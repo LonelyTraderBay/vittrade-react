@@ -26,16 +26,12 @@ const TIMEFRAMES: { id: Timeframe; label: string }[] = [
   { id: '1w', label: '1W' },
 ];
 
-export function TimeframeSelector({
-  active,
-  onChange,
-  compact = false,
-}: TimeframeSelectorProps) {
+export function TimeframeSelector({ active, onChange, compact = false }: TimeframeSelectorProps) {
   const c = useThemeColors();
   const { hapticSelection } = useHaptic();
 
   return (
-    <div 
+    <div
       className="inline-flex rounded-lg overflow-hidden"
       style={{
         background: c.surface2,
@@ -46,7 +42,7 @@ export function TimeframeSelector({
     >
       {TIMEFRAMES.map(({ id, label }) => {
         const isActive = id === active;
-        
+
         return (
           <button
             key={id}
@@ -77,10 +73,7 @@ export function TimeframeSelector({
 /**
  * Minimal pill variant (for mini chart)
  */
-export function TimeframePills({
-  active,
-  onChange,
-}: TimeframeSelectorProps) {
+export function TimeframePills({ active, onChange }: TimeframeSelectorProps) {
   const c = useThemeColors();
 
   // Show only key timeframes for mini chart
@@ -90,7 +83,7 @@ export function TimeframePills({
     <div className="inline-flex gap-1">
       {miniTimeframes.map((tf) => {
         const isActive = tf === active;
-        
+
         return (
           <button
             key={tf}
@@ -99,9 +92,7 @@ export function TimeframePills({
             style={{
               padding: '2px 6px',
               borderRadius: 4,
-              background: isActive 
-                ? 'rgba(16, 185, 129, 0.15)' 
-                : c.surface2 + '80',
+              background: isActive ? 'rgba(16, 185, 129, 0.15)' : c.surface2 + '80',
               color: isActive ? '#10B981' : c.text3,
               fontSize: 9,
               fontWeight: 700,

@@ -1,9 +1,9 @@
 /**
  * DCA Create Plan Sheet
- * 
+ *
  * Bottom sheet for creating new DCA plan
  * Migrated to useThemeColors() — no direct CSS var references
- * 
+ *
  * @module components/dca
  */
 
@@ -52,7 +52,13 @@ const AMOUNT_PRESETS = [100_000, 250_000, 500_000, 1_000_000, 2_000_000, 5_000_0
 /**
  * DCA Create Plan Sheet Component
  */
-export function DCACreatePlanSheet({ open, onClose, onCreate, isCreating, preselectedCoin }: DCACreatePlanSheetProps) {
+export function DCACreatePlanSheet({
+  open,
+  onClose,
+  onCreate,
+  isCreating,
+  preselectedCoin,
+}: DCACreatePlanSheetProps) {
   const c = useThemeColors();
   const [coinSymbol, setCoinSymbol] = useState<string>(preselectedCoin || 'BTC');
   const [frequency, setFrequency] = useState<DCAFrequency>('weekly');
@@ -66,7 +72,7 @@ export function DCACreatePlanSheet({ open, onClose, onCreate, isCreating, presel
     };
 
     await onCreate(request);
-    
+
     // Reset form
     setCoinSymbol('BTC');
     setFrequency('weekly');
@@ -147,7 +153,7 @@ export function DCACreatePlanSheet({ open, onClose, onCreate, isCreating, presel
           <label className="block text-[14px] font-medium mb-3" style={{ color: c.text1 }}>
             Số Tiền Mỗi Lần (VND)
           </label>
-          
+
           {/* Input */}
           <div className="relative mb-3">
             <input
@@ -163,11 +169,18 @@ export function DCACreatePlanSheet({ open, onClose, onCreate, isCreating, presel
                 borderColor: c.border,
                 color: c.text1,
               }}
-              onFocus={(e) => { e.currentTarget.style.borderColor = c.primary; }}
-              onBlur={(e) => { e.currentTarget.style.borderColor = c.border; }}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = c.primary;
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = c.border;
+              }}
               placeholder="500.000"
             />
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[14px]" style={{ color: c.text2 }}>
+            <div
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-[14px]"
+              style={{ color: c.text2 }}
+            >
               VND
             </div>
           </div>
@@ -185,8 +198,12 @@ export function DCACreatePlanSheet({ open, onClose, onCreate, isCreating, presel
                 onClick={() => setAmount(preset.toString())}
                 className="h-9 rounded-lg text-[12px] font-medium transition-colors"
                 style={{ background: c.surface2, color: c.text1 }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = c.surface; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = c.surface2; }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = c.surface;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = c.surface2;
+                }}
               >
                 {formatVND(preset)}
               </button>
@@ -199,19 +216,21 @@ export function DCACreatePlanSheet({ open, onClose, onCreate, isCreating, presel
           <div className="text-[14px] font-medium mb-3" style={{ color: c.text1 }}>
             Tóm Tắt
           </div>
-          
+
           <div className="flex justify-between text-[14px]">
             <span style={{ color: c.text2 }}>Coin:</span>
-            <span className="font-medium" style={{ color: c.text1 }}>{coinSymbol}</span>
+            <span className="font-medium" style={{ color: c.text1 }}>
+              {coinSymbol}
+            </span>
           </div>
-          
+
           <div className="flex justify-between text-[14px]">
             <span style={{ color: c.text2 }}>Tần suất:</span>
             <span className="font-medium" style={{ color: c.text1 }}>
               {FREQUENCY_OPTIONS.find((f) => f.value === frequency)?.label}
             </span>
           </div>
-          
+
           <div className="flex justify-between text-[14px]">
             <span style={{ color: c.text2 }}>Mỗi lần:</span>
             <span className="font-medium" style={{ color: c.text1 }}>
@@ -220,15 +239,18 @@ export function DCACreatePlanSheet({ open, onClose, onCreate, isCreating, presel
           </div>
 
           {/* Monthly estimate */}
-          <div className="flex justify-between text-[14px] pt-2 border-t" style={{ borderColor: c.border }}>
+          <div
+            className="flex justify-between text-[14px] pt-2 border-t"
+            style={{ borderColor: c.border }}
+          >
             <span style={{ color: c.text2 }}>Ước tính/tháng:</span>
             <span className="font-medium" style={{ color: c.text1 }}>
               {formatVND(
                 frequency === 'daily'
                   ? (parseInt(amount) || 0) * 30
                   : frequency === 'weekly'
-                  ? (parseInt(amount) || 0) * 4
-                  : parseInt(amount) || 0
+                    ? (parseInt(amount) || 0) * 4
+                    : parseInt(amount) || 0,
               )}{' '}
               VND
             </span>

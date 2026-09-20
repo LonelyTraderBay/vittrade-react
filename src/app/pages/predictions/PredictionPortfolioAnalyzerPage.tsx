@@ -17,13 +17,33 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  TrendingUp, TrendingDown, Target, Award, BarChart3,
-  PieChart as PieIcon, Activity, Percent, Info, Shield,
+  TrendingUp,
+  TrendingDown,
+  Target,
+  Award,
+  BarChart3,
+  PieChart as PieIcon,
+  Activity,
+  Percent,
+  Info,
+  Shield,
 } from 'lucide-react';
-import { PieChart, Pie, Cell, ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, BarChart, Bar } from 'recharts';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  BarChart,
+  Bar,
+} from 'recharts';
 
 const TABS = ['Tong quan', 'Hieu suat', 'Rui ro'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface Position {
   id: string;
@@ -110,8 +130,8 @@ export function PredictionPortfolioAnalyzerPage() {
   const [tab, setTab] = useState<Tab>('Tong quan');
 
   // Calculate metrics
-  const openPositions = MOCK_POSITIONS.filter(p => p.status === 'open');
-  const closedPositions = MOCK_POSITIONS.filter(p => p.status === 'closed');
+  const openPositions = MOCK_POSITIONS.filter((p) => p.status === 'open');
+  const closedPositions = MOCK_POSITIONS.filter((p) => p.status === 'closed');
 
   const totalInvested = MOCK_POSITIONS.reduce((sum, p) => sum + p.shares * p.avgPrice, 0);
   const currentValue = openPositions.reduce((sum, p) => sum + p.shares * p.currentPrice, 0);
@@ -124,19 +144,18 @@ export function PredictionPortfolioAnalyzerPage() {
   const totalPnL = realizedPnL + unrealizedPnL;
   const totalPnLPercent = totalInvested > 0 ? (totalPnL / totalInvested) * 100 : 0;
 
-  const winningTrades = closedPositions.filter(p => (p.pnl || 0) > 0).length;
-  const losingTrades = closedPositions.filter(p => (p.pnl || 0) < 0).length;
+  const winningTrades = closedPositions.filter((p) => (p.pnl || 0) > 0).length;
+  const losingTrades = closedPositions.filter((p) => (p.pnl || 0) < 0).length;
   const totalTrades = closedPositions.length;
   const winRate = totalTrades > 0 ? (winningTrades / totalTrades) * 100 : 0;
 
   // Category breakdown
   const categoryMap = new Map<string, { invested: number; pnl: number }>();
-  MOCK_POSITIONS.forEach(p => {
+  MOCK_POSITIONS.forEach((p) => {
     const existing = categoryMap.get(p.category) || { invested: 0, pnl: 0 };
     const cost = p.shares * p.avgPrice;
-    const value = p.status === 'open'
-      ? p.shares * p.currentPrice
-      : p.shares * p.avgPrice + (p.pnl || 0);
+    const value =
+      p.status === 'open' ? p.shares * p.currentPrice : p.shares * p.avgPrice + (p.pnl || 0);
     categoryMap.set(p.category, {
       invested: existing.invested + cost,
       pnl: existing.pnl + (value - cost),
@@ -203,7 +222,8 @@ export function PredictionPortfolioAnalyzerPage() {
                       fontWeight: 700,
                     }}
                   >
-                    {totalPnLPercent >= 0 ? '+' : ''}{totalPnLPercent.toFixed(2)}%
+                    {totalPnLPercent >= 0 ? '+' : ''}
+                    {totalPnLPercent.toFixed(2)}%
                   </p>
                 </div>
                 <div>
@@ -270,9 +290,7 @@ export function PredictionPortfolioAnalyzerPage() {
                     <stat.icon size={16} color={stat.color} />
                     <p style={{ color: c.text3, fontSize: 11 }}>{stat.label}</p>
                   </div>
-                  <p style={{ color: c.text1, fontSize: 18, fontWeight: 700 }}>
-                    {stat.value}
-                  </p>
+                  <p style={{ color: c.text1, fontSize: 18, fontWeight: 700 }}>{stat.value}</p>
                 </div>
               ))}
             </div>
@@ -295,7 +313,9 @@ export function PredictionPortfolioAnalyzerPage() {
                     innerRadius={50}
                     outerRadius={80}
                     dataKey="value"
-                    label={(entry) => `${entry.name} ${((entry.value / totalInvested) * 100).toFixed(0)}%`}
+                    label={(entry) =>
+                      `${entry.name} ${((entry.value / totalInvested) * 100).toFixed(0)}%`
+                    }
                   >
                     {categoryData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -404,15 +424,11 @@ export function PredictionPortfolioAnalyzerPage() {
                 <div className="grid grid-cols-2 gap-3 mb-3">
                   <div>
                     <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Winning</p>
-                    <p style={{ color: c.buy, fontSize: 15, fontWeight: 700 }}>
-                      {winningTrades}
-                    </p>
+                    <p style={{ color: c.buy, fontSize: 15, fontWeight: 700 }}>{winningTrades}</p>
                   </div>
                   <div>
                     <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Losing</p>
-                    <p style={{ color: c.sell, fontSize: 15, fontWeight: 700 }}>
-                      {losingTrades}
-                    </p>
+                    <p style={{ color: c.sell, fontSize: 15, fontWeight: 700 }}>{losingTrades}</p>
                   </div>
                 </div>
 
@@ -445,7 +461,14 @@ export function PredictionPortfolioAnalyzerPage() {
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginBottom: 2 }}>
+                          <p
+                            style={{
+                              color: c.text1,
+                              fontSize: 13,
+                              fontWeight: 600,
+                              marginBottom: 2,
+                            }}
+                          >
                             {pos.eventName}
                           </p>
                           <p style={{ color: c.text3, fontSize: 11 }}>{pos.category}</p>
@@ -486,9 +509,7 @@ export function PredictionPortfolioAnalyzerPage() {
                       <Shield size={16} color="#3B82F6" />
                       <p style={{ color: c.text2, fontSize: 13 }}>Max Drawdown</p>
                     </div>
-                    <p style={{ color: c.sell, fontSize: 15, fontWeight: 700 }}>
-                      -12.4%
-                    </p>
+                    <p style={{ color: c.sell, fontSize: 15, fontWeight: 700 }}>-12.4%</p>
                   </div>
 
                   <div className="flex items-center justify-between">
@@ -496,9 +517,7 @@ export function PredictionPortfolioAnalyzerPage() {
                       <Activity size={16} color={c.text3} />
                       <p style={{ color: c.text2, fontSize: 13 }}>Portfolio Volatility</p>
                     </div>
-                    <p style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>
-                      18.2%
-                    </p>
+                    <p style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>18.2%</p>
                   </div>
 
                   <div className="flex items-center justify-between">
@@ -506,9 +525,7 @@ export function PredictionPortfolioAnalyzerPage() {
                       <PieIcon size={16} color={c.text3} />
                       <p style={{ color: c.text2, fontSize: 13 }}>Concentration (Top 3)</p>
                     </div>
-                    <p style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>
-                      62.3%
-                    </p>
+                    <p style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>62.3%</p>
                   </div>
 
                   <div className="flex items-center justify-between">
@@ -516,9 +533,7 @@ export function PredictionPortfolioAnalyzerPage() {
                       <Percent size={16} color={c.text3} />
                       <p style={{ color: c.text2, fontSize: 13 }}>Sharpe Ratio</p>
                     </div>
-                    <p style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>
-                      1.42
-                    </p>
+                    <p style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>1.42</p>
                   </div>
                 </div>
               </div>
@@ -563,7 +578,10 @@ export function PredictionPortfolioAnalyzerPage() {
             {/* Diversification Score */}
             <div
               className="rounded-2xl p-4"
-              style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}
+              style={{
+                background: 'rgba(16,185,129,0.06)',
+                border: '1px solid rgba(16,185,129,0.15)',
+              }}
             >
               <div className="flex items-start gap-2 mb-3">
                 <Shield size={16} color="#10B981" style={{ marginTop: 2 }} />
@@ -585,12 +603,15 @@ export function PredictionPortfolioAnalyzerPage() {
             {/* Risk Warning - §9.6 compliance */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
+              style={{
+                background: 'rgba(245,158,11,0.06)',
+                border: '1px solid rgba(245,158,11,0.15)',
+              }}
             >
               <Info size={14} color="#F59E0B" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Phan tich rui ro dua tren du lieu lich su. Hieu suat qua khu khong dam bao ket qua tuong lai.
-                Luon quan ly rui ro va phan tan dau tu.
+                Phan tich rui ro dua tren du lieu lich su. Hieu suat qua khu khong dam bao ket qua
+                tuong lai. Luon quan ly rui ro va phan tan dau tu.
               </p>
             </div>
           </>

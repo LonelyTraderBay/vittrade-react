@@ -9,8 +9,15 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import {
-  TrendingUp, TrendingDown, ChevronRight, ChevronLeft,
-  ArrowUpRight, ArrowDownRight, BarChart3, PieChart, Layers,
+  TrendingUp,
+  TrendingDown,
+  ChevronRight,
+  ChevronLeft,
+  ArrowUpRight,
+  ArrowDownRight,
+  BarChart3,
+  PieChart,
+  Layers,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -31,14 +38,21 @@ const TIMEFRAMES = ['24h', '7d', '30d'] as const;
 
 /* ─── Sector Performance Card ─── */
 function SectorCard({
-  sector, timeframe, onClick,
+  sector,
+  timeframe,
+  onClick,
 }: {
   sector: MarketSector;
   timeframe: '24h' | '7d' | '30d';
   onClick: () => void;
 }) {
   const c = useThemeColors();
-  const change = timeframe === '24h' ? sector.change24h : timeframe === '7d' ? sector.change7d : sector.change30d;
+  const change =
+    timeframe === '24h'
+      ? sector.change24h
+      : timeframe === '7d'
+        ? sector.change7d
+        : sector.change30d;
   const isPos = change >= 0;
 
   return (
@@ -54,15 +68,14 @@ function SectorCard({
           <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1 }}>
             {sector.nameVi}
           </p>
-          <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>
-            {sector.coinCount} coins
-          </p>
+          <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>{sector.coinCount} coins</p>
         </div>
         <div className="text-right">
           <span
             className="rounded-lg px-2 py-1 inline-flex items-center gap-1"
             style={{
-              fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold,
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.bold,
               color: isPos ? '#10B981' : '#EF4444',
               background: isPos ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
             }}
@@ -75,24 +88,45 @@ function SectorCard({
 
       <div className="flex items-center justify-between mb-2">
         <span style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>Vốn hóa</span>
-        <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text1, fontFamily: 'monospace' }}>
+        <span
+          style={{
+            fontSize: FONT_SCALE.xs,
+            fontWeight: FONT_WEIGHT.semibold,
+            color: c.text1,
+            fontFamily: 'monospace',
+          }}
+        >
           {fmtCompact(sector.totalMarketCap, { prefix: '$' })}
         </span>
       </div>
 
       <div className="flex items-center justify-between mb-3">
         <span style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>KL 24h</span>
-        <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text1, fontFamily: 'monospace' }}>
+        <span
+          style={{
+            fontSize: FONT_SCALE.xs,
+            fontWeight: FONT_WEIGHT.semibold,
+            color: c.text1,
+            fontFamily: 'monospace',
+          }}
+        >
           {fmtCompact(sector.volume24h, { prefix: '$' })}
         </span>
       </div>
 
       {/* Mini dominance bar */}
       <div className="flex items-center gap-2">
-        <div className="flex-1 rounded-full overflow-hidden" style={{ height: 4, background: c.surface2 }}>
+        <div
+          className="flex-1 rounded-full overflow-hidden"
+          style={{ height: 4, background: c.surface2 }}
+        >
           <div
             className="rounded-full"
-            style={{ width: `${Math.min(sector.dominance * 3, 100)}%`, height: '100%', background: sector.color }}
+            style={{
+              width: `${Math.min(sector.dominance * 3, 100)}%`,
+              height: '100%',
+              background: sector.color,
+            }}
           />
         </div>
         <span style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>
@@ -102,11 +136,16 @@ function SectorCard({
 
       {/* Top coins */}
       <div className="flex gap-1 mt-3">
-        {sector.topCoins.slice(0, 4).map(coin => (
+        {sector.topCoins.slice(0, 4).map((coin) => (
           <span
             key={coin}
             className="px-2 py-0.5 rounded-md"
-            style={{ fontSize: 10, fontWeight: FONT_WEIGHT.semibold, color: c.text2, background: c.surface2 }}
+            style={{
+              fontSize: 10,
+              fontWeight: FONT_WEIGHT.semibold,
+              color: c.text2,
+              background: c.surface2,
+            }}
           >
             {coin}
           </span>
@@ -125,12 +164,7 @@ function SectorCard({
 }
 
 /* ─── Sector Detail View ─── */
-function SectorDetailView({
-  sector, onBack,
-}: {
-  sector: MarketSector;
-  onBack: () => void;
-}) {
+function SectorDetailView({ sector, onBack }: { sector: MarketSector; onBack: () => void }) {
   const c = useThemeColors();
   const navigate = useNavigate();
   const prefix = useRoutePrefix();
@@ -144,7 +178,6 @@ function SectorDetailView({
     <PageLayout>
       <Header title={sector.nameVi} back />
       <PageContent gap="default">
-
         {/* Sector Hero */}
         <TrCard variant="hero" className="p-4">
           <div className="flex items-center gap-3 mb-3">
@@ -169,15 +202,23 @@ function SectorDetailView({
               { label: '24h', value: sector.change24h },
               { label: '7 ngày', value: sector.change7d },
               { label: '30 ngày', value: sector.change30d },
-            ].map(item => (
-              <div key={item.label} className="rounded-xl p-2 text-center" style={{ background: c.portfolioBtnGhost }}>
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="rounded-xl p-2 text-center"
+                style={{ background: c.portfolioBtnGhost }}
+              >
                 <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>{item.label}</p>
-                <p style={{
-                  fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold,
-                  color: item.value >= 0 ? '#10B981' : '#EF4444',
-                  fontFamily: 'monospace',
-                }}>
-                  {item.value >= 0 ? '+' : ''}{fmtPct(item.value)}
+                <p
+                  style={{
+                    fontSize: FONT_SCALE.sm,
+                    fontWeight: FONT_WEIGHT.bold,
+                    color: item.value >= 0 ? '#10B981' : '#EF4444',
+                    fontFamily: 'monospace',
+                  }}
+                >
+                  {item.value >= 0 ? '+' : ''}
+                  {fmtPct(item.value)}
                 </p>
               </div>
             ))}
@@ -186,13 +227,27 @@ function SectorDetailView({
           <div className="flex items-center justify-between mt-3">
             <div>
               <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>Tổng vốn hóa</p>
-              <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+              <p
+                style={{
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  color: c.text1,
+                  fontFamily: 'monospace',
+                }}
+              >
                 {fmtCompact(sector.totalMarketCap, { prefix: '$' })}
               </p>
             </div>
             <div className="text-right">
               <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>KL 24h</p>
-              <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+              <p
+                style={{
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  color: c.text1,
+                  fontFamily: 'monospace',
+                }}
+              >
                 {fmtCompact(sector.volume24h, { prefix: '$' })}
               </p>
             </div>
@@ -203,11 +258,41 @@ function SectorDetailView({
         <PageSection label={`Coin trong ngành ${sector.nameVi}`} accentColor={sector.color}>
           <TrCard className="px-3">
             {/* Column header */}
-            <div className="flex items-center py-2" style={{ borderBottom: `1px solid ${c.divider}` }}>
-              <span style={{ fontSize: FONT_SCALE.micro, color: c.text3, flex: 1 }}>#  Tên</span>
-              <span style={{ fontSize: FONT_SCALE.micro, color: c.text3, width: 72, textAlign: 'right' }}>Giá</span>
-              <span style={{ fontSize: FONT_SCALE.micro, color: c.text3, width: 56, textAlign: 'right' }}>24h</span>
-              <span style={{ fontSize: FONT_SCALE.micro, color: c.text3, width: 56, textAlign: 'right' }}>7d</span>
+            <div
+              className="flex items-center py-2"
+              style={{ borderBottom: `1px solid ${c.divider}` }}
+            >
+              <span style={{ fontSize: FONT_SCALE.micro, color: c.text3, flex: 1 }}># Tên</span>
+              <span
+                style={{
+                  fontSize: FONT_SCALE.micro,
+                  color: c.text3,
+                  width: 72,
+                  textAlign: 'right',
+                }}
+              >
+                Giá
+              </span>
+              <span
+                style={{
+                  fontSize: FONT_SCALE.micro,
+                  color: c.text3,
+                  width: 56,
+                  textAlign: 'right',
+                }}
+              >
+                24h
+              </span>
+              <span
+                style={{
+                  fontSize: FONT_SCALE.micro,
+                  color: c.text3,
+                  width: 56,
+                  textAlign: 'right',
+                }}
+              >
+                7d
+              </span>
             </div>
 
             {sortedCoins.length === 0 ? (
@@ -226,36 +311,69 @@ function SectorDetailView({
                     className="flex items-center py-3 w-full"
                     style={{ borderBottom: `1px solid ${c.divider}` }}
                   >
-                    <span style={{ fontSize: FONT_SCALE.micro, color: c.text3, width: 16 }}>{i + 1}</span>
+                    <span style={{ fontSize: FONT_SCALE.micro, color: c.text3, width: 16 }}>
+                      {i + 1}
+                    </span>
                     <div className="flex items-center gap-2 flex-1 min-w-0 ml-1">
                       <div
                         className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
                         style={{ background: `${coin.color}18` }}
                       >
-                        <span style={{ fontSize: 10, fontWeight: FONT_WEIGHT.bold, color: coin.color }}>
+                        <span
+                          style={{ fontSize: 10, fontWeight: FONT_WEIGHT.bold, color: coin.color }}
+                        >
                           {coin.symbol.slice(0, 3)}
                         </span>
                       </div>
                       <div className="text-left min-w-0">
-                        <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold, color: c.text1 }}>
+                        <span
+                          style={{
+                            fontSize: FONT_SCALE.sm,
+                            fontWeight: FONT_WEIGHT.semibold,
+                            color: c.text1,
+                          }}
+                        >
                           {coin.symbol}
                         </span>
                       </div>
                     </div>
-                    <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text1, fontFamily: 'monospace', width: 72, textAlign: 'right' }}>
+                    <span
+                      style={{
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: FONT_WEIGHT.semibold,
+                        color: c.text1,
+                        fontFamily: 'monospace',
+                        width: 72,
+                        textAlign: 'right',
+                      }}
+                    >
                       {fmtPrice(coin.price)}
                     </span>
-                    <span style={{
-                      fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace',
-                      color: isPos24 ? '#10B981' : '#EF4444', width: 56, textAlign: 'right',
-                    }}>
-                      {isPos24 ? '+' : ''}{fmtPct(coin.change24h)}
+                    <span
+                      style={{
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: FONT_WEIGHT.bold,
+                        fontFamily: 'monospace',
+                        color: isPos24 ? '#10B981' : '#EF4444',
+                        width: 56,
+                        textAlign: 'right',
+                      }}
+                    >
+                      {isPos24 ? '+' : ''}
+                      {fmtPct(coin.change24h)}
                     </span>
-                    <span style={{
-                      fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace',
-                      color: isPos7d ? '#10B981' : '#EF4444', width: 56, textAlign: 'right',
-                    }}>
-                      {isPos7d ? '+' : ''}{fmtPct(coin.change7d)}
+                    <span
+                      style={{
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: FONT_WEIGHT.bold,
+                        fontFamily: 'monospace',
+                        color: isPos7d ? '#10B981' : '#EF4444',
+                        width: 56,
+                        textAlign: 'right',
+                      }}
+                    >
+                      {isPos7d ? '+' : ''}
+                      {fmtPct(coin.change7d)}
                     </span>
                   </button>
                 );
@@ -267,8 +385,8 @@ function SectorDetailView({
         {/* Top coins */}
         <PageSection label="Top coin theo vốn hóa" accentColor={sector.color}>
           <div className="flex gap-2 overflow-x-auto scrollbar-none -mx-5 px-5 pb-1">
-            {sector.topCoins.map(coin => {
-              const data = HEATMAP_COINS.find(c => c.symbol === coin);
+            {sector.topCoins.map((coin) => {
+              const data = HEATMAP_COINS.find((c) => c.symbol === coin);
               if (!data) return null;
               const isPos = data.change24h >= 0;
 
@@ -286,22 +404,41 @@ function SectorDetailView({
                       className="w-6 h-6 rounded-lg flex items-center justify-center"
                       style={{ background: `${data.color}18` }}
                     >
-                      <span style={{ fontSize: 8, fontWeight: FONT_WEIGHT.bold, color: data.color }}>
+                      <span
+                        style={{ fontSize: 8, fontWeight: FONT_WEIGHT.bold, color: data.color }}
+                      >
                         {data.symbol.slice(0, 3)}
                       </span>
                     </div>
-                    <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text1 }}>
+                    <span
+                      style={{
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: FONT_WEIGHT.semibold,
+                        color: c.text1,
+                      }}
+                    >
                       {data.symbol}
                     </span>
                   </div>
-                  <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+                  <p
+                    style={{
+                      fontSize: FONT_SCALE.sm,
+                      fontWeight: FONT_WEIGHT.bold,
+                      color: c.text1,
+                      fontFamily: 'monospace',
+                    }}
+                  >
                     {fmtPrice(data.price)}
                   </p>
-                  <p style={{
-                    fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold,
-                    color: isPos ? '#10B981' : '#EF4444',
-                  }}>
-                    {isPos ? '+' : ''}{fmtPct(data.change24h)}
+                  <p
+                    style={{
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.bold,
+                      color: isPos ? '#10B981' : '#EF4444',
+                    }}
+                  >
+                    {isPos ? '+' : ''}
+                    {fmtPct(data.change24h)}
                   </p>
                 </TrCard>
               );
@@ -326,11 +463,14 @@ export function MarketSectorsPage() {
   const [timeframe, setTimeframe] = useState<'24h' | '7d' | '30d'>('24h');
   const [sortBy, setSortBy] = useState(SORT_OPTIONS[0]);
 
-  const selectedSector = selectedSectorId ? MARKET_SECTORS.find(s => s.id === selectedSectorId) : null;
+  const selectedSector = selectedSectorId
+    ? MARKET_SECTORS.find((s) => s.id === selectedSectorId)
+    : null;
 
   const sortedSectors = useMemo(() => {
-    const changeKey = timeframe === '24h' ? 'change24h' : timeframe === '7d' ? 'change7d' : 'change30d';
-    let sectors = [...MARKET_SECTORS];
+    const changeKey =
+      timeframe === '24h' ? 'change24h' : timeframe === '7d' ? 'change7d' : 'change30d';
+    const sectors = [...MARKET_SECTORS];
 
     switch (sortBy) {
       case 'Hiệu suất 24h':
@@ -349,12 +489,7 @@ export function MarketSectorsPage() {
 
   // If a sector is selected, show detail view
   if (selectedSector) {
-    return (
-      <SectorDetailView
-        sector={selectedSector}
-        onBack={() => setSearchParams({})}
-      />
-    );
+    return <SectorDetailView sector={selectedSector} onBack={() => setSearchParams({})} />;
   }
 
   // Sector heatmap summary
@@ -364,19 +499,20 @@ export function MarketSectorsPage() {
     <PageLayout>
       <Header title="Ngành thị trường" back />
       <PageContent gap="default">
-
         {/* Sector Heatmap Mini */}
         <TrCard className="p-4">
           <div className="flex items-center gap-2 mb-3">
             <PieChart size={14} color="#8B5CF6" />
-            <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text2 }}>
+            <span
+              style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text2 }}
+            >
               Phân bổ vốn hóa theo ngành
             </span>
           </div>
 
           {/* Horizontal stacked bar */}
           <div className="flex rounded-lg overflow-hidden mb-3" style={{ height: 20 }}>
-            {MARKET_SECTORS.map(sector => {
+            {MARKET_SECTORS.map((sector) => {
               const pct = (sector.totalMarketCap / totalMarketCap) * 100;
               if (pct < 1) return null;
               return (
@@ -396,27 +532,33 @@ export function MarketSectorsPage() {
 
           {/* Legend */}
           <div className="flex flex-wrap gap-x-3 gap-y-1">
-            {MARKET_SECTORS.filter(s => (s.totalMarketCap / totalMarketCap) * 100 >= 1).map(sector => (
-              <div key={sector.id} className="flex items-center gap-1">
-                <div className="w-2 h-2 rounded-full" style={{ background: sector.color }} />
-                <span style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>
-                  {sector.name} {((sector.totalMarketCap / totalMarketCap) * 100).toFixed(1)}%
-                </span>
-              </div>
-            ))}
+            {MARKET_SECTORS.filter((s) => (s.totalMarketCap / totalMarketCap) * 100 >= 1).map(
+              (sector) => (
+                <div key={sector.id} className="flex items-center gap-1">
+                  <div className="w-2 h-2 rounded-full" style={{ background: sector.color }} />
+                  <span style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>
+                    {sector.name} {((sector.totalMarketCap / totalMarketCap) * 100).toFixed(1)}%
+                  </span>
+                </div>
+              ),
+            )}
           </div>
         </TrCard>
 
         {/* Timeframe + Sort */}
         <div className="flex items-center justify-between">
           <div className="flex gap-2">
-            {TIMEFRAMES.map(tf => (
+            {TIMEFRAMES.map((tf) => (
               <button
                 key={tf}
-                onClick={() => { setTimeframe(tf); hapticSelection(); }}
+                onClick={() => {
+                  setTimeframe(tf);
+                  hapticSelection();
+                }}
                 className="px-3 py-2 rounded-xl min-h-9"
                 style={{
-                  fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold,
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.semibold,
                   background: timeframe === tf ? c.chipActiveBg : c.chipBg,
                   color: timeframe === tf ? c.chipActiveText : c.chipText,
                   border: `1px solid ${timeframe === tf ? c.chipActiveBorder : c.chipBorder}`,
@@ -428,13 +570,17 @@ export function MarketSectorsPage() {
           </div>
 
           <div className="flex gap-2">
-            {SORT_OPTIONS.map(opt => (
+            {SORT_OPTIONS.map((opt) => (
               <button
                 key={opt}
-                onClick={() => { setSortBy(opt); hapticSelection(); }}
+                onClick={() => {
+                  setSortBy(opt);
+                  hapticSelection();
+                }}
                 className="px-2 py-1 rounded-lg"
                 style={{
-                  fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.medium,
+                  fontSize: FONT_SCALE.micro,
+                  fontWeight: FONT_WEIGHT.medium,
                   color: sortBy === opt ? '#3B82F6' : c.text3,
                   background: sortBy === opt ? 'rgba(59,130,246,0.1)' : 'transparent',
                 }}
@@ -447,7 +593,7 @@ export function MarketSectorsPage() {
 
         {/* Sector Cards Grid */}
         <div className="flex flex-col gap-3">
-          {sortedSectors.map(sector => (
+          {sortedSectors.map((sector) => (
             <SectorCard
               key={sector.id}
               sector={sector}
@@ -464,23 +610,62 @@ export function MarketSectorsPage() {
         <PageSection label="So sánh nhanh" accentColor="#3B82F6">
           <TrCard className="px-3">
             {/* Column header */}
-            <div className="flex items-center py-2" style={{ borderBottom: `1px solid ${c.divider}` }}>
+            <div
+              className="flex items-center py-2"
+              style={{ borderBottom: `1px solid ${c.divider}` }}
+            >
               <span style={{ fontSize: FONT_SCALE.micro, color: c.text3, flex: 1 }}>Ngành</span>
-              <span style={{ fontSize: FONT_SCALE.micro, color: c.text3, width: 52, textAlign: 'right' }}>24h</span>
-              <span style={{ fontSize: FONT_SCALE.micro, color: c.text3, width: 52, textAlign: 'right' }}>7d</span>
-              <span style={{ fontSize: FONT_SCALE.micro, color: c.text3, width: 52, textAlign: 'right' }}>30d</span>
+              <span
+                style={{
+                  fontSize: FONT_SCALE.micro,
+                  color: c.text3,
+                  width: 52,
+                  textAlign: 'right',
+                }}
+              >
+                24h
+              </span>
+              <span
+                style={{
+                  fontSize: FONT_SCALE.micro,
+                  color: c.text3,
+                  width: 52,
+                  textAlign: 'right',
+                }}
+              >
+                7d
+              </span>
+              <span
+                style={{
+                  fontSize: FONT_SCALE.micro,
+                  color: c.text3,
+                  width: 52,
+                  textAlign: 'right',
+                }}
+              >
+                30d
+              </span>
             </div>
 
-            {sortedSectors.map(sector => (
+            {sortedSectors.map((sector) => (
               <button
                 key={sector.id}
-                onClick={() => { setSearchParams({ id: sector.id }); hapticSelection(); }}
+                onClick={() => {
+                  setSearchParams({ id: sector.id });
+                  hapticSelection();
+                }}
                 className="flex items-center py-2.5 w-full"
                 style={{ borderBottom: `1px solid ${c.divider}` }}
               >
                 <div className="flex items-center gap-2 flex-1">
                   <span style={{ fontSize: 14 }}>{sector.icon}</span>
-                  <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text1 }}>
+                  <span
+                    style={{
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.semibold,
+                      color: c.text1,
+                    }}
+                  >
                     {sector.name}
                   </span>
                 </div>
@@ -488,12 +673,16 @@ export function MarketSectorsPage() {
                   <span
                     key={i}
                     style={{
-                      fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace',
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.bold,
+                      fontFamily: 'monospace',
                       color: val >= 0 ? '#10B981' : '#EF4444',
-                      width: 52, textAlign: 'right',
+                      width: 52,
+                      textAlign: 'right',
                     }}
                   >
-                    {val >= 0 ? '+' : ''}{fmtPct(val)}
+                    {val >= 0 ? '+' : ''}
+                    {fmtPct(val)}
                   </span>
                 ))}
               </button>

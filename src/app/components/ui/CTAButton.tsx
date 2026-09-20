@@ -1,7 +1,13 @@
 import React from 'react';
+import type { LucideIcon } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
-import { ButtonGradients, ButtonShadows, ButtonHeights, ButtonRadius, ButtonFontSize } from '../../theme/button';
-import { VitDensity } from '../../theme/density';
+import {
+  ButtonGradients,
+  ButtonShadows,
+  ButtonHeights,
+  ButtonRadius,
+  ButtonFontSize,
+} from '../../theme/button';
 
 /**
  * CTAButton — Enterprise CTA Button Component
@@ -9,14 +15,25 @@ import { VitDensity } from '../../theme/density';
  * Supports gradient backgrounds, disabled states, loading states
  */
 
+/**
+ * Density subset backed by the button theme tokens in theme/button.ts
+ * (ButtonHeights/ButtonRadius/ButtonFontSize define compact/standard/hero).
+ */
+export type CTADensity = 'compact' | 'standard' | 'hero';
+
 export interface CTAButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'success' | 'danger' | 'warning' | 'ghost';
+  variant?: 'primary' | 'success' | 'danger' | 'warning' | 'ghost' | 'secondary';
   loading?: boolean;
   fullWidth?: boolean;
-  density?: VitDensity;
+  density?: CTADensity;
   bg?: string;
   textColor?: string;
-  children: React.ReactNode;
+  /** Optional text label (alternative to children) */
+  label?: string;
+  /** Optional leading icon (lucide-react icon component) */
+  icon?: LucideIcon;
+  /** Content — optional when `label` is used instead */
+  children?: React.ReactNode;
 }
 
 export function CTAButton({
@@ -45,9 +62,15 @@ export function CTAButton({
         height: ButtonHeights[density],
         borderRadius: ButtonRadius[density],
         fontSize: ButtonFontSize[density],
-        background: isDisabled ? c.surface2 : (bg ?? ButtonGradients[variant]),
+        background: isDisabled
+          ? c.surface2
+          : (bg ?? (variant === 'secondary' ? undefined : ButtonGradients[variant])),
         color: isDisabled ? c.text3 : (textColor ?? '#fff'),
-        boxShadow: isDisabled ? 'none' : ButtonShadows[variant],
+        boxShadow: isDisabled
+          ? 'none'
+          : variant === 'secondary'
+            ? undefined
+            : ButtonShadows[variant],
         transition: 'all var(--tr-duration-normal) ease',
         ...style,
       }}

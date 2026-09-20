@@ -49,12 +49,18 @@ interface SessionTimeoutState {
 }
 
 const ACTIVITY_EVENTS = [
-  'mousedown', 'mousemove', 'keydown', 'scroll',
-  'touchstart', 'touchmove', 'click', 'wheel',
+  'mousedown',
+  'mousemove',
+  'keydown',
+  'scroll',
+  'touchstart',
+  'touchmove',
+  'click',
+  'wheel',
 ] as const;
 
 const DEFAULT_TIMEOUT = 5 * 60 * 1000; // 5 minutes
-const DEFAULT_WARNING = 60 * 1000;      // 60 seconds
+const DEFAULT_WARNING = 60 * 1000; // 60 seconds
 
 export function useSessionTimeout({
   timeout = DEFAULT_TIMEOUT,

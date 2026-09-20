@@ -10,22 +10,22 @@
  * API Configuration
  */
 export const API_CONFIG = {
-  TIMEOUT: 30000,              // 30 seconds
+  TIMEOUT: 30000, // 30 seconds
   RETRY_COUNT: 3,
-  RETRY_DELAY: 1000,           // 1 second
-  BASE_URL: '/api',            // Mock API base
+  RETRY_DELAY: 1000, // 1 second
+  BASE_URL: '/api', // Mock API base
 } as const;
 
 /**
  * Price Update Intervals (milliseconds)
  */
 export const UPDATE_INTERVALS = {
-  PRICE_FAST: 1000,            // 1 second (active trading)
-  PRICE_NORMAL: 3000,          // 3 seconds (normal view)
-  PRICE_SLOW: 10000,           // 10 seconds (background)
-  ORDERBOOK: 2000,             // 2 seconds
-  BALANCE: 5000,               // 5 seconds
-  PORTFOLIO: 10000,            // 10 seconds
+  PRICE_FAST: 1000, // 1 second (active trading)
+  PRICE_NORMAL: 3000, // 3 seconds (normal view)
+  PRICE_SLOW: 10000, // 10 seconds (background)
+  ORDERBOOK: 2000, // 2 seconds
+  BALANCE: 5000, // 5 seconds
+  PORTFOLIO: 10000, // 10 seconds
 } as const;
 
 /**
@@ -77,18 +77,18 @@ export const TRADING_LIMITS = {
   MIN_ORDER_SIZE: 0.00001,
   MAX_LEVERAGE: 125,
   MAX_OPEN_ORDERS: 200,
-  MIN_NOTIONAL: 10,            // Min order value in USDT
+  MIN_NOTIONAL: 10, // Min order value in USDT
 } as const;
 
 /**
  * P2P Configuration
  */
 export const P2P_CONFIG = {
-  MIN_ORDER_TIME: 15,          // minutes
-  MAX_ORDER_TIME: 120,         // minutes
-  DEFAULT_ORDER_TIME: 30,      // minutes
-  ESCROW_RELEASE_DELAY: 0,     // seconds (instant)
-  MIN_TRADE_AMOUNT: 100000,    // VND
+  MIN_ORDER_TIME: 15, // minutes
+  MAX_ORDER_TIME: 120, // minutes
+  DEFAULT_ORDER_TIME: 30, // minutes
+  ESCROW_RELEASE_DELAY: 0, // seconds (instant)
+  MIN_TRADE_AMOUNT: 100000, // VND
   MAX_TRADE_AMOUNT: 100000000, // VND
 } as const;
 
@@ -96,11 +96,11 @@ export const P2P_CONFIG = {
  * Arena Configuration
  */
 export const ARENA_CONFIG = {
-  MIN_ENTRY_FEE: 10,           // Arena Points
-  MAX_ENTRY_FEE: 10000,        // Arena Points
+  MIN_ENTRY_FEE: 10, // Arena Points
+  MAX_ENTRY_FEE: 10000, // Arena Points
   MIN_PARTICIPANTS: 2,
   MAX_PARTICIPANTS: 1000,
-  RULE_CLARITY_THRESHOLD: 70,  // Score out of 100
+  RULE_CLARITY_THRESHOLD: 70, // Score out of 100
   MIN_TITLE_LENGTH: 10,
   MAX_TITLE_LENGTH: 100,
   MAX_DESCRIPTION_LENGTH: 1000,
@@ -112,20 +112,20 @@ export const ARENA_CONFIG = {
 export const PREDICTION_CONFIG = {
   MIN_SHARES: 1,
   MAX_SHARES: 100000,
-  MIN_PROBABILITY: 1,          // 1%
-  MAX_PROBABILITY: 99,         // 99%
-  FEE_PERCENTAGE: 2,           // 2%
-  LIQUIDITY_THRESHOLD: 1000,   // Min liquidity in USDT
+  MIN_PROBABILITY: 1, // 1%
+  MAX_PROBABILITY: 99, // 99%
+  FEE_PERCENTAGE: 2, // 2%
+  LIQUIDITY_THRESHOLD: 1000, // Min liquidity in USDT
 } as const;
 
 /**
  * Cache Expiration (milliseconds)
  */
 export const CACHE_EXPIRATION = {
-  PRICE: 3000,                 // 3 seconds
-  MARKET_DATA: 10000,          // 10 seconds
-  USER_PROFILE: 300000,        // 5 minutes
-  STATIC_DATA: 3600000,        // 1 hour
+  PRICE: 3000, // 3 seconds
+  MARKET_DATA: 10000, // 10 seconds
+  USER_PROFILE: 300000, // 5 minutes
+  STATIC_DATA: 3600000, // 1 hour
 } as const;
 
 /**
@@ -148,9 +148,9 @@ export const FEATURES = {
   ENABLE_ARENA: true,
   ENABLE_PREDICTION: true,
   ENABLE_DCA: true,
-  ENABLE_FUTURES: false,       // Not yet implemented
-  ENABLE_STAKING: false,       // Not yet implemented
-  DEMO_MODE: true,             // Allow demo/mock trading
+  ENABLE_FUTURES: false, // Not yet implemented
+  ENABLE_STAKING: false, // Not yet implemented
+  DEMO_MODE: true, // Allow demo/mock trading
 } as const;
 
 /**

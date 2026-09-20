@@ -6,7 +6,17 @@ import { PageContent, PageSection } from '../../../components/layout/PageContent
 import { TabBar } from '../../../components/layout/TabBar';
 import { useThemeColors } from '../../../hooks/useThemeColors';
 import { TrCard } from '../../../components/ui/TrCard';
-import { LineChart, Line, Area, AreaChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import {
+  LineChart,
+  Line,
+  Area,
+  AreaChart,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+} from 'recharts';
 
 const EQUITY_DATA = [
   { date: '2025-09-01', equity: 1000, buyHold: 1000, rolling: null },
@@ -54,16 +64,27 @@ export function BotEquityCurvePage() {
         <div className="grid grid-cols-3 gap-3">
           <TrCard className="p-3 text-center">
             <p style={{ color: c.text3, fontSize: 10 }}>Bot Return</p>
-            <p style={{ color: '#10B981', fontSize: 18, fontWeight: 700 }}>+{totalReturn.toFixed(1)}%</p>
+            <p style={{ color: '#10B981', fontSize: 18, fontWeight: 700 }}>
+              +{totalReturn.toFixed(1)}%
+            </p>
           </TrCard>
           <TrCard className="p-3 text-center">
             <p style={{ color: c.text3, fontSize: 10 }}>Buy & Hold</p>
-            <p style={{ color: c.text1, fontSize: 18, fontWeight: 700 }}>+{buyHoldReturn.toFixed(1)}%</p>
+            <p style={{ color: c.text1, fontSize: 18, fontWeight: 700 }}>
+              +{buyHoldReturn.toFixed(1)}%
+            </p>
           </TrCard>
           <TrCard className="p-3 text-center">
             <p style={{ color: c.text3, fontSize: 10 }}>Alpha</p>
-            <p style={{ color: outperformance >= 0 ? '#10B981' : '#EF4444', fontSize: 18, fontWeight: 700 }}>
-              {outperformance >= 0 ? '+' : ''}{outperformance.toFixed(1)}%
+            <p
+              style={{
+                color: outperformance >= 0 ? '#10B981' : '#EF4444',
+                fontSize: 18,
+                fontWeight: 700,
+              }}
+            >
+              {outperformance >= 0 ? '+' : ''}
+              {outperformance.toFixed(1)}%
             </p>
           </TrCard>
         </div>
@@ -88,44 +109,51 @@ export function BotEquityCurvePage() {
                 <AreaChart data={EQUITY_DATA}>
                   <defs key="gradient-defs">
                     <linearGradient id="botGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10B981" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
+                      <stop offset="5%" stopColor="#10B981" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <XAxis 
+                  <XAxis
                     key="x-axis-eq"
-                    dataKey="date" 
-                    stroke={c.text3} 
+                    dataKey="date"
+                    stroke={c.text3}
                     style={{ fontSize: 9 }}
                     tickLine={false}
-                    tickFormatter={val => new Date(val).toLocaleDateString('en-US', { month: 'short' })}
+                    tickFormatter={(val) =>
+                      new Date(val).toLocaleDateString('en-US', { month: 'short' })
+                    }
                   />
-                  <YAxis 
+                  <YAxis
                     key="y-axis-eq"
-                    stroke={c.text3} 
+                    stroke={c.text3}
                     style={{ fontSize: 10 }}
                     tickLine={false}
-                    tickFormatter={val => `$${val}`}
+                    tickFormatter={(val) => `$${val}`}
                   />
                   <Tooltip
-                    contentStyle={{ background: c.surface, border: `1px solid ${c.borderSolid}`, borderRadius: 8, fontSize: 11 }}
-                    labelFormatter={val => new Date(val).toLocaleDateString()}
+                    contentStyle={{
+                      background: c.surface,
+                      border: `1px solid ${c.borderSolid}`,
+                      borderRadius: 8,
+                      fontSize: 11,
+                    }}
+                    labelFormatter={(val) => new Date(val).toLocaleDateString()}
                   />
                   <Legend key="legend-eq" wrapperStyle={{ fontSize: 11 }} />
-                  <Area 
+                  <Area
                     key="area-eq"
-                    type="monotone" 
-                    dataKey="equity" 
-                    stroke="#10B981" 
+                    type="monotone"
+                    dataKey="equity"
+                    stroke="#10B981"
                     strokeWidth={2}
-                    fill="url(#botGrad)" 
+                    fill="url(#botGrad)"
                     name="Bot"
                   />
-                  <Line 
+                  <Line
                     key="line-bm"
-                    type="monotone" 
-                    dataKey="buyHold" 
-                    stroke={c.text3} 
+                    type="monotone"
+                    dataKey="buyHold"
+                    stroke={c.text3}
                     strokeWidth={2}
                     strokeDasharray="4 4"
                     dot={false}
@@ -141,31 +169,38 @@ export function BotEquityCurvePage() {
           <PageSection label="Rolling 30-Day Sharpe Ratio">
             <TrCard className="p-4">
               <ResponsiveContainer width="100%" height={200}>
-                <LineChart data={EQUITY_DATA.filter(d => d.rolling !== null)}>
-                  <XAxis 
+                <LineChart data={EQUITY_DATA.filter((d) => d.rolling !== null)}>
+                  <XAxis
                     key="x-axis-roll"
-                    dataKey="date" 
-                    stroke={c.text3} 
+                    dataKey="date"
+                    stroke={c.text3}
                     style={{ fontSize: 9 }}
                     tickLine={false}
-                    tickFormatter={val => new Date(val).toLocaleDateString('en-US', { month: 'short' })}
+                    tickFormatter={(val) =>
+                      new Date(val).toLocaleDateString('en-US', { month: 'short' })
+                    }
                   />
-                  <YAxis 
+                  <YAxis
                     key="y-axis-roll"
-                    stroke={c.text3} 
+                    stroke={c.text3}
                     style={{ fontSize: 10 }}
                     tickLine={false}
                     domain={[0, 2.5]}
                   />
                   <Tooltip
-                    contentStyle={{ background: c.surface, border: `1px solid ${c.borderSolid}`, borderRadius: 8, fontSize: 11 }}
+                    contentStyle={{
+                      background: c.surface,
+                      border: `1px solid ${c.borderSolid}`,
+                      borderRadius: 8,
+                      fontSize: 11,
+                    }}
                     formatter={(value: any) => [value, 'Sharpe Ratio']}
                   />
-                  <Line 
+                  <Line
                     key="line-rolling"
-                    type="monotone" 
-                    dataKey="rolling" 
-                    stroke={c.primary} 
+                    type="monotone"
+                    dataKey="rolling"
+                    stroke={c.primary}
                     strokeWidth={2}
                     dot={{ fill: c.primary, r: 3 }}
                   />
@@ -176,8 +211,12 @@ export function BotEquityCurvePage() {
                   { label: 'Current', value: '2.08', status: 'Excellent' },
                   { label: 'Average', value: '1.94', status: 'Good' },
                   { label: 'Min', value: '1.52', status: 'Fair' },
-                ].map(stat => (
-                  <div key={stat.label} className="text-center p-2 rounded-lg" style={{ background: c.surface2 }}>
+                ].map((stat) => (
+                  <div
+                    key={stat.label}
+                    className="text-center p-2 rounded-lg"
+                    style={{ background: c.surface2 }}
+                  >
                     <p style={{ color: c.text3, fontSize: 9 }}>{stat.label}</p>
                     <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>{stat.value}</p>
                     <p style={{ color: c.text3, fontSize: 9 }}>{stat.status}</p>
@@ -192,7 +231,7 @@ export function BotEquityCurvePage() {
           <PageSection label="Monthly Alpha (Bot vs Market)">
             <TrCard className="p-4">
               <div className="space-y-3">
-                {MONTHLY_RETURNS.map(month => (
+                {MONTHLY_RETURNS.map((month) => (
                   <div key={month.month}>
                     <div className="flex items-center justify-between mb-2">
                       <p style={{ color: c.text2, fontSize: 11 }}>{month.month}</p>
@@ -203,20 +242,26 @@ export function BotEquityCurvePage() {
                         <span style={{ color: c.text3, fontSize: 11 }}>
                           Mkt: +{month.marketReturn}%
                         </span>
-                        <span style={{ 
-                          color: month.alpha >= 0 ? '#10B981' : '#EF4444', 
-                          fontSize: 11, 
-                          fontWeight: 700,
-                          fontFamily: 'monospace',
-                        }}>
-                          {month.alpha >= 0 ? '+' : ''}{month.alpha}%
+                        <span
+                          style={{
+                            color: month.alpha >= 0 ? '#10B981' : '#EF4444',
+                            fontSize: 11,
+                            fontWeight: 700,
+                            fontFamily: 'monospace',
+                          }}
+                        >
+                          {month.alpha >= 0 ? '+' : ''}
+                          {month.alpha}%
                         </span>
                       </div>
                     </div>
-                    <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
-                      <div 
+                    <div
+                      className="h-2 rounded-full overflow-hidden"
+                      style={{ background: c.surface2 }}
+                    >
+                      <div
                         className="h-full"
-                        style={{ 
+                        style={{
                           background: month.alpha >= 0 ? '#10B981' : '#EF4444',
                           width: `${Math.min(Math.abs(month.alpha) * 20, 100)}%`,
                         }}
@@ -234,12 +279,26 @@ export function BotEquityCurvePage() {
           <TrCard className="p-4">
             <div className="grid grid-cols-2 gap-3">
               {[
-                { icon: TrendingUp, label: 'Total Return', value: `+${totalReturn.toFixed(1)}%`, color: '#10B981' },
+                {
+                  icon: TrendingUp,
+                  label: 'Total Return',
+                  value: `+${totalReturn.toFixed(1)}%`,
+                  color: '#10B981',
+                },
                 { icon: Activity, label: 'Annualized Return', value: '+52.3%', color: '#10B981' },
-                { icon: Target, label: 'Outperformance', value: `+${outperformance.toFixed(1)}%`, color: outperformance >= 0 ? '#10B981' : '#EF4444' },
+                {
+                  icon: Target,
+                  label: 'Outperformance',
+                  value: `+${outperformance.toFixed(1)}%`,
+                  color: outperformance >= 0 ? '#10B981' : '#EF4444',
+                },
                 { icon: BarChart3, label: 'Avg Monthly', value: '+4.5%', color: c.text1 },
-              ].map(stat => (
-                <div key={stat.label} className="flex items-start gap-3 p-3 rounded-xl" style={{ background: c.surface2 }}>
+              ].map((stat) => (
+                <div
+                  key={stat.label}
+                  className="flex items-start gap-3 p-3 rounded-xl"
+                  style={{ background: c.surface2 }}
+                >
                   <stat.icon size={20} color={stat.color} className="shrink-0 mt-0.5" />
                   <div className="flex-1">
                     <p style={{ color: c.text3, fontSize: 10 }}>{stat.label}</p>
@@ -252,7 +311,10 @@ export function BotEquityCurvePage() {
         </PageSection>
 
         {/* Analysis */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}
+        >
           <p style={{ color: '#10B981', fontSize: 13, fontWeight: 700, marginBottom: 8 }}>
             ✅ Strong Outperformance
           </p>
@@ -260,7 +322,8 @@ export function BotEquityCurvePage() {
             <li className="flex gap-2">
               <span style={{ color: c.text3 }}>•</span>
               <p style={{ color: c.text2, fontSize: 11 }}>
-                Bot returned +{totalReturn.toFixed(1)}% vs buy & hold +{buyHoldReturn.toFixed(1)}% (alpha: +{outperformance.toFixed(1)}%)
+                Bot returned +{totalReturn.toFixed(1)}% vs buy & hold +{buyHoldReturn.toFixed(1)}%
+                (alpha: +{outperformance.toFixed(1)}%)
               </p>
             </li>
             <li className="flex gap-2">

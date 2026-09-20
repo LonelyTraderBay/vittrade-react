@@ -1,12 +1,12 @@
 /**
  * DCA Dynamic Amount Adjustment Service
- * 
+ *
  * Provides smart amount adjustment strategies:
  * - Volatility-Based: increase during high vol, decrease during low
  * - Performance-Based: adjust based on plan P/L
  * - Balance-Based: auto-reduce/pause on low balance
  * - Target-Based: adjust to hit target by deadline
- * 
+ *
  * @module services/DCADynamicAmountService
  * @version 1.0 (Phase 2 - Sprint 3, Task 3.2.4)
  */
@@ -16,11 +16,11 @@
    ═══════════════════════════════════════════ */
 
 export type AdjustmentStrategy =
-  | 'fixed'          // No adjustment
-  | 'volatility'     // Based on recent volatility
-  | 'performance'    // Based on plan P/L
-  | 'balance'        // Based on available balance
-  | 'target';        // Path-to-target calculation
+  | 'fixed' // No adjustment
+  | 'volatility' // Based on recent volatility
+  | 'performance' // Based on plan P/L
+  | 'balance' // Based on available balance
+  | 'target'; // Path-to-target calculation
 
 export interface VolatilityConfig {
   /** Base amount (VND) */
@@ -113,20 +113,68 @@ const VOLATILITY_HISTORY: VolatilitySnapshot[] = [
   { date: '29/01', volatility: 15.3, suggestedMultiplier: 0.8, amount: 400_000 },
   { date: '05/02', volatility: 42.1, suggestedMultiplier: 1.5, amount: 750_000 },
   { date: '12/02', volatility: 22.0, suggestedMultiplier: 1.0, amount: 500_000 },
-  { date: '19/02', volatility: 8.5,  suggestedMultiplier: 0.7, amount: 350_000 },
+  { date: '19/02', volatility: 8.5, suggestedMultiplier: 0.7, amount: 350_000 },
   { date: '26/02', volatility: 31.2, suggestedMultiplier: 1.4, amount: 700_000 },
   { date: '05/03', volatility: 19.8, suggestedMultiplier: 1.0, amount: 500_000 },
 ];
 
 const AMOUNT_HISTORY: AmountHistoryEntry[] = [
-  { date: '05/03/26', baseAmount: 500_000, adjustedAmount: 500_000, strategy: 'volatility', reason: 'Volatility bình thường (19.8%)' },
-  { date: '26/02/26', baseAmount: 500_000, adjustedAmount: 700_000, strategy: 'volatility', reason: 'Volatility cao (31.2%) — cơ hội mua giá tốt' },
-  { date: '19/02/26', baseAmount: 500_000, adjustedAmount: 350_000, strategy: 'volatility', reason: 'Volatility thấp (8.5%) — giảm lượng mua' },
-  { date: '12/02/26', baseAmount: 500_000, adjustedAmount: 500_000, strategy: 'volatility', reason: 'Volatility bình thường (22.0%)' },
-  { date: '05/02/26', baseAmount: 500_000, adjustedAmount: 750_000, strategy: 'volatility', reason: 'Volatility rất cao (42.1%) — tối đa lượng mua' },
-  { date: '29/01/26', baseAmount: 500_000, adjustedAmount: 400_000, strategy: 'performance', reason: 'Portfolio lỗ -3.2% — giảm nhẹ' },
-  { date: '22/01/26', baseAmount: 500_000, adjustedAmount: 650_000, strategy: 'volatility', reason: 'Volatility cao (28.4%) — tăng lượng mua' },
-  { date: '15/01/26', baseAmount: 500_000, adjustedAmount: 750_000, strategy: 'volatility', reason: 'Volatility cao (35.8%) — cơ hội mua rẻ' },
+  {
+    date: '05/03/26',
+    baseAmount: 500_000,
+    adjustedAmount: 500_000,
+    strategy: 'volatility',
+    reason: 'Volatility bình thường (19.8%)',
+  },
+  {
+    date: '26/02/26',
+    baseAmount: 500_000,
+    adjustedAmount: 700_000,
+    strategy: 'volatility',
+    reason: 'Volatility cao (31.2%) — cơ hội mua giá tốt',
+  },
+  {
+    date: '19/02/26',
+    baseAmount: 500_000,
+    adjustedAmount: 350_000,
+    strategy: 'volatility',
+    reason: 'Volatility thấp (8.5%) — giảm lượng mua',
+  },
+  {
+    date: '12/02/26',
+    baseAmount: 500_000,
+    adjustedAmount: 500_000,
+    strategy: 'volatility',
+    reason: 'Volatility bình thường (22.0%)',
+  },
+  {
+    date: '05/02/26',
+    baseAmount: 500_000,
+    adjustedAmount: 750_000,
+    strategy: 'volatility',
+    reason: 'Volatility rất cao (42.1%) — tối đa lượng mua',
+  },
+  {
+    date: '29/01/26',
+    baseAmount: 500_000,
+    adjustedAmount: 400_000,
+    strategy: 'performance',
+    reason: 'Portfolio lỗ -3.2% — giảm nhẹ',
+  },
+  {
+    date: '22/01/26',
+    baseAmount: 500_000,
+    adjustedAmount: 650_000,
+    strategy: 'volatility',
+    reason: 'Volatility cao (28.4%) — tăng lượng mua',
+  },
+  {
+    date: '15/01/26',
+    baseAmount: 500_000,
+    adjustedAmount: 750_000,
+    strategy: 'volatility',
+    reason: 'Volatility cao (35.8%) — cơ hội mua rẻ',
+  },
 ];
 
 /* ═══════════════════════════════════════════
@@ -277,7 +325,10 @@ class DynamicAmountService {
       };
     }
     if (currentBalance <= cfg.reduceThreshold) {
-      const ratio = Math.max(0.3, (currentBalance - cfg.pauseThreshold) / (cfg.reduceThreshold - cfg.pauseThreshold));
+      const ratio = Math.max(
+        0.3,
+        (currentBalance - cfg.pauseThreshold) / (cfg.reduceThreshold - cfg.pauseThreshold),
+      );
       const adj = Math.round(cfg.baseAmount * ratio);
       return {
         originalAmount: cfg.baseAmount,
@@ -335,10 +386,30 @@ class DynamicAmountService {
   }> {
     return [
       { id: 'fixed', name: 'Cố định', description: 'Mua cùng số tiền mỗi kỳ', icon: 'lock' },
-      { id: 'volatility', name: 'Theo Volatility', description: 'Mua nhiều khi thị trường biến động, mua ít khi ổn định', icon: 'activity' },
-      { id: 'performance', name: 'Theo Hiệu suất', description: 'Điều chỉnh dựa trên lời/lỗ của portfolio', icon: 'trending-up' },
-      { id: 'balance', name: 'Theo Số dư', description: 'Tự động giảm/dừng khi số dư ví thấp', icon: 'wallet' },
-      { id: 'target', name: 'Theo Mục tiêu', description: 'Tính toán lượng mua để đạt mục tiêu đúng hạn', icon: 'target' },
+      {
+        id: 'volatility',
+        name: 'Theo Volatility',
+        description: 'Mua nhiều khi thị trường biến động, mua ít khi ổn định',
+        icon: 'activity',
+      },
+      {
+        id: 'performance',
+        name: 'Theo Hiệu suất',
+        description: 'Điều chỉnh dựa trên lời/lỗ của portfolio',
+        icon: 'trending-up',
+      },
+      {
+        id: 'balance',
+        name: 'Theo Số dư',
+        description: 'Tự động giảm/dừng khi số dư ví thấp',
+        icon: 'wallet',
+      },
+      {
+        id: 'target',
+        name: 'Theo Mục tiêu',
+        description: 'Tính toán lượng mua để đạt mục tiêu đúng hạn',
+        icon: 'target',
+      },
     ];
   }
 }

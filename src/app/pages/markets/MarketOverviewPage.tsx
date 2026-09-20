@@ -9,9 +9,19 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  TrendingUp, TrendingDown, ChevronRight, BarChart3,
-  Activity, Globe, Layers, Gauge, ArrowUpRight, ArrowDownRight,
-  PieChart, Zap, Target,
+  TrendingUp,
+  TrendingDown,
+  ChevronRight,
+  BarChart3,
+  Activity,
+  Globe,
+  Layers,
+  Gauge,
+  ArrowUpRight,
+  ArrowDownRight,
+  PieChart,
+  Zap,
+  Target,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -76,7 +86,8 @@ function FearGreedGauge({ value, label }: { value: number; label: string }) {
           />
           {/* Needle */}
           <line
-            x1="60" y1="60"
+            x1="60"
+            y1="60"
             x2={60 + 35 * Math.cos((rotation * Math.PI) / 180)}
             y2={60 + 35 * Math.sin((rotation * Math.PI) / 180)}
             stroke={color}
@@ -86,7 +97,14 @@ function FearGreedGauge({ value, label }: { value: number; label: string }) {
           <circle cx="60" cy="60" r="4" fill={color} />
         </svg>
       </div>
-      <span style={{ fontSize: FONT_SCALE.xl, fontWeight: FONT_WEIGHT.bold, color, fontFamily: 'monospace' }}>
+      <span
+        style={{
+          fontSize: FONT_SCALE.xl,
+          fontWeight: FONT_WEIGHT.bold,
+          color,
+          fontFamily: 'monospace',
+        }}
+      >
         {value}
       </span>
       <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color }}>
@@ -98,9 +116,17 @@ function FearGreedGauge({ value, label }: { value: number; label: string }) {
 
 /* ─── Stat Card ─── */
 function StatCard({
-  label, value, change, icon: Icon, color,
+  label,
+  value,
+  change,
+  icon: Icon,
+  color,
 }: {
-  label: string; value: string; change?: number; icon: React.ElementType; color: string;
+  label: string;
+  value: string;
+  change?: number;
+  icon: React.ElementType;
+  color: string;
 }) {
   const c = useThemeColors();
   const isPositive = (change ?? 0) >= 0;
@@ -114,17 +140,36 @@ function StatCard({
         >
           <Icon size={14} color={color} />
         </div>
-        <span style={{ fontSize: FONT_SCALE.micro, color: c.text3, fontWeight: FONT_WEIGHT.medium }}>
+        <span
+          style={{ fontSize: FONT_SCALE.micro, color: c.text3, fontWeight: FONT_WEIGHT.medium }}
+        >
           {label}
         </span>
       </div>
-      <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+      <p
+        style={{
+          fontSize: FONT_SCALE.sm,
+          fontWeight: FONT_WEIGHT.bold,
+          color: c.text1,
+          fontFamily: 'monospace',
+        }}
+      >
         {value}
       </p>
       {change !== undefined && (
         <div className="flex items-center gap-1 mt-1">
-          {isPositive ? <ArrowUpRight size={12} color="#10B981" /> : <ArrowDownRight size={12} color="#EF4444" />}
-          <span style={{ fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.semibold, color: isPositive ? '#10B981' : '#EF4444' }}>
+          {isPositive ? (
+            <ArrowUpRight size={12} color="#10B981" />
+          ) : (
+            <ArrowDownRight size={12} color="#EF4444" />
+          )}
+          <span
+            style={{
+              fontSize: FONT_SCALE.micro,
+              fontWeight: FONT_WEIGHT.semibold,
+              color: isPositive ? '#10B981' : '#EF4444',
+            }}
+          >
             {fmtPct(change)}
           </span>
         </div>
@@ -134,7 +179,13 @@ function StatCard({
 }
 
 /* ─── Sector Row ─── */
-function SectorRow({ sector, onClick }: { sector: typeof MARKET_SECTORS[0]; onClick: () => void }) {
+function SectorRow({
+  sector,
+  onClick,
+}: {
+  sector: (typeof MARKET_SECTORS)[0];
+  onClick: () => void;
+}) {
   const c = useThemeColors();
   const isPos = sector.change24h >= 0;
 
@@ -154,16 +205,19 @@ function SectorRow({ sector, onClick }: { sector: typeof MARKET_SECTORS[0]; onCl
         <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold, color: c.text1 }}>
           {sector.nameVi}
         </p>
-        <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>
-          {sector.coinCount} coins
-        </p>
+        <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>{sector.coinCount} coins</p>
       </div>
       <div className="text-right mr-1">
-        <p style={{
-          fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold,
-          color: isPos ? '#10B981' : '#EF4444', fontFamily: 'monospace',
-        }}>
-          {isPos ? '+' : ''}{fmtPct(sector.change24h)}
+        <p
+          style={{
+            fontSize: FONT_SCALE.sm,
+            fontWeight: FONT_WEIGHT.bold,
+            color: isPos ? '#10B981' : '#EF4444',
+            fontFamily: 'monospace',
+          }}
+        >
+          {isPos ? '+' : ''}
+          {fmtPct(sector.change24h)}
         </p>
         <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>
           {fmtCompact(sector.totalMarketCap, { prefix: '$' })}
@@ -175,8 +229,16 @@ function SectorRow({ sector, onClick }: { sector: typeof MARKET_SECTORS[0]; onCl
 }
 
 /* ─── Quick Mover Row ─── */
-function QuickMoverRow({ symbol, price, change, color }: {
-  symbol: string; price: number; change: number; color: string;
+function QuickMoverRow({
+  symbol,
+  price,
+  change,
+  color,
+}: {
+  symbol: string;
+  price: number;
+  change: number;
+  color: string;
 }) {
   const c = useThemeColors();
   const isPos = change >= 0;
@@ -187,23 +249,41 @@ function QuickMoverRow({ symbol, price, change, color }: {
         className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
         style={{ background: `${color}20` }}
       >
-        <span style={{ fontSize: 10, fontWeight: FONT_WEIGHT.bold, color }}>{symbol.slice(0, 3)}</span>
+        <span style={{ fontSize: 10, fontWeight: FONT_WEIGHT.bold, color }}>
+          {symbol.slice(0, 3)}
+        </span>
       </div>
-      <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold, color: c.text1, flex: 1 }}>
+      <span
+        style={{
+          fontSize: FONT_SCALE.sm,
+          fontWeight: FONT_WEIGHT.semibold,
+          color: c.text1,
+          flex: 1,
+        }}
+      >
         {symbol}
       </span>
-      <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text2, fontFamily: 'monospace' }}>
+      <span
+        style={{
+          fontSize: FONT_SCALE.xs,
+          fontWeight: FONT_WEIGHT.semibold,
+          color: c.text2,
+          fontFamily: 'monospace',
+        }}
+      >
         {fmtPrice(price)}
       </span>
       <span
         className="rounded-lg px-2 py-1"
         style={{
-          fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold,
+          fontSize: FONT_SCALE.xs,
+          fontWeight: FONT_WEIGHT.bold,
           color: isPos ? '#10B981' : '#EF4444',
           background: isPos ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
         }}
       >
-        {isPos ? '+' : ''}{fmtPct(change)}
+        {isPos ? '+' : ''}
+        {fmtPct(change)}
       </span>
     </div>
   );
@@ -226,49 +306,81 @@ export function MarketOverviewPage() {
     <PageLayout>
       <Header title="Tổng quan thị trường" back />
       <PageContent gap="relaxed">
-
         {/* ─── Hero: Global Market Cap ─── */}
         <TrCard variant="hero" className="p-4">
           <div className="flex items-center gap-2 mb-3">
             <Globe size={16} color="#3B82F6" />
-            <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text2 }}>
+            <span
+              style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text2 }}
+            >
               Tổng vốn hóa thị trường
             </span>
           </div>
           <div className="flex items-end gap-3 mb-3">
-            <span style={{
-              fontSize: FONT_SCALE.xl, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace',
-            }}>
+            <span
+              style={{
+                fontSize: FONT_SCALE.xl,
+                fontWeight: FONT_WEIGHT.bold,
+                color: c.text1,
+                fontFamily: 'monospace',
+              }}
+            >
               {fmtCompact(stats.totalMarketCap, { prefix: '$' })}
             </span>
             <span
               className="rounded-lg px-2 py-0.5 mb-0.5"
               style={{
-                fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold,
+                fontSize: FONT_SCALE.xs,
+                fontWeight: FONT_WEIGHT.bold,
                 color: stats.totalMarketCapChange24h >= 0 ? '#10B981' : '#EF4444',
-                background: stats.totalMarketCapChange24h >= 0 ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
+                background:
+                  stats.totalMarketCapChange24h >= 0
+                    ? 'rgba(16,185,129,0.12)'
+                    : 'rgba(239,68,68,0.12)',
               }}
             >
-              {stats.totalMarketCapChange24h >= 0 ? '▲' : '▼'} {fmtPct(Math.abs(stats.totalMarketCapChange24h))}
+              {stats.totalMarketCapChange24h >= 0 ? '▲' : '▼'}{' '}
+              {fmtPct(Math.abs(stats.totalMarketCapChange24h))}
             </span>
           </div>
 
           <div className="grid grid-cols-3 gap-2">
             <div className="rounded-xl p-2" style={{ background: c.portfolioBtnGhost }}>
               <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>BTC Dominance</p>
-              <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: '#F7931A', fontFamily: 'monospace' }}>
+              <p
+                style={{
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  color: '#F7931A',
+                  fontFamily: 'monospace',
+                }}
+              >
                 {stats.btcDominance}%
               </p>
             </div>
             <div className="rounded-xl p-2" style={{ background: c.portfolioBtnGhost }}>
               <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>ETH Dominance</p>
-              <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: '#627EEA', fontFamily: 'monospace' }}>
+              <p
+                style={{
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  color: '#627EEA',
+                  fontFamily: 'monospace',
+                }}
+              >
                 {stats.ethDominance}%
               </p>
             </div>
             <div className="rounded-xl p-2" style={{ background: c.portfolioBtnGhost }}>
               <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>KL 24h</p>
-              <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+              <p
+                style={{
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  color: c.text1,
+                  fontFamily: 'monospace',
+                }}
+              >
                 {fmtCompact(stats.total24hVolume, { prefix: '$' })}
               </p>
             </div>
@@ -309,7 +421,13 @@ export function MarketOverviewPage() {
           <TrCard className="p-4 flex flex-col items-center">
             <div className="flex items-center gap-2 mb-2 self-start">
               <Gauge size={14} color="#F59E0B" />
-              <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text2 }}>
+              <span
+                style={{
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.semibold,
+                  color: c.text2,
+                }}
+              >
                 Fear & Greed
               </span>
             </div>
@@ -319,7 +437,13 @@ export function MarketOverviewPage() {
           <TrCard className="p-4">
             <div className="flex items-center gap-2 mb-3">
               <Target size={14} color="#3B82F6" />
-              <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text2 }}>
+              <span
+                style={{
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.semibold,
+                  color: c.text2,
+                }}
+              >
                 Biến động thị trường
               </span>
             </div>
@@ -329,7 +453,14 @@ export function MarketOverviewPage() {
                   <div className="w-2 h-2 rounded-full" style={{ background: '#10B981' }} />
                   <span style={{ fontSize: FONT_SCALE.xs, color: c.text2 }}>Tăng</span>
                 </div>
-                <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: '#10B981', fontFamily: 'monospace' }}>
+                <span
+                  style={{
+                    fontSize: FONT_SCALE.sm,
+                    fontWeight: FONT_WEIGHT.bold,
+                    color: '#10B981',
+                    fontFamily: 'monospace',
+                  }}
+                >
                   {breadth.advancing.toLocaleString()}
                 </span>
               </div>
@@ -338,16 +469,25 @@ export function MarketOverviewPage() {
                   <div className="w-2 h-2 rounded-full" style={{ background: '#EF4444' }} />
                   <span style={{ fontSize: FONT_SCALE.xs, color: c.text2 }}>Giảm</span>
                 </div>
-                <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: '#EF4444', fontFamily: 'monospace' }}>
+                <span
+                  style={{
+                    fontSize: FONT_SCALE.sm,
+                    fontWeight: FONT_WEIGHT.bold,
+                    color: '#EF4444',
+                    fontFamily: 'monospace',
+                  }}
+                >
                   {breadth.declining.toLocaleString()}
                 </span>
               </div>
               {/* Bar */}
               <div className="flex rounded-full overflow-hidden" style={{ height: 6 }}>
-                <div style={{
-                  width: `${(breadth.advancing / (breadth.advancing + breadth.declining)) * 100}%`,
-                  background: '#10B981',
-                }} />
+                <div
+                  style={{
+                    width: `${(breadth.advancing / (breadth.advancing + breadth.declining)) * 100}%`,
+                    background: '#10B981',
+                  }}
+                />
                 <div style={{ flex: 1, background: '#EF4444' }} />
               </div>
               <div className="flex items-center justify-between">
@@ -368,7 +508,7 @@ export function MarketOverviewPage() {
             { label: 'Biến động', icon: TrendingUp, color: '#10B981', path: 'movers' },
             { label: 'Ngành', icon: Layers, color: '#8B5CF6', path: 'sectors' },
             { label: 'Heatmap', icon: BarChart3, color: '#3B82F6', path: 'heatmap' },
-          ].map(item => (
+          ].map((item) => (
             <TrCard
               key={item.path}
               as="button"
@@ -382,7 +522,13 @@ export function MarketOverviewPage() {
               >
                 <item.icon size={18} color={item.color} />
               </div>
-              <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text1 }}>
+              <span
+                style={{
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.semibold,
+                  color: c.text1,
+                }}
+              >
                 {item.label}
               </span>
             </TrCard>
@@ -398,14 +544,26 @@ export function MarketOverviewPage() {
             >
               <div className="flex items-center gap-2">
                 <TrendingUp size={14} color="#10B981" />
-                <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, color: '#10B981' }}>
+                <span
+                  style={{
+                    fontSize: FONT_SCALE.xs,
+                    fontWeight: FONT_WEIGHT.bold,
+                    color: '#10B981',
+                  }}
+                >
                   Tăng mạnh
                 </span>
               </div>
               <ChevronRight size={12} color={c.text3} />
             </button>
-            {topGainers.map(m => (
-              <QuickMoverRow key={m.id} symbol={m.symbol} price={m.price} change={m.change24h} color={m.color} />
+            {topGainers.map((m) => (
+              <QuickMoverRow
+                key={m.id}
+                symbol={m.symbol}
+                price={m.price}
+                change={m.change24h}
+                color={m.color}
+              />
             ))}
           </TrCard>
 
@@ -416,14 +574,26 @@ export function MarketOverviewPage() {
             >
               <div className="flex items-center gap-2">
                 <TrendingDown size={14} color="#EF4444" />
-                <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, color: '#EF4444' }}>
+                <span
+                  style={{
+                    fontSize: FONT_SCALE.xs,
+                    fontWeight: FONT_WEIGHT.bold,
+                    color: '#EF4444',
+                  }}
+                >
                   Giảm mạnh
                 </span>
               </div>
               <ChevronRight size={12} color={c.text3} />
             </button>
-            {topLosers.map(m => (
-              <QuickMoverRow key={m.id} symbol={m.symbol} price={m.price} change={m.change24h} color={m.color} />
+            {topLosers.map((m) => (
+              <QuickMoverRow
+                key={m.id}
+                symbol={m.symbol}
+                price={m.price}
+                change={m.change24h}
+                color={m.color}
+              />
             ))}
           </TrCard>
         </div>
@@ -431,7 +601,7 @@ export function MarketOverviewPage() {
         {/* ─── Sector Performance ─── */}
         <PageSection label="Hiệu suất ngành" accentColor="#8B5CF6">
           <TrCard className="px-4">
-            {topSectors.slice(0, 5).map(sector => (
+            {topSectors.slice(0, 5).map((sector) => (
               <SectorRow
                 key={sector.id}
                 sector={sector}
@@ -442,7 +612,13 @@ export function MarketOverviewPage() {
               className="flex items-center justify-center gap-2 w-full py-3"
               onClick={() => navigate(`${prefix}/markets/sectors`)}
             >
-              <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: '#3B82F6' }}>
+              <span
+                style={{
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.semibold,
+                  color: '#3B82F6',
+                }}
+              >
                 Xem tất cả ngành
               </span>
               <ChevronRight size={12} color="#3B82F6" />
@@ -464,7 +640,9 @@ export function MarketOverviewPage() {
                 };
                 return (
                   <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                    <span style={{ fontSize: 8, color: c.text3, fontFamily: 'monospace' }}>{point.value}</span>
+                    <span style={{ fontSize: 8, color: c.text3, fontFamily: 'monospace' }}>
+                      {point.value}
+                    </span>
                     <div
                       className="w-full rounded-t-md"
                       style={{
@@ -493,7 +671,7 @@ export function MarketOverviewPage() {
               { label: 'Cảnh báo giá', icon: '🔔', path: 'alerts' },
               { label: 'Biểu đồ nhiệt', icon: '🗺️', path: 'heatmap' },
               { label: 'Danh sách thị trường', icon: '📋', path: '' },
-            ].map(item => (
+            ].map((item) => (
               <TrCard
                 key={item.path}
                 as="button"
@@ -502,7 +680,13 @@ export function MarketOverviewPage() {
                 onClick={() => navigate(`${prefix}/markets/${item.path}`)}
               >
                 <span style={{ fontSize: 18 }}>{item.icon}</span>
-                <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.medium, color: c.text1 }}>
+                <span
+                  style={{
+                    fontSize: FONT_SCALE.sm,
+                    fontWeight: FONT_WEIGHT.medium,
+                    color: c.text1,
+                  }}
+                >
                   {item.label}
                 </span>
               </TrCard>

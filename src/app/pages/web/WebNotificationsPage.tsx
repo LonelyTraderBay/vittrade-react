@@ -269,7 +269,8 @@ export function WebNotificationsPage() {
                         padding: '10px 12px',
                         borderRadius: '8px',
                         border: 'none',
-                        backgroundColor: selectedCategory === category.id ? `${c.primary}15` : 'transparent',
+                        backgroundColor:
+                          selectedCategory === category.id ? `${c.primary}15` : 'transparent',
                         color: selectedCategory === category.id ? c.primary : c.text1,
                         fontSize: WEB_FONT.base,
                         fontWeight: selectedCategory === category.id ? 500 : 400,
@@ -384,7 +385,10 @@ export function WebNotificationsPage() {
                       onClick={() => handleNotificationClick(notif)}
                       style={{
                         padding: 20,
-                        borderBottom: index < filteredNotifications.length - 1 ? `1px solid ${c.border}` : 'none',
+                        borderBottom:
+                          index < filteredNotifications.length - 1
+                            ? `1px solid ${c.border}`
+                            : 'none',
                         backgroundColor: notif.isRead ? c.surface : `${c.primary}05`,
                         cursor: notif.actionUrl ? 'pointer' : 'default',
                         transition: 'all 0.2s',
@@ -398,7 +402,9 @@ export function WebNotificationsPage() {
                         }
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = notif.isRead ? c.surface : `${c.primary}05`;
+                        e.currentTarget.style.backgroundColor = notif.isRead
+                          ? c.surface
+                          : `${c.primary}05`;
                       }}
                     >
                       {/* Unread Indicator */}
@@ -412,7 +418,8 @@ export function WebNotificationsPage() {
                             width: '4px',
                             backgroundColor: c.primary,
                             borderTopLeftRadius: '12px',
-                            borderBottomLeftRadius: index === filteredNotifications.length - 1 ? '12px' : '0',
+                            borderBottomLeftRadius:
+                              index === filteredNotifications.length - 1 ? '12px' : '0',
                           }}
                         />
                       )}
@@ -436,7 +443,14 @@ export function WebNotificationsPage() {
                       {/* Content */}
                       <div style={{ flex: 1, minWidth: 0 }}>
                         {/* Header */}
-                        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '4px' }}>
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                            justifyContent: 'space-between',
+                            marginBottom: '4px',
+                          }}
+                        >
                           <div style={{ flex: 1 }}>
                             <span
                               style={{
@@ -592,7 +606,14 @@ export function WebNotificationsPage() {
                 }}
               >
                 <BellOff size={48} style={{ color: c.text2, margin: '0 auto 16px' }} />
-                <div style={{ fontSize: WEB_FONT.base, fontWeight: 500, color: c.text1, marginBottom: '8px' }}>
+                <div
+                  style={{
+                    fontSize: WEB_FONT.base,
+                    fontWeight: 500,
+                    color: c.text1,
+                    marginBottom: '8px',
+                  }}
+                >
                   Không có thông báo
                 </div>
                 <div style={{ fontSize: WEB_FONT.sm, color: c.text2 }}>

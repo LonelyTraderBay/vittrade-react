@@ -6,7 +6,19 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { TabBar } from '../../components/layout/TabBar';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { TrCard } from '../../components/ui/TrCard';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, LineChart, Line, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Legend,
+} from 'recharts';
 import { fmtUsd } from '../../data/formatNumber';
 
 const FUND_DATA = {
@@ -30,7 +42,7 @@ const CLAIMS_HISTORY = [
     date: '2026-02-20',
     user: 'User#12345',
     reason: 'Validator slashing (2%)',
-    loss: 125.50,
+    loss: 125.5,
     coverage: 50,
     payout: 62.75,
     status: 'approved',
@@ -41,9 +53,9 @@ const CLAIMS_HISTORY = [
     date: '2026-01-15',
     user: 'User#67890',
     reason: 'Smart contract exploit (partial)',
-    loss: 5000.00,
+    loss: 5000.0,
     coverage: 80,
-    payout: 4000.00,
+    payout: 4000.0,
     status: 'approved',
     processingDays: 7,
   },
@@ -52,9 +64,9 @@ const CLAIMS_HISTORY = [
     date: '2025-12-10',
     user: 'User#24680',
     reason: 'Validator downtime loss',
-    loss: 50.00,
+    loss: 50.0,
     coverage: 100,
-    payout: 50.00,
+    payout: 50.0,
     status: 'approved',
     processingDays: 2,
   },
@@ -63,9 +75,9 @@ const CLAIMS_HISTORY = [
     date: '2025-11-05',
     user: 'User#13579',
     reason: 'Slashing event (1.5%)',
-    loss: 200.00,
+    loss: 200.0,
     coverage: 50,
-    payout: 100.00,
+    payout: 100.0,
     status: 'approved',
     processingDays: 4,
   },
@@ -105,7 +117,13 @@ export function StakingInsuranceFundTransparencyPage() {
 
       <PageContent>
         {/* Info Banner */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(16,185,129,0.08)', border: '1.5px solid rgba(16,185,129,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{
+            background: 'rgba(16,185,129,0.08)',
+            border: '1.5px solid rgba(16,185,129,0.2)',
+          }}
+        >
           <div className="flex gap-3">
             <Shield size={20} color="#10B981" className="shrink-0 mt-0.5" />
             <div>
@@ -113,7 +131,8 @@ export function StakingInsuranceFundTransparencyPage() {
                 User Protection Fund
               </p>
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                A dedicated fund covers up to 50-100% of losses from slashing, smart contract exploits, and validator failures. Fully transparent, audited monthly.
+                A dedicated fund covers up to 50-100% of losses from slashing, smart contract
+                exploits, and validator failures. Fully transparent, audited monthly.
               </p>
             </div>
           </div>
@@ -137,7 +156,9 @@ export function StakingInsuranceFundTransparencyPage() {
               <TrCard className="p-5">
                 <div className="flex items-center justify-between mb-6">
                   <div>
-                    <p style={{ color: c.text3, fontSize: 12, marginBottom: 4 }}>Total Fund Balance</p>
+                    <p style={{ color: c.text3, fontSize: 12, marginBottom: 4 }}>
+                      Total Fund Balance
+                    </p>
                     <p style={{ color: c.text1, fontSize: 24, fontWeight: 700 }}>
                       {fmtUsd(FUND_DATA.totalBalance)}
                     </p>
@@ -187,7 +208,9 @@ export function StakingInsuranceFundTransparencyPage() {
 
                 <div className="grid grid-cols-2 gap-3 mt-6">
                   <div className="rounded-xl p-3" style={{ background: c.surface2 }}>
-                    <p style={{ color: c.text3, fontSize: 11, marginBottom: 2 }}>Total Liabilities</p>
+                    <p style={{ color: c.text3, fontSize: 11, marginBottom: 2 }}>
+                      Total Liabilities
+                    </p>
                     <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>
                       {fmtUsd(FUND_DATA.liabilities)}
                     </p>
@@ -219,7 +242,8 @@ export function StakingInsuranceFundTransparencyPage() {
                       label={({ asset, percentage }) => `${asset} ${percentage}%`}
                       outerRadius={70}
                       fill="#8884d8"
-                      dataKey="value">
+                      dataKey="value"
+                    >
                       {ASSET_BREAKDOWN.map((entry, index) => (
                         <Cell key={`asset-cell-${index}`} fill={entry.color} />
                       ))}
@@ -239,10 +263,16 @@ export function StakingInsuranceFundTransparencyPage() {
 
                 <div className="flex flex-col gap-2 mt-3">
                   {ASSET_BREAKDOWN.map((item, idx) => (
-                    <div key={idx} className="flex items-center justify-between p-3 rounded-xl" style={{ background: c.surface2 }}>
+                    <div
+                      key={idx}
+                      className="flex items-center justify-between p-3 rounded-xl"
+                      style={{ background: c.surface2 }}
+                    >
                       <div className="flex items-center gap-3">
                         <div className="w-3 h-3 rounded-full" style={{ background: item.color }} />
-                        <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>{item.asset}</p>
+                        <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>
+                          {item.asset}
+                        </p>
                       </div>
                       <div className="text-right">
                         <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>
@@ -266,7 +296,8 @@ export function StakingInsuranceFundTransparencyPage() {
                       How the Fund Grows
                     </p>
                     <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                      {CONTRIBUTIONS.stakingFees}% of all staking fees are automatically allocated to the insurance fund. No user funds are ever used.
+                      {CONTRIBUTIONS.stakingFees}% of all staking fees are automatically allocated
+                      to the insurance fund. No user funds are ever used.
                     </p>
                   </div>
                 </div>
@@ -284,8 +315,13 @@ export function StakingInsuranceFundTransparencyPage() {
                       {fmtUsd(CONTRIBUTIONS.ytdContributions)}
                     </p>
                   </div>
-                  <div className="rounded-xl p-3 col-span-2" style={{ background: 'rgba(59,130,246,0.08)' }}>
-                    <p style={{ color: c.text3, fontSize: 11, marginBottom: 2 }}>Total Contributed (All-time)</p>
+                  <div
+                    className="rounded-xl p-3 col-span-2"
+                    style={{ background: 'rgba(59,130,246,0.08)' }}
+                  >
+                    <p style={{ color: c.text3, fontSize: 11, marginBottom: 2 }}>
+                      Total Contributed (All-time)
+                    </p>
                     <p style={{ color: '#3B82F6', fontSize: 18, fontWeight: 700 }}>
                       {fmtUsd(CONTRIBUTIONS.totalContributed)}
                     </p>
@@ -300,11 +336,13 @@ export function StakingInsuranceFundTransparencyPage() {
           <>
             <PageSection label="Claims History">
               <div className="flex flex-col gap-3">
-                {CLAIMS_HISTORY.map(claim => (
+                {CLAIMS_HISTORY.map((claim) => (
                   <TrCard key={claim.id} className="p-4">
                     <div className="flex items-start justify-between mb-3">
                       <div>
-                        <p style={{ color: c.text1, fontSize: 14, fontWeight: 700, marginBottom: 2 }}>
+                        <p
+                          style={{ color: c.text1, fontSize: 14, fontWeight: 700, marginBottom: 2 }}
+                        >
                           {claim.user}
                         </p>
                         <p style={{ color: c.text3, fontSize: 11 }}>
@@ -313,7 +351,8 @@ export function StakingInsuranceFundTransparencyPage() {
                       </div>
                       <span
                         className="px-2 py-1 rounded-lg text-xs font-bold"
-                        style={{ background: 'rgba(16,185,129,0.15)', color: '#10B981' }}>
+                        style={{ background: 'rgba(16,185,129,0.15)', color: '#10B981' }}
+                      >
                         Approved
                       </span>
                     </div>
@@ -355,11 +394,18 @@ export function StakingInsuranceFundTransparencyPage() {
               </div>
             </PageSection>
 
-            <div className="rounded-2xl p-4" style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}>
+            <div
+              className="rounded-2xl p-4"
+              style={{
+                background: 'rgba(59,130,246,0.08)',
+                border: '1px solid rgba(59,130,246,0.2)',
+              }}
+            >
               <div className="flex gap-2">
                 <FileText size={16} color="#3B82F6" className="shrink-0 mt-0.5" />
                 <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                  <strong>Claim Processing:</strong> All claims are reviewed within 24 hours. Approved claims are paid out within 7 business days. Average approval rate: 94%.
+                  <strong>Claim Processing:</strong> All claims are reviewed within 24 hours.
+                  Approved claims are paid out within 7 business days. Average approval rate: 94%.
                 </p>
               </div>
             </div>
@@ -426,15 +472,11 @@ export function StakingInsuranceFundTransparencyPage() {
                 <div className="grid grid-cols-2 gap-3 mt-4">
                   <div className="rounded-xl p-3" style={{ background: 'rgba(59,130,246,0.08)' }}>
                     <p style={{ color: c.text3, fontSize: 11, marginBottom: 2 }}>12M Growth</p>
-                    <p style={{ color: '#3B82F6', fontSize: 16, fontWeight: 700 }}>
-                      +10.6%
-                    </p>
+                    <p style={{ color: '#3B82F6', fontSize: 16, fontWeight: 700 }}>+10.6%</p>
                   </div>
                   <div className="rounded-xl p-3" style={{ background: 'rgba(16,185,129,0.08)' }}>
                     <p style={{ color: c.text3, fontSize: 11, marginBottom: 2 }}>Avg Ratio</p>
-                    <p style={{ color: '#10B981', fontSize: 16, fontWeight: 700 }}>
-                      161%
-                    </p>
+                    <p style={{ color: '#10B981', fontSize: 16, fontWeight: 700 }}>161%</p>
                   </div>
                 </div>
               </TrCard>
@@ -448,7 +490,9 @@ export function StakingInsuranceFundTransparencyPage() {
                       <div className="flex items-center gap-3">
                         <FileText size={20} color="#3B82F6" />
                         <div>
-                          <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>{month} Audit</p>
+                          <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>
+                            {month} Audit
+                          </p>
                           <p style={{ color: c.text3, fontSize: 11 }}>Third-party verified</p>
                         </div>
                       </div>
@@ -464,7 +508,8 @@ export function StakingInsuranceFundTransparencyPage() {
         {/* Footer */}
         <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6, textAlign: 'center' }}>
-            Insurance fund is audited monthly by third-party firms. All claim data is anonymized. Fund balance and ratio are updated in real-time. Last audit: March 1, 2026.
+            Insurance fund is audited monthly by third-party firms. All claim data is anonymized.
+            Fund balance and ratio are updated in real-time. Last audit: March 1, 2026.
           </p>
         </div>
       </PageContent>

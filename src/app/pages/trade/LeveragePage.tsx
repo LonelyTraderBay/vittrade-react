@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router';
-import {
-  ChevronLeft, AlertTriangle, Zap, Shield, Info, CheckCircle,
-} from 'lucide-react';
+import { ChevronLeft, AlertTriangle, Zap, Shield, Info, CheckCircle } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { CTAButton } from '../../components/ui/CTAButton';
@@ -84,7 +82,15 @@ export function LeveragePage() {
               <Zap size={20} color={risk.color} />
               <span style={{ color: c.text2, fontSize: 12 }}>Đòn bẩy</span>
             </div>
-            <p style={{ color: risk.color, fontSize: 56, fontWeight: 900, fontFamily: 'monospace', lineHeight: 1 }}>
+            <p
+              style={{
+                color: risk.color,
+                fontSize: 56,
+                fontWeight: 900,
+                fontFamily: 'monospace',
+                lineHeight: 1,
+              }}
+            >
               {val}x
             </p>
             <div className="flex items-center justify-center gap-2 mt-3">
@@ -106,15 +112,23 @@ export function LeveragePage() {
             <span style={{ color: c.text3, fontSize: 12 }}>Mức rủi ro</span>
             <span style={{ color: risk.color, fontSize: 12, fontWeight: 600 }}>{risk.label}</span>
           </div>
-          <div className="h-2 rounded-full overflow-hidden flex gap-1" style={{ background: c.surface2 }}>
-            {[1, 2, 3, 4, 5, 6].map(level => (
+          <div
+            className="h-2 rounded-full overflow-hidden flex gap-1"
+            style={{ background: c.surface2 }}
+          >
+            {[1, 2, 3, 4, 5, 6].map((level) => (
               <div
                 key={level}
                 className="flex-1 rounded-full"
                 style={{
-                  background: level <= risk.level
-                    ? level <= 2 ? '#10B981' : level <= 4 ? '#F59E0B' : '#EF4444'
-                    : c.surface2,
+                  background:
+                    level <= risk.level
+                      ? level <= 2
+                        ? '#10B981'
+                        : level <= 4
+                          ? '#F59E0B'
+                          : '#EF4444'
+                      : c.surface2,
                   transition: 'background 0.3s ease',
                 }}
               />
@@ -131,12 +145,12 @@ export function LeveragePage() {
             max={100}
             step={1}
             value={val}
-            onChange={e => setVal(parseInt(e.target.value))}
+            onChange={(e) => setVal(parseInt(e.target.value))}
             className="w-full"
             style={{ accentColor: risk.color }}
           />
           <div className="flex justify-between">
-            {SLIDER_STOPS.map(v => (
+            {SLIDER_STOPS.map((v) => (
               <button
                 key={v}
                 onClick={() => setVal(v)}
@@ -158,15 +172,14 @@ export function LeveragePage() {
         <div className="flex flex-col gap-2">
           <label style={{ color: c.text2, fontSize: 12, fontWeight: 600 }}>Chọn nhanh</label>
           <div className="grid grid-cols-5 gap-2">
-            {LEVERAGE_PRESETS.map(v => (
+            {LEVERAGE_PRESETS.map((v) => (
               <button
                 key={v}
                 onClick={() => setVal(v)}
                 className="h-10 rounded-xl text-sm font-bold"
                 style={{
-                  background: val === v
-                    ? `linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)`
-                    : c.surface2,
+                  background:
+                    val === v ? `linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)` : c.surface2,
                   color: val === v ? '#fff' : c.text2,
                   border: `1px solid ${val === v ? 'transparent' : c.borderSolid}`,
                   boxShadow: val === v ? '0 4px 12px rgba(59,130,246,0.3)' : 'none',
@@ -188,15 +201,43 @@ export function LeveragePage() {
             Với ký quỹ ${exampleMargin} USDT
           </p>
           {[
-            { label: 'Giá trị hợp đồng', value: `$${positionSize.toLocaleString()}`, color: c.text1 },
-            { label: 'Thanh lý cách giá vào', value: `~${liqDistance.toFixed(1)}%`, color: '#EF4444' },
-            { label: 'Phí mở vị thế (0.02%)', value: `$${(positionSize * 0.0002).toFixed(4)}`, color: '#F59E0B' },
-            { label: 'Lợi nhuận nếu +1%', value: `+$${(exampleMargin * val * 0.01).toFixed(2)}`, color: '#10B981' },
-            { label: 'Lỗ nếu -1%', value: `-$${(exampleMargin * val * 0.01).toFixed(2)}`, color: '#EF4444' },
-          ].map(row => (
-            <div key={row.label} className="flex justify-between py-1" style={{ borderBottom: `1px solid ${c.divider}` }}>
+            {
+              label: 'Giá trị hợp đồng',
+              value: `$${positionSize.toLocaleString()}`,
+              color: c.text1,
+            },
+            {
+              label: 'Thanh lý cách giá vào',
+              value: `~${liqDistance.toFixed(1)}%`,
+              color: '#EF4444',
+            },
+            {
+              label: 'Phí mở vị thế (0.02%)',
+              value: `$${(positionSize * 0.0002).toFixed(4)}`,
+              color: '#F59E0B',
+            },
+            {
+              label: 'Lợi nhuận nếu +1%',
+              value: `+$${(exampleMargin * val * 0.01).toFixed(2)}`,
+              color: '#10B981',
+            },
+            {
+              label: 'Lỗ nếu -1%',
+              value: `-$${(exampleMargin * val * 0.01).toFixed(2)}`,
+              color: '#EF4444',
+            },
+          ].map((row) => (
+            <div
+              key={row.label}
+              className="flex justify-between py-1"
+              style={{ borderBottom: `1px solid ${c.divider}` }}
+            >
               <span style={{ color: c.text3, fontSize: 12 }}>{row.label}</span>
-              <span style={{ color: row.color, fontSize: 12, fontWeight: 600, fontFamily: 'monospace' }}>{row.value}</span>
+              <span
+                style={{ color: row.color, fontSize: 12, fontWeight: 600, fontFamily: 'monospace' }}
+              >
+                {row.value}
+              </span>
             </div>
           ))}
         </TrCard>
@@ -209,13 +250,17 @@ export function LeveragePage() {
             border: `1px solid ${val > 20 ? 'rgba(239,68,68,0.2)' : 'rgba(245,158,11,0.2)'}`,
           }}
         >
-          <AlertTriangle size={14} color={val > 20 ? '#EF4444' : '#F59E0B'} className="shrink-0 mt-1" />
+          <AlertTriangle
+            size={14}
+            color={val > 20 ? '#EF4444' : '#F59E0B'}
+            className="shrink-0 mt-1"
+          />
           <p style={{ color: val > 20 ? '#EF4444' : '#F59E0B', fontSize: 12, lineHeight: 1.6 }}>
             {val > 50
               ? 'Đòn bẩy cực kỳ cao! Giá chỉ cần biến động nhỏ cũng có thể thanh lý toàn bộ vị thế. Chỉ dành cho trader có kinh nghiệm.'
               : val > 20
-              ? 'Đòn bẩy cao làm tăng đáng kể rủi ro thanh lý. Hãy đảm bảo quản lý rủi ro chặt chẽ với Stop Loss.'
-              : 'Đòn bẩy giúp khuếch đại lợi nhuận nhưng cũng tăng rủi ro. Luôn sử dụng Take Profit và Stop Loss.'}
+                ? 'Đòn bẩy cao làm tăng đáng kể rủi ro thanh lý. Hãy đảm bảo quản lý rủi ro chặt chẽ với Stop Loss.'
+                : 'Đòn bẩy giúp khuếch đại lợi nhuận nhưng cũng tăng rủi ro. Luôn sử dụng Take Profit và Stop Loss.'}
           </p>
         </div>
 
@@ -224,7 +269,9 @@ export function LeveragePage() {
           <TrCard className="p-4" accentBorder="rgba(239,68,68,0.2)">
             <div className="flex items-center gap-2 mb-2">
               <Shield size={14} color="#EF4444" />
-              <span style={{ color: '#EF4444', fontSize: 13, fontWeight: 700 }}>Lưu ý quan trọng</span>
+              <span style={{ color: '#EF4444', fontSize: 13, fontWeight: 700 }}>
+                Lưu ý quan trọng
+              </span>
             </div>
             <div className="flex flex-col gap-2">
               {[
@@ -245,9 +292,7 @@ export function LeveragePage() {
         <div className="flex-1" />
 
         {/* Confirm button */}
-        <CTAButton onClick={handleConfirm}>
-          Xác nhận đòn bẩy {val}x
-        </CTAButton>
+        <CTAButton onClick={handleConfirm}>Xác nhận đòn bẩy {val}x</CTAButton>
 
         <div style={{ height: 16 }} />
       </div>

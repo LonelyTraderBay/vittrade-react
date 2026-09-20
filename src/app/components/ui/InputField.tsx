@@ -9,7 +9,10 @@ import { textRoleSize } from '../../theme/typography';
  * Focus border follows VitTrade primary amber token.
  */
 
-export interface InputFieldProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'prefix'> {
+export interface InputFieldProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'prefix'
+> {
   /** Optional label above input */
   label?: string;
   /** Error message (turns border red) */
@@ -38,7 +41,7 @@ export function InputField({
 }: InputFieldProps) {
   const c = useThemeColors();
   const [focused, setFocused] = useState(false);
-  const borderColor = error ? '#EF4444' : (focused ? c.primary : c.borderSolid);
+  const borderColor = error ? '#EF4444' : focused ? c.primary : c.borderSolid;
   const focusShadow = focused && !error ? '0 0 0 2px rgba(229, 138, 0, 0.25)' : 'none';
   const inputId = id || (label ? `input-${label.replace(/\s+/g, '-').toLowerCase()}` : undefined);
 
@@ -65,7 +68,8 @@ export function InputField({
           height: 'var(--input-height)',
           borderRadius: 'var(--input-radius)',
           boxShadow: focusShadow,
-          transition: 'border-color var(--tr-duration-normal) ease, box-shadow var(--tr-duration-normal) ease',
+          transition:
+            'border-color var(--tr-duration-normal) ease, box-shadow var(--tr-duration-normal) ease',
           ...containerStyle,
         }}
       >
@@ -96,7 +100,13 @@ export function InputField({
         {suffix}
       </div>
       {error && (
-        <p id={inputId ? `${inputId}-error` : undefined} role="alert" style={{ color: '#EF4444', fontSize: textRoleSize('caption'), marginTop: 4 }}>{error}</p>
+        <p
+          id={inputId ? `${inputId}-error` : undefined}
+          role="alert"
+          style={{ color: '#EF4444', fontSize: textRoleSize('caption'), marginTop: 4 }}
+        >
+          {error}
+        </p>
       )}
     </div>
   );
@@ -125,7 +135,7 @@ export function InputWrapper({
 }: InputWrapperProps) {
   const c = useThemeColors();
   const [focused, setFocused] = useState(false);
-  const borderColor = error ? '#EF4444' : (focused ? c.primary : c.borderSolid);
+  const borderColor = error ? '#EF4444' : focused ? c.primary : c.borderSolid;
   const focusShadow = focused && !error ? '0 0 0 2px rgba(229, 138, 0, 0.25)' : 'none';
 
   return (
@@ -150,7 +160,8 @@ export function InputWrapper({
           height: 'var(--input-height)',
           borderRadius: 'var(--input-radius)',
           boxShadow: focusShadow,
-          transition: 'border-color var(--tr-duration-normal) ease, box-shadow var(--tr-duration-normal) ease',
+          transition:
+            'border-color var(--tr-duration-normal) ease, box-shadow var(--tr-duration-normal) ease',
           cursor: onClick ? 'pointer' : undefined,
           ...style,
         }}

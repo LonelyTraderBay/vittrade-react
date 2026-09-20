@@ -76,8 +76,9 @@ describe('useRefresh', () => {
       expect(result.current.refreshCount).toBe(0);
 
       await act(async () => {
-        await result.current.refresh();
+        const p = result.current.refresh();
         await vi.advanceTimersByTimeAsync(800);
+        await p;
       });
 
       expect(result.current.refreshCount).toBe(1);
@@ -89,8 +90,9 @@ describe('useRefresh', () => {
       expect(result.current.lastRefreshedAt).toBeNull();
 
       await act(async () => {
-        await result.current.refresh();
+        const p = result.current.refresh();
         await vi.advanceTimersByTimeAsync(800);
+        await p;
       });
 
       expect(result.current.lastRefreshedAt).toBeInstanceOf(Date);
@@ -101,22 +103,25 @@ describe('useRefresh', () => {
 
       // First refresh
       await act(async () => {
-        await result.current.refresh();
+        const p = result.current.refresh();
         await vi.advanceTimersByTimeAsync(800);
+        await p;
       });
       expect(result.current.refreshCount).toBe(1);
 
       // Second refresh
       await act(async () => {
-        await result.current.refresh();
+        const p = result.current.refresh();
         await vi.advanceTimersByTimeAsync(800);
+        await p;
       });
       expect(result.current.refreshCount).toBe(2);
 
       // Third refresh
       await act(async () => {
-        await result.current.refresh();
+        const p = result.current.refresh();
         await vi.advanceTimersByTimeAsync(800);
+        await p;
       });
       expect(result.current.refreshCount).toBe(3);
     });
@@ -167,8 +172,9 @@ describe('useRefresh', () => {
       const { result } = renderHook(() => useRefresh({ delay: 100 }));
 
       await act(async () => {
-        await result.current.refresh();
+        const p = result.current.refresh();
         await vi.advanceTimersByTimeAsync(100);
+        await p;
       });
 
       expect(result.current.isRefreshing).toBe(false);
@@ -182,7 +188,9 @@ describe('useRefresh', () => {
       const { result } = renderHook(() => useRefresh({ onStart }));
 
       await act(async () => {
-        result.current.refresh();
+        const p = result.current.refresh();
+        await vi.advanceTimersByTimeAsync(800);
+        await p;
       });
 
       expect(onStart).toHaveBeenCalledTimes(1);
@@ -193,8 +201,9 @@ describe('useRefresh', () => {
       const { result } = renderHook(() => useRefresh({ onEnd }));
 
       await act(async () => {
-        await result.current.refresh();
+        const p = result.current.refresh();
         await vi.advanceTimersByTimeAsync(800);
+        await p;
       });
 
       expect(onEnd).toHaveBeenCalledTimes(1);
@@ -208,8 +217,9 @@ describe('useRefresh', () => {
       const { result } = renderHook(() => useRefresh({ onStart, onEnd }));
 
       await act(async () => {
-        await result.current.refresh();
+        const p = result.current.refresh();
         await vi.advanceTimersByTimeAsync(800);
+        await p;
       });
 
       expect(calls).toEqual(['start', 'end']);
@@ -221,13 +231,15 @@ describe('useRefresh', () => {
       const { result } = renderHook(() => useRefresh({ onStart, onEnd }));
 
       await act(async () => {
-        await result.current.refresh();
+        const p = result.current.refresh();
         await vi.advanceTimersByTimeAsync(800);
+        await p;
       });
 
       await act(async () => {
-        await result.current.refresh();
+        const p = result.current.refresh();
         await vi.advanceTimersByTimeAsync(800);
+        await p;
       });
 
       expect(onStart).toHaveBeenCalledTimes(2);
@@ -237,12 +249,15 @@ describe('useRefresh', () => {
     it('should work without callbacks', async () => {
       const { result } = renderHook(() => useRefresh());
 
-      await expect(async () => {
-        await act(async () => {
-          await result.current.refresh();
-          await vi.advanceTimersByTimeAsync(800);
-        });
-      }).resolves.not.toThrow();
+      await expect(
+        (async () => {
+          await act(async () => {
+            const p = result.current.refresh();
+            await vi.advanceTimersByTimeAsync(800);
+            await p;
+          });
+        })(),
+      ).resolves.not.toThrow();
     });
   });
 
@@ -261,46 +276,42 @@ describe('useRefresh', () => {
     });
 
     it('should show seconds for 10-59 seconds ago', async () => {
-      vi.useRealTimers();
       const { result } = renderHook(() => useRefresh());
 
-      const pastDate = new Date(Date.now() - 30_000); // 30s ago
-
       await act(async () => {
-        // Manually set lastRefreshedAt for testing
-        await result.current.refresh();
+        const p = result.current.refresh();
+        await vi.advanceTimersByTimeAsync(800);
+        await p;
       });
 
-      // Mock the date to be 30s in the past
-      vi.useFakeTimers();
-      const spy = vi.spyOn(Date, 'now').mockReturnValue(pastDate.getTime() + 30_000);
+      expect(result.current.lastRefreshedLabel).toBe('Vừa cập nhật');
 
+      // Advance 30 seconds: label should switch to a seconds-based string
       await act(async () => {
-        vi.advanceTimersByTime(0);
+        await vi.advanceTimersByTimeAsync(30_000);
       });
 
-      vi.useRealTimers();
-      spy.mockRestore();
+      expect(result.current.lastRefreshedLabel).toBe('30 giây trước');
     });
 
     it('should update label automatically after 30 seconds', async () => {
-      vi.useRealTimers();
       const { result } = renderHook(() => useRefresh());
 
       await act(async () => {
-        await result.current.refresh();
+        const p = result.current.refresh();
+        await vi.advanceTimersByTimeAsync(800);
+        await p;
       });
 
       const initialLabel = result.current.lastRefreshedLabel;
       expect(initialLabel).toBe('Vừa cập nhật');
 
-      // Wait for auto-update interval
+      // Wait for auto-update interval (fires 30s after lastRefreshedAt)
       await act(async () => {
-        await new Promise((resolve) => setTimeout(resolve, 31_000));
+        await vi.advanceTimersByTimeAsync(30_000);
       });
 
-      // Label may have updated
-      // (exact value depends on timing, but should still be a valid time string)
+      expect(result.current.lastRefreshedLabel).toBe('30 giây trước');
     });
   });
 
@@ -318,10 +329,9 @@ describe('useRefresh', () => {
     });
 
     it('should update refresh function when delay changes', () => {
-      const { result, rerender } = renderHook(
-        ({ delay }) => useRefresh({ delay }),
-        { initialProps: { delay: 800 } }
-      );
+      const { result, rerender } = renderHook(({ delay }) => useRefresh({ delay }), {
+        initialProps: { delay: 800 },
+      });
 
       const refresh1 = result.current.refresh;
 
@@ -334,10 +344,9 @@ describe('useRefresh', () => {
     });
 
     it('should not recreate refresh when callbacks change', () => {
-      const { result, rerender } = renderHook(
-        ({ onStart }) => useRefresh({ onStart }),
-        { initialProps: { onStart: vi.fn() } }
-      );
+      const { result, rerender } = renderHook(({ onStart }) => useRefresh({ onStart }), {
+        initialProps: { onStart: vi.fn() },
+      });
 
       const refresh1 = result.current.refresh;
 
@@ -354,9 +363,7 @@ describe('useRefresh', () => {
     it('should support typical pull-to-refresh flow', async () => {
       const onStart = vi.fn();
       const onEnd = vi.fn();
-      const { result } = renderHook(() =>
-        useRefresh({ delay: 800, onStart, onEnd })
-      );
+      const { result } = renderHook(() => useRefresh({ delay: 800, onStart, onEnd }));
 
       // User pulls to refresh
       await act(async () => {
@@ -404,7 +411,7 @@ describe('useRefresh', () => {
           onEnd: () => {
             isLoading = false;
           },
-        })
+        }),
       );
 
       expect(isLoading).toBe(false);
@@ -428,8 +435,9 @@ describe('useRefresh', () => {
       const { result } = renderHook(() => useRefresh({ delay: 0 }));
 
       await act(async () => {
-        await result.current.refresh();
+        const p = result.current.refresh();
         await vi.advanceTimersByTimeAsync(0);
+        await p;
       });
 
       expect(result.current.isRefreshing).toBe(false);
@@ -487,8 +495,9 @@ describe('useRefresh', () => {
 
       for (let i = 0; i < 20; i++) {
         await act(async () => {
-          await result.current.refresh();
+          const p = result.current.refresh();
           await vi.advanceTimersByTimeAsync(50);
+          await p;
         });
       }
 
@@ -498,16 +507,15 @@ describe('useRefresh', () => {
     it('should maintain correct state across many refreshes', async () => {
       const onStart = vi.fn();
       const onEnd = vi.fn();
-      const { result } = renderHook(() =>
-        useRefresh({ delay: 100, onStart, onEnd })
-      );
+      const { result } = renderHook(() => useRefresh({ delay: 100, onStart, onEnd }));
 
       const iterations = 10;
 
       for (let i = 0; i < iterations; i++) {
         await act(async () => {
-          await result.current.refresh();
+          const p = result.current.refresh();
           await vi.advanceTimersByTimeAsync(100);
+          await p;
         });
       }
 

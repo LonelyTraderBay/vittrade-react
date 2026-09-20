@@ -2,7 +2,7 @@
  * ══════════════════════════════════════════════════════════════
  *  CopySettingsPage — Phase 1 Week 3: Copy Trading Settings
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Global copy trading preferences
  * - Default copy mode setting
@@ -10,13 +10,13 @@
  * - Notification preferences
  * - Emergency contact setup
  * - Auto-stop rules
- * 
+ *
  * Compliance:
  * - Default risk settings for new copies
  * - Emergency contact (required for high-risk copies)
  * - Notification opt-in/out with legal requirements
  * - Auto-stop circuit breakers
- * 
+ *
  * Guidelines:
  * - PageLayout + PageSection pattern
  * - Settings organized by category
@@ -26,9 +26,20 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { 
-  Settings, Bell, Shield, AlertTriangle, Target, Phone,
-  Mail, Lock, Eye, EyeOff, ChevronRight, Info, Zap
+import {
+  Settings,
+  Bell,
+  Shield,
+  AlertTriangle,
+  Target,
+  Phone,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  ChevronRight,
+  Info,
+  Zap,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -44,13 +55,13 @@ interface SettingsState {
   defaultCopyRatio: number;
   defaultStopLoss: number;
   defaultTakeProfit: number;
-  
+
   // Risk Limits
   maxPortfolioAllocation: number;
   maxCopiesActive: number;
   enableCircuitBreaker: boolean;
   circuitBreakerThreshold: number;
-  
+
   // Notifications
   notifyNewTrades: boolean;
   notifyPnLChanges: boolean;
@@ -58,11 +69,11 @@ interface SettingsState {
   notifyProviderUpdates: boolean;
   emailNotifications: boolean;
   pushNotifications: boolean;
-  
+
   // Emergency
   emergencyContact: string;
   emergencyPhone: string;
-  
+
   // Privacy
   showPortfolioPublic: boolean;
 }
@@ -71,7 +82,7 @@ export function CopySettingsPage() {
   const c = useThemeColors();
   const navigate = useNavigate();
   const prefix = useRoutePrefix();
-  
+
   const [settings, setSettings] = useState<SettingsState>({
     defaultCopyMode: 'fixed',
     defaultCopyRatio: 50,
@@ -110,7 +121,15 @@ export function CopySettingsPage() {
           <div className="space-y-3">
             {/* Default Copy Mode */}
             <div className="p-3 rounded-xl" style={{ background: c.surface2 }}>
-              <label style={{ color: c.text1, fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 8 }}>
+              <label
+                style={{
+                  color: c.text1,
+                  fontSize: 12,
+                  fontWeight: 600,
+                  display: 'block',
+                  marginBottom: 8,
+                }}
+              >
                 Copy Mode mặc định
               </label>
               <div className="grid grid-cols-3 gap-2">
@@ -118,7 +137,7 @@ export function CopySettingsPage() {
                   { id: 'mirror' as const, label: 'Mirror' },
                   { id: 'fixed' as const, label: 'Fixed' },
                   { id: 'smart' as const, label: 'Smart' },
-                ].map(mode => (
+                ].map((mode) => (
                   <button
                     key={mode.id}
                     onClick={() => setSettings({ ...settings, defaultCopyMode: mode.id })}
@@ -153,7 +172,9 @@ export function CopySettingsPage() {
                   max={100}
                   step={5}
                   value={settings.defaultCopyRatio}
-                  onChange={(e) => setSettings({ ...settings, defaultCopyRatio: parseInt(e.target.value) })}
+                  onChange={(e) =>
+                    setSettings({ ...settings, defaultCopyRatio: parseInt(e.target.value) })
+                  }
                   className="w-full"
                   style={{ accentColor: c.primary }}
                 />
@@ -179,7 +200,9 @@ export function CopySettingsPage() {
                 max={50}
                 step={5}
                 value={settings.defaultStopLoss}
-                onChange={(e) => setSettings({ ...settings, defaultStopLoss: parseInt(e.target.value) })}
+                onChange={(e) =>
+                  setSettings({ ...settings, defaultStopLoss: parseInt(e.target.value) })
+                }
                 className="w-full"
                 style={{ accentColor: '#EF4444' }}
               />
@@ -201,7 +224,9 @@ export function CopySettingsPage() {
                 max={100}
                 step={5}
                 value={settings.defaultTakeProfit}
-                onChange={(e) => setSettings({ ...settings, defaultTakeProfit: parseInt(e.target.value) })}
+                onChange={(e) =>
+                  setSettings({ ...settings, defaultTakeProfit: parseInt(e.target.value) })
+                }
                 className="w-full"
                 style={{ accentColor: '#10B981' }}
               />
@@ -216,10 +241,20 @@ export function CopySettingsPage() {
             <div className="p-3 rounded-xl" style={{ background: c.surface2 }}>
               <div className="flex justify-between items-center mb-2">
                 <div>
-                  <label style={{ color: c.text1, fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 2 }}>
+                  <label
+                    style={{
+                      color: c.text1,
+                      fontSize: 12,
+                      fontWeight: 600,
+                      display: 'block',
+                      marginBottom: 2,
+                    }}
+                  >
                     Max allocation per provider
                   </label>
-                  <p style={{ color: c.text3, fontSize: 9 }}>Không copy quá X% tổng portfolio vào 1 provider</p>
+                  <p style={{ color: c.text3, fontSize: 9 }}>
+                    Không copy quá X% tổng portfolio vào 1 provider
+                  </p>
                 </div>
                 <span style={{ color: c.primary, fontSize: 14, fontWeight: 700 }}>
                   {settings.maxPortfolioAllocation}%
@@ -231,7 +266,9 @@ export function CopySettingsPage() {
                 max={50}
                 step={5}
                 value={settings.maxPortfolioAllocation}
-                onChange={(e) => setSettings({ ...settings, maxPortfolioAllocation: parseInt(e.target.value) })}
+                onChange={(e) =>
+                  setSettings({ ...settings, maxPortfolioAllocation: parseInt(e.target.value) })
+                }
                 className="w-full"
                 style={{ accentColor: c.primary }}
               />
@@ -241,10 +278,20 @@ export function CopySettingsPage() {
             <div className="p-3 rounded-xl" style={{ background: c.surface2 }}>
               <div className="flex justify-between items-center mb-2">
                 <div>
-                  <label style={{ color: c.text1, fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 2 }}>
+                  <label
+                    style={{
+                      color: c.text1,
+                      fontSize: 12,
+                      fontWeight: 600,
+                      display: 'block',
+                      marginBottom: 2,
+                    }}
+                  >
                     Max số copy đồng thời
                   </label>
-                  <p style={{ color: c.text3, fontSize: 9 }}>Giới hạn số provider bạn có thể copy cùng lúc</p>
+                  <p style={{ color: c.text3, fontSize: 9 }}>
+                    Giới hạn số provider bạn có thể copy cùng lúc
+                  </p>
                 </div>
                 <span style={{ color: c.primary, fontSize: 14, fontWeight: 700 }}>
                   {settings.maxCopiesActive}
@@ -256,7 +303,9 @@ export function CopySettingsPage() {
                 max={10}
                 step={1}
                 value={settings.maxCopiesActive}
-                onChange={(e) => setSettings({ ...settings, maxCopiesActive: parseInt(e.target.value) })}
+                onChange={(e) =>
+                  setSettings({ ...settings, maxCopiesActive: parseInt(e.target.value) })
+                }
                 className="w-full"
                 style={{ accentColor: c.primary }}
               />
@@ -277,13 +326,18 @@ export function CopySettingsPage() {
                   </p>
                 </div>
                 <button
-                  onClick={() => setSettings({ ...settings, enableCircuitBreaker: !settings.enableCircuitBreaker })}
+                  onClick={() =>
+                    setSettings({
+                      ...settings,
+                      enableCircuitBreaker: !settings.enableCircuitBreaker,
+                    })
+                  }
                   className="w-12 h-6 rounded-full transition-all relative"
                   style={{
                     background: settings.enableCircuitBreaker ? c.primary : c.border,
                   }}
                 >
-                  <div 
+                  <div
                     className="w-5 h-5 rounded-full bg-white absolute top-0.5 transition-all shadow"
                     style={{ left: settings.enableCircuitBreaker ? '24px' : '2px' }}
                   />
@@ -304,7 +358,12 @@ export function CopySettingsPage() {
                     max={50}
                     step={5}
                     value={settings.circuitBreakerThreshold}
-                    onChange={(e) => setSettings({ ...settings, circuitBreakerThreshold: parseInt(e.target.value) })}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        circuitBreakerThreshold: parseInt(e.target.value),
+                      })
+                    }
                     className="w-full"
                     style={{ accentColor: '#EF4444' }}
                   />
@@ -318,12 +377,28 @@ export function CopySettingsPage() {
         <PageSection label="Thông báo" accentColor="#3B82F6">
           <div className="space-y-3">
             {[
-              { key: 'notifyNewTrades' as const, label: 'Trades mới', desc: 'Thông báo mỗi khi provider mở/đóng lệnh' },
-              { key: 'notifyPnLChanges' as const, label: 'Thay đổi P/L', desc: 'Cảnh báo khi P/L thay đổi >5%' },
-              { key: 'notifyRiskAlerts' as const, label: 'Cảnh báo rủi ro', desc: 'Provider gần stop-loss hoặc có drawdown lớn' },
-              { key: 'notifyProviderUpdates' as const, label: 'Cập nhật provider', desc: 'Thông báo khi provider thay đổi chiến lược' },
-            ].map(item => (
-              <div 
+              {
+                key: 'notifyNewTrades' as const,
+                label: 'Trades mới',
+                desc: 'Thông báo mỗi khi provider mở/đóng lệnh',
+              },
+              {
+                key: 'notifyPnLChanges' as const,
+                label: 'Thay đổi P/L',
+                desc: 'Cảnh báo khi P/L thay đổi >5%',
+              },
+              {
+                key: 'notifyRiskAlerts' as const,
+                label: 'Cảnh báo rủi ro',
+                desc: 'Provider gần stop-loss hoặc có drawdown lớn',
+              },
+              {
+                key: 'notifyProviderUpdates' as const,
+                label: 'Cập nhật provider',
+                desc: 'Thông báo khi provider thay đổi chiến lược',
+              },
+            ].map((item) => (
+              <div
                 key={item.key}
                 className="flex items-center justify-between p-3 rounded-xl"
                 style={{ background: c.surface2 }}
@@ -332,9 +407,7 @@ export function CopySettingsPage() {
                   <p style={{ color: c.text1, fontSize: 12, fontWeight: 600, marginBottom: 2 }}>
                     {item.label}
                   </p>
-                  <p style={{ color: c.text3, fontSize: 9, lineHeight: 1.4 }}>
-                    {item.desc}
-                  </p>
+                  <p style={{ color: c.text3, fontSize: 9, lineHeight: 1.4 }}>{item.desc}</p>
                 </div>
                 <button
                   onClick={() => setSettings({ ...settings, [item.key]: !settings[item.key] })}
@@ -343,7 +416,7 @@ export function CopySettingsPage() {
                     background: settings[item.key] ? c.primary : c.border,
                   }}
                 >
-                  <div 
+                  <div
                     className="w-5 h-5 rounded-full bg-white absolute top-0.5 transition-all shadow"
                     style={{ left: settings[item.key] ? '24px' : '2px' }}
                   />
@@ -356,7 +429,9 @@ export function CopySettingsPage() {
             {/* Notification Channels */}
             <div className="grid grid-cols-2 gap-2">
               <button
-                onClick={() => setSettings({ ...settings, emailNotifications: !settings.emailNotifications })}
+                onClick={() =>
+                  setSettings({ ...settings, emailNotifications: !settings.emailNotifications })
+                }
                 className="p-3 rounded-xl flex items-center gap-2 transition-all"
                 style={{
                   background: settings.emailNotifications ? c.primary + '15' : c.surface2,
@@ -364,16 +439,20 @@ export function CopySettingsPage() {
                 }}
               >
                 <Mail size={14} color={settings.emailNotifications ? c.primary : c.text3} />
-                <span style={{ 
-                  color: settings.emailNotifications ? c.primary : c.text2,
-                  fontSize: 11,
-                  fontWeight: 600
-                }}>
+                <span
+                  style={{
+                    color: settings.emailNotifications ? c.primary : c.text2,
+                    fontSize: 11,
+                    fontWeight: 600,
+                  }}
+                >
                   Email
                 </span>
               </button>
               <button
-                onClick={() => setSettings({ ...settings, pushNotifications: !settings.pushNotifications })}
+                onClick={() =>
+                  setSettings({ ...settings, pushNotifications: !settings.pushNotifications })
+                }
                 className="p-3 rounded-xl flex items-center gap-2 transition-all"
                 style={{
                   background: settings.pushNotifications ? c.primary + '15' : c.surface2,
@@ -381,11 +460,13 @@ export function CopySettingsPage() {
                 }}
               >
                 <Bell size={14} color={settings.pushNotifications ? c.primary : c.text3} />
-                <span style={{ 
-                  color: settings.pushNotifications ? c.primary : c.text2,
-                  fontSize: 11,
-                  fontWeight: 600
-                }}>
+                <span
+                  style={{
+                    color: settings.pushNotifications ? c.primary : c.text2,
+                    fontSize: 11,
+                    fontWeight: 600,
+                  }}
+                >
                   Push
                 </span>
               </button>
@@ -395,12 +476,15 @@ export function CopySettingsPage() {
 
         {/* Emergency Contact */}
         <PageSection label="Liên hệ khẩn cấp" accentColor="#F59E0B">
-          <div className="p-3 rounded-xl" style={{ background: c.warningBg, border: `1px solid ${c.warningBorder}` }}>
+          <div
+            className="p-3 rounded-xl"
+            style={{ background: c.warningBg, border: `1px solid ${c.warningBorder}` }}
+          >
             <div className="flex items-start gap-2 mb-3">
               <Info size={14} color={c.warningText} className="shrink-0 mt-0.5" />
               <p style={{ color: c.warningText, fontSize: 10, lineHeight: 1.5 }}>
-                Người liên hệ khẩn cấp sẽ được thông báo nếu tài khoản của bạn có hoạt động bất thường 
-                hoặc kích hoạt circuit breaker.
+                Người liên hệ khẩn cấp sẽ được thông báo nếu tài khoản của bạn có hoạt động bất
+                thường hoặc kích hoạt circuit breaker.
               </p>
             </div>
 
@@ -466,13 +550,15 @@ export function CopySettingsPage() {
                 </p>
               </div>
               <button
-                onClick={() => setSettings({ ...settings, showPortfolioPublic: !settings.showPortfolioPublic })}
+                onClick={() =>
+                  setSettings({ ...settings, showPortfolioPublic: !settings.showPortfolioPublic })
+                }
                 className="w-12 h-6 rounded-full transition-all relative ml-3"
                 style={{
                   background: settings.showPortfolioPublic ? c.primary : c.border,
                 }}
               >
-                <div 
+                <div
                   className="w-5 h-5 rounded-full bg-white absolute top-0.5 transition-all shadow"
                   style={{ left: settings.showPortfolioPublic ? '24px' : '2px' }}
                 />

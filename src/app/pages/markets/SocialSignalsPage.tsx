@@ -8,9 +8,20 @@
 
 import React, { useState, useMemo } from 'react';
 import {
-  Target, Users, Star, TrendingUp, TrendingDown,
-  Shield, AlertTriangle, Copy, Heart, ChevronDown,
-  CheckCircle, XCircle, Clock, Info,
+  Target,
+  Users,
+  Star,
+  TrendingUp,
+  TrendingDown,
+  Shield,
+  AlertTriangle,
+  Copy,
+  Heart,
+  ChevronDown,
+  CheckCircle,
+  XCircle,
+  Clock,
+  Info,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -22,7 +33,9 @@ import { useHaptic } from '../../hooks/useHaptic';
 import { fmtPrice, fmtPct, fmtCompact } from '../../data/formatNumber';
 import { FONT_SCALE, FONT_WEIGHT } from '../../constants/typography';
 import {
-  TRADING_SIGNALS, SIGNAL_PROVIDER_TIERS, SIGNAL_STATUS_CONFIG,
+  TRADING_SIGNALS,
+  SIGNAL_PROVIDER_TIERS,
+  SIGNAL_STATUS_CONFIG,
   type TradingSignal,
 } from '../../data/marketP3Data';
 
@@ -30,7 +43,10 @@ const TABS = ['Tín hiệu', 'Nhà cung cấp', 'Hiệu suất'];
 const STATUS_FILTERS = ['all', 'active', 'target_hit', 'stopped'] as const;
 const CATEGORY_FILTERS = ['all', 'scalp', 'swing', 'position'] as const;
 const CATEGORY_LABELS: Record<string, string> = {
-  all: 'Tất cả', scalp: 'Scalp', swing: 'Swing', position: 'Position',
+  all: 'Tất cả',
+  scalp: 'Scalp',
+  swing: 'Swing',
+  position: 'Position',
 };
 
 export function SocialSignalsPage() {
@@ -44,30 +60,42 @@ export function SocialSignalsPage() {
 
   const filteredSignals = useMemo(() => {
     let items = [...TRADING_SIGNALS];
-    if (statusFilter !== 'all') items = items.filter(s => s.status === statusFilter);
-    if (categoryFilter !== 'all') items = items.filter(s => s.category === categoryFilter);
+    if (statusFilter !== 'all') items = items.filter((s) => s.status === statusFilter);
+    if (categoryFilter !== 'all') items = items.filter((s) => s.category === categoryFilter);
     return items;
   }, [statusFilter, categoryFilter]);
 
   // Provider aggregation
   const providers = useMemo(() => {
-    const map = new Map<string, {
-      name: string; avatar: string; tier: TradingSignal['providerTier'];
-      winRate: number; followers: number; totalSignals: number;
-      activeSignals: number; avgPnl: number;
-    }>();
+    const map = new Map<
+      string,
+      {
+        name: string;
+        avatar: string;
+        tier: TradingSignal['providerTier'];
+        winRate: number;
+        followers: number;
+        totalSignals: number;
+        activeSignals: number;
+        avgPnl: number;
+      }
+    >();
 
-    TRADING_SIGNALS.forEach(s => {
+    TRADING_SIGNALS.forEach((s) => {
       const existing = map.get(s.providerName);
       if (existing) {
         existing.totalSignals++;
         if (s.status === 'active') existing.activeSignals++;
-        existing.avgPnl = (existing.avgPnl * (existing.totalSignals - 1) + s.pnlPct) / existing.totalSignals;
+        existing.avgPnl =
+          (existing.avgPnl * (existing.totalSignals - 1) + s.pnlPct) / existing.totalSignals;
       } else {
         map.set(s.providerName, {
-          name: s.providerName, avatar: s.providerAvatar,
-          tier: s.providerTier, winRate: s.providerWinRate,
-          followers: s.providerFollowers, totalSignals: 1,
+          name: s.providerName,
+          avatar: s.providerAvatar,
+          tier: s.providerTier,
+          winRate: s.providerWinRate,
+          followers: s.providerFollowers,
+          totalSignals: 1,
           activeSignals: s.status === 'active' ? 1 : 0,
           avgPnl: s.pnlPct,
         });
@@ -79,8 +107,8 @@ export function SocialSignalsPage() {
 
   // Performance stats
   const totalSignals = TRADING_SIGNALS.length;
-  const hitSignals = TRADING_SIGNALS.filter(s => s.status === 'target_hit').length;
-  const stoppedSignals = TRADING_SIGNALS.filter(s => s.status === 'stopped').length;
+  const hitSignals = TRADING_SIGNALS.filter((s) => s.status === 'target_hit').length;
+  const stoppedSignals = TRADING_SIGNALS.filter((s) => s.status === 'stopped').length;
   const overallWinRate = totalSignals > 0 ? (hitSignals / (hitSignals + stoppedSignals)) * 100 : 0;
   const avgPnl = TRADING_SIGNALS.reduce((s, sig) => s + sig.pnlPct, 0) / totalSignals;
 
@@ -95,8 +123,8 @@ export function SocialSignalsPage() {
           <div className="flex gap-2">
             <Shield size={14} color="#F59E0B" className="shrink-0 mt-1" />
             <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, lineHeight: 1.5 }}>
-              Tín hiệu từ cộng đồng chỉ mang tính tham khảo. Không phải khuyến nghị đầu tư. 
-              Luôn tự nghiên cứu và quản lý rủi ro.
+              Tín hiệu từ cộng đồng chỉ mang tính tham khảo. Không phải khuyến nghị đầu tư. Luôn tự
+              nghiên cứu và quản lý rủi ro.
             </p>
           </div>
         </TrCard>
@@ -106,12 +134,18 @@ export function SocialSignalsPage() {
           <>
             {/* Filters */}
             <div className="flex gap-2 overflow-x-auto scrollbar-none -mx-5 px-5">
-              {STATUS_FILTERS.map(f => {
-                const cfg = f === 'all' ? { label: 'Tất cả', color: '#6B7280' } : SIGNAL_STATUS_CONFIG[f as TradingSignal['status']];
+              {STATUS_FILTERS.map((f) => {
+                const cfg =
+                  f === 'all'
+                    ? { label: 'Tất cả', color: '#6B7280' }
+                    : SIGNAL_STATUS_CONFIG[f as TradingSignal['status']];
                 return (
                   <button
                     key={f}
-                    onClick={() => { setStatusFilter(f); hapticSelection(); }}
+                    onClick={() => {
+                      setStatusFilter(f);
+                      hapticSelection();
+                    }}
                     className="shrink-0 px-3 py-2 rounded-xl min-h-9"
                     style={{
                       background: statusFilter === f ? `${cfg.color}12` : c.surface2,
@@ -128,10 +162,13 @@ export function SocialSignalsPage() {
             </div>
 
             <div className="flex gap-2">
-              {CATEGORY_FILTERS.map(f => (
+              {CATEGORY_FILTERS.map((f) => (
                 <button
                   key={f}
-                  onClick={() => { setCategoryFilter(f); hapticSelection(); }}
+                  onClick={() => {
+                    setCategoryFilter(f);
+                    hapticSelection();
+                  }}
                   className="px-3 py-1 rounded-lg min-h-9"
                   style={{
                     background: categoryFilter === f ? c.chipActiveBg : 'transparent',
@@ -147,12 +184,15 @@ export function SocialSignalsPage() {
 
             {/* Signal cards */}
             <div className="flex flex-col" style={{ gap: 6 }}>
-              {filteredSignals.map(signal => (
+              {filteredSignals.map((signal) => (
                 <SignalCard
                   key={signal.id}
                   signal={signal}
                   expanded={expandedId === signal.id}
-                  onToggle={() => { setExpandedId(expandedId === signal.id ? null : signal.id); hapticSelection(); }}
+                  onToggle={() => {
+                    setExpandedId(expandedId === signal.id ? null : signal.id);
+                    hapticSelection();
+                  }}
                   c={c}
                 />
               ))}
@@ -186,11 +226,13 @@ export function SocialSignalsPage() {
                           border: `1px solid ${idx < 3 ? tierCfg.color : c.borderSolid}`,
                         }}
                       >
-                        <span style={{
-                          color: idx < 3 ? tierCfg.color : c.text3,
-                          fontSize: FONT_SCALE.micro,
-                          fontWeight: FONT_WEIGHT.bold,
-                        }}>
+                        <span
+                          style={{
+                            color: idx < 3 ? tierCfg.color : c.text3,
+                            fontSize: FONT_SCALE.micro,
+                            fontWeight: FONT_WEIGHT.bold,
+                          }}
+                        >
                           {idx + 1}
                         </span>
                       </div>
@@ -201,19 +243,31 @@ export function SocialSignalsPage() {
                       {/* Info */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <span style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>
+                          <span
+                            style={{
+                              color: c.text1,
+                              fontSize: FONT_SCALE.sm,
+                              fontWeight: FONT_WEIGHT.bold,
+                            }}
+                          >
                             {provider.name}
                           </span>
                           <span
                             className="px-2 py-1 rounded"
-                            style={{ background: tierCfg.bg, color: tierCfg.color, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.semibold }}
+                            style={{
+                              background: tierCfg.bg,
+                              color: tierCfg.color,
+                              fontSize: FONT_SCALE.micro,
+                              fontWeight: FONT_WEIGHT.semibold,
+                            }}
                           >
                             {tierCfg.label}
                           </span>
                         </div>
                         <div className="flex items-center gap-3 mt-1">
                           <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>
-                            <Users size={12} className="inline mr-1" /> {fmtCompact(provider.followers)}
+                            <Users size={12} className="inline mr-1" />{' '}
+                            {fmtCompact(provider.followers)}
                           </span>
                           <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>
                             {provider.totalSignals} tín hiệu
@@ -223,11 +277,18 @@ export function SocialSignalsPage() {
 
                       {/* Win rate */}
                       <div className="text-right shrink-0">
-                        <p style={{
-                          color: provider.winRate >= 65 ? '#10B981' : provider.winRate >= 50 ? '#F59E0B' : '#EF4444',
-                          fontSize: FONT_SCALE.base,
-                          fontWeight: FONT_WEIGHT.bold,
-                        }}>
+                        <p
+                          style={{
+                            color:
+                              provider.winRate >= 65
+                                ? '#10B981'
+                                : provider.winRate >= 50
+                                  ? '#F59E0B'
+                                  : '#EF4444',
+                            fontSize: FONT_SCALE.base,
+                            fontWeight: FONT_WEIGHT.bold,
+                          }}
+                        >
                           {provider.winRate.toFixed(1)}%
                         </p>
                         <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Win rate</p>
@@ -235,26 +296,43 @@ export function SocialSignalsPage() {
                     </div>
 
                     {/* Stats bar */}
-                    <div className="grid grid-cols-3 gap-2 mt-3 pt-2" style={{ borderTop: `1px solid ${c.borderSolid}` }}>
+                    <div
+                      className="grid grid-cols-3 gap-2 mt-3 pt-2"
+                      style={{ borderTop: `1px solid ${c.borderSolid}` }}
+                    >
                       <div className="text-center">
                         <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Đang active</p>
-                        <p style={{ color: '#3B82F6', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+                        <p
+                          style={{
+                            color: '#3B82F6',
+                            fontSize: FONT_SCALE.xs,
+                            fontWeight: FONT_WEIGHT.bold,
+                          }}
+                        >
                           {provider.activeSignals}
                         </p>
                       </div>
                       <div className="text-center">
                         <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Tổng signals</p>
-                        <p style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+                        <p
+                          style={{
+                            color: c.text1,
+                            fontSize: FONT_SCALE.xs,
+                            fontWeight: FONT_WEIGHT.bold,
+                          }}
+                        >
                           {provider.totalSignals}
                         </p>
                       </div>
                       <div className="text-center">
                         <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>TB PnL</p>
-                        <p style={{
-                          color: provider.avgPnl >= 0 ? '#10B981' : '#EF4444',
-                          fontSize: FONT_SCALE.xs,
-                          fontWeight: FONT_WEIGHT.bold,
-                        }}>
+                        <p
+                          style={{
+                            color: provider.avgPnl >= 0 ? '#10B981' : '#EF4444',
+                            fontSize: FONT_SCALE.xs,
+                            fontWeight: FONT_WEIGHT.bold,
+                          }}
+                        >
                           {fmtPct(provider.avgPnl)}
                         </p>
                       </div>
@@ -271,32 +349,49 @@ export function SocialSignalsPage() {
           <>
             {/* Overall performance */}
             <TrCard variant="hero" className="p-4">
-              <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.medium, marginBottom: 8 }}>
+              <p
+                style={{
+                  color: c.text3,
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.medium,
+                  marginBottom: 8,
+                }}
+              >
                 Hiệu suất tổng hợp
               </p>
               <div className="grid grid-cols-3 gap-3">
                 <div className="text-center">
-                  <p style={{
-                    color: overallWinRate >= 60 ? '#10B981' : '#F59E0B',
-                    fontSize: FONT_SCALE.lg,
-                    fontWeight: FONT_WEIGHT.bold,
-                  }}>
+                  <p
+                    style={{
+                      color: overallWinRate >= 60 ? '#10B981' : '#F59E0B',
+                      fontSize: FONT_SCALE.lg,
+                      fontWeight: FONT_WEIGHT.bold,
+                    }}
+                  >
                     {overallWinRate.toFixed(1)}%
                   </p>
                   <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Win rate</p>
                 </div>
                 <div className="text-center">
-                  <p style={{
-                    color: avgPnl >= 0 ? '#10B981' : '#EF4444',
-                    fontSize: FONT_SCALE.lg,
-                    fontWeight: FONT_WEIGHT.bold,
-                  }}>
+                  <p
+                    style={{
+                      color: avgPnl >= 0 ? '#10B981' : '#EF4444',
+                      fontSize: FONT_SCALE.lg,
+                      fontWeight: FONT_WEIGHT.bold,
+                    }}
+                  >
                     {fmtPct(avgPnl)}
                   </p>
                   <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>TB PnL</p>
                 </div>
                 <div className="text-center">
-                  <p style={{ color: c.text1, fontSize: FONT_SCALE.lg, fontWeight: FONT_WEIGHT.bold }}>
+                  <p
+                    style={{
+                      color: c.text1,
+                      fontSize: FONT_SCALE.lg,
+                      fontWeight: FONT_WEIGHT.bold,
+                    }}
+                  >
                     {totalSignals}
                   </p>
                   <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Tổng signals</p>
@@ -306,22 +401,32 @@ export function SocialSignalsPage() {
 
             {/* Status breakdown */}
             <TrCard className="p-4">
-              <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, marginBottom: 12 }}>
+              <p
+                style={{
+                  color: c.text2,
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.semibold,
+                  marginBottom: 12,
+                }}
+              >
                 Phân bổ trạng thái
               </p>
               <div className="flex rounded-lg overflow-hidden" style={{ height: 12 }}>
                 {Object.entries(SIGNAL_STATUS_CONFIG).map(([key, cfg]) => {
-                  const count = TRADING_SIGNALS.filter(s => s.status === key).length;
+                  const count = TRADING_SIGNALS.filter((s) => s.status === key).length;
                   const pct = (count / totalSignals) * 100;
                   if (pct === 0) return null;
                   return (
-                    <div key={key} style={{ width: `${pct}%`, background: cfg.color, opacity: 0.8 }} />
+                    <div
+                      key={key}
+                      style={{ width: `${pct}%`, background: cfg.color, opacity: 0.8 }}
+                    />
                   );
                 })}
               </div>
               <div className="flex flex-wrap gap-3 mt-2">
                 {Object.entries(SIGNAL_STATUS_CONFIG).map(([key, cfg]) => {
-                  const count = TRADING_SIGNALS.filter(s => s.status === key).length;
+                  const count = TRADING_SIGNALS.filter((s) => s.status === key).length;
                   if (count === 0) return null;
                   return (
                     <div key={key} className="flex items-center gap-1.5">
@@ -338,28 +443,41 @@ export function SocialSignalsPage() {
             {/* Signal results list */}
             <PageSection label="Kết quả tín hiệu" accentColor="#3B82F6">
               <div className="flex flex-col" style={{ gap: 2 }}>
-                {TRADING_SIGNALS
-                  .filter(s => s.status !== 'active')
+                {TRADING_SIGNALS.filter((s) => s.status !== 'active')
                   .sort((a, b) => b.pnlPct - a.pnlPct)
-                  .map(signal => {
+                  .map((signal) => {
                     const statusCfg = SIGNAL_STATUS_CONFIG[signal.status];
                     return (
-                      <div key={signal.id} className="flex items-center gap-3 px-4 py-3 rounded-xl" style={{ background: c.surface }}>
+                      <div
+                        key={signal.id}
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl"
+                        style={{ background: c.surface }}
+                      >
                         <div className="shrink-0">
-                          {signal.status === 'target_hit'
-                            ? <CheckCircle size={16} color="#10B981" />
-                            : <XCircle size={16} color="#EF4444" />
-                          }
+                          {signal.status === 'target_hit' ? (
+                            <CheckCircle size={16} color="#10B981" />
+                          ) : (
+                            <XCircle size={16} color="#EF4444" />
+                          )}
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
-                            <span style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+                            <span
+                              style={{
+                                color: c.text1,
+                                fontSize: FONT_SCALE.xs,
+                                fontWeight: FONT_WEIGHT.semibold,
+                              }}
+                            >
                               {signal.pair}
                             </span>
                             <span
                               className="px-1.5 py-0.5 rounded"
                               style={{
-                                background: signal.direction === 'long' ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)',
+                                background:
+                                  signal.direction === 'long'
+                                    ? 'rgba(16,185,129,0.1)'
+                                    : 'rgba(239,68,68,0.1)',
                                 color: signal.direction === 'long' ? '#10B981' : '#EF4444',
                                 fontSize: 8,
                                 fontWeight: FONT_WEIGHT.semibold,
@@ -372,11 +490,13 @@ export function SocialSignalsPage() {
                             {signal.providerName} · {signal.timeAgo}
                           </span>
                         </div>
-                        <span style={{
-                          color: signal.pnlPct >= 0 ? '#10B981' : '#EF4444',
-                          fontSize: FONT_SCALE.sm,
-                          fontWeight: FONT_WEIGHT.bold,
-                        }}>
+                        <span
+                          style={{
+                            color: signal.pnlPct >= 0 ? '#10B981' : '#EF4444',
+                            fontSize: FONT_SCALE.sm,
+                            fontWeight: FONT_WEIGHT.bold,
+                          }}
+                        >
                           {fmtPct(signal.pnlPct)}
                         </span>
                       </div>
@@ -393,7 +513,12 @@ export function SocialSignalsPage() {
 
 /* ─── Sub-components ─── */
 
-function SignalCard({ signal, expanded, onToggle, c }: {
+function SignalCard({
+  signal,
+  expanded,
+  onToggle,
+  c,
+}: {
   signal: TradingSignal;
   expanded: boolean;
   onToggle: () => void;
@@ -404,8 +529,14 @@ function SignalCard({ signal, expanded, onToggle, c }: {
   const isLong = signal.direction === 'long';
   const dirColor = isLong ? '#10B981' : '#EF4444';
 
-  const confidenceColor = signal.confidence === 'high' ? '#10B981' : signal.confidence === 'medium' ? '#F59E0B' : '#6B7280';
-  const confidenceLabel = signal.confidence === 'high' ? 'Cao' : signal.confidence === 'medium' ? 'TB' : 'Thấp';
+  const confidenceColor =
+    signal.confidence === 'high'
+      ? '#10B981'
+      : signal.confidence === 'medium'
+        ? '#F59E0B'
+        : '#6B7280';
+  const confidenceLabel =
+    signal.confidence === 'high' ? 'Cao' : signal.confidence === 'medium' ? 'TB' : 'Thấp';
 
   return (
     <TrCard className="overflow-hidden">
@@ -413,12 +544,19 @@ function SignalCard({ signal, expanded, onToggle, c }: {
         {/* Provider row */}
         <div className="flex items-center gap-2 mb-2">
           <span style={{ fontSize: 16 }}>{signal.providerAvatar}</span>
-          <span style={{ color: c.text2, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.semibold }}>
+          <span
+            style={{ color: c.text2, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.semibold }}
+          >
             {signal.providerName}
           </span>
           <span
             className="px-1 py-0.5 rounded"
-            style={{ background: tierCfg.bg, color: tierCfg.color, fontSize: 7, fontWeight: FONT_WEIGHT.bold }}
+            style={{
+              background: tierCfg.bg,
+              color: tierCfg.color,
+              fontSize: 7,
+              fontWeight: FONT_WEIGHT.bold,
+            }}
           >
             {tierCfg.label}
           </span>
@@ -431,7 +569,12 @@ function SignalCard({ signal, expanded, onToggle, c }: {
         <div className="flex items-center gap-2 mb-2">
           <span
             className="px-2 py-0.5 rounded"
-            style={{ background: `${dirColor}12`, color: dirColor, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.bold }}
+            style={{
+              background: `${dirColor}12`,
+              color: dirColor,
+              fontSize: FONT_SCALE.micro,
+              fontWeight: FONT_WEIGHT.bold,
+            }}
           >
             {isLong ? '▲ LONG' : '▼ SHORT'}
           </span>
@@ -440,7 +583,12 @@ function SignalCard({ signal, expanded, onToggle, c }: {
           </span>
           <span
             className="px-1.5 py-0.5 rounded"
-            style={{ background: `${statusCfg.color}12`, color: statusCfg.color, fontSize: 8, fontWeight: FONT_WEIGHT.semibold }}
+            style={{
+              background: `${statusCfg.color}12`,
+              color: statusCfg.color,
+              fontSize: 8,
+              fontWeight: FONT_WEIGHT.semibold,
+            }}
           >
             {statusCfg.label}
           </span>
@@ -456,28 +604,41 @@ function SignalCard({ signal, expanded, onToggle, c }: {
         <div className="grid grid-cols-4 gap-2">
           <div>
             <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Entry</p>
-            <p style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+            <p
+              style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}
+            >
               {fmtPrice(signal.entry)}
             </p>
           </div>
           <div>
             <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Hiện tại</p>
-            <p style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+            <p
+              style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}
+            >
               {fmtPrice(signal.currentPrice)}
             </p>
           </div>
           <div>
             <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Stop Loss</p>
-            <p style={{ color: '#EF4444', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+            <p
+              style={{
+                color: '#EF4444',
+                fontSize: FONT_SCALE.xs,
+                fontWeight: FONT_WEIGHT.semibold,
+              }}
+            >
               {fmtPrice(signal.stopLoss)}
             </p>
           </div>
           <div>
             <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>PnL</p>
-            <p style={{
-              color: signal.pnlPct >= 0 ? '#10B981' : '#EF4444',
-              fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold,
-            }}>
+            <p
+              style={{
+                color: signal.pnlPct >= 0 ? '#10B981' : '#EF4444',
+                fontSize: FONT_SCALE.xs,
+                fontWeight: FONT_WEIGHT.bold,
+              }}
+            >
               {fmtPct(signal.pnlPct)}
             </p>
           </div>
@@ -489,14 +650,34 @@ function SignalCard({ signal, expanded, onToggle, c }: {
         <div className="px-4 pb-3 pt-1" style={{ borderTop: `1px solid ${c.borderSolid}` }}>
           {/* Targets */}
           <div className="mb-3 mt-2">
-            <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.semibold, marginBottom: 4 }}>
+            <p
+              style={{
+                color: c.text3,
+                fontSize: FONT_SCALE.micro,
+                fontWeight: FONT_WEIGHT.semibold,
+                marginBottom: 4,
+              }}
+            >
               Mục tiêu
             </p>
             <div className="flex gap-2">
               {signal.targets.map((target, idx) => (
-                <div key={idx} className="flex-1 text-center py-2 rounded-lg" style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}>
+                <div
+                  key={idx}
+                  className="flex-1 text-center py-2 rounded-lg"
+                  style={{
+                    background: 'rgba(16,185,129,0.06)',
+                    border: '1px solid rgba(16,185,129,0.15)',
+                  }}
+                >
                   <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>TP{idx + 1}</p>
-                  <p style={{ color: '#10B981', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+                  <p
+                    style={{
+                      color: '#10B981',
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.semibold,
+                    }}
+                  >
                     {fmtPrice(target)}
                   </p>
                 </div>
@@ -508,7 +689,13 @@ function SignalCard({ signal, expanded, onToggle, c }: {
           <div className="flex items-center gap-3 mb-3">
             <div className="flex items-center gap-1">
               <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Độ tin cậy:</span>
-              <span style={{ color: confidenceColor, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.semibold }}>
+              <span
+                style={{
+                  color: confidenceColor,
+                  fontSize: FONT_SCALE.micro,
+                  fontWeight: FONT_WEIGHT.semibold,
+                }}
+              >
                 {confidenceLabel}
               </span>
             </div>
@@ -531,7 +718,9 @@ function SignalCard({ signal, expanded, onToggle, c }: {
             </div>
             <div className="flex items-center gap-1">
               <Copy size={14} color={c.text3} />
-              <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>{signal.copies} copies</span>
+              <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>
+                {signal.copies} copies
+              </span>
             </div>
           </div>
         </div>

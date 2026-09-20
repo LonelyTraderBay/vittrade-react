@@ -119,7 +119,10 @@ export function fmtSignedUsd(value: number, options?: { decimals?: number }): st
  * - < 1K  → 999
  * Luôn dùng comma cho phần ngàn nếu cần
  */
-export function fmtCompact(value: number, options?: { prefix?: string; forceDecimals?: number }): string {
+export function fmtCompact(
+  value: number,
+  options?: { prefix?: string; forceDecimals?: number },
+): string {
   const prefix = options?.prefix ?? '';
   const abs = Math.abs(value);
   const sign = value < 0 ? '-' : '';

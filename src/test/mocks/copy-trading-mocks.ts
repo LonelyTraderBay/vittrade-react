@@ -55,9 +55,7 @@ export interface MockRiskAssessment {
 /**
  * Generate mock provider
  */
-export function createMockProvider(
-  overrides?: Partial<MockCopyProvider>
-): MockCopyProvider {
+export function createMockProvider(overrides?: Partial<MockCopyProvider>): MockCopyProvider {
   const defaults: MockCopyProvider = {
     id: `provider-${Math.random().toString(36).substr(2, 9)}`,
     name: 'CryptoKing',
@@ -87,18 +85,8 @@ export function createMockProvider(
  * Generate multiple mock providers
  */
 export function createMockProviders(count: number): MockCopyProvider[] {
-  const names = [
-    'CryptoKing',
-    'SwingMaster',
-    'AlgoTrader',
-    'TrendFollower',
-    'ScalpingPro',
-  ];
-  const tiers: Array<'basic' | 'verified' | 'pro'> = [
-    'basic',
-    'verified',
-    'pro',
-  ];
+  const names = ['CryptoKing', 'SwingMaster', 'AlgoTrader', 'TrendFollower', 'ScalpingPro'];
+  const tiers: Array<'basic' | 'verified' | 'pro'> = ['basic', 'verified', 'pro'];
   const risks: Array<'low' | 'medium' | 'high'> = ['low', 'medium', 'high'];
 
   return Array.from({ length: count }, (_, i) =>
@@ -116,7 +104,7 @@ export function createMockProviders(count: number): MockCopyProvider[] {
         copiers: Math.floor(Math.random() * 5000),
         aum: Math.floor(Math.random() * 10000000),
       },
-    })
+    }),
   );
 }
 
@@ -124,7 +112,7 @@ export function createMockProviders(count: number): MockCopyProvider[] {
  * Generate mock copy relationship
  */
 export function createMockCopyRelationship(
-  overrides?: Partial<MockCopyRelationship>
+  overrides?: Partial<MockCopyRelationship>,
 ): MockCopyRelationship {
   const defaults: MockCopyRelationship = {
     id: `copy-${Math.random().toString(36).substr(2, 9)}`,
@@ -145,7 +133,7 @@ export function createMockCopyRelationship(
  * Generate mock risk assessment
  */
 export function createMockRiskAssessment(
-  overrides?: Partial<MockRiskAssessment>
+  overrides?: Partial<MockRiskAssessment>,
 ): MockRiskAssessment {
   const defaults: MockRiskAssessment = {
     id: `assessment-${Math.random().toString(36).substr(2, 9)}`,
@@ -216,9 +204,7 @@ export interface MockCopyTrade {
   timestamp: string;
 }
 
-export function createMockTrade(
-  overrides?: Partial<MockCopyTrade>
-): MockCopyTrade {
+export function createMockTrade(overrides?: Partial<MockCopyTrade>): MockCopyTrade {
   const defaults: MockCopyTrade = {
     id: `trade-${Math.random().toString(36).substr(2, 9)}`,
     copyId: 'copy-1',
@@ -245,9 +231,7 @@ export interface MockPerformanceData {
   slippageCost: number;
 }
 
-export function createMockPerformanceData(
-  days: number
-): MockPerformanceData[] {
+export function createMockPerformanceData(days: number): MockPerformanceData[] {
   const data: MockPerformanceData[] = [];
   let providerEquity = 1000;
   let userEquity = 1000;
@@ -262,9 +246,7 @@ export function createMockPerformanceData(
     cumulativeSlippage += userEquity * slippage;
 
     data.push({
-      date: new Date(Date.now() - (days - i) * 24 * 60 * 60 * 1000)
-        .toISOString()
-        .split('T')[0],
+      date: new Date(Date.now() - (days - i) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       providerEquity: Math.round(providerEquity * 100) / 100,
       userEquity: Math.round(userEquity * 100) / 100,
       slippageCost: Math.round(cumulativeSlippage * 100) / 100,

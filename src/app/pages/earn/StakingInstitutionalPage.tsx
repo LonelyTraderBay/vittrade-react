@@ -21,13 +21,49 @@ interface BatchOperation {
 }
 
 const PENDING_BATCHES: BatchOperation[] = [
-  { id: 'b1', type: 'stake', operations: 12, totalAmount: 500, status: 'pending', created: '2026-03-07 14:30', approvals: 1, requiredApprovals: 3 },
-  { id: 'b2', type: 'claim', operations: 8, totalAmount: 24.5, status: 'approved', created: '2026-03-07 13:15', approvals: 3, requiredApprovals: 3 },
+  {
+    id: 'b1',
+    type: 'stake',
+    operations: 12,
+    totalAmount: 500,
+    status: 'pending',
+    created: '2026-03-07 14:30',
+    approvals: 1,
+    requiredApprovals: 3,
+  },
+  {
+    id: 'b2',
+    type: 'claim',
+    operations: 8,
+    totalAmount: 24.5,
+    status: 'approved',
+    created: '2026-03-07 13:15',
+    approvals: 3,
+    requiredApprovals: 3,
+  },
 ];
 
 const EXECUTED_BATCHES: BatchOperation[] = [
-  { id: 'e1', type: 'stake', operations: 15, totalAmount: 750, status: 'executed', created: '2026-03-06 16:20', approvals: 3, requiredApprovals: 3 },
-  { id: 'e2', type: 'unstake', operations: 5, totalAmount: 150, status: 'executed', created: '2026-03-05 11:45', approvals: 3, requiredApprovals: 3 },
+  {
+    id: 'e1',
+    type: 'stake',
+    operations: 15,
+    totalAmount: 750,
+    status: 'executed',
+    created: '2026-03-06 16:20',
+    approvals: 3,
+    requiredApprovals: 3,
+  },
+  {
+    id: 'e2',
+    type: 'unstake',
+    operations: 5,
+    totalAmount: 150,
+    status: 'executed',
+    created: '2026-03-05 11:45',
+    approvals: 3,
+    requiredApprovals: 3,
+  },
 ];
 
 const SIGNERS = [
@@ -51,11 +87,24 @@ export function StakingInstitutionalPage() {
     <PageLayout>
       <Header title="Institutional Dashboard" back />
 
-      <BottomSheetV2 open={showBatchSheet} onClose={() => setShowBatchSheet(false)} title="Create Batch Operation">
+      <BottomSheetV2
+        open={showBatchSheet}
+        onClose={() => setShowBatchSheet(false)}
+        title="Create Batch Operation"
+      >
         <div className="flex flex-col gap-4">
           <div>
-            <label style={{ color: c.text2, fontSize: 12, marginBottom: 6, display: 'block' }}>Operation Type</label>
-            <select className="w-full p-3 rounded-xl text-sm" style={{ background: c.surface2, color: c.text1, border: `1px solid ${c.borderSolid}` }}>
+            <label style={{ color: c.text2, fontSize: 12, marginBottom: 6, display: 'block' }}>
+              Operation Type
+            </label>
+            <select
+              className="w-full p-3 rounded-xl text-sm"
+              style={{
+                background: c.surface2,
+                color: c.text1,
+                border: `1px solid ${c.borderSolid}`,
+              }}
+            >
               <option>Batch Stake</option>
               <option>Batch Unstake</option>
               <option>Batch Claim Rewards</option>
@@ -63,8 +112,13 @@ export function StakingInstitutionalPage() {
             </select>
           </div>
           <div>
-            <label style={{ color: c.text2, fontSize: 12, marginBottom: 6, display: 'block' }}>Upload CSV File</label>
-            <div className="border-2 border-dashed rounded-xl p-4 text-center" style={{ borderColor: c.borderSolid }}>
+            <label style={{ color: c.text2, fontSize: 12, marginBottom: 6, display: 'block' }}>
+              Upload CSV File
+            </label>
+            <div
+              className="border-2 border-dashed rounded-xl p-4 text-center"
+              style={{ borderColor: c.borderSolid }}
+            >
               <FileText size={32} color={c.text3} className="mx-auto mb-2" />
               <p style={{ color: c.text2, fontSize: 12 }}>Drop CSV or click to upload</p>
               <p style={{ color: c.text3, fontSize: 10 }}>Format: address, amount, validator</p>
@@ -76,7 +130,8 @@ export function StakingInstitutionalPage() {
               setShowBatchSheet(false);
             }}
             className="w-full py-3 rounded-[14px] text-sm font-semibold"
-            style={{ background: c.primary, color: '#FFF' }}>
+            style={{ background: c.primary, color: '#FFF' }}
+          >
             Submit for Approval
           </button>
         </div>
@@ -84,7 +139,13 @@ export function StakingInstitutionalPage() {
 
       <PageContent>
         {/* Info Banner */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(139,92,246,0.08)', border: '1.5px solid rgba(139,92,246,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{
+            background: 'rgba(139,92,246,0.08)',
+            border: '1.5px solid rgba(139,92,246,0.2)',
+          }}
+        >
           <div className="flex gap-3">
             <Building2 size={20} color="#8B5CF6" className="shrink-0 mt-0.5" />
             <div>
@@ -92,7 +153,8 @@ export function StakingInstitutionalPage() {
                 Enterprise Staking Platform
               </p>
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                Batch operations, multi-signature approvals, and institutional-grade custody for large-scale staking.
+                Batch operations, multi-signature approvals, and institutional-grade custody for
+                large-scale staking.
               </p>
             </div>
           </div>
@@ -101,7 +163,10 @@ export function StakingInstitutionalPage() {
         {/* Stats */}
         <TrCard className="p-4">
           <div className="grid grid-cols-3 gap-3">
-            <div className="text-center p-3 rounded-xl" style={{ background: 'rgba(139,92,246,0.08)' }}>
+            <div
+              className="text-center p-3 rounded-xl"
+              style={{ background: 'rgba(139,92,246,0.08)' }}
+            >
               <Building2 size={20} color="#8B5CF6" className="mx-auto mb-2" />
               <p style={{ color: c.text1, fontSize: 18, fontWeight: 700 }}>$25.6M</p>
               <p style={{ color: c.text3, fontSize: 10 }}>Total Staked</p>
@@ -111,7 +176,10 @@ export function StakingInstitutionalPage() {
               <p style={{ color: c.text1, fontSize: 18, fontWeight: 700 }}>3/5</p>
               <p style={{ color: c.text3, fontSize: 10 }}>Multi-Sig</p>
             </div>
-            <div className="text-center p-3 rounded-xl" style={{ background: 'rgba(16,185,129,0.08)' }}>
+            <div
+              className="text-center p-3 rounded-xl"
+              style={{ background: 'rgba(16,185,129,0.08)' }}
+            >
               <Shield size={20} color="#10B981" className="mx-auto mb-2" />
               <p style={{ color: '#10B981', fontSize: 18, fontWeight: 700 }}>SOC 2</p>
               <p style={{ color: c.text3, fontSize: 10 }}>Certified</p>
@@ -123,7 +191,8 @@ export function StakingInstitutionalPage() {
         <button
           onClick={() => setShowBatchSheet(true)}
           className="w-full py-3 rounded-[14px] text-sm font-semibold"
-          style={{ background: c.primary, color: '#FFF' }}>
+          style={{ background: c.primary, color: '#FFF' }}
+        >
           Create Batch Operation
         </button>
 
@@ -140,7 +209,7 @@ export function StakingInstitutionalPage() {
         {/* Batch Operations */}
         <PageSection label={tab === 'pending' ? 'Pending Approvals' : 'Executed Batches'}>
           <div className="flex flex-col gap-2">
-            {(tab === 'pending' ? PENDING_BATCHES : EXECUTED_BATCHES).map(batch => {
+            {(tab === 'pending' ? PENDING_BATCHES : EXECUTED_BATCHES).map((batch) => {
               const statusStyle = getStatusColor(batch.status);
               return (
                 <TrCard key={batch.id} className="p-4">
@@ -153,9 +222,15 @@ export function StakingInstitutionalPage() {
                         {batch.operations} operations • {batch.totalAmount} ETH
                       </p>
                     </div>
-                    <span className="px-2 py-1 rounded-md text-xs font-bold"
-                      style={{ background: statusStyle.bg, color: statusStyle.color }}>
-                      {batch.status === 'pending' ? 'Pending' : batch.status === 'approved' ? 'Approved' : 'Executed'}
+                    <span
+                      className="px-2 py-1 rounded-md text-xs font-bold"
+                      style={{ background: statusStyle.bg, color: statusStyle.color }}
+                    >
+                      {batch.status === 'pending'
+                        ? 'Pending'
+                        : batch.status === 'approved'
+                          ? 'Approved'
+                          : 'Executed'}
                     </span>
                   </div>
 
@@ -168,11 +243,15 @@ export function StakingInstitutionalPage() {
                           {batch.approvals}/{batch.requiredApprovals}
                         </p>
                       </div>
-                      <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
+                      <div
+                        className="h-2 rounded-full overflow-hidden"
+                        style={{ background: c.surface2 }}
+                      >
                         <div
                           className="h-full"
                           style={{
-                            background: batch.approvals === batch.requiredApprovals ? '#10B981' : '#F59E0B',
+                            background:
+                              batch.approvals === batch.requiredApprovals ? '#10B981' : '#F59E0B',
                             width: `${(batch.approvals / batch.requiredApprovals) * 100}%`,
                           }}
                         />
@@ -180,7 +259,10 @@ export function StakingInstitutionalPage() {
                     </div>
                   )}
 
-                  <div className="flex items-center justify-between pt-3 border-t" style={{ borderColor: c.borderSolid }}>
+                  <div
+                    className="flex items-center justify-between pt-3 border-t"
+                    style={{ borderColor: c.borderSolid }}
+                  >
                     <div className="flex items-center gap-1">
                       <Clock size={12} color={c.text3} />
                       <p style={{ color: c.text3, fontSize: 10 }}>{batch.created}</p>
@@ -189,7 +271,8 @@ export function StakingInstitutionalPage() {
                       <button
                         onClick={() => toast.success('Approval submitted!')}
                         className="px-3 py-1.5 rounded-lg text-xs font-semibold"
-                        style={{ background: c.primary, color: '#FFF' }}>
+                        style={{ background: c.primary, color: '#FFF' }}
+                      >
                         Approve
                       </button>
                     )}
@@ -197,7 +280,8 @@ export function StakingInstitutionalPage() {
                       <button
                         onClick={() => toast.success('Batch executed!')}
                         className="px-3 py-1.5 rounded-lg text-xs font-semibold"
-                        style={{ background: '#10B981', color: '#FFF' }}>
+                        style={{ background: '#10B981', color: '#FFF' }}
+                      >
                         Execute
                       </button>
                     )}
@@ -213,7 +297,11 @@ export function StakingInstitutionalPage() {
           <TrCard className="p-4">
             <div className="space-y-3">
               {SIGNERS.map((signer, idx) => (
-                <div key={idx} className="flex items-center justify-between pb-3 border-b last:border-b-0" style={{ borderColor: c.borderSolid }}>
+                <div
+                  key={idx}
+                  className="flex items-center justify-between pb-3 border-b last:border-b-0"
+                  style={{ borderColor: c.borderSolid }}
+                >
                   <div>
                     <p style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 2 }}>
                       {signer.name}
@@ -254,7 +342,13 @@ export function StakingInstitutionalPage() {
         </PageSection>
 
         {/* Compliance Note */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(59,130,246,0.08)', border: '1.5px solid rgba(59,130,246,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{
+            background: 'rgba(59,130,246,0.08)',
+            border: '1.5px solid rgba(59,130,246,0.2)',
+          }}
+        >
           <div className="flex gap-3">
             <Shield size={18} color="#3B82F6" className="shrink-0 mt-0.5" />
             <div>
@@ -262,7 +356,8 @@ export function StakingInstitutionalPage() {
                 Institutional Compliance
               </p>
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.6 }}>
-                SOC 2 Type II certified. MiFID II compliant. Multi-signature custody with Fireblocks. 24/7 institutional support. Dedicated account manager for AUM &gt; $10M.
+                SOC 2 Type II certified. MiFID II compliant. Multi-signature custody with
+                Fireblocks. 24/7 institutional support. Dedicated account manager for AUM &gt; $10M.
               </p>
             </div>
           </div>

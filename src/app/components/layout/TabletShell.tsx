@@ -57,15 +57,14 @@ const TABLET_PLATFORM: PlatformInfo = {
   hasSidebar: true,
   modalStyle: 'floating',
   minTouchTarget: 40,
+  sidebarWidth: 80,
+  commandBarHeight: 56,
 };
 
 function TabletLoadingFallback() {
   const c = useThemeColors();
   return (
-    <div
-      className="flex items-center justify-center"
-      style={{ minHeight: '60vh', color: c.text3 }}
-    >
+    <div className="flex items-center justify-center" style={{ minHeight: '60vh', color: c.text3 }}>
       <div className="flex flex-col items-center gap-3">
         <div
           className="rounded-full"
@@ -106,7 +105,11 @@ export function TabletShell() {
           {isOffline && (
             <div
               className="flex items-center justify-center gap-2 py-2 text-xs font-medium shrink-0"
-              style={{ background: 'rgba(245,158,11,0.1)', color: '#F59E0B', borderBottom: `1px solid rgba(245,158,11,0.2)` }}
+              style={{
+                background: 'rgba(245,158,11,0.1)',
+                color: '#F59E0B',
+                borderBottom: `1px solid rgba(245,158,11,0.2)`,
+              }}
             >
               <span className="w-2 h-2 rounded-full" style={{ background: '#F59E0B' }} />
               <span>Mất kết nối mạng — Đang hiển thị dữ liệu lưu trữ</span>

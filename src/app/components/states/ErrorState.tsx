@@ -33,12 +33,8 @@ export function ErrorState({
       </div>
 
       <div className="text-center">
-        <p style={{ color: c.text1, fontSize: 16, fontWeight: 600, marginBottom: 4 }}>
-          {title}
-        </p>
-        <p style={{ color: c.text2, fontSize: 13, lineHeight: 1.5 }}>
-          {message}
-        </p>
+        <p style={{ color: c.text1, fontSize: 16, fontWeight: 600, marginBottom: 4 }}>{title}</p>
+        <p style={{ color: c.text2, fontSize: 13, lineHeight: 1.5 }}>{message}</p>
       </div>
 
       {onAction && (

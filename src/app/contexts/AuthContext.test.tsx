@@ -146,25 +146,25 @@ describe('AuthContext', () => {
 
   describe('Context Sharing', () => {
     it('should share auth state across multiple useAuth calls', () => {
-      const { result: result1 } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
-      });
-      const { result: result2 } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
-      });
+      // Two consumers of ONE provider — separate renderHook calls would
+      // mount separate providers with independent state.
+      const { result } = renderHook(
+        () => ({ first: useAuth(), second: useAuth() }),
+        { wrapper: AuthProvider },
+      );
 
       // Both should start authenticated
-      expect(result1.current.isAuthenticated).toBe(true);
-      expect(result2.current.isAuthenticated).toBe(true);
+      expect(result.current.first.isAuthenticated).toBe(true);
+      expect(result.current.second.isAuthenticated).toBe(true);
 
-      // Logout from first hook
+      // Logout from first consumer
       act(() => {
-        result1.current.logout();
+        result.current.first.logout();
       });
 
       // Both should now be logged out
-      expect(result1.current.isAuthenticated).toBe(false);
-      expect(result2.current.isAuthenticated).toBe(false);
+      expect(result.current.first.isAuthenticated).toBe(false);
+      expect(result.current.second.isAuthenticated).toBe(false);
     });
   });
 

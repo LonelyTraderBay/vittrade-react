@@ -129,7 +129,10 @@ const DEVICE_TYPE_CONFIG: Record<DeviceType, { icon: React.ElementType; color: s
   tablet: { icon: Tablet, color: '#8B5CF6' },
 };
 
-const STATUS_CONFIG: Record<DeviceStatus, { label: string; color: string; icon: React.ElementType }> = {
+const STATUS_CONFIG: Record<
+  DeviceStatus,
+  { label: string; color: string; icon: React.ElementType }
+> = {
   trusted: { label: 'Đáng tin cậy', color: '#10B981', icon: ShieldCheck },
   active: { label: 'Hoạt động', color: '#3B82F6', icon: Shield },
   suspicious: { label: 'Đáng ngờ', color: '#EF4444', icon: ShieldAlert },
@@ -187,9 +190,7 @@ function DeviceCard({ device }: { device: Device }) {
                   Thiết bị hiện tại
                 </span>
               )}
-              {device.status === 'trusted' && (
-                <Star size={14} fill="#F59E0B" color="#F59E0B" />
-              )}
+              {device.status === 'trusted' && <Star size={14} fill="#F59E0B" color="#F59E0B" />}
             </div>
             <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION }}>
               {device.browser} · {device.os}
@@ -243,7 +244,10 @@ function DeviceCard({ device }: { device: Device }) {
 
       {/* Location & IP */}
       <div className="mb-4">
-        <div className="flex items-center gap-4" style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION }}>
+        <div
+          className="flex items-center gap-4"
+          style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION }}
+        >
           <span className="flex items-center gap-1.5">
             <MapPin size={12} />
             {device.location}
@@ -261,10 +265,7 @@ function DeviceCard({ device }: { device: Device }) {
       </div>
 
       {/* Stats */}
-      <div
-        className="pt-4 grid grid-cols-3 gap-4"
-        style={{ borderTop: `1px solid ${c.divider}` }}
-      >
+      <div className="pt-4 grid grid-cols-3 gap-4" style={{ borderTop: `1px solid ${c.divider}` }}>
         <div>
           <div style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION, marginBottom: 4 }}>
             Hoạt động
@@ -278,7 +279,10 @@ function DeviceCard({ device }: { device: Device }) {
             Lần đầu
           </div>
           <div style={{ color: c.text1, fontSize: WEB_FONT.SIZE.BODY, fontWeight: 700 }}>
-            {new Date(device.firstSeen).toLocaleDateString('vi-VN', { month: 'short', day: 'numeric' })}
+            {new Date(device.firstSeen).toLocaleDateString('vi-VN', {
+              month: 'short',
+              day: 'numeric',
+            })}
           </div>
         </div>
         <div>
@@ -303,12 +307,19 @@ function DeviceCard({ device }: { device: Device }) {
           <div className="flex items-start gap-2">
             <AlertTriangle size={14} color="#EF4444" className="flex-shrink-0 mt-0.5" />
             <div>
-              <div style={{ color: '#EF4444', fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 4 }}>
+              <div
+                style={{
+                  color: '#EF4444',
+                  fontSize: WEB_FONT.SIZE.CAPTION,
+                  fontWeight: 600,
+                  marginBottom: 4,
+                }}
+              >
                 Cảnh báo bảo mật
               </div>
               <div style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
-                Thiết bị này có dấu hiệu đáng ngờ (đăng nhập từ vị trí lạ, lần đầu tiên).
-                Nếu không phải bạn, hãy đăng xuất ngay.
+                Thiết bị này có dấu hiệu đáng ngờ (đăng nhập từ vị trí lạ, lần đầu tiên). Nếu không
+                phải bạn, hãy đăng xuất ngay.
               </div>
             </div>
           </div>
@@ -331,219 +342,247 @@ export function WebDeviceManagementPage() {
 
   return (
     <PageLayout>
-    <div className="flex" style={{ minHeight: '100%' }}>
-      {/* ═══ LEFT SIDEBAR (280px) ═══ */}
-      <div
-        className="flex flex-col"
-        style={{
-          width: 280,
-          background: c.surface,
-          borderRight: `1px solid ${c.divider}`,
-          position: 'sticky',
-          top: 0,
-          alignSelf: 'flex-start',
-          maxHeight: '100vh',
-          overflowY: 'auto',
-        }}
-      >
-        {/* Header */}
+      <div className="flex" style={{ minHeight: '100%' }}>
+        {/* ═══ LEFT SIDEBAR (280px) ═══ */}
         <div
-          className="flex items-center justify-between px-5"
+          className="flex flex-col"
           style={{
-            height: 60,
-            borderBottom: `1px solid ${c.divider}`,
+            width: 280,
+            background: c.surface,
+            borderRight: `1px solid ${c.divider}`,
+            position: 'sticky',
+            top: 0,
+            alignSelf: 'flex-start',
+            maxHeight: '100vh',
+            overflowY: 'auto',
           }}
         >
-          <h2
-            style={{
-              color: c.text1,
-              fontSize: WEB_FONT.SIZE.H2,
-              fontWeight: 700,
-              margin: 0,
-            }}
-          >
-            Thiết bị
-          </h2>
-        </div>
-
-        {/* Stats */}
-        <div className="p-4">
-          <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 12 }}>
-            Tổng quan
-          </div>
-          <div className="flex flex-col gap-3">
-            <div
-              className="p-3 rounded-lg"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-              }}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION }}>
-                  Tổng thiết bị
-                </div>
-                <div style={{ color: c.text1, fontSize: 18, fontWeight: 800 }}>
-                  {DEVICES.length}
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <div style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
-                  Đáng tin cậy
-                </div>
-                <div style={{ color: '#10B981', fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 700 }}>
-                  {trustedDevices.length}
-                </div>
-              </div>
-            </div>
-
-            {suspiciousDevices.length > 0 && (
-              <div
-                className="p-3 rounded-lg"
-                style={{
-                  background: '#EF444415',
-                  border: `1px solid #EF444440`,
-                }}
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  <AlertTriangle size={14} color="#EF4444" />
-                  <div style={{ color: '#EF4444', fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 700 }}>
-                    Cảnh báo
-                  </div>
-                </div>
-                <div style={{ color: c.text3, fontSize: 11 }}>
-                  {suspiciousDevices.length} thiết bị đáng ngờ
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="px-4 pb-4">
-          <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 12 }}>
-            Thao tác nhanh
-          </div>
-          <div className="flex flex-col gap-2">
-            <button
-              className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-left"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-                color: c.text2,
-                fontSize: WEB_FONT.SIZE.CAPTION,
-                fontWeight: 600,
-              }}
-            >
-              <LogOut size={14} />
-              Đăng xuất tất cả
-            </button>
-            <button
-              onClick={() => navigate('/w/profile/activity')}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-left"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-                color: c.text2,
-                fontSize: WEB_FONT.SIZE.CAPTION,
-                fontWeight: 600,
-              }}
-            >
-              <Clock size={14} />
-              Lịch sử đăng nhập
-            </button>
-          </div>
-        </div>
-
-        {/* Info Card */}
-        <div className="px-4 pb-4 mt-auto">
+          {/* Header */}
           <div
-            className="p-3 rounded-lg"
+            className="flex items-center justify-between px-5"
             style={{
-              background: '#3B82F615',
-              border: `1px solid #3B82F640`,
+              height: 60,
+              borderBottom: `1px solid ${c.divider}`,
             }}
           >
-            <div className="flex items-start gap-2">
-              <Info size={14} color="#3B82F6" className="flex-shrink-0 mt-0.5" />
-              <div>
-                <div style={{ color: '#3B82F6', fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 4 }}>
-                  Bảo mật thiết bị
-                </div>
-                <div style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
-                  Thiết bị đáng tin cậy giúp bạn đăng nhập nhanh hơn và bỏ qua một số bước xác minh.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ═══ MAIN CONTENT ═══ */}
-      <div className="flex-1 min-w-0">
-        <div className="max-w-5xl mx-auto p-8">
-          {/* Page Header */}
-          <div className="mb-6">
-            <h3
+            <h2
               style={{
                 color: c.text1,
-                fontSize: WEB_FONT.SIZE.H3,
+                fontSize: WEB_FONT.SIZE.H2,
                 fontWeight: 700,
-                marginBottom: 8,
+                margin: 0,
               }}
             >
-              Thiết bị đã kết nối
-            </h3>
-            <p style={{ color: c.text2, fontSize: WEB_FONT.SIZE.BODY, margin: 0 }}>
-              Quản lý các thiết bị đang đăng nhập vào tài khoản của bạn
-            </p>
+              Thiết bị
+            </h2>
           </div>
 
-          {/* Devices List */}
-          <div className="flex flex-col gap-4">
-            {DEVICES.map((device) => (
-              <DeviceCard key={device.id} device={device} />
-            ))}
-          </div>
-
-          {/* Security Tips */}
-          <div className="mt-8">
-            <h4
+          {/* Stats */}
+          <div className="p-4">
+            <div
               style={{
-                color: c.text1,
-                fontSize: WEB_FONT.SIZE.BODY,
-                fontWeight: 700,
+                color: c.text2,
+                fontSize: WEB_FONT.SIZE.CAPTION,
+                fontWeight: 600,
                 marginBottom: 12,
               }}
             >
-              Khuyến nghị bảo mật
-            </h4>
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                'Kiểm tra thiết bị định kỳ, đăng xuất thiết bị không quen',
-                'Chỉ đánh dấu tin cậy cho thiết bị cá nhân',
-                'Bật 2FA để bảo vệ tài khoản khỏi truy cập trái phép',
-                'Thay đổi mật khẩu ngay nếu phát hiện thiết bị lạ',
-              ].map((tip, i) => (
+              Tổng quan
+            </div>
+            <div className="flex flex-col gap-3">
+              <div
+                className="p-3 rounded-lg"
+                style={{
+                  background: c.bg,
+                  border: `1px solid ${c.border}`,
+                }}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION }}>
+                    Tổng thiết bị
+                  </div>
+                  <div style={{ color: c.text1, fontSize: 18, fontWeight: 800 }}>
+                    {DEVICES.length}
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
+                    Đáng tin cậy
+                  </div>
+                  <div
+                    style={{ color: '#10B981', fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 700 }}
+                  >
+                    {trustedDevices.length}
+                  </div>
+                </div>
+              </div>
+
+              {suspiciousDevices.length > 0 && (
                 <div
-                  key={i}
-                  className="flex items-start gap-2 p-3 rounded-lg"
+                  className="p-3 rounded-lg"
                   style={{
-                    background: c.surface,
-                    border: `1px solid ${c.border}`,
+                    background: '#EF444415',
+                    border: `1px solid #EF444440`,
                   }}
                 >
-                  <CheckCircle2 size={16} color="#10B981" className="flex-shrink-0 mt-0.5" />
-                  <span style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, lineHeight: 1.5 }}>
-                    {tip}
-                  </span>
+                  <div className="flex items-center gap-2 mb-2">
+                    <AlertTriangle size={14} color="#EF4444" />
+                    <div
+                      style={{ color: '#EF4444', fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 700 }}
+                    >
+                      Cảnh báo
+                    </div>
+                  </div>
+                  <div style={{ color: c.text3, fontSize: 11 }}>
+                    {suspiciousDevices.length} thiết bị đáng ngờ
+                  </div>
                 </div>
+              )}
+            </div>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="px-4 pb-4">
+            <div
+              style={{
+                color: c.text2,
+                fontSize: WEB_FONT.SIZE.CAPTION,
+                fontWeight: 600,
+                marginBottom: 12,
+              }}
+            >
+              Thao tác nhanh
+            </div>
+            <div className="flex flex-col gap-2">
+              <button
+                className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-left"
+                style={{
+                  background: c.bg,
+                  border: `1px solid ${c.border}`,
+                  color: c.text2,
+                  fontSize: WEB_FONT.SIZE.CAPTION,
+                  fontWeight: 600,
+                }}
+              >
+                <LogOut size={14} />
+                Đăng xuất tất cả
+              </button>
+              <button
+                onClick={() => navigate('/w/profile/activity')}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-left"
+                style={{
+                  background: c.bg,
+                  border: `1px solid ${c.border}`,
+                  color: c.text2,
+                  fontSize: WEB_FONT.SIZE.CAPTION,
+                  fontWeight: 600,
+                }}
+              >
+                <Clock size={14} />
+                Lịch sử đăng nhập
+              </button>
+            </div>
+          </div>
+
+          {/* Info Card */}
+          <div className="px-4 pb-4 mt-auto">
+            <div
+              className="p-3 rounded-lg"
+              style={{
+                background: '#3B82F615',
+                border: `1px solid #3B82F640`,
+              }}
+            >
+              <div className="flex items-start gap-2">
+                <Info size={14} color="#3B82F6" className="flex-shrink-0 mt-0.5" />
+                <div>
+                  <div
+                    style={{
+                      color: '#3B82F6',
+                      fontSize: WEB_FONT.SIZE.CAPTION,
+                      fontWeight: 600,
+                      marginBottom: 4,
+                    }}
+                  >
+                    Bảo mật thiết bị
+                  </div>
+                  <div style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
+                    Thiết bị đáng tin cậy giúp bạn đăng nhập nhanh hơn và bỏ qua một số bước xác
+                    minh.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ═══ MAIN CONTENT ═══ */}
+        <div className="flex-1 min-w-0">
+          <div className="max-w-5xl mx-auto p-8">
+            {/* Page Header */}
+            <div className="mb-6">
+              <h3
+                style={{
+                  color: c.text1,
+                  fontSize: WEB_FONT.SIZE.H3,
+                  fontWeight: 700,
+                  marginBottom: 8,
+                }}
+              >
+                Thiết bị đã kết nối
+              </h3>
+              <p style={{ color: c.text2, fontSize: WEB_FONT.SIZE.BODY, margin: 0 }}>
+                Quản lý các thiết bị đang đăng nhập vào tài khoản của bạn
+              </p>
+            </div>
+
+            {/* Devices List */}
+            <div className="flex flex-col gap-4">
+              {DEVICES.map((device) => (
+                <DeviceCard key={device.id} device={device} />
               ))}
+            </div>
+
+            {/* Security Tips */}
+            <div className="mt-8">
+              <h4
+                style={{
+                  color: c.text1,
+                  fontSize: WEB_FONT.SIZE.BODY,
+                  fontWeight: 700,
+                  marginBottom: 12,
+                }}
+              >
+                Khuyến nghị bảo mật
+              </h4>
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  'Kiểm tra thiết bị định kỳ, đăng xuất thiết bị không quen',
+                  'Chỉ đánh dấu tin cậy cho thiết bị cá nhân',
+                  'Bật 2FA để bảo vệ tài khoản khỏi truy cập trái phép',
+                  'Thay đổi mật khẩu ngay nếu phát hiện thiết bị lạ',
+                ].map((tip, i) => (
+                  <div
+                    key={i}
+                    className="flex items-start gap-2 p-3 rounded-lg"
+                    style={{
+                      background: c.surface,
+                      border: `1px solid ${c.border}`,
+                    }}
+                  >
+                    <CheckCircle2 size={16} color="#10B981" className="flex-shrink-0 mt-0.5" />
+                    <span
+                      style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, lineHeight: 1.5 }}
+                    >
+                      {tip}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </PageLayout>
   );
 }

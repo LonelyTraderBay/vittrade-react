@@ -10,8 +10,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Upload, Camera, CheckCircle, AlertTriangle, Info,
-  FileText, X, Eye, Shield, Scan, Sparkles, ChevronRight,
+  Upload,
+  Camera,
+  CheckCircle,
+  AlertTriangle,
+  Info,
+  FileText,
+  X,
+  Eye,
+  Shield,
+  Scan,
+  Sparkles,
+  ChevronRight,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Header } from '../../components/layout/Header';
@@ -138,19 +148,22 @@ export function P2PIdentityVerificationPage() {
 
     // Simulate OCR processing
     if (mountedRef.current) setProcessing(true);
-    
-    await new Promise(res => {
+
+    await new Promise((res) => {
       timeoutRef.current = setTimeout(res, 2000);
     });
 
     // Mock OCR data (front side only)
-    const ocrData = side === 'front' ? {
-      idNumber: '001234567890',
-      fullName: 'NGUYỄN VĂN A',
-      dateOfBirth: '01/01/1990',
-      issueDate: '01/01/2020',
-      expiryDate: '01/01/2035',
-    } : undefined;
+    const ocrData =
+      side === 'front'
+        ? {
+            idNumber: '001234567890',
+            fullName: 'NGUYỄN VĂN A',
+            dateOfBirth: '01/01/1990',
+            issueDate: '01/01/2020',
+            expiryDate: '01/01/2035',
+          }
+        : undefined;
 
     // Mock quality check
     const qualityCheck = {
@@ -199,11 +212,7 @@ export function P2PIdentityVerificationPage() {
 
   return (
     <PageLayout>
-      <Header
-        title="Identity Verification"
-        subtitle="KYC · P2P"
-        back
-      />
+      <Header title="Identity Verification" subtitle="KYC · P2P" back />
 
       {/* Hero */}
       <div className="px-5 py-4">
@@ -235,7 +244,7 @@ export function P2PIdentityVerificationPage() {
           </h3>
 
           <div className="flex flex-col gap-3">
-            {DOCUMENT_TYPES.map(doc => (
+            {DOCUMENT_TYPES.map((doc) => (
               <button
                 key={doc.id}
                 onClick={() => {
@@ -243,16 +252,14 @@ export function P2PIdentityVerificationPage() {
                   setSelectedType(doc.id);
                 }}
                 className="p-4 rounded-xl text-left flex items-center gap-3"
-                style={{ background: c.surface1, border: `1px solid ${c.borderSolid}` }}
+                style={{ background: c.surface, border: `1px solid ${c.borderSolid}` }}
               >
                 <div className="text-3xl">{doc.icon}</div>
                 <div className="flex-1">
                   <h4 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700, marginBottom: 2 }}>
                     {doc.label}
                   </h4>
-                  <p style={{ color: c.text3, fontSize: 11 }}>
-                    {doc.description}
-                  </p>
+                  <p style={{ color: c.text3, fontSize: 11 }}>{doc.description}</p>
                 </div>
                 <ChevronRight size={18} color={c.text3} />
               </button>
@@ -277,9 +284,7 @@ export function P2PIdentityVerificationPage() {
                 {GUIDELINES.map((guide, idx) => (
                   <div key={idx} className="flex items-start gap-2">
                     <CheckCircle size={12} color="#10B981" className="shrink-0 mt-1" />
-                    <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                      {guide}
-                    </p>
+                    <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>{guide}</p>
                   </div>
                 ))}
               </div>
@@ -316,7 +321,7 @@ export function P2PIdentityVerificationPage() {
                       frontInputRef.current?.click();
                     }}
                     className="w-full h-48 rounded-xl border-2 border-dashed flex flex-col items-center justify-center gap-3"
-                    style={{ borderColor: c.borderSolid, background: c.surface1 }}
+                    style={{ borderColor: c.borderSolid, background: c.surface }}
                   >
                     <div
                       className="w-16 h-16 rounded-full flex items-center justify-center"
@@ -325,12 +330,12 @@ export function P2PIdentityVerificationPage() {
                       <Camera size={28} color="#3B82F6" />
                     </div>
                     <div className="text-center">
-                      <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, marginBottom: 4 }}>
+                      <p
+                        style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, marginBottom: 4 }}
+                      >
                         Chụp hoặc tải ảnh mặt trước
                       </p>
-                      <p style={{ color: c.text3, fontSize: 11 }}>
-                        JPG, PNG • Tối đa 10MB
-                      </p>
+                      <p style={{ color: c.text3, fontSize: 11 }}>JPG, PNG • Tối đa 10MB</p>
                     </div>
                   </button>
                 </>
@@ -366,7 +371,10 @@ export function P2PIdentityVerificationPage() {
 
                   {/* OCR Result */}
                   {frontUpload.ocrData && (
-                    <div className="mt-3 p-3 rounded-lg" style={{ background: hexToRgba('#10B981', 10) }}>
+                    <div
+                      className="mt-3 p-3 rounded-lg"
+                      style={{ background: hexToRgba('#10B981', 10) }}
+                    >
                       <div className="flex items-center gap-2 mb-2">
                         <Scan size={14} color="#10B981" />
                         <p style={{ color: '#10B981', fontSize: 11, fontWeight: 700 }}>
@@ -405,12 +413,16 @@ export function P2PIdentityVerificationPage() {
                   {/* Quality Check */}
                   {frontUpload.qualityCheck && (
                     <div className="mt-2 flex items-center gap-2">
-                      <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
+                      <div
+                        className="flex-1 h-1.5 rounded-full overflow-hidden"
+                        style={{ background: c.surface2 }}
+                      >
                         <div
                           className="h-full rounded-full"
                           style={{
                             width: `${frontUpload.qualityCheck.score}%`,
-                            background: frontUpload.qualityCheck.score >= 70 ? '#10B981' : '#EF4444',
+                            background:
+                              frontUpload.qualityCheck.score >= 70 ? '#10B981' : '#EF4444',
                           }}
                         />
                       </div>
@@ -450,7 +462,7 @@ export function P2PIdentityVerificationPage() {
                     className="w-full h-48 rounded-xl border-2 border-dashed flex flex-col items-center justify-center gap-3"
                     style={{
                       borderColor: frontUpload ? c.borderSolid : c.surface2,
-                      background: frontUpload ? c.surface1 : c.surface2,
+                      background: frontUpload ? c.surface : c.surface2,
                       opacity: frontUpload ? 1 : 0.5,
                     }}
                   >
@@ -461,7 +473,9 @@ export function P2PIdentityVerificationPage() {
                       <Camera size={28} color="#3B82F6" />
                     </div>
                     <div className="text-center">
-                      <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, marginBottom: 4 }}>
+                      <p
+                        style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, marginBottom: 4 }}
+                      >
                         Chụp hoặc tải ảnh mặt sau
                       </p>
                       <p style={{ color: c.text3, fontSize: 11 }}>
@@ -502,7 +516,10 @@ export function P2PIdentityVerificationPage() {
 
                   {backUpload.qualityCheck && (
                     <div className="mt-2 flex items-center gap-2">
-                      <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
+                      <div
+                        className="flex-1 h-1.5 rounded-full overflow-hidden"
+                        style={{ background: c.surface2 }}
+                      >
                         <div
                           className="h-full rounded-full"
                           style={{
@@ -534,9 +551,7 @@ export function P2PIdentityVerificationPage() {
                 {SECURITY_NOTES.map((note, idx) => (
                   <div key={idx} className="flex items-start gap-2">
                     <CheckCircle size={12} color="#10B981" className="shrink-0 mt-1" />
-                    <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                      {note}
-                    </p>
+                    <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>{note}</p>
                   </div>
                 ))}
               </div>

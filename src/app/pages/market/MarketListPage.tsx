@@ -1,5 +1,27 @@
 import React, { useState, useMemo } from 'react';
-import { Search, SlidersHorizontal, TrendingUp, TrendingDown, X, Loader2, Target, BarChart3, Layers, Activity, Filter, Calendar, Scale, Zap, MessageCircle, PieChart, Newspaper, LineChart, Unlock, Radio, GitBranch } from 'lucide-react';
+import {
+  Search,
+  SlidersHorizontal,
+  TrendingUp,
+  TrendingDown,
+  X,
+  Loader2,
+  Target,
+  BarChart3,
+  Layers,
+  Activity,
+  Filter,
+  Calendar,
+  Scale,
+  Zap,
+  MessageCircle,
+  PieChart,
+  Newspaper,
+  LineChart,
+  Unlock,
+  Radio,
+  GitBranch,
+} from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useHaptic } from '../../hooks/useHaptic';
@@ -44,21 +66,41 @@ export function MarketListPage() {
   const routePrefix = useRoutePrefix();
 
   const toggleFavorite = (id: string) => {
-    const pair = pairs.find(p => p.id === id);
-    setPairs(ps => ps.map(p => p.id === id ? { ...p, isFavorite: !p.isFavorite } : p));
-    actionToast.info(pair?.isFavorite ? TOAST.FAVORITE.removed(pair.baseAsset) : TOAST.FAVORITE.added(pair?.baseAsset ?? ''), { haptic: 'selection' });
+    const pair = pairs.find((p) => p.id === id);
+    setPairs((ps) => ps.map((p) => (p.id === id ? { ...p, isFavorite: !p.isFavorite } : p)));
+    actionToast.info(
+      pair?.isFavorite
+        ? TOAST.FAVORITE.removed(pair.baseAsset)
+        : TOAST.FAVORITE.added(pair?.baseAsset ?? ''),
+      { haptic: 'selection' },
+    );
   };
 
   const filtered = useMemo(() => {
     let list = pairs;
-    if (search) list = list.filter(p => p.symbol.toLowerCase().includes(search.toLowerCase()) || p.baseAsset.toLowerCase().includes(search.toLowerCase()));
-    if (category !== 'Tất cả') list = list.filter(p => p.category === category);
+    if (search)
+      list = list.filter(
+        (p) =>
+          p.symbol.toLowerCase().includes(search.toLowerCase()) ||
+          p.baseAsset.toLowerCase().includes(search.toLowerCase()),
+      );
+    if (category !== 'Tất cả') list = list.filter((p) => p.category === category);
     switch (sort) {
-      case 'price_desc': list = [...list].sort((a, b) => b.price - a.price); break;
-      case 'price_asc': list = [...list].sort((a, b) => a.price - b.price); break;
-      case 'change_desc': list = [...list].sort((a, b) => b.change24h - a.change24h); break;
-      case 'change_asc': list = [...list].sort((a, b) => a.change24h - b.change24h); break;
-      case 'volume_desc': list = [...list].sort((a, b) => b.volume24h - a.volume24h); break;
+      case 'price_desc':
+        list = [...list].sort((a, b) => b.price - a.price);
+        break;
+      case 'price_asc':
+        list = [...list].sort((a, b) => a.price - b.price);
+        break;
+      case 'change_desc':
+        list = [...list].sort((a, b) => b.change24h - a.change24h);
+        break;
+      case 'change_asc':
+        list = [...list].sort((a, b) => a.change24h - b.change24h);
+        break;
+      case 'volume_desc':
+        list = [...list].sort((a, b) => b.volume24h - a.volume24h);
+        break;
     }
     return list;
   }, [pairs, search, category, sort]);
@@ -78,8 +120,14 @@ export function MarketListPage() {
     resetKey: `${search}|${category}|${sort}`,
   });
 
-  const gainers = pairs.filter(p => p.change24h > 0).sort((a, b) => b.change24h - a.change24h).slice(0, 3);
-  const losers = pairs.filter(p => p.change24h < 0).sort((a, b) => a.change24h - b.change24h).slice(0, 3);
+  const gainers = pairs
+    .filter((p) => p.change24h > 0)
+    .sort((a, b) => b.change24h - a.change24h)
+    .slice(0, 3);
+  const losers = pairs
+    .filter((p) => p.change24h < 0)
+    .sort((a, b) => a.change24h - b.change24h)
+    .slice(0, 3);
 
   const { refresh, lastRefreshedLabel, refreshCount } = useRefresh();
 
@@ -89,7 +137,9 @@ export function MarketListPage() {
         {/* Header */}
         <div>
           <div className="flex items-center justify-between mb-3">
-            <h1 style={{ color: c.text1, fontSize: FONT_SCALE.xl, fontWeight: FONT_WEIGHT.bold }}>Thị trường</h1>
+            <h1 style={{ color: c.text1, fontSize: FONT_SCALE.xl, fontWeight: FONT_WEIGHT.bold }}>
+              Thị trường
+            </h1>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => navigate(`${routePrefix}/markets/overview`)}
@@ -119,20 +169,43 @@ export function MarketListPage() {
           </div>
 
           {/* Search */}
-          <div className="flex items-center gap-3 rounded-2xl px-4 mb-3"
-            style={{ background: c.searchBg, border: `1.5px solid ${c.searchBorder}`, height: 52, borderRadius: 14 }}>
+          <div
+            className="flex items-center gap-3 rounded-2xl px-4 mb-3"
+            style={{
+              background: c.searchBg,
+              border: `1.5px solid ${c.searchBorder}`,
+              height: 52,
+              borderRadius: 14,
+            }}
+          >
             <Search size={21} color={c.searchPlaceholder} />
             <input
-              type="text" placeholder="Tìm kiếm BTC, ETH..." value={search}
-              onChange={e => setSearch(e.target.value)}
-              style={{ background: 'transparent', border: 'none', outline: 'none', color: c.text1, fontSize: FONT_SCALE.base, flex: 1 }}
+              type="text"
+              placeholder="Tìm kiếm BTC, ETH..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                outline: 'none',
+                color: c.text1,
+                fontSize: FONT_SCALE.base,
+                flex: 1,
+              }}
             />
             {search && (
-              <button onClick={() => setSearch('')}><X size={14} color={c.text3} /></button>
+              <button onClick={() => setSearch('')}>
+                <X size={14} color={c.text3} />
+              </button>
             )}
-            <button onClick={() => setShowSort(!showSort)}
+            <button
+              onClick={() => setShowSort(!showSort)}
               className="flex items-center gap-1 rounded-xl px-2 py-1 min-h-9"
-              style={{ background: sort !== 'default' ? 'rgba(59,130,246,0.2)' : 'transparent', color: sort !== 'default' ? '#3B82F6' : c.text3 }}>
+              style={{
+                background: sort !== 'default' ? 'rgba(59,130,246,0.2)' : 'transparent',
+                color: sort !== 'default' ? '#3B82F6' : c.text3,
+              }}
+            >
               <SlidersHorizontal size={14} />
             </button>
           </div>
@@ -140,16 +213,23 @@ export function MarketListPage() {
           {/* Sort options */}
           {showSort && (
             <TrCard className="p-3 mb-3 flex flex-wrap gap-2">
-              {SORT_OPTIONS.map(opt => (
-                <button key={opt.id} onClick={() => { setSort(opt.id); setShowSort(false); hapticSelection(); }}
+              {SORT_OPTIONS.map((opt) => (
+                <button
+                  key={opt.id}
+                  onClick={() => {
+                    setSort(opt.id);
+                    setShowSort(false);
+                    hapticSelection();
+                  }}
                   className="px-3 py-2 rounded-xl min-h-9"
-                  style={{ 
-                    background: sort === opt.id ? c.chipActiveBg : c.surface2, 
-                    color: sort === opt.id ? c.chipActiveText : c.text2, 
+                  style={{
+                    background: sort === opt.id ? c.chipActiveBg : c.surface2,
+                    color: sort === opt.id ? c.chipActiveText : c.text2,
                     border: `1px solid ${sort === opt.id ? c.chipActiveBorder : c.borderSolid}`,
                     fontSize: FONT_SCALE.xs,
                     fontWeight: FONT_WEIGHT.semibold,
-                  }}>
+                  }}
+                >
                   {opt.label}
                 </button>
               ))}
@@ -158,8 +238,13 @@ export function MarketListPage() {
 
           {/* Category tabs */}
           <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none -mx-5 px-5">
-            {CATEGORIES.map(cat => (
-              <button key={cat} onClick={() => { setCategory(cat); hapticSelection(); }}
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => {
+                  setCategory(cat);
+                  hapticSelection();
+                }}
                 className="shrink-0 px-3 py-2 rounded-xl min-h-9"
                 style={{
                   background: category === cat ? c.chipActiveBg : c.chipBg,
@@ -167,7 +252,8 @@ export function MarketListPage() {
                   border: `1px solid ${category === cat ? c.chipActiveBorder : c.chipBorder}`,
                   fontSize: FONT_SCALE.xs,
                   fontWeight: FONT_WEIGHT.semibold,
-                }}>
+                }}
+              >
                 {cat}
               </button>
             ))}
@@ -183,24 +269,72 @@ export function MarketListPage() {
               <TrCard className="p-3" accentBorder="rgba(16,185,129,0.15)">
                 <div className="flex items-center gap-2 mb-2">
                   <TrendingUp size={14} color="#10B981" />
-                  <span style={{ color: '#10B981', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>Tăng mạnh</span>
+                  <span
+                    style={{
+                      color: '#10B981',
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.semibold,
+                    }}
+                  >
+                    Tăng mạnh
+                  </span>
                 </div>
-                {gainers.map(p => (
+                {gainers.map((p) => (
                   <div key={p.id} className="flex justify-between items-center py-1">
-                    <span style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>{p.baseAsset}</span>
-                    <span style={{ color: '#10B981', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>{fmtPct(p.change24h)}</span>
+                    <span
+                      style={{
+                        color: c.text1,
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: FONT_WEIGHT.semibold,
+                      }}
+                    >
+                      {p.baseAsset}
+                    </span>
+                    <span
+                      style={{
+                        color: '#10B981',
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: FONT_WEIGHT.semibold,
+                      }}
+                    >
+                      {fmtPct(p.change24h)}
+                    </span>
                   </div>
                 ))}
               </TrCard>
               <TrCard className="p-3" accentBorder="rgba(239,68,68,0.15)">
                 <div className="flex items-center gap-2 mb-2">
                   <TrendingDown size={14} color="#EF4444" />
-                  <span style={{ color: '#EF4444', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>Giảm mạnh</span>
+                  <span
+                    style={{
+                      color: '#EF4444',
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.semibold,
+                    }}
+                  >
+                    Giảm mạnh
+                  </span>
                 </div>
-                {losers.map(p => (
+                {losers.map((p) => (
                   <div key={p.id} className="flex justify-between items-center py-1">
-                    <span style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>{p.baseAsset}</span>
-                    <span style={{ color: '#EF4444', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>{fmtPct(p.change24h)}</span>
+                    <span
+                      style={{
+                        color: c.text1,
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: FONT_WEIGHT.semibold,
+                      }}
+                    >
+                      {p.baseAsset}
+                    </span>
+                    <span
+                      style={{
+                        color: '#EF4444',
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: FONT_WEIGHT.semibold,
+                      }}
+                    >
+                      {fmtPct(p.change24h)}
+                    </span>
                   </div>
                 ))}
               </TrCard>
@@ -213,22 +347,38 @@ export function MarketListPage() {
                 { icon: Scale, label: 'So sánh', route: 'compare', color: '#8B5CF6' },
                 { icon: Calendar, label: 'Sự kiện', route: 'calendar', color: '#F59E0B' },
                 { icon: Zap, label: 'Phái sinh', route: 'derivatives', color: '#EF4444' },
-                { icon: MessageCircle, label: 'Tâm lý', route: 'social-sentiment', color: '#06B6D4' },
+                {
+                  icon: MessageCircle,
+                  label: 'Tâm lý',
+                  route: 'social-sentiment',
+                  color: '#06B6D4',
+                },
                 { icon: PieChart, label: 'Danh mục', route: 'portfolio-tracker', color: '#10B981' },
                 { icon: Newspaper, label: 'Tin tức', route: 'news', color: '#64748B' },
                 { icon: LineChart, label: 'Phân tích', route: 'advanced-charts', color: '#0EA5E9' },
                 { icon: Unlock, label: 'Unlock', route: 'unlocks', color: '#A855F7' },
                 { icon: Radio, label: 'Tín hiệu', route: 'signals', color: '#F97316' },
                 { icon: GitBranch, label: 'Tương quan', route: 'correlations', color: '#14B8A6' },
-              ].map(tool => (
+              ].map((tool) => (
                 <button
                   key={tool.route}
-                  onClick={() => { navigate(`${routePrefix}/markets/${tool.route}`); hapticSelection(); }}
+                  onClick={() => {
+                    navigate(`${routePrefix}/markets/${tool.route}`);
+                    hapticSelection();
+                  }}
                   className="shrink-0 flex items-center gap-2 px-3 py-2 rounded-xl min-h-9"
                   style={{ background: `${tool.color}08`, border: `1px solid ${tool.color}20` }}
                 >
                   <tool.icon size={14} color={tool.color} />
-                  <span style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.medium }}>{tool.label}</span>
+                  <span
+                    style={{
+                      color: c.text2,
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.medium,
+                    }}
+                  >
+                    {tool.label}
+                  </span>
                 </button>
               ))}
             </div>
@@ -245,7 +395,11 @@ export function MarketListPage() {
         />
 
         {/* List — with infinite scroll */}
-        <PullToRefresh onRefresh={refresh} lastRefreshedLabel={lastRefreshedLabel} refreshCount={refreshCount}>
+        <PullToRefresh
+          onRefresh={refresh}
+          lastRefreshedLabel={lastRefreshedLabel}
+          refreshCount={refreshCount}
+        >
           <RefreshableSkeletonList
             isLoading={isInitialLoading}
             rows={8}
@@ -256,14 +410,18 @@ export function MarketListPage() {
                 title={search ? `Không tìm thấy "${search}"` : 'Không có kết quả'}
                 subtitle="Thử thay đổi bộ lọc hoặc tìm kiếm từ khóa khác"
                 ctaLabel="Xóa bộ lọc"
-                onCta={() => { setSearch(''); setCategory('Tất cả'); setSort('default'); }}
+                onCta={() => {
+                  setSearch('');
+                  setCategory('Tất cả');
+                  setSort('default');
+                }}
               />
             }
             lastRefreshedLabel={lastRefreshedLabel}
             refreshCount={refreshCount}
           >
             <div className="contents">
-              {visiblePairs.map(pair => (
+              {visiblePairs.map((pair) => (
                 <MarketItem key={pair.id} pair={pair} onFavoriteToggle={toggleFavorite} />
               ))}
 

@@ -1,12 +1,42 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  ArrowLeft, Shield, ShieldCheck, ShieldAlert, ShieldOff,
-  AlertTriangle, CheckCircle, XCircle, Info, ChevronRight,
-  ChevronDown, Clock, MapPin, Monitor, Globe, Smartphone,
-  Laptop, Lock, LogIn, LogOut, Key, Eye, EyeOff, Search,
-  Filter, Calendar, X, RefreshCw, Download, Bell,
-  Zap, Wallet, FileText, Ban, RotateCcw, SlidersHorizontal,
+  ArrowLeft,
+  Shield,
+  ShieldCheck,
+  ShieldAlert,
+  ShieldOff,
+  AlertTriangle,
+  CheckCircle,
+  XCircle,
+  Info,
+  ChevronRight,
+  ChevronDown,
+  Clock,
+  MapPin,
+  Monitor,
+  Globe,
+  Smartphone,
+  Laptop,
+  Lock,
+  LogIn,
+  LogOut,
+  Key,
+  Eye,
+  EyeOff,
+  Search,
+  Filter,
+  Calendar,
+  X,
+  RefreshCw,
+  Download,
+  Bell,
+  Zap,
+  Wallet,
+  FileText,
+  Ban,
+  RotateCcw,
+  SlidersHorizontal,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { WEB_FONT, WEB_BUTTON, WEB_SPACING, WEB_ICON } from '../../components/layout/webConstants';
@@ -58,17 +88,70 @@ interface SecurityAlert {
 }
 
 /* ═══ Config ═══ */
-const SEVERITY_CONFIG: Record<Severity, { label: string; color: string; bg: string; border: string; icon: React.ElementType; weight: number }> = {
-  critical: { label: 'Nghiêm trọng', color: '#DC2626', bg: 'rgba(220,38,38,0.06)', border: 'rgba(220,38,38,0.15)', icon: ShieldOff, weight: 5 },
-  high: { label: 'Cao', color: '#EF4444', bg: 'rgba(239,68,68,0.06)', border: 'rgba(239,68,68,0.15)', icon: ShieldAlert, weight: 4 },
-  medium: { label: 'Trung bình', color: '#F59E0B', bg: 'rgba(245,158,11,0.06)', border: 'rgba(245,158,11,0.15)', icon: AlertTriangle, weight: 3 },
-  low: { label: 'Thấp', color: '#3B82F6', bg: 'rgba(59,130,246,0.06)', border: 'rgba(59,130,246,0.15)', icon: Info, weight: 2 },
-  info: { label: 'Thông tin', color: '#6B7280', bg: 'rgba(107,114,128,0.06)', border: 'rgba(107,114,128,0.15)', icon: Info, weight: 1 },
+const SEVERITY_CONFIG: Record<
+  Severity,
+  {
+    label: string;
+    color: string;
+    bg: string;
+    border: string;
+    icon: React.ElementType;
+    weight: number;
+  }
+> = {
+  critical: {
+    label: 'Nghiêm trọng',
+    color: '#DC2626',
+    bg: 'rgba(220,38,38,0.06)',
+    border: 'rgba(220,38,38,0.15)',
+    icon: ShieldOff,
+    weight: 5,
+  },
+  high: {
+    label: 'Cao',
+    color: '#EF4444',
+    bg: 'rgba(239,68,68,0.06)',
+    border: 'rgba(239,68,68,0.15)',
+    icon: ShieldAlert,
+    weight: 4,
+  },
+  medium: {
+    label: 'Trung bình',
+    color: '#F59E0B',
+    bg: 'rgba(245,158,11,0.06)',
+    border: 'rgba(245,158,11,0.15)',
+    icon: AlertTriangle,
+    weight: 3,
+  },
+  low: {
+    label: 'Thấp',
+    color: '#3B82F6',
+    bg: 'rgba(59,130,246,0.06)',
+    border: 'rgba(59,130,246,0.15)',
+    icon: Info,
+    weight: 2,
+  },
+  info: {
+    label: 'Thông tin',
+    color: '#6B7280',
+    bg: 'rgba(107,114,128,0.06)',
+    border: 'rgba(107,114,128,0.15)',
+    icon: Info,
+    weight: 1,
+  },
 };
 
-const STATUS_CONFIG: Record<AlertStatus, { label: string; color: string; bg: string; icon: React.ElementType }> = {
+const STATUS_CONFIG: Record<
+  AlertStatus,
+  { label: string; color: string; bg: string; icon: React.ElementType }
+> = {
   active: { label: 'Đang hoạt động', color: '#EF4444', bg: 'rgba(239,68,68,0.06)', icon: Zap },
-  investigating: { label: 'Đang điều tra', color: '#F59E0B', bg: 'rgba(245,158,11,0.06)', icon: Search },
+  investigating: {
+    label: 'Đang điều tra',
+    color: '#F59E0B',
+    bg: 'rgba(245,158,11,0.06)',
+    icon: Search,
+  },
   resolved: { label: 'Đã xử lý', color: '#10B981', bg: 'rgba(16,185,129,0.06)', icon: CheckCircle },
   dismissed: { label: 'Đã bỏ qua', color: '#6B7280', bg: 'rgba(107,114,128,0.06)', icon: XCircle },
 };
@@ -294,22 +377,23 @@ export function WebSecurityAlertListPage() {
     // Search
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
-      items = items.filter(a =>
-        a.title.toLowerCase().includes(q) ||
-        a.description.toLowerCase().includes(q) ||
-        a.location.toLowerCase().includes(q) ||
-        a.device.toLowerCase().includes(q)
+      items = items.filter(
+        (a) =>
+          a.title.toLowerCase().includes(q) ||
+          a.description.toLowerCase().includes(q) ||
+          a.location.toLowerCase().includes(q) ||
+          a.device.toLowerCase().includes(q),
       );
     }
 
     // Severity
     if (severityFilter.size > 0) {
-      items = items.filter(a => severityFilter.has(a.severity));
+      items = items.filter((a) => severityFilter.has(a.severity));
     }
 
     // Status
     if (statusFilter.size > 0) {
-      items = items.filter(a => statusFilter.has(a.status));
+      items = items.filter((a) => statusFilter.has(a.status));
     }
 
     // Date range
@@ -322,16 +406,29 @@ export function WebSecurityAlertListPage() {
         '90d': 90 * 24 * 60 * 60 * 1000,
       };
       const cutoff = now - (ranges[dateRange] || 0);
-      items = items.filter(a => a.sortDate >= cutoff);
+      items = items.filter((a) => a.sortDate >= cutoff);
     }
 
     // Sort
     switch (sortBy) {
-      case 'newest': items.sort((a, b) => b.sortDate - a.sortDate); break;
-      case 'oldest': items.sort((a, b) => a.sortDate - b.sortDate); break;
-      case 'severity': items.sort((a, b) => SEVERITY_CONFIG[b.severity].weight - SEVERITY_CONFIG[a.severity].weight); break;
+      case 'newest':
+        items.sort((a, b) => b.sortDate - a.sortDate);
+        break;
+      case 'oldest':
+        items.sort((a, b) => a.sortDate - b.sortDate);
+        break;
+      case 'severity':
+        items.sort(
+          (a, b) => SEVERITY_CONFIG[b.severity].weight - SEVERITY_CONFIG[a.severity].weight,
+        );
+        break;
       case 'status': {
-        const ord: Record<AlertStatus, number> = { active: 0, investigating: 1, resolved: 2, dismissed: 3 };
+        const ord: Record<AlertStatus, number> = {
+          active: 0,
+          investigating: 1,
+          resolved: 2,
+          dismissed: 3,
+        };
         items.sort((a, b) => ord[a.status] - ord[b.status]);
         break;
       }
@@ -341,36 +438,46 @@ export function WebSecurityAlertListPage() {
   }, [searchQuery, severityFilter, statusFilter, dateRange, sortBy]);
 
   /* ─── Stats ─── */
-  const stats = useMemo(() => ({
-    total: MOCK_ALERTS.length,
-    active: MOCK_ALERTS.filter(a => a.status === 'active').length,
-    investigating: MOCK_ALERTS.filter(a => a.status === 'investigating').length,
-    resolved: MOCK_ALERTS.filter(a => a.status === 'resolved').length,
-    critical: MOCK_ALERTS.filter(a => a.severity === 'critical').length,
-    high: MOCK_ALERTS.filter(a => a.severity === 'high').length,
-  }), []);
+  const stats = useMemo(
+    () => ({
+      total: MOCK_ALERTS.length,
+      active: MOCK_ALERTS.filter((a) => a.status === 'active').length,
+      investigating: MOCK_ALERTS.filter((a) => a.status === 'investigating').length,
+      resolved: MOCK_ALERTS.filter((a) => a.status === 'resolved').length,
+      critical: MOCK_ALERTS.filter((a) => a.severity === 'critical').length,
+      high: MOCK_ALERTS.filter((a) => a.severity === 'high').length,
+    }),
+    [],
+  );
 
-  const activeFilters = severityFilter.size + statusFilter.size + (dateRange !== 'all' ? 1 : 0) + (searchQuery.trim() ? 1 : 0);
+  const activeFilters =
+    severityFilter.size +
+    statusFilter.size +
+    (dateRange !== 'all' ? 1 : 0) +
+    (searchQuery.trim() ? 1 : 0);
 
   /* ─── Toggle helpers ─── */
   const toggleSeverity = (sev: Severity) => {
-    setSeverityFilter(prev => {
+    setSeverityFilter((prev) => {
       const next = new Set(prev);
-      next.has(sev) ? next.delete(sev) : next.add(sev);
+      if (next.has(sev)) next.delete(sev);
+      else next.add(sev);
       return next;
     });
   };
   const toggleStatus = (st: AlertStatus) => {
-    setStatusFilter(prev => {
+    setStatusFilter((prev) => {
       const next = new Set(prev);
-      next.has(st) ? next.delete(st) : next.add(st);
+      if (next.has(st)) next.delete(st);
+      else next.add(st);
       return next;
     });
   };
   const toggleSelect = (id: string) => {
-    setSelectedAlerts(prev => {
+    setSelectedAlerts((prev) => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
       return next;
     });
   };
@@ -383,13 +490,20 @@ export function WebSecurityAlertListPage() {
 
   /* ─── Styles ─── */
   const card = (extra?: React.CSSProperties): React.CSSProperties => ({
-    padding: WEB_SPACING.cardDefault, borderRadius: 14,
-    background: c.surface, border: `1px solid ${c.borderSolid}`, ...extra,
+    padding: WEB_SPACING.cardDefault,
+    borderRadius: 14,
+    background: c.surface,
+    border: `1px solid ${c.borderSolid}`,
+    ...extra,
   });
 
   const chipActive = (active: boolean, color: string): React.CSSProperties => ({
-    padding: '4px 12px', borderRadius: 20, cursor: 'pointer',
-    fontSize: WEB_FONT.xs, fontWeight: 600, border: 'none',
+    padding: '4px 12px',
+    borderRadius: 20,
+    cursor: 'pointer',
+    fontSize: WEB_FONT.xs,
+    fontWeight: 600,
+    border: 'none',
     background: active ? `${color}12` : 'transparent',
     color: active ? color : c.text3,
     outline: active ? `1.5px solid ${color}40` : `1px solid ${c.borderSolid}`,
@@ -399,27 +513,85 @@ export function WebSecurityAlertListPage() {
   return (
     <PageLayout>
       {/* ─── Header ─── */}
-      <div className="flex items-center justify-between" style={{ height: 56, padding: '0 24px', borderBottom: `1px solid ${c.borderSolid}`, background: c.surface }}>
+      <div
+        className="flex items-center justify-between"
+        style={{
+          height: 56,
+          padding: '0 24px',
+          borderBottom: `1px solid ${c.borderSolid}`,
+          background: c.surface,
+        }}
+      >
         <div className="flex items-center gap-3">
-          <button onClick={() => navigate('/w/profile/security')} className="flex items-center justify-center" style={{ width: 36, height: 36, borderRadius: 10, background: c.bg, border: `1px solid ${c.borderSolid}`, cursor: 'pointer' }}>
+          <button
+            onClick={() => navigate('/w/profile/security')}
+            className="flex items-center justify-center"
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 10,
+              background: c.bg,
+              border: `1px solid ${c.borderSolid}`,
+              cursor: 'pointer',
+            }}
+          >
             <ArrowLeft size={16} color={c.text1} />
           </button>
           <div>
-            <h1 style={{ color: c.text1, fontSize: WEB_FONT.lg, fontWeight: 700 }}>Cảnh báo bảo mật</h1>
+            <h1 style={{ color: c.text1, fontSize: WEB_FONT.lg, fontWeight: 700 }}>
+              Cảnh báo bảo mật
+            </h1>
             <p style={{ color: c.text3, fontSize: WEB_FONT.xs }}>Bảo mật &gt; Tất cả cảnh báo</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={() => setShowIP(!showIP)} className="flex items-center gap-1.5"
-            style={{ padding: '6px 12px', borderRadius: 8, background: c.bg, border: `1px solid ${c.borderSolid}`, color: c.text2, fontSize: WEB_FONT.xs, fontWeight: 500, cursor: 'pointer' }}>
+          <button
+            onClick={() => setShowIP(!showIP)}
+            className="flex items-center gap-1.5"
+            style={{
+              padding: '6px 12px',
+              borderRadius: 8,
+              background: c.bg,
+              border: `1px solid ${c.borderSolid}`,
+              color: c.text2,
+              fontSize: WEB_FONT.xs,
+              fontWeight: 500,
+              cursor: 'pointer',
+            }}
+          >
             {showIP ? <EyeOff size={13} /> : <Eye size={13} />}
             {showIP ? 'Ẩn IP' : 'Hiện IP'}
           </button>
-          <button onClick={() => setShowFilters(!showFilters)} className="flex items-center gap-1.5"
-            style={{ padding: '6px 12px', borderRadius: 8, background: showFilters ? 'rgba(59,130,246,0.06)' : c.bg, border: `1px solid ${showFilters ? 'rgba(59,130,246,0.2)' : c.borderSolid}`, color: showFilters ? '#3B82F6' : c.text2, fontSize: WEB_FONT.xs, fontWeight: 500, cursor: 'pointer' }}>
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="flex items-center gap-1.5"
+            style={{
+              padding: '6px 12px',
+              borderRadius: 8,
+              background: showFilters ? 'rgba(59,130,246,0.06)' : c.bg,
+              border: `1px solid ${showFilters ? 'rgba(59,130,246,0.2)' : c.borderSolid}`,
+              color: showFilters ? '#3B82F6' : c.text2,
+              fontSize: WEB_FONT.xs,
+              fontWeight: 500,
+              cursor: 'pointer',
+            }}
+          >
             <SlidersHorizontal size={13} />
             Bộ lọc
-            {activeFilters > 0 && <span style={{ padding: '0 5px', borderRadius: 8, background: '#3B82F6', color: '#fff', fontSize: 9, fontWeight: 700 }}>{activeFilters}</span>}
+            {activeFilters > 0 && (
+              <span
+                style={{
+                  padding: '0 5px',
+                  borderRadius: 8,
+                  background: '#3B82F6',
+                  color: '#fff',
+                  fontSize: 9,
+                  fontWeight: 700,
+                }}
+              >
+                {activeFilters}
+              </span>
+            )}
           </button>
         </div>
       </div>
@@ -427,18 +599,57 @@ export function WebSecurityAlertListPage() {
       {/* ─── Content ─── */}
       <div style={{ maxWidth: 1000, margin: '0 auto', padding: '24px 24px' }}>
         <div className="flex flex-col" style={{ gap: 20 }}>
-
           {/* ═══ Stats bar ═══ */}
           <div className="flex" style={{ gap: 12 }}>
             {[
               { label: 'Tổng cảnh báo', value: stats.total, color: c.text1, bg: c.surface },
-              { label: 'Cần xử lý', value: stats.active, color: '#EF4444', bg: 'rgba(239,68,68,0.04)' },
-              { label: 'Đang điều tra', value: stats.investigating, color: '#F59E0B', bg: 'rgba(245,158,11,0.04)' },
-              { label: 'Nghiêm trọng', value: stats.critical, color: '#DC2626', bg: 'rgba(220,38,38,0.04)' },
-              { label: 'Đã xử lý', value: stats.resolved, color: '#10B981', bg: 'rgba(16,185,129,0.04)' },
-            ].map(s => (
-              <div key={s.label} className="flex-1" style={{ padding: '14px 16px', borderRadius: 12, background: s.bg, border: `1px solid ${c.borderSolid}`, textAlign: 'center' }}>
-                <p style={{ color: s.color, fontSize: 22, fontWeight: 800, lineHeight: 1, marginBottom: 4 }}>{s.value}</p>
+              {
+                label: 'Cần xử lý',
+                value: stats.active,
+                color: '#EF4444',
+                bg: 'rgba(239,68,68,0.04)',
+              },
+              {
+                label: 'Đang điều tra',
+                value: stats.investigating,
+                color: '#F59E0B',
+                bg: 'rgba(245,158,11,0.04)',
+              },
+              {
+                label: 'Nghiêm trọng',
+                value: stats.critical,
+                color: '#DC2626',
+                bg: 'rgba(220,38,38,0.04)',
+              },
+              {
+                label: 'Đã xử lý',
+                value: stats.resolved,
+                color: '#10B981',
+                bg: 'rgba(16,185,129,0.04)',
+              },
+            ].map((s) => (
+              <div
+                key={s.label}
+                className="flex-1"
+                style={{
+                  padding: '14px 16px',
+                  borderRadius: 12,
+                  background: s.bg,
+                  border: `1px solid ${c.borderSolid}`,
+                  textAlign: 'center',
+                }}
+              >
+                <p
+                  style={{
+                    color: s.color,
+                    fontSize: 22,
+                    fontWeight: 800,
+                    lineHeight: 1,
+                    marginBottom: 4,
+                  }}
+                >
+                  {s.value}
+                </p>
                 <p style={{ color: c.text3, fontSize: WEB_FONT.xs }}>{s.label}</p>
               </div>
             ))}
@@ -449,20 +660,46 @@ export function WebSecurityAlertListPage() {
             <div style={card()}>
               {/* Search */}
               <div style={{ position: 'relative', marginBottom: 16 }}>
-                <Search size={14} color={c.text3} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)' }} />
+                <Search
+                  size={14}
+                  color={c.text3}
+                  style={{
+                    position: 'absolute',
+                    left: 12,
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                  }}
+                />
                 <input
                   value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Tìm kiếm cảnh báo theo tiêu đề, mô tả, vị trí, thiết bị..."
                   className="outline-none"
                   style={{
-                    width: '100%', height: WEB_BUTTON.md, borderRadius: 10,
-                    border: `1px solid ${c.borderSolid}`, background: c.bg,
-                    padding: '0 14px 0 36px', color: c.text1, fontSize: WEB_FONT.sm,
+                    width: '100%',
+                    height: WEB_BUTTON.md,
+                    borderRadius: 10,
+                    border: `1px solid ${c.borderSolid}`,
+                    background: c.bg,
+                    padding: '0 14px 0 36px',
+                    color: c.text1,
+                    fontSize: WEB_FONT.sm,
                   }}
                 />
                 {searchQuery && (
-                  <button onClick={() => setSearchQuery('')} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    style={{
+                      position: 'absolute',
+                      right: 12,
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      padding: 0,
+                    }}
+                  >
                     <X size={14} color={c.text3} />
                   </button>
                 )}
@@ -470,10 +707,28 @@ export function WebSecurityAlertListPage() {
 
               {/* Severity chips */}
               <div style={{ marginBottom: 12 }}>
-                <p style={{ color: c.text2, fontSize: WEB_FONT.xs, fontWeight: 600, marginBottom: 8 }}>Mức độ</p>
+                <p
+                  style={{
+                    color: c.text2,
+                    fontSize: WEB_FONT.xs,
+                    fontWeight: 600,
+                    marginBottom: 8,
+                  }}
+                >
+                  Mức độ
+                </p>
                 <div className="flex flex-wrap" style={{ gap: 6 }}>
-                  {(Object.entries(SEVERITY_CONFIG) as [Severity, typeof SEVERITY_CONFIG[Severity]][]).map(([key, cfg]) => (
-                    <button key={key} onClick={() => toggleSeverity(key)} style={chipActive(severityFilter.has(key), cfg.color)}>
+                  {(
+                    Object.entries(SEVERITY_CONFIG) as [
+                      Severity,
+                      (typeof SEVERITY_CONFIG)[Severity],
+                    ][]
+                  ).map(([key, cfg]) => (
+                    <button
+                      key={key}
+                      onClick={() => toggleSeverity(key)}
+                      style={chipActive(severityFilter.has(key), cfg.color)}
+                    >
                       {cfg.label}
                     </button>
                   ))}
@@ -482,10 +737,28 @@ export function WebSecurityAlertListPage() {
 
               {/* Status chips */}
               <div style={{ marginBottom: 12 }}>
-                <p style={{ color: c.text2, fontSize: WEB_FONT.xs, fontWeight: 600, marginBottom: 8 }}>Trạng thái</p>
+                <p
+                  style={{
+                    color: c.text2,
+                    fontSize: WEB_FONT.xs,
+                    fontWeight: 600,
+                    marginBottom: 8,
+                  }}
+                >
+                  Trạng thái
+                </p>
                 <div className="flex flex-wrap" style={{ gap: 6 }}>
-                  {(Object.entries(STATUS_CONFIG) as [AlertStatus, typeof STATUS_CONFIG[AlertStatus]][]).map(([key, cfg]) => (
-                    <button key={key} onClick={() => toggleStatus(key)} style={chipActive(statusFilter.has(key), cfg.color)}>
+                  {(
+                    Object.entries(STATUS_CONFIG) as [
+                      AlertStatus,
+                      (typeof STATUS_CONFIG)[AlertStatus],
+                    ][]
+                  ).map(([key, cfg]) => (
+                    <button
+                      key={key}
+                      onClick={() => toggleStatus(key)}
+                      style={chipActive(statusFilter.has(key), cfg.color)}
+                    >
                       {cfg.label}
                     </button>
                   ))}
@@ -496,18 +769,40 @@ export function WebSecurityAlertListPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center" style={{ gap: 4 }}>
                   <Calendar size={13} color={c.text3} />
-                  <span style={{ color: c.text2, fontSize: WEB_FONT.xs, fontWeight: 600, marginRight: 6 }}>Thời gian:</span>
-                  {DATE_RANGES.map(d => (
-                    <button key={d.id} onClick={() => setDateRange(d.id)}
-                      style={chipActive(dateRange === d.id, '#3B82F6')}>
+                  <span
+                    style={{
+                      color: c.text2,
+                      fontSize: WEB_FONT.xs,
+                      fontWeight: 600,
+                      marginRight: 6,
+                    }}
+                  >
+                    Thời gian:
+                  </span>
+                  {DATE_RANGES.map((d) => (
+                    <button
+                      key={d.id}
+                      onClick={() => setDateRange(d.id)}
+                      style={chipActive(dateRange === d.id, '#3B82F6')}
+                    >
                       {d.label}
                     </button>
                   ))}
                 </div>
                 <div className="flex items-center gap-3">
                   {activeFilters > 0 && (
-                    <button onClick={clearFilters} className="flex items-center gap-1"
-                      style={{ color: '#EF4444', fontSize: WEB_FONT.xs, fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer' }}>
+                    <button
+                      onClick={clearFilters}
+                      className="flex items-center gap-1"
+                      style={{
+                        color: '#EF4444',
+                        fontSize: WEB_FONT.xs,
+                        fontWeight: 500,
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                      }}
+                    >
                       <RotateCcw size={11} /> Xóa bộ lọc
                     </button>
                   )}
@@ -515,14 +810,23 @@ export function WebSecurityAlertListPage() {
                     <span style={{ color: c.text3, fontSize: WEB_FONT.xs }}>Sắp xếp:</span>
                     <select
                       value={sortBy}
-                      onChange={e => setSortBy(e.target.value as SortOption)}
+                      onChange={(e) => setSortBy(e.target.value as SortOption)}
                       style={{
-                        padding: '4px 8px', borderRadius: 6,
-                        border: `1px solid ${c.borderSolid}`, background: c.bg,
-                        color: c.text1, fontSize: WEB_FONT.xs, cursor: 'pointer', outline: 'none',
+                        padding: '4px 8px',
+                        borderRadius: 6,
+                        border: `1px solid ${c.borderSolid}`,
+                        background: c.bg,
+                        color: c.text1,
+                        fontSize: WEB_FONT.xs,
+                        cursor: 'pointer',
+                        outline: 'none',
                       }}
                     >
-                      {SORT_OPTIONS.map(s => <option key={s.id} value={s.id}>{s.label}</option>)}
+                      {SORT_OPTIONS.map((s) => (
+                        <option key={s.id} value={s.id}>
+                          {s.label}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -533,15 +837,41 @@ export function WebSecurityAlertListPage() {
           {/* ═══ Results header ═══ */}
           <div className="flex items-center justify-between">
             <p style={{ color: c.text2, fontSize: WEB_FONT.sm }}>
-              Hiển thị <span style={{ color: c.text1, fontWeight: 600 }}>{filteredAlerts.length}</span> / {MOCK_ALERTS.length} cảnh báo
+              Hiển thị{' '}
+              <span style={{ color: c.text1, fontWeight: 600 }}>{filteredAlerts.length}</span> /{' '}
+              {MOCK_ALERTS.length} cảnh báo
             </p>
             {selectedAlerts.size > 0 && (
               <div className="flex items-center gap-2">
-                <span style={{ color: c.text2, fontSize: WEB_FONT.xs }}>{selectedAlerts.size} đã chọn</span>
-                <button style={{ padding: '4px 10px', borderRadius: 6, background: '#10B981', border: 'none', color: '#fff', fontSize: WEB_FONT.xs, fontWeight: 600, cursor: 'pointer' }}>
+                <span style={{ color: c.text2, fontSize: WEB_FONT.xs }}>
+                  {selectedAlerts.size} đã chọn
+                </span>
+                <button
+                  style={{
+                    padding: '4px 10px',
+                    borderRadius: 6,
+                    background: '#10B981',
+                    border: 'none',
+                    color: '#fff',
+                    fontSize: WEB_FONT.xs,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                >
                   Đánh dấu xử lý
                 </button>
-                <button onClick={() => setSelectedAlerts(new Set())} style={{ padding: '4px 10px', borderRadius: 6, background: c.bg, border: `1px solid ${c.borderSolid}`, color: c.text3, fontSize: WEB_FONT.xs, cursor: 'pointer' }}>
+                <button
+                  onClick={() => setSelectedAlerts(new Set())}
+                  style={{
+                    padding: '4px 10px',
+                    borderRadius: 6,
+                    background: c.bg,
+                    border: `1px solid ${c.borderSolid}`,
+                    color: c.text3,
+                    fontSize: WEB_FONT.xs,
+                    cursor: 'pointer',
+                  }}
+                >
                   Bỏ chọn
                 </button>
               </div>
@@ -552,23 +882,49 @@ export function WebSecurityAlertListPage() {
           {filteredAlerts.length === 0 ? (
             <div style={card({ textAlign: 'center' as const, padding: '48px 24px' })}>
               <div className="flex justify-center" style={{ marginBottom: 12 }}>
-                <div className="flex items-center justify-center" style={{ width: 56, height: 56, borderRadius: '50%', background: 'rgba(16,185,129,0.06)' }}>
+                <div
+                  className="flex items-center justify-center"
+                  style={{
+                    width: 56,
+                    height: 56,
+                    borderRadius: '50%',
+                    background: 'rgba(16,185,129,0.06)',
+                  }}
+                >
                   <ShieldCheck size={28} color="#10B981" />
                 </div>
               </div>
-              <p style={{ color: c.text1, fontSize: WEB_FONT.lg, fontWeight: 600, marginBottom: 4 }}>Không có cảnh báo nào</p>
+              <p
+                style={{ color: c.text1, fontSize: WEB_FONT.lg, fontWeight: 600, marginBottom: 4 }}
+              >
+                Không có cảnh báo nào
+              </p>
               <p style={{ color: c.text3, fontSize: WEB_FONT.sm }}>
-                {activeFilters > 0 ? 'Thử thay đổi bộ lọc để xem thêm kết quả.' : 'Tài khoản của bạn hiện không có cảnh báo bảo mật.'}
+                {activeFilters > 0
+                  ? 'Thử thay đổi bộ lọc để xem thêm kết quả.'
+                  : 'Tài khoản của bạn hiện không có cảnh báo bảo mật.'}
               </p>
               {activeFilters > 0 && (
-                <button onClick={clearFilters} className="flex items-center gap-1 mx-auto" style={{ marginTop: 12, color: '#3B82F6', fontSize: WEB_FONT.sm, fontWeight: 600, background: 'none', border: 'none', cursor: 'pointer' }}>
+                <button
+                  onClick={clearFilters}
+                  className="flex items-center gap-1 mx-auto"
+                  style={{
+                    marginTop: 12,
+                    color: '#3B82F6',
+                    fontSize: WEB_FONT.sm,
+                    fontWeight: 600,
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                >
                   <RotateCcw size={12} /> Xóa bộ lọc
                 </button>
               )}
             </div>
           ) : (
             <div className="flex flex-col" style={{ gap: 8 }}>
-              {filteredAlerts.map(alert => {
+              {filteredAlerts.map((alert) => {
                 const sev = SEVERITY_CONFIG[alert.severity];
                 const sts = STATUS_CONFIG[alert.status];
                 const AlertIcon = alert.icon;
@@ -580,7 +936,9 @@ export function WebSecurityAlertListPage() {
                     className="flex items-center cursor-pointer transition-all"
                     onClick={() => navigate(`/w/profile/security/alerts/${alert.id}`)}
                     style={{
-                      padding: '14px 16px', borderRadius: 12, gap: 14,
+                      padding: '14px 16px',
+                      borderRadius: 12,
+                      gap: 14,
                       background: isSelected ? `${sev.color}04` : c.surface,
                       border: `1px solid ${isSelected ? `${sev.color}25` : alert.status === 'active' ? sev.border : c.borderSolid}`,
                       transition: 'border-color 0.15s, background 0.15s',
@@ -588,10 +946,15 @@ export function WebSecurityAlertListPage() {
                   >
                     {/* Checkbox */}
                     <button
-                      onClick={e => { e.stopPropagation(); toggleSelect(alert.id); }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleSelect(alert.id);
+                      }}
                       className="flex items-center justify-center shrink-0"
                       style={{
-                        width: 20, height: 20, borderRadius: 4,
+                        width: 20,
+                        height: 20,
+                        borderRadius: 4,
                         border: `1.5px solid ${isSelected ? '#3B82F6' : c.borderSolid}`,
                         background: isSelected ? '#3B82F6' : 'transparent',
                         cursor: 'pointer',
@@ -601,43 +964,109 @@ export function WebSecurityAlertListPage() {
                     </button>
 
                     {/* Icon */}
-                    <div className="flex items-center justify-center shrink-0" style={{
-                      width: 40, height: 40, borderRadius: 10,
-                      background: sev.bg, border: `1px solid ${sev.border}`,
-                    }}>
+                    <div
+                      className="flex items-center justify-center shrink-0"
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 10,
+                        background: sev.bg,
+                        border: `1px solid ${sev.border}`,
+                      }}
+                    >
                       <AlertIcon size={18} color={sev.color} />
                     </div>
 
                     {/* Content */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2" style={{ marginBottom: 3 }}>
-                        <p style={{ color: c.text1, fontSize: WEB_FONT.md, fontWeight: 600 }}>{alert.title}</p>
-                        <span style={{ padding: '1px 8px', borderRadius: 10, background: sev.bg, border: `1px solid ${sev.border}`, color: sev.color, fontSize: 10, fontWeight: 700 }}>
+                        <p style={{ color: c.text1, fontSize: WEB_FONT.md, fontWeight: 600 }}>
+                          {alert.title}
+                        </p>
+                        <span
+                          style={{
+                            padding: '1px 8px',
+                            borderRadius: 10,
+                            background: sev.bg,
+                            border: `1px solid ${sev.border}`,
+                            color: sev.color,
+                            fontSize: 10,
+                            fontWeight: 700,
+                          }}
+                        >
                           {sev.label}
                         </span>
-                        <span style={{ padding: '1px 8px', borderRadius: 10, background: sts.bg, color: sts.color, fontSize: 10, fontWeight: 600 }}>
+                        <span
+                          style={{
+                            padding: '1px 8px',
+                            borderRadius: 10,
+                            background: sts.bg,
+                            color: sts.color,
+                            fontSize: 10,
+                            fontWeight: 600,
+                          }}
+                        >
                           {sts.label}
                         </span>
                       </div>
-                      <p style={{ color: c.text2, fontSize: WEB_FONT.sm, marginBottom: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{alert.description}</p>
-                      <div className="flex items-center" style={{ gap: 12, color: c.text3, fontSize: WEB_FONT.xs }}>
-                        <span className="flex items-center gap-1"><Clock size={10} />{alert.createdAt}</span>
-                        <span className="flex items-center gap-1"><MapPin size={10} />{alert.location}</span>
+                      <p
+                        style={{
+                          color: c.text2,
+                          fontSize: WEB_FONT.sm,
+                          marginBottom: 4,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {alert.description}
+                      </p>
+                      <div
+                        className="flex items-center"
+                        style={{ gap: 12, color: c.text3, fontSize: WEB_FONT.xs }}
+                      >
                         <span className="flex items-center gap-1">
-                          {alert.deviceType === 'mobile' ? <Smartphone size={10} /> : <Monitor size={10} />}
+                          <Clock size={10} />
+                          {alert.createdAt}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <MapPin size={10} />
+                          {alert.location}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          {alert.deviceType === 'mobile' ? (
+                            <Smartphone size={10} />
+                          ) : (
+                            <Monitor size={10} />
+                          )}
                           {alert.device}
                         </span>
-                        {showIP && <span className="flex items-center gap-1"><Globe size={10} />{alert.ip}</span>}
+                        {showIP && (
+                          <span className="flex items-center gap-1">
+                            <Globe size={10} />
+                            {alert.ip}
+                          </span>
+                        )}
                       </div>
                     </div>
 
                     {/* Trailing */}
                     <div className="flex flex-col items-end shrink-0" style={{ gap: 4 }}>
                       {alert.status === 'active' && (
-                        <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#EF4444', animation: 'pulse 2s infinite' }} />
+                        <div
+                          style={{
+                            width: 8,
+                            height: 8,
+                            borderRadius: '50%',
+                            background: '#EF4444',
+                            animation: 'pulse 2s infinite',
+                          }}
+                        />
                       )}
                       {alert.responseCount > 0 && (
-                        <span style={{ color: c.text3, fontSize: 10 }}>{alert.resolvedCount}/{alert.responseCount} phản hồi</span>
+                        <span style={{ color: c.text3, fontSize: 10 }}>
+                          {alert.resolvedCount}/{alert.responseCount} phản hồi
+                        </span>
                       )}
                       <ChevronRight size={14} color={c.text3} />
                     </div>
@@ -648,11 +1077,20 @@ export function WebSecurityAlertListPage() {
           )}
 
           {/* ═══ Footer info ═══ */}
-          <div className="flex items-start gap-3" style={{ padding: '14px 16px', borderRadius: 10, background: 'rgba(59,130,246,0.03)', border: '1px solid rgba(59,130,246,0.1)' }}>
+          <div
+            className="flex items-start gap-3"
+            style={{
+              padding: '14px 16px',
+              borderRadius: 10,
+              background: 'rgba(59,130,246,0.03)',
+              border: '1px solid rgba(59,130,246,0.1)',
+            }}
+          >
             <Info size={14} color="#3B82F6" className="shrink-0" style={{ marginTop: 2 }} />
             <p style={{ color: c.text2, fontSize: WEB_FONT.xs, lineHeight: 1.5 }}>
-              Cảnh báo bảo mật được tạo tự động bởi hệ thống giám sát. Cảnh báo mức <strong>Nghiêm trọng</strong> và <strong>Cao</strong> nên được xử lý trong vòng 24 giờ.
-              Cảnh báo cũ hơn 90 ngày sẽ được lưu trữ tự động.
+              Cảnh báo bảo mật được tạo tự động bởi hệ thống giám sát. Cảnh báo mức{' '}
+              <strong>Nghiêm trọng</strong> và <strong>Cao</strong> nên được xử lý trong vòng 24
+              giờ. Cảnh báo cũ hơn 90 ngày sẽ được lưu trữ tự động.
             </p>
           </div>
         </div>

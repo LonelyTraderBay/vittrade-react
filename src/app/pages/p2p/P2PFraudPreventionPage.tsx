@@ -3,11 +3,32 @@ import { useNavigate } from 'react-router';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
 import {
-  Shield, ShieldAlert, AlertTriangle, CheckCircle, XCircle,
-  ChevronRight, ChevronDown, Eye, EyeOff, Phone, MessageSquare,
-  CreditCard, Ban, Flag, Lock, UserX, Banknote, Globe,
-  AlertOctagon, Info, ExternalLink, BookOpen, FileWarning,
-  CircleAlert, ShieldCheck, Smartphone,
+  Shield,
+  ShieldAlert,
+  AlertTriangle,
+  CheckCircle,
+  XCircle,
+  ChevronRight,
+  ChevronDown,
+  Eye,
+  EyeOff,
+  Phone,
+  MessageSquare,
+  CreditCard,
+  Ban,
+  Flag,
+  Lock,
+  UserX,
+  Banknote,
+  Globe,
+  AlertOctagon,
+  Info,
+  ExternalLink,
+  BookOpen,
+  FileWarning,
+  CircleAlert,
+  ShieldCheck,
+  Smartphone,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useHaptic } from '../../hooks/useHaptic';
@@ -177,18 +198,78 @@ const SEVERITY_CONFIG: Record<ScamPattern['severity'], { label: string; color: s
 
 const DEFAULT_CHECKLIST: ChecklistItem[] = [
   // Before
-  { id: 'ck1', label: '2FA đã bật', description: 'Bảo vệ tài khoản bằng 2FA', checked: true, category: 'before' },
-  { id: 'ck2', label: 'Anti-Phishing Code đã thiết lập', description: 'Nhận diện email thật từ sàn', checked: false, category: 'before' },
-  { id: 'ck3', label: 'Kiểm tra rating đối tác', description: 'Chỉ giao dịch với merchant uy tín', checked: true, category: 'before' },
-  { id: 'ck4', label: 'Xác nhận payment method hợp lệ', description: 'Phương thức thanh toán được hỗ trợ', checked: true, category: 'before' },
+  {
+    id: 'ck1',
+    label: '2FA đã bật',
+    description: 'Bảo vệ tài khoản bằng 2FA',
+    checked: true,
+    category: 'before',
+  },
+  {
+    id: 'ck2',
+    label: 'Anti-Phishing Code đã thiết lập',
+    description: 'Nhận diện email thật từ sàn',
+    checked: false,
+    category: 'before',
+  },
+  {
+    id: 'ck3',
+    label: 'Kiểm tra rating đối tác',
+    description: 'Chỉ giao dịch với merchant uy tín',
+    checked: true,
+    category: 'before',
+  },
+  {
+    id: 'ck4',
+    label: 'Xác nhận payment method hợp lệ',
+    description: 'Phương thức thanh toán được hỗ trợ',
+    checked: true,
+    category: 'before',
+  },
   // During
-  { id: 'ck5', label: 'Kiểm tra tên người chuyển', description: 'Tên phải khớp với tên P2P', checked: false, category: 'during' },
-  { id: 'ck6', label: 'Chỉ bấm "Đã nhận" khi tiền thật vào TK', description: 'Không tin screenshot', checked: true, category: 'during' },
-  { id: 'ck7', label: 'Không giao dịch ngoài nền tảng', description: 'Mọi thao tác trong app', checked: true, category: 'during' },
-  { id: 'ck8', label: 'Lưu bằng chứng giao dịch', description: 'Screenshot chat, sao kê ngân hàng', checked: false, category: 'during' },
+  {
+    id: 'ck5',
+    label: 'Kiểm tra tên người chuyển',
+    description: 'Tên phải khớp với tên P2P',
+    checked: false,
+    category: 'during',
+  },
+  {
+    id: 'ck6',
+    label: 'Chỉ bấm "Đã nhận" khi tiền thật vào TK',
+    description: 'Không tin screenshot',
+    checked: true,
+    category: 'during',
+  },
+  {
+    id: 'ck7',
+    label: 'Không giao dịch ngoài nền tảng',
+    description: 'Mọi thao tác trong app',
+    checked: true,
+    category: 'during',
+  },
+  {
+    id: 'ck8',
+    label: 'Lưu bằng chứng giao dịch',
+    description: 'Screenshot chat, sao kê ngân hàng',
+    checked: false,
+    category: 'during',
+  },
   // After
-  { id: 'ck9', label: 'Review đối tác sau giao dịch', description: 'Giúp cộng đồng nhận diện scam', checked: true, category: 'after' },
-  { id: 'ck10', label: 'Biết cách gửi claim bảo hiểm', description: 'Nắm rõ quy trình trong 7 ngày', checked: false, category: 'after' },
+  {
+    id: 'ck9',
+    label: 'Review đối tác sau giao dịch',
+    description: 'Giúp cộng đồng nhận diện scam',
+    checked: true,
+    category: 'after',
+  },
+  {
+    id: 'ck10',
+    label: 'Biết cách gửi claim bảo hiểm',
+    description: 'Nắm rõ quy trình trong 7 ngày',
+    checked: false,
+    category: 'after',
+  },
 ];
 
 const CATEGORY_LABELS: Record<ChecklistItem['category'], string> = {
@@ -209,17 +290,17 @@ export function P2PFraudPreventionPage() {
   const [checklist, setChecklist] = useState(DEFAULT_CHECKLIST);
   const [activeChecklistTab, setActiveChecklistTab] = useState<ChecklistItem['category']>('before');
 
-  const checkedCount = checklist.filter(i => i.checked).length;
+  const checkedCount = checklist.filter((i) => i.checked).length;
   const totalCount = checklist.length;
-  const safetyScore = Math.round(checkedCount / totalCount * 100);
+  const safetyScore = Math.round((checkedCount / totalCount) * 100);
 
   const toggleChecklist = (id: string) => {
-    setChecklist(prev => prev.map(i => i.id === id ? { ...i, checked: !i.checked } : i));
+    setChecklist((prev) => prev.map((i) => (i.id === id ? { ...i, checked: !i.checked } : i)));
     hapticSelection();
   };
 
   const togglePattern = (id: string) => {
-    setExpandedPattern(prev => prev === id ? null : id);
+    setExpandedPattern((prev) => (prev === id ? null : id));
     hapticSelection();
   };
 
@@ -232,15 +313,22 @@ export function P2PFraudPreventionPage() {
         <TrCard className="p-5">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <ShieldCheck size={20} color={safetyScore >= 80 ? '#10B981' : safetyScore >= 50 ? '#F59E0B' : '#EF4444'} />
+              <ShieldCheck
+                size={20}
+                color={safetyScore >= 80 ? '#10B981' : safetyScore >= 50 ? '#F59E0B' : '#EF4444'}
+              />
               <span style={{ color: c.text1, fontSize: φ.base, fontWeight: 700 }}>
                 Chỉ số an toàn
               </span>
             </div>
-            <span style={{
-              color: safetyScore >= 80 ? '#10B981' : safetyScore >= 50 ? '#F59E0B' : '#EF4444',
-              fontSize: 28, fontWeight: 700, fontVariantNumeric: 'tabular-nums',
-            }}>
+            <span
+              style={{
+                color: safetyScore >= 80 ? '#10B981' : safetyScore >= 50 ? '#F59E0B' : '#EF4444',
+                fontSize: 28,
+                fontWeight: 700,
+                fontVariantNumeric: 'tabular-nums',
+              }}
+            >
               {safetyScore}%
             </span>
           </div>
@@ -250,7 +338,8 @@ export function P2PFraudPreventionPage() {
               className="h-full rounded-full transition-all"
               style={{
                 width: `${safetyScore}%`,
-                background: safetyScore >= 80 ? '#10B981' : safetyScore >= 50 ? '#F59E0B' : '#EF4444',
+                background:
+                  safetyScore >= 80 ? '#10B981' : safetyScore >= 50 ? '#F59E0B' : '#EF4444',
               }}
             />
           </div>
@@ -281,7 +370,7 @@ export function P2PFraudPreventionPage() {
           </div>
 
           <div className="flex flex-col" style={{ gap: φSpace[2] }}>
-            {SCAM_PATTERNS.map(pattern => {
+            {SCAM_PATTERNS.map((pattern) => {
               const Icon = pattern.icon;
               const sevCfg = SEVERITY_CONFIG[pattern.severity];
               const isExpanded = expandedPattern === pattern.id;
@@ -301,12 +390,24 @@ export function P2PFraudPreventionPage() {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <span style={{ color: c.text1, fontSize: φ.body, fontWeight: 700, lineHeight: 1.5 }}>
+                        <span
+                          style={{
+                            color: c.text1,
+                            fontSize: φ.body,
+                            fontWeight: 700,
+                            lineHeight: 1.5,
+                          }}
+                        >
                           {pattern.title}
                         </span>
                         <span
                           className="px-1.5 py-0.5 rounded"
-                          style={{ background: `${sevCfg.color}12`, color: sevCfg.color, fontSize: 9, fontWeight: 700 }}
+                          style={{
+                            background: `${sevCfg.color}12`,
+                            color: sevCfg.color,
+                            fontSize: 9,
+                            fontWeight: 700,
+                          }}
                         >
                           {sevCfg.label}
                         </span>
@@ -316,7 +417,8 @@ export function P2PFraudPreventionPage() {
                       </p>
                     </div>
                     <ChevronDown
-                      size={16} color={c.text3}
+                      size={16}
+                      color={c.text3}
                       className="shrink-0 mt-1 transition-transform"
                       style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
                     />
@@ -327,7 +429,15 @@ export function P2PFraudPreventionPage() {
                     <div className="px-4 pb-4" style={{ borderTop: `1px solid ${c.divider}` }}>
                       {/* How it works */}
                       <div className="pt-4 mb-4">
-                        <p style={{ color: c.text2, fontSize: 11, fontWeight: 700, marginBottom: 8, letterSpacing: 0.3 }}>
+                        <p
+                          style={{
+                            color: c.text2,
+                            fontSize: 11,
+                            fontWeight: 700,
+                            marginBottom: 8,
+                            letterSpacing: 0.3,
+                          }}
+                        >
                           CÁCH THỨC HOẠT ĐỘNG
                         </p>
                         <div className="flex flex-col gap-2">
@@ -335,7 +445,12 @@ export function P2PFraudPreventionPage() {
                             <div key={i} className="flex items-start gap-2">
                               <span
                                 className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
-                                style={{ background: c.surface2, color: c.text3, fontSize: 10, fontWeight: 700 }}
+                                style={{
+                                  background: c.surface2,
+                                  color: c.text3,
+                                  fontSize: 10,
+                                  fontWeight: 700,
+                                }}
                               >
                                 {i + 1}
                               </span>
@@ -349,7 +464,15 @@ export function P2PFraudPreventionPage() {
 
                       {/* Red flags */}
                       <div className="mb-4">
-                        <p style={{ color: '#EF4444', fontSize: 11, fontWeight: 700, marginBottom: 8, letterSpacing: 0.3 }}>
+                        <p
+                          style={{
+                            color: '#EF4444',
+                            fontSize: 11,
+                            fontWeight: 700,
+                            marginBottom: 8,
+                            letterSpacing: 0.3,
+                          }}
+                        >
                           DẤU HIỆU NHẬN BIẾT
                         </p>
                         <div className="flex flex-col gap-1.5">
@@ -366,7 +489,15 @@ export function P2PFraudPreventionPage() {
 
                       {/* Prevention */}
                       <div>
-                        <p style={{ color: '#10B981', fontSize: 11, fontWeight: 700, marginBottom: 8, letterSpacing: 0.3 }}>
+                        <p
+                          style={{
+                            color: '#10B981',
+                            fontSize: 11,
+                            fontWeight: 700,
+                            marginBottom: 8,
+                            letterSpacing: 0.3,
+                          }}
+                        >
                           CÁCH PHÒNG TRÁNH
                         </p>
                         <div className="flex flex-col gap-1.5">
@@ -399,26 +530,34 @@ export function P2PFraudPreventionPage() {
 
           {/* Tab selector */}
           <div className="flex gap-1.5 mb-4">
-            {(['before', 'during', 'after'] as const).map(cat => {
+            {(['before', 'during', 'after'] as const).map((cat) => {
               const isActive = activeChecklistTab === cat;
-              const catItems = checklist.filter(i => i.category === cat);
-              const catChecked = catItems.filter(i => i.checked).length;
+              const catItems = checklist.filter((i) => i.category === cat);
+              const catChecked = catItems.filter((i) => i.checked).length;
               return (
                 <button
                   key={cat}
-                  onClick={() => { setActiveChecklistTab(cat); hapticSelection(); }}
+                  onClick={() => {
+                    setActiveChecklistTab(cat);
+                    hapticSelection();
+                  }}
                   className="flex-1 py-2 rounded-lg text-center"
                   style={{
-                    fontSize: 11, fontWeight: isActive ? 700 : 500,
+                    fontSize: 11,
+                    fontWeight: isActive ? 700 : 500,
                     color: isActive ? '#fff' : c.text2,
                     background: isActive ? '#3B82F6' : c.surface2,
                   }}
                 >
                   {CATEGORY_LABELS[cat]}
-                  <span style={{
-                    display: 'block', fontSize: 9, marginTop: 2,
-                    color: isActive ? 'rgba(255,255,255,0.7)' : c.text3,
-                  }}>
+                  <span
+                    style={{
+                      display: 'block',
+                      fontSize: 9,
+                      marginTop: 2,
+                      color: isActive ? 'rgba(255,255,255,0.7)' : c.text3,
+                    }}
+                  >
                     {catChecked}/{catItems.length}
                   </span>
                 </button>
@@ -429,7 +568,7 @@ export function P2PFraudPreventionPage() {
           {/* Items */}
           <div className="flex flex-col">
             {checklist
-              .filter(i => i.category === activeChecklistTab)
+              .filter((i) => i.category === activeChecklistTab)
               .map((item, idx, arr) => {
                 const isLast = idx === arr.length - 1;
                 return (
@@ -449,11 +588,15 @@ export function P2PFraudPreventionPage() {
                       {item.checked && <CheckCircle size={12} color="#fff" />}
                     </div>
                     <div className="flex-1">
-                      <p style={{
-                        color: item.checked ? '#10B981' : c.text1,
-                        fontSize: φ.sm, fontWeight: 600, lineHeight: 1.5,
-                        textDecoration: item.checked ? 'line-through' : 'none',
-                      }}>
+                      <p
+                        style={{
+                          color: item.checked ? '#10B981' : c.text1,
+                          fontSize: φ.sm,
+                          fontWeight: 600,
+                          lineHeight: 1.5,
+                          textDecoration: item.checked ? 'line-through' : 'none',
+                        }}
+                      >
                         {item.label}
                       </p>
                       <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
@@ -477,13 +620,21 @@ export function P2PFraudPreventionPage() {
 
           <div className="flex flex-col" style={{ gap: φSpace[2] }}>
             <button
-              onClick={() => { hapticSelection(); navigate(`${prefix}/p2p/insurance-fund`); }}
+              onClick={() => {
+                hapticSelection();
+                navigate(`${prefix}/p2p/insurance-fund`);
+              }}
               className="flex items-center justify-between p-3 rounded-xl"
-              style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)' }}
+              style={{
+                background: 'rgba(239,68,68,0.06)',
+                border: '1px solid rgba(239,68,68,0.15)',
+              }}
             >
               <div className="flex items-center gap-2.5">
                 <Shield size={16} color="#EF4444" />
-                <span style={{ color: '#DC2626', fontSize: φ.sm, fontWeight: 600, lineHeight: 1.5 }}>
+                <span
+                  style={{ color: '#DC2626', fontSize: φ.sm, fontWeight: 600, lineHeight: 1.5 }}
+                >
                   Gửi yêu cầu bồi thường bảo hiểm
                 </span>
               </div>
@@ -491,13 +642,21 @@ export function P2PFraudPreventionPage() {
             </button>
 
             <button
-              onClick={() => { hapticSelection(); navigate(`${prefix}/support`); }}
+              onClick={() => {
+                hapticSelection();
+                navigate(`${prefix}/support`);
+              }}
               className="flex items-center justify-between p-3 rounded-xl"
-              style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
+              style={{
+                background: 'rgba(245,158,11,0.06)',
+                border: '1px solid rgba(245,158,11,0.15)',
+              }}
             >
               <div className="flex items-center gap-2.5">
                 <Phone size={16} color="#F59E0B" />
-                <span style={{ color: '#D97706', fontSize: φ.sm, fontWeight: 600, lineHeight: 1.5 }}>
+                <span
+                  style={{ color: '#D97706', fontSize: φ.sm, fontWeight: 600, lineHeight: 1.5 }}
+                >
                   Liên hệ hỗ trợ khẩn cấp
                 </span>
               </div>
@@ -505,7 +664,10 @@ export function P2PFraudPreventionPage() {
             </button>
 
             <button
-              onClick={() => { hapticSelection(); toast.info('Đang mở form report'); }}
+              onClick={() => {
+                hapticSelection();
+                toast.info('Đang mở form report');
+              }}
               className="flex items-center justify-between p-3 rounded-xl"
               style={{ background: c.surface2 }}
             >
@@ -527,8 +689,8 @@ export function P2PFraudPreventionPage() {
         >
           <Info size={12} color={c.text3} className="shrink-0 mt-0.5" />
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
-            Thông tin phòng chống gian lận mang tính chất giáo dục.
-            Nếu bạn đã bị lừa đảo, hãy gửi claim bảo hiểm trong vòng 7 ngày và liên hệ hỗ trợ ngay.
+            Thông tin phòng chống gian lận mang tính chất giáo dục. Nếu bạn đã bị lừa đảo, hãy gửi
+            claim bảo hiểm trong vòng 7 ngày và liên hệ hỗ trợ ngay.
           </p>
         </div>
 

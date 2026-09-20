@@ -7,7 +7,7 @@
  *
  *  Catches a subtler pattern: sub-components defined in the
  *  SAME file as PageContent that return root elements with
- *  mt-*/mb-* margins. These are often rendered as direct
+ *  mt-*, mb-* margins. These are often rendered as direct
  *  children of PageContent (e.g., via className="contents").
  *
  *  Example violation:
@@ -110,7 +110,9 @@ function deepScanFile(filePath: string): DeepViolation[] {
     }
 
     // const ComponentName = (
-    const constMatch = trimmed.match(/^(?:export\s+)?const\s+([A-Z][A-Za-z0-9]*)\s*=\s*(?:\(|function)/);
+    const constMatch = trimmed.match(
+      /^(?:export\s+)?const\s+([A-Z][A-Za-z0-9]*)\s*=\s*(?:\(|function)/,
+    );
     if (constMatch) {
       components.push({ name: constMatch[1], startLine: i });
     }
@@ -126,7 +128,10 @@ function deepScanFile(filePath: string): DeepViolation[] {
     for (let i = comp.startLine; i < bodyEnd; i++) {
       const line = lines[i];
       for (const ch of line) {
-        if (ch === '{') { braceCount++; inBody = true; }
+        if (ch === '{') {
+          braceCount++;
+          inBody = true;
+        }
         if (ch === '}') braceCount--;
       }
       if (inBody && braceCount <= 0) break;
@@ -149,12 +154,19 @@ function deepScanFile(filePath: string): DeepViolation[] {
       const trimmed = line.trim();
 
       for (const ch of line) {
-        if (ch === '{') { braceCount++; inBody = true; }
+        if (ch === '{') {
+          braceCount++;
+          inBody = true;
+        }
         if (ch === '}') braceCount--;
       }
       if (inBody && braceCount <= 0) break;
 
-      if (trimmed.startsWith('return (') || trimmed.startsWith('return(') || trimmed === 'return (') {
+      if (
+        trimmed.startsWith('return (') ||
+        trimmed.startsWith('return(') ||
+        trimmed === 'return ('
+      ) {
         foundReturn = true;
         continue;
       }
@@ -191,7 +203,6 @@ function deepScanFile(filePath: string): DeepViolation[] {
         }
 
         // Only check first element after return
-        foundReturn = false;
         break;
       }
     }
@@ -203,7 +214,6 @@ function deepScanFile(filePath: string): DeepViolation[] {
 /* ─── Test Suite ─── */
 
 describe('Layout Anti-Pattern Lint — Deep Scan', () => {
-
   describe('Strict Guard — Sub-component roots in fixed files', () => {
     for (const relFile of GUARDED_FILES) {
       const absPath = path.resolve(SRC_ROOT, relFile);
@@ -219,9 +229,7 @@ describe('Layout Anti-Pattern Lint — Deep Scan', () => {
           }
           report += '\n  FIX: Remove margin from sub-component root element.\n';
           report += '  PageContent gap handles spacing between children.\n';
-          expect.fail(
-            `${violations.length} sub-component root margin(s) in ${relFile}` + report
-          );
+          expect.fail(`${violations.length} sub-component root margin(s) in ${relFile}` + report);
         }
       });
     }

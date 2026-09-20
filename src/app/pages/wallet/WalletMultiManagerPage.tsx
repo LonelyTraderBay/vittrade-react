@@ -17,14 +17,39 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  Wallet, Plus, MoreVertical, Eye, EyeOff, Copy, CheckCircle,
-  TrendingUp, DollarSign, Shield, AlertCircle, Folder,
-  Star, Clock, ArrowUpRight, ArrowDownRight, Info,
+  Wallet,
+  Plus,
+  MoreVertical,
+  Eye,
+  EyeOff,
+  Copy,
+  CheckCircle,
+  TrendingUp,
+  DollarSign,
+  Shield,
+  AlertCircle,
+  Folder,
+  Star,
+  Clock,
+  ArrowUpRight,
+  ArrowDownRight,
+  Info,
 } from 'lucide-react';
-import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+} from 'recharts';
 
 const TABS = ['Tất cả', 'Nhóm', 'Hoạt động'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface WalletItem {
   id: string;
@@ -117,8 +142,20 @@ const MOCK_WALLETS: WalletItem[] = [
 ];
 
 const MOCK_GROUPS: WalletGroup[] = [
-  { id: 'g1', name: 'Active Trading', color: '#10B981', walletIds: ['w1', 'w2'], totalValue: 74180 },
-  { id: 'g2', name: 'Long Term Hold', color: '#3B82F6', walletIds: ['w3', 'w4'], totalValue: 193500 },
+  {
+    id: 'g1',
+    name: 'Active Trading',
+    color: '#10B981',
+    walletIds: ['w1', 'w2'],
+    totalValue: 74180,
+  },
+  {
+    id: 'g2',
+    name: 'Long Term Hold',
+    color: '#3B82F6',
+    walletIds: ['w3', 'w4'],
+    totalValue: 193500,
+  },
 ];
 
 const WALLET_TYPE_COLORS = {
@@ -137,7 +174,10 @@ export function WalletMultiManagerPage() {
   const [copiedAddress, setCopiedAddress] = useState<string | null>(null);
 
   const totalBalance = MOCK_WALLETS.reduce((sum, w) => sum + w.balance, 0);
-  const totalChange = MOCK_WALLETS.reduce((sum, w) => sum + (w.balance * w.balanceChange24h / 100), 0);
+  const totalChange = MOCK_WALLETS.reduce(
+    (sum, w) => sum + (w.balance * w.balanceChange24h) / 100,
+    0,
+  );
   const totalChangePercent = (totalChange / totalBalance) * 100;
 
   const pieData = MOCK_WALLETS.map((w) => ({
@@ -211,7 +251,8 @@ export function WalletMultiManagerPage() {
                       fontWeight: 600,
                     }}
                   >
-                    {totalChangePercent >= 0 ? '+' : ''}{totalChangePercent.toFixed(2)}%
+                    {totalChangePercent >= 0 ? '+' : ''}
+                    {totalChangePercent.toFixed(2)}%
                   </p>
                 </div>
               </div>
@@ -219,7 +260,9 @@ export function WalletMultiManagerPage() {
               <div className="grid grid-cols-3 gap-3">
                 <div>
                   <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Wallets</p>
-                  <p style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>{MOCK_WALLETS.length}</p>
+                  <p style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>
+                    {MOCK_WALLETS.length}
+                  </p>
                 </div>
                 <div>
                   <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>24h Change</p>
@@ -235,7 +278,9 @@ export function WalletMultiManagerPage() {
                 </div>
                 <div>
                   <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Groups</p>
-                  <p style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>{MOCK_GROUPS.length}</p>
+                  <p style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>
+                    {MOCK_GROUPS.length}
+                  </p>
                 </div>
               </div>
             </div>
@@ -290,7 +335,10 @@ export function WalletMultiManagerPage() {
                       onClick={() => setSelectedWallet(wallet.id)}
                       className="rounded-2xl p-4 cursor-pointer hover:opacity-90 transition-opacity"
                       style={{
-                        background: selectedWallet === wallet.id ? `${COLORS[idx % COLORS.length]}08` : c.surface,
+                        background:
+                          selectedWallet === wallet.id
+                            ? `${COLORS[idx % COLORS.length]}08`
+                            : c.surface,
                         border: `1px solid ${selectedWallet === wallet.id ? COLORS[idx % COLORS.length] : c.border}`,
                       }}
                     >
@@ -321,10 +369,14 @@ export function WalletMultiManagerPage() {
                                   DEFAULT
                                 </span>
                               )}
-                              {wallet.isFavorite && <Star size={12} color="#F59E0B" fill="#F59E0B" />}
+                              {wallet.isFavorite && (
+                                <Star size={12} color="#F59E0B" fill="#F59E0B" />
+                              )}
                             </div>
                             <div className="flex items-center gap-2">
-                              <code style={{ color: c.text3, fontSize: 10, fontFamily: 'monospace' }}>
+                              <code
+                                style={{ color: c.text3, fontSize: 10, fontFamily: 'monospace' }}
+                              >
                                 {isRevealed ? wallet.address : maskAddress(wallet.address)}
                               </code>
                               <button
@@ -387,7 +439,8 @@ export function WalletMultiManagerPage() {
                                 fontWeight: 600,
                               }}
                             >
-                              {wallet.balanceChange24h >= 0 ? '+' : ''}{wallet.balanceChange24h}%
+                              {wallet.balanceChange24h >= 0 ? '+' : ''}
+                              {wallet.balanceChange24h}%
                             </p>
                           </div>
                         </div>
@@ -412,7 +465,10 @@ export function WalletMultiManagerPage() {
                       </div>
 
                       {/* Footer */}
-                      <div className="flex items-center justify-between pt-2" style={{ borderTop: `1px solid ${c.border}` }}>
+                      <div
+                        className="flex items-center justify-between pt-2"
+                        style={{ borderTop: `1px solid ${c.border}` }}
+                      >
                         <div className="flex items-center gap-1.5">
                           <Clock size={10} color={c.text3} />
                           <p style={{ color: c.text3, fontSize: 10 }}>
@@ -459,11 +515,15 @@ export function WalletMultiManagerPage() {
             {/* Security Info */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+              style={{
+                background: 'rgba(59,130,246,0.06)',
+                border: '1px solid rgba(59,130,246,0.15)',
+              }}
             >
               <Shield size={14} color="#3B82F6" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Addresses are masked by default. Click eye icon to reveal. Never share your private keys.
+                Addresses are masked by default. Click eye icon to reveal. Never share your private
+                keys.
               </p>
             </div>
           </>
@@ -491,7 +551,9 @@ export function WalletMultiManagerPage() {
                             background: group.color,
                           }}
                         />
-                        <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>{group.name}</p>
+                        <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>
+                          {group.name}
+                        </p>
                       </div>
                       <button className="p-2 rounded-lg hover:opacity-70">
                         <MoreVertical size={16} color={c.text3} />
@@ -557,45 +619,51 @@ export function WalletMultiManagerPage() {
           <>
             {/* Activity by Wallet */}
             <PageSection label="Recent Activity">
-              {MOCK_WALLETS.sort((a, b) => b.lastActive.getTime() - a.lastActive.getTime()).map((wallet) => (
-                <div
-                  key={wallet.id}
-                  className="rounded-xl p-3 flex items-center justify-between"
-                  style={{ background: c.surface, border: `1px solid ${c.border}` }}
-                >
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="flex items-center justify-center"
-                      style={{
-                        width: 32,
-                        height: 32,
-                        borderRadius: 8,
-                        background: `${WALLET_TYPE_COLORS[wallet.type]}20`,
-                      }}
-                    >
-                      <Wallet size={16} color={WALLET_TYPE_COLORS[wallet.type]} />
+              {MOCK_WALLETS.sort((a, b) => b.lastActive.getTime() - a.lastActive.getTime()).map(
+                (wallet) => (
+                  <div
+                    key={wallet.id}
+                    className="rounded-xl p-3 flex items-center justify-between"
+                    style={{ background: c.surface, border: `1px solid ${c.border}` }}
+                  >
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="flex items-center justify-center"
+                        style={{
+                          width: 32,
+                          height: 32,
+                          borderRadius: 8,
+                          background: `${WALLET_TYPE_COLORS[wallet.type]}20`,
+                        }}
+                      >
+                        <Wallet size={16} color={WALLET_TYPE_COLORS[wallet.type]} />
+                      </div>
+                      <div>
+                        <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
+                          {wallet.name}
+                        </p>
+                        <p style={{ color: c.text3, fontSize: 10 }}>
+                          {maskAddress(wallet.address)}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>{wallet.name}</p>
-                      <p style={{ color: c.text3, fontSize: 10 }}>{maskAddress(wallet.address)}</p>
+                    <div className="text-right">
+                      <p style={{ color: c.text2, fontSize: 11 }}>
+                        {wallet.lastActive.toLocaleString('vi-VN', {
+                          month: 'short',
+                          day: 'numeric',
+                        })}
+                      </p>
+                      <p style={{ color: c.text3, fontSize: 10 }}>
+                        {wallet.lastActive.toLocaleString('vi-VN', {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p style={{ color: c.text2, fontSize: 11 }}>
-                      {wallet.lastActive.toLocaleString('vi-VN', {
-                        month: 'short',
-                        day: 'numeric',
-                      })}
-                    </p>
-                    <p style={{ color: c.text3, fontSize: 10 }}>
-                      {wallet.lastActive.toLocaleString('vi-VN', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                ),
+              )}
             </PageSection>
           </>
         )}

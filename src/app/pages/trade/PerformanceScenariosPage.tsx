@@ -2,7 +2,7 @@
  * ══════════════════════════════════════════════════════════════
  *  PerformanceScenariosPage — Phase 4 Sprint 3 Day 9-10
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - PRIIPs performance scenarios (4 scenarios required)
  * - Stress / Unfavorable / Moderate / Favorable
@@ -42,14 +42,18 @@ export function PerformanceScenariosPage() {
 
       <PageContent gap="relaxed">
         {/* Disclaimer */}
-        <div className="rounded-2xl p-3 flex gap-2.5" style={{ background: c.warningBg, border: `1px solid ${c.warningBorder}` }}>
+        <div
+          className="rounded-2xl p-3 flex gap-2.5"
+          style={{ background: c.warningBg, border: `1px solid ${c.warningBorder}` }}
+        >
           <AlertTriangle size={16} color={c.warningText} className="shrink-0 mt-0.5" />
           <div>
             <p style={{ color: c.warningText, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
               Not a Guarantee
             </p>
             <p style={{ color: c.warningText, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
-              These scenarios are illustrations based on past performance and statistical models. Actual results may differ significantly.
+              These scenarios are illustrations based on past performance and statistical models.
+              Actual results may differ significantly.
             </p>
           </div>
         </div>
@@ -66,7 +70,7 @@ export function PerformanceScenariosPage() {
 
         {/* Holding Period Selector */}
         <div className="flex gap-2">
-          {[1, 3, 5].map(period => (
+          {[1, 3, 5].map((period) => (
             <button
               key={period}
               onClick={() => setHoldingPeriod(period as HoldingPeriod)}
@@ -75,7 +79,8 @@ export function PerformanceScenariosPage() {
                 background: holdingPeriod === period ? c.primary : c.surface2,
                 color: holdingPeriod === period ? '#fff' : c.text2,
                 fontWeight: holdingPeriod === period ? 600 : 500,
-              }}>
+              }}
+            >
               {period} {period === 1 ? 'Year' : 'Years'}
             </button>
           ))}
@@ -92,8 +97,10 @@ export function PerformanceScenariosPage() {
               return (
                 <TrCard key={key} className="p-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ background: scenario.color + '15' }}>
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                      style={{ background: scenario.color + '15' }}
+                    >
                       <Icon size={22} color={scenario.color} />
                     </div>
 
@@ -103,26 +110,33 @@ export function PerformanceScenariosPage() {
                           {scenario.label} Scenario
                         </span>
                         <span style={{ color: scenario.color, fontSize: 16, fontWeight: 700 }}>
-                          {scenario.return > 0 ? '+' : ''}{scenario.return}% p.a.
+                          {scenario.return > 0 ? '+' : ''}
+                          {scenario.return}% p.a.
                         </span>
                       </div>
 
                       <div className="grid grid-cols-2 gap-2">
                         <div className="rounded-lg p-2" style={{ background: c.surface2 }}>
-                          <p style={{ color: c.text3, fontSize: 9 }}>Value After {holdingPeriod}Y</p>
-                          <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginTop: 1 }}>
+                          <p style={{ color: c.text3, fontSize: 9 }}>
+                            Value After {holdingPeriod}Y
+                          </p>
+                          <p
+                            style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginTop: 1 }}
+                          >
                             €{Math.round(outcome).toLocaleString()}
                           </p>
                         </div>
 
                         <div className="rounded-lg p-2" style={{ background: c.surface2 }}>
                           <p style={{ color: c.text3, fontSize: 9 }}>Profit/Loss</p>
-                          <p style={{
-                            color: profit >= 0 ? '#10B981' : '#EF4444',
-                            fontSize: 13,
-                            fontWeight: 700,
-                            marginTop: 1
-                          }}>
+                          <p
+                            style={{
+                              color: profit >= 0 ? '#10B981' : '#EF4444',
+                              fontSize: 13,
+                              fontWeight: 700,
+                              marginTop: 1,
+                            }}
+                          >
                             {profit >= 0 ? '+' : ''}€{Math.round(profit).toLocaleString()}
                           </p>
                         </div>
@@ -136,10 +150,14 @@ export function PerformanceScenariosPage() {
         </PageSection>
 
         {/* Info */}
-        <div className="rounded-2xl p-3 flex gap-2.5" style={{ background: c.infoBg, border: `1px solid ${c.infoBorder}` }}>
-          <Info size={16} color={c.infoText} className="shrink-0 mt-0.5" />
-          <p style={{ color: c.infoText, fontSize: 10, lineHeight: 1.4 }}>
-            Scenarios calculated using statistical models based on historical volatility and returns. The stress scenario shows what you might get back in extreme market conditions.
+        <div
+          className="rounded-2xl p-3 flex gap-2.5"
+          style={{ background: 'rgba(59,130,246,0.08)', border: `1px solid rgba(59,130,246,0.20)` }}
+        >
+          <Info size={16} color={c.info} className="shrink-0 mt-0.5" />
+          <p style={{ color: c.info, fontSize: 10, lineHeight: 1.4 }}>
+            Scenarios calculated using statistical models based on historical volatility and
+            returns. The stress scenario shows what you might get back in extreme market conditions.
           </p>
         </div>
       </PageContent>

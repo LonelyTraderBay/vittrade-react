@@ -2,20 +2,20 @@
  * ══════════════════════════════════════════════════════════════
  *  ExecutionVenueAnalysisPage — Phase 4 Sprint 1 Day 9-10
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Detailed execution venue comparison & analysis
  * - Cost breakdown (fees, spread, market impact)
  * - Speed analysis (latency, fill time)
  * - Liquidity metrics
  * - Venue selection optimization
- * 
+ *
  * Compliance:
  * - Supports Best Execution obligation (MiFID II Art. 27)
  * - Transparency in venue selection criteria
  * - Data-driven decision making
  * - Cost-benefit analysis for clients
- * 
+ *
  * Features:
  * - Side-by-side venue comparison
  * - Historical performance trends
@@ -23,7 +23,7 @@
  * - Speed efficiency ranking
  * - Liquidity depth analysis
  * - Custom filters & sorting
- * 
+ *
  * Guidelines:
  * - PageLayout + TabBar pattern
  * - Interactive comparison tables
@@ -34,9 +34,20 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  TrendingUp, DollarSign, Zap, Activity, BarChart3, Filter,
-  Download, ChevronDown, Target, Award, CheckCircle, Shield,
-  Clock, TrendingDown
+  TrendingUp,
+  DollarSign,
+  Zap,
+  Activity,
+  BarChart3,
+  Filter,
+  Download,
+  ChevronDown,
+  Target,
+  Award,
+  CheckCircle,
+  Shield,
+  Clock,
+  TrendingDown,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -46,8 +57,15 @@ import { useThemeColors } from '../../hooks/useThemeColors';
 import { TrCard } from '../../components/ui/TrCard';
 import { fmtUsd, fmtNum, fmtPct } from '../../data/formatNumber';
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer, LineChart, Line
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  LineChart,
+  Line,
 } from 'recharts';
 
 type TabType = 'comparison' | 'costs' | 'speed' | 'trends';
@@ -95,16 +113,16 @@ const VENUE_METRICS: VenueMetrics[] = [
     avgFillTime: 0.5,
     fillRate: 99.5,
     liquidity: 180,
-    reliability: 99.90,
+    reliability: 99.9,
   },
   {
     venue: 'Kraken',
     volume: 6780,
     value: 465000000,
-    avgFee: 0.10,
+    avgFee: 0.1,
     avgSpread: 2.8,
     marketImpact: 1.3,
-    totalCost: 4.30,
+    totalCost: 4.3,
     avgLatency: 55,
     avgFillTime: 0.4,
     fillRate: 99.3,
@@ -123,7 +141,7 @@ const VENUE_METRICS: VenueMetrics[] = [
     avgFillTime: 0.35,
     fillRate: 98.9,
     liquidity: 120,
-    reliability: 99.80,
+    reliability: 99.8,
   },
   {
     venue: 'OKX',
@@ -144,7 +162,7 @@ const VENUE_METRICS: VenueMetrics[] = [
 const COST_TRENDS = [
   { month: 'Nov', binance: 3.9, coinbase: 4.9, kraken: 4.4 },
   { month: 'Dec', binance: 3.85, coinbase: 4.85, kraken: 4.35 },
-  { month: 'Jan', binance: 3.88, coinbase: 4.82, kraken: 4.30 },
+  { month: 'Jan', binance: 3.88, coinbase: 4.82, kraken: 4.3 },
 ];
 
 export function ExecutionVenueAnalysisPage() {
@@ -196,29 +214,29 @@ export function ExecutionVenueAnalysisPage() {
             <p style={{ color: c.text1, fontSize: 20, fontWeight: 700, marginTop: 4 }}>
               {VENUE_METRICS.length}
             </p>
-            <p style={{ color: c.text3, fontSize: 9, marginTop: 2 }}>
-              Active integrations
-            </p>
+            <p style={{ color: c.text3, fontSize: 9, marginTop: 2 }}>Active integrations</p>
           </TrCard>
 
           <TrCard className="p-3">
             <p style={{ color: c.text3, fontSize: 10 }}>Avg Total Cost</p>
             <p style={{ color: c.text1, fontSize: 20, fontWeight: 700, marginTop: 4 }}>
-              {(VENUE_METRICS.reduce((s, v) => s + v.totalCost, 0) / VENUE_METRICS.length).toFixed(2)} bps
+              {(VENUE_METRICS.reduce((s, v) => s + v.totalCost, 0) / VENUE_METRICS.length).toFixed(
+                2,
+              )}{' '}
+              bps
             </p>
-            <p style={{ color: '#10B981', fontSize: 9, marginTop: 2 }}>
-              -5% vs last quarter
-            </p>
+            <p style={{ color: '#10B981', fontSize: 9, marginTop: 2 }}>-5% vs last quarter</p>
           </TrCard>
 
           <TrCard className="p-3">
             <p style={{ color: c.text3, fontSize: 10 }}>Avg Fill Time</p>
             <p style={{ color: c.text1, fontSize: 20, fontWeight: 700, marginTop: 4 }}>
-              {(VENUE_METRICS.reduce((s, v) => s + v.avgFillTime, 0) / VENUE_METRICS.length).toFixed(2)}s
+              {(
+                VENUE_METRICS.reduce((s, v) => s + v.avgFillTime, 0) / VENUE_METRICS.length
+              ).toFixed(2)}
+              s
             </p>
-            <p style={{ color: '#10B981', fontSize: 9, marginTop: 2 }}>
-              -12% vs last quarter
-            </p>
+            <p style={{ color: '#10B981', fontSize: 9, marginTop: 2 }}>-12% vs last quarter</p>
           </TrCard>
         </div>
 
@@ -227,7 +245,7 @@ export function ExecutionVenueAnalysisPage() {
           <Filter size={16} color={c.text3} />
           <span style={{ color: c.text3, fontSize: 11 }}>Sort by:</span>
           <div className="flex gap-2">
-            {SORT_OPTIONS.map(opt => (
+            {SORT_OPTIONS.map((opt) => (
               <button
                 key={opt.id}
                 onClick={() => setSortBy(opt.id)}
@@ -236,7 +254,8 @@ export function ExecutionVenueAnalysisPage() {
                   background: sortBy === opt.id ? c.primary : c.surface2,
                   color: sortBy === opt.id ? '#fff' : c.text2,
                   fontWeight: sortBy === opt.id ? 600 : 500,
-                }}>
+                }}
+              >
                 {opt.label}
               </button>
             ))}
@@ -244,7 +263,7 @@ export function ExecutionVenueAnalysisPage() {
         </div>
 
         {/* Tabs */}
-        <TabBar tabs={TABS} active={tab} onChange={setTab} variant="underline" />
+        <TabBar<TabType> tabs={TABS} active={tab} onChange={setTab} variant="underline" />
 
         {/* Content */}
         {tab === 'comparison' && (
@@ -253,21 +272,23 @@ export function ExecutionVenueAnalysisPage() {
               {sortedVenues.map((venue, idx) => (
                 <TrCard key={venue.venue} className="p-3">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                      style={{ background: idx === 0 ? '#F59E0B' + '15' : c.surface2 }}>
-                      <span style={{
-                        color: idx === 0 ? '#F59E0B' : c.text2,
-                        fontSize: 14,
-                        fontWeight: 700
-                      }}>
+                    <div
+                      className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                      style={{ background: idx === 0 ? '#F59E0B' + '15' : c.surface2 }}
+                    >
+                      <span
+                        style={{
+                          color: idx === 0 ? '#F59E0B' : c.text2,
+                          fontSize: 14,
+                          fontWeight: 700,
+                        }}
+                      >
                         #{idx + 1}
                       </span>
                     </div>
 
                     <div className="flex-1">
-                      <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>
-                        {venue.venue}
-                      </p>
+                      <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>{venue.venue}</p>
                       <p style={{ color: c.text3, fontSize: 10, marginTop: 1 }}>
                         {fmtNum(venue.volume)} orders • {fmtUsd(venue.value)}
                       </p>
@@ -328,11 +349,17 @@ export function ExecutionVenueAnalysisPage() {
                           {venue.avgFee}%
                         </span>
                       </div>
-                      <div className="h-1.5 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
-                        <div className="h-full rounded-full" style={{
-                          width: `${(venue.avgFee / 0.12) * 100}%`,
-                          background: '#3B82F6'
-                        }} />
+                      <div
+                        className="h-1.5 rounded-full overflow-hidden"
+                        style={{ background: c.surface2 }}
+                      >
+                        <div
+                          className="h-full rounded-full"
+                          style={{
+                            width: `${(venue.avgFee / 0.12) * 100}%`,
+                            background: '#3B82F6',
+                          }}
+                        />
                       </div>
                     </div>
 
@@ -343,11 +370,17 @@ export function ExecutionVenueAnalysisPage() {
                           {venue.avgSpread.toFixed(1)} bps
                         </span>
                       </div>
-                      <div className="h-1.5 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
-                        <div className="h-full rounded-full" style={{
-                          width: `${(venue.avgSpread / 3.2) * 100}%`,
-                          background: '#10B981'
-                        }} />
+                      <div
+                        className="h-1.5 rounded-full overflow-hidden"
+                        style={{ background: c.surface2 }}
+                      >
+                        <div
+                          className="h-full rounded-full"
+                          style={{
+                            width: `${(venue.avgSpread / 3.2) * 100}%`,
+                            background: '#10B981',
+                          }}
+                        />
                       </div>
                     </div>
 
@@ -358,17 +391,25 @@ export function ExecutionVenueAnalysisPage() {
                           {venue.marketImpact.toFixed(1)} bps
                         </span>
                       </div>
-                      <div className="h-1.5 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
-                        <div className="h-full rounded-full" style={{
-                          width: `${(venue.marketImpact / 1.6) * 100}%`,
-                          background: '#F59E0B'
-                        }} />
+                      <div
+                        className="h-1.5 rounded-full overflow-hidden"
+                        style={{ background: c.surface2 }}
+                      >
+                        <div
+                          className="h-full rounded-full"
+                          style={{
+                            width: `${(venue.marketImpact / 1.6) * 100}%`,
+                            background: '#F59E0B',
+                          }}
+                        />
                       </div>
                     </div>
 
                     <div className="pt-2 mt-2 border-t" style={{ borderColor: c.border }}>
                       <div className="flex items-center justify-between">
-                        <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>Total Cost</span>
+                        <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
+                          Total Cost
+                        </span>
                         <span style={{ color: c.primary, fontSize: 14, fontWeight: 700 }}>
                           {venue.totalCost.toFixed(2)} bps
                         </span>
@@ -387,16 +428,16 @@ export function ExecutionVenueAnalysisPage() {
               {sortedVenues.map((venue) => (
                 <TrCard key={venue.venue} className="p-3">
                   <div className="flex items-center justify-between mb-2">
-                    <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
-                      {venue.venue}
-                    </p>
+                    <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>{venue.venue}</p>
                     <div className="flex items-center gap-1.5">
                       <Zap size={14} color={venue.avgFillTime < 0.4 ? '#10B981' : '#F59E0B'} />
-                      <span style={{
-                        color: venue.avgFillTime < 0.4 ? '#10B981' : '#F59E0B',
-                        fontSize: 14,
-                        fontWeight: 700
-                      }}>
+                      <span
+                        style={{
+                          color: venue.avgFillTime < 0.4 ? '#10B981' : '#F59E0B',
+                          fontSize: 14,
+                          fontWeight: 700,
+                        }}
+                      >
                         {venue.avgFillTime}s
                       </span>
                     </div>
@@ -440,13 +481,37 @@ export function ExecutionVenueAnalysisPage() {
                       fontSize: 11,
                     }}
                   />
-                  <Line key="line-binance" type="monotone" dataKey="binance" name="Binance" stroke="#F59E0B" strokeWidth={2} />
-                  <Line key="line-coinbase" type="monotone" dataKey="coinbase" name="Coinbase" stroke="#3B82F6" strokeWidth={2} />
-                  <Line key="line-kraken" type="monotone" dataKey="kraken" name="Kraken" stroke="#10B981" strokeWidth={2} />
+                  <Line
+                    key="line-binance"
+                    type="monotone"
+                    dataKey="binance"
+                    name="Binance"
+                    stroke="#F59E0B"
+                    strokeWidth={2}
+                  />
+                  <Line
+                    key="line-coinbase"
+                    type="monotone"
+                    dataKey="coinbase"
+                    name="Coinbase"
+                    stroke="#3B82F6"
+                    strokeWidth={2}
+                  />
+                  <Line
+                    key="line-kraken"
+                    type="monotone"
+                    dataKey="kraken"
+                    name="Kraken"
+                    stroke="#10B981"
+                    strokeWidth={2}
+                  />
                 </LineChart>
               </ResponsiveContainer>
 
-              <div className="flex items-center justify-center gap-4 mt-3 pt-3 border-t" style={{ borderColor: c.border }}>
+              <div
+                className="flex items-center justify-center gap-4 mt-3 pt-3 border-t"
+                style={{ borderColor: c.border }}
+              >
                 <div className="flex items-center gap-1.5">
                   <div className="w-2 h-2 rounded-full" style={{ background: '#F59E0B' }} />
                   <span style={{ color: c.text3, fontSize: 10 }}>Binance</span>
@@ -461,8 +526,8 @@ export function ExecutionVenueAnalysisPage() {
                 </div>
               </div>
 
-              <div className="mt-3 p-3 rounded-lg" style={{ background: c.successBg }}>
-                <p style={{ color: c.successText, fontSize: 11, fontWeight: 600 }}>
+              <div className="mt-3 p-3 rounded-lg" style={{ background: c.buyAlpha10 }}>
+                <p style={{ color: c.success, fontSize: 11, fontWeight: 600 }}>
                   ✓ Overall costs trending down 5% over last 3 months
                 </p>
               </div>

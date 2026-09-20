@@ -1,11 +1,25 @@
 import React, { useState } from 'react';
-import { ChevronRight, CheckCircle2, AlertTriangle, TrendingUp, Shield, Target } from 'lucide-react';
+import {
+  ChevronRight,
+  CheckCircle2,
+  AlertTriangle,
+  TrendingUp,
+  Shield,
+  Target,
+} from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout, StickyFooter } from '../../components/layout/PageLayout';
 import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { TrCard } from '../../components/ui/TrCard';
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer, Tooltip } from 'recharts';
+import {
+  Radar,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  ResponsiveContainer,
+  Tooltip,
+} from 'recharts';
 
 type QuestionType = 'single' | 'slider' | 'quiz';
 
@@ -33,14 +47,26 @@ const QUESTIONS: Question[] = [
     id: 'net-worth',
     question: 'What is your total net worth (excluding primary residence)?',
     type: 'single',
-    options: ['Less than $10,000', '$10,000-$50,000', '$50,000-$100,000', '$100,000-$500,000', 'Over $500,000'],
+    options: [
+      'Less than $10,000',
+      '$10,000-$50,000',
+      '$50,000-$100,000',
+      '$100,000-$500,000',
+      'Over $500,000',
+    ],
     weights: [0, 10, 20, 30, 40],
   },
   {
     id: 'income',
     question: 'What is your annual income?',
     type: 'single',
-    options: ['Less than $30,000', '$30,000-$60,000', '$60,000-$100,000', '$100,000-$200,000', 'Over $200,000'],
+    options: [
+      'Less than $30,000',
+      '$30,000-$60,000',
+      '$60,000-$100,000',
+      '$100,000-$200,000',
+      'Over $200,000',
+    ],
     weights: [0, 10, 15, 20, 25],
   },
   {
@@ -59,7 +85,8 @@ const QUESTIONS: Question[] = [
   },
   {
     id: 'risk',
-    question: 'How would you rate your risk tolerance? (1 = Very Conservative, 10 = Very Aggressive)',
+    question:
+      'How would you rate your risk tolerance? (1 = Very Conservative, 10 = Very Aggressive)',
     type: 'slider',
     min: 1,
     max: 10,
@@ -72,27 +99,52 @@ const QUESTIONS: Question[] = [
     quizQuestions: [
       {
         q: 'What is slashing in Proof of Stake?',
-        options: ['A reward mechanism', 'A penalty for validator misbehavior', 'A way to unstake faster', 'A fee structure'],
+        options: [
+          'A reward mechanism',
+          'A penalty for validator misbehavior',
+          'A way to unstake faster',
+          'A fee structure',
+        ],
         correct: 1,
       },
       {
         q: 'What does APY stand for?',
-        options: ['Annual Payment Yield', 'Annual Percentage Yield', 'Average Profit Yearly', 'Asset Price Yield'],
+        options: [
+          'Annual Payment Yield',
+          'Annual Percentage Yield',
+          'Average Profit Yearly',
+          'Asset Price Yield',
+        ],
         correct: 1,
       },
       {
         q: 'What is a lock-up period?',
-        options: ['Time to earn rewards', 'Time funds are locked and cannot be withdrawn', 'Time to verify transactions', 'Validator uptime'],
+        options: [
+          'Time to earn rewards',
+          'Time funds are locked and cannot be withdrawn',
+          'Time to verify transactions',
+          'Validator uptime',
+        ],
         correct: 1,
       },
       {
         q: 'What is liquid staking?',
-        options: ['Staking only stablecoins', 'Staking with instant withdrawal', 'Staking while maintaining liquidity via derivative tokens', 'Staking in liquidity pools'],
+        options: [
+          'Staking only stablecoins',
+          'Staking with instant withdrawal',
+          'Staking while maintaining liquidity via derivative tokens',
+          'Staking in liquidity pools',
+        ],
         correct: 2,
       },
       {
         q: 'What is the main risk of staking?',
-        options: ['High fees', 'Slashing and smart contract risk', 'Slow transactions', 'No rewards'],
+        options: [
+          'High fees',
+          'Slashing and smart contract risk',
+          'Slow transactions',
+          'No rewards',
+        ],
         correct: 1,
       },
     ],
@@ -157,7 +209,7 @@ export function StakingSuitabilityAssessmentPage() {
 
   const calculateScore = () => {
     let total = 0;
-    QUESTIONS.forEach(q => {
+    QUESTIONS.forEach((q) => {
       const answer = answers[q.id];
       if (!answer) return;
 
@@ -166,7 +218,9 @@ export function StakingSuitabilityAssessmentPage() {
       } else if (q.type === 'slider' && q.weight) {
         total += answer * q.weight;
       } else if (q.type === 'quiz' && q.weight) {
-        const correctCount = answer.filter((a: number, idx: number) => a === q.quizQuestions![idx].correct).length;
+        const correctCount = answer.filter(
+          (a: number, idx: number) => a === q.quizQuestions![idx].correct,
+        ).length;
         total += correctCount * q.weight;
       }
     });
@@ -186,7 +240,11 @@ export function StakingSuitabilityAssessmentPage() {
     { subject: 'Experience', value: (answers['experience'] || 0) * 10, fullMark: 40 },
     { subject: 'Net Worth', value: (answers['net-worth'] || 0) * 10, fullMark: 40 },
     { subject: 'Income', value: (answers['income'] || 0) * 5, fullMark: 25 },
-    { subject: 'Objectives', value: answers['objectives'] !== undefined ? QUESTIONS[3].weights![answers['objectives']] : 0, fullMark: 35 },
+    {
+      subject: 'Objectives',
+      value: answers['objectives'] !== undefined ? QUESTIONS[3].weights![answers['objectives']] : 0,
+      fullMark: 35,
+    },
     { subject: 'Horizon', value: (answers['horizon'] || 0) * 10, fullMark: 30 },
     { subject: 'Risk Tolerance', value: (answers['risk'] || 1) * 3, fullMark: 30 },
   ];
@@ -203,24 +261,45 @@ export function StakingSuitabilityAssessmentPage() {
             <div className="text-center mb-6">
               <div
                 className="w-32 h-32 rounded-full mx-auto flex items-center justify-center mb-4"
-                style={{ background: `${profileData.color}22`, border: `4px solid ${profileData.color}` }}>
+                style={{
+                  background: `${profileData.color}22`,
+                  border: `4px solid ${profileData.color}`,
+                }}
+              >
                 <div>
-                  <p style={{ color: profileData.color, fontSize: 36, fontWeight: 700, lineHeight: 1 }}>
+                  <p
+                    style={{
+                      color: profileData.color,
+                      fontSize: 36,
+                      fontWeight: 700,
+                      lineHeight: 1,
+                    }}
+                  >
                     {score}
                   </p>
                   <p style={{ color: c.text3, fontSize: 11 }}>/ 100</p>
                 </div>
               </div>
 
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-3"
-                style={{ background: `${profileData.color}22` }}>
+              <div
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-3"
+                style={{ background: `${profileData.color}22` }}
+              >
                 <div className="w-3 h-3 rounded-full" style={{ background: profileData.color }} />
                 <p style={{ color: profileData.color, fontSize: 16, fontWeight: 700 }}>
                   {profileData.label} Investor
                 </p>
               </div>
 
-              <p style={{ color: c.text2, fontSize: 13, lineHeight: 1.6, maxWidth: 320, margin: '0 auto' }}>
+              <p
+                style={{
+                  color: c.text2,
+                  fontSize: 13,
+                  lineHeight: 1.6,
+                  maxWidth: 320,
+                  margin: '0 auto',
+                }}
+              >
                 {profileData.desc}
               </p>
             </div>
@@ -229,8 +308,19 @@ export function StakingSuitabilityAssessmentPage() {
             <ResponsiveContainer width="100%" height={240}>
               <RadarChart data={radarData}>
                 <PolarGrid key="polar-grid" stroke={c.borderSolid} />
-                <PolarAngleAxis key="polar-angle" dataKey="subject" tick={{ fill: c.text3, fontSize: 10 }} />
-                <Radar key="radar" name="Your Profile" dataKey="value" stroke={profileData.color} fill={profileData.color} fillOpacity={0.3} />
+                <PolarAngleAxis
+                  key="polar-angle"
+                  dataKey="subject"
+                  tick={{ fill: c.text3, fontSize: 10 }}
+                />
+                <Radar
+                  key="radar"
+                  name="Your Profile"
+                  dataKey="value"
+                  stroke={profileData.color}
+                  fill={profileData.color}
+                  fillOpacity={0.3}
+                />
                 <Tooltip
                   key="tooltip"
                   contentStyle={{
@@ -251,8 +341,10 @@ export function StakingSuitabilityAssessmentPage() {
                 <TrCard key={idx} hover className="p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                        style={{ background: `${profileData.color}22` }}>
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center"
+                        style={{ background: `${profileData.color}22` }}
+                      >
                         <CheckCircle2 size={20} color={profileData.color} />
                       </div>
                       <div>
@@ -269,7 +361,13 @@ export function StakingSuitabilityAssessmentPage() {
 
           {/* Warning for Conservative */}
           {profile === 'conservative' && (
-            <div className="rounded-2xl p-4" style={{ background: 'rgba(245,158,11,0.08)', border: '1.5px solid rgba(245,158,11,0.2)' }}>
+            <div
+              className="rounded-2xl p-4"
+              style={{
+                background: 'rgba(245,158,11,0.08)',
+                border: '1.5px solid rgba(245,158,11,0.2)',
+              }}
+            >
               <div className="flex gap-3">
                 <AlertTriangle size={18} color="#F59E0B" className="shrink-0 mt-0.5" />
                 <div>
@@ -277,7 +375,9 @@ export function StakingSuitabilityAssessmentPage() {
                     High-Risk Products Restricted
                   </p>
                   <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.6 }}>
-                    Based on your assessment, DeFi staking, liquid staking, and long lock-up products are restricted. You can re-assess annually or when your financial situation changes.
+                    Based on your assessment, DeFi staking, liquid staking, and long lock-up
+                    products are restricted. You can re-assess annually or when your financial
+                    situation changes.
                   </p>
                 </div>
               </div>
@@ -288,7 +388,8 @@ export function StakingSuitabilityAssessmentPage() {
           <div className="flex flex-col gap-3">
             <button
               className="w-full py-3 rounded-[14px] text-center text-sm font-semibold"
-              style={{ background: c.primary, color: '#FFF' }}>
+              style={{ background: c.primary, color: '#FFF' }}
+            >
               Explore Recommended Products
             </button>
             <button
@@ -298,7 +399,8 @@ export function StakingSuitabilityAssessmentPage() {
                 setAnswers({});
               }}
               className="w-full py-3 rounded-[14px] text-center text-sm font-semibold"
-              style={{ background: c.surface2, color: c.text1 }}>
+              style={{ background: c.surface2, color: c.text1 }}
+            >
               Retake Assessment
             </button>
           </div>
@@ -306,7 +408,8 @@ export function StakingSuitabilityAssessmentPage() {
           {/* Validity Notice */}
           <div className="rounded-xl p-3" style={{ background: c.surface2 }}>
             <p style={{ color: c.text3, fontSize: 11, textAlign: 'center' }}>
-              This assessment is valid until <strong>March 7, 2027</strong>. You must re-assess annually or if your financial situation changes significantly.
+              This assessment is valid until <strong>March 7, 2027</strong>. You must re-assess
+              annually or if your financial situation changes significantly.
             </p>
           </div>
         </PageContent>
@@ -325,9 +428,7 @@ export function StakingSuitabilityAssessmentPage() {
             <p style={{ color: c.text3, fontSize: 12 }}>
               Question {step + 1} of {totalSteps}
             </p>
-            <p style={{ color: c.text1, fontSize: 12, fontWeight: 700 }}>
-              {Math.round(progress)}%
-            </p>
+            <p style={{ color: c.text1, fontSize: 12, fontWeight: 700 }}>{Math.round(progress)}%</p>
           </div>
           <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
             <div
@@ -339,7 +440,15 @@ export function StakingSuitabilityAssessmentPage() {
 
         {/* Question */}
         <TrCard className="p-5">
-          <p style={{ color: c.text1, fontSize: 16, fontWeight: 700, lineHeight: 1.5, marginBottom: 20 }}>
+          <p
+            style={{
+              color: c.text1,
+              fontSize: 16,
+              fontWeight: 700,
+              lineHeight: 1.5,
+              marginBottom: 20,
+            }}
+          >
             {currentQuestion.question}
           </p>
 
@@ -355,11 +464,13 @@ export function StakingSuitabilityAssessmentPage() {
                     style={{
                       background: isSelected ? `${c.primary}22` : c.surface2,
                       border: `2px solid ${isSelected ? c.primary : 'transparent'}`,
-                    }}>
+                    }}
+                  >
                     <div className="flex items-center gap-3">
                       <div
                         className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0"
-                        style={{ borderColor: isSelected ? c.primary : c.borderSolid }}>
+                        style={{ borderColor: isSelected ? c.primary : c.borderSolid }}
+                      >
                         {isSelected && (
                           <div className="w-3 h-3 rounded-full" style={{ background: c.primary }} />
                         )}
@@ -383,10 +494,10 @@ export function StakingSuitabilityAssessmentPage() {
                 min={currentQuestion.min}
                 max={currentQuestion.max}
                 value={answers[currentQuestion.id] || currentQuestion.min}
-                onChange={e => handleAnswer(Number(e.target.value))}
+                onChange={(e) => handleAnswer(Number(e.target.value))}
                 className="w-full h-2 rounded-full appearance-none cursor-pointer"
                 style={{
-                  background: `linear-gradient(to right, ${c.primary} 0%, ${c.primary} ${((answers[currentQuestion.id] || currentQuestion.min!) - currentQuestion.min!) / (currentQuestion.max! - currentQuestion.min!) * 100}%, ${c.surface2} ${((answers[currentQuestion.id] || currentQuestion.min!) - currentQuestion.min!) / (currentQuestion.max! - currentQuestion.min!) * 100}%, ${c.surface2} 100%)`,
+                  background: `linear-gradient(to right, ${c.primary} 0%, ${c.primary} ${(((answers[currentQuestion.id] || currentQuestion.min!) - currentQuestion.min!) / (currentQuestion.max! - currentQuestion.min!)) * 100}%, ${c.surface2} ${(((answers[currentQuestion.id] || currentQuestion.min!) - currentQuestion.min!) / (currentQuestion.max! - currentQuestion.min!)) * 100}%, ${c.surface2} 100%)`,
                 }}
               />
               <div className="text-center mt-4">
@@ -422,7 +533,8 @@ export function StakingSuitabilityAssessmentPage() {
                               background: isSelected ? `${c.primary}22` : c.bg,
                               border: `1px solid ${isSelected ? c.primary : c.borderSolid}`,
                               color: c.text2,
-                            }}>
+                            }}
+                          >
                             {opt}
                           </button>
                         );
@@ -437,7 +549,13 @@ export function StakingSuitabilityAssessmentPage() {
 
         {/* Info box */}
         {step === 0 && (
-          <div className="rounded-2xl p-4" style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}>
+          <div
+            className="rounded-2xl p-4"
+            style={{
+              background: 'rgba(59,130,246,0.08)',
+              border: '1px solid rgba(59,130,246,0.2)',
+            }}
+          >
             <div className="flex gap-3">
               <Shield size={18} color="#3B82F6" className="shrink-0 mt-0.5" />
               <div>
@@ -445,7 +563,9 @@ export function StakingSuitabilityAssessmentPage() {
                   Why This Assessment?
                 </p>
                 <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.6 }}>
-                  Regulatory compliance requires us to assess your suitability for high-risk staking products. This helps protect you from unsuitable investments. Your answers are confidential.
+                  Regulatory compliance requires us to assess your suitability for high-risk staking
+                  products. This helps protect you from unsuitable investments. Your answers are
+                  confidential.
                 </p>
               </div>
             </div>
@@ -459,7 +579,8 @@ export function StakingSuitabilityAssessmentPage() {
             <button
               onClick={handlePrevious}
               className="flex-1 py-3 rounded-[14px] text-center text-sm font-semibold"
-              style={{ background: c.surface2, color: c.text1 }}>
+              style={{ background: c.surface2, color: c.text1 }}
+            >
               Previous
             </button>
           )}
@@ -471,7 +592,8 @@ export function StakingSuitabilityAssessmentPage() {
               background: isAnswered ? c.primary : c.surface2,
               color: isAnswered ? '#FFF' : c.text3,
               opacity: isAnswered ? 1 : 0.5,
-            }}>
+            }}
+          >
             {step === totalSteps - 1 ? 'Submit' : 'Next'}
           </button>
         </div>

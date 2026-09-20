@@ -17,12 +17,17 @@ export function ResponsivePageHeader({ title, back = true, right }: Props) {
     else navigate(-1);
   };
   return (
-    <div className="flex items-center justify-between px-5 py-3 sticky top-0 z-20"
-      style={{ background: c.bg, borderBottom: `1px solid ${c.divider}` }}>
+    <div
+      className="flex items-center justify-between px-5 py-3 sticky top-0 z-20"
+      style={{ background: c.bg, borderBottom: `1px solid ${c.divider}` }}
+    >
       <div className="flex items-center gap-3">
         {back && (
-          <button onClick={handleBack} className="w-9 h-9 flex items-center justify-center rounded-xl active:opacity-60"
-            style={{ background: c.surface2 }}>
+          <button
+            onClick={handleBack}
+            className="w-9 h-9 flex items-center justify-center rounded-xl active:opacity-60"
+            style={{ background: c.surface2 }}
+          >
             <ArrowLeft size={18} color={c.text1} />
           </button>
         )}

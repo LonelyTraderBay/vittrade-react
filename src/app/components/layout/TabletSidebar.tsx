@@ -1,10 +1,24 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import {
-  Home, BarChart2, ArrowLeftRight, Wallet, User,
-  Bell, HelpCircle, Settings, Shield, ChevronLeft,
-  ChevronRight, Layers, Zap, Globe, TrendingUp,
-  Target, Star, PieChart,
+  Home,
+  BarChart2,
+  ArrowLeftRight,
+  Wallet,
+  User,
+  Bell,
+  HelpCircle,
+  Settings,
+  Shield,
+  ChevronLeft,
+  ChevronRight,
+  Layers,
+  Zap,
+  Globe,
+  TrendingUp,
+  Target,
+  Star,
+  PieChart,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 
@@ -126,20 +140,33 @@ export function TabletSidebar() {
         </div>
         {expanded && (
           <div className="flex flex-col min-w-0">
-            <span style={{ color: c.text1, fontSize: 16, fontWeight: 700, letterSpacing: -0.3 }}>VitTrade</span>
+            <span style={{ color: c.text1, fontSize: 16, fontWeight: 700, letterSpacing: -0.3 }}>
+              VitTrade
+            </span>
             <span style={{ color: c.text3, fontSize: 10, fontWeight: 500 }}>Tablet</span>
           </div>
         )}
       </div>
 
       {/* ─── Navigation Sections ─── */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden py-3 scrollbar-none" style={{ gap: 8 }}>
+      <div
+        className="flex-1 overflow-y-auto overflow-x-hidden py-3 scrollbar-none"
+        style={{ gap: 8 }}
+      >
         {NAV_SECTIONS.map((section, si) => (
           <div key={section.title} className="mb-2">
             {/* Section label — only when expanded */}
             {expanded && (
               <div className="px-5 pt-3 pb-1.5">
-                <span style={{ color: c.text3, fontSize: 10, fontWeight: 600, letterSpacing: 0.5, textTransform: 'uppercase' }}>
+                <span
+                  style={{
+                    color: c.text3,
+                    fontSize: 10,
+                    fontWeight: 600,
+                    letterSpacing: 0.5,
+                    textTransform: 'uppercase',
+                  }}
+                >
                   {section.title}
                 </span>
               </div>
@@ -147,7 +174,7 @@ export function TabletSidebar() {
 
             {/* Section items */}
             <div className="flex flex-col gap-0.5 px-3">
-              {section.items.map(item => {
+              {section.items.map((item) => {
                 const active = isActive(item.path);
                 const Icon = item.icon;
                 return (
@@ -199,14 +226,16 @@ export function TabletSidebar() {
                     </div>
 
                     {expanded && (
-                      <span style={{
-                        color: active ? '#3B82F6' : c.text1,
-                        fontSize: 14,
-                        fontWeight: active ? 600 : 400,
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                      }}>
+                      <span
+                        style={{
+                          color: active ? '#3B82F6' : c.text1,
+                          fontSize: 14,
+                          fontWeight: active ? 600 : 400,
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
                         {item.label}
                       </span>
                     )}
@@ -228,7 +257,7 @@ export function TabletSidebar() {
         className="shrink-0 flex flex-col gap-0.5 px-3 py-3"
         style={{ borderTop: `1px solid ${c.divider}` }}
       >
-        {BOTTOM_ITEMS.map(item => {
+        {BOTTOM_ITEMS.map((item) => {
           const Icon = item.icon;
           return (
             <button
@@ -246,14 +275,23 @@ export function TabletSidebar() {
                 {item.badge && item.badge > 0 && (
                   <div
                     className="absolute -top-1 -right-1.5 flex items-center justify-center rounded-full"
-                    style={{ width: 14, height: 14, background: '#EF4444', fontSize: 8, fontWeight: 700, color: '#fff' }}
+                    style={{
+                      width: 14,
+                      height: 14,
+                      background: '#EF4444',
+                      fontSize: 8,
+                      fontWeight: 700,
+                      color: '#fff',
+                    }}
                   >
                     {item.badge}
                   </div>
                 )}
               </div>
               {expanded && (
-                <span style={{ color: c.text3, fontSize: 13, whiteSpace: 'nowrap' }}>{item.label}</span>
+                <span style={{ color: c.text3, fontSize: 13, whiteSpace: 'nowrap' }}>
+                  {item.label}
+                </span>
               )}
             </button>
           );
@@ -276,9 +314,7 @@ export function TabletSidebar() {
           ) : (
             <ChevronRight size={20} color={c.text2} />
           )}
-          {expanded && (
-            <span style={{ color: c.text2, fontSize: 13 }}>Thu gọn</span>
-          )}
+          {expanded && <span style={{ color: c.text2, fontSize: 13 }}>Thu gọn</span>}
         </button>
       </div>
     </div>

@@ -1,5 +1,16 @@
 import React, { useState } from 'react';
-import { TrendingUp, Wallet, DollarSign, Calendar, Zap, Lock, ArrowRight, Download, RefreshCw, Plus } from 'lucide-react';
+import {
+  TrendingUp,
+  Wallet,
+  DollarSign,
+  Calendar,
+  Zap,
+  Lock,
+  ArrowRight,
+  Download,
+  RefreshCw,
+  Plus,
+} from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { PageContent, PageSection } from '../../components/layout/PageContent';
@@ -8,7 +19,18 @@ import { TrCard, TrCardStat } from '../../components/ui/TrCard';
 import { fmtUsd, fmtAmount } from '../../data/formatNumber';
 import { useNavigate } from 'react-router';
 import { useRoutePrefix } from '../../hooks/useRoutePrefix';
-import { LineChart, Line, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
+import {
+  LineChart,
+  Line,
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+} from 'recharts';
 import { useIsDark } from '../../hooks/useIsDark';
 
 interface Position {
@@ -34,11 +56,81 @@ interface PerformanceData {
 }
 
 const POSITIONS: Position[] = [
-  { id: 'p1', product: 'BTC Fixed 90D', asset: 'BTC', type: 'fixed', amount: 0.05, usdValue: 3377, earned: 0.00029, earnedUsd: 19.58, apy: 5.8, startDate: '01/01/2026', endDate: '01/04/2026', status: 'active', color: '#F7931A' },
-  { id: 'p2', product: 'USDT Flexible', asset: 'USDT', type: 'flexible', amount: 2500, usdValue: 2500, earned: 18.74, earnedUsd: 18.74, apy: 6.5, startDate: '15/01/2026', endDate: null, status: 'active', color: '#26A17B' },
-  { id: 'p3', product: 'ETH Fixed 60D', asset: 'ETH', type: 'fixed', amount: 1.5, usdValue: 4200, earned: 0.035, earnedUsd: 98, apy: 7.2, startDate: '20/01/2026', endDate: '21/03/2026', status: 'maturing', color: '#627EEA' },
-  { id: 'p4', product: 'SOL Fixed 30D', asset: 'SOL', type: 'fixed', amount: 50, usdValue: 6500, earned: 1.2, earnedUsd: 156, apy: 9.8, startDate: '01/02/2026', endDate: '03/03/2026', status: 'maturing', color: '#9945FF' },
-  { id: 'p5', product: 'ETH-USDT LP', asset: 'LP', type: 'defi', amount: 1000, usdValue: 1000, earned: 23.5, earnedUsd: 23.5, apy: 18.7, startDate: '10/02/2026', endDate: null, status: 'active', color: '#06B6D4' },
+  {
+    id: 'p1',
+    product: 'BTC Fixed 90D',
+    asset: 'BTC',
+    type: 'fixed',
+    amount: 0.05,
+    usdValue: 3377,
+    earned: 0.00029,
+    earnedUsd: 19.58,
+    apy: 5.8,
+    startDate: '01/01/2026',
+    endDate: '01/04/2026',
+    status: 'active',
+    color: '#F7931A',
+  },
+  {
+    id: 'p2',
+    product: 'USDT Flexible',
+    asset: 'USDT',
+    type: 'flexible',
+    amount: 2500,
+    usdValue: 2500,
+    earned: 18.74,
+    earnedUsd: 18.74,
+    apy: 6.5,
+    startDate: '15/01/2026',
+    endDate: null,
+    status: 'active',
+    color: '#26A17B',
+  },
+  {
+    id: 'p3',
+    product: 'ETH Fixed 60D',
+    asset: 'ETH',
+    type: 'fixed',
+    amount: 1.5,
+    usdValue: 4200,
+    earned: 0.035,
+    earnedUsd: 98,
+    apy: 7.2,
+    startDate: '20/01/2026',
+    endDate: '21/03/2026',
+    status: 'maturing',
+    color: '#627EEA',
+  },
+  {
+    id: 'p4',
+    product: 'SOL Fixed 30D',
+    asset: 'SOL',
+    type: 'fixed',
+    amount: 50,
+    usdValue: 6500,
+    earned: 1.2,
+    earnedUsd: 156,
+    apy: 9.8,
+    startDate: '01/02/2026',
+    endDate: '03/03/2026',
+    status: 'maturing',
+    color: '#9945FF',
+  },
+  {
+    id: 'p5',
+    product: 'ETH-USDT LP',
+    asset: 'LP',
+    type: 'defi',
+    amount: 1000,
+    usdValue: 1000,
+    earned: 23.5,
+    earnedUsd: 23.5,
+    apy: 18.7,
+    startDate: '10/02/2026',
+    endDate: null,
+    status: 'active',
+    color: '#06B6D4',
+  },
 ];
 
 const PERFORMANCE_DATA: PerformanceData[] = [
@@ -59,17 +151,17 @@ export function StakingDashboardPage() {
 
   const totalStaked = POSITIONS.reduce((sum, p) => sum + p.usdValue, 0);
   const totalEarned = POSITIONS.reduce((sum, p) => sum + p.earnedUsd, 0);
-  const weightedAPY = POSITIONS.reduce((sum, p) => sum + (p.apy * p.usdValue), 0) / totalStaked;
-  
+  const weightedAPY = POSITIONS.reduce((sum, p) => sum + p.apy * p.usdValue, 0) / totalStaked;
+
   const dailyEarnings = totalStaked * (weightedAPY / 100 / 365);
   const monthlyEarnings = dailyEarnings * 30;
   const yearlyProjection = dailyEarnings * 365;
 
-  const activePositions = POSITIONS.filter(p => p.status === 'active').length;
-  const maturingSoon = POSITIONS.filter(p => p.status === 'maturing').length;
+  const activePositions = POSITIONS.filter((p) => p.status === 'active').length;
+  const maturingSoon = POSITIONS.filter((p) => p.status === 'maturing').length;
 
   // Allocation pie chart data
-  const allocationData = POSITIONS.map(p => ({
+  const allocationData = POSITIONS.map((p) => ({
     name: p.asset,
     value: p.usdValue,
     color: p.color,
@@ -107,12 +199,9 @@ export function StakingDashboardPage() {
                 style={{
                   background: 'rgba(255,255,255,0.1)',
                   border: '1px solid rgba(255,255,255,0.15)',
-                }}>
-                <RefreshCw
-                  size={18}
-                  color="#FFF"
-                  className={isRefreshing ? 'animate-spin' : ''}
-                />
+                }}
+              >
+                <RefreshCw size={18} color="#FFF" className={isRefreshing ? 'animate-spin' : ''} />
               </button>
               <button
                 onClick={handleExport}
@@ -120,30 +209,37 @@ export function StakingDashboardPage() {
                 style={{
                   background: 'rgba(255,255,255,0.1)',
                   border: '1px solid rgba(255,255,255,0.15)',
-                }}>
+                }}
+              >
                 <Download size={18} color="#FFF" />
               </button>
             </div>
           </div>
 
           <div className="grid grid-cols-3 gap-3 mb-4">
-            <div className="rounded-xl p-3"
+            <div
+              className="rounded-xl p-3"
               style={{
                 background: 'rgba(16,185,129,0.15)',
                 border: '1px solid rgba(16,185,129,0.3)',
-              }}>
+              }}
+            >
               <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: 11, marginBottom: 4 }}>
                 Tổng thu nhập
               </p>
-              <p style={{ color: '#34D399', fontSize: 18, fontWeight: 700, fontFamily: 'monospace' }}>
+              <p
+                style={{ color: '#34D399', fontSize: 18, fontWeight: 700, fontFamily: 'monospace' }}
+              >
                 +{fmtUsd(totalEarned)}
               </p>
             </div>
-            <div className="rounded-xl p-3"
+            <div
+              className="rounded-xl p-3"
               style={{
                 background: 'rgba(59,130,246,0.15)',
                 border: '1px solid rgba(59,130,246,0.3)',
-              }}>
+              }}
+            >
               <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: 11, marginBottom: 4 }}>
                 APY trung bình
               </p>
@@ -151,11 +247,13 @@ export function StakingDashboardPage() {
                 {weightedAPY.toFixed(2)}%
               </p>
             </div>
-            <div className="rounded-xl p-3"
+            <div
+              className="rounded-xl p-3"
               style={{
                 background: 'rgba(245,158,11,0.15)',
                 border: '1px solid rgba(245,158,11,0.3)',
-              }}>
+              }}
+            >
               <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: 11, marginBottom: 4 }}>
                 Vị thế
               </p>
@@ -170,7 +268,9 @@ export function StakingDashboardPage() {
               <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 10, marginBottom: 2 }}>
                 Hàng ngày
               </p>
-              <p style={{ color: '#34D399', fontSize: 14, fontWeight: 700, fontFamily: 'monospace' }}>
+              <p
+                style={{ color: '#34D399', fontSize: 14, fontWeight: 700, fontFamily: 'monospace' }}
+              >
                 +{fmtUsd(dailyEarnings)}
               </p>
             </div>
@@ -178,7 +278,9 @@ export function StakingDashboardPage() {
               <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 10, marginBottom: 2 }}>
                 Hàng tháng
               </p>
-              <p style={{ color: '#34D399', fontSize: 14, fontWeight: 700, fontFamily: 'monospace' }}>
+              <p
+                style={{ color: '#34D399', fontSize: 14, fontWeight: 700, fontFamily: 'monospace' }}
+              >
                 +{fmtUsd(monthlyEarnings)}
               </p>
             </div>
@@ -186,7 +288,9 @@ export function StakingDashboardPage() {
               <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 10, marginBottom: 2 }}>
                 Hàng năm
               </p>
-              <p style={{ color: '#34D399', fontSize: 14, fontWeight: 700, fontFamily: 'monospace' }}>
+              <p
+                style={{ color: '#34D399', fontSize: 14, fontWeight: 700, fontFamily: 'monospace' }}
+              >
                 +{fmtUsd(yearlyProjection)}
               </p>
             </div>
@@ -258,7 +362,10 @@ export function StakingDashboardPage() {
                 <span style={{ color: c.text3, fontSize: 11 }}>Tổng giá trị</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-0.5 rounded" style={{ background: '#10B981', borderTop: '2px dashed #10B981' }} />
+                <div
+                  className="w-3 h-0.5 rounded"
+                  style={{ background: '#10B981', borderTop: '2px dashed #10B981' }}
+                />
                 <span style={{ color: c.text3, fontSize: 11 }}>Lợi nhuận</span>
               </div>
             </div>
@@ -280,7 +387,8 @@ export function StakingDashboardPage() {
                       innerRadius={35}
                       outerRadius={55}
                       paddingAngle={2}
-                      dataKey="value">
+                      dataKey="value"
+                    >
                       {allocationData.map((entry, index) => (
                         <Cell key={`dashboard-cell-${index}`} fill={entry.color} />
                       ))}
@@ -309,29 +417,42 @@ export function StakingDashboardPage() {
         {/* Active Positions */}
         <PageSection label={`Vị thế Hoạt động (${POSITIONS.length})`}>
           <div className="flex flex-col gap-3">
-            {POSITIONS.map(pos => {
+            {POSITIONS.map((pos) => {
               const daysLeft = pos.endDate
-                ? Math.ceil((new Date(pos.endDate.split('/').reverse().join('-')).getTime() - Date.now()) / 86400000)
+                ? Math.ceil(
+                    (new Date(pos.endDate.split('/').reverse().join('-')).getTime() - Date.now()) /
+                      86400000,
+                  )
                 : null;
-              
+
               return (
                 <TrCard key={pos.id} hover className="p-4">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-3 flex-1">
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center"
-                        style={{ background: `${pos.color}22`, border: `1.5px solid ${pos.color}44` }}>
+                      <div
+                        className="w-10 h-10 rounded-full flex items-center justify-center"
+                        style={{
+                          background: `${pos.color}22`,
+                          border: `1.5px solid ${pos.color}44`,
+                        }}
+                      >
                         <span style={{ color: pos.color, fontSize: 10, fontWeight: 700 }}>
                           {pos.asset.slice(0, 3)}
                         </span>
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }} className="text-truncate">
+                          <p
+                            style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}
+                            className="text-truncate"
+                          >
                             {pos.product}
                           </p>
                           {pos.status === 'maturing' && (
-                            <span className="px-2 py-0.5 rounded-md text-xs font-bold shrink-0"
-                              style={{ background: 'rgba(245,158,11,0.15)', color: '#F59E0B' }}>
+                            <span
+                              className="px-2 py-0.5 rounded-md text-xs font-bold shrink-0"
+                              style={{ background: 'rgba(245,158,11,0.15)', color: '#F59E0B' }}
+                            >
                               {daysLeft} ngày nữa
                             </span>
                           )}
@@ -345,15 +466,17 @@ export function StakingDashboardPage() {
                             <Wallet size={10} color="#10B981" />
                           )}
                           <span style={{ color: c.text3, fontSize: 11 }}>
-                            {pos.type === 'fixed' ? 'Cố định' : pos.type === 'defi' ? 'DeFi' : 'Linh hoạt'}
+                            {pos.type === 'fixed'
+                              ? 'Cố định'
+                              : pos.type === 'defi'
+                                ? 'DeFi'
+                                : 'Linh hoạt'}
                           </span>
                         </div>
                       </div>
                     </div>
                     <div className="text-right shrink-0">
-                      <p style={{ color: '#10B981', fontSize: 16, fontWeight: 700 }}>
-                        {pos.apy}%
-                      </p>
+                      <p style={{ color: '#10B981', fontSize: 16, fontWeight: 700 }}>{pos.apy}%</p>
                       <p style={{ color: c.text3, fontSize: 10 }}>APY</p>
                     </div>
                   </div>
@@ -361,14 +484,28 @@ export function StakingDashboardPage() {
                   <div className="grid grid-cols-2 gap-2">
                     <div className="rounded-xl p-2" style={{ background: c.surface2 }}>
                       <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Đang stake</p>
-                      <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}>
+                      <p
+                        style={{
+                          color: c.text1,
+                          fontSize: 13,
+                          fontWeight: 600,
+                          fontFamily: 'monospace',
+                        }}
+                      >
                         {fmtAmount(pos.amount)} {pos.asset}
                       </p>
                       <p style={{ color: c.text3, fontSize: 10 }}>{fmtUsd(pos.usdValue)}</p>
                     </div>
                     <div className="rounded-xl p-2" style={{ background: c.surface2 }}>
                       <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Đã nhận</p>
-                      <p style={{ color: '#10B981', fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}>
+                      <p
+                        style={{
+                          color: '#10B981',
+                          fontSize: 13,
+                          fontWeight: 600,
+                          fontFamily: 'monospace',
+                        }}
+                      >
                         +{fmtAmount(pos.earned)} {pos.asset}
                       </p>
                       <p style={{ color: c.text3, fontSize: 10 }}>+{fmtUsd(pos.earnedUsd)}</p>
@@ -385,14 +522,16 @@ export function StakingDashboardPage() {
           <button
             onClick={() => navigate(`${prefix}/earn/staking`)}
             className="flex items-center justify-center gap-2 py-3 rounded-xl font-semibold"
-            style={{ background: c.primary, color: '#FFF' }}>
+            style={{ background: c.primary, color: '#FFF' }}
+          >
             <Plus size={18} />
             Stake thêm
           </button>
           <button
             onClick={() => navigate(`${prefix}/earn/analytics`)}
             className="flex items-center justify-center gap-2 py-3 rounded-xl font-semibold"
-            style={{ background: c.surface2, color: c.text1 }}>
+            style={{ background: c.surface2, color: c.text1 }}
+          >
             <TrendingUp size={18} />
             Phân tích
           </button>
@@ -400,13 +539,15 @@ export function StakingDashboardPage() {
 
         {/* Navigation Cards */}
         <div className="grid grid-cols-2 gap-3">
-          <TrCard
-            hover
-            className="p-4"
-            onClick={() => navigate(`${prefix}/earn/history`)}>
+          <TrCard hover className="p-4" onClick={() => navigate(`${prefix}/earn/history`)}>
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                style={{ background: 'rgba(59,130,246,0.12)', border: '1.5px solid rgba(59,130,246,0.3)' }}>
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                style={{
+                  background: 'rgba(59,130,246,0.12)',
+                  border: '1.5px solid rgba(59,130,246,0.3)',
+                }}
+              >
                 <Calendar size={20} color="#3B82F6" />
               </div>
               <div className="flex-1">
@@ -417,13 +558,15 @@ export function StakingDashboardPage() {
             <ArrowRight size={16} color={c.text3} className="ml-auto" />
           </TrCard>
 
-          <TrCard
-            hover
-            className="p-4"
-            onClick={() => navigate(`${prefix}/earn/calendar`)}>
+          <TrCard hover className="p-4" onClick={() => navigate(`${prefix}/earn/calendar`)}>
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                style={{ background: 'rgba(16,185,129,0.12)', border: '1.5px solid rgba(16,185,129,0.3)' }}>
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                style={{
+                  background: 'rgba(16,185,129,0.12)',
+                  border: '1.5px solid rgba(16,185,129,0.3)',
+                }}
+              >
                 <DollarSign size={20} color="#10B981" />
               </div>
               <div className="flex-1">
@@ -437,8 +580,13 @@ export function StakingDashboardPage() {
 
         {/* Upcoming Maturity Alert */}
         {maturingSoon > 0 && (
-          <div className="rounded-2xl p-4"
-            style={{ background: 'rgba(245,158,11,0.08)', border: '1.5px solid rgba(245,158,11,0.2)' }}>
+          <div
+            className="rounded-2xl p-4"
+            style={{
+              background: 'rgba(245,158,11,0.08)',
+              border: '1.5px solid rgba(245,158,11,0.2)',
+            }}
+          >
             <div className="flex items-center gap-3">
               <Calendar size={20} color="#F59E0B" />
               <div className="flex-1">
@@ -452,7 +600,8 @@ export function StakingDashboardPage() {
               <button
                 onClick={() => navigate(`${prefix}/earn/calendar`)}
                 className="px-4 py-2 rounded-xl text-xs font-semibold"
-                style={{ background: '#F59E0B', color: '#FFF' }}>
+                style={{ background: '#F59E0B', color: '#FFF' }}
+              >
                 Xem
               </button>
             </div>

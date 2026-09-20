@@ -116,7 +116,7 @@ const MOCK_AML: AMLScreening = {
 //  HELPER FUNCTIONS
 // ═══════════════════════════════════════════════════════════
 
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const mockApiCall = async <T>(data: T, delayMs = 500): Promise<T> => {
   await delay(delayMs);
@@ -142,7 +142,10 @@ export const p2pKycApi = {
   /**
    * Upload identity document
    */
-  uploadIdentity: async (file: File, docType: string): Promise<{ success: boolean; ocrData?: any }> => {
+  uploadIdentity: async (
+    file: File,
+    docType: string,
+  ): Promise<{ success: boolean; ocrData?: any }> => {
     await delay(1500); // Simulate OCR processing
     return {
       success: true,
@@ -201,7 +204,10 @@ export const p2pSecurityApi = {
   /**
    * Enable 2FA
    */
-  enable2FA: async (method: 'sms' | 'app' | 'email', code: string): Promise<{ success: boolean }> => {
+  enable2FA: async (
+    method: 'sms' | 'app' | 'email',
+    code: string,
+  ): Promise<{ success: boolean }> => {
     await delay(500);
     if (code.length !== 6) throw new Error('Invalid code');
     return { success: true };
@@ -218,7 +224,9 @@ export const p2pSecurityApi = {
   /**
    * Get trusted devices
    */
-  getDevices: async (): Promise<Array<{ id: string; name: string; lastUsed: string; trusted: boolean }>> => {
+  getDevices: async (): Promise<
+    Array<{ id: string; name: string; lastUsed: string; trusted: boolean }>
+  > => {
     return mockApiCall([
       { id: '1', name: 'iPhone 15 Pro', lastUsed: '2026-03-05 14:20', trusted: true },
       { id: '2', name: 'Chrome on MacBook', lastUsed: '2026-03-04 10:30', trusted: true },
@@ -245,11 +253,31 @@ export const p2pSecurityApi = {
   /**
    * Get login history
    */
-  getLoginHistory: async (): Promise<Array<{ id: string; timestamp: string; location: string; device: string; suspicious: boolean }>> => {
+  getLoginHistory: async (): Promise<
+    Array<{ id: string; timestamp: string; location: string; device: string; suspicious: boolean }>
+  > => {
     return mockApiCall([
-      { id: '1', timestamp: '2026-03-05 14:20', location: 'Hà Nội, VN', device: 'iPhone 15 Pro', suspicious: false },
-      { id: '2', timestamp: '2026-03-05 08:30', location: 'Hà Nội, VN', device: 'iPhone 15 Pro', suspicious: false },
-      { id: '3', timestamp: '2026-03-04 18:00', location: 'Singapore, SG', device: 'Unknown Android', suspicious: true },
+      {
+        id: '1',
+        timestamp: '2026-03-05 14:20',
+        location: 'Hà Nội, VN',
+        device: 'iPhone 15 Pro',
+        suspicious: false,
+      },
+      {
+        id: '2',
+        timestamp: '2026-03-05 08:30',
+        location: 'Hà Nội, VN',
+        device: 'iPhone 15 Pro',
+        suspicious: false,
+      },
+      {
+        id: '3',
+        timestamp: '2026-03-04 18:00',
+        location: 'Singapore, SG',
+        device: 'Unknown Android',
+        suspicious: true,
+      },
     ]);
   },
 };
@@ -284,7 +312,9 @@ export const p2pWalletApi = {
   /**
    * Get escrow balance breakdown
    */
-  getEscrowBalance: async (): Promise<Array<{ orderId: string; asset: string; amount: number; status: string }>> => {
+  getEscrowBalance: async (): Promise<
+    Array<{ orderId: string; asset: string; amount: number; status: string }>
+  > => {
     return mockApiCall([
       { orderId: '45892', asset: 'USDT', amount: 500, status: 'locked' },
       { orderId: '45870', asset: 'BTC', amount: 0.01, status: 'locked' },
@@ -294,10 +324,33 @@ export const p2pWalletApi = {
   /**
    * Get fund lock history
    */
-  getFundLockHistory: async (): Promise<Array<{ id: string; type: 'lock' | 'unlock'; asset: string; amount: number; reason: string; timestamp: string }>> => {
+  getFundLockHistory: async (): Promise<
+    Array<{
+      id: string;
+      type: 'lock' | 'unlock';
+      asset: string;
+      amount: number;
+      reason: string;
+      timestamp: string;
+    }>
+  > => {
     return mockApiCall([
-      { id: '1', type: 'lock', asset: 'USDT', amount: 1500, reason: 'Order #45892 created', timestamp: '2026-03-05 14:20' },
-      { id: '2', type: 'unlock', asset: 'USDT', amount: 1000, reason: 'Order #45880 completed', timestamp: '2026-03-05 13:45' },
+      {
+        id: '1',
+        type: 'lock',
+        asset: 'USDT',
+        amount: 1500,
+        reason: 'Order #45892 created',
+        timestamp: '2026-03-05 14:20',
+      },
+      {
+        id: '2',
+        type: 'unlock',
+        asset: 'USDT',
+        amount: 1000,
+        reason: 'Order #45880 completed',
+        timestamp: '2026-03-05 13:45',
+      },
     ]);
   },
 };
@@ -324,7 +377,10 @@ export const p2pComplianceApi = {
   /**
    * Submit source of funds
    */
-  submitSourceOfFunds: async (data: { source: string; details: string }): Promise<{ success: boolean }> => {
+  submitSourceOfFunds: async (data: {
+    source: string;
+    details: string;
+  }): Promise<{ success: boolean }> => {
     await delay(500);
     return { success: true };
   },
@@ -391,7 +447,10 @@ export const p2pPaymentMethodApi = {
   /**
    * Verify payment method (micro-deposit)
    */
-  verifyPaymentMethod: async (methodId: string, amounts: number[]): Promise<{ success: boolean }> => {
+  verifyPaymentMethod: async (
+    methodId: string,
+    amounts: number[],
+  ): Promise<{ success: boolean }> => {
     await delay(800);
     // Mock verification logic
     const correctAmounts = [1.23, 4.56];
@@ -411,10 +470,35 @@ export const p2pPaymentMethodApi = {
   /**
    * Get payment method history
    */
-  getPaymentMethodHistory: async (methodId: string): Promise<Array<{ id: string; orderId: string; type: 'buy' | 'sell'; amount: number; status: string; timestamp: string }>> => {
+  getPaymentMethodHistory: async (
+    methodId: string,
+  ): Promise<
+    Array<{
+      id: string;
+      orderId: string;
+      type: 'buy' | 'sell';
+      amount: number;
+      status: string;
+      timestamp: string;
+    }>
+  > => {
     return mockApiCall([
-      { id: '1', orderId: '#45892', type: 'buy', amount: 36000000, status: 'completed', timestamp: '2026-03-05 14:20' },
-      { id: '2', orderId: '#45880', type: 'buy', amount: 24000000, status: 'completed', timestamp: '2026-03-05 13:45' },
+      {
+        id: '1',
+        orderId: '#45892',
+        type: 'buy',
+        amount: 36000000,
+        status: 'completed',
+        timestamp: '2026-03-05 14:20',
+      },
+      {
+        id: '2',
+        orderId: '#45880',
+        type: 'buy',
+        amount: 24000000,
+        status: 'completed',
+        timestamp: '2026-03-05 13:45',
+      },
     ]);
   },
 };

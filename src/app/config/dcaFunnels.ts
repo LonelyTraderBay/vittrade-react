@@ -1,9 +1,9 @@
 /**
  * DCA Conversion Funnel Definitions
- * 
+ *
  * Defines conversion funnels for tracking user journeys.
  * Each funnel represents a key path to DCA plan creation.
- * 
+ *
  * @module config/dcaFunnels
  * @version 2.0 (Phase 2 - Sprint 2)
  */
@@ -18,19 +18,19 @@
 export interface FunnelStepDefinition {
   /** Step ID */
   id: string;
-  
+
   /** Step name */
   name: string;
-  
+
   /** Description */
   description: string;
-  
+
   /** Event name that triggers this step */
   eventName: string;
-  
+
   /** Is this step required? */
   required: boolean;
-  
+
   /** Expected time to next step (ms) */
   expectedDuration?: number;
 }
@@ -41,25 +41,25 @@ export interface FunnelStepDefinition {
 export interface FunnelDefinition {
   /** Funnel ID */
   id: string;
-  
+
   /** Funnel name */
   name: string;
-  
+
   /** Description */
   description: string;
-  
+
   /** Steps in order */
   steps: FunnelStepDefinition[];
-  
+
   /** Success event (final step) */
   successEvent: string;
-  
+
   /** Expected completion time (ms) */
   expectedCompletionTime: number;
-  
+
   /** Minimum time to be considered valid (ms) */
   minCompletionTime?: number;
-  
+
   /** Metadata */
   metadata?: Record<string, any>;
 }
@@ -70,7 +70,7 @@ export interface FunnelDefinition {
 
 /**
  * Wallet Discovery to Plan Creation Funnel
- * 
+ *
  * Tracks users who discover DCA through wallet shortcut
  * and complete plan creation.
  */
@@ -138,7 +138,7 @@ export const WALLET_TO_CREATION_FUNNEL: FunnelDefinition = {
 
 /**
  * Asset Detail to Plan Creation Funnel
- * 
+ *
  * Tracks users who start DCA from asset detail page
  * with pre-selected coin.
  */
@@ -206,7 +206,7 @@ export const ASSET_TO_CREATION_FUNNEL: FunnelDefinition = {
 
 /**
  * First-Time User Funnel
- * 
+ *
  * Tracks new users from empty state to first plan creation.
  */
 export const FIRST_TIME_USER_FUNNEL: FunnelDefinition = {
@@ -265,7 +265,7 @@ export const FIRST_TIME_USER_FUNNEL: FunnelDefinition = {
 
 /**
  * Plan Activation Funnel
- * 
+ *
  * Tracks users from plan creation to first execution.
  */
 export const PLAN_ACTIVATION_FUNNEL: FunnelDefinition = {
@@ -308,10 +308,10 @@ export const PLAN_ACTIVATION_FUNNEL: FunnelDefinition = {
 
 /**
  * Pair Detail to Plan Creation Funnel
- * 
+ *
  * Tracks users who discover DCA from pair detail page (Markets)
  * and complete plan creation with pre-selected coin.
- * 
+ *
  * Key difference from Asset funnel: this starts from Markets context
  * (user browsing coins) vs Wallet context (user managing assets).
  * Higher intent signal — user is already researching a specific coin.
@@ -431,7 +431,7 @@ export function getAllFunnels(): FunnelDefinition[] {
  * Get funnels that track a specific event
  */
 export function getFunnelsByEvent(eventName: string): FunnelDefinition[] {
-  return getAllFunnels().filter(funnel =>
-    funnel.steps.some(step => step.eventName === eventName)
+  return getAllFunnels().filter((funnel) =>
+    funnel.steps.some((step) => step.eventName === eventName),
   );
 }

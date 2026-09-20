@@ -17,13 +17,22 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  Shield, AlertTriangle, CheckCircle, Trash2, Eye,
-  Clock, DollarSign, Info, XCircle, RefreshCw,
-  Infinity as InfinityIcon, TrendingUp,
+  Shield,
+  AlertTriangle,
+  CheckCircle,
+  Trash2,
+  Eye,
+  Clock,
+  DollarSign,
+  Info,
+  XCircle,
+  RefreshCw,
+  Infinity as InfinityIcon,
+  TrendingUp,
 } from 'lucide-react';
 
 const TABS = ['Hoạt động', 'Lịch sử', 'Cài đặt'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface TokenApproval {
   id: string;
@@ -198,22 +207,30 @@ export function WalletTokenApprovalPage() {
                 </div>
                 <div>
                   <p style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>Token Approvals</p>
-                  <p style={{ color: c.text3, fontSize: 12 }}>{MOCK_APPROVALS.length} active approvals</p>
+                  <p style={{ color: c.text3, fontSize: 12 }}>
+                    {MOCK_APPROVALS.length} active approvals
+                  </p>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Critical Risk</p>
-                  <p style={{ color: '#EF4444', fontSize: 18, fontWeight: 700 }}>{criticalApprovals}</p>
+                  <p style={{ color: '#EF4444', fontSize: 18, fontWeight: 700 }}>
+                    {criticalApprovals}
+                  </p>
                 </div>
                 <div>
                   <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>High Risk</p>
-                  <p style={{ color: '#F97316', fontSize: 18, fontWeight: 700 }}>{highRiskApprovals}</p>
+                  <p style={{ color: '#F97316', fontSize: 18, fontWeight: 700 }}>
+                    {highRiskApprovals}
+                  </p>
                 </div>
                 <div>
                   <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Unlimited</p>
-                  <p style={{ color: '#F59E0B', fontSize: 18, fontWeight: 700 }}>{unlimitedApprovals}</p>
+                  <p style={{ color: '#F59E0B', fontSize: 18, fontWeight: 700 }}>
+                    {unlimitedApprovals}
+                  </p>
                 </div>
                 <div>
                   <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Unused</p>
@@ -226,16 +243,24 @@ export function WalletTokenApprovalPage() {
             {criticalApprovals > 0 && (
               <div
                 className="rounded-2xl p-4"
-                style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)' }}
+                style={{
+                  background: 'rgba(239,68,68,0.06)',
+                  border: '1px solid rgba(239,68,68,0.15)',
+                }}
               >
                 <div className="flex items-start gap-2">
-                  <AlertTriangle size={16} color="#EF4444" style={{ marginTop: 2, flexShrink: 0 }} />
+                  <AlertTriangle
+                    size={16}
+                    color="#EF4444"
+                    style={{ marginTop: 2, flexShrink: 0 }}
+                  />
                   <div className="flex-1">
                     <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginBottom: 4 }}>
                       Critical Security Risk
                     </p>
                     <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                      You have {criticalApprovals} approval(s) to unverified contracts. Revoke immediately to protect your funds.
+                      You have {criticalApprovals} approval(s) to unverified contracts. Revoke
+                      immediately to protect your funds.
                     </p>
                   </div>
                 </div>
@@ -319,7 +344,8 @@ export function WalletTokenApprovalPage() {
                       <div
                         className="rounded-xl p-2 mb-3"
                         style={{
-                          background: approval.amount === 'unlimited' ? 'rgba(239,68,68,0.08)' : c.bg,
+                          background:
+                            approval.amount === 'unlimited' ? 'rgba(239,68,68,0.08)' : c.bg,
                         }}
                       >
                         <div className="flex items-center justify-between">
@@ -348,14 +374,20 @@ export function WalletTokenApprovalPage() {
                         <div>
                           <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Approved</p>
                           <p style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>
-                            {approval.approvedAt.toLocaleDateString('vi-VN', { month: 'short', year: 'numeric' })}
+                            {approval.approvedAt.toLocaleDateString('vi-VN', {
+                              month: 'short',
+                              year: 'numeric',
+                            })}
                           </p>
                         </div>
                         <div>
                           <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Last Used</p>
                           <p style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>
                             {approval.lastUsed
-                              ? approval.lastUsed.toLocaleDateString('vi-VN', { month: 'short', day: 'numeric' })
+                              ? approval.lastUsed.toLocaleDateString('vi-VN', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                })
                               : 'Never'}
                           </p>
                         </div>
@@ -373,7 +405,11 @@ export function WalletTokenApprovalPage() {
                           className="rounded-lg p-2 mt-3 flex items-start gap-1.5"
                           style={{ background: 'rgba(239,68,68,0.06)' }}
                         >
-                          <AlertTriangle size={11} color="#EF4444" style={{ marginTop: 1, flexShrink: 0 }} />
+                          <AlertTriangle
+                            size={11}
+                            color="#EF4444"
+                            style={{ marginTop: 1, flexShrink: 0 }}
+                          />
                           <p style={{ color: '#EF4444', fontSize: 10, lineHeight: 1.4 }}>
                             Unused unlimited approval - revoke to protect funds
                           </p>
@@ -405,11 +441,15 @@ export function WalletTokenApprovalPage() {
             {/* Info */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+              style={{
+                background: 'rgba(59,130,246,0.06)',
+                border: '1px solid rgba(59,130,246,0.15)',
+              }}
             >
               <Info size={14} color="#3B82F6" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Token approvals allow smart contracts to spend your tokens. Revoke unused or suspicious approvals to protect your assets.
+                Token approvals allow smart contracts to spend your tokens. Revoke unused or
+                suspicious approvals to protect your assets.
               </p>
             </div>
           </>
@@ -437,7 +477,14 @@ export function WalletTokenApprovalPage() {
                     >
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex-1">
-                          <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginBottom: 2 }}>
+                          <p
+                            style={{
+                              color: c.text1,
+                              fontSize: 13,
+                              fontWeight: 600,
+                              marginBottom: 2,
+                            }}
+                          >
                             {revoked.token} → {revoked.spenderName}
                           </p>
                           <p style={{ color: c.text3, fontSize: 11 }}>{revoked.reason}</p>
@@ -472,7 +519,9 @@ export function WalletTokenApprovalPage() {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Total Revoked</p>
-                  <p style={{ color: c.text1, fontSize: 18, fontWeight: 700 }}>{REVOKED_APPROVALS.length}</p>
+                  <p style={{ color: c.text1, fontSize: 18, fontWeight: 700 }}>
+                    {REVOKED_APPROVALS.length}
+                  </p>
                 </div>
                 <div>
                   <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Funds Protected</p>
@@ -601,7 +650,11 @@ export function WalletTokenApprovalPage() {
                   'Check contract security audits',
                 ].map((tip, idx) => (
                   <li key={idx} className="flex items-start gap-2">
-                    <CheckCircle size={14} color="#10B981" style={{ marginTop: 2, flexShrink: 0 }} />
+                    <CheckCircle
+                      size={14}
+                      color="#10B981"
+                      style={{ marginTop: 2, flexShrink: 0 }}
+                    />
                     <p style={{ color: c.text2, fontSize: 11 }}>{tip}</p>
                   </li>
                 ))}
@@ -611,11 +664,15 @@ export function WalletTokenApprovalPage() {
             {/* Warning */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)' }}
+              style={{
+                background: 'rgba(239,68,68,0.06)',
+                border: '1px solid rgba(239,68,68,0.15)',
+              }}
             >
               <AlertTriangle size={14} color="#EF4444" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Revoking approvals costs gas. Monitor approvals regularly and revoke suspicious contracts immediately.
+                Revoking approvals costs gas. Monitor approvals regularly and revoke suspicious
+                contracts immediately.
               </p>
             </div>
           </>

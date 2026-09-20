@@ -17,17 +17,35 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  Zap, TrendingUp, TrendingDown, Clock, DollarSign,
-  CheckCircle, AlertCircle, Info, Lightbulb, Activity,
-  ArrowRight, RefreshCw,
+  Zap,
+  TrendingUp,
+  TrendingDown,
+  Clock,
+  DollarSign,
+  CheckCircle,
+  AlertCircle,
+  Info,
+  Lightbulb,
+  Activity,
+  ArrowRight,
+  RefreshCw,
 } from 'lucide-react';
 import {
-  LineChart, Line, AreaChart, Area, BarChart, Bar,
-  XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine,
+  LineChart,
+  Line,
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  ReferenceLine,
 } from 'recharts';
 
 const TABS = ['Hien tai', 'Xu huong', 'Meo tiet kiem'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface GasLevel {
   speed: 'slow' | 'standard' | 'fast';
@@ -40,7 +58,14 @@ interface GasLevel {
 
 const CURRENT_GAS: GasLevel[] = [
   { speed: 'slow', label: 'Slow', gwei: 15, usd: 2.1, timeEstimate: '~3 min', recommended: false },
-  { speed: 'standard', label: 'Standard', gwei: 25, usd: 3.5, timeEstimate: '~1 min', recommended: true },
+  {
+    speed: 'standard',
+    label: 'Standard',
+    gwei: 25,
+    usd: 3.5,
+    timeEstimate: '~1 min',
+    recommended: true,
+  },
   { speed: 'fast', label: 'Fast', gwei: 35, usd: 4.9, timeEstimate: '~15 sec', recommended: false },
 ];
 
@@ -164,21 +189,25 @@ export function WalletGasOptimizerPage() {
                 background: isLow
                   ? 'rgba(16,185,129,0.06)'
                   : isHigh
-                  ? 'rgba(239,68,68,0.06)'
-                  : 'rgba(245,158,11,0.06)',
+                    ? 'rgba(239,68,68,0.06)'
+                    : 'rgba(245,158,11,0.06)',
                 border: `1px solid ${
                   isLow
                     ? 'rgba(16,185,129,0.15)'
                     : isHigh
-                    ? 'rgba(239,68,68,0.15)'
-                    : 'rgba(245,158,11,0.15)'
+                      ? 'rgba(239,68,68,0.15)'
+                      : 'rgba(245,158,11,0.15)'
                 }`,
               }}
             >
               <div className="flex items-center gap-2 mb-2">
                 <Activity size={16} color={isLow ? '#10B981' : isHigh ? '#EF4444' : '#F59E0B'} />
                 <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
-                  {isLow ? 'Low Gas Prices - Good Time!' : isHigh ? 'High Gas Prices' : 'Normal Gas Prices'}
+                  {isLow
+                    ? 'Low Gas Prices - Good Time!'
+                    : isHigh
+                      ? 'High Gas Prices'
+                      : 'Normal Gas Prices'}
                 </p>
               </div>
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
@@ -246,8 +275,8 @@ export function WalletGasOptimizerPage() {
                             level.speed === 'slow'
                               ? '#10B981'
                               : level.speed === 'standard'
-                              ? '#F59E0B'
-                              : '#EF4444',
+                                ? '#F59E0B'
+                                : '#EF4444',
                         }}
                       />
                     </div>
@@ -336,7 +365,13 @@ export function WalletGasOptimizerPage() {
                   <YAxis
                     tick={{ fill: c.text3, fontSize: 10 }}
                     axisLine={{ stroke: c.border }}
-                    label={{ value: 'Gwei', angle: -90, position: 'insideLeft', fill: c.text3, fontSize: 10 }}
+                    label={{
+                      value: 'Gwei',
+                      angle: -90,
+                      position: 'insideLeft',
+                      fill: c.text3,
+                      fontSize: 10,
+                    }}
                   />
                   <Tooltip
                     contentStyle={{
@@ -393,10 +428,7 @@ export function WalletGasOptimizerPage() {
                     tick={{ fill: c.text3, fontSize: 10 }}
                     axisLine={{ stroke: c.border }}
                   />
-                  <YAxis
-                    tick={{ fill: c.text3, fontSize: 10 }}
-                    axisLine={{ stroke: c.border }}
-                  />
+                  <YAxis tick={{ fill: c.text3, fontSize: 10 }} axisLine={{ stroke: c.border }} />
                   <Tooltip
                     contentStyle={{
                       background: c.surface,
@@ -414,7 +446,10 @@ export function WalletGasOptimizerPage() {
             {/* Best Time to Transact */}
             <div
               className="rounded-2xl p-4"
-              style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}
+              style={{
+                background: 'rgba(16,185,129,0.06)',
+                border: '1px solid rgba(16,185,129,0.15)',
+              }}
             >
               <div className="flex items-start gap-2 mb-3">
                 <Clock size={16} color="#10B981" style={{ marginTop: 2 }} />
@@ -423,7 +458,9 @@ export function WalletGasOptimizerPage() {
                     Best Time to Transact
                   </p>
                   <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                    Gas fees are typically lowest between <span style={{ color: '#10B981', fontWeight: 700 }}>2 AM - 6 AM UTC</span> (Saturday - Sunday)
+                    Gas fees are typically lowest between{' '}
+                    <span style={{ color: '#10B981', fontWeight: 700 }}>2 AM - 6 AM UTC</span>{' '}
+                    (Saturday - Sunday)
                   </p>
                 </div>
               </div>
@@ -460,16 +497,17 @@ export function WalletGasOptimizerPage() {
                         <span
                           className="px-1.5 py-0.5 rounded text-[10px] font-semibold"
                           style={{
-                            background: stat.trend === 'down' ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)',
+                            background:
+                              stat.trend === 'down'
+                                ? 'rgba(16,185,129,0.1)'
+                                : 'rgba(239,68,68,0.1)',
                             color: stat.trend === 'down' ? '#10B981' : '#EF4444',
                           }}
                         >
                           {stat.change}
                         </span>
                       )}
-                      {stat.date && (
-                        <p style={{ color: c.text3, fontSize: 10 }}>{stat.date}</p>
-                      )}
+                      {stat.date && <p style={{ color: c.text3, fontSize: 10 }}>{stat.date}</p>}
                     </div>
                   </div>
                 ))}
@@ -559,7 +597,9 @@ export function WalletGasOptimizerPage() {
                   >
                     <div className="flex items-center gap-2">
                       <action.icon size={16} color={c.text3} />
-                      <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>{action.label}</p>
+                      <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
+                        {action.label}
+                      </p>
                     </div>
                     <ArrowRight size={14} color={c.text3} />
                   </button>
@@ -570,11 +610,15 @@ export function WalletGasOptimizerPage() {
             {/* Info */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+              style={{
+                background: 'rgba(59,130,246,0.06)',
+                border: '1px solid rgba(59,130,246,0.15)',
+              }}
             >
               <Info size={14} color="#3B82F6" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Gas prices vary based on network congestion. Monitor trends and use optimization strategies to save on fees.
+                Gas prices vary based on network congestion. Monitor trends and use optimization
+                strategies to save on fees.
               </p>
             </div>
           </>

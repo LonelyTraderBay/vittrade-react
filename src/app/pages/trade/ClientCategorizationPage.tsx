@@ -2,13 +2,13 @@
  * ══════════════════════════════════════════════════════════════
  *  ClientCategorizationPage — Phase 4 Sprint 2 Day 1-2
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - MiFID II client categorization (Retail / Professional / ECP)
  * - Opt-up / opt-down request workflows
  * - Category-specific protections disclosure
  * - Regulatory compliance tracking
- * 
+ *
  * Compliance:
  * - MiFID II Art. 4: Client categorization required
  * - Annex II: Professional client criteria
@@ -16,7 +16,7 @@
  *   - Retail: Maximum protection (appropriateness, best execution, investor compensation)
  *   - Professional: Reduced protection (assumed knowledge)
  *   - ECP: Minimal protection (eligible counterparty)
- * 
+ *
  * Features:
  * - Current category display
  * - Protection comparison table
@@ -24,7 +24,7 @@
  * - Opt-down workflow (Professional → Retail)
  * - Qualification criteria checker
  * - Category history & audit trail
- * 
+ *
  * Guidelines:
  * - PageLayout + TabBar pattern
  * - Clear protection differences
@@ -36,9 +36,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Shield, User, CheckCircle, AlertTriangle, ChevronRight,
-  Info, FileText, Award, Lock, TrendingUp, Clock, Eye,
-  Settings, ExternalLink, Target, Activity
+  Shield,
+  User,
+  CheckCircle,
+  AlertTriangle,
+  ChevronRight,
+  Info,
+  FileText,
+  Award,
+  Lock,
+  TrendingUp,
+  Clock,
+  Eye,
+  Settings,
+  ExternalLink,
+  Target,
+  Activity,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout, StickyFooter } from '../../components/layout/PageLayout';
@@ -156,7 +169,7 @@ export function ClientCategorizationPage() {
   const [tab, setTab] = useState<TabType>('overview');
   const [currentCategory] = useState<ClientCategory>('retail'); // Mock: current user is retail
 
-  const current = CATEGORIES.find(cat => cat.id === currentCategory)!;
+  const current = CATEGORIES.find((cat) => cat.id === currentCategory)!;
   const CurrentIcon = current.icon;
 
   const TABS = [
@@ -172,18 +185,16 @@ export function ClientCategorizationPage() {
 
   return (
     <PageLayout>
-      <Header
-        title="Client Categorization"
-        subtitle="MiFID II Classification"
-        back
-      />
+      <Header title="Client Categorization" subtitle="MiFID II Classification" back />
 
       <PageContent gap="relaxed">
         {/* Current Category Card */}
         <TrCard className="p-4">
           <div className="flex items-start gap-3 mb-3">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
-              style={{ background: current.color + '15' }}>
+            <div
+              className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
+              style={{ background: current.color + '15' }}
+            >
               <CurrentIcon size={28} color={current.color} />
             </div>
 
@@ -192,28 +203,30 @@ export function ClientCategorizationPage() {
                 <span style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>
                   {current.label}
                 </span>
-                <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold"
-                  style={{ background: current.color + '15', color: current.color }}>
+                <span
+                  className="px-2 py-0.5 rounded-md text-[10px] font-semibold"
+                  style={{ background: current.color + '15', color: current.color }}
+                >
                   CURRENT
                 </span>
               </div>
-              <p style={{ color: c.text3, fontSize: 12, lineHeight: 1.4 }}>
-                {current.description}
-              </p>
+              <p style={{ color: c.text3, fontSize: 12, lineHeight: 1.4 }}>{current.description}</p>
             </div>
 
             <CheckCircle size={20} color={current.color} />
           </div>
 
           {/* Protection Level */}
-          <div className="rounded-lg p-3 flex items-center gap-2.5"
-            style={{ background: c.successBg, border: `1px solid ${c.successBorder}` }}>
-            <Shield size={16} color={c.successText} />
+          <div
+            className="rounded-lg p-3 flex items-center gap-2.5"
+            style={{ background: c.buyAlpha10, border: `1px solid ${c.buyAlpha20}` }}
+          >
+            <Shield size={16} color={c.success} />
             <div className="flex-1">
-              <p style={{ color: c.successText, fontSize: 11, fontWeight: 600 }}>
+              <p style={{ color: c.success, fontSize: 11, fontWeight: 600 }}>
                 Maximum Protection Active
               </p>
-              <p style={{ color: c.successText, fontSize: 9, opacity: 0.9, marginTop: 2 }}>
+              <p style={{ color: c.success, fontSize: 9, opacity: 0.9, marginTop: 2 }}>
                 You have full MiFID II retail investor protections
               </p>
             </div>
@@ -221,20 +234,24 @@ export function ClientCategorizationPage() {
         </TrCard>
 
         {/* Info Notice */}
-        <div className="rounded-2xl p-3 flex gap-2.5" style={{ background: c.infoBg, border: `1px solid ${c.infoBorder}` }}>
-          <Info size={16} color={c.infoText} className="shrink-0 mt-0.5" />
+        <div
+          className="rounded-2xl p-3 flex gap-2.5"
+          style={{ background: 'rgba(59,130,246,0.08)', border: `1px solid rgba(59,130,246,0.20)` }}
+        >
+          <Info size={16} color={c.info} className="shrink-0 mt-0.5" />
           <div>
-            <p style={{ color: c.infoText, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
+            <p style={{ color: c.info, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
               MiFID II Categorization
             </p>
-            <p style={{ color: c.infoText, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
-              Your client category determines the level of regulatory protection you receive. Retail clients have maximum protection.
+            <p style={{ color: c.info, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
+              Your client category determines the level of regulatory protection you receive. Retail
+              clients have maximum protection.
             </p>
           </div>
         </div>
 
         {/* Tabs */}
-        <TabBar tabs={TABS} active={tab} onChange={setTab} variant="underline" />
+        <TabBar<TabType> tabs={TABS} active={tab} onChange={setTab} variant="underline" />
 
         {/* Content */}
         {tab === 'overview' && (
@@ -249,8 +266,10 @@ export function ClientCategorizationPage() {
                   return (
                     <TrCard key={category.id} className="p-4">
                       <div className="flex items-start gap-3 mb-3">
-                        <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                          style={{ background: category.color + '15' }}>
+                        <div
+                          className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                          style={{ background: category.color + '15' }}
+                        >
                           <Icon size={22} color={category.color} />
                         </div>
 
@@ -259,9 +278,7 @@ export function ClientCategorizationPage() {
                             <span style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>
                               {category.label}
                             </span>
-                            {isCurrent && (
-                              <CheckCircle size={14} color={category.color} />
-                            )}
+                            {isCurrent && <CheckCircle size={14} color={category.color} />}
                           </div>
                           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.4 }}>
                             {category.description}
@@ -273,14 +290,18 @@ export function ClientCategorizationPage() {
                       <div className="grid grid-cols-2 gap-2">
                         <div className="rounded-lg p-2" style={{ background: c.surface2 }}>
                           <p style={{ color: c.text3, fontSize: 9 }}>Protections</p>
-                          <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginTop: 1 }}>
+                          <p
+                            style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginTop: 1 }}
+                          >
                             {category.protections.length} active
                           </p>
                         </div>
 
                         <div className="rounded-lg p-2" style={{ background: c.surface2 }}>
                           <p style={{ color: c.text3, fontSize: 9 }}>Requirements</p>
-                          <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginTop: 1 }}>
+                          <p
+                            style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginTop: 1 }}
+                          >
                             {category.requirements.length} criteria
                           </p>
                         </div>
@@ -296,8 +317,10 @@ export function ClientCategorizationPage() {
               <PageSection label="Want Professional Status?">
                 <TrCard className="p-4">
                   <div className="flex items-start gap-3 mb-3">
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ background: '#3B82F6' + '15' }}>
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                      style={{ background: '#3B82F6' + '15' }}
+                    >
                       <TrendingUp size={22} color="#3B82F6" />
                     </div>
 
@@ -306,7 +329,8 @@ export function ClientCategorizationPage() {
                         Request Professional Client Status
                       </p>
                       <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.4 }}>
-                        If you meet the criteria, you can request to be treated as a professional client with reduced regulatory requirements.
+                        If you meet the criteria, you can request to be treated as a professional
+                        client with reduced regulatory requirements.
                       </p>
                     </div>
                   </div>
@@ -315,7 +339,8 @@ export function ClientCategorizationPage() {
                     <div className="flex gap-2">
                       <AlertTriangle size={14} color={c.warningText} className="shrink-0 mt-0.5" />
                       <p style={{ color: c.warningText, fontSize: 10, lineHeight: 1.4 }}>
-                        <strong>Warning:</strong> Opting up means you waive certain investor protections. This cannot be reversed easily.
+                        <strong>Warning:</strong> Opting up means you waive certain investor
+                        protections. This cannot be reversed easily.
                       </p>
                     </div>
                   </div>
@@ -329,7 +354,8 @@ export function ClientCategorizationPage() {
                       height: 44,
                       fontWeight: 600,
                       fontSize: 13,
-                    }}>
+                    }}
+                  >
                     <FileText size={16} />
                     <span>Start Opt-Up Application</span>
                     <ChevronRight size={14} />
@@ -384,9 +410,7 @@ export function ClientCategorizationPage() {
                     {category.requirements.map((req, idx) => (
                       <div key={idx} className="flex items-start gap-2">
                         <Target size={12} color={c.text3} className="shrink-0 mt-0.5" />
-                        <span style={{ color: c.text2, fontSize: 11, lineHeight: 1.4 }}>
-                          {req}
-                        </span>
+                        <span style={{ color: c.text2, fontSize: 11, lineHeight: 1.4 }}>{req}</span>
                       </div>
                     ))}
                   </div>
@@ -402,8 +426,10 @@ export function ClientCategorizationPage() {
               {HISTORY.map((entry, idx) => (
                 <TrCard key={idx} className="p-3">
                   <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ background: c.primary + '15' }}>
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                      style={{ background: c.primary + '15' }}
+                    >
                       <Clock size={18} color={c.primary} />
                     </div>
 
@@ -417,19 +443,18 @@ export function ClientCategorizationPage() {
 
                       {entry.from && (
                         <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
-                          {CATEGORIES.find(c => c.id === entry.from)?.label} → {CATEGORIES.find(c => c.id === entry.to)?.label}
+                          {CATEGORIES.find((c) => c.id === entry.from)?.label} →{' '}
+                          {CATEGORIES.find((c) => c.id === entry.to)?.label}
                         </p>
                       )}
 
-                      <p style={{ color: c.text3, fontSize: 10 }}>
-                        {entry.reason}
-                      </p>
+                      <p style={{ color: c.text3, fontSize: 10 }}>{entry.reason}</p>
 
                       <p style={{ color: c.text3, fontSize: 9, marginTop: 2 }}>
                         {new Date(entry.date).toLocaleDateString('en-US', {
                           year: 'numeric',
                           month: 'long',
-                          day: 'numeric'
+                          day: 'numeric',
                         })}
                       </p>
                     </div>
@@ -445,7 +470,8 @@ export function ClientCategorizationPage() {
           <button
             onClick={() => navigate(`${prefix}/trade/copy-trading/regulatory-disclosures`)}
             className="rounded-xl p-3 flex items-center justify-between transition-all"
-            style={{ background: c.surface2, border: `1px solid ${c.border}` }}>
+            style={{ background: c.surface2, border: `1px solid ${c.border}` }}
+          >
             <div className="flex items-center gap-2">
               <FileText size={16} color={c.primary} />
               <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>Disclosures</span>
@@ -456,7 +482,8 @@ export function ClientCategorizationPage() {
           <button
             onClick={() => navigate(`${prefix}/settings/security`)}
             className="rounded-xl p-3 flex items-center justify-between transition-all"
-            style={{ background: c.surface2, border: `1px solid ${c.border}` }}>
+            style={{ background: c.surface2, border: `1px solid ${c.border}` }}
+          >
             <div className="flex items-center gap-2">
               <Settings size={16} color="#10B981" />
               <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>Settings</span>

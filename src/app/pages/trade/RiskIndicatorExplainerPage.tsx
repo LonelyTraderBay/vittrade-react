@@ -2,13 +2,13 @@
  * ══════════════════════════════════════════════════════════════
  *  RiskIndicatorExplainerPage — Phase 4 Sprint 3 Day 11-12
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Explain Summary Risk Indicator (SRI) 1-7 scale
  * - PRIIPs requirement: risk classification
  * - Educational content for investors
  * - Show product's SRI score
- * 
+ *
  * Compliance:
  * - PRIIPs: SRI mandatory in KID
  * - Scale 1 (lowest risk) to 7 (highest risk)
@@ -88,26 +88,44 @@ export function RiskIndicatorExplainerPage() {
         <TrCard className="p-4">
           <div className="text-center mb-4">
             <p style={{ color: c.text3, fontSize: 11 }}>Mirror Copy Trading</p>
-            <p style={{ color: c.text1, fontSize: 16, fontWeight: 600, marginTop: 8, marginBottom: 8 }}>
+            <p
+              style={{
+                color: c.text1,
+                fontSize: 16,
+                fontWeight: 600,
+                marginTop: 8,
+                marginBottom: 8,
+              }}
+            >
               Summary Risk Indicator
             </p>
 
             {/* SRI Scale */}
             <div className="flex gap-1 mb-3">
-              {[1, 2, 3, 4, 5, 6, 7].map(level => (
+              {[1, 2, 3, 4, 5, 6, 7].map((level) => (
                 <div
                   key={level}
                   className="flex-1 h-12 rounded flex items-center justify-center"
                   style={{
-                    background: level <= productSRI
-                      ? level <= 2 ? '#10B981' : level <= 4 ? '#3B82F6' : level <= 5 ? '#F59E0B' : '#EF4444'
-                      : c.surface2,
-                  }}>
-                  <span style={{
-                    color: level <= productSRI ? '#fff' : c.text3,
-                    fontSize: 14,
-                    fontWeight: 700
-                  }}>
+                    background:
+                      level <= productSRI
+                        ? level <= 2
+                          ? '#10B981'
+                          : level <= 4
+                            ? '#3B82F6'
+                            : level <= 5
+                              ? '#F59E0B'
+                              : '#EF4444'
+                        : c.surface2,
+                  }}
+                >
+                  <span
+                    style={{
+                      color: level <= productSRI ? '#fff' : c.text3,
+                      fontSize: 14,
+                      fontWeight: 700,
+                    }}
+                  >
                     {level}
                   </span>
                 </div>
@@ -124,7 +142,8 @@ export function RiskIndicatorExplainerPage() {
             <div className="flex gap-2">
               <AlertTriangle size={14} color={c.warningText} className="shrink-0 mt-0.5" />
               <p style={{ color: c.warningText, fontSize: 10, lineHeight: 1.4 }}>
-                <strong>SRI 6 - High Risk:</strong> This product has high volatility. You could lose a significant portion of your investment.
+                <strong>SRI 6 - High Risk:</strong> This product has high volatility. You could lose
+                a significant portion of your investment.
               </p>
             </div>
           </div>
@@ -134,14 +153,17 @@ export function RiskIndicatorExplainerPage() {
         <PageSection label="What is the Summary Risk Indicator?">
           <TrCard className="p-4">
             <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.6 }}>
-              The Summary Risk Indicator (SRI) is a guide to the level of risk of this product compared to other products. It shows how likely it is that the product will lose money because of movements in the markets or because we are not able to pay you.
+              The Summary Risk Indicator (SRI) is a guide to the level of risk of this product
+              compared to other products. It shows how likely it is that the product will lose money
+              because of movements in the markets or because we are not able to pay you.
             </p>
 
-            <div className="mt-3 p-3 rounded-lg" style={{ background: c.infoBg }}>
+            <div className="mt-3 p-3 rounded-lg" style={{ background: 'rgba(59,130,246,0.08)' }}>
               <div className="flex gap-2">
-                <Info size={14} color={c.infoText} className="shrink-0 mt-0.5" />
-                <p style={{ color: c.infoText, fontSize: 10, lineHeight: 1.4 }}>
-                  The risk indicator assumes you keep the product for 3 years. The actual risk can vary significantly if you cash in at an early stage.
+                <Info size={14} color={c.info} className="shrink-0 mt-0.5" />
+                <p style={{ color: c.info, fontSize: 10, lineHeight: 1.4 }}>
+                  The risk indicator assumes you keep the product for 3 years. The actual risk can
+                  vary significantly if you cash in at an early stage.
                 </p>
               </div>
             </div>
@@ -154,8 +176,10 @@ export function RiskIndicatorExplainerPage() {
             {RISK_LEVELS.map((risk) => (
               <TrCard key={risk.level} className="p-3">
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                    style={{ background: risk.color + '15' }}>
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                    style={{ background: risk.color + '15' }}
+                  >
                     <span style={{ color: risk.color, fontSize: 16, fontWeight: 700 }}>
                       {risk.level}
                     </span>
@@ -167,8 +191,10 @@ export function RiskIndicatorExplainerPage() {
                         {risk.label}
                       </span>
                       {risk.level === productSRI && (
-                        <span className="px-2 py-0.5 rounded text-[9px] font-semibold"
-                          style={{ background: c.primary + '15', color: c.primary }}>
+                        <span
+                          className="px-2 py-0.5 rounded text-[9px] font-semibold"
+                          style={{ background: c.primary + '15', color: c.primary }}
+                        >
                           THIS PRODUCT
                         </span>
                       )}
@@ -193,11 +219,9 @@ export function RiskIndicatorExplainerPage() {
           <TrCard className="p-4">
             <div className="space-y-3">
               <div className="flex items-start gap-2">
-                <AlertTriangle size={14} color={c.errorText} className="shrink-0 mt-0.5" />
+                <AlertTriangle size={14} color={c.error} className="shrink-0 mt-0.5" />
                 <div>
-                  <p style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>
-                    Provider Risk
-                  </p>
+                  <p style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>Provider Risk</p>
                   <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.4, marginTop: 1 }}>
                     The trader you copy may underperform or take excessive risks.
                   </p>
@@ -205,11 +229,9 @@ export function RiskIndicatorExplainerPage() {
               </div>
 
               <div className="flex items-start gap-2">
-                <AlertTriangle size={14} color={c.errorText} className="shrink-0 mt-0.5" />
+                <AlertTriangle size={14} color={c.error} className="shrink-0 mt-0.5" />
                 <div>
-                  <p style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>
-                    Liquidity Risk
-                  </p>
+                  <p style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>Liquidity Risk</p>
                   <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.4, marginTop: 1 }}>
                     In extreme market conditions, you may not be able to exit positions quickly.
                   </p>
@@ -217,11 +239,9 @@ export function RiskIndicatorExplainerPage() {
               </div>
 
               <div className="flex items-start gap-2">
-                <AlertTriangle size={14} color={c.errorText} className="shrink-0 mt-0.5" />
+                <AlertTriangle size={14} color={c.error} className="shrink-0 mt-0.5" />
                 <div>
-                  <p style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>
-                    Operational Risk
-                  </p>
+                  <p style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>Operational Risk</p>
                   <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.4, marginTop: 1 }}>
                     Technical failures or errors in trade copying may occur.
                   </p>

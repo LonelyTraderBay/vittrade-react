@@ -35,15 +35,15 @@ export function ArenaPageFooter({ hideDisclaimer, className }: ArenaPageFooterPr
 
   return (
     <div className={`flex flex-col gap-3 px-5 mt-4 ${className ?? ''}`}>
-
       {/* ─── Offline Banner ─── */}
-      {(!isOnline || isReconnecting) && (
-        <ArenaOfflineBanner isReconnecting={isReconnecting} />
-      )}
+      {(!isOnline || isReconnecting) && <ArenaOfflineBanner isReconnecting={isReconnecting} />}
 
       {/* ─── Community Rules Button ─── */}
       <button
-        onClick={() => { setRulesOpen(true); hapticSelection(); }}
+        onClick={() => {
+          setRulesOpen(true);
+          hapticSelection();
+        }}
         className="flex items-center justify-center gap-2 py-3 rounded-xl w-full active:opacity-70"
         style={{
           background: c.chipBg,
@@ -52,9 +52,7 @@ export function ArenaPageFooter({ hideDisclaimer, className }: ArenaPageFooterPr
         }}
       >
         <BookOpen size={14} color="#3B82F6" />
-        <span style={{ color: '#3B82F6', fontSize: φ.xs, fontWeight: 600 }}>
-          Quy tắc cộng đồng
-        </span>
+        <span style={{ color: '#3B82F6', fontSize: φ.xs, fontWeight: 600 }}>Quy tắc cộng đồng</span>
       </button>
 
       {/* ─── Points-only Disclaimer ─── */}
@@ -62,7 +60,8 @@ export function ArenaPageFooter({ hideDisclaimer, className }: ArenaPageFooterPr
         <TrCard className="p-3 flex items-start gap-2">
           <Shield size={14} color={c.accent} className="shrink-0 mt-0.5" />
           <p style={{ color: c.text3, fontSize: φ.xs, lineHeight: 1.5 }}>
-            Arena Points chỉ dùng trong Open Arena, không phải tài sản tài chính. Không thỏa thuận giao dịch ngoài nền tảng.
+            Arena Points chỉ dùng trong Open Arena, không phải tài sản tài chính. Không thỏa thuận
+            giao dịch ngoài nền tảng.
           </p>
         </TrCard>
       )}

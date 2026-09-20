@@ -10,6 +10,9 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { AppProvider, useApp } from '../contexts/AppContext';
+import { AuthProvider } from '../contexts/AuthContext';
+import { ThemeProvider } from '../contexts/ThemeContext';
+import { UIProvider } from '../contexts/UIContext';
 import { USER_PROFILE } from '../data/mockData';
 
 describe('AppContext', () => {
@@ -339,8 +342,18 @@ describe('AppContext', () => {
 
   describe('Error Handling', () => {
     it('should throw error when useApp is used outside AppProvider', () => {
+      // Provide the sub-contexts so their own guards do not fire first —
+      // this isolates useApp's own "outside AppProvider" error.
       expect(() => {
-        renderHook(() => useApp());
+        renderHook(() => useApp(), {
+          wrapper: ({ children }) => (
+            <ThemeProvider>
+              <AuthProvider>
+                <UIProvider>{children}</UIProvider>
+              </AuthProvider>
+            </ThemeProvider>
+          ),
+        });
       }).toThrow('useApp must be used inside AppProvider');
     });
   });

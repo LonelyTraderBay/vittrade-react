@@ -112,7 +112,8 @@ export function StakingRegulatoryFrameworkPage() {
       <BottomSheetV2
         open={!!selectedLicense}
         onClose={() => setSelectedLicense(null)}
-        title={selectedLicense?.jurisdiction || ''}>
+        title={selectedLicense?.jurisdiction || ''}
+      >
         {selectedLicense && (
           <div className="flex flex-col gap-4">
             <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
@@ -121,9 +122,13 @@ export function StakingRegulatoryFrameworkPage() {
                 <span
                   className="px-2 py-1 rounded-lg text-xs font-bold"
                   style={{
-                    background: selectedLicense.status === 'active' ? 'rgba(16,185,129,0.15)' : 'rgba(245,158,11,0.15)',
+                    background:
+                      selectedLicense.status === 'active'
+                        ? 'rgba(16,185,129,0.15)'
+                        : 'rgba(245,158,11,0.15)',
                     color: selectedLicense.status === 'active' ? '#10B981' : '#F59E0B',
-                  }}>
+                  }}
+                >
                   {selectedLicense.status.toUpperCase()}
                 </span>
               </div>
@@ -134,7 +139,14 @@ export function StakingRegulatoryFrameworkPage() {
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span style={{ color: c.text3, fontSize: 12 }}>License Number:</span>
-                  <span style={{ color: c.text1, fontSize: 12, fontWeight: 600, fontFamily: 'monospace' }}>
+                  <span
+                    style={{
+                      color: c.text1,
+                      fontSize: 12,
+                      fontWeight: 600,
+                      fontFamily: 'monospace',
+                    }}
+                  >
                     {selectedLicense.licenseNumber}
                   </span>
                 </div>
@@ -172,7 +184,8 @@ export function StakingRegulatoryFrameworkPage() {
               target="_blank"
               rel="noopener noreferrer"
               className="w-full py-3 rounded-xl text-center text-sm font-semibold flex items-center justify-center gap-2"
-              style={{ background: c.surface2, color: '#3B82F6' }}>
+              style={{ background: c.surface2, color: '#3B82F6' }}
+            >
               Verify on {selectedLicense.regulator.split(' ')[0]} website
               <ExternalLink size={16} />
             </a>
@@ -182,7 +195,13 @@ export function StakingRegulatoryFrameworkPage() {
 
       <PageContent>
         {/* Info Banner */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(16,185,129,0.08)', border: '1.5px solid rgba(16,185,129,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{
+            background: 'rgba(16,185,129,0.08)',
+            border: '1.5px solid rgba(16,185,129,0.2)',
+          }}
+        >
           <div className="flex gap-3">
             <Shield size={20} color="#10B981" className="shrink-0 mt-0.5" />
             <div>
@@ -190,7 +209,8 @@ export function StakingRegulatoryFrameworkPage() {
                 Regulated & Compliant
               </p>
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                We operate under licenses from leading global regulators. Your funds are protected by investor protection schemes where eligible.
+                We operate under licenses from leading global regulators. Your funds are protected
+                by investor protection schemes where eligible.
               </p>
             </div>
           </div>
@@ -211,15 +231,21 @@ export function StakingRegulatoryFrameworkPage() {
           <>
             <PageSection label="Global Regulatory Licenses">
               <div className="flex flex-col gap-3">
-                {LICENSES.map(license => (
+                {LICENSES.map((license) => (
                   <TrCard
                     key={license.licenseNumber}
                     hover
                     className="p-4"
-                    onClick={() => setSelectedLicense(license)}>
+                    onClick={() => setSelectedLicense(license)}
+                  >
                     <div className="flex items-start gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                        style={{ background: 'rgba(16,185,129,0.12)', border: '1.5px solid rgba(16,185,129,0.3)' }}>
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                        style={{
+                          background: 'rgba(16,185,129,0.12)',
+                          border: '1.5px solid rgba(16,185,129,0.3)',
+                        }}
+                      >
                         <MapPin size={20} color="#10B981" />
                       </div>
                       <div className="flex-1">
@@ -230,14 +256,25 @@ export function StakingRegulatoryFrameworkPage() {
                           <span
                             className="px-2 py-0.5 rounded-md text-xs font-bold"
                             style={{
-                              background: license.status === 'active' ? 'rgba(16,185,129,0.15)' :
-                                         license.status === 'pending' ? 'rgba(245,158,11,0.15)' :
-                                         'rgba(239,68,68,0.15)',
-                              color: license.status === 'active' ? '#10B981' :
-                                     license.status === 'pending' ? '#F59E0B' : '#EF4444',
-                            }}>
-                            {license.status === 'active' ? 'Active' :
-                             license.status === 'pending' ? 'Pending' : 'Expired'}
+                              background:
+                                license.status === 'active'
+                                  ? 'rgba(16,185,129,0.15)'
+                                  : license.status === 'pending'
+                                    ? 'rgba(245,158,11,0.15)'
+                                    : 'rgba(239,68,68,0.15)',
+                              color:
+                                license.status === 'active'
+                                  ? '#10B981'
+                                  : license.status === 'pending'
+                                    ? '#F59E0B'
+                                    : '#EF4444',
+                            }}
+                          >
+                            {license.status === 'active'
+                              ? 'Active'
+                              : license.status === 'pending'
+                                ? 'Pending'
+                                : 'Expired'}
                           </span>
                         </div>
                         <p style={{ color: c.text3, fontSize: 12, marginBottom: 4 }}>
@@ -254,14 +291,16 @@ export function StakingRegulatoryFrameworkPage() {
                         <span
                           key={idx}
                           className="px-2 py-1 rounded-lg text-xs"
-                          style={{ background: c.surface2, color: c.text2 }}>
+                          style={{ background: c.surface2, color: c.text2 }}
+                        >
                           {scope}
                         </span>
                       ))}
                       {license.scope.length > 2 && (
                         <span
                           className="px-2 py-1 rounded-lg text-xs"
-                          style={{ background: c.surface2, color: c.text3 }}>
+                          style={{ background: c.surface2, color: c.text3 }}
+                        >
                           +{license.scope.length - 2} more
                         </span>
                       )}
@@ -271,9 +310,16 @@ export function StakingRegulatoryFrameworkPage() {
               </div>
             </PageSection>
 
-            <div className="rounded-xl p-3" style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}>
+            <div
+              className="rounded-xl p-3"
+              style={{
+                background: 'rgba(59,130,246,0.08)',
+                border: '1px solid rgba(59,130,246,0.2)',
+              }}
+            >
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                💡 All licenses are verified and up-to-date. Click any license to view full details and verify directly with the regulator.
+                💡 All licenses are verified and up-to-date. Click any license to view full details
+                and verify directly with the regulator.
               </p>
             </div>
           </>
@@ -286,17 +332,22 @@ export function StakingRegulatoryFrameworkPage() {
                 {PROTECTION_SCHEMES.map((scheme, idx) => (
                   <TrCard key={idx} className="p-4">
                     <div className="flex items-start gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                        style={{ background: 'rgba(59,130,246,0.12)', border: '1.5px solid rgba(59,130,246,0.3)' }}>
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                        style={{
+                          background: 'rgba(59,130,246,0.12)',
+                          border: '1.5px solid rgba(59,130,246,0.3)',
+                        }}
+                      >
                         <Shield size={20} color="#3B82F6" />
                       </div>
                       <div className="flex-1">
-                        <p style={{ color: c.text1, fontSize: 14, fontWeight: 700, marginBottom: 2 }}>
+                        <p
+                          style={{ color: c.text1, fontSize: 14, fontWeight: 700, marginBottom: 2 }}
+                        >
                           {scheme.jurisdiction}
                         </p>
-                        <p style={{ color: c.text3, fontSize: 12 }}>
-                          {scheme.scheme}
-                        </p>
+                        <p style={{ color: c.text3, fontSize: 12 }}>{scheme.scheme}</p>
                       </div>
                       <div className="text-right shrink-0">
                         <p style={{ color: '#10B981', fontSize: 16, fontWeight: 700 }}>
@@ -323,11 +374,20 @@ export function StakingRegulatoryFrameworkPage() {
               </div>
             </PageSection>
 
-            <div className="rounded-2xl p-4" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
+            <div
+              className="rounded-2xl p-4"
+              style={{
+                background: 'rgba(245,158,11,0.08)',
+                border: '1px solid rgba(245,158,11,0.2)',
+              }}
+            >
               <div className="flex gap-2">
                 <AlertCircle size={16} color="#F59E0B" className="shrink-0 mt-0.5" />
                 <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                  <strong>Important:</strong> Cryptocurrency holdings are NOT covered by traditional deposit insurance. Only fiat balances held at partner banks are eligible for FDIC/FSCS/DGS protection. Staking rewards are subject to smart contract and validator risks.
+                  <strong>Important:</strong> Cryptocurrency holdings are NOT covered by traditional
+                  deposit insurance. Only fiat balances held at partner banks are eligible for
+                  FDIC/FSCS/DGS protection. Staking rewards are subject to smart contract and
+                  validator risks.
                 </p>
               </div>
             </div>
@@ -362,23 +422,35 @@ export function StakingRegulatoryFrameworkPage() {
                       desc: 'If unresolved after 8 weeks, you may refer to the Financial Ombudsman Service (UK/EU) or relevant authority.',
                       action: 'financial-ombudsman.org.uk',
                     },
-                  ].map(item => (
+                  ].map((item) => (
                     <div key={item.step} className="flex gap-3">
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
-                        style={{ background: c.primary, color: '#FFF', fontSize: 14, fontWeight: 700 }}>
+                      <div
+                        className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+                        style={{
+                          background: c.primary,
+                          color: '#FFF',
+                          fontSize: 14,
+                          fontWeight: 700,
+                        }}
+                      >
                         {item.step}
                       </div>
                       <div className="flex-1">
-                        <p style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 2 }}>
+                        <p
+                          style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 2 }}
+                        >
                           {item.title}
                         </p>
-                        <p style={{ color: c.text3, fontSize: 12, lineHeight: 1.5, marginBottom: 4 }}>
+                        <p
+                          style={{ color: c.text3, fontSize: 12, lineHeight: 1.5, marginBottom: 4 }}
+                        >
                           {item.desc}
                         </p>
                         <a
                           href={`mailto:${item.action}`}
                           className="text-xs font-semibold"
-                          style={{ color: '#3B82F6' }}>
+                          style={{ color: '#3B82F6' }}
+                        >
                           {item.action}
                         </a>
                       </div>
@@ -392,16 +464,31 @@ export function StakingRegulatoryFrameworkPage() {
               <TrCard className="p-4">
                 <div className="space-y-3">
                   {[
-                    { name: 'UK Financial Conduct Authority', email: 'consumer.queries@fca.org.uk', phone: '+44 800 111 6768' },
+                    {
+                      name: 'UK Financial Conduct Authority',
+                      email: 'consumer.queries@fca.org.uk',
+                      phone: '+44 800 111 6768',
+                    },
                     { name: 'US FinCEN', email: 'frc@fincen.gov', phone: '+1 800-949-2732' },
-                    { name: 'EU Financial Ombudsman', email: 'enquiries@financialombudsman.ie', phone: '+353 1 567 7000' },
+                    {
+                      name: 'EU Financial Ombudsman',
+                      email: 'enquiries@financialombudsman.ie',
+                      phone: '+353 1 567 7000',
+                    },
                   ].map((contact, idx) => (
-                    <div key={idx} className="pb-3 border-b last:border-b-0" style={{ borderColor: c.borderSolid }}>
+                    <div
+                      key={idx}
+                      className="pb-3 border-b last:border-b-0"
+                      style={{ borderColor: c.borderSolid }}
+                    >
                       <p style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 4 }}>
                         {contact.name}
                       </p>
                       <div className="flex flex-col gap-1">
-                        <a href={`mailto:${contact.email}`} style={{ color: '#3B82F6', fontSize: 11 }}>
+                        <a
+                          href={`mailto:${contact.email}`}
+                          style={{ color: '#3B82F6', fontSize: 11 }}
+                        >
                           {contact.email}
                         </a>
                         <a href={`tel:${contact.phone}`} style={{ color: c.text3, fontSize: 11 }}>
@@ -419,7 +506,9 @@ export function StakingRegulatoryFrameworkPage() {
         {/* Footer Info */}
         <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6, textAlign: 'center' }}>
-            This information is accurate as of March 2026. Regulatory status may change. For the most current information, please contact our Compliance Team or verify directly with the respective regulators.
+            This information is accurate as of March 2026. Regulatory status may change. For the
+            most current information, please contact our Compliance Team or verify directly with the
+            respective regulators.
           </p>
         </div>
       </PageContent>

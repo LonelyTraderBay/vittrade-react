@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import {
-  Mail, ArrowRight, ArrowLeft, AlertCircle,
-  CheckCircle, KeyRound,
-} from 'lucide-react';
+import { Mail, ArrowRight, ArrowLeft, AlertCircle, CheckCircle, KeyRound } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { WEB_FONT, WEB_BUTTON } from '../../components/layout/webConstants';
 import { WebAuthBrandPanel, WebAuthFormShell } from '../../components/web/WebAuthBrandPanel';
@@ -33,7 +30,9 @@ function StepIndicator({ current, c }: { current: number; c: any }) {
             <div
               className="flex items-center justify-center"
               style={{
-                width: 24, height: 24, borderRadius: '50%',
+                width: 24,
+                height: 24,
+                borderRadius: '50%',
                 background: i <= current ? '#3B82F6' : c.surface,
                 border: i <= current ? 'none' : `1.5px solid ${c.borderSolid}`,
                 transition: 'all 0.2s ease',
@@ -42,23 +41,36 @@ function StepIndicator({ current, c }: { current: number; c: any }) {
               {i < current ? (
                 <CheckCircle size={14} color="#fff" strokeWidth={2.5} />
               ) : (
-                <span style={{
-                  color: i === current ? '#fff' : c.text3,
-                  fontSize: 11, fontWeight: 600,
-                }}>{i + 1}</span>
+                <span
+                  style={{
+                    color: i === current ? '#fff' : c.text3,
+                    fontSize: 11,
+                    fontWeight: 600,
+                  }}
+                >
+                  {i + 1}
+                </span>
               )}
             </div>
-            <span style={{
-              color: i <= current ? c.text1 : c.text3,
-              fontSize: WEB_FONT.xs, fontWeight: i === current ? 600 : 400,
-            }}>{label}</span>
+            <span
+              style={{
+                color: i <= current ? c.text1 : c.text3,
+                fontSize: WEB_FONT.xs,
+                fontWeight: i === current ? 600 : 400,
+              }}
+            >
+              {label}
+            </span>
           </div>
           {i < steps.length - 1 && (
-            <div style={{
-              width: 24, height: 1,
-              background: i < current ? '#3B82F6' : c.borderSolid,
-              transition: 'background 0.2s ease',
-            }} />
+            <div
+              style={{
+                width: 24,
+                height: 1,
+                background: i < current ? '#3B82F6' : c.borderSolid,
+                transition: 'background 0.2s ease',
+              }}
+            />
           )}
         </div>
       ))}
@@ -98,25 +110,28 @@ export function WebForgotPasswordPage() {
   };
 
   const handleSubmitEmail = async () => {
-    if (!email.trim()) { setEmailError('Vui lòng nhập email'); return; }
-    if (!EMAIL_RE.test(email)) { setEmailError('Định dạng email không hợp lệ'); return; }
+    if (!email.trim()) {
+      setEmailError('Vui lòng nhập email');
+      return;
+    }
+    if (!EMAIL_RE.test(email)) {
+      setEmailError('Định dạng email không hợp lệ');
+      return;
+    }
     setEmailError('');
     setIsLoading(true);
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise((r) => setTimeout(r, 1000));
     setIsLoading(false);
     setStep('sent');
   };
 
   const handleResend = async () => {
     setIsLoading(true);
-    await new Promise(r => setTimeout(r, 800));
+    await new Promise((r) => setTimeout(r, 800));
     setIsLoading(false);
   };
 
-  const emailBorder =
-    focusField === 'email' ? '#3B82F6'
-    : emailError ? '#EF4444'
-    : c.borderSolid;
+  const emailBorder = focusField === 'email' ? '#3B82F6' : emailError ? '#EF4444' : c.borderSolid;
 
   return (
     <div className="flex" style={{ minHeight: '100vh', background: c.bg }}>
@@ -128,8 +143,13 @@ export function WebForgotPasswordPage() {
           onClick={() => navigate('/w/auth/login')}
           className="flex items-center hover:underline"
           style={{
-            gap: 6, color: c.text2, fontSize: WEB_FONT.sm,
-            marginBottom: 24, background: 'none', border: 'none', cursor: 'pointer',
+            gap: 6,
+            color: c.text2,
+            fontSize: WEB_FONT.sm,
+            marginBottom: 24,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
           }}
         >
           <ArrowLeft size={16} />
@@ -146,42 +166,76 @@ export function WebForgotPasswordPage() {
               <div
                 className="flex items-center justify-center"
                 style={{
-                  width: 56, height: 56, borderRadius: 16,
-                  background: 'rgba(59,130,246,0.08)', marginBottom: 16,
+                  width: 56,
+                  height: 56,
+                  borderRadius: 16,
+                  background: 'rgba(59,130,246,0.08)',
+                  marginBottom: 16,
                 }}
               >
                 <KeyRound size={28} color="#3B82F6" />
               </div>
-              <h1 style={{ color: c.text1, fontSize: WEB_FONT['2xl'], fontWeight: 700, marginBottom: 6, textAlign: 'center' }}>
+              <h1
+                style={{
+                  color: c.text1,
+                  fontSize: WEB_FONT['2xl'],
+                  fontWeight: 700,
+                  marginBottom: 6,
+                  textAlign: 'center',
+                }}
+              >
                 Quên mật khẩu?
               </h1>
-              <p style={{ color: c.text2, fontSize: WEB_FONT.md, lineHeight: 1.5, textAlign: 'center', maxWidth: 340 }}>
+              <p
+                style={{
+                  color: c.text2,
+                  fontSize: WEB_FONT.md,
+                  lineHeight: 1.5,
+                  textAlign: 'center',
+                  maxWidth: 340,
+                }}
+              >
                 Nhập email đã đăng ký, chúng tôi sẽ gửi liên kết đặt lại mật khẩu cho bạn.
               </p>
             </div>
 
             {/* Email input */}
             <div style={{ marginBottom: 20 }}>
-              <label style={{ display: 'block', color: c.text2, fontSize: WEB_FONT.sm, fontWeight: 500, marginBottom: 6 }}>
+              <label
+                style={{
+                  display: 'block',
+                  color: c.text2,
+                  fontSize: WEB_FONT.sm,
+                  fontWeight: 500,
+                  marginBottom: 6,
+                }}
+              >
                 Email đã đăng ký
               </label>
               <div
                 className="flex items-center"
                 style={{
-                  height: WEB_BUTTON.lg, borderRadius: 10,
+                  height: WEB_BUTTON.lg,
+                  borderRadius: 10,
                   border: `1.5px solid ${emailBorder}`,
-                  background: c.surface, padding: '0 14px', gap: 10,
+                  background: c.surface,
+                  padding: '0 14px',
+                  gap: 10,
                   transition: 'border-color 0.15s ease',
                 }}
               >
                 <Mail size={16} color={c.text3} className="shrink-0" />
                 <input
-                  type="email" placeholder="you@example.com"
+                  type="email"
+                  placeholder="you@example.com"
                   value={email}
-                  onChange={e => { setEmail(e.target.value); setEmailError(''); }}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setEmailError('');
+                  }}
                   onFocus={() => setFocusField('email')}
                   onBlur={handleEmailBlur}
-                  onKeyDown={e => e.key === 'Enter' && handleSubmitEmail()}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSubmitEmail()}
                   autoComplete="email"
                   className="flex-1 bg-transparent outline-none min-w-0"
                   style={{ color: c.text1, fontSize: WEB_FONT.md, height: '100%' }}
@@ -196,9 +250,15 @@ export function WebForgotPasswordPage() {
               disabled={isLoading}
               className="flex items-center justify-center gap-2"
               style={{
-                height: WEB_BUTTON.lg, borderRadius: 10, width: '100%',
-                background: isLoading ? c.surface2 : 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
-                color: '#fff', fontSize: WEB_FONT.md, fontWeight: 600,
+                height: WEB_BUTTON.lg,
+                borderRadius: 10,
+                width: '100%',
+                background: isLoading
+                  ? c.surface2
+                  : 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
+                color: '#fff',
+                fontSize: WEB_FONT.md,
+                fontWeight: 600,
                 cursor: isLoading ? 'not-allowed' : 'pointer',
                 border: 'none',
                 boxShadow: isLoading ? 'none' : '0 4px 16px rgba(59,130,246,0.25)',
@@ -206,12 +266,16 @@ export function WebForgotPasswordPage() {
               }}
             >
               {isLoading ? (
-                <div style={{
-                  width: 18, height: 18, borderRadius: '50%',
-                  border: '2px solid rgba(255,255,255,0.3)',
-                  borderTopColor: '#fff',
-                  animation: 'spin 0.7s linear infinite',
-                }} />
+                <div
+                  style={{
+                    width: 18,
+                    height: 18,
+                    borderRadius: '50%',
+                    border: '2px solid rgba(255,255,255,0.3)',
+                    borderTopColor: '#fff',
+                    animation: 'spin 0.7s linear infinite',
+                  }}
+                />
               ) : (
                 <div className="flex items-center" style={{ gap: 8 }}>
                   Gửi liên kết đặt lại
@@ -228,39 +292,67 @@ export function WebForgotPasswordPage() {
             <div
               className="flex items-center justify-center"
               style={{
-                width: 64, height: 64, borderRadius: 20,
-                background: 'rgba(16,185,129,0.08)', marginBottom: 20,
+                width: 64,
+                height: 64,
+                borderRadius: 20,
+                background: 'rgba(16,185,129,0.08)',
+                marginBottom: 20,
               }}
             >
               <Mail size={32} color="#10B981" />
             </div>
-            <h1 style={{ color: c.text1, fontSize: WEB_FONT['2xl'], fontWeight: 700, marginBottom: 8, textAlign: 'center' }}>
+            <h1
+              style={{
+                color: c.text1,
+                fontSize: WEB_FONT['2xl'],
+                fontWeight: 700,
+                marginBottom: 8,
+                textAlign: 'center',
+              }}
+            >
               Kiểm tra email
             </h1>
-            <p style={{ color: c.text2, fontSize: WEB_FONT.md, lineHeight: 1.5, textAlign: 'center', maxWidth: 360, marginBottom: 8 }}>
+            <p
+              style={{
+                color: c.text2,
+                fontSize: WEB_FONT.md,
+                lineHeight: 1.5,
+                textAlign: 'center',
+                maxWidth: 360,
+                marginBottom: 8,
+              }}
+            >
               Chúng tôi đã gửi liên kết đặt lại mật khẩu tới:
             </p>
             <div
               style={{
-                padding: '10px 20px', borderRadius: 10,
-                background: c.surface, border: `1px solid ${c.borderSolid}`,
+                padding: '10px 20px',
+                borderRadius: 10,
+                background: c.surface,
+                border: `1px solid ${c.borderSolid}`,
                 marginBottom: 24,
               }}
             >
-              <span style={{ color: c.text1, fontSize: WEB_FONT.md, fontWeight: 600 }}>{email}</span>
+              <span style={{ color: c.text1, fontSize: WEB_FONT.md, fontWeight: 600 }}>
+                {email}
+              </span>
             </div>
 
             {/* Info box */}
             <div
               style={{
-                padding: '14px 18px', borderRadius: 12,
+                padding: '14px 18px',
+                borderRadius: 12,
                 background: 'rgba(59,130,246,0.06)',
                 border: '1px solid rgba(59,130,246,0.12)',
-                width: '100%', marginBottom: 24,
+                width: '100%',
+                marginBottom: 24,
               }}
             >
               <p style={{ color: c.text2, fontSize: WEB_FONT.sm, lineHeight: 1.5 }}>
-                Liên kết sẽ hết hạn sau <span style={{ color: c.text1, fontWeight: 600 }}>15 phút</span>. Nếu không nhận được email, kiểm tra thư mục Spam hoặc thử lại.
+                Liên kết sẽ hết hạn sau{' '}
+                <span style={{ color: c.text1, fontWeight: 600 }}>15 phút</span>. Nếu không nhận
+                được email, kiểm tra thư mục Spam hoặc thử lại.
               </p>
             </div>
 
@@ -268,13 +360,20 @@ export function WebForgotPasswordPage() {
             <div className="flex flex-col" style={{ gap: 12, width: '100%' }}>
               {/* Simulate "open email link" → go to reset-password page */}
               <button
-                onClick={() => navigate('/w/auth/reset-password', { state: { email, token: 'valid-token' } })}
+                onClick={() =>
+                  navigate('/w/auth/reset-password', { state: { email, token: 'valid-token' } })
+                }
                 className="flex items-center justify-center gap-2"
                 style={{
-                  height: WEB_BUTTON.lg, borderRadius: 10, width: '100%',
+                  height: WEB_BUTTON.lg,
+                  borderRadius: 10,
+                  width: '100%',
                   background: 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
-                  color: '#fff', fontSize: WEB_FONT.md, fontWeight: 600,
-                  cursor: 'pointer', border: 'none',
+                  color: '#fff',
+                  fontSize: WEB_FONT.md,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  border: 'none',
                   boxShadow: '0 4px 16px rgba(59,130,246,0.25)',
                 }}
               >
@@ -286,9 +385,13 @@ export function WebForgotPasswordPage() {
                 disabled={isLoading}
                 className="flex items-center justify-center"
                 style={{
-                  height: WEB_BUTTON.lg, borderRadius: 10, width: '100%',
-                  background: c.surface, color: c.text1,
-                  fontSize: WEB_FONT.md, fontWeight: 500,
+                  height: WEB_BUTTON.lg,
+                  borderRadius: 10,
+                  width: '100%',
+                  background: c.surface,
+                  color: c.text1,
+                  fontSize: WEB_FONT.md,
+                  fontWeight: 500,
                   cursor: isLoading ? 'not-allowed' : 'pointer',
                   border: `1.5px solid ${c.borderSolid}`,
                 }}
@@ -300,22 +403,50 @@ export function WebForgotPasswordPage() {
             {/* Help tips */}
             <div
               style={{
-                marginTop: 24, padding: '14px 18px', borderRadius: 12,
-                background: c.surface, border: `1px solid ${c.borderSolid}`,
+                marginTop: 24,
+                padding: '14px 18px',
+                borderRadius: 12,
+                background: c.surface,
+                border: `1px solid ${c.borderSolid}`,
                 width: '100%',
               }}
             >
-              <p style={{ color: c.text1, fontSize: WEB_FONT.sm, fontWeight: 600, marginBottom: 6 }}>
+              <p
+                style={{ color: c.text1, fontSize: WEB_FONT.sm, fontWeight: 600, marginBottom: 6 }}
+              >
                 Không nhận được email?
               </p>
-              <ul style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.6, paddingLeft: 16, margin: 0 }}>
+              <ul
+                style={{
+                  color: c.text3,
+                  fontSize: WEB_FONT.xs,
+                  lineHeight: 1.6,
+                  paddingLeft: 16,
+                  margin: 0,
+                }}
+              >
                 <li>Kiểm tra thư mục Spam / Junk</li>
-                <li>Đảm bảo email <span style={{ color: c.text2, fontWeight: 500 }}>{email}</span> chính xác</li>
+                <li>
+                  Đảm bảo email <span style={{ color: c.text2, fontWeight: 500 }}>{email}</span>{' '}
+                  chính xác
+                </li>
                 <li>Thử gửi lại email bằng nút phía trên</li>
-                <li>Liên hệ{' '}
-                  <button className="hover:underline" style={{ color: '#3B82F6', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 500, padding: 0 }}>
+                <li>
+                  Liên hệ{' '}
+                  <button
+                    className="hover:underline"
+                    style={{
+                      color: '#3B82F6',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontWeight: 500,
+                      padding: 0,
+                    }}
+                  >
                     hỗ trợ
-                  </button> nếu vẫn gặp vấn đề
+                  </button>{' '}
+                  nếu vẫn gặp vấn đề
                 </li>
               </ul>
             </div>
@@ -326,7 +457,16 @@ export function WebForgotPasswordPage() {
         <div style={{ marginTop: 40, textAlign: 'center' }}>
           <p style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.5 }}>
             Cần trợ giúp?{' '}
-            <button className="hover:underline" style={{ color: '#3B82F6', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 500 }}>
+            <button
+              className="hover:underline"
+              style={{
+                color: '#3B82F6',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontWeight: 500,
+              }}
+            >
               Liên hệ hỗ trợ
             </button>
           </p>

@@ -2,7 +2,7 @@
  * ══════════════════════════════════════════════════════════════
  *  DisputeResolutionPage.test.tsx — Dispute Resolution Tests
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Test Coverage (4 tests):
  * 1. ✅ File complaint form complete
  * 2. ✅ 5 complaint types available
@@ -12,7 +12,7 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { screen, waitFor, within } from '@testing-library/react';
-import { renderWithRouter, userEvent } from '../../../test/utils/test-utils';
+import { renderWithRouter, userEvent } from '@/test/test-utils-navigation';
 import { DisputeResolutionPage } from '../DisputeResolutionPage';
 
 describe('DisputeResolutionPage', () => {

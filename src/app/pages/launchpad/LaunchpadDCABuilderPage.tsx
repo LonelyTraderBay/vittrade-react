@@ -15,13 +15,22 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  Plus, TrendingUp, Calendar, DollarSign, Pause, Play,
-  Clock, BarChart3, ArrowRight, CheckCircle2, Settings,
+  Plus,
+  TrendingUp,
+  Calendar,
+  DollarSign,
+  Pause,
+  Play,
+  Clock,
+  BarChart3,
+  ArrowRight,
+  CheckCircle2,
+  Settings,
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 const TABS = ['Chiến lược', 'Lịch sử', 'Tạo mới'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface DCAStrategy {
   id: string;
@@ -126,25 +135,36 @@ export function LaunchpadDCABuilderPage() {
 
   const getFrequencyLabel = (freq: string) => {
     switch (freq) {
-      case 'daily': return 'Hàng ngày';
-      case 'weekly': return 'Hàng tuần';
-      case 'biweekly': return '2 tuần/lần';
-      case 'monthly': return 'Hàng tháng';
-      default: return freq;
+      case 'daily':
+        return 'Hàng ngày';
+      case 'weekly':
+        return 'Hàng tuần';
+      case 'biweekly':
+        return '2 tuần/lần';
+      case 'monthly':
+        return 'Hàng tháng';
+      default:
+        return freq;
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return '#10B981';
-      case 'paused': return '#F59E0B';
-      case 'completed': return '#6B7280';
-      default: return c.text3;
+      case 'active':
+        return '#10B981';
+      case 'paused':
+        return '#F59E0B';
+      case 'completed':
+        return '#6B7280';
+      default:
+        return c.text3;
     }
   };
 
   const handleCreateStrategy = () => {
-    alert(`DCA Strategy Created:\nToken: ${token}\nFrequency: ${frequency}\nAmount: $${amount}\nBudget: $${totalBudget}\nStart: ${startDate}`);
+    alert(
+      `DCA Strategy Created:\nToken: ${token}\nFrequency: ${frequency}\nAmount: $${amount}\nBudget: $${totalBudget}\nStart: ${startDate}`,
+    );
   };
 
   return (
@@ -183,7 +203,7 @@ export function LaunchpadDCABuilderPage() {
                 <div>
                   <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Active Strategies</p>
                   <p style={{ color: c.text1, fontSize: 16, fontWeight: 600 }}>
-                    {MOCK_STRATEGIES.filter(s => s.status === 'active').length}
+                    {MOCK_STRATEGIES.filter((s) => s.status === 'active').length}
                   </p>
                 </div>
                 <div>
@@ -198,7 +218,8 @@ export function LaunchpadDCABuilderPage() {
             {/* Strategies List */}
             <PageSection label="Các chiến lược">
               {MOCK_STRATEGIES.map((strategy) => {
-                const pnlPercent = ((strategy.currentValue - strategy.totalInvested) / strategy.totalInvested) * 100;
+                const pnlPercent =
+                  ((strategy.currentValue - strategy.totalInvested) / strategy.totalInvested) * 100;
                 return (
                   <div
                     key={strategy.id}
@@ -219,13 +240,20 @@ export function LaunchpadDCABuilderPage() {
                           <TrendingUp size={20} color="#3B82F6" />
                         </div>
                         <div>
-                          <p style={{ color: c.text1, fontSize: 15, fontWeight: 600 }}>{strategy.token}</p>
+                          <p style={{ color: c.text1, fontSize: 15, fontWeight: 600 }}>
+                            {strategy.token}
+                          </p>
                           <div className="flex items-center gap-2">
-                            <p style={{ color: c.text3, fontSize: 11 }}>{getFrequencyLabel(strategy.frequency)}</p>
+                            <p style={{ color: c.text3, fontSize: 11 }}>
+                              {getFrequencyLabel(strategy.frequency)}
+                            </p>
                             <span
                               className="px-2 py-0.5 rounded-md text-[10px] font-semibold"
                               style={{
-                                background: strategy.status === 'active' ? 'rgba(16,185,129,0.08)' : 'rgba(245,158,11,0.08)',
+                                background:
+                                  strategy.status === 'active'
+                                    ? 'rgba(16,185,129,0.08)'
+                                    : 'rgba(245,158,11,0.08)',
                                 color: getStatusColor(strategy.status),
                               }}
                             >
@@ -236,15 +264,24 @@ export function LaunchpadDCABuilderPage() {
                       </div>
                       <div className="flex gap-2">
                         {strategy.status === 'active' ? (
-                          <button className="p-2 rounded-lg hover:opacity-80" style={{ background: c.bg }}>
+                          <button
+                            className="p-2 rounded-lg hover:opacity-80"
+                            style={{ background: c.bg }}
+                          >
                             <Pause size={14} color={c.text3} />
                           </button>
                         ) : (
-                          <button className="p-2 rounded-lg hover:opacity-80" style={{ background: c.bg }}>
+                          <button
+                            className="p-2 rounded-lg hover:opacity-80"
+                            style={{ background: c.bg }}
+                          >
                             <Play size={14} color="#10B981" />
                           </button>
                         )}
-                        <button className="p-2 rounded-lg hover:opacity-80" style={{ background: c.bg }}>
+                        <button
+                          className="p-2 rounded-lg hover:opacity-80"
+                          style={{ background: c.bg }}
+                        >
                           <Settings size={14} color={c.text3} />
                         </button>
                       </div>
@@ -258,8 +295,16 @@ export function LaunchpadDCABuilderPage() {
                         </p>
                       </div>
                       <div>
-                        <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Current Value</p>
-                        <p style={{ color: pnlPercent >= 0 ? '#10B981' : '#EF4444', fontSize: 14, fontWeight: 600 }}>
+                        <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>
+                          Current Value
+                        </p>
+                        <p
+                          style={{
+                            color: pnlPercent >= 0 ? '#10B981' : '#EF4444',
+                            fontSize: 14,
+                            fontWeight: 600,
+                          }}
+                        >
                           ${strategy.currentValue.toFixed(2)}
                         </p>
                       </div>
@@ -279,7 +324,10 @@ export function LaunchpadDCABuilderPage() {
 
                     <div
                       className="rounded-xl p-2 mb-2"
-                      style={{ background: pnlPercent >= 0 ? 'rgba(16,185,129,0.06)' : 'rgba(239,68,68,0.06)' }}
+                      style={{
+                        background:
+                          pnlPercent >= 0 ? 'rgba(16,185,129,0.06)' : 'rgba(239,68,68,0.06)',
+                      }}
                     >
                       <div className="flex items-center justify-between">
                         <p style={{ color: c.text3, fontSize: 10 }}>P/L</p>
@@ -290,12 +338,17 @@ export function LaunchpadDCABuilderPage() {
                             fontWeight: 700,
                           }}
                         >
-                          {pnlPercent >= 0 ? '+' : ''}{pnlPercent.toFixed(2)}% (${(strategy.currentValue - strategy.totalInvested).toFixed(2)})
+                          {pnlPercent >= 0 ? '+' : ''}
+                          {pnlPercent.toFixed(2)}% ($
+                          {(strategy.currentValue - strategy.totalInvested).toFixed(2)})
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between pt-2" style={{ borderTop: `1px solid ${c.border}` }}>
+                    <div
+                      className="flex items-center justify-between pt-2"
+                      style={{ borderTop: `1px solid ${c.border}` }}
+                    >
                       <div className="flex items-center gap-1">
                         <Calendar size={11} color={c.text3} />
                         <p style={{ color: c.text3, fontSize: 10 }}>
@@ -387,7 +440,10 @@ export function LaunchpadDCABuilderPage() {
         {tab === 'Tạo mới' && (
           <>
             <PageSection label="Token">
-              <div className="rounded-2xl p-4" style={{ background: c.surface, border: `1px solid ${c.border}` }}>
+              <div
+                className="rounded-2xl p-4"
+                style={{ background: c.surface, border: `1px solid ${c.border}` }}
+              >
                 <label style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}>
                   Chọn token
                 </label>
@@ -397,7 +453,12 @@ export function LaunchpadDCABuilderPage() {
                   onChange={(e) => setToken(e.target.value)}
                   placeholder="ARB, OP, MATIC..."
                   className="w-full px-4 py-2.5 rounded-xl outline-none"
-                  style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 14 }}
+                  style={{
+                    background: c.bg,
+                    border: `1px solid ${c.border}`,
+                    color: c.text1,
+                    fontSize: 14,
+                  }}
                 />
               </div>
             </PageSection>
@@ -436,9 +497,14 @@ export function LaunchpadDCABuilderPage() {
             </PageSection>
 
             <PageSection label="Số tiền">
-              <div className="rounded-2xl p-4" style={{ background: c.surface, border: `1px solid ${c.border}` }}>
+              <div
+                className="rounded-2xl p-4"
+                style={{ background: c.surface, border: `1px solid ${c.border}` }}
+              >
                 <div className="mb-4">
-                  <label style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}
+                  >
                     Số tiền mỗi lần (USD)
                   </label>
                   <div className="flex items-center gap-2">
@@ -449,13 +515,20 @@ export function LaunchpadDCABuilderPage() {
                       onChange={(e) => setAmount(e.target.value)}
                       placeholder="100"
                       className="flex-1 px-4 py-2.5 rounded-xl outline-none"
-                      style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 14 }}
+                      style={{
+                        background: c.bg,
+                        border: `1px solid ${c.border}`,
+                        color: c.text1,
+                        fontSize: 14,
+                      }}
                     />
                   </div>
                 </div>
 
                 <div className="mb-4">
-                  <label style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}
+                  >
                     Tổng ngân sách (USD)
                   </label>
                   <div className="flex items-center gap-2">
@@ -466,13 +539,20 @@ export function LaunchpadDCABuilderPage() {
                       onChange={(e) => setTotalBudget(e.target.value)}
                       placeholder="1000"
                       className="flex-1 px-4 py-2.5 rounded-xl outline-none"
-                      style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 14 }}
+                      style={{
+                        background: c.bg,
+                        border: `1px solid ${c.border}`,
+                        color: c.text1,
+                        fontSize: 14,
+                      }}
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}
+                  >
                     Ngày bắt đầu
                   </label>
                   <div className="flex items-center gap-2">
@@ -482,7 +562,12 @@ export function LaunchpadDCABuilderPage() {
                       value={startDate}
                       onChange={(e) => setStartDate(e.target.value)}
                       className="flex-1 px-4 py-2.5 rounded-xl outline-none"
-                      style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 14 }}
+                      style={{
+                        background: c.bg,
+                        border: `1px solid ${c.border}`,
+                        color: c.text1,
+                        fontSize: 14,
+                      }}
                     />
                   </div>
                 </div>
@@ -493,9 +578,14 @@ export function LaunchpadDCABuilderPage() {
             {amount && totalBudget && (
               <div
                 className="rounded-2xl p-4"
-                style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}
+                style={{
+                  background: 'rgba(16,185,129,0.06)',
+                  border: '1px solid rgba(16,185,129,0.15)',
+                }}
               >
-                <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginBottom: 8 }}>Xem trước chiến lược</p>
+                <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginBottom: 8 }}>
+                  Xem trước chiến lược
+                </p>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <p style={{ color: c.text3, fontSize: 10 }}>Token</p>
@@ -503,7 +593,9 @@ export function LaunchpadDCABuilderPage() {
                   </div>
                   <div>
                     <p style={{ color: c.text3, fontSize: 10 }}>Frequency</p>
-                    <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>{getFrequencyLabel(frequency)}</p>
+                    <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
+                      {getFrequencyLabel(frequency)}
+                    </p>
                   </div>
                   <div>
                     <p style={{ color: c.text3, fontSize: 10 }}>Per Order</p>

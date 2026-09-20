@@ -10,8 +10,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Shield, Mail, AlertTriangle, CheckCircle, Info,
-  ChevronRight, Eye, EyeOff, RefreshCw, Copy,
+  Shield,
+  Mail,
+  AlertTriangle,
+  CheckCircle,
+  Info,
+  ChevronRight,
+  Eye,
+  EyeOff,
+  RefreshCw,
+  Copy,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -147,16 +155,14 @@ export function P2PAntiPhishingCodePage() {
             không có code này, đó là email giả mạo.
           </p>
           <div className="flex flex-col gap-2">
-            {[
-              'Bảo vệ khỏi email phishing',
-              'Xác thực email chính thức',
-              'Ngăn chặn lừa đảo',
-            ].map((benefit, idx) => (
-              <div key={idx} className="flex items-start gap-2">
-                <CheckCircle size={12} color="#10B981" className="shrink-0 mt-1" />
-                <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>{benefit}</p>
-              </div>
-            ))}
+            {['Bảo vệ khỏi email phishing', 'Xác thực email chính thức', 'Ngăn chặn lừa đảo'].map(
+              (benefit, idx) => (
+                <div key={idx} className="flex items-start gap-2">
+                  <CheckCircle size={12} color="#10B981" className="shrink-0 mt-1" />
+                  <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>{benefit}</p>
+                </div>
+              ),
+            )}
           </div>
         </TrCard>
       </div>
@@ -199,14 +205,15 @@ export function P2PAntiPhishingCodePage() {
                 }}
                 className="p-2"
               >
-                {showCode ? <EyeOff size={16} color={c.text3} /> : <Eye size={16} color={c.text3} />}
+                {showCode ? (
+                  <EyeOff size={16} color={c.text3} />
+                ) : (
+                  <Eye size={16} color={c.text3} />
+                )}
               </button>
             </div>
 
-            <div
-              className="p-4 rounded-lg mb-4 text-center"
-              style={{ background: c.surface2 }}
-            >
+            <div className="p-4 rounded-lg mb-4 text-center" style={{ background: c.surface2 }}>
               <p
                 style={{
                   color: c.text1,
@@ -288,9 +295,7 @@ export function P2PAntiPhishingCodePage() {
               <div
                 className="px-2 py-1 rounded-md inline-block text-xs font-bold"
                 style={{
-                  background: example.isLegit
-                    ? hexToRgba('#10B981', 15)
-                    : hexToRgba('#EF4444', 15),
+                  background: example.isLegit ? hexToRgba('#10B981', 15) : hexToRgba('#EF4444', 15),
                   color: example.isLegit ? '#10B981' : '#EF4444',
                 }}
               >
@@ -305,7 +310,10 @@ export function P2PAntiPhishingCodePage() {
       <div className="px-5">
         <div
           className="p-3 rounded-lg flex items-start gap-2"
-          style={{ background: hexToRgba('#EF4444', 10), border: `1px solid ${hexToRgba('#EF4444', 30)}` }}
+          style={{
+            background: hexToRgba('#EF4444', 10),
+            border: `1px solid ${hexToRgba('#EF4444', 30)}`,
+          }}
         >
           <AlertTriangle size={14} color="#EF4444" className="shrink-0 mt-0.5" />
           <div>

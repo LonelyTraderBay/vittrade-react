@@ -17,8 +17,14 @@ import { fmtAmount } from '../../data/formatNumber';
 import { TrCard } from '../../components/ui/TrCard';
 import { CTAButton } from '../../components/ui/CTAButton';
 import {
-  CheckCircle, Clock, Copy, Share2, Download, ChevronRight,
-  AlertCircle, Briefcase,
+  CheckCircle,
+  Clock,
+  Copy,
+  Share2,
+  Download,
+  ChevronRight,
+  AlertCircle,
+  Briefcase,
 } from 'lucide-react';
 import { CopyButton, ErrorState, ShareReceiptCard } from './LaunchpadComponents';
 import { SUB_STATUS_LABELS, type Subscription } from './launchpadData';
@@ -51,11 +57,13 @@ export function LaunchpadReceiptPage() {
       <PageContent gap="default">
         {/* Success hero */}
         <div className="flex flex-col items-center py-6">
-          <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
+          <div
+            className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
             style={{
               background: 'rgba(16,185,129,0.12)',
               border: '2px solid rgba(16,185,129,0.3)',
-            }}>
+            }}
+          >
             <CheckCircle size={32} color="#10B981" />
           </div>
           <h2 style={{ color: c.text1, fontSize: 20, fontWeight: 800, marginBottom: 4 }}>
@@ -69,20 +77,24 @@ export function LaunchpadReceiptPage() {
         {/* Project card */}
         <TrCard className="p-4">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-lg font-bold shrink-0"
+            <div
+              className="w-12 h-12 rounded-2xl flex items-center justify-center text-lg font-bold shrink-0"
               style={{
                 background: sub.projectLogoColor + '22',
                 border: `2px solid ${sub.projectLogoColor}44`,
                 color: sub.projectLogoColor,
-              }}>
+              }}
+            >
               {sub.projectLogo}
             </div>
             <div className="flex-1">
               <p style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>{sub.projectName}</p>
               <p style={{ color: c.text2, fontSize: 13 }}>${sub.projectSymbol}</p>
             </div>
-            <span className="px-2.5 py-1 rounded-lg text-xs font-bold"
-              style={{ background: `${statusInfo.color}15`, color: statusInfo.color }}>
+            <span
+              className="px-2.5 py-1 rounded-lg text-xs font-bold"
+              style={{ background: `${statusInfo.color}15`, color: statusInfo.color }}
+            >
               {statusInfo.label}
             </span>
           </div>
@@ -90,25 +102,41 @@ export function LaunchpadReceiptPage() {
 
         {/* Receipt details */}
         <TrCard className="p-4">
-          <p style={{ color: c.text1, fontSize: 14, fontWeight: 700, marginBottom: 12 }}>Chi tiết đơn đăng ký</p>
+          <p style={{ color: c.text1, fontSize: 14, fontWeight: 700, marginBottom: 12 }}>
+            Chi tiết đơn đăng ký
+          </p>
           <div className="flex flex-col gap-3">
             {[
               { label: 'Mã đăng ký', value: sub.id, mono: true },
               { label: 'Thời gian', value: sub.timestamp },
-              { label: 'Số tiền', value: `${fmtAmount(sub.amount, 2)} USDT`, mono: true, highlight: true },
-              { label: 'Dự kiến nhận', value: `${fmtAmount(sub.tokensExpected, 0)} ${sub.projectSymbol}`, mono: true },
+              {
+                label: 'Số tiền',
+                value: `${fmtAmount(sub.amount, 2)} USDT`,
+                mono: true,
+                highlight: true,
+              },
+              {
+                label: 'Dự kiến nhận',
+                value: `${fmtAmount(sub.tokensExpected, 0)} ${sub.projectSymbol}`,
+                mono: true,
+              },
               { label: 'Trạng thái', value: statusInfo.label, color: statusInfo.color },
               { label: 'Mở khóa tiếp theo', value: sub.nextUnlockDate },
-            ].map(row => (
-              <div key={row.label} className="flex justify-between items-center py-1.5"
-                style={{ borderBottom: `1px solid ${c.divider}` }}>
+            ].map((row) => (
+              <div
+                key={row.label}
+                className="flex justify-between items-center py-1.5"
+                style={{ borderBottom: `1px solid ${c.divider}` }}
+              >
                 <span style={{ color: c.text3, fontSize: 12 }}>{row.label}</span>
-                <span style={{
-                  color: (row as any).color || ((row as any).highlight ? c.text1 : c.text2),
-                  fontSize: 12,
-                  fontWeight: (row as any).highlight ? 700 : 500,
-                  fontFamily: (row as any).mono ? 'monospace' : 'inherit',
-                }}>
+                <span
+                  style={{
+                    color: (row as any).color || ((row as any).highlight ? c.text1 : c.text2),
+                    fontSize: 12,
+                    fontWeight: (row as any).highlight ? 700 : 500,
+                    fontFamily: (row as any).mono ? 'monospace' : 'inherit',
+                  }}
+                >
                   {row.value}
                 </span>
               </div>
@@ -136,7 +164,15 @@ export function LaunchpadReceiptPage() {
               'Token mở khóa theo lịch vesting — kiểm tra tab Portfolio để theo dõi.',
             ].map((step, i) => (
               <div key={i} className="flex items-start gap-2">
-                <span style={{ color: '#3B82F6', fontSize: 12, fontWeight: 700, width: 16, shrinkX: 0 }}>
+                <span
+                  style={{
+                    color: '#3B82F6',
+                    fontSize: 12,
+                    fontWeight: 700,
+                    width: 16,
+                    flexShrink: 0,
+                  }}
+                >
                   {i + 1}.
                 </span>
                 <span style={{ color: c.text2, fontSize: 12, lineHeight: 1.5 }}>{step}</span>
@@ -149,8 +185,8 @@ export function LaunchpadReceiptPage() {
         <div className="flex items-start gap-2 px-1">
           <AlertCircle size={13} color={c.text3} className="shrink-0 mt-0.5" />
           <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
-            Phân bổ thực tế có thể khác dự kiến nếu tổng đăng ký vượt hard cap.
-            Hiệu suất quá khứ không đảm bảo kết quả tương lai.
+            Phân bổ thực tế có thể khác dự kiến nếu tổng đăng ký vượt hard cap. Hiệu suất quá khứ
+            không đảm bảo kết quả tương lai.
           </p>
         </div>
 
@@ -163,13 +199,18 @@ export function LaunchpadReceiptPage() {
             <Briefcase size={16} />
             Xem portfolio
           </CTAButton>
-          <button onClick={() => navigate(`${prefix}/launchpad`)}
+          <button
+            onClick={() => navigate(`${prefix}/launchpad`)}
             className="w-full py-3 rounded-2xl flex items-center justify-center gap-2"
             style={{
-              background: c.surface2, color: c.text2,
+              background: c.surface2,
+              color: c.text2,
               border: `1px solid ${c.borderSolid}`,
-              fontSize: 14, fontWeight: 600, borderRadius: 14,
-            }}>
+              fontSize: 14,
+              fontWeight: 600,
+              borderRadius: 14,
+            }}
+          >
             Quay lại Launchpad
           </button>
         </div>

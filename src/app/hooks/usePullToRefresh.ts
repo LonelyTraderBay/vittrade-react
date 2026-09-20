@@ -42,7 +42,9 @@ export function usePullToRefresh({
 
   const onTouchStart = useCallback((e: React.TouchEvent) => {
     // Chỉ activate khi scroll ở top
-    const scrollContainer = (e.currentTarget as HTMLElement).closest('[data-pull-scroll]') as HTMLElement | null;
+    const scrollContainer = (e.currentTarget as HTMLElement).closest(
+      '[data-pull-scroll]',
+    ) as HTMLElement | null;
     const scrollTop = scrollContainer ? scrollContainer.scrollTop : 0;
     if (scrollTop > 5) return;
 
@@ -51,38 +53,41 @@ export function usePullToRefresh({
     activated.current = false;
   }, []);
 
-  const onTouchMove = useCallback((e: React.TouchEvent) => {
-    if (!pulling.current || state.isRefreshing) return;
+  const onTouchMove = useCallback(
+    (e: React.TouchEvent) => {
+      if (!pulling.current || state.isRefreshing) return;
 
-    currentY.current = e.touches[0].clientY;
-    const delta = currentY.current - startY.current;
+      currentY.current = e.touches[0].clientY;
+      const delta = currentY.current - startY.current;
 
-    // Dead zone: require 10px vertical movement before any state changes.
-    // This prevents re-renders during simple taps/clicks on buttons.
-    if (!activated.current) {
-      if (Math.abs(delta) < 10) return;
-      activated.current = true;
-    }
+      // Dead zone: require 10px vertical movement before any state changes.
+      // This prevents re-renders during simple taps/clicks on buttons.
+      if (!activated.current) {
+        if (Math.abs(delta) < 10) return;
+        activated.current = true;
+      }
 
-    if (delta < 0) {
-      pulling.current = false;
-      activated.current = false;
-      setState(s => s.isPulling ? IDLE_STATE : s);
-      return;
-    }
+      if (delta < 0) {
+        pulling.current = false;
+        activated.current = false;
+        setState((s) => (s.isPulling ? IDLE_STATE : s));
+        return;
+      }
 
-    // Resistance curve — kéo càng xa càng nặng
-    const resistance = 0.4;
-    const distance = Math.min(delta * resistance, maxPull);
-    const progress = Math.min(distance / threshold, 1);
+      // Resistance curve — kéo càng xa càng nặng
+      const resistance = 0.4;
+      const distance = Math.min(delta * resistance, maxPull);
+      const progress = Math.min(distance / threshold, 1);
 
-    setState(s => ({
-      ...s,
-      pullDistance: distance,
-      isPulling: true,
-      progress,
-    }));
-  }, [state.isRefreshing, threshold, maxPull]);
+      setState((s) => ({
+        ...s,
+        pullDistance: distance,
+        isPulling: true,
+        progress,
+      }));
+    },
+    [state.isRefreshing, threshold, maxPull],
+  );
 
   const onTouchEnd = useCallback(async () => {
     if (!pulling.current) return;
@@ -97,17 +102,19 @@ export function usePullToRefresh({
     activated.current = false;
 
     if (state.pullDistance >= threshold && !state.isRefreshing) {
-      setState(s => ({ ...s, isRefreshing: true, pullDistance: threshold * 0.6, progress: 1 }));
+      setState((s) => ({ ...s, isRefreshing: true, pullDistance: threshold * 0.6, progress: 1 }));
 
       const startTime = Date.now();
       try {
         await onRefresh();
-      } catch { /* ignore */ }
+      } catch {
+        /* ignore */
+      }
 
       // Đảm bảo loading hiển thị tối thiểu minLoadingTime
       const elapsed = Date.now() - startTime;
       if (elapsed < minLoadingTime) {
-        await new Promise(r => setTimeout(r, minLoadingTime - elapsed));
+        await new Promise((r) => setTimeout(r, minLoadingTime - elapsed));
       }
 
       setState(IDLE_STATE);

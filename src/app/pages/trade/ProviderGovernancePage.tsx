@@ -2,19 +2,19 @@
  * ══════════════════════════════════════════════════════════════
  *  ProviderGovernancePage — Phase 3: Provider Accountability
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - For providers only (access gated)
  * - Strategy modification log
  * - Follower communication center
  * - Performance fee waterfall report
  * - Compliance checklist
- * 
+ *
  * Compliance:
  * - Provider must notify followers 24h before major changes
  * - Transparency in fee earnings
  * - Regular compliance verification
- * 
+ *
  * Guidelines:
  * - PageLayout + TabBar pattern
  * - Trust-first (providers accountable to followers)
@@ -23,10 +23,22 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { 
-  FileText, Users, DollarSign, CheckCircle, AlertTriangle,
-  Calendar, TrendingUp, MessageSquare, Send, Clock, Shield,
-  Eye, ChevronRight, Edit, Lock
+import {
+  FileText,
+  Users,
+  DollarSign,
+  CheckCircle,
+  AlertTriangle,
+  Calendar,
+  TrendingUp,
+  MessageSquare,
+  Send,
+  Clock,
+  Shield,
+  Eye,
+  ChevronRight,
+  Edit,
+  Lock,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -109,7 +121,7 @@ export function ProviderGovernancePage() {
   const c = useThemeColors();
   const navigate = useNavigate();
   const prefix = useRoutePrefix();
-  
+
   const [activeTab, setActiveTab] = useState<TabType>('modifications');
   const [showMessageModal, setShowMessageModal] = useState(false);
 
@@ -128,9 +140,12 @@ export function ProviderGovernancePage() {
 
       <PageContent gap="relaxed">
         {/* Provider Stats Summary */}
-        <div className="p-4 rounded-2xl" style={{ background: c.primary + '22', border: `2px solid ${c.primary}` }}>
+        <div
+          className="p-4 rounded-2xl"
+          style={{ background: c.primary + '22', border: `2px solid ${c.primary}` }}
+        >
           <div className="flex items-center gap-3 mb-3">
-            <div 
+            <div
               className="w-12 h-12 rounded-full flex items-center justify-center"
               style={{ background: c.primary }}
             >
@@ -184,11 +199,15 @@ export function ProviderGovernancePage() {
         {/* Tab Content */}
         {activeTab === 'modifications' && (
           <div className="space-y-4">
-            <div className="p-3 rounded-xl" style={{ background: c.warningBg, border: `1px solid ${c.warningBorder}` }}>
+            <div
+              className="p-3 rounded-xl"
+              style={{ background: c.warningBg, border: `1px solid ${c.warningBorder}` }}
+            >
               <div className="flex items-start gap-2">
                 <AlertTriangle size={14} color={c.warningText} className="shrink-0 mt-0.5" />
                 <p style={{ color: c.warningText, fontSize: 10, lineHeight: 1.5 }}>
-                  <strong>24-Hour Notice Required:</strong> You must notify all followers at least 24 hours before implementing major strategy changes.
+                  <strong>24-Hour Notice Required:</strong> You must notify all followers at least
+                  24 hours before implementing major strategy changes.
                 </p>
               </div>
             </div>
@@ -201,7 +220,7 @@ export function ProviderGovernancePage() {
                 </div>
               ) : (
                 <div className="space-y-2">
-                  {STRATEGY_MODIFICATIONS.map(mod => (
+                  {STRATEGY_MODIFICATIONS.map((mod) => (
                     <div
                       key={mod.id}
                       className="p-4 rounded-xl"
@@ -210,22 +229,28 @@ export function ProviderGovernancePage() {
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
-                            <span 
+                            <span
                               className="px-2 py-0.5 rounded text-xs"
-                              style={{ 
-                                background: mod.type === 'fee_structure' ? '#10B98122' : 
-                                           mod.type === 'risk_level' ? '#EF444422' : '#F59E0B22',
-                                color: mod.type === 'fee_structure' ? '#10B981' : 
-                                       mod.type === 'risk_level' ? '#EF4444' : '#F59E0B',
+                              style={{
+                                background:
+                                  mod.type === 'fee_structure'
+                                    ? '#10B98122'
+                                    : mod.type === 'risk_level'
+                                      ? '#EF444422'
+                                      : '#F59E0B22',
+                                color:
+                                  mod.type === 'fee_structure'
+                                    ? '#10B981'
+                                    : mod.type === 'risk_level'
+                                      ? '#EF4444'
+                                      : '#F59E0B',
                                 fontWeight: 600,
-                                textTransform: 'uppercase'
+                                textTransform: 'uppercase',
                               }}
                             >
                               {mod.type.replace('_', ' ')}
                             </span>
-                            {mod.notificationSent && (
-                              <CheckCircle size={12} color="#10B981" />
-                            )}
+                            {mod.notificationSent && <CheckCircle size={12} color="#10B981" />}
                           </div>
 
                           <div className="mb-2">
@@ -233,7 +258,9 @@ export function ProviderGovernancePage() {
                             <div className="flex items-center gap-2">
                               <span style={{ color: c.text2, fontSize: 11 }}>{mod.oldValue}</span>
                               <ChevronRight size={12} color={c.text3} />
-                              <span style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>{mod.newValue}</span>
+                              <span style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>
+                                {mod.newValue}
+                              </span>
                             </div>
                           </div>
 
@@ -244,7 +271,9 @@ export function ProviderGovernancePage() {
                             </div>
                             <div className="flex items-center gap-1">
                               <Users size={10} color={c.text3} />
-                              <span style={{ color: c.text3, fontSize: 10 }}>{mod.followerImpact} followers impacted</span>
+                              <span style={{ color: c.text3, fontSize: 10 }}>
+                                {mod.followerImpact} followers impacted
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -302,7 +331,7 @@ export function ProviderGovernancePage() {
               </button>
 
               <div className="space-y-2">
-                {FOLLOWER_MESSAGES.map(msg => (
+                {FOLLOWER_MESSAGES.map((msg) => (
                   <div
                     key={msg.id}
                     className="p-4 rounded-xl"
@@ -311,21 +340,29 @@ export function ProviderGovernancePage() {
                     <div className="flex items-start gap-3 mb-2">
                       <MessageSquare size={16} color={c.primary} className="shrink-0 mt-1" />
                       <div className="flex-1 min-w-0">
-                        <p style={{ color: c.text1, fontSize: 12, fontWeight: 700, marginBottom: 4 }}>
+                        <p
+                          style={{ color: c.text1, fontSize: 12, fontWeight: 700, marginBottom: 4 }}
+                        >
                           {msg.subject}
                         </p>
-                        <p style={{ color: c.text3, fontSize: 10, marginBottom: 8, lineHeight: 1.4 }}>
+                        <p
+                          style={{ color: c.text3, fontSize: 10, marginBottom: 8, lineHeight: 1.4 }}
+                        >
                           {msg.body}
                         </p>
 
                         <div className="flex items-center gap-4">
                           <div className="flex items-center gap-1">
                             <Users size={10} color={c.text3} />
-                            <span style={{ color: c.text3, fontSize: 9 }}>{msg.recipients} recipients</span>
+                            <span style={{ color: c.text3, fontSize: 9 }}>
+                              {msg.recipients} recipients
+                            </span>
                           </div>
                           <div className="flex items-center gap-1">
                             <Eye size={10} color={c.text3} />
-                            <span style={{ color: c.text3, fontSize: 9 }}>{msg.openRate}% open rate</span>
+                            <span style={{ color: c.text3, fontSize: 9 }}>
+                              {msg.openRate}% open rate
+                            </span>
                           </div>
                           <div className="flex items-center gap-1">
                             <Clock size={10} color={c.text3} />
@@ -350,7 +387,9 @@ export function ProviderGovernancePage() {
                   <p style={{ color: '#10B981', fontSize: 20, fontWeight: 700, marginBottom: 2 }}>
                     ${providerStats.monthlyFeesEarned}
                   </p>
-                  <p style={{ color: c.text3, fontSize: 9 }}>From {providerStats.followers} followers</p>
+                  <p style={{ color: c.text3, fontSize: 9 }}>
+                    From {providerStats.followers} followers
+                  </p>
                 </div>
                 <div className="p-3 rounded-xl" style={{ background: c.surface2 }}>
                   <p style={{ color: c.text3, fontSize: 10, marginBottom: 4 }}>All-Time</p>
@@ -361,13 +400,16 @@ export function ProviderGovernancePage() {
                 </div>
               </div>
 
-              <div className="p-3 rounded-xl" style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}>
+              <div
+                className="p-3 rounded-xl"
+                style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}
+              >
                 <p style={{ color: c.primary, fontSize: 11, fontWeight: 600, marginBottom: 6 }}>
                   High-Water Mark System
                 </p>
                 <p style={{ color: c.primary, fontSize: 10, lineHeight: 1.5 }}>
-                  You only earn performance fees when followers are in profit (above their previous peak). 
-                  This ensures fair compensation aligned with follower success.
+                  You only earn performance fees when followers are in profit (above their previous
+                  peak). This ensures fair compensation aligned with follower success.
                 </p>
               </div>
 
@@ -383,7 +425,7 @@ export function ProviderGovernancePage() {
                   { name: 'Follower #067', profit: 280, fee: 28 },
                   { name: 'Follower #089', profit: 250, fee: 25 },
                 ].map((follower, i) => (
-                  <div 
+                  <div
                     key={i}
                     className="flex justify-between items-center p-3 rounded-lg"
                     style={{ background: c.surface2 }}
@@ -414,7 +456,11 @@ export function ProviderGovernancePage() {
                   { item: 'KYC verification up-to-date', status: true, lastCheck: '2026-03-01' },
                   { item: 'Risk disclosure accurate', status: true, lastCheck: '2026-03-05' },
                   { item: 'Fee structure transparent', status: true, lastCheck: '2026-02-28' },
-                  { item: 'No conflicts of interest undisclosed', status: true, lastCheck: '2026-03-01' },
+                  {
+                    item: 'No conflicts of interest undisclosed',
+                    status: true,
+                    lastCheck: '2026-03-01',
+                  },
                   { item: 'Strategy description current', status: true, lastCheck: '2026-03-05' },
                   { item: 'Communication obligations met', status: true, lastCheck: '2026-03-08' },
                 ].map((item, i) => (
@@ -430,7 +476,14 @@ export function ProviderGovernancePage() {
                         <AlertTriangle size={16} color="#EF4444" />
                       )}
                       <div>
-                        <p style={{ color: item.status ? '#10B981' : '#EF4444', fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
+                        <p
+                          style={{
+                            color: item.status ? '#10B981' : '#EF4444',
+                            fontSize: 11,
+                            fontWeight: 600,
+                            marginBottom: 2,
+                          }}
+                        >
                           {item.item}
                         </p>
                         <p style={{ color: item.status ? '#10B981' : '#EF4444', fontSize: 9 }}>
@@ -442,7 +495,10 @@ export function ProviderGovernancePage() {
                 ))}
               </div>
 
-              <div className="p-4 rounded-xl text-center" style={{ background: c.primary + '22', border: `2px solid ${c.primary}` }}>
+              <div
+                className="p-4 rounded-xl text-center"
+                style={{ background: c.primary + '22', border: `2px solid ${c.primary}` }}
+              >
                 <p style={{ color: c.primary, fontSize: 14, fontWeight: 700, marginBottom: 4 }}>
                   Compliance Score: {providerStats.complianceScore}/100
                 </p>
@@ -457,12 +513,12 @@ export function ProviderGovernancePage() {
 
       {/* Broadcast Message Modal */}
       {showMessageModal && (
-        <div 
+        <div
           className="fixed inset-0 z-50 flex items-end justify-center"
           style={{ background: 'rgba(0,0,0,0.5)' }}
           onClick={() => setShowMessageModal(false)}
         >
-          <div 
+          <div
             className="w-full max-w-md rounded-t-3xl p-6"
             style={{ background: c.bg }}
             onClick={(e) => e.stopPropagation()}

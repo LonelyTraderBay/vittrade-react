@@ -11,10 +11,27 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Wallet, Lock, Shield, ArrowRightLeft, Eye, EyeOff,
-  ChevronRight, Info, TrendingUp, TrendingDown, Clock,
-  DollarSign, AlertCircle, History, ArrowUpRight, ArrowDownLeft,
-  FileText, Download, Plus, Minus, ChevronDown,
+  Wallet,
+  Lock,
+  Shield,
+  ArrowRightLeft,
+  Eye,
+  EyeOff,
+  ChevronRight,
+  Info,
+  TrendingUp,
+  TrendingDown,
+  Clock,
+  DollarSign,
+  AlertCircle,
+  History,
+  ArrowUpRight,
+  ArrowDownLeft,
+  FileText,
+  Download,
+  Plus,
+  Minus,
+  ChevronDown,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Header } from '../../components/layout/Header';
@@ -47,21 +64,21 @@ const MOCK_BALANCES: AssetBalance[] = [
   {
     asset: 'USDT',
     symbol: 'USDT',
-    available: 12_450.50,
-    inEscrow: 3_200.00,
-    locked: 500.00,
-    total: 16_150.50,
-    usdValue: 16_150.50,
+    available: 12_450.5,
+    inEscrow: 3_200.0,
+    locked: 500.0,
+    total: 16_150.5,
+    usdValue: 16_150.5,
     logo: '💵',
   },
   {
     asset: 'BTC',
     symbol: 'BTC',
     available: 0.0524,
-    inEscrow: 0.0100,
-    locked: 0.0000,
+    inEscrow: 0.01,
+    locked: 0.0,
     total: 0.0624,
-    usdValue: 4_243.20,
+    usdValue: 4_243.2,
     logo: '₿',
   },
   {
@@ -71,7 +88,7 @@ const MOCK_BALANCES: AssetBalance[] = [
     inEscrow: 12_000_000,
     locked: 0,
     total: 57_600_000,
-    usdValue: 2_400.00,
+    usdValue: 2_400.0,
     logo: '₫',
   },
 ];
@@ -96,7 +113,7 @@ const RECENT_TRANSACTIONS: Transaction[] = [
     id: '1',
     type: 'escrow_release',
     asset: 'USDT',
-    amount: 1_500.00,
+    amount: 1_500.0,
     status: 'completed',
     time: '10 phút trước',
     orderId: '#P2P-45892',
@@ -105,7 +122,7 @@ const RECENT_TRANSACTIONS: Transaction[] = [
     id: '2',
     type: 'transfer_in',
     asset: 'USDT',
-    amount: 5_000.00,
+    amount: 5_000.0,
     status: 'completed',
     time: '2 giờ trước',
   },
@@ -131,7 +148,11 @@ const RECENT_TRANSACTIONS: Transaction[] = [
 /* ═══════════════════════════════════════════════════════════
    Balance Card Component
    ═══════════════════════════════════════════════════════════ */
-function BalanceCard({ balance, expanded, onToggle }: {
+function BalanceCard({
+  balance,
+  expanded,
+  onToggle,
+}: {
   balance: AssetBalance;
   expanded: boolean;
   onToggle: () => void;
@@ -159,15 +180,22 @@ function BalanceCard({ balance, expanded, onToggle }: {
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
-              {balance.asset}
-            </h3>
+            <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>{balance.asset}</h3>
             <span style={{ color: c.text3, fontSize: 10 }}>
               ≈ ${fmtAmount(balance.usdValue, 2)}
             </span>
           </div>
-          <p style={{ color: c.text1, fontSize: φ.md, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
-            {balance.symbol === 'VND' ? fmtVnd(balance.total) : fmtAmount(balance.total, balance.symbol === 'BTC' ? 8 : 2)}
+          <p
+            style={{
+              color: c.text1,
+              fontSize: φ.md,
+              fontWeight: 700,
+              fontVariantNumeric: 'tabular-nums',
+            }}
+          >
+            {balance.symbol === 'VND'
+              ? fmtVnd(balance.total)
+              : fmtAmount(balance.total, balance.symbol === 'BTC' ? 8 : 2)}
           </p>
         </div>
 
@@ -198,8 +226,17 @@ function BalanceCard({ balance, expanded, onToggle }: {
                     <Wallet size={10} color={c.text3} />
                     <p style={{ color: c.text3, fontSize: 10 }}>Khả dụng</p>
                   </div>
-                  <p style={{ color: '#10B981', fontSize: φ.xs, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
-                    {balance.symbol === 'VND' ? fmtVnd(balance.available) : fmtAmount(balance.available, balance.symbol === 'BTC' ? 8 : 2)}
+                  <p
+                    style={{
+                      color: '#10B981',
+                      fontSize: φ.xs,
+                      fontWeight: 700,
+                      fontVariantNumeric: 'tabular-nums',
+                    }}
+                  >
+                    {balance.symbol === 'VND'
+                      ? fmtVnd(balance.available)
+                      : fmtAmount(balance.available, balance.symbol === 'BTC' ? 8 : 2)}
                   </p>
                 </div>
 
@@ -208,8 +245,17 @@ function BalanceCard({ balance, expanded, onToggle }: {
                     <Lock size={10} color={c.text3} />
                     <p style={{ color: c.text3, fontSize: 10 }}>Escrow</p>
                   </div>
-                  <p style={{ color: '#F59E0B', fontSize: φ.xs, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
-                    {balance.symbol === 'VND' ? fmtVnd(balance.inEscrow) : fmtAmount(balance.inEscrow, balance.symbol === 'BTC' ? 8 : 2)}
+                  <p
+                    style={{
+                      color: '#F59E0B',
+                      fontSize: φ.xs,
+                      fontWeight: 700,
+                      fontVariantNumeric: 'tabular-nums',
+                    }}
+                  >
+                    {balance.symbol === 'VND'
+                      ? fmtVnd(balance.inEscrow)
+                      : fmtAmount(balance.inEscrow, balance.symbol === 'BTC' ? 8 : 2)}
                   </p>
                 </div>
 
@@ -218,8 +264,17 @@ function BalanceCard({ balance, expanded, onToggle }: {
                     <Shield size={10} color={c.text3} />
                     <p style={{ color: c.text3, fontSize: 10 }}>Locked</p>
                   </div>
-                  <p style={{ color: c.text3, fontSize: φ.xs, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
-                    {balance.symbol === 'VND' ? fmtVnd(balance.locked) : fmtAmount(balance.locked, balance.symbol === 'BTC' ? 8 : 2)}
+                  <p
+                    style={{
+                      color: c.text3,
+                      fontSize: φ.xs,
+                      fontWeight: 700,
+                      fontVariantNumeric: 'tabular-nums',
+                    }}
+                  >
+                    {balance.symbol === 'VND'
+                      ? fmtVnd(balance.locked)
+                      : fmtAmount(balance.locked, balance.symbol === 'BTC' ? 8 : 2)}
                   </p>
                 </div>
               </div>
@@ -284,12 +339,7 @@ export function P2PWalletPage() {
   const prefix = useRoutePrefix();
   const [balanceVisible, setBalanceVisible] = useState(true);
   const [expandedAsset, setExpandedAsset] = useState<string | null>(null);
-  const { isRefreshing, handleRefresh } = useRefresh({
-    onRefresh: async () => {
-      await new Promise(res => setTimeout(res, 1000));
-      hapticSuccess();
-    },
-  });
+  const { isRefreshing, refresh: handleRefresh } = useRefresh();
 
   const getTransactionIcon = (type: Transaction['type']) => {
     switch (type) {
@@ -326,13 +376,20 @@ export function P2PWalletPage() {
 
   const getTransactionLabel = (type: Transaction['type']) => {
     switch (type) {
-      case 'deposit': return 'Nạp tiền';
-      case 'withdraw': return 'Rút tiền';
-      case 'transfer_in': return 'Chuyển vào từ Main Wallet';
-      case 'transfer_out': return 'Chuyển ra Main Wallet';
-      case 'escrow_lock': return 'Khóa Escrow';
-      case 'escrow_release': return 'Giải phóng Escrow';
-      default: return 'Giao dịch';
+      case 'deposit':
+        return 'Nạp tiền';
+      case 'withdraw':
+        return 'Rút tiền';
+      case 'transfer_in':
+        return 'Chuyển vào từ Main Wallet';
+      case 'transfer_out':
+        return 'Chuyển ra Main Wallet';
+      case 'escrow_lock':
+        return 'Khóa Escrow';
+      case 'escrow_release':
+        return 'Giải phóng Escrow';
+      default:
+        return 'Giao dịch';
     }
   };
 
@@ -365,18 +422,18 @@ export function P2PWalletPage() {
                 </p>
                 <div className="flex items-center gap-2">
                   {balanceVisible ? (
-                    <h2 style={{
-                      color: '#FFFFFF',
-                      fontSize: φ.xl,
-                      fontWeight: 700,
-                      fontVariantNumeric: 'tabular-nums',
-                    }}>
+                    <h2
+                      style={{
+                        color: '#FFFFFF',
+                        fontSize: φ.xl,
+                        fontWeight: 700,
+                        fontVariantNumeric: 'tabular-nums',
+                      }}
+                    >
                       ${fmtAmount(TOTAL_USD_VALUE, 2)}
                     </h2>
                   ) : (
-                    <h2 style={{ color: '#FFFFFF', fontSize: φ.xl, fontWeight: 700 }}>
-                      ••••••
-                    </h2>
+                    <h2 style={{ color: '#FFFFFF', fontSize: φ.xl, fontWeight: 700 }}>••••••</h2>
                   )}
                 </div>
               </div>
@@ -429,11 +486,15 @@ export function P2PWalletPage() {
         <div className="px-5 mb-4">
           <div
             className="p-3 rounded-lg flex items-start gap-2"
-            style={{ background: hexToRgba('#3B82F6', 10), border: `1px solid ${hexToRgba('#3B82F6', 30)}` }}
+            style={{
+              background: hexToRgba('#3B82F6', 10),
+              border: `1px solid ${hexToRgba('#3B82F6', 30)}`,
+            }}
           >
             <Info size={14} color="#3B82F6" className="shrink-0 mt-0.5" />
             <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-              P2P Wallet tách biệt khỏi Main Wallet để đảm bảo an toàn. Chuyển tiền nội bộ miễn phí & tức thì.
+              P2P Wallet tách biệt khỏi Main Wallet để đảm bảo an toàn. Chuyển tiền nội bộ miễn phí
+              & tức thì.
             </p>
           </div>
         </div>
@@ -445,12 +506,14 @@ export function P2PWalletPage() {
           </h3>
 
           <div className="flex flex-col gap-3">
-            {MOCK_BALANCES.map(balance => (
+            {MOCK_BALANCES.map((balance) => (
               <BalanceCard
                 key={balance.asset}
                 balance={balance}
                 expanded={expandedAsset === balance.asset}
-                onToggle={() => setExpandedAsset(expandedAsset === balance.asset ? null : balance.asset)}
+                onToggle={() =>
+                  setExpandedAsset(expandedAsset === balance.asset ? null : balance.asset)
+                }
               />
             ))}
           </div>
@@ -459,9 +522,7 @@ export function P2PWalletPage() {
         {/* Recent Transactions */}
         <div className="px-5">
           <div className="flex items-center justify-between mb-3">
-            <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
-              Giao dịch gần đây
-            </h3>
+            <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Giao dịch gần đây</h3>
             <button
               onClick={() => {
                 hapticSelection();
@@ -525,16 +586,29 @@ export function P2PWalletPage() {
                         fontVariantNumeric: 'tabular-nums',
                       }}
                     >
-                      {tx.type.includes('in') || tx.type === 'escrow_release' || tx.type === 'deposit' ? '+' : '-'}
+                      {tx.type.includes('in') ||
+                      tx.type === 'escrow_release' ||
+                      tx.type === 'deposit'
+                        ? '+'
+                        : '-'}
                       {fmtAmount(tx.amount, tx.asset === 'BTC' ? 8 : 2)} {tx.asset}
                     </p>
                     <p
                       className="text-xs"
                       style={{
-                        color: tx.status === 'completed' ? '#10B981' : tx.status === 'pending' ? '#F59E0B' : '#EF4444',
+                        color:
+                          tx.status === 'completed'
+                            ? '#10B981'
+                            : tx.status === 'pending'
+                              ? '#F59E0B'
+                              : '#EF4444',
                       }}
                     >
-                      {tx.status === 'completed' ? 'Hoàn thành' : tx.status === 'pending' ? 'Đang xử lý' : 'Thất bại'}
+                      {tx.status === 'completed'
+                        ? 'Hoàn thành'
+                        : tx.status === 'pending'
+                          ? 'Đang xử lý'
+                          : 'Thất bại'}
                     </p>
                   </div>
                 </div>

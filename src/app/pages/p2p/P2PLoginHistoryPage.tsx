@@ -10,9 +10,19 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Shield, Smartphone, Monitor, Tablet, MapPin, Clock,
-  CheckCircle, AlertTriangle, XCircle, ChevronDown, Filter,
-  Download, Info,
+  Shield,
+  Smartphone,
+  Monitor,
+  Tablet,
+  MapPin,
+  Clock,
+  CheckCircle,
+  AlertTriangle,
+  XCircle,
+  ChevronDown,
+  Filter,
+  Download,
+  Info,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Header } from '../../components/layout/Header';
@@ -197,10 +207,7 @@ function LoginEventCard({ event }: { event: LoginEvent }) {
                 : hexToRgba(statusConfig.color, 12),
             }}
           >
-            <DeviceIcon
-              size={18}
-              color={event.isCurrent ? '#10B981' : statusConfig.color}
-            />
+            <DeviceIcon size={18} color={event.isCurrent ? '#10B981' : statusConfig.color} />
           </div>
 
           <div className="flex-1 min-w-0">
@@ -287,9 +294,7 @@ function LoginEventCard({ event }: { event: LoginEvent }) {
                   </p>
                 </div>
                 <div>
-                  <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
-                    Login Method
-                  </p>
+                  <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Login Method</p>
                   <p style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>
                     {event.method === '2fa'
                       ? '2FA'
@@ -336,21 +341,16 @@ export function P2PLoginHistoryPage() {
   const [events, setEvents] = useState<LoginEvent[]>(MOCK_LOGIN_HISTORY);
   const [filter, setFilter] = useState<'all' | 'success' | 'suspicious'>('all');
 
-  const { isRefreshing, handleRefresh } = useRefresh({
-    onRefresh: async () => {
-      await new Promise(res => setTimeout(res, 1000));
-      hapticSuccess();
-    },
-  });
+  const { isRefreshing, refresh: handleRefresh } = useRefresh();
 
-  const filteredEvents = events.filter(e => {
+  const filteredEvents = events.filter((e) => {
     if (filter === 'all') return true;
     if (filter === 'suspicious') return e.status === 'suspicious' || e.status === 'failed';
     return e.status === filter;
   });
 
   const suspiciousCount = events.filter(
-    e => e.status === 'suspicious' || e.status === 'failed'
+    (e) => e.status === 'suspicious' || e.status === 'failed',
   ).length;
 
   return (
@@ -362,6 +362,7 @@ export function P2PLoginHistoryPage() {
           back
           action={{
             icon: Download,
+            onClick: () => {},
           }}
         />
 
@@ -375,9 +376,7 @@ export function P2PLoginHistoryPage() {
               >
                 <Shield size={18} color="#3B82F6" />
               </div>
-              <p style={{ color: '#3B82F6', fontSize: φ.sm, fontWeight: 700 }}>
-                {events.length}
-              </p>
+              <p style={{ color: '#3B82F6', fontSize: φ.sm, fontWeight: 700 }}>{events.length}</p>
               <p style={{ color: c.text3, fontSize: 9 }}>Tổng số</p>
             </TrCard>
 
@@ -389,7 +388,7 @@ export function P2PLoginHistoryPage() {
                 <CheckCircle size={18} color="#10B981" />
               </div>
               <p style={{ color: '#10B981', fontSize: φ.sm, fontWeight: 700 }}>
-                {events.filter(e => e.status === 'success').length}
+                {events.filter((e) => e.status === 'success').length}
               </p>
               <p style={{ color: c.text3, fontSize: 9 }}>Thành công</p>
             </TrCard>
@@ -401,9 +400,7 @@ export function P2PLoginHistoryPage() {
               >
                 <AlertTriangle size={18} color="#F59E0B" />
               </div>
-              <p style={{ color: '#F59E0B', fontSize: φ.sm, fontWeight: 700 }}>
-                {suspiciousCount}
-              </p>
+              <p style={{ color: '#F59E0B', fontSize: φ.sm, fontWeight: 700 }}>{suspiciousCount}</p>
               <p style={{ color: c.text3, fontSize: 9 }}>Đáng ngờ</p>
             </TrCard>
           </div>
@@ -416,7 +413,7 @@ export function P2PLoginHistoryPage() {
               { id: 'all', label: 'Tất cả' },
               { id: 'success', label: 'Thành công' },
               { id: 'suspicious', label: 'Đáng ngờ' },
-            ].map(f => (
+            ].map((f) => (
               <button
                 key={f.id}
                 onClick={() => {
@@ -460,7 +457,7 @@ export function P2PLoginHistoryPage() {
 
         {/* Events List */}
         <div className="px-5 flex flex-col gap-3">
-          {filteredEvents.map(event => (
+          {filteredEvents.map((event) => (
             <LoginEventCard key={event.id} event={event} />
           ))}
         </div>

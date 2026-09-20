@@ -1,9 +1,9 @@
 /**
  * Onboarding Modules Screen
- * 
+ *
  * Introduces the 5 core modules.
  * Swipeable carousel with module cards.
- * 
+ *
  * @module pages/onboarding/OnboardingModules
  * @version 1.0 (Phase 3)
  */
@@ -16,7 +16,7 @@ import {
   BarChart3,
   Trophy,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { OnboardingProgress } from '../../components/onboarding/OnboardingProgress';
@@ -80,12 +80,7 @@ const MODULES = [
     icon: BarChart3,
     name: 'Prediction Markets',
     description: 'Dự đoán sự kiện',
-    features: [
-      'Thị trường dự đoán',
-      'Xác suất realtime',
-      'Portfolio & P/L',
-      'Leaderboard',
-    ],
+    features: ['Thị trường dự đoán', 'Xác suất realtime', 'Portfolio & P/L', 'Leaderboard'],
     color: '#8B5CF6',
   },
   {
@@ -107,33 +102,30 @@ const MODULES = [
    COMPONENT
    ═══════════════════════════════════════════ */
 
-export default function OnboardingModules({
-  onNext,
-  onBack,
-}: OnboardingModulesProps) {
+export default function OnboardingModules({ onNext, onBack }: OnboardingModulesProps) {
   const c = useThemeColors();
   const [currentIndex, setCurrentIndex] = useState(0);
-  
+
   const currentModule = MODULES[currentIndex];
   const Icon = currentModule.icon;
-  
+
   const handlePrev = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
     }
   };
-  
+
   const handleNext = () => {
     if (currentIndex < MODULES.length - 1) {
       setCurrentIndex(currentIndex + 1);
     }
   };
-  
+
   return (
     <div className="min-h-screen flex flex-col" style={{ background: c.bg }}>
       {/* Progress */}
       <OnboardingProgress currentStep="modules" />
-      
+
       {/* Header */}
       <div className="px-5 py-4">
         <h1
@@ -156,7 +148,7 @@ export default function OnboardingModules({
           Mỗi module phục vụ một nhu cầu khác nhau
         </p>
       </div>
-      
+
       {/* Module Card */}
       <div className="flex-1 flex items-center justify-center px-5 py-8">
         <div className="w-full max-w-sm">
@@ -169,7 +161,7 @@ export default function OnboardingModules({
           >
             <Icon size={40} color="white" />
           </div>
-          
+
           {/* Name */}
           <h2
             className="text-center mb-2"
@@ -181,7 +173,7 @@ export default function OnboardingModules({
           >
             {currentModule.name}
           </h2>
-          
+
           {/* Description */}
           <p
             className="text-center mb-6"
@@ -192,7 +184,7 @@ export default function OnboardingModules({
           >
             {currentModule.description}
           </p>
-          
+
           {/* Features */}
           <div className="space-y-3">
             {currentModule.features.map((feature, idx) => (
@@ -201,15 +193,13 @@ export default function OnboardingModules({
                   className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0"
                   style={{ background: currentModule.color }}
                 />
-                <p style={{ color: c.text1, fontSize: 13 }}>
-                  {feature}
-                </p>
+                <p style={{ color: c.text1, fontSize: 13 }}>{feature}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
-      
+
       {/* Indicators */}
       <div className="flex items-center justify-center gap-2 py-4">
         {MODULES.map((_, idx) => (
@@ -226,7 +216,7 @@ export default function OnboardingModules({
           />
         ))}
       </div>
-      
+
       {/* Navigation */}
       <div className="px-5 pb-5">
         <div className="flex items-center gap-3">
@@ -237,16 +227,14 @@ export default function OnboardingModules({
           >
             <ChevronLeft size={20} color={c.text2} />
           </button>
-          
+
           {currentIndex < MODULES.length - 1 ? (
             <button
               onClick={handleNext}
               className="flex-1 py-4 rounded-xl flex items-center justify-center gap-2 transition-all"
               style={{ background: currentModule.color }}
             >
-              <span style={{ color: 'white', fontSize: φ.base, fontWeight: 600 }}>
-                Tiếp theo
-              </span>
+              <span style={{ color: 'white', fontSize: φ.base, fontWeight: 600 }}>Tiếp theo</span>
               <ChevronRight size={20} color="white" />
             </button>
           ) : (
@@ -257,9 +245,7 @@ export default function OnboardingModules({
                 background: 'linear-gradient(90deg, #8B5CF6 0%, #A78BFA 100%)',
               }}
             >
-              <span style={{ color: 'white', fontSize: φ.base, fontWeight: 600 }}>
-                Đã hiểu
-              </span>
+              <span style={{ color: 'white', fontSize: φ.base, fontWeight: 600 }}>Đã hiểu</span>
             </button>
           )}
         </div>

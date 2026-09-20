@@ -17,11 +17,22 @@ export function StakingEmergencyActionsPage() {
     <PageLayout>
       <Header title="Emergency Actions" back />
 
-      <BottomSheetV2 open={showPauseSheet} onClose={() => setShowPauseSheet(false)} title="Pause All Staking">
+      <BottomSheetV2
+        open={showPauseSheet}
+        onClose={() => setShowPauseSheet(false)}
+        title="Pause All Staking"
+      >
         <div className="flex flex-col gap-4">
-          <div className="rounded-2xl p-4" style={{ background: 'rgba(245,158,11,0.08)', border: '1.5px solid rgba(245,158,11,0.2)' }}>
+          <div
+            className="rounded-2xl p-4"
+            style={{
+              background: 'rgba(245,158,11,0.08)',
+              border: '1.5px solid rgba(245,158,11,0.2)',
+            }}
+          >
             <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-              This will pause all new staking transactions. Existing stakes will continue earning rewards. You can resume anytime.
+              This will pause all new staking transactions. Existing stakes will continue earning
+              rewards. You can resume anytime.
             </p>
           </div>
           <button
@@ -30,22 +41,35 @@ export function StakingEmergencyActionsPage() {
               setShowPauseSheet(false);
             }}
             className="w-full py-3 rounded-[14px] text-sm font-semibold"
-            style={{ background: '#F59E0B', color: '#FFF' }}>
+            style={{ background: '#F59E0B', color: '#FFF' }}
+          >
             Confirm Pause
           </button>
         </div>
       </BottomSheetV2>
 
-      <BottomSheetV2 open={showWithdrawSheet} onClose={() => setShowWithdrawSheet(false)} title="Emergency Withdrawal">
+      <BottomSheetV2
+        open={showWithdrawSheet}
+        onClose={() => setShowWithdrawSheet(false)}
+        title="Emergency Withdrawal"
+      >
         <div className="flex flex-col gap-4">
-          <div className="rounded-2xl p-4" style={{ background: 'rgba(239,68,68,0.08)', border: '1.5px solid rgba(239,68,68,0.2)' }}>
+          <div
+            className="rounded-2xl p-4"
+            style={{
+              background: 'rgba(239,68,68,0.08)',
+              border: '1.5px solid rgba(239,68,68,0.2)',
+            }}
+          >
             <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6, marginBottom: 8 }}>
-              ⚠️ <strong>Warning:</strong> Emergency withdrawal may incur penalties and take 2-7 days depending on network.
+              ⚠️ <strong>Warning:</strong> Emergency withdrawal may incur penalties and take 2-7
+              days depending on network.
             </p>
             <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
-              • Fixed-term stakes: 5% early withdrawal penalty<br />
-              • Flexible stakes: Standard 2-day unstaking period<br />
-              • Rewards earned to date will be included
+              • Fixed-term stakes: 5% early withdrawal penalty
+              <br />
+              • Flexible stakes: Standard 2-day unstaking period
+              <br />• Rewards earned to date will be included
             </p>
           </div>
           <button
@@ -54,7 +78,8 @@ export function StakingEmergencyActionsPage() {
               setShowWithdrawSheet(false);
             }}
             className="w-full py-3 rounded-[14px] text-sm font-semibold"
-            style={{ background: '#EF4444', color: '#FFF' }}>
+            style={{ background: '#EF4444', color: '#FFF' }}
+          >
             Confirm Emergency Withdrawal
           </button>
         </div>
@@ -62,7 +87,10 @@ export function StakingEmergencyActionsPage() {
 
       <PageContent>
         {/* Warning Banner */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(239,68,68,0.08)', border: '1.5px solid rgba(239,68,68,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{ background: 'rgba(239,68,68,0.08)', border: '1.5px solid rgba(239,68,68,0.2)' }}
+        >
           <div className="flex gap-3">
             <AlertTriangle size={20} color="#EF4444" className="shrink-0 mt-0.5" />
             <div>
@@ -70,7 +98,9 @@ export function StakingEmergencyActionsPage() {
                 Emergency Actions Only
               </p>
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                Use these actions only in critical situations (smart contract exploits, validator failures, extreme market events). Normal unstaking is available anytime via Dashboard.
+                Use these actions only in critical situations (smart contract exploits, validator
+                failures, extreme market events). Normal unstaking is available anytime via
+                Dashboard.
               </p>
             </div>
           </div>
@@ -81,8 +111,10 @@ export function StakingEmergencyActionsPage() {
           <div className="flex flex-col gap-3">
             <TrCard hover className="p-4" onClick={() => setShowPauseSheet(true)}>
               <div className="flex items-start gap-3">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                  style={{ background: 'rgba(245,158,11,0.12)' }}>
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                  style={{ background: 'rgba(245,158,11,0.12)' }}
+                >
                   <Pause size={24} color="#F59E0B" />
                 </div>
                 <div className="flex-1">
@@ -101,8 +133,10 @@ export function StakingEmergencyActionsPage() {
 
             <TrCard hover className="p-4" onClick={() => setShowWithdrawSheet(true)}>
               <div className="flex items-start gap-3">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                  style={{ background: 'rgba(239,68,68,0.12)' }}>
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                  style={{ background: 'rgba(239,68,68,0.12)' }}
+                >
                   <ArrowDownCircle size={24} color="#EF4444" />
                 </div>
                 <div className="flex-1">
@@ -121,8 +155,10 @@ export function StakingEmergencyActionsPage() {
 
             <TrCard hover className="p-4">
               <div className="flex items-start gap-3">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                  style={{ background: 'rgba(59,130,246,0.12)' }}>
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                  style={{ background: 'rgba(59,130,246,0.12)' }}
+                >
                   <RefreshCw size={24} color="#3B82F6" />
                 </div>
                 <div className="flex-1">
@@ -146,28 +182,47 @@ export function StakingEmergencyActionsPage() {
           <TrCard className="p-4">
             <div className="space-y-3">
               {[
-                { title: 'Smart Contract Exploit', severity: 'critical', desc: 'Immediate withdrawal if contract vulnerability discovered' },
-                { title: 'Validator Mass Failure', severity: 'high', desc: 'Multiple validators going offline simultaneously' },
-                { title: 'Extreme Market Event', severity: 'high', desc: 'Black swan event with >50% asset price drop' },
-                { title: 'Regulatory Action', severity: 'medium', desc: 'Government ban or restriction on staking' },
+                {
+                  title: 'Smart Contract Exploit',
+                  severity: 'critical',
+                  desc: 'Immediate withdrawal if contract vulnerability discovered',
+                },
+                {
+                  title: 'Validator Mass Failure',
+                  severity: 'high',
+                  desc: 'Multiple validators going offline simultaneously',
+                },
+                {
+                  title: 'Extreme Market Event',
+                  severity: 'high',
+                  desc: 'Black swan event with >50% asset price drop',
+                },
+                {
+                  title: 'Regulatory Action',
+                  severity: 'medium',
+                  desc: 'Government ban or restriction on staking',
+                },
               ].map((item, idx) => (
-                <div key={idx} className="pb-3 border-b last:border-b-0" style={{ borderColor: c.borderSolid }}>
+                <div
+                  key={idx}
+                  className="pb-3 border-b last:border-b-0"
+                  style={{ borderColor: c.borderSolid }}
+                >
                   <div className="flex items-start gap-2 mb-2">
                     <AlertTriangle
                       size={16}
                       color={
-                        item.severity === 'critical' ? '#EF4444' :
-                        item.severity === 'high' ? '#F59E0B' : '#3B82F6'
+                        item.severity === 'critical'
+                          ? '#EF4444'
+                          : item.severity === 'high'
+                            ? '#F59E0B'
+                            : '#3B82F6'
                       }
                       className="shrink-0 mt-0.5"
                     />
-                    <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>
-                      {item.title}
-                    </p>
+                    <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>{item.title}</p>
                   </div>
-                  <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
-                    {item.desc}
-                  </p>
+                  <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -187,9 +242,7 @@ export function StakingEmergencyActionsPage() {
               </div>
               <div className="rounded-xl p-3" style={{ background: c.surface2 }}>
                 <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Last Emergency</p>
-                <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>
-                  Never
-                </p>
+                <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>Never</p>
                 <p style={{ color: c.text3, fontSize: 10 }}>No history</p>
               </div>
             </div>
@@ -199,7 +252,9 @@ export function StakingEmergencyActionsPage() {
         {/* Footer */}
         <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6, textAlign: 'center' }}>
-            Emergency actions are monitored and logged. Abuse may result in account restrictions. For non-emergency unstaking, use the Dashboard. Contact support before taking emergency actions.
+            Emergency actions are monitored and logged. Abuse may result in account restrictions.
+            For non-emergency unstaking, use the Dashboard. Contact support before taking emergency
+            actions.
           </p>
         </div>
       </PageContent>

@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from 'react';
 export function useAnimatedCounter(
   endValue: number,
   duration: number = 1200,
-  startOnMount: boolean = true
+  startOnMount: boolean = true,
 ): number {
   const [count, setCount] = useState(0);
   const frameRef = useRef<number>();

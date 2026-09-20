@@ -1,11 +1,6 @@
 import React from 'react';
 import { useThemeColors } from '../../hooks/useThemeColors';
-import {
-  WEB_FONT,
-  WEB_SPACING,
-  WEB_ICON,
-  WEB_BUTTON,
-} from '../layout/webConstants';
+import { WEB_FONT, WEB_SPACING, WEB_ICON, WEB_BUTTON } from '../layout/webConstants';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -76,9 +71,7 @@ export function WebCardHeader({ title, action, badge, compact }: WebCardHeaderPr
       }}
     >
       <div className="flex items-center gap-2.5">
-        <span style={{ color: c.text1, fontSize: WEB_FONT.md, fontWeight: 700 }}>
-          {title}
-        </span>
+        <span style={{ color: c.text1, fontSize: WEB_FONT.md, fontWeight: 700 }}>{title}</span>
         {badge !== undefined && badge > 0 && (
           <span
             className="flex items-center justify-center rounded"
@@ -139,30 +132,30 @@ export function WebPageHeader({ title, subtitle, children }: WebPageHeaderProps)
   return (
     <div className="flex items-center justify-between">
       <div>
-        <h1 style={{
-          color: c.text1,
-          fontSize: WEB_FONT['2xl'],
-          fontWeight: 700,
-          margin: 0,
-          lineHeight: 1.3,
-        }}>
+        <h1
+          style={{
+            color: c.text1,
+            fontSize: WEB_FONT['2xl'],
+            fontWeight: 700,
+            margin: 0,
+            lineHeight: 1.3,
+          }}
+        >
           {title}
         </h1>
         {subtitle && (
-          <p style={{
-            color: c.text3,
-            fontSize: WEB_FONT.base,
-            marginTop: 2,
-          }}>
+          <p
+            style={{
+              color: c.text3,
+              fontSize: WEB_FONT.base,
+              marginTop: 2,
+            }}
+          >
             {subtitle}
           </p>
         )}
       </div>
-      {children && (
-        <div className="flex items-center gap-3 shrink-0">
-          {children}
-        </div>
-      )}
+      {children && <div className="flex items-center gap-3 shrink-0">{children}</div>}
     </div>
   );
 }
@@ -181,7 +174,13 @@ interface WebActionButtonProps {
   badge?: number;
 }
 
-export function WebActionButton({ icon: Icon, label, onClick, primary, badge }: WebActionButtonProps) {
+export function WebActionButton({
+  icon: Icon,
+  label,
+  onClick,
+  primary,
+  badge,
+}: WebActionButtonProps) {
   const c = useThemeColors();
   return (
     <button
@@ -232,7 +231,14 @@ interface WebStatWidgetProps {
   onClick?: () => void;
 }
 
-export function WebStatWidget({ icon: Icon, color, label, value, sub, onClick }: WebStatWidgetProps) {
+export function WebStatWidget({
+  icon: Icon,
+  color,
+  label,
+  value,
+  sub,
+  onClick,
+}: WebStatWidgetProps) {
   const c = useThemeColors();
   return (
     <button
@@ -257,31 +263,37 @@ export function WebStatWidget({ icon: Icon, color, label, value, sub, onClick }:
         <Icon size={WEB_ICON.lg} color={color} />
       </div>
       <div className="flex-1 min-w-0">
-        <p style={{
-          color: c.text3,
-          fontSize: WEB_FONT.xs,
-          fontWeight: 600,
-          letterSpacing: 0.3,
-          textTransform: 'uppercase',
-          marginBottom: 2,
-        }}>
+        <p
+          style={{
+            color: c.text3,
+            fontSize: WEB_FONT.xs,
+            fontWeight: 600,
+            letterSpacing: 0.3,
+            textTransform: 'uppercase',
+            marginBottom: 2,
+          }}
+        >
           {label}
         </p>
-        <p style={{
-          color: c.text1,
-          fontSize: WEB_FONT.xl,
-          fontWeight: 700,
-          fontVariantNumeric: 'tabular-nums',
-        }}>
+        <p
+          style={{
+            color: c.text1,
+            fontSize: WEB_FONT.xl,
+            fontWeight: 700,
+            fontVariantNumeric: 'tabular-nums',
+          }}
+        >
           {value}
         </p>
         {sub && (
-          <p style={{
-            color: c.text3,
-            fontSize: WEB_FONT.sm,
-            fontVariantNumeric: 'tabular-nums',
-            marginTop: 1,
-          }}>
+          <p
+            style={{
+              color: c.text3,
+              fontSize: WEB_FONT.sm,
+              fontVariantNumeric: 'tabular-nums',
+              marginTop: 1,
+            }}
+          >
             {sub}
           </p>
         )}
@@ -362,9 +374,7 @@ export function WebInfoBanner({ icon: Icon, message, color = '#10B981' }: WebInf
       }}
     >
       <Icon size={WEB_ICON.sm} color={color} />
-      <span style={{ color, fontSize: WEB_FONT.base }}>
-        {message}
-      </span>
+      <span style={{ color, fontSize: WEB_FONT.base }}>{message}</span>
     </div>
   );
 }
@@ -383,7 +393,7 @@ export function WebChipGroup<T extends string>({ items, active, onChange }: WebC
   const c = useThemeColors();
   return (
     <div className="flex gap-1.5">
-      {items.map(item => (
+      {items.map((item) => (
         <button
           key={item.id}
           onClick={() => onChange(item.id)}
@@ -395,7 +405,8 @@ export function WebChipGroup<T extends string>({ items, active, onChange }: WebC
             fontWeight: active === item.id ? 600 : 500,
             background: active === item.id ? c.chipActiveBg : 'transparent',
             color: active === item.id ? c.chipActiveText : c.text3,
-            border: active === item.id ? `1px solid ${c.chipActiveBorder}` : '1px solid transparent',
+            border:
+              active === item.id ? `1px solid ${c.chipActiveBorder}` : '1px solid transparent',
           }}
         >
           {item.label}
@@ -422,8 +433,12 @@ interface WebSearchBarProps {
 }
 
 export function WebSearchBar({
-  value, onChange, placeholder = 'Tìm kiếm...',
-  width, icon: SearchIcon, clearIcon: ClearIcon,
+  value,
+  onChange,
+  placeholder = 'Tìm kiếm...',
+  width,
+  icon: SearchIcon,
+  clearIcon: ClearIcon,
 }: WebSearchBarProps) {
   const c = useThemeColors();
   return (
@@ -441,7 +456,7 @@ export function WebSearchBar({
         type="text"
         placeholder={placeholder}
         value={value}
-        onChange={e => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
         className="flex-1 bg-transparent outline-none"
         style={{ color: c.text1, fontSize: WEB_FONT.md }}
       />
@@ -474,10 +489,12 @@ interface WebPageContentProps {
 
 export function WebPageContent({ children, grow }: WebPageContentProps) {
   return (
-    <div style={{ 
-      padding: grow ? '24px 0 0' : '24px 0 40px',
-      flex: grow ? 1 : undefined 
-    }}>
+    <div
+      style={{
+        padding: grow ? '24px 0 0' : '24px 0 40px',
+        flex: grow ? 1 : undefined,
+      }}
+    >
       {children}
     </div>
   );

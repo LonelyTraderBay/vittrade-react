@@ -2,18 +2,18 @@
  * ══════════════════════════════════════════════════════════════
  *  DisputeResolutionPage — Phase 3: Complaint Handling
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - File complaint form (execution/fees/strategy/performance/misconduct)
  * - Case status tracking (timeline view)
  * - Resolution history
  * - Escalation path
- * 
+ *
  * Compliance:
  * - Consumer protection requirement
  * - Fair dispute resolution process
  * - Transparent case handling
- * 
+ *
  * Guidelines:
  * - PageLayout + TabBar pattern
  * - Step-by-step complaint form
@@ -23,9 +23,18 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { 
-  FileText, AlertCircle, CheckCircle, Clock, Send, Upload,
-  ChevronRight, MessageSquare, Shield, Info, XCircle
+import {
+  FileText,
+  AlertCircle,
+  CheckCircle,
+  Clock,
+  Send,
+  Upload,
+  ChevronRight,
+  MessageSquare,
+  Shield,
+  Info,
+  XCircle,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout, StickyFooter } from '../../components/layout/PageLayout';
@@ -36,12 +45,8 @@ import { useRoutePrefix } from '../../hooks/useRoutePrefix';
 
 type TabType = 'file' | 'active' | 'history';
 
-type ComplaintType = 
-  | 'execution_issue' 
-  | 'fee_discrepancy' 
-  | 'strategy_change' 
-  | 'performance_data' 
-  | 'misconduct';
+type ComplaintType =
+  'execution_issue' | 'fee_discrepancy' | 'strategy_change' | 'performance_data' | 'misconduct';
 
 type CaseStatus = 'submitted' | 'under_review' | 'provider_response' | 'resolved' | 'escalated';
 
@@ -91,30 +96,30 @@ const RESOLVED_CASES: DisputeCase[] = [
 ];
 
 const COMPLAINT_TYPES: { value: ComplaintType; label: string; description: string }[] = [
-  { 
-    value: 'execution_issue', 
-    label: 'Execution Issue', 
-    description: 'Slippage, delay, or fill rate problems' 
+  {
+    value: 'execution_issue',
+    label: 'Execution Issue',
+    description: 'Slippage, delay, or fill rate problems',
   },
-  { 
-    value: 'fee_discrepancy', 
-    label: 'Fee Discrepancy', 
-    description: 'Incorrect fee calculation or charge' 
+  {
+    value: 'fee_discrepancy',
+    label: 'Fee Discrepancy',
+    description: 'Incorrect fee calculation or charge',
   },
-  { 
-    value: 'strategy_change', 
-    label: 'Strategy Change Without Notice', 
-    description: 'Provider changed strategy without 24h notice' 
+  {
+    value: 'strategy_change',
+    label: 'Strategy Change Without Notice',
+    description: 'Provider changed strategy without 24h notice',
   },
-  { 
-    value: 'performance_data', 
-    label: 'Performance Data Inaccuracy', 
-    description: 'Suspicious or fake performance stats' 
+  {
+    value: 'performance_data',
+    label: 'Performance Data Inaccuracy',
+    description: 'Suspicious or fake performance stats',
   },
-  { 
-    value: 'misconduct', 
-    label: 'Provider Misconduct', 
-    description: 'Unethical behavior or scam' 
+  {
+    value: 'misconduct',
+    label: 'Provider Misconduct',
+    description: 'Unethical behavior or scam',
   },
 ];
 
@@ -122,7 +127,7 @@ export function DisputeResolutionPage() {
   const c = useThemeColors();
   const navigate = useNavigate();
   const prefix = useRoutePrefix();
-  
+
   const [activeTab, setActiveTab] = useState<TabType>('file');
   const [selectedType, setSelectedType] = useState<ComplaintType | null>(null);
   const [selectedProvider, setSelectedProvider] = useState('');
@@ -131,31 +136,46 @@ export function DisputeResolutionPage() {
 
   const getStatusColor = (status: CaseStatus) => {
     switch (status) {
-      case 'submitted': return '#6B7280';
-      case 'under_review': return '#3B82F6';
-      case 'provider_response': return '#F59E0B';
-      case 'resolved': return '#10B981';
-      case 'escalated': return '#EF4444';
+      case 'submitted':
+        return '#6B7280';
+      case 'under_review':
+        return '#3B82F6';
+      case 'provider_response':
+        return '#F59E0B';
+      case 'resolved':
+        return '#10B981';
+      case 'escalated':
+        return '#EF4444';
     }
   };
 
   const getStatusLabel = (status: CaseStatus) => {
     switch (status) {
-      case 'submitted': return 'Submitted';
-      case 'under_review': return 'Under Review';
-      case 'provider_response': return 'Provider Responded';
-      case 'resolved': return 'Resolved';
-      case 'escalated': return 'Escalated';
+      case 'submitted':
+        return 'Submitted';
+      case 'under_review':
+        return 'Under Review';
+      case 'provider_response':
+        return 'Provider Responded';
+      case 'resolved':
+        return 'Resolved';
+      case 'escalated':
+        return 'Escalated';
     }
   };
 
   const getOutcomeLabel = (outcome?: DisputeCase['outcome']) => {
     switch (outcome) {
-      case 'refund': return 'Refund Issued';
-      case 'warning': return 'Provider Warned';
-      case 'suspension': return 'Provider Suspended';
-      case 'no_action': return 'No Action Required';
-      default: return 'Pending';
+      case 'refund':
+        return 'Refund Issued';
+      case 'warning':
+        return 'Provider Warned';
+      case 'suspension':
+        return 'Provider Suspended';
+      case 'no_action':
+        return 'No Action Required';
+      default:
+        return 'Pending';
     }
   };
 
@@ -164,7 +184,7 @@ export function DisputeResolutionPage() {
       alert('Please fill all required fields');
       return;
     }
-    
+
     alert('Complaint submitted successfully! You will receive updates via email.');
     // Reset form
     setSelectedType(null);
@@ -194,7 +214,10 @@ export function DisputeResolutionPage() {
       {activeTab === 'file' ? (
         <>
           <PageContent grow gap="relaxed">
-            <div className="p-3 rounded-xl" style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}>
+            <div
+              className="p-3 rounded-xl"
+              style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}
+            >
               <div className="flex items-start gap-2">
                 <Info size={14} color={c.primary} className="shrink-0 mt-0.5" />
                 <div>
@@ -210,7 +233,7 @@ export function DisputeResolutionPage() {
 
             <PageSection label="Complaint Type" accentColor={c.primary}>
               <div className="space-y-2">
-                {COMPLAINT_TYPES.map(type => (
+                {COMPLAINT_TYPES.map((type) => (
                   <button
                     key={type.value}
                     onClick={() => setSelectedType(type.value)}
@@ -220,18 +243,22 @@ export function DisputeResolutionPage() {
                       border: `2px solid ${selectedType === type.value ? c.primary : c.border}`,
                     }}
                   >
-                    <p style={{ 
-                      color: selectedType === type.value ? c.primary : c.text1,
-                      fontSize: 12,
-                      fontWeight: 600,
-                      marginBottom: 2
-                    }}>
+                    <p
+                      style={{
+                        color: selectedType === type.value ? c.primary : c.text1,
+                        fontSize: 12,
+                        fontWeight: 600,
+                        marginBottom: 2,
+                      }}
+                    >
                       {type.label}
                     </p>
-                    <p style={{ 
-                      color: selectedType === type.value ? c.primary : c.text3,
-                      fontSize: 10
-                    }}>
+                    <p
+                      style={{
+                        color: selectedType === type.value ? c.primary : c.text3,
+                        fontSize: 10,
+                      }}
+                    >
                       {type.description}
                     </p>
                   </button>
@@ -261,7 +288,9 @@ export function DisputeResolutionPage() {
             <PageSection label="Details" accentColor={c.primary}>
               <div className="space-y-3">
                 <div>
-                  <label style={{ color: c.text2, fontSize: 11, display: 'block', marginBottom: 6 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 11, display: 'block', marginBottom: 6 }}
+                  >
                     Subject
                   </label>
                   <input
@@ -280,7 +309,9 @@ export function DisputeResolutionPage() {
                 </div>
 
                 <div>
-                  <label style={{ color: c.text2, fontSize: 11, display: 'block', marginBottom: 6 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 11, display: 'block', marginBottom: 6 }}
+                  >
                     Description
                   </label>
                   <textarea
@@ -316,11 +347,14 @@ export function DisputeResolutionPage() {
               disabled={!selectedType || !selectedProvider || !subject || !description}
               className="w-full py-3 rounded-xl flex items-center justify-center gap-2"
               style={{
-                background: (!selectedType || !selectedProvider || !subject || !description) ? c.border : c.primary,
+                background:
+                  !selectedType || !selectedProvider || !subject || !description
+                    ? c.border
+                    : c.primary,
                 color: '#fff',
                 fontWeight: 600,
                 fontSize: 14,
-                opacity: (!selectedType || !selectedProvider || !subject || !description) ? 0.5 : 1,
+                opacity: !selectedType || !selectedProvider || !subject || !description ? 0.5 : 1,
               }}
             >
               <Send size={16} />
@@ -333,13 +367,11 @@ export function DisputeResolutionPage() {
           {ACTIVE_CASES.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12">
               <CheckCircle size={48} color={c.text3} className="mb-3" />
-              <p style={{ color: c.text3, fontSize: 13, textAlign: 'center' }}>
-                No active cases
-              </p>
+              <p style={{ color: c.text3, fontSize: 13, textAlign: 'center' }}>No active cases</p>
             </div>
           ) : (
             <div className="space-y-3">
-              {ACTIVE_CASES.map(caseItem => (
+              {ACTIVE_CASES.map((caseItem) => (
                 <div
                   key={caseItem.id}
                   className="p-4 rounded-2xl"
@@ -348,13 +380,13 @@ export function DisputeResolutionPage() {
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <span 
+                        <span
                           className="px-2 py-0.5 rounded text-xs"
-                          style={{ 
+                          style={{
                             background: getStatusColor(caseItem.status) + '22',
                             color: getStatusColor(caseItem.status),
                             fontWeight: 600,
-                            textTransform: 'uppercase'
+                            textTransform: 'uppercase',
                           }}
                         >
                           {getStatusLabel(caseItem.status)}
@@ -362,7 +394,9 @@ export function DisputeResolutionPage() {
                         <span style={{ color: c.text3, fontSize: 10 }}>Case #{caseItem.id}</span>
                       </div>
 
-                      <h4 style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 4 }}>
+                      <h4
+                        style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 4 }}
+                      >
                         {caseItem.subject}
                       </h4>
 
@@ -377,11 +411,15 @@ export function DisputeResolutionPage() {
                       <div className="flex items-center gap-4 text-xs">
                         <div className="flex items-center gap-1">
                           <Clock size={10} color={c.text3} />
-                          <span style={{ color: c.text3, fontSize: 9 }}>Submitted: {caseItem.submittedDate}</span>
+                          <span style={{ color: c.text3, fontSize: 9 }}>
+                            Submitted: {caseItem.submittedDate}
+                          </span>
                         </div>
                         <div className="flex items-center gap-1">
                           <AlertCircle size={10} color={c.text3} />
-                          <span style={{ color: c.text3, fontSize: 9 }}>Est. resolution: {caseItem.estimatedResolution}</span>
+                          <span style={{ color: c.text3, fontSize: 9 }}>
+                            Est. resolution: {caseItem.estimatedResolution}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -391,10 +429,30 @@ export function DisputeResolutionPage() {
                   <div className="mt-3 pt-3" style={{ borderTop: `1px solid ${c.border}` }}>
                     <div className="space-y-2">
                       {[
-                        { status: 'submitted', date: caseItem.submittedDate, label: 'Complaint submitted', done: true },
-                        { status: 'under_review', date: caseItem.updatedDate, label: 'Under review by support team', done: caseItem.status !== 'submitted' },
-                        { status: 'provider_response', date: '', label: 'Awaiting provider response', done: ['provider_response', 'resolved'].includes(caseItem.status) },
-                        { status: 'resolved', date: '', label: 'Resolution', done: caseItem.status === 'resolved' },
+                        {
+                          status: 'submitted',
+                          date: caseItem.submittedDate,
+                          label: 'Complaint submitted',
+                          done: true,
+                        },
+                        {
+                          status: 'under_review',
+                          date: caseItem.updatedDate,
+                          label: 'Under review by support team',
+                          done: caseItem.status !== 'submitted',
+                        },
+                        {
+                          status: 'provider_response',
+                          date: '',
+                          label: 'Awaiting provider response',
+                          done: ['provider_response', 'resolved'].includes(caseItem.status),
+                        },
+                        {
+                          status: 'resolved',
+                          date: '',
+                          label: 'Resolution',
+                          done: caseItem.status === 'resolved',
+                        },
                       ].map((step, i) => (
                         <div key={i} className="flex items-start gap-2">
                           <div className="shrink-0 mt-1">
@@ -405,7 +463,13 @@ export function DisputeResolutionPage() {
                             )}
                           </div>
                           <div>
-                            <p style={{ color: step.done ? c.text1 : c.text3, fontSize: 10, fontWeight: step.done ? 600 : 400 }}>
+                            <p
+                              style={{
+                                color: step.done ? c.text1 : c.text3,
+                                fontSize: 10,
+                                fontWeight: step.done ? 600 : 400,
+                              }}
+                            >
                               {step.label}
                             </p>
                             {step.date && (
@@ -421,8 +485,8 @@ export function DisputeResolutionPage() {
                     onClick={() => alert('Escalation feature coming soon')}
                     className="w-full mt-3 py-2 rounded-lg"
                     style={{
-                      background: c.dangerBg,
-                      color: c.dangerText,
+                      background: c.sellAlpha10,
+                      color: c.error,
                       fontSize: 11,
                       fontWeight: 600,
                     }}
@@ -445,7 +509,7 @@ export function DisputeResolutionPage() {
             </div>
           ) : (
             <div className="space-y-3">
-              {RESOLVED_CASES.map(caseItem => (
+              {RESOLVED_CASES.map((caseItem) => (
                 <div
                   key={caseItem.id}
                   className="p-4 rounded-2xl"
@@ -460,7 +524,9 @@ export function DisputeResolutionPage() {
                         </span>
                       </div>
 
-                      <h4 style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 4 }}>
+                      <h4
+                        style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 4 }}
+                      >
                         {caseItem.subject}
                       </h4>
 
@@ -473,7 +539,9 @@ export function DisputeResolutionPage() {
                       </p>
 
                       <div className="flex items-center gap-4 text-xs">
-                        <span style={{ color: c.text3, fontSize: 9 }}>Resolved: {caseItem.updatedDate}</span>
+                        <span style={{ color: c.text3, fontSize: 9 }}>
+                          Resolved: {caseItem.updatedDate}
+                        </span>
                       </div>
                     </div>
                   </div>

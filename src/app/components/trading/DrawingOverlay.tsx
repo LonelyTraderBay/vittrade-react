@@ -13,7 +13,10 @@ import { useTheme } from '../../contexts/ThemeContext';
 
 export type DrawingTool = 'none' | 'trendline' | 'fibonacci' | 'hline' | 'eraser';
 
-interface Point { x: number; y: number }
+interface Point {
+  x: number;
+  y: number;
+}
 
 interface Drawing {
   id: string;
@@ -45,10 +48,14 @@ export function DrawingOverlay({ activeTool, onDrawingCount }: DrawingOverlayPro
   // Colors based on tool
   const toolColor = (tool: DrawingTool): string => {
     switch (tool) {
-      case 'trendline': return '#3B82F6';
-      case 'fibonacci': return '#8B5CF6';
-      case 'hline': return '#F59E0B';
-      default: return '#3B82F6';
+      case 'trendline':
+        return '#3B82F6';
+      case 'fibonacci':
+        return '#8B5CF6';
+      case 'hline':
+        return '#F59E0B';
+      default:
+        return '#3B82F6';
     }
   };
 
@@ -121,7 +128,7 @@ export function DrawingOverlay({ activeTool, onDrawingCount }: DrawingOverlayPro
     };
 
     // Draw completed drawings
-    drawings.forEach(d => {
+    drawings.forEach((d) => {
       if (d.tool === 'trendline' && d.points.length === 2) {
         drawOneLine(d.points[0], d.points[1], d.color);
         // Extend line slightly
@@ -135,7 +142,7 @@ export function DrawingOverlay({ activeTool, onDrawingCount }: DrawingOverlayPro
           drawOneLine(d.points[1], { x: ex, y: ey }, d.color + '40', true);
         }
         // Dots at endpoints
-        d.points.forEach(p => {
+        d.points.forEach((p) => {
           ctx.beginPath();
           ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
           ctx.fillStyle = d.color;
@@ -154,11 +161,17 @@ export function DrawingOverlay({ activeTool, onDrawingCount }: DrawingOverlayPro
     });
 
     // Draw in-progress
-    if (isDrawing && startPoint && currentPoint && activeTool !== 'none' && activeTool !== 'eraser') {
+    if (
+      isDrawing &&
+      startPoint &&
+      currentPoint &&
+      activeTool !== 'none' &&
+      activeTool !== 'eraser'
+    ) {
       const color = toolColor(activeTool) + 'CC';
       if (activeTool === 'trendline') {
         drawOneLine(startPoint, currentPoint, color, true);
-        [startPoint, currentPoint].forEach(p => {
+        [startPoint, currentPoint].forEach((p) => {
           ctx.beginPath();
           ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
           ctx.fillStyle = color;
@@ -174,7 +187,9 @@ export function DrawingOverlay({ activeTool, onDrawingCount }: DrawingOverlayPro
     ctx.setLineDash([]);
   }, [drawings, isDrawing, startPoint, currentPoint, activeTool, isDark]);
 
-  useEffect(() => { render(); }, [render]);
+  useEffect(() => {
+    render();
+  }, [render]);
 
   // Resize
   useEffect(() => {
@@ -204,7 +219,7 @@ export function DrawingOverlay({ activeTool, onDrawingCount }: DrawingOverlayPro
       let closestIdx = -1;
       let closestDist = 20; // threshold
       drawings.forEach((d, idx) => {
-        d.points.forEach(p => {
+        d.points.forEach((p) => {
           const dist = Math.sqrt((p.x - pos.x) ** 2 + (p.y - pos.y) ** 2);
           if (dist < closestDist) {
             closestDist = dist;
@@ -213,7 +228,7 @@ export function DrawingOverlay({ activeTool, onDrawingCount }: DrawingOverlayPro
         });
       });
       if (closestIdx >= 0) {
-        setDrawings(prev => prev.filter((_, i) => i !== closestIdx));
+        setDrawings((prev) => prev.filter((_, i) => i !== closestIdx));
       }
       return;
     }
@@ -239,13 +254,16 @@ export function DrawingOverlay({ activeTool, onDrawingCount }: DrawingOverlayPro
     const color = toolColor(activeTool);
 
     if (activeTool === 'hline') {
-      setDrawings(prev => [...prev, { id, tool: 'hline', points: [currentPoint], color }]);
+      setDrawings((prev) => [...prev, { id, tool: 'hline', points: [currentPoint], color }]);
     } else {
       // Need at least some distance
       const dx = currentPoint.x - startPoint.x;
       const dy = currentPoint.y - startPoint.y;
       if (Math.sqrt(dx * dx + dy * dy) > 8) {
-        setDrawings(prev => [...prev, { id, tool: activeTool, points: [startPoint, currentPoint], color }]);
+        setDrawings((prev) => [
+          ...prev,
+          { id, tool: activeTool, points: [startPoint, currentPoint], color },
+        ]);
       }
     }
 

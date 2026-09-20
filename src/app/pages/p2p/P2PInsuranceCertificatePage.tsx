@@ -2,8 +2,17 @@ import React from 'react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
 import {
-  Shield, ShieldCheck, CheckCircle, Download, Share2,
-  Award, Calendar, User, FileText, Info, Star,
+  Shield,
+  ShieldCheck,
+  CheckCircle,
+  Download,
+  Share2,
+  Award,
+  Calendar,
+  User,
+  FileText,
+  Info,
+  Star,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useHaptic } from '../../hooks/useHaptic';
@@ -124,12 +133,16 @@ export function P2PInsuranceCertificatePage() {
   const handleShare = () => {
     hapticSelection();
     if (navigator.share) {
-      navigator.share({
-        title: 'Chứng nhận Bảo hiểm P2P',
-        text: `Chứng nhận bảo hiểm ${CERTIFICATE_DATA.certId} — Tier ${CERTIFICATE_DATA.tierName} (${CERTIFICATE_DATA.coveragePct}%)`,
-      }).catch(() => {});
+      navigator
+        .share({
+          title: 'Chứng nhận Bảo hiểm P2P',
+          text: `Chứng nhận bảo hiểm ${CERTIFICATE_DATA.certId} — Tier ${CERTIFICATE_DATA.tierName} (${CERTIFICATE_DATA.coveragePct}%)`,
+        })
+        .catch(() => {});
     } else {
-      navigator.clipboard?.writeText(`Chứng nhận bảo hiểm: ${CERTIFICATE_DATA.certId} — Tier ${CERTIFICATE_DATA.tierName}`);
+      navigator.clipboard?.writeText(
+        `Chứng nhận bảo hiểm: ${CERTIFICATE_DATA.certId} — Tier ${CERTIFICATE_DATA.tierName}`,
+      );
       toast.success('Đã sao chép thông tin chứng nhận');
     }
   };
@@ -152,28 +165,46 @@ export function P2PInsuranceCertificatePage() {
             <div className="flex justify-center mb-3">
               <div
                 className="w-14 h-14 rounded-full flex items-center justify-center"
-                style={{ background: 'rgba(255,255,255,0.15)', border: '2px solid rgba(255,255,255,0.3)' }}
+                style={{
+                  background: 'rgba(255,255,255,0.15)',
+                  border: '2px solid rgba(255,255,255,0.3)',
+                }}
               >
                 <ShieldCheck size={28} color="#fff" />
               </div>
             </div>
-            <p style={{ color: '#fff', fontSize: 11, fontWeight: 600, letterSpacing: 1.5, opacity: 0.8, marginBottom: 4 }}>
+            <p
+              style={{
+                color: '#fff',
+                fontSize: 11,
+                fontWeight: 600,
+                letterSpacing: 1.5,
+                opacity: 0.8,
+                marginBottom: 4,
+              }}
+            >
               CHỨNG NHẬN BẢO HIỂM
             </p>
-            <p style={{ color: '#fff', fontSize: φ.base, fontWeight: 700 }}>
-              Giao dịch P2P
-            </p>
+            <p style={{ color: '#fff', fontSize: φ.base, fontWeight: 700 }}>Giao dịch P2P</p>
           </div>
 
           {/* Body */}
           <div className="p-5">
             {/* Cert ID */}
-            <div className="text-center mb-4 pb-4" style={{ borderBottom: `1px dashed ${c.divider}` }}>
+            <div
+              className="text-center mb-4 pb-4"
+              style={{ borderBottom: `1px dashed ${c.divider}` }}
+            >
               <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Mã chứng nhận</p>
-              <p style={{
-                color: '#3B82F6', fontSize: φ.base, fontWeight: 700,
-                fontFamily: 'monospace', letterSpacing: 1,
-              }}>
+              <p
+                style={{
+                  color: '#3B82F6',
+                  fontSize: φ.base,
+                  fontWeight: 700,
+                  fontFamily: 'monospace',
+                  letterSpacing: 1,
+                }}
+              >
                 {CERTIFICATE_DATA.certId}
               </p>
             </div>
@@ -183,7 +214,9 @@ export function P2PInsuranceCertificatePage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <User size={14} color={c.text3} />
-                  <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Người được bảo hiểm</span>
+                  <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>
+                    Người được bảo hiểm
+                  </span>
                 </div>
                 <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
                   {CERTIFICATE_DATA.holderName}
@@ -204,7 +237,9 @@ export function P2PInsuranceCertificatePage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Shield size={14} color={c.text3} />
-                  <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Mức bảo hiểm</span>
+                  <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>
+                    Mức bảo hiểm
+                  </span>
                 </div>
                 <span style={{ color: '#10B981', fontSize: φ.body, fontWeight: 700 }}>
                   {CERTIFICATE_DATA.coveragePct}%
@@ -214,24 +249,52 @@ export function P2PInsuranceCertificatePage() {
 
             {/* Coverage details */}
             <div className="p-3 rounded-xl mb-4" style={{ background: c.surface2 }}>
-              <p style={{ color: c.text2, fontSize: 11, fontWeight: 600, marginBottom: 8, letterSpacing: 0.3 }}>
+              <p
+                style={{
+                  color: c.text2,
+                  fontSize: 11,
+                  fontWeight: 600,
+                  marginBottom: 8,
+                  letterSpacing: 0.3,
+                }}
+              >
                 PHẠM VI BẢO HIỂM
               </p>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between">
-                  <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Hạn mức / claim</span>
-                  <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
+                  <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>
+                    Hạn mức / claim
+                  </span>
+                  <span
+                    style={{
+                      color: c.text1,
+                      fontSize: φ.sm,
+                      fontWeight: 600,
+                      fontVariantNumeric: 'tabular-nums',
+                    }}
+                  >
                     {fmtVnd(CERTIFICATE_DATA.maxCoveragePerClaim)} đ
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Hạn mức / 30 ngày</span>
-                  <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
+                  <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>
+                    Hạn mức / 30 ngày
+                  </span>
+                  <span
+                    style={{
+                      color: c.text1,
+                      fontSize: φ.sm,
+                      fontWeight: 600,
+                      fontVariantNumeric: 'tabular-nums',
+                    }}
+                  >
                     {fmtVnd(CERTIFICATE_DATA.maxCoveragePer30Days)} đ
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Cửa sổ claim</span>
+                  <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>
+                    Cửa sổ claim
+                  </span>
                   <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
                     {CERTIFICATE_DATA.claimWindowDays} ngày
                   </span>
@@ -240,7 +303,10 @@ export function P2PInsuranceCertificatePage() {
             </div>
 
             {/* Validity */}
-            <div className="flex items-center justify-between mb-4 pb-4" style={{ borderBottom: `1px solid ${c.divider}` }}>
+            <div
+              className="flex items-center justify-between mb-4 pb-4"
+              style={{ borderBottom: `1px solid ${c.divider}` }}
+            >
               <div className="flex items-center gap-2">
                 <Calendar size={14} color={c.text3} />
                 <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Hiệu lực</span>
@@ -252,7 +318,15 @@ export function P2PInsuranceCertificatePage() {
 
             {/* Coverage scope */}
             <div className="mb-4">
-              <p style={{ color: c.text2, fontSize: 11, fontWeight: 600, marginBottom: 8, letterSpacing: 0.3 }}>
+              <p
+                style={{
+                  color: c.text2,
+                  fontSize: 11,
+                  fontWeight: 600,
+                  marginBottom: 8,
+                  letterSpacing: 0.3,
+                }}
+              >
                 CÁC TRƯỜNG HỢP ĐƯỢC BẢO VỆ
               </p>
               {[
@@ -260,12 +334,10 @@ export function P2PInsuranceCertificatePage() {
                 'Chargeback — buyer hoàn tiền qua ngân hàng',
                 'Lỗi hệ thống — dispute phân xử sai',
                 'Trường hợp khác — xem xét riêng',
-              ].map(item => (
+              ].map((item) => (
                 <div key={item} className="flex items-center gap-2 py-1">
                   <CheckCircle size={12} color="#10B981" />
-                  <span style={{ color: c.text2, fontSize: φ.sm, lineHeight: 1.5 }}>
-                    {item}
-                  </span>
+                  <span style={{ color: c.text2, fontSize: φ.sm, lineHeight: 1.5 }}>{item}</span>
                 </div>
               ))}
             </div>
@@ -310,8 +382,8 @@ export function P2PInsuranceCertificatePage() {
         >
           <Info size={12} color={c.text3} className="shrink-0 mt-0.5" />
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
-            Chứng nhận này xác nhận quyền lợi bảo hiểm P2P của bạn theo điều khoản hiện hành.
-            Mức bảo hiểm có thể thay đổi khi tier merchant thay đổi.
+            Chứng nhận này xác nhận quyền lợi bảo hiểm P2P của bạn theo điều khoản hiện hành. Mức
+            bảo hiểm có thể thay đổi khi tier merchant thay đổi.
           </p>
         </div>
 

@@ -4,11 +4,36 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Shield, Bell, Globe, Moon, Sun, ChevronRight, LogOut, Copy, CheckCircle,
-  User, Settings, ShieldCheck, HelpCircle, FileText, Star, Users, Key, Zap,
-  Crown, Bot, ClipboardList, Smartphone, Trophy, BarChart3,
-  Compass, RefreshCw, RotateCcw, MessageCircle,
+  Shield,
+  Bell,
+  Globe,
+  Moon,
+  Sun,
+  ChevronRight,
+  LogOut,
+  Copy,
+  CheckCircle,
+  User,
+  Settings,
+  ShieldCheck,
+  HelpCircle,
+  FileText,
+  Star,
+  Users,
+  Key,
+  Zap,
+  Crown,
+  Bot,
+  ClipboardList,
+  Smartphone,
+  Trophy,
+  BarChart3,
+  Compass,
+  RefreshCw,
+  RotateCcw,
+  MessageCircle,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { USER_PROFILE } from '../../data/mockData';
@@ -70,10 +95,17 @@ function ProfileSkeleton() {
       <PageContent gap="relaxed">
         <div
           className="rounded-3xl p-5"
-          style={{ background: c.surface, border: `1px solid ${c.cardBorder}`, boxShadow: c.cardShadow }}
+          style={{
+            background: c.surface,
+            border: `1px solid ${c.cardBorder}`,
+            boxShadow: c.cardShadow,
+          }}
         >
           <div className="flex items-center gap-4 mb-4">
-            <div className="rounded-2xl" style={{ ...shimmer, width: φAvatar.md, height: φAvatar.md }} />
+            <div
+              className="rounded-2xl"
+              style={{ ...shimmer, width: φAvatar.md, height: φAvatar.md }}
+            />
             <div className="flex-1 flex flex-col gap-2">
               <div className="h-4.5 rounded" style={{ ...shimmer, width: '70%' }} />
               <div className="h-3 rounded" style={{ ...shimmer, width: '50%' }} />
@@ -94,7 +126,10 @@ function ProfileSkeleton() {
                   className="flex items-center gap-3 px-4 py-3.5"
                   style={{ borderBottom: i < count - 1 ? `1px solid ${c.divider}` : 'none' }}
                 >
-                  <div className="rounded-xl" style={{ ...shimmer, width: φAvatar.sm, height: φAvatar.sm }} />
+                  <div
+                    className="rounded-xl"
+                    style={{ ...shimmer, width: φAvatar.sm, height: φAvatar.sm }}
+                  />
                   <div className="flex-1 flex flex-col gap-1.5">
                     <div className="h-3.5 rounded" style={{ ...shimmer, width: '65%' }} />
                     <div className="h-2.5 rounded" style={{ ...shimmer, width: '40%' }} />
@@ -120,7 +155,7 @@ function MenuRow({
   onClick,
   isLast,
 }: {
-  icon: React.ComponentType<{ size: number; color: string }>;
+  icon: LucideIcon;
   label: string;
   sub?: string;
   subColor?: string;
@@ -171,7 +206,10 @@ export function ProfilePage() {
   const { isLoading } = useLoadingState({ loadOnly: true, initialDelay: 600 });
   const actionToast = useActionToast();
 
-  const kycInfo = KYC_MAP[USER_PROFILE.kycStatus] ?? { label: USER_PROFILE.kycStatus, colorKey: 'warn' as const };
+  const kycInfo = KYC_MAP[USER_PROFILE.kycStatus] ?? {
+    label: USER_PROFILE.kycStatus,
+    colorKey: 'warn' as const,
+  };
 
   const handleCopyRef = () => {
     navigator.clipboard.writeText(USER_PROFILE.referralCode).catch(() => {});
@@ -193,14 +231,57 @@ export function ProfilePage() {
       label: 'TÀI KHOẢN',
       theme: SECTION_THEMES.account,
       items: [
-        { icon: ShieldCheck, label: 'Xác minh danh tính (KYC)', sub: kycInfo.label, subColor: c[kycInfo.colorKey], action: () => navigate(`${prefix}/profile/kyc`) },
-        { icon: Shield, label: 'Bảo mật', sub: USER_PROFILE.has2FA ? '2FA đang bật' : '2FA chưa bật', subColor: USER_PROFILE.has2FA ? c.buy : c.sell, action: () => navigate(`${prefix}/profile/security`) },
-        { icon: Crown, label: 'VIP Program', sub: 'VIP 1 — Maker 0.09%', subColor: c.warn, action: () => navigate(`${prefix}/profile/vip`) },
-        { icon: Bell, label: 'Thông báo', sub: 'Quản lý cảnh báo', action: () => navigate(`${prefix}/notifications`) },
-        { icon: Key, label: 'Quản lý API', sub: '3 key đang hoạt động', action: () => navigate(`${prefix}/profile/api`) },
-        { icon: Smartphone, label: 'Quản lý thiết bị', sub: '4 thiết bị đã đăng nhập', action: () => navigate(`${prefix}/profile/devices`) },
-        { icon: Users, label: 'Tài khoản phụ', sub: '5 tài khoản', action: () => navigate(`${prefix}/profile/sub-accounts`) },
-        { icon: ClipboardList, label: 'Lịch sử lệnh', sub: 'Xem lệnh đã đặt', action: () => navigate(`${prefix}/trade/orders-history`) },
+        {
+          icon: ShieldCheck,
+          label: 'Xác minh danh tính (KYC)',
+          sub: kycInfo.label,
+          subColor: c[kycInfo.colorKey],
+          action: () => navigate(`${prefix}/profile/kyc`),
+        },
+        {
+          icon: Shield,
+          label: 'Bảo mật',
+          sub: USER_PROFILE.has2FA ? '2FA đang bật' : '2FA chưa bật',
+          subColor: USER_PROFILE.has2FA ? c.buy : c.sell,
+          action: () => navigate(`${prefix}/profile/security`),
+        },
+        {
+          icon: Crown,
+          label: 'VIP Program',
+          sub: 'VIP 1 — Maker 0.09%',
+          subColor: c.warn,
+          action: () => navigate(`${prefix}/profile/vip`),
+        },
+        {
+          icon: Bell,
+          label: 'Thông báo',
+          sub: 'Quản lý cảnh báo',
+          action: () => navigate(`${prefix}/notifications`),
+        },
+        {
+          icon: Key,
+          label: 'Quản lý API',
+          sub: '3 key đang hoạt động',
+          action: () => navigate(`${prefix}/profile/api`),
+        },
+        {
+          icon: Smartphone,
+          label: 'Quản lý thiết bị',
+          sub: '4 thiết bị đã đăng nhập',
+          action: () => navigate(`${prefix}/profile/devices`),
+        },
+        {
+          icon: Users,
+          label: 'Tài khoản phụ',
+          sub: '5 tài khoản',
+          action: () => navigate(`${prefix}/profile/sub-accounts`),
+        },
+        {
+          icon: ClipboardList,
+          label: 'Lịch sử lệnh',
+          sub: 'Xem lệnh đã đặt',
+          action: () => navigate(`${prefix}/trade/orders-history`),
+        },
       ],
     },
     {
@@ -209,10 +290,49 @@ export function ProfilePage() {
       theme: SECTION_THEMES.settings,
       items: [
         { icon: Globe, label: 'Ngôn ngữ', sub: 'Tiếng Việt', action: () => {} },
-        { icon: theme === 'dark' ? Moon : Sun, label: 'Giao diện', sub: theme === 'dark' ? 'Tối' : 'Sáng', action: () => { setTheme(theme === 'dark' ? 'light' : 'dark'); hapticSelection(); } },
-        { icon: Settings, label: 'Cài đặt chung', sub: undefined, action: () => navigate(`${prefix}/profile/settings`) },
-        { icon: RotateCcw, label: 'Xem lại Onboarding', sub: 'Hướng dẫn sử dụng app', action: () => { onboardingService.resetOnboarding('demo-user'); coachmarkService.resetAll(); hapticLight(); navigate('/onboarding'); } },
-        { icon: MessageCircle, label: 'Mẹo sử dụng', sub: coachmarkService.isDisabled() ? 'Đã tắt' : 'Đang bật', subColor: coachmarkService.isDisabled() ? c.sell : c.buy, action: () => { const isDisabled = coachmarkService.isDisabled(); coachmarkService.setDisabled(!isDisabled); if (!isDisabled) { actionToast.success({ title: 'Đã tắt mẹo sử dụng', description: 'Bạn sẽ không thấy gợi ý ngữ cảnh nữa' }); } else { coachmarkService.resetAll(); actionToast.success({ title: 'Đã bật mẹo sử dụng', description: 'Bạn sẽ thấy gợi ý khi vào các trang' }); } hapticLight(); } },
+        {
+          icon: theme === 'dark' ? Moon : Sun,
+          label: 'Giao diện',
+          sub: theme === 'dark' ? 'Tối' : 'Sáng',
+          action: () => {
+            setTheme(theme === 'dark' ? 'light' : 'dark');
+            hapticSelection();
+          },
+        },
+        {
+          icon: Settings,
+          label: 'Cài đặt chung',
+          sub: undefined,
+          action: () => navigate(`${prefix}/profile/settings`),
+        },
+        {
+          icon: RotateCcw,
+          label: 'Xem lại Onboarding',
+          sub: 'Hướng dẫn sử dụng app',
+          action: () => {
+            onboardingService.resetOnboarding('demo-user');
+            coachmarkService.resetAll();
+            hapticLight();
+            navigate('/onboarding');
+          },
+        },
+        {
+          icon: MessageCircle,
+          label: 'Mẹo sử dụng',
+          sub: coachmarkService.isDisabled() ? 'Đã tắt' : 'Đang bật',
+          subColor: coachmarkService.isDisabled() ? c.sell : c.buy,
+          action: () => {
+            const isDisabled = coachmarkService.isDisabled();
+            coachmarkService.setDisabled(!isDisabled);
+            if (!isDisabled) {
+              actionToast.success('Đã tắt mẹo sử dụng — Bạn sẽ không thấy gợi ý ngữ cảnh nữa');
+            } else {
+              coachmarkService.resetAll();
+              actionToast.success('Đã bật mẹo sử dụng — Bạn sẽ thấy gợi ý khi vào các trang');
+            }
+            hapticLight();
+          },
+        },
       ],
     },
     {
@@ -220,14 +340,55 @@ export function ProfilePage() {
       label: 'KHÁM PHÁ',
       theme: SECTION_THEMES.explore,
       items: [
-        { icon: Compass, label: 'Khám phá chủ đề', sub: 'Crypto, Sports, Politics...', action: () => navigate(`${prefix}/topics`) },
-        { icon: Users, label: 'Chương trình giới thiệu', sub: 'Nhận 20% hoa hồng', action: () => navigate(`${prefix}/referral`) },
-        { icon: Trophy, label: 'Prediction Leaderboard', sub: 'Xem top traders', action: () => navigate(`${prefix}/markets/predictions/leaderboard`) },
-        { icon: RefreshCw, label: 'Mua tự động DCA', sub: 'Đầu tư định kỳ tự động', subColor: c.buy, action: () => navigate(`${prefix}/dca`) },
-        { icon: Zap, label: 'Staking & Earn', sub: 'APY tới 24.5%', action: () => navigate(`${prefix}/earn/staking`) },
-        { icon: Bot, label: 'Trading Bots', sub: 'Giao dịch tự động 24/7', action: () => navigate(`${prefix}/trade/bots`) },
-        { icon: HelpCircle, label: 'Trung tâm hỗ trợ', sub: undefined, action: () => navigate(`${prefix}/support`) },
-        { icon: FileText, label: 'Tin tức & Thông báo', sub: undefined, action: () => navigate(`${prefix}/news`) },
+        {
+          icon: Compass,
+          label: 'Khám phá chủ đề',
+          sub: 'Crypto, Sports, Politics...',
+          action: () => navigate(`${prefix}/topics`),
+        },
+        {
+          icon: Users,
+          label: 'Chương trình giới thiệu',
+          sub: 'Nhận 20% hoa hồng',
+          action: () => navigate(`${prefix}/referral`),
+        },
+        {
+          icon: Trophy,
+          label: 'Prediction Leaderboard',
+          sub: 'Xem top traders',
+          action: () => navigate(`${prefix}/markets/predictions/leaderboard`),
+        },
+        {
+          icon: RefreshCw,
+          label: 'Mua tự động DCA',
+          sub: 'Đầu tư định kỳ tự động',
+          subColor: c.buy,
+          action: () => navigate(`${prefix}/dca`),
+        },
+        {
+          icon: Zap,
+          label: 'Staking & Earn',
+          sub: 'APY tới 24.5%',
+          action: () => navigate(`${prefix}/earn/staking`),
+        },
+        {
+          icon: Bot,
+          label: 'Trading Bots',
+          sub: 'Giao dịch tự động 24/7',
+          action: () => navigate(`${prefix}/trade/bots`),
+        },
+        {
+          icon: HelpCircle,
+          label: 'Trung tâm hỗ trợ',
+          sub: undefined,
+          action: () => navigate(`${prefix}/support`),
+        },
+        {
+          icon: FileText,
+          label: 'Tin tức & Thông báo',
+          sub: undefined,
+          action: () => navigate(`${prefix}/news`),
+        },
         { icon: Star, label: 'Đánh giá ứng dụng', sub: undefined, action: () => {} },
       ],
     },
@@ -306,7 +467,10 @@ export function ProfilePage() {
             </div>
 
             <button
-              onClick={() => { navigate(`${prefix}/profile/edit`); hapticSelection(); }}
+              onClick={() => {
+                navigate(`${prefix}/profile/edit`);
+                hapticSelection();
+              }}
               className="flex items-center justify-center rounded-xl shrink-0"
               style={{
                 width: 40,
@@ -323,7 +487,10 @@ export function ProfilePage() {
           <div className="flex gap-3 relative z-10">
             <div
               className="flex-1 rounded-2xl px-3.5 py-3"
-              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.08)' }}
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                border: '1px solid rgba(255,255,255,0.08)',
+              }}
             >
               <p style={{ color: c.portfolioTextMuted, fontSize: φ.xs, marginBottom: 4 }}>UID</p>
               <p
@@ -341,9 +508,14 @@ export function ProfilePage() {
             <button
               onClick={handleCopyRef}
               className="flex-1 rounded-2xl px-3.5 py-3 text-left"
-              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.08)' }}
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                border: '1px solid rgba(255,255,255,0.08)',
+              }}
             >
-              <p style={{ color: c.portfolioTextMuted, fontSize: φ.xs, marginBottom: 4 }}>Mã giới thiệu</p>
+              <p style={{ color: c.portfolioTextMuted, fontSize: φ.xs, marginBottom: 4 }}>
+                Mã giới thiệu
+              </p>
               <div className="flex items-center gap-1.5">
                 <p
                   style={{
@@ -356,7 +528,11 @@ export function ProfilePage() {
                 >
                   {USER_PROFILE.referralCode}
                 </p>
-                {copiedRef ? <CheckCircle size={14} color={c.buy} /> : <Copy size={14} color="#93C5FD" />}
+                {copiedRef ? (
+                  <CheckCircle size={14} color={c.buy} />
+                ) : (
+                  <Copy size={14} color="#93C5FD" />
+                )}
               </div>
             </button>
           </div>
@@ -389,7 +565,11 @@ export function ProfilePage() {
 
         {/* ═══ Menu Sections ═══ */}
         {menuSections.map((section) => (
-          <PageSection key={section.key} label={section.label} accentColor={section.theme.iconColor}>
+          <PageSection
+            key={section.key}
+            label={section.label}
+            accentColor={section.theme.iconColor}
+          >
             <TrCard overflow>
               {section.items.map((item, i) => (
                 <MenuRow
@@ -400,7 +580,10 @@ export function ProfilePage() {
                   subColor={item.subColor}
                   iconBg={section.theme.iconBg}
                   iconColor={section.theme.iconColor}
-                  onClick={() => { item.action(); hapticSelection(); }}
+                  onClick={() => {
+                    item.action();
+                    hapticSelection();
+                  }}
                   isLast={i === section.items.length - 1}
                 />
               ))}
@@ -413,7 +596,10 @@ export function ProfilePage() {
           <TrCard
             as="button"
             hover
-            onClick={() => { navigate(`${prefix}/profile/activity`); hapticSelection(); }}
+            onClick={() => {
+              navigate(`${prefix}/profile/activity`);
+              hapticSelection();
+            }}
             className="w-full flex items-center justify-center gap-2 font-semibold"
             style={{ height: φAvatar.sm + 8, color: c.text2, fontSize: φ.sm }}
           >

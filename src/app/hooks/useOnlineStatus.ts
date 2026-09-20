@@ -22,7 +22,7 @@ interface OnlineStatus {
 
 export function useOnlineStatus(): OnlineStatus {
   const [isOnline, setIsOnline] = useState(
-    typeof navigator !== 'undefined' ? navigator.onLine : true
+    typeof navigator !== 'undefined' ? navigator.onLine : true,
   );
   const [isReconnecting, setIsReconnecting] = useState(false);
   const wasOfflineRef = useRef(false);

@@ -43,12 +43,12 @@ const REPORT_TYPES = [
 const SAMPLE_DATA = {
   year: '2025',
   totalTrades: 1247,
-  realizedGains: 3842.50,
-  realizedLosses: -1127.30,
-  netGainLoss: 2715.20,
-  shortTermGains: 2318.40,
-  longTermGains: 396.80,
-  totalFees: 287.60,
+  realizedGains: 3842.5,
+  realizedLosses: -1127.3,
+  netGainLoss: 2715.2,
+  shortTermGains: 2318.4,
+  longTermGains: 396.8,
+  totalFees: 287.6,
   costBasisMethod: 'FIFO',
 };
 
@@ -61,7 +61,7 @@ export function BotTaxReportingPage() {
 
   const toggleReport = (id: string) => {
     if (selectedReports.includes(id)) {
-      setSelectedReports(selectedReports.filter(r => r !== id));
+      setSelectedReports(selectedReports.filter((r) => r !== id));
     } else {
       setSelectedReports([...selectedReports, id]);
     }
@@ -74,7 +74,7 @@ export function BotTaxReportingPage() {
     }
 
     setGenerating(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     setGenerating(false);
     toast.success(`Generated ${selectedReports.length} tax report(s) for ${selectedYear}`);
   };
@@ -85,7 +85,13 @@ export function BotTaxReportingPage() {
 
       <PageContent grow>
         {/* Info Banner */}
-        <div className="rounded-2xl p-4 mb-4" style={{ background: 'rgba(245,158,11,0.08)', border: '1.5px solid rgba(245,158,11,0.2)' }}>
+        <div
+          className="rounded-2xl p-4 mb-4"
+          style={{
+            background: 'rgba(245,158,11,0.08)',
+            border: '1.5px solid rgba(245,158,11,0.2)',
+          }}
+        >
           <div className="flex gap-3">
             <AlertTriangle size={20} color="#F59E0B" className="shrink-0 mt-0.5" />
             <div>
@@ -93,8 +99,9 @@ export function BotTaxReportingPage() {
                 Tax Reporting Notice
               </p>
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.6 }}>
-                Cryptocurrency trading is taxable in most countries. Bot trades are treated as individual transactions. 
-                We provide reports for convenience, but you should consult a tax professional for accurate filing.
+                Cryptocurrency trading is taxable in most countries. Bot trades are treated as
+                individual transactions. We provide reports for convenience, but you should consult
+                a tax professional for accurate filing.
               </p>
             </div>
           </div>
@@ -103,7 +110,7 @@ export function BotTaxReportingPage() {
         {/* Tax Year Selection */}
         <PageSection label="Select Tax Year">
           <div className="grid grid-cols-4 gap-2">
-            {TAX_YEARS.map(year => (
+            {TAX_YEARS.map((year) => (
               <button
                 key={year}
                 onClick={() => setSelectedYear(year)}
@@ -112,7 +119,8 @@ export function BotTaxReportingPage() {
                   background: selectedYear === year ? c.primary : c.surface,
                   color: selectedYear === year ? '#FFF' : c.text1,
                   border: `1px solid ${selectedYear === year ? c.primary : c.borderSolid}`,
-                }}>
+                }}
+              >
                 <p style={{ fontSize: 13, fontWeight: 700 }}>{year}</p>
               </button>
             ))}
@@ -153,11 +161,13 @@ export function BotTaxReportingPage() {
             <div className="pt-3 border-t" style={{ borderColor: c.borderSolid }}>
               <div className="flex items-center justify-between">
                 <p style={{ color: c.text2, fontSize: 13, fontWeight: 600 }}>Net Gain/Loss:</p>
-                <p style={{ 
-                  color: SAMPLE_DATA.netGainLoss >= 0 ? '#10B981' : '#EF4444', 
-                  fontSize: 20, 
-                  fontWeight: 700,
-                }}>
+                <p
+                  style={{
+                    color: SAMPLE_DATA.netGainLoss >= 0 ? '#10B981' : '#EF4444',
+                    fontSize: 20,
+                    fontWeight: 700,
+                  }}
+                >
                   {SAMPLE_DATA.netGainLoss >= 0 ? '+' : ''}${SAMPLE_DATA.netGainLoss.toFixed(2)}
                 </p>
               </div>
@@ -171,7 +181,7 @@ export function BotTaxReportingPage() {
             {[
               { id: 'FIFO', label: 'FIFO', desc: 'First In, First Out (most common)' },
               { id: 'LIFO', label: 'LIFO', desc: 'Last In, First Out' },
-            ].map(method => (
+            ].map((method) => (
               <button
                 key={method.id}
                 onClick={() => setCostBasisMethod(method.id as 'FIFO' | 'LIFO')}
@@ -179,15 +189,29 @@ export function BotTaxReportingPage() {
                 style={{
                   background: costBasisMethod === method.id ? `${c.primary}08` : c.surface,
                   border: `2px solid ${costBasisMethod === method.id ? c.primary : c.borderSolid}`,
-                }}>
+                }}
+              >
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="w-4 h-4 rounded-full border-2"
-                    style={{ borderColor: costBasisMethod === method.id ? c.primary : c.borderSolid }}>
+                  <div
+                    className="w-4 h-4 rounded-full border-2"
+                    style={{
+                      borderColor: costBasisMethod === method.id ? c.primary : c.borderSolid,
+                    }}
+                  >
                     {costBasisMethod === method.id && (
-                      <div className="w-2 h-2 rounded-full m-0.5" style={{ background: c.primary }} />
+                      <div
+                        className="w-2 h-2 rounded-full m-0.5"
+                        style={{ background: c.primary }}
+                      />
                     )}
                   </div>
-                  <p style={{ color: costBasisMethod === method.id ? c.primary : c.text1, fontSize: 13, fontWeight: 700 }}>
+                  <p
+                    style={{
+                      color: costBasisMethod === method.id ? c.primary : c.text1,
+                      fontSize: 13,
+                      fontWeight: 700,
+                    }}
+                  >
                     {method.label}
                   </p>
                 </div>
@@ -200,7 +224,7 @@ export function BotTaxReportingPage() {
         {/* Report Types */}
         <PageSection label="Select Report Types">
           <div className="flex flex-col gap-2">
-            {REPORT_TYPES.map(report => (
+            {REPORT_TYPES.map((report) => (
               <button
                 key={report.id}
                 onClick={() => toggleReport(report.id)}
@@ -208,27 +232,40 @@ export function BotTaxReportingPage() {
                 style={{
                   background: selectedReports.includes(report.id) ? `${c.primary}08` : c.surface,
                   border: `2px solid ${selectedReports.includes(report.id) ? c.primary : c.borderSolid}`,
-                }}>
+                }}
+              >
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-md border-2 flex items-center justify-center shrink-0 mt-0.5"
-                    style={{ 
+                  <div
+                    className="w-6 h-6 rounded-md border-2 flex items-center justify-center shrink-0 mt-0.5"
+                    style={{
                       borderColor: selectedReports.includes(report.id) ? c.primary : c.borderSolid,
                       background: selectedReports.includes(report.id) ? c.primary : 'transparent',
-                    }}>
+                    }}
+                  >
                     {selectedReports.includes(report.id) && <CheckCircle2 size={16} color="#FFF" />}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <p style={{ color: selectedReports.includes(report.id) ? c.primary : c.text1, fontSize: 13, fontWeight: 700 }}>
+                      <p
+                        style={{
+                          color: selectedReports.includes(report.id) ? c.primary : c.text1,
+                          fontSize: 13,
+                          fontWeight: 700,
+                        }}
+                      >
                         {report.name}
                       </p>
-                      <span className="px-2 py-0.5 rounded-md text-xs font-bold"
-                        style={{ background: c.surface2, color: c.text3 }}>
+                      <span
+                        className="px-2 py-0.5 rounded-md text-xs font-bold"
+                        style={{ background: c.surface2, color: c.text3 }}
+                      >
                         {report.format}
                       </span>
                       {report.recommended && (
-                        <span className="px-2 py-0.5 rounded-md text-xs font-bold"
-                          style={{ background: 'rgba(16,185,129,0.12)', color: '#10B981' }}>
+                        <span
+                          className="px-2 py-0.5 rounded-md text-xs font-bold"
+                          style={{ background: 'rgba(16,185,129,0.12)', color: '#10B981' }}
+                        >
                           Recommended
                         </span>
                       )}
@@ -295,10 +332,11 @@ export function BotTaxReportingPage() {
           disabled={generating || selectedReports.length === 0}
           className="w-full py-3 rounded-[14px] text-sm font-semibold flex items-center justify-center gap-2"
           style={{
-            background: (generating || selectedReports.length === 0) ? c.surface2 : c.primary,
-            color: (generating || selectedReports.length === 0) ? c.text3 : '#FFF',
-            cursor: (generating || selectedReports.length === 0) ? 'not-allowed' : 'pointer',
-          }}>
+            background: generating || selectedReports.length === 0 ? c.surface2 : c.primary,
+            color: generating || selectedReports.length === 0 ? c.text3 : '#FFF',
+            cursor: generating || selectedReports.length === 0 ? 'not-allowed' : 'pointer',
+          }}
+        >
           {generating ? (
             <>
               <div className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
@@ -307,7 +345,8 @@ export function BotTaxReportingPage() {
           ) : (
             <>
               <Download size={16} />
-              Generate {selectedReports.length} Report{selectedReports.length > 1 ? 's' : ''} for {selectedYear}
+              Generate {selectedReports.length} Report{selectedReports.length > 1 ? 's' : ''} for{' '}
+              {selectedYear}
             </>
           )}
         </button>

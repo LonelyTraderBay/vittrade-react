@@ -27,21 +27,21 @@ export interface OpenOrder {
   symbol: string;
   side: 'buy' | 'sell';
   type: 'limit' | 'stop-limit';
-  
+
   // Current order details
   price: number;
   stopPrice?: number; // For stop-limit
   amount: number;
   filled: number;
   remaining: number;
-  
+
   // Queue info (if available)
   queuePosition?: number;
   totalInQueue?: number;
-  
+
   // Exchange capabilities
   supportsAmend: boolean; // True if exchange allows amend
-  
+
   // Timing
   createdAt: string;
 }
@@ -49,7 +49,7 @@ export interface OpenOrder {
 interface OrderAmendmentProps {
   order: OpenOrder;
   currentMarketPrice: number;
-  
+
   onAmend: (orderId: string, newPrice: number, newAmount: number) => void;
   onCancel: () => void;
 }
@@ -86,9 +86,8 @@ export function OrderAmendment({
   const amountChangePct = ((newAmountNum - order.amount) / order.amount) * 100;
 
   // Price direction vs market
-  const isPriceBetter = order.side === 'buy'
-    ? newPriceNum < currentMarketPrice
-    : newPriceNum > currentMarketPrice;
+  const isPriceBetter =
+    order.side === 'buy' ? newPriceNum < currentMarketPrice : newPriceNum > currentMarketPrice;
 
   // Validation
   const isValidPrice = newPriceNum > 0;
@@ -97,9 +96,10 @@ export function OrderAmendment({
 
   // Queue impact warning
   const willLoseQueue = !order.supportsAmend && hasChanges;
-  const queueRisk = order.queuePosition && order.totalInQueue
-    ? (order.queuePosition / order.totalInQueue) < 0.2 // In top 20%
-    : false;
+  const queueRisk =
+    order.queuePosition && order.totalInQueue
+      ? order.queuePosition / order.totalInQueue < 0.2 // In top 20%
+      : false;
 
   const handleSubmit = () => {
     if (!canSubmit) {
@@ -124,9 +124,7 @@ export function OrderAmendment({
               <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1 }}>
                 Modify Order
               </p>
-              <p style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>
-                #{order.id.slice(0, 12)}...
-              </p>
+              <p style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>#{order.id.slice(0, 12)}...</p>
             </div>
           </div>
           <span
@@ -144,9 +142,7 @@ export function OrderAmendment({
 
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 4 }}>
-              Symbol
-            </p>
+            <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 4 }}>Symbol</p>
             <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1 }}>
               {order.symbol}
             </p>
@@ -155,7 +151,14 @@ export function OrderAmendment({
             <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 4 }}>
               Market Price
             </p>
-            <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+            <p
+              style={{
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.bold,
+                color: c.text1,
+                fontFamily: 'monospace',
+              }}
+            >
               {fmtPrice(currentMarketPrice)}
             </p>
           </div>
@@ -164,28 +167,47 @@ export function OrderAmendment({
 
       {/* Current Order Details */}
       <TrCard className="p-4">
-        <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, marginBottom: 12 }}>
-          Current Order
-        </p>
+        <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, marginBottom: 12 }}>Current Order</p>
 
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Price</span>
-            <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+            <span
+              style={{
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.bold,
+                color: c.text1,
+                fontFamily: 'monospace',
+              }}
+            >
               {fmtPrice(order.price)}
             </span>
           </div>
 
           <div className="flex items-center justify-between">
             <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Amount</span>
-            <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+            <span
+              style={{
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.bold,
+                color: c.text1,
+                fontFamily: 'monospace',
+              }}
+            >
               {fmtAmount(order.amount)} {order.symbol.split('/')[0]}
             </span>
           </div>
 
           <div className="flex items-center justify-between">
             <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Filled / Remaining</span>
-            <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold, color: c.text2, fontFamily: 'monospace' }}>
+            <span
+              style={{
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.semibold,
+                color: c.text2,
+                fontFamily: 'monospace',
+              }}
+            >
               {fmtAmount(order.filled)} / {fmtAmount(order.remaining)}
             </span>
           </div>
@@ -195,10 +217,14 @@ export function OrderAmendment({
         {order.queuePosition && order.totalInQueue && (
           <div className="mt-3 pt-3" style={{ borderTop: `1px solid ${c.divider}` }}>
             <div className="flex items-center justify-between mb-2">
-              <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>
-                Queue Position
-              </span>
-              <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, color: queueRisk ? '#F59E0B' : c.text1 }}>
+              <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Queue Position</span>
+              <span
+                style={{
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.bold,
+                  color: queueRisk ? '#F59E0B' : c.text1,
+                }}
+              >
                 #{order.queuePosition} of {order.totalInQueue.toLocaleString()}
               </span>
             </div>
@@ -217,22 +243,24 @@ export function OrderAmendment({
 
       {/* Edit Mode Toggle */}
       <div className="flex gap-2">
-        {['price', 'amount', 'both'].map(mode => (
+        {['price', 'amount', 'both'].map((mode) => (
           <button
             key={mode}
-            onClick={() => { setEditMode(mode as any); hapticSelection(); }}
+            onClick={() => {
+              setEditMode(mode as any);
+              hapticSelection();
+            }}
             className="flex-1 px-3 py-2 rounded-xl min-h-10"
             style={{
               fontSize: FONT_SCALE.xs,
               fontWeight: editMode === mode ? FONT_WEIGHT.bold : FONT_WEIGHT.semibold,
               background: editMode === mode ? c.chipActiveBg : c.surface2,
               color: editMode === mode ? c.chipActiveText : c.text2,
-              border: editMode === mode
-                ? `2px solid ${c.chipActiveBorder}`
-                : `1.5px solid ${c.borderSolid}`,
-              boxShadow: editMode === mode
-                ? '0 1px 3px rgba(59,130,246,0.15)'
-                : 'none',
+              border:
+                editMode === mode
+                  ? `2px solid ${c.chipActiveBorder}`
+                  : `1.5px solid ${c.borderSolid}`,
+              boxShadow: editMode === mode ? '0 1px 3px rgba(59,130,246,0.15)' : 'none',
             }}
           >
             {mode === 'price' ? 'Edit Price' : mode === 'amount' ? 'Edit Amount' : 'Edit Both'}
@@ -243,7 +271,9 @@ export function OrderAmendment({
       {/* Edit Price */}
       {(editMode === 'price' || editMode === 'both') && (
         <div>
-          <label style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}>
+          <label
+            style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}
+          >
             New Price
           </label>
           <div className="relative">
@@ -251,7 +281,7 @@ export function OrderAmendment({
               type="text"
               inputMode="decimal"
               value={newPrice}
-              onChange={e => setNewPrice(formatNum(e.target.value))}
+              onChange={(e) => setNewPrice(formatNum(e.target.value))}
               placeholder={order.price.toString()}
               className="w-full px-3 py-3 rounded-xl min-h-11"
               style={{
@@ -280,14 +310,17 @@ export function OrderAmendment({
                   <TrendingDown size={12} color="#EF4444" />
                 )}
                 <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>
-                  {priceChangePct >= 0 ? '+' : ''}{fmtPct(priceChangePct)} from current
+                  {priceChangePct >= 0 ? '+' : ''}
+                  {fmtPct(priceChangePct)} from current
                 </span>
               </div>
-              <span style={{
-                fontSize: FONT_SCALE.xs,
-                fontWeight: FONT_WEIGHT.semibold,
-                color: isPriceBetter ? '#10B981' : '#F59E0B',
-              }}>
+              <span
+                style={{
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.semibold,
+                  color: isPriceBetter ? '#10B981' : '#F59E0B',
+                }}
+              >
                 {isPriceBetter ? '✓ Better than market' : '⚠ Worse than market'}
               </span>
             </div>
@@ -298,7 +331,9 @@ export function OrderAmendment({
       {/* Edit Amount */}
       {(editMode === 'amount' || editMode === 'both') && (
         <div>
-          <label style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}>
+          <label
+            style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}
+          >
             New Amount
           </label>
           <div className="relative">
@@ -306,7 +341,7 @@ export function OrderAmendment({
               type="text"
               inputMode="decimal"
               value={newAmount}
-              onChange={e => setNewAmount(formatNum(e.target.value))}
+              onChange={(e) => setNewAmount(formatNum(e.target.value))}
               placeholder={order.amount.toString()}
               className="w-full px-3 py-3 rounded-xl min-h-11"
               style={{
@@ -335,7 +370,8 @@ export function OrderAmendment({
                   <TrendingDown size={12} color="#EF4444" />
                 )}
                 <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>
-                  {amountChangePct >= 0 ? '+' : ''}{fmtPct(amountChangePct)} from current
+                  {amountChangePct >= 0 ? '+' : ''}
+                  {fmtPct(amountChangePct)} from current
                 </span>
               </div>
             </div>
@@ -359,21 +395,42 @@ export function OrderAmendment({
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
               <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Price</span>
-              <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+              <span
+                style={{
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  color: c.text1,
+                  fontFamily: 'monospace',
+                }}
+              >
                 {fmtPrice(newPriceNum)}
               </span>
             </div>
 
             <div className="flex items-center justify-between">
               <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Amount</span>
-              <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+              <span
+                style={{
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  color: c.text1,
+                  fontFamily: 'monospace',
+                }}
+              >
                 {fmtAmount(newAmountNum)} {order.symbol.split('/')[0]}
               </span>
             </div>
 
             <div className="flex items-center justify-between">
               <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Total Value</span>
-              <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+              <span
+                style={{
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  color: c.text1,
+                  fontFamily: 'monospace',
+                }}
+              >
                 {fmtUsd((newAmountNum - order.filled) * newPriceNum)}
               </span>
             </div>
@@ -383,10 +440,20 @@ export function OrderAmendment({
 
       {/* Warnings */}
       {willLoseQueue && queueRisk && (
-        <div className="flex items-start gap-2 rounded-xl px-3 py-3" style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}>
+        <div
+          className="flex items-start gap-2 rounded-xl px-3 py-3"
+          style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}
+        >
           <AlertTriangle size={14} color="#EF4444" className="shrink-0 mt-1" />
           <div className="flex-1">
-            <p style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, color: '#EF4444', marginBottom: 4 }}>
+            <p
+              style={{
+                fontSize: FONT_SCALE.xs,
+                fontWeight: FONT_WEIGHT.bold,
+                color: '#EF4444',
+                marginBottom: 4,
+              }}
+            >
               Queue Position Will Be Lost
             </p>
             <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, lineHeight: 1.5 }}>
@@ -398,7 +465,10 @@ export function OrderAmendment({
       )}
 
       {order.supportsAmend && (
-        <div className="flex items-start gap-2 rounded-xl px-3 py-3" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
+        <div
+          className="flex items-start gap-2 rounded-xl px-3 py-3"
+          style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}
+        >
           <CheckCircle size={14} color="#10B981" className="shrink-0 mt-1" />
           <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, lineHeight: 1.5 }}>
             <strong style={{ color: '#10B981' }}>Queue position preserved</strong> — This exchange
@@ -444,11 +514,14 @@ export function OrderAmendment({
       </div>
 
       {/* Info */}
-      <div className="flex items-start gap-2 rounded-xl px-3 py-3" style={{ background: 'rgba(100,116,139,0.08)', border: '1px solid rgba(100,116,139,0.2)' }}>
+      <div
+        className="flex items-start gap-2 rounded-xl px-3 py-3"
+        style={{ background: 'rgba(100,116,139,0.08)', border: '1px solid rgba(100,116,139,0.2)' }}
+      >
         <Info size={14} color={c.text3} className="shrink-0 mt-1" />
         <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, lineHeight: 1.5 }}>
-          Modifying price or amount may affect your order's queue position depending on exchange rules.
-          Decreasing size is usually safe, but increasing may reset priority.
+          Modifying price or amount may affect your order's queue position depending on exchange
+          rules. Decreasing size is usually safe, but increasing may reset priority.
         </p>
       </div>
     </div>

@@ -16,7 +16,7 @@ const TAX_SUMMARY_2025 = {
   totalCapitalGains: 12345.67,
   costBasis: 100000,
   proceeds: 112345.67,
-  shortTermGains: 8000.00,
+  shortTermGains: 8000.0,
   longTermGains: 4345.67,
   stakingRewardsByAsset: {
     ETH: { amount: 2.5, usdValue: 7000 },
@@ -126,9 +126,10 @@ export function StakingTransactionReportingPage() {
       <BottomSheetV2
         open={showMethodSheet}
         onClose={() => setShowMethodSheet(false)}
-        title="Select Cost Basis Method">
+        title="Select Cost Basis Method"
+      >
         <div className="flex flex-col gap-3">
-          {COST_BASIS_METHODS.map(method => (
+          {COST_BASIS_METHODS.map((method) => (
             <TrCard
               key={method.value}
               hover
@@ -139,11 +140,15 @@ export function StakingTransactionReportingPage() {
               }}
               style={{
                 border: costBasisMethod === method.value ? `2px solid ${c.primary}` : undefined,
-              }}>
+              }}
+            >
               <div className="flex items-start gap-3">
                 <div
                   className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5"
-                  style={{ borderColor: costBasisMethod === method.value ? c.primary : c.borderSolid }}>
+                  style={{
+                    borderColor: costBasisMethod === method.value ? c.primary : c.borderSolid,
+                  }}
+                >
                   {costBasisMethod === method.value && (
                     <div className="w-3 h-3 rounded-full" style={{ background: c.primary }} />
                   )}
@@ -152,16 +157,21 @@ export function StakingTransactionReportingPage() {
                   <p style={{ color: c.text1, fontSize: 14, fontWeight: 700, marginBottom: 4 }}>
                     {method.label}
                   </p>
-                  <p style={{ color: c.text3, fontSize: 12, lineHeight: 1.5 }}>
-                    {method.desc}
-                  </p>
+                  <p style={{ color: c.text3, fontSize: 12, lineHeight: 1.5 }}>{method.desc}</p>
                 </div>
               </div>
             </TrCard>
           ))}
-          <div className="rounded-xl p-3" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
+          <div
+            className="rounded-xl p-3"
+            style={{
+              background: 'rgba(245,158,11,0.08)',
+              border: '1px solid rgba(245,158,11,0.2)',
+            }}
+          >
             <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-              💡 Once you choose a method for a tax year, you should use it consistently. Consult a tax professional for guidance.
+              💡 Once you choose a method for a tax year, you should use it consistently. Consult a
+              tax professional for guidance.
             </p>
           </div>
         </div>
@@ -171,7 +181,8 @@ export function StakingTransactionReportingPage() {
       <BottomSheetV2
         open={showExportSheet}
         onClose={() => setShowExportSheet(false)}
-        title="Export Options">
+        title="Export Options"
+      >
         <div className="flex flex-col gap-3">
           <PageSection label="Tax Forms (PDF)">
             <div className="flex flex-col gap-2">
@@ -236,7 +247,13 @@ export function StakingTransactionReportingPage() {
 
       <PageContent>
         {/* Info Banner */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(59,130,246,0.08)', border: '1.5px solid rgba(59,130,246,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{
+            background: 'rgba(59,130,246,0.08)',
+            border: '1.5px solid rgba(59,130,246,0.2)',
+          }}
+        >
           <div className="flex gap-3">
             <FileText size={20} color="#3B82F6" className="shrink-0 mt-0.5" />
             <div>
@@ -244,7 +261,8 @@ export function StakingTransactionReportingPage() {
                 Tax Compliance Made Easy
               </p>
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                Generate IRS-compliant tax reports. Export to TurboTax, CoinTracker, or download PDF forms. Always consult a tax professional.
+                Generate IRS-compliant tax reports. Export to TurboTax, CoinTracker, or download PDF
+                forms. Always consult a tax professional.
               </p>
             </div>
           </div>
@@ -256,9 +274,10 @@ export function StakingTransactionReportingPage() {
             <p style={{ color: c.text3, fontSize: 11, marginBottom: 6 }}>Tax Year</p>
             <select
               value={year}
-              onChange={e => setYear(e.target.value)}
+              onChange={(e) => setYear(e.target.value)}
               className="w-full p-2 rounded-lg text-sm font-semibold"
-              style={{ background: c.surface2, color: c.text1, border: 'none' }}>
+              style={{ background: c.surface2, color: c.text1, border: 'none' }}
+            >
               <option value="2025">2025</option>
               <option value="2024">2024</option>
               <option value="2023">2023</option>
@@ -292,33 +311,42 @@ export function StakingTransactionReportingPage() {
                   {/* Staking Income */}
                   <div className="rounded-xl p-4" style={{ background: c.surface2 }}>
                     <div className="flex items-center justify-between mb-3">
-                      <p style={{ color: c.text2, fontSize: 13, fontWeight: 700 }}>Total Staking Income</p>
+                      <p style={{ color: c.text2, fontSize: 13, fontWeight: 700 }}>
+                        Total Staking Income
+                      </p>
                       <p style={{ color: c.text1, fontSize: 18, fontWeight: 700 }}>
                         {fmtUsd(TAX_SUMMARY_2025.totalStakingIncome)}
                       </p>
                     </div>
                     <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
-                      Taxed as ordinary income at your marginal tax rate (reported on Form 1099-MISC)
+                      Taxed as ordinary income at your marginal tax rate (reported on Form
+                      1099-MISC)
                     </p>
                   </div>
 
                   {/* Capital Gains */}
                   <div className="rounded-xl p-4" style={{ background: c.surface2 }}>
                     <div className="flex items-center justify-between mb-3">
-                      <p style={{ color: c.text2, fontSize: 13, fontWeight: 700 }}>Total Capital Gains</p>
+                      <p style={{ color: c.text2, fontSize: 13, fontWeight: 700 }}>
+                        Total Capital Gains
+                      </p>
                       <p style={{ color: c.text1, fontSize: 18, fontWeight: 700 }}>
                         {fmtUsd(TAX_SUMMARY_2025.totalCapitalGains)}
                       </p>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Short-term (&lt;1 year)</p>
+                        <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
+                          Short-term (&lt;1 year)
+                        </p>
                         <p style={{ color: '#F59E0B', fontSize: 14, fontWeight: 700 }}>
                           {fmtUsd(TAX_SUMMARY_2025.shortTermGains)}
                         </p>
                       </div>
                       <div>
-                        <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Long-term (≥1 year)</p>
+                        <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
+                          Long-term (≥1 year)
+                        </p>
                         <p style={{ color: '#10B981', fontSize: 14, fontWeight: 700 }}>
                           {fmtUsd(TAX_SUMMARY_2025.longTermGains)}
                         </p>
@@ -357,7 +385,11 @@ export function StakingTransactionReportingPage() {
               <TrCard className="p-4">
                 <div className="space-y-3">
                   {Object.entries(TAX_SUMMARY_2025.stakingRewardsByAsset).map(([asset, data]) => (
-                    <div key={asset} className="flex items-center justify-between p-3 rounded-xl" style={{ background: c.surface2 }}>
+                    <div
+                      key={asset}
+                      className="flex items-center justify-between p-3 rounded-xl"
+                      style={{ background: c.surface2 }}
+                    >
                       <div>
                         <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>{asset}</p>
                         <p style={{ color: c.text3, fontSize: 11 }}>
@@ -386,7 +418,11 @@ export function StakingTransactionReportingPage() {
                   <div className="flex items-center justify-between mb-2">
                     <div>
                       <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>
-                        {tx.type === 'stake' ? 'Staked' : tx.type === 'unstake' ? 'Unstaked' : 'Reward'}{' '}
+                        {tx.type === 'stake'
+                          ? 'Staked'
+                          : tx.type === 'unstake'
+                            ? 'Unstaked'
+                            : 'Reward'}{' '}
                         {tx.amount} {tx.asset}
                       </p>
                       <p style={{ color: c.text3, fontSize: 11 }}>
@@ -398,16 +434,24 @@ export function StakingTransactionReportingPage() {
                         {fmtUsd(tx.usdValue)}
                       </p>
                       {tx.taxable && (
-                        <span className="text-xs px-2 py-0.5 rounded-md" style={{ background: 'rgba(245,158,11,0.15)', color: '#F59E0B' }}>
+                        <span
+                          className="text-xs px-2 py-0.5 rounded-md"
+                          style={{ background: 'rgba(245,158,11,0.15)', color: '#F59E0B' }}
+                        >
                           Taxable
                         </span>
                       )}
                     </div>
                   </div>
                   {tx.costBasis && (
-                    <div className="flex items-center justify-between text-xs pt-2 border-t" style={{ borderColor: c.borderSolid }}>
+                    <div
+                      className="flex items-center justify-between text-xs pt-2 border-t"
+                      style={{ borderColor: c.borderSolid }}
+                    >
                       <span style={{ color: c.text3 }}>Cost Basis:</span>
-                      <span style={{ color: c.text2, fontFamily: 'monospace' }}>{fmtUsd(tx.costBasis)}</span>
+                      <span style={{ color: c.text2, fontFamily: 'monospace' }}>
+                        {fmtUsd(tx.costBasis)}
+                      </span>
                     </div>
                   )}
                 </TrCard>
@@ -422,7 +466,10 @@ export function StakingTransactionReportingPage() {
               <div className="flex flex-col gap-3">
                 <TrCard hover className="p-4" onClick={() => setShowExportSheet(true)}>
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(239,68,68,0.12)' }}>
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center"
+                      style={{ background: 'rgba(239,68,68,0.12)' }}
+                    >
                       <FileText size={24} color="#EF4444" />
                     </div>
                     <div className="flex-1">
@@ -439,16 +486,17 @@ export function StakingTransactionReportingPage() {
 
                 <TrCard hover className="p-4" onClick={() => setShowExportSheet(true)}>
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(59,130,246,0.12)' }}>
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center"
+                      style={{ background: 'rgba(59,130,246,0.12)' }}
+                    >
                       <ExternalLink size={24} color="#3B82F6" />
                     </div>
                     <div className="flex-1">
                       <p style={{ color: c.text1, fontSize: 14, fontWeight: 700, marginBottom: 2 }}>
                         Third-Party Integrations
                       </p>
-                      <p style={{ color: c.text3, fontSize: 11 }}>
-                        TurboTax, CoinTracker, Koinly
-                      </p>
+                      <p style={{ color: c.text3, fontSize: 11 }}>TurboTax, CoinTracker, Koinly</p>
                     </div>
                     <Download size={20} color={c.text3} />
                   </div>
@@ -456,16 +504,17 @@ export function StakingTransactionReportingPage() {
 
                 <TrCard hover className="p-4" onClick={() => setShowExportSheet(true)}>
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(16,185,129,0.12)' }}>
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center"
+                      style={{ background: 'rgba(16,185,129,0.12)' }}
+                    >
                       <FileText size={24} color="#10B981" />
                     </div>
                     <div className="flex-1">
                       <p style={{ color: c.text1, fontSize: 14, fontWeight: 700, marginBottom: 2 }}>
                         Raw Data Export
                       </p>
-                      <p style={{ color: c.text3, fontSize: 11 }}>
-                        CSV, JSON formats
-                      </p>
+                      <p style={{ color: c.text3, fontSize: 11 }}>CSV, JSON formats</p>
                     </div>
                     <Download size={20} color={c.text3} />
                   </div>
@@ -473,7 +522,13 @@ export function StakingTransactionReportingPage() {
               </div>
             </PageSection>
 
-            <div className="rounded-2xl p-4" style={{ background: 'rgba(245,158,11,0.08)', border: '1.5px solid rgba(245,158,11,0.2)' }}>
+            <div
+              className="rounded-2xl p-4"
+              style={{
+                background: 'rgba(245,158,11,0.08)',
+                border: '1.5px solid rgba(245,158,11,0.2)',
+              }}
+            >
               <div className="flex gap-3">
                 <FileText size={18} color="#F59E0B" className="shrink-0 mt-0.5" />
                 <div>
@@ -481,7 +536,9 @@ export function StakingTransactionReportingPage() {
                     Important Tax Notice
                   </p>
                   <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.6 }}>
-                    These reports are for informational purposes only. Tax laws vary by jurisdiction. Always consult a qualified tax professional or CPA before filing. We are not tax advisors.
+                    These reports are for informational purposes only. Tax laws vary by
+                    jurisdiction. Always consult a qualified tax professional or CPA before filing.
+                    We are not tax advisors.
                   </p>
                 </div>
               </div>
@@ -509,7 +566,9 @@ export function StakingTransactionReportingPage() {
         {/* Footer */}
         <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6, textAlign: 'center' }}>
-            Tax reports are generated using real-time transaction data. Historical data cannot be modified once a tax year closes. Reports use fair market value at the time of transaction (UTC timezone). Last updated: {new Date().toLocaleDateString('en-GB')}.
+            Tax reports are generated using real-time transaction data. Historical data cannot be
+            modified once a tax year closes. Reports use fair market value at the time of
+            transaction (UTC timezone). Last updated: {new Date().toLocaleDateString('en-GB')}.
           </p>
         </div>
       </PageContent>

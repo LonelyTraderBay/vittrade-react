@@ -15,13 +15,22 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  Plus, Clock, CheckCircle, XCircle, ArrowDown, ArrowUp,
-  TrendingUp, Calendar, AlertTriangle, Edit2, Trash2,
+  Plus,
+  Clock,
+  CheckCircle,
+  XCircle,
+  ArrowDown,
+  ArrowUp,
+  TrendingUp,
+  Calendar,
+  AlertTriangle,
+  Edit2,
+  Trash2,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 const TABS = ['Hoạt động', 'Lịch sử', 'Tạo lệnh'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface LimitOrder {
   id: string;
@@ -58,7 +67,7 @@ const MOCK_ORDERS: LimitOrder[] = [
     token: 'Optimism',
     tokenSymbol: 'OP',
     type: 'sell',
-    targetPrice: 2.10,
+    targetPrice: 2.1,
     currentPrice: 1.87,
     amount: 500,
     filled: 0,
@@ -86,8 +95,8 @@ const MOCK_ORDERS: LimitOrder[] = [
     token: 'Avalanche',
     tokenSymbol: 'AVAX',
     type: 'buy',
-    targetPrice: 38.50,
-    currentPrice: 42.30,
+    targetPrice: 38.5,
+    currentPrice: 42.3,
     amount: 100,
     filled: 45,
     status: 'active',
@@ -112,39 +121,54 @@ export function LaunchpadLimitOrdersPage() {
   const [expiryDays, setExpiryDays] = useState('7');
   const [partialFill, setPartialFill] = useState(true);
 
-  const activeOrders = MOCK_ORDERS.filter(o => o.status === 'active');
-  const historyOrders = MOCK_ORDERS.filter(o => o.status !== 'active');
+  const activeOrders = MOCK_ORDERS.filter((o) => o.status === 'active');
+  const historyOrders = MOCK_ORDERS.filter((o) => o.status !== 'active');
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return '#3B82F6';
-      case 'filled': return '#10B981';
-      case 'cancelled': return '#6B7280';
-      case 'expired': return '#EF4444';
-      default: return c.text3;
+      case 'active':
+        return '#3B82F6';
+      case 'filled':
+        return '#10B981';
+      case 'cancelled':
+        return '#6B7280';
+      case 'expired':
+        return '#EF4444';
+      default:
+        return c.text3;
     }
   };
 
   const getStatusBg = (status: string) => {
     switch (status) {
-      case 'active': return 'rgba(59,130,246,0.08)';
-      case 'filled': return 'rgba(16,185,129,0.08)';
-      case 'cancelled': return 'rgba(107,114,128,0.08)';
-      case 'expired': return 'rgba(239,68,68,0.08)';
-      default: return c.bg;
+      case 'active':
+        return 'rgba(59,130,246,0.08)';
+      case 'filled':
+        return 'rgba(16,185,129,0.08)';
+      case 'cancelled':
+        return 'rgba(107,114,128,0.08)';
+      case 'expired':
+        return 'rgba(239,68,68,0.08)';
+      default:
+        return c.bg;
     }
   };
 
   const getProgressToTarget = (order: LimitOrder) => {
     if (order.type === 'buy') {
-      return Math.max(0, Math.min(100, ((order.targetPrice - order.currentPrice) / order.targetPrice) * 100 + 100));
+      return Math.max(
+        0,
+        Math.min(100, ((order.targetPrice - order.currentPrice) / order.targetPrice) * 100 + 100),
+      );
     } else {
       return Math.max(0, Math.min(100, (order.currentPrice / order.targetPrice) * 100));
     }
   };
 
   const handleCreateOrder = () => {
-    alert(`Limit Order Created:\nType: ${orderType.toUpperCase()}\nToken: ${token}\nPrice: $${targetPrice}\nAmount: ${amount}\nExpiry: ${expiryDays} days\nPartial: ${partialFill}`);
+    alert(
+      `Limit Order Created:\nType: ${orderType.toUpperCase()}\nToken: ${token}\nPrice: $${targetPrice}\nAmount: ${amount}\nExpiry: ${expiryDays} days\nPartial: ${partialFill}`,
+    );
     setShowCreateSheet(false);
   };
 
@@ -190,7 +214,8 @@ export function LaunchpadLimitOrdersPage() {
             <PageSection label="Lệnh hoạt động">
               {activeOrders.map((order) => {
                 const progress = getProgressToTarget(order);
-                const distancePercent = ((order.currentPrice - order.targetPrice) / order.targetPrice) * 100;
+                const distancePercent =
+                  ((order.currentPrice - order.targetPrice) / order.targetPrice) * 100;
                 return (
                   <div
                     key={order.id}
@@ -205,7 +230,10 @@ export function LaunchpadLimitOrdersPage() {
                             width: 40,
                             height: 40,
                             borderRadius: 12,
-                            background: order.type === 'buy' ? 'rgba(16,185,129,0.08)' : 'rgba(239,68,68,0.08)',
+                            background:
+                              order.type === 'buy'
+                                ? 'rgba(16,185,129,0.08)'
+                                : 'rgba(239,68,68,0.08)',
                           }}
                         >
                           {order.type === 'buy' ? (
@@ -233,10 +261,16 @@ export function LaunchpadLimitOrdersPage() {
                         </div>
                       </div>
                       <div className="flex gap-2">
-                        <button className="p-2 rounded-lg hover:opacity-80" style={{ background: c.bg }}>
+                        <button
+                          className="p-2 rounded-lg hover:opacity-80"
+                          style={{ background: c.bg }}
+                        >
                           <Edit2 size={14} color={c.text3} />
                         </button>
-                        <button className="p-2 rounded-lg hover:opacity-80" style={{ background: c.bg }}>
+                        <button
+                          className="p-2 rounded-lg hover:opacity-80"
+                          style={{ background: c.bg }}
+                        >
                           <Trash2 size={14} color="#EF4444" />
                         </button>
                       </div>
@@ -244,13 +278,17 @@ export function LaunchpadLimitOrdersPage() {
 
                     <div className="grid grid-cols-2 gap-3 mb-3">
                       <div>
-                        <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Target Price</p>
+                        <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>
+                          Target Price
+                        </p>
                         <p style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>
                           ${order.targetPrice.toFixed(2)}
                         </p>
                       </div>
                       <div>
-                        <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Current Price</p>
+                        <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>
+                          Current Price
+                        </p>
                         <p style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>
                           ${order.currentPrice.toFixed(2)}
                         </p>
@@ -280,7 +318,8 @@ export function LaunchpadLimitOrdersPage() {
                             fontWeight: 600,
                           }}
                         >
-                          {distancePercent > 0 ? '+' : ''}{distancePercent.toFixed(2)}%
+                          {distancePercent > 0 ? '+' : ''}
+                          {distancePercent.toFixed(2)}%
                         </p>
                       </div>
                       <div
@@ -291,13 +330,17 @@ export function LaunchpadLimitOrdersPage() {
                           className="h-full rounded-full transition-all"
                           style={{
                             width: `${progress}%`,
-                            background: progress > 90 ? '#10B981' : progress > 50 ? '#F59E0B' : '#3B82F6',
+                            background:
+                              progress > 90 ? '#10B981' : progress > 50 ? '#F59E0B' : '#3B82F6',
                           }}
                         />
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between pt-2" style={{ borderTop: `1px solid ${c.border}` }}>
+                    <div
+                      className="flex items-center justify-between pt-2"
+                      style={{ borderTop: `1px solid ${c.border}` }}
+                    >
                       <div className="flex items-center gap-1">
                         <Calendar size={11} color={c.text3} />
                         <p style={{ color: c.text3, fontSize: 10 }}>
@@ -358,22 +401,21 @@ export function LaunchpadLimitOrdersPage() {
                     <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>
                       ${order.targetPrice.toFixed(2)}
                     </p>
-                    <p style={{ color: c.text3, fontSize: 11 }}>{order.amount} {order.tokenSymbol}</p>
+                    <p style={{ color: c.text3, fontSize: 11 }}>
+                      {order.amount} {order.tokenSymbol}
+                    </p>
                   </div>
                 </div>
-                <div className="flex items-center justify-between pt-2" style={{ borderTop: `1px solid ${c.border}` }}>
+                <div
+                  className="flex items-center justify-between pt-2"
+                  style={{ borderTop: `1px solid ${c.border}` }}
+                >
                   <p style={{ color: c.text3, fontSize: 10 }}>
                     {order.createdAt.toLocaleDateString()} {order.createdAt.toLocaleTimeString()}
                   </p>
-                  {order.status === 'filled' && (
-                    <CheckCircle size={14} color="#10B981" />
-                  )}
-                  {order.status === 'cancelled' && (
-                    <XCircle size={14} color="#6B7280" />
-                  )}
-                  {order.status === 'expired' && (
-                    <AlertTriangle size={14} color="#EF4444" />
-                  )}
+                  {order.status === 'filled' && <CheckCircle size={14} color="#10B981" />}
+                  {order.status === 'cancelled' && <XCircle size={14} color="#6B7280" />}
+                  {order.status === 'expired' && <AlertTriangle size={14} color="#EF4444" />}
                 </div>
               </div>
             ))}
@@ -407,7 +449,9 @@ export function LaunchpadLimitOrdersPage() {
                   >
                     Buy
                   </p>
-                  <p style={{ color: c.text3, fontSize: 11, textAlign: 'center' }}>Mua khi giá xuống</p>
+                  <p style={{ color: c.text3, fontSize: 11, textAlign: 'center' }}>
+                    Mua khi giá xuống
+                  </p>
                 </button>
                 <button
                   onClick={() => setOrderType('sell')}
@@ -432,15 +476,22 @@ export function LaunchpadLimitOrdersPage() {
                   >
                     Sell
                   </p>
-                  <p style={{ color: c.text3, fontSize: 11, textAlign: 'center' }}>Bán khi giá lên</p>
+                  <p style={{ color: c.text3, fontSize: 11, textAlign: 'center' }}>
+                    Bán khi giá lên
+                  </p>
                 </button>
               </div>
             </PageSection>
 
             <PageSection label="Chi tiết lệnh">
-              <div className="rounded-2xl p-4" style={{ background: c.surface, border: `1px solid ${c.border}` }}>
+              <div
+                className="rounded-2xl p-4"
+                style={{ background: c.surface, border: `1px solid ${c.border}` }}
+              >
                 <div className="mb-4">
-                  <label style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}
+                  >
                     Token
                   </label>
                   <input
@@ -449,12 +500,19 @@ export function LaunchpadLimitOrdersPage() {
                     onChange={(e) => setToken(e.target.value)}
                     placeholder="ARB"
                     className="w-full px-4 py-2.5 rounded-xl outline-none"
-                    style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 14 }}
+                    style={{
+                      background: c.bg,
+                      border: `1px solid ${c.border}`,
+                      color: c.text1,
+                      fontSize: 14,
+                    }}
                   />
                 </div>
 
                 <div className="mb-4">
-                  <label style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}
+                  >
                     Target Price (USD)
                   </label>
                   <input
@@ -463,12 +521,19 @@ export function LaunchpadLimitOrdersPage() {
                     onChange={(e) => setTargetPrice(e.target.value)}
                     placeholder="0.00"
                     className="w-full px-4 py-2.5 rounded-xl outline-none"
-                    style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 14 }}
+                    style={{
+                      background: c.bg,
+                      border: `1px solid ${c.border}`,
+                      color: c.text1,
+                      fontSize: 14,
+                    }}
                   />
                 </div>
 
                 <div className="mb-4">
-                  <label style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}
+                  >
                     Amount
                   </label>
                   <input
@@ -477,12 +542,19 @@ export function LaunchpadLimitOrdersPage() {
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="0"
                     className="w-full px-4 py-2.5 rounded-xl outline-none"
-                    style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 14 }}
+                    style={{
+                      background: c.bg,
+                      border: `1px solid ${c.border}`,
+                      color: c.text1,
+                      fontSize: 14,
+                    }}
                   />
                 </div>
 
                 <div className="mb-4">
-                  <label style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}
+                  >
                     Expiry (days)
                   </label>
                   <div className="grid grid-cols-4 gap-2">
@@ -504,15 +576,25 @@ export function LaunchpadLimitOrdersPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-3" style={{ borderTop: `1px solid ${c.border}` }}>
+                <div
+                  className="flex items-center justify-between pt-3"
+                  style={{ borderTop: `1px solid ${c.border}` }}
+                >
                   <div>
-                    <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>Allow Partial Fill</p>
+                    <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>
+                      Allow Partial Fill
+                    </p>
                     <p style={{ color: c.text3, fontSize: 11 }}>Cho phép khớp một phần</p>
                   </div>
                   <button
                     onClick={() => setPartialFill(!partialFill)}
                     className="relative"
-                    style={{ width: 48, height: 28, borderRadius: 14, background: partialFill ? c.primary : c.border }}
+                    style={{
+                      width: 48,
+                      height: 28,
+                      borderRadius: 14,
+                      background: partialFill ? c.primary : c.border,
+                    }}
                   >
                     <div
                       className="absolute top-1 transition-all"
@@ -533,9 +615,14 @@ export function LaunchpadLimitOrdersPage() {
             {targetPrice && amount && (
               <div
                 className="rounded-2xl p-4"
-                style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+                style={{
+                  background: 'rgba(59,130,246,0.06)',
+                  border: '1px solid rgba(59,130,246,0.15)',
+                }}
               >
-                <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginBottom: 8 }}>Order Preview</p>
+                <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginBottom: 8 }}>
+                  Order Preview
+                </p>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
                     <p style={{ color: c.text3, fontSize: 10 }}>Type</p>
@@ -551,7 +638,9 @@ export function LaunchpadLimitOrdersPage() {
                   </div>
                   <div>
                     <p style={{ color: c.text3, fontSize: 10 }}>Expires</p>
-                    <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>{expiryDays} days</p>
+                    <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
+                      {expiryDays} days
+                    </p>
                   </div>
                   <div>
                     <p style={{ color: c.text3, fontSize: 10 }}>Partial</p>

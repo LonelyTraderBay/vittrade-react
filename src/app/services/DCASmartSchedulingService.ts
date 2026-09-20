@@ -1,13 +1,13 @@
 /**
  * DCA Smart Scheduling Service
- * 
+ *
  * Optimizes DCA execution timing based on:
  * - Market volatility
  * - Gas fees (for crypto)
  * - Historical patterns
  * - Trading volume
  * - Price action
- * 
+ *
  * @module services/DCASmartSchedulingService
  * @version 1.0 (Phase 2 - Sprint 3)
  */
@@ -20,21 +20,21 @@
  * Scheduling Strategy
  */
 export type SchedulingStrategy =
-  | 'fixed'           // Fixed time, no optimization
-  | 'volatility'      // Execute during low volatility
-  | 'gas-optimized'   // Execute when gas fees are low
-  | 'volume'          // Execute during high volume
-  | 'hybrid';         // Combine multiple factors
+  | 'fixed' // Fixed time, no optimization
+  | 'volatility' // Execute during low volatility
+  | 'gas-optimized' // Execute when gas fees are low
+  | 'volume' // Execute during high volume
+  | 'hybrid'; // Combine multiple factors
 
 /**
  * Time of Day Preference
  */
 export type TimePreference =
-  | 'morning'         // 6am-12pm
-  | 'afternoon'       // 12pm-6pm
-  | 'evening'         // 6pm-12am
-  | 'night'           // 12am-6am
-  | 'any';            // No preference
+  | 'morning' // 6am-12pm
+  | 'afternoon' // 12pm-6pm
+  | 'evening' // 6pm-12am
+  | 'night' // 12am-6am
+  | 'any'; // No preference
 
 /**
  * Market Condition
@@ -42,19 +42,19 @@ export type TimePreference =
 export interface MarketCondition {
   /** Timestamp */
   timestamp: number;
-  
+
   /** Current volatility (%) */
   volatility: number;
-  
+
   /** Gas price (gwei) */
   gasPrice: number;
-  
+
   /** Trading volume (24h) */
   volume24h: number;
-  
+
   /** Price change (24h %) */
   priceChange24h: number;
-  
+
   /** Trend direction */
   trend: 'bullish' | 'bearish' | 'neutral';
 }
@@ -65,22 +65,22 @@ export interface MarketCondition {
 export interface ExecutionWindow {
   /** Start time (timestamp) */
   start: number;
-  
+
   /** End time (timestamp) */
   end: number;
-  
+
   /** Optimal time within window */
   optimalTime: number;
-  
+
   /** Expected volatility */
   expectedVolatility: number;
-  
+
   /** Expected gas price */
   expectedGasPrice: number;
-  
+
   /** Score (0-100, higher is better) */
   score: number;
-  
+
   /** Reasoning */
   reason: string;
 }
@@ -91,19 +91,19 @@ export interface ExecutionWindow {
 export interface HistoricalPattern {
   /** Hour of day (0-23) */
   hour: number;
-  
+
   /** Day of week (0-6, 0=Sunday) */
   dayOfWeek: number;
-  
+
   /** Average volatility */
   avgVolatility: number;
-  
+
   /** Average gas price */
   avgGasPrice: number;
-  
+
   /** Average volume */
   avgVolume: number;
-  
+
   /** Sample count */
   sampleCount: number;
 }
@@ -114,37 +114,37 @@ export interface HistoricalPattern {
 export interface SmartScheduleConfig {
   /** Config ID */
   id: string;
-  
+
   /** User ID */
   userId: string;
-  
+
   /** DCA plan ID */
   planId: string;
-  
+
   /** Strategy */
   strategy: SchedulingStrategy;
-  
+
   /** Time preference */
   timePreference: TimePreference;
-  
+
   /** Max delay allowed (hours) */
   maxDelayHours: number;
-  
+
   /** Max advance allowed (hours) */
   maxAdvanceHours: number;
-  
+
   /** Volatility threshold (%) */
   volatilityThreshold?: number;
-  
+
   /** Gas price threshold (gwei) */
   gasPriceThreshold?: number;
-  
+
   /** Enabled? */
   enabled: boolean;
-  
+
   /** Created at */
   createdAt: number;
-  
+
   /** Updated at */
   updatedAt: number;
 }
@@ -155,31 +155,31 @@ export interface SmartScheduleConfig {
 export interface SchedulingDecision {
   /** Decision ID */
   id: string;
-  
+
   /** Scheduled time (original) */
   scheduledTime: number;
-  
+
   /** Recommended time (optimized) */
   recommendedTime: number;
-  
+
   /** Delay/advance (ms) */
   adjustment: number;
-  
+
   /** Adjustment (hours) */
   adjustmentHours: number;
-  
+
   /** Market condition at scheduled time */
   scheduledCondition: MarketCondition;
-  
+
   /** Market condition at recommended time */
   recommendedCondition: MarketCondition;
-  
+
   /** Score improvement */
   scoreImprovement: number;
-  
+
   /** Reasoning */
   reasoning: string[];
-  
+
   /** Should delay/advance? */
   shouldAdjust: boolean;
 }
@@ -190,19 +190,19 @@ export interface SchedulingDecision {
 export interface SchedulingStats {
   /** Total decisions */
   totalDecisions: number;
-  
+
   /** Adjustments made */
   adjustmentsMade: number;
-  
+
   /** Average adjustment (hours) */
   avgAdjustment: number;
-  
+
   /** Average score improvement */
   avgScoreImprovement: number;
-  
+
   /** Volatility savings (%) */
   volatilitySavings: number;
-  
+
   /** Gas savings (%) */
   gasSavings: number;
 }
@@ -216,25 +216,24 @@ export interface SchedulingStats {
  */
 function generateMockMarketCondition(timestamp: number): MarketCondition {
   const hour = new Date(timestamp).getHours();
-  
+
   // Volatility varies by time of day
   // Higher during market open (9am-4pm EST)
   const baseVolatility = hour >= 9 && hour <= 16 ? 2.5 : 1.5;
   const volatility = baseVolatility + Math.random() * 1.5;
-  
+
   // Gas prices higher during peak hours
   const baseGasPrice = hour >= 14 && hour <= 20 ? 30 : 15;
   const gasPrice = baseGasPrice + Math.random() * 20;
-  
+
   // Volume higher during day
   const volume24h = hour >= 8 && hour <= 20 ? 50000000 : 30000000;
-  
+
   const priceChange24h = (Math.random() - 0.5) * 10;
-  
+
   const trend: 'bullish' | 'bearish' | 'neutral' =
-    priceChange24h > 2 ? 'bullish' :
-    priceChange24h < -2 ? 'bearish' : 'neutral';
-  
+    priceChange24h > 2 ? 'bullish' : priceChange24h < -2 ? 'bearish' : 'neutral';
+
   return {
     timestamp,
     volatility,
@@ -253,15 +252,15 @@ class DCASmartSchedulingService {
   private configs: Map<string, SmartScheduleConfig> = new Map();
   private decisions: SchedulingDecision[] = [];
   private patterns: HistoricalPattern[] = [];
-  
+
   constructor() {
     this.initializePatterns();
   }
-  
+
   /* ═══════════════════════════════════════════
      INITIALIZATION
      ═══════════════════════════════════════════ */
-  
+
   /**
    * Initialize historical patterns (mock data)
    */
@@ -272,10 +271,10 @@ class DCASmartSchedulingService {
         // Night/early morning: lowest volatility & gas
         // Business hours (9am-5pm): higher volatility & gas
         // Evening: moderate
-        
+
         let avgVolatility: number;
         let avgGasPrice: number;
-        
+
         if (hour >= 2 && hour < 8) {
           // Night/early morning: best for execution
           avgVolatility = 1.2 + Math.random() * 0.5;
@@ -289,7 +288,7 @@ class DCASmartSchedulingService {
           avgVolatility = 1.8 + Math.random() * 0.8;
           avgGasPrice = 20 + Math.random() * 10;
         }
-        
+
         this.patterns.push({
           hour,
           dayOfWeek: day,
@@ -301,16 +300,16 @@ class DCASmartSchedulingService {
       }
     }
   }
-  
+
   /* ═══════════════════════════════════════════
      CONFIGURATION MANAGEMENT
      ═══════════════════════════════════════════ */
-  
+
   /**
    * Create smart schedule configuration
    */
   createConfig(
-    config: Omit<SmartScheduleConfig, 'id' | 'createdAt' | 'updatedAt'>
+    config: Omit<SmartScheduleConfig, 'id' | 'createdAt' | 'updatedAt'>,
   ): SmartScheduleConfig {
     const newConfig: SmartScheduleConfig = {
       ...config,
@@ -318,36 +317,32 @@ class DCASmartSchedulingService {
       createdAt: Date.now(),
       updatedAt: Date.now(),
     };
-    
+
     this.configs.set(newConfig.id, newConfig);
     return newConfig;
   }
-  
+
   /**
    * Get configuration
    */
   getConfig(id: string): SmartScheduleConfig | null {
     return this.configs.get(id) || null;
   }
-  
+
   /**
    * Get configs by plan ID
    */
   getConfigsByPlan(planId: string): SmartScheduleConfig[] {
-    return Array.from(this.configs.values())
-      .filter(c => c.planId === planId);
+    return Array.from(this.configs.values()).filter((c) => c.planId === planId);
   }
-  
+
   /**
    * Update configuration
    */
-  updateConfig(
-    id: string,
-    updates: Partial<SmartScheduleConfig>
-  ): SmartScheduleConfig | null {
+  updateConfig(id: string, updates: Partial<SmartScheduleConfig>): SmartScheduleConfig | null {
     const config = this.configs.get(id);
     if (!config) return null;
-    
+
     const updated: SmartScheduleConfig = {
       ...config,
       ...updates,
@@ -355,15 +350,15 @@ class DCASmartSchedulingService {
       createdAt: config.createdAt,
       updatedAt: Date.now(),
     };
-    
+
     this.configs.set(id, updated);
     return updated;
   }
-  
+
   /* ═══════════════════════════════════════════
      PATTERN ANALYSIS
      ═══════════════════════════════════════════ */
-  
+
   /**
    * Get historical pattern for a specific time
    */
@@ -371,31 +366,29 @@ class DCASmartSchedulingService {
     const date = new Date(timestamp);
     const hour = date.getHours();
     const dayOfWeek = date.getDay();
-    
-    return this.patterns.find(
-      p => p.hour === hour && p.dayOfWeek === dayOfWeek
-    ) || null;
+
+    return this.patterns.find((p) => p.hour === hour && p.dayOfWeek === dayOfWeek) || null;
   }
-  
+
   /**
    * Find best execution windows within a range
    */
   findBestWindows(
     startTime: number,
     endTime: number,
-    strategy: SchedulingStrategy
+    strategy: SchedulingStrategy,
   ): ExecutionWindow[] {
     const windows: ExecutionWindow[] = [];
     const hourMs = 60 * 60 * 1000;
-    
+
     // Analyze each hour in the range
     for (let time = startTime; time <= endTime; time += hourMs) {
       const pattern = this.getPattern(time);
       if (!pattern) continue;
-      
+
       const condition = generateMockMarketCondition(time);
       const score = this.calculateExecutionScore(condition, strategy);
-      
+
       windows.push({
         start: time,
         end: time + hourMs,
@@ -406,67 +399,66 @@ class DCASmartSchedulingService {
         reason: this.generateScoreReason(condition, strategy),
       });
     }
-    
+
     // Sort by score (descending)
     return windows.sort((a, b) => b.score - a.score);
   }
-  
+
   /* ═══════════════════════════════════════════
      SCORING
      ═══════════════════════════════════════════ */
-  
+
   /**
    * Calculate execution score (0-100)
    */
   private calculateExecutionScore(
     condition: MarketCondition,
-    strategy: SchedulingStrategy
+    strategy: SchedulingStrategy,
   ): number {
-    let score = 50; // Base score
-    
+    let score: number;
+
     switch (strategy) {
       case 'volatility':
         // Lower volatility = higher score
-        score = 100 - (condition.volatility * 10);
+        score = 100 - condition.volatility * 10;
         break;
-        
+
       case 'gas-optimized':
         // Lower gas = higher score
-        score = 100 - (condition.gasPrice / 2);
+        score = 100 - condition.gasPrice / 2;
         break;
-        
-      case 'volume':
+
+      case 'volume': {
         // Higher volume = higher score (but diminishing returns)
         const volumeScore = Math.min(100, condition.volume24h / 1000000);
         score = volumeScore;
         break;
-        
-      case 'hybrid':
+      }
+
+      case 'hybrid': {
         // Combine multiple factors
-        const volScore = 100 - (condition.volatility * 10);
-        const gasScore = 100 - (condition.gasPrice / 2);
+        const volScore = 100 - condition.volatility * 10;
+        const gasScore = 100 - condition.gasPrice / 2;
         const volBonus = Math.min(20, condition.volume24h / 5000000);
-        score = (volScore * 0.4) + (gasScore * 0.4) + volBonus;
+        score = volScore * 0.4 + gasScore * 0.4 + volBonus;
         break;
-        
+      }
+
       case 'fixed':
       default:
         score = 50;
         break;
     }
-    
+
     return Math.max(0, Math.min(100, score));
   }
-  
+
   /**
    * Generate score reasoning
    */
-  private generateScoreReason(
-    condition: MarketCondition,
-    strategy: SchedulingStrategy
-  ): string {
+  private generateScoreReason(condition: MarketCondition, strategy: SchedulingStrategy): string {
     const reasons: string[] = [];
-    
+
     if (strategy === 'volatility' || strategy === 'hybrid') {
       if (condition.volatility < 1.5) {
         reasons.push('Very low volatility');
@@ -476,7 +468,7 @@ class DCASmartSchedulingService {
         reasons.push('High volatility');
       }
     }
-    
+
     if (strategy === 'gas-optimized' || strategy === 'hybrid') {
       if (condition.gasPrice < 15) {
         reasons.push('Low gas fees');
@@ -486,7 +478,7 @@ class DCASmartSchedulingService {
         reasons.push('High gas fees');
       }
     }
-    
+
     if (strategy === 'volume' || strategy === 'hybrid') {
       if (condition.volume24h > 60000000) {
         reasons.push('High volume');
@@ -496,73 +488,70 @@ class DCASmartSchedulingService {
         reasons.push('Low volume');
       }
     }
-    
+
     return reasons.join(', ');
   }
-  
+
   /* ═══════════════════════════════════════════
      SCHEDULING DECISIONS
      ═══════════════════════════════════════════ */
-  
+
   /**
    * Make scheduling decision
    */
-  makeDecision(
-    config: SmartScheduleConfig,
-    scheduledTime: number
-  ): SchedulingDecision {
+  makeDecision(config: SmartScheduleConfig, scheduledTime: number): SchedulingDecision {
     // Define search window
     const maxDelayMs = config.maxDelayHours * 60 * 60 * 1000;
     const maxAdvanceMs = config.maxAdvanceHours * 60 * 60 * 1000;
     const startTime = scheduledTime - maxAdvanceMs;
     const endTime = scheduledTime + maxDelayMs;
-    
+
     // Find best windows
     const windows = this.findBestWindows(startTime, endTime, config.strategy);
-    
+
     // Get scheduled condition
     const scheduledCondition = generateMockMarketCondition(scheduledTime);
     const scheduledScore = this.calculateExecutionScore(scheduledCondition, config.strategy);
-    
+
     // Find best window
     const bestWindow = windows[0];
     const recommendedTime = bestWindow?.optimalTime || scheduledTime;
     const recommendedCondition = generateMockMarketCondition(recommendedTime);
     const recommendedScore = bestWindow?.score || scheduledScore;
-    
+
     const adjustment = recommendedTime - scheduledTime;
     const adjustmentHours = adjustment / (60 * 60 * 1000);
     const scoreImprovement = recommendedScore - scheduledScore;
-    
+
     // Decide if should adjust
-    const shouldAdjust = 
+    const shouldAdjust =
       config.enabled &&
       Math.abs(adjustmentHours) > 0.5 && // At least 30 min adjustment
       scoreImprovement > 5; // At least 5 point improvement
-    
+
     const reasoning: string[] = [];
-    
+
     if (shouldAdjust) {
       if (adjustmentHours > 0) {
         reasoning.push(`Delay ${Math.abs(adjustmentHours).toFixed(1)}h for better conditions`);
       } else {
         reasoning.push(`Advance ${Math.abs(adjustmentHours).toFixed(1)}h for better conditions`);
       }
-      
+
       if (config.strategy === 'volatility' || config.strategy === 'hybrid') {
         const volDiff = scheduledCondition.volatility - recommendedCondition.volatility;
         if (volDiff > 0.5) {
           reasoning.push(`${volDiff.toFixed(1)}% lower volatility`);
         }
       }
-      
+
       if (config.strategy === 'gas-optimized' || config.strategy === 'hybrid') {
         const gasDiff = scheduledCondition.gasPrice - recommendedCondition.gasPrice;
         if (gasDiff > 5) {
           reasoning.push(`${gasDiff.toFixed(0)} gwei lower gas`);
         }
       }
-      
+
       reasoning.push(bestWindow.reason);
     } else {
       reasoning.push('Execute at scheduled time');
@@ -572,7 +561,7 @@ class DCASmartSchedulingService {
         reasoning.push('Insufficient improvement');
       }
     }
-    
+
     const decision: SchedulingDecision = {
       id: `dec_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       scheduledTime,
@@ -585,21 +574,21 @@ class DCASmartSchedulingService {
       reasoning,
       shouldAdjust,
     };
-    
+
     this.decisions.push(decision);
     return decision;
   }
-  
+
   /* ═══════════════════════════════════════════
      STATISTICS
      ═══════════════════════════════════════════ */
-  
+
   /**
    * Get scheduling stats
    */
   getStats(configId?: string): SchedulingStats {
-    let decisions = this.decisions;
-    
+    const decisions = this.decisions;
+
     if (configId) {
       const config = this.configs.get(configId);
       if (!config) {
@@ -615,11 +604,11 @@ class DCASmartSchedulingService {
       // Filter decisions for this config's plan
       // In real implementation, we'd track configId in decision
     }
-    
+
     const totalDecisions = decisions.length;
-    const adjustedDecisions = decisions.filter(d => d.shouldAdjust);
+    const adjustedDecisions = decisions.filter((d) => d.shouldAdjust);
     const adjustmentsMade = adjustedDecisions.length;
-    
+
     if (totalDecisions === 0) {
       return {
         totalDecisions: 0,
@@ -630,27 +619,26 @@ class DCASmartSchedulingService {
         gasSavings: 0,
       };
     }
-    
-    const avgAdjustment = adjustedDecisions.reduce(
-      (sum, d) => sum + Math.abs(d.adjustmentHours),
-      0
-    ) / (adjustmentsMade || 1);
-    
-    const avgScoreImprovement = decisions.reduce(
-      (sum, d) => sum + d.scoreImprovement,
-      0
-    ) / totalDecisions;
-    
-    const volatilitySavings = adjustedDecisions.reduce(
-      (sum, d) => sum + (d.scheduledCondition.volatility - d.recommendedCondition.volatility),
-      0
-    ) / (adjustmentsMade || 1);
-    
-    const gasSavings = adjustedDecisions.reduce(
-      (sum, d) => sum + (d.scheduledCondition.gasPrice - d.recommendedCondition.gasPrice),
-      0
-    ) / (adjustmentsMade || 1);
-    
+
+    const avgAdjustment =
+      adjustedDecisions.reduce((sum, d) => sum + Math.abs(d.adjustmentHours), 0) /
+      (adjustmentsMade || 1);
+
+    const avgScoreImprovement =
+      decisions.reduce((sum, d) => sum + d.scoreImprovement, 0) / totalDecisions;
+
+    const volatilitySavings =
+      adjustedDecisions.reduce(
+        (sum, d) => sum + (d.scheduledCondition.volatility - d.recommendedCondition.volatility),
+        0,
+      ) / (adjustmentsMade || 1);
+
+    const gasSavings =
+      adjustedDecisions.reduce(
+        (sum, d) => sum + (d.scheduledCondition.gasPrice - d.recommendedCondition.gasPrice),
+        0,
+      ) / (adjustmentsMade || 1);
+
     return {
       totalDecisions,
       adjustmentsMade,
@@ -660,20 +648,18 @@ class DCASmartSchedulingService {
       gasSavings,
     };
   }
-  
+
   /**
    * Get recent decisions
    */
   getRecentDecisions(limit: number = 10): SchedulingDecision[] {
-    return this.decisions
-      .slice(-limit)
-      .reverse();
+    return this.decisions.slice(-limit).reverse();
   }
-  
+
   /* ═══════════════════════════════════════════
      UTILITIES
      ═══════════════════════════════════════════ */
-  
+
   /**
    * Get time preference window (hour range)
    */
@@ -692,7 +678,7 @@ class DCASmartSchedulingService {
         return { start: 0, end: 24 };
     }
   }
-  
+
   /**
    * Clear all data (for testing)
    */

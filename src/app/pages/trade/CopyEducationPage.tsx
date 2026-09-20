@@ -2,21 +2,21 @@
  * ══════════════════════════════════════════════════════════════
  *  CopyEducationPage — Phase 1: Educational Hub
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Standalone educational resource (accessible anytime)
  * - Interactive scenario simulators
  * - Fee calculator with real examples
  * - Common mistakes guide
  * - Regulatory notices
- * 
+ *
  * Compliance:
  * - No promotional language
  * - Balanced risk/reward presentation
  * - Real-world loss scenarios included
  * - Past performance disclaimers
  * - Educational, not investment advice
- * 
+ *
  * Guidelines:
  * - PageLayout + PageContent pattern
  * - TabBar for content navigation
@@ -26,11 +26,26 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { 
-  BookOpen, DollarSign, TrendingDown, AlertTriangle, 
-  Target, Users, Clock, Zap, Info, CheckCircle,
-  XCircle, Shield, Calculator, BarChart3, Activity,
-  TrendingUp, AlertCircle, ChevronRight, Eye
+import {
+  BookOpen,
+  DollarSign,
+  TrendingDown,
+  AlertTriangle,
+  Target,
+  Users,
+  Clock,
+  Zap,
+  Info,
+  CheckCircle,
+  XCircle,
+  Shield,
+  Calculator,
+  BarChart3,
+  Activity,
+  TrendingUp,
+  AlertCircle,
+  ChevronRight,
+  Eye,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -39,9 +54,18 @@ import { TabBar } from '../../components/layout/TabBar';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useRoutePrefix } from '../../hooks/useRoutePrefix';
 import { TrCard } from '../../components/ui/TrCard';
-import { 
-  LineChart, Line, BarChart, Bar, XAxis, YAxis, 
-  CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Area,
+  AreaChart,
 } from 'recharts';
 
 type TabType = 'how-it-works' | 'scenarios' | 'fees' | 'mistakes' | 'regulatory';
@@ -50,22 +74,22 @@ type TabType = 'how-it-works' | 'scenarios' | 'fees' | 'mistakes' | 'regulatory'
 const generateScenarioData = (type: 'profit' | 'loss' | 'slippage') => {
   const data = [];
   const baseValue = 10000;
-  
+
   for (let i = 0; i <= 30; i++) {
     let providerValue = baseValue;
     let yourValue = baseValue;
-    
+
     if (type === 'profit') {
-      providerValue = baseValue + (i * 100);
-      yourValue = baseValue + (i * 100) - (i * 8); // Fees + slippage
+      providerValue = baseValue + i * 100;
+      yourValue = baseValue + i * 100 - i * 8; // Fees + slippage
     } else if (type === 'loss') {
-      providerValue = baseValue - (i * 80);
-      yourValue = baseValue - (i * 85); // Slightly worse due to slippage
+      providerValue = baseValue - i * 80;
+      yourValue = baseValue - i * 85; // Slightly worse due to slippage
     } else if (type === 'slippage') {
-      providerValue = baseValue + (i * 50);
-      yourValue = baseValue + (i * 45); // 10% slippage impact
+      providerValue = baseValue + i * 50;
+      yourValue = baseValue + i * 45; // 10% slippage impact
     }
-    
+
     data.push({
       day: i,
       provider: providerValue,
@@ -73,7 +97,7 @@ const generateScenarioData = (type: 'profit' | 'loss' | 'slippage') => {
       label: i % 5 === 0 ? `D${i}` : '',
     });
   }
-  
+
   return data;
 };
 
@@ -81,12 +105,14 @@ export function CopyEducationPage() {
   const c = useThemeColors();
   const navigate = useNavigate();
   const prefix = useRoutePrefix();
-  
+
   const [activeTab, setActiveTab] = useState<TabType>('how-it-works');
-  
+
   // Scenario simulator state
-  const [selectedScenario, setSelectedScenario] = useState<'profit' | 'loss' | 'slippage'>('profit');
-  
+  const [selectedScenario, setSelectedScenario] = useState<'profit' | 'loss' | 'slippage'>(
+    'profit',
+  );
+
   // Fee calculator state
   const [feeCapital, setFeeCapital] = useState(5000);
   const [feeProfit, setFeeProfit] = useState(15);
@@ -94,7 +120,7 @@ export function CopyEducationPage() {
 
   // Calculate fees
   const platformFee = feeCapital * 0.001; // 0.1%
-  const performanceFee = (feeCapital * (feeProfit / 100)) * 0.1; // 10% of profit
+  const performanceFee = feeCapital * (feeProfit / 100) * 0.1; // 10% of profit
   const tradingFees = feeTrades * 2 * 0.0025 * (feeCapital / 50); // Avg trade size assumption
   const totalFees = platformFee + performanceFee + tradingFees;
   const grossProfit = feeCapital * (feeProfit / 100);
@@ -113,15 +139,18 @@ export function CopyEducationPage() {
 
       <PageContent gap="relaxed">
         {/* Intro Banner */}
-        <div className="rounded-2xl p-4 flex gap-3" style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}>
+        <div
+          className="rounded-2xl p-4 flex gap-3"
+          style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}
+        >
           <BookOpen size={24} color={c.primary} className="shrink-0" />
           <div>
             <h3 style={{ color: c.primary, fontSize: 15, fontWeight: 700, marginBottom: 4 }}>
               Học trước khi đầu tư
             </h3>
             <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.5 }}>
-              Trang này giúp bạn hiểu rõ cơ chế, rủi ro và chi phí của Copy Trading. 
-              Không có gì thay thế được hiểu biết đầy đủ.
+              Trang này giúp bạn hiểu rõ cơ chế, rủi ro và chi phí của Copy Trading. Không có gì
+              thay thế được hiểu biết đầy đủ.
             </p>
           </div>
         </div>
@@ -148,7 +177,7 @@ export function CopyEducationPage() {
               <h3 style={{ color: c.text1, fontSize: 15, fontWeight: 700, marginBottom: 12 }}>
                 Copy Trading hoạt động như thế nào?
               </h3>
-              
+
               <div className="space-y-4">
                 {[
                   {
@@ -179,20 +208,24 @@ export function CopyEducationPage() {
                     desc: 'Bạn có thể xem real-time P/L, tắt copy bất cứ lúc nào, hoặc điều chỉnh cấu hình. Các vị thế đang mở vẫn theo provider cho đến khi đóng.',
                     color: c.primary,
                   },
-                ].map(item => {
+                ].map((item) => {
                   const Icon = item.icon;
                   return (
                     <div key={item.step} className="flex gap-3">
-                      <div 
+                      <div
                         className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
                         style={{ background: item.color + '15' }}
                       >
-                        <span style={{ color: item.color, fontSize: 14, fontWeight: 700 }}>{item.step}</span>
+                        <span style={{ color: item.color, fontSize: 14, fontWeight: 700 }}>
+                          {item.step}
+                        </span>
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
                           <Icon size={14} color={c.text1} />
-                          <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>{item.title}</p>
+                          <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
+                            {item.title}
+                          </p>
                         </div>
                         <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>{item.desc}</p>
                       </div>
@@ -207,7 +240,7 @@ export function CopyEducationPage() {
               <h3 style={{ color: c.text1, fontSize: 15, fontWeight: 700, marginBottom: 12 }}>
                 Các chế độ sao chép
               </h3>
-              
+
               <div className="space-y-3">
                 {[
                   {
@@ -231,8 +264,12 @@ export function CopyEducationPage() {
                     cons: 'Phức tạp hơn, kết quả khác xa provider',
                     color: '#F59E0B',
                   },
-                ].map(item => (
-                  <div key={item.mode} className="p-3 rounded-xl" style={{ background: c.surface2, border: `1px solid ${c.border}` }}>
+                ].map((item) => (
+                  <div
+                    key={item.mode}
+                    className="p-3 rounded-xl"
+                    style={{ background: c.surface2, border: `1px solid ${c.border}` }}
+                  >
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-2 h-2 rounded-full" style={{ background: item.color }} />
                       <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>{item.mode}</p>
@@ -260,30 +297,30 @@ export function CopyEducationPage() {
               <h3 style={{ color: c.text1, fontSize: 15, fontWeight: 700, marginBottom: 12 }}>
                 Khái niệm quan trọng
               </h3>
-              
+
               <div className="space-y-2">
                 {[
-                  { 
-                    term: 'Slippage', 
+                  {
+                    term: 'Slippage',
                     def: 'Chênh lệch giá giữa lệnh của provider và lệnh của bạn. Thường 0.05-0.2%. Trong thị trường biến động mạnh có thể lên 0.5-1%.',
                     icon: TrendingDown,
                   },
-                  { 
-                    term: 'High-Water Mark', 
+                  {
+                    term: 'High-Water Mark',
                     def: 'Provider chỉ nhận performance fee trên profit mới (vượt đỉnh cũ). Nếu tài khoản $10k → $12k → $11k → $13k, fee chỉ tính trên $1k cuối.',
                     icon: TrendingUp,
                   },
-                  { 
-                    term: 'Position Sizing', 
+                  {
+                    term: 'Position Sizing',
                     def: 'Cách tính kích thước vị thế sao chép. Mirror = tỷ lệ %, Fixed = số tiền cố định, Smart = dynamic dựa trên risk.',
                     icon: Target,
                   },
-                  { 
-                    term: 'Execution Delay', 
+                  {
+                    term: 'Execution Delay',
                     def: 'Thời gian từ khi provider mở lệnh đến khi lệnh của bạn execute. Thường 0.5-3 giây. Delay cao → slippage cao.',
                     icon: Clock,
                   },
-                ].map(item => {
+                ].map((item) => {
                   const Icon = item.icon;
                   return (
                     <div key={item.term} className="flex gap-2">
@@ -308,7 +345,7 @@ export function CopyEducationPage() {
                 { id: 'profit', label: 'Lời', icon: TrendingUp, color: '#10B981' },
                 { id: 'loss', label: 'Lỗ', icon: TrendingDown, color: '#EF4444' },
                 { id: 'slippage', label: 'Slippage', icon: Activity, color: '#F59E0B' },
-              ].map(s => {
+              ].map((s) => {
                 const Icon = s.icon;
                 const isActive = selectedScenario === s.id;
                 return (
@@ -322,11 +359,13 @@ export function CopyEducationPage() {
                     }}
                   >
                     <Icon size={20} color={isActive ? s.color : c.text3} />
-                    <span style={{ 
-                      color: isActive ? s.color : c.text2, 
-                      fontSize: 12, 
-                      fontWeight: isActive ? 600 : 500 
-                    }}>
+                    <span
+                      style={{
+                        color: isActive ? s.color : c.text2,
+                        fontSize: 12,
+                        fontWeight: isActive ? 600 : 500,
+                      }}
+                    >
                       {s.label}
                     </span>
                   </button>
@@ -338,11 +377,12 @@ export function CopyEducationPage() {
             <TrCard className="p-4">
               <div className="flex items-center justify-between mb-3">
                 <h3 style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>
-                  Kịch bản: {
-                    selectedScenario === 'profit' ? 'Provider lời 30%' :
-                    selectedScenario === 'loss' ? 'Provider lỗ 24%' :
-                    'Slippage impact 10%'
-                  }
+                  Kịch bản:{' '}
+                  {selectedScenario === 'profit'
+                    ? 'Provider lời 30%'
+                    : selectedScenario === 'loss'
+                      ? 'Provider lỗ 24%'
+                      : 'Slippage impact 10%'}
                 </h3>
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-1">
@@ -361,26 +401,26 @@ export function CopyEducationPage() {
                   <AreaChart data={scenarioData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
                     <defs key="gradient-defs">
                       <linearGradient id="provider-grad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={c.primary} stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor={c.primary} stopOpacity={0}/>
+                        <stop offset="5%" stopColor={c.primary} stopOpacity={0.3} />
+                        <stop offset="95%" stopColor={c.primary} stopOpacity={0} />
                       </linearGradient>
                       <linearGradient id="you-grad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#F59E0B" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#F59E0B" stopOpacity={0}/>
+                        <stop offset="5%" stopColor="#F59E0B" stopOpacity={0.3} />
+                        <stop offset="95%" stopColor="#F59E0B" stopOpacity={0} />
                       </linearGradient>
                     </defs>
                     <CartesianGrid key="grid" strokeDasharray="3 3" stroke={c.border} />
-                    <XAxis 
+                    <XAxis
                       key="x-axis"
-                      dataKey="label" 
+                      dataKey="label"
                       tick={{ fill: c.text3, fontSize: 9 }}
                       stroke={c.border}
                     />
-                    <YAxis 
+                    <YAxis
                       key="y-axis"
                       tick={{ fill: c.text3, fontSize: 9 }}
                       stroke={c.border}
-                      tickFormatter={(val) => `$${(val/1000).toFixed(0)}k`}
+                      tickFormatter={(val) => `$${(val / 1000).toFixed(0)}k`}
                     />
                     <Tooltip
                       key="tooltip"
@@ -391,25 +431,25 @@ export function CopyEducationPage() {
                         fontSize: 11,
                       }}
                       formatter={(value: any, name: string) => [
-                        `$${value.toFixed(0)}`, 
-                        name === 'provider' ? 'Provider' : 'Bạn'
+                        `$${value.toFixed(0)}`,
+                        name === 'provider' ? 'Provider' : 'Bạn',
                       ]}
                     />
-                    <Area 
+                    <Area
                       key="area-provider"
-                      type="monotone" 
-                      dataKey="provider" 
-                      stroke={c.primary} 
+                      type="monotone"
+                      dataKey="provider"
+                      stroke={c.primary}
                       strokeWidth={2}
-                      fill="url(#provider-grad)" 
+                      fill="url(#provider-grad)"
                     />
-                    <Area 
+                    <Area
                       key="area-you"
-                      type="monotone" 
-                      dataKey="you" 
-                      stroke="#F59E0B" 
+                      type="monotone"
+                      dataKey="you"
+                      stroke="#F59E0B"
                       strokeWidth={2}
-                      fill="url(#you-grad)" 
+                      fill="url(#you-grad)"
                     />
                   </AreaChart>
                 </ResponsiveContainer>
@@ -419,46 +459,62 @@ export function CopyEducationPage() {
               <div className="grid grid-cols-3 gap-3 mb-3">
                 <div className="text-center p-2 rounded-lg" style={{ background: c.surface2 }}>
                   <p style={{ color: c.text3, fontSize: 10, marginBottom: 1 }}>Provider</p>
-                  <p style={{ 
-                    color: selectedScenario === 'loss' ? '#EF4444' : '#10B981', 
-                    fontSize: 16, 
-                    fontWeight: 700 
-                  }}>
+                  <p
+                    style={{
+                      color: selectedScenario === 'loss' ? '#EF4444' : '#10B981',
+                      fontSize: 16,
+                      fontWeight: 700,
+                    }}
+                  >
                     ${finalProvider.toFixed(0)}
                   </p>
                 </div>
                 <div className="text-center p-2 rounded-lg" style={{ background: c.surface2 }}>
                   <p style={{ color: c.text3, fontSize: 10, marginBottom: 1 }}>Bạn</p>
-                  <p style={{ 
-                    color: selectedScenario === 'loss' ? '#EF4444' : '#10B981', 
-                    fontSize: 16, 
-                    fontWeight: 700 
-                  }}>
+                  <p
+                    style={{
+                      color: selectedScenario === 'loss' ? '#EF4444' : '#10B981',
+                      fontSize: 16,
+                      fontWeight: 700,
+                    }}
+                  >
                     ${finalYou.toFixed(0)}
                   </p>
                 </div>
                 <div className="text-center p-2 rounded-lg" style={{ background: c.surface2 }}>
                   <p style={{ color: c.text3, fontSize: 10, marginBottom: 1 }}>Gap</p>
-                  <p style={{ color: '#EF4444', fontSize: 16, fontWeight: 700 }}>
-                    -{gapPercent}%
-                  </p>
+                  <p style={{ color: '#EF4444', fontSize: 16, fontWeight: 700 }}>-{gapPercent}%</p>
                 </div>
               </div>
 
               {/* Explanation */}
-              <div className="p-3 rounded-xl" style={{ background: c.warningBg, border: `1px solid ${c.warningBorder}` }}>
+              <div
+                className="p-3 rounded-xl"
+                style={{ background: c.warningBg, border: `1px solid ${c.warningBorder}` }}
+              >
                 <p style={{ color: c.warningText, fontSize: 11, lineHeight: 1.5 }}>
                   {selectedScenario === 'profit' && (
-                    <>Provider lời 30%, nhưng bạn chỉ lời ~22% do phí (platform + performance + trading) và slippage. 
-                    <strong> Gap ~8% là chi phí thực tế của Copy Trading.</strong></>
+                    <>
+                      Provider lời 30%, nhưng bạn chỉ lời ~22% do phí (platform + performance +
+                      trading) và slippage.
+                      <strong> Gap ~8% là chi phí thực tế của Copy Trading.</strong>
+                    </>
                   )}
                   {selectedScenario === 'loss' && (
-                    <>Provider lỗ 24%, bạn lỗ ~25.5% do slippage làm kết quả tệ hơn. 
-                    <strong> Trong thị trường xấu, bạn có thể lỗ nhiều hơn provider.</strong></>
+                    <>
+                      Provider lỗ 24%, bạn lỗ ~25.5% do slippage làm kết quả tệ hơn.
+                      <strong> Trong thị trường xấu, bạn có thể lỗ nhiều hơn provider.</strong>
+                    </>
                   )}
                   {selectedScenario === 'slippage' && (
-                    <>Slippage 10% có nghĩa là nếu provider lời $1500, bạn chỉ lời $1350 (~$150 mất do execution delay). 
-                    <strong> Slippage cao trong thị trường biến động hoặc provider trade quá nhanh.</strong></>
+                    <>
+                      Slippage 10% có nghĩa là nếu provider lời $1500, bạn chỉ lời $1350 (~$150 mất
+                      do execution delay).
+                      <strong>
+                        {' '}
+                        Slippage cao trong thị trường biến động hoặc provider trade quá nhanh.
+                      </strong>
+                    </>
                   )}
                 </p>
               </div>
@@ -469,7 +525,7 @@ export function CopyEducationPage() {
               <h3 style={{ color: c.text1, fontSize: 15, fontWeight: 700, marginBottom: 12 }}>
                 Kịch bản thực tế
               </h3>
-              
+
               <div className="space-y-3">
                 {[
                   {
@@ -497,17 +553,25 @@ export function CopyEducationPage() {
                     color: '#EF4444',
                   },
                 ].map((scenario, idx) => (
-                  <div key={idx} className="p-3 rounded-xl" style={{ background: c.surface2, border: `1px solid ${c.border}` }}>
+                  <div
+                    key={idx}
+                    className="p-3 rounded-xl"
+                    style={{ background: c.surface2, border: `1px solid ${c.border}` }}
+                  >
                     <div className="flex items-start gap-2 mb-2">
                       <AlertTriangle size={14} color={scenario.color} className="shrink-0 mt-0.5" />
-                      <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>{scenario.title}</p>
+                      <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
+                        {scenario.title}
+                      </p>
                     </div>
                     <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.4, marginBottom: 2 }}>
                       {scenario.desc}
                     </p>
                     <div className="flex items-center gap-1">
                       <span style={{ color: c.text3, fontSize: 10 }}>Impact:</span>
-                      <span style={{ color: scenario.color, fontSize: 10, fontWeight: 600 }}>{scenario.impact}</span>
+                      <span style={{ color: scenario.color, fontSize: 10, fontWeight: 600 }}>
+                        {scenario.impact}
+                      </span>
                     </div>
                   </div>
                 ))}
@@ -523,10 +587,12 @@ export function CopyEducationPage() {
               <h3 style={{ color: c.text1, fontSize: 15, fontWeight: 700, marginBottom: 12 }}>
                 Máy tính phí
               </h3>
-              
+
               <div className="space-y-3 mb-4">
                 <div>
-                  <label style={{ color: c.text2, fontSize: 11, display: 'block', marginBottom: 4 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 11, display: 'block', marginBottom: 4 }}
+                  >
                     Số vốn copy (USD)
                   </label>
                   <input
@@ -542,9 +608,11 @@ export function CopyEducationPage() {
                     }}
                   />
                 </div>
-                
+
                 <div>
-                  <label style={{ color: c.text2, fontSize: 11, display: 'block', marginBottom: 4 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 11, display: 'block', marginBottom: 4 }}
+                  >
                     Lợi nhuận dự kiến (%)
                   </label>
                   <input
@@ -560,9 +628,11 @@ export function CopyEducationPage() {
                     }}
                   />
                 </div>
-                
+
                 <div>
-                  <label style={{ color: c.text2, fontSize: 11, display: 'block', marginBottom: 4 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 11, display: 'block', marginBottom: 4 }}
+                  >
                     Số lượng trades (30 ngày)
                   </label>
                   <input
@@ -584,34 +654,52 @@ export function CopyEducationPage() {
               <div className="p-4 rounded-xl" style={{ background: c.surface2 }}>
                 <div className="flex justify-between items-center mb-2">
                   <span style={{ color: c.text3, fontSize: 11 }}>Platform fee (0.1%)</span>
-                  <span style={{ color: c.text2, fontSize: 12, fontWeight: 600 }}>${platformFee.toFixed(2)}</span>
+                  <span style={{ color: c.text2, fontSize: 12, fontWeight: 600 }}>
+                    ${platformFee.toFixed(2)}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center mb-2">
-                  <span style={{ color: c.text3, fontSize: 11 }}>Performance fee (10% of profit)</span>
-                  <span style={{ color: c.text2, fontSize: 12, fontWeight: 600 }}>${performanceFee.toFixed(2)}</span>
+                  <span style={{ color: c.text3, fontSize: 11 }}>
+                    Performance fee (10% of profit)
+                  </span>
+                  <span style={{ color: c.text2, fontSize: 12, fontWeight: 600 }}>
+                    ${performanceFee.toFixed(2)}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center mb-3">
                   <span style={{ color: c.text3, fontSize: 11 }}>Trading fees (~0.25%)</span>
-                  <span style={{ color: c.text2, fontSize: 12, fontWeight: 600 }}>${tradingFees.toFixed(2)}</span>
+                  <span style={{ color: c.text2, fontSize: 12, fontWeight: 600 }}>
+                    ${tradingFees.toFixed(2)}
+                  </span>
                 </div>
                 <div className="h-px mb-3" style={{ background: c.border }} />
                 <div className="flex justify-between items-center mb-2">
                   <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>Tổng phí</span>
-                  <span style={{ color: '#EF4444', fontSize: 14, fontWeight: 700 }}>${totalFees.toFixed(2)}</span>
+                  <span style={{ color: '#EF4444', fontSize: 14, fontWeight: 700 }}>
+                    ${totalFees.toFixed(2)}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center mb-2">
-                  <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>Lợi nhuận gross</span>
-                  <span style={{ color: '#10B981', fontSize: 14, fontWeight: 700 }}>${grossProfit.toFixed(2)}</span>
+                  <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
+                    Lợi nhuận gross
+                  </span>
+                  <span style={{ color: '#10B981', fontSize: 14, fontWeight: 700 }}>
+                    ${grossProfit.toFixed(2)}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>Lợi nhuận NET</span>
-                  <span style={{ color: '#10B981', fontSize: 16, fontWeight: 700 }}>${netProfit.toFixed(2)}</span>
+                  <span style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>
+                    Lợi nhuận NET
+                  </span>
+                  <span style={{ color: '#10B981', fontSize: 16, fontWeight: 700 }}>
+                    ${netProfit.toFixed(2)}
+                  </span>
                 </div>
               </div>
 
               <div className="mt-3 p-3 rounded-xl" style={{ background: c.primary + '15' }}>
                 <p style={{ color: c.primary, fontSize: 11, lineHeight: 1.4 }}>
-                  <strong>Phí thực tế: {effectiveFeePercent.toFixed(1)}%</strong> của lợi nhuận. 
+                  <strong>Phí thực tế: {effectiveFeePercent.toFixed(1)}%</strong> của lợi nhuận.
                   Chưa tính slippage (thường thêm 0.5-2%).
                 </p>
               </div>
@@ -622,7 +710,7 @@ export function CopyEducationPage() {
               <h3 style={{ color: c.text1, fontSize: 15, fontWeight: 700, marginBottom: 12 }}>
                 Chi tiết cấu trúc phí
               </h3>
-              
+
               <div className="space-y-3">
                 {[
                   {
@@ -649,9 +737,11 @@ export function CopyEducationPage() {
                     example: 'Provider mua $100, bạn mua $100.50 → slippage $0.50',
                     note: 'Cao trong thị trường biến động',
                   },
-                ].map(item => (
+                ].map((item) => (
                   <div key={item.fee} className="p-3 rounded-xl" style={{ background: c.surface2 }}>
-                    <p style={{ color: c.text1, fontSize: 12, fontWeight: 600, marginBottom: 2 }}>{item.fee}</p>
+                    <p style={{ color: c.text1, fontSize: 12, fontWeight: 600, marginBottom: 2 }}>
+                      {item.fee}
+                    </p>
                     <div className="space-y-1">
                       <div className="flex gap-2">
                         <span style={{ color: c.text3, fontSize: 10 }}>Khi nào:</span>
@@ -680,7 +770,7 @@ export function CopyEducationPage() {
               <h3 style={{ color: c.text1, fontSize: 15, fontWeight: 700, marginBottom: 12 }}>
                 10 sai lầm phổ biến
               </h3>
-              
+
               <div className="space-y-3">
                 {[
                   {
@@ -744,21 +834,48 @@ export function CopyEducationPage() {
                     severity: 'low',
                   },
                 ].map((item, idx) => {
-                  const severityColor = item.severity === 'critical' ? '#EF4444' : item.severity === 'high' ? '#F59E0B' : '#6B7280';
+                  const severityColor =
+                    item.severity === 'critical'
+                      ? '#EF4444'
+                      : item.severity === 'high'
+                        ? '#F59E0B'
+                        : '#6B7280';
                   return (
-                    <div key={idx} className="p-3 rounded-xl" style={{ background: c.surface2, border: `1px solid ${c.border}` }}>
+                    <div
+                      key={idx}
+                      className="p-3 rounded-xl"
+                      style={{ background: c.surface2, border: `1px solid ${c.border}` }}
+                    >
                       <div className="flex items-start gap-2 mb-2">
                         <div className="shrink-0 mt-0.5">
-                          <div className="w-5 h-5 rounded-full flex items-center justify-center"
-                            style={{ background: severityColor + '22' }}>
-                            <span style={{ color: severityColor, fontSize: 10, fontWeight: 700 }}>{idx + 1}</span>
+                          <div
+                            className="w-5 h-5 rounded-full flex items-center justify-center"
+                            style={{ background: severityColor + '22' }}
+                          >
+                            <span style={{ color: severityColor, fontSize: 10, fontWeight: 700 }}>
+                              {idx + 1}
+                            </span>
                           </div>
                         </div>
                         <div className="flex-1">
-                          <p style={{ color: c.text1, fontSize: 12, fontWeight: 600, marginBottom: 1 }}>
+                          <p
+                            style={{
+                              color: c.text1,
+                              fontSize: 12,
+                              fontWeight: 600,
+                              marginBottom: 1,
+                            }}
+                          >
                             {item.mistake}
                           </p>
-                          <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.4, marginBottom: 2 }}>
+                          <p
+                            style={{
+                              color: c.text3,
+                              fontSize: 10,
+                              lineHeight: 1.4,
+                              marginBottom: 2,
+                            }}
+                          >
                             <strong style={{ color: c.text2 }}>Tại sao sai:</strong> {item.why}
                           </p>
                           <div className="flex items-start gap-1">
@@ -784,7 +901,7 @@ export function CopyEducationPage() {
               <h3 style={{ color: c.text1, fontSize: 15, fontWeight: 700, marginBottom: 12 }}>
                 Khung pháp lý
               </h3>
-              
+
               <div className="space-y-3">
                 {[
                   {
@@ -817,18 +934,29 @@ export function CopyEducationPage() {
                       'Investor compensation schemes (nếu có)',
                     ],
                   },
-                ].map(item => (
-                  <div key={item.regulation} className="p-3 rounded-xl" style={{ background: c.surface2 }}>
+                ].map((item) => (
+                  <div
+                    key={item.regulation}
+                    className="p-3 rounded-xl"
+                    style={{ background: c.surface2 }}
+                  >
                     <div className="flex items-center gap-2 mb-2">
                       <Shield size={14} color={c.primary} />
-                      <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>{item.regulation}</p>
+                      <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
+                        {item.regulation}
+                      </p>
                     </div>
                     <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>{item.applies}</p>
                     <ul className="space-y-1">
                       {item.requirements.map((req, idx) => (
                         <li key={idx} className="flex items-start gap-1.5">
-                          <div className="w-1 h-1 rounded-full mt-1.5" style={{ background: c.primary }} />
-                          <span style={{ color: c.text2, fontSize: 10, lineHeight: 1.4 }}>{req}</span>
+                          <div
+                            className="w-1 h-1 rounded-full mt-1.5"
+                            style={{ background: c.primary }}
+                          />
+                          <span style={{ color: c.text2, fontSize: 10, lineHeight: 1.4 }}>
+                            {req}
+                          </span>
                         </li>
                       ))}
                     </ul>
@@ -842,7 +970,7 @@ export function CopyEducationPage() {
               <h3 style={{ color: c.text1, fontSize: 15, fontWeight: 700, marginBottom: 12 }}>
                 Quyền lợi của bạn
               </h3>
-              
+
               <div className="space-y-2">
                 {[
                   'Được đánh giá appropriateness trước khi copy',
@@ -863,12 +991,16 @@ export function CopyEducationPage() {
             </TrCard>
 
             {/* Disclaimers */}
-            <div className="p-4 rounded-2xl" style={{ background: c.surface2, border: `1px solid ${c.border}` }}>
+            <div
+              className="p-4 rounded-2xl"
+              style={{ background: c.surface2, border: `1px solid ${c.border}` }}
+            >
               <p style={{ color: c.text2, fontSize: 10, lineHeight: 1.6, textAlign: 'center' }}>
-                <strong style={{ color: c.text1 }}>Investment Disclaimer:</strong> Copy Trading không phải là lời khuyên đầu tư. 
-                Provider không phải investment advisor được cấp phép. Hiệu suất quá khứ không đảm bảo kết quả tương lai. 
-                Bạn có thể mất toàn bộ vốn đầu tư. Chỉ đầu tư số tiền bạn có thể chấp nhận mất. 
-                Platform không chịu trách nhiệm cho kết quả copy trading của bạn.
+                <strong style={{ color: c.text1 }}>Investment Disclaimer:</strong> Copy Trading
+                không phải là lời khuyên đầu tư. Provider không phải investment advisor được cấp
+                phép. Hiệu suất quá khứ không đảm bảo kết quả tương lai. Bạn có thể mất toàn bộ vốn
+                đầu tư. Chỉ đầu tư số tiền bạn có thể chấp nhận mất. Platform không chịu trách nhiệm
+                cho kết quả copy trading của bạn.
               </p>
             </div>
           </div>

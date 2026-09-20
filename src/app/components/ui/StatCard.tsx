@@ -27,34 +27,34 @@ export type StatSize = 'sm' | 'md' | 'lg';
 export interface StatCardProps {
   /** Label text */
   label: string;
-  
+
   /** Value text (formatted) */
   value: string | number;
-  
+
   /** Optional subtitle/helper text */
   subtitle?: string;
-  
+
   /** Trend indicator */
   trend?: StatTrend;
-  
+
   /** Optional icon */
   icon?: LucideIcon;
-  
+
   /** Size variant */
   size?: StatSize;
-  
+
   /** Click handler (makes card interactive) */
   onClick?: () => void;
-  
+
   /** Loading state */
   loading?: boolean;
-  
+
   /** Custom className */
   className?: string;
-  
+
   /** Custom style */
   style?: React.CSSProperties;
-  
+
   /** Highlight value with color */
   valueColor?: string;
 }
@@ -109,9 +109,12 @@ export function StatCard({
   // Get trend color
   const getTrendColor = (): string => {
     switch (trend) {
-      case 'up': return '#10B981';
-      case 'down': return '#EF4444';
-      default: return c.text2;
+      case 'up':
+        return '#10B981';
+      case 'down':
+        return '#EF4444';
+      default:
+        return c.text2;
     }
   };
 
@@ -141,12 +144,7 @@ export function StatCard({
     >
       {/* Header: Icon + Label */}
       <div className="flex items-center gap-2 mb-1">
-        {Icon && (
-          <Icon
-            size={config.iconSize}
-            color={c.text3}
-          />
-        )}
+        {Icon && <Icon size={config.iconSize} color={c.text3} />}
         <span
           style={{
             color: c.text2,
@@ -214,16 +212,16 @@ export function StatCard({
 export interface StatItemProps {
   /** Label text */
   label: string;
-  
+
   /** Value text */
   value: string | number;
-  
+
   /** Optional trend */
   trend?: StatTrend;
-  
+
   /** Compact mode */
   compact?: boolean;
-  
+
   /** Custom className */
   className?: string;
 }
@@ -232,20 +230,17 @@ export interface StatItemProps {
  * Inline stat item (label: value format)
  * Good for lists and compact displays
  */
-export function StatItem({
-  label,
-  value,
-  trend,
-  compact = false,
-  className = '',
-}: StatItemProps) {
+export function StatItem({ label, value, trend, compact = false, className = '' }: StatItemProps) {
   const c = useThemeColors();
 
   const getTrendColor = (): string => {
     switch (trend) {
-      case 'up': return '#10B981';
-      case 'down': return '#EF4444';
-      default: return c.text1;
+      case 'up':
+        return '#10B981';
+      case 'down':
+        return '#EF4444';
+      default:
+        return c.text1;
     }
   };
 
@@ -274,13 +269,13 @@ export function StatItem({
         >
           {value}
         </span>
-        {trend && trend !== 'neutral' && (
-          trend === 'up' ? (
+        {trend &&
+          trend !== 'neutral' &&
+          (trend === 'up' ? (
             <TrendingUp size={compact ? 12 : 14} color={getTrendColor()} />
           ) : (
             <TrendingDown size={compact ? 12 : 14} color={getTrendColor()} />
-          )
-        )}
+          ))}
       </div>
     </div>
   );
@@ -291,13 +286,13 @@ export function StatItem({
 export interface StatGridProps {
   /** Child StatCard components */
   children: React.ReactNode;
-  
+
   /** Number of columns */
   columns?: 2 | 3 | 4;
-  
+
   /** Gap between cards */
   gap?: number;
-  
+
   /** Custom className */
   className?: string;
 }
@@ -305,12 +300,7 @@ export interface StatGridProps {
 /**
  * Grid layout for StatCards
  */
-export function StatGrid({
-  children,
-  columns = 2,
-  gap = 12,
-  className = '',
-}: StatGridProps) {
+export function StatGrid({ children, columns = 2, gap = 12, className = '' }: StatGridProps) {
   return (
     <div
       className={`grid ${className}`}
@@ -329,7 +319,7 @@ export function StatGrid({
 export interface PercentageStatProps extends Omit<StatCardProps, 'trend'> {
   /** Percentage value (positive or negative) */
   percentage: number;
-  
+
   /** Auto-detect trend from percentage */
   autoTrend?: boolean;
 }
@@ -337,26 +327,16 @@ export interface PercentageStatProps extends Omit<StatCardProps, 'trend'> {
 /**
  * StatCard with automatic trend based on percentage
  */
-export function PercentageStat({
-  percentage,
-  autoTrend = true,
-  ...props
-}: PercentageStatProps) {
+export function PercentageStat({ percentage, autoTrend = true, ...props }: PercentageStatProps) {
   const trend: StatTrend = autoTrend
     ? percentage > 0
       ? 'up'
       : percentage < 0
-      ? 'down'
-      : 'neutral'
+        ? 'down'
+        : 'neutral'
     : 'neutral';
 
   const formattedValue = `${percentage > 0 ? '+' : ''}${percentage.toFixed(2)}%`;
 
-  return (
-    <StatCard
-      {...props}
-      value={formattedValue}
-      trend={trend}
-    />
-  );
+  return <StatCard {...props} value={formattedValue} trend={trend} />;
 }

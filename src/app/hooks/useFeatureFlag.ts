@@ -1,9 +1,9 @@
 /**
  * useFeatureFlag Hook
- * 
+ *
  * React hook for accessing feature flags.
  * Provides convenient methods for checking flags and getting variants.
- * 
+ *
  * @module hooks/useFeatureFlag
  * @version 2.0 (Phase 2 - Sprint 2)
  */
@@ -21,7 +21,7 @@ import { UserContext, DCAFeatureFlag, DCAABTestFlag } from '../types/featureFlag
  */
 export function useFeatureFlag(
   flagKey: DCAFeatureFlag | DCAABTestFlag | string,
-  userContext?: UserContext
+  userContext?: UserContext,
 ): boolean {
   // Subscribe to flag changes (for future real-time updates)
   const isEnabled = useSyncExternalStore(
@@ -30,7 +30,7 @@ export function useFeatureFlag(
       return () => {};
     },
     () => featureFlags.isEnabled(flagKey, userContext),
-    () => featureFlags.isEnabled(flagKey, userContext)
+    () => featureFlags.isEnabled(flagKey, userContext),
   );
 
   return isEnabled;
@@ -42,14 +42,14 @@ export function useFeatureFlag(
 export function useFeatureFlagValue<T>(
   flagKey: string,
   defaultValue: T,
-  userContext?: UserContext
+  userContext?: UserContext,
 ): T {
   const value = useSyncExternalStore(
     (callback) => {
       return () => {};
     },
     () => featureFlags.getValue(flagKey, defaultValue, userContext),
-    () => featureFlags.getValue(flagKey, defaultValue, userContext)
+    () => featureFlags.getValue(flagKey, defaultValue, userContext),
   );
 
   return value;
@@ -60,14 +60,14 @@ export function useFeatureFlagValue<T>(
  */
 export function useABTestVariant(
   flagKey: DCAABTestFlag | string,
-  userContext?: UserContext
+  userContext?: UserContext,
 ): string {
   const variant = useSyncExternalStore(
     (callback) => {
       return () => {};
     },
     () => featureFlags.getVariant(flagKey, userContext),
-    () => featureFlags.getVariant(flagKey, userContext)
+    () => featureFlags.getVariant(flagKey, userContext),
   );
 
   return variant;
@@ -78,7 +78,7 @@ export function useABTestVariant(
  */
 export function useFeatureFlags(
   flagKeys: (DCAFeatureFlag | DCAABTestFlag | string)[],
-  userContext?: UserContext
+  userContext?: UserContext,
 ): Record<string, boolean> {
   return useMemo(() => {
     const flags: Record<string, boolean> = {};
@@ -160,11 +160,11 @@ export function useDCADeepLinking(): boolean {
  */
 export function useDCAShortcutVariant(): 'full' | 'compact' | 'hidden' {
   const variant = useABTestVariant(DCAABTestFlag.DCA_SHORTCUT_VARIANT);
-  
+
   if (variant === 'full' || variant === 'compact' || variant === 'hidden') {
     return variant;
   }
-  
+
   return 'full'; // Default fallback
 }
 
@@ -214,14 +214,16 @@ export function useAllDCAFlags() {
 /**
  * Conditional render based on feature flag
  */
-export function useConditionalRender(flagKey: string): (children: React.ReactNode) => React.ReactNode | null {
+export function useConditionalRender(
+  flagKey: string,
+): (children: React.ReactNode) => React.ReactNode | null {
   const isEnabled = useFeatureFlag(flagKey);
-  
+
   return useCallback(
     (children: React.ReactNode) => {
       return isEnabled ? children : null;
     },
-    [isEnabled]
+    [isEnabled],
   );
 }
 
@@ -233,12 +235,12 @@ export function useVariantRender(flagKey: string): {
   renderVariant: (variants: Record<string, React.ReactNode>) => React.ReactNode;
 } {
   const variant = useABTestVariant(flagKey);
-  
+
   const renderVariant = useCallback(
     (variants: Record<string, React.ReactNode>) => {
       return variants[variant] || variants['default'] || null;
     },
-    [variant]
+    [variant],
   );
 
   return { variant, renderVariant };

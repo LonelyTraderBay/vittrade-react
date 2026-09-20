@@ -2,19 +2,19 @@
  * ══════════════════════════════════════════════════════════════
  *  ARMIntegrationStatusPage — Phase 4 Sprint 1 Day 5-6
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Real-time ARM (Approved Reporting Mechanism) connection health
  * - Latency monitoring & SLA tracking
  * - Failover status & redundancy checks
  * - Connection diagnostics & troubleshooting
- * 
+ *
  * Compliance:
  * - ARM providers must be approved by regulator
  * - Redundancy required for business continuity
  * - Latency monitoring for SLA compliance
  * - Automated failover for high availability
- * 
+ *
  * Features:
  * - Live connection status (green/amber/red)
  * - Latency heatmap (real-time)
@@ -22,7 +22,7 @@
  * - Incident history
  * - Test connection button
  * - Automatic health checks
- * 
+ *
  * Guidelines:
  * - PageLayout pattern
  * - Real-time status indicators
@@ -33,9 +33,23 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Shield, Activity, Zap, CheckCircle, AlertTriangle, XCircle,
-  RefreshCw, TrendingUp, Clock, Server, Database, Wifi,
-  ChevronRight, Info, Settings, ExternalLink, Target
+  Shield,
+  Activity,
+  Zap,
+  CheckCircle,
+  AlertTriangle,
+  XCircle,
+  RefreshCw,
+  TrendingUp,
+  Clock,
+  Server,
+  Database,
+  Wifi,
+  ChevronRight,
+  Info,
+  Settings,
+  ExternalLink,
+  Target,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -44,8 +58,13 @@ import { useThemeColors } from '../../hooks/useThemeColors';
 import { useRoutePrefix } from '../../hooks/useRoutePrefix';
 import { TrCard } from '../../components/ui/TrCard';
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
 } from 'recharts';
 
 type ConnectionStatus = 'healthy' | 'degraded' | 'down';
@@ -104,7 +123,7 @@ const ARM_CONNECTIONS: ARMConnection[] = [
     provider: 'Bloomberg',
     region: 'US (New York)',
     status: 'degraded',
-    uptime: 98.50,
+    uptime: 98.5,
     avgLatency: 15,
     currentLatency: 45,
     lastCheck: '2026-03-08T10:44:50Z',
@@ -140,21 +159,20 @@ export function ARMIntegrationStatusPage() {
 
   return (
     <PageLayout>
-      <Header
-        title="ARM Integration"
-        subtitle="Connection Health · Monitoring"
-        back
-      />
+      <Header title="ARM Integration" subtitle="Connection Health · Monitoring" back />
 
       <PageContent gap="relaxed">
         {/* Overall Status */}
-        <div className="rounded-2xl p-3 flex gap-2.5" style={{ background: c.successBg, border: `1px solid ${c.successBorder}` }}>
-          <CheckCircle size={16} color={c.successText} className="shrink-0 mt-0.5" />
+        <div
+          className="rounded-2xl p-3 flex gap-2.5"
+          style={{ background: c.buyAlpha10, border: `1px solid ${c.buyAlpha20}` }}
+        >
+          <CheckCircle size={16} color={c.success} className="shrink-0 mt-0.5" />
           <div>
-            <p style={{ color: c.successText, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
+            <p style={{ color: c.success, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
               All Systems Operational
             </p>
-            <p style={{ color: c.successText, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
+            <p style={{ color: c.success, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
               3/3 ARM providers online. Failover ready. Average uptime: 99.5%.
             </p>
           </div>
@@ -172,8 +190,10 @@ export function ARMIntegrationStatusPage() {
                 <TrCard key={conn.id} className="p-4">
                   <div className="flex items-start gap-3 mb-3">
                     {/* Status Icon */}
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ background: statusConfig.color + '15' }}>
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                      style={{ background: statusConfig.color + '15' }}
+                    >
                       <StatusIcon size={22} color={statusConfig.color} />
                     </div>
 
@@ -184,8 +204,10 @@ export function ARMIntegrationStatusPage() {
                           {conn.provider}
                         </span>
                         {conn.isPrimary && (
-                          <span className="px-2 py-0.5 rounded-md text-[9px] font-semibold"
-                            style={{ background: c.primary + '15', color: c.primary }}>
+                          <span
+                            className="px-2 py-0.5 rounded-md text-[9px] font-semibold"
+                            style={{ background: c.primary + '15', color: c.primary }}
+                          >
                             PRIMARY
                           </span>
                         )}
@@ -194,8 +216,10 @@ export function ARMIntegrationStatusPage() {
                     </div>
 
                     {/* Status Badge */}
-                    <span className="px-2.5 py-1 rounded-lg text-[11px] font-semibold"
-                      style={{ background: statusConfig.color + '15', color: statusConfig.color }}>
+                    <span
+                      className="px-2.5 py-1 rounded-lg text-[11px] font-semibold"
+                      style={{ background: statusConfig.color + '15', color: statusConfig.color }}
+                    >
                       {statusConfig.label}
                     </span>
                   </div>
@@ -216,23 +240,31 @@ export function ARMIntegrationStatusPage() {
                       </p>
                     </div>
 
-                    <div className="rounded-lg p-2" style={{
-                      background: isOverLimit ? '#EF4444' + '15' : c.surface2
-                    }}>
+                    <div
+                      className="rounded-lg p-2"
+                      style={{
+                        background: isOverLimit ? '#EF4444' + '15' : c.surface2,
+                      }}
+                    >
                       <p style={{ color: c.text3, fontSize: 9 }}>Current</p>
-                      <p style={{
-                        color: isOverLimit ? '#EF4444' : c.text1,
-                        fontSize: 16,
-                        fontWeight: 700,
-                        marginTop: 2
-                      }}>
+                      <p
+                        style={{
+                          color: isOverLimit ? '#EF4444' : c.text1,
+                          fontSize: 16,
+                          fontWeight: 700,
+                          marginTop: 2,
+                        }}
+                      >
                         {conn.currentLatency}ms
                       </p>
                     </div>
                   </div>
 
                   {/* Details */}
-                  <div className="space-y-1.5 mb-3 p-2 rounded-lg" style={{ background: c.surface2 }}>
+                  <div
+                    className="space-y-1.5 mb-3 p-2 rounded-lg"
+                    style={{ background: c.surface2 }}
+                  >
                     <div className="flex items-center justify-between">
                       <span style={{ color: c.text3, fontSize: 10 }}>Endpoint:</span>
                       <span style={{ color: c.text2, fontSize: 10, fontFamily: 'monospace' }}>
@@ -247,9 +279,7 @@ export function ARMIntegrationStatusPage() {
                     </div>
                     <div className="flex items-center justify-between">
                       <span style={{ color: c.text3, fontSize: 10 }}>Cert Expiry:</span>
-                      <span style={{ color: c.text2, fontSize: 10 }}>
-                        {conn.certExpiry}
-                      </span>
+                      <span style={{ color: c.text2, fontSize: 10 }}>{conn.certExpiry}</span>
                     </div>
                   </div>
 
@@ -264,7 +294,8 @@ export function ARMIntegrationStatusPage() {
                         color: testing === conn.id ? c.text3 : c.primary,
                         fontSize: 11,
                         fontWeight: 600,
-                      }}>
+                      }}
+                    >
                       {testing === conn.id ? (
                         <>
                           <RefreshCw size={14} className="animate-spin" />
@@ -285,7 +316,8 @@ export function ARMIntegrationStatusPage() {
                         color: c.text2,
                         fontSize: 11,
                         fontWeight: 600,
-                      }}>
+                      }}
+                    >
                       <ExternalLink size={14} />
                       <span>Logs</span>
                     </button>
@@ -343,7 +375,10 @@ export function ARMIntegrationStatusPage() {
               </LineChart>
             </ResponsiveContainer>
 
-            <div className="flex items-center justify-center gap-4 mt-3 pt-3 border-t" style={{ borderColor: c.border }}>
+            <div
+              className="flex items-center justify-center gap-4 mt-3 pt-3 border-t"
+              style={{ borderColor: c.border }}
+            >
               <div className="flex items-center gap-1.5">
                 <div className="w-2 h-2 rounded-full" style={{ background: '#10B981' }} />
                 <span style={{ color: c.text3, fontSize: 10 }}>REGIS-TR</span>
@@ -369,8 +404,14 @@ export function ARMIntegrationStatusPage() {
                   <span style={{ color: c.text2, fontSize: 12 }}>Uptime Target (99.9%)</span>
                   <span style={{ color: '#10B981', fontSize: 14, fontWeight: 700 }}>99.97%</span>
                 </div>
-                <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
-                  <div className="h-full rounded-full" style={{ width: '99.97%', background: '#10B981' }} />
+                <div
+                  className="h-2 rounded-full overflow-hidden"
+                  style={{ background: c.surface2 }}
+                >
+                  <div
+                    className="h-full rounded-full"
+                    style={{ width: '99.97%', background: '#10B981' }}
+                  />
                 </div>
               </div>
 
@@ -379,8 +420,14 @@ export function ARMIntegrationStatusPage() {
                   <span style={{ color: c.text2, fontSize: 12 }}>Latency Target (&lt;100ms)</span>
                   <span style={{ color: '#10B981', fontSize: 14, fontWeight: 700 }}>18ms avg</span>
                 </div>
-                <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
-                  <div className="h-full rounded-full" style={{ width: '18%', background: '#10B981' }} />
+                <div
+                  className="h-2 rounded-full overflow-hidden"
+                  style={{ background: c.surface2 }}
+                >
+                  <div
+                    className="h-full rounded-full"
+                    style={{ width: '18%', background: '#10B981' }}
+                  />
                 </div>
               </div>
 
@@ -389,8 +436,14 @@ export function ARMIntegrationStatusPage() {
                   <span style={{ color: c.text2, fontSize: 12 }}>Failover Readiness</span>
                   <span style={{ color: '#10B981', fontSize: 14, fontWeight: 700 }}>100%</span>
                 </div>
-                <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
-                  <div className="h-full rounded-full" style={{ width: '100%', background: '#10B981' }} />
+                <div
+                  className="h-2 rounded-full overflow-hidden"
+                  style={{ background: c.surface2 }}
+                >
+                  <div
+                    className="h-full rounded-full"
+                    style={{ width: '100%', background: '#10B981' }}
+                  />
                 </div>
               </div>
             </div>
@@ -402,7 +455,8 @@ export function ARMIntegrationStatusPage() {
           <button
             onClick={() => navigate(`${prefix}/trade/copy-trading/transaction-reporting`)}
             className="rounded-xl p-3 flex items-center justify-between transition-all"
-            style={{ background: c.surface2, border: `1px solid ${c.border}` }}>
+            style={{ background: c.surface2, border: `1px solid ${c.border}` }}
+          >
             <div className="flex items-center gap-2">
               <Activity size={16} color={c.primary} />
               <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>Live Queue</span>
@@ -413,7 +467,8 @@ export function ARMIntegrationStatusPage() {
           <button
             onClick={() => navigate(`${prefix}/trade/copy-trading/regulatory-reports-dashboard`)}
             className="rounded-xl p-3 flex items-center justify-between transition-all"
-            style={{ background: c.surface2, border: `1px solid ${c.border}` }}>
+            style={{ background: c.surface2, border: `1px solid ${c.border}` }}
+          >
             <div className="flex items-center gap-2">
               <Shield size={16} color="#10B981" />
               <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>Dashboard</span>

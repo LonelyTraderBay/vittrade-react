@@ -51,10 +51,8 @@ export const TOAST = {
     ORDER_PLACED: (side: 'buy' | 'sell') =>
       `Đã đặt lệnh ${side === 'buy' ? 'MUA' : 'BÁN'} thành công`,
     /** Dynamic: orderId (last 6 chars uppercase) */
-    ORDER_CANCELLED: (orderId: string) =>
-      `Đã hủy lệnh #${orderId.slice(-6).toUpperCase()}`,
-    ORDER_MODIFIED: (orderId: string) =>
-      `Đã sửa lệnh #${orderId.slice(-6).toUpperCase()}`,
+    ORDER_CANCELLED: (orderId: string) => `Đã hủy lệnh #${orderId.slice(-6).toUpperCase()}`,
+    ORDER_MODIFIED: (orderId: string) => `Đã sửa lệnh #${orderId.slice(-6).toUpperCase()}`,
     EXPORT_SUCCESS: 'Đã tạo file xuất dữ liệu',
   },
 
@@ -119,7 +117,8 @@ export const TOAST = {
     ORDER_SUBMITTED: 'Lệnh đã gửi thành công',
     ORDER_CANCELLED: 'Đã hủy lệnh thành công',
     RECEIPT_SHARED: 'Đã sao chép link chi tiết lệnh',
-    ORDER_FILLED_NOTIFICATION: (shares: number, price: string) => `${shares} shares vừa khớp @ $${price}!`,
+    ORDER_FILLED_NOTIFICATION: (shares: number, price: string) =>
+      `${shares} shares vừa khớp @ $${price}!`,
     COMMENT_REPORTED: 'Đã báo cáo bình luận. Chúng tôi sẽ xem xét.',
     USER_BLOCKED: 'Đã chặn người dùng trong mục Predictions',
   },

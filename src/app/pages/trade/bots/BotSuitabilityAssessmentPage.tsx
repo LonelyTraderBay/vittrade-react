@@ -43,7 +43,7 @@ const QUESTIONS: Question[] = [
     category: 'knowledge',
     question: 'Do you understand how Grid Bots work?',
     options: [
-      { id: 'a', text: 'No, I don\'t know what a Grid Bot is', score: 0 },
+      { id: 'a', text: "No, I don't know what a Grid Bot is", score: 0 },
       { id: 'b', text: 'Slightly - I have a basic idea', score: 1 },
       { id: 'c', text: 'Yes - I understand the concept and risks', score: 2 },
       { id: 'd', text: 'Expert - I can explain it and have used it before', score: 3 },
@@ -55,15 +55,20 @@ const QUESTIONS: Question[] = [
     question: 'Do you understand what "slippage" means in trading?',
     options: [
       { id: 'a', text: 'No, never heard of it', score: 0 },
-      { id: 'b', text: 'Vaguely - I\'ve seen the term but not sure what it means', score: 1 },
-      { id: 'c', text: 'Yes - I know it\'s the difference between expected and actual price', score: 2 },
+      { id: 'b', text: "Vaguely - I've seen the term but not sure what it means", score: 1 },
+      {
+        id: 'c',
+        text: "Yes - I know it's the difference between expected and actual price",
+        score: 2,
+      },
       { id: 'd', text: 'Expert - I know how to mitigate slippage', score: 3 },
     ],
   },
   {
     id: 'q5',
     category: 'risk',
-    question: 'What percentage of your total savings/investments are you planning to allocate to trading bots?',
+    question:
+      'What percentage of your total savings/investments are you planning to allocate to trading bots?',
     options: [
       { id: 'a', text: 'More than 50% of my total savings', score: 0 },
       { id: 'b', text: '20-50% of my total savings', score: 1 },
@@ -98,7 +103,7 @@ const QUESTIONS: Question[] = [
     category: 'knowledge',
     question: 'Do you understand the difference between DCA, Grid, and Martingale strategies?',
     options: [
-      { id: 'a', text: 'No, I don\'t know any of them', score: 0 },
+      { id: 'a', text: "No, I don't know any of them", score: 0 },
       { id: 'b', text: 'I know DCA but not the others', score: 1 },
       { id: 'c', text: 'I understand all three conceptually', score: 2 },
       { id: 'd', text: 'Expert - I know when to use each strategy', score: 3 },
@@ -115,12 +120,12 @@ export function BotSuitabilityAssessmentPage() {
 
   const totalQuestions = QUESTIONS.length;
   const progress = (Object.keys(answers).length / totalQuestions) * 100;
-  
+
   const calculateScore = () => {
     let total = 0;
     Object.entries(answers).forEach(([qId, optionId]) => {
-      const question = QUESTIONS.find(q => q.id === qId);
-      const option = question?.options.find(o => o.id === optionId);
+      const question = QUESTIONS.find((q) => q.id === qId);
+      const option = question?.options.find((o) => o.id === optionId);
       total += option?.score || 0;
     });
     return total;
@@ -135,7 +140,8 @@ export function BotSuitabilityAssessmentPage() {
       return {
         status: 'pass',
         title: 'Suitable for Trading Bots',
-        message: 'Based on your responses, you have sufficient knowledge and risk tolerance to use Trading Bots.',
+        message:
+          'Based on your responses, you have sufficient knowledge and risk tolerance to use Trading Bots.',
         color: '#10B981',
         icon: CheckCircle2,
       };
@@ -143,7 +149,8 @@ export function BotSuitabilityAssessmentPage() {
       return {
         status: 'warning',
         title: 'Proceed with Caution',
-        message: 'You have some experience, but we recommend starting with small amounts and simpler strategies like DCA. Avoid high-risk strategies like Martingale.',
+        message:
+          'You have some experience, but we recommend starting with small amounts and simpler strategies like DCA. Avoid high-risk strategies like Martingale.',
         color: '#F59E0B',
         icon: AlertTriangle,
       };
@@ -151,7 +158,8 @@ export function BotSuitabilityAssessmentPage() {
       return {
         status: 'fail',
         title: 'Not Recommended',
-        message: 'Based on your responses, Trading Bots may not be suitable for you at this time. We recommend gaining more trading experience and knowledge before using automated strategies.',
+        message:
+          'Based on your responses, Trading Bots may not be suitable for you at this time. We recommend gaining more trading experience and knowledge before using automated strategies.',
         color: '#EF4444',
         icon: XCircle,
       };
@@ -161,7 +169,7 @@ export function BotSuitabilityAssessmentPage() {
   const handleAnswer = (optionId: string) => {
     const qId = QUESTIONS[currentQ].id;
     setAnswers({ ...answers, [qId]: optionId });
-    
+
     if (currentQ < totalQuestions - 1) {
       setTimeout(() => setCurrentQ(currentQ + 1), 300);
     } else {
@@ -171,13 +179,16 @@ export function BotSuitabilityAssessmentPage() {
 
   const handleComplete = () => {
     const result = getResult();
-    localStorage.setItem('bot_suitability_result', JSON.stringify({
-      score,
-      scorePercent,
-      status: result.status,
-      timestamp: new Date().toISOString(),
-    }));
-    
+    localStorage.setItem(
+      'bot_suitability_result',
+      JSON.stringify({
+        score,
+        scorePercent,
+        status: result.status,
+        timestamp: new Date().toISOString(),
+      }),
+    );
+
     if (result.status === 'pass' || result.status === 'warning') {
       toast.success('Assessment complete - you may proceed');
       navigate('/trade/bots');
@@ -196,16 +207,35 @@ export function BotSuitabilityAssessmentPage() {
         <PageContent grow>
           {/* Result Card */}
           <div className="flex flex-col items-center py-8">
-            <div className="w-24 h-24 rounded-full flex items-center justify-center mb-6"
-              style={{ background: `${result.color}15`, border: `3px solid ${result.color}` }}>
+            <div
+              className="w-24 h-24 rounded-full flex items-center justify-center mb-6"
+              style={{ background: `${result.color}15`, border: `3px solid ${result.color}` }}
+            >
               <ResultIcon size={48} color={result.color} />
             </div>
 
-            <p style={{ color: result.color, fontSize: 20, fontWeight: 700, marginBottom: 8, textAlign: 'center' }}>
+            <p
+              style={{
+                color: result.color,
+                fontSize: 20,
+                fontWeight: 700,
+                marginBottom: 8,
+                textAlign: 'center',
+              }}
+            >
               {result.title}
             </p>
 
-            <p style={{ color: c.text2, fontSize: 14, lineHeight: 1.6, textAlign: 'center', marginBottom: 24, maxWidth: 300 }}>
+            <p
+              style={{
+                color: c.text2,
+                fontSize: 14,
+                lineHeight: 1.6,
+                textAlign: 'center',
+                marginBottom: 24,
+                maxWidth: 300,
+              }}
+            >
               {result.message}
             </p>
 
@@ -218,7 +248,7 @@ export function BotSuitabilityAssessmentPage() {
                 </p>
               </div>
               <div className="h-3 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
-                <div 
+                <div
                   className="h-full transition-all duration-500"
                   style={{ background: result.color, width: `${scorePercent}%` }}
                 />
@@ -231,16 +261,16 @@ export function BotSuitabilityAssessmentPage() {
             {/* Breakdown */}
             <PageSection label="Category Breakdown">
               <div className="grid grid-cols-2 gap-3">
-                {(['experience', 'knowledge', 'risk', 'financial'] as const).map(cat => {
-                  const catQuestions = QUESTIONS.filter(q => q.category === cat);
+                {(['experience', 'knowledge', 'risk', 'financial'] as const).map((cat) => {
+                  const catQuestions = QUESTIONS.filter((q) => q.category === cat);
                   const catScore = catQuestions.reduce((sum, q) => {
                     const ans = answers[q.id];
-                    const opt = q.options.find(o => o.id === ans);
+                    const opt = q.options.find((o) => o.id === ans);
                     return sum + (opt?.score || 0);
                   }, 0);
                   const catMax = catQuestions.length * 3;
                   const catPercent = (catScore / catMax) * 100;
-                  
+
                   return (
                     <TrCard key={cat} className="p-3 text-center">
                       <p style={{ color: c.text3, fontSize: 10, marginBottom: 4 }}>
@@ -249,11 +279,19 @@ export function BotSuitabilityAssessmentPage() {
                       <p style={{ color: c.text1, fontSize: 16, fontWeight: 700, marginBottom: 4 }}>
                         {catScore}/{catMax}
                       </p>
-                      <div className="h-1.5 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
-                        <div 
+                      <div
+                        className="h-1.5 rounded-full overflow-hidden"
+                        style={{ background: c.surface2 }}
+                      >
+                        <div
                           className="h-full"
-                          style={{ 
-                            background: catPercent >= 75 ? '#10B981' : catPercent >= 50 ? '#F59E0B' : '#EF4444',
+                          style={{
+                            background:
+                              catPercent >= 75
+                                ? '#10B981'
+                                : catPercent >= 50
+                                  ? '#F59E0B'
+                                  : '#EF4444',
                             width: `${catPercent}%`,
                           }}
                         />
@@ -342,9 +380,8 @@ export function BotSuitabilityAssessmentPage() {
                 Regulatory Compliance (MiFID II)
               </p>
               <p style={{ color: c.text3, fontSize: 12, lineHeight: 1.6 }}>
-                This appropriateness assessment is required under European regulations
-                for complex financial products. Your responses have been recorded for
-                compliance purposes.
+                This appropriateness assessment is required under European regulations for complex
+                financial products. Your responses have been recorded for compliance purposes.
               </p>
             </div>
           </div>
@@ -354,7 +391,8 @@ export function BotSuitabilityAssessmentPage() {
           <button
             onClick={handleComplete}
             className="w-full py-3 rounded-[14px] text-sm font-semibold"
-            style={{ background: result.color, color: '#FFF' }}>
+            style={{ background: result.color, color: '#FFF' }}
+          >
             {result.status === 'fail' ? 'Review Educational Materials' : 'Continue to Trading Bots'}
           </button>
         </StickyFooter>
@@ -368,7 +406,7 @@ export function BotSuitabilityAssessmentPage() {
   return (
     <PageLayout variant="flush">
       <Header title="Suitability Assessment" back />
-      
+
       <PageContent grow>
         {/* Progress */}
         <div className="mb-6">
@@ -381,7 +419,7 @@ export function BotSuitabilityAssessmentPage() {
             </p>
           </div>
           <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
-            <div 
+            <div
               className="h-full transition-all duration-300"
               style={{ background: c.primary, width: `${progress}%` }}
             />
@@ -391,8 +429,10 @@ export function BotSuitabilityAssessmentPage() {
         {/* Question */}
         <div className="mb-6">
           <div className="flex items-start gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-              style={{ background: `${c.primary}15` }}>
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+              style={{ background: `${c.primary}15` }}
+            >
               <ClipboardCheck size={20} color={c.primary} />
             </div>
             <div className="flex-1">
@@ -408,7 +448,7 @@ export function BotSuitabilityAssessmentPage() {
 
         {/* Options */}
         <div className="flex flex-col gap-3">
-          {question.options.map(option => {
+          {question.options.map((option) => {
             const isSelected = selectedOption === option.id;
             return (
               <button
@@ -418,15 +458,24 @@ export function BotSuitabilityAssessmentPage() {
                 style={{
                   background: isSelected ? `${c.primary}15` : c.surface,
                   border: `2px solid ${isSelected ? c.primary : c.borderSolid}`,
-                }}>
+                }}
+              >
                 <div className="flex items-start gap-3">
-                  <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-1"
-                    style={{ borderColor: isSelected ? c.primary : c.borderSolid }}>
+                  <div
+                    className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-1"
+                    style={{ borderColor: isSelected ? c.primary : c.borderSolid }}
+                  >
                     {isSelected && (
                       <div className="w-2.5 h-2.5 rounded-full" style={{ background: c.primary }} />
                     )}
                   </div>
-                  <p style={{ color: isSelected ? c.primary : c.text1, fontSize: 13, lineHeight: 1.6 }}>
+                  <p
+                    style={{
+                      color: isSelected ? c.primary : c.text1,
+                      fontSize: 13,
+                      lineHeight: 1.6,
+                    }}
+                  >
                     {option.text}
                   </p>
                 </div>
@@ -436,10 +485,13 @@ export function BotSuitabilityAssessmentPage() {
         </div>
 
         {/* Info */}
-        <div className="mt-6 rounded-2xl p-4" style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}>
+        <div
+          className="mt-6 rounded-2xl p-4"
+          style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}
+        >
           <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-            <strong>Why we ask:</strong> These questions help determine if Trading Bots are suitable for your 
-            experience level and risk profile. Answer honestly for accurate results.
+            <strong>Why we ask:</strong> These questions help determine if Trading Bots are suitable
+            for your experience level and risk profile. Answer honestly for accurate results.
           </p>
         </div>
       </PageContent>

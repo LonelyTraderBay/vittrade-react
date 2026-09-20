@@ -98,28 +98,33 @@ export function TabBar<T extends string>({
   const { hapticSelection } = useHaptic();
 
   // Normalize tabs to always work with objects
-  const normalizedTabs = tabs.map((tab): TabItem => 
-    typeof tab === 'string' 
-      ? { id: tab, label: tab } 
-      : tab
+  const normalizedTabs = tabs.map((tab): TabItem =>
+    typeof tab === 'string' ? { id: tab, label: tab } : tab,
   );
 
-  const handleSelect = useCallback((tabId: T) => {
-    if (tabId !== active) {
-      onChange(tabId);
-      hapticSelection();
-    }
-  }, [active, onChange, hapticSelection]);
+  const handleSelect = useCallback(
+    (tabId: T) => {
+      if (tabId !== active) {
+        onChange(tabId);
+        hapticSelection();
+      }
+    },
+    [active, onChange, hapticSelection],
+  );
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent, currentIndex: number) => {
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-      e.preventDefault();
-      const nextIndex = e.key === 'ArrowRight'
-        ? (currentIndex + 1) % normalizedTabs.length
-        : (currentIndex - 1 + normalizedTabs.length) % normalizedTabs.length;
-      handleSelect(normalizedTabs[nextIndex].id as T);
-    }
-  }, [normalizedTabs, handleSelect]);
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent, currentIndex: number) => {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        const nextIndex =
+          e.key === 'ArrowRight'
+            ? (currentIndex + 1) % normalizedTabs.length
+            : (currentIndex - 1 + normalizedTabs.length) % normalizedTabs.length;
+        handleSelect(normalizedTabs[nextIndex].id as T);
+      }
+    },
+    [normalizedTabs, handleSelect],
+  );
 
   /* ═══ Underline variant ═══ */
   if (variant === 'underline') {
@@ -161,7 +166,8 @@ export function TabBar<T extends string>({
                   background: tabColor,
                   opacity: isActive ? 1 : 0,
                   transform: isActive ? 'scaleX(1)' : 'scaleX(0)',
-                  transition: 'opacity var(--tr-duration-normal) ease, transform var(--tr-duration-normal) ease',
+                  transition:
+                    'opacity var(--tr-duration-normal) ease, transform var(--tr-duration-normal) ease',
                 }}
               />
             </button>
@@ -174,11 +180,7 @@ export function TabBar<T extends string>({
   /* ═══ Pill variant ═══ */
   if (variant === 'pill') {
     return (
-      <div
-        id={id}
-        role="tablist"
-        className={`flex gap-2 ${className}`}
-      >
+      <div id={id} role="tablist" className={`flex gap-2 ${className}`}>
         {normalizedTabs.map((tab, i) => {
           const isActive = tab.id === active;
           const tabColor = colors?.[tab.id as T] ?? activeColor;
@@ -235,7 +237,8 @@ export function TabBar<T extends string>({
               fontWeight: 700,
               fontSize: 13,
               minHeight: 40,
-              transition: 'background var(--tr-duration-fast) ease, color var(--tr-duration-fast) ease',
+              transition:
+                'background var(--tr-duration-fast) ease, color var(--tr-duration-fast) ease',
             }}
           >
             {tab.label}

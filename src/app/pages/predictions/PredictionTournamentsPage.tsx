@@ -18,13 +18,24 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  Trophy, Users, Clock, DollarSign, Target, Award,
-  TrendingUp, ChevronRight, Calendar, Info, CheckCircle,
-  Star, Zap, BarChart3,
+  Trophy,
+  Users,
+  Clock,
+  DollarSign,
+  Target,
+  Award,
+  TrendingUp,
+  ChevronRight,
+  Calendar,
+  Info,
+  CheckCircle,
+  Star,
+  Zap,
+  BarChart3,
 } from 'lucide-react';
 
 const TABS = ['Dang dien ra', 'Cua toi', 'Ket thuc'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface Tournament {
   id: string;
@@ -160,7 +171,9 @@ export function PredictionTournamentsPage() {
       onClick={() => navigate(`${prefix}/predictions/tournament/${tournament.id}`)}
       className="w-full rounded-2xl p-4 hover:opacity-90 transition-opacity active:scale-[0.98]"
       style={{
-        background: tournament.featured ? 'linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1))' : c.surface,
+        background: tournament.featured
+          ? 'linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1))'
+          : c.surface,
         border: `1px solid ${tournament.featured ? 'rgba(59,130,246,0.3)' : c.border}`,
       }}
     >
@@ -238,7 +251,10 @@ export function PredictionTournamentsPage() {
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between pt-3" style={{ borderTop: `1px solid ${c.border}` }}>
+      <div
+        className="flex items-center justify-between pt-3"
+        style={{ borderTop: `1px solid ${c.border}` }}
+      >
         <span
           className="px-2 py-1 rounded-lg text-[10px]"
           style={{ background: c.chipBg, color: c.chipText }}
@@ -246,7 +262,9 @@ export function PredictionTournamentsPage() {
           {tournament.category}
         </span>
         <div className="flex items-center gap-1">
-          <p style={{ color: tournament.isJoined ? c.buy : c.text3, fontSize: 11, fontWeight: 600 }}>
+          <p
+            style={{ color: tournament.isJoined ? c.buy : c.text3, fontSize: 11, fontWeight: 600 }}
+          >
             {tournament.isJoined ? 'Joined' : 'View Details'}
           </p>
           <ChevronRight size={14} color={c.text3} />
@@ -264,20 +282,24 @@ export function PredictionTournamentsPage() {
         {tab === 'Dang dien ra' && (
           <>
             {/* Featured Tournament */}
-            {activeTournaments.filter((t) => t.featured).map((tournament) => (
-              <div key={tournament.id}>
-                <div className="flex items-center gap-2 mb-2 px-1">
-                  <Zap size={14} color="#F59E0B" />
-                  <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>Featured</p>
+            {activeTournaments
+              .filter((t) => t.featured)
+              .map((tournament) => (
+                <div key={tournament.id}>
+                  <div className="flex items-center gap-2 mb-2 px-1">
+                    <Zap size={14} color="#F59E0B" />
+                    <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>Featured</p>
+                  </div>
+                  {renderTournamentCard(tournament)}
                 </div>
-                {renderTournamentCard(tournament)}
-              </div>
-            ))}
+              ))}
 
             {/* Active Tournaments */}
             <PageSection label="Tat ca giai dau">
               <div className="space-y-3">
-                {activeTournaments.filter((t) => !t.featured).map((tournament) => renderTournamentCard(tournament))}
+                {activeTournaments
+                  .filter((t) => !t.featured)
+                  .map((tournament) => renderTournamentCard(tournament))}
               </div>
             </PageSection>
 
@@ -286,7 +308,7 @@ export function PredictionTournamentsPage() {
               <PageSection label="Sap dien ra">
                 <div className="space-y-3">
                   {MOCK_TOURNAMENTS.filter((t) => t.status === 'upcoming').map((tournament) =>
-                    renderTournamentCard(tournament)
+                    renderTournamentCard(tournament),
                   )}
                 </div>
               </PageSection>
@@ -295,12 +317,15 @@ export function PredictionTournamentsPage() {
             {/* Info */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+              style={{
+                background: 'rgba(59,130,246,0.06)',
+                border: '1px solid rgba(59,130,246,0.15)',
+              }}
             >
               <Info size={14} color="#3B82F6" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Tournaments are skill-based competitions. Prizes distributed based on prediction accuracy.
-                Read rules carefully before joining.
+                Tournaments are skill-based competitions. Prizes distributed based on prediction
+                accuracy. Read rules carefully before joining.
               </p>
             </div>
           </>
@@ -319,7 +344,9 @@ export function PredictionTournamentsPage() {
               <div className="grid grid-cols-3 gap-4">
                 <div className="text-center">
                   <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Joined</p>
-                  <p style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}>{myTournaments.length}</p>
+                  <p style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}>
+                    {myTournaments.length}
+                  </p>
                 </div>
                 <div className="text-center">
                   <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Best Rank</p>
@@ -345,9 +372,7 @@ export function PredictionTournamentsPage() {
                   <p style={{ color: c.text2, fontSize: 13, marginBottom: 4 }}>
                     Chua tham gia giai dau nao
                   </p>
-                  <p style={{ color: c.text3, fontSize: 11 }}>
-                    Xem tab "Dang dien ra" de tham gia
-                  </p>
+                  <p style={{ color: c.text3, fontSize: 11 }}>Xem tab "Dang dien ra" de tham gia</p>
                 </div>
               ) : (
                 <div className="space-y-3">

@@ -165,7 +165,7 @@ export function StakingRiskAssessmentPage() {
   const handleAnswer = (value: number) => {
     const question = QUESTIONS[currentQuestion];
     setAnswers({ ...answers, [question.id]: value });
-    
+
     if (currentQuestion < QUESTIONS.length - 1) {
       setTimeout(() => setCurrentQuestion(currentQuestion + 1), 300);
     } else {
@@ -191,12 +191,16 @@ export function StakingRiskAssessmentPage() {
           {/* Result Card */}
           <TrCard className="p-4">
             <div className="flex items-start gap-3 mb-4">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center"
-                style={{ background: profile.bg, border: `2px solid ${profile.color}` }}>
+              <div
+                className="w-16 h-16 rounded-2xl flex items-center justify-center"
+                style={{ background: profile.bg, border: `2px solid ${profile.color}` }}
+              >
                 <Shield size={32} color={profile.color} />
               </div>
               <div className="flex-1">
-                <p style={{ color: c.text3, fontSize: 12, marginBottom: 2 }}>Hồ sơ rủi ro của bạn:</p>
+                <p style={{ color: c.text3, fontSize: 12, marginBottom: 2 }}>
+                  Hồ sơ rủi ro của bạn:
+                </p>
                 <p style={{ color: c.text1, fontSize: 20, fontWeight: 800, marginBottom: 4 }}>
                   {profile.label}
                 </p>
@@ -249,8 +253,11 @@ export function StakingRiskAssessmentPage() {
             </p>
             <div className="space-y-3">
               {profile.products.map((product, idx) => (
-                <div key={idx} className="flex items-center justify-between p-3 rounded-xl"
-                  style={{ background: c.surface2 }}>
+                <div
+                  key={idx}
+                  className="flex items-center justify-between p-3 rounded-xl"
+                  style={{ background: c.surface2 }}
+                >
                   <div className="flex-1">
                     <p style={{ color: c.text1, fontSize: 14, fontWeight: 600, marginBottom: 2 }}>
                       {product.name}
@@ -267,11 +274,18 @@ export function StakingRiskAssessmentPage() {
           </TrCard>
 
           {/* Warning */}
-          <div className="rounded-xl p-3" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
+          <div
+            className="rounded-xl p-3"
+            style={{
+              background: 'rgba(245,158,11,0.08)',
+              border: '1px solid rgba(245,158,11,0.2)',
+            }}
+          >
             <div className="flex gap-2">
               <AlertCircle size={16} color="#F59E0B" className="shrink-0 mt-0.5" />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                <strong>Lưu ý:</strong> Đây chỉ là gợi ý dựa trên câu trả lời của bạn. Không phải lời khuyên đầu tư. Bạn nên tự nghiên cứu và đánh giá kỹ trước khi quyết định stake.
+                <strong>Lưu ý:</strong> Đây chỉ là gợi ý dựa trên câu trả lời của bạn. Không phải
+                lời khuyên đầu tư. Bạn nên tự nghiên cứu và đánh giá kỹ trước khi quyết định stake.
               </p>
             </div>
           </div>
@@ -281,14 +295,16 @@ export function StakingRiskAssessmentPage() {
             <button
               onClick={() => navigate(`${prefix}/earn/staking`)}
               className="flex-1 py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2"
-              style={{ background: c.primary, color: '#FFF' }}>
+              style={{ background: c.primary, color: '#FFF' }}
+            >
               Khám phá sản phẩm
               <ArrowRight size={18} />
             </button>
             <button
               onClick={reset}
               className="px-4 py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2"
-              style={{ background: c.surface2, color: c.text1 }}>
+              style={{ background: c.surface2, color: c.text1 }}
+            >
               <RotateCcw size={18} />
               Làm lại
             </button>
@@ -297,7 +313,8 @@ export function StakingRiskAssessmentPage() {
           {/* Footer */}
           <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
             <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6, textAlign: 'center' }}>
-              Hồ sơ rủi ro được lưu trong tài khoản của bạn. Bạn có thể làm lại bài đánh giá bất kỳ lúc nào để cập nhật gợi ý sản phẩm phù hợp.
+              Hồ sơ rủi ro được lưu trong tài khoản của bạn. Bạn có thể làm lại bài đánh giá bất kỳ
+              lúc nào để cập nhật gợi ý sản phẩm phù hợp.
             </p>
           </div>
         </PageContent>
@@ -317,9 +334,7 @@ export function StakingRiskAssessmentPage() {
             <span style={{ color: c.text3, fontSize: 12 }}>
               Câu hỏi {currentQuestion + 1}/{QUESTIONS.length}
             </span>
-            <span style={{ color: c.text3, fontSize: 12 }}>
-              {Math.round(progress)}%
-            </span>
+            <span style={{ color: c.text3, fontSize: 12 }}>{Math.round(progress)}%</span>
           </div>
           <div className="h-2 rounded-full" style={{ background: c.borderSolid }}>
             <div
@@ -336,8 +351,13 @@ export function StakingRiskAssessmentPage() {
         {/* Question Card */}
         <TrCard className="p-5 mb-6">
           <div className="flex items-start gap-3 mb-4">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-              style={{ background: 'rgba(59,130,246,0.12)', border: '1.5px solid rgba(59,130,246,0.3)' }}>
+            <div
+              className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
+              style={{
+                background: 'rgba(59,130,246,0.12)',
+                border: '1.5px solid rgba(59,130,246,0.3)',
+              }}
+            >
               <span style={{ color: '#3B82F6', fontSize: 16, fontWeight: 700 }}>
                 {currentQuestion + 1}
               </span>
@@ -358,12 +378,15 @@ export function StakingRiskAssessmentPage() {
                   style={{
                     background: isSelected ? 'rgba(59,130,246,0.12)' : c.surface2,
                     border: `1.5px solid ${isSelected ? '#3B82F6' : c.borderSolid}`,
-                  }}>
-                  <span style={{
-                    color: isSelected ? '#3B82F6' : c.text1,
-                    fontSize: 14,
-                    fontWeight: isSelected ? 700 : 500,
-                  }}>
+                  }}
+                >
+                  <span
+                    style={{
+                      color: isSelected ? '#3B82F6' : c.text1,
+                      fontSize: 14,
+                      fontWeight: isSelected ? 700 : 500,
+                    }}
+                  >
                     {option.label}
                   </span>
                   {isSelected && <CheckCircle2 size={20} color="#3B82F6" />}
@@ -374,11 +397,15 @@ export function StakingRiskAssessmentPage() {
         </TrCard>
 
         {/* Info Banner */}
-        <div className="rounded-xl p-3" style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}>
+        <div
+          className="rounded-xl p-3"
+          style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}
+        >
           <div className="flex gap-2">
             <AlertCircle size={16} color="#3B82F6" className="shrink-0 mt-0.5" />
             <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-              Trả lời trung thực để nhận được gợi ý sản phẩm phù hợp với tình hình tài chính và mục tiêu đầu tư của bạn.
+              Trả lời trung thực để nhận được gợi ý sản phẩm phù hợp với tình hình tài chính và mục
+              tiêu đầu tư của bạn.
             </p>
           </div>
         </div>
@@ -388,7 +415,8 @@ export function StakingRiskAssessmentPage() {
           <button
             onClick={() => setCurrentQuestion(currentQuestion - 1)}
             className="w-full py-3 rounded-xl font-semibold"
-            style={{ background: c.surface2, color: c.text2 }}>
+            style={{ background: c.surface2, color: c.text2 }}
+          >
             ← Quay lại câu trước
           </button>
         )}

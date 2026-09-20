@@ -25,6 +25,8 @@ interface PullToRefreshProps {
   style?: React.CSSProperties;
   lastRefreshedLabel?: string;
   refreshCount?: number;
+  /** External refreshing flag (refresh cycle is managed internally) */
+  isRefreshing?: boolean;
 }
 
 const INDICATOR_HEIGHT = 48;
@@ -66,63 +68,69 @@ export function PullToRefresh({
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [phase, setPhase] = useState<'idle' | 'pulling' | 'triggered' | 'refreshing'>('idle');
 
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    if (isRefreshing) return;
-    const el = containerRef.current;
-    if (!el) return;
-    const scrollEl = getScrollParent(el) || el;
-    if (scrollEl.scrollTop > 5) return;
+  const handleTouchStart = useCallback(
+    (e: React.TouchEvent) => {
+      if (isRefreshing) return;
+      const el = containerRef.current;
+      if (!el) return;
+      const scrollEl = getScrollParent(el) || el;
+      if (scrollEl.scrollTop > 5) return;
 
-    startY.current = e.touches[0].clientY;
-    currentY.current = startY.current;
-    isPulling.current = true;
-    activated.current = false;
-  }, [isRefreshing]);
-
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (!isPulling.current || isRefreshing) return;
-    const el = containerRef.current;
-    if (!el) return;
-    const scrollEl = getScrollParent(el) || el;
-    if (scrollEl.scrollTop > 5) {
-      isPulling.current = false;
+      startY.current = e.touches[0].clientY;
+      currentY.current = startY.current;
+      isPulling.current = true;
       activated.current = false;
-      // Only reset state if we actually started pulling (skip for taps)
-      if (activated.current) {
-        setPullDistance(0);
-        setPhase('idle');
+    },
+    [isRefreshing],
+  );
+
+  const handleTouchMove = useCallback(
+    (e: React.TouchEvent) => {
+      if (!isPulling.current || isRefreshing) return;
+      const el = containerRef.current;
+      if (!el) return;
+      const scrollEl = getScrollParent(el) || el;
+      if (scrollEl.scrollTop > 5) {
+        isPulling.current = false;
+        activated.current = false;
+        // Only reset state if we actually started pulling (skip for taps)
+        if (activated.current) {
+          setPullDistance(0);
+          setPhase('idle');
+        }
+        return;
       }
-      return;
-    }
 
-    currentY.current = e.touches[0].clientY;
-    const delta = currentY.current - startY.current;
+      currentY.current = e.touches[0].clientY;
+      const delta = currentY.current - startY.current;
 
-    // Dead zone: require 10px vertical movement before any state changes.
-    // This prevents re-renders during simple taps/clicks on buttons (back button fix).
-    if (!activated.current) {
-      if (Math.abs(delta) < 10) return;
-      activated.current = true;
-    }
-
-    if (delta <= 0) {
-      if (activated.current) {
-        setPullDistance(0);
-        setPhase('idle');
+      // Dead zone: require 10px vertical movement before any state changes.
+      // This prevents re-renders during simple taps/clicks on buttons (back button fix).
+      if (!activated.current) {
+        if (Math.abs(delta) < 10) return;
+        activated.current = true;
       }
-      return;
-    }
 
-    // Rubber-band damping
-    const dampened = Math.min(delta * 0.45, threshold * 1.8);
-    setPullDistance(dampened);
-    const nextPhase = dampened >= threshold ? 'triggered' : 'pulling';
-    if (nextPhase === 'triggered' && prevPhaseRef.current !== 'triggered') {
-      hapticLight();
-    }
-    prevPhaseRef.current = nextPhase;
-    setPhase(nextPhase);
-  }, [isRefreshing, threshold]);
+      if (delta <= 0) {
+        if (activated.current) {
+          setPullDistance(0);
+          setPhase('idle');
+        }
+        return;
+      }
+
+      // Rubber-band damping
+      const dampened = Math.min(delta * 0.45, threshold * 1.8);
+      setPullDistance(dampened);
+      const nextPhase = dampened >= threshold ? 'triggered' : 'pulling';
+      if (nextPhase === 'triggered' && prevPhaseRef.current !== 'triggered') {
+        hapticLight();
+      }
+      prevPhaseRef.current = nextPhase;
+      setPhase(nextPhase);
+    },
+    [isRefreshing, threshold],
+  );
 
   const handleTouchEnd = useCallback(async () => {
     if (!isPulling.current) return;
@@ -149,7 +157,7 @@ export function PullToRefresh({
         success = false;
       }
 
-      await new Promise(r => setTimeout(r, 300));
+      await new Promise((r) => setTimeout(r, 300));
       setIsRefreshing(false);
       setPullDistance(0);
       setPhase('idle');
@@ -187,7 +195,9 @@ export function PullToRefresh({
         className="flex items-center justify-center overflow-hidden"
         style={{
           height: pullDistance,
-          transition: isPulling.current ? 'none' : 'height var(--tr-duration-slow) cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          transition: isPulling.current
+            ? 'none'
+            : 'height var(--tr-duration-slow) cubic-bezier(0.25, 0.46, 0.45, 0.94)',
         }}
       >
         <div
@@ -272,7 +282,8 @@ export function PullToRefresh({
               left: 0,
               width: '40%',
               height: '100%',
-              background: 'linear-gradient(90deg, transparent, #3B82F6 40%, #60A5FA 60%, transparent)',
+              background:
+                'linear-gradient(90deg, transparent, #3B82F6 40%, #60A5FA 60%, transparent)',
               borderRadius: 1,
               animation: 'ptr-progress 1s ease-in-out infinite',
             }}

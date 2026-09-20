@@ -1,11 +1,30 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import {
-  Home, BarChart2, ArrowLeftRight, Wallet, User,
-  Bell, HelpCircle, Settings, Shield, Layers,
-  Zap, Globe, TrendingUp, Target, Star,
-  PieChart, Activity, BookOpen, FileText, Lock,
-  BarChart, Award, Users, Database,
+  Home,
+  BarChart2,
+  ArrowLeftRight,
+  Wallet,
+  User,
+  Bell,
+  HelpCircle,
+  Settings,
+  Shield,
+  Layers,
+  Zap,
+  Globe,
+  TrendingUp,
+  Target,
+  Star,
+  PieChart,
+  Activity,
+  BookOpen,
+  FileText,
+  Lock,
+  BarChart,
+  Award,
+  Users,
+  Database,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { WEB_SIDEBAR_WIDTH, WEB_COMMAND_BAR_HEIGHT } from './webConstants';
@@ -50,12 +69,17 @@ const NAV_SECTIONS: NavSection[] = [
     title: 'TỔNG QUAN',
     items: [
       { path: `${PREFIX}/home`, icon: Home, label: 'Trang chủ' },
-      { path: `${PREFIX}/markets`, icon: BarChart2, label: 'Thị trường', children: [
-        { path: `${PREFIX}/markets/overview`, label: 'Tổng quan' },
-        { path: `${PREFIX}/markets/movers`, label: 'Biến động' },
-        { path: `${PREFIX}/markets/watchlist`, label: 'Theo dõi' },
-        { path: `${PREFIX}/markets/heatmap`, label: 'Heatmap' },
-      ]},
+      {
+        path: `${PREFIX}/markets`,
+        icon: BarChart2,
+        label: 'Thị trường',
+        children: [
+          { path: `${PREFIX}/markets/overview`, label: 'Tổng quan' },
+          { path: `${PREFIX}/markets/movers`, label: 'Biến động' },
+          { path: `${PREFIX}/markets/watchlist`, label: 'Theo dõi' },
+          { path: `${PREFIX}/markets/heatmap`, label: 'Heatmap' },
+        ],
+      },
     ],
   },
   {
@@ -101,11 +125,11 @@ export function WebSidebar() {
   const isActive = (path: string) => {
     // Exact match
     if (location.pathname === path) return true;
-    
+
     // For items with children, match if current path starts with item path
     // Example: /w/markets/overview should activate /w/markets
     if (location.pathname.startsWith(path + '/')) return true;
-    
+
     return false;
   };
 
@@ -140,7 +164,9 @@ export function WebSidebar() {
           <TrendingUp size={18} color="#fff" strokeWidth={2.5} />
         </div>
         <div className="flex flex-col">
-          <span style={{ color: c.text1, fontSize: 16, fontWeight: 700, letterSpacing: -0.3 }}>VitTrade</span>
+          <span style={{ color: c.text1, fontSize: 16, fontWeight: 700, letterSpacing: -0.3 }}>
+            VitTrade
+          </span>
           <span style={{ color: c.text3, fontSize: 11, fontWeight: 500 }}>Enterprise Web</span>
         </div>
       </div>
@@ -150,18 +176,20 @@ export function WebSidebar() {
         {NAV_SECTIONS.map((section) => (
           <div key={section.title} className="mb-1">
             <div className="px-5 pt-5 pb-2">
-              <span style={{
-                color: c.text3,
-                fontSize: 11,
-                fontWeight: 700,
-                letterSpacing: 1.2,
-              }}>
+              <span
+                style={{
+                  color: c.text3,
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: 1.2,
+                }}
+              >
                 {section.title}
               </span>
             </div>
 
             <div className="flex flex-col px-2.5 gap-0.5">
-              {section.items.map(item => {
+              {section.items.map((item) => {
                 const active = isActive(item.path);
                 const Icon = item.icon;
                 return (
@@ -186,13 +214,15 @@ export function WebSidebar() {
                         strokeWidth={active ? 2 : 1.5}
                         color={active ? '#3B82F6' : c.text2}
                       />
-                      <span style={{
-                        color: active ? '#3B82F6' : c.text1,
-                        fontSize: 14,
-                        fontWeight: active ? 600 : 400,
-                        flex: 1,
-                        textAlign: 'left',
-                      }}>
+                      <span
+                        style={{
+                          color: active ? '#3B82F6' : c.text1,
+                          fontSize: 14,
+                          fontWeight: active ? 600 : 400,
+                          flex: 1,
+                          textAlign: 'left',
+                        }}
+                      >
                         {item.label}
                       </span>
                       {item.badge && item.badge > 0 && (
@@ -216,8 +246,11 @@ export function WebSidebar() {
 
                     {/* Sub-items */}
                     {active && item.children && (
-                      <div className="flex flex-col ml-9 mt-0.5 mb-1.5 border-l-2" style={{ borderColor: c.divider }}>
-                        {item.children.map(child => (
+                      <div
+                        className="flex flex-col ml-9 mt-0.5 mb-1.5 border-l-2"
+                        style={{ borderColor: c.divider }}
+                      >
+                        {item.children.map((child) => (
                           <button
                             key={child.path}
                             onClick={() => navigate(child.path)}
@@ -227,7 +260,9 @@ export function WebSidebar() {
                               color: isExactActive(child.path) ? '#3B82F6' : c.text2,
                               fontSize: 13,
                               fontWeight: isExactActive(child.path) ? 600 : 400,
-                              background: isExactActive(child.path) ? 'rgba(59,130,246,0.05)' : 'transparent',
+                              background: isExactActive(child.path)
+                                ? 'rgba(59,130,246,0.05)'
+                                : 'transparent',
                             }}
                           >
                             {child.label}
@@ -248,7 +283,7 @@ export function WebSidebar() {
         className="shrink-0 flex flex-col px-2.5 py-2.5 gap-0.5"
         style={{ borderTop: `1px solid ${c.divider}` }}
       >
-        {BOTTOM_ITEMS.map(item => {
+        {BOTTOM_ITEMS.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.path);
           return (
@@ -262,15 +297,34 @@ export function WebSidebar() {
               }}
             >
               <Icon size={16} strokeWidth={active ? 2 : 1.5} color={active ? '#3B82F6' : c.text3} />
-              <span style={{ color: active ? '#3B82F6' : c.text2, fontSize: 13, flex: 1, textAlign: 'left', fontWeight: active ? 600 : 400 }}>
+              <span
+                style={{
+                  color: active ? '#3B82F6' : c.text2,
+                  fontSize: 13,
+                  flex: 1,
+                  textAlign: 'left',
+                  fontWeight: active ? 600 : 400,
+                }}
+              >
                 {item.label}
               </span>
               {item.badge && (
-                <span className="rounded" style={{
-                  minWidth: 20, height: 18, padding: '0 5px',
-                  background: 'rgba(239,68,68,0.15)', fontSize: 10, fontWeight: 700, color: '#EF4444',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 4,
-                }}>
+                <span
+                  className="rounded"
+                  style={{
+                    minWidth: 20,
+                    height: 18,
+                    padding: '0 5px',
+                    background: 'rgba(239,68,68,0.15)',
+                    fontSize: 10,
+                    fontWeight: 700,
+                    color: '#EF4444',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 4,
+                  }}
+                >
                   {item.badge}
                 </span>
               )}
@@ -286,12 +340,27 @@ export function WebSidebar() {
         >
           <div
             className="flex items-center justify-center shrink-0 rounded-lg"
-            style={{ width: 34, height: 34, background: 'linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)' }}
+            style={{
+              width: 34,
+              height: 34,
+              background: 'linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)',
+            }}
           >
             <span style={{ color: '#fff', fontSize: 13, fontWeight: 700 }}>V</span>
           </div>
           <div className="flex flex-col min-w-0 text-left">
-            <span style={{ color: c.text1, fontSize: 13, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>VitTrader Pro</span>
+            <span
+              style={{
+                color: c.text1,
+                fontSize: 13,
+                fontWeight: 600,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              VitTrader Pro
+            </span>
             <span style={{ color: c.text3, fontSize: 11 }}>VIP 3 · v2.4.1</span>
           </div>
         </button>

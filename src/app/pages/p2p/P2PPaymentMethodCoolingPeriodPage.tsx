@@ -25,7 +25,9 @@ export function P2PPaymentMethodCoolingPeriodPage() {
   const mountedRef = useRef(true);
 
   useEffect(() => {
-    return () => { mountedRef.current = false; };
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   const daysLeft = Math.floor(COOLING_DATA.hoursRemaining / 24);
@@ -38,7 +40,10 @@ export function P2PPaymentMethodCoolingPeriodPage() {
       <div className="px-5 py-4">
         <TrCard rounded="lg" className="p-4" style={{ background: hexToRgba('#F59E0B', 10) }}>
           <div className="flex items-start gap-3 mb-4">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: hexToRgba('#F59E0B', 20) }}>
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+              style={{ background: hexToRgba('#F59E0B', 20) }}
+            >
               <Clock size={24} color="#F59E0B" />
             </div>
             <div className="flex-1">
@@ -51,7 +56,10 @@ export function P2PPaymentMethodCoolingPeriodPage() {
             </div>
           </div>
 
-          <div className="p-4 rounded-xl text-center" style={{ background: hexToRgba('#F59E0B', 15) }}>
+          <div
+            className="p-4 rounded-xl text-center"
+            style={{ background: hexToRgba('#F59E0B', 15) }}
+          >
             <p style={{ color: '#F59E0B', fontSize: φ.xl, fontWeight: 700, marginBottom: 4 }}>
               {daysLeft}d {hoursLeft}h
             </p>
@@ -65,11 +73,15 @@ export function P2PPaymentMethodCoolingPeriodPage() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Thêm lúc</p>
-              <p style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>{COOLING_DATA.addedAt}</p>
+              <p style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>
+                {COOLING_DATA.addedAt}
+              </p>
             </div>
             <div>
               <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Sẵn sàng lúc</p>
-              <p style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>{COOLING_DATA.availableAt}</p>
+              <p style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>
+                {COOLING_DATA.availableAt}
+              </p>
             </div>
           </div>
         </TrCard>
@@ -79,7 +91,9 @@ export function P2PPaymentMethodCoolingPeriodPage() {
         <TrCard rounded="md" className="p-4">
           <div className="flex items-start gap-2 mb-3">
             <Info size={16} color="#3B82F6" className="shrink-0 mt-0.5" />
-            <h4 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Tại sao có cooling period?</h4>
+            <h4 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
+              Tại sao có cooling period?
+            </h4>
           </div>
           <div className="flex flex-col gap-2">
             {[
@@ -98,12 +112,18 @@ export function P2PPaymentMethodCoolingPeriodPage() {
       </div>
 
       <div className="px-5">
-        <div className="p-3 rounded-lg flex items-start gap-2" style={{ background: hexToRgba('#3B82F6', 10) }}>
+        <div
+          className="p-3 rounded-lg flex items-start gap-2"
+          style={{ background: hexToRgba('#3B82F6', 10) }}
+        >
           <Calendar size={14} color="#3B82F6" className="shrink-0 mt-0.5" />
           <div>
-            <p style={{ color: '#3B82F6', fontSize: 11, fontWeight: 600, marginBottom: 4 }}>Trong thời gian chờ</p>
+            <p style={{ color: '#3B82F6', fontSize: 11, fontWeight: 600, marginBottom: 4 }}>
+              Trong thời gian chờ
+            </p>
             <p style={{ color: c.text2, fontSize: 10, lineHeight: 1.5 }}>
-              Bạn vẫn có thể dùng các phương thức khác đã verify. Phương thức này sẽ tự động khả dụng sau 7 ngày.
+              Bạn vẫn có thể dùng các phương thức khác đã verify. Phương thức này sẽ tự động khả
+              dụng sau 7 ngày.
             </p>
           </div>
         </div>

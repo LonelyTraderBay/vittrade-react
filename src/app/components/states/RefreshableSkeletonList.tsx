@@ -59,9 +59,7 @@ export function RefreshableSkeletonList({
     return (
       <div className="contents">
         {emptyState}
-        {lastRefreshedLabel && (
-          <RefreshTimestamp label={lastRefreshedLabel} count={refreshCount} />
-        )}
+        {lastRefreshedLabel && <RefreshTimestamp label={lastRefreshedLabel} count={refreshCount} />}
       </div>
     );
   }
@@ -69,9 +67,7 @@ export function RefreshableSkeletonList({
   return (
     <div className="contents">
       {children}
-      {lastRefreshedLabel && (
-        <RefreshTimestamp label={lastRefreshedLabel} count={refreshCount} />
-      )}
+      {lastRefreshedLabel && <RefreshTimestamp label={lastRefreshedLabel} count={refreshCount} />}
     </div>
   );
 }
@@ -92,12 +88,13 @@ export function RefreshTimestamp({ label, count }: { label: string; count?: numb
           <span style={{ color: c.text3, fontSize: 10 }}>·</span>
           <div
             className="flex items-center gap-0.5 px-1.5 py-0.5 rounded-full"
-            style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.12)' }}
+            style={{
+              background: 'rgba(59,130,246,0.08)',
+              border: '1px solid rgba(59,130,246,0.12)',
+            }}
           >
             <RefreshCw size={8} color="#3B82F6" strokeWidth={2.5} />
-            <span style={{ color: '#3B82F6', fontSize: 9, fontWeight: 600 }}>
-              {count}
-            </span>
+            <span style={{ color: '#3B82F6', fontSize: 9, fontWeight: 600 }}>{count}</span>
           </div>
         </div>
       )}

@@ -44,29 +44,131 @@ interface KeyboardShortcutsProps {
 
 export const DEFAULT_SHORTCUTS: Omit<ShortcutAction, 'action'>[] = [
   // Trading
-  { id: 'quick_buy', category: 'Trading', label: 'Quick Buy', description: 'Market buy at current price', defaultKey: 'F1' },
-  { id: 'quick_sell', category: 'Trading', label: 'Quick Sell', description: 'Market sell at current price', defaultKey: 'F2' },
-  { id: 'place_limit_buy', category: 'Trading', label: 'Limit Buy', description: 'Open limit buy form', defaultKey: 'B' },
-  { id: 'place_limit_sell', category: 'Trading', label: 'Limit Sell', description: 'Open limit sell form', defaultKey: 'S' },
-  { id: 'toggle_oco', category: 'Trading', label: 'OCO Order', description: 'Open OCO order form', defaultKey: 'O' },
-  
+  {
+    id: 'quick_buy',
+    category: 'Trading',
+    label: 'Quick Buy',
+    description: 'Market buy at current price',
+    defaultKey: 'F1',
+  },
+  {
+    id: 'quick_sell',
+    category: 'Trading',
+    label: 'Quick Sell',
+    description: 'Market sell at current price',
+    defaultKey: 'F2',
+  },
+  {
+    id: 'place_limit_buy',
+    category: 'Trading',
+    label: 'Limit Buy',
+    description: 'Open limit buy form',
+    defaultKey: 'B',
+  },
+  {
+    id: 'place_limit_sell',
+    category: 'Trading',
+    label: 'Limit Sell',
+    description: 'Open limit sell form',
+    defaultKey: 'S',
+  },
+  {
+    id: 'toggle_oco',
+    category: 'Trading',
+    label: 'OCO Order',
+    description: 'Open OCO order form',
+    defaultKey: 'O',
+  },
+
   // Orders
-  { id: 'cancel_all', category: 'Orders', label: 'Cancel All', description: 'Cancel all open orders', defaultKey: 'Escape' },
-  { id: 'cancel_buys', category: 'Orders', label: 'Cancel Buys', description: 'Cancel all buy orders', defaultKey: 'Shift+B' },
-  { id: 'cancel_sells', category: 'Orders', label: 'Cancel Sells', description: 'Cancel all sell orders', defaultKey: 'Shift+S' },
-  { id: 'view_orders', category: 'Orders', label: 'View Orders', description: 'Show open orders list', defaultKey: 'L' },
-  
+  {
+    id: 'cancel_all',
+    category: 'Orders',
+    label: 'Cancel All',
+    description: 'Cancel all open orders',
+    defaultKey: 'Escape',
+  },
+  {
+    id: 'cancel_buys',
+    category: 'Orders',
+    label: 'Cancel Buys',
+    description: 'Cancel all buy orders',
+    defaultKey: 'Shift+B',
+  },
+  {
+    id: 'cancel_sells',
+    category: 'Orders',
+    label: 'Cancel Sells',
+    description: 'Cancel all sell orders',
+    defaultKey: 'Shift+S',
+  },
+  {
+    id: 'view_orders',
+    category: 'Orders',
+    label: 'View Orders',
+    description: 'Show open orders list',
+    defaultKey: 'L',
+  },
+
   // Navigation
-  { id: 'focus_price', category: 'Navigation', label: 'Focus Price', description: 'Focus on price input', defaultKey: 'P' },
-  { id: 'focus_amount', category: 'Navigation', label: 'Focus Amount', description: 'Focus on amount input', defaultKey: 'A' },
-  { id: 'toggle_chart', category: 'Navigation', label: 'Toggle Chart', description: 'Show/hide trading chart', defaultKey: 'C' },
-  { id: 'toggle_orderbook', category: 'Navigation', label: 'Toggle Orderbook', description: 'Show/hide order book', defaultKey: 'D' },
-  
+  {
+    id: 'focus_price',
+    category: 'Navigation',
+    label: 'Focus Price',
+    description: 'Focus on price input',
+    defaultKey: 'P',
+  },
+  {
+    id: 'focus_amount',
+    category: 'Navigation',
+    label: 'Focus Amount',
+    description: 'Focus on amount input',
+    defaultKey: 'A',
+  },
+  {
+    id: 'toggle_chart',
+    category: 'Navigation',
+    label: 'Toggle Chart',
+    description: 'Show/hide trading chart',
+    defaultKey: 'C',
+  },
+  {
+    id: 'toggle_orderbook',
+    category: 'Navigation',
+    label: 'Toggle Orderbook',
+    description: 'Show/hide order book',
+    defaultKey: 'D',
+  },
+
   // View
-  { id: 'increase_amount', category: 'View', label: 'Increase Amount', description: 'Increase order amount by 10%', defaultKey: 'ArrowUp' },
-  { id: 'decrease_amount', category: 'View', label: 'Decrease Amount', description: 'Decrease order amount by 10%', defaultKey: 'ArrowDown' },
-  { id: 'max_amount', category: 'View', label: 'Max Amount', description: 'Set amount to maximum available', defaultKey: 'M' },
-  { id: 'help', category: 'View', label: 'Help', description: 'Show shortcuts reference', defaultKey: '?' },
+  {
+    id: 'increase_amount',
+    category: 'View',
+    label: 'Increase Amount',
+    description: 'Increase order amount by 10%',
+    defaultKey: 'ArrowUp',
+  },
+  {
+    id: 'decrease_amount',
+    category: 'View',
+    label: 'Decrease Amount',
+    description: 'Decrease order amount by 10%',
+    defaultKey: 'ArrowDown',
+  },
+  {
+    id: 'max_amount',
+    category: 'View',
+    label: 'Max Amount',
+    description: 'Set amount to maximum available',
+    defaultKey: 'M',
+  },
+  {
+    id: 'help',
+    category: 'View',
+    label: 'Help',
+    description: 'Show shortcuts reference',
+    defaultKey: '?',
+  },
 ];
 
 /* ═══════════════════════════════════════════════════════════════
@@ -76,7 +178,7 @@ export const DEFAULT_SHORTCUTS: Omit<ShortcutAction, 'action'>[] = [
 export function useKeyboardShortcuts(
   shortcuts: ShortcutAction[],
   enabled: boolean = true,
-  onTriggered?: (actionId: string) => void
+  onTriggered?: (actionId: string) => void,
 ) {
   useEffect(() => {
     if (!enabled) return;
@@ -95,8 +197,8 @@ export function useKeyboardShortcuts(
       keyCombo += e.key;
 
       // Find matching shortcut
-      const shortcut = shortcuts.find(s => 
-        (s.customKey || s.defaultKey).toLowerCase() === keyCombo.toLowerCase()
+      const shortcut = shortcuts.find(
+        (s) => (s.customKey || s.defaultKey).toLowerCase() === keyCombo.toLowerCase(),
       );
 
       if (shortcut) {
@@ -129,7 +231,7 @@ export function ShortcutsReference({
   const categories = ['Trading', 'Orders', 'Navigation', 'View'] as const;
 
   const handleSaveCustomKey = (id: string, newKey: string) => {
-    setCustomKeys(prev => ({ ...prev, [id]: newKey }));
+    setCustomKeys((prev) => ({ ...prev, [id]: newKey }));
     setEditingId(null);
   };
 
@@ -151,38 +253,57 @@ export function ShortcutsReference({
       </div>
 
       {/* Info */}
-      <div className="p-3 rounded-xl" style={{ background: 'rgba(59,130,246,0.08)', border: `1px solid rgba(59,130,246,0.2)` }}>
+      <div
+        className="p-3 rounded-xl"
+        style={{ background: 'rgba(59,130,246,0.08)', border: `1px solid rgba(59,130,246,0.2)` }}
+      >
         <p style={{ fontSize: FONT_SCALE.xs, color: c.text2, lineHeight: 1.6 }}>
-          <strong style={{ color: '#3B82F6' }}>Pro tip:</strong> Master these shortcuts to trade 3x faster.
-          Click any shortcut to customize the key binding.
+          <strong style={{ color: '#3B82F6' }}>Pro tip:</strong> Master these shortcuts to trade 3x
+          faster. Click any shortcut to customize the key binding.
         </p>
       </div>
 
       {/* Shortcuts by Category */}
-      {categories.map(category => {
-        const categoryShortcuts = shortcuts.filter(s => s.category === category);
+      {categories.map((category) => {
+        const categoryShortcuts = shortcuts.filter((s) => s.category === category);
         if (categoryShortcuts.length === 0) return null;
 
         return (
           <div key={category}>
-            <p style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, color: c.text1, marginBottom: 8 }}>
+            <p
+              style={{
+                fontSize: FONT_SCALE.xs,
+                fontWeight: FONT_WEIGHT.bold,
+                color: c.text1,
+                marginBottom: 8,
+              }}
+            >
               {category}
             </p>
             <TrCard className="p-0 overflow-hidden">
               {categoryShortcuts.map((shortcut, i) => {
                 const isEditing = editingId === shortcut.id;
-                const displayKey = customKeys[shortcut.id] || shortcut.customKey || shortcut.defaultKey;
+                const displayKey =
+                  customKeys[shortcut.id] || shortcut.customKey || shortcut.defaultKey;
 
                 return (
                   <div
                     key={shortcut.id}
                     className="flex items-center justify-between px-3 py-3"
                     style={{
-                      borderBottom: i < categoryShortcuts.length - 1 ? `1px solid ${c.divider}` : 'none',
+                      borderBottom:
+                        i < categoryShortcuts.length - 1 ? `1px solid ${c.divider}` : 'none',
                     }}
                   >
                     <div className="flex-1">
-                      <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold, color: c.text1, marginBottom: 2 }}>
+                      <p
+                        style={{
+                          fontSize: FONT_SCALE.sm,
+                          fontWeight: FONT_WEIGHT.semibold,
+                          color: c.text1,
+                          marginBottom: 2,
+                        }}
+                      >
                         {shortcut.label}
                       </p>
                       <p style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>
@@ -247,10 +368,19 @@ export function ShortcutsReference({
         <div className="flex items-start gap-3">
           <HelpCircle size={18} color="#F59E0B" className="shrink-0 mt-1" />
           <div className="flex-1">
-            <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, marginBottom: 4 }}>
+            <p
+              style={{
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.bold,
+                color: c.text1,
+                marginBottom: 4,
+              }}
+            >
               Learning Tips
             </p>
-            <ul style={{ fontSize: FONT_SCALE.xs, color: c.text3, lineHeight: 1.6, paddingLeft: 16 }}>
+            <ul
+              style={{ fontSize: FONT_SCALE.xs, color: c.text3, lineHeight: 1.6, paddingLeft: 16 }}
+            >
               <li>Start with F1/F2 for quick buy/sell</li>
               <li>ESC to cancel all orders in emergency</li>
               <li>B/S for limit orders when you need precision</li>
@@ -313,13 +443,7 @@ export function ShortcutHint({
    SHORTCUT TOAST NOTIFICATION
    ═══════════════════════════════════════════════════════════════ */
 
-export function ShortcutToast({
-  action,
-  onDismiss,
-}: {
-  action: string;
-  onDismiss: () => void;
-}) {
+export function ShortcutToast({ action, onDismiss }: { action: string; onDismiss: () => void }) {
   const c = useThemeColors();
 
   useEffect(() => {

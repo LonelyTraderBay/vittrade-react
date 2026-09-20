@@ -17,29 +17,29 @@ export interface P2PAd {
   merchantId: string;
   merchantName: string;
   merchantAvatar?: string;
-  
+
   // Ad Details
   type: P2PAdType;
-  asset: string;               // e.g., "BTC"
-  fiatCurrency: string;        // e.g., "VND"
+  asset: string; // e.g., "BTC"
+  fiatCurrency: string; // e.g., "VND"
   price: number;
   availableAmount: number;
   minOrderAmount: number;
   maxOrderAmount: number;
-  
+
   // Payment
   paymentMethods: P2PPaymentMethod[];
-  paymentTimeLimit: number;    // minutes
-  
+  paymentTimeLimit: number; // minutes
+
   // Terms
   terms?: string;
   autoReply?: string;
-  
+
   // Stats
   completedOrders: number;
   completionRate: number;
-  avgReleaseTime: number;      // minutes
-  
+  avgReleaseTime: number; // minutes
+
   // Status
   status: P2PAdStatus;
   createdAt: Date;
@@ -48,14 +48,8 @@ export interface P2PAd {
 
 /* ─── P2P Payment Method ─── */
 
-export type PaymentMethodType = 
-  | 'bank_transfer' 
-  | 'momo' 
-  | 'zalopay' 
-  | 'viettel_pay' 
-  | 'viettelpay'
-  | 'paypal' 
-  | 'cash';
+export type PaymentMethodType =
+  'bank_transfer' | 'momo' | 'zalopay' | 'viettel_pay' | 'viettelpay' | 'paypal' | 'cash';
 
 export interface P2PPaymentMethod {
   id: string;
@@ -70,54 +64,54 @@ export interface P2PPaymentMethod {
 
 /* ─── P2P Order ─── */
 
-export type P2POrderStatus = 
+export type P2POrderStatus =
   | 'created'
-  | 'pending_payment' 
-  | 'payment_sent' 
-  | 'confirming' 
-  | 'completed' 
-  | 'cancelled' 
-  | 'disputed' 
+  | 'pending_payment'
+  | 'payment_sent'
+  | 'confirming'
+  | 'completed'
+  | 'cancelled'
+  | 'disputed'
   | 'refunded';
 
 export interface P2POrder {
   id: string;
   adId: string;
-  
+
   // Parties
   buyerId: string;
   buyerName: string;
   sellerId: string;
   sellerName: string;
-  merchantId: string;          // ad owner
-  
+  merchantId: string; // ad owner
+
   // Order Details
   asset: string;
   fiatCurrency: string;
-  amount: number;              // crypto amount
-  price: number;               // fiat price per unit
-  totalPrice: number;          // total fiat amount
+  amount: number; // crypto amount
+  price: number; // fiat price per unit
+  totalPrice: number; // total fiat amount
   fee: number;
-  
+
   // Payment
   paymentMethod: P2PPaymentMethod;
   paymentTimeLimit: number;
   paymentDeadline: Date;
   paymentProof?: string[];
-  
+
   // Status
   status: P2POrderStatus;
-  
+
   // Timeline
   createdAt: Date;
   paymentSentAt?: Date;
   releasedAt?: Date;
   completedAt?: Date;
   cancelledAt?: Date;
-  
+
   // Escrow
   escrowStatus: 'pending' | 'locked' | 'released' | 'refunded';
-  
+
   // Chat
   lastMessageAt?: Date;
   unreadCount?: number;
@@ -138,12 +132,8 @@ export interface P2PMessage {
 
 /* ─── P2P Dispute ─── */
 
-export type DisputeReason = 
-  | 'payment_not_received' 
-  | 'wrong_amount' 
-  | 'scam_attempt' 
-  | 'unresponsive' 
-  | 'other';
+export type DisputeReason =
+  'payment_not_received' | 'wrong_amount' | 'scam_attempt' | 'unresponsive' | 'other';
 
 export type DisputeStatus = 'open' | 'investigating' | 'resolved' | 'escalated';
 
@@ -154,17 +144,17 @@ export interface P2PDispute {
   reporterName: string;
   reportedId: string;
   reportedName: string;
-  
+
   // Dispute Details
   reason: DisputeReason;
   description: string;
-  evidence: string[];          // image URLs
-  
+  evidence: string[]; // image URLs
+
   // Status
   status: DisputeStatus;
   resolution?: string;
   resolvedBy?: string;
-  
+
   // Timeline
   createdAt: Date;
   resolvedAt?: Date;
@@ -176,29 +166,29 @@ export interface MerchantProfile {
   userId: string;
   username: string;
   avatar?: string;
-  
+
   // Verification
   kycLevel: 'none' | 'basic' | 'advanced';
   verificationBadges: string[];
-  
+
   // Stats
   totalTrades: number;
   completedTrades: number;
   completionRate: number;
   avgReleaseTime: number;
   firstTradeDate: Date;
-  
+
   // Ratings
   positiveRating: number;
   neutralRating: number;
   negativeRating: number;
   overallRating: number;
-  
+
   // Activity
   lastSeenAt: Date;
   isOnline: boolean;
-  avgResponseTime: number;     // minutes
-  
+  avgResponseTime: number; // minutes
+
   // Limits
   dailyTradeLimit: number;
   remainingDailyLimit: number;

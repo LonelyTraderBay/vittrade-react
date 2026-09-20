@@ -146,18 +146,14 @@ describe('TrCard', () => {
     });
 
     it('should override border with accent color', () => {
-      const { container } = render(
-        <TrCard accentBorder="rgba(16,185,129,0.2)">Content</TrCard>
-      );
+      const { container } = render(<TrCard accentBorder="rgba(16,185,129,0.2)">Content</TrCard>);
       const card = container.firstChild as HTMLElement;
 
       expect(card.style.border).toBe('1px solid rgba(16, 185, 129, 0.2)');
     });
 
     it('should support custom accent colors', () => {
-      const { container } = render(
-        <TrCard accentBorder="#EF4444">Content</TrCard>
-      );
+      const { container } = render(<TrCard accentBorder="#EF4444">Content</TrCard>);
       const card = container.firstChild as HTMLElement;
 
       expect(card.style.border).toBe('1px solid rgb(239, 68, 68)');
@@ -194,9 +190,13 @@ describe('TrCard', () => {
     it('should handle onClick', () => {
       let clicked = false;
       const { container } = render(
-        <TrCard onClick={() => { clicked = true; }}>
+        <TrCard
+          onClick={() => {
+            clicked = true;
+          }}
+        >
           Clickable
-        </TrCard>
+        </TrCard>,
       );
 
       (container.firstChild as HTMLElement).click();
@@ -207,9 +207,13 @@ describe('TrCard', () => {
     it('should handle onMouseEnter', () => {
       let entered = false;
       const { container } = render(
-        <TrCard onMouseEnter={() => { entered = true; }}>
+        <TrCard
+          onMouseEnter={() => {
+            entered = true;
+          }}
+        >
           Hoverable
-        </TrCard>
+        </TrCard>,
       );
 
       const card = container.firstChild as HTMLElement;
@@ -221,9 +225,13 @@ describe('TrCard', () => {
     it('should handle onMouseLeave', () => {
       let left = false;
       const { container } = render(
-        <TrCard onMouseLeave={() => { left = true; }}>
+        <TrCard
+          onMouseLeave={() => {
+            left = true;
+          }}
+        >
           Hoverable
-        </TrCard>
+        </TrCard>,
       );
 
       const card = container.firstChild as HTMLElement;
@@ -236,9 +244,7 @@ describe('TrCard', () => {
   describe('Custom Styles', () => {
     it('should merge custom inline styles', () => {
       const { container } = render(
-        <TrCard style={{ padding: '20px', margin: '10px' }}>
-          Content
-        </TrCard>
+        <TrCard style={{ padding: '20px', margin: '10px' }}>Content</TrCard>,
       );
       const card = container.firstChild as HTMLElement;
 
@@ -247,9 +253,7 @@ describe('TrCard', () => {
     });
 
     it('should allow overriding variant styles', () => {
-      const { container } = render(
-        <TrCard style={{ background: 'red' }}>Content</TrCard>
-      );
+      const { container } = render(<TrCard style={{ background: 'red' }}>Content</TrCard>);
       const card = container.firstChild as HTMLElement;
 
       expect(card.style.background).toBe('red');
@@ -264,9 +268,7 @@ describe('TrCard', () => {
     });
 
     it('should support aria-label', () => {
-      const { container } = render(
-        <TrCard aria-label="Portfolio card">Content</TrCard>
-      );
+      const { container } = render(<TrCard aria-label="Portfolio card">Content</TrCard>);
 
       expect(container.firstChild).toHaveAttribute('aria-label', 'Portfolio card');
     });
@@ -283,7 +285,7 @@ describe('TrCard', () => {
       const { container } = render(
         <TrCard variant="hero" rounded="lg" hover>
           Combined
-        </TrCard>
+        </TrCard>,
       );
       const card = container.firstChild as HTMLElement;
 
@@ -304,7 +306,7 @@ describe('TrCard', () => {
           style={{ padding: '16px' }}
         >
           Full featured
-        </TrCard>
+        </TrCard>,
       );
       const card = container.firstChild as HTMLElement;
 
@@ -319,18 +321,14 @@ describe('TrCard', () => {
 
   describe('Density & Alignment', () => {
     it('should apply density-driven padding', () => {
-      const { container } = render(
-        <TrCard density="standard">Standard density</TrCard>
-      );
+      const { container } = render(<TrCard density="standard">Standard density</TrCard>);
       const card = container.firstChild as HTMLElement;
 
       expect(card.style.padding).toBe('16px');
     });
 
     it('should apply compact density padding', () => {
-      const { container } = render(
-        <TrCard density="compact">Compact density</TrCard>
-      );
+      const { container } = render(<TrCard density="compact">Compact density</TrCard>);
       const card = container.firstChild as HTMLElement;
 
       expect(card.style.padding).toBe('12px');
@@ -338,7 +336,9 @@ describe('TrCard', () => {
 
     it('should allow explicit padding override', () => {
       const { container } = render(
-        <TrCard density="compact" padding={24}>Custom padding</TrCard>
+        <TrCard density="compact" padding={24}>
+          Custom padding
+        </TrCard>,
       );
       const card = container.firstChild as HTMLElement;
 
@@ -349,7 +349,7 @@ describe('TrCard', () => {
       const { container } = render(
         <TrCard contentAlign="center" style={{ height: 120 }}>
           Centered
-        </TrCard>
+        </TrCard>,
       );
       const card = container.firstChild as HTMLElement;
       const wrapper = card.firstChild as HTMLElement;
@@ -361,7 +361,7 @@ describe('TrCard', () => {
 
     it('should override background with background prop', () => {
       const { container } = render(
-        <TrCard background="linear-gradient(red, blue)">Custom bg</TrCard>
+        <TrCard background="linear-gradient(red, blue)">Custom bg</TrCard>,
       );
       const card = container.firstChild as HTMLElement;
 
@@ -374,7 +374,7 @@ describe('TrCard', () => {
       const { container } = render(
         <TrCard variant="hero" rounded="lg">
           <div>Portfolio Balance</div>
-        </TrCard>
+        </TrCard>,
       );
       const card = container.firstChild as HTMLElement;
 
@@ -386,9 +386,14 @@ describe('TrCard', () => {
     it('should render clickable market card', () => {
       let clicked = false;
       const { container } = render(
-        <TrCard hover onClick={() => { clicked = true; }}>
+        <TrCard
+          hover
+          onClick={() => {
+            clicked = true;
+          }}
+        >
           BTC/USDT
-        </TrCard>
+        </TrCard>,
       );
 
       expect(container.firstChild).toHaveClass('hover-card');
@@ -401,7 +406,7 @@ describe('TrCard', () => {
       render(
         <TrCard variant="hero">
           <TrCard variant="inner">Nested content</TrCard>
-        </TrCard>
+        </TrCard>,
       );
 
       expect(screen.getByText('Nested content')).toBeInTheDocument();
@@ -409,9 +414,7 @@ describe('TrCard', () => {
 
     it('should render position card with accent border', () => {
       const { container } = render(
-        <TrCard accentBorder="rgba(16,185,129,0.2)">
-          Long Position
-        </TrCard>
+        <TrCard accentBorder="rgba(16,185,129,0.2)">Long Position</TrCard>,
       );
       const card = container.firstChild as HTMLElement;
 
@@ -423,7 +426,7 @@ describe('TrCard', () => {
       const { container } = render(
         <TrCard as="button" hover>
           Tap to trade
-        </TrCard>
+        </TrCard>,
       );
 
       expect(container.firstChild?.nodeName).toBe('BUTTON');
@@ -444,7 +447,7 @@ describe('TrCard', () => {
           <div>Child 1</div>
           <div>Child 2</div>
           <div>Child 3</div>
-        </TrCard>
+        </TrCard>,
       );
 
       expect(screen.getByText('Child 1')).toBeInTheDocument();
@@ -460,7 +463,7 @@ describe('TrCard', () => {
             <p>Description</p>
             <button>Action</button>
           </div>
-        </TrCard>
+        </TrCard>,
       );
 
       expect(screen.getByText('Title')).toBeInTheDocument();
@@ -501,18 +504,14 @@ describe('TrCardStat', () => {
     });
 
     it('should support custom className', () => {
-      const { container } = render(
-        <TrCardStat className="custom-stat">Content</TrCardStat>
-      );
+      const { container } = render(<TrCardStat className="custom-stat">Content</TrCardStat>);
 
       expect(container.firstChild).toHaveClass('custom-stat');
       expect(container.firstChild).toHaveClass('rounded-xl');
     });
 
     it('should support custom styles', () => {
-      const { container } = render(
-        <TrCardStat style={{ padding: '10px' }}>Content</TrCardStat>
-      );
+      const { container } = render(<TrCardStat style={{ padding: '10px' }}>Content</TrCardStat>);
       const stat = container.firstChild as HTMLElement;
 
       expect(stat.style.padding).toBe('10px');
@@ -527,7 +526,7 @@ describe('TrCardStat', () => {
             <div>Total Balance</div>
             <div>$10,000</div>
           </TrCardStat>
-        </TrCard>
+        </TrCard>,
       );
 
       expect(screen.getByText('Total Balance')).toBeInTheDocument();
@@ -540,7 +539,7 @@ describe('TrCardStat', () => {
           <TrCardStat>Stat 1</TrCardStat>
           <TrCardStat>Stat 2</TrCardStat>
           <TrCardStat>Stat 3</TrCardStat>
-        </TrCard>
+        </TrCard>,
       );
 
       expect(screen.getByText('Stat 1')).toBeInTheDocument();
@@ -552,10 +551,8 @@ describe('TrCardStat', () => {
       render(
         <TrCardStat>
           <div style={{ fontSize: 11, color: '#9CA3AF' }}>P/L Today</div>
-          <div style={{ fontSize: 14, fontWeight: 600, color: '#10B981' }}>
-            +$125.50
-          </div>
-        </TrCardStat>
+          <div style={{ fontSize: 14, fontWeight: 600, color: '#10B981' }}>+$125.50</div>
+        </TrCardStat>,
       );
 
       expect(screen.getByText('P/L Today')).toBeInTheDocument();
@@ -577,7 +574,7 @@ describe('TrCardStat', () => {
             <span>Label:</span>
             <strong>Value</strong>
           </div>
-        </TrCardStat>
+        </TrCardStat>,
       );
 
       expect(screen.getByText('Label:')).toBeInTheDocument();

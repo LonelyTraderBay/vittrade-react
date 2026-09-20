@@ -21,10 +21,13 @@ import { useThemeColors } from '../../hooks/useThemeColors';
 
 type Platform = 'phone' | 'tablet' | 'web';
 
-const PLATFORM_CONFIG: Record<Platform, { prefix: string; icon: typeof Smartphone; label: string; color: string }> = {
-  phone:  { prefix: '',   icon: Smartphone, label: 'Phone',  color: '#3B82F6' },
-  tablet: { prefix: '/t', icon: Tablet,     label: 'Tablet', color: '#8B5CF6' },
-  web:    { prefix: '/w', icon: Monitor,    label: 'Web',    color: '#10B981' },
+const PLATFORM_CONFIG: Record<
+  Platform,
+  { prefix: string; icon: typeof Smartphone; label: string; color: string }
+> = {
+  phone: { prefix: '', icon: Smartphone, label: 'Phone', color: '#3B82F6' },
+  tablet: { prefix: '/t', icon: Tablet, label: 'Tablet', color: '#8B5CF6' },
+  web: { prefix: '/w', icon: Monitor, label: 'Web', color: '#10B981' },
 };
 
 function detectPlatform(width: number): Platform {
@@ -41,9 +44,7 @@ function getCurrentPrefix(pathname: string): string {
 }
 
 function getRoutePath(pathname: string): string {
-  return pathname
-    .replace(/^\/(w|t|r)\//, '/')
-    .replace(/^\/(w|t|r)$/, '/home');
+  return pathname.replace(/^\/(w|t|r)\//, '/').replace(/^\/(w|t|r)$/, '/home');
 }
 
 export function PlatformSwitcher() {
@@ -56,9 +57,7 @@ export function PlatformSwitcher() {
   // Detect current platform from route
   const currentPrefix = getCurrentPrefix(location.pathname);
   const currentPlatform: Platform =
-    currentPrefix === '/w' ? 'web' :
-    currentPrefix === '/t' ? 'tablet' :
-    'phone';
+    currentPrefix === '/w' ? 'web' : currentPrefix === '/t' ? 'tablet' : 'phone';
 
   useEffect(() => {
     // Initialize last known prefix

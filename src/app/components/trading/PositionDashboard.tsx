@@ -26,17 +26,17 @@ export interface Position {
   symbol: string;
   baseAsset: string;
   logoColor: string;
-  
+
   // Position details
   side: 'long' | 'short';
   amount: number;
   entryPrice: number;
   currentPrice: number;
-  
+
   // Optional: Margin trading
   leverage?: number;
   liquidationPrice?: number;
-  
+
   // Timestamp
   openedAt: string; // ISO date
 }
@@ -51,7 +51,11 @@ interface PositionDashboardProps {
    POSITION CARD COMPONENT
    ═══════════════════════════════════════════════════════════════ */
 
-function PositionCard({ position, portfolioValue, onClick }: {
+function PositionCard({
+  position,
+  portfolioValue,
+  onClick,
+}: {
   position: Position;
   portfolioValue: number;
   onClick?: () => void;
@@ -61,9 +65,7 @@ function PositionCard({ position, portfolioValue, onClick }: {
   // Calculate P&L
   const entryValue = position.amount * position.entryPrice;
   const currentValue = position.amount * position.currentPrice;
-  const pnlUsd = position.side === 'long'
-    ? currentValue - entryValue
-    : entryValue - currentValue;
+  const pnlUsd = position.side === 'long' ? currentValue - entryValue : entryValue - currentValue;
   const pnlPct = (pnlUsd / entryValue) * 100;
   const isProfit = pnlUsd >= 0;
 
@@ -72,9 +74,10 @@ function PositionCard({ position, portfolioValue, onClick }: {
 
   // Break-even price (including 0.1% fee on entry and exit)
   const feeRate = 0.001; // 0.1%
-  const breakEvenPrice = position.side === 'long'
-    ? position.entryPrice * (1 + feeRate * 2)
-    : position.entryPrice * (1 - feeRate * 2);
+  const breakEvenPrice =
+    position.side === 'long'
+      ? position.entryPrice * (1 + feeRate * 2)
+      : position.entryPrice * (1 - feeRate * 2);
 
   // Liquidation risk (for margin)
   const hasLiqRisk = position.liquidationPrice !== undefined;
@@ -98,13 +101,21 @@ function PositionCard({ position, portfolioValue, onClick }: {
             className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
             style={{ background: `${position.logoColor}1F` }}
           >
-            <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, color: position.logoColor }}>
+            <span
+              style={{
+                fontSize: FONT_SCALE.xs,
+                fontWeight: FONT_WEIGHT.bold,
+                color: position.logoColor,
+              }}
+            >
               {position.baseAsset.slice(0, 3)}
             </span>
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1 }}>
+              <span
+                style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1 }}
+              >
                 {position.symbol}
               </span>
               <span
@@ -113,7 +124,8 @@ function PositionCard({ position, portfolioValue, onClick }: {
                   fontSize: FONT_SCALE.micro,
                   fontWeight: FONT_WEIGHT.bold,
                   color: position.side === 'long' ? '#10B981' : '#EF4444',
-                  background: position.side === 'long' ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
+                  background:
+                    position.side === 'long' ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
                 }}
               >
                 {position.side === 'long' ? 'LONG' : 'SHORT'}
@@ -136,7 +148,8 @@ function PositionCard({ position, portfolioValue, onClick }: {
               fontFamily: 'monospace',
             }}
           >
-            {isProfit ? '+' : ''}{fmtUsd(pnlUsd)}
+            {isProfit ? '+' : ''}
+            {fmtUsd(pnlUsd)}
           </p>
           <p
             style={{
@@ -145,7 +158,8 @@ function PositionCard({ position, portfolioValue, onClick }: {
               color: isProfit ? '#10B981' : '#EF4444',
             }}
           >
-            {isProfit ? '+' : ''}{fmtPct(pnlPct)}
+            {isProfit ? '+' : ''}
+            {fmtPct(pnlPct)}
           </p>
         </div>
       </div>
@@ -156,7 +170,14 @@ function PositionCard({ position, portfolioValue, onClick }: {
           <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 4 }}>
             Giá vào lệnh
           </p>
-          <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold, color: c.text1, fontFamily: 'monospace' }}>
+          <p
+            style={{
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.semibold,
+              color: c.text1,
+              fontFamily: 'monospace',
+            }}
+          >
             {fmtPrice(position.entryPrice)}
           </p>
         </div>
@@ -164,7 +185,14 @@ function PositionCard({ position, portfolioValue, onClick }: {
           <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 4 }}>
             Giá hiện tại
           </p>
-          <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold, color: c.text1, fontFamily: 'monospace' }}>
+          <p
+            style={{
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.semibold,
+              color: c.text1,
+              fontFamily: 'monospace',
+            }}
+          >
             {fmtPrice(position.currentPrice)}
           </p>
         </div>
@@ -173,10 +201,10 @@ function PositionCard({ position, portfolioValue, onClick }: {
       {/* Position Size Bar */}
       <div className="mb-3">
         <div className="flex items-center justify-between mb-2">
-          <span style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>
-            Tỷ trọng danh mục
-          </span>
-          <span style={{ fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.bold, color: c.text1 }}>
+          <span style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>Tỷ trọng danh mục</span>
+          <span
+            style={{ fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.bold, color: c.text1 }}
+          >
             {fmtPct(positionPct)}
           </span>
         </div>
@@ -194,14 +222,24 @@ function PositionCard({ position, portfolioValue, onClick }: {
       </div>
 
       {/* Bottom Info */}
-      <div className="flex items-center justify-between pt-3" style={{ borderTop: `1px solid ${c.divider}` }}>
+      <div
+        className="flex items-center justify-between pt-3"
+        style={{ borderTop: `1px solid ${c.divider}` }}
+      >
         <div>
           <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>Break-even</p>
-          <p style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text2, fontFamily: 'monospace' }}>
+          <p
+            style={{
+              fontSize: FONT_SCALE.xs,
+              fontWeight: FONT_WEIGHT.semibold,
+              color: c.text2,
+              fontFamily: 'monospace',
+            }}
+          >
             {fmtPrice(breakEvenPrice)}
           </p>
         </div>
-        
+
         {hasLiqRisk && (
           <div className="text-right">
             <p style={{ fontSize: FONT_SCALE.micro, color: isHighRisk ? '#EF4444' : c.text3 }}>
@@ -209,7 +247,14 @@ function PositionCard({ position, portfolioValue, onClick }: {
             </p>
             <div className="flex items-center gap-1">
               {isHighRisk && <AlertTriangle size={12} color="#EF4444" />}
-              <p style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: isHighRisk ? '#EF4444' : c.text2, fontFamily: 'monospace' }}>
+              <p
+                style={{
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.semibold,
+                  color: isHighRisk ? '#EF4444' : c.text2,
+                  fontFamily: 'monospace',
+                }}
+              >
                 {fmtPrice(position.liquidationPrice!)}
               </p>
             </div>
@@ -219,7 +264,10 @@ function PositionCard({ position, portfolioValue, onClick }: {
 
       {/* High Risk Warning */}
       {isHighRisk && (
-        <div className="mt-3 flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}>
+        <div
+          className="mt-3 flex items-center gap-2 px-3 py-2 rounded-lg"
+          style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}
+        >
           <AlertTriangle size={12} color="#EF4444" className="shrink-0" />
           <span style={{ fontSize: FONT_SCALE.micro, color: '#EF4444', lineHeight: 1.4 }}>
             Cảnh báo: Còn {fmtPct(liqDistance)} đến giá thanh lý
@@ -246,16 +294,13 @@ export function PositionDashboard({
     return positions.reduce((sum, pos) => {
       const entryValue = pos.amount * pos.entryPrice;
       const currentValue = pos.amount * pos.currentPrice;
-      const pnl = pos.side === 'long'
-        ? currentValue - entryValue
-        : entryValue - currentValue;
+      const pnl = pos.side === 'long' ? currentValue - entryValue : entryValue - currentValue;
       return sum + pnl;
     }, 0);
   }, [positions]);
 
-  const totalPnLPct = totalPortfolioValue > 0
-    ? (totalPnL / (totalPortfolioValue - totalPnL)) * 100
-    : 0;
+  const totalPnLPct =
+    totalPortfolioValue > 0 ? (totalPnL / (totalPortfolioValue - totalPnL)) * 100 : 0;
   const isProfit = totalPnL >= 0;
 
   if (positions.length === 0) {
@@ -268,7 +313,14 @@ export function PositionDashboard({
           <DollarSign size={24} color={c.text3} />
         </div>
         <div className="text-center">
-          <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold, color: c.text2, marginBottom: 4 }}>
+          <p
+            style={{
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.semibold,
+              color: c.text2,
+              marginBottom: 4,
+            }}
+          >
             Chưa có vị thế nào
           </p>
           <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, lineHeight: 1.5 }}>
@@ -282,11 +334,12 @@ export function PositionDashboard({
   return (
     <div className="flex flex-col gap-4">
       {/* Summary Card */}
-      <TrCard className="p-4" accentBorder={isProfit ? 'rgba(16,185,129,0.3)' : 'rgba(239,68,68,0.3)'}>
+      <TrCard
+        className="p-4"
+        accentBorder={isProfit ? 'rgba(16,185,129,0.3)' : 'rgba(239,68,68,0.3)'}
+      >
         <div className="flex items-center justify-between mb-3">
-          <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>
-            Tổng Unrealized P&L
-          </span>
+          <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Tổng Unrealized P&L</span>
           <div className="flex items-center gap-1">
             <div
               className="w-2 h-2 rounded-full"
@@ -295,14 +348,16 @@ export function PositionDashboard({
                 animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
               }}
             />
-            <span style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>
-              LIVE
-            </span>
+            <span style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>LIVE</span>
           </div>
         </div>
 
         <div className="flex items-baseline gap-3 mb-2">
-          {isProfit ? <TrendingUp size={20} color="#10B981" /> : <TrendingDown size={20} color="#EF4444" />}
+          {isProfit ? (
+            <TrendingUp size={20} color="#10B981" />
+          ) : (
+            <TrendingDown size={20} color="#EF4444" />
+          )}
           <div>
             <p
               style={{
@@ -313,7 +368,8 @@ export function PositionDashboard({
                 lineHeight: 1,
               }}
             >
-              {isProfit ? '+' : ''}{fmtUsd(totalPnL)}
+              {isProfit ? '+' : ''}
+              {fmtUsd(totalPnL)}
             </p>
             <p
               style={{
@@ -323,15 +379,26 @@ export function PositionDashboard({
                 marginTop: 4,
               }}
             >
-              {isProfit ? '+' : ''}{fmtPct(totalPnLPct)}
+              {isProfit ? '+' : ''}
+              {fmtPct(totalPnLPct)}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center justify-between pt-3" style={{ borderTop: `1px solid ${c.divider}` }}>
+        <div
+          className="flex items-center justify-between pt-3"
+          style={{ borderTop: `1px solid ${c.divider}` }}
+        >
           <div>
             <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>Tổng giá trị</p>
-            <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+            <p
+              style={{
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.bold,
+                color: c.text1,
+                fontFamily: 'monospace',
+              }}
+            >
               {fmtUsd(totalPortfolioValue)}
             </p>
           </div>
@@ -346,7 +413,7 @@ export function PositionDashboard({
 
       {/* Individual Positions */}
       <div className="flex flex-col gap-3">
-        {positions.map(pos => (
+        {positions.map((pos) => (
           <PositionCard
             key={pos.id}
             position={pos}

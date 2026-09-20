@@ -109,7 +109,10 @@ const API_KEYS: APIKey[] = [
   },
 ];
 
-const PERMISSION_CONFIG: Record<APIPermission, { label: string; color: string; icon: React.ElementType }> = {
+const PERMISSION_CONFIG: Record<
+  APIPermission,
+  { label: string; color: string; icon: React.ElementType }
+> = {
   read: { label: 'Read', color: '#3B82F6', icon: Eye },
   trade: { label: 'Trade', color: '#10B981', icon: Activity },
   withdraw: { label: 'Withdraw', color: '#EF4444', icon: Unlock },
@@ -266,7 +269,14 @@ function APIKeyCard({ apiKey }: { apiKey: APIKey }) {
 
       {/* Permissions */}
       <div className="mb-4">
-        <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 8 }}>
+        <div
+          style={{
+            color: c.text2,
+            fontSize: WEB_FONT.SIZE.CAPTION,
+            fontWeight: 600,
+            marginBottom: 8,
+          }}
+        >
           Quyền truy cập
         </div>
         <div className="flex items-center gap-2">
@@ -294,7 +304,14 @@ function APIKeyCard({ apiKey }: { apiKey: APIKey }) {
 
       {/* IP Whitelist */}
       <div className="mb-4">
-        <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 8 }}>
+        <div
+          style={{
+            color: c.text2,
+            fontSize: WEB_FONT.SIZE.CAPTION,
+            fontWeight: 600,
+            marginBottom: 8,
+          }}
+        >
           IP Whitelist
         </div>
         {apiKey.ipWhitelist.length > 0 ? (
@@ -322,10 +339,7 @@ function APIKeyCard({ apiKey }: { apiKey: APIKey }) {
       </div>
 
       {/* Stats */}
-      <div
-        className="pt-4 grid grid-cols-3 gap-4"
-        style={{ borderTop: `1px solid ${c.divider}` }}
-      >
+      <div className="pt-4 grid grid-cols-3 gap-4" style={{ borderTop: `1px solid ${c.divider}` }}>
         <div>
           <div style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION, marginBottom: 4 }}>
             Requests (30d)
@@ -347,12 +361,14 @@ function APIKeyCard({ apiKey }: { apiKey: APIKey }) {
             Sử dụng gần nhất
           </div>
           <div style={{ color: c.text1, fontSize: WEB_FONT.SIZE.BODY, fontWeight: 700 }}>
-            {apiKey.lastUsed ? new Date(apiKey.lastUsed).toLocaleString('vi-VN', { 
-              month: 'short', 
-              day: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit'
-            }) : '—'}
+            {apiKey.lastUsed
+              ? new Date(apiKey.lastUsed).toLocaleString('vi-VN', {
+                  month: 'short',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })
+              : '—'}
           </div>
         </div>
       </div>
@@ -373,225 +389,253 @@ export function WebAPIManagementPage() {
 
   return (
     <PageLayout>
-    <div className="flex" style={{ minHeight: '100%' }}>
-      {/* ═══ LEFT SIDEBAR (300px) ═══ */}
-      <div
-        className="flex flex-col"
-        style={{
-          width: 300,
-          background: c.surface,
-          borderRight: `1px solid ${c.divider}`,
-          position: 'sticky',
-          top: 0,
-          alignSelf: 'flex-start',
-          maxHeight: '100vh',
-          overflowY: 'auto',
-        }}
-      >
-        {/* Header */}
+      <div className="flex" style={{ minHeight: '100%' }}>
+        {/* ═══ LEFT SIDEBAR (300px) ═══ */}
         <div
-          className="flex items-center justify-between px-5"
+          className="flex flex-col"
           style={{
-            height: 60,
-            borderBottom: `1px solid ${c.divider}`,
+            width: 300,
+            background: c.surface,
+            borderRight: `1px solid ${c.divider}`,
+            position: 'sticky',
+            top: 0,
+            alignSelf: 'flex-start',
+            maxHeight: '100vh',
+            overflowY: 'auto',
           }}
         >
-          <h2
-            style={{
-              color: c.text1,
-              fontSize: WEB_FONT.SIZE.H2,
-              fontWeight: 700,
-              margin: 0,
-            }}
-          >
-            API Management
-          </h2>
-        </div>
-
-        {/* Create New Button */}
-        <div className="p-4">
-          <button
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg transition-colors"
-            style={{
-              background: '#3B82F6',
-              color: '#fff',
-              fontSize: WEB_FONT.SIZE.BODY,
-              fontWeight: 600,
-              border: 'none',
-            }}
-          >
-            <Plus size={18} />
-            Tạo API Key mới
-          </button>
-        </div>
-
-        {/* Stats */}
-        <div className="px-4 pb-4">
-          <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 12 }}>
-            Thống kê
-          </div>
-          <div className="flex flex-col gap-3">
-            <div
-              className="p-3 rounded-lg"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-              }}
-            >
-              <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, marginBottom: 4 }}>
-                API Keys hoạt động
-              </div>
-              <div style={{ color: '#10B981', fontSize: 20, fontWeight: 800 }}>
-                {activeKeys.length}
-                <span style={{ fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, color: c.text3 }}>
-                  /{API_KEYS.length}
-                </span>
-              </div>
-            </div>
-            <div
-              className="p-3 rounded-lg"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-              }}
-            >
-              <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, marginBottom: 4 }}>
-                Requests (30 ngày)
-              </div>
-              <div style={{ color: c.text1, fontSize: 20, fontWeight: 800 }}>
-                {totalRequests.toLocaleString()}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Best Practices */}
-        <div className="px-4 pb-4">
+          {/* Header */}
           <div
-            className="p-4 rounded-lg"
+            className="flex items-center justify-between px-5"
             style={{
-              background: '#3B82F615',
-              border: `1px solid #3B82F640`,
+              height: 60,
+              borderBottom: `1px solid ${c.divider}`,
             }}
           >
-            <div className="flex items-center gap-2 mb-3">
-              <Shield size={16} color="#3B82F6" />
-              <span style={{ color: '#3B82F6', fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 700 }}>
-                Best Practices
-              </span>
-            </div>
-            <ul style={{ margin: 0, paddingLeft: 20, color: c.text2, fontSize: 11, lineHeight: 1.6 }}>
-              {BEST_PRACTICES.slice(0, 3).map((tip, i) => (
-                <li key={i}>{tip}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* Documentation Link */}
-        <div className="px-4 pb-4 mt-auto">
-          <button
-            className="w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors"
-            style={{
-              background: c.bg,
-              border: `1px solid ${c.border}`,
-              color: c.text2,
-              fontSize: WEB_FONT.SIZE.CAPTION,
-              fontWeight: 600,
-            }}
-          >
-            <span className="flex items-center gap-2">
-              <Info size={14} />
-              API Documentation
-            </span>
-            <ChevronRight size={14} />
-          </button>
-        </div>
-      </div>
-
-      {/* ═══ MAIN CONTENT ═══ */}
-      <div className="flex-1 min-w-0">
-        <div className="max-w-5xl mx-auto p-8">
-          {/* Page Header */}
-          <div className="mb-6">
-            <h3
+            <h2
               style={{
                 color: c.text1,
-                fontSize: WEB_FONT.SIZE.H3,
+                fontSize: WEB_FONT.SIZE.H2,
                 fontWeight: 700,
-                marginBottom: 8,
+                margin: 0,
               }}
             >
-              API Keys của bạn
-            </h3>
-            <p style={{ color: c.text2, fontSize: WEB_FONT.SIZE.BODY, margin: 0 }}>
-              Quản lý API keys để truy cập dữ liệu và giao dịch theo chương trình
-            </p>
+              API Management
+            </h2>
           </div>
 
-          {/* API Keys List */}
-          <div className="flex flex-col gap-4">
-            {API_KEYS.map((apiKey) => (
-              <APIKeyCard key={apiKey.id} apiKey={apiKey} />
-            ))}
-          </div>
-
-          {/* Security Notice */}
-          <div
-            className="mt-6 p-5 rounded-xl"
-            style={{
-              background: '#EF444415',
-              border: `1px solid #EF444440`,
-            }}
-          >
-            <div className="flex items-start gap-3">
-              <AlertTriangle size={20} color="#EF4444" className="flex-shrink-0 mt-0.5" />
-              <div>
-                <div style={{ color: '#EF4444', fontSize: WEB_FONT.SIZE.BODY, fontWeight: 700, marginBottom: 8 }}>
-                  Cảnh báo bảo mật
-                </div>
-                <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, lineHeight: 1.6 }}>
-                  API Secret chỉ hiển thị 1 lần khi tạo. Lưu trữ an toàn và không chia sẻ với bất kỳ ai.
-                  Nếu API key bị lộ, hãy xóa ngay lập tức và tạo key mới.
-                  Chúng tôi không thể khôi phục API Secret đã mất.
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Full Best Practices */}
-          <div className="mt-6">
-            <h4
+          {/* Create New Button */}
+          <div className="p-4">
+            <button
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg transition-colors"
               style={{
-                color: c.text1,
+                background: '#3B82F6',
+                color: '#fff',
                 fontSize: WEB_FONT.SIZE.BODY,
-                fontWeight: 700,
+                fontWeight: 600,
+                border: 'none',
+              }}
+            >
+              <Plus size={18} />
+              Tạo API Key mới
+            </button>
+          </div>
+
+          {/* Stats */}
+          <div className="px-4 pb-4">
+            <div
+              style={{
+                color: c.text2,
+                fontSize: WEB_FONT.SIZE.CAPTION,
+                fontWeight: 600,
                 marginBottom: 12,
               }}
             >
-              Khuyến nghị bảo mật
-            </h4>
-            <div className="grid grid-cols-2 gap-3">
-              {BEST_PRACTICES.map((tip, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-2 p-3 rounded-lg"
-                  style={{
-                    background: c.surface,
-                    border: `1px solid ${c.border}`,
-                  }}
-                >
-                  <CheckCircle2 size={16} color="#10B981" className="flex-shrink-0 mt-0.5" />
-                  <span style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, lineHeight: 1.5 }}>
-                    {tip}
+              Thống kê
+            </div>
+            <div className="flex flex-col gap-3">
+              <div
+                className="p-3 rounded-lg"
+                style={{
+                  background: c.bg,
+                  border: `1px solid ${c.border}`,
+                }}
+              >
+                <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, marginBottom: 4 }}>
+                  API Keys hoạt động
+                </div>
+                <div style={{ color: '#10B981', fontSize: 20, fontWeight: 800 }}>
+                  {activeKeys.length}
+                  <span
+                    style={{ fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, color: c.text3 }}
+                  >
+                    /{API_KEYS.length}
                   </span>
                 </div>
+              </div>
+              <div
+                className="p-3 rounded-lg"
+                style={{
+                  background: c.bg,
+                  border: `1px solid ${c.border}`,
+                }}
+              >
+                <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, marginBottom: 4 }}>
+                  Requests (30 ngày)
+                </div>
+                <div style={{ color: c.text1, fontSize: 20, fontWeight: 800 }}>
+                  {totalRequests.toLocaleString()}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Best Practices */}
+          <div className="px-4 pb-4">
+            <div
+              className="p-4 rounded-lg"
+              style={{
+                background: '#3B82F615',
+                border: `1px solid #3B82F640`,
+              }}
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <Shield size={16} color="#3B82F6" />
+                <span
+                  style={{ color: '#3B82F6', fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 700 }}
+                >
+                  Best Practices
+                </span>
+              </div>
+              <ul
+                style={{
+                  margin: 0,
+                  paddingLeft: 20,
+                  color: c.text2,
+                  fontSize: 11,
+                  lineHeight: 1.6,
+                }}
+              >
+                {BEST_PRACTICES.slice(0, 3).map((tip, i) => (
+                  <li key={i}>{tip}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Documentation Link */}
+          <div className="px-4 pb-4 mt-auto">
+            <button
+              className="w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors"
+              style={{
+                background: c.bg,
+                border: `1px solid ${c.border}`,
+                color: c.text2,
+                fontSize: WEB_FONT.SIZE.CAPTION,
+                fontWeight: 600,
+              }}
+            >
+              <span className="flex items-center gap-2">
+                <Info size={14} />
+                API Documentation
+              </span>
+              <ChevronRight size={14} />
+            </button>
+          </div>
+        </div>
+
+        {/* ═══ MAIN CONTENT ═══ */}
+        <div className="flex-1 min-w-0">
+          <div className="max-w-5xl mx-auto p-8">
+            {/* Page Header */}
+            <div className="mb-6">
+              <h3
+                style={{
+                  color: c.text1,
+                  fontSize: WEB_FONT.SIZE.H3,
+                  fontWeight: 700,
+                  marginBottom: 8,
+                }}
+              >
+                API Keys của bạn
+              </h3>
+              <p style={{ color: c.text2, fontSize: WEB_FONT.SIZE.BODY, margin: 0 }}>
+                Quản lý API keys để truy cập dữ liệu và giao dịch theo chương trình
+              </p>
+            </div>
+
+            {/* API Keys List */}
+            <div className="flex flex-col gap-4">
+              {API_KEYS.map((apiKey) => (
+                <APIKeyCard key={apiKey.id} apiKey={apiKey} />
               ))}
+            </div>
+
+            {/* Security Notice */}
+            <div
+              className="mt-6 p-5 rounded-xl"
+              style={{
+                background: '#EF444415',
+                border: `1px solid #EF444440`,
+              }}
+            >
+              <div className="flex items-start gap-3">
+                <AlertTriangle size={20} color="#EF4444" className="flex-shrink-0 mt-0.5" />
+                <div>
+                  <div
+                    style={{
+                      color: '#EF4444',
+                      fontSize: WEB_FONT.SIZE.BODY,
+                      fontWeight: 700,
+                      marginBottom: 8,
+                    }}
+                  >
+                    Cảnh báo bảo mật
+                  </div>
+                  <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, lineHeight: 1.6 }}>
+                    API Secret chỉ hiển thị 1 lần khi tạo. Lưu trữ an toàn và không chia sẻ với bất
+                    kỳ ai. Nếu API key bị lộ, hãy xóa ngay lập tức và tạo key mới. Chúng tôi không
+                    thể khôi phục API Secret đã mất.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Full Best Practices */}
+            <div className="mt-6">
+              <h4
+                style={{
+                  color: c.text1,
+                  fontSize: WEB_FONT.SIZE.BODY,
+                  fontWeight: 700,
+                  marginBottom: 12,
+                }}
+              >
+                Khuyến nghị bảo mật
+              </h4>
+              <div className="grid grid-cols-2 gap-3">
+                {BEST_PRACTICES.map((tip, i) => (
+                  <div
+                    key={i}
+                    className="flex items-start gap-2 p-3 rounded-lg"
+                    style={{
+                      background: c.surface,
+                      border: `1px solid ${c.border}`,
+                    }}
+                  >
+                    <CheckCircle2 size={16} color="#10B981" className="flex-shrink-0 mt-0.5" />
+                    <span
+                      style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, lineHeight: 1.5 }}
+                    >
+                      {tip}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </PageLayout>
   );
 }

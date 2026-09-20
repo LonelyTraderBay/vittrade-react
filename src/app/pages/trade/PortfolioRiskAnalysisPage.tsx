@@ -2,19 +2,19 @@
  * ══════════════════════════════════════════════════════════════
  *  PortfolioRiskAnalysisPage — Phase 2: Risk Management
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Aggregate exposure by asset
  * - Correlation heatmap across providers
  * - Value at Risk (VaR) calculation
  * - Scenario analysis (stress tests)
  * - Diversification score
- * 
+ *
  * Compliance:
  * - Risk concentration limits
  * - Correlation warnings (>0.8)
  * - VaR disclosure (95% confidence)
- * 
+ *
  * Guidelines:
  * - PageLayout + TabBar
  * - Heavy visualizations (Recharts)
@@ -23,9 +23,17 @@
 
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router';
-import { 
-  Shield, AlertTriangle, TrendingDown, BarChart3, Target,
-  Activity, Info, Eye, DollarSign, Percent
+import {
+  Shield,
+  AlertTriangle,
+  TrendingDown,
+  BarChart3,
+  Target,
+  Activity,
+  Info,
+  Eye,
+  DollarSign,
+  Percent,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -33,9 +41,20 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { TabBar } from '../../components/layout/TabBar';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useRoutePrefix } from '../../hooks/useRoutePrefix';
-import { 
-  PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer, Legend, ScatterChart, Scatter
+import {
+  PieChart,
+  Pie,
+  Cell,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+  ScatterChart,
+  Scatter,
 } from 'recharts';
 
 type TabType = 'exposure' | 'correlation' | 'var' | 'scenarios';
@@ -51,9 +70,9 @@ const ASSET_EXPOSURE = [
 ];
 
 const CORRELATION_MATRIX = [
-  { provider: 'CryptoKing', cryptoKing: 1.00, swingMaster: 0.72, algoTrader: 0.45 },
-  { provider: 'SwingMaster', cryptoKing: 0.72, swingMaster: 1.00, algoTrader: 0.38 },
-  { provider: 'AlgoTrader', cryptoKing: 0.45, swingMaster: 0.38, algoTrader: 1.00 },
+  { provider: 'CryptoKing', cryptoKing: 1.0, swingMaster: 0.72, algoTrader: 0.45 },
+  { provider: 'SwingMaster', cryptoKing: 0.72, swingMaster: 1.0, algoTrader: 0.38 },
+  { provider: 'AlgoTrader', cryptoKing: 0.45, swingMaster: 0.38, algoTrader: 1.0 },
 ];
 
 const VAR_HISTORY = Array.from({ length: 30 }, (_, i) => ({
@@ -75,7 +94,7 @@ export function PortfolioRiskAnalysisPage() {
   const c = useThemeColors();
   const navigate = useNavigate();
   const prefix = useRoutePrefix();
-  
+
   const [activeTab, setActiveTab] = useState<TabType>('exposure');
 
   const totalValue = ASSET_EXPOSURE.reduce((sum, a) => sum + a.value, 0);
@@ -92,13 +111,19 @@ export function PortfolioRiskAnalysisPage() {
   }, []);
 
   // Concentration risk check
-  const highConcentration = ASSET_EXPOSURE.filter(a => a.percent > 30);
-  
+  const highConcentration = ASSET_EXPOSURE.filter((a) => a.percent > 30);
+
   // Correlation warnings
-  const highCorrelation = CORRELATION_MATRIX.flatMap((row, i) => 
+  const highCorrelation = CORRELATION_MATRIX.flatMap((row, i) =>
     Object.entries(row)
-      .filter(([key, val]) => key !== 'provider' && typeof val === 'number' && val > 0.8 && i < CORRELATION_MATRIX.length - 1)
-      .map(([key, val]) => ({ p1: row.provider, p2: key, corr: val }))
+      .filter(
+        ([key, val]) =>
+          key !== 'provider' &&
+          typeof val === 'number' &&
+          val > 0.8 &&
+          i < CORRELATION_MATRIX.length - 1,
+      )
+      .map(([key, val]) => ({ p1: row.provider, p2: key, corr: val })),
   );
 
   return (
@@ -108,7 +133,10 @@ export function PortfolioRiskAnalysisPage() {
       <PageContent gap="relaxed">
         {/* Risk Summary Cards */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="p-3 rounded-xl" style={{ background: c.surface, border: `1px solid ${c.border}` }}>
+          <div
+            className="p-3 rounded-xl"
+            style={{ background: c.surface, border: `1px solid ${c.border}` }}
+          >
             <p style={{ color: c.text3, fontSize: 10, marginBottom: 4 }}>Total Exposure</p>
             <p style={{ color: c.text1, fontSize: 18, fontWeight: 700, marginBottom: 2 }}>
               ${totalValue.toLocaleString()}
@@ -116,7 +144,10 @@ export function PortfolioRiskAnalysisPage() {
             <p style={{ color: c.text3, fontSize: 9 }}>Across {ASSET_EXPOSURE.length} assets</p>
           </div>
 
-          <div className="p-3 rounded-xl" style={{ background: c.surface, border: `1px solid ${c.border}` }}>
+          <div
+            className="p-3 rounded-xl"
+            style={{ background: c.surface, border: `1px solid ${c.border}` }}
+          >
             <p style={{ color: c.text3, fontSize: 10, marginBottom: 4 }}>VaR (95%, 1-day)</p>
             <p style={{ color: '#EF4444', fontSize: 18, fontWeight: 700, marginBottom: 2 }}>
               ${Math.abs(var95).toFixed(0)}
@@ -124,14 +155,24 @@ export function PortfolioRiskAnalysisPage() {
             <p style={{ color: c.text3, fontSize: 9 }}>Max loss @ 95%</p>
           </div>
 
-          <div className="p-3 rounded-xl" style={{ background: c.surface, border: `1px solid ${c.border}` }}>
+          <div
+            className="p-3 rounded-xl"
+            style={{ background: c.surface, border: `1px solid ${c.border}` }}
+          >
             <p style={{ color: c.text3, fontSize: 10, marginBottom: 4 }}>Diversification</p>
-            <p style={{ 
-              color: diversificationScore > 70 ? '#10B981' : diversificationScore > 50 ? '#F59E0B' : '#EF4444',
-              fontSize: 18,
-              fontWeight: 700,
-              marginBottom: 2
-            }}>
+            <p
+              style={{
+                color:
+                  diversificationScore > 70
+                    ? '#10B981'
+                    : diversificationScore > 50
+                      ? '#F59E0B'
+                      : '#EF4444',
+                fontSize: 18,
+                fontWeight: 700,
+                marginBottom: 2,
+              }}
+            >
               {diversificationScore.toFixed(0)}/100
             </p>
             <p style={{ color: c.text3, fontSize: 9 }}>
@@ -139,14 +180,20 @@ export function PortfolioRiskAnalysisPage() {
             </p>
           </div>
 
-          <div className="p-3 rounded-xl" style={{ background: c.surface, border: `1px solid ${c.border}` }}>
+          <div
+            className="p-3 rounded-xl"
+            style={{ background: c.surface, border: `1px solid ${c.border}` }}
+          >
             <p style={{ color: c.text3, fontSize: 10, marginBottom: 4 }}>Risk Alerts</p>
-            <p style={{ 
-              color: (highConcentration.length + highCorrelation.length) > 0 ? '#EF4444' : '#10B981',
-              fontSize: 18,
-              fontWeight: 700,
-              marginBottom: 2
-            }}>
+            <p
+              style={{
+                color:
+                  highConcentration.length + highCorrelation.length > 0 ? '#EF4444' : '#10B981',
+                fontSize: 18,
+                fontWeight: 700,
+                marginBottom: 2,
+              }}
+            >
               {highConcentration.length + highCorrelation.length}
             </p>
             <p style={{ color: c.text3, fontSize: 9 }}>Active warnings</p>
@@ -155,7 +202,10 @@ export function PortfolioRiskAnalysisPage() {
 
         {/* Risk Warnings */}
         {(highConcentration.length > 0 || highCorrelation.length > 0) && (
-          <div className="p-3 rounded-xl" style={{ background: c.warningBg, border: `1px solid ${c.warningBorder}` }}>
+          <div
+            className="p-3 rounded-xl"
+            style={{ background: c.warningBg, border: `1px solid ${c.warningBorder}` }}
+          >
             <div className="flex items-start gap-2 mb-2">
               <AlertTriangle size={14} color={c.warningText} className="shrink-0 mt-0.5" />
               <h4 style={{ color: c.warningText, fontSize: 12, fontWeight: 700 }}>
@@ -163,13 +213,19 @@ export function PortfolioRiskAnalysisPage() {
               </h4>
             </div>
             <ul className="space-y-1">
-              {highConcentration.map(asset => (
-                <li key={asset.asset} style={{ color: c.warningText, fontSize: 10, lineHeight: 1.4, paddingLeft: 12 }}>
+              {highConcentration.map((asset) => (
+                <li
+                  key={asset.asset}
+                  style={{ color: c.warningText, fontSize: 10, lineHeight: 1.4, paddingLeft: 12 }}
+                >
                   • {asset.asset} chiếm {asset.percent}% (khuyến nghị &lt;30%)
                 </li>
               ))}
               {highCorrelation.map((corr, i) => (
-                <li key={i} style={{ color: c.warningText, fontSize: 10, lineHeight: 1.4, paddingLeft: 12 }}>
+                <li
+                  key={i}
+                  style={{ color: c.warningText, fontSize: 10, lineHeight: 1.4, paddingLeft: 12 }}
+                >
                   • High correlation: {corr.p1} ↔ {corr.p2} ({(corr.corr as number).toFixed(2)})
                 </li>
               ))}
@@ -227,38 +283,36 @@ export function PortfolioRiskAnalysisPage() {
               </div>
 
               <div className="space-y-2">
-                {ASSET_EXPOSURE.map(asset => (
-                  <div 
+                {ASSET_EXPOSURE.map((asset) => (
+                  <div
                     key={asset.asset}
                     className="flex items-center justify-between p-2 rounded-lg"
                     style={{ background: c.surface2 }}
                   >
                     <div className="flex items-center gap-2">
-                      <div 
-                        className="w-3 h-3 rounded-full"
-                        style={{ background: asset.color }}
-                      />
+                      <div className="w-3 h-3 rounded-full" style={{ background: asset.color }} />
                       <span style={{ color: c.text2, fontSize: 11 }}>{asset.asset}</span>
                     </div>
                     <div className="text-right">
                       <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
                         ${asset.value.toLocaleString()}
                       </p>
-                      <p style={{ color: c.text3, fontSize: 9 }}>
-                        {asset.percent}%
-                      </p>
+                      <p style={{ color: c.text3, fontSize: 9 }}>{asset.percent}%</p>
                     </div>
                   </div>
                 ))}
               </div>
             </PageSection>
 
-            <div className="p-3 rounded-xl" style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}>
+            <div
+              className="p-3 rounded-xl"
+              style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}
+            >
               <div className="flex items-start gap-2">
                 <Info size={14} color={c.primary} className="shrink-0 mt-0.5" />
                 <p style={{ color: c.primary, fontSize: 10, lineHeight: 1.5 }}>
-                  Diversification score {diversificationScore.toFixed(0)}/100. 
-                  Khuyến nghị không để asset nào chiếm &gt;30% portfolio.
+                  Diversification score {diversificationScore.toFixed(0)}/100. Khuyến nghị không để
+                  asset nào chiếm &gt;30% portfolio.
                 </p>
               </div>
             </div>
@@ -268,12 +322,15 @@ export function PortfolioRiskAnalysisPage() {
         {activeTab === 'correlation' && (
           <div className="space-y-4">
             <PageSection label="Provider Correlation Matrix" accentColor="#8B5CF6">
-              <div className="p-3 rounded-xl mb-3" style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}>
+              <div
+                className="p-3 rounded-xl mb-3"
+                style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}
+              >
                 <div className="flex items-start gap-2">
                   <Info size={14} color={c.primary} className="shrink-0 mt-0.5" />
                   <p style={{ color: c.primary, fontSize: 10, lineHeight: 1.5 }}>
-                    Correlation &gt;0.8 nghĩa là 2 providers có xu hướng giống nhau. 
-                    Portfolio tốt nên có providers với correlation thấp.
+                    Correlation &gt;0.8 nghĩa là 2 providers có xu hướng giống nhau. Portfolio tốt
+                    nên có providers với correlation thấp.
                   </p>
                 </div>
               </div>
@@ -283,9 +340,15 @@ export function PortfolioRiskAnalysisPage() {
                 <table className="w-full">
                   <thead>
                     <tr>
-                      <th className="p-2 text-left" style={{ fontSize: 10, color: c.text3 }}>Provider</th>
-                      {CORRELATION_MATRIX.map(row => (
-                        <th key={row.provider} className="p-2 text-center" style={{ fontSize: 10, color: c.text3 }}>
+                      <th className="p-2 text-left" style={{ fontSize: 10, color: c.text3 }}>
+                        Provider
+                      </th>
+                      {CORRELATION_MATRIX.map((row) => (
+                        <th
+                          key={row.provider}
+                          className="p-2 text-center"
+                          style={{ fontSize: 10, color: c.text3 }}
+                        >
                           {row.provider.split(/(?=[A-Z])/).join(' ')}
                         </th>
                       ))}
@@ -294,7 +357,10 @@ export function PortfolioRiskAnalysisPage() {
                   <tbody>
                     {CORRELATION_MATRIX.map((row, i) => (
                       <tr key={row.provider}>
-                        <td className="p-2" style={{ fontSize: 11, color: c.text2, fontWeight: 600 }}>
+                        <td
+                          className="p-2"
+                          style={{ fontSize: 11, color: c.text2, fontWeight: 600 }}
+                        >
                           {row.provider.split(/(?=[A-Z])/).join(' ')}
                         </td>
                         {Object.entries(row)
@@ -302,10 +368,10 @@ export function PortfolioRiskAnalysisPage() {
                           .map(([key, val]) => {
                             const isHigh = typeof val === 'number' && val > 0.8 && val < 1.0;
                             return (
-                              <td 
+                              <td
                                 key={key}
                                 className="p-2 text-center"
-                                style={{ 
+                                style={{
                                   background: isHigh ? c.warningBg : c.surface2,
                                   fontSize: 12,
                                   fontWeight: 600,
@@ -332,17 +398,8 @@ export function PortfolioRiskAnalysisPage() {
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={VAR_HISTORY} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
                     <CartesianGrid key="grid-var" strokeDasharray="3 3" stroke={c.border} />
-                    <XAxis 
-                      key="x-var"
-                      dataKey="day" 
-                      stroke={c.text3}
-                      style={{ fontSize: 10 }}
-                    />
-                    <YAxis 
-                      key="y-var"
-                      stroke={c.text3}
-                      style={{ fontSize: 10 }}
-                    />
+                    <XAxis key="x-var" dataKey="day" stroke={c.text3} style={{ fontSize: 10 }} />
+                    <YAxis key="y-var" stroke={c.text3} style={{ fontSize: 10 }} />
                     <Tooltip
                       key="tip-var"
                       contentStyle={{
@@ -382,12 +439,12 @@ export function PortfolioRiskAnalysisPage() {
                 </div>
               </div>
 
-              <div className="p-3 rounded-xl" style={{ background: c.dangerBg }}>
+              <div className="p-3 rounded-xl" style={{ background: c.sellAlpha10 }}>
                 <div className="flex items-start gap-2">
-                  <AlertTriangle size={14} color={c.dangerText} className="shrink-0 mt-0.5" />
-                  <p style={{ color: c.dangerText, fontSize: 10, lineHeight: 1.5 }}>
-                    VaR chỉ ước tính rủi ro trong điều kiện market bình thường. 
-                    Trong black swan events, loss có thể vượt xa VaR 99%.
+                  <AlertTriangle size={14} color={c.error} className="shrink-0 mt-0.5" />
+                  <p style={{ color: c.error, fontSize: 10, lineHeight: 1.5 }}>
+                    VaR chỉ ước tính rủi ro trong điều kiện market bình thường. Trong black swan
+                    events, loss có thể vượt xa VaR 99%.
                   </p>
                 </div>
               </div>
@@ -399,35 +456,39 @@ export function PortfolioRiskAnalysisPage() {
           <div className="space-y-4">
             <PageSection label="Stress Test Scenarios" accentColor="#6B7280">
               <div className="space-y-2">
-                {STRESS_SCENARIOS.map(scenario => (
-                  <div 
+                {STRESS_SCENARIOS.map((scenario) => (
+                  <div
                     key={scenario.name}
                     className="p-3 rounded-xl"
                     style={{ background: c.surface2 }}
                   >
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex-1">
-                        <p style={{ color: c.text1, fontSize: 12, fontWeight: 600, marginBottom: 2 }}>
+                        <p
+                          style={{ color: c.text1, fontSize: 12, fontWeight: 600, marginBottom: 2 }}
+                        >
                           {scenario.name}
                         </p>
                         <p style={{ color: c.text3, fontSize: 9 }}>
                           Probability: {scenario.probability}%
                         </p>
                       </div>
-                      <p style={{ 
-                        color: scenario.impact >= 0 ? '#10B981' : '#EF4444',
-                        fontSize: 16,
-                        fontWeight: 700
-                      }}>
+                      <p
+                        style={{
+                          color: scenario.impact >= 0 ? '#10B981' : '#EF4444',
+                          fontSize: 16,
+                          fontWeight: 700,
+                        }}
+                      >
                         {scenario.impact >= 0 ? '+' : ''}${scenario.impact.toLocaleString()}
                       </p>
                     </div>
                     <div className="w-full h-2 rounded-full" style={{ background: c.border }}>
-                      <div 
+                      <div
                         className="h-full rounded-full"
-                        style={{ 
+                        style={{
                           background: scenario.color,
-                          width: `${Math.abs(scenario.impact) / 2400 * 100}%`
+                          width: `${(Math.abs(scenario.impact) / 2400) * 100}%`,
                         }}
                       />
                     </div>
@@ -435,12 +496,15 @@ export function PortfolioRiskAnalysisPage() {
                 ))}
               </div>
 
-              <div className="p-3 rounded-xl" style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}>
+              <div
+                className="p-3 rounded-xl"
+                style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}
+              >
                 <div className="flex items-start gap-2">
                   <Info size={14} color={c.primary} className="shrink-0 mt-0.5" />
                   <p style={{ color: c.primary, fontSize: 10, lineHeight: 1.5 }}>
-                    Stress test giúp bạn hiểu portfolio sẽ phản ứng ra sao trong các tình huống thị trường khác nhau. 
-                    Đảm bảo bạn có thể chấp nhận worst-case scenario.
+                    Stress test giúp bạn hiểu portfolio sẽ phản ứng ra sao trong các tình huống thị
+                    trường khác nhau. Đảm bảo bạn có thể chấp nhận worst-case scenario.
                   </p>
                 </div>
               </div>

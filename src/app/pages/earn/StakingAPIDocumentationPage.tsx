@@ -17,7 +17,12 @@ const ENDPOINTS = [
     params: [
       { name: 'asset', type: 'string', required: true, desc: 'ETH, BTC, SOL, etc.' },
       { name: 'amount', type: 'number', required: true, desc: 'Amount to stake' },
-      { name: 'product', type: 'string', required: true, desc: 'flexible, fixed-30, fixed-60, etc.' },
+      {
+        name: 'product',
+        type: 'string',
+        required: true,
+        desc: 'flexible, fixed-30, fixed-60, etc.',
+      },
       { name: 'validator', type: 'string', required: false, desc: 'Optional validator address' },
     ],
     response: {
@@ -63,7 +68,12 @@ const ENDPOINTS = [
     desc: 'Unstake assets from a position',
     params: [
       { name: 'positionId', type: 'string', required: true, desc: 'Position ID to unstake' },
-      { name: 'amount', type: 'number', required: false, desc: 'Partial unstake amount (optional)' },
+      {
+        name: 'amount',
+        type: 'number',
+        required: false,
+        desc: 'Partial unstake amount (optional)',
+      },
     ],
     response: {
       unstakeId: 'uns_xyz789',
@@ -191,7 +201,13 @@ export function StakingAPIDocumentationPage() {
 
       <PageContent>
         {/* Info Banner */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(139,92,246,0.08)', border: '1.5px solid rgba(139,92,246,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{
+            background: 'rgba(139,92,246,0.08)',
+            border: '1.5px solid rgba(139,92,246,0.2)',
+          }}
+        >
           <div className="flex gap-3">
             <Code size={20} color="#8B5CF6" className="shrink-0 mt-0.5" />
             <div>
@@ -199,7 +215,8 @@ export function StakingAPIDocumentationPage() {
                 Programmatic Staking API
               </p>
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                RESTful API with JSON payloads. Rate limits apply. API key authentication required. Test in sandbox environment before production.
+                RESTful API with JSON payloads. Rate limits apply. API key authentication required.
+                Test in sandbox environment before production.
               </p>
             </div>
           </div>
@@ -247,17 +264,29 @@ export function StakingAPIDocumentationPage() {
                     onClick={() => setSelectedEndpoint(idx)}
                     style={{
                       border: selectedEndpoint === idx ? `2px solid ${c.primary}` : undefined,
-                    }}>
+                    }}
+                  >
                     <div className="flex items-center gap-2 mb-2">
                       <span
                         className="px-2 py-0.5 rounded-md text-xs font-bold"
                         style={{
-                          background: ep.method === 'POST' ? 'rgba(16,185,129,0.15)' : 'rgba(59,130,246,0.15)',
+                          background:
+                            ep.method === 'POST'
+                              ? 'rgba(16,185,129,0.15)'
+                              : 'rgba(59,130,246,0.15)',
                           color: ep.method === 'POST' ? '#10B981' : '#3B82F6',
-                        }}>
+                        }}
+                      >
                         {ep.method}
                       </span>
-                      <p style={{ color: c.text1, fontSize: 13, fontFamily: 'monospace', fontWeight: 600 }}>
+                      <p
+                        style={{
+                          color: c.text1,
+                          fontSize: 13,
+                          fontFamily: 'monospace',
+                          fontWeight: 600,
+                        }}
+                      >
                         {ep.path}
                       </p>
                     </div>
@@ -273,12 +302,23 @@ export function StakingAPIDocumentationPage() {
                   <span
                     className="px-3 py-1 rounded-lg text-sm font-bold"
                     style={{
-                      background: endpoint.method === 'POST' ? 'rgba(16,185,129,0.15)' : 'rgba(59,130,246,0.15)',
+                      background:
+                        endpoint.method === 'POST'
+                          ? 'rgba(16,185,129,0.15)'
+                          : 'rgba(59,130,246,0.15)',
                       color: endpoint.method === 'POST' ? '#10B981' : '#3B82F6',
-                    }}>
+                    }}
+                  >
                     {endpoint.method}
                   </span>
-                  <p style={{ color: c.text1, fontSize: 14, fontFamily: 'monospace', fontWeight: 700 }}>
+                  <p
+                    style={{
+                      color: c.text1,
+                      fontSize: 14,
+                      fontFamily: 'monospace',
+                      fontWeight: 700,
+                    }}
+                  >
                     {endpoint.path}
                   </p>
                 </div>
@@ -296,14 +336,22 @@ export function StakingAPIDocumentationPage() {
                     {endpoint.params.map((param, idx) => (
                       <div key={idx} className="rounded-lg p-3" style={{ background: c.surface2 }}>
                         <div className="flex items-center gap-2 mb-1">
-                          <p style={{ color: c.text1, fontSize: 12, fontFamily: 'monospace', fontWeight: 700 }}>
+                          <p
+                            style={{
+                              color: c.text1,
+                              fontSize: 12,
+                              fontFamily: 'monospace',
+                              fontWeight: 700,
+                            }}
+                          >
                             {param.name}
                           </p>
-                          <span style={{ color: c.text3, fontSize: 10 }}>
-                            {param.type}
-                          </span>
+                          <span style={{ color: c.text3, fontSize: 10 }}>{param.type}</span>
                           {param.required && (
-                            <span className="px-1.5 py-0.5 rounded text-xs font-bold" style={{ background: 'rgba(239,68,68,0.15)', color: '#EF4444' }}>
+                            <span
+                              className="px-1.5 py-0.5 rounded text-xs font-bold"
+                              style={{ background: 'rgba(239,68,68,0.15)', color: '#EF4444' }}
+                            >
                               required
                             </span>
                           )}
@@ -323,13 +371,16 @@ export function StakingAPIDocumentationPage() {
                     <button
                       onClick={() => handleCopy(JSON.stringify(endpoint.response, null, 2))}
                       className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs"
-                      style={{ background: c.surface2, color: c.text2 }}>
+                      style={{ background: c.surface2, color: c.text2 }}
+                    >
                       <Copy size={12} />
                       Copy
                     </button>
                   </div>
                   <div className="rounded-lg p-3 overflow-x-auto" style={{ background: '#1E1E1E' }}>
-                    <pre style={{ fontSize: 11, color: '#D4D4D4', margin: 0, fontFamily: 'monospace' }}>
+                    <pre
+                      style={{ fontSize: 11, color: '#D4D4D4', margin: 0, fontFamily: 'monospace' }}
+                    >
                       {JSON.stringify(endpoint.response, null, 2)}
                     </pre>
                   </div>
@@ -343,7 +394,7 @@ export function StakingAPIDocumentationPage() {
           <>
             <PageSection label="Code Examples">
               <div className="flex gap-2 mb-3">
-                {(['javascript', 'python', 'curl'] as const).map(lang => (
+                {(['javascript', 'python', 'curl'] as const).map((lang) => (
                   <button
                     key={lang}
                     onClick={() => setCodeLanguage(lang)}
@@ -351,27 +402,40 @@ export function StakingAPIDocumentationPage() {
                     style={{
                       background: codeLanguage === lang ? c.primary : c.surface2,
                       color: codeLanguage === lang ? '#FFF' : c.text2,
-                    }}>
+                    }}
+                  >
                     {lang === 'javascript' ? 'JavaScript' : lang === 'python' ? 'Python' : 'cURL'}
                   </button>
                 ))}
               </div>
 
               <TrCard className="p-0 overflow-hidden">
-                <div className="flex items-center justify-between p-3 border-b" style={{ borderColor: c.borderSolid }}>
+                <div
+                  className="flex items-center justify-between p-3 border-b"
+                  style={{ borderColor: c.borderSolid }}
+                >
                   <p style={{ color: c.text2, fontSize: 12, fontWeight: 700 }}>
                     Create Stake Position
                   </p>
                   <button
                     onClick={() => handleCopy(CODE_EXAMPLES[codeLanguage])}
                     className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs"
-                    style={{ background: c.surface2, color: c.text2 }}>
+                    style={{ background: c.surface2, color: c.text2 }}
+                  >
                     <Copy size={12} />
                     Copy
                   </button>
                 </div>
                 <div className="p-3 overflow-x-auto" style={{ background: '#1E1E1E' }}>
-                  <pre style={{ fontSize: 11, color: '#D4D4D4', margin: 0, fontFamily: 'monospace', lineHeight: 1.6 }}>
+                  <pre
+                    style={{
+                      fontSize: 11,
+                      color: '#D4D4D4',
+                      margin: 0,
+                      fontFamily: 'monospace',
+                      lineHeight: 1.6,
+                    }}
+                  >
                     {CODE_EXAMPLES[codeLanguage]}
                   </pre>
                 </div>
@@ -381,7 +445,10 @@ export function StakingAPIDocumentationPage() {
             <PageSection label="Try in Sandbox">
               <TrCard className="p-4">
                 <div className="flex items-start gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(245,158,11,0.12)' }}>
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    style={{ background: 'rgba(245,158,11,0.12)' }}
+                  >
                     <Zap size={24} color="#F59E0B" />
                   </div>
                   <div className="flex-1">
@@ -389,7 +456,8 @@ export function StakingAPIDocumentationPage() {
                       Sandbox Environment
                     </p>
                     <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                      Test your integration with fake data before going live. No real funds involved.
+                      Test your integration with fake data before going live. No real funds
+                      involved.
                     </p>
                   </div>
                 </div>
@@ -397,7 +465,14 @@ export function StakingAPIDocumentationPage() {
                 <div className="rounded-xl p-3 mb-3" style={{ background: c.surface2 }}>
                   <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Sandbox Base URL</p>
                   <div className="flex items-center justify-between">
-                    <p style={{ color: c.text1, fontSize: 12, fontFamily: 'monospace', fontWeight: 600 }}>
+                    <p
+                      style={{
+                        color: c.text1,
+                        fontSize: 12,
+                        fontFamily: 'monospace',
+                        fontWeight: 600,
+                      }}
+                    >
                       https://sandbox.platform.com/v1
                     </p>
                     <Copy
@@ -411,7 +486,8 @@ export function StakingAPIDocumentationPage() {
 
                 <button
                   className="w-full py-3 rounded-[14px] text-center text-sm font-semibold"
-                  style={{ background: c.primary, color: '#FFF' }}>
+                  style={{ background: c.primary, color: '#FFF' }}
+                >
                   Get Sandbox API Key
                 </button>
               </TrCard>
@@ -430,13 +506,19 @@ export function StakingAPIDocumentationPage() {
                       API Key Authentication
                     </p>
                     <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                      Include your API key in the <code style={{ background: c.surface2, padding: '2px 6px', borderRadius: 4 }}>X-API-Key</code> header with every request.
+                      Include your API key in the{' '}
+                      <code style={{ background: c.surface2, padding: '2px 6px', borderRadius: 4 }}>
+                        X-API-Key
+                      </code>{' '}
+                      header with every request.
                     </p>
                   </div>
                 </div>
 
                 <div className="rounded-lg p-3" style={{ background: '#1E1E1E' }}>
-                  <pre style={{ fontSize: 11, color: '#D4D4D4', margin: 0, fontFamily: 'monospace' }}>
+                  <pre
+                    style={{ fontSize: 11, color: '#D4D4D4', margin: 0, fontFamily: 'monospace' }}
+                  >
                     {`curl -H "X-API-Key: YOUR_API_KEY" \\
   https://api.platform.com/v1/staking/positions`}
                   </pre>
@@ -444,7 +526,8 @@ export function StakingAPIDocumentationPage() {
 
                 <button
                   className="w-full mt-3 py-2.5 rounded-xl text-sm font-semibold"
-                  style={{ background: c.surface2, color: c.text1 }}>
+                  style={{ background: c.surface2, color: c.text1 }}
+                >
                   Generate API Key in Settings →
                 </button>
               </TrCard>
@@ -458,16 +541,22 @@ export function StakingAPIDocumentationPage() {
                     className="p-4"
                     style={{
                       border: tier.tier === 'Pro' ? `2px solid ${c.primary}` : undefined,
-                    }}>
+                    }}
+                  >
                     <div className="flex items-start justify-between mb-3">
                       <div>
-                        <p style={{ color: c.text1, fontSize: 16, fontWeight: 700, marginBottom: 2 }}>
+                        <p
+                          style={{ color: c.text1, fontSize: 16, fontWeight: 700, marginBottom: 2 }}
+                        >
                           {tier.tier}
                         </p>
                         <p style={{ color: c.text3, fontSize: 11 }}>{tier.price}</p>
                       </div>
                       {tier.tier === 'Pro' && (
-                        <span className="px-2 py-1 rounded-md text-xs font-bold" style={{ background: `${c.primary}22`, color: c.primary }}>
+                        <span
+                          className="px-2 py-1 rounded-md text-xs font-bold"
+                          style={{ background: `${c.primary}22`, color: c.primary }}
+                        >
                           Recommended
                         </span>
                       )}
@@ -486,7 +575,8 @@ export function StakingAPIDocumentationPage() {
                     {tier.tier === 'Enterprise' && (
                       <button
                         className="w-full mt-3 py-2 rounded-xl text-sm font-semibold"
-                        style={{ background: c.primary, color: '#FFF' }}>
+                        style={{ background: c.primary, color: '#FFF' }}
+                      >
                         Contact Sales
                       </button>
                     )}
@@ -505,10 +595,15 @@ export function StakingAPIDocumentationPage() {
                     { code: 404, message: 'Not Found - Endpoint does not exist' },
                     { code: 500, message: 'Internal Server Error' },
                   ].map((error, idx) => (
-                    <div key={idx} className="flex items-start gap-3 p-3 rounded-lg" style={{ background: c.surface2 }}>
+                    <div
+                      key={idx}
+                      className="flex items-start gap-3 p-3 rounded-lg"
+                      style={{ background: c.surface2 }}
+                    >
                       <span
                         className="px-2 py-0.5 rounded-md text-xs font-bold shrink-0"
-                        style={{ background: 'rgba(239,68,68,0.15)', color: '#EF4444' }}>
+                        style={{ background: 'rgba(239,68,68,0.15)', color: '#EF4444' }}
+                      >
                         {error.code}
                       </span>
                       <p style={{ color: c.text2, fontSize: 12 }}>{error.message}</p>
@@ -523,7 +618,8 @@ export function StakingAPIDocumentationPage() {
         {/* Footer */}
         <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6, textAlign: 'center' }}>
-            API documentation last updated: March 7, 2026. For enterprise support, contact api-support@platform.com. Join our Discord for community help.
+            API documentation last updated: March 7, 2026. For enterprise support, contact
+            api-support@platform.com. Join our Discord for community help.
           </p>
         </div>
       </PageContent>

@@ -16,34 +16,142 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  TrendingUp, Activity, BarChart3, Layers, Target,
-  ArrowUpRight, ArrowDownRight, Info, Eye, EyeOff,
+  TrendingUp,
+  Activity,
+  BarChart3,
+  Layers,
+  Target,
+  ArrowUpRight,
+  ArrowDownRight,
+  Info,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import {
-  LineChart, Line, AreaChart, Area, BarChart, Bar,
-  XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, ComposedChart,
+  LineChart,
+  Line,
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  ReferenceLine,
+  ComposedChart,
 } from 'recharts';
 
 const TABS = ['Bieu do', 'Chi bao', 'Phan tich'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 // Price history with volume and technical indicators
 const PRICE_HISTORY = [
-  { time: '10:00', price: 0.58, volume: 12400, ma7: 0.56, ma25: 0.54, rsi: 42, bb_upper: 0.62, bb_lower: 0.52 },
-  { time: '11:00', price: 0.61, volume: 15800, ma7: 0.57, ma25: 0.55, rsi: 48, bb_upper: 0.63, bb_lower: 0.53 },
-  { time: '12:00', price: 0.59, volume: 11200, ma7: 0.58, ma25: 0.56, rsi: 45, bb_upper: 0.63, bb_lower: 0.53 },
-  { time: '13:00', price: 0.63, volume: 18900, ma7: 0.59, ma25: 0.57, rsi: 52, bb_upper: 0.64, bb_lower: 0.54 },
-  { time: '14:00', price: 0.65, volume: 21500, ma7: 0.60, ma25: 0.58, rsi: 58, bb_upper: 0.66, bb_lower: 0.54 },
-  { time: '15:00', price: 0.64, volume: 16700, ma7: 0.61, ma25: 0.59, rsi: 55, bb_upper: 0.66, bb_lower: 0.56 },
-  { time: '16:00', price: 0.67, volume: 24300, ma7: 0.62, ma25: 0.60, rsi: 61, bb_upper: 0.68, bb_lower: 0.56 },
-  { time: '17:00', price: 0.68, volume: 27800, ma7: 0.63, ma25: 0.61, rsi: 64, bb_upper: 0.69, bb_lower: 0.57 },
-  { time: '18:00', price: 0.66, volume: 19400, ma7: 0.64, ma25: 0.62, rsi: 59, bb_upper: 0.69, bb_lower: 0.59 },
-  { time: '19:00', price: 0.69, volume: 31200, ma7: 0.65, ma25: 0.63, rsi: 66, bb_upper: 0.71, bb_lower: 0.59 },
+  {
+    time: '10:00',
+    price: 0.58,
+    volume: 12400,
+    ma7: 0.56,
+    ma25: 0.54,
+    rsi: 42,
+    bb_upper: 0.62,
+    bb_lower: 0.52,
+  },
+  {
+    time: '11:00',
+    price: 0.61,
+    volume: 15800,
+    ma7: 0.57,
+    ma25: 0.55,
+    rsi: 48,
+    bb_upper: 0.63,
+    bb_lower: 0.53,
+  },
+  {
+    time: '12:00',
+    price: 0.59,
+    volume: 11200,
+    ma7: 0.58,
+    ma25: 0.56,
+    rsi: 45,
+    bb_upper: 0.63,
+    bb_lower: 0.53,
+  },
+  {
+    time: '13:00',
+    price: 0.63,
+    volume: 18900,
+    ma7: 0.59,
+    ma25: 0.57,
+    rsi: 52,
+    bb_upper: 0.64,
+    bb_lower: 0.54,
+  },
+  {
+    time: '14:00',
+    price: 0.65,
+    volume: 21500,
+    ma7: 0.6,
+    ma25: 0.58,
+    rsi: 58,
+    bb_upper: 0.66,
+    bb_lower: 0.54,
+  },
+  {
+    time: '15:00',
+    price: 0.64,
+    volume: 16700,
+    ma7: 0.61,
+    ma25: 0.59,
+    rsi: 55,
+    bb_upper: 0.66,
+    bb_lower: 0.56,
+  },
+  {
+    time: '16:00',
+    price: 0.67,
+    volume: 24300,
+    ma7: 0.62,
+    ma25: 0.6,
+    rsi: 61,
+    bb_upper: 0.68,
+    bb_lower: 0.56,
+  },
+  {
+    time: '17:00',
+    price: 0.68,
+    volume: 27800,
+    ma7: 0.63,
+    ma25: 0.61,
+    rsi: 64,
+    bb_upper: 0.69,
+    bb_lower: 0.57,
+  },
+  {
+    time: '18:00',
+    price: 0.66,
+    volume: 19400,
+    ma7: 0.64,
+    ma25: 0.62,
+    rsi: 59,
+    bb_upper: 0.69,
+    bb_lower: 0.59,
+  },
+  {
+    time: '19:00',
+    price: 0.69,
+    volume: 31200,
+    ma7: 0.65,
+    ma25: 0.63,
+    rsi: 66,
+    bb_upper: 0.71,
+    bb_lower: 0.59,
+  },
 ];
 
 const ORDER_FLOW = [
   { price: 0.72, buyVolume: 3200, sellVolume: 1400 },
-  { price: 0.70, buyVolume: 5800, sellVolume: 2100 },
+  { price: 0.7, buyVolume: 5800, sellVolume: 2100 },
   { price: 0.68, buyVolume: 8900, sellVolume: 4200 },
   { price: 0.66, buyVolume: 6700, sellVolume: 7300 },
   { price: 0.64, buyVolume: 4500, sellVolume: 9800 },
@@ -121,7 +229,8 @@ export function PredictionAdvancedChartPage() {
                       fontWeight: 600,
                     }}
                   >
-                    {priceChange >= 0 ? '+' : ''}{priceChangePercent.toFixed(2)}%
+                    {priceChange >= 0 ? '+' : ''}
+                    {priceChangePercent.toFixed(2)}%
                   </p>
                 </div>
               </div>
@@ -453,8 +562,8 @@ export function PredictionAdvancedChartPage() {
                               indicator.strength === 'Strong'
                                 ? '80%'
                                 : indicator.strength === 'Moderate'
-                                ? '50%'
-                                : '25%',
+                                  ? '50%'
+                                  : '25%',
                             background: indicator.color,
                           }}
                         />
@@ -469,7 +578,10 @@ export function PredictionAdvancedChartPage() {
             {/* Overall Signal */}
             <div
               className="rounded-2xl p-4"
-              style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}
+              style={{
+                background: 'rgba(16,185,129,0.06)',
+                border: '1px solid rgba(16,185,129,0.15)',
+              }}
             >
               <div className="flex items-center justify-between mb-2">
                 <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>Overall Signal</p>
@@ -536,7 +648,10 @@ export function PredictionAdvancedChartPage() {
               <div className="space-y-2">
                 <div
                   className="rounded-xl p-3"
-                  style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)' }}
+                  style={{
+                    background: 'rgba(239,68,68,0.06)',
+                    border: '1px solid rgba(239,68,68,0.15)',
+                  }}
                 >
                   <div className="flex items-center justify-between mb-1">
                     <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>Resistance</p>
@@ -552,7 +667,10 @@ export function PredictionAdvancedChartPage() {
 
                 <div
                   className="rounded-xl p-3"
-                  style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}
+                  style={{
+                    background: 'rgba(16,185,129,0.06)',
+                    border: '1px solid rgba(16,185,129,0.15)',
+                  }}
                 >
                   <div className="flex items-center justify-between mb-1">
                     <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>Support</p>
@@ -621,12 +739,15 @@ export function PredictionAdvancedChartPage() {
             {/* Disclaimer */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
+              style={{
+                background: 'rgba(245,158,11,0.06)',
+                border: '1px solid rgba(245,158,11,0.15)',
+              }}
             >
               <Info size={14} color="#F59E0B" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Phan tich ky thuat chi mang tinh tham khao. Khong dam bao ket qua tuong lai.
-                Ket hop voi nghien cuu co ban de quyet dinh.
+                Phan tich ky thuat chi mang tinh tham khao. Khong dam bao ket qua tuong lai. Ket hop
+                voi nghien cuu co ban de quyet dinh.
               </p>
             </div>
           </>

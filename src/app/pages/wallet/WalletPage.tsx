@@ -10,8 +10,21 @@ import { useRoutePrefix } from '../../hooks/useRoutePrefix';
 import { useHaptic } from '../../hooks/useHaptic';
 import { φ, φIcon, φAvatar, φRadius } from '../../utils/golden';
 import {
-  Eye, EyeOff, Download, Upload, ShoppingCart, Clock,
-  ChevronRight, ArrowDownUp, Search, Lock, ListOrdered, Gauge, ArrowDownLeft, Sparkles, Wifi,
+  Eye,
+  EyeOff,
+  Download,
+  Upload,
+  ShoppingCart,
+  Clock,
+  ChevronRight,
+  ArrowDownUp,
+  Search,
+  Lock,
+  ListOrdered,
+  Gauge,
+  ArrowDownLeft,
+  Sparkles,
+  Wifi,
 } from 'lucide-react';
 import { TrCard } from '../../components/ui/TrCard';
 import { TabBar } from '../../components/layout/TabBar';
@@ -103,16 +116,29 @@ export function WalletPage() {
   const [hideSmallBalances, setHideSmallBalances] = useState(false);
   const { hapticSelection, hapticLight } = useHaptic();
   const routePrefix = useRoutePrefix();
-  const { isLoading, isRefreshing, refresh, lastRefreshedLabel, refreshCount } = useLoadingState({ initialDelay: 600 });
+  const { isLoading, isRefreshing, refresh, lastRefreshedLabel, refreshCount } = useLoadingState({
+    initialDelay: 600,
+  });
   const { plans } = useDCA();
 
   const totalUSD = USER_ASSETS.reduce((s, a) => s + a.usdValue, 0);
   const totalBTC = totalUSD / 67543.21;
 
   /* ─── Balance breakdown ─── */
-  const totalAvailable = useMemo(() => USER_ASSETS.reduce((s, a) => s + (a.available / a.balance) * a.usdValue, 0), []);
-  const totalInOrder = useMemo(() => USER_ASSETS.reduce((s, a) => s + (a.inOrder / Math.max(a.balance, 0.000001)) * a.usdValue, 0), []);
-  const totalFrozen = useMemo(() => USER_ASSETS.reduce((s, a) => s + (a.frozen / Math.max(a.balance, 0.000001)) * a.usdValue, 0), []);
+  const totalAvailable = useMemo(
+    () => USER_ASSETS.reduce((s, a) => s + (a.available / a.balance) * a.usdValue, 0),
+    [],
+  );
+  const totalInOrder = useMemo(
+    () =>
+      USER_ASSETS.reduce((s, a) => s + (a.inOrder / Math.max(a.balance, 0.000001)) * a.usdValue, 0),
+    [],
+  );
+  const totalFrozen = useMemo(
+    () =>
+      USER_ASSETS.reduce((s, a) => s + (a.frozen / Math.max(a.balance, 0.000001)) * a.usdValue, 0),
+    [],
+  );
 
   /* ─── Filtered & sorted assets ─── */
   const filteredAssets = useMemo(() => {
@@ -120,7 +146,7 @@ export function WalletPage() {
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       list = list.filter(
-        (a) => a.symbol.toLowerCase().includes(q) || a.name.toLowerCase().includes(q)
+        (a) => a.symbol.toLowerCase().includes(q) || a.name.toLowerCase().includes(q),
       );
     }
     if (hideSmallBalances) {
@@ -131,7 +157,12 @@ export function WalletPage() {
 
   return (
     <PageLayout>
-      <PullToRefresh onRefresh={refresh} lastRefreshedLabel={lastRefreshedLabel} refreshCount={refreshCount} className="min-h-full">
+      <PullToRefresh
+        onRefresh={refresh}
+        lastRefreshedLabel={lastRefreshedLabel}
+        refreshCount={refreshCount}
+        className="min-h-full"
+      >
         <PageContent>
           {/* ═══ Page Title ═══ */}
           <div>
@@ -145,14 +176,18 @@ export function WalletPage() {
                 Tổng tài sản ước tính
               </span>
               <button
-                onClick={() => { toggleBalanceHidden(); hapticLight(); }}
+                onClick={() => {
+                  toggleBalanceHidden();
+                  hapticLight();
+                }}
                 className="p-1 rounded-lg hover-ghost"
                 aria-label={isBalanceHidden ? 'Hiện số dư' : 'Ẩn số dư'}
               >
-                {isBalanceHidden
-                  ? <EyeOff size={φIcon.sm} color={c.portfolioTextMuted} />
-                  : <Eye size={φIcon.sm} color={c.portfolioTextDim} />
-                }
+                {isBalanceHidden ? (
+                  <EyeOff size={φIcon.sm} color={c.portfolioTextMuted} />
+                ) : (
+                  <Eye size={φIcon.sm} color={c.portfolioTextDim} />
+                )}
               </button>
             </div>
 
@@ -171,7 +206,14 @@ export function WalletPage() {
               </span>
             </div>
 
-            <p style={{ color: c.portfolioTextMuted, fontSize: φ.xs, marginBottom: φ.base, fontFamily: 'monospace' }}>
+            <p
+              style={{
+                color: c.portfolioTextMuted,
+                fontSize: φ.xs,
+                marginBottom: φ.base,
+                fontFamily: 'monospace',
+              }}
+            >
               {isBalanceHidden ? '••••• BTC' : `≈ ${totalBTC.toFixed(8)} BTC`}
             </p>
 
@@ -184,7 +226,7 @@ export function WalletPage() {
                 { label: 'Khả dụng', value: totalAvailable, color: c.buy, icon: Eye },
                 { label: 'Trong lệnh', value: totalInOrder, color: '#F59E0B', icon: ListOrdered },
                 { label: 'Đóng băng', value: totalFrozen, color: c.sell, icon: Lock },
-              ].map(item => (
+              ].map((item) => (
                 <div key={item.label} className="flex flex-col items-center gap-1">
                   <div className="flex items-center gap-1">
                     <item.icon size={10} color={item.color} />
@@ -209,7 +251,10 @@ export function WalletPage() {
               {ACTION_BUTTONS.map((btn) => (
                 <button
                   key={btn.label}
-                  onClick={() => { navigate(`${routePrefix}${btn.route}`); hapticSelection(); }}
+                  onClick={() => {
+                    navigate(`${routePrefix}${btn.route}`);
+                    hapticSelection();
+                  }}
                   className="flex-1 flex flex-col items-center gap-1 py-2 rounded-2xl hover-ghost"
                   style={{ background: c.portfolioBtnGhost }}
                 >
@@ -227,17 +272,16 @@ export function WalletPage() {
 
           {/* ═══ DCA Shortcut ═══ */}
           <div>
-            {plans.length > 0 ? (
-              <WalletDCAShortcut variant="full" />
-            ) : (
-              <WalletDCAEmptyState />
-            )}
+            {plans.length > 0 ? <WalletDCAShortcut variant="full" /> : <WalletDCAEmptyState />}
           </div>
 
           {/* ═══ Quick Wallet Tools ═══ */}
           <div className="grid grid-cols-2 gap-2">
             <button
-              onClick={() => { navigate(`${routePrefix}/wallet/pending-deposits`); hapticSelection(); }}
+              onClick={() => {
+                navigate(`${routePrefix}/wallet/pending-deposits`);
+                hapticSelection();
+              }}
               className="flex items-center gap-2.5 px-3 py-2.5 rounded-2xl hover-ghost"
               style={{ background: c.surface2, border: `1px solid ${c.divider}` }}
             >
@@ -245,7 +289,10 @@ export function WalletPage() {
               <span style={{ color: c.text2, fontSize: φ.xs, fontWeight: 600 }}>Nạp đang chờ</span>
             </button>
             <button
-              onClick={() => { navigate(`${routePrefix}/wallet/limits`); hapticSelection(); }}
+              onClick={() => {
+                navigate(`${routePrefix}/wallet/limits`);
+                hapticSelection();
+              }}
               className="flex items-center gap-2.5 px-3 py-2.5 rounded-2xl hover-ghost"
               style={{ background: c.surface2, border: `1px solid ${c.divider}` }}
             >
@@ -253,7 +300,10 @@ export function WalletPage() {
               <span style={{ color: c.text2, fontSize: φ.xs, fontWeight: 600 }}>Hạn mức rút</span>
             </button>
             <button
-              onClick={() => { navigate(`${routePrefix}/wallet/dust-converter`); hapticSelection(); }}
+              onClick={() => {
+                navigate(`${routePrefix}/wallet/dust-converter`);
+                hapticSelection();
+              }}
               className="flex items-center gap-2.5 px-3 py-2.5 rounded-2xl hover-ghost"
               style={{ background: c.surface2, border: `1px solid ${c.divider}` }}
             >
@@ -261,12 +311,17 @@ export function WalletPage() {
               <span style={{ color: c.text2, fontSize: φ.xs, fontWeight: 600 }}>Dọn dust</span>
             </button>
             <button
-              onClick={() => { navigate(`${routePrefix}/wallet/network-status`); hapticSelection(); }}
+              onClick={() => {
+                navigate(`${routePrefix}/wallet/network-status`);
+                hapticSelection();
+              }}
               className="flex items-center gap-2.5 px-3 py-2.5 rounded-2xl hover-ghost"
               style={{ background: c.surface2, border: `1px solid ${c.divider}` }}
             >
               <Wifi size={16} color={c.success} />
-              <span style={{ color: c.text2, fontSize: φ.xs, fontWeight: 600 }}>Trạng thái mạng</span>
+              <span style={{ color: c.text2, fontSize: φ.xs, fontWeight: 600 }}>
+                Trạng thái mạng
+              </span>
             </button>
           </div>
 
@@ -317,7 +372,10 @@ export function WalletPage() {
                 placeholder="Tìm tài sản..."
                 variant="compact"
                 filterActive={hideSmallBalances}
-                onFilterToggle={() => { setHideSmallBalances(!hideSmallBalances); hapticSelection(); }}
+                onFilterToggle={() => {
+                  setHideSmallBalances(!hideSmallBalances);
+                  hapticSelection();
+                }}
                 className="mb-3"
               />
 
@@ -329,7 +387,10 @@ export function WalletPage() {
                 </span>
                 <div className="flex items-center gap-2">
                   <button
-                    onClick={() => { navigate(`${routePrefix}/wallet/address-book`); hapticSelection(); }}
+                    onClick={() => {
+                      navigate(`${routePrefix}/wallet/address-book`);
+                      hapticSelection();
+                    }}
                     className="px-2 py-1 rounded-xl hover-chip"
                     style={{
                       background: c.surface2,
@@ -342,7 +403,10 @@ export function WalletPage() {
                     Sổ địa chỉ
                   </button>
                   <button
-                    onClick={() => { navigate(`${routePrefix}/wallet/portfolio-analytics`); hapticSelection(); }}
+                    onClick={() => {
+                      navigate(`${routePrefix}/wallet/portfolio-analytics`);
+                      hapticSelection();
+                    }}
                     className="px-2 py-1 rounded-xl hover-chip"
                     style={{
                       background: c.primaryAlpha12,
@@ -369,20 +433,22 @@ export function WalletPage() {
                   {filteredAssets.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-8 gap-2">
                       <Search size={24} color={c.text3} />
-                      <p style={{ color: c.text3, fontSize: φ.sm }}>
-                        Không tìm thấy tài sản
-                      </p>
+                      <p style={{ color: c.text3, fontSize: φ.sm }}>Không tìm thấy tài sản</p>
                     </div>
                   ) : (
                     filteredAssets.map((asset, i) => (
                       <button
                         key={asset.id}
-                        onClick={() => { navigate(`${routePrefix}/wallet/asset/${asset.id}`); hapticSelection(); }}
+                        onClick={() => {
+                          navigate(`${routePrefix}/wallet/asset/${asset.id}`);
+                          hapticSelection();
+                        }}
                         className="flex items-center gap-3 px-4 w-full market-row"
                         style={{
                           paddingTop: 14,
                           paddingBottom: 14,
-                          borderBottom: i < filteredAssets.length - 1 ? `1px solid ${c.divider}` : 'none',
+                          borderBottom:
+                            i < filteredAssets.length - 1 ? `1px solid ${c.divider}` : 'none',
                         }}
                       >
                         {/* Logo */}
@@ -416,7 +482,10 @@ export function WalletPage() {
                               {fmtPct(asset.change24h)}
                             </span>
                           </div>
-                          <span className="truncate w-full text-left" style={{ color: c.text3, fontSize: φ.xs }}>
+                          <span
+                            className="truncate w-full text-left"
+                            style={{ color: c.text3, fontSize: φ.xs }}
+                          >
                             {asset.name}
                           </span>
                         </div>

@@ -2,7 +2,7 @@
  * ══════════════════════════════════════════════════════════════
  *  Test Setup — Vitest Global Configuration
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Runs before all tests to configure:
  * - @testing-library/jest-dom matchers
  * - Global mocks (window.matchMedia, IntersectionObserver)
@@ -22,7 +22,7 @@ afterEach(() => {
 // Mock window.matchMedia (required for responsive components)
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: vi.fn().mockImplementation(query => ({
+  value: vi.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,

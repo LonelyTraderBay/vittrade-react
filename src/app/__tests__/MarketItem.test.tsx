@@ -10,7 +10,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderWithProviders } from '../test-utils/test-utils';
+import { renderWithProviders } from '@/test/test-utils';
 import { MarketItem } from '../components/trading/MarketItem';
 import type { CryptoPair } from '../data/mockData';
 
@@ -31,13 +31,16 @@ describe('MarketItem', () => {
     baseAsset: 'Bitcoin',
     quoteAsset: 'USDT',
     price: 45000,
+    prevPrice: 43900,
     change24h: 2.5,
     volume24h: 1234567890,
     high24h: 46000,
     low24h: 44000,
+    marketCap: 880000000000,
     isFavorite: false,
     logoColor: '#F7931A',
     sparklineData: [100, 102, 101, 103, 105, 104, 106],
+    category: 'Layer 1',
   };
 
   const mockPairNegative: CryptoPair = {
@@ -64,7 +67,7 @@ describe('MarketItem', () => {
     it('should render price', () => {
       renderWithProviders(<MarketItem pair={mockPair} />);
 
-      expect(screen.getByText('$45,000.00')).toBeInTheDocument();
+      expect(screen.getByText('45,000.00')).toBeInTheDocument();
     });
 
     it('should render 24h change', () => {
@@ -82,24 +85,20 @@ describe('MarketItem', () => {
     it('should render with aria-label', () => {
       renderWithProviders(<MarketItem pair={mockPair} />);
 
-      expect(screen.getByLabelText('BTCUSDT — $45,000.00')).toBeInTheDocument();
+      expect(screen.getByLabelText('BTCUSDT — 45,000.00')).toBeInTheDocument();
     });
   });
 
   describe('Positive vs Negative Change', () => {
     it('should render positive change in green', () => {
-      const { container } = renderWithProviders(
-        <MarketItem pair={mockPair} />
-      );
+      const { container } = renderWithProviders(<MarketItem pair={mockPair} />);
 
       const changeElement = screen.getByText('+2.50%');
       expect(changeElement).toHaveStyle({ color: '#10B981' });
     });
 
     it('should render negative change in red', () => {
-      const { container } = renderWithProviders(
-        <MarketItem pair={mockPairNegative} />
-      );
+      const { container } = renderWithProviders(<MarketItem pair={mockPairNegative} />);
 
       const changeElement = screen.getByText('-1.50%');
       expect(changeElement).toHaveStyle({ color: '#EF4444' });
@@ -109,7 +108,7 @@ describe('MarketItem', () => {
       const zeroPair = { ...mockPair, change24h: 0 };
       renderWithProviders(<MarketItem pair={zeroPair} />);
 
-      const changeElement = screen.getByText('+0.00%');
+      const changeElement = screen.getByText('0.00%');
       expect(changeElement).toHaveStyle({ color: '#10B981' });
     });
   });
@@ -191,9 +190,7 @@ describe('MarketItem', () => {
     });
 
     it('should hide sparkline when showSparkline is false', () => {
-      renderWithProviders(
-        <MarketItem pair={mockPair} showSparkline={false} />
-      );
+      renderWithProviders(<MarketItem pair={mockPair} showSparkline={false} />);
 
       // Sparkline should not be visible
       // Component still renders but without sparkline
@@ -210,9 +207,7 @@ describe('MarketItem', () => {
 
     it('should render star when onFavoriteToggle is provided', () => {
       const onFavoriteToggle = vi.fn();
-      renderWithProviders(
-        <MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} />
-      );
+      renderWithProviders(<MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} />);
 
       expect(screen.getByLabelText('Thêm vào yêu thích')).toBeInTheDocument();
     });
@@ -220,9 +215,7 @@ describe('MarketItem', () => {
     it('should call onFavoriteToggle when star is clicked', async () => {
       const user = userEvent.setup();
       const onFavoriteToggle = vi.fn();
-      renderWithProviders(
-        <MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} />
-      );
+      renderWithProviders(<MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} />);
 
       const star = screen.getByLabelText('Thêm vào yêu thích');
       await user.click(star);
@@ -233,9 +226,7 @@ describe('MarketItem', () => {
     it('should not navigate when star is clicked', async () => {
       const user = userEvent.setup();
       const onFavoriteToggle = vi.fn();
-      renderWithProviders(
-        <MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} />
-      );
+      renderWithProviders(<MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} />);
 
       const star = screen.getByLabelText('Thêm vào yêu thích');
       await user.click(star);
@@ -246,18 +237,14 @@ describe('MarketItem', () => {
     it('should show filled star for favorite pairs', () => {
       const favoritePair = { ...mockPair, isFavorite: true };
       const onFavoriteToggle = vi.fn();
-      renderWithProviders(
-        <MarketItem pair={favoritePair} onFavoriteToggle={onFavoriteToggle} />
-      );
+      renderWithProviders(<MarketItem pair={favoritePair} onFavoriteToggle={onFavoriteToggle} />);
 
       expect(screen.getByLabelText('Bỏ yêu thích')).toBeInTheDocument();
     });
 
     it('should show unfilled star for non-favorite pairs', () => {
       const onFavoriteToggle = vi.fn();
-      renderWithProviders(
-        <MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} />
-      );
+      renderWithProviders(<MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} />);
 
       expect(screen.getByLabelText('Thêm vào yêu thích')).toBeInTheDocument();
     });
@@ -291,16 +278,12 @@ describe('MarketItem', () => {
     it('should have descriptive aria-label with pair and price', () => {
       renderWithProviders(<MarketItem pair={mockPair} />);
 
-      expect(
-        screen.getByLabelText('BTCUSDT — $45,000.00')
-      ).toBeInTheDocument();
+      expect(screen.getByLabelText('BTCUSDT — 45,000.00')).toBeInTheDocument();
     });
 
     it('should have proper star button aria-label', () => {
       const onFavoriteToggle = vi.fn();
-      renderWithProviders(
-        <MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} />
-      );
+      renderWithProviders(<MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} />);
 
       const star = screen.getByLabelText('Thêm vào yêu thích');
       expect(star).toBeInstanceOf(HTMLButtonElement);
@@ -311,14 +294,14 @@ describe('MarketItem', () => {
     it('should format large prices with comma separator', () => {
       renderWithProviders(<MarketItem pair={mockPair} />);
 
-      expect(screen.getByText('$45,000.00')).toBeInTheDocument();
+      expect(screen.getByText('45,000.00')).toBeInTheDocument();
     });
 
     it('should format small prices with decimals', () => {
       const smallPricePair = { ...mockPair, price: 0.0123 };
       renderWithProviders(<MarketItem pair={smallPricePair} />);
 
-      expect(screen.getByText('$0.0123')).toBeInTheDocument();
+      expect(screen.getByText('0.0123')).toBeInTheDocument();
     });
 
     it('should format percentage changes correctly', () => {
@@ -336,9 +319,7 @@ describe('MarketItem', () => {
 
   describe('Memo Optimization', () => {
     it('should be memoized component', () => {
-      const { rerender } = renderWithProviders(
-        <MarketItem pair={mockPair} />
-      );
+      const { rerender } = renderWithProviders(<MarketItem pair={mockPair} />);
 
       // Same props should not trigger re-render
       rerender(<MarketItem pair={mockPair} />);
@@ -353,7 +334,7 @@ describe('MarketItem', () => {
 
       expect(screen.getByText('Bitcoin')).toBeInTheDocument();
       expect(screen.getByText('USDT')).toBeInTheDocument();
-      expect(screen.getByText('$45,000.00')).toBeInTheDocument();
+      expect(screen.getByText('45,000.00')).toBeInTheDocument();
       expect(screen.getByText('+2.50%')).toBeInTheDocument();
     });
 
@@ -362,7 +343,7 @@ describe('MarketItem', () => {
 
       expect(screen.getByText('Ethereum')).toBeInTheDocument();
       expect(screen.getByText('USDT')).toBeInTheDocument();
-      expect(screen.getByText('$3,000.00')).toBeInTheDocument();
+      expect(screen.getByText('3,000.00')).toBeInTheDocument();
       expect(screen.getByText('-1.50%')).toBeInTheDocument();
     });
 
@@ -370,9 +351,7 @@ describe('MarketItem', () => {
       const user = userEvent.setup();
       const onFavoriteToggle = vi.fn();
 
-      renderWithProviders(
-        <MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} />
-      );
+      renderWithProviders(<MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} />);
 
       // Click star
       const star = screen.getByLabelText('Thêm vào yêu thích');
@@ -390,7 +369,7 @@ describe('MarketItem', () => {
       const onFavoriteToggle = vi.fn();
 
       const { rerender } = renderWithProviders(
-        <MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} />
+        <MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} />,
       );
 
       // Add to favorites
@@ -399,9 +378,7 @@ describe('MarketItem', () => {
 
       // Update to favorite
       const favoritePair = { ...mockPair, isFavorite: true };
-      rerender(
-        <MarketItem pair={favoritePair} onFavoriteToggle={onFavoriteToggle} />
-      );
+      rerender(<MarketItem pair={favoritePair} onFavoriteToggle={onFavoriteToggle} />);
 
       // Should show remove label
       expect(screen.getByLabelText('Bỏ yêu thích')).toBeInTheDocument();
@@ -416,16 +393,14 @@ describe('MarketItem', () => {
       };
       renderWithProviders(<MarketItem pair={longNamePair} />);
 
-      expect(
-        screen.getByText('Very Long Asset Name That Should Be Truncated')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Very Long Asset Name That Should Be Truncated')).toBeInTheDocument();
     });
 
     it('should handle zero price', () => {
       const zeroPricePair = { ...mockPair, price: 0 };
       renderWithProviders(<MarketItem pair={zeroPricePair} />);
 
-      expect(screen.getByText('$0.00')).toBeInTheDocument();
+      expect(screen.getByText('0.000000')).toBeInTheDocument();
     });
 
     it('should handle very small change values', () => {
@@ -452,9 +427,7 @@ describe('MarketItem', () => {
 
   describe('Interaction States', () => {
     it('should have active:opacity-70 class', () => {
-      const { container } = renderWithProviders(
-        <MarketItem pair={mockPair} />
-      );
+      const { container } = renderWithProviders(<MarketItem pair={mockPair} />);
 
       const row = screen.getByRole('button');
       expect(row).toHaveClass('active:opacity-70');

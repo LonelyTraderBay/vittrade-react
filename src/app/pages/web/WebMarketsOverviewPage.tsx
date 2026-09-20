@@ -46,26 +46,127 @@ interface MarketPair {
 }
 
 const TRENDING_PAIRS: MarketPair[] = [
-  { symbol: 'BTC', name: 'Bitcoin', price: 98500, change24h: 2.45, volume24h: 45600000000, marketCap: 1920000000000 },
-  { symbol: 'ETH', name: 'Ethereum', price: 3420, change24h: 3.82, volume24h: 28400000000, marketCap: 410000000000 },
-  { symbol: 'SOL', name: 'Solana', price: 142.5, change24h: 8.56, volume24h: 3200000000, marketCap: 65000000000 },
-  { symbol: 'BNB', name: 'BNB', price: 615, change24h: 1.23, volume24h: 1800000000, marketCap: 89000000000 },
-  { symbol: 'XRP', name: 'Ripple', price: 0.58, change24h: -1.45, volume24h: 2100000000, marketCap: 31000000000 },
-  { symbol: 'ADA', name: 'Cardano', price: 0.68, change24h: 4.12, volume24h: 980000000, marketCap: 24000000000 },
+  {
+    symbol: 'BTC',
+    name: 'Bitcoin',
+    price: 98500,
+    change24h: 2.45,
+    volume24h: 45600000000,
+    marketCap: 1920000000000,
+  },
+  {
+    symbol: 'ETH',
+    name: 'Ethereum',
+    price: 3420,
+    change24h: 3.82,
+    volume24h: 28400000000,
+    marketCap: 410000000000,
+  },
+  {
+    symbol: 'SOL',
+    name: 'Solana',
+    price: 142.5,
+    change24h: 8.56,
+    volume24h: 3200000000,
+    marketCap: 65000000000,
+  },
+  {
+    symbol: 'BNB',
+    name: 'BNB',
+    price: 615,
+    change24h: 1.23,
+    volume24h: 1800000000,
+    marketCap: 89000000000,
+  },
+  {
+    symbol: 'XRP',
+    name: 'Ripple',
+    price: 0.58,
+    change24h: -1.45,
+    volume24h: 2100000000,
+    marketCap: 31000000000,
+  },
+  {
+    symbol: 'ADA',
+    name: 'Cardano',
+    price: 0.68,
+    change24h: 4.12,
+    volume24h: 980000000,
+    marketCap: 24000000000,
+  },
 ];
 
 const NEW_LISTINGS: MarketPair[] = [
-  { symbol: 'PEPE', name: 'Pepe', price: 0.00000123, change24h: 45.67, volume24h: 450000000, marketCap: 520000000, isNew: true },
-  { symbol: 'ARB', name: 'Arbitrum', price: 1.85, change24h: 12.34, volume24h: 280000000, marketCap: 2300000000, isNew: true },
-  { symbol: 'OP', name: 'Optimism', price: 2.42, change24h: 8.91, volume24h: 195000000, marketCap: 1800000000, isNew: true },
+  {
+    symbol: 'PEPE',
+    name: 'Pepe',
+    price: 0.00000123,
+    change24h: 45.67,
+    volume24h: 450000000,
+    marketCap: 520000000,
+    isNew: true,
+  },
+  {
+    symbol: 'ARB',
+    name: 'Arbitrum',
+    price: 1.85,
+    change24h: 12.34,
+    volume24h: 280000000,
+    marketCap: 2300000000,
+    isNew: true,
+  },
+  {
+    symbol: 'OP',
+    name: 'Optimism',
+    price: 2.42,
+    change24h: 8.91,
+    volume24h: 195000000,
+    marketCap: 1800000000,
+    isNew: true,
+  },
 ];
 
 const VOLUME_LEADERS: MarketPair[] = [
-  { symbol: 'BTC', name: 'Bitcoin', price: 98500, change24h: 2.45, volume24h: 45600000000, marketCap: 1920000000000 },
-  { symbol: 'ETH', name: 'Ethereum', price: 3420, change24h: 3.82, volume24h: 28400000000, marketCap: 410000000000 },
-  { symbol: 'SOL', name: 'Solana', price: 142.5, change24h: 8.56, volume24h: 3200000000, marketCap: 65000000000 },
-  { symbol: 'XRP', name: 'Ripple', price: 0.58, change24h: -1.45, volume24h: 2100000000, marketCap: 31000000000 },
-  { symbol: 'BNB', name: 'BNB', price: 615, change24h: 1.23, volume24h: 1800000000, marketCap: 89000000000 },
+  {
+    symbol: 'BTC',
+    name: 'Bitcoin',
+    price: 98500,
+    change24h: 2.45,
+    volume24h: 45600000000,
+    marketCap: 1920000000000,
+  },
+  {
+    symbol: 'ETH',
+    name: 'Ethereum',
+    price: 3420,
+    change24h: 3.82,
+    volume24h: 28400000000,
+    marketCap: 410000000000,
+  },
+  {
+    symbol: 'SOL',
+    name: 'Solana',
+    price: 142.5,
+    change24h: 8.56,
+    volume24h: 3200000000,
+    marketCap: 65000000000,
+  },
+  {
+    symbol: 'XRP',
+    name: 'Ripple',
+    price: 0.58,
+    change24h: -1.45,
+    volume24h: 2100000000,
+    marketCap: 31000000000,
+  },
+  {
+    symbol: 'BNB',
+    name: 'BNB',
+    price: 615,
+    change24h: 1.23,
+    volume24h: 1800000000,
+    marketCap: 89000000000,
+  },
 ];
 
 /* ═══════════════════════════════════════════════════════════
@@ -90,7 +191,17 @@ function formatVolume(volume: number): string {
    COMPONENTS
    ═══════════════════════════════════════════════════════════ */
 
-function StatCard({ label, value, change, icon: Icon }: { label: string; value: string; change: number; icon: any }) {
+function StatCard({
+  label,
+  value,
+  change,
+  icon: Icon,
+}: {
+  label: string;
+  value: string;
+  change: number;
+  icon: any;
+}) {
   const c = useThemeColors();
   const isPositive = change >= 0;
 
@@ -106,7 +217,9 @@ function StatCard({ label, value, change, icon: Icon }: { label: string; value: 
         <span style={{ fontSize: WEB_FONT.sm, color: c.text3, fontWeight: 600 }}>{label}</span>
         <Icon size={WEB_ICON.lg} color={c.text3} />
       </div>
-      <div style={{ fontSize: WEB_FONT['2xl'], fontWeight: 700, color: c.text1, marginBottom: 4 }}>{value}</div>
+      <div style={{ fontSize: WEB_FONT['2xl'], fontWeight: 700, color: c.text1, marginBottom: 4 }}>
+        {value}
+      </div>
       <div className="flex items-center gap-1">
         {isPositive ? (
           <ArrowUpRight size={WEB_ICON.sm} color="#10B981" />
@@ -152,10 +265,14 @@ function PairCard({ pair, onClick }: { pair: MarketPair; onClick: () => void }) 
               background: `linear-gradient(135deg, ${c.primary}40, ${c.primary}20)`,
             }}
           >
-            <span style={{ fontSize: WEB_FONT.md, fontWeight: 700, color: c.primary }}>{pair.symbol[0]}</span>
+            <span style={{ fontSize: WEB_FONT.md, fontWeight: 700, color: c.primary }}>
+              {pair.symbol[0]}
+            </span>
           </div>
           <div>
-            <div style={{ fontSize: WEB_FONT.md, fontWeight: 700, color: c.text1 }}>{pair.symbol}/USDT</div>
+            <div style={{ fontSize: WEB_FONT.md, fontWeight: 700, color: c.text1 }}>
+              {pair.symbol}/USDT
+            </div>
             <div style={{ fontSize: WEB_FONT.xs, color: c.text3 }}>{pair.name}</div>
           </div>
         </div>
@@ -172,7 +289,15 @@ function PairCard({ pair, onClick }: { pair: MarketPair; onClick: () => void }) 
         )}
       </div>
 
-      <div style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text1, marginBottom: 8, fontVariantNumeric: 'tabular-nums' }}>
+      <div
+        style={{
+          fontSize: WEB_FONT.xl,
+          fontWeight: 700,
+          color: c.text1,
+          marginBottom: 8,
+          fontVariantNumeric: 'tabular-nums',
+        }}
+      >
         ${formatPrice(pair.price)}
       </div>
 
@@ -194,7 +319,9 @@ function PairCard({ pair, onClick }: { pair: MarketPair; onClick: () => void }) 
             {pair.change24h.toFixed(2)}%
           </span>
         </div>
-        <span style={{ fontSize: WEB_FONT.xs, color: c.text3 }}>Vol: {formatVolume(pair.volume24h)}</span>
+        <span style={{ fontSize: WEB_FONT.xs, color: c.text3 }}>
+          Vol: {formatVolume(pair.volume24h)}
+        </span>
       </div>
     </div>
   );
@@ -214,11 +341,21 @@ export function WebMarketsOverviewPage() {
 
   return (
     <PageLayout>
-      <Header variant="page" title="Tổng quan thị trường" subtitle="Theo dõi xu hướng và cơ hội đầu tư" back />
+      <Header
+        variant="page"
+        title="Tổng quan thị trường"
+        subtitle="Theo dõi xu hướng và cơ hội đầu tư"
+        back
+      />
       <div style={{ maxWidth: 1600, margin: '0 auto', padding: `${WEB_SPACING.cardRelaxed}px` }}>
         {/* ─── Global Stats ─── */}
         <div className="grid grid-cols-4 gap-4 mb-8">
-          <StatCard label="Tổng giá trị thị trường" value="$2.85T" change={2.34} icon={DollarSign} />
+          <StatCard
+            label="Tổng giá trị thị trường"
+            value="$2.85T"
+            change={2.34}
+            icon={DollarSign}
+          />
           <StatCard label="Khối lượng 24h" value="$156.8B" change={8.45} icon={Activity} />
           <StatCard label="Bitcoin Dominance" value="67.4%" change={0.12} icon={TrendingUp} />
           <StatCard label="Số cặp giao dịch" value="1,247" change={1.2} icon={Zap} />
@@ -227,7 +364,9 @@ export function WebMarketsOverviewPage() {
         {/* ─── Trending Pairs ─── */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <h2 style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text1 }}>Xu hướng nổi bật</h2>
+            <h2 style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text1 }}>
+              Xu hướng nổi bật
+            </h2>
             <button
               onClick={() => navigate('/w/markets')}
               style={{
@@ -241,7 +380,11 @@ export function WebMarketsOverviewPage() {
           </div>
           <div className="grid grid-cols-3 gap-4">
             {TRENDING_PAIRS.map((pair) => (
-              <PairCard key={pair.symbol} pair={pair} onClick={() => handlePairClick(pair.symbol)} />
+              <PairCard
+                key={pair.symbol}
+                pair={pair}
+                onClick={() => handlePairClick(pair.symbol)}
+              />
             ))}
           </div>
         </div>
@@ -252,7 +395,9 @@ export function WebMarketsOverviewPage() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Activity size={WEB_ICON.lg} color={c.text1} />
-              <h2 style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text1 }}>Top khối lượng</h2>
+              <h2 style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text1 }}>
+                Top khối lượng
+              </h2>
             </div>
             <div
               className="rounded-2xl overflow-hidden"
@@ -268,23 +413,40 @@ export function WebMarketsOverviewPage() {
                     key={pair.symbol}
                     className="flex items-center justify-between p-4 cursor-pointer transition-all hover:bg-opacity-50"
                     style={{
-                      borderBottom: idx < VOLUME_LEADERS.length - 1 ? `1px solid ${c.divider}` : 'none',
+                      borderBottom:
+                        idx < VOLUME_LEADERS.length - 1 ? `1px solid ${c.divider}` : 'none',
                     }}
                     onClick={() => handlePairClick(pair.symbol)}
                   >
                     <div className="flex items-center gap-3">
-                      <span style={{ fontSize: WEB_FONT.sm, color: c.text3, fontWeight: 700, width: 24 }}>
+                      <span
+                        style={{
+                          fontSize: WEB_FONT.sm,
+                          color: c.text3,
+                          fontWeight: 700,
+                          width: 24,
+                        }}
+                      >
                         {idx + 1}
                       </span>
                       <div>
                         <div style={{ fontSize: WEB_FONT.md, fontWeight: 700, color: c.text1 }}>
                           {pair.symbol}/USDT
                         </div>
-                        <div style={{ fontSize: WEB_FONT.xs, color: c.text3 }}>{formatVolume(pair.volume24h)}</div>
+                        <div style={{ fontSize: WEB_FONT.xs, color: c.text3 }}>
+                          {formatVolume(pair.volume24h)}
+                        </div>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div style={{ fontSize: WEB_FONT.md, fontWeight: 700, color: c.text1, fontVariantNumeric: 'tabular-nums' }}>
+                      <div
+                        style={{
+                          fontSize: WEB_FONT.md,
+                          fontWeight: 700,
+                          color: c.text1,
+                          fontVariantNumeric: 'tabular-nums',
+                        }}
+                      >
                         ${formatPrice(pair.price)}
                       </div>
                       <div
@@ -308,11 +470,17 @@ export function WebMarketsOverviewPage() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Zap size={WEB_ICON.lg} color={c.text1} />
-              <h2 style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text1 }}>Niêm yết mới</h2>
+              <h2 style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text1 }}>
+                Niêm yết mới
+              </h2>
             </div>
             <div className="flex flex-col gap-4">
               {NEW_LISTINGS.map((pair) => (
-                <PairCard key={pair.symbol} pair={pair} onClick={() => handlePairClick(pair.symbol)} />
+                <PairCard
+                  key={pair.symbol}
+                  pair={pair}
+                  onClick={() => handlePairClick(pair.symbol)}
+                />
               ))}
             </div>
           </div>

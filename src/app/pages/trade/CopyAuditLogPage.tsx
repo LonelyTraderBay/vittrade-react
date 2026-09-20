@@ -2,19 +2,19 @@
  * ══════════════════════════════════════════════════════════════
  *  CopyAuditLogPage — Phase 2: Compliance & Transparency
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Filterable event timeline (all copy actions)
  * - Trade reconciliation view (provider vs you)
  * - Slippage report generator
  * - Export audit logs (CSV/PDF/JSON)
- * 
+ *
  * Compliance (MiFID II Art. 58):
  * - Complete audit trail required
  * - 5-year retention minimum
  * - Tamper-proof logging
  * - Export capability for regulators
- * 
+ *
  * Guidelines:
  * - Reverse chronological order
  * - Filter by event type
@@ -24,10 +24,22 @@
 
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
-import { 
-  FileText, Search, Filter, Download, Calendar, CheckCircle,
-  AlertCircle, Activity, DollarSign, Settings, Shield,
-  Clock, Eye, TrendingUp, TrendingDown
+import {
+  FileText,
+  Search,
+  Filter,
+  Download,
+  Calendar,
+  CheckCircle,
+  AlertCircle,
+  Activity,
+  DollarSign,
+  Settings,
+  Shield,
+  Clock,
+  Eye,
+  TrendingUp,
+  TrendingDown,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -141,15 +153,15 @@ export function CopyAuditLogPage() {
   const c = useThemeColors();
   const navigate = useNavigate();
   const prefix = useRoutePrefix();
-  
+
   const [filter, setFilter] = useState<EventType>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [showExportModal, setShowExportModal] = useState(false);
 
-  const filteredEvents = MOCK_EVENTS.filter(event => {
+  const filteredEvents = MOCK_EVENTS.filter((event) => {
     // Filter by type
     if (filter !== 'all' && event.type !== filter) return false;
-    
+
     // Filter by search
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
@@ -159,16 +171,20 @@ export function CopyAuditLogPage() {
         event.metadata?.pair?.toLowerCase().includes(query)
       );
     }
-    
+
     return true;
   });
 
   const getIcon = (type: AuditEvent['type']) => {
     switch (type) {
-      case 'trade': return Activity;
-      case 'config': return Settings;
-      case 'risk': return AlertCircle;
-      case 'system': return CheckCircle;
+      case 'trade':
+        return Activity;
+      case 'config':
+        return Settings;
+      case 'risk':
+        return AlertCircle;
+      case 'system':
+        return CheckCircle;
     }
   };
 
@@ -176,10 +192,14 @@ export function CopyAuditLogPage() {
     if (severity === 'critical') return '#EF4444';
     if (severity === 'warning') return '#F59E0B';
     switch (type) {
-      case 'trade': return '#3B82F6';
-      case 'config': return '#8B5CF6';
-      case 'risk': return '#EF4444';
-      case 'system': return '#10B981';
+      case 'trade':
+        return '#3B82F6';
+      case 'config':
+        return '#8B5CF6';
+      case 'risk':
+        return '#EF4444';
+      case 'system':
+        return '#10B981';
     }
   };
 
@@ -187,15 +207,17 @@ export function CopyAuditLogPage() {
     // TODO: Implement export logic
     console.log(`Exporting as ${format}...`);
     setShowExportModal(false);
-    
+
     // Mock download
-    alert(`Audit log exported as ${format.toUpperCase()}. In production, this would download a file.`);
+    alert(
+      `Audit log exported as ${format.toUpperCase()}. In production, this would download a file.`,
+    );
   };
 
   return (
     <PageLayout>
-      <Header 
-        title="Audit Log" 
+      <Header
+        title="Audit Log"
         back
         action={{
           icon: Download,
@@ -205,7 +227,10 @@ export function CopyAuditLogPage() {
 
       <PageContent gap="relaxed">
         {/* Compliance Notice */}
-        <div className="p-3 rounded-xl" style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}>
+        <div
+          className="p-3 rounded-xl"
+          style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}
+        >
           <div className="flex items-start gap-2">
             <Shield size={14} color={c.primary} className="shrink-0 mt-0.5" />
             <div>
@@ -242,10 +267,26 @@ export function CopyAuditLogPage() {
           variant="pill"
           tabs={[
             { id: 'all', label: 'Tất cả', badge: MOCK_EVENTS.length },
-            { id: 'trade', label: 'Trades', badge: MOCK_EVENTS.filter(e => e.type === 'trade').length },
-            { id: 'config', label: 'Config', badge: MOCK_EVENTS.filter(e => e.type === 'config').length },
-            { id: 'risk', label: 'Risk', badge: MOCK_EVENTS.filter(e => e.type === 'risk').length },
-            { id: 'system', label: 'System', badge: MOCK_EVENTS.filter(e => e.type === 'system').length },
+            {
+              id: 'trade',
+              label: 'Trades',
+              badge: MOCK_EVENTS.filter((e) => e.type === 'trade').length,
+            },
+            {
+              id: 'config',
+              label: 'Config',
+              badge: MOCK_EVENTS.filter((e) => e.type === 'config').length,
+            },
+            {
+              id: 'risk',
+              label: 'Risk',
+              badge: MOCK_EVENTS.filter((e) => e.type === 'risk').length,
+            },
+            {
+              id: 'system',
+              label: 'System',
+              badge: MOCK_EVENTS.filter((e) => e.type === 'system').length,
+            },
           ]}
           active={filter}
           onChange={(id) => setFilter(id as EventType)}
@@ -261,10 +302,10 @@ export function CopyAuditLogPage() {
           </div>
         ) : (
           <div className="space-y-2">
-            {filteredEvents.map(event => {
+            {filteredEvents.map((event) => {
               const Icon = getIcon(event.type);
               const color = getColor(event.type, event.severity);
-              
+
               return (
                 <div
                   key={event.id}
@@ -272,7 +313,7 @@ export function CopyAuditLogPage() {
                   style={{ background: c.surface, border: `1px solid ${c.border}` }}
                 >
                   <div className="flex gap-3">
-                    <div 
+                    <div
                       className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
                       style={{ background: color + '22' }}
                     >
@@ -282,19 +323,23 @@ export function CopyAuditLogPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between mb-1">
                         <div>
-                          <h4 style={{ 
-                            color: c.text1, 
-                            fontSize: 13, 
-                            fontWeight: 700,
-                            marginBottom: 2,
-                          }}>
+                          <h4
+                            style={{
+                              color: c.text1,
+                              fontSize: 13,
+                              fontWeight: 700,
+                              marginBottom: 2,
+                            }}
+                          >
                             {event.title}
                           </h4>
-                          <p style={{ 
-                            color: c.text2, 
-                            fontSize: 11, 
-                            lineHeight: 1.5,
-                          }}>
+                          <p
+                            style={{
+                              color: c.text2,
+                              fontSize: 11,
+                              lineHeight: 1.5,
+                            }}
+                          >
                             {event.description}
                           </p>
                         </div>
@@ -302,17 +347,15 @@ export function CopyAuditLogPage() {
 
                       <div className="flex items-center gap-2 mt-2">
                         <Clock size={10} color={c.text3} />
-                        <span style={{ color: c.text3, fontSize: 10 }}>
-                          {event.timestamp}
-                        </span>
+                        <span style={{ color: c.text3, fontSize: 10 }}>{event.timestamp}</span>
                         <span style={{ color: c.text3, fontSize: 10 }}>•</span>
-                        <span 
+                        <span
                           className="px-2 py-0.5 rounded text-xs"
-                          style={{ 
+                          style={{
                             background: color + '22',
                             color: color,
                             fontWeight: 600,
-                            textTransform: 'uppercase'
+                            textTransform: 'uppercase',
                           }}
                         >
                           {event.type}
@@ -350,11 +393,13 @@ export function CopyAuditLogPage() {
                             {event.metadata.pnl !== undefined && (
                               <div>
                                 <span style={{ color: c.text3, fontSize: 9 }}>P/L</span>
-                                <p style={{ 
-                                  color: event.metadata.pnl >= 0 ? '#10B981' : '#EF4444',
-                                  fontSize: 11,
-                                  fontWeight: 600
-                                }}>
+                                <p
+                                  style={{
+                                    color: event.metadata.pnl >= 0 ? '#10B981' : '#EF4444',
+                                    fontSize: 11,
+                                    fontWeight: 600,
+                                  }}
+                                >
                                   {event.metadata.pnl >= 0 ? '+' : ''}${event.metadata.pnl}
                                 </p>
                               </div>
@@ -391,19 +436,19 @@ export function CopyAuditLogPage() {
             <div className="p-3 rounded-xl text-center" style={{ background: c.surface2 }}>
               <p style={{ color: c.text3, fontSize: 10, marginBottom: 4 }}>Trades</p>
               <p style={{ color: '#3B82F6', fontSize: 18, fontWeight: 700 }}>
-                {MOCK_EVENTS.filter(e => e.type === 'trade').length}
+                {MOCK_EVENTS.filter((e) => e.type === 'trade').length}
               </p>
             </div>
             <div className="p-3 rounded-xl text-center" style={{ background: c.surface2 }}>
               <p style={{ color: c.text3, fontSize: 10, marginBottom: 4 }}>Config Changes</p>
               <p style={{ color: '#8B5CF6', fontSize: 18, fontWeight: 700 }}>
-                {MOCK_EVENTS.filter(e => e.type === 'config').length}
+                {MOCK_EVENTS.filter((e) => e.type === 'config').length}
               </p>
             </div>
             <div className="p-3 rounded-xl text-center" style={{ background: c.surface2 }}>
               <p style={{ color: c.text3, fontSize: 10, marginBottom: 4 }}>Risk Alerts</p>
               <p style={{ color: '#EF4444', fontSize: 18, fontWeight: 700 }}>
-                {MOCK_EVENTS.filter(e => e.type === 'risk').length}
+                {MOCK_EVENTS.filter((e) => e.type === 'risk').length}
               </p>
             </div>
           </div>
@@ -412,12 +457,12 @@ export function CopyAuditLogPage() {
 
       {/* Export Modal */}
       {showExportModal && (
-        <div 
+        <div
           className="fixed inset-0 z-50 flex items-end justify-center"
           style={{ background: 'rgba(0,0,0,0.5)' }}
           onClick={() => setShowExportModal(false)}
         >
-          <div 
+          <div
             className="w-full max-w-md rounded-t-3xl p-6"
             style={{ background: c.bg }}
             onClick={(e) => e.stopPropagation()}
@@ -425,16 +470,14 @@ export function CopyAuditLogPage() {
             <h3 style={{ color: c.text1, fontSize: 16, fontWeight: 700, marginBottom: 4 }}>
               Export Audit Log
             </h3>
-            <p style={{ color: c.text3, fontSize: 12, marginBottom: 16 }}>
-              Chọn định dạng export
-            </p>
+            <p style={{ color: c.text3, fontSize: 12, marginBottom: 16 }}>Chọn định dạng export</p>
 
             <div className="space-y-2 mb-4">
               {[
                 { format: 'csv' as const, label: 'CSV', desc: 'Excel-compatible spreadsheet' },
                 { format: 'pdf' as const, label: 'PDF', desc: 'Printable document' },
                 { format: 'json' as const, label: 'JSON', desc: 'Raw data for developers' },
-              ].map(item => (
+              ].map((item) => (
                 <button
                   key={item.format}
                   onClick={() => handleExport(item.format)}
@@ -445,9 +488,7 @@ export function CopyAuditLogPage() {
                     <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginBottom: 2 }}>
                       {item.label}
                     </p>
-                    <p style={{ color: c.text3, fontSize: 10 }}>
-                      {item.desc}
-                    </p>
+                    <p style={{ color: c.text3, fontSize: 10 }}>{item.desc}</p>
                   </div>
                   <Download size={16} color={c.text3} />
                 </button>

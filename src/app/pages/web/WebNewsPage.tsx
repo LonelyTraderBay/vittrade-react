@@ -87,7 +87,8 @@ const NEWS_ARTICLES: NewsArticle[] = [
   {
     id: 'n1',
     title: 'Nâng cấp hệ thống bảo mật — Bắt buộc kích hoạt 2FA',
-    excerpt: 'Từ 20/03/2026, tất cả tài khoản phải bật 2FA để đảm bảo an toàn. Hướng dẫn chi tiết trong bài viết.',
+    excerpt:
+      'Từ 20/03/2026, tất cả tài khoản phải bật 2FA để đảm bảo an toàn. Hướng dẫn chi tiết trong bài viết.',
     category: 'security',
     priority: 'critical',
     publishedDate: '2026-03-13',
@@ -111,7 +112,8 @@ const NEWS_ARTICLES: NewsArticle[] = [
   {
     id: 'n3',
     title: 'Ra mắt VIP Program mới — Phí giao dịch giảm tới 70%',
-    excerpt: 'Chương trình VIP 6 tier với hoa hồng lifetime và quyền lợi đặc biệt cho trader chuyên nghiệp.',
+    excerpt:
+      'Chương trình VIP 6 tier với hoa hồng lifetime và quyền lợi đặc biệt cho trader chuyên nghiệp.',
     category: 'platform',
     priority: 'important',
     publishedDate: '2026-03-10',
@@ -158,7 +160,8 @@ const NEWS_ARTICLES: NewsArticle[] = [
   {
     id: 'n7',
     title: 'Bảo trì hệ thống định kỳ — 15/03, 2:00 - 4:00 AM',
-    excerpt: 'Hệ thống sẽ tạm ngưng 2 giờ để nâng cấp máy chủ. Giao dịch không khả dụng trong thời gian này.',
+    excerpt:
+      'Hệ thống sẽ tạm ngưng 2 giờ để nâng cấp máy chủ. Giao dịch không khả dụng trong thời gian này.',
     category: 'platform',
     priority: 'important',
     publishedDate: '2026-03-05',
@@ -170,7 +173,8 @@ const NEWS_ARTICLES: NewsArticle[] = [
   {
     id: 'n8',
     title: 'Thêm 15 token mới — Listing Q1/2026',
-    excerpt: 'Danh sách 15 token mới được niêm yết trong tháng 3, bao gồm các dự án DeFi và Layer-2.',
+    excerpt:
+      'Danh sách 15 token mới được niêm yết trong tháng 3, bao gồm các dự án DeFi và Layer-2.',
     category: 'product',
     publishedDate: '2026-03-03',
     readTime: '4 phút',
@@ -263,7 +267,10 @@ function ArticleCard({ article }: { article: NewsArticle }) {
         </p>
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4" style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
+          <div
+            className="flex items-center gap-4"
+            style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}
+          >
             <span className="flex items-center gap-1">
               <Calendar size={12} />
               {new Date(article.publishedDate).toLocaleDateString('vi-VN')}
@@ -335,159 +342,195 @@ export function WebNewsPage() {
 
   return (
     <PageLayout>
-    <div className="flex" style={{ minHeight: '100%' }}>
-      {/* ═══ LEFT SIDEBAR (280px) ═══ */}
-      <div
-        className="flex flex-col"
-        style={{
-          width: 280,
-          background: c.surface,
-          borderRight: `1px solid ${c.divider}`,
-          position: 'sticky',
-          top: 0,
-          alignSelf: 'flex-start',
-          maxHeight: '100vh',
-          overflowY: 'auto',
-        }}
-      >
-        {/* Header */}
+      <div className="flex" style={{ minHeight: '100%' }}>
+        {/* ═══ LEFT SIDEBAR (280px) ═══ */}
         <div
-          className="flex items-center justify-between px-5"
+          className="flex flex-col"
           style={{
-            height: 60,
-            borderBottom: `1px solid ${c.divider}`,
+            width: 280,
+            background: c.surface,
+            borderRight: `1px solid ${c.divider}`,
+            position: 'sticky',
+            top: 0,
+            alignSelf: 'flex-start',
+            maxHeight: '100vh',
+            overflowY: 'auto',
           }}
         >
-          <h2
+          {/* Header */}
+          <div
+            className="flex items-center justify-between px-5"
             style={{
-              color: c.text1,
-              fontSize: WEB_FONT.SIZE.H2,
-              fontWeight: 700,
-              margin: 0,
+              height: 60,
+              borderBottom: `1px solid ${c.divider}`,
             }}
           >
-            Tin tức
-          </h2>
-          {unreadCount > 0 && (
-            <span
-              className="px-2 py-1 rounded-full"
+            <h2
               style={{
-                background: '#EF4444',
-                color: '#fff',
-                fontSize: 11,
+                color: c.text1,
+                fontSize: WEB_FONT.SIZE.H2,
                 fontWeight: 700,
+                margin: 0,
               }}
             >
-              {unreadCount}
-            </span>
-          )}
-        </div>
-
-        {/* Search */}
-        <div className="p-4">
-          <div
-            className="flex items-center gap-2 px-3 py-2 rounded-lg"
-            style={{
-              background: c.bg,
-              border: `1px solid ${c.border}`,
-            }}
-          >
-            <Search size={16} color={c.text3} />
-            <input
-              type="text"
-              placeholder="Tìm kiếm tin tức..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              style={{
-                flex: 1,
-                background: 'transparent',
-                border: 'none',
-                outline: 'none',
-                color: c.text1,
-                fontSize: WEB_FONT.SIZE.CAPTION,
-              }}
-            />
-          </div>
-        </div>
-
-        {/* Categories */}
-        <div className="px-4 pb-4">
-          <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 12 }}>
-            Danh mục
-          </div>
-          <div className="flex flex-col gap-1">
-            {CATEGORIES.map((category) => {
-              const Icon = category.icon;
-              const count = NEWS_ARTICLES.filter((a) => category.id === 'all' || a.category === category.id).length;
-              const isActive = selectedCategory === category.id;
-
-              return (
-                <button
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className="flex items-center justify-between px-3 py-2 rounded-lg transition-all"
-                  style={{
-                    background: isActive ? `${category.color}15` : 'transparent',
-                    color: isActive ? category.color : c.text2,
-                    fontWeight: isActive ? 600 : 500,
-                    fontSize: WEB_FONT.SIZE.CAPTION,
-                  }}
-                >
-                  <div className="flex items-center gap-2">
-                    <Icon size={16} />
-                    {category.label}
-                  </div>
-                  <span
-                    style={{
-                      color: isActive ? category.color : c.text3,
-                      fontSize: 12,
-                      fontWeight: 600,
-                    }}
-                  >
-                    {count}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="px-4 pb-4 mt-auto">
-          <div
-            className="p-3 rounded-lg"
-            style={{
-              background: c.bg,
-              border: `1px solid ${c.border}`,
-            }}
-          >
-            <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, marginBottom: 8 }}>
-              Thống kê
-            </div>
-            <div className="flex items-center justify-between mb-2">
-              <span style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>Chưa đọc</span>
-              <span style={{ color: '#EF4444', fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 700 }}>
+              Tin tức
+            </h2>
+            {unreadCount > 0 && (
+              <span
+                className="px-2 py-1 rounded-full"
+                style={{
+                  background: '#EF4444',
+                  color: '#fff',
+                  fontSize: 11,
+                  fontWeight: 700,
+                }}
+              >
                 {unreadCount}
               </span>
+            )}
+          </div>
+
+          {/* Search */}
+          <div className="p-4">
+            <div
+              className="flex items-center gap-2 px-3 py-2 rounded-lg"
+              style={{
+                background: c.bg,
+                border: `1px solid ${c.border}`,
+              }}
+            >
+              <Search size={16} color={c.text3} />
+              <input
+                type="text"
+                placeholder="Tìm kiếm tin tức..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                style={{
+                  flex: 1,
+                  background: 'transparent',
+                  border: 'none',
+                  outline: 'none',
+                  color: c.text1,
+                  fontSize: WEB_FONT.SIZE.CAPTION,
+                }}
+              />
             </div>
-            <div className="flex items-center justify-between">
-              <span style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>Tổng bài viết</span>
-              <span style={{ color: c.text1, fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 700 }}>
-                {NEWS_ARTICLES.length}
-              </span>
+          </div>
+
+          {/* Categories */}
+          <div className="px-4 pb-4">
+            <div
+              style={{
+                color: c.text2,
+                fontSize: WEB_FONT.SIZE.CAPTION,
+                fontWeight: 600,
+                marginBottom: 12,
+              }}
+            >
+              Danh mục
+            </div>
+            <div className="flex flex-col gap-1">
+              {CATEGORIES.map((category) => {
+                const Icon = category.icon;
+                const count = NEWS_ARTICLES.filter(
+                  (a) => category.id === 'all' || a.category === category.id,
+                ).length;
+                const isActive = selectedCategory === category.id;
+
+                return (
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className="flex items-center justify-between px-3 py-2 rounded-lg transition-all"
+                    style={{
+                      background: isActive ? `${category.color}15` : 'transparent',
+                      color: isActive ? category.color : c.text2,
+                      fontWeight: isActive ? 600 : 500,
+                      fontSize: WEB_FONT.SIZE.CAPTION,
+                    }}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Icon size={16} />
+                      {category.label}
+                    </div>
+                    <span
+                      style={{
+                        color: isActive ? category.color : c.text3,
+                        fontSize: 12,
+                        fontWeight: 600,
+                      }}
+                    >
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="px-4 pb-4 mt-auto">
+            <div
+              className="p-3 rounded-lg"
+              style={{
+                background: c.bg,
+                border: `1px solid ${c.border}`,
+              }}
+            >
+              <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, marginBottom: 8 }}>
+                Thống kê
+              </div>
+              <div className="flex items-center justify-between mb-2">
+                <span style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>Chưa đọc</span>
+                <span
+                  style={{ color: '#EF4444', fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 700 }}
+                >
+                  {unreadCount}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
+                  Tổng bài viết
+                </span>
+                <span style={{ color: c.text1, fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 700 }}>
+                  {NEWS_ARTICLES.length}
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* ═══ MAIN CONTENT ═══ */}
-      <div className="flex-1 min-w-0">
-        <div className="max-w-4xl mx-auto p-8">
-          {/* Featured Articles */}
-          {featuredArticles.length > 0 && selectedCategory === 'all' && (
-            <section className="mb-8">
-              <div className="flex items-center gap-2 mb-4">
-                <Sparkles size={20} color="#F59E0B" />
+        {/* ═══ MAIN CONTENT ═══ */}
+        <div className="flex-1 min-w-0">
+          <div className="max-w-4xl mx-auto p-8">
+            {/* Featured Articles */}
+            {featuredArticles.length > 0 && selectedCategory === 'all' && (
+              <section className="mb-8">
+                <div className="flex items-center gap-2 mb-4">
+                  <Sparkles size={20} color="#F59E0B" />
+                  <h3
+                    style={{
+                      color: c.text1,
+                      fontSize: WEB_FONT.SIZE.H3,
+                      fontWeight: 700,
+                      margin: 0,
+                    }}
+                  >
+                    Nổi bật
+                  </h3>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4">
+                  {featuredArticles.map((article) => (
+                    <ArticleCard key={article.id} article={article} />
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* All Articles */}
+            <section>
+              <div className="flex items-center justify-between mb-4">
                 <h3
                   style={{
                     color: c.text1,
@@ -496,67 +539,44 @@ export function WebNewsPage() {
                     margin: 0,
                   }}
                 >
-                  Nổi bật
+                  {selectedCategory === 'all'
+                    ? 'Tất cả bài viết'
+                    : CATEGORIES.find((c) => c.id === selectedCategory)?.label}
                 </h3>
+                <span style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
+                  {filteredArticles.length} bài viết
+                </span>
               </div>
 
-              <div className="grid grid-cols-1 gap-4">
-                {featuredArticles.map((article) => (
-                  <ArticleCard key={article.id} article={article} />
-                ))}
-              </div>
+              {filteredArticles.length > 0 ? (
+                <div className="flex flex-col gap-4">
+                  {filteredArticles
+                    .filter((a) => !(selectedCategory === 'all' && a.isFeatured))
+                    .map((article) => (
+                      <ArticleCard key={article.id} article={article} />
+                    ))}
+                </div>
+              ) : (
+                <div
+                  className="flex flex-col items-center justify-center py-16 rounded-xl"
+                  style={{
+                    background: c.surface,
+                    border: `1px solid ${c.border}`,
+                  }}
+                >
+                  <Newspaper size={48} color={c.text3} className="mb-4" />
+                  <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.BODY, marginBottom: 8 }}>
+                    Không tìm thấy bài viết
+                  </div>
+                  <div style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
+                    Thử thay đổi danh mục hoặc từ khóa tìm kiếm
+                  </div>
+                </div>
+              )}
             </section>
-          )}
-
-          {/* All Articles */}
-          <section>
-            <div className="flex items-center justify-between mb-4">
-              <h3
-                style={{
-                  color: c.text1,
-                  fontSize: WEB_FONT.SIZE.H3,
-                  fontWeight: 700,
-                  margin: 0,
-                }}
-              >
-                {selectedCategory === 'all'
-                  ? 'Tất cả bài viết'
-                  : CATEGORIES.find((c) => c.id === selectedCategory)?.label}
-              </h3>
-              <span style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
-                {filteredArticles.length} bài viết
-              </span>
-            </div>
-
-            {filteredArticles.length > 0 ? (
-              <div className="flex flex-col gap-4">
-                {filteredArticles
-                  .filter((a) => !(selectedCategory === 'all' && a.isFeatured))
-                  .map((article) => (
-                    <ArticleCard key={article.id} article={article} />
-                  ))}
-              </div>
-            ) : (
-              <div
-                className="flex flex-col items-center justify-center py-16 rounded-xl"
-                style={{
-                  background: c.surface,
-                  border: `1px solid ${c.border}`,
-                }}
-              >
-                <Newspaper size={48} color={c.text3} className="mb-4" />
-                <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.BODY, marginBottom: 8 }}>
-                  Không tìm thấy bài viết
-                </div>
-                <div style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
-                  Thử thay đổi danh mục hoặc từ khóa tìm kiếm
-                </div>
-              </div>
-            )}
-          </section>
+          </div>
         </div>
       </div>
-    </div>
     </PageLayout>
   );
 }

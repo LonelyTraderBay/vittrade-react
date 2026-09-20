@@ -226,7 +226,19 @@ function getDaysUntil(dateStr: string): number {
    COMPONENTS
    ═══════════════════════════════════════════════════════════ */
 
-function StatCard({ label, value, subtext, icon: Icon, color }: { label: string; value: string; subtext: string; icon: any; color: string }) {
+function StatCard({
+  label,
+  value,
+  subtext,
+  icon: Icon,
+  color,
+}: {
+  label: string;
+  value: string;
+  subtext: string;
+  icon: any;
+  color: string;
+}) {
   const c = useThemeColors();
 
   return (
@@ -249,7 +261,15 @@ function StatCard({ label, value, subtext, icon: Icon, color }: { label: string;
   );
 }
 
-function EventCard({ event, onClick, compact }: { event: PredictionEvent; onClick: () => void; compact?: boolean }) {
+function EventCard({
+  event,
+  onClick,
+  compact,
+}: {
+  event: PredictionEvent;
+  onClick: () => void;
+  compact?: boolean;
+}) {
   const c = useThemeColors();
   const daysLeft = getDaysUntil(event.endDate);
   const topOutcome = event.outcomes[0];
@@ -288,7 +308,9 @@ function EventCard({ event, onClick, compact }: { event: PredictionEvent; onClic
                 }}
               >
                 <Zap size={10} color="#EF4444" fill="#EF4444" />
-                <span style={{ fontSize: WEB_FONT.xs, fontWeight: 700, color: '#EF4444' }}>BREAKING</span>
+                <span style={{ fontSize: WEB_FONT.xs, fontWeight: 700, color: '#EF4444' }}>
+                  BREAKING
+                </span>
               </div>
             )}
             {hasPosition && (
@@ -300,7 +322,9 @@ function EventCard({ event, onClick, compact }: { event: PredictionEvent; onClic
                 }}
               >
                 <Eye size={10} color="#10B981" />
-                <span style={{ fontSize: WEB_FONT.xs, fontWeight: 700, color: '#10B981' }}>VỊ THẾ</span>
+                <span style={{ fontSize: WEB_FONT.xs, fontWeight: 700, color: '#10B981' }}>
+                  VỊ THẾ
+                </span>
               </div>
             )}
           </div>
@@ -368,18 +392,26 @@ function EventCard({ event, onClick, compact }: { event: PredictionEvent; onClic
         >
           <div className="flex items-center justify-between">
             <div>
-              <div style={{ fontSize: WEB_FONT.xs, color: c.text3, marginBottom: 2 }}>Vị thế của bạn</div>
+              <div style={{ fontSize: WEB_FONT.xs, color: c.text3, marginBottom: 2 }}>
+                Vị thế của bạn
+              </div>
               <div style={{ fontSize: WEB_FONT.sm, fontWeight: 700, color: c.text1 }}>
                 {event.myPosition.shares} shares · {event.myPosition.outcome}
               </div>
             </div>
             <div className="text-right">
-              <div style={{ fontSize: WEB_FONT.xs, color: c.text3, marginBottom: 2 }}>Giá trị hiện tại</div>
+              <div style={{ fontSize: WEB_FONT.xs, color: c.text3, marginBottom: 2 }}>
+                Giá trị hiện tại
+              </div>
               <div
                 style={{
                   fontSize: WEB_FONT.md,
                   fontWeight: 700,
-                  color: event.myPosition.currentValue > event.myPosition.shares * event.myPosition.avgPrice ? '#10B981' : '#EF4444',
+                  color:
+                    event.myPosition.currentValue >
+                    event.myPosition.shares * event.myPosition.avgPrice
+                      ? '#10B981'
+                      : '#EF4444',
                 }}
               >
                 ${event.myPosition.currentValue.toFixed(2)}
@@ -486,7 +518,6 @@ export function WebPredictionsPage() {
         }
       />
       <div style={{ maxWidth: 1600, margin: '0 auto', padding: `${WEB_SPACING.cardRelaxed}px` }}>
-
         {/* ─── Risk Disclosure Banner ─── */}
         <div
           className="rounded-2xl p-4 mb-6 flex items-start gap-3"
@@ -497,12 +528,15 @@ export function WebPredictionsPage() {
         >
           <Shield size={WEB_ICON.md} color="#F59E0B" style={{ flexShrink: 0, marginTop: 2 }} />
           <div>
-            <div style={{ fontSize: WEB_FONT.sm, fontWeight: 700, color: c.text1, marginBottom: 4 }}>
+            <div
+              style={{ fontSize: WEB_FONT.sm, fontWeight: 700, color: c.text1, marginBottom: 4 }}
+            >
               Lưu ý rủi ro
             </div>
             <p style={{ fontSize: WEB_FONT.sm, color: c.text2, lineHeight: 1.5 }}>
-              Prediction Markets là thị trường dự đoán có tính chất đầu cơ. Xác suất hiển thị không phải là chắc chắn.
-              Bạn có thể mất toàn bộ vốn đầu tư. Chỉ tham gia với số tiền bạn có thể chấp nhận mất.
+              Prediction Markets là thị trường dự đoán có tính chất đầu cơ. Xác suất hiển thị không
+              phải là chắc chắn. Bạn có thể mất toàn bộ vốn đầu tư. Chỉ tham gia với số tiền bạn có
+              thể chấp nhận mất.
             </p>
           </div>
         </div>
@@ -622,7 +656,11 @@ export function WebPredictionsPage() {
               </div>
               <div className="flex flex-col gap-4">
                 {BREAKING_EVENTS.map((event) => (
-                  <EventCard key={event.id} event={event} onClick={() => handleEventClick(event.id)} />
+                  <EventCard
+                    key={event.id}
+                    event={event}
+                    onClick={() => handleEventClick(event.id)}
+                  />
                 ))}
               </div>
             </div>
@@ -636,7 +674,12 @@ export function WebPredictionsPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 {TRENDING_EVENTS.map((event) => (
-                  <EventCard key={event.id} event={event} onClick={() => handleEventClick(event.id)} compact />
+                  <EventCard
+                    key={event.id}
+                    event={event}
+                    onClick={() => handleEventClick(event.id)}
+                    compact
+                  />
                 ))}
               </div>
             </div>
@@ -647,7 +690,9 @@ export function WebPredictionsPage() {
             {/* My Positions */}
             <div className="mb-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 style={{ fontSize: WEB_FONT.lg, fontWeight: 700, color: c.text1 }}>Vị thế của bạn</h2>
+                <h2 style={{ fontSize: WEB_FONT.lg, fontWeight: 700, color: c.text1 }}>
+                  Vị thế của bạn
+                </h2>
                 <button
                   onClick={() => navigate('/w/predictions/portfolio')}
                   style={{
@@ -668,14 +713,17 @@ export function WebPredictionsPage() {
                   }}
                 >
                   <Eye size={32} color={c.text3} style={{ margin: '0 auto 12px' }} />
-                  <p style={{ fontSize: WEB_FONT.sm, color: c.text3 }}>
-                    Bạn chưa có vị thế nào
-                  </p>
+                  <p style={{ fontSize: WEB_FONT.sm, color: c.text3 }}>Bạn chưa có vị thế nào</p>
                 </div>
               ) : (
                 <div className="flex flex-col gap-3">
                   {MY_POSITIONS.map((event) => (
-                    <EventCard key={event.id} event={event} onClick={() => handleEventClick(event.id)} compact />
+                    <EventCard
+                      key={event.id}
+                      event={event}
+                      onClick={() => handleEventClick(event.id)}
+                      compact
+                    />
                   ))}
                 </div>
               )}
@@ -689,7 +737,9 @@ export function WebPredictionsPage() {
                 border: `1px solid ${c.border}`,
               }}
             >
-              <h3 style={{ fontSize: WEB_FONT.md, fontWeight: 700, color: c.text1, marginBottom: 16 }}>
+              <h3
+                style={{ fontSize: WEB_FONT.md, fontWeight: 700, color: c.text1, marginBottom: 16 }}
+              >
                 Khám phá
               </h3>
               <div className="flex flex-col gap-2">

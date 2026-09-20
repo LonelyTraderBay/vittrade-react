@@ -98,7 +98,8 @@ export function InfoRow({
   const c = useThemeColors();
   const [copied, setCopied] = useState(false);
 
-  const variant: InfoRowVariant = variantProp ?? (highlight ? 'highlight' : stacked ? 'stacked' : 'default');
+  const variant: InfoRowVariant =
+    variantProp ?? (highlight ? 'highlight' : stacked ? 'stacked' : 'default');
   const isClickable = !!onPress;
 
   const handleCopy = useCallback(() => {
@@ -112,16 +113,20 @@ export function InfoRow({
 
   /* ─── Container styles by variant ─── */
   const containerStyle: React.CSSProperties = {
-    ...(variant === 'highlight' ? {
-      background: c.primaryAlpha08,
-      borderRadius: 12,
-      padding: '12px 14px',
-      marginTop: 2,
-      marginBottom: 2,
-    } : {}),
-    ...(separator && variant !== 'highlight' ? {
-      borderBottom: `1px solid ${c.divider}`,
-    } : {}),
+    ...(variant === 'highlight'
+      ? {
+          background: c.primaryAlpha08,
+          borderRadius: 12,
+          padding: '12px 14px',
+          marginTop: 2,
+          marginBottom: 2,
+        }
+      : {}),
+    ...(separator && variant !== 'highlight'
+      ? {
+          borderBottom: `1px solid ${c.divider}`,
+        }
+      : {}),
     ...(border === false ? { borderBottom: 'none' } : {}),
   };
 
@@ -153,7 +158,9 @@ export function InfoRow({
               color: valueColor ?? c.text1,
               fontSize: φ.sm,
               fontWeight: valueBold ? 700 : 500,
-              fontFamily: mono ? '-apple-system, BlinkMacSystemFont, "SF Mono", monospace' : 'inherit',
+              fontFamily: mono
+                ? '-apple-system, BlinkMacSystemFont, "SF Mono", monospace'
+                : 'inherit',
               lineHeight: 1.4,
             }}
           >
@@ -161,19 +168,17 @@ export function InfoRow({
           </span>
           {copyable && value && (
             <button
-              onClick={(e) => { e.stopPropagation(); handleCopy(); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleCopy();
+              }}
               className="shrink-0 p-1 rounded-lg active:opacity-60"
               aria-label="Sao chép"
             >
-              {copied
-                ? <Check size={14} color={c.buy} />
-                : <Copy size={14} color={c.text3} />
-              }
+              {copied ? <Check size={14} color={c.buy} /> : <Copy size={14} color={c.text3} />}
             </button>
           )}
-          {isClickable && (
-            <ChevronRight size={φIcon.sm} color={c.text3} className="shrink-0" />
-          )}
+          {isClickable && <ChevronRight size={φIcon.sm} color={c.text3} className="shrink-0" />}
         </div>
 
         {helper && (
@@ -226,7 +231,9 @@ export function InfoRow({
               color: valueColor ?? c.text1,
               fontSize: φ.sm,
               fontWeight: valueBold ? 700 : 600,
-              fontFamily: mono ? '-apple-system, BlinkMacSystemFont, "SF Mono", monospace' : 'inherit',
+              fontFamily: mono
+                ? '-apple-system, BlinkMacSystemFont, "SF Mono", monospace'
+                : 'inherit',
             }}
           >
             {value}
@@ -235,20 +242,18 @@ export function InfoRow({
 
         {copyable && value && (
           <button
-            onClick={(e) => { e.stopPropagation(); handleCopy(); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleCopy();
+            }}
             className="shrink-0 p-1 rounded-lg active:opacity-60"
             aria-label="Sao chép"
           >
-            {copied
-              ? <Check size={14} color={c.buy} />
-              : <Copy size={14} color={c.text3} />
-            }
+            {copied ? <Check size={14} color={c.buy} /> : <Copy size={14} color={c.text3} />}
           </button>
         )}
 
-        {isClickable && (
-          <ChevronRight size={φIcon.sm} color={c.text3} className="shrink-0" />
-        )}
+        {isClickable && <ChevronRight size={φIcon.sm} color={c.text3} className="shrink-0" />}
       </div>
     </Tag>
   );
@@ -299,7 +304,7 @@ export function InfoRowGroup({ title, children, className = '' }: InfoRowGroupPr
           if (!React.isValidElement(child)) return child;
           const isLast = i === React.Children.count(children) - 1;
           return React.cloneElement(child as React.ReactElement<InfoRowProps>, {
-            separator: isLast ? false : (child.props as InfoRowProps).separator ?? true,
+            separator: isLast ? false : ((child.props as InfoRowProps).separator ?? true),
           });
         })}
       </div>

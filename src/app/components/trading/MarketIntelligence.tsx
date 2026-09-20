@@ -11,7 +11,16 @@
  */
 
 import React, { useState } from 'react';
-import { TrendingUp, TrendingDown, Users, Activity, DollarSign, Info, ChevronRight, Eye } from 'lucide-react';
+import {
+  TrendingUp,
+  TrendingDown,
+  Users,
+  Activity,
+  DollarSign,
+  Info,
+  ChevronRight,
+  Eye,
+} from 'lucide-react';
 import { TrCard } from '../ui/TrCard';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { FONT_SCALE, FONT_WEIGHT } from '../../constants/typography';
@@ -78,7 +87,9 @@ export function OpenInterestWidget({ pair, data, className = '' }: OpenInterestP
           <div
             className="px-2 py-0.5 rounded-lg mb-1"
             style={{
-              background: isIncreasing ? withAlpha('#10B981', ALPHA.soft) : withAlpha('#EF4444', ALPHA.soft),
+              background: isIncreasing
+                ? withAlpha('#10B981', ALPHA.soft)
+                : withAlpha('#EF4444', ALPHA.soft),
             }}
           >
             <span
@@ -97,13 +108,8 @@ export function OpenInterestWidget({ pair, data, className = '' }: OpenInterestP
 
       {/* 24h Stats */}
       <div className="grid grid-cols-3 gap-2 mb-3">
-        <div
-          className="rounded-xl p-2.5 text-center"
-          style={{ background: c.surface2 }}
-        >
-          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
-            Change 24h
-          </p>
+        <div className="rounded-xl p-2.5 text-center" style={{ background: c.surface2 }}>
+          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>Change 24h</p>
           <p
             style={{
               color: isIncreasing ? '#10B981' : '#EF4444',
@@ -115,13 +121,8 @@ export function OpenInterestWidget({ pair, data, className = '' }: OpenInterestP
             {isIncreasing ? '+' : ''}${(data.change24h / 1000000).toFixed(2)}M
           </p>
         </div>
-        <div
-          className="rounded-xl p-2.5 text-center"
-          style={{ background: c.surface2 }}
-        >
-          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
-            High 24h
-          </p>
+        <div className="rounded-xl p-2.5 text-center" style={{ background: c.surface2 }}>
+          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>High 24h</p>
           <p
             style={{
               color: c.text1,
@@ -133,13 +134,8 @@ export function OpenInterestWidget({ pair, data, className = '' }: OpenInterestP
             ${(data.high24h / 1000000).toFixed(2)}M
           </p>
         </div>
-        <div
-          className="rounded-xl p-2.5 text-center"
-          style={{ background: c.surface2 }}
-        >
-          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
-            Low 24h
-          </p>
+        <div className="rounded-xl p-2.5 text-center" style={{ background: c.surface2 }}>
+          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>Low 24h</p>
           <p
             style={{
               color: c.text1,
@@ -160,7 +156,8 @@ export function OpenInterestWidget({ pair, data, className = '' }: OpenInterestP
       >
         <Info size={12} color="#3B82F6" className="shrink-0 mt-0.5" />
         <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
-          OI tăng + giá tăng = bullish strong. OI tăng + giá giảm = bearish momentum. OI giảm = positions đóng.
+          OI tăng + giá tăng = bullish strong. OI tăng + giá giảm = bearish momentum. OI giảm =
+          positions đóng.
         </p>
       </div>
     </TrCard>
@@ -191,11 +188,26 @@ export function LongShortRatio({ pair, data, className = '' }: LongShortRatioPro
   const c = useThemeColors();
   const [view, setView] = useState<'accounts' | 'volume'>('accounts');
 
-  const longPct = view === 'accounts' ? data.longPct : (data.longVolume / (data.longVolume + data.shortVolume)) * 100;
-  const shortPct = view === 'accounts' ? data.shortPct : (data.shortVolume / (data.longVolume + data.shortVolume)) * 100;
+  const longPct =
+    view === 'accounts'
+      ? data.longPct
+      : (data.longVolume / (data.longVolume + data.shortVolume)) * 100;
+  const shortPct =
+    view === 'accounts'
+      ? data.shortPct
+      : (data.shortVolume / (data.longVolume + data.shortVolume)) * 100;
 
   const ratio = longPct / shortPct;
-  const sentiment = ratio > 2 ? 'Strong Long' : ratio > 1.2 ? 'Long' : ratio > 0.8 ? 'Neutral' : ratio > 0.5 ? 'Short' : 'Strong Short';
+  const sentiment =
+    ratio > 2
+      ? 'Strong Long'
+      : ratio > 1.2
+        ? 'Long'
+        : ratio > 0.8
+          ? 'Neutral'
+          : ratio > 0.5
+            ? 'Short'
+            : 'Strong Short';
   const sentimentColor = ratio > 1.2 ? '#10B981' : ratio > 0.8 ? '#F59E0B' : '#EF4444';
 
   return (
@@ -253,12 +265,16 @@ export function LongShortRatio({ pair, data, className = '' }: LongShortRatioPro
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-1.5">
             <TrendingUp size={14} color="#10B981" strokeWidth={ICON_STROKE.standard} />
-            <span style={{ color: '#10B981', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+            <span
+              style={{ color: '#10B981', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}
+            >
               Long {longPct.toFixed(1)}%
             </span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span style={{ color: '#EF4444', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+            <span
+              style={{ color: '#EF4444', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}
+            >
               Short {shortPct.toFixed(1)}%
             </span>
             <TrendingDown size={14} color="#EF4444" strokeWidth={ICON_STROKE.standard} />
@@ -286,9 +302,7 @@ export function LongShortRatio({ pair, data, className = '' }: LongShortRatioPro
 
         {/* Ratio number */}
         <div className="text-center mt-2">
-          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>
-            Long/Short Ratio
-          </p>
+          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Long/Short Ratio</p>
           <p
             style={{
               color: sentimentColor,
@@ -304,26 +318,38 @@ export function LongShortRatio({ pair, data, className = '' }: LongShortRatioPro
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-2">
-        <div
-          className="rounded-xl p-2.5"
-          style={{ background: withAlpha('#10B981', ALPHA.hover) }}
-        >
+        <div className="rounded-xl p-2.5" style={{ background: withAlpha('#10B981', ALPHA.hover) }}>
           <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
             {view === 'accounts' ? 'Long Accounts' : 'Long Volume'}
           </p>
-          <p style={{ color: '#10B981', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}>
-            {view === 'accounts' ? data.longAccounts.toLocaleString() : `$${(data.longVolume / 1000000).toFixed(1)}M`}
+          <p
+            style={{
+              color: '#10B981',
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.bold,
+              fontFamily: 'monospace',
+            }}
+          >
+            {view === 'accounts'
+              ? data.longAccounts.toLocaleString()
+              : `$${(data.longVolume / 1000000).toFixed(1)}M`}
           </p>
         </div>
-        <div
-          className="rounded-xl p-2.5"
-          style={{ background: withAlpha('#EF4444', ALPHA.hover) }}
-        >
+        <div className="rounded-xl p-2.5" style={{ background: withAlpha('#EF4444', ALPHA.hover) }}>
           <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
             {view === 'accounts' ? 'Short Accounts' : 'Short Volume'}
           </p>
-          <p style={{ color: '#EF4444', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}>
-            {view === 'accounts' ? data.shortAccounts.toLocaleString() : `$${(data.shortVolume / 1000000).toFixed(1)}M`}
+          <p
+            style={{
+              color: '#EF4444',
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.bold,
+              fontFamily: 'monospace',
+            }}
+          >
+            {view === 'accounts'
+              ? data.shortAccounts.toLocaleString()
+              : `$${(data.shortVolume / 1000000).toFixed(1)}M`}
           </p>
         </div>
       </div>
@@ -352,7 +378,16 @@ export function TopTraderPositions({ pair, data, className = '' }: TopTraderPosi
   const c = useThemeColors();
 
   const isLongBias = data.longPct > 50;
-  const bias = data.longPct > 60 ? 'Strong Long' : data.longPct > 55 ? 'Long' : data.longPct < 40 ? 'Strong Short' : data.longPct < 45 ? 'Short' : 'Neutral';
+  const bias =
+    data.longPct > 60
+      ? 'Strong Long'
+      : data.longPct > 55
+        ? 'Long'
+        : data.longPct < 40
+          ? 'Strong Short'
+          : data.longPct < 45
+            ? 'Short'
+            : 'Neutral';
   const biasColor = data.longPct > 55 ? '#10B981' : data.longPct < 45 ? '#EF4444' : '#F59E0B';
 
   const change24hAbs = Math.abs(data.change24h);
@@ -410,7 +445,10 @@ export function TopTraderPositions({ pair, data, className = '' }: TopTraderPosi
       </div>
 
       {/* Visual bar */}
-      <div className="h-3 rounded-full overflow-hidden flex mb-3" style={{ background: c.surface2 }}>
+      <div
+        className="h-3 rounded-full overflow-hidden flex mb-3"
+        style={{ background: c.surface2 }}
+      >
         <div
           className="transition-all"
           style={{
@@ -433,9 +471,7 @@ export function TopTraderPositions({ pair, data, className = '' }: TopTraderPosi
         style={{ background: c.surface2 }}
       >
         <div>
-          <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, marginBottom: 2 }}>
-            24h Change
-          </p>
+          <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, marginBottom: 2 }}>24h Change</p>
           <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold }}>
             Shifted {change24hAbs.toFixed(1)}% to {changeDirection}
           </p>
@@ -443,7 +479,10 @@ export function TopTraderPositions({ pair, data, className = '' }: TopTraderPosi
         <div
           className="w-10 h-10 rounded-xl flex items-center justify-center"
           style={{
-            background: data.change24h > 0 ? withAlpha('#10B981', ALPHA.muted) : withAlpha('#EF4444', ALPHA.muted),
+            background:
+              data.change24h > 0
+                ? withAlpha('#10B981', ALPHA.muted)
+                : withAlpha('#EF4444', ALPHA.muted),
           }}
         >
           {data.change24h > 0 ? (
@@ -461,7 +500,8 @@ export function TopTraderPositions({ pair, data, className = '' }: TopTraderPosi
       >
         <Info size={12} color="#F59E0B" className="shrink-0 mt-0.5" />
         <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
-          Top traders = accounts với volume cao nhất. Thường là whales, institutions. Theo trend của họ có thể profitable.
+          Top traders = accounts với volume cao nhất. Thường là whales, institutions. Theo trend của
+          họ có thể profitable.
         </p>
       </div>
     </TrCard>
@@ -529,9 +569,7 @@ export function MarketSentiment({ pair, data, className = '' }: MarketSentimentP
           border: `1.5px solid ${withAlpha(config.color, ALPHA.soft)}`,
         }}
       >
-        <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, marginBottom: 6 }}>
-          {pair} Sentiment
-        </p>
+        <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, marginBottom: 6 }}>{pair} Sentiment</p>
         <div className="flex items-center justify-center gap-2 mb-2">
           <span style={{ fontSize: 32 }}>{config.emoji}</span>
           <p
@@ -559,10 +597,17 @@ export function MarketSentiment({ pair, data, className = '' }: MarketSentimentP
 
       {/* Component breakdown */}
       <div className="flex flex-col gap-2">
-        <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, marginBottom: 4 }}>
+        <p
+          style={{
+            color: c.text2,
+            fontSize: FONT_SCALE.xs,
+            fontWeight: FONT_WEIGHT.semibold,
+            marginBottom: 4,
+          }}
+        >
           Component Scores
         </p>
-        {components.map(comp => {
+        {components.map((comp) => {
           const normalized = ((comp.value + 100) / 200) * 100; // Convert -100~100 to 0~100
           const color = comp.value > 20 ? '#10B981' : comp.value < -20 ? '#EF4444' : '#F59E0B';
 
@@ -577,10 +622,14 @@ export function MarketSentiment({ pair, data, className = '' }: MarketSentimentP
                     fontWeight: FONT_WEIGHT.bold,
                   }}
                 >
-                  {comp.value > 0 ? '+' : ''}{comp.value}
+                  {comp.value > 0 ? '+' : ''}
+                  {comp.value}
                 </span>
               </div>
-              <div className="h-1.5 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
+              <div
+                className="h-1.5 rounded-full overflow-hidden"
+                style={{ background: c.surface2 }}
+              >
                 <div
                   className="h-full rounded-full transition-all"
                   style={{
@@ -601,11 +650,14 @@ export function MarketSentiment({ pair, data, className = '' }: MarketSentimentP
       >
         <Info size={12} color={c.text3} className="shrink-0 mt-0.5" />
         <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
-          {data.overall === 'extreme_greed' && 'Market quá tham lam → Có thể sắp điều chỉnh. Cân nhắc chốt lời.'}
-          {data.overall === 'greed' && 'Sentiment tích cực nhưng chưa quá nóng. Theo trend nhưng cẩn thận.'}
+          {data.overall === 'extreme_greed' &&
+            'Market quá tham lam → Có thể sắp điều chỉnh. Cân nhắc chốt lời.'}
+          {data.overall === 'greed' &&
+            'Sentiment tích cực nhưng chưa quá nóng. Theo trend nhưng cẩn thận.'}
           {data.overall === 'neutral' && 'Market cân bằng. Chờ tín hiệu rõ ràng hơn.'}
           {data.overall === 'fear' && 'Market sợ hãi. Có thể là cơ hội mua nếu fundamentals ổn.'}
-          {data.overall === 'extreme_fear' && 'Panic selling có thể xảy ra. Cơ hội cho long-term investors.'}
+          {data.overall === 'extreme_fear' &&
+            'Panic selling có thể xảy ra. Cơ hội cho long-term investors.'}
         </p>
       </div>
     </TrCard>
@@ -643,8 +695,8 @@ export function FundingRateHistory({
   const minutes = Math.floor((nextFundingIn % 3600) / 60);
 
   const avgRate = history.reduce((sum, h) => sum + h.rate, 0) / history.length;
-  const minRate = Math.min(...history.map(h => h.rate));
-  const maxRate = Math.max(...history.map(h => h.rate));
+  const minRate = Math.min(...history.map((h) => h.rate));
+  const maxRate = Math.max(...history.map((h) => h.rate));
 
   const currentColor = currentRate >= 0 ? '#EF4444' : '#10B981';
 
@@ -667,7 +719,8 @@ export function FundingRateHistory({
             fontFamily: 'monospace',
           }}
         >
-          {currentRate >= 0 ? '+' : ''}{(currentRate * 100).toFixed(4)}%
+          {currentRate >= 0 ? '+' : ''}
+          {(currentRate * 100).toFixed(4)}%
         </span>
       </div>
 
@@ -676,9 +729,7 @@ export function FundingRateHistory({
         className="rounded-xl p-3 mb-3 flex items-center justify-between"
         style={{ background: withAlpha('#3B82F6', ALPHA.hover) }}
       >
-        <span style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>
-          Next funding in
-        </span>
+        <span style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>Next funding in</span>
         <span
           style={{
             color: '#3B82F6',
@@ -694,9 +745,7 @@ export function FundingRateHistory({
       {/* Stats */}
       <div className="grid grid-cols-3 gap-2 mb-3">
         <div className="rounded-xl p-2.5 text-center" style={{ background: c.surface2 }}>
-          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
-            Current
-          </p>
+          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>Current</p>
           <p
             style={{
               color: currentColor,
@@ -705,13 +754,12 @@ export function FundingRateHistory({
               fontFamily: 'monospace',
             }}
           >
-            {currentRate >= 0 ? '+' : ''}{(currentRate * 100).toFixed(3)}%
+            {currentRate >= 0 ? '+' : ''}
+            {(currentRate * 100).toFixed(3)}%
           </p>
         </div>
         <div className="rounded-xl p-2.5 text-center" style={{ background: c.surface2 }}>
-          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
-            24h Avg
-          </p>
+          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>24h Avg</p>
           <p
             style={{
               color: avgRate >= 0 ? '#EF4444' : '#10B981',
@@ -720,14 +768,20 @@ export function FundingRateHistory({
               fontFamily: 'monospace',
             }}
           >
-            {avgRate >= 0 ? '+' : ''}{(avgRate * 100).toFixed(3)}%
+            {avgRate >= 0 ? '+' : ''}
+            {(avgRate * 100).toFixed(3)}%
           </p>
         </div>
         <div className="rounded-xl p-2.5 text-center" style={{ background: c.surface2 }}>
-          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
-            Range
-          </p>
-          <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}>
+          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>Range</p>
+          <p
+            style={{
+              color: c.text1,
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.bold,
+              fontFamily: 'monospace',
+            }}
+          >
             {(maxRate * 100).toFixed(3)}%
           </p>
         </div>
@@ -771,7 +825,8 @@ export function FundingRateHistory({
       >
         <Info size={12} color={c.text3} className="shrink-0 mt-0.5" />
         <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
-          Funding rate dương (đỏ) → Long trả Short. Âm (xanh) → Short trả Long. Thanh toán mỗi 8 giờ.
+          Funding rate dương (đỏ) → Long trả Short. Âm (xanh) → Short trả Long. Thanh toán mỗi 8
+          giờ.
         </p>
       </div>
     </TrCard>

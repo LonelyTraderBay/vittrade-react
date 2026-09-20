@@ -34,9 +34,7 @@ describe('CTAButton', () => {
     });
 
     it('should not be full width when disabled', () => {
-      const { container } = render(
-        <CTAButton fullWidth={false}>Button</CTAButton>
-      );
+      const { container } = render(<CTAButton fullWidth={false}>Button</CTAButton>);
 
       const button = container.firstChild as HTMLElement;
       expect(button).not.toHaveClass('w-full');
@@ -53,9 +51,7 @@ describe('CTAButton', () => {
     });
 
     it('should render success variant', () => {
-      const { container } = render(
-        <CTAButton variant="success">Success</CTAButton>
-      );
+      const { container } = render(<CTAButton variant="success">Success</CTAButton>);
 
       const button = container.firstChild as HTMLElement;
       expect(button.style.background).toContain('linear-gradient');
@@ -63,9 +59,7 @@ describe('CTAButton', () => {
     });
 
     it('should render danger variant', () => {
-      const { container } = render(
-        <CTAButton variant="danger">Danger</CTAButton>
-      );
+      const { container } = render(<CTAButton variant="danger">Danger</CTAButton>);
 
       const button = container.firstChild as HTMLElement;
       expect(button.style.background).toContain('linear-gradient');
@@ -73,9 +67,7 @@ describe('CTAButton', () => {
     });
 
     it('should render ghost variant', () => {
-      const { container } = render(
-        <CTAButton variant="ghost">Ghost</CTAButton>
-      );
+      const { container } = render(<CTAButton variant="ghost">Ghost</CTAButton>);
 
       const button = container.firstChild as HTMLElement;
       expect(button.style.background).toBe('transparent');
@@ -123,7 +115,11 @@ describe('CTAButton', () => {
       const user = userEvent.setup();
       const onClick = vi.fn();
 
-      render(<CTAButton disabled onClick={onClick}>Disabled</CTAButton>);
+      render(
+        <CTAButton disabled onClick={onClick}>
+          Disabled
+        </CTAButton>,
+      );
 
       const button = screen.getByRole('button');
       await user.click(button);
@@ -164,7 +160,11 @@ describe('CTAButton', () => {
       const user = userEvent.setup();
       const onClick = vi.fn();
 
-      render(<CTAButton loading onClick={onClick}>Loading</CTAButton>);
+      render(
+        <CTAButton loading onClick={onClick}>
+          Loading
+        </CTAButton>,
+      );
 
       const button = screen.getByRole('button');
       await user.click(button);
@@ -214,7 +214,7 @@ describe('CTAButton', () => {
   describe('Custom Styling', () => {
     it('should apply custom background', () => {
       const { container } = render(
-        <CTAButton bg="linear-gradient(to right, red, blue)">Custom</CTAButton>
+        <CTAButton bg="linear-gradient(to right, red, blue)">Custom</CTAButton>,
       );
 
       const button = container.firstChild as HTMLElement;
@@ -222,27 +222,21 @@ describe('CTAButton', () => {
     });
 
     it('should apply custom text color', () => {
-      const { container } = render(
-        <CTAButton textColor="#000000">Custom</CTAButton>
-      );
+      const { container } = render(<CTAButton textColor="#000000">Custom</CTAButton>);
 
       const button = container.firstChild as HTMLElement;
       expect(button.style.color).toBe('rgb(0, 0, 0)');
     });
 
     it('should apply custom className', () => {
-      const { container } = render(
-        <CTAButton className="custom-btn">Custom</CTAButton>
-      );
+      const { container } = render(<CTAButton className="custom-btn">Custom</CTAButton>);
 
       const button = container.firstChild as HTMLElement;
       expect(button).toHaveClass('custom-btn');
     });
 
     it('should preserve base classes with custom className', () => {
-      const { container } = render(
-        <CTAButton className="custom">Button</CTAButton>
-      );
+      const { container } = render(<CTAButton className="custom">Button</CTAButton>);
 
       const button = container.firstChild as HTMLElement;
       expect(button).toHaveClass('flex');
@@ -253,7 +247,7 @@ describe('CTAButton', () => {
 
     it('should apply custom inline styles', () => {
       const { container } = render(
-        <CTAButton style={{ margin: '10px', padding: '20px' }}>Button</CTAButton>
+        <CTAButton style={{ margin: '10px', padding: '20px' }}>Button</CTAButton>,
       );
 
       const button = container.firstChild as HTMLElement;
@@ -304,36 +298,28 @@ describe('CTAButton', () => {
 
   describe('Box Shadows', () => {
     it('should have primary shadow for primary variant', () => {
-      const { container } = render(
-        <CTAButton variant="primary">Primary</CTAButton>
-      );
+      const { container } = render(<CTAButton variant="primary">Primary</CTAButton>);
 
       const button = container.firstChild as HTMLElement;
       expect(button.style.boxShadow).toContain('rgba(229,138,0,0.3)');
     });
 
     it('should have success shadow for success variant', () => {
-      const { container } = render(
-        <CTAButton variant="success">Success</CTAButton>
-      );
+      const { container } = render(<CTAButton variant="success">Success</CTAButton>);
 
       const button = container.firstChild as HTMLElement;
       expect(button.style.boxShadow).toContain('rgba(16,185,129,0.3)');
     });
 
     it('should have danger shadow for danger variant', () => {
-      const { container } = render(
-        <CTAButton variant="danger">Danger</CTAButton>
-      );
+      const { container } = render(<CTAButton variant="danger">Danger</CTAButton>);
 
       const button = container.firstChild as HTMLElement;
       expect(button.style.boxShadow).toContain('rgba(239,68,68,0.3)');
     });
 
     it('should have no shadow for ghost variant', () => {
-      const { container } = render(
-        <CTAButton variant="ghost">Ghost</CTAButton>
-      );
+      const { container } = render(<CTAButton variant="ghost">Ghost</CTAButton>);
 
       const button = container.firstChild as HTMLElement;
       expect(button.style.boxShadow).toBe('none');
@@ -393,9 +379,7 @@ describe('CTAButton', () => {
 
   describe('Real-world Scenarios', () => {
     it('should render primary CTA for buy action', () => {
-      const { container } = render(
-        <CTAButton variant="primary">Mua BTC</CTAButton>
-      );
+      const { container } = render(<CTAButton variant="primary">Mua BTC</CTAButton>);
 
       expect(screen.getByText('Mua BTC')).toBeInTheDocument();
       const button = container.firstChild as HTMLElement;
@@ -403,9 +387,7 @@ describe('CTAButton', () => {
     });
 
     it('should render success CTA for confirm action', () => {
-      const { container } = render(
-        <CTAButton variant="success">Xác nhận</CTAButton>
-      );
+      const { container } = render(<CTAButton variant="success">Xác nhận</CTAButton>);
 
       expect(screen.getByText('Xác nhận')).toBeInTheDocument();
       const button = container.firstChild as HTMLElement;
@@ -413,9 +395,7 @@ describe('CTAButton', () => {
     });
 
     it('should render danger CTA for sell action', () => {
-      const { container } = render(
-        <CTAButton variant="danger">Bán BTC</CTAButton>
-      );
+      const { container } = render(<CTAButton variant="danger">Bán BTC</CTAButton>);
 
       expect(screen.getByText('Bán BTC')).toBeInTheDocument();
       const button = container.firstChild as HTMLElement;
@@ -436,7 +416,7 @@ describe('CTAButton', () => {
       render(
         <form onSubmit={onSubmit}>
           <CTAButton type="submit">Gửi đơn</CTAButton>
-        </form>
+        </form>,
       );
 
       const button = screen.getByRole('button');
@@ -497,7 +477,11 @@ describe('CTAButton', () => {
     });
 
     it('should handle both disabled and loading', () => {
-      render(<CTAButton disabled loading>Button</CTAButton>);
+      render(
+        <CTAButton disabled loading>
+          Button
+        </CTAButton>,
+      );
 
       const button = screen.getByRole('button');
       expect(button).toBeDisabled();

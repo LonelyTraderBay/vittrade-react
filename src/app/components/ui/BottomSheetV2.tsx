@@ -42,8 +42,10 @@ export interface BottomSheetV2Props {
   open: boolean;
   /** Close callback */
   onClose: () => void;
-  /** Sheet title (displayed in header row) */
-  title?: string;
+  /** Sheet title (displayed in header row) — accepts rich content (icon + text) */
+  title?: React.ReactNode;
+  /** Optional subtitle under the title */
+  subtitle?: string;
   /** Content inside the sheet */
   children: React.ReactNode;
   /**
@@ -209,9 +211,7 @@ export function BottomSheetV2({
   }, [open]);
 
   // Backdrop opacity follows drag
-  const computedBackdropOpacity = dragOffset > 0
-    ? Math.max(0, 1 - dragOffset / 300)
-    : 1;
+  const computedBackdropOpacity = dragOffset > 0 ? Math.max(0, 1 - dragOffset / 300) : 1;
 
   /* ─── Previous focus restore ─── */
   const previousFocusRef = useRef<Element | null>(null);
@@ -251,25 +251,34 @@ export function BottomSheetV2({
   }, [open, onAfterOpen]);
 
   /* ─── Focus trap + Escape ─── */
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'Escape' && !preventClose) {
-      onClose();
-      return;
-    }
-    if (e.key === 'Tab' && sheetRef.current) {
-      const focusable = sheetRef.current.querySelectorAll<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      );
-      if (focusable.length === 0) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (e.shiftKey) {
-        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
-      } else {
-        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Escape' && !preventClose) {
+        onClose();
+        return;
       }
-    }
-  }, [onClose, preventClose]);
+      if (e.key === 'Tab' && sheetRef.current) {
+        const focusable = sheetRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
+    },
+    [onClose, preventClose],
+  );
 
   const handleBackdropClick = useCallback(() => {
     if (!preventClose) onClose();
@@ -278,36 +287,43 @@ export function BottomSheetV2({
   /* ─── Resolved values ─── */
   const resolvedMaxHeight = maxHeight ?? (variant === 'bottom' ? '85vh' : '80vh');
   const resolvedAriaLabel = ariaLabel ?? title ?? 'Dialog';
-
   /* ─── Default header — 44×44pt close button ─── */
-  const defaultHeader = (title || showCloseButton) ? (
-    <div className="flex items-center justify-between px-5 shrink-0"
-      style={{ paddingTop: 4, paddingBottom: 4 }}
-    >
-      {title ? (
-        <h3 style={{ color: c.text1, fontSize: 18, fontWeight: 600, lineHeight: 1.4 }}>{title}</h3>
-      ) : (
-        <div />
-      )}
-      {showCloseButton && (
-        <button
-          onClick={onClose}
-          className="flex items-center justify-center shrink-0 rounded-full transition-colors"
-          style={{ width: 44, height: 44, minWidth: 44, minHeight: 44, color: c.text3 }}
-          aria-label="Đóng"
-        >
-          <X size={20} />
-        </button>
-      )}
-    </div>
-  ) : null;
+  const defaultHeader =
+    title || showCloseButton ? (
+      <div
+        className="flex items-center justify-between px-5 shrink-0"
+        style={{ paddingTop: 4, paddingBottom: 4 }}
+      >
+        {title ? (
+          <h3 style={{ color: c.text1, fontSize: 18, fontWeight: 600, lineHeight: 1.4 }}>
+            {title}
+          </h3>
+        ) : (
+          <div />
+        )}
+        {showCloseButton && (
+          <button
+            onClick={onClose}
+            className="flex items-center justify-center shrink-0 rounded-full transition-colors"
+            style={{ width: 44, height: 44, minWidth: 44, minHeight: 44, color: c.text3 }}
+            aria-label="Đóng"
+          >
+            <X size={20} />
+          </button>
+        )}
+      </div>
+    ) : null;
 
   /* ─── Drag handle ─── */
   const handleElement = showHandle ? (
-    <div className="flex justify-center shrink-0 cursor-grab active:cursor-grabbing"
+    <div
+      className="flex justify-center shrink-0 cursor-grab active:cursor-grabbing"
       style={{ paddingTop: 12, paddingBottom: 4 }}
     >
-      <div className="rounded-full" style={{ width: 40, height: 4, background: c.text3, opacity: 0.3 }} />
+      <div
+        className="rounded-full"
+        style={{ width: 40, height: 4, background: c.text3, opacity: 0.3 }}
+      />
     </div>
   ) : null;
 
@@ -347,17 +363,15 @@ export function BottomSheetV2({
                 animate={{ y: dragOffset, opacity: 1 }}
                 exit={{ y: '100%', opacity: 1 }}
                 transition={
-                  dragOffset > 0
-                    ? { duration: 0 }
-                    : { type: 'spring', damping: 28, stiffness: 320 }
+                  dragOffset > 0 ? { duration: 0 } : { type: 'spring', damping: 28, stiffness: 320 }
                 }
                 className={`relative w-full rounded-t-3xl flex flex-col overflow-hidden outline-none ${className ?? ''}`}
                 tabIndex={-1}
                 onKeyDown={handleKeyDown}
                 role="dialog"
                 aria-modal="true"
-                aria-label={resolvedAriaLabel}
-                onClick={e => e.stopPropagation()}
+                aria-label={String(resolvedAriaLabel)}
+                onClick={(e) => e.stopPropagation()}
                 style={{
                   background: c.surface,
                   maxWidth: 440,
@@ -415,8 +429,8 @@ export function BottomSheetV2({
                   onKeyDown={handleKeyDown}
                   role="dialog"
                   aria-modal="true"
-                  aria-label={resolvedAriaLabel}
-                  onClick={e => e.stopPropagation()}
+                  aria-label={String(resolvedAriaLabel)}
+                  onClick={(e) => e.stopPropagation()}
                   style={{
                     background: c.surface,
                     maxHeight: resolvedMaxHeight,
@@ -425,7 +439,10 @@ export function BottomSheetV2({
                 >
                   {showHandle && (
                     <div className="flex justify-center pt-3 pb-1 shrink-0">
-                      <div className="rounded-full" style={{ width: 40, height: 4, background: c.text3, opacity: 0.3 }} />
+                      <div
+                        className="rounded-full"
+                        style={{ width: 40, height: 4, background: c.text3, opacity: 0.3 }}
+                      />
                     </div>
                   )}
                   {customHeader ?? defaultHeader}
@@ -466,12 +483,7 @@ export interface BottomSheetRowProps {
   valueColor?: string;
 }
 
-export function BottomSheetRow({
-  label,
-  value,
-  highlight,
-  valueColor,
-}: BottomSheetRowProps) {
+export function BottomSheetRow({ label, value, highlight, valueColor }: BottomSheetRowProps) {
   const c = useThemeColors();
   return (
     <div className="flex justify-between items-center py-2">

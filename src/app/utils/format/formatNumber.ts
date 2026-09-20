@@ -14,10 +14,10 @@
  */
 export function formatCompactNumber(value: number, decimals: number = 1): string {
   if (value === 0) return '0';
-  
+
   const absValue = Math.abs(value);
   const sign = value < 0 ? '-' : '';
-  
+
   if (absValue >= 1e12) {
     return `${sign}${(absValue / 1e12).toFixed(decimals)}T`;
   }
@@ -30,7 +30,7 @@ export function formatCompactNumber(value: number, decimals: number = 1): string
   if (absValue >= 1e3) {
     return `${sign}${(absValue / 1e3).toFixed(decimals)}K`;
   }
-  
+
   return `${sign}${absValue.toFixed(decimals)}`;
 }
 
@@ -122,17 +122,17 @@ export function formatPhoneNumber(phone: string): string {
  */
 export function abbreviateNumber(num: number, decimals: number = 1): string {
   if (num === 0) return '0';
-  
+
   const absNum = Math.abs(num);
   const sign = num < 0 ? '-' : '';
-  
+
   if (absNum >= 1e6) {
     return `${sign}${(absNum / 1e6).toFixed(decimals)}m`;
   }
   if (absNum >= 1e3) {
     return `${sign}${(absNum / 1e3).toFixed(decimals)}k`;
   }
-  
+
   return `${sign}${absNum.toFixed(decimals)}`;
 }
 

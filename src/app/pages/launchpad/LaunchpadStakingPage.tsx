@@ -19,27 +19,50 @@ import { fmtAmount } from '../../data/formatNumber';
 import { TrCard } from '../../components/ui/TrCard';
 import { CTAButton } from '../../components/ui/CTAButton';
 import {
-  Coins, Lock, Unlock, TrendingUp, Clock, ChevronRight,
-  AlertTriangle, CheckCircle, Shield, Calculator, Info,
-  X, Star, Zap, Gift, ArrowRight, ArrowDown,
-  AlertCircle, Percent,
+  Coins,
+  Lock,
+  Unlock,
+  TrendingUp,
+  Clock,
+  ChevronRight,
+  AlertTriangle,
+  CheckCircle,
+  Shield,
+  Calculator,
+  Info,
+  X,
+  Star,
+  Zap,
+  Gift,
+  ArrowRight,
+  ArrowDown,
+  AlertCircle,
+  Percent,
 } from 'lucide-react';
 import {
-  LAUNCHPOOL_POOLS, MOCK_STAKE_POSITIONS, MOCK_USER,
-  calculateAPY, estimateRewards, truncateAddress,
+  LAUNCHPOOL_POOLS,
+  MOCK_STAKE_POSITIONS,
+  MOCK_USER,
+  calculateAPY,
+  estimateRewards,
+  truncateAddress,
   getRewardPerSecond,
-  type LaunchpoolPool, type StakePosition, type StakingTier,
+  type LaunchpoolPool,
+  type StakePosition,
+  type StakingTier,
 } from './launchpadData';
 import { CountdownTimer, RiskDisclosure } from './LaunchpadComponents';
 
 const TABS = ['Pools', 'Vị trí của tôi', 'Tính APY'] as const;
-type StakingTab = typeof TABS[number];
+type StakingTab = (typeof TABS)[number];
 
 /* ─── Hook: real-time reward accrual ─── */
 function useRewardAccrual(positions: StakePosition[]) {
   const [rewards, setRewards] = useState<Record<string, number>>(() => {
     const m: Record<string, number> = {};
-    positions.forEach(p => { m[p.id] = p.pendingRewards; });
+    positions.forEach((p) => {
+      m[p.id] = p.pendingRewards;
+    });
     return m;
   });
   const ratesRef = useRef<Record<string, number>>({});
@@ -47,10 +70,14 @@ function useRewardAccrual(positions: StakePosition[]) {
   useEffect(() => {
     // pre-compute per-second rates
     const pools = LAUNCHPOOL_POOLS;
-    positions.forEach(pos => {
-      const pool = pools.find(p => p.id === pos.poolId);
+    positions.forEach((pos) => {
+      const pool = pools.find((p) => p.id === pos.poolId);
       if (pool && pos.status === 'active') {
-        ratesRef.current[pos.id] = getRewardPerSecond(pos.stakedAmount, pos.apy, pool.rewardTokenPrice);
+        ratesRef.current[pos.id] = getRewardPerSecond(
+          pos.stakedAmount,
+          pos.apy,
+          pool.rewardTokenPrice,
+        );
       }
     });
 
@@ -60,10 +87,10 @@ function useRewardAccrual(positions: StakePosition[]) {
     const tick = (now: number) => {
       const dt = (now - last) / 1000; // seconds elapsed
       last = now;
-      setRewards(prev => {
+      setRewards((prev) => {
         const next = { ...prev };
         let changed = false;
-        positions.forEach(pos => {
+        positions.forEach((pos) => {
           const rate = ratesRef.current[pos.id];
           if (rate && pos.status === 'active') {
             next[pos.id] = (prev[pos.id] ?? pos.pendingRewards) + rate * dt;
@@ -82,17 +109,38 @@ function useRewardAccrual(positions: StakePosition[]) {
 }
 
 /* ─── Animated number display ─── */
-function AnimatedNumber({ value, decimals = 4, color, size = 14, symbol }: {
-  value: number; decimals?: number; color: string; size?: number; symbol?: string;
+function AnimatedNumber({
+  value,
+  decimals = 4,
+  color,
+  size = 14,
+  symbol,
+}: {
+  value: number;
+  decimals?: number;
+  color: string;
+  size?: number;
+  symbol?: string;
 }) {
   // Split into integer and fractional for smooth display
   const fixed = value.toFixed(decimals);
   const [int, frac] = fixed.split('.');
   return (
-    <span style={{ color, fontSize: size, fontWeight: 700, fontFamily: 'monospace', display: 'inline-flex', alignItems: 'baseline' }}>
+    <span
+      style={{
+        color,
+        fontSize: size,
+        fontWeight: 700,
+        fontFamily: 'monospace',
+        display: 'inline-flex',
+        alignItems: 'baseline',
+      }}
+    >
       <span>{parseInt(int).toLocaleString()}</span>
       {frac && <span style={{ fontSize: size * 0.75, opacity: 0.75 }}>.{frac}</span>}
-      {symbol && <span style={{ fontSize: size * 0.7, marginLeft: 3, fontWeight: 600 }}>{symbol}</span>}
+      {symbol && (
+        <span style={{ fontSize: size * 0.7, marginLeft: 3, fontWeight: 600 }}>{symbol}</span>
+      )}
     </span>
   );
 }
@@ -113,7 +161,7 @@ export function LaunchpadStakingPage() {
 
   const totalStaked = MOCK_STAKE_POSITIONS.reduce((s, p) => s + p.stakedAmount, 0);
   const totalPendingRewards = MOCK_STAKE_POSITIONS.reduce((s, p) => s + p.pendingRewards, 0);
-  const activePools = LAUNCHPOOL_POOLS.filter(p => p.status === 'active');
+  const activePools = LAUNCHPOOL_POOLS.filter((p) => p.status === 'active');
 
   const rewards = useRewardAccrual(MOCK_STAKE_POSITIONS);
   const liveTotalRewards = Object.values(rewards).reduce((s, v) => s + v, 0);
@@ -121,9 +169,7 @@ export function LaunchpadStakingPage() {
   return (
     <PageLayout>
       {/* Stake sheet */}
-      {stakePool && (
-        <StakeSheet pool={stakePool} onClose={() => setStakePool(null)} />
-      )}
+      {stakePool && <StakeSheet pool={stakePool} onClose={() => setStakePool(null)} />}
       {/* Unstake sheet */}
       {unstakePosition && (
         <UnstakeSheet position={unstakePosition} onClose={() => setUnstakePosition(null)} />
@@ -135,11 +181,20 @@ export function LaunchpadStakingPage() {
       <PageContent gap="default">
         {/* Hero stats */}
         <TrCard variant="hero" className="p-5 relative overflow-hidden">
-          <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.2) 0%, transparent 65%)' }} />
+          <div
+            className="absolute -top-12 -right-12 w-40 h-40 rounded-full"
+            style={{
+              background: 'radial-gradient(circle, rgba(16,185,129,0.2) 0%, transparent 65%)',
+            }}
+          />
           <div className="flex items-center gap-3 mb-4 relative z-10">
-            <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
-              style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.25)' }}>
+            <div
+              className="w-12 h-12 rounded-2xl flex items-center justify-center"
+              style={{
+                background: 'rgba(16,185,129,0.15)',
+                border: '1px solid rgba(16,185,129,0.25)',
+              }}
+            >
               <Coins size={22} color="#10B981" />
             </div>
             <div>
@@ -150,17 +205,30 @@ export function LaunchpadStakingPage() {
             </div>
           </div>
           <div className="flex gap-3 relative z-10">
-            <div className="flex-1 rounded-xl p-2.5" style={{ background: 'rgba(255,255,255,0.06)' }}>
+            <div
+              className="flex-1 rounded-xl p-2.5"
+              style={{ background: 'rgba(255,255,255,0.06)' }}
+            >
               <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 10 }}>Pools hoạt động</p>
-              <p style={{ color: '#10B981', fontSize: 16, fontWeight: 700 }}>{activePools.length}</p>
+              <p style={{ color: '#10B981', fontSize: 16, fontWeight: 700 }}>
+                {activePools.length}
+              </p>
             </div>
-            <div className="flex-1 rounded-xl p-2.5" style={{ background: 'rgba(255,255,255,0.06)' }}>
+            <div
+              className="flex-1 rounded-xl p-2.5"
+              style={{ background: 'rgba(255,255,255,0.06)' }}
+            >
               <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 10 }}>Phần thưởng chờ</p>
               <AnimatedNumber value={liveTotalRewards} decimals={2} color="#F59E0B" size={16} />
             </div>
-            <div className="flex-1 rounded-xl p-2.5" style={{ background: 'rgba(255,255,255,0.06)' }}>
+            <div
+              className="flex-1 rounded-xl p-2.5"
+              style={{ background: 'rgba(255,255,255,0.06)' }}
+            >
               <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 10 }}>Vị trí</p>
-              <p style={{ color: '#fff', fontSize: 16, fontWeight: 700 }}>{MOCK_STAKE_POSITIONS.length}</p>
+              <p style={{ color: '#fff', fontSize: 16, fontWeight: 700 }}>
+                {MOCK_STAKE_POSITIONS.length}
+              </p>
             </div>
           </div>
         </TrCard>
@@ -170,13 +238,17 @@ export function LaunchpadStakingPage() {
           <>
             {loading ? (
               <div className="flex flex-col gap-4">
-                {[1, 2, 3].map(i => (
-                  <div key={i} className="h-48 rounded-2xl animate-pulse" style={{ background: c.surface2 }} />
+                {[1, 2, 3].map((i) => (
+                  <div
+                    key={i}
+                    className="h-48 rounded-2xl animate-pulse"
+                    style={{ background: c.surface2 }}
+                  />
                 ))}
               </div>
             ) : (
               <div className="flex flex-col gap-4">
-                {LAUNCHPOOL_POOLS.map(pool => (
+                {LAUNCHPOOL_POOLS.map((pool) => (
                   <PoolCard
                     key={pool.id}
                     pool={pool}
@@ -210,19 +282,27 @@ export function LaunchpadStakingPage() {
                 <button
                   onClick={() => navigate(`${prefix}/launchpad/batch-claim`)}
                   className="w-full rounded-2xl p-4 flex items-center gap-3 hover:opacity-90 transition-opacity active:scale-[0.98]"
-                  style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}>
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                    style={{ background: 'rgba(16,185,129,0.12)' }}>
+                  style={{
+                    background: 'rgba(16,185,129,0.06)',
+                    border: '1px solid rgba(16,185,129,0.15)',
+                  }}
+                >
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    style={{ background: 'rgba(16,185,129,0.12)' }}
+                  >
                     <Zap size={18} color="#10B981" />
                   </div>
                   <div className="flex-1 text-left">
                     <p style={{ color: '#10B981', fontSize: 13, fontWeight: 700 }}>Batch Claim</p>
-                    <p style={{ color: c.text3, fontSize: 10 }}>Nhận phần thưởng từ tất cả vị trí cùng lúc</p>
+                    <p style={{ color: c.text3, fontSize: 10 }}>
+                      Nhận phần thưởng từ tất cả vị trí cùng lúc
+                    </p>
                   </div>
                   <ChevronRight size={16} color="#10B981" />
                 </button>
 
-                {MOCK_STAKE_POSITIONS.map(pos => (
+                {MOCK_STAKE_POSITIONS.map((pos) => (
                   <PositionCard
                     key={pos.id}
                     position={pos}
@@ -236,7 +316,7 @@ export function LaunchpadStakingPage() {
         )}
 
         {tab === 'Tính APY' && (
-          <APYCalculator pools={LAUNCHPOOL_POOLS.filter(p => p.status === 'active')} />
+          <APYCalculator pools={LAUNCHPOOL_POOLS.filter((p) => p.status === 'active')} />
         )}
 
         {/* Risk disclosure */}
@@ -252,12 +332,18 @@ export function LaunchpadStakingPage() {
    PoolCard — individual launchpool
    ═══════════════════════════════════════════════════════════ */
 
-function PoolCard({ pool, onStake, onDetail }: {
-  pool: LaunchpoolPool; onStake: () => void; onDetail: () => void;
+function PoolCard({
+  pool,
+  onStake,
+  onDetail,
+}: {
+  pool: LaunchpoolPool;
+  onStake: () => void;
+  onDetail: () => void;
 }) {
   const c = useThemeColors();
   const fillPct = Math.min((pool.totalStaked / pool.poolCap) * 100, 100);
-  const tierForUser = pool.stakingTiers.filter(t => pool.userStaked >= t.minStake).pop();
+  const tierForUser = pool.stakingTiers.filter((t) => pool.userStaked >= t.minStake).pop();
   const effectiveAPY = calculateAPY(pool.apy, pool.userStaked, pool.stakingTiers);
 
   return (
@@ -265,15 +351,25 @@ function PoolCard({ pool, onStake, onDetail }: {
       <button className="w-full text-left p-4" onClick={onDetail}>
         {/* Header */}
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-sm font-bold shrink-0"
-            style={{ background: pool.projectLogoColor + '22', border: `2px solid ${pool.projectLogoColor}44`, color: pool.projectLogoColor }}>
+          <div
+            className="w-12 h-12 rounded-2xl flex items-center justify-center text-sm font-bold shrink-0"
+            style={{
+              background: pool.projectLogoColor + '22',
+              border: `2px solid ${pool.projectLogoColor}44`,
+              color: pool.projectLogoColor,
+            }}
+          >
             {pool.projectLogo}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-0.5">
-              <span style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>{pool.projectName}</span>
-              <span className="px-1.5 py-0.5 rounded-md text-xs font-bold"
-                style={{ background: 'rgba(16,185,129,0.15)', color: '#10B981' }}>
+              <span style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>
+                {pool.projectName}
+              </span>
+              <span
+                className="px-1.5 py-0.5 rounded-md text-xs font-bold"
+                style={{ background: 'rgba(16,185,129,0.15)', color: '#10B981' }}
+              >
                 Launchpool
               </span>
             </div>
@@ -293,10 +389,16 @@ function PoolCard({ pool, onStake, onDetail }: {
             { label: 'Tổng stake', value: pool.totalStakedDisplay },
             { label: 'Lock', value: `${pool.lockPeriod} ngày` },
             { label: 'Chain', value: pool.chain },
-          ].map(r => (
-            <div key={r.label} className="rounded-xl p-2 text-center" style={{ background: c.surface2 }}>
+          ].map((r) => (
+            <div
+              key={r.label}
+              className="rounded-xl p-2 text-center"
+              style={{ background: c.surface2 }}
+            >
               <p style={{ color: c.text3, fontSize: 10 }}>{r.label}</p>
-              <p style={{ color: c.text1, fontSize: 12, fontWeight: 600, fontFamily: 'monospace' }}>{r.value}</p>
+              <p style={{ color: c.text1, fontSize: 12, fontWeight: 600, fontFamily: 'monospace' }}>
+                {r.value}
+              </p>
             </div>
           ))}
         </div>
@@ -305,24 +407,35 @@ function PoolCard({ pool, onStake, onDetail }: {
         <div className="mb-3">
           <div className="flex justify-between mb-1">
             <span style={{ color: c.text3, fontSize: 11 }}>Pool capacity</span>
-            <span style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>{fillPct.toFixed(1)}%</span>
+            <span style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>
+              {fillPct.toFixed(1)}%
+            </span>
           </div>
           <div className="h-2 rounded-full overflow-hidden" style={{ background: c.borderSolid }}>
-            <div className="h-full rounded-full" style={{
-              width: `${fillPct}%`,
-              background: `linear-gradient(90deg, ${pool.projectLogoColor}, ${pool.projectLogoColor}99)`,
-            }} />
+            <div
+              className="h-full rounded-full"
+              style={{
+                width: `${fillPct}%`,
+                background: `linear-gradient(90deg, ${pool.projectLogoColor}, ${pool.projectLogoColor}99)`,
+              }}
+            />
           </div>
         </div>
 
         {/* Staking tiers */}
         <div className="flex gap-1.5 mb-3">
-          {pool.stakingTiers.map(tier => (
-            <div key={tier.label} className="flex-1 rounded-lg p-1.5 text-center"
+          {pool.stakingTiers.map((tier) => (
+            <div
+              key={tier.label}
+              className="flex-1 rounded-lg p-1.5 text-center"
               style={{
                 background: tierForUser?.label === tier.label ? `${tier.color}20` : c.surface2,
-                border: tierForUser?.label === tier.label ? `1px solid ${tier.color}40` : `1px solid transparent`,
-              }}>
+                border:
+                  tierForUser?.label === tier.label
+                    ? `1px solid ${tier.color}40`
+                    : `1px solid transparent`,
+              }}
+            >
               <p style={{ color: tier.color, fontSize: 10, fontWeight: 600 }}>{tier.label}</p>
               <p style={{ color: c.text2, fontSize: 9 }}>+{tier.apyBonus}%</p>
             </div>
@@ -331,8 +444,13 @@ function PoolCard({ pool, onStake, onDetail }: {
 
         {/* User position summary */}
         {pool.userStaked > 0 && (
-          <div className="rounded-xl p-3 flex items-center justify-between"
-            style={{ background: `${pool.projectLogoColor}08`, border: `1px solid ${pool.projectLogoColor}18` }}>
+          <div
+            className="rounded-xl p-3 flex items-center justify-between"
+            style={{
+              background: `${pool.projectLogoColor}08`,
+              border: `1px solid ${pool.projectLogoColor}18`,
+            }}
+          >
             <div>
               <p style={{ color: c.text3, fontSize: 10 }}>Bạn đang stake</p>
               <p style={{ color: c.text1, fontSize: 14, fontWeight: 700, fontFamily: 'monospace' }}>
@@ -341,7 +459,9 @@ function PoolCard({ pool, onStake, onDetail }: {
             </div>
             <div className="text-right">
               <p style={{ color: c.text3, fontSize: 10 }}>Phần thưởng chờ</p>
-              <p style={{ color: '#F59E0B', fontSize: 14, fontWeight: 700, fontFamily: 'monospace' }}>
+              <p
+                style={{ color: '#F59E0B', fontSize: 14, fontWeight: 700, fontFamily: 'monospace' }}
+              >
                 {pool.userRewards.toLocaleString()} {pool.rewardToken}
               </p>
             </div>
@@ -356,7 +476,11 @@ function PoolCard({ pool, onStake, onDetail }: {
         )}
         {pool.status === 'active' && (
           <div className="mt-3">
-            <CountdownTimer targetDate={pool.endDate} label="Pool kết thúc sau" color={pool.projectLogoColor} />
+            <CountdownTimer
+              targetDate={pool.endDate}
+              label="Pool kết thúc sau"
+              color={pool.projectLogoColor}
+            />
           </div>
         )}
       </button>
@@ -364,23 +488,47 @@ function PoolCard({ pool, onStake, onDetail }: {
       {/* Action */}
       <div className="px-4 pb-4">
         {pool.status === 'active' && (
-          <button onClick={onStake}
+          <button
+            onClick={onStake}
             className="w-full h-12 rounded-2xl font-bold text-white flex items-center justify-center gap-2 hover:opacity-90 transition-opacity active:scale-[0.98]"
-            style={{ background: pool.projectLogoColor, fontSize: 14, borderRadius: 14, fontWeight: 600 }}>
+            style={{
+              background: pool.projectLogoColor,
+              fontSize: 14,
+              borderRadius: 14,
+              fontWeight: 600,
+            }}
+          >
             <Coins size={16} />
             {pool.userStaked > 0 ? 'Stake thêm' : 'Bắt đầu stake'}
           </button>
         )}
         {pool.status === 'upcoming' && (
-          <div className="w-full h-12 rounded-2xl flex items-center justify-center gap-2"
-            style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', fontSize: 14, borderRadius: 14, color: '#F59E0B', fontWeight: 600 }}>
+          <div
+            className="w-full h-12 rounded-2xl flex items-center justify-center gap-2"
+            style={{
+              background: 'rgba(245,158,11,0.08)',
+              border: '1px solid rgba(245,158,11,0.2)',
+              fontSize: 14,
+              borderRadius: 14,
+              color: '#F59E0B',
+              fontWeight: 600,
+            }}
+          >
             <Clock size={16} />
             Sắp mở
           </div>
         )}
         {pool.status === 'ended' && (
-          <div className="w-full h-12 rounded-2xl flex items-center justify-center gap-2"
-            style={{ background: c.surface2, fontSize: 14, borderRadius: 14, color: c.text3, fontWeight: 600 }}>
+          <div
+            className="w-full h-12 rounded-2xl flex items-center justify-center gap-2"
+            style={{
+              background: c.surface2,
+              fontSize: 14,
+              borderRadius: 14,
+              color: c.text3,
+              fontWeight: 600,
+            }}
+          >
             Đã kết thúc
           </div>
         )}
@@ -393,8 +541,14 @@ function PoolCard({ pool, onStake, onDetail }: {
    PositionCard — user staking position
    ═══════════════════════════════════════════════════════════ */
 
-function PositionCard({ position, liveReward, onUnstake }: {
-  position: StakePosition; liveReward: number; onUnstake: () => void;
+function PositionCard({
+  position,
+  liveReward,
+  onUnstake,
+}: {
+  position: StakePosition;
+  liveReward: number;
+  onUnstake: () => void;
 }) {
   const c = useThemeColors();
   const navigate = useNavigate();
@@ -411,8 +565,10 @@ function PositionCard({ position, liveReward, onUnstake }: {
     <TrCard className="p-4">
       {/* Header */}
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xs font-bold"
-          style={{ background: position.projectLogoColor + '22', color: position.projectLogoColor }}>
+        <div
+          className="w-10 h-10 rounded-xl flex items-center justify-center text-xs font-bold"
+          style={{ background: position.projectLogoColor + '22', color: position.projectLogoColor }}
+        >
           {position.projectSymbol.slice(0, 2)}
         </div>
         <div className="flex-1 min-w-0">
@@ -429,28 +585,49 @@ function PositionCard({ position, liveReward, onUnstake }: {
       {/* Info */}
       <div className="grid grid-cols-2 gap-2 mb-3">
         {[
-          { label: 'Số lượng stake', value: `$${position.stakedAmount.toLocaleString()}`, icon: Coins },
+          {
+            label: 'Số lượng stake',
+            value: `$${position.stakedAmount.toLocaleString()}`,
+            icon: Coins,
+          },
           { label: 'APY', value: `${position.apy}%`, icon: Percent },
-          { label: 'Phần thưởng chờ', value: `${liveReward.toLocaleString()} ${position.rewardToken}`, icon: Gift },
-          { label: 'Đã nhận', value: `${position.claimedRewards.toLocaleString()} ${position.rewardToken}`, icon: CheckCircle },
-        ].map(r => (
-          <div key={r.label} className="rounded-xl p-2.5 flex items-center gap-2" style={{ background: c.surface2 }}>
+          {
+            label: 'Phần thưởng chờ',
+            value: `${liveReward.toLocaleString()} ${position.rewardToken}`,
+            icon: Gift,
+          },
+          {
+            label: 'Đã nhận',
+            value: `${position.claimedRewards.toLocaleString()} ${position.rewardToken}`,
+            icon: CheckCircle,
+          },
+        ].map((r) => (
+          <div
+            key={r.label}
+            className="rounded-xl p-2.5 flex items-center gap-2"
+            style={{ background: c.surface2 }}
+          >
             <r.icon size={13} color={c.text3} />
             <div>
               <p style={{ color: c.text3, fontSize: 9 }}>{r.label}</p>
-              <p style={{ color: c.text1, fontSize: 12, fontWeight: 600, fontFamily: 'monospace' }}>{r.value}</p>
+              <p style={{ color: c.text1, fontSize: 12, fontWeight: 600, fontFamily: 'monospace' }}>
+                {r.value}
+              </p>
             </div>
           </div>
         ))}
       </div>
 
       {/* Lock info */}
-      <div className="rounded-xl p-3 flex items-center gap-2 mb-3"
-        style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.12)' }}>
+      <div
+        className="rounded-xl p-3 flex items-center gap-2 mb-3"
+        style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.12)' }}
+      >
         <Lock size={14} color="#F59E0B" />
         <div className="flex-1">
           <p style={{ color: c.text2, fontSize: 11 }}>
-            Khóa đến: <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{position.lockUntil}</span>
+            Khóa đến:{' '}
+            <span style={{ fontWeight: 600, fontFamily: 'monospace' }}>{position.lockUntil}</span>
           </p>
         </div>
       </div>
@@ -461,14 +638,28 @@ function PositionCard({ position, liveReward, onUnstake }: {
           <button
             onClick={() => navigate(`${prefix}/launchpad/claim-receipt/${position.id}`)}
             className="flex-1 h-10 rounded-xl font-bold flex items-center justify-center gap-1.5 hover:opacity-90 transition-opacity active:scale-[0.98]"
-            style={{ background: 'rgba(16,185,129,0.1)', color: '#10B981', fontSize: 13, fontWeight: 600 }}>
+            style={{
+              background: 'rgba(16,185,129,0.1)',
+              color: '#10B981',
+              fontSize: 13,
+              fontWeight: 600,
+            }}
+          >
             <Gift size={14} />
             Nhận thưởng
           </button>
         )}
-        <button onClick={onUnstake}
+        <button
+          onClick={onUnstake}
           className="flex-1 h-10 rounded-xl font-bold flex items-center justify-center gap-1.5 hover:opacity-90 transition-opacity active:scale-[0.98]"
-          style={{ background: c.surface2, color: c.text2, border: `1px solid ${c.borderSolid}`, fontSize: 13, fontWeight: 600 }}>
+          style={{
+            background: c.surface2,
+            color: c.text2,
+            border: `1px solid ${c.borderSolid}`,
+            fontSize: 13,
+            fontWeight: 600,
+          }}
+        >
           <Unlock size={14} />
           Unstake
         </button>
@@ -487,15 +678,15 @@ function APYCalculator({ pools }: { pools: LaunchpoolPool[] }) {
   const [amount, setAmount] = useState('1000');
   const [days, setDays] = useState('30');
 
-  const pool = pools.find(p => p.id === selectedPoolId) || pools[0];
+  const pool = pools.find((p) => p.id === selectedPoolId) || pools[0];
   if (!pool) return null;
 
   const numAmount = parseFloat(amount) || 0;
   const numDays = parseInt(days) || 0;
   const effectiveAPY = calculateAPY(pool.apy, numAmount, pool.stakingTiers);
   const rewards = estimateRewards(numAmount, effectiveAPY, numDays, pool.rewardTokenPrice);
-  const currentTier = pool.stakingTiers.filter(t => numAmount >= t.minStake).pop();
-  const nextTier = pool.stakingTiers.find(t => numAmount < t.minStake);
+  const currentTier = pool.stakingTiers.filter((t) => numAmount >= t.minStake).pop();
+  const nextTier = pool.stakingTiers.find((t) => numAmount < t.minStake);
 
   return (
     <div className="flex flex-col gap-4">
@@ -509,14 +700,23 @@ function APYCalculator({ pools }: { pools: LaunchpoolPool[] }) {
         <div className="mb-4">
           <p style={{ color: c.text2, fontSize: 12, marginBottom: 6 }}>Chọn pool</p>
           <div className="flex gap-2">
-            {pools.map(p => (
-              <button key={p.id} onClick={() => setSelectedPoolId(p.id)}
+            {pools.map((p) => (
+              <button
+                key={p.id}
+                onClick={() => setSelectedPoolId(p.id)}
                 className="flex-1 rounded-xl p-2.5 text-center"
                 style={{
                   background: selectedPoolId === p.id ? `${p.projectLogoColor}15` : c.surface2,
                   border: `1px solid ${selectedPoolId === p.id ? p.projectLogoColor + '40' : c.borderSolid}`,
-                }}>
-                <p style={{ color: selectedPoolId === p.id ? p.projectLogoColor : c.text2, fontSize: 11, fontWeight: 600 }}>
+                }}
+              >
+                <p
+                  style={{
+                    color: selectedPoolId === p.id ? p.projectLogoColor : c.text2,
+                    fontSize: 11,
+                    fontWeight: 600,
+                  }}
+                >
                   {p.projectSymbol}
                 </p>
                 <p style={{ color: c.text3, fontSize: 9 }}>{p.apy}% APY</p>
@@ -527,31 +727,42 @@ function APYCalculator({ pools }: { pools: LaunchpoolPool[] }) {
 
         {/* Amount input */}
         <div className="mb-4">
-          <p style={{ color: c.text2, fontSize: 12, marginBottom: 6 }}>Số lượng stake ({pool.stakeToken})</p>
-          <div className="flex rounded-xl overflow-hidden" style={{ border: `1px solid ${c.borderSolid}` }}>
+          <p style={{ color: c.text2, fontSize: 12, marginBottom: 6 }}>
+            Số lượng stake ({pool.stakeToken})
+          </p>
+          <div
+            className="flex rounded-xl overflow-hidden"
+            style={{ border: `1px solid ${c.borderSolid}` }}
+          >
             <input
               type="number"
               value={amount}
-              onChange={e => setAmount(e.target.value)}
+              onChange={(e) => setAmount(e.target.value)}
               className="flex-1 px-3 py-2.5 bg-transparent outline-none"
               style={{ color: c.text1, fontSize: 16, fontWeight: 600, fontFamily: 'monospace' }}
               placeholder="0.00"
               min={pool.minStake}
               max={pool.maxStake}
             />
-            <span className="flex items-center px-3" style={{ color: c.text3, fontSize: 12, background: c.surface2 }}>
+            <span
+              className="flex items-center px-3"
+              style={{ color: c.text3, fontSize: 12, background: c.surface2 }}
+            >
               {pool.stakeToken}
             </span>
           </div>
           <div className="flex gap-2 mt-2">
-            {[100, 500, 1000, 5000, 10000].map(v => (
-              <button key={v} onClick={() => setAmount(v.toString())}
+            {[100, 500, 1000, 5000, 10000].map((v) => (
+              <button
+                key={v}
+                onClick={() => setAmount(v.toString())}
                 className="flex-1 py-1 rounded-lg text-xs"
                 style={{
                   background: amount === v.toString() ? 'rgba(59,130,246,0.1)' : c.surface2,
                   color: amount === v.toString() ? '#3B82F6' : c.text3,
                   fontWeight: 600,
-                }}>
+                }}
+              >
                 {v >= 1000 ? `${v / 1000}K` : v}
               </button>
             ))}
@@ -562,15 +773,19 @@ function APYCalculator({ pools }: { pools: LaunchpoolPool[] }) {
         <div className="mb-4">
           <p style={{ color: c.text2, fontSize: 12, marginBottom: 6 }}>Thời gian stake (ngày)</p>
           <div className="flex gap-2">
-            {[7, 14, 30, 60, 90].map(d => (
-              <button key={d} onClick={() => setDays(d.toString())}
+            {[7, 14, 30, 60, 90].map((d) => (
+              <button
+                key={d}
+                onClick={() => setDays(d.toString())}
                 className="flex-1 py-2 rounded-xl text-center"
                 style={{
                   background: days === d.toString() ? 'rgba(16,185,129,0.1)' : c.surface2,
                   border: `1px solid ${days === d.toString() ? 'rgba(16,185,129,0.3)' : c.borderSolid}`,
                   color: days === d.toString() ? '#10B981' : c.text2,
-                  fontSize: 13, fontWeight: 600,
-                }}>
+                  fontSize: 13,
+                  fontWeight: 600,
+                }}
+              >
                 {d}d
               </button>
             ))}
@@ -580,7 +795,9 @@ function APYCalculator({ pools }: { pools: LaunchpoolPool[] }) {
 
       {/* Results */}
       <TrCard className="p-4">
-        <p style={{ color: c.text1, fontSize: 14, fontWeight: 700, marginBottom: 12 }}>Kết quả ước tính</p>
+        <p style={{ color: c.text1, fontSize: 14, fontWeight: 700, marginBottom: 12 }}>
+          Kết quả ước tính
+        </p>
 
         <div className="flex flex-col gap-3">
           {/* Effective APY */}
@@ -604,10 +821,17 @@ function APYCalculator({ pools }: { pools: LaunchpoolPool[] }) {
 
           {/* Next tier hint */}
           {nextTier && numAmount > 0 && (
-            <div className="rounded-xl p-2.5" style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.12)' }}>
+            <div
+              className="rounded-xl p-2.5"
+              style={{
+                background: 'rgba(59,130,246,0.06)',
+                border: '1px solid rgba(59,130,246,0.12)',
+              }}
+            >
               <p style={{ color: '#3B82F6', fontSize: 11 }}>
                 <Info size={11} className="inline mr-1" />
-                Stake thêm ${(nextTier.minStake - numAmount).toLocaleString()} để lên hạng {nextTier.label} (+{nextTier.apyBonus}% APY)
+                Stake thêm ${(nextTier.minStake - numAmount).toLocaleString()} để lên hạng{' '}
+                {nextTier.label} (+{nextTier.apyBonus}% APY)
               </p>
             </div>
           )}
@@ -617,7 +841,9 @@ function APYCalculator({ pools }: { pools: LaunchpoolPool[] }) {
           {/* Daily rate */}
           <div className="flex justify-between items-center">
             <span style={{ color: c.text2, fontSize: 13 }}>Lãi suất hàng ngày</span>
-            <span style={{ color: c.text1, fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}>
+            <span
+              style={{ color: c.text1, fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}
+            >
               {(rewards.dailyRate * 100).toFixed(4)}%
             </span>
           </div>
@@ -625,7 +851,9 @@ function APYCalculator({ pools }: { pools: LaunchpoolPool[] }) {
           {/* Token rewards */}
           <div className="flex justify-between items-center">
             <span style={{ color: c.text2, fontSize: 13 }}>Phần thưởng dự kiến</span>
-            <span style={{ color: '#F59E0B', fontSize: 15, fontWeight: 700, fontFamily: 'monospace' }}>
+            <span
+              style={{ color: '#F59E0B', fontSize: 15, fontWeight: 700, fontFamily: 'monospace' }}
+            >
               {rewards.tokenRewards.toLocaleString()} {pool.rewardToken}
             </span>
           </div>
@@ -633,19 +861,23 @@ function APYCalculator({ pools }: { pools: LaunchpoolPool[] }) {
           {/* USD value */}
           <div className="flex justify-between items-center">
             <span style={{ color: c.text2, fontSize: 13 }}>Giá trị ước tính (USD)</span>
-            <span style={{ color: c.text1, fontSize: 15, fontWeight: 700, fontFamily: 'monospace' }}>
+            <span
+              style={{ color: c.text1, fontSize: 15, fontWeight: 700, fontFamily: 'monospace' }}
+            >
               ${rewards.usdValue.toLocaleString()}
             </span>
           </div>
         </div>
 
         {/* Disclaimer */}
-        <div className="mt-4 rounded-xl p-3 flex items-start gap-2"
-          style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.12)' }}>
+        <div
+          className="mt-4 rounded-xl p-3 flex items-start gap-2"
+          style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.12)' }}
+        >
           <AlertTriangle size={13} color="#F59E0B" className="shrink-0 mt-0.5" />
           <p style={{ color: c.text2, fontSize: 10, lineHeight: 1.5 }}>
-            Kết quả chỉ mang tính tham khảo. APY có thể thay đổi theo điều kiện pool và số người tham gia.
-            Rút sớm có thể bị phạt {pool.earlyExitPenalty}% số lượng stake.
+            Kết quả chỉ mang tính tham khảo. APY có thể thay đổi theo điều kiện pool và số người
+            tham gia. Rút sớm có thể bị phạt {pool.earlyExitPenalty}% số lượng stake.
           </p>
         </div>
       </TrCard>
@@ -666,8 +898,9 @@ function StakeSheet({ pool, onClose }: { pool: LaunchpoolPool; onClose: () => vo
   const numAmount = parseFloat(amount) || 0;
   const effectiveAPY = calculateAPY(pool.apy, numAmount, pool.stakingTiers);
   const rewards = estimateRewards(numAmount, effectiveAPY, pool.lockPeriod, pool.rewardTokenPrice);
-  const isValid = numAmount >= pool.minStake && numAmount <= pool.maxStake && numAmount <= MOCK_USER.usdtBalance;
-  const currentTier = pool.stakingTiers.filter(t => numAmount >= t.minStake).pop();
+  const isValid =
+    numAmount >= pool.minStake && numAmount <= pool.maxStake && numAmount <= MOCK_USER.usdtBalance;
+  const currentTier = pool.stakingTiers.filter((t) => numAmount >= t.minStake).pop();
 
   const handleConfirm = () => {
     setProcessing(true);
@@ -678,32 +911,58 @@ function StakeSheet({ pool, onClose }: { pool: LaunchpoolPool; onClose: () => vo
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end" style={{ background: 'rgba(0,0,0,0.75)' }}
-      onClick={onClose}>
-      <div className="w-full rounded-t-3xl flex flex-col"
-        style={{ background: c.surface, maxWidth: 440, margin: '0 auto', maxHeight: '90vh', overflow: 'auto' }}
-        onClick={e => e.stopPropagation()}>
-        <div className="flex justify-center pt-3 pb-2 sticky top-0 z-10" style={{ background: c.surface }}>
+    <div
+      className="fixed inset-0 z-50 flex items-end"
+      style={{ background: 'rgba(0,0,0,0.75)' }}
+      onClick={onClose}
+    >
+      <div
+        className="w-full rounded-t-3xl flex flex-col"
+        style={{
+          background: c.surface,
+          maxWidth: 440,
+          margin: '0 auto',
+          maxHeight: '90vh',
+          overflow: 'auto',
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div
+          className="flex justify-center pt-3 pb-2 sticky top-0 z-10"
+          style={{ background: c.surface }}
+        >
           <div className="w-10 h-1 rounded-full" style={{ background: c.borderSolid }} />
         </div>
         <div className="px-5 pb-6 flex flex-col gap-4">
-
           {step === 'input' && (
             <>
               <div className="flex items-center justify-between">
-                <h3 style={{ color: c.text1, fontSize: 18, fontWeight: 800 }}>Stake {pool.stakeToken}</h3>
-                <button onClick={onClose}><X size={20} color={c.text3} /></button>
+                <h3 style={{ color: c.text1, fontSize: 18, fontWeight: 800 }}>
+                  Stake {pool.stakeToken}
+                </h3>
+                <button onClick={onClose}>
+                  <X size={20} color={c.text3} />
+                </button>
               </div>
 
               {/* Pool info */}
-              <div className="flex items-center gap-3 rounded-xl p-3" style={{ background: c.surface2 }}>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold"
-                  style={{ background: pool.projectLogoColor + '22', color: pool.projectLogoColor }}>
+              <div
+                className="flex items-center gap-3 rounded-xl p-3"
+                style={{ background: c.surface2 }}
+              >
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold"
+                  style={{ background: pool.projectLogoColor + '22', color: pool.projectLogoColor }}
+                >
                   {pool.projectLogo}
                 </div>
                 <div className="flex-1">
-                  <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>{pool.projectName}</p>
-                  <p style={{ color: c.text3, fontSize: 11 }}>Lock: {pool.lockPeriod} ngày · Chain: {pool.chain}</p>
+                  <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>
+                    {pool.projectName}
+                  </p>
+                  <p style={{ color: c.text3, fontSize: 11 }}>
+                    Lock: {pool.lockPeriod} ngày · Chain: {pool.chain}
+                  </p>
                 </div>
                 <div className="text-right">
                   <p style={{ color: '#10B981', fontSize: 16, fontWeight: 800 }}>{pool.apy}%</p>
@@ -716,29 +975,59 @@ function StakeSheet({ pool, onClose }: { pool: LaunchpoolPool; onClose: () => vo
                 <div className="flex justify-between mb-1.5">
                   <span style={{ color: c.text2, fontSize: 12 }}>Số lượng</span>
                   <span style={{ color: c.text3, fontSize: 11 }}>
-                    Có sẵn: <span style={{ fontWeight: 600, color: c.text1 }}>${MOCK_USER.usdtBalance.toLocaleString()}</span>
+                    Có sẵn:{' '}
+                    <span style={{ fontWeight: 600, color: c.text1 }}>
+                      ${MOCK_USER.usdtBalance.toLocaleString()}
+                    </span>
                   </span>
                 </div>
-                <div className="flex rounded-xl overflow-hidden" style={{ border: `1px solid ${c.borderSolid}` }}>
-                  <input type="number" value={amount} onChange={e => setAmount(e.target.value)}
+                <div
+                  className="flex rounded-xl overflow-hidden"
+                  style={{ border: `1px solid ${c.borderSolid}` }}
+                >
+                  <input
+                    type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
                     className="flex-1 px-3 py-3 bg-transparent outline-none"
-                    style={{ color: c.text1, fontSize: 18, fontWeight: 600, fontFamily: 'monospace' }}
-                    placeholder="0.00" />
+                    style={{
+                      color: c.text1,
+                      fontSize: 18,
+                      fontWeight: 600,
+                      fontFamily: 'monospace',
+                    }}
+                    placeholder="0.00"
+                  />
                   <div className="flex items-center gap-2 px-3" style={{ background: c.surface2 }}>
-                    <button onClick={() => setAmount(Math.min(pool.maxStake, MOCK_USER.usdtBalance).toString())}
+                    <button
+                      onClick={() =>
+                        setAmount(Math.min(pool.maxStake, MOCK_USER.usdtBalance).toString())
+                      }
                       className="px-2 py-0.5 rounded-lg"
-                      style={{ background: 'rgba(59,130,246,0.1)', color: '#3B82F6', fontSize: 10, fontWeight: 600 }}>
+                      style={{
+                        background: 'rgba(59,130,246,0.1)',
+                        color: '#3B82F6',
+                        fontSize: 10,
+                        fontWeight: 600,
+                      }}
+                    >
                       MAX
                     </button>
                     <span style={{ color: c.text3, fontSize: 12 }}>{pool.stakeToken}</span>
                   </div>
                 </div>
                 <div className="flex gap-2 mt-2">
-                  {[25, 50, 75, 100].map(pct => (
-                    <button key={pct}
-                      onClick={() => setAmount(Math.min(MOCK_USER.usdtBalance * pct / 100, pool.maxStake).toString())}
+                  {[25, 50, 75, 100].map((pct) => (
+                    <button
+                      key={pct}
+                      onClick={() =>
+                        setAmount(
+                          Math.min((MOCK_USER.usdtBalance * pct) / 100, pool.maxStake).toString(),
+                        )
+                      }
                       className="flex-1 py-1 rounded-lg text-xs"
-                      style={{ background: c.surface2, color: c.text3, fontWeight: 600 }}>
+                      style={{ background: c.surface2, color: c.text3, fontWeight: 600 }}
+                    >
                       {pct}%
                     </button>
                   ))}
@@ -757,10 +1046,18 @@ function StakeSheet({ pool, onClose }: { pool: LaunchpoolPool; onClose: () => vo
 
               {/* APY + tier preview */}
               {numAmount > 0 && (
-                <div className="rounded-xl p-3" style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.12)' }}>
+                <div
+                  className="rounded-xl p-3"
+                  style={{
+                    background: 'rgba(16,185,129,0.06)',
+                    border: '1px solid rgba(16,185,129,0.12)',
+                  }}
+                >
                   <div className="flex justify-between mb-2">
                     <span style={{ color: c.text2, fontSize: 12 }}>APY hiệu lực</span>
-                    <span style={{ color: '#10B981', fontSize: 16, fontWeight: 800 }}>{effectiveAPY}%</span>
+                    <span style={{ color: '#10B981', fontSize: 16, fontWeight: 800 }}>
+                      {effectiveAPY}%
+                    </span>
                   </div>
                   {currentTier && (
                     <div className="flex items-center gap-1.5">
@@ -774,7 +1071,14 @@ function StakeSheet({ pool, onClose }: { pool: LaunchpoolPool; onClose: () => vo
                     <span style={{ color: c.text3, fontSize: 11 }}>
                       Thu nhập dự kiến ({pool.lockPeriod}d)
                     </span>
-                    <span style={{ color: '#F59E0B', fontSize: 12, fontWeight: 600, fontFamily: 'monospace' }}>
+                    <span
+                      style={{
+                        color: '#F59E0B',
+                        fontSize: 12,
+                        fontWeight: 600,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       ~{rewards.tokenRewards.toLocaleString()} {pool.rewardToken}
                     </span>
                   </div>
@@ -782,11 +1086,16 @@ function StakeSheet({ pool, onClose }: { pool: LaunchpoolPool; onClose: () => vo
               )}
 
               {/* Warnings */}
-              <div className="rounded-xl p-3 flex items-start gap-2"
-                style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.12)' }}>
+              <div
+                className="rounded-xl p-3 flex items-start gap-2"
+                style={{
+                  background: 'rgba(245,158,11,0.06)',
+                  border: '1px solid rgba(245,158,11,0.12)',
+                }}
+              >
                 <AlertTriangle size={13} color="#F59E0B" className="shrink-0 mt-0.5" />
                 <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                  Token sẽ bị khóa {pool.lockPeriod} ngày. Rút sớm mất {pool.earlyExitPenalty}% phí. 
+                  Token sẽ bị khóa {pool.lockPeriod} ngày. Rút sớm mất {pool.earlyExitPenalty}% phí.
                   Cooldown {pool.cooldownDays} ngày khi unstake.
                 </p>
               </div>
@@ -801,7 +1110,9 @@ function StakeSheet({ pool, onClose }: { pool: LaunchpoolPool; onClose: () => vo
             <>
               <div className="flex items-center justify-between">
                 <h3 style={{ color: c.text1, fontSize: 18, fontWeight: 800 }}>Xác nhận Stake</h3>
-                <button onClick={onClose}><X size={20} color={c.text3} /></button>
+                <button onClick={onClose}>
+                  <X size={20} color={c.text3} />
+                </button>
               </div>
 
               <div className="flex flex-col gap-2">
@@ -814,29 +1125,61 @@ function StakeSheet({ pool, onClose }: { pool: LaunchpoolPool; onClose: () => vo
                   { label: 'Cooldown', value: `${pool.cooldownDays} ngày` },
                   { label: 'Phi rút sớm', value: `${pool.earlyExitPenalty}%` },
                   { label: 'Chain', value: pool.chain },
-                  { label: 'Thu nhập dự kiến', value: `~${rewards.tokenRewards.toLocaleString()} ${pool.rewardToken}` },
-                  { label: 'Giá trị USD ước tính', value: `~$${rewards.usdValue.toLocaleString()}` },
-                ].map(r => (
-                  <div key={r.label} className="flex justify-between py-1.5" style={{ borderBottom: `1px solid ${c.border}` }}>
+                  {
+                    label: 'Thu nhập dự kiến',
+                    value: `~${rewards.tokenRewards.toLocaleString()} ${pool.rewardToken}`,
+                  },
+                  {
+                    label: 'Giá trị USD ước tính',
+                    value: `~$${rewards.usdValue.toLocaleString()}`,
+                  },
+                ].map((r) => (
+                  <div
+                    key={r.label}
+                    className="flex justify-between py-1.5"
+                    style={{ borderBottom: `1px solid ${c.border}` }}
+                  >
                     <span style={{ color: c.text2, fontSize: 13 }}>{r.label}</span>
-                    <span style={{ color: c.text1, fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}>{r.value}</span>
+                    <span
+                      style={{
+                        color: c.text1,
+                        fontSize: 13,
+                        fontWeight: 600,
+                        fontFamily: 'monospace',
+                      }}
+                    >
+                      {r.value}
+                    </span>
                   </div>
                 ))}
               </div>
 
-              <div className="rounded-xl p-3 flex items-start gap-2"
-                style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)' }}>
+              <div
+                className="rounded-xl p-3 flex items-start gap-2"
+                style={{
+                  background: 'rgba(239,68,68,0.06)',
+                  border: '1px solid rgba(239,68,68,0.15)',
+                }}
+              >
                 <Shield size={14} color="#EF4444" className="shrink-0 mt-0.5" />
                 <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                  Hành động này không thể hoàn tác. Token sẽ bị khóa và chỉ có thể rút sau khi hết lock + cooldown.
-                  Giá trị phần thưởng có thể thay đổi.
+                  Hành động này không thể hoàn tác. Token sẽ bị khóa và chỉ có thể rút sau khi hết
+                  lock + cooldown. Giá trị phần thưởng có thể thay đổi.
                 </p>
               </div>
 
               <div className="flex gap-3">
-                <button onClick={() => setStep('input')}
+                <button
+                  onClick={() => setStep('input')}
                   className="flex-1 h-12 rounded-2xl font-bold"
-                  style={{ background: c.surface2, color: c.text2, fontSize: 14, borderRadius: 14, fontWeight: 600 }}>
+                  style={{
+                    background: c.surface2,
+                    color: c.text2,
+                    fontSize: 14,
+                    borderRadius: 14,
+                    fontWeight: 600,
+                  }}
+                >
                   Quay lại
                 </button>
                 <CTAButton className="flex-1" loading={processing} onClick={handleConfirm}>
@@ -849,13 +1192,18 @@ function StakeSheet({ pool, onClose }: { pool: LaunchpoolPool; onClose: () => vo
           {step === 'success' && (
             <>
               <div className="text-center py-4">
-                <div className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center"
-                  style={{ background: 'rgba(16,185,129,0.15)' }}>
+                <div
+                  className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center"
+                  style={{ background: 'rgba(16,185,129,0.15)' }}
+                >
                   <CheckCircle size={32} color="#10B981" />
                 </div>
-                <h3 style={{ color: c.text1, fontSize: 20, fontWeight: 800, marginBottom: 4 }}>Stake thành công!</h3>
+                <h3 style={{ color: c.text1, fontSize: 20, fontWeight: 800, marginBottom: 4 }}>
+                  Stake thành công!
+                </h3>
                 <p style={{ color: c.text2, fontSize: 13 }}>
-                  Bạn đã stake ${numAmount.toLocaleString()} {pool.stakeToken} vào {pool.projectName}
+                  Bạn đã stake ${numAmount.toLocaleString()} {pool.stakeToken} vào{' '}
+                  {pool.projectName}
                 </p>
               </div>
 
@@ -863,9 +1211,12 @@ function StakeSheet({ pool, onClose }: { pool: LaunchpoolPool; onClose: () => vo
                 {[
                   { label: 'APY', value: `${effectiveAPY}%` },
                   { label: 'Lock until', value: `${pool.lockPeriod} ngày từ bây giờ` },
-                  { label: 'Thu nhập dự kiến', value: `~${rewards.tokenRewards.toLocaleString()} ${pool.rewardToken}` },
-                ].map(r => (
-                  <div key={r.label} className="flex justify-between py-1" >
+                  {
+                    label: 'Thu nhập dự kiến',
+                    value: `~${rewards.tokenRewards.toLocaleString()} ${pool.rewardToken}`,
+                  },
+                ].map((r) => (
+                  <div key={r.label} className="flex justify-between py-1">
                     <span style={{ color: c.text3, fontSize: 12 }}>{r.label}</span>
                     <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>{r.value}</span>
                   </div>
@@ -893,10 +1244,10 @@ function UnstakeSheet({ position, onClose }: { position: StakePosition; onClose:
   const [step, setStep] = useState<'input' | 'confirm' | 'success'>('input');
   const [processing, setProcessing] = useState(false);
 
-  const pool = LAUNCHPOOL_POOLS.find(p => p.id === position.poolId);
+  const pool = LAUNCHPOOL_POOLS.find((p) => p.id === position.poolId);
   const penalty = pool?.earlyExitPenalty || 0;
   const numAmount = parseFloat(amount) || 0;
-  const penaltyAmount = numAmount * penalty / 100;
+  const penaltyAmount = (numAmount * penalty) / 100;
   const receiveAmount = numAmount - penaltyAmount;
 
   const handleConfirm = () => {
@@ -908,41 +1259,80 @@ function UnstakeSheet({ position, onClose }: { position: StakePosition; onClose:
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end" style={{ background: 'rgba(0,0,0,0.75)' }}
-      onClick={onClose}>
-      <div className="w-full rounded-t-3xl flex flex-col"
-        style={{ background: c.surface, maxWidth: 440, margin: '0 auto', maxHeight: '90vh', overflow: 'auto' }}
-        onClick={e => e.stopPropagation()}>
-        <div className="flex justify-center pt-3 pb-2 sticky top-0 z-10" style={{ background: c.surface }}>
+    <div
+      className="fixed inset-0 z-50 flex items-end"
+      style={{ background: 'rgba(0,0,0,0.75)' }}
+      onClick={onClose}
+    >
+      <div
+        className="w-full rounded-t-3xl flex flex-col"
+        style={{
+          background: c.surface,
+          maxWidth: 440,
+          margin: '0 auto',
+          maxHeight: '90vh',
+          overflow: 'auto',
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div
+          className="flex justify-center pt-3 pb-2 sticky top-0 z-10"
+          style={{ background: c.surface }}
+        >
           <div className="w-10 h-1 rounded-full" style={{ background: c.borderSolid }} />
         </div>
         <div className="px-5 pb-6 flex flex-col gap-4">
-
           {step === 'input' && (
             <>
               <div className="flex items-center justify-between">
-                <h3 style={{ color: c.text1, fontSize: 18, fontWeight: 800 }}>Unstake {position.stakeToken}</h3>
-                <button onClick={onClose}><X size={20} color={c.text3} /></button>
+                <h3 style={{ color: c.text1, fontSize: 18, fontWeight: 800 }}>
+                  Unstake {position.stakeToken}
+                </h3>
+                <button onClick={onClose}>
+                  <X size={20} color={c.text3} />
+                </button>
               </div>
 
               <div className="rounded-xl p-3" style={{ background: c.surface2 }}>
                 <p style={{ color: c.text3, fontSize: 11 }}>Đang stake</p>
-                <p style={{ color: c.text1, fontSize: 20, fontWeight: 800, fontFamily: 'monospace' }}>
+                <p
+                  style={{ color: c.text1, fontSize: 20, fontWeight: 800, fontFamily: 'monospace' }}
+                >
                   ${position.stakedAmount.toLocaleString()} {position.stakeToken}
                 </p>
               </div>
 
               <div>
                 <p style={{ color: c.text2, fontSize: 12, marginBottom: 6 }}>Số lượng rút</p>
-                <div className="flex rounded-xl overflow-hidden" style={{ border: `1px solid ${c.borderSolid}` }}>
-                  <input type="number" value={amount} onChange={e => setAmount(e.target.value)}
+                <div
+                  className="flex rounded-xl overflow-hidden"
+                  style={{ border: `1px solid ${c.borderSolid}` }}
+                >
+                  <input
+                    type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
                     className="flex-1 px-3 py-3 bg-transparent outline-none"
-                    style={{ color: c.text1, fontSize: 18, fontWeight: 600, fontFamily: 'monospace' }}
-                    placeholder="0.00" max={position.stakedAmount} />
+                    style={{
+                      color: c.text1,
+                      fontSize: 18,
+                      fontWeight: 600,
+                      fontFamily: 'monospace',
+                    }}
+                    placeholder="0.00"
+                    max={position.stakedAmount}
+                  />
                   <div className="flex items-center gap-2 px-3" style={{ background: c.surface2 }}>
-                    <button onClick={() => setAmount(position.stakedAmount.toString())}
+                    <button
+                      onClick={() => setAmount(position.stakedAmount.toString())}
                       className="px-2 py-0.5 rounded-lg"
-                      style={{ background: 'rgba(239,68,68,0.1)', color: '#EF4444', fontSize: 10, fontWeight: 600 }}>
+                      style={{
+                        background: 'rgba(239,68,68,0.1)',
+                        color: '#EF4444',
+                        fontSize: 10,
+                        fontWeight: 600,
+                      }}
+                    >
                       ALL
                     </button>
                   </div>
@@ -951,20 +1341,42 @@ function UnstakeSheet({ position, onClose }: { position: StakePosition; onClose:
 
               {/* Penalty warning */}
               {penalty > 0 && (
-                <div className="rounded-xl p-3" style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)' }}>
+                <div
+                  className="rounded-xl p-3"
+                  style={{
+                    background: 'rgba(239,68,68,0.06)',
+                    border: '1px solid rgba(239,68,68,0.15)',
+                  }}
+                >
                   <div className="flex items-center gap-2 mb-2">
                     <AlertTriangle size={14} color="#EF4444" />
-                    <span style={{ color: '#EF4444', fontSize: 12, fontWeight: 700 }}>Phi rút sớm</span>
+                    <span style={{ color: '#EF4444', fontSize: 12, fontWeight: 700 }}>
+                      Phi rút sớm
+                    </span>
                   </div>
                   <div className="flex justify-between mb-1">
                     <span style={{ color: c.text2, fontSize: 12 }}>Phi phạt ({penalty}%)</span>
-                    <span style={{ color: '#EF4444', fontSize: 12, fontWeight: 600, fontFamily: 'monospace' }}>
+                    <span
+                      style={{
+                        color: '#EF4444',
+                        fontSize: 12,
+                        fontWeight: 600,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       -${penaltyAmount.toLocaleString()}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span style={{ color: c.text2, fontSize: 12 }}>Bạn nhận được</span>
-                    <span style={{ color: c.text1, fontSize: 14, fontWeight: 700, fontFamily: 'monospace' }}>
+                    <span
+                      style={{
+                        color: c.text1,
+                        fontSize: 14,
+                        fontWeight: 700,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       ${receiveAmount.toLocaleString()}
                     </span>
                   </div>
@@ -973,17 +1385,26 @@ function UnstakeSheet({ position, onClose }: { position: StakePosition; onClose:
 
               {/* Cooldown info */}
               {pool && pool.cooldownDays > 0 && (
-                <div className="rounded-xl p-3 flex items-start gap-2"
-                  style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.12)' }}>
+                <div
+                  className="rounded-xl p-3 flex items-start gap-2"
+                  style={{
+                    background: 'rgba(245,158,11,0.06)',
+                    border: '1px solid rgba(245,158,11,0.12)',
+                  }}
+                >
                   <Clock size={13} color="#F59E0B" className="shrink-0 mt-0.5" />
                   <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                    Sau khi unstake, token sẽ vào giai đoạn cooldown {pool.cooldownDays} ngày trước khi có thể rút về ví.
+                    Sau khi unstake, token sẽ vào giai đoạn cooldown {pool.cooldownDays} ngày trước
+                    khi có thể rút về ví.
                   </p>
                 </div>
               )}
 
-              <CTAButton variant="danger" disabled={numAmount <= 0 || numAmount > position.stakedAmount}
-                onClick={() => setStep('confirm')}>
+              <CTAButton
+                variant="danger"
+                disabled={numAmount <= 0 || numAmount > position.stakedAmount}
+                onClick={() => setStep('confirm')}
+              >
                 Tiếp tục Unstake
               </CTAButton>
             </>
@@ -992,33 +1413,61 @@ function UnstakeSheet({ position, onClose }: { position: StakePosition; onClose:
           {step === 'confirm' && (
             <>
               <div className="flex items-center justify-between">
-                <h3 style={{ color: '#EF4444', fontSize: 18, fontWeight: 800 }}>Xác nhận Unstake</h3>
-                <button onClick={onClose}><X size={20} color={c.text3} /></button>
+                <h3 style={{ color: '#EF4444', fontSize: 18, fontWeight: 800 }}>
+                  Xác nhận Unstake
+                </h3>
+                <button onClick={onClose}>
+                  <X size={20} color={c.text3} />
+                </button>
               </div>
 
-              <div className="rounded-xl p-4 text-center"
-                style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.2)' }}>
+              <div
+                className="rounded-xl p-4 text-center"
+                style={{
+                  background: 'rgba(239,68,68,0.06)',
+                  border: '1px solid rgba(239,68,68,0.2)',
+                }}
+              >
                 <AlertTriangle size={28} color="#EF4444" className="mx-auto mb-2" />
                 <p style={{ color: c.text1, fontSize: 14, fontWeight: 700, marginBottom: 4 }}>
                   Bạn chắc chắn muốn unstake?
                 </p>
                 <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.5 }}>
-                  Bạn sẽ mất {penalty}% phí phạt (${penaltyAmount.toLocaleString()}).
-                  Token sẽ vào cooldown {pool?.cooldownDays || 0} ngày.
-                  Bạn sẽ ngừng nhận phần thưởng cho số lượng này.
+                  Bạn sẽ mất {penalty}% phí phạt (${penaltyAmount.toLocaleString()}). Token sẽ vào
+                  cooldown {pool?.cooldownDays || 0} ngày. Bạn sẽ ngừng nhận phần thưởng cho số
+                  lượng này.
                 </p>
               </div>
 
               <div className="flex flex-col gap-2">
                 {[
                   { label: 'Số lượng unstake', value: `$${numAmount.toLocaleString()}` },
-                  { label: 'Phi phạt', value: `-$${penaltyAmount.toLocaleString()}`, color: '#EF4444' },
-                  { label: 'Bạn nhận', value: `$${receiveAmount.toLocaleString()}`, color: '#10B981' },
+                  {
+                    label: 'Phi phạt',
+                    value: `-$${penaltyAmount.toLocaleString()}`,
+                    color: '#EF4444',
+                  },
+                  {
+                    label: 'Bạn nhận',
+                    value: `$${receiveAmount.toLocaleString()}`,
+                    color: '#10B981',
+                  },
                   { label: 'Cooldown', value: `${pool?.cooldownDays || 0} ngày` },
-                ].map(r => (
-                  <div key={r.label} className="flex justify-between py-1.5" style={{ borderBottom: `1px solid ${c.border}` }}>
+                ].map((r) => (
+                  <div
+                    key={r.label}
+                    className="flex justify-between py-1.5"
+                    style={{ borderBottom: `1px solid ${c.border}` }}
+                  >
                     <span style={{ color: c.text2, fontSize: 13 }}>{r.label}</span>
-                    <span style={{ color: (r as any).color || c.text1, fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}>
+                    <span
+                      style={{
+                        color: (r as any).color || c.text1,
+                        fontSize: 13,
+                        fontWeight: 600,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       {r.value}
                     </span>
                   </div>
@@ -1026,12 +1475,25 @@ function UnstakeSheet({ position, onClose }: { position: StakePosition; onClose:
               </div>
 
               <div className="flex gap-3">
-                <button onClick={() => setStep('input')}
+                <button
+                  onClick={() => setStep('input')}
                   className="flex-1 h-12 rounded-2xl font-bold"
-                  style={{ background: c.surface2, color: c.text2, fontSize: 14, borderRadius: 14, fontWeight: 600 }}>
+                  style={{
+                    background: c.surface2,
+                    color: c.text2,
+                    fontSize: 14,
+                    borderRadius: 14,
+                    fontWeight: 600,
+                  }}
+                >
                   Hủy
                 </button>
-                <CTAButton variant="danger" className="flex-1" loading={processing} onClick={handleConfirm}>
+                <CTAButton
+                  variant="danger"
+                  className="flex-1"
+                  loading={processing}
+                  onClick={handleConfirm}
+                >
                   Xác nhận Unstake
                 </CTAButton>
               </div>
@@ -1041,13 +1503,18 @@ function UnstakeSheet({ position, onClose }: { position: StakePosition; onClose:
           {step === 'success' && (
             <>
               <div className="text-center py-4">
-                <div className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center"
-                  style={{ background: 'rgba(16,185,129,0.15)' }}>
+                <div
+                  className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center"
+                  style={{ background: 'rgba(16,185,129,0.15)' }}
+                >
                   <CheckCircle size={32} color="#10B981" />
                 </div>
-                <h3 style={{ color: c.text1, fontSize: 20, fontWeight: 800, marginBottom: 4 }}>Unstake thành công!</h3>
+                <h3 style={{ color: c.text1, fontSize: 20, fontWeight: 800, marginBottom: 4 }}>
+                  Unstake thành công!
+                </h3>
                 <p style={{ color: c.text2, fontSize: 13 }}>
-                  ${receiveAmount.toLocaleString()} {position.stakeToken} đang trong giai đoạn cooldown
+                  ${receiveAmount.toLocaleString()} {position.stakeToken} đang trong giai đoạn
+                  cooldown
                 </p>
               </div>
               <CTAButton onClick={onClose}>Hoàn tất</CTAButton>

@@ -1,7 +1,13 @@
 import React, { useMemo } from 'react';
 import {
-  AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
-  CartesianGrid, ReferenceLine
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+  ReferenceLine,
 } from 'recharts';
 import { generateChartData } from '../../data/mockData';
 import { useThemeColors } from '../../hooks/useThemeColors';
@@ -13,7 +19,12 @@ interface PriceAreaChartProps {
 }
 
 const TIMEFRAME_POINTS: Record<string, number> = {
-  '15m': 24, '1H': 48, '4H': 48, '1D': 60, '1W': 56, '1M': 60,
+  '15m': 24,
+  '1H': 48,
+  '4H': 48,
+  '1D': 60,
+  '1W': 56,
+  '1M': 60,
 };
 
 interface CustomTooltipProps {
@@ -26,10 +37,17 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
   const c = useThemeColors();
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-xl px-3 py-2" style={{ background: c.surface2, border: `1px solid ${c.borderSolid}` }}>
+    <div
+      className="rounded-xl px-3 py-2"
+      style={{ background: c.surface2, border: `1px solid ${c.borderSolid}` }}
+    >
       <p style={{ color: c.text2, fontSize: 11 }}>{label}</p>
       <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>
-        ${payload[0].value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        $
+        {payload[0].value.toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}
       </p>
     </div>
   );
@@ -41,8 +59,8 @@ export function PriceAreaChart({ basePrice, isPositive, timeframe }: PriceAreaCh
   const data = useMemo(() => generateChartData(basePrice, points), [basePrice, points]);
 
   const color = isPositive ? '#10B981' : '#EF4444';
-  const minVal = Math.min(...data.map(d => d.price));
-  const maxVal = Math.max(...data.map(d => d.price));
+  const minVal = Math.min(...data.map((d) => d.price));
+  const maxVal = Math.max(...data.map((d) => d.price));
   const mid = (minVal + maxVal) / 2;
 
   return (
@@ -70,7 +88,9 @@ export function PriceAreaChart({ basePrice, isPositive, timeframe }: PriceAreaCh
           axisLine={false}
           tickLine={false}
           width={60}
-          tickFormatter={v => v > 100 ? v.toLocaleString('en-US', { maximumFractionDigits: 0 }) : v.toFixed(4)}
+          tickFormatter={(v) =>
+            v > 100 ? v.toLocaleString('en-US', { maximumFractionDigits: 0 }) : v.toFixed(4)
+          }
         />
         <Tooltip key="pac-tip" content={<CustomTooltip />} />
         <ReferenceLine key="pac-ref" y={mid} stroke={c.divider} strokeDasharray="4 4" />

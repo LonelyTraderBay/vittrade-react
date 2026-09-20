@@ -1,10 +1,10 @@
 /**
  * Onboarding Goals Screen
- * 
+ *
  * Step 5: User selects goals/interests.
  * Personalizes the experience and helps route
  * the user to the most relevant first action.
- * 
+ *
  * @module pages/onboarding/OnboardingGoals
  * @version 1.0 (Phase 3)
  */
@@ -108,9 +108,7 @@ export default function OnboardingGoals({
 
   const toggleGoal = (goalId: UserGoal) => {
     setSelected((prev) =>
-      prev.includes(goalId)
-        ? prev.filter((g) => g !== goalId)
-        : [...prev, goalId]
+      prev.includes(goalId) ? prev.filter((g) => g !== goalId) : [...prev, goalId],
     );
   };
 
@@ -209,21 +207,25 @@ export default function OnboardingGoals({
                 </div>
 
                 {/* Label */}
-                <p style={{
-                  fontSize: φ.sm,
-                  fontWeight: 600,
-                  color: c.text1,
-                  marginBottom: 2,
-                }}>
+                <p
+                  style={{
+                    fontSize: φ.sm,
+                    fontWeight: 600,
+                    color: c.text1,
+                    marginBottom: 2,
+                  }}
+                >
                   {goal.label}
                 </p>
 
                 {/* Description */}
-                <p style={{
-                  fontSize: 11,
-                  color: c.text3,
-                  lineHeight: 1.3,
-                }}>
+                <p
+                  style={{
+                    fontSize: 11,
+                    color: c.text3,
+                    lineHeight: 1.3,
+                  }}
+                >
                   {goal.description}
                 </p>
 

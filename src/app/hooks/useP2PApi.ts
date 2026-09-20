@@ -25,10 +25,7 @@ interface UseApiResult<T> {
   refetch: () => Promise<void>;
 }
 
-function useApi<T>(
-  apiCall: () => Promise<T>,
-  deps: any[] = []
-): UseApiResult<T> {
+function useApi<T>(apiCall: () => Promise<T>, deps: any[] = []): UseApiResult<T> {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -91,7 +88,9 @@ export function useUploadIdentity() {
   const mountedRef = useRef(true);
 
   useEffect(() => {
-    return () => { mountedRef.current = false; };
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   const upload = async (file: File, docType: string) => {
@@ -121,7 +120,9 @@ export function useSubmitSelfie() {
   const mountedRef = useRef(true);
 
   useEffect(() => {
-    return () => { mountedRef.current = false; };
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   const submit = async (file: File) => {
@@ -162,7 +163,9 @@ export function use2FA() {
   const mountedRef = useRef(true);
 
   useEffect(() => {
-    return () => { mountedRef.current = false; };
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   const enable = async (method: 'sms' | 'app' | 'email', code: string) => {
@@ -232,7 +235,9 @@ export function useWalletTransfer() {
   const mountedRef = useRef(true);
 
   useEffect(() => {
-    return () => { mountedRef.current = false; };
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   const transfer = async (params: {
@@ -298,7 +303,9 @@ export function useSubmitSourceOfFunds() {
   const mountedRef = useRef(true);
 
   useEffect(() => {
-    return () => { mountedRef.current = false; };
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   const submit = async (data: { source: string; details: string }) => {
@@ -339,7 +346,9 @@ export function useAddPaymentMethod() {
   const mountedRef = useRef(true);
 
   useEffect(() => {
-    return () => { mountedRef.current = false; };
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   const add = async (data: { type: string; name: string; accountNumber: string }) => {
@@ -369,7 +378,9 @@ export function useVerifyPaymentMethod() {
   const mountedRef = useRef(true);
 
   useEffect(() => {
-    return () => { mountedRef.current = false; };
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   const verify = async (methodId: string, amounts: number[]) => {

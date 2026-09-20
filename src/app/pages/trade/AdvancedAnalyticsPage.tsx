@@ -11,8 +11,15 @@ import { PageLayout } from '../../components/layout/PageLayout';
 import { PageContent } from '../../components/layout/PageContent';
 import { TabBar } from '../../components/layout/TabBar';
 import { AITradingSignals, type AISignal } from '../../components/trading/AITradingSignals';
-import { PortfolioRiskAnalyzer, type RiskMetrics } from '../../components/trading/PortfolioRiskAnalyzer';
-import { TradeJournal, type TradeEntry, type JournalStats } from '../../components/trading/TradeJournal';
+import {
+  PortfolioRiskAnalyzer,
+  type RiskMetrics,
+} from '../../components/trading/PortfolioRiskAnalyzer';
+import {
+  TradeJournal,
+  type TradeEntry,
+  type JournalStats,
+} from '../../components/trading/TradeJournal';
 import { PositionSizingCalculator } from '../../components/trading/PositionSizingCalculator';
 import { TrCard } from '../../components/ui/TrCard';
 import { useThemeColors } from '../../hooks/useThemeColors';
@@ -254,10 +261,7 @@ export function AdvancedAnalyticsPage() {
 
       <PageContent gap="default">
         {/* Hero Banner */}
-        <TrCard
-          variant="hero"
-          className="p-6"
-        >
+        <TrCard variant="hero" className="p-6">
           <div className="flex items-center gap-3 mb-4">
             <div
               className="w-16 h-16 rounded-2xl flex items-center justify-center"
@@ -305,9 +309,7 @@ export function AdvancedAnalyticsPage() {
                 >
                   {stat.value}
                 </p>
-                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 10 }}>
-                  {stat.label}
-                </p>
+                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 10 }}>{stat.label}</p>
               </div>
             ))}
           </div>
@@ -317,10 +319,10 @@ export function AdvancedAnalyticsPage() {
         <TabBar
           variant="underline"
           tabs={[
-            { id: 'ai', label: 'AI Signals', icon: Brain },
-            { id: 'risk', label: 'Risk Analysis', icon: Shield },
-            { id: 'journal', label: 'Trade Journal', icon: BookOpen },
-            { id: 'sizing', label: 'Position Sizing', icon: Calculator },
+            { id: 'ai', label: 'AI Signals' },
+            { id: 'risk', label: 'Risk Analysis' },
+            { id: 'journal', label: 'Trade Journal' },
+            { id: 'sizing', label: 'Position Sizing' },
           ]}
           active={tab}
           onChange={setTab}
@@ -352,7 +354,9 @@ export function AdvancedAnalyticsPage() {
                     AI Model: GPT-4 + TradingView Integration
                   </p>
                   <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>
-                    Signals generated using multi-factor analysis: technical indicators (RSI, MACD, EMA), on-chain data (whale movements, funding rates), sentiment analysis (social media, news), and volume profiling.
+                    Signals generated using multi-factor analysis: technical indicators (RSI, MACD,
+                    EMA), on-chain data (whale movements, funding rates), sentiment analysis (social
+                    media, news), and volume profiling.
                   </p>
                 </div>
               </div>
@@ -384,7 +388,8 @@ export function AdvancedAnalyticsPage() {
                     Enterprise Risk Management
                   </p>
                   <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>
-                    VaR calculated using Monte Carlo simulation (10,000 iterations). Sharpe/Sortino ratios updated daily. Beta computed against BTC with 30-day rolling window.
+                    VaR calculated using Monte Carlo simulation (10,000 iterations). Sharpe/Sortino
+                    ratios updated daily. Beta computed against BTC with 30-day rolling window.
                   </p>
                 </div>
               </div>
@@ -417,7 +422,8 @@ export function AdvancedAnalyticsPage() {
                     Performance Attribution
                   </p>
                   <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>
-                    Automatic trade tagging, setup classification, and pattern recognition. Export to CSV for tax reporting. Connects to TradingView for chart annotations.
+                    Automatic trade tagging, setup classification, and pattern recognition. Export
+                    to CSV for tax reporting. Connects to TradingView for chart annotations.
                   </p>
                 </div>
               </div>
@@ -429,13 +435,12 @@ export function AdvancedAnalyticsPage() {
         {tab === 'sizing' && (
           <div className="flex flex-col gap-3">
             <PositionSizingCalculator
+              symbol="BTC/USDT"
+              baseAsset="BTC"
+              currentPrice={67500}
               accountBalance={50000}
-              entryPrice={67500}
-              stopLossPrice={66800}
-              takeProfitPrice={70200}
-              winRate={66.7}
-              avgWin={2210}
-              avgLoss={415}
+              initialEntryPrice={67500}
+              initialStopLoss={66800}
             />
 
             <TrCard className="p-4" style={{ background: withAlpha('#F59E0B', ALPHA.hover) }}>
@@ -453,7 +458,9 @@ export function AdvancedAnalyticsPage() {
                     Kelly Criterion Optimization
                   </p>
                   <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>
-                    Kelly % capped at 25% (half Kelly) for safety. Adjusts automatically based on your actual win rate and R:R ratio from Trade Journal. Supports fractional Kelly for conservative sizing.
+                    Kelly % capped at 25% (half Kelly) for safety. Adjusts automatically based on
+                    your actual win rate and R:R ratio from Trade Journal. Supports fractional Kelly
+                    for conservative sizing.
                   </p>
                 </div>
               </div>
@@ -498,9 +505,7 @@ export function AdvancedAnalyticsPage() {
                   className="w-1.5 h-1.5 rounded-full shrink-0"
                   style={{ background: '#10B981' }}
                 />
-                <p style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>
-                  {feature}
-                </p>
+                <p style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>{feature}</p>
               </div>
             ))}
           </div>

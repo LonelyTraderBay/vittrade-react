@@ -2,275 +2,297 @@
  * ══════════════════════════════════════════════════════════════
  *  CopyConfirmationPage.test.tsx — Final Confirmation Tests
  * ══════════════════════════════════════════════════════════════
- * 
+ *
+ * Written against the current component: critical risk banner,
+ * provider stats, config summary (from navigation state or safe
+ * defaults), expandable fee breakdown and 30-day scenario
+ * projections, max-loss disclosure, 4 required consent toggles,
+ * cooling-off notice, "what happens next" steps and the gated
+ * "Xác nhận & Bắt đầu Copy" CTA.
+ *
+ * The page resolves the provider from :providerId (COPY_TRADERS
+ * ct001…ct005) and the configuration from location.state.
+ *
  * Test Coverage (10 tests):
- * 1. ✅ ESMA warnings prominent
- * 2. ✅ Cooling-off notice shown (first copy)
- * 3. ✅ Configuration summary correct
- * 4. ✅ Fee breakdown detailed
- * 5. ✅ 4 scenario projections shown
- * 6. ✅ 4 consent checkboxes required
- * 7. ✅ 2FA confirmation (first copy)
- * 8. ✅ Cannot submit without all consents
- * 9. ✅ Confirm CTA works
- * 10. ✅ Back button works
+ * 1. ✅ Critical risk warning banner (lose-all-capital + past performance)
+ * 2. ✅ Provider summary stats
+ * 3. ✅ Configuration summary (defaults)
+ * 4. ✅ Expandable fee breakdown is itemized with a total
+ * 5. ✅ Expandable scenario projections (best / realistic / worst + disclaimer)
+ * 6. ✅ Max-loss disclosure without custom stop-loss
+ * 7. ✅ Configuration + max-loss reflect navigation state (custom SL)
+ * 8. ✅ Cooling-off notice and next steps
+ * 9. ✅ All 4 consents are required to enable the CTA
+ * 10. ✅ Confirm navigates to active copies; back navigates -1
+ *
+ * Dropped from the old suite (features no longer exist):
+ * - 2FA verification step for first copies
+ * - Circuit breaker / max open positions summary rows
+ * (ESMA banner content is asserted via the actual Vietnamese texts)
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { screen, waitFor, within } from '@testing-library/react';
-import { renderWithRouter, userEvent, mockNavigate } from '../../../test/utils/test-utils';
+import { screen, waitFor, render, within } from '@testing-library/react';
+import { Routes, Route, MemoryRouter } from 'react-router';
+import { renderWithRouter, userEvent, mockNavigate } from '@/test/test-utils-navigation';
+import { UIProvider } from '@/app/contexts/UIContext';
 import { CopyConfirmationPage } from '../CopyConfirmationPage';
+
+const ROUTE_PATH = '/trade/copy-provider/:providerId/confirmation';
+
+function renderPage(providerId = 'ct001') {
+  return renderWithRouter(
+    <Routes>
+      <Route path={ROUTE_PATH} element={<CopyConfirmationPage />} />
+    </Routes>,
+    { initialRoute: `/trade/copy-provider/${providerId}/confirmation` },
+  );
+}
+
+/** Match a <p> whose full text content contains all given fragments. */
+const pContaining = (...fragments: string[]) => (_: string, el: Element | null) =>
+  el?.tagName === 'P' && fragments.every((f) => (el.textContent ?? '').includes(f));
 
 describe('CopyConfirmationPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('should display ESMA warnings prominently', () => {
-    renderWithRouter(<CopyConfirmationPage />, {
-      initialRoute: '/trade/copy-provider/provider-123/confirmation',
-    });
+  it('should display the critical risk warning banner prominently', () => {
+    renderPage();
 
-    // ESMA warning banner should be prominent
-    const esmaWarning = screen.getByText(/esma warning/i);
-    expect(esmaWarning).toBeInTheDocument();
+    expect(screen.getByText('Cảnh báo rủi ro quan trọng')).toBeInTheDocument();
 
-    // "Past performance is not indicative of future results"
-    expect(screen.getByText(/past performance.*not indicative/i)).toBeInTheDocument();
-
-    // Risk of capital loss
-    expect(screen.getByText(/you can lose.*capital/i)).toBeInTheDocument();
-
-    // Leverage warning
-    expect(screen.getByText(/leveraged positions.*magnify losses/i)).toBeInTheDocument();
+    // "You can lose ALL of the committed $5,000" + past performance disclaimer
+    expect(
+      screen.getByText(pContaining('mất toàn bộ', '$5000', 'Hiệu suất quá khứ')),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(pContaining('Chỉ đầu tư số tiền bạn có thể chấp nhận mất')),
+    ).toBeInTheDocument();
   });
 
-  it('should show cooling-off notice for first copy', () => {
-    // Mock first-time copy user
-    vi.spyOn(Storage.prototype, 'getItem').mockReturnValue(null);
+  it('should display provider summary stats', () => {
+    renderPage('ct001'); // AlphaHunter_VN
 
-    renderWithRouter(<CopyConfirmationPage />, {
-      initialRoute: '/trade/copy-provider/provider-123/confirmation',
-    });
-
-    // 24-48h cooling-off period notice
-    expect(screen.getByText(/24.*48.*hour.*cooling.*off/i)).toBeInTheDocument();
-    expect(screen.getByText(/your first copy/i)).toBeInTheDocument();
-    expect(screen.getByText(/cancel within 48 hours/i)).toBeInTheDocument();
+    expect(screen.getByText('Bạn sắp copy')).toBeInTheDocument();
+    expect(screen.getByText('AlphaHunter_VN')).toBeInTheDocument();
+    expect(screen.getByText('Medium Risk')).toBeInTheDocument();
+    expect(screen.getByText('Total ROI')).toBeInTheDocument();
+    expect(screen.getByText('+342.5%')).toBeInTheDocument();
+    expect(screen.getByText('Max DD')).toBeInTheDocument();
+    expect(screen.getByText('-12.4%')).toBeInTheDocument();
+    expect(screen.getByText('Sharpe')).toBeInTheDocument();
+    expect(screen.getByText('2.31')).toBeInTheDocument();
   });
 
-  it('should display complete configuration summary', () => {
-    renderWithRouter(<CopyConfirmationPage />, {
-      initialRoute: '/trade/copy-provider/provider-123/confirmation',
-    });
+  it('should display the configuration summary with safe defaults', () => {
+    renderPage();
 
-    // Provider name
-    expect(screen.getByText(/CryptoKing/i)).toBeInTheDocument();
-
-    // Copy mode
-    expect(screen.getByText(/copy mode.*smart mode/i)).toBeInTheDocument();
-
-    // Allocation
-    expect(screen.getByText(/allocation.*\$2,000/i)).toBeInTheDocument();
-
-    // Position sizing
-    expect(screen.getByText(/position sizing.*50%/i)).toBeInTheDocument();
-
-    // Max open positions
-    expect(screen.getByText(/max positions.*20/i)).toBeInTheDocument();
-
-    // Circuit breakers
-    expect(screen.getByText(/daily loss limit.*5%/i)).toBeInTheDocument();
-    expect(screen.getByText(/total loss limit.*20%/i)).toBeInTheDocument();
+    expect(screen.getByText('Cấu hình')).toBeInTheDocument();
+    expect(screen.getByText('Số vốn copy')).toBeInTheDocument();
+    const configCard = screen.getByText('Số vốn copy').closest('.rounded-xl') as HTMLElement;
+    expect(within(configCard).getByText('$5000')).toBeInTheDocument();
+    expect(screen.getByText('Chế độ copy')).toBeInTheDocument();
+    expect(within(configCard).getByText('Fixed 50%')).toBeInTheDocument();
+    expect(within(configCard).getAllByText('Theo provider').length).toBe(2); // SL + TP
+    expect(screen.getByText('Trailing Stop')).toBeInTheDocument();
+    expect(within(configCard).getByText('Không')).toBeInTheDocument();
   });
 
-  it('should show detailed fee breakdown', () => {
-    renderWithRouter(<CopyConfirmationPage />, {
-      initialRoute: '/trade/copy-provider/provider-123/confirmation',
-    });
-
-    // Fee breakdown section
-    expect(screen.getByText(/fee breakdown/i)).toBeInTheDocument();
-
-    // Performance fee
-    expect(screen.getByText(/performance fee.*10%/i)).toBeInTheDocument();
-    expect(screen.getByText(/charged on profits only/i)).toBeInTheDocument();
-
-    // Platform fee
-    expect(screen.getByText(/platform fee.*0\.1%/i)).toBeInTheDocument();
-    expect(screen.getByText(/monthly/i)).toBeInTheDocument();
-
-    // Example calculation
-    expect(screen.getByText(/example.*\$200 profit/i)).toBeInTheDocument();
-    expect(screen.getByText(/you pay.*\$20/i)).toBeInTheDocument();
-
-    // Total cost estimate
-    expect(screen.getByText(/estimated monthly cost.*\$2\.00/i)).toBeInTheDocument();
-  });
-
-  it('should display 4 scenario projections', () => {
-    renderWithRouter(<CopyConfirmationPage />, {
-      initialRoute: '/trade/copy-provider/provider-123/confirmation',
-    });
-
-    // Scenario projection section
-    expect(screen.getByText(/scenario analysis/i)).toBeInTheDocument();
-
-    // Best case (+30% annual)
-    expect(screen.getByText(/best case/i)).toBeInTheDocument();
-    expect(screen.getByText(/\+30%/)).toBeInTheDocument();
-
-    // Good case (+15% annual)
-    expect(screen.getByText(/good case/i)).toBeInTheDocument();
-    expect(screen.getByText(/\+15%/)).toBeInTheDocument();
-
-    // Base case (+5% annual)
-    expect(screen.getByText(/base case/i)).toBeInTheDocument();
-    expect(screen.getByText(/\+5%/)).toBeInTheDocument();
-
-    // Worst case (-20% annual)
-    expect(screen.getByText(/worst case/i)).toBeInTheDocument();
-    expect(screen.getByText(/-20%/)).toBeInTheDocument();
-
-    // Disclaimer
-    expect(screen.getByText(/scenarios are illustrative/i)).toBeInTheDocument();
-  });
-
-  it('should require all 4 consent checkboxes', async () => {
+  it('should show an itemized fee breakdown when expanded', async () => {
     const user = userEvent.setup();
-    renderWithRouter(<CopyConfirmationPage />, {
-      initialRoute: '/trade/copy-provider/provider-123/confirmation',
+    renderPage();
+
+    // Collapsed by default
+    expect(screen.queryByText('Tổng phí cố định tháng đầu')).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /Chi phí & Phí/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Platform fee (0.1%)')).toBeInTheDocument();
+      expect(screen.getByText('$5.00')).toBeInTheDocument();
+      expect(screen.getByText('Trading fees (est. 50 trades/month)')).toBeInTheDocument();
+      expect(screen.getByText('$125.00')).toBeInTheDocument();
+      expect(screen.getByText(/0\.25% mỗi lần mở\/đóng lệnh \(\$1\.25\/trade\)/)).toBeInTheDocument();
+      expect(screen.getByText('Performance fee (10% of profit)')).toBeInTheDocument();
+      expect(screen.getByText('Chỉ khi lời')).toBeInTheDocument();
+      expect(screen.getByText('High-water mark: chỉ tính trên profit vượt đỉnh cũ')).toBeInTheDocument();
+      expect(screen.getByText('Slippage (ước tính 1.5%)')).toBeInTheDocument();
+      expect(screen.getByText('Không phải phí')).toBeInTheDocument();
+      expect(screen.getByText('Tổng phí cố định tháng đầu')).toBeInTheDocument();
+      expect(screen.getByText('$130.00')).toBeInTheDocument();
     });
+  });
 
-    // Find all 4 consent checkboxes
-    const consent1 = screen.getByRole('checkbox', { name: /understand risks/i });
-    const consent2 = screen.getByRole('checkbox', { name: /past performance/i });
-    const consent3 = screen.getByRole('checkbox', { name: /reviewed fees/i });
-    const consent4 = screen.getByRole('checkbox', { name: /terms and conditions/i });
+  it('should show scenario projections when expanded', async () => {
+    const user = userEvent.setup();
+    renderPage();
 
-    expect(consent1).toBeInTheDocument();
-    expect(consent2).toBeInTheDocument();
-    expect(consent3).toBeInTheDocument();
-    expect(consent4).toBeInTheDocument();
+    expect(screen.queryByText('Kịch bản tốt (+15%)')).not.toBeInTheDocument();
 
-    // All should be unchecked initially
-    expect(consent1).not.toBeChecked();
-    expect(consent2).not.toBeChecked();
-    expect(consent3).not.toBeChecked();
-    expect(consent4).not.toBeChecked();
+    await user.click(screen.getByRole('button', { name: /Kịch bản dự kiến \(30 ngày\)/i }));
 
-    // Confirm button should be disabled
-    const confirmBtn = screen.getByRole('button', { name: /confirm.*start/i });
+    await waitFor(() => {
+      // Three scenario cards for $5,000 capital
+      expect(screen.getByText('Kịch bản tốt (+15%)')).toBeInTheDocument();
+      expect(screen.getByText('Kịch bản thực tế (+5%)')).toBeInTheDocument();
+      expect(screen.getByText('Kịch bản xấu (-10%)')).toBeInTheDocument();
+
+      // Optimistic: +$750 gross, -$75 performance fee → +$534 (10.7%) net
+      expect(screen.getByText('+$750')).toBeInTheDocument();
+      expect(screen.getByText('-$75')).toBeInTheDocument();
+      expect(screen.getByText('+$534 (10.7%)')).toBeInTheDocument();
+
+      // Realistic: +$250 gross → +$91 (1.8%) net
+      expect(screen.getByText('+$250')).toBeInTheDocument();
+      expect(screen.getByText('+$91 (1.8%)')).toBeInTheDocument();
+
+      // Pessimistic: $-500 gross, no performance fee, $-638 (-12.8%) net
+      expect(screen.getByText('$-500')).toBeInTheDocument();
+      expect(screen.getByText('$0 (chỉ khi lời)')).toBeInTheDocument();
+      expect(screen.getByText('$-638 (-12.8%)')).toBeInTheDocument();
+
+      // Disclaimer
+      expect(
+        screen.getByText(/Đây chỉ là ước tính\. Kết quả thực tế/i),
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('should disclose max loss and warn when no custom stop-loss is set', () => {
+    renderPage();
+
+    expect(screen.getByText('Kịch bản mất vốn tối đa')).toBeInTheDocument();
+    expect(
+      screen.getByText(pContaining('mất toàn bộ $5000', 'drawdown 100%')),
+    ).toBeInTheDocument();
+
+    // Extra warning because no custom stop-loss is configured
+    expect(screen.getByText(/Bạn chưa đặt stop-loss riêng/i)).toBeInTheDocument();
+    expect(screen.getByText(/Max DD -12\.4%/)).toBeInTheDocument();
+  });
+
+  it('should reflect configuration passed via navigation state', () => {
+    render(
+      <MemoryRouter
+        initialEntries={[
+          {
+            pathname: '/trade/copy-provider/ct001/confirmation',
+            state: {
+              copyCapital: 10000,
+              copyMode: 'smart',
+              useCustomStopLoss: true,
+              customStopLoss: 20,
+              useCustomTakeProfit: true,
+              customTakeProfit: 50,
+              useTrailingStop: true,
+              trailingStopPercent: 7,
+            },
+          },
+        ]}
+      >
+        <UIProvider>
+          <Routes>
+            <Route path={ROUTE_PATH} element={<CopyConfirmationPage />} />
+          </Routes>
+        </UIProvider>
+      </MemoryRouter>,
+    );
+
+    // Summary reflects the state
+    const configCard = screen.getByText('Số vốn copy').closest('.rounded-xl') as HTMLElement;
+    expect(within(configCard).getByText('$10000')).toBeInTheDocument();
+    expect(within(configCard).getByText('Smart Copy')).toBeInTheDocument();
+    expect(within(configCard).getByText('-20%')).toBeInTheDocument();
+    expect(within(configCard).getByText('+50%')).toBeInTheDocument();
+    expect(within(configCard).getByText('7%')).toBeInTheDocument();
+
+    // Max loss is capped by the custom stop-loss (20% of $10,000)
+    expect(
+      screen.getByText(pContaining('Với stop-loss 20%', 'mất tối đa $2000')),
+    ).toBeInTheDocument();
+    // No "missing stop-loss" warning in this configuration
+    expect(screen.queryByText(/Bạn chưa đặt stop-loss riêng/i)).not.toBeInTheDocument();
+  });
+
+  it('should show cooling-off notice and next steps', () => {
+    renderPage();
+
+    expect(screen.getByText('Thời gian suy nghĩ (24h)')).toBeInTheDocument();
+    expect(
+      screen.getByText(pContaining('24 giờ', 'review lại quyết định')),
+    ).toBeInTheDocument();
+
+    expect(screen.getByText('Điều gì xảy ra tiếp theo?')).toBeInTheDocument();
+    expect(screen.getByText('Khóa vốn')).toBeInTheDocument();
+    expect(screen.getByText('$5000 sẽ được khóa trong tài khoản copy')).toBeInTheDocument();
+    expect(screen.getByText('Thời gian chờ')).toBeInTheDocument();
+    expect(screen.getByText('24h cooling-off period (chỉ lần đầu)')).toBeInTheDocument();
+    expect(screen.getByText('Kích hoạt')).toBeInTheDocument();
+    expect(screen.getByText('Theo dõi')).toBeInTheDocument();
+    expect(
+      screen.getByText('Bạn có thể xem real-time P/L và dừng copy bất cứ lúc nào'),
+    ).toBeInTheDocument();
+  });
+
+  it('should require all 4 consents before enabling the CTA', async () => {
+    const user = userEvent.setup();
+    renderPage();
+
+    const confirmBtn = screen.getByRole('button', { name: /Xác nhận & Bắt đầu Copy/i });
+
+    // Initially disabled with helper message (no pre-checked boxes)
     expect(confirmBtn).toBeDisabled();
-  });
+    expect(
+      screen.getByText('Bạn cần đồng ý với tất cả 4 điều khoản để tiếp tục'),
+    ).toBeInTheDocument();
 
-  it('should require 2FA confirmation for first copy', async () => {
-    const user = userEvent.setup();
-    
-    // Mock first-time copy user
-    vi.spyOn(Storage.prototype, 'getItem').mockReturnValue(null);
+    const consents = [
+      screen.getByRole('button', { name: /mất toàn bộ vốn đầu tư/i }),
+      screen.getByRole('button', { name: /tất cả các khoản phí/i }),
+      screen.getByRole('button', { name: /có thể chấp nhận mất hoàn toàn/i }),
+      screen.getByRole('button', { name: /Điều khoản sử dụng/i }),
+    ];
+    expect(consents.length).toBe(4);
 
-    renderWithRouter(<CopyConfirmationPage />, {
-      initialRoute: '/trade/copy-provider/provider-123/confirmation',
-    });
-
-    // Check all consent boxes
-    const consent1 = screen.getByRole('checkbox', { name: /understand risks/i });
-    const consent2 = screen.getByRole('checkbox', { name: /past performance/i });
-    const consent3 = screen.getByRole('checkbox', { name: /reviewed fees/i });
-    const consent4 = screen.getByRole('checkbox', { name: /terms and conditions/i });
-
-    await user.click(consent1);
-    await user.click(consent2);
-    await user.click(consent3);
-    await user.click(consent4);
-
-    // Click confirm
-    const confirmBtn = screen.getByRole('button', { name: /confirm.*start/i });
-    await user.click(confirmBtn);
-
-    // Should show 2FA modal
-    await waitFor(() => {
-      expect(screen.getByText(/2fa verification/i)).toBeInTheDocument();
-      expect(screen.getByText(/enter your 2fa code/i)).toBeInTheDocument();
-    });
-  });
-
-  it('should not allow submission without all consents', async () => {
-    const user = userEvent.setup();
-    renderWithRouter(<CopyConfirmationPage />, {
-      initialRoute: '/trade/copy-provider/provider-123/confirmation',
-    });
-
-    // Check only 3 out of 4 consents
-    const consent1 = screen.getByRole('checkbox', { name: /understand risks/i });
-    const consent2 = screen.getByRole('checkbox', { name: /past performance/i });
-    const consent3 = screen.getByRole('checkbox', { name: /reviewed fees/i });
-
-    await user.click(consent1);
-    await user.click(consent2);
-    await user.click(consent3);
-    // Skip consent4 (terms and conditions)
-
-    // Confirm button should still be disabled
-    const confirmBtn = screen.getByRole('button', { name: /confirm.*start/i });
+    // Agree to the first three — CTA still gated
+    await user.click(consents[0]);
+    await user.click(consents[1]);
+    await user.click(consents[2]);
     expect(confirmBtn).toBeDisabled();
+    expect(
+      screen.getByText('Bạn cần đồng ý với tất cả 4 điều khoản để tiếp tục'),
+    ).toBeInTheDocument();
 
-    // Validation message should appear
+    // Agree to terms — CTA enables and helper disappears
+    await user.click(consents[3]);
     await waitFor(() => {
-      expect(screen.getByText(/must accept all terms/i)).toBeInTheDocument();
+      expect(confirmBtn).toBeEnabled();
+      expect(
+        screen.queryByText('Bạn cần đồng ý với tất cả 4 điều khoản để tiếp tục'),
+      ).not.toBeInTheDocument();
     });
   });
 
-  it('should confirm and start copy after all consents', async () => {
+  it('should navigate to active copies on confirm and go back via header', async () => {
     const user = userEvent.setup();
-    
-    // Mock returning user (no 2FA required)
-    vi.spyOn(Storage.prototype, 'getItem').mockReturnValue('true');
+    renderPage();
 
-    renderWithRouter(<CopyConfirmationPage />, {
-      initialRoute: '/trade/copy-provider/provider-123/confirmation',
-    });
+    // Complete all consents then confirm
+    await user.click(screen.getByRole('button', { name: /mất toàn bộ vốn đầu tư/i }));
+    await user.click(screen.getByRole('button', { name: /tất cả các khoản phí/i }));
+    await user.click(screen.getByRole('button', { name: /có thể chấp nhận mất hoàn toàn/i }));
+    await user.click(screen.getByRole('button', { name: /Điều khoản sử dụng/i }));
 
-    // Check all 4 consents
-    const consent1 = screen.getByRole('checkbox', { name: /understand risks/i });
-    const consent2 = screen.getByRole('checkbox', { name: /past performance/i });
-    const consent3 = screen.getByRole('checkbox', { name: /reviewed fees/i });
-    const consent4 = screen.getByRole('checkbox', { name: /terms and conditions/i });
+    await user.click(screen.getByRole('button', { name: /Xác nhận & Bắt đầu Copy/i }));
 
-    await user.click(consent1);
-    await user.click(consent2);
-    await user.click(consent3);
-    await user.click(consent4);
-
-    // Confirm button should be enabled
-    const confirmBtn = screen.getByRole('button', { name: /confirm.*start/i });
-    expect(confirmBtn).not.toBeDisabled();
-
-    // Click confirm
-    await user.click(confirmBtn);
-
-    // Should navigate to active copies
     await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith(
-        expect.stringContaining('/trade/copy-trading/active')
-      );
-    });
-  });
-
-  it('should allow navigation back to configuration', async () => {
-    const user = userEvent.setup();
-    renderWithRouter(<CopyConfirmationPage />, {
-      initialRoute: '/trade/copy-provider/provider-123/confirmation',
+      expect(mockNavigate).toHaveBeenCalledWith('/trade/copy-trading/active');
     });
 
-    // Find back button
-    const backBtn = screen.getByRole('button', { name: /back/i });
-    await user.click(backBtn);
-
-    // Should navigate back to configuration page
-    await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith(-1);
-    });
+    // Header back button navigates back
+    await user.click(screen.getByRole('button', { name: 'Quay lại' }));
+    expect(mockNavigate).toHaveBeenCalledWith(-1);
   });
 });

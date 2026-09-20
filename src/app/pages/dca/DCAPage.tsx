@@ -1,6 +1,6 @@
 /**
  * DCA Page (Dollar Cost Averaging)
- * 
+ *
  * Redesigned to match new compact layout:
  * - Back button + title header
  * - Breadcrumb navigation
@@ -8,19 +8,32 @@
  * - Compact overview card (3-column)
  * - Plans list + history tabs
  * - Bottom CTA button
- * 
+ *
  * Integrated with:
  * - Analytics tracking (page views, actions)
  * - Feature flags (DCA enabled check)
  * - Funnel tracking (plan creation journey)
  * - Deep linking analytics
- * 
+ *
  * @module pages/dca
  * @version 2.0 (Phase 2 - Sprint 2)
  */
 
 import { useState, useMemo, useEffect, useRef } from 'react';
-import { ChevronLeft, Plus, RefreshCw, TrendingUp, Clock, BarChart3, ArrowUpRight, ArrowDownRight, Target, Activity, Sliders, ChevronRight } from 'lucide-react';
+import {
+  ChevronLeft,
+  Plus,
+  RefreshCw,
+  TrendingUp,
+  Clock,
+  BarChart3,
+  ArrowUpRight,
+  ArrowDownRight,
+  Target,
+  Activity,
+  Sliders,
+  ChevronRight,
+} from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router';
 import { DCAProvider, useDCA } from '../../contexts/DCAContext';
 import { DCAOverviewCard } from '../../components/dca/DCAOverviewCard';
@@ -61,7 +74,13 @@ function DCAPageContent() {
   const location = useLocation();
   const { hapticSelection } = useHaptic();
   const routePrefix = useRoutePrefix();
-  const { isLoading: isRefreshLoading, isRefreshing, refresh, lastRefreshedLabel, refreshCount } = useLoadingState({ initialDelay: 600 });
+  const {
+    isLoading: isRefreshLoading,
+    isRefreshing,
+    refresh,
+    lastRefreshedLabel,
+    refreshCount,
+  } = useLoadingState({ initialDelay: 600 });
   const [activeTab, setActiveTab] = useState<Tab>('plans');
   const [createSheetOpen, setCreateSheetOpen] = useState(false);
   const [deleteConfirmPlanId, setDeleteConfirmPlanId] = useState<string | null>(null);
@@ -76,22 +95,18 @@ function DCAPageContent() {
   usePageViewTracking('dca_page');
 
   // Analytics: Track events
-  const {
-    trackEvent,
-    trackDeepLink,
-    trackPlanCreation,
-    trackPlanStatusChange,
-    trackPlanDeletion,
-  } = useDCAAnalytics();
+  const { trackEvent, trackDeepLink, trackPlanCreation, trackPlanStatusChange, trackPlanDeletion } =
+    useDCAAnalytics();
 
   // Funnel: Track wallet to creation (if coming from wallet)
-  const { trackDCAPageView: trackWalletFunnelPageView, trackCreateSheetOpened: trackWalletFunnelCreateSheet } = useWalletToCreationFunnel();
+  const {
+    trackDCAPageView: trackWalletFunnelPageView,
+    trackCreateSheetOpened: trackWalletFunnelCreateSheet,
+  } = useWalletToCreationFunnel();
 
   // Funnel: Track asset to creation (if coming from asset detail with deep link)
-  const {
-    trackCreateSheetOpened: trackAssetFunnelCreateSheet,
-    trackPreselectedCoinUsed,
-  } = useAssetToCreationFunnel();
+  const { trackCreateSheetOpened: trackAssetFunnelCreateSheet, trackPreselectedCoinUsed } =
+    useAssetToCreationFunnel();
 
   // Track page view in funnels
   useEffect(() => {
@@ -141,21 +156,21 @@ function DCAPageContent() {
     try {
       await createPlan(request);
       toast.success('Tạo kế hoạch DCA thành công!');
-      
+
       // Track plan creation in analytics
       trackPlanCreation(
         request.id || 'temp',
         request.coinSymbol,
         request.frequency,
         request.amount,
-        preselectedCoin ? 'asset_detail' : 'dca_page'
+        preselectedCoin ? 'asset_detail' : 'dca_page',
       );
-      
+
       // Track if preselected coin was used
       if (preselectedCoin && request.coinSymbol === preselectedCoin) {
         trackPreselectedCoinUsed();
       }
-      
+
       setCreateSheetOpen(false);
       setPreselectedCoin(null);
     } catch (error) {
@@ -167,13 +182,11 @@ function DCAPageContent() {
     try {
       const plan = plans.find((p) => p.id === planId);
       await togglePlanStatus(planId);
-      
+
       // Track status change
       const newStatus = plan?.status === 'active' ? 'paused' : 'active';
       trackPlanStatusChange(planId, newStatus as 'active' | 'paused');
-      toast.success(
-        plan?.status === 'active' ? 'Đã tạm dừng kế hoạch' : 'Đã kích hoạt kế hoạch'
-      );
+      toast.success(plan?.status === 'active' ? 'Đã tạm dừng kế hoạch' : 'Đã kích hoạt kế hoạch');
     } catch (error) {
       toast.error('Không thể cập nhật kế hoạch');
     }
@@ -183,10 +196,10 @@ function DCAPageContent() {
     if (!deleteConfirmPlanId) return;
     try {
       await deletePlan(deleteConfirmPlanId);
-      
+
       // Track plan deletion
       trackPlanDeletion(deleteConfirmPlanId, 'user_initiated');
-      
+
       toast.success('Đã xóa kế hoạch');
       setDeleteConfirmPlanId(null);
     } catch (error) {
@@ -240,10 +253,7 @@ function DCAPageContent() {
     const last = filteredChartData[filteredChartData.length - 1];
 
     const valueChange = last.portfolioValue - first.portfolioValue;
-    const percentChange =
-      first.portfolioValue > 0
-        ? (valueChange / first.portfolioValue) * 100
-        : 0;
+    const percentChange = first.portfolioValue > 0 ? (valueChange / first.portfolioValue) * 100 : 0;
 
     // Also calculate invested change within the period
     const investedChange = last.totalInvested - first.totalInvested;
@@ -288,13 +298,13 @@ function DCAPageContent() {
   }
 
   return (
-    <PullToRefresh onRefresh={refresh} lastRefreshedLabel={lastRefreshedLabel} refreshCount={refreshCount} className="min-h-full pb-32 flex flex-col">
-      <Header
-        variant="page"
-        title="Mua tự động (DCA)"
-        subtitle="Tự động mua crypto định kỳ"
-        back
-      />
+    <PullToRefresh
+      onRefresh={refresh}
+      lastRefreshedLabel={lastRefreshedLabel}
+      refreshCount={refreshCount}
+      className="min-h-full pb-32 flex flex-col"
+    >
+      <Header variant="page" title="Mua tự động (DCA)" subtitle="Tự động mua crypto định kỳ" back />
 
       {/* Content */}
       <PageContent gap="relaxed">
@@ -331,10 +341,7 @@ function DCAPageContent() {
 
         {/* Advanced Tools Section */}
         <div className="space-y-3">
-          <p
-            className="text-[14px]"
-            style={{ fontWeight: 600, color: c.text1 }}
-          >
+          <p className="text-[14px]" style={{ fontWeight: 600, color: c.text1 }}>
             Công cụ nâng cao
           </p>
           <div className="grid grid-cols-2 gap-3">
@@ -354,10 +361,7 @@ function DCAPageContent() {
               >
                 <Target className="w-5 h-5" style={{ color: '#8B5CF6' }} />
               </div>
-              <span
-                className="text-[13px] mb-1"
-                style={{ fontWeight: 600, color: c.text1 }}
-              >
+              <span className="text-[13px] mb-1" style={{ fontWeight: 600, color: c.text1 }}>
                 Portfolio Optimizer
               </span>
               <span className="text-[11px]" style={{ lineHeight: 1.3, color: c.text2 }}>
@@ -381,10 +385,7 @@ function DCAPageContent() {
               >
                 <Activity className="w-5 h-5" style={{ color: '#3B82F6' }} />
               </div>
-              <span
-                className="text-[13px] mb-1"
-                style={{ fontWeight: 600, color: c.text1 }}
-              >
+              <span className="text-[13px] mb-1" style={{ fontWeight: 600, color: c.text1 }}>
                 Dynamic Amount
               </span>
               <span className="text-[11px]" style={{ lineHeight: 1.3, color: c.text2 }}>
@@ -408,10 +409,7 @@ function DCAPageContent() {
               >
                 <Sliders className="w-5 h-5" style={{ color: '#10B981' }} />
               </div>
-              <span
-                className="text-[13px] mb-1"
-                style={{ fontWeight: 600, color: c.text1 }}
-              >
+              <span className="text-[13px] mb-1" style={{ fontWeight: 600, color: c.text1 }}>
                 Auto-Rebalance
               </span>
               <span className="text-[11px]" style={{ lineHeight: 1.3, color: c.text2 }}>
@@ -435,10 +433,7 @@ function DCAPageContent() {
               >
                 <Clock className="w-5 h-5" style={{ color: '#F59E0B' }} />
               </div>
-              <span
-                className="text-[13px] mb-1"
-                style={{ fontWeight: 600, color: c.text1 }}
-              >
+              <span className="text-[13px] mb-1" style={{ fontWeight: 600, color: c.text1 }}>
                 Smart Schedule
               </span>
               <span className="text-[11px]" style={{ lineHeight: 1.3, color: c.text2 }}>
@@ -514,13 +509,13 @@ function DCAPageContent() {
                   <DCAHistoryChart data={portfolioHistory} height={300} />
                 ) : (
                   <div className="py-12 text-center">
-                    <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: c.surface2 }}>
+                    <div
+                      className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+                      style={{ background: c.surface2 }}
+                    >
                       <BarChart3 className="w-8 h-8" style={{ color: c.text3 }} />
                     </div>
-                    <h3
-                      className="text-[18px] mb-2"
-                      style={{ fontWeight: 500, color: c.text1 }}
-                    >
+                    <h3 className="text-[18px] mb-2" style={{ fontWeight: 500, color: c.text1 }}>
                       Chưa có lịch sử
                     </h3>
                     <p className="text-[14px]" style={{ color: c.text2 }}>
@@ -536,13 +531,13 @@ function DCAPageContent() {
         {/* Empty State (no plans) */}
         {plans.length === 0 && (
           <div className="py-12 text-center">
-            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: c.surface2 }}>
+            <div
+              className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+              style={{ background: c.surface2 }}
+            >
               <Clock className="w-8 h-8" style={{ color: c.text3 }} />
             </div>
-            <h3
-              className="text-[18px] mb-2"
-              style={{ fontWeight: 500, color: c.text1 }}
-            >
+            <h3 className="text-[18px] mb-2" style={{ fontWeight: 500, color: c.text1 }}>
               Chưa có kế hoạch DCA
             </h3>
             <p className="text-[14px] mb-6" style={{ color: c.text2 }}>
@@ -629,7 +624,12 @@ function DCAPageContent() {
               </p>
               <p
                 className="text-[23px]"
-                style={{ fontWeight: 700, fontVariantNumeric: 'tabular-nums', lineHeight: 1.2, color: c.text1 }}
+                style={{
+                  fontWeight: 700,
+                  fontVariantNumeric: 'tabular-nums',
+                  lineHeight: 1.2,
+                  color: c.text1,
+                }}
               >
                 {new Intl.NumberFormat('vi-VN').format(Math.round(overview.currentValue))} VND
               </p>
@@ -643,7 +643,11 @@ function DCAPageContent() {
                     : 'bg-[rgba(239,68,68,0.1)]'
                 }
               `}
-              style={{ fontWeight: 600, fontVariantNumeric: 'tabular-nums', color: overview.profitLoss >= 0 ? c.buy : c.sell }}
+              style={{
+                fontWeight: 600,
+                fontVariantNumeric: 'tabular-nums',
+                color: overview.profitLoss >= 0 ? c.buy : c.sell,
+              }}
             >
               {overview.profitLoss >= 0 ? '+' : ''}
               {overview.profitLossPercent.toFixed(1).replace('.', ',')}%
@@ -685,7 +689,11 @@ function DCAPageContent() {
                         : 'bg-[rgba(239,68,68,0.1)]'
                     }
                   `}
-                  style={{ fontWeight: 600, fontVariantNumeric: 'tabular-nums', color: timeframePnL.isProfit ? c.buy : c.sell }}
+                  style={{
+                    fontWeight: 600,
+                    fontVariantNumeric: 'tabular-nums',
+                    color: timeframePnL.isProfit ? c.buy : c.sell,
+                  }}
                 >
                   {timeframePnL.isProfit ? (
                     <ArrowUpRight className="w-3 h-3" />
@@ -703,10 +711,17 @@ function DCAPageContent() {
                   </p>
                   <p
                     className="text-[14px]"
-                    style={{ fontWeight: 600, fontVariantNumeric: 'tabular-nums', color: timeframePnL.isProfit ? c.buy : c.sell }}
+                    style={{
+                      fontWeight: 600,
+                      fontVariantNumeric: 'tabular-nums',
+                      color: timeframePnL.isProfit ? c.buy : c.sell,
+                    }}
                   >
                     {timeframePnL.isProfit ? '+' : ''}
-                    {new Intl.NumberFormat('vi-VN').format(Math.round(timeframePnL.valueChange))} VND
+                    {new Intl.NumberFormat('vi-VN').format(
+                      Math.round(timeframePnL.valueChange),
+                    )}{' '}
+                    VND
                   </p>
                 </div>
                 <div>
@@ -717,7 +732,9 @@ function DCAPageContent() {
                     className="text-[14px]"
                     style={{ fontWeight: 600, fontVariantNumeric: 'tabular-nums', color: c.text1 }}
                   >
-                    +{new Intl.NumberFormat('vi-VN').format(Math.round(timeframePnL.investedChange))} VND
+                    +
+                    {new Intl.NumberFormat('vi-VN').format(Math.round(timeframePnL.investedChange))}{' '}
+                    VND
                   </p>
                 </div>
               </div>

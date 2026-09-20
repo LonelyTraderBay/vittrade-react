@@ -2,13 +2,13 @@
  * ══════════════════════════════════════════════════════════════
  *  AuditTrailPage — Phase 4 Sprint 4 Day 9-10
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Complete audit trail of all copy trading actions
  * - MiFID II record-keeping requirement (5+ years)
  * - Forensic-level detail for regulatory inspection
  * - Export capabilities for compliance
- * 
+ *
  * Compliance:
  * - MiFID II Art. 16(6): Record-keeping obligations
  * - Minimum 5 years retention (7 years for UK)
@@ -99,14 +99,18 @@ export function AuditTrailPage() {
 
       <PageContent gap="relaxed">
         {/* Compliance Notice */}
-        <div className="rounded-2xl p-3 flex gap-2.5" style={{ background: c.successBg, border: `1px solid ${c.successBorder}` }}>
-          <FileText size={16} color={c.successText} className="shrink-0 mt-0.5" />
+        <div
+          className="rounded-2xl p-3 flex gap-2.5"
+          style={{ background: c.buyAlpha10, border: `1px solid ${c.buyAlpha20}` }}
+        >
+          <FileText size={16} color={c.success} className="shrink-0 mt-0.5" />
           <div>
-            <p style={{ color: c.successText, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
+            <p style={{ color: c.success, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
               Complete Record-Keeping
             </p>
-            <p style={{ color: c.successText, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
-              All actions are logged for 7 years as required by MiFID II. This audit trail is available for regulatory inspection.
+            <p style={{ color: c.success, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
+              All actions are logged for 7 years as required by MiFID II. This audit trail is
+              available for regulatory inspection.
             </p>
           </div>
         </div>
@@ -134,7 +138,11 @@ export function AuditTrailPage() {
         {/* Search & Filter */}
         <div className="flex gap-2">
           <div className="flex-1 relative">
-            <Search size={16} color={c.text3} className="absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search
+              size={16}
+              color={c.text3}
+              className="absolute left-3 top-1/2 -translate-y-1/2"
+            />
             <input
               type="text"
               value={search}
@@ -146,13 +154,14 @@ export function AuditTrailPage() {
           </div>
           <button
             className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-            style={{ background: c.surface2, border: `1px solid ${c.border}` }}>
+            style={{ background: c.surface2, border: `1px solid ${c.border}` }}
+          >
             <Filter size={16} color={c.text3} />
           </button>
         </div>
 
         {/* Tabs */}
-        <TabBar tabs={TABS} active={tab} onChange={setTab} variant="underline" />
+        <TabBar<TabType> tabs={TABS} active={tab} onChange={setTab} variant="underline" />
 
         {/* Audit Entries */}
         <PageSection label="Audit Log">
@@ -164,8 +173,10 @@ export function AuditTrailPage() {
               return (
                 <TrCard key={entry.id} className="p-3">
                   <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ background: categoryConfig.color + '15' }}>
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                      style={{ background: categoryConfig.color + '15' }}
+                    >
                       <Icon size={18} color={categoryConfig.color} />
                     </div>
 
@@ -174,8 +185,13 @@ export function AuditTrailPage() {
                         <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
                           {entry.action}
                         </span>
-                        <span className="px-2 py-0.5 rounded text-[9px] font-semibold"
-                          style={{ background: categoryConfig.color + '15', color: categoryConfig.color }}>
+                        <span
+                          className="px-2 py-0.5 rounded text-[9px] font-semibold"
+                          style={{
+                            background: categoryConfig.color + '15',
+                            color: categoryConfig.color,
+                          }}
+                        >
                           {categoryConfig.label}
                         </span>
                       </div>
@@ -189,20 +205,14 @@ export function AuditTrailPage() {
                           {new Date(entry.timestamp).toLocaleString()}
                         </span>
                         {entry.user && (
-                          <span style={{ color: c.text3, fontSize: 9 }}>
-                            • {entry.user}
-                          </span>
+                          <span style={{ color: c.text3, fontSize: 9 }}>• {entry.user}</span>
                         )}
                         {entry.ipAddress && (
-                          <span style={{ color: c.text3, fontSize: 9 }}>
-                            • {entry.ipAddress}
-                          </span>
+                          <span style={{ color: c.text3, fontSize: 9 }}>• {entry.ipAddress}</span>
                         )}
                       </div>
 
-                      <p style={{ color: c.text3, fontSize: 8, marginTop: 2 }}>
-                        ID: {entry.id}
-                      </p>
+                      <p style={{ color: c.text3, fontSize: 8, marginTop: 2 }}>ID: {entry.id}</p>
                     </div>
                   </div>
                 </TrCard>
@@ -222,7 +232,8 @@ export function AuditTrailPage() {
               fontWeight: 600,
               fontSize: 12,
               border: `1px solid ${c.border}`,
-            }}>
+            }}
+          >
             <Download size={14} />
             <span>CSV</span>
           </button>
@@ -236,7 +247,8 @@ export function AuditTrailPage() {
               fontWeight: 600,
               fontSize: 12,
               border: `1px solid ${c.border}`,
-            }}>
+            }}
+          >
             <Download size={14} />
             <span>PDF</span>
           </button>

@@ -48,11 +48,17 @@ export function LiquidationHeatmap({
   const sortedClusters = [...clusters].sort((a, b) => b.price - a.price);
 
   // Find max total for scaling
-  const maxTotal = Math.max(...clusters.map(c => c.total));
+  const maxTotal = Math.max(...clusters.map((c) => c.total));
 
   // Find largest clusters
-  const topLongCluster = clusters.reduce((max, c) => c.longLiquidations > max.longLiquidations ? c : max, clusters[0]);
-  const topShortCluster = clusters.reduce((max, c) => c.shortLiquidations > max.shortLiquidations ? c : max, clusters[0]);
+  const topLongCluster = clusters.reduce(
+    (max, c) => (c.longLiquidations > max.longLiquidations ? c : max),
+    clusters[0],
+  );
+  const topShortCluster = clusters.reduce(
+    (max, c) => (c.shortLiquidations > max.shortLiquidations ? c : max),
+    clusters[0],
+  );
 
   return (
     <TrCard className={`p-4 ${className}`}>
@@ -63,9 +69,7 @@ export function LiquidationHeatmap({
             Liquidation Heatmap
           </span>
         </div>
-        <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>
-          {pair}
-        </span>
+        <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>{pair}</span>
       </div>
 
       {/* Current price indicator */}
@@ -73,9 +77,7 @@ export function LiquidationHeatmap({
         className="rounded-xl p-3 mb-3 flex items-center justify-between"
         style={{ background: withAlpha('#3B82F6', ALPHA.hover) }}
       >
-        <span style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>
-          Current Price
-        </span>
+        <span style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>Current Price</span>
         <span
           style={{
             color: '#3B82F6',
@@ -114,7 +116,8 @@ export function LiquidationHeatmap({
                     ${cluster.price.toLocaleString()}
                   </span>
                   <span style={{ color: c.text3, fontSize: 10 }}>
-                    ({distancePct >= 0 ? '+' : ''}{distancePct.toFixed(1)}%)
+                    ({distancePct >= 0 ? '+' : ''}
+                    {distancePct.toFixed(1)}%)
                   </span>
                 </div>
                 <span style={{ color: c.text3, fontSize: 10 }}>
@@ -123,7 +126,10 @@ export function LiquidationHeatmap({
               </div>
 
               {/* Bar */}
-              <div className="h-6 rounded-lg overflow-hidden flex" style={{ background: c.surface2 }}>
+              <div
+                className="h-6 rounded-lg overflow-hidden flex"
+                style={{ background: c.surface2 }}
+              >
                 {/* Long liquidations (below current = green) */}
                 <div
                   className="transition-all flex items-center justify-end px-1"
@@ -165,28 +171,36 @@ export function LiquidationHeatmap({
 
       {/* Legend */}
       <div className="grid grid-cols-2 gap-2 mb-3">
-        <div
-          className="rounded-xl p-2.5"
-          style={{ background: withAlpha('#EF4444', ALPHA.hover) }}
-        >
+        <div className="rounded-xl p-2.5" style={{ background: withAlpha('#EF4444', ALPHA.hover) }}>
           <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
             Largest Short Liq
           </p>
-          <p style={{ color: '#EF4444', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}>
+          <p
+            style={{
+              color: '#EF4444',
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.bold,
+              fontFamily: 'monospace',
+            }}
+          >
             ${topShortCluster.price.toLocaleString()}
           </p>
           <p style={{ color: c.text3, fontSize: 10 }}>
             ${(topShortCluster.shortLiquidations / 1000000).toFixed(1)}M
           </p>
         </div>
-        <div
-          className="rounded-xl p-2.5"
-          style={{ background: withAlpha('#10B981', ALPHA.hover) }}
-        >
+        <div className="rounded-xl p-2.5" style={{ background: withAlpha('#10B981', ALPHA.hover) }}>
           <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
             Largest Long Liq
           </p>
-          <p style={{ color: '#10B981', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}>
+          <p
+            style={{
+              color: '#10B981',
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.bold,
+              fontFamily: 'monospace',
+            }}
+          >
             ${topLongCluster.price.toLocaleString()}
           </p>
           <p style={{ color: c.text3, fontSize: 10 }}>
@@ -202,7 +216,8 @@ export function LiquidationHeatmap({
       >
         <Info size={12} color="#F97316" className="shrink-0 mt-0.5" />
         <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
-          Cluster lớn = nhiều vị thế sẽ bị thanh lý ở mức giá đó. Giá thường bounce hoặc accelerate qua cluster.
+          Cluster lớn = nhiều vị thế sẽ bị thanh lý ở mức giá đó. Giá thường bounce hoặc accelerate
+          qua cluster.
         </p>
       </div>
     </TrCard>
@@ -237,13 +252,15 @@ export function RecentLiquidations({
   const c = useThemeColors();
   const [filter, setFilter] = useState<'all' | 'long' | 'short'>('all');
 
-  const filtered = liquidations.filter(liq => 
-    filter === 'all' ? true : liq.side === filter
-  );
+  const filtered = liquidations.filter((liq) => (filter === 'all' ? true : liq.side === filter));
 
   const totalLiquidated = filtered.reduce((sum, liq) => sum + liq.size, 0);
-  const longLiquidated = filtered.filter(l => l.side === 'long').reduce((sum, l) => sum + l.size, 0);
-  const shortLiquidated = filtered.filter(l => l.side === 'short').reduce((sum, l) => sum + l.size, 0);
+  const longLiquidated = filtered
+    .filter((l) => l.side === 'long')
+    .reduce((sum, l) => sum + l.size, 0);
+  const shortLiquidated = filtered
+    .filter((l) => l.side === 'short')
+    .reduce((sum, l) => sum + l.size, 0);
 
   const formatTimestamp = (ts: number) => {
     const now = Date.now();
@@ -268,10 +285,7 @@ export function RecentLiquidations({
         </div>
         {autoRefresh && (
           <div className="flex items-center gap-1">
-            <div
-              className="w-2 h-2 rounded-full animate-pulse"
-              style={{ background: '#10B981' }}
-            />
+            <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: '#10B981' }} />
             <span style={{ color: '#10B981', fontSize: 10, fontWeight: FONT_WEIGHT.semibold }}>
               LIVE
             </span>
@@ -282,10 +296,15 @@ export function RecentLiquidations({
       {/* Stats */}
       <div className="grid grid-cols-3 gap-2 mb-3">
         <div className="rounded-xl p-2.5 text-center" style={{ background: c.surface2 }}>
-          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
-            Total
-          </p>
-          <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}>
+          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>Total</p>
+          <p
+            style={{
+              color: c.text1,
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.bold,
+              fontFamily: 'monospace',
+            }}
+          >
             ${(totalLiquidated / 1000000).toFixed(2)}M
           </p>
         </div>
@@ -293,10 +312,15 @@ export function RecentLiquidations({
           className="rounded-xl p-2.5 text-center"
           style={{ background: withAlpha('#10B981', ALPHA.hover) }}
         >
-          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
-            Longs
-          </p>
-          <p style={{ color: '#10B981', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}>
+          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>Longs</p>
+          <p
+            style={{
+              color: '#10B981',
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.bold,
+              fontFamily: 'monospace',
+            }}
+          >
             ${(longLiquidated / 1000000).toFixed(2)}M
           </p>
         </div>
@@ -304,10 +328,15 @@ export function RecentLiquidations({
           className="rounded-xl p-2.5 text-center"
           style={{ background: withAlpha('#EF4444', ALPHA.hover) }}
         >
-          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
-            Shorts
-          </p>
-          <p style={{ color: '#EF4444', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}>
+          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>Shorts</p>
+          <p
+            style={{
+              color: '#EF4444',
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.bold,
+              fontFamily: 'monospace',
+            }}
+          >
             ${(shortLiquidated / 1000000).toFixed(2)}M
           </p>
         </div>
@@ -315,7 +344,7 @@ export function RecentLiquidations({
 
       {/* Filter */}
       <div className="flex rounded-2xl p-1 gap-1 mb-3" style={{ background: c.surface2 }}>
-        {(['all', 'long', 'short'] as const).map(f => (
+        {(['all', 'long', 'short'] as const).map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
@@ -334,14 +363,15 @@ export function RecentLiquidations({
 
       {/* Feed */}
       <div className="flex flex-col gap-1.5 max-h-80 overflow-y-auto">
-        {filtered.slice(0, 20).map(liq => (
+        {filtered.slice(0, 20).map((liq) => (
           <div
             key={liq.id}
             className="rounded-xl p-2.5 flex items-center justify-between"
             style={{
-              background: liq.side === 'long'
-                ? withAlpha('#10B981', ALPHA.hover)
-                : withAlpha('#EF4444', ALPHA.hover),
+              background:
+                liq.side === 'long'
+                  ? withAlpha('#10B981', ALPHA.hover)
+                  : withAlpha('#EF4444', ALPHA.hover),
               border: `1px solid ${liq.side === 'long' ? withAlpha('#10B981', ALPHA.soft) : withAlpha('#EF4444', ALPHA.soft)}`,
             }}
           >
@@ -394,11 +424,12 @@ export function RecentLiquidations({
                   fontFamily: 'monospace',
                 }}
               >
-                ${liq.size >= 1000000
+                $
+                {liq.size >= 1000000
                   ? `${(liq.size / 1000000).toFixed(2)}M`
                   : liq.size >= 1000
-                  ? `${(liq.size / 1000).toFixed(1)}K`
-                  : liq.size.toFixed(0)}
+                    ? `${(liq.size / 1000).toFixed(1)}K`
+                    : liq.size.toFixed(0)}
               </p>
             </div>
           </div>
@@ -412,7 +443,8 @@ export function RecentLiquidations({
       >
         <Clock size={12} color={c.text3} className="shrink-0 mt-0.5" />
         <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
-          Showing last 20 liquidations. Large liquidations (whales) có thể trigger cascading liquidations → volatility spike.
+          Showing last 20 liquidations. Large liquidations (whales) có thể trigger cascading
+          liquidations → volatility spike.
         </p>
       </div>
     </TrCard>
@@ -452,9 +484,12 @@ export function LiquidationStats({ pair, data, className = '' }: LiquidationStat
   const c = useThemeColors();
   const [period, setPeriod] = useState<'24h' | '7d' | '30d'>('24h');
 
-  const currentData = period === '24h' ? data.last24h : period === '7d' ? data.last7d : data.last30d;
-  const longPct = period === '24h' ? (data.last24h.longLiquidations / data.last24h.total) * 100 : 50;
-  const shortPct = period === '24h' ? (data.last24h.shortLiquidations / data.last24h.total) * 100 : 50;
+  const currentData =
+    period === '24h' ? data.last24h : period === '7d' ? data.last7d : data.last30d;
+  const longPct =
+    period === '24h' ? (data.last24h.longLiquidations / data.last24h.total) * 100 : 50;
+  const shortPct =
+    period === '24h' ? (data.last24h.shortLiquidations / data.last24h.total) * 100 : 50;
 
   return (
     <TrCard className={`p-4 ${className}`}>
@@ -467,7 +502,7 @@ export function LiquidationStats({ pair, data, className = '' }: LiquidationStat
 
       {/* Period selector */}
       <div className="flex rounded-2xl p-1 gap-1 mb-3" style={{ background: c.surface2 }}>
-        {(['24h', '7d', '30d'] as const).map(p => (
+        {(['24h', '7d', '30d'] as const).map((p) => (
           <button
             key={p}
             onClick={() => setPeriod(p)}
@@ -516,18 +551,33 @@ export function LiquidationStats({ pair, data, className = '' }: LiquidationStat
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-1.5">
                 <TrendingUp size={14} color="#10B981" />
-                <span style={{ color: '#10B981', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+                <span
+                  style={{
+                    color: '#10B981',
+                    fontSize: FONT_SCALE.xs,
+                    fontWeight: FONT_WEIGHT.bold,
+                  }}
+                >
                   {longPct.toFixed(1)}%
                 </span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span style={{ color: '#EF4444', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+                <span
+                  style={{
+                    color: '#EF4444',
+                    fontSize: FONT_SCALE.xs,
+                    fontWeight: FONT_WEIGHT.bold,
+                  }}
+                >
                   {shortPct.toFixed(1)}%
                 </span>
                 <TrendingDown size={14} color="#EF4444" />
               </div>
             </div>
-            <div className="h-3 rounded-full overflow-hidden flex" style={{ background: c.surface2 }}>
+            <div
+              className="h-3 rounded-full overflow-hidden flex"
+              style={{ background: c.surface2 }}
+            >
               <div
                 className="transition-all"
                 style={{ width: `${longPct}%`, background: '#10B981' }}
@@ -545,15 +595,27 @@ export function LiquidationStats({ pair, data, className = '' }: LiquidationStat
               <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
                 Largest Liq
               </p>
-              <p style={{ color: '#EF4444', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}>
+              <p
+                style={{
+                  color: '#EF4444',
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  fontFamily: 'monospace',
+                }}
+              >
                 ${(data.last24h.largestLiquidation / 1000).toFixed(0)}K
               </p>
             </div>
             <div className="rounded-xl p-2.5" style={{ background: c.surface2 }}>
-              <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
-                Avg Liq
-              </p>
-              <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}>
+              <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>Avg Liq</p>
+              <p
+                style={{
+                  color: c.text1,
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  fontFamily: 'monospace',
+                }}
+              >
                 ${(data.last24h.avgLiquidation / 1000).toFixed(1)}K
               </p>
             </div>

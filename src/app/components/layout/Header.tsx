@@ -128,7 +128,9 @@ export function Header({
     if (navigatingRef.current) return;
     navigatingRef.current = true;
     // Reset guard after animation completes (300ms safety margin)
-    setTimeout(() => { navigatingRef.current = false; }, 300);
+    setTimeout(() => {
+      navigatingRef.current = false;
+    }, 300);
 
     if (onBack) onBack();
     else navigate(-1);
@@ -239,7 +241,12 @@ export function Header({
       <div className="contents">
         <div
           className={`flex ${hasSubtitle ? 'items-start' : 'items-center'} gap-3 px-5 shrink-0`}
-          style={{ ...barStyle, minHeight: 52, paddingTop: hasSubtitle ? 8 : 0, paddingBottom: hasSubtitle ? 8 : 0 }}
+          style={{
+            ...barStyle,
+            minHeight: 52,
+            paddingTop: hasSubtitle ? 8 : 0,
+            paddingBottom: hasSubtitle ? 8 : 0,
+          }}
         >
           {/* FIX 1.3: Back button vertically centered relative to title line */}
           {back && (
@@ -298,7 +305,12 @@ export function Header({
     <div className="contents">
       <div
         className={`flex ${hasSubtitle ? 'items-start' : 'items-center'} justify-between px-5 shrink-0`}
-        style={{ minHeight: 52, paddingTop: hasSubtitle ? 8 : 0, paddingBottom: hasSubtitle ? 8 : 0, ...barStyle }}
+        style={{
+          minHeight: 52,
+          paddingTop: hasSubtitle ? 8 : 0,
+          paddingBottom: hasSubtitle ? 8 : 0,
+          ...barStyle,
+        }}
       >
         {/* Left */}
         <div className="flex items-center gap-2 flex-1" style={{ marginTop: hasSubtitle ? 2 : 0 }}>
@@ -312,28 +324,27 @@ export function Header({
               <span
                 style={{
                   color: c.text1,
-                  fontSize: 17, /* iOS nav bar exception */
+                  fontSize: 17 /* iOS nav bar exception */,
                   fontWeight: 600,
                   letterSpacing: -0.2,
                 }}
               >
                 {title}
               </span>
-              {badge != null && badge > 0 && (
-                <CountBadge count={badge} />
-              )}
+              {badge != null && badge > 0 && <CountBadge count={badge} />}
             </div>
           )}
           {/* FIX 1.4: subtitle fontSize 10 → 12 (minimum readable) */}
           {subtitle && (
-            <span style={{ color: c.text2, fontSize: 12, marginTop: 1 }}>
-              {subtitle}
-            </span>
+            <span style={{ color: c.text2, fontSize: 12, marginTop: 1 }}>{subtitle}</span>
           )}
         </div>
 
         {/* Right — keeps placeholder for centering in standard variant */}
-        <div className="flex items-center gap-1.5 flex-1 justify-end" style={{ marginTop: hasSubtitle ? 2 : 0 }}>
+        <div
+          className="flex items-center gap-1.5 flex-1 justify-end"
+          style={{ marginTop: hasSubtitle ? 2 : 0 }}
+        >
           {renderRight(false)}
         </div>
       </div>

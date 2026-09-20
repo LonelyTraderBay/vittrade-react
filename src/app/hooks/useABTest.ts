@@ -1,9 +1,9 @@
 /**
  * useABTest Hook
- * 
+ *
  * React hook for A/B testing with automatic exposure tracking.
  * Integrates with Feature Flags for variant assignment.
- * 
+ *
  * @module hooks/useABTest
  * @version 2.0 (Phase 2 - Sprint 2)
  */
@@ -26,13 +26,9 @@ export function useABTest(
     userId?: string;
     autoTrackExposure?: boolean;
     exposureDelay?: number;
-  }
+  },
 ) {
-  const {
-    userId = 'anonymous',
-    autoTrackExposure = true,
-    exposureDelay = 0,
-  } = options || {};
+  const { userId = 'anonymous', autoTrackExposure = true, exposureDelay = 0 } = options || {};
 
   // Get test definition
   const test = useMemo(() => {
@@ -66,36 +62,36 @@ export function useABTest(
       const metric = metricName || test.successMetric.name;
       abTestAnalytics.trackConversion(test.id, metric, userId, value);
     },
-    [test, userId]
+    [test, userId],
   );
 
   // Get variant config
   const config = useMemo(() => {
     if (!test) return {};
-    const variantObj = test.variants.find(v => v.id === variant);
+    const variantObj = test.variants.find((v) => v.id === variant);
     return variantObj?.config || {};
   }, [test, variant]);
 
   // Check if variant is control
   const isControl = useMemo(() => {
     if (!test) return false;
-    const variantObj = test.variants.find(v => v.id === variant);
+    const variantObj = test.variants.find((v) => v.id === variant);
     return variantObj?.isControl || false;
   }, [test, variant]);
 
   return {
     /** Current variant ID */
     variant,
-    
+
     /** Variant configuration */
     config,
-    
+
     /** Is this the control variant? */
     isControl,
-    
+
     /** Track conversion */
     trackConversion,
-    
+
     /** Test definition */
     test,
   };
@@ -190,15 +186,18 @@ export function useCreateFormLayoutTest(userId?: string) {
 
 /**
  * Pair Detail Banner Placement A/B Test
- * 
+ *
  * Controls whether the DCA banner shows before or after the risk warning.
  * - 'after_risk' (Control): Banner between risk warning and Buy/Sell CTA
  * - 'before_risk' (Variant): Banner between content and risk warning
  */
 export function usePairDetailBannerTest(userId?: string) {
-  const { variant, config, trackConversion, isControl } = useABTest('dca_pair_detail_placement_v1', {
-    userId,
-  });
+  const { variant, config, trackConversion, isControl } = useABTest(
+    'dca_pair_detail_placement_v1',
+    {
+      userId,
+    },
+  );
 
   const handleBannerClick = useCallback(() => {
     trackConversion('Banner Click-Through Rate');
@@ -259,7 +258,7 @@ export function useVariantRenderer(testId: string, userId?: string) {
     (renderers: Record<string, React.ReactNode>) => {
       return renderers[variant] || renderers['default'] || null;
     },
-    [variant]
+    [variant],
   );
 
   return { variant, renderVariant };
@@ -271,7 +270,7 @@ export function useVariantRenderer(testId: string, userId?: string) {
 export function useVariantProps<T extends Record<string, any>>(
   testId: string,
   propsMap: Record<string, T>,
-  userId?: string
+  userId?: string,
 ): T {
   const { variant } = useABTest(testId, { userId });
 
@@ -300,7 +299,7 @@ export function useABTestDebug(testId: string) {
       isControl,
       config,
       active: test?.active,
-      variants: test?.variants.map(v => ({
+      variants: test?.variants.map((v) => ({
         id: v.id,
         name: v.name,
         allocation: v.allocation,

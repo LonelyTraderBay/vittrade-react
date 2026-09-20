@@ -17,12 +17,20 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  Calendar, Clock, Bell, Filter, TrendingUp, AlertCircle,
-  ChevronRight, Star, CheckCircle, Info,
+  Calendar,
+  Clock,
+  Bell,
+  Filter,
+  TrendingUp,
+  AlertCircle,
+  ChevronRight,
+  Star,
+  CheckCircle,
+  Info,
 } from 'lucide-react';
 
 const TABS = ['Lich', 'Sap toi', 'Thong bao'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface CalendarEvent {
   id: string;
@@ -111,43 +119,56 @@ export function PredictionEventCalendarPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showFilter, setShowFilter] = useState(false);
 
-  const categories = Array.from(new Set(MOCK_EVENTS.map(e => e.category)));
+  const categories = Array.from(new Set(MOCK_EVENTS.map((e) => e.category)));
 
   const filteredEvents = selectedCategory
-    ? MOCK_EVENTS.filter(e => e.category === selectedCategory)
+    ? MOCK_EVENTS.filter((e) => e.category === selectedCategory)
     : MOCK_EVENTS;
 
   const upcomingEvents = filteredEvents
-    .filter(e => e.status === 'active' || e.status === 'upcoming')
+    .filter((e) => e.status === 'active' || e.status === 'upcoming')
     .sort((a, b) => a.resolutionDate.getTime() - b.resolutionDate.getTime());
 
-  const watchingEvents = MOCK_EVENTS.filter(e => e.isWatching);
+  const watchingEvents = MOCK_EVENTS.filter((e) => e.isWatching);
 
   // Group events by month
   const eventsByMonth = new Map<string, CalendarEvent[]>();
-  filteredEvents.forEach(event => {
-    const monthKey = event.resolutionDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+  filteredEvents.forEach((event) => {
+    const monthKey = event.resolutionDate.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+    });
     const existing = eventsByMonth.get(monthKey) || [];
     eventsByMonth.set(monthKey, [...existing, event]);
   });
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return c.buy;
-      case 'upcoming': return c.warn;
-      case 'resolving': return c.primary;
-      case 'resolved': return '#6B7280';
-      default: return c.text3;
+      case 'active':
+        return c.buy;
+      case 'upcoming':
+        return c.warn;
+      case 'resolving':
+        return c.primary;
+      case 'resolved':
+        return '#6B7280';
+      default:
+        return c.text3;
     }
   };
 
   const getStatusBg = (status: string) => {
     switch (status) {
-      case 'active': return 'rgba(16,185,129,0.08)';
-      case 'upcoming': return 'rgba(245,158,11,0.08)';
-      case 'resolving': return 'rgba(59,130,246,0.08)';
-      case 'resolved': return 'rgba(107,114,128,0.08)';
-      default: return c.bg;
+      case 'active':
+        return 'rgba(16,185,129,0.08)';
+      case 'upcoming':
+        return 'rgba(245,158,11,0.08)';
+      case 'resolving':
+        return 'rgba(59,130,246,0.08)';
+      case 'resolved':
+        return 'rgba(107,114,128,0.08)';
+      default:
+        return c.bg;
     }
   };
 
@@ -233,11 +254,15 @@ export function PredictionEventCalendarPage() {
                 <div className="text-center">
                   <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>This Month</p>
                   <p style={{ color: c.buy, fontSize: 20, fontWeight: 700 }}>
-                    {filteredEvents.filter(e => {
-                      const now = new Date();
-                      return e.resolutionDate.getMonth() === now.getMonth() &&
-                        e.resolutionDate.getFullYear() === now.getFullYear();
-                    }).length}
+                    {
+                      filteredEvents.filter((e) => {
+                        const now = new Date();
+                        return (
+                          e.resolutionDate.getMonth() === now.getMonth() &&
+                          e.resolutionDate.getFullYear() === now.getFullYear()
+                        );
+                      }).length
+                    }
                   </p>
                 </div>
               </div>
@@ -274,13 +299,20 @@ export function PredictionEventCalendarPage() {
 
                       <div className="grid grid-cols-3 gap-3 mb-3">
                         <div>
-                          <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Resolution</p>
+                          <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
+                            Resolution
+                          </p>
                           <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
-                            {event.resolutionDate.toLocaleDateString('vi-VN', { month: 'short', day: 'numeric' })}
+                            {event.resolutionDate.toLocaleDateString('vi-VN', {
+                              month: 'short',
+                              day: 'numeric',
+                            })}
                           </p>
                         </div>
                         <div>
-                          <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Probability</p>
+                          <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
+                            Probability
+                          </p>
                           <p style={{ color: c.primary, fontSize: 12, fontWeight: 600 }}>
                             {event.probability}%
                           </p>
@@ -323,7 +355,7 @@ export function PredictionEventCalendarPage() {
             <PageSection label="Su kien sap dien ra">
               {upcomingEvents.slice(0, 10).map((event) => {
                 const daysUntil = Math.floor(
-                  (event.resolutionDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+                  (event.resolutionDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24),
                 );
                 const isUrgent = daysUntil <= 7 && daysUntil >= 0;
                 return (
@@ -347,7 +379,9 @@ export function PredictionEventCalendarPage() {
 
                     <div className="grid grid-cols-2 gap-3 mb-2">
                       <div>
-                        <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Resolution Date</p>
+                        <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
+                          Resolution Date
+                        </p>
                         <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
                           {event.resolutionDate.toLocaleDateString('vi-VN')}
                         </p>
@@ -397,7 +431,10 @@ export function PredictionEventCalendarPage() {
               >
                 <div className="space-y-3">
                   {[
-                    { label: 'Resolution Reminder', desc: 'Thong bao truoc khi su kien chot ket qua' },
+                    {
+                      label: 'Resolution Reminder',
+                      desc: 'Thong bao truoc khi su kien chot ket qua',
+                    },
                     { label: 'Price Alert', desc: 'Canh bao khi xac suat thay doi lon' },
                     { label: 'New Events', desc: 'Thong bao su kien moi theo danh muc quan tam' },
                   ].map((setting, idx) => (
@@ -407,7 +444,9 @@ export function PredictionEventCalendarPage() {
                       style={{ borderBottom: idx < 2 ? `1px solid ${c.border}` : 'none' }}
                     >
                       <div>
-                        <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>{setting.label}</p>
+                        <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
+                          {setting.label}
+                        </p>
                         <p style={{ color: c.text3, fontSize: 11 }}>{setting.desc}</p>
                       </div>
                       <button
@@ -455,7 +494,10 @@ export function PredictionEventCalendarPage() {
                     <div>
                       <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Resolution</p>
                       <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
-                        {event.resolutionDate.toLocaleDateString('vi-VN', { month: 'short', day: 'numeric' })}
+                        {event.resolutionDate.toLocaleDateString('vi-VN', {
+                          month: 'short',
+                          day: 'numeric',
+                        })}
                       </p>
                     </div>
                     <div>
@@ -486,11 +528,15 @@ export function PredictionEventCalendarPage() {
             {/* Info */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+              style={{
+                background: 'rgba(59,130,246,0.06)',
+                border: '1px solid rgba(59,130,246,0.15)',
+              }}
             >
               <Info size={14} color={c.primary} style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Thong bao giup ban khong bo lo su kien quan trong. Ban se nhan canh bao qua app va email.
+                Thong bao giup ban khong bo lo su kien quan trong. Ban se nhan canh bao qua app va
+                email.
               </p>
             </div>
           </>

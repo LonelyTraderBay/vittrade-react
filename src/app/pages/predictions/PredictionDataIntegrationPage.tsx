@@ -17,13 +17,27 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  Database, Key, Webhook, CheckCircle, AlertCircle,
-  RefreshCw, Copy, Eye, EyeOff, Plus, Trash2,
-  Activity, Globe, Shield, Info, Clock, Link2,
+  Database,
+  Key,
+  Webhook,
+  CheckCircle,
+  AlertCircle,
+  RefreshCw,
+  Copy,
+  Eye,
+  EyeOff,
+  Plus,
+  Trash2,
+  Activity,
+  Globe,
+  Shield,
+  Info,
+  Clock,
+  Link2,
 } from 'lucide-react';
 
 const TABS = ['Nguon du lieu', 'API Keys', 'Webhooks'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface DataSource {
   id: string;
@@ -226,8 +240,12 @@ export function PredictionDataIntegrationPage() {
                   <Database size={24} color="#10B981" />
                 </div>
                 <div>
-                  <p style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>Oracle Data Sources</p>
-                  <p style={{ color: c.text3, fontSize: 12 }}>External data feeds for event resolution</p>
+                  <p style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>
+                    Oracle Data Sources
+                  </p>
+                  <p style={{ color: c.text3, fontSize: 12 }}>
+                    External data feeds for event resolution
+                  </p>
                 </div>
               </div>
 
@@ -348,11 +366,15 @@ export function PredictionDataIntegrationPage() {
             {/* Info */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+              style={{
+                background: 'rgba(59,130,246,0.06)',
+                border: '1px solid rgba(59,130,246,0.15)',
+              }}
             >
               <Shield size={14} color="#3B82F6" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Oracle data sources are used for automatic event resolution. All sources are verified and monitored.
+                Oracle data sources are used for automatic event resolution. All sources are
+                verified and monitored.
               </p>
             </div>
           </>
@@ -487,11 +509,15 @@ export function PredictionDataIntegrationPage() {
             {/* Security Warning */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)' }}
+              style={{
+                background: 'rgba(239,68,68,0.06)',
+                border: '1px solid rgba(239,68,68,0.15)',
+              }}
             >
               <AlertCircle size={14} color="#EF4444" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Keep your API keys secret. Never share them or commit to version control. Revoke immediately if compromised.
+                Keep your API keys secret. Never share them or commit to version control. Revoke
+                immediately if compromised.
               </p>
             </div>
           </>
@@ -561,18 +587,20 @@ export function PredictionDataIntegrationPage() {
                     {/* Stats */}
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Success Rate</p>
+                        <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
+                          Success Rate
+                        </p>
                         <div className="flex items-center gap-2">
                           <p style={{ color: '#10B981', fontSize: 13, fontWeight: 700 }}>
                             {webhook.successRate}%
                           </p>
-                          {webhook.successRate >= 95 && (
-                            <CheckCircle size={12} color="#10B981" />
-                          )}
+                          {webhook.successRate >= 95 && <CheckCircle size={12} color="#10B981" />}
                         </div>
                       </div>
                       <div>
-                        <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Last Triggered</p>
+                        <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
+                          Last Triggered
+                        </p>
                         <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
                           {webhook.lastTriggered ? getTimeSince(webhook.lastTriggered) : 'Never'}
                         </p>
@@ -602,11 +630,15 @@ export function PredictionDataIntegrationPage() {
             {/* Info */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+              style={{
+                background: 'rgba(59,130,246,0.06)',
+                border: '1px solid rgba(59,130,246,0.15)',
+              }}
             >
               <Info size={14} color="#3B82F6" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Webhooks allow you to receive real-time notifications when events occur. Configure your endpoint to handle POST requests.
+                Webhooks allow you to receive real-time notifications when events occur. Configure
+                your endpoint to handle POST requests.
               </p>
             </div>
           </>

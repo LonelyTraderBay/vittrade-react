@@ -8,8 +8,14 @@
 
 import React, { useState } from 'react';
 import {
-  Flag, Ban, BookOpen, Shield, AlertTriangle,
-  Info, ChevronRight, CheckCircle2,
+  Flag,
+  Ban,
+  BookOpen,
+  Shield,
+  AlertTriangle,
+  Info,
+  ChevronRight,
+  CheckCircle2,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useHaptic } from '../../hooks/useHaptic';
@@ -40,13 +46,19 @@ interface ReportDialogProps {
   targetType?: 'user' | 'challenge' | 'mode';
 }
 
-export function ReportDialog({ open, onClose, targetName, targetType = 'user' }: ReportDialogProps) {
+export function ReportDialog({
+  open,
+  onClose,
+  targetName,
+  targetType = 'user',
+}: ReportDialogProps) {
   const c = useThemeColors();
   const { hapticSelection } = useHaptic();
   const actionToast = useActionToast();
   const [selectedReason, setSelectedReason] = useState<string | null>(null);
 
-  const typeLabel = targetType === 'challenge' ? 'challenge' : targetType === 'mode' ? 'mode' : 'người dùng';
+  const typeLabel =
+    targetType === 'challenge' ? 'challenge' : targetType === 'mode' ? 'mode' : 'người dùng';
 
   const handleConfirm = () => {
     actionToast.success(TOAST.ARENA.USER_REPORTED);
@@ -57,7 +69,10 @@ export function ReportDialog({ open, onClose, targetName, targetType = 'user' }:
   return (
     <ConfirmationDialog
       open={open}
-      onClose={() => { setSelectedReason(null); onClose(); }}
+      onClose={() => {
+        setSelectedReason(null);
+        onClose();
+      }}
       onConfirm={handleConfirm}
       variant="danger"
       icon={<Flag size={28} color="#EF4444" />}
@@ -67,10 +82,13 @@ export function ReportDialog({ open, onClose, targetName, targetType = 'user' }:
       cancelText="Huỷ"
     >
       <div className="flex flex-col gap-1.5 mt-2">
-        {REPORT_REASONS.map(reason => (
+        {REPORT_REASONS.map((reason) => (
           <button
             key={reason}
-            onClick={() => { setSelectedReason(reason); hapticSelection(); }}
+            onClick={() => {
+              setSelectedReason(reason);
+              hapticSelection();
+            }}
             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-left active:opacity-70"
             style={{
               background: selectedReason === reason ? 'rgba(239,68,68,0.08)' : c.surface2,
@@ -139,11 +157,17 @@ export function BlockUserDialog({ open, onClose, userName, userAvatar }: BlockUs
    ═══════════════════════════════════════════ */
 
 const COMMUNITY_RULES = [
-  { title: 'Không giao dịch ngoài nền tảng', desc: 'Mọi thỏa thuận phải diễn ra trong Open Arena.' },
+  {
+    title: 'Không giao dịch ngoài nền tảng',
+    desc: 'Mọi thỏa thuận phải diễn ra trong Open Arena.',
+  },
   { title: 'Tôn trọng kết quả', desc: 'Không thao túng hoặc từ chối kết quả hợp lệ.' },
   { title: 'Không spam / quảng cáo', desc: 'Không gửi link, quảng cáo trong chat.' },
   { title: 'Ngôn ngữ văn minh', desc: 'Không xúc phạm, đe doạ người chơi khác.' },
-  { title: 'Points chỉ dùng trong Arena', desc: 'Arena Points không có giá trị tiền tệ, không rút được.' },
+  {
+    title: 'Points chỉ dùng trong Arena',
+    desc: 'Arena Points không có giá trị tiền tệ, không rút được.',
+  },
   { title: 'Báo cáo vi phạm', desc: 'Nếu phát hiện gian lận, hãy báo cáo ngay.' },
 ] as const;
 
@@ -169,9 +193,22 @@ export function CommunityRulesDialog({ open, onClose }: CommunityRulesDialogProp
     >
       <div className="flex flex-col gap-2 mt-2">
         {COMMUNITY_RULES.map((rule, i) => (
-          <div key={i} className="flex items-start gap-2.5 px-3 py-2 rounded-xl"
-            style={{ background: c.surface2 }}>
-            <span style={{ color: '#3B82F6', fontSize: φ.xs, fontWeight: 700, minWidth: 16, marginTop: 1 }}>{i + 1}.</span>
+          <div
+            key={i}
+            className="flex items-start gap-2.5 px-3 py-2 rounded-xl"
+            style={{ background: c.surface2 }}
+          >
+            <span
+              style={{
+                color: '#3B82F6',
+                fontSize: φ.xs,
+                fontWeight: 700,
+                minWidth: 16,
+                marginTop: 1,
+              }}
+            >
+              {i + 1}.
+            </span>
             <div className="flex-1 min-w-0">
               <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>{rule.title}</p>
               <p style={{ color: c.text3, fontSize: φ.xs, lineHeight: 1.4 }}>{rule.desc}</p>
@@ -193,8 +230,10 @@ interface ModerationBannerProps {
 
 export function UnderReviewBanner({ className }: ModerationBannerProps) {
   return (
-    <TrCard className={`p-3 flex items-start gap-2.5 ${className ?? ''}`}
-      accentBorder="rgba(245,158,11,0.25)">
+    <TrCard
+      className={`p-3 flex items-start gap-2.5 ${className ?? ''}`}
+      accentBorder="rgba(245,158,11,0.25)"
+    >
       <Shield size={14} color="#F59E0B" className="shrink-0 mt-0.5" />
       <div className="flex-1 min-w-0">
         <p style={{ color: '#F59E0B', fontSize: φ.sm, fontWeight: 600, marginBottom: 2 }}>
@@ -210,8 +249,10 @@ export function UnderReviewBanner({ className }: ModerationBannerProps) {
 
 export function ReportedContentBanner({ className }: ModerationBannerProps) {
   return (
-    <TrCard className={`p-3 flex items-start gap-2.5 ${className ?? ''}`}
-      accentBorder="rgba(239,68,68,0.25)">
+    <TrCard
+      className={`p-3 flex items-start gap-2.5 ${className ?? ''}`}
+      accentBorder="rgba(239,68,68,0.25)"
+    >
       <Flag size={14} color="#EF4444" className="shrink-0 mt-0.5" />
       <div className="flex-1 min-w-0">
         <p style={{ color: '#EF4444', fontSize: φ.sm, fontWeight: 600, marginBottom: 2 }}>
@@ -227,8 +268,10 @@ export function ReportedContentBanner({ className }: ModerationBannerProps) {
 
 export function AntiScamBanner({ className }: ModerationBannerProps) {
   return (
-    <TrCard className={`p-3 flex items-start gap-2.5 ${className ?? ''}`}
-      accentBorder="rgba(59,130,246,0.2)">
+    <TrCard
+      className={`p-3 flex items-start gap-2.5 ${className ?? ''}`}
+      accentBorder="rgba(59,130,246,0.2)"
+    >
       <AlertTriangle size={14} color="#3B82F6" className="shrink-0 mt-0.5" />
       <p style={{ color: '#3B82F6', fontSize: φ.xs, lineHeight: 1.5 }}>
         Không thỏa thuận giao dịch ngoài nền tảng. Arena Points không phải tài sản tài chính.
@@ -239,8 +282,10 @@ export function AntiScamBanner({ className }: ModerationBannerProps) {
 
 export function PointsOnlyBanner({ className }: ModerationBannerProps) {
   return (
-    <TrCard className={`p-3 flex items-start gap-2.5 ${className ?? ''}`}
-      accentBorder="rgba(245,158,11,0.2)">
+    <TrCard
+      className={`p-3 flex items-start gap-2.5 ${className ?? ''}`}
+      accentBorder="rgba(245,158,11,0.2)"
+    >
       <Info size={14} color="#F59E0B" className="shrink-0 mt-0.5" />
       <p style={{ color: '#F59E0B', fontSize: φ.xs, lineHeight: 1.5 }}>
         Arena Points chỉ dùng trong Open Arena. Không có giá trị tiền tệ và không thể rút ra ngoài.

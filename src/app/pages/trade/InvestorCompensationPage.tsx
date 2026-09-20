@@ -2,14 +2,14 @@
  * ══════════════════════════════════════════════════════════════
  *  InvestorCompensationPage — Phase 4 Sprint 2 Day 11-12
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - FSCS (Financial Services Compensation Scheme) disclosure
  * - DGS (Deposit Guarantee Scheme) for EU clients
  * - Coverage limits disclosure (€20k - €100k)
  * - Eligibility checker
  * - Claim process guide
- * 
+ *
  * Compliance:
  * - FSCS: UK investor protection (up to £85k)
  * - DGS: EU deposit guarantee (€100k)
@@ -20,8 +20,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Shield, CheckCircle, Info, AlertCircle, FileText,
-  ChevronRight, ExternalLink, HelpCircle
+  Shield,
+  CheckCircle,
+  Info,
+  AlertCircle,
+  FileText,
+  ChevronRight,
+  ExternalLink,
+  HelpCircle,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -51,8 +57,10 @@ export function InvestorCompensationPage() {
         {/* Protection Summary */}
         <TrCard className="p-4">
           <div className="flex items-start gap-3 mb-3">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
-              style={{ background: '#10B981' + '15' }}>
+            <div
+              className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
+              style={{ background: '#10B981' + '15' }}
+            >
               <Shield size={28} color="#10B981" />
             </div>
 
@@ -61,36 +69,45 @@ export function InvestorCompensationPage() {
                 Protected up to £85,000
               </p>
               <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.4 }}>
-                Your investments are protected by the UK Financial Services Compensation Scheme (FSCS)
+                Your investments are protected by the UK Financial Services Compensation Scheme
+                (FSCS)
               </p>
             </div>
           </div>
 
-          <div className="rounded-lg p-3" style={{ background: c.successBg, border: `1px solid ${c.successBorder}` }}>
+          <div
+            className="rounded-lg p-3"
+            style={{ background: c.buyAlpha10, border: `1px solid ${c.buyAlpha20}` }}
+          >
             <div className="flex gap-2">
-              <CheckCircle size={14} color={c.successText} className="shrink-0 mt-0.5" />
-              <p style={{ color: c.successText, fontSize: 10, lineHeight: 1.4 }}>
-                <strong>You're covered:</strong> If our firm fails, FSCS may pay compensation for claims up to £85,000 per eligible person.
+              <CheckCircle size={14} color={c.success} className="shrink-0 mt-0.5" />
+              <p style={{ color: c.success, fontSize: 10, lineHeight: 1.4 }}>
+                <strong>You're covered:</strong> If our firm fails, FSCS may pay compensation for
+                claims up to £85,000 per eligible person.
               </p>
             </div>
           </div>
         </TrCard>
 
         {/* Info Notice */}
-        <div className="rounded-2xl p-3 flex gap-2.5" style={{ background: c.infoBg, border: `1px solid ${c.infoBorder}` }}>
-          <Info size={16} color={c.infoText} className="shrink-0 mt-0.5" />
+        <div
+          className="rounded-2xl p-3 flex gap-2.5"
+          style={{ background: 'rgba(59,130,246,0.08)', border: `1px solid rgba(59,130,246,0.20)` }}
+        >
+          <Info size={16} color={c.info} className="shrink-0 mt-0.5" />
           <div>
-            <p style={{ color: c.infoText, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
+            <p style={{ color: c.info, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
               Automatic Protection
             </p>
-            <p style={{ color: c.infoText, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
-              FSCS protection is automatic for eligible claimants. No registration required. Coverage applies if we cannot meet our obligations.
+            <p style={{ color: c.info, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
+              FSCS protection is automatic for eligible claimants. No registration required.
+              Coverage applies if we cannot meet our obligations.
             </p>
           </div>
         </div>
 
         {/* Tabs */}
-        <TabBar tabs={TABS} active={tab} onChange={setTab} variant="underline" />
+        <TabBar<TabType> tabs={TABS} active={tab} onChange={setTab} variant="underline" />
 
         {/* Content */}
         {tab === 'overview' && (
@@ -98,7 +115,9 @@ export function InvestorCompensationPage() {
             <PageSection label="What Is FSCS?">
               <TrCard className="p-4">
                 <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.6, marginBottom: 3 }}>
-                  The Financial Services Compensation Scheme (FSCS) is the UK's statutory deposit insurance and investors compensation scheme for customers of authorised financial services firms.
+                  The Financial Services Compensation Scheme (FSCS) is the UK's statutory deposit
+                  insurance and investors compensation scheme for customers of authorised financial
+                  services firms.
                 </p>
 
                 <div className="space-y-3">
@@ -129,9 +148,7 @@ export function InvestorCompensationPage() {
                   <div className="flex items-start gap-2.5">
                     <CheckCircle size={16} color="#10B981" className="shrink-0 mt-0.5" />
                     <div>
-                      <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
-                        Fast Payment
-                      </p>
+                      <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>Fast Payment</p>
                       <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.4, marginTop: 1 }}>
                         FSCS aims to pay compensation within 3-6 months
                       </p>
@@ -151,17 +168,13 @@ export function InvestorCompensationPage() {
                         £85,000
                       </span>
                     </div>
-                    <p style={{ color: c.text3, fontSize: 9 }}>
-                      Per eligible person, per firm
-                    </p>
+                    <p style={{ color: c.text3, fontSize: 9 }}>Per eligible person, per firm</p>
                   </div>
 
                   <div className="p-3 rounded-lg" style={{ background: c.surface2 }}>
                     <div className="flex items-center justify-between mb-2">
                       <span style={{ color: c.text2, fontSize: 12 }}>Deposits</span>
-                      <span style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>
-                        £85,000
-                      </span>
+                      <span style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>£85,000</span>
                     </div>
                     <p style={{ color: c.text3, fontSize: 9 }}>
                       Per eligible person, per banking institution
@@ -172,7 +185,8 @@ export function InvestorCompensationPage() {
                     <div className="flex gap-2">
                       <AlertCircle size={14} color={c.warningText} className="shrink-0 mt-0.5" />
                       <p style={{ color: c.warningText, fontSize: 10, lineHeight: 1.4 }}>
-                        <strong>Note:</strong> Some products may not be covered. Check eligibility for each product type.
+                        <strong>Note:</strong> Some products may not be covered. Check eligibility
+                        for each product type.
                       </p>
                     </div>
                   </div>
@@ -231,7 +245,8 @@ export function InvestorCompensationPage() {
                 {
                   step: 1,
                   title: 'Firm Declared in Default',
-                  description: 'FSCS can only pay if the FCA declares our firm in default (unable to meet obligations)',
+                  description:
+                    'FSCS can only pay if the FCA declares our firm in default (unable to meet obligations)',
                 },
                 {
                   step: 2,
@@ -256,13 +271,16 @@ export function InvestorCompensationPage() {
                 {
                   step: 6,
                   title: 'Payment',
-                  description: 'If approved, FSCS pays compensation directly to you (typically within 3-6 months)',
+                  description:
+                    'If approved, FSCS pays compensation directly to you (typically within 3-6 months)',
                 },
               ].map((item) => (
                 <TrCard key={item.step} className="p-3">
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                      style={{ background: c.primary + '15' }}>
+                    <div
+                      className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                      style={{ background: c.primary + '15' }}
+                    >
                       <span style={{ color: c.primary, fontSize: 14, fontWeight: 700 }}>
                         {item.step}
                       </span>
@@ -290,7 +308,8 @@ export function InvestorCompensationPage() {
                 height: 44,
                 fontWeight: 600,
                 fontSize: 13,
-              }}>
+              }}
+            >
               <ExternalLink size={16} />
               <span>Visit FSCS Website</span>
             </button>
@@ -300,12 +319,11 @@ export function InvestorCompensationPage() {
         {/* FAQ Link */}
         <button
           className="w-full rounded-xl p-3 flex items-center justify-between transition-all"
-          style={{ background: c.surface2, border: `1px solid ${c.border}` }}>
+          style={{ background: c.surface2, border: `1px solid ${c.border}` }}
+        >
           <div className="flex items-center gap-2">
             <HelpCircle size={16} color={c.primary} />
-            <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
-              FSCS FAQs
-            </span>
+            <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>FSCS FAQs</span>
           </div>
           <ChevronRight size={16} color={c.text3} />
         </button>

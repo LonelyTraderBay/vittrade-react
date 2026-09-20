@@ -41,9 +41,15 @@ const AUDIT_REPORTS: AuditReport[] = [
       low: 5,
       informational: 8,
     },
-    summary: 'Comprehensive security audit of staking smart contracts. All critical and high-severity issues resolved. Medium-severity findings relate to gas optimization opportunities.',
+    summary:
+      'Comprehensive security audit of staking smart contracts. All critical and high-severity issues resolved. Medium-severity findings relate to gas optimization opportunities.',
     pdfUrl: '/audits/trail-of-bits-q1-2026.pdf',
-    scope: ['Staking Pool Contract', 'Reward Distribution', 'Validator Registry', 'Emergency Pause Mechanism'],
+    scope: [
+      'Staking Pool Contract',
+      'Reward Distribution',
+      'Validator Registry',
+      'Emergency Pause Mechanism',
+    ],
   },
   {
     id: 'sc-2025-q4',
@@ -59,7 +65,8 @@ const AUDIT_REPORTS: AuditReport[] = [
       low: 7,
       informational: 12,
     },
-    summary: 'All high-severity issues patched before deployment. Focus areas: reentrancy protection, integer overflow checks, access control.',
+    summary:
+      'All high-severity issues patched before deployment. Focus areas: reentrancy protection, integer overflow checks, access control.',
     pdfUrl: '/audits/sigma-prime-q4-2025.pdf',
     scope: ['Liquid Staking Module', 'Auto-Compound Logic', 'Insurance Fund Contract'],
   },
@@ -77,9 +84,16 @@ const AUDIT_REPORTS: AuditReport[] = [
       low: 0,
       informational: 0,
     },
-    summary: 'Unqualified opinion. Financial statements present fairly the financial position. Internal controls are adequate and effective.',
+    summary:
+      'Unqualified opinion. Financial statements present fairly the financial position. Internal controls are adequate and effective.',
     pdfUrl: '/audits/deloitte-financial-2025.pdf',
-    scope: ['Balance Sheet', 'Income Statement', 'Cash Flow', 'Internal Controls', 'Client Fund Segregation'],
+    scope: [
+      'Balance Sheet',
+      'Income Statement',
+      'Cash Flow',
+      'Internal Controls',
+      'Client Fund Segregation',
+    ],
   },
   {
     id: 'sec-2025',
@@ -95,9 +109,16 @@ const AUDIT_REPORTS: AuditReport[] = [
       low: 3,
       informational: 5,
     },
-    summary: 'Successfully passed SOC 2 Type II audit. Controls operating effectively for Security, Availability, and Confidentiality.',
+    summary:
+      'Successfully passed SOC 2 Type II audit. Controls operating effectively for Security, Availability, and Confidentiality.',
     pdfUrl: '/audits/pwc-soc2-2025.pdf',
-    scope: ['Access Controls', 'Encryption', 'Incident Response', 'Business Continuity', 'Change Management'],
+    scope: [
+      'Access Controls',
+      'Encryption',
+      'Incident Response',
+      'Business Continuity',
+      'Change Management',
+    ],
   },
   {
     id: 'sc-2026-q2',
@@ -122,8 +143,8 @@ export function StakingAuditReportsPage() {
   const c = useThemeColors();
   const [tab, setTab] = useState<'all' | 'smart-contract' | 'financial' | 'security'>('all');
 
-  const filtered = tab === 'all' ? AUDIT_REPORTS : AUDIT_REPORTS.filter(r => r.type === tab);
-  const published = AUDIT_REPORTS.filter(r => r.status === 'published');
+  const filtered = tab === 'all' ? AUDIT_REPORTS : AUDIT_REPORTS.filter((r) => r.type === tab);
+  const published = AUDIT_REPORTS.filter((r) => r.status === 'published');
 
   return (
     <PageLayout>
@@ -131,7 +152,13 @@ export function StakingAuditReportsPage() {
 
       <PageContent>
         {/* Info Banner */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(59,130,246,0.08)', border: '1.5px solid rgba(59,130,246,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{
+            background: 'rgba(59,130,246,0.08)',
+            border: '1.5px solid rgba(59,130,246,0.2)',
+          }}
+        >
           <div className="flex gap-3">
             <Shield size={20} color="#3B82F6" className="shrink-0 mt-0.5" />
             <div>
@@ -139,7 +166,8 @@ export function StakingAuditReportsPage() {
                 Transparency & Trust
               </p>
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                All staking smart contracts are audited quarterly by leading security firms. Financial and security audits are conducted annually.
+                All staking smart contracts are audited quarterly by leading security firms.
+                Financial and security audits are conducted annually.
               </p>
             </div>
           </div>
@@ -150,22 +178,16 @@ export function StakingAuditReportsPage() {
           <div className="grid grid-cols-3 gap-3">
             <div>
               <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Published Audits</p>
-              <p style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}>
-                {published.length}
-              </p>
+              <p style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}>{published.length}</p>
             </div>
             <div>
               <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Critical Issues</p>
-              <p style={{ color: '#10B981', fontSize: 20, fontWeight: 700 }}>
-                0
-              </p>
+              <p style={{ color: '#10B981', fontSize: 20, fontWeight: 700 }}>0</p>
               <p style={{ color: c.text3, fontSize: 9 }}>All-time</p>
             </div>
             <div>
               <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Bug Bounty</p>
-              <p style={{ color: '#F59E0B', fontSize: 20, fontWeight: 700 }}>
-                $2M
-              </p>
+              <p style={{ color: '#F59E0B', fontSize: 20, fontWeight: 700 }}>$2M</p>
               <p style={{ color: c.text3, fontSize: 9 }}>Max payout</p>
             </div>
           </div>
@@ -186,8 +208,12 @@ export function StakingAuditReportsPage() {
         {/* Audit Reports */}
         <PageSection label="">
           <div className="flex flex-col gap-3">
-            {filtered.map(report => {
-              const totalFindings = report.findings.critical + report.findings.high + report.findings.medium + report.findings.low;
+            {filtered.map((report) => {
+              const totalFindings =
+                report.findings.critical +
+                report.findings.high +
+                report.findings.medium +
+                report.findings.low;
               return (
                 <TrCard
                   key={report.id}
@@ -195,25 +221,35 @@ export function StakingAuditReportsPage() {
                   className="p-4"
                   style={{
                     opacity: report.status === 'published' ? 1 : 0.7,
-                  }}>
+                  }}
+                >
                   <div className="flex items-start gap-3 mb-3">
                     <div
                       className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
                       style={{
-                        background: report.type === 'smart-contract' ? 'rgba(139,92,246,0.12)' :
-                                   report.type === 'financial' ? 'rgba(16,185,129,0.12)' :
-                                   'rgba(245,158,11,0.12)',
+                        background:
+                          report.type === 'smart-contract'
+                            ? 'rgba(139,92,246,0.12)'
+                            : report.type === 'financial'
+                              ? 'rgba(16,185,129,0.12)'
+                              : 'rgba(245,158,11,0.12)',
                         border: `1.5px solid ${
-                          report.type === 'smart-contract' ? 'rgba(139,92,246,0.3)' :
-                          report.type === 'financial' ? 'rgba(16,185,129,0.3)' :
-                          'rgba(245,158,11,0.3)'
+                          report.type === 'smart-contract'
+                            ? 'rgba(139,92,246,0.3)'
+                            : report.type === 'financial'
+                              ? 'rgba(16,185,129,0.3)'
+                              : 'rgba(245,158,11,0.3)'
                         }`,
-                      }}>
+                      }}
+                    >
                       <FileText
                         size={24}
                         color={
-                          report.type === 'smart-contract' ? '#8B5CF6' :
-                          report.type === 'financial' ? '#10B981' : '#F59E0B'
+                          report.type === 'smart-contract'
+                            ? '#8B5CF6'
+                            : report.type === 'financial'
+                              ? '#10B981'
+                              : '#F59E0B'
                         }
                       />
                     </div>
@@ -225,9 +261,7 @@ export function StakingAuditReportsPage() {
                         {report.status === 'published' && (
                           <CheckCircle2 size={14} color="#10B981" />
                         )}
-                        {report.status === 'in-progress' && (
-                          <Clock size={14} color="#F59E0B" />
-                        )}
+                        {report.status === 'in-progress' && <Clock size={14} color="#F59E0B" />}
                       </div>
                       <p style={{ color: c.text3, fontSize: 12, marginBottom: 4 }}>
                         By {report.auditor} • {new Date(report.date).toLocaleDateString('en-GB')}
@@ -235,14 +269,25 @@ export function StakingAuditReportsPage() {
                       <span
                         className="px-2 py-0.5 rounded-md text-xs font-bold"
                         style={{
-                          background: report.type === 'smart-contract' ? 'rgba(139,92,246,0.15)' :
-                                     report.type === 'financial' ? 'rgba(16,185,129,0.15)' :
-                                     'rgba(245,158,11,0.15)',
-                          color: report.type === 'smart-contract' ? '#8B5CF6' :
-                                 report.type === 'financial' ? '#10B981' : '#F59E0B',
-                        }}>
-                        {report.type === 'smart-contract' ? 'Smart Contract' :
-                         report.type === 'financial' ? 'Financial' : 'Security'}
+                          background:
+                            report.type === 'smart-contract'
+                              ? 'rgba(139,92,246,0.15)'
+                              : report.type === 'financial'
+                                ? 'rgba(16,185,129,0.15)'
+                                : 'rgba(245,158,11,0.15)',
+                          color:
+                            report.type === 'smart-contract'
+                              ? '#8B5CF6'
+                              : report.type === 'financial'
+                                ? '#10B981'
+                                : '#F59E0B',
+                        }}
+                      >
+                        {report.type === 'smart-contract'
+                          ? 'Smart Contract'
+                          : report.type === 'financial'
+                            ? 'Financial'
+                            : 'Security'}
                       </span>
                     </div>
                   </div>
@@ -253,7 +298,9 @@ export function StakingAuditReportsPage() {
 
                   {report.status === 'published' && totalFindings > 0 && (
                     <div className="rounded-xl p-3 mb-3" style={{ background: c.surface2 }}>
-                      <p style={{ color: c.text3, fontSize: 11, marginBottom: 6 }}>Findings Summary</p>
+                      <p style={{ color: c.text3, fontSize: 11, marginBottom: 6 }}>
+                        Findings Summary
+                      </p>
                       <div className="grid grid-cols-5 gap-2">
                         {[
                           { label: 'Critical', value: report.findings.critical, color: '#EF4444' },
@@ -261,7 +308,7 @@ export function StakingAuditReportsPage() {
                           { label: 'Medium', value: report.findings.medium, color: '#FBBF24' },
                           { label: 'Low', value: report.findings.low, color: '#3B82F6' },
                           { label: 'Info', value: report.findings.informational, color: '#6B7280' },
-                        ].map(item => (
+                        ].map((item) => (
                           <div key={item.label} className="text-center">
                             <p style={{ color: item.color, fontSize: 16, fontWeight: 700 }}>
                               {item.value}
@@ -280,7 +327,8 @@ export function StakingAuditReportsPage() {
                         <span
                           key={idx}
                           className="px-2 py-1 rounded-lg text-xs"
-                          style={{ background: c.surface2, color: c.text2 }}>
+                          style={{ background: c.surface2, color: c.text2 }}
+                        >
                           {item}
                         </span>
                       ))}
@@ -293,7 +341,8 @@ export function StakingAuditReportsPage() {
                         href={report.pdfUrl}
                         download
                         className="flex-1 py-2.5 rounded-xl text-center text-sm font-semibold flex items-center justify-center gap-2"
-                        style={{ background: c.primary, color: '#FFF' }}>
+                        style={{ background: c.primary, color: '#FFF' }}
+                      >
                         <Download size={16} />
                         Download PDF
                       </a>
@@ -302,7 +351,8 @@ export function StakingAuditReportsPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex-1 py-2.5 rounded-xl text-center text-sm font-semibold flex items-center justify-center gap-2"
-                        style={{ background: c.surface2, color: c.text1 }}>
+                        style={{ background: c.surface2, color: c.text1 }}
+                      >
                         <ExternalLink size={16} />
                         View
                       </a>
@@ -310,11 +360,14 @@ export function StakingAuditReportsPage() {
                   )}
 
                   {report.status === 'in-progress' && (
-                    <div className="flex items-center gap-2 p-2 rounded-lg"
-                      style={{ background: 'rgba(245,158,11,0.08)' }}>
+                    <div
+                      className="flex items-center gap-2 p-2 rounded-lg"
+                      style={{ background: 'rgba(245,158,11,0.08)' }}
+                    >
                       <Clock size={14} color="#F59E0B" />
                       <p style={{ color: '#F59E0B', fontSize: 11 }}>
-                        Audit in progress • Expected: {new Date(report.date).toLocaleDateString('en-GB')}
+                        Audit in progress • Expected:{' '}
+                        {new Date(report.date).toLocaleDateString('en-GB')}
                       </p>
                     </div>
                   )}
@@ -328,8 +381,13 @@ export function StakingAuditReportsPage() {
         <PageSection label="Bug Bounty Program">
           <TrCard className="p-4">
             <div className="flex items-start gap-3 mb-3">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                style={{ background: 'rgba(139,92,246,0.12)', border: '1.5px solid rgba(139,92,246,0.3)' }}>
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                style={{
+                  background: 'rgba(139,92,246,0.12)',
+                  border: '1.5px solid rgba(139,92,246,0.3)',
+                }}
+              >
                 <Shield size={24} color="#8B5CF6" />
               </div>
               <div className="flex-1">
@@ -343,7 +401,8 @@ export function StakingAuditReportsPage() {
             </div>
 
             <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6, marginBottom: 12 }}>
-              We partner with Immunefi to reward security researchers who discover vulnerabilities in our smart contracts and infrastructure.
+              We partner with Immunefi to reward security researchers who discover vulnerabilities
+              in our smart contracts and infrastructure.
             </p>
 
             <div className="rounded-xl p-3 mb-3" style={{ background: c.surface2 }}>
@@ -372,7 +431,8 @@ export function StakingAuditReportsPage() {
               target="_blank"
               rel="noopener noreferrer"
               className="w-full py-3 rounded-xl text-center text-sm font-semibold flex items-center justify-center gap-2"
-              style={{ background: c.primary, color: '#FFF' }}>
+              style={{ background: c.primary, color: '#FFF' }}
+            >
               View on Immunefi
               <ExternalLink size={16} />
             </a>
@@ -382,7 +442,9 @@ export function StakingAuditReportsPage() {
         {/* Footer Info */}
         <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6, textAlign: 'center' }}>
-            All audit reports are published within 14 days of completion. Smart contract audits are conducted quarterly. Financial and security audits are conducted annually. Reports are available for download and verification.
+            All audit reports are published within 14 days of completion. Smart contract audits are
+            conducted quarterly. Financial and security audits are conducted annually. Reports are
+            available for download and verification.
           </p>
         </div>
       </PageContent>

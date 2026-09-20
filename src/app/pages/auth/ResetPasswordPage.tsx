@@ -27,7 +27,7 @@ export function ResetPasswordPage() {
   const [success, setSuccess] = useState(false);
   const [touched, setTouched] = useState(false);
 
-  const allRulesPass = PW_RULES.every(r => r.test(newPw));
+  const allRulesPass = PW_RULES.every((r) => r.test(newPw));
   const passwordsMatch = newPw === confirmPw;
   const canSubmit = allRulesPass && passwordsMatch && confirmPw.length > 0;
   const showMismatch = touched && confirmPw.length > 0 && !passwordsMatch;
@@ -35,7 +35,7 @@ export function ResetPasswordPage() {
   const handleSubmit = async () => {
     if (!canSubmit) return;
     setIsLoading(true);
-    await new Promise(r => setTimeout(r, 1200));
+    await new Promise((r) => setTimeout(r, 1200));
     setIsLoading(false);
     setSuccess(true);
   };
@@ -45,12 +45,19 @@ export function ResetPasswordPage() {
       <PageLayout>
         <Header title="Đặt lại mật khẩu" subtitle="Xác thực · Bảo mật" back />
         <PageContent padding="relaxed" gap="relaxed" className="items-center">
-          <div className="w-24 h-24 rounded-full flex items-center justify-center"
-            style={{ background: 'rgba(16,185,129,0.15)', border: '2px solid rgba(16,185,129,0.4)' }}>
+          <div
+            className="w-24 h-24 rounded-full flex items-center justify-center"
+            style={{
+              background: 'rgba(16,185,129,0.15)',
+              border: '2px solid rgba(16,185,129,0.4)',
+            }}
+          >
             <CheckCircle size={48} color="#10B981" />
           </div>
           <div className="text-center">
-            <h2 style={{ color: c.text1, fontSize: 22, fontWeight: 700 }}>Đổi mật khẩu thành công!</h2>
+            <h2 style={{ color: c.text1, fontSize: 22, fontWeight: 700 }}>
+              Đổi mật khẩu thành công!
+            </h2>
             <p style={{ color: c.text2, fontSize: 14, marginTop: 8, lineHeight: 1.6 }}>
               Mật khẩu của bạn đã được cập nhật.{'\n'}Vui lòng đăng nhập lại với mật khẩu mới.
             </p>
@@ -72,8 +79,13 @@ export function ResetPasswordPage() {
       <PageContent padding="relaxed" gap="relaxed">
         {/* Icon + description */}
         <div className="text-center">
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
-            style={{ background: 'rgba(59,130,246,0.1)', border: '1.5px solid rgba(59,130,246,0.3)' }}>
+          <div
+            className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
+            style={{
+              background: 'rgba(59,130,246,0.1)',
+              border: '1.5px solid rgba(59,130,246,0.3)',
+            }}
+          >
             <Lock size={32} color="#3B82F6" />
           </div>
           <h2 style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}>Tạo mật khẩu mới</h2>
@@ -89,7 +101,7 @@ export function ResetPasswordPage() {
             type={showPw ? 'text' : 'password'}
             placeholder="••••••••"
             value={newPw}
-            onChange={e => setNewPw(e.target.value)}
+            onChange={(e) => setNewPw(e.target.value)}
             prefix={<Lock size={18} color={c.text3} />}
             suffix={
               <button onClick={() => setShowPw(!showPw)}>
@@ -101,15 +113,21 @@ export function ResetPasswordPage() {
 
           {/* Password rules */}
           <div className="flex flex-col gap-1.5 mt-3">
-            {PW_RULES.map(rule => {
+            {PW_RULES.map((rule) => {
               const pass = rule.test(newPw);
               return (
                 <div key={rule.id} className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full flex items-center justify-center shrink-0"
-                    style={{ background: pass ? 'rgba(16,185,129,0.15)' : 'rgba(255,255,255,0.04)' }}>
+                  <div
+                    className="w-4 h-4 rounded-full flex items-center justify-center shrink-0"
+                    style={{
+                      background: pass ? 'rgba(16,185,129,0.15)' : 'rgba(255,255,255,0.04)',
+                    }}
+                  >
                     <Check size={10} color={pass ? '#10B981' : c.text3} />
                   </div>
-                  <span style={{ color: pass ? '#10B981' : c.text3, fontSize: 12 }}>{rule.label}</span>
+                  <span style={{ color: pass ? '#10B981' : c.text3, fontSize: 12 }}>
+                    {rule.label}
+                  </span>
                 </div>
               );
             })}
@@ -123,11 +141,18 @@ export function ResetPasswordPage() {
             type={showConfirmPw ? 'text' : 'password'}
             placeholder="••••••••"
             value={confirmPw}
-            onChange={e => { setConfirmPw(e.target.value); setTouched(true); }}
+            onChange={(e) => {
+              setConfirmPw(e.target.value);
+              setTouched(true);
+            }}
             prefix={<Lock size={18} color={c.text3} />}
             suffix={
               <button onClick={() => setShowConfirmPw(!showConfirmPw)}>
-                {showConfirmPw ? <EyeOff size={18} color={c.text3} /> : <Eye size={18} color={c.text3} />}
+                {showConfirmPw ? (
+                  <EyeOff size={18} color={c.text3} />
+                ) : (
+                  <Eye size={18} color={c.text3} />
+                )}
               </button>
             }
             containerStyle={showMismatch ? { borderColor: '#EF4444' } : undefined}
@@ -157,9 +182,11 @@ export function ResetPasswordPage() {
         </CTAButton>
 
         {/* Back to login */}
-        <button onClick={() => navigate(`${prefix}/auth/login`)}
+        <button
+          onClick={() => navigate(`${prefix}/auth/login`)}
           className="flex items-center justify-center"
-          style={{ color: '#3B82F6', fontSize: 13, fontWeight: 600 }}>
+          style={{ color: '#3B82F6', fontSize: 13, fontWeight: 600 }}
+        >
           Quay lại đăng nhập
         </button>
       </PageContent>

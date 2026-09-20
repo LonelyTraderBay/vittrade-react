@@ -16,21 +16,38 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
     // Force all packages (motion, recharts, radix-ui, …) to share the
-    // exact same React/jotai instance, preventing "Invalid hook call" and
-    // "multiple Jotai instances" errors.
+    // exact same React instance, preventing "Invalid hook call" and
+    // "multiple React instances" errors.
     dedupe: [
       'react',
       'react-dom',
       'react/jsx-runtime',
       'react/jsx-dev-runtime',
       'react-router',
-      'jotai',
       '@emotion/react',
       '@emotion/styled',
       '@radix-ui/react-context',
       '@radix-ui/react-primitive',
       'vaul',
     ],
+  },
+
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router'],
+          'vendor-mui': [
+            '@mui/material',
+            '@mui/icons-material',
+            '@emotion/react',
+            '@emotion/styled',
+          ],
+          'vendor-charts': ['recharts', 'lightweight-charts'],
+          'vendor-motion': ['motion'],
+        },
+      },
+    },
   },
 
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.

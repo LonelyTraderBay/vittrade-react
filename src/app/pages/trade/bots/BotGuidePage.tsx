@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { BookOpen, Play, TrendingUp, Grid3x3, Zap, AlertTriangle, ChevronDown, ChevronUp } from 'lucide-react';
+import {
+  BookOpen,
+  Play,
+  TrendingUp,
+  Grid3x3,
+  Zap,
+  AlertTriangle,
+  ChevronDown,
+  ChevronUp,
+} from 'lucide-react';
 import { Header } from '../../../components/layout/Header';
 import { PageLayout } from '../../../components/layout/PageLayout';
 import { PageContent, PageSection } from '../../../components/layout/PageContent';
@@ -47,7 +56,8 @@ const STRATEGIES = [
     icon: Grid3x3,
     color: '#F59E0B',
     difficulty: 'Intermediate',
-    description: 'Place buy and sell orders at multiple price levels to profit from price fluctuations.',
+    description:
+      'Place buy and sell orders at multiple price levels to profit from price fluctuations.',
     howItWorks: [
       'Define price range (e.g., $65,000 - $70,000)',
       'Set number of grids (e.g., 20 grids)',
@@ -121,11 +131,7 @@ const STRATEGIES = [
       'One win recovers all previous losses',
       '⚠️ HIGH RISK - can blow up account',
     ],
-    pros: [
-      'High win rate (78%+)',
-      'Recovers losses quickly',
-      'Simple logic',
-    ],
+    pros: ['High win rate (78%+)', 'Recovers losses quickly', 'Simple logic'],
     cons: [
       'Catastrophic risk if many losses',
       'Requires large capital',
@@ -165,12 +171,12 @@ const BEST_PRACTICES = [
   },
   {
     title: 'Diversify',
-    description: 'Don\'t put all capital in one bot - spread across multiple strategies.',
+    description: "Don't put all capital in one bot - spread across multiple strategies.",
     icon: '🎯',
   },
   {
     title: 'Avoid FOMO',
-    description: 'Don\'t create bots during extreme market conditions.',
+    description: "Don't create bots during extreme market conditions.",
     icon: '⚠️',
   },
 ];
@@ -214,7 +220,13 @@ export function BotGuidePage() {
 
       <PageContent>
         {/* Intro Banner */}
-        <div className="rounded-2xl p-4 mb-4" style={{ background: 'rgba(59,130,246,0.08)', border: '1.5px solid rgba(59,130,246,0.2)' }}>
+        <div
+          className="rounded-2xl p-4 mb-4"
+          style={{
+            background: 'rgba(59,130,246,0.08)',
+            border: '1.5px solid rgba(59,130,246,0.2)',
+          }}
+        >
           <div className="flex gap-3">
             <BookOpen size={24} color="#3B82F6" className="shrink-0" />
             <div>
@@ -222,7 +234,7 @@ export function BotGuidePage() {
                 Complete Guide to Trading Bots
               </p>
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                Learn how each bot strategy works, when to use it, and how to avoid common mistakes. 
+                Learn how each bot strategy works, when to use it, and how to avoid common mistakes.
                 Perfect for beginners and experienced traders.
               </p>
             </div>
@@ -241,7 +253,7 @@ export function BotGuidePage() {
         {view === 'strategies' && (
           <PageSection label="Bot Strategies Explained">
             <div className="flex flex-col gap-3">
-              {STRATEGIES.map(strategy => {
+              {STRATEGIES.map((strategy) => {
                 const isExpanded = expandedStrategy === strategy.id;
                 const StratIcon = strategy.icon;
 
@@ -250,10 +262,13 @@ export function BotGuidePage() {
                     {/* Header */}
                     <button
                       onClick={() => setExpandedStrategy(isExpanded ? null : strategy.id)}
-                      className="w-full p-4 text-left">
+                      className="w-full p-4 text-left"
+                    >
                       <div className="flex items-start gap-3 mb-3">
-                        <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                          style={{ background: `${strategy.color}15` }}>
+                        <div
+                          className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                          style={{ background: `${strategy.color}15` }}
+                        >
                           <StratIcon size={24} color={strategy.color} />
                         </div>
                         <div className="flex-1">
@@ -261,17 +276,27 @@ export function BotGuidePage() {
                             <p style={{ color: strategy.color, fontSize: 15, fontWeight: 700 }}>
                               {strategy.name}
                             </p>
-                            <span className="px-2 py-0.5 rounded-md text-xs font-bold"
+                            <span
+                              className="px-2 py-0.5 rounded-md text-xs font-bold"
                               style={{
-                                background: strategy.difficulty === 'Beginner' ? 'rgba(16,185,129,0.12)' 
-                                  : strategy.difficulty === 'Intermediate' ? 'rgba(245,158,11,0.12)'
-                                  : strategy.difficulty === 'Advanced' ? 'rgba(139,92,246,0.12)'
-                                  : 'rgba(239,68,68,0.12)',
-                                color: strategy.difficulty === 'Beginner' ? '#10B981' 
-                                  : strategy.difficulty === 'Intermediate' ? '#F59E0B'
-                                  : strategy.difficulty === 'Advanced' ? '#8B5CF6'
-                                  : '#EF4444',
-                              }}>
+                                background:
+                                  strategy.difficulty === 'Beginner'
+                                    ? 'rgba(16,185,129,0.12)'
+                                    : strategy.difficulty === 'Intermediate'
+                                      ? 'rgba(245,158,11,0.12)'
+                                      : strategy.difficulty === 'Advanced'
+                                        ? 'rgba(139,92,246,0.12)'
+                                        : 'rgba(239,68,68,0.12)',
+                                color:
+                                  strategy.difficulty === 'Beginner'
+                                    ? '#10B981'
+                                    : strategy.difficulty === 'Intermediate'
+                                      ? '#F59E0B'
+                                      : strategy.difficulty === 'Advanced'
+                                        ? '#8B5CF6'
+                                        : '#EF4444',
+                              }}
+                            >
                               {strategy.difficulty}
                             </span>
                           </div>
@@ -292,13 +317,24 @@ export function BotGuidePage() {
                       <div className="px-4 pb-4 space-y-4">
                         {/* How It Works */}
                         <div>
-                          <p style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 8 }}>
+                          <p
+                            style={{
+                              color: c.text1,
+                              fontSize: 13,
+                              fontWeight: 700,
+                              marginBottom: 8,
+                            }}
+                          >
                             How It Works:
                           </p>
                           <ol className="space-y-2 pl-4">
                             {strategy.howItWorks.map((step, idx) => (
                               <li key={idx} className="flex gap-2">
-                                <span style={{ color: strategy.color, fontWeight: 700, fontSize: 12 }}>{idx + 1}.</span>
+                                <span
+                                  style={{ color: strategy.color, fontWeight: 700, fontSize: 12 }}
+                                >
+                                  {idx + 1}.
+                                </span>
                                 <p style={{ color: c.text2, fontSize: 12 }}>{step}</p>
                               </li>
                             ))}
@@ -307,8 +343,18 @@ export function BotGuidePage() {
 
                         {/* Pros/Cons */}
                         <div className="grid grid-cols-2 gap-3">
-                          <div className="rounded-xl p-3" style={{ background: 'rgba(16,185,129,0.08)' }}>
-                            <p style={{ color: '#10B981', fontSize: 11, fontWeight: 700, marginBottom: 6 }}>
+                          <div
+                            className="rounded-xl p-3"
+                            style={{ background: 'rgba(16,185,129,0.08)' }}
+                          >
+                            <p
+                              style={{
+                                color: '#10B981',
+                                fontSize: 11,
+                                fontWeight: 700,
+                                marginBottom: 6,
+                              }}
+                            >
                               ✅ Pros
                             </p>
                             <ul className="space-y-1.5">
@@ -320,8 +366,18 @@ export function BotGuidePage() {
                               ))}
                             </ul>
                           </div>
-                          <div className="rounded-xl p-3" style={{ background: 'rgba(239,68,68,0.08)' }}>
-                            <p style={{ color: '#EF4444', fontSize: 11, fontWeight: 700, marginBottom: 6 }}>
+                          <div
+                            className="rounded-xl p-3"
+                            style={{ background: 'rgba(239,68,68,0.08)' }}
+                          >
+                            <p
+                              style={{
+                                color: '#EF4444',
+                                fontSize: 11,
+                                fontWeight: 700,
+                                marginBottom: 6,
+                              }}
+                            >
                               ❌ Cons
                             </p>
                             <ul className="space-y-1.5">
@@ -338,30 +394,56 @@ export function BotGuidePage() {
                         {/* Best For */}
                         <div className="rounded-xl p-3" style={{ background: c.surface2 }}>
                           <p style={{ color: c.text3, fontSize: 10, marginBottom: 4 }}>BEST FOR:</p>
-                          <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>{strategy.bestFor}</p>
+                          <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
+                            {strategy.bestFor}
+                          </p>
                         </div>
 
                         {/* Example */}
-                        <div className="rounded-xl p-3" style={{ background: `${strategy.color}08`, border: `1px solid ${strategy.color}30` }}>
-                          <p style={{ color: strategy.color, fontSize: 11, fontWeight: 700, marginBottom: 8 }}>
+                        <div
+                          className="rounded-xl p-3"
+                          style={{
+                            background: `${strategy.color}08`,
+                            border: `1px solid ${strategy.color}30`,
+                          }}
+                        >
+                          <p
+                            style={{
+                              color: strategy.color,
+                              fontSize: 11,
+                              fontWeight: 700,
+                              marginBottom: 8,
+                            }}
+                          >
                             📈 Example
                           </p>
                           <div className="space-y-2">
                             <div className="flex justify-between">
                               <span style={{ color: c.text3, fontSize: 11 }}>Setup:</span>
-                              <span style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>{strategy.example.setup}</span>
+                              <span style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>
+                                {strategy.example.setup}
+                              </span>
                             </div>
                             <div className="flex justify-between">
                               <span style={{ color: c.text3, fontSize: 11 }}>Duration:</span>
-                              <span style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>{strategy.example.duration}</span>
+                              <span style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>
+                                {strategy.example.duration}
+                              </span>
                             </div>
                             <div className="flex justify-between">
                               <span style={{ color: c.text3, fontSize: 11 }}>Result:</span>
-                              <span style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>{strategy.example.result}</span>
+                              <span style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>
+                                {strategy.example.result}
+                              </span>
                             </div>
-                            <div className="flex justify-between pt-2 border-t" style={{ borderColor: c.borderSolid }}>
+                            <div
+                              className="flex justify-between pt-2 border-t"
+                              style={{ borderColor: c.borderSolid }}
+                            >
                               <span style={{ color: c.text3, fontSize: 11 }}>Profit:</span>
-                              <span style={{ color: '#10B981', fontSize: 13, fontWeight: 700 }}>{strategy.example.profit}</span>
+                              <span style={{ color: '#10B981', fontSize: 13, fontWeight: 700 }}>
+                                {strategy.example.profit}
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -415,7 +497,9 @@ export function BotGuidePage() {
                       <p style={{ color: c.text2, fontSize: 12 }}>{item.why}</p>
                     </div>
                     <div className="rounded-lg p-2" style={{ background: 'rgba(16,185,129,0.08)' }}>
-                      <p style={{ color: '#10B981', fontSize: 10, fontWeight: 700, marginBottom: 2 }}>
+                      <p
+                        style={{ color: '#10B981', fontSize: 10, fontWeight: 700, marginBottom: 2 }}
+                      >
                         ✅ HOW TO FIX:
                       </p>
                       <p style={{ color: c.text2, fontSize: 11 }}>{item.fix}</p>
@@ -431,14 +515,15 @@ export function BotGuidePage() {
         <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
           <div className="flex items-center gap-3 mb-3">
             <Play size={20} color={c.primary} />
-            <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>
-              Video Tutorials
-            </p>
+            <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>Video Tutorials</p>
           </div>
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6, marginBottom: 8 }}>
             Watch our step-by-step video guides to master each bot strategy.
           </p>
-          <button className="w-full py-2 rounded-xl text-xs font-semibold" style={{ background: c.primary, color: '#FFF' }}>
+          <button
+            className="w-full py-2 rounded-xl text-xs font-semibold"
+            style={{ background: c.primary, color: '#FFF' }}
+          >
             View All Tutorials
           </button>
         </div>

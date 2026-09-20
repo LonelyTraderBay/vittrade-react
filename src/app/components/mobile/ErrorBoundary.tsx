@@ -33,7 +33,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     this.setState({ errorInfo });
-    console.error(`[ErrorBoundary${this.props.section ? ` — ${this.props.section}` : ''}]`, error, errorInfo);
+    console.error(
+      `[ErrorBoundary${this.props.section ? ` — ${this.props.section}` : ''}]`,
+      error,
+      errorInfo,
+    );
   }
 
   handleRetry = () => {
@@ -70,7 +74,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
           <button
             onClick={this.handleRetry}
             className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs"
-            style={{ background: 'rgba(239,68,68,0.1)', color: '#EF4444', border: '1px solid rgba(239,68,68,0.2)' }}
+            style={{
+              background: 'rgba(239,68,68,0.1)',
+              color: '#EF4444',
+              border: '1px solid rgba(239,68,68,0.2)',
+            }}
           >
             <RefreshCw size={12} />
             Thử lại
@@ -122,7 +130,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
           <button
             onClick={this.handleGoHome}
             className="h-12 px-5 rounded-2xl flex items-center justify-center gap-2 font-semibold text-sm"
-            style={{ background: 'var(--secondary)', color: 'var(--foreground)', border: '1px solid var(--border)' }}
+            style={{
+              background: 'var(--secondary)',
+              color: 'var(--foreground)',
+              border: '1px solid var(--border)',
+            }}
           >
             <Home size={16} />
           </button>
@@ -143,11 +155,27 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             className="w-full rounded-xl p-3 overflow-auto max-h-40"
             style={{ background: 'var(--secondary)', border: '1px solid var(--border)' }}
           >
-            <p style={{ color: '#EF4444', fontSize: 12, fontFamily: 'monospace', fontWeight: 600, marginBottom: 4 }}>
+            <p
+              style={{
+                color: '#EF4444',
+                fontSize: 12,
+                fontFamily: 'monospace',
+                fontWeight: 600,
+                marginBottom: 4,
+              }}
+            >
               {error.name}: {error.message}
             </p>
             {errorInfo?.componentStack && (
-              <pre style={{ color: 'var(--muted-foreground)', fontSize: 10, fontFamily: 'monospace', whiteSpace: 'pre-wrap', margin: 0 }}>
+              <pre
+                style={{
+                  color: 'var(--muted-foreground)',
+                  fontSize: 10,
+                  fontFamily: 'monospace',
+                  whiteSpace: 'pre-wrap',
+                  margin: 0,
+                }}
+              >
                 {errorInfo.componentStack.slice(0, 500)}
               </pre>
             )}

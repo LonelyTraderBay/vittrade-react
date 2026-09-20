@@ -28,12 +28,7 @@ describe('SectionHeader', () => {
     });
 
     it('should render subtitle when provided', () => {
-      render(
-        <SectionHeader
-          title="Title"
-          subtitle="This is a description"
-        />
-      );
+      render(<SectionHeader title="Title" subtitle="This is a description" />);
 
       expect(screen.getByText('This is a description')).toBeInTheDocument();
     });
@@ -127,7 +122,7 @@ describe('SectionHeader', () => {
       const accentBar = container.querySelector('.shrink-0');
       // Check if there's a div with specific width/height (accent bar)
       const divs = container.querySelectorAll('div');
-      const hasAccent = Array.from(divs).some(div => {
+      const hasAccent = Array.from(divs).some((div) => {
         const style = window.getComputedStyle(div);
         return style.width === '3px' && style.height === '16px';
       });
@@ -146,7 +141,7 @@ describe('SectionHeader', () => {
       const { container } = render(<SectionHeader title="Test" accent />);
 
       const divs = container.querySelectorAll('div');
-      const accentBar = Array.from(divs).find(div => {
+      const accentBar = Array.from(divs).find((div) => {
         return div.style.background === 'rgb(229, 138, 0)';
       });
 
@@ -154,12 +149,10 @@ describe('SectionHeader', () => {
     });
 
     it('should use custom accent color', () => {
-      const { container } = render(
-        <SectionHeader title="Test" accent accentColor="#10B981" />
-      );
+      const { container } = render(<SectionHeader title="Test" accent accentColor="#10B981" />);
 
       const divs = container.querySelectorAll('div');
-      const accentBar = Array.from(divs).find(div => {
+      const accentBar = Array.from(divs).find((div) => {
         return div.style.background === 'rgb(16, 185, 129)';
       });
 
@@ -170,7 +163,7 @@ describe('SectionHeader', () => {
       const { container } = render(<SectionHeader title="Test" accent />);
 
       const divs = container.querySelectorAll('div');
-      const accentBar = Array.from(divs).find(div => {
+      const accentBar = Array.from(divs).find((div) => {
         return div.style.width === '4px';
       });
 
@@ -187,7 +180,7 @@ describe('SectionHeader', () => {
       const { container } = render(<SectionHeader title="Test" />);
 
       const divs = container.querySelectorAll('div');
-      const accentBar = Array.from(divs).find(div => {
+      const accentBar = Array.from(divs).find((div) => {
         return div.style.width === '4px' && div.style.height === '16px';
       });
 
@@ -195,12 +188,10 @@ describe('SectionHeader', () => {
     });
 
     it('should render accentBar variant', () => {
-      const { container } = render(
-        <SectionHeader title="Test" variant="accentBar" />
-      );
+      const { container } = render(<SectionHeader title="Test" variant="accentBar" />);
 
       const divs = container.querySelectorAll('div');
-      const accentBar = Array.from(divs).find(div => {
+      const accentBar = Array.from(divs).find((div) => {
         return div.style.width === '4px' && div.style.height === '16px';
       });
 
@@ -216,13 +207,7 @@ describe('SectionHeader', () => {
 
     it('should render action label with chevron', () => {
       const onAction = vi.fn();
-      render(
-        <SectionHeader
-          title="Test"
-          actionLabel="Xem thêm"
-          onAction={onAction}
-        />
-      );
+      render(<SectionHeader title="Test" actionLabel="Xem thêm" onAction={onAction} />);
 
       expect(screen.getByText('Xem thêm')).toBeInTheDocument();
     });
@@ -230,13 +215,7 @@ describe('SectionHeader', () => {
     it('should call onAction when action label clicked', async () => {
       const user = userEvent.setup();
       const onAction = vi.fn();
-      render(
-        <SectionHeader
-          title="Test"
-          actionLabel="Xem thêm"
-          onAction={onAction}
-        />
-      );
+      render(<SectionHeader title="Test" actionLabel="Xem thêm" onAction={onAction} />);
 
       await user.click(screen.getByText('Xem thêm'));
       expect(onAction).toHaveBeenCalledTimes(1);
@@ -254,35 +233,20 @@ describe('SectionHeader', () => {
     });
 
     it('should render right action when provided', () => {
-      render(
-        <SectionHeader
-          title="Test"
-          right={<button>View All</button>}
-        />
-      );
+      render(<SectionHeader title="Test" right={<button>View All</button>} />);
 
       expect(screen.getByText('View All')).toBeInTheDocument();
     });
 
     it('should render button in right section', () => {
-      render(
-        <SectionHeader
-          title="Test"
-          right={<button>Action</button>}
-        />
-      );
+      render(<SectionHeader title="Test" right={<button>Action</button>} />);
 
       const button = screen.getByRole('button', { name: 'Action' });
       expect(button).toBeInTheDocument();
     });
 
     it('should render link in right section', () => {
-      render(
-        <SectionHeader
-          title="Test"
-          right={<a href="/all">See all</a>}
-        />
-      );
+      render(<SectionHeader title="Test" right={<a href="/all">See all</a>} />);
 
       const link = screen.getByText('See all');
       expect(link).toBeInTheDocument();
@@ -290,12 +254,7 @@ describe('SectionHeader', () => {
     });
 
     it('should render badge in right section', () => {
-      render(
-        <SectionHeader
-          title="Test"
-          right={<span className="badge">New</span>}
-        />
-      );
+      render(<SectionHeader title="Test" right={<span className="badge">New</span>} />);
 
       expect(screen.getByText('New')).toBeInTheDocument();
     });
@@ -333,18 +292,14 @@ describe('SectionHeader', () => {
     });
 
     it('should apply custom className', () => {
-      const { container } = render(
-        <SectionHeader title="Test" className="custom-header" />
-      );
+      const { container } = render(<SectionHeader title="Test" className="custom-header" />);
 
       const wrapper = container.firstChild as HTMLElement;
       expect(wrapper).toHaveClass('custom-header');
     });
 
     it('should preserve base classes with custom className', () => {
-      const { container } = render(
-        <SectionHeader title="Test" className="custom" />
-      );
+      const { container } = render(<SectionHeader title="Test" className="custom" />);
 
       const wrapper = container.firstChild as HTMLElement;
       expect(wrapper).toHaveClass('flex');
@@ -392,7 +347,7 @@ describe('SectionHeader', () => {
           title="Thị trường"
           subtitle="24h Volume: $1.2B"
           right={<button>Xem tất cả</button>}
-        />
+        />,
       );
 
       expect(screen.getByText('Thị trường')).toBeInTheDocument();
@@ -401,25 +356,13 @@ describe('SectionHeader', () => {
     });
 
     it('should render portfolio section with accent', () => {
-      render(
-        <SectionHeader
-          title="Portfolio"
-          accent
-          accentColor="#10B981"
-        />
-      );
+      render(<SectionHeader title="Portfolio" accent accentColor="#10B981" />);
 
       expect(screen.getByText('Portfolio')).toBeInTheDocument();
     });
 
     it('should render activity section with custom size', () => {
-      render(
-        <SectionHeader
-          title="Recent Activity"
-          titleSize={16}
-          mb={16}
-        />
-      );
+      render(<SectionHeader title="Recent Activity" titleSize={16} mb={16} />);
 
       const title = screen.getByText('Recent Activity');
       expect(title).toHaveStyle({ fontSize: '16px' });
@@ -434,7 +377,7 @@ describe('SectionHeader', () => {
               See all →
             </a>
           }
-        />
+        />,
       );
 
       expect(screen.getByText('Trending')).toBeInTheDocument();
@@ -450,7 +393,7 @@ describe('SectionHeader', () => {
           accent
           accentColor="#F59E0B"
           right={<button>View</button>}
-        />
+        />,
       );
 
       expect(screen.getByText('Hot Markets')).toBeInTheDocument();
@@ -468,7 +411,7 @@ describe('SectionHeader', () => {
           right={<span className="badge">3</span>}
           className="section-header"
           mb={20}
-        />
+        />,
       );
 
       expect(screen.getByText('Complete Example')).toBeInTheDocument();
@@ -479,7 +422,8 @@ describe('SectionHeader', () => {
 
   describe('Edge Cases', () => {
     it('should handle very long titles', () => {
-      const longTitle = 'This is a very long title that should be truncated properly when it exceeds the container width';
+      const longTitle =
+        'This is a very long title that should be truncated properly when it exceeds the container width';
       render(<SectionHeader title={longTitle} />);
 
       expect(screen.getByText(longTitle)).toBeInTheDocument();
@@ -488,9 +432,7 @@ describe('SectionHeader', () => {
 
     it('should handle very long subtitles', () => {
       const longSubtitle = 'This is a very long subtitle with a lot of text';
-      render(
-        <SectionHeader title="Title" subtitle={longSubtitle} />
-      );
+      render(<SectionHeader title="Title" subtitle={longSubtitle} />);
 
       expect(screen.getByText(longSubtitle)).toBeInTheDocument();
     });
@@ -509,12 +451,7 @@ describe('SectionHeader', () => {
     });
 
     it('should handle Vietnamese characters', () => {
-      render(
-        <SectionHeader
-          title="Thị trường crypto"
-          subtitle="Biến động 24 giờ"
-        />
-      );
+      render(<SectionHeader title="Thị trường crypto" subtitle="Biến động 24 giờ" />);
 
       expect(screen.getByText('Thị trường crypto')).toBeInTheDocument();
       expect(screen.getByText('Biến động 24 giờ')).toBeInTheDocument();
@@ -538,12 +475,7 @@ describe('SectionHeader', () => {
     });
 
     it('should allow screen readers to read title and subtitle', () => {
-      render(
-        <SectionHeader
-          title="Main Title"
-          subtitle="Supporting description"
-        />
-      );
+      render(<SectionHeader title="Main Title" subtitle="Supporting description" />);
 
       const title = screen.getByText('Main Title');
       const subtitle = screen.getByText('Supporting description');

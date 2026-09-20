@@ -180,12 +180,12 @@ export function WebSecurityCenterPage() {
   // Map setting IDs to their routes
   const settingRoutes: Record<string, string> = {
     '2fa': '/w/profile/security/two-factor-auth',
-    'sms': '/w/profile/security/two-factor-auth',
+    sms: '/w/profile/security/two-factor-auth',
     'anti-phishing': '/w/profile/security/anti-phishing',
-    'biometric': '/w/profile/security/passkey',
+    biometric: '/w/profile/security/passkey',
     'withdrawal-whitelist': '/w/profile/security/withdrawal-whitelist',
-    'passkey': '/w/profile/security/passkey',
-    'password': '/w/profile/security/change-password',
+    passkey: '/w/profile/security/passkey',
+    password: '/w/profile/security/change-password',
   };
 
   const getScoreColor = (score: number) => {
@@ -218,372 +218,469 @@ export function WebSecurityCenterPage() {
 
   return (
     <PageLayout>
-    <div className="flex" style={{ minHeight: '100%' }}>
-      {/* ═══ LEFT SIDEBAR (280px) ═══ */}
-      <div
-        className="flex flex-col"
-        style={{
-          width: 280,
-          background: c.surface,
-          borderRight: `1px solid ${c.divider}`,
-          position: 'sticky',
-          top: 0,
-          alignSelf: 'flex-start',
-          maxHeight: '100vh',
-          overflowY: 'auto',
-        }}
-      >
-        {/* Header */}
+      <div className="flex" style={{ minHeight: '100%' }}>
+        {/* ═══ LEFT SIDEBAR (280px) ═══ */}
         <div
-          className="flex items-center justify-between px-5"
+          className="flex flex-col"
           style={{
-            height: 60,
-            borderBottom: `1px solid ${c.divider}`,
+            width: 280,
+            background: c.surface,
+            borderRight: `1px solid ${c.divider}`,
+            position: 'sticky',
+            top: 0,
+            alignSelf: 'flex-start',
+            maxHeight: '100vh',
+            overflowY: 'auto',
           }}
         >
-          <h2
-            style={{
-              color: c.text1,
-              fontSize: WEB_FONT.xl,
-              fontWeight: 700,
-              margin: 0,
-            }}
-          >
-            Trung tâm bảo mật
-          </h2>
-          {/* Score badge */}
+          {/* Header */}
           <div
-            className="flex items-center gap-1.5 cursor-pointer"
-            onClick={() => navigate('/w/profile/security/security-audit')}
-            title="Điểm bảo mật — Nhấn để xem chi tiết"
+            className="flex items-center justify-between px-5"
             style={{
-              padding: '4px 10px',
-              borderRadius: 20,
-              background: `${getScoreColor(SECURITY_SCORE)}12`,
-              border: `1px solid ${getScoreColor(SECURITY_SCORE)}30`,
+              height: 60,
+              borderBottom: `1px solid ${c.divider}`,
             }}
           >
-            <Shield size={12} color={getScoreColor(SECURITY_SCORE)} />
-            <span style={{ color: getScoreColor(SECURITY_SCORE), fontSize: WEB_FONT.xs, fontWeight: 700 }}>{SECURITY_SCORE}</span>
-          </div>
-        </div>
-
-        {/* Security Score Card */}
-        <div
-          className="mx-4 mt-4 p-4 rounded-xl cursor-pointer"
-          style={{
-            background: `linear-gradient(135deg, ${getScoreColor(SECURITY_SCORE)}15, ${getScoreColor(SECURITY_SCORE)}05)`,
-            border: `1px solid ${getScoreColor(SECURITY_SCORE)}40`,
-          }}
-          onClick={() => navigate('/w/profile/security/security-audit')}
-        >
-          <div className="flex items-center gap-3 mb-3">
-            <div
-              className="flex items-center justify-center rounded-full"
+            <h2
               style={{
-                width: 48,
-                height: 48,
-                background: getScoreColor(SECURITY_SCORE),
+                color: c.text1,
+                fontSize: WEB_FONT.xl,
+                fontWeight: 700,
+                margin: 0,
               }}
             >
-              <Shield size={24} color="#fff" />
-            </div>
-            <div>
-              <div style={{ color: c.text1, fontSize: WEB_FONT.base, fontWeight: 700 }}>
-                Điểm bảo mật
-              </div>
-              <div
+              Trung tâm bảo mật
+            </h2>
+            {/* Score badge */}
+            <div
+              className="flex items-center gap-1.5 cursor-pointer"
+              onClick={() => navigate('/w/profile/security/security-audit')}
+              title="Điểm bảo mật — Nhấn để xem chi tiết"
+              style={{
+                padding: '4px 10px',
+                borderRadius: 20,
+                background: `${getScoreColor(SECURITY_SCORE)}12`,
+                border: `1px solid ${getScoreColor(SECURITY_SCORE)}30`,
+              }}
+            >
+              <Shield size={12} color={getScoreColor(SECURITY_SCORE)} />
+              <span
                 style={{
-                  fontSize: 28,
-                  fontWeight: 800,
                   color: getScoreColor(SECURITY_SCORE),
-                  lineHeight: 1,
+                  fontSize: WEB_FONT.xs,
+                  fontWeight: 700,
                 }}
               >
                 {SECURITY_SCORE}
-                <span style={{ fontSize: 16, fontWeight: 600, opacity: 0.7 }}>/100</span>
-              </div>
+              </span>
             </div>
           </div>
-          <div style={{ color: c.text2, fontSize: WEB_FONT.xs, lineHeight: 1.4 }}>
-            Tài khoản của bạn được bảo vệ tốt. Kích hoạt Passkey để đạt 100 điểm.
-          </div>
+
+          {/* Security Score Card */}
           <div
-            className="flex items-center gap-1 mt-2"
-            style={{ color: getScoreColor(SECURITY_SCORE), fontSize: WEB_FONT.xs, fontWeight: 600 }}
+            className="mx-4 mt-4 p-4 rounded-xl cursor-pointer"
+            style={{
+              background: `linear-gradient(135deg, ${getScoreColor(SECURITY_SCORE)}15, ${getScoreColor(SECURITY_SCORE)}05)`,
+              border: `1px solid ${getScoreColor(SECURITY_SCORE)}40`,
+            }}
+            onClick={() => navigate('/w/profile/security/security-audit')}
           >
-            Xem đánh giá chi tiết
-            <ChevronRight size={12} />
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="px-4 mt-5">
-          <div style={{ color: c.text2, fontSize: WEB_FONT.xs, fontWeight: 600, marginBottom: 12 }}>
-            Thao tác nhanh
-          </div>
-          <div className="flex flex-col gap-2">
-            <button
-              onClick={() => navigate('/w/profile/security/security-audit')}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-                color: c.text2,
-                fontSize: WEB_FONT.xs,
-                fontWeight: 600,
-              }}
-            >
-              <Shield size={WEB_ICON.sm} />
-              Đánh giá bảo mật
-            </button>
-            <button
-              onClick={() => navigate('/w/profile/security/login-activity')}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-                color: c.text2,
-                fontSize: WEB_FONT.xs,
-                fontWeight: 600,
-              }}
-            >
-              <Clock size={WEB_ICON.sm} />
-              Lịch sử đăng nhập
-            </button>
-            <button
-              onClick={() => navigate('/w/profile/security/withdrawal-whitelist')}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-                color: c.text2,
-                fontSize: WEB_FONT.xs,
-                fontWeight: 600,
-              }}
-            >
-              <FileKey size={WEB_ICON.sm} />
-              Whitelist rút tiền
-            </button>
-            <button
-              onClick={() => navigate('/w/profile/devices')}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-                color: c.text2,
-                fontSize: WEB_FONT.xs,
-                fontWeight: 600,
-              }}
-            >
-              <Smartphone size={WEB_ICON.sm} />
-              Quản lý thiết bị
-            </button>
-            <button
-              onClick={() => navigate('/w/profile/security/notifications')}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-                color: c.text2,
-                fontSize: WEB_FONT.xs,
-                fontWeight: 600,
-              }}
-            >
-              <Bell size={WEB_ICON.sm} />
-              Thông báo bảo mật
-            </button>
-            <button
-              onClick={() => navigate('/w/profile/security/session-management')}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-                color: c.text2,
-                fontSize: WEB_FONT.xs,
-                fontWeight: 600,
-              }}
-            >
-              <Monitor size={WEB_ICON.sm} />
-              Quản lý phiên
-            </button>
-            <button
-              onClick={() => navigate('/w/profile/security/change-password')}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-                color: c.text2,
-                fontSize: WEB_FONT.xs,
-                fontWeight: 600,
-              }}
-            >
-              <Lock size={WEB_ICON.sm} />
-              Đổi mật khẩu
-            </button>
-            <button
-              onClick={() => navigate('/w/profile/security/two-factor-auth')}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-                color: c.text2,
-                fontSize: WEB_FONT.xs,
-                fontWeight: 600,
-              }}
-            >
-              <ShieldCheck size={WEB_ICON.sm} />
-              Quản lý 2FA
-            </button>
-            <button
-              onClick={() => navigate('/w/profile/security/device-trust')}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-                color: c.text2,
-                fontSize: WEB_FONT.xs,
-                fontWeight: 600,
-              }}
-            >
-              <Fingerprint size={WEB_ICON.sm} />
-              Chi tiết thiết bị
-            </button>
-            <button
-              onClick={() => navigate('/w/profile/security/alert-list')}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
-              style={{
-                background: 'rgba(239,68,68,0.04)',
-                border: `1px solid rgba(239,68,68,0.15)`,
-                color: '#EF4444',
-                fontSize: WEB_FONT.xs,
-                fontWeight: 600,
-              }}
-            >
-              <AlertTriangle size={WEB_ICON.sm} />
-              Cảnh báo bảo mật
-              <span style={{ marginLeft: 'auto', padding: '0px 6px', borderRadius: 8, background: '#EF4444', color: '#fff', fontSize: 9, fontWeight: 700 }}>2</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* ═══ MAIN CONTENT ═══ */}
-      <div className="flex-1 min-w-0">
-        <div className="max-w-4xl mx-auto p-8">
-          {/* Security Settings Section */}
-          <section className="mb-8">
-            <h3
-              style={{
-                color: c.text1,
-                fontSize: WEB_FONT.lg,
-                fontWeight: 700,
-                marginBottom: 16,
-              }}
-            >
-              Cài đặt bảo mật
-            </h3>
-
-            <div className="flex flex-col gap-3">
-              {SECURITY_SETTINGS.map((setting) => {
-                const Icon = setting.icon;
-                return (
-                  <div
-                    key={setting.id}
-                    className="flex items-center justify-between p-4 rounded-xl transition-colors cursor-pointer"
-                    style={{
-                      background: c.surface,
-                      border: `1px solid ${c.border}`,
-                    }}
-                    onClick={() => {
-                      if (settingRoutes[setting.id]) {
-                        navigate(settingRoutes[setting.id]);
-                      } else if (setting.onClick) {
-                        setting.onClick();
-                      }
-                    }}
-                  >
-                    <div className="flex items-center gap-4">
-                      <div
-                        className="flex items-center justify-center rounded-xl"
-                        style={{
-                          width: 36,
-                          height: 36,
-                          background: `${getStatusColor(setting.status)}15`,
-                        }}
-                      >
-                        <Icon size={WEB_ICON.md} color={getStatusColor(setting.status)} />
-                      </div>
-                      <div>
-                        <div style={{ color: c.text1, fontSize: WEB_FONT.base, fontWeight: 600 }}>
-                          {setting.title}
-                        </div>
-                        <div style={{ color: c.text2, fontSize: WEB_FONT.xs, marginTop: 2 }}>
-                          {setting.description}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      {setting.status === 'active' && (
-                        <div
-                          className="flex items-center gap-1 px-2 py-1 rounded-md"
-                          style={{
-                            background: '#10B98115',
-                            color: '#10B981',
-                            fontSize: WEB_FONT.xs,
-                            fontWeight: 600,
-                          }}
-                        >
-                          <Check size={12} />
-                          Đã bật
-                        </div>
-                      )}
-                      {setting.action && (
-                        <button
-                          className="px-3 py-1.5 rounded-lg transition-colors"
-                          style={{
-                            background: c.bg,
-                            border: `1px solid ${c.border}`,
-                            color: c.text2,
-                            fontSize: WEB_FONT.xs,
-                            fontWeight: 600,
-                          }}
-                        >
-                          {setting.action}
-                        </button>
-                      )}
-                      <ChevronRight size={WEB_ICON.sm} color={c.text3} />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-
-          {/* Recommendations */}
-          {SECURITY_RECOMMENDATIONS.length > 0 && (
-            <section className="mb-8">
-              <div className="flex items-center gap-2 mb-4">
-                <AlertTriangle size={WEB_ICON.sm} color="#F59E0B" />
-                <h3
+            <div className="flex items-center gap-3 mb-3">
+              <div
+                className="flex items-center justify-center rounded-full"
+                style={{
+                  width: 48,
+                  height: 48,
+                  background: getScoreColor(SECURITY_SCORE),
+                }}
+              >
+                <Shield size={24} color="#fff" />
+              </div>
+              <div>
+                <div style={{ color: c.text1, fontSize: WEB_FONT.base, fontWeight: 700 }}>
+                  Điểm bảo mật
+                </div>
+                <div
                   style={{
-                    color: c.text1,
-                    fontSize: WEB_FONT.lg,
-                    fontWeight: 700,
-                    margin: 0,
+                    fontSize: 28,
+                    fontWeight: 800,
+                    color: getScoreColor(SECURITY_SCORE),
+                    lineHeight: 1,
                   }}
                 >
-                  Đề xuất nâng cao bảo mật
-                </h3>
+                  {SECURITY_SCORE}
+                  <span style={{ fontSize: 16, fontWeight: 600, opacity: 0.7 }}>/100</span>
+                </div>
               </div>
+            </div>
+            <div style={{ color: c.text2, fontSize: WEB_FONT.xs, lineHeight: 1.4 }}>
+              Tài khoản của bạn được bảo vệ tốt. Kích hoạt Passkey để đạt 100 điểm.
+            </div>
+            <div
+              className="flex items-center gap-1 mt-2"
+              style={{
+                color: getScoreColor(SECURITY_SCORE),
+                fontSize: WEB_FONT.xs,
+                fontWeight: 600,
+              }}
+            >
+              Xem đánh giá chi tiết
+              <ChevronRight size={12} />
+            </div>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="px-4 mt-5">
+            <div
+              style={{ color: c.text2, fontSize: WEB_FONT.xs, fontWeight: 600, marginBottom: 12 }}
+            >
+              Thao tác nhanh
+            </div>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => navigate('/w/profile/security/security-audit')}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
+                style={{
+                  background: c.bg,
+                  border: `1px solid ${c.border}`,
+                  color: c.text2,
+                  fontSize: WEB_FONT.xs,
+                  fontWeight: 600,
+                }}
+              >
+                <Shield size={WEB_ICON.sm} />
+                Đánh giá bảo mật
+              </button>
+              <button
+                onClick={() => navigate('/w/profile/security/login-activity')}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
+                style={{
+                  background: c.bg,
+                  border: `1px solid ${c.border}`,
+                  color: c.text2,
+                  fontSize: WEB_FONT.xs,
+                  fontWeight: 600,
+                }}
+              >
+                <Clock size={WEB_ICON.sm} />
+                Lịch sử đăng nhập
+              </button>
+              <button
+                onClick={() => navigate('/w/profile/security/withdrawal-whitelist')}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
+                style={{
+                  background: c.bg,
+                  border: `1px solid ${c.border}`,
+                  color: c.text2,
+                  fontSize: WEB_FONT.xs,
+                  fontWeight: 600,
+                }}
+              >
+                <FileKey size={WEB_ICON.sm} />
+                Whitelist rút tiền
+              </button>
+              <button
+                onClick={() => navigate('/w/profile/devices')}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
+                style={{
+                  background: c.bg,
+                  border: `1px solid ${c.border}`,
+                  color: c.text2,
+                  fontSize: WEB_FONT.xs,
+                  fontWeight: 600,
+                }}
+              >
+                <Smartphone size={WEB_ICON.sm} />
+                Quản lý thiết bị
+              </button>
+              <button
+                onClick={() => navigate('/w/profile/security/notifications')}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
+                style={{
+                  background: c.bg,
+                  border: `1px solid ${c.border}`,
+                  color: c.text2,
+                  fontSize: WEB_FONT.xs,
+                  fontWeight: 600,
+                }}
+              >
+                <Bell size={WEB_ICON.sm} />
+                Thông báo bảo mật
+              </button>
+              <button
+                onClick={() => navigate('/w/profile/security/session-management')}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
+                style={{
+                  background: c.bg,
+                  border: `1px solid ${c.border}`,
+                  color: c.text2,
+                  fontSize: WEB_FONT.xs,
+                  fontWeight: 600,
+                }}
+              >
+                <Monitor size={WEB_ICON.sm} />
+                Quản lý phiên
+              </button>
+              <button
+                onClick={() => navigate('/w/profile/security/change-password')}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
+                style={{
+                  background: c.bg,
+                  border: `1px solid ${c.border}`,
+                  color: c.text2,
+                  fontSize: WEB_FONT.xs,
+                  fontWeight: 600,
+                }}
+              >
+                <Lock size={WEB_ICON.sm} />
+                Đổi mật khẩu
+              </button>
+              <button
+                onClick={() => navigate('/w/profile/security/two-factor-auth')}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
+                style={{
+                  background: c.bg,
+                  border: `1px solid ${c.border}`,
+                  color: c.text2,
+                  fontSize: WEB_FONT.xs,
+                  fontWeight: 600,
+                }}
+              >
+                <ShieldCheck size={WEB_ICON.sm} />
+                Quản lý 2FA
+              </button>
+              <button
+                onClick={() => navigate('/w/profile/security/device-trust')}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
+                style={{
+                  background: c.bg,
+                  border: `1px solid ${c.border}`,
+                  color: c.text2,
+                  fontSize: WEB_FONT.xs,
+                  fontWeight: 600,
+                }}
+              >
+                <Fingerprint size={WEB_ICON.sm} />
+                Chi tiết thiết bị
+              </button>
+              <button
+                onClick={() => navigate('/w/profile/security/alert-list')}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
+                style={{
+                  background: 'rgba(239,68,68,0.04)',
+                  border: `1px solid rgba(239,68,68,0.15)`,
+                  color: '#EF4444',
+                  fontSize: WEB_FONT.xs,
+                  fontWeight: 600,
+                }}
+              >
+                <AlertTriangle size={WEB_ICON.sm} />
+                Cảnh báo bảo mật
+                <span
+                  style={{
+                    marginLeft: 'auto',
+                    padding: '0px 6px',
+                    borderRadius: 8,
+                    background: '#EF4444',
+                    color: '#fff',
+                    fontSize: 9,
+                    fontWeight: 700,
+                  }}
+                >
+                  2
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* ═══ MAIN CONTENT ═══ */}
+        <div className="flex-1 min-w-0">
+          <div className="max-w-4xl mx-auto p-8">
+            {/* Security Settings Section */}
+            <section className="mb-8">
+              <h3
+                style={{
+                  color: c.text1,
+                  fontSize: WEB_FONT.lg,
+                  fontWeight: 700,
+                  marginBottom: 16,
+                }}
+              >
+                Cài đặt bảo mật
+              </h3>
 
               <div className="flex flex-col gap-3">
-                {SECURITY_RECOMMENDATIONS.map((rec) => {
-                  const Icon = rec.icon;
+                {SECURITY_SETTINGS.map((setting) => {
+                  const Icon = setting.icon;
                   return (
                     <div
-                      key={rec.id}
+                      key={setting.id}
                       className="flex items-center justify-between p-4 rounded-xl transition-colors cursor-pointer"
+                      style={{
+                        background: c.surface,
+                        border: `1px solid ${c.border}`,
+                      }}
+                      onClick={() => {
+                        if (settingRoutes[setting.id]) {
+                          navigate(settingRoutes[setting.id]);
+                        } else if (setting.onClick) {
+                          setting.onClick();
+                        }
+                      }}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div
+                          className="flex items-center justify-center rounded-xl"
+                          style={{
+                            width: 36,
+                            height: 36,
+                            background: `${getStatusColor(setting.status)}15`,
+                          }}
+                        >
+                          <Icon size={WEB_ICON.md} color={getStatusColor(setting.status)} />
+                        </div>
+                        <div>
+                          <div style={{ color: c.text1, fontSize: WEB_FONT.base, fontWeight: 600 }}>
+                            {setting.title}
+                          </div>
+                          <div style={{ color: c.text2, fontSize: WEB_FONT.xs, marginTop: 2 }}>
+                            {setting.description}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        {setting.status === 'active' && (
+                          <div
+                            className="flex items-center gap-1 px-2 py-1 rounded-md"
+                            style={{
+                              background: '#10B98115',
+                              color: '#10B981',
+                              fontSize: WEB_FONT.xs,
+                              fontWeight: 600,
+                            }}
+                          >
+                            <Check size={12} />
+                            Đã bật
+                          </div>
+                        )}
+                        {setting.action && (
+                          <button
+                            className="px-3 py-1.5 rounded-lg transition-colors"
+                            style={{
+                              background: c.bg,
+                              border: `1px solid ${c.border}`,
+                              color: c.text2,
+                              fontSize: WEB_FONT.xs,
+                              fontWeight: 600,
+                            }}
+                          >
+                            {setting.action}
+                          </button>
+                        )}
+                        <ChevronRight size={WEB_ICON.sm} color={c.text3} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+
+            {/* Recommendations */}
+            {SECURITY_RECOMMENDATIONS.length > 0 && (
+              <section className="mb-8">
+                <div className="flex items-center gap-2 mb-4">
+                  <AlertTriangle size={WEB_ICON.sm} color="#F59E0B" />
+                  <h3
+                    style={{
+                      color: c.text1,
+                      fontSize: WEB_FONT.lg,
+                      fontWeight: 700,
+                      margin: 0,
+                    }}
+                  >
+                    Đề xuất nâng cao bảo mật
+                  </h3>
+                </div>
+
+                <div className="flex flex-col gap-3">
+                  {SECURITY_RECOMMENDATIONS.map((rec) => {
+                    const Icon = rec.icon;
+                    return (
+                      <div
+                        key={rec.id}
+                        className="flex items-center justify-between p-4 rounded-xl transition-colors cursor-pointer"
+                        style={{
+                          background: c.surface,
+                          border: `1px solid ${c.border}`,
+                        }}
+                      >
+                        <div className="flex items-center gap-4">
+                          <div
+                            className="flex items-center justify-center rounded-xl"
+                            style={{
+                              width: 36,
+                              height: 36,
+                              background: '#F59E0B15',
+                            }}
+                          >
+                            <Icon size={WEB_ICON.md} color="#F59E0B" />
+                          </div>
+                          <div>
+                            <div
+                              style={{ color: c.text1, fontSize: WEB_FONT.base, fontWeight: 600 }}
+                            >
+                              {rec.title}
+                            </div>
+                            <div style={{ color: c.text2, fontSize: WEB_FONT.xs, marginTop: 2 }}>
+                              {rec.description}
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          className="px-4 py-2 rounded-lg transition-colors"
+                          style={{
+                            background: '#3B82F6',
+                            color: '#fff',
+                            fontSize: WEB_FONT.xs,
+                            fontWeight: 600,
+                            border: 'none',
+                          }}
+                          onClick={() => {
+                            if (settingRoutes[rec.id]) {
+                              navigate(settingRoutes[rec.id]);
+                            }
+                          }}
+                        >
+                          {rec.action}
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+            )}
+
+            {/* Login Sessions */}
+            <section>
+              <h3
+                style={{
+                  color: c.text1,
+                  fontSize: WEB_FONT.lg,
+                  fontWeight: 700,
+                  marginBottom: 16,
+                }}
+              >
+                Phiên đăng nhập
+              </h3>
+
+              <div className="flex flex-col gap-3">
+                {LOGIN_SESSIONS.map((session) => {
+                  const DeviceIcon = getDeviceIcon(session.deviceType);
+                  return (
+                    <div
+                      key={session.id}
+                      className="flex items-center justify-between p-4 rounded-xl"
                       style={{
                         background: c.surface,
                         border: `1px solid ${c.border}`,
@@ -595,154 +692,87 @@ export function WebSecurityCenterPage() {
                           style={{
                             width: 36,
                             height: 36,
-                            background: '#F59E0B15',
+                            background: session.isCurrent ? '#3B82F615' : `${c.text3}15`,
                           }}
                         >
-                          <Icon size={WEB_ICON.md} color="#F59E0B" />
+                          <DeviceIcon
+                            size={WEB_ICON.md}
+                            color={session.isCurrent ? '#3B82F6' : c.text3}
+                          />
                         </div>
                         <div>
-                          <div style={{ color: c.text1, fontSize: WEB_FONT.base, fontWeight: 600 }}>
-                            {rec.title}
+                          <div className="flex items-center gap-2">
+                            <span
+                              style={{ color: c.text1, fontSize: WEB_FONT.base, fontWeight: 600 }}
+                            >
+                              {session.device}
+                            </span>
+                            {session.isCurrent && (
+                              <span
+                                className="px-2 py-0.5 rounded-md"
+                                style={{
+                                  background: '#10B98115',
+                                  color: '#10B981',
+                                  fontSize: 11,
+                                  fontWeight: 600,
+                                }}
+                              >
+                                Hiện tại
+                              </span>
+                            )}
                           </div>
-                          <div style={{ color: c.text2, fontSize: WEB_FONT.xs, marginTop: 2 }}>
-                            {rec.description}
+                          <div
+                            className="flex items-center gap-3 mt-1"
+                            style={{ color: c.text2, fontSize: WEB_FONT.xs }}
+                          >
+                            <span className="flex items-center gap-1">
+                              <MapPin size={12} />
+                              {session.location}
+                            </span>
+                            <span>•</span>
+                            <span>{showIP ? session.ip : '•••.•••.•••.•••'}</span>
+                            <span>•</span>
+                            <span>{session.lastActive}</span>
                           </div>
                         </div>
                       </div>
-                      <button
-                        className="px-4 py-2 rounded-lg transition-colors"
-                        style={{
-                          background: '#3B82F6',
-                          color: '#fff',
-                          fontSize: WEB_FONT.xs,
-                          fontWeight: 600,
-                          border: 'none',
-                        }}
-                        onClick={() => {
-                          if (settingRoutes[rec.id]) {
-                            navigate(settingRoutes[rec.id]);
-                          }
-                        }}
-                      >
-                        {rec.action}
-                      </button>
+                      {!session.isCurrent && (
+                        <button
+                          className="px-3 py-1.5 rounded-lg transition-colors"
+                          style={{
+                            background: 'transparent',
+                            border: `1px solid #EF444440`,
+                            color: '#EF4444',
+                            fontSize: WEB_FONT.xs,
+                            fontWeight: 600,
+                          }}
+                        >
+                          Đăng xuất
+                        </button>
+                      )}
                     </div>
                   );
                 })}
               </div>
+
+              <button
+                onClick={() => setShowIP(!showIP)}
+                className="mt-3 flex items-center gap-1.5 mx-auto px-3 py-1.5 rounded-lg transition-colors"
+                style={{
+                  background: c.bg,
+                  border: `1px solid ${c.border}`,
+                  color: c.text2,
+                  fontSize: WEB_FONT.xs,
+                  fontWeight: 600,
+                }}
+              >
+                {showIP ? <EyeOff size={14} /> : <Eye size={14} />}
+                {showIP ? 'Ẩn IP' : 'Hiện IP'}
+              </button>
             </section>
-          )}
-
-          {/* Login Sessions */}
-          <section>
-            <h3
-              style={{
-                color: c.text1,
-                fontSize: WEB_FONT.lg,
-                fontWeight: 700,
-                marginBottom: 16,
-              }}
-            >
-              Phiên đăng nhập
-            </h3>
-
-            <div className="flex flex-col gap-3">
-              {LOGIN_SESSIONS.map((session) => {
-                const DeviceIcon = getDeviceIcon(session.deviceType);
-                return (
-                  <div
-                    key={session.id}
-                    className="flex items-center justify-between p-4 rounded-xl"
-                    style={{
-                      background: c.surface,
-                      border: `1px solid ${c.border}`,
-                    }}
-                  >
-                    <div className="flex items-center gap-4">
-                      <div
-                        className="flex items-center justify-center rounded-xl"
-                        style={{
-                          width: 36,
-                          height: 36,
-                          background: session.isCurrent ? '#3B82F615' : `${c.text3}15`,
-                        }}
-                      >
-                        <DeviceIcon
-                          size={WEB_ICON.md}
-                          color={session.isCurrent ? '#3B82F6' : c.text3}
-                        />
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span style={{ color: c.text1, fontSize: WEB_FONT.base, fontWeight: 600 }}>
-                            {session.device}
-                          </span>
-                          {session.isCurrent && (
-                            <span
-                              className="px-2 py-0.5 rounded-md"
-                              style={{
-                                background: '#10B98115',
-                                color: '#10B981',
-                                fontSize: 11,
-                                fontWeight: 600,
-                              }}
-                            >
-                              Hiện tại
-                            </span>
-                          )}
-                        </div>
-                        <div
-                          className="flex items-center gap-3 mt-1"
-                          style={{ color: c.text2, fontSize: WEB_FONT.xs }}
-                        >
-                          <span className="flex items-center gap-1">
-                            <MapPin size={12} />
-                            {session.location}
-                          </span>
-                          <span>•</span>
-                          <span>{showIP ? session.ip : '•••.•••.•••.•••'}</span>
-                          <span>•</span>
-                          <span>{session.lastActive}</span>
-                        </div>
-                      </div>
-                    </div>
-                    {!session.isCurrent && (
-                      <button
-                        className="px-3 py-1.5 rounded-lg transition-colors"
-                        style={{
-                          background: 'transparent',
-                          border: `1px solid #EF444440`,
-                          color: '#EF4444',
-                          fontSize: WEB_FONT.xs,
-                          fontWeight: 600,
-                        }}
-                      >
-                        Đăng xuất
-                      </button>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-
-            <button
-              onClick={() => setShowIP(!showIP)}
-              className="mt-3 flex items-center gap-1.5 mx-auto px-3 py-1.5 rounded-lg transition-colors"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-                color: c.text2,
-                fontSize: WEB_FONT.xs,
-                fontWeight: 600,
-              }}
-            >
-              {showIP ? <EyeOff size={14} /> : <Eye size={14} />}
-              {showIP ? 'Ẩn IP' : 'Hiện IP'}
-            </button>
-          </section>
+          </div>
         </div>
       </div>
-    </div>
     </PageLayout>
   );
 }

@@ -1,8 +1,8 @@
 /**
  * DCA Overview Demo Page
- * 
+ *
  * Demo page showcasing DCAOverviewCard component with different scenarios
- * 
+ *
  * @module pages/dca
  */
 
@@ -96,8 +96,14 @@ const largeData: DCAOverviewData = {
 };
 
 /** Sparkline mock data */
-const sparklineProfit = [30, 32, 31, 35, 34, 36, 38, 37, 40, 39, 41, 43, 42, 45, 44, 46, 48, 47, 50, 52, 51, 54, 53, 56, 55, 58, 57, 60, 62];
-const sparklineLoss = [60, 58, 57, 55, 56, 53, 52, 50, 48, 46, 44, 43, 41, 40, 38, 37, 35, 34, 32, 31, 30, 28, 29, 27, 26, 25, 24, 23, 22];
+const sparklineProfit = [
+  30, 32, 31, 35, 34, 36, 38, 37, 40, 39, 41, 43, 42, 45, 44, 46, 48, 47, 50, 52, 51, 54, 53, 56,
+  55, 58, 57, 60, 62,
+];
+const sparklineLoss = [
+  60, 58, 57, 55, 56, 53, 52, 50, 48, 46, 44, 43, 41, 40, 38, 37, 35, 34, 32, 31, 30, 28, 29, 27,
+  26, 25, 24, 23, 22,
+];
 
 /**
  * DCA Overview Demo Page Component
@@ -220,7 +226,10 @@ export default function DCAOverviewDemo() {
           title="Mobile Preview (360px width)"
           description="Xem preview trên màn hình nhỏ (responsive)."
         >
-          <div className="max-w-[360px] mx-auto border-2 border-dashed rounded-2xl p-2" style={{ borderColor: c.border }}>
+          <div
+            className="max-w-[360px] mx-auto border-2 border-dashed rounded-2xl p-2"
+            style={{ borderColor: c.border }}
+          >
             <DCAOverviewCard
               data={profitableData}
               sparklineData={sparklineProfit}
@@ -236,11 +245,20 @@ export default function DCAOverviewDemo() {
       </PageContent>
 
       {/* Footer Info */}
-      <div className="fixed bottom-0 left-0 right-0 p-4" style={{ background: c.surface, borderTop: `1px solid ${c.border}` }}>
+      <div
+        className="fixed bottom-0 left-0 right-0 p-4"
+        style={{ background: c.surface, borderTop: `1px solid ${c.border}` }}
+      >
         <div className="text-center text-[12px]" style={{ color: c.text3 }}>
-          Component: <code className="px-2 py-1 rounded" style={{ background: c.surface2 }}>DCAOverviewCard</code>
+          Component:{' '}
+          <code className="px-2 py-1 rounded" style={{ background: c.surface2 }}>
+            DCAOverviewCard
+          </code>
           {' • '}
-          Location: <code className="px-2 py-1 rounded" style={{ background: c.surface2 }}>/src/app/components/dca/DCAOverviewCard.tsx</code>
+          Location:{' '}
+          <code className="px-2 py-1 rounded" style={{ background: c.surface2 }}>
+            /src/app/components/dca/DCAOverviewCard.tsx
+          </code>
         </div>
       </div>
     </PageLayout>

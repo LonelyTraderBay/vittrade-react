@@ -14,13 +14,16 @@ interface GatePanelProps {
   onAction?: () => void;
 }
 
-const GATE_CONFIG: Record<GateType, {
-  icon: typeof ShieldCheck;
-  title: string;
-  subtitle: string;
-  ctaLabel: string;
-  color: string;
-}> = {
+const GATE_CONFIG: Record<
+  GateType,
+  {
+    icon: typeof ShieldCheck;
+    title: string;
+    subtitle: string;
+    ctaLabel: string;
+    color: string;
+  }
+> = {
   kyc: {
     icon: ShieldCheck,
     title: 'Cần xác minh danh tính',
@@ -31,7 +34,8 @@ const GATE_CONFIG: Record<GateType, {
   '2fa': {
     icon: KeyRound,
     title: 'Bật xác thực 2 lớp (2FA)',
-    subtitle: 'Tính năng này yêu cầu 2FA để bảo vệ tài khoản. Hãy thiết lập 2FA trước khi tiếp tục.',
+    subtitle:
+      'Tính năng này yêu cầu 2FA để bảo vệ tài khoản. Hãy thiết lập 2FA trước khi tiếp tục.',
     ctaLabel: 'Thiết lập 2FA',
     color: '#3B82F6',
   },
@@ -79,9 +83,7 @@ export function GatePanel({ type, title, message, actionLabel, onAction }: GateP
         <p style={{ color: c.text1, fontSize: 17, fontWeight: 700, marginBottom: 8 }}>
           {displayTitle}
         </p>
-        <p style={{ color: c.text2, fontSize: 13, lineHeight: 1.6 }}>
-          {displaySub}
-        </p>
+        <p style={{ color: c.text2, fontSize: 13, lineHeight: 1.6 }}>{displaySub}</p>
       </div>
 
       {/* CTA */}
@@ -102,9 +104,7 @@ export function GatePanel({ type, title, message, actionLabel, onAction }: GateP
       {/* Security note */}
       <div className="flex items-center gap-1.5 mt-2">
         <Lock size={10} color={c.text3} />
-        <span style={{ color: c.text3, fontSize: 11 }}>
-          Thông tin được mã hóa và bảo mật
-        </span>
+        <span style={{ color: c.text3, fontSize: 11 }}>Thông tin được mã hóa và bảo mật</span>
       </div>
     </div>
   );

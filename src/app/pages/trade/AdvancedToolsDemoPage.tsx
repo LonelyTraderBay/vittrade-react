@@ -49,13 +49,13 @@ const MOCK_ORDERBOOK: OrderBookLevel[] = Array.from({ length: 20 }, (_, i) => {
   const price = basePrice + (10 - i) * priceStep;
   const buyVol = i > 10 ? Math.random() * 5 + 1 : 0;
   const sellVol = i <= 10 ? Math.random() * 5 + 1 : 0;
-  
+
   return {
     price,
     buyVolume: buyVol,
     sellVolume: sellVol,
-    totalBuyVolume: buyVol * (i + 1) / 2,
-    totalSellVolume: sellVol * (21 - i) / 2,
+    totalBuyVolume: (buyVol * (i + 1)) / 2,
+    totalSellVolume: (sellVol * (21 - i)) / 2,
   };
 });
 
@@ -131,7 +131,7 @@ export function AdvancedToolsDemoPage() {
   const [shortcutToast, setShortcutToast] = useState<string | null>(null);
 
   // Keyboard shortcuts setup
-  const shortcuts: ShortcutAction[] = DEFAULT_SHORTCUTS.map(s => ({
+  const shortcuts: ShortcutAction[] = DEFAULT_SHORTCUTS.map((s) => ({
     ...s,
     action: () => {
       console.log('Shortcut triggered:', s.id);
@@ -147,34 +147,27 @@ export function AdvancedToolsDemoPage() {
   const handleLadderOrder = (side: 'buy' | 'sell', price: number, amount: number) => {
     console.log('Ladder order:', { side, price, amount });
     hapticSuccess();
-    actionToast.success({
-      title: `${side === 'buy' ? 'Buy' : 'Sell'} Order Placed`,
-      message: `${amount} BTC @ $${price.toLocaleString()}`,
-    });
+    actionToast.success(
+      `${side === 'buy' ? 'Buy' : 'Sell'} Order Placed — ${amount} BTC @ $${price.toLocaleString()}`,
+    );
   };
 
   const handleCancelOrder = (orderId: string) => {
     console.log('Cancel order:', orderId);
     hapticSuccess();
-    actionToast.success({ title: 'Order Cancelled', message: `#${orderId}` });
+    actionToast.success(`Order Cancelled — #${orderId}`);
   };
 
   const handleBulkCancel = (orderIds: string[]) => {
     console.log('Bulk cancel:', orderIds);
     hapticSuccess();
-    actionToast.success({
-      title: 'Orders Cancelled',
-      message: `${orderIds.length} orders cancelled`,
-    });
+    actionToast.success(`Orders Cancelled — ${orderIds.length} orders cancelled`);
   };
 
   const handleBulkModify = (orderIds: string[], modification: BulkModification) => {
     console.log('Bulk modify:', { orderIds, modification });
     hapticSuccess();
-    actionToast.success({
-      title: 'Orders Modified',
-      message: `${orderIds.length} orders updated`,
-    });
+    actionToast.success(`Orders Modified — ${orderIds.length} orders updated`);
   };
 
   return (
@@ -192,12 +185,19 @@ export function AdvancedToolsDemoPage() {
               <Zap size={20} color="#3B82F6" />
             </div>
             <div className="flex-1">
-              <p style={{ fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold, color: c.text1, marginBottom: 6 }}>
+              <p
+                style={{
+                  fontSize: FONT_SCALE.base,
+                  fontWeight: FONT_WEIGHT.bold,
+                  color: c.text1,
+                  marginBottom: 6,
+                }}
+              >
                 Phase 3: Advanced Trading Tools
               </p>
               <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, lineHeight: 1.6 }}>
-                3 công cụ nâng cao cho pro traders: trade nhanh hơn với ladder,
-                quản lý nhiều lệnh cùng lúc, và shortcuts để tăng tốc 3x.
+                3 công cụ nâng cao cho pro traders: trade nhanh hơn với ladder, quản lý nhiều lệnh
+                cùng lúc, và shortcuts để tăng tốc 3x.
               </p>
             </div>
           </div>
@@ -223,7 +223,14 @@ export function AdvancedToolsDemoPage() {
                 <Target size={24} color="#10B981" />
               </div>
               <div className="flex-1 text-left">
-                <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, marginBottom: 4 }}>
+                <p
+                  style={{
+                    fontSize: FONT_SCALE.sm,
+                    fontWeight: FONT_WEIGHT.bold,
+                    color: c.text1,
+                    marginBottom: 4,
+                  }}
+                >
                   Ladder Trading
                 </p>
                 <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, lineHeight: 1.5 }}>
@@ -252,7 +259,14 @@ export function AdvancedToolsDemoPage() {
                 <CheckSquare size={24} color="#F59E0B" />
               </div>
               <div className="flex-1 text-left">
-                <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, marginBottom: 4 }}>
+                <p
+                  style={{
+                    fontSize: FONT_SCALE.sm,
+                    fontWeight: FONT_WEIGHT.bold,
+                    color: c.text1,
+                    marginBottom: 4,
+                  }}
+                >
                   Bulk Operations
                 </p>
                 <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, lineHeight: 1.5 }}>
@@ -281,7 +295,14 @@ export function AdvancedToolsDemoPage() {
                 <Keyboard size={24} color="#8B5CF6" />
               </div>
               <div className="flex-1 text-left">
-                <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, marginBottom: 4 }}>
+                <p
+                  style={{
+                    fontSize: FONT_SCALE.sm,
+                    fontWeight: FONT_WEIGHT.bold,
+                    color: c.text1,
+                    marginBottom: 4,
+                  }}
+                >
                   Keyboard Shortcuts
                 </p>
                 <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, lineHeight: 1.5 }}>
@@ -298,7 +319,14 @@ export function AdvancedToolsDemoPage() {
           <div className="flex items-start gap-3">
             <TrendingUp size={18} color="#10B981" className="shrink-0 mt-1" />
             <div className="flex-1">
-              <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: '#10B981', marginBottom: 4 }}>
+              <p
+                style={{
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  color: '#10B981',
+                  marginBottom: 4,
+                }}
+              >
                 Trading Speed: 3x Faster
               </p>
               <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, lineHeight: 1.5 }}>
@@ -311,20 +339,50 @@ export function AdvancedToolsDemoPage() {
 
         {/* Benefits */}
         <TrCard className="p-4">
-          <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, marginBottom: 12 }}>
+          <p
+            style={{
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.bold,
+              color: c.text1,
+              marginBottom: 12,
+            }}
+          >
             Advanced Tools Benefits
           </p>
           <div className="flex flex-col gap-3">
             {[
-              { icon: '⚡', title: 'Ladder: 1-click orders', desc: 'Không cần nhập giá, click trực tiếp trên DOM' },
-              { icon: '📦', title: 'Bulk: Manage 100+ orders', desc: 'Select all → Cancel/Modify hàng loạt' },
-              { icon: '⌨️', title: 'Shortcuts: Muscle memory', desc: 'F1/F2 để buy/sell, ESC panic close' },
-              { icon: '🎯', title: 'Precision + Speed', desc: 'Vừa nhanh vừa chính xác, như pro traders' },
+              {
+                icon: '⚡',
+                title: 'Ladder: 1-click orders',
+                desc: 'Không cần nhập giá, click trực tiếp trên DOM',
+              },
+              {
+                icon: '📦',
+                title: 'Bulk: Manage 100+ orders',
+                desc: 'Select all → Cancel/Modify hàng loạt',
+              },
+              {
+                icon: '⌨️',
+                title: 'Shortcuts: Muscle memory',
+                desc: 'F1/F2 để buy/sell, ESC panic close',
+              },
+              {
+                icon: '🎯',
+                title: 'Precision + Speed',
+                desc: 'Vừa nhanh vừa chính xác, như pro traders',
+              },
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-3">
                 <span style={{ fontSize: FONT_SCALE.lg }}>{item.icon}</span>
                 <div className="flex-1">
-                  <p style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text1, marginBottom: 2 }}>
+                  <p
+                    style={{
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.semibold,
+                      color: c.text1,
+                      marginBottom: 2,
+                    }}
+                  >
                     {item.title}
                   </p>
                   <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, lineHeight: 1.4 }}>
@@ -338,7 +396,14 @@ export function AdvancedToolsDemoPage() {
 
         {/* Implementation Status */}
         <TrCard className="p-4">
-          <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, marginBottom: 12 }}>
+          <p
+            style={{
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.bold,
+              color: c.text1,
+              marginBottom: 12,
+            }}
+          >
             Phase 3 Progress
           </p>
           <div className="flex flex-col gap-2">
@@ -350,16 +415,17 @@ export function AdvancedToolsDemoPage() {
               { label: 'Persistent shortcut settings', status: 'pending' },
             ].map((item, i) => (
               <div key={i} className="flex items-center justify-between">
-                <span style={{ fontSize: FONT_SCALE.xs, color: c.text2 }}>
-                  {item.label}
-                </span>
+                <span style={{ fontSize: FONT_SCALE.xs, color: c.text2 }}>{item.label}</span>
                 <span
                   className="px-2 py-1 rounded"
                   style={{
                     fontSize: FONT_SCALE.micro,
                     fontWeight: FONT_WEIGHT.bold,
                     color: item.status === 'complete' ? '#10B981' : '#F59E0B',
-                    background: item.status === 'complete' ? 'rgba(16,185,129,0.12)' : 'rgba(245,158,11,0.12)',
+                    background:
+                      item.status === 'complete'
+                        ? 'rgba(16,185,129,0.12)'
+                        : 'rgba(245,158,11,0.12)',
                   }}
                 >
                   {item.status === 'complete' ? '✓ Complete' : '⏳ Pending'}
@@ -374,7 +440,10 @@ export function AdvancedToolsDemoPage() {
       <TabBar
         tabs={TABS}
         active={tab}
-        onChange={(t) => { setTab(t); hapticSelection(); }}
+        onChange={(t) => {
+          setTab(t);
+          hapticSelection();
+        }}
         variant="pill"
       />
 
@@ -490,18 +559,12 @@ export function AdvancedToolsDemoPage() {
         onClose={() => setShowShortcutsSheet(false)}
         title="Keyboard Shortcuts"
       >
-        <ShortcutsReference
-          shortcuts={shortcuts}
-          onClose={() => setShowShortcutsSheet(false)}
-        />
+        <ShortcutsReference shortcuts={shortcuts} onClose={() => setShowShortcutsSheet(false)} />
       </BottomSheetV2>
 
       {/* Shortcut Toast */}
       {shortcutToast && (
-        <ShortcutToast
-          action={shortcutToast}
-          onDismiss={() => setShortcutToast(null)}
-        />
+        <ShortcutToast action={shortcutToast} onDismiss={() => setShortcutToast(null)} />
       )}
     </PageLayout>
   );

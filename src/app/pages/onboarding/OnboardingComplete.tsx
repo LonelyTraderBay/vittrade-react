@@ -1,9 +1,9 @@
 /**
  * Onboarding Complete Screen
- * 
+ *
  * Step 6: Completion with personalized recommendations.
  * Shows summary of selected goals and suggests first action.
- * 
+ *
  * @module pages/onboarding/OnboardingComplete
  * @version 1.0 (Phase 3)
  */
@@ -170,14 +170,16 @@ export default function OnboardingComplete({
       <div className="flex-1 px-5">
         {recommendations.length > 0 && (
           <div>
-            <p style={{
-              fontSize: 12,
-              fontWeight: 600,
-              color: c.text3,
-              textTransform: 'uppercase' as const,
-              letterSpacing: 0.5,
-              marginBottom: φSpace[3],
-            }}>
+            <p
+              style={{
+                fontSize: 12,
+                fontWeight: 600,
+                color: c.text3,
+                textTransform: 'uppercase' as const,
+                letterSpacing: 0.5,
+                marginBottom: φSpace[3],
+              }}
+            >
               Đề xuất cho bạn
             </p>
 
@@ -212,17 +214,17 @@ export default function OnboardingComplete({
                       <Icon size={22} color={rec.color} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p style={{
-                        fontSize: φ.sm,
-                        fontWeight: 600,
-                        color: c.text1,
-                        marginBottom: 2,
-                      }}>
+                      <p
+                        style={{
+                          fontSize: φ.sm,
+                          fontWeight: 600,
+                          color: c.text1,
+                          marginBottom: 2,
+                        }}
+                      >
                         {rec.title}
                       </p>
-                      <p style={{ fontSize: 12, color: c.text2 }}>
-                        {rec.description}
-                      </p>
+                      <p style={{ fontSize: 12, color: c.text2 }}>{rec.description}</p>
                     </div>
                     <ArrowRight size={16} color={c.text3} className="shrink-0" />
                   </button>
@@ -263,9 +265,7 @@ export default function OnboardingComplete({
             background: 'linear-gradient(90deg, #8B5CF6 0%, #A78BFA 100%)',
           }}
         >
-          <span style={{ color: 'white', fontSize: φ.base, fontWeight: 600 }}>
-            Bắt đầu sử dụng
-          </span>
+          <span style={{ color: 'white', fontSize: φ.base, fontWeight: 600 }}>Bắt đầu sử dụng</span>
           <ArrowRight size={18} color="white" />
         </button>
 
@@ -281,9 +281,7 @@ export default function OnboardingComplete({
             borderRadius: φRadius.sm,
           }}
         >
-          <span style={{ color: c.text3, fontSize: φ.sm }}>
-            Về trang chủ
-          </span>
+          <span style={{ color: c.text3, fontSize: φ.sm }}>Về trang chủ</span>
         </button>
       </div>
     </div>

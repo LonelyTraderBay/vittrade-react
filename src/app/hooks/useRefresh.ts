@@ -62,10 +62,10 @@ export function useRefresh(options: UseRefreshOptions = {}) {
   const refresh = useCallback(async () => {
     setIsRefreshing(true);
     onStartRef.current?.();
-    await new Promise(r => setTimeout(r, delay));
+    await new Promise((r) => setTimeout(r, delay));
     onEndRef.current?.();
     setIsRefreshing(false);
-    setRefreshCount(c => c + 1);
+    setRefreshCount((c) => c + 1);
     setLastRefreshedAt(new Date());
   }, [delay]);
 

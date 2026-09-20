@@ -48,9 +48,7 @@ export function SessionWarningBar({ remainingSeconds, onExtend }: SessionWarning
         }}
       >
         <RefreshCw size={11} color="#F59E0B" strokeWidth={2.5} />
-        <span style={{ color: '#F59E0B', fontSize: φ.xs, fontWeight: 700 }}>
-          Gia hạn
-        </span>
+        <span style={{ color: '#F59E0B', fontSize: φ.xs, fontWeight: 700 }}>Gia hạn</span>
       </button>
     </div>
   );
@@ -83,7 +81,7 @@ export function SessionTimedOutModal({ open, onReauth }: SessionTimedOutModalPro
           border: `1px solid ${c.borderSolid}`,
           boxShadow: '0 24px 64px rgba(0,0,0,0.5)',
         }}
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Icon */}
         <div
@@ -99,7 +97,8 @@ export function SessionTimedOutModal({ open, onReauth }: SessionTimedOutModalPro
             Phiên đã hết thời gian
           </p>
           <p style={{ color: c.text2, fontSize: φ.sm, lineHeight: 1.5 }}>
-            Vì lý do bảo mật, phiên làm việc đã tạm khóa sau thời gian không hoạt động. Xác thực lại để tiếp tục.
+            Vì lý do bảo mật, phiên làm việc đã tạm khóa sau thời gian không hoạt động. Xác thực lại
+            để tiếp tục.
           </p>
         </div>
 

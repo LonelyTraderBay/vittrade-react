@@ -1,8 +1,16 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Zap, TrendingUp, TrendingDown, Mail, ChevronRight,
-  BarChart3, Users, Clock, ArrowUpRight, ArrowDownRight,
+  Zap,
+  TrendingUp,
+  TrendingDown,
+  Mail,
+  ChevronRight,
+  BarChart3,
+  Users,
+  Clock,
+  ArrowUpRight,
+  ArrowDownRight,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useHaptic } from '../../hooks/useHaptic';
@@ -19,11 +27,7 @@ import { CTAButton } from '../../components/ui/CTAButton';
 import { SkeletonRow } from '../../components/states/SkeletonBlock';
 import { ErrorState } from '../../components/states/ErrorState';
 import { OfflineBanner } from '../../components/states/OfflineBanner';
-import {
-  PREDICTION_EVENTS,
-  fmtVolume,
-  timeRemaining,
-} from '../../data/predictionMockData';
+import { PREDICTION_EVENTS, fmtVolume, timeRemaining } from '../../data/predictionMockData';
 import type { PredictionEvent } from '../../data/predictionMockData';
 import { φ, φRadius, φIcon } from '../../utils/golden';
 import { TOAST } from '../../data/toastMessages';
@@ -52,17 +56,21 @@ function MoverItem({ event, rank }: { event: PredictionEvent; rank: number }) {
   const rankColors = [c.warn, '#94A3B8', '#CD7F32'];
 
   return (
-    <TrCard hover as="button"
-      onClick={() => { hapticSelection(); navigate(`${prefix}/markets/predictions/event/${event.id}`); }}
-      className="p-4 w-full text-left">
+    <TrCard
+      hover
+      as="button"
+      onClick={() => {
+        hapticSelection();
+        navigate(`${prefix}/markets/predictions/event/${event.id}`);
+      }}
+      className="p-4 w-full text-left"
+    >
       <div className="flex items-start gap-3">
         {/* Rank */}
         <div
           className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
           style={{
-            background: rank <= 3
-              ? `${rankColors[rank - 1]}18`
-              : c.surface2,
+            background: rank <= 3 ? `${rankColors[rank - 1]}18` : c.surface2,
           }}
         >
           <span
@@ -78,7 +86,15 @@ function MoverItem({ event, rank }: { event: PredictionEvent; rank: number }) {
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <p style={{ color: c.text1, fontSize: 13, fontWeight: 700, lineHeight: 1.4, marginBottom: 6 }}>
+          <p
+            style={{
+              color: c.text1,
+              fontSize: 13,
+              fontWeight: 700,
+              lineHeight: 1.4,
+              marginBottom: 6,
+            }}
+          >
             {event.title}
           </p>
 
@@ -86,11 +102,13 @@ function MoverItem({ event, rank }: { event: PredictionEvent; rank: number }) {
           <div className="flex items-center gap-3 mb-2">
             <div className="flex items-center gap-1.5">
               <span style={{ color: c.text2, fontSize: 11 }}>Yes:</span>
-              <span style={{
-                color: topOutcome.chance >= 50 ? c.buy : c.sell,
-                fontSize: 13,
-                fontWeight: 700,
-              }}>
+              <span
+                style={{
+                  color: topOutcome.chance >= 50 ? c.buy : c.sell,
+                  fontSize: 13,
+                  fontWeight: 700,
+                }}
+              >
                 {topOutcome.chance}%
               </span>
             </div>
@@ -106,12 +124,15 @@ function MoverItem({ event, rank }: { event: PredictionEvent; rank: number }) {
               ) : (
                 <ArrowDownRight size={12} color={c.sell} strokeWidth={2.5} />
               )}
-              <span style={{
-                color: isUp ? c.buy : c.sell,
-                fontSize: 12,
-                fontWeight: 700,
-              }}>
-                {isUp ? '+' : ''}{event.change24h}%
+              <span
+                style={{
+                  color: isUp ? c.buy : c.sell,
+                  fontSize: 12,
+                  fontWeight: 700,
+                }}
+              >
+                {isUp ? '+' : ''}
+                {event.change24h}%
               </span>
             </div>
           </div>
@@ -120,7 +141,12 @@ function MoverItem({ event, rank }: { event: PredictionEvent; rank: number }) {
           <div className="flex items-center gap-3">
             <span
               className="px-1.5 py-0.5 rounded"
-              style={{ background: c.primaryAlpha12, color: c.primary, fontSize: 9, fontWeight: 600 }}
+              style={{
+                background: c.primaryAlpha12,
+                color: c.primary,
+                fontSize: 9,
+                fontWeight: 600,
+              }}
             >
               {event.category}
             </span>
@@ -187,7 +213,9 @@ function EmailCTA() {
         </div>
         <div className="flex-1">
           <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>Get daily updates</p>
-          <p style={{ color: c.text3, fontSize: 11 }}>Top movers & trending markets in your inbox</p>
+          <p style={{ color: c.text3, fontSize: 11 }}>
+            Top movers & trending markets in your inbox
+          </p>
         </div>
       </div>
       <div className="flex gap-2">
@@ -195,7 +223,7 @@ function EmailCTA() {
           type="email"
           placeholder="your@email.com"
           value={email}
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
           className="flex-1 px-3 py-2.5 rounded-xl"
           style={{
             background: c.surface2,
@@ -229,22 +257,24 @@ export function PredictionsBreakingPage() {
   const c = useThemeColors();
   const prefix = useRoutePrefix();
   const { hapticSelection } = useHaptic();
-  const { isLoading, refresh, lastRefreshedLabel, refreshCount } = useLoadingState({ initialDelay: 400 });
+  const { isLoading, refresh, lastRefreshedLabel, refreshCount } = useLoadingState({
+    initialDelay: 400,
+  });
 
   const [activeTab, setActiveTab] = useState('all');
   const [hasError, setHasError] = useState(false);
   const [isOffline] = useState(false);
 
   const movers = useMemo(() => {
-    let events = PREDICTION_EVENTS.filter(e => e.status === 'active' && e.change24h !== 0);
+    let events = PREDICTION_EVENTS.filter((e) => e.status === 'active' && e.change24h !== 0);
     if (activeTab !== 'all') {
-      events = events.filter(e => e.category === activeTab);
+      events = events.filter((e) => e.category === activeTab);
     }
     return [...events].sort((a, b) => Math.abs(b.change24h) - Math.abs(a.change24h));
   }, [activeTab]);
 
-  const upCount = movers.filter(m => m.change24h > 0).length;
-  const downCount = movers.filter(m => m.change24h < 0).length;
+  const upCount = movers.filter((m) => m.change24h > 0).length;
+  const downCount = movers.filter((m) => m.change24h < 0).length;
 
   return (
     <PageLayout>
@@ -268,85 +298,96 @@ export function PredictionsBreakingPage() {
           <ErrorState
             title="Không thể tải dữ liệu"
             message="Kiểm tra kết nối mạng và thử lại."
-            onAction={() => { setHasError(false); refresh(); }}
+            onAction={() => {
+              setHasError(false);
+              refresh();
+            }}
           />
         ) : (
-        <PageContent>
-        {/* Summary bar */}
-        <TrCard className="p-3.5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Zap size={16} color={c.warn} />
-              <span style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>24h Movement</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1">
-                <TrendingUp size={13} color={c.buy} />
-                <span style={{ color: c.buy, fontSize: 12, fontWeight: 600 }}>{upCount} up</span>
+          <PageContent>
+            {/* Summary bar */}
+            <TrCard className="p-3.5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Zap size={16} color={c.warn} />
+                  <span style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>
+                    24h Movement
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-1">
+                    <TrendingUp size={13} color={c.buy} />
+                    <span style={{ color: c.buy, fontSize: 12, fontWeight: 600 }}>
+                      {upCount} up
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <TrendingDown size={13} color={c.sell} />
+                    <span style={{ color: c.sell, fontSize: 12, fontWeight: 600 }}>
+                      {downCount} down
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center gap-1">
-                <TrendingDown size={13} color={c.sell} />
-                <span style={{ color: c.sell, fontSize: 12, fontWeight: 600 }}>{downCount} down</span>
-              </div>
-            </div>
-          </div>
-        </TrCard>
-
-        {/* Category tabs */}
-        <div className="flex gap-2 -mx-5 px-5 overflow-x-auto scrollbar-none">
-          {CATEGORY_TABS.map(tab => {
-            const active = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => { setActiveTab(tab.id); hapticSelection(); }}
-                className="shrink-0 px-3.5 py-2 rounded-xl"
-                style={{
-                  background: active ? c.chipActiveBg : c.chipBg,
-                  border: `1px solid ${active ? c.chipActiveBorder : c.chipBorder}`,
-                  color: active ? c.chipActiveText : c.chipText,
-                  fontSize: 12,
-                  fontWeight: active ? 600 : 400,
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {tab.label}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Movers list */}
-        {isLoading ? (
-          <div>
-            <TrCard overflow>
-              {Array.from({ length: 6 }).map((_, i) => (
-                <SkeletonRow key={i} />
-              ))}
             </TrCard>
-          </div>
-        ) : movers.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16">
-            <Zap size={40} color={c.text3} style={{ opacity: 0.4 }} />
-            <p style={{ color: c.text2, fontSize: 14, fontWeight: 600, marginTop: 12 }}>
-              No movers in this category
-            </p>
-            <p style={{ color: c.text3, fontSize: 12, marginTop: 4, textAlign: 'center' }}>
-              Try selecting a different category
-            </p>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-2.5">
-            {movers.map((event, i) => (
-              <MoverItem key={event.id} event={event} rank={i + 1} />
-            ))}
-          </div>
-        )}
 
-        {/* Email subscription CTA */}
-        <EmailCTA />
+            {/* Category tabs */}
+            <div className="flex gap-2 -mx-5 px-5 overflow-x-auto scrollbar-none">
+              {CATEGORY_TABS.map((tab) => {
+                const active = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => {
+                      setActiveTab(tab.id);
+                      hapticSelection();
+                    }}
+                    className="shrink-0 px-3.5 py-2 rounded-xl"
+                    style={{
+                      background: active ? c.chipActiveBg : c.chipBg,
+                      border: `1px solid ${active ? c.chipActiveBorder : c.chipBorder}`,
+                      color: active ? c.chipActiveText : c.chipText,
+                      fontSize: 12,
+                      fontWeight: active ? 600 : 400,
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
 
-        </PageContent>
+            {/* Movers list */}
+            {isLoading ? (
+              <div>
+                <TrCard overflow>
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <SkeletonRow key={i} />
+                  ))}
+                </TrCard>
+              </div>
+            ) : movers.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-16">
+                <Zap size={40} color={c.text3} style={{ opacity: 0.4 }} />
+                <p style={{ color: c.text2, fontSize: 14, fontWeight: 600, marginTop: 12 }}>
+                  No movers in this category
+                </p>
+                <p style={{ color: c.text3, fontSize: 12, marginTop: 4, textAlign: 'center' }}>
+                  Try selecting a different category
+                </p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2.5">
+                {movers.map((event, i) => (
+                  <MoverItem key={event.id} event={event} rank={i + 1} />
+                ))}
+              </div>
+            )}
+
+            {/* Email subscription CTA */}
+            <EmailCTA />
+          </PageContent>
         )}
       </PullToRefresh>
     </PageLayout>

@@ -1,9 +1,9 @@
 /**
  * A/B Test Analytics Service
- * 
+ *
  * Tracks exposures, conversions, and results for A/B tests.
  * Integrates with DCA Analytics for event tracking.
- * 
+ *
  * @module services/ABTestAnalytics
  * @version 2.0 (Phase 2 - Sprint 2)
  */
@@ -119,7 +119,7 @@ class ABTestAnalyticsService {
     testId: string,
     metricName: string,
     userId: string = 'anonymous',
-    value?: number
+    value?: number,
   ): void {
     // Get user's variant
     const variantId = this.getUserVariant(testId, userId);
@@ -173,7 +173,7 @@ class ABTestAnalyticsService {
     // Calculate winner and significance
     const { winner, significance, confidence } = this.determineWinner(
       variantResults,
-      test.targetSignificance
+      test.targetSignificance,
     );
 
     return {
@@ -193,10 +193,10 @@ class ABTestAnalyticsService {
     const exposures = this.getExposureCount(testId, variantId);
     const conversions = this.getConversionCount(testId, variantId);
     const conversionRate = exposures > 0 ? conversions / exposures : 0;
-    
+
     // Calculate standard error
     const standardError = this.calculateStandardError(conversionRate, exposures);
-    
+
     // Calculate 95% confidence interval
     const margin = 1.96 * standardError; // 1.96 for 95% confidence
     const confidenceInterval: [number, number] = [
@@ -225,7 +225,7 @@ class ABTestAnalyticsService {
    */
   private determineWinner(
     variants: VariantResults[],
-    targetSignificance: number
+    targetSignificance: number,
   ): { winner?: string; significance: number; confidence: number } {
     if (variants.length < 2) {
       return { significance: 0, confidence: 0 };
@@ -242,12 +242,11 @@ class ABTestAnalyticsService {
     const confidence = significance;
 
     // Check if we have enough sample size
-    const hasEnoughSamples = variants.every(v => v.exposures >= 100);
-    
+    const hasEnoughSamples = variants.every((v) => v.exposures >= 100);
+
     // Determine winner if statistically significant
-    const winner = significance >= targetSignificance && hasEnoughSamples
-      ? best.variantId
-      : undefined;
+    const winner =
+      significance >= targetSignificance && hasEnoughSamples ? best.variantId : undefined;
 
     return { winner, significance, confidence };
   }
@@ -265,10 +264,10 @@ class ABTestAnalyticsService {
 
     // Pooled proportion
     const pPool = (p1 * n1 + p2 * n2) / (n1 + n2);
-    
+
     // Standard error of difference
     const se = Math.sqrt(pPool * (1 - pPool) * (1 / n1 + 1 / n2));
-    
+
     if (se === 0) return 0;
 
     // Z-score
@@ -282,12 +281,12 @@ class ABTestAnalyticsService {
     // Approximate p-value using z-score
     // For z > 1.96, p < 0.05 (95% confidence)
     // For z > 2.58, p < 0.01 (99% confidence)
-    
+
     if (zScore >= 2.58) return 0.99;
     if (zScore >= 1.96) return 0.95;
-    if (zScore >= 1.645) return 0.90;
-    if (zScore >= 1.28) return 0.80;
-    
+    if (zScore >= 1.645) return 0.9;
+    if (zScore >= 1.28) return 0.8;
+
     // Simple approximation for lower z-scores
     return Math.max(0, Math.min(1, zScore / 2.58));
   }
@@ -309,7 +308,7 @@ class ABTestAnalyticsService {
    */
   private getExposureCount(testId: string, variantId: string): number {
     const exposures = this.exposures.get(testId) || [];
-    return exposures.filter(e => e.variantId === variantId).length;
+    return exposures.filter((e) => e.variantId === variantId).length;
   }
 
   /**
@@ -317,7 +316,7 @@ class ABTestAnalyticsService {
    */
   private getConversionCount(testId: string, variantId: string): number {
     const conversions = this.conversions.get(testId) || [];
-    return conversions.filter(c => c.variantId === variantId).length;
+    return conversions.filter((c) => c.variantId === variantId).length;
   }
 
   /**
@@ -326,7 +325,7 @@ class ABTestAnalyticsService {
   private getRevenue(testId: string, variantId: string): number {
     const conversions = this.conversions.get(testId) || [];
     return conversions
-      .filter(c => c.variantId === variantId && c.value !== undefined)
+      .filter((c) => c.variantId === variantId && c.value !== undefined)
       .reduce((sum, c) => sum + (c.value || 0), 0);
   }
 
@@ -393,14 +392,14 @@ class ABTestAnalyticsService {
       if (!stored) return;
 
       const data = JSON.parse(stored);
-      
+
       this.exposures = new Map(data.exposures);
       this.conversions = new Map(data.conversions);
       this.userVariants = new Map(
         data.userVariants.map(([testId, entries]: [string, [string, string][]]) => [
           testId,
           new Map(entries),
-        ])
+        ]),
       );
     } catch (error) {
       console.error('[ABTestAnalytics] Failed to load:', error);

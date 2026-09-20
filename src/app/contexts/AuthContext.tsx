@@ -35,16 +35,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   // Memoize context value to prevent unnecessary re-renders
-  const value = useMemo(
-    () => ({ ...state, login, logout }),
-    [state, login, logout]
-  );
+  const value = useMemo(() => ({ ...state, login, logout }), [state, login, logout]);
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

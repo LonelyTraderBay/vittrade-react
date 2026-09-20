@@ -22,14 +22,17 @@ import { φ } from '../../utils/golden';
 
 type BannerState = 'hidden' | 'offline' | 'reconnecting' | 'recovered';
 
-const BANNER_CONFIG: Record<Exclude<BannerState, 'hidden'>, {
-  bg: string;
-  border: string;
-  text: string;
-  icon: typeof WifiOff;
-  label: string;
-  spinning?: boolean;
-}> = {
+const BANNER_CONFIG: Record<
+  Exclude<BannerState, 'hidden'>,
+  {
+    bg: string;
+    border: string;
+    text: string;
+    icon: typeof WifiOff;
+    label: string;
+    spinning?: boolean;
+  }
+> = {
   offline: {
     bg: 'rgba(239,68,68,0.12)',
     border: 'rgba(239,68,68,0.25)',

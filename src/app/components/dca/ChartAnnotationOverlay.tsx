@@ -9,14 +9,7 @@
  * @module components/dca
  */
 
-import {
-  useState,
-  useRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  forwardRef,
-} from 'react';
+import { useState, useRef, useCallback, useEffect, useImperativeHandle, forwardRef } from 'react';
 import {
   Pen,
   Type,
@@ -109,9 +102,12 @@ function distPP(ax: number, ay: number, bx: number, by: number): number {
 }
 
 function distPointToSegment(
-  px: number, py: number,
-  ax: number, ay: number,
-  bx: number, by: number,
+  px: number,
+  py: number,
+  ax: number,
+  ay: number,
+  bx: number,
+  by: number,
 ): number {
   const dx = bx - ax;
   const dy = by - ay;
@@ -146,11 +142,17 @@ function hitTestAnnotation(
   switch (ann.type) {
     case 'pen': {
       for (let i = 0; i < ann.points.length - 1; i++) {
-        if (distPointToSegment(
-          pos.x, pos.y,
-          ann.points[i].x, ann.points[i].y,
-          ann.points[i + 1].x, ann.points[i + 1].y,
-        ) < HIT_THRESHOLD) return true;
+        if (
+          distPointToSegment(
+            pos.x,
+            pos.y,
+            ann.points[i].x,
+            ann.points[i].y,
+            ann.points[i + 1].x,
+            ann.points[i + 1].y,
+          ) < HIT_THRESHOLD
+        )
+          return true;
       }
       return false;
     }
@@ -160,18 +162,14 @@ function hitTestAnnotation(
       return pos.x >= bb.x && pos.x <= bb.x + bb.w && pos.y >= bb.y && pos.y <= bb.y + bb.h;
     }
     case 'arrow': {
-      return distPointToSegment(
-        pos.x, pos.y,
-        ann.startX, ann.startY, ann.endX, ann.endY,
-      ) < HIT_THRESHOLD;
+      return (
+        distPointToSegment(pos.x, pos.y, ann.startX, ann.startY, ann.endX, ann.endY) < HIT_THRESHOLD
+      );
     }
   }
 }
 
-function hitTestArrowHandles(
-  pos: { x: number; y: number },
-  arrow: ArrowLine,
-): DragHandle | null {
+function hitTestArrowHandles(pos: { x: number; y: number }, arrow: ArrowLine): DragHandle | null {
   if (distPP(pos.x, pos.y, arrow.startX, arrow.startY) < HANDLE_HIT_RADIUS) return 'arrow-start';
   if (distPP(pos.x, pos.y, arrow.endX, arrow.endY) < HANDLE_HIT_RADIUS) return 'arrow-end';
   return null;
@@ -266,7 +264,14 @@ function drawArrowLine(ctx: CanvasRenderingContext2D, arrow: ArrowLine) {
   ctx.fill();
 }
 
-function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+function roundRect(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number,
+) {
   ctx.moveTo(x + r, y);
   ctx.arcTo(x + w, y, x + w, y + h, r);
   ctx.arcTo(x + w, y + h, x, y + h, r);
@@ -284,7 +289,10 @@ function drawSelectionUI(ctx: CanvasRenderingContext2D, ann: Annotation, selColo
 
   switch (ann.type) {
     case 'pen': {
-      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      let minX = Infinity,
+        minY = Infinity,
+        maxX = -Infinity,
+        maxY = -Infinity;
       for (const p of ann.points) {
         if (p.x < minX) minX = p.x;
         if (p.y < minY) minY = p.y;
@@ -342,10 +350,15 @@ function drawEraserHighlight(ctx: CanvasRenderingContext2D, ann: Annotation) {
   ctx.setLineDash([4, 3]);
   switch (ann.type) {
     case 'pen': {
-      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      let minX = Infinity,
+        minY = Infinity,
+        maxX = -Infinity,
+        maxY = -Infinity;
       for (const p of ann.points) {
-        if (p.x < minX) minX = p.x; if (p.y < minY) minY = p.y;
-        if (p.x > maxX) maxX = p.x; if (p.y > maxY) maxY = p.y;
+        if (p.x < minX) minX = p.x;
+        if (p.y < minY) minY = p.y;
+        if (p.x > maxX) maxX = p.x;
+        if (p.y > maxY) maxY = p.y;
       }
       const pad = 12;
       ctx.strokeRect(minX - pad, minY - pad, maxX - minX + pad * 2, maxY - minY + pad * 2);
@@ -416,7 +429,10 @@ export interface ChartAnnotationOverlayProps {
 export const ChartAnnotationOverlay = forwardRef<
   ChartAnnotationHandle,
   ChartAnnotationOverlayProps
->(function ChartAnnotationOverlay({ active, onClose, width, height, snapPoints: rawSnapPoints }, ref) {
+>(function ChartAnnotationOverlay(
+  { active, onClose, width, height, snapPoints: rawSnapPoints },
+  ref,
+) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [tool, setTool] = useState<AnnotationTool>('pen');
   const [color, setColor] = useState(PRESET_COLORS[0].value);
@@ -512,9 +528,15 @@ export const ChartAnnotationOverlay = forwardRef<
       for (let i = 0; i < anns.length; i++) {
         const ann = anns[i];
         switch (ann.type) {
-          case 'pen': drawPenStroke(ctx, ann); break;
-          case 'text': drawTextLabel(ctx, ann); break;
-          case 'arrow': drawArrowLine(ctx, ann); break;
+          case 'pen':
+            drawPenStroke(ctx, ann);
+            break;
+          case 'text':
+            drawTextLabel(ctx, ann);
+            break;
+          case 'arrow':
+            drawArrowLine(ctx, ann);
+            break;
         }
         if (eraserIdx === i) drawEraserHighlight(ctx, ann);
         if (selIdx === i) drawSelectionUI(ctx, ann, '#3B82F6');
@@ -588,9 +610,10 @@ export const ChartAnnotationOverlay = forwardRef<
             dragRef.current = {
               handle: 'body',
               startPos: pos,
-              originalAnnotation: selAnn.type === 'pen'
-                ? { ...selAnn, points: selAnn.points.map((p) => ({ ...p })) }
-                : { ...selAnn },
+              originalAnnotation:
+                selAnn.type === 'pen'
+                  ? { ...selAnn, points: selAnn.points.map((p) => ({ ...p })) }
+                  : { ...selAnn },
             };
             return;
           }
@@ -602,9 +625,10 @@ export const ChartAnnotationOverlay = forwardRef<
             dragRef.current = {
               handle: 'body',
               startPos: pos,
-              originalAnnotation: ann.type === 'pen'
-                ? { ...ann, points: ann.points.map((p) => ({ ...p })) }
-                : { ...ann },
+              originalAnnotation:
+                ann.type === 'pen'
+                  ? { ...ann, points: ann.points.map((p) => ({ ...p })) }
+                  : { ...ann },
             };
             return;
           }
@@ -648,7 +672,10 @@ export const ChartAnnotationOverlay = forwardRef<
       if (tool === 'eraser') {
         let found: number | null = null;
         for (let i = annotations.length - 1; i >= 0; i--) {
-          if (hitTestAnnotation(pos, annotations[i], ctx)) { found = i; break; }
+          if (hitTestAnnotation(pos, annotations[i], ctx)) {
+            found = i;
+            break;
+          }
         }
         if (found !== eraserHoverIndex) setEraserHoverIndex(found);
         return;
@@ -667,7 +694,10 @@ export const ChartAnnotationOverlay = forwardRef<
             switch (orig.type) {
               case 'pen': {
                 const o = orig as PenStroke;
-                next[selectedIndex] = { ...o, points: o.points.map((p) => ({ x: p.x + dx, y: p.y + dy })) };
+                next[selectedIndex] = {
+                  ...o,
+                  points: o.points.map((p) => ({ x: p.x + dx, y: p.y + dy })),
+                };
                 break;
               }
               case 'text': {
@@ -677,7 +707,13 @@ export const ChartAnnotationOverlay = forwardRef<
               }
               case 'arrow': {
                 const o = orig as ArrowLine;
-                next[selectedIndex] = { ...o, startX: o.startX + dx, startY: o.startY + dy, endX: o.endX + dx, endY: o.endY + dy };
+                next[selectedIndex] = {
+                  ...o,
+                  startX: o.startX + dx,
+                  startY: o.startY + dy,
+                  endX: o.endX + dx,
+                  endY: o.endY + dy,
+                };
                 break;
               }
             }
@@ -735,7 +771,20 @@ export const ChartAnnotationOverlay = forwardRef<
         e.preventDefault();
       }
     },
-    [active, tool, annotations, selectedIndex, eraserHoverIndex, activeSnap, color, penWidth, canvasSnapPoints, getCanvasPos, getCtx, redrawCanvas],
+    [
+      active,
+      tool,
+      annotations,
+      selectedIndex,
+      eraserHoverIndex,
+      activeSnap,
+      color,
+      penWidth,
+      canvasSnapPoints,
+      getCanvasPos,
+      getCtx,
+      redrawCanvas,
+    ],
   );
 
   const handlePointerUp = useCallback(
@@ -770,7 +819,14 @@ export const ChartAnnotationOverlay = forwardRef<
           if (distPP(endPos.x, endPos.y, start.x, start.y) > 10) {
             setAnnotations((prev) => [
               ...prev,
-              { type: 'arrow', startX: start.x, startY: start.y, endX: endPos.x, endY: endPos.y, color },
+              {
+                type: 'arrow',
+                startX: start.x,
+                startY: start.y,
+                endX: endPos.x,
+                endY: endPos.y,
+                color,
+              },
             ]);
           }
         }
@@ -784,7 +840,10 @@ export const ChartAnnotationOverlay = forwardRef<
 
   /* ── Text input confirm ─────────────────────────────────── */
   const confirmTextInput = useCallback(() => {
-    if (!textInput || !textInput.value.trim()) { setTextInput(null); return; }
+    if (!textInput || !textInput.value.trim()) {
+      setTextInput(null);
+      return;
+    }
     setAnnotations((prev) => [
       ...prev,
       { type: 'text', x: textInput.x, y: textInput.y, text: textInput.value.trim(), color },
@@ -845,11 +904,16 @@ export const ChartAnnotationOverlay = forwardRef<
   /* ── Cursor style ───────────────────────────────────────── */
   const cursorStyle = (() => {
     switch (tool) {
-      case 'pen': return 'crosshair';
-      case 'text': return 'text';
-      case 'arrow': return 'crosshair';
-      case 'eraser': return 'pointer';
-      case 'select': return 'default';
+      case 'pen':
+        return 'crosshair';
+      case 'text':
+        return 'text';
+      case 'arrow':
+        return 'crosshair';
+      case 'eraser':
+        return 'pointer';
+      case 'select':
+        return 'default';
     }
   })();
 
@@ -888,16 +952,30 @@ export const ChartAnnotationOverlay = forwardRef<
             autoFocus
             type="text"
             value={textInput.value}
-            onChange={(e) => setTextInput((prev) => prev ? { ...prev, value: e.target.value } : null)}
-            onKeyDown={(e) => { if (e.key === 'Enter') confirmTextInput(); if (e.key === 'Escape') setTextInput(null); }}
+            onChange={(e) =>
+              setTextInput((prev) => (prev ? { ...prev, value: e.target.value } : null))
+            }
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') confirmTextInput();
+              if (e.key === 'Escape') setTextInput(null);
+            }}
             placeholder="Ghi chú..."
             className="bg-[rgba(0,0,0,0.7)] text-white text-[13px] px-2.5 py-1.5 rounded-lg border border-[rgba(255,255,255,0.2)] outline-none min-w-[120px] max-w-[200px]"
             style={{ fontWeight: 500 }}
           />
-          <button onClick={confirmTextInput} className="w-7 h-7 rounded-md text-white flex items-center justify-center flex-shrink-0" style={{ background: '#3B82F6' }} aria-label="Xác nhận">
+          <button
+            onClick={confirmTextInput}
+            className="w-7 h-7 rounded-md text-white flex items-center justify-center flex-shrink-0"
+            style={{ background: '#3B82F6' }}
+            aria-label="Xác nhận"
+          >
             <Check className="w-3.5 h-3.5" />
           </button>
-          <button onClick={() => setTextInput(null)} className="w-7 h-7 rounded-md bg-[rgba(255,255,255,0.15)] text-white flex items-center justify-center flex-shrink-0" aria-label="Hủy">
+          <button
+            onClick={() => setTextInput(null)}
+            className="w-7 h-7 rounded-md bg-[rgba(255,255,255,0.15)] text-white flex items-center justify-center flex-shrink-0"
+            aria-label="Hủy"
+          >
             <X className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -910,13 +988,24 @@ export const ChartAnnotationOverlay = forwardRef<
           style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.3)' }}
         >
           {/* ── Tools ──────────────────────────────────────── */}
-          <ToolButton active={tool === 'select'} onClick={() => setTool('select')} label="Chọn / Di chuyển">
+          <ToolButton
+            active={tool === 'select'}
+            onClick={() => setTool('select')}
+            label="Chọn / Di chuyển"
+          >
             <MousePointer2 className="w-4 h-4" />
           </ToolButton>
 
           {/* Pen button with width indicator */}
           <div className="relative">
-            <ToolButton active={tool === 'pen'} onClick={() => { setTool('pen'); if (tool === 'pen') setShowWidthPicker((p) => !p); }} label="Vẽ tay">
+            <ToolButton
+              active={tool === 'pen'}
+              onClick={() => {
+                setTool('pen');
+                if (tool === 'pen') setShowWidthPicker((p) => !p);
+              }}
+              label="Vẽ tay"
+            >
               <Pen className="w-4 h-4" />
             </ToolButton>
             {/* Width dot indicator */}
@@ -935,7 +1024,10 @@ export const ChartAnnotationOverlay = forwardRef<
                 {PEN_WIDTHS.map((w) => (
                   <button
                     key={w.key}
-                    onClick={() => { setPenWidth(w.value); setShowWidthPicker(false); }}
+                    onClick={() => {
+                      setPenWidth(w.value);
+                      setShowWidthPicker(false);
+                    }}
                     className={`flex items-center justify-center w-9 h-9 rounded-lg transition-all ${
                       penWidth === w.value
                         ? 'bg-[rgba(59,130,246,0.3)] ring-1 ring-[#3B82F6]'
@@ -962,7 +1054,11 @@ export const ChartAnnotationOverlay = forwardRef<
             <MoveUpRight className="w-4 h-4" />
           </ToolButton>
 
-          <ToolButton active={tool === 'eraser'} onClick={() => setTool('eraser')} label="Xóa ghi chú">
+          <ToolButton
+            active={tool === 'eraser'}
+            onClick={() => setTool('eraser')}
+            label="Xóa ghi chú"
+          >
             <Eraser className="w-4 h-4" />
           </ToolButton>
 
@@ -972,20 +1068,31 @@ export const ChartAnnotationOverlay = forwardRef<
           {/* ── Color picker ───────────────────────────────── */}
           <div className="relative">
             <button
-              onClick={() => { setShowColorPicker((p) => !p); setShowWidthPicker(false); }}
+              onClick={() => {
+                setShowColorPicker((p) => !p);
+                setShowWidthPicker(false);
+              }}
               className="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-[rgba(255,255,255,0.1)] transition-colors"
               aria-label="Chọn màu"
             >
-              <div className="w-5 h-5 rounded-full border-2 border-white" style={{ background: color }} />
+              <div
+                className="w-5 h-5 rounded-full border-2 border-white"
+                style={{ background: color }}
+              />
             </button>
             {showColorPicker && (
               <div className="absolute bottom-12 left-1/2 -translate-x-1/2 bg-[rgba(0,0,0,0.9)] rounded-xl p-2 flex gap-1.5">
                 {PRESET_COLORS.map((c) => (
                   <button
                     key={c.key}
-                    onClick={() => { setColor(c.value); setShowColorPicker(false); }}
+                    onClick={() => {
+                      setColor(c.value);
+                      setShowColorPicker(false);
+                    }}
                     className={`w-8 h-8 rounded-full border-2 transition-all ${
-                      color === c.value ? 'border-white scale-110' : 'border-transparent opacity-70 hover:opacity-100'
+                      color === c.value
+                        ? 'border-white scale-110'
+                        : 'border-transparent opacity-70 hover:opacity-100'
                     }`}
                     style={{ background: c.value }}
                     aria-label={c.label}
@@ -1000,22 +1107,42 @@ export const ChartAnnotationOverlay = forwardRef<
           <div className="w-px h-6 bg-[rgba(255,255,255,0.15)] mx-0.5" />
 
           {/* ── Actions: Undo / Duplicate / Delete / Clear ── */}
-          <ToolButton active={false} onClick={handleUndo} label="Hoàn tác" disabled={annotations.length === 0}>
+          <ToolButton
+            active={false}
+            onClick={handleUndo}
+            label="Hoàn tác"
+            disabled={annotations.length === 0}
+          >
             <Undo2 className="w-4 h-4" />
           </ToolButton>
 
           {selectedIndex !== null && (
-            <ToolButton active={false} onClick={handleDuplicate} label="Nhân đôi ghi chú" variant="accent">
+            <ToolButton
+              active={false}
+              onClick={handleDuplicate}
+              label="Nhân đôi ghi chú"
+              variant="accent"
+            >
               <Copy className="w-4 h-4" />
             </ToolButton>
           )}
 
           {selectedIndex !== null ? (
-            <ToolButton active={false} onClick={handleDeleteSelected} label="Xóa mục đã chọn" variant="danger">
+            <ToolButton
+              active={false}
+              onClick={handleDeleteSelected}
+              label="Xóa mục đã chọn"
+              variant="danger"
+            >
               <Trash2 className="w-4 h-4" />
             </ToolButton>
           ) : (
-            <ToolButton active={false} onClick={handleClear} label="Xóa tất cả" disabled={annotations.length === 0}>
+            <ToolButton
+              active={false}
+              onClick={handleClear}
+              label="Xóa tất cả"
+              disabled={annotations.length === 0}
+            >
               <Trash2 className="w-4 h-4" />
             </ToolButton>
           )}
@@ -1040,14 +1167,14 @@ export const ChartAnnotationOverlay = forwardRef<
             </span>
           )}
           {tool === 'eraser' && (
-            <span className="text-[11px] text-[rgba(239,68,68,0.7)]">
-              Chạm vào ghi chú để xóa
-            </span>
+            <span className="text-[11px] text-[rgba(239,68,68,0.7)]">Chạm vào ghi chú để xóa</span>
           )}
           {tool === 'select' && selectedIndex !== null && (
             <span className="text-[11px] text-[rgba(59,130,246,0.8)]">
               Kéo để di chuyển
-              {annotations[selectedIndex]?.type === 'arrow' ? ' · Kéo đầu mũi tên để thay đổi hướng' : ''}
+              {annotations[selectedIndex]?.type === 'arrow'
+                ? ' · Kéo đầu mũi tên để thay đổi hướng'
+                : ''}
             </span>
           )}
           {tool === 'select' && selectedIndex === null && annotations.length > 0 && (
@@ -1076,7 +1203,12 @@ export const ChartAnnotationOverlay = forwardRef<
 /* ══════════════════════════════════════════════════════════ */
 
 function ToolButton({
-  active, onClick, label, children, disabled = false, variant,
+  active,
+  onClick,
+  label,
+  children,
+  disabled = false,
+  variant,
 }: {
   active: boolean;
   onClick: () => void;

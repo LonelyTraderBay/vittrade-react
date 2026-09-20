@@ -1,21 +1,21 @@
 /**
  * A/B Test Dashboard - Test Results Visualization
- * 
+ *
  * Comprehensive A/B test dashboard showing:
  * - Active tests overview
  * - Variant performance comparison
  * - Statistical significance
  * - Winner recommendation
- * 
+ *
  * @module pages/admin/ABTestDashboard
  * @version 1.0 (Phase 2 - Sprint 3)
  */
 
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router';
-import { 
-  ChevronLeft, 
-  Beaker, 
+import {
+  ChevronLeft,
+  Beaker,
   TrendingUp,
   Award,
   AlertCircle,
@@ -23,19 +23,19 @@ import {
   Clock,
   Users,
   Target,
-  BarChart2
+  BarChart2,
 } from 'lucide-react';
-import { 
-  BarChart, 
+import {
+  BarChart,
   Bar,
   LineChart,
   Line,
-  ResponsiveContainer, 
-  XAxis, 
-  YAxis, 
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
   Tooltip,
   CartesianGrid,
-  Legend
+  Legend,
 } from 'recharts';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useRoutePrefix } from '../../hooks/useRoutePrefix';
@@ -46,6 +46,7 @@ import { TrCard } from '../../components/ui/TrCard';
 import { φ } from '../../utils/golden';
 import { abTestAnalytics } from '../../services/ABTestAnalytics';
 import { AB_TESTS } from '../../config/abTests';
+import type { ABTest, ABTestResults } from '../../config/abTests';
 
 /* ═══════════════════════════════════════════
    TYPES
@@ -70,6 +71,47 @@ interface VariantSummary {
   isWinner: boolean;
 }
 
+/**
+ * Page-local extended view of ABTestResults — the service type only carries
+ * `significance`/`confidence` and per-variant exposures, so the aggregate and
+ * statistical fields this dashboard renders are derived here.
+ */
+type ABTestResultsView = ABTestResults & {
+  hasSignificance: boolean;
+  totalExposures: number;
+  zScore: number;
+  pValue: number;
+};
+
+function toResultsView(test: ABTest, results: ABTestResults): ABTestResultsView {
+  const totalExposures = results.variants.reduce((sum, v) => sum + v.exposures, 0);
+  const hasSignificance = results.significance >= test.targetSignificance;
+
+  // Two-proportion z-test between the best variant and control (same formula
+  // the service uses internally for winner determination).
+  const sorted = [...results.variants].sort((a, b) => b.conversionRate - a.conversionRate);
+  const best = sorted[0];
+  const control = results.variants[0];
+  let zScore = 0;
+  if (best && control && best.exposures > 0 && control.exposures > 0) {
+    const pPool =
+      (best.conversionRate * best.exposures + control.conversionRate * control.exposures) /
+      (best.exposures + control.exposures);
+    const se = Math.sqrt(pPool * (1 - pPool) * (1 / best.exposures + 1 / control.exposures));
+    if (se > 0) {
+      zScore = Math.abs(best.conversionRate - control.conversionRate) / se;
+    }
+  }
+
+  return {
+    ...results,
+    hasSignificance,
+    totalExposures,
+    zScore,
+    pValue: Math.max(0, 1 - results.confidence),
+  };
+}
+
 /* ═══════════════════════════════════════════
    MAIN COMPONENT
    ═══════════════════════════════════════════ */
@@ -84,15 +126,15 @@ export default function ABTestDashboard() {
     const summaries: TestSummary[] = [];
 
     for (const test of AB_TESTS) {
-      const results = abTestAnalytics.getTestResults(test);
-      
-      const variants: VariantSummary[] = results.variants.map(v => ({
-        variant: v.variant,
+      const results = toResultsView(test, abTestAnalytics.getTestResults(test));
+
+      const variants: VariantSummary[] = results.variants.map((v) => ({
+        variant: v.variantId,
         exposures: v.exposures,
         conversions: v.conversions,
         conversionRate: v.conversionRate,
-        isControl: v.variant === test.variants[0].id,
-        isWinner: v.variant === results.winner,
+        isControl: v.variantId === test.variants[0].id,
+        isWinner: v.variantId === results.winner,
       }));
 
       summaries.push({
@@ -100,7 +142,7 @@ export default function ABTestDashboard() {
         testName: test.name,
         status: results.hasSignificance ? 'completed' : 'active',
         variants,
-        winner: results.winner,
+        winner: results.winner ?? null,
         confidence: results.confidence,
         sampleSize: results.totalExposures,
       });
@@ -111,12 +153,12 @@ export default function ABTestDashboard() {
 
   const selectedTestData = useMemo(() => {
     if (!selectedTest) return null;
-    
-    const test = AB_TESTS.find(t => t.id === selectedTest);
+
+    const test = AB_TESTS.find((t) => t.id === selectedTest);
     if (!test) return null;
 
-    const results = abTestAnalytics.getTestResults(test);
-    
+    const results = toResultsView(test, abTestAnalytics.getTestResults(test));
+
     return {
       test,
       results,
@@ -124,7 +166,7 @@ export default function ABTestDashboard() {
   }, [selectedTest]);
 
   // Active tests count
-  const activeTestsCount = testSummaries.filter(t => t.status === 'active').length;
+  const activeTestsCount = testSummaries.filter((t) => t.status === 'active').length;
 
   return (
     <PageLayout>
@@ -149,7 +191,9 @@ export default function ABTestDashboard() {
               </div>
               <div className="flex-1">
                 <p style={{ color: c.text3, fontSize: 11 }}>Tests đang chạy</p>
-                <p style={{ color: c.text1, fontSize: 20, fontWeight: 700, fontFamily: 'monospace' }}>
+                <p
+                  style={{ color: c.text1, fontSize: 20, fontWeight: 700, fontFamily: 'monospace' }}
+                >
                   {activeTestsCount}
                 </p>
               </div>
@@ -166,8 +210,10 @@ export default function ABTestDashboard() {
               </div>
               <div className="flex-1">
                 <p style={{ color: c.text3, fontSize: 11 }}>Có kết quả</p>
-                <p style={{ color: c.text1, fontSize: 20, fontWeight: 700, fontFamily: 'monospace' }}>
-                  {testSummaries.filter(t => t.winner).length}
+                <p
+                  style={{ color: c.text1, fontSize: 20, fontWeight: 700, fontFamily: 'monospace' }}
+                >
+                  {testSummaries.filter((t) => t.winner).length}
                 </p>
               </div>
             </div>
@@ -176,15 +222,13 @@ export default function ABTestDashboard() {
 
         {/* Test List */}
         <div className="space-y-3">
-          <h2 style={{ color: c.text1, fontSize: φ.base, fontWeight: 600 }}>
-            Tất cả A/B Tests
-          </h2>
+          <h2 style={{ color: c.text1, fontSize: φ.base, fontWeight: 600 }}>Tất cả A/B Tests</h2>
 
           {testSummaries.map((test) => {
             const isSelected = selectedTest === test.testId;
-            const controlVariant = test.variants.find(v => v.isControl);
-            const treatmentVariant = test.variants.find(v => !v.isControl);
-            
+            const controlVariant = test.variants.find((v) => v.isControl);
+            const treatmentVariant = test.variants.find((v) => !v.isControl);
+
             return (
               <TrCard
                 key={test.testId}
@@ -203,18 +247,17 @@ export default function ABTestDashboard() {
                         {test.testName}
                       </h3>
                     </div>
-                    <p style={{ color: c.text3, fontSize: 11 }}>
-                      {test.testId}
-                    </p>
+                    <p style={{ color: c.text3, fontSize: 11 }}>{test.testId}</p>
                   </div>
 
                   {/* Status Badge */}
                   <div
                     className="px-2 py-1 rounded"
                     style={{
-                      background: test.status === 'active' 
-                        ? 'rgba(59,130,246,0.12)'
-                        : 'rgba(16,185,129,0.12)',
+                      background:
+                        test.status === 'active'
+                          ? 'rgba(59,130,246,0.12)'
+                          : 'rgba(16,185,129,0.12)',
                     }}
                   >
                     <span
@@ -233,26 +276,47 @@ export default function ABTestDashboard() {
                 <div className="grid grid-cols-3 gap-2 mb-3">
                   <div className="text-center p-2 rounded-lg" style={{ background: c.surface2 }}>
                     <p style={{ color: c.text3, fontSize: 10 }}>Mẫu</p>
-                    <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}>
+                    <p
+                      style={{
+                        color: c.text1,
+                        fontSize: 13,
+                        fontWeight: 600,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       {test.sampleSize}
                     </p>
                   </div>
 
                   <div className="text-center p-2 rounded-lg" style={{ background: c.surface2 }}>
                     <p style={{ color: c.text3, fontSize: 10 }}>Độ tin cậy</p>
-                    <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}>
+                    <p
+                      style={{
+                        color: c.text1,
+                        fontSize: 13,
+                        fontWeight: 600,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       {(test.confidence * 100).toFixed(1)}%
                     </p>
                   </div>
 
                   <div className="text-center p-2 rounded-lg" style={{ background: c.surface2 }}>
                     <p style={{ color: c.text3, fontSize: 10 }}>Lift</p>
-                    <p style={{ 
-                      color: treatmentVariant && controlVariant && treatmentVariant.conversionRate > controlVariant.conversionRate ? '#10B981' : c.text1, 
-                      fontSize: 13, 
-                      fontWeight: 600,
-                      fontFamily: 'monospace' 
-                    }}>
+                    <p
+                      style={{
+                        color:
+                          treatmentVariant &&
+                          controlVariant &&
+                          treatmentVariant.conversionRate > controlVariant.conversionRate
+                            ? '#10B981'
+                            : c.text1,
+                        fontSize: 13,
+                        fontWeight: 600,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       {controlVariant && treatmentVariant
                         ? `${(((treatmentVariant.conversionRate - controlVariant.conversionRate) / controlVariant.conversionRate) * 100).toFixed(1)}%`
                         : '-'}
@@ -267,19 +331,29 @@ export default function ABTestDashboard() {
                       <div className="flex items-center justify-between mb-1">
                         <div className="flex items-center gap-2">
                           <span style={{ color: c.text2, fontSize: 12, fontWeight: 500 }}>
-                            {variant.variant === 'control' ? 'Control' : `Variant ${variant.variant.toUpperCase()}`}
+                            {variant.variant === 'control'
+                              ? 'Control'
+                              : `Variant ${variant.variant.toUpperCase()}`}
                           </span>
-                          {variant.isWinner && (
-                            <Award size={14} color="#10B981" />
-                          )}
+                          {variant.isWinner && <Award size={14} color="#10B981" />}
                         </div>
-                        <span style={{ color: c.text1, fontSize: 12, fontWeight: 600, fontFamily: 'monospace' }}>
+                        <span
+                          style={{
+                            color: c.text1,
+                            fontSize: 12,
+                            fontWeight: 600,
+                            fontFamily: 'monospace',
+                          }}
+                        >
                           {(variant.conversionRate * 100).toFixed(1)}%
                         </span>
                       </div>
 
                       {/* Progress Bar */}
-                      <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
+                      <div
+                        className="h-2 rounded-full overflow-hidden"
+                        style={{ background: c.surface2 }}
+                      >
                         <div
                           className="h-full transition-all"
                           style={{
@@ -287,8 +361,8 @@ export default function ABTestDashboard() {
                             background: variant.isWinner
                               ? '#10B981'
                               : variant.isControl
-                              ? '#3B82F6'
-                              : '#8B5CF6',
+                                ? '#3B82F6'
+                                : '#8B5CF6',
                           }}
                         />
                       </div>
@@ -309,7 +383,10 @@ export default function ABTestDashboard() {
                     <div className="flex items-center gap-2">
                       <CheckCircle size={14} color="#10B981" />
                       <p style={{ color: '#10B981', fontSize: 12, fontWeight: 600 }}>
-                        Winner: {test.winner === 'control' ? 'Control' : `Variant ${test.winner.toUpperCase()}`}
+                        Winner:{' '}
+                        {test.winner === 'control'
+                          ? 'Control'
+                          : `Variant ${test.winner.toUpperCase()}`}
                       </p>
                     </div>
                   </div>
@@ -323,13 +400,27 @@ export default function ABTestDashboard() {
                       <div className="grid grid-cols-2 gap-3">
                         <div>
                           <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Z-Score</p>
-                          <p style={{ color: c.text1, fontSize: 15, fontWeight: 600, fontFamily: 'monospace' }}>
+                          <p
+                            style={{
+                              color: c.text1,
+                              fontSize: 15,
+                              fontWeight: 600,
+                              fontFamily: 'monospace',
+                            }}
+                          >
                             {selectedTestData.results.zScore.toFixed(3)}
                           </p>
                         </div>
                         <div>
                           <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>P-Value</p>
-                          <p style={{ color: c.text1, fontSize: 15, fontWeight: 600, fontFamily: 'monospace' }}>
+                          <p
+                            style={{
+                              color: c.text1,
+                              fontSize: 15,
+                              fontWeight: 600,
+                              fontFamily: 'monospace',
+                            }}
+                          >
                             {selectedTestData.results.pValue.toFixed(4)}
                           </p>
                         </div>
@@ -353,7 +444,9 @@ export default function ABTestDashboard() {
                           <div className="flex-1">
                             <p
                               style={{
-                                color: selectedTestData.results.hasSignificance ? '#10B981' : '#F59E0B',
+                                color: selectedTestData.results.hasSignificance
+                                  ? '#10B981'
+                                  : '#F59E0B',
                                 fontSize: 12,
                                 fontWeight: 600,
                                 marginBottom: 2,
@@ -375,21 +468,32 @@ export default function ABTestDashboard() {
                       {/* Sample Size Progress */}
                       <div>
                         <div className="flex items-center justify-between mb-2">
-                          <p style={{ color: c.text2, fontSize: 12 }}>
-                            Kích thước mẫu
-                          </p>
-                          <p style={{ color: c.text1, fontSize: 12, fontWeight: 600, fontFamily: 'monospace' }}>
-                            {selectedTestData.results.totalExposures} / {selectedTestData.test.minSampleSize}
+                          <p style={{ color: c.text2, fontSize: 12 }}>Kích thước mẫu</p>
+                          <p
+                            style={{
+                              color: c.text1,
+                              fontSize: 12,
+                              fontWeight: 600,
+                              fontFamily: 'monospace',
+                            }}
+                          >
+                            {selectedTestData.results.totalExposures} /{' '}
+                            {selectedTestData.test.minSampleSize}
                           </p>
                         </div>
-                        <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
+                        <div
+                          className="h-2 rounded-full overflow-hidden"
+                          style={{ background: c.surface2 }}
+                        >
                           <div
                             className="h-full transition-all"
                             style={{
                               width: `${Math.min(100, (selectedTestData.results.totalExposures / selectedTestData.test.minSampleSize) * 100)}%`,
-                              background: selectedTestData.results.totalExposures >= selectedTestData.test.minSampleSize
-                                ? '#10B981'
-                                : '#3B82F6',
+                              background:
+                                selectedTestData.results.totalExposures >=
+                                selectedTestData.test.minSampleSize
+                                  ? '#10B981'
+                                  : '#3B82F6',
                             }}
                           />
                         </div>
@@ -409,9 +513,7 @@ export default function ABTestDashboard() {
               <p style={{ color: c.text2, fontSize: φ.base, fontWeight: 600, marginBottom: 8 }}>
                 Chưa có A/B test nào
               </p>
-              <p style={{ color: c.text3, fontSize: φ.sm }}>
-                Tạo test mới để bắt đầu thử nghiệm
-              </p>
+              <p style={{ color: c.text3, fontSize: φ.sm }}>Tạo test mới để bắt đầu thử nghiệm</p>
             </div>
           </TrCard>
         )}

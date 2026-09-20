@@ -98,7 +98,7 @@ describe('TrCard', () => {
       renderWithTheme(
         <TrCard as="button" onClick={handleClick}>
           Click me
-        </TrCard>
+        </TrCard>,
       );
       const button = screen.getByText('Click me');
       button.click();
@@ -107,11 +107,7 @@ describe('TrCard', () => {
 
     it('should handle onMouseEnter events', () => {
       const handleMouseEnter = vi.fn();
-      renderWithTheme(
-        <TrCard onMouseEnter={handleMouseEnter}>
-          Hover me
-        </TrCard>
-      );
+      renderWithTheme(<TrCard onMouseEnter={handleMouseEnter}>Hover me</TrCard>);
       const card = screen.getByText('Hover me');
       fireEvent.mouseEnter(card);
       expect(handleMouseEnter).toHaveBeenCalledTimes(1);
@@ -122,7 +118,7 @@ describe('TrCard', () => {
     it('should apply accent border when provided', () => {
       const accentColor = 'rgba(16, 185, 129, 0.2)';
       const { container } = renderWithTheme(
-        <TrCard accentBorder="rgba(16,185,129,0.2)">Accent</TrCard>
+        <TrCard accentBorder="rgba(16,185,129,0.2)">Accent</TrCard>,
       );
       const card = container.firstChild as HTMLElement;
       expect(card.style.border).toContain(accentColor);
@@ -130,7 +126,7 @@ describe('TrCard', () => {
 
     it('should merge custom styles with variant styles', () => {
       const { container } = renderWithTheme(
-        <TrCard style={{ padding: '20px', margin: '10px' }}>Custom</TrCard>
+        <TrCard style={{ padding: '20px', margin: '10px' }}>Custom</TrCard>,
       );
       const card = container.firstChild as HTMLElement;
       expect(card.style.padding).toBe('20px');
@@ -139,9 +135,7 @@ describe('TrCard', () => {
     });
 
     it('should apply additional className', () => {
-      const { container } = renderWithTheme(
-        <TrCard className="custom-class">Content</TrCard>
-      );
+      const { container } = renderWithTheme(<TrCard className="custom-class">Content</TrCard>);
       const card = container.firstChild as HTMLElement;
       expect(card.className).toContain('custom-class');
     });
@@ -165,7 +159,7 @@ describe('TrCard', () => {
       const { container } = renderWithTheme(
         <TrCard as="button" aria-label="Custom Card">
           Content
-        </TrCard>
+        </TrCard>,
       );
       const card = container.firstChild as HTMLElement;
       expect(card.getAttribute('aria-label')).toBe('Custom Card');
@@ -184,7 +178,7 @@ describe('TrCard', () => {
           <div>Child 1</div>
           <div>Child 2</div>
           <div>Child 3</div>
-        </TrCard>
+        </TrCard>,
       );
       expect(screen.getByText('Child 1')).toBeInTheDocument();
       expect(screen.getByText('Child 2')).toBeInTheDocument();
@@ -199,7 +193,7 @@ describe('TrCard', () => {
             <p>Description</p>
             <button>Action</button>
           </div>
-        </TrCard>
+        </TrCard>,
       );
       expect(screen.getByText('Title')).toBeInTheDocument();
       expect(screen.getByText('Description')).toBeInTheDocument();

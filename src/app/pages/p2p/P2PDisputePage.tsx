@@ -37,7 +37,9 @@ export function P2PDisputePage() {
   const mountedRef = useRef(true);
 
   useEffect(() => {
-    return () => { mountedRef.current = false; };
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   const handleSubmit = () => {
@@ -57,7 +59,10 @@ export function P2PDisputePage() {
       <div className="px-5 py-4">
         <TrCard rounded="lg" className="p-4" style={{ background: hexToRgba('#EF4444', 10) }}>
           <div className="flex items-start gap-3">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: hexToRgba('#EF4444', 20) }}>
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+              style={{ background: hexToRgba('#EF4444', 20) }}
+            >
               <AlertTriangle size={24} color="#EF4444" />
             </div>
             <div className="flex-1">
@@ -73,19 +78,32 @@ export function P2PDisputePage() {
       </div>
 
       <div className="px-5 mb-6">
-        <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700, marginBottom: 12 }}>Lý do tranh chấp</h3>
+        <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700, marginBottom: 12 }}>
+          Lý do tranh chấp
+        </h3>
         <div className="flex flex-col gap-2">
-          {REASONS.map(r => (
+          {REASONS.map((r) => (
             <button
               key={r}
-              onClick={() => { hapticSelection(); setReason(r); }}
+              onClick={() => {
+                hapticSelection();
+                setReason(r);
+              }}
               className="p-3 rounded-lg text-left"
               style={{
-                background: reason === r ? hexToRgba('#3B82F6', 12) : c.surface1,
+                background: reason === r ? hexToRgba('#3B82F6', 12) : c.surface,
                 border: `1px solid ${reason === r ? '#3B82F6' : c.borderSolid}`,
               }}
             >
-              <p style={{ color: reason === r ? '#3B82F6' : c.text1, fontSize: φ.xs, fontWeight: 600 }}>{r}</p>
+              <p
+                style={{
+                  color: reason === r ? '#3B82F6' : c.text1,
+                  fontSize: φ.xs,
+                  fontWeight: 600,
+                }}
+              >
+                {r}
+              </p>
             </button>
           ))}
         </div>
@@ -97,13 +115,14 @@ export function P2PDisputePage() {
           placeholder="Mô tả vấn đề, bao gồm: thời gian, số tiền, bằng chứng..."
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          multiline
-          rows={6}
         />
       </div>
 
       <div className="px-5 mb-6">
-        <button className="w-full p-4 rounded-xl border-2 border-dashed flex flex-col items-center gap-2" style={{ borderColor: c.borderSolid, background: c.surface1 }}>
+        <button
+          className="w-full p-4 rounded-xl border-2 border-dashed flex flex-col items-center gap-2"
+          style={{ borderColor: c.borderSolid, background: c.surface }}
+        >
           <Upload size={24} color={c.text3} />
           <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>Upload bằng chứng</p>
           <p style={{ color: c.text3, fontSize: 10 }}>Screenshots, chat logs, payment receipts</p>

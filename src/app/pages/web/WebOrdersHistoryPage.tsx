@@ -216,7 +216,8 @@ export function WebOrdersHistoryPage() {
       if (statusFilter !== 'all' && order.status !== statusFilter) return false;
       if (typeFilter !== 'all' && order.type !== typeFilter) return false;
       if (sideFilter !== 'all' && order.side !== sideFilter) return false;
-      if (searchQuery && !order.pair.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+      if (searchQuery && !order.pair.toLowerCase().includes(searchQuery.toLowerCase()))
+        return false;
       return true;
     });
   }, [statusFilter, typeFilter, sideFilter, searchQuery]);
@@ -226,7 +227,10 @@ export function WebOrdersHistoryPage() {
     const open = MOCK_ORDERS.filter((o) => o.status === 'open').length;
     const filled = MOCK_ORDERS.filter((o) => o.status === 'filled').length;
     const cancelled = MOCK_ORDERS.filter((o) => o.status === 'cancelled').length;
-    const totalVolume = MOCK_ORDERS.filter((o) => o.status === 'filled').reduce((sum, o) => sum + o.total, 0);
+    const totalVolume = MOCK_ORDERS.filter((o) => o.status === 'filled').reduce(
+      (sum, o) => sum + o.total,
+      0,
+    );
     return { open, filled, cancelled, totalVolume };
   }, []);
 
@@ -281,7 +285,6 @@ export function WebOrdersHistoryPage() {
         }
       />
       <div style={{ maxWidth: 1600, margin: '0 auto', padding: `${WEB_SPACING.cardRelaxed}px` }}>
-
         {/* ─── Stats Cards ─── */}
         <div className="grid grid-cols-4 gap-4 mb-6">
           <div
@@ -291,12 +294,8 @@ export function WebOrdersHistoryPage() {
               border: `1px solid ${c.border}`,
             }}
           >
-            <p style={{ fontSize: WEB_FONT.sm, color: c.text3, marginBottom: 8 }}>
-              Lệnh chờ
-            </p>
-            <p style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: '#3B82F6' }}>
-              {stats.open}
-            </p>
+            <p style={{ fontSize: WEB_FONT.sm, color: c.text3, marginBottom: 8 }}>Lệnh chờ</p>
+            <p style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: '#3B82F6' }}>{stats.open}</p>
           </div>
 
           <div
@@ -306,9 +305,7 @@ export function WebOrdersHistoryPage() {
               border: `1px solid ${c.border}`,
             }}
           >
-            <p style={{ fontSize: WEB_FONT.sm, color: c.text3, marginBottom: 8 }}>
-              Đã khớp
-            </p>
+            <p style={{ fontSize: WEB_FONT.sm, color: c.text3, marginBottom: 8 }}>Đã khớp</p>
             <p style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: '#10B981' }}>
               {stats.filled}
             </p>
@@ -321,9 +318,7 @@ export function WebOrdersHistoryPage() {
               border: `1px solid ${c.border}`,
             }}
           >
-            <p style={{ fontSize: WEB_FONT.sm, color: c.text3, marginBottom: 8 }}>
-              Đã hủy
-            </p>
+            <p style={{ fontSize: WEB_FONT.sm, color: c.text3, marginBottom: 8 }}>Đã hủy</p>
             <p style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text3 }}>
               {stats.cancelled}
             </p>
@@ -514,23 +509,32 @@ export function WebOrdersHistoryPage() {
               background: c.bg,
             }}
           >
-            {['Mã lệnh', 'Cặp', 'Hướng', 'Loại', 'Giá', 'Số lượng', 'Đã khớp', 'Tổng', 'Thời gian', 'Trạng thái'].map(
-              (label) => (
-                <div
-                  key={label}
-                  className="flex items-center"
-                  style={{
-                    fontSize: WEB_FONT.xs,
-                    fontWeight: 700,
-                    color: c.text3,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px',
-                  }}
-                >
-                  {label}
-                </div>
-              )
-            )}
+            {[
+              'Mã lệnh',
+              'Cặp',
+              'Hướng',
+              'Loại',
+              'Giá',
+              'Số lượng',
+              'Đã khớp',
+              'Tổng',
+              'Thời gian',
+              'Trạng thái',
+            ].map((label) => (
+              <div
+                key={label}
+                className="flex items-center"
+                style={{
+                  fontSize: WEB_FONT.xs,
+                  fontWeight: 700,
+                  color: c.text3,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                }}
+              >
+                {label}
+              </div>
+            ))}
           </div>
 
           {/* Table Body */}
@@ -561,10 +565,12 @@ export function WebOrdersHistoryPage() {
                     key={order.id}
                     className="grid cursor-pointer transition-all hover:bg-opacity-50"
                     style={{
-                      gridTemplateColumns: '140px 100px 100px 100px 120px 120px 120px 120px 140px 100px',
+                      gridTemplateColumns:
+                        '140px 100px 100px 100px 120px 120px 120px 120px 140px 100px',
                       padding: '0 20px',
                       height: WEB_SPACING.rowDefault,
-                      borderBottom: idx < filteredOrders.length - 1 ? `1px solid ${c.divider}` : 'none',
+                      borderBottom:
+                        idx < filteredOrders.length - 1 ? `1px solid ${c.divider}` : 'none',
                     }}
                     onClick={() => setSelectedOrder(order)}
                   >
@@ -626,7 +632,11 @@ export function WebOrdersHistoryPage() {
                           background: c.bg,
                         }}
                       >
-                        {order.type === 'market' ? 'Market' : order.type === 'limit' ? 'Limit' : 'Stop Limit'}
+                        {order.type === 'market'
+                          ? 'Market'
+                          : order.type === 'limit'
+                            ? 'Limit'
+                            : 'Stop Limit'}
                       </span>
                     </div>
 
@@ -750,12 +760,12 @@ export function WebOrdersHistoryPage() {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text1, marginBottom: 16 }}>
+            <h3
+              style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text1, marginBottom: 16 }}
+            >
               Chi tiết lệnh: {selectedOrder.id}
             </h3>
-            <p style={{ fontSize: WEB_FONT.sm, color: c.text3 }}>
-              Coming soon...
-            </p>
+            <p style={{ fontSize: WEB_FONT.sm, color: c.text3 }}>Coming soon...</p>
             <button
               onClick={() => setSelectedOrder(null)}
               className="mt-6 rounded-xl w-full"

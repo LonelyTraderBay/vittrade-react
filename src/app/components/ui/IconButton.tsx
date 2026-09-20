@@ -20,12 +20,12 @@ import { useThemeColors } from '../../hooks/useThemeColors';
 
 /* ─── Types ─── */
 
-export type IconButtonVariant = 
-  | 'default'      // Transparent with text color
-  | 'ghost'        // Surface2 background
-  | 'primary'      // Primary color
-  | 'success'      // Success color
-  | 'danger'       // Danger color
+export type IconButtonVariant =
+  | 'default' // Transparent with text color
+  | 'ghost' // Surface2 background
+  | 'primary' // Primary color
+  | 'success' // Success color
+  | 'danger' // Danger color
   | 'transparent'; // No background, no border
 
 export type IconButtonSize = 'sm' | 'md' | 'lg';
@@ -33,31 +33,31 @@ export type IconButtonSize = 'sm' | 'md' | 'lg';
 export interface IconButtonProps {
   /** Icon component from lucide-react */
   icon: LucideIcon;
-  
+
   /** Optional label text */
   label?: string;
-  
+
   /** Click handler */
   onClick?: () => void;
-  
+
   /** Visual variant */
   variant?: IconButtonVariant;
-  
+
   /** Size variant */
   size?: IconButtonSize;
-  
+
   /** Disabled state */
   disabled?: boolean;
-  
+
   /** Loading state */
   loading?: boolean;
-  
+
   /** Custom className */
   className?: string;
-  
+
   /** Custom style */
   style?: React.CSSProperties;
-  
+
   /** ARIA label for accessibility */
   'aria-label'?: string;
 }
@@ -202,7 +202,7 @@ export function IconButton({
 export interface IconOnlyButtonProps extends Omit<IconButtonProps, 'label'> {
   /** Icon component */
   icon: LucideIcon;
-  
+
   /** Required ARIA label for accessibility */
   'aria-label': string;
 }
@@ -221,16 +221,16 @@ import { ArrowLeft, ChevronLeft } from 'lucide-react';
 export interface BackButtonProps {
   /** Click handler */
   onClick: () => void;
-  
+
   /** Use ChevronLeft instead of ArrowLeft */
   useChevron?: boolean;
-  
+
   /** Custom label */
   label?: string;
-  
+
   /** Size variant */
   size?: IconButtonSize;
-  
+
   /** Custom className */
   className?: string;
 }
@@ -265,13 +265,13 @@ import { X } from 'lucide-react';
 export interface CloseButtonProps {
   /** Click handler */
   onClick: () => void;
-  
+
   /** Size variant */
   size?: IconButtonSize;
-  
+
   /** Custom className */
   className?: string;
-  
+
   /** Custom label */
   label?: string;
 }
@@ -279,12 +279,7 @@ export interface CloseButtonProps {
 /**
  * Specialized close button (common pattern)
  */
-export function CloseButton({
-  onClick,
-  size = 'md',
-  className,
-  label,
-}: CloseButtonProps) {
+export function CloseButton({ onClick, size = 'md', className, label }: CloseButtonProps) {
   return (
     <IconButton
       icon={X}

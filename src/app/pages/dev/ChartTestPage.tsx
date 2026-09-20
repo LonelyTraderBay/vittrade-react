@@ -10,33 +10,46 @@ import { PageLayout } from '../../components/layout/PageLayout';
 import { PageContent } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { MiniChart } from '../../../components/trading/MiniChart';
-import { ChartPerformanceMonitor, analyzeChartBundleSize } from '../../../components/trading/ChartPerformanceMonitor';
-import { PAIR_CONFIGS } from '../../../utils/chartDataGenerator';
-import { useThemeColors } from '../../../hooks/useThemeColors';
+import {
+  ChartPerformanceMonitor,
+  analyzeChartBundleSize,
+} from '../../../components/trading/ChartPerformanceMonitor';
+import { getPairConfig } from '../../../utils/chartDataGenerator';
+import { useThemeColors } from '../../hooks/useThemeColors';
 import { TrCard } from '../../components/ui/TrCard';
-import { φ } from '../../../utils/golden';
+import { φ } from '../../utils/golden';
+
+// Pair ids mirror PAIR_CONFIGS keys in utils/chartDataGenerator (map itself is not exported)
+const PAIR_IDS = [
+  'btcusdt',
+  'ethusdt',
+  'bnbusdt',
+  'solusdt',
+  'xrpusdt',
+  'adausdt',
+  'dogeusdt',
+  'dotusdt',
+  'maticusdt',
+  'linkusdt',
+];
 
 export function ChartTestPage() {
   const c = useThemeColors();
   const [showPerf, setShowPerf] = useState(false);
 
-  const pairs = Object.keys(PAIR_CONFIGS);
+  const pairs = PAIR_IDS;
 
   return (
     <PageLayout>
       <Header title="Chart Test Suite" back />
-      
+
       <PageContent gap="relaxed">
         {/* Controls */}
         <TrCard>
           <div className="flex items-center justify-between">
             <div>
-              <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
-                Performance Monitor
-              </p>
-              <p style={{ color: c.text3, fontSize: φ.xs }}>
-                Show render times
-              </p>
+              <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Performance Monitor</p>
+              <p style={{ color: c.text3, fontSize: φ.xs }}>Show render times</p>
             </div>
             <button
               onClick={() => setShowPerf(!showPerf)}
@@ -51,7 +64,7 @@ export function ChartTestPage() {
               {showPerf ? 'ON' : 'OFF'}
             </button>
           </div>
-          
+
           <button
             onClick={() => analyzeChartBundleSize()}
             className="w-full mt-3 px-4 py-2 rounded-lg"
@@ -67,22 +80,18 @@ export function ChartTestPage() {
         </TrCard>
 
         {/* Test Grid */}
-        <div style={{ color: c.text1, fontSize: φ.md, fontWeight: 700 }}>
-          All Trading Pairs
-        </div>
+        <div style={{ color: c.text1, fontSize: φ.md, fontWeight: 700 }}>All Trading Pairs</div>
 
         <div className="space-y-4">
           {pairs.map((pairId) => {
-            const config = PAIR_CONFIGS[pairId];
+            const config = getPairConfig(pairId);
             const symbol = pairId.split('-')[0].toUpperCase();
-            
+
             return (
               <div key={pairId}>
                 {/* Pair Info */}
                 <div className="mb-2">
-                  <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
-                    {symbol}/USDT
-                  </p>
+                  <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>{symbol}/USDT</p>
                   <div className="flex gap-4 mt-1">
                     <span style={{ color: c.text3, fontSize: φ.xs }}>
                       Base: ${config.basePrice.toLocaleString()}
@@ -119,9 +128,7 @@ export function ChartTestPage() {
         <div className="space-y-4">
           {[100, 120, 140, 160].map((height) => (
             <div key={height}>
-              <p style={{ color: c.text3, fontSize: φ.xs, marginBottom: 8 }}>
-                Height: {height}px
-              </p>
+              <p style={{ color: c.text3, fontSize: φ.xs, marginBottom: 8 }}>Height: {height}px</p>
               <MiniChart
                 pairId="btc-usdt"
                 height={height}
@@ -140,9 +147,7 @@ export function ChartTestPage() {
 
         <div className="space-y-4">
           <div>
-            <p style={{ color: c.text3, fontSize: φ.xs, marginBottom: 8 }}>
-              No Volume
-            </p>
+            <p style={{ color: c.text3, fontSize: φ.xs, marginBottom: 8 }}>No Volume</p>
             <MiniChart
               pairId="btc-usdt"
               height={120}
@@ -153,9 +158,7 @@ export function ChartTestPage() {
           </div>
 
           <div>
-            <p style={{ color: c.text3, fontSize: φ.xs, marginBottom: 8 }}>
-              No Price Line
-            </p>
+            <p style={{ color: c.text3, fontSize: φ.xs, marginBottom: 8 }}>No Price Line</p>
             <MiniChart
               pairId="btc-usdt"
               height={120}
@@ -205,9 +208,7 @@ export function ChartTestPage() {
             </div>
             <div className="flex justify-between">
               <span style={{ color: c.text3, fontSize: φ.xs }}>Touch Response</span>
-              <span style={{ color: '#10B981', fontSize: φ.xs, fontWeight: 600 }}>
-                Instant ✅
-              </span>
+              <span style={{ color: '#10B981', fontSize: φ.xs, fontWeight: 600 }}>Instant ✅</span>
             </div>
           </div>
         </TrCard>

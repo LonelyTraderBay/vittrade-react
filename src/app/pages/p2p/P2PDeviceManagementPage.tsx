@@ -10,9 +10,19 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Smartphone, Monitor, Tablet, MapPin, Clock, Shield,
-  CheckCircle, XCircle, AlertTriangle, Trash2, Info,
-  ChevronRight, X,
+  Smartphone,
+  Monitor,
+  Tablet,
+  MapPin,
+  Clock,
+  Shield,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  Trash2,
+  Info,
+  ChevronRight,
+  X,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Header } from '../../components/layout/Header';
@@ -164,9 +174,7 @@ function DeviceCard({
 
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
-                {device.name}
-              </h3>
+              <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>{device.name}</h3>
               {device.isCurrent && (
                 <span
                   className="px-2 py-0.5 rounded-md text-xs font-bold"
@@ -188,20 +196,14 @@ function DeviceCard({
 
             <div className="flex items-center gap-2">
               <MapPin size={10} color={c.text3} />
-              <p style={{ color: c.text3, fontSize: 10 }}>
-                {device.location}
-              </p>
+              <p style={{ color: c.text3, fontSize: 10 }}>{device.location}</p>
               <span style={{ color: c.text3, fontSize: 10 }}>•</span>
               <Clock size={10} color={c.text3} />
-              <p style={{ color: c.text3, fontSize: 10 }}>
-                {device.lastActive}
-              </p>
+              <p style={{ color: c.text3, fontSize: 10 }}>{device.lastActive}</p>
             </div>
           </div>
 
-          {!device.isTrusted && !device.isCurrent && (
-            <AlertTriangle size={18} color="#F59E0B" />
-          )}
+          {!device.isTrusted && !device.isCurrent && <AlertTriangle size={18} color="#F59E0B" />}
         </div>
       </button>
 
@@ -219,7 +221,14 @@ function DeviceCard({
               <div className="grid grid-cols-2 gap-3 mb-4">
                 <div>
                   <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>IP Address</p>
-                  <p style={{ color: c.text1, fontSize: 11, fontFamily: 'monospace', fontWeight: 600 }}>
+                  <p
+                    style={{
+                      color: c.text1,
+                      fontSize: 11,
+                      fontFamily: 'monospace',
+                      fontWeight: 600,
+                    }}
+                  >
                     {device.ip}
                   </p>
                 </div>
@@ -231,7 +240,14 @@ function DeviceCard({
                 </div>
                 <div className="col-span-2">
                   <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Fingerprint</p>
-                  <p style={{ color: c.text1, fontSize: 10, fontFamily: 'monospace', fontWeight: 600 }}>
+                  <p
+                    style={{
+                      color: c.text1,
+                      fontSize: 10,
+                      fontFamily: 'monospace',
+                      fontWeight: 600,
+                    }}
+                  >
                     {device.fingerprint}
                   </p>
                 </div>
@@ -311,47 +327,34 @@ export function P2PDeviceManagementPage() {
   const [devices, setDevices] = useState<Device[]>(MOCK_DEVICES);
   const [confirmRemove, setConfirmRemove] = useState<string | null>(null);
 
-  const { isRefreshing, handleRefresh } = useRefresh({
-    onRefresh: async () => {
-      await new Promise(res => setTimeout(res, 1000));
-      hapticSuccess();
-    },
-  });
+  const { isRefreshing, refresh: handleRefresh } = useRefresh();
 
   const handleTrust = (deviceId: string) => {
-    setDevices(prev =>
-      prev.map(d => (d.id === deviceId ? { ...d, isTrusted: true } : d))
-    );
+    setDevices((prev) => prev.map((d) => (d.id === deviceId ? { ...d, isTrusted: true } : d)));
     hapticSuccess();
     toast.success('Đã đánh dấu thiết bị tin cậy');
   };
 
   const handleRevoke = (deviceId: string) => {
-    setDevices(prev =>
-      prev.map(d => (d.id === deviceId ? { ...d, isTrusted: false } : d))
-    );
+    setDevices((prev) => prev.map((d) => (d.id === deviceId ? { ...d, isTrusted: false } : d)));
     hapticSuccess();
     toast.success('Đã hủy tin cậy thiết bị');
   };
 
   const handleRemove = (deviceId: string) => {
-    setDevices(prev => prev.filter(d => d.id !== deviceId));
+    setDevices((prev) => prev.filter((d) => d.id !== deviceId));
     setConfirmRemove(null);
     hapticError();
     toast.success('Đã xóa thiết bị');
   };
 
-  const trustedDevices = devices.filter(d => d.isTrusted);
-  const untrustedDevices = devices.filter(d => !d.isTrusted);
+  const trustedDevices = devices.filter((d) => d.isTrusted);
+  const untrustedDevices = devices.filter((d) => !d.isTrusted);
 
   return (
     <PullToRefresh onRefresh={handleRefresh} isRefreshing={isRefreshing}>
       <PageLayout>
-        <Header
-          title="Quản lý thiết bị"
-          subtitle="Bảo mật · P2P"
-          back
-        />
+        <Header title="Quản lý thiết bị" subtitle="Bảo mật · P2P" back />
 
         {/* Stats Card */}
         <div className="px-5 py-4">
@@ -403,7 +406,10 @@ export function P2PDeviceManagementPage() {
         <div className="px-5 mb-6">
           <div
             className="p-3 rounded-lg flex items-start gap-2"
-            style={{ background: hexToRgba('#3B82F6', 10), border: `1px solid ${hexToRgba('#3B82F6', 30)}` }}
+            style={{
+              background: hexToRgba('#3B82F6', 10),
+              border: `1px solid ${hexToRgba('#3B82F6', 30)}`,
+            }}
           >
             <Info size={14} color="#3B82F6" className="shrink-0 mt-0.5" />
             <div>
@@ -411,7 +417,8 @@ export function P2PDeviceManagementPage() {
                 Thiết bị tin cậy
               </p>
               <p style={{ color: c.text2, fontSize: 10, lineHeight: 1.5 }}>
-                Đánh dấu thiết bị tin cậy để giảm số lần xác thực 2FA. Chỉ đánh dấu thiết bị cá nhân của bạn.
+                Đánh dấu thiết bị tin cậy để giảm số lần xác thực 2FA. Chỉ đánh dấu thiết bị cá nhân
+                của bạn.
               </p>
             </div>
           </div>
@@ -425,7 +432,7 @@ export function P2PDeviceManagementPage() {
             </h3>
 
             <div className="flex flex-col gap-3">
-              {trustedDevices.map(device => (
+              {trustedDevices.map((device) => (
                 <DeviceCard
                   key={device.id}
                   device={device}
@@ -446,7 +453,7 @@ export function P2PDeviceManagementPage() {
             </h3>
 
             <div className="flex flex-col gap-3">
-              {untrustedDevices.map(device => (
+              {untrustedDevices.map((device) => (
                 <DeviceCard
                   key={device.id}
                   device={device}
@@ -464,9 +471,7 @@ export function P2PDeviceManagementPage() {
           <TrCard rounded="md" className="p-4">
             <div className="flex items-start gap-2 mb-3">
               <Shield size={16} color="#10B981" className="shrink-0 mt-0.5" />
-              <h4 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
-                Mẹo bảo mật
-              </h4>
+              <h4 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Mẹo bảo mật</h4>
             </div>
             <ul style={{ color: c.text2, fontSize: 11, lineHeight: 1.8, paddingLeft: 16 }}>
               <li>Kiểm tra thường xuyên danh sách thiết bị</li>
@@ -484,11 +489,11 @@ export function P2PDeviceManagementPage() {
           onConfirm={() => {
             if (confirmRemove) handleRemove(confirmRemove);
           }}
+          icon={null}
           title="Xóa thiết bị?"
-          message="Thiết bị này sẽ bị đăng xuất và cần đăng nhập lại. Bạn có chắc chắn?"
+          description={null}
           confirmText="Xóa"
           cancelText="Hủy"
-          type="danger"
         />
       </PageLayout>
     </PullToRefresh>

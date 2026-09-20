@@ -96,7 +96,7 @@ export function useTradeSettings() {
   }, []);
 
   const updateSettings = useCallback((patch: Partial<TradeSettings>) => {
-    setSettingsState(prev => {
+    setSettingsState((prev) => {
       const next = { ...prev, ...patch };
       saveSettings(next);
       return next;

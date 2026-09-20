@@ -27,11 +27,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Memoize context value to prevent unnecessary re-renders
   const value = useMemo(() => ({ theme, setTheme }), [theme, setTheme]);
 
-  return (
-    <ThemeContext.Provider value={value}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
 export function useTheme() {

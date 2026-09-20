@@ -31,7 +31,7 @@ export function useTourProgress({
   variant,
 }: UseTourProgressConfig) {
   const storageKey = `tour_progress_${tourId}`;
-  
+
   const [progress, setProgress, clearProgress] = useLocalStorage<TourProgress | null>(
     storageKey,
     null,
@@ -40,7 +40,7 @@ export function useTourProgress({
   // Initialize or resume progress
   const initProgress = useCallback((): TourProgress => {
     const now = new Date();
-    
+
     // If no existing progress, start fresh
     if (!progress) {
       const newProgress: TourProgress = {
@@ -59,7 +59,7 @@ export function useTourProgress({
     // Check if should resume or restart
     const lastVisit = new Date(progress.lastVisit);
     const hoursSinceLastVisit = (now.getTime() - lastVisit.getTime()) / (1000 * 60 * 60);
-    
+
     // If completed or skipped, offer fresh start
     if (progress.completed || progress.skipped) {
       const freshProgress: TourProgress = {
@@ -141,18 +141,21 @@ export function useTourProgress({
   }, [progress, initProgress, setProgress]);
 
   // Jump to specific step
-  const goToStep = useCallback((stepIndex: number) => {
-    const current = progress || initProgress();
-    if (stepIndex < 0 || stepIndex >= totalSteps) return current;
+  const goToStep = useCallback(
+    (stepIndex: number) => {
+      const current = progress || initProgress();
+      if (stepIndex < 0 || stepIndex >= totalSteps) return current;
 
-    const updated: TourProgress = {
-      ...current,
-      currentStep: stepIndex,
-      lastVisit: new Date().toISOString(),
-    };
-    setProgress(updated);
-    return updated;
-  }, [progress, totalSteps, initProgress, setProgress]);
+      const updated: TourProgress = {
+        ...current,
+        currentStep: stepIndex,
+        lastVisit: new Date().toISOString(),
+      };
+      setProgress(updated);
+      return updated;
+    },
+    [progress, totalSteps, initProgress, setProgress],
+  );
 
   // Mark as skipped
   const markSkipped = useCallback(() => {
@@ -183,11 +186,11 @@ export function useTourProgress({
   const shouldShowResumePrompt = useCallback((): boolean => {
     if (!progress || progress.completed || progress.skipped) return false;
     if (progress.currentStep === 0) return false;
-    
+
     const now = new Date();
     const lastVisit = new Date(progress.lastVisit);
     const hoursSinceLastVisit = (now.getTime() - lastVisit.getTime()) / (1000 * 60 * 60);
-    
+
     return hoursSinceLastVisit <= resumeWindowHours && progress.currentStep > 0;
   }, [progress, resumeWindowHours]);
 

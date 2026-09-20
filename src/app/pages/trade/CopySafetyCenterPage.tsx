@@ -2,19 +2,19 @@
  * ══════════════════════════════════════════════════════════════
  *  CopySafetyCenterPage — Phase 3: Trust & Safety Hub
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Provider verification explained
  * - Trust metrics breakdown (Sharpe, Max DD, slippage)
  * - Community guidelines
  * - Safety tools (block, report, emergency stop)
  * - Recent enforcement actions
- * 
+ *
  * Compliance:
  * - User education (consumer protection)
  * - Transparency in enforcement
  * - Clear reporting procedures
- * 
+ *
  * Guidelines:
  * - PageLayout + TabBar pattern
  * - Educational tone
@@ -23,9 +23,20 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { 
-  Shield, Info, AlertTriangle, BookOpen, Users, Flag, Ban,
-  ChevronDown, CheckCircle, XCircle, TrendingUp, Activity
+import {
+  Shield,
+  Info,
+  AlertTriangle,
+  BookOpen,
+  Users,
+  Flag,
+  Ban,
+  ChevronDown,
+  ChevronRight,
+  CheckCircle,
+  XCircle,
+  TrendingUp,
+  Activity,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -62,15 +73,8 @@ interface EnforcementAction {
 const VERIFICATION_TIERS: VerificationTier[] = [
   {
     tier: 'Basic',
-    requirements: [
-      'Email verification',
-      'Phone verification',
-      'KYC Level 1',
-    ],
-    benefits: [
-      'Can become provider',
-      'Basic provider features',
-    ],
+    requirements: ['Email verification', 'Phone verification', 'KYC Level 1'],
+    benefits: ['Can become provider', 'Basic provider features'],
     color: '#6B7280',
   },
   {
@@ -82,11 +86,7 @@ const VERIFICATION_TIERS: VerificationTier[] = [
       '$10,000 minimum capital',
       'Full disclosure obligations',
     ],
-    benefits: [
-      'Verified badge',
-      'Higher trust from followers',
-      'Advanced provider features',
-    ],
+    benefits: ['Verified badge', 'Higher trust from followers', 'Advanced provider features'],
     color: '#3B82F6',
   },
   {
@@ -99,12 +99,7 @@ const VERIFICATION_TIERS: VerificationTier[] = [
       'Sharpe Ratio > 1.5',
       'Monthly performance audit',
     ],
-    benefits: [
-      'Pro badge',
-      'Priority support',
-      'Featured in leaderboard',
-      'Premium analytics',
-    ],
+    benefits: ['Pro badge', 'Priority support', 'Featured in leaderboard', 'Premium analytics'],
     color: '#8B5CF6',
   },
 ];
@@ -126,7 +121,7 @@ const TRUST_METRICS: TrustMetric[] = [
   },
   {
     name: 'Slippage',
-    description: 'Difference between provider\'s price and your execution price.',
+    description: "Difference between provider's price and your execution price.",
     goodRange: '< 0.2% (excellent), 0.2-0.5% (acceptable)',
     badRange: '> 0.5% (poor execution)',
     whyMatters: 'High slippage eats into your returns, especially in volatile markets',
@@ -168,7 +163,7 @@ export function CopySafetyCenterPage() {
   const c = useThemeColors();
   const navigate = useNavigate();
   const prefix = useRoutePrefix();
-  
+
   const [activeTab, setActiveTab] = useState<TabType>('verification');
   const [expandedMetric, setExpandedMetric] = useState<string | null>(null);
 
@@ -178,9 +173,12 @@ export function CopySafetyCenterPage() {
 
       <PageContent gap="relaxed">
         {/* Hero Banner */}
-        <div className="p-4 rounded-2xl" style={{ background: c.primary + '22', border: `2px solid ${c.primary}` }}>
+        <div
+          className="p-4 rounded-2xl"
+          style={{ background: c.primary + '22', border: `2px solid ${c.primary}` }}
+        >
           <div className="flex gap-3">
-            <div 
+            <div
               className="w-12 h-12 rounded-full flex items-center justify-center shrink-0"
               style={{ background: c.primary }}
             >
@@ -218,7 +216,7 @@ export function CopySafetyCenterPage() {
               Provider verification tiers explained:
             </p>
 
-            {VERIFICATION_TIERS.map(tier => (
+            {VERIFICATION_TIERS.map((tier) => (
               <div
                 key={tier.tier}
                 className="p-4 rounded-2xl"
@@ -226,9 +224,7 @@ export function CopySafetyCenterPage() {
               >
                 <div className="flex items-center gap-2 mb-3">
                   <Shield size={20} color={tier.color} />
-                  <h4 style={{ color: tier.color, fontSize: 14, fontWeight: 700 }}>
-                    {tier.tier}
-                  </h4>
+                  <h4 style={{ color: tier.color, fontSize: 14, fontWeight: 700 }}>{tier.tier}</h4>
                 </div>
 
                 <div className="mb-3">
@@ -237,7 +233,10 @@ export function CopySafetyCenterPage() {
                   </p>
                   <ul className="space-y-1">
                     {tier.requirements.map((req, i) => (
-                      <li key={i} style={{ color: c.text3, fontSize: 10, lineHeight: 1.4, paddingLeft: 12 }}>
+                      <li
+                        key={i}
+                        style={{ color: c.text3, fontSize: 10, lineHeight: 1.4, paddingLeft: 12 }}
+                      >
                         • {req}
                       </li>
                     ))}
@@ -250,7 +249,10 @@ export function CopySafetyCenterPage() {
                   </p>
                   <ul className="space-y-1">
                     {tier.benefits.map((benefit, i) => (
-                      <li key={i} style={{ color: c.text3, fontSize: 10, lineHeight: 1.4, paddingLeft: 12 }}>
+                      <li
+                        key={i}
+                        style={{ color: c.text3, fontSize: 10, lineHeight: 1.4, paddingLeft: 12 }}
+                      >
                         ✓ {benefit}
                       </li>
                     ))}
@@ -259,11 +261,14 @@ export function CopySafetyCenterPage() {
               </div>
             ))}
 
-            <div className="p-3 rounded-xl" style={{ background: c.warningBg, border: `1px solid ${c.warningBorder}` }}>
+            <div
+              className="p-3 rounded-xl"
+              style={{ background: c.warningBg, border: `1px solid ${c.warningBorder}` }}
+            >
               <div className="flex items-start gap-2">
                 <AlertTriangle size={14} color={c.warningText} className="shrink-0 mt-0.5" />
                 <p style={{ color: c.warningText, fontSize: 10, lineHeight: 1.5 }}>
-                  <strong>Important:</strong> Verification badges confirm identity and track record, 
+                  <strong>Important:</strong> Verification badges confirm identity and track record,
                   but DO NOT guarantee future performance. Always check risk metrics before copying.
                 </p>
               </div>
@@ -277,29 +282,31 @@ export function CopySafetyCenterPage() {
               Understanding trust metrics:
             </p>
 
-            {TRUST_METRICS.map(metric => (
-              <div 
+            {TRUST_METRICS.map((metric) => (
+              <div
                 key={metric.name}
                 className="rounded-2xl overflow-hidden"
                 style={{ background: c.surface, border: `1px solid ${c.border}` }}
               >
                 <button
-                  onClick={() => setExpandedMetric(expandedMetric === metric.name ? null : metric.name)}
+                  onClick={() =>
+                    setExpandedMetric(expandedMetric === metric.name ? null : metric.name)
+                  }
                   className="w-full p-4 flex items-center justify-between"
                 >
                   <div className="text-left">
                     <p style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 2 }}>
                       {metric.name}
                     </p>
-                    <p style={{ color: c.text3, fontSize: 10 }}>
-                      {metric.description}
-                    </p>
+                    <p style={{ color: c.text3, fontSize: 10 }}>{metric.description}</p>
                   </div>
-                  <ChevronDown 
-                    size={16} 
+                  <ChevronDown
+                    size={16}
                     color={c.text3}
                     className="transition-transform shrink-0"
-                    style={{ transform: expandedMetric === metric.name ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                    style={{
+                      transform: expandedMetric === metric.name ? 'rotate(180deg)' : 'rotate(0deg)',
+                    }}
                   />
                 </button>
 
@@ -307,25 +314,42 @@ export function CopySafetyCenterPage() {
                   <div className="px-4 pb-4" style={{ borderTop: `1px solid ${c.border}` }}>
                     <div className="pt-3 space-y-3">
                       <div className="p-2 rounded-lg" style={{ background: '#10B98122' }}>
-                        <p style={{ color: '#10B981', fontSize: 10, fontWeight: 600, marginBottom: 2 }}>
+                        <p
+                          style={{
+                            color: '#10B981',
+                            fontSize: 10,
+                            fontWeight: 600,
+                            marginBottom: 2,
+                          }}
+                        >
                           ✓ Good Range
                         </p>
-                        <p style={{ color: '#10B981', fontSize: 10 }}>
-                          {metric.goodRange}
-                        </p>
+                        <p style={{ color: '#10B981', fontSize: 10 }}>{metric.goodRange}</p>
                       </div>
 
                       <div className="p-2 rounded-lg" style={{ background: '#EF444422' }}>
-                        <p style={{ color: '#EF4444', fontSize: 10, fontWeight: 600, marginBottom: 2 }}>
+                        <p
+                          style={{
+                            color: '#EF4444',
+                            fontSize: 10,
+                            fontWeight: 600,
+                            marginBottom: 2,
+                          }}
+                        >
                           ✗ Bad Range
                         </p>
-                        <p style={{ color: '#EF4444', fontSize: 10 }}>
-                          {metric.badRange}
-                        </p>
+                        <p style={{ color: '#EF4444', fontSize: 10 }}>{metric.badRange}</p>
                       </div>
 
                       <div className="p-2 rounded-lg" style={{ background: c.primary + '15' }}>
-                        <p style={{ color: c.primary, fontSize: 10, fontWeight: 600, marginBottom: 2 }}>
+                        <p
+                          style={{
+                            color: c.primary,
+                            fontSize: 10,
+                            fontWeight: 600,
+                            marginBottom: 2,
+                          }}
+                        >
                           Why It Matters
                         </p>
                         <p style={{ color: c.primary, fontSize: 10, lineHeight: 1.4 }}>
@@ -353,7 +377,7 @@ export function CopySafetyCenterPage() {
                   'Market manipulation',
                   'Misleading claims (guaranteed profits)',
                 ].map((item, i) => (
-                  <li 
+                  <li
                     key={i}
                     className="flex items-start gap-2 p-2 rounded-lg"
                     style={{ background: c.surface2 }}
@@ -375,7 +399,7 @@ export function CopySafetyCenterPage() {
                   'Report suspicious behavior immediately',
                   'Do not over-allocate to single provider',
                 ].map((item, i) => (
-                  <li 
+                  <li
                     key={i}
                     className="flex items-start gap-2 p-2 rounded-lg"
                     style={{ background: c.surface2 }}
@@ -415,9 +439,7 @@ export function CopySafetyCenterPage() {
                   <p style={{ color: c.text1, fontSize: 11, fontWeight: 600, marginBottom: 4 }}>
                     3. Investigation
                   </p>
-                  <p style={{ color: c.text3, fontSize: 10 }}>
-                    Team reviews within 24-48 hours
-                  </p>
+                  <p style={{ color: c.text3, fontSize: 10 }}>Team reviews within 24-48 hours</p>
                 </div>
 
                 <div className="p-3 rounded-lg" style={{ background: c.surface2 }}>
@@ -477,25 +499,29 @@ export function CopySafetyCenterPage() {
 
                 <button
                   onClick={() => {
-                    if (confirm('Are you sure you want to STOP ALL copying? This will close all positions immediately.')) {
+                    if (
+                      confirm(
+                        'Are you sure you want to STOP ALL copying? This will close all positions immediately.',
+                      )
+                    ) {
                       alert('Emergency stop activated! All copies stopped.');
                     }
                   }}
                   className="w-full p-4 rounded-xl flex items-center justify-between"
-                  style={{ background: c.dangerBg, border: `2px solid ${c.dangerText}` }}
+                  style={{ background: c.sellAlpha10, border: `2px solid ${c.error}` }}
                 >
                   <div className="flex items-center gap-3 text-left">
-                    <AlertTriangle size={20} color={c.dangerText} />
+                    <AlertTriangle size={20} color={c.error} />
                     <div>
-                      <p style={{ color: c.dangerText, fontSize: 13, fontWeight: 700, marginBottom: 2 }}>
+                      <p style={{ color: c.error, fontSize: 13, fontWeight: 700, marginBottom: 2 }}>
                         Emergency Stop All
                       </p>
-                      <p style={{ color: c.dangerText, fontSize: 10 }}>
+                      <p style={{ color: c.error, fontSize: 10 }}>
                         Immediately stop all copying and close positions
                       </p>
                     </div>
                   </div>
-                  <ChevronRight size={16} color={c.dangerText} />
+                  <ChevronRight size={16} color={c.error} />
                 </button>
               </div>
             </PageSection>
@@ -509,18 +535,22 @@ export function CopySafetyCenterPage() {
             </p>
 
             <div className="space-y-2">
-              {ENFORCEMENT_ACTIONS.map(action => (
+              {ENFORCEMENT_ACTIONS.map((action) => (
                 <div
                   key={action.id}
                   className="p-4 rounded-xl"
                   style={{ background: c.surface, border: `1px solid ${c.border}` }}
                 >
                   <div className="flex items-start gap-3">
-                    <div 
+                    <div
                       className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-                      style={{ 
-                        background: action.action === 'suspended' ? '#EF444422' : 
-                                   action.action === 'warned' ? '#F59E0B22' : '#10B98122'
+                      style={{
+                        background:
+                          action.action === 'suspended'
+                            ? '#EF444422'
+                            : action.action === 'warned'
+                              ? '#F59E0B22'
+                              : '#10B98122',
                       }}
                     >
                       {action.action === 'suspended' ? (
@@ -534,15 +564,23 @@ export function CopySafetyCenterPage() {
 
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <span 
+                        <span
                           className="px-2 py-0.5 rounded text-xs"
-                          style={{ 
-                            background: action.action === 'suspended' ? '#EF444422' : 
-                                       action.action === 'warned' ? '#F59E0B22' : '#10B98122',
-                            color: action.action === 'suspended' ? '#EF4444' : 
-                                   action.action === 'warned' ? '#F59E0B' : '#10B981',
+                          style={{
+                            background:
+                              action.action === 'suspended'
+                                ? '#EF444422'
+                                : action.action === 'warned'
+                                  ? '#F59E0B22'
+                                  : '#10B98122',
+                            color:
+                              action.action === 'suspended'
+                                ? '#EF4444'
+                                : action.action === 'warned'
+                                  ? '#F59E0B'
+                                  : '#10B981',
                             fontWeight: 600,
-                            textTransform: 'uppercase'
+                            textTransform: 'uppercase',
                           }}
                         >
                           {action.action}
@@ -562,10 +600,13 @@ export function CopySafetyCenterPage() {
               ))}
             </div>
 
-            <div className="p-3 rounded-xl" style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}>
+            <div
+              className="p-3 rounded-xl"
+              style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}
+            >
               <p style={{ color: c.primary, fontSize: 10, lineHeight: 1.5, textAlign: 'center' }}>
-                We take enforcement seriously. All actions are logged and transparent. 
-                If you believe an action was unfair, contact support.
+                We take enforcement seriously. All actions are logged and transparent. If you
+                believe an action was unfair, contact support.
               </p>
             </div>
           </div>

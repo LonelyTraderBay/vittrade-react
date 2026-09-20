@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import {
-  AlertTriangle, CheckCircle2, Info, Shield, Clock,
-  ChevronRight, Users, Lock,
+  AlertTriangle,
+  CheckCircle2,
+  Info,
+  Shield,
+  Clock,
+  ChevronRight,
+  Users,
+  Lock,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useRoutePrefix } from '../../hooks/useRoutePrefix';
@@ -20,8 +26,12 @@ import { SkeletonCard } from '../../components/states/SkeletonBlock';
 import { TOAST } from '../../data/toastMessages';
 import { φ } from '../../utils/golden';
 import {
-  getChallengeById, getRoomById, fmtPoints, MY_ARENA_STATS,
-  privacyLabel, roomStatusLabel,
+  getChallengeById,
+  getRoomById,
+  fmtPoints,
+  MY_ARENA_STATS,
+  privacyLabel,
+  roomStatusLabel,
 } from '../../data/arenaData';
 
 /* ═══════════════════════════════════════════
@@ -42,7 +52,15 @@ function JoinSkeleton() {
    Checkbox Component (≥44pt tap target)
    ═══════════════════════════════════════════ */
 
-function Checkbox({ checked, onChange, label }: { checked: boolean; onChange: () => void; label: string }) {
+function Checkbox({
+  checked,
+  onChange,
+  label,
+}: {
+  checked: boolean;
+  onChange: () => void;
+  label: string;
+}) {
   const c = useThemeColors();
   return (
     <button
@@ -75,7 +93,9 @@ export function ArenaJoinPage() {
   const prefix = useRoutePrefix();
   const actionToast = useActionToast();
   const { hapticSelection } = useHaptic();
-  const { isLoading, refresh, lastRefreshedLabel, refreshCount } = useLoadingState({ initialDelay: 300 });
+  const { isLoading, refresh, lastRefreshedLabel, refreshCount } = useLoadingState({
+    initialDelay: 300,
+  });
 
   const [readRules, setReadRules] = useState(false);
   const [understandPoints, setUnderstandPoints] = useState(false);
@@ -88,7 +108,11 @@ export function ArenaJoinPage() {
     return (
       <PageLayout>
         <Header title="Tham gia" subtitle="Thử thách · Open Arena" back />
-        <EmptyState icon={AlertTriangle} title="Không tìm thấy" subtitle="Challenge không tồn tại hoặc đã bị xoá" />
+        <EmptyState
+          icon={AlertTriangle}
+          title="Không tìm thấy"
+          subtitle="Challenge không tồn tại hoặc đã bị xoá"
+        />
       </PageLayout>
     );
   }
@@ -101,7 +125,10 @@ export function ArenaJoinPage() {
   const endAt = challenge?.endAt ?? room?.endsAt ?? '';
   const creatorName = challenge?.creator.name ?? room?.creator.name ?? '';
   const creatorAvatar = challenge?.creator.avatar ?? room?.creator.avatar ?? '';
-  const rules = challenge?.rules ?? ['Luật do người tạo quy định', 'Entry points bị trừ khi tham gia'];
+  const rules = challenge?.rules ?? [
+    'Luật do người tạo quy định',
+    'Entry points bị trừ khi tham gia',
+  ];
   const slotsTotal = challenge?.slotsTotal ?? room?.slotsTotal ?? 0;
   const slotsFilled = challenge?.slotsFilled ?? room?.slotsFilled ?? 0;
 
@@ -114,7 +141,9 @@ export function ArenaJoinPage() {
 
   // Time left
   const endDate = endAt ? new Date(endAt) : null;
-  const daysLeft = endDate ? Math.max(0, Math.ceil((endDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24))) : 0;
+  const daysLeft = endDate
+    ? Math.max(0, Math.ceil((endDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+    : 0;
 
   const handleJoin = () => {
     hapticSelection();
@@ -129,15 +158,23 @@ export function ArenaJoinPage() {
   };
 
   return (
-    <PullToRefresh onRefresh={refresh} lastRefreshedLabel={lastRefreshedLabel} refreshCount={refreshCount} className="pb-8">
+    <PullToRefresh
+      onRefresh={refresh}
+      lastRefreshedLabel={lastRefreshedLabel}
+      refreshCount={refreshCount}
+      className="pb-8"
+    >
       <Header title="Tham gia challenge" subtitle="Đăng ký · Open Arena" back />
 
-      {isLoading ? <JoinSkeleton /> : (
+      {isLoading ? (
+        <JoinSkeleton />
+      ) : (
         <PageContent gap="default">
-
           {/* ─── Challenge Summary ─── */}
           <TrCard className="p-4">
-            <p style={{ color: c.text1, fontSize: φ.base, fontWeight: 700, marginBottom: 4 }}>{title}</p>
+            <p style={{ color: c.text1, fontSize: φ.base, fontWeight: 700, marginBottom: 4 }}>
+              {title}
+            </p>
             <div className="flex items-center gap-2 flex-wrap">
               <span style={{ color: '#8B5CF6', fontSize: φ.xs, fontWeight: 600 }}>{modeName}</span>
               <span style={{ color: c.text3, fontSize: φ.xs }}>·</span>
@@ -150,7 +187,10 @@ export function ArenaJoinPage() {
             <div className="flex flex-col gap-3">
               <div className="flex items-center justify-between">
                 <span style={{ color: c.text3, fontSize: φ.xs }}>Quyền riêng tư</span>
-                <span className="flex items-center gap-1" style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
+                <span
+                  className="flex items-center gap-1"
+                  style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}
+                >
                   {pr.icon} {pr.label}
                 </span>
               </div>
@@ -171,8 +211,10 @@ export function ArenaJoinPage() {
 
           {/* ─── Creator / Host Info ─── */}
           <TrCard className="p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-              style={{ background: c.surface2, fontSize: 20 }}>
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+              style={{ background: c.surface2, fontSize: 20 }}
+            >
               {creatorAvatar}
             </div>
             <div className="flex-1 min-w-0">
@@ -183,11 +225,15 @@ export function ArenaJoinPage() {
 
           {/* ─── Rule Summary ─── */}
           <TrCard className="p-4">
-            <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 600, marginBottom: 8 }}>Tóm tắt luật</p>
+            <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 600, marginBottom: 8 }}>
+              Tóm tắt luật
+            </p>
             <div className="flex flex-col gap-2">
               {rules.slice(0, 4).map((rule, i) => (
                 <div key={i} className="flex items-start gap-2">
-                  <span style={{ color: '#8B5CF6', fontSize: φ.xs, fontWeight: 700, minWidth: 16 }}>{i + 1}.</span>
+                  <span style={{ color: '#8B5CF6', fontSize: φ.xs, fontWeight: 700, minWidth: 16 }}>
+                    {i + 1}.
+                  </span>
                   <span style={{ color: c.text2, fontSize: φ.xs, lineHeight: 1.5 }}>{rule}</span>
                 </div>
               ))}
@@ -201,19 +247,48 @@ export function ArenaJoinPage() {
           <TrCard className="p-4">
             <div className="flex items-center justify-between mb-3">
               <span style={{ color: c.text2, fontSize: φ.sm }}>Số dư Arena Points</span>
-              <span style={{ color: hasEnough ? '#10B981' : '#EF4444', fontSize: φ.base, fontWeight: 700, fontFamily: 'monospace' }}>
+              <span
+                style={{
+                  color: hasEnough ? '#10B981' : '#EF4444',
+                  fontSize: φ.base,
+                  fontWeight: 700,
+                  fontFamily: 'monospace',
+                }}
+              >
                 {fmtPoints(balance)} pts
               </span>
             </div>
-            <div className="flex items-center justify-between mb-3" style={{ borderTop: `1px solid ${c.divider}`, paddingTop: 12 }}>
+            <div
+              className="flex items-center justify-between mb-3"
+              style={{ borderTop: `1px solid ${c.divider}`, paddingTop: 12 }}
+            >
               <span style={{ color: c.text2, fontSize: φ.sm }}>Entry Points</span>
-              <span style={{ color: '#F59E0B', fontSize: φ.base, fontWeight: 700, fontFamily: 'monospace' }}>
+              <span
+                style={{
+                  color: '#F59E0B',
+                  fontSize: φ.base,
+                  fontWeight: 700,
+                  fontFamily: 'monospace',
+                }}
+              >
                 -{fmtPoints(entryPoints)} pts
               </span>
             </div>
-            <div className="flex items-center justify-between" style={{ borderTop: `1px solid ${c.divider}`, paddingTop: 12 }}>
-              <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>Sau khi tham gia</span>
-              <span style={{ color: c.text1, fontSize: φ.base, fontWeight: 700, fontFamily: 'monospace' }}>
+            <div
+              className="flex items-center justify-between"
+              style={{ borderTop: `1px solid ${c.divider}`, paddingTop: 12 }}
+            >
+              <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
+                Sau khi tham gia
+              </span>
+              <span
+                style={{
+                  color: c.text1,
+                  fontSize: φ.base,
+                  fontWeight: 700,
+                  fontFamily: 'monospace',
+                }}
+              >
                 {fmtPoints(balance - entryPoints)} pts
               </span>
             </div>
@@ -228,13 +303,17 @@ export function ArenaJoinPage() {
               <input
                 type="number"
                 value={guess}
-                onChange={e => setGuess(e.target.value)}
+                onChange={(e) => setGuess(e.target.value)}
                 placeholder="VD: 68500"
                 className="w-full px-4 py-3 rounded-xl"
                 style={{
-                  background: c.searchBg, border: `1.5px solid ${c.searchBorder}`,
-                  color: c.text1, fontSize: φ.base, fontFamily: 'monospace',
-                  outline: 'none', minHeight: 48,
+                  background: c.searchBg,
+                  border: `1.5px solid ${c.searchBorder}`,
+                  color: c.text1,
+                  fontSize: φ.base,
+                  fontFamily: 'monospace',
+                  outline: 'none',
+                  minHeight: 48,
                 }}
               />
               <p style={{ color: c.text3, fontSize: φ.xs, marginTop: 4 }}>
@@ -257,13 +336,17 @@ export function ArenaJoinPage() {
           <TrCard className="p-3 flex items-start gap-2">
             <Info size={14} color="#3B82F6" className="shrink-0 mt-0.5" />
             <p style={{ color: c.text3, fontSize: φ.xs, lineHeight: 1.5 }}>
-              Entry points sẽ bị trừ ngay khi tham gia. Nếu hủy trước deadline, bạn được hoàn 50%. Arena Points không có giá trị tiền tệ.
+              Entry points sẽ bị trừ ngay khi tham gia. Nếu hủy trước deadline, bạn được hoàn 50%.
+              Arena Points không có giá trị tiền tệ.
             </p>
           </TrCard>
 
           {/* ─── Void/Cancel Policy Link ─── */}
           <button
-            onClick={() => { navigate(`${prefix}/arena/safety`); hapticSelection(); }}
+            onClick={() => {
+              navigate(`${prefix}/arena/safety`);
+              hapticSelection();
+            }}
             className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl active:opacity-70"
             style={{ color: '#3B82F6', fontSize: φ.xs, fontWeight: 600, minHeight: 36 }}
           >
@@ -276,22 +359,25 @@ export function ArenaJoinPage() {
           <div className="flex flex-col gap-2">
             <Checkbox
               checked={readRules}
-              onChange={() => { setReadRules(!readRules); hapticSelection(); }}
+              onChange={() => {
+                setReadRules(!readRules);
+                hapticSelection();
+              }}
               label="Tôi đã đọc luật chơi và hiểu các điều kiện của challenge này"
             />
             <Checkbox
               checked={understandPoints}
-              onChange={() => { setUnderstandPoints(!understandPoints); hapticSelection(); }}
+              onChange={() => {
+                setUnderstandPoints(!understandPoints);
+                hapticSelection();
+              }}
               label="Tôi hiểu đây là Arena Points — không phải tài sản tài chính và không thể rút ra ngoài"
             />
           </div>
 
           {/* ─── CTAs ─── */}
-          <div className="flex flex-col gap-3 mt-2">
-            <CTAButton
-              onClick={handleJoin}
-              disabled={!canJoin}
-            >
+          <div className="flex flex-col gap-3">
+            <CTAButton onClick={handleJoin} disabled={!canJoin}>
               Xác nhận tham gia · {fmtPoints(entryPoints)} pts
             </CTAButton>
 
@@ -299,14 +385,17 @@ export function ArenaJoinPage() {
               onClick={handleDecline}
               className="w-full py-3.5 rounded-2xl active:opacity-70"
               style={{
-                background: c.chipBg, border: `1.5px solid ${c.chipBorder}`,
-                color: c.chipText, fontSize: φ.sm, fontWeight: 600, minHeight: 44,
+                background: c.chipBg,
+                border: `1.5px solid ${c.chipBorder}`,
+                color: c.chipText,
+                fontSize: φ.sm,
+                fontWeight: 600,
+                minHeight: 44,
               }}
             >
               Từ chối
             </button>
           </div>
-
         </PageContent>
       )}
     </PullToRefresh>

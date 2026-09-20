@@ -10,8 +10,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Camera, CheckCircle, AlertTriangle, Info, ChevronRight,
-  User, Shield, Sparkles, RefreshCw, X,
+  Camera,
+  CheckCircle,
+  AlertTriangle,
+  Info,
+  ChevronRight,
+  User,
+  Shield,
+  Sparkles,
+  RefreshCw,
+  X,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Header } from '../../components/layout/Header';
@@ -90,7 +98,7 @@ export function P2PSelfieVerificationPage() {
   useEffect(() => {
     return () => {
       mountedRef.current = false;
-      timeoutsRef.current.forEach(timeout => clearTimeout(timeout));
+      timeoutsRef.current.forEach((timeout) => clearTimeout(timeout));
       timeoutsRef.current = [];
     };
   }, []);
@@ -103,35 +111,35 @@ export function P2PSelfieVerificationPage() {
   const handleTakeSelfie = async (file: File) => {
     const preview = URL.createObjectURL(file);
     if (!mountedRef.current) return;
-    
+
     setSelfieImage(preview);
     hapticSelection();
     setStep('liveness');
 
     // Auto-complete liveness actions
     for (let i = 0; i < livenessActions.length; i++) {
-      await new Promise<void>(res => {
+      await new Promise<void>((res) => {
         const timeout = setTimeout(() => {
           if (mountedRef.current) res();
         }, 2000);
         timeoutsRef.current.push(timeout);
       });
-      
+
       if (!mountedRef.current) return;
-      
+
       setCurrentActionIndex(i);
-      setLivenessActions(prev =>
-        prev.map((action, idx) => (idx === i ? { ...action, completed: true } : action))
+      setLivenessActions((prev) =>
+        prev.map((action, idx) => (idx === i ? { ...action, completed: true } : action)),
       );
       hapticSuccess();
     }
 
     // Process result
     if (!mountedRef.current) return;
-    
+
     setProcessing(true);
-    
-    await new Promise<void>(res => {
+
+    await new Promise<void>((res) => {
       const timeout = setTimeout(() => {
         if (mountedRef.current) res();
       }, 2000);
@@ -240,9 +248,7 @@ export function P2PSelfieVerificationPage() {
           <TrCard rounded="md" className="p-4">
             <div className="flex items-start gap-2 mb-3">
               <Info size={16} color="#3B82F6" className="shrink-0 mt-0.5" />
-              <h4 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
-                Mẹo để thành công
-              </h4>
+              <h4 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Mẹo để thành công</h4>
             </div>
             <div className="flex flex-col gap-2">
               {TIPS.map((tip, idx) => (
@@ -257,11 +263,7 @@ export function P2PSelfieVerificationPage() {
 
         {/* Start Button */}
         <div className="px-5">
-          <CTAButton
-            label="Bắt đầu chụp ảnh"
-            onClick={handleStartSelfie}
-            icon={Camera}
-          />
+          <CTAButton label="Bắt đầu chụp ảnh" onClick={handleStartSelfie} icon={Camera} />
         </div>
       </PageLayout>
     );
@@ -317,7 +319,7 @@ export function P2PSelfieVerificationPage() {
   // Liveness Check Step
   if (step === 'liveness') {
     const currentAction = livenessActions[currentActionIndex];
-    const completedCount = livenessActions.filter(a => a.completed).length;
+    const completedCount = livenessActions.filter((a) => a.completed).length;
 
     return (
       <PageLayout>
@@ -327,17 +329,12 @@ export function P2PSelfieVerificationPage() {
           {/* Progress */}
           <div className="mb-6">
             <div className="flex items-center justify-between mb-2">
-              <span style={{ color: c.text2, fontSize: 11, fontWeight: 600 }}>
-                Tiến độ
-              </span>
+              <span style={{ color: c.text2, fontSize: 11, fontWeight: 600 }}>Tiến độ</span>
               <span style={{ color: '#3B82F6', fontSize: 11, fontWeight: 700 }}>
                 {completedCount}/{livenessActions.length}
               </span>
             </div>
-            <div
-              className="h-2 rounded-full overflow-hidden"
-              style={{ background: c.surface2 }}
-            >
+            <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
               <div
                 className="h-full rounded-full transition-all duration-500"
                 style={{
@@ -350,27 +347,23 @@ export function P2PSelfieVerificationPage() {
 
           {/* Current Action */}
           {currentAction && (
-            <TrCard rounded="xl" className="p-8 text-center mb-6">
+            <TrCard rounded="lg" className="p-8 text-center mb-6">
               <div className="text-7xl mb-4">{currentAction.icon}</div>
               <h3 style={{ color: c.text1, fontSize: φ.lg, fontWeight: 700, marginBottom: 8 }}>
                 {currentAction.instruction}
               </h3>
-              <p style={{ color: c.text3, fontSize: φ.xs }}>
-                Làm theo hướng dẫn để tiếp tục
-              </p>
+              <p style={{ color: c.text3, fontSize: φ.xs }}>Làm theo hướng dẫn để tiếp tục</p>
             </TrCard>
           )}
 
           {/* Action List */}
           <div className="grid grid-cols-2 gap-3">
-            {livenessActions.map(action => (
+            {livenessActions.map((action) => (
               <div
                 key={action.id}
                 className="p-3 rounded-xl text-center"
                 style={{
-                  background: action.completed
-                    ? hexToRgba('#10B981', 12)
-                    : c.surface2,
+                  background: action.completed ? hexToRgba('#10B981', 12) : c.surface2,
                   border: `1px solid ${action.completed ? '#10B981' : c.borderSolid}`,
                 }}
               >
@@ -409,9 +402,7 @@ export function P2PSelfieVerificationPage() {
             <div
               className="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center"
               style={{
-                background: isSuccess
-                  ? hexToRgba('#10B981', 12)
-                  : hexToRgba('#EF4444', 12),
+                background: isSuccess ? hexToRgba('#10B981', 12) : hexToRgba('#EF4444', 12),
               }}
             >
               {isSuccess ? (
@@ -431,9 +422,7 @@ export function P2PSelfieVerificationPage() {
               {isSuccess ? 'Xác minh thành công!' : 'Xác minh thất bại'}
             </h2>
             <p style={{ color: c.text3, fontSize: φ.xs }}>
-              {isSuccess
-                ? 'Khuôn mặt của bạn đã được xác minh'
-                : 'Vui lòng thử lại'}
+              {isSuccess ? 'Khuôn mặt của bạn đã được xác minh' : 'Vui lòng thử lại'}
             </p>
           </div>
 
@@ -454,10 +443,7 @@ export function P2PSelfieVerificationPage() {
                   {verificationResult.matchScore}%
                 </span>
               </div>
-              <div
-                className="h-2 rounded-full overflow-hidden"
-                style={{ background: c.surface2 }}
-              >
+              <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
                 <div
                   className="h-full rounded-full"
                   style={{
@@ -486,10 +472,7 @@ export function P2PSelfieVerificationPage() {
                   {verificationResult.livenessScore}%
                 </span>
               </div>
-              <div
-                className="h-2 rounded-full overflow-hidden"
-                style={{ background: c.surface2 }}
-              >
+              <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
                 <div
                   className="h-full rounded-full"
                   style={{

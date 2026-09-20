@@ -2,7 +2,7 @@
  * ══════════════════════════════════════════════════════════════
  *  ComplaintTrackingPage — Phase 4 Sprint 4 Day 5-6
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Track complaint status in real-time
  * - Timeline view of investigation progress
@@ -12,7 +12,14 @@
 
 import React from 'react';
 import { useParams, useNavigate } from 'react-router';
-import { Clock, CheckCircle, MessageSquare, FileText, AlertCircle, ChevronRight } from 'lucide-react';
+import {
+  Clock,
+  CheckCircle,
+  MessageSquare,
+  FileText,
+  AlertCircle,
+  ChevronRight,
+} from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { PageContent, PageSection } from '../../components/layout/PageContent';
@@ -70,8 +77,10 @@ export function ComplaintTrackingPage() {
         {/* Status Card */}
         <TrCard className="p-4">
           <div className="flex items-start gap-3 mb-3">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-              style={{ background: '#F59E0B' + '15' }}>
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+              style={{ background: '#F59E0B' + '15' }}
+            >
               <Clock size={22} color="#F59E0B" />
             </div>
 
@@ -101,7 +110,10 @@ export function ComplaintTrackingPage() {
         </TrCard>
 
         {/* Deadline Notice */}
-        <div className="rounded-2xl p-3 flex gap-2.5" style={{ background: c.warningBg, border: `1px solid ${c.warningBorder}` }}>
+        <div
+          className="rounded-2xl p-3 flex gap-2.5"
+          style={{ background: c.warningBg, border: `1px solid ${c.warningBorder}` }}
+        >
           <AlertCircle size={16} color={c.warningText} className="shrink-0 mt-0.5" />
           <div>
             <p style={{ color: c.warningText, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
@@ -119,14 +131,16 @@ export function ComplaintTrackingPage() {
             {timeline.map((item, idx) => (
               <div key={idx} className="flex items-start gap-3">
                 <div className="flex flex-col items-center">
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+                  <div
+                    className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
                     style={{
                       background: item.completed
                         ? '#10B981' + '15'
                         : item.current
-                        ? '#F59E0B' + '15'
-                        : c.surface2
-                    }}>
+                          ? '#F59E0B' + '15'
+                          : c.surface2,
+                    }}
+                  >
                     {item.completed ? (
                       <CheckCircle size={16} color="#10B981" />
                     ) : item.current ? (
@@ -136,16 +150,17 @@ export function ComplaintTrackingPage() {
                     )}
                   </div>
                   {idx < timeline.length - 1 && (
-                    <div className="w-0.5 h-8 my-1" style={{
-                      background: item.completed ? '#10B981' : c.border
-                    }} />
+                    <div
+                      className="w-0.5 h-8 my-1"
+                      style={{
+                        background: item.completed ? '#10B981' : c.border,
+                      }}
+                    />
                   )}
                 </div>
 
                 <div className="flex-1 pb-4">
-                  <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
-                    {item.status}
-                  </p>
+                  <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>{item.status}</p>
                   <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.4, marginTop: 1 }}>
                     {item.description}
                   </p>
@@ -153,7 +168,7 @@ export function ComplaintTrackingPage() {
                     {new Date(item.date).toLocaleDateString('en-US', {
                       month: 'long',
                       day: 'numeric',
-                      year: 'numeric'
+                      year: 'numeric',
                     })}
                   </p>
                 </div>
@@ -166,19 +181,19 @@ export function ComplaintTrackingPage() {
         <div className="space-y-3">
           <button
             className="w-full rounded-xl p-3 flex items-center justify-between transition-all"
-            style={{ background: c.surface2, border: `1px solid ${c.border}` }}>
+            style={{ background: c.surface2, border: `1px solid ${c.border}` }}
+          >
             <div className="flex items-center gap-2.5">
               <MessageSquare size={16} color={c.primary} />
-              <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
-                Add Information
-              </span>
+              <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>Add Information</span>
             </div>
             <ChevronRight size={16} color={c.text3} />
           </button>
 
           <button
             className="w-full rounded-xl p-3 flex items-center justify-between transition-all"
-            style={{ background: c.surface2, border: `1px solid ${c.border}` }}>
+            style={{ background: c.surface2, border: `1px solid ${c.border}` }}
+          >
             <div className="flex items-center gap-2.5">
               <FileText size={16} color="#10B981" />
               <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
@@ -191,7 +206,8 @@ export function ComplaintTrackingPage() {
           <button
             onClick={() => navigate(`${prefix}/trade/copy-trading/ombudsman-referral`)}
             className="w-full rounded-xl p-3 flex items-center justify-between transition-all"
-            style={{ background: c.surface2, border: `1px solid ${c.border}` }}>
+            style={{ background: c.surface2, border: `1px solid ${c.border}` }}
+          >
             <div className="flex items-center gap-2.5">
               <AlertCircle size={16} color="#F59E0B" />
               <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>

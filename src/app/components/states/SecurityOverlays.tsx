@@ -29,7 +29,7 @@ export function SessionExpiredModal({ open, onLogin, onClose }: SessionExpiredMo
           border: `1px solid ${c.borderSolid}`,
           boxShadow: '0 24px 64px rgba(0,0,0,0.5)',
         }}
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Close */}
         {onClose && (
@@ -107,7 +107,10 @@ export function ReauthSheet({ open, onSubmit, onClose }: ReauthSheetProps) {
         <div className="flex items-center gap-3">
           <div
             className="w-10 h-10 rounded-xl flex items-center justify-center"
-            style={{ background: 'rgba(59,130,246,0.12)', border: '1px solid rgba(59,130,246,0.2)' }}
+            style={{
+              background: 'rgba(59,130,246,0.12)',
+              border: '1px solid rgba(59,130,246,0.2)',
+            }}
           >
             <KeyRound size={20} color="#3B82F6" />
           </div>
@@ -115,9 +118,7 @@ export function ReauthSheet({ open, onSubmit, onClose }: ReauthSheetProps) {
             <p style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>
               Xác thực lại để tiếp tục
             </p>
-            <p style={{ color: c.text2, fontSize: 12 }}>
-              Hành động này cần xác nhận danh tính
-            </p>
+            <p style={{ color: c.text2, fontSize: 12 }}>Hành động này cần xác nhận danh tính</p>
           </div>
         </div>
       }
@@ -127,7 +128,7 @@ export function ReauthSheet({ open, onSubmit, onClose }: ReauthSheetProps) {
         {[
           { id: 'password', label: 'Mật khẩu' },
           { id: '2fa', label: 'Mã 2FA' },
-        ].map(tab => (
+        ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => setMethod(tab.id as any)}
@@ -165,7 +166,11 @@ export function ReauthSheet({ open, onSubmit, onClose }: ReauthSheetProps) {
               }}
             />
             <button onClick={() => setShowPassword(!showPassword)}>
-              {showPassword ? <EyeOff size={18} color={c.text3} /> : <Eye size={18} color={c.text3} />}
+              {showPassword ? (
+                <EyeOff size={18} color={c.text3} />
+              ) : (
+                <Eye size={18} color={c.text3} />
+              )}
             </button>
           </div>
         </div>

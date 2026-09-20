@@ -13,7 +13,7 @@ import { CTAButton } from '../ui/CTAButton';
 
 export function FundStatsSkeleton() {
   const c = useThemeColors();
-  
+
   return (
     <TrCard className="p-5">
       <div className="flex items-center gap-2 mb-4">
@@ -22,9 +22,12 @@ export function FundStatsSkeleton() {
       </div>
 
       <div className="grid grid-cols-2" style={{ gap: φSpace[4] }}>
-        {[1, 2, 3, 4].map(i => (
+        {[1, 2, 3, 4].map((i) => (
           <div key={i}>
-            <div className="h-3 w-20 rounded mb-2 animate-pulse" style={{ background: c.surface2 }} />
+            <div
+              className="h-3 w-20 rounded mb-2 animate-pulse"
+              style={{ background: c.surface2 }}
+            />
             <div className="h-7 w-24 rounded animate-pulse" style={{ background: c.surface2 }} />
           </div>
         ))}
@@ -35,7 +38,7 @@ export function FundStatsSkeleton() {
 
 export function ChartSkeleton() {
   const c = useThemeColors();
-  
+
   return (
     <TrCard className="p-5">
       <div className="flex items-center gap-2 mb-4">
@@ -49,7 +52,7 @@ export function ChartSkeleton() {
 
 export function ClaimCardSkeleton() {
   const c = useThemeColors();
-  
+
   return (
     <TrCard className="p-4">
       <div className="flex items-center justify-between mb-3">
@@ -65,7 +68,9 @@ export function ClaimCardSkeleton() {
 export function ClaimsListSkeleton() {
   return (
     <div className="flex flex-col" style={{ gap: φSpace[3] }}>
-      {[1, 2, 3, 4].map(i => <ClaimCardSkeleton key={i} />)}
+      {[1, 2, 3, 4].map((i) => (
+        <ClaimCardSkeleton key={i} />
+      ))}
     </div>
   );
 }
@@ -79,9 +84,14 @@ interface ErrorStateProps {
   retryLabel?: string;
 }
 
-export function ErrorState({ title = 'Đã có lỗi', message, onRetry, retryLabel = 'Thử lại' }: ErrorStateProps) {
+export function ErrorState({
+  title = 'Đã có lỗi',
+  message,
+  onRetry,
+  retryLabel = 'Thử lại',
+}: ErrorStateProps) {
   const c = useThemeColors();
-  
+
   return (
     <TrCard className="p-6">
       <div className="flex flex-col items-center text-center" style={{ gap: φSpace[3] }}>
@@ -91,22 +101,16 @@ export function ErrorState({ title = 'Đã có lỗi', message, onRetry, retryLa
         >
           <AlertCircle size={28} color="#EF4444" />
         </div>
-        
+
         <div>
           <p style={{ color: c.text1, fontSize: φ.base, fontWeight: 700, marginBottom: 8 }}>
             {title}
           </p>
-          <p style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>
-            {message}
-          </p>
+          <p style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>{message}</p>
         </div>
 
         {onRetry && (
-          <CTAButton
-            variant="secondary"
-            onClick={onRetry}
-            className="mt-2"
-          >
+          <CTAButton variant="secondary" onClick={onRetry} className="mt-2">
             {retryLabel}
           </CTAButton>
         )}
@@ -123,7 +127,7 @@ interface OfflineStateProps {
 
 export function OfflineState({ onRetry }: OfflineStateProps) {
   const c = useThemeColors();
-  
+
   return (
     <div
       className="p-3 rounded-xl flex items-center gap-3"
@@ -171,7 +175,7 @@ interface EmptyStateProps {
 
 export function EmptyState({ icon, title, description, action }: EmptyStateProps) {
   const c = useThemeColors();
-  
+
   return (
     <TrCard className="p-8">
       <div className="flex flex-col items-center text-center" style={{ gap: φSpace[3] }}>
@@ -190,24 +194,18 @@ export function EmptyState({ icon, title, description, action }: EmptyStateProps
             <FileX size={32} color={c.text3} />
           </div>
         )}
-        
+
         <div>
           <p style={{ color: c.text1, fontSize: φ.base, fontWeight: 700, marginBottom: 8 }}>
             {title}
           </p>
           {description && (
-            <p style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>
-              {description}
-            </p>
+            <p style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>{description}</p>
           )}
         </div>
 
         {action && (
-          <CTAButton
-            variant="primary"
-            onClick={action.onClick}
-            className="mt-2"
-          >
+          <CTAButton variant="primary" onClick={action.onClick} className="mt-2">
             {action.label}
           </CTAButton>
         )}
@@ -220,13 +218,11 @@ export function EmptyState({ icon, title, description, action }: EmptyStateProps
 
 export function LoadingSpinner({ text = 'Đang tải...' }: { text?: string }) {
   const c = useThemeColors();
-  
+
   return (
     <div className="flex flex-col items-center justify-center py-12" style={{ gap: φSpace[3] }}>
       <Loader size={32} color="#3B82F6" className="animate-spin" />
-      <p style={{ color: c.text2, fontSize: φ.sm }}>
-        {text}
-      </p>
+      <p style={{ color: c.text2, fontSize: φ.sm }}>{text}</p>
     </div>
   );
 }
@@ -240,17 +236,17 @@ interface ClaimExpiryWarningProps {
 
 export function ClaimExpiryWarning({ expiryDate, daysRemaining }: ClaimExpiryWarningProps) {
   const c = useThemeColors();
-  
+
   const isUrgent = daysRemaining <= 2;
   const color = isUrgent ? '#EF4444' : '#F59E0B';
   const bgColor = isUrgent ? 'rgba(239,68,68,0.08)' : 'rgba(245,158,11,0.08)';
   const borderColor = isUrgent ? 'rgba(239,68,68,0.2)' : 'rgba(245,158,11,0.2)';
-  
+
   const formatExpiryDate = (dateStr: string): string => {
     const date = new Date(dateStr);
     return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
   };
-  
+
   return (
     <div
       className="p-3 rounded-xl flex items-start gap-2"

@@ -2,28 +2,34 @@
  * ══════════════════════════════════════════════════════════════
  *  RIYCalculatorPage — Phase 4 Sprint 3 Day 3-4
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Interactive RIY (Reduction in Yield) calculator
  * - Show impact of costs on investment returns
  * - Scenario comparison (with/without costs)
  * - Visual charts for understanding
- * 
+ *
  * Compliance:
  * - PRIIPs: RIY calculation methodology
  * - Help clients understand cost impact
  */
 
 import React, { useState, useMemo } from 'react';
-import {
-  Calculator, TrendingUp, TrendingDown, Info, BarChart3
-} from 'lucide-react';
+import { Calculator, TrendingUp, TrendingDown, Info, BarChart3 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { TrCard } from '../../components/ui/TrCard';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts';
 
 export function RIYCalculatorPage() {
   const c = useThemeColors();
@@ -38,7 +44,7 @@ export function RIYCalculatorPage() {
     for (let year = 0; year <= years; year++) {
       const withoutCosts = investment * Math.pow(1 + expectedReturn / 100, year);
       const withCosts = investment * Math.pow(1 + (expectedReturn - totalCosts) / 100, year);
-      
+
       data.push({
         year,
         withoutCosts: Math.round(withoutCosts),
@@ -71,7 +77,11 @@ export function RIYCalculatorPage() {
                   value={investment}
                   onChange={(e) => setInvestment(Number(e.target.value))}
                   className="w-full h-12 px-3 rounded-xl outline-none"
-                  style={{ background: c.surface2, color: c.text1, border: `1px solid ${c.border}` }}
+                  style={{
+                    background: c.surface2,
+                    color: c.text1,
+                    border: `1px solid ${c.border}`,
+                  }}
                 />
               </div>
 
@@ -85,7 +95,11 @@ export function RIYCalculatorPage() {
                   onChange={(e) => setExpectedReturn(Number(e.target.value))}
                   step="0.1"
                   className="w-full h-12 px-3 rounded-xl outline-none"
-                  style={{ background: c.surface2, color: c.text1, border: `1px solid ${c.border}` }}
+                  style={{
+                    background: c.surface2,
+                    color: c.text1,
+                    border: `1px solid ${c.border}`,
+                  }}
                 />
               </div>
 
@@ -99,7 +113,11 @@ export function RIYCalculatorPage() {
                   onChange={(e) => setTotalCosts(Number(e.target.value))}
                   step="0.1"
                   className="w-full h-12 px-3 rounded-xl outline-none"
-                  style={{ background: c.surface2, color: c.text1, border: `1px solid ${c.border}` }}
+                  style={{
+                    background: c.surface2,
+                    color: c.text1,
+                    border: `1px solid ${c.border}`,
+                  }}
                 />
               </div>
 
@@ -114,7 +132,11 @@ export function RIYCalculatorPage() {
                   min="1"
                   max="20"
                   className="w-full h-12 px-3 rounded-xl outline-none"
-                  style={{ background: c.surface2, color: c.text1, border: `1px solid ${c.border}` }}
+                  style={{
+                    background: c.surface2,
+                    color: c.text1,
+                    border: `1px solid ${c.border}`,
+                  }}
                 />
               </div>
             </div>
@@ -147,9 +169,10 @@ export function RIYCalculatorPage() {
               </span>
             </div>
 
-            <div className="rounded-lg p-3" style={{ background: c.infoBg }}>
-              <p style={{ color: c.infoText, fontSize: 10, lineHeight: 1.4 }}>
-                Over {years} years, costs reduce your investment by €{difference.toLocaleString()} ({((difference / finalWithoutCosts) * 100).toFixed(1)}% loss).
+            <div className="rounded-lg p-3" style={{ background: 'rgba(59,130,246,0.08)' }}>
+              <p style={{ color: c.info, fontSize: 10, lineHeight: 1.4 }}>
+                Over {years} years, costs reduce your investment by €{difference.toLocaleString()} (
+                {((difference / finalWithoutCosts) * 100).toFixed(1)}% loss).
               </p>
             </div>
           </TrCard>
@@ -172,8 +195,22 @@ export function RIYCalculatorPage() {
                     fontSize: 11,
                   }}
                 />
-                <Line key="line-without" type="monotone" dataKey="withoutCosts" name="Without Costs" stroke="#10B981" strokeWidth={2} />
-                <Line key="line-with" type="monotone" dataKey="withCosts" name="With Costs" stroke="#EF4444" strokeWidth={2} />
+                <Line
+                  key="line-without"
+                  type="monotone"
+                  dataKey="withoutCosts"
+                  name="Without Costs"
+                  stroke="#10B981"
+                  strokeWidth={2}
+                />
+                <Line
+                  key="line-with"
+                  type="monotone"
+                  dataKey="withCosts"
+                  name="With Costs"
+                  stroke="#EF4444"
+                  strokeWidth={2}
+                />
               </LineChart>
             </ResponsiveContainer>
           </TrCard>

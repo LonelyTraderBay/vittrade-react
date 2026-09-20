@@ -17,18 +17,40 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  Shield, TrendingUp, AlertTriangle, CheckCircle, Lock,
-  Eye, Users, DollarSign, Activity, Zap, Info,
-  ArrowRight, Target,
+  Shield,
+  TrendingUp,
+  AlertTriangle,
+  CheckCircle,
+  Lock,
+  Eye,
+  Users,
+  DollarSign,
+  Activity,
+  Zap,
+  Info,
+  ArrowRight,
+  Target,
 } from 'lucide-react';
 import {
-  RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
-  PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis,
-  Tooltip, ResponsiveContainer, Legend,
+  RadarChart,
+  Radar,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  PieChart,
+  Pie,
+  Cell,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
 } from 'recharts';
 
 const TABS = ['Tổng quan', 'Bảo mật', 'Đa dạng hóa'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface HealthMetric {
   category: string;
@@ -125,7 +147,7 @@ export function WalletHealthScorePage() {
   const [tab, setTab] = useState<Tab>('Tổng quan');
 
   const overallScore = Math.round(
-    HEALTH_METRICS.reduce((sum, m) => sum + m.score, 0) / HEALTH_METRICS.length
+    HEALTH_METRICS.reduce((sum, m) => sum + m.score, 0) / HEALTH_METRICS.length,
   );
 
   const getScoreColor = (score: number) => {
@@ -180,14 +202,7 @@ export function WalletHealthScorePage() {
               <div className="relative inline-flex items-center justify-center mb-4">
                 <svg width="160" height="160" className="transform -rotate-90">
                   {/* Background circle */}
-                  <circle
-                    cx="80"
-                    cy="80"
-                    r="70"
-                    fill="none"
-                    stroke={c.bg}
-                    strokeWidth="12"
-                  />
+                  <circle cx="80" cy="80" r="70" fill="none" stroke={c.bg} strokeWidth="12" />
                   {/* Progress circle */}
                   <circle
                     cx="80"
@@ -219,18 +234,18 @@ export function WalletHealthScorePage() {
                 {overallScore >= 80
                   ? 'Excellent'
                   : overallScore >= 60
-                  ? 'Good'
-                  : overallScore >= 40
-                  ? 'Needs Improvement'
-                  : 'Critical'}
+                    ? 'Good'
+                    : overallScore >= 40
+                      ? 'Needs Improvement'
+                      : 'Critical'}
               </p>
               <p style={{ color: c.text3, fontSize: 11 }}>
                 Your wallet is{' '}
                 {overallScore >= 80
                   ? 'well-secured and diversified'
                   : overallScore >= 60
-                  ? 'in good shape with room for improvement'
-                  : 'at risk - take action now'}
+                    ? 'in good shape with room for improvement'
+                    : 'at risk - take action now'}
               </p>
             </div>
 
@@ -245,10 +260,7 @@ export function WalletHealthScorePage() {
               <ResponsiveContainer width="100%" height={260}>
                 <RadarChart data={RADAR_DATA}>
                   <PolarGrid stroke={c.border} />
-                  <PolarAngleAxis
-                    dataKey="metric"
-                    tick={{ fill: c.text2, fontSize: 10 }}
-                  />
+                  <PolarAngleAxis dataKey="metric" tick={{ fill: c.text2, fontSize: 10 }} />
                   <PolarRadiusAxis
                     angle={90}
                     domain={[0, 100]}
@@ -279,7 +291,13 @@ export function WalletHealthScorePage() {
                         {metric.category}
                       </p>
                       <div className="flex items-center gap-2">
-                        <p style={{ color: getStatusColor(metric.status), fontSize: 14, fontWeight: 700 }}>
+                        <p
+                          style={{
+                            color: getStatusColor(metric.status),
+                            fontSize: 14,
+                            fontWeight: 700,
+                          }}
+                        >
                           {metric.score}
                         </p>
                         <span
@@ -353,48 +371,50 @@ export function WalletHealthScorePage() {
             {/* Top Recommendations */}
             <PageSection label="Đề xuất ưu tiên">
               <div className="space-y-2">
-                {RECOMMENDATIONS.filter((r) => r.impact === 'high').slice(0, 3).map((rec) => (
-                  <div
-                    key={rec.id}
-                    className="rounded-2xl p-4"
-                    style={{ background: c.surface, border: `1px solid ${c.border}` }}
-                  >
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
-                            {rec.title}
-                          </p>
-                          <span
-                            className="px-2 py-0.5 rounded-lg text-[9px] font-semibold uppercase"
-                            style={{
-                              background: `${getImpactColor(rec.impact)}20`,
-                              color: getImpactColor(rec.impact),
-                            }}
-                          >
-                            {rec.impact} impact
-                          </span>
-                        </div>
-                        <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
-                          {rec.description}
-                        </p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => alert(rec.actionLabel)}
-                      className="w-full rounded-xl py-2 mt-2 flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
-                      style={{
-                        background: c.primary,
-                        color: '#fff',
-                        fontSize: 12,
-                        fontWeight: 600,
-                      }}
+                {RECOMMENDATIONS.filter((r) => r.impact === 'high')
+                  .slice(0, 3)
+                  .map((rec) => (
+                    <div
+                      key={rec.id}
+                      className="rounded-2xl p-4"
+                      style={{ background: c.surface, border: `1px solid ${c.border}` }}
                     >
-                      {rec.actionLabel}
-                      <ArrowRight size={14} />
-                    </button>
-                  </div>
-                ))}
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
+                              {rec.title}
+                            </p>
+                            <span
+                              className="px-2 py-0.5 rounded-lg text-[9px] font-semibold uppercase"
+                              style={{
+                                background: `${getImpactColor(rec.impact)}20`,
+                                color: getImpactColor(rec.impact),
+                              }}
+                            >
+                              {rec.impact} impact
+                            </span>
+                          </div>
+                          <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
+                            {rec.description}
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => alert(rec.actionLabel)}
+                        className="w-full rounded-xl py-2 mt-2 flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+                        style={{
+                          background: c.primary,
+                          color: '#fff',
+                          fontSize: 12,
+                          fontWeight: 600,
+                        }}
+                      >
+                        {rec.actionLabel}
+                        <ArrowRight size={14} />
+                      </button>
+                    </div>
+                  ))}
               </div>
             </PageSection>
           </>
@@ -437,11 +457,19 @@ export function WalletHealthScorePage() {
                   { item: '2FA Enabled', status: true, description: 'Google Authenticator active' },
                   { item: 'Email Verification', status: true, description: 'Verified on signup' },
                   { item: 'Biometric Lock', status: true, description: 'Face ID enabled' },
-                  { item: 'Seed Phrase Backup', status: false, description: 'Not backed up securely' },
+                  {
+                    item: 'Seed Phrase Backup',
+                    status: false,
+                    description: 'Not backed up securely',
+                  },
                   { item: 'Anti-Phishing Code', status: true, description: 'Set: XK89' },
                   { item: 'Withdrawal Whitelist', status: false, description: 'Not configured' },
                   { item: 'Session Timeout', status: true, description: '15 minutes' },
-                  { item: 'Device Authorization', status: true, description: '2 devices registered' },
+                  {
+                    item: 'Device Authorization',
+                    status: true,
+                    description: '2 devices registered',
+                  },
                 ].map((check) => (
                   <div
                     key={check.item}
@@ -478,7 +506,10 @@ export function WalletHealthScorePage() {
             {/* Security Recommendations */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)' }}
+              style={{
+                background: 'rgba(239,68,68,0.06)',
+                border: '1px solid rgba(239,68,68,0.15)',
+              }}
             >
               <AlertTriangle size={14} color="#EF4444" style={{ marginTop: 2, flexShrink: 0 }} />
               <div>
@@ -561,7 +592,9 @@ export function WalletHealthScorePage() {
               <div className="grid grid-cols-2 gap-2 mt-4">
                 {DIVERSIFICATION_DATA.map((item) => (
                   <div key={item.name} className="flex items-center gap-2">
-                    <div style={{ width: 12, height: 12, borderRadius: 2, background: item.color }} />
+                    <div
+                      style={{ width: 12, height: 12, borderRadius: 2, background: item.color }}
+                    />
                     <p style={{ color: c.text2, fontSize: 11 }}>{item.name}</p>
                   </div>
                 ))}
@@ -571,7 +604,10 @@ export function WalletHealthScorePage() {
             {/* Concentration Risk */}
             <div
               className="rounded-2xl p-4"
-              style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
+              style={{
+                background: 'rgba(245,158,11,0.06)',
+                border: '1px solid rgba(245,158,11,0.15)',
+              }}
             >
               <div className="flex items-start gap-2 mb-3">
                 <AlertTriangle size={16} color="#F59E0B" style={{ marginTop: 2 }} />
@@ -580,7 +616,8 @@ export function WalletHealthScorePage() {
                     Concentration Risk
                   </p>
                   <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                    42% of your portfolio is in BTC. Consider rebalancing to reduce single-asset risk.
+                    42% of your portfolio is in BTC. Consider rebalancing to reduce single-asset
+                    risk.
                   </p>
                 </div>
               </div>
@@ -620,11 +657,15 @@ export function WalletHealthScorePage() {
             {/* Info */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+              style={{
+                background: 'rgba(59,130,246,0.06)',
+                border: '1px solid rgba(59,130,246,0.15)',
+              }}
             >
               <Info size={14} color="#3B82F6" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Diversification reduces portfolio volatility. Aim for balance across asset types and risk levels.
+                Diversification reduces portfolio volatility. Aim for balance across asset types and
+                risk levels.
               </p>
             </div>
           </>

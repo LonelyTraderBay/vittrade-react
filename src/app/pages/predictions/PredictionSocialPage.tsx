@@ -17,14 +17,29 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  MessageCircle, Share2, ThumbsUp, ThumbsDown, TrendingUp,
-  Send, Link2, Twitter, Facebook, MoreHorizontal, Flag,
-  User, Clock, Award, BarChart3, Copy, Check, Info,
+  MessageCircle,
+  Share2,
+  ThumbsUp,
+  ThumbsDown,
+  TrendingUp,
+  Send,
+  Link2,
+  Twitter,
+  Facebook,
+  MoreHorizontal,
+  Flag,
+  User,
+  Clock,
+  Award,
+  BarChart3,
+  Copy,
+  Check,
+  Info,
 } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 
 const TABS = ['Binh luan', 'Phan tich', 'Chia se'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface Comment {
   id: string;
@@ -47,7 +62,8 @@ const MOCK_COMMENTS: Comment[] = [
     userId: 'u1',
     userName: 'CryptoAnalyst',
     userTier: 'platinum',
-    content: 'Looking at on-chain metrics, BTC accumulation by whales increased 15% this month. Strong bullish signal for $100K target.',
+    content:
+      'Looking at on-chain metrics, BTC accumulation by whales increased 15% this month. Strong bullish signal for $100K target.',
     stance: 'bullish',
     upvotes: 124,
     downvotes: 8,
@@ -73,7 +89,8 @@ const MOCK_COMMENTS: Comment[] = [
     userId: 'u3',
     userName: 'MacroTrader',
     userTier: 'silver',
-    content: 'Fed policy still uncertain. I think we need to see Q4 data before making bold predictions.',
+    content:
+      'Fed policy still uncertain. I think we need to see Q4 data before making bold predictions.',
     stance: 'neutral',
     upvotes: 67,
     downvotes: 15,
@@ -106,7 +123,9 @@ export function PredictionSocialPage() {
   const { eventId } = useParams();
   const [tab, setTab] = useState<Tab>('Binh luan');
   const [newComment, setNewComment] = useState('');
-  const [selectedStance, setSelectedStance] = useState<'bullish' | 'bearish' | 'neutral'>('neutral');
+  const [selectedStance, setSelectedStance] = useState<'bullish' | 'bearish' | 'neutral'>(
+    'neutral',
+  );
   const [replyTo, setReplyTo] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
@@ -132,27 +151,33 @@ export function PredictionSocialPage() {
 
   const getTierColor = (tier: string) => {
     switch (tier) {
-      case 'platinum': return '#E5E7EB';
-      case 'gold': return '#F59E0B';
-      case 'silver': return '#9CA3AF';
-      case 'bronze': return '#D97706';
-      default: return c.text3;
+      case 'platinum':
+        return '#E5E7EB';
+      case 'gold':
+        return '#F59E0B';
+      case 'silver':
+        return '#9CA3AF';
+      case 'bronze':
+        return '#D97706';
+      default:
+        return c.text3;
     }
   };
 
   const getStanceColor = (stance: string) => {
     switch (stance) {
-      case 'bullish': return c.buy;
-      case 'bearish': return c.sell;
-      case 'neutral': return '#6B7280';
-      default: return c.text3;
+      case 'bullish':
+        return c.buy;
+      case 'bearish':
+        return c.sell;
+      case 'neutral':
+        return '#6B7280';
+      default:
+        return c.text3;
     }
   };
 
-  const totalComments = MOCK_COMMENTS.reduce(
-    (sum, c) => sum + 1 + c.replies.length,
-    0
-  );
+  const totalComments = MOCK_COMMENTS.reduce((sum, c) => sum + 1 + c.replies.length, 0);
 
   const renderComment = (comment: Comment, isReply: boolean = false) => (
     <div
@@ -178,9 +203,7 @@ export function PredictionSocialPage() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
-                {comment.userName}
-              </p>
+              <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>{comment.userName}</p>
               <span
                 className="px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase"
                 style={{
@@ -202,8 +225,8 @@ export function PredictionSocialPage() {
             <div className="flex items-center gap-1.5 mt-0.5">
               <Clock size={10} color={c.text3} />
               <p style={{ color: c.text3, fontSize: 10 }}>
-                {comment.createdAt.toLocaleString('vi-VN', { 
-                  hour: '2-digit', 
+                {comment.createdAt.toLocaleString('vi-VN', {
+                  hour: '2-digit',
                   minute: '2-digit',
                   day: 'numeric',
                   month: 'short',
@@ -238,18 +261,14 @@ export function PredictionSocialPage() {
           style={{ background: c.bg }}
         >
           <ThumbsUp size={13} color={c.buy} />
-          <span style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>
-            {comment.upvotes}
-          </span>
+          <span style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>{comment.upvotes}</span>
         </button>
         <button
           className="flex items-center gap-1.5 px-2 py-1 rounded-lg hover:opacity-70 transition-opacity"
           style={{ background: c.bg }}
         >
           <ThumbsDown size={13} color={c.sell} />
-          <span style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>
-            {comment.downvotes}
-          </span>
+          <span style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>{comment.downvotes}</span>
         </button>
         {!isReply && (
           <button
@@ -258,9 +277,7 @@ export function PredictionSocialPage() {
             style={{ background: c.bg }}
           >
             <MessageCircle size={13} color={c.text3} />
-            <span style={{ color: c.text2, fontSize: 11, fontWeight: 600 }}>
-              Tra loi
-            </span>
+            <span style={{ color: c.text2, fontSize: 11, fontWeight: 600 }}>Tra loi</span>
           </button>
         )}
         <button className="flex items-center gap-1.5 px-2 py-1 rounded-lg hover:opacity-70 transition-opacity">
@@ -271,9 +288,7 @@ export function PredictionSocialPage() {
 
       {/* Replies */}
       {comment.replies.length > 0 && (
-        <div className="mt-3">
-          {comment.replies.map((reply) => renderComment(reply, true))}
-        </div>
+        <div className="mt-3">{comment.replies.map((reply) => renderComment(reply, true))}</div>
       )}
     </div>
   );
@@ -378,11 +393,15 @@ export function PredictionSocialPage() {
             {/* Disclaimer */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+              style={{
+                background: 'rgba(59,130,246,0.06)',
+                border: '1px solid rgba(59,130,246,0.15)',
+              }}
             >
               <Info size={14} color={c.primary} style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Y kien nguoi dung chi mang tinh tham khao. Khong phai loi khuyen dau tu. Tu chiu trach nhiem quyet dinh.
+                Y kien nguoi dung chi mang tinh tham khao. Khong phai loi khuyen dau tu. Tu chiu
+                trach nhiem quyet dinh.
               </p>
             </div>
           </>
@@ -459,9 +478,7 @@ export function PredictionSocialPage() {
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
-                          {user.name}
-                        </p>
+                        <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>{user.name}</p>
                         <span
                           className="px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase"
                           style={{
@@ -484,7 +501,10 @@ export function PredictionSocialPage() {
             {/* Sentiment Over Time */}
             <div
               className="rounded-xl p-3"
-              style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}
+              style={{
+                background: 'rgba(16,185,129,0.06)',
+                border: '1px solid rgba(16,185,129,0.15)',
+              }}
             >
               <p style={{ color: c.text1, fontSize: 12, fontWeight: 600, marginBottom: 4 }}>
                 Sentiment Trend
@@ -534,7 +554,12 @@ export function PredictionSocialPage() {
                   value={shareUrl}
                   readOnly
                   className="flex-1 px-3 py-2 rounded-xl outline-none"
-                  style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 12 }}
+                  style={{
+                    background: c.bg,
+                    border: `1px solid ${c.border}`,
+                    color: c.text1,
+                    fontSize: 12,
+                  }}
                 />
                 <button
                   onClick={handleCopyLink}
@@ -596,9 +621,7 @@ export function PredictionSocialPage() {
                     <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.5 }}>
                       Join the prediction market and share your insights with the community.
                     </p>
-                    <p style={{ color: c.text3, fontSize: 11, marginTop: 6 }}>
-                      app.example.com
-                    </p>
+                    <p style={{ color: c.text3, fontSize: 11, marginTop: 6 }}>app.example.com</p>
                   </div>
                 </div>
               </div>

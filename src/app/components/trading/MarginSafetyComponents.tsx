@@ -14,8 +14,17 @@
 
 import React from 'react';
 import {
-  AlertTriangle, Info, Shield, TrendingUp, TrendingDown,
-  Bell, Target, DollarSign, Zap, Clock, Activity,
+  AlertTriangle,
+  Info,
+  Shield,
+  TrendingUp,
+  TrendingDown,
+  Bell,
+  Target,
+  DollarSign,
+  Zap,
+  Clock,
+  Activity,
 } from 'lucide-react';
 import { TrCard } from '../ui/TrCard';
 import { useThemeColors } from '../../hooks/useThemeColors';
@@ -116,7 +125,9 @@ export function MarginLevelAlert({ marginLevel, className = '' }: MarginLevelAle
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-1">
-            <p style={{ color: config.color, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>
+            <p
+              style={{ color: config.color, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}
+            >
               {config.title}
             </p>
             <span
@@ -131,11 +142,24 @@ export function MarginLevelAlert({ marginLevel, className = '' }: MarginLevelAle
               {marginLevel.toFixed(1)}%
             </span>
           </div>
-          <p style={{ color: config.color, fontSize: FONT_SCALE.xs, lineHeight: 1.5, marginBottom: 6 }}>
+          <p
+            style={{
+              color: config.color,
+              fontSize: FONT_SCALE.xs,
+              lineHeight: 1.5,
+              marginBottom: 6,
+            }}
+          >
             {config.message}
           </p>
           {config.action && (
-            <p style={{ color: config.color, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+            <p
+              style={{
+                color: config.color,
+                fontSize: FONT_SCALE.xs,
+                fontWeight: FONT_WEIGHT.semibold,
+              }}
+            >
               ⚠️ {config.action}
             </p>
           )}
@@ -175,7 +199,12 @@ interface PriceComparisonProps {
   className?: string;
 }
 
-export function PriceComparison({ markPrice, lastPrice, indexPrice, className = '' }: PriceComparisonProps) {
+export function PriceComparison({
+  markPrice,
+  lastPrice,
+  indexPrice,
+  className = '',
+}: PriceComparisonProps) {
   const c = useThemeColors();
 
   const spread = ((lastPrice - markPrice) / markPrice) * 100;
@@ -211,15 +240,31 @@ export function PriceComparison({ markPrice, lastPrice, indexPrice, className = 
           <div className="flex items-center justify-between">
             <div>
               <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Mark Price</p>
-              <p style={{ color: c.text1, fontSize: FONT_SCALE.lg, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}>
-                ${markPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              <p
+                style={{
+                  color: c.text1,
+                  fontSize: FONT_SCALE.lg,
+                  fontWeight: FONT_WEIGHT.bold,
+                  fontFamily: 'monospace',
+                }}
+              >
+                $
+                {markPrice.toLocaleString('en-US', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
               </p>
             </div>
             <div
               className="px-2.5 py-1 rounded-lg"
-              style={{ background: withAlpha(c.primary, ALPHA.muted), border: `1px solid ${withAlpha(c.primary, ALPHA.border)}` }}
+              style={{
+                background: withAlpha(c.primary, ALPHA.muted),
+                border: `1px solid ${withAlpha(c.primary, ALPHA.border)}`,
+              }}
             >
-              <span style={{ color: c.primary, fontSize: 9, fontWeight: FONT_WEIGHT.bold }}>Dùng cho thanh lý</span>
+              <span style={{ color: c.primary, fontSize: 9, fontWeight: FONT_WEIGHT.bold }}>
+                Dùng cho thanh lý
+              </span>
             </div>
           </div>
         </div>
@@ -228,8 +273,19 @@ export function PriceComparison({ markPrice, lastPrice, indexPrice, className = 
         <div className="flex items-center justify-between">
           <div>
             <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Last Price</p>
-            <p style={{ color: c.text1, fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.semibold, fontFamily: 'monospace' }}>
-              ${lastPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            <p
+              style={{
+                color: c.text1,
+                fontSize: FONT_SCALE.base,
+                fontWeight: FONT_WEIGHT.semibold,
+                fontFamily: 'monospace',
+              }}
+            >
+              $
+              {lastPrice.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </p>
           </div>
           <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Giá khớp lệnh gần nhất</span>
@@ -239,8 +295,19 @@ export function PriceComparison({ markPrice, lastPrice, indexPrice, className = 
         <div className="flex items-center justify-between">
           <div>
             <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Index Price</p>
-            <p style={{ color: c.text2, fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.semibold, fontFamily: 'monospace' }}>
-              ${indexPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            <p
+              style={{
+                color: c.text2,
+                fontSize: FONT_SCALE.base,
+                fontWeight: FONT_WEIGHT.semibold,
+                fontFamily: 'monospace',
+              }}
+            >
+              $
+              {indexPrice.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </p>
           </div>
           <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Avg của các sàn</span>
@@ -250,11 +317,15 @@ export function PriceComparison({ markPrice, lastPrice, indexPrice, className = 
       {/* Info banner */}
       <div
         className="flex items-start gap-2 mt-3 p-2.5 rounded-xl"
-        style={{ background: withAlpha('#3B82F6', ALPHA.hover), border: `1px solid ${withAlpha('#3B82F6', ALPHA.soft)}` }}
+        style={{
+          background: withAlpha('#3B82F6', ALPHA.hover),
+          border: `1px solid ${withAlpha('#3B82F6', ALPHA.soft)}`,
+        }}
       >
         <Info size={12} color="#3B82F6" className="shrink-0 mt-0.5" />
         <p style={{ color: '#3B82F6', fontSize: 10, lineHeight: 1.5 }}>
-          <strong>Mark Price</strong> được dùng để tính PnL và thanh lý, giúp tránh manipulation từ flash crash.
+          <strong>Mark Price</strong> được dùng để tính PnL và thanh lý, giúp tránh manipulation từ
+          flash crash.
         </p>
       </div>
     </TrCard>
@@ -272,7 +343,12 @@ interface MarginRequirementProps {
   className?: string;
 }
 
-export function MarginRequirement({ leverage, positionSize, mode, className = '' }: MarginRequirementProps) {
+export function MarginRequirement({
+  leverage,
+  positionSize,
+  mode,
+  className = '',
+}: MarginRequirementProps) {
   const c = useThemeColors();
 
   // Industry standard margins
@@ -298,14 +374,27 @@ export function MarginRequirement({ leverage, positionSize, mode, className = ''
           style={{ background: c.surface2, border: `1px solid ${c.borderSolid}` }}
         >
           <div className="flex items-center justify-between mb-1.5">
-            <span style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>Initial Margin Ratio (IMR)</span>
-            <span style={{ color: '#8B5CF6', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>
+            <span style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>
+              Initial Margin Ratio (IMR)
+            </span>
+            <span
+              style={{ color: '#8B5CF6', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}
+            >
               {IMR.toFixed(2)}%
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Margin cần để mở vị thế</span>
-            <span style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, fontFamily: 'monospace' }}>
+            <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>
+              Margin cần để mở vị thế
+            </span>
+            <span
+              style={{
+                color: c.text1,
+                fontSize: FONT_SCALE.xs,
+                fontWeight: FONT_WEIGHT.semibold,
+                fontFamily: 'monospace',
+              }}
+            >
               ${initialMargin.toFixed(2)}
             </span>
           </div>
@@ -314,17 +403,33 @@ export function MarginRequirement({ leverage, positionSize, mode, className = ''
         {/* MMR */}
         <div
           className="rounded-xl p-3"
-          style={{ background: withAlpha('#EF4444', ALPHA.hover), border: `1px solid ${withAlpha('#EF4444', ALPHA.soft)}` }}
+          style={{
+            background: withAlpha('#EF4444', ALPHA.hover),
+            border: `1px solid ${withAlpha('#EF4444', ALPHA.soft)}`,
+          }}
         >
           <div className="flex items-center justify-between mb-1.5">
-            <span style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>Maintenance Margin Ratio (MMR)</span>
-            <span style={{ color: '#EF4444', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>
+            <span style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>
+              Maintenance Margin Ratio (MMR)
+            </span>
+            <span
+              style={{ color: '#EF4444', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}
+            >
               {MMR.toFixed(2)}%
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Margin tối thiểu để giữ vị thế</span>
-            <span style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, fontFamily: 'monospace' }}>
+            <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>
+              Margin tối thiểu để giữ vị thế
+            </span>
+            <span
+              style={{
+                color: c.text1,
+                fontSize: FONT_SCALE.xs,
+                fontWeight: FONT_WEIGHT.semibold,
+                fontFamily: 'monospace',
+              }}
+            >
               ${maintenanceMargin.toFixed(2)}
             </span>
           </div>
@@ -338,7 +443,10 @@ export function MarginRequirement({ leverage, positionSize, mode, className = ''
           <span
             className="px-2.5 py-1 rounded-lg"
             style={{
-              background: mode === 'cross' ? withAlpha(c.primary, ALPHA.soft) : withAlpha('#F59E0B', ALPHA.soft),
+              background:
+                mode === 'cross'
+                  ? withAlpha(c.primary, ALPHA.soft)
+                  : withAlpha('#F59E0B', ALPHA.soft),
               color: mode === 'cross' ? c.primary : '#F59E0B',
               fontSize: FONT_SCALE.xs,
               fontWeight: FONT_WEIGHT.bold,
@@ -347,9 +455,7 @@ export function MarginRequirement({ leverage, positionSize, mode, className = ''
             {mode === 'cross' ? 'CROSS MARGIN' : 'ISOLATED MARGIN'}
           </span>
           <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>
-            {mode === 'cross'
-              ? 'Dùng chung toàn bộ số dư ví'
-              : 'Chỉ rủi ro margin của vị thế này'}
+            {mode === 'cross' ? 'Dùng chung toàn bộ số dư ví' : 'Chỉ rủi ro margin của vị thế này'}
           </span>
         </div>
       </div>
@@ -374,7 +480,8 @@ export function ADLIndicator({ queuePosition, className = '' }: ADLIndicatorProp
       return {
         color: '#EF4444',
         label: 'Rủi ro rất cao',
-        message: 'Vị thế của bạn ở hàng đầu trong hàng đợi ADL. Có thể bị đóng tự động nếu xảy ra thanh lý lớn.',
+        message:
+          'Vị thế của bạn ở hàng đầu trong hàng đợi ADL. Có thể bị đóng tự động nếu xảy ra thanh lý lớn.',
       };
     }
     if (queuePosition === 2) {
@@ -409,14 +516,16 @@ export function ADLIndicator({ queuePosition, className = '' }: ADLIndicatorProp
             ADL Queue
           </span>
         </div>
-        <span style={{ color: config.color, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+        <span
+          style={{ color: config.color, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}
+        >
           {config.label}
         </span>
       </div>
 
       {/* Visual indicator */}
       <div className="flex gap-1 mb-2">
-        {[1, 2, 3, 4, 5].map(i => (
+        {[1, 2, 3, 4, 5].map((i) => (
           <div
             key={i}
             className="flex-1 h-1.5 rounded-full"
@@ -438,7 +547,8 @@ export function ADLIndicator({ queuePosition, className = '' }: ADLIndicatorProp
       >
         <Info size={11} color={c.text3} className="shrink-0 mt-0.5" />
         <p style={{ color: c.text3, fontSize: 9, lineHeight: 1.4 }}>
-          ADL xảy ra khi vị thế lỗ lớn bị thanh lý nhưng không đủ thanh khoản. Vị thế có lãi cao nhất sẽ bị đóng để bù đắp.
+          ADL xảy ra khi vị thế lỗ lớn bị thanh lý nhưng không đủ thanh khoản. Vị thế có lãi cao
+          nhất sẽ bị đóng để bù đắp.
         </p>
       </div>
     </TrCard>
@@ -484,23 +594,39 @@ export function CostBreakdown({
 
       <div className="flex flex-col gap-2">
         {/* Trading fee */}
-        <div className="flex items-center justify-between py-1.5" style={{ borderBottom: `1px solid ${c.divider}` }}>
+        <div
+          className="flex items-center justify-between py-1.5"
+          style={{ borderBottom: `1px solid ${c.divider}` }}
+        >
           <div className="flex items-center gap-1.5">
             <span style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>Phí giao dịch</span>
-            <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>({(tradingFeeRate * 100).toFixed(3)}%)</span>
+            <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>
+              ({(tradingFeeRate * 100).toFixed(3)}%)
+            </span>
           </div>
-          <span style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, fontFamily: 'monospace' }}>
+          <span
+            style={{
+              color: c.text1,
+              fontSize: FONT_SCALE.xs,
+              fontWeight: FONT_WEIGHT.semibold,
+              fontFamily: 'monospace',
+            }}
+          >
             ${tradingFee.toFixed(4)}
           </span>
         </div>
 
         {/* Funding fee (futures) */}
         {fundingRate !== 0 && (
-          <div className="flex items-center justify-between py-1.5" style={{ borderBottom: `1px solid ${c.divider}` }}>
+          <div
+            className="flex items-center justify-between py-1.5"
+            style={{ borderBottom: `1px solid ${c.divider}` }}
+          >
             <div className="flex items-center gap-1.5">
               <span style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>Funding fee</span>
               <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>
-                ({fundingRate >= 0 ? '+' : ''}{(fundingRate * 100).toFixed(4)}% × {holdDuration / 8} lần)
+                ({fundingRate >= 0 ? '+' : ''}
+                {(fundingRate * 100).toFixed(4)}% × {holdDuration / 8} lần)
               </span>
             </div>
             <span
@@ -518,14 +644,24 @@ export function CostBreakdown({
 
         {/* Borrow interest (margin) */}
         {borrowInterest !== 0 && (
-          <div className="flex items-center justify-between py-1.5" style={{ borderBottom: `1px solid ${c.divider}` }}>
+          <div
+            className="flex items-center justify-between py-1.5"
+            style={{ borderBottom: `1px solid ${c.divider}` }}
+          >
             <div className="flex items-center gap-1.5">
               <span style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>Lãi vay ký quỹ</span>
               <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>
                 ({(borrowInterest * 100).toFixed(2)}%/ngày × {holdDuration}h)
               </span>
             </div>
-            <span style={{ color: '#EF4444', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, fontFamily: 'monospace' }}>
+            <span
+              style={{
+                color: '#EF4444',
+                fontSize: FONT_SCALE.xs,
+                fontWeight: FONT_WEIGHT.semibold,
+                fontFamily: 'monospace',
+              }}
+            >
               -${borrowFee.toFixed(4)}
             </span>
           </div>
@@ -534,12 +670,22 @@ export function CostBreakdown({
         {/* Total */}
         <div
           className="flex items-center justify-between py-2 px-3 rounded-xl mt-1"
-          style={{ background: withAlpha('#F59E0B', ALPHA.soft), border: `1px solid ${withAlpha('#F59E0B', ALPHA.muted)}` }}
+          style={{
+            background: withAlpha('#F59E0B', ALPHA.soft),
+            border: `1px solid ${withAlpha('#F59E0B', ALPHA.muted)}`,
+          }}
         >
           <span style={{ color: '#F59E0B', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>
             Tổng chi phí
           </span>
-          <span style={{ color: '#F59E0B', fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}>
+          <span
+            style={{
+              color: '#F59E0B',
+              fontSize: FONT_SCALE.base,
+              fontWeight: FONT_WEIGHT.bold,
+              fontFamily: 'monospace',
+            }}
+          >
             ${totalCost.toFixed(4)}
           </span>
         </div>
@@ -552,7 +698,8 @@ export function CostBreakdown({
       >
         <Info size={12} color={c.text3} className="shrink-0 mt-0.5" />
         <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
-          Chi phí thực tế có thể khác tùy funding rate và thời gian giữ vị thế. Phí được tự động trừ vào số dư.
+          Chi phí thực tế có thể khác tùy funding rate và thời gian giữ vị thế. Phí được tự động trừ
+          vào số dư.
         </p>
       </div>
     </TrCard>
@@ -569,7 +716,10 @@ export function NegativeBalanceProtection({ className = '' }: { className?: stri
   return (
     <TrCard
       className={`p-4 ${className}`}
-      style={{ background: withAlpha('#10B981', ALPHA.hover), border: `1.5px solid ${withAlpha('#10B981', ALPHA.soft)}` }}
+      style={{
+        background: withAlpha('#10B981', ALPHA.hover),
+        border: `1.5px solid ${withAlpha('#10B981', ALPHA.soft)}`,
+      }}
     >
       <div className="flex items-start gap-3">
         <div
@@ -579,12 +729,20 @@ export function NegativeBalanceProtection({ className = '' }: { className?: stri
           <Shield size={ICON_SIZE.md} color="#10B981" strokeWidth={ICON_STROKE.bold} />
         </div>
         <div className="flex-1">
-          <p style={{ color: '#10B981', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, marginBottom: 4 }}>
+          <p
+            style={{
+              color: '#10B981',
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.bold,
+              marginBottom: 4,
+            }}
+          >
             Bảo vệ số dư âm
           </p>
           <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.6 }}>
-            Nền tảng cam kết <strong style={{ color: c.text1 }}>bảo vệ 100% số dư âm</strong>. 
-            Bạn không bao giờ mất nhiều hơn số tiền đã nạp vào tài khoản, ngay cả trong trường hợp thanh lý.
+            Nền tảng cam kết <strong style={{ color: c.text1 }}>bảo vệ 100% số dư âm</strong>. Bạn
+            không bao giờ mất nhiều hơn số tiền đã nạp vào tài khoản, ngay cả trong trường hợp thanh
+            lý.
           </p>
           <p style={{ color: c.text3, fontSize: 10, marginTop: 6 }}>
             Insurance Fund: $12,450,000 | Cập nhật: Hàng ngày
@@ -605,7 +763,11 @@ interface LeverageWarningProps {
   className?: string;
 }
 
-export function LeverageWarning({ leverage, region = 'OTHER', className = '' }: LeverageWarningProps) {
+export function LeverageWarning({
+  leverage,
+  region = 'OTHER',
+  className = '',
+}: LeverageWarningProps) {
   const c = useThemeColors();
 
   // Regulatory stats (must be displayed in EU/UK)
@@ -628,24 +790,52 @@ export function LeverageWarning({ leverage, region = 'OTHER', className = '' }: 
       }}
     >
       <div className="flex items-start gap-3">
-        <AlertTriangle size={ICON_SIZE.md} color={config.color} strokeWidth={ICON_STROKE.bold} className="shrink-0" />
+        <AlertTriangle
+          size={ICON_SIZE.md}
+          color={config.color}
+          strokeWidth={ICON_STROKE.bold}
+          className="shrink-0"
+        />
         <div className="flex-1">
           {/* Regulatory warning (EU/UK/SG) */}
           {(region === 'EU' || region === 'UK' || region === 'SG') && (
             <div
               className="rounded-xl p-3 mb-3"
-              style={{ background: withAlpha(config.color, ALPHA.muted), border: `1px solid ${withAlpha(config.color, ALPHA.border)}` }}
+              style={{
+                background: withAlpha(config.color, ALPHA.muted),
+                border: `1px solid ${withAlpha(config.color, ALPHA.border)}`,
+              }}
             >
-              <p style={{ color: config.color, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, marginBottom: 4 }}>
+              <p
+                style={{
+                  color: config.color,
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  marginBottom: 4,
+                }}
+              >
                 ⚠️ Cảnh báo theo quy định {region}
               </p>
-              <p style={{ color: config.color, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+              <p
+                style={{
+                  color: config.color,
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.bold,
+                }}
+              >
                 {RETAIL_LOSS_PERCENTAGE}% nhà đầu tư cá nhân thua lỗ khi giao dịch với đòn bẩy
               </p>
             </div>
           )}
 
-          <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, marginBottom: 6 }}>
+          <p
+            style={{
+              color: c.text1,
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.bold,
+              marginBottom: 6,
+            }}
+          >
             Rủi ro đòn bẩy {leverage}x
           </p>
 
@@ -653,7 +843,9 @@ export function LeverageWarning({ leverage, region = 'OTHER', className = '' }: 
             <div className="flex items-start gap-2">
               <span style={{ color: config.color, fontSize: FONT_SCALE.xs }}>•</span>
               <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>
-                Giá chỉ cần biến động <strong style={{ color: config.color }}>{(100 / leverage).toFixed(2)}%</strong> ngược chiều là bạn bị thanh lý toàn bộ vị thế
+                Giá chỉ cần biến động{' '}
+                <strong style={{ color: config.color }}>{(100 / leverage).toFixed(2)}%</strong>{' '}
+                ngược chiều là bạn bị thanh lý toàn bộ vị thế
               </p>
             </div>
             <div className="flex items-start gap-2">
@@ -666,7 +858,8 @@ export function LeverageWarning({ leverage, region = 'OTHER', className = '' }: 
               <div className="flex items-start gap-2">
                 <span style={{ color: config.color, fontSize: FONT_SCALE.xs }}>•</span>
                 <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>
-                  <strong style={{ color: config.color }}>Đòn bẩy cực kỳ cao</strong> - Chỉ dành cho trader có kinh nghiệm. Luôn đặt Stop Loss
+                  <strong style={{ color: config.color }}>Đòn bẩy cực kỳ cao</strong> - Chỉ dành cho
+                  trader có kinh nghiệm. Luôn đặt Stop Loss
                 </p>
               </div>
             )}
@@ -674,13 +867,28 @@ export function LeverageWarning({ leverage, region = 'OTHER', className = '' }: 
 
           {/* Regional restrictions */}
           {region === 'EU' && leverage > 30 && (
-            <p style={{ color: '#EF4444', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, marginTop: 8 }}>
+            <p
+              style={{
+                color: '#EF4444',
+                fontSize: FONT_SCALE.xs,
+                fontWeight: FONT_WEIGHT.bold,
+                marginTop: 8,
+              }}
+            >
               ⚠️ ESMA quy định: Nhà đầu tư cá nhân ở EU chỉ được dùng tối đa 30x cho crypto
             </p>
           )}
           {region === 'UK' && leverage > 2 && (
-            <p style={{ color: '#EF4444', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, marginTop: 8 }}>
-              ⚠️ FCA quy định: Nhà đầu tư cá nhân ở UK chỉ được dùng tối đa 2x cho crypto derivatives
+            <p
+              style={{
+                color: '#EF4444',
+                fontSize: FONT_SCALE.xs,
+                fontWeight: FONT_WEIGHT.bold,
+                marginTop: 8,
+              }}
+            >
+              ⚠️ FCA quy định: Nhà đầu tư cá nhân ở UK chỉ được dùng tối đa 2x cho crypto
+              derivatives
             </p>
           )}
         </div>
@@ -740,19 +948,30 @@ export function FundingRateDisplay({
             fontFamily: 'monospace',
           }}
         >
-          {currentRate >= 0 ? '+' : ''}{(currentRate * 100).toFixed(4)}%
+          {currentRate >= 0 ? '+' : ''}
+          {(currentRate * 100).toFixed(4)}%
         </span>
       </div>
 
       {/* Countdown */}
       <div
         className="rounded-xl p-3 mb-3"
-        style={{ background: withAlpha('#3B82F6', ALPHA.hover), border: `1px solid ${withAlpha('#3B82F6', ALPHA.soft)}` }}
+        style={{
+          background: withAlpha('#3B82F6', ALPHA.hover),
+          border: `1px solid ${withAlpha('#3B82F6', ALPHA.soft)}`,
+        }}
       >
         <div className="flex items-center justify-between">
           <span style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>Funding tiếp theo trong</span>
           <div className="flex items-center gap-1">
-            <span style={{ color: '#3B82F6', fontSize: FONT_SCALE.lg, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}>
+            <span
+              style={{
+                color: '#3B82F6',
+                fontSize: FONT_SCALE.lg,
+                fontWeight: FONT_WEIGHT.bold,
+                fontFamily: 'monospace',
+              }}
+            >
               {String(hours).padStart(2, '0')}:{String(minutes).padStart(2, '0')}
             </span>
           </div>
@@ -764,7 +983,9 @@ export function FundingRateDisplay({
         <div
           className="rounded-xl p-3 mb-2"
           style={{
-            background: willPay ? withAlpha('#EF4444', ALPHA.hover) : withAlpha('#10B981', ALPHA.hover),
+            background: willPay
+              ? withAlpha('#EF4444', ALPHA.hover)
+              : withAlpha('#10B981', ALPHA.hover),
             border: `1px solid ${willPay ? withAlpha('#EF4444', ALPHA.soft) : withAlpha('#10B981', ALPHA.soft)}`,
           }}
         >
@@ -790,10 +1011,7 @@ export function FundingRateDisplay({
       )}
 
       {/* Info */}
-      <div
-        className="flex items-start gap-2 p-2.5 rounded-xl"
-        style={{ background: c.surface2 }}
-      >
+      <div className="flex items-start gap-2 p-2.5 rounded-xl" style={{ background: c.surface2 }}>
         <Info size={11} color={c.text3} className="shrink-0 mt-0.5" />
         <p style={{ color: c.text3, fontSize: 9, lineHeight: 1.4 }}>
           Funding rate dương → Long trả Short. Âm → Short trả Long. Thanh toán mỗi 8 giờ.

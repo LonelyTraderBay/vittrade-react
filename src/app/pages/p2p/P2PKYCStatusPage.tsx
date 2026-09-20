@@ -10,9 +10,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  CheckCircle, Clock, XCircle, AlertTriangle, FileText,
-  Camera, Video, Upload, RefreshCw, ChevronRight, Info,
-  Shield, MessageCircle, ExternalLink, ChevronDown, ChevronUp,
+  CheckCircle,
+  Clock,
+  XCircle,
+  AlertTriangle,
+  FileText,
+  Camera,
+  Video,
+  Upload,
+  RefreshCw,
+  ChevronRight,
+  Info,
+  Shield,
+  MessageCircle,
+  ExternalLink,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Header } from '../../components/layout/Header';
@@ -114,7 +127,10 @@ const MOCK_VERIFICATION: {
 /* ═══════════════════════════════════════════════════════════
    Status Config
    ═══════════════════════════════════════════════════════════ */
-const STATUS_CONFIG: Record<StepStatus, { color: string; bg: string; label: string; icon: React.ElementType }> = {
+const STATUS_CONFIG: Record<
+  StepStatus,
+  { color: string; bg: string; label: string; icon: React.ElementType }
+> = {
   completed: {
     color: '#10B981',
     bg: hexToRgba('#10B981', 12),
@@ -192,9 +208,7 @@ function StepTimeline({ step, isLast }: { step: VerificationStep; isLast: boolea
               <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700, marginBottom: 2 }}>
                 {step.label}
               </h3>
-              <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
-                {step.description}
-              </p>
+              <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>{step.description}</p>
             </div>
 
             {/* Status Badge */}
@@ -221,9 +235,7 @@ function StepTimeline({ step, isLast }: { step: VerificationStep; isLast: boolea
           {step.status === 'processing' && step.estimatedTime && (
             <div className="flex items-center gap-1 mt-2">
               <Clock size={10} color="#3B82F6" />
-              <p style={{ color: '#3B82F6', fontSize: 10 }}>
-                Ước tính: {step.estimatedTime}
-              </p>
+              <p style={{ color: '#3B82F6', fontSize: 10 }}>Ước tính: {step.estimatedTime}</p>
             </div>
           )}
 
@@ -277,13 +289,19 @@ function StepTimeline({ step, isLast }: { step: VerificationStep; isLast: boolea
                   >
                     <div
                       className="p-3 rounded-lg"
-                      style={{ background: hexToRgba('#EF4444', 10), border: `1px solid ${hexToRgba('#EF4444', 30)}` }}
+                      style={{
+                        background: hexToRgba('#EF4444', 10),
+                        border: `1px solid ${hexToRgba('#EF4444', 30)}`,
+                      }}
                     >
-                      <p style={{ color: '#EF4444', fontSize: 11, fontWeight: 600, marginBottom: 4 }}>
+                      <p
+                        style={{ color: '#EF4444', fontSize: 11, fontWeight: 600, marginBottom: 4 }}
+                      >
                         {step.rejectedReason || 'Tài liệu không hợp lệ'}
                       </p>
                       <p style={{ color: c.text2, fontSize: 10, lineHeight: 1.5 }}>
-                        {step.rejectedDetails || 'Vui lòng tải lại tài liệu rõ nét, không bị mờ hoặc che khuất.'}
+                        {step.rejectedDetails ||
+                          'Vui lòng tải lại tài liệu rõ nét, không bị mờ hoặc che khuất.'}
                       </p>
                       <button
                         onClick={() => {
@@ -316,26 +334,17 @@ export function P2PKYCStatusPage() {
   const c = useThemeColors();
   const { hapticSelection, hapticSuccess } = useHaptic();
   const prefix = useRoutePrefix();
-  const { isRefreshing, handleRefresh } = useRefresh({
-    onRefresh: async () => {
-      await new Promise(res => setTimeout(res, 1000));
-      hapticSuccess();
-    },
-  });
+  const { isRefreshing, refresh: handleRefresh } = useRefresh();
 
   const data = MOCK_VERIFICATION;
-  const completedSteps = data.steps.filter(s => s.status === 'completed').length;
+  const completedSteps = data.steps.filter((s) => s.status === 'completed').length;
   const totalSteps = data.steps.length;
   const progress = (completedSteps / totalSteps) * 100;
 
   return (
     <PullToRefresh onRefresh={handleRefresh} isRefreshing={isRefreshing}>
       <PageLayout>
-        <Header
-          title="KYC Status"
-          subtitle="KYC · P2P"
-          back
-        />
+        <Header title="KYC Status" subtitle="KYC · P2P" back />
 
         {/* Overall Status Card */}
         <div className="px-5 py-4">
@@ -351,34 +360,25 @@ export function P2PKYCStatusPage() {
                 <h2 style={{ color: c.text1, fontSize: φ.md, fontWeight: 700, marginBottom: 2 }}>
                   Tier {data.tier} - {data.tierName}
                 </h2>
-                <p style={{ color: c.text3, fontSize: 11 }}>
-                  Gửi lúc {data.submittedAt}
-                </p>
+                <p style={{ color: c.text3, fontSize: 11 }}>Gửi lúc {data.submittedAt}</p>
               </div>
               <div
                 className="px-2 py-1 rounded-md"
                 style={{ background: hexToRgba('#F59E0B', 15) }}
               >
-                <span style={{ color: '#F59E0B', fontSize: 10, fontWeight: 700 }}>
-                  Đang xử lý
-                </span>
+                <span style={{ color: '#F59E0B', fontSize: 10, fontWeight: 700 }}>Đang xử lý</span>
               </div>
             </div>
 
             {/* Progress Bar */}
             <div className="mb-3">
               <div className="flex items-center justify-between mb-2">
-                <span style={{ color: c.text2, fontSize: 11, fontWeight: 600 }}>
-                  Tiến độ
-                </span>
+                <span style={{ color: c.text2, fontSize: 11, fontWeight: 600 }}>Tiến độ</span>
                 <span style={{ color: '#3B82F6', fontSize: 11, fontWeight: 700 }}>
                   {completedSteps}/{totalSteps} bước
                 </span>
               </div>
-              <div
-                className="h-2 rounded-full overflow-hidden"
-                style={{ background: c.surface2 }}
-              >
+              <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
                 <div
                   className="h-full rounded-full transition-all duration-500"
                   style={{
@@ -396,7 +396,8 @@ export function P2PKYCStatusPage() {
             >
               <Info size={14} color="#3B82F6" className="shrink-0 mt-0.5" />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Chúng tôi đang xem xét hồ sơ của bạn. Bạn sẽ nhận được thông báo qua email khi hoàn tất.
+                Chúng tôi đang xem xét hồ sơ của bạn. Bạn sẽ nhận được thông báo qua email khi hoàn
+                tất.
               </p>
             </div>
           </TrCard>
@@ -410,11 +411,7 @@ export function P2PKYCStatusPage() {
 
           <TrCard rounded="lg" className="p-4">
             {data.steps.map((step, idx) => (
-              <StepTimeline
-                key={step.id}
-                step={step}
-                isLast={idx === data.steps.length - 1}
-              />
+              <StepTimeline key={step.id} step={step} isLast={idx === data.steps.length - 1} />
             ))}
           </TrCard>
         </div>

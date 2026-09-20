@@ -80,7 +80,7 @@ export function useInfiniteScroll<T>({
     setIsLoadingMore(true);
 
     setTimeout(() => {
-      setVisibleCount(prev => Math.min(prev + pageSize, dataLengthRef.current));
+      setVisibleCount((prev) => Math.min(prev + pageSize, dataLengthRef.current));
       setIsLoadingMore(false);
       loadingRef.current = false;
     }, loadDelay);
@@ -106,12 +106,12 @@ export function useInfiniteScroll<T>({
         {
           rootMargin: `0px 0px ${threshold}px 0px`,
           threshold: 0,
-        }
+        },
       );
 
       observerRef.current.observe(node);
     },
-    [loadMore, threshold]
+    [loadMore, threshold],
   );
 
   // Cleanup on unmount

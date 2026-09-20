@@ -11,11 +11,7 @@ import { useThemeColors } from '../../hooks/useThemeColors';
    ═══════════════════════════════════════════════════════════ */
 
 // ─── Retry wrapper for dynamic imports ───
-function retryImport<T>(
-  importFn: () => Promise<T>,
-  retries = 3,
-  delay = 1000,
-): Promise<T> {
+function retryImport<T>(importFn: () => Promise<T>, retries = 3, delay = 1000): Promise<T> {
   return new Promise((resolve, reject) => {
     importFn()
       .then(resolve)
@@ -38,10 +34,7 @@ function RouteLoadingFallback() {
   const c = useThemeColors();
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center"
-      style={{ background: c.bg }}
-    >
+    <div className="min-h-screen flex items-center justify-center" style={{ background: c.bg }}>
       <div className="flex flex-col items-center gap-4">
         <div className="relative w-12 h-12">
           <div
@@ -63,10 +56,7 @@ function RouteErrorFallback({ onRetry }: { onRetry: () => void }) {
   const c = useThemeColors();
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center"
-      style={{ background: c.bg }}
-    >
+    <div className="min-h-screen flex items-center justify-center" style={{ background: c.bg }}>
       <div className="flex flex-col items-center gap-4 px-6 text-center">
         <div
           className="w-14 h-14 rounded-2xl flex items-center justify-center"
@@ -74,9 +64,7 @@ function RouteErrorFallback({ onRetry }: { onRetry: () => void }) {
         >
           <span style={{ fontSize: 28 }}>!</span>
         </div>
-        <p style={{ color: c.text1, fontSize: 16, fontWeight: 600 }}>
-          Không tải được trang
-        </p>
+        <p style={{ color: c.text1, fontSize: 16, fontWeight: 600 }}>Không tải được trang</p>
         <p style={{ color: c.text3, fontSize: 13, lineHeight: 1.5 }}>
           Lỗi kết nối hoặc module chưa sẵn sàng. Vui lòng thử lại.
         </p>
@@ -138,7 +126,7 @@ export function LazyRoute({ component: Comp }: LazyRouteProps) {
   return (
     <LazyErrorBoundary
       key={retryKey}
-      fallback={<RouteErrorFallback onRetry={() => setRetryKey(k => k + 1)} />}
+      fallback={<RouteErrorFallback onRetry={() => setRetryKey((k) => k + 1)} />}
     >
       <Suspense fallback={<RouteLoadingFallback />}>
         <Comp />

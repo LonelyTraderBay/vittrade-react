@@ -27,7 +27,7 @@ export function WebCopyConfigurationPage() {
   const [capital, setCapital] = useState(1000);
   const [stopLoss, setStopLoss] = useState(10);
 
-  const provider = COPY_TRADERS.find(t => t.id === providerId);
+  const provider = COPY_TRADERS.find((t) => t.id === providerId);
 
   return (
     <PageLayout variant="flush">
@@ -47,7 +47,9 @@ export function WebCopyConfigurationPage() {
 
           <div className="space-y-6">
             <div>
-              <label style={{ color: c.text2, fontSize: WEB_FONT.sm, display: 'block', marginBottom: 8 }}>
+              <label
+                style={{ color: c.text2, fontSize: WEB_FONT.sm, display: 'block', marginBottom: 8 }}
+              >
                 Số tiền copy (USDT)
               </label>
               <input
@@ -65,7 +67,9 @@ export function WebCopyConfigurationPage() {
             </div>
 
             <div>
-              <label style={{ color: c.text2, fontSize: WEB_FONT.sm, display: 'block', marginBottom: 8 }}>
+              <label
+                style={{ color: c.text2, fontSize: WEB_FONT.sm, display: 'block', marginBottom: 8 }}
+              >
                 Stop Loss (%)
               </label>
               <input
@@ -114,7 +118,7 @@ export function WebCopyConfirmationPage() {
   const c = useThemeColors();
   const navigate = useNavigate();
 
-  const provider = COPY_TRADERS.find(t => t.id === providerId);
+  const provider = COPY_TRADERS.find((t) => t.id === providerId);
 
   return (
     <PageLayout variant="flush">
@@ -136,7 +140,9 @@ export function WebCopyConfirmationPage() {
               <CheckCircle size={WEB_ICON.xl} color="#fff" />
             </div>
             <div>
-              <h3 style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text1, marginBottom: 8 }}>
+              <h3
+                style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text1, marginBottom: 8 }}
+              >
                 Copy thành công
               </h3>
               <p style={{ fontSize: WEB_FONT.sm, color: c.text2 }}>
@@ -148,7 +154,9 @@ export function WebCopyConfirmationPage() {
           <div className="space-y-4">
             <div className="flex justify-between">
               <span style={{ color: c.text3, fontSize: WEB_FONT.sm }}>Số tiền copy</span>
-              <span style={{ color: c.text1, fontSize: WEB_FONT.md, fontWeight: 600 }}>1,000 USDT</span>
+              <span style={{ color: c.text1, fontSize: WEB_FONT.md, fontWeight: 600 }}>
+                1,000 USDT
+              </span>
             </div>
             <div className="flex justify-between">
               <span style={{ color: c.text3, fontSize: WEB_FONT.sm }}>Stop Loss</span>
@@ -296,7 +304,8 @@ export function WebCopyEducationPage() {
             Copy Trading là gì?
           </h3>
           <p style={{ fontSize: WEB_FONT.md, color: c.text2, lineHeight: 1.6, marginBottom: 24 }}>
-            Copy Trading cho phép bạn tự động sao chép các lệnh giao dịch của các trader có kinh nghiệm.
+            Copy Trading cho phép bạn tự động sao chép các lệnh giao dịch của các trader có kinh
+            nghiệm.
           </p>
           <h4 style={{ fontSize: WEB_FONT.lg, fontWeight: 700, color: c.text1, marginBottom: 16 }}>
             Rủi ro chính

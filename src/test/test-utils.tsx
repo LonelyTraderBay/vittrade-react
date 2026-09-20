@@ -33,9 +33,7 @@ function AllTheProviders({ children, routerProps = {} }: AllTheProvidersProps) {
         <AuthProvider>
           <UIProvider>
             <AppProvider>
-              <DCAProvider>
-                {children}
-              </DCAProvider>
+              <DCAProvider>{children}</DCAProvider>
             </AppProvider>
           </UIProvider>
         </AuthProvider>
@@ -51,10 +49,7 @@ interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
   routerProps?: MemoryRouterProps;
 }
 
-export function renderWithProviders(
-  ui: ReactElement,
-  options?: CustomRenderOptions
-) {
+export function renderWithProviders(ui: ReactElement, options?: CustomRenderOptions) {
   const { routerProps, ...renderOptions } = options ?? {};
 
   return render(ui, {
@@ -68,14 +63,9 @@ export function renderWithProviders(
 /**
  * Render with only Router (for components that don't need contexts)
  */
-export function renderWithRouter(
-  ui: ReactElement,
-  routerProps?: MemoryRouterProps
-) {
+export function renderWithRouter(ui: ReactElement, routerProps?: MemoryRouterProps) {
   return render(ui, {
-    wrapper: ({ children }) => (
-      <MemoryRouter {...routerProps}>{children}</MemoryRouter>
-    ),
+    wrapper: ({ children }) => <MemoryRouter {...routerProps}>{children}</MemoryRouter>,
   });
 }
 
@@ -112,14 +102,13 @@ export const createMockUser = (overrides = {}) => ({
 /**
  * Wait for async updates
  */
-export const waitForLoadingToFinish = () =>
-  new Promise((resolve) => setTimeout(resolve, 0));
+export const waitForLoadingToFinish = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 /**
  * Mock intersection observer entry
  */
 export const createIntersectionObserverEntry = (
-  isIntersecting: boolean
+  isIntersecting: boolean,
 ): IntersectionObserverEntry => ({
   isIntersecting,
   boundingClientRect: {} as DOMRectReadOnly,

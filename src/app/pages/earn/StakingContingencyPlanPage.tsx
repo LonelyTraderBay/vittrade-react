@@ -18,7 +18,12 @@ const CONTINGENCY_SCENARIOS = [
       'Full audit within 24 hours',
       'User communication within 1 hour',
     ],
-    preventative: ['Quarterly security audits', 'Bug bounty program', 'Multi-sig wallet controls', 'Insurance fund 165% coverage'],
+    preventative: [
+      'Quarterly security audits',
+      'Bug bounty program',
+      'Multi-sig wallet controls',
+      'Insurance fund 165% coverage',
+    ],
   },
   {
     scenario: 'Validator Slashing Event',
@@ -30,7 +35,12 @@ const CONTINGENCY_SCENARIOS = [
       'Affected users notified immediately',
       'Validator removed from rotation',
     ],
-    preventative: ['24/7 validator monitoring', 'Multi-validator distribution', 'Performance-based allocation', 'Automatic failover'],
+    preventative: [
+      '24/7 validator monitoring',
+      'Multi-validator distribution',
+      'Performance-based allocation',
+      'Automatic failover',
+    ],
   },
   {
     scenario: 'Network Failure',
@@ -42,7 +52,12 @@ const CONTINGENCY_SCENARIOS = [
       'Status page updated real-time',
       'Service restoration within 4 hours',
     ],
-    preventative: ['Multi-region deployment', 'Redundant infrastructure', 'Daily backups', 'Disaster recovery drills'],
+    preventative: [
+      'Multi-region deployment',
+      'Redundant infrastructure',
+      'Daily backups',
+      'Disaster recovery drills',
+    ],
   },
   {
     scenario: 'Regulatory Action',
@@ -54,7 +69,11 @@ const CONTINGENCY_SCENARIOS = [
       'User withdrawal window (30 days)',
       'Geographic restriction if required',
     ],
-    preventative: ['Proactive compliance monitoring', 'Multiple jurisdictional licenses', 'Legal reserve fund'],
+    preventative: [
+      'Proactive compliance monitoring',
+      'Multiple jurisdictional licenses',
+      'Legal reserve fund',
+    ],
   },
 ];
 
@@ -76,7 +95,13 @@ export function StakingContingencyPlanPage() {
 
       <PageContent>
         {/* Info Banner */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(59,130,246,0.08)', border: '1.5px solid rgba(59,130,246,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{
+            background: 'rgba(59,130,246,0.08)',
+            border: '1.5px solid rgba(59,130,246,0.2)',
+          }}
+        >
           <div className="flex gap-3">
             <Shield size={20} color="#3B82F6" className="shrink-0 mt-0.5" />
             <div>
@@ -84,7 +109,8 @@ export function StakingContingencyPlanPage() {
                 Disaster Recovery & Business Continuity
               </p>
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                Our contingency plan ensures continuity of service and asset protection in all emergency scenarios. Tested quarterly.
+                Our contingency plan ensures continuity of service and asset protection in all
+                emergency scenarios. Tested quarterly.
               </p>
             </div>
           </div>
@@ -136,18 +162,27 @@ export function StakingContingencyPlanPage() {
                     <div className="flex items-center gap-2">
                       <span
                         className="px-2 py-0.5 rounded-md text-xs"
-                        style={{ background: c.surface2, color: c.text3 }}>
+                        style={{ background: c.surface2, color: c.text3 }}
+                      >
                         {item.likelihood}
                       </span>
                       <span
                         className="px-2 py-0.5 rounded-md text-xs font-bold"
                         style={{
-                          background: item.impact === 'Critical' ? 'rgba(239,68,68,0.15)' :
-                                     item.impact === 'High' ? 'rgba(245,158,11,0.15)' :
-                                     'rgba(59,130,246,0.15)',
-                          color: item.impact === 'Critical' ? '#EF4444' :
-                                 item.impact === 'High' ? '#F59E0B' : '#3B82F6',
-                        }}>
+                          background:
+                            item.impact === 'Critical'
+                              ? 'rgba(239,68,68,0.15)'
+                              : item.impact === 'High'
+                                ? 'rgba(245,158,11,0.15)'
+                                : 'rgba(59,130,246,0.15)',
+                          color:
+                            item.impact === 'Critical'
+                              ? '#EF4444'
+                              : item.impact === 'High'
+                                ? '#F59E0B'
+                                : '#3B82F6',
+                        }}
+                      >
                         {item.impact} Impact
                       </span>
                     </div>
@@ -177,7 +212,8 @@ export function StakingContingencyPlanPage() {
                       <span
                         key={i}
                         className="px-2 py-1 rounded-lg text-xs"
-                        style={{ background: 'rgba(16,185,129,0.08)', color: '#10B981' }}>
+                        style={{ background: 'rgba(16,185,129,0.08)', color: '#10B981' }}
+                      >
                         {measure}
                       </span>
                     ))}
@@ -192,31 +228,46 @@ export function StakingContingencyPlanPage() {
         <PageSection label="Testing & Validation">
           <TrCard className="p-4">
             <div className="space-y-3">
-              <div className="flex items-center justify-between pb-3 border-b" style={{ borderColor: c.borderSolid }}>
+              <div
+                className="flex items-center justify-between pb-3 border-b"
+                style={{ borderColor: c.borderSolid }}
+              >
                 <div>
                   <p style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 2 }}>
                     Last DR Test
                   </p>
                   <p style={{ color: c.text3, fontSize: 11 }}>
-                    {new Date(RECOVERY_METRICS.lastTest).toLocaleDateString('en-GB', { month: 'long', day: 'numeric', year: 'numeric' })}
+                    {new Date(RECOVERY_METRICS.lastTest).toLocaleDateString('en-GB', {
+                      month: 'long',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })}
                   </p>
                 </div>
                 <CheckCircle2 size={20} color="#10B981" />
               </div>
-              <div className="flex items-center justify-between pb-3 border-b" style={{ borderColor: c.borderSolid }}>
+              <div
+                className="flex items-center justify-between pb-3 border-b"
+                style={{ borderColor: c.borderSolid }}
+              >
                 <div>
                   <p style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 2 }}>
                     Next Scheduled Test
                   </p>
                   <p style={{ color: c.text3, fontSize: 11 }}>
-                    {new Date(RECOVERY_METRICS.nextTest).toLocaleDateString('en-GB', { month: 'long', day: 'numeric', year: 'numeric' })}
+                    {new Date(RECOVERY_METRICS.nextTest).toLocaleDateString('en-GB', {
+                      month: 'long',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })}
                   </p>
                 </div>
                 <AlertTriangle size={20} color="#F59E0B" />
               </div>
               <div>
                 <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                  Our disaster recovery plan is tested quarterly with full simulations. All test results are documented and audited by third parties.
+                  Our disaster recovery plan is tested quarterly with full simulations. All test
+                  results are documented and audited by third parties.
                 </p>
               </div>
             </div>
@@ -237,7 +288,9 @@ export function StakingContingencyPlanPage() {
                     <FileText size={20} color="#3B82F6" />
                     <div>
                       <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>{doc.name}</p>
-                      <p style={{ color: c.text3, fontSize: 10 }}>{doc.size} • Updated {new Date(doc.date).toLocaleDateString('en-GB')}</p>
+                      <p style={{ color: c.text3, fontSize: 10 }}>
+                        {doc.size} • Updated {new Date(doc.date).toLocaleDateString('en-GB')}
+                      </p>
                     </div>
                   </div>
                   <ExternalLink size={16} color={c.text3} />
@@ -250,7 +303,9 @@ export function StakingContingencyPlanPage() {
         {/* Footer */}
         <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6, textAlign: 'center' }}>
-            Our contingency plan is reviewed annually and updated based on new threats, regulatory requirements, and industry best practices. For inquiries, contact compliance@platform.com.
+            Our contingency plan is reviewed annually and updated based on new threats, regulatory
+            requirements, and industry best practices. For inquiries, contact
+            compliance@platform.com.
           </p>
         </div>
       </PageContent>

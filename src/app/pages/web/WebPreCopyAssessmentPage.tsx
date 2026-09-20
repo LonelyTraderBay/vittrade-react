@@ -43,7 +43,7 @@ export function WebPreCopyAssessmentPage() {
     },
   ];
 
-  const allAnswered = questions.every(q => answers[q.id]);
+  const allAnswered = questions.every((q) => answers[q.id]);
 
   return (
     <PageLayout variant="flush">
@@ -65,7 +65,9 @@ export function WebPreCopyAssessmentPage() {
               <Shield size={WEB_ICON.xl} color="#fff" />
             </div>
             <div>
-              <h3 style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text1, marginBottom: 8 }}>
+              <h3
+                style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text1, marginBottom: 8 }}
+              >
                 Đánh giá rủi ro trước khi copy
               </h3>
               <p style={{ fontSize: WEB_FONT.sm, color: c.text2 }}>
@@ -96,7 +98,7 @@ export function WebPreCopyAssessmentPage() {
                 {idx + 1}. {q.question}
               </h4>
               <div className="space-y-3">
-                {q.options.map(opt => (
+                {q.options.map((opt) => (
                   <button
                     key={opt.value}
                     onClick={() => setAnswers({ ...answers, [q.id]: opt.value })}
@@ -124,14 +126,21 @@ export function WebPreCopyAssessmentPage() {
         {allAnswered && (
           <div
             className="rounded-2xl p-6 flex gap-4"
-            style={{ background: c.successBg, border: `1px solid ${c.successBorder}` }}
+            style={{ background: c.buyAlpha10, border: `1px solid ${c.buyAlpha20}` }}
           >
-            <CheckCircle size={WEB_ICON.lg} color={c.successText} className="shrink-0" />
+            <CheckCircle size={WEB_ICON.lg} color={c.success} className="shrink-0" />
             <div>
-              <p style={{ color: c.successText, fontSize: WEB_FONT.md, fontWeight: 600, marginBottom: 8 }}>
+              <p
+                style={{
+                  color: c.success,
+                  fontSize: WEB_FONT.md,
+                  fontWeight: 600,
+                  marginBottom: 8,
+                }}
+              >
                 Đánh giá hoàn tất
               </p>
-              <p style={{ color: c.successText, fontSize: WEB_FONT.sm, opacity: 0.9 }}>
+              <p style={{ color: c.success, fontSize: WEB_FONT.sm, opacity: 0.9 }}>
                 Bạn đủ điều kiện để tiếp tục. Vui lòng cấu hình chiến lược copy.
               </p>
             </div>

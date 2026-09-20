@@ -1,26 +1,26 @@
 /**
  * Admin Home - Dashboard Navigation Hub
- * 
+ *
  * Central hub for accessing all admin dashboards and tools:
  * - Analytics Dashboard
  * - A/B Test Dashboard
  * - Funnel Dashboard
  * - Real-time Metrics
- * 
+ *
  * @module pages/admin/AdminHome
  * @version 1.0 (Phase 2 - Sprint 3)
  */
 
 import { useNavigate } from 'react-router';
-import { 
-  BarChart3, 
-  Beaker, 
+import {
+  BarChart3,
+  Beaker,
   Filter,
   Zap,
   Settings,
   ChevronRight,
   Activity,
-  TrendingUp
+  TrendingUp,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useRoutePrefix } from '../../hooks/useRoutePrefix';
@@ -47,11 +47,11 @@ export default function AdminHome() {
 
   // Quick stats
   const totalEvents = dcaAnalytics.getQueue().length;
-  const activeTests = AB_TESTS.filter(test => {
+  const activeTests = AB_TESTS.filter((test) => {
     const results = abTestAnalytics.getTestResults(test);
-    return !results.hasSignificance;
+    return !(results.significance >= test.targetSignificance);
   }).length;
-  
+
   const completedFunnels = CONVERSION_FUNNELS.reduce((sum, funnel) => {
     const analytics = funnelTracker.getFunnelAnalytics(funnel.id);
     return sum + analytics.completedSessions;
@@ -97,7 +97,13 @@ export default function AdminHome() {
           <button
             onClick={() => navigate(`${routePrefix}/admin/settings`)}
             className="flex items-center justify-center hover-ghost"
-            style={{ width: 36, height: 36, borderRadius: 10, background: c.searchBg, border: `1px solid ${c.border}` }}
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 10,
+              background: c.searchBg,
+              border: `1px solid ${c.border}`,
+            }}
             aria-label="Settings"
           >
             <Settings size={18} color={c.text2} />
@@ -143,9 +149,7 @@ export default function AdminHome() {
         <div>
           <div className="flex items-center gap-2 mb-3">
             <Zap size={18} color={c.text1} />
-            <h2 style={{ color: c.text1, fontSize: φ.base, fontWeight: 600 }}>
-              Real-Time Metrics
-            </h2>
+            <h2 style={{ color: c.text1, fontSize: φ.base, fontWeight: 600 }}>Real-Time Metrics</h2>
           </div>
           <RealTimeMetrics />
         </div>
@@ -154,9 +158,7 @@ export default function AdminHome() {
         <div>
           <div className="flex items-center gap-2 mb-3">
             <TrendingUp size={18} color={c.text1} />
-            <h2 style={{ color: c.text1, fontSize: φ.base, fontWeight: 600 }}>
-              Dashboards
-            </h2>
+            <h2 style={{ color: c.text1, fontSize: φ.base, fontWeight: 600 }}>Dashboards</h2>
           </div>
 
           <div className="space-y-3">
@@ -177,17 +179,24 @@ export default function AdminHome() {
                   </div>
 
                   <div className="flex-1 text-left">
-                    <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, marginBottom: 2 }}>
+                    <h3
+                      style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, marginBottom: 2 }}
+                    >
                       {dashboard.title}
                     </h3>
-                    <p style={{ color: c.text3, fontSize: 11 }}>
-                      {dashboard.description}
-                    </p>
+                    <p style={{ color: c.text3, fontSize: 11 }}>{dashboard.description}</p>
                   </div>
 
                   <div className="flex items-center gap-3">
                     <div className="text-right">
-                      <p style={{ color: dashboard.color, fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}>
+                      <p
+                        style={{
+                          color: dashboard.color,
+                          fontSize: 13,
+                          fontWeight: 600,
+                          fontFamily: 'monospace',
+                        }}
+                      >
                         {dashboard.stat}
                       </p>
                     </div>
@@ -202,9 +211,7 @@ export default function AdminHome() {
         {/* Footer Info */}
         <TrCard className="p-4">
           <div className="text-center">
-            <p style={{ color: c.text3, fontSize: 11 }}>
-              Admin Dashboard v1.0 • Phase 2 Sprint 3
-            </p>
+            <p style={{ color: c.text3, fontSize: 11 }}>Admin Dashboard v1.0 • Phase 2 Sprint 3</p>
             <p style={{ color: c.text3, fontSize: 10, marginTop: 4 }}>
               Last updated: {new Date().toLocaleString('vi-VN')}
             </p>

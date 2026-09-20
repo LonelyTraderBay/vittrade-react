@@ -5,7 +5,16 @@ import { PageLayout } from '../../../components/layout/PageLayout';
 import { PageContent, PageSection } from '../../../components/layout/PageContent';
 import { useThemeColors } from '../../../hooks/useThemeColors';
 import { TrCard } from '../../../components/ui/TrCard';
-import { AreaChart, Area, ResponsiveContainer, XAxis, YAxis, Tooltip, BarChart, Bar } from 'recharts';
+import {
+  AreaChart,
+  Area,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+  BarChart,
+  Bar,
+} from 'recharts';
 
 const UNDERWATER_DATA = [
   { date: '2025-09-01', underwater: 0 },
@@ -33,19 +42,56 @@ const DD_DURATION_DATA = [
 ];
 
 const DD_EVENTS = [
-  { id: 1, start: '2025-09-10', end: '2025-09-30', depth: -2.3, duration: '20 days', recovery: '21 days' },
-  { id: 2, start: '2025-10-10', end: '2025-11-08', depth: -8.2, duration: '29 days', recovery: '2 days' },
-  { id: 3, start: '2025-11-20', end: '2025-12-03', depth: -3.1, duration: '13 days', recovery: '2 days' },
-  { id: 4, start: '2025-12-15', end: '2026-01-18', depth: -10.3, duration: '34 days', recovery: '2 days' },
-  { id: 5, start: '2026-02-28', end: '2026-03-08', depth: -5.4, duration: '8 days', recovery: 'Ongoing' },
+  {
+    id: 1,
+    start: '2025-09-10',
+    end: '2025-09-30',
+    depth: -2.3,
+    duration: '20 days',
+    recovery: '21 days',
+  },
+  {
+    id: 2,
+    start: '2025-10-10',
+    end: '2025-11-08',
+    depth: -8.2,
+    duration: '29 days',
+    recovery: '2 days',
+  },
+  {
+    id: 3,
+    start: '2025-11-20',
+    end: '2025-12-03',
+    depth: -3.1,
+    duration: '13 days',
+    recovery: '2 days',
+  },
+  {
+    id: 4,
+    start: '2025-12-15',
+    end: '2026-01-18',
+    depth: -10.3,
+    duration: '34 days',
+    recovery: '2 days',
+  },
+  {
+    id: 5,
+    start: '2026-02-28',
+    end: '2026-03-08',
+    depth: -5.4,
+    duration: '8 days',
+    recovery: 'Ongoing',
+  },
 ];
 
 export function BotDrawdownAnalyzerPage() {
   const c = useThemeColors();
 
-  const maxDD = Math.min(...UNDERWATER_DATA.map(d => d.underwater));
-  const avgDD = UNDERWATER_DATA.filter(d => d.underwater < 0).reduce((sum, d) => sum + d.underwater, 0) / UNDERWATER_DATA.filter(d => d.underwater < 0).length;
-  const ddDays = UNDERWATER_DATA.filter(d => d.underwater < 0).length;
+  const maxDD = Math.min(...UNDERWATER_DATA.map((d) => d.underwater));
+  const avgDD =
+    UNDERWATER_DATA.filter((d) => d.underwater < 0).reduce((sum, d) => sum + d.underwater, 0) /
+    UNDERWATER_DATA.filter((d) => d.underwater < 0).length;
+  const ddDays = UNDERWATER_DATA.filter((d) => d.underwater < 0).length;
   const totalDays = UNDERWATER_DATA.length;
 
   return (
@@ -86,36 +132,43 @@ export function BotDrawdownAnalyzerPage() {
               <AreaChart data={UNDERWATER_DATA}>
                 <defs key="gradient-defs">
                   <linearGradient id="uwGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#EF4444" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#EF4444" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#EF4444" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#EF4444" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <XAxis 
+                <XAxis
                   key="x-axis-dd"
-                  dataKey="date" 
-                  stroke={c.text3} 
+                  dataKey="date"
+                  stroke={c.text3}
                   style={{ fontSize: 9 }}
                   tickLine={false}
-                  tickFormatter={val => new Date(val).toLocaleDateString('en-US', { month: 'short' })}
+                  tickFormatter={(val) =>
+                    new Date(val).toLocaleDateString('en-US', { month: 'short' })
+                  }
                 />
-                <YAxis 
+                <YAxis
                   key="y-axis-dd"
-                  stroke={c.text3} 
+                  stroke={c.text3}
                   style={{ fontSize: 10 }}
                   tickLine={false}
-                  tickFormatter={val => `${val}%`}
+                  tickFormatter={(val) => `${val}%`}
                 />
                 <Tooltip
-                  contentStyle={{ background: c.surface, border: `1px solid ${c.borderSolid}`, borderRadius: 8, fontSize: 11 }}
+                  contentStyle={{
+                    background: c.surface,
+                    border: `1px solid ${c.borderSolid}`,
+                    borderRadius: 8,
+                    fontSize: 11,
+                  }}
                   formatter={(value: any) => [`${value}%`, 'Drawdown']}
                 />
-                <Area 
+                <Area
                   key="area-dd"
-                  type="monotone" 
-                  dataKey="underwater" 
-                  stroke="#EF4444" 
+                  type="monotone"
+                  dataKey="underwater"
+                  stroke="#EF4444"
                   strokeWidth={2}
-                  fill="url(#uwGradient)" 
+                  fill="url(#uwGradient)"
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -130,21 +183,26 @@ export function BotDrawdownAnalyzerPage() {
           <TrCard className="p-4">
             <ResponsiveContainer width="100%" height={160}>
               <BarChart data={DD_DURATION_DATA}>
-                <XAxis 
+                <XAxis
                   key="x-axis-dur"
-                  dataKey="range" 
-                  stroke={c.text3} 
+                  dataKey="range"
+                  stroke={c.text3}
                   style={{ fontSize: 10 }}
                   tickLine={false}
                 />
-                <YAxis 
+                <YAxis
                   key="y-axis-dur"
-                  stroke={c.text3} 
+                  stroke={c.text3}
                   style={{ fontSize: 10 }}
                   tickLine={false}
                 />
                 <Tooltip
-                  contentStyle={{ background: c.surface, border: `1px solid ${c.borderSolid}`, borderRadius: 8, fontSize: 11 }}
+                  contentStyle={{
+                    background: c.surface,
+                    border: `1px solid ${c.borderSolid}`,
+                    borderRadius: 8,
+                    fontSize: 11,
+                  }}
                   formatter={(value: any) => [`${value} events`, 'Count']}
                 />
                 <Bar key="bar-count" dataKey="count" fill="#F59E0B" radius={[4, 4, 0, 0]} />
@@ -162,7 +220,10 @@ export function BotDrawdownAnalyzerPage() {
                   <div className="flex items-center gap-2">
                     <span style={{ color: c.text3, fontSize: 11 }}>Event #{idx + 1}</span>
                     {Math.abs(event.depth) > 8 && (
-                      <span className="px-2 py-0.5 rounded-md text-xs font-bold" style={{ background: 'rgba(239,68,68,0.12)', color: '#EF4444' }}>
+                      <span
+                        className="px-2 py-0.5 rounded-md text-xs font-bold"
+                        style={{ background: 'rgba(239,68,68,0.12)', color: '#EF4444' }}
+                      >
                         Severe
                       </span>
                     )}
@@ -173,16 +234,27 @@ export function BotDrawdownAnalyzerPage() {
                   <div className="rounded-lg p-2" style={{ background: c.surface2 }}>
                     <p style={{ color: c.text3, fontSize: 9 }}>Start</p>
                     <p style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>
-                      {new Date(event.start).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                      {new Date(event.start).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                      })}
                     </p>
                   </div>
                   <div className="rounded-lg p-2" style={{ background: c.surface2 }}>
                     <p style={{ color: c.text3, fontSize: 9 }}>Duration</p>
-                    <p style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>{event.duration}</p>
+                    <p style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>
+                      {event.duration}
+                    </p>
                   </div>
                   <div className="rounded-lg p-2" style={{ background: c.surface2 }}>
                     <p style={{ color: c.text3, fontSize: 9 }}>Recovery</p>
-                    <p style={{ color: event.recovery === 'Ongoing' ? '#F59E0B' : '#10B981', fontSize: 11, fontWeight: 600 }}>
+                    <p
+                      style={{
+                        color: event.recovery === 'Ongoing' ? '#F59E0B' : '#10B981',
+                        fontSize: 11,
+                        fontWeight: 600,
+                      }}
+                    >
                       {event.recovery}
                     </p>
                   </div>
@@ -200,19 +272,27 @@ export function BotDrawdownAnalyzerPage() {
           <ul className="space-y-2">
             <li className="flex gap-2">
               <span style={{ color: '#10B981' }}>✓</span>
-              <p style={{ color: c.text2, fontSize: 11 }}>Max drawdown (-10.3%) is within acceptable range (&lt;15%)</p>
+              <p style={{ color: c.text2, fontSize: 11 }}>
+                Max drawdown (-10.3%) is within acceptable range (&lt;15%)
+              </p>
             </li>
             <li className="flex gap-2">
               <span style={{ color: '#10B981' }}>✓</span>
-              <p style={{ color: c.text2, fontSize: 11 }}>Average recovery time is short (2-21 days)</p>
+              <p style={{ color: c.text2, fontSize: 11 }}>
+                Average recovery time is short (2-21 days)
+              </p>
             </li>
             <li className="flex gap-2">
               <span style={{ color: '#F59E0B' }}>!</span>
-              <p style={{ color: c.text2, fontSize: 11 }}>Currently in drawdown (-3.2%), monitor closely</p>
+              <p style={{ color: c.text2, fontSize: 11 }}>
+                Currently in drawdown (-3.2%), monitor closely
+              </p>
             </li>
             <li className="flex gap-2">
               <span style={{ color: '#10B981' }}>✓</span>
-              <p style={{ color: c.text2, fontSize: 11 }}>Most drawdowns are short-term (&lt;1 week)</p>
+              <p style={{ color: c.text2, fontSize: 11 }}>
+                Most drawdowns are short-term (&lt;1 week)
+              </p>
             </li>
           </ul>
         </div>

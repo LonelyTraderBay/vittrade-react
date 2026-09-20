@@ -26,9 +26,15 @@ function RightPanel({ pairs }: { pairs: CryptoPair[] }) {
   const navigate = useNavigate();
   const c = useThemeColors();
   const prefix = useRoutePrefix();
-  const gainers = pairs.filter(p => p.change24h > 0).sort((a, b) => b.change24h - a.change24h).slice(0, 5);
-  const losers = pairs.filter(p => p.change24h < 0).sort((a, b) => a.change24h - b.change24h).slice(0, 5);
-  const favorites = pairs.filter(p => p.isFavorite);
+  const gainers = pairs
+    .filter((p) => p.change24h > 0)
+    .sort((a, b) => b.change24h - a.change24h)
+    .slice(0, 5);
+  const losers = pairs
+    .filter((p) => p.change24h < 0)
+    .sort((a, b) => a.change24h - b.change24h)
+    .slice(0, 5);
+  const favorites = pairs.filter((p) => p.isFavorite);
 
   return (
     <div className="flex flex-col gap-4" style={{ width: 340 }}>
@@ -39,13 +45,22 @@ function RightPanel({ pairs }: { pairs: CryptoPair[] }) {
           <span style={{ color: '#10B981', fontSize: 14, fontWeight: 700 }}>Top Tăng mạnh</span>
         </div>
         {gainers.map((p, i) => (
-          <button key={p.id} onClick={() => navigate(`${prefix}/pair/${p.id}`)}
+          <button
+            key={p.id}
+            onClick={() => navigate(`${prefix}/pair/${p.id}`)}
             className="flex items-center justify-between py-2 w-full active:opacity-70"
-            style={{ borderBottom: i < gainers.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
+            style={{
+              borderBottom: i < gainers.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+            }}
+          >
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full flex items-center justify-center"
-                style={{ background: p.logoColor + '22' }}>
-                <span style={{ color: p.logoColor, fontSize: 9, fontWeight: 700 }}>{p.baseAsset.slice(0, 3)}</span>
+              <div
+                className="w-7 h-7 rounded-full flex items-center justify-center"
+                style={{ background: p.logoColor + '22' }}
+              >
+                <span style={{ color: p.logoColor, fontSize: 9, fontWeight: 700 }}>
+                  {p.baseAsset.slice(0, 3)}
+                </span>
               </div>
               <span style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>{p.baseAsset}</span>
             </div>
@@ -53,8 +68,10 @@ function RightPanel({ pairs }: { pairs: CryptoPair[] }) {
               <span style={{ color: c.text1, fontSize: 13, fontFamily: 'monospace' }}>
                 ${fmtPrice(p.price)}
               </span>
-              <span className="rounded px-1.5 py-0.5 text-xs font-semibold"
-                style={{ background: 'rgba(16,185,129,0.15)', color: '#10B981' }}>
+              <span
+                className="rounded px-1.5 py-0.5 text-xs font-semibold"
+                style={{ background: 'rgba(16,185,129,0.15)', color: '#10B981' }}
+              >
                 +{fmtPct(p.change24h)}
               </span>
             </div>
@@ -69,18 +86,29 @@ function RightPanel({ pairs }: { pairs: CryptoPair[] }) {
           <span style={{ color: '#EF4444', fontSize: 14, fontWeight: 700 }}>Top Giảm mạnh</span>
         </div>
         {losers.map((p, i) => (
-          <button key={p.id} onClick={() => navigate(`${prefix}/pair/${p.id}`)}
+          <button
+            key={p.id}
+            onClick={() => navigate(`${prefix}/pair/${p.id}`)}
             className="flex items-center justify-between py-2 w-full active:opacity-70"
-            style={{ borderBottom: i < losers.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
+            style={{
+              borderBottom: i < losers.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+            }}
+          >
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full flex items-center justify-center"
-                style={{ background: p.logoColor + '22' }}>
-                <span style={{ color: p.logoColor, fontSize: 9, fontWeight: 700 }}>{p.baseAsset.slice(0, 3)}</span>
+              <div
+                className="w-7 h-7 rounded-full flex items-center justify-center"
+                style={{ background: p.logoColor + '22' }}
+              >
+                <span style={{ color: p.logoColor, fontSize: 9, fontWeight: 700 }}>
+                  {p.baseAsset.slice(0, 3)}
+                </span>
               </div>
               <span style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>{p.baseAsset}</span>
             </div>
-            <span className="rounded px-1.5 py-0.5 text-xs font-semibold"
-              style={{ background: 'rgba(239,68,68,0.15)', color: '#EF4444' }}>
+            <span
+              className="rounded px-1.5 py-0.5 text-xs font-semibold"
+              style={{ background: 'rgba(239,68,68,0.15)', color: '#EF4444' }}
+            >
               {fmtPct(p.change24h)}
             </span>
           </button>
@@ -96,20 +124,33 @@ function RightPanel({ pairs }: { pairs: CryptoPair[] }) {
         </div>
         {favorites.length === 0 ? (
           <p style={{ color: c.text3, fontSize: 13 }}>Chưa có cặp yêu thích</p>
-        ) : favorites.slice(0, 5).map((p, i) => {
-          const isPos = p.change24h >= 0;
-          return (
-            <button key={p.id} onClick={() => navigate(`${prefix}/pair/${p.id}`)}
-              className="flex items-center justify-between py-2 w-full"
-              style={{ borderBottom: i < Math.min(favorites.length, 5) - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
-              <span style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>{p.symbol}</span>
-              <SparklineChart data={p.sparklineData} isPositive={isPos} width={48} height={20} />
-              <span style={{ color: isPos ? '#10B981' : '#EF4444', fontSize: 12, fontWeight: 600 }}>
-                {isPos ? '+' : ''}{fmtPct(p.change24h)}
-              </span>
-            </button>
-          );
-        })}
+        ) : (
+          favorites.slice(0, 5).map((p, i) => {
+            const isPos = p.change24h >= 0;
+            return (
+              <button
+                key={p.id}
+                onClick={() => navigate(`${prefix}/pair/${p.id}`)}
+                className="flex items-center justify-between py-2 w-full"
+                style={{
+                  borderBottom:
+                    i < Math.min(favorites.length, 5) - 1
+                      ? '1px solid rgba(255,255,255,0.04)'
+                      : 'none',
+                }}
+              >
+                <span style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>{p.symbol}</span>
+                <SparklineChart data={p.sparklineData} isPositive={isPos} width={48} height={20} />
+                <span
+                  style={{ color: isPos ? '#10B981' : '#EF4444', fontSize: 12, fontWeight: 600 }}
+                >
+                  {isPos ? '+' : ''}
+                  {fmtPct(p.change24h)}
+                </span>
+              </button>
+            );
+          })
+        )}
       </TrCard>
     </div>
   );
@@ -125,19 +166,34 @@ export function ResponsiveMarketListPage() {
   const [pairs, setPairs] = useState<CryptoPair[]>(CRYPTO_PAIRS);
 
   const toggleFavorite = (id: string) => {
-    setPairs(ps => ps.map(p => p.id === id ? { ...p, isFavorite: !p.isFavorite } : p));
+    setPairs((ps) => ps.map((p) => (p.id === id ? { ...p, isFavorite: !p.isFavorite } : p)));
   };
 
   const filtered = useMemo(() => {
     let list = pairs;
-    if (search) list = list.filter(p => p.symbol.toLowerCase().includes(search.toLowerCase()) || p.baseAsset.toLowerCase().includes(search.toLowerCase()));
-    if (category !== 'Tất cả') list = list.filter(p => p.category === category);
+    if (search)
+      list = list.filter(
+        (p) =>
+          p.symbol.toLowerCase().includes(search.toLowerCase()) ||
+          p.baseAsset.toLowerCase().includes(search.toLowerCase()),
+      );
+    if (category !== 'Tất cả') list = list.filter((p) => p.category === category);
     switch (sort) {
-      case 'price_desc': list = [...list].sort((a, b) => b.price - a.price); break;
-      case 'price_asc': list = [...list].sort((a, b) => a.price - b.price); break;
-      case 'change_desc': list = [...list].sort((a, b) => b.change24h - a.change24h); break;
-      case 'change_asc': list = [...list].sort((a, b) => a.change24h - b.change24h); break;
-      case 'volume_desc': list = [...list].sort((a, b) => b.volume24h - a.volume24h); break;
+      case 'price_desc':
+        list = [...list].sort((a, b) => b.price - a.price);
+        break;
+      case 'price_asc':
+        list = [...list].sort((a, b) => a.price - b.price);
+        break;
+      case 'change_desc':
+        list = [...list].sort((a, b) => b.change24h - a.change24h);
+        break;
+      case 'change_asc':
+        list = [...list].sort((a, b) => a.change24h - b.change24h);
+        break;
+      case 'volume_desc':
+        list = [...list].sort((a, b) => b.volume24h - a.volume24h);
+        break;
     }
     return list;
   }, [pairs, search, category, sort]);
@@ -146,29 +202,70 @@ export function ResponsiveMarketListPage() {
     <PageLayout style={{ flex: 1 }}>
       {/* Header */}
       <div className="px-5 pt-4 pb-2">
-        <h1 style={{ color: c.text1, fontSize: 22, fontWeight: 700, marginBottom: 12 }}>Thị trường</h1>
+        <h1 style={{ color: c.text1, fontSize: 22, fontWeight: 700, marginBottom: 12 }}>
+          Thị trường
+        </h1>
 
-        <div className="flex items-center gap-3 rounded-2xl px-4 mb-3"
-          style={{ background: c.searchBg, border: `1.5px solid ${c.searchBorder}`, height: 52, borderRadius: 14 }}>
+        <div
+          className="flex items-center gap-3 rounded-2xl px-4 mb-3"
+          style={{
+            background: c.searchBg,
+            border: `1.5px solid ${c.searchBorder}`,
+            height: 52,
+            borderRadius: 14,
+          }}
+        >
           <Search size={18} color={c.text3} />
-          <input type="text" placeholder="Tìm kiếm BTC, ETH..." value={search}
-            onChange={e => setSearch(e.target.value)}
-            style={{ background: 'transparent', border: 'none', outline: 'none', color: c.text1, fontSize: 15, flex: 1 }} />
-          {search && <button onClick={() => setSearch('')}><X size={16} color={c.text3} /></button>}
-          <button onClick={() => setShowSort(!showSort)}
+          <input
+            type="text"
+            placeholder="Tìm kiếm BTC, ETH..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              outline: 'none',
+              color: c.text1,
+              fontSize: 15,
+              flex: 1,
+            }}
+          />
+          {search && (
+            <button onClick={() => setSearch('')}>
+              <X size={16} color={c.text3} />
+            </button>
+          )}
+          <button
+            onClick={() => setShowSort(!showSort)}
             className="flex items-center gap-1 rounded-xl px-2 py-1"
-            style={{ background: sort !== 'default' ? 'rgba(59,130,246,0.2)' : 'transparent', color: sort !== 'default' ? '#3B82F6' : c.text3 }}>
+            style={{
+              background: sort !== 'default' ? 'rgba(59,130,246,0.2)' : 'transparent',
+              color: sort !== 'default' ? '#3B82F6' : c.text3,
+            }}
+          >
             <SlidersHorizontal size={16} />
           </button>
         </div>
 
         {showSort && (
-          <div className="rounded-2xl p-3 mb-3 flex flex-wrap gap-2"
-            style={{ background: c.surface2, border: `1px solid ${c.borderSolid}` }}>
-            {SORT_OPTIONS.map(opt => (
-              <button key={opt.id} onClick={() => { setSort(opt.id); setShowSort(false); }}
+          <div
+            className="rounded-2xl p-3 mb-3 flex flex-wrap gap-2"
+            style={{ background: c.surface2, border: `1px solid ${c.borderSolid}` }}
+          >
+            {SORT_OPTIONS.map((opt) => (
+              <button
+                key={opt.id}
+                onClick={() => {
+                  setSort(opt.id);
+                  setShowSort(false);
+                }}
                 className="px-3 py-1.5 rounded-xl text-xs font-semibold"
-                style={{ background: sort === opt.id ? c.chipActiveBg : c.surface, color: sort === opt.id ? c.chipActiveText : c.text2, border: `1px solid ${sort === opt.id ? c.chipActiveBorder : c.borderSolid}` }}>
+                style={{
+                  background: sort === opt.id ? c.chipActiveBg : c.surface,
+                  color: sort === opt.id ? c.chipActiveText : c.text2,
+                  border: `1px solid ${sort === opt.id ? c.chipActiveBorder : c.borderSolid}`,
+                }}
+              >
                 {opt.label}
               </button>
             ))}
@@ -176,10 +273,17 @@ export function ResponsiveMarketListPage() {
         )}
 
         <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-          {CATEGORIES.map(cat => (
-            <button key={cat} onClick={() => setCategory(cat)}
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setCategory(cat)}
               className="shrink-0 px-3 py-1.5 rounded-xl text-xs font-semibold"
-              style={{ background: category === cat ? c.chipActiveBg : c.chipBg, color: category === cat ? c.chipActiveText : c.chipText, border: `1px solid ${category === cat ? c.chipActiveBorder : c.chipBorder}` }}>
+              style={{
+                background: category === cat ? c.chipActiveBg : c.chipBg,
+                color: category === cat ? c.chipActiveText : c.chipText,
+                border: `1px solid ${category === cat ? c.chipActiveBorder : c.chipBorder}`,
+              }}
+            >
               {cat}
             </button>
           ))}
@@ -187,16 +291,25 @@ export function ResponsiveMarketListPage() {
       </div>
 
       {/* Column header — extra columns on tablet/desktop */}
-      <div className="flex items-center px-4 py-2" style={{ borderBottom: `1px solid ${c.divider}` }}>
+      <div
+        className="flex items-center px-4 py-2"
+        style={{ borderBottom: `1px solid ${c.divider}` }}
+      >
         <span style={{ color: c.text3, fontSize: 11, flex: 1 }}>Cặp giao dịch</span>
         {(isTablet || isDesktop) && (
-          <span style={{ color: c.text3, fontSize: 11, width: 80, textAlign: 'center' }}>Volume</span>
+          <span style={{ color: c.text3, fontSize: 11, width: 80, textAlign: 'center' }}>
+            Volume
+          </span>
         )}
         {(isTablet || isDesktop) && (
-          <span style={{ color: c.text3, fontSize: 11, width: 80, textAlign: 'center' }}>MarketCap</span>
+          <span style={{ color: c.text3, fontSize: 11, width: 80, textAlign: 'center' }}>
+            MarketCap
+          </span>
         )}
         <span style={{ color: c.text3, fontSize: 11, flex: 1, textAlign: 'center' }}>Biểu đồ</span>
-        <span style={{ color: c.text3, fontSize: 11, flex: 1, textAlign: 'right' }}>Giá / Thay đổi</span>
+        <span style={{ color: c.text3, fontSize: 11, flex: 1, textAlign: 'right' }}>
+          Giá / Thay đổi
+        </span>
         <div className="w-8" />
       </div>
 
@@ -207,7 +320,7 @@ export function ResponsiveMarketListPage() {
           <p style={{ color: c.text3, fontSize: 14 }}>Không tìm thấy "{search}"</p>
         </div>
       ) : (
-        filtered.map(pair => (
+        filtered.map((pair) => (
           <MarketItem key={pair.id} pair={pair} onFavoriteToggle={toggleFavorite} />
         ))
       )}

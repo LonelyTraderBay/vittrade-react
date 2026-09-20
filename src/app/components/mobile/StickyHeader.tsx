@@ -56,7 +56,8 @@ export function StickyColumnHeader({
               color: c.text3,
               fontSize: 10,
               fontWeight: 500,
-              textAlign: col.align || (i === 0 ? 'left' : i === columns.length - 1 ? 'right' : 'center'),
+              textAlign:
+                col.align || (i === 0 ? 'left' : i === columns.length - 1 ? 'right' : 'center'),
             }}
           >
             {col.label}

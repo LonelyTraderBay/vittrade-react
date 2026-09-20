@@ -39,13 +39,12 @@ export function ResponsiveBottomNav() {
           borderRadius: 999,
           background: 'linear-gradient(180deg, rgba(23,28,36,0.98) 0%, rgba(7,9,13,0.96) 100%)',
           border: '1px solid rgba(45,52,64,0.46)',
-          boxShadow: [
-            '0 10px 22px rgba(7,9,13,0.45)',
-            '0 -1px 28px rgba(229,138,0,0.12)',
-          ].join(', '),
+          boxShadow: ['0 10px 22px rgba(7,9,13,0.45)', '0 -1px 28px rgba(229,138,0,0.12)'].join(
+            ', ',
+          ),
         }}
       >
-        {TABS.map(tab => {
+        {TABS.map((tab) => {
           const isActive = getIsActive(tab.path);
           const Icon = tab.icon;
 
@@ -73,7 +72,8 @@ export function ResponsiveBottomNav() {
                       'inset 0 1px 0 rgba(255,255,255,0.2)',
                       'inset 0 -1px 0 rgba(0,0,0,0.1)',
                     ].join(', '),
-                    transition: 'transform var(--tr-duration-fast) var(--tr-ease-standard), box-shadow var(--tr-duration-fast) ease',
+                    transition:
+                      'transform var(--tr-duration-fast) var(--tr-ease-standard), box-shadow var(--tr-duration-fast) ease',
                   }}
                 >
                   <Icon size={22} color={c.navCenterIcon} strokeWidth={2.5} />

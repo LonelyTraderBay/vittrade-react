@@ -1,6 +1,16 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { Search, Bell, Moon, Sun, ChevronRight, Command, Keyboard, Maximize2, Minimize2 } from 'lucide-react';
+import {
+  Search,
+  Bell,
+  Moon,
+  Sun,
+  ChevronRight,
+  Command,
+  Keyboard,
+  Maximize2,
+  Minimize2,
+} from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useUI } from '../../contexts/UIContext';
 import { WEB_COMMAND_BAR_HEIGHT } from './webConstants';
@@ -134,7 +144,7 @@ export function WebCommandBar() {
           <span key={crumb.path} className="flex items-center gap-2 shrink-0">
             {i > 0 && <ChevronRight size={13} color={c.text3} className="shrink-0" />}
             <button
-              onClick={() => i < crumbs.length - 1 ? navigate(crumb.path) : undefined}
+              onClick={() => (i < crumbs.length - 1 ? navigate(crumb.path) : undefined)}
               style={{
                 color: i === crumbs.length - 1 ? c.text1 : c.text3,
                 fontSize: 14,
@@ -171,7 +181,9 @@ export function WebCommandBar() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => setSearchFocused(true)}
-            onBlur={() => { setSearchFocused(false); }}
+            onBlur={() => {
+              setSearchFocused(false);
+            }}
             className="flex-1 bg-transparent outline-none"
             style={{
               color: c.text1,
@@ -221,13 +233,15 @@ export function WebCommandBar() {
       {/* ─── Right: Actions ─── */}
       <div className="flex items-center gap-2 shrink-0">
         {/* Clock */}
-        <span style={{
-          color: c.text3,
-          fontSize: 13,
-          fontWeight: 500,
-          fontVariantNumeric: 'tabular-nums',
-          marginRight: 8,
-        }}>
+        <span
+          style={{
+            color: c.text3,
+            fontSize: 13,
+            fontWeight: 500,
+            fontVariantNumeric: 'tabular-nums',
+            marginRight: 8,
+          }}
+        >
           {time.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
         </span>
 
@@ -253,9 +267,12 @@ export function WebCommandBar() {
             <div
               className="absolute -top-0.5 -right-0.5 flex items-center justify-center rounded-full"
               style={{
-                width: 18, height: 18,
+                width: 18,
+                height: 18,
                 background: '#EF4444',
-                fontSize: 9, fontWeight: 700, color: '#fff',
+                fontSize: 9,
+                fontWeight: 700,
+                color: '#fff',
                 border: `2px solid ${c.navBg}`,
               }}
             >
@@ -275,7 +292,11 @@ export function WebCommandBar() {
         >
           <div
             className="flex items-center justify-center shrink-0 rounded-lg"
-            style={{ width: 32, height: 32, background: 'linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)' }}
+            style={{
+              width: 32,
+              height: 32,
+              background: 'linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)',
+            }}
           >
             <span style={{ color: '#fff', fontSize: 12, fontWeight: 700 }}>V</span>
           </div>

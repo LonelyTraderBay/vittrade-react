@@ -7,7 +7,7 @@
  *  of <PageContent>. These margins stack with PageContent's
  *  built-in `gap` and produce non-standard spacing values.
  *
- *  FIX: Remove mt-*/mb-*/my-* from direct children. Let gap prop
+ *  FIX: Remove mt-*, mb-*, my-* from direct children. Let gap prop
  *  control spacing uniformly.
  *
  *  Run:  pnpm test -- layout-lint
@@ -141,8 +141,8 @@ function scanFile(filePath: string): Violation[] {
   if (!content.includes('<PageContent')) return [];
 
   let insidePageContent = false;
-  let pageContentIndent = -1;     // indent of <PageContent>
-  let childIndent = -1;           // indent of direct children
+  let pageContentIndent = -1; // indent of <PageContent>
+  let childIndent = -1; // indent of direct children
   let isMultiLinePageContentTag = false;
 
   for (let i = 0; i < lines.length; i++) {
@@ -274,8 +274,8 @@ function formatReport(violations: Violation[], title: string): string {
   const border = '═'.repeat(titleLine.length);
 
   let report = `\n\n╔${border}╗\n`;
-  report +=      `║${titleLine}║\n`;
-  report +=      `╚${border}╝\n\n`;
+  report += `║${titleLine}║\n`;
+  report += `╚${border}╝\n\n`;
 
   for (const [file, vs] of byFile) {
     report += `  ${file}\n`;
@@ -317,7 +317,6 @@ function findTsxFiles(dir: string): string[] {
 /* ─── Test Suite ─── */
 
 describe('Layout Anti-Pattern Lint', () => {
-
   // ════════════════════════════════════════════════
   //  TEST 1: STRICT GUARD — Must pass (hard fail)
   // ════════════════════════════════════════════════
@@ -334,8 +333,7 @@ describe('Layout Anti-Pattern Lint', () => {
         if (violations.length > 0) {
           const report = formatReport(violations, 'REGRESSION DETECTED');
           expect.fail(
-            `${violations.length} margin+gap stacking violation(s) in ${relFile}` +
-            report
+            `${violations.length} margin+gap stacking violation(s) in ${relFile}` + report,
           );
         }
       });
@@ -349,7 +347,7 @@ describe('Layout Anti-Pattern Lint', () => {
     it('scans all page files and reports potential violations', () => {
       const allPages = findTsxFiles(PAGES_DIR);
       const guardedSet = new Set(GUARDED_FILES);
-      const unguardedPages = allPages.filter(f => {
+      const unguardedPages = allPages.filter((f) => {
         const rel = path.relative(SRC_ROOT, f);
         return !guardedSet.has(rel);
       });
@@ -360,13 +358,16 @@ describe('Layout Anti-Pattern Lint', () => {
       }
 
       if (allViolations.length > 0) {
-        const report = formatReport(allViolations, 'DISCOVERY — Potential violations (not blocking)');
+        const report = formatReport(
+          allViolations,
+          'DISCOVERY — Potential violations (not blocking)',
+        );
         // Log but don't fail — these are files not yet in the guard list
         console.warn(
           `\n[Layout Lint Discovery] Found ${allViolations.length} potential violation(s) ` +
-          `across ${new Set(allViolations.map(v => v.file)).size} unguarded file(s).` +
-          report +
-          '\nTo guard these files after fixing, add them to GUARDED_FILES in layout-lint.test.ts\n'
+            `across ${new Set(allViolations.map((v) => v.file)).size} unguarded file(s).` +
+            report +
+            '\nTo guard these files after fixing, add them to GUARDED_FILES in layout-lint.test.ts\n',
         );
       }
 

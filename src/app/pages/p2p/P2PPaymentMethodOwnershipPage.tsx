@@ -34,17 +34,19 @@ export function P2PPaymentMethodOwnershipPage() {
   const mountedRef = useRef(true);
 
   useEffect(() => {
-    return () => { mountedRef.current = false; };
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   const handleUpload = (docId: string) => {
-    setDocs(prev => prev.map(d => d.id === docId ? { ...d, uploaded: true } : d));
+    setDocs((prev) => prev.map((d) => (d.id === docId ? { ...d, uploaded: true } : d)));
     hapticSuccess();
     toast.success('Đã upload tài liệu');
   };
 
   const handleSubmit = () => {
-    const requiredUploaded = docs.filter(d => !d.optional).every(d => d.uploaded);
+    const requiredUploaded = docs.filter((d) => !d.optional).every((d) => d.uploaded);
     if (!requiredUploaded) {
       toast.error('Vui lòng upload đủ tài liệu bắt buộc');
       return;
@@ -54,7 +56,7 @@ export function P2PPaymentMethodOwnershipPage() {
     navigate(`${prefix}/p2p/payment-methods`);
   };
 
-  const canSubmit = docs.filter(d => !d.optional).every(d => d.uploaded);
+  const canSubmit = docs.filter((d) => !d.optional).every((d) => d.uploaded);
 
   return (
     <PageLayout>
@@ -63,7 +65,10 @@ export function P2PPaymentMethodOwnershipPage() {
       <div className="px-5 py-4">
         <TrCard rounded="lg" className="p-4" style={{ background: hexToRgba('#3B82F6', 8) }}>
           <div className="flex items-start gap-3">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: '#3B82F6' }}>
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+              style={{ background: '#3B82F6' }}
+            >
               <CreditCard size={24} color="#FFFFFF" />
             </div>
             <div className="flex-1">
@@ -83,12 +88,14 @@ export function P2PPaymentMethodOwnershipPage() {
           Tài liệu cần thiết
         </h3>
         <div className="flex flex-col gap-3">
-          {docs.map(doc => (
+          {docs.map((doc) => (
             <TrCard key={doc.id} rounded="md" className="p-4">
               <div className="flex items-center gap-3">
                 <div
                   className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                  style={{ background: doc.uploaded ? hexToRgba('#10B981', 12) : hexToRgba('#3B82F6', 12) }}
+                  style={{
+                    background: doc.uploaded ? hexToRgba('#10B981', 12) : hexToRgba('#3B82F6', 12),
+                  }}
                 >
                   {doc.uploaded ? (
                     <CheckCircle size={18} color="#10B981" />
@@ -100,7 +107,10 @@ export function P2PPaymentMethodOwnershipPage() {
                   <div className="flex items-center gap-2 mb-1">
                     <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>{doc.label}</p>
                     {doc.optional && (
-                      <span className="px-2 py-0.5 rounded-md text-xs" style={{ background: c.surface2, color: c.text3 }}>
+                      <span
+                        className="px-2 py-0.5 rounded-md text-xs"
+                        style={{ background: c.surface2, color: c.text3 }}
+                      >
                         Optional
                       </span>
                     )}
@@ -119,7 +129,11 @@ export function P2PPaymentMethodOwnershipPage() {
                   </button>
                 ) : (
                   <button
-                    onClick={() => setDocs(prev => prev.map(d => d.id === doc.id ? { ...d, uploaded: false } : d))}
+                    onClick={() =>
+                      setDocs((prev) =>
+                        prev.map((d) => (d.id === doc.id ? { ...d, uploaded: false } : d)),
+                      )
+                    }
                     className="p-2"
                   >
                     <X size={16} color={c.text3} />

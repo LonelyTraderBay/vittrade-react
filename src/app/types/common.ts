@@ -193,32 +193,32 @@ export interface ThemeColors {
   surface1: string;
   surface2: string;
   surface3: string;
-  
+
   // Text
   text1: string;
   text2: string;
   text3: string;
-  
+
   // Semantic
   primary: string;
   secondary: string;
   success: string;
   warning: string;
   error: string;
-  
+
   // Trading
   buy: string;
   sell: string;
-  
+
   // Borders
   border: string;
   borderSolid: string;
-  
+
   // Interactive
   hover: string;
   active: string;
   disabled: string;
-  
+
   // Focus
   ring: string;
 }
@@ -251,7 +251,7 @@ export type DeepReadonly<T> = {
  * Non-nullable deep
  */
 export type DeepNonNullable<T> = {
-  [P in keyof T]: NonNullable<T[P]> extends object 
-    ? DeepNonNullable<NonNullable<T[P]>> 
+  [P in keyof T]: NonNullable<T[P]> extends object
+    ? DeepNonNullable<NonNullable<T[P]>>
     : NonNullable<T[P]>;
 };

@@ -10,9 +10,24 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Shield, ShieldCheck, ShieldAlert, Lock, Smartphone,
-  Key, Eye, AlertTriangle, CheckCircle, Clock, ChevronRight,
-  MapPin, Monitor, Settings, Bell, XCircle, Info, Fingerprint,
+  Shield,
+  ShieldCheck,
+  ShieldAlert,
+  Lock,
+  Smartphone,
+  Key,
+  Eye,
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  ChevronRight,
+  MapPin,
+  Monitor,
+  Settings,
+  Bell,
+  XCircle,
+  Info,
+  Fingerprint,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -197,17 +212,10 @@ function SecurityScoreCard({ score, maxScore }: { score: number; maxScore: numbe
           <h3 style={{ color: c.text1, fontSize: φ.md, fontWeight: 700, marginBottom: 4 }}>
             Security Score
           </h3>
-          <p style={{ color: c.text3, fontSize: 11 }}>
-            Điểm bảo mật P2P của bạn
-          </p>
+          <p style={{ color: c.text3, fontSize: 11 }}>Điểm bảo mật P2P của bạn</p>
         </div>
-        <div
-          className="px-3 py-1.5 rounded-lg"
-          style={{ background: hexToRgba(scoreColor, 12) }}
-        >
-          <span style={{ color: scoreColor, fontSize: 11, fontWeight: 700 }}>
-            {scoreLabel}
-          </span>
+        <div className="px-3 py-1.5 rounded-lg" style={{ background: hexToRgba(scoreColor, 12) }}>
+          <span style={{ color: scoreColor, fontSize: 11, fontWeight: 700 }}>{scoreLabel}</span>
         </div>
       </div>
 
@@ -216,14 +224,7 @@ function SecurityScoreCard({ score, maxScore }: { score: number; maxScore: numbe
         <div className="relative w-32 h-32">
           <svg className="w-full h-full transform -rotate-90">
             {/* Background Circle */}
-            <circle
-              cx="64"
-              cy="64"
-              r="56"
-              fill="none"
-              stroke={c.surface2}
-              strokeWidth="8"
-            />
+            <circle cx="64" cy="64" r="56" fill="none" stroke={c.surface2} strokeWidth="8" />
             {/* Progress Circle */}
             <circle
               cx="64"
@@ -248,10 +249,7 @@ function SecurityScoreCard({ score, maxScore }: { score: number; maxScore: numbe
       </div>
 
       {/* Info */}
-      <div
-        className="p-3 rounded-lg"
-        style={{ background: hexToRgba(scoreColor, 8) }}
-      >
+      <div className="p-3 rounded-lg" style={{ background: hexToRgba(scoreColor, 8) }}>
         <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
           {percentage >= 80
             ? 'Tài khoản P2P của bạn được bảo vệ rất tốt. Tiếp tục duy trì!'
@@ -272,18 +270,16 @@ export function P2PSecurityCenterPage() {
   const c = useThemeColors();
   const { hapticSelection, hapticSuccess } = useHaptic();
   const prefix = useRoutePrefix();
-  const { isRefreshing, handleRefresh } = useRefresh({
-    onRefresh: async () => {
-      await new Promise(res => setTimeout(res, 1000));
-      hapticSuccess();
-    },
-  });
+  const { isRefreshing, refresh: handleRefresh } = useRefresh();
 
   const getSeverityColor = (severity: SecurityEvent['severity']) => {
     switch (severity) {
-      case 'critical': return '#EF4444';
-      case 'warning': return '#F59E0B';
-      default: return '#10B981';
+      case 'critical':
+        return '#EF4444';
+      case 'warning':
+        return '#F59E0B';
+      default:
+        return '#10B981';
     }
   };
 
@@ -296,6 +292,7 @@ export function P2PSecurityCenterPage() {
           back
           action={{
             icon: Settings,
+            onClick: () => {},
           }}
         />
 
@@ -375,9 +372,7 @@ export function P2PSecurityCenterPage() {
                       {metric.score > 0 && (
                         <>
                           <span style={{ color: c.text3, fontSize: 10 }}>•</span>
-                          <span style={{ color: c.text3, fontSize: 10 }}>
-                            +{metric.score} điểm
-                          </span>
+                          <span style={{ color: c.text3, fontSize: 10 }}>+{metric.score} điểm</span>
                         </>
                       )}
                     </div>
@@ -397,7 +392,7 @@ export function P2PSecurityCenterPage() {
           </h3>
 
           <div className="grid grid-cols-2 gap-3">
-            {QUICK_ACTIONS.map(action => {
+            {QUICK_ACTIONS.map((action) => {
               const ActionIcon = action.icon;
               return (
                 <button
@@ -407,7 +402,7 @@ export function P2PSecurityCenterPage() {
                     navigate(`${prefix}${action.path}`);
                   }}
                   className="p-4 rounded-xl text-left"
-                  style={{ background: c.surface1, border: `1px solid ${c.borderSolid}` }}
+                  style={{ background: c.surface, border: `1px solid ${c.borderSolid}` }}
                 >
                   <div
                     className="w-10 h-10 rounded-lg flex items-center justify-center mb-3"

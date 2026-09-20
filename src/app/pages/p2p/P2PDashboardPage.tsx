@@ -1,14 +1,38 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  TrendingUp, BarChart3, Clock, CheckCircle, XCircle,
-  AlertTriangle, Star, ChevronRight, Users, Repeat, DollarSign,
-  Shield, Award, ShoppingCart, ArrowUpRight, ArrowDownRight, Zap,
-  Target, Activity,
+  TrendingUp,
+  BarChart3,
+  Clock,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  Star,
+  ChevronRight,
+  Users,
+  Repeat,
+  DollarSign,
+  Shield,
+  Award,
+  ShoppingCart,
+  ArrowUpRight,
+  ArrowDownRight,
+  Zap,
+  Target,
+  Activity,
 } from 'lucide-react';
 import {
-  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
-  AreaChart, Area, PieChart, Pie, Cell,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  PieChart,
+  Pie,
+  Cell,
 } from 'recharts';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -23,7 +47,14 @@ import { φ, φIcon } from '../../utils/golden';
 /* ═══════════════════════════════════════════════════════════
    Stat Card (reusable)
    ═══════════════════════════════════════════════════════════ */
-function StatCard({ label, value, sub, icon: Icon, color, trend }: {
+function StatCard({
+  label,
+  value,
+  sub,
+  icon: Icon,
+  color,
+  trend,
+}: {
   label: string;
   value: string;
   sub?: string;
@@ -43,14 +74,20 @@ function StatCard({ label, value, sub, icon: Icon, color, trend }: {
         </div>
         {trend && (
           <div className="flex items-center gap-0.5">
-            {trend.value >= 0
-              ? <ArrowUpRight size={10} color="#10B981" />
-              : <ArrowDownRight size={10} color="#EF4444" />}
-            <span style={{
-              color: trend.value >= 0 ? '#10B981' : '#EF4444',
-              fontSize: 9, fontWeight: 700,
-            }}>
-              {trend.value >= 0 ? '+' : ''}{fmtPct(trend.value)}
+            {trend.value >= 0 ? (
+              <ArrowUpRight size={10} color="#10B981" />
+            ) : (
+              <ArrowDownRight size={10} color="#EF4444" />
+            )}
+            <span
+              style={{
+                color: trend.value >= 0 ? '#10B981' : '#EF4444',
+                fontSize: 9,
+                fontWeight: 700,
+              }}
+            >
+              {trend.value >= 0 ? '+' : ''}
+              {fmtPct(trend.value)}
             </span>
           </div>
         )}
@@ -59,9 +96,7 @@ function StatCard({ label, value, sub, icon: Icon, color, trend }: {
         {value}
       </p>
       <p style={{ color: c.text3, fontSize: 9, marginTop: 2 }}>{label}</p>
-      {sub && (
-        <p style={{ color: c.text3, fontSize: 9, marginTop: 1 }}>{sub}</p>
-      )}
+      {sub && <p style={{ color: c.text3, fontSize: 9, marginTop: 1 }}>{sub}</p>}
     </TrCard>
   );
 }
@@ -75,11 +110,18 @@ function CustomTooltip({ active, payload, label }: any) {
   return (
     <div
       className="rounded-lg px-3 py-2"
-      style={{ background: c.surface, border: `1px solid ${c.border}`, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
+      style={{
+        background: c.surface,
+        border: `1px solid ${c.border}`,
+        boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+      }}
     >
       <p style={{ color: c.text3, fontSize: 9, marginBottom: 2 }}>{label}</p>
       {payload.map((p: any, i: number) => (
-        <p key={i} style={{ color: p.color, fontSize: 11, fontWeight: 600, fontFamily: 'monospace' }}>
+        <p
+          key={i}
+          style={{ color: p.color, fontSize: 11, fontWeight: 600, fontFamily: 'monospace' }}
+        >
           {p.name}: {typeof p.value === 'number' && p.value > 10000 ? fmtCompact(p.value) : p.value}
         </p>
       ))}
@@ -122,39 +164,42 @@ export function P2PDashboardPage() {
   const prefix = useRoutePrefix();
   const stats = P2P_STATISTICS;
   const userLevel = P2P_USER_LEVEL;
-  const currentLevel = P2P_TRADING_LEVELS.find(l => l.id === userLevel.currentLevel);
-  const nextLevel = P2P_TRADING_LEVELS.find(l => l.id === userLevel.currentLevel + 1);
+  const currentLevel = P2P_TRADING_LEVELS.find((l) => l.id === userLevel.currentLevel);
+  const nextLevel = P2P_TRADING_LEVELS.find((l) => l.id === userLevel.currentLevel + 1);
 
   const [timeFilter, setTimeFilter] = useState<'7d' | '30d' | 'all'>('30d');
 
-  const volumeDisplay = timeFilter === '7d'
-    ? stats.totalVolume7d
-    : timeFilter === '30d'
-      ? stats.totalVolume30d
-      : stats.totalVolumeAll;
+  const volumeDisplay =
+    timeFilter === '7d'
+      ? stats.totalVolume7d
+      : timeFilter === '30d'
+        ? stats.totalVolume30d
+        : stats.totalVolumeAll;
 
-  const dailyPct = userLevel.dailyLimit > 0
-    ? (userLevel.dailyUsed / userLevel.dailyLimit) * 100
-    : 0;
+  const dailyPct =
+    userLevel.dailyLimit > 0 ? (userLevel.dailyUsed / userLevel.dailyLimit) * 100 : 0;
 
   return (
     <PageLayout>
       <Header title="P2P Dashboard" subtitle="Tổng quan · P2P" back />
 
       <div className="flex-1 px-5 py-4 flex flex-col gap-4">
-
         {/* ───── Time Filter ───── */}
         <div className="flex gap-1.5">
-          {TIME_FILTERS.map(tf => (
+          {TIME_FILTERS.map((tf) => (
             <button
               key={tf.id}
-              onClick={() => { setTimeFilter(tf.id as any); hapticSelection(); }}
+              onClick={() => {
+                setTimeFilter(tf.id as any);
+                hapticSelection();
+              }}
               className="px-3 py-1.5 rounded-lg"
               style={{
                 background: timeFilter === tf.id ? c.chipActiveBg : c.chipBg,
                 color: timeFilter === tf.id ? c.chipActiveText : c.chipText,
                 border: `1px solid ${timeFilter === tf.id ? c.chipActiveBorder : c.chipBorder}`,
-                fontWeight: 600, fontSize: φ.xs,
+                fontWeight: 600,
+                fontSize: φ.xs,
               }}
             >
               {tf.label}
@@ -166,12 +211,14 @@ export function P2PDashboardPage() {
         <TrCard className="p-4" accentBorder="rgba(59,130,246,0.2)">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center"
-                style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}>
+              <div
+                className="w-8 h-8 rounded-xl flex items-center justify-center"
+                style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
+              >
                 <Activity size={16} color="#fff" />
               </div>
               <span style={{ color: c.text2, fontSize: φ.sm, fontWeight: 600 }}>
-                Tổng Volume ({TIME_FILTERS.find(t => t.id === timeFilter)?.label})
+                Tổng Volume ({TIME_FILTERS.find((t) => t.id === timeFilter)?.label})
               </span>
             </div>
             <div className="flex items-center gap-0.5">
@@ -179,7 +226,15 @@ export function P2PDashboardPage() {
               <span style={{ color: '#10B981', fontSize: φ.xs, fontWeight: 700 }}>+12.5%</span>
             </div>
           </div>
-          <p style={{ color: c.text1, fontSize: 28, fontWeight: 700, fontFamily: 'monospace', marginBottom: 4 }}>
+          <p
+            style={{
+              color: c.text1,
+              fontSize: 28,
+              fontWeight: 700,
+              fontFamily: 'monospace',
+              marginBottom: 4,
+            }}
+          >
             {fmtCompact(volumeDisplay, { prefix: '₫' })}
           </p>
           <div className="flex items-center gap-4">
@@ -237,12 +292,17 @@ export function P2PDashboardPage() {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <BarChart3 size={14} color={c.text2} />
-              <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Volume theo tuần</span>
+              <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
+                Volume theo tuần
+              </span>
             </div>
           </div>
           <div style={{ height: 140 }}>
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={stats.volumeByWeek} margin={{ top: 5, right: 5, bottom: 0, left: 0 }}>
+              <AreaChart
+                data={stats.volumeByWeek}
+                margin={{ top: 5, right: 5, bottom: 0, left: 0 }}
+              >
                 <defs key="defs">
                   <linearGradient id="volumeGrad" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#3B82F6" stopOpacity={0.3} />
@@ -251,15 +311,21 @@ export function P2PDashboardPage() {
                 </defs>
                 <XAxis
                   key="xaxis"
-                  dataKey="week" axisLine={false} tickLine={false}
+                  dataKey="week"
+                  axisLine={false}
+                  tickLine={false}
                   tick={{ fill: c.text3, fontSize: 9 }}
                 />
                 <YAxis key="yaxis" hide />
                 <Tooltip key="tooltip" content={<CustomTooltip />} />
                 <Area
                   key="area-volume"
-                  type="monotone" dataKey="volume" name="Volume"
-                  stroke="#3B82F6" strokeWidth={2} fill="url(#volumeGrad)"
+                  type="monotone"
+                  dataKey="volume"
+                  name="Volume"
+                  stroke="#3B82F6"
+                  strokeWidth={2}
+                  fill="url(#volumeGrad)"
                   dot={{ r: 3, fill: '#3B82F6', stroke: '#fff', strokeWidth: 1.5 }}
                   activeDot={{ r: 5, fill: '#3B82F6', stroke: '#fff', strokeWidth: 2 }}
                   isAnimationActive={false}
@@ -274,7 +340,9 @@ export function P2PDashboardPage() {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <ShoppingCart size={14} color={c.text2} />
-              <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Đơn hàng theo tháng</span>
+              <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
+                Đơn hàng theo tháng
+              </span>
             </div>
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1">
@@ -289,16 +357,37 @@ export function P2PDashboardPage() {
           </div>
           <div style={{ height: 130 }}>
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={stats.ordersByMonth} margin={{ top: 5, right: 5, bottom: 0, left: 0 }}>
+              <BarChart
+                data={stats.ordersByMonth}
+                margin={{ top: 5, right: 5, bottom: 0, left: 0 }}
+              >
                 <XAxis
                   key="xaxis"
-                  dataKey="month" axisLine={false} tickLine={false}
+                  dataKey="month"
+                  axisLine={false}
+                  tickLine={false}
                   tick={{ fill: c.text3, fontSize: 9 }}
                 />
                 <YAxis key="yaxis" hide />
                 <Tooltip key="tooltip" content={<CustomTooltip />} />
-                <Bar key="bar-buy" dataKey="buy" name="Mua" fill="#10B981" radius={[3, 3, 0, 0]} barSize={12} isAnimationActive={false} />
-                <Bar key="bar-sell" dataKey="sell" name="Bán" fill="#EF4444" radius={[3, 3, 0, 0]} barSize={12} isAnimationActive={false} />
+                <Bar
+                  key="bar-buy"
+                  dataKey="buy"
+                  name="Mua"
+                  fill="#10B981"
+                  radius={[3, 3, 0, 0]}
+                  barSize={12}
+                  isAnimationActive={false}
+                />
+                <Bar
+                  key="bar-sell"
+                  dataKey="sell"
+                  name="Bán"
+                  fill="#EF4444"
+                  radius={[3, 3, 0, 0]}
+                  barSize={12}
+                  isAnimationActive={false}
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -319,12 +408,14 @@ export function P2PDashboardPage() {
                     data={stats.assetDistribution}
                     dataKey="percentage"
                     nameKey="asset"
-                    cx="50%" cy="50%"
-                    innerRadius={28} outerRadius={42}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={28}
+                    outerRadius={42}
                     strokeWidth={0}
                     isAnimationActive={false}
                   >
-                    {stats.assetDistribution.map(entry => (
+                    {stats.assetDistribution.map((entry) => (
                       <Cell key={entry.asset} fill={ASSET_COLORS[entry.asset] || '#6B7280'} />
                     ))}
                   </Pie>
@@ -332,14 +423,26 @@ export function P2PDashboardPage() {
               </ResponsiveContainer>
             </div>
             <div className="flex-1 flex flex-col gap-1.5">
-              {stats.assetDistribution.map(item => (
+              {stats.assetDistribution.map((item) => (
                 <div key={item.asset} className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <div className="w-2.5 h-2.5 rounded-sm" style={{ background: ASSET_COLORS[item.asset] || '#6B7280' }} />
-                    <span style={{ color: c.text2, fontSize: φ.xs, fontWeight: 600 }}>{item.asset}</span>
+                    <div
+                      className="w-2.5 h-2.5 rounded-sm"
+                      style={{ background: ASSET_COLORS[item.asset] || '#6B7280' }}
+                    />
+                    <span style={{ color: c.text2, fontSize: φ.xs, fontWeight: 600 }}>
+                      {item.asset}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span style={{ color: c.text1, fontSize: φ.xs, fontWeight: 600, fontFamily: 'monospace' }}>
+                    <span
+                      style={{
+                        color: c.text1,
+                        fontSize: φ.xs,
+                        fontWeight: 600,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       {item.percentage}%
                     </span>
                     <span style={{ color: c.text3, fontSize: 9, fontFamily: 'monospace' }}>
@@ -373,11 +476,17 @@ export function P2PDashboardPage() {
           <div className="mb-3">
             <div className="flex items-center justify-between mb-1.5">
               <span style={{ color: c.text3, fontSize: φ.xs }}>Hạn mức hôm nay</span>
-              <span style={{ color: c.text1, fontSize: φ.xs, fontWeight: 600, fontFamily: 'monospace' }}>
-                {fmtCompact(userLevel.dailyUsed)} / {userLevel.dailyLimit > 0 ? fmtCompact(userLevel.dailyLimit) : 'Không giới hạn'}
+              <span
+                style={{ color: c.text1, fontSize: φ.xs, fontWeight: 600, fontFamily: 'monospace' }}
+              >
+                {fmtCompact(userLevel.dailyUsed)} /{' '}
+                {userLevel.dailyLimit > 0 ? fmtCompact(userLevel.dailyLimit) : 'Không giới hạn'}
               </span>
             </div>
-            <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
+            <div
+              className="w-full h-2 rounded-full overflow-hidden"
+              style={{ background: c.surface2 }}
+            >
               <div
                 className="h-full rounded-full"
                 style={{
@@ -403,7 +512,10 @@ export function P2PDashboardPage() {
                   {Math.round(userLevel.nextLevelProgress * 100)}%
                 </span>
               </div>
-              <div className="w-full h-1.5 rounded-full overflow-hidden" style={{ background: c.surface3 || c.border }}>
+              <div
+                className="w-full h-1.5 rounded-full overflow-hidden"
+                style={{ background: c.surface3 || c.border }}
+              >
                 <div
                   className="h-full rounded-full"
                   style={{
@@ -415,7 +527,11 @@ export function P2PDashboardPage() {
               </div>
               <div className="flex flex-wrap gap-1.5 mt-2">
                 {nextLevel.requirements.map((req, i) => (
-                  <span key={i} className="px-1.5 py-0.5 rounded" style={{ background: c.chipBg, color: c.text3, fontSize: 8 }}>
+                  <span
+                    key={i}
+                    className="px-1.5 py-0.5 rounded"
+                    style={{ background: c.chipBg, color: c.text3, fontSize: 8 }}
+                  >
                     {req}
                   </span>
                 ))}
@@ -428,7 +544,9 @@ export function P2PDashboardPage() {
         <TrCard className="p-4">
           <div className="flex items-center gap-2 mb-3">
             <TrendingUp size={14} color={c.text2} />
-            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>So sánh với Platform</span>
+            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
+              So sánh với Platform
+            </span>
           </div>
           <div className="flex flex-col gap-3">
             {[
@@ -457,7 +575,7 @@ export function P2PDashboardPage() {
                 platform: 91.0,
                 suffix: '%',
               },
-            ].map(metric => {
+            ].map((metric) => {
               const isBetter = metric.lowerBetter
                 ? metric.yours < metric.platform
                 : metric.yours > metric.platform;
@@ -466,18 +584,27 @@ export function P2PDashboardPage() {
                   <div className="flex items-center justify-between mb-1">
                     <span style={{ color: c.text2, fontSize: φ.xs }}>{metric.label}</span>
                     <div className="flex items-center gap-2">
-                      <span style={{
-                        color: isBetter ? '#10B981' : '#F59E0B',
-                        fontSize: φ.xs, fontWeight: 700, fontFamily: 'monospace',
-                      }}>
-                        {metric.yours}{metric.suffix}
+                      <span
+                        style={{
+                          color: isBetter ? '#10B981' : '#F59E0B',
+                          fontSize: φ.xs,
+                          fontWeight: 700,
+                          fontFamily: 'monospace',
+                        }}
+                      >
+                        {metric.yours}
+                        {metric.suffix}
                       </span>
                       <span style={{ color: c.text3, fontSize: 9 }}>
-                        vs {metric.platform}{metric.suffix}
+                        vs {metric.platform}
+                        {metric.suffix}
                       </span>
                     </div>
                   </div>
-                  <div className="relative w-full h-1.5 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
+                  <div
+                    className="relative w-full h-1.5 rounded-full overflow-hidden"
+                    style={{ background: c.surface2 }}
+                  >
                     <div
                       className="absolute top-0 left-0 h-full rounded-full"
                       style={{
@@ -507,21 +634,45 @@ export function P2PDashboardPage() {
         <div className="grid grid-cols-3 gap-2">
           <TrCard className="p-3 flex flex-col items-center">
             <Users size={16} color="#8B5CF6" />
-            <p style={{ color: c.text1, fontSize: φ.base, fontWeight: 700, marginTop: 4, fontFamily: 'monospace' }}>
+            <p
+              style={{
+                color: c.text1,
+                fontSize: φ.base,
+                fontWeight: 700,
+                marginTop: 4,
+                fontFamily: 'monospace',
+              }}
+            >
               {stats.uniqueCounterparties}
             </p>
             <p style={{ color: c.text3, fontSize: 8, textAlign: 'center' }}>Đối tác</p>
           </TrCard>
           <TrCard className="p-3 flex flex-col items-center">
             <Repeat size={16} color="#F59E0B" />
-            <p style={{ color: c.text1, fontSize: φ.base, fontWeight: 700, marginTop: 4, fontFamily: 'monospace' }}>
+            <p
+              style={{
+                color: c.text1,
+                fontSize: φ.base,
+                fontWeight: 700,
+                marginTop: 4,
+                fontFamily: 'monospace',
+              }}
+            >
               {stats.repeatCustomerRate}%
             </p>
             <p style={{ color: c.text3, fontSize: 8, textAlign: 'center' }}>Quay lại</p>
           </TrCard>
           <TrCard className="p-3 flex flex-col items-center">
             <DollarSign size={16} color="#10B981" />
-            <p style={{ color: c.text1, fontSize: φ.base, fontWeight: 700, marginTop: 4, fontFamily: 'monospace' }}>
+            <p
+              style={{
+                color: c.text1,
+                fontSize: φ.base,
+                fontWeight: 700,
+                marginTop: 4,
+                fontFamily: 'monospace',
+              }}
+            >
               {fmtCompact(stats.avgOrderSize)}
             </p>
             <p style={{ color: c.text3, fontSize: 8, textAlign: 'center' }}>TB đơn hàng</p>
@@ -532,14 +683,34 @@ export function P2PDashboardPage() {
         <TrCard className="p-4">
           <div className="flex items-center gap-2 mb-3">
             <ShoppingCart size={14} color={c.text2} />
-            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Phân tích đơn hàng</span>
+            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
+              Phân tích đơn hàng
+            </span>
           </div>
           <div className="flex flex-col gap-2">
             {[
-              { label: 'Hoàn thành', count: stats.completedOrders, total: stats.totalOrders, color: '#10B981', icon: CheckCircle },
-              { label: 'Đã hủy', count: stats.cancelledOrders, total: stats.totalOrders, color: '#EF4444', icon: XCircle },
-              { label: 'Tranh chấp', count: stats.disputedOrders, total: stats.totalOrders, color: '#F59E0B', icon: AlertTriangle },
-            ].map(item => {
+              {
+                label: 'Hoàn thành',
+                count: stats.completedOrders,
+                total: stats.totalOrders,
+                color: '#10B981',
+                icon: CheckCircle,
+              },
+              {
+                label: 'Đã hủy',
+                count: stats.cancelledOrders,
+                total: stats.totalOrders,
+                color: '#EF4444',
+                icon: XCircle,
+              },
+              {
+                label: 'Tranh chấp',
+                count: stats.disputedOrders,
+                total: stats.totalOrders,
+                color: '#F59E0B',
+                icon: AlertTriangle,
+              },
+            ].map((item) => {
               const pct = (item.count / item.total) * 100;
               return (
                 <div key={item.label} className="flex items-center gap-3">
@@ -547,14 +718,28 @@ export function P2PDashboardPage() {
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-1">
                       <span style={{ color: c.text2, fontSize: φ.xs }}>{item.label}</span>
-                      <span style={{ color: c.text1, fontSize: φ.xs, fontWeight: 600, fontFamily: 'monospace' }}>
+                      <span
+                        style={{
+                          color: c.text1,
+                          fontSize: φ.xs,
+                          fontWeight: 600,
+                          fontFamily: 'monospace',
+                        }}
+                      >
                         {item.count} ({fmtPct(pct)})
                       </span>
                     </div>
-                    <div className="w-full h-1.5 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
+                    <div
+                      className="w-full h-1.5 rounded-full overflow-hidden"
+                      style={{ background: c.surface2 }}
+                    >
                       <div
                         className="h-full rounded-full"
-                        style={{ width: `${pct}%`, background: item.color, transition: 'width 0.5s ease' }}
+                        style={{
+                          width: `${pct}%`,
+                          background: item.color,
+                          transition: 'width 0.5s ease',
+                        }}
                       />
                     </div>
                   </div>
@@ -577,26 +762,51 @@ export function P2PDashboardPage() {
             {stats.topMerchants.map((m, i) => (
               <button
                 key={m.id}
-                onClick={() => { navigate(`${prefix}/p2p/merchant/${m.id}`); hapticSelection(); }}
+                onClick={() => {
+                  navigate(`${prefix}/p2p/merchant/${m.id}`);
+                  hapticSelection();
+                }}
                 className="flex items-center gap-3 w-full text-left"
               >
-                <div className="flex items-center justify-center w-6"
-                  style={{ color: i < 3 ? ['#F59E0B', '#9CA3AF', '#CD7F32'][i] : c.text3, fontSize: φ.sm, fontWeight: 700 }}>
+                <div
+                  className="flex items-center justify-center w-6"
+                  style={{
+                    color: i < 3 ? ['#F59E0B', '#9CA3AF', '#CD7F32'][i] : c.text3,
+                    fontSize: φ.sm,
+                    fontWeight: 700,
+                  }}
+                >
                   #{i + 1}
                 </div>
                 <div
                   className="w-8 h-8 rounded-full flex items-center justify-center"
-                  style={{ background: i === 0 ? 'linear-gradient(135deg, #F59E0B, #FBBF24)' : 'linear-gradient(135deg, #3B82F6, #60A5FA)' }}
+                  style={{
+                    background:
+                      i === 0
+                        ? 'linear-gradient(135deg, #F59E0B, #FBBF24)'
+                        : 'linear-gradient(135deg, #3B82F6, #60A5FA)',
+                  }}
                 >
-                  <span style={{ color: '#fff', fontSize: 10, fontWeight: 700 }}>{m.name.charAt(0)}</span>
+                  <span style={{ color: '#fff', fontSize: 10, fontWeight: 700 }}>
+                    {m.name.charAt(0)}
+                  </span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <span className="truncate block" style={{ color: c.text1, fontSize: φ.xs, fontWeight: 600 }}>{m.name}</span>
-                  <span style={{ color: c.text3, fontSize: 9 }}>{m.trades} đơn · {fmtCompact(m.volume, { prefix: '₫' })}</span>
+                  <span
+                    className="truncate block"
+                    style={{ color: c.text1, fontSize: φ.xs, fontWeight: 600 }}
+                  >
+                    {m.name}
+                  </span>
+                  <span style={{ color: c.text3, fontSize: 9 }}>
+                    {m.trades} đơn · {fmtCompact(m.volume, { prefix: '₫' })}
+                  </span>
                 </div>
                 <div className="flex items-center gap-0.5">
                   <Star size={9} fill="#F59E0B" color="#F59E0B" />
-                  <span style={{ color: c.text2, fontSize: φ.xs, fontWeight: 600 }}>{m.rating}</span>
+                  <span style={{ color: c.text2, fontSize: φ.xs, fontWeight: 600 }}>
+                    {m.rating}
+                  </span>
                 </div>
                 <ChevronRight size={12} color={c.text3} />
               </button>
@@ -609,10 +819,15 @@ export function P2PDashboardPage() {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Clock size={14} color={c.text2} />
-              <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Hoạt động gần đây</span>
+              <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
+                Hoạt động gần đây
+              </span>
             </div>
             <button
-              onClick={() => { navigate(`${prefix}/p2p/my-orders`); hapticSelection(); }}
+              onClick={() => {
+                navigate(`${prefix}/p2p/my-orders`);
+                hapticSelection();
+              }}
               className="flex items-center gap-1"
             >
               <span style={{ color: '#3B82F6', fontSize: φ.xs, fontWeight: 600 }}>Xem tất cả</span>
@@ -623,14 +838,26 @@ export function P2PDashboardPage() {
             {stats.recentActivity.map((act, i) => {
               const statusInfo = STATUS_MAP[act.status] || { label: act.status, color: c.text3 };
               return (
-                <div key={i} className="flex items-center gap-3 py-2" style={{ borderBottom: i < stats.recentActivity.length - 1 ? `1px solid ${c.divider}` : 'none' }}>
+                <div
+                  key={i}
+                  className="flex items-center gap-3 py-2"
+                  style={{
+                    borderBottom:
+                      i < stats.recentActivity.length - 1 ? `1px solid ${c.divider}` : 'none',
+                  }}
+                >
                   <div
                     className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                    style={{ background: act.type === 'buy' ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)' }}
+                    style={{
+                      background:
+                        act.type === 'buy' ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)',
+                    }}
                   >
-                    {act.type === 'buy'
-                      ? <ArrowDownRight size={14} color="#10B981" />
-                      : <ArrowUpRight size={14} color="#EF4444" />}
+                    {act.type === 'buy' ? (
+                      <ArrowDownRight size={14} color="#10B981" />
+                    ) : (
+                      <ArrowUpRight size={14} color="#EF4444" />
+                    )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
@@ -643,12 +870,24 @@ export function P2PDashboardPage() {
                     </span>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <p style={{ color: c.text1, fontSize: φ.xs, fontWeight: 600, fontFamily: 'monospace' }}>
+                    <p
+                      style={{
+                        color: c.text1,
+                        fontSize: φ.xs,
+                        fontWeight: 600,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       {fmtCompact(act.total, { prefix: '₫' })}
                     </p>
                     <span
                       className="px-1.5 py-0.5 rounded"
-                      style={{ background: statusInfo.color + '15', color: statusInfo.color, fontSize: 8, fontWeight: 600 }}
+                      style={{
+                        background: statusInfo.color + '15',
+                        color: statusInfo.color,
+                        fontSize: 8,
+                        fontWeight: 600,
+                      }}
                     >
                       {statusInfo.label}
                     </span>
@@ -662,16 +901,24 @@ export function P2PDashboardPage() {
         {/* ───── Quick Navigation ───── */}
         <div className="grid grid-cols-2 gap-2.5">
           {[
-            { label: 'Đơn hàng', icon: ShoppingCart, color: '#3B82F6', path: `${prefix}/p2p/my-orders` },
+            {
+              label: 'Đơn hàng',
+              icon: ShoppingCart,
+              color: '#3B82F6',
+              path: `${prefix}/p2p/my-orders`,
+            },
             { label: 'Đánh giá', icon: Star, color: '#F59E0B', path: `${prefix}/p2p/reviews` },
             { label: 'Quảng cáo', icon: BarChart3, color: '#8B5CF6', path: `${prefix}/p2p/my-ads` },
             { label: 'Express', icon: Zap, color: '#10B981', path: `${prefix}/p2p/express` },
-          ].map(item => (
+          ].map((item) => (
             <TrCard
               key={item.label}
               as="button"
               hover
-              onClick={() => { navigate(item.path); hapticSelection(); }}
+              onClick={() => {
+                navigate(item.path);
+                hapticSelection();
+              }}
               className="p-3 flex items-center gap-3 w-full text-left"
             >
               <div
@@ -681,13 +928,14 @@ export function P2PDashboardPage() {
                 <item.icon size={16} color={item.color} />
               </div>
               <div className="flex-1">
-                <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>{item.label}</span>
+                <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
+                  {item.label}
+                </span>
               </div>
               <ChevronRight size={14} color={c.text3} />
             </TrCard>
           ))}
         </div>
-
       </div>
     </PageLayout>
   );

@@ -26,11 +26,7 @@ export function EditProfilePage() {
   return (
     <PageLayout>
       {/* Header */}
-      <Header
-        title="Chỉnh sửa hồ sơ"
-        subtitle="Chỉnh sửa · Profile"
-        back
-      />
+      <Header title="Chỉnh sửa hồ sơ" subtitle="Chỉnh sửa · Profile" back />
 
       <PageContent gap="default">
         {/* Avatar */}
@@ -52,20 +48,30 @@ export function EditProfilePage() {
               <Camera size={14} color="#fff" />
             </button>
           </div>
-          <p style={{ color: c.text3, fontSize: 12, marginTop: 10 }}>Nhấn vào biểu tượng camera để thay đổi</p>
+          <p style={{ color: c.text3, fontSize: 12, marginTop: 10 }}>
+            Nhấn vào biểu tượng camera để thay đổi
+          </p>
         </div>
 
         {/* Form */}
         <div className="flex flex-col gap-4">
           {/* Full name */}
           <div>
-            <label style={{ color: c.text2, fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 8 }}>
+            <label
+              style={{
+                color: c.text2,
+                fontSize: 12,
+                fontWeight: 600,
+                display: 'block',
+                marginBottom: 8,
+              }}
+            >
               HỌ VÀ TÊN
             </label>
             <input
               type="text"
               value={fullName}
-              onChange={e => setFullName(e.target.value)}
+              onChange={(e) => setFullName(e.target.value)}
               className="w-full rounded-2xl px-4"
               style={{
                 background: c.surface2,
@@ -81,7 +87,15 @@ export function EditProfilePage() {
 
           {/* Email (read-only) */}
           <div>
-            <label style={{ color: c.text2, fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 8 }}>
+            <label
+              style={{
+                color: c.text2,
+                fontSize: 12,
+                fontWeight: 600,
+                display: 'block',
+                marginBottom: 8,
+              }}
+            >
               EMAIL
             </label>
             <input
@@ -104,13 +118,21 @@ export function EditProfilePage() {
 
           {/* Phone */}
           <div>
-            <label style={{ color: c.text2, fontSize: 12, fontWeight: 600, display: 'block', marginBottom: 8 }}>
+            <label
+              style={{
+                color: c.text2,
+                fontSize: 12,
+                fontWeight: 600,
+                display: 'block',
+                marginBottom: 8,
+              }}
+            >
               SỐ ĐIỆN THOẠI
             </label>
             <input
               type="tel"
               value={phone}
-              onChange={e => setPhone(e.target.value)}
+              onChange={(e) => setPhone(e.target.value)}
               className="w-full rounded-2xl px-4"
               style={{
                 background: c.surface2,
@@ -125,11 +147,7 @@ export function EditProfilePage() {
           </div>
 
           {/* Save button */}
-          <CTAButton
-            onClick={handleSave}
-            loading={isSaving}
-            variant="primary"
-          >
+          <CTAButton onClick={handleSave} loading={isSaving} variant="primary">
             {isSaving ? 'Đang lưu...' : '💾 Lưu thay đổi'}
           </CTAButton>
         </div>

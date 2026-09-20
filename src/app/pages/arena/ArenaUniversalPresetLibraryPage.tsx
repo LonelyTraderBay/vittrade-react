@@ -1,8 +1,24 @@
 import React, { useState, useMemo } from 'react';
 import {
-  Check, ChevronDown, ChevronRight, Search, Sparkles, Eye,
-  Info, Shield, Target, BookOpen, Layers, Zap, List, Play,
-  X, Star, Filter, Hash, type LucideIcon,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  Search,
+  Sparkles,
+  Eye,
+  Info,
+  Shield,
+  Target,
+  BookOpen,
+  Layers,
+  Zap,
+  List,
+  Play,
+  X,
+  Star,
+  Filter,
+  Hash,
+  type LucideIcon,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Header } from '../../components/layout/Header';
@@ -23,13 +39,28 @@ import { hexToRgba } from '../../utils/helpers/string';
    ═══════════════════════════════════════════════════════════════ */
 
 type DomainId =
-  | 'sports' | 'esports' | 'crypto' | 'tech' | 'science'
-  | 'health' | 'entertainment' | 'work' | 'community' | 'other';
+  | 'sports'
+  | 'esports'
+  | 'crypto'
+  | 'tech'
+  | 'science'
+  | 'health'
+  | 'entertainment'
+  | 'work'
+  | 'community'
+  | 'other';
 
 type ChallengeType =
-  | 'yes_no' | 'multi_choice' | 'closest_guess' | 'highest_wins'
-  | 'lowest_wins' | 'first_to_finish' | 'team_score' | 'referee_decision'
-  | 'community_vote' | 'proof_challenge';
+  | 'yes_no'
+  | 'multi_choice'
+  | 'closest_guess'
+  | 'highest_wins'
+  | 'lowest_wins'
+  | 'first_to_finish'
+  | 'team_score'
+  | 'referee_decision'
+  | 'community_vote'
+  | 'proof_challenge';
 
 type DropdownState = 'default' | 'focused' | 'typing' | 'selected' | 'no_results' | 'disabled';
 
@@ -48,63 +79,146 @@ interface DomainPack {
 
 const DOMAIN_PACKS: DomainPack[] = [
   {
-    id: 'sports', icon: '⚽', title: 'Thể thao',
+    id: 'sports',
+    icon: '⚽',
+    title: 'Thể thao',
     description: 'Bóng đá, bóng rổ, tennis, F1, MMA, Olympic — tất cả giải đấu thể thao.',
-    supportedTypes: ['yes_no', 'closest_guess', 'highest_wins', 'team_score', 'multi_choice', 'referee_decision'],
+    supportedTypes: [
+      'yes_no',
+      'closest_guess',
+      'highest_wins',
+      'team_score',
+      'multi_choice',
+      'referee_decision',
+    ],
     examples: ['Đội nào thắng trận chung kết?', 'Tỷ số gần đúng nhất?', 'Ai ghi bàn trước?'],
   },
   {
-    id: 'esports', icon: '🎮', title: 'Esports / Game',
+    id: 'esports',
+    icon: '🎮',
+    title: 'Esports / Game',
     description: 'League of Legends, Valorant, CS2, PUBG Mobile, Genshin Impact, speedrun.',
-    supportedTypes: ['yes_no', 'highest_wins', 'first_to_finish', 'team_score', 'closest_guess', 'proof_challenge'],
-    examples: ['Team nào vô địch giải đấu?', 'Ai đạt điểm cao nhất?', 'Map nào được chọn nhiều nhất?'],
+    supportedTypes: [
+      'yes_no',
+      'highest_wins',
+      'first_to_finish',
+      'team_score',
+      'closest_guess',
+      'proof_challenge',
+    ],
+    examples: [
+      'Team nào vô địch giải đấu?',
+      'Ai đạt điểm cao nhất?',
+      'Map nào được chọn nhiều nhất?',
+    ],
   },
   {
-    id: 'crypto', icon: '📈', title: 'Crypto / Markets',
+    id: 'crypto',
+    icon: '📈',
+    title: 'Crypto / Markets',
     description: 'Bitcoin, Ethereum, altcoins, DeFi, macro, cổ phiếu, chỉ số tài chính.',
     supportedTypes: ['yes_no', 'closest_guess', 'highest_wins', 'lowest_wins', 'multi_choice'],
-    examples: ['BTC vượt mốc $100K không?', 'ETH ở mức nào tại thời điểm Y?', 'Coin nào tăng mạnh hơn?'],
+    examples: [
+      'BTC vượt mốc $100K không?',
+      'ETH ở mức nào tại thời điểm Y?',
+      'Coin nào tăng mạnh hơn?',
+    ],
   },
   {
-    id: 'tech', icon: '🤖', title: 'Công nghệ / AI',
+    id: 'tech',
+    icon: '🤖',
+    title: 'Công nghệ / AI',
     description: 'Ra mắt sản phẩm, AI benchmark, ngôn ngữ lập trình, startup, gadget.',
     supportedTypes: ['yes_no', 'multi_choice', 'closest_guess', 'highest_wins', 'community_vote'],
-    examples: ['Sản phẩm nào ra mắt đầu tiên?', 'AI nào đạt benchmark cao nhất?', 'Framework nào phổ biến nhất 2026?'],
+    examples: [
+      'Sản phẩm nào ra mắt đầu tiên?',
+      'AI nào đạt benchmark cao nhất?',
+      'Framework nào phổ biến nhất 2026?',
+    ],
   },
   {
-    id: 'science', icon: '🔬', title: 'Khoa học / Học tập',
+    id: 'science',
+    icon: '🔬',
+    title: 'Khoa học / Học tập',
     description: 'Thí nghiệm, kỳ thi, khóa học online, quiz, nghiên cứu, bài tập nhóm.',
-    supportedTypes: ['closest_guess', 'highest_wins', 'multi_choice', 'first_to_finish', 'team_score'],
-    examples: ['Kết quả gần đúng nhất?', 'Ai trả lời đúng nhiều nhất?', 'Nhóm nào đạt điểm cao hơn?'],
+    supportedTypes: [
+      'closest_guess',
+      'highest_wins',
+      'multi_choice',
+      'first_to_finish',
+      'team_score',
+    ],
+    examples: [
+      'Kết quả gần đúng nhất?',
+      'Ai trả lời đúng nhiều nhất?',
+      'Nhóm nào đạt điểm cao hơn?',
+    ],
   },
   {
-    id: 'health', icon: '💪', title: 'Sức khỏe / Lifestyle',
+    id: 'health',
+    icon: '💪',
+    title: 'Sức khỏe / Lifestyle',
     description: 'Fitness challenge, chạy bộ, giảm cân, thiền, thói quen, streak.',
-    supportedTypes: ['highest_wins', 'lowest_wins', 'first_to_finish', 'closest_guess', 'proof_challenge'],
+    supportedTypes: [
+      'highest_wins',
+      'lowest_wins',
+      'first_to_finish',
+      'closest_guess',
+      'proof_challenge',
+    ],
     examples: ['Ai hoàn thành mục tiêu trước?', 'Ai giữ streak dài hơn?', 'Ai có số bước cao hơn?'],
   },
   {
-    id: 'entertainment', icon: '🎬', title: 'Giải trí / Văn hóa',
+    id: 'entertainment',
+    icon: '🎬',
+    title: 'Giải trí / Văn hóa',
     description: 'Oscar, Grammy, phim, nhạc, game show, reality TV, sách, truyện.',
     supportedTypes: ['yes_no', 'multi_choice', 'community_vote', 'closest_guess'],
     examples: ['Phim nào đoạt giải Oscar?', 'Bài hát nào đạt #1?', 'Ai bị loại tiếp theo?'],
   },
   {
-    id: 'work', icon: '💼', title: 'Công việc / Năng suất',
+    id: 'work',
+    icon: '💼',
+    title: 'Công việc / Năng suất',
     description: 'Sprint KPI, task completion, bug fix, sales target, OKR, team challenge.',
-    supportedTypes: ['first_to_finish', 'highest_wins', 'team_score', 'closest_guess', 'proof_challenge'],
-    examples: ['Ai hoàn thành task trước?', 'Team nào đạt KPI cao hơn?', 'Ai close nhiều việc hơn?'],
+    supportedTypes: [
+      'first_to_finish',
+      'highest_wins',
+      'team_score',
+      'closest_guess',
+      'proof_challenge',
+    ],
+    examples: [
+      'Ai hoàn thành task trước?',
+      'Team nào đạt KPI cao hơn?',
+      'Ai close nhiều việc hơn?',
+    ],
   },
   {
-    id: 'community', icon: '🎪', title: 'Cộng đồng / Sự kiện',
+    id: 'community',
+    icon: '🎪',
+    title: 'Cộng đồng / Sự kiện',
     description: 'Meetup, hackathon, volunteer, fundraising, event, neighborhood.',
     supportedTypes: ['yes_no', 'closest_guess', 'community_vote', 'first_to_finish', 'team_score'],
     examples: ['Ai đến trước?', 'Team nào hoàn thành checkpoint đủ?', 'Kết quả vote nào thắng?'],
   },
   {
-    id: 'other', icon: '🎲', title: 'Khác / Custom',
+    id: 'other',
+    icon: '🎲',
+    title: 'Khác / Custom',
     description: 'Mọi lĩnh vực khác: thời tiết, nấu ăn, thú cưng, du lịch, tùy ý sáng tạo.',
-    supportedTypes: ['yes_no', 'multi_choice', 'closest_guess', 'highest_wins', 'lowest_wins', 'first_to_finish', 'team_score', 'referee_decision', 'community_vote', 'proof_challenge'],
+    supportedTypes: [
+      'yes_no',
+      'multi_choice',
+      'closest_guess',
+      'highest_wins',
+      'lowest_wins',
+      'first_to_finish',
+      'team_score',
+      'referee_decision',
+      'community_vote',
+      'proof_challenge',
+    ],
     examples: ['Kết quả sẽ là gì?', 'Ai sẽ thắng?', 'Điều gì sẽ xảy ra?'],
   },
 ];
@@ -239,45 +353,75 @@ interface DemoFlow {
 
 const DEMO_FLOWS: DemoFlow[] = [
   {
-    domain: 'sports', domainLabel: 'Thể thao', domainIcon: '⚽',
-    type: 'closest_guess', typeLabel: 'Closest Guess', typeIcon: '🎯',
+    domain: 'sports',
+    domainLabel: 'Thể thao',
+    domainIcon: '⚽',
+    type: 'closest_guess',
+    typeLabel: 'Closest Guess',
+    typeIcon: '🎯',
     suggestions: ['Tỷ số gần đúng nhất?', 'Bao nhiêu thẻ vàng?', 'Tổng bàn thắng?'],
     generatedRule: 'Người đoán gần đúng nhất tỷ số trận chung kết vào ngày kết thúc sẽ thắng.',
     color: '#10B981',
   },
   {
-    domain: 'crypto', domainLabel: 'Crypto / Markets', domainIcon: '📈',
-    type: 'yes_no', typeLabel: 'Yes / No', typeIcon: '✅',
+    domain: 'crypto',
+    domainLabel: 'Crypto / Markets',
+    domainIcon: '📈',
+    type: 'yes_no',
+    typeLabel: 'Yes / No',
+    typeIcon: '✅',
     suggestions: ['BTC vượt $100K?', 'ETH flippening?', 'Fed giảm lãi suất?'],
     generatedRule: 'Nếu BTC vượt mốc $100,000 trước 23:59 UTC ngày kết thúc → Yes thắng.',
     color: '#F59E0B',
   },
   {
-    domain: 'science', domainLabel: 'Khoa học / Học tập', domainIcon: '🔬',
-    type: 'highest_wins', typeLabel: 'Highest Wins', typeIcon: '📊',
+    domain: 'science',
+    domainLabel: 'Khoa học / Học tập',
+    domainIcon: '🔬',
+    type: 'highest_wins',
+    typeLabel: 'Highest Wins',
+    typeIcon: '📊',
     suggestions: ['Ai trả lời đúng nhiều nhất?', 'Nhóm nào điểm cao hơn?', 'Ai đạt A+?'],
     generatedRule: 'Người chơi đạt điểm số cao nhất trong bài kiểm tra vào ngày kết thúc sẽ thắng.',
     color: '#8B5CF6',
   },
   {
-    domain: 'health', domainLabel: 'Sức khỏe / Lifestyle', domainIcon: '💪',
-    type: 'first_to_finish', typeLabel: 'First To Finish', typeIcon: '🏁',
-    suggestions: ['Ai hoàn thành mục tiêu trước?', 'Ai đạt target cân nặng?', 'Ai chạy 100km trước?'],
+    domain: 'health',
+    domainLabel: 'Sức khỏe / Lifestyle',
+    domainIcon: '💪',
+    type: 'first_to_finish',
+    typeLabel: 'First To Finish',
+    typeIcon: '🏁',
+    suggestions: [
+      'Ai hoàn thành mục tiêu trước?',
+      'Ai đạt target cân nặng?',
+      'Ai chạy 100km trước?',
+    ],
     generatedRule: 'Cá nhân hoàn thành trước mục tiêu 100km chạy bộ trước deadline sẽ thắng.',
     color: '#EF4444',
   },
   {
-    domain: 'community', domainLabel: 'Cộng đồng / Sự kiện', domainIcon: '🎪',
-    type: 'community_vote', typeLabel: 'Community Vote', typeIcon: '🗳️',
+    domain: 'community',
+    domainLabel: 'Cộng đồng / Sự kiện',
+    domainIcon: '🎪',
+    type: 'community_vote',
+    typeLabel: 'Community Vote',
+    typeIcon: '🗳️',
     suggestions: ['Kết quả vote nào thắng?', 'Ai được bầu chọn?', 'Ý tưởng nào được chọn?'],
-    generatedRule: 'Tất cả được vote nhiều nhất kết quả sự kiện sau khi sự kiện kết thúc sẽ được công nh���n.',
+    generatedRule:
+      'Tất cả được vote nhiều nhất kết quả sự kiện sau khi sự kiện kết thúc sẽ được công nh���n.',
     color: '#EC4899',
   },
   {
-    domain: 'work', domainLabel: 'Công việc / Năng suất', domainIcon: '💼',
-    type: 'team_score', typeLabel: 'Team Score', typeIcon: '⚔️',
+    domain: 'work',
+    domainLabel: 'Công việc / Năng suất',
+    domainIcon: '💼',
+    type: 'team_score',
+    typeLabel: 'Team Score',
+    typeIcon: '⚔️',
     suggestions: ['Team nào đạt KPI cao hơn?', 'Sprint velocity cao nhất?', 'Ai close nhiều nhất?'],
-    generatedRule: 'Đội đạt điểm cao nhất tổng số task completed trong sprint vào ngày kết thúc sẽ nhận toàn bộ pool.',
+    generatedRule:
+      'Đội đạt điểm cao nhất tổng số task completed trong sprint vào ngày kết thúc sẽ nhận toàn bộ pool.',
     color: '#F97316',
   },
 ];
@@ -311,8 +455,15 @@ const TITLE_SUGGESTIONS: TitleSuggestion[] = [
 
 /* ─── SearchableDropdown (generic) ─── */
 function SearchableDropdown({
-  label, options, value, onChange, icon: IconComp, color,
-  renderOption, placeholder, demoState,
+  label,
+  options,
+  value,
+  onChange,
+  icon: IconComp,
+  color,
+  renderOption,
+  placeholder,
+  demoState,
 }: {
   label: string;
   options: { id: string; label: string; icon?: string; desc?: string }[];
@@ -320,7 +471,10 @@ function SearchableDropdown({
   onChange: (v: string) => void;
   icon?: LucideIcon;
   color?: string;
-  renderOption?: (opt: { id: string; label: string; icon?: string; desc?: string }, active: boolean) => React.ReactNode;
+  renderOption?: (
+    opt: { id: string; label: string; icon?: string; desc?: string },
+    active: boolean,
+  ) => React.ReactNode;
   placeholder?: string;
   demoState?: DropdownState;
 }) {
@@ -330,37 +484,59 @@ function SearchableDropdown({
   const [search, setSearch] = useState('');
 
   const isDisabled = demoState === 'disabled';
-  const effectiveState: DropdownState = demoState || (open ? (search ? 'typing' : 'focused') : (value ? 'selected' : 'default'));
+  const effectiveState: DropdownState =
+    demoState || (open ? (search ? 'typing' : 'focused') : value ? 'selected' : 'default');
 
-  const filtered = options.filter(o =>
-    o.label.toLowerCase().includes(search.toLowerCase())
-  );
-  const selected = options.find(o => o.id === value);
+  const filtered = options.filter((o) => o.label.toLowerCase().includes(search.toLowerCase()));
+  const selected = options.find((o) => o.id === value);
   const hasNoResults = filtered.length === 0 && search.length > 0;
 
-  const borderColor = effectiveState === 'selected' ? (color || 'rgba(139,92,246,0.3)')
-    : effectiveState === 'focused' || effectiveState === 'typing' ? 'rgba(59,130,246,0.4)'
-    : c.searchBorder;
+  const borderColor =
+    effectiveState === 'selected'
+      ? color || 'rgba(139,92,246,0.3)'
+      : effectiveState === 'focused' || effectiveState === 'typing'
+        ? 'rgba(59,130,246,0.4)'
+        : c.searchBorder;
 
   return (
     <div className="relative">
       {/* State badge */}
       {demoState && (
         <div className="flex items-center gap-1.5 mb-1">
-          <div className="w-2 h-2 rounded-full" style={{
-            background: effectiveState === 'selected' ? '#10B981'
-              : effectiveState === 'disabled' ? '#94A3B8'
-              : effectiveState === 'no_results' ? '#EF4444'
-              : '#3B82F6',
-          }} />
-          <span style={{ color: c.text3, fontSize: 9, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+          <div
+            className="w-2 h-2 rounded-full"
+            style={{
+              background:
+                effectiveState === 'selected'
+                  ? '#10B981'
+                  : effectiveState === 'disabled'
+                    ? '#94A3B8'
+                    : effectiveState === 'no_results'
+                      ? '#EF4444'
+                      : '#3B82F6',
+            }}
+          />
+          <span
+            style={{
+              color: c.text3,
+              fontSize: 9,
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: 0.5,
+            }}
+          >
             {effectiveState}
           </span>
         </div>
       )}
 
       <button
-        onClick={() => { if (!isDisabled) { setOpen(!open); hapticSelection(); } }}
+        onClick={() => {
+          if (!isDisabled) {
+            setOpen(!open);
+            hapticSelection();
+          }
+        }}
         className="w-full flex items-center justify-between px-4 py-3 rounded-xl active:opacity-70"
         style={{
           background: c.searchBg,
@@ -375,10 +551,14 @@ function SearchableDropdown({
           {selected ? (
             <div className="flex items-center gap-2">
               {selected.icon && <span style={{ fontSize: 14 }}>{selected.icon}</span>}
-              <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>{selected.label}</span>
+              <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
+                {selected.label}
+              </span>
             </div>
           ) : (
-            <span style={{ color: c.text3, fontSize: φ.sm }}>{placeholder || `Chọn ${label.toLowerCase()}...`}</span>
+            <span style={{ color: c.text3, fontSize: φ.sm }}>
+              {placeholder || `Chọn ${label.toLowerCase()}...`}
+            </span>
           )}
         </div>
         <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
@@ -394,21 +574,37 @@ function SearchableDropdown({
             exit={{ opacity: 0, y: -8, height: 0 }}
             transition={{ duration: 0.2 }}
             className="mt-2 rounded-xl overflow-hidden z-30 relative"
-            style={{ background: c.surface, border: `1.5px solid ${c.borderSolid}`, boxShadow: '0 8px 32px rgba(0,0,0,0.15)' }}
+            style={{
+              background: c.surface,
+              border: `1.5px solid ${c.borderSolid}`,
+              boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+            }}
           >
-            <div className="flex items-center gap-2 px-3 py-2.5" style={{ borderBottom: `1px solid ${c.divider}` }}>
+            <div
+              className="flex items-center gap-2 px-3 py-2.5"
+              style={{ borderBottom: `1px solid ${c.divider}` }}
+            >
               <Search size={14} color={c.text3} />
               <input
                 type="text"
                 value={search}
-                onChange={e => setSearch(e.target.value)}
+                onChange={(e) => setSearch(e.target.value)}
                 placeholder={`Tìm ${label.toLowerCase()}...`}
                 className="flex-1 bg-transparent outline-none"
                 style={{ color: c.text1, fontSize: φ.xs }}
                 autoFocus
               />
               {search && (
-                <button onClick={() => setSearch('')} style={{ minWidth: 28, minHeight: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <button
+                  onClick={() => setSearch('')}
+                  style={{
+                    minWidth: 28,
+                    minHeight: 28,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
                   <X size={12} color={c.text3} />
                 </button>
               )}
@@ -416,16 +612,26 @@ function SearchableDropdown({
             <div style={{ maxHeight: 220, overflowY: 'auto' }}>
               {hasNoResults ? (
                 <div className="px-4 py-6 text-center">
-                  <Search size={20} color={c.text3} className="mx-auto mb-2" style={{ opacity: 0.4 }} />
+                  <Search
+                    size={20}
+                    color={c.text3}
+                    className="mx-auto mb-2"
+                    style={{ opacity: 0.4 }}
+                  />
                   <p style={{ color: c.text3, fontSize: φ.xs }}>Không tìm thấy kết quả</p>
                 </div>
               ) : (
-                filtered.map(opt => {
+                filtered.map((opt) => {
                   const active = value === opt.id;
                   return (
                     <button
                       key={opt.id}
-                      onClick={() => { onChange(opt.id); setOpen(false); setSearch(''); hapticSelection(); }}
+                      onClick={() => {
+                        onChange(opt.id);
+                        setOpen(false);
+                        setSearch('');
+                        hapticSelection();
+                      }}
                       className="w-full flex items-center gap-2.5 px-4 py-3 active:opacity-70 text-left"
                       style={{
                         background: active ? hexToRgba(color || '#8B5CF6', 10) : 'transparent',
@@ -433,14 +639,26 @@ function SearchableDropdown({
                         minHeight: 44,
                       }}
                     >
-                      {renderOption ? renderOption(opt, active) : (
+                      {renderOption ? (
+                        renderOption(opt, active)
+                      ) : (
                         <div className="contents">
                           {opt.icon && <span style={{ fontSize: 14 }}>{opt.icon}</span>}
                           <div className="flex-1 min-w-0">
-                            <span style={{ color: active ? (color || '#8B5CF6') : c.text1, fontSize: φ.sm, fontWeight: active ? 700 : 500 }}>
+                            <span
+                              style={{
+                                color: active ? color || '#8B5CF6' : c.text1,
+                                fontSize: φ.sm,
+                                fontWeight: active ? 700 : 500,
+                              }}
+                            >
                               {opt.label}
                             </span>
-                            {opt.desc && <p style={{ color: c.text3, fontSize: 10, marginTop: 1 }}>{opt.desc}</p>}
+                            {opt.desc && (
+                              <p style={{ color: c.text3, fontSize: 10, marginTop: 1 }}>
+                                {opt.desc}
+                              </p>
+                            )}
                           </div>
                           {active && <Check size={14} color={color || '#8B5CF6'} strokeWidth={3} />}
                         </div>
@@ -459,7 +677,10 @@ function SearchableDropdown({
 
 /* ─── SuggestionChipRow ─── */
 function SuggestionChipRow({
-  suggestions, onSelect, selectedIdx, color,
+  suggestions,
+  onSelect,
+  selectedIdx,
+  color,
 }: {
   suggestions: { text: string; type?: ChallengeType }[];
   onSelect: (text: string, idx: number) => void;
@@ -477,7 +698,10 @@ function SuggestionChipRow({
         return (
           <button
             key={i}
-            onClick={() => { onSelect(s.text, i); hapticSelection(); }}
+            onClick={() => {
+              onSelect(s.text, i);
+              hapticSelection();
+            }}
             className="shrink-0 px-3 py-2 rounded-xl flex items-center gap-1.5 active:opacity-70"
             style={{
               background: active ? hexToRgba(color || '#8B5CF6', 15) : c.chipBg,
@@ -486,7 +710,13 @@ function SuggestionChipRow({
             }}
           >
             {typeInfo && <span style={{ fontSize: 10 }}>{typeInfo.icon}</span>}
-            <span style={{ color: active ? (color || '#8B5CF6') : c.chipText, fontSize: 11, fontWeight: active ? 600 : 500 }}>
+            <span
+              style={{
+                color: active ? color || '#8B5CF6' : c.chipText,
+                fontSize: 11,
+                fontWeight: active ? 600 : 500,
+              }}
+            >
               {s.text}
             </span>
           </button>
@@ -498,7 +728,9 @@ function SuggestionChipRow({
 
 /* ─── SmartAutocompleteList ─── */
 function SmartAutocompleteList({
-  query, domain, onSelect,
+  query,
+  domain,
+  onSelect,
 }: {
   query: string;
   domain: DomainId;
@@ -509,7 +741,7 @@ function SmartAutocompleteList({
 
   const allSuggestions = SUGGESTION_LIBRARY[domain] || [];
   const filtered = query
-    ? allSuggestions.filter(s => s.text.toLowerCase().includes(query.toLowerCase()))
+    ? allSuggestions.filter((s) => s.text.toLowerCase().includes(query.toLowerCase()))
     : allSuggestions.slice(0, 5);
 
   if (filtered.length === 0 && query) {
@@ -527,14 +759,27 @@ function SmartAutocompleteList({
         return (
           <button
             key={i}
-            onClick={() => { onSelect(s.text); hapticSelection(); }}
+            onClick={() => {
+              onSelect(s.text);
+              hapticSelection();
+            }}
             className="w-full flex items-center gap-2.5 px-3.5 py-2.5 active:opacity-70 text-left"
-            style={{ borderBottom: i < filtered.length - 1 ? `1px solid ${c.divider}` : 'none', minHeight: 40 }}
+            style={{
+              borderBottom: i < filtered.length - 1 ? `1px solid ${c.divider}` : 'none',
+              minHeight: 40,
+            }}
           >
             <Sparkles size={11} color={typeInfo.color} />
             <span style={{ color: c.text1, fontSize: 12, fontWeight: 500, flex: 1 }}>{s.text}</span>
-            <span className="px-1.5 py-0.5 rounded-md shrink-0"
-              style={{ background: hexToRgba(typeInfo.color, 12), color: typeInfo.color, fontSize: 8, fontWeight: 600 }}>
+            <span
+              className="px-1.5 py-0.5 rounded-md shrink-0"
+              style={{
+                background: hexToRgba(typeInfo.color, 12),
+                color: typeInfo.color,
+                fontSize: 8,
+                fontWeight: 600,
+              }}
+            >
               {typeInfo.label}
             </span>
           </button>
@@ -546,7 +791,8 @@ function SmartAutocompleteList({
 
 /* ─── AutoTitleSuggestionRow ─── */
 function AutoTitleSuggestionRow({
-  onSelect, selectedTitle,
+  onSelect,
+  selectedTitle,
 }: {
   onSelect: (title: string) => void;
   selectedTitle?: string;
@@ -558,12 +804,15 @@ function AutoTitleSuggestionRow({
     <div className="flex flex-col gap-1.5">
       {TITLE_SUGGESTIONS.map((ts, i) => {
         const active = selectedTitle === ts.text;
-        const domainPack = DOMAIN_PACKS.find(d => d.id === ts.domain);
+        const domainPack = DOMAIN_PACKS.find((d) => d.id === ts.domain);
         const typeInfo = CHALLENGE_TYPE_MAP[ts.type];
         return (
           <button
             key={i}
-            onClick={() => { onSelect(ts.text); hapticSelection(); }}
+            onClick={() => {
+              onSelect(ts.text);
+              hapticSelection();
+            }}
             className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl active:opacity-70 text-left"
             style={{
               background: active ? 'rgba(139,92,246,0.06)' : c.chipBg,
@@ -573,13 +822,22 @@ function AutoTitleSuggestionRow({
           >
             <span style={{ fontSize: 14 }}>{domainPack?.icon}</span>
             <div className="flex-1 min-w-0">
-              <p style={{ color: active ? '#8B5CF6' : c.text1, fontSize: 12, fontWeight: active ? 700 : 500 }} className="truncate">
+              <p
+                style={{
+                  color: active ? '#8B5CF6' : c.text1,
+                  fontSize: 12,
+                  fontWeight: active ? 700 : 500,
+                }}
+                className="truncate"
+              >
                 {ts.text}
               </p>
               <div className="flex items-center gap-1.5 mt-0.5">
                 <span style={{ color: c.text3, fontSize: 9 }}>{domainPack?.title}</span>
                 <span style={{ color: c.text3, fontSize: 9 }}>•</span>
-                <span style={{ color: typeInfo.color, fontSize: 9, fontWeight: 600 }}>{typeInfo.icon} {typeInfo.label}</span>
+                <span style={{ color: typeInfo.color, fontSize: 9, fontWeight: 600 }}>
+                  {typeInfo.icon} {typeInfo.label}
+                </span>
               </div>
             </div>
             {active && <Check size={14} color="#8B5CF6" strokeWidth={3} />}
@@ -641,7 +899,10 @@ export function ArenaUniversalPresetLibraryPage() {
           return (
             <button
               key={i}
-              onClick={() => { setActiveSection(i); hapticSelection(); }}
+              onClick={() => {
+                setActiveSection(i);
+                hapticSelection();
+              }}
               className="shrink-0 flex items-center gap-1.5 px-3.5 rounded-xl"
               style={{
                 background: active ? c.chipActiveBg : c.chipBg,
@@ -659,554 +920,886 @@ export function ArenaUniversalPresetLibraryPage() {
         })}
       </div>
 
-      <PullToRefresh onRefresh={refresh} lastRefreshedLabel={lastRefreshedLabel} refreshCount={refreshCount}>
+      <PullToRefresh
+        onRefresh={refresh}
+        lastRefreshedLabel={lastRefreshedLabel}
+        refreshCount={refreshCount}
+      >
         <PageContent gap="default">
+          {/* ═══ SECTION 1 — Domain Packs ═══ */}
+          {activeSection === 0 && (
+            <div className="flex flex-col">
+              <SectionHeader
+                title="Domain Packs"
+                accent
+                accentColor="#8B5CF6"
+                mb={4}
+                subtitle="10 lĩnh vực bao phủ mọi loại challenge"
+              />
 
-        {/* ═══ SECTION 1 — Domain Packs ═══ */}
-        {activeSection === 0 && (
-          <div className="flex flex-col">
-            <SectionHeader title="Domain Packs" accent accentColor="#8B5CF6" mb={4}
-              subtitle="10 lĩnh vực bao phủ mọi loại challenge" />
-
-            {DOMAIN_PACKS.map(pack => {
-              const expanded = expandedDomain === pack.id;
-              return (
-                <TrCard key={pack.id} className="overflow-hidden">
-                  <button
-                    onClick={() => { setExpandedDomain(expanded ? null : pack.id); hapticSelection(); }}
-                    className="w-full flex items-center gap-3 px-4 py-3.5 text-left active:opacity-70"
-                    style={{ minHeight: 56 }}
-                  >
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ background: c.surface2, fontSize: 20 }}>
-                      {pack.icon}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>{pack.title}</p>
-                      <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.3 }} className="truncate">{pack.description}</p>
-                    </div>
-                    <motion.div animate={{ rotate: expanded ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                      <ChevronDown size={16} color={c.text3} />
-                    </motion.div>
-                  </button>
-
-                  <AnimatePresence>
-                    {expanded && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.25 }}
-                        className="overflow-hidden"
+              {DOMAIN_PACKS.map((pack) => {
+                const expanded = expandedDomain === pack.id;
+                return (
+                  <TrCard key={pack.id} className="overflow-hidden">
+                    <button
+                      onClick={() => {
+                        setExpandedDomain(expanded ? null : pack.id);
+                        hapticSelection();
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-3.5 text-left active:opacity-70"
+                      style={{ minHeight: 56 }}
+                    >
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                        style={{ background: c.surface2, fontSize: 20 }}
                       >
-                        <div className="px-4 pb-4" style={{ borderTop: `1px solid ${c.divider}` }}>
-                          {/* Supported types */}
-                          <p style={{ color: c.text2, fontSize: 10, fontWeight: 600, marginTop: 12, marginBottom: 6, letterSpacing: 0.5 }}>
-                            CHALLENGE TYPES HỖ TRỢ
-                          </p>
-                          <div className="flex flex-wrap gap-1.5 mb-3">
-                            {pack.supportedTypes.map(t => {
-                              const info = CHALLENGE_TYPE_MAP[t];
-                              return (
-                                <span key={t} className="px-2 py-1 rounded-lg flex items-center gap-1"
-                                  style={{ background: hexToRgba(info.color, 10), border: `1px solid ${hexToRgba(info.color, 20)}` }}>
-                                  <span style={{ fontSize: 10 }}>{info.icon}</span>
-                                  <span style={{ color: info.color, fontSize: 9, fontWeight: 600 }}>{info.label}</span>
-                                </span>
-                              );
-                            })}
-                          </div>
+                        {pack.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
+                          {pack.title}
+                        </p>
+                        <p
+                          style={{ color: c.text3, fontSize: 11, lineHeight: 1.3 }}
+                          className="truncate"
+                        >
+                          {pack.description}
+                        </p>
+                      </div>
+                      <motion.div
+                        animate={{ rotate: expanded ? 180 : 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <ChevronDown size={16} color={c.text3} />
+                      </motion.div>
+                    </button>
 
-                          {/* Example suggestions */}
-                          <p style={{ color: c.text2, fontSize: 10, fontWeight: 600, marginBottom: 6, letterSpacing: 0.5 }}>
-                            GỢI Ý MẪU
+                    <AnimatePresence>
+                      {expanded && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          className="overflow-hidden"
+                        >
+                          <div
+                            className="px-4 pb-4"
+                            style={{ borderTop: `1px solid ${c.divider}` }}
+                          >
+                            {/* Supported types */}
+                            <p
+                              style={{
+                                color: c.text2,
+                                fontSize: 10,
+                                fontWeight: 600,
+                                marginTop: 12,
+                                marginBottom: 6,
+                                letterSpacing: 0.5,
+                              }}
+                            >
+                              CHALLENGE TYPES HỖ TRỢ
+                            </p>
+                            <div className="flex flex-wrap gap-1.5 mb-3">
+                              {pack.supportedTypes.map((t) => {
+                                const info = CHALLENGE_TYPE_MAP[t];
+                                return (
+                                  <span
+                                    key={t}
+                                    className="px-2 py-1 rounded-lg flex items-center gap-1"
+                                    style={{
+                                      background: hexToRgba(info.color, 10),
+                                      border: `1px solid ${hexToRgba(info.color, 20)}`,
+                                    }}
+                                  >
+                                    <span style={{ fontSize: 10 }}>{info.icon}</span>
+                                    <span
+                                      style={{ color: info.color, fontSize: 9, fontWeight: 600 }}
+                                    >
+                                      {info.label}
+                                    </span>
+                                  </span>
+                                );
+                              })}
+                            </div>
+
+                            {/* Example suggestions */}
+                            <p
+                              style={{
+                                color: c.text2,
+                                fontSize: 10,
+                                fontWeight: 600,
+                                marginBottom: 6,
+                                letterSpacing: 0.5,
+                              }}
+                            >
+                              GỢI Ý MẪU
+                            </p>
+                            <div className="flex flex-col gap-1">
+                              {pack.examples.map((ex, i) => (
+                                <div
+                                  key={i}
+                                  className="flex items-center gap-2 px-3 py-2 rounded-lg"
+                                  style={{ background: c.surface2 }}
+                                >
+                                  <Sparkles size={10} color={c.text3} />
+                                  <span style={{ color: c.text1, fontSize: 12 }}>"{ex}"</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </TrCard>
+                );
+              })}
+            </div>
+          )}
+
+          {/* ═══ SECTION 2 — Suggestion Library ═══ */}
+          {activeSection === 1 && (
+            <div className="flex flex-col">
+              <SectionHeader
+                title="Suggestion Library"
+                accent
+                accentColor="#F59E0B"
+                mb={4}
+                subtitle="6–8 gợi ý cho mỗi lĩnh vực"
+              />
+
+              {/* Domain filter */}
+              <div className="flex gap-1.5 overflow-x-auto no-scrollbar -mx-5 px-5 pb-1">
+                {DOMAIN_PACKS.map((d) => {
+                  const active = sugDomain === d.id;
+                  return (
+                    <button
+                      key={d.id}
+                      onClick={() => {
+                        setSugDomain(d.id);
+                        setSugSelectedIdx(undefined);
+                        hapticSelection();
+                      }}
+                      className="shrink-0 flex items-center gap-1.5 px-3 rounded-xl"
+                      style={{
+                        background: active ? c.chipActiveBg : c.chipBg,
+                        border: `1.5px solid ${active ? c.chipActiveBorder : c.chipBorder}`,
+                        minHeight: 36,
+                      }}
+                    >
+                      <span style={{ fontSize: 12 }}>{d.icon}</span>
+                      <span
+                        style={{
+                          color: active ? c.chipActiveText : c.chipText,
+                          fontSize: 10,
+                          fontWeight: active ? 700 : 500,
+                        }}
+                      >
+                        {d.title}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Suggestions as chips */}
+              <TrCard className="p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Sparkles size={14} color="#F59E0B" />
+                  <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
+                    Gợi ý — {DOMAIN_PACKS.find((d) => d.id === sugDomain)?.title}
+                  </span>
+                  <span
+                    className="px-1.5 py-0.5 rounded-md"
+                    style={{
+                      background: 'rgba(245,158,11,0.1)',
+                      color: '#F59E0B',
+                      fontSize: 9,
+                      fontWeight: 700,
+                    }}
+                  >
+                    {SUGGESTION_LIBRARY[sugDomain].length}
+                  </span>
+                </div>
+                <SuggestionChipRow
+                  suggestions={SUGGESTION_LIBRARY[sugDomain]}
+                  onSelect={(text, idx) => {
+                    setSugSelectedIdx(idx);
+                    actionToast.success(`Đã chọn gợi ý — ${text}`);
+                  }}
+                  selectedIdx={sugSelectedIdx}
+                  color="#F59E0B"
+                />
+              </TrCard>
+
+              {/* Autocomplete demo */}
+              <TrCard className="p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Search size={14} color="#3B82F6" />
+                  <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
+                    SmartAutocompleteList
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  value={autoQuery}
+                  onChange={(e) => setAutoQuery(e.target.value)}
+                  placeholder="Gõ để tìm gợi ý..."
+                  className="w-full px-4 py-3 rounded-xl mb-2"
+                  style={{
+                    background: c.searchBg,
+                    border: `1.5px solid ${c.searchBorder}`,
+                    color: c.text1,
+                    fontSize: φ.sm,
+                    outline: 'none',
+                  }}
+                />
+                <SmartAutocompleteList
+                  query={autoQuery}
+                  domain={sugDomain}
+                  onSelect={(text) => {
+                    setAutoQuery(text);
+                    actionToast.success(`Đã chọn — ${text}`);
+                  }}
+                />
+              </TrCard>
+            </div>
+          )}
+
+          {/* ═══ SECTION 3 — Dropdown Components ═══ */}
+          {activeSection === 2 && (
+            <div className="flex flex-col">
+              <SectionHeader
+                title="Dropdown / Autocomplete"
+                accent
+                accentColor="#3B82F6"
+                mb={4}
+                subtitle="Component set có đầy đủ states"
+              />
+
+              {/* Domain dropdown */}
+              <TrCard className="p-4">
+                <p
+                  style={{
+                    color: c.text2,
+                    fontSize: 10,
+                    fontWeight: 600,
+                    marginBottom: 8,
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  SEARCHABLE DROPDOWN — DOMAIN
+                </p>
+                <SearchableDropdown
+                  label="Lĩnh vực"
+                  options={DOMAIN_PACKS.map((d) => ({
+                    id: d.id,
+                    label: d.title,
+                    icon: d.icon,
+                    desc: d.description.slice(0, 50),
+                  }))}
+                  value={ddDomain}
+                  onChange={setDdDomain}
+                  icon={Layers}
+                  color="#8B5CF6"
+                />
+              </TrCard>
+
+              {/* Challenge type dropdown */}
+              <TrCard className="p-4">
+                <p
+                  style={{
+                    color: c.text2,
+                    fontSize: 10,
+                    fontWeight: 600,
+                    marginBottom: 8,
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  SEARCHABLE DROPDOWN — CHALLENGE TYPE
+                </p>
+                <SearchableDropdown
+                  label="Loại challenge"
+                  options={Object.entries(CHALLENGE_TYPE_MAP).map(([id, info]) => ({
+                    id,
+                    label: info.label,
+                    icon: info.icon,
+                  }))}
+                  value={ddType}
+                  onChange={setDdType}
+                  icon={Target}
+                  color="#F59E0B"
+                />
+              </TrCard>
+
+              {/* Win condition */}
+              <TrCard className="p-4">
+                <p
+                  style={{
+                    color: c.text2,
+                    fontSize: 10,
+                    fontWeight: 600,
+                    marginBottom: 8,
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  SEARCHABLE DROPDOWN — WIN CONDITION
+                </p>
+                <SearchableDropdown
+                  label="Điều kiện thắng"
+                  options={[
+                    { id: 'closest', label: 'Người đoán gần đúng nhất', icon: '🎯' },
+                    { id: 'highest', label: 'Điểm/giá trị cao nhất', icon: '📊' },
+                    { id: 'lowest', label: 'Điểm/giá trị thấp nhất', icon: '📉' },
+                    { id: 'first', label: 'Hoàn thành trước', icon: '🏁' },
+                    { id: 'correct', label: 'Trả lời đúng', icon: '✅' },
+                    { id: 'voted', label: 'Được vote nhiều nhất', icon: '🗳️' },
+                    { id: 'proof', label: 'Bằng chứng hợp lệ', icon: '📸' },
+                  ]}
+                  value={ddWin}
+                  onChange={setDdWin}
+                  icon={Target}
+                  color="#10B981"
+                />
+              </TrCard>
+
+              {/* Resolution source */}
+              <TrCard className="p-4">
+                <p
+                  style={{
+                    color: c.text2,
+                    fontSize: 10,
+                    fontWeight: 600,
+                    marginBottom: 8,
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  SEARCHABLE DROPDOWN — RESOLUTION SOURCE
+                </p>
+                <SearchableDropdown
+                  label="Nguồn kết quả"
+                  options={[
+                    {
+                      id: 'coingecko',
+                      label: 'CoinGecko API',
+                      icon: '📈',
+                      desc: 'Giá crypto real-time',
+                    },
+                    {
+                      id: 'espn',
+                      label: 'ESPN / Live Score',
+                      icon: '⚽',
+                      desc: 'Kết quả thể thao',
+                    },
+                    {
+                      id: 'manual',
+                      label: 'Nhập thủ công',
+                      icon: '✍️',
+                      desc: 'Creator tự nhập kết quả',
+                    },
+                    {
+                      id: 'community',
+                      label: 'Community Vote',
+                      icon: '🗳️',
+                      desc: 'Cộng đồng bình chọn',
+                    },
+                    { id: 'referee', label: 'Referee', icon: '🧑‍⚖️', desc: 'Trọng tài xác nhận' },
+                    {
+                      id: 'oracle',
+                      label: 'Oracle / Smart Contract',
+                      icon: '🔗',
+                      desc: 'Nguồn on-chain',
+                    },
+                  ]}
+                  value={ddSource}
+                  onChange={setDdSource}
+                  icon={Eye}
+                  color="#06B6D4"
+                />
+              </TrCard>
+
+              {/* Tie rule */}
+              <TrCard className="p-4">
+                <p
+                  style={{
+                    color: c.text2,
+                    fontSize: 10,
+                    fontWeight: 600,
+                    marginBottom: 8,
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  SEARCHABLE DROPDOWN — TIE RULE
+                </p>
+                <SearchableDropdown
+                  label="Luật hòa"
+                  options={[
+                    { id: 'split', label: 'Chia đều pool', icon: '⚖️' },
+                    { id: 'refund', label: 'Hoàn trả entry points', icon: '↩️' },
+                    { id: 'rematch', label: 'Chơi lại (rematch)', icon: '🔄' },
+                    { id: 'referee', label: 'Trọng tài quyết định', icon: '🧑‍⚖️' },
+                    { id: 'random', label: 'Bốc thăm ngẫu nhiên', icon: '🎲' },
+                  ]}
+                  value={ddTie}
+                  onChange={setDdTie}
+                  icon={Shield}
+                  color="#F97316"
+                />
+              </TrCard>
+
+              {/* Void rule */}
+              <TrCard className="p-4">
+                <p
+                  style={{
+                    color: c.text2,
+                    fontSize: 10,
+                    fontWeight: 600,
+                    marginBottom: 8,
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  SEARCHABLE DROPDOWN — VOID RULE
+                </p>
+                <SearchableDropdown
+                  label="Luật hủy bỏ"
+                  options={[
+                    { id: 'no_evidence', label: 'Không đủ bằng chứng → hủy', icon: '🚫' },
+                    { id: 'external', label: 'Sự kiện gốc bị hủy → hủy', icon: '❌' },
+                    { id: 'min_part', label: 'Không đủ người tham gia → hủy', icon: '👤' },
+                    { id: 'timeout', label: 'Quá hạn chốt kết quả → hủy', icon: '⏰' },
+                  ]}
+                  value={ddVoid}
+                  onChange={setDdVoid}
+                  icon={Shield}
+                  color="#EF4444"
+                />
+              </TrCard>
+
+              {/* Result deadline */}
+              <TrCard className="p-4">
+                <p
+                  style={{
+                    color: c.text2,
+                    fontSize: 10,
+                    fontWeight: 600,
+                    marginBottom: 8,
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  SEARCHABLE DROPDOWN — RESULT DEADLINE
+                </p>
+                <SearchableDropdown
+                  label="Hạn chốt kết quả"
+                  options={[
+                    { id: '1h', label: '1 giờ sau kết thúc', icon: '⏱️' },
+                    { id: '6h', label: '6 giờ sau kết thúc', icon: '⏱️' },
+                    { id: '12h', label: '12 giờ sau kết thúc', icon: '⏱️' },
+                    { id: '24h', label: '24 giờ sau kết thúc', icon: '⏱️' },
+                    { id: '48h', label: '48 giờ sau kết thúc', icon: '⏱️' },
+                    { id: '7d', label: '7 ngày sau kết thúc', icon: '📅' },
+                  ]}
+                  value={ddDeadline}
+                  onChange={setDdDeadline}
+                  icon={Filter}
+                  color="#94A3B8"
+                />
+              </TrCard>
+
+              {/* Disabled state demo */}
+              <TrCard className="p-4">
+                <p
+                  style={{
+                    color: c.text2,
+                    fontSize: 10,
+                    fontWeight: 600,
+                    marginBottom: 8,
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  STATE — DISABLED
+                </p>
+                <SearchableDropdown
+                  label="Demo"
+                  options={[]}
+                  value=""
+                  onChange={() => {}}
+                  demoState="disabled"
+                  placeholder="Dropdown bị vô hiệu hóa"
+                />
+              </TrCard>
+            </div>
+          )}
+
+          {/* ═══ SECTION 4 — Demo Mini-Flows ═══ */}
+          {activeSection === 3 && (
+            <div className="flex flex-col">
+              <SectionHeader
+                title="Example Mappings"
+                accent
+                accentColor="#10B981"
+                mb={4}
+                subtitle="6 demo mini-flow minh họa end-to-end"
+              />
+
+              {/* Demo selector */}
+              <div className="flex gap-1.5 overflow-x-auto no-scrollbar -mx-5 px-5 pb-1">
+                {DEMO_FLOWS.map((df, i) => {
+                  const active = activeDemoIdx === i;
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => {
+                        setActiveDemoIdx(i);
+                        hapticSelection();
+                      }}
+                      className="shrink-0 flex items-center gap-1.5 px-3 rounded-xl"
+                      style={{
+                        background: active ? hexToRgba(df.color, 15) : c.chipBg,
+                        border: `1.5px solid ${active ? hexToRgba(df.color, 40) : c.chipBorder}`,
+                        minHeight: 36,
+                      }}
+                    >
+                      <span style={{ fontSize: 12 }}>{df.domainIcon}</span>
+                      <span
+                        style={{
+                          color: active ? df.color : c.chipText,
+                          fontSize: 10,
+                          fontWeight: active ? 700 : 500,
+                        }}
+                      >
+                        {df.domainLabel}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Active Demo Card */}
+              {(() => {
+                const demo = DEMO_FLOWS[activeDemoIdx];
+                return (
+                  <motion.div
+                    key={activeDemoIdx}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <TrCard className="p-4" accentBorder={hexToRgba(demo.color, 30)}>
+                      {/* Header */}
+                      <div className="flex items-center gap-2.5 mb-4">
+                        <div
+                          className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                          style={{ background: hexToRgba(demo.color, 15), fontSize: 20 }}
+                        >
+                          {demo.domainIcon}
+                        </div>
+                        <div className="flex-1">
+                          <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
+                            {demo.domainLabel} + {demo.typeLabel}
                           </p>
-                          <div className="flex flex-col gap-1">
-                            {pack.examples.map((ex, i) => (
-                              <div key={i} className="flex items-center gap-2 px-3 py-2 rounded-lg"
-                                style={{ background: c.surface2 }}>
-                                <Sparkles size={10} color={c.text3} />
-                                <span style={{ color: c.text1, fontSize: 12 }}>"{ex}"</span>
-                              </div>
+                          <p style={{ color: c.text3, fontSize: 10 }}>Demo mapping flow</p>
+                        </div>
+                        <span
+                          className="px-2 py-0.5 rounded-lg"
+                          style={{
+                            background: hexToRgba(demo.color, 12),
+                            color: demo.color,
+                            fontSize: 9,
+                            fontWeight: 700,
+                          }}
+                        >
+                          {demo.typeIcon} {demo.typeLabel}
+                        </span>
+                      </div>
+
+                      {/* Steps */}
+                      <div className="flex flex-col gap-3">
+                        {/* Step 1: Domain */}
+                        <div
+                          className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl"
+                          style={{ background: c.surface2 }}
+                        >
+                          <div
+                            className="w-6 h-6 rounded-full flex items-center justify-center"
+                            style={{ background: demo.color, fontSize: 10 }}
+                          >
+                            <span style={{ color: '#fff', fontSize: 10, fontWeight: 700 }}>1</span>
+                          </div>
+                          <span
+                            style={{ color: c.text3, fontSize: 10, fontWeight: 600, width: 60 }}
+                          >
+                            Domain
+                          </span>
+                          <div className="flex items-center gap-1.5 flex-1">
+                            <span style={{ fontSize: 12 }}>{demo.domainIcon}</span>
+                            <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
+                              {demo.domainLabel}
+                            </span>
+                          </div>
+                          <Check size={12} color="#10B981" />
+                        </div>
+
+                        {/* Step 2: Type */}
+                        <div
+                          className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl"
+                          style={{ background: c.surface2 }}
+                        >
+                          <div
+                            className="w-6 h-6 rounded-full flex items-center justify-center"
+                            style={{ background: demo.color, fontSize: 10 }}
+                          >
+                            <span style={{ color: '#fff', fontSize: 10, fontWeight: 700 }}>2</span>
+                          </div>
+                          <span
+                            style={{ color: c.text3, fontSize: 10, fontWeight: 600, width: 60 }}
+                          >
+                            Type
+                          </span>
+                          <div className="flex items-center gap-1.5 flex-1">
+                            <span style={{ fontSize: 12 }}>{demo.typeIcon}</span>
+                            <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
+                              {demo.typeLabel}
+                            </span>
+                          </div>
+                          <Check size={12} color="#10B981" />
+                        </div>
+
+                        {/* Step 3: Suggestions */}
+                        <div className="px-3 py-2.5 rounded-xl" style={{ background: c.surface2 }}>
+                          <div className="flex items-center gap-2.5 mb-2">
+                            <div
+                              className="w-6 h-6 rounded-full flex items-center justify-center"
+                              style={{ background: demo.color }}
+                            >
+                              <span style={{ color: '#fff', fontSize: 10, fontWeight: 700 }}>
+                                3
+                              </span>
+                            </div>
+                            <span style={{ color: c.text3, fontSize: 10, fontWeight: 600 }}>
+                              Suggestion chips
+                            </span>
+                          </div>
+                          <div className="flex flex-wrap gap-1.5 ml-8">
+                            {demo.suggestions.map((s, i) => (
+                              <span
+                                key={i}
+                                className="px-2.5 py-1.5 rounded-lg"
+                                style={{
+                                  background: hexToRgba(demo.color, 10),
+                                  border: `1px solid ${hexToRgba(demo.color, 25)}`,
+                                  fontSize: 10,
+                                  color: demo.color,
+                                  fontWeight: 600,
+                                }}
+                              >
+                                {s}
+                              </span>
                             ))}
                           </div>
                         </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </TrCard>
-              );
-            })}
-          </div>
-        )}
 
-        {/* ═══ SECTION 2 — Suggestion Library ═══ */}
-        {activeSection === 1 && (
-          <div className="flex flex-col">
-            <SectionHeader title="Suggestion Library" accent accentColor="#F59E0B" mb={4}
-              subtitle="6–8 gợi ý cho mỗi lĩnh vực" />
+                        {/* Step 4: Generated rule */}
+                        <div
+                          className="px-3 py-2.5 rounded-xl"
+                          style={{
+                            background: hexToRgba(demo.color, 8),
+                            border: `1px solid ${hexToRgba(demo.color, 15)}`,
+                          }}
+                        >
+                          <div className="flex items-center gap-2.5 mb-2">
+                            <div
+                              className="w-6 h-6 rounded-full flex items-center justify-center"
+                              style={{ background: demo.color }}
+                            >
+                              <span style={{ color: '#fff', fontSize: 10, fontWeight: 700 }}>
+                                4
+                              </span>
+                            </div>
+                            <span style={{ color: demo.color, fontSize: 10, fontWeight: 600 }}>
+                              Generated Rule Preview
+                            </span>
+                          </div>
+                          <div className="ml-8 flex items-start gap-2">
+                            <Eye size={12} color={demo.color} className="shrink-0 mt-0.5" />
+                            <p
+                              style={{
+                                color: c.text1,
+                                fontSize: 12,
+                                fontWeight: 600,
+                                lineHeight: 1.5,
+                              }}
+                            >
+                              "{demo.generatedRule}"
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </TrCard>
+                  </motion.div>
+                );
+              })()}
 
-            {/* Domain filter */}
-            <div className="flex gap-1.5 overflow-x-auto no-scrollbar -mx-5 px-5 pb-1">
-              {DOMAIN_PACKS.map(d => {
-                const active = sugDomain === d.id;
-                return (
-                  <button
-                    key={d.id}
-                    onClick={() => { setSugDomain(d.id); setSugSelectedIdx(undefined); hapticSelection(); }}
-                    className="shrink-0 flex items-center gap-1.5 px-3 rounded-xl"
+              {/* All 6 demos summary */}
+              <TrCard className="p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <BookOpen size={14} color="#10B981" />
+                  <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
+                    Tổng quan 6 demo flows
+                  </span>
+                </div>
+                <div className="flex flex-col gap-2">
+                  {DEMO_FLOWS.map((df, i) => (
+                    <button
+                      key={i}
+                      onClick={() => {
+                        setActiveDemoIdx(i);
+                        hapticSelection();
+                      }}
+                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl active:opacity-70 text-left"
+                      style={{
+                        background: activeDemoIdx === i ? hexToRgba(df.color, 8) : c.surface2,
+                        border: `1px solid ${activeDemoIdx === i ? hexToRgba(df.color, 25) : 'transparent'}`,
+                        minHeight: 44,
+                      }}
+                    >
+                      <span style={{ fontSize: 14 }}>{df.domainIcon}</span>
+                      <span style={{ color: c.text1, fontSize: 12, fontWeight: 600, flex: 1 }}>
+                        {df.domainLabel} + {df.typeLabel}
+                      </span>
+                      <span style={{ fontSize: 10 }}>{df.typeIcon}</span>
+                      <ChevronRight size={12} color={c.text3} />
+                    </button>
+                  ))}
+                </div>
+              </TrCard>
+            </div>
+          )}
+
+          {/* ═══ SECTION 5 — Auto Title Suggestions ═══ */}
+          {activeSection === 4 && (
+            <div className="flex flex-col">
+              <SectionHeader
+                title="Auto Title Suggestions"
+                accent
+                accentColor="#EC4899"
+                mb={4}
+                subtitle="Gợi ý title thông minh theo domain + type"
+              />
+
+              <TrCard className="p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Zap size={14} color="#EC4899" />
+                  <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
+                    AutoTitleSuggestionRow
+                  </span>
+                  <span
+                    className="px-1.5 py-0.5 rounded-md"
                     style={{
-                      background: active ? c.chipActiveBg : c.chipBg,
-                      border: `1.5px solid ${active ? c.chipActiveBorder : c.chipBorder}`,
-                      minHeight: 36,
+                      background: 'rgba(236,72,153,0.1)',
+                      color: '#EC4899',
+                      fontSize: 8,
+                      fontWeight: 700,
                     }}
                   >
-                    <span style={{ fontSize: 12 }}>{d.icon}</span>
-                    <span style={{ color: active ? c.chipActiveText : c.chipText, fontSize: 10, fontWeight: active ? 700 : 500 }}>
-                      {d.title}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+                    {TITLE_SUGGESTIONS.length} titles
+                  </span>
+                </div>
+                <AutoTitleSuggestionRow
+                  onSelect={(title) => {
+                    setSelectedTitle(title);
+                    actionToast.success(`Đã chọn title — ${title}`);
+                  }}
+                  selectedTitle={selectedTitle}
+                />
+              </TrCard>
 
-            {/* Suggestions as chips */}
-            <TrCard className="p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <Sparkles size={14} color="#F59E0B" />
-                <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
-                  Gợi ý — {DOMAIN_PACKS.find(d => d.id === sugDomain)?.title}
-                </span>
-                <span className="px-1.5 py-0.5 rounded-md" style={{ background: 'rgba(245,158,11,0.1)', color: '#F59E0B', fontSize: 9, fontWeight: 700 }}>
-                  {SUGGESTION_LIBRARY[sugDomain].length}
-                </span>
-              </div>
-              <SuggestionChipRow
-                suggestions={SUGGESTION_LIBRARY[sugDomain]}
-                onSelect={(text, idx) => {
-                  setSugSelectedIdx(idx);
-                  actionToast.success({ title: 'Đã chọn gợi ý', description: text });
-                }}
-                selectedIdx={sugSelectedIdx}
-                color="#F59E0B"
-              />
-            </TrCard>
-
-            {/* Autocomplete demo */}
-            <TrCard className="p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <Search size={14} color="#3B82F6" />
-                <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>SmartAutocompleteList</span>
-              </div>
-              <input
-                type="text"
-                value={autoQuery}
-                onChange={e => setAutoQuery(e.target.value)}
-                placeholder="Gõ để tìm gợi ý..."
-                className="w-full px-4 py-3 rounded-xl mb-2"
-                style={{
-                  background: c.searchBg,
-                  border: `1.5px solid ${c.searchBorder}`,
-                  color: c.text1,
-                  fontSize: φ.sm,
-                  outline: 'none',
-                }}
-              />
-              <SmartAutocompleteList
-                query={autoQuery}
-                domain={sugDomain}
-                onSelect={(text) => {
-                  setAutoQuery(text);
-                  actionToast.success({ title: 'Đã chọn', description: text });
-                }}
-              />
-            </TrCard>
-          </div>
-        )}
-
-        {/* ═══ SECTION 3 — Dropdown Components ═══ */}
-        {activeSection === 2 && (
-          <div className="flex flex-col">
-            <SectionHeader title="Dropdown / Autocomplete" accent accentColor="#3B82F6" mb={4}
-              subtitle="Component set có đầy đủ states" />
-
-            {/* Domain dropdown */}
-            <TrCard className="p-4">
-              <p style={{ color: c.text2, fontSize: 10, fontWeight: 600, marginBottom: 8, letterSpacing: 0.5 }}>SEARCHABLE DROPDOWN — DOMAIN</p>
-              <SearchableDropdown
-                label="Lĩnh vực"
-                options={DOMAIN_PACKS.map(d => ({ id: d.id, label: d.title, icon: d.icon, desc: d.description.slice(0, 50) }))}
-                value={ddDomain}
-                onChange={setDdDomain}
-                icon={Layers}
-                color="#8B5CF6"
-              />
-            </TrCard>
-
-            {/* Challenge type dropdown */}
-            <TrCard className="p-4">
-              <p style={{ color: c.text2, fontSize: 10, fontWeight: 600, marginBottom: 8, letterSpacing: 0.5 }}>SEARCHABLE DROPDOWN — CHALLENGE TYPE</p>
-              <SearchableDropdown
-                label="Loại challenge"
-                options={Object.entries(CHALLENGE_TYPE_MAP).map(([id, info]) => ({
-                  id, label: info.label, icon: info.icon,
-                }))}
-                value={ddType}
-                onChange={setDdType}
-                icon={Target}
-                color="#F59E0B"
-              />
-            </TrCard>
-
-            {/* Win condition */}
-            <TrCard className="p-4">
-              <p style={{ color: c.text2, fontSize: 10, fontWeight: 600, marginBottom: 8, letterSpacing: 0.5 }}>SEARCHABLE DROPDOWN — WIN CONDITION</p>
-              <SearchableDropdown
-                label="Điều kiện thắng"
-                options={[
-                  { id: 'closest', label: 'Người đoán gần đúng nhất', icon: '🎯' },
-                  { id: 'highest', label: 'Điểm/giá trị cao nhất', icon: '📊' },
-                  { id: 'lowest', label: 'Điểm/giá trị thấp nhất', icon: '📉' },
-                  { id: 'first', label: 'Hoàn thành trước', icon: '🏁' },
-                  { id: 'correct', label: 'Trả lời đúng', icon: '✅' },
-                  { id: 'voted', label: 'Được vote nhiều nhất', icon: '🗳️' },
-                  { id: 'proof', label: 'Bằng chứng hợp lệ', icon: '📸' },
-                ]}
-                value={ddWin}
-                onChange={setDdWin}
-                icon={Target}
-                color="#10B981"
-              />
-            </TrCard>
-
-            {/* Resolution source */}
-            <TrCard className="p-4">
-              <p style={{ color: c.text2, fontSize: 10, fontWeight: 600, marginBottom: 8, letterSpacing: 0.5 }}>SEARCHABLE DROPDOWN — RESOLUTION SOURCE</p>
-              <SearchableDropdown
-                label="Nguồn kết quả"
-                options={[
-                  { id: 'coingecko', label: 'CoinGecko API', icon: '📈', desc: 'Giá crypto real-time' },
-                  { id: 'espn', label: 'ESPN / Live Score', icon: '⚽', desc: 'Kết quả thể thao' },
-                  { id: 'manual', label: 'Nhập thủ công', icon: '✍️', desc: 'Creator tự nhập kết quả' },
-                  { id: 'community', label: 'Community Vote', icon: '🗳️', desc: 'Cộng đồng bình chọn' },
-                  { id: 'referee', label: 'Referee', icon: '🧑‍⚖️', desc: 'Trọng tài xác nhận' },
-                  { id: 'oracle', label: 'Oracle / Smart Contract', icon: '🔗', desc: 'Nguồn on-chain' },
-                ]}
-                value={ddSource}
-                onChange={setDdSource}
-                icon={Eye}
-                color="#06B6D4"
-              />
-            </TrCard>
-
-            {/* Tie rule */}
-            <TrCard className="p-4">
-              <p style={{ color: c.text2, fontSize: 10, fontWeight: 600, marginBottom: 8, letterSpacing: 0.5 }}>SEARCHABLE DROPDOWN — TIE RULE</p>
-              <SearchableDropdown
-                label="Luật hòa"
-                options={[
-                  { id: 'split', label: 'Chia đều pool', icon: '⚖️' },
-                  { id: 'refund', label: 'Hoàn trả entry points', icon: '↩️' },
-                  { id: 'rematch', label: 'Chơi lại (rematch)', icon: '🔄' },
-                  { id: 'referee', label: 'Trọng tài quyết định', icon: '🧑‍⚖️' },
-                  { id: 'random', label: 'Bốc thăm ngẫu nhiên', icon: '🎲' },
-                ]}
-                value={ddTie}
-                onChange={setDdTie}
-                icon={Shield}
-                color="#F97316"
-              />
-            </TrCard>
-
-            {/* Void rule */}
-            <TrCard className="p-4">
-              <p style={{ color: c.text2, fontSize: 10, fontWeight: 600, marginBottom: 8, letterSpacing: 0.5 }}>SEARCHABLE DROPDOWN — VOID RULE</p>
-              <SearchableDropdown
-                label="Luật hủy bỏ"
-                options={[
-                  { id: 'no_evidence', label: 'Không đủ bằng chứng → hủy', icon: '🚫' },
-                  { id: 'external', label: 'Sự kiện gốc bị hủy → hủy', icon: '❌' },
-                  { id: 'min_part', label: 'Không đủ người tham gia → hủy', icon: '👤' },
-                  { id: 'timeout', label: 'Quá hạn chốt kết quả → hủy', icon: '⏰' },
-                ]}
-                value={ddVoid}
-                onChange={setDdVoid}
-                icon={Shield}
-                color="#EF4444"
-              />
-            </TrCard>
-
-            {/* Result deadline */}
-            <TrCard className="p-4">
-              <p style={{ color: c.text2, fontSize: 10, fontWeight: 600, marginBottom: 8, letterSpacing: 0.5 }}>SEARCHABLE DROPDOWN — RESULT DEADLINE</p>
-              <SearchableDropdown
-                label="Hạn chốt kết quả"
-                options={[
-                  { id: '1h', label: '1 giờ sau kết thúc', icon: '⏱️' },
-                  { id: '6h', label: '6 giờ sau kết thúc', icon: '⏱️' },
-                  { id: '12h', label: '12 giờ sau kết thúc', icon: '⏱️' },
-                  { id: '24h', label: '24 giờ sau kết thúc', icon: '⏱️' },
-                  { id: '48h', label: '48 giờ sau kết thúc', icon: '⏱️' },
-                  { id: '7d', label: '7 ngày sau kết thúc', icon: '📅' },
-                ]}
-                value={ddDeadline}
-                onChange={setDdDeadline}
-                icon={Filter}
-                color="#94A3B8"
-              />
-            </TrCard>
-
-            {/* Disabled state demo */}
-            <TrCard className="p-4">
-              <p style={{ color: c.text2, fontSize: 10, fontWeight: 600, marginBottom: 8, letterSpacing: 0.5 }}>STATE — DISABLED</p>
-              <SearchableDropdown
-                label="Demo"
-                options={[]}
-                value=""
-                onChange={() => {}}
-                demoState="disabled"
-                placeholder="Dropdown bị vô hiệu hóa"
-              />
-            </TrCard>
-          </div>
-        )}
-
-        {/* ═══ SECTION 4 — Demo Mini-Flows ═══ */}
-        {activeSection === 3 && (
-          <div className="flex flex-col">
-            <SectionHeader title="Example Mappings" accent accentColor="#10B981" mb={4}
-              subtitle="6 demo mini-flow minh họa end-to-end" />
-
-            {/* Demo selector */}
-            <div className="flex gap-1.5 overflow-x-auto no-scrollbar -mx-5 px-5 pb-1">
-              {DEMO_FLOWS.map((df, i) => {
-                const active = activeDemoIdx === i;
-                return (
-                  <button
-                    key={i}
-                    onClick={() => { setActiveDemoIdx(i); hapticSelection(); }}
-                    className="shrink-0 flex items-center gap-1.5 px-3 rounded-xl"
-                    style={{
-                      background: active ? hexToRgba(df.color, 15) : c.chipBg,
-                      border: `1.5px solid ${active ? hexToRgba(df.color, 40) : c.chipBorder}`,
-                      minHeight: 36,
-                    }}
-                  >
-                    <span style={{ fontSize: 12 }}>{df.domainIcon}</span>
-                    <span style={{ color: active ? df.color : c.chipText, fontSize: 10, fontWeight: active ? 700 : 500 }}>
-                      {df.domainLabel}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Active Demo Card */}
-            {(() => {
-              const demo = DEMO_FLOWS[activeDemoIdx];
-              return (
-                <motion.div
-                  key={activeDemoIdx}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <TrCard className="p-4" accentBorder={hexToRgba(demo.color, 30)}>
-                    {/* Header */}
-                    <div className="flex items-center gap-2.5 mb-4">
-                      <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                        style={{ background: hexToRgba(demo.color, 15), fontSize: 20 }}>
-                        {demo.domainIcon}
-                      </div>
-                      <div className="flex-1">
-                        <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
-                          {demo.domainLabel} + {demo.typeLabel}
-                        </p>
-                        <p style={{ color: c.text3, fontSize: 10 }}>Demo mapping flow</p>
-                      </div>
-                      <span className="px-2 py-0.5 rounded-lg"
-                        style={{ background: hexToRgba(demo.color, 12), color: demo.color, fontSize: 9, fontWeight: 700 }}>
-                        {demo.typeIcon} {demo.typeLabel}
+              {/* Selected title preview */}
+              {selectedTitle && (
+                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+                  <TrCard className="p-4" accentBorder="rgba(236,72,153,0.2)">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Eye size={13} color="#EC4899" />
+                      <span style={{ color: c.text1, fontSize: φ.xs, fontWeight: 600 }}>
+                        Title đã chọn
                       </span>
                     </div>
-
-                    {/* Steps */}
-                    <div className="flex flex-col gap-3">
-                      {/* Step 1: Domain */}
-                      <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl" style={{ background: c.surface2 }}>
-                        <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: demo.color, fontSize: 10 }}>
-                          <span style={{ color: '#fff', fontSize: 10, fontWeight: 700 }}>1</span>
-                        </div>
-                        <span style={{ color: c.text3, fontSize: 10, fontWeight: 600, width: 60 }}>Domain</span>
-                        <div className="flex items-center gap-1.5 flex-1">
-                          <span style={{ fontSize: 12 }}>{demo.domainIcon}</span>
-                          <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>{demo.domainLabel}</span>
-                        </div>
-                        <Check size={12} color="#10B981" />
-                      </div>
-
-                      {/* Step 2: Type */}
-                      <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl" style={{ background: c.surface2 }}>
-                        <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: demo.color, fontSize: 10 }}>
-                          <span style={{ color: '#fff', fontSize: 10, fontWeight: 700 }}>2</span>
-                        </div>
-                        <span style={{ color: c.text3, fontSize: 10, fontWeight: 600, width: 60 }}>Type</span>
-                        <div className="flex items-center gap-1.5 flex-1">
-                          <span style={{ fontSize: 12 }}>{demo.typeIcon}</span>
-                          <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>{demo.typeLabel}</span>
-                        </div>
-                        <Check size={12} color="#10B981" />
-                      </div>
-
-                      {/* Step 3: Suggestions */}
-                      <div className="px-3 py-2.5 rounded-xl" style={{ background: c.surface2 }}>
-                        <div className="flex items-center gap-2.5 mb-2">
-                          <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: demo.color }}>
-                            <span style={{ color: '#fff', fontSize: 10, fontWeight: 700 }}>3</span>
-                          </div>
-                          <span style={{ color: c.text3, fontSize: 10, fontWeight: 600 }}>Suggestion chips</span>
-                        </div>
-                        <div className="flex flex-wrap gap-1.5 ml-8">
-                          {demo.suggestions.map((s, i) => (
-                            <span key={i} className="px-2.5 py-1.5 rounded-lg"
-                              style={{ background: hexToRgba(demo.color, 10), border: `1px solid ${hexToRgba(demo.color, 25)}`, fontSize: 10, color: demo.color, fontWeight: 600 }}>
-                              {s}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Step 4: Generated rule */}
-                      <div className="px-3 py-2.5 rounded-xl" style={{ background: hexToRgba(demo.color, 8), border: `1px solid ${hexToRgba(demo.color, 15)}` }}>
-                        <div className="flex items-center gap-2.5 mb-2">
-                          <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: demo.color }}>
-                            <span style={{ color: '#fff', fontSize: 10, fontWeight: 700 }}>4</span>
-                          </div>
-                          <span style={{ color: demo.color, fontSize: 10, fontWeight: 600 }}>Generated Rule Preview</span>
-                        </div>
-                        <div className="ml-8 flex items-start gap-2">
-                          <Eye size={12} color={demo.color} className="shrink-0 mt-0.5" />
-                          <p style={{ color: c.text1, fontSize: 12, fontWeight: 600, lineHeight: 1.5 }}>
-                            "{demo.generatedRule}"
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+                    <p
+                      style={{
+                        color: '#EC4899',
+                        fontSize: φ.body,
+                        fontWeight: 700,
+                        lineHeight: 1.4,
+                      }}
+                    >
+                      "{selectedTitle}"
+                    </p>
+                    <p style={{ color: c.text3, fontSize: 10, marginTop: 4 }}>
+                      Có thể chỉnh sửa sau khi chọn
+                    </p>
                   </TrCard>
                 </motion.div>
-              );
-            })()}
+              )}
 
-            {/* All 6 demos summary */}
-            <TrCard className="p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <BookOpen size={14} color="#10B981" />
-                <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Tổng quan 6 demo flows</span>
-              </div>
-              <div className="flex flex-col gap-2">
-                {DEMO_FLOWS.map((df, i) => (
-                  <button
-                    key={i}
-                    onClick={() => { setActiveDemoIdx(i); hapticSelection(); }}
-                    className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl active:opacity-70 text-left"
-                    style={{
-                      background: activeDemoIdx === i ? hexToRgba(df.color, 8) : c.surface2,
-                      border: `1px solid ${activeDemoIdx === i ? hexToRgba(df.color, 25) : 'transparent'}`,
-                      minHeight: 44,
-                    }}
-                  >
-                    <span style={{ fontSize: 14 }}>{df.domainIcon}</span>
-                    <span style={{ color: c.text1, fontSize: 12, fontWeight: 600, flex: 1 }}>
-                      {df.domainLabel} + {df.typeLabel}
-                    </span>
-                    <span style={{ fontSize: 10 }}>{df.typeIcon}</span>
-                    <ChevronRight size={12} color={c.text3} />
-                  </button>
-                ))}
-              </div>
-            </TrCard>
-          </div>
-        )}
-
-        {/* ═══ SECTION 5 — Auto Title Suggestions ═══ */}
-        {activeSection === 4 && (
-          <div className="flex flex-col">
-            <SectionHeader title="Auto Title Suggestions" accent accentColor="#EC4899" mb={4}
-              subtitle="Gợi ý title thông minh theo domain + type" />
-
-            <TrCard className="p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <Zap size={14} color="#EC4899" />
-                <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>AutoTitleSuggestionRow</span>
-                <span className="px-1.5 py-0.5 rounded-md" style={{ background: 'rgba(236,72,153,0.1)', color: '#EC4899', fontSize: 8, fontWeight: 700 }}>
-                  {TITLE_SUGGESTIONS.length} titles
-                </span>
-              </div>
-              <AutoTitleSuggestionRow
-                onSelect={(title) => {
-                  setSelectedTitle(title);
-                  actionToast.success({ title: 'Đã chọn title', description: title });
-                }}
-                selectedTitle={selectedTitle}
-              />
-            </TrCard>
-
-            {/* Selected title preview */}
-            {selectedTitle && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                <TrCard className="p-4" accentBorder="rgba(236,72,153,0.2)">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Eye size={13} color="#EC4899" />
-                    <span style={{ color: c.text1, fontSize: φ.xs, fontWeight: 600 }}>Title đã chọn</span>
-                  </div>
-                  <p style={{ color: '#EC4899', fontSize: φ.body, fontWeight: 700, lineHeight: 1.4 }}>
-                    "{selectedTitle}"
-                  </p>
-                  <p style={{ color: c.text3, fontSize: 10, marginTop: 4 }}>
-                    Có thể chỉnh sửa sau khi chọn
-                  </p>
-                </TrCard>
-              </motion.div>
-            )}
-
-            {/* How it works */}
-            <TrCard className="p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <Info size={14} color="#3B82F6" />
-                <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Cách hoạt động</span>
-              </div>
-              <div className="flex flex-col gap-2">
-                {[
-                  { step: '1', text: 'User chọn Domain → hệ thống lọc title phù hợp', color: '#8B5CF6' },
-                  { step: '2', text: 'User chọn Challenge Type → refine suggestions', color: '#F59E0B' },
-                  { step: '3', text: 'User tap suggestion → auto-fill title input', color: '#10B981' },
-                  { step: '4', text: 'User có thể chỉnh sửa title trước khi tiếp tục', color: '#3B82F6' },
-                ].map(s => (
-                  <div key={s.step} className="flex items-start gap-2.5 px-3 py-2 rounded-lg" style={{ background: c.surface2 }}>
-                    <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
-                      style={{ background: hexToRgba(s.color, 20) }}>
-                      <span style={{ color: s.color, fontSize: 9, fontWeight: 700 }}>{s.step}</span>
+              {/* How it works */}
+              <TrCard className="p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Info size={14} color="#3B82F6" />
+                  <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
+                    Cách hoạt động
+                  </span>
+                </div>
+                <div className="flex flex-col gap-2">
+                  {[
+                    {
+                      step: '1',
+                      text: 'User chọn Domain → hệ thống lọc title phù hợp',
+                      color: '#8B5CF6',
+                    },
+                    {
+                      step: '2',
+                      text: 'User chọn Challenge Type → refine suggestions',
+                      color: '#F59E0B',
+                    },
+                    {
+                      step: '3',
+                      text: 'User tap suggestion → auto-fill title input',
+                      color: '#10B981',
+                    },
+                    {
+                      step: '4',
+                      text: 'User có thể chỉnh sửa title trước khi tiếp tục',
+                      color: '#3B82F6',
+                    },
+                  ].map((s) => (
+                    <div
+                      key={s.step}
+                      className="flex items-start gap-2.5 px-3 py-2 rounded-lg"
+                      style={{ background: c.surface2 }}
+                    >
+                      <div
+                        className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
+                        style={{ background: hexToRgba(s.color, 20) }}
+                      >
+                        <span style={{ color: s.color, fontSize: 9, fontWeight: 700 }}>
+                          {s.step}
+                        </span>
+                      </div>
+                      <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.4 }}>{s.text}</p>
                     </div>
-                    <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.4 }}>{s.text}</p>
-                  </div>
-                ))}
-              </div>
-            </TrCard>
+                  ))}
+                </div>
+              </TrCard>
 
-            {/* Rule engine note */}
-            <TrCard className="p-3 flex items-start gap-2">
-              <Shield size={14} color="#10B981" className="shrink-0 mt-0.5" />
-              <p style={{ color: c.text3, fontSize: φ.xs, lineHeight: 1.5 }}>
-                Hệ preset dùng 1 rule engine chung — không tạo form riêng cho từng ngành.
-                Tất cả domains đều tái sử dụng cùng challenge types, dropdowns, và suggestion pipeline.
-              </p>
-            </TrCard>
-          </div>
-        )}
-
+              {/* Rule engine note */}
+              <TrCard className="p-3 flex items-start gap-2">
+                <Shield size={14} color="#10B981" className="shrink-0 mt-0.5" />
+                <p style={{ color: c.text3, fontSize: φ.xs, lineHeight: 1.5 }}>
+                  Hệ preset dùng 1 rule engine chung — không tạo form riêng cho từng ngành. Tất cả
+                  domains đều tái sử dụng cùng challenge types, dropdowns, và suggestion pipeline.
+                </p>
+              </TrCard>
+            </div>
+          )}
         </PageContent>
       </PullToRefresh>
     </PageLayout>

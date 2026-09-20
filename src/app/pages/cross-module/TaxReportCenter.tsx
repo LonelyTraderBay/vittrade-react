@@ -18,13 +18,25 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  FileText, Download, Calendar, DollarSign, TrendingUp,
-  Clock, Info, AlertTriangle, CheckCircle, Activity,
-  Target, ShoppingCart, Wallet, BarChart3, Zap,
+  FileText,
+  Download,
+  Calendar,
+  DollarSign,
+  TrendingUp,
+  Clock,
+  Info,
+  AlertTriangle,
+  CheckCircle,
+  Activity,
+  Target,
+  ShoppingCart,
+  Wallet,
+  BarChart3,
+  Zap,
 } from 'lucide-react';
 
 const TABS = ['Tao bao cao', 'Bao cao', 'Cai dat'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface TaxableActivity {
   module: string;
@@ -153,14 +165,14 @@ export function TaxReportCenter() {
 
   const totalGainLoss = TAXABLE_ACTIVITIES.filter((a) => a.taxable).reduce(
     (sum, a) => sum + a.gainLoss,
-    0
+    0,
   );
   const totalTransactions = TAXABLE_ACTIVITIES.reduce((sum, a) => sum + a.count, 0);
   const taxableModules = TAXABLE_ACTIVITIES.filter((a) => a.taxable).length;
 
   const generateReport = () => {
     alert(
-      `Generating ${format.toUpperCase()} report for ${startDate} to ${endDate}...\nTotal Gain/Loss: $${totalGainLoss.toLocaleString()}`
+      `Generating ${format.toUpperCase()} report for ${startDate} to ${endDate}...\nTotal Gain/Loss: $${totalGainLoss.toLocaleString()}`,
     );
   };
 
@@ -237,7 +249,9 @@ export function TaxReportCenter() {
               </p>
               <div className="grid grid-cols-2 gap-3 mb-3">
                 <div>
-                  <label style={{ color: c.text2, fontSize: 11, display: 'block', marginBottom: 6 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 11, display: 'block', marginBottom: 6 }}
+                  >
                     Start Date
                   </label>
                   <input
@@ -254,7 +268,9 @@ export function TaxReportCenter() {
                   />
                 </div>
                 <div>
-                  <label style={{ color: c.text2, fontSize: 11, display: 'block', marginBottom: 6 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 11, display: 'block', marginBottom: 6 }}
+                  >
                     End Date
                   </label>
                   <input
@@ -277,7 +293,11 @@ export function TaxReportCenter() {
                 {[
                   { label: '2024', start: '2024-01-01', end: '2024-12-31' },
                   { label: 'Q4 2024', start: '2024-10-01', end: '2024-12-31' },
-                  { label: 'YTD', start: '2024-01-01', end: new Date().toISOString().split('T')[0] },
+                  {
+                    label: 'YTD',
+                    start: '2024-01-01',
+                    end: new Date().toISOString().split('T')[0],
+                  },
                 ].map((preset) => (
                   <button
                     key={preset.label}
@@ -329,7 +349,14 @@ export function TaxReportCenter() {
                             <Icon size={16} color={activity.color} />
                           </div>
                           <div>
-                            <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginBottom: 2 }}>
+                            <p
+                              style={{
+                                color: c.text1,
+                                fontSize: 13,
+                                fontWeight: 600,
+                                marginBottom: 2,
+                              }}
+                            >
                               {activity.moduleName}
                             </p>
                             {!activity.taxable && (
@@ -346,7 +373,9 @@ export function TaxReportCenter() {
 
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Transactions</p>
+                          <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
+                            Transactions
+                          </p>
                           <p style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>
                             {activity.count}
                           </p>
@@ -359,8 +388,8 @@ export function TaxReportCenter() {
                                 activity.gainLoss > 0
                                   ? '#10B981'
                                   : activity.gainLoss < 0
-                                  ? '#EF4444'
-                                  : c.text3,
+                                    ? '#EF4444'
+                                    : c.text3,
                               fontSize: 15,
                               fontWeight: 700,
                             }}
@@ -467,7 +496,10 @@ export function TaxReportCenter() {
             {/* Disclaimer */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
+              style={{
+                background: 'rgba(245,158,11,0.06)',
+                border: '1px solid rgba(245,158,11,0.15)',
+              }}
             >
               <AlertTriangle size={14} color="#F59E0B" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
@@ -514,14 +546,14 @@ export function TaxReportCenter() {
                                   report.status === 'ready'
                                     ? 'rgba(16,185,129,0.1)'
                                     : report.status === 'generating'
-                                    ? 'rgba(245,158,11,0.1)'
-                                    : 'rgba(239,68,68,0.1)',
+                                      ? 'rgba(245,158,11,0.1)'
+                                      : 'rgba(239,68,68,0.1)',
                                 color:
                                   report.status === 'ready'
                                     ? '#10B981'
                                     : report.status === 'generating'
-                                    ? '#F59E0B'
-                                    : '#EF4444',
+                                      ? '#F59E0B'
+                                      : '#EF4444',
                               }}
                             >
                               {report.status}
@@ -560,7 +592,9 @@ export function TaxReportCenter() {
                           </p>
                         </div>
                         <div>
-                          <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Transactions</p>
+                          <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
+                            Transactions
+                          </p>
                           <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
                             {report.transactionCount}
                           </p>
@@ -657,7 +691,11 @@ export function TaxReportCenter() {
                   'Crypto Tax Guide by IRS',
                 ].map((resource, idx) => (
                   <li key={idx} className="flex items-start gap-2">
-                    <CheckCircle size={14} color="#10B981" style={{ marginTop: 2, flexShrink: 0 }} />
+                    <CheckCircle
+                      size={14}
+                      color="#10B981"
+                      style={{ marginTop: 2, flexShrink: 0 }}
+                    />
                     <p style={{ color: c.text2, fontSize: 11 }}>{resource}</p>
                   </li>
                 ))}
@@ -667,7 +705,10 @@ export function TaxReportCenter() {
             {/* Important Disclaimer */}
             <div
               className="rounded-2xl p-4"
-              style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)' }}
+              style={{
+                background: 'rgba(239,68,68,0.06)',
+                border: '1px solid rgba(239,68,68,0.15)',
+              }}
             >
               <div className="flex items-start gap-2 mb-3">
                 <AlertTriangle size={16} color="#EF4444" style={{ marginTop: 2 }} />
@@ -701,12 +742,15 @@ export function TaxReportCenter() {
             {/* Info */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+              style={{
+                background: 'rgba(59,130,246,0.06)',
+                border: '1px solid rgba(59,130,246,0.15)',
+              }}
             >
               <Info size={14} color="#3B82F6" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Tax reports aggregate data from all modules. Each transaction includes timestamp, type,
-                amount, and gain/loss calculation.
+                Tax reports aggregate data from all modules. Each transaction includes timestamp,
+                type, amount, and gain/loss calculation.
               </p>
             </div>
           </>

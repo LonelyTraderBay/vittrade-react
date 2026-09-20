@@ -2,7 +2,7 @@
  * ══════════════════════════════════════════════════════════════
  *  CopySettingsPage.test.tsx — Settings Tests
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Test Coverage (8 tests):
  * 1. ✅ Global defaults editable
  * 2. ✅ Circuit breaker config works
@@ -16,7 +16,7 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { screen, waitFor, within } from '@testing-library/react';
-import { renderWithRouter, userEvent } from '../../../test/utils/test-utils';
+import { renderWithRouter, userEvent } from '@/test/test-utils-navigation';
 import { CopySettingsPage } from '../CopySettingsPage';
 
 describe('CopySettingsPage', () => {
@@ -67,7 +67,7 @@ describe('CopySettingsPage', () => {
     // Auto-pause toggle
     const autoPauseToggle = screen.getByRole('switch', { name: /auto-pause when triggered/i });
     expect(autoPauseToggle).toBeInTheDocument();
-    
+
     await user.click(autoPauseToggle);
     expect(autoPauseToggle).toBeChecked();
 
@@ -129,7 +129,9 @@ describe('CopySettingsPage', () => {
     expect(tierToggle).toBeChecked();
 
     // Should show explanation
-    expect(screen.getByText(/automatically stop.*provider loses verification/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/automatically stop.*provider loses verification/i),
+    ).toBeInTheDocument();
   });
 
   it('should setup emergency contact', async () => {
@@ -183,7 +185,7 @@ describe('CopySettingsPage', () => {
     await waitFor(() => {
       expect(localStorageSpy).toHaveBeenCalledWith(
         expect.stringContaining('copySettings'),
-        expect.any(String)
+        expect.any(String),
       );
     });
 

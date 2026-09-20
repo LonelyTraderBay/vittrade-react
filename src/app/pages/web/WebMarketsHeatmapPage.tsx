@@ -15,13 +15,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import {
-  TrendingUp,
-  TrendingDown,
-  Grid3x3,
-  Filter,
-  Info,
-} from 'lucide-react';
+import { TrendingUp, TrendingDown, Grid3x3, Filter, Info } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { WEB_FONT, WEB_SPACING, WEB_ICON, WEB_BUTTON } from '../../components/layout/webConstants';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -41,21 +35,126 @@ interface HeatmapAsset {
 }
 
 const HEATMAP_DATA: HeatmapAsset[] = [
-  { symbol: 'BTC', name: 'Bitcoin', marketCap: 1920000000000, change24h: 2.45, price: 98500, category: 'Layer 1' },
-  { symbol: 'ETH', name: 'Ethereum', marketCap: 410000000000, change24h: 3.82, price: 3420, category: 'Layer 1' },
-  { symbol: 'BNB', name: 'BNB', marketCap: 89000000000, change24h: 1.23, price: 615, category: 'Exchange' },
-  { symbol: 'SOL', name: 'Solana', marketCap: 65000000000, change24h: 8.56, price: 142.5, category: 'Layer 1' },
-  { symbol: 'XRP', name: 'Ripple', marketCap: 31000000000, change24h: -1.45, price: 0.58, category: 'Payment' },
-  { symbol: 'ADA', name: 'Cardano', marketCap: 24000000000, change24h: 4.12, price: 0.68, category: 'Layer 1' },
-  { symbol: 'AVAX', name: 'Avalanche', marketCap: 15000000000, change24h: -2.34, price: 42.3, category: 'Layer 1' },
-  { symbol: 'DOGE', name: 'Dogecoin', marketCap: 12000000000, change24h: 1.56, price: 0.082, category: 'Meme' },
-  { symbol: 'MATIC', name: 'Polygon', marketCap: 9800000000, change24h: 5.67, price: 1.15, category: 'Layer 2' },
-  { symbol: 'LINK', name: 'Chainlink', marketCap: 8500000000, change24h: 6.78, price: 18.75, category: 'Oracle' },
-  { symbol: 'UNI', name: 'Uniswap', marketCap: 6200000000, change24h: -3.21, price: 7.82, category: 'DeFi' },
-  { symbol: 'ATOM', name: 'Cosmos', marketCap: 4800000000, change24h: 2.91, price: 11.45, category: 'Interop' },
-  { symbol: 'ARB', name: 'Arbitrum', marketCap: 2300000000, change24h: 12.34, price: 1.85, category: 'Layer 2' },
-  { symbol: 'OP', name: 'Optimism', marketCap: 1800000000, change24h: 8.91, price: 2.42, category: 'Layer 2' },
-  { symbol: 'PEPE', name: 'Pepe', marketCap: 520000000, change24h: 45.67, price: 0.00000123, category: 'Meme' },
+  {
+    symbol: 'BTC',
+    name: 'Bitcoin',
+    marketCap: 1920000000000,
+    change24h: 2.45,
+    price: 98500,
+    category: 'Layer 1',
+  },
+  {
+    symbol: 'ETH',
+    name: 'Ethereum',
+    marketCap: 410000000000,
+    change24h: 3.82,
+    price: 3420,
+    category: 'Layer 1',
+  },
+  {
+    symbol: 'BNB',
+    name: 'BNB',
+    marketCap: 89000000000,
+    change24h: 1.23,
+    price: 615,
+    category: 'Exchange',
+  },
+  {
+    symbol: 'SOL',
+    name: 'Solana',
+    marketCap: 65000000000,
+    change24h: 8.56,
+    price: 142.5,
+    category: 'Layer 1',
+  },
+  {
+    symbol: 'XRP',
+    name: 'Ripple',
+    marketCap: 31000000000,
+    change24h: -1.45,
+    price: 0.58,
+    category: 'Payment',
+  },
+  {
+    symbol: 'ADA',
+    name: 'Cardano',
+    marketCap: 24000000000,
+    change24h: 4.12,
+    price: 0.68,
+    category: 'Layer 1',
+  },
+  {
+    symbol: 'AVAX',
+    name: 'Avalanche',
+    marketCap: 15000000000,
+    change24h: -2.34,
+    price: 42.3,
+    category: 'Layer 1',
+  },
+  {
+    symbol: 'DOGE',
+    name: 'Dogecoin',
+    marketCap: 12000000000,
+    change24h: 1.56,
+    price: 0.082,
+    category: 'Meme',
+  },
+  {
+    symbol: 'MATIC',
+    name: 'Polygon',
+    marketCap: 9800000000,
+    change24h: 5.67,
+    price: 1.15,
+    category: 'Layer 2',
+  },
+  {
+    symbol: 'LINK',
+    name: 'Chainlink',
+    marketCap: 8500000000,
+    change24h: 6.78,
+    price: 18.75,
+    category: 'Oracle',
+  },
+  {
+    symbol: 'UNI',
+    name: 'Uniswap',
+    marketCap: 6200000000,
+    change24h: -3.21,
+    price: 7.82,
+    category: 'DeFi',
+  },
+  {
+    symbol: 'ATOM',
+    name: 'Cosmos',
+    marketCap: 4800000000,
+    change24h: 2.91,
+    price: 11.45,
+    category: 'Interop',
+  },
+  {
+    symbol: 'ARB',
+    name: 'Arbitrum',
+    marketCap: 2300000000,
+    change24h: 12.34,
+    price: 1.85,
+    category: 'Layer 2',
+  },
+  {
+    symbol: 'OP',
+    name: 'Optimism',
+    marketCap: 1800000000,
+    change24h: 8.91,
+    price: 2.42,
+    category: 'Layer 2',
+  },
+  {
+    symbol: 'PEPE',
+    name: 'Pepe',
+    marketCap: 520000000,
+    change24h: 45.67,
+    price: 0.00000123,
+    category: 'Meme',
+  },
 ];
 
 type CategoryFilter = 'all' | 'layer1' | 'layer2' | 'defi' | 'meme';
@@ -91,7 +190,15 @@ function formatPrice(price: number): string {
    COMPONENTS
    ═══════════════════════════════════════════════════════════ */
 
-function HeatmapCell({ asset, size, onClick }: { asset: HeatmapAsset; size: 'large' | 'medium' | 'small' | 'tiny'; onClick: () => void }) {
+function HeatmapCell({
+  asset,
+  size,
+  onClick,
+}: {
+  asset: HeatmapAsset;
+  size: 'large' | 'medium' | 'small' | 'tiny';
+  onClick: () => void;
+}) {
   const c = useThemeColors();
   const changeColor = getChangeColor(asset.change24h);
   const isPositive = asset.change24h >= 0;
@@ -165,9 +272,15 @@ function HeatmapCell({ asset, size, onClick }: { asset: HeatmapAsset; size: 'lar
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1">
               {isPositive ? (
-                <TrendingUp size={size === 'large' ? WEB_ICON.sm : WEB_ICON.xs} color={changeColor} />
+                <TrendingUp
+                  size={size === 'large' ? WEB_ICON.sm : WEB_ICON.xs}
+                  color={changeColor}
+                />
               ) : (
-                <TrendingDown size={size === 'large' ? WEB_ICON.sm : WEB_ICON.xs} color={changeColor} />
+                <TrendingDown
+                  size={size === 'large' ? WEB_ICON.sm : WEB_ICON.xs}
+                  color={changeColor}
+                />
               )}
               <span
                 style={{
@@ -264,7 +377,6 @@ export function WebMarketsHeatmapPage() {
         }
       />
       <div style={{ maxWidth: 1600, margin: '0 auto', padding: `${WEB_SPACING.cardRelaxed}px` }}>
-
         {/* ─── Heatmap Grid ─── */}
         <div
           className="rounded-2xl p-6"

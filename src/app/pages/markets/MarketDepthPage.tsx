@@ -9,8 +9,12 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import {
-  ArrowUpRight, ArrowDownRight, AlertTriangle,
-  Layers, Activity, BarChart3,
+  ArrowUpRight,
+  ArrowDownRight,
+  AlertTriangle,
+  Layers,
+  Activity,
+  BarChart3,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -32,19 +36,16 @@ export function MarketDepthPage() {
   const { hapticSelection } = useHaptic();
   const { pairId } = useParams<{ pairId: string }>();
 
-  const pair = CRYPTO_PAIRS.find(p => p.id === pairId) ?? CRYPTO_PAIRS[0];
+  const pair = CRYPTO_PAIRS.find((p) => p.id === pairId) ?? CRYPTO_PAIRS[0];
   const [tab, setTab] = useState('Depth Chart');
   const [depthLevels, setDepthLevels] = useState(25);
 
   const depth = useMemo(
     () => generateDepthData(pair.price, depthLevels),
-    [pair.price, depthLevels]
+    [pair.price, depthLevels],
   );
 
-  const whaleOrders = useMemo(
-    () => generateWhaleOrders(pair.price),
-    [pair.price]
-  );
+  const whaleOrders = useMemo(() => generateWhaleOrders(pair.price), [pair.price]);
 
   return (
     <PageLayout>
@@ -60,25 +61,41 @@ export function MarketDepthPage() {
                 className="w-10 h-10 rounded-full flex items-center justify-center"
                 style={{ background: `${pair.logoColor}18` }}
               >
-                <span style={{ color: pair.logoColor, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>
+                <span
+                  style={{
+                    color: pair.logoColor,
+                    fontSize: FONT_SCALE.sm,
+                    fontWeight: FONT_WEIGHT.bold,
+                  }}
+                >
                   {pair.baseAsset.slice(0, 2)}
                 </span>
               </div>
               <div>
-                <p style={{ color: c.text1, fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold }}>
+                <p
+                  style={{
+                    color: c.text1,
+                    fontSize: FONT_SCALE.base,
+                    fontWeight: FONT_WEIGHT.bold,
+                  }}
+                >
                   {pair.symbol}
                 </p>
                 <div className="flex items-center gap-1">
-                  {pair.change24h >= 0
-                    ? <ArrowUpRight size={12} color="#10B981" />
-                    : <ArrowDownRight size={12} color="#EF4444" />
-                  }
-                  <span style={{
-                    color: pair.change24h >= 0 ? '#10B981' : '#EF4444',
-                    fontSize: FONT_SCALE.xs,
-                    fontWeight: FONT_WEIGHT.medium,
-                  }}>
-                    {pair.change24h >= 0 ? '+' : ''}{pair.change24h.toFixed(2)}%
+                  {pair.change24h >= 0 ? (
+                    <ArrowUpRight size={12} color="#10B981" />
+                  ) : (
+                    <ArrowDownRight size={12} color="#EF4444" />
+                  )}
+                  <span
+                    style={{
+                      color: pair.change24h >= 0 ? '#10B981' : '#EF4444',
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.medium,
+                    }}
+                  >
+                    {pair.change24h >= 0 ? '+' : ''}
+                    {pair.change24h.toFixed(2)}%
                   </span>
                 </div>
               </div>
@@ -96,22 +113,48 @@ export function MarketDepthPage() {
           <>
             {/* Spread info */}
             <div className="grid grid-cols-3 gap-2">
-              <MiniStat label="Spread" value={`$${depth.spread.toFixed(2)}`} sub={`${depth.spreadPct.toFixed(4)}%`} c={c} />
-              <MiniStat label="Bid Wall" value={fmtCompact(depth.bids.reduce((s, b) => s + b.quantity, 0))} sub={pair.baseAsset} c={c} color="#10B981" />
-              <MiniStat label="Ask Wall" value={fmtCompact(depth.asks.reduce((s, a) => s + a.quantity, 0))} sub={pair.baseAsset} c={c} color="#EF4444" />
+              <MiniStat
+                label="Spread"
+                value={`$${depth.spread.toFixed(2)}`}
+                sub={`${depth.spreadPct.toFixed(4)}%`}
+                c={c}
+              />
+              <MiniStat
+                label="Bid Wall"
+                value={fmtCompact(depth.bids.reduce((s, b) => s + b.quantity, 0))}
+                sub={pair.baseAsset}
+                c={c}
+                color="#10B981"
+              />
+              <MiniStat
+                label="Ask Wall"
+                value={fmtCompact(depth.asks.reduce((s, a) => s + a.quantity, 0))}
+                sub={pair.baseAsset}
+                c={c}
+                color="#EF4444"
+              />
             </div>
 
             {/* Depth chart visualization */}
             <TrCard className="p-4">
               <div className="flex items-center justify-between mb-3">
-                <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+                <p
+                  style={{
+                    color: c.text2,
+                    fontSize: FONT_SCALE.xs,
+                    fontWeight: FONT_WEIGHT.semibold,
+                  }}
+                >
                   Biểu đồ độ sâu
                 </p>
                 <div className="flex gap-2">
-                  {[15, 25, 50].map(n => (
+                  {[15, 25, 50].map((n) => (
                     <button
                       key={n}
-                      onClick={() => { setDepthLevels(n); hapticSelection(); }}
+                      onClick={() => {
+                        setDepthLevels(n);
+                        hapticSelection();
+                      }}
                       className="px-2 py-1 rounded"
                       style={{
                         background: depthLevels === n ? c.chipActiveBg : 'transparent',
@@ -134,13 +177,22 @@ export function MarketDepthPage() {
               />
 
               {/* Legend */}
-              <div className="flex justify-between mt-3 pt-2" style={{ borderTop: `1px solid ${c.borderSolid}` }}>
+              <div
+                className="flex justify-between mt-3 pt-2"
+                style={{ borderTop: `1px solid ${c.borderSolid}` }}
+              >
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-sm" style={{ background: 'rgba(16,185,129,0.3)' }} />
+                  <div
+                    className="w-3 h-3 rounded-sm"
+                    style={{ background: 'rgba(16,185,129,0.3)' }}
+                  />
                   <span style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>Mua (Bid)</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-sm" style={{ background: 'rgba(239,68,68,0.3)' }} />
+                  <div
+                    className="w-3 h-3 rounded-sm"
+                    style={{ background: 'rgba(239,68,68,0.3)' }}
+                  />
                   <span style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>Bán (Ask)</span>
                 </div>
               </div>
@@ -148,7 +200,14 @@ export function MarketDepthPage() {
 
             {/* Buy/Sell wall ratio */}
             <TrCard className="p-4">
-              <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, marginBottom: 8 }}>
+              <p
+                style={{
+                  color: c.text2,
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.semibold,
+                  marginBottom: 8,
+                }}
+              >
                 Tỷ lệ tường mua/bán
               </p>
               {(() => {
@@ -163,10 +222,22 @@ export function MarketDepthPage() {
                       <div style={{ width: `${100 - bidPct}%`, background: '#EF4444' }} />
                     </div>
                     <div className="flex justify-between mt-2">
-                      <span style={{ color: '#10B981', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+                      <span
+                        style={{
+                          color: '#10B981',
+                          fontSize: FONT_SCALE.xs,
+                          fontWeight: FONT_WEIGHT.semibold,
+                        }}
+                      >
                         Mua {bidPct.toFixed(1)}%
                       </span>
-                      <span style={{ color: '#EF4444', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+                      <span
+                        style={{
+                          color: '#EF4444',
+                          fontSize: FONT_SCALE.xs,
+                          fontWeight: FONT_WEIGHT.semibold,
+                        }}
+                      >
                         Bán {(100 - bidPct).toFixed(1)}%
                       </span>
                     </div>
@@ -182,13 +253,36 @@ export function MarketDepthPage() {
           <>
             {/* Column header */}
             <div className="flex px-3 py-2" style={{ background: c.surface2, borderRadius: 8 }}>
-              <span style={{ flex: 1, color: c.text3, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.semibold }}>
+              <span
+                style={{
+                  flex: 1,
+                  color: c.text3,
+                  fontSize: FONT_SCALE.micro,
+                  fontWeight: FONT_WEIGHT.semibold,
+                }}
+              >
                 Giá (USDT)
               </span>
-              <span style={{ flex: 1, color: c.text3, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.semibold, textAlign: 'right' }}>
+              <span
+                style={{
+                  flex: 1,
+                  color: c.text3,
+                  fontSize: FONT_SCALE.micro,
+                  fontWeight: FONT_WEIGHT.semibold,
+                  textAlign: 'right',
+                }}
+              >
                 Số lượng ({pair.baseAsset})
               </span>
-              <span style={{ flex: 1, color: c.text3, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.semibold, textAlign: 'right' }}>
+              <span
+                style={{
+                  flex: 1,
+                  color: c.text3,
+                  fontSize: FONT_SCALE.micro,
+                  fontWeight: FONT_WEIGHT.semibold,
+                  textAlign: 'right',
+                }}
+              >
                 Tích lũy
               </span>
             </div>
@@ -196,26 +290,34 @@ export function MarketDepthPage() {
             {/* Asks (reversed, top = highest) */}
             <PageSection label="Lệnh bán (Ask)" accentColor="#EF4444" gap={0}>
               <div className="flex flex-col">
-                {depth.asks.slice(0, 15).reverse().map((level, idx) => {
-                  const maxCum = depth.asks[Math.min(14, depth.asks.length - 1)]?.cumulative ?? 1;
-                  return (
-                    <OrderBookRow
-                      key={idx}
-                      price={level.price}
-                      quantity={level.quantity}
-                      cumulative={level.cumulative}
-                      maxCumulative={maxCum}
-                      side="sell"
-                      c={c}
-                    />
-                  );
-                })}
+                {depth.asks
+                  .slice(0, 15)
+                  .reverse()
+                  .map((level, idx) => {
+                    const maxCum = depth.asks[Math.min(14, depth.asks.length - 1)]?.cumulative ?? 1;
+                    return (
+                      <OrderBookRow
+                        key={idx}
+                        price={level.price}
+                        quantity={level.quantity}
+                        cumulative={level.cumulative}
+                        maxCumulative={maxCum}
+                        side="sell"
+                        c={c}
+                      />
+                    );
+                  })}
               </div>
             </PageSection>
 
             {/* Mid price */}
-            <div className="flex items-center justify-center py-2 my-1 rounded-lg" style={{ background: c.surface2 }}>
-              <span style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>
+            <div
+              className="flex items-center justify-center py-2 my-1 rounded-lg"
+              style={{ background: c.surface2 }}
+            >
+              <span
+                style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}
+              >
                 ${fmtPrice(depth.midPrice)}
               </span>
               <span style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginLeft: 8 }}>
@@ -252,12 +354,19 @@ export function MarketDepthPage() {
               <div className="flex gap-3">
                 <AlertTriangle size={16} color="#F59E0B" className="shrink-0 mt-1" />
                 <div>
-                  <p style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, marginBottom: 2 }}>
+                  <p
+                    style={{
+                      color: c.text1,
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.semibold,
+                      marginBottom: 2,
+                    }}
+                  >
                     Cảnh báo cá voi
                   </p>
                   <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>
-                    Các lệnh lớn bất thường trong sổ lệnh {pair.symbol}. 
-                    Không phải tín hiệu giao dịch — chỉ mang tính tham khảo.
+                    Các lệnh lớn bất thường trong sổ lệnh {pair.symbol}. Không phải tín hiệu giao
+                    dịch — chỉ mang tính tham khảo.
                   </p>
                 </div>
               </div>
@@ -265,13 +374,14 @@ export function MarketDepthPage() {
 
             <PageSection label="Lệnh lớn gần đây" accentColor="#F59E0B">
               <div className="flex flex-col" style={{ gap: 4 }}>
-                {whaleOrders.map(order => (
+                {whaleOrders.map((order) => (
                   <TrCard key={order.id} className="p-4">
                     <div className="flex items-center gap-3">
                       <div
                         className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                         style={{
-                          background: order.side === 'buy' ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)',
+                          background:
+                            order.side === 'buy' ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)',
                         }}
                       >
                         <span style={{ fontSize: 18 }}>🐋</span>
@@ -281,7 +391,10 @@ export function MarketDepthPage() {
                           <span
                             className="px-2 py-0.5 rounded"
                             style={{
-                              background: order.side === 'buy' ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
+                              background:
+                                order.side === 'buy'
+                                  ? 'rgba(16,185,129,0.12)'
+                                  : 'rgba(239,68,68,0.12)',
                               color: order.side === 'buy' ? '#10B981' : '#EF4444',
                               fontSize: FONT_SCALE.micro,
                               fontWeight: FONT_WEIGHT.bold,
@@ -293,14 +406,26 @@ export function MarketDepthPage() {
                             {order.timeAgo}
                           </span>
                         </div>
-                        <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold }}>
+                        <p
+                          style={{
+                            color: c.text1,
+                            fontSize: FONT_SCALE.sm,
+                            fontWeight: FONT_WEIGHT.semibold,
+                          }}
+                        >
                           {order.quantity.toFixed(4)} {pair.baseAsset}
                         </p>
                         <div className="flex items-center gap-3 mt-1">
                           <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>
                             @ ${fmtPrice(order.price)}
                           </span>
-                          <span style={{ color: c.text2, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.medium }}>
+                          <span
+                            style={{
+                              color: c.text2,
+                              fontSize: FONT_SCALE.micro,
+                              fontWeight: FONT_WEIGHT.medium,
+                            }}
+                          >
                             ≈ {fmtCompact(order.usdValue, { prefix: '$' })}
                           </span>
                         </div>
@@ -314,26 +439,54 @@ export function MarketDepthPage() {
             {/* Whale summary */}
             <div className="grid grid-cols-2 gap-2">
               <TrCard className="p-3 text-center">
-                <p style={{ color: '#10B981', fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold }}>
-                  {whaleOrders.filter(o => o.side === 'buy').length}
+                <p
+                  style={{
+                    color: '#10B981',
+                    fontSize: FONT_SCALE.base,
+                    fontWeight: FONT_WEIGHT.bold,
+                  }}
+                >
+                  {whaleOrders.filter((o) => o.side === 'buy').length}
                 </p>
                 <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Lệnh mua lớn</p>
-                <p style={{ color: '#10B981', fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.medium, marginTop: 2 }}>
+                <p
+                  style={{
+                    color: '#10B981',
+                    fontSize: FONT_SCALE.micro,
+                    fontWeight: FONT_WEIGHT.medium,
+                    marginTop: 2,
+                  }}
+                >
                   {fmtCompact(
-                    whaleOrders.filter(o => o.side === 'buy').reduce((s, o) => s + o.usdValue, 0),
-                    { prefix: '$' }
+                    whaleOrders.filter((o) => o.side === 'buy').reduce((s, o) => s + o.usdValue, 0),
+                    { prefix: '$' },
                   )}
                 </p>
               </TrCard>
               <TrCard className="p-3 text-center">
-                <p style={{ color: '#EF4444', fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold }}>
-                  {whaleOrders.filter(o => o.side === 'sell').length}
+                <p
+                  style={{
+                    color: '#EF4444',
+                    fontSize: FONT_SCALE.base,
+                    fontWeight: FONT_WEIGHT.bold,
+                  }}
+                >
+                  {whaleOrders.filter((o) => o.side === 'sell').length}
                 </p>
                 <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Lệnh bán lớn</p>
-                <p style={{ color: '#EF4444', fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.medium, marginTop: 2 }}>
+                <p
+                  style={{
+                    color: '#EF4444',
+                    fontSize: FONT_SCALE.micro,
+                    fontWeight: FONT_WEIGHT.medium,
+                    marginTop: 2,
+                  }}
+                >
                   {fmtCompact(
-                    whaleOrders.filter(o => o.side === 'sell').reduce((s, o) => s + o.usdValue, 0),
-                    { prefix: '$' }
+                    whaleOrders
+                      .filter((o) => o.side === 'sell')
+                      .reduce((s, o) => s + o.usdValue, 0),
+                    { prefix: '$' },
                   )}
                 </p>
               </TrCard>
@@ -347,20 +500,36 @@ export function MarketDepthPage() {
 
 /* ─── Sub-components ─── */
 
-function MiniStat({ label, value, sub, c, color }: {
-  label: string; value: string; sub: string;
-  c: ReturnType<typeof useThemeColors>; color?: string;
+function MiniStat({
+  label,
+  value,
+  sub,
+  c,
+  color,
+}: {
+  label: string;
+  value: string;
+  sub: string;
+  c: ReturnType<typeof useThemeColors>;
+  color?: string;
 }) {
   return (
     <TrCard className="p-3 text-center">
       <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 4 }}>{label}</p>
-      <p style={{ color: color ?? c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>{value}</p>
+      <p style={{ color: color ?? c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>
+        {value}
+      </p>
       <p style={{ color: c.text3, fontSize: 10, marginTop: 2 }}>{sub}</p>
     </TrCard>
   );
 }
 
-function DepthChartCanvas({ bids, asks, midPrice, c }: {
+function DepthChartCanvas({
+  bids,
+  asks,
+  midPrice,
+  c,
+}: {
   bids: DepthLevel[];
   asks: DepthLevel[];
   midPrice: number;
@@ -390,7 +559,7 @@ function DepthChartCanvas({ bids, asks, midPrice, c }: {
 
     const maxCum = Math.max(
       bids[bids.length - 1]?.cumulative ?? 0,
-      asks[asks.length - 1]?.cumulative ?? 0
+      asks[asks.length - 1]?.cumulative ?? 0,
     );
 
     const bidMinPrice = bids[bids.length - 1]?.price ?? midPrice * 0.95;
@@ -418,7 +587,8 @@ function DepthChartCanvas({ bids, asks, midPrice, c }: {
       }
     }
 
-    const lastBidX = ((bids[bids.length - 1]?.price ?? bidMinPrice) - bidMinPrice) / priceRange * width;
+    const lastBidX =
+      (((bids[bids.length - 1]?.price ?? bidMinPrice) - bidMinPrice) / priceRange) * width;
     ctx.lineTo(lastBidX, height - padding);
     ctx.closePath();
 
@@ -462,7 +632,8 @@ function DepthChartCanvas({ bids, asks, midPrice, c }: {
       }
     }
 
-    const lastAskX = ((asks[asks.length - 1]?.price ?? askMaxPrice) - bidMinPrice) / priceRange * width;
+    const lastAskX =
+      (((asks[asks.length - 1]?.price ?? askMaxPrice) - bidMinPrice) / priceRange) * width;
     ctx.lineTo(lastAskX, height - padding);
     ctx.closePath();
 
@@ -499,7 +670,6 @@ function DepthChartCanvas({ bids, asks, midPrice, c }: {
     ctx.lineWidth = 1;
     ctx.stroke();
     ctx.setLineDash([]);
-
   }, [bids, asks, midPrice, c]);
 
   return (
@@ -509,7 +679,14 @@ function DepthChartCanvas({ bids, asks, midPrice, c }: {
   );
 }
 
-function OrderBookRow({ price, quantity, cumulative, maxCumulative, side, c }: {
+function OrderBookRow({
+  price,
+  quantity,
+  cumulative,
+  maxCumulative,
+  side,
+  c,
+}: {
   price: number;
   quantity: number;
   cumulative: number;
@@ -522,10 +699,7 @@ function OrderBookRow({ price, quantity, cumulative, maxCumulative, side, c }: {
   const priceColor = side === 'buy' ? '#10B981' : '#EF4444';
 
   return (
-    <div
-      className="flex items-center px-3 py-2 relative"
-      style={{ minHeight: 28 }}
-    >
+    <div className="flex items-center px-3 py-2 relative" style={{ minHeight: 28 }}>
       {/* Background bar */}
       <div
         className="absolute inset-y-0 right-0"
@@ -534,13 +708,40 @@ function OrderBookRow({ price, quantity, cumulative, maxCumulative, side, c }: {
           background: bgColor,
         }}
       />
-      <span style={{ flex: 1, color: priceColor, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.medium, position: 'relative', zIndex: 1 }}>
+      <span
+        style={{
+          flex: 1,
+          color: priceColor,
+          fontSize: FONT_SCALE.xs,
+          fontWeight: FONT_WEIGHT.medium,
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
         {fmtPrice(price)}
       </span>
-      <span style={{ flex: 1, color: c.text1, fontSize: FONT_SCALE.xs, textAlign: 'right', position: 'relative', zIndex: 1 }}>
+      <span
+        style={{
+          flex: 1,
+          color: c.text1,
+          fontSize: FONT_SCALE.xs,
+          textAlign: 'right',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
         {quantity.toFixed(4)}
       </span>
-      <span style={{ flex: 1, color: c.text3, fontSize: FONT_SCALE.xs, textAlign: 'right', position: 'relative', zIndex: 1 }}>
+      <span
+        style={{
+          flex: 1,
+          color: c.text3,
+          fontSize: FONT_SCALE.xs,
+          textAlign: 'right',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
         {cumulative.toFixed(4)}
       </span>
     </div>

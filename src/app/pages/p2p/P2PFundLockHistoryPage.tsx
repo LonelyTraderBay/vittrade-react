@@ -17,10 +17,38 @@ import { useRefresh } from '../../hooks/useRefresh';
 import { fmtAmount, fmtVnd } from '../../data/formatNumber';
 
 const HISTORY = [
-  { id: '1', type: 'lock', asset: 'USDT', amount: 1500, reason: 'Order #45892 created', timestamp: '2026-03-05 14:20' },
-  { id: '2', type: 'unlock', asset: 'USDT', amount: 1000, reason: 'Order #45880 completed', timestamp: '2026-03-05 13:45' },
-  { id: '3', type: 'lock', asset: 'BTC', amount: 0.01, reason: 'Order #45870 created', timestamp: '2026-03-05 10:30' },
-  { id: '4', type: 'unlock', asset: 'VND', amount: 12000000, reason: 'Order #45850 released', timestamp: '2026-03-04 16:20' },
+  {
+    id: '1',
+    type: 'lock',
+    asset: 'USDT',
+    amount: 1500,
+    reason: 'Order #45892 created',
+    timestamp: '2026-03-05 14:20',
+  },
+  {
+    id: '2',
+    type: 'unlock',
+    asset: 'USDT',
+    amount: 1000,
+    reason: 'Order #45880 completed',
+    timestamp: '2026-03-05 13:45',
+  },
+  {
+    id: '3',
+    type: 'lock',
+    asset: 'BTC',
+    amount: 0.01,
+    reason: 'Order #45870 created',
+    timestamp: '2026-03-05 10:30',
+  },
+  {
+    id: '4',
+    type: 'unlock',
+    asset: 'VND',
+    amount: 12000000,
+    reason: 'Order #45850 released',
+    timestamp: '2026-03-04 16:20',
+  },
 ];
 
 export function P2PFundLockHistoryPage() {
@@ -29,15 +57,12 @@ export function P2PFundLockHistoryPage() {
   const mountedRef = useRef(true);
 
   useEffect(() => {
-    return () => { mountedRef.current = false; };
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
-  const { isRefreshing, handleRefresh } = useRefresh({
-    onRefresh: async () => {
-      await new Promise(res => setTimeout(res, 1000));
-      if (mountedRef.current) hapticSuccess();
-    },
-  });
+  const { isRefreshing, refresh: handleRefresh } = useRefresh();
 
   const formatAmount = (asset: string, amount: number) => {
     if (asset === 'BTC') return fmtAmount(amount, 8);
@@ -51,9 +76,16 @@ export function P2PFundLockHistoryPage() {
         <Header title="Fund Lock History" subtitle="Escrow · P2P" back />
 
         <div className="px-5 py-4">
-          <TrCard rounded="lg" className="p-4" style={{ background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)' }}>
+          <TrCard
+            rounded="lg"
+            className="p-4"
+            style={{ background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)' }}
+          >
             <div className="flex items-start gap-3">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(255,255,255,0.2)' }}>
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                style={{ background: 'rgba(255,255,255,0.2)' }}
+              >
                 <Lock size={24} color="#FFFFFF" />
               </div>
               <div className="flex-1">
@@ -69,7 +101,7 @@ export function P2PFundLockHistoryPage() {
         </div>
 
         <div className="px-5 flex flex-col gap-3">
-          {HISTORY.map(item => {
+          {HISTORY.map((item) => {
             const isLock = item.type === 'lock';
             const Icon = isLock ? Lock : Unlock;
             const color = isLock ? '#F59E0B' : '#10B981';
@@ -77,7 +109,10 @@ export function P2PFundLockHistoryPage() {
             return (
               <TrCard key={item.id} rounded="md" className="p-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: hexToRgba(color, 12) }}>
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                    style={{ background: hexToRgba(color, 12) }}
+                  >
                     <Icon size={18} color={color} />
                   </div>
                   <div className="flex-1">
@@ -85,7 +120,10 @@ export function P2PFundLockHistoryPage() {
                       <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
                         {formatAmount(item.asset, item.amount)} {item.asset}
                       </p>
-                      <span className="px-2 py-0.5 rounded-md text-xs font-bold" style={{ background: hexToRgba(color, 15), color }}>
+                      <span
+                        className="px-2 py-0.5 rounded-md text-xs font-bold"
+                        style={{ background: hexToRgba(color, 15), color }}
+                      >
                         {isLock ? 'Khóa' : 'Mở'}
                       </span>
                     </div>

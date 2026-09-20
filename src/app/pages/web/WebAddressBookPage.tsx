@@ -132,7 +132,10 @@ const SAVED_ADDRESSES: SavedAddress[] = [
 
 const NETWORK_OPTIONS = ['All', 'BTC', 'ERC20', 'TRC20', 'BSC', 'Polygon'];
 
-const STATUS_CONFIG: Record<AddressStatus, { label: string; color: string; icon: React.ElementType }> = {
+const STATUS_CONFIG: Record<
+  AddressStatus,
+  { label: string; color: string; icon: React.ElementType }
+> = {
   verified: { label: 'Đã xác minh', color: '#10B981', icon: ShieldCheck },
   pending: { label: 'Chờ xác minh', color: '#F59E0B', icon: Shield },
   unverified: { label: 'Chưa xác minh', color: '#94A3B8', icon: AlertTriangle },
@@ -186,7 +189,10 @@ function AddressCard({ address }: { address: SavedAddress }) {
               </span>
             )}
           </div>
-          <div className="flex items-center gap-2" style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
+          <div
+            className="flex items-center gap-2"
+            style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}
+          >
             <span className="font-semibold">{address.asset}</span>
             <span>•</span>
             <span>{address.network}</span>
@@ -232,7 +238,9 @@ function AddressCard({ address }: { address: SavedAddress }) {
             wordBreak: 'break-all',
           }}
         >
-          {showAddress ? address.address : address.address.slice(0, 12) + '••••••••' + address.address.slice(-8)}
+          {showAddress
+            ? address.address
+            : address.address.slice(0, 12) + '••••••••' + address.address.slice(-8)}
         </code>
         <button
           onClick={() => setShowAddress(!showAddress)}
@@ -267,7 +275,10 @@ function AddressCard({ address }: { address: SavedAddress }) {
           </span>
         </div>
 
-        <div className="flex items-center gap-4" style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
+        <div
+          className="flex items-center gap-4"
+          style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}
+        >
           <span>Sử dụng: {address.usageCount} lần</span>
           {address.lastUsed && (
             <>
@@ -324,244 +335,267 @@ export function WebAddressBookPage() {
 
   return (
     <PageLayout>
-    <div className="flex" style={{ minHeight: '100%' }}>
-      {/* ═══ LEFT SIDEBAR (280px) ═══ */}
-      <div
-        className="flex flex-col"
-        style={{
-          width: 280,
-          background: c.surface,
-          borderRight: `1px solid ${c.divider}`,
-          position: 'sticky',
-          top: 0,
-          alignSelf: 'flex-start',
-          maxHeight: '100vh',
-          overflowY: 'auto',
-        }}
-      >
-        {/* Header */}
+      <div className="flex" style={{ minHeight: '100%' }}>
+        {/* ═══ LEFT SIDEBAR (280px) ═══ */}
         <div
-          className="flex items-center justify-between px-5"
+          className="flex flex-col"
           style={{
-            height: 60,
-            borderBottom: `1px solid ${c.divider}`,
+            width: 280,
+            background: c.surface,
+            borderRight: `1px solid ${c.divider}`,
+            position: 'sticky',
+            top: 0,
+            alignSelf: 'flex-start',
+            maxHeight: '100vh',
+            overflowY: 'auto',
           }}
         >
-          <h2
-            style={{
-              color: c.text1,
-              fontSize: WEB_FONT.SIZE.H2,
-              fontWeight: 700,
-              margin: 0,
-            }}
-          >
-            Address Book
-          </h2>
-        </div>
-
-        {/* Add New Button */}
-        <div className="p-4">
-          <button
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg transition-colors"
-            style={{
-              background: '#3B82F6',
-              color: '#fff',
-              fontSize: WEB_FONT.SIZE.BODY,
-              fontWeight: 600,
-              border: 'none',
-            }}
-          >
-            <Plus size={18} />
-            Thêm địa chỉ
-          </button>
-        </div>
-
-        {/* Stats */}
-        <div className="px-4 pb-4">
-          <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 12 }}>
-            Thống kê
-          </div>
-          <div className="flex flex-col gap-3">
-            <div
-              className="p-3 rounded-lg"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-              }}
-            >
-              <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, marginBottom: 4 }}>
-                Tổng địa chỉ
-              </div>
-              <div style={{ color: c.text1, fontSize: 20, fontWeight: 800 }}>
-                {SAVED_ADDRESSES.length}
-              </div>
-            </div>
-            <div
-              className="p-3 rounded-lg"
-              style={{
-                background: '#10B98115',
-                border: `1px solid #10B98140`,
-              }}
-            >
-              <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, marginBottom: 4 }}>
-                Đã xác minh
-              </div>
-              <div style={{ color: '#10B981', fontSize: 20, fontWeight: 800 }}>
-                {verifiedCount}
-                <span style={{ fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, color: c.text3 }}>
-                  /{SAVED_ADDRESSES.length}
-                </span>
-              </div>
-            </div>
-            <div
-              className="p-3 rounded-lg"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-              }}
-            >
-              <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, marginBottom: 4 }}>
-                Whitelist
-              </div>
-              <div style={{ color: c.text1, fontSize: 20, fontWeight: 800 }}>
-                {whitelistedCount}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Network Filter */}
-        <div className="px-4 pb-4">
-          <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 12 }}>
-            Lọc theo mạng
-          </div>
-          <div className="flex flex-col gap-1">
-            {NETWORK_OPTIONS.map((network) => {
-              const count =
-                network === 'All'
-                  ? SAVED_ADDRESSES.length
-                  : SAVED_ADDRESSES.filter((a) => a.network === network).length;
-              const isActive = selectedNetwork === network;
-
-              return (
-                <button
-                  key={network}
-                  onClick={() => setSelectedNetwork(network)}
-                  className="flex items-center justify-between px-3 py-2 rounded-lg transition-all text-left"
-                  style={{
-                    background: isActive ? '#3B82F615' : 'transparent',
-                    color: isActive ? '#3B82F6' : c.text2,
-                    fontSize: WEB_FONT.SIZE.CAPTION,
-                    fontWeight: isActive ? 600 : 500,
-                  }}
-                >
-                  <span>{network}</span>
-                  <span style={{ fontSize: 12 }}>{count}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Security Note */}
-        <div className="px-4 pb-4 mt-auto">
+          {/* Header */}
           <div
-            className="p-3 rounded-lg"
+            className="flex items-center justify-between px-5"
             style={{
-              background: '#3B82F615',
-              border: `1px solid #3B82F640`,
+              height: 60,
+              borderBottom: `1px solid ${c.divider}`,
             }}
           >
-            <div className="flex items-start gap-2">
-              <Info size={14} color="#3B82F6" className="flex-shrink-0 mt-0.5" />
-              <div>
-                <div style={{ color: '#3B82F6', fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 4 }}>
-                  Lưu ý bảo mật
-                </div>
-                <div style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
-                  Luôn kiểm tra kỹ địa chỉ trước khi rút. Giao dịch blockchain không thể hoàn tác.
-                </div>
-              </div>
-            </div>
+            <h2
+              style={{
+                color: c.text1,
+                fontSize: WEB_FONT.SIZE.H2,
+                fontWeight: 700,
+                margin: 0,
+              }}
+            >
+              Address Book
+            </h2>
           </div>
-        </div>
-      </div>
 
-      {/* ═══ MAIN CONTENT ═══ */}
-      <div className="flex-1 min-w-0">
-        <div className="max-w-5xl mx-auto p-8">
-          {/* Page Header */}
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h3
+          {/* Add New Button */}
+          <div className="p-4">
+            <button
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg transition-colors"
+              style={{
+                background: '#3B82F6',
+                color: '#fff',
+                fontSize: WEB_FONT.SIZE.BODY,
+                fontWeight: 600,
+                border: 'none',
+              }}
+            >
+              <Plus size={18} />
+              Thêm địa chỉ
+            </button>
+          </div>
+
+          {/* Stats */}
+          <div className="px-4 pb-4">
+            <div
+              style={{
+                color: c.text2,
+                fontSize: WEB_FONT.SIZE.CAPTION,
+                fontWeight: 600,
+                marginBottom: 12,
+              }}
+            >
+              Thống kê
+            </div>
+            <div className="flex flex-col gap-3">
+              <div
+                className="p-3 rounded-lg"
                 style={{
-                  color: c.text1,
-                  fontSize: WEB_FONT.SIZE.H3,
-                  fontWeight: 700,
-                  marginBottom: 8,
+                  background: c.bg,
+                  border: `1px solid ${c.border}`,
                 }}
               >
-                Địa chỉ đã lưu
-              </h3>
-              <p style={{ color: c.text2, fontSize: WEB_FONT.SIZE.BODY, margin: 0 }}>
-                {filteredAddresses.length} địa chỉ
-              </p>
-            </div>
-
-            {/* Search */}
-            <div
-              className="flex items-center gap-2 px-3 py-2 rounded-lg"
-              style={{
-                width: 320,
-                background: c.surface,
-                border: `1px solid ${c.border}`,
-              }}
-            >
-              <Search size={16} color={c.text3} />
-              <input
-                type="text"
-                placeholder="Tìm theo label hoặc địa chỉ..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, marginBottom: 4 }}>
+                  Tổng địa chỉ
+                </div>
+                <div style={{ color: c.text1, fontSize: 20, fontWeight: 800 }}>
+                  {SAVED_ADDRESSES.length}
+                </div>
+              </div>
+              <div
+                className="p-3 rounded-lg"
                 style={{
-                  flex: 1,
-                  background: 'transparent',
-                  border: 'none',
-                  outline: 'none',
-                  color: c.text1,
-                  fontSize: WEB_FONT.SIZE.CAPTION,
+                  background: '#10B98115',
+                  border: `1px solid #10B98140`,
                 }}
-              />
+              >
+                <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, marginBottom: 4 }}>
+                  Đã xác minh
+                </div>
+                <div style={{ color: '#10B981', fontSize: 20, fontWeight: 800 }}>
+                  {verifiedCount}
+                  <span
+                    style={{ fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, color: c.text3 }}
+                  >
+                    /{SAVED_ADDRESSES.length}
+                  </span>
+                </div>
+              </div>
+              <div
+                className="p-3 rounded-lg"
+                style={{
+                  background: c.bg,
+                  border: `1px solid ${c.border}`,
+                }}
+              >
+                <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, marginBottom: 4 }}>
+                  Whitelist
+                </div>
+                <div style={{ color: c.text1, fontSize: 20, fontWeight: 800 }}>
+                  {whitelistedCount}
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Address List */}
-          {filteredAddresses.length > 0 ? (
-            <div className="flex flex-col gap-4">
-              {filteredAddresses.map((address) => (
-                <AddressCard key={address.id} address={address} />
-              ))}
-            </div>
-          ) : (
+          {/* Network Filter */}
+          <div className="px-4 pb-4">
             <div
-              className="flex flex-col items-center justify-center py-16 rounded-xl"
               style={{
-                background: c.surface,
-                border: `1px solid ${c.border}`,
+                color: c.text2,
+                fontSize: WEB_FONT.SIZE.CAPTION,
+                fontWeight: 600,
+                marginBottom: 12,
               }}
             >
-              <BookOpen size={48} color={c.text3} className="mb-4" />
-              <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.BODY, marginBottom: 8 }}>
-                Không tìm thấy địa chỉ
-              </div>
-              <div style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
-                Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm
+              Lọc theo mạng
+            </div>
+            <div className="flex flex-col gap-1">
+              {NETWORK_OPTIONS.map((network) => {
+                const count =
+                  network === 'All'
+                    ? SAVED_ADDRESSES.length
+                    : SAVED_ADDRESSES.filter((a) => a.network === network).length;
+                const isActive = selectedNetwork === network;
+
+                return (
+                  <button
+                    key={network}
+                    onClick={() => setSelectedNetwork(network)}
+                    className="flex items-center justify-between px-3 py-2 rounded-lg transition-all text-left"
+                    style={{
+                      background: isActive ? '#3B82F615' : 'transparent',
+                      color: isActive ? '#3B82F6' : c.text2,
+                      fontSize: WEB_FONT.SIZE.CAPTION,
+                      fontWeight: isActive ? 600 : 500,
+                    }}
+                  >
+                    <span>{network}</span>
+                    <span style={{ fontSize: 12 }}>{count}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Security Note */}
+          <div className="px-4 pb-4 mt-auto">
+            <div
+              className="p-3 rounded-lg"
+              style={{
+                background: '#3B82F615',
+                border: `1px solid #3B82F640`,
+              }}
+            >
+              <div className="flex items-start gap-2">
+                <Info size={14} color="#3B82F6" className="flex-shrink-0 mt-0.5" />
+                <div>
+                  <div
+                    style={{
+                      color: '#3B82F6',
+                      fontSize: WEB_FONT.SIZE.CAPTION,
+                      fontWeight: 600,
+                      marginBottom: 4,
+                    }}
+                  >
+                    Lưu ý bảo mật
+                  </div>
+                  <div style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
+                    Luôn kiểm tra kỹ địa chỉ trước khi rút. Giao dịch blockchain không thể hoàn tác.
+                  </div>
+                </div>
               </div>
             </div>
-          )}
+          </div>
+        </div>
+
+        {/* ═══ MAIN CONTENT ═══ */}
+        <div className="flex-1 min-w-0">
+          <div className="max-w-5xl mx-auto p-8">
+            {/* Page Header */}
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h3
+                  style={{
+                    color: c.text1,
+                    fontSize: WEB_FONT.SIZE.H3,
+                    fontWeight: 700,
+                    marginBottom: 8,
+                  }}
+                >
+                  Địa chỉ đã lưu
+                </h3>
+                <p style={{ color: c.text2, fontSize: WEB_FONT.SIZE.BODY, margin: 0 }}>
+                  {filteredAddresses.length} địa chỉ
+                </p>
+              </div>
+
+              {/* Search */}
+              <div
+                className="flex items-center gap-2 px-3 py-2 rounded-lg"
+                style={{
+                  width: 320,
+                  background: c.surface,
+                  border: `1px solid ${c.border}`,
+                }}
+              >
+                <Search size={16} color={c.text3} />
+                <input
+                  type="text"
+                  placeholder="Tìm theo label hoặc địa chỉ..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  style={{
+                    flex: 1,
+                    background: 'transparent',
+                    border: 'none',
+                    outline: 'none',
+                    color: c.text1,
+                    fontSize: WEB_FONT.SIZE.CAPTION,
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Address List */}
+            {filteredAddresses.length > 0 ? (
+              <div className="flex flex-col gap-4">
+                {filteredAddresses.map((address) => (
+                  <AddressCard key={address.id} address={address} />
+                ))}
+              </div>
+            ) : (
+              <div
+                className="flex flex-col items-center justify-center py-16 rounded-xl"
+                style={{
+                  background: c.surface,
+                  border: `1px solid ${c.border}`,
+                }}
+              >
+                <BookOpen size={48} color={c.text3} className="mb-4" />
+                <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.BODY, marginBottom: 8 }}>
+                  Không tìm thấy địa chỉ
+                </div>
+                <div style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
+                  Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
     </PageLayout>
   );
 }

@@ -36,26 +36,8 @@ export function SkipLink() {
         width: 1,
         height: 1,
         overflow: 'hidden',
-        
-        // Visible when focused
-        ':focus': {
-          position: 'fixed',
-          top: 8,
-          left: 8,
-          zIndex: 9999,
-          width: 'auto',
-          height: 'auto',
-          padding: '12px 20px',
-          background: c.primary,
-          color: '#FFFFFF',
-          fontSize: 14,
-          fontWeight: 600,
-          borderRadius: 8,
-          textDecoration: 'none',
-          boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
-          outline: `3px solid ${c.ring}`,
-          outlineOffset: 2,
-        },
+        // Visible-when-focused styling is applied imperatively in onFocus below
+        // (React inline styles cannot express the ':focus' pseudo-class).
       }}
       onFocus={(e) => {
         // Inline style override for :focus pseudo-class

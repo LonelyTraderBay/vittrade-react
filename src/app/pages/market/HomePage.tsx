@@ -1,6 +1,16 @@
 import {
-  Gift, ChevronRight, Eye, EyeOff, TrendingUp, TrendingDown,
-  ArrowDownToLine, ArrowUpFromLine, Wallet, Search, Bell, Zap,
+  Gift,
+  ChevronRight,
+  Eye,
+  EyeOff,
+  TrendingUp,
+  TrendingDown,
+  ArrowDownToLine,
+  ArrowUpFromLine,
+  Wallet,
+  Search,
+  Bell,
+  Zap,
 } from 'lucide-react';
 import { fmtUsd, fmtPct, fmtSignedUsd } from '../../data/formatNumber';
 import { SparklineChart } from '../../components/trading/SparklineChart';
@@ -57,9 +67,10 @@ function AnnouncementBanner() {
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
     const dx = e.changedTouches[0].clientX - touchStartX.current;
     if (Math.abs(dx) > 40) {
-      setIdx((i) => dx < 0
-        ? (i + 1) % ANNOUNCEMENTS.length
-        : (i - 1 + ANNOUNCEMENTS.length) % ANNOUNCEMENTS.length
+      setIdx((i) =>
+        dx < 0
+          ? (i + 1) % ANNOUNCEMENTS.length
+          : (i - 1 + ANNOUNCEMENTS.length) % ANNOUNCEMENTS.length,
       );
     }
     // Resume auto after 10s
@@ -96,7 +107,11 @@ function AnnouncementBanner() {
           {ANNOUNCEMENTS.map((_, i) => (
             <button
               key={i}
-              onClick={() => { setIdx(i); setPaused(true); setTimeout(() => setPaused(false), 10000); }}
+              onClick={() => {
+                setIdx(i);
+                setPaused(true);
+                setTimeout(() => setPaused(false), 10000);
+              }}
               className="rounded-full"
               style={{
                 width: i === idx ? 16 : 5,
@@ -149,10 +164,11 @@ function PortfolioCard() {
       <div className="flex items-center justify-between mb-2 relative z-10">
         <span style={{ color: c.portfolioTextDim, fontSize: φ.sm }}>Tổng tài sản (USDT)</span>
         <button onClick={toggleBalanceHidden} className="p-1.5 hover-ghost rounded-lg">
-          {isBalanceHidden
-            ? <EyeOff size={18} color={c.portfolioTextMuted} />
-            : <Eye size={18} color={c.portfolioTextDim} />
-          }
+          {isBalanceHidden ? (
+            <EyeOff size={18} color={c.portfolioTextMuted} />
+          ) : (
+            <Eye size={18} color={c.portfolioTextDim} />
+          )}
         </button>
       </div>
 
@@ -300,9 +316,13 @@ function SectionHeader({
 }) {
   const c = useThemeColors();
   return (
-    <div className="flex items-center justify-between mb-3">
+    <div className="flex items-center justify-between">
       <h2 style={{ color: c.text1, fontSize: 'var(--tr-text-headline)', fontWeight: 700 }}>
-        {icon && <span className="inline mr-1.5" style={{ verticalAlign: 'middle' }}>{icon}</span>}
+        {icon && (
+          <span className="inline mr-1.5" style={{ verticalAlign: 'middle' }}>
+            {icon}
+          </span>
+        )}
         {title}
       </h2>
       {onSeeAll && (
@@ -341,13 +361,28 @@ function SkeletonList({ rows = 5 }: { rows?: number }) {
             }}
           />
           <div className="flex-1 flex flex-col gap-2">
-            <div className="animate-pulse" style={{ width: '60%', height: 12, borderRadius: 4, background: c.surface2 }} />
-            <div className="animate-pulse" style={{ width: '40%', height: 10, borderRadius: 4, background: c.surface2 }} />
+            <div
+              className="animate-pulse"
+              style={{ width: '60%', height: 12, borderRadius: 4, background: c.surface2 }}
+            />
+            <div
+              className="animate-pulse"
+              style={{ width: '40%', height: 10, borderRadius: 4, background: c.surface2 }}
+            />
           </div>
-          <div className="animate-pulse" style={{ width: 64, height: 30, borderRadius: 4, background: c.surface2 }} />
+          <div
+            className="animate-pulse"
+            style={{ width: 64, height: 30, borderRadius: 4, background: c.surface2 }}
+          />
           <div className="flex flex-col items-end gap-2">
-            <div className="animate-pulse" style={{ width: 60, height: 12, borderRadius: 4, background: c.surface2 }} />
-            <div className="animate-pulse" style={{ width: 45, height: 10, borderRadius: 4, background: c.surface2 }} />
+            <div
+              className="animate-pulse"
+              style={{ width: 60, height: 12, borderRadius: 4, background: c.surface2 }}
+            />
+            <div
+              className="animate-pulse"
+              style={{ width: 45, height: 10, borderRadius: 4, background: c.surface2 }}
+            />
           </div>
         </div>
       ))}
@@ -362,7 +397,9 @@ export function HomePage() {
   const c = useThemeColors();
   const prefix = useRoutePrefix();
   const [tab, setTab] = useState<'hot' | 'gainers' | 'losers' | 'new'>('hot');
-  const { isLoading, refresh, lastRefreshedLabel, refreshCount } = useLoadingState({ initialDelay: 600 });
+  const { isLoading, refresh, lastRefreshedLabel, refreshCount } = useLoadingState({
+    initialDelay: 600,
+  });
 
   const hotPairs = CRYPTO_PAIRS.filter((p) => p.isFavorite).slice(0, 5);
   const gainerPairs = [...CRYPTO_PAIRS].sort((a, b) => b.change24h - a.change24h).slice(0, 5);
@@ -370,10 +407,13 @@ export function HomePage() {
   const newPairs = CRYPTO_PAIRS.slice(-5);
 
   const tabPairs =
-    tab === 'hot' ? hotPairs
-    : tab === 'gainers' ? gainerPairs
-    : tab === 'losers' ? loserPairs
-    : newPairs;
+    tab === 'hot'
+      ? hotPairs
+      : tab === 'gainers'
+        ? gainerPairs
+        : tab === 'losers'
+          ? loserPairs
+          : newPairs;
 
   const tabs = [
     { key: 'hot' as const, label: '🔥 Hot' },
@@ -384,10 +424,22 @@ export function HomePage() {
 
   return (
     <>
-      <PullToRefresh onRefresh={refresh} lastRefreshedLabel={lastRefreshedLabel} refreshCount={refreshCount} className="pb-8">
+      <PullToRefresh
+        onRefresh={refresh}
+        lastRefreshedLabel={lastRefreshedLabel}
+        refreshCount={refreshCount}
+        className="pb-8"
+      >
         {/* ═══ Header ═══ */}
         <div className="flex items-center justify-between px-5 pt-2 pb-3">
-          <h1 style={{ color: c.text1, fontSize: 'var(--tr-text-amount-large)', fontWeight: 700, letterSpacing: -0.5 }}>
+          <h1
+            style={{
+              color: c.text1,
+              fontSize: 'var(--tr-text-amount-large)',
+              fontWeight: 700,
+              letterSpacing: -0.5,
+            }}
+          >
             VitTrade
           </h1>
           <div className="flex items-center gap-1.5">
@@ -433,10 +485,7 @@ export function HomePage() {
 
           {/* ═══ Market Section ═══ */}
           <div>
-            <SectionHeader
-              title="Thị trường"
-              onSeeAll={() => navigate(`${prefix}/markets`)}
-            />
+            <SectionHeader title="Thị trường" onSeeAll={() => navigate(`${prefix}/markets`)} />
 
             {/* Tabs */}
             <div className="flex gap-2 mb-3">
@@ -488,7 +537,9 @@ export function HomePage() {
                     </div>
 
                     <div className="flex-1 text-left min-w-0">
-                      <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 600 }}>{pair.symbol}</p>
+                      <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 600 }}>
+                        {pair.symbol}
+                      </p>
                       <p style={{ color: c.text3, fontSize: φ.xs }}>
                         Vol ${(pair.volume24h / 1e9).toFixed(2)}B
                       </p>
@@ -514,7 +565,13 @@ export function HomePage() {
                       >
                         {fmtUsd(pair.price)}
                       </p>
-                      <p style={{ color: pair.change24h >= 0 ? c.buy : c.sell, fontSize: φ.xs, fontWeight: 600 }}>
+                      <p
+                        style={{
+                          color: pair.change24h >= 0 ? c.buy : c.sell,
+                          fontSize: φ.xs,
+                          fontWeight: 600,
+                        }}
+                      >
                         {fmtPct(pair.change24h)}
                       </p>
                     </div>
@@ -559,7 +616,14 @@ export function HomePage() {
                       {pair.baseAsset}
                     </span>
                   </div>
-                  <p style={{ color: c.text1, fontSize: φ.base, fontWeight: 700, fontFamily: 'monospace' }}>
+                  <p
+                    style={{
+                      color: c.text1,
+                      fontSize: φ.base,
+                      fontWeight: 700,
+                      fontFamily: 'monospace',
+                    }}
+                  >
                     {fmtUsd(pair.price)}
                   </p>
                   <p
@@ -581,7 +645,9 @@ export function HomePage() {
           <div>
             <SectionHeader
               title="Top tăng giá"
-              icon={<TrendingUp size={φIcon.md} color={c.buy} style={{ verticalAlign: 'middle' }} />}
+              icon={
+                <TrendingUp size={φIcon.md} color={c.buy} style={{ verticalAlign: 'middle' }} />
+              }
               onSeeAll={() => navigate(`${prefix}/markets`)}
             />
             <TrCard overflow>
@@ -617,9 +683,14 @@ export function HomePage() {
                     </span>
                   </div>
                   <div className="flex-1 text-left">
-                    <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 600 }}>{pair.symbol}</p>
+                    <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 600 }}>
+                      {pair.symbol}
+                    </p>
                   </div>
-                  <div className="px-3 py-1" style={{ borderRadius: φRadius.xs, background: c.buyAlpha10 }}>
+                  <div
+                    className="px-3 py-1"
+                    style={{ borderRadius: φRadius.xs, background: c.buyAlpha10 }}
+                  >
                     <span style={{ color: c.buy, fontSize: φ.sm, fontWeight: 700 }}>
                       {fmtPct(pair.change24h)}
                     </span>
@@ -633,7 +704,9 @@ export function HomePage() {
           <div>
             <SectionHeader
               title="Top giảm giá"
-              icon={<TrendingDown size={φIcon.md} color={c.sell} style={{ verticalAlign: 'middle' }} />}
+              icon={
+                <TrendingDown size={φIcon.md} color={c.sell} style={{ verticalAlign: 'middle' }} />
+              }
               onSeeAll={() => navigate(`${prefix}/markets`)}
             />
             <TrCard overflow>
@@ -645,7 +718,13 @@ export function HomePage() {
                   style={{ borderBottom: i < 2 ? `1px solid ${c.divider}` : 'none' }}
                 >
                   <span
-                    style={{ color: c.text3, fontSize: φ.sm, fontWeight: 700, width: 20, textAlign: 'center' }}
+                    style={{
+                      color: c.text3,
+                      fontSize: φ.sm,
+                      fontWeight: 700,
+                      width: 20,
+                      textAlign: 'center',
+                    }}
                   >
                     {i + 1}
                   </span>
@@ -663,9 +742,14 @@ export function HomePage() {
                     </span>
                   </div>
                   <div className="flex-1 text-left">
-                    <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 600 }}>{pair.symbol}</p>
+                    <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 600 }}>
+                      {pair.symbol}
+                    </p>
                   </div>
-                  <div className="px-3 py-1" style={{ borderRadius: φRadius.xs, background: c.sellAlpha10 }}>
+                  <div
+                    className="px-3 py-1"
+                    style={{ borderRadius: φRadius.xs, background: c.sellAlpha10 }}
+                  >
                     <span style={{ color: c.sell, fontSize: φ.sm, fontWeight: 700 }}>
                       {fmtPct(pair.change24h)}
                     </span>

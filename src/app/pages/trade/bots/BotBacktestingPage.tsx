@@ -5,7 +5,19 @@ import { PageLayout, StickyFooter } from '../../../components/layout/PageLayout'
 import { PageContent, PageSection } from '../../../components/layout/PageContent';
 import { useThemeColors } from '../../../hooks/useThemeColors';
 import { TrCard } from '../../../components/ui/TrCard';
-import { LineChart, Line, BarChart, Bar, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend, Area, AreaChart } from 'recharts';
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  Area,
+  AreaChart,
+} from 'recharts';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router';
 
@@ -75,9 +87,9 @@ export function BotBacktestingPage() {
   const handleRunBacktest = () => {
     setStep('running');
     setProgress(0);
-    
+
     const interval = setInterval(() => {
-      setProgress(p => {
+      setProgress((p) => {
         if (p >= 100) {
           clearInterval(interval);
           setTimeout(() => setStep('results'), 500);
@@ -114,10 +126,16 @@ export function BotBacktestingPage() {
         <Header title="Running Backtest..." back={false} />
         <PageContent>
           <div className="flex flex-col items-center justify-center py-16 gap-6">
-            <div className="w-24 h-24 rounded-full flex items-center justify-center"
-              style={{ background: `conic-gradient(${c.primary} ${progress * 3.6}deg, ${c.surface2} 0deg)` }}>
-              <div className="w-20 h-20 rounded-full flex items-center justify-center"
-                style={{ background: c.surface }}>
+            <div
+              className="w-24 h-24 rounded-full flex items-center justify-center"
+              style={{
+                background: `conic-gradient(${c.primary} ${progress * 3.6}deg, ${c.surface2} 0deg)`,
+              }}
+            >
+              <div
+                className="w-20 h-20 rounded-full flex items-center justify-center"
+                style={{ background: c.surface }}
+              >
                 <BarChart3 size={40} color={c.primary} />
               </div>
             </div>
@@ -132,8 +150,11 @@ export function BotBacktestingPage() {
                 {progress >= 90 && 'Generating report...'}
               </p>
             </div>
-            <div className="w-full max-w-xs h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
-              <div 
+            <div
+              className="w-full max-w-xs h-2 rounded-full overflow-hidden"
+              style={{ background: c.surface2 }}
+            >
+              <div
                 className="h-full transition-all duration-300"
                 style={{ background: c.primary, width: `${progress}%` }}
               />
@@ -146,17 +167,23 @@ export function BotBacktestingPage() {
 
   if (step === 'results') {
     const recommendation = metrics.sharpeRatio >= 1.5 && metrics.maxDrawdown > -10;
-    
+
     return (
       <PageLayout variant="flush">
-        <Header title="Backtest Results" back action={{ icon: CheckCircle2, onClick: handleDeploy }} />
+        <Header
+          title="Backtest Results"
+          back
+          action={{ icon: CheckCircle2, onClick: handleDeploy }}
+        />
         <PageContent grow>
           {/* Recommendation Banner */}
-          <div className="rounded-2xl p-4 mb-4" 
-            style={{ 
-              background: recommendation ? 'rgba(16,185,129,0.08)' : 'rgba(245,158,11,0.08)', 
+          <div
+            className="rounded-2xl p-4 mb-4"
+            style={{
+              background: recommendation ? 'rgba(16,185,129,0.08)' : 'rgba(245,158,11,0.08)',
               border: `2px solid ${recommendation ? 'rgba(16,185,129,0.3)' : 'rgba(245,158,11,0.3)'}`,
-            }}>
+            }}
+          >
             <div className="flex gap-3">
               {recommendation ? (
                 <CheckCircle2 size={24} color="#10B981" className="shrink-0" />
@@ -164,11 +191,18 @@ export function BotBacktestingPage() {
                 <AlertTriangle size={24} color="#F59E0B" className="shrink-0" />
               )}
               <div>
-                <p style={{ color: recommendation ? '#10B981' : '#F59E0B', fontSize: 16, fontWeight: 700, marginBottom: 4 }}>
+                <p
+                  style={{
+                    color: recommendation ? '#10B981' : '#F59E0B',
+                    fontSize: 16,
+                    fontWeight: 700,
+                    marginBottom: 4,
+                  }}
+                >
                   {recommendation ? '✅ Recommended to Deploy' : '⚠️ Optimize Before Deploy'}
                 </p>
                 <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                  {recommendation 
+                  {recommendation
                     ? 'Strong risk-adjusted returns (Sharpe > 1.5) and low drawdown. This strategy performed well historically.'
                     : 'Consider adjusting parameters or testing a different date range to improve Sharpe ratio and reduce drawdown.'}
                 </p>
@@ -187,9 +221,7 @@ export function BotBacktestingPage() {
             </TrCard>
             <TrCard className="p-3 text-center">
               <p style={{ color: c.text3, fontSize: 10 }}>Sharpe Ratio</p>
-              <p style={{ color: c.text1, fontSize: 18, fontWeight: 700 }}>
-                {metrics.sharpeRatio}
-              </p>
+              <p style={{ color: c.text1, fontSize: 18, fontWeight: 700 }}>{metrics.sharpeRatio}</p>
               <p style={{ color: '#10B981', fontSize: 11 }}>Excellent</p>
             </TrCard>
             <TrCard className="p-3 text-center">
@@ -208,37 +240,44 @@ export function BotBacktestingPage() {
                 <AreaChart data={BACKTEST_RESULTS.equityCurve}>
                   <defs key="equity-gradient-defs">
                     <linearGradient id="equityGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10B981" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
+                      <stop offset="5%" stopColor="#10B981" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <XAxis 
+                  <XAxis
                     key="x-axis-eq"
-                    dataKey="date" 
-                    stroke={c.text3} 
+                    dataKey="date"
+                    stroke={c.text3}
                     style={{ fontSize: 9 }}
                     tickLine={false}
-                    tickFormatter={(val) => new Date(val).toLocaleDateString('en-US', { month: 'short' })}
+                    tickFormatter={(val) =>
+                      new Date(val).toLocaleDateString('en-US', { month: 'short' })
+                    }
                   />
-                  <YAxis 
+                  <YAxis
                     key="y-axis-eq"
-                    stroke={c.text3} 
+                    stroke={c.text3}
                     style={{ fontSize: 10 }}
                     tickLine={false}
                     tickFormatter={(val) => `$${val}`}
                   />
                   <Tooltip
-                    contentStyle={{ background: c.surface, border: `1px solid ${c.borderSolid}`, borderRadius: 8, fontSize: 11 }}
+                    contentStyle={{
+                      background: c.surface,
+                      border: `1px solid ${c.borderSolid}`,
+                      borderRadius: 8,
+                      fontSize: 11,
+                    }}
                     labelFormatter={(val) => new Date(val).toLocaleDateString()}
                     formatter={(value: any) => [`$${value}`, 'Equity']}
                   />
-                  <Area 
+                  <Area
                     key="area-equity"
-                    type="monotone" 
-                    dataKey="equity" 
-                    stroke="#10B981" 
+                    type="monotone"
+                    dataKey="equity"
+                    stroke="#10B981"
                     strokeWidth={2}
-                    fill="url(#equityGradient)" 
+                    fill="url(#equityGradient)"
                   />
                 </AreaChart>
               </ResponsiveContainer>
@@ -252,36 +291,43 @@ export function BotBacktestingPage() {
                 <AreaChart data={BACKTEST_RESULTS.drawdownData}>
                   <defs key="dd-gradient-defs">
                     <linearGradient id="ddGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#EF4444" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#EF4444" stopOpacity={0}/>
+                      <stop offset="5%" stopColor="#EF4444" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#EF4444" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <XAxis 
+                  <XAxis
                     key="x-axis-dd"
-                    dataKey="date" 
-                    stroke={c.text3} 
+                    dataKey="date"
+                    stroke={c.text3}
                     style={{ fontSize: 9 }}
                     tickLine={false}
-                    tickFormatter={(val) => new Date(val).toLocaleDateString('en-US', { month: 'short' })}
+                    tickFormatter={(val) =>
+                      new Date(val).toLocaleDateString('en-US', { month: 'short' })
+                    }
                   />
-                  <YAxis 
+                  <YAxis
                     key="y-axis-dd"
-                    stroke={c.text3} 
+                    stroke={c.text3}
                     style={{ fontSize: 10 }}
                     tickLine={false}
                     tickFormatter={(val) => `${val}%`}
                   />
                   <Tooltip
-                    contentStyle={{ background: c.surface, border: `1px solid ${c.borderSolid}`, borderRadius: 8, fontSize: 11 }}
+                    contentStyle={{
+                      background: c.surface,
+                      border: `1px solid ${c.borderSolid}`,
+                      borderRadius: 8,
+                      fontSize: 11,
+                    }}
                     formatter={(value: any) => [`${value}%`, 'Drawdown']}
                   />
-                  <Area 
+                  <Area
                     key="area-dd"
-                    type="monotone" 
-                    dataKey="drawdown" 
-                    stroke="#EF4444" 
+                    type="monotone"
+                    dataKey="drawdown"
+                    stroke="#EF4444"
                     strokeWidth={2}
-                    fill="url(#ddGradient)" 
+                    fill="url(#ddGradient)"
                   />
                 </AreaChart>
               </ResponsiveContainer>
@@ -293,22 +339,27 @@ export function BotBacktestingPage() {
             <TrCard className="p-4">
               <ResponsiveContainer width="100%" height={180}>
                 <BarChart data={BACKTEST_RESULTS.monthlyReturns}>
-                  <XAxis 
+                  <XAxis
                     key="x-axis-mr"
-                    dataKey="month" 
-                    stroke={c.text3} 
+                    dataKey="month"
+                    stroke={c.text3}
                     style={{ fontSize: 10 }}
                     tickLine={false}
                   />
-                  <YAxis 
+                  <YAxis
                     key="y-axis-mr"
-                    stroke={c.text3} 
+                    stroke={c.text3}
                     style={{ fontSize: 10 }}
                     tickLine={false}
                     tickFormatter={(val) => `${val}%`}
                   />
                   <Tooltip
-                    contentStyle={{ background: c.surface, border: `1px solid ${c.borderSolid}`, borderRadius: 8, fontSize: 11 }}
+                    contentStyle={{
+                      background: c.surface,
+                      border: `1px solid ${c.borderSolid}`,
+                      borderRadius: 8,
+                      fontSize: 11,
+                    }}
                     formatter={(value: any) => [`${value}%`, 'Return']}
                   />
                   <Bar key="bar-returns" dataKey="returns" fill="#10B981" radius={[4, 4, 0, 0]} />
@@ -348,8 +399,9 @@ export function BotBacktestingPage() {
               ⚠️ Backtest Disclaimer
             </p>
             <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6 }}>
-              Past performance does not guarantee future results. Actual trading will incur slippage, fees, and execution delays 
-              not reflected in this backtest. Use these results as a guideline, not a guarantee.
+              Past performance does not guarantee future results. Actual trading will incur
+              slippage, fees, and execution delays not reflected in this backtest. Use these results
+              as a guideline, not a guarantee.
             </p>
           </div>
         </PageContent>
@@ -359,13 +411,15 @@ export function BotBacktestingPage() {
             <button
               onClick={() => setStep('config')}
               className="flex-1 py-3 rounded-[14px] text-sm font-semibold"
-              style={{ background: c.surface2, color: c.text1 }}>
+              style={{ background: c.surface2, color: c.text1 }}
+            >
               Back to Config
             </button>
             <button
               onClick={handleDeploy}
               className="flex-1 py-3 rounded-[14px] text-sm font-semibold flex items-center justify-center gap-2"
-              style={{ background: recommendation ? '#10B981' : c.primary, color: '#FFF' }}>
+              style={{ background: recommendation ? '#10B981' : c.primary, color: '#FFF' }}
+            >
               <CheckCircle2 size={16} />
               {recommendation ? 'Deploy Bot' : 'Deploy Anyway'}
             </button>
@@ -379,11 +433,11 @@ export function BotBacktestingPage() {
   return (
     <PageLayout variant="flush">
       <Header title="Backtest Strategy" back />
-      
+
       <PageContent grow>
         <PageSection label="Strategy Selection">
           <div className="grid grid-cols-2 gap-2">
-            {STRATEGIES.map(strategy => (
+            {STRATEGIES.map((strategy) => (
               <button
                 key={strategy.id}
                 onClick={() => setSelectedStrategy(strategy.id)}
@@ -391,10 +445,17 @@ export function BotBacktestingPage() {
                 style={{
                   background: selectedStrategy === strategy.id ? `${strategy.color}15` : c.surface,
                   border: `2px solid ${selectedStrategy === strategy.id ? strategy.color : c.borderSolid}`,
-                }}>
+                }}
+              >
                 <div className="flex items-center gap-2 mb-1">
                   <div className="w-3 h-3 rounded-full" style={{ background: strategy.color }} />
-                  <p style={{ color: selectedStrategy === strategy.id ? strategy.color : c.text1, fontSize: 13, fontWeight: 700 }}>
+                  <p
+                    style={{
+                      color: selectedStrategy === strategy.id ? strategy.color : c.text1,
+                      fontSize: 13,
+                      fontWeight: 700,
+                    }}
+                  >
                     {strategy.name}
                   </p>
                 </div>
@@ -405,7 +466,7 @@ export function BotBacktestingPage() {
 
         <PageSection label="Trading Pair">
           <div className="grid grid-cols-3 gap-2">
-            {PAIRS.map(pair => (
+            {PAIRS.map((pair) => (
               <button
                 key={pair}
                 onClick={() => setSelectedPair(pair)}
@@ -414,7 +475,8 @@ export function BotBacktestingPage() {
                   background: selectedPair === pair ? c.primary : c.surface,
                   color: selectedPair === pair ? '#FFF' : c.text1,
                   border: `1px solid ${selectedPair === pair ? c.primary : c.borderSolid}`,
-                }}>
+                }}
+              >
                 {pair}
               </button>
             ))}
@@ -423,7 +485,7 @@ export function BotBacktestingPage() {
 
         <PageSection label="Date Range">
           <div className="grid grid-cols-4 gap-2">
-            {['1m', '3m', '6m', '1y'].map(range => (
+            {['1m', '3m', '6m', '1y'].map((range) => (
               <button
                 key={range}
                 onClick={() => setDateRange(range)}
@@ -432,7 +494,8 @@ export function BotBacktestingPage() {
                   background: dateRange === range ? c.primary : c.surface,
                   color: dateRange === range ? '#FFF' : c.text1,
                   border: `1px solid ${dateRange === range ? c.primary : c.borderSolid}`,
-                }}>
+                }}
+              >
                 {range === '1m' && '1 Month'}
                 {range === '3m' && '3 Months'}
                 {range === '6m' && '6 Months'}
@@ -443,20 +506,33 @@ export function BotBacktestingPage() {
         </PageSection>
 
         <PageSection label="Initial Capital">
-          <div className="flex items-center gap-3 rounded-2xl px-4"
-            style={{ background: c.surface2, border: `1.5px solid ${c.borderSolid}`, height: 52 }}>
+          <div
+            className="flex items-center gap-3 rounded-2xl px-4"
+            style={{ background: c.surface2, border: `1.5px solid ${c.borderSolid}`, height: 52 }}
+          >
             <input
               type="number"
               inputMode="decimal"
               value={capital}
-              onChange={e => setCapital(e.target.value)}
-              style={{ background: 'transparent', border: 'none', outline: 'none', color: c.text1, fontSize: 16, flex: 1, fontFamily: 'monospace' }}
+              onChange={(e) => setCapital(e.target.value)}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                outline: 'none',
+                color: c.text1,
+                fontSize: 16,
+                flex: 1,
+                fontFamily: 'monospace',
+              }}
             />
             <span style={{ color: c.text3, fontSize: 13 }}>USDT</span>
           </div>
         </PageSection>
 
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}
+        >
           <div className="flex gap-3">
             <Calendar size={18} color="#3B82F6" className="shrink-0 mt-0.5" />
             <div>
@@ -468,8 +544,7 @@ export function BotBacktestingPage() {
                 {dateRange === '1m' && 'Feb 8 - Mar 8, 2026'}
                 {dateRange === '3m' && 'Dec 8, 2025 - Mar 8, 2026'}
                 {dateRange === '6m' && 'Sep 8, 2025 - Mar 8, 2026'}
-                {dateRange === '1y' && 'Mar 8, 2025 - Mar 8, 2026'}
-                {' '}with ${capital} initial capital.
+                {dateRange === '1y' && 'Mar 8, 2025 - Mar 8, 2026'} with ${capital} initial capital.
               </p>
             </div>
           </div>
@@ -480,7 +555,8 @@ export function BotBacktestingPage() {
         <button
           onClick={handleRunBacktest}
           className="w-full py-3 rounded-[14px] text-sm font-semibold flex items-center justify-center gap-2"
-          style={{ background: c.primary, color: '#FFF' }}>
+          style={{ background: c.primary, color: '#FFF' }}
+        >
           <Play size={16} />
           Run Backtest
         </button>

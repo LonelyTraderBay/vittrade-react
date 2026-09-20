@@ -21,18 +21,29 @@
 
 import React, { useState } from 'react';
 import {
-  X, AlertTriangle, CheckCircle, Bot, Pause, Play,
-  Settings, Trash2, Plus, BarChart2, Clock, TrendingUp,
-  DollarSign, Activity, Zap, ChevronRight,
+  X,
+  AlertTriangle,
+  CheckCircle,
+  Bot,
+  Pause,
+  Play,
+  Settings,
+  Trash2,
+  Plus,
+  BarChart2,
+  Clock,
+  TrendingUp,
+  DollarSign,
+  Activity,
+  Zap,
+  ChevronRight,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useWebStyles } from '../../hooks/useWebStyles';
 import { fmtSignedUsd, fmtPct } from '../../data/formatNumber';
-import {
-  WEB_FONT, WEB_SPACING, WEB_ICON, WEB_BUTTON,
-} from '../../components/layout/webConstants';
+import { WEB_FONT, WEB_SPACING, WEB_ICON, WEB_BUTTON } from '../../components/layout/webConstants';
 
 /* ═══════════════════════════════════════════
    Data types & mock data
@@ -49,7 +60,8 @@ interface BotStrategy {
   avgReturn: string;
   suitableFor: string;
   params: Array<{
-    key: string; label: string;
+    key: string;
+    label: string;
     type: 'number' | 'select' | 'range';
     options?: string[];
     defaultValue: string;
@@ -59,26 +71,60 @@ interface BotStrategy {
 
 const STRATEGIES: BotStrategy[] = [
   {
-    id: 'dca', name: 'DCA Bot',
+    id: 'dca',
+    name: 'DCA Bot',
     description: 'Dollar Cost Averaging — Mua định kỳ, giảm rủi ro biến động',
-    longDesc: 'DCA Bot tự động mua một lượng cố định theo chu kỳ thời gian, bất kể giá tăng hay giảm. Chiến lược này giảm tác động của biến động giá ngắn hạn.',
-    icon: '📅', color: '#3B82F6', risk: 'low', avgReturn: '+8–15% / năm',
+    longDesc:
+      'DCA Bot tự động mua một lượng cố định theo chu kỳ thời gian, bất kể giá tăng hay giảm. Chiến lược này giảm tác động của biến động giá ngắn hạn.',
+    icon: '📅',
+    color: '#3B82F6',
+    risk: 'low',
+    avgReturn: '+8–15% / năm',
     suitableFor: 'Nhà đầu tư dài hạn, người mới',
     params: [
-      { key: 'pair', label: 'Cặp giao dịch', type: 'select', options: ['BTC/USDT', 'ETH/USDT', 'SOL/USDT', 'BNB/USDT'], defaultValue: 'BTC/USDT' },
+      {
+        key: 'pair',
+        label: 'Cặp giao dịch',
+        type: 'select',
+        options: ['BTC/USDT', 'ETH/USDT', 'SOL/USDT', 'BNB/USDT'],
+        defaultValue: 'BTC/USDT',
+      },
       { key: 'amount', label: 'Mỗi lần mua', type: 'number', defaultValue: '50', unit: 'USDT' },
-      { key: 'interval', label: 'Chu kỳ', type: 'select', options: ['Mỗi giờ', 'Mỗi ngày', 'Mỗi tuần', 'Mỗi tháng'], defaultValue: 'Mỗi ngày' },
-      { key: 'totalBudget', label: 'Ngân sách tổng', type: 'number', defaultValue: '1000', unit: 'USDT' },
+      {
+        key: 'interval',
+        label: 'Chu kỳ',
+        type: 'select',
+        options: ['Mỗi giờ', 'Mỗi ngày', 'Mỗi tuần', 'Mỗi tháng'],
+        defaultValue: 'Mỗi ngày',
+      },
+      {
+        key: 'totalBudget',
+        label: 'Ngân sách tổng',
+        type: 'number',
+        defaultValue: '1000',
+        unit: 'USDT',
+      },
     ],
   },
   {
-    id: 'grid', name: 'Grid Bot',
+    id: 'grid',
+    name: 'Grid Bot',
     description: 'Lưới giá — Mua thấp bán cao tự động trong khoảng giá',
-    longDesc: 'Grid Bot đặt nhiều lệnh mua và bán trong khoảng giá xác định, tự động kiếm lời khi thị trường đi ngang hoặc biến động nhẹ.',
-    icon: '⚡', color: '#F59E0B', risk: 'medium', avgReturn: '+15–40% / năm',
+    longDesc:
+      'Grid Bot đặt nhiều lệnh mua và bán trong khoảng giá xác định, tự động kiếm lời khi thị trường đi ngang hoặc biến động nhẹ.',
+    icon: '⚡',
+    color: '#F59E0B',
+    risk: 'medium',
+    avgReturn: '+15–40% / năm',
     suitableFor: 'Thị trường sideway, trader kinh nghiệm',
     params: [
-      { key: 'pair', label: 'Cặp giao dịch', type: 'select', options: ['BTC/USDT', 'ETH/USDT', 'SOL/USDT'], defaultValue: 'ETH/USDT' },
+      {
+        key: 'pair',
+        label: 'Cặp giao dịch',
+        type: 'select',
+        options: ['BTC/USDT', 'ETH/USDT', 'SOL/USDT'],
+        defaultValue: 'ETH/USDT',
+      },
       { key: 'upperPrice', label: 'Giá trần', type: 'number', defaultValue: '4000', unit: 'USDT' },
       { key: 'lowerPrice', label: 'Giá sàn', type: 'number', defaultValue: '3000', unit: 'USDT' },
       { key: 'gridCount', label: 'Số lưới', type: 'number', defaultValue: '20', unit: 'lưới' },
@@ -86,28 +132,62 @@ const STRATEGIES: BotStrategy[] = [
     ],
   },
   {
-    id: 'martingale', name: 'Martingale Bot',
+    id: 'martingale',
+    name: 'Martingale Bot',
     description: 'Tăng gấp đôi khi thua — Phục hồi nhanh sau drawdown',
-    longDesc: 'Martingale tăng gấp đôi kích thước lệnh sau mỗi lần thua để bù đắp khi thắng. Tiềm năng lợi nhuận cao nhưng rủi ro cũng cao hơn.',
-    icon: '🎯', color: '#8B5CF6', risk: 'high', avgReturn: '+30–80% / năm',
+    longDesc:
+      'Martingale tăng gấp đôi kích thước lệnh sau mỗi lần thua để bù đắp khi thắng. Tiềm năng lợi nhuận cao nhưng rủi ro cũng cao hơn.',
+    icon: '🎯',
+    color: '#8B5CF6',
+    risk: 'high',
+    avgReturn: '+30–80% / năm',
     suitableFor: 'Trader chuyên nghiệp, vốn lớn',
     params: [
-      { key: 'pair', label: 'Cặp giao dịch', type: 'select', options: ['BTC/USDT', 'ETH/USDT', 'SOL/USDT'], defaultValue: 'BTC/USDT' },
+      {
+        key: 'pair',
+        label: 'Cặp giao dịch',
+        type: 'select',
+        options: ['BTC/USDT', 'ETH/USDT', 'SOL/USDT'],
+        defaultValue: 'BTC/USDT',
+      },
       { key: 'baseOrder', label: 'Lệnh cơ bản', type: 'number', defaultValue: '20', unit: 'USDT' },
       { key: 'multiplier', label: 'Hệ số nhân', type: 'number', defaultValue: '2', unit: 'x' },
-      { key: 'maxOrders', label: 'Số lệnh tối đa', type: 'number', defaultValue: '5', unit: 'lệnh' },
+      {
+        key: 'maxOrders',
+        label: 'Số lệnh tối đa',
+        type: 'number',
+        defaultValue: '5',
+        unit: 'lệnh',
+      },
       { key: 'takeProfit', label: 'Take profit', type: 'number', defaultValue: '2', unit: '%' },
     ],
   },
   {
-    id: 'momentum', name: 'Momentum Bot',
+    id: 'momentum',
+    name: 'Momentum Bot',
     description: 'Theo đà thị trường — Mua khi uptrend, bán khi downtrend',
-    longDesc: 'Momentum Bot sử dụng chỉ báo kỹ thuật (RSI, MACD) để xác định xu hướng và tự động vào/ra lệnh theo momentum của thị trường.',
-    icon: '📈', color: '#10B981', risk: 'medium', avgReturn: '+20–50% / năm',
+    longDesc:
+      'Momentum Bot sử dụng chỉ báo kỹ thuật (RSI, MACD) để xác định xu hướng và tự động vào/ra lệnh theo momentum của thị trường.',
+    icon: '📈',
+    color: '#10B981',
+    risk: 'medium',
+    avgReturn: '+20–50% / năm',
     suitableFor: 'Thị trường trending, trader trung cấp',
     params: [
-      { key: 'pair', label: 'Cặp giao dịch', type: 'select', options: ['BTC/USDT', 'ETH/USDT', 'SOL/USDT'], defaultValue: 'BTC/USDT' },
-      { key: 'investment', label: 'Vốn giao dịch', type: 'number', defaultValue: '500', unit: 'USDT' },
+      {
+        key: 'pair',
+        label: 'Cặp giao dịch',
+        type: 'select',
+        options: ['BTC/USDT', 'ETH/USDT', 'SOL/USDT'],
+        defaultValue: 'BTC/USDT',
+      },
+      {
+        key: 'investment',
+        label: 'Vốn giao dịch',
+        type: 'number',
+        defaultValue: '500',
+        unit: 'USDT',
+      },
       { key: 'rsiPeriod', label: 'RSI Period', type: 'number', defaultValue: '14', unit: '' },
       { key: 'stopLoss', label: 'Stop loss', type: 'number', defaultValue: '5', unit: '%' },
       { key: 'takeProfit', label: 'Take profit', type: 'number', defaultValue: '10', unit: '%' },
@@ -139,19 +219,49 @@ interface ActiveBot {
 
 const ACTIVE_BOTS: ActiveBot[] = [
   {
-    id: 'bot1', strategyId: 'dca', strategyName: 'DCA Bot', icon: '📅', color: '#3B82F6',
-    pair: 'BTC/USDT', status: 'running', profit: 84.20, profitPct: 8.42, trades: 47,
-    investment: 1000, startDate: '01/01/2026', runtime: '52 ngày',
+    id: 'bot1',
+    strategyId: 'dca',
+    strategyName: 'DCA Bot',
+    icon: '📅',
+    color: '#3B82F6',
+    pair: 'BTC/USDT',
+    status: 'running',
+    profit: 84.2,
+    profitPct: 8.42,
+    trades: 47,
+    investment: 1000,
+    startDate: '01/01/2026',
+    runtime: '52 ngày',
   },
   {
-    id: 'bot2', strategyId: 'grid', strategyName: 'Grid Bot', icon: '⚡', color: '#F59E0B',
-    pair: 'ETH/USDT', status: 'running', profit: 127.40, profitPct: 25.48, trades: 234,
-    investment: 500, startDate: '15/01/2026', runtime: '38 ngày',
+    id: 'bot2',
+    strategyId: 'grid',
+    strategyName: 'Grid Bot',
+    icon: '⚡',
+    color: '#F59E0B',
+    pair: 'ETH/USDT',
+    status: 'running',
+    profit: 127.4,
+    profitPct: 25.48,
+    trades: 234,
+    investment: 500,
+    startDate: '15/01/2026',
+    runtime: '38 ngày',
   },
   {
-    id: 'bot3', strategyId: 'momentum', strategyName: 'Momentum Bot', icon: '📈', color: '#10B981',
-    pair: 'SOL/USDT', status: 'paused', profit: -12.30, profitPct: -2.46, trades: 18,
-    investment: 500, startDate: '10/02/2026', runtime: '13 ngày',
+    id: 'bot3',
+    strategyId: 'momentum',
+    strategyName: 'Momentum Bot',
+    icon: '📈',
+    color: '#10B981',
+    pair: 'SOL/USDT',
+    status: 'paused',
+    profit: -12.3,
+    profitPct: -2.46,
+    trades: 18,
+    investment: 500,
+    startDate: '10/02/2026',
+    runtime: '13 ngày',
   },
 ];
 
@@ -159,14 +269,18 @@ const ACTIVE_BOTS: ActiveBot[] = [
    Create Bot Dialog (centered modal for desktop)
    ═══════════════════════════════════════════ */
 
-function CreateBotDialog({ strategy, onClose, onCreate }: {
+function CreateBotDialog({
+  strategy,
+  onClose,
+  onCreate,
+}: {
   strategy: BotStrategy;
   onClose: () => void;
   onCreate: () => void;
 }) {
   const c = useThemeColors();
   const [params, setParams] = useState<Record<string, string>>(
-    Object.fromEntries(strategy.params.map(p => [p.key, p.defaultValue]))
+    Object.fromEntries(strategy.params.map((p) => [p.key, p.defaultValue])),
   );
   const [agreed, setAgreed] = useState(false);
 
@@ -186,7 +300,7 @@ function CreateBotDialog({ strategy, onClose, onCreate }: {
           maxHeight: '80vh',
           boxShadow: '0 24px 64px rgba(0,0,0,0.3)',
         }}
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Dialog Header */}
         <div
@@ -200,7 +314,9 @@ function CreateBotDialog({ strategy, onClose, onCreate }: {
             <div
               className="flex items-center justify-center shrink-0"
               style={{
-                width: 48, height: 48, borderRadius: 14,
+                width: 48,
+                height: 48,
+                borderRadius: 14,
                 background: strategy.color + '18',
                 fontSize: 24,
               }}
@@ -220,7 +336,9 @@ function CreateBotDialog({ strategy, onClose, onCreate }: {
             onClick={onClose}
             className="flex items-center justify-center transition-colors"
             style={{
-              width: 36, height: 36, borderRadius: 10,
+              width: 36,
+              height: 36,
+              borderRadius: 10,
               background: c.surface2,
             }}
           >
@@ -246,12 +364,17 @@ function CreateBotDialog({ strategy, onClose, onCreate }: {
             </div>
 
             {/* Params */}
-            {strategy.params.map(param => (
+            {strategy.params.map((param) => (
               <div key={param.key}>
-                <label style={{
-                  color: c.text2, fontSize: WEB_FONT.sm, fontWeight: 500,
-                  display: 'block', marginBottom: 8,
-                }}>
+                <label
+                  style={{
+                    color: c.text2,
+                    fontSize: WEB_FONT.sm,
+                    fontWeight: 500,
+                    display: 'block',
+                    marginBottom: 8,
+                  }}
+                >
                   {param.label}
                   {param.unit && (
                     <span style={{ color: c.text3, fontWeight: 400 }}> ({param.unit})</span>
@@ -259,10 +382,10 @@ function CreateBotDialog({ strategy, onClose, onCreate }: {
                 </label>
                 {param.type === 'select' ? (
                   <div className="flex gap-2 flex-wrap">
-                    {param.options?.map(opt => (
+                    {param.options?.map((opt) => (
                       <button
                         key={opt}
-                        onClick={() => setParams(p => ({ ...p, [param.key]: opt }))}
+                        onClick={() => setParams((p) => ({ ...p, [param.key]: opt }))}
                         style={{
                           padding: '8px 16px',
                           borderRadius: 10,
@@ -294,10 +417,14 @@ function CreateBotDialog({ strategy, onClose, onCreate }: {
                       type="number"
                       inputMode="decimal"
                       value={params[param.key]}
-                      onChange={e => setParams(p => ({ ...p, [param.key]: e.target.value }))}
+                      onChange={(e) => setParams((p) => ({ ...p, [param.key]: e.target.value }))}
                       style={{
-                        background: 'transparent', border: 'none', outline: 'none',
-                        color: c.text1, fontSize: WEB_FONT.md, flex: 1,
+                        background: 'transparent',
+                        border: 'none',
+                        outline: 'none',
+                        color: c.text1,
+                        fontSize: WEB_FONT.md,
+                        flex: 1,
                         fontVariantNumeric: 'tabular-nums',
                       }}
                     />
@@ -322,7 +449,8 @@ function CreateBotDialog({ strategy, onClose, onCreate }: {
               >
                 <AlertTriangle size={WEB_ICON.sm} color="#EF4444" className="shrink-0 mt-0.5" />
                 <p style={{ color: '#EF4444', fontSize: WEB_FONT.sm, lineHeight: 1.6, margin: 0 }}>
-                  Chiến lược này có rủi ro cao. Bạn có thể mất nhiều hơn vốn ban đầu nếu thị trường biến động mạnh.
+                  Chiến lược này có rủi ro cao. Bạn có thể mất nhiều hơn vốn ban đầu nếu thị trường
+                  biến động mạnh.
                 </p>
               </div>
             )}
@@ -331,12 +459,21 @@ function CreateBotDialog({ strategy, onClose, onCreate }: {
             <button
               onClick={() => setAgreed(!agreed)}
               className="flex items-start gap-3"
-              style={{ cursor: 'pointer', background: 'none', border: 'none', padding: 0, textAlign: 'left' }}
+              style={{
+                cursor: 'pointer',
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                textAlign: 'left',
+              }}
             >
               <div
                 className="flex items-center justify-center shrink-0"
                 style={{
-                  width: 22, height: 22, borderRadius: 7, marginTop: 1,
+                  width: 22,
+                  height: 22,
+                  borderRadius: 7,
+                  marginTop: 1,
                   border: `2px solid ${agreed ? strategy.color : c.border}`,
                   background: agreed ? strategy.color : 'transparent',
                   transition: 'all 0.15s ease',
@@ -361,7 +498,12 @@ function CreateBotDialog({ strategy, onClose, onCreate }: {
           }}
         >
           <button
-            onClick={() => { if (agreed) { onCreate(); onClose(); } }}
+            onClick={() => {
+              if (agreed) {
+                onCreate();
+                onClose();
+              }
+            }}
             disabled={!agreed}
             style={{
               width: '100%',
@@ -391,7 +533,13 @@ function CreateBotDialog({ strategy, onClose, onCreate }: {
    Summary Stat Card
    ═══════════════════════════════════════════ */
 
-function SummaryStatCard({ icon: Icon, label, value, valueColor, subValue }: {
+function SummaryStatCard({
+  icon: Icon,
+  label,
+  value,
+  valueColor,
+  subValue,
+}: {
   icon: React.ElementType;
   label: string;
   value: string;
@@ -414,35 +562,49 @@ function SummaryStatCard({ icon: Icon, label, value, valueColor, subValue }: {
       <div
         className="flex items-center justify-center shrink-0"
         style={{
-          width: 44, height: 44, borderRadius: 12,
+          width: 44,
+          height: 44,
+          borderRadius: 12,
           background: (valueColor || c.text1) + '12',
         }}
       >
         <Icon size={WEB_ICON.lg} color={valueColor || c.text2} />
       </div>
       <div className="min-w-0">
-        <p style={{
-          color: c.text3, fontSize: WEB_FONT.xs, fontWeight: 600,
-          letterSpacing: 0.3, textTransform: 'uppercase' as const,
-          margin: 0, marginBottom: 4,
-        }}>
+        <p
+          style={{
+            color: c.text3,
+            fontSize: WEB_FONT.xs,
+            fontWeight: 600,
+            letterSpacing: 0.3,
+            textTransform: 'uppercase' as const,
+            margin: 0,
+            marginBottom: 4,
+          }}
+        >
           {label}
         </p>
-        <p style={{
-          color: valueColor || c.text1,
-          fontSize: WEB_FONT.xl,
-          fontWeight: 700,
-          fontVariantNumeric: 'tabular-nums',
-          margin: 0,
-          lineHeight: 1.2,
-        }}>
+        <p
+          style={{
+            color: valueColor || c.text1,
+            fontSize: WEB_FONT.xl,
+            fontWeight: 700,
+            fontVariantNumeric: 'tabular-nums',
+            margin: 0,
+            lineHeight: 1.2,
+          }}
+        >
           {value}
         </p>
         {subValue && (
-          <p style={{
-            color: c.text3, fontSize: WEB_FONT.xs,
-            margin: 0, marginTop: 2,
-          }}>
+          <p
+            style={{
+              color: c.text3,
+              fontSize: WEB_FONT.xs,
+              margin: 0,
+              marginTop: 2,
+            }}
+          >
             {subValue}
           </p>
         )}
@@ -455,7 +617,11 @@ function SummaryStatCard({ icon: Icon, label, value, valueColor, subValue }: {
    Bot Card (desktop)
    ═══════════════════════════════════════════ */
 
-function BotCard({ bot, onToggle, onDelete }: {
+function BotCard({
+  bot,
+  onToggle,
+  onDelete,
+}: {
   bot: ActiveBot;
   onToggle: () => void;
   onDelete: () => void;
@@ -488,7 +654,9 @@ function BotCard({ bot, onToggle, onDelete }: {
           <div
             className="flex items-center justify-center shrink-0"
             style={{
-              width: 42, height: 42, borderRadius: 12,
+              width: 42,
+              height: 42,
+              borderRadius: 12,
               background: bot.color + '15',
               fontSize: 20,
             }}
@@ -502,9 +670,12 @@ function BotCard({ bot, onToggle, onDelete }: {
               </span>
               <span
                 style={{
-                  padding: '3px 10px', borderRadius: 8,
-                  fontSize: WEB_FONT.xs, fontWeight: 700,
-                  background: bot.color + '18', color: bot.color,
+                  padding: '3px 10px',
+                  borderRadius: 8,
+                  fontSize: WEB_FONT.xs,
+                  fontWeight: 700,
+                  background: bot.color + '18',
+                  color: bot.color,
                 }}
               >
                 {bot.pair}
@@ -513,51 +684,61 @@ function BotCard({ bot, onToggle, onDelete }: {
             <div className="flex items-center gap-2" style={{ marginTop: 3 }}>
               <div
                 style={{
-                  width: 7, height: 7, borderRadius: '50%',
+                  width: 7,
+                  height: 7,
+                  borderRadius: '50%',
                   background: isRunning ? '#10B981' : '#F59E0B',
                   boxShadow: isRunning ? '0 0 8px rgba(16,185,129,0.5)' : 'none',
                 }}
               />
-              <span style={{
-                color: isRunning ? '#10B981' : '#F59E0B',
-                fontSize: WEB_FONT.sm, fontWeight: 600,
-              }}>
+              <span
+                style={{
+                  color: isRunning ? '#10B981' : '#F59E0B',
+                  fontSize: WEB_FONT.sm,
+                  fontWeight: 600,
+                }}
+              >
                 {isRunning ? 'Đang chạy' : 'Tạm dừng'}
               </span>
-              <span style={{ color: c.text3, fontSize: WEB_FONT.sm }}>
-                · {bot.runtime}
-              </span>
+              <span style={{ color: c.text3, fontSize: WEB_FONT.sm }}>· {bot.runtime}</span>
             </div>
           </div>
         </div>
 
         {/* P/L */}
         <div className="text-right shrink-0" style={{ marginLeft: 16 }}>
-          <p style={{
-            color: profitColor, fontSize: WEB_FONT.lg, fontWeight: 700,
-            fontVariantNumeric: 'tabular-nums', margin: 0,
-          }}>
+          <p
+            style={{
+              color: profitColor,
+              fontSize: WEB_FONT.lg,
+              fontWeight: 700,
+              fontVariantNumeric: 'tabular-nums',
+              margin: 0,
+            }}
+          >
             {fmtSignedUsd(bot.profit)}
           </p>
-          <p style={{
-            color: profitColor, fontSize: WEB_FONT.sm,
-            fontVariantNumeric: 'tabular-nums', margin: 0, marginTop: 2,
-          }}>
+          <p
+            style={{
+              color: profitColor,
+              fontSize: WEB_FONT.sm,
+              fontVariantNumeric: 'tabular-nums',
+              margin: 0,
+              marginTop: 2,
+            }}
+          >
             {fmtPct(bot.profitPct)}
           </p>
         </div>
       </div>
 
       {/* Card Body — Stats Row */}
-      <div
-        className="grid grid-cols-3 gap-3"
-        style={{ padding: '14px 20px' }}
-      >
+      <div className="grid grid-cols-3 gap-3" style={{ padding: '14px 20px' }}>
         {[
           { label: 'Đầu tư', value: `$${bot.investment.toLocaleString()}`, icon: DollarSign },
           { label: 'Số lệnh', value: `${bot.trades}`, icon: Activity },
           { label: 'Ngày bắt đầu', value: bot.startDate, icon: Clock },
-        ].map(s => {
+        ].map((s) => {
           const SIcon = s.icon;
           return (
             <div
@@ -570,16 +751,24 @@ function BotCard({ bot, onToggle, onDelete }: {
             >
               <div className="flex items-center gap-1.5" style={{ marginBottom: 6 }}>
                 <SIcon size={12} color={c.text3} />
-                <span style={{
-                  color: c.text3, fontSize: WEB_FONT.xs, fontWeight: 500,
-                }}>
+                <span
+                  style={{
+                    color: c.text3,
+                    fontSize: WEB_FONT.xs,
+                    fontWeight: 500,
+                  }}
+                >
                   {s.label}
                 </span>
               </div>
-              <span style={{
-                color: c.text1, fontSize: WEB_FONT.base, fontWeight: 600,
-                fontVariantNumeric: 'tabular-nums',
-              }}>
+              <span
+                style={{
+                  color: c.text1,
+                  fontSize: WEB_FONT.base,
+                  fontWeight: 600,
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
                 {s.value}
               </span>
             </div>
@@ -656,10 +845,7 @@ function BotCard({ bot, onToggle, onDelete }: {
    Strategy Card (desktop)
    ═══════════════════════════════════════════ */
 
-function StrategyCard({ strategy, onSelect }: {
-  strategy: BotStrategy;
-  onSelect: () => void;
-}) {
+function StrategyCard({ strategy, onSelect }: { strategy: BotStrategy; onSelect: () => void }) {
   const c = useThemeColors();
   const risk = RISK_CONFIG[strategy.risk];
 
@@ -680,7 +866,9 @@ function StrategyCard({ strategy, onSelect }: {
           <div
             className="flex items-center justify-center shrink-0"
             style={{
-              width: 52, height: 52, borderRadius: 14,
+              width: 52,
+              height: 52,
+              borderRadius: 14,
               background: strategy.color + '15',
               border: `1.5px solid ${strategy.color}30`,
               fontSize: 26,
@@ -695,18 +883,25 @@ function StrategyCard({ strategy, onSelect }: {
               </span>
               <span
                 style={{
-                  padding: '4px 10px', borderRadius: 8,
-                  fontSize: WEB_FONT.xs, fontWeight: 700,
-                  background: risk.bg, color: risk.color,
+                  padding: '4px 10px',
+                  borderRadius: 8,
+                  fontSize: WEB_FONT.xs,
+                  fontWeight: 700,
+                  background: risk.bg,
+                  color: risk.color,
                 }}
               >
                 Rủi ro: {risk.label}
               </span>
             </div>
-            <p style={{
-              color: c.text2, fontSize: WEB_FONT.base,
-              lineHeight: 1.5, margin: 0,
-            }}>
+            <p
+              style={{
+                color: c.text2,
+                fontSize: WEB_FONT.base,
+                lineHeight: 1.5,
+                margin: 0,
+              }}
+            >
               {strategy.description}
             </p>
           </div>
@@ -715,28 +910,50 @@ function StrategyCard({ strategy, onSelect }: {
         {/* Stats */}
         <div className="grid grid-cols-2 gap-3" style={{ marginBottom: 16 }}>
           <div style={{ background: c.surface2, borderRadius: 10, padding: '12px 14px' }}>
-            <p style={{
-              color: c.text3, fontSize: WEB_FONT.xs, fontWeight: 500,
-              margin: 0, marginBottom: 4, textTransform: 'uppercase' as const,
-            }}>
+            <p
+              style={{
+                color: c.text3,
+                fontSize: WEB_FONT.xs,
+                fontWeight: 500,
+                margin: 0,
+                marginBottom: 4,
+                textTransform: 'uppercase' as const,
+              }}
+            >
               Lợi nhuận kỳ vọng
             </p>
-            <p style={{
-              color: '#10B981', fontSize: WEB_FONT.md, fontWeight: 700, margin: 0,
-            }}>
+            <p
+              style={{
+                color: '#10B981',
+                fontSize: WEB_FONT.md,
+                fontWeight: 700,
+                margin: 0,
+              }}
+            >
               {strategy.avgReturn}
             </p>
           </div>
           <div style={{ background: c.surface2, borderRadius: 10, padding: '12px 14px' }}>
-            <p style={{
-              color: c.text3, fontSize: WEB_FONT.xs, fontWeight: 500,
-              margin: 0, marginBottom: 4, textTransform: 'uppercase' as const,
-            }}>
+            <p
+              style={{
+                color: c.text3,
+                fontSize: WEB_FONT.xs,
+                fontWeight: 500,
+                margin: 0,
+                marginBottom: 4,
+                textTransform: 'uppercase' as const,
+              }}
+            >
               Phù hợp với
             </p>
-            <p style={{
-              color: c.text1, fontSize: WEB_FONT.base, fontWeight: 600, margin: 0,
-            }}>
+            <p
+              style={{
+                color: c.text1,
+                fontSize: WEB_FONT.base,
+                fontWeight: 600,
+                margin: 0,
+              }}
+            >
               {strategy.suitableFor}
             </p>
           </div>
@@ -745,12 +962,14 @@ function StrategyCard({ strategy, onSelect }: {
         {/* Param tags */}
         <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: 18 }}>
           <span style={{ color: c.text3, fontSize: WEB_FONT.sm }}>Thông số:</span>
-          {strategy.params.slice(0, 4).map(p => (
+          {strategy.params.slice(0, 4).map((p) => (
             <span
               key={p.key}
               style={{
-                padding: '4px 10px', borderRadius: 8,
-                fontSize: WEB_FONT.xs, fontWeight: 500,
+                padding: '4px 10px',
+                borderRadius: 8,
+                fontSize: WEB_FONT.xs,
+                fontWeight: 500,
                 background: strategy.color + '0D',
                 color: strategy.color,
               }}
@@ -798,12 +1017,14 @@ export function WebTradingBotsPage() {
 
   const totalProfit = bots.reduce((s, b) => s + b.profit, 0);
   const totalInvestment = bots.reduce((s, b) => s + b.investment, 0);
-  const runningCount = bots.filter(b => b.status === 'running').length;
+  const runningCount = bots.filter((b) => b.status === 'running').length;
 
   const toggleBot = (id: string) => {
-    setBots(prev => prev.map(b =>
-      b.id === id ? { ...b, status: b.status === 'running' ? 'paused' : 'running' } : b
-    ));
+    setBots((prev) =>
+      prev.map((b) =>
+        b.id === id ? { ...b, status: b.status === 'running' ? 'paused' : 'running' } : b,
+      ),
+    );
   };
 
   const tabs = [
@@ -818,7 +1039,10 @@ export function WebTradingBotsPage() {
         <CreateBotDialog
           strategy={selectedStrategy}
           onClose={() => setSelectedStrategy(null)}
-          onCreate={() => { setShowSuccess(true); setTimeout(() => setShowSuccess(false), 3000); }}
+          onCreate={() => {
+            setShowSuccess(true);
+            setTimeout(() => setShowSuccess(false), 3000);
+          }}
         />
       )}
 
@@ -827,7 +1051,8 @@ export function WebTradingBotsPage() {
         <div
           className="fixed z-50 flex items-center gap-3"
           style={{
-            top: 80, right: 40,
+            top: 80,
+            right: 40,
             background: c.surface,
             border: '1px solid rgba(16,185,129,0.3)',
             boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
@@ -856,7 +1081,6 @@ export function WebTradingBotsPage() {
 
       {/* Content wrapper */}
       <div style={{ padding: '24px 0 40px' }}>
-
         {/* ─── Summary Stats Bar ─── */}
         <div
           className="grid gap-4"
@@ -880,7 +1104,7 @@ export function WebTradingBotsPage() {
             label="Tổng lợi nhuận"
             value={fmtSignedUsd(totalProfit)}
             valueColor={totalProfit >= 0 ? '#10B981' : '#EF4444'}
-            subValue={fmtPct(totalProfit / totalInvestment * 100)}
+            subValue={fmtPct((totalProfit / totalInvestment) * 100)}
           />
           <SummaryStatCard
             icon={Activity}
@@ -902,7 +1126,7 @@ export function WebTradingBotsPage() {
             display: 'inline-flex',
           }}
         >
-          {tabs.map(t => {
+          {tabs.map((t) => {
             const active = tab === t.id;
             const TIcon = t.icon;
             return (
@@ -945,13 +1169,23 @@ export function WebTradingBotsPage() {
                 <div
                   className="flex items-center justify-center"
                   style={{
-                    width: 64, height: 64, borderRadius: 16,
-                    background: c.surface2, marginBottom: 16,
+                    width: 64,
+                    height: 64,
+                    borderRadius: 16,
+                    background: c.surface2,
+                    marginBottom: 16,
                   }}
                 >
                   <Bot size={32} color={c.text3} />
                 </div>
-                <p style={{ color: c.text2, fontSize: WEB_FONT.lg, fontWeight: 600, marginBottom: 4 }}>
+                <p
+                  style={{
+                    color: c.text2,
+                    fontSize: WEB_FONT.lg,
+                    fontWeight: 600,
+                    marginBottom: 4,
+                  }}
+                >
                   Chưa có bot nào đang chạy
                 </p>
                 <p style={{ color: c.text3, fontSize: WEB_FONT.base, marginBottom: 20 }}>
@@ -983,12 +1217,12 @@ export function WebTradingBotsPage() {
                   className="grid gap-5"
                   style={{ gridTemplateColumns: 'repeat(2, 1fr)', marginBottom: 20 }}
                 >
-                  {bots.map(bot => (
+                  {bots.map((bot) => (
                     <BotCard
                       key={bot.id}
                       bot={bot}
                       onToggle={() => toggleBot(bot.id)}
-                      onDelete={() => setBots(prev => prev.filter(b => b.id !== bot.id))}
+                      onDelete={() => setBots((prev) => prev.filter((b) => b.id !== bot.id))}
                     />
                   ))}
 
@@ -1008,15 +1242,15 @@ export function WebTradingBotsPage() {
                     <div
                       className="flex items-center justify-center"
                       style={{
-                        width: 48, height: 48, borderRadius: 14,
+                        width: 48,
+                        height: 48,
+                        borderRadius: 14,
                         background: 'rgba(59,130,246,0.08)',
                       }}
                     >
                       <Plus size={WEB_ICON.lg} color="#3B82F6" />
                     </div>
-                    <span style={{ fontSize: WEB_FONT.md, fontWeight: 600 }}>
-                      Thêm Bot mới
-                    </span>
+                    <span style={{ fontSize: WEB_FONT.md, fontWeight: 600 }}>Thêm Bot mới</span>
                   </button>
                 </div>
               </div>
@@ -1049,7 +1283,7 @@ export function WebTradingBotsPage() {
                   { label: 'Grid Bot', value: '+27.1%', color: '#F59E0B', icon: '⚡' },
                   { label: 'Momentum', value: '+18.3%', color: '#10B981', icon: '📈' },
                   { label: 'Martingale', value: '+42.7%', color: '#8B5CF6', icon: '🎯' },
-                ].map(s => (
+                ].map((s) => (
                   <div
                     key={s.label}
                     className="flex items-center gap-3"
@@ -1057,10 +1291,15 @@ export function WebTradingBotsPage() {
                   >
                     <span style={{ fontSize: 22 }}>{s.icon}</span>
                     <div>
-                      <p style={{
-                        color: s.color, fontSize: WEB_FONT.lg, fontWeight: 700,
-                        fontVariantNumeric: 'tabular-nums', margin: 0,
-                      }}>
+                      <p
+                        style={{
+                          color: s.color,
+                          fontSize: WEB_FONT.lg,
+                          fontWeight: 700,
+                          fontVariantNumeric: 'tabular-nums',
+                          margin: 0,
+                        }}
+                      >
                         {s.value}
                       </p>
                       <p style={{ color: c.text3, fontSize: WEB_FONT.xs, margin: 0, marginTop: 2 }}>
@@ -1077,7 +1316,7 @@ export function WebTradingBotsPage() {
               className="grid gap-5"
               style={{ gridTemplateColumns: 'repeat(2, 1fr)', marginBottom: 24 }}
             >
-              {STRATEGIES.map(strategy => (
+              {STRATEGIES.map((strategy) => (
                 <StrategyCard
                   key={strategy.id}
                   strategy={strategy}
@@ -1098,10 +1337,9 @@ export function WebTradingBotsPage() {
             >
               <AlertTriangle size={WEB_ICON.md} color="#F59E0B" className="shrink-0 mt-0.5" />
               <p style={{ color: c.text2, fontSize: WEB_FONT.base, lineHeight: 1.6, margin: 0 }}>
-                <span style={{ color: '#F59E0B', fontWeight: 700 }}>Lưu ý quan trọng:</span>{' '}
-                Bot giao dịch không đảm bảo lợi nhuận.
-                Hiệu suất trong quá khứ không đại diện cho kết quả tương lai.
-                Chỉ đầu tư số tiền bạn có thể chấp nhận mất.
+                <span style={{ color: '#F59E0B', fontWeight: 700 }}>Lưu ý quan trọng:</span> Bot
+                giao dịch không đảm bảo lợi nhuận. Hiệu suất trong quá khứ không đại diện cho kết
+                quả tương lai. Chỉ đầu tư số tiền bạn có thể chấp nhận mất.
               </p>
             </div>
           </div>

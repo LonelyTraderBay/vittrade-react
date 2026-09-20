@@ -2,19 +2,19 @@
  * ══════════════════════════════════════════════════════════════
  *  PerformanceAttributionPage — Phase 2: Deep Analytics
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Returns attribution (alpha vs beta)
  * - Drawdown analysis with underwater chart
  * - Monte Carlo simulation projections
  * - Correlation matrix with provider
  * - Rolling performance metrics
- * 
+ *
  * Compliance:
  * - No misleading attribution (can't claim skill for market gains)
  * - Confidence intervals on projections
  * - Historical context required
- * 
+ *
  * Guidelines:
  * - PageLayout + TabBar pattern
  * - Heavy use of Recharts for visualizations
@@ -23,19 +23,40 @@
 
 import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router';
-import { 
-  TrendingUp, TrendingDown, Activity, Target, BarChart3,
-  Info, AlertCircle, Calculator, Zap, Eye
+import {
+  TrendingUp,
+  TrendingDown,
+  Activity,
+  Target,
+  BarChart3,
+  Info,
+  AlertCircle,
+  Calculator,
+  Zap,
+  Eye,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { TabBar } from '../../components/layout/TabBar';
 import { useThemeColors } from '../../hooks/useThemeColors';
-import { 
-  LineChart, Line, AreaChart, Area, BarChart, Bar, ScatterChart, Scatter,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
-  ReferenceLine, Cell
+import {
+  LineChart,
+  Line,
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  ScatterChart,
+  Scatter,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+  ReferenceLine,
+  Cell,
 } from 'recharts';
 
 type TabType = 'attribution' | 'drawdown' | 'monte-carlo' | 'correlation';
@@ -45,7 +66,7 @@ const RETURNS_DATA = Array.from({ length: 30 }, (_, i) => {
   const marketReturn = (Math.random() - 0.4) * 3;
   const alpha = (Math.random() - 0.5) * 2;
   const totalReturn = marketReturn + alpha;
-  
+
   return {
     day: i + 1,
     market: marketReturn,
@@ -74,7 +95,7 @@ const DRAWDOWN_DATA = Array.from({ length: 30 }, (_, i) => {
   const equity = 5000 + (650 / 30) * i + Math.random() * 200 - 100;
   const peak = Math.max(...RETURNS_DATA.slice(0, i + 1).map((d: any) => 5000 + d.cumTotal * 50));
   const drawdown = ((equity - peak) / peak) * 100;
-  
+
   return {
     day: i + 1,
     equity: equity,
@@ -87,7 +108,7 @@ const MONTE_CARLO_PATHS = Array.from({ length: 50 }, (_, pathIdx) => {
   return Array.from({ length: 30 }, (_, day) => ({
     day: day + 1,
     path: pathIdx,
-    value: 5000 * Math.exp((0.13 / 30 * day) + (Math.random() - 0.5) * 0.3),
+    value: 5000 * Math.exp((0.13 / 30) * day + (Math.random() - 0.5) * 0.3),
   }));
 });
 
@@ -108,7 +129,7 @@ export function PerformanceAttributionPage() {
   const { copyId } = useParams();
   const c = useThemeColors();
   const navigate = useNavigate();
-  
+
   const [activeTab, setActiveTab] = useState<TabType>('attribution');
 
   // Calculate metrics
@@ -116,11 +137,11 @@ export function PerformanceAttributionPage() {
     const total = RETURNS_DATA[RETURNS_DATA.length - 1].cumTotal;
     const market = RETURNS_DATA[RETURNS_DATA.length - 1].cumMarket;
     const alphaVal = RETURNS_DATA[RETURNS_DATA.length - 1].cumAlpha;
-    
+
     // Simple beta calculation
     const betaVal = 1.15;
     const rSquaredVal = 0.72;
-    
+
     return {
       totalReturn: total,
       alpha: alphaVal,
@@ -129,11 +150,13 @@ export function PerformanceAttributionPage() {
     };
   }, []);
 
-  const maxDD = Math.min(...DRAWDOWN_DATA.map(d => d.drawdown));
-  const avgDD = DRAWDOWN_DATA.filter(d => d.drawdown < 0).reduce((sum, d) => sum + d.drawdown, 0) / DRAWDOWN_DATA.filter(d => d.drawdown < 0).length;
+  const maxDD = Math.min(...DRAWDOWN_DATA.map((d) => d.drawdown));
+  const avgDD =
+    DRAWDOWN_DATA.filter((d) => d.drawdown < 0).reduce((sum, d) => sum + d.drawdown, 0) /
+    DRAWDOWN_DATA.filter((d) => d.drawdown < 0).length;
 
   // Monte Carlo stats
-  const mcPaths = MONTE_CARLO_PATHS.map(path => path[path.length - 1].value);
+  const mcPaths = MONTE_CARLO_PATHS.map((path) => path[path.length - 1].value);
   const mcMedian = mcPaths.sort((a, b) => a - b)[Math.floor(mcPaths.length / 2)];
   const mc5th = mcPaths.sort((a, b) => a - b)[Math.floor(mcPaths.length * 0.05)];
   const mc95th = mcPaths.sort((a, b) => a - b)[Math.floor(mcPaths.length * 0.95)];
@@ -145,7 +168,10 @@ export function PerformanceAttributionPage() {
       <PageContent gap="relaxed">
         {/* Summary Cards */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="p-3 rounded-xl" style={{ background: c.surface, border: `1px solid ${c.border}` }}>
+          <div
+            className="p-3 rounded-xl"
+            style={{ background: c.surface, border: `1px solid ${c.border}` }}
+          >
             <p style={{ color: c.text3, fontSize: 10, marginBottom: 4 }}>Total Return</p>
             <p style={{ color: '#10B981', fontSize: 18, fontWeight: 700, marginBottom: 2 }}>
               +{totalReturn.toFixed(1)}%
@@ -153,15 +179,29 @@ export function PerformanceAttributionPage() {
             <p style={{ color: c.text3, fontSize: 9 }}>30 ngày</p>
           </div>
 
-          <div className="p-3 rounded-xl" style={{ background: c.surface, border: `1px solid ${c.border}` }}>
+          <div
+            className="p-3 rounded-xl"
+            style={{ background: c.surface, border: `1px solid ${c.border}` }}
+          >
             <p style={{ color: c.text3, fontSize: 10, marginBottom: 4 }}>Alpha (Skill)</p>
-            <p style={{ color: alpha >= 0 ? '#10B981' : '#EF4444', fontSize: 18, fontWeight: 700, marginBottom: 2 }}>
-              {alpha >= 0 ? '+' : ''}{alpha.toFixed(1)}%
+            <p
+              style={{
+                color: alpha >= 0 ? '#10B981' : '#EF4444',
+                fontSize: 18,
+                fontWeight: 700,
+                marginBottom: 2,
+              }}
+            >
+              {alpha >= 0 ? '+' : ''}
+              {alpha.toFixed(1)}%
             </p>
             <p style={{ color: c.text3, fontSize: 9 }}>vs market</p>
           </div>
 
-          <div className="p-3 rounded-xl" style={{ background: c.surface, border: `1px solid ${c.border}` }}>
+          <div
+            className="p-3 rounded-xl"
+            style={{ background: c.surface, border: `1px solid ${c.border}` }}
+          >
             <p style={{ color: c.text3, fontSize: 10, marginBottom: 4 }}>Beta (Market)</p>
             <p style={{ color: c.text1, fontSize: 18, fontWeight: 700, marginBottom: 2 }}>
               {beta.toFixed(2)}
@@ -169,7 +209,10 @@ export function PerformanceAttributionPage() {
             <p style={{ color: c.text3, fontSize: 9 }}>sensitivity</p>
           </div>
 
-          <div className="p-3 rounded-xl" style={{ background: c.surface, border: `1px solid ${c.border}` }}>
+          <div
+            className="p-3 rounded-xl"
+            style={{ background: c.surface, border: `1px solid ${c.border}` }}
+          >
             <p style={{ color: c.text3, fontSize: 10, marginBottom: 4 }}>R² (Fit)</p>
             <p style={{ color: c.text1, fontSize: 18, fontWeight: 700, marginBottom: 2 }}>
               {(rSquared * 100).toFixed(0)}%
@@ -199,13 +242,8 @@ export function PerformanceAttributionPage() {
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={RETURNS_DATA} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
                     <CartesianGrid key="grid-ret" strokeDasharray="3 3" stroke={c.border} />
-                    <XAxis 
-                      key="x-ret"
-                      dataKey="day" 
-                      stroke={c.text3}
-                      style={{ fontSize: 10 }}
-                    />
-                    <YAxis 
+                    <XAxis key="x-ret" dataKey="day" stroke={c.text3} style={{ fontSize: 10 }} />
+                    <YAxis
                       key="y-ret"
                       stroke={c.text3}
                       style={{ fontSize: 10 }}
@@ -221,22 +259,22 @@ export function PerformanceAttributionPage() {
                       formatter={(value: any) => `${value.toFixed(2)}%`}
                     />
                     <Legend key="legend-ret" wrapperStyle={{ fontSize: 11 }} />
-                    <Area 
+                    <Area
                       key="area-market"
-                      type="monotone" 
-                      dataKey="cumMarket" 
+                      type="monotone"
+                      dataKey="cumMarket"
                       stackId="1"
-                      stroke="#6B7280" 
+                      stroke="#6B7280"
                       fill="#6B7280"
                       fillOpacity={0.3}
                       name="Market (Beta)"
                     />
-                    <Area 
+                    <Area
                       key="area-alpha"
-                      type="monotone" 
-                      dataKey="cumAlpha" 
+                      type="monotone"
+                      dataKey="cumAlpha"
                       stackId="1"
-                      stroke="#8B5CF6" 
+                      stroke="#8B5CF6"
                       fill="#8B5CF6"
                       fillOpacity={0.5}
                       name="Alpha (Skill)"
@@ -245,7 +283,10 @@ export function PerformanceAttributionPage() {
                 </ResponsiveContainer>
               </div>
 
-              <div className="p-3 rounded-xl" style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}>
+              <div
+                className="p-3 rounded-xl"
+                style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}
+              >
                 <div className="flex items-start gap-2">
                   <Info size={14} color={c.primary} className="shrink-0 mt-0.5" />
                   <div>
@@ -253,9 +294,10 @@ export function PerformanceAttributionPage() {
                       Giải thích
                     </p>
                     <p style={{ color: c.primary, fontSize: 10, lineHeight: 1.5 }}>
-                      <strong>Alpha:</strong> Phần lợi nhuận do kỹ năng provider (không phụ thuộc thị trường).{' '}
-                      <strong>Beta:</strong> Phần lợi nhuận do thị trường chung tăng/giảm.{' '}
-                      Beta {beta.toFixed(2)} nghĩa là khi thị trường +1%, bạn +{beta.toFixed(2)}%.
+                      <strong>Alpha:</strong> Phần lợi nhuận do kỹ năng provider (không phụ thuộc
+                      thị trường). <strong>Beta:</strong> Phần lợi nhuận do thị trường chung
+                      tăng/giảm. Beta {beta.toFixed(2)} nghĩa là khi thị trường +1%, bạn +
+                      {beta.toFixed(2)}%.
                     </p>
                   </div>
                 </div>
@@ -271,11 +313,11 @@ export function PerformanceAttributionPage() {
                     </span>
                   </div>
                   <div className="w-full h-2 rounded-full" style={{ background: c.border }}>
-                    <div 
+                    <div
                       className="h-full rounded-full"
-                      style={{ 
+                      style={{
                         background: '#6B7280',
-                        width: `${Math.abs(RETURNS_DATA[RETURNS_DATA.length - 1].cumMarket / totalReturn) * 100}%`
+                        width: `${Math.abs(RETURNS_DATA[RETURNS_DATA.length - 1].cumMarket / totalReturn) * 100}%`,
                       }}
                     />
                   </div>
@@ -285,15 +327,16 @@ export function PerformanceAttributionPage() {
                   <div className="flex justify-between items-center mb-2">
                     <span style={{ color: c.text2, fontSize: 11 }}>Skill contribution (Alpha)</span>
                     <span style={{ color: '#8B5CF6', fontSize: 13, fontWeight: 700 }}>
-                      {alpha >= 0 ? '+' : ''}{alpha.toFixed(1)}%
+                      {alpha >= 0 ? '+' : ''}
+                      {alpha.toFixed(1)}%
                     </span>
                   </div>
                   <div className="w-full h-2 rounded-full" style={{ background: c.border }}>
-                    <div 
+                    <div
                       className="h-full rounded-full"
-                      style={{ 
+                      style={{
                         background: '#8B5CF6',
-                        width: `${Math.abs(alpha / totalReturn) * 100}%`
+                        width: `${Math.abs(alpha / totalReturn) * 100}%`,
                       }}
                     />
                   </div>
@@ -308,15 +351,13 @@ export function PerformanceAttributionPage() {
             <PageSection label="Underwater Chart" accentColor="#EF4444">
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={DRAWDOWN_DATA} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+                  <AreaChart
+                    data={DRAWDOWN_DATA}
+                    margin={{ top: 5, right: 10, left: 0, bottom: 5 }}
+                  >
                     <CartesianGrid key="grid-dd" strokeDasharray="3 3" stroke={c.border} />
-                    <XAxis 
-                      key="x-dd"
-                      dataKey="day" 
-                      stroke={c.text3}
-                      style={{ fontSize: 10 }}
-                    />
-                    <YAxis 
+                    <XAxis key="x-dd" dataKey="day" stroke={c.text3} style={{ fontSize: 10 }} />
+                    <YAxis
                       key="y-dd"
                       stroke={c.text3}
                       style={{ fontSize: 10 }}
@@ -333,11 +374,11 @@ export function PerformanceAttributionPage() {
                       formatter={(value: any) => `${value.toFixed(2)}%`}
                     />
                     <ReferenceLine key="ref-dd-0" y={0} stroke={c.text3} strokeDasharray="3 3" />
-                    <Area 
+                    <Area
                       key="area-dd"
-                      type="monotone" 
-                      dataKey="drawdown" 
-                      stroke="#EF4444" 
+                      type="monotone"
+                      dataKey="drawdown"
+                      stroke="#EF4444"
                       fill="#EF4444"
                       fillOpacity={0.3}
                     />
@@ -346,7 +387,10 @@ export function PerformanceAttributionPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <div className="p-3 rounded-xl" style={{ background: '#FEF2F2', border: '1px solid #EF4444' }}>
+                <div
+                  className="p-3 rounded-xl"
+                  style={{ background: '#FEF2F2', border: '1px solid #EF4444' }}
+                >
                   <p style={{ color: '#991B1B', fontSize: 10, marginBottom: 4 }}>Max Drawdown</p>
                   <p style={{ color: '#EF4444', fontSize: 18, fontWeight: 700 }}>
                     {maxDD.toFixed(2)}%
@@ -360,12 +404,15 @@ export function PerformanceAttributionPage() {
                 </div>
               </div>
 
-              <div className="p-3 rounded-xl" style={{ background: c.warningBg, border: `1px solid ${c.warningBorder}` }}>
+              <div
+                className="p-3 rounded-xl"
+                style={{ background: c.warningBg, border: `1px solid ${c.warningBorder}` }}
+              >
                 <div className="flex items-start gap-2">
                   <AlertCircle size={14} color={c.warningText} className="shrink-0 mt-0.5" />
                   <p style={{ color: c.warningText, fontSize: 10, lineHeight: 1.5 }}>
-                    Underwater chart hiển thị khoảng cách từ đỉnh lịch sử. 
-                    Thời gian recovery dài có thể gây stress tâm lý.
+                    Underwater chart hiển thị khoảng cách từ đỉnh lịch sử. Thời gian recovery dài có
+                    thể gây stress tâm lý.
                   </p>
                 </div>
               </div>
@@ -375,18 +422,26 @@ export function PerformanceAttributionPage() {
             <PageSection label="Drawdown Stats" accentColor={c.primary}>
               <div className="space-y-2">
                 {[
-                  { label: 'Số lần drawdown >5%', value: DRAWDOWN_DATA.filter(d => d.drawdown < -5).length },
-                  { label: 'Thời gian trong drawdown', value: `${(DRAWDOWN_DATA.filter(d => d.drawdown < 0).length / DRAWDOWN_DATA.length * 100).toFixed(0)}%` },
+                  {
+                    label: 'Số lần drawdown >5%',
+                    value: DRAWDOWN_DATA.filter((d) => d.drawdown < -5).length,
+                  },
+                  {
+                    label: 'Thời gian trong drawdown',
+                    value: `${((DRAWDOWN_DATA.filter((d) => d.drawdown < 0).length / DRAWDOWN_DATA.length) * 100).toFixed(0)}%`,
+                  },
                   { label: 'Longest drawdown', value: '12 ngày' },
                   { label: 'Avg recovery time', value: '4.2 ngày' },
-                ].map(item => (
-                  <div 
+                ].map((item) => (
+                  <div
                     key={item.label}
                     className="flex justify-between items-center p-2 rounded-lg"
                     style={{ background: c.surface2 }}
                   >
                     <span style={{ color: c.text2, fontSize: 11 }}>{item.label}</span>
-                    <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>{item.value}</span>
+                    <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
+                      {item.value}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -397,12 +452,15 @@ export function PerformanceAttributionPage() {
         {activeTab === 'monte-carlo' && (
           <div className="space-y-4">
             <PageSection label="Monte Carlo Simulation (30 ngày)" accentColor="#8B5CF6">
-              <div className="p-3 rounded-xl mb-3" style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}>
+              <div
+                className="p-3 rounded-xl mb-3"
+                style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}
+              >
                 <div className="flex items-start gap-2">
                   <Calculator size={14} color={c.primary} className="shrink-0 mt-0.5" />
                   <p style={{ color: c.primary, fontSize: 10, lineHeight: 1.5 }}>
-                    50 kịch bản ngẫu nhiên dựa trên volatility lịch sử. 
-                    Vùng xám = 90% confidence interval (5th-95th percentile).
+                    50 kịch bản ngẫu nhiên dựa trên volatility lịch sử. Vùng xám = 90% confidence
+                    interval (5th-95th percentile).
                   </p>
                 </div>
               </div>
@@ -411,7 +469,7 @@ export function PerformanceAttributionPage() {
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
                     <CartesianGrid key="grid-mc" strokeDasharray="3 3" stroke={c.border} />
-                    <XAxis 
+                    <XAxis
                       key="x-mc"
                       dataKey="day"
                       type="number"
@@ -419,7 +477,7 @@ export function PerformanceAttributionPage() {
                       stroke={c.text3}
                       style={{ fontSize: 10 }}
                     />
-                    <YAxis 
+                    <YAxis
                       key="y-mc"
                       stroke={c.text3}
                       style={{ fontSize: 10 }}
@@ -436,10 +494,10 @@ export function PerformanceAttributionPage() {
                       formatter={(value: any) => `$${value.toFixed(0)}`}
                     />
                     {MONTE_CARLO_PATHS.slice(0, 20).map((path, i) => (
-                      <Line 
+                      <Line
                         key={i}
                         data={path}
-                        type="monotone" 
+                        type="monotone"
                         dataKey="value"
                         stroke="#8B5CF6"
                         strokeWidth={0.5}
@@ -454,31 +512,37 @@ export function PerformanceAttributionPage() {
               {/* Percentiles */}
               <div className="grid grid-cols-3 gap-2">
                 <div className="p-3 rounded-xl text-center" style={{ background: '#FEF2F2' }}>
-                  <p style={{ color: '#991B1B', fontSize: 10, marginBottom: 4 }}>5th Percentile (Worst)</p>
+                  <p style={{ color: '#991B1B', fontSize: 10, marginBottom: 4 }}>
+                    5th Percentile (Worst)
+                  </p>
                   <p style={{ color: '#EF4444', fontSize: 16, fontWeight: 700 }}>
                     ${mc5th.toFixed(0)}
                   </p>
                 </div>
                 <div className="p-3 rounded-xl text-center" style={{ background: '#F5F3FF' }}>
-                  <p style={{ color: '#4C1D95', fontSize: 10, marginBottom: 4 }}>50th Percentile (Median)</p>
+                  <p style={{ color: '#4C1D95', fontSize: 10, marginBottom: 4 }}>
+                    50th Percentile (Median)
+                  </p>
                   <p style={{ color: '#8B5CF6', fontSize: 16, fontWeight: 700 }}>
                     ${mcMedian.toFixed(0)}
                   </p>
                 </div>
                 <div className="p-3 rounded-xl text-center" style={{ background: '#F0FDF4' }}>
-                  <p style={{ color: '#166534', fontSize: 10, marginBottom: 4 }}>95th Percentile (Best)</p>
+                  <p style={{ color: '#166534', fontSize: 10, marginBottom: 4 }}>
+                    95th Percentile (Best)
+                  </p>
                   <p style={{ color: '#10B981', fontSize: 16, fontWeight: 700 }}>
                     ${mc95th.toFixed(0)}
                   </p>
                 </div>
               </div>
 
-              <div className="p-3 rounded-xl" style={{ background: c.dangerBg }}>
+              <div className="p-3 rounded-xl" style={{ background: c.sellAlpha10 }}>
                 <div className="flex items-start gap-2">
-                  <AlertCircle size={14} color={c.dangerText} className="shrink-0 mt-0.5" />
-                  <p style={{ color: c.dangerText, fontSize: 10, lineHeight: 1.5 }}>
-                    <strong>Disclaimer:</strong> Đây chỉ là mô phỏng dựa trên dữ liệu lịch sử. 
-                    Kết quả thực tế có thể nằm ngoài khoảng này do thay đổi market conditions.
+                  <AlertCircle size={14} color={c.error} className="shrink-0 mt-0.5" />
+                  <p style={{ color: c.error, fontSize: 10, lineHeight: 1.5 }}>
+                    <strong>Disclaimer:</strong> Đây chỉ là mô phỏng dựa trên dữ liệu lịch sử. Kết
+                    quả thực tế có thể nằm ngoài khoảng này do thay đổi market conditions.
                   </p>
                 </div>
               </div>
@@ -493,19 +557,24 @@ export function PerformanceAttributionPage() {
                 <ResponsiveContainer width="100%" height="100%">
                   <ScatterChart margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
                     <CartesianGrid key="grid-sc" strokeDasharray="3 3" stroke={c.border} />
-                    <XAxis 
+                    <XAxis
                       key="x-sc"
-                      type="number" 
-                      dataKey="x" 
+                      type="number"
+                      dataKey="x"
                       name="Market Return"
                       stroke={c.text3}
                       style={{ fontSize: 10 }}
-                      label={{ value: 'Market %', position: 'insideBottom', offset: -5, fontSize: 10 }}
+                      label={{
+                        value: 'Market %',
+                        position: 'insideBottom',
+                        offset: -5,
+                        fontSize: 10,
+                      }}
                     />
-                    <YAxis 
+                    <YAxis
                       key="y-sc"
-                      type="number" 
-                      dataKey="y" 
+                      type="number"
+                      dataKey="y"
                       name="Your Return"
                       stroke={c.text3}
                       style={{ fontSize: 10 }}
@@ -521,7 +590,12 @@ export function PerformanceAttributionPage() {
                       }}
                       cursor={{ strokeDasharray: '3 3' }}
                     />
-                    <Scatter key="scatter-ret" name="Daily returns" data={CORRELATION_DATA} fill="#3B82F6" />
+                    <Scatter
+                      key="scatter-ret"
+                      name="Daily returns"
+                      data={CORRELATION_DATA}
+                      fill="#3B82F6"
+                    />
                     <ReferenceLine key="ref-sc-x0" x={0} stroke={c.text3} strokeDasharray="3 3" />
                     <ReferenceLine key="ref-sc-y0" y={0} stroke={c.text3} strokeDasharray="3 3" />
                   </ScatterChart>
@@ -543,7 +617,10 @@ export function PerformanceAttributionPage() {
                 </div>
               </div>
 
-              <div className="p-3 rounded-xl" style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}>
+              <div
+                className="p-3 rounded-xl"
+                style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}
+              >
                 <div className="flex items-start gap-2">
                   <Info size={14} color={c.primary} className="shrink-0 mt-0.5" />
                   <div>
@@ -551,11 +628,17 @@ export function PerformanceAttributionPage() {
                       Cách đọc
                     </p>
                     <ul className="space-y-1">
-                      <li style={{ color: c.primary, fontSize: 10, lineHeight: 1.4, paddingLeft: 12 }}>
-                        • R² = {(rSquared * 100).toFixed(0)}% nghĩa là {(rSquared * 100).toFixed(0)}% biến động của bạn được giải thích bởi thị trường
+                      <li
+                        style={{ color: c.primary, fontSize: 10, lineHeight: 1.4, paddingLeft: 12 }}
+                      >
+                        • R² = {(rSquared * 100).toFixed(0)}% nghĩa là {(rSquared * 100).toFixed(0)}
+                        % biến động của bạn được giải thích bởi thị trường
                       </li>
-                      <li style={{ color: c.primary, fontSize: 10, lineHeight: 1.4, paddingLeft: 12 }}>
-                        • {((1 - rSquared) * 100).toFixed(0)}% còn lại đến từ skill/strategy riêng của provider
+                      <li
+                        style={{ color: c.primary, fontSize: 10, lineHeight: 1.4, paddingLeft: 12 }}
+                      >
+                        • {((1 - rSquared) * 100).toFixed(0)}% còn lại đến từ skill/strategy riêng
+                        của provider
                       </li>
                     </ul>
                   </div>

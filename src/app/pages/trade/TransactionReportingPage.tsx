@@ -2,21 +2,21 @@
  * ══════════════════════════════════════════════════════════════
  *  TransactionReportingPage — Phase 4 Sprint 1 Day 1-2
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Real-time transaction reporting to ARM (Approved Reporting Mechanism)
  * - MiFID II Article 26 compliance (transaction reporting)
  * - EMIR compliance (derivatives reporting)
  * - ISO 20022 message format support
  * - Submission queue & status tracking
- * 
+ *
  * Compliance:
  * - MiFID II Art. 26: T+1 transaction reporting mandatory
  * - EMIR: Real-time derivatives reporting
  * - RTS 22: Transaction reporting fields (65+ fields)
  * - ISO 20022: Standard message format
  * - ARM integration: Approved reporting mechanism
- * 
+ *
  * Features:
  * - Real-time reporting queue
  * - Auto-submission (< 1 min latency)
@@ -24,7 +24,7 @@
  * - ISO 20022 XML preview
  * - Audit trail (immutable log)
  * - SLA monitoring (T+1 compliance)
- * 
+ *
  * Guidelines:
  * - PageLayout + TabBar pattern
  * - Enterprise-grade tables (sortable)
@@ -36,10 +36,28 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  FileText, Send, CheckCircle, XCircle, Clock, AlertTriangle,
-  RefreshCw, Download, Eye, Filter, Search, Info, Shield,
-  Activity, TrendingUp, Zap, Database, ChevronRight, Copy,
-  ExternalLink, BarChart3, Calendar
+  FileText,
+  Send,
+  CheckCircle,
+  XCircle,
+  Clock,
+  AlertTriangle,
+  RefreshCw,
+  Download,
+  Eye,
+  Filter,
+  Search,
+  Info,
+  Shield,
+  Activity,
+  TrendingUp,
+  Zap,
+  Database,
+  ChevronRight,
+  Copy,
+  ExternalLink,
+  BarChart3,
+  Calendar,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -176,8 +194,8 @@ const STATUS_CONFIG: Record<ReportStatus, { color: string; label: string; icon: 
 
 const SLA_CONFIG: Record<string, { color: string; label: string }> = {
   'on-time': { color: '#10B981', label: 'On-time' },
-  'warning': { color: '#F59E0B', label: 'Warning' },
-  'breach': { color: '#EF4444', label: 'SLA Breach' },
+  warning: { color: '#F59E0B', label: 'Warning' },
+  breach: { color: '#EF4444', label: 'SLA Breach' },
 };
 
 export function TransactionReportingPage() {
@@ -193,17 +211,18 @@ export function TransactionReportingPage() {
     let filtered = MOCK_REPORTS;
 
     if (tab === 'queue') {
-      filtered = filtered.filter(r => ['pending', 'submitting', 'submitted'].includes(r.status));
+      filtered = filtered.filter((r) => ['pending', 'submitting', 'submitted'].includes(r.status));
     } else if (tab === 'failed') {
-      filtered = filtered.filter(r => r.status === 'failed');
+      filtered = filtered.filter((r) => r.status === 'failed');
     } else if (tab === 'history') {
-      filtered = filtered.filter(r => r.status === 'confirmed');
+      filtered = filtered.filter((r) => r.status === 'confirmed');
     }
 
     if (searchQuery) {
-      filtered = filtered.filter(r =>
-        r.transactionId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        r.instrument.toLowerCase().includes(searchQuery.toLowerCase())
+      filtered = filtered.filter(
+        (r) =>
+          r.transactionId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          r.instrument.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     }
 
@@ -213,12 +232,14 @@ export function TransactionReportingPage() {
   // Stats
   const stats = useMemo(() => {
     const total = MOCK_REPORTS.length;
-    const confirmed = MOCK_REPORTS.filter(r => r.status === 'confirmed').length;
-    const failed = MOCK_REPORTS.filter(r => r.status === 'failed').length;
-    const pending = MOCK_REPORTS.filter(r => ['pending', 'submitting', 'submitted'].includes(r.status)).length;
-    const onTime = MOCK_REPORTS.filter(r => r.slaStatus === 'on-time').length;
+    const confirmed = MOCK_REPORTS.filter((r) => r.status === 'confirmed').length;
+    const failed = MOCK_REPORTS.filter((r) => r.status === 'failed').length;
+    const pending = MOCK_REPORTS.filter((r) =>
+      ['pending', 'submitting', 'submitted'].includes(r.status),
+    ).length;
+    const onTime = MOCK_REPORTS.filter((r) => r.slaStatus === 'on-time').length;
     const avgLatency = 22; // seconds (mock)
-    
+
     return { total, confirmed, failed, pending, onTime, avgLatency };
   }, []);
 
@@ -245,14 +266,18 @@ export function TransactionReportingPage() {
 
       <PageContent gap="relaxed">
         {/* Compliance Notice */}
-        <div className="rounded-2xl p-3 flex gap-2.5" style={{ background: c.infoBg, border: `1px solid ${c.infoBorder}` }}>
-          <Shield size={16} color={c.infoText} className="shrink-0 mt-0.5" />
+        <div
+          className="rounded-2xl p-3 flex gap-2.5"
+          style={{ background: 'rgba(59,130,246,0.08)', border: `1px solid rgba(59,130,246,0.20)` }}
+        >
+          <Shield size={16} color={c.info} className="shrink-0 mt-0.5" />
           <div>
-            <p style={{ color: c.infoText, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
+            <p style={{ color: c.info, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
               MiFID II Article 26 Compliance
             </p>
-            <p style={{ color: c.infoText, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
-              All transactions must be reported to ARM within T+1. Reports include 65+ data fields per RTS 22. Auto-submission enabled.
+            <p style={{ color: c.info, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
+              All transactions must be reported to ARM within T+1. Reports include 65+ data fields
+              per RTS 22. Auto-submission enabled.
             </p>
           </div>
         </div>
@@ -263,13 +288,17 @@ export function TransactionReportingPage() {
             <div className="flex items-start justify-between">
               <div>
                 <p style={{ color: c.text3, fontSize: 10 }}>Total Today</p>
-                <p style={{ color: c.text1, fontSize: 20, fontWeight: 700, marginTop: 4 }}>{stats.total}</p>
+                <p style={{ color: c.text1, fontSize: 20, fontWeight: 700, marginTop: 4 }}>
+                  {stats.total}
+                </p>
                 <p style={{ color: '#10B981', fontSize: 9, marginTop: 2 }}>
                   {stats.confirmed} confirmed
                 </p>
               </div>
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center"
-                style={{ background: c.primary + '15' }}>
+              <div
+                className="w-9 h-9 rounded-lg flex items-center justify-center"
+                style={{ background: c.primary + '15' }}
+              >
                 <FileText size={16} color={c.primary} />
               </div>
             </div>
@@ -279,13 +308,15 @@ export function TransactionReportingPage() {
             <div className="flex items-start justify-between">
               <div>
                 <p style={{ color: c.text3, fontSize: 10 }}>Avg Latency</p>
-                <p style={{ color: c.text1, fontSize: 20, fontWeight: 700, marginTop: 4 }}>{stats.avgLatency}s</p>
-                <p style={{ color: '#10B981', fontSize: 9, marginTop: 2 }}>
-                  Under 60s SLA ✓
+                <p style={{ color: c.text1, fontSize: 20, fontWeight: 700, marginTop: 4 }}>
+                  {stats.avgLatency}s
                 </p>
+                <p style={{ color: '#10B981', fontSize: 9, marginTop: 2 }}>Under 60s SLA ✓</p>
               </div>
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center"
-                style={{ background: '#10B981' + '15' }}>
+              <div
+                className="w-9 h-9 rounded-lg flex items-center justify-center"
+                style={{ background: '#10B981' + '15' }}
+              >
                 <Zap size={16} color="#10B981" />
               </div>
             </div>
@@ -302,8 +333,10 @@ export function TransactionReportingPage() {
                   {stats.onTime}/{stats.total} on-time
                 </p>
               </div>
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center"
-                style={{ background: '#10B981' + '15' }}>
+              <div
+                className="w-9 h-9 rounded-lg flex items-center justify-center"
+                style={{ background: '#10B981' + '15' }}
+              >
                 <TrendingUp size={16} color="#10B981" />
               </div>
             </div>
@@ -328,7 +361,7 @@ export function TransactionReportingPage() {
         </div>
 
         {/* Tabs */}
-        <TabBar tabs={TABS} active={tab} onChange={setTab} variant="underline" />
+        <TabBar<TabType> tabs={TABS} active={tab} onChange={setTab} variant="underline" />
 
         {/* Content */}
         {tab === 'stats' ? (
@@ -341,13 +374,21 @@ export function TransactionReportingPage() {
                     <div className="flex items-center justify-between">
                       <span style={{ color: c.text2, fontSize: 12 }}>MiFID II Reports</span>
                       <span style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
-                        {MOCK_REPORTS.filter(r => r.reportType === 'mifid2' || r.reportType === 'both').length}
+                        {
+                          MOCK_REPORTS.filter(
+                            (r) => r.reportType === 'mifid2' || r.reportType === 'both',
+                          ).length
+                        }
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span style={{ color: c.text2, fontSize: 12 }}>EMIR Reports</span>
                       <span style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
-                        {MOCK_REPORTS.filter(r => r.reportType === 'emir' || r.reportType === 'both').length}
+                        {
+                          MOCK_REPORTS.filter(
+                            (r) => r.reportType === 'emir' || r.reportType === 'both',
+                          ).length
+                        }
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
@@ -365,19 +406,19 @@ export function TransactionReportingPage() {
                     <div className="flex items-center justify-between">
                       <span style={{ color: c.text2, fontSize: 12 }}>REGIS-TR</span>
                       <span style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
-                        {MOCK_REPORTS.filter(r => r.armProvider === 'REGIS-TR').length}
+                        {MOCK_REPORTS.filter((r) => r.armProvider === 'REGIS-TR').length}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span style={{ color: c.text2, fontSize: 12 }}>UnaVista</span>
                       <span style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
-                        {MOCK_REPORTS.filter(r => r.armProvider === 'UnaVista').length}
+                        {MOCK_REPORTS.filter((r) => r.armProvider === 'UnaVista').length}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span style={{ color: c.text2, fontSize: 12 }}>Bloomberg</span>
                       <span style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
-                        {MOCK_REPORTS.filter(r => r.armProvider === 'Bloomberg').length}
+                        {MOCK_REPORTS.filter((r) => r.armProvider === 'Bloomberg').length}
                       </span>
                     </div>
                   </div>
@@ -394,7 +435,8 @@ export function TransactionReportingPage() {
                 height: 44,
                 fontWeight: 600,
                 fontSize: 13,
-              }}>
+              }}
+            >
               <BarChart3 size={16} />
               <span>View Full Dashboard</span>
               <ChevronRight size={14} />
@@ -412,8 +454,10 @@ export function TransactionReportingPage() {
                   <TrCard key={report.id} className="p-3">
                     <div className="flex items-start gap-3">
                       {/* Status Icon */}
-                      <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                        style={{ background: statusConfig.color + '15' }}>
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                        style={{ background: statusConfig.color + '15' }}
+                      >
                         <StatusIcon size={18} color={statusConfig.color} />
                       </div>
 
@@ -425,11 +469,14 @@ export function TransactionReportingPage() {
                               <span style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
                                 {report.instrument}
                               </span>
-                              <span className="px-1.5 py-0.5 rounded text-[9px] font-semibold"
+                              <span
+                                className="px-1.5 py-0.5 rounded text-[9px] font-semibold"
                                 style={{
-                                  background: report.side === 'buy' ? '#10B981' + '15' : '#EF4444' + '15',
+                                  background:
+                                    report.side === 'buy' ? '#10B981' + '15' : '#EF4444' + '15',
                                   color: report.side === 'buy' ? '#10B981' : '#EF4444',
-                                }}>
+                                }}
+                              >
                                 {report.side.toUpperCase()}
                               </span>
                             </div>
@@ -439,8 +486,13 @@ export function TransactionReportingPage() {
                           </div>
 
                           <div className="text-right">
-                            <span className="px-2 py-1 rounded-lg text-[10px] font-semibold"
-                              style={{ background: statusConfig.color + '15', color: statusConfig.color }}>
+                            <span
+                              className="px-2 py-1 rounded-lg text-[10px] font-semibold"
+                              style={{
+                                background: statusConfig.color + '15',
+                                color: statusConfig.color,
+                              }}
+                            >
                               {statusConfig.label}
                             </span>
                           </div>
@@ -477,7 +529,10 @@ export function TransactionReportingPage() {
                         {/* SLA Status */}
                         {report.slaStatus && (
                           <div className="flex items-center gap-1.5 mb-2">
-                            <div className="w-1.5 h-1.5 rounded-full" style={{ background: slaConfig.color }} />
+                            <div
+                              className="w-1.5 h-1.5 rounded-full"
+                              style={{ background: slaConfig.color }}
+                            />
                             <span style={{ color: slaConfig.color, fontSize: 9, fontWeight: 600 }}>
                               {slaConfig.label}
                             </span>
@@ -486,10 +541,15 @@ export function TransactionReportingPage() {
 
                         {/* Error Message */}
                         {report.errorMessage && (
-                          <div className="rounded-lg p-2 mb-2 flex gap-1.5"
-                            style={{ background: c.errorBg, border: `1px solid ${c.errorBorder}` }}>
-                            <AlertTriangle size={12} color={c.errorText} className="shrink-0 mt-0.5" />
-                            <p style={{ color: c.errorText, fontSize: 9, lineHeight: 1.3 }}>
+                          <div
+                            className="rounded-lg p-2 mb-2 flex gap-1.5"
+                            style={{
+                              background: c.sellAlpha10,
+                              border: `1px solid ${c.sellAlpha20}`,
+                            }}
+                          >
+                            <AlertTriangle size={12} color={c.error} className="shrink-0 mt-0.5" />
+                            <p style={{ color: c.error, fontSize: 9, lineHeight: 1.3 }}>
                               {report.errorMessage}
                             </p>
                           </div>
@@ -500,7 +560,13 @@ export function TransactionReportingPage() {
                           <button
                             onClick={() => handleViewXML(report.id)}
                             className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all"
-                            style={{ background: c.surface2, color: c.text2, fontSize: 10, fontWeight: 500 }}>
+                            style={{
+                              background: c.surface2,
+                              color: c.text2,
+                              fontSize: 10,
+                              fontWeight: 500,
+                            }}
+                          >
                             <Eye size={12} />
                             <span>View XML</span>
                           </button>
@@ -509,7 +575,13 @@ export function TransactionReportingPage() {
                             <button
                               onClick={() => handleRetry(report.id)}
                               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all"
-                              style={{ background: c.primary + '15', color: c.primary, fontSize: 10, fontWeight: 600 }}>
+                              style={{
+                                background: c.primary + '15',
+                                color: c.primary,
+                                fontSize: 10,
+                                fontWeight: 600,
+                              }}
+                            >
                               <RefreshCw size={12} />
                               <span>Retry</span>
                             </button>
@@ -519,7 +591,13 @@ export function TransactionReportingPage() {
                             <button
                               onClick={() => navigator.clipboard.writeText(report.messageId!)}
                               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-all"
-                              style={{ background: c.surface2, color: c.text2, fontSize: 10, fontWeight: 500 }}>
+                              style={{
+                                background: c.surface2,
+                                color: c.text2,
+                                fontSize: 10,
+                                fontWeight: 500,
+                              }}
+                            >
                               <Copy size={12} />
                               <span>Copy ID</span>
                             </button>
@@ -536,7 +614,9 @@ export function TransactionReportingPage() {
                   <Database size={48} color={c.text3} className="mx-auto mb-3 opacity-50" />
                   <p style={{ color: c.text3, fontSize: 13 }}>No reports found</p>
                   <p style={{ color: c.text3, fontSize: 11, marginTop: 4 }}>
-                    {searchQuery ? 'Try a different search term' : 'Reports will appear here automatically'}
+                    {searchQuery
+                      ? 'Try a different search term'
+                      : 'Reports will appear here automatically'}
                   </p>
                 </div>
               )}
@@ -549,7 +629,8 @@ export function TransactionReportingPage() {
           <button
             onClick={() => navigate(`${prefix}/trade/copy-trading/regulatory-reports-dashboard`)}
             className="rounded-xl p-3 flex flex-col items-start gap-2 transition-all"
-            style={{ background: c.surface2, border: `1px solid ${c.border}` }}>
+            style={{ background: c.surface2, border: `1px solid ${c.border}` }}
+          >
             <BarChart3 size={18} color={c.primary} />
             <div>
               <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>Dashboard</p>
@@ -560,7 +641,8 @@ export function TransactionReportingPage() {
           <button
             onClick={() => navigate(`${prefix}/trade/copy-trading/arm-integration-status`)}
             className="rounded-xl p-3 flex flex-col items-start gap-2 transition-all"
-            style={{ background: c.surface2, border: `1px solid ${c.border}` }}>
+            style={{ background: c.surface2, border: `1px solid ${c.border}` }}
+          >
             <Activity size={18} color="#10B981" />
             <div>
               <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>ARM Status</p>

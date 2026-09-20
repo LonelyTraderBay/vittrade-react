@@ -33,7 +33,9 @@ export function P2PVideoVerificationPage() {
   const mountedRef = useRef(true);
 
   useEffect(() => {
-    return () => { mountedRef.current = false; };
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   const handleBook = () => {
@@ -50,7 +52,10 @@ export function P2PVideoVerificationPage() {
       <div className="px-5 py-4">
         <TrCard rounded="lg" className="p-4" style={{ background: hexToRgba('#8B5CF6', 8) }}>
           <div className="flex items-start gap-3">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: '#8B5CF6' }}>
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+              style={{ background: '#8B5CF6' }}
+            >
               <Video size={24} color="#FFFFFF" />
             </div>
             <div className="flex-1">
@@ -72,7 +77,12 @@ export function P2PVideoVerificationPage() {
             <h4 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Chuẩn bị</h4>
           </div>
           <div className="flex flex-col gap-2">
-            {['CMND/CCCD gốc', 'Môi trường đủ sáng', 'Camera và mic hoạt động', 'Thời gian 10-15 phút'].map((item, i) => (
+            {[
+              'CMND/CCCD gốc',
+              'Môi trường đủ sáng',
+              'Camera và mic hoạt động',
+              'Thời gian 10-15 phút',
+            ].map((item, i) => (
               <div key={i} className="flex items-start gap-2">
                 <CheckCircle size={12} color="#10B981" className="shrink-0 mt-1" />
                 <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>{item}</p>
@@ -83,23 +93,34 @@ export function P2PVideoVerificationPage() {
       </div>
 
       <div className="px-5 mb-6">
-        <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700, marginBottom: 12 }}>Chọn khung giờ</h3>
+        <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700, marginBottom: 12 }}>
+          Chọn khung giờ
+        </h3>
         <div className="flex flex-col gap-3">
-          {TIME_SLOTS.map(slot => (
+          {TIME_SLOTS.map((slot) => (
             <button
               key={slot.id}
-              onClick={() => { hapticSelection(); setSelectedSlot(slot.id); }}
+              onClick={() => {
+                hapticSelection();
+                setSelectedSlot(slot.id);
+              }}
               disabled={!slot.available}
               className="p-4 rounded-xl text-left"
               style={{
-                background: selectedSlot === slot.id ? hexToRgba('#8B5CF6', 12) : c.surface1,
+                background: selectedSlot === slot.id ? hexToRgba('#8B5CF6', 12) : c.surface,
                 border: `1px solid ${selectedSlot === slot.id ? '#8B5CF6' : c.borderSolid}`,
                 opacity: slot.available ? 1 : 0.5,
               }}
             >
               <div className="flex items-center gap-2 mb-2">
                 <Calendar size={14} color={selectedSlot === slot.id ? '#8B5CF6' : c.text3} />
-                <p style={{ color: selectedSlot === slot.id ? '#8B5CF6' : c.text1, fontSize: φ.sm, fontWeight: 600 }}>
+                <p
+                  style={{
+                    color: selectedSlot === slot.id ? '#8B5CF6' : c.text1,
+                    fontSize: φ.sm,
+                    fontWeight: 600,
+                  }}
+                >
                   {slot.date}
                 </p>
               </div>
@@ -107,7 +128,10 @@ export function P2PVideoVerificationPage() {
                 <Clock size={14} color={c.text3} />
                 <p style={{ color: c.text2, fontSize: 11 }}>{slot.time}</p>
                 {!slot.available && (
-                  <span className="ml-auto px-2 py-0.5 rounded-md text-xs" style={{ background: c.surface2, color: c.text3 }}>
+                  <span
+                    className="ml-auto px-2 py-0.5 rounded-md text-xs"
+                    style={{ background: c.surface2, color: c.text3 }}
+                  >
                     Hết chỗ
                   </span>
                 )}
@@ -118,7 +142,12 @@ export function P2PVideoVerificationPage() {
       </div>
 
       <div className="px-5">
-        <CTAButton label="Đặt lịch" onClick={handleBook} disabled={!selectedSlot} icon={ChevronRight} />
+        <CTAButton
+          label="Đặt lịch"
+          onClick={handleBook}
+          disabled={!selectedSlot}
+          icon={ChevronRight}
+        />
       </div>
     </PageLayout>
   );

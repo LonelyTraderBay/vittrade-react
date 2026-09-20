@@ -2,299 +2,298 @@
  * ══════════════════════════════════════════════════════════════
  *  ProviderApplicationPage.test.tsx — Provider Application Tests
  * ══════════════════════════════════════════════════════════════
- * 
+ *
+ * Rewritten for the current Vietnamese 5-step wizard
+ * (intro → requirements → disclosure → fees → review).
+ *
  * Test Coverage (8 tests):
- * 1. ✅ 5-step wizard renders
- * 2. ✅ Step validation works
- * 3. ✅ Cannot skip steps
- * 4. ✅ KYC verification checked
- * 5. ✅ Disclosure obligations listed
- * 6. ✅ Fee structure setup works
- * 7. ✅ Terms acceptance required
- * 8. ✅ Submission works
+ * 1. ✅ Intro step renders benefits, responsibilities, requirements
+ * 2. ✅ Requirements step blocks progression until criteria met
+ * 3. ✅ Requirement validation messages (KYC, months, capital)
+ * 4. ✅ Disclosure step requires both consents (disclosure + fiduciary)
+ * 5. ✅ Fee step: performance fee example + 100-char strategy minimum
+ * 6. ✅ Review step shows entered data and requires terms acceptance
+ * 7. ✅ Submission alerts and navigates back to copy trading list
+ * 8. ✅ Header back button uses router history
+ *
+ * DROPPED from the old suite (features no longer exist on the page):
+ * - Clickable stepper with locked steps / lock icons (progress is a passive bar)
+ * - Document uploads (trading statement, proof of performance)
+ * - localStorage persistence of the application
+ * - Confirmation modal before submit (page uses window.alert)
+ * - Post-submit success screen (page navigates straight away)
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { screen, waitFor, within } from '@testing-library/react';
-import { renderWithRouter, userEvent, mockNavigate } from '../../../test/utils/test-utils';
+import { screen, waitFor } from '@testing-library/react';
+import { renderWithRouter, userEvent, mockNavigate } from '@/test/test-utils-navigation';
 import { ProviderApplicationPage } from '../ProviderApplicationPage';
+
+const STRATEGY_100CHARS =
+  'Chiến lược swing trading trên BTC/ETH với phân tích kỹ thuật, risk/reward 1:2, stop-loss chặt chẽ, quản lý vốn 2% mỗi giao dịch.';
 
 describe('ProviderApplicationPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('should render 5-step wizard', () => {
+  it('should render intro step with benefits, responsibilities and requirements', () => {
     renderWithRouter(<ProviderApplicationPage />);
 
-    // Wizard steps
-    expect(screen.getByText(/step 1.*eligibility/i)).toBeInTheDocument();
-    expect(screen.getByText(/step 2.*verification/i)).toBeInTheDocument();
-    expect(screen.getByText(/step 3.*disclosure/i)).toBeInTheDocument();
-    expect(screen.getByText(/step 4.*fee structure/i)).toBeInTheDocument();
-    expect(screen.getByText(/step 5.*review/i)).toBeInTheDocument();
+    expect(screen.getByText('Đăng ký Provider')).toBeInTheDocument();
+    expect(screen.getByText('Trở thành Copy Trading Provider')).toBeInTheDocument();
+    expect(
+      screen.getByText(/kiếm performance fee từ những người copy bạn/i),
+    ).toBeInTheDocument();
 
-    // Progress indicator
-    expect(screen.getByText(/1 of 5/i)).toBeInTheDocument();
+    // Benefits
+    expect(screen.getByText('Lợi ích')).toBeInTheDocument();
+    expect(screen.getByText('Performance Fee')).toBeInTheDocument();
+    expect(screen.getByText('Xây dựng danh tiếng')).toBeInTheDocument();
+    expect(screen.getByText('Không giới hạn thu nhập')).toBeInTheDocument();
 
-    // Current step should be highlighted
-    const step1 = screen.getByText(/step 1/i).closest('div');
-    expect(step1).toHaveClass(expect.stringContaining('active'));
+    // Responsibilities warning
+    expect(screen.getByText('Trách nhiệm quan trọng')).toBeInTheDocument();
+    expect(screen.getByText(/Vi phạm sẽ bị cấm vĩnh viễn và xử lý pháp lý/i)).toBeInTheDocument();
+
+    // Requirements preview
+    expect(screen.getByText('Yêu cầu cơ bản')).toBeInTheDocument();
+    expect(screen.getByText('KYC Level 2')).toBeInTheDocument();
+    expect(screen.getByText('Trading history ≥6 tháng')).toBeInTheDocument();
+    expect(screen.getByText('Vốn tối thiểu $10,000')).toBeInTheDocument();
+    expect(screen.getByText('Sharpe Ratio >1.0')).toBeInTheDocument();
   });
 
-  it('should validate each step before proceeding', async () => {
+  it('should block requirements step until all criteria are met', async () => {
     const user = userEvent.setup();
     renderWithRouter(<ProviderApplicationPage />);
 
-    // Step 1: Eligibility criteria
-    expect(screen.getByText(/eligibility criteria/i)).toBeInTheDocument();
+    // Intro → Requirements
+    await user.click(screen.getByRole('button', { name: 'Tiếp tục' }));
+    expect(screen.getByText('Kiểm tra điều kiện')).toBeInTheDocument();
 
-    // Try to proceed without checking all boxes
-    const nextBtn = screen.getByRole('button', { name: /next/i });
-    await user.click(nextBtn);
+    // Nothing satisfied yet → blocked with a summary error
+    const nextBtn = screen.getByRole('button', { name: 'Tiếp tục' });
+    expect(nextBtn).toBeDisabled();
+    expect(
+      screen.getByText(/Bạn chưa đáp ứng tất cả các yêu cầu/i),
+    ).toBeInTheDocument();
 
-    // Should show validation error
-    await waitFor(() => {
-      expect(screen.getByText(/please complete all requirements/i)).toBeInTheDocument();
-    });
+    // Complete KYC
+    await user.click(screen.getByRole('button', { name: 'Hoàn thành KYC ngay' }));
+    expect(screen.getByRole('button', { name: 'Đã hoàn thành KYC' })).toBeInTheDocument();
 
-    // Should not advance to step 2
-    expect(screen.getByText(/step 1.*eligibility/i)).toBeInTheDocument();
+    // 6 months of history (default capital $10,000 already passes)
+    const monthsInput = screen.getByDisplayValue('0');
+    await user.clear(monthsInput);
+    await user.type(monthsInput, '8');
 
-    // Check all eligibility boxes
-    const checkbox1 = screen.getByRole('checkbox', { name: /18 years or older/i });
-    const checkbox2 = screen.getByRole('checkbox', { name: /minimum trading history/i });
-    const checkbox3 = screen.getByRole('checkbox', { name: /good standing/i });
-
-    await user.click(checkbox1);
-    await user.click(checkbox2);
-    await user.click(checkbox3);
-
-    // Now should be able to proceed
-    await user.click(nextBtn);
-
-    // Should advance to step 2
-    await waitFor(() => {
-      expect(screen.getByText(/step 2.*verification/i)).toBeInTheDocument();
-      expect(screen.getByText(/2 of 5/i)).toBeInTheDocument();
-    });
+    // Error disappears, button enables
+    expect(screen.queryByText(/Bạn chưa đáp ứng tất cả các yêu cầu/i)).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Tiếp tục' })).toBeEnabled();
   });
 
-  it('should prevent skipping steps', async () => {
+  it('should show specific validation messages for each requirement', async () => {
     const user = userEvent.setup();
     renderWithRouter(<ProviderApplicationPage />);
 
-    // Step 3, 4, 5 should be disabled/locked
-    const step3 = screen.getByText(/step 3.*disclosure/i).closest('button');
-    const step4 = screen.getByText(/step 4.*fee structure/i).closest('button');
-    const step5 = screen.getByText(/step 5.*review/i).closest('button');
+    await user.click(screen.getByRole('button', { name: 'Tiếp tục' }));
+    expect(screen.getByText('Kiểm tra điều kiện')).toBeInTheDocument();
 
-    expect(step3).toBeDisabled();
-    expect(step4).toBeDisabled();
-    expect(step5).toBeDisabled();
+    // Trading history below 6 months
+    const monthsInput = screen.getByDisplayValue('0');
+    await user.clear(monthsInput);
+    await user.type(monthsInput, '3');
+    expect(screen.getByText('Cần ít nhất 6 tháng (hiện tại: 3 tháng)')).toBeInTheDocument();
 
-    // Lock icons should be visible
-    expect(screen.getAllByTestId('lock-icon').length).toBeGreaterThanOrEqual(3);
+    // Capital below the $10,000 minimum
+    const capitalInput = screen.getByDisplayValue('10000');
+    await user.clear(capitalInput);
+    await user.type(capitalInput, '5000');
+    const missing = 10000 - 5000;
+    expect(screen.getByText(`Thiếu $${missing.toLocaleString()}`)).toBeInTheDocument();
 
-    // Clicking on locked step should do nothing
-    if (step3) {
-      await user.click(step3);
-    }
+    // Still blocked
+    expect(screen.getByRole('button', { name: 'Tiếp tục' })).toBeDisabled();
 
-    // Should still be on step 1
-    expect(screen.getByText(/1 of 5/i)).toBeInTheDocument();
+    // Fix both → unblocked
+    await user.click(screen.getByRole('button', { name: 'Hoàn thành KYC ngay' }));
+    await user.clear(monthsInput);
+    await user.type(monthsInput, '6');
+    await user.clear(capitalInput);
+    await user.type(capitalInput, '15000');
+
+    expect(screen.queryByText(/Cần ít nhất 6 tháng/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Thiếu \$/i)).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Tiếp tục' })).toBeEnabled();
   });
 
-  it('should check KYC verification status', async () => {
+  it('should require both disclosure and fiduciary consents', async () => {
     const user = userEvent.setup();
     renderWithRouter(<ProviderApplicationPage />);
 
-    // Complete step 1
-    const checkbox1 = screen.getByRole('checkbox', { name: /18 years or older/i });
-    const checkbox2 = screen.getByRole('checkbox', { name: /minimum trading history/i });
-    const checkbox3 = screen.getByRole('checkbox', { name: /good standing/i });
+    // Advance through requirements
+    await user.click(screen.getByRole('button', { name: 'Tiếp tục' }));
+    await user.click(screen.getByRole('button', { name: 'Hoàn thành KYC ngay' }));
+    const monthsInput = screen.getByDisplayValue('0');
+    await user.clear(monthsInput);
+    await user.type(monthsInput, '8');
+    await user.click(screen.getByRole('button', { name: 'Tiếp tục' }));
 
-    await user.click(checkbox1);
-    await user.click(checkbox2);
-    await user.click(checkbox3);
+    // Disclosure step
+    expect(screen.getByText('Nghĩa vụ công khai')).toBeInTheDocument();
+    expect(screen.getByText('Bạn đồng ý công khai')).toBeInTheDocument();
 
-    const nextBtn = screen.getByRole('button', { name: /next/i });
-    await user.click(nextBtn);
+    // The mandated disclosure list
+    expect(
+      screen.getByText(/Mọi thay đổi chiến lược \(phải thông báo trước 7 ngày\)/i),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/Conflict of interest \(nếu trade coin mình hold\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/Slippage trung bình và execution quality/i)).toBeInTheDocument();
 
-    // Step 2: Verification
-    await waitFor(() => {
-      expect(screen.getByText(/kyc verification/i)).toBeInTheDocument();
-    });
-
-    // Should show KYC status
-    expect(screen.getByText(/identity verification/i)).toBeInTheDocument();
-    expect(screen.getByText(/verified/i)).toBeInTheDocument();
-
-    // Should show 2FA status
-    expect(screen.getByText(/two-factor authentication/i)).toBeInTheDocument();
-    expect(screen.getByText(/enabled/i)).toBeInTheDocument();
-
-    // Should require enhanced verification for providers
-    expect(screen.getByText(/enhanced verification required/i)).toBeInTheDocument();
-
-    // Upload documents section
-    expect(screen.getByText(/trading statement/i)).toBeInTheDocument();
-    expect(screen.getByText(/proof of performance/i)).toBeInTheDocument();
+    // Blocked until both consents
+    expect(screen.getByRole('button', { name: 'Tiếp tục' })).toBeDisabled();
+    await user.click(screen.getByRole('button', { name: /Tôi cam kết công khai tất cả thông tin trên/i }));
+    expect(screen.getByRole('button', { name: 'Tiếp tục' })).toBeDisabled();
+    await user.click(screen.getByRole('button', { name: /fiduciary duty/i }));
+    expect(screen.getByRole('button', { name: 'Tiếp tục' })).toBeEnabled();
   });
 
-  it('should display all disclosure obligations', async () => {
+  it('should configure fee and enforce the 100-char strategy minimum', async () => {
     const user = userEvent.setup();
     renderWithRouter(<ProviderApplicationPage />);
 
-    // Navigate to Step 3 (complete steps 1 & 2 first)
-    // ... (abbreviated for brevity)
+    // Advance through requirements + disclosure
+    await user.click(screen.getByRole('button', { name: 'Tiếp tục' }));
+    await user.click(screen.getByRole('button', { name: 'Hoàn thành KYC ngay' }));
+    const monthsInput = screen.getByDisplayValue('0');
+    await user.clear(monthsInput);
+    await user.type(monthsInput, '8');
+    await user.click(screen.getByRole('button', { name: 'Tiếp tục' }));
+    await user.click(screen.getByRole('button', { name: /Tôi cam kết công khai tất cả thông tin trên/i }));
+    await user.click(screen.getByRole('button', { name: /fiduciary duty/i }));
+    await user.click(screen.getByRole('button', { name: 'Tiếp tục' }));
 
-    // Manually navigate to step 3 for testing
-    const step3Content = screen.getByText(/disclosure obligations/i);
-    expect(step3Content).toBeInTheDocument();
+    // Fee step
+    expect(screen.getByText('Cấu trúc phí')).toBeInTheDocument();
+    expect(screen.getByText('Performance Fee (0-30%)')).toBeInTheDocument();
 
-    // 6 key disclosures
-    expect(screen.getByText(/conflict of interest/i)).toBeInTheDocument();
-    expect(screen.getByText(/front-running prevention/i)).toBeInTheDocument();
-    expect(screen.getByText(/performance calculation/i)).toBeInTheDocument();
-    expect(screen.getByText(/fee transparency/i)).toBeInTheDocument();
-    expect(screen.getByText(/risk warnings/i)).toBeInTheDocument();
-    expect(screen.getByText(/follower communication/i)).toBeInTheDocument();
+    // Default 10% fee → example payout
+    const feeInput = screen.getByDisplayValue('10');
+    expect(feeInput).toBeInTheDocument();
+    expect(screen.getByText(/Copier lời \$100 → bạn nhận \$10/i)).toBeInTheDocument();
 
-    // Each disclosure should have an accept checkbox
-    const disclosureCheckboxes = screen.getAllByRole('checkbox', { name: /acknowledge/i });
-    expect(disclosureCheckboxes.length).toBeGreaterThanOrEqual(6);
+    // Change to 25% → example updates
+    await user.clear(feeInput);
+    await user.type(feeInput, '25');
+    expect(screen.getByText(/bạn nhận \$25/i)).toBeInTheDocument();
+
+    // Strategy description counter starts at 0 → blocked
+    expect(screen.getByText('0/100 ký tự')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Tiếp tục' })).toBeDisabled();
+
+    // Write a ≥100 char strategy → unblocked
+    const textarea = screen.getByPlaceholderText(/Tôi sử dụng chiến lược swing trading/i);
+    await user.type(textarea, STRATEGY_100CHARS);
+    expect(STRATEGY_100CHARS.length).toBeGreaterThanOrEqual(100);
+    expect(screen.getByText(`${STRATEGY_100CHARS.length}/100 ký tự`)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Tiếp tục' })).toBeEnabled();
   });
 
-  it('should configure fee structure', async () => {
+  it('should review entered data and require terms acceptance before submit', async () => {
     const user = userEvent.setup();
     renderWithRouter(<ProviderApplicationPage />);
 
-    // Navigate to Step 4
-    // ... (abbreviated)
+    // Full flow to the review step
+    await user.click(screen.getByRole('button', { name: 'Tiếp tục' }));
+    await user.click(screen.getByRole('button', { name: 'Hoàn thành KYC ngay' }));
+    const monthsInput = screen.getByDisplayValue('0');
+    await user.clear(monthsInput);
+    await user.type(monthsInput, '12');
+    await user.click(screen.getByRole('button', { name: 'Tiếp tục' }));
+    await user.click(screen.getByRole('button', { name: /Tôi cam kết công khai tất cả thông tin trên/i }));
+    await user.click(screen.getByRole('button', { name: /fiduciary duty/i }));
+    await user.click(screen.getByRole('button', { name: 'Tiếp tục' }));
+    const feeInput = screen.getByDisplayValue('10');
+    await user.clear(feeInput);
+    await user.type(feeInput, '20');
+    await user.type(
+      screen.getByPlaceholderText(/Tôi sử dụng chiến lược swing trading/i),
+      STRATEGY_100CHARS,
+    );
+    await user.click(screen.getByRole('button', { name: 'Tiếp tục' }));
 
-    // Fee structure configuration
-    expect(screen.getByText(/fee structure/i)).toBeInTheDocument();
+    // Review shows the entered data
+    expect(screen.getByText('Xem lại đơn đăng ký')).toBeInTheDocument();
+    expect(screen.getByText('Thông tin cơ bản')).toBeInTheDocument();
+    expect(screen.getByText('12 tháng')).toBeInTheDocument();
+    // Capital kept at its $10,000 default in this flow
+    expect(screen.getByText(`$${(10000).toLocaleString()}`)).toBeInTheDocument();
+    expect(screen.getByText('20%')).toBeInTheDocument();
+    expect(screen.getByText(STRATEGY_100CHARS)).toBeInTheDocument();
 
-    // Performance fee slider
-    const perfFeeSlider = screen.getByLabelText(/performance fee/i);
-    expect(perfFeeSlider).toBeInTheDocument();
-    expect(perfFeeSlider).toHaveValue('10'); // Default 10%
+    // Terms consent lists the three documents
+    expect(screen.getByText('Điều khoản Provider')).toBeInTheDocument();
+    expect(screen.getByText('Code of Conduct')).toBeInTheDocument();
+    expect(screen.getByText('Disclosure Requirements')).toBeInTheDocument();
 
-    // Adjust to 15%
-    await user.clear(perfFeeSlider);
-    await user.type(perfFeeSlider, '15');
-
-    // Should show preview
-    await waitFor(() => {
-      expect(screen.getByText(/15%.*profits/i)).toBeInTheDocument();
-    });
-
-    // Example calculation
-    expect(screen.getByText(/example.*\$1000 profit/i)).toBeInTheDocument();
-    expect(screen.getByText(/you earn.*\$150/i)).toBeInTheDocument();
-    expect(screen.getByText(/follower pays.*\$150/i)).toBeInTheDocument();
-
-    // Minimum fee validation
-    await user.clear(perfFeeSlider);
-    await user.type(perfFeeSlider, '50'); // Too high
-
-    await waitFor(() => {
-      expect(screen.getByText(/maximum 30%/i)).toBeInTheDocument();
-    });
-  });
-
-  it('should require terms acceptance before submission', async () => {
-    const user = userEvent.setup();
-    renderWithRouter(<ProviderApplicationPage />);
-
-    // Navigate to Step 5: Review
-    // ... (abbreviated)
-
-    // Terms and conditions
-    expect(screen.getByText(/terms and conditions/i)).toBeInTheDocument();
-    expect(screen.getByText(/provider agreement/i)).toBeInTheDocument();
-
-    // Should have 4 final consent checkboxes
-    const consent1 = screen.getByRole('checkbox', { name: /provider terms/i });
-    const consent2 = screen.getByRole('checkbox', { name: /code of conduct/i });
-    const consent3 = screen.getByRole('checkbox', { name: /disclosure obligations/i });
-    const consent4 = screen.getByRole('checkbox', { name: /regulatory compliance/i });
-
-    expect(consent1).toBeInTheDocument();
-    expect(consent2).toBeInTheDocument();
-    expect(consent3).toBeInTheDocument();
-    expect(consent4).toBeInTheDocument();
-
-    // Submit button should be disabled
-    const submitBtn = screen.getByRole('button', { name: /submit application/i });
+    // Submit blocked before consent
+    const submitBtn = screen.getByRole('button', { name: /Gửi đơn đăng ký/ });
     expect(submitBtn).toBeDisabled();
 
-    // Check all consents
-    await user.click(consent1);
-    await user.click(consent2);
-    await user.click(consent3);
-    await user.click(consent4);
+    // Processing time notice
+    expect(screen.getByText(/xem xét đơn trong 2-3 ngày làm việc/i)).toBeInTheDocument();
 
-    // Submit button should enable
-    await waitFor(() => {
-      expect(submitBtn).not.toBeDisabled();
-    });
+    // Accept terms → enabled
+    await user.click(screen.getByRole('button', { name: /Tôi đã đọc và đồng ý với/i }));
+    expect(submitBtn).toBeEnabled();
   });
 
-  it('should submit application successfully', async () => {
+  it('should submit the application and navigate back to the list', async () => {
     const user = userEvent.setup();
-    const localStorageSpy = vi.spyOn(Storage.prototype, 'setItem');
+    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
 
     renderWithRouter(<ProviderApplicationPage />);
 
-    // Navigate through all steps and complete
-    // ... (abbreviated full flow)
+    // Full flow to review
+    await user.click(screen.getByRole('button', { name: 'Tiếp tục' }));
+    await user.click(screen.getByRole('button', { name: 'Hoàn thành KYC ngay' }));
+    const monthsInput = screen.getByDisplayValue('0');
+    await user.clear(monthsInput);
+    await user.type(monthsInput, '12');
+    await user.click(screen.getByRole('button', { name: 'Tiếp tục' }));
+    await user.click(screen.getByRole('button', { name: /Tôi cam kết công khai tất cả thông tin trên/i }));
+    await user.click(screen.getByRole('button', { name: /fiduciary duty/i }));
+    await user.click(screen.getByRole('button', { name: 'Tiếp tục' }));
+    await user.type(
+      screen.getByPlaceholderText(/Tôi sử dụng chiến lược swing trading/i),
+      STRATEGY_100CHARS,
+    );
+    await user.click(screen.getByRole('button', { name: 'Tiếp tục' }));
+    await user.click(screen.getByRole('button', { name: /Tôi đã đọc và đồng ý với/i }));
 
-    // At Step 5, accept all terms
-    const consent1 = screen.getByRole('checkbox', { name: /provider terms/i });
-    const consent2 = screen.getByRole('checkbox', { name: /code of conduct/i });
-    const consent3 = screen.getByRole('checkbox', { name: /disclosure obligations/i });
-    const consent4 = screen.getByRole('checkbox', { name: /regulatory compliance/i });
+    await user.click(screen.getByRole('button', { name: /Gửi đơn đăng ký/ }));
 
-    await user.click(consent1);
-    await user.click(consent2);
-    await user.click(consent3);
-    await user.click(consent4);
-
-    // Submit application
-    const submitBtn = screen.getByRole('button', { name: /submit application/i });
-    await user.click(submitBtn);
-
-    // Should show confirmation modal
     await waitFor(() => {
-      expect(screen.getByText(/confirm submission/i)).toBeInTheDocument();
-      expect(screen.getByText(/this action cannot be undone/i)).toBeInTheDocument();
-    });
-
-    // Confirm
-    const confirmBtn = screen.getByRole('button', { name: /confirm/i });
-    await user.click(confirmBtn);
-
-    // Should save application
-    await waitFor(() => {
-      expect(localStorageSpy).toHaveBeenCalledWith(
-        expect.stringContaining('providerApplication'),
-        expect.any(String)
+      expect(alertSpy).toHaveBeenCalledWith(
+        expect.stringContaining('Đơn đăng ký đã được gửi'),
       );
     });
-
-    // Should show success message
     await waitFor(() => {
-      expect(screen.getByText(/application submitted/i)).toBeInTheDocument();
-      expect(screen.getByText(/review within 3-5 business days/i)).toBeInTheDocument();
+      expect(mockNavigate).toHaveBeenCalledWith('/trade/copy-trading');
     });
 
-    // Should navigate to provider dashboard (or confirmation page)
+    alertSpy.mockRestore();
+  });
+
+  it('should navigate back via the header back button', async () => {
+    const user = userEvent.setup();
+    renderWithRouter(<ProviderApplicationPage />);
+
+    await user.click(screen.getByRole('button', { name: 'Quay lại' }));
+
     await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith(
-        expect.stringContaining('/trade/copy-trading/provider-dashboard')
-      );
+      expect(mockNavigate).toHaveBeenCalledWith(-1);
     });
   });
 });
