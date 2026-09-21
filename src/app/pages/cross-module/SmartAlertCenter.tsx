@@ -18,13 +18,24 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  Bell, Plus, Trash2, CheckCircle, Clock, TrendingUp,
-  Target, ShoppingCart, Zap, Wallet, Activity, Info,
-  Edit, AlertCircle,
+  Bell,
+  Plus,
+  Trash2,
+  CheckCircle,
+  Clock,
+  TrendingUp,
+  Target,
+  ShoppingCart,
+  Zap,
+  Wallet,
+  Activity,
+  Info,
+  Edit,
+  AlertCircle,
 } from 'lucide-react';
 
 const TABS = ['Hoat dong', 'Lich su', 'Cai dat'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface Alert {
   id: string;
@@ -267,7 +278,9 @@ export function SmartAlertCenter() {
                 </div>
                 <div>
                   <p style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>Smart Alerts</p>
-                  <p style={{ color: c.text3, fontSize: 12 }}>{ACTIVE_ALERTS.length} total alerts</p>
+                  <p style={{ color: c.text3, fontSize: 12 }}>
+                    {ACTIVE_ALERTS.length} total alerts
+                  </p>
                 </div>
               </div>
 
@@ -351,13 +364,13 @@ export function SmartAlertCenter() {
                           </div>
                           <div className="flex items-center gap-1">
                             <button
-                              onClick={() => alert(`Edit ${alert.type}`)}
+                              onClick={() => window.alert(`Edit ${alert.type}`)}
                               className="p-2 rounded-lg hover:opacity-70 transition-opacity"
                             >
                               <Edit size={14} color={c.text3} />
                             </button>
                             <button
-                              onClick={() => alert(`Delete ${alert.type}`)}
+                              onClick={() => window.alert(`Delete ${alert.type}`)}
                               className="p-2 rounded-lg hover:opacity-70 transition-opacity"
                               style={{ background: 'rgba(239,68,68,0.08)' }}
                             >
@@ -368,7 +381,9 @@ export function SmartAlertCenter() {
 
                         <div className="space-y-2 mb-3">
                           <div>
-                            <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Condition</p>
+                            <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
+                              Condition
+                            </p>
                             <p style={{ color: c.text1, fontSize: 12 }}>{alert.condition}</p>
                           </div>
                           <div>
@@ -379,14 +394,18 @@ export function SmartAlertCenter() {
 
                         <div className="grid grid-cols-2 gap-3">
                           <div>
-                            <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Triggered</p>
+                            <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
+                              Triggered
+                            </p>
                             <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
                               {alert.triggerCount} times
                             </p>
                           </div>
                           {alert.lastTriggered && (
                             <div>
-                              <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Last Trigger</p>
+                              <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
+                                Last Trigger
+                              </p>
                               <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
                                 {alert.lastTriggered.toLocaleDateString('vi-VN', {
                                   month: 'short',
@@ -422,11 +441,15 @@ export function SmartAlertCenter() {
             {/* Info */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+              style={{
+                background: 'rgba(59,130,246,0.06)',
+                border: '1px solid rgba(59,130,246,0.15)',
+              }}
             >
               <Info size={14} color="#3B82F6" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Smart alerts work across all modules. Set conditions and get notified via push, email, or SMS.
+                Smart alerts work across all modules. Set conditions and get notified via push,
+                email, or SMS.
               </p>
             </div>
           </>
@@ -454,7 +477,14 @@ export function SmartAlertCenter() {
                     >
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex-1">
-                          <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginBottom: 2 }}>
+                          <p
+                            style={{
+                              color: c.text1,
+                              fontSize: 13,
+                              fontWeight: 600,
+                              marginBottom: 2,
+                            }}
+                          >
                             {entry.alertName}
                           </p>
                           <span
@@ -466,7 +496,9 @@ export function SmartAlertCenter() {
                         </div>
                         <CheckCircle size={16} color="#10B981" />
                       </div>
-                      <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>{entry.action}</p>
+                      <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>
+                        {entry.action}
+                      </p>
                       <div className="flex items-center gap-1.5">
                         <Clock size={10} color={c.text3} />
                         <p style={{ color: c.text3, fontSize: 10 }}>
@@ -525,7 +557,9 @@ export function SmartAlertCenter() {
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginBottom: 2 }}>
+                        <p
+                          style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginBottom: 2 }}
+                        >
                           {channel.label}
                         </p>
                         <p style={{ color: c.text3, fontSize: 11 }}>
@@ -583,7 +617,14 @@ export function SmartAlertCenter() {
                       >
                         <div className="flex items-start justify-between mb-2">
                           <div className="flex-1">
-                            <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginBottom: 2 }}>
+                            <p
+                              style={{
+                                color: c.text1,
+                                fontSize: 13,
+                                fontWeight: 600,
+                                marginBottom: 2,
+                              }}
+                            >
                               {template.name}
                             </p>
                             <p style={{ color: c.text3, fontSize: 11 }}>{template.description}</p>
@@ -619,7 +660,10 @@ export function SmartAlertCenter() {
             {/* Warning */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
+              style={{
+                background: 'rgba(245,158,11,0.06)',
+                border: '1px solid rgba(245,158,11,0.15)',
+              }}
             >
               <AlertCircle size={14} color="#F59E0B" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>

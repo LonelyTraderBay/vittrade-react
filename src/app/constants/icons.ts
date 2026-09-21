@@ -1,14 +1,14 @@
 /**
  * Enterprise Icon System
- * 
+ *
  * Standardized icon sizes for visual consistency
  * Based on fintech industry standards (Coinbase, Robinhood)
- * 
+ *
  * Usage:
  * ```tsx
  * import { ICON_SIZE } from '@/constants/icons';
  * import { TrendingUp } from 'lucide-react';
- * 
+ *
  * <TrendingUp size={ICON_SIZE.base} strokeWidth={ICON_STROKE.standard} />
  * ```
  */
@@ -62,36 +62,36 @@ export const ICON_SIZE = {
  * Consistent stroke weights for visual harmony
  */
 export const ICON_STROKE = {
-  thin: 1.5,      // Decorative, subtle
-  standard: 2,    // Default for most icons
-  emphasis: 2.2,  // Important icons, warnings
-  bold: 2.5,      // Heavy emphasis (use sparingly)
+  thin: 1.5, // Decorative, subtle
+  standard: 2, // Default for most icons
+  emphasis: 2.2, // Important icons, warnings
+  bold: 2.5, // Heavy emphasis (use sparingly)
 } as const;
 
 /**
  * Icon Container Sizes
  * Standard container sizes for icons with backgrounds
- * 
+ *
  * Usage:
  * ```tsx
- * <div style={{ 
- *   width: ICON_CONTAINER.sm, 
- *   height: ICON_CONTAINER.sm 
+ * <div style={{
+ *   width: ICON_CONTAINER.sm,
+ *   height: ICON_CONTAINER.sm
  * }}>
  *   <Icon size={ICON_SIZE.sm} />
  * </div>
  * ```
  */
 export const ICON_CONTAINER = {
-  sm: 32,   // For 16px icons
+  sm: 32, // For 16px icons
   base: 36, // For 18px icons
-  md: 40,   // For 20px icons
-  lg: 48,   // For 24px icons
+  md: 40, // For 20px icons
+  lg: 48, // For 24px icons
 } as const;
 
 /**
  * Helper Types
  */
-export type IconSize = typeof ICON_SIZE[keyof typeof ICON_SIZE];
-export type IconStroke = typeof ICON_STROKE[keyof typeof ICON_STROKE];
-export type IconContainerSize = typeof ICON_CONTAINER[keyof typeof ICON_CONTAINER];
+export type IconSize = (typeof ICON_SIZE)[keyof typeof ICON_SIZE];
+export type IconStroke = (typeof ICON_STROKE)[keyof typeof ICON_STROKE];
+export type IconContainerSize = (typeof ICON_CONTAINER)[keyof typeof ICON_CONTAINER];

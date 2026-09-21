@@ -16,12 +16,22 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  Zap, Plus, Trash2, TrendingDown, Activity, Target,
-  CheckCircle, Clock, AlertCircle, Info, Settings, Copy,
+  Zap,
+  Plus,
+  Trash2,
+  TrendingDown,
+  Activity,
+  Target,
+  CheckCircle,
+  Clock,
+  AlertCircle,
+  Info,
+  Settings,
+  Copy,
 } from 'lucide-react';
 
 const TABS = ['Luat cua toi', 'Mau', 'Lich su'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface SmartRule {
   id: string;
@@ -273,12 +283,8 @@ export function DCASmartRulesPage() {
                   style={{ background: c.surface, border: `1px solid ${c.border}` }}
                 >
                   <Zap size={48} color={c.text3} style={{ margin: '0 auto 12px' }} />
-                  <p style={{ color: c.text2, fontSize: 13, marginBottom: 4 }}>
-                    Chua co luat nao
-                  </p>
-                  <p style={{ color: c.text3, fontSize: 11 }}>
-                    Tao luat tu mau hoac tu dinh nghia
-                  </p>
+                  <p style={{ color: c.text2, fontSize: 13, marginBottom: 4 }}>Chua co luat nao</p>
+                  <p style={{ color: c.text3, fontSize: 11 }}>Tao luat tu mau hoac tu dinh nghia</p>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -327,7 +333,9 @@ export function DCASmartRulesPage() {
 
                         <div className="space-y-2 mb-3">
                           <div>
-                            <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Condition</p>
+                            <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
+                              Condition
+                            </p>
                             <p style={{ color: c.text1, fontSize: 12 }}>{rule.condition}</p>
                           </div>
                           <div>
@@ -338,16 +346,23 @@ export function DCASmartRulesPage() {
 
                         <div className="grid grid-cols-2 gap-3">
                           <div>
-                            <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Triggered</p>
+                            <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
+                              Triggered
+                            </p>
                             <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
                               {rule.triggeredCount} times
                             </p>
                           </div>
                           {rule.lastTriggered && (
                             <div>
-                              <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Last Trigger</p>
+                              <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
+                                Last Trigger
+                              </p>
                               <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
-                                {rule.lastTriggered.toLocaleDateString('vi-VN', { month: 'short', day: 'numeric' })}
+                                {rule.lastTriggered.toLocaleDateString('vi-VN', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                })}
                               </p>
                             </div>
                           )}
@@ -378,11 +393,15 @@ export function DCASmartRulesPage() {
             {/* Info */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+              style={{
+                background: 'rgba(59,130,246,0.06)',
+                border: '1px solid rgba(59,130,246,0.15)',
+              }}
             >
               <Info size={14} color="#3B82F6" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Smart rules tu dong dieu chinh DCA dua tren dieu kien thi truong. Giup toi uu hoa gia mua trung binh.
+                Smart rules tu dong dieu chinh DCA dua tren dieu kien thi truong. Giup toi uu hoa
+                gia mua trung binh.
               </p>
             </div>
           </>
@@ -394,7 +413,15 @@ export function DCASmartRulesPage() {
             <PageSection label="Rule Templates">
               {['Entry', 'Exit', 'Adjust'].map((category) => (
                 <div key={category}>
-                  <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginBottom: 8, marginTop: 16 }}>
+                  <p
+                    style={{
+                      color: c.text1,
+                      fontSize: 13,
+                      fontWeight: 600,
+                      marginBottom: 8,
+                      marginTop: 16,
+                    }}
+                  >
                     {category} Rules
                   </p>
                   <div className="space-y-2">
@@ -406,7 +433,14 @@ export function DCASmartRulesPage() {
                       >
                         <div className="flex items-start justify-between mb-2">
                           <div className="flex-1">
-                            <p style={{ color: c.text1, fontSize: 14, fontWeight: 600, marginBottom: 2 }}>
+                            <p
+                              style={{
+                                color: c.text1,
+                                fontSize: 14,
+                                fontWeight: 600,
+                                marginBottom: 2,
+                              }}
+                            >
                               {template.name}
                             </p>
                             <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
@@ -415,10 +449,7 @@ export function DCASmartRulesPage() {
                           </div>
                         </div>
 
-                        <div
-                          className="rounded-xl p-2 mb-3"
-                          style={{ background: c.bg }}
-                        >
+                        <div className="rounded-xl p-2 mb-3" style={{ background: c.bg }}>
                           <div className="flex items-center justify-between mb-2">
                             <p style={{ color: c.text3, fontSize: 10 }}>Condition</p>
                             <code style={{ color: c.text1, fontSize: 10, fontFamily: 'monospace' }}>
@@ -427,7 +458,14 @@ export function DCASmartRulesPage() {
                           </div>
                           <div className="flex items-center justify-between">
                             <p style={{ color: c.text3, fontSize: 10 }}>Action</p>
-                            <code style={{ color: '#10B981', fontSize: 10, fontFamily: 'monospace', fontWeight: 600 }}>
+                            <code
+                              style={{
+                                color: '#10B981',
+                                fontSize: 10,
+                                fontFamily: 'monospace',
+                                fontWeight: 600,
+                              }}
+                            >
                               {template.action}
                             </code>
                           </div>
@@ -496,14 +534,14 @@ export function DCASmartRulesPage() {
                                   entry.result === 'executed'
                                     ? 'rgba(16,185,129,0.1)'
                                     : entry.result === 'failed'
-                                    ? 'rgba(239,68,68,0.1)'
-                                    : 'rgba(245,158,11,0.1)',
+                                      ? 'rgba(239,68,68,0.1)'
+                                      : 'rgba(245,158,11,0.1)',
                                 color:
                                   entry.result === 'executed'
                                     ? '#10B981'
                                     : entry.result === 'failed'
-                                    ? '#EF4444'
-                                    : '#F59E0B',
+                                      ? '#EF4444'
+                                      : '#F59E0B',
                               }}
                             >
                               {entry.result.toUpperCase()}
@@ -523,10 +561,7 @@ export function DCASmartRulesPage() {
                         </div>
                       </div>
 
-                      <div
-                        className="rounded-xl p-2"
-                        style={{ background: c.bg }}
-                      >
+                      <div className="rounded-xl p-2" style={{ background: c.bg }}>
                         <div className="flex items-center justify-between mb-1">
                           <p style={{ color: c.text3, fontSize: 10 }}>Condition Met</p>
                           <p style={{ color: c.text1, fontSize: 11 }}>{entry.condition}</p>
@@ -569,7 +604,10 @@ export function DCASmartRulesPage() {
             {/* Success Banner */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}
+              style={{
+                background: 'rgba(16,185,129,0.06)',
+                border: '1px solid rgba(16,185,129,0.15)',
+              }}
             >
               <CheckCircle size={14} color="#10B981" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>

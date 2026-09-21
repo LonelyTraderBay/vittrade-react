@@ -63,23 +63,23 @@ interface MarketDataWSContextValue {
   // Liquidations
   recentLiquidations: Liquidation[];
   subscribeLiquidations: (callback: (liq: Liquidation) => void) => () => void;
-  
+
   // Open Interest
   openInterest: OpenInterestData | null;
   subscribeOpenInterest: (callback: (data: OpenInterestData) => void) => () => void;
-  
+
   // Long/Short Ratio
   longShortRatio: LongShortRatioData | null;
   subscribeLongShortRatio: (callback: (data: LongShortRatioData) => void) => () => void;
-  
+
   // Top Traders
   topTraders: TopTraderData | null;
   subscribeTopTraders: (callback: (data: TopTraderData) => void) => () => void;
-  
+
   // Funding Rate
   fundingRate: FundingRateData | null;
   subscribeFundingRate: (callback: (data: FundingRateData) => void) => () => void;
-  
+
   // Connection status
   isConnected: boolean;
 }
@@ -90,7 +90,7 @@ const MarketDataWSContext = createContext<MarketDataWSContextValue | null>(null)
    MOCK DATA GENERATORS
    ═══════════════════════════════════════════════════════════════ */
 
-const PAIRS = ['BTC/USDT', 'ETH/USDT', 'SOL/USDT', 'BNB/USDT', 'ADA/USDT'];
+const PAIRS = ['BTC/USDT', 'ETH/USDT', 'SOL/USDT', 'BNB/USDT', 'ADA/USDT'] as const;
 const PRICES = {
   'BTC/USDT': 67543,
   'ETH/USDT': 3245,
@@ -103,21 +103,21 @@ function generateLiquidation(): Liquidation {
   const pair = PAIRS[Math.floor(Math.random() * PAIRS.length)];
   const basePrice = PRICES[pair];
   const side: 'long' | 'short' = Math.random() > 0.55 ? 'long' : 'short';
-  
+
   // Size distribution: mostly small, occasional whales
   const sizeRandom = Math.random();
   let size: number;
   if (sizeRandom > 0.95) {
     // 5% chance: whale liquidation ($500K - $2M)
     size = 500000 + Math.random() * 1500000;
-  } else if (sizeRandom > 0.80) {
+  } else if (sizeRandom > 0.8) {
     // 15% chance: large ($50K - $500K)
     size = 50000 + Math.random() * 450000;
   } else {
     // 80% chance: normal retail ($1K - $50K)
     size = 1000 + Math.random() * 49000;
   }
-  
+
   return {
     id: `liq-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
     timestamp: Date.now(),
@@ -134,7 +134,7 @@ function generateOpenInterest(previous: OpenInterestData | null): OpenInterestDa
   // OI changes -2% to +2% per update
   const change = (Math.random() - 0.5) * base * 0.04;
   const newCurrent = Math.max(20000000000, base + change);
-  
+
   return {
     current: newCurrent,
     change24h: change,
@@ -151,7 +151,7 @@ function generateLongShortRatio(previous: LongShortRatioData | null): LongShortR
   const shift = (Math.random() - 0.5) * 2;
   const newLongPct = Math.max(30, Math.min(70, baseLongPct + shift));
   const newShortPct = 100 - newLongPct;
-  
+
   return {
     longPct: newLongPct,
     shortPct: newShortPct,
@@ -167,7 +167,7 @@ function generateTopTraders(previous: TopTraderData | null): TopTraderData {
   const baseLongPct = previous?.longPct || 58.3;
   const shift = (Math.random() - 0.5) * 1.5;
   const newLongPct = Math.max(35, Math.min(65, baseLongPct + shift));
-  
+
   return {
     longPct: newLongPct,
     shortPct: 100 - newLongPct,
@@ -181,7 +181,7 @@ function generateFundingRate(previous: FundingRateData | null): FundingRateData 
   const baseRate = previous?.rate || 0.0001;
   const change = (Math.random() - 0.5) * 0.00005;
   const newRate = Math.max(-0.0003, Math.min(0.0003, baseRate + change));
-  
+
   return {
     rate: newRate,
     avgRate: 0.0001,
@@ -199,10 +199,7 @@ interface MarketDataWSProviderProps {
   autoConnect?: boolean;
 }
 
-export function MarketDataWSProvider({
-  children,
-  autoConnect = true,
-}: MarketDataWSProviderProps) {
+export function MarketDataWSProvider({ children, autoConnect = true }: MarketDataWSProviderProps) {
   const [isConnected, setIsConnected] = useState(false);
   const [recentLiquidations, setRecentLiquidations] = useState<Liquidation[]>([]);
   const [openInterest, setOpenInterest] = useState<OpenInterestData | null>(null);
@@ -234,16 +231,16 @@ export function MarketDataWSProvider({
 
     const streamLiquidations = () => {
       const newLiq = generateLiquidation();
-      
+
       // Update state
-      setRecentLiquidations(prev => {
+      setRecentLiquidations((prev) => {
         const updated = [newLiq, ...prev].slice(0, 50);
         return updated;
       });
-      
+
       // Notify subscribers
-      liqSubscribers.current.forEach(callback => callback(newLiq));
-      
+      liqSubscribers.current.forEach((callback) => callback(newLiq));
+
       // Schedule next liquidation (2-10 seconds)
       const delay = 2000 + Math.random() * 8000;
       intervalsRef.current.liquidations = setTimeout(streamLiquidations, delay);
@@ -267,11 +264,14 @@ export function MarketDataWSProvider({
     // Initial data
     setOpenInterest(generateOpenInterest(null));
 
-    intervalsRef.current.openInterest = setInterval(() => {
-      const newData = generateOpenInterest(openInterest);
-      setOpenInterest(newData);
-      oiSubscribers.current.forEach(callback => callback(newData));
-    }, 5 * 60 * 1000); // 5 minutes
+    intervalsRef.current.openInterest = setInterval(
+      () => {
+        const newData = generateOpenInterest(openInterest);
+        setOpenInterest(newData);
+        oiSubscribers.current.forEach((callback) => callback(newData));
+      },
+      5 * 60 * 1000,
+    ); // 5 minutes
 
     return () => {
       if (intervalsRef.current.openInterest) {
@@ -291,7 +291,7 @@ export function MarketDataWSProvider({
     intervalsRef.current.longShortRatio = setInterval(() => {
       const newData = generateLongShortRatio(longShortRatio);
       setLongShortRatio(newData);
-      lsrSubscribers.current.forEach(callback => callback(newData));
+      lsrSubscribers.current.forEach((callback) => callback(newData));
     }, 15 * 1000); // 15 seconds
 
     return () => {
@@ -312,7 +312,7 @@ export function MarketDataWSProvider({
     intervalsRef.current.topTraders = setInterval(() => {
       const newData = generateTopTraders(topTraders);
       setTopTraders(newData);
-      ttSubscribers.current.forEach(callback => callback(newData));
+      ttSubscribers.current.forEach((callback) => callback(newData));
     }, 60 * 1000); // 1 minute
 
     return () => {
@@ -333,7 +333,7 @@ export function MarketDataWSProvider({
     intervalsRef.current.fundingRate = setInterval(() => {
       const newData = generateFundingRate(fundingRate);
       setFundingRate(newData);
-      frSubscribers.current.forEach(callback => callback(newData));
+      frSubscribers.current.forEach((callback) => callback(newData));
     }, 30 * 1000); // 30 seconds
 
     return () => {
@@ -410,11 +410,7 @@ export function MarketDataWSProvider({
     isConnected,
   };
 
-  return (
-    <MarketDataWSContext.Provider value={value}>
-      {children}
-    </MarketDataWSContext.Provider>
-  );
+  return <MarketDataWSContext.Provider value={value}>{children}</MarketDataWSContext.Provider>;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -506,7 +502,7 @@ export function useFundingRate(): FundingRateData | null {
  */
 export function useLiquidationNotifications(
   onLiquidation: (liq: Liquidation) => void,
-  minSize?: number
+  minSize?: number,
 ) {
   const { subscribeLiquidations } = useMarketDataWS();
 
@@ -529,10 +525,7 @@ export function WSConnectionIndicator() {
 
   return (
     <div className="flex items-center gap-1.5">
-      <div
-        className="w-2 h-2 rounded-full animate-pulse"
-        style={{ background: '#10B981' }}
-      />
+      <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: '#10B981' }} />
       <span
         style={{
           color: '#10B981',

@@ -44,25 +44,153 @@ interface Mover {
 }
 
 const GAINERS_24H: Mover[] = [
-  { symbol: 'PEPE', name: 'Pepe', price: 0.00000123, change: 45.67, volume24h: 450000000, high24h: 0.00000128, low24h: 0.00000084 },
-  { symbol: 'SOL', name: 'Solana', price: 142.5, change: 18.56, volume24h: 3200000000, high24h: 145.2, low24h: 120.3 },
-  { symbol: 'ARB', name: 'Arbitrum', price: 1.85, change: 15.34, volume24h: 280000000, high24h: 1.92, low24h: 1.58 },
-  { symbol: 'MATIC', name: 'Polygon', price: 1.15, change: 12.89, volume24h: 890000000, high24h: 1.18, low24h: 1.01 },
-  { symbol: 'AVAX', name: 'Avalanche', price: 42.3, change: 11.45, volume24h: 540000000, high24h: 43.1, low24h: 37.8 },
-  { symbol: 'LINK', name: 'Chainlink', price: 18.75, change: 10.23, volume24h: 620000000, high24h: 19.2, low24h: 16.8 },
-  { symbol: 'UNI', name: 'Uniswap', price: 7.82, change: 9.67, volume24h: 380000000, high24h: 8.05, low24h: 7.05 },
-  { symbol: 'ATOM', name: 'Cosmos', price: 11.45, change: 8.91, volume24h: 290000000, high24h: 11.82, low24h: 10.42 },
+  {
+    symbol: 'PEPE',
+    name: 'Pepe',
+    price: 0.00000123,
+    change: 45.67,
+    volume24h: 450000000,
+    high24h: 0.00000128,
+    low24h: 0.00000084,
+  },
+  {
+    symbol: 'SOL',
+    name: 'Solana',
+    price: 142.5,
+    change: 18.56,
+    volume24h: 3200000000,
+    high24h: 145.2,
+    low24h: 120.3,
+  },
+  {
+    symbol: 'ARB',
+    name: 'Arbitrum',
+    price: 1.85,
+    change: 15.34,
+    volume24h: 280000000,
+    high24h: 1.92,
+    low24h: 1.58,
+  },
+  {
+    symbol: 'MATIC',
+    name: 'Polygon',
+    price: 1.15,
+    change: 12.89,
+    volume24h: 890000000,
+    high24h: 1.18,
+    low24h: 1.01,
+  },
+  {
+    symbol: 'AVAX',
+    name: 'Avalanche',
+    price: 42.3,
+    change: 11.45,
+    volume24h: 540000000,
+    high24h: 43.1,
+    low24h: 37.8,
+  },
+  {
+    symbol: 'LINK',
+    name: 'Chainlink',
+    price: 18.75,
+    change: 10.23,
+    volume24h: 620000000,
+    high24h: 19.2,
+    low24h: 16.8,
+  },
+  {
+    symbol: 'UNI',
+    name: 'Uniswap',
+    price: 7.82,
+    change: 9.67,
+    volume24h: 380000000,
+    high24h: 8.05,
+    low24h: 7.05,
+  },
+  {
+    symbol: 'ATOM',
+    name: 'Cosmos',
+    price: 11.45,
+    change: 8.91,
+    volume24h: 290000000,
+    high24h: 11.82,
+    low24h: 10.42,
+  },
 ];
 
 const LOSERS_24H: Mover[] = [
-  { symbol: 'LUNA', name: 'Terra', price: 0.85, change: -15.67, volume24h: 120000000, high24h: 1.05, low24h: 0.82 },
-  { symbol: 'FTM', name: 'Fantom', price: 0.62, change: -12.34, volume24h: 95000000, high24h: 0.72, low24h: 0.60 },
-  { symbol: 'ALGO', name: 'Algorand', price: 0.28, change: -10.45, volume24h: 78000000, high24h: 0.32, low24h: 0.27 },
-  { symbol: 'XTZ', name: 'Tezos', price: 1.15, change: -9.82, volume24h: 65000000, high24h: 1.29, low24h: 1.12 },
-  { symbol: 'EGLD', name: 'MultiversX', price: 52.3, change: -8.67, volume24h: 48000000, high24h: 58.2, low24h: 51.5 },
-  { symbol: 'ICP', name: 'Internet Computer', price: 8.45, change: -7.91, volume24h: 92000000, high24h: 9.28, low24h: 8.32 },
-  { symbol: 'FLOW', name: 'Flow', price: 1.52, change: -7.23, volume24h: 42000000, high24h: 1.67, low24h: 1.48 },
-  { symbol: 'SAND', name: 'The Sandbox', price: 0.58, change: -6.54, volume24h: 58000000, high24h: 0.63, low24h: 0.56 },
+  {
+    symbol: 'LUNA',
+    name: 'Terra',
+    price: 0.85,
+    change: -15.67,
+    volume24h: 120000000,
+    high24h: 1.05,
+    low24h: 0.82,
+  },
+  {
+    symbol: 'FTM',
+    name: 'Fantom',
+    price: 0.62,
+    change: -12.34,
+    volume24h: 95000000,
+    high24h: 0.72,
+    low24h: 0.6,
+  },
+  {
+    symbol: 'ALGO',
+    name: 'Algorand',
+    price: 0.28,
+    change: -10.45,
+    volume24h: 78000000,
+    high24h: 0.32,
+    low24h: 0.27,
+  },
+  {
+    symbol: 'XTZ',
+    name: 'Tezos',
+    price: 1.15,
+    change: -9.82,
+    volume24h: 65000000,
+    high24h: 1.29,
+    low24h: 1.12,
+  },
+  {
+    symbol: 'EGLD',
+    name: 'MultiversX',
+    price: 52.3,
+    change: -8.67,
+    volume24h: 48000000,
+    high24h: 58.2,
+    low24h: 51.5,
+  },
+  {
+    symbol: 'ICP',
+    name: 'Internet Computer',
+    price: 8.45,
+    change: -7.91,
+    volume24h: 92000000,
+    high24h: 9.28,
+    low24h: 8.32,
+  },
+  {
+    symbol: 'FLOW',
+    name: 'Flow',
+    price: 1.52,
+    change: -7.23,
+    volume24h: 42000000,
+    high24h: 1.67,
+    low24h: 1.48,
+  },
+  {
+    symbol: 'SAND',
+    name: 'The Sandbox',
+    price: 0.58,
+    change: -6.54,
+    volume24h: 58000000,
+    high24h: 0.63,
+    low24h: 0.56,
+  },
 ];
 
 type Timeframe = '1h' | '24h' | '7d';
@@ -127,10 +255,14 @@ function MoverRow({ mover, rank, onClick }: { mover: Mover; rank: number; onClic
             background: `linear-gradient(135deg, ${changeColor}40, ${changeColor}20)`,
           }}
         >
-          <span style={{ fontSize: WEB_FONT.sm, fontWeight: 700, color: changeColor }}>{mover.symbol[0]}</span>
+          <span style={{ fontSize: WEB_FONT.sm, fontWeight: 700, color: changeColor }}>
+            {mover.symbol[0]}
+          </span>
         </div>
         <div>
-          <div style={{ fontSize: WEB_FONT.md, fontWeight: 700, color: c.text1 }}>{mover.symbol}/USDT</div>
+          <div style={{ fontSize: WEB_FONT.md, fontWeight: 700, color: c.text1 }}>
+            {mover.symbol}/USDT
+          </div>
           <div style={{ fontSize: WEB_FONT.xs, color: c.text3 }}>{mover.name}</div>
         </div>
       </div>
@@ -203,7 +335,11 @@ export function WebMarketsMoversPage() {
 
   return (
     <PageLayout>
-      <Header variant="page" title="Top Movers" subtitle="Các cặp biến động mạnh nhất" back
+      <Header
+        variant="page"
+        title="Top Movers"
+        subtitle="Các cặp biến động mạnh nhất"
+        back
         right={
           <div
             className="flex items-center rounded-xl p-1"
@@ -243,7 +379,9 @@ export function WebMarketsMoversPage() {
           >
             <div className="flex items-center gap-2 mb-2">
               <Flame size={WEB_ICON.lg} color="#10B981" />
-              <span style={{ fontSize: WEB_FONT.sm, color: c.text3, fontWeight: 600 }}>Top Gainer</span>
+              <span style={{ fontSize: WEB_FONT.sm, color: c.text3, fontWeight: 600 }}>
+                Top Gainer
+              </span>
             </div>
             <div style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text1 }}>
               {GAINERS_24H[0].symbol}/USDT
@@ -262,7 +400,9 @@ export function WebMarketsMoversPage() {
           >
             <div className="flex items-center gap-2 mb-2">
               <Snowflake size={WEB_ICON.lg} color="#EF4444" />
-              <span style={{ fontSize: WEB_FONT.sm, color: c.text3, fontWeight: 600 }}>Top Loser</span>
+              <span style={{ fontSize: WEB_FONT.sm, color: c.text3, fontWeight: 600 }}>
+                Top Loser
+              </span>
             </div>
             <div style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text1 }}>
               {LOSERS_24H[0].symbol}/USDT
@@ -281,11 +421,13 @@ export function WebMarketsMoversPage() {
           >
             <div className="flex items-center gap-2 mb-2">
               <Activity size={WEB_ICON.lg} color={c.primary} />
-              <span style={{ fontSize: WEB_FONT.sm, color: c.text3, fontWeight: 600 }}>Tổng khối lượng</span>
+              <span style={{ fontSize: WEB_FONT.sm, color: c.text3, fontWeight: 600 }}>
+                Tổng khối lượng
+              </span>
             </div>
             <div style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text1 }}>
               {formatVolume(
-                [...GAINERS_24H, ...LOSERS_24H].reduce((sum, m) => sum + m.volume24h, 0)
+                [...GAINERS_24H, ...LOSERS_24H].reduce((sum, m) => sum + m.volume24h, 0),
               )}
             </div>
             <div style={{ fontSize: WEB_FONT.sm, color: c.text3 }}>16 cặp</div>
@@ -298,7 +440,9 @@ export function WebMarketsMoversPage() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <TrendingUp size={WEB_ICON.xl} color="#10B981" />
-              <h2 style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text1 }}>Top Gainers</h2>
+              <h2 style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text1 }}>
+                Top Gainers
+              </h2>
             </div>
 
             <div

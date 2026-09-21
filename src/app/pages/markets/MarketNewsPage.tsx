@@ -9,8 +9,14 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Clock, ExternalLink, ChevronRight, Bookmark, BookmarkCheck,
-  TrendingUp, TrendingDown, Minus,
+  Clock,
+  ExternalLink,
+  ChevronRight,
+  Bookmark,
+  BookmarkCheck,
+  TrendingUp,
+  TrendingDown,
+  Minus,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -21,7 +27,9 @@ import { useRoutePrefix } from '../../hooks/useRoutePrefix';
 import { useHaptic } from '../../hooks/useHaptic';
 import { FONT_SCALE, FONT_WEIGHT } from '../../constants/typography';
 import {
-  MARKET_NEWS, NEWS_CATEGORIES, SENTIMENT_BADGE,
+  MARKET_NEWS,
+  NEWS_CATEGORIES,
+  SENTIMENT_BADGE,
   type MarketNewsItem,
 } from '../../data/marketP2Data';
 
@@ -37,7 +45,7 @@ export function MarketNewsPage() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const toggleSave = (id: string) => {
-    setSavedIds(prev => {
+    setSavedIds((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else next.add(id);
@@ -50,18 +58,18 @@ export function MarketNewsPage() {
     let items = [...MARKET_NEWS];
     if (category !== 'all') {
       if (category === 'breaking') {
-        items = items.filter(n => n.isBreaking);
+        items = items.filter((n) => n.isBreaking);
       } else {
-        items = items.filter(n => n.category === category);
+        items = items.filter((n) => n.category === category);
       }
     }
     if (sentimentFilter) {
-      items = items.filter(n => n.sentiment === sentimentFilter);
+      items = items.filter((n) => n.sentiment === sentimentFilter);
     }
     return items;
   }, [category, sentimentFilter]);
 
-  const breakingNews = MARKET_NEWS.filter(n => n.isBreaking);
+  const breakingNews = MARKET_NEWS.filter((n) => n.isBreaking);
 
   return (
     <PageLayout>
@@ -87,20 +95,27 @@ export function MarketNewsPage() {
                 {breakingNews[0].timeAgo}
               </span>
             </div>
-            <p style={{
-              color: c.text1,
-              fontSize: FONT_SCALE.sm,
-              fontWeight: FONT_WEIGHT.bold,
-              lineHeight: 1.4,
-            }}>
+            <p
+              style={{
+                color: c.text1,
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.bold,
+                lineHeight: 1.4,
+              }}
+            >
               {breakingNews[0].title}
             </p>
             <div className="flex items-center gap-2 mt-2">
-              {breakingNews[0].relatedTokens.map(token => (
+              {breakingNews[0].relatedTokens.map((token) => (
                 <span
                   key={token}
                   className="px-2 py-0.5 rounded"
-                  style={{ background: c.surface2, color: c.text2, fontSize: 10, fontWeight: FONT_WEIGHT.semibold }}
+                  style={{
+                    background: c.surface2,
+                    color: c.text2,
+                    fontSize: 10,
+                    fontWeight: FONT_WEIGHT.semibold,
+                  }}
                 >
                   {token}
                 </span>
@@ -111,10 +126,13 @@ export function MarketNewsPage() {
 
         {/* Category filter chips */}
         <div className="flex gap-2 overflow-x-auto scrollbar-none -mx-5 px-5 pb-1">
-          {NEWS_CATEGORIES.map(cat => (
+          {NEWS_CATEGORIES.map((cat) => (
             <button
               key={cat.id}
-              onClick={() => { setCategory(cat.id); hapticSelection(); }}
+              onClick={() => {
+                setCategory(cat.id);
+                hapticSelection();
+              }}
               className="shrink-0 px-3 py-1.5 rounded-xl"
               style={{
                 background: category === cat.id ? `${cat.color}15` : c.surface2,
@@ -131,13 +149,16 @@ export function MarketNewsPage() {
 
         {/* Sentiment filter */}
         <div className="flex gap-2">
-          {(['bullish', 'neutral', 'bearish'] as const).map(s => {
+          {(['bullish', 'neutral', 'bearish'] as const).map((s) => {
             const cfg = SENTIMENT_BADGE[s];
             const isActive = sentimentFilter === s;
             return (
               <button
                 key={s}
-                onClick={() => { setSentimentFilter(isActive ? null : s); hapticSelection(); }}
+                onClick={() => {
+                  setSentimentFilter(isActive ? null : s);
+                  hapticSelection();
+                }}
                 className="flex items-center gap-1 px-2.5 py-1 rounded-lg"
                 style={{
                   background: isActive ? `${cfg.color}12` : 'transparent',
@@ -147,11 +168,13 @@ export function MarketNewsPage() {
                 {s === 'bullish' && <TrendingUp size={12} color={cfg.color} />}
                 {s === 'bearish' && <TrendingDown size={12} color={cfg.color} />}
                 {s === 'neutral' && <Minus size={12} color={cfg.color} />}
-                <span style={{
-                  color: isActive ? cfg.color : c.text3,
-                  fontSize: FONT_SCALE.micro,
-                  fontWeight: FONT_WEIGHT.medium,
-                }}>
+                <span
+                  style={{
+                    color: isActive ? cfg.color : c.text3,
+                    fontSize: FONT_SCALE.micro,
+                    fontWeight: FONT_WEIGHT.medium,
+                  }}
+                >
                   {cfg.label}
                 </span>
               </button>
@@ -161,13 +184,16 @@ export function MarketNewsPage() {
 
         {/* News feed */}
         <div className="flex flex-col" style={{ gap: 4 }}>
-          {filteredNews.map(news => (
+          {filteredNews.map((news) => (
             <NewsCard
               key={news.id}
               news={news}
               expanded={expandedId === news.id}
               saved={savedIds.has(news.id)}
-              onToggleExpand={() => { setExpandedId(expandedId === news.id ? null : news.id); hapticSelection(); }}
+              onToggleExpand={() => {
+                setExpandedId(expandedId === news.id ? null : news.id);
+                hapticSelection();
+              }}
               onToggleSave={() => toggleSave(news.id)}
               onTokenTap={(token) => {
                 const pairId = `${token.toLowerCase()}usdt`;
@@ -186,9 +212,16 @@ export function MarketNewsPage() {
               Không có tin tức phù hợp
             </p>
             <button
-              onClick={() => { setCategory('all'); setSentimentFilter(null); }}
+              onClick={() => {
+                setCategory('all');
+                setSentimentFilter(null);
+              }}
               className="mt-3 px-4 py-2 rounded-xl"
-              style={{ background: 'rgba(59,130,246,0.1)', color: '#3B82F6', fontSize: FONT_SCALE.xs }}
+              style={{
+                background: 'rgba(59,130,246,0.1)',
+                color: '#3B82F6',
+                fontSize: FONT_SCALE.xs,
+              }}
             >
               Xem tất cả
             </button>
@@ -201,7 +234,15 @@ export function MarketNewsPage() {
 
 /* ─── Sub-components ─── */
 
-function NewsCard({ news, expanded, saved, onToggleExpand, onToggleSave, onTokenTap, c }: {
+function NewsCard({
+  news,
+  expanded,
+  saved,
+  onToggleExpand,
+  onToggleSave,
+  onTokenTap,
+  c,
+}: {
   news: MarketNewsItem;
   expanded: boolean;
   saved: boolean;
@@ -211,7 +252,7 @@ function NewsCard({ news, expanded, saved, onToggleExpand, onToggleSave, onToken
   c: ReturnType<typeof useThemeColors>;
 }) {
   const sentimentCfg = SENTIMENT_BADGE[news.sentiment];
-  const categoryCfg = NEWS_CATEGORIES.find(cat => cat.id === news.category);
+  const categoryCfg = NEWS_CATEGORIES.find((cat) => cat.id === news.category);
 
   return (
     <TrCard
@@ -273,45 +314,45 @@ function NewsCard({ news, expanded, saved, onToggleExpand, onToggleSave, onToken
             </div>
 
             {/* Title */}
-            <p style={{
-              color: c.text1,
-              fontSize: FONT_SCALE.sm,
-              fontWeight: FONT_WEIGHT.semibold,
-              lineHeight: 1.4,
-              display: '-webkit-box',
-              WebkitLineClamp: expanded ? 'unset' : 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: expanded ? 'visible' : 'hidden',
-            }}>
+            <p
+              style={{
+                color: c.text1,
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.semibold,
+                lineHeight: 1.4,
+                display: '-webkit-box',
+                WebkitLineClamp: expanded ? 'unset' : 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: expanded ? 'visible' : 'hidden',
+              }}
+            >
               {news.title}
             </p>
 
             {/* Meta row */}
             <div className="flex items-center gap-2 mt-1.5">
-              <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>
-                {news.source}
-              </span>
+              <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>{news.source}</span>
               <span style={{ color: c.text3, fontSize: 8 }}>•</span>
               <Clock size={9} color={c.text3} />
-              <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>
-                {news.timeAgo}
-              </span>
+              <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>{news.timeAgo}</span>
               <span style={{ color: c.text3, fontSize: 8 }}>•</span>
-              <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>
-                {news.readTime}
-              </span>
+              <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>{news.readTime}</span>
             </div>
           </div>
 
           {/* Save button */}
           <button
-            onClick={e => { e.stopPropagation(); onToggleSave(); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleSave();
+            }}
             className="shrink-0 mt-1"
           >
-            {saved
-              ? <BookmarkCheck size={16} color="#3B82F6" fill="#3B82F6" />
-              : <Bookmark size={16} color={c.text3} />
-            }
+            {saved ? (
+              <BookmarkCheck size={16} color="#3B82F6" fill="#3B82F6" />
+            ) : (
+              <Bookmark size={16} color={c.text3} />
+            )}
           </button>
         </div>
       </button>
@@ -319,20 +360,22 @@ function NewsCard({ news, expanded, saved, onToggleExpand, onToggleSave, onToken
       {/* Expanded detail */}
       {expanded && (
         <div className="px-4 pb-3" style={{ borderTop: `1px solid ${c.borderSolid}` }}>
-          <p style={{
-            color: c.text2,
-            fontSize: FONT_SCALE.xs,
-            lineHeight: 1.6,
-            paddingTop: 12,
-            marginBottom: 12,
-          }}>
+          <p
+            style={{
+              color: c.text2,
+              fontSize: FONT_SCALE.xs,
+              lineHeight: 1.6,
+              paddingTop: 12,
+              marginBottom: 12,
+            }}
+          >
             {news.summary}
           </p>
 
           {/* Related tokens */}
           <div className="flex items-center gap-2 flex-wrap">
             <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Liên quan:</span>
-            {news.relatedTokens.map(token => (
+            {news.relatedTokens.map((token) => (
               <button
                 key={token}
                 onClick={() => onTokenTap(token)}
@@ -342,7 +385,13 @@ function NewsCard({ news, expanded, saved, onToggleExpand, onToggleSave, onToken
                   border: `1px solid ${c.borderSolid}`,
                 }}
               >
-                <span style={{ color: c.text1, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.semibold }}>
+                <span
+                  style={{
+                    color: c.text1,
+                    fontSize: FONT_SCALE.micro,
+                    fontWeight: FONT_WEIGHT.semibold,
+                  }}
+                >
                   {token}
                 </span>
                 <ChevronRight size={12} color={c.text3} />

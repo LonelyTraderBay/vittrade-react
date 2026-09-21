@@ -51,9 +51,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     <ThemeProvider>
       <AuthProvider>
         <UIProvider>
-          <TradingBridge>
-            {children}
-          </TradingBridge>
+          <TradingBridge>{children}</TradingBridge>
         </UIProvider>
       </AuthProvider>
     </ThemeProvider>
@@ -74,14 +72,10 @@ function TradingBridge({ children }: { children: React.ReactNode }) {
   // Memoize context value to prevent unnecessary re-renders
   const value = React.useMemo(
     () => ({ selectedPair, setSelectedPair, lastPriceUpdate }),
-    [selectedPair, setSelectedPair, lastPriceUpdate]
+    [selectedPair, setSelectedPair, lastPriceUpdate],
   );
 
-  return (
-    <TradingContext.Provider value={value}>
-      {children}
-    </TradingContext.Provider>
-  );
+  return <TradingContext.Provider value={value}>{children}</TradingContext.Provider>;
 }
 
 /**
@@ -105,6 +99,6 @@ export function useApp(): AppContextType {
       ...ui,
       ...trading,
     }),
-    [auth, theme, ui, trading]
+    [auth, theme, ui, trading],
   );
 }

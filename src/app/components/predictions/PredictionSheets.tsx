@@ -9,9 +9,21 @@
 
 import React, { useState } from 'react';
 import {
-  X, AlertTriangle, Shield, Info, ChevronRight,
-  ArrowUp, ArrowDown, TrendingUp, BookOpen, Layers,
-  Flag, Ban, Link2, MessageCircle, CheckCircle2,
+  X,
+  AlertTriangle,
+  Shield,
+  Info,
+  ChevronRight,
+  ArrowUp,
+  ArrowDown,
+  TrendingUp,
+  BookOpen,
+  Layers,
+  Flag,
+  Ban,
+  Link2,
+  MessageCircle,
+  CheckCircle2,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useHaptic } from '../../hooks/useHaptic';
@@ -45,7 +57,12 @@ interface TradeReviewSheetProps {
   data: TradeReviewData;
 }
 
-export function PredictionTradeReviewSheet({ open, onClose, onConfirm, data }: TradeReviewSheetProps) {
+export function PredictionTradeReviewSheet({
+  open,
+  onClose,
+  onConfirm,
+  data,
+}: TradeReviewSheetProps) {
   const c = useThemeColors();
   const { hapticSuccess } = useHaptic();
   const isBuy = data.side === 'buy';
@@ -54,21 +71,33 @@ export function PredictionTradeReviewSheet({ open, onClose, onConfirm, data }: T
     <BottomSheetV2 open={open} onClose={onClose} title="Xác nhận lệnh">
       {/* Side + Outcome */}
       <div className="flex items-center gap-2 mb-4">
-        <span className="px-3 py-1.5 rounded-lg flex items-center gap-1"
+        <span
+          className="px-3 py-1.5 rounded-lg flex items-center gap-1"
           style={{
             background: isBuy ? c.buyAlpha10 : c.sellAlpha10,
             color: isBuy ? c.buy : c.sell,
-            fontSize: φ.sm, fontWeight: 700,
-          }}>
+            fontSize: φ.sm,
+            fontWeight: 700,
+          }}
+        >
           {isBuy ? <ArrowUp size={12} /> : <ArrowDown size={12} />}
           {isBuy ? 'Buy' : 'Sell'}
         </span>
-        <span className="px-3 py-1.5 rounded-lg"
-          style={{ background: hexToRgba(data.outcomeColor, 15), color: data.outcomeColor, fontSize: φ.sm, fontWeight: 600 }}>
+        <span
+          className="px-3 py-1.5 rounded-lg"
+          style={{
+            background: hexToRgba(data.outcomeColor, 15),
+            color: data.outcomeColor,
+            fontSize: φ.sm,
+            fontWeight: 600,
+          }}
+        >
           {data.outcome}
         </span>
-        <span className="px-2 py-1 rounded-md"
-          style={{ background: c.surface2, color: c.text3, fontSize: 10, fontWeight: 600 }}>
+        <span
+          className="px-2 py-1 rounded-md"
+          style={{ background: c.surface2, color: c.text3, fontSize: 10, fontWeight: 600 }}
+        >
           {data.orderType === 'market' ? 'Market' : 'Limit'}
         </span>
       </div>
@@ -83,19 +112,27 @@ export function PredictionTradeReviewSheet({ open, onClose, onConfirm, data }: T
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <span style={{ color: c.text3, fontSize: φ.xs }}>Số lượng shares</span>
-            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, fontFamily: 'monospace' }}>
+            <span
+              style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, fontFamily: 'monospace' }}
+            >
               ~{data.shares.toLocaleString()}
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span style={{ color: c.text3, fontSize: φ.xs }}>{isBuy ? 'Chi phí ước tính' : 'Số tiền nhận'}</span>
-            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, fontFamily: 'monospace' }}>
+            <span style={{ color: c.text3, fontSize: φ.xs }}>
+              {isBuy ? 'Chi phí ước tính' : 'Số tiền nhận'}
+            </span>
+            <span
+              style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, fontFamily: 'monospace' }}
+            >
               ${data.amount.toFixed(2)}
             </span>
           </div>
           <div className="flex items-center justify-between">
             <span style={{ color: c.text3, fontSize: φ.xs }}>Giá</span>
-            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, fontFamily: 'monospace' }}>
+            <span
+              style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, fontFamily: 'monospace' }}
+            >
               ${data.price.toFixed(2)}
             </span>
           </div>
@@ -110,7 +147,9 @@ export function PredictionTradeReviewSheet({ open, onClose, onConfirm, data }: T
               <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
                 {isBuy ? 'Tiềm năng nhận' : 'Tổng chi'}
               </span>
-              <span style={{ color: c.buy, fontSize: φ.base, fontWeight: 700, fontFamily: 'monospace' }}>
+              <span
+                style={{ color: c.buy, fontSize: φ.base, fontWeight: 700, fontFamily: 'monospace' }}
+              >
                 ${(data.potentialPayout - data.fee).toFixed(2)}
               </span>
             </div>
@@ -120,28 +159,37 @@ export function PredictionTradeReviewSheet({ open, onClose, onConfirm, data }: T
 
       {/* Slippage / Liquidity note */}
       {data.orderType === 'market' && (
-        <div className="flex items-start gap-2 mb-3 px-3 py-2.5 rounded-xl"
-          style={{ background: c.warnAlpha10, border: `1px solid ${c.warnAlpha15}` }}>
+        <div
+          className="flex items-start gap-2 mb-3 px-3 py-2.5 rounded-xl"
+          style={{ background: c.warnAlpha10, border: `1px solid ${c.warnAlpha15}` }}
+        >
           <AlertTriangle size={13} color={c.warn} className="shrink-0 mt-0.5" />
           <p style={{ color: c.warn, fontSize: 11, lineHeight: 1.4 }}>
-            Lệnh market sẽ khớp ngay với giá tốt nhất hiện tại. Giá thực tế có thể chênh nhẹ do trượt giá (slippage).
+            Lệnh market sẽ khớp ngay với giá tốt nhất hiện tại. Giá thực tế có thể chênh nhẹ do
+            trượt giá (slippage).
           </p>
         </div>
       )}
 
       {/* Rule reminder */}
-      <div className="flex items-start gap-2 mb-4 px-3 py-2.5 rounded-xl"
-        style={{ background: c.primaryAlpha12, border: `1px solid ${c.primaryAlpha12}` }}>
+      <div
+        className="flex items-start gap-2 mb-4 px-3 py-2.5 rounded-xl"
+        style={{ background: c.primaryAlpha12, border: `1px solid ${c.primaryAlpha12}` }}
+      >
         <Info size={13} color={c.primary} className="shrink-0 mt-0.5" />
         <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.4 }}>
-          Mỗi share thắng trả $1.00, thua trả $0.00. Kết quả dựa trên nguồn xác minh công khai. Đây không phải lời khuyên đầu tư.
+          Mỗi share thắng trả $1.00, thua trả $0.00. Kết quả dựa trên nguồn xác minh công khai. Đây
+          không phải lời khuyên đầu tư.
         </p>
       </div>
 
       {/* CTA */}
       <CTAButton
         variant={isBuy ? 'success' : 'danger'}
-        onClick={() => { hapticSuccess(); onConfirm(); }}
+        onClick={() => {
+          hapticSuccess();
+          onConfirm();
+        }}
         fullWidth
       >
         Xác nhận lệnh · ${data.amount.toFixed(2)}
@@ -204,9 +252,9 @@ export function PredictionRiskExplainerSheet({ open, onClose }: RiskExplainerPro
   };
 
   return (
-    <BottomSheetV2 
-      open={open} 
-      onClose={onClose} 
+    <BottomSheetV2
+      open={open}
+      onClose={onClose}
       title={
         <div className="flex items-center gap-2">
           <Shield size={18} color={c.warn} />
@@ -219,23 +267,25 @@ export function PredictionRiskExplainerSheet({ open, onClose }: RiskExplainerPro
       </p>
 
       <div className="flex flex-col gap-3">
-        {RISK_ITEMS.map(item => {
+        {RISK_ITEMS.map((item) => {
           const itemColor = colorMap[item.colorKey] || c.primary;
           return (
-          <TrCard key={item.title} className="p-4 flex items-start gap-3">
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-              style={{ background: hexToRgba(itemColor, 12) }}>
-              <item.icon size={16} color={itemColor} />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, lineHeight: 1.4 }}>
-                {item.title}
-              </p>
-              <p style={{ color: c.text2, fontSize: φ.xs, lineHeight: 1.5, marginTop: 2 }}>
-                {item.desc}
-              </p>
-            </div>
-          </TrCard>
+            <TrCard key={item.title} className="p-4 flex items-start gap-3">
+              <div
+                className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                style={{ background: hexToRgba(itemColor, 12) }}
+              >
+                <item.icon size={16} color={itemColor} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, lineHeight: 1.4 }}>
+                  {item.title}
+                </p>
+                <p style={{ color: c.text2, fontSize: φ.xs, lineHeight: 1.5, marginTop: 2 }}>
+                  {item.desc}
+                </p>
+              </div>
+            </TrCard>
           );
         })}
       </div>
@@ -270,7 +320,13 @@ interface CommentReportDialogProps {
   commentUser?: string;
 }
 
-export function PredictionsCommentReportDialog({ open, onClose, onReport, onBlock, commentUser }: CommentReportDialogProps) {
+export function PredictionsCommentReportDialog({
+  open,
+  onClose,
+  onReport,
+  onBlock,
+  commentUser,
+}: CommentReportDialogProps) {
   const c = useThemeColors();
   const [selectedReason, setSelectedReason] = useState('');
   const { hapticSelection } = useHaptic();
@@ -302,17 +358,21 @@ export function PredictionsCommentReportDialog({ open, onClose, onReport, onBloc
     >
       {commentUser && (
         <p style={{ color: c.text2, fontSize: φ.xs, marginBottom: 12 }}>
-          Báo cáo bình luận của <span style={{ fontWeight: 600, color: c.text1 }}>{commentUser}</span>
+          Báo cáo bình luận của{' '}
+          <span style={{ fontWeight: 600, color: c.text1 }}>{commentUser}</span>
         </p>
       )}
 
       {/* Reasons */}
       <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, marginBottom: 8 }}>Chọn lý do</p>
       <div className="flex flex-col gap-2 mb-4">
-        {REPORT_REASONS.map(reason => (
+        {REPORT_REASONS.map((reason) => (
           <button
             key={reason}
-            onClick={() => { setSelectedReason(reason); hapticSelection(); }}
+            onClick={() => {
+              setSelectedReason(reason);
+              hapticSelection();
+            }}
             className="flex items-center gap-3 px-4 py-3 rounded-xl text-left active:opacity-70"
             style={{
               background: selectedReason === reason ? c.sellAlpha10 : c.surface2,
@@ -320,11 +380,13 @@ export function PredictionsCommentReportDialog({ open, onClose, onReport, onBloc
               minHeight: 44,
             }}
           >
-            <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0"
+            <div
+              className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0"
               style={{
                 borderColor: selectedReason === reason ? c.sell : c.borderSolid,
                 background: selectedReason === reason ? c.sell : 'transparent',
-              }}>
+              }}
+            >
               {selectedReason === reason && <CheckCircle2 size={12} color="#fff" />}
             </div>
             <span style={{ color: c.text1, fontSize: φ.sm }}>{reason}</span>
@@ -333,22 +395,20 @@ export function PredictionsCommentReportDialog({ open, onClose, onReport, onBloc
       </div>
 
       {/* External links warning */}
-      <div className="flex items-start gap-2 mb-4 px-3 py-2.5 rounded-xl"
-        style={{ background: c.warnAlpha10, border: `1px solid ${c.warnAlpha15}` }}>
+      <div
+        className="flex items-start gap-2 mb-4 px-3 py-2.5 rounded-xl"
+        style={{ background: c.warnAlpha10, border: `1px solid ${c.warnAlpha15}` }}
+      >
         <Link2 size={13} color={c.warn} className="shrink-0 mt-0.5" />
         <p style={{ color: c.warn, fontSize: 11, lineHeight: 1.4 }}>
-          Cảnh giác với link bên ngoài. Không chia sẻ thông tin cá nhân hoặc tài chính trong phần bình luận.
+          Cảnh giác với link bên ngoài. Không chia sẻ thông tin cá nhân hoặc tài chính trong phần
+          bình luận.
         </p>
       </div>
 
       {/* CTAs */}
       <div className="flex flex-col gap-3">
-        <CTAButton
-          variant="danger"
-          onClick={handleReport}
-          disabled={!selectedReason}
-          fullWidth
-        >
+        <CTAButton variant="danger" onClick={handleReport} disabled={!selectedReason} fullWidth>
           Gửi báo cáo
         </CTAButton>
 
@@ -356,7 +416,15 @@ export function PredictionsCommentReportDialog({ open, onClose, onReport, onBloc
           <button
             onClick={handleBlock}
             className="w-full py-3 rounded-2xl flex items-center justify-center gap-2 active:opacity-70"
-            style={{ background: c.chipBg, border: `1.5px solid ${c.chipBorder}`, color: c.chipText, fontSize: φ.sm, fontWeight: 600, minHeight: 44 }}>
+            style={{
+              background: c.chipBg,
+              border: `1.5px solid ${c.chipBorder}`,
+              color: c.chipText,
+              fontSize: φ.sm,
+              fontWeight: 600,
+              minHeight: 44,
+            }}
+          >
             <Ban size={14} />
             Chặn {commentUser}
           </button>

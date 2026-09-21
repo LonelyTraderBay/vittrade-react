@@ -12,7 +12,15 @@
  */
 
 import React from 'react';
-import { CheckCircle, TrendingUp, TrendingDown, Clock, Award, ExternalLink, Activity } from 'lucide-react';
+import {
+  CheckCircle,
+  TrendingUp,
+  TrendingDown,
+  Clock,
+  Award,
+  ExternalLink,
+  Activity,
+} from 'lucide-react';
 import { TrCard } from '../ui/TrCard';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { FONT_SCALE, FONT_WEIGHT } from '../../constants/typography';
@@ -35,22 +43,22 @@ export interface ExecutionReportData {
   orderId: string;
   symbol: string;
   side: 'buy' | 'sell';
-  
+
   // Order details
   requestedAmount: number;
   filledAmount: number;
   fills: VenueFill[];
-  
+
   // Pricing
   expectedPrice: number; // Pre-execution estimate
   averageFillPrice: number;
   bestAvailablePrice: number; // Best single-venue price at time
-  
+
   // Timing
   submittedAt: string;
   completedAt: string;
   executionTimeMs: number;
-  
+
   // Quality metrics
   slippagePct: number;
   savingsVsSingleVenue: number;
@@ -68,23 +76,35 @@ interface ExecutionReportProps {
 
 function getQualityColor(grade: string): string {
   switch (grade) {
-    case 'A': return '#10B981';
-    case 'B': return '#3B82F6';
-    case 'C': return '#F59E0B';
-    case 'D': return '#EF4444';
-    case 'F': return '#DC2626';
-    default: return '#64748B';
+    case 'A':
+      return '#10B981';
+    case 'B':
+      return '#3B82F6';
+    case 'C':
+      return '#F59E0B';
+    case 'D':
+      return '#EF4444';
+    case 'F':
+      return '#DC2626';
+    default:
+      return '#64748B';
   }
 }
 
 function getQualityLabel(grade: string): string {
   switch (grade) {
-    case 'A': return 'Excellent';
-    case 'B': return 'Good';
-    case 'C': return 'Average';
-    case 'D': return 'Below Average';
-    case 'F': return 'Poor';
-    default: return 'Unknown';
+    case 'A':
+      return 'Excellent';
+    case 'B':
+      return 'Good';
+    case 'C':
+      return 'Average';
+    case 'D':
+      return 'Below Average';
+    case 'F':
+      return 'Poor';
+    default:
+      return 'Unknown';
   }
 }
 
@@ -121,7 +141,14 @@ export function ExecutionReport({ data, onClose }: ExecutionReportProps) {
             <CheckCircle size={24} color="#10B981" />
           </div>
           <div className="flex-1">
-            <p style={{ fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold, color: c.text1, marginBottom: 4 }}>
+            <p
+              style={{
+                fontSize: FONT_SCALE.base,
+                fontWeight: FONT_WEIGHT.bold,
+                color: c.text1,
+                marginBottom: 4,
+              }}
+            >
               Order {isFullyFilled ? 'Filled' : 'Partially Filled'}
             </p>
             <p style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>
@@ -129,10 +156,14 @@ export function ExecutionReport({ data, onClose }: ExecutionReportProps) {
             </p>
           </div>
           <div className="text-right">
-            <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, marginBottom: 2 }}>
-              Fill Rate
-            </p>
-            <p style={{ fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold, color: isFullyFilled ? '#10B981' : '#F59E0B' }}>
+            <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, marginBottom: 2 }}>Fill Rate</p>
+            <p
+              style={{
+                fontSize: FONT_SCALE.base,
+                fontWeight: FONT_WEIGHT.bold,
+                color: isFullyFilled ? '#10B981' : '#F59E0B',
+              }}
+            >
               {fmtPct(fillPct)}
             </p>
           </div>
@@ -168,33 +199,31 @@ export function ExecutionReport({ data, onClose }: ExecutionReportProps) {
 
         <div className="grid grid-cols-3 gap-3">
           <div>
-            <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 4 }}>
-              Slippage
-            </p>
-            <p style={{
-              fontSize: FONT_SCALE.sm,
-              fontWeight: FONT_WEIGHT.bold,
-              color: isSlippageGood ? '#10B981' : '#F59E0B',
-            }}>
+            <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 4 }}>Slippage</p>
+            <p
+              style={{
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.bold,
+                color: isSlippageGood ? '#10B981' : '#F59E0B',
+              }}
+            >
               {fmtPct(Math.abs(data.slippagePct))}
             </p>
           </div>
           <div>
-            <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 4 }}>
-              Saved
-            </p>
-            <p style={{
-              fontSize: FONT_SCALE.sm,
-              fontWeight: FONT_WEIGHT.bold,
-              color: hasSavings ? '#10B981' : c.text2,
-            }}>
+            <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 4 }}>Saved</p>
+            <p
+              style={{
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.bold,
+                color: hasSavings ? '#10B981' : c.text2,
+              }}
+            >
               {hasSavings ? fmtUsd(data.savingsVsSingleVenue) : '—'}
             </p>
           </div>
           <div className="text-right">
-            <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 4 }}>
-              Time
-            </p>
+            <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 4 }}>Time</p>
             <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1 }}>
               {formatExecutionTime(data.executionTimeMs)}
             </p>
@@ -204,25 +233,33 @@ export function ExecutionReport({ data, onClose }: ExecutionReportProps) {
 
       {/* Price Breakdown */}
       <TrCard className="p-4">
-        <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, marginBottom: 12 }}>
-          Price Breakdown
-        </p>
+        <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, marginBottom: 12 }}>Price Breakdown</p>
 
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>
-              Expected Price
-            </span>
-            <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold, color: c.text2, fontFamily: 'monospace' }}>
+            <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Expected Price</span>
+            <span
+              style={{
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.semibold,
+                color: c.text2,
+                fontFamily: 'monospace',
+              }}
+            >
               {fmtPrice(data.expectedPrice)}
             </span>
           </div>
 
           <div className="flex items-center justify-between">
-            <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>
-              Average Fill Price
-            </span>
-            <span style={{ fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+            <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Average Fill Price</span>
+            <span
+              style={{
+                fontSize: FONT_SCALE.base,
+                fontWeight: FONT_WEIGHT.bold,
+                color: c.text1,
+                fontFamily: 'monospace',
+              }}
+            >
               {fmtPrice(data.averageFillPrice)}
             </span>
           </div>
@@ -231,7 +268,14 @@ export function ExecutionReport({ data, onClose }: ExecutionReportProps) {
             <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>
               Best Available (Single Venue)
             </span>
-            <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold, color: c.text2, fontFamily: 'monospace' }}>
+            <span
+              style={{
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.semibold,
+                color: c.text2,
+                fontFamily: 'monospace',
+              }}
+            >
               {fmtPrice(data.bestAvailablePrice)}
             </span>
           </div>
@@ -245,16 +289,17 @@ export function ExecutionReport({ data, onClose }: ExecutionReportProps) {
               ) : (
                 <TrendingDown size={14} color="#EF4444" />
               )}
-              <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>
-                Slippage vs Expected:
-              </span>
+              <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Slippage vs Expected:</span>
             </div>
-            <span style={{
-              fontSize: FONT_SCALE.sm,
-              fontWeight: FONT_WEIGHT.bold,
-              color: isSlippageGood ? '#10B981' : data.slippagePct > 1 ? '#EF4444' : '#F59E0B',
-            }}>
-              {data.slippagePct >= 0 ? '+' : ''}{fmtPct(data.slippagePct)}
+            <span
+              style={{
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.bold,
+                color: isSlippageGood ? '#10B981' : data.slippagePct > 1 ? '#EF4444' : '#F59E0B',
+              }}
+            >
+              {data.slippagePct >= 0 ? '+' : ''}
+              {fmtPct(data.slippagePct)}
             </span>
           </div>
         </div>
@@ -289,16 +334,30 @@ export function ExecutionReport({ data, onClose }: ExecutionReportProps) {
                         className="w-5 h-5 rounded flex items-center justify-center"
                         style={{ background: `${c.text3}22` }}
                       >
-                        <span style={{ fontSize: 10, fontWeight: FONT_WEIGHT.bold, color: c.text3 }}>
+                        <span
+                          style={{ fontSize: 10, fontWeight: FONT_WEIGHT.bold, color: c.text3 }}
+                        >
                           {fill.venue[0]}
                         </span>
                       </div>
                     )}
-                    <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text1 }}>
+                    <span
+                      style={{
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: FONT_WEIGHT.semibold,
+                        color: c.text1,
+                      }}
+                    >
                       {fill.venue}
                     </span>
                   </div>
-                  <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, color: c.text1 }}>
+                  <span
+                    style={{
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.bold,
+                      color: c.text1,
+                    }}
+                  >
                     {fmtPct(pctOfTotal)}
                   </span>
                 </div>
@@ -306,26 +365,50 @@ export function ExecutionReport({ data, onClose }: ExecutionReportProps) {
                 <div className="grid grid-cols-3 gap-2">
                   <div>
                     <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>Amount</p>
-                    <p style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text2, fontFamily: 'monospace' }}>
+                    <p
+                      style={{
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: FONT_WEIGHT.semibold,
+                        color: c.text2,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       {fmtAmount(fill.amount)}
                     </p>
                   </div>
                   <div>
                     <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>Price</p>
-                    <p style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text2, fontFamily: 'monospace' }}>
+                    <p
+                      style={{
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: FONT_WEIGHT.semibold,
+                        color: c.text2,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       {fmtPrice(fill.price)}
                     </p>
                   </div>
                   <div className="text-right">
                     <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>Value</p>
-                    <p style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text2, fontFamily: 'monospace' }}>
+                    <p
+                      style={{
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: FONT_WEIGHT.semibold,
+                        color: c.text2,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       {fmtUsd(fillValue)}
                     </p>
                   </div>
                 </div>
 
                 {/* Progress bar */}
-                <div className="mt-2 h-1.5 rounded-full overflow-hidden" style={{ background: c.divider }}>
+                <div
+                  className="mt-2 h-1.5 rounded-full overflow-hidden"
+                  style={{ background: c.divider }}
+                >
                   <div
                     className="h-full rounded-full transition-all"
                     style={{
@@ -342,35 +425,61 @@ export function ExecutionReport({ data, onClose }: ExecutionReportProps) {
 
       {/* Order Summary */}
       <TrCard className="p-4">
-        <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, marginBottom: 12 }}>
-          Order Summary
-        </p>
+        <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, marginBottom: 12 }}>Order Summary</p>
 
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Requested</span>
-            <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold, color: c.text2, fontFamily: 'monospace' }}>
+            <span
+              style={{
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.semibold,
+                color: c.text2,
+                fontFamily: 'monospace',
+              }}
+            >
               {fmtAmount(data.requestedAmount)} {data.symbol.split('/')[0]}
             </span>
           </div>
 
           <div className="flex items-center justify-between">
             <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Filled</span>
-            <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+            <span
+              style={{
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.bold,
+                color: c.text1,
+                fontFamily: 'monospace',
+              }}
+            >
               {fmtAmount(data.filledAmount)} {data.symbol.split('/')[0]}
             </span>
           </div>
 
           <div className="flex items-center justify-between">
             <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Total Value</span>
-            <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+            <span
+              style={{
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.bold,
+                color: c.text1,
+                fontFamily: 'monospace',
+              }}
+            >
               {fmtUsd(data.filledAmount * data.averageFillPrice)}
             </span>
           </div>
 
           <div className="flex items-center justify-between">
             <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Total Fees</span>
-            <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold, color: c.text2, fontFamily: 'monospace' }}>
+            <span
+              style={{
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.semibold,
+                color: c.text2,
+                fontFamily: 'monospace',
+              }}
+            >
               {fmtUsd(totalFees)}
             </span>
           </div>
@@ -381,16 +490,12 @@ export function ExecutionReport({ data, onClose }: ExecutionReportProps) {
       <TrCard className="p-4">
         <div className="flex items-center gap-2 mb-3">
           <Clock size={16} color={c.text3} />
-          <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>
-            Execution Timeline
-          </span>
+          <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Execution Timeline</span>
         </div>
 
         <div className="flex items-center justify-between">
           <div>
-            <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 2 }}>
-              Submitted
-            </p>
+            <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 2 }}>Submitted</p>
             <p style={{ fontSize: FONT_SCALE.xs, color: c.text2 }}>
               {new Date(data.submittedAt).toLocaleTimeString('vi-VN')}
             </p>
@@ -407,9 +512,7 @@ export function ExecutionReport({ data, onClose }: ExecutionReportProps) {
             <div className="h-px" style={{ background: c.divider }} />
           </div>
           <div className="text-right">
-            <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 2 }}>
-              Completed
-            </p>
+            <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 2 }}>Completed</p>
             <p style={{ fontSize: FONT_SCALE.xs, color: c.text2 }}>
               {new Date(data.completedAt).toLocaleTimeString('vi-VN')}
             </p>
@@ -419,11 +522,21 @@ export function ExecutionReport({ data, onClose }: ExecutionReportProps) {
 
       {/* Savings Highlight */}
       {hasSavings && (
-        <div className="p-4 rounded-xl" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
+        <div
+          className="p-4 rounded-xl"
+          style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}
+        >
           <div className="flex items-start gap-3">
             <TrendingUp size={18} color="#10B981" className="shrink-0 mt-1" />
             <div className="flex-1">
-              <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: '#10B981', marginBottom: 4 }}>
+              <p
+                style={{
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  color: '#10B981',
+                  marginBottom: 4,
+                }}
+              >
                 Saved {fmtUsd(data.savingsVsSingleVenue)} vs Best Single Venue
               </p>
               <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, lineHeight: 1.5 }}>

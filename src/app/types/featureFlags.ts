@@ -1,9 +1,9 @@
 /**
  * Feature Flag Type Definitions
- * 
+ *
  * Defines all feature flag types and configurations.
  * Supports remote config, A/B testing, and gradual rollouts.
- * 
+ *
  * @module types/featureFlags
  * @version 2.0 (Phase 2 - Sprint 2)
  */
@@ -18,31 +18,31 @@
 export interface FeatureFlag {
   /** Flag key */
   key: string;
-  
+
   /** Display name */
   name: string;
-  
+
   /** Description */
   description: string;
-  
+
   /** Is enabled globally */
   enabled: boolean;
-  
+
   /** Rollout percentage (0-100) */
   rolloutPercentage?: number;
-  
+
   /** Target user segments */
   userSegments?: string[];
-  
+
   /** A/B test variants (if applicable) */
   variants?: FeatureFlagVariant[];
-  
+
   /** Default variant */
   defaultVariant?: string;
-  
+
   /** Expiration date (for cleanup) */
   expiresAt?: Date;
-  
+
   /** Additional metadata */
   metadata?: Record<string, any>;
 }
@@ -53,13 +53,13 @@ export interface FeatureFlag {
 export interface FeatureFlagVariant {
   /** Variant key */
   key: string;
-  
+
   /** Display name */
   name: string;
-  
+
   /** Allocation weight (0-100) */
   weight: number;
-  
+
   /** Variant value */
   value: any;
 }
@@ -70,10 +70,10 @@ export interface FeatureFlagVariant {
 export interface UserContext {
   /** User ID */
   userId?: string;
-  
+
   /** User segment */
   segment?: string;
-  
+
   /** Custom attributes */
   attributes?: Record<string, any>;
 }
@@ -88,31 +88,31 @@ export interface UserContext {
 export enum DCAFeatureFlag {
   /** Master kill switch */
   DCA_ENABLED = 'dca_enabled',
-  
+
   /** Wallet shortcut visibility */
   DCA_WALLET_SHORTCUT = 'dca_wallet_shortcut',
-  
+
   /** Asset detail button */
   DCA_ASSET_DETAIL_BUTTON = 'dca_asset_detail_button',
-  
+
   /** Deep linking support */
   DCA_DEEP_LINKING = 'dca_deep_linking',
-  
+
   /** Advanced options in create form */
   DCA_ADVANCED_OPTIONS = 'dca_advanced_options',
-  
+
   /** Push notifications */
   DCA_NOTIFICATIONS = 'dca_notifications',
-  
+
   /** Auto-rebalance feature */
   DCA_AUTO_REBALANCE = 'dca_auto_rebalance',
-  
+
   /** Portfolio chart */
   DCA_PORTFOLIO_CHART = 'dca_portfolio_chart',
-  
+
   /** Leaderboard */
   DCA_LEADERBOARD = 'dca_leaderboard',
-  
+
   /** Social sharing */
   DCA_SOCIAL_SHARING = 'dca_social_sharing',
 
@@ -135,13 +135,13 @@ export enum DCAFeatureFlag {
 export enum DCAABTestFlag {
   /** Wallet shortcut variant */
   DCA_SHORTCUT_VARIANT = 'dca_shortcut_variant',
-  
+
   /** Onboarding flow */
   DCA_ONBOARDING_FLOW = 'dca_onboarding_flow',
-  
+
   /** Frequency presets */
   DCA_FREQUENCY_PRESETS = 'dca_frequency_presets',
-  
+
   /** Create form layout */
   DCA_CREATE_FORM_LAYOUT = 'dca_create_form_layout',
 
@@ -365,22 +365,22 @@ export const DEFAULT_AB_TEST_FLAGS: Record<string, FeatureFlag> = {
 export interface IFeatureFlagService {
   /** Check if flag is enabled */
   isEnabled(flagKey: string, userContext?: UserContext): boolean;
-  
+
   /** Get flag value */
   getValue<T>(flagKey: string, defaultValue: T, userContext?: UserContext): T;
-  
+
   /** Get variant for A/B test */
   getVariant(flagKey: string, userContext?: UserContext): string;
-  
+
   /** Get all flags */
   getAllFlags(): Record<string, FeatureFlag>;
-  
+
   /** Override flag (for testing) */
   override(flagKey: string, value: any): void;
-  
+
   /** Clear overrides */
   clearOverrides(): void;
-  
+
   /** Refresh flags from remote */
   refresh(): Promise<void>;
 }
@@ -395,19 +395,19 @@ export interface IFeatureFlagService {
 export interface FeatureFlagConfig {
   /** Enable feature flags */
   enabled: boolean;
-  
+
   /** Debug mode */
   debug: boolean;
-  
+
   /** Remote config URL */
   remoteConfigUrl?: string;
-  
+
   /** Refresh interval (ms) */
   refreshInterval: number;
-  
+
   /** Enable localStorage cache */
   cache: boolean;
-  
+
   /** Cache TTL (ms) */
   cacheTTL: number;
 }

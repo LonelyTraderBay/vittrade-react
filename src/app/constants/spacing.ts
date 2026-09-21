@@ -1,18 +1,18 @@
 /**
  * Enterprise Spacing System
- * 
+ *
  * Based on golden ratio and 4pt grid system
  * Ensures consistent rhythm and visual hierarchy
- * 
+ *
  * Usage:
  * ```tsx
  * import { SPACING } from '@/constants/spacing';
- * 
+ *
  * <div style={{ marginBottom: SPACING.base, gap: SPACING.sm }}>
  *   ...
  * </div>
  * ```
- * 
+ *
  * Or with Tailwind:
  * mb-2  (8px)  = SPACING.xs
  * mb-3  (12px) = SPACING.sm
@@ -102,35 +102,35 @@ export const TOUCH_TARGET = {
 /**
  * Border Radius Scale
  * Matches golden ratio constants from utils/golden.ts
- * 
+ *
  * Note: φRadius already exists in /src/app/utils/golden.ts
  * Use that for actual values. This is documentation only.
  */
 export const RADIUS_SCALE = {
-  xs: 8,    // Small elements, badges
-  sm: 10,   // Inputs, small cards
-  md: 12,   // Default cards, buttons
-  lg: 16,   // Large cards, modals
-  xl: 20,   // Hero cards, special surfaces
-  xxl: 24,  // Extra large containers
+  xs: 8, // Small elements, badges
+  sm: 10, // Inputs, small cards
+  md: 12, // Default cards, buttons
+  lg: 16, // Large cards, modals
+  xl: 20, // Hero cards, special surfaces
+  xxl: 24, // Extra large containers
 } as const;
 
 /**
  * Helper Types
  */
-export type SpacingValue = typeof SPACING[keyof typeof SPACING];
-export type TouchTargetSize = typeof TOUCH_TARGET[keyof typeof TOUCH_TARGET];
-export type RadiusValue = typeof RADIUS_SCALE[keyof typeof RADIUS_SCALE];
+export type SpacingValue = (typeof SPACING)[keyof typeof SPACING];
+export type TouchTargetSize = (typeof TOUCH_TARGET)[keyof typeof TOUCH_TARGET];
+export type RadiusValue = (typeof RADIUS_SCALE)[keyof typeof RADIUS_SCALE];
 
 /**
  * Usage Guidelines
- * 
+ *
  * ✅ DO:
  * - Use SPACING.base (16px) for most padding/margins
  * - Use SPACING.sm (12px) for gaps between related items
  * - Use SPACING.md (24px) for section breaks
  * - Stick to the scale — avoid arbitrary values
- * 
+ *
  * ❌ DON'T:
  * - Don't use gap-2.5 (10px) — use gap-2 (8px) or gap-3 (12px)
  * - Don't mix px values — use Tailwind classes

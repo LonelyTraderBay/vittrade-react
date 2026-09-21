@@ -16,13 +16,32 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  PieChart as PieIcon, Plus, Trash2, TrendingUp, DollarSign,
-  BarChart3, Settings, CheckCircle, Info, Percent,
+  PieChart as PieIcon,
+  Plus,
+  Trash2,
+  TrendingUp,
+  DollarSign,
+  BarChart3,
+  Settings,
+  CheckCircle,
+  Info,
+  Percent,
 } from 'lucide-react';
-import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+} from 'recharts';
 
 const TABS = ['Cai dat', 'Tai san', 'Hieu suat'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface AssetAllocation {
   id: string;
@@ -119,7 +138,7 @@ export function DCAMultiAssetPage() {
   }));
 
   const needsRebalance = MOCK_ALLOCATIONS.some(
-    (a) => Math.abs(a.currentPercent - a.targetPercent) > parseFloat(rebalanceThreshold)
+    (a) => Math.abs(a.currentPercent - a.targetPercent) > parseFloat(rebalanceThreshold),
   );
 
   return (
@@ -145,7 +164,12 @@ export function DCAMultiAssetPage() {
                   value={totalBudget}
                   onChange={(e) => setTotalBudget(e.target.value)}
                   className="flex-1 px-3 py-2 rounded-xl outline-none"
-                  style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 14 }}
+                  style={{
+                    background: c.bg,
+                    border: `1px solid ${c.border}`,
+                    color: c.text1,
+                    fontSize: 14,
+                  }}
                 />
               </div>
 
@@ -184,7 +208,9 @@ export function DCAMultiAssetPage() {
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div>
-                        <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>{asset.symbol}</p>
+                        <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>
+                          {asset.symbol}
+                        </p>
                         <p style={{ color: c.text3, fontSize: 11 }}>{asset.name}</p>
                       </div>
                       <button
@@ -204,7 +230,9 @@ export function DCAMultiAssetPage() {
                         </p>
                       </div>
                       <div>
-                        <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Amount per Period</p>
+                        <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
+                          Amount per Period
+                        </p>
                         <p style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>
                           ${asset.amountPerPeriod}
                         </p>
@@ -291,7 +319,9 @@ export function DCAMultiAssetPage() {
 
               {rebalanceEnabled && (
                 <div>
-                  <label style={{ color: c.text2, fontSize: 11, display: 'block', marginBottom: 6 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 11, display: 'block', marginBottom: 6 }}
+                  >
                     Rebalance Threshold (%)
                   </label>
                   <input
@@ -299,7 +329,12 @@ export function DCAMultiAssetPage() {
                     value={rebalanceThreshold}
                     onChange={(e) => setRebalanceThreshold(e.target.value)}
                     className="w-full px-3 py-2 rounded-xl outline-none"
-                    style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 13 }}
+                    style={{
+                      background: c.bg,
+                      border: `1px solid ${c.border}`,
+                      color: c.text1,
+                      fontSize: 13,
+                    }}
                   />
                   <p style={{ color: c.text3, fontSize: 10, marginTop: 4 }}>
                     Rebalance when allocation deviates by this %
@@ -311,11 +346,15 @@ export function DCAMultiAssetPage() {
             {/* Info */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+              style={{
+                background: 'rgba(59,130,246,0.06)',
+                border: '1px solid rgba(59,130,246,0.15)',
+              }}
             >
               <Info size={14} color="#3B82F6" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Multi-asset DCA giup da dang hoa danh muc. Tu dong phan bo theo ti le muc tieu moi ky.
+                Multi-asset DCA giup da dang hoa danh muc. Tu dong phan bo theo ti le muc tieu moi
+                ky.
               </p>
             </div>
           </>
@@ -407,7 +446,9 @@ export function DCAMultiAssetPage() {
                       }}
                     />
                     <div className="flex-1">
-                      <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>{asset.symbol}</p>
+                      <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>
+                        {asset.symbol}
+                      </p>
                       <p style={{ color: c.text3, fontSize: 11 }}>{asset.name}</p>
                     </div>
                   </div>
@@ -446,7 +487,10 @@ export function DCAMultiAssetPage() {
             {needsRebalance && rebalanceEnabled && (
               <div
                 className="rounded-2xl p-4"
-                style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
+                style={{
+                  background: 'rgba(245,158,11,0.06)',
+                  border: '1px solid rgba(245,158,11,0.15)',
+                }}
               >
                 <div className="flex items-start gap-2 mb-3">
                   <Settings size={16} color="#F59E0B" style={{ marginTop: 2 }} />
@@ -455,7 +499,8 @@ export function DCAMultiAssetPage() {
                       Rebalancing Required
                     </p>
                     <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                      Some allocations deviate from target. Next purchase will rebalance automatically.
+                      Some allocations deviate from target. Next purchase will rebalance
+                      automatically.
                     </p>
                   </div>
                 </div>
@@ -498,10 +543,34 @@ export function DCAMultiAssetPage() {
                     }}
                   />
                   <Legend key="legend" />
-                  <Bar key="bar-btc" dataKey="BTC" stackId="stack" fill={COLORS[0]} radius={[0, 0, 0, 0]} />
-                  <Bar key="bar-eth" dataKey="ETH" stackId="stack" fill={COLORS[1]} radius={[0, 0, 0, 0]} />
-                  <Bar key="bar-bnb" dataKey="BNB" stackId="stack" fill={COLORS[2]} radius={[0, 0, 0, 0]} />
-                  <Bar key="bar-sol" dataKey="SOL" stackId="stack" fill={COLORS[3]} radius={[4, 4, 0, 0]} />
+                  <Bar
+                    key="bar-btc"
+                    dataKey="BTC"
+                    stackId="stack"
+                    fill={COLORS[0]}
+                    radius={[0, 0, 0, 0]}
+                  />
+                  <Bar
+                    key="bar-eth"
+                    dataKey="ETH"
+                    stackId="stack"
+                    fill={COLORS[1]}
+                    radius={[0, 0, 0, 0]}
+                  />
+                  <Bar
+                    key="bar-bnb"
+                    dataKey="BNB"
+                    stackId="stack"
+                    fill={COLORS[2]}
+                    radius={[0, 0, 0, 0]}
+                  />
+                  <Bar
+                    key="bar-sol"
+                    dataKey="SOL"
+                    stackId="stack"
+                    fill={COLORS[3]}
+                    radius={[4, 4, 0, 0]}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -515,7 +584,8 @@ export function DCAMultiAssetPage() {
                   return returnB - returnA;
                 })
                 .map((asset, idx) => {
-                  const assetReturn = ((asset.currentValue - asset.totalInvested) / asset.totalInvested) * 100;
+                  const assetReturn =
+                    ((asset.currentValue - asset.totalInvested) / asset.totalInvested) * 100;
                   return (
                     <div
                       key={asset.id}
@@ -532,7 +602,9 @@ export function DCAMultiAssetPage() {
                           )}
                         </div>
                         <div>
-                          <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>{asset.symbol}</p>
+                          <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
+                            {asset.symbol}
+                          </p>
                           <p style={{ color: c.text3, fontSize: 10 }}>{asset.name}</p>
                         </div>
                       </div>
@@ -552,7 +624,10 @@ export function DCAMultiAssetPage() {
             {/* Diversification Score */}
             <div
               className="rounded-2xl p-4"
-              style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}
+              style={{
+                background: 'rgba(16,185,129,0.06)',
+                border: '1px solid rgba(16,185,129,0.15)',
+              }}
             >
               <div className="flex items-start gap-2 mb-3">
                 <CheckCircle size={16} color="#10B981" style={{ marginTop: 2 }} />

@@ -64,16 +64,8 @@ export function ChartGradientDefs({ gradients }: ChartGradientDefsProps) {
             x2={isHorizontal ? '1' : '0'}
             y2={isHorizontal ? '0' : '1'}
           >
-            <stop
-              offset="0%"
-              stopColor={g.color}
-              stopOpacity={g.opacityFrom ?? 0.3}
-            />
-            <stop
-              offset="100%"
-              stopColor={g.color}
-              stopOpacity={g.opacityTo ?? 0}
-            />
+            <stop offset="0%" stopColor={g.color} stopOpacity={g.opacityFrom ?? 0.3} />
+            <stop offset="100%" stopColor={g.color} stopOpacity={g.opacityTo ?? 0} />
           </linearGradient>
         );
       })}

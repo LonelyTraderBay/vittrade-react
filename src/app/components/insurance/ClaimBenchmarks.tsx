@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart3, TrendingUp, TrendingDown, Minus, Clock, DollarSign, CheckCircle, Users, Sparkles, AlertTriangle } from 'lucide-react';
+import {
+  BarChart3,
+  TrendingUp,
+  TrendingDown,
+  Minus,
+  Clock,
+  DollarSign,
+  CheckCircle,
+  Users,
+  Sparkles,
+  AlertTriangle,
+} from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { φ, φSpace } from '../../utils/golden';
 import { fmtVnd } from '../../data/formatNumber';
@@ -142,7 +153,7 @@ function calculateSuccessPrediction(
   const tierMult = TIER_MULTIPLIERS[tier] || 0.85;
   const tierAdjusted = baseRate * tierMult;
 
-  let amountAdjust = 0;
+  let amountAdjust: number;
   if (amount <= BENCHMARKS.amountPercentiles.p25) amountAdjust = 5;
   else if (amount <= BENCHMARKS.amountPercentiles.p50) amountAdjust = 2;
   else if (amount <= BENCHMARKS.amountPercentiles.p75) amountAdjust = -3;
@@ -170,11 +181,16 @@ function calculateSuccessPrediction(
     else if (merchantResponseTimeMinutes > 60) merchantResponseTimeAdjust = -5;
   }
 
-  const raw = tierAdjusted + amountAdjust + evidenceAdjust + merchantRatingAdjust + merchantResponseTimeAdjust;
+  const raw =
+    tierAdjusted +
+    amountAdjust +
+    evidenceAdjust +
+    merchantRatingAdjust +
+    merchantResponseTimeAdjust;
   const probability = Math.min(95, Math.max(15, Math.round(raw)));
 
   const confidence: 'high' | 'medium' | 'low' =
-    evidenceCount >= 3 && (REASON_APPROVAL_RATES[reason] !== undefined)
+    evidenceCount >= 3 && REASON_APPROVAL_RATES[reason] !== undefined
       ? 'high'
       : evidenceCount >= 2
         ? 'medium'
@@ -212,49 +228,60 @@ function calculateSuccessPrediction(
     label: 'Số tiền yêu cầu',
     impact: amountAdjust > 0 ? 'positive' : amountAdjust < 0 ? 'negative' : 'neutral',
     weight: amountAdjust,
-    detail: amountAdjust >= 0
-      ? 'Số tiền thấp hơn trung bình — ít bị soát xét'
-      : 'Số tiền cao — cần bằng chứng kỹ hơn',
+    detail:
+      amountAdjust >= 0
+        ? 'Số tiền thấp hơn trung bình — ít bị soát xét'
+        : 'Số tiền cao — cần bằng chứng kỹ hơn',
   });
 
   factors.push({
     label: `Bằng chứng (${evidenceCount} file)`,
     impact: evidenceAdjust > 0 ? 'positive' : evidenceAdjust < 0 ? 'negative' : 'neutral',
     weight: evidenceAdjust,
-    detail: evidenceCount >= 3
-      ? `Nhiều hơn TB nền tảng (${BENCHMARKS.avgEvidenceCount} file)`
-      : `Nên bổ sung thêm (TB: ${BENCHMARKS.avgEvidenceCount} file)`,
+    detail:
+      evidenceCount >= 3
+        ? `Nhiều hơn TB nền tảng (${BENCHMARKS.avgEvidenceCount} file)`
+        : `Nên bổ sung thêm (TB: ${BENCHMARKS.avgEvidenceCount} file)`,
   });
 
   if (merchantRating !== undefined) {
     factors.push({
       label: 'Xếp hạng doanh nghiệp',
-      impact: merchantRatingAdjust > 0 ? 'positive' : merchantRatingAdjust < 0 ? 'negative' : 'neutral',
+      impact:
+        merchantRatingAdjust > 0 ? 'positive' : merchantRatingAdjust < 0 ? 'negative' : 'neutral',
       weight: merchantRatingAdjust,
-      detail: merchantRatingAdjust >= 0
-        ? 'Xếp hạng cao — tin cậy hơn'
-        : 'Xếp hạng thấp — cần nâng cấp doanh nghiệp',
+      detail:
+        merchantRatingAdjust >= 0
+          ? 'Xếp hạng cao — tin cậy hơn'
+          : 'Xếp hạng thấp — cần nâng cấp doanh nghiệp',
     });
   }
 
   if (merchantResponseTimeMinutes !== undefined) {
     factors.push({
       label: 'Thời gian phản hồi doanh nghiệp',
-      impact: merchantResponseTimeAdjust > 0 ? 'positive' : merchantResponseTimeAdjust < 0 ? 'negative' : 'neutral',
+      impact:
+        merchantResponseTimeAdjust > 0
+          ? 'positive'
+          : merchantResponseTimeAdjust < 0
+            ? 'negative'
+            : 'neutral',
       weight: merchantResponseTimeAdjust,
-      detail: merchantResponseTimeAdjust >= 0
-        ? 'Phản hồi nhanh — tin cậy hơn'
-        : 'Phản hồi chậm — cần nâng cấp doanh nghiệp',
+      detail:
+        merchantResponseTimeAdjust >= 0
+          ? 'Phản hồi nhanh — tin cậy hơn'
+          : 'Phản hồi chậm — cần nâng cấp doanh nghiệp',
     });
   }
 
-  const summary = probability >= 80
-    ? 'Khả năng duyệt cao — hồ sơ đầy đủ và phù hợp'
-    : probability >= 65
-      ? 'Khả năng duyệt khá — có thể bổ sung thêm bằng chứng'
-      : probability >= 50
-        ? 'Khả năng duyệt trung bình — nên bổ sung thông tin'
-        : 'Khả năng duyệt thấp — cần nâng tier hoặc bổ sung bằng chứng';
+  const summary =
+    probability >= 80
+      ? 'Khả năng duyệt cao — hồ sơ đầy đủ và phù hợp'
+      : probability >= 65
+        ? 'Khả năng duyệt khá — có thể bổ sung thêm bằng chứng'
+        : probability >= 50
+          ? 'Khả năng duyệt trung bình — nên bổ sung thông tin'
+          : 'Khả năng duyệt thấp — cần nâng tier hoặc bổ sung bằng chứng';
 
   return { probability, confidence, factors, summary };
 }
@@ -275,13 +302,17 @@ function CircularProgress({ probability, color }: { probability: number; color: 
     <div className="relative" style={{ width: 80, height: 80 }}>
       <svg width={80} height={80} viewBox="0 0 80 80">
         <circle
-          cx={40} cy={40} r={r}
+          cx={40}
+          cy={40}
+          r={r}
           fill="none"
           stroke="var(--surface2, #F1F5F9)"
           strokeWidth={6}
         />
         <circle
-          cx={40} cy={40} r={r}
+          cx={40}
+          cy={40}
+          r={r}
           fill="none"
           stroke={color}
           strokeWidth={6}
@@ -343,14 +374,18 @@ export function ClaimBenchmarks({
   const speedPct = getSpeedPercentile(processingHours);
 
   // Success prediction
-  const prediction = calculateSuccessPrediction(claimReason, userTier, claimAmount, evidenceCount, merchantRating, merchantResponseTimeMinutes);
+  const prediction = calculateSuccessPrediction(
+    claimReason,
+    userTier,
+    claimAmount,
+    evidenceCount,
+    merchantRating,
+    merchantResponseTimeMinutes,
+  );
   const showPrediction = claimStatus === 'pending' || claimStatus === 'reviewing';
 
-  const predictionColor = prediction.probability >= 75
-    ? '#10B981'
-    : prediction.probability >= 55
-      ? '#F59E0B'
-      : '#EF4444';
+  const predictionColor =
+    prediction.probability >= 75 ? '#10B981' : prediction.probability >= 55 ? '#F59E0B' : '#EF4444';
 
   const confidenceLabels: Record<string, string> = {
     high: 'Độ tin cậy cao',
@@ -366,10 +401,14 @@ export function ClaimBenchmarks({
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(12px)',
-            transition: 'opacity 0.45s cubic-bezier(0.16,1,0.3,1), transform 0.45s cubic-bezier(0.16,1,0.3,1)',
+            transition:
+              'opacity 0.45s cubic-bezier(0.16,1,0.3,1), transform 0.45s cubic-bezier(0.16,1,0.3,1)',
           }}
         >
-          <TrCard className="p-5" style={{ border: `1.5px solid ${hexToRgba(predictionColor, 25)}` }}>
+          <TrCard
+            className="p-5"
+            style={{ border: `1.5px solid ${hexToRgba(predictionColor, 25)}` }}
+          >
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
@@ -392,11 +431,20 @@ export function ClaimBenchmarks({
             <div className="flex items-center gap-5 mb-4">
               <CircularProgress probability={prediction.probability} color={predictionColor} />
               <div className="flex-1">
-                <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, lineHeight: 1.5, marginBottom: 4 }}>
+                <p
+                  style={{
+                    color: c.text1,
+                    fontSize: φ.sm,
+                    fontWeight: 600,
+                    lineHeight: 1.5,
+                    marginBottom: 4,
+                  }}
+                >
                   {prediction.summary}
                 </p>
                 <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
-                  Dựa trên phân tích {BENCHMARKS.totalClaimsProcessed.toLocaleString('vi-VN')} claims tương tự trên nền tảng
+                  Dựa trên phân tích {BENCHMARKS.totalClaimsProcessed.toLocaleString('vi-VN')}{' '}
+                  claims tương tự trên nền tảng
                 </p>
               </div>
             </div>
@@ -404,16 +452,18 @@ export function ClaimBenchmarks({
             {/* Prediction Factors */}
             <div className="flex flex-col gap-2">
               {prediction.factors.map((factor, idx) => {
-                const factorColor = factor.impact === 'positive'
-                  ? '#10B981'
-                  : factor.impact === 'negative'
-                    ? '#EF4444'
-                    : '#6B7280';
-                const FactorIcon = factor.impact === 'positive'
-                  ? TrendingUp
-                  : factor.impact === 'negative'
-                    ? TrendingDown
-                    : Minus;
+                const factorColor =
+                  factor.impact === 'positive'
+                    ? '#10B981'
+                    : factor.impact === 'negative'
+                      ? '#EF4444'
+                      : '#6B7280';
+                const FactorIcon =
+                  factor.impact === 'positive'
+                    ? TrendingUp
+                    : factor.impact === 'negative'
+                      ? TrendingDown
+                      : Minus;
 
                 return (
                   <div
@@ -434,16 +484,21 @@ export function ClaimBenchmarks({
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                        <span style={{ color: c.text1, fontSize: 11, fontWeight: 600, lineHeight: 1.5 }}>
+                        <span
+                          style={{ color: c.text1, fontSize: 11, fontWeight: 600, lineHeight: 1.5 }}
+                        >
                           {factor.label}
                         </span>
-                        <span style={{
-                          color: factorColor,
-                          fontSize: 10,
-                          fontWeight: 700,
-                          fontVariantNumeric: 'tabular-nums',
-                        }}>
-                          {factor.weight > 0 ? '+' : ''}{factor.weight}%
+                        <span
+                          style={{
+                            color: factorColor,
+                            fontSize: 10,
+                            fontWeight: 700,
+                            fontVariantNumeric: 'tabular-nums',
+                          }}
+                        >
+                          {factor.weight > 0 ? '+' : ''}
+                          {factor.weight}%
                         </span>
                       </div>
                       <span style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
@@ -462,7 +517,8 @@ export function ClaimBenchmarks({
             >
               <AlertTriangle size={11} color={c.text3} className="shrink-0 mt-0.5" />
               <span style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
-                Dự đoán dựa trên dữ liệu lịch sử, không đảm bảo kết quả. Mỗi claim đều được xem xét độc lập.
+                Dự đoán dựa trên dữ liệu lịch sử, không đảm bảo kết quả. Mỗi claim đều được xem xét
+                độc lập.
               </span>
             </div>
           </TrCard>
@@ -478,13 +534,15 @@ export function ClaimBenchmarks({
             So sánh với nền tảng
           </span>
         </div>
-        <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5, marginBottom: 16, marginTop: -8 }}>
-          So sánh claim của bạn với {BENCHMARKS.totalClaimsProcessed.toLocaleString('vi-VN')} claims đã xử lý
+        <p
+          style={{ color: c.text3, fontSize: 11, lineHeight: 1.5, marginBottom: 16, marginTop: -8 }}
+        >
+          So sánh claim của bạn với {BENCHMARKS.totalClaimsProcessed.toLocaleString('vi-VN')} claims
+          đã xử lý
         </p>
 
         {/* Comparison metrics */}
         <div className="flex flex-col" style={{ gap: φSpace[4] }}>
-
           {/* Amount comparison */}
           <div className="p-3 rounded-xl" style={{ background: c.surface2 }}>
             <div className="flex items-center justify-between mb-2">
@@ -505,14 +563,24 @@ export function ClaimBenchmarks({
             <div className="flex items-center gap-3 mb-2">
               <div className="flex-1">
                 <div className="flex items-end justify-between mb-1">
-                  <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
+                  <span
+                    style={{
+                      color: c.text1,
+                      fontSize: φ.sm,
+                      fontWeight: 700,
+                      fontVariantNumeric: 'tabular-nums',
+                    }}
+                  >
                     {fmtVnd(claimAmount)} d
                   </span>
                   <span style={{ color: c.text3, fontSize: 10 }}>
                     TB: {fmtVnd(BENCHMARKS.avgClaimAmount)} d
                   </span>
                 </div>
-                <div className="relative w-full rounded-full" style={{ height: 8, background: `${c.divider}` }}>
+                <div
+                  className="relative w-full rounded-full"
+                  style={{ height: 8, background: `${c.divider}` }}
+                >
                   <div
                     className="absolute top-0 w-0.5 h-full"
                     style={{
@@ -552,14 +620,24 @@ export function ClaimBenchmarks({
             </div>
 
             <div className="flex items-end justify-between mb-1">
-              <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
+              <span
+                style={{
+                  color: c.text1,
+                  fontSize: φ.sm,
+                  fontWeight: 700,
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
                 {processingHours}h
               </span>
               <span style={{ color: c.text3, fontSize: 10 }}>
                 TB: {BENCHMARKS.avgResolutionHours}h | Trung vị: {BENCHMARKS.medianResolutionHours}h
               </span>
             </div>
-            <div className="relative w-full rounded-full" style={{ height: 8, background: `${c.divider}` }}>
+            <div
+              className="relative w-full rounded-full"
+              style={{ height: 8, background: `${c.divider}` }}
+            >
               <div
                 className="absolute top-0 w-0.5 h-full"
                 style={{
@@ -576,7 +654,15 @@ export function ClaimBenchmarks({
                 }}
               />
             </div>
-            <span style={{ color: c.text3, fontSize: 10, lineHeight: 1.5, marginTop: 4, display: 'inline-block' }}>
+            <span
+              style={{
+                color: c.text3,
+                fontSize: 10,
+                lineHeight: 1.5,
+                marginTop: 4,
+                display: 'inline-block',
+              }}
+            >
               {speedPct}
             </span>
           </div>
@@ -594,35 +680,48 @@ export function ClaimBenchmarks({
             <div className="flex items-center gap-4">
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-1">
-                  <span style={{
-                    color: coveragePct >= BENCHMARKS.avgCoveragePct ? '#10B981' : '#F59E0B',
-                    fontSize: φ.base,
-                    fontWeight: 700,
-                  }}>
+                  <span
+                    style={{
+                      color: coveragePct >= BENCHMARKS.avgCoveragePct ? '#10B981' : '#F59E0B',
+                      fontSize: φ.base,
+                      fontWeight: 700,
+                    }}
+                  >
                     {coveragePct}%
                   </span>
                   <span style={{ color: c.text3, fontSize: 10 }}>
                     TB nền tảng: {BENCHMARKS.avgCoveragePct}%
                   </span>
                 </div>
-                <div className="w-full rounded-full overflow-hidden" style={{ height: 8, background: c.divider }}>
+                <div
+                  className="w-full rounded-full overflow-hidden"
+                  style={{ height: 8, background: c.divider }}
+                >
                   <div
                     className="h-full rounded-full"
                     style={{
                       width: `${coveragePct}%`,
-                      background: coveragePct >= BENCHMARKS.avgCoveragePct
-                        ? 'linear-gradient(90deg, #10B981, #34D399)'
-                        : 'linear-gradient(90deg, #F59E0B, #FBBF24)',
+                      background:
+                        coveragePct >= BENCHMARKS.avgCoveragePct
+                          ? 'linear-gradient(90deg, #10B981, #34D399)'
+                          : 'linear-gradient(90deg, #F59E0B, #FBBF24)',
                     }}
                   />
                 </div>
               </div>
             </div>
-            <span style={{ color: c.text3, fontSize: 10, lineHeight: 1.5, marginTop: 4, display: 'inline-block' }}>
+            <span
+              style={{
+                color: c.text3,
+                fontSize: 10,
+                lineHeight: 1.5,
+                marginTop: 4,
+                display: 'inline-block',
+              }}
+            >
               {coveragePct >= BENCHMARKS.avgCoveragePct
                 ? `Cao hơn ${coveragePct - BENCHMARKS.avgCoveragePct}% so với TB nền tảng`
-                : `Thấp hơn ${BENCHMARKS.avgCoveragePct - coveragePct}% so với TB nền tảng`
-              }
+                : `Thấp hơn ${BENCHMARKS.avgCoveragePct - coveragePct}% so với TB nền tảng`}
             </span>
           </div>
 
@@ -645,17 +744,22 @@ export function ClaimBenchmarks({
                 const isUserReason = reason === claimReason;
                 return (
                   <div key={reason} className="flex items-center gap-2">
-                    <span style={{
-                      color: isUserReason ? '#3B82F6' : c.text3,
-                      fontSize: 11,
-                      fontWeight: isUserReason ? 700 : 500,
-                      width: 80,
-                      lineHeight: 1.5,
-                    }}>
+                    <span
+                      style={{
+                        color: isUserReason ? '#3B82F6' : c.text3,
+                        fontSize: 11,
+                        fontWeight: isUserReason ? 700 : 500,
+                        width: 80,
+                        lineHeight: 1.5,
+                      }}
+                    >
                       {labels[reason] || reason}
                       {isUserReason && ' *'}
                     </span>
-                    <div className="flex-1 rounded-full overflow-hidden" style={{ height: 6, background: c.divider }}>
+                    <div
+                      className="flex-1 rounded-full overflow-hidden"
+                      style={{ height: 6, background: c.divider }}
+                    >
                       <div
                         className="h-full rounded-full"
                         style={{
@@ -665,14 +769,16 @@ export function ClaimBenchmarks({
                         }}
                       />
                     </div>
-                    <span style={{
-                      color: isUserReason ? '#3B82F6' : c.text3,
-                      fontSize: 10,
-                      fontWeight: isUserReason ? 700 : 500,
-                      fontVariantNumeric: 'tabular-nums',
-                      width: 28,
-                      textAlign: 'right',
-                    }}>
+                    <span
+                      style={{
+                        color: isUserReason ? '#3B82F6' : c.text3,
+                        fontSize: 10,
+                        fontWeight: isUserReason ? 700 : 500,
+                        fontVariantNumeric: 'tabular-nums',
+                        width: 28,
+                        textAlign: 'right',
+                      }}
+                    >
                       {pct}%
                     </span>
                   </div>
@@ -685,13 +791,27 @@ export function ClaimBenchmarks({
           <div className="grid grid-cols-2 gap-2">
             <div className="p-3 rounded-xl" style={{ background: c.surface2 }}>
               <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>Tỷ lệ duyệt chung</p>
-              <p style={{ color: '#10B981', fontSize: φ.base, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
+              <p
+                style={{
+                  color: '#10B981',
+                  fontSize: φ.base,
+                  fontWeight: 700,
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
                 {BENCHMARKS.approvalRate}%
               </p>
             </div>
             <div className="p-3 rounded-xl" style={{ background: c.surface2 }}>
               <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>Xử lý nhanh nhất</p>
-              <p style={{ color: '#3B82F6', fontSize: φ.base, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
+              <p
+                style={{
+                  color: '#3B82F6',
+                  fontSize: φ.base,
+                  fontWeight: 700,
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
                 4h
               </p>
             </div>

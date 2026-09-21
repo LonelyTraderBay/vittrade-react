@@ -11,8 +11,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  CreditCard, Upload, CheckCircle, Clock, Info, Camera,
-  AlertTriangle, Shield, ChevronRight,
+  CreditCard,
+  Upload,
+  CheckCircle,
+  Clock,
+  Info,
+  Camera,
+  AlertTriangle,
+  Shield,
+  ChevronRight,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -102,7 +109,7 @@ export function P2PPaymentMethodVerificationPage() {
           </h3>
 
           <div className="flex flex-col gap-3">
-            {VERIFICATION_METHODS.map(method => {
+            {VERIFICATION_METHODS.map((method) => {
               const MethodIcon = method.icon;
               return (
                 <button
@@ -112,7 +119,7 @@ export function P2PPaymentMethodVerificationPage() {
                     setSelectedMethod(method.id);
                   }}
                   className="p-4 rounded-xl text-left"
-                  style={{ background: c.surface1, border: `1px solid ${c.borderSolid}` }}
+                  style={{ background: c.surface, border: `1px solid ${c.borderSolid}` }}
                 >
                   <div className="flex items-start gap-3">
                     <div

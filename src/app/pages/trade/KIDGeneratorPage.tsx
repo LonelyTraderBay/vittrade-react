@@ -2,13 +2,13 @@
  * ══════════════════════════════════════════════════════════════
  *  KIDGeneratorPage — Phase 4 Sprint 3 Day 7-8
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Generate Key Information Document (KID)
  * - PRIIPs mandatory document (3 pages max)
  * - Contains: objectives, costs, risks, scenarios
  * - Must be provided BEFORE investment
- * 
+ *
  * Compliance:
  * - PRIIPs Regulation: KID mandatory
  * - Max 3 A4 pages
@@ -17,7 +17,16 @@
  */
 
 import React from 'react';
-import { FileText, Download, Eye, Shield, Info, BarChart3, TrendingUp, AlertTriangle } from 'lucide-react';
+import {
+  FileText,
+  Download,
+  Eye,
+  Shield,
+  Info,
+  BarChart3,
+  TrendingUp,
+  AlertTriangle,
+} from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { PageContent, PageSection } from '../../components/layout/PageContent';
@@ -51,14 +60,18 @@ export function KIDGeneratorPage() {
 
       <PageContent gap="relaxed">
         {/* Regulatory Notice */}
-        <div className="rounded-2xl p-3 flex gap-2.5" style={{ background: c.infoBg, border: `1px solid ${c.infoBorder}` }}>
-          <Shield size={16} color={c.infoText} className="shrink-0 mt-0.5" />
+        <div
+          className="rounded-2xl p-3 flex gap-2.5"
+          style={{ background: 'rgba(59,130,246,0.08)', border: `1px solid rgba(59,130,246,0.20)` }}
+        >
+          <Shield size={16} color={c.info} className="shrink-0 mt-0.5" />
           <div>
-            <p style={{ color: c.infoText, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
+            <p style={{ color: c.info, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
               Mandatory PRIIPs Document
             </p>
-            <p style={{ color: c.infoText, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
-              This Key Information Document must be provided before you invest. It contains essential information in a standardized format (max 3 pages).
+            <p style={{ color: c.info, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
+              This Key Information Document must be provided before you invest. It contains
+              essential information in a standardized format (max 3 pages).
             </p>
           </div>
         </div>
@@ -66,8 +79,10 @@ export function KIDGeneratorPage() {
         {/* KID Preview */}
         <TrCard className="p-4">
           <div className="flex items-start gap-3 mb-4">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
-              style={{ background: c.primary + '15' }}>
+            <div
+              className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
+              style={{ background: c.primary + '15' }}
+            >
               <FileText size={28} color={c.primary} />
             </div>
 
@@ -91,9 +106,7 @@ export function KIDGeneratorPage() {
 
             <div className="rounded-lg p-2.5" style={{ background: c.surface2 }}>
               <p style={{ color: c.text3, fontSize: 9 }}>Pages</p>
-              <p style={{ color: c.text1, fontSize: 12, fontWeight: 600, marginTop: 2 }}>
-                3 / 3
-              </p>
+              <p style={{ color: c.text1, fontSize: 12, fontWeight: 600, marginTop: 2 }}>3 / 3</p>
             </div>
           </div>
         </TrCard>
@@ -106,8 +119,10 @@ export function KIDGeneratorPage() {
               return (
                 <TrCard key={idx} className="p-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                      style={{ background: c.primary + '15' }}>
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center"
+                      style={{ background: c.primary + '15' }}
+                    >
                       <Icon size={18} color={c.primary} />
                     </div>
 
@@ -117,8 +132,10 @@ export function KIDGeneratorPage() {
                       </p>
                     </div>
 
-                    <div className="w-6 h-6 rounded-full flex items-center justify-center"
-                      style={{ background: '#10B981' + '15' }}>
+                    <div
+                      className="w-6 h-6 rounded-full flex items-center justify-center"
+                      style={{ background: '#10B981' + '15' }}
+                    >
                       <CheckCircle size={14} color="#10B981" />
                     </div>
                   </div>
@@ -139,7 +156,8 @@ export function KIDGeneratorPage() {
               fontWeight: 600,
               fontSize: 13,
               border: `1px solid ${c.border}`,
-            }}>
+            }}
+          >
             <Eye size={16} />
             <span>Preview KID</span>
           </button>
@@ -152,7 +170,8 @@ export function KIDGeneratorPage() {
               height: 44,
               fontWeight: 600,
               fontSize: 13,
-            }}>
+            }}
+          >
             <Download size={16} />
             <span>Download PDF</span>
           </button>

@@ -43,7 +43,7 @@ export function PageTransition({ children }: PageTransitionProps) {
   const motionRef = useRef<HTMLDivElement>(null);
 
   const isRootTab = ROOT_TABS.some(
-    r => location.pathname === r || location.pathname === `/r${r}`
+    (r) => location.pathname === r || location.pathname === `/r${r}`,
   );
 
   const prevDepth = useRef(pathDepth(location.pathname));

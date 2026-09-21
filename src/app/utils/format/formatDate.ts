@@ -84,7 +84,7 @@ export function formatCountdown(seconds: number): string {
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
   const s = seconds % 60;
-  
+
   if (h > 0) {
     return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   }
@@ -113,9 +113,11 @@ export function formatDuration(seconds: number): string {
  */
 export function isToday(date: Date): boolean {
   const today = new Date();
-  return date.getDate() === today.getDate() &&
+  return (
+    date.getDate() === today.getDate() &&
     date.getMonth() === today.getMonth() &&
-    date.getFullYear() === today.getFullYear();
+    date.getFullYear() === today.getFullYear()
+  );
 }
 
 /**
@@ -124,9 +126,11 @@ export function isToday(date: Date): boolean {
 export function isYesterday(date: Date): boolean {
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-  return date.getDate() === yesterday.getDate() &&
+  return (
+    date.getDate() === yesterday.getDate() &&
     date.getMonth() === yesterday.getMonth() &&
-    date.getFullYear() === yesterday.getFullYear();
+    date.getFullYear() === yesterday.getFullYear()
+  );
 }
 
 /**

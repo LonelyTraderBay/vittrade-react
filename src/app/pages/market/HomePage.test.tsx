@@ -75,17 +75,10 @@ describe('HomePage', () => {
   describe('Quick Actions', () => {
     it('should render all quick action buttons', () => {
       renderWithProviders(<HomePage />);
-      
-      const expectedActions = [
-        'Khám phá',
-        'Mua nhanh',
-        'Convert',
-        'P2P',
-        'Launchpad',
-        'Staking',
-      ];
 
-      expectedActions.forEach(action => {
+      const expectedActions = ['Khám phá', 'Mua nhanh', 'Convert', 'P2P', 'Launchpad', 'Staking'];
+
+      expectedActions.forEach((action) => {
         expect(screen.getByText(action)).toBeInTheDocument();
       });
     });
@@ -100,7 +93,7 @@ describe('HomePage', () => {
   describe('Market Tabs', () => {
     it('should render market tabs', () => {
       renderWithProviders(<HomePage />);
-      
+
       expect(screen.getByText(/🔥 Hot/)).toBeInTheDocument();
       expect(screen.getByText(/📈 Tăng/)).toBeInTheDocument();
       expect(screen.getByText(/📉 Giảm/)).toBeInTheDocument();
@@ -127,9 +120,9 @@ describe('HomePage', () => {
   describe('Navigation', () => {
     it('should have search button with correct navigation', () => {
       renderWithProviders(<HomePage />, {
-        routerProps: { initialEntries: ['/'] }
+        routerProps: { initialEntries: ['/'] },
       });
-      
+
       const searchButton = screen.getByRole('button', { name: /Tìm kiếm toàn cục/i });
       expect(searchButton).toBeInTheDocument();
       expect(searchButton.getAttribute('aria-label')).toBe('Tìm kiếm toàn cục');
@@ -159,34 +152,37 @@ describe('HomePage', () => {
   describe('Loading States', () => {
     it('should render market list after loading', async () => {
       renderWithProviders(<HomePage />);
-      
+
       // Initially might show loading, but will show content
       // After timeout, market items should be visible
-      await vi.waitFor(() => {
-        const marketSection = screen.getByText('Thị trường');
-        expect(marketSection).toBeInTheDocument();
-      }, { timeout: 2000 });
+      await vi.waitFor(
+        () => {
+          const marketSection = screen.getByText('Thị trường');
+          expect(marketSection).toBeInTheDocument();
+        },
+        { timeout: 2000 },
+      );
     });
   });
 
   describe('Accessibility', () => {
     it('should have proper heading hierarchy', () => {
       renderWithProviders(<HomePage />);
-      
+
       const h1 = screen.getByText('VitTrade');
       expect(h1.tagName).toBe('H1');
     });
 
     it('should have accessible search button', () => {
       renderWithProviders(<HomePage />);
-      
+
       const searchButton = screen.getByRole('button', { name: /Tìm kiếm toàn cục/i });
       expect(searchButton).toBeInTheDocument();
     });
 
     it('should have clickable quick action buttons', () => {
       renderWithProviders(<HomePage />);
-      
+
       const quickActionButtons = screen.getAllByRole('button');
       expect(quickActionButtons.length).toBeGreaterThan(0);
     });
@@ -195,7 +191,7 @@ describe('HomePage', () => {
   describe('Pull to Refresh', () => {
     it('should wrap content in PullToRefresh component', () => {
       const { container } = renderWithProviders(<HomePage />);
-      
+
       // PullToRefresh adds a specific class
       const pullToRefreshContainer = container.querySelector('.pb-8');
       expect(pullToRefreshContainer).toBeInTheDocument();
@@ -205,7 +201,7 @@ describe('HomePage', () => {
   describe('Announcement Banner', () => {
     it('should render announcement section', () => {
       const { container } = renderWithProviders(<HomePage />);
-      
+
       // Check for the announcement banner container
       const banner = container.querySelector('.mb-3.flex');
       expect(banner).toBeInTheDocument();
@@ -215,7 +211,7 @@ describe('HomePage', () => {
   describe('Integration', () => {
     it('should render all main sections in correct order', () => {
       const { container } = renderWithProviders(<HomePage />);
-      
+
       // Check that main sections exist
       expect(screen.getByText('VitTrade')).toBeInTheDocument(); // Header
       expect(screen.getByText(/Tổng tài sản/i)).toBeInTheDocument(); // Portfolio

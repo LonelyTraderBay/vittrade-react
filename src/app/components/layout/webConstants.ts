@@ -55,16 +55,18 @@ export const WEB_CONTENT_PADDING = 32;
  * a known non-pair segment is considered a trading terminal (full-bleed).
  */
 const TRADE_STANDARD_SEGMENTS = new Set([
-  'orders', 'orders-history', 'bots', 'copy', 'settings', 'convert',
+  'orders',
+  'orders-history',
+  'bots',
+  'copy',
+  'settings',
+  'convert',
 ]);
 
 /**
  * Explicit full-bleed routes (non-trade).
  */
-const EXPLICIT_FULL_BLEED = [
-  '/w/scanner',
-  '/w/trade/analytics',
-];
+const EXPLICIT_FULL_BLEED = ['/w/scanner', '/w/trade/analytics'];
 
 /**
  * Check if a pathname should render full-bleed (no maxWidth, no side padding).
@@ -79,7 +81,7 @@ const EXPLICIT_FULL_BLEED = [
  */
 export function isFullBleedRoute(pathname: string): boolean {
   // Check explicit full-bleed routes first
-  if (EXPLICIT_FULL_BLEED.some(route => pathname.startsWith(route))) {
+  if (EXPLICIT_FULL_BLEED.some((route) => pathname.startsWith(route))) {
     return true;
   }
 

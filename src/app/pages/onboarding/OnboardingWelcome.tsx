@@ -1,9 +1,9 @@
 /**
  * Onboarding Welcome Screen
- * 
+ *
  * First screen in onboarding flow.
  * Welcomes user and sets expectations.
- * 
+ *
  * @module pages/onboarding/OnboardingWelcome
  * @version 1.0 (Phase 3)
  */
@@ -25,24 +25,18 @@ interface OnboardingWelcomeProps {
    COMPONENT
    ═══════════════════════════════════════════ */
 
-export default function OnboardingWelcome({
-  onNext,
-  onSkip,
-}: OnboardingWelcomeProps) {
+export default function OnboardingWelcome({ onNext, onSkip }: OnboardingWelcomeProps) {
   const c = useThemeColors();
-  
+
   return (
     <div className="min-h-screen flex flex-col" style={{ background: c.bg }}>
       {/* Skip button */}
       <div className="flex justify-end p-4">
-        <button
-          onClick={onSkip}
-          style={{ color: c.text3, fontSize: 13 }}
-        >
+        <button onClick={onSkip} style={{ color: c.text3, fontSize: 13 }}>
           Bỏ qua
         </button>
       </div>
-      
+
       {/* Content */}
       <div className="flex-1 flex flex-col items-center justify-center px-8 pb-16">
         {/* Logo/Icon */}
@@ -54,7 +48,7 @@ export default function OnboardingWelcome({
         >
           <Sparkles size={40} color="white" />
         </div>
-        
+
         {/* Title */}
         <h1
           className="text-center mb-3"
@@ -65,9 +59,11 @@ export default function OnboardingWelcome({
             lineHeight: 1.2,
           }}
         >
-          Chào mừng đến với<br />Trading App
+          Chào mừng đến với
+          <br />
+          Trading App
         </h1>
-        
+
         {/* Subtitle */}
         <p
           className="text-center mb-10"
@@ -80,7 +76,7 @@ export default function OnboardingWelcome({
         >
           Nền tảng toàn diện cho Trading, P2P, Prediction Markets và Arena Challenges
         </p>
-        
+
         {/* Features */}
         <div className="space-y-4 w-full max-w-sm mb-10">
           <div className="flex items-start gap-3">
@@ -99,7 +95,7 @@ export default function OnboardingWelcome({
               </p>
             </div>
           </div>
-          
+
           <div className="flex items-start gap-3">
             <div
               className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
@@ -111,12 +107,10 @@ export default function OnboardingWelcome({
               <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, marginBottom: 2 }}>
                 An toàn & Minh bạch
               </p>
-              <p style={{ color: c.text3, fontSize: 11 }}>
-                Bảo mật tối đa, rõ ràng từng giao dịch
-              </p>
+              <p style={{ color: c.text3, fontSize: 11 }}>Bảo mật tối đa, rõ ràng từng giao dịch</p>
             </div>
           </div>
-          
+
           <div className="flex items-start gap-3">
             <div
               className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
@@ -135,7 +129,7 @@ export default function OnboardingWelcome({
           </div>
         </div>
       </div>
-      
+
       {/* CTA */}
       <div className="p-5">
         <button
@@ -145,15 +139,10 @@ export default function OnboardingWelcome({
             background: 'linear-gradient(90deg, #8B5CF6 0%, #A78BFA 100%)',
           }}
         >
-          <span style={{ color: 'white', fontSize: φ.base, fontWeight: 600 }}>
-            Bắt đầu
-          </span>
+          <span style={{ color: 'white', fontSize: φ.base, fontWeight: 600 }}>Bắt đầu</span>
         </button>
-        
-        <p
-          className="text-center mt-3"
-          style={{ color: c.text3, fontSize: 11 }}
-        >
+
+        <p className="text-center mt-3" style={{ color: c.text3, fontSize: 11 }}>
           Chỉ mất 1 phút để hoàn thành
         </p>
       </div>

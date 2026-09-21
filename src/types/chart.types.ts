@@ -93,15 +93,7 @@ export interface MiniChartConfig {
    ═══════════════════════════════════════════════════════════════ */
 
 export type Indicator =
-  | 'MA7'
-  | 'MA25'
-  | 'MA99'
-  | 'EMA12'
-  | 'EMA26'
-  | 'BOLL'
-  | 'RSI'
-  | 'MACD'
-  | 'VOL';
+  'MA7' | 'MA25' | 'MA99' | 'EMA12' | 'EMA26' | 'BOLL' | 'RSI' | 'MACD' | 'VOL';
 
 export interface IndicatorConfig {
   type: Indicator;

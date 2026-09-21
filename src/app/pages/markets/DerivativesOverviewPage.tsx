@@ -9,9 +9,13 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  ArrowUpRight, ArrowDownRight,
-  BarChart3, Activity, AlertTriangle,
-  Zap, Scale,
+  ArrowUpRight,
+  ArrowDownRight,
+  BarChart3,
+  Activity,
+  AlertTriangle,
+  Zap,
+  Scale,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -24,7 +28,9 @@ import { useHaptic } from '../../hooks/useHaptic';
 import { fmtPrice, fmtPct, fmtCompact } from '../../data/formatNumber';
 import { FONT_SCALE, FONT_WEIGHT } from '../../constants/typography';
 import {
-  DERIVATIVE_PAIRS, DERIVATIVES_GLOBAL_STATS, LIQUIDATION_HISTORY,
+  DERIVATIVE_PAIRS,
+  DERIVATIVES_GLOBAL_STATS,
+  LIQUIDATION_HISTORY,
   type DerivativePair,
 } from '../../data/marketP1Data';
 
@@ -45,11 +51,16 @@ export function DerivativesOverviewPage() {
   const sortedPairs = useMemo(() => {
     const items = [...DERIVATIVE_PAIRS];
     switch (sortBy) {
-      case 'OI': return items.sort((a, b) => b.openInterest - a.openInterest);
-      case 'Volume': return items.sort((a, b) => b.volume24h - a.volume24h);
-      case 'Funding': return items.sort((a, b) => Math.abs(b.fundingRate) - Math.abs(a.fundingRate));
-      case 'Thay đổi': return items.sort((a, b) => Math.abs(b.change24h) - Math.abs(a.change24h));
-      default: return items;
+      case 'OI':
+        return items.sort((a, b) => b.openInterest - a.openInterest);
+      case 'Volume':
+        return items.sort((a, b) => b.volume24h - a.volume24h);
+      case 'Funding':
+        return items.sort((a, b) => Math.abs(b.fundingRate) - Math.abs(a.fundingRate));
+      case 'Thay đổi':
+        return items.sort((a, b) => Math.abs(b.change24h) - Math.abs(a.change24h));
+      default:
+        return items;
     }
   }, [sortBy]);
 
@@ -67,19 +78,30 @@ export function DerivativesOverviewPage() {
           <>
             {/* Global stats hero */}
             <TrCard variant="hero" className="p-4">
-              <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.medium, marginBottom: 4 }}>
+              <p
+                style={{
+                  color: c.text3,
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.medium,
+                  marginBottom: 4,
+                }}
+              >
                 Tổng Open Interest
               </p>
               <div className="flex items-end gap-2">
-                <span style={{ color: c.text1, fontSize: FONT_SCALE.xl, fontWeight: FONT_WEIGHT.bold }}>
+                <span
+                  style={{ color: c.text1, fontSize: FONT_SCALE.xl, fontWeight: FONT_WEIGHT.bold }}
+                >
                   {fmtCompact(stats.totalOpenInterest, { prefix: '$' })}
                 </span>
-                <span style={{
-                  color: stats.oiChange24h >= 0 ? '#10B981' : '#EF4444',
-                  fontSize: FONT_SCALE.sm,
-                  fontWeight: FONT_WEIGHT.semibold,
-                  paddingBottom: 2,
-                }}>
+                <span
+                  style={{
+                    color: stats.oiChange24h >= 0 ? '#10B981' : '#EF4444',
+                    fontSize: FONT_SCALE.sm,
+                    fontWeight: FONT_WEIGHT.semibold,
+                    paddingBottom: 2,
+                  }}
+                >
                   {fmtPct(stats.oiChange24h)}
                 </span>
               </div>
@@ -125,13 +147,19 @@ export function DerivativesOverviewPage() {
                 <div className="flex flex-col gap-2">
                   {LIQUIDATION_HISTORY.map((point, idx) => {
                     const maxVal = Math.max(
-                      ...LIQUIDATION_HISTORY.map(p => Math.max(p.long, p.short))
+                      ...LIQUIDATION_HISTORY.map((p) => Math.max(p.long, p.short)),
                     );
                     return (
                       <div key={idx} className="flex items-center gap-2">
-                        <span style={{
-                          color: c.text3, fontSize: FONT_SCALE.micro, width: 48, textAlign: 'right', flexShrink: 0,
-                        }}>
+                        <span
+                          style={{
+                            color: c.text3,
+                            fontSize: FONT_SCALE.micro,
+                            width: 48,
+                            textAlign: 'right',
+                            flexShrink: 0,
+                          }}
+                        >
                           {point.time}
                         </span>
                         <div className="flex-1 flex gap-0.5">
@@ -156,7 +184,10 @@ export function DerivativesOverviewPage() {
                     );
                   })}
                 </div>
-                <div className="flex gap-4 mt-3 pt-2" style={{ borderTop: `1px solid ${c.borderSolid}` }}>
+                <div
+                  className="flex gap-4 mt-3 pt-2"
+                  style={{ borderTop: `1px solid ${c.borderSolid}` }}
+                >
                   <div className="flex items-center gap-2">
                     <div className="w-2.5 h-2.5 rounded-sm" style={{ background: '#10B981' }} />
                     <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>
@@ -176,7 +207,7 @@ export function DerivativesOverviewPage() {
             {/* Top OI pairs */}
             <PageSection label="Top Open Interest" accentColor="#3B82F6">
               <div className="flex flex-col" style={{ gap: 2 }}>
-                {DERIVATIVE_PAIRS.slice(0, 5).map(pair => (
+                {DERIVATIVE_PAIRS.slice(0, 5).map((pair) => (
                   <OIPairRow key={pair.id} pair={pair} c={c} />
                 ))}
               </div>
@@ -189,10 +220,13 @@ export function DerivativesOverviewPage() {
           <>
             {/* Sort chips */}
             <div className="flex gap-2 overflow-x-auto scrollbar-none -mx-5 px-5">
-              {SORT_OPTIONS.map(opt => (
+              {SORT_OPTIONS.map((opt) => (
                 <button
                   key={opt}
-                  onClick={() => { setSortBy(opt); hapticSelection(); }}
+                  onClick={() => {
+                    setSortBy(opt);
+                    hapticSelection();
+                  }}
                   className="shrink-0 px-3 py-1.5 rounded-xl"
                   style={{
                     background: sortBy === opt ? c.chipActiveBg : c.surface2,
@@ -209,7 +243,7 @@ export function DerivativesOverviewPage() {
 
             {/* Perpetual pairs list */}
             <div className="flex flex-col" style={{ gap: 4 }}>
-              {sortedPairs.map(pair => (
+              {sortedPairs.map((pair) => (
                 <PerpPairCard key={pair.id} pair={pair} c={c} />
               ))}
             </div>
@@ -221,10 +255,19 @@ export function DerivativesOverviewPage() {
           <>
             {/* Liquidation summary */}
             <TrCard variant="hero" className="p-4">
-              <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.medium, marginBottom: 8 }}>
+              <p
+                style={{
+                  color: c.text3,
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.medium,
+                  marginBottom: 8,
+                }}
+              >
                 Tổng thanh lý 24h
               </p>
-              <span style={{ color: c.text1, fontSize: FONT_SCALE.xl, fontWeight: FONT_WEIGHT.bold }}>
+              <span
+                style={{ color: c.text1, fontSize: FONT_SCALE.xl, fontWeight: FONT_WEIGHT.bold }}
+              >
                 {fmtCompact(stats.totalLiquidations24h, { prefix: '$' })}
               </span>
 
@@ -245,13 +288,25 @@ export function DerivativesOverviewPage() {
                   />
                 </div>
                 <div className="flex justify-between mt-2">
-                  <span style={{ color: '#10B981', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
-                    Long {fmtCompact(stats.longLiquidations24h, { prefix: '$' })}
-                    ({((stats.longLiquidations24h / stats.totalLiquidations24h) * 100).toFixed(1)}%)
+                  <span
+                    style={{
+                      color: '#10B981',
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.semibold,
+                    }}
+                  >
+                    Long {fmtCompact(stats.longLiquidations24h, { prefix: '$' })}(
+                    {((stats.longLiquidations24h / stats.totalLiquidations24h) * 100).toFixed(1)}%)
                   </span>
-                  <span style={{ color: '#EF4444', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
-                    Short {fmtCompact(stats.shortLiquidations24h, { prefix: '$' })}
-                    ({((stats.shortLiquidations24h / stats.totalLiquidations24h) * 100).toFixed(1)}%)
+                  <span
+                    style={{
+                      color: '#EF4444',
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.semibold,
+                    }}
+                  >
+                    Short {fmtCompact(stats.shortLiquidations24h, { prefix: '$' })}(
+                    {((stats.shortLiquidations24h / stats.totalLiquidations24h) * 100).toFixed(1)}%)
                   </span>
                 </div>
               </div>
@@ -261,8 +316,11 @@ export function DerivativesOverviewPage() {
             <PageSection label="Thanh lý theo cặp" accentColor="#EF4444">
               <div className="flex flex-col" style={{ gap: 4 }}>
                 {DERIVATIVE_PAIRS.sort(
-                  (a, b) => (b.liquidations24h.long + b.liquidations24h.short) - (a.liquidations24h.long + a.liquidations24h.short)
-                ).map(pair => (
+                  (a, b) =>
+                    b.liquidations24h.long +
+                    b.liquidations24h.short -
+                    (a.liquidations24h.long + a.liquidations24h.short),
+                ).map((pair) => (
                   <LiquidationCard key={pair.id} pair={pair} c={c} />
                 ))}
               </div>
@@ -273,12 +331,19 @@ export function DerivativesOverviewPage() {
               <div className="flex gap-3">
                 <AlertTriangle size={16} color="#F59E0B" className="shrink-0 mt-1" />
                 <div>
-                  <p style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, marginBottom: 4 }}>
+                  <p
+                    style={{
+                      color: c.text1,
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.semibold,
+                      marginBottom: 4,
+                    }}
+                  >
                     Cảnh báo rủi ro
                   </p>
                   <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>
-                    Giao dịch phái sinh có rủi ro cao. Bạn có thể mất toàn bộ vốn. 
-                    Đòn bẩy khuếch đại cả lãi lẫn lỗ. Chỉ giao dịch với số tiền bạn có thể chấp nhận mất.
+                    Giao dịch phái sinh có rủi ro cao. Bạn có thể mất toàn bộ vốn. Đòn bẩy khuếch
+                    đại cả lãi lẫn lỗ. Chỉ giao dịch với số tiền bạn có thể chấp nhận mất.
                   </p>
                 </div>
               </div>
@@ -292,7 +357,15 @@ export function DerivativesOverviewPage() {
 
 /* ─── Sub-components ─── */
 
-function StatCard({ label, value, change, subtitle, icon, c, valueColor }: {
+function StatCard({
+  label,
+  value,
+  change,
+  subtitle,
+  icon,
+  c,
+  valueColor,
+}: {
   label: string;
   value: string;
   change?: number;
@@ -304,44 +377,53 @@ function StatCard({ label, value, change, subtitle, icon, c, valueColor }: {
   return (
     <TrCard className="p-3">
       <div className="flex items-center gap-2 mb-2">
-        <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: c.surface2 }}>
+        <div
+          className="w-6 h-6 rounded-lg flex items-center justify-center"
+          style={{ background: c.surface2 }}
+        >
           {icon}
         </div>
-        <span style={{ color: c.text3, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.medium }}>
+        <span
+          style={{ color: c.text3, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.medium }}
+        >
           {label}
         </span>
       </div>
-      <p style={{ color: valueColor ?? c.text1, fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold }}>
+      <p
+        style={{
+          color: valueColor ?? c.text1,
+          fontSize: FONT_SCALE.base,
+          fontWeight: FONT_WEIGHT.bold,
+        }}
+      >
         {value}
       </p>
       {change !== undefined && (
         <div className="flex items-center gap-0.5 mt-0.5">
-          {change >= 0
-            ? <ArrowUpRight size={12} color="#10B981" />
-            : <ArrowDownRight size={12} color="#EF4444" />
-          }
-          <span style={{
-            color: change >= 0 ? '#10B981' : '#EF4444',
-            fontSize: FONT_SCALE.micro,
-            fontWeight: FONT_WEIGHT.medium,
-          }}>
+          {change >= 0 ? (
+            <ArrowUpRight size={12} color="#10B981" />
+          ) : (
+            <ArrowDownRight size={12} color="#EF4444" />
+          )}
+          <span
+            style={{
+              color: change >= 0 ? '#10B981' : '#EF4444',
+              fontSize: FONT_SCALE.micro,
+              fontWeight: FONT_WEIGHT.medium,
+            }}
+          >
             {fmtPct(change)}
           </span>
         </div>
       )}
       {subtitle && !change && (
-        <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginTop: 2 }}>
-          {subtitle}
-        </p>
+        <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginTop: 2 }}>{subtitle}</p>
       )}
     </TrCard>
   );
 }
 
-function OIPairRow({ pair, c }: {
-  pair: DerivativePair;
-  c: ReturnType<typeof useThemeColors>;
-}) {
+function OIPairRow({ pair, c }: { pair: DerivativePair; c: ReturnType<typeof useThemeColors> }) {
   return (
     <div className="flex items-center gap-3 px-4 py-3 rounded-xl" style={{ background: c.surface }}>
       <div
@@ -361,11 +443,13 @@ function OIPairRow({ pair, c }: {
         </p>
       </div>
       <div className="text-right shrink-0">
-        <p style={{
-          color: pair.openInterestChange24h >= 0 ? '#10B981' : '#EF4444',
-          fontSize: FONT_SCALE.xs,
-          fontWeight: FONT_WEIGHT.semibold,
-        }}>
+        <p
+          style={{
+            color: pair.openInterestChange24h >= 0 ? '#10B981' : '#EF4444',
+            fontSize: FONT_SCALE.xs,
+            fontWeight: FONT_WEIGHT.semibold,
+          }}
+        >
           {fmtPct(pair.openInterestChange24h)}
         </p>
         <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>24h</p>
@@ -374,10 +458,7 @@ function OIPairRow({ pair, c }: {
   );
 }
 
-function PerpPairCard({ pair, c }: {
-  pair: DerivativePair;
-  c: ReturnType<typeof useThemeColors>;
-}) {
+function PerpPairCard({ pair, c }: { pair: DerivativePair; c: ReturnType<typeof useThemeColors> }) {
   const isUp = pair.change24h >= 0;
   const longPct = pair.longRatio;
   const shortPct = pair.shortRatio;
@@ -390,7 +471,9 @@ function PerpPairCard({ pair, c }: {
           className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
           style={{ background: `${pair.color}18` }}
         >
-          <span style={{ color: pair.color, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+          <span
+            style={{ color: pair.color, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}
+          >
             {pair.symbol.split('/')[0].slice(0, 2)}
           </span>
         </div>
@@ -412,11 +495,13 @@ function PerpPairCard({ pair, c }: {
           <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>
             ${fmtPrice(pair.price)}
           </p>
-          <span style={{
-            color: isUp ? '#10B981' : '#EF4444',
-            fontSize: FONT_SCALE.xs,
-            fontWeight: FONT_WEIGHT.medium,
-          }}>
+          <span
+            style={{
+              color: isUp ? '#10B981' : '#EF4444',
+              fontSize: FONT_SCALE.xs,
+              fontWeight: FONT_WEIGHT.medium,
+            }}
+          >
             {fmtPct(pair.change24h)}
           </span>
         </div>
@@ -438,11 +523,13 @@ function PerpPairCard({ pair, c }: {
         </div>
         <div>
           <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Funding</p>
-          <p style={{
-            color: pair.fundingRate >= 0 ? '#10B981' : '#EF4444',
-            fontSize: FONT_SCALE.xs,
-            fontWeight: FONT_WEIGHT.semibold,
-          }}>
+          <p
+            style={{
+              color: pair.fundingRate >= 0 ? '#10B981' : '#EF4444',
+              fontSize: FONT_SCALE.xs,
+              fontWeight: FONT_WEIGHT.semibold,
+            }}
+          >
             {(pair.fundingRate * 100).toFixed(4)}%
           </p>
         </div>
@@ -451,10 +538,14 @@ function PerpPairCard({ pair, c }: {
       {/* Long/Short ratio bar */}
       <div>
         <div className="flex justify-between mb-1">
-          <span style={{ color: '#10B981', fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.medium }}>
+          <span
+            style={{ color: '#10B981', fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.medium }}
+          >
             Long {longPct.toFixed(1)}%
           </span>
-          <span style={{ color: '#EF4444', fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.medium }}>
+          <span
+            style={{ color: '#EF4444', fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.medium }}
+          >
             Short {shortPct.toFixed(1)}%
           </span>
         </div>
@@ -467,7 +558,10 @@ function PerpPairCard({ pair, c }: {
   );
 }
 
-function LiquidationCard({ pair, c }: {
+function LiquidationCard({
+  pair,
+  c,
+}: {
   pair: DerivativePair;
   c: ReturnType<typeof useThemeColors>;
 }) {
@@ -481,14 +575,18 @@ function LiquidationCard({ pair, c }: {
           className="w-7 h-7 rounded-full flex items-center justify-center shrink-0"
           style={{ background: `${pair.color}18` }}
         >
-          <span style={{ color: pair.color, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.bold }}>
+          <span
+            style={{ color: pair.color, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.bold }}
+          >
             {pair.symbol.split('/')[0].slice(0, 2)}
           </span>
         </div>
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-1">
-            <span style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+            <span
+              style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}
+            >
               {pair.symbol}
             </span>
             <span style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>

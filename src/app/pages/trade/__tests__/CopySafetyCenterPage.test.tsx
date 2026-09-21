@@ -2,124 +2,216 @@
  * ══════════════════════════════════════════════════════════════
  *  CopySafetyCenterPage.test.tsx — Safety Center Tests
  * ══════════════════════════════════════════════════════════════
- * 
- * Test Coverage (3 tests):
- * 1. ✅ Verification tiers explained
- * 2. ✅ Trust metrics breakdown clear
- * 3. ✅ Safety tools accessible
+ *
+ * Written against the current component: a 5-tab trust & safety hub
+ * (Verification / Metrics / Guidelines / Tools / Enforcement) with
+ * expandable trust-metric explainers, community guidelines,
+ * block/report/emergency-stop tools and a public enforcement log.
+ *
+ * Test Coverage (6 tests):
+ * 1. ✅ Hero banner + all 3 verification tiers with requirements/benefits
+ * 2. ✅ Trust metrics expand to show good/bad ranges and rationale
+ * 3. ✅ Guidelines tab: prohibited behaviors, responsibilities, reporting
+ * 4. ✅ Safety tools: block/report navigate; emergency stop confirms
+ * 5. ✅ Enforcement tab lists actions with reasons and transparency note
+ * 6. ✅ Tab switching swaps content
+ *
+ * Dropped from the old suite (features no longer exist):
+ * - Fair Play / Completion / Dispute / Response / Transparency scores
+ * - Safety checklist and risk calculator tools
+ * - Educational resource links (scam awareness / red flags)
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { screen, waitFor } from '@testing-library/react';
-import { renderWithRouter, userEvent } from '../../../test/utils/test-utils';
+import { renderWithRouter, userEvent, mockNavigate } from '@/test/test-utils-navigation';
 import { CopySafetyCenterPage } from '../CopySafetyCenterPage';
 
 describe('CopySafetyCenterPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.spyOn(window, 'confirm').mockReturnValue(true);
+    vi.spyOn(window, 'alert').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('should explain all verification tiers', () => {
     renderWithRouter(<CopySafetyCenterPage />);
 
-    // Page title
-    expect(screen.getByText(/safety center/i)).toBeInTheDocument();
-
-    // Verification tiers
-    expect(screen.getByText(/verification tiers/i)).toBeInTheDocument();
+    // Hero + intro
+    expect(screen.getByText('Safety Center')).toBeInTheDocument();
+    expect(screen.getByText('Your Safety is Our Priority')).toBeInTheDocument();
+    expect(screen.getByText(/Provider verification tiers explained:/i)).toBeInTheDocument();
 
     // Tier 1: Basic
-    expect(screen.getByText(/basic/i)).toBeInTheDocument();
-    expect(screen.getByText(/email.*phone verified/i)).toBeInTheDocument();
-    expect(screen.getByText(/low trust/i)).toBeInTheDocument();
+    expect(screen.getByText('Basic')).toBeInTheDocument();
+    expect(screen.getByText('• Email verification')).toBeInTheDocument();
+    expect(screen.getByText('• KYC Level 1')).toBeInTheDocument();
 
     // Tier 2: Verified
-    expect(screen.getByText(/verified/i)).toBeInTheDocument();
-    expect(screen.getByText(/kyc.*identity verified/i)).toBeInTheDocument();
-    expect(screen.getByText(/medium trust/i)).toBeInTheDocument();
+    expect(screen.getByText('Verified')).toBeInTheDocument();
+    expect(screen.getByText('• KYC Level 2 (ID + Selfie)')).toBeInTheDocument();
+    expect(screen.getByText('• 6 months trading history')).toBeInTheDocument();
+    expect(screen.getByText('• $10,000 minimum capital')).toBeInTheDocument();
 
     // Tier 3: Pro
-    expect(screen.getByText(/pro/i)).toBeInTheDocument();
-    expect(screen.getByText(/enhanced verification/i)).toBeInTheDocument();
-    expect(screen.getByText(/trading history.*verified/i)).toBeInTheDocument();
-    expect(screen.getByText(/high trust/i)).toBeInTheDocument();
+    expect(screen.getByText('Pro')).toBeInTheDocument();
+    expect(screen.getByText('• 12 months trading history')).toBeInTheDocument();
+    expect(screen.getByText('• $50,000 minimum capital')).toBeInTheDocument();
+    expect(screen.getByText('• Sharpe Ratio > 1.5')).toBeInTheDocument();
+    expect(screen.getByText('• Monthly performance audit')).toBeInTheDocument();
+    expect(screen.getByText('✓ Featured in leaderboard')).toBeInTheDocument();
 
-    // Recommendation
-    expect(screen.getByText(/only copy.*verified.*above/i)).toBeInTheDocument();
-
-    // Visual badges
-    const badges = screen.getAllByTestId('badge-icon');
-    expect(badges.length).toBeGreaterThanOrEqual(3);
+    // Badges do NOT guarantee performance
+    expect(
+      screen.getByText(/DO NOT guarantee future performance/i),
+    ).toBeInTheDocument();
   });
 
-  it('should provide clear trust metrics breakdown', () => {
-    renderWithRouter(<CopySafetyCenterPage />);
-
-    // Trust metrics section
-    expect(screen.getByText(/trust metrics/i)).toBeInTheDocument();
-
-    // Metric 1: Fair Play Score
-    expect(screen.getByText(/fair play score/i)).toBeInTheDocument();
-    expect(screen.getByText(/based on.*following rules/i)).toBeInTheDocument();
-
-    // Metric 2: Completion Rate
-    expect(screen.getByText(/completion rate/i)).toBeInTheDocument();
-    expect(screen.getByText(/percentage.*completed trades/i)).toBeInTheDocument();
-
-    // Metric 3: Dispute Rate
-    expect(screen.getByText(/dispute rate/i)).toBeInTheDocument();
-    expect(screen.getByText(/complaints per 1000.*followers/i)).toBeInTheDocument();
-
-    // Metric 4: Response Time
-    expect(screen.getByText(/response time/i)).toBeInTheDocument();
-    expect(screen.getByText(/avg time.*respond.*followers/i)).toBeInTheDocument();
-
-    // Metric 5: Transparency Score
-    expect(screen.getByText(/transparency score/i)).toBeInTheDocument();
-    expect(screen.getByText(/communication.*disclosure quality/i)).toBeInTheDocument();
-
-    // How it's calculated
-    expect(screen.getByText(/how.*calculated/i)).toBeInTheDocument();
-
-    // Example provider scores
-    expect(screen.getByText(/example.*high trust.*95/i)).toBeInTheDocument();
-    expect(screen.getByText(/example.*low trust.*45/i)).toBeInTheDocument();
-  });
-
-  it('should make safety tools easily accessible', async () => {
+  it('should expand trust metrics with good/bad ranges and rationale', async () => {
     const user = userEvent.setup();
     renderWithRouter(<CopySafetyCenterPage />);
 
-    // Safety tools section
-    expect(screen.getByText(/safety tools/i)).toBeInTheDocument();
+    await user.click(screen.getByRole('tab', { name: 'Metrics' }));
 
-    // Tool 1: Report Provider
-    const reportBtn = screen.getByRole('button', { name: /report provider/i });
-    expect(reportBtn).toBeInTheDocument();
+    expect(screen.getByText('Understanding trust metrics:')).toBeInTheDocument();
 
-    await user.click(reportBtn);
+    // All 4 metrics listed collapsed
+    ['Sharpe Ratio', 'Max Drawdown', 'Slippage', 'Win Rate'].forEach((name) =>
+      expect(screen.getByRole('button', { name: new RegExp(name) })).toBeInTheDocument(),
+    );
+    expect(screen.queryByText('✓ Good Range')).not.toBeInTheDocument();
+
+    // Expand Sharpe Ratio
+    await user.click(screen.getByRole('button', { name: /Sharpe Ratio/ }));
     await waitFor(() => {
-      expect(screen.getByText(/report.*suspicious activity/i)).toBeInTheDocument();
+      expect(screen.getByText('✓ Good Range')).toBeInTheDocument();
+      expect(screen.getByText('> 1.5 (excellent), 1.0-1.5 (good)')).toBeInTheDocument();
+      expect(screen.getByText('✗ Bad Range')).toBeInTheDocument();
+      expect(screen.getByText('< 1.0 (poor)')).toBeInTheDocument();
+      expect(screen.getByText('Why It Matters')).toBeInTheDocument();
+      expect(
+        screen.getByText('Shows if provider is taking smart risks or just gambling'),
+      ).toBeInTheDocument();
     });
 
-    // Tool 2: Block Provider
-    expect(screen.getByRole('button', { name: /block provider/i })).toBeInTheDocument();
+    // Expand Max Drawdown — Sharpe panel collapses (single-expand accordion)
+    await user.click(screen.getByRole('button', { name: /Max Drawdown/ }));
+    await waitFor(() => {
+      expect(screen.getByText('< 15% (excellent), 15-25% (acceptable)')).toBeInTheDocument();
+      expect(screen.getByText('> 25% (risky)')).toBeInTheDocument();
+      expect(screen.getByText('Indicates worst-case loss scenario. Can you handle it?')).toBeInTheDocument();
+      expect(screen.queryByText('< 1.0 (poor)')).not.toBeInTheDocument();
+    });
+  });
 
-    // Tool 3: Emergency Stop
-    expect(screen.getByRole('button', { name: /emergency stop/i })).toBeInTheDocument();
+  it('should show guidelines: prohibited behaviors, responsibilities, reporting', async () => {
+    const user = userEvent.setup();
+    renderWithRouter(<CopySafetyCenterPage />);
 
-    // Tool 4: Safety Checklist
-    expect(screen.getByRole('button', { name: /safety checklist/i })).toBeInTheDocument();
+    await user.click(screen.getByRole('tab', { name: 'Guidelines' }));
 
-    // Tool 5: Risk Calculator
-    expect(screen.getByRole('button', { name: /risk calculator/i })).toBeInTheDocument();
+    // 7 prohibited behaviors
+    expect(screen.getByText('Prohibited Provider Behaviors')).toBeInTheDocument();
+    ['Wash trading (fake volume)', 'Fake performance data', 'Hidden fee structures'].forEach(
+      (item) => expect(screen.getByText(item)).toBeInTheDocument(),
+    );
+    expect(screen.getByText('Misleading claims (guaranteed profits)')).toBeInTheDocument();
 
-    // Educational resources
-    expect(screen.getByText(/safety education/i)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /scam awareness/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /red flags guide/i })).toBeInTheDocument();
+    // 6 follower responsibilities
+    expect(screen.getByText('Follower Responsibilities')).toBeInTheDocument();
+    expect(screen.getByText('Do your own research before copying')).toBeInTheDocument();
+    expect(screen.getByText('Do not over-allocate to single provider')).toBeInTheDocument();
 
-    // Contact support
-    expect(screen.getByRole('button', { name: /contact support/i })).toBeInTheDocument();
+    // Reporting procedure: 4 steps
+    expect(screen.getByText('Reporting Procedures')).toBeInTheDocument();
+    expect(screen.getByText('1. Collect Evidence')).toBeInTheDocument();
+    expect(screen.getByText('2. File Report')).toBeInTheDocument();
+    expect(screen.getByText('3. Investigation')).toBeInTheDocument();
+    expect(screen.getByText('Team reviews within 24-48 hours')).toBeInTheDocument();
+    expect(screen.getByText('4. Enforcement')).toBeInTheDocument();
+  });
+
+  it('should provide safety tools with confirmations where destructive', async () => {
+    const user = userEvent.setup();
+    renderWithRouter(<CopySafetyCenterPage />);
+
+    await user.click(screen.getByRole('tab', { name: 'Tools' }));
+
+    expect(screen.getByText('Safety Tools')).toBeInTheDocument();
+
+    // Block Provider navigates to the copy trading hub
+    await user.click(screen.getByRole('button', { name: /Block Provider/ }));
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith('/trade/copy-trading');
+    });
+
+    // Report Provider navigates to the safety route
+    await user.click(screen.getByRole('button', { name: /Report Provider/ }));
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith('/trade/copy-trading/safety');
+    });
+
+    // Emergency Stop All requires confirmation, then alerts
+    await user.click(screen.getByRole('button', { name: /Emergency Stop All/ }));
+    expect(window.confirm).toHaveBeenCalledWith(
+      expect.stringContaining('STOP ALL copying'),
+    );
+    expect(window.alert).toHaveBeenCalledWith('Emergency stop activated! All copies stopped.');
+
+    // Declining the confirmation does nothing destructive
+    vi.mocked(window.confirm).mockReturnValue(false);
+    await user.click(screen.getByRole('button', { name: /Emergency Stop All/ }));
+    expect(window.alert).toHaveBeenCalledTimes(1); // still only the first activation
+  });
+
+  it('should list recent enforcement actions transparently', async () => {
+    const user = userEvent.setup();
+    renderWithRouter(<CopySafetyCenterPage />);
+
+    await user.click(screen.getByRole('tab', { name: 'Enforcement' }));
+
+    expect(screen.getByText(/Recent enforcement actions taken to protect users:/i)).toBeInTheDocument();
+
+    // 3 actions: suspended / warned / verified
+    expect(screen.getByText('suspended')).toBeInTheDocument();
+    expect(screen.getByText('Provider X')).toBeInTheDocument();
+    expect(screen.getByText('Wash trading detected (fake volume)')).toBeInTheDocument();
+    expect(screen.getByText('2026-03-05')).toBeInTheDocument();
+
+    expect(screen.getByText('warned')).toBeInTheDocument();
+    expect(screen.getByText('Provider Y')).toBeInTheDocument();
+    expect(screen.getByText('Undisclosed fee changes')).toBeInTheDocument();
+
+    expect(screen.getByText('verified')).toBeInTheDocument();
+    expect(screen.getByText('Provider Z')).toBeInTheDocument();
+    expect(screen.getByText('Passed Pro tier audit')).toBeInTheDocument();
+
+    // Transparency note
+    expect(
+      screen.getByText(/All actions are logged and transparent/i),
+    ).toBeInTheDocument();
+  });
+
+  it('should switch content between tabs', async () => {
+    const user = userEvent.setup();
+    renderWithRouter(<CopySafetyCenterPage />);
+
+    // Verification is the default tab
+    expect(screen.getByText('Provider verification tiers explained:')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('tab', { name: 'Enforcement' }));
+    await waitFor(() => {
+      expect(screen.getByText(/Recent enforcement actions/i)).toBeInTheDocument();
+      expect(screen.queryByText('Provider verification tiers explained:')).not.toBeInTheDocument();
+    });
+
+    await user.click(screen.getByRole('tab', { name: 'Verification' }));
+    await waitFor(() => {
+      expect(screen.getByText('Provider verification tiers explained:')).toBeInTheDocument();
+    });
   });
 });

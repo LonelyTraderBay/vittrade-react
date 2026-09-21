@@ -17,12 +17,20 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  Calculator, TrendingUp, TrendingDown, AlertTriangle, Info,
-  DollarSign, Percent, Target, BarChart3, Shield,
+  Calculator,
+  TrendingUp,
+  TrendingDown,
+  AlertTriangle,
+  Info,
+  DollarSign,
+  Percent,
+  Target,
+  BarChart3,
+  Shield,
 } from 'lucide-react';
 
 const TABS = ['May tinh', 'Kich ban', 'Huong dan'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface RiskMetrics {
   maxLoss: number;
@@ -64,16 +72,15 @@ export function PredictionRiskCalculatorPage() {
     const probabilityOfProfit = current * 100;
 
     // Expected value: (prob_win * max_gain) - (prob_loss * max_loss)
-    const expectedValue = (current * maxGain) - ((1 - current) * maxLoss);
+    const expectedValue = current * maxGain - (1 - current) * maxLoss;
 
     // Risk/Reward ratio
     const riskRewardRatio = maxLoss > 0 ? maxGain / maxLoss : 0;
 
     // Kelly criterion for optimal bet size: (p*b - q) / b
     // where p = probability of win, q = 1-p, b = odds (max_gain / max_loss)
-    const kellyFraction = riskRewardRatio > 0
-      ? (current * riskRewardRatio - (1 - current)) / riskRewardRatio
-      : 0;
+    const kellyFraction =
+      riskRewardRatio > 0 ? (current * riskRewardRatio - (1 - current)) / riskRewardRatio : 0;
     const kellyBetSize = Math.max(0, Math.min(1, kellyFraction)) * bank;
 
     return {
@@ -108,7 +115,9 @@ export function PredictionRiskCalculatorPage() {
                 style={{ background: c.surface, border: `1px solid ${c.border}` }}
               >
                 <div className="mb-4">
-                  <label style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}
+                  >
                     Event
                   </label>
                   <input
@@ -117,12 +126,19 @@ export function PredictionRiskCalculatorPage() {
                     onChange={(e) => setEventName(e.target.value)}
                     placeholder="Event name..."
                     className="w-full px-4 py-2.5 rounded-xl outline-none"
-                    style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 14 }}
+                    style={{
+                      background: c.bg,
+                      border: `1px solid ${c.border}`,
+                      color: c.text1,
+                      fontSize: 14,
+                    }}
                   />
                 </div>
 
                 <div className="mb-4">
-                  <label style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}
+                  >
                     Outcome
                   </label>
                   <div className="grid grid-cols-2 gap-2">
@@ -147,7 +163,9 @@ export function PredictionRiskCalculatorPage() {
 
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   <div>
-                    <label style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}>
+                    <label
+                      style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}
+                    >
                       Shares
                     </label>
                     <input
@@ -156,11 +174,18 @@ export function PredictionRiskCalculatorPage() {
                       onChange={(e) => setShares(e.target.value)}
                       placeholder="0"
                       className="w-full px-4 py-2.5 rounded-xl outline-none"
-                      style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 14 }}
+                      style={{
+                        background: c.bg,
+                        border: `1px solid ${c.border}`,
+                        color: c.text1,
+                        fontSize: 14,
+                      }}
                     />
                   </div>
                   <div>
-                    <label style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}>
+                    <label
+                      style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}
+                    >
                       Entry Price ($)
                     </label>
                     <input
@@ -169,14 +194,21 @@ export function PredictionRiskCalculatorPage() {
                       onChange={(e) => setEntryPrice(e.target.value)}
                       placeholder="0.00"
                       className="w-full px-4 py-2.5 rounded-xl outline-none"
-                      style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 14 }}
+                      style={{
+                        background: c.bg,
+                        border: `1px solid ${c.border}`,
+                        color: c.text1,
+                        fontSize: 14,
+                      }}
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}>
+                    <label
+                      style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}
+                    >
                       Current Price ($)
                     </label>
                     <input
@@ -185,11 +217,18 @@ export function PredictionRiskCalculatorPage() {
                       onChange={(e) => setCurrentPrice(e.target.value)}
                       placeholder="0.00"
                       className="w-full px-4 py-2.5 rounded-xl outline-none"
-                      style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 14 }}
+                      style={{
+                        background: c.bg,
+                        border: `1px solid ${c.border}`,
+                        color: c.text1,
+                        fontSize: 14,
+                      }}
                     />
                   </div>
                   <div>
-                    <label style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}>
+                    <label
+                      style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}
+                    >
                       Total Bankroll ($)
                     </label>
                     <input
@@ -198,7 +237,12 @@ export function PredictionRiskCalculatorPage() {
                       onChange={(e) => setBankroll(e.target.value)}
                       placeholder="0"
                       className="w-full px-4 py-2.5 rounded-xl outline-none"
-                      style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 14 }}
+                      style={{
+                        background: c.bg,
+                        border: `1px solid ${c.border}`,
+                        color: c.text1,
+                        fontSize: 14,
+                      }}
                     />
                   </div>
                 </div>
@@ -247,7 +291,8 @@ export function PredictionRiskCalculatorPage() {
                       fontWeight: 700,
                     }}
                   >
-                    {pnlPercent >= 0 ? '+' : ''}{pnlPercent.toFixed(2)}%
+                    {pnlPercent >= 0 ? '+' : ''}
+                    {pnlPercent.toFixed(2)}%
                   </p>
                 </div>
               </div>
@@ -338,7 +383,10 @@ export function PredictionRiskCalculatorPage() {
             {/* Position Sizing */}
             <div
               className="rounded-2xl p-4"
-              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+              style={{
+                background: 'rgba(59,130,246,0.06)',
+                border: '1px solid rgba(59,130,246,0.15)',
+              }}
             >
               <div className="flex items-start gap-2 mb-3">
                 <Shield size={16} color={c.primary} style={{ marginTop: 2 }} />
@@ -364,11 +412,15 @@ export function PredictionRiskCalculatorPage() {
             {/* Warning */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
+              style={{
+                background: 'rgba(245,158,11,0.06)',
+                border: '1px solid rgba(245,158,11,0.15)',
+              }}
             >
               <AlertTriangle size={14} color={c.warn} style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Phan tich rui ro chi mang tinh tham khao. Ket qua thuc te co the khac. Luon quan ly von than trong.
+                Phan tich rui ro chi mang tinh tham khao. Ket qua thuc te co the khac. Luon quan ly
+                von than trong.
               </p>
             </div>
           </>
@@ -378,8 +430,16 @@ export function PredictionRiskCalculatorPage() {
           <>
             <PageSection label="Scenarios Analysis">
               {[
-                { outcome: 'Win (YES resolves)', payout: parseFloat(shares) * 1, probability: parseFloat(currentPrice) * 100 },
-                { outcome: 'Loss (NO resolves)', payout: 0, probability: (1 - parseFloat(currentPrice)) * 100 },
+                {
+                  outcome: 'Win (YES resolves)',
+                  payout: parseFloat(shares) * 1,
+                  probability: parseFloat(currentPrice) * 100,
+                },
+                {
+                  outcome: 'Loss (NO resolves)',
+                  payout: 0,
+                  probability: (1 - parseFloat(currentPrice)) * 100,
+                },
               ].map((scenario, idx) => {
                 const profit = scenario.payout - cost;
                 const profitPercent = cost > 0 ? (profit / cost) * 100 : 0;
@@ -391,7 +451,9 @@ export function PredictionRiskCalculatorPage() {
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div>
-                        <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>{scenario.outcome}</p>
+                        <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>
+                          {scenario.outcome}
+                        </p>
                         <p style={{ color: c.text3, fontSize: 11 }}>
                           Implied probability: {scenario.probability.toFixed(1)}%
                         </p>
@@ -431,7 +493,8 @@ export function PredictionRiskCalculatorPage() {
                             fontWeight: 700,
                           }}
                         >
-                          {profitPercent >= 0 ? '+' : ''}{profitPercent.toFixed(2)}%
+                          {profitPercent >= 0 ? '+' : ''}
+                          {profitPercent.toFixed(2)}%
                         </p>
                       </div>
                     </div>
@@ -465,7 +528,9 @@ export function PredictionRiskCalculatorPage() {
                   className="flex justify-between pt-2"
                   style={{ borderTop: `1px solid ${c.border}` }}
                 >
-                  <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>Net Expected Value</p>
+                  <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
+                    Net Expected Value
+                  </p>
                   <p
                     style={{
                       color: metrics.expectedValue >= 0 ? c.buy : c.sell,
@@ -520,15 +585,18 @@ export function PredictionRiskCalculatorPage() {
                 {[
                   {
                     term: 'Max Loss',
-                    definition: 'So tien toi da co the mat neu outcome khong xay ra (= chi phi mua shares)',
+                    definition:
+                      'So tien toi da co the mat neu outcome khong xay ra (= chi phi mua shares)',
                   },
                   {
                     term: 'Max Gain',
-                    definition: 'Loi nhuan toi da neu outcome xay ra (= shares × (1 - entry_price))',
+                    definition:
+                      'Loi nhuan toi da neu outcome xay ra (= shares × (1 - entry_price))',
                   },
                   {
                     term: 'Expected Value',
-                    definition: 'Gia tri ky vong cua vi the, tinh theo xac suat. EV > 0 cho thay co edge.',
+                    definition:
+                      'Gia tri ky vong cua vi the, tinh theo xac suat. EV > 0 cho thay co edge.',
                   },
                   {
                     term: 'Kelly Criterion',
@@ -554,12 +622,15 @@ export function PredictionRiskCalculatorPage() {
             {/* Disclaimer - §9.6 compliance */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)' }}
+              style={{
+                background: 'rgba(239,68,68,0.06)',
+                border: '1px solid rgba(239,68,68,0.15)',
+              }}
             >
               <Info size={14} color={c.sell} style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Cong cu tinh toan chi la tham khao. Khong dam bao ket qua. Probability khong phai la certainty.
-                Luon quan ly rui ro va chi dau tu so tien co the chap nhan mat.
+                Cong cu tinh toan chi la tham khao. Khong dam bao ket qua. Probability khong phai la
+                certainty. Luon quan ly rui ro va chi dau tu so tien co the chap nhan mat.
               </p>
             </div>
           </>

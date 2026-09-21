@@ -75,7 +75,7 @@ const VIP_TIERS: VIPTier[] = [
     color: '#94A3B8',
     gradient: 'linear-gradient(135deg, #94A3B8, #64748B)',
     volumeRequired: 0,
-    makerFee: 0.10,
+    makerFee: 0.1,
     takerFee: 0.15,
     benefits: ['Giao dịch cơ bản', 'Hỗ trợ email'],
   },
@@ -178,9 +178,7 @@ function TierProgressCard({ status, tiers }: { status: UserVIPStatus; tiers: VIP
           <div style={{ color: c.text2, fontSize: WEB_FONT.xs, fontWeight: 600 }}>
             Tier hiện tại
           </div>
-          <div style={{ color: c.text1, fontSize: 24, fontWeight: 800 }}>
-            {currentTier.name}
-          </div>
+          <div style={{ color: c.text1, fontSize: 24, fontWeight: 800 }}>{currentTier.name}</div>
         </div>
       </div>
 
@@ -195,10 +193,7 @@ function TierProgressCard({ status, tiers }: { status: UserVIPStatus; tiers: VIP
                 {status.progress.toFixed(1)}%
               </span>
             </div>
-            <div
-              className="h-2 rounded-full overflow-hidden"
-              style={{ background: c.bg }}
-            >
+            <div className="h-2 rounded-full overflow-hidden" style={{ background: c.bg }}>
               <div
                 className="h-full transition-all duration-500"
                 style={{
@@ -209,7 +204,10 @@ function TierProgressCard({ status, tiers }: { status: UserVIPStatus; tiers: VIP
             </div>
           </div>
 
-          <div className="flex items-center justify-between mt-4 pt-4" style={{ borderTop: `1px solid ${c.divider}` }}>
+          <div
+            className="flex items-center justify-between mt-4 pt-4"
+            style={{ borderTop: `1px solid ${c.divider}` }}
+          >
             <div>
               <div style={{ color: c.text2, fontSize: WEB_FONT.xs }}>Khối lượng 30 ngày</div>
               <div style={{ color: c.text1, fontSize: WEB_FONT.base, fontWeight: 700 }}>
@@ -444,206 +442,227 @@ export function WebVIPProgramPage() {
 
   return (
     <PageLayout>
-    <div className="flex" style={{ minHeight: '100%' }}>
-      {/* ═══ LEFT SIDEBAR (280px) ═══ */}
-      <div
-        className="flex flex-col"
-        style={{
-          width: 280,
-          background: c.surface,
-          borderRight: `1px solid ${c.divider}`,
-        }}
-      >
-        {/* Header */}
+      <div className="flex" style={{ minHeight: '100%' }}>
+        {/* ═══ LEFT SIDEBAR (280px) ═══ */}
         <div
-          className="flex items-center justify-between px-5"
+          className="flex flex-col"
           style={{
-            height: 60,
-            borderBottom: `1px solid ${c.divider}`,
+            width: 280,
+            background: c.surface,
+            borderRight: `1px solid ${c.divider}`,
           }}
         >
-          <h2
+          {/* Header */}
+          <div
+            className="flex items-center justify-between px-5"
             style={{
-              color: c.text1,
-              fontSize: WEB_FONT.xl,
-              fontWeight: 700,
-              margin: 0,
+              height: 60,
+              borderBottom: `1px solid ${c.divider}`,
             }}
           >
-            VIP Program
-          </h2>
-        </div>
-
-        {/* Current Tier Card */}
-        <div className="p-4">
-          <TierProgressCard status={USER_STATUS} tiers={VIP_TIERS} />
-        </div>
-
-        {/* Quick Stats */}
-        <div className="px-4 pb-4">
-          <div style={{ color: c.text2, fontSize: WEB_FONT.xs, fontWeight: 600, marginBottom: 12 }}>
-            Thống kê
+            <h2
+              style={{
+                color: c.text1,
+                fontSize: WEB_FONT.xl,
+                fontWeight: 700,
+                margin: 0,
+              }}
+            >
+              VIP Program
+            </h2>
           </div>
-          <div className="flex flex-col gap-3">
-            <div
-              className="p-3 rounded-lg"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-              }}
-            >
-              <div style={{ color: c.text2, fontSize: WEB_FONT.xs, marginBottom: 4 }}>
-                Tiết kiệm phí (30d)
-              </div>
-              <div style={{ color: '#10B981', fontSize: 18, fontWeight: 800 }}>
-                $1,234
-              </div>
-            </div>
-            <div
-              className="p-3 rounded-lg"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-              }}
-            >
-              <div style={{ color: c.text2, fontSize: WEB_FONT.xs, marginBottom: 4 }}>
-                Giới thiệu bạn bè
-              </div>
-              <div style={{ color: c.text1, fontSize: 18, fontWeight: 800 }}>
-                {USER_STATUS.referralCount}
-                <span style={{ fontSize: WEB_FONT.xs, fontWeight: 600, color: c.text3 }}>
-                  {' '}người
-                </span>
-              </div>
-            </div>
+
+          {/* Current Tier Card */}
+          <div className="p-4">
+            <TierProgressCard status={USER_STATUS} tiers={VIP_TIERS} />
           </div>
-        </div>
-      </div>
 
-      {/* ═══ MAIN CONTENT ═══ */}
-      <div className="flex-1 min-w-0">
-        <div className="max-w-5xl mx-auto p-8">
-          {/* Benefits Grid */}
-          <section className="mb-8">
-            <h3
-              style={{
-                color: c.text1,
-                fontSize: WEB_FONT.lg,
-                fontWeight: 700,
-                marginBottom: 16,
-              }}
-            >
-              Quyền lợi VIP
-            </h3>
-
-            <div className="grid grid-cols-3 gap-4">
-              {benefits.map((benefit) => {
-                const Icon = benefit.icon;
-                return (
-                  <div
-                    key={benefit.label}
-                    className="p-4 rounded-xl"
-                    style={{
-                      background: c.surface,
-                      border: `1px solid ${c.border}`,
-                    }}
-                  >
-                    <div
-                      className="flex items-center justify-center rounded-xl mb-3"
-                      style={{
-                        width: 48,
-                        height: 48,
-                        background: `${currentTier.color}15`,
-                      }}
-                    >
-                      <Icon size={24} color={currentTier.color} />
-                    </div>
-                    <div style={{ color: c.text1, fontSize: WEB_FONT.base, fontWeight: 700, marginBottom: 4 }}>
-                      {benefit.label}
-                    </div>
-                    <div style={{ color: c.text2, fontSize: WEB_FONT.xs }}>
-                      {benefit.value}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-
-          {/* Tier Comparison Table */}
-          <section className="mb-8">
-            <h3
-              style={{
-                color: c.text1,
-                fontSize: WEB_FONT.lg,
-                fontWeight: 700,
-                marginBottom: 16,
-              }}
-            >
-              So sánh tier
-            </h3>
-
+          {/* Quick Stats */}
+          <div className="px-4 pb-4">
             <div
-              className="rounded-xl overflow-hidden"
-              style={{
-                background: c.surface,
-                border: `1px solid ${c.border}`,
-              }}
+              style={{ color: c.text2, fontSize: WEB_FONT.xs, fontWeight: 600, marginBottom: 12 }}
             >
-              <TierComparisonTable tiers={VIP_TIERS} currentTier={USER_STATUS.currentTier} />
+              Thống kê
             </div>
-          </section>
-
-          {/* How to Upgrade */}
-          <section>
-            <h3
-              style={{
-                color: c.text1,
-                fontSize: WEB_FONT.lg,
-                fontWeight: 700,
-                marginBottom: 16,
-              }}
-            >
-              Cách nâng tier
-            </h3>
-
-            <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-3">
               <div
-                className="p-5 rounded-xl"
+                className="p-3 rounded-lg"
                 style={{
-                  background: c.surface,
+                  background: c.bg,
                   border: `1px solid ${c.border}`,
                 }}
               >
-                <Target size={32} color="#3B82F6" className="mb-3" />
-                <div style={{ color: c.text1, fontSize: WEB_FONT.base, fontWeight: 700, marginBottom: 8 }}>
-                  Tăng khối lượng giao dịch
+                <div style={{ color: c.text2, fontSize: WEB_FONT.xs, marginBottom: 4 }}>
+                  Tiết kiệm phí (30d)
                 </div>
-                <div style={{ color: c.text2, fontSize: WEB_FONT.xs, lineHeight: 1.6 }}>
-                  Khối lượng giao dịch 30 ngày được tính tự động. Giao dịch nhiều hơn để đạt tier cao hơn.
-                </div>
+                <div style={{ color: '#10B981', fontSize: 18, fontWeight: 800 }}>$1,234</div>
               </div>
-
               <div
-                className="p-5 rounded-xl"
+                className="p-3 rounded-lg"
                 style={{
-                  background: c.surface,
+                  background: c.bg,
                   border: `1px solid ${c.border}`,
                 }}
               >
-                <Users size={32} color="#10B981" className="mb-3" />
-                <div style={{ color: c.text1, fontSize: WEB_FONT.base, fontWeight: 700, marginBottom: 8 }}>
+                <div style={{ color: c.text2, fontSize: WEB_FONT.xs, marginBottom: 4 }}>
                   Giới thiệu bạn bè
                 </div>
-                <div style={{ color: c.text2, fontSize: WEB_FONT.xs, lineHeight: 1.6 }}>
-                  Mỗi bạn bè active +5% khối lượng tương đương. Tối đa 50% boost.
+                <div style={{ color: c.text1, fontSize: 18, fontWeight: 800 }}>
+                  {USER_STATUS.referralCount}
+                  <span style={{ fontSize: WEB_FONT.xs, fontWeight: 600, color: c.text3 }}>
+                    {' '}
+                    người
+                  </span>
                 </div>
               </div>
             </div>
-          </section>
+          </div>
+        </div>
+
+        {/* ═══ MAIN CONTENT ═══ */}
+        <div className="flex-1 min-w-0">
+          <div className="max-w-5xl mx-auto p-8">
+            {/* Benefits Grid */}
+            <section className="mb-8">
+              <h3
+                style={{
+                  color: c.text1,
+                  fontSize: WEB_FONT.lg,
+                  fontWeight: 700,
+                  marginBottom: 16,
+                }}
+              >
+                Quyền lợi VIP
+              </h3>
+
+              <div className="grid grid-cols-3 gap-4">
+                {benefits.map((benefit) => {
+                  const Icon = benefit.icon;
+                  return (
+                    <div
+                      key={benefit.label}
+                      className="p-4 rounded-xl"
+                      style={{
+                        background: c.surface,
+                        border: `1px solid ${c.border}`,
+                      }}
+                    >
+                      <div
+                        className="flex items-center justify-center rounded-xl mb-3"
+                        style={{
+                          width: 48,
+                          height: 48,
+                          background: `${currentTier.color}15`,
+                        }}
+                      >
+                        <Icon size={24} color={currentTier.color} />
+                      </div>
+                      <div
+                        style={{
+                          color: c.text1,
+                          fontSize: WEB_FONT.base,
+                          fontWeight: 700,
+                          marginBottom: 4,
+                        }}
+                      >
+                        {benefit.label}
+                      </div>
+                      <div style={{ color: c.text2, fontSize: WEB_FONT.xs }}>{benefit.value}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+
+            {/* Tier Comparison Table */}
+            <section className="mb-8">
+              <h3
+                style={{
+                  color: c.text1,
+                  fontSize: WEB_FONT.lg,
+                  fontWeight: 700,
+                  marginBottom: 16,
+                }}
+              >
+                So sánh tier
+              </h3>
+
+              <div
+                className="rounded-xl overflow-hidden"
+                style={{
+                  background: c.surface,
+                  border: `1px solid ${c.border}`,
+                }}
+              >
+                <TierComparisonTable tiers={VIP_TIERS} currentTier={USER_STATUS.currentTier} />
+              </div>
+            </section>
+
+            {/* How to Upgrade */}
+            <section>
+              <h3
+                style={{
+                  color: c.text1,
+                  fontSize: WEB_FONT.lg,
+                  fontWeight: 700,
+                  marginBottom: 16,
+                }}
+              >
+                Cách nâng tier
+              </h3>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div
+                  className="p-5 rounded-xl"
+                  style={{
+                    background: c.surface,
+                    border: `1px solid ${c.border}`,
+                  }}
+                >
+                  <Target size={32} color="#3B82F6" className="mb-3" />
+                  <div
+                    style={{
+                      color: c.text1,
+                      fontSize: WEB_FONT.base,
+                      fontWeight: 700,
+                      marginBottom: 8,
+                    }}
+                  >
+                    Tăng khối lượng giao dịch
+                  </div>
+                  <div style={{ color: c.text2, fontSize: WEB_FONT.xs, lineHeight: 1.6 }}>
+                    Khối lượng giao dịch 30 ngày được tính tự động. Giao dịch nhiều hơn để đạt tier
+                    cao hơn.
+                  </div>
+                </div>
+
+                <div
+                  className="p-5 rounded-xl"
+                  style={{
+                    background: c.surface,
+                    border: `1px solid ${c.border}`,
+                  }}
+                >
+                  <Users size={32} color="#10B981" className="mb-3" />
+                  <div
+                    style={{
+                      color: c.text1,
+                      fontSize: WEB_FONT.base,
+                      fontWeight: 700,
+                      marginBottom: 8,
+                    }}
+                  >
+                    Giới thiệu bạn bè
+                  </div>
+                  <div style={{ color: c.text2, fontSize: WEB_FONT.xs, lineHeight: 1.6 }}>
+                    Mỗi bạn bè active +5% khối lượng tương đương. Tối đa 50% boost.
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
         </div>
       </div>
-    </div>
     </PageLayout>
   );
 }

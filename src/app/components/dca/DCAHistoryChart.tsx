@@ -54,8 +54,7 @@ const formatVND = (value: number): string => {
 const formatVNDFull = (amount: number): string =>
   new Intl.NumberFormat('vi-VN').format(Math.round(amount));
 
-const formatDate = (date: Date): string =>
-  `${date.getDate()}/${date.getMonth() + 1}`;
+const formatDate = (date: Date): string => `${date.getDate()}/${date.getMonth() + 1}`;
 
 const formatDateFull = (date: Date): string =>
   date.toLocaleDateString('vi-VN', {
@@ -140,8 +139,7 @@ function CrosshairTooltip({ active, payload }: any) {
   };
   const dateObj = new Date(data.date);
   const profitLoss = data.portfolioValue - data.totalInvested;
-  const profitLossPercent =
-    data.totalInvested > 0 ? (profitLoss / data.totalInvested) * 100 : 0;
+  const profitLossPercent = data.totalInvested > 0 ? (profitLoss / data.totalInvested) * 100 : 0;
   const isProfit = profitLoss >= 0;
 
   return (
@@ -246,10 +244,7 @@ function getTouchDistance(touches: React.TouchList): number {
   return Math.sqrt(dx * dx + dy * dy);
 }
 
-function getTouchCenter(
-  touches: React.TouchList,
-  containerRect: DOMRect,
-): number {
+function getTouchCenter(touches: React.TouchList, containerRect: DOMRect): number {
   if (touches.length < 2) return 0.5;
   const cx = (touches[0].clientX + touches[1].clientX) / 2;
   return (cx - containerRect.left) / containerRect.width;
@@ -562,13 +557,8 @@ export function DCAHistoryChart({
         setVisibleStart(Math.max(0, newStart));
         setVisibleEnd(Math.min(1, newEnd));
         e.preventDefault();
-      } else if (
-        !touchRef.current.isPinching &&
-        e.touches.length === 1 &&
-        isZoomed
-      ) {
-        const dx =
-          (e.touches[0].clientX - touchRef.current.panStartX) / rect.width;
+      } else if (!touchRef.current.isPinching && e.touches.length === 1 && isZoomed) {
+        const dx = (e.touches[0].clientX - touchRef.current.panStartX) / rect.width;
         const range = touchRef.current.panEnd - touchRef.current.panStart;
         let newStart = touchRef.current.panStart - dx * range;
         let newEnd = touchRef.current.panEnd - dx * range;
@@ -618,9 +608,7 @@ export function DCAHistoryChart({
     if (data.length < 2) return '';
     const first = data[0].date;
     const last = data[data.length - 1].date;
-    const diffDays = Math.round(
-      (last.getTime() - first.getTime()) / (1000 * 60 * 60 * 24),
-    );
+    const diffDays = Math.round((last.getTime() - first.getTime()) / (1000 * 60 * 60 * 24));
     if (diffDays <= 7) return '7 ngày qua';
     if (diffDays <= 30) return '30 ngày qua';
     if (diffDays <= 90) return '90 ngày qua';
@@ -659,8 +647,8 @@ export function DCAHistoryChart({
     const effYRange = effYMax - effYMin;
 
     return chartData.map((d) => ({
-      x: plotLeft + ((d.date as number) - xMin) / xRange * plotWidth,
-      y: plotTop + (effYMax - d.portfolioValue) / effYRange * plotHeight,
+      x: plotLeft + (((d.date as number) - xMin) / xRange) * plotWidth,
+      y: plotTop + ((effYMax - d.portfolioValue) / effYRange) * plotHeight,
       label: d.dateLabel,
     }));
   }, [interactive, chartData, chartAreaSize]);
@@ -677,10 +665,7 @@ export function DCAHistoryChart({
       {/* Header */}
       <div className="flex items-start justify-between mb-5">
         <div>
-          <h3
-            className="text-[18px] mb-1"
-            style={{ fontWeight: 500, color: c.text1 }}
-          >
+          <h3 className="text-[18px] mb-1" style={{ fontWeight: 500, color: c.text1 }}>
             Lịch Sử Danh Mục
           </h3>
           <p className="text-[14px]" style={{ color: c.text2 }}>
@@ -701,11 +686,7 @@ export function DCAHistoryChart({
                   : hasAnnotations
                     ? 'rgba(59,130,246,0.1)'
                     : 'transparent',
-                color: annotationMode
-                  ? 'white'
-                  : hasAnnotations
-                    ? c.primary
-                    : c.text2,
+                color: annotationMode ? 'white' : hasAnnotations ? c.primary : c.text2,
               }}
               aria-label={annotationMode ? 'Tắt ghi chú' : 'Bật ghi chú'}
               title="Ghi chú trên biểu đồ"
@@ -728,7 +709,11 @@ export function DCAHistoryChart({
             {isExporting ? (
               <div
                 className="w-4 h-4 border-2 border-t-transparent rounded-full"
-                style={{ borderColor: c.text3, borderTopColor: 'transparent', animation: 'spin 0.8s linear infinite' }}
+                style={{
+                  borderColor: c.text3,
+                  borderTopColor: 'transparent',
+                  animation: 'spin 0.8s linear infinite',
+                }}
               />
             ) : exportSuccess ? (
               <Check className="w-4 h-4" style={{ color: c.buy }} />
@@ -739,7 +724,10 @@ export function DCAHistoryChart({
 
           {/* Zoom controls (interactive, not annotating) */}
           {interactive && !annotationMode && (
-            <div className="flex items-center gap-1 ml-1 pl-1 border-l" style={{ borderColor: c.border }}>
+            <div
+              className="flex items-center gap-1 ml-1 pl-1 border-l"
+              style={{ borderColor: c.border }}
+            >
               <button
                 onClick={zoomIn}
                 className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
@@ -777,7 +765,10 @@ export function DCAHistoryChart({
 
       {/* Annotation mode banner */}
       {annotationMode && (
-        <div className="mb-3 px-3 py-2 rounded-lg" style={{ background: c.primary + '14', border: `1px solid ${c.primary}26` }}>
+        <div
+          className="mb-3 px-3 py-2 rounded-lg"
+          style={{ background: c.primary + '14', border: `1px solid ${c.primary}26` }}
+        >
           <p className="text-[12px] text-center" style={{ fontWeight: 500, color: c.primary }}>
             Chế độ ghi chú — Vẽ, viết, đánh dấu, di chuyển, nhân đôi hoặc xóa
           </p>
@@ -785,11 +776,7 @@ export function DCAHistoryChart({
       )}
 
       {/* Chart container (relative for annotation overlay) */}
-      <div
-        ref={chartAreaRef}
-        className="relative"
-        style={{ height }}
-      >
+      <div ref={chartAreaRef} className="relative" style={{ height }}>
         <div
           ref={containerRef}
           onTouchStart={handleTouchStart}
@@ -802,15 +789,8 @@ export function DCAHistoryChart({
           }}
         >
           <ResponsiveContainer width="100%" height={height}>
-            <LineChart
-              data={chartData}
-              margin={{ top: 5, right: 5, left: 0, bottom: 5 }}
-            >
-              <CartesianGrid
-                key="grid"
-                strokeDasharray="3 3"
-                stroke={c.border}
-              />
+            <LineChart data={chartData} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
+              <CartesianGrid key="grid" strokeDasharray="3 3" stroke={c.border} />
 
               <XAxis
                 key="xaxis"
@@ -920,7 +900,10 @@ export function DCAHistoryChart({
       )}
 
       {/* Legend */}
-      <div className="flex items-center justify-center gap-6 mt-5 pt-5 border-t" style={{ borderColor: c.border }}>
+      <div
+        className="flex items-center justify-center gap-6 mt-5 pt-5 border-t"
+        style={{ borderColor: c.border }}
+      >
         <div className="flex items-center gap-2">
           <div className="w-4 h-0.5" style={{ background: c.primary }} />
           <span className="text-[12px]" style={{ color: c.text2 }}>
@@ -929,10 +912,7 @@ export function DCAHistoryChart({
         </div>
 
         <div className="flex items-center gap-2">
-          <div
-            className="w-4 h-0.5"
-            style={{ background: c.text3, borderTop: '2px dashed' }}
-          />
+          <div className="w-4 h-0.5" style={{ background: c.text3, borderTop: '2px dashed' }} />
           <span className="text-[12px]" style={{ color: c.text2 }}>
             Đã đầu tư
           </span>

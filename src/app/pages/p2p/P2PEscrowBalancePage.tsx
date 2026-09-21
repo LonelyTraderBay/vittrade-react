@@ -10,8 +10,16 @@
 import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import {
-  Lock, ChevronRight, Clock, User, Info, AlertCircle,
-  TrendingUp, TrendingDown, Shield, FileText,
+  Lock,
+  ChevronRight,
+  Clock,
+  User,
+  Info,
+  AlertCircle,
+  TrendingUp,
+  TrendingDown,
+  Shield,
+  FileText,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -49,7 +57,7 @@ const MOCK_ESCROW_ORDERS: Record<string, EscrowOrder[]> = {
       orderId: '#P2P-45892',
       type: 'sell',
       asset: 'USDT',
-      amount: 1_500.00,
+      amount: 1_500.0,
       fiatAmount: 36_000_000,
       fiatCurrency: 'VND',
       counterparty: 'buyer_***89',
@@ -62,7 +70,7 @@ const MOCK_ESCROW_ORDERS: Record<string, EscrowOrder[]> = {
       orderId: '#P2P-45880',
       type: 'sell',
       asset: 'USDT',
-      amount: 1_000.00,
+      amount: 1_000.0,
       fiatAmount: 24_000_000,
       fiatCurrency: 'VND',
       counterparty: 'buyer_***12',
@@ -75,7 +83,7 @@ const MOCK_ESCROW_ORDERS: Record<string, EscrowOrder[]> = {
       orderId: '#P2P-45870',
       type: 'sell',
       asset: 'USDT',
-      amount: 700.00,
+      amount: 700.0,
       fiatAmount: 16_800_000,
       fiatCurrency: 'VND',
       counterparty: 'buyer_***45',
@@ -105,7 +113,7 @@ const MOCK_ESCROW_ORDERS: Record<string, EscrowOrder[]> = {
       orderId: '#P2P-45850',
       type: 'buy',
       asset: 'USDT',
-      amount: 500.00,
+      amount: 500.0,
       fiatAmount: 12_000_000,
       fiatCurrency: 'VND',
       counterparty: 'seller_***34',
@@ -117,7 +125,7 @@ const MOCK_ESCROW_ORDERS: Record<string, EscrowOrder[]> = {
 };
 
 const ESCROW_TOTALS = {
-  USDT: 3_200.00,
+  USDT: 3_200.0,
   BTC: 0.01,
   VND: 12_000_000,
 };
@@ -172,9 +180,8 @@ function EscrowOrderCard({ order }: { order: EscrowOrder }) {
               <span
                 className="px-2 py-0.5 rounded-md text-xs font-bold"
                 style={{
-                  background: order.type === 'buy'
-                    ? hexToRgba('#10B981', 15)
-                    : hexToRgba('#EF4444', 15),
+                  background:
+                    order.type === 'buy' ? hexToRgba('#10B981', 15) : hexToRgba('#EF4444', 15),
                   color: order.type === 'buy' ? '#10B981' : '#EF4444',
                 }}
               >
@@ -230,9 +237,7 @@ function EscrowOrderCard({ order }: { order: EscrowOrder }) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
             <Clock size={10} color={c.text3} />
-            <p style={{ color: c.text3, fontSize: 10 }}>
-              Khóa lúc: {order.lockedAt}
-            </p>
+            <p style={{ color: c.text3, fontSize: 10 }}>Khóa lúc: {order.lockedAt}</p>
           </div>
           <ChevronRight size={14} color={c.text3} />
         </div>
@@ -266,12 +271,7 @@ export function P2PEscrowBalancePage() {
   const initialAsset = searchParams.get('asset') || 'USDT';
   const [selectedAsset, setSelectedAsset] = useState(initialAsset);
 
-  const { isRefreshing, handleRefresh } = useRefresh({
-    onRefresh: async () => {
-      await new Promise(res => setTimeout(res, 1000));
-      hapticSuccess();
-    },
-  });
+  const { isRefreshing, refresh: handleRefresh } = useRefresh();
 
   const orders = MOCK_ESCROW_ORDERS[selectedAsset] || [];
   const totalEscrow = ESCROW_TOTALS[selectedAsset as keyof typeof ESCROW_TOTALS] || 0;
@@ -317,10 +317,7 @@ export function P2PEscrowBalancePage() {
               </div>
             </div>
 
-            <div
-              className="p-3 rounded-lg"
-              style={{ background: 'rgba(255,255,255,0.15)' }}
-            >
+            <div className="p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.15)' }}>
               <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: 11 }}>
                 {orders.length} đơn hàng đang giữ tiền
               </p>
@@ -332,7 +329,10 @@ export function P2PEscrowBalancePage() {
         <div className="px-5 mb-6">
           <div
             className="p-3 rounded-lg flex items-start gap-2"
-            style={{ background: hexToRgba('#3B82F6', 10), border: `1px solid ${hexToRgba('#3B82F6', 30)}` }}
+            style={{
+              background: hexToRgba('#3B82F6', 10),
+              border: `1px solid ${hexToRgba('#3B82F6', 30)}`,
+            }}
           >
             <Info size={14} color="#3B82F6" className="shrink-0 mt-0.5" />
             <div>
@@ -350,7 +350,7 @@ export function P2PEscrowBalancePage() {
         {/* Asset Tabs */}
         <div className="px-5 mb-4">
           <div className="flex gap-2">
-            {['USDT', 'BTC', 'VND'].map(asset => {
+            {['USDT', 'BTC', 'VND'].map((asset) => {
               const count = MOCK_ESCROW_ORDERS[asset]?.length || 0;
               const isSelected = selectedAsset === asset;
 
@@ -389,7 +389,7 @@ export function P2PEscrowBalancePage() {
         <div className="px-5">
           {orders.length > 0 ? (
             <div className="flex flex-col gap-3">
-              {orders.map(order => (
+              {orders.map((order) => (
                 <EscrowOrderCard key={order.id} order={order} />
               ))}
             </div>

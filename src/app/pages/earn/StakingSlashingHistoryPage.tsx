@@ -6,7 +6,15 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { TabBar } from '../../components/layout/TabBar';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { TrCard } from '../../components/ui/TrCard';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+} from 'recharts';
 
 interface SlashingEvent {
   id: string;
@@ -113,7 +121,13 @@ export function StakingSlashingHistoryPage() {
 
       <PageContent>
         {/* Info Banner */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(16,185,129,0.08)', border: '1.5px solid rgba(16,185,129,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{
+            background: 'rgba(16,185,129,0.08)',
+            border: '1.5px solid rgba(16,185,129,0.2)',
+          }}
+        >
           <div className="flex gap-3">
             <Shield size={20} color="#10B981" className="shrink-0 mt-0.5" />
             <div>
@@ -121,7 +135,8 @@ export function StakingSlashingHistoryPage() {
                 Protected by Insurance
               </p>
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                All slashing events are covered by our insurance fund. {SLASHING_STATS.coverageRate}% of historical losses have been fully compensated.
+                All slashing events are covered by our insurance fund. {SLASHING_STATS.coverageRate}
+                % of historical losses have been fully compensated.
               </p>
             </div>
           </div>
@@ -144,7 +159,10 @@ export function StakingSlashingHistoryPage() {
               </p>
               <p style={{ color: c.text3, fontSize: 9 }}>All networks</p>
             </div>
-            <div className="text-center p-3 rounded-xl" style={{ background: 'rgba(16,185,129,0.08)' }}>
+            <div
+              className="text-center p-3 rounded-xl"
+              style={{ background: 'rgba(16,185,129,0.08)' }}
+            >
               <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Insurance Paid</p>
               <p style={{ color: '#10B981', fontSize: 20, fontWeight: 700 }}>
                 {SLASHING_STATS.totalCovered} ETH
@@ -177,11 +195,18 @@ export function StakingSlashingHistoryPage() {
             <PageSection label="Slashing Events">
               {SLASHING_EVENTS.length > 0 ? (
                 <div className="flex flex-col gap-3">
-                  {SLASHING_EVENTS.map(event => (
+                  {SLASHING_EVENTS.map((event) => (
                     <TrCard key={event.id} className="p-4">
                       <div className="flex items-start justify-between mb-3">
                         <div>
-                          <p style={{ color: c.text1, fontSize: 14, fontWeight: 700, marginBottom: 2 }}>
+                          <p
+                            style={{
+                              color: c.text1,
+                              fontSize: 14,
+                              fontWeight: 700,
+                              marginBottom: 2,
+                            }}
+                          >
                             {event.validator}
                           </p>
                           <p style={{ color: c.text3, fontSize: 11 }}>
@@ -191,24 +216,38 @@ export function StakingSlashingHistoryPage() {
                         <span
                           className="px-2 py-1 rounded-lg text-xs font-bold"
                           style={{
-                            background: event.status === 'covered' ? 'rgba(16,185,129,0.15)' :
-                                       event.status === 'partial' ? 'rgba(245,158,11,0.15)' :
-                                       'rgba(239,68,68,0.15)',
-                            color: event.status === 'covered' ? '#10B981' :
-                                   event.status === 'partial' ? '#F59E0B' : '#EF4444',
-                          }}>
-                          {event.status === 'covered' ? 'Fully Covered' :
-                           event.status === 'partial' ? 'Partially Covered' : 'Not Covered'}
+                            background:
+                              event.status === 'covered'
+                                ? 'rgba(16,185,129,0.15)'
+                                : event.status === 'partial'
+                                  ? 'rgba(245,158,11,0.15)'
+                                  : 'rgba(239,68,68,0.15)',
+                            color:
+                              event.status === 'covered'
+                                ? '#10B981'
+                                : event.status === 'partial'
+                                  ? '#F59E0B'
+                                  : '#EF4444',
+                          }}
+                        >
+                          {event.status === 'covered'
+                            ? 'Fully Covered'
+                            : event.status === 'partial'
+                              ? 'Partially Covered'
+                              : 'Not Covered'}
                         </span>
                       </div>
 
                       <div className="rounded-xl p-3 mb-3" style={{ background: c.surface2 }}>
                         <p style={{ color: c.text2, fontSize: 12, marginBottom: 6 }}>
                           <strong>Reason:</strong>{' '}
-                          {event.reason === 'double-sign' ? 'Double Signing' :
-                           event.reason === 'downtime' ? 'Validator Downtime' :
-                           event.reason === 'attestation-miss' ? 'Missed Attestations' :
-                           'Sync Committee Failure'}
+                          {event.reason === 'double-sign'
+                            ? 'Double Signing'
+                            : event.reason === 'downtime'
+                              ? 'Validator Downtime'
+                              : event.reason === 'attestation-miss'
+                                ? 'Missed Attestations'
+                                : 'Sync Committee Failure'}
                         </p>
                         <div className="grid grid-cols-3 gap-2">
                           <div>
@@ -235,7 +274,8 @@ export function StakingSlashingHistoryPage() {
                       <div className="flex items-center gap-2">
                         <Shield size={14} color="#10B981" />
                         <p style={{ color: c.text3, fontSize: 11 }}>
-                          Insurance payout: {(event.slashedAmount * event.insuranceCoverage / 100).toFixed(2)} ETH
+                          Insurance payout:{' '}
+                          {((event.slashedAmount * event.insuranceCoverage) / 100).toFixed(2)} ETH
                         </p>
                       </div>
                     </TrCard>
@@ -292,14 +332,10 @@ export function StakingSlashingHistoryPage() {
                 <div className="flex items-center justify-center gap-4 mt-3">
                   <div className="flex items-center gap-2">
                     <TrendingDown size={14} color="#10B981" />
-                    <p style={{ color: c.text2, fontSize: 11 }}>
-                      -40% vs 12 months ago
-                    </p>
+                    <p style={{ color: c.text2, fontSize: 11 }}>-40% vs 12 months ago</p>
                   </div>
                   <div className="w-1 h-1 rounded-full" style={{ background: c.borderSolid }} />
-                  <p style={{ color: c.text3, fontSize: 11 }}>
-                    Avg: 0.25 events/month
-                  </p>
+                  <p style={{ color: c.text3, fontSize: 11 }}>Avg: 0.25 events/month</p>
                 </div>
               </TrCard>
             </PageSection>
@@ -312,17 +348,24 @@ export function StakingSlashingHistoryPage() {
                 ].map((item, idx) => (
                   <TrCard key={idx} className="p-4">
                     <div className="flex items-center justify-between mb-2">
-                      <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>{item.network}</p>
+                      <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>
+                        {item.network}
+                      </p>
                       <p style={{ color: c.text3, fontSize: 11 }}>{item.events} events</p>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="rounded-xl p-2" style={{ background: c.surface2 }}>
-                        <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Total Slashed</p>
+                        <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
+                          Total Slashed
+                        </p>
                         <p style={{ color: '#EF4444', fontSize: 14, fontWeight: 700 }}>
                           {item.amount} {item.network === 'Ethereum' ? 'ETH' : 'SOL'}
                         </p>
                       </div>
-                      <div className="rounded-xl p-2" style={{ background: 'rgba(16,185,129,0.08)' }}>
+                      <div
+                        className="rounded-xl p-2"
+                        style={{ background: 'rgba(16,185,129,0.08)' }}
+                      >
                         <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Coverage</p>
                         <p style={{ color: '#10B981', fontSize: 14, fontWeight: 700 }}>
                           {item.coverage}%
@@ -347,8 +390,11 @@ export function StakingSlashingHistoryPage() {
                         <AlertTriangle
                           size={18}
                           color={
-                            item.severity === 'critical' ? '#EF4444' :
-                            item.severity === 'high' ? '#F97316' : '#F59E0B'
+                            item.severity === 'critical'
+                              ? '#EF4444'
+                              : item.severity === 'high'
+                                ? '#F97316'
+                                : '#F59E0B'
                           }
                         />
                         <div>
@@ -356,13 +402,12 @@ export function StakingSlashingHistoryPage() {
                             {item.reason}
                           </p>
                           <p style={{ color: c.text3, fontSize: 10 }}>
-                            {item.severity.charAt(0).toUpperCase() + item.severity.slice(1)} severity
+                            {item.severity.charAt(0).toUpperCase() + item.severity.slice(1)}{' '}
+                            severity
                           </p>
                         </div>
                       </div>
-                      <p style={{ color: c.text2, fontSize: 13, fontWeight: 700 }}>
-                        {item.events}
-                      </p>
+                      <p style={{ color: c.text2, fontSize: 13, fontWeight: 700 }}>{item.events}</p>
                     </div>
                   </TrCard>
                 ))}
@@ -378,8 +423,10 @@ export function StakingSlashingHistoryPage() {
                 {PREVENTION_MEASURES.map((measure, idx) => (
                   <TrCard key={idx} className="p-4">
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                        style={{ background: 'rgba(16,185,129,0.12)' }}>
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                        style={{ background: 'rgba(16,185,129,0.12)' }}
+                      >
                         <Shield size={20} color="#10B981" />
                       </div>
                       <div className="flex-1">
@@ -389,7 +436,8 @@ export function StakingSlashingHistoryPage() {
                           </p>
                           <span
                             className="px-2 py-0.5 rounded-md text-xs font-bold"
-                            style={{ background: 'rgba(16,185,129,0.15)', color: '#10B981' }}>
+                            style={{ background: 'rgba(16,185,129,0.15)', color: '#10B981' }}
+                          >
                             Active
                           </span>
                         </div>
@@ -403,9 +451,17 @@ export function StakingSlashingHistoryPage() {
               </div>
             </PageSection>
 
-            <div className="rounded-2xl p-4" style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}>
+            <div
+              className="rounded-2xl p-4"
+              style={{
+                background: 'rgba(59,130,246,0.08)',
+                border: '1px solid rgba(59,130,246,0.2)',
+              }}
+            >
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                💡 <strong>Proactive Protection:</strong> Our multi-layered prevention system has reduced slashing events by 40% year-over-year. Continuous monitoring and automated rebalancing ensure your stake is always protected.
+                💡 <strong>Proactive Protection:</strong> Our multi-layered prevention system has
+                reduced slashing events by 40% year-over-year. Continuous monitoring and automated
+                rebalancing ensure your stake is always protected.
               </p>
             </div>
           </>
@@ -414,7 +470,8 @@ export function StakingSlashingHistoryPage() {
         {/* Export */}
         <button
           className="w-full py-3 rounded-[14px] text-sm font-semibold flex items-center justify-center gap-2"
-          style={{ background: c.surface2, color: c.text1 }}>
+          style={{ background: c.surface2, color: c.text1 }}
+        >
           <Download size={16} />
           Export Slashing Report (CSV)
         </button>
@@ -422,7 +479,9 @@ export function StakingSlashingHistoryPage() {
         {/* Footer */}
         <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6, textAlign: 'center' }}>
-            Slashing data is updated in real-time. Insurance claims are processed within 7 business days. Historical data available for 24 months. For questions, contact support@platform.com.
+            Slashing data is updated in real-time. Insurance claims are processed within 7 business
+            days. Historical data available for 24 months. For questions, contact
+            support@platform.com.
           </p>
         </div>
       </PageContent>

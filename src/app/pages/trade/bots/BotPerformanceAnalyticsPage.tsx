@@ -6,7 +6,20 @@ import { PageContent, PageSection } from '../../../components/layout/PageContent
 import { TabBar } from '../../../components/layout/TabBar';
 import { useThemeColors } from '../../../hooks/useThemeColors';
 import { TrCard } from '../../../components/ui/TrCard';
-import { LineChart, Line, BarChart, Bar, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell } from 'recharts';
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  PieChart,
+  Pie,
+  Cell,
+} from 'recharts';
 
 const PNL_DATA = [
   { date: 'Mar 1', pnl: 12.5 },
@@ -44,15 +57,15 @@ export function BotPerformanceAnalyticsPage() {
   const [timeframe, setTimeframe] = useState<'7d' | '30d' | 'all'>('7d');
 
   const metrics = {
-    totalPnL: 199.30,
+    totalPnL: 199.3,
     winRate: 68.2,
     sharpeRatio: 1.87,
-    avgWin: 12.30,
-    avgLoss: -8.50,
+    avgWin: 12.3,
+    avgLoss: -8.5,
     profitFactor: 2.14,
     totalTrades: 96,
-    bestTrade: 42.80,
-    worstTrade: -24.50,
+    bestTrade: 42.8,
+    worstTrade: -24.5,
   };
 
   return (
@@ -71,15 +84,11 @@ export function BotPerformanceAnalyticsPage() {
             </div>
             <div className="text-center">
               <p style={{ color: c.text3, fontSize: 10 }}>Win Rate</p>
-              <p style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}>
-                {metrics.winRate}%
-              </p>
+              <p style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}>{metrics.winRate}%</p>
             </div>
             <div className="text-center">
               <p style={{ color: c.text3, fontSize: 10 }}>Sharpe Ratio</p>
-              <p style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}>
-                {metrics.sharpeRatio}
-              </p>
+              <p style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}>{metrics.sharpeRatio}</p>
             </div>
           </div>
           <div className="rounded-xl p-2" style={{ background: 'rgba(16,185,129,0.08)' }}>
@@ -106,31 +115,36 @@ export function BotPerformanceAnalyticsPage() {
           <TrCard className="p-4">
             <ResponsiveContainer width="100%" height={220}>
               <LineChart data={PNL_DATA}>
-                <XAxis 
+                <XAxis
                   key="x-axis"
-                  dataKey="date" 
-                  stroke={c.text3} 
+                  dataKey="date"
+                  stroke={c.text3}
                   style={{ fontSize: 10 }}
                   tickLine={false}
                 />
-                <YAxis 
+                <YAxis
                   key="y-axis"
-                  stroke={c.text3} 
+                  stroke={c.text3}
                   style={{ fontSize: 10 }}
                   tickLine={false}
                   tickFormatter={(val) => `$${val}`}
                 />
                 <Tooltip
                   key="tooltip"
-                  contentStyle={{ background: c.surface, border: `1px solid ${c.borderSolid}`, borderRadius: 8, fontSize: 12 }}
+                  contentStyle={{
+                    background: c.surface,
+                    border: `1px solid ${c.borderSolid}`,
+                    borderRadius: 8,
+                    fontSize: 12,
+                  }}
                   labelStyle={{ color: c.text1, fontWeight: 700 }}
                   formatter={(value: any) => [`$${value}`, 'PnL']}
                 />
-                <Line 
+                <Line
                   key="line-pnl"
-                  type="monotone" 
-                  dataKey="pnl" 
-                  stroke="#10B981" 
+                  type="monotone"
+                  dataKey="pnl"
+                  stroke="#10B981"
                   strokeWidth={3}
                   dot={{ fill: '#10B981', r: 5 }}
                 />
@@ -144,30 +158,39 @@ export function BotPerformanceAnalyticsPage() {
           <TrCard className="p-4">
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={WIN_LOSS_DATA}>
-                <XAxis 
+                <XAxis
                   key="x-axis"
-                  dataKey="week" 
-                  stroke={c.text3} 
+                  dataKey="week"
+                  stroke={c.text3}
                   style={{ fontSize: 10 }}
                   tickLine={false}
                 />
-                <YAxis 
-                  key="y-axis"
-                  stroke={c.text3} 
-                  style={{ fontSize: 10 }}
-                  tickLine={false}
-                />
+                <YAxis key="y-axis" stroke={c.text3} style={{ fontSize: 10 }} tickLine={false} />
                 <Tooltip
                   key="tooltip"
-                  contentStyle={{ background: c.surface, border: `1px solid ${c.borderSolid}`, borderRadius: 8, fontSize: 12 }}
+                  contentStyle={{
+                    background: c.surface,
+                    border: `1px solid ${c.borderSolid}`,
+                    borderRadius: 8,
+                    fontSize: 12,
+                  }}
                   cursor={{ fill: 'rgba(59,130,246,0.1)' }}
                 />
-                <Legend 
-                  key="legend"
-                  wrapperStyle={{ fontSize: 12, color: c.text2 }}
+                <Legend key="legend" wrapperStyle={{ fontSize: 12, color: c.text2 }} />
+                <Bar
+                  key="bar-wins"
+                  dataKey="wins"
+                  fill="#10B981"
+                  radius={[4, 4, 0, 0]}
+                  name="Wins"
                 />
-                <Bar key="bar-wins" dataKey="wins" fill="#10B981" radius={[4, 4, 0, 0]} name="Wins" />
-                <Bar key="bar-losses" dataKey="losses" fill="#EF4444" radius={[4, 4, 0, 0]} name="Losses" />
+                <Bar
+                  key="bar-losses"
+                  dataKey="losses"
+                  fill="#EF4444"
+                  radius={[4, 4, 0, 0]}
+                  name="Losses"
+                />
               </BarChart>
             </ResponsiveContainer>
           </TrCard>
@@ -177,25 +200,37 @@ export function BotPerformanceAnalyticsPage() {
         <PageSection label="Performance by Strategy">
           <TrCard className="p-4">
             <div className="space-y-3">
-              {STRATEGY_PERFORMANCE.map(strat => {
+              {STRATEGY_PERFORMANCE.map((strat) => {
                 const isProfitable = strat.pnl >= 0;
                 return (
                   <div key={strat.strategy}>
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <div className="w-3 h-3 rounded-full" style={{ background: strat.color }} />
-                        <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>{strat.strategy} Bot</p>
+                        <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>
+                          {strat.strategy} Bot
+                        </p>
                       </div>
-                      <p style={{ color: isProfitable ? '#10B981' : '#EF4444', fontSize: 14, fontWeight: 700 }}>
-                        {isProfitable ? '+' : ''}{strat.pnl.toFixed(2)} USDT
+                      <p
+                        style={{
+                          color: isProfitable ? '#10B981' : '#EF4444',
+                          fontSize: 14,
+                          fontWeight: 700,
+                        }}
+                      >
+                        {isProfitable ? '+' : ''}
+                        {strat.pnl.toFixed(2)} USDT
                       </p>
                     </div>
-                    <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
-                      <div 
+                    <div
+                      className="h-2 rounded-full overflow-hidden"
+                      style={{ background: c.surface2 }}
+                    >
+                      <div
                         className="h-full"
-                        style={{ 
+                        style={{
                           background: strat.color,
-                          width: `${Math.abs(strat.pnl) / 127.4 * 100}%`,
+                          width: `${(Math.abs(strat.pnl) / 127.4) * 100}%`,
                         }}
                       />
                     </div>
@@ -212,7 +247,9 @@ export function BotPerformanceAnalyticsPage() {
             <TrCard className="p-4">
               <Target size={20} color="#3B82F6" className="mb-2" />
               <p style={{ color: c.text3, fontSize: 12 }}>Profit Factor</p>
-              <p style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}>{metrics.profitFactor}</p>
+              <p style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}>
+                {metrics.profitFactor}
+              </p>
               <p style={{ color: c.text3, fontSize: 10, marginTop: 4 }}>
                 Gross profit / Gross loss
               </p>
@@ -221,25 +258,21 @@ export function BotPerformanceAnalyticsPage() {
               <Award size={20} color="#F59E0B" className="mb-2" />
               <p style={{ color: c.text3, fontSize: 12 }}>Avg Win</p>
               <p style={{ color: '#10B981', fontSize: 20, fontWeight: 700 }}>+${metrics.avgWin}</p>
-              <p style={{ color: c.text3, fontSize: 10, marginTop: 4 }}>
-                Per winning trade
-              </p>
+              <p style={{ color: c.text3, fontSize: 10, marginTop: 4 }}>Per winning trade</p>
             </TrCard>
             <TrCard className="p-4">
               <TrendingUp size={20} color="#10B981" className="mb-2" />
               <p style={{ color: c.text3, fontSize: 12 }}>Best Trade</p>
-              <p style={{ color: '#10B981', fontSize: 20, fontWeight: 700 }}>+${metrics.bestTrade}</p>
-              <p style={{ color: c.text3, fontSize: 10, marginTop: 4 }}>
-                Largest single win
+              <p style={{ color: '#10B981', fontSize: 20, fontWeight: 700 }}>
+                +${metrics.bestTrade}
               </p>
+              <p style={{ color: c.text3, fontSize: 10, marginTop: 4 }}>Largest single win</p>
             </TrCard>
             <TrCard className="p-4">
               <Activity size={20} color="#EF4444" className="mb-2" />
               <p style={{ color: c.text3, fontSize: 12 }}>Avg Loss</p>
               <p style={{ color: '#EF4444', fontSize: 20, fontWeight: 700 }}>{metrics.avgLoss}</p>
-              <p style={{ color: c.text3, fontSize: 10, marginTop: 4 }}>
-                Per losing trade
-              </p>
+              <p style={{ color: c.text3, fontSize: 10, marginTop: 4 }}>Per losing trade</p>
             </TrCard>
           </div>
         </PageSection>
@@ -260,14 +293,23 @@ export function BotPerformanceAnalyticsPage() {
                   dataKey="count"
                   label={(entry) => `${entry.duration}: ${entry.count}`}
                   labelLine={false}
-                  style={{ fontSize: 10, fill: c.text1 }}>
+                  style={{ fontSize: 10, fill: c.text1 }}
+                >
                   {TRADE_DURATION_DATA.map((entry, index) => (
-                    <Cell key={`cell-duration-${index}`} fill={['#3B82F6', '#10B981', '#F59E0B', '#EF4444'][index]} />
+                    <Cell
+                      key={`cell-duration-${index}`}
+                      fill={['#3B82F6', '#10B981', '#F59E0B', '#EF4444'][index]}
+                    />
                   ))}
                 </Pie>
                 <Tooltip
                   key="tooltip-pie"
-                  contentStyle={{ background: c.surface, border: `1px solid ${c.borderSolid}`, borderRadius: 8, fontSize: 12 }}
+                  contentStyle={{
+                    background: c.surface,
+                    border: `1px solid ${c.borderSolid}`,
+                    borderRadius: 8,
+                    fontSize: 12,
+                  }}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -288,13 +330,15 @@ export function BotPerformanceAnalyticsPage() {
               { label: 'Best Trade', value: `+$${metrics.bestTrade}`, suffix: '' },
               { label: 'Worst Trade', value: `$${metrics.worstTrade}`, suffix: '' },
             ].map((item, idx) => (
-              <div key={idx} className="flex items-center justify-between p-2 rounded-lg" style={{ background: c.surface2 }}>
+              <div
+                key={idx}
+                className="flex items-center justify-between p-2 rounded-lg"
+                style={{ background: c.surface2 }}
+              >
                 <p style={{ color: c.text2, fontSize: 12 }}>{item.label}</p>
                 <div className="text-right">
                   <p style={{ color: c.text1, fontSize: 12, fontWeight: 700 }}>{item.value}</p>
-                  {item.suffix && (
-                    <p style={{ color: c.text3, fontSize: 10 }}>{item.suffix}</p>
-                  )}
+                  {item.suffix && <p style={{ color: c.text3, fontSize: 10 }}>{item.suffix}</p>}
                 </div>
               </div>
             ))}
@@ -302,7 +346,13 @@ export function BotPerformanceAnalyticsPage() {
         </TrCard>
 
         {/* Performance Rating */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(16,185,129,0.08)', border: '1.5px solid rgba(16,185,129,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{
+            background: 'rgba(16,185,129,0.08)',
+            border: '1.5px solid rgba(16,185,129,0.2)',
+          }}
+        >
           <div className="flex gap-3">
             <Award size={20} color="#10B981" className="shrink-0 mt-1" />
             <div>
@@ -310,8 +360,9 @@ export function BotPerformanceAnalyticsPage() {
                 Excellent Performance (A+)
               </p>
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                Your bots are performing above average. Sharpe ratio &gt; 1.5, win rate &gt; 65%, and profit factor &gt; 2 
-                indicate strong risk-adjusted returns. Keep monitoring and adjusting as market conditions change.
+                Your bots are performing above average. Sharpe ratio &gt; 1.5, win rate &gt; 65%,
+                and profit factor &gt; 2 indicate strong risk-adjusted returns. Keep monitoring and
+                adjusting as market conditions change.
               </p>
             </div>
           </div>

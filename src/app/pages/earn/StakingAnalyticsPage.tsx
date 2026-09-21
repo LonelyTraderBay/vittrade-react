@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { TrendingUp, BarChart3, PieChart as PieChartIcon, Download, Calendar, DollarSign, Percent } from 'lucide-react';
+import {
+  TrendingUp,
+  BarChart3,
+  PieChart as PieChartIcon,
+  Download,
+  Calendar,
+  DollarSign,
+  Percent,
+} from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { PageContent, PageSection } from '../../components/layout/PageContent';
@@ -7,7 +15,23 @@ import { TabBar } from '../../components/layout/TabBar';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { TrCard } from '../../components/ui/TrCard';
 import { fmtUsd, fmtAmount } from '../../data/formatNumber';
-import { LineChart, Line, BarChart, Bar, AreaChart, Area, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from 'recharts';
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  AreaChart,
+  Area,
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  Legend,
+} from 'recharts';
 import { useIsDark } from '../../hooks/useIsDark';
 import { BottomSheetV2, BottomSheetRow } from '../../components/ui/BottomSheetV2';
 
@@ -72,11 +96,51 @@ const ROI_COMPARISON: ROIData[] = [
 ];
 
 const PRODUCT_PERFORMANCE: ProductPerformance[] = [
-  { product: 'BTC Fixed 90D', asset: 'BTC', invested: 3377, earned: 19.58, roi: 0.58, apy: 5.8, color: '#F7931A' },
-  { product: 'USDT Flexible', asset: 'USDT', invested: 2500, earned: 18.74, roi: 0.75, apy: 6.5, color: '#26A17B' },
-  { product: 'ETH Fixed 60D', asset: 'ETH', invested: 4200, earned: 98, roi: 2.33, apy: 7.2, color: '#627EEA' },
-  { product: 'SOL Fixed 30D', asset: 'SOL', invested: 6500, earned: 156, roi: 2.4, apy: 9.8, color: '#9945FF' },
-  { product: 'ETH-USDT LP', asset: 'LP', invested: 1000, earned: 23.5, roi: 2.35, apy: 18.7, color: '#06B6D4' },
+  {
+    product: 'BTC Fixed 90D',
+    asset: 'BTC',
+    invested: 3377,
+    earned: 19.58,
+    roi: 0.58,
+    apy: 5.8,
+    color: '#F7931A',
+  },
+  {
+    product: 'USDT Flexible',
+    asset: 'USDT',
+    invested: 2500,
+    earned: 18.74,
+    roi: 0.75,
+    apy: 6.5,
+    color: '#26A17B',
+  },
+  {
+    product: 'ETH Fixed 60D',
+    asset: 'ETH',
+    invested: 4200,
+    earned: 98,
+    roi: 2.33,
+    apy: 7.2,
+    color: '#627EEA',
+  },
+  {
+    product: 'SOL Fixed 30D',
+    asset: 'SOL',
+    invested: 6500,
+    earned: 156,
+    roi: 2.4,
+    apy: 9.8,
+    color: '#9945FF',
+  },
+  {
+    product: 'ETH-USDT LP',
+    asset: 'LP',
+    invested: 1000,
+    earned: 23.5,
+    roi: 2.35,
+    apy: 18.7,
+    color: '#06B6D4',
+  },
 ];
 
 export function StakingAnalyticsPage() {
@@ -88,13 +152,13 @@ export function StakingAnalyticsPage() {
 
   const totalEarned = EARNINGS_BREAKDOWN[EARNINGS_BREAKDOWN.length - 1].total;
   const avgAPY = 7.2;
-  const bestPerformer = PRODUCT_PERFORMANCE.reduce((best, p) => p.roi > best.roi ? p : best);
+  const bestPerformer = PRODUCT_PERFORMANCE.reduce((best, p) => (p.roi > best.roi ? p : best));
 
   const calculateCompound = () => {
     const P = parseFloat(calcInput.principal || '0');
     const r = parseFloat(calcInput.apy || '0') / 100;
     const t = parseFloat(calcInput.days || '0') / 365;
-    
+
     if (calcInput.compound) {
       // Daily compounding: A = P(1 + r/365)^(365*t)
       const A = P * Math.pow(1 + r / 365, 365 * t);
@@ -116,10 +180,7 @@ export function StakingAnalyticsPage() {
     <PageLayout>
       <Header title="Phân tích Hiệu suất" back />
 
-      <BottomSheetV2
-        open={showCalc}
-        onClose={() => setShowCalc(false)}
-        title="Tính lợi nhuận">
+      <BottomSheetV2 open={showCalc} onClose={() => setShowCalc(false)} title="Tính lợi nhuận">
         <div className="flex flex-col gap-4">
           <div>
             <label style={{ color: c.text2, fontSize: 13, display: 'block', marginBottom: 6 }}>
@@ -130,7 +191,7 @@ export function StakingAnalyticsPage() {
               inputMode="decimal"
               placeholder="1000"
               value={calcInput.principal}
-              onChange={e => setCalcInput({ ...calcInput, principal: e.target.value })}
+              onChange={(e) => setCalcInput({ ...calcInput, principal: e.target.value })}
               className="w-full px-4 py-3 rounded-xl outline-none"
               style={{
                 background: c.surface2,
@@ -150,7 +211,7 @@ export function StakingAnalyticsPage() {
               inputMode="decimal"
               placeholder="7.5"
               value={calcInput.apy}
-              onChange={e => setCalcInput({ ...calcInput, apy: e.target.value })}
+              onChange={(e) => setCalcInput({ ...calcInput, apy: e.target.value })}
               className="w-full px-4 py-3 rounded-xl outline-none"
               style={{
                 background: c.surface2,
@@ -170,7 +231,7 @@ export function StakingAnalyticsPage() {
               inputMode="decimal"
               placeholder="90"
               value={calcInput.days}
-              onChange={e => setCalcInput({ ...calcInput, days: e.target.value })}
+              onChange={(e) => setCalcInput({ ...calcInput, days: e.target.value })}
               className="w-full px-4 py-3 rounded-xl outline-none"
               style={{
                 background: c.surface2,
@@ -184,16 +245,24 @@ export function StakingAnalyticsPage() {
           <button
             onClick={() => setCalcInput({ ...calcInput, compound: !calcInput.compound })}
             className="flex items-center gap-3 p-3 rounded-xl"
-            style={{ background: c.surface2 }}>
+            style={{ background: c.surface2 }}
+          >
             <div
               className="w-5 h-5 rounded-md border flex items-center justify-center"
               style={{
                 borderColor: calcInput.compound ? '#10B981' : c.borderSolid,
                 background: calcInput.compound ? '#10B981' : 'transparent',
-              }}>
+              }}
+            >
               {calcInput.compound && (
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                  <path d="M2 6L5 9L10 3" stroke="#FFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path
+                    d="M2 6L5 9L10 3"
+                    stroke="#FFF"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               )}
             </div>
@@ -206,7 +275,10 @@ export function StakingAnalyticsPage() {
           {calcInput.principal && calcInput.apy && calcInput.days && (
             <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
               <p style={{ color: c.text2, fontSize: 12, marginBottom: 12 }}>Kết quả:</p>
-              <BottomSheetRow label="Số lượng gốc" value={`$${parseFloat(calcInput.principal).toLocaleString()}`} />
+              <BottomSheetRow
+                label="Số lượng gốc"
+                value={`$${parseFloat(calcInput.principal).toLocaleString()}`}
+              />
               <BottomSheetRow
                 label="Lợi nhuận"
                 value={`+$${calcResult.earned.toLocaleString(undefined, { maximumFractionDigits: 2 })}`}
@@ -236,7 +308,9 @@ export function StakingAnalyticsPage() {
                 <DollarSign size={14} color="#10B981" />
                 <p style={{ color: c.text3, fontSize: 11 }}>Tổng thu nhập</p>
               </div>
-              <p style={{ color: '#10B981', fontSize: 18, fontWeight: 700, fontFamily: 'monospace' }}>
+              <p
+                style={{ color: '#10B981', fontSize: 18, fontWeight: 700, fontFamily: 'monospace' }}
+              >
                 +{fmtUsd(totalEarned)}
               </p>
             </div>
@@ -245,9 +319,7 @@ export function StakingAnalyticsPage() {
                 <Percent size={14} color="#3B82F6" />
                 <p style={{ color: c.text3, fontSize: 11 }}>APY TB</p>
               </div>
-              <p style={{ color: '#3B82F6', fontSize: 18, fontWeight: 700 }}>
-                {avgAPY}%
-              </p>
+              <p style={{ color: '#3B82F6', fontSize: 18, fontWeight: 700 }}>{avgAPY}%</p>
             </div>
             <div>
               <div className="flex items-center gap-1 mb-1">
@@ -263,14 +335,16 @@ export function StakingAnalyticsPage() {
             <button
               onClick={() => setShowCalc(true)}
               className="flex-1 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1"
-              style={{ background: c.primary, color: '#FFF' }}>
+              style={{ background: c.primary, color: '#FFF' }}
+            >
               <BarChart3 size={14} />
               Tính lợi nhuận
             </button>
             <button
               onClick={handleExport}
               className="flex-1 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1"
-              style={{ background: c.surface2, color: c.text1 }}>
+              style={{ background: c.surface2, color: c.text1 }}
+            >
               <Download size={14} />
               Xuất báo cáo
             </button>
@@ -325,7 +399,10 @@ export function StakingAnalyticsPage() {
                         borderRadius: 12,
                         fontSize: 12,
                       }}
-                      formatter={(value: number, name: string) => [`$${value.toFixed(2)}`, name.toUpperCase()]}
+                      formatter={(value: number, name: string) => [
+                        `$${value.toFixed(2)}`,
+                        name.toUpperCase(),
+                      ]}
                     />
                     <Legend
                       key="legend"
@@ -390,13 +467,20 @@ export function StakingAnalyticsPage() {
                   { asset: 'ETH', earned: 98, color: '#627EEA' },
                   { asset: 'SOL', earned: 156, color: '#9945FF' },
                   { asset: 'LP', earned: 23.5, color: '#06B6D4' },
-                ].map(item => (
+                ].map((item) => (
                   <TrCard key={item.asset} className="p-3">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-2 h-2 rounded-full" style={{ background: item.color }} />
                       <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>{item.asset}</p>
                     </div>
-                    <p style={{ color: '#10B981', fontSize: 16, fontWeight: 700, fontFamily: 'monospace' }}>
+                    <p
+                      style={{
+                        color: '#10B981',
+                        fontSize: 16,
+                        fontWeight: 700,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       +${item.earned.toFixed(2)}
                     </p>
                   </TrCard>
@@ -443,13 +527,15 @@ export function StakingAnalyticsPage() {
                     }}
                     formatter={(value: number, name: string) => [
                       `${value}%`,
-                      name === 'flexible' ? 'Linh hoạt' : name === 'fixed' ? 'Cố định' : 'DeFi'
+                      name === 'flexible' ? 'Linh hoạt' : name === 'fixed' ? 'Cố định' : 'DeFi',
                     ]}
                   />
                   <Legend
                     key="legend"
                     wrapperStyle={{ fontSize: 11 }}
-                    formatter={(value) => value === 'flexible' ? 'Linh hoạt' : value === 'fixed' ? 'Cố định' : 'DeFi'}
+                    formatter={(value) =>
+                      value === 'flexible' ? 'Linh hoạt' : value === 'fixed' ? 'Cố định' : 'DeFi'
+                    }
                   />
                   <Line
                     key="analytics-line-flexible"
@@ -479,7 +565,8 @@ export function StakingAnalyticsPage() {
               </ResponsiveContainer>
               <div className="rounded-xl p-3 mt-3" style={{ background: c.surface2 }}>
                 <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6 }}>
-                  💡 <strong>Insight:</strong> APY DeFi biến động cao (±15-25%) do thay đổi thanh khoản pool. APY Fixed và Flexible ổn định hơn (±4-7%).
+                  💡 <strong>Insight:</strong> APY DeFi biến động cao (±15-25%) do thay đổi thanh
+                  khoản pool. APY Fixed và Flexible ổn định hơn (±4-7%).
                 </p>
               </div>
             </TrCard>
@@ -523,13 +610,10 @@ export function StakingAnalyticsPage() {
                     }}
                     formatter={(value: number, name: string) => [
                       `${value}%`,
-                      name === 'staking' ? 'Staking' : 'Holding'
+                      name === 'staking' ? 'Staking' : 'Holding',
                     ]}
                   />
-                  <Legend
-                    key="legend"
-                    wrapperStyle={{ fontSize: 11 }}
-                  />
+                  <Legend key="legend" wrapperStyle={{ fontSize: 11 }} />
                   <Bar
                     key="analytics-bar-staking"
                     dataKey="staking"
@@ -546,7 +630,8 @@ export function StakingAnalyticsPage() {
               </ResponsiveContainer>
               <div className="rounded-xl p-3 mt-3" style={{ background: c.surface2 }}>
                 <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6 }}>
-                  💡 <strong>Insight:</strong> Staking cho ROI cao hơn +3.5% so với holding sau 6 tháng nhờ phần thưởng hàng ngày.
+                  💡 <strong>Insight:</strong> Staking cho ROI cao hơn +3.5% so với holding sau 6
+                  tháng nhờ phần thưởng hàng ngày.
                 </p>
               </div>
             </TrCard>
@@ -556,17 +641,24 @@ export function StakingAnalyticsPage() {
         {tab === 'products' && (
           <PageSection label="Hiệu suất theo Sản phẩm">
             <div className="flex flex-col gap-3">
-              {PRODUCT_PERFORMANCE.map(product => (
+              {PRODUCT_PERFORMANCE.map((product) => (
                 <TrCard key={product.product} className="p-4">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center"
-                      style={{ background: `${product.color}22`, border: `1.5px solid ${product.color}44` }}>
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center"
+                      style={{
+                        background: `${product.color}22`,
+                        border: `1.5px solid ${product.color}44`,
+                      }}
+                    >
                       <span style={{ color: product.color, fontSize: 10, fontWeight: 700 }}>
                         {product.asset.slice(0, 3)}
                       </span>
                     </div>
                     <div className="flex-1">
-                      <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>{product.product}</p>
+                      <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>
+                        {product.product}
+                      </p>
                       <p style={{ color: c.text3, fontSize: 11 }}>APY: {product.apy}%</p>
                     </div>
                     <div className="text-right">
@@ -579,13 +671,27 @@ export function StakingAnalyticsPage() {
                   <div className="grid grid-cols-2 gap-2">
                     <div className="rounded-xl p-2" style={{ background: c.surface2 }}>
                       <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Đầu tư</p>
-                      <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}>
+                      <p
+                        style={{
+                          color: c.text1,
+                          fontSize: 13,
+                          fontWeight: 600,
+                          fontFamily: 'monospace',
+                        }}
+                      >
                         {fmtUsd(product.invested)}
                       </p>
                     </div>
                     <div className="rounded-xl p-2" style={{ background: c.surface2 }}>
                       <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Thu nhập</p>
-                      <p style={{ color: '#10B981', fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}>
+                      <p
+                        style={{
+                          color: '#10B981',
+                          fontSize: 13,
+                          fontWeight: 600,
+                          fontFamily: 'monospace',
+                        }}
+                      >
                         +${product.earned.toFixed(2)}
                       </p>
                     </div>
@@ -608,7 +714,8 @@ export function StakingAnalyticsPage() {
         {/* Bottom Info */}
         <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6, textAlign: 'center' }}>
-            Dữ liệu được cập nhật theo thời gian thực. APY có thể thay đổi dựa trên điều kiện thị trường. ROI tính theo giá trị USD tại thời điểm hiện tại.
+            Dữ liệu được cập nhật theo thời gian thực. APY có thể thay đổi dựa trên điều kiện thị
+            trường. ROI tính theo giá trị USD tại thời điểm hiện tại.
           </p>
         </div>
       </PageContent>

@@ -5,14 +5,44 @@ import { PageLayout, StickyFooter } from '../../components/layout/PageLayout';
 import { PageContent } from '../../components/layout/PageContent';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  Shield, ShieldCheck, CheckCircle, XCircle, Clock,
-  FileText, AlertTriangle, ChevronRight, Info,
-  DollarSign, Search, Bell, TrendingUp,
-  ArrowUpRight, Activity, Lock, ExternalLink,
-  Scale, HeartPulse, Calculator, BarChart3,
-  Users, Zap, Award, ShieldAlert, Target, Bookmark, HelpCircle,
+  Shield,
+  ShieldCheck,
+  CheckCircle,
+  XCircle,
+  Clock,
+  FileText,
+  AlertTriangle,
+  ChevronRight,
+  Info,
+  DollarSign,
+  Search,
+  Bell,
+  TrendingUp,
+  ArrowUpRight,
+  Activity,
+  Lock,
+  ExternalLink,
+  Scale,
+  HeartPulse,
+  Calculator,
+  BarChart3,
+  Users,
+  Zap,
+  Award,
+  ShieldAlert,
+  Target,
+  Bookmark,
+  HelpCircle,
 } from 'lucide-react';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+} from 'recharts';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useHaptic } from '../../hooks/useHaptic';
 import { useRoutePrefix } from '../../hooks/useRoutePrefix';
@@ -49,29 +79,50 @@ interface InsuranceClaim {
 
 const MOCK_CLAIMS: InsuranceClaim[] = [
   {
-    id: 'ic001', claimCode: 'CLM-001', orderId: 'P2P-78400',
-    reason: 'fraud', amount: 15_000_000, paidAmount: 12_750_000,
-    status: 'paid', submittedAt: '2026-02-18',
+    id: 'ic001',
+    claimCode: 'CLM-001',
+    orderId: 'P2P-78400',
+    reason: 'fraud',
+    amount: 15_000_000,
+    paidAmount: 12_750_000,
+    status: 'paid',
+    submittedAt: '2026-02-18',
   },
   {
-    id: 'ic002', claimCode: 'CLM-002', orderId: 'P2P-78412',
-    reason: 'chargeback', amount: 8_000_000,
-    status: 'reviewing', submittedAt: '2026-02-23',
+    id: 'ic002',
+    claimCode: 'CLM-002',
+    orderId: 'P2P-78412',
+    reason: 'chargeback',
+    amount: 8_000_000,
+    status: 'reviewing',
+    submittedAt: '2026-02-23',
   },
   {
-    id: 'ic003', claimCode: 'CLM-003', orderId: 'P2P-78415',
-    reason: 'dispute_error', amount: 50_000_000,
-    status: 'approved', submittedAt: '2026-02-22',
+    id: 'ic003',
+    claimCode: 'CLM-003',
+    orderId: 'P2P-78415',
+    reason: 'dispute_error',
+    amount: 50_000_000,
+    status: 'approved',
+    submittedAt: '2026-02-22',
   },
   {
-    id: 'ic004', claimCode: 'CLM-004', orderId: 'P2P-78390',
-    reason: 'other', amount: 3_000_000,
-    status: 'rejected', submittedAt: '2026-02-20',
+    id: 'ic004',
+    claimCode: 'CLM-004',
+    orderId: 'P2P-78390',
+    reason: 'other',
+    amount: 3_000_000,
+    status: 'rejected',
+    submittedAt: '2026-02-20',
   },
   {
-    id: 'ic005', claimCode: 'CLM-005', orderId: 'P2P-78425',
-    reason: 'fraud', amount: 25_000_000,
-    status: 'pending', submittedAt: '2026-02-25',
+    id: 'ic005',
+    claimCode: 'CLM-005',
+    orderId: 'P2P-78425',
+    reason: 'fraud',
+    amount: 25_000_000,
+    status: 'pending',
+    submittedAt: '2026-02-25',
   },
 ];
 
@@ -82,7 +133,10 @@ const CLAIM_REASON_LABELS: Record<ClaimReason, string> = {
   other: 'Khác',
 };
 
-const CLAIM_STATUS_CONFIG: Record<ClaimStatus, { label: string; color: string; icon: React.ElementType }> = {
+const CLAIM_STATUS_CONFIG: Record<
+  ClaimStatus,
+  { label: string; color: string; icon: React.ElementType }
+> = {
   pending: { label: 'Chờ xử lý', color: '#F59E0B', icon: Clock },
   reviewing: { label: 'Đang xem xét', color: '#3B82F6', icon: Search },
   approved: { label: 'Đã duyệt', color: '#10B981', icon: CheckCircle },
@@ -116,26 +170,44 @@ const FUND_STATS = {
 
 /* ─── Fund Solvency & Governance (TIER 1.2) ─── */
 const FUND_SOLVENCY = {
-  outstandingClaimsAmount: 83_000_000,   // CLM-002 (8M) + CLM-003 (50M) + CLM-005 (25M)
-  solvencyRatio: 6.3,                    // totalFund / outstandingClaimsAmount
+  outstandingClaimsAmount: 83_000_000, // CLM-002 (8M) + CLM-003 (50M) + CLM-005 (25M)
+  solvencyRatio: 6.3, // totalFund / outstandingClaimsAmount
   healthStatus: 'healthy' as 'healthy' | 'warning' | 'critical',
   lastAuditDate: '28/02/2026',
   auditorName: 'Deloitte Vietnam',
   nextAuditDate: '31/03/2026',
-  maxClaimPerPeriod: 100_000_000,        // 100M VND per 30 days
+  maxClaimPerPeriod: 100_000_000, // 100M VND per 30 days
   claimWindowDays: 7,
-  approvalRate: 78.5,                    // % all-time
+  approvalRate: 78.5, // % all-time
   avgResolutionHours: 36,
 };
 
-const HEALTH_CONFIG: Record<typeof FUND_SOLVENCY.healthStatus, { label: string; color: string; desc: string }> = {
-  healthy:  { label: 'Khỏe mạnh', color: '#10B981', desc: 'Quỹ đủ khả năng chi trả toàn bộ claims đang xử lý' },
-  warning:  { label: 'Cảnh báo',  color: '#F59E0B', desc: 'Tỷ lệ thanh khoản đang giảm, cần theo dõi' },
-  critical: { label: 'Nguy hiểm', color: '#EF4444', desc: 'Quỹ không đủ chi trả, đang tạm ngưng nhận claims' },
+const HEALTH_CONFIG: Record<
+  typeof FUND_SOLVENCY.healthStatus,
+  { label: string; color: string; desc: string }
+> = {
+  healthy: {
+    label: 'Khỏe mạnh',
+    color: '#10B981',
+    desc: 'Quỹ đủ khả năng chi trả toàn bộ claims đang xử lý',
+  },
+  warning: {
+    label: 'Cảnh báo',
+    color: '#F59E0B',
+    desc: 'Tỷ lệ thanh khoản đang giảm, cần theo dõi',
+  },
+  critical: {
+    label: 'Nguy hiểm',
+    color: '#EF4444',
+    desc: 'Quỹ không đủ chi trả, đang tạm ngưng nhận claims',
+  },
 };
 
 /* ─── Mock Order Lookup for Amount Validation (TIER 1.4) ─── */
-const MOCK_ORDER_LOOKUP: Record<string, { amount: number; coin: string; date: string; hasExistingClaim: boolean }> = {
+const MOCK_ORDER_LOOKUP: Record<
+  string,
+  { amount: number; coin: string; date: string; hasExistingClaim: boolean }
+> = {
   'P2P-78400': { amount: 15_000_000, coin: 'USDT', date: '2026-02-18', hasExistingClaim: true },
   'P2P-78412': { amount: 8_000_000, coin: 'BTC', date: '2026-02-23', hasExistingClaim: true },
   'P2P-78415': { amount: 50_000_000, coin: 'ETH', date: '2026-02-22', hasExistingClaim: true },
@@ -224,9 +296,17 @@ const PLATFORM_STATS = {
 const PERSONAL_SUMMARY = {
   totalClaims: MOCK_CLAIMS.length,
   totalClaimed: MOCK_CLAIMS.reduce((sum, cl) => sum + cl.amount, 0),
-  totalReceived: MOCK_CLAIMS.filter(cl => cl.paidAmount).reduce((sum, cl) => sum + (cl.paidAmount || 0), 0),
-  pendingCount: MOCK_CLAIMS.filter(cl => cl.status === 'pending' || cl.status === 'reviewing').length,
-  successRate: Math.round(MOCK_CLAIMS.filter(cl => cl.status === 'paid' || cl.status === 'approved').length / MOCK_CLAIMS.length * 100),
+  totalReceived: MOCK_CLAIMS.filter((cl) => cl.paidAmount).reduce(
+    (sum, cl) => sum + (cl.paidAmount || 0),
+    0,
+  ),
+  pendingCount: MOCK_CLAIMS.filter((cl) => cl.status === 'pending' || cl.status === 'reviewing')
+    .length,
+  successRate: Math.round(
+    (MOCK_CLAIMS.filter((cl) => cl.status === 'paid' || cl.status === 'approved').length /
+      MOCK_CLAIMS.length) *
+      100,
+  ),
 };
 
 /* ─── Notification Prefs ─── */
@@ -238,11 +318,36 @@ interface NotifPref {
 }
 
 const DEFAULT_NOTIF_PREFS: NotifPref[] = [
-  { key: 'status_change', label: 'Thay đổi trạng thái', desc: 'Khi claim chuyển sang trạng thái mới', enabled: true },
-  { key: 'reviewer_note', label: 'Ghi chú reviewer', desc: 'Khi có ghi chú mới từ nhân viên', enabled: true },
-  { key: 'evidence_request', label: 'Yêu cầu bằng chứng', desc: 'Khi cần bổ sung tài liệu', enabled: true },
-  { key: 'payment_complete', label: 'Chi trả hoàn tất', desc: 'Khi tiền đã chuyển vào ví', enabled: true },
-  { key: 'fund_report', label: 'Báo cáo quỹ hàng tuần', desc: 'Cập nhật tình hình quỹ bảo hiểm', enabled: false },
+  {
+    key: 'status_change',
+    label: 'Thay đổi trạng thái',
+    desc: 'Khi claim chuyển sang trạng thái mới',
+    enabled: true,
+  },
+  {
+    key: 'reviewer_note',
+    label: 'Ghi chú reviewer',
+    desc: 'Khi có ghi chú mới từ nhân viên',
+    enabled: true,
+  },
+  {
+    key: 'evidence_request',
+    label: 'Yêu cầu bằng chứng',
+    desc: 'Khi cần bổ sung tài liệu',
+    enabled: true,
+  },
+  {
+    key: 'payment_complete',
+    label: 'Chi trả hoàn tất',
+    desc: 'Khi tiền đã chuyển vào ví',
+    enabled: true,
+  },
+  {
+    key: 'fund_report',
+    label: 'Báo cáo quỹ hàng tuần',
+    desc: 'Cập nhật tình hình quỹ bảo hiểm',
+    enabled: false,
+  },
 ];
 
 /* ═══════════════════════════════════════════════════════════ */
@@ -270,15 +375,16 @@ export function P2PInsuranceFundPage() {
     setShowOnboardingTour(false);
     try {
       sessionStorage.setItem('p2p_insurance_tour_seen', '1');
-    } catch {}
+    } catch {
+      // Ignore storage failures
+    }
   };
 
   /* ─── Sheet Analytics ─── */
   const { onAfterOpen: onSubmitSheetOpen } = useSheetAnalytics('p2p-insurance-submit-claim');
 
-  const filteredClaims = claimFilter === 'all'
-    ? MOCK_CLAIMS
-    : MOCK_CLAIMS.filter(cl => cl.status === claimFilter);
+  const filteredClaims =
+    claimFilter === 'all' ? MOCK_CLAIMS : MOCK_CLAIMS.filter((cl) => cl.status === claimFilter);
 
   const handleClaimTap = (claimId: string) => {
     hapticSelection();
@@ -293,11 +399,17 @@ export function P2PInsuranceFundPage() {
         back
         right={
           <button
-            onClick={() => { setShowOnboardingTour(true); hapticSelection(); }}
+            onClick={() => {
+              setShowOnboardingTour(true);
+              hapticSelection();
+            }}
             className="flex items-center justify-center"
             style={{
-              width: 36, height: 36, borderRadius: 10,
-              background: c.searchBg, border: `1px solid ${c.border}`,
+              width: 36,
+              height: 36,
+              borderRadius: 10,
+              background: c.searchBg,
+              border: `1px solid ${c.border}`,
             }}
             aria-label="Hướng dẫn sử dụng"
           >
@@ -309,13 +421,16 @@ export function P2PInsuranceFundPage() {
       {/* ── Tab Switcher ── */}
       <div className="px-5 pt-3 pb-1" style={{ flexShrink: 0 }}>
         <div className="flex rounded-xl p-1" style={{ background: c.surface2 }}>
-          {(['overview', 'claims'] as const).map(tab => {
+          {(['overview', 'claims'] as const).map((tab) => {
             const isActive = activeTab === tab;
             const label = tab === 'overview' ? 'Tổng quan' : 'Yêu cầu của tôi';
             return (
               <button
                 key={tab}
-                onClick={() => { setActiveTab(tab); hapticSelection(); }}
+                onClick={() => {
+                  setActiveTab(tab);
+                  hapticSelection();
+                }}
                 className="flex-1 py-2.5 rounded-lg text-center transition-all"
                 style={{
                   fontSize: φ.body,
@@ -341,8 +456,14 @@ export function P2PInsuranceFundPage() {
           claims={filteredClaims}
           allClaims={MOCK_CLAIMS}
           filter={claimFilter}
-          setFilter={(f) => { setClaimFilter(f); hapticSelection(); }}
-          onSubmitClaim={() => { setShowSubmitModal(true); hapticSelection(); }}
+          setFilter={(f) => {
+            setClaimFilter(f);
+            hapticSelection();
+          }}
+          onSubmitClaim={() => {
+            setShowSubmitModal(true);
+            hapticSelection();
+          }}
           onClaimTap={handleClaimTap}
         />
       )}
@@ -399,12 +520,18 @@ interface AnimatedStatProps {
 
 function AnimatedStat({ value, suffix = '', prefix = '', formatFn }: AnimatedStatProps) {
   const animatedValue = useAnimatedCounter(value);
-  
+
   if (formatFn) {
     return <>{formatFn(animatedValue)}</>;
   }
-  
-  return <>{prefix}{animatedValue.toLocaleString('vi-VN')}{suffix}</>;
+
+  return (
+    <>
+      {prefix}
+      {animatedValue.toLocaleString('vi-VN')}
+      {suffix}
+    </>
+  );
 }
 
 function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
@@ -416,14 +543,12 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
   const prefix = useRoutePrefix();
 
   const toggleNotifPref = (key: string) => {
-    setNotifPrefs(prev => prev.map(p =>
-      p.key === key ? { ...p, enabled: !p.enabled } : p
-    ));
+    setNotifPrefs((prev) => prev.map((p) => (p.key === key ? { ...p, enabled: !p.enabled } : p)));
     hapticSelection();
     toast.success('Đã cập nhật thông báo');
   };
 
-  const enabledCount = notifPrefs.filter(p => p.enabled).length;
+  const enabledCount = notifPrefs.filter((p) => p.enabled).length;
 
   const handleCalcAmountChange = (raw: string) => {
     // Only keep digits
@@ -433,7 +558,8 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
 
   const parsedCalcAmount = parseAmountInput(calcAmount);
   const displayCalcAmount = calcAmount ? formatAmountInput(calcAmount) : '';
-  const calcPayout = parsedCalcAmount > 0 ? Math.round(parsedCalcAmount * userProfile.coveragePct / 100) : 0;
+  const calcPayout =
+    parsedCalcAmount > 0 ? Math.round((parsedCalcAmount * userProfile.coveragePct) / 100) : 0;
 
   return (
     <PageContent gap="relaxed">
@@ -449,37 +575,61 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
         <div className="grid grid-cols-2" style={{ gap: φSpace[4] }}>
           <div>
             <p style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Tổng quỹ</p>
-            <p style={{
-              color: '#10B981', fontSize: 22, fontWeight: 700,
-              fontVariantNumeric: 'tabular-nums', lineHeight: 1.3, marginTop: 2,
-            }}>
+            <p
+              style={{
+                color: '#10B981',
+                fontSize: 22,
+                fontWeight: 700,
+                fontVariantNumeric: 'tabular-nums',
+                lineHeight: 1.3,
+                marginTop: 2,
+              }}
+            >
               {fmtVnd(stats.totalFund)} đ
             </p>
           </div>
           <div>
             <p style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Claims đang xử lý</p>
-            <p style={{
-              color: '#3B82F6', fontSize: 22, fontWeight: 700,
-              fontVariantNumeric: 'tabular-nums', lineHeight: 1.3, marginTop: 2,
-            }}>
+            <p
+              style={{
+                color: '#3B82F6',
+                fontSize: 22,
+                fontWeight: 700,
+                fontVariantNumeric: 'tabular-nums',
+                lineHeight: 1.3,
+                marginTop: 2,
+              }}
+            >
               {stats.activeClaims}
             </p>
           </div>
           <div>
             <p style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Tổng đóng góp</p>
-            <p style={{
-              color: c.text1, fontSize: φ.base, fontWeight: 700,
-              fontVariantNumeric: 'tabular-nums', lineHeight: 1.3, marginTop: 2,
-            }}>
+            <p
+              style={{
+                color: c.text1,
+                fontSize: φ.base,
+                fontWeight: 700,
+                fontVariantNumeric: 'tabular-nums',
+                lineHeight: 1.3,
+                marginTop: 2,
+              }}
+            >
               {fmtVnd(stats.totalContributed)} đ
             </p>
           </div>
           <div>
             <p style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Đã chi trả</p>
-            <p style={{
-              color: c.text1, fontSize: φ.base, fontWeight: 700,
-              fontVariantNumeric: 'tabular-nums', lineHeight: 1.3, marginTop: 2,
-            }}>
+            <p
+              style={{
+                color: c.text1,
+                fontSize: φ.base,
+                fontWeight: 700,
+                fontVariantNumeric: 'tabular-nums',
+                lineHeight: 1.3,
+                marginTop: 2,
+              }}
+            >
               {fmtVnd(stats.totalPaid)} đ
             </p>
           </div>
@@ -626,7 +776,8 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
               Bạn vừa thua dispute?
             </p>
             <p style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5, marginTop: 2 }}>
-              Nếu bạn nghĩ kết quả không công bằng, bạn có thể gửi yêu cầu bồi thường bảo hiểm trong vòng 7 ngày.
+              Nếu bạn nghĩ kết quả không công bằng, bạn có thể gửi yêu cầu bồi thường bảo hiểm trong
+              vòng 7 ngày.
             </p>
             <button
               onClick={() => {
@@ -658,9 +809,13 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
             { label: 'KYC đã xác minh', met: true, detail: 'Level 2 — Pro' },
             { label: '2FA đã bật', met: true, detail: 'Google Authenticator' },
             { label: 'Tier đủ điều kiện', met: true, detail: 'Pro — bảo hiểm 85%' },
-            { label: 'Hạn mức còn lại', met: true, detail: `${fmtVnd(100_000_000 - 25_000_000)} đ / 30 ngày` },
+            {
+              label: 'Hạn mức còn lại',
+              met: true,
+              detail: `${fmtVnd(100_000_000 - 25_000_000)} đ / 30 ngày`,
+            },
             { label: 'Giao dịch P2P gần đây', met: true, detail: '3 đơn trong 7 ngày qua' },
-          ].map(item => (
+          ].map((item) => (
             <div
               key={item.label}
               className="flex items-center justify-between py-2"
@@ -676,10 +831,13 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
                   {item.label}
                 </span>
               </div>
-              <span style={{
-                color: item.met ? '#10B981' : '#EF4444',
-                fontSize: 11, fontWeight: 600,
-              }}>
+              <span
+                style={{
+                  color: item.met ? '#10B981' : '#EF4444',
+                  fontSize: 11,
+                  fontWeight: 600,
+                }}
+              >
                 {item.detail}
               </span>
             </div>
@@ -702,9 +860,7 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <HeartPulse size={18} color={HEALTH_CONFIG[FUND_SOLVENCY.healthStatus].color} />
-            <span style={{ color: c.text1, fontSize: φ.body, fontWeight: 700 }}>
-              Sức khỏe quỹ
-            </span>
+            <span style={{ color: c.text1, fontSize: φ.body, fontWeight: 700 }}>Sức khỏe quỹ</span>
           </div>
           <div
             className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg"
@@ -714,10 +870,13 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
               className="w-2 h-2 rounded-full"
               style={{ background: HEALTH_CONFIG[FUND_SOLVENCY.healthStatus].color }}
             />
-            <span style={{
-              color: HEALTH_CONFIG[FUND_SOLVENCY.healthStatus].color,
-              fontSize: φ.sm, fontWeight: 700,
-            }}>
+            <span
+              style={{
+                color: HEALTH_CONFIG[FUND_SOLVENCY.healthStatus].color,
+                fontSize: φ.sm,
+                fontWeight: 700,
+              }}
+            >
               {HEALTH_CONFIG[FUND_SOLVENCY.healthStatus].label}
             </span>
           </div>
@@ -728,40 +887,86 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
         </p>
 
         {/* Solvency metrics */}
-        <div className="flex flex-col gap-3" style={{ paddingTop: 12, borderTop: `1px solid ${c.divider}` }}>
+        <div
+          className="flex flex-col gap-3"
+          style={{ paddingTop: 12, borderTop: `1px solid ${c.divider}` }}
+        >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Scale size={14} color={c.text3} />
-              <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Tỷ lệ thanh khoản</span>
+              <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>
+                Tỷ lệ thanh khoản
+              </span>
             </div>
-            <span style={{
-              color: FUND_SOLVENCY.solvencyRatio >= 3 ? '#10B981' : FUND_SOLVENCY.solvencyRatio >= 1 ? '#F59E0B' : '#EF4444',
-              fontSize: φ.body, fontWeight: 700, fontVariantNumeric: 'tabular-nums',
-            }}>
+            <span
+              style={{
+                color:
+                  FUND_SOLVENCY.solvencyRatio >= 3
+                    ? '#10B981'
+                    : FUND_SOLVENCY.solvencyRatio >= 1
+                      ? '#F59E0B'
+                      : '#EF4444',
+                fontSize: φ.body,
+                fontWeight: 700,
+                fontVariantNumeric: 'tabular-nums',
+              }}
+            >
               {FUND_SOLVENCY.solvencyRatio.toFixed(1)}x
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Claims chưa giải quyết</span>
-            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
+            <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>
+              Claims chưa giải quyết
+            </span>
+            <span
+              style={{
+                color: c.text1,
+                fontSize: φ.sm,
+                fontWeight: 600,
+                fontVariantNumeric: 'tabular-nums',
+              }}
+            >
               {fmtVnd(FUND_SOLVENCY.outstandingClaimsAmount)} đ
             </span>
           </div>
           <div className="flex items-center justify-between">
             <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Tỷ lệ duyệt</span>
-            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
+            <span
+              style={{
+                color: c.text1,
+                fontSize: φ.sm,
+                fontWeight: 600,
+                fontVariantNumeric: 'tabular-nums',
+              }}
+            >
               {FUND_SOLVENCY.approvalRate}%
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Thời gian xử lý TB</span>
-            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
+            <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>
+              Thời gian xử lý TB
+            </span>
+            <span
+              style={{
+                color: c.text1,
+                fontSize: φ.sm,
+                fontWeight: 600,
+                fontVariantNumeric: 'tabular-nums',
+              }}
+            >
               {FUND_SOLVENCY.avgResolutionHours}h
             </span>
           </div>
           <div className="flex items-center justify-between">
             <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Hạn mức/30 ngày</span>
-            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
+            <span
+              style={{
+                color: c.text1,
+                fontSize: φ.sm,
+                fontWeight: 600,
+                fontVariantNumeric: 'tabular-nums',
+              }}
+            >
               {fmtVnd(FUND_SOLVENCY.maxClaimPerPeriod)} đ
             </span>
           </div>
@@ -772,7 +977,10 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
           className="mt-4 p-3 rounded-xl flex items-start gap-3"
           style={{ background: c.surface2, border: `1px solid ${c.divider}` }}
         >
-          <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(59,130,246,0.1)' }}>
+          <div
+            className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+            style={{ background: 'rgba(59,130,246,0.1)' }}
+          >
             <ShieldCheck size={16} color="#3B82F6" />
           </div>
           <div className="flex-1">
@@ -789,10 +997,7 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
               Kỳ tiếp theo: {FUND_SOLVENCY.nextAuditDate}
             </p>
           </div>
-          <button
-            onClick={() => toast.info('Đang mở báo cáo kiểm toán')}
-            className="shrink-0 mt-1"
-          >
+          <button onClick={() => toast.info('Đang mở báo cáo kiểm toán')} className="shrink-0 mt-1">
             <ExternalLink size={14} color="#3B82F6" />
           </button>
         </div>
@@ -803,15 +1008,11 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
         <div className="flex items-center justify-between mb-1">
           <div className="flex items-center gap-2">
             <TrendingUp size={16} color="#10B981" />
-            <span style={{ color: c.text1, fontSize: φ.body, fontWeight: 700 }}>
-              Biến động quỹ
-            </span>
+            <span style={{ color: c.text1, fontSize: φ.body, fontWeight: 700 }}>Biến động quỹ</span>
           </div>
           <div className="flex items-center gap-1.5">
             <ArrowUpRight size={14} color="#10B981" />
-            <span style={{ color: '#10B981', fontSize: φ.sm, fontWeight: 700 }}>
-              +37.6%
-            </span>
+            <span style={{ color: '#10B981', fontSize: φ.sm, fontWeight: 700 }}>+37.6%</span>
           </div>
         </div>
         <p style={{ color: c.text3, fontSize: 11, marginBottom: 12, lineHeight: 1.5 }}>
@@ -820,16 +1021,24 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
 
         {/* Range selector */}
         <div className="flex gap-1.5 mb-3">
-          {(['7d', '30d', '90d'] as ChartRange[]).map(range => {
+          {(['7d', '30d', '90d'] as ChartRange[]).map((range) => {
             const isActive = chartRange === range;
-            const labels: Record<ChartRange, string> = { '7d': '7 ngày', '30d': '30 ngày', '90d': '90 ngày' };
+            const labels: Record<ChartRange, string> = {
+              '7d': '7 ngày',
+              '30d': '30 ngày',
+              '90d': '90 ngày',
+            };
             return (
               <button
                 key={range}
-                onClick={() => { setChartRange(range); hapticSelection(); }}
+                onClick={() => {
+                  setChartRange(range);
+                  hapticSelection();
+                }}
                 className="px-3 py-1.5 rounded-lg"
                 style={{
-                  fontSize: 11, fontWeight: isActive ? 700 : 500,
+                  fontSize: 11,
+                  fontWeight: isActive ? 700 : 500,
                   color: isActive ? '#fff' : c.text2,
                   background: isActive ? '#3B82F6' : c.surface2,
                 }}
@@ -843,14 +1052,22 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
         {/* Chart */}
         <div style={{ height: 160, marginLeft: -8, marginRight: -8 }}>
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={getChartData(chartRange)} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
+            <AreaChart
+              data={getChartData(chartRange)}
+              margin={{ top: 4, right: 4, left: -20, bottom: 0 }}
+            >
               <defs key="defs-fund-gradient">
                 <linearGradient id="fundGradient" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#10B981" stopOpacity={0.3} />
                   <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid key="grid" strokeDasharray="3 3" stroke="rgba(128,128,128,0.1)" vertical={false} />
+              <CartesianGrid
+                key="grid"
+                strokeDasharray="3 3"
+                stroke="rgba(128,128,128,0.1)"
+                vertical={false}
+              />
               <XAxis
                 key="xaxis"
                 dataKey="day"
@@ -920,10 +1137,14 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
           <span style={{ color: c.text1, fontSize: φ.base, fontWeight: 700 }}>
             Mức bảo hiểm của bạn
           </span>
-          <span style={{
-            color: '#3B82F6', fontSize: 28, fontWeight: 700,
-            fontVariantNumeric: 'tabular-nums',
-          }}>
+          <span
+            style={{
+              color: '#3B82F6',
+              fontSize: 28,
+              fontWeight: 700,
+              fontVariantNumeric: 'tabular-nums',
+            }}
+          >
             {userProfile.coveragePct}%
           </span>
         </div>
@@ -931,11 +1152,17 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Tier merchant</span>
-            <span style={{ color: c.text1, fontSize: φ.body, fontWeight: 600 }}>{userProfile.tierName}</span>
+            <span style={{ color: c.text1, fontSize: φ.body, fontWeight: 600 }}>
+              {userProfile.tierName}
+            </span>
           </div>
           <div className="flex items-center justify-between">
-            <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Đóng góp/giao dịch</span>
-            <span style={{ color: c.text1, fontSize: φ.body, fontWeight: 600 }}>{userProfile.contributionRate}</span>
+            <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>
+              Đóng góp/giao dịch
+            </span>
+            <span style={{ color: c.text1, fontSize: φ.body, fontWeight: 600 }}>
+              {userProfile.contributionRate}
+            </span>
           </div>
         </div>
       </TrCard>
@@ -959,21 +1186,35 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
                 style={{
                   borderBottom: isLast ? 'none' : `1px solid ${c.divider}`,
                   background: tier.highlight ? 'rgba(59,130,246,0.06)' : 'transparent',
-                  marginLeft: -20, marginRight: -20, paddingLeft: 20, paddingRight: 20,
+                  marginLeft: -20,
+                  marginRight: -20,
+                  paddingLeft: 20,
+                  paddingRight: 20,
                   borderRadius: tier.highlight ? 8 : 0,
                 }}
               >
-                <span style={{
-                  color: tier.highlight ? '#3B82F6' : c.text1,
-                  fontSize: φ.body, fontWeight: tier.highlight ? 700 : 500,
-                }}>
+                <span
+                  style={{
+                    color: tier.highlight ? '#3B82F6' : c.text1,
+                    fontSize: φ.body,
+                    fontWeight: tier.highlight ? 700 : 500,
+                  }}
+                >
                   {tier.name}
                 </span>
-                <span style={{
-                  color: tier.coveragePct === 'Không có' ? c.text3 : (tier.highlight ? '#3B82F6' : c.text1),
-                  fontSize: φ.body, fontWeight: 600,
-                  fontVariantNumeric: 'tabular-nums',
-                }}>
+                <span
+                  style={{
+                    color:
+                      tier.coveragePct === 'Không có'
+                        ? c.text3
+                        : tier.highlight
+                          ? '#3B82F6'
+                          : c.text1,
+                    fontSize: φ.body,
+                    fontWeight: 600,
+                    fontVariantNumeric: 'tabular-nums',
+                  }}
+                >
                   {tier.coveragePct}
                   {tier.bonus && (
                     <span style={{ color: '#10B981', fontSize: φ.sm, marginLeft: 4 }}>
@@ -1014,9 +1255,7 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
                   <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, lineHeight: 1.5 }}>
                     {pref.label}
                   </p>
-                  <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
-                    {pref.desc}
-                  </p>
+                  <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>{pref.desc}</p>
                 </div>
                 <button
                   onClick={() => toggleNotifPref(pref.key)}
@@ -1033,7 +1272,9 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
                   <div
                     className="absolute rounded-full transition-all"
                     style={{
-                      width: 18, height: 18, top: 3,
+                      width: 18,
+                      height: 18,
+                      top: 3,
                       background: '#fff',
                       boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
                       left: pref.enabled ? 23 : 3,
@@ -1048,7 +1289,15 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
 
       {/* ── How It Works ── */}
       <TrCard className="p-5">
-        <span style={{ color: c.text1, fontSize: φ.body, fontWeight: 700, display: 'block', marginBottom: 16 }}>
+        <span
+          style={{
+            color: c.text1,
+            fontSize: φ.body,
+            fontWeight: 700,
+            display: 'block',
+            marginBottom: 16,
+          }}
+        >
           Cách hoạt động
         </span>
 
@@ -1069,17 +1318,23 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
               title: 'Bồi thường',
               desc: 'Review trong 48h, chi trả trong 72h',
             },
-          ].map(item => (
+          ].map((item) => (
             <div key={item.step} className="flex items-start gap-3">
               <div
                 className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
                 style={{ background: c.surface2 }}
               >
-                <span style={{ color: c.text1, fontSize: φ.body, fontWeight: 700 }}>{item.step}</span>
+                <span style={{ color: c.text1, fontSize: φ.body, fontWeight: 700 }}>
+                  {item.step}
+                </span>
               </div>
               <div className="flex-1">
-                <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 700, lineHeight: 1.5 }}>{item.title}</p>
-                <p style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5, marginTop: 2 }}>{item.desc}</p>
+                <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 700, lineHeight: 1.5 }}>
+                  {item.title}
+                </p>
+                <p style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5, marginTop: 2 }}>
+                  {item.desc}
+                </p>
               </div>
             </div>
           ))}
@@ -1096,20 +1351,29 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
         </div>
 
         <div>
-          <label style={{ color: c.text2, fontSize: φ.sm, fontWeight: 600, display: 'block', marginBottom: 8 }}>
+          <label
+            style={{
+              color: c.text2,
+              fontSize: φ.sm,
+              fontWeight: 600,
+              display: 'block',
+              marginBottom: 8,
+            }}
+          >
             Nhập số tiền giao dịch (VND)
           </label>
           <input
             type="text"
             inputMode="numeric"
             value={displayCalcAmount}
-            onChange={e => handleCalcAmountChange(e.target.value)}
+            onChange={(e) => handleCalcAmountChange(e.target.value)}
             placeholder="VD: 50.000.000"
             className="w-full px-4 py-3 rounded-xl outline-none"
             style={{
               background: c.surface2,
               border: `1.5px solid ${parsedCalcAmount > FUND_SOLVENCY.maxClaimPerPeriod ? '#EF4444' : c.borderSolid}`,
-              color: c.text1, fontSize: φ.body,
+              color: c.text1,
+              fontSize: φ.body,
               fontVariantNumeric: 'tabular-nums',
             }}
           />
@@ -1123,8 +1387,17 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
         {parsedCalcAmount > 0 && parsedCalcAmount <= FUND_SOLVENCY.maxClaimPerPeriod && (
           <div className="mt-4 flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Đóng góp bảo hiểm</span>
-              <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
+              <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>
+                Đóng góp bảo hiểm
+              </span>
+              <span
+                style={{
+                  color: c.text1,
+                  fontSize: φ.sm,
+                  fontWeight: 600,
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
                 {fmtVnd(Math.round(parsedCalcAmount * 0.001))} đ
               </span>
             </div>
@@ -1132,32 +1405,54 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
               <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>
                 Bảo hiểm ({userProfile.tierName} {userProfile.coveragePct}%)
               </span>
-              <span style={{ color: '#3B82F6', fontSize: φ.sm, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
+              <span
+                style={{
+                  color: '#3B82F6',
+                  fontSize: φ.sm,
+                  fontWeight: 700,
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
                 {fmtVnd(calcPayout)} đ
               </span>
             </div>
             <div className="pt-3" style={{ borderTop: `1px solid ${c.divider}` }}>
-              <p style={{ color: c.text3, fontSize: 11, fontWeight: 600, marginBottom: 8, letterSpacing: 0.3 }}>
+              <p
+                style={{
+                  color: c.text3,
+                  fontSize: 11,
+                  fontWeight: 600,
+                  marginBottom: 8,
+                  letterSpacing: 0.3,
+                }}
+              >
                 SO SÁNH THEO TIER
               </p>
               {[
                 { name: 'Xác minh', pct: 70 },
                 { name: 'Pro', pct: 85, current: true },
                 { name: 'Elite', pct: 100 },
-              ].map(t => (
+              ].map((t) => (
                 <div key={t.name} className="flex items-center justify-between py-1.5">
-                  <span style={{
-                    color: t.current ? '#3B82F6' : c.text3,
-                    fontSize: φ.sm, fontWeight: t.current ? 700 : 500,
-                  }}>
+                  <span
+                    style={{
+                      color: t.current ? '#3B82F6' : c.text3,
+                      fontSize: φ.sm,
+                      fontWeight: t.current ? 700 : 500,
+                    }}
+                  >
                     {t.name} ({t.pct}%)
                     {t.current && <span style={{ fontSize: 10, marginLeft: 4 }}>← Bạn</span>}
                   </span>
-                  <span style={{
-                    color: t.current ? '#3B82F6' : c.text1,
-                    fontSize: φ.sm, fontWeight: 600, fontVariantNumeric: 'tabular-nums',
-                  }}>
-                    {fmtVnd(Math.round(parsedCalcAmount * t.pct / 100))} đ
+                  <span
+                    style={{
+                      color: t.current ? '#3B82F6' : c.text1,
+                      fontSize: φ.sm,
+                      fontWeight: 600,
+                      fontVariantNumeric: 'tabular-nums',
+                    }}
+                  >
+                    {fmtVnd(Math.round((parsedCalcAmount * t.pct) / 100))} đ
                   </span>
                 </div>
               ))}
@@ -1177,20 +1472,59 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
 
         <div className="grid grid-cols-2" style={{ gap: φSpace[4] }}>
           {[
-            { label: 'Tổng claims', value: PLATFORM_STATS.totalClaimsAllTime, isNumeric: true, icon: FileText, color: '#3B82F6' },
-            { label: 'Tháng này', value: PLATFORM_STATS.claimsThisMonth, isNumeric: true, icon: Activity, color: '#F59E0B' },
-            { label: 'Merchants', value: PLATFORM_STATS.merchantsCovered, isNumeric: true, icon: Users, color: '#10B981' },
-            { label: 'Xử lý nhanh nhất', value: PLATFORM_STATS.fastestResolution, isNumeric: false, icon: Zap, color: '#8B5CF6' },
-          ].map(stat => {
+            {
+              label: 'Tổng claims',
+              value: PLATFORM_STATS.totalClaimsAllTime,
+              isNumeric: true,
+              icon: FileText,
+              color: '#3B82F6',
+            },
+            {
+              label: 'Tháng này',
+              value: PLATFORM_STATS.claimsThisMonth,
+              isNumeric: true,
+              icon: Activity,
+              color: '#F59E0B',
+            },
+            {
+              label: 'Merchants',
+              value: PLATFORM_STATS.merchantsCovered,
+              isNumeric: true,
+              icon: Users,
+              color: '#10B981',
+            },
+            {
+              label: 'Xử lý nhanh nhất',
+              value: PLATFORM_STATS.fastestResolution,
+              isNumeric: false,
+              icon: Zap,
+              color: '#8B5CF6',
+            },
+          ].map((stat) => {
             const IconComp = stat.icon;
             return (
-              <div key={stat.label} className="flex items-start gap-2.5 p-3 rounded-xl" style={{ background: c.surface2 }}>
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: `${stat.color}12` }}>
+              <div
+                key={stat.label}
+                className="flex items-start gap-2.5 p-3 rounded-xl"
+                style={{ background: c.surface2 }}
+              >
+                <div
+                  className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                  style={{ background: `${stat.color}12` }}
+                >
                   <IconComp size={14} color={stat.color} />
                 </div>
                 <div>
                   <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>{stat.label}</p>
-                  <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 700, fontVariantNumeric: 'tabular-nums', marginTop: 2 }}>
+                  <p
+                    style={{
+                      color: c.text1,
+                      fontSize: φ.body,
+                      fontWeight: 700,
+                      fontVariantNumeric: 'tabular-nums',
+                      marginTop: 2,
+                    }}
+                  >
                     {stat.isNumeric ? <AnimatedStat value={stat.value as number} /> : stat.value}
                   </p>
                 </div>
@@ -1199,17 +1533,39 @@ function OverviewTab({ c, stats, userProfile, tiers }: OverviewTabProps) {
           })}
         </div>
 
-        <div className="flex flex-col gap-2 mt-4 pt-3" style={{ borderTop: `1px solid ${c.divider}` }}>
+        <div
+          className="flex flex-col gap-2 mt-4 pt-3"
+          style={{ borderTop: `1px solid ${c.divider}` }}
+        >
           <div className="flex items-center justify-between">
             <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Tổng đã xử lý</span>
-            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
+            <span
+              style={{
+                color: c.text1,
+                fontSize: φ.sm,
+                fontWeight: 600,
+                fontVariantNumeric: 'tabular-nums',
+              }}
+            >
               <AnimatedStat value={PLATFORM_STATS.totalAmountProcessed} formatFn={fmtCompact} />
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Claim trung bình</span>
-            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
-              <AnimatedStat value={PLATFORM_STATS.averageClaimAmount} formatFn={(n) => `${fmtVnd(n)} đ`} />
+            <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>
+              Claim trung bình
+            </span>
+            <span
+              style={{
+                color: c.text1,
+                fontSize: φ.sm,
+                fontWeight: 600,
+                fontVariantNumeric: 'tabular-nums',
+              }}
+            >
+              <AnimatedStat
+                value={PLATFORM_STATS.averageClaimAmount}
+                formatFn={(n) => `${fmtVnd(n)} đ`}
+              />
             </span>
           </div>
         </div>
@@ -1232,7 +1588,15 @@ interface ClaimsTabProps {
   onClaimTap: (claimId: string) => void;
 }
 
-function ClaimsTab({ c, claims, allClaims, filter, setFilter, onSubmitClaim, onClaimTap }: ClaimsTabProps) {
+function ClaimsTab({
+  c,
+  claims,
+  allClaims,
+  filter,
+  setFilter,
+  onSubmitClaim,
+  onClaimTap,
+}: ClaimsTabProps) {
   const FILTERS: { key: ClaimStatus | 'all'; label: string }[] = [
     { key: 'all', label: 'Tất cả' },
     { key: 'pending', label: 'Chờ xử lý' },
@@ -1246,7 +1610,7 @@ function ClaimsTab({ c, claims, allClaims, filter, setFilter, onSubmitClaim, onC
       {/* Filter chips */}
       <div className="px-5 pt-3 pb-2">
         <div className="flex gap-2 overflow-x-auto scrollbar-none">
-          {FILTERS.map(f => {
+          {FILTERS.map((f) => {
             const isActive = filter === f.key;
             return (
               <button
@@ -1274,34 +1638,72 @@ function ClaimsTab({ c, claims, allClaims, filter, setFilter, onSubmitClaim, onC
         <TrCard className="p-4">
           <div className="grid grid-cols-3 gap-3">
             <div className="text-center">
-              <p style={{ color: '#3B82F6', fontSize: 20, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
+              <p
+                style={{
+                  color: '#3B82F6',
+                  fontSize: 20,
+                  fontWeight: 700,
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
                 {PERSONAL_SUMMARY.totalClaims}
               </p>
               <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>Tổng gửi</p>
             </div>
             <div className="text-center">
-              <p style={{ color: '#F59E0B', fontSize: 20, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
+              <p
+                style={{
+                  color: '#F59E0B',
+                  fontSize: 20,
+                  fontWeight: 700,
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
                 {PERSONAL_SUMMARY.pendingCount}
               </p>
               <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>Đang chờ</p>
             </div>
             <div className="text-center">
-              <p style={{ color: '#10B981', fontSize: 20, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
+              <p
+                style={{
+                  color: '#10B981',
+                  fontSize: 20,
+                  fontWeight: 700,
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
                 {PERSONAL_SUMMARY.successRate}%
               </p>
               <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>Thành công</p>
             </div>
           </div>
-          <div className="flex flex-col gap-2 mt-3 pt-3" style={{ borderTop: `1px solid ${c.divider}` }}>
+          <div
+            className="flex flex-col gap-2 mt-3 pt-3"
+            style={{ borderTop: `1px solid ${c.divider}` }}
+          >
             <div className="flex items-center justify-between">
               <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Tổng yêu cầu</span>
-              <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
+              <span
+                style={{
+                  color: c.text1,
+                  fontSize: φ.sm,
+                  fontWeight: 600,
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
                 {fmtVnd(PERSONAL_SUMMARY.totalClaimed)} đ
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Đã nhận</span>
-              <span style={{ color: '#10B981', fontSize: φ.sm, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
+              <span
+                style={{
+                  color: '#10B981',
+                  fontSize: φ.sm,
+                  fontWeight: 700,
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
                 {fmtVnd(PERSONAL_SUMMARY.totalReceived)} đ
               </span>
             </div>
@@ -1317,13 +1719,8 @@ function ClaimsTab({ c, claims, allClaims, filter, setFilter, onSubmitClaim, onC
             </p>
           </TrCard>
         ) : (
-          claims.map(claim => (
-            <ClaimCard
-              key={claim.id}
-              claim={claim}
-              c={c}
-              onTap={() => onClaimTap(claim.id)}
-            />
+          claims.map((claim) => (
+            <ClaimCard key={claim.id} claim={claim} c={c} onTap={() => onClaimTap(claim.id)} />
           ))
         )}
 
@@ -1355,7 +1752,10 @@ function ClaimCard({ claim, c, onTap }: ClaimCardProps) {
     <TrCard className="p-4" hover as="button" onClick={onTap}>
       {/* Status badge + chevron */}
       <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-1.5 px-2 py-1 rounded-md" style={{ background: `${cfg.color}12` }}>
+        <div
+          className="flex items-center gap-1.5 px-2 py-1 rounded-md"
+          style={{ background: `${cfg.color}12` }}
+        >
           <StatusIcon size={12} color={cfg.color} />
           <span style={{ color: cfg.color, fontSize: 11, fontWeight: 600 }}>{cfg.label}</span>
         </div>
@@ -1371,10 +1771,14 @@ function ClaimCard({ claim, c, onTap }: ClaimCardProps) {
           </p>
         </div>
         <div className="text-right">
-          <p style={{
-            color: c.text1, fontSize: φ.base, fontWeight: 700,
-            fontVariantNumeric: 'tabular-nums',
-          }}>
+          <p
+            style={{
+              color: c.text1,
+              fontSize: φ.base,
+              fontWeight: 700,
+              fontVariantNumeric: 'tabular-nums',
+            }}
+          >
             {fmtVnd(claim.amount)} đ
           </p>
           <p style={{ color: c.text3, fontSize: φ.sm, marginTop: 2, lineHeight: 1.5 }}>
@@ -1435,19 +1839,21 @@ function SubmitClaimModal({ c, open, onClose, onSubmit, onAfterOpen }: SubmitCla
   const amountExceedsMax = parsedAmount > FUND_SOLVENCY.maxClaimPerPeriod;
 
   /* ─── Estimated payout (TIER 1.4) ─── */
-  const estimatedPayout = parsedAmount > 0 ? Math.round(parsedAmount * USER_PROFILE.coveragePct / 100) : 0;
+  const estimatedPayout =
+    parsedAmount > 0 ? Math.round((parsedAmount * USER_PROFILE.coveragePct) / 100) : 0;
 
   /* ─── Duplicate claim detection ─── */
   const hasDuplicateClaim = matchedOrder?.hasExistingClaim ?? false;
 
   /* ─── Validation ─── */
-  const isFormValid = orderId.trim().length > 0
-    && matchedOrder !== null
-    && !hasDuplicateClaim
-    && description.trim().length >= 10
-    && parsedAmount > 0
-    && !amountExceedsOrder
-    && !amountExceedsMax;
+  const isFormValid =
+    orderId.trim().length > 0 &&
+    matchedOrder !== null &&
+    !hasDuplicateClaim &&
+    description.trim().length >= 10 &&
+    parsedAmount > 0 &&
+    !amountExceedsOrder &&
+    !amountExceedsMax;
   const isConsentValid = consentAccuracy && consentTerms;
   const isValid = isFormValid && isConsentValid;
 
@@ -1482,24 +1888,36 @@ function SubmitClaimModal({ c, open, onClose, onSubmit, onAfterOpen }: SubmitCla
       <div className="flex flex-col gap-4 mb-4">
         {/* Order ID with lookup */}
         <div>
-          <label style={{ color: c.text2, fontSize: φ.sm, fontWeight: 600, display: 'block', marginBottom: 8 }}>
+          <label
+            style={{
+              color: c.text2,
+              fontSize: φ.sm,
+              fontWeight: 600,
+              display: 'block',
+              marginBottom: 8,
+            }}
+          >
             Mã đơn hàng P2P *
           </label>
           <input
             type="text"
             value={orderId}
-            onChange={e => setOrderId(e.target.value)}
+            onChange={(e) => setOrderId(e.target.value)}
             placeholder="VD: P2P-78450"
             className="w-full px-4 py-3 rounded-xl outline-none"
             style={{
               background: c.surface2,
               border: `1.5px solid ${orderNotFound ? '#EF4444' : hasDuplicateClaim ? '#F59E0B' : matchedOrder ? '#10B981' : c.borderSolid}`,
-              color: c.text1, fontSize: φ.body,
+              color: c.text1,
+              fontSize: φ.body,
             }}
           />
           {/* Order lookup result */}
           {matchedOrder && !hasDuplicateClaim && (
-            <div className="flex items-center gap-2 mt-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(16,185,129,0.06)' }}>
+            <div
+              className="flex items-center gap-2 mt-2 px-3 py-2 rounded-lg"
+              style={{ background: 'rgba(16,185,129,0.06)' }}
+            >
               <CheckCircle size={12} color="#10B981" />
               <span style={{ color: '#10B981', fontSize: 11, fontWeight: 600 }}>
                 {matchedOrder.coin} · {fmtVnd(matchedOrder.amount)} đ · {matchedOrder.date}
@@ -1513,7 +1931,10 @@ function SubmitClaimModal({ c, open, onClose, onSubmit, onAfterOpen }: SubmitCla
                 setShowDuplicateSheet(true);
               }}
               className="flex items-center justify-between gap-2 mt-2 px-3 py-2 rounded-lg w-full text-left"
-              style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.2)' }}
+              style={{
+                background: 'rgba(245,158,11,0.06)',
+                border: '1px solid rgba(245,158,11,0.2)',
+              }}
             >
               <div className="flex items-center gap-2">
                 <AlertTriangle size={12} color="#F59E0B" />
@@ -1533,14 +1954,27 @@ function SubmitClaimModal({ c, open, onClose, onSubmit, onAfterOpen }: SubmitCla
 
         {/* Reason */}
         <div>
-          <label style={{ color: c.text2, fontSize: φ.sm, fontWeight: 600, display: 'block', marginBottom: 8 }}>
+          <label
+            style={{
+              color: c.text2,
+              fontSize: φ.sm,
+              fontWeight: 600,
+              display: 'block',
+              marginBottom: 8,
+            }}
+          >
             Lý do *
           </label>
           <select
             value={reason}
-            onChange={e => setReason(e.target.value as ClaimReason)}
+            onChange={(e) => setReason(e.target.value as ClaimReason)}
             className="w-full px-4 py-3 rounded-xl outline-none"
-            style={{ background: c.surface2, border: `1.5px solid ${c.borderSolid}`, color: c.text1, fontSize: φ.body }}
+            style={{
+              background: c.surface2,
+              border: `1.5px solid ${c.borderSolid}`,
+              color: c.text1,
+              fontSize: φ.body,
+            }}
           >
             <option value="fraud">Gian lận</option>
             <option value="chargeback">Chargeback</option>
@@ -1551,20 +1985,29 @@ function SubmitClaimModal({ c, open, onClose, onSubmit, onAfterOpen }: SubmitCla
 
         {/* Amount with validation */}
         <div>
-          <label style={{ color: c.text2, fontSize: φ.sm, fontWeight: 600, display: 'block', marginBottom: 8 }}>
+          <label
+            style={{
+              color: c.text2,
+              fontSize: φ.sm,
+              fontWeight: 600,
+              display: 'block',
+              marginBottom: 8,
+            }}
+          >
             Số tiền yêu cầu (VND) *
           </label>
           <input
             type="text"
             inputMode="numeric"
             value={displayAmount}
-            onChange={e => handleAmountChange(e.target.value)}
+            onChange={(e) => handleAmountChange(e.target.value)}
             placeholder="VD: 15.000.000"
             className="w-full px-4 py-3 rounded-xl outline-none"
             style={{
               background: c.surface2,
               border: `1.5px solid ${amountExceedsOrder || amountExceedsMax ? '#EF4444' : c.borderSolid}`,
-              color: c.text1, fontSize: φ.body,
+              color: c.text1,
+              fontSize: φ.body,
               fontVariantNumeric: 'tabular-nums',
             }}
           />
@@ -1589,16 +2032,29 @@ function SubmitClaimModal({ c, open, onClose, onSubmit, onAfterOpen }: SubmitCla
 
         {/* Description */}
         <div>
-          <label style={{ color: c.text2, fontSize: φ.sm, fontWeight: 600, display: 'block', marginBottom: 8 }}>
+          <label
+            style={{
+              color: c.text2,
+              fontSize: φ.sm,
+              fontWeight: 600,
+              display: 'block',
+              marginBottom: 8,
+            }}
+          >
             Mô tả chi tiết * (tối thiểu 10 ký tự)
           </label>
           <textarea
             rows={3}
             value={description}
-            onChange={e => setDescription(e.target.value)}
+            onChange={(e) => setDescription(e.target.value)}
             placeholder="Mô tả vấn đề và cung cấp bằng chứng..."
             className="w-full px-4 py-3 rounded-xl resize-none outline-none"
-            style={{ background: c.surface2, border: `1.5px solid ${c.borderSolid}`, color: c.text1, fontSize: φ.body }}
+            style={{
+              background: c.surface2,
+              border: `1.5px solid ${c.borderSolid}`,
+              color: c.text1,
+              fontSize: φ.body,
+            }}
           />
           {description.length > 0 && description.length < 10 && (
             <p style={{ color: '#F59E0B', fontSize: 11, marginTop: 4, lineHeight: 1.5 }}>
@@ -1614,12 +2070,27 @@ function SubmitClaimModal({ c, open, onClose, onSubmit, onAfterOpen }: SubmitCla
           className="p-4 rounded-xl mb-4"
           style={{ background: c.surface2, border: `1px solid ${c.divider}` }}
         >
-          <p style={{ color: c.text2, fontSize: 11, fontWeight: 600, marginBottom: 8, letterSpacing: 0.3 }}>
+          <p
+            style={{
+              color: c.text2,
+              fontSize: 11,
+              fontWeight: 600,
+              marginBottom: 8,
+              letterSpacing: 0.3,
+            }}
+          >
             DỰ KIẾN BỒI THƯỜNG
           </p>
           <div className="flex items-center justify-between mb-2">
             <span style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Số tiền yêu cầu</span>
-            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
+            <span
+              style={{
+                color: c.text1,
+                fontSize: φ.sm,
+                fontWeight: 600,
+                fontVariantNumeric: 'tabular-nums',
+              }}
+            >
               {fmtVnd(parsedAmount)} đ
             </span>
           </div>
@@ -1631,9 +2102,21 @@ function SubmitClaimModal({ c, open, onClose, onSubmit, onAfterOpen }: SubmitCla
               {USER_PROFILE.coveragePct}%
             </span>
           </div>
-          <div className="flex items-center justify-between pt-2" style={{ borderTop: `1px dashed ${c.divider}` }}>
-            <span style={{ color: '#10B981', fontSize: φ.sm, fontWeight: 700, lineHeight: 1.5 }}>Dự kiến nhận</span>
-            <span style={{ color: '#10B981', fontSize: φ.body, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
+          <div
+            className="flex items-center justify-between pt-2"
+            style={{ borderTop: `1px dashed ${c.divider}` }}
+          >
+            <span style={{ color: '#10B981', fontSize: φ.sm, fontWeight: 700, lineHeight: 1.5 }}>
+              Dự kiến nhận
+            </span>
+            <span
+              style={{
+                color: '#10B981',
+                fontSize: φ.body,
+                fontWeight: 700,
+                fontVariantNumeric: 'tabular-nums',
+              }}
+            >
               {fmtVnd(estimatedPayout)} đ
             </span>
           </div>
@@ -1644,7 +2127,10 @@ function SubmitClaimModal({ c, open, onClose, onSubmit, onAfterOpen }: SubmitCla
       <div className="flex flex-col gap-3 mb-5">
         {/* Consent 1: Accuracy */}
         <button
-          onClick={() => { setConsentAccuracy(v => !v); hapticSelection(); }}
+          onClick={() => {
+            setConsentAccuracy((v) => !v);
+            hapticSelection();
+          }}
           className="flex items-start gap-3 text-left"
         >
           <div
@@ -1657,13 +2143,17 @@ function SubmitClaimModal({ c, open, onClose, onSubmit, onAfterOpen }: SubmitCla
             {consentAccuracy && <CheckCircle size={12} color="#fff" />}
           </div>
           <span style={{ color: c.text2, fontSize: φ.sm, lineHeight: 1.5 }}>
-            Tôi xác nhận thông tin trên là chính xác và đầy đủ. Tôi hiểu rằng cung cấp thông tin sai sẽ bị từ chối và có thể bị hạn chế tài khoản.
+            Tôi xác nhận thông tin trên là chính xác và đầy đủ. Tôi hiểu rằng cung cấp thông tin sai
+            sẽ bị từ chối và có thể bị hạn chế tài khoản.
           </span>
         </button>
 
         {/* Consent 2: Terms + Privacy */}
         <button
-          onClick={() => { setConsentTerms(v => !v); hapticSelection(); }}
+          onClick={() => {
+            setConsentTerms((v) => !v);
+            hapticSelection();
+          }}
           className="flex items-start gap-3 text-left"
         >
           <div
@@ -1679,18 +2169,26 @@ function SubmitClaimModal({ c, open, onClose, onSubmit, onAfterOpen }: SubmitCla
             Tôi đồng ý với{' '}
             <span
               style={{ color: '#3B82F6', fontWeight: 600 }}
-              onClick={(e) => { e.stopPropagation(); onClose(); navigate(`${prefix}/p2p/insurance/policy`); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                onClose();
+                navigate(`${prefix}/p2p/insurance/policy`);
+              }}
             >
               Điều khoản Bảo hiểm P2P
-            </span>
-            {' '}và{' '}
+            </span>{' '}
+            và{' '}
             <span
               style={{ color: '#3B82F6', fontWeight: 600 }}
-              onClick={(e) => { e.stopPropagation(); onClose(); navigate(`${prefix}/p2p/insurance/policy`); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                onClose();
+                navigate(`${prefix}/p2p/insurance/policy`);
+              }}
             >
               Chính sách Quyền riêng tư
-            </span>.
-            Dữ liệu bằng chứng sẽ được lưu trữ bảo mật trong quá trình xử lý.
+            </span>
+            . Dữ liệu bằng chứng sẽ được lưu trữ bảo mật trong quá trình xử lý.
           </span>
         </button>
       </div>
@@ -1702,20 +2200,25 @@ function SubmitClaimModal({ c, open, onClose, onSubmit, onAfterOpen }: SubmitCla
       >
         <Lock size={12} color={c.text3} className="shrink-0 mt-0.5" />
         <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
-          Thông tin cá nhân và bằng chứng của bạn được mã hóa và chỉ nhân viên có thẩm quyền mới được truy cập trong quá trình xem xét yêu cầu.
+          Thông tin cá nhân và bằng chứng của bạn được mã hóa và chỉ nhân viên có thẩm quyền mới
+          được truy cập trong quá trình xem xét yêu cầu.
         </p>
       </div>
 
       {/* Submit */}
-      <CTAButton
-        onClick={onSubmit}
-        variant="primary"
-        disabled={!isValid}
-      >
+      <CTAButton onClick={onSubmit} variant="primary" disabled={!isValid}>
         Gửi yêu cầu bồi thường
       </CTAButton>
 
-      <p style={{ color: c.text3, fontSize: 11, textAlign: 'center', marginTop: 12, lineHeight: 1.5 }}>
+      <p
+        style={{
+          color: c.text3,
+          fontSize: 11,
+          textAlign: 'center',
+          marginTop: 12,
+          lineHeight: 1.5,
+        }}
+      >
         Yêu cầu sẽ được xem xét trong 48 giờ. Chi trả trong 72 giờ sau khi duyệt.
       </p>
 
@@ -1731,12 +2234,15 @@ function SubmitClaimModal({ c, open, onClose, onSubmit, onAfterOpen }: SubmitCla
         >
           <div
             className="p-3 rounded-xl mb-4 flex items-start gap-2"
-            style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}
+            style={{
+              background: 'rgba(245,158,11,0.08)',
+              border: '1px solid rgba(245,158,11,0.2)',
+            }}
           >
             <AlertTriangle size={14} color="#F59E0B" className="shrink-0 mt-0.5" />
             <p style={{ color: '#D97706', fontSize: φ.sm, lineHeight: 1.5 }}>
-              Đơn hàng <strong>{orderKey}</strong> đã có yêu cầu bồi thường đang được xử lý.
-              Mỗi đơn hàng chỉ được phép có 1 claim active.
+              Đơn hàng <strong>{orderKey}</strong> đã có yêu cầu bồi thường đang được xử lý. Mỗi đơn
+              hàng chỉ được phép có 1 claim active.
             </p>
           </div>
 
@@ -1745,7 +2251,7 @@ function SubmitClaimModal({ c, open, onClose, onSubmit, onAfterOpen }: SubmitCla
               Claims hiện có cho đơn này:
             </p>
             {/* Mock existing claims for this order */}
-            {MOCK_CLAIMS.filter(cl => cl.orderId === orderKey).map(existingClaim => {
+            {MOCK_CLAIMS.filter((cl) => cl.orderId === orderKey).map((existingClaim) => {
               const cfg = CLAIM_STATUS_CONFIG[existingClaim.status];
               const Icon = cfg.icon;
               return (
@@ -1785,8 +2291,8 @@ function SubmitClaimModal({ c, open, onClose, onSubmit, onAfterOpen }: SubmitCla
 
           <p style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5, textAlign: 'center' }}>
             Vui lòng chờ claim hiện tại được xử lý xong hoặc{' '}
-            <span style={{ color: '#3B82F6', fontWeight: 600 }}>liên hệ hỗ trợ</span>{' '}
-            nếu cần trợ giúp.
+            <span style={{ color: '#3B82F6', fontWeight: 600 }}>liên hệ hỗ trợ</span> nếu cần trợ
+            giúp.
           </p>
         </BottomSheetV2>
       )}

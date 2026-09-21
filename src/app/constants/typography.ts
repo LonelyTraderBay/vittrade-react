@@ -1,13 +1,13 @@
 /**
  * Enterprise Typography Scale System
- * 
+ *
  * Based on industry fintech standards (Coinbase, Robinhood, Revolut)
  * Uses 6-tier scale for clear visual hierarchy
- * 
+ *
  * Usage:
  * ```tsx
  * import { FONT_SCALE } from '@/constants/typography';
- * 
+ *
  * <span style={{ fontSize: FONT_SCALE.xs }}>Label</span>
  * <span style={{ fontSize: FONT_SCALE.base }}>Value</span>
  * ```
@@ -81,9 +81,9 @@ export const FONT_WEIGHT = {
  * Optimized for readability
  */
 export const LINE_HEIGHT = {
-  tight: 1.1,    // Hero numbers, large display text
-  normal: 1.4,   // Body text, paragraphs
-  relaxed: 1.6,  // Long-form content
+  tight: 1.1, // Hero numbers, large display text
+  normal: 1.4, // Body text, paragraphs
+  relaxed: 1.6, // Long-form content
 } as const;
 
 /**
@@ -91,15 +91,15 @@ export const LINE_HEIGHT = {
  * For better legibility in specific contexts
  */
 export const LETTER_SPACING = {
-  tight: -0.5,   // Large numbers, headings
-  normal: 0,     // Default
-  wide: 0.5,     // Uppercase labels, tags
+  tight: -0.5, // Large numbers, headings
+  normal: 0, // Default
+  wide: 0.5, // Uppercase labels, tags
 } as const;
 
 /**
  * Typography Helper Types
  */
-export type FontSize = typeof FONT_SCALE[keyof typeof FONT_SCALE];
-export type FontWeight = typeof FONT_WEIGHT[keyof typeof FONT_WEIGHT];
-export type LineHeight = typeof LINE_HEIGHT[keyof typeof LINE_HEIGHT];
-export type LetterSpacing = typeof LETTER_SPACING[keyof typeof LETTER_SPACING];
+export type FontSize = (typeof FONT_SCALE)[keyof typeof FONT_SCALE];
+export type FontWeight = (typeof FONT_WEIGHT)[keyof typeof FONT_WEIGHT];
+export type LineHeight = (typeof LINE_HEIGHT)[keyof typeof LINE_HEIGHT];
+export type LetterSpacing = (typeof LETTER_SPACING)[keyof typeof LETTER_SPACING];

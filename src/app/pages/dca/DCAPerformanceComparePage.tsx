@@ -16,17 +16,35 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  TrendingUp, TrendingDown, Activity, Target, Zap,
-  BarChart3, Info, AlertTriangle, CheckCircle,
+  TrendingUp,
+  TrendingDown,
+  Activity,
+  Target,
+  Zap,
+  BarChart3,
+  Info,
+  AlertTriangle,
+  CheckCircle,
 } from 'lucide-react';
 import {
-  LineChart, Line, ComposedChart, Area, XAxis, YAxis,
-  Tooltip, ResponsiveContainer, Legend, RadarChart, Radar,
-  PolarGrid, PolarAngleAxis, PolarRadiusAxis,
+  LineChart,
+  Line,
+  ComposedChart,
+  Area,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+  RadarChart,
+  Radar,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
 } from 'recharts';
 
 const TABS = ['So sanh', 'Kich ban', 'Phan tich'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 const COMPARISON_DATA = [
   { month: 'Jan', dca: 1000, lumpSum: 1000, price: 42000 },
@@ -133,7 +151,10 @@ export function DCAPerformanceComparePage() {
               {/* DCA Card */}
               <div
                 className="rounded-2xl p-4"
-                style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}
+                style={{
+                  background: 'rgba(16,185,129,0.08)',
+                  border: '1px solid rgba(16,185,129,0.2)',
+                }}
               >
                 <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>DCA Strategy</p>
                 <p style={{ color: '#10B981', fontSize: 22, fontWeight: 700, marginBottom: 8 }}>
@@ -158,7 +179,10 @@ export function DCAPerformanceComparePage() {
               {/* Lump Sum Card */}
               <div
                 className="rounded-2xl p-4"
-                style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}
+                style={{
+                  background: 'rgba(59,130,246,0.08)',
+                  border: '1px solid rgba(59,130,246,0.2)',
+                }}
               >
                 <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Lump Sum</p>
                 <p style={{ color: '#3B82F6', fontSize: 22, fontWeight: 700, marginBottom: 8 }}>
@@ -428,7 +452,10 @@ export function DCAPerformanceComparePage() {
             {/* Recommendations */}
             <div
               className="rounded-xl p-3"
-              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+              style={{
+                background: 'rgba(59,130,246,0.06)',
+                border: '1px solid rgba(59,130,246,0.15)',
+              }}
             >
               <div className="flex items-start gap-2">
                 <Info size={14} color="#3B82F6" style={{ marginTop: 2, flexShrink: 0 }} />
@@ -568,12 +595,15 @@ export function DCAPerformanceComparePage() {
             {/* Disclaimer */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
+              style={{
+                background: 'rgba(245,158,11,0.06)',
+                border: '1px solid rgba(245,158,11,0.15)',
+              }}
             >
               <Info size={14} color="#F59E0B" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                So sanh dua tren du lieu lich su cu the. Ket qua co the khac trong dieu kien thi truong khac.
-                Khong dam bao hieu suat tuong lai.
+                So sanh dua tren du lieu lich su cu the. Ket qua co the khac trong dieu kien thi
+                truong khac. Khong dam bao hieu suat tuong lai.
               </p>
             </div>
           </>

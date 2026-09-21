@@ -20,26 +20,35 @@ function QRCodeDisplay({ address }: { address: string }) {
   const cells: boolean[][] = Array.from({ length: 21 }, (_, r) =>
     Array.from({ length: 21 }, (_, c) => {
       if ((r < 7 && c < 7) || (r < 7 && c > 13) || (r > 13 && c < 7)) return true;
-      return ((seed * (r + 1) * (c + 1)) % 7) < 3;
-    })
+      return (seed * (r + 1) * (c + 1)) % 7 < 3;
+    }),
   );
   const colors = useThemeColors();
   return (
-    <div className="rounded-3xl p-4 flex items-center justify-center"
-      style={{ background: '#fff', width: 180, height: 180, boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
+    <div
+      className="rounded-3xl p-4 flex items-center justify-center"
+      style={{
+        background: '#fff',
+        width: 180,
+        height: 180,
+        boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+      }}
+    >
       <svg width="148" height="148" viewBox="0 0 21 21">
-        {cells.map((row, r) => row.map((filled, c) => filled ? (
-          <rect key={`${r}-${c}`} x={c} y={r} width="1" height="1" fill="#111" />
-        ) : null))}
-        <rect x="0" y="0" width="7" height="7" fill="none" stroke="#111" strokeWidth="0.5"/>
-        <rect x="1" y="1" width="5" height="5" fill="none" stroke="#111" strokeWidth="0.5"/>
-        <rect x="2" y="2" width="3" height="3" fill="#111"/>
-        <rect x="14" y="0" width="7" height="7" fill="none" stroke="#111" strokeWidth="0.5"/>
-        <rect x="15" y="1" width="5" height="5" fill="none" stroke="#111" strokeWidth="0.5"/>
-        <rect x="16" y="2" width="3" height="3" fill="#111"/>
-        <rect x="0" y="14" width="7" height="7" fill="none" stroke="#111" strokeWidth="0.5"/>
-        <rect x="1" y="15" width="5" height="5" fill="none" stroke="#111" strokeWidth="0.5"/>
-        <rect x="2" y="16" width="3" height="3" fill="#111"/>
+        {cells.map((row, r) =>
+          row.map((filled, c) =>
+            filled ? <rect key={`${r}-${c}`} x={c} y={r} width="1" height="1" fill="#111" /> : null,
+          ),
+        )}
+        <rect x="0" y="0" width="7" height="7" fill="none" stroke="#111" strokeWidth="0.5" />
+        <rect x="1" y="1" width="5" height="5" fill="none" stroke="#111" strokeWidth="0.5" />
+        <rect x="2" y="2" width="3" height="3" fill="#111" />
+        <rect x="14" y="0" width="7" height="7" fill="none" stroke="#111" strokeWidth="0.5" />
+        <rect x="15" y="1" width="5" height="5" fill="none" stroke="#111" strokeWidth="0.5" />
+        <rect x="16" y="2" width="3" height="3" fill="#111" />
+        <rect x="0" y="14" width="7" height="7" fill="none" stroke="#111" strokeWidth="0.5" />
+        <rect x="1" y="15" width="5" height="5" fill="none" stroke="#111" strokeWidth="0.5" />
+        <rect x="2" y="16" width="3" height="3" fill="#111" />
       </svg>
     </div>
   );
@@ -61,7 +70,14 @@ function DepositSkeleton() {
       {/* Warning skeleton */}
       <div className="h-28 rounded-2xl" style={s} />
       {/* QR code area */}
-      <div className="flex flex-col items-center gap-4 py-6 rounded-2xl" style={{ background: c.surface, border: `1px solid ${c.cardBorder}`, boxShadow: c.cardShadow }}>
+      <div
+        className="flex flex-col items-center gap-4 py-6 rounded-2xl"
+        style={{
+          background: c.surface,
+          border: `1px solid ${c.cardBorder}`,
+          boxShadow: c.cardShadow,
+        }}
+      >
         <div className="w-[180px] h-[180px] rounded-3xl" style={s} />
         <div className="h-3 w-40 rounded" style={s} />
         <div className="h-3 w-64 rounded" style={s} />
@@ -75,7 +91,8 @@ function DepositSkeleton() {
 
 export function DepositPage() {
   const { asset = 'USDT' } = useParams();
-  const networks = DEPOSIT_NETWORKS[asset as keyof typeof DEPOSIT_NETWORKS] ?? DEPOSIT_NETWORKS.USDT;
+  const networks =
+    DEPOSIT_NETWORKS[asset as keyof typeof DEPOSIT_NETWORKS] ?? DEPOSIT_NETWORKS.USDT;
 
   const [selectedNetwork, setSelectedNetwork] = useState(networks[0]);
   const [copied, setCopied] = useState(false);
@@ -101,7 +118,7 @@ export function DepositPage() {
     if (!memoValue) return;
     navigator.clipboard.writeText(memoValue).catch(() => {});
     setMemoCopied(true);
-    actionToast.success({ title: `${memoLabel} đã sao chép`, description: memoValue }, { haptic: 'success' });
+    actionToast.success(`${memoLabel} đã sao chép — ${memoValue}`, { haptic: 'success' });
     setTimeout(() => setMemoCopied(false), 2000);
   };
 
@@ -114,21 +131,41 @@ export function DepositPage() {
         title="Chọn mạng lưới"
       >
         <div className="flex flex-col gap-1">
-          {networks.map(net => (
-            <button key={net.id} onClick={() => { setSelectedNetwork(net); setShowNetworkPicker(false); hapticSelection(); }}
+          {networks.map((net) => (
+            <button
+              key={net.id}
+              onClick={() => {
+                setSelectedNetwork(net);
+                setShowNetworkPicker(false);
+                hapticSelection();
+              }}
               className="w-full flex items-center justify-between px-4 py-3.5 rounded-2xl market-row"
-              style={{ background: net.id === selectedNetwork.id ? 'rgba(59,130,246,0.1)' : 'transparent' }}>
+              style={{
+                background: net.id === selectedNetwork.id ? 'rgba(59,130,246,0.1)' : 'transparent',
+              }}
+            >
               <div>
                 <div className="flex items-center gap-2">
-                  <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, textAlign: 'left' }}>{net.name}</p>
+                  <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, textAlign: 'left' }}>
+                    {net.name}
+                  </p>
                   {net.memo && (
-                    <span className="px-1.5 py-0.5 rounded"
-                      style={{ background: 'rgba(245,158,11,0.15)', color: '#F59E0B', fontSize: 9, fontWeight: 700 }}>
+                    <span
+                      className="px-1.5 py-0.5 rounded"
+                      style={{
+                        background: 'rgba(245,158,11,0.15)',
+                        color: '#F59E0B',
+                        fontSize: 9,
+                        fontWeight: 700,
+                      }}
+                    >
                       {net.memoLabel || 'Memo'}
                     </span>
                   )}
                 </div>
-                <p style={{ color: c.text3, fontSize: φ.xs }}>Phí: {net.fee} • ~{net.arrivalTime} • {net.confirmations} xác nhận</p>
+                <p style={{ color: c.text3, fontSize: φ.xs }}>
+                  Phí: {net.fee} • ~{net.arrivalTime} • {net.confirmations} xác nhận
+                </p>
               </div>
               {net.id === selectedNetwork.id && <CheckCircle size={φIcon.sm} color="#3B82F6" />}
             </button>
@@ -139,18 +176,33 @@ export function DepositPage() {
       <Header title={`Nạp ${asset}`} subtitle="Nạp tiền · Wallet" back />
 
       {isLoading ? (
-        <PageContent><DepositSkeleton /></PageContent>
+        <PageContent>
+          <DepositSkeleton />
+        </PageContent>
       ) : (
         <PageContent gap="default">
           {/* Network selector */}
           <div>
-            <label style={{ color: c.text2, fontSize: φ.sm, marginBottom: 8, display: 'block' }}>Chọn mạng lưới</label>
+            <label style={{ color: c.text2, fontSize: φ.sm, marginBottom: 8, display: 'block' }}>
+              Chọn mạng lưới
+            </label>
             <button
-              onClick={() => { setShowNetworkPicker(true); hapticSelection(); }}
+              onClick={() => {
+                setShowNetworkPicker(true);
+                hapticSelection();
+              }}
               className="w-full flex items-center justify-between px-4 rounded-2xl hover-ghost"
-              style={{ background: c.surface2, border: '1.5px solid #3B82F6', height: 52, borderRadius: 14 }}>
+              style={{
+                background: c.surface2,
+                border: '1.5px solid #3B82F6',
+                height: 52,
+                borderRadius: 14,
+              }}
+            >
               <div className="flex flex-col items-start">
-                <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>{selectedNetwork.name}</span>
+                <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
+                  {selectedNetwork.name}
+                </span>
                 <span style={{ color: c.text2, fontSize: φ.xs }}>
                   Phí: {selectedNetwork.fee} • Nạp tối thiểu: {selectedNetwork.minDeposit} {asset}
                 </span>
@@ -164,27 +216,38 @@ export function DepositPage() {
               <span style={{ color: c.text3, fontSize: 10 }}>•</span>
               <span style={{ color: c.text3, fontSize: 10 }}>~{selectedNetwork.arrivalTime}</span>
               <span style={{ color: c.text3, fontSize: 10 }}>•</span>
-              <span style={{ color: c.text3, fontSize: 10 }}>{selectedNetwork.confirmations} xác nhận</span>
+              <span style={{ color: c.text3, fontSize: 10 }}>
+                {selectedNetwork.confirmations} xác nhận
+              </span>
             </div>
           </div>
 
           {/* Important warning */}
-          <div className="rounded-2xl p-4" style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)' }}>
+          <div
+            className="rounded-2xl p-4"
+            style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)' }}
+          >
             <div className="flex items-start gap-2">
               <AlertTriangle size={φIcon.sm} color="#EF4444" className="shrink-0 mt-0.5" />
               <div>
-                <p style={{ color: '#EF4444', fontSize: φ.sm, fontWeight: 700, marginBottom: 4 }}>Quan trọng — Đọc trước khi nạp</p>
+                <p style={{ color: '#EF4444', fontSize: φ.sm, fontWeight: 700, marginBottom: 4 }}>
+                  Quan trọng — Đọc trước khi nạp
+                </p>
                 <ul className="flex flex-col gap-1">
                   {[
                     `Chỉ gửi ${asset} qua mạng ${selectedNetwork.name}`,
                     'Gửi sai mạng sẽ mất tiền vĩnh viễn, không thể khôi phục',
                     `Nạp tối thiểu: ${selectedNetwork.minDeposit} ${asset}`,
                     `Cần ${selectedNetwork.confirmations} xác nhận blockchain`,
-                    ...(hasMemo ? [
-                      `BẮT BUỘC nhập đúng ${memoLabel} khi gửi. Thiếu ${memoLabel} sẽ MẤT TIỀN vĩnh viễn`,
-                    ] : []),
+                    ...(hasMemo
+                      ? [
+                          `BẮT BUỘC nhập đúng ${memoLabel} khi gửi. Thiếu ${memoLabel} sẽ MẤT TIỀN vĩnh viễn`,
+                        ]
+                      : []),
                   ].map((msg, i) => (
-                    <li key={msg} style={{ color: '#F87171', fontSize: φ.xs }}>• {msg}</li>
+                    <li key={msg} style={{ color: '#F87171', fontSize: φ.xs }}>
+                      • {msg}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -193,7 +256,13 @@ export function DepositPage() {
 
           {/* ═══ Memo/Tag Critical Warning Banner (only for memo-required networks) ═══ */}
           {hasMemo && (
-            <div className="rounded-2xl p-4" style={{ background: 'rgba(245,158,11,0.12)', border: '2px solid rgba(245,158,11,0.5)' }}>
+            <div
+              className="rounded-2xl p-4"
+              style={{
+                background: 'rgba(245,158,11,0.12)',
+                border: '2px solid rgba(245,158,11,0.5)',
+              }}
+            >
               <div className="flex items-start gap-2">
                 <AlertTriangle size={φIcon.md} color="#F59E0B" className="shrink-0 mt-0.5" />
                 <div>
@@ -201,8 +270,9 @@ export function DepositPage() {
                     Mạng này yêu cầu {memoLabel}
                   </p>
                   <p style={{ color: '#D97706', fontSize: φ.xs, lineHeight: 1.5, marginTop: 4 }}>
-                    Bạn phải nhập cả <strong>Địa chỉ</strong> và <strong>{memoLabel}</strong> khi gửi {asset}.
-                    Thiếu {memoLabel} sẽ khiến giao dịch không được ghi nhận và <strong>không thể khôi phục</strong>.
+                    Bạn phải nhập cả <strong>Địa chỉ</strong> và <strong>{memoLabel}</strong> khi
+                    gửi {asset}. Thiếu {memoLabel} sẽ khiến giao dịch không được ghi nhận và{' '}
+                    <strong>không thể khôi phục</strong>.
                   </p>
                 </div>
               </div>
@@ -213,15 +283,33 @@ export function DepositPage() {
           <TrCard className="flex flex-col items-center gap-4 py-4">
             <QRCodeDisplay address={selectedNetwork.address} />
             <div className="flex flex-col items-center gap-1">
-              <span style={{ color: c.text2, fontSize: φ.xs }}>Địa chỉ {asset} ({selectedNetwork.name.split(' ')[0]})</span>
-              <span style={{ color: c.text1, fontSize: φ.xs, fontFamily: 'monospace', textAlign: 'center', padding: '0 16px', lineHeight: 1.6, wordBreak: 'break-all' }}>
+              <span style={{ color: c.text2, fontSize: φ.xs }}>
+                Địa chỉ {asset} ({selectedNetwork.name.split(' ')[0]})
+              </span>
+              <span
+                style={{
+                  color: c.text1,
+                  fontSize: φ.xs,
+                  fontFamily: 'monospace',
+                  textAlign: 'center',
+                  padding: '0 16px',
+                  lineHeight: 1.6,
+                  wordBreak: 'break-all',
+                }}
+              >
                 {selectedNetwork.address}
               </span>
             </div>
 
-            <button onClick={handleCopy}
+            <button
+              onClick={handleCopy}
               className="flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold ripple"
-              style={{ background: copied ? 'rgba(16,185,129,0.15)' : 'rgba(59,130,246,0.15)', color: copied ? '#10B981' : '#3B82F6', fontSize: φ.sm }}>
+              style={{
+                background: copied ? 'rgba(16,185,129,0.15)' : 'rgba(59,130,246,0.15)',
+                color: copied ? '#10B981' : '#3B82F6',
+                fontSize: φ.sm,
+              }}
+            >
               {copied ? <CheckCircle size={φIcon.sm} /> : <Copy size={φIcon.sm} />}
               {copied ? 'Đã sao chép địa chỉ!' : 'Sao chép địa chỉ'}
             </button>
@@ -232,40 +320,55 @@ export function DepositPage() {
             <TrCard className="p-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-lg flex items-center justify-center"
-                    style={{ background: 'rgba(245,158,11,0.15)' }}>
+                  <div
+                    className="w-6 h-6 rounded-lg flex items-center justify-center"
+                    style={{ background: 'rgba(245,158,11,0.15)' }}
+                  >
                     <AlertTriangle size={13} color="#F59E0B" />
                   </div>
                   <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
                     {memoLabel}
                   </span>
-                  <span className="px-1.5 py-0.5 rounded"
-                    style={{ background: 'rgba(239,68,68,0.12)', color: '#EF4444', fontSize: 9, fontWeight: 700 }}>
+                  <span
+                    className="px-1.5 py-0.5 rounded"
+                    style={{
+                      background: 'rgba(239,68,68,0.12)',
+                      color: '#EF4444',
+                      fontSize: 9,
+                      fontWeight: 700,
+                    }}
+                  >
                     BẮT BUỘC
                   </span>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 rounded-xl px-4 py-3"
-                style={{ background: c.surface2, border: `1.5px solid rgba(245,158,11,0.4)` }}>
-                <span style={{
-                  color: c.text1,
-                  fontSize: 18,
-                  fontWeight: 700,
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "SF Mono", monospace',
-                  letterSpacing: 2,
-                  flex: 1,
-                }}>
+              <div
+                className="flex items-center gap-3 rounded-xl px-4 py-3"
+                style={{ background: c.surface2, border: `1.5px solid rgba(245,158,11,0.4)` }}
+              >
+                <span
+                  style={{
+                    color: c.text1,
+                    fontSize: 18,
+                    fontWeight: 700,
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Mono", monospace',
+                    letterSpacing: 2,
+                    flex: 1,
+                  }}
+                >
                   {memoValue}
                 </span>
-                <button onClick={handleCopyMemo}
+                <button
+                  onClick={handleCopyMemo}
                   className="flex items-center gap-1.5 px-3 py-2 rounded-xl shrink-0"
                   style={{
                     background: memoCopied ? 'rgba(16,185,129,0.15)' : 'rgba(59,130,246,0.15)',
                     color: memoCopied ? '#10B981' : '#3B82F6',
                     fontSize: φ.xs,
                     fontWeight: 600,
-                  }}>
+                  }}
+                >
                   {memoCopied ? <CheckCircle size={13} /> : <Copy size={13} />}
                   {memoCopied ? 'Đã chép' : 'Sao chép'}
                 </button>
@@ -286,7 +389,7 @@ export function DepositPage() {
               { label: 'Phí nạp', value: selectedNetwork.fee },
               { label: 'Nạp tối thiểu', value: `${selectedNetwork.minDeposit} ${asset}` },
               { label: 'Nạp nhỏ hơn tối thiểu', value: 'Không được ghi nhận' },
-            ].map(row => (
+            ].map((row) => (
               <div key={row.label} className="flex justify-between items-center">
                 <span style={{ color: c.text2, fontSize: φ.sm }}>{row.label}</span>
                 <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>{row.value}</span>
@@ -295,8 +398,16 @@ export function DepositPage() {
           </TrCard>
 
           {/* Refresh button */}
-          <button onClick={() => hapticLight()} className="flex items-center justify-center gap-2 h-12 rounded-2xl hover-ghost"
-            style={{ background: c.surface2, border: `1px solid ${c.borderSolid}`, color: c.text2, fontSize: φ.sm }}>
+          <button
+            onClick={() => hapticLight()}
+            className="flex items-center justify-center gap-2 h-12 rounded-2xl hover-ghost"
+            style={{
+              background: c.surface2,
+              border: `1px solid ${c.borderSolid}`,
+              color: c.text2,
+              fontSize: φ.sm,
+            }}
+          >
             <RefreshCw size={φIcon.sm} />
             Làm mới địa chỉ nạp
           </button>

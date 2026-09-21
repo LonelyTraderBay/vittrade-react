@@ -10,8 +10,20 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  FileText, Upload, CheckCircle, AlertTriangle, Info, X, Eye,
-  Home, CreditCard, Receipt, Calendar, MapPin, Shield, ChevronRight,
+  FileText,
+  Upload,
+  CheckCircle,
+  AlertTriangle,
+  Info,
+  X,
+  Eye,
+  Home,
+  CreditCard,
+  Receipt,
+  Calendar,
+  MapPin,
+  Shield,
+  ChevronRight,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Header } from '../../components/layout/Header';
@@ -134,8 +146,8 @@ export function P2PAddressProofPage() {
 
     // Simulate OCR
     if (mountedRef.current) setProcessing(true);
-    
-    await new Promise(res => {
+
+    await new Promise((res) => {
       timeoutRef.current = setTimeout(res, 2000);
     });
 
@@ -207,9 +219,7 @@ export function P2PAddressProofPage() {
         <TrCard rounded="md" className="p-4">
           <div className="flex items-start gap-2 mb-3">
             <Info size={16} color="#3B82F6" className="shrink-0 mt-0.5" />
-            <h4 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
-              Yêu cầu tài liệu
-            </h4>
+            <h4 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Yêu cầu tài liệu</h4>
           </div>
           <div className="flex flex-col gap-2">
             {REQUIREMENTS.map((req, idx) => (
@@ -230,7 +240,7 @@ export function P2PAddressProofPage() {
           </h3>
 
           <div className="flex flex-col gap-3">
-            {DOCUMENT_TYPES.map(doc => {
+            {DOCUMENT_TYPES.map((doc) => {
               const DocIcon = doc.icon;
               return (
                 <button
@@ -240,7 +250,7 @@ export function P2PAddressProofPage() {
                     setSelectedType(doc.id);
                   }}
                   className="p-4 rounded-xl text-left"
-                  style={{ background: c.surface1, border: `1px solid ${c.borderSolid}` }}
+                  style={{ background: c.surface, border: `1px solid ${c.borderSolid}` }}
                 >
                   <div className="flex items-start gap-3 mb-3">
                     <div
@@ -250,7 +260,9 @@ export function P2PAddressProofPage() {
                       <DocIcon size={18} color="#3B82F6" />
                     </div>
                     <div className="flex-1">
-                      <h4 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700, marginBottom: 2 }}>
+                      <h4
+                        style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700, marginBottom: 2 }}
+                      >
                         {doc.label}
                       </h4>
                       <p style={{ color: c.text3, fontSize: 11 }}>{doc.description}</p>
@@ -282,9 +294,7 @@ export function P2PAddressProofPage() {
         <>
           <div className="px-5 mb-6">
             <div className="flex items-center justify-between mb-3">
-              <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
-                Upload tài liệu
-              </h3>
+              <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Upload tài liệu</h3>
               <button
                 onClick={() => {
                   hapticSelection();
@@ -316,7 +326,7 @@ export function P2PAddressProofPage() {
                     fileInputRef.current?.click();
                   }}
                   className="w-full h-64 rounded-xl border-2 border-dashed flex flex-col items-center justify-center gap-3"
-                  style={{ borderColor: c.borderSolid, background: c.surface1 }}
+                  style={{ borderColor: c.borderSolid, background: c.surface }}
                 >
                   <div
                     className="w-16 h-16 rounded-full flex items-center justify-center"
@@ -328,9 +338,7 @@ export function P2PAddressProofPage() {
                     <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, marginBottom: 4 }}>
                       Chụp hoặc tải tài liệu
                     </p>
-                    <p style={{ color: c.text3, fontSize: 11 }}>
-                      JPG, PNG, PDF • Tối đa 10MB
-                    </p>
+                    <p style={{ color: c.text3, fontSize: 11 }}>JPG, PNG, PDF • Tối đa 10MB</p>
                   </div>
                 </button>
               </>
@@ -382,7 +390,10 @@ export function P2PAddressProofPage() {
 
                 {/* Extracted Data */}
                 {upload.extractedData && (
-                  <div className="mt-3 p-3 rounded-lg" style={{ background: hexToRgba('#10B981', 10) }}>
+                  <div
+                    className="mt-3 p-3 rounded-lg"
+                    style={{ background: hexToRgba('#10B981', 10) }}
+                  >
                     <div className="flex items-center gap-2 mb-2">
                       <CheckCircle size={14} color="#10B981" />
                       <p style={{ color: '#10B981', fontSize: 11, fontWeight: 700 }}>
@@ -421,7 +432,6 @@ export function P2PAddressProofPage() {
                 placeholder="Nhập địa chỉ đầy đủ"
                 value={manualAddress}
                 onChange={(e) => setManualAddress(e.target.value)}
-                icon={MapPin}
               />
 
               <div
@@ -501,11 +511,7 @@ export function P2PAddressProofPage() {
             style={{ background: 'rgba(0,0,0,0.9)' }}
             onClick={() => setShowPreview(false)}
           >
-            <img
-              src={upload.preview}
-              alt="Preview"
-              className="max-w-full max-h-full rounded-lg"
-            />
+            <img src={upload.preview} alt="Preview" className="max-w-full max-h-full rounded-lg" />
             <button
               onClick={() => setShowPreview(false)}
               className="absolute top-5 right-5 w-10 h-10 rounded-full flex items-center justify-center"

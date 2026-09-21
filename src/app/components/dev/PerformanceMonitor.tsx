@@ -32,14 +32,17 @@ export function PerformanceMonitor() {
   useEffect(() => {
     // Get performance metrics
     const getMetrics = () => {
-      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+      const navigation = performance.getEntriesByType(
+        'navigation',
+      )[0] as PerformanceNavigationTiming;
       const paint = performance.getEntriesByType('paint');
-      
+
       const metrics: PerformanceMetrics = {
         loadTime: navigation?.loadEventEnd - navigation?.fetchStart || 0,
         domContentLoaded: navigation?.domContentLoadedEventEnd - navigation?.fetchStart || 0,
-        firstPaint: paint.find(p => p.name === 'first-paint')?.startTime || 0,
-        firstContentfulPaint: paint.find(p => p.name === 'first-contentful-paint')?.startTime || 0,
+        firstPaint: paint.find((p) => p.name === 'first-paint')?.startTime || 0,
+        firstContentfulPaint:
+          paint.find((p) => p.name === 'first-contentful-paint')?.startTime || 0,
         largestContentfulPaint: 0,
       };
 
@@ -47,7 +50,9 @@ export function PerformanceMonitor() {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
         const lastEntry = entries[entries.length - 1] as any;
-        setMetrics(prev => prev ? { ...prev, largestContentfulPaint: lastEntry.startTime } : null);
+        setMetrics((prev) =>
+          prev ? { ...prev, largestContentfulPaint: lastEntry.startTime } : null,
+        );
       });
       observer.observe({ entryTypes: ['largest-contentful-paint'] });
 
@@ -63,10 +68,12 @@ export function PerformanceMonitor() {
 
     // Get resource timings
     const getResources = () => {
-      const resourceTimings = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+      const resourceTimings = performance.getEntriesByType(
+        'resource',
+      ) as PerformanceResourceTiming[];
       const processedResources = resourceTimings
-        .filter(r => r.initiatorType !== 'fetch') // Exclude API calls
-        .map(r => ({
+        .filter((r) => r.initiatorType !== 'fetch') // Exclude API calls
+        .map((r) => ({
           name: r.name.split('/').pop() || r.name,
           type: r.initiatorType,
           duration: r.duration,
@@ -79,8 +86,8 @@ export function PerformanceMonitor() {
 
       // Detect lazy loaded chunks
       const chunks = resourceTimings
-        .filter(r => r.name.includes('chunk') || r.name.includes('lazy'))
-        .map(r => r.name.split('/').pop() || r.name);
+        .filter((r) => r.name.includes('chunk') || r.name.includes('lazy'))
+        .map((r) => r.name.split('/').pop() || r.name);
       setLazyLoadedChunks(chunks);
     };
 
@@ -132,29 +139,43 @@ export function PerformanceMonitor() {
           <div className="flex items-center gap-3 mb-4">
             <Activity size={24} color={c.primary} />
             <div>
-              <p style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>
-                Performance Score
-              </p>
-              <p style={{ color: c.text3, fontSize: 12 }}>
-                Based on Core Web Vitals
-              </p>
+              <p style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>Performance Score</p>
+              <p style={{ color: c.text3, fontSize: 12 }}>Based on Core Web Vitals</p>
             </div>
           </div>
           <div className="grid grid-cols-3 gap-3">
             <div className="text-center p-3 rounded-xl" style={{ background: c.surface2 }}>
-              <p style={{ color: getScoreColor(metrics.firstContentfulPaint, { good: 1800, ok: 3000 }), fontSize: 20, fontWeight: 700 }}>
+              <p
+                style={{
+                  color: getScoreColor(metrics.firstContentfulPaint, { good: 1800, ok: 3000 }),
+                  fontSize: 20,
+                  fontWeight: 700,
+                }}
+              >
                 {metrics.firstContentfulPaint.toFixed(0)}ms
               </p>
               <p style={{ color: c.text3, fontSize: 10 }}>FCP</p>
             </div>
             <div className="text-center p-3 rounded-xl" style={{ background: c.surface2 }}>
-              <p style={{ color: getScoreColor(metrics.largestContentfulPaint, { good: 2500, ok: 4000 }), fontSize: 20, fontWeight: 700 }}>
+              <p
+                style={{
+                  color: getScoreColor(metrics.largestContentfulPaint, { good: 2500, ok: 4000 }),
+                  fontSize: 20,
+                  fontWeight: 700,
+                }}
+              >
                 {metrics.largestContentfulPaint.toFixed(0)}ms
               </p>
               <p style={{ color: c.text3, fontSize: 10 }}>LCP</p>
             </div>
             <div className="text-center p-3 rounded-xl" style={{ background: c.surface2 }}>
-              <p style={{ color: getScoreColor(metrics.loadTime, { good: 3000, ok: 5000 }), fontSize: 20, fontWeight: 700 }}>
+              <p
+                style={{
+                  color: getScoreColor(metrics.loadTime, { good: 3000, ok: 5000 }),
+                  fontSize: 20,
+                  fontWeight: 700,
+                }}
+              >
                 {(metrics.loadTime / 1000).toFixed(2)}s
               </p>
               <p style={{ color: c.text3, fontSize: 10 }}>Load Time</p>
@@ -167,22 +188,55 @@ export function PerformanceMonitor() {
           <TrCard className="p-4">
             <div className="space-y-3">
               {[
-                { label: 'First Paint (FP)', value: metrics.firstPaint, unit: 'ms', thresholds: { good: 1000, ok: 2000 } },
-                { label: 'First Contentful Paint (FCP)', value: metrics.firstContentfulPaint, unit: 'ms', thresholds: { good: 1800, ok: 3000 } },
-                { label: 'Largest Contentful Paint (LCP)', value: metrics.largestContentfulPaint, unit: 'ms', thresholds: { good: 2500, ok: 4000 } },
-                { label: 'DOM Content Loaded', value: metrics.domContentLoaded, unit: 'ms', thresholds: { good: 2000, ok: 3500 } },
-                { label: 'Page Load', value: metrics.loadTime, unit: 'ms', thresholds: { good: 3000, ok: 5000 } },
+                {
+                  label: 'First Paint (FP)',
+                  value: metrics.firstPaint,
+                  unit: 'ms',
+                  thresholds: { good: 1000, ok: 2000 },
+                },
+                {
+                  label: 'First Contentful Paint (FCP)',
+                  value: metrics.firstContentfulPaint,
+                  unit: 'ms',
+                  thresholds: { good: 1800, ok: 3000 },
+                },
+                {
+                  label: 'Largest Contentful Paint (LCP)',
+                  value: metrics.largestContentfulPaint,
+                  unit: 'ms',
+                  thresholds: { good: 2500, ok: 4000 },
+                },
+                {
+                  label: 'DOM Content Loaded',
+                  value: metrics.domContentLoaded,
+                  unit: 'ms',
+                  thresholds: { good: 2000, ok: 3500 },
+                },
+                {
+                  label: 'Page Load',
+                  value: metrics.loadTime,
+                  unit: 'ms',
+                  thresholds: { good: 3000, ok: 5000 },
+                },
               ].map((metric, idx) => {
                 const color = getScoreColor(metric.value, metric.thresholds);
                 return (
-                  <div key={idx} className="pb-3 border-b last:border-b-0" style={{ borderColor: c.borderSolid }}>
+                  <div
+                    key={idx}
+                    className="pb-3 border-b last:border-b-0"
+                    style={{ borderColor: c.borderSolid }}
+                  >
                     <div className="flex items-center justify-between mb-2">
                       <p style={{ color: c.text2, fontSize: 12 }}>{metric.label}</p>
                       <p style={{ color, fontSize: 13, fontWeight: 700 }}>
-                        {metric.value.toFixed(0)}{metric.unit}
+                        {metric.value.toFixed(0)}
+                        {metric.unit}
                       </p>
                     </div>
-                    <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
+                    <div
+                      className="h-2 rounded-full overflow-hidden"
+                      style={{ background: c.surface2 }}
+                    >
                       <div
                         className="h-full"
                         style={{
@@ -219,7 +273,8 @@ export function PerformanceMonitor() {
                 <div
                   className="h-full"
                   style={{
-                    background: (metrics.memoryUsed / (metrics.memoryLimit || 1)) > 0.8 ? '#EF4444' : '#10B981',
+                    background:
+                      metrics.memoryUsed / (metrics.memoryLimit || 1) > 0.8 ? '#EF4444' : '#10B981',
                     width: `${(metrics.memoryUsed / (metrics.memoryLimit || 1)) * 100}%`,
                   }}
                 />
@@ -240,10 +295,12 @@ export function PerformanceMonitor() {
               </div>
               <div className="space-y-2">
                 {lazyLoadedChunks.map((chunk, idx) => (
-                  <div key={idx} className="px-3 py-2 rounded-lg" style={{ background: c.surface2 }}>
-                    <p style={{ color: c.text1, fontSize: 11, fontFamily: 'monospace' }}>
-                      {chunk}
-                    </p>
+                  <div
+                    key={idx}
+                    className="px-3 py-2 rounded-lg"
+                    style={{ background: c.surface2 }}
+                  >
+                    <p style={{ color: c.text1, fontSize: 11, fontFamily: 'monospace' }}>{chunk}</p>
                   </div>
                 ))}
               </div>
@@ -256,16 +313,31 @@ export function PerformanceMonitor() {
           <TrCard className="p-4">
             <div className="space-y-2">
               {resources.map((resource, idx) => (
-                <div key={idx} className="flex items-center justify-between pb-2 border-b last:border-b-0" style={{ borderColor: c.borderSolid }}>
+                <div
+                  key={idx}
+                  className="flex items-center justify-between pb-2 border-b last:border-b-0"
+                  style={{ borderColor: c.borderSolid }}
+                >
                   <div className="flex-1 min-w-0 mr-3">
-                    <p style={{ color: c.text1, fontSize: 11, fontFamily: 'monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <p
+                      style={{
+                        color: c.text1,
+                        fontSize: 11,
+                        fontFamily: 'monospace',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
                       {resource.name}
                     </p>
                     <p style={{ color: c.text3, fontSize: 10 }}>
                       {resource.type} • {formatBytes(resource.size)}
                     </p>
                   </div>
-                  <p style={{ color: c.text2, fontSize: 11, fontWeight: 700, whiteSpace: 'nowrap' }}>
+                  <p
+                    style={{ color: c.text2, fontSize: 11, fontWeight: 700, whiteSpace: 'nowrap' }}
+                  >
                     {formatTime(resource.duration)}
                   </p>
                 </div>
@@ -320,7 +392,13 @@ export function PerformanceMonitor() {
         </PageSection>
 
         {/* Benchmark */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(59,130,246,0.08)', border: '1.5px solid rgba(59,130,246,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{
+            background: 'rgba(59,130,246,0.08)',
+            border: '1.5px solid rgba(59,130,246,0.2)',
+          }}
+        >
           <p style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 6 }}>
             Performance Targets
           </p>

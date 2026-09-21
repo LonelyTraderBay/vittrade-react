@@ -6,7 +6,15 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { TrCard } from '../../components/ui/TrCard';
 import { fmtUsd } from '../../data/formatNumber';
-import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
+import {
+  LineChart,
+  Line,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+} from 'recharts';
 import { useIsDark } from '../../hooks/useIsDark';
 
 interface Position {
@@ -30,24 +38,28 @@ const POSITIONS: Position[] = [
   { id: 'p4', product: 'SOL Fixed 30D', asset: 'SOL', amount: 50, autoCompound: false },
 ];
 
-const generateComparisonData = (principal: number, apy: number, months: number): ComparisonData[] => {
+const generateComparisonData = (
+  principal: number,
+  apy: number,
+  months: number,
+): ComparisonData[] => {
   const data: ComparisonData[] = [];
   const monthlyRate = apy / 100 / 12;
-  
+
   for (let m = 0; m <= months; m++) {
     // With compound
     const withCompound = principal * Math.pow(1 + monthlyRate, m);
-    
+
     // Without compound (simple interest)
     const withoutCompound = principal * (1 + monthlyRate * m);
-    
+
     data.push({
       month: m,
       withCompound,
       withoutCompound,
     });
   }
-  
+
   return data;
 };
 
@@ -57,7 +69,7 @@ export function StakingAutoCompoundPage() {
   const [frequency, setFrequency] = useState<'daily' | 'weekly' | 'monthly'>('daily');
   const [minThreshold, setMinThreshold] = useState('10');
   const [gasOptimization, setGasOptimization] = useState(true);
-  
+
   const [simulationPrincipal, setSimulationPrincipal] = useState('1000');
   const [simulationAPY, setSimulationAPY] = useState('7.5');
   const [simulationMonths, setSimulationMonths] = useState('12');
@@ -65,7 +77,7 @@ export function StakingAutoCompoundPage() {
   const comparisonData = generateComparisonData(
     parseFloat(simulationPrincipal || '1000'),
     parseFloat(simulationAPY || '7.5'),
-    parseInt(simulationMonths || '12')
+    parseInt(simulationMonths || '12'),
   );
 
   const finalWithCompound = comparisonData[comparisonData.length - 1].withCompound;
@@ -73,7 +85,7 @@ export function StakingAutoCompoundPage() {
   const difference = finalWithCompound - finalWithoutCompound;
   const percentageGain = (difference / finalWithoutCompound) * 100;
 
-  const activePositions = POSITIONS.filter(p => p.autoCompound).length;
+  const activePositions = POSITIONS.filter((p) => p.autoCompound).length;
   const totalPositions = POSITIONS.length;
 
   return (
@@ -82,7 +94,13 @@ export function StakingAutoCompoundPage() {
 
       <PageContent>
         {/* Info Banner */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(16,185,129,0.08)', border: '1.5px solid rgba(16,185,129,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{
+            background: 'rgba(16,185,129,0.08)',
+            border: '1.5px solid rgba(16,185,129,0.2)',
+          }}
+        >
           <div className="flex gap-3">
             <RotateCw size={20} color="#10B981" className="shrink-0 mt-0.5" />
             <div>
@@ -90,7 +108,8 @@ export function StakingAutoCompoundPage() {
                 Tự động Tái đầu tư
               </p>
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                Auto-compound tự động thêm phần thưởng vào số lượng stake để tối đa hóa lợi nhuận kép. APY thực tế sẽ cao hơn APY danh nghĩa.
+                Auto-compound tự động thêm phần thưởng vào số lượng stake để tối đa hóa lợi nhuận
+                kép. APY thực tế sẽ cao hơn APY danh nghĩa.
               </p>
             </div>
           </div>
@@ -108,8 +127,13 @@ export function StakingAutoCompoundPage() {
               </p>
               <p style={{ color: c.text3, fontSize: 11 }}>positions</p>
             </div>
-            <div className="w-20 h-20 rounded-full flex items-center justify-center"
-              style={{ background: 'rgba(16,185,129,0.12)', border: '3px solid rgba(16,185,129,0.3)' }}>
+            <div
+              className="w-20 h-20 rounded-full flex items-center justify-center"
+              style={{
+                background: 'rgba(16,185,129,0.12)',
+                border: '3px solid rgba(16,185,129,0.3)',
+              }}
+            >
               <RotateCw size={36} color="#10B981" />
             </div>
           </div>
@@ -118,14 +142,16 @@ export function StakingAutoCompoundPage() {
             <div className="rounded-xl p-3" style={{ background: c.surface2 }}>
               <p style={{ color: c.text3, fontSize: 11, marginBottom: 2 }}>Tần suất</p>
               <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>
-                {frequency === 'daily' ? 'Hàng ngày' : frequency === 'weekly' ? 'Hàng tuần' : 'Hàng tháng'}
+                {frequency === 'daily'
+                  ? 'Hàng ngày'
+                  : frequency === 'weekly'
+                    ? 'Hàng tuần'
+                    : 'Hàng tháng'}
               </p>
             </div>
             <div className="rounded-xl p-3" style={{ background: c.surface2 }}>
               <p style={{ color: c.text3, fontSize: 11, marginBottom: 2 }}>Ngưỡng tối thiểu</p>
-              <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>
-                ${minThreshold}
-              </p>
+              <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>${minThreshold}</p>
             </div>
           </div>
         </TrCard>
@@ -143,7 +169,7 @@ export function StakingAutoCompoundPage() {
                     { id: 'daily' as const, label: 'Hàng ngày', desc: 'APY cao nhất' },
                     { id: 'weekly' as const, label: 'Hàng tuần', desc: 'Cân bằng' },
                     { id: 'monthly' as const, label: 'Hàng tháng', desc: 'Tiết kiệm gas' },
-                  ].map(freq => (
+                  ].map((freq) => (
                     <button
                       key={freq.id}
                       onClick={() => setFrequency(freq.id)}
@@ -151,13 +177,16 @@ export function StakingAutoCompoundPage() {
                       style={{
                         background: frequency === freq.id ? 'rgba(16,185,129,0.12)' : c.surface2,
                         border: `1.5px solid ${frequency === freq.id ? '#10B981' : c.borderSolid}`,
-                      }}>
-                      <p style={{
-                        color: frequency === freq.id ? '#10B981' : c.text1,
-                        fontSize: 13,
-                        fontWeight: 700,
-                        marginBottom: 2,
-                      }}>
+                      }}
+                    >
+                      <p
+                        style={{
+                          color: frequency === freq.id ? '#10B981' : c.text1,
+                          fontSize: 13,
+                          fontWeight: 700,
+                          marginBottom: 2,
+                        }}
+                      >
                         {freq.label}
                       </p>
                       <p style={{ color: c.text3, fontSize: 10 }}>{freq.desc}</p>
@@ -174,7 +203,7 @@ export function StakingAutoCompoundPage() {
                   type="number"
                   inputMode="decimal"
                   value={minThreshold}
-                  onChange={e => setMinThreshold(e.target.value)}
+                  onChange={(e) => setMinThreshold(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl outline-none"
                   style={{
                     background: c.surface2,
@@ -192,16 +221,24 @@ export function StakingAutoCompoundPage() {
               <button
                 onClick={() => setGasOptimization(!gasOptimization)}
                 className="flex items-center gap-3 p-3 rounded-xl"
-                style={{ background: c.surface2 }}>
+                style={{ background: c.surface2 }}
+              >
                 <div
                   className="w-5 h-5 rounded-md border flex items-center justify-center"
                   style={{
                     borderColor: gasOptimization ? '#10B981' : c.borderSolid,
                     background: gasOptimization ? '#10B981' : 'transparent',
-                  }}>
+                  }}
+                >
                   {gasOptimization && (
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                      <path d="M2 6L5 9L10 3" stroke="#FFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path
+                        d="M2 6L5 9L10 3"
+                        stroke="#FFF"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
                     </svg>
                   )}
                 </div>
@@ -213,11 +250,18 @@ export function StakingAutoCompoundPage() {
                 </div>
               </button>
 
-              <div className="rounded-xl p-3" style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}>
+              <div
+                className="rounded-xl p-3"
+                style={{
+                  background: 'rgba(59,130,246,0.08)',
+                  border: '1px solid rgba(59,130,246,0.2)',
+                }}
+              >
                 <div className="flex gap-2">
                   <Info size={16} color="#3B82F6" className="shrink-0 mt-0.5" />
                   <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                    <strong>Gợi ý:</strong> Tần suất Daily cho APY tối đa. Weekly cân bằng giữa APY và gas fee. Monthly tiết kiệm gas nhất nhưng APY thấp hơn.
+                    <strong>Gợi ý:</strong> Tần suất Daily cho APY tối đa. Weekly cân bằng giữa APY
+                    và gas fee. Monthly tiết kiệm gas nhất nhưng APY thấp hơn.
                   </p>
                 </div>
               </div>
@@ -228,7 +272,7 @@ export function StakingAutoCompoundPage() {
         {/* Position Settings */}
         <PageSection label="Vị thế Auto-Compound">
           <div className="flex flex-col gap-3">
-            {POSITIONS.map(position => (
+            {POSITIONS.map((position) => (
               <TrCard key={position.id} className="p-4">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex-1">
@@ -250,7 +294,8 @@ export function StakingAutoCompoundPage() {
                       className="absolute cursor-pointer top-0 left-0 right-0 bottom-0 rounded-full transition-all"
                       style={{
                         background: position.autoCompound ? '#10B981' : c.borderSolid,
-                      }}>
+                      }}
+                    >
                       <span
                         className="absolute left-1 bottom-1 bg-white w-4 h-4 rounded-full transition-all"
                         style={{
@@ -261,11 +306,18 @@ export function StakingAutoCompoundPage() {
                   </label>
                 </div>
                 {position.autoCompound && (
-                  <div className="flex items-center gap-2 p-2 rounded-lg"
-                    style={{ background: 'rgba(16,185,129,0.08)' }}>
+                  <div
+                    className="flex items-center gap-2 p-2 rounded-lg"
+                    style={{ background: 'rgba(16,185,129,0.08)' }}
+                  >
                     <Zap size={14} color="#10B981" />
                     <p style={{ color: '#10B981', fontSize: 11, fontWeight: 600 }}>
-                      Auto-compound đang bật • {frequency === 'daily' ? 'Hàng ngày' : frequency === 'weekly' ? 'Hàng tuần' : 'Hàng tháng'}
+                      Auto-compound đang bật •{' '}
+                      {frequency === 'daily'
+                        ? 'Hàng ngày'
+                        : frequency === 'weekly'
+                          ? 'Hàng tuần'
+                          : 'Hàng tháng'}
                     </p>
                   </div>
                 )}
@@ -280,14 +332,16 @@ export function StakingAutoCompoundPage() {
             <div className="flex flex-col gap-4">
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label style={{ color: c.text3, fontSize: 11, display: 'block', marginBottom: 4 }}>
+                  <label
+                    style={{ color: c.text3, fontSize: 11, display: 'block', marginBottom: 4 }}
+                  >
                     Số lượng gốc
                   </label>
                   <input
                     type="number"
                     inputMode="decimal"
                     value={simulationPrincipal}
-                    onChange={e => setSimulationPrincipal(e.target.value)}
+                    onChange={(e) => setSimulationPrincipal(e.target.value)}
                     className="w-full px-2 py-2 rounded-lg outline-none text-center"
                     style={{
                       background: c.surface2,
@@ -299,14 +353,16 @@ export function StakingAutoCompoundPage() {
                   />
                 </div>
                 <div>
-                  <label style={{ color: c.text3, fontSize: 11, display: 'block', marginBottom: 4 }}>
+                  <label
+                    style={{ color: c.text3, fontSize: 11, display: 'block', marginBottom: 4 }}
+                  >
                     APY (%)
                   </label>
                   <input
                     type="number"
                     inputMode="decimal"
                     value={simulationAPY}
-                    onChange={e => setSimulationAPY(e.target.value)}
+                    onChange={(e) => setSimulationAPY(e.target.value)}
                     className="w-full px-2 py-2 rounded-lg outline-none text-center"
                     style={{
                       background: c.surface2,
@@ -318,14 +374,16 @@ export function StakingAutoCompoundPage() {
                   />
                 </div>
                 <div>
-                  <label style={{ color: c.text3, fontSize: 11, display: 'block', marginBottom: 4 }}>
+                  <label
+                    style={{ color: c.text3, fontSize: 11, display: 'block', marginBottom: 4 }}
+                  >
                     Tháng
                   </label>
                   <input
                     type="number"
                     inputMode="decimal"
                     value={simulationMonths}
-                    onChange={e => setSimulationMonths(e.target.value)}
+                    onChange={(e) => setSimulationMonths(e.target.value)}
                     className="w-full px-2 py-2 rounded-lg outline-none text-center"
                     style={{
                       background: c.surface2,
@@ -353,7 +411,13 @@ export function StakingAutoCompoundPage() {
                     tick={{ fill: c.text3, fontSize: 11 }}
                     axisLine={false}
                     tickLine={false}
-                    label={{ value: 'Tháng', position: 'insideBottom', offset: -5, fill: c.text3, fontSize: 11 }}
+                    label={{
+                      value: 'Tháng',
+                      position: 'insideBottom',
+                      offset: -5,
+                      fill: c.text3,
+                      fontSize: 11,
+                    }}
                   />
                   <YAxis
                     key="y-axis"
@@ -373,7 +437,7 @@ export function StakingAutoCompoundPage() {
                     }}
                     formatter={(value: number, name: string) => [
                       `$${value.toLocaleString(undefined, { maximumFractionDigits: 2 })}`,
-                      name === 'withCompound' ? 'Có compound' : 'Không compound'
+                      name === 'withCompound' ? 'Có compound' : 'Không compound',
                     ]}
                   />
                   <Line
@@ -402,16 +466,33 @@ export function StakingAutoCompoundPage() {
                     <div className="w-3 h-0.5 rounded" style={{ background: '#10B981' }} />
                     <p style={{ color: c.text3, fontSize: 10 }}>Có compound</p>
                   </div>
-                  <p style={{ color: '#10B981', fontSize: 16, fontWeight: 700, fontFamily: 'monospace' }}>
+                  <p
+                    style={{
+                      color: '#10B981',
+                      fontSize: 16,
+                      fontWeight: 700,
+                      fontFamily: 'monospace',
+                    }}
+                  >
                     {fmtUsd(finalWithCompound)}
                   </p>
                 </div>
                 <div className="rounded-xl p-3" style={{ background: 'rgba(239,68,68,0.08)' }}>
                   <div className="flex items-center gap-2 mb-1">
-                    <div className="w-3 h-0.5 rounded" style={{ background: '#EF4444', borderTop: '2px dashed #EF4444' }} />
+                    <div
+                      className="w-3 h-0.5 rounded"
+                      style={{ background: '#EF4444', borderTop: '2px dashed #EF4444' }}
+                    />
                     <p style={{ color: c.text3, fontSize: 10 }}>Không compound</p>
                   </div>
-                  <p style={{ color: '#EF4444', fontSize: 16, fontWeight: 700, fontFamily: 'monospace' }}>
+                  <p
+                    style={{
+                      color: '#EF4444',
+                      fontSize: 16,
+                      fontWeight: 700,
+                      fontFamily: 'monospace',
+                    }}
+                  >
                     {fmtUsd(finalWithoutCompound)}
                   </p>
                 </div>
@@ -419,7 +500,14 @@ export function StakingAutoCompoundPage() {
 
               <div className="rounded-xl p-3 text-center" style={{ background: c.surface2 }}>
                 <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Lợi thế compound</p>
-                <p style={{ color: '#10B981', fontSize: 20, fontWeight: 700, fontFamily: 'monospace' }}>
+                <p
+                  style={{
+                    color: '#10B981',
+                    fontSize: 20,
+                    fontWeight: 700,
+                    fontFamily: 'monospace',
+                  }}
+                >
                   +{fmtUsd(difference)}
                 </p>
                 <p style={{ color: c.text3, fontSize: 11 }}>
@@ -433,7 +521,8 @@ export function StakingAutoCompoundPage() {
         {/* Save Button */}
         <button
           className="w-full py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2"
-          style={{ background: c.primary, color: '#FFF' }}>
+          style={{ background: c.primary, color: '#FFF' }}
+        >
           <Settings size={18} />
           Lưu cài đặt
         </button>
@@ -441,7 +530,9 @@ export function StakingAutoCompoundPage() {
         {/* Footer Info */}
         <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6, textAlign: 'center' }}>
-            Auto-compound hoạt động tự động 24/7. Phần thưởng sẽ được tự động thêm vào số lượng stake theo tần suất đã chọn. Bạn có thể tắt bất kỳ lúc nào mà không mất phần thưởng đã tích lũy.
+            Auto-compound hoạt động tự động 24/7. Phần thưởng sẽ được tự động thêm vào số lượng
+            stake theo tần suất đã chọn. Bạn có thể tắt bất kỳ lúc nào mà không mất phần thưởng đã
+            tích lũy.
           </p>
         </div>
       </PageContent>

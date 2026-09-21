@@ -1,9 +1,9 @@
 /**
  * useDCAAnalytics Hook
- * 
+ *
  * React hook for DCA analytics tracking.
  * Provides convenient methods for tracking DCA events.
- * 
+ *
  * @module hooks/useDCAAnalytics
  * @version 2.0 (Phase 2 - Sprint 2)
  */
@@ -20,31 +20,37 @@ import { DCAFrequency } from '../types/dca';
 export interface UseDCAAnalyticsReturn {
   /** Track generic DCA event */
   trackEvent: (eventName: DCAEventName | string, properties?: Record<string, any>) => void;
-  
+
   /** Track page view */
   trackPageView: (pageName: string) => void;
-  
+
   /** Track plan creation */
-  trackPlanCreation: (planId: string, coinSymbol: string, frequency: DCAFrequency, amount: number, source?: DCAEventSource) => void;
-  
+  trackPlanCreation: (
+    planId: string,
+    coinSymbol: string,
+    frequency: DCAFrequency,
+    amount: number,
+    source?: DCAEventSource,
+  ) => void;
+
   /** Track plan status change */
   trackPlanStatusChange: (planId: string, newStatus: 'active' | 'paused') => void;
-  
+
   /** Track plan deletion */
   trackPlanDeletion: (planId: string, reason?: string) => void;
-  
+
   /** Track wallet shortcut interaction */
   trackWalletShortcut: (action: 'impression' | 'click', variant?: 'full' | 'compact') => void;
-  
+
   /** Track asset detail button */
   trackAssetDetailButton: (action: 'impression' | 'click', coinSymbol: string) => void;
-  
+
   /** Track deep link usage */
   trackDeepLink: (coinSymbol: string, converted: boolean) => void;
-  
+
   /** Track empty state interaction */
   trackEmptyState: (action: 'impression' | 'click') => void;
-  
+
   /** Track execution result */
   trackExecution: (planId: string, success: boolean, error?: string) => void;
 
@@ -67,7 +73,7 @@ export interface UseDCAAnalyticsReturn {
 export function useDCAAnalytics(): UseDCAAnalyticsReturn {
   // Track component mount/unmount for debugging
   const componentName = useRef<string>('Unknown');
-  
+
   useEffect(() => {
     // Try to get component name from stack trace
     try {
@@ -84,23 +90,29 @@ export function useDCAAnalytics(): UseDCAAnalyticsReturn {
   }, []);
 
   // Memoized tracking functions
-  const trackEvent = useCallback((eventName: DCAEventName | string, properties?: Record<string, any>) => {
-    dcaAnalytics.trackEvent(eventName, properties);
-  }, []);
+  const trackEvent = useCallback(
+    (eventName: DCAEventName | string, properties?: Record<string, any>) => {
+      dcaAnalytics.trackEvent(eventName, properties);
+    },
+    [],
+  );
 
   const trackPageView = useCallback((pageName: string) => {
     dcaAnalytics.trackPageView(pageName);
   }, []);
 
-  const trackPlanCreation = useCallback((
-    planId: string,
-    coinSymbol: string,
-    frequency: DCAFrequency,
-    amount: number,
-    source?: DCAEventSource
-  ) => {
-    dcaAnalytics.trackPlanCreation(planId, coinSymbol, frequency, amount, source);
-  }, []);
+  const trackPlanCreation = useCallback(
+    (
+      planId: string,
+      coinSymbol: string,
+      frequency: DCAFrequency,
+      amount: number,
+      source?: DCAEventSource,
+    ) => {
+      dcaAnalytics.trackPlanCreation(planId, coinSymbol, frequency, amount, source);
+    },
+    [],
+  );
 
   const trackPlanStatusChange = useCallback((planId: string, newStatus: 'active' | 'paused') => {
     dcaAnalytics.trackPlanStatusChange(planId, newStatus);
@@ -110,13 +122,19 @@ export function useDCAAnalytics(): UseDCAAnalyticsReturn {
     dcaAnalytics.trackPlanDeletion(planId, reason);
   }, []);
 
-  const trackWalletShortcut = useCallback((action: 'impression' | 'click', variant?: 'full' | 'compact') => {
-    dcaAnalytics.trackWalletShortcut(action, variant);
-  }, []);
+  const trackWalletShortcut = useCallback(
+    (action: 'impression' | 'click', variant?: 'full' | 'compact') => {
+      dcaAnalytics.trackWalletShortcut(action, variant);
+    },
+    [],
+  );
 
-  const trackAssetDetailButton = useCallback((action: 'impression' | 'click', coinSymbol: string) => {
-    dcaAnalytics.trackAssetDetailButton(action, coinSymbol);
-  }, []);
+  const trackAssetDetailButton = useCallback(
+    (action: 'impression' | 'click', coinSymbol: string) => {
+      dcaAnalytics.trackAssetDetailButton(action, coinSymbol);
+    },
+    [],
+  );
 
   const trackDeepLink = useCallback((coinSymbol: string, converted: boolean) => {
     dcaAnalytics.trackDeepLink(coinSymbol, converted);
@@ -138,9 +156,12 @@ export function useDCAAnalytics(): UseDCAAnalyticsReturn {
     dcaAnalytics.trackTradeChip(coinSymbol, variant);
   }, []);
 
-  const trackPairDetailBanner = useCallback((action: 'impression' | 'click', coinSymbol: string) => {
-    dcaAnalytics.trackPairDetailBanner(action, coinSymbol);
-  }, []);
+  const trackPairDetailBanner = useCallback(
+    (action: 'impression' | 'click', coinSymbol: string) => {
+      dcaAnalytics.trackPairDetailBanner(action, coinSymbol);
+    },
+    [],
+  );
 
   const trackProfileMenu = useCallback((variant: 'mobile' | 'responsive') => {
     dcaAnalytics.trackProfileMenu(variant);
@@ -185,7 +206,7 @@ export function usePageViewTracking(pageName: string) {
 export function useImpressionTracking(
   eventName: DCAEventName,
   properties?: Record<string, any>,
-  options?: { delay?: number }
+  options?: { delay?: number },
 ) {
   const { trackEvent } = useDCAAnalytics();
   const tracked = useRef(false);

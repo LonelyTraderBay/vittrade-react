@@ -51,14 +51,17 @@ interface ConfirmationDialogProps {
   onAfterOpen?: () => void;
 }
 
-const VARIANT_COLORS: Record<ConfirmationVariant, {
-  bg: string;
-  border: string;
-  btnBg: string;
-  btnBorder: string;
-  btnColor: string;
-  iconBg: string;
-}> = {
+const VARIANT_COLORS: Record<
+  ConfirmationVariant,
+  {
+    bg: string;
+    border: string;
+    btnBg: string;
+    btnBorder: string;
+    btnColor: string;
+    iconBg: string;
+  }
+> = {
   danger: {
     bg: 'rgba(239,68,68,0.1)',
     border: '1px solid rgba(239,68,68,0.2)',
@@ -146,11 +149,7 @@ export function ConfirmationDialog({
       </div>
 
       {/* Optional extra content */}
-      {children && (
-        <div className="mb-5">
-          {children}
-        </div>
-      )}
+      {children && <div className="mb-5">{children}</div>}
 
       {/* Buttons */}
       <div className="flex gap-3">
@@ -162,7 +161,10 @@ export function ConfirmationDialog({
           {cancelText}
         </button>
         <button
-          onClick={() => { onConfirm(); onClose(); }}
+          onClick={() => {
+            onConfirm();
+            onClose();
+          }}
           className="flex-1 py-3 rounded-xl font-semibold text-sm"
           style={{ background: colors.btnBg, color: colors.btnColor }}
         >

@@ -30,29 +30,35 @@ export default function App() {
   }, []);
 
   return (
-    <React.Suspense fallback={
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh',
-        background: 'var(--background)',
-        color: 'var(--foreground)',
-      }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{
-            width: 40,
-            height: 40,
-            border: '3px solid rgba(59,130,246,0.2)',
-            borderTopColor: '#3B82F6',
-            borderRadius: '50%',
-            margin: '0 auto 16px',
-            animation: 'spin 1s linear infinite',
-          }} />
-          <p style={{ fontSize: 14, opacity: 0.6 }}>Đang tải...</p>
+    <React.Suspense
+      fallback={
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '100vh',
+            background: 'var(--background)',
+            color: 'var(--foreground)',
+          }}
+        >
+          <div style={{ textAlign: 'center' }}>
+            <div
+              style={{
+                width: 40,
+                height: 40,
+                border: '3px solid rgba(59,130,246,0.2)',
+                borderTopColor: '#3B82F6',
+                borderRadius: '50%',
+                margin: '0 auto 16px',
+                animation: 'spin 1s linear infinite',
+              }}
+            />
+            <p style={{ fontSize: 14, opacity: 0.6 }}>Đang tải...</p>
+          </div>
         </div>
-      </div>
-    }>
+      }
+    >
       <RouterProvider router={router} />
     </React.Suspense>
   );

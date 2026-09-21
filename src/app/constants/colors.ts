@@ -1,29 +1,29 @@
 /**
  * Enterprise Color Alpha System
- * 
+ *
  * Standardized opacity values for consistent transparency effects
  * Works with any color from theme (c.success, c.warning, c.primary, etc.)
- * 
+ *
  * ⚠️ NEVER concatenate ALPHA directly with CSS variables!
  *   ❌ `${c.success}${ALPHA.ghost}` → produces INVALID CSS
  *   ✅ `withAlpha(c.success, ALPHA.ghost)` → uses color-mix(), works correctly
- * 
+ *
  * ALPHA hex suffixes ONLY work with literal HEX concatenation:
  *   ✅ `#10B981${ALPHA.ghost}` — literal hex + hex suffix, OK → `#10B98108`
  *   ❌ `${c.success}${ALPHA.ghost}` — CSS variable, BROKEN
  *   ❌ `rgba(255,255,255,${ALPHA.ghost})` — BROKEN! alpha='08' → parsed as 8 → clamped to 1 = OPAQUE
  *   ✅ `rgba(255,255,255,${OPACITY.ghost})` — use OPACITY for rgba() → 0.03
- * 
+ *
  * Usage:
  * ```tsx
  * import { ALPHA } from '@/constants/colors';
  * import { useThemeColors } from '@/hooks/useThemeColors';
- * 
+ *
  * const c = useThemeColors();
- * 
+ *
  * // Background with subtle tint
  * background: `${c.success}${ALPHA.ghost}`  // #10B98108
- * 
+ *
  * // Border with more visibility
  * border: `1px solid ${c.success}${ALPHA.border}`  // #10B98130
  * ```
@@ -104,21 +104,28 @@ export const ALPHA = {
  * Each OPACITY value matches the same semantic level as the corresponding ALPHA value.
  */
 export const OPACITY = {
-  ghost: 0.03,    // matches ALPHA.ghost  (08 hex ≈ 3%)
-  hover: 0.06,    // matches ALPHA.hover  (10 hex ≈ 6%)
-  muted: 0.08,    // matches ALPHA.muted  (15 hex ≈ 8%)
-  soft: 0.13,     // matches ALPHA.soft   (20 hex ≈ 13%)
-  border: 0.19,   // matches ALPHA.border (30 hex ≈ 19%)
-  medium: 0.25,   // matches ALPHA.medium (40 hex ≈ 25%)
-  dim: 0.31,      // matches ALPHA.dim    (50 hex ≈ 31%)
-  visible: 0.38,  // matches ALPHA.visible(60 hex ≈ 38%)
-  strong: 0.50,   // matches ALPHA.strong (80 hex ≈ 50%)
+  ghost: 0.03, // matches ALPHA.ghost  (08 hex ≈ 3%)
+  hover: 0.06, // matches ALPHA.hover  (10 hex ≈ 6%)
+  muted: 0.08, // matches ALPHA.muted  (15 hex ≈ 8%)
+  soft: 0.13, // matches ALPHA.soft   (20 hex ≈ 13%)
+  border: 0.19, // matches ALPHA.border (30 hex ≈ 19%)
+  medium: 0.25, // matches ALPHA.medium (40 hex ≈ 25%)
+  dim: 0.31, // matches ALPHA.dim    (50 hex ≈ 31%)
+  visible: 0.38, // matches ALPHA.visible(60 hex ≈ 38%)
+  strong: 0.5, // matches ALPHA.strong (80 hex ≈ 50%)
 } as const;
 
 /* ─── Hex alpha → percentage lookup (for color-mix) ─── */
 const HEX_TO_PCT: Record<string, number> = {
-  '08': 3, '10': 6, '15': 8, '20': 13,
-  '30': 19, '40': 25, '50': 31, '60': 38, '80': 50,
+  '08': 3,
+  '10': 6,
+  '15': 8,
+  '20': 13,
+  '30': 19,
+  '40': 25,
+  '50': 31,
+  '60': 38,
+  '80': 50,
 };
 
 /**
@@ -153,49 +160,49 @@ export function withAlpha(color: string, alpha: string): string {
 
 /**
  * Semantic Color Mapping
- * 
+ *
  * Maps business logic to theme colors
  * Use these instead of hard-coding color names
  */
 export const SEMANTIC_COLORS = {
   // Financial states
-  profit: 'success',     // Green for positive changes
-  loss: 'error',         // Red for negative changes
-  neutral: 'text2',      // Gray for neutral/zero
-  
+  profit: 'success', // Green for positive changes
+  loss: 'error', // Red for negative changes
+  neutral: 'text2', // Gray for neutral/zero
+
   // Status indicators
-  active: 'success',     // Green for active/running
-  pending: 'warning',    // Amber for pending/waiting
-  failed: 'error',       // Red for failed/error
-  completed: 'primary',  // Blue for completed/done
-  
+  active: 'success', // Green for active/running
+  pending: 'warning', // Amber for pending/waiting
+  failed: 'error', // Red for failed/error
+  completed: 'primary', // Blue for completed/done
+
   // Risk levels
-  lowRisk: 'success',    // Green for low risk
+  lowRisk: 'success', // Green for low risk
   mediumRisk: 'warning', // Amber for medium risk
-  highRisk: 'error',     // Red for high risk
-  
+  highRisk: 'error', // Red for high risk
+
   // Urgency tiers
-  critical: 'error',     // Red for critical/urgent
-  urgent: 'warning',     // Amber for soon
-  soon: 'primary',       // Blue for approaching
-  safe: 'success',       // Green for safe/good
+  critical: 'error', // Red for critical/urgent
+  urgent: 'warning', // Amber for soon
+  soon: 'primary', // Blue for approaching
+  safe: 'success', // Green for safe/good
 } as const;
 
 /**
  * Crypto Asset Colors
- * 
+ *
  * Standard colors for major cryptocurrencies
  * Use for asset icons, charts, badges
  */
 export const CRYPTO_COLORS = {
-  BTC: '#F7931A',  // Bitcoin orange
-  ETH: '#627EEA',  // Ethereum blue
+  BTC: '#F7931A', // Bitcoin orange
+  ETH: '#627EEA', // Ethereum blue
   USDT: '#26A17B', // Tether teal
-  SOL: '#9945FF',  // Solana purple
-  BNB: '#F3BA2F',  // Binance gold
+  SOL: '#9945FF', // Solana purple
+  BNB: '#F3BA2F', // Binance gold
   USDC: '#2775CA', // USDC blue
-  XRP: '#23292F',  // Ripple black
-  ADA: '#0033AD',  // Cardano blue
+  XRP: '#23292F', // Ripple black
+  ADA: '#0033AD', // Cardano blue
   DOGE: '#C2A633', // Dogecoin gold
   MATIC: '#8247E5', // Polygon purple
 } as const;
@@ -203,6 +210,6 @@ export const CRYPTO_COLORS = {
 /**
  * Helper Types
  */
-export type AlphaValue = typeof ALPHA[keyof typeof ALPHA];
-export type SemanticColor = typeof SEMANTIC_COLORS[keyof typeof SEMANTIC_COLORS];
+export type AlphaValue = (typeof ALPHA)[keyof typeof ALPHA];
+export type SemanticColor = (typeof SEMANTIC_COLORS)[keyof typeof SEMANTIC_COLORS];
 export type CryptoAsset = keyof typeof CRYPTO_COLORS;

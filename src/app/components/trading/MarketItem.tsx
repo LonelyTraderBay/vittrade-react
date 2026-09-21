@@ -24,7 +24,11 @@ interface MarketItemProps {
  *  Change badge: rounded-lg px-2 py-1, fontSize 12
  *  Padding: px-5 (20px) container level
  */
-export const MarketItem = memo(function MarketItem({ pair, showSparkline = true, onFavoriteToggle }: MarketItemProps) {
+export const MarketItem = memo(function MarketItem({
+  pair,
+  showSparkline = true,
+  onFavoriteToggle,
+}: MarketItemProps) {
   const navigate = useNavigate();
   const c = useThemeColors();
   const prefix = useRoutePrefix();
@@ -35,7 +39,9 @@ export const MarketItem = memo(function MarketItem({ pair, showSparkline = true,
       role="button"
       tabIndex={0}
       onClick={() => navigate(`${prefix}/pair/${pair.id}`)}
-      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') navigate(`${prefix}/pair/${pair.id}`); }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') navigate(`${prefix}/pair/${pair.id}`);
+      }}
       className="flex items-center gap-3 px-5 w-full active:opacity-70 transition-opacity cursor-pointer"
       style={{
         paddingTop: 14,
@@ -61,7 +67,10 @@ export const MarketItem = memo(function MarketItem({ pair, showSparkline = true,
 
       {/* Name */}
       <div className="flex flex-col items-start flex-1 min-w-0">
-        <span className="text-truncate" style={{ color: c.text1, fontSize: 14, fontWeight: 600, maxWidth: '100%' }}>
+        <span
+          className="text-truncate"
+          style={{ color: c.text1, fontSize: 14, fontWeight: 600, maxWidth: '100%' }}
+        >
           {pair.baseAsset}
         </span>
         <span className="text-truncate" style={{ color: c.text3, fontSize: 12, maxWidth: '100%' }}>
@@ -78,12 +87,14 @@ export const MarketItem = memo(function MarketItem({ pair, showSparkline = true,
 
       {/* Price + Change */}
       <div className="flex flex-col items-end shrink-0">
-        <span style={{
-          color: c.text1,
-          fontSize: 14,
-          fontWeight: 600,
-          fontFamily: '-apple-system, BlinkMacSystemFont, "SF Mono", monospace',
-        }}>
+        <span
+          style={{
+            color: c.text1,
+            fontSize: 14,
+            fontWeight: 600,
+            fontFamily: '-apple-system, BlinkMacSystemFont, "SF Mono", monospace',
+          }}
+        >
           {fmtPriceUtil(pair.price)}
         </span>
         <span
@@ -102,7 +113,10 @@ export const MarketItem = memo(function MarketItem({ pair, showSparkline = true,
       {/* Star */}
       {onFavoriteToggle && (
         <button
-          onClick={e => { e.stopPropagation(); onFavoriteToggle(pair.id); }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onFavoriteToggle(pair.id);
+          }}
           className="ml-1 w-8 h-8 flex items-center justify-center shrink-0"
           aria-label={pair.isFavorite ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'}
         >

@@ -14,7 +14,12 @@ const API_ENDPOINTS = [
     path: '/api/v1/bots',
     description: 'List all user bots',
     params: [
-      { name: 'status', type: 'string', required: false, description: 'Filter by status (running, stopped, paused)' },
+      {
+        name: 'status',
+        type: 'string',
+        required: false,
+        description: 'Filter by status (running, stopped, paused)',
+      },
       { name: 'limit', type: 'number', required: false, description: 'Max results (default: 20)' },
     ],
     response: `{
@@ -37,9 +42,24 @@ const API_ENDPOINTS = [
     description: 'Create a new bot',
     params: [
       { name: 'name', type: 'string', required: true, description: 'Bot name' },
-      { name: 'strategy', type: 'string', required: true, description: 'dca | grid | momentum | martingale' },
-      { name: 'pair', type: 'string', required: true, description: 'Trading pair (e.g., BTC/USDT)' },
-      { name: 'config', type: 'object', required: true, description: 'Strategy-specific parameters' },
+      {
+        name: 'strategy',
+        type: 'string',
+        required: true,
+        description: 'dca | grid | momentum | martingale',
+      },
+      {
+        name: 'pair',
+        type: 'string',
+        required: true,
+        description: 'Trading pair (e.g., BTC/USDT)',
+      },
+      {
+        name: 'config',
+        type: 'object',
+        required: true,
+        description: 'Strategy-specific parameters',
+      },
     ],
     response: `{
   "bot": {
@@ -227,7 +247,13 @@ export function BotAPIDocumentationPage() {
 
       <PageContent>
         {/* Intro */}
-        <div className="rounded-2xl p-4 mb-4" style={{ background: 'rgba(59,130,246,0.08)', border: '1.5px solid rgba(59,130,246,0.2)' }}>
+        <div
+          className="rounded-2xl p-4 mb-4"
+          style={{
+            background: 'rgba(59,130,246,0.08)',
+            border: '1.5px solid rgba(59,130,246,0.2)',
+          }}
+        >
           <div className="flex gap-3">
             <Code size={24} color="#3B82F6" className="shrink-0" />
             <div>
@@ -235,8 +261,8 @@ export function BotAPIDocumentationPage() {
                 Bot API Documentation
               </p>
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                Programmatically create, manage, and monitor trading bots using our REST API and WebSocket connections. 
-                Available for Enterprise tier users.
+                Programmatically create, manage, and monitor trading bots using our REST API and
+                WebSocket connections. Available for Enterprise tier users.
               </p>
             </div>
           </div>
@@ -258,18 +284,33 @@ export function BotAPIDocumentationPage() {
                 <TrCard key={idx} className="p-4">
                   {/* Header */}
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="px-2 py-1 rounded-md text-xs font-bold"
+                    <span
+                      className="px-2 py-1 rounded-md text-xs font-bold"
                       style={{
-                        background: endpoint.method === 'GET' ? 'rgba(16,185,129,0.12)' 
-                          : endpoint.method === 'POST' ? 'rgba(59,130,246,0.12)'
-                          : 'rgba(239,68,68,0.12)',
-                        color: endpoint.method === 'GET' ? '#10B981' 
-                          : endpoint.method === 'POST' ? '#3B82F6'
-                          : '#EF4444',
-                      }}>
+                        background:
+                          endpoint.method === 'GET'
+                            ? 'rgba(16,185,129,0.12)'
+                            : endpoint.method === 'POST'
+                              ? 'rgba(59,130,246,0.12)'
+                              : 'rgba(239,68,68,0.12)',
+                        color:
+                          endpoint.method === 'GET'
+                            ? '#10B981'
+                            : endpoint.method === 'POST'
+                              ? '#3B82F6'
+                              : '#EF4444',
+                      }}
+                    >
                       {endpoint.method}
                     </span>
-                    <code style={{ color: c.text1, fontSize: 12, fontFamily: 'monospace', fontWeight: 600 }}>
+                    <code
+                      style={{
+                        color: c.text1,
+                        fontSize: 12,
+                        fontFamily: 'monospace',
+                        fontWeight: 600,
+                      }}
+                    >
                       {endpoint.path}
                     </code>
                   </div>
@@ -286,13 +327,18 @@ export function BotAPIDocumentationPage() {
                       <div className="space-y-2">
                         {endpoint.params.map((param, pIdx) => (
                           <div key={pIdx} className="flex items-start gap-2">
-                            <code style={{ color: c.primary, fontSize: 11, fontFamily: 'monospace' }}>
+                            <code
+                              style={{ color: c.primary, fontSize: 11, fontFamily: 'monospace' }}
+                            >
                               {param.name}
                             </code>
                             <span style={{ color: c.text3, fontSize: 11 }}>
-                              ({param.type}) {param.required && <strong style={{ color: '#EF4444' }}>*</strong>}
+                              ({param.type}){' '}
+                              {param.required && <strong style={{ color: '#EF4444' }}>*</strong>}
                             </span>
-                            <p style={{ color: c.text3, fontSize: 10, flex: 1 }}>— {param.description}</p>
+                            <p style={{ color: c.text3, fontSize: 10, flex: 1 }}>
+                              — {param.description}
+                            </p>
                           </div>
                         ))}
                       </div>
@@ -307,8 +353,18 @@ export function BotAPIDocumentationPage() {
                         <Copy size={14} color={c.text3} />
                       </button>
                     </div>
-                    <div className="rounded-lg p-3 overflow-x-auto" style={{ background: c.surface2 }}>
-                      <pre style={{ color: c.text2, fontSize: 10, fontFamily: 'monospace', lineHeight: 1.6 }}>
+                    <div
+                      className="rounded-lg p-3 overflow-x-auto"
+                      style={{ background: c.surface2 }}
+                    >
+                      <pre
+                        style={{
+                          color: c.text2,
+                          fontSize: 10,
+                          fontFamily: 'monospace',
+                          lineHeight: 1.6,
+                        }}
+                      >
                         {endpoint.response}
                       </pre>
                     </div>
@@ -341,7 +397,14 @@ export function BotAPIDocumentationPage() {
                   <TrCard key={idx} className="p-4">
                     <div className="flex items-center gap-2 mb-2">
                       <Zap size={16} color={c.primary} />
-                      <code style={{ color: c.primary, fontSize: 12, fontFamily: 'monospace', fontWeight: 700 }}>
+                      <code
+                        style={{
+                          color: c.primary,
+                          fontSize: 12,
+                          fontFamily: 'monospace',
+                          fontWeight: 700,
+                        }}
+                      >
                         {event.event}
                       </code>
                     </div>
@@ -349,7 +412,14 @@ export function BotAPIDocumentationPage() {
                       {event.description}
                     </p>
                     <div className="rounded-lg p-3" style={{ background: c.surface2 }}>
-                      <pre style={{ color: c.text2, fontSize: 10, fontFamily: 'monospace', lineHeight: 1.6 }}>
+                      <pre
+                        style={{
+                          color: c.text2,
+                          fontSize: 10,
+                          fontFamily: 'monospace',
+                          lineHeight: 1.6,
+                        }}
+                      >
                         {event.payload}
                       </pre>
                     </div>
@@ -364,7 +434,7 @@ export function BotAPIDocumentationPage() {
         {view === 'examples' && (
           <>
             <div className="flex gap-2 mb-4">
-              {(['javascript', 'python', 'curl'] as const).map(lang => (
+              {(['javascript', 'python', 'curl'] as const).map((lang) => (
                 <button
                   key={lang}
                   onClick={() => setLanguage(lang)}
@@ -372,7 +442,8 @@ export function BotAPIDocumentationPage() {
                   style={{
                     background: language === lang ? c.primary : c.surface,
                     color: language === lang ? '#FFF' : c.text1,
-                  }}>
+                  }}
+                >
                   {lang === 'javascript' ? 'JavaScript' : lang === 'python' ? 'Python' : 'cURL'}
                 </button>
               ))}
@@ -384,17 +455,24 @@ export function BotAPIDocumentationPage() {
                   <div className="flex items-center gap-2">
                     <BookOpen size={16} color={c.primary} />
                     <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>
-                      {language === 'javascript' ? 'JavaScript SDK' : language === 'python' ? 'Python SDK' : 'cURL Commands'}
+                      {language === 'javascript'
+                        ? 'JavaScript SDK'
+                        : language === 'python'
+                          ? 'Python SDK'
+                          : 'cURL Commands'}
                     </p>
                   </div>
-                  <button 
+                  <button
                     onClick={() => handleCopy(CODE_EXAMPLES[language])}
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg"
-                    style={{ background: copiedCode ? 'rgba(16,185,129,0.12)' : c.surface2 }}>
+                    style={{ background: copiedCode ? 'rgba(16,185,129,0.12)' : c.surface2 }}
+                  >
                     {copiedCode ? (
                       <>
                         <CheckCircle2 size={14} color="#10B981" />
-                        <span style={{ color: '#10B981', fontSize: 11, fontWeight: 600 }}>Copied!</span>
+                        <span style={{ color: '#10B981', fontSize: 11, fontWeight: 600 }}>
+                          Copied!
+                        </span>
                       </>
                     ) : (
                       <>
@@ -405,7 +483,14 @@ export function BotAPIDocumentationPage() {
                   </button>
                 </div>
                 <div className="rounded-lg p-4 overflow-x-auto" style={{ background: c.surface2 }}>
-                  <pre style={{ color: c.text2, fontSize: 11, fontFamily: 'monospace', lineHeight: 1.7 }}>
+                  <pre
+                    style={{
+                      color: c.text2,
+                      fontSize: 11,
+                      fontFamily: 'monospace',
+                      lineHeight: 1.7,
+                    }}
+                  >
                     {CODE_EXAMPLES[language]}
                   </pre>
                 </div>
@@ -420,15 +505,21 @@ export function BotAPIDocumentationPage() {
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span style={{ color: c.text2, fontSize: 12 }}>REST API:</span>
-                <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>100 requests / minute</span>
+                <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
+                  100 requests / minute
+                </span>
               </div>
               <div className="flex justify-between">
                 <span style={{ color: c.text2, fontSize: 12 }}>WebSocket:</span>
-                <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>Unlimited subscriptions</span>
+                <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
+                  Unlimited subscriptions
+                </span>
               </div>
               <div className="flex justify-between">
                 <span style={{ color: c.text2, fontSize: 12 }}>Max bots (API):</span>
-                <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>Enterprise tier only</span>
+                <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
+                  Enterprise tier only
+                </span>
               </div>
             </div>
           </TrCard>
@@ -438,12 +529,11 @@ export function BotAPIDocumentationPage() {
         <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
           <div className="flex items-center gap-2 mb-3">
             <Key size={18} color={c.primary} />
-            <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>
-              Authentication
-            </p>
+            <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>Authentication</p>
           </div>
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6, marginBottom: 8 }}>
-            All API requests require an API key. Generate yours in Security Settings. Include in header:
+            All API requests require an API key. Generate yours in Security Settings. Include in
+            header:
           </p>
           <div className="rounded-lg p-3" style={{ background: c.surface }}>
             <code style={{ color: c.primary, fontSize: 11, fontFamily: 'monospace' }}>

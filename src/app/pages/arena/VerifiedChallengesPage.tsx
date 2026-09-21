@@ -23,16 +23,39 @@ export function VerifiedChallengesPage() {
             <Lock size={36} color="#8B5CF6" />
           </div>
 
-          <p style={{ color: c.text1, fontSize: 22, fontWeight: 700, marginBottom: 8, textAlign: 'center' }}>
+          <p
+            style={{
+              color: c.text1,
+              fontSize: 22,
+              fontWeight: 700,
+              marginBottom: 8,
+              textAlign: 'center',
+            }}
+          >
             Verified Challenges
           </p>
-          <p style={{ color: c.text2, fontSize: φ.sm, textAlign: 'center', lineHeight: 1.6, marginBottom: 20 }}>
-            Sẽ mở trong tương lai cho challenge xác thực cao hơn với cơ chế verify on-chain và prize pool lớn hơn.
+          <p
+            style={{
+              color: c.text2,
+              fontSize: φ.sm,
+              textAlign: 'center',
+              lineHeight: 1.6,
+              marginBottom: 20,
+            }}
+          >
+            Sẽ mở trong tương lai cho challenge xác thực cao hơn với cơ chế verify on-chain và prize
+            pool lớn hơn.
           </p>
 
           <span
             className="px-4 py-2 rounded-xl mb-8"
-            style={{ background: 'rgba(139,92,246,0.12)', color: '#8B5CF6', fontSize: φ.sm, fontWeight: 700, border: '1px solid rgba(139,92,246,0.2)' }}
+            style={{
+              background: 'rgba(139,92,246,0.12)',
+              color: '#8B5CF6',
+              fontSize: φ.sm,
+              fontWeight: 700,
+              border: '1px solid rgba(139,92,246,0.2)',
+            }}
           >
             Coming Soon
           </span>
@@ -51,7 +74,12 @@ export function VerifiedChallengesPage() {
                   'Creator badges và trust score nâng cao',
                 ].map((item, i) => (
                   <li key={i} style={{ color: c.text3, fontSize: φ.xs, lineHeight: 1.5 }}>
-                    <Shield size={9} color="#8B5CF6" className="inline mr-1" style={{ verticalAlign: 'middle' }} />
+                    <Shield
+                      size={9}
+                      color="#8B5CF6"
+                      className="inline mr-1"
+                      style={{ verticalAlign: 'middle' }}
+                    />
                     {item}
                   </li>
                 ))}

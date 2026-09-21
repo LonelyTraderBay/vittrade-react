@@ -27,19 +27,19 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
   });
 
   const toggleBalanceHidden = useCallback(() => {
-    setState(s => ({ ...s, isBalanceHidden: !s.isBalanceHidden }));
+    setState((s) => ({ ...s, isBalanceHidden: !s.isBalanceHidden }));
   }, []);
 
   const setIsOffline = useCallback((isOffline: boolean) => {
-    setState(s => ({ ...s, isOffline }));
+    setState((s) => ({ ...s, isOffline }));
   }, []);
 
   const setNotifications = useCallback((notifications: number) => {
-    setState(s => ({ ...s, notifications }));
+    setState((s) => ({ ...s, notifications }));
   }, []);
 
   const setPendingRewards = useCallback((pendingRewards: number) => {
-    setState(s => ({ ...s, pendingRewards }));
+    setState((s) => ({ ...s, pendingRewards }));
   }, []);
 
   // Memoize context value to prevent unnecessary re-renders when parent re-renders
@@ -51,14 +51,10 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
       setNotifications,
       setPendingRewards,
     }),
-    [state, toggleBalanceHidden, setIsOffline, setNotifications, setPendingRewards]
+    [state, toggleBalanceHidden, setIsOffline, setNotifications, setPendingRewards],
   );
 
-  return (
-    <UIContext.Provider value={value}>
-      {children}
-    </UIContext.Provider>
-  );
+  return <UIContext.Provider value={value}>{children}</UIContext.Provider>;
 }
 
 export function useUI() {

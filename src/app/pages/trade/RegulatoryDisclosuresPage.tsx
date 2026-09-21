@@ -2,7 +2,7 @@
  * ══════════════════════════════════════════════════════════════
  *  RegulatoryDisclosuresPage — Phase 3: Legal Compliance
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - MiFID II compliance statement
  * - Investor protection scheme info
@@ -10,12 +10,12 @@
  * - Liability limitations
  * - Regulatory contact info
  * - Terms of Service (Copy Trading specific)
- * 
+ *
  * Compliance:
  * - Mandatory legal disclosures (MiFID II/ESMA)
  * - Transparent regulatory compliance
  * - User protection information
- * 
+ *
  * Guidelines:
  * - PageLayout + TabBar pattern
  * - Legal language (clear but formal)
@@ -24,9 +24,17 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { 
-  Shield, FileText, AlertTriangle, Globe, Info, Phone,
-  ExternalLink, ChevronRight, Lock, Scale
+import {
+  Shield,
+  FileText,
+  AlertTriangle,
+  Globe,
+  Info,
+  Phone,
+  ExternalLink,
+  ChevronRight,
+  Lock,
+  Scale,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -39,7 +47,7 @@ type TabType = 'mifid' | 'protection' | 'restrictions' | 'liability' | 'contact'
 export function RegulatoryDisclosuresPage() {
   const c = useThemeColors();
   const navigate = useNavigate();
-  
+
   const [activeTab, setActiveTab] = useState<TabType>('mifid');
 
   return (
@@ -48,9 +56,12 @@ export function RegulatoryDisclosuresPage() {
 
       <PageContent gap="relaxed">
         {/* Hero Banner */}
-        <div className="p-4 rounded-2xl" style={{ background: c.primary + '22', border: `2px solid ${c.primary}` }}>
+        <div
+          className="p-4 rounded-2xl"
+          style={{ background: c.primary + '22', border: `2px solid ${c.primary}` }}
+        >
           <div className="flex gap-3">
-            <div 
+            <div
               className="w-12 h-12 rounded-full flex items-center justify-center shrink-0"
               style={{ background: c.primary }}
             >
@@ -91,7 +102,7 @@ export function RegulatoryDisclosuresPage() {
                     Article 24: Information to Clients
                   </p>
                   <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
-                    We provide all material information about copy trading, including risks, costs, 
+                    We provide all material information about copy trading, including risks, costs,
                     and nature of service. All disclosures are clear, accurate, and not misleading.
                   </p>
                 </div>
@@ -124,8 +135,8 @@ export function RegulatoryDisclosuresPage() {
                     Article 27: Best Execution Obligation
                   </p>
                   <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
-                    We execute your copy orders on terms most favorable to you, considering price, 
-                    costs, speed, likelihood of execution, and other relevant factors. Execution 
+                    We execute your copy orders on terms most favorable to you, considering price,
+                    costs, speed, likelihood of execution, and other relevant factors. Execution
                     quality metrics are disclosed transparently.
                   </p>
                 </div>
@@ -135,19 +146,23 @@ export function RegulatoryDisclosuresPage() {
                     Article 58: Record Keeping
                   </p>
                   <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
-                    All transactions, communications, and risk assessments are recorded and retained 
+                    All transactions, communications, and risk assessments are recorded and retained
                     for a minimum of 5 years. You can request your complete audit trail at any time.
                   </p>
                 </div>
               </div>
             </PageSection>
 
-            <div className="p-3 rounded-xl" style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}>
+            <div
+              className="p-3 rounded-xl"
+              style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}
+            >
               <div className="flex items-start gap-2">
                 <Info size={14} color={c.primary} className="shrink-0 mt-0.5" />
                 <p style={{ color: c.primary, fontSize: 10, lineHeight: 1.5 }}>
-                  <strong>Our Commitment:</strong> We comply with all MiFID II requirements to protect 
-                  retail investors. Our compliance is audited annually by independent third parties.
+                  <strong>Our Commitment:</strong> We comply with all MiFID II requirements to
+                  protect retail investors. Our compliance is audited annually by independent third
+                  parties.
                 </p>
               </div>
             </div>
@@ -163,8 +178,8 @@ export function RegulatoryDisclosuresPage() {
                     Coverage Limit
                   </p>
                   <p style={{ color: '#10B981', fontSize: 10, lineHeight: 1.5 }}>
-                    Eligible claims are covered up to €20,000 per user under the Investor Compensation 
-                    Scheme (ICS). This protects you if we become insolvent.
+                    Eligible claims are covered up to €20,000 per user under the Investor
+                    Compensation Scheme (ICS). This protects you if we become insolvent.
                   </p>
                 </div>
 
@@ -246,7 +261,10 @@ export function RegulatoryDisclosuresPage() {
           <div className="space-y-4">
             <PageSection label="Jurisdictional Restrictions" accentColor="#F59E0B">
               <div className="space-y-3">
-                <div className="p-3 rounded-xl" style={{ background: c.warningBg, border: `1px solid ${c.warningBorder}` }}>
+                <div
+                  className="p-3 rounded-xl"
+                  style={{ background: c.warningBg, border: `1px solid ${c.warningBorder}` }}
+                >
                   <div className="flex items-start gap-2 mb-2">
                     <AlertTriangle size={14} color={c.warningText} className="shrink-0 mt-0.5" />
                     <p style={{ color: c.warningText, fontSize: 11, fontWeight: 700 }}>
@@ -275,16 +293,26 @@ export function RegulatoryDisclosuresPage() {
                   </p>
                   <div className="space-y-2 mt-3">
                     <div>
-                      <p style={{ color: c.text2, fontSize: 11, marginBottom: 2 }}>EU Retail Clients:</p>
-                      <p style={{ color: c.text3, fontSize: 10 }}>Max 30:1 for major forex, 20:1 for minor</p>
+                      <p style={{ color: c.text2, fontSize: 11, marginBottom: 2 }}>
+                        EU Retail Clients:
+                      </p>
+                      <p style={{ color: c.text3, fontSize: 10 }}>
+                        Max 30:1 for major forex, 20:1 for minor
+                      </p>
                     </div>
                     <div>
-                      <p style={{ color: c.text2, fontSize: 11, marginBottom: 2 }}>UK Retail Clients:</p>
+                      <p style={{ color: c.text2, fontSize: 11, marginBottom: 2 }}>
+                        UK Retail Clients:
+                      </p>
                       <p style={{ color: c.text3, fontSize: 10 }}>FCA limits apply (same as EU)</p>
                     </div>
                     <div>
-                      <p style={{ color: c.text2, fontSize: 11, marginBottom: 2 }}>Professional Clients:</p>
-                      <p style={{ color: c.text3, fontSize: 10 }}>Higher leverage available (up to 100:1)</p>
+                      <p style={{ color: c.text2, fontSize: 11, marginBottom: 2 }}>
+                        Professional Clients:
+                      </p>
+                      <p style={{ color: c.text3, fontSize: 10 }}>
+                        Higher leverage available (up to 100:1)
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -294,7 +322,8 @@ export function RegulatoryDisclosuresPage() {
                     Tax Reporting Obligations
                   </p>
                   <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5, marginBottom: 6 }}>
-                    You are responsible for reporting trading income to your local tax authority. We provide:
+                    You are responsible for reporting trading income to your local tax authority. We
+                    provide:
                   </p>
                   <ul className="space-y-1">
                     <li style={{ color: c.text3, fontSize: 10, paddingLeft: 12 }}>
@@ -322,7 +351,8 @@ export function RegulatoryDisclosuresPage() {
                     Platform Role
                   </p>
                   <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
-                    We are a <strong>technology provider</strong>, not an investment advisor. We do not:
+                    We are a <strong>technology provider</strong>, not an investment advisor. We do
+                    not:
                   </p>
                   <ul className="space-y-1 mt-2">
                     <li style={{ color: c.text3, fontSize: 10, paddingLeft: 12 }}>
@@ -363,17 +393,15 @@ export function RegulatoryDisclosuresPage() {
                   </ul>
                 </div>
 
-                <div className="p-3 rounded-xl" style={{ background: c.dangerBg }}>
+                <div className="p-3 rounded-xl" style={{ background: c.sellAlpha10 }}>
                   <div className="flex items-start gap-2 mb-2">
-                    <AlertTriangle size={14} color={c.dangerText} className="shrink-0 mt-0.5" />
-                    <p style={{ color: c.dangerText, fontSize: 11, fontWeight: 700 }}>
-                      Indemnification
-                    </p>
+                    <AlertTriangle size={14} color={c.error} className="shrink-0 mt-0.5" />
+                    <p style={{ color: c.error, fontSize: 11, fontWeight: 700 }}>Indemnification</p>
                   </div>
-                  <p style={{ color: c.dangerText, fontSize: 10, lineHeight: 1.5 }}>
-                    You agree to indemnify and hold us harmless from any claims, damages, or losses 
-                    arising from your use of copy trading, except in cases of our gross negligence or 
-                    willful misconduct.
+                  <p style={{ color: c.error, fontSize: 10, lineHeight: 1.5 }}>
+                    You agree to indemnify and hold us harmless from any claims, damages, or losses
+                    arising from your use of copy trading, except in cases of our gross negligence
+                    or willful misconduct.
                   </p>
                 </div>
 
@@ -382,8 +410,8 @@ export function RegulatoryDisclosuresPage() {
                     Limitation of Liability
                   </p>
                   <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
-                    Our maximum liability is limited to the fees you paid in the last 12 months, 
-                    except where prohibited by law. We are not liable for consequential, indirect, 
+                    Our maximum liability is limited to the fees you paid in the last 12 months,
+                    except where prohibited by law. We are not liable for consequential, indirect,
                     or punitive damages.
                   </p>
                 </div>
@@ -406,9 +434,7 @@ export function RegulatoryDisclosuresPage() {
                       <p style={{ color: c.text1, fontSize: 12, fontWeight: 700, marginBottom: 2 }}>
                         Financial Conduct Authority (FCA)
                       </p>
-                      <p style={{ color: c.text3, fontSize: 10 }}>
-                        UK regulatory authority
-                      </p>
+                      <p style={{ color: c.text3, fontSize: 10 }}>UK regulatory authority</p>
                     </div>
                   </div>
                   <ExternalLink size={14} color={c.text3} />
@@ -424,9 +450,7 @@ export function RegulatoryDisclosuresPage() {
                       <p style={{ color: c.text1, fontSize: 12, fontWeight: 700, marginBottom: 2 }}>
                         European Securities and Markets Authority (ESMA)
                       </p>
-                      <p style={{ color: c.text3, fontSize: 10 }}>
-                        EU regulatory authority
-                      </p>
+                      <p style={{ color: c.text3, fontSize: 10 }}>EU regulatory authority</p>
                     </div>
                   </div>
                   <ExternalLink size={14} color={c.text3} />
@@ -442,9 +466,7 @@ export function RegulatoryDisclosuresPage() {
                       <p style={{ color: c.text1, fontSize: 12, fontWeight: 700, marginBottom: 2 }}>
                         Financial Ombudsman Service
                       </p>
-                      <p style={{ color: c.text3, fontSize: 10 }}>
-                        Dispute resolution
-                      </p>
+                      <p style={{ color: c.text3, fontSize: 10 }}>Dispute resolution</p>
                     </div>
                   </div>
                   <ExternalLink size={14} color={c.text3} />

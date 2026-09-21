@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { Tag, Zap, Megaphone, Settings, Shield, Bell, Pin, Calendar, ChevronRight } from 'lucide-react';
+import {
+  Tag,
+  Zap,
+  Megaphone,
+  Settings,
+  Shield,
+  Bell,
+  Pin,
+  Calendar,
+  ChevronRight,
+} from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { TrCard } from '../../components/ui/TrCard';
 import { Header } from '../../components/layout/Header';
@@ -18,8 +28,12 @@ const TYPE_CONFIG: Record<string, { icon: any; color: string; label: string }> =
 
 const FILTERS = ['Tất cả', 'Khuyến mãi', 'Tính năng', 'Niêm yết', 'Bảo trì', 'Bảo mật'];
 const FILTER_MAP: Record<string, string | null> = {
-  'Tất cả': null, 'Khuyến mãi': 'promotion', 'Tính năng': 'new_feature',
-  'Niêm yết': 'listing', 'Bảo trì': 'maintenance', 'Bảo mật': 'security',
+  'Tất cả': null,
+  'Khuyến mãi': 'promotion',
+  'Tính năng': 'new_feature',
+  'Niêm yết': 'listing',
+  'Bảo trì': 'maintenance',
+  'Bảo mật': 'security',
 };
 
 export function AnnouncementsPage() {
@@ -28,12 +42,10 @@ export function AnnouncementsPage() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const filterType = FILTER_MAP[activeFilter];
-  const articles = filterType
-    ? NEWS_ARTICLES.filter(a => a.type === filterType)
-    : NEWS_ARTICLES;
+  const articles = filterType ? NEWS_ARTICLES.filter((a) => a.type === filterType) : NEWS_ARTICLES;
 
-  const pinned = articles.filter(a => a.isPinned);
-  const regular = articles.filter(a => !a.isPinned);
+  const pinned = articles.filter((a) => a.isPinned);
+  const regular = articles.filter((a) => !a.isPinned);
 
   return (
     <PageLayout>
@@ -41,16 +53,22 @@ export function AnnouncementsPage() {
 
       <PageContent>
         {/* Filter chips */}
-        <div className="flex gap-2 px-5 mt-3 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none' }}>
-          {FILTERS.map(f => (
-            <button key={f} onClick={() => setActiveFilter(f)}
+        <div
+          className="flex gap-2 px-5 mt-3 overflow-x-auto pb-2"
+          style={{ scrollbarWidth: 'none' }}
+        >
+          {FILTERS.map((f) => (
+            <button
+              key={f}
+              onClick={() => setActiveFilter(f)}
               className="shrink-0 px-4 py-2 rounded-xl text-xs whitespace-nowrap"
               style={{
                 background: activeFilter === f ? c.chipActiveBg : c.chipBg,
                 color: activeFilter === f ? c.chipActiveText : c.chipText,
                 border: `1px solid ${activeFilter === f ? c.chipActiveBorder : c.chipBorder}`,
                 fontWeight: 600,
-              }}>
+              }}
+            >
               {f}
             </button>
           ))}
@@ -63,10 +81,14 @@ export function AnnouncementsPage() {
               <Pin size={13} color={c.primary} />
               <span style={{ color: c.text2, fontSize: 12, fontWeight: 600 }}>GHIM</span>
             </div>
-            {pinned.map(article => (
-              <AnnouncementCard key={article.id} article={article} c={c}
+            {pinned.map((article) => (
+              <AnnouncementCard
+                key={article.id}
+                article={article}
+                c={c}
                 expanded={expandedId === article.id}
-                onToggle={() => setExpandedId(expandedId === article.id ? null : article.id)} />
+                onToggle={() => setExpandedId(expandedId === article.id ? null : article.id)}
+              />
             ))}
           </div>
         )}
@@ -79,10 +101,14 @@ export function AnnouncementsPage() {
               <p style={{ color: c.text3, fontSize: 13 }}>Không có thông báo nào</p>
             </TrCard>
           )}
-          {regular.map(article => (
-            <AnnouncementCard key={article.id} article={article} c={c}
+          {regular.map((article) => (
+            <AnnouncementCard
+              key={article.id}
+              article={article}
+              c={c}
               expanded={expandedId === article.id}
-              onToggle={() => setExpandedId(expandedId === article.id ? null : article.id)} />
+              onToggle={() => setExpandedId(expandedId === article.id ? null : article.id)}
+            />
           ))}
         </div>
       </PageContent>
@@ -95,15 +121,30 @@ function AnnouncementCard({ article, c, expanded, onToggle }: any) {
   const Icon = config.icon;
 
   return (
-    <TrCard as="button" hover onClick={onToggle} className="w-full text-left p-4 mb-2 transition-all">
+    <TrCard
+      as="button"
+      hover
+      onClick={onToggle}
+      className="w-full text-left p-4 mb-2 transition-all"
+    >
       <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-          style={{ background: config.color + '15' }}>
+        <div
+          className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+          style={{ background: config.color + '15' }}
+        >
           <Icon size={18} color={config.color} />
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <span className="px-2 py-0.5 rounded-md" style={{ background: config.color + '15', color: config.color, fontSize: 10, fontWeight: 600 }}>
+            <span
+              className="px-2 py-0.5 rounded-md"
+              style={{
+                background: config.color + '15',
+                color: config.color,
+                fontSize: 10,
+                fontWeight: 600,
+              }}
+            >
               {config.label}
             </span>
             {article.isPinned && <Pin size={11} color={c.primary} />}
@@ -121,8 +162,11 @@ function AnnouncementCard({ article, c, expanded, onToggle }: any) {
               </p>
               <div className="flex flex-wrap gap-1.5 mt-3">
                 {article.tags.map((tag: string) => (
-                  <span key={tag} className="px-2 py-0.5 rounded-md"
-                    style={{ background: c.surface2, color: c.text2, fontSize: 10 }}>
+                  <span
+                    key={tag}
+                    className="px-2 py-0.5 rounded-md"
+                    style={{ background: c.surface2, color: c.text2, fontSize: 10 }}
+                  >
                     #{tag}
                   </span>
                 ))}
@@ -130,8 +174,15 @@ function AnnouncementCard({ article, c, expanded, onToggle }: any) {
             </div>
           )}
         </div>
-        <ChevronRight size={16} color={c.text3}
-          style={{ transform: expanded ? 'rotate(90deg)' : 'none', transition: '0.2s', marginTop: 4 }} />
+        <ChevronRight
+          size={16}
+          color={c.text3}
+          style={{
+            transform: expanded ? 'rotate(90deg)' : 'none',
+            transition: '0.2s',
+            marginTop: 4,
+          }}
+        />
       </div>
     </TrCard>
   );

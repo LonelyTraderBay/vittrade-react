@@ -83,22 +83,28 @@ interface TradeJournalProps {
    ═══════════════════════════════════════════════════════════════ */
 
 function calculateStats(trades: TradeEntry[]): JournalStats {
-  const wins = trades.filter(t => t.outcome === 'win');
-  const losses = trades.filter(t => t.outcome === 'loss');
-  const breakeven = trades.filter(t => t.outcome === 'breakeven');
+  const wins = trades.filter((t) => t.outcome === 'win');
+  const losses = trades.filter((t) => t.outcome === 'loss');
+  const breakeven = trades.filter((t) => t.outcome === 'breakeven');
 
   const totalWinPnl = wins.reduce((sum, t) => sum + t.pnl, 0);
   const totalLossPnl = Math.abs(losses.reduce((sum, t) => sum + t.pnl, 0));
 
-  const pairPnl = trades.reduce((acc, t) => {
-    acc[t.pair] = (acc[t.pair] || 0) + t.pnl;
-    return acc;
-  }, {} as Record<string, number>);
+  const pairPnl = trades.reduce(
+    (acc, t) => {
+      acc[t.pair] = (acc[t.pair] || 0) + t.pnl;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
 
-  const setupPnl = trades.reduce((acc, t) => {
-    acc[t.setup] = (acc[t.setup] || 0) + t.pnl;
-    return acc;
-  }, {} as Record<string, number>);
+  const setupPnl = trades.reduce(
+    (acc, t) => {
+      acc[t.setup] = (acc[t.setup] || 0) + t.pnl;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
 
   return {
     totalTrades: trades.length,
@@ -110,9 +116,10 @@ function calculateStats(trades: TradeEntry[]): JournalStats {
     avgLoss: losses.length > 0 ? totalLossPnl / losses.length : 0,
     profitFactor: totalLossPnl > 0 ? totalWinPnl / totalLossPnl : 0,
     expectancy: trades.length > 0 ? trades.reduce((sum, t) => sum + t.pnl, 0) / trades.length : 0,
-    largestWin: Math.max(...trades.map(t => t.pnl), 0),
-    largestLoss: Math.min(...trades.map(t => t.pnl), 0),
-    avgHoldTime: trades.length > 0 ? trades.reduce((sum, t) => sum + t.duration, 0) / trades.length : 0,
+    largestWin: Math.max(...trades.map((t) => t.pnl), 0),
+    largestLoss: Math.min(...trades.map((t) => t.pnl), 0),
+    avgHoldTime:
+      trades.length > 0 ? trades.reduce((sum, t) => sum + t.duration, 0) / trades.length : 0,
     bestPair: Object.entries(pairPnl).sort(([, a], [, b]) => b - a)[0]?.[0] || 'N/A',
     worstPair: Object.entries(pairPnl).sort(([, a], [, b]) => a - b)[0]?.[0] || 'N/A',
     bestSetup: Object.entries(setupPnl).sort(([, a], [, b]) => b - a)[0]?.[0] || 'N/A',
@@ -152,16 +159,15 @@ function StatsOverview({ stats }: { stats: JournalStats }) {
         <p style={{ color: c.text3, fontSize: 10, marginBottom: 4 }}>Profit Factor</p>
         <p
           style={{
-            color: stats.profitFactor >= 2 ? '#10B981' : stats.profitFactor >= 1 ? '#3B82F6' : '#EF4444',
+            color:
+              stats.profitFactor >= 2 ? '#10B981' : stats.profitFactor >= 1 ? '#3B82F6' : '#EF4444',
             fontSize: FONT_SCALE.xl,
             fontWeight: FONT_WEIGHT.bold,
           }}
         >
           {stats.profitFactor.toFixed(2)}
         </p>
-        <p style={{ color: c.text3, fontSize: 10 }}>
-          Wins / Losses
-        </p>
+        <p style={{ color: c.text3, fontSize: 10 }}>Wins / Losses</p>
       </div>
 
       {/* Avg Win */}
@@ -207,9 +213,7 @@ function StatsOverview({ stats }: { stats: JournalStats }) {
         >
           ${stats.expectancy.toFixed(0)}
         </p>
-        <p style={{ color: c.text3, fontSize: 10 }}>
-          Per trade
-        </p>
+        <p style={{ color: c.text3, fontSize: 10 }}>Per trade</p>
       </div>
 
       {/* Avg Hold Time */}
@@ -285,7 +289,8 @@ function TradeRow({ trade, onClick }: { trade: TradeEntry; onClick?: () => void 
             {trade.pnl > 0 ? '+' : ''}${trade.pnl.toFixed(2)}
           </p>
           <p style={{ color: c.text3, fontSize: 10 }}>
-            {trade.pnlPct > 0 ? '+' : ''}{trade.pnlPct.toFixed(1)}%
+            {trade.pnlPct > 0 ? '+' : ''}
+            {trade.pnlPct.toFixed(1)}%
           </p>
         </div>
       </div>
@@ -342,7 +347,7 @@ function SetupBreakdown({ trades }: { trades: TradeEntry[] }) {
   const setupStats = useMemo(() => {
     const stats: Record<string, { count: number; wins: number; pnl: number }> = {};
 
-    trades.forEach(trade => {
+    trades.forEach((trade) => {
       if (!stats[trade.setup]) {
         stats[trade.setup] = { count: 0, wins: 0, pnl: 0 };
       }
@@ -372,13 +377,15 @@ function SetupBreakdown({ trades }: { trades: TradeEntry[] }) {
 
       <div className="flex flex-col gap-2">
         {setupStats.map((item, i) => (
-          <div
-            key={i}
-            className="rounded-xl p-3"
-            style={{ background: c.surface2 }}
-          >
+          <div key={i} className="rounded-xl p-3" style={{ background: c.surface2 }}>
             <div className="flex items-center justify-between mb-1">
-              <p style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+              <p
+                style={{
+                  color: c.text1,
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.semibold,
+                }}
+              >
                 {item.setup.replace('_', ' ').toUpperCase()}
               </p>
               <p
@@ -416,8 +423,8 @@ export function TradeJournal({ trades, onTradeClick }: TradeJournalProps) {
 
   const filteredTrades = useMemo(() => {
     if (filter === 'all') return trades;
-    if (filter === 'wins') return trades.filter(t => t.outcome === 'win');
-    return trades.filter(t => t.outcome === 'loss');
+    if (filter === 'wins') return trades.filter((t) => t.outcome === 'win');
+    return trades.filter((t) => t.outcome === 'loss');
   }, [trades, filter]);
 
   return (
@@ -461,7 +468,7 @@ export function TradeJournal({ trades, onTradeClick }: TradeJournalProps) {
 
       {/* Filters */}
       <div className="flex gap-2">
-        {(['all', 'wins', 'losses'] as const).map(f => (
+        {(['all', 'wins', 'losses'] as const).map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
@@ -481,12 +488,8 @@ export function TradeJournal({ trades, onTradeClick }: TradeJournalProps) {
 
       {/* Trades List */}
       <div className="flex flex-col gap-2">
-        {filteredTrades.map(trade => (
-          <TradeRow
-            key={trade.id}
-            trade={trade}
-            onClick={() => onTradeClick?.(trade)}
-          />
+        {filteredTrades.map((trade) => (
+          <TradeRow key={trade.id} trade={trade} onClick={() => onTradeClick?.(trade)} />
         ))}
       </div>
     </div>

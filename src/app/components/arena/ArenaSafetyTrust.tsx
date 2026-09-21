@@ -15,8 +15,16 @@
 import React from 'react';
 import { BottomSheetV2 } from '../ui/BottomSheetV2';
 import {
-  Shield, ChevronRight, Info, Lock, Eye,
-  FileText, Scale, AlertTriangle, X, Flag,
+  Shield,
+  ChevronRight,
+  Info,
+  Lock,
+  Eye,
+  FileText,
+  Scale,
+  AlertTriangle,
+  X,
+  Flag,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useHaptic } from '../../hooks/useHaptic';
@@ -34,11 +42,11 @@ export { SafetyBanner } from './ArenaGovernance';
 export interface TrustMetricRowData {
   key: string;
   label: string;
-  value: number;      // 0–100
-  maxValue?: number;   // default 100
+  value: number; // 0–100
+  maxValue?: number; // default 100
   color: string;
   description: string; // microcopy explaining this metric
-  suffix?: string;     // e.g. '%' or '/5'
+  suffix?: string; // e.g. '%' or '/5'
 }
 
 interface TrustMetricRowProps {
@@ -55,21 +63,19 @@ export function TrustMetricRow({ metric, showBar = true }: TrustMetricRowProps) 
     <div>
       <div className="flex items-center justify-between mb-1.5">
         <div className="flex items-center gap-2">
-          <div
-            className="w-2 h-2 rounded-full shrink-0"
-            style={{ background: metric.color }}
-          />
-          <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
-            {metric.label}
-          </span>
+          <div className="w-2 h-2 rounded-full shrink-0" style={{ background: metric.color }} />
+          <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>{metric.label}</span>
         </div>
-        <span style={{
-          color: metric.color,
-          fontSize: φ.sm,
-          fontWeight: 700,
-          fontFamily: 'monospace',
-        }}>
-          {metric.value}{metric.suffix || `/${max}`}
+        <span
+          style={{
+            color: metric.color,
+            fontSize: φ.sm,
+            fontWeight: 700,
+            fontFamily: 'monospace',
+          }}
+        >
+          {metric.value}
+          {metric.suffix || `/${max}`}
         </span>
       </div>
       {showBar && (
@@ -84,9 +90,7 @@ export function TrustMetricRow({ metric, showBar = true }: TrustMetricRowProps) 
           />
         </div>
       )}
-      <p style={{ color: c.text3, fontSize: φ.xs, lineHeight: 1.4 }}>
-        {metric.description}
-      </p>
+      <p style={{ color: c.text3, fontSize: φ.xs, lineHeight: 1.4 }}>{metric.description}</p>
     </div>
   );
 }
@@ -179,12 +183,16 @@ interface SafetySnapshotCardProps {
 }
 
 export function SafetySnapshotCard({
-  data, onTrustTap, onSafetyTap, onResolutionTap, className,
+  data,
+  onTrustTap,
+  onSafetyTap,
+  onResolutionTap,
+  className,
 }: SafetySnapshotCardProps) {
   const c = useThemeColors();
   const { hapticSelection } = useHaptic();
-  const trustColor = data.creatorTrustScore >= 80 ? '#10B981'
-    : data.creatorTrustScore >= 60 ? '#F59E0B' : '#EF4444';
+  const trustColor =
+    data.creatorTrustScore >= 80 ? '#10B981' : data.creatorTrustScore >= 60 ? '#F59E0B' : '#EF4444';
 
   const rows: { label: string; value: string; icon: React.ElementType; color: string }[] = [
     {
@@ -218,28 +226,27 @@ export function SafetySnapshotCard({
       {/* Header */}
       <div className="flex items-center gap-2 mb-3">
         <Shield size={14} color="#10B981" />
-        <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
-          An toàn nhanh
-        </span>
+        <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>An toàn nhanh</span>
       </div>
 
       {/* Metric rows */}
       <div className="flex flex-col gap-2.5 mb-3">
-        {rows.map(row => (
+        {rows.map((row) => (
           <div key={row.label} className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <row.icon size={13} color={row.color} className="shrink-0" />
               <span style={{ color: c.text2, fontSize: φ.xs }}>{row.label}</span>
             </div>
-            <span style={{ color: c.text1, fontSize: φ.xs, fontWeight: 600 }}>
-              {row.value}
-            </span>
+            <span style={{ color: c.text1, fontSize: φ.xs, fontWeight: 600 }}>{row.value}</span>
           </div>
         ))}
 
         {/* Creator trust — tappable */}
         <button
-          onClick={() => { onTrustTap?.(); hapticSelection(); }}
+          onClick={() => {
+            onTrustTap?.();
+            hapticSelection();
+          }}
           className="flex items-center justify-between active:opacity-70"
           style={{ minHeight: 28 }}
         >
@@ -248,29 +255,42 @@ export function SafetySnapshotCard({
             <span style={{ color: c.text2, fontSize: φ.xs }}>Tin cậy creator</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span style={{
-              color: trustColor,
-              fontSize: φ.xs,
-              fontWeight: 700,
-              fontFamily: 'monospace',
-            }}>
+            <span
+              style={{
+                color: trustColor,
+                fontSize: φ.xs,
+                fontWeight: 700,
+                fontFamily: 'monospace',
+              }}
+            >
               {data.creatorTrustScore}%
             </span>
-            <span style={{ color: c.text3, fontSize: 10 }}>
-              {data.creatorName}
-            </span>
+            <span style={{ color: c.text3, fontSize: 10 }}>{data.creatorName}</span>
             <ChevronRight size={10} color={c.text3} />
           </div>
         </button>
       </div>
 
       {/* Divider + policy links */}
-      <div className="pt-2.5 flex flex-wrap gap-x-4 gap-y-1" style={{ borderTop: `1px solid ${c.divider}` }}>
+      <div
+        className="pt-2.5 flex flex-wrap gap-x-4 gap-y-1"
+        style={{ borderTop: `1px solid ${c.divider}` }}
+      >
         {onSafetyTap && (
-          <PolicyInfoLink label="An toàn & báo cáo" onClick={onSafetyTap} color="#EF4444" icon={Flag} />
+          <PolicyInfoLink
+            label="An toàn & báo cáo"
+            onClick={onSafetyTap}
+            color="#EF4444"
+            icon={Flag}
+          />
         )}
         {onResolutionTap && (
-          <PolicyInfoLink label="Cách chốt kết quả" onClick={onResolutionTap} color="#3B82F6" icon={Scale} />
+          <PolicyInfoLink
+            label="Cách chốt kết quả"
+            onClick={onResolutionTap}
+            color="#3B82F6"
+            icon={Scale}
+          />
         )}
       </div>
     </TrCard>
@@ -287,11 +307,11 @@ export function SafetySnapshotCard({
  */
 
 export interface TrustBreakdownData {
-  fairPlay: number;                // 0–100
-  completionRate: number;          // 0–100 %
-  disputeRate: number;             // 0–100 (lower = better)
-  reportUpheldRate: number;        // 0–100 %
-  creatorReliability: number;      // 0–100
+  fairPlay: number; // 0–100
+  completionRate: number; // 0–100 %
+  disputeRate: number; // 0–100 (lower = better)
+  reportUpheldRate: number; // 0–100 %
+  creatorReliability: number; // 0–100
   roomSafetyTier: 'green' | 'yellow' | 'red';
   entityName: string;
   overallScore: number;
@@ -313,8 +333,8 @@ export function TrustBreakdownSheet({ open, onClose, data }: TrustBreakdownSheet
   const c = useThemeColors();
   const { hapticSelection } = useHaptic();
 
-  const scoreColor = data.overallScore >= 80 ? '#10B981'
-    : data.overallScore >= 60 ? '#F59E0B' : '#EF4444';
+  const scoreColor =
+    data.overallScore >= 80 ? '#10B981' : data.overallScore >= 60 ? '#F59E0B' : '#EF4444';
 
   const tier = SAFETY_TIER_CONFIG[data.roomSafetyTier] || SAFETY_TIER_CONFIG.green;
 
@@ -324,15 +344,18 @@ export function TrustBreakdownSheet({ open, onClose, data }: TrustBreakdownSheet
       label: 'Fair Play',
       value: data.fairPlay,
       color: data.fairPlay >= 80 ? '#10B981' : data.fairPlay >= 60 ? '#F59E0B' : '#EF4444',
-      description: 'Mức tuân thủ luật chơi và chấp nhận kết quả. Nguồn: đánh giá từ hệ thống sau mỗi challenge.',
+      description:
+        'Mức tuân thủ luật chơi và chấp nhận kết quả. Nguồn: đánh giá từ hệ thống sau mỗi challenge.',
       suffix: '%',
     },
     {
       key: 'completion',
       label: 'Tỷ lệ hoàn thành',
       value: data.completionRate,
-      color: data.completionRate >= 90 ? '#10B981' : data.completionRate >= 70 ? '#F59E0B' : '#EF4444',
-      description: 'Phòng hoàn thành đầy đủ (từ join đến kết thúc). Không tính phòng bị hủy bởi hệ thống.',
+      color:
+        data.completionRate >= 90 ? '#10B981' : data.completionRate >= 70 ? '#F59E0B' : '#EF4444',
+      description:
+        'Phòng hoàn thành đầy đủ (từ join đến kết thúc). Không tính phòng bị hủy bởi hệ thống.',
       suffix: '%',
     },
     {
@@ -347,7 +370,12 @@ export function TrustBreakdownSheet({ open, onClose, data }: TrustBreakdownSheet
       key: 'report_upheld',
       label: 'Báo cáo xác nhận',
       value: data.reportUpheldRate,
-      color: data.reportUpheldRate <= 3 ? '#10B981' : data.reportUpheldRate <= 10 ? '#F59E0B' : '#EF4444',
+      color:
+        data.reportUpheldRate <= 3
+          ? '#10B981'
+          : data.reportUpheldRate <= 10
+            ? '#F59E0B'
+            : '#EF4444',
       description: 'Tỷ lệ báo cáo vi phạm được xác nhận đúng. Thấp = ít vi phạm thực tế.',
       suffix: '%',
     },
@@ -355,88 +383,106 @@ export function TrustBreakdownSheet({ open, onClose, data }: TrustBreakdownSheet
       key: 'reliability',
       label: 'Độ tin cậy creator',
       value: data.creatorReliability,
-      color: data.creatorReliability >= 80 ? '#10B981' : data.creatorReliability >= 60 ? '#F59E0B' : '#EF4444',
-      description: 'Đánh giá uy tín khi tạo và quản lý challenge. Nguồn: đánh giá cộng đồng + lịch sử.',
+      color:
+        data.creatorReliability >= 80
+          ? '#10B981'
+          : data.creatorReliability >= 60
+            ? '#F59E0B'
+            : '#EF4444',
+      description:
+        'Đánh giá uy tín khi tạo và quản lý challenge. Nguồn: đánh giá cộng đồng + lịch sử.',
       suffix: '%',
     },
   ];
 
   return (
     <BottomSheetV2 open={open} onClose={onClose} title="Chi tiết tin cậy">
-        {/* Overall score */}
-        <TrCard className="p-4 mb-4">
-          <div className="flex items-center gap-4 mb-3">
-            <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
-              style={{ background: hexToRgba(scoreColor, 12), border: `2px solid ${hexToRgba(scoreColor, 30)}` }}
-            >
-              <span style={{ color: scoreColor, fontSize: 24, fontWeight: 700, fontFamily: 'monospace' }}>
-                {data.overallScore}
-              </span>
-            </div>
-            <div className="flex-1 min-w-0">
-              <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 700 }}>
-                {data.entityName}
-              </p>
-              <div className="flex items-center gap-1.5 mt-1">
-                <Shield size={10} color={scoreColor} />
-                <span style={{ color: scoreColor, fontSize: φ.xs, fontWeight: 600 }}>
-                  {data.overallScore >= 80 ? 'Tin cậy cao' : data.overallScore >= 60 ? 'Trung bình' : 'Cần cải thiện'}
-                </span>
-              </div>
-            </div>
-          </div>
-          {/* Score bar */}
-          <div className="h-2 rounded-full" style={{ background: c.surface2 }}>
-            <div
-              className="h-full rounded-full"
-              style={{
-                width: `${data.overallScore}%`,
-                background: `linear-gradient(90deg, ${hexToRgba(scoreColor, 80)}, ${scoreColor})`,
-                transition: 'width 0.6s ease-out',
-              }}
-            />
-          </div>
-        </TrCard>
-
-        {/* Room Safety Tier */}
-        <TrCard className="p-4 mb-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Shield size={14} color={tier.color} />
-            <div>
-              <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
-                Mức an toàn phòng
-              </span>
-            </div>
-          </div>
-          <span
-            className="px-2.5 py-1 rounded-lg"
-            style={{ background: hexToRgba(tier.color, 12), color: tier.color, fontSize: φ.xs, fontWeight: 600 }}
+      {/* Overall score */}
+      <TrCard className="p-4 mb-4">
+        <div className="flex items-center gap-4 mb-3">
+          <div
+            className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
+            style={{
+              background: hexToRgba(scoreColor, 12),
+              border: `2px solid ${hexToRgba(scoreColor, 30)}`,
+            }}
           >
-            {tier.label}
-          </span>
-        </TrCard>
-
-        {/* Individual metrics */}
-        <TrCard className="p-4 mb-4">
-          <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700, marginBottom: 12 }}>
-            Chỉ số chi tiết
-          </p>
-          <div className="flex flex-col gap-4">
-            {metrics.map(m => (
-              <TrustMetricRow key={m.key} metric={m} />
-            ))}
+            <span
+              style={{ color: scoreColor, fontSize: 24, fontWeight: 700, fontFamily: 'monospace' }}
+            >
+              {data.overallScore}
+            </span>
           </div>
-        </TrCard>
+          <div className="flex-1 min-w-0">
+            <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 700 }}>{data.entityName}</p>
+            <div className="flex items-center gap-1.5 mt-1">
+              <Shield size={10} color={scoreColor} />
+              <span style={{ color: scoreColor, fontSize: φ.xs, fontWeight: 600 }}>
+                {data.overallScore >= 80
+                  ? 'Tin cậy cao'
+                  : data.overallScore >= 60
+                    ? 'Trung bình'
+                    : 'Cần cải thiện'}
+              </span>
+            </div>
+          </div>
+        </div>
+        {/* Score bar */}
+        <div className="h-2 rounded-full" style={{ background: c.surface2 }}>
+          <div
+            className="h-full rounded-full"
+            style={{
+              width: `${data.overallScore}%`,
+              background: `linear-gradient(90deg, ${hexToRgba(scoreColor, 80)}, ${scoreColor})`,
+              transition: 'width 0.6s ease-out',
+            }}
+          />
+        </div>
+      </TrCard>
 
-        {/* Source disclaimer */}
-        <TrCard className="p-3 flex items-start gap-2" accentBorder="rgba(139,92,246,0.2)">
-          <Info size={13} color={c.accent} className="shrink-0 mt-0.5" />
-          <p style={{ color: c.text3, fontSize: φ.xs, lineHeight: 1.5 }}>
-            Các chỉ số dựa trên dữ liệu hoạt động trong Open Arena.
-            Điểm không phải chỉ số tài chính. Nguồn: lịch sử challenge + đánh giá cộng đồng + hệ thống kiểm duyệt.
-          </p>
-        </TrCard>
+      {/* Room Safety Tier */}
+      <TrCard className="p-4 mb-4 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Shield size={14} color={tier.color} />
+          <div>
+            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
+              Mức an toàn phòng
+            </span>
+          </div>
+        </div>
+        <span
+          className="px-2.5 py-1 rounded-lg"
+          style={{
+            background: hexToRgba(tier.color, 12),
+            color: tier.color,
+            fontSize: φ.xs,
+            fontWeight: 600,
+          }}
+        >
+          {tier.label}
+        </span>
+      </TrCard>
+
+      {/* Individual metrics */}
+      <TrCard className="p-4 mb-4">
+        <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700, marginBottom: 12 }}>
+          Chỉ số chi tiết
+        </p>
+        <div className="flex flex-col gap-4">
+          {metrics.map((m) => (
+            <TrustMetricRow key={m.key} metric={m} />
+          ))}
+        </div>
+      </TrCard>
+
+      {/* Source disclaimer */}
+      <TrCard className="p-3 flex items-start gap-2" accentBorder="rgba(139,92,246,0.2)">
+        <Info size={13} color={c.accent} className="shrink-0 mt-0.5" />
+        <p style={{ color: c.text3, fontSize: φ.xs, lineHeight: 1.5 }}>
+          Các chỉ số dựa trên dữ liệu hoạt động trong Open Arena. Điểm không phải chỉ số tài chính.
+          Nguồn: lịch sử challenge + đánh giá cộng đồng + hệ thống kiểm duyệt.
+        </p>
+      </TrCard>
     </BottomSheetV2>
   );
 }
@@ -455,9 +501,10 @@ export function buildTrustBreakdownFromCreator(creator: {
   return {
     fairPlay: ts,
     completionRate: creator.completionRate ?? Math.min(100, ts + 5),
-    disputeRate: creator.disputeRate !== undefined
-      ? Math.round(creator.disputeRate * 100)
-      : Math.round(Math.max(0, 100 - ts) * 0.3),
+    disputeRate:
+      creator.disputeRate !== undefined
+        ? Math.round(creator.disputeRate * 100)
+        : Math.round(Math.max(0, 100 - ts) * 0.3),
     reportUpheldRate: Math.max(0, Math.round((100 - ts) * 0.15)),
     creatorReliability: Math.min(100, ts + 3),
     roomSafetyTier: ts >= 80 ? 'green' : ts >= 60 ? 'yellow' : 'red',

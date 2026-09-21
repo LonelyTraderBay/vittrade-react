@@ -7,7 +7,18 @@
  * @module components/dca
  */
 
-import { Edit2, Trash2, Clock, Pause, Play, AlertTriangle, ChevronRight, TrendingUp, TrendingDown, RefreshCw } from 'lucide-react';
+import {
+  Edit2,
+  Trash2,
+  Clock,
+  Pause,
+  Play,
+  AlertTriangle,
+  ChevronRight,
+  TrendingUp,
+  TrendingDown,
+  RefreshCw,
+} from 'lucide-react';
 import { DCAPlan } from '../../types/dca';
 import { useThemeColors } from '../../hooks/useThemeColors';
 
@@ -40,17 +51,23 @@ const formatVND = (amount: number): string => {
 
 const formatFrequency = (frequency: DCAPlan['frequency']): string => {
   switch (frequency) {
-    case 'daily': return 'Hàng ngày';
-    case 'weekly': return 'Hàng tuần';
-    case 'monthly': return 'Hàng tháng';
+    case 'daily':
+      return 'Hàng ngày';
+    case 'weekly':
+      return 'Hàng tuần';
+    case 'monthly':
+      return 'Hàng tháng';
   }
 };
 
 const frequencyShort = (frequency: DCAPlan['frequency']): string => {
   switch (frequency) {
-    case 'daily': return '/ngày';
-    case 'weekly': return '/tuần';
-    case 'monthly': return '/tháng';
+    case 'daily':
+      return '/ngày';
+    case 'weekly':
+      return '/tuần';
+    case 'monthly':
+      return '/tháng';
   }
 };
 
@@ -109,27 +126,32 @@ export function DCAPlanCard({
   isLoading,
 }: DCAPlanCardProps) {
   const c = useThemeColors();
-  const currentValue = plan.totalInvested > 0
-    ? (plan.totalInvested / plan.currentHoldings) * plan.currentHoldings
-    : 0;
-  const profitLoss = plan.totalInvested > 0
-    ? ((plan.averageCost > 0
-      ? ((plan.totalInvested / plan.currentHoldings) - plan.averageCost) * plan.currentHoldings
-      : 0))
-    : 0;
-  const profitLossPercent = plan.averageCost > 0 && plan.totalInvested > 0
-    ? (((plan.totalInvested / plan.currentHoldings) - plan.averageCost) / plan.averageCost) * 100
-    : 0;
+  const currentValue =
+    plan.totalInvested > 0 ? (plan.totalInvested / plan.currentHoldings) * plan.currentHoldings : 0;
+  const profitLoss =
+    plan.totalInvested > 0
+      ? plan.averageCost > 0
+        ? (plan.totalInvested / plan.currentHoldings - plan.averageCost) * plan.currentHoldings
+        : 0
+      : 0;
+  const profitLossPercent =
+    plan.averageCost > 0 && plan.totalInvested > 0
+      ? ((plan.totalInvested / plan.currentHoldings - plan.averageCost) / plan.averageCost) * 100
+      : 0;
   const isProfit = profitLossPercent >= 0;
   const statusConfig = getStatusConfig(plan.status);
 
   // Calculate execution count estimate
-  const daysSinceCreation = Math.max(1, Math.floor((new Date().getTime() - plan.createdAt.getTime()) / (1000 * 60 * 60 * 24)));
-  const estimatedExecutions = plan.frequency === 'daily'
-    ? daysSinceCreation
-    : plan.frequency === 'weekly'
-      ? Math.floor(daysSinceCreation / 7)
-      : Math.floor(daysSinceCreation / 30);
+  const daysSinceCreation = Math.max(
+    1,
+    Math.floor((new Date().getTime() - plan.createdAt.getTime()) / (1000 * 60 * 60 * 24)),
+  );
+  const estimatedExecutions =
+    plan.frequency === 'daily'
+      ? daysSinceCreation
+      : plan.frequency === 'weekly'
+        ? Math.floor(daysSinceCreation / 7)
+        : Math.floor(daysSinceCreation / 30);
 
   return (
     <div
@@ -152,9 +174,22 @@ export function DCAPlanCard({
 
       <div style={{ padding: '16px 16px 12px' }}>
         {/* ── Row 1: Coin identity + Status badge ── */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: 16,
+          }}
+        >
           <div
-            style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1, cursor: onViewDetail ? 'pointer' : undefined }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+              flex: 1,
+              cursor: onViewDetail ? 'pointer' : undefined,
+            }}
             onClick={() => onViewDetail?.(plan.id)}
           >
             {/* Coin icon */}
@@ -276,7 +311,10 @@ export function DCAPlanCard({
                 fontVariantNumeric: 'tabular-nums',
               }}
             >
-              {formatVND(plan.amountPerPurchase)} <span style={{ fontSize: 'var(--φ-fs-xs, 10px)', fontWeight: 400, color: c.text2 }}>VND</span>
+              {formatVND(plan.amountPerPurchase)}{' '}
+              <span style={{ fontSize: 'var(--φ-fs-xs, 10px)', fontWeight: 400, color: c.text2 }}>
+                VND
+              </span>
             </div>
           </div>
 
@@ -303,7 +341,10 @@ export function DCAPlanCard({
                 fontVariantNumeric: 'tabular-nums',
               }}
             >
-              {plan.currentHoldings.toFixed(4)} <span style={{ fontSize: 'var(--φ-fs-xs, 10px)', fontWeight: 400, color: c.text2 }}>{plan.coinSymbol}</span>
+              {plan.currentHoldings.toFixed(4)}{' '}
+              <span style={{ fontSize: 'var(--φ-fs-xs, 10px)', fontWeight: 400, color: c.text2 }}>
+                {plan.coinSymbol}
+              </span>
             </div>
           </div>
 
@@ -330,7 +371,10 @@ export function DCAPlanCard({
                 fontVariantNumeric: 'tabular-nums',
               }}
             >
-              {formatVND(plan.totalInvested)} <span style={{ fontSize: 'var(--φ-fs-xs, 10px)', fontWeight: 400, color: c.text2 }}>VND</span>
+              {formatVND(plan.totalInvested)}{' '}
+              <span style={{ fontSize: 'var(--φ-fs-xs, 10px)', fontWeight: 400, color: c.text2 }}>
+                VND
+              </span>
             </div>
           </div>
 
@@ -371,7 +415,8 @@ export function DCAPlanCard({
                       fontVariantNumeric: 'tabular-nums',
                     }}
                   >
-                    {isProfit ? '+' : ''}{profitLossPercent.toFixed(2)}%
+                    {isProfit ? '+' : ''}
+                    {profitLossPercent.toFixed(2)}%
                   </span>
                 </div>
               ) : (
@@ -475,9 +520,8 @@ export function DCAPlanCard({
               fontWeight: 600,
               transition: 'background 0.15s, opacity 0.15s',
               opacity: isLoading || plan.status === 'error' ? 0.4 : 1,
-              background: plan.status === 'active'
-                ? 'rgba(245,158,11,0.12)'
-                : 'rgba(16,185,129,0.12)',
+              background:
+                plan.status === 'active' ? 'rgba(245,158,11,0.12)' : 'rgba(16,185,129,0.12)',
               color: plan.status === 'active' ? '#F59E0B' : '#10B981',
             }}
           >

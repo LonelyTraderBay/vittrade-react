@@ -33,11 +33,13 @@ export function P2PDisputeEvidencePage() {
   const mountedRef = useRef(true);
 
   useEffect(() => {
-    return () => { mountedRef.current = false; };
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   const handleUpload = (docId: string) => {
-    setEvidence(prev => prev.map(e => e.id === docId ? { ...e, uploaded: true } : e));
+    setEvidence((prev) => prev.map((e) => (e.id === docId ? { ...e, uploaded: true } : e)));
     hapticSuccess();
     toast.success('Đã upload evidence');
   };
@@ -47,25 +49,42 @@ export function P2PDisputeEvidencePage() {
       <Header title="Bằng chứng tranh chấp" subtitle="Tranh chấp · P2P" back />
       <div className="px-5 py-4">
         <TrCard rounded="lg" className="p-4" style={{ background: hexToRgba('#3B82F6', 8) }}>
-          <p style={{ color: '#3B82F6', fontSize: φ.md, fontWeight: 700, marginBottom: 4 }}>Dispute #{id}</p>
+          <p style={{ color: '#3B82F6', fontSize: φ.md, fontWeight: 700, marginBottom: 4 }}>
+            Dispute #{id}
+          </p>
           <p style={{ color: c.text2, fontSize: φ.xs }}>Upload tài liệu chứng minh</p>
         </TrCard>
       </div>
       <div className="px-5 flex flex-col gap-3">
-        {evidence.map(ev => {
+        {evidence.map((ev) => {
           const EvIcon = ev.icon;
           return (
             <TrCard key={ev.id} rounded="md" className="p-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: ev.uploaded ? hexToRgba('#10B981', 12) : hexToRgba('#3B82F6', 12) }}>
-                  {ev.uploaded ? <CheckCircle size={18} color="#10B981" /> : <EvIcon size={18} color="#3B82F6" />}
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                  style={{
+                    background: ev.uploaded ? hexToRgba('#10B981', 12) : hexToRgba('#3B82F6', 12),
+                  }}
+                >
+                  {ev.uploaded ? (
+                    <CheckCircle size={18} color="#10B981" />
+                  ) : (
+                    <EvIcon size={18} color="#3B82F6" />
+                  )}
                 </div>
                 <div className="flex-1">
                   <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>{ev.label}</p>
-                  {ev.uploaded && <p style={{ color: '#10B981', fontSize: 10, fontWeight: 600 }}>✓ Uploaded</p>}
+                  {ev.uploaded && (
+                    <p style={{ color: '#10B981', fontSize: 10, fontWeight: 600 }}>✓ Uploaded</p>
+                  )}
                 </div>
                 {!ev.uploaded && (
-                  <button onClick={() => handleUpload(ev.id)} className="px-3 py-1.5 rounded-lg text-xs font-semibold" style={{ background: hexToRgba('#3B82F6', 12), color: '#3B82F6' }}>
+                  <button
+                    onClick={() => handleUpload(ev.id)}
+                    className="px-3 py-1.5 rounded-lg text-xs font-semibold"
+                    style={{ background: hexToRgba('#3B82F6', 12), color: '#3B82F6' }}
+                  >
                     Upload
                   </button>
                 )}
@@ -75,7 +94,12 @@ export function P2PDisputeEvidencePage() {
         })}
       </div>
       <div className="px-5 mt-6">
-        <CTAButton onClick={() => { toast.success('Đã gửi bằng chứng'); navigate(`${prefix}/p2p/dispute/detail/${id}`); }}>
+        <CTAButton
+          onClick={() => {
+            toast.success('Đã gửi bằng chứng');
+            navigate(`${prefix}/p2p/dispute/detail/${id}`);
+          }}
+        >
           Gửi bằng chứng
         </CTAButton>
       </div>

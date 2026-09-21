@@ -9,9 +9,15 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Filter, ChevronDown, ChevronUp, RotateCcw,
-  ArrowUpRight, ArrowDownRight,
-  Search, X, Sliders,
+  Filter,
+  ChevronDown,
+  ChevronUp,
+  RotateCcw,
+  ArrowUpRight,
+  ArrowDownRight,
+  Search,
+  X,
+  Sliders,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -53,14 +59,17 @@ export function MarketScreenerPage() {
   const [activePreset, setActivePreset] = useState<string | null>(null);
 
   // Apply preset
-  const applyPreset = useCallback((presetId: string) => {
-    const preset = SCREENER_PRESETS.find(p => p.id === presetId);
-    if (preset) {
-      setFilters(preset.filters);
-      setActivePreset(presetId);
-      hapticSelection();
-    }
-  }, [hapticSelection]);
+  const applyPreset = useCallback(
+    (presetId: string) => {
+      const preset = SCREENER_PRESETS.find((p) => p.id === presetId);
+      if (preset) {
+        setFilters(preset.filters);
+        setActivePreset(presetId);
+        hapticSelection();
+      }
+    },
+    [hapticSelection],
+  );
 
   // Reset filters
   const resetFilters = useCallback(() => {
@@ -71,31 +80,37 @@ export function MarketScreenerPage() {
   }, [hapticLight]);
 
   // Toggle category
-  const toggleCategory = useCallback((cat: string) => {
-    if (cat === 'Tất cả') {
-      setFilters(prev => ({ ...prev, categories: [] }));
-    } else {
-      setFilters(prev => {
-        const cats = prev.categories.includes(cat)
-          ? prev.categories.filter(c => c !== cat)
-          : [...prev.categories, cat];
-        return { ...prev, categories: cats };
-      });
-    }
-    setActivePreset(null);
-    hapticSelection();
-  }, [hapticSelection]);
+  const toggleCategory = useCallback(
+    (cat: string) => {
+      if (cat === 'Tất cả') {
+        setFilters((prev) => ({ ...prev, categories: [] }));
+      } else {
+        setFilters((prev) => {
+          const cats = prev.categories.includes(cat)
+            ? prev.categories.filter((c) => c !== cat)
+            : [...prev.categories, cat];
+          return { ...prev, categories: cats };
+        });
+      }
+      setActivePreset(null);
+      hapticSelection();
+    },
+    [hapticSelection],
+  );
 
   // Toggle sort
-  const toggleSort = useCallback((sortBy: ScreenerFilters['sortBy']) => {
-    setFilters(prev => ({
-      ...prev,
-      sortBy,
-      sortDir: prev.sortBy === sortBy && prev.sortDir === 'desc' ? 'asc' : 'desc',
-    }));
-    setActivePreset(null);
-    hapticSelection();
-  }, [hapticSelection]);
+  const toggleSort = useCallback(
+    (sortBy: ScreenerFilters['sortBy']) => {
+      setFilters((prev) => ({
+        ...prev,
+        sortBy,
+        sortDir: prev.sortBy === sortBy && prev.sortDir === 'desc' ? 'asc' : 'desc',
+      }));
+      setActivePreset(null);
+      hapticSelection();
+    },
+    [hapticSelection],
+  );
 
   // Filter and sort results
   const results = useMemo(() => {
@@ -104,36 +119,46 @@ export function MarketScreenerPage() {
     // Search
     if (search) {
       const q = search.toLowerCase();
-      items = items.filter(p =>
-        p.baseAsset.toLowerCase().includes(q) ||
-        p.symbol.toLowerCase().includes(q)
+      items = items.filter(
+        (p) => p.baseAsset.toLowerCase().includes(q) || p.symbol.toLowerCase().includes(q),
       );
     }
 
     // Category filter
     if (filters.categories.length > 0) {
-      items = items.filter(p => filters.categories.includes(p.category));
+      items = items.filter((p) => filters.categories.includes(p.category));
     }
 
     // Range filters
-    if (filters.minPrice !== undefined) items = items.filter(p => p.price >= filters.minPrice!);
-    if (filters.maxPrice !== undefined) items = items.filter(p => p.price <= filters.maxPrice!);
-    if (filters.minMarketCap !== undefined) items = items.filter(p => p.marketCap >= filters.minMarketCap!);
-    if (filters.maxMarketCap !== undefined) items = items.filter(p => p.marketCap <= filters.maxMarketCap!);
-    if (filters.minVolume24h !== undefined) items = items.filter(p => p.volume24h >= filters.minVolume24h!);
-    if (filters.maxVolume24h !== undefined) items = items.filter(p => p.volume24h <= filters.maxVolume24h!);
-    if (filters.minChange24h !== undefined) items = items.filter(p => p.change24h >= filters.minChange24h!);
-    if (filters.maxChange24h !== undefined) items = items.filter(p => p.change24h <= filters.maxChange24h!);
+    if (filters.minPrice !== undefined) items = items.filter((p) => p.price >= filters.minPrice!);
+    if (filters.maxPrice !== undefined) items = items.filter((p) => p.price <= filters.maxPrice!);
+    if (filters.minMarketCap !== undefined)
+      items = items.filter((p) => p.marketCap >= filters.minMarketCap!);
+    if (filters.maxMarketCap !== undefined)
+      items = items.filter((p) => p.marketCap <= filters.maxMarketCap!);
+    if (filters.minVolume24h !== undefined)
+      items = items.filter((p) => p.volume24h >= filters.minVolume24h!);
+    if (filters.maxVolume24h !== undefined)
+      items = items.filter((p) => p.volume24h <= filters.maxVolume24h!);
+    if (filters.minChange24h !== undefined)
+      items = items.filter((p) => p.change24h >= filters.minChange24h!);
+    if (filters.maxChange24h !== undefined)
+      items = items.filter((p) => p.change24h <= filters.maxChange24h!);
 
     // Sort
     const dir = filters.sortDir === 'desc' ? -1 : 1;
     items.sort((a, b) => {
       switch (filters.sortBy) {
-        case 'marketCap': return (a.marketCap - b.marketCap) * dir;
-        case 'volume': return (a.volume24h - b.volume24h) * dir;
-        case 'change24h': return (a.change24h - b.change24h) * dir;
-        case 'price': return (a.price - b.price) * dir;
-        default: return 0;
+        case 'marketCap':
+          return (a.marketCap - b.marketCap) * dir;
+        case 'volume':
+          return (a.volume24h - b.volume24h) * dir;
+        case 'change24h':
+          return (a.change24h - b.change24h) * dir;
+        case 'price':
+          return (a.price - b.price) * dir;
+        default:
+          return 0;
       }
     });
 
@@ -170,17 +195,26 @@ export function MarketScreenerPage() {
             type="text"
             placeholder="Tìm kiếm token..."
             value={search}
-            onChange={e => setSearch(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
             style={{
-              background: 'transparent', border: 'none', outline: 'none',
-              color: c.text1, fontSize: FONT_SCALE.sm, flex: 1,
+              background: 'transparent',
+              border: 'none',
+              outline: 'none',
+              color: c.text1,
+              fontSize: FONT_SCALE.sm,
+              flex: 1,
             }}
           />
           {search && (
-            <button onClick={() => setSearch('')}><X size={14} color={c.text3} /></button>
+            <button onClick={() => setSearch('')}>
+              <X size={14} color={c.text3} />
+            </button>
           )}
           <button
-            onClick={() => { setShowFilters(!showFilters); hapticLight(); }}
+            onClick={() => {
+              setShowFilters(!showFilters);
+              hapticLight();
+            }}
             className="flex items-center gap-1 rounded-xl px-2 py-1"
             style={{
               background: activeFilterCount > 0 ? 'rgba(59,130,246,0.15)' : 'transparent',
@@ -198,7 +232,7 @@ export function MarketScreenerPage() {
 
         {/* Preset chips */}
         <div className="flex gap-2 overflow-x-auto scrollbar-none -mx-5 px-5 pb-1">
-          {SCREENER_PRESETS.map(preset => (
+          {SCREENER_PRESETS.map((preset) => (
             <button
               key={preset.id}
               onClick={() => applyPreset(preset.id)}
@@ -221,7 +255,13 @@ export function MarketScreenerPage() {
         {showFilters && (
           <TrCard className="p-4">
             <div className="flex items-center justify-between mb-3">
-              <span style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold }}>
+              <span
+                style={{
+                  color: c.text1,
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.semibold,
+                }}
+              >
                 Bộ lọc nâng cao
               </span>
               <button
@@ -237,10 +277,11 @@ export function MarketScreenerPage() {
             {/* Category chips */}
             <PageSection label="Danh mục" accentColor="#3B82F6" gap={8}>
               <div className="flex flex-wrap gap-2">
-                {CATEGORIES.map(cat => {
-                  const isActive = cat === 'Tất cả'
-                    ? filters.categories.length === 0
-                    : filters.categories.includes(cat);
+                {CATEGORIES.map((cat) => {
+                  const isActive =
+                    cat === 'Tất cả'
+                      ? filters.categories.length === 0
+                      : filters.categories.includes(cat);
                   return (
                     <button
                       key={cat}
@@ -266,40 +307,40 @@ export function MarketScreenerPage() {
               <RangeInput
                 label="Giá min ($)"
                 value={filters.minPrice}
-                onChange={v => setFilters(p => ({ ...p, minPrice: v }))}
+                onChange={(v) => setFilters((p) => ({ ...p, minPrice: v }))}
                 c={c}
               />
               <RangeInput
                 label="Giá max ($)"
                 value={filters.maxPrice}
-                onChange={v => setFilters(p => ({ ...p, maxPrice: v }))}
+                onChange={(v) => setFilters((p) => ({ ...p, maxPrice: v }))}
                 c={c}
               />
               <RangeInput
                 label="Vốn hóa min ($)"
                 value={filters.minMarketCap}
-                onChange={v => setFilters(p => ({ ...p, minMarketCap: v }))}
+                onChange={(v) => setFilters((p) => ({ ...p, minMarketCap: v }))}
                 c={c}
                 placeholder="e.g. 1000000000"
               />
               <RangeInput
                 label="KL 24h min ($)"
                 value={filters.minVolume24h}
-                onChange={v => setFilters(p => ({ ...p, minVolume24h: v }))}
+                onChange={(v) => setFilters((p) => ({ ...p, minVolume24h: v }))}
                 c={c}
                 placeholder="e.g. 100000000"
               />
               <RangeInput
                 label="% Thay đổi min"
                 value={filters.minChange24h}
-                onChange={v => setFilters(p => ({ ...p, minChange24h: v }))}
+                onChange={(v) => setFilters((p) => ({ ...p, minChange24h: v }))}
                 c={c}
                 placeholder="e.g. -5"
               />
               <RangeInput
                 label="% Thay đổi max"
                 value={filters.maxChange24h}
-                onChange={v => setFilters(p => ({ ...p, maxChange24h: v }))}
+                onChange={(v) => setFilters((p) => ({ ...p, maxChange24h: v }))}
                 c={c}
                 placeholder="e.g. 10"
               />
@@ -309,7 +350,7 @@ export function MarketScreenerPage() {
 
         {/* Sort header */}
         <div className="flex items-center gap-2 overflow-x-auto scrollbar-none -mx-5 px-5">
-          {SORT_OPTIONS.map(opt => {
+          {SORT_OPTIONS.map((opt) => {
             const isActive = filters.sortBy === opt.id;
             return (
               <button
@@ -324,18 +365,16 @@ export function MarketScreenerPage() {
                 }}
               >
                 {opt.label}
-                {isActive && (
-                  filters.sortDir === 'desc'
-                    ? <ChevronDown size={12} />
-                    : <ChevronUp size={12} />
-                )}
+                {isActive &&
+                  (filters.sortDir === 'desc' ? (
+                    <ChevronDown size={12} />
+                  ) : (
+                    <ChevronUp size={12} />
+                  ))}
               </button>
             );
           })}
-          <span
-            className="shrink-0 ml-auto"
-            style={{ color: c.text3, fontSize: FONT_SCALE.xs }}
-          >
+          <span className="shrink-0 ml-auto" style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>
             {results.length} kết quả
           </span>
         </div>
@@ -348,7 +387,10 @@ export function MarketScreenerPage() {
               pair={pair}
               rank={idx + 1}
               c={c}
-              onTap={() => { navigate(`${prefix}/pair/${pair.id}`); hapticLight(); }}
+              onTap={() => {
+                navigate(`${prefix}/pair/${pair.id}`);
+                hapticLight();
+              }}
             />
           ))}
         </div>
@@ -362,7 +404,11 @@ export function MarketScreenerPage() {
             <button
               onClick={resetFilters}
               className="mt-3 px-4 py-2 rounded-xl"
-              style={{ background: 'rgba(59,130,246,0.1)', color: '#3B82F6', fontSize: FONT_SCALE.xs }}
+              style={{
+                background: 'rgba(59,130,246,0.1)',
+                color: '#3B82F6',
+                fontSize: FONT_SCALE.xs,
+              }}
             >
               Đặt lại bộ lọc
             </button>
@@ -376,7 +422,11 @@ export function MarketScreenerPage() {
 /* ─── Sub-components ─── */
 
 function RangeInput({
-  label, value, onChange, c, placeholder,
+  label,
+  value,
+  onChange,
+  c,
+  placeholder,
 }: {
   label: string;
   value: number | undefined;
@@ -386,13 +436,21 @@ function RangeInput({
 }) {
   return (
     <div>
-      <label style={{ color: c.text3, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.medium, display: 'block', marginBottom: 4 }}>
+      <label
+        style={{
+          color: c.text3,
+          fontSize: FONT_SCALE.micro,
+          fontWeight: FONT_WEIGHT.medium,
+          display: 'block',
+          marginBottom: 4,
+        }}
+      >
         {label}
       </label>
       <input
         type="number"
         value={value ?? ''}
-        onChange={e => {
+        onChange={(e) => {
           const v = e.target.value;
           onChange(v === '' ? undefined : Number(v));
         }}
@@ -411,7 +469,10 @@ function RangeInput({
 }
 
 function ScreenerRow({
-  pair, rank, c, onTap,
+  pair,
+  rank,
+  c,
+  onTap,
 }: {
   pair: CryptoPair;
   rank: number;
@@ -427,10 +488,16 @@ function ScreenerRow({
       style={{ background: c.surface }}
     >
       {/* Rank */}
-      <span style={{
-        color: c.text3, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.medium,
-        width: 20, textAlign: 'center', flexShrink: 0,
-      }}>
+      <span
+        style={{
+          color: c.text3,
+          fontSize: FONT_SCALE.micro,
+          fontWeight: FONT_WEIGHT.medium,
+          width: 20,
+          textAlign: 'center',
+          flexShrink: 0,
+        }}
+      >
         {rank}
       </span>
 
@@ -439,7 +506,9 @@ function ScreenerRow({
         className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
         style={{ background: `${pair.logoColor}18` }}
       >
-        <span style={{ color: pair.logoColor, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+        <span
+          style={{ color: pair.logoColor, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}
+        >
           {pair.baseAsset.slice(0, 2)}
         </span>
       </div>
@@ -465,15 +534,18 @@ function ScreenerRow({
           ${fmtPrice(pair.price)}
         </p>
         <div className="flex items-center justify-end gap-1">
-          {isUp
-            ? <ArrowUpRight size={12} color="#10B981" />
-            : <ArrowDownRight size={12} color="#EF4444" />
-          }
-          <span style={{
-            color: isUp ? '#10B981' : '#EF4444',
-            fontSize: FONT_SCALE.xs,
-            fontWeight: FONT_WEIGHT.medium,
-          }}>
+          {isUp ? (
+            <ArrowUpRight size={12} color="#10B981" />
+          ) : (
+            <ArrowDownRight size={12} color="#EF4444" />
+          )}
+          <span
+            style={{
+              color: isUp ? '#10B981' : '#EF4444',
+              fontSize: FONT_SCALE.xs,
+              fontWeight: FONT_WEIGHT.medium,
+            }}
+          >
             {fmtPct(pair.change24h)}
           </span>
         </div>

@@ -90,7 +90,17 @@ const formatPercent = (p: number): string => {
 
 /* ─── Shimmer Skeleton ───────────────────────────────────── */
 
-function ShimmerBlock({ w, h, r = 8, className = '' }: { w: string | number; h: number; r?: number; className?: string }) {
+function ShimmerBlock({
+  w,
+  h,
+  r = 8,
+  className = '',
+}: {
+  w: string | number;
+  h: number;
+  r?: number;
+  className?: string;
+}) {
   return (
     <div
       className={`animate-pulse ${className}`}
@@ -98,7 +108,8 @@ function ShimmerBlock({ w, h, r = 8, className = '' }: { w: string | number; h: 
         width: typeof w === 'number' ? w : w,
         height: h,
         borderRadius: r,
-        background: 'linear-gradient(90deg, rgba(255,255,255,0.06) 25%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.06) 75%)',
+        background:
+          'linear-gradient(90deg, rgba(255,255,255,0.06) 25%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.06) 75%)',
         backgroundSize: '200% 100%',
         animation: 'dcaShimmer 1.8s ease-in-out infinite',
       }}
@@ -139,7 +150,10 @@ function SkeletonCard({ ghostBg }: { ghostBg: string }) {
       </div>
 
       {/* Next execution row */}
-      <div className="rounded-2xl px-3 py-2.5 flex items-center gap-2.5" style={{ background: ghostBg }}>
+      <div
+        className="rounded-2xl px-3 py-2.5 flex items-center gap-2.5"
+        style={{ background: ghostBg }}
+      >
         <ShimmerBlock w={32} h={32} r={12} />
         <div className="space-y-1.5 flex-1">
           <ShimmerBlock w={80} h={10} />
@@ -150,7 +164,11 @@ function SkeletonCard({ ghostBg }: { ghostBg: string }) {
       {/* Action buttons */}
       <div className="flex gap-3">
         {[0, 1, 2, 3].map((i) => (
-          <div key={i} className="flex-1 flex flex-col items-center gap-1.5 py-2 rounded-2xl" style={{ background: ghostBg }}>
+          <div
+            key={i}
+            className="flex-1 flex flex-col items-center gap-1.5 py-2 rounded-2xl"
+            style={{ background: ghostBg }}
+          >
             <ShimmerBlock w={34} h={34} r={12} />
             <ShimmerBlock w={30} h={10} />
           </div>
@@ -261,12 +279,21 @@ function Sparkline({ data, width = 100, height = 44, isProfit, onTap }: Sparklin
   return (
     <button
       type="button"
-      onClick={(e) => { e.stopPropagation(); onTap?.(); }}
+      onClick={(e) => {
+        e.stopPropagation();
+        onTap?.();
+      }}
       className={`relative block rounded-lg transition-all ${onTap ? 'cursor-pointer hover:opacity-80 active:scale-95' : 'cursor-default'}`}
       aria-label="Xem biểu đồ chi tiết"
       style={{ padding: 0, background: 'transparent', border: 'none' }}
     >
-      <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} fill="none" className="overflow-visible">
+      <svg
+        width={width}
+        height={height}
+        viewBox={`0 0 ${width} ${height}`}
+        fill="none"
+        className="overflow-visible"
+      >
         <defs>
           <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor={fillStart} />
@@ -311,7 +338,12 @@ function Sparkline({ data, width = 100, height = 44, isProfit, onTap }: Sparklin
           >
             <circle cx={width} cy={lastPointY} r={6} fill={strokeColor} opacity={0.3}>
               <animate attributeName="r" values="4;8;4" dur="2s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.3;0.1;0.3" dur="2s" repeatCount="indefinite" />
+              <animate
+                attributeName="opacity"
+                values="0.3;0.1;0.3"
+                dur="2s"
+                repeatCount="indefinite"
+              />
             </circle>
             <circle cx={width} cy={lastPointY} r={3} fill={strokeColor} />
           </g>
@@ -376,7 +408,10 @@ function TooltipPopover({ open, onClose, children }: TooltipPopoverProps) {
         <div className="flex items-start justify-between gap-2">
           <div>{children}</div>
           <button
-            onClick={(e) => { e.stopPropagation(); onClose(); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
             className="w-5 h-5 flex items-center justify-center rounded-full shrink-0 mt-px"
             style={{ color: c.text3 }}
             aria-label="Đóng"
@@ -403,7 +438,8 @@ const TOOLTIP_CONTENT: Record<TooltipId, { title: string; body: string; example:
   plans: {
     title: 'Kế hoạch',
     body: 'là tổng số kế hoạch DCA bạn đã tạo. Mỗi kế hoạch có một trạng thái riêng:',
-    example: '• Đang chạy — tự động mua crypto đúng lịch.\n• Tạm dừng — bạn đã dừng tạm.\n• Lỗi — giao dịch gặp sự cố.',
+    example:
+      '• Đang chạy — tự động mua crypto đúng lịch.\n• Tạm dừng — bạn đã dừng tạm.\n• Lỗi — giao dịch gặp sự cố.',
   },
   invested: {
     title: 'Đã đầu tư',
@@ -459,7 +495,10 @@ export function DCAOverviewCard({
 
   const helpBtn = (id: TooltipId) => (
     <button
-      onClick={(e) => { e.stopPropagation(); toggleTooltip(id); }}
+      onClick={(e) => {
+        e.stopPropagation();
+        toggleTooltip(id);
+      }}
       className="w-5 h-5 flex items-center justify-center rounded-full transition-colors"
       style={{ color: 'rgba(255,255,255,0.4)' }}
       aria-label={`Giải thích ${TOOLTIP_CONTENT[id].title}`}
@@ -471,9 +510,7 @@ export function DCAOverviewCard({
   const tooltipFor = (id: TooltipId) => (
     <TooltipPopover open={activeTooltip === id} onClose={closeTooltip}>
       <p>
-        <span style={{ fontWeight: 600, color: c.text1 }}>
-          {TOOLTIP_CONTENT[id].title}
-        </span>{' '}
+        <span style={{ fontWeight: 600, color: c.text1 }}>{TOOLTIP_CONTENT[id].title}</span>{' '}
         {TOOLTIP_CONTENT[id].body}
       </p>
       <p className="mt-1.5 whitespace-pre-line" style={{ color: c.text3 }}>
@@ -485,12 +522,13 @@ export function DCAOverviewCard({
   const ghostBg = c.portfolioBtnGhost;
 
   /* ── Action buttons config ── */
-  const ACTION_BUTTONS: { icon: typeof Plus; label: string; color: string; action?: () => void }[] = [
-    { icon: Plus, label: 'Tạo mới', color: '#10B981', action: actions?.onCreatePlan },
-    { icon: Pause, label: 'Tạm dừng', color: '#FBBF24', action: actions?.onPauseAll },
-    { icon: BarChart3, label: 'Biểu đồ', color: '#8B5CF6', action: actions?.onViewChart },
-    { icon: ListOrdered, label: 'Lịch sử', color: '#CBD5E1', action: actions?.onViewHistory },
-  ];
+  const ACTION_BUTTONS: { icon: typeof Plus; label: string; color: string; action?: () => void }[] =
+    [
+      { icon: Plus, label: 'Tạo mới', color: '#10B981', action: actions?.onCreatePlan },
+      { icon: Pause, label: 'Tạm dừng', color: '#FBBF24', action: actions?.onPauseAll },
+      { icon: BarChart3, label: 'Biểu đồ', color: '#8B5CF6', action: actions?.onViewChart },
+      { icon: ListOrdered, label: 'Lịch sử', color: '#CBD5E1', action: actions?.onViewHistory },
+    ];
 
   return (
     <TrCard
@@ -510,15 +548,16 @@ export function DCAOverviewCard({
               Tổng danh mục DCA (VND)
             </span>
             <button
-              onClick={(e) => { e.stopPropagation(); setBalanceHidden(!balanceHidden); hapticLight(); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setBalanceHidden(!balanceHidden);
+                hapticLight();
+              }}
               className="p-1 rounded-lg transition-colors"
               style={{ color: c.portfolioTextMuted }}
               aria-label={balanceHidden ? 'Hiện số dư' : 'Ẩn số dư'}
             >
-              {balanceHidden
-                ? <EyeOff size={18} />
-                : <Eye size={18} />
-              }
+              {balanceHidden ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
 
@@ -553,20 +592,21 @@ export function DCAOverviewCard({
                     fontVariantNumeric: 'tabular-nums',
                   }}
                 >
-                  {isProfit
-                    ? <ArrowUpRight className="w-3.5 h-3.5" />
-                    : <ArrowDownRight className="w-3.5 h-3.5" />
-                  }
-                  {balanceHidden ? '•••' : `${isProfit ? '+' : ''}${formatVNDFull(data.profitLoss)}`}
+                  {isProfit ? (
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  ) : (
+                    <ArrowDownRight className="w-3.5 h-3.5" />
+                  )}
+                  {balanceHidden
+                    ? '•••'
+                    : `${isProfit ? '+' : ''}${formatVNDFull(data.profitLoss)}`}
                   {!balanceHidden && (
                     <span style={{ opacity: 0.8, marginLeft: 2 }}>
                       ({formatPercent(data.profitLossPercent)})
                     </span>
                   )}
                 </div>
-                <span style={{ color: c.portfolioTextMuted, fontSize: φ.xs }}>
-                  tổng lãi/lỗ
-                </span>
+                <span style={{ color: c.portfolioTextMuted, fontSize: φ.xs }}>tổng lãi/lỗ</span>
               </div>
             </div>
 
@@ -602,7 +642,15 @@ export function DCAOverviewCard({
                   <span style={{ color: c.portfolioTextDim, fontSize: 11 }}>Kế hoạch</span>
                   {helpBtn('plans')}
                 </div>
-                <div style={{ color: '#FFFFFF', fontSize: 20, fontWeight: 700, fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>
+                <div
+                  style={{
+                    color: '#FFFFFF',
+                    fontSize: 20,
+                    fontWeight: 700,
+                    fontVariantNumeric: 'tabular-nums',
+                    lineHeight: 1,
+                  }}
+                >
                   {balanceHidden ? '•' : String(totalPlans)}
                 </div>
                 <div style={{ color: c.portfolioTextMuted, fontSize: 10, marginTop: 4 }}>
@@ -625,7 +673,15 @@ export function DCAOverviewCard({
                   <span style={{ color: c.portfolioTextDim, fontSize: 11 }}>Đã đầu tư</span>
                   {helpBtn('invested')}
                 </div>
-                <div style={{ color: '#34D399', fontSize: 20, fontWeight: 700, fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>
+                <div
+                  style={{
+                    color: '#34D399',
+                    fontSize: 20,
+                    fontWeight: 700,
+                    fontVariantNumeric: 'tabular-nums',
+                    lineHeight: 1,
+                  }}
+                >
                   {balanceHidden ? '•••' : formatCompactVND(data.totalInvested)}
                 </div>
                 <div style={{ color: c.portfolioTextMuted, fontSize: 10, marginTop: 4 }}>
@@ -648,7 +704,15 @@ export function DCAOverviewCard({
                   <span style={{ color: c.portfolioTextDim, fontSize: 11 }}>TB/plan</span>
                   {helpBtn('average')}
                 </div>
-                <div style={{ color: '#A78BFA', fontSize: 20, fontWeight: 700, fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>
+                <div
+                  style={{
+                    color: '#A78BFA',
+                    fontSize: 20,
+                    fontWeight: 700,
+                    fontVariantNumeric: 'tabular-nums',
+                    lineHeight: 1,
+                  }}
+                >
                   {balanceHidden ? '•••' : formatCompactVND(averagePerPlan)}
                 </div>
                 <div style={{ color: c.portfolioTextMuted, fontSize: 10, marginTop: 4 }}>
@@ -675,7 +739,12 @@ export function DCAOverviewCard({
                 <div className="min-w-0">
                   <p style={{ color: c.portfolioTextMuted, fontSize: 10 }}>Lần mua tiếp</p>
                   <p
-                    style={{ color: '#FFFFFF', fontSize: 13, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}
+                    style={{
+                      color: '#FFFFFF',
+                      fontSize: 13,
+                      fontWeight: 600,
+                      fontVariantNumeric: 'tabular-nums',
+                    }}
                     className="truncate"
                   >
                     {data.nextExecution.relativeTime}
@@ -685,9 +754,7 @@ export function DCAOverviewCard({
                   </p>
                 </div>
               ) : (
-                <p style={{ color: c.portfolioTextMuted, fontSize: 13 }}>
-                  Không có lịch mua
-                </p>
+                <p style={{ color: c.portfolioTextMuted, fontSize: 13 }}>Không có lịch mua</p>
               )}
             </div>
 
@@ -725,7 +792,11 @@ export function DCAOverviewCard({
             {ACTION_BUTTONS.map((btn) => (
               <button
                 key={btn.label}
-                onClick={(e) => { e.stopPropagation(); hapticSelection(); btn.action?.(); }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  hapticSelection();
+                  btn.action?.();
+                }}
                 className="flex-1 flex flex-col items-center gap-1 py-2 rounded-2xl transition-opacity hover:opacity-80 active:scale-[0.97]"
                 style={{ background: ghostBg }}
               >

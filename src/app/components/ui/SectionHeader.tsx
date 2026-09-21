@@ -75,14 +75,17 @@ export function SectionHeader({
   const showAccent = variant === 'accentBar' || variant === 'markerTitle';
   const isMarker = variant === 'markerTitle';
 
-  const resolvedTitleSize = titleSize ?? (isMarker ? textRoleSize('sectionTitle') : density === 'compact' ? textRoleSize('label') : textRoleSize('sectionLabel'));
+  const resolvedTitleSize =
+    titleSize ??
+    (isMarker
+      ? textRoleSize('sectionTitle')
+      : density === 'compact'
+        ? textRoleSize('label')
+        : textRoleSize('sectionLabel'));
   const resolvedTitleWeight = isMarker ? 600 : 700;
 
   return (
-    <div
-      className={`flex items-center gap-2 ${className}`}
-      style={{ marginBottom: mb }}
-    >
+    <div className={`flex items-center gap-2 ${className}`} style={{ marginBottom: mb }}>
       {showAccent && (
         <div
           className="shrink-0"
@@ -145,9 +148,7 @@ export function SectionHeader({
           aria-label={`${actionLabel} ${title}`}
         >
           {actionLabel}
-          {actionShowChevron && (
-            <ChevronRight size={16} color={accentColor} strokeWidth={2} />
-          )}
+          {actionShowChevron && <ChevronRight size={16} color={accentColor} strokeWidth={2} />}
         </button>
       )}
       {right && <div className="shrink-0">{right}</div>}

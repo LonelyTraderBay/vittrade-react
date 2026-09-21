@@ -145,43 +145,58 @@ export function TrInput({
   const isHero = size === 'hero';
 
   /* ─── Numeric formatting ─── */
-  const formatNumeric = useCallback((raw: string): string => {
-    if (!numeric) return raw;
-    // Strip non-numeric except dot and minus
-    const cleaned = raw.replace(/[^0-9.\-]/g, '');
-    // Split integer and decimal parts
-    const parts = cleaned.split('.');
-    // Add thousands separator to integer part
-    const intPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    return parts.length > 1 ? `${intPart}.${parts[1]}` : intPart;
-  }, [numeric]);
+  const formatNumeric = useCallback(
+    (raw: string): string => {
+      if (!numeric) return raw;
+      // Strip non-numeric except dot and minus
+      const cleaned = raw.replace(/[^0-9.-]/g, '');
+      // Split integer and decimal parts
+      const parts = cleaned.split('.');
+      // Add thousands separator to integer part
+      const intPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return parts.length > 1 ? `${intPart}.${parts[1]}` : intPart;
+    },
+    [numeric],
+  );
 
-  const parseNumeric = useCallback((formatted: string): string => {
-    if (!numeric) return formatted;
-    return formatted.replace(/,/g, '');
-  }, [numeric]);
+  const parseNumeric = useCallback(
+    (formatted: string): string => {
+      if (!numeric) return formatted;
+      return formatted.replace(/,/g, '');
+    },
+    [numeric],
+  );
 
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value;
-    if (onChangeNative) onChangeNative(e);
-    if (onChange) {
-      onChange(numeric ? parseNumeric(raw) : raw);
-    }
-  }, [onChange, onChangeNative, numeric, parseNumeric]);
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const raw = e.target.value;
+      if (onChangeNative) onChangeNative(e);
+      if (onChange) {
+        onChange(numeric ? parseNumeric(raw) : raw);
+      }
+    },
+    [onChange, onChangeNative, numeric, parseNumeric],
+  );
 
-  const handleFocus = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
-    setFocused(true);
-    if (selectOnFocus) {
-      // Defer to allow the browser to focus first
-      requestAnimationFrame(() => e.target.select());
-    }
-    onFocus?.(e);
-  }, [selectOnFocus, onFocus]);
+  const handleFocus = useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      setFocused(true);
+      if (selectOnFocus) {
+        // Defer to allow the browser to focus first
+        requestAnimationFrame(() => e.target.select());
+      }
+      onFocus?.(e);
+    },
+    [selectOnFocus, onFocus],
+  );
 
-  const handleBlur = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
-    setFocused(false);
-    onBlur?.(e);
-  }, [onBlur]);
+  const handleBlur = useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      setFocused(false);
+      onBlur?.(e);
+    },
+    [onBlur],
+  );
 
   const handleClear = useCallback(() => {
     onChange?.('');
@@ -205,9 +220,7 @@ export function TrInput({
   const displayValue = numeric && value ? formatNumeric(value) : (value ?? '');
 
   /* ─── Resolve input type (password toggle) ─── */
-  const resolvedType = isPassword
-    ? (showPassword ? 'text' : 'password')
-    : type;
+  const resolvedType = isPassword ? (showPassword ? 'text' : 'password') : type;
 
   /* ─── Resolve inputMode ─── */
   const resolvedInputMode = inputMode ?? (numeric ? 'decimal' : undefined);
@@ -239,17 +252,15 @@ export function TrInput({
           border: `${isHero ? 2 : 1.5}px solid ${borderColor}`,
           boxShadow,
           opacity: disabled ? 0.5 : 1,
-          transition: 'border-color var(--tr-duration-normal) ease, box-shadow var(--tr-duration-normal) ease',
+          transition:
+            'border-color var(--tr-duration-normal) ease, box-shadow var(--tr-duration-normal) ease',
           cursor: disabled ? 'not-allowed' : 'text',
         }}
         onClick={() => !disabled && inputRef.current?.focus()}
       >
         {/* Prefix */}
         {prefix && (
-          <span
-            className="shrink-0 flex items-center"
-            style={{ color: c.text3, fontSize: φ.sm }}
-          >
+          <span className="shrink-0 flex items-center" style={{ color: c.text3, fontSize: φ.sm }}>
             {prefix}
           </span>
         )}
@@ -279,7 +290,9 @@ export function TrInput({
             fontSize: isHero ? φ.lg : φ.base,
             fontWeight: isHero ? 700 : 400,
             lineHeight: 1.5,
-            fontFamily: numeric ? '-apple-system, BlinkMacSystemFont, "SF Mono", monospace' : 'inherit',
+            fontFamily: numeric
+              ? '-apple-system, BlinkMacSystemFont, "SF Mono", monospace'
+              : 'inherit',
             /* Prevent iOS zoom — already set to 16px in theme.css */
           }}
         />
@@ -311,10 +324,11 @@ export function TrInput({
             aria-label={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
             tabIndex={-1}
           >
-            {showPassword
-              ? <EyeOff size={18} color={c.text3} />
-              : <Eye size={18} color={c.text3} />
-            }
+            {showPassword ? (
+              <EyeOff size={18} color={c.text3} />
+            ) : (
+              <Eye size={18} color={c.text3} />
+            )}
           </button>
         )}
 
@@ -419,7 +433,10 @@ export function TrTextarea({
         placeholder={placeholder}
         onChange={(e) => onChange?.(e.target.value)}
         onFocus={() => setFocused(true)}
-        onBlur={(e) => { setFocused(false); onBlur?.(e); }}
+        onBlur={(e) => {
+          setFocused(false);
+          onBlur?.(e);
+        }}
         rows={rows}
         maxLength={maxLength}
         disabled={disabled}
@@ -430,10 +447,15 @@ export function TrTextarea({
           borderRadius: 14,
           background: disabled ? c.surface2 : 'var(--input-bg)',
           border: `1.5px solid ${borderColor}`,
-          boxShadow: hasError ? '0 0 0 2px rgba(239,68,68,0.15)' : focused ? `0 0 0 2px ${c.primary}40` : 'none',
+          boxShadow: hasError
+            ? '0 0 0 2px rgba(239,68,68,0.15)'
+            : focused
+              ? `0 0 0 2px ${c.primary}40`
+              : 'none',
           color: c.text1,
           fontSize: φ.base,
-          transition: 'border-color var(--tr-duration-normal) ease, box-shadow var(--tr-duration-normal) ease',
+          transition:
+            'border-color var(--tr-duration-normal) ease, box-shadow var(--tr-duration-normal) ease',
           opacity: disabled ? 0.5 : 1,
         }}
       />
@@ -451,7 +473,7 @@ export function TrTextarea({
         )}
         {maxLength && (
           <span style={{ color: c.text3, fontSize: φ.xs, marginLeft: 'auto' }}>
-            {(value?.length ?? 0)}/{maxLength}
+            {value?.length ?? 0}/{maxLength}
           </span>
         )}
       </div>

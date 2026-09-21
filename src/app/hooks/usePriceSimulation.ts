@@ -55,7 +55,7 @@ export function usePriceSimulation({
     if (!enabled) return;
 
     const id = setInterval(() => {
-      setPrice(prev => {
+      setPrice((prev) => {
         const delta = (Math.random() - bias) * prev * volatility;
         const next = parseFloat((prev + delta).toFixed(2));
 

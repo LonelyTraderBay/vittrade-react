@@ -8,12 +8,15 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import type { Mock } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
+import { renderToString } from 'react-dom/server';
 import { renderWithProviders } from '../../test/test-utils';
+import { ThemeProvider } from '../contexts/ThemeContext';
 import { PullToRefresh } from '../components/ui/PullToRefresh';
 
 describe('PullToRefresh', () => {
-  let mockOnRefresh: ReturnType<typeof vi.fn>;
+  let mockOnRefresh: Mock<() => Promise<void>>;
 
   beforeEach(() => {
     mockOnRefresh = vi.fn().mockResolvedValue(undefined);
@@ -24,9 +27,9 @@ describe('PullToRefresh', () => {
       renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <div>Test content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       expect(screen.getByText('Test content')).toBeInTheDocument();
     });
 
@@ -34,9 +37,9 @@ describe('PullToRefresh', () => {
       const { container } = renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <div data-testid="child">Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       const child = screen.getByTestId('child');
       expect(child).toBeInTheDocument();
       expect(child.parentElement).toBeTruthy();
@@ -46,23 +49,20 @@ describe('PullToRefresh', () => {
       const { container } = renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh} className="custom-class">
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       const wrapper = container.querySelector('.custom-class');
       expect(wrapper).toBeInTheDocument();
     });
 
     it('should apply custom style to container', () => {
       const { container } = renderWithProviders(
-        <PullToRefresh
-          onRefresh={mockOnRefresh}
-          style={{ backgroundColor: 'red' }}
-        >
+        <PullToRefresh onRefresh={mockOnRefresh} style={{ backgroundColor: 'red' }}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       const wrapper = container.querySelector('div[style*="background-color"]');
       expect(wrapper).toBeInTheDocument();
     });
@@ -73,9 +73,9 @@ describe('PullToRefresh', () => {
       renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       // The indicator text might not be visible initially (height: 0)
       // but the component structure should be there
       const container = screen.getByText('Content').closest('div')?.parentElement;
@@ -86,23 +86,20 @@ describe('PullToRefresh', () => {
       renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh} refreshCount={5}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       // Badge should show count (might be hidden initially)
       expect(screen.getByText('5')).toBeInTheDocument();
     });
 
     it('should show last refreshed label when provided', () => {
       renderWithProviders(
-        <PullToRefresh
-          onRefresh={mockOnRefresh}
-          lastRefreshedLabel="2 minutes ago"
-        >
+        <PullToRefresh onRefresh={mockOnRefresh} lastRefreshedLabel="2 minutes ago">
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       // Label should be present
       expect(screen.getByText(/2 minutes ago/)).toBeInTheDocument();
     });
@@ -111,9 +108,9 @@ describe('PullToRefresh', () => {
       renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh} refreshCount={0}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       expect(screen.queryByText('0')).not.toBeInTheDocument();
     });
 
@@ -121,9 +118,9 @@ describe('PullToRefresh', () => {
       renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       const container = screen.getByText('Content').parentElement;
       expect(container).toBeInTheDocument();
       // No badge should be rendered
@@ -135,19 +132,19 @@ describe('PullToRefresh', () => {
       const { container } = renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       const wrapper = container.querySelector('.relative.flex-1');
       expect(wrapper).toBeInTheDocument();
-      
+
       // Simulate touchstart
       const touchStart = new TouchEvent('touchstart', {
         touches: [{ clientY: 100 } as Touch],
       });
-      
+
       wrapper?.dispatchEvent(touchStart);
-      
+
       // Component should handle the event without errors
       expect(wrapper).toBeInTheDocument();
     });
@@ -156,19 +153,19 @@ describe('PullToRefresh', () => {
       const { container } = renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       const wrapper = container.querySelector('.relative.flex-1');
       expect(wrapper).toBeInTheDocument();
-      
+
       // Simulate touchmove
       const touchMove = new TouchEvent('touchmove', {
         touches: [{ clientY: 150 } as Touch],
       });
-      
+
       wrapper?.dispatchEvent(touchMove);
-      
+
       expect(wrapper).toBeInTheDocument();
     });
 
@@ -176,16 +173,16 @@ describe('PullToRefresh', () => {
       const { container } = renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       const wrapper = container.querySelector('.relative.flex-1');
       expect(wrapper).toBeInTheDocument();
-      
+
       // Simulate touchend
       const touchEnd = new TouchEvent('touchend');
       wrapper?.dispatchEvent(touchEnd);
-      
+
       expect(wrapper).toBeInTheDocument();
     });
   });
@@ -193,53 +190,53 @@ describe('PullToRefresh', () => {
   describe('Refresh Callback', () => {
     it('should accept async onRefresh function', async () => {
       const asyncRefresh = vi.fn().mockResolvedValue(undefined);
-      
+
       renderWithProviders(
         <PullToRefresh onRefresh={asyncRefresh}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       expect(screen.getByText('Content')).toBeInTheDocument();
     });
 
     it('should handle successful refresh', async () => {
       const successRefresh = vi.fn().mockResolvedValue(undefined);
-      
+
       renderWithProviders(
         <PullToRefresh onRefresh={successRefresh}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       // Component should be ready to handle refresh
       expect(screen.getByText('Content')).toBeInTheDocument();
     });
 
     it('should handle failed refresh', async () => {
       const failedRefresh = vi.fn().mockRejectedValue(new Error('Failed'));
-      
+
       renderWithProviders(
         <PullToRefresh onRefresh={failedRefresh}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       // Component should handle errors gracefully
       expect(screen.getByText('Content')).toBeInTheDocument();
     });
 
     it('should handle refresh that takes time', async () => {
-      const slowRefresh = vi.fn().mockImplementation(
-        () => new Promise(resolve => setTimeout(resolve, 1000))
-      );
-      
+      const slowRefresh = vi
+        .fn()
+        .mockImplementation(() => new Promise((resolve) => setTimeout(resolve, 1000)));
+
       renderWithProviders(
         <PullToRefresh onRefresh={slowRefresh}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       expect(screen.getByText('Content')).toBeInTheDocument();
     });
   });
@@ -249,9 +246,9 @@ describe('PullToRefresh', () => {
       renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       // Component should be initialized with default threshold
       expect(screen.getByText('Content')).toBeInTheDocument();
     });
@@ -260,9 +257,9 @@ describe('PullToRefresh', () => {
       renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh} threshold={100}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       expect(screen.getByText('Content')).toBeInTheDocument();
     });
 
@@ -270,9 +267,9 @@ describe('PullToRefresh', () => {
       renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh} threshold={30}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       expect(screen.getByText('Content')).toBeInTheDocument();
     });
 
@@ -280,27 +277,28 @@ describe('PullToRefresh', () => {
       renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh} threshold={200}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       expect(screen.getByText('Content')).toBeInTheDocument();
     });
   });
 
   describe('Scroll Behavior', () => {
     it('should apply -webkit-overflow-scrolling: touch', () => {
-      const { container } = renderWithProviders(
-        <PullToRefresh onRefresh={mockOnRefresh}>
-          <div>Content</div>
-        </PullToRefresh>
+      // jsdom's CSSOM drops the non-standard webkit-overflow-scrolling
+      // property, so it cannot be observed via toHaveStyle. Assert on the
+      // markup React serializes instead — the wrapper must carry the
+      // inline style.
+      const html = renderToString(
+        <ThemeProvider>
+          <PullToRefresh onRefresh={mockOnRefresh}>
+            <div>Content</div>
+          </PullToRefresh>
+        </ThemeProvider>,
       );
-      
-      const wrapper = container.querySelector('.relative.flex-1');
-      expect(wrapper).toBeInTheDocument();
-      
-      const styles = window.getComputedStyle(wrapper!);
-      // WebkitOverflowScrolling is set inline
-      expect(wrapper).toHaveStyle({ WebkitOverflowScrolling: 'touch' });
+      expect(html).toContain('class="relative flex-1 ');
+      expect(html).toContain('style="-webkit-overflow-scrolling:touch"');
     });
 
     it('should render children in scrollable area', () => {
@@ -311,9 +309,9 @@ describe('PullToRefresh', () => {
             <p>Line 2</p>
             <p>Line 3</p>
           </div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       const content = screen.getByTestId('scrollable-content');
       expect(content).toBeInTheDocument();
       expect(screen.getByText('Line 1')).toBeInTheDocument();
@@ -327,9 +325,9 @@ describe('PullToRefresh', () => {
       renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       expect(screen.getByText('Kéo xuống để làm mới')).toBeInTheDocument();
     });
 
@@ -337,9 +335,9 @@ describe('PullToRefresh', () => {
       const { container } = renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       // RefreshCw icon should be rendered
       const svg = container.querySelector('svg');
       expect(svg).toBeInTheDocument();
@@ -351,9 +349,9 @@ describe('PullToRefresh', () => {
       const { container } = renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       // Check for style tag with animations
       const styleTag = container.querySelector('style');
       expect(styleTag).toBeInTheDocument();
@@ -365,9 +363,9 @@ describe('PullToRefresh', () => {
       const { container } = renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       const styleTag = container.querySelector('style');
       expect(styleTag?.textContent).toContain('from { transform: rotate(0deg)');
       expect(styleTag?.textContent).toContain('to { transform: rotate(360deg)');
@@ -377,9 +375,9 @@ describe('PullToRefresh', () => {
       const { container } = renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       const styleTag = container.querySelector('style');
       expect(styleTag?.textContent).toContain('@keyframes ptr-progress');
     });
@@ -390,9 +388,9 @@ describe('PullToRefresh', () => {
       const { container } = renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       // Progress bar is conditionally rendered during refresh
       // Check that component structure is ready
       expect(container.querySelector('.relative.flex-1')).toBeInTheDocument();
@@ -404,9 +402,9 @@ describe('PullToRefresh', () => {
       renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh} lastRefreshedLabel={undefined}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       expect(screen.getByText('Content')).toBeInTheDocument();
     });
 
@@ -414,19 +412,15 @@ describe('PullToRefresh', () => {
       renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh} refreshCount={undefined}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       expect(screen.getByText('Content')).toBeInTheDocument();
     });
 
     it('should handle empty children', () => {
-      renderWithProviders(
-        <PullToRefresh onRefresh={mockOnRefresh}>
-          {null}
-        </PullToRefresh>
-      );
-      
+      renderWithProviders(<PullToRefresh onRefresh={mockOnRefresh}>{null}</PullToRefresh>);
+
       // Should not crash
       const container = document.body;
       expect(container).toBeTruthy();
@@ -438,9 +432,9 @@ describe('PullToRefresh', () => {
           <div>Child 1</div>
           <div>Child 2</div>
           <div>Child 3</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       expect(screen.getByText('Child 1')).toBeInTheDocument();
       expect(screen.getByText('Child 2')).toBeInTheDocument();
       expect(screen.getByText('Child 3')).toBeInTheDocument();
@@ -450,13 +444,11 @@ describe('PullToRefresh', () => {
       renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <div data-pull-scroll style={{ overflowY: 'auto', height: '100px' }}>
-            <div style={{ height: '200px' }}>
-              Tall scrollable content
-            </div>
+            <div style={{ height: '200px' }}>Tall scrollable content</div>
           </div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       expect(screen.getByText('Tall scrollable content')).toBeInTheDocument();
     });
   });
@@ -466,9 +458,9 @@ describe('PullToRefresh', () => {
       const { container } = renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       const wrapper = container.querySelector('.relative.flex-1');
       expect(wrapper).toBeInTheDocument();
     });
@@ -477,9 +469,9 @@ describe('PullToRefresh', () => {
       renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <button>Focusable Button</button>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       const button = screen.getByRole('button', { name: /focusable button/i });
       expect(button).toBeInTheDocument();
     });
@@ -488,13 +480,13 @@ describe('PullToRefresh', () => {
   describe('Performance', () => {
     it('should not call onRefresh on mount', () => {
       const spy = vi.fn().mockResolvedValue(undefined);
-      
+
       renderWithProviders(
         <PullToRefresh onRefresh={spy}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       expect(spy).not.toHaveBeenCalled();
     });
 
@@ -502,40 +494,40 @@ describe('PullToRefresh', () => {
       const { rerender } = renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <div>Version 1</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       rerender(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <div>Version 2</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       rerender(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <div>Version 3</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       expect(screen.getByText('Version 3')).toBeInTheDocument();
     });
 
     it('should handle changing onRefresh callback', () => {
       const callback1 = vi.fn().mockResolvedValue(undefined);
       const callback2 = vi.fn().mockResolvedValue(undefined);
-      
+
       const { rerender } = renderWithProviders(
         <PullToRefresh onRefresh={callback1}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       rerender(
         <PullToRefresh onRefresh={callback2}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       expect(screen.getByText('Content')).toBeInTheDocument();
     });
   });
@@ -543,14 +535,11 @@ describe('PullToRefresh', () => {
   describe('Integration with useRefresh Hook', () => {
     it('should work with lastRefreshedLabel from hook', () => {
       renderWithProviders(
-        <PullToRefresh
-          onRefresh={mockOnRefresh}
-          lastRefreshedLabel="vừa xong"
-        >
+        <PullToRefresh onRefresh={mockOnRefresh} lastRefreshedLabel="vừa xong">
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       expect(screen.getByText(/vừa xong/)).toBeInTheDocument();
     });
 
@@ -558,9 +547,9 @@ describe('PullToRefresh', () => {
       renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh} refreshCount={3}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       expect(screen.getByText('3')).toBeInTheDocument();
     });
 
@@ -568,17 +557,17 @@ describe('PullToRefresh', () => {
       const { rerender } = renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh} refreshCount={1}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       expect(screen.getByText('1')).toBeInTheDocument();
-      
+
       rerender(
         <PullToRefresh onRefresh={mockOnRefresh} refreshCount={2}>
           <div>Content</div>
-        </PullToRefresh>
+        </PullToRefresh>,
       );
-      
+
       expect(screen.getByText('2')).toBeInTheDocument();
     });
   });

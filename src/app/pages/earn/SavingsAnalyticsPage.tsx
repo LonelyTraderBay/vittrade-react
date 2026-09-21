@@ -1,8 +1,20 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import {
-  TrendingUp, BarChart3, PieChart as PieChartIcon, Calendar,
-  DollarSign, Percent, ArrowUpRight, Layers, Zap, Info,
-  RefreshCw, Download, ChevronRight, Target, Sparkles,
+  TrendingUp,
+  BarChart3,
+  PieChart as PieChartIcon,
+  Calendar,
+  DollarSign,
+  Percent,
+  ArrowUpRight,
+  Layers,
+  Zap,
+  Info,
+  RefreshCw,
+  Download,
+  ChevronRight,
+  Target,
+  Sparkles,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -22,10 +34,23 @@ import { FONT_SCALE, FONT_WEIGHT } from '../../constants/typography';
 import { ICON_SIZE, ICON_STROKE } from '../../constants/icons';
 import { ALPHA } from '../../constants/colors';
 import {
-  AreaChart, Area, LineChart, Line, BarChart, Bar,
-  PieChart, Pie, Cell, ComposedChart,
-  ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid,
-  Legend, ReferenceLine,
+  AreaChart,
+  Area,
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  ComposedChart,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  Legend,
+  ReferenceLine,
 } from 'recharts';
 import { ChartGradientDefs, CHART_GRADIENTS } from '../../components/charts/ChartGradientDefs';
 
@@ -94,65 +119,65 @@ interface ProductPerformance {
 
 const YIELD_HISTORY: YieldDataPoint[] = [
   { date: '01/10', usdt: 0, btc: 0, sol: 0, eth: 0, total: 0 },
-  { date: '01/11', usdt: 12.50, btc: 0, sol: 0, eth: 0, total: 12.50 },
-  { date: '01/12', usdt: 26.30, btc: 3.20, sol: 0, eth: 0, total: 29.50 },
-  { date: '01/01', usdt: 41.80, btc: 7.90, sol: 8.50, eth: 2.10, total: 60.30 },
-  { date: '01/02', usdt: 58.20, btc: 13.40, sol: 22.30, eth: 5.80, total: 99.70 },
-  { date: '15/02', usdt: 66.90, btc: 16.80, sol: 35.60, eth: 8.20, total: 127.50 },
-  { date: '01/03', usdt: 76.40, btc: 20.50, sol: 51.20, eth: 11.60, total: 159.70 },
-  { date: '09/03', usdt: 80.12, btc: 22.38, sol: 58.50, eth: 13.36, total: 174.36 },
+  { date: '01/11', usdt: 12.5, btc: 0, sol: 0, eth: 0, total: 12.5 },
+  { date: '01/12', usdt: 26.3, btc: 3.2, sol: 0, eth: 0, total: 29.5 },
+  { date: '01/01', usdt: 41.8, btc: 7.9, sol: 8.5, eth: 2.1, total: 60.3 },
+  { date: '01/02', usdt: 58.2, btc: 13.4, sol: 22.3, eth: 5.8, total: 99.7 },
+  { date: '15/02', usdt: 66.9, btc: 16.8, sol: 35.6, eth: 8.2, total: 127.5 },
+  { date: '01/03', usdt: 76.4, btc: 20.5, sol: 51.2, eth: 11.6, total: 159.7 },
+  { date: '09/03', usdt: 80.12, btc: 22.38, sol: 58.5, eth: 13.36, total: 174.36 },
 ];
 
 const YIELD_HISTORY_90D: YieldDataPoint[] = [
   { date: '10/12', usdt: 0, btc: 0, sol: 0, eth: 0, total: 0 },
-  { date: '25/12', usdt: 8.20, btc: 2.10, sol: 4.30, eth: 1.50, total: 16.10 },
-  { date: '10/01', usdt: 18.50, btc: 5.80, sol: 12.40, eth: 3.60, total: 40.30 },
-  { date: '25/01', usdt: 29.80, btc: 9.20, sol: 21.50, eth: 5.90, total: 66.40 },
-  { date: '10/02', usdt: 42.10, btc: 13.10, sol: 32.80, eth: 8.40, total: 96.40 },
-  { date: '25/02', usdt: 55.30, btc: 17.40, sol: 45.20, eth: 11.20, total: 129.10 },
-  { date: '09/03', usdt: 62.80, btc: 19.90, sol: 52.60, eth: 13.36, total: 148.66 },
+  { date: '25/12', usdt: 8.2, btc: 2.1, sol: 4.3, eth: 1.5, total: 16.1 },
+  { date: '10/01', usdt: 18.5, btc: 5.8, sol: 12.4, eth: 3.6, total: 40.3 },
+  { date: '25/01', usdt: 29.8, btc: 9.2, sol: 21.5, eth: 5.9, total: 66.4 },
+  { date: '10/02', usdt: 42.1, btc: 13.1, sol: 32.8, eth: 8.4, total: 96.4 },
+  { date: '25/02', usdt: 55.3, btc: 17.4, sol: 45.2, eth: 11.2, total: 129.1 },
+  { date: '09/03', usdt: 62.8, btc: 19.9, sol: 52.6, eth: 13.36, total: 148.66 },
 ];
 
 const YIELD_HISTORY_30D: YieldDataPoint[] = [
   { date: '08/02', usdt: 0, btc: 0, sol: 0, eth: 0, total: 0 },
-  { date: '15/02', usdt: 4.20, btc: 1.80, sol: 3.10, eth: 0.90, total: 10.00 },
-  { date: '22/02', usdt: 8.90, btc: 3.60, sol: 6.80, eth: 1.90, total: 21.20 },
-  { date: '01/03', usdt: 14.10, btc: 5.50, sol: 11.20, eth: 3.10, total: 33.90 },
-  { date: '09/03', usdt: 18.40, btc: 7.20, sol: 14.80, eth: 4.10, total: 44.50 },
+  { date: '15/02', usdt: 4.2, btc: 1.8, sol: 3.1, eth: 0.9, total: 10.0 },
+  { date: '22/02', usdt: 8.9, btc: 3.6, sol: 6.8, eth: 1.9, total: 21.2 },
+  { date: '01/03', usdt: 14.1, btc: 5.5, sol: 11.2, eth: 3.1, total: 33.9 },
+  { date: '09/03', usdt: 18.4, btc: 7.2, sol: 14.8, eth: 4.1, total: 44.5 },
 ];
 
 const COMPOUND_PERFORMANCE: CompoundDataPoint[] = [
-  { month: 'T1', simple: 100.00, compound: 100.00, difference: 0 },
+  { month: 'T1', simple: 100.0, compound: 100.0, difference: 0 },
   { month: 'T2', simple: 143.75, compound: 144.02, difference: 0.27 },
-  { month: 'T3', simple: 287.50, compound: 289.30, difference: 1.80 },
+  { month: 'T3', simple: 287.5, compound: 289.3, difference: 1.8 },
   { month: 'T4', simple: 431.25, compound: 436.12, difference: 4.87 },
-  { month: 'T5', simple: 575.00, compound: 584.76, difference: 9.76 },
+  { month: 'T5', simple: 575.0, compound: 584.76, difference: 9.76 },
   { month: 'T6', simple: 718.75, compound: 735.52, difference: 16.77 },
-  { month: 'T7', simple: 862.50, compound: 888.70, difference: 26.20 },
+  { month: 'T7', simple: 862.5, compound: 888.7, difference: 26.2 },
   { month: 'T8', simple: 1006.25, compound: 1044.63, difference: 38.38 },
-  { month: 'T9', simple: 1150.00, compound: 1203.64, difference: 53.64 },
+  { month: 'T9', simple: 1150.0, compound: 1203.64, difference: 53.64 },
   { month: 'T10', simple: 1293.75, compound: 1366.08, difference: 72.33 },
-  { month: 'T11', simple: 1437.50, compound: 1532.32, difference: 94.82 },
+  { month: 'T11', simple: 1437.5, compound: 1532.32, difference: 94.82 },
   { month: 'T12', simple: 1581.25, compound: 1702.73, difference: 121.48 },
 ];
 
 const APY_TRENDS: APYTrendPoint[] = [
-  { date: '01/10', flexible: 4.20, locked30: 5.80, locked60: 6.50, weighted: 4.85 },
-  { date: '01/11', flexible: 4.50, locked30: 6.00, locked60: 6.80, weighted: 5.10 },
-  { date: '01/12', flexible: 4.30, locked30: 5.50, locked60: 6.20, weighted: 4.92 },
-  { date: '01/01', flexible: 4.80, locked30: 6.50, locked60: 7.20, weighted: 5.35 },
-  { date: '01/02', flexible: 4.50, locked30: 6.20, locked60: 6.80, weighted: 5.15 },
-  { date: '15/02', flexible: 4.70, locked30: 6.80, locked60: 7.50, weighted: 5.42 },
-  { date: '01/03', flexible: 4.40, locked30: 6.30, locked60: 7.00, weighted: 5.20 },
-  { date: '09/03', flexible: 4.50, locked30: 6.50, locked60: 7.20, weighted: 5.30 },
+  { date: '01/10', flexible: 4.2, locked30: 5.8, locked60: 6.5, weighted: 4.85 },
+  { date: '01/11', flexible: 4.5, locked30: 6.0, locked60: 6.8, weighted: 5.1 },
+  { date: '01/12', flexible: 4.3, locked30: 5.5, locked60: 6.2, weighted: 4.92 },
+  { date: '01/01', flexible: 4.8, locked30: 6.5, locked60: 7.2, weighted: 5.35 },
+  { date: '01/02', flexible: 4.5, locked30: 6.2, locked60: 6.8, weighted: 5.15 },
+  { date: '15/02', flexible: 4.7, locked30: 6.8, locked60: 7.5, weighted: 5.42 },
+  { date: '01/03', flexible: 4.4, locked30: 6.3, locked60: 7.0, weighted: 5.2 },
+  { date: '09/03', flexible: 4.5, locked30: 6.5, locked60: 7.2, weighted: 5.3 },
 ];
 
 const MONTHLY_EARNINGS: MonthlyEarningsPoint[] = [
-  { month: 'T10', earned: 12.50, deposited: 3500, withdrawn: 0 },
-  { month: 'T11', earned: 17.00, deposited: 1350, withdrawn: 0 },
-  { month: 'T12', earned: 30.80, deposited: 3250, withdrawn: 500 },
-  { month: 'T01', earned: 39.40, deposited: 2240, withdrawn: 0 },
-  { month: 'T02', earned: 52.80, deposited: 0, withdrawn: 1000 },
+  { month: 'T10', earned: 12.5, deposited: 3500, withdrawn: 0 },
+  { month: 'T11', earned: 17.0, deposited: 1350, withdrawn: 0 },
+  { month: 'T12', earned: 30.8, deposited: 3250, withdrawn: 500 },
+  { month: 'T01', earned: 39.4, deposited: 2240, withdrawn: 0 },
+  { month: 'T02', earned: 52.8, deposited: 0, withdrawn: 1000 },
   { month: 'T03', earned: 22.36, deposited: 500, withdrawn: 0 },
 ];
 
@@ -165,24 +190,64 @@ const ASSET_ALLOCATION: AssetAllocation[] = [
 
 const PRODUCT_PERFORMANCE: ProductPerformance[] = [
   {
-    id: 'p1', product: 'USDT Linh hoạt', asset: 'USDT', type: 'flexible',
-    invested: 3500, earned: 80.12, roi: 2.29, apy: 4.50, avgApy: 4.38,
-    daysActive: 161, color: '#26A17B', compoundEnabled: true, compoundBoost: 0.18,
+    id: 'p1',
+    product: 'USDT Linh hoạt',
+    asset: 'USDT',
+    type: 'flexible',
+    invested: 3500,
+    earned: 80.12,
+    roi: 2.29,
+    apy: 4.5,
+    avgApy: 4.38,
+    daysActive: 161,
+    color: '#26A17B',
+    compoundEnabled: true,
+    compoundBoost: 0.18,
   },
   {
-    id: 'p2', product: 'BTC Cố định 60D', asset: 'BTC', type: 'locked',
-    invested: 1350.86, earned: 22.38, roi: 1.66, apy: 3.50, avgApy: 3.42,
-    daysActive: 53, color: '#F7931A', compoundEnabled: false, compoundBoost: 0,
+    id: 'p2',
+    product: 'BTC Cố định 60D',
+    asset: 'BTC',
+    type: 'locked',
+    invested: 1350.86,
+    earned: 22.38,
+    roi: 1.66,
+    apy: 3.5,
+    avgApy: 3.42,
+    daysActive: 53,
+    color: '#F7931A',
+    compoundEnabled: false,
+    compoundBoost: 0,
   },
   {
-    id: 'p3', product: 'SOL Cố định 30D', asset: 'SOL', type: 'locked',
-    invested: 3250, earned: 58.50, roi: 1.80, apy: 6.50, avgApy: 6.35,
-    daysActive: 18, color: '#9945FF', compoundEnabled: false, compoundBoost: 0,
+    id: 'p3',
+    product: 'SOL Cố định 30D',
+    asset: 'SOL',
+    type: 'locked',
+    invested: 3250,
+    earned: 58.5,
+    roi: 1.8,
+    apy: 6.5,
+    avgApy: 6.35,
+    daysActive: 18,
+    color: '#9945FF',
+    compoundEnabled: false,
+    compoundBoost: 0,
   },
   {
-    id: 'p4', product: 'ETH Linh hoạt', asset: 'ETH', type: 'flexible',
-    invested: 2240, earned: 13.36, roi: 0.60, apy: 2.80, avgApy: 2.72,
-    daysActive: 32, color: '#627EEA', compoundEnabled: true, compoundBoost: 0.12,
+    id: 'p4',
+    product: 'ETH Linh hoạt',
+    asset: 'ETH',
+    type: 'flexible',
+    invested: 2240,
+    earned: 13.36,
+    roi: 0.6,
+    apy: 2.8,
+    avgApy: 2.72,
+    daysActive: 32,
+    color: '#627EEA',
+    compoundEnabled: true,
+    compoundBoost: 0.12,
   },
 ];
 
@@ -190,10 +255,10 @@ const PRODUCT_PERFORMANCE: ProductPerformance[] = [
    Tabs
    ═══════════════════════════════════════════════════════════ */
 const TABS = ['Yield', 'Compound', 'APY', 'Phân bổ'] as const;
-type TabKey = typeof TABS[number];
+type TabKey = (typeof TABS)[number];
 
 const TIME_RANGES = ['30D', '90D', '6M', 'All'] as const;
-type TimeRange = typeof TIME_RANGES[number];
+type TimeRange = (typeof TIME_RANGES)[number];
 
 /* ═══════════════════════════════════════════════════════════
    Skeleton
@@ -221,16 +286,38 @@ function ChartTooltip({ active, payload, label }: any) {
         minWidth: 120,
       }}
     >
-      <div style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 4, fontWeight: FONT_WEIGHT.semibold }}>{label}</div>
+      <div
+        style={{
+          fontSize: FONT_SCALE.micro,
+          color: c.text3,
+          marginBottom: 4,
+          fontWeight: FONT_WEIGHT.semibold,
+        }}
+      >
+        {label}
+      </div>
       {payload.map((entry: any, idx: number) => (
-        <div key={idx} className="flex items-center justify-between gap-3" style={{ marginBottom: 2 }}>
+        <div
+          key={idx}
+          className="flex items-center justify-between gap-3"
+          style={{ marginBottom: 2 }}
+        >
           <div className="flex items-center gap-1.5">
             <div className="w-2 h-2 rounded-full" style={{ background: entry.color }} />
             <span style={{ fontSize: FONT_SCALE.xs, color: c.text2 }}>{entry.name}</span>
           </div>
-          <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text1, fontFamily: 'monospace' }}>
+          <span
+            style={{
+              fontSize: FONT_SCALE.xs,
+              fontWeight: FONT_WEIGHT.semibold,
+              color: c.text1,
+              fontFamily: 'monospace',
+            }}
+          >
             {typeof entry.value === 'number'
-              ? entry.value >= 10 ? fmtUsd(entry.value) : `${entry.value.toFixed(2)}%`
+              ? entry.value >= 10
+                ? fmtUsd(entry.value)
+                : `${entry.value.toFixed(2)}%`
               : entry.value}
           </span>
         </div>
@@ -266,18 +353,22 @@ export function SavingsAnalyticsPage() {
   /* ─── Yield data by time range ─── */
   const yieldData = useMemo(() => {
     switch (timeRange) {
-      case '30D': return YIELD_HISTORY_30D;
-      case '90D': return YIELD_HISTORY_90D;
-      default: return YIELD_HISTORY;
+      case '30D':
+        return YIELD_HISTORY_30D;
+      case '90D':
+        return YIELD_HISTORY_90D;
+      default:
+        return YIELD_HISTORY;
     }
   }, [timeRange]);
 
   /* ─── Summary stats ─── */
   const totalInvested = ASSET_ALLOCATION.reduce((s, a) => s + a.value, 0);
   const totalEarned = YIELD_HISTORY[YIELD_HISTORY.length - 1].total;
-  const weightedAPY = totalInvested > 0
-    ? ASSET_ALLOCATION.reduce((s, a) => s + (a.apy * a.value), 0) / totalInvested
-    : 0;
+  const weightedAPY =
+    totalInvested > 0
+      ? ASSET_ALLOCATION.reduce((s, a) => s + a.apy * a.value, 0) / totalInvested
+      : 0;
   const dailyEarnings = totalInvested * (weightedAPY / 100 / 365);
   const compoundBoost = COMPOUND_PERFORMANCE[COMPOUND_PERFORMANCE.length - 1].difference;
 
@@ -298,11 +389,14 @@ export function SavingsAnalyticsPage() {
     };
   }, [calcPrincipal, calcAPY, calcMonths]);
 
-  const handleProductTap = useCallback((product: ProductPerformance) => {
-    hapticSelection();
-    setSelectedProduct(product);
-    setShowProductSheet(true);
-  }, [hapticSelection]);
+  const handleProductTap = useCallback(
+    (product: ProductPerformance) => {
+      hapticSelection();
+      setSelectedProduct(product);
+      setShowProductSheet(true);
+    },
+    [hapticSelection],
+  );
 
   /* ═══════════════════════════════════════════════════════════
      Tab: Yield History
@@ -311,10 +405,13 @@ export function SavingsAnalyticsPage() {
     <>
       {/* Time range selector */}
       <div className="flex gap-2">
-        {TIME_RANGES.map(r => (
+        {TIME_RANGES.map((r) => (
           <button
             key={r}
-            onClick={() => { setTimeRange(r); hapticSelection(); }}
+            onClick={() => {
+              setTimeRange(r);
+              hapticSelection();
+            }}
             className="flex-1 py-2 rounded-lg"
             style={{
               background: timeRange === r ? '#3B82F614' : c.surface2,
@@ -334,11 +431,16 @@ export function SavingsAnalyticsPage() {
         <div className="flex items-center justify-between mb-3">
           <div>
             <div style={{ fontSize: 11, color: c.text3, fontWeight: 600 }}>Tổng yield tích lũy</div>
-            <div style={{ fontSize: 22, fontWeight: 700, color: '#10B981', fontFamily: 'monospace' }}>
+            <div
+              style={{ fontSize: 22, fontWeight: 700, color: '#10B981', fontFamily: 'monospace' }}
+            >
               {fmtUsd(totalEarned)}
             </div>
           </div>
-          <div className="flex items-center gap-1 px-2 py-1 rounded-md" style={{ background: '#10B98114' }}>
+          <div
+            className="flex items-center gap-1 px-2 py-1 rounded-md"
+            style={{ background: '#10B98114' }}
+          >
             <ArrowUpRight size={12} color="#10B981" />
             <span style={{ fontSize: 11, fontWeight: 600, color: '#10B981' }}>
               {fmtPct((totalEarned / totalInvested) * 100)}
@@ -425,7 +527,7 @@ export function SavingsAnalyticsPage() {
             { label: 'BTC', color: '#F7931A' },
             { label: 'SOL', color: '#9945FF' },
             { label: 'ETH', color: '#627EEA' },
-          ].map(a => (
+          ].map((a) => (
             <div key={a.label} className="flex items-center gap-1.5">
               <div className="w-2 h-2 rounded-full" style={{ background: a.color }} />
               <span style={{ fontSize: 10, color: c.text3 }}>{a.label}</span>
@@ -444,7 +546,12 @@ export function SavingsAnalyticsPage() {
         <div style={{ height: 180 }}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={MONTHLY_EARNINGS} margin={{ top: 8, right: 4, left: -20, bottom: 0 }}>
-              <CartesianGrid key="grid-bar" strokeDasharray="3 3" stroke={gridColor} vertical={false} />
+              <CartesianGrid
+                key="grid-bar"
+                strokeDasharray="3 3"
+                stroke={gridColor}
+                vertical={false}
+              />
               <XAxis
                 key="x-bar"
                 dataKey="month"
@@ -460,7 +567,13 @@ export function SavingsAnalyticsPage() {
                 tickFormatter={(v: number) => `$${v}`}
               />
               <Tooltip key="tooltip-bar" content={<ChartTooltip />} />
-              <Bar key="bar-earned" dataKey="earned" name="Thu nhập" fill="#10B981" radius={[4, 4, 0, 0]} />
+              <Bar
+                key="bar-earned"
+                dataKey="earned"
+                name="Thu nhập"
+                fill="#10B981"
+                radius={[4, 4, 0, 0]}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -507,7 +620,10 @@ export function SavingsAnalyticsPage() {
               Dựa trên {fmtUsd(totalInvested)} vốn · APY {weightedAPY.toFixed(2)}%
             </div>
           </div>
-          <div className="flex items-center gap-1 px-2 py-1 rounded-md" style={{ background: '#8B5CF614' }}>
+          <div
+            className="flex items-center gap-1 px-2 py-1 rounded-md"
+            style={{ background: '#8B5CF614' }}
+          >
             <Sparkles size={12} color="#8B5CF6" />
             <span style={{ fontSize: 11, fontWeight: 600, color: '#8B5CF6' }}>
               +{fmtUsd(compoundBoost)}
@@ -517,7 +633,10 @@ export function SavingsAnalyticsPage() {
 
         <div style={{ height: 240 }}>
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={COMPOUND_PERFORMANCE} margin={{ top: 8, right: 4, left: -10, bottom: 0 }}>
+            <AreaChart
+              data={COMPOUND_PERFORMANCE}
+              margin={{ top: 8, right: 4, left: -10, bottom: 0 }}
+            >
               <ChartGradientDefs
                 key="gradient-defs"
                 gradients={[
@@ -525,7 +644,12 @@ export function SavingsAnalyticsPage() {
                   { id: 'simpleFill', color: '#94A3B8', opacityFrom: 0.1 },
                 ]}
               />
-              <CartesianGrid key="grid-cmp" strokeDasharray="3 3" stroke={gridColor} vertical={false} />
+              <CartesianGrid
+                key="grid-cmp"
+                strokeDasharray="3 3"
+                stroke={gridColor}
+                vertical={false}
+              />
               <XAxis
                 key="x-cmp"
                 dataKey="month"
@@ -571,7 +695,10 @@ export function SavingsAnalyticsPage() {
             <span style={{ fontSize: 10, color: c.text3 }}>Lãi kép</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-3 h-0.5 rounded-full" style={{ background: '#94A3B8', borderBottom: '1px dashed #94A3B8' }} />
+            <div
+              className="w-3 h-0.5 rounded-full"
+              style={{ background: '#94A3B8', borderBottom: '1px dashed #94A3B8' }}
+            />
             <span style={{ fontSize: 10, color: c.text3 }}>Lãi đơn</span>
           </div>
         </div>
@@ -588,14 +715,28 @@ export function SavingsAnalyticsPage() {
 
         <div style={{ height: 160 }}>
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={COMPOUND_PERFORMANCE.slice(1)} margin={{ top: 8, right: 4, left: -20, bottom: 0 }}>
+            <BarChart
+              data={COMPOUND_PERFORMANCE.slice(1)}
+              margin={{ top: 8, right: 4, left: -20, bottom: 0 }}
+            >
               <ChartGradientDefs
                 key="gradient-defs"
                 gradients={[
-                  { id: 'diffFill', color: '#F59E0B', opacityFrom: 0.8, opacityTo: 0.3, direction: 'vertical' },
+                  {
+                    id: 'diffFill',
+                    color: '#F59E0B',
+                    opacityFrom: 0.8,
+                    opacityTo: 0.3,
+                    direction: 'vertical',
+                  },
                 ]}
               />
-              <CartesianGrid key="grid-diff" strokeDasharray="3 3" stroke={gridColor} vertical={false} />
+              <CartesianGrid
+                key="grid-diff"
+                strokeDasharray="3 3"
+                stroke={gridColor}
+                vertical={false}
+              />
               <XAxis
                 key="x-diff"
                 dataKey="month"
@@ -611,7 +752,13 @@ export function SavingsAnalyticsPage() {
                 tickFormatter={(v: number) => `$${v}`}
               />
               <Tooltip key="tooltip-diff" content={<ChartTooltip />} />
-              <Bar key="bar-diff" dataKey="difference" name="Chênh lệch" fill="url(#diffFill)" radius={[4, 4, 0, 0]} />
+              <Bar
+                key="bar-diff"
+                dataKey="difference"
+                name="Chênh lệch"
+                fill="url(#diffFill)"
+                radius={[4, 4, 0, 0]}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -631,9 +778,18 @@ export function SavingsAnalyticsPage() {
             <div style={{ fontSize: 11, color: c.text3 }}>Ước tính lợi nhuận theo thời gian</div>
           </div>
           <button
-            onClick={() => { setShowCalculator(true); hapticSelection(); }}
+            onClick={() => {
+              setShowCalculator(true);
+              hapticSelection();
+            }}
             className="px-3 py-1.5 rounded-lg"
-            style={{ background: '#3B82F614', border: '1px solid #3B82F630', fontSize: 12, fontWeight: 600, color: '#3B82F6' }}
+            style={{
+              background: '#3B82F614',
+              border: '1px solid #3B82F630',
+              fontSize: 12,
+              fontWeight: 600,
+              color: '#3B82F6',
+            }}
           >
             Tính ngay
           </button>
@@ -642,7 +798,7 @@ export function SavingsAnalyticsPage() {
 
       {/* Compound status per product */}
       <PageSection label="Trạng thái lãi kép theo sản phẩm" accentColor="#8B5CF6">
-        {PRODUCT_PERFORMANCE.map(p => (
+        {PRODUCT_PERFORMANCE.map((p) => (
           <TrCard key={p.id} className="p-3">
             <div className="flex items-center gap-3">
               <div
@@ -702,7 +858,12 @@ export function SavingsAnalyticsPage() {
         <div style={{ height: 220 }}>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={APY_TRENDS} margin={{ top: 8, right: 4, left: -20, bottom: 0 }}>
-              <CartesianGrid key="grid-apy" strokeDasharray="3 3" stroke={gridColor} vertical={false} />
+              <CartesianGrid
+                key="grid-apy"
+                strokeDasharray="3 3"
+                stroke={gridColor}
+                vertical={false}
+              />
               <XAxis
                 key="x-apy"
                 dataKey="date"
@@ -778,7 +939,7 @@ export function SavingsAnalyticsPage() {
             { label: 'Cố định 30D', color: '#F59E0B' },
             { label: 'Cố định 60D', color: '#8B5CF6' },
             { label: 'Bình quân', color: '#3B82F6', dashed: true },
-          ].map(l => (
+          ].map((l) => (
             <div key={l.label} className="flex items-center gap-1.5">
               <div
                 className="w-3 h-0.5 rounded-full"
@@ -797,25 +958,37 @@ export function SavingsAnalyticsPage() {
       <div className="flex gap-2">
         <TrCard className="flex-1 p-3">
           <div style={{ fontSize: 10, color: c.text3, marginBottom: 4 }}>Cao nhất</div>
-          <div style={{ fontSize: 16, fontWeight: 700, color: '#10B981', fontFamily: 'monospace' }}>7.50%</div>
+          <div style={{ fontSize: 16, fontWeight: 700, color: '#10B981', fontFamily: 'monospace' }}>
+            7.50%
+          </div>
           <div style={{ fontSize: 10, color: c.text3 }}>Cố đ��nh 60D · 15/02</div>
         </TrCard>
         <TrCard className="flex-1 p-3">
           <div style={{ fontSize: 10, color: c.text3, marginBottom: 4 }}>Thấp nhất</div>
-          <div style={{ fontSize: 16, fontWeight: 700, color: '#EF4444', fontFamily: 'monospace' }}>4.20%</div>
+          <div style={{ fontSize: 16, fontWeight: 700, color: '#EF4444', fontFamily: 'monospace' }}>
+            4.20%
+          </div>
           <div style={{ fontSize: 10, color: c.text3 }}>Linh hoạt · 01/10</div>
         </TrCard>
         <TrCard className="flex-1 p-3">
           <div style={{ fontSize: 10, color: c.text3, marginBottom: 4 }}>Biến động</div>
-          <div style={{ fontSize: 16, fontWeight: 700, color: '#F59E0B', fontFamily: 'monospace' }}>±0.45%</div>
+          <div style={{ fontSize: 16, fontWeight: 700, color: '#F59E0B', fontFamily: 'monospace' }}>
+            ±0.45%
+          </div>
           <div style={{ fontSize: 10, color: c.text3 }}>Trong 6 tháng</div>
         </TrCard>
       </div>
 
       {/* Product performance table */}
       <PageSection label="Hiệu suất theo sản phẩm" accentColor="#3B82F6">
-        {PRODUCT_PERFORMANCE.map(p => (
-          <TrCard key={p.id} hover as="button" className="p-3 w-full text-left" onClick={() => handleProductTap(p)}>
+        {PRODUCT_PERFORMANCE.map((p) => (
+          <TrCard
+            key={p.id}
+            hover
+            as="button"
+            className="p-3 w-full text-left"
+            onClick={() => handleProductTap(p)}
+          >
             <div className="flex items-center gap-3">
               <div
                 className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
@@ -824,18 +997,25 @@ export function SavingsAnalyticsPage() {
                 <span style={{ fontSize: 12, fontWeight: 700, color: p.color }}>{p.asset}</span>
               </div>
               <div className="flex-1 min-w-0">
-                <div className="truncate" style={{ fontSize: 13, fontWeight: 600, color: c.text1 }}>{p.product}</div>
+                <div className="truncate" style={{ fontSize: 13, fontWeight: 600, color: c.text1 }}>
+                  {p.product}
+                </div>
                 <div style={{ fontSize: 11, color: c.text3 }}>
                   {p.type === 'flexible' ? 'Linh hoạt' : 'Cố định'} · {p.daysActive} ngày
                 </div>
               </div>
               <div className="text-right shrink-0">
-                <div style={{ fontSize: 13, fontWeight: 700, color: '#10B981', fontFamily: 'monospace' }}>
+                <div
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 700,
+                    color: '#10B981',
+                    fontFamily: 'monospace',
+                  }}
+                >
                   +{fmtUsd(p.earned)}
                 </div>
-                <div style={{ fontSize: 10, color: c.text3 }}>
-                  ROI {fmtPct(p.roi)}
-                </div>
+                <div style={{ fontSize: 10, color: c.text3 }}>ROI {fmtPct(p.roi)}</div>
               </div>
               <ChevronRight size={14} color={c.text3} className="shrink-0" />
             </div>
@@ -849,8 +1029,14 @@ export function SavingsAnalyticsPage() {
      Tab: Asset Allocation
      ═══════════════════════════════════════════════════════════ */
   const renderAllocationTab = () => {
-    const flexibleTotal = ASSET_ALLOCATION.filter(a => a.type === 'flexible').reduce((s, a) => s + a.value, 0);
-    const lockedTotal = ASSET_ALLOCATION.filter(a => a.type === 'locked').reduce((s, a) => s + a.value, 0);
+    const flexibleTotal = ASSET_ALLOCATION.filter((a) => a.type === 'flexible').reduce(
+      (s, a) => s + a.value,
+      0,
+    );
+    const lockedTotal = ASSET_ALLOCATION.filter((a) => a.type === 'locked').reduce(
+      (s, a) => s + a.value,
+      0,
+    );
 
     return (
       <>
@@ -876,7 +1062,7 @@ export function SavingsAnalyticsPage() {
                     dataKey="value"
                     strokeWidth={0}
                   >
-                    {ASSET_ALLOCATION.map(a => (
+                    {ASSET_ALLOCATION.map((a) => (
                       <Cell key={a.name} fill={a.color} />
                     ))}
                   </Pie>
@@ -886,12 +1072,20 @@ export function SavingsAnalyticsPage() {
             </div>
 
             <div className="flex-1 flex flex-col gap-2">
-              {ASSET_ALLOCATION.map(a => {
+              {ASSET_ALLOCATION.map((a) => {
                 const pct = (a.value / totalInvested) * 100;
                 return (
                   <div key={a.name} className="flex items-center gap-2">
-                    <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: a.color }} />
-                    <span className="flex-1" style={{ fontSize: 12, color: c.text1, fontWeight: 500 }}>{a.name}</span>
+                    <div
+                      className="w-2.5 h-2.5 rounded-full shrink-0"
+                      style={{ background: a.color }}
+                    />
+                    <span
+                      className="flex-1"
+                      style={{ fontSize: 12, color: c.text1, fontWeight: 500 }}
+                    >
+                      {a.name}
+                    </span>
                     <span style={{ fontSize: 11, color: c.text2, fontFamily: 'monospace' }}>
                       {pct.toFixed(1)}%
                     </span>
@@ -906,7 +1100,9 @@ export function SavingsAnalyticsPage() {
         <TrCard className="p-4">
           <div className="flex items-center gap-2 mb-3">
             <Layers size={16} color="#F59E0B" />
-            <span style={{ fontSize: 13, fontWeight: 700, color: c.text1 }}>Linh hoạt vs Cố định</span>
+            <span style={{ fontSize: 13, fontWeight: 700, color: c.text1 }}>
+              Linh hoạt vs Cố định
+            </span>
           </div>
 
           {/* Stacked bar */}
@@ -934,8 +1130,12 @@ export function SavingsAnalyticsPage() {
               className="flex-1 rounded-xl p-3"
               style={{ background: '#3B82F60D', border: '1px solid #3B82F620' }}
             >
-              <div style={{ fontSize: 10, color: '#3B82F6', fontWeight: 600, marginBottom: 2 }}>Linh hoạt</div>
-              <div style={{ fontSize: 15, fontWeight: 700, color: c.text1, fontFamily: 'monospace' }}>
+              <div style={{ fontSize: 10, color: '#3B82F6', fontWeight: 600, marginBottom: 2 }}>
+                Linh hoạt
+              </div>
+              <div
+                style={{ fontSize: 15, fontWeight: 700, color: c.text1, fontFamily: 'monospace' }}
+              >
                 {fmtUsd(flexibleTotal)}
               </div>
               <div style={{ fontSize: 10, color: c.text3 }}>
@@ -946,8 +1146,12 @@ export function SavingsAnalyticsPage() {
               className="flex-1 rounded-xl p-3"
               style={{ background: '#F59E0B0D', border: '1px solid #F59E0B20' }}
             >
-              <div style={{ fontSize: 10, color: '#F59E0B', fontWeight: 600, marginBottom: 2 }}>Cố định</div>
-              <div style={{ fontSize: 15, fontWeight: 700, color: c.text1, fontFamily: 'monospace' }}>
+              <div style={{ fontSize: 10, color: '#F59E0B', fontWeight: 600, marginBottom: 2 }}>
+                Cố định
+              </div>
+              <div
+                style={{ fontSize: 15, fontWeight: 700, color: c.text1, fontFamily: 'monospace' }}
+              >
                 {fmtUsd(lockedTotal)}
               </div>
               <div style={{ fontSize: 10, color: c.text3 }}>
@@ -959,9 +1163,9 @@ export function SavingsAnalyticsPage() {
 
         {/* Individual asset cards */}
         <PageSection label="Chi tiết từng tài sản" accentColor="#10B981">
-          {ASSET_ALLOCATION.map(a => {
+          {ASSET_ALLOCATION.map((a) => {
             const pct = (a.value / totalInvested) * 100;
-            const product = PRODUCT_PERFORMANCE.find(p => p.asset === a.name);
+            const product = PRODUCT_PERFORMANCE.find((p) => p.asset === a.name);
             return (
               <TrCard key={a.name} className="p-3">
                 <div className="flex items-center gap-3">
@@ -973,7 +1177,9 @@ export function SavingsAnalyticsPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span style={{ fontSize: 13, fontWeight: 600, color: c.text1 }}>{a.name}</span>
+                      <span style={{ fontSize: 13, fontWeight: 600, color: c.text1 }}>
+                        {a.name}
+                      </span>
                       <span
                         className="px-1.5 py-0.5 rounded"
                         style={{
@@ -991,7 +1197,14 @@ export function SavingsAnalyticsPage() {
                     </div>
                   </div>
                   <div className="text-right shrink-0">
-                    <div style={{ fontSize: 14, fontWeight: 700, color: c.text1, fontFamily: 'monospace' }}>
+                    <div
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 700,
+                        color: c.text1,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       {fmtUsd(a.value)}
                     </div>
                     {product && (
@@ -1003,7 +1216,10 @@ export function SavingsAnalyticsPage() {
                 </div>
 
                 {/* Allocation bar */}
-                <div className="mt-2 rounded-full overflow-hidden" style={{ height: 4, background: c.surface2 }}>
+                <div
+                  className="mt-2 rounded-full overflow-hidden"
+                  style={{ height: 4, background: c.surface2 }}
+                >
                   <div
                     className="h-full rounded-full"
                     style={{
@@ -1030,7 +1246,10 @@ export function SavingsAnalyticsPage() {
       <TabBar
         tabs={TABS}
         active={tab}
-        onChange={(t) => { setTab(t); hapticSelection(); }}
+        onChange={(t) => {
+          setTab(t);
+          hapticSelection();
+        }}
       />
 
       <PageContent gap="default">
@@ -1046,20 +1265,43 @@ export function SavingsAnalyticsPage() {
             <TrCard variant="hero" className="p-4">
               <div className="flex gap-2">
                 <TrCardStat className="flex-1 text-center">
-                  <div style={{ fontSize: 10, color: c.text3, marginBottom: 2 }}>Tổng tiết kiệm</div>
-                  <div style={{ fontSize: 16, fontWeight: 700, color: c.text1, fontFamily: 'monospace' }}>
+                  <div style={{ fontSize: 10, color: c.text3, marginBottom: 2 }}>
+                    Tổng tiết kiệm
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 16,
+                      fontWeight: 700,
+                      color: c.text1,
+                      fontFamily: 'monospace',
+                    }}
+                  >
                     {fmtUsd(totalInvested)}
                   </div>
                 </TrCardStat>
                 <TrCardStat className="flex-1 text-center">
                   <div style={{ fontSize: 10, color: c.text3, marginBottom: 2 }}>Tổng yield</div>
-                  <div style={{ fontSize: 16, fontWeight: 700, color: '#10B981', fontFamily: 'monospace' }}>
+                  <div
+                    style={{
+                      fontSize: 16,
+                      fontWeight: 700,
+                      color: '#10B981',
+                      fontFamily: 'monospace',
+                    }}
+                  >
                     +{fmtUsd(totalEarned)}
                   </div>
                 </TrCardStat>
                 <TrCardStat className="flex-1 text-center">
                   <div style={{ fontSize: 10, color: c.text3, marginBottom: 2 }}>APY BQ</div>
-                  <div style={{ fontSize: 16, fontWeight: 700, color: '#3B82F6', fontFamily: 'monospace' }}>
+                  <div
+                    style={{
+                      fontSize: 16,
+                      fontWeight: 700,
+                      color: '#3B82F6',
+                      fontFamily: 'monospace',
+                    }}
+                  >
                     {weightedAPY.toFixed(2)}%
                   </div>
                 </TrCardStat>
@@ -1093,23 +1335,42 @@ export function SavingsAnalyticsPage() {
                 </span>
               </div>
               <div>
-                <div style={{ fontSize: 16, fontWeight: 700, color: c.text1 }}>{selectedProduct.product}</div>
+                <div style={{ fontSize: 16, fontWeight: 700, color: c.text1 }}>
+                  {selectedProduct.product}
+                </div>
                 <div style={{ fontSize: 12, color: c.text3 }}>
-                  {selectedProduct.type === 'flexible' ? 'Linh hoạt' : 'Cố định'} · {selectedProduct.daysActive} ngày
+                  {selectedProduct.type === 'flexible' ? 'Linh hoạt' : 'Cố định'} ·{' '}
+                  {selectedProduct.daysActive} ngày
                 </div>
               </div>
             </div>
 
             <div className="rounded-xl p-3" style={{ background: c.surface2 }}>
-              <BottomSheetRow label="Số tiền đầu tư" value={fmtUsd(selectedProduct.invested)} highlight />
-              <BottomSheetRow label="Thu nhập" value={`+${fmtUsd(selectedProduct.earned)}`} valueColor="#10B981" />
-              <BottomSheetRow label="ROI" value={fmtPct(selectedProduct.roi)} valueColor="#10B981" />
+              <BottomSheetRow
+                label="Số tiền đầu tư"
+                value={fmtUsd(selectedProduct.invested)}
+                highlight
+              />
+              <BottomSheetRow
+                label="Thu nhập"
+                value={`+${fmtUsd(selectedProduct.earned)}`}
+                valueColor="#10B981"
+              />
+              <BottomSheetRow
+                label="ROI"
+                value={fmtPct(selectedProduct.roi)}
+                valueColor="#10B981"
+              />
               <BottomSheetRow label="APY hiện tại" value={`${selectedProduct.apy}%`} />
               <BottomSheetRow label="APY trung bình" value={`${selectedProduct.avgApy}%`} />
               <BottomSheetRow label="Thời gian" value={`${selectedProduct.daysActive} ngày`} />
               <BottomSheetRow
                 label="Lãi kép"
-                value={selectedProduct.compoundEnabled ? `Bật (+${selectedProduct.compoundBoost.toFixed(2)}%)` : 'Tắt'}
+                value={
+                  selectedProduct.compoundEnabled
+                    ? `Bật (+${selectedProduct.compoundBoost.toFixed(2)}%)`
+                    : 'Tắt'
+                }
                 valueColor={selectedProduct.compoundEnabled ? '#10B981' : c.text3}
               />
             </div>
@@ -1135,39 +1396,75 @@ export function SavingsAnalyticsPage() {
         <div className="flex flex-col gap-4 pb-4">
           {/* Principal */}
           <div>
-            <label style={{ fontSize: 12, fontWeight: 600, color: c.text2, display: 'block', marginBottom: 6 }}>
+            <label
+              style={{
+                fontSize: 12,
+                fontWeight: 600,
+                color: c.text2,
+                display: 'block',
+                marginBottom: 6,
+              }}
+            >
               Số tiền gốc (USDT)
             </label>
             <input
               type="number"
               value={calcPrincipal}
-              onChange={e => setCalcPrincipal(e.target.value)}
+              onChange={(e) => setCalcPrincipal(e.target.value)}
               className="w-full px-3 py-2.5 rounded-xl outline-none"
-              style={{ background: c.surface2, border: `1px solid ${c.border}`, color: c.text1, fontSize: 14, fontFamily: 'monospace' }}
+              style={{
+                background: c.surface2,
+                border: `1px solid ${c.border}`,
+                color: c.text1,
+                fontSize: 14,
+                fontFamily: 'monospace',
+              }}
             />
           </div>
 
           {/* APY */}
           <div>
-            <label style={{ fontSize: 12, fontWeight: 600, color: c.text2, display: 'block', marginBottom: 6 }}>
+            <label
+              style={{
+                fontSize: 12,
+                fontWeight: 600,
+                color: c.text2,
+                display: 'block',
+                marginBottom: 6,
+              }}
+            >
               APY (%)
             </label>
             <input
               type="number"
               value={calcAPY}
-              onChange={e => setCalcAPY(e.target.value)}
+              onChange={(e) => setCalcAPY(e.target.value)}
               className="w-full px-3 py-2.5 rounded-xl outline-none"
-              style={{ background: c.surface2, border: `1px solid ${c.border}`, color: c.text1, fontSize: 14, fontFamily: 'monospace' }}
+              style={{
+                background: c.surface2,
+                border: `1px solid ${c.border}`,
+                color: c.text1,
+                fontSize: 14,
+                fontFamily: 'monospace',
+              }}
             />
           </div>
 
           {/* Months */}
           <div>
-            <label style={{ fontSize: 12, fontWeight: 600, color: c.text2, display: 'block', marginBottom: 6 }}>
+            <label
+              style={{
+                fontSize: 12,
+                fontWeight: 600,
+                color: c.text2,
+                display: 'block',
+                marginBottom: 6,
+              }}
+            >
               Thời gian (tháng)
             </label>
             <div className="flex gap-2">
-              {['3', '6', '12', '24', '36'].map(m => (
+              {['3', '6', '12', '24', '36'].map((m) => (
                 <button
                   key={m}
                   onClick={() => setCalcMonths(m)}
@@ -1189,8 +1486,17 @@ export function SavingsAnalyticsPage() {
           {/* Results */}
           <div className="rounded-xl p-3" style={{ background: c.surface2 }}>
             <BottomSheetRow label="Lãi đơn" value={fmtUsd(calcResults.simple)} />
-            <BottomSheetRow label="Lãi kép (hàng ngày)" value={fmtUsd(calcResults.compound)} highlight valueColor="#10B981" />
-            <BottomSheetRow label="Chênh lệch" value={`+${fmtUsd(calcResults.boost)}`} valueColor="#8B5CF6" />
+            <BottomSheetRow
+              label="Lãi kép (hàng ngày)"
+              value={fmtUsd(calcResults.compound)}
+              highlight
+              valueColor="#10B981"
+            />
+            <BottomSheetRow
+              label="Chênh lệch"
+              value={`+${fmtUsd(calcResults.boost)}`}
+              valueColor="#8B5CF6"
+            />
             <div className="mt-2 pt-2" style={{ borderTop: `1px solid ${c.divider}` }}>
               <BottomSheetRow label="Tổng nhận được" value={fmtUsd(calcResults.total)} highlight />
             </div>
@@ -1202,7 +1508,8 @@ export function SavingsAnalyticsPage() {
           >
             <Info size={14} color="#3B82F6" className="shrink-0 mt-0.5" />
             <span style={{ fontSize: 11, color: c.text2 }}>
-              Ước tính dựa trên APY cố định. APY thực tế có thể thay đổi theo thị trường. Lãi kép được tính theo chu kỳ hàng ngày.
+              Ước tính dựa trên APY cố định. APY thực tế có thể thay đổi theo thị trường. Lãi kép
+              được tính theo chu kỳ hàng ngày.
             </span>
           </div>
         </div>

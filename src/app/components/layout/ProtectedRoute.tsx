@@ -16,13 +16,7 @@ export function ProtectedRoute() {
     const isResponsive = location.pathname.startsWith('/r/');
     const loginPath = isResponsive ? '/r/auth/login' : '/auth/login';
 
-    return (
-      <Navigate
-        to={loginPath}
-        state={{ from: location.pathname }}
-        replace
-      />
-    );
+    return <Navigate to={loginPath} state={{ from: location.pathname }} replace />;
   }
 
   return <Outlet />;

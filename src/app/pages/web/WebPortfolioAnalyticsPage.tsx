@@ -152,15 +152,11 @@ function MetricCard({ metric }: { metric: PerformanceMetric }) {
         >
           <Icon size={20} color={metric.color} />
         </div>
-        <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION }}>
-          {metric.label}
-        </div>
+        <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION }}>{metric.label}</div>
       </div>
 
       <div className="flex items-end justify-between">
-        <div style={{ color: c.text1, fontSize: 24, fontWeight: 800 }}>
-          {metric.value}
-        </div>
+        <div style={{ color: c.text1, fontSize: 24, fontWeight: 800 }}>{metric.value}</div>
         {metric.change !== undefined && (
           <div className="flex items-center gap-1">
             {metric.trend === 'up' ? (
@@ -293,199 +289,158 @@ export function WebPortfolioAnalyticsPage() {
 
   return (
     <PageLayout>
-    <div className="flex" style={{ minHeight: '100%' }}>
-      {/* ═══ LEFT SIDEBAR (280px) ═══ */}
-      <div
-        className="flex flex-col"
-        style={{
-          width: 280,
-          background: c.surface,
-          borderRight: `1px solid ${c.divider}`,
-          position: 'sticky',
-          top: 0,
-          alignSelf: 'flex-start',
-          maxHeight: '100vh',
-          overflowY: 'auto',
-        }}
-      >
-        {/* Header */}
+      <div className="flex" style={{ minHeight: '100%' }}>
+        {/* ═══ LEFT SIDEBAR (280px) ═══ */}
         <div
-          className="flex items-center justify-between px-5"
+          className="flex flex-col"
           style={{
-            height: 60,
-            borderBottom: `1px solid ${c.divider}`,
+            width: 280,
+            background: c.surface,
+            borderRight: `1px solid ${c.divider}`,
+            position: 'sticky',
+            top: 0,
+            alignSelf: 'flex-start',
+            maxHeight: '100vh',
+            overflowY: 'auto',
           }}
         >
-          <h2
-            style={{
-              color: c.text1,
-              fontSize: WEB_FONT.SIZE.H2,
-              fontWeight: 700,
-              margin: 0,
-            }}
-          >
-            Analytics
-          </h2>
-        </div>
-
-        {/* Timeframe Selector */}
-        <div className="p-4">
-          <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 12 }}>
-            Khoảng thời gian
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            {(['7d', '30d', '90d', '1y'] as const).map((tf) => (
-              <button
-                key={tf}
-                onClick={() => setTimeframe(tf)}
-                className="px-3 py-2 rounded-lg transition-all"
-                style={{
-                  background: timeframe === tf ? '#3B82F6' : c.bg,
-                  color: timeframe === tf ? '#fff' : c.text2,
-                  fontSize: WEB_FONT.SIZE.CAPTION,
-                  fontWeight: 600,
-                  border: timeframe === tf ? 'none' : `1px solid ${c.border}`,
-                }}
-              >
-                {tf === '7d' && '7 ngày'}
-                {tf === '30d' && '30 ngày'}
-                {tf === '90d' && '90 ngày'}
-                {tf === '1y' && '1 năm'}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Asset Allocation */}
-        <div className="px-4 pb-4">
-          <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 12 }}>
-            Phân bổ tài sản
-          </div>
+          {/* Header */}
           <div
-            className="p-3 rounded-lg"
+            className="flex items-center justify-between px-5"
             style={{
-              background: c.bg,
-              border: `1px solid ${c.border}`,
+              height: 60,
+              borderBottom: `1px solid ${c.divider}`,
             }}
           >
-            {ASSET_ALLOCATION.map((asset, i) => (
-              <React.Fragment key={asset.asset}>
-                {i > 0 && <div style={{ height: 1, background: c.divider, margin: '8px 0' }} />}
-                <AllocationRow asset={asset} />
-              </React.Fragment>
-            ))}
-          </div>
-        </div>
-
-        {/* Export */}
-        <div className="px-4 pb-4 mt-auto">
-          <button
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-colors"
-            style={{
-              background: c.bg,
-              border: `1px solid ${c.border}`,
-              color: c.text2,
-              fontSize: WEB_FONT.SIZE.CAPTION,
-              fontWeight: 600,
-            }}
-          >
-            <Download size={14} />
-            Xuất báo cáo
-          </button>
-        </div>
-      </div>
-
-      {/* ═══ MAIN CONTENT ═══ */}
-      <div className="flex-1 min-w-0">
-        <div className="max-w-6xl mx-auto p-8">
-          {/* Page Header */}
-          <div className="mb-6">
-            <h3
+            <h2
               style={{
                 color: c.text1,
-                fontSize: WEB_FONT.SIZE.H3,
+                fontSize: WEB_FONT.SIZE.H2,
                 fontWeight: 700,
-                marginBottom: 8,
+                margin: 0,
               }}
             >
-              Phân tích danh mục
-            </h3>
-            <p style={{ color: c.text2, fontSize: WEB_FONT.SIZE.BODY, margin: 0 }}>
-              Tổng quan hiệu suất và phân bổ tài sản
-            </p>
+              Analytics
+            </h2>
           </div>
 
-          {/* Key Metrics */}
-          <div className="grid grid-cols-4 gap-4 mb-8">
-            {PERFORMANCE_METRICS.map((metric) => (
-              <MetricCard key={metric.label} metric={metric} />
-            ))}
+          {/* Timeframe Selector */}
+          <div className="p-4">
+            <div
+              style={{
+                color: c.text2,
+                fontSize: WEB_FONT.SIZE.CAPTION,
+                fontWeight: 600,
+                marginBottom: 12,
+              }}
+            >
+              Khoảng thời gian
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {(['7d', '30d', '90d', '1y'] as const).map((tf) => (
+                <button
+                  key={tf}
+                  onClick={() => setTimeframe(tf)}
+                  className="px-3 py-2 rounded-lg transition-all"
+                  style={{
+                    background: timeframe === tf ? '#3B82F6' : c.bg,
+                    color: timeframe === tf ? '#fff' : c.text2,
+                    fontSize: WEB_FONT.SIZE.CAPTION,
+                    fontWeight: 600,
+                    border: timeframe === tf ? 'none' : `1px solid ${c.border}`,
+                  }}
+                >
+                  {tf === '7d' && '7 ngày'}
+                  {tf === '30d' && '30 ngày'}
+                  {tf === '90d' && '90 ngày'}
+                  {tf === '1y' && '1 năm'}
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* Performance Chart (Mock) */}
-          <div
-            className="p-6 rounded-xl mb-8"
-            style={{
-              background: c.surface,
-              border: `1px solid ${c.border}`,
-            }}
-          >
-            <div className="flex items-center justify-between mb-6">
-              <h4
+          {/* Asset Allocation */}
+          <div className="px-4 pb-4">
+            <div
+              style={{
+                color: c.text2,
+                fontSize: WEB_FONT.SIZE.CAPTION,
+                fontWeight: 600,
+                marginBottom: 12,
+              }}
+            >
+              Phân bổ tài sản
+            </div>
+            <div
+              className="p-3 rounded-lg"
+              style={{
+                background: c.bg,
+                border: `1px solid ${c.border}`,
+              }}
+            >
+              {ASSET_ALLOCATION.map((asset, i) => (
+                <React.Fragment key={asset.asset}>
+                  {i > 0 && <div style={{ height: 1, background: c.divider, margin: '8px 0' }} />}
+                  <AllocationRow asset={asset} />
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+
+          {/* Export */}
+          <div className="px-4 pb-4 mt-auto">
+            <button
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-colors"
+              style={{
+                background: c.bg,
+                border: `1px solid ${c.border}`,
+                color: c.text2,
+                fontSize: WEB_FONT.SIZE.CAPTION,
+                fontWeight: 600,
+              }}
+            >
+              <Download size={14} />
+              Xuất báo cáo
+            </button>
+          </div>
+        </div>
+
+        {/* ═══ MAIN CONTENT ═══ */}
+        <div className="flex-1 min-w-0">
+          <div className="max-w-6xl mx-auto p-8">
+            {/* Page Header */}
+            <div className="mb-6">
+              <h3
                 style={{
                   color: c.text1,
-                  fontSize: WEB_FONT.SIZE.BODY,
+                  fontSize: WEB_FONT.SIZE.H3,
                   fontWeight: 700,
-                  margin: 0,
+                  marginBottom: 8,
                 }}
               >
-                Biến động giá trị danh mục
-              </h4>
-              <div className="flex items-center gap-2">
-                <span style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
-                  30 ngày qua
-                </span>
-              </div>
+                Phân tích danh mục
+              </h3>
+              <p style={{ color: c.text2, fontSize: WEB_FONT.SIZE.BODY, margin: 0 }}>
+                Tổng quan hiệu suất và phân bổ tài sản
+              </p>
             </div>
 
-            {/* Simple bar chart mock */}
-            <div className="flex items-end justify-between gap-2" style={{ height: 200 }}>
-              {MONTHLY_PERFORMANCE.map((month) => {
-                const maxValue = Math.max(...MONTHLY_PERFORMANCE.map((m) => m.value));
-                const height = (month.value / maxValue) * 100;
-                return (
-                  <div key={month.month} className="flex-1 flex flex-col items-center gap-2">
-                    <div className="relative w-full" style={{ height: 160 }}>
-                      <div
-                        className="absolute bottom-0 w-full rounded-t-lg transition-all"
-                        style={{
-                          height: `${height}%`,
-                          background: month.pnl >= 0 ? '#10B981' : '#EF4444',
-                          opacity: 0.8,
-                        }}
-                      />
-                    </div>
-                    <div style={{ color: c.text3, fontSize: 11, fontWeight: 600 }}>
-                      {month.month}
-                    </div>
-                  </div>
-                );
-              })}
+            {/* Key Metrics */}
+            <div className="grid grid-cols-4 gap-4 mb-8">
+              {PERFORMANCE_METRICS.map((metric) => (
+                <MetricCard key={metric.label} metric={metric} />
+              ))}
             </div>
-          </div>
 
-          {/* Top Performers / Losers */}
-          <div className="grid grid-cols-2 gap-6">
-            {/* Top Gainers */}
+            {/* Performance Chart (Mock) */}
             <div
-              className="p-6 rounded-xl"
+              className="p-6 rounded-xl mb-8"
               style={{
                 background: c.surface,
                 border: `1px solid ${c.border}`,
               }}
             >
-              <div className="flex items-center gap-2 mb-4">
-                <TrendingUp size={20} color="#10B981" />
+              <div className="flex items-center justify-between mb-6">
                 <h4
                   style={{
                     color: c.text1,
@@ -494,75 +449,141 @@ export function WebPortfolioAnalyticsPage() {
                     margin: 0,
                   }}
                 >
-                  Top Gainers
+                  Biến động giá trị danh mục
                 </h4>
-              </div>
-              <div>
-                {TOP_PERFORMERS.map((p, i) => (
-                  <React.Fragment key={p.asset}>
-                    {i > 0 && <div style={{ height: 1, background: c.divider, margin: '12px 0' }} />}
-                    <PerformerRow {...p} />
-                  </React.Fragment>
-                ))}
-              </div>
-            </div>
-
-            {/* Top Losers */}
-            <div
-              className="p-6 rounded-xl"
-              style={{
-                background: c.surface,
-                border: `1px solid ${c.border}`,
-              }}
-            >
-              <div className="flex items-center gap-2 mb-4">
-                <TrendingDown size={20} color="#EF4444" />
-                <h4
-                  style={{
-                    color: c.text1,
-                    fontSize: WEB_FONT.SIZE.BODY,
-                    fontWeight: 700,
-                    margin: 0,
-                  }}
-                >
-                  Top Losers
-                </h4>
-              </div>
-              <div>
-                {TOP_LOSERS.map((p, i) => (
-                  <React.Fragment key={p.asset}>
-                    {i > 0 && <div style={{ height: 1, background: c.divider, margin: '12px 0' }} />}
-                    <PerformerRow {...p} />
-                  </React.Fragment>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Risk Insights */}
-          <div
-            className="mt-6 p-5 rounded-xl"
-            style={{
-              background: '#3B82F615',
-              border: `1px solid #3B82F640`,
-            }}
-          >
-            <div className="flex items-start gap-3">
-              <Info size={20} color="#3B82F6" className="flex-shrink-0 mt-0.5" />
-              <div>
-                <div style={{ color: '#3B82F6', fontSize: WEB_FONT.SIZE.BODY, fontWeight: 700, marginBottom: 8 }}>
-                  Insight: Đa dạng hóa tốt
+                <div className="flex items-center gap-2">
+                  <span style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
+                    30 ngày qua
+                  </span>
                 </div>
-                <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, lineHeight: 1.6 }}>
-                  Danh mục của bạn phân bổ đa dạng với 5 tài sản. BTC và ETH chiếm 74.8% tổng giá trị.
-                  Khuyến nghị: Cân nhắc tăng tỷ trọng stablecoin để giảm biến động.
+              </div>
+
+              {/* Simple bar chart mock */}
+              <div className="flex items-end justify-between gap-2" style={{ height: 200 }}>
+                {MONTHLY_PERFORMANCE.map((month) => {
+                  const maxValue = Math.max(...MONTHLY_PERFORMANCE.map((m) => m.value));
+                  const height = (month.value / maxValue) * 100;
+                  return (
+                    <div key={month.month} className="flex-1 flex flex-col items-center gap-2">
+                      <div className="relative w-full" style={{ height: 160 }}>
+                        <div
+                          className="absolute bottom-0 w-full rounded-t-lg transition-all"
+                          style={{
+                            height: `${height}%`,
+                            background: month.pnl >= 0 ? '#10B981' : '#EF4444',
+                            opacity: 0.8,
+                          }}
+                        />
+                      </div>
+                      <div style={{ color: c.text3, fontSize: 11, fontWeight: 600 }}>
+                        {month.month}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Top Performers / Losers */}
+            <div className="grid grid-cols-2 gap-6">
+              {/* Top Gainers */}
+              <div
+                className="p-6 rounded-xl"
+                style={{
+                  background: c.surface,
+                  border: `1px solid ${c.border}`,
+                }}
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  <TrendingUp size={20} color="#10B981" />
+                  <h4
+                    style={{
+                      color: c.text1,
+                      fontSize: WEB_FONT.SIZE.BODY,
+                      fontWeight: 700,
+                      margin: 0,
+                    }}
+                  >
+                    Top Gainers
+                  </h4>
+                </div>
+                <div>
+                  {TOP_PERFORMERS.map((p, i) => (
+                    <React.Fragment key={p.asset}>
+                      {i > 0 && (
+                        <div style={{ height: 1, background: c.divider, margin: '12px 0' }} />
+                      )}
+                      <PerformerRow {...p} />
+                    </React.Fragment>
+                  ))}
+                </div>
+              </div>
+
+              {/* Top Losers */}
+              <div
+                className="p-6 rounded-xl"
+                style={{
+                  background: c.surface,
+                  border: `1px solid ${c.border}`,
+                }}
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  <TrendingDown size={20} color="#EF4444" />
+                  <h4
+                    style={{
+                      color: c.text1,
+                      fontSize: WEB_FONT.SIZE.BODY,
+                      fontWeight: 700,
+                      margin: 0,
+                    }}
+                  >
+                    Top Losers
+                  </h4>
+                </div>
+                <div>
+                  {TOP_LOSERS.map((p, i) => (
+                    <React.Fragment key={p.asset}>
+                      {i > 0 && (
+                        <div style={{ height: 1, background: c.divider, margin: '12px 0' }} />
+                      )}
+                      <PerformerRow {...p} />
+                    </React.Fragment>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Risk Insights */}
+            <div
+              className="mt-6 p-5 rounded-xl"
+              style={{
+                background: '#3B82F615',
+                border: `1px solid #3B82F640`,
+              }}
+            >
+              <div className="flex items-start gap-3">
+                <Info size={20} color="#3B82F6" className="flex-shrink-0 mt-0.5" />
+                <div>
+                  <div
+                    style={{
+                      color: '#3B82F6',
+                      fontSize: WEB_FONT.SIZE.BODY,
+                      fontWeight: 700,
+                      marginBottom: 8,
+                    }}
+                  >
+                    Insight: Đa dạng hóa tốt
+                  </div>
+                  <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, lineHeight: 1.6 }}>
+                    Danh mục của bạn phân bổ đa dạng với 5 tài sản. BTC và ETH chiếm 74.8% tổng giá
+                    trị. Khuyến nghị: Cân nhắc tăng tỷ trọng stablecoin để giảm biến động.
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </PageLayout>
   );
 }

@@ -1,8 +1,16 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import {
-  Shield, FileText, AlertTriangle,
-  ChevronRight, ChevronLeft, X, CheckCircle,
-  Target, Zap, Star, TrendingUp,
+  Shield,
+  FileText,
+  AlertTriangle,
+  ChevronRight,
+  ChevronLeft,
+  X,
+  CheckCircle,
+  Target,
+  Zap,
+  Star,
+  TrendingUp,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { φ, φSpace } from '../../utils/golden';
@@ -58,7 +66,9 @@ function getPersonalizedTips(stepId: string, user: UserProfile, variant: 'A' | '
   switch (stepId) {
     case 'welcome': {
       if (user.totalTrades > 30) {
-        tips.push(`Bạn đã hoàn thành ${user.totalTrades} giao dịch — mọi GD đều được bảo vệ tự động`);
+        tips.push(
+          `Bạn đã hoàn thành ${user.totalTrades} giao dịch — mọi GD đều được bảo vệ tự động`,
+        );
       }
       if (user.tradingVolume30d > 100_000_000) {
         tips.push('Với khối lượng GD cao, bảo hiểm là lớp phòng vệ quan trọng');
@@ -95,7 +105,9 @@ function getPersonalizedTips(stepId: string, user: UserProfile, variant: 'A' | '
     }
     case 'claims': {
       if (user.claimCount > 0) {
-        tips.push(`Bạn đã gửi ${user.claimCount} yêu cầu trước đó — có thể tham khảo lịch sử để gửi nhanh hơn`);
+        tips.push(
+          `Bạn đã gửi ${user.claimCount} yêu cầu trước đó — có thể tham khảo lịch sử để gửi nhanh hơn`,
+        );
       } else {
         tips.push('Đây là lần đầu — đừng lo, quy trình gửi yêu cầu rất đơn giản');
       }
@@ -171,7 +183,8 @@ function buildTourSteps(user: UserProfile, variant: 'A' | 'B'): TourStep[] {
     {
       id: 'welcome',
       title: 'Chào mừng đến Quỹ Bảo Hiểm P2P',
-      description: 'Quỹ bảo hiểm P2P bảo vệ bạn khi giao dịch P2P gặp sự cố. Mỗi giao dịch của bạn đều được trích một phần nhỏ vào quỹ để đảm bảo an toàn cho cộng đồng.',
+      description:
+        'Quỹ bảo hiểm P2P bảo vệ bạn khi giao dịch P2P gặp sự cố. Mỗi giao dịch của bạn đều được trích một phần nhỏ vào quỹ để đảm bảo an toàn cho cộng đồng.',
       icon: Shield,
       iconColor: '#3B82F6',
       iconBg: 'rgba(59,130,246,0.1)',
@@ -184,7 +197,8 @@ function buildTourSteps(user: UserProfile, variant: 'A' | 'B'): TourStep[] {
     {
       id: 'tiers',
       title: 'Hệ thống Tier bảo hiểm',
-      description: 'Mức bảo hiểm phụ thuộc vào tier của bạn. Tier càng cao, tỷ lệ bồi thường càng lớn. Hoàn thành KYC và bật 2FA để nâng tier.',
+      description:
+        'Mức bảo hiểm phụ thuộc vào tier của bạn. Tier càng cao, tỷ lệ bồi thường càng lớn. Hoàn thành KYC và bật 2FA để nâng tier.',
       icon: Target,
       iconColor: '#8B5CF6',
       iconBg: 'rgba(139,92,246,0.1)',
@@ -198,7 +212,8 @@ function buildTourSteps(user: UserProfile, variant: 'A' | 'B'): TourStep[] {
     {
       id: 'claims',
       title: 'Cách gửi yêu cầu bồi thường',
-      description: 'Khi gặp sự cố trong giao dịch P2P, bạn có thể gửi yêu cầu bồi thường trong vòng 7 ngày. Hệ thống sẽ xem xét và phản hồi trong 48-72 giờ.',
+      description:
+        'Khi gặp sự cố trong giao dịch P2P, bạn có thể gửi yêu cầu bồi thường trong vòng 7 ngày. Hệ thống sẽ xem xét và phản hồi trong 48-72 giờ.',
       icon: FileText,
       iconColor: '#10B981',
       iconBg: 'rgba(16,185,129,0.1)',
@@ -212,21 +227,23 @@ function buildTourSteps(user: UserProfile, variant: 'A' | 'B'): TourStep[] {
     {
       id: 'safety',
       title: 'Phòng chống gian lận',
-      description: 'An toàn là ưu tiên hàng đầu. Hiểu các dấu hiệu scam phổ biến và làm theo checklist an toàn trước mỗi giao dịch.',
+      description:
+        'An toàn là ưu tiên hàng đầu. Hiểu các dấu hiệu scam phổ biến và làm theo checklist an toàn trước mỗi giao dịch.',
       icon: AlertTriangle,
       iconColor: '#F59E0B',
       iconBg: 'rgba(245,158,11,0.1)',
       tips: [
         'Không bao giờ giao dịch ngoài nền tảng',
         'Kiểm tra kỹ thông tin merchant trước khi giao dịch',
-        'Chỉ bấm \"Đã thanh toán\" khi đã chuyển tiền thật',
+        'Chỉ bấm "Đã thanh toán" khi đã chuyển tiền thật',
         'Báo cáo ngay khi phát hiện dấu hiệu bất thường',
       ],
     },
     {
       id: 'features',
       title: 'Các tính năng nâng cao',
-      description: 'Khám phá thêm các công cụ giúp bạn quản lý bảo hiểm tốt hơn: Điểm bảo vệ, Chứng nhận bảo hiểm, Lịch sử đóng góp, và So sánh benchmark.',
+      description:
+        'Khám phá thêm các công cụ giúp bạn quản lý bảo hiểm tốt hơn: Điểm bảo vệ, Chứng nhận bảo hiểm, Lịch sử đóng góp, và So sánh benchmark.',
       icon: Zap,
       iconColor: '#6366F1',
       iconBg: 'rgba(99,102,241,0.1)',
@@ -239,7 +256,7 @@ function buildTourSteps(user: UserProfile, variant: 'A' | 'B'): TourStep[] {
     },
   ];
 
-  return steps.map(step => ({
+  return steps.map((step) => ({
     ...step,
     personalizedTips: getPersonalizedTips(step.id, user, variant),
   }));
@@ -254,7 +271,11 @@ interface InsuranceOnboardingTourProps {
   userProfile?: UserProfile;
 }
 
-export function InsuranceOnboardingTour({ open, onClose, userProfile }: InsuranceOnboardingTourProps) {
+export function InsuranceOnboardingTour({
+  open,
+  onClose,
+  userProfile,
+}: InsuranceOnboardingTourProps) {
   const c = useThemeColors();
   const { hapticSelection, hapticSuccess } = useHaptic();
   const [animating, setAnimating] = useState(false);
@@ -262,14 +283,14 @@ export function InsuranceOnboardingTour({ open, onClose, userProfile }: Insuranc
   const [sheetVisible, setSheetVisible] = useState(false);
 
   const user = userProfile || DEFAULT_USER;
-  
+
   // TIER 7.2: A/B test for personalized tips variant
-  const { variant: abVariant, trackConversion } = useABTest(
-    'insurance_tour_personalization',
-    { userId: `user_${user.tier}_${user.accountAgeDays}` }
-  );
-  // Map to expected interface
-  const variant = { id: abVariant || 'A' };
+  const { variant: abVariant, trackConversion } = useABTest('insurance_tour_personalization', {
+    userId: `user_${user.tier}_${user.accountAgeDays}`,
+  });
+  // Map to expected interface (useABTest types its variant as a plain string;
+  // tour steps expect the 'A' | 'B' union — same value at runtime)
+  const variant = { id: (abVariant || 'A') as 'A' | 'B' };
   const trackCTAClick = () => trackConversion('cta_click');
   const markCompleted = () => trackConversion('completed');
   const markSkipped = () => trackConversion('skipped');
@@ -292,11 +313,19 @@ export function InsuranceOnboardingTour({ open, onClose, userProfile }: Insuranc
   // Use tour progress currentStep instead of local state
   const currentStep = progress.currentStep;
 
-  const tourSteps = useMemo(() => buildTourSteps(user, variant.id), [
-    user.tier, user.tradingVolume30d, user.totalTrades,
-    user.kycLevel, user.has2FA, user.claimCount, user.accountAgeDays,
-    variant.id,
-  ]);
+  const tourSteps = useMemo(
+    () => buildTourSteps(user, variant.id),
+    [
+      user.tier,
+      user.tradingVolume30d,
+      user.totalTrades,
+      user.kycLevel,
+      user.has2FA,
+      user.claimCount,
+      user.accountAgeDays,
+      variant.id,
+    ],
+  );
 
   // Step duration tracking for A/B test
   const stepStartTimeRef = useRef<number>(Date.now());
@@ -325,7 +354,7 @@ export function InsuranceOnboardingTour({ open, onClose, userProfile }: Insuranc
     // Track step duration for A/B test
     const stepDuration = Date.now() - stepStartTimeRef.current;
     trackCTAClick(); // Track CTA engagement
-    
+
     if (isLast) {
       hapticSuccess();
       completeTour(); // Mark tour as completed in progress
@@ -334,7 +363,7 @@ export function InsuranceOnboardingTour({ open, onClose, userProfile }: Insuranc
       setTimeout(onClose, 300);
       return;
     }
-    
+
     hapticSelection();
     setSlideDir(1);
     setAnimating(true);
@@ -439,23 +468,27 @@ export function InsuranceOnboardingTour({ open, onClose, userProfile }: Insuranc
           </div>
 
           {/* Title + Description */}
-          <h2 style={{
-            color: c.text1,
-            fontSize: φ.md,
-            fontWeight: 800,
-            lineHeight: 1.3,
-            textAlign: 'center',
-            marginBottom: 8,
-          }}>
+          <h2
+            style={{
+              color: c.text1,
+              fontSize: φ.md,
+              fontWeight: 800,
+              lineHeight: 1.3,
+              textAlign: 'center',
+              marginBottom: 8,
+            }}
+          >
             {step.title}
           </h2>
-          <p style={{
-            color: c.text2,
-            fontSize: φ.body,
-            lineHeight: 1.6,
-            textAlign: 'center',
-            marginBottom: 24,
-          }}>
+          <p
+            style={{
+              color: c.text2,
+              fontSize: φ.body,
+              lineHeight: 1.6,
+              textAlign: 'center',
+              marginBottom: 24,
+            }}
+          >
             {step.description}
           </p>
 
@@ -483,12 +516,14 @@ export function InsuranceOnboardingTour({ open, onClose, userProfile }: Insuranc
                   >
                     <TrendingUp size={11} color="#3B82F6" />
                   </div>
-                  <span style={{
-                    color: c.text1,
-                    fontSize: φ.sm,
-                    lineHeight: 1.5,
-                    fontWeight: 500,
-                  }}>
+                  <span
+                    style={{
+                      color: c.text1,
+                      fontSize: φ.sm,
+                      lineHeight: 1.5,
+                      fontWeight: 500,
+                    }}
+                  >
                     {tip}
                   </span>
                 </div>
@@ -517,12 +552,14 @@ export function InsuranceOnboardingTour({ open, onClose, userProfile }: Insuranc
                 >
                   <CheckCircle size={13} color={step.iconColor} />
                 </div>
-                <span style={{
-                  color: c.text1,
-                  fontSize: φ.sm,
-                  lineHeight: 1.5,
-                  fontWeight: 500,
-                }}>
+                <span
+                  style={{
+                    color: c.text1,
+                    fontSize: φ.sm,
+                    lineHeight: 1.5,
+                    fontWeight: 500,
+                  }}
+                >
                   {tip}
                 </span>
               </div>

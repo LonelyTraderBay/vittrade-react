@@ -58,21 +58,26 @@ export function OfflineBanner({
         {showStaleHint && !isReconnecting && (
           <div className="flex items-center gap-1 mt-1">
             <Clock size={10} color={c.text3} />
-            <p style={{ color: c.text3, fontSize: 11 }}>
-              Cập nhật lần cuối: 2 phút trước
-            </p>
+            <p style={{ color: c.text3, fontSize: 11 }}>Cập nhật lần cuối: 2 phút trước</p>
           </div>
         )}
         {isReconnecting && (
           <div className="flex items-center gap-2 mt-1.5">
             <div className="flex gap-1">
-              <div className="w-1.5 h-1.5 rounded-full" style={{ background: s.iconColor, animation: 'pulse 1.4s infinite 0s' }} />
-              <div className="w-1.5 h-1.5 rounded-full" style={{ background: s.iconColor, animation: 'pulse 1.4s infinite 0.2s' }} />
-              <div className="w-1.5 h-1.5 rounded-full" style={{ background: s.iconColor, animation: 'pulse 1.4s infinite 0.4s' }} />
+              <div
+                className="w-1.5 h-1.5 rounded-full"
+                style={{ background: s.iconColor, animation: 'pulse 1.4s infinite 0s' }}
+              />
+              <div
+                className="w-1.5 h-1.5 rounded-full"
+                style={{ background: s.iconColor, animation: 'pulse 1.4s infinite 0.2s' }}
+              />
+              <div
+                className="w-1.5 h-1.5 rounded-full"
+                style={{ background: s.iconColor, animation: 'pulse 1.4s infinite 0.4s' }}
+              />
             </div>
-            <p style={{ color: c.text3, fontSize: 11 }}>
-              Tự động thử lại sau vài giây
-            </p>
+            <p style={{ color: c.text3, fontSize: 11 }}>Tự động thử lại sau vài giây</p>
           </div>
         )}
       </div>
@@ -100,14 +105,8 @@ export function Banner({ variant, icon, message, detail, className }: BannerProp
     >
       {icon && <span className="shrink-0 mt-0.5">{icon}</span>}
       <div className="flex-1">
-        <p style={{ color: s.color, fontSize: 13, fontWeight: 600, lineHeight: 1.4 }}>
-          {message}
-        </p>
-        {detail && (
-          <p style={{ color: c.text3, fontSize: 11, marginTop: 2 }}>
-            {detail}
-          </p>
-        )}
+        <p style={{ color: s.color, fontSize: 13, fontWeight: 600, lineHeight: 1.4 }}>{message}</p>
+        {detail && <p style={{ color: c.text3, fontSize: 11, marginTop: 2 }}>{detail}</p>}
       </div>
     </div>
   );

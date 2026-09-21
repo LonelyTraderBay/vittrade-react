@@ -2,20 +2,20 @@
  * ══════════════════════════════════════════════════════════════
  *  RegulatoryInspectionReadyPage — Phase 4 Sprint 4 Day 11-12
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Regulatory compliance dashboard
  * - FCA/ESMA inspection readiness
  * - Compliance score & gap analysis
  * - Document repository access
  * - Audit trail verification
- * 
+ *
  * Compliance:
  * - MiFID II: Full compliance status
  * - PRIIPs: Documentation complete
  * - FCA CASS: Client money segregation
  * - All records accessible for inspection
- * 
+ *
  * Features:
  * - Compliance score (97%)
  * - Regulatory framework coverage
@@ -26,8 +26,17 @@
 
 import React from 'react';
 import {
-  Shield, CheckCircle, FileText, Download, TrendingUp,
-  Clock, Users, BarChart3, Award, ExternalLink, AlertCircle
+  Shield,
+  CheckCircle,
+  FileText,
+  Download,
+  TrendingUp,
+  Clock,
+  Users,
+  BarChart3,
+  Award,
+  ExternalLink,
+  AlertCircle,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -114,8 +123,10 @@ export function RegulatoryInspectionReadyPage() {
         {/* Compliance Score */}
         <TrCard className="p-4">
           <div className="flex items-start gap-3 mb-4">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
-              style={{ background: '#10B981' + '15' }}>
+            <div
+              className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
+              style={{ background: '#10B981' + '15' }}
+            >
               <Award size={28} color="#10B981" />
             </div>
 
@@ -131,18 +142,22 @@ export function RegulatoryInspectionReadyPage() {
           </div>
 
           {/* Progress Bar */}
-          <div className="w-full h-3 rounded-full overflow-hidden mb-3" style={{ background: c.surface2 }}>
+          <div
+            className="w-full h-3 rounded-full overflow-hidden mb-3"
+            style={{ background: c.surface2 }}
+          >
             <div
               className="h-full rounded-full transition-all"
               style={{ background: '#10B981', width: `${complianceScore}%` }}
             />
           </div>
 
-          <div className="rounded-lg p-3" style={{ background: c.successBg }}>
+          <div className="rounded-lg p-3" style={{ background: c.buyAlpha10 }}>
             <div className="flex gap-2">
-              <CheckCircle size={14} color={c.successText} className="shrink-0 mt-0.5" />
-              <p style={{ color: c.successText, fontSize: 10, lineHeight: 1.4 }}>
-                <strong>Inspection Ready:</strong> All regulatory requirements met. Full documentation available for FCA/ESMA inspection.
+              <CheckCircle size={14} color={c.success} className="shrink-0 mt-0.5" />
+              <p style={{ color: c.success, fontSize: 10, lineHeight: 1.4 }}>
+                <strong>Inspection Ready:</strong> All regulatory requirements met. Full
+                documentation available for FCA/ESMA inspection.
               </p>
             </div>
           </div>
@@ -185,16 +200,16 @@ export function RegulatoryInspectionReadyPage() {
                     {framework.name}
                   </span>
                   <div className="flex items-center gap-2">
-                    <span style={{
-                      color: framework.compliance >= 95 ? '#10B981' : '#F59E0B',
-                      fontSize: 16,
-                      fontWeight: 700
-                    }}>
+                    <span
+                      style={{
+                        color: framework.compliance >= 95 ? '#10B981' : '#F59E0B',
+                        fontSize: 16,
+                        fontWeight: 700,
+                      }}
+                    >
                       {framework.compliance}%
                     </span>
-                    {framework.compliance >= 95 && (
-                      <CheckCircle size={16} color="#10B981" />
-                    )}
+                    {framework.compliance >= 95 && <CheckCircle size={16} color="#10B981" />}
                   </div>
                 </div>
 
@@ -218,22 +233,24 @@ export function RegulatoryInspectionReadyPage() {
               <TrCard key={idx} className="p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-                      style={{ background: '#10B981' + '15' }}>
+                    <div
+                      className="w-8 h-8 rounded-lg flex items-center justify-center"
+                      style={{ background: '#10B981' + '15' }}
+                    >
                       <FileText size={14} color="#10B981" />
                     </div>
                     <div>
-                      <p style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>
-                        {doc.name}
-                      </p>
+                      <p style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>{doc.name}</p>
                       <p style={{ color: c.text3, fontSize: 9, marginTop: 1 }}>
                         {doc.count.toLocaleString()} records
                       </p>
                     </div>
                   </div>
 
-                  <span className="px-2.5 py-1 rounded-lg text-[9px] font-semibold"
-                    style={{ background: '#10B981' + '15', color: '#10B981' }}>
+                  <span
+                    className="px-2.5 py-1 rounded-lg text-[9px] font-semibold"
+                    style={{ background: '#10B981' + '15', color: '#10B981' }}
+                  >
                     {doc.status}
                   </span>
                 </div>
@@ -246,8 +263,10 @@ export function RegulatoryInspectionReadyPage() {
         <PageSection label="Regulatory Inspector Access">
           <TrCard className="p-4">
             <div className="flex items-start gap-3 mb-3">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                style={{ background: c.primary + '15' }}>
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                style={{ background: c.primary + '15' }}
+              >
                 <Shield size={22} color={c.primary} />
               </div>
 
@@ -256,7 +275,8 @@ export function RegulatoryInspectionReadyPage() {
                   Secure Inspector Portal
                 </p>
                 <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.4 }}>
-                  FCA/ESMA inspectors can access all required documents through our secure portal with audit logging.
+                  FCA/ESMA inspectors can access all required documents through our secure portal
+                  with audit logging.
                 </p>
               </div>
             </div>
@@ -270,7 +290,8 @@ export function RegulatoryInspectionReadyPage() {
                 fontWeight: 600,
                 fontSize: 12,
                 border: `1px solid ${c.border}`,
-              }}>
+              }}
+            >
               <ExternalLink size={14} />
               <span>Inspector Portal Access</span>
             </button>
@@ -280,7 +301,8 @@ export function RegulatoryInspectionReadyPage() {
         {/* Final CTA */}
         <button
           className="w-full rounded-[14px] h-[48px] flex items-center justify-center gap-2 transition-all"
-          style={{ background: '#10B981', color: '#fff', fontWeight: 600, fontSize: 14 }}>
+          style={{ background: '#10B981', color: '#fff', fontWeight: 600, fontSize: 14 }}
+        >
           <Download size={18} />
           <span>Download Full Compliance Report (PDF)</span>
         </button>

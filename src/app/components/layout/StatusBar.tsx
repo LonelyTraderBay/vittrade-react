@@ -28,7 +28,7 @@ export function StatusBar() {
         `${now.getHours().toString().padStart(2, '0')}:${now
           .getMinutes()
           .toString()
-          .padStart(2, '0')}`
+          .padStart(2, '0')}`,
       );
     };
     update();
@@ -73,15 +73,45 @@ export function StatusBar() {
 
         {/* WiFi icon — 3-arc style matching iOS 18 */}
         <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
-          <path d="M8 10.5a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5z" fill={c.statusBarIcon} transform="translate(0,-1.5)" />
-          <path d="M5.17 9.17a4 4 0 0 1 5.66 0" stroke={c.statusBarIcon} strokeWidth="1.3" strokeLinecap="round" transform="translate(0,-1.5)" />
-          <path d="M2.64 6.64a7.07 7.07 0 0 1 10.72 0" stroke={c.statusBarIcon} strokeWidth="1.3" strokeLinecap="round" transform="translate(0,-1.5)" />
-          <path d="M0.4 4.1a10.2 10.2 0 0 1 15.2 0" stroke={c.statusBarIconDim} strokeWidth="1.3" strokeLinecap="round" transform="translate(0,-1.5)" />
+          <path
+            d="M8 10.5a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5z"
+            fill={c.statusBarIcon}
+            transform="translate(0,-1.5)"
+          />
+          <path
+            d="M5.17 9.17a4 4 0 0 1 5.66 0"
+            stroke={c.statusBarIcon}
+            strokeWidth="1.3"
+            strokeLinecap="round"
+            transform="translate(0,-1.5)"
+          />
+          <path
+            d="M2.64 6.64a7.07 7.07 0 0 1 10.72 0"
+            stroke={c.statusBarIcon}
+            strokeWidth="1.3"
+            strokeLinecap="round"
+            transform="translate(0,-1.5)"
+          />
+          <path
+            d="M0.4 4.1a10.2 10.2 0 0 1 15.2 0"
+            stroke={c.statusBarIconDim}
+            strokeWidth="1.3"
+            strokeLinecap="round"
+            transform="translate(0,-1.5)"
+          />
         </svg>
 
         {/* Battery — iOS 18 style */}
         <svg width="27" height="13" viewBox="0 0 27 13" fill="none">
-          <rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke={c.statusBarIconDim} strokeWidth="1" />
+          <rect
+            x="0.5"
+            y="0.5"
+            width="22"
+            height="12"
+            rx="3.5"
+            stroke={c.statusBarIconDim}
+            strokeWidth="1"
+          />
           <rect x="2" y="2" width="17" height="9" rx="2" fill={c.statusBarBattery} />
           <path d="M24 4.5v4a2.5 2.5 0 0 0 0-4z" fill={c.statusBarIconDim} />
         </svg>

@@ -64,7 +64,7 @@ export function AdvancedTradingDemoPage() {
     pair: 'BTC/USDT',
     side: 'long' as const,
     currentSize: 0.5,
-    currentPnl: 1250.00,
+    currentPnl: 1250.0,
     markPrice: 67543.21,
     entryPrice: 65200,
     currentMargin: 6520,
@@ -73,8 +73,8 @@ export function AdvancedTradingDemoPage() {
   };
 
   const mockPnLData = {
-    realizedPnL: 3250.50,
-    unrealizedPnL: 1250.00,
+    realizedPnL: 3250.5,
+    unrealizedPnL: 1250.0,
     totalEquity: 15000,
   };
 
@@ -82,43 +82,75 @@ export function AdvancedTradingDemoPage() {
     totalTrades: 47,
     winningTrades: 32,
     losingTrades: 15,
-    totalProfit: 8450.00,
-    totalLoss: -3200.00,
+    totalProfit: 8450.0,
+    totalLoss: -3200.0,
     avgWin: 264.06,
     avgLoss: -213.33,
-    largestWin: 1250.00,
-    largestLoss: -850.00,
+    largestWin: 1250.0,
+    largestLoss: -850.0,
   };
 
   const mockPeriods = [
-    { period: 'Week 11 (Mar 10-16)', pnl: 1250.50, trades: 12, winRate: 75 },
-    { period: 'Week 10 (Mar 3-9)', pnl: -320.00, trades: 8, winRate: 37.5 },
+    { period: 'Week 11 (Mar 10-16)', pnl: 1250.5, trades: 12, winRate: 75 },
+    { period: 'Week 10 (Mar 3-9)', pnl: -320.0, trades: 8, winRate: 37.5 },
     { period: 'Week 9 (Feb 24-Mar 2)', pnl: 890.25, trades: 15, winRate: 66.7 },
-    { period: 'Week 8 (Feb 17-23)', pnl: 520.00, trades: 10, winRate: 60 },
-    { period: 'Week 7 (Feb 10-16)', pnl: 1100.00, trades: 14, winRate: 71.4 },
+    { period: 'Week 8 (Feb 17-23)', pnl: 520.0, trades: 10, winRate: 60 },
+    { period: 'Week 7 (Feb 10-16)', pnl: 1100.0, trades: 14, winRate: 71.4 },
   ];
 
   const mockAttributions = [
-    { id: 'a1', pair: 'BTC/USDT', side: 'long' as const, pnl: 1250, pnlPct: 19.2, contribution: 27.8, entryDate: '2024-03-01', closeDate: '2024-03-10', duration: '9 days' },
-    { id: 'a2', pair: 'ETH/USDT', side: 'short' as const, pnl: 820, pnlPct: 22.7, contribution: 18.2, entryDate: '2024-03-05', closeDate: '2024-03-11', duration: '6 days' },
-    { id: 'a3', pair: 'SOL/USDT', side: 'long' as const, pnl: -450, pnlPct: -15.6, contribution: -10.0, entryDate: '2024-03-08', duration: '3 days (open)' },
-    { id: 'a4', pair: 'BNB/USDT', side: 'long' as const, pnl: 380, pnlPct: 9.0, contribution: 8.4, entryDate: '2024-03-02', closeDate: '2024-03-09', duration: '7 days' },
+    {
+      id: 'a1',
+      pair: 'BTC/USDT',
+      side: 'long' as const,
+      pnl: 1250,
+      pnlPct: 19.2,
+      contribution: 27.8,
+      entryDate: '2024-03-01',
+      closeDate: '2024-03-10',
+      duration: '9 days',
+    },
+    {
+      id: 'a2',
+      pair: 'ETH/USDT',
+      side: 'short' as const,
+      pnl: 820,
+      pnlPct: 22.7,
+      contribution: 18.2,
+      entryDate: '2024-03-05',
+      closeDate: '2024-03-11',
+      duration: '6 days',
+    },
+    {
+      id: 'a3',
+      pair: 'SOL/USDT',
+      side: 'long' as const,
+      pnl: -450,
+      pnlPct: -15.6,
+      contribution: -10.0,
+      entryDate: '2024-03-08',
+      duration: '3 days (open)',
+    },
+    {
+      id: 'a4',
+      pair: 'BNB/USDT',
+      side: 'long' as const,
+      pnl: 380,
+      pnlPct: 9.0,
+      contribution: 8.4,
+      entryDate: '2024-03-02',
+      closeDate: '2024-03-09',
+      duration: '7 days',
+    },
   ];
 
   return (
     <PageLayout>
-      <Header
-        title="Advanced Trading"
-        subtitle="Position & Order Controls"
-        back
-      />
+      <Header title="Advanced Trading" subtitle="Position & Order Controls" back />
 
       <PageContent gap="default">
         {/* Position Mode Toggle */}
-        <PositionModeToggle
-          currentMode={positionMode}
-          onChange={setPositionMode}
-        />
+        <PositionModeToggle currentMode={positionMode} onChange={setPositionMode} />
 
         {/* Tab Navigation */}
         <TabBar
@@ -136,10 +168,24 @@ export function AdvancedTradingDemoPage() {
         {tab === 'position' && (
           <div className="flex flex-col gap-3">
             <TrCard className="p-4">
-              <p style={{ color: c.text1, fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold, marginBottom: 8 }}>
+              <p
+                style={{
+                  color: c.text1,
+                  fontSize: FONT_SCALE.base,
+                  fontWeight: FONT_WEIGHT.bold,
+                  marginBottom: 8,
+                }}
+              >
                 Position Management Features
               </p>
-              <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, lineHeight: 1.5, marginBottom: 12 }}>
+              <p
+                style={{
+                  color: c.text3,
+                  fontSize: FONT_SCALE.xs,
+                  lineHeight: 1.5,
+                  marginBottom: 12,
+                }}
+              >
                 Professional tools để quản lý vị thế hiệu quả
               </p>
 
@@ -161,25 +207,50 @@ export function AdvancedTradingDemoPage() {
 
             {/* Current position preview */}
             <TrCard className="p-4">
-              <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, marginBottom: 8 }}>
+              <p
+                style={{
+                  color: c.text2,
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.bold,
+                  marginBottom: 8,
+                }}
+              >
                 Mock Position (Demo)
               </p>
               <div className="flex flex-col gap-1.5">
                 <div className="flex justify-between">
                   <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>Pair</span>
-                  <span style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+                  <span
+                    style={{
+                      color: c.text1,
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.semibold,
+                    }}
+                  >
                     {mockPosition.pair} · {mockPosition.side.toUpperCase()}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>Size</span>
-                  <span style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+                  <span
+                    style={{
+                      color: c.text1,
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.semibold,
+                    }}
+                  >
                     {mockPosition.currentSize} BTC
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>Unrealized PnL</span>
-                  <span style={{ color: '#10B981', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+                  <span
+                    style={{
+                      color: '#10B981',
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.bold,
+                    }}
+                  >
                     +${mockPosition.currentPnl.toFixed(2)}
                   </span>
                 </div>
@@ -210,7 +281,7 @@ export function AdvancedTradingDemoPage() {
               <IcebergConfig
                 totalSize={totalSize}
                 visibleSize={orderOptions.iceberg.visibleSize}
-                onVisibleSizeChange={(size) => 
+                onVisibleSizeChange={(size) =>
                   setOrderOptions({
                     ...orderOptions,
                     iceberg: { enabled: true, visibleSize: size },
@@ -230,34 +301,65 @@ export function AdvancedTradingDemoPage() {
 
             {/* Summary */}
             <TrCard className="p-4">
-              <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, marginBottom: 8 }}>
+              <p
+                style={{
+                  color: c.text1,
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  marginBottom: 8,
+                }}
+              >
                 Order Summary
               </p>
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between">
                   <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>Order Type</span>
-                  <span style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+                  <span
+                    style={{
+                      color: c.text1,
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.semibold,
+                    }}
+                  >
                     {orderType.toUpperCase()}
                   </span>
                 </div>
                 {(orderType === 'limit' || orderType === 'stop-limit') && (
                   <div className="flex justify-between">
                     <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>Time In Force</span>
-                    <span style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+                    <span
+                      style={{
+                        color: c.text1,
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: FONT_WEIGHT.semibold,
+                      }}
+                    >
                       {orderTIF}
                     </span>
                   </div>
                 )}
                 <div className="flex justify-between">
                   <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>Reduce-Only</span>
-                  <span style={{ color: orderOptions.reduceOnly ? '#10B981' : c.text3, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+                  <span
+                    style={{
+                      color: orderOptions.reduceOnly ? '#10B981' : c.text3,
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.semibold,
+                    }}
+                  >
                     {orderOptions.reduceOnly ? 'Yes' : 'No'}
                   </span>
                 </div>
                 {orderOptions.iceberg?.enabled && (
                   <div className="flex justify-between">
                     <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>Iceberg</span>
-                    <span style={{ color: '#3B82F6', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+                    <span
+                      style={{
+                        color: '#3B82F6',
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: FONT_WEIGHT.semibold,
+                      }}
+                    >
                       {orderOptions.iceberg.visibleSize.toFixed(4)} visible
                     </span>
                   </div>

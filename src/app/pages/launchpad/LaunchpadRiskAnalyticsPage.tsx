@@ -15,13 +15,31 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  Shield, AlertTriangle, CheckCircle, XCircle, FileText,
-  Users, Lock, Code2, TrendingUp, ExternalLink, Info,
+  Shield,
+  AlertTriangle,
+  CheckCircle,
+  XCircle,
+  FileText,
+  Users,
+  Lock,
+  Code2,
+  TrendingUp,
+  ExternalLink,
+  Info,
 } from 'lucide-react';
-import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, Cell, PieChart, Pie } from 'recharts';
+import {
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  Radar,
+  ResponsiveContainer,
+  Cell,
+  PieChart,
+  Pie,
+} from 'recharts';
 
 const TABS = ['Tổng quan', 'Due Diligence', 'Báo cáo'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface RiskScore {
   overall: number;
@@ -78,7 +96,12 @@ const MOCK_PROJECT: ProjectRisk = {
   ],
 };
 
-const MOCK_PROJECTS: Array<{ name: string; symbol: string; score: number; level: ProjectRisk['riskLevel'] }> = [
+const MOCK_PROJECTS: Array<{
+  name: string;
+  symbol: string;
+  score: number;
+  level: ProjectRisk['riskLevel'];
+}> = [
   { name: 'SafeToken', symbol: 'SAFE', score: 92, level: 'low' },
   { name: 'VitToken', symbol: 'VIT', score: 78, level: 'medium' },
   { name: 'MoonCoin', symbol: 'MOON', score: 45, level: 'high' },
@@ -109,21 +132,31 @@ export function LaunchpadRiskAnalyticsPage() {
 
   const getRiskColor = (level: string) => {
     switch (level) {
-      case 'low': return '#10B981';
-      case 'medium': return '#F59E0B';
-      case 'high': return '#EF4444';
-      case 'critical': return '#991B1B';
-      default: return c.text3;
+      case 'low':
+        return '#10B981';
+      case 'medium':
+        return '#F59E0B';
+      case 'high':
+        return '#EF4444';
+      case 'critical':
+        return '#991B1B';
+      default:
+        return c.text3;
     }
   };
 
   const getRiskBg = (level: string) => {
     switch (level) {
-      case 'low': return 'rgba(16,185,129,0.08)';
-      case 'medium': return 'rgba(245,158,11,0.08)';
-      case 'high': return 'rgba(239,68,68,0.08)';
-      case 'critical': return 'rgba(153,27,27,0.08)';
-      default: return c.bg;
+      case 'low':
+        return 'rgba(16,185,129,0.08)';
+      case 'medium':
+        return 'rgba(245,158,11,0.08)';
+      case 'high':
+        return 'rgba(239,68,68,0.08)';
+      case 'critical':
+        return 'rgba(153,27,27,0.08)';
+      default:
+        return c.bg;
     }
   };
 
@@ -149,7 +182,9 @@ export function LaunchpadRiskAnalyticsPage() {
             >
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <p style={{ color: c.text3, fontSize: 12, marginBottom: 4 }}>Overall Risk Score</p>
+                  <p style={{ color: c.text3, fontSize: 12, marginBottom: 4 }}>
+                    Overall Risk Score
+                  </p>
                   <p style={{ color: c.text1, fontSize: 28, fontWeight: 700 }}>
                     {selectedProject.riskScore.overall}/100
                   </p>
@@ -207,7 +242,11 @@ export function LaunchpadRiskAnalyticsPage() {
               <ResponsiveContainer width="100%" height={280}>
                 <RadarChart data={radarData}>
                   <PolarGrid key="polar-grid" stroke={c.border} />
-                  <PolarAngleAxis key="polar-angle" dataKey="metric" tick={{ fill: c.text3, fontSize: 11 }} />
+                  <PolarAngleAxis
+                    key="polar-angle"
+                    dataKey="metric"
+                    tick={{ fill: c.text3, fontSize: 11 }}
+                  />
                   <Radar
                     key="radar"
                     dataKey="value"
@@ -223,10 +262,22 @@ export function LaunchpadRiskAnalyticsPage() {
             <PageSection label="Kiểm tra nhanh">
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { label: 'Audit Verified', status: selectedProject.auditStatus === 'verified', icon: FileText },
+                  {
+                    label: 'Audit Verified',
+                    status: selectedProject.auditStatus === 'verified',
+                    icon: FileText,
+                  },
                   { label: 'Team Doxxed', status: selectedProject.teamDoxxed, icon: Users },
-                  { label: 'Contract Verified', status: selectedProject.contractVerified, icon: Code2 },
-                  { label: 'Liquidity Locked', status: selectedProject.liquidityLocked, icon: Lock },
+                  {
+                    label: 'Contract Verified',
+                    status: selectedProject.contractVerified,
+                    icon: Code2,
+                  },
+                  {
+                    label: 'Liquidity Locked',
+                    status: selectedProject.liquidityLocked,
+                    icon: Lock,
+                  },
                 ].map((check) => (
                   <div
                     key={check.label}
@@ -257,9 +308,16 @@ export function LaunchpadRiskAnalyticsPage() {
                   <div
                     key={idx}
                     className="rounded-xl p-3 flex items-start gap-2"
-                    style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)' }}
+                    style={{
+                      background: 'rgba(239,68,68,0.06)',
+                      border: '1px solid rgba(239,68,68,0.15)',
+                    }}
                   >
-                    <AlertTriangle size={14} color="#EF4444" style={{ marginTop: 2, flexShrink: 0 }} />
+                    <AlertTriangle
+                      size={14}
+                      color="#EF4444"
+                      style={{ marginTop: 2, flexShrink: 0 }}
+                    />
                     <p style={{ color: c.text1, fontSize: 12, lineHeight: 1.5 }}>{warning}</p>
                   </div>
                 ))}
@@ -273,9 +331,16 @@ export function LaunchpadRiskAnalyticsPage() {
                   <div
                     key={idx}
                     className="rounded-xl p-3 flex items-start gap-2"
-                    style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}
+                    style={{
+                      background: 'rgba(16,185,129,0.06)',
+                      border: '1px solid rgba(16,185,129,0.15)',
+                    }}
                   >
-                    <CheckCircle size={14} color="#10B981" style={{ marginTop: 2, flexShrink: 0 }} />
+                    <CheckCircle
+                      size={14}
+                      color="#10B981"
+                      style={{ marginTop: 2, flexShrink: 0 }}
+                    />
                     <p style={{ color: c.text1, fontSize: 12, lineHeight: 1.5 }}>{strength}</p>
                   </div>
                 ))}
@@ -374,7 +439,9 @@ export function LaunchpadRiskAnalyticsPage() {
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
                           <Shield size={14} color="#10B981" />
-                          <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>{audit.firm}</p>
+                          <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
+                            {audit.firm}
+                          </p>
                         </div>
                         <span
                           className="px-2 py-0.5 rounded-md text-[10px] font-semibold"
@@ -457,11 +524,19 @@ export function LaunchpadRiskAnalyticsPage() {
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>{project.name}</p>
+                      <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>
+                        {project.name}
+                      </p>
                       <p style={{ color: c.text3, fontSize: 11 }}>{project.symbol}</p>
                     </div>
                     <div className="text-right">
-                      <p style={{ color: getScoreColor(project.score), fontSize: 16, fontWeight: 700 }}>
+                      <p
+                        style={{
+                          color: getScoreColor(project.score),
+                          fontSize: 16,
+                          fontWeight: 700,
+                        }}
+                      >
                         {project.score}
                       </p>
                       <span
@@ -550,7 +625,9 @@ export function LaunchpadRiskAnalyticsPage() {
                     className="flex items-center justify-between rounded-xl p-3 hover:opacity-80 transition-opacity"
                     style={{ background: c.bg, border: `1px solid ${c.border}` }}
                   >
-                    <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>{resource.label}</p>
+                    <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
+                      {resource.label}
+                    </p>
                     <ExternalLink size={14} color={c.text3} />
                   </a>
                 ))}
@@ -560,11 +637,15 @@ export function LaunchpadRiskAnalyticsPage() {
             {/* Disclaimer */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+              style={{
+                background: 'rgba(59,130,246,0.06)',
+                border: '1px solid rgba(59,130,246,0.15)',
+              }}
             >
               <Info size={14} color="#3B82F6" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Risk analysis is for reference only. Always do your own research (DYOR) before investing. Past performance does not guarantee future results.
+                Risk analysis is for reference only. Always do your own research (DYOR) before
+                investing. Past performance does not guarantee future results.
               </p>
             </div>
           </>

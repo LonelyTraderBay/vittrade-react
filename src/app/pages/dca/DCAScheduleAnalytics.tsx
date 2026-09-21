@@ -1,12 +1,12 @@
 /**
  * DCA Smart Schedule Analytics
- * 
+ *
  * Monitor and analyze scheduling decisions:
  * - Recent decisions
  * - Execution timeline
  * - Savings metrics
  * - Pattern insights
- * 
+ *
  * @module pages/dca/DCAScheduleAnalytics
  * @version 1.0 (Phase 2 - Sprint 3)
  */
@@ -23,7 +23,7 @@ import {
   BarChart3,
   CheckCircle,
   AlertCircle,
-  ChevronRight
+  ChevronRight,
 } from 'lucide-react';
 import {
   LineChart,
@@ -35,7 +35,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend
+  Legend,
 } from 'recharts';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useRoutePrefix } from '../../hooks/useRoutePrefix';
@@ -89,7 +89,7 @@ export default function DCAScheduleAnalytics() {
     const now = Date.now();
     const decisions = [];
     for (let i = 0; i < 5; i++) {
-      const scheduledTime = now + (i * 24 * 60 * 60 * 1000); // Daily
+      const scheduledTime = now + i * 24 * 60 * 60 * 1000; // Daily
       const decision = smartSchedulingService.makeDecision(config, scheduledTime);
       decisions.push(decision);
     }
@@ -106,7 +106,7 @@ export default function DCAScheduleAnalytics() {
 
   // Chart data - hourly pattern
   const hourlyPatternData = Array.from({ length: 24 }, (_, hour) => {
-    const patterns = smartSchedulingService['patterns'].filter(p => p.hour === hour);
+    const patterns = smartSchedulingService['patterns'].filter((p) => p.hour === hour);
     const avgVolatility = patterns.reduce((sum, p) => sum + p.avgVolatility, 0) / patterns.length;
     const avgGasPrice = patterns.reduce((sum, p) => sum + p.avgGasPrice, 0) / patterns.length;
 
@@ -119,11 +119,7 @@ export default function DCAScheduleAnalytics() {
 
   return (
     <PageLayout>
-      <Header
-        title="Smart Scheduling"
-        subtitle="Phân tích · DCA"
-        back
-      />
+      <Header title="Smart Scheduling" subtitle="Phân tích · DCA" back />
 
       <PageContent gap="default">
         {/* Stats Overview */}
@@ -144,7 +140,7 @@ export default function DCAScheduleAnalytics() {
               <p style={{ color: c.text3, fontSize: 11 }}>Đã điều chỉnh</p>
             </div>
             <p style={{ color: '#10B981', fontSize: 20, fontWeight: 700, fontFamily: 'monospace' }}>
-              {stats.adjustmentsMade || mockDecisions.filter(d => d.shouldAdjust).length}
+              {stats.adjustmentsMade || mockDecisions.filter((d) => d.shouldAdjust).length}
             </p>
           </TrCard>
 
@@ -238,7 +234,10 @@ export default function DCAScheduleAnalytics() {
             <h2 style={{ color: c.text1, fontSize: φ.base, fontWeight: 600 }}>
               Quyết định gần đây
             </h2>
-            <button className="flex items-center gap-1" style={{ color: '#8B5CF6', fontSize: 12, fontWeight: 600 }}>
+            <button
+              className="flex items-center gap-1"
+              style={{ color: '#8B5CF6', fontSize: 12, fontWeight: 600 }}
+            >
               Xem tất cả
               <ChevronRight size={14} />
             </button>
@@ -257,7 +256,9 @@ export default function DCAScheduleAnalytics() {
                       className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                       style={{
                         background: isAdjusted
-                          ? (isDelayed ? 'rgba(245,158,11,0.15)' : 'rgba(59,130,246,0.15)')
+                          ? isDelayed
+                            ? 'rgba(245,158,11,0.15)'
+                            : 'rgba(59,130,246,0.15)'
                           : 'rgba(16,185,129,0.15)',
                       }}
                     >
@@ -282,7 +283,9 @@ export default function DCAScheduleAnalytics() {
                           <span
                             className="px-2 py-0.5 rounded text-[10px] font-semibold"
                             style={{
-                              background: isDelayed ? 'rgba(245,158,11,0.15)' : 'rgba(59,130,246,0.15)',
+                              background: isDelayed
+                                ? 'rgba(245,158,11,0.15)'
+                                : 'rgba(59,130,246,0.15)',
                               color: isDelayed ? '#F59E0B' : '#3B82F6',
                             }}
                           >
@@ -299,11 +302,18 @@ export default function DCAScheduleAnalytics() {
                           {isAdjusted && (
                             <>
                               {' → '}
-                              <span style={{ color: isDelayed ? '#F59E0B' : '#3B82F6', fontWeight: 600 }}>
+                              <span
+                                style={{
+                                  color: isDelayed ? '#F59E0B' : '#3B82F6',
+                                  fontWeight: 600,
+                                }}
+                              >
                                 {formatTime(decision.recommendedTime)}
                               </span>
                               <span style={{ color: c.text3 }}>
-                                {' '}({isDelayed ? '+' : ''}{decision.adjustmentHours.toFixed(1)}h)
+                                {' '}
+                                ({isDelayed ? '+' : ''}
+                                {decision.adjustmentHours.toFixed(1)}h)
                               </span>
                             </>
                           )}
@@ -311,9 +321,7 @@ export default function DCAScheduleAnalytics() {
                       </div>
 
                       {/* Reasoning */}
-                      <p style={{ color: c.text3, fontSize: 10 }}>
-                        {decision.reasoning[0]}
-                      </p>
+                      <p style={{ color: c.text3, fontSize: 10 }}>{decision.reasoning[0]}</p>
 
                       {/* Metrics */}
                       {isAdjusted && (
@@ -322,13 +330,13 @@ export default function DCAScheduleAnalytics() {
                             <div className="flex items-center gap-1">
                               <TrendingDown size={10} color="#8B5CF6" />
                               <span style={{ color: c.text3, fontSize: 9 }}>
-                                Vol: {decision.scheduledCondition.volatility.toFixed(1)}%
-                                {' → '}
+                                Vol: {decision.scheduledCondition.volatility.toFixed(1)}%{' → '}
                                 {decision.recommendedCondition.volatility.toFixed(1)}%
                               </span>
                             </div>
                           )}
-                          {(config.strategy === 'gas-optimized' || config.strategy === 'hybrid') && (
+                          {(config.strategy === 'gas-optimized' ||
+                            config.strategy === 'hybrid') && (
                             <div className="flex items-center gap-1">
                               <Zap size={10} color="#F59E0B" />
                               <span style={{ color: c.text3, fontSize: 9 }}>
@@ -355,21 +363,30 @@ export default function DCAScheduleAnalytics() {
           </h3>
 
           <div className="space-y-2">
-            <div className="flex items-center justify-between py-2 border-b" style={{ borderColor: c.divider }}>
+            <div
+              className="flex items-center justify-between py-2 border-b"
+              style={{ borderColor: c.divider }}
+            >
               <span style={{ color: c.text3, fontSize: 11 }}>Chiến lược</span>
               <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
                 {config.strategy.charAt(0).toUpperCase() + config.strategy.slice(1)}
               </span>
             </div>
 
-            <div className="flex items-center justify-between py-2 border-b" style={{ borderColor: c.divider }}>
+            <div
+              className="flex items-center justify-between py-2 border-b"
+              style={{ borderColor: c.divider }}
+            >
               <span style={{ color: c.text3, fontSize: 11 }}>Khung giờ</span>
               <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
                 {config.timePreference.charAt(0).toUpperCase() + config.timePreference.slice(1)}
               </span>
             </div>
 
-            <div className="flex items-center justify-between py-2 border-b" style={{ borderColor: c.divider }}>
+            <div
+              className="flex items-center justify-between py-2 border-b"
+              style={{ borderColor: c.divider }}
+            >
               <span style={{ color: c.text3, fontSize: 11 }}>Điều chỉnh</span>
               <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
                 -{config.maxAdvanceHours}h / +{config.maxDelayHours}h
@@ -377,7 +394,10 @@ export default function DCAScheduleAnalytics() {
             </div>
 
             {config.volatilityThreshold && (
-              <div className="flex items-center justify-between py-2 border-b" style={{ borderColor: c.divider }}>
+              <div
+                className="flex items-center justify-between py-2 border-b"
+                style={{ borderColor: c.divider }}
+              >
                 <span style={{ color: c.text3, fontSize: 11 }}>Ngưỡng volatility</span>
                 <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
                   {'<'} {config.volatilityThreshold}%
@@ -386,7 +406,10 @@ export default function DCAScheduleAnalytics() {
             )}
 
             {config.gasPriceThreshold && (
-              <div className="flex items-center justify-between py-2 border-b" style={{ borderColor: c.divider }}>
+              <div
+                className="flex items-center justify-between py-2 border-b"
+                style={{ borderColor: c.divider }}
+              >
                 <span style={{ color: c.text3, fontSize: 11 }}>Ngưỡng gas</span>
                 <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
                   {'<'} {config.gasPriceThreshold} gwei
@@ -411,7 +434,13 @@ export default function DCAScheduleAnalytics() {
 
         {/* Performance Insights */}
         {stats.totalDecisions > 0 && (
-          <TrCard className="p-4" style={{ background: 'rgba(139,92,246,0.05)', border: '1px solid rgba(139,92,246,0.2)' }}>
+          <TrCard
+            className="p-4"
+            style={{
+              background: 'rgba(139,92,246,0.05)',
+              border: '1px solid rgba(139,92,246,0.2)',
+            }}
+          >
             <div className="flex items-start gap-3">
               <TrendingUp size={20} color="#8B5CF6" className="shrink-0 mt-0.5" />
               <div>
@@ -419,9 +448,9 @@ export default function DCAScheduleAnalytics() {
                   Performance Insight
                 </p>
                 <p style={{ color: c.text2, fontSize: 11 }}>
-                  Smart Scheduling đã điều chỉnh {stats.adjustmentsMade} lần,
-                  tiết kiệm trung bình {stats.volatilitySavings.toFixed(1)}% volatility và{' '}
-                  {stats.gasSavings.toFixed(0)} gwei gas fees mỗi lần thực thi.
+                  Smart Scheduling đã điều chỉnh {stats.adjustmentsMade} lần, tiết kiệm trung bình{' '}
+                  {stats.volatilitySavings.toFixed(1)}% volatility và {stats.gasSavings.toFixed(0)}{' '}
+                  gwei gas fees mỗi lần thực thi.
                 </p>
               </div>
             </div>

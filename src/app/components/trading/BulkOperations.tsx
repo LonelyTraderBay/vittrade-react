@@ -12,7 +12,16 @@
  */
 
 import React, { useState, useMemo } from 'react';
-import { CheckSquare, Square, Trash2, Edit2, Filter, AlertTriangle, X, CheckCircle } from 'lucide-react';
+import {
+  CheckSquare,
+  Square,
+  Trash2,
+  Edit2,
+  Filter,
+  AlertTriangle,
+  X,
+  CheckCircle,
+} from 'lucide-react';
 import { TrCard } from '../ui/TrCard';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useHaptic } from '../../hooks/useHaptic';
@@ -52,11 +61,7 @@ export interface BulkModification {
    BULK OPERATIONS COMPONENT
    ═══════════════════════════════════════════════════════════════ */
 
-export function BulkOperations({
-  orders,
-  onBulkCancel,
-  onBulkModify,
-}: BulkOperationsProps) {
+export function BulkOperations({ orders, onBulkCancel, onBulkModify }: BulkOperationsProps) {
   const c = useThemeColors();
   const { hapticSuccess, hapticWarning, hapticSelection } = useHaptic();
 
@@ -74,13 +79,13 @@ export function BulkOperations({
 
   // Get unique symbols
   const symbols = useMemo(() => {
-    const unique = new Set(orders.map(o => o.symbol));
+    const unique = new Set(orders.map((o) => o.symbol));
     return ['all', ...Array.from(unique)];
   }, [orders]);
 
   // Filtered orders
   const filteredOrders = useMemo(() => {
-    return orders.filter(order => {
+    return orders.filter((order) => {
       if (filterSide !== 'all' && order.side !== filterSide) return false;
       if (filterSymbol !== 'all' && order.symbol !== filterSymbol) return false;
       return true;
@@ -89,17 +94,19 @@ export function BulkOperations({
 
   // Selected orders
   const selectedOrders = useMemo(() => {
-    return orders.filter(o => selectedIds.has(o.id));
+    return orders.filter((o) => selectedIds.has(o.id));
   }, [orders, selectedIds]);
 
   // Selection stats
   const selectionStats = useMemo(() => {
-    const buyOrders = selectedOrders.filter(o => o.side === 'buy');
-    const sellOrders = selectedOrders.filter(o => o.side === 'sell');
+    const buyOrders = selectedOrders.filter((o) => o.side === 'buy');
+    const sellOrders = selectedOrders.filter((o) => o.side === 'sell');
     const totalValue = selectedOrders.reduce((sum, o) => sum + o.totalValue, 0);
-    const avgFillPct = selectedOrders.length > 0
-      ? selectedOrders.reduce((sum, o) => sum + (o.filled / o.amount) * 100, 0) / selectedOrders.length
-      : 0;
+    const avgFillPct =
+      selectedOrders.length > 0
+        ? selectedOrders.reduce((sum, o) => sum + (o.filled / o.amount) * 100, 0) /
+          selectedOrders.length
+        : 0;
 
     return {
       total: selectedOrders.length,
@@ -113,7 +120,7 @@ export function BulkOperations({
   // Handlers
   const toggleSelection = (id: string) => {
     hapticSelection();
-    setSelectedIds(prev => {
+    setSelectedIds((prev) => {
       const next = new Set(prev);
       if (next.has(id)) {
         next.delete(id);
@@ -129,7 +136,7 @@ export function BulkOperations({
     if (selectedIds.size === filteredOrders.length) {
       setSelectedIds(new Set());
     } else {
-      setSelectedIds(new Set(filteredOrders.map(o => o.id)));
+      setSelectedIds(new Set(filteredOrders.map((o) => o.id)));
     }
   };
 
@@ -185,28 +192,30 @@ export function BulkOperations({
             Bulk Operations
           </span>
         </div>
-        <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>
-          {orders.length} open orders
-        </span>
+        <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>{orders.length} open orders</span>
       </div>
 
       {/* Filters */}
       <div className="flex gap-2">
         {/* Side Filter */}
         <div className="flex gap-1 flex-1">
-          {(['all', 'buy', 'sell'] as const).map(side => (
+          {(['all', 'buy', 'sell'] as const).map((side) => (
             <button
               key={side}
-              onClick={() => { setFilterSide(side); hapticSelection(); }}
+              onClick={() => {
+                setFilterSide(side);
+                hapticSelection();
+              }}
               className="flex-1 px-2 py-1.5 rounded-lg min-h-9"
               style={{
                 fontSize: FONT_SCALE.xs,
                 fontWeight: filterSide === side ? FONT_WEIGHT.bold : FONT_WEIGHT.semibold,
                 background: filterSide === side ? c.chipActiveBg : c.surface2,
                 color: filterSide === side ? c.chipActiveText : c.text2,
-                border: filterSide === side
-                  ? `2px solid ${c.chipActiveBorder}`
-                  : `1px solid ${c.borderSolid}`,
+                border:
+                  filterSide === side
+                    ? `2px solid ${c.chipActiveBorder}`
+                    : `1px solid ${c.borderSolid}`,
               }}
             >
               {side === 'all' ? 'All' : side === 'buy' ? 'Buy' : 'Sell'}
@@ -217,7 +226,10 @@ export function BulkOperations({
         {/* Symbol Filter */}
         <select
           value={filterSymbol}
-          onChange={e => { setFilterSymbol(e.target.value); hapticSelection(); }}
+          onChange={(e) => {
+            setFilterSymbol(e.target.value);
+            hapticSelection();
+          }}
           className="px-3 py-1.5 rounded-lg min-h-9"
           style={{
             fontSize: FONT_SCALE.xs,
@@ -227,7 +239,7 @@ export function BulkOperations({
             border: `1px solid ${c.borderSolid}`,
           }}
         >
-          {symbols.map(sym => (
+          {symbols.map((sym) => (
             <option key={sym} value={sym}>
               {sym === 'all' ? 'All Symbols' : sym}
             </option>
@@ -255,7 +267,13 @@ export function BulkOperations({
               <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 2 }}>
                 Buy / Sell
               </p>
-              <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold, color: c.text1 }}>
+              <p
+                style={{
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.semibold,
+                  color: c.text1,
+                }}
+              >
                 {selectionStats.buy} / {selectionStats.sell}
               </p>
             </div>
@@ -263,7 +281,14 @@ export function BulkOperations({
               <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 2 }}>
                 Total Value
               </p>
-              <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold, color: c.text1, fontFamily: 'monospace' }}>
+              <p
+                style={{
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.semibold,
+                  color: c.text1,
+                  fontFamily: 'monospace',
+                }}
+              >
                 {fmtUsd(selectionStats.totalValue)}
               </p>
             </div>
@@ -272,10 +297,14 @@ export function BulkOperations({
           {selectionStats.avgFillPct > 0 && (
             <div className="mt-2 pt-2" style={{ borderTop: `1px solid ${c.divider}` }}>
               <div className="flex items-center justify-between">
-                <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>
-                  Avg Fill Rate
-                </span>
-                <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text1 }}>
+                <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Avg Fill Rate</span>
+                <span
+                  style={{
+                    fontSize: FONT_SCALE.xs,
+                    fontWeight: FONT_WEIGHT.semibold,
+                    color: c.text1,
+                  }}
+                >
                   {fmtPct(selectionStats.avgFillPct)}
                 </span>
               </div>
@@ -307,12 +336,10 @@ export function BulkOperations({
         <div className="max-h-96 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
           {filteredOrders.length === 0 ? (
             <div className="p-6 text-center">
-              <p style={{ fontSize: FONT_SCALE.sm, color: c.text3 }}>
-                No orders matching filters
-              </p>
+              <p style={{ fontSize: FONT_SCALE.sm, color: c.text3 }}>No orders matching filters</p>
             </div>
           ) : (
-            filteredOrders.map(order => {
+            filteredOrders.map((order) => {
               const isSelected = selectedIds.has(order.id);
               const fillPct = (order.filled / order.amount) * 100;
 
@@ -327,7 +354,13 @@ export function BulkOperations({
                     cursor: 'pointer',
                   }}
                 >
-                  <button onClick={(e) => { e.stopPropagation(); toggleSelection(order.id); }} className="shrink-0">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleSelection(order.id);
+                    }}
+                    className="shrink-0"
+                  >
                     {isSelected ? (
                       <CheckSquare size={18} color="#3B82F6" />
                     ) : (
@@ -338,7 +371,13 @@ export function BulkOperations({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
                       <div className="flex items-center gap-2">
-                        <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1 }}>
+                        <span
+                          style={{
+                            fontSize: FONT_SCALE.sm,
+                            fontWeight: FONT_WEIGHT.bold,
+                            color: c.text1,
+                          }}
+                        >
                           {order.symbol}
                         </span>
                         <span
@@ -347,13 +386,23 @@ export function BulkOperations({
                             fontSize: FONT_SCALE.micro,
                             fontWeight: FONT_WEIGHT.bold,
                             color: order.side === 'buy' ? '#10B981' : '#EF4444',
-                            background: order.side === 'buy' ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
+                            background:
+                              order.side === 'buy'
+                                ? 'rgba(16,185,129,0.12)'
+                                : 'rgba(239,68,68,0.12)',
                           }}
                         >
                           {order.side.toUpperCase()}
                         </span>
                       </div>
-                      <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+                      <span
+                        style={{
+                          fontSize: FONT_SCALE.sm,
+                          fontWeight: FONT_WEIGHT.bold,
+                          color: c.text1,
+                          fontFamily: 'monospace',
+                        }}
+                      >
                         {fmtPrice(order.price)}
                       </span>
                     </div>
@@ -362,13 +411,18 @@ export function BulkOperations({
                       <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>
                         {fmtAmount(order.filled)} / {fmtAmount(order.amount)} filled
                       </span>
-                      <span style={{ fontSize: FONT_SCALE.xs, color: c.text3, fontFamily: 'monospace' }}>
+                      <span
+                        style={{ fontSize: FONT_SCALE.xs, color: c.text3, fontFamily: 'monospace' }}
+                      >
                         {fmtUsd(order.totalValue)}
                       </span>
                     </div>
 
                     {fillPct > 0 && (
-                      <div className="mt-1.5 h-1 rounded-full overflow-hidden" style={{ background: c.divider }}>
+                      <div
+                        className="mt-1.5 h-1 rounded-full overflow-hidden"
+                        style={{ background: c.divider }}
+                      >
                         <div
                           className="h-full rounded-full"
                           style={{
@@ -391,7 +445,9 @@ export function BulkOperations({
         <div className="flex flex-col gap-3">
           {/* Modify Section */}
           <div>
-            <label style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}>
+            <label
+              style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}
+            >
               Shift Prices (%)
             </label>
             <div className="flex gap-2">
@@ -400,7 +456,7 @@ export function BulkOperations({
                   type="text"
                   inputMode="decimal"
                   value={shiftPct}
-                  onChange={e => setShiftPct(formatNum(e.target.value))}
+                  onChange={(e) => setShiftPct(formatNum(e.target.value))}
                   placeholder="+5 or -5"
                   className="w-full px-3 py-2 rounded-xl min-h-11"
                   style={{
@@ -471,19 +527,25 @@ export function BulkOperations({
           <div
             className="w-full max-w-sm rounded-2xl p-4"
             style={{ background: c.bg }}
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start gap-3 mb-4">
               <AlertTriangle size={24} color={confirmAction === 'cancel' ? '#EF4444' : '#F59E0B'} />
               <div className="flex-1">
-                <p style={{ fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold, color: c.text1, marginBottom: 6 }}>
+                <p
+                  style={{
+                    fontSize: FONT_SCALE.base,
+                    fontWeight: FONT_WEIGHT.bold,
+                    color: c.text1,
+                    marginBottom: 6,
+                  }}
+                >
                   {confirmAction === 'cancel' ? 'Cancel Orders?' : 'Modify Orders?'}
                 </p>
                 <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, lineHeight: 1.5 }}>
                   {confirmAction === 'cancel'
                     ? `This will cancel ${selectedOrders.length} open orders. This action cannot be undone.`
-                    : `This will shift prices of ${selectedOrders.length} orders by ${shiftPct}%. Original queue positions may be lost.`
-                  }
+                    : `This will shift prices of ${selectedOrders.length} orders by ${shiftPct}%. Original queue positions may be lost.`}
                 </p>
               </div>
             </div>
@@ -510,12 +572,14 @@ export function BulkOperations({
                   fontSize: FONT_SCALE.sm,
                   fontWeight: FONT_WEIGHT.bold,
                   color: '#fff',
-                  background: confirmAction === 'cancel'
-                    ? 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)'
-                    : 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
-                  boxShadow: confirmAction === 'cancel'
-                    ? '0 4px 16px rgba(239,68,68,0.3)'
-                    : '0 4px 16px rgba(245,158,11,0.3)',
+                  background:
+                    confirmAction === 'cancel'
+                      ? 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)'
+                      : 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
+                  boxShadow:
+                    confirmAction === 'cancel'
+                      ? '0 4px 16px rgba(239,68,68,0.3)'
+                      : '0 4px 16px rgba(245,158,11,0.3)',
                 }}
               >
                 <CheckCircle size={16} className="inline mr-1" />

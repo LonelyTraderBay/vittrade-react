@@ -20,12 +20,60 @@ export interface FeeTier {
 }
 
 const FEE_TIERS: FeeTier[] = [
-  { level: 0, name: 'Standard', makerFee: 0.10, takerFee: 0.10, volume30d: 0, requiredVolume: 0, discount: 0 },
-  { level: 1, name: 'VIP 1', makerFee: 0.09, takerFee: 0.10, volume30d: 0, requiredVolume: 50000, discount: 10 },
-  { level: 2, name: 'VIP 2', makerFee: 0.08, takerFee: 0.09, volume30d: 0, requiredVolume: 250000, discount: 15 },
-  { level: 3, name: 'VIP 3', makerFee: 0.06, takerFee: 0.08, volume30d: 0, requiredVolume: 1000000, discount: 25 },
-  { level: 4, name: 'VIP 4', makerFee: 0.04, takerFee: 0.06, volume30d: 0, requiredVolume: 5000000, discount: 40 },
-  { level: 5, name: 'VIP 5', makerFee: 0.02, takerFee: 0.04, volume30d: 0, requiredVolume: 25000000, discount: 60 },
+  {
+    level: 0,
+    name: 'Standard',
+    makerFee: 0.1,
+    takerFee: 0.1,
+    volume30d: 0,
+    requiredVolume: 0,
+    discount: 0,
+  },
+  {
+    level: 1,
+    name: 'VIP 1',
+    makerFee: 0.09,
+    takerFee: 0.1,
+    volume30d: 0,
+    requiredVolume: 50000,
+    discount: 10,
+  },
+  {
+    level: 2,
+    name: 'VIP 2',
+    makerFee: 0.08,
+    takerFee: 0.09,
+    volume30d: 0,
+    requiredVolume: 250000,
+    discount: 15,
+  },
+  {
+    level: 3,
+    name: 'VIP 3',
+    makerFee: 0.06,
+    takerFee: 0.08,
+    volume30d: 0,
+    requiredVolume: 1000000,
+    discount: 25,
+  },
+  {
+    level: 4,
+    name: 'VIP 4',
+    makerFee: 0.04,
+    takerFee: 0.06,
+    volume30d: 0,
+    requiredVolume: 5000000,
+    discount: 40,
+  },
+  {
+    level: 5,
+    name: 'VIP 5',
+    makerFee: 0.02,
+    takerFee: 0.04,
+    volume30d: 0,
+    requiredVolume: 25000000,
+    discount: 60,
+  },
 ];
 
 // Mock current user tier
@@ -65,12 +113,16 @@ export function FeeTierDisplay({ orderType, total, className = '' }: FeeTierDisp
           <span style={{ color: c.text3, fontSize: 12 }}>
             Phí ({isLimitOrder ? 'Maker' : 'Taker'})
           </span>
-          <span className="px-1 py-0.5 rounded text-center"
+          <span
+            className="px-1 py-0.5 rounded text-center"
             style={{
               background: 'rgba(245,158,11,0.1)',
               color: '#F59E0B',
-              fontSize: 9, fontWeight: 700, lineHeight: 1,
-            }}>
+              fontSize: 9,
+              fontWeight: 700,
+              lineHeight: 1,
+            }}
+          >
             {currentTier.name}
           </span>
           {totalDiscount > 0 && (
@@ -78,13 +130,22 @@ export function FeeTierDisplay({ orderType, total, className = '' }: FeeTierDisp
               -{totalDiscount}%
             </span>
           )}
-          {expanded ? <ChevronUp size={10} color={c.text3} /> : <ChevronDown size={10} color={c.text3} />}
+          {expanded ? (
+            <ChevronUp size={10} color={c.text3} />
+          ) : (
+            <ChevronDown size={10} color={c.text3} />
+          )}
         </div>
         <div className="flex items-center gap-1">
           {totalDiscount > 0 && (
-            <span style={{
-              color: c.text3, fontSize: 11, textDecoration: 'line-through', fontFamily: 'monospace',
-            }}>
+            <span
+              style={{
+                color: c.text3,
+                fontSize: 11,
+                textDecoration: 'line-through',
+                fontFamily: 'monospace',
+              }}
+            >
               {baseFeeRate.toFixed(2)}%
             </span>
           )}
@@ -96,36 +157,52 @@ export function FeeTierDisplay({ orderType, total, className = '' }: FeeTierDisp
 
       {/* Expanded tier info */}
       {expanded && (
-        <div className="flex flex-col gap-2 rounded-xl p-3 mt-1"
-          style={{ background: c.surface2, border: `1px solid ${c.borderSolid}` }}>
+        <div
+          className="flex flex-col gap-2 rounded-xl p-3 mt-1"
+          style={{ background: c.surface2, border: `1px solid ${c.borderSolid}` }}
+        >
           {/* Current tier */}
           <div className="flex items-center justify-between">
             <span style={{ color: c.text2, fontSize: 11 }}>Tier hiện tại</span>
             <div className="flex items-center gap-1">
               <Star size={10} color="#F59E0B" />
-              <span style={{ color: '#F59E0B', fontSize: 12, fontWeight: 700 }}>{currentTier.name}</span>
+              <span style={{ color: '#F59E0B', fontSize: 12, fontWeight: 700 }}>
+                {currentTier.name}
+              </span>
             </div>
           </div>
 
           {/* Fee rates */}
           <div className="flex gap-3">
-            <div className="flex-1 rounded-lg p-2 text-center"
-              style={{ background: isLimitOrder ? 'rgba(16,185,129,0.08)' : c.surface }}>
+            <div
+              className="flex-1 rounded-lg p-2 text-center"
+              style={{ background: isLimitOrder ? 'rgba(16,185,129,0.08)' : c.surface }}
+            >
               <p style={{ color: c.text3, fontSize: 10 }}>Maker</p>
-              <p style={{
-                color: isLimitOrder ? '#10B981' : c.text1,
-                fontSize: 13, fontWeight: 700, fontFamily: 'monospace',
-              }}>
+              <p
+                style={{
+                  color: isLimitOrder ? '#10B981' : c.text1,
+                  fontSize: 13,
+                  fontWeight: 700,
+                  fontFamily: 'monospace',
+                }}
+              >
                 {currentTier.makerFee.toFixed(2)}%
               </p>
             </div>
-            <div className="flex-1 rounded-lg p-2 text-center"
-              style={{ background: !isLimitOrder ? 'rgba(239,68,68,0.08)' : c.surface }}>
+            <div
+              className="flex-1 rounded-lg p-2 text-center"
+              style={{ background: !isLimitOrder ? 'rgba(239,68,68,0.08)' : c.surface }}
+            >
               <p style={{ color: c.text3, fontSize: 10 }}>Taker</p>
-              <p style={{
-                color: !isLimitOrder ? '#EF4444' : c.text1,
-                fontSize: 13, fontWeight: 700, fontFamily: 'monospace',
-              }}>
+              <p
+                style={{
+                  color: !isLimitOrder ? '#EF4444' : c.text1,
+                  fontSize: 13,
+                  fontWeight: 700,
+                  fontFamily: 'monospace',
+                }}
+              >
                 {currentTier.takerFee.toFixed(2)}%
               </p>
             </div>
@@ -134,7 +211,9 @@ export function FeeTierDisplay({ orderType, total, className = '' }: FeeTierDisp
           {/* Volume 30d */}
           <div className="flex items-center justify-between">
             <span style={{ color: c.text3, fontSize: 11 }}>KL 30 ngày</span>
-            <span style={{ color: c.text1, fontSize: 12, fontWeight: 600, fontFamily: 'monospace' }}>
+            <span
+              style={{ color: c.text1, fontSize: 12, fontWeight: 600, fontFamily: 'monospace' }}
+            >
               {fmtCompact(CURRENT_USER.volume30d, { prefix: '$' })}
             </span>
           </div>
@@ -153,15 +232,14 @@ export function FeeTierDisplay({ orderType, total, className = '' }: FeeTierDisp
           {nextTier && (
             <div>
               <div className="flex items-center justify-between mb-1">
-                <span style={{ color: c.text3, fontSize: 10 }}>
-                  Tiếp theo: {nextTier.name}
-                </span>
+                <span style={{ color: c.text3, fontSize: 10 }}>Tiếp theo: {nextTier.name}</span>
                 <span style={{ color: c.text3, fontSize: 10 }}>
                   {fmtCompact(nextTier.requiredVolume, { prefix: '$' })}
                 </span>
               </div>
               <div className="h-1 rounded-full overflow-hidden" style={{ background: c.surface3 }}>
-                <div className="h-full rounded-full"
+                <div
+                  className="h-full rounded-full"
                   style={{
                     background: 'linear-gradient(90deg, #F59E0B, #EAB308)',
                     width: `${Math.min((CURRENT_USER.volume30d / nextTier.requiredVolume) * 100, 100)}%`,

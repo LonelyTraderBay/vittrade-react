@@ -8,9 +8,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import {
-  Ban, Shield,
-} from 'lucide-react';
+import { Ban, Shield } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useRoutePrefix } from '../../hooks/useRoutePrefix';
 import { useHaptic } from '../../hooks/useHaptic';
@@ -45,7 +43,7 @@ export function ArenaBlockedUsersPage() {
 
   const handleUnblock = () => {
     if (!unblockTarget) return;
-    setBlockedUsers(prev => prev.filter(u => u.id !== unblockTarget.id));
+    setBlockedUsers((prev) => prev.filter((u) => u.id !== unblockTarget.id));
     actionToast.success(TOAST.ARENA.USER_UNBLOCKED);
     setUnblockTarget(null);
   };
@@ -68,7 +66,6 @@ export function ArenaBlockedUsersPage() {
       <Header title="Người đã chặn" subtitle="An toàn · Open Arena" back />
 
       <PageContent>
-
         {/* Info banner */}
         <SafetyBanner
           variant="info"
@@ -86,8 +83,14 @@ export function ArenaBlockedUsersPage() {
               reason={user.reason}
               blockedAt={user.blockedAt}
               sourceLabel={SOURCE_LABELS[user.source]}
-              onUnblock={() => { setUnblockTarget(user); hapticWarning(); }}
-              onViewProfile={() => { navigate(`${prefix}/arena/creator/${user.id}`); hapticSelection(); }}
+              onUnblock={() => {
+                setUnblockTarget(user);
+                hapticWarning();
+              }}
+              onViewProfile={() => {
+                navigate(`${prefix}/arena/creator/${user.id}`);
+                hapticSelection();
+              }}
               isLast={i === blockedUsers.length - 1}
             />
           ))}

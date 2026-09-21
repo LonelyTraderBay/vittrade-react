@@ -87,7 +87,7 @@ export function ClaimSLATracker({
     // Delay mount animation
     const mt = requestAnimationFrame(() => setMounted(true));
     const interval = setInterval(() => {
-      setTickOffset(prev => prev + 1);
+      setTickOffset((prev) => prev + 1);
     }, 1000);
     return () => {
       cancelAnimationFrame(mt);
@@ -112,8 +112,20 @@ export function ClaimSLATracker({
   const time = getTimeBreakdown(remaining);
 
   const slaLabel = status === 'pending' ? 'Xem xét ban đầu (48h)' : 'Xử lý claim (72h)';
-  const phaseColor = isOverdue ? '#EF4444' : isUrgent ? '#EF4444' : isWarning ? '#F59E0B' : '#3B82F6';
-  const phaseBg = isOverdue ? 'rgba(239,68,68,0.06)' : isUrgent ? 'rgba(239,68,68,0.06)' : isWarning ? 'rgba(245,158,11,0.06)' : 'rgba(59,130,246,0.06)';
+  const phaseColor = isOverdue
+    ? '#EF4444'
+    : isUrgent
+      ? '#EF4444'
+      : isWarning
+        ? '#F59E0B'
+        : '#3B82F6';
+  const phaseBg = isOverdue
+    ? 'rgba(239,68,68,0.06)'
+    : isUrgent
+      ? 'rgba(239,68,68,0.06)'
+      : isWarning
+        ? 'rgba(245,158,11,0.06)'
+        : 'rgba(59,130,246,0.06)';
   const PhaseIcon = isOverdue ? AlertTriangle : isUrgent ? Zap : Clock;
 
   const statusMessage = isOverdue
@@ -144,7 +156,8 @@ export function ClaimSLATracker({
       style={{
         opacity: mounted ? 1 : 0,
         transform: mounted ? 'translateY(0)' : 'translateY(12px)',
-        transition: 'opacity 0.45s cubic-bezier(0.16,1,0.3,1), transform 0.45s cubic-bezier(0.16,1,0.3,1)',
+        transition:
+          'opacity 0.45s cubic-bezier(0.16,1,0.3,1), transform 0.45s cubic-bezier(0.16,1,0.3,1)',
       }}
     >
       <TrCard className="p-4" style={{ border: `1.5px solid ${hexToRgba(phaseColor, 20)}` }}>
@@ -152,9 +165,7 @@ export function ClaimSLATracker({
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <PhaseIcon size={14} color={phaseColor} />
-            <span style={{ color: phaseColor, fontSize: φ.sm, fontWeight: 700 }}>
-              SLA Tracker
-            </span>
+            <span style={{ color: phaseColor, fontSize: φ.sm, fontWeight: 700 }}>SLA Tracker</span>
           </div>
           <div
             className="flex items-center gap-1.5 px-2 py-1 rounded-lg"
@@ -181,7 +192,9 @@ export function ClaimSLATracker({
           {isOverdue ? (
             <div className="flex flex-col items-center gap-1">
               <AlertTriangle size={24} color="#EF4444" />
-              <span style={{ color: '#EF4444', fontSize: φ.base, fontWeight: 700, lineHeight: 1.3 }}>
+              <span
+                style={{ color: '#EF4444', fontSize: φ.base, fontWeight: 700, lineHeight: 1.3 }}
+              >
                 Quá hạn SLA
               </span>
               <span style={{ color: '#EF4444', fontSize: 11, lineHeight: 1.5 }}>
@@ -204,12 +217,17 @@ export function ClaimSLATracker({
                 >
                   <AnimatedDigit value={padTwo(time.hours)} color={phaseColor} />
                 </div>
-                <span style={{ color: c.text3, fontSize: 9, marginTop: 4, fontWeight: 600 }}>GIO</span>
+                <span style={{ color: c.text3, fontSize: 9, marginTop: 4, fontWeight: 600 }}>
+                  GIO
+                </span>
               </div>
 
               <span
                 style={{
-                  color: phaseColor, fontSize: 20, fontWeight: 700, marginBottom: 12,
+                  color: phaseColor,
+                  fontSize: 20,
+                  fontWeight: 700,
+                  marginBottom: 12,
                   animation: 'sla-blink 1s infinite',
                 }}
               >
@@ -230,12 +248,17 @@ export function ClaimSLATracker({
                 >
                   <AnimatedDigit value={padTwo(time.minutes)} color={phaseColor} />
                 </div>
-                <span style={{ color: c.text3, fontSize: 9, marginTop: 4, fontWeight: 600 }}>PHUT</span>
+                <span style={{ color: c.text3, fontSize: 9, marginTop: 4, fontWeight: 600 }}>
+                  PHUT
+                </span>
               </div>
 
               <span
                 style={{
-                  color: phaseColor, fontSize: 20, fontWeight: 700, marginBottom: 12,
+                  color: phaseColor,
+                  fontSize: 20,
+                  fontWeight: 700,
+                  marginBottom: 12,
                   animation: 'sla-blink 1s infinite',
                 }}
               >
@@ -256,7 +279,9 @@ export function ClaimSLATracker({
                 >
                   <AnimatedDigit value={padTwo(time.seconds)} color={phaseColor} />
                 </div>
-                <span style={{ color: c.text3, fontSize: 9, marginTop: 4, fontWeight: 600 }}>GIAY</span>
+                <span style={{ color: c.text3, fontSize: 9, marginTop: 4, fontWeight: 600 }}>
+                  GIAY
+                </span>
               </div>
             </div>
           )}
@@ -265,14 +290,15 @@ export function ClaimSLATracker({
         {/* Progress Bar — CSS animated */}
         <div className="mb-2">
           <div className="flex items-center justify-between mb-1.5">
-            <span style={{ color: c.text3, fontSize: 10, fontWeight: 600 }}>
-              {slaLabel}
-            </span>
+            <span style={{ color: c.text3, fontSize: 10, fontWeight: 600 }}>{slaLabel}</span>
             <span style={{ color: phaseColor, fontSize: 10, fontWeight: 700 }}>
               {Math.round(progressPct)}%
             </span>
           </div>
-          <div className="w-full rounded-full overflow-hidden" style={{ height: 6, background: c.surface2 }}>
+          <div
+            className="w-full rounded-full overflow-hidden"
+            style={{ height: 6, background: c.surface2 }}
+          >
             <div
               className="h-full rounded-full"
               style={{
@@ -300,17 +326,16 @@ export function ClaimSLATracker({
                 {step.done ? (
                   <CheckCircle size={12} color="#10B981" />
                 ) : (
-                  <div
-                    className="w-3 h-3 rounded-full border-2"
-                    style={{ borderColor: c.text3 }}
-                  />
+                  <div className="w-3 h-3 rounded-full border-2" style={{ borderColor: c.text3 }} />
                 )}
-                <span style={{
-                  color: step.done ? '#10B981' : c.text2,
-                  fontSize: 11,
-                  fontWeight: step.done ? 600 : 500,
-                  lineHeight: 1.5,
-                }}>
+                <span
+                  style={{
+                    color: step.done ? '#10B981' : c.text2,
+                    fontSize: 11,
+                    fontWeight: step.done ? 600 : 500,
+                    lineHeight: 1.5,
+                  }}
+                >
                   {step.phase}
                 </span>
               </div>
@@ -331,9 +356,7 @@ export function ClaimSLATracker({
           }}
         >
           <PhaseIcon size={12} color={phaseColor} />
-          <span style={{ color: phaseColor, fontSize: 11, fontWeight: 600 }}>
-            {statusMessage}
-          </span>
+          <span style={{ color: phaseColor, fontSize: 11, fontWeight: 600 }}>{statusMessage}</span>
         </div>
 
         {/* CSS animations */}

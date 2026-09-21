@@ -1,2 +1,21 @@
-node_modules
+# Dependencies
+node_modules/
+
+# Build output
 dist/
+coverage/
+
+# Environment — never commit local secrets
+.env
+.env.local
+.env.*.local
+
+# Tooling caches
+.mimosa/
+.eslintcache
+.vite/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log

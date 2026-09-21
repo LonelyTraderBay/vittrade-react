@@ -1,8 +1,19 @@
 import React, { useState } from 'react';
 import {
-  Shield, CheckCircle2, TrendingUp, AlertCircle, ArrowRight,
-  RotateCcw, PiggyBank, Lock, Unlock, Sparkles, Clock,
-  AlertTriangle, ChevronRight, Target,
+  Shield,
+  CheckCircle2,
+  TrendingUp,
+  AlertCircle,
+  ArrowRight,
+  RotateCcw,
+  PiggyBank,
+  Lock,
+  Unlock,
+  Sparkles,
+  Clock,
+  AlertTriangle,
+  ChevronRight,
+  Target,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout, StickyFooter } from '../../components/layout/PageLayout';
@@ -126,7 +137,8 @@ function getRiskProfile(score: number): RiskResult {
       label: 'Thận trọng (Conservative)',
       color: '#10B981',
       bg: 'rgba(16,185,129,0.12)',
-      description: 'Bạn ưu tiên an toàn và bảo toàn vốn. Nên chọn sản phẩm linh hoạt hoặc cố định ngắn hạn với stablecoin.',
+      description:
+        'Bạn ưu tiên an toàn và bảo toàn vốn. Nên chọn sản phẩm linh hoạt hoặc cố định ngắn hạn với stablecoin.',
       recommendations: [
         'Ưu tiên sản phẩm Linh hoạt (Flexible) — rút bất kỳ lúc nào',
         'Stablecoin (USDT) chiếm 60-80% danh mục tiết kiệm',
@@ -135,7 +147,13 @@ function getRiskProfile(score: number): RiskResult {
         'Đọc kỹ điều khoản rút sớm trước khi đăng ký cố định',
       ],
       products: [
-        { name: 'USDT Linh hoạt', apy: '4.5%', risk: 'Rất thấp', type: 'Linh hoạt', color: '#26A17B' },
+        {
+          name: 'USDT Linh hoạt',
+          apy: '4.5%',
+          risk: 'Rất thấp',
+          type: 'Linh hoạt',
+          color: '#26A17B',
+        },
         { name: 'USDT Cố định 30D', apy: '7.2%', risk: 'Thấp', type: 'Cố định', color: '#26A17B' },
         { name: 'BTC Linh hoạt', apy: '1.8%', risk: 'Thấp', type: 'Linh hoạt', color: '#F7931A' },
       ],
@@ -151,7 +169,8 @@ function getRiskProfile(score: number): RiskResult {
       label: 'Cân bằng (Moderate)',
       color: '#F59E0B',
       bg: 'rgba(245,158,11,0.12)',
-      description: 'Bạn chấp nhận rủi ro vừa phải để đổi lấy lợi suất cao hơn. Nên mix giữa linh hoạt và cố định, stablecoin và blue-chip crypto.',
+      description:
+        'Bạn chấp nhận rủi ro vừa phải để đổi lấy lợi suất cao hơn. Nên mix giữa linh hoạt và cố định, stablecoin và blue-chip crypto.',
       recommendations: [
         'Mix 30-40% Flexible + 60-70% Fixed (nhiều kỳ hạn)',
         'Đa dạng hóa: USDT (40%) + BTC (25%) + ETH/SOL (35%)',
@@ -162,8 +181,20 @@ function getRiskProfile(score: number): RiskResult {
       products: [
         { name: 'USDT Linh hoạt', apy: '4.5%', risk: 'Thấp', type: 'Linh hoạt', color: '#26A17B' },
         { name: 'USDT Cố định 90D', apy: '9.8%', risk: 'Thấp', type: 'Cố định', color: '#26A17B' },
-        { name: 'BTC Cố định 60D', apy: '3.5%', risk: 'Trung bình', type: 'Cố định', color: '#F7931A' },
-        { name: 'SOL Cố định 30D', apy: '6.5%', risk: 'Trung bình', type: 'Cố định', color: '#9945FF' },
+        {
+          name: 'BTC Cố định 60D',
+          apy: '3.5%',
+          risk: 'Trung bình',
+          type: 'Cố định',
+          color: '#F7931A',
+        },
+        {
+          name: 'SOL Cố định 30D',
+          apy: '6.5%',
+          risk: 'Trung bình',
+          type: 'Cố định',
+          color: '#9945FF',
+        },
       ],
       strategyMatch: 'Tăng trưởng Cân bằng',
       warnings: [
@@ -178,7 +209,8 @@ function getRiskProfile(score: number): RiskResult {
       label: 'Năng động (Aggressive)',
       color: '#EF4444',
       bg: 'rgba(239,68,68,0.12)',
-      description: 'Bạn ưu tiên tối đa hóa lợi suất, sẵn sàng chấp nhận rủi ro biến động giá và lock dài hạn.',
+      description:
+        'Bạn ưu tiên tối đa hóa lợi suất, sẵn sàng chấp nhận rủi ro biến động giá và lock dài hạn.',
       recommendations: [
         'Ưu tiên sản phẩm Cố định 60-90 ngày — APY cao nhất',
         'Đa dạng altcoin: SOL, ETH cùng USDT fixed',
@@ -188,8 +220,20 @@ function getRiskProfile(score: number): RiskResult {
       ],
       products: [
         { name: 'USDT Cố định 90D', apy: '9.8%', risk: 'Thấp', type: 'Cố định', color: '#26A17B' },
-        { name: 'BTC Cố định 60D', apy: '3.5%', risk: 'Trung bình', type: 'Cố định', color: '#F7931A' },
-        { name: 'SOL Cố định 30D', apy: '6.5%', risk: 'Trung bình', type: 'Cố định', color: '#9945FF' },
+        {
+          name: 'BTC Cố định 60D',
+          apy: '3.5%',
+          risk: 'Trung bình',
+          type: 'Cố định',
+          color: '#F7931A',
+        },
+        {
+          name: 'SOL Cố định 30D',
+          apy: '6.5%',
+          risk: 'Trung bình',
+          type: 'Cố định',
+          color: '#9945FF',
+        },
         { name: 'ETH Linh hoạt', apy: '2.1%', risk: 'Thấp', type: 'Linh hoạt', color: '#627EEA' },
       ],
       strategyMatch: 'Tối đa Lợi suất',
@@ -240,7 +284,7 @@ export function SavingsRiskAssessmentPage() {
   const totalScore = Object.values(answers).reduce((sum, val) => sum + val, 0);
   const maxScore = QUESTIONS.length * 3;
   const profile = getRiskProfile(totalScore);
-  const progress = showResult ? 100 : ((currentQuestion) / QUESTIONS.length) * 100;
+  const progress = showResult ? 100 : (currentQuestion / QUESTIONS.length) * 100;
   const answeredCount = Object.keys(answers).length;
 
   /* ═══ Result Screen ═══ */
@@ -252,34 +296,42 @@ export function SavingsRiskAssessmentPage() {
           {/* Result Card — FIXED: Better contrast & typography on dark gradient */}
           <TrCard variant="hero" rounded="lg" className="p-5">
             <div className="flex items-start gap-3 mb-4">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0"
-                style={{ background: profile.bg, border: `2px solid ${profile.color}` }}>
+              <div
+                className="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0"
+                style={{ background: profile.bg, border: `2px solid ${profile.color}` }}
+              >
                 <Shield size={ICON_SIZE.xl} color={profile.color} />
               </div>
               <div className="flex-1">
-                <p style={{
-                  color: c.portfolioTextMuted,
-                  fontSize: FONT_SCALE.xs,
-                  marginBottom: 2,
-                  fontWeight: FONT_WEIGHT.medium,
-                }}>
+                <p
+                  style={{
+                    color: c.portfolioTextMuted,
+                    fontSize: FONT_SCALE.xs,
+                    marginBottom: 2,
+                    fontWeight: FONT_WEIGHT.medium,
+                  }}
+                >
                   Hồ sơ rủi ro tiết kiệm:
                 </p>
-                <p style={{
-                  color: '#FFFFFF',
-                  fontSize: FONT_SCALE.lg,
-                  fontWeight: FONT_WEIGHT.bold,
-                  marginBottom: 6,
-                  letterSpacing: -0.5,
-                }}>
+                <p
+                  style={{
+                    color: '#FFFFFF',
+                    fontSize: FONT_SCALE.lg,
+                    fontWeight: FONT_WEIGHT.bold,
+                    marginBottom: 6,
+                    letterSpacing: -0.5,
+                  }}
+                >
                   {profile.label}
                 </p>
-                <p style={{
-                  color: 'rgba(255, 255, 255, 0.85)',
-                  fontSize: FONT_SCALE.sm,
-                  lineHeight: 1.6,
-                  fontWeight: FONT_WEIGHT.regular,
-                }}>
+                <p
+                  style={{
+                    color: 'rgba(255, 255, 255, 0.85)',
+                    fontSize: FONT_SCALE.sm,
+                    lineHeight: 1.6,
+                    fontWeight: FONT_WEIGHT.regular,
+                  }}
+                >
                   {profile.description}
                 </p>
               </div>
@@ -289,22 +341,54 @@ export function SavingsRiskAssessmentPage() {
             <div className="rounded-xl p-3" style={{ background: c.surface2 }}>
               <div className="flex justify-between mb-2">
                 <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>Điểm rủi ro:</span>
-                <span style={{ color: profile.color, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>
+                <span
+                  style={{
+                    color: profile.color,
+                    fontSize: FONT_SCALE.sm,
+                    fontWeight: FONT_WEIGHT.bold,
+                  }}
+                >
                   {totalScore}/{maxScore} điểm
                 </span>
               </div>
               <div className="h-2.5 rounded-full flex" style={{ background: c.borderSolid }}>
-                <div className="h-full rounded-full"
+                <div
+                  className="h-full rounded-full"
                   style={{
                     background: `linear-gradient(90deg, #10B981, ${profile.color})`,
                     width: `${(totalScore / maxScore) * 100}%`,
                     transition: 'width 0.6s ease',
-                  }} />
+                  }}
+                />
               </div>
               <div className="flex justify-between mt-1.5">
-                <span style={{ color: '#10B981', fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.semibold }}>Thận trọng</span>
-                <span style={{ color: '#F59E0B', fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.semibold }}>Cân bằng</span>
-                <span style={{ color: '#EF4444', fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.semibold }}>Năng động</span>
+                <span
+                  style={{
+                    color: '#10B981',
+                    fontSize: FONT_SCALE.micro,
+                    fontWeight: FONT_WEIGHT.semibold,
+                  }}
+                >
+                  Thận trọng
+                </span>
+                <span
+                  style={{
+                    color: '#F59E0B',
+                    fontSize: FONT_SCALE.micro,
+                    fontWeight: FONT_WEIGHT.semibold,
+                  }}
+                >
+                  Cân bằng
+                </span>
+                <span
+                  style={{
+                    color: '#EF4444',
+                    fontSize: FONT_SCALE.micro,
+                    fontWeight: FONT_WEIGHT.semibold,
+                  }}
+                >
+                  Năng động
+                </span>
               </div>
             </div>
           </TrCard>
@@ -313,15 +397,31 @@ export function SavingsRiskAssessmentPage() {
           <TrCard className="p-4" accentBorder={`${profile.color}30`}>
             <div className="flex items-center gap-2 mb-2">
               <Sparkles size={ICON_SIZE.sm} color={profile.color} />
-              <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>Chiến lược phù hợp</p>
+              <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>
+                Chiến lược phù hợp
+              </p>
             </div>
-            <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.5, marginBottom: 12 }}>
-              Dựa trên kết quả, chiến lược <strong style={{ color: profile.color }}>"{profile.strategyMatch}"</strong> phù hợp nhất với bạn.
+            <p
+              style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.5, marginBottom: 12 }}
+            >
+              Dựa trên kết quả, chiến lược{' '}
+              <strong style={{ color: profile.color }}>"{profile.strategyMatch}"</strong> phù hợp
+              nhất với bạn.
             </p>
             <button
-              onClick={() => { navigate(`${prefix}/earn/savings/recommendations`); hapticSelection(); }}
+              onClick={() => {
+                navigate(`${prefix}/earn/savings/recommendations`);
+                hapticSelection();
+              }}
               className="w-full py-2.5 rounded-xl flex items-center justify-center gap-2"
-              style={{ background: `${profile.color}15`, color: profile.color, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, border: `1px solid ${profile.color}30` }}>
+              style={{
+                background: `${profile.color}15`,
+                color: profile.color,
+                fontSize: FONT_SCALE.xs,
+                fontWeight: FONT_WEIGHT.semibold,
+                border: `1px solid ${profile.color}30`,
+              }}
+            >
               <Target size={ICON_SIZE.sm} />
               Xem gợi ý chi tiết
               <ChevronRight size={ICON_SIZE.sm} />
@@ -332,12 +432,18 @@ export function SavingsRiskAssessmentPage() {
           <TrCard className="p-4">
             <div className="flex items-center gap-2 mb-3">
               <TrendingUp size={ICON_SIZE.sm} color={profile.color} />
-              <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>Gợi ý cho bạn</p>
+              <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>
+                Gợi ý cho bạn
+              </p>
             </div>
             <div className="flex flex-col gap-2.5">
               {profile.recommendations.map((rec, idx) => (
                 <div key={idx} className="flex items-start gap-2.5">
-                  <CheckCircle2 size={ICON_SIZE.sm} color={profile.color} className="shrink-0 mt-0.5" />
+                  <CheckCircle2
+                    size={ICON_SIZE.sm}
+                    color={profile.color}
+                    className="shrink-0 mt-0.5"
+                  />
                   <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.6 }}>{rec}</p>
                 </div>
               ))}
@@ -348,33 +454,73 @@ export function SavingsRiskAssessmentPage() {
           <PageSection label="Sản phẩm phù hợp" accentColor={profile.color}>
             <div className="flex flex-col gap-2">
               {profile.products.map((product, idx) => (
-                <TrCard key={idx} hover className="p-3.5"
-                  onClick={() => { navigate(`${prefix}/earn/savings`); hapticSelection(); }}>
+                <TrCard
+                  key={idx}
+                  hover
+                  className="p-3.5"
+                  onClick={() => {
+                    navigate(`${prefix}/earn/savings`);
+                    hapticSelection();
+                  }}
+                >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-                      style={{ background: product.color + '22', border: `1.5px solid ${product.color}44` }}>
-                      {product.type === 'Linh hoạt'
-                        ? <Unlock size={ICON_SIZE.sm} color={product.color} />
-                        : <Lock size={ICON_SIZE.sm} color={product.color} />}
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
+                      style={{
+                        background: product.color + '22',
+                        border: `1.5px solid ${product.color}44`,
+                      }}
+                    >
+                      {product.type === 'Linh hoạt' ? (
+                        <Unlock size={ICON_SIZE.sm} color={product.color} />
+                      ) : (
+                        <Lock size={ICON_SIZE.sm} color={product.color} />
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold, marginBottom: 2 }}>
+                      <p
+                        style={{
+                          color: c.text1,
+                          fontSize: FONT_SCALE.sm,
+                          fontWeight: FONT_WEIGHT.semibold,
+                          marginBottom: 2,
+                        }}
+                      >
                         {product.name}
                       </p>
                       <div className="flex items-center gap-2">
-                        <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>{product.type}</span>
-                        <span className="px-1.5 py-0.5 rounded"
+                        <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>
+                          {product.type}
+                        </span>
+                        <span
+                          className="px-1.5 py-0.5 rounded"
                           style={{
-                            background: product.risk === 'Rất thấp' || product.risk === 'Thấp' ? 'rgba(16,185,129,0.12)' : 'rgba(245,158,11,0.12)',
-                            color: product.risk === 'Rất thấp' || product.risk === 'Thấp' ? '#10B981' : '#F59E0B',
-                            fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.semibold,
-                          }}>
+                            background:
+                              product.risk === 'Rất thấp' || product.risk === 'Thấp'
+                                ? 'rgba(16,185,129,0.12)'
+                                : 'rgba(245,158,11,0.12)',
+                            color:
+                              product.risk === 'Rất thấp' || product.risk === 'Thấp'
+                                ? '#10B981'
+                                : '#F59E0B',
+                            fontSize: FONT_SCALE.micro,
+                            fontWeight: FONT_WEIGHT.semibold,
+                          }}
+                        >
                           {product.risk}
                         </span>
                       </div>
                     </div>
                     <div className="text-right shrink-0">
-                      <p style={{ color: '#10B981', fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold }}>{product.apy}</p>
+                      <p
+                        style={{
+                          color: '#10B981',
+                          fontSize: FONT_SCALE.base,
+                          fontWeight: FONT_WEIGHT.bold,
+                        }}
+                      >
+                        {product.apy}
+                      </p>
                       <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>APY</p>
                     </div>
                   </div>
@@ -385,16 +531,32 @@ export function SavingsRiskAssessmentPage() {
 
           {/* Warnings */}
           {profile.warnings.length > 0 && (
-            <div className="rounded-2xl p-4"
-              style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
+            <div
+              className="rounded-2xl p-4"
+              style={{
+                background: 'rgba(245,158,11,0.08)',
+                border: '1px solid rgba(245,158,11,0.2)',
+              }}
+            >
               <div className="flex items-center gap-2 mb-2">
                 <AlertTriangle size={ICON_SIZE.sm} color="#F59E0B" />
-                <p style={{ color: '#F59E0B', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>Lưu ý rủi ro</p>
+                <p
+                  style={{
+                    color: '#F59E0B',
+                    fontSize: FONT_SCALE.xs,
+                    fontWeight: FONT_WEIGHT.bold,
+                  }}
+                >
+                  Lưu ý rủi ro
+                </p>
               </div>
               <div className="flex flex-col gap-1.5">
                 {profile.warnings.map((w, idx) => (
                   <div key={idx} className="flex items-start gap-2">
-                    <div className="w-1 h-1 rounded-full mt-1.5 shrink-0" style={{ background: '#F59E0B' }} />
+                    <div
+                      className="w-1 h-1 rounded-full mt-1.5 shrink-0"
+                      style={{ background: '#F59E0B' }}
+                    />
                     <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>{w}</p>
                   </div>
                 ))}
@@ -404,7 +566,12 @@ export function SavingsRiskAssessmentPage() {
 
           {/* Action buttons */}
           <div className="flex gap-3">
-            <CTAButton onClick={() => { navigate(`${prefix}/earn/savings`); hapticSelection(); }}>
+            <CTAButton
+              onClick={() => {
+                navigate(`${prefix}/earn/savings`);
+                hapticSelection();
+              }}
+            >
               <PiggyBank size={ICON_SIZE.base} />
               Khám phá sản phẩm
             </CTAButton>
@@ -412,16 +579,29 @@ export function SavingsRiskAssessmentPage() {
           <button
             onClick={reset}
             className="w-full py-3 rounded-xl flex items-center justify-center gap-2"
-            style={{ background: c.surface2, color: c.text2, fontWeight: FONT_WEIGHT.semibold, fontSize: FONT_SCALE.sm }}>
+            style={{
+              background: c.surface2,
+              color: c.text2,
+              fontWeight: FONT_WEIGHT.semibold,
+              fontSize: FONT_SCALE.sm,
+            }}
+          >
             <RotateCcw size={ICON_SIZE.sm} />
             Làm lại đánh giá
           </button>
 
           {/* Footer disclaimer */}
           <div className="rounded-2xl p-3" style={{ background: c.surface2 }}>
-            <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, lineHeight: 1.6, textAlign: 'center' }}>
-              Hồ sơ rủi ro được lưu trong tài khoản. Bạn có thể đánh giá lại bất kỳ lúc nào.
-              Đây không phải tư vấn tài chính — bạn chịu trách nhiệm cho quyết định đầu tư.
+            <p
+              style={{
+                color: c.text3,
+                fontSize: FONT_SCALE.xs,
+                lineHeight: 1.6,
+                textAlign: 'center',
+              }}
+            >
+              Hồ sơ rủi ro được lưu trong tài khoản. Bạn có thể đánh giá lại bất kỳ lúc nào. Đây
+              không phải tư vấn tài chính — bạn chịu trách nhiệm cho quyết định đầu tư.
             </p>
           </div>
         </PageContent>
@@ -443,35 +623,55 @@ export function SavingsRiskAssessmentPage() {
             <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>
               Câu hỏi {currentQuestion + 1}/{QUESTIONS.length}
             </span>
-            <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>
-              {Math.round(progress)}%
-            </span>
+            <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>{Math.round(progress)}%</span>
           </div>
           <div className="h-2 rounded-full" style={{ background: c.borderSolid }}>
-            <div className="h-full rounded-full"
+            <div
+              className="h-full rounded-full"
               style={{
                 background: 'linear-gradient(90deg, #3B82F6 0%, #10B981 100%)',
                 width: `${progress}%`,
                 transition: 'width 0.3s ease',
-              }} />
+              }}
+            />
           </div>
         </div>
 
         {/* Question Card */}
         <TrCard className="p-5">
           <div className="flex items-start gap-3 mb-4">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-              style={{ background: 'rgba(59,130,246,0.12)', border: '1.5px solid rgba(59,130,246,0.3)' }}>
-              <span style={{ color: '#3B82F6', fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold }}>
+            <div
+              className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
+              style={{
+                background: 'rgba(59,130,246,0.12)',
+                border: '1.5px solid rgba(59,130,246,0.3)',
+              }}
+            >
+              <span
+                style={{
+                  color: '#3B82F6',
+                  fontSize: FONT_SCALE.base,
+                  fontWeight: FONT_WEIGHT.bold,
+                }}
+              >
                 {currentQuestion + 1}
               </span>
             </div>
             <div className="flex-1">
-              <p style={{ color: c.text1, fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold, lineHeight: 1.4 }}>
+              <p
+                style={{
+                  color: c.text1,
+                  fontSize: FONT_SCALE.base,
+                  fontWeight: FONT_WEIGHT.bold,
+                  lineHeight: 1.4,
+                }}
+              >
                 {question.question}
               </p>
               {question.helpText && (
-                <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, lineHeight: 1.5, marginTop: 4 }}>
+                <p
+                  style={{ color: c.text3, fontSize: FONT_SCALE.xs, lineHeight: 1.5, marginTop: 4 }}
+                >
                   {question.helpText}
                 </p>
               )}
@@ -490,14 +690,17 @@ export function SavingsRiskAssessmentPage() {
                     background: isSelected ? 'rgba(59,130,246,0.12)' : c.surface2,
                     border: `1.5px solid ${isSelected ? '#3B82F6' : c.borderSolid}`,
                     transition: 'all 150ms ease',
-                  }}>
+                  }}
+                >
                   <div className="flex items-center justify-between">
                     <div className="flex-1 min-w-0">
-                      <span style={{
-                        color: isSelected ? '#3B82F6' : c.text1,
-                        fontSize: FONT_SCALE.sm,
-                        fontWeight: isSelected ? FONT_WEIGHT.bold : FONT_WEIGHT.medium,
-                      }}>
+                      <span
+                        style={{
+                          color: isSelected ? '#3B82F6' : c.text1,
+                          fontSize: FONT_SCALE.sm,
+                          fontWeight: isSelected ? FONT_WEIGHT.bold : FONT_WEIGHT.medium,
+                        }}
+                      >
                         {option.label}
                       </span>
                       {option.description && (
@@ -506,7 +709,9 @@ export function SavingsRiskAssessmentPage() {
                         </p>
                       )}
                     </div>
-                    {isSelected && <CheckCircle2 size={ICON_SIZE.md} color="#3B82F6" className="shrink-0 ml-2" />}
+                    {isSelected && (
+                      <CheckCircle2 size={ICON_SIZE.md} color="#3B82F6" className="shrink-0 ml-2" />
+                    )}
                   </div>
                 </button>
               );
@@ -515,12 +720,15 @@ export function SavingsRiskAssessmentPage() {
         </TrCard>
 
         {/* Info banner */}
-        <div className="rounded-xl p-3"
-          style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}>
+        <div
+          className="rounded-xl p-3"
+          style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}
+        >
           <div className="flex gap-2">
             <AlertCircle size={ICON_SIZE.sm} color="#3B82F6" className="shrink-0 mt-0.5" />
             <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>
-              Trả lời trung thực để nhận gợi ý sản phẩm tiết kiệm phù hợp. Kết quả có thể thay đổi khi làm lại.
+              Trả lời trung thực để nhận gợi ý sản phẩm tiết kiệm phù hợp. Kết quả có thể thay đổi
+              khi làm lại.
             </p>
           </div>
         </div>
@@ -530,9 +738,18 @@ export function SavingsRiskAssessmentPage() {
       {currentQuestion > 0 && (
         <StickyFooter>
           <button
-            onClick={() => { setCurrentQuestion(currentQuestion - 1); hapticLight(); }}
+            onClick={() => {
+              setCurrentQuestion(currentQuestion - 1);
+              hapticLight();
+            }}
             className="w-full py-3 rounded-xl"
-            style={{ background: c.surface2, color: c.text2, fontWeight: FONT_WEIGHT.semibold, fontSize: FONT_SCALE.sm }}>
+            style={{
+              background: c.surface2,
+              color: c.text2,
+              fontWeight: FONT_WEIGHT.semibold,
+              fontSize: FONT_SCALE.sm,
+            }}
+          >
             ← Quay lại câu trước
           </button>
         </StickyFooter>

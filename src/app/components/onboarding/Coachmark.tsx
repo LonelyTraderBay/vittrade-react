@@ -1,6 +1,6 @@
 /**
  * Coachmark Component
- * 
+ *
  * Contextual tooltip shown after onboarding completion.
  * Supports:
  *   - Directional placement (top/bottom)
@@ -8,7 +8,7 @@
  *   - Action buttons with optional route
  *   - Auto-dismiss with animation
  *   - Sequence navigation (next/dismiss all)
- * 
+ *
  * @module components/onboarding/Coachmark
  * @version 1.0 (Phase 3)
  */
@@ -31,10 +31,10 @@ import { φ, φSpace, φRadius } from '../../utils/golden';
 interface CoachmarkProps {
   /** Screen context */
   screen: CoachmarkScreen;
-  
+
   /** Optional: callback when action button is pressed */
   onAction?: (route: string) => void;
-  
+
   /** Optional: callback when all tips for this screen are done */
   onComplete?: () => void;
 }
@@ -144,7 +144,10 @@ export function Coachmark({ screen, onAction, onComplete }: CoachmarkProps) {
 
   if (!currentTip || !visible) return null;
 
-  const isBottom = currentTip.placement === 'bottom' || currentTip.placement === 'left' || currentTip.placement === 'right';
+  const isBottom =
+    currentTip.placement === 'bottom' ||
+    currentTip.placement === 'left' ||
+    currentTip.placement === 'right';
 
   return (
     <AnimatePresence>
@@ -205,20 +208,24 @@ export function Coachmark({ screen, onAction, onComplete }: CoachmarkProps) {
                 <Info size={16} color="#8B5CF6" />
               </div>
               <div className="flex-1 min-w-0">
-                <p style={{
-                  fontSize: φ.sm,
-                  fontWeight: 700,
-                  color: c.text1,
-                  marginBottom: 4,
-                  lineHeight: 1.3,
-                }}>
+                <p
+                  style={{
+                    fontSize: φ.sm,
+                    fontWeight: 700,
+                    color: c.text1,
+                    marginBottom: 4,
+                    lineHeight: 1.3,
+                  }}
+                >
                   {currentTip.title}
                 </p>
-                <p style={{
-                  fontSize: 12,
-                  color: c.text2,
-                  lineHeight: 1.5,
-                }}>
+                <p
+                  style={{
+                    fontSize: 12,
+                    color: c.text2,
+                    lineHeight: 1.5,
+                  }}
+                >
                   {currentTip.description}
                 </p>
               </div>
@@ -238,7 +245,13 @@ export function Coachmark({ screen, onAction, onComplete }: CoachmarkProps) {
 
             {/* Disclosure badge (per Guidelines §6) */}
             {currentTip.disclosure && (
-              <div style={{ paddingLeft: φSpace[4], paddingRight: φSpace[4], paddingBottom: φSpace[3] }}>
+              <div
+                style={{
+                  paddingLeft: φSpace[4],
+                  paddingRight: φSpace[4],
+                  paddingBottom: φSpace[3],
+                }}
+              >
                 <div
                   className="inline-flex items-center gap-1.5"
                   style={{

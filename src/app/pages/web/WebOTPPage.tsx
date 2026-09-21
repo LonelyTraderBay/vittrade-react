@@ -1,8 +1,14 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import {
-  ArrowLeft, ArrowRight, AlertCircle, CheckCircle,
-  ShieldCheck, RefreshCw, Smartphone, Mail,
+  ArrowLeft,
+  ArrowRight,
+  AlertCircle,
+  CheckCircle,
+  ShieldCheck,
+  RefreshCw,
+  Smartphone,
+  Mail,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useThemeColors } from '../../hooks/useThemeColors';
@@ -58,41 +64,50 @@ export function WebOTPPage() {
 
   /* ─── Countdown timer ─── */
   useEffect(() => {
-    if (countdown <= 0) { setCanResend(true); return; }
-    const id = setInterval(() => setCountdown(prev => prev - 1), 1000);
+    if (countdown <= 0) {
+      setCanResend(true);
+      return;
+    }
+    const id = setInterval(() => setCountdown((prev) => prev - 1), 1000);
     return () => clearInterval(id);
   }, [countdown]);
 
   /* ─── Verify OTP ─── */
-  const handleVerify = useCallback(async (code: string) => {
-    setIsLoading(true);
-    setError('');
-    await new Promise(r => setTimeout(r, 1000));
+  const handleVerify = useCallback(
+    async (code: string) => {
+      setIsLoading(true);
+      setError('');
+      await new Promise((r) => setTimeout(r, 1000));
 
-    if (code === VALID_CODE) {
-      setSuccess(true);
-      setIsLoading(false);
-      // Auto-navigate after success animation
-      setTimeout(() => {
-        if (purpose === 'register') {
-          navigate('/w/auth/2fa-setup', { replace: true });
-        } else if (purpose === '2fa') {
-          login(contact, '');
-          navigate('/w/home', { replace: true });
-        } else if (purpose === 'forgot-password') {
-          navigate('/w/auth/reset-password', { replace: true, state: { email: contact, token: 'valid-token' } });
-        } else {
-          navigate('/w/auth/reset-password', { replace: true });
-        }
-      }, 1800);
-    } else {
-      setError('Mã xác thực không đúng. Vui lòng kiểm tra lại.');
-      setIsLoading(false);
-      // Reset and refocus
-      setOtp(['', '', '', '', '', '']);
-      setTimeout(() => inputRefs.current[0]?.focus(), 100);
-    }
-  }, [purpose, navigate, login, contact]);
+      if (code === VALID_CODE) {
+        setSuccess(true);
+        setIsLoading(false);
+        // Auto-navigate after success animation
+        setTimeout(() => {
+          if (purpose === 'register') {
+            navigate('/w/auth/2fa-setup', { replace: true });
+          } else if (purpose === '2fa') {
+            login(contact, '');
+            navigate('/w/home', { replace: true });
+          } else if (purpose === 'forgot-password') {
+            navigate('/w/auth/reset-password', {
+              replace: true,
+              state: { email: contact, token: 'valid-token' },
+            });
+          } else {
+            navigate('/w/auth/reset-password', { replace: true });
+          }
+        }, 1800);
+      } else {
+        setError('Mã xác thực không đúng. Vui lòng kiểm tra lại.');
+        setIsLoading(false);
+        // Reset and refocus
+        setOtp(['', '', '', '', '', '']);
+        setTimeout(() => inputRefs.current[0]?.focus(), 100);
+      }
+    },
+    [purpose, navigate, login, contact],
+  );
 
   /* ─── Input handlers ─── */
   const handleChange = (index: number, value: string) => {
@@ -107,7 +122,7 @@ export function WebOTPPage() {
     }
 
     // Auto-verify when all filled
-    if (newOtp.every(d => d !== '') && newOtp.join('').length === 6) {
+    if (newOtp.every((d) => d !== '') && newOtp.join('').length === 6) {
       handleVerify(newOtp.join(''));
     }
   };
@@ -138,7 +153,7 @@ export function WebOTPPage() {
   /* ─── Resend ─── */
   const handleResend = async () => {
     setIsResending(true);
-    await new Promise(r => setTimeout(r, 800));
+    await new Promise((r) => setTimeout(r, 800));
     setIsResending(false);
     setCanResend(false);
     setCountdown(59);
@@ -171,13 +186,16 @@ export function WebOTPPage() {
     'forgot-password': 'Nhập mã 6 số đã gửi để xác thực yêu cầu đặt lại mật khẩu.',
   };
 
-  const backRoute = purpose === 'register' ? '/w/auth/register'
-    : purpose === 'forgot-password' ? '/w/auth/forgot-password'
-    : '/w/auth/login';
+  const backRoute =
+    purpose === 'register'
+      ? '/w/auth/register'
+      : purpose === 'forgot-password'
+        ? '/w/auth/forgot-password'
+        : '/w/auth/login';
 
   const formatTime = (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
 
-  const filled = otp.filter(d => d !== '').length;
+  const filled = otp.filter((d) => d !== '').length;
 
   return (
     <div className="flex" style={{ minHeight: '100vh', background: c.bg }}>
@@ -189,8 +207,13 @@ export function WebOTPPage() {
           onClick={() => navigate(backRoute)}
           className="flex items-center hover:underline"
           style={{
-            gap: 6, color: c.text2, fontSize: WEB_FONT.sm,
-            marginBottom: 32, background: 'none', border: 'none', cursor: 'pointer',
+            gap: 6,
+            color: c.text2,
+            fontSize: WEB_FONT.sm,
+            marginBottom: 32,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
           }}
         >
           <ArrowLeft size={16} />
@@ -204,18 +227,39 @@ export function WebOTPPage() {
               <div
                 className="flex items-center justify-center"
                 style={{
-                  width: 60, height: 60, borderRadius: 18,
-                  background: 'rgba(59,130,246,0.08)', marginBottom: 16,
+                  width: 60,
+                  height: 60,
+                  borderRadius: 18,
+                  background: 'rgba(59,130,246,0.08)',
+                  marginBottom: 16,
                 }}
               >
-                {contactType === 'email'
-                  ? <Mail size={28} color="#3B82F6" />
-                  : <Smartphone size={28} color="#3B82F6" />}
+                {contactType === 'email' ? (
+                  <Mail size={28} color="#3B82F6" />
+                ) : (
+                  <Smartphone size={28} color="#3B82F6" />
+                )}
               </div>
-              <h1 style={{ color: c.text1, fontSize: WEB_FONT['2xl'], fontWeight: 700, marginBottom: 6, textAlign: 'center' }}>
+              <h1
+                style={{
+                  color: c.text1,
+                  fontSize: WEB_FONT['2xl'],
+                  fontWeight: 700,
+                  marginBottom: 6,
+                  textAlign: 'center',
+                }}
+              >
                 {purposeTitle[purpose]}
               </h1>
-              <p style={{ color: c.text2, fontSize: WEB_FONT.md, lineHeight: 1.5, textAlign: 'center', maxWidth: 360 }}>
+              <p
+                style={{
+                  color: c.text2,
+                  fontSize: WEB_FONT.md,
+                  lineHeight: 1.5,
+                  textAlign: 'center',
+                  maxWidth: 360,
+                }}
+              >
                 {purposeDesc[purpose]}
               </p>
             </div>
@@ -224,14 +268,18 @@ export function WebOTPPage() {
             <div
               className="flex items-center justify-center gap-2"
               style={{
-                padding: '10px 20px', borderRadius: 10,
-                background: c.surface, border: `1px solid ${c.borderSolid}`,
+                padding: '10px 20px',
+                borderRadius: 10,
+                background: c.surface,
+                border: `1px solid ${c.borderSolid}`,
                 marginBottom: 28,
               }}
             >
-              {contactType === 'email'
-                ? <Mail size={14} color={c.text3} />
-                : <Smartphone size={14} color={c.text3} />}
+              {contactType === 'email' ? (
+                <Mail size={14} color={c.text3} />
+              ) : (
+                <Smartphone size={14} color={c.text3} />
+              )}
               <span style={{ color: c.text1, fontSize: WEB_FONT.md, fontWeight: 500 }}>
                 {maskContact(contact)}
               </span>
@@ -242,23 +290,23 @@ export function WebOTPPage() {
               {otp.map((digit, i) => (
                 <input
                   key={i}
-                  ref={el => { inputRefs.current[i] = el; }}
+                  ref={(el) => {
+                    inputRefs.current[i] = el;
+                  }}
                   type="text"
                   inputMode="numeric"
                   maxLength={1}
                   value={digit}
-                  onChange={e => handleChange(i, e.target.value)}
-                  onKeyDown={e => handleKeyDown(i, e)}
+                  onChange={(e) => handleChange(i, e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(i, e)}
                   onPaste={i === 0 ? handlePaste : undefined}
                   disabled={isLoading}
                   className="outline-none text-center"
                   style={{
-                    width: 52, height: 60, borderRadius: 12,
-                    border: `2px solid ${
-                      error ? '#EF4444'
-                      : digit ? '#3B82F6'
-                      : c.borderSolid
-                    }`,
+                    width: 52,
+                    height: 60,
+                    borderRadius: 12,
+                    border: `2px solid ${error ? '#EF4444' : digit ? '#3B82F6' : c.borderSolid}`,
                     background: digit ? 'rgba(59,130,246,0.04)' : c.surface,
                     color: c.text1,
                     fontSize: 24,
@@ -272,11 +320,13 @@ export function WebOTPPage() {
 
             {/* Progress dots */}
             <div className="flex justify-center" style={{ gap: 6, marginBottom: 20 }}>
-              {[0, 1, 2, 3, 4, 5].map(i => (
+              {[0, 1, 2, 3, 4, 5].map((i) => (
                 <div
                   key={i}
                   style={{
-                    width: 6, height: 6, borderRadius: '50%',
+                    width: 6,
+                    height: 6,
+                    borderRadius: '50%',
                     background: i < filled ? '#3B82F6' : c.borderSolid,
                     transition: 'background 0.15s ease',
                   }}
@@ -289,7 +339,8 @@ export function WebOTPPage() {
               <div
                 className="flex items-center gap-2"
                 style={{
-                  padding: '10px 14px', borderRadius: 10,
+                  padding: '10px 14px',
+                  borderRadius: 10,
                   background: 'rgba(239,68,68,0.08)',
                   border: '1px solid rgba(239,68,68,0.2)',
                   marginBottom: 20,
@@ -302,13 +353,20 @@ export function WebOTPPage() {
 
             {/* Loading indicator */}
             {isLoading && (
-              <div className="flex items-center justify-center" style={{ marginBottom: 20, gap: 8 }}>
-                <div style={{
-                  width: 16, height: 16, borderRadius: '50%',
-                  border: '2px solid rgba(59,130,246,0.2)',
-                  borderTopColor: '#3B82F6',
-                  animation: 'spin 0.7s linear infinite',
-                }} />
+              <div
+                className="flex items-center justify-center"
+                style={{ marginBottom: 20, gap: 8 }}
+              >
+                <div
+                  style={{
+                    width: 16,
+                    height: 16,
+                    borderRadius: '50%',
+                    border: '2px solid rgba(59,130,246,0.2)',
+                    borderTopColor: '#3B82F6',
+                    animation: 'spin 0.7s linear infinite',
+                  }}
+                />
                 <span style={{ color: c.text2, fontSize: WEB_FONT.sm }}>Đang xác thực...</span>
               </div>
             )}
@@ -321,20 +379,31 @@ export function WebOTPPage() {
                   disabled={isResending}
                   className="flex items-center gap-2 hover:underline"
                   style={{
-                    color: '#3B82F6', fontSize: WEB_FONT.sm, fontWeight: 600,
-                    background: 'none', border: 'none', cursor: isResending ? 'wait' : 'pointer',
+                    color: '#3B82F6',
+                    fontSize: WEB_FONT.sm,
+                    fontWeight: 600,
+                    background: 'none',
+                    border: 'none',
+                    cursor: isResending ? 'wait' : 'pointer',
                   }}
                 >
-                  <RefreshCw size={14} style={{ animation: isResending ? 'spin 0.7s linear infinite' : 'none' }} />
+                  <RefreshCw
+                    size={14}
+                    style={{ animation: isResending ? 'spin 0.7s linear infinite' : 'none' }}
+                  />
                   {isResending ? 'Đang gửi lại...' : 'Gửi lại mã xác thực'}
                 </button>
               ) : (
                 <div className="flex items-center gap-2">
                   <span style={{ color: c.text3, fontSize: WEB_FONT.sm }}>Gửi lại sau</span>
-                  <span style={{
-                    color: c.text1, fontSize: WEB_FONT.sm, fontWeight: 600,
-                    fontVariantNumeric: 'tabular-nums',
-                  }}>
+                  <span
+                    style={{
+                      color: c.text1,
+                      fontSize: WEB_FONT.sm,
+                      fontWeight: 600,
+                      fontVariantNumeric: 'tabular-nums',
+                    }}
+                  >
                     {formatTime(countdown)}
                   </span>
                 </div>
@@ -348,7 +417,10 @@ export function WebOTPPage() {
                   onClick={() => setRememberDevice(!rememberDevice)}
                   className="flex items-center"
                   style={{
-                    gap: 12, padding: '12px 16px', borderRadius: 12, width: '100%',
+                    gap: 12,
+                    padding: '12px 16px',
+                    borderRadius: 12,
+                    width: '100%',
                     background: rememberDevice ? 'rgba(59,130,246,0.04)' : c.surface,
                     border: `1.5px solid ${rememberDevice ? '#3B82F6' : c.borderSolid}`,
                     cursor: 'pointer',
@@ -358,7 +430,9 @@ export function WebOTPPage() {
                   <div
                     className="flex items-center justify-center shrink-0"
                     style={{
-                      width: 22, height: 22, borderRadius: 6,
+                      width: 22,
+                      height: 22,
+                      borderRadius: 6,
                       background: rememberDevice ? '#3B82F6' : 'transparent',
                       border: `2px solid ${rememberDevice ? '#3B82F6' : c.borderSolid}`,
                       transition: 'all 0.15s ease',
@@ -367,7 +441,14 @@ export function WebOTPPage() {
                     {rememberDevice && <CheckCircle size={13} color="#fff" strokeWidth={3} />}
                   </div>
                   <div style={{ textAlign: 'left' }}>
-                    <p style={{ color: c.text1, fontSize: WEB_FONT.sm, fontWeight: 500, marginBottom: 2 }}>
+                    <p
+                      style={{
+                        color: c.text1,
+                        fontSize: WEB_FONT.sm,
+                        fontWeight: 500,
+                        marginBottom: 2,
+                      }}
+                    >
                       Ghi nhớ thiết bị này
                     </p>
                     <p style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.3 }}>
@@ -381,18 +462,50 @@ export function WebOTPPage() {
             {/* Help text */}
             <div
               style={{
-                padding: '14px 18px', borderRadius: 12,
-                background: c.surface, border: `1px solid ${c.borderSolid}`,
+                padding: '14px 18px',
+                borderRadius: 12,
+                background: c.surface,
+                border: `1px solid ${c.borderSolid}`,
               }}
             >
-              <p style={{ color: c.text2, fontSize: WEB_FONT.sm, lineHeight: 1.6, marginBottom: 8 }}>
+              <p
+                style={{ color: c.text2, fontSize: WEB_FONT.sm, lineHeight: 1.6, marginBottom: 8 }}
+              >
                 <span style={{ fontWeight: 600, color: c.text1 }}>Không nhận được mã?</span>
               </p>
-              <ul style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.6, paddingLeft: 16, margin: 0 }}>
+              <ul
+                style={{
+                  color: c.text3,
+                  fontSize: WEB_FONT.xs,
+                  lineHeight: 1.6,
+                  paddingLeft: 16,
+                  margin: 0,
+                }}
+              >
                 <li>Kiểm tra thư mục Spam / Junk trong hộp thư</li>
-                <li>Đảm bảo {contactType === 'email' ? 'email' : 'số điện thoại'} <span style={{ color: c.text2, fontWeight: 500 }}>{maskContact(contact)}</span> chính xác</li>
+                <li>
+                  Đảm bảo {contactType === 'email' ? 'email' : 'số điện thoại'}{' '}
+                  <span style={{ color: c.text2, fontWeight: 500 }}>{maskContact(contact)}</span>{' '}
+                  chính xác
+                </li>
                 <li>Thử gửi lại mã sau khi hết thời gian chờ</li>
-                <li>Liên hệ <button className="hover:underline" style={{ color: '#3B82F6', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 500, padding: 0 }}>hỗ trợ</button> nếu vẫn gặp vấn đề</li>
+                <li>
+                  Liên hệ{' '}
+                  <button
+                    className="hover:underline"
+                    style={{
+                      color: '#3B82F6',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontWeight: 500,
+                      padding: 0,
+                    }}
+                  >
+                    hỗ trợ
+                  </button>{' '}
+                  nếu vẫn gặp vấn đề
+                </li>
               </ul>
             </div>
 
@@ -400,13 +513,19 @@ export function WebOTPPage() {
             <div
               className="flex items-center justify-center"
               style={{
-                marginTop: 20, padding: '8px 16px', borderRadius: 8,
+                marginTop: 20,
+                padding: '8px 16px',
+                borderRadius: 8,
                 background: 'rgba(59,130,246,0.04)',
                 border: '1px dashed rgba(59,130,246,0.2)',
               }}
             >
               <span style={{ color: c.text3, fontSize: WEB_FONT.xs }}>
-                Demo: nhập <span style={{ color: '#3B82F6', fontWeight: 600, fontFamily: 'monospace' }}>123456</span> để xác thực thành công
+                Demo: nhập{' '}
+                <span style={{ color: '#3B82F6', fontWeight: 600, fontFamily: 'monospace' }}>
+                  123456
+                </span>{' '}
+                để xác thực thành công
               </span>
             </div>
           </div>
@@ -416,16 +535,36 @@ export function WebOTPPage() {
             <div
               className="flex items-center justify-center"
               style={{
-                width: 72, height: 72, borderRadius: 24,
-                background: 'rgba(16,185,129,0.1)', marginBottom: 20,
+                width: 72,
+                height: 72,
+                borderRadius: 24,
+                background: 'rgba(16,185,129,0.1)',
+                marginBottom: 20,
               }}
             >
               <ShieldCheck size={36} color="#10B981" />
             </div>
-            <h1 style={{ color: c.text1, fontSize: WEB_FONT['2xl'], fontWeight: 700, marginBottom: 8, textAlign: 'center' }}>
+            <h1
+              style={{
+                color: c.text1,
+                fontSize: WEB_FONT['2xl'],
+                fontWeight: 700,
+                marginBottom: 8,
+                textAlign: 'center',
+              }}
+            >
               Xác thực thành công!
             </h1>
-            <p style={{ color: c.text2, fontSize: WEB_FONT.md, lineHeight: 1.5, textAlign: 'center', maxWidth: 340, marginBottom: 28 }}>
+            <p
+              style={{
+                color: c.text2,
+                fontSize: WEB_FONT.md,
+                lineHeight: 1.5,
+                textAlign: 'center',
+                maxWidth: 340,
+                marginBottom: 28,
+              }}
+            >
               {purpose === 'register'
                 ? 'Tài khoản đã được xác thực. Đang chuyển đến thiết lập bảo mật...'
                 : purpose === '2fa'
@@ -435,12 +574,16 @@ export function WebOTPPage() {
                     : 'Xác minh thành công. Đang chuyển hướng...'}
             </p>
             <div className="flex items-center gap-2">
-              <div style={{
-                width: 16, height: 16, borderRadius: '50%',
-                border: '2px solid rgba(16,185,129,0.3)',
-                borderTopColor: '#10B981',
-                animation: 'spin 0.8s linear infinite',
-              }} />
+              <div
+                style={{
+                  width: 16,
+                  height: 16,
+                  borderRadius: '50%',
+                  border: '2px solid rgba(16,185,129,0.3)',
+                  borderTopColor: '#10B981',
+                  animation: 'spin 0.8s linear infinite',
+                }}
+              />
               <span style={{ color: c.text3, fontSize: WEB_FONT.sm }}>Đang chuyển hướng...</span>
             </div>
           </div>
@@ -450,7 +593,16 @@ export function WebOTPPage() {
         <div style={{ marginTop: 40, textAlign: 'center' }}>
           <p style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.5 }}>
             Cần trợ giúp?{' '}
-            <button className="hover:underline" style={{ color: '#3B82F6', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 500 }}>
+            <button
+              className="hover:underline"
+              style={{
+                color: '#3B82F6',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontWeight: 500,
+              }}
+            >
               Liên hệ hỗ trợ
             </button>
           </p>

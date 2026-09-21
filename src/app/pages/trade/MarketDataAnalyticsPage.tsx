@@ -87,19 +87,49 @@ export function MarketDataAnalyticsPage() {
   }));
 
   const mockLiquidationClusters = [
-    { price: 70000, longLiquidations: 45000000, shortLiquidations: 12000000, total: 57000000, intensity: 95 },
-    { price: 68500, longLiquidations: 32000000, shortLiquidations: 8000000, total: 40000000, intensity: 70 },
+    {
+      price: 70000,
+      longLiquidations: 45000000,
+      shortLiquidations: 12000000,
+      total: 57000000,
+      intensity: 95,
+    },
+    {
+      price: 68500,
+      longLiquidations: 32000000,
+      shortLiquidations: 8000000,
+      total: 40000000,
+      intensity: 70,
+    },
     { price: 67543, longLiquidations: 0, shortLiquidations: 0, total: 0, intensity: 0 }, // Current price
-    { price: 66000, longLiquidations: 15000000, shortLiquidations: 28000000, total: 43000000, intensity: 75 },
-    { price: 65000, longLiquidations: 8000000, shortLiquidations: 52000000, total: 60000000, intensity: 100 },
-    { price: 64000, longLiquidations: 12000000, shortLiquidations: 35000000, total: 47000000, intensity: 80 },
+    {
+      price: 66000,
+      longLiquidations: 15000000,
+      shortLiquidations: 28000000,
+      total: 43000000,
+      intensity: 75,
+    },
+    {
+      price: 65000,
+      longLiquidations: 8000000,
+      shortLiquidations: 52000000,
+      total: 60000000,
+      intensity: 100,
+    },
+    {
+      price: 64000,
+      longLiquidations: 12000000,
+      shortLiquidations: 35000000,
+      total: 47000000,
+      intensity: 80,
+    },
   ];
 
   const mockRecentLiquidations = Array.from({ length: 30 }, (_, i) => ({
     id: `liq-${i}`,
     timestamp: Date.now() - i * 45000, // Every 45 seconds
     pair: Math.random() > 0.7 ? 'ETH/USDT' : 'BTC/USDT',
-    side: Math.random() > 0.55 ? 'long' as const : 'short' as const,
+    side: Math.random() > 0.55 ? ('long' as const) : ('short' as const),
     size: Math.random() * 500000 + 10000,
     price: 67543 + (Math.random() - 0.5) * 1000,
     exchange: 'Binance',
@@ -126,11 +156,7 @@ export function MarketDataAnalyticsPage() {
 
   return (
     <PageLayout>
-      <Header
-        title="Market Analytics"
-        subtitle="Data & Intelligence"
-        back
-      />
+      <Header title="Market Analytics" subtitle="Data & Intelligence" back />
 
       <PageContent gap="default">
         {/* Pair selector (mock) */}
@@ -139,18 +165,21 @@ export function MarketDataAnalyticsPage() {
           style={{ background: c.surface }}
         >
           <div>
-            <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, marginBottom: 2 }}>
-              Analyzing
-            </p>
+            <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, marginBottom: 2 }}>Analyzing</p>
             <p style={{ color: c.text1, fontSize: FONT_SCALE.lg, fontWeight: FONT_WEIGHT.bold }}>
               {selectedPair}
             </p>
           </div>
           <div className="text-right">
-            <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, marginBottom: 2 }}>
-              Mark Price
-            </p>
-            <p style={{ color: '#10B981', fontSize: FONT_SCALE.lg, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}>
+            <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, marginBottom: 2 }}>Mark Price</p>
+            <p
+              style={{
+                color: '#10B981',
+                fontSize: FONT_SCALE.lg,
+                fontWeight: FONT_WEIGHT.bold,
+                fontFamily: 'monospace',
+              }}
+            >
               $67,543.21
             </p>
           </div>
@@ -171,20 +200,11 @@ export function MarketDataAnalyticsPage() {
         {/* MARKET DATA TAB */}
         {tab === 'market' && (
           <div className="flex flex-col gap-3">
-            <OpenInterestWidget
-              pair={selectedPair}
-              data={mockOpenInterest}
-            />
+            <OpenInterestWidget pair={selectedPair} data={mockOpenInterest} />
 
-            <LongShortRatio
-              pair={selectedPair}
-              data={mockLongShortRatio}
-            />
+            <LongShortRatio pair={selectedPair} data={mockLongShortRatio} />
 
-            <TopTraderPositions
-              pair={selectedPair}
-              data={mockTopTraders}
-            />
+            <TopTraderPositions pair={selectedPair} data={mockTopTraders} />
 
             <FundingRateHistory
               pair={selectedPair}
@@ -198,10 +218,7 @@ export function MarketDataAnalyticsPage() {
         {/* LIQUIDATIONS TAB */}
         {tab === 'liquidations' && (
           <div className="flex flex-col gap-3">
-            <LiquidationStats
-              pair={selectedPair}
-              data={mockLiqStats}
-            />
+            <LiquidationStats pair={selectedPair} data={mockLiqStats} />
 
             <LiquidationHeatmap
               pair={selectedPair}
@@ -209,44 +226,56 @@ export function MarketDataAnalyticsPage() {
               clusters={mockLiquidationClusters}
             />
 
-            <RecentLiquidations
-              liquidations={mockRecentLiquidations}
-              autoRefresh={true}
-            />
+            <RecentLiquidations liquidations={mockRecentLiquidations} autoRefresh={true} />
           </div>
         )}
 
         {/* SENTIMENT TAB */}
         {tab === 'sentiment' && (
           <div className="flex flex-col gap-3">
-            <MarketSentiment
-              pair={selectedPair}
-              data={mockSentiment}
-            />
+            <MarketSentiment pair={selectedPair} data={mockSentiment} />
 
             {/* Sentiment components breakdown */}
-            <div
-              className="rounded-2xl p-4"
-              style={{ background: c.surface }}
-            >
-              <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, marginBottom: 8 }}>
+            <div className="rounded-2xl p-4" style={{ background: c.surface }}>
+              <p
+                style={{
+                  color: c.text1,
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  marginBottom: 8,
+                }}
+              >
                 How Sentiment is Calculated
               </p>
               <div className="flex flex-col gap-2">
                 {[
-                  { label: 'Open Interest Trend', weight: '20%', description: 'OI tăng + giá tăng = bullish' },
-                  { label: 'Long/Short Ratio', weight: '25%', description: 'Tỷ lệ long vs short traders' },
-                  { label: 'Top Trader Positions', weight: '25%', description: 'Whales đang long hay short' },
+                  {
+                    label: 'Open Interest Trend',
+                    weight: '20%',
+                    description: 'OI tăng + giá tăng = bullish',
+                  },
+                  {
+                    label: 'Long/Short Ratio',
+                    weight: '25%',
+                    description: 'Tỷ lệ long vs short traders',
+                  },
+                  {
+                    label: 'Top Trader Positions',
+                    weight: '25%',
+                    description: 'Whales đang long hay short',
+                  },
                   { label: 'Funding Rate', weight: '15%', description: 'Dương = bullish pressure' },
                   { label: 'Price Action', weight: '15%', description: 'Momentum và volatility' },
                 ].map((comp, i) => (
-                  <div
-                    key={i}
-                    className="rounded-xl p-3"
-                    style={{ background: c.surface2 }}
-                  >
+                  <div key={i} className="rounded-xl p-3" style={{ background: c.surface2 }}>
                     <div className="flex items-center justify-between mb-1">
-                      <span style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+                      <span
+                        style={{
+                          color: c.text1,
+                          fontSize: FONT_SCALE.xs,
+                          fontWeight: FONT_WEIGHT.semibold,
+                        }}
+                      >
                         {comp.label}
                       </span>
                       <span
@@ -270,20 +299,44 @@ export function MarketDataAnalyticsPage() {
             </div>
 
             {/* Trading implications */}
-            <div
-              className="rounded-2xl p-4"
-              style={{ background: c.surface }}
-            >
-              <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, marginBottom: 8 }}>
+            <div className="rounded-2xl p-4" style={{ background: c.surface }}>
+              <p
+                style={{
+                  color: c.text1,
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  marginBottom: 8,
+                }}
+              >
                 Trading Implications
               </p>
               <div className="flex flex-col gap-2">
                 {[
-                  { condition: 'Extreme Greed (>75)', action: 'Cân nhắc chốt lời. Market có thể điều chỉnh.', color: '#EF4444' },
-                  { condition: 'Greed (60-75)', action: 'Theo trend nhưng cẩn thận. Đặt trailing stop.', color: '#F59E0B' },
-                  { condition: 'Neutral (40-60)', action: 'Chờ tín hiệu rõ ràng hơn. Không FOMO.', color: '#3B82F6' },
-                  { condition: 'Fear (25-40)', action: 'Cơ hội accumulate nếu fundamentals ổn.', color: '#84CC16' },
-                  { condition: 'Extreme Fear (<25)', action: 'Capitulation có thể xảy ra. DCA cho long-term.', color: '#10B981' },
+                  {
+                    condition: 'Extreme Greed (>75)',
+                    action: 'Cân nhắc chốt lời. Market có thể điều chỉnh.',
+                    color: '#EF4444',
+                  },
+                  {
+                    condition: 'Greed (60-75)',
+                    action: 'Theo trend nhưng cẩn thận. Đặt trailing stop.',
+                    color: '#F59E0B',
+                  },
+                  {
+                    condition: 'Neutral (40-60)',
+                    action: 'Chờ tín hiệu rõ ràng hơn. Không FOMO.',
+                    color: '#3B82F6',
+                  },
+                  {
+                    condition: 'Fear (25-40)',
+                    action: 'Cơ hội accumulate nếu fundamentals ổn.',
+                    color: '#84CC16',
+                  },
+                  {
+                    condition: 'Extreme Fear (<25)',
+                    action: 'Capitulation có thể xảy ra. DCA cho long-term.',
+                    color: '#10B981',
+                  },
                 ].map((implication, i) => (
                   <div
                     key={i}
@@ -295,7 +348,14 @@ export function MarketDataAnalyticsPage() {
                       style={{ background: implication.color, minHeight: 36 }}
                     />
                     <div className="flex-1">
-                      <p style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, marginBottom: 2 }}>
+                      <p
+                        style={{
+                          color: c.text1,
+                          fontSize: FONT_SCALE.xs,
+                          fontWeight: FONT_WEIGHT.semibold,
+                          marginBottom: 2,
+                        }}
+                      >
                         {implication.condition}
                       </p>
                       <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.4 }}>

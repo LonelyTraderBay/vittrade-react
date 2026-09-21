@@ -3,9 +3,22 @@ import { useNavigate, useParams } from 'react-router';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
 import {
-  Lock, Unlock, Copy, CopyCheck, ExternalLink, Shield, ShieldCheck,
-  Users, Clock, CheckCircle, AlertTriangle, ChevronRight,
-  Eye, EyeOff, Key, UserCheck,
+  Lock,
+  Unlock,
+  Copy,
+  CopyCheck,
+  ExternalLink,
+  Shield,
+  ShieldCheck,
+  Users,
+  Clock,
+  CheckCircle,
+  AlertTriangle,
+  ChevronRight,
+  Eye,
+  EyeOff,
+  Key,
+  UserCheck,
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { P2P_ORDERS, P2P_ORDER } from '../../data/mockData';
@@ -57,22 +70,41 @@ interface EscrowTimelineEvent {
 /* ═══════════════════════════════════════════════════════════
    Multi-Sig Progress Ring
    ═══════════════════════════════════════════════════════════ */
-function MultiSigRing({ signed, total, size = 64 }: { signed: number; total: number; size?: number }) {
+function MultiSigRing({
+  signed,
+  total,
+  size = 64,
+}: {
+  signed: number;
+  total: number;
+  size?: number;
+}) {
   const c = useThemeColors();
   const radius = (size - 8) / 2;
   const circumference = 2 * Math.PI * radius;
   const progress = (signed / total) * circumference;
 
   return (
-    <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
+    <div
+      className="relative flex items-center justify-center"
+      style={{ width: size, height: size }}
+    >
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
         <circle
-          cx={size / 2} cy={size / 2} r={radius}
-          fill="none" stroke={c.surface2} strokeWidth={4}
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke={c.surface2}
+          strokeWidth={4}
         />
         <circle
-          cx={size / 2} cy={size / 2} r={radius}
-          fill="none" stroke="#10B981" strokeWidth={4}
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke="#10B981"
+          strokeWidth={4}
           strokeDasharray={circumference}
           strokeDashoffset={circumference - progress}
           strokeLinecap="round"
@@ -81,7 +113,9 @@ function MultiSigRing({ signed, total, size = 64 }: { signed: number; total: num
         />
       </svg>
       <div className="absolute flex flex-col items-center">
-        <span style={{ color: '#10B981', fontSize: φ.base, fontWeight: 700 }}>{signed}/{total}</span>
+        <span style={{ color: '#10B981', fontSize: φ.base, fontWeight: 700 }}>
+          {signed}/{total}
+        </span>
       </div>
     </div>
   );
@@ -98,14 +132,15 @@ export function P2PEscrowDetailPage() {
   const prefix = useRoutePrefix();
   const actionToast = useActionToast();
 
-  const order = (orderId ? P2P_ORDERS.find(o => o.id === orderId) : null) || P2P_ORDER;
+  const order = (orderId ? P2P_ORDERS.find((o) => o.id === orderId) : null) || P2P_ORDER;
   const escrowAddress = generateEscrowAddress(order.id);
 
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [showFullAddress, setShowFullAddress] = useState(false);
 
   /* ─── Determine escrow status from order ─── */
-  const isLocked = order.status === 'pending_payment' || order.status === 'paid' || order.status === 'disputed';
+  const isLocked =
+    order.status === 'pending_payment' || order.status === 'paid' || order.status === 'disputed';
   const isReleased = order.status === 'released';
   const isCancelled = order.status === 'cancelled' || order.status === 'expired';
 
@@ -137,7 +172,7 @@ export function P2PEscrowDetailPage() {
     },
   ];
 
-  const signedCount = signers.filter(s => s.hasSigned).length;
+  const signedCount = signers.filter((s) => s.hasSigned).length;
 
   /* ─── Escrow timeline ─── */
   const buildTimeline = (): EscrowTimelineEvent[] => {
@@ -244,7 +279,10 @@ export function P2PEscrowDetailPage() {
     }
 
     if (isCancelled) {
-      const cancelTime = order.cancelledAt?.split(' ')[1]?.slice(0, 5) || order.expiresAt.split(' ')[1]?.slice(0, 5) || '—';
+      const cancelTime =
+        order.cancelledAt?.split(' ')[1]?.slice(0, 5) ||
+        order.expiresAt.split(' ')[1]?.slice(0, 5) ||
+        '—';
       events.push({
         id: 'cancelled',
         label: order.status === 'expired' ? 'Hết hạn thanh toán' : 'Đơn hàng bị hủy',
@@ -286,13 +324,16 @@ export function P2PEscrowDetailPage() {
   };
 
   /* ─── Copy handler ─── */
-  const handleCopy = useCallback((text: string, field: string) => {
-    navigator.clipboard.writeText(text).catch(() => {});
-    setCopiedField(field);
-    hapticSelection();
-    actionToast.success(TOAST.P2P.ESCROW_ADDRESS_COPIED, { haptic: 'selection' });
-    setTimeout(() => setCopiedField(null), 2500);
-  }, [hapticSelection, actionToast]);
+  const handleCopy = useCallback(
+    (text: string, field: string) => {
+      navigator.clipboard.writeText(text).catch(() => {});
+      setCopiedField(field);
+      hapticSelection();
+      actionToast.success(TOAST.P2P.ESCROW_ADDRESS_COPIED, { haptic: 'selection' });
+      setTimeout(() => setCopiedField(null), 2500);
+    },
+    [hapticSelection, actionToast],
+  );
 
   /* ─── Escrow status config ─── */
   const statusConfig = isReleased
@@ -300,8 +341,18 @@ export function P2PEscrowDetailPage() {
     : isCancelled
       ? { label: 'Đã hoàn trả', color: '#6B7280', icon: Unlock, bg: 'rgba(107,114,128,0.08)' }
       : order.status === 'disputed'
-        ? { label: 'Đang tranh chấp — Coin bị khóa', color: '#EF4444', icon: Lock, bg: 'rgba(239,68,68,0.08)' }
-        : { label: 'Đang khóa — Bảo vệ giao dịch', color: '#F59E0B', icon: Lock, bg: 'rgba(245,158,11,0.08)' };
+        ? {
+            label: 'Đang tranh chấp — Coin bị khóa',
+            color: '#EF4444',
+            icon: Lock,
+            bg: 'rgba(239,68,68,0.08)',
+          }
+        : {
+            label: 'Đang khóa — Bảo vệ giao dịch',
+            color: '#F59E0B',
+            icon: Lock,
+            bg: 'rgba(245,158,11,0.08)',
+          };
 
   const StatusIcon = statusConfig.icon;
 
@@ -312,7 +363,6 @@ export function P2PEscrowDetailPage() {
       <Header title="Chi tiết Escrow" subtitle="Escrow · P2P" back />
 
       <div className="flex-1 px-5 py-4 flex flex-col gap-4 pb-8">
-
         {/* ═══ Status Hero ═══ */}
         <div
           className="rounded-2xl p-5 flex flex-col items-center gap-3"
@@ -340,14 +390,19 @@ export function P2PEscrowDetailPage() {
         <TrCard className="p-4">
           <div className="flex items-center justify-between mb-3">
             <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
-              <Key size={14} className="inline mr-1.5" />Địa chỉ Escrow
+              <Key size={14} className="inline mr-1.5" />
+              Địa chỉ Escrow
             </h3>
             <button
               onClick={() => setShowFullAddress(!showFullAddress)}
               className="flex items-center gap-1 px-2 py-1 rounded-lg"
               style={{ background: c.surface2, minHeight: 28 }}
             >
-              {showFullAddress ? <EyeOff size={12} color={c.text3} /> : <Eye size={12} color={c.text3} />}
+              {showFullAddress ? (
+                <EyeOff size={12} color={c.text3} />
+              ) : (
+                <Eye size={12} color={c.text3} />
+              )}
               <span style={{ color: c.text3, fontSize: 10 }}>
                 {showFullAddress ? 'Ẩn' : 'Hiện'}
               </span>
@@ -358,31 +413,47 @@ export function P2PEscrowDetailPage() {
             className="rounded-xl p-3 flex items-center gap-3"
             style={{ background: c.surface2, border: `1px solid ${c.borderSolid}` }}
           >
-            <code style={{
-              color: c.text1, fontSize: φ.sm, fontFamily: 'monospace',
-              wordBreak: 'break-all', flex: 1, letterSpacing: '0.3px',
-            }}>
+            <code
+              style={{
+                color: c.text1,
+                fontSize: φ.sm,
+                fontFamily: 'monospace',
+                wordBreak: 'break-all',
+                flex: 1,
+                letterSpacing: '0.3px',
+              }}
+            >
               {showFullAddress ? escrowAddress : maskAddress(escrowAddress)}
             </code>
             <button
               onClick={() => handleCopy(escrowAddress, 'escrow')}
               className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
               style={{
-                background: copiedField === 'escrow' ? 'rgba(16,185,129,0.15)' : 'rgba(59,130,246,0.1)',
-                minWidth: 36, minHeight: 36,
+                background:
+                  copiedField === 'escrow' ? 'rgba(16,185,129,0.15)' : 'rgba(59,130,246,0.1)',
+                minWidth: 36,
+                minHeight: 36,
               }}
             >
-              {copiedField === 'escrow'
-                ? <CopyCheck size={14} color="#10B981" />
-                : <Copy size={14} color="#3B82F6" />}
+              {copiedField === 'escrow' ? (
+                <CopyCheck size={14} color="#10B981" />
+              ) : (
+                <Copy size={14} color="#3B82F6" />
+              )}
             </button>
           </div>
 
           {/* Explorer Link */}
           <button
-            onClick={() => { hapticSelection(); }}
+            onClick={() => {
+              hapticSelection();
+            }}
             className="w-full flex items-center justify-center gap-2 mt-3 py-2.5 rounded-xl"
-            style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.12)', minHeight: 44 }}
+            style={{
+              background: 'rgba(59,130,246,0.06)',
+              border: '1px solid rgba(59,130,246,0.12)',
+              minHeight: 44,
+            }}
           >
             <ExternalLink size={14} color="#3B82F6" />
             <span style={{ color: '#3B82F6', fontSize: φ.sm, fontWeight: 600 }}>
@@ -395,23 +466,37 @@ export function P2PEscrowDetailPage() {
         <TrCard className="p-4">
           <div className="flex items-center justify-between mb-4">
             <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
-              <Users size={14} className="inline mr-1.5" />Multi-Signature ({signedCount}/3)
+              <Users size={14} className="inline mr-1.5" />
+              Multi-Signature ({signedCount}/3)
             </h3>
             <MultiSigRing signed={signedCount} total={3} size={48} />
           </div>
 
           <p style={{ color: c.text3, fontSize: φ.xs, marginBottom: 12, lineHeight: 1.6 }}>
-            Escrow yêu cầu tối thiểu 2/3 chữ ký để giải phóng coin.
-            Platform luôn ký khi tạo escrow (1/3).
+            Escrow yêu cầu tối thiểu 2/3 chữ ký để giải phóng coin. Platform luôn ký khi tạo escrow
+            (1/3).
           </p>
 
           <div className="flex flex-col gap-2">
             {signers.map((signer, i) => {
-              const roleConfig = signer.role === 'buyer'
-                ? { color: '#3B82F6', icon: UserCheck, gradient: 'linear-gradient(135deg, #3B82F6, #60A5FA)' }
-                : signer.role === 'seller'
-                  ? { color: '#8B5CF6', icon: UserCheck, gradient: 'linear-gradient(135deg, #8B5CF6, #A78BFA)' }
-                  : { color: '#10B981', icon: ShieldCheck, gradient: 'linear-gradient(135deg, #10B981, #34D399)' };
+              const roleConfig =
+                signer.role === 'buyer'
+                  ? {
+                      color: '#3B82F6',
+                      icon: UserCheck,
+                      gradient: 'linear-gradient(135deg, #3B82F6, #60A5FA)',
+                    }
+                  : signer.role === 'seller'
+                    ? {
+                        color: '#8B5CF6',
+                        icon: UserCheck,
+                        gradient: 'linear-gradient(135deg, #8B5CF6, #A78BFA)',
+                      }
+                    : {
+                        color: '#10B981',
+                        icon: ShieldCheck,
+                        gradient: 'linear-gradient(135deg, #10B981, #34D399)',
+                      };
 
               return (
                 <motion.div
@@ -432,15 +517,20 @@ export function P2PEscrowDetailPage() {
                       opacity: signer.hasSigned ? 1 : 0.5,
                     }}
                   >
-                    {signer.hasSigned
-                      ? <CheckCircle size={16} color="#fff" />
-                      : <Clock size={16} color={c.text3} />}
+                    {signer.hasSigned ? (
+                      <CheckCircle size={16} color="#fff" />
+                    ) : (
+                      <Clock size={16} color={c.text3} />
+                    )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p style={{
-                      color: signer.hasSigned ? c.text1 : c.text3,
-                      fontSize: φ.sm, fontWeight: 600,
-                    }}>
+                    <p
+                      style={{
+                        color: signer.hasSigned ? c.text1 : c.text3,
+                        fontSize: φ.sm,
+                        fontWeight: 600,
+                      }}
+                    >
                       {signer.label}
                     </p>
                     <p style={{ color: c.text3, fontSize: 10, fontFamily: 'monospace' }}>
@@ -451,20 +541,32 @@ export function P2PEscrowDetailPage() {
                     {signer.hasSigned ? (
                       <span
                         className="px-2 py-0.5 rounded-full"
-                        style={{ background: `${roleConfig.color}15`, color: roleConfig.color, fontSize: 9, fontWeight: 700 }}
+                        style={{
+                          background: `${roleConfig.color}15`,
+                          color: roleConfig.color,
+                          fontSize: 9,
+                          fontWeight: 700,
+                        }}
                       >
                         Đã ký
                       </span>
                     ) : (
                       <span
                         className="px-2 py-0.5 rounded-full"
-                        style={{ background: c.surface2, color: c.text3, fontSize: 9, fontWeight: 600 }}
+                        style={{
+                          background: c.surface2,
+                          color: c.text3,
+                          fontSize: 9,
+                          fontWeight: 600,
+                        }}
                       >
                         Chờ ký
                       </span>
                     )}
                     {signer.signedAt && (
-                      <span style={{ color: c.text3, fontSize: 9, marginTop: 2 }}>{signer.signedAt}</span>
+                      <span style={{ color: c.text3, fontSize: 9, marginTop: 2 }}>
+                        {signer.signedAt}
+                      </span>
                     )}
                   </div>
                 </motion.div>
@@ -481,19 +583,30 @@ export function P2PEscrowDetailPage() {
           {[
             { label: 'Mã đơn', value: order.orderNumber },
             { label: 'Loại', value: `${order.type === 'buy' ? 'Mua' : 'Bán'} ${order.asset}` },
-            { label: 'Số lượng', value: `${fmtAmount(order.escrowAmount)} ${order.asset}`, mono: true },
+            {
+              label: 'Số lượng',
+              value: `${fmtAmount(order.escrowAmount)} ${order.asset}`,
+              mono: true,
+            },
             { label: 'Giá', value: `${fmtVnd(order.price)} VND/${order.asset}` },
             { label: 'Tổng', value: `${fmtVnd(order.total)} VND`, bold: true },
             { label: 'Merchant', value: order.merchant },
             { label: 'Phương thức TT', value: order.paymentMethod },
-          ].map(row => (
-            <div key={row.label} className="flex justify-between items-center py-2" style={{ borderBottom: `1px solid ${c.divider}` }}>
+          ].map((row) => (
+            <div
+              key={row.label}
+              className="flex justify-between items-center py-2"
+              style={{ borderBottom: `1px solid ${c.divider}` }}
+            >
               <span style={{ color: c.text3, fontSize: φ.sm }}>{row.label}</span>
-              <span style={{
-                color: c.text1, fontSize: φ.sm,
-                fontWeight: row.bold ? 700 : 400,
-                fontFamily: row.mono ? 'monospace' : 'inherit',
-              }}>
+              <span
+                style={{
+                  color: c.text1,
+                  fontSize: φ.sm,
+                  fontWeight: row.bold ? 700 : 400,
+                  fontFamily: row.mono ? 'monospace' : 'inherit',
+                }}
+              >
                 {row.value}
               </span>
             </div>
@@ -512,9 +625,24 @@ export function P2PEscrowDetailPage() {
               const isLast = i === buildTimeline().length - 1;
               const Icon = event.icon;
               const statusStyles = {
-                completed: { bg: 'rgba(16,185,129,0.12)', color: '#10B981', border: '#10B981', line: '#10B981' },
-                active: { bg: 'rgba(59,130,246,0.12)', color: '#3B82F6', border: '#3B82F6', line: '#3B82F6' },
-                pending: { bg: c.surface2, color: c.text3, border: c.borderSolid, line: c.borderSolid },
+                completed: {
+                  bg: 'rgba(16,185,129,0.12)',
+                  color: '#10B981',
+                  border: '#10B981',
+                  line: '#10B981',
+                },
+                active: {
+                  bg: 'rgba(59,130,246,0.12)',
+                  color: '#3B82F6',
+                  border: '#3B82F6',
+                  line: '#3B82F6',
+                },
+                pending: {
+                  bg: c.surface2,
+                  color: c.text3,
+                  border: c.borderSolid,
+                  line: c.borderSolid,
+                },
               };
               const s = statusStyles[event.status];
 
@@ -544,10 +672,13 @@ export function P2PEscrowDetailPage() {
                     className="flex-1 pb-4"
                   >
                     <div className="flex items-center justify-between">
-                      <span style={{
-                        color: event.status === 'pending' ? c.text3 : c.text1,
-                        fontSize: φ.sm, fontWeight: 600,
-                      }}>
+                      <span
+                        style={{
+                          color: event.status === 'pending' ? c.text3 : c.text1,
+                          fontSize: φ.sm,
+                          fontWeight: 600,
+                        }}
+                      >
                         {event.label}
                       </span>
                       <span style={{ color: c.text3, fontSize: 9, fontFamily: 'monospace' }}>
@@ -578,9 +709,9 @@ export function P2PEscrowDetailPage() {
                 Bảo vệ bởi VitTrade Escrow
               </p>
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.6 }}>
-                Coin được khóa trong smart contract đa chữ ký (2/3 multisig).
-                Không bên nào có thể đơn phương rút coin. Nếu phát sinh tranh chấp,
-                VitTrade sẽ đóng vai trọng tài (arbiter).
+                Coin được khóa trong smart contract đa chữ ký (2/3 multisig). Không bên nào có thể
+                đơn phương rút coin. Nếu phát sinh tranh chấp, VitTrade sẽ đóng vai trọng tài
+                (arbiter).
               </p>
             </div>
           </div>
@@ -594,7 +725,9 @@ export function P2PEscrowDetailPage() {
         >
           <div className="flex items-center gap-2">
             <ChevronRight size={14} color={c.text2} />
-            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>Xem chi tiết đơn hàng</span>
+            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
+              Xem chi tiết đơn hàng
+            </span>
           </div>
           <ChevronRight size={14} color={c.text3} />
         </button>

@@ -17,17 +17,38 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  TrendingUp, TrendingDown, Activity, Target, DollarSign,
-  BarChart3, Clock, Percent, Info, Zap,
+  TrendingUp,
+  TrendingDown,
+  Activity,
+  Target,
+  DollarSign,
+  BarChart3,
+  Clock,
+  Percent,
+  Info,
+  Zap,
 } from 'lucide-react';
 import {
-  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
-  RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
-  LineChart, Line, Legend, ComposedChart, Area,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  RadarChart,
+  Radar,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  LineChart,
+  Line,
+  Legend,
+  ComposedChart,
+  Area,
 } from 'recharts';
 
 const TABS = ['Hieu suat', 'Chi so', 'So sanh'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface ModuleMetrics {
   module: string;
@@ -92,7 +113,7 @@ const RADAR_DATA = MODULE_METRICS.map((m) => ({
   metric: m.moduleName.replace(' Trading', '').replace(' Markets', '').replace(' Strategy', ''),
   roi: m.roi * 5, // Scale for visibility
   winRate: m.winRate,
-  volume: (m.totalVolume / 2500), // Scale down
+  volume: m.totalVolume / 2500, // Scale down
   fullMark: 100,
 }));
 
@@ -120,8 +141,7 @@ export function CrossModuleAnalytics() {
   const totalROI = MODULE_METRICS.reduce((sum, m) => sum + m.roi, 0) / MODULE_METRICS.length;
   const totalTrades = MODULE_METRICS.reduce((sum, m) => sum + m.totalTrades, 0);
   const totalVolume = MODULE_METRICS.reduce((sum, m) => sum + m.totalVolume, 0);
-  const avgWinRate =
-    MODULE_METRICS.reduce((sum, m) => sum + m.winRate, 0) / MODULE_METRICS.length;
+  const avgWinRate = MODULE_METRICS.reduce((sum, m) => sum + m.winRate, 0) / MODULE_METRICS.length;
 
   const bestModule = [...MODULE_METRICS].sort((a, b) => b.roi - a.roi)[0];
   const mostActiveModule = [...MODULE_METRICS].sort((a, b) => b.totalTrades - a.totalTrades)[0];
@@ -178,7 +198,10 @@ export function CrossModuleAnalytics() {
             <div className="grid grid-cols-2 gap-3">
               <div
                 className="rounded-2xl p-4"
-                style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}
+                style={{
+                  background: 'rgba(16,185,129,0.06)',
+                  border: '1px solid rgba(16,185,129,0.15)',
+                }}
               >
                 <div className="flex items-center gap-2 mb-2">
                   <TrendingUp size={16} color="#10B981" />
@@ -194,7 +217,10 @@ export function CrossModuleAnalytics() {
 
               <div
                 className="rounded-2xl p-4"
-                style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+                style={{
+                  background: 'rgba(59,130,246,0.06)',
+                  border: '1px solid rgba(59,130,246,0.15)',
+                }}
               >
                 <div className="flex items-center gap-2 mb-2">
                   <Activity size={16} color="#3B82F6" />
@@ -232,7 +258,13 @@ export function CrossModuleAnalytics() {
                     key="y-roi"
                     tick={{ fill: c.text3, fontSize: 10 }}
                     axisLine={{ stroke: c.border }}
-                    label={{ value: 'ROI %', angle: -90, position: 'insideLeft', fill: c.text3, fontSize: 10 }}
+                    label={{
+                      value: 'ROI %',
+                      angle: -90,
+                      position: 'insideLeft',
+                      fill: c.text3,
+                      fontSize: 10,
+                    }}
                   />
                   <Tooltip
                     key="tooltip-roi"
@@ -281,10 +313,38 @@ export function CrossModuleAnalytics() {
                     }}
                   />
                   <Legend key="legend-trend" />
-                  <Line key="line-trading" type="monotone" dataKey="trading" stroke="#10B981" strokeWidth={2} name="Trading" />
-                  <Line key="line-p2p" type="monotone" dataKey="p2p" stroke="#F59E0B" strokeWidth={2} name="P2P" />
-                  <Line key="line-predictions" type="monotone" dataKey="predictions" stroke="#8B5CF6" strokeWidth={2} name="Predictions" />
-                  <Line key="line-dca" type="monotone" dataKey="dca" stroke="#6366F1" strokeWidth={2} name="DCA" />
+                  <Line
+                    key="line-trading"
+                    type="monotone"
+                    dataKey="trading"
+                    stroke="#10B981"
+                    strokeWidth={2}
+                    name="Trading"
+                  />
+                  <Line
+                    key="line-p2p"
+                    type="monotone"
+                    dataKey="p2p"
+                    stroke="#F59E0B"
+                    strokeWidth={2}
+                    name="P2P"
+                  />
+                  <Line
+                    key="line-predictions"
+                    type="monotone"
+                    dataKey="predictions"
+                    stroke="#8B5CF6"
+                    strokeWidth={2}
+                    name="Predictions"
+                  />
+                  <Line
+                    key="line-dca"
+                    type="monotone"
+                    dataKey="dca"
+                    stroke="#6366F1"
+                    strokeWidth={2}
+                    name="DCA"
+                  />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -399,8 +459,8 @@ export function CrossModuleAnalytics() {
                             mod.riskScore > 70
                               ? '#EF4444'
                               : mod.riskScore > 50
-                              ? '#F59E0B'
-                              : '#10B981',
+                                ? '#F59E0B'
+                                : '#10B981',
                           fontSize: 11,
                           fontWeight: 700,
                         }}
@@ -420,8 +480,8 @@ export function CrossModuleAnalytics() {
                             mod.riskScore > 70
                               ? '#EF4444'
                               : mod.riskScore > 50
-                              ? '#F59E0B'
-                              : '#10B981',
+                                ? '#F59E0B'
+                                : '#10B981',
                         }}
                       />
                     </div>
@@ -449,14 +509,26 @@ export function CrossModuleAnalytics() {
                     dataKey="risk"
                     tick={{ fill: c.text3, fontSize: 10 }}
                     axisLine={{ stroke: c.border }}
-                    label={{ value: 'Risk Score', position: 'insideBottom', offset: -5, fill: c.text3, fontSize: 10 }}
+                    label={{
+                      value: 'Risk Score',
+                      position: 'insideBottom',
+                      offset: -5,
+                      fill: c.text3,
+                      fontSize: 10,
+                    }}
                   />
                   <YAxis
                     key="y-rr"
                     dataKey="return"
                     tick={{ fill: c.text3, fontSize: 10 }}
                     axisLine={{ stroke: c.border }}
-                    label={{ value: 'ROI %', angle: -90, position: 'insideLeft', fill: c.text3, fontSize: 10 }}
+                    label={{
+                      value: 'ROI %',
+                      angle: -90,
+                      position: 'insideLeft',
+                      fill: c.text3,
+                      fontSize: 10,
+                    }}
                   />
                   <Tooltip
                     key="tooltip-rr"
@@ -469,7 +541,13 @@ export function CrossModuleAnalytics() {
                     }}
                   />
                   <Bar key="bar-return" dataKey="return" fill="#10B981" radius={[4, 4, 0, 0]} />
-                  <Line key="line-risk" type="monotone" dataKey="risk" stroke="#EF4444" strokeWidth={2} />
+                  <Line
+                    key="line-risk"
+                    type="monotone"
+                    dataKey="risk"
+                    stroke="#EF4444"
+                    strokeWidth={2}
+                  />
                 </ComposedChart>
               </ResponsiveContainer>
             </div>
@@ -535,23 +613,30 @@ export function CrossModuleAnalytics() {
             {/* Arena Disclosure */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
+              style={{
+                background: 'rgba(245,158,11,0.06)',
+                border: '1px solid rgba(245,158,11,0.15)',
+              }}
             >
               <Zap size={14} color="#F59E0B" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Open Arena metrics are not included in financial analytics as Arena uses points-only system.
-                See Arena leaderboard for trust and performance metrics.
+                Open Arena metrics are not included in financial analytics as Arena uses points-only
+                system. See Arena leaderboard for trust and performance metrics.
               </p>
             </div>
 
             {/* Info */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+              style={{
+                background: 'rgba(59,130,246,0.06)',
+                border: '1px solid rgba(59,130,246,0.15)',
+              }}
             >
               <Info size={14} color="#3B82F6" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Metrics calculated independently per module. Cross-module comparison helps identify best strategies.
+                Metrics calculated independently per module. Cross-module comparison helps identify
+                best strategies.
               </p>
             </div>
           </>

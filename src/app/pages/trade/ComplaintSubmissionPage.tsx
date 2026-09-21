@@ -2,7 +2,7 @@
  * ══════════════════════════════════════════════════════════════
  *  ComplaintSubmissionPage — Phase 4 Sprint 4 Day 3-4
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Form to submit a formal complaint
  * - Structured data collection
@@ -52,14 +52,18 @@ export function ComplaintSubmissionPage() {
 
       <PageContent gap="relaxed" grow>
         {/* Info Notice */}
-        <div className="rounded-2xl p-3 flex gap-2.5" style={{ background: c.infoBg, border: `1px solid ${c.infoBorder}` }}>
-          <Info size={16} color={c.infoText} className="shrink-0 mt-0.5" />
+        <div
+          className="rounded-2xl p-3 flex gap-2.5"
+          style={{ background: 'rgba(59,130,246,0.08)', border: `1px solid rgba(59,130,246,0.20)` }}
+        >
+          <Info size={16} color={c.info} className="shrink-0 mt-0.5" />
           <div>
-            <p style={{ color: c.infoText, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
+            <p style={{ color: c.info, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
               Complaint Process
             </p>
-            <p style={{ color: c.infoText, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
-              We'll acknowledge your complaint within 5 business days and provide a final response within 8 weeks.
+            <p style={{ color: c.info, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
+              We'll acknowledge your complaint within 5 business days and provide a final response
+              within 8 weeks.
             </p>
           </div>
         </div>
@@ -76,10 +80,13 @@ export function ComplaintSubmissionPage() {
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 className="w-full h-12 px-3 rounded-xl outline-none"
-                style={{ background: c.surface2, color: c.text1, border: `1px solid ${c.border}` }}>
+                style={{ background: c.surface2, color: c.text1, border: `1px solid ${c.border}` }}
+              >
                 <option value="">Select category</option>
                 {CATEGORIES.map((cat) => (
-                  <option key={cat} value={cat}>{cat}</option>
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
                 ))}
               </select>
             </div>
@@ -123,8 +130,10 @@ export function ComplaintSubmissionPage() {
             {/* Evidence Upload */}
             <TrCard className="p-4">
               <div className="text-center">
-                <div className="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center"
-                  style={{ background: c.surface2 }}>
+                <div
+                  className="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center"
+                  style={{ background: c.surface2 }}
+                >
                   <Upload size={20} color={c.text3} />
                 </div>
                 <p style={{ color: c.text1, fontSize: 12, fontWeight: 600, marginBottom: 2 }}>
@@ -135,7 +144,8 @@ export function ComplaintSubmissionPage() {
                 </p>
                 <button
                   className="mt-3 px-4 py-2 rounded-lg text-xs"
-                  style={{ background: c.surface2, color: c.text1, fontWeight: 600 }}>
+                  style={{ background: c.surface2, color: c.text1, fontWeight: 600 }}
+                >
                   Choose Files
                 </button>
               </div>
@@ -156,7 +166,15 @@ export function ComplaintSubmissionPage() {
               <p style={{ color: c.text1, fontSize: 11, lineHeight: 1.5 }}>
                 I confirm that the information provided is accurate and I understand:
               </p>
-              <ul style={{ color: c.text3, fontSize: 10, lineHeight: 1.5, marginTop: 2, paddingLeft: 16 }}>
+              <ul
+                style={{
+                  color: c.text3,
+                  fontSize: 10,
+                  lineHeight: 1.5,
+                  marginTop: 2,
+                  paddingLeft: 16,
+                }}
+              >
                 <li>• We will respond within 8 weeks</li>
                 <li>• I can refer to the Financial Ombudsman if not satisfied</li>
                 <li>• My complaint will be investigated fairly</li>
@@ -178,7 +196,8 @@ export function ComplaintSubmissionPage() {
             fontSize: 14,
             opacity: canSubmit ? 1 : 0.5,
             cursor: canSubmit ? 'pointer' : 'not-allowed',
-          }}>
+          }}
+        >
           <MessageSquare size={18} />
           <span>Submit Complaint</span>
         </button>

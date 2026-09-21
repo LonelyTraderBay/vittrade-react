@@ -8,8 +8,15 @@
 
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import {
-  ChevronDown, Check, X, Pencil, Layers,
-  TrendingUp, TrendingDown, Minus, Info,
+  ChevronDown,
+  Check,
+  X,
+  Pencil,
+  Layers,
+  TrendingUp,
+  TrendingDown,
+  Minus,
+  Info,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -22,8 +29,12 @@ import { fmtPrice, fmtNum } from '../../data/formatNumber';
 import { FONT_SCALE, FONT_WEIGHT } from '../../constants/typography';
 import { CRYPTO_PAIRS } from '../../data/mockData';
 import {
-  INDICATOR_LIST, DRAWING_TOOLS, TECH_SIGNAL_SUMMARIES,
-  type IndicatorConfig, type DrawingTool, type TechSignalSummary,
+  INDICATOR_LIST,
+  DRAWING_TOOLS,
+  TECH_SIGNAL_SUMMARIES,
+  type IndicatorConfig,
+  type DrawingTool,
+  type TechSignalSummary,
 } from '../../data/marketP3Data';
 
 const TABS = ['Chỉ báo', 'Công cụ vẽ', 'Tín hiệu kỹ thuật'];
@@ -34,13 +45,14 @@ const CATEGORIES: { id: IndicatorConfig['category']; label: string; color: strin
   { id: 'volume', label: 'Khối lượng', color: '#14B8A6' },
 ];
 
-const SIGNAL_LABELS: Record<TechSignalSummary['overallSignal'], { label: string; color: string }> = {
-  strong_buy: { label: 'Mua mạnh', color: '#059669' },
-  buy: { label: 'Mua', color: '#10B981' },
-  neutral: { label: 'Trung lập', color: '#6B7280' },
-  sell: { label: 'Bán', color: '#EF4444' },
-  strong_sell: { label: 'Bán mạnh', color: '#DC2626' },
-};
+const SIGNAL_LABELS: Record<TechSignalSummary['overallSignal'], { label: string; color: string }> =
+  {
+    strong_buy: { label: 'Mua mạnh', color: '#059669' },
+    buy: { label: 'Mua', color: '#10B981' },
+    neutral: { label: 'Trung lập', color: '#6B7280' },
+    sell: { label: 'Bán', color: '#EF4444' },
+    strong_sell: { label: 'Bán mạnh', color: '#DC2626' },
+  };
 
 const DRAWING_CATEGORIES: { id: DrawingTool['category']; label: string }[] = [
   { id: 'line', label: 'Đường' },
@@ -61,16 +73,16 @@ export function AdvancedChartsPage() {
 
   const filteredIndicators = useMemo(() => {
     if (catFilter === 'all') return INDICATOR_LIST;
-    return INDICATOR_LIST.filter(i => i.category === catFilter);
+    return INDICATOR_LIST.filter((i) => i.category === catFilter);
   }, [catFilter]);
 
   const filteredTools = useMemo(() => {
     if (drawCatFilter === 'all') return DRAWING_TOOLS;
-    return DRAWING_TOOLS.filter(t => t.category === drawCatFilter);
+    return DRAWING_TOOLS.filter((t) => t.category === drawCatFilter);
   }, [drawCatFilter]);
 
   const toggleIndicator = (id: string) => {
-    setActiveIndicators(prev => {
+    setActiveIndicators((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else next.add(id);
@@ -90,12 +102,21 @@ export function AdvancedChartsPage() {
           <>
             {/* Active indicators count */}
             <div className="flex items-center justify-between">
-              <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+              <p
+                style={{
+                  color: c.text2,
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.semibold,
+                }}
+              >
                 Đang sử dụng: {activeIndicators.size} chỉ báo
               </p>
               {activeIndicators.size > 0 && (
                 <button
-                  onClick={() => { setActiveIndicators(new Set()); hapticLight(); }}
+                  onClick={() => {
+                    setActiveIndicators(new Set());
+                    hapticLight();
+                  }}
                   className="px-2 py-1 rounded"
                   style={{ color: '#EF4444', fontSize: FONT_SCALE.micro }}
                 >
@@ -107,8 +128,8 @@ export function AdvancedChartsPage() {
             {/* Active chips */}
             {activeIndicators.size > 0 && (
               <div className="flex flex-wrap gap-1.5">
-                {Array.from(activeIndicators).map(id => {
-                  const ind = INDICATOR_LIST.find(i => i.id === id);
+                {Array.from(activeIndicators).map((id) => {
+                  const ind = INDICATOR_LIST.find((i) => i.id === id);
                   if (!ind) return null;
                   return (
                     <span
@@ -119,7 +140,13 @@ export function AdvancedChartsPage() {
                         border: `1px solid ${ind.color}30`,
                       }}
                     >
-                      <span style={{ color: ind.color, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.semibold }}>
+                      <span
+                        style={{
+                          color: ind.color,
+                          fontSize: FONT_SCALE.micro,
+                          fontWeight: FONT_WEIGHT.semibold,
+                        }}
+                      >
                         {ind.shortName}
                       </span>
                       <button onClick={() => toggleIndicator(id)}>
@@ -134,7 +161,10 @@ export function AdvancedChartsPage() {
             {/* Category filter */}
             <div className="flex gap-2 overflow-x-auto scrollbar-none -mx-5 px-5">
               <button
-                onClick={() => { setCatFilter('all'); hapticSelection(); }}
+                onClick={() => {
+                  setCatFilter('all');
+                  hapticSelection();
+                }}
                 className="shrink-0 px-3 py-1.5 rounded-xl"
                 style={{
                   background: catFilter === 'all' ? c.chipActiveBg : c.surface2,
@@ -145,10 +175,13 @@ export function AdvancedChartsPage() {
               >
                 Tất cả
               </button>
-              {CATEGORIES.map(cat => (
+              {CATEGORIES.map((cat) => (
                 <button
                   key={cat.id}
-                  onClick={() => { setCatFilter(cat.id); hapticSelection(); }}
+                  onClick={() => {
+                    setCatFilter(cat.id);
+                    hapticSelection();
+                  }}
                   className="shrink-0 px-3 py-1.5 rounded-xl"
                   style={{
                     background: catFilter === cat.id ? `${cat.color}15` : c.surface2,
@@ -165,10 +198,10 @@ export function AdvancedChartsPage() {
 
             {/* Indicator list */}
             <div className="flex flex-col" style={{ gap: 4 }}>
-              {filteredIndicators.map(ind => {
+              {filteredIndicators.map((ind) => {
                 const isActive = activeIndicators.has(ind.id);
                 const isExpanded = expandedIndicator === ind.id;
-                const catCfg = CATEGORIES.find(c => c.id === ind.category);
+                const catCfg = CATEGORIES.find((c) => c.id === ind.category);
 
                 return (
                   <TrCard key={ind.id} className="overflow-hidden">
@@ -180,18 +213,34 @@ export function AdvancedChartsPage() {
                         className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
                         style={{ background: `${ind.color}12` }}
                       >
-                        <span style={{ color: ind.color, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.bold }}>
+                        <span
+                          style={{
+                            color: ind.color,
+                            fontSize: FONT_SCALE.micro,
+                            fontWeight: FONT_WEIGHT.bold,
+                          }}
+                        >
                           {ind.shortName.slice(0, 3)}
                         </span>
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <span style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold }}>
+                          <span
+                            style={{
+                              color: c.text1,
+                              fontSize: FONT_SCALE.sm,
+                              fontWeight: FONT_WEIGHT.semibold,
+                            }}
+                          >
                             {ind.shortName}
                           </span>
                           <span
                             className="px-1.5 py-0.5 rounded"
-                            style={{ background: `${catCfg?.color ?? '#6B7280'}10`, color: catCfg?.color ?? '#6B7280', fontSize: 8 }}
+                            style={{
+                              background: `${catCfg?.color ?? '#6B7280'}10`,
+                              color: catCfg?.color ?? '#6B7280',
+                              fontSize: 8,
+                            }}
                           >
                             {catCfg?.label}
                           </span>
@@ -201,28 +250,57 @@ export function AdvancedChartsPage() {
                         </p>
                       </div>
                       <button
-                        onClick={e => { e.stopPropagation(); toggleIndicator(ind.id); }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleIndicator(ind.id);
+                        }}
                         className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
                         style={{
                           background: isActive ? `${ind.color}15` : c.surface2,
                           border: `1px solid ${isActive ? ind.color : c.borderSolid}`,
                         }}
                       >
-                        {isActive ? <Check size={14} color={ind.color} /> : <span style={{ color: c.text3, fontSize: 14 }}>+</span>}
+                        {isActive ? (
+                          <Check size={14} color={ind.color} />
+                        ) : (
+                          <span style={{ color: c.text3, fontSize: 14 }}>+</span>
+                        )}
                       </button>
                     </button>
 
                     {isExpanded && (
-                      <div className="px-4 pb-3 pt-1" style={{ borderTop: `1px solid ${c.borderSolid}` }}>
-                        <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.6, marginBottom: 8 }}>
+                      <div
+                        className="px-4 pb-3 pt-1"
+                        style={{ borderTop: `1px solid ${c.borderSolid}` }}
+                      >
+                        <p
+                          style={{
+                            color: c.text2,
+                            fontSize: FONT_SCALE.xs,
+                            lineHeight: 1.6,
+                            marginBottom: 8,
+                          }}
+                        >
                           {ind.description}
                         </p>
                         {ind.params.length > 0 && (
                           <div className="flex flex-wrap gap-2">
-                            {ind.params.map(param => (
-                              <div key={param.label} className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg" style={{ background: c.surface2 }}>
-                                <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>{param.label}:</span>
-                                <span style={{ color: c.text1, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.semibold }}>
+                            {ind.params.map((param) => (
+                              <div
+                                key={param.label}
+                                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg"
+                                style={{ background: c.surface2 }}
+                              >
+                                <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>
+                                  {param.label}:
+                                </span>
+                                <span
+                                  style={{
+                                    color: c.text1,
+                                    fontSize: FONT_SCALE.micro,
+                                    fontWeight: FONT_WEIGHT.semibold,
+                                  }}
+                                >
                                   {param.default}
                                 </span>
                               </div>
@@ -246,11 +324,19 @@ export function AdvancedChartsPage() {
               <div className="flex gap-3">
                 <Pencil size={16} color="#3B82F6" className="shrink-0 mt-0.5" />
                 <div>
-                  <p style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, marginBottom: 2 }}>
+                  <p
+                    style={{
+                      color: c.text1,
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.semibold,
+                      marginBottom: 2,
+                    }}
+                  >
                     Bộ công cụ vẽ chuyên nghiệp
                   </p>
                   <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>
-                    Chọn công cụ bên dưới để vẽ trên biểu đồ. Hỗ trợ đường xu hướng, kênh giá, Fibonacci và đo lường.
+                    Chọn công cụ bên dưới để vẽ trên biểu đồ. Hỗ trợ đường xu hướng, kênh giá,
+                    Fibonacci và đo lường.
                   </p>
                 </div>
               </div>
@@ -259,7 +345,10 @@ export function AdvancedChartsPage() {
             {/* Category filter */}
             <div className="flex gap-2">
               <button
-                onClick={() => { setDrawCatFilter('all'); hapticSelection(); }}
+                onClick={() => {
+                  setDrawCatFilter('all');
+                  hapticSelection();
+                }}
                 className="px-3 py-1.5 rounded-xl"
                 style={{
                   background: drawCatFilter === 'all' ? c.chipActiveBg : c.surface2,
@@ -270,10 +359,13 @@ export function AdvancedChartsPage() {
               >
                 Tất cả
               </button>
-              {DRAWING_CATEGORIES.map(cat => (
+              {DRAWING_CATEGORIES.map((cat) => (
                 <button
                   key={cat.id}
-                  onClick={() => { setDrawCatFilter(cat.id); hapticSelection(); }}
+                  onClick={() => {
+                    setDrawCatFilter(cat.id);
+                    hapticSelection();
+                  }}
                   className="px-3 py-1.5 rounded-xl"
                   style={{
                     background: drawCatFilter === cat.id ? c.chipActiveBg : c.surface2,
@@ -289,12 +381,22 @@ export function AdvancedChartsPage() {
 
             {/* Drawing tools grid */}
             <div className="grid grid-cols-3 gap-2">
-              {filteredTools.map(tool => {
-                const catLabel = DRAWING_CATEGORIES.find(c => c.id === tool.category)?.label ?? '';
+              {filteredTools.map((tool) => {
+                const catLabel =
+                  DRAWING_CATEGORIES.find((c) => c.id === tool.category)?.label ?? '';
                 return (
                   <TrCard key={tool.id} as="button" hover className="p-3 text-center">
-                    <span style={{ fontSize: 24, display: 'block', marginBottom: 6 }}>{tool.icon}</span>
-                    <p style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, marginBottom: 2 }}>
+                    <span style={{ fontSize: 24, display: 'block', marginBottom: 6 }}>
+                      {tool.icon}
+                    </span>
+                    <p
+                      style={{
+                        color: c.text1,
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: FONT_WEIGHT.semibold,
+                        marginBottom: 2,
+                      }}
+                    >
                       {tool.name}
                     </p>
                     <p style={{ color: c.text3, fontSize: 8 }}>{catLabel}</p>
@@ -341,10 +443,24 @@ export function AdvancedChartsPage() {
 
             {/* Signal summaries per pair */}
             <div className="flex flex-col" style={{ gap: 8 }}>
-              {TECH_SIGNAL_SUMMARIES.map(signal => {
+              {TECH_SIGNAL_SUMMARIES.map((signal) => {
                 const signalCfg = SIGNAL_LABELS[signal.overallSignal];
-                const maCfg = SIGNAL_LABELS[signal.maSummary === 'buy' ? 'buy' : signal.maSummary === 'sell' ? 'sell' : 'neutral'];
-                const oscCfg = SIGNAL_LABELS[signal.oscSummary === 'buy' ? 'buy' : signal.oscSummary === 'sell' ? 'sell' : 'neutral'];
+                const maCfg =
+                  SIGNAL_LABELS[
+                    signal.maSummary === 'buy'
+                      ? 'buy'
+                      : signal.maSummary === 'sell'
+                        ? 'sell'
+                        : 'neutral'
+                  ];
+                const oscCfg =
+                  SIGNAL_LABELS[
+                    signal.oscSummary === 'buy'
+                      ? 'buy'
+                      : signal.oscSummary === 'sell'
+                        ? 'sell'
+                        : 'neutral'
+                  ];
                 const total = signal.buyCount + signal.sellCount + signal.neutralCount;
 
                 return (
@@ -352,7 +468,13 @@ export function AdvancedChartsPage() {
                     {/* Pair header */}
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2">
-                        <span style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>
+                        <span
+                          style={{
+                            color: c.text1,
+                            fontSize: FONT_SCALE.sm,
+                            fontWeight: FONT_WEIGHT.bold,
+                          }}
+                        >
                           {signal.pair}
                         </span>
                         <span
@@ -378,18 +500,45 @@ export function AdvancedChartsPage() {
                     {/* Buy/Sell/Neutral bar */}
                     <div className="mb-3">
                       <div className="flex rounded overflow-hidden" style={{ height: 8 }}>
-                        <div style={{ width: `${(signal.buyCount / total) * 100}%`, background: '#10B981' }} />
-                        <div style={{ width: `${(signal.neutralCount / total) * 100}%`, background: '#6B7280' }} />
-                        <div style={{ width: `${(signal.sellCount / total) * 100}%`, background: '#EF4444' }} />
+                        <div
+                          style={{
+                            width: `${(signal.buyCount / total) * 100}%`,
+                            background: '#10B981',
+                          }}
+                        />
+                        <div
+                          style={{
+                            width: `${(signal.neutralCount / total) * 100}%`,
+                            background: '#6B7280',
+                          }}
+                        />
+                        <div
+                          style={{
+                            width: `${(signal.sellCount / total) * 100}%`,
+                            background: '#EF4444',
+                          }}
+                        />
                       </div>
                       <div className="flex justify-between mt-1">
-                        <span style={{ color: '#10B981', fontSize: 10, fontWeight: FONT_WEIGHT.semibold }}>
+                        <span
+                          style={{
+                            color: '#10B981',
+                            fontSize: 10,
+                            fontWeight: FONT_WEIGHT.semibold,
+                          }}
+                        >
                           Mua {signal.buyCount}
                         </span>
                         <span style={{ color: '#6B7280', fontSize: 10 }}>
                           Trung lập {signal.neutralCount}
                         </span>
-                        <span style={{ color: '#EF4444', fontSize: 10, fontWeight: FONT_WEIGHT.semibold }}>
+                        <span
+                          style={{
+                            color: '#EF4444',
+                            fontSize: 10,
+                            fontWeight: FONT_WEIGHT.semibold,
+                          }}
+                        >
                           Bán {signal.sellCount}
                         </span>
                       </div>
@@ -398,14 +547,30 @@ export function AdvancedChartsPage() {
                     {/* MA + Oscillator summary */}
                     <div className="grid grid-cols-2 gap-2 mb-3">
                       <div className="px-3 py-2 rounded-lg" style={{ background: c.surface2 }}>
-                        <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>Moving Averages</p>
-                        <p style={{ color: maCfg.color, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+                        <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
+                          Moving Averages
+                        </p>
+                        <p
+                          style={{
+                            color: maCfg.color,
+                            fontSize: FONT_SCALE.xs,
+                            fontWeight: FONT_WEIGHT.bold,
+                          }}
+                        >
                           {maCfg.label}
                         </p>
                       </div>
                       <div className="px-3 py-2 rounded-lg" style={{ background: c.surface2 }}>
-                        <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>Oscillators</p>
-                        <p style={{ color: oscCfg.color, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+                        <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
+                          Oscillators
+                        </p>
+                        <p
+                          style={{
+                            color: oscCfg.color,
+                            fontSize: FONT_SCALE.xs,
+                            fontWeight: FONT_WEIGHT.bold,
+                          }}
+                        >
                           {oscCfg.label}
                         </p>
                       </div>
@@ -413,11 +578,18 @@ export function AdvancedChartsPage() {
 
                     {/* Pivot points */}
                     <div>
-                      <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.semibold, marginBottom: 6 }}>
+                      <p
+                        style={{
+                          color: c.text3,
+                          fontSize: FONT_SCALE.micro,
+                          fontWeight: FONT_WEIGHT.semibold,
+                          marginBottom: 6,
+                        }}
+                      >
                         Pivot Points
                       </p>
                       <div className="flex gap-1">
-                        {signal.pivotPoints.map(pp => {
+                        {signal.pivotPoints.map((pp) => {
                           const isPivot = pp.label === 'Pivot';
                           const isSupport = pp.label.startsWith('S');
                           const color = isPivot ? '#3B82F6' : isSupport ? '#10B981' : '#EF4444';
@@ -430,8 +602,16 @@ export function AdvancedChartsPage() {
                                 border: isPivot ? `1px solid ${color}30` : 'none',
                               }}
                             >
-                              <p style={{ color, fontSize: 8, fontWeight: FONT_WEIGHT.semibold }}>{pp.label}</p>
-                              <p style={{ color: c.text1, fontSize: 10, fontWeight: FONT_WEIGHT.medium }}>
+                              <p style={{ color, fontSize: 8, fontWeight: FONT_WEIGHT.semibold }}>
+                                {pp.label}
+                              </p>
+                              <p
+                                style={{
+                                  color: c.text1,
+                                  fontSize: 10,
+                                  fontWeight: FONT_WEIGHT.medium,
+                                }}
+                              >
                                 {fmtNum(pp.value)}
                               </p>
                             </div>

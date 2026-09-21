@@ -1,6 +1,6 @@
 /**
  * Feature Flag Service
- * 
+ *
  * Manages feature flags for controlled rollouts and A/B testing.
  * Features:
  * - Remote config support
@@ -9,7 +9,7 @@
  * - A/B test variant assignment
  * - localStorage caching
  * - Override for testing/QA
- * 
+ *
  * @module services/FeatureFlagService
  * @version 2.0 (Phase 2 - Sprint 2)
  */
@@ -38,7 +38,7 @@ class FeatureFlagService implements IFeatureFlagService {
 
   constructor(config?: Partial<FeatureFlagConfig>) {
     this.config = { ...DEFAULT_FEATURE_FLAG_CONFIG, ...config };
-    
+
     // Initialize with default flags
     this.flags = {
       ...DEFAULT_FEATURE_FLAGS,
@@ -124,12 +124,12 @@ class FeatureFlagService implements IFeatureFlagService {
     // If flag has variants, return variant value
     if (flag.variants && flag.variants.length > 0) {
       const variant = this.getVariant(flagKey, userContext);
-      const variantObj = flag.variants.find(v => v.key === variant);
+      const variantObj = flag.variants.find((v) => v.key === variant);
       return (variantObj?.value as T) || defaultValue;
     }
 
     // Otherwise return enabled status
-    return (this.isEnabled(flagKey, userContext) as any) as T;
+    return this.isEnabled(flagKey, userContext) as any as T;
   }
 
   /**
@@ -149,7 +149,7 @@ class FeatureFlagService implements IFeatureFlagService {
 
     // Assign variant based on user hash
     const variant = this.assignVariant(flag, userContext);
-    
+
     // Save assignment for consistency
     this.variantAssignments[assignmentKey] = variant;
     this.saveVariantAssignments();
@@ -173,7 +173,7 @@ class FeatureFlagService implements IFeatureFlagService {
    */
   override(flagKey: string, value: any): void {
     this.overrides[flagKey] = value;
-    
+
     if (this.config.debug) {
       console.log(`[FeatureFlags] Override "${flagKey}" = ${value}`);
     }
@@ -191,7 +191,7 @@ class FeatureFlagService implements IFeatureFlagService {
    */
   clearOverrides(): void {
     this.overrides = {};
-    
+
     try {
       sessionStorage.removeItem('feature_flag_overrides');
     } catch (error) {
@@ -214,7 +214,7 @@ class FeatureFlagService implements IFeatureFlagService {
     try {
       const response = await fetch(this.config.remoteConfigUrl);
       const remoteFlags = await response.json();
-      
+
       // Merge with local flags
       this.flags = {
         ...this.flags,
@@ -248,7 +248,7 @@ class FeatureFlagService implements IFeatureFlagService {
 
     // Calculate total weight
     const totalWeight = flag.variants.reduce((sum, v) => sum + v.weight, 0);
-    
+
     // Get deterministic random value based on user
     const hash = this.hashUserId(userContext?.userId || 'anonymous');
     const bucket = (hash % 10000) / 10000; // 0.0 to 1.0
@@ -282,7 +282,7 @@ class FeatureFlagService implements IFeatureFlagService {
     let hash = 0;
     for (let i = 0; i < userId.length; i++) {
       const char = userId.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
+      hash = (hash << 5) - hash + char;
       hash = hash & hash; // Convert to 32-bit integer
     }
     return Math.abs(hash);
@@ -316,7 +316,7 @@ class FeatureFlagService implements IFeatureFlagService {
       if (!cached) return;
 
       const cacheData = JSON.parse(cached);
-      
+
       // Check if cache is still valid
       const age = Date.now() - cacheData.timestamp;
       if (age > this.config.cacheTTL) {

@@ -20,7 +20,7 @@ import { useHaptic } from './useHaptic';
  *    actionToast.info('Đã thêm vào yêu thích');
  */
 
-type HapticType = 'light' | 'success' | 'medium' | 'selection' | 'error';
+type HapticType = 'light' | 'success' | 'medium' | 'selection' | 'error' | 'warning';
 
 interface ToastOptions {
   /** Haptic feedback type (default: 'light') */
@@ -30,37 +30,66 @@ interface ToastOptions {
 }
 
 export function useActionToast() {
-  const { hapticLight, hapticSuccess, hapticMedium, hapticSelection, hapticError } = useHaptic();
+  const { hapticLight, hapticSuccess, hapticMedium, hapticSelection, hapticError, hapticWarning } =
+    useHaptic();
 
-  const fireHaptic = useCallback((type: HapticType) => {
-    switch (type) {
-      case 'success': hapticSuccess(); break;
-      case 'medium': hapticMedium(); break;
-      case 'selection': hapticSelection(); break;
-      case 'error': hapticError(); break;
-      default: hapticLight(); break;
-    }
-  }, [hapticLight, hapticSuccess, hapticMedium, hapticSelection, hapticError]);
+  const fireHaptic = useCallback(
+    (type: HapticType) => {
+      switch (type) {
+        case 'success':
+          hapticSuccess();
+          break;
+        case 'medium':
+          hapticMedium();
+          break;
+        case 'selection':
+          hapticSelection();
+          break;
+        case 'error':
+          hapticError();
+          break;
+        case 'warning':
+          hapticWarning();
+          break;
+        default:
+          hapticLight();
+          break;
+      }
+    },
+    [hapticLight, hapticSuccess, hapticMedium, hapticSelection, hapticError, hapticWarning],
+  );
 
-  const success = useCallback((message: string, options?: ToastOptions) => {
-    fireHaptic(options?.haptic ?? 'light');
-    toast.success(message, { duration: options?.duration ?? 1500 });
-  }, [fireHaptic]);
+  const success = useCallback(
+    (message: string, options?: ToastOptions) => {
+      fireHaptic(options?.haptic ?? 'light');
+      toast.success(message, { duration: options?.duration ?? 1500 });
+    },
+    [fireHaptic],
+  );
 
-  const error = useCallback((message: string, options?: ToastOptions) => {
-    fireHaptic(options?.haptic ?? 'error');
-    toast.error(message, { duration: options?.duration ?? 2000 });
-  }, [fireHaptic]);
+  const error = useCallback(
+    (message: string, options?: ToastOptions) => {
+      fireHaptic(options?.haptic ?? 'error');
+      toast.error(message, { duration: options?.duration ?? 2000 });
+    },
+    [fireHaptic],
+  );
 
-  const info = useCallback((message: string, options?: ToastOptions) => {
-    fireHaptic(options?.haptic ?? 'selection');
-    toast(message, { duration: options?.duration ?? 1500 });
-  }, [fireHaptic]);
+  const info = useCallback(
+    (message: string, options?: ToastOptions) => {
+      fireHaptic(options?.haptic ?? 'selection');
+      toast(message, { duration: options?.duration ?? 1500 });
+    },
+    [fireHaptic],
+  );
 
-  const warning = useCallback((message: string, options?: ToastOptions) => {
-    fireHaptic(options?.haptic ?? 'medium');
-    toast.warning(message, { duration: options?.duration ?? 1800 });
-  }, [fireHaptic]);
+  const warning = useCallback(
+    (message: string, options?: ToastOptions) => {
+      fireHaptic(options?.haptic ?? 'medium');
+      toast.warning(message, { duration: options?.duration ?? 1800 });
+    },
+    [fireHaptic],
+  );
 
   return { success, error, info, warning };
 }

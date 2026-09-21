@@ -56,7 +56,9 @@ export function AppLayout() {
   const sessionTimeout = useSessionTimeout({
     timeout: 5 * 60 * 1000,
     warningBefore: 60 * 1000,
-    onTimeout: () => { /* handled by isTimedOut state */ },
+    onTimeout: () => {
+      /* handled by isTimedOut state */
+    },
     enabled: true,
   });
 
@@ -64,7 +66,7 @@ export function AppLayout() {
   const handleRefresh = useCallback(async () => {
     hapticLight();
     // Simulate data refresh
-    await new Promise(r => setTimeout(r, 1200));
+    await new Promise((r) => setTimeout(r, 1200));
   }, [hapticLight]);
 
   const pullToRefresh = usePullToRefresh({
@@ -76,7 +78,7 @@ export function AppLayout() {
   const { showScrollTop, scrollToTop } = useScrollPosition(scrollRef);
 
   // ─── Swipe-back disabled on root tabs ───
-  const isRootTab = NO_SWIPE_ROUTES.some(r => location.pathname === r);
+  const isRootTab = NO_SWIPE_ROUTES.some((r) => location.pathname === r);
 
   // ─── Simulated reconnection logic ───
   useEffect(() => {
@@ -121,11 +123,7 @@ export function AppLayout() {
       {/* Offline / Reconnecting Banner (legacy — kept for offline simulation) */}
       {isOffline && (
         <div className="py-1.5">
-          <OfflineBanner
-            variant="warn"
-            showStaleHint
-            isReconnecting={isReconnecting}
-          />
+          <OfflineBanner variant="warn" showStaleHint isReconnecting={isReconnecting} />
         </div>
       )}
 
@@ -172,10 +170,7 @@ export function AppLayout() {
       <div id="sheet-portal" />
 
       {/* Session timed-out modal */}
-      <SessionTimedOutModal
-        open={sessionTimeout.isTimedOut}
-        onReauth={sessionTimeout.resetTimer}
-      />
+      <SessionTimedOutModal open={sessionTimeout.isTimedOut} onReauth={sessionTimeout.resetTimer} />
     </div>
   );
 }

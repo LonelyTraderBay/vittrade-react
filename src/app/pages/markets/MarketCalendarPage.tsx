@@ -7,9 +7,7 @@
  */
 
 import React, { useState, useMemo } from 'react';
-import {
-  Calendar, Clock,
-} from 'lucide-react';
+import { Calendar, Clock } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { PageContent, PageSection } from '../../components/layout/PageContent';
@@ -18,15 +16,29 @@ import { TrCard } from '../../components/ui/TrCard';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useHaptic } from '../../hooks/useHaptic';
 import { FONT_SCALE, FONT_WEIGHT } from '../../constants/typography';
-import { MARKET_EVENTS, EVENT_TYPE_CONFIG, IMPACT_CONFIG, type MarketEvent } from '../../data/marketP1Data';
+import {
+  MARKET_EVENTS,
+  EVENT_TYPE_CONFIG,
+  IMPACT_CONFIG,
+  type MarketEvent,
+} from '../../data/marketP1Data';
 
 const VIEW_TABS = ['Danh sách', 'Lịch'];
-const TYPE_FILTERS = ['Tất cả', 'Token Unlock', 'Nâng cấp', 'Airdrop', 'Đốt token', 'Niêm yết', 'Báo cáo', 'Hội nghị'];
+const TYPE_FILTERS = [
+  'Tất cả',
+  'Token Unlock',
+  'Nâng cấp',
+  'Airdrop',
+  'Đốt token',
+  'Niêm yết',
+  'Báo cáo',
+  'Hội nghị',
+];
 const TYPE_FILTER_MAP: Record<string, MarketEvent['type'] | null> = {
   'Tất cả': null,
   'Token Unlock': 'unlock',
   'Nâng cấp': 'upgrade',
-  'Airdrop': 'airdrop',
+  Airdrop: 'airdrop',
   'Đốt token': 'burn',
   'Niêm yết': 'listing',
   'Báo cáo': 'report',
@@ -39,7 +51,20 @@ function parseDate(dateStr: string) {
 
 function formatEventDate(dateStr: string): string {
   const d = parseDate(dateStr);
-  const months = ['Th1', 'Th2', 'Th3', 'Th4', 'Th5', 'Th6', 'Th7', 'Th8', 'Th9', 'Th10', 'Th11', 'Th12'];
+  const months = [
+    'Th1',
+    'Th2',
+    'Th3',
+    'Th4',
+    'Th5',
+    'Th6',
+    'Th7',
+    'Th8',
+    'Th9',
+    'Th10',
+    'Th11',
+    'Th12',
+  ];
   return `${d.getDate()} ${months[d.getMonth()]}`;
 }
 
@@ -63,7 +88,9 @@ function getRelativeLabel(dateStr: string): string {
 }
 
 // Group events by date
-function groupByDate(events: MarketEvent[]): { date: string; label: string; events: MarketEvent[] }[] {
+function groupByDate(
+  events: MarketEvent[],
+): { date: string; label: string; events: MarketEvent[] }[] {
   const groups: Record<string, MarketEvent[]> = {};
   for (const ev of events) {
     const dateKey = parseDate(ev.date).toISOString().split('T')[0];
@@ -91,8 +118,8 @@ export function MarketCalendarPage() {
   const filteredEvents = useMemo(() => {
     let items = [...MARKET_EVENTS];
     const typeKey = TYPE_FILTER_MAP[typeFilter];
-    if (typeKey) items = items.filter(e => e.type === typeKey);
-    if (impactFilter) items = items.filter(e => e.impact === impactFilter);
+    if (typeKey) items = items.filter((e) => e.type === typeKey);
+    if (impactFilter) items = items.filter((e) => e.impact === impactFilter);
     return items.sort((a, b) => parseDate(a.date).getTime() - parseDate(b.date).getTime());
   }, [typeFilter, impactFilter]);
 
@@ -103,7 +130,9 @@ export function MarketCalendarPage() {
     const days: { day: number; events: MarketEvent[] }[] = [];
     for (let d = 1; d <= 31; d++) {
       const dateStr = `2026-03-${d.toString().padStart(2, '0')}`;
-      const dayEvents = filteredEvents.filter(e => parseDate(e.date).toISOString().split('T')[0] === dateStr);
+      const dayEvents = filteredEvents.filter(
+        (e) => parseDate(e.date).toISOString().split('T')[0] === dateStr,
+      );
       days.push({ day: d, events: dayEvents });
     }
     return days;
@@ -111,9 +140,9 @@ export function MarketCalendarPage() {
 
   // Stats
   const stats = useMemo(() => {
-    const upcoming = MARKET_EVENTS.filter(e => getDaysUntil(e.date) >= 0);
-    const highImpact = upcoming.filter(e => e.impact === 'high');
-    const thisWeek = upcoming.filter(e => getDaysUntil(e.date) <= 7);
+    const upcoming = MARKET_EVENTS.filter((e) => getDaysUntil(e.date) >= 0);
+    const highImpact = upcoming.filter((e) => e.impact === 'high');
+    const thisWeek = upcoming.filter((e) => getDaysUntil(e.date) <= 7);
     return { total: upcoming.length, highImpact: highImpact.length, thisWeek: thisWeek.length };
   }, []);
 
@@ -132,10 +161,13 @@ export function MarketCalendarPage() {
 
         {/* Type filter chips */}
         <div className="flex gap-2 overflow-x-auto scrollbar-none -mx-5 px-5 pb-1">
-          {TYPE_FILTERS.map(f => (
+          {TYPE_FILTERS.map((f) => (
             <button
               key={f}
-              onClick={() => { setTypeFilter(f); hapticSelection(); }}
+              onClick={() => {
+                setTypeFilter(f);
+                hapticSelection();
+              }}
               className="shrink-0 px-3 py-2 rounded-xl min-h-9"
               style={{
                 background: typeFilter === f ? c.chipActiveBg : c.surface2,
@@ -152,13 +184,16 @@ export function MarketCalendarPage() {
 
         {/* Impact filter */}
         <div className="flex gap-2">
-          {(['high', 'medium', 'low'] as const).map(imp => {
+          {(['high', 'medium', 'low'] as const).map((imp) => {
             const cfg = IMPACT_CONFIG[imp];
             const isActive = impactFilter === imp;
             return (
               <button
                 key={imp}
-                onClick={() => { setImpactFilter(isActive ? null : imp); hapticSelection(); }}
+                onClick={() => {
+                  setImpactFilter(isActive ? null : imp);
+                  hapticSelection();
+                }}
                 className="flex items-center gap-1 px-3 py-1 rounded-lg"
                 style={{
                   background: isActive ? `${cfg.color}18` : 'transparent',
@@ -166,11 +201,13 @@ export function MarketCalendarPage() {
                 }}
               >
                 <div className="w-1.5 h-1.5 rounded-full" style={{ background: cfg.color }} />
-                <span style={{
-                  color: isActive ? cfg.color : c.text3,
-                  fontSize: FONT_SCALE.micro,
-                  fontWeight: FONT_WEIGHT.medium,
-                }}>
+                <span
+                  style={{
+                    color: isActive ? cfg.color : c.text3,
+                    fontSize: FONT_SCALE.micro,
+                    fontWeight: FONT_WEIGHT.medium,
+                  }}
+                >
                   {cfg.label}
                 </span>
               </button>
@@ -181,32 +218,39 @@ export function MarketCalendarPage() {
         {/* List view */}
         {view === 'Danh sách' && (
           <div className="flex flex-col" style={{ gap: 16 }}>
-            {grouped.map(group => (
+            {grouped.map((group) => (
               <div key={group.date}>
                 {/* Date header */}
                 <div className="flex items-center gap-2 mb-2">
-                  <span style={{
-                    color: c.text1,
-                    fontSize: FONT_SCALE.sm,
-                    fontWeight: FONT_WEIGHT.bold,
-                  }}>
+                  <span
+                    style={{
+                      color: c.text1,
+                      fontSize: FONT_SCALE.sm,
+                      fontWeight: FONT_WEIGHT.bold,
+                    }}
+                  >
                     {group.label}
                   </span>
-                  <span style={{
-                    color: c.text3,
-                    fontSize: FONT_SCALE.micro,
-                  }}>
+                  <span
+                    style={{
+                      color: c.text3,
+                      fontSize: FONT_SCALE.micro,
+                    }}
+                  >
                     {getRelativeLabel(group.events[0].date)}
                   </span>
                 </div>
 
                 <div className="flex flex-col" style={{ gap: 4 }}>
-                  {group.events.map(ev => (
+                  {group.events.map((ev) => (
                     <EventCard
                       key={ev.id}
                       event={ev}
                       expanded={expandedId === ev.id}
-                      onToggle={() => { setExpandedId(expandedId === ev.id ? null : ev.id); hapticSelection(); }}
+                      onToggle={() => {
+                        setExpandedId(expandedId === ev.id ? null : ev.id);
+                        hapticSelection();
+                      }}
                       c={c}
                     />
                   ))}
@@ -220,16 +264,24 @@ export function MarketCalendarPage() {
         {view === 'Lịch' && (
           <TrCard className="p-4">
             <div className="flex items-center justify-between mb-4">
-              <span style={{ color: c.text1, fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold }}>
+              <span
+                style={{ color: c.text1, fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold }}
+              >
                 Tháng 3, 2026
               </span>
             </div>
 
             {/* Day headers */}
             <div className="grid grid-cols-7 gap-1 mb-2">
-              {['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'].map(d => (
+              {['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'].map((d) => (
                 <div key={d} className="text-center">
-                  <span style={{ color: c.text3, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.medium }}>
+                  <span
+                    style={{
+                      color: c.text3,
+                      fontSize: FONT_SCALE.micro,
+                      fontWeight: FONT_WEIGHT.medium,
+                    }}
+                  >
                     {d}
                   </span>
                 </div>
@@ -241,7 +293,7 @@ export function MarketCalendarPage() {
               {calendarDays.map(({ day, events: dayEvents }) => {
                 const isToday = day === 11;
                 const hasEvents = dayEvents.length > 0;
-                const hasHighImpact = dayEvents.some(e => e.impact === 'high');
+                const hasHighImpact = dayEvents.some((e) => e.impact === 'high');
                 return (
                   <button
                     key={day}
@@ -254,16 +306,24 @@ export function MarketCalendarPage() {
                     }}
                     className="flex flex-col items-center justify-center rounded-xl py-2"
                     style={{
-                      background: isToday ? 'rgba(59,130,246,0.12)' : hasEvents ? `${c.surface2}` : 'transparent',
-                      border: isToday ? '1.5px solid rgba(59,130,246,0.3)' : '1.5px solid transparent',
+                      background: isToday
+                        ? 'rgba(59,130,246,0.12)'
+                        : hasEvents
+                          ? `${c.surface2}`
+                          : 'transparent',
+                      border: isToday
+                        ? '1.5px solid rgba(59,130,246,0.3)'
+                        : '1.5px solid transparent',
                       minHeight: 44,
                     }}
                   >
-                    <span style={{
-                      color: isToday ? '#3B82F6' : c.text1,
-                      fontSize: FONT_SCALE.xs,
-                      fontWeight: isToday ? FONT_WEIGHT.bold : FONT_WEIGHT.medium,
-                    }}>
+                    <span
+                      style={{
+                        color: isToday ? '#3B82F6' : c.text1,
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: isToday ? FONT_WEIGHT.bold : FONT_WEIGHT.medium,
+                      }}
+                    >
                       {day}
                     </span>
                     {hasEvents && (
@@ -272,7 +332,11 @@ export function MarketCalendarPage() {
                           <div
                             key={i}
                             className="w-1 h-1 rounded-full"
-                            style={{ background: hasHighImpact ? '#EF4444' : EVENT_TYPE_CONFIG[ev.type].color }}
+                            style={{
+                              background: hasHighImpact
+                                ? '#EF4444'
+                                : EVENT_TYPE_CONFIG[ev.type].color,
+                            }}
                           />
                         ))}
                       </div>
@@ -283,13 +347,18 @@ export function MarketCalendarPage() {
             </div>
 
             {/* Legend */}
-            <div className="flex flex-wrap gap-3 mt-4 pt-3" style={{ borderTop: `1px solid ${c.borderSolid}` }}>
-              {Object.entries(EVENT_TYPE_CONFIG).slice(0, 5).map(([key, cfg]) => (
-                <div key={key} className="flex items-center gap-1">
-                  <div className="w-2 h-2 rounded-full" style={{ background: cfg.color }} />
-                  <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>{cfg.label}</span>
-                </div>
-              ))}
+            <div
+              className="flex flex-wrap gap-3 mt-4 pt-3"
+              style={{ borderTop: `1px solid ${c.borderSolid}` }}
+            >
+              {Object.entries(EVENT_TYPE_CONFIG)
+                .slice(0, 5)
+                .map(([key, cfg]) => (
+                  <div key={key} className="flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-full" style={{ background: cfg.color }} />
+                    <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>{cfg.label}</span>
+                  </div>
+                ))}
             </div>
           </TrCard>
         )}
@@ -309,23 +378,31 @@ export function MarketCalendarPage() {
 
 /* ─── Sub-components ─── */
 
-function MiniStat({ label, value, color, c }: {
-  label: string; value: number; color: string;
+function MiniStat({
+  label,
+  value,
+  color,
+  c,
+}: {
+  label: string;
+  value: number;
+  color: string;
   c: ReturnType<typeof useThemeColors>;
 }) {
   return (
     <TrCard className="p-3 text-center">
-      <p style={{ color, fontSize: FONT_SCALE.lg, fontWeight: FONT_WEIGHT.bold }}>
-        {value}
-      </p>
-      <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginTop: 2 }}>
-        {label}
-      </p>
+      <p style={{ color, fontSize: FONT_SCALE.lg, fontWeight: FONT_WEIGHT.bold }}>{value}</p>
+      <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginTop: 2 }}>{label}</p>
     </TrCard>
   );
 }
 
-function EventCard({ event, expanded, onToggle, c }: {
+function EventCard({
+  event,
+  expanded,
+  onToggle,
+  c,
+}: {
   event: MarketEvent;
   expanded: boolean;
   onToggle: () => void;
@@ -380,12 +457,14 @@ function EventCard({ event, expanded, onToggle, c }: {
               </span>
             </div>
 
-            <p style={{
-              color: isPast ? c.text3 : c.text1,
-              fontSize: FONT_SCALE.sm,
-              fontWeight: FONT_WEIGHT.semibold,
-              lineHeight: 1.3,
-            }}>
+            <p
+              style={{
+                color: isPast ? c.text3 : c.text1,
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.semibold,
+                lineHeight: 1.3,
+              }}
+            >
               {event.titleVi}
             </p>
 
@@ -394,7 +473,13 @@ function EventCard({ event, expanded, onToggle, c }: {
               <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>
                 {formatEventTime(event.date)}
               </span>
-              <span style={{ fontSize: FONT_SCALE.micro, color: impactCfg.color, fontWeight: FONT_WEIGHT.medium }}>
+              <span
+                style={{
+                  fontSize: FONT_SCALE.micro,
+                  color: impactCfg.color,
+                  fontWeight: FONT_WEIGHT.medium,
+                }}
+              >
                 • {impactCfg.label}
               </span>
               {!event.confirmed && (
@@ -407,12 +492,18 @@ function EventCard({ event, expanded, onToggle, c }: {
 
           {/* Days countdown */}
           <div className="text-right shrink-0">
-            <p style={{
-              color: daysUntil <= 1 ? '#EF4444' : daysUntil <= 3 ? '#F59E0B' : c.text2,
-              fontSize: FONT_SCALE.xs,
-              fontWeight: FONT_WEIGHT.bold,
-            }}>
-              {daysUntil === 0 ? 'Hôm nay' : daysUntil > 0 ? `${daysUntil}d` : `${Math.abs(daysUntil)}d trước`}
+            <p
+              style={{
+                color: daysUntil <= 1 ? '#EF4444' : daysUntil <= 3 ? '#F59E0B' : c.text2,
+                fontSize: FONT_SCALE.xs,
+                fontWeight: FONT_WEIGHT.bold,
+              }}
+            >
+              {daysUntil === 0
+                ? 'Hôm nay'
+                : daysUntil > 0
+                  ? `${daysUntil}d`
+                  : `${Math.abs(daysUntil)}d trước`}
             </p>
           </div>
         </div>
@@ -420,16 +511,15 @@ function EventCard({ event, expanded, onToggle, c }: {
 
       {/* Expanded detail */}
       {expanded && (
-        <div
-          className="px-4 pb-3"
-          style={{ borderTop: `1px solid ${c.borderSolid}` }}
-        >
-          <p style={{
-            color: c.text2,
-            fontSize: FONT_SCALE.xs,
-            lineHeight: 1.5,
-            paddingTop: 12,
-          }}>
+        <div className="px-4 pb-3" style={{ borderTop: `1px solid ${c.borderSolid}` }}>
+          <p
+            style={{
+              color: c.text2,
+              fontSize: FONT_SCALE.xs,
+              lineHeight: 1.5,
+              paddingTop: 12,
+            }}
+          >
             {event.description}
           </p>
           {event.source && (

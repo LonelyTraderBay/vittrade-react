@@ -17,17 +17,37 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  TrendingUp, TrendingDown, Activity, BarChart3, Target,
-  Calendar, DollarSign, Percent, AlertTriangle, Info,
-  Play, RefreshCw, Download,
+  TrendingUp,
+  TrendingDown,
+  Activity,
+  BarChart3,
+  Target,
+  Calendar,
+  DollarSign,
+  Percent,
+  AlertTriangle,
+  Info,
+  Play,
+  RefreshCw,
+  Download,
 } from 'lucide-react';
 import {
-  LineChart, Line, AreaChart, Area, BarChart, Bar,
-  XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, ComposedChart,
+  LineChart,
+  Line,
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+  ComposedChart,
 } from 'recharts';
 
 const TABS = ['Cai dat', 'Ket qua', 'Phan tich'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface BacktestConfig {
   asset: string;
@@ -61,11 +81,11 @@ const MOCK_HISTORICAL_DATA = [
   { date: '2024-05', price: 50000, dcaValue: 52083, lumpValue: 11905, dcaShares: 1.167 },
   { date: '2024-06', price: 48000, dcaValue: 61875, lumpValue: 11429, dcaShares: 1.375 },
   { date: '2024-07', price: 55000, dcaValue: 73438, lumpValue: 13095, dcaShares: 1.557 },
-  { date: '2024-08', price: 52000, dcaValue: 83750, lumpValue: 12381, dcaShares: 1.750 },
+  { date: '2024-08', price: 52000, dcaValue: 83750, lumpValue: 12381, dcaShares: 1.75 },
   { date: '2024-09', price: 60000, dcaValue: 97500, lumpValue: 14286, dcaShares: 1.917 },
   { date: '2024-10', price: 58000, dcaValue: 110417, lumpValue: 13810, dcaShares: 2.084 },
   { date: '2024-11', price: 68000, dcaValue: 131563, lumpValue: 16190, dcaShares: 2.231 },
-  { date: '2024-12', price: 65000, dcaValue: 145000, lumpValue: 15476, dcaShares: 2.400 },
+  { date: '2024-12', price: 65000, dcaValue: 145000, lumpValue: 15476, dcaShares: 2.4 },
 ];
 
 const DRAWDOWN_DATA = [
@@ -173,7 +193,9 @@ export function DCABacktesterPage() {
               </p>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label style={{ color: c.text2, fontSize: 11, display: 'block', marginBottom: 6 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 11, display: 'block', marginBottom: 6 }}
+                  >
                     Start Date
                   </label>
                   <input
@@ -181,11 +203,18 @@ export function DCABacktesterPage() {
                     value={config.startDate}
                     onChange={(e) => setConfig({ ...config, startDate: e.target.value })}
                     className="w-full px-3 py-2 rounded-xl outline-none"
-                    style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 13 }}
+                    style={{
+                      background: c.bg,
+                      border: `1px solid ${c.border}`,
+                      color: c.text1,
+                      fontSize: 13,
+                    }}
                   />
                 </div>
                 <div>
-                  <label style={{ color: c.text2, fontSize: 11, display: 'block', marginBottom: 6 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 11, display: 'block', marginBottom: 6 }}
+                  >
                     End Date
                   </label>
                   <input
@@ -193,7 +222,12 @@ export function DCABacktesterPage() {
                     value={config.endDate}
                     onChange={(e) => setConfig({ ...config, endDate: e.target.value })}
                     className="w-full px-3 py-2 rounded-xl outline-none"
-                    style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 13 }}
+                    style={{
+                      background: c.bg,
+                      border: `1px solid ${c.border}`,
+                      color: c.text1,
+                      fontSize: 13,
+                    }}
                   />
                 </div>
               </div>
@@ -211,9 +245,16 @@ export function DCABacktesterPage() {
                 <input
                   type="number"
                   value={config.investmentAmount}
-                  onChange={(e) => setConfig({ ...config, investmentAmount: parseFloat(e.target.value) })}
+                  onChange={(e) =>
+                    setConfig({ ...config, investmentAmount: parseFloat(e.target.value) })
+                  }
                   className="w-full px-3 py-2 rounded-xl outline-none"
-                  style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 13 }}
+                  style={{
+                    background: c.bg,
+                    border: `1px solid ${c.border}`,
+                    color: c.text1,
+                    fontSize: 13,
+                  }}
                 />
               </div>
 
@@ -252,8 +293,16 @@ export function DCABacktesterPage() {
               <div className="space-y-2">
                 {[
                   { value: 'fixed', label: 'Fixed Amount', desc: 'Invest same amount each period' },
-                  { value: 'value_average', label: 'Value Averaging', desc: 'Adjust amount to reach target value' },
-                  { value: 'buy_dips', label: 'Buy the Dips', desc: 'Invest more when price drops' },
+                  {
+                    value: 'value_average',
+                    label: 'Value Averaging',
+                    desc: 'Adjust amount to reach target value',
+                  },
+                  {
+                    value: 'buy_dips',
+                    label: 'Buy the Dips',
+                    desc: 'Invest more when price drops',
+                  },
                 ].map((strategy) => (
                   <button
                     key={strategy.value}
@@ -285,9 +334,16 @@ export function DCABacktesterPage() {
                 <input
                   type="number"
                   value={config.dipThreshold}
-                  onChange={(e) => setConfig({ ...config, dipThreshold: parseFloat(e.target.value) })}
+                  onChange={(e) =>
+                    setConfig({ ...config, dipThreshold: parseFloat(e.target.value) })
+                  }
                   className="w-full px-3 py-2 rounded-xl outline-none"
-                  style={{ background: c.surface, border: `1px solid ${c.border}`, color: c.text1, fontSize: 13 }}
+                  style={{
+                    background: c.surface,
+                    border: `1px solid ${c.border}`,
+                    color: c.text1,
+                    fontSize: 13,
+                  }}
                 />
                 <p style={{ color: c.text3, fontSize: 10, marginTop: 4 }}>
                   Double investment when price drops by this %
@@ -324,12 +380,15 @@ export function DCABacktesterPage() {
             {/* Disclaimer */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
+              style={{
+                background: 'rgba(245,158,11,0.06)',
+                border: '1px solid rgba(245,158,11,0.15)',
+              }}
             >
               <Info size={14} color="#F59E0B" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Backtest dua tren du lieu lich su. Hieu suat qua khu khong dam bao ket qua tuong lai.
-                Chi mang tinh tham khao.
+                Backtest dua tren du lieu lich su. Hieu suat qua khu khong dam bao ket qua tuong
+                lai. Chi mang tinh tham khao.
               </p>
             </div>
           </>
@@ -350,7 +409,10 @@ export function DCABacktesterPage() {
               </div>
               <div
                 className="rounded-2xl p-4"
-                style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}
+                style={{
+                  background: 'rgba(16,185,129,0.08)',
+                  border: '1px solid rgba(16,185,129,0.2)',
+                }}
               >
                 <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Final Value</p>
                 <p style={{ color: '#10B981', fontSize: 20, fontWeight: 700 }}>
@@ -451,10 +513,27 @@ export function DCABacktesterPage() {
               >
                 <div className="space-y-3">
                   {[
-                    { label: 'Avg Buy Price', value: `$${results.avgBuyPrice.toLocaleString()}`, icon: DollarSign },
-                    { label: 'Total Shares', value: results.totalShares.toFixed(4), icon: BarChart3 },
-                    { label: 'Number of Buys', value: results.numberOfBuys.toString(), icon: Calendar },
-                    { label: 'Max Drawdown', value: `${results.maxDrawdown}%`, icon: TrendingDown, negative: true },
+                    {
+                      label: 'Avg Buy Price',
+                      value: `$${results.avgBuyPrice.toLocaleString()}`,
+                      icon: DollarSign,
+                    },
+                    {
+                      label: 'Total Shares',
+                      value: results.totalShares.toFixed(4),
+                      icon: BarChart3,
+                    },
+                    {
+                      label: 'Number of Buys',
+                      value: results.numberOfBuys.toString(),
+                      icon: Calendar,
+                    },
+                    {
+                      label: 'Max Drawdown',
+                      value: `${results.maxDrawdown}%`,
+                      icon: TrendingDown,
+                      negative: true,
+                    },
                     { label: 'Sharpe Ratio', value: results.sharpeRatio.toFixed(2), icon: Target },
                     { label: 'Volatility', value: `${results.volatility}%`, icon: Activity },
                     { label: 'Win Rate', value: `${results.winRate}%`, icon: Percent },
@@ -482,7 +561,10 @@ export function DCABacktesterPage() {
             {/* DCA Advantage */}
             <div
               className="rounded-2xl p-4"
-              style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}
+              style={{
+                background: 'rgba(16,185,129,0.06)',
+                border: '1px solid rgba(16,185,129,0.15)',
+              }}
             >
               <div className="flex items-start gap-2 mb-2">
                 <TrendingUp size={16} color="#10B981" style={{ marginTop: 2 }} />
@@ -561,19 +643,34 @@ export function DCABacktesterPage() {
                   {
                     label: 'Max Drawdown',
                     value: results.maxDrawdown,
-                    status: results.maxDrawdown > -15 ? 'good' : results.maxDrawdown > -30 ? 'moderate' : 'high',
+                    status:
+                      results.maxDrawdown > -15
+                        ? 'good'
+                        : results.maxDrawdown > -30
+                          ? 'moderate'
+                          : 'high',
                     desc: 'Largest peak-to-trough decline',
                   },
                   {
                     label: 'Volatility',
                     value: results.volatility,
-                    status: results.volatility < 20 ? 'good' : results.volatility < 40 ? 'moderate' : 'high',
+                    status:
+                      results.volatility < 20
+                        ? 'good'
+                        : results.volatility < 40
+                          ? 'moderate'
+                          : 'high',
                     desc: 'Standard deviation of returns',
                   },
                   {
                     label: 'Sharpe Ratio',
                     value: results.sharpeRatio,
-                    status: results.sharpeRatio > 2 ? 'good' : results.sharpeRatio > 1 ? 'moderate' : 'high',
+                    status:
+                      results.sharpeRatio > 2
+                        ? 'good'
+                        : results.sharpeRatio > 1
+                          ? 'moderate'
+                          : 'high',
                     desc: 'Risk-adjusted return',
                   },
                 ].map((metric) => (
@@ -584,7 +681,9 @@ export function DCABacktesterPage() {
                   >
                     <div className="flex items-start justify-between mb-2">
                       <div>
-                        <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>{metric.label}</p>
+                        <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
+                          {metric.label}
+                        </p>
                         <p style={{ color: c.text3, fontSize: 10 }}>{metric.desc}</p>
                       </div>
                       <span
@@ -594,14 +693,14 @@ export function DCABacktesterPage() {
                             metric.status === 'good'
                               ? 'rgba(16,185,129,0.1)'
                               : metric.status === 'moderate'
-                              ? 'rgba(245,158,11,0.1)'
-                              : 'rgba(239,68,68,0.1)',
+                                ? 'rgba(245,158,11,0.1)'
+                                : 'rgba(239,68,68,0.1)',
                           color:
                             metric.status === 'good'
                               ? '#10B981'
                               : metric.status === 'moderate'
-                              ? '#F59E0B'
-                              : '#EF4444',
+                                ? '#F59E0B'
+                                : '#EF4444',
                         }}
                       >
                         {metric.status.toUpperCase()}
@@ -643,9 +742,7 @@ export function DCABacktesterPage() {
             <p style={{ color: c.text2, fontSize: 13, marginBottom: 4 }}>
               Chua co ket qua backtest
             </p>
-            <p style={{ color: c.text3, fontSize: 11 }}>
-              Vao tab "Cai dat" de chay backtest
-            </p>
+            <p style={{ color: c.text3, fontSize: 11 }}>Vao tab "Cai dat" de chay backtest</p>
           </div>
         )}
       </PageContent>

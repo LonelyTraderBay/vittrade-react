@@ -15,12 +15,20 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  ArrowLeftRight, TrendingDown, Shield, Zap, AlertCircle,
-  ChevronDown, Info, ChevronRight, Repeat, ExternalLink,
+  ArrowLeftRight,
+  TrendingDown,
+  Shield,
+  Zap,
+  AlertCircle,
+  ChevronDown,
+  Info,
+  ChevronRight,
+  Repeat,
+  ExternalLink,
 } from 'lucide-react';
 
 const TABS = ['So sánh', 'Lịch sử', 'Cài đặt'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface DEX {
   name: string;
@@ -152,7 +160,10 @@ export function LaunchpadSwapAggregatorPage() {
   const [showRouteDetails, setShowRouteDetails] = useState<string | null>(null);
 
   const bestDex = MOCK_DEXES[0];
-  const savingsVsWorst = ((bestDex.price - MOCK_DEXES[MOCK_DEXES.length - 1].price) / MOCK_DEXES[MOCK_DEXES.length - 1].price) * 100;
+  const savingsVsWorst =
+    ((bestDex.price - MOCK_DEXES[MOCK_DEXES.length - 1].price) /
+      MOCK_DEXES[MOCK_DEXES.length - 1].price) *
+    100;
 
   return (
     <PageLayout>
@@ -201,7 +212,9 @@ export function LaunchpadSwapAggregatorPage() {
                 </button>
               </div>
 
-              <p style={{ color: c.text2, fontSize: 12, marginBottom: 12, marginTop: 16 }}>Swap to</p>
+              <p style={{ color: c.text2, fontSize: 12, marginBottom: 12, marginTop: 16 }}>
+                Swap to
+              </p>
               <div className="flex items-center gap-3">
                 <button
                   className="flex items-center gap-2 px-3 py-2 rounded-xl hover:opacity-90"
@@ -225,7 +238,10 @@ export function LaunchpadSwapAggregatorPage() {
             {/* Best Route Alert */}
             <div
               className="rounded-2xl p-4 flex items-start gap-3"
-              style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}
+              style={{
+                background: 'rgba(16,185,129,0.06)',
+                border: '1px solid rgba(16,185,129,0.15)',
+              }}
             >
               <Zap size={18} color="#10B981" />
               <div className="flex-1">
@@ -243,7 +259,9 @@ export function LaunchpadSwapAggregatorPage() {
               {MOCK_DEXES.map((dex, idx) => (
                 <div key={dex.name}>
                   <button
-                    onClick={() => setShowRouteDetails(showRouteDetails === dex.name ? null : dex.name)}
+                    onClick={() =>
+                      setShowRouteDetails(showRouteDetails === dex.name ? null : dex.name)
+                    }
                     className="w-full rounded-2xl p-4 hover:opacity-90 transition-opacity active:scale-[0.98]"
                     style={{
                       background: idx === 0 ? 'rgba(16,185,129,0.04)' : c.surface,
@@ -260,7 +278,9 @@ export function LaunchpadSwapAggregatorPage() {
                         </div>
                         <div className="text-left">
                           <div className="flex items-center gap-2">
-                            <p style={{ color: c.text1, fontSize: 15, fontWeight: 600 }}>{dex.name}</p>
+                            <p style={{ color: c.text1, fontSize: 15, fontWeight: 600 }}>
+                              {dex.name}
+                            </p>
                             {idx === 0 && (
                               <span
                                 className="px-2 py-0.5 rounded-md text-[10px] font-semibold"
@@ -286,7 +306,12 @@ export function LaunchpadSwapAggregatorPage() {
                         <p style={{ color: c.text3, fontSize: 10 }}>Price Impact</p>
                         <p
                           style={{
-                            color: dex.priceImpact < 0.2 ? '#10B981' : dex.priceImpact < 0.3 ? '#F59E0B' : '#EF4444',
+                            color:
+                              dex.priceImpact < 0.2
+                                ? '#10B981'
+                                : dex.priceImpact < 0.3
+                                  ? '#F59E0B'
+                                  : '#EF4444',
                             fontSize: 13,
                             fontWeight: 600,
                           }}
@@ -317,11 +342,18 @@ export function LaunchpadSwapAggregatorPage() {
                             <React.Fragment key={i}>
                               <span
                                 className="px-2 py-1 rounded-lg"
-                                style={{ background: c.surface, color: c.text1, fontSize: 11, fontWeight: 600 }}
+                                style={{
+                                  background: c.surface,
+                                  color: c.text1,
+                                  fontSize: 11,
+                                  fontWeight: 600,
+                                }}
                               >
                                 {token}
                               </span>
-                              {i < dex.route.length - 1 && <ChevronRight size={12} color={c.text3} />}
+                              {i < dex.route.length - 1 && (
+                                <ChevronRight size={12} color={c.text3} />
+                              )}
                             </React.Fragment>
                           ))}
                         </div>
@@ -353,11 +385,15 @@ export function LaunchpadSwapAggregatorPage() {
             {/* Warning */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
+              style={{
+                background: 'rgba(245,158,11,0.06)',
+                border: '1px solid rgba(245,158,11,0.15)',
+              }}
             >
               <AlertCircle size={14} color="#F59E0B" />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Giá chỉ mang tính chất tham khảo. Kiểm tra lại trước khi swap. Slippage: {slippageTolerance}%
+                Giá chỉ mang tính chất tham khảo. Kiểm tra lại trước khi swap. Slippage:{' '}
+                {slippageTolerance}%
               </p>
             </div>
           </>
@@ -368,7 +404,9 @@ export function LaunchpadSwapAggregatorPage() {
             {MOCK_HISTORY.map((swap) => (
               <button
                 key={swap.id}
-                onClick={() => {/* Navigate to tx detail */}}
+                onClick={() => {
+                  /* Navigate to tx detail */
+                }}
                 className="w-full rounded-2xl p-4 hover:opacity-90 transition-opacity active:scale-[0.98]"
                 style={{ background: c.surface, border: `1px solid ${c.border}` }}
               >
@@ -385,9 +423,14 @@ export function LaunchpadSwapAggregatorPage() {
                             swap.status === 'success'
                               ? 'rgba(16,185,129,0.15)'
                               : swap.status === 'pending'
-                              ? 'rgba(245,158,11,0.15)'
-                              : 'rgba(239,68,68,0.15)',
-                          color: swap.status === 'success' ? '#10B981' : swap.status === 'pending' ? '#F59E0B' : '#EF4444',
+                                ? 'rgba(245,158,11,0.15)'
+                                : 'rgba(239,68,68,0.15)',
+                          color:
+                            swap.status === 'success'
+                              ? '#10B981'
+                              : swap.status === 'pending'
+                                ? '#F59E0B'
+                                : '#EF4444',
                         }}
                       >
                         {swap.status.toUpperCase()}
@@ -396,11 +439,16 @@ export function LaunchpadSwapAggregatorPage() {
                     <p style={{ color: c.text3, fontSize: 11 }}>{swap.dex}</p>
                   </div>
                   <div className="text-right">
-                    <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>{swap.amount} {swap.from}</p>
+                    <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>
+                      {swap.amount} {swap.from}
+                    </p>
                     <p style={{ color: c.text3, fontSize: 11 }}>@{swap.rate.toFixed(2)}</p>
                   </div>
                 </div>
-                <div className="flex items-center justify-between pt-2" style={{ borderTop: `1px solid ${c.border}` }}>
+                <div
+                  className="flex items-center justify-between pt-2"
+                  style={{ borderTop: `1px solid ${c.border}` }}
+                >
                   <p style={{ color: c.text3, fontSize: 10 }}>
                     {swap.timestamp.toLocaleDateString()} {swap.timestamp.toLocaleTimeString()}
                   </p>
@@ -417,9 +465,14 @@ export function LaunchpadSwapAggregatorPage() {
         {tab === 'Cài đặt' && (
           <>
             <PageSection label="Slippage & Gas">
-              <div className="rounded-2xl p-4" style={{ background: c.surface, border: `1px solid ${c.border}` }}>
+              <div
+                className="rounded-2xl p-4"
+                style={{ background: c.surface, border: `1px solid ${c.border}` }}
+              >
                 <div className="mb-4">
-                  <label style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}
+                  >
                     Slippage Tolerance (%)
                   </label>
                   <div className="flex gap-2 mb-2">
@@ -445,11 +498,19 @@ export function LaunchpadSwapAggregatorPage() {
                     onChange={(e) => setSlippageTolerance(e.target.value)}
                     placeholder="Custom"
                     className="w-full px-4 py-2.5 rounded-xl outline-none"
-                    style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 14 }}
+                    style={{
+                      background: c.bg,
+                      border: `1px solid ${c.border}`,
+                      color: c.text1,
+                      fontSize: 14,
+                    }}
                   />
                 </div>
 
-                <div className="flex items-center justify-between pt-3" style={{ borderTop: `1px solid ${c.border}` }}>
+                <div
+                  className="flex items-center justify-between pt-3"
+                  style={{ borderTop: `1px solid ${c.border}` }}
+                >
                   <div>
                     <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>Auto Refresh</p>
                     <p style={{ color: c.text3, fontSize: 11 }}>Cập nhật giá mỗi 10s</p>
@@ -457,7 +518,12 @@ export function LaunchpadSwapAggregatorPage() {
                   <button
                     onClick={() => setAutoRefresh(!autoRefresh)}
                     className="relative"
-                    style={{ width: 48, height: 28, borderRadius: 14, background: autoRefresh ? c.primary : c.border }}
+                    style={{
+                      width: 48,
+                      height: 28,
+                      borderRadius: 14,
+                      background: autoRefresh ? c.primary : c.border,
+                    }}
                   >
                     <div
                       className="absolute top-1 transition-all"
@@ -477,11 +543,15 @@ export function LaunchpadSwapAggregatorPage() {
             <PageSection label="An toàn">
               <div
                 className="rounded-xl p-3 flex items-start gap-2"
-                style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+                style={{
+                  background: 'rgba(59,130,246,0.06)',
+                  border: '1px solid rgba(59,130,246,0.15)',
+                }}
               >
                 <Info size={14} color="#3B82F6" />
                 <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                  Luôn kiểm tra địa chỉ hợp đồng và chỉ swap trên các DEX uy tín. Không chia sẻ private key.
+                  Luôn kiểm tra địa chỉ hợp đồng và chỉ swap trên các DEX uy tín. Không chia sẻ
+                  private key.
                 </p>
               </div>
             </PageSection>
@@ -499,7 +569,9 @@ export function LaunchpadSwapAggregatorPage() {
           >
             <button
               onClick={() => {
-                alert(`Swap ${amount} ${fromToken} for ${(parseFloat(amount) / bestDex.price).toFixed(4)} ${toToken} via ${bestDex.name}`);
+                alert(
+                  `Swap ${amount} ${fromToken} for ${(parseFloat(amount) / bestDex.price).toFixed(4)} ${toToken} via ${bestDex.name}`,
+                );
               }}
               className="w-full rounded-[14px] flex items-center justify-center gap-2 transition-all hover:opacity-90 active:scale-[0.98]"
               style={{

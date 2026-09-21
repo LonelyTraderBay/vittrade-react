@@ -22,7 +22,9 @@ export function useGoBack() {
   return useCallback(() => {
     if (navigatingRef.current) return;
     navigatingRef.current = true;
-    setTimeout(() => { navigatingRef.current = false; }, 300);
+    setTimeout(() => {
+      navigatingRef.current = false;
+    }, 300);
     navigate(-1);
   }, [navigate]);
 }

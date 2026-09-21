@@ -34,17 +34,17 @@ interface SlippageProtectionProps {
   amount: number;
   expectedPrice: number;
   currentPrice: number;
-  
+
   // Liquidity data (for impact estimation)
   orderBookDepth?: {
     bids: Array<{ price: number; quantity: number }>;
     asks: Array<{ price: number; quantity: number }>;
   };
-  
+
   // Current settings
   settings: SlippageSettings;
   onSettingsChange: (settings: SlippageSettings) => void;
-  
+
   // Callbacks
   onApply?: () => void;
 }
@@ -63,7 +63,10 @@ const SLIPPAGE_PRESETS = [
 function estimatePriceImpact(
   side: 'buy' | 'sell',
   amount: number,
-  orderBook?: { bids: Array<{ price: number; quantity: number }>; asks: Array<{ price: number; quantity: number }> }
+  orderBook?: {
+    bids: Array<{ price: number; quantity: number }>;
+    asks: Array<{ price: number; quantity: number }>;
+  },
 ): { avgPrice: number; impactPct: number; worstPrice: number } {
   if (!orderBook) {
     // Fallback: assume 0.2% impact for every 10 units
@@ -82,7 +85,7 @@ function estimatePriceImpact(
 
   for (const level of levels) {
     if (remaining <= 0) break;
-    
+
     const fillQty = Math.min(remaining, level.quantity);
     totalCost += fillQty * level.price;
     remaining -= fillQty;
@@ -117,11 +120,12 @@ export function SlippageProtection({
 
   // Estimate price impact
   const impact = estimatePriceImpact(side, amount, orderBookDepth);
-  
+
   // Calculate max acceptable price
-  const maxAcceptablePrice = side === 'buy'
-    ? expectedPrice * (1 + settings.maxSlippagePct / 100)
-    : expectedPrice * (1 - settings.maxSlippagePct / 100);
+  const maxAcceptablePrice =
+    side === 'buy'
+      ? expectedPrice * (1 + settings.maxSlippagePct / 100)
+      : expectedPrice * (1 - settings.maxSlippagePct / 100);
 
   // Check if current impact exceeds tolerance
   const impactExceedsTolerance = impact.impactPct > settings.maxSlippagePct;
@@ -165,7 +169,10 @@ export function SlippageProtection({
           </div>
           <div className="flex items-center gap-2">
             <button
-              onClick={() => { setShowInfo(!showInfo); hapticSelection(); }}
+              onClick={() => {
+                setShowInfo(!showInfo);
+                hapticSelection();
+              }}
               className="w-8 h-8 rounded-lg flex items-center justify-center"
               style={{ background: c.surface2 }}
             >
@@ -191,7 +198,13 @@ export function SlippageProtection({
         </div>
 
         {showInfo && (
-          <div className="p-3 rounded-xl mb-3" style={{ background: 'rgba(59,130,246,0.08)', border: `1px solid rgba(59,130,246,0.2)` }}>
+          <div
+            className="p-3 rounded-xl mb-3"
+            style={{
+              background: 'rgba(59,130,246,0.08)',
+              border: `1px solid rgba(59,130,246,0.2)`,
+            }}
+          >
             <p style={{ fontSize: FONT_SCALE.xs, color: c.text2, lineHeight: 1.6 }}>
               <strong style={{ color: '#3B82F6' }}>Slippage Protection</strong> ngăn lệnh Market
               thực thi với giá quá tệ. Nếu slippage vượt ngưỡng, lệnh sẽ bị reject tự động.
@@ -219,42 +232,52 @@ export function SlippageProtection({
       {settings.enabled && (
         <>
           <div>
-            <label style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}>
+            <label
+              style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}
+            >
               Max Slippage Tolerance
             </label>
             <div className="grid grid-cols-2 gap-2">
-              {SLIPPAGE_PRESETS.map(preset => (
+              {SLIPPAGE_PRESETS.map((preset) => (
                 <button
                   key={preset.value}
                   onClick={() => handleSlippageChange(preset.value)}
                   className="px-3 py-3 rounded-xl min-h-11 text-left"
                   style={{
-                    background: settings.maxSlippagePct === preset.value ? c.chipActiveBg : c.surface2,
-                    border: settings.maxSlippagePct === preset.value
-                      ? `2px solid ${c.chipActiveBorder}`
-                      : `1.5px solid ${c.borderSolid}`,
-                    boxShadow: settings.maxSlippagePct === preset.value
-                      ? '0 1px 3px rgba(59,130,246,0.15)'
-                      : 'none',
+                    background:
+                      settings.maxSlippagePct === preset.value ? c.chipActiveBg : c.surface2,
+                    border:
+                      settings.maxSlippagePct === preset.value
+                        ? `2px solid ${c.chipActiveBorder}`
+                        : `1.5px solid ${c.borderSolid}`,
+                    boxShadow:
+                      settings.maxSlippagePct === preset.value
+                        ? '0 1px 3px rgba(59,130,246,0.15)'
+                        : 'none',
                   }}
                 >
                   <div className="flex items-center justify-between">
-                    <span style={{
-                      fontSize: FONT_SCALE.xs,
-                      fontWeight: settings.maxSlippagePct === preset.value ? FONT_WEIGHT.bold : FONT_WEIGHT.semibold,
-                      color: settings.maxSlippagePct === preset.value ? c.chipActiveText : c.text2,
-                    }}>
+                    <span
+                      style={{
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight:
+                          settings.maxSlippagePct === preset.value
+                            ? FONT_WEIGHT.bold
+                            : FONT_WEIGHT.semibold,
+                        color:
+                          settings.maxSlippagePct === preset.value ? c.chipActiveText : c.text2,
+                      }}
+                    >
                       {preset.label}
                     </span>
-                    <div
-                      className="w-2 h-2 rounded-full"
-                      style={{ background: preset.color }}
-                    />
+                    <div className="w-2 h-2 rounded-full" style={{ background: preset.color }} />
                   </div>
-                  <span style={{
-                    fontSize: FONT_SCALE.micro,
-                    color: settings.maxSlippagePct === preset.value ? c.chipActiveText : c.text3,
-                  }}>
+                  <span
+                    style={{
+                      fontSize: FONT_SCALE.micro,
+                      color: settings.maxSlippagePct === preset.value ? c.chipActiveText : c.text3,
+                    }}
+                  >
                     {preset.level}
                   </span>
                 </button>
@@ -263,7 +286,10 @@ export function SlippageProtection({
           </div>
 
           {/* Price Impact Estimation */}
-          <TrCard className="p-4" accentBorder={impactExceedsTolerance ? 'rgba(239,68,68,0.3)' : 'rgba(59,130,246,0.2)'}>
+          <TrCard
+            className="p-4"
+            accentBorder={impactExceedsTolerance ? 'rgba(239,68,68,0.3)' : 'rgba(59,130,246,0.2)'}
+          >
             <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, marginBottom: 12 }}>
               Estimated Price Impact
             </p>
@@ -273,7 +299,14 @@ export function SlippageProtection({
                 <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 4 }}>
                   Expected Price
                 </p>
-                <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+                <p
+                  style={{
+                    fontSize: FONT_SCALE.sm,
+                    fontWeight: FONT_WEIGHT.bold,
+                    color: c.text1,
+                    fontFamily: 'monospace',
+                  }}
+                >
                   {fmtPrice(expectedPrice)}
                 </p>
               </div>
@@ -281,25 +314,37 @@ export function SlippageProtection({
                 <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 4 }}>
                   Max Accept
                 </p>
-                <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+                <p
+                  style={{
+                    fontSize: FONT_SCALE.sm,
+                    fontWeight: FONT_WEIGHT.bold,
+                    color: c.text1,
+                    fontFamily: 'monospace',
+                  }}
+                >
                   {fmtPrice(maxAcceptablePrice)}
                 </p>
               </div>
             </div>
 
-            <div className="p-3 rounded-xl" style={{
-              background: impactExceedsTolerance ? 'rgba(239,68,68,0.08)' : 'rgba(59,130,246,0.08)',
-              border: `1px solid ${impactExceedsTolerance ? 'rgba(239,68,68,0.2)' : 'rgba(59,130,246,0.2)'}`,
-            }}>
+            <div
+              className="p-3 rounded-xl"
+              style={{
+                background: impactExceedsTolerance
+                  ? 'rgba(239,68,68,0.08)'
+                  : 'rgba(59,130,246,0.08)',
+                border: `1px solid ${impactExceedsTolerance ? 'rgba(239,68,68,0.2)' : 'rgba(59,130,246,0.2)'}`,
+              }}
+            >
               <div className="flex items-center justify-between mb-2">
-                <span style={{ fontSize: FONT_SCALE.xs, color: c.text2 }}>
-                  Estimated Slippage
-                </span>
-                <span style={{
-                  fontSize: FONT_SCALE.sm,
-                  fontWeight: FONT_WEIGHT.bold,
-                  color: impactExceedsTolerance ? '#EF4444' : '#3B82F6',
-                }}>
+                <span style={{ fontSize: FONT_SCALE.xs, color: c.text2 }}>Estimated Slippage</span>
+                <span
+                  style={{
+                    fontSize: FONT_SCALE.sm,
+                    fontWeight: FONT_WEIGHT.bold,
+                    color: impactExceedsTolerance ? '#EF4444' : '#3B82F6',
+                  }}
+                >
                   {fmtPct(impact.impactPct)}
                 </span>
               </div>
@@ -313,7 +358,14 @@ export function SlippageProtection({
 
           {/* Options */}
           <TrCard className="p-4">
-            <p style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, color: c.text1, marginBottom: 12 }}>
+            <p
+              style={{
+                fontSize: FONT_SCALE.xs,
+                fontWeight: FONT_WEIGHT.bold,
+                color: c.text1,
+                marginBottom: 12,
+              }}
+            >
               Advanced Options
             </p>
 
@@ -338,7 +390,14 @@ export function SlippageProtection({
                     {settings.rejectOnExceed && <Check size={12} color="#fff" />}
                   </div>
                   <div className="flex-1 text-left">
-                    <p style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text1, marginBottom: 2 }}>
+                    <p
+                      style={{
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: FONT_WEIGHT.semibold,
+                        color: c.text1,
+                        marginBottom: 2,
+                      }}
+                    >
                       Reject if worse than limit
                     </p>
                     <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, lineHeight: 1.4 }}>
@@ -368,7 +427,14 @@ export function SlippageProtection({
                     {settings.allowPartialFill && <Check size={12} color="#fff" />}
                   </div>
                   <div className="flex-1 text-left">
-                    <p style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text1, marginBottom: 2 }}>
+                    <p
+                      style={{
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: FONT_WEIGHT.semibold,
+                        color: c.text1,
+                        marginBottom: 2,
+                      }}
+                    >
                       Allow partial fill
                     </p>
                     <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, lineHeight: 1.4 }}>
@@ -382,11 +448,18 @@ export function SlippageProtection({
 
           {/* Warning if would reject */}
           {wouldReject && (
-            <div className="flex items-start gap-2 rounded-xl px-3 py-3" style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}>
+            <div
+              className="flex items-start gap-2 rounded-xl px-3 py-3"
+              style={{
+                background: 'rgba(239,68,68,0.08)',
+                border: '1px solid rgba(239,68,68,0.2)',
+              }}
+            >
               <AlertTriangle size={14} color="#EF4444" className="shrink-0 mt-1" />
               <p style={{ color: '#EF4444', fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>
-                <strong>Lệnh sẽ bị reject!</strong> Estimated slippage ({fmtPct(impact.impactPct)}) 
-                vượt ngưỡng ({fmtPct(settings.maxSlippagePct)}). Tăng tolerance hoặc giảm khối lượng.
+                <strong>Lệnh sẽ bị reject!</strong> Estimated slippage ({fmtPct(impact.impactPct)})
+                vượt ngưỡng ({fmtPct(settings.maxSlippagePct)}). Tăng tolerance hoặc giảm khối
+                lượng.
               </p>
             </div>
           )}

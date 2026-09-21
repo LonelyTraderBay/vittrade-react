@@ -8,8 +8,14 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import {
-  CheckCircle, Copy, Share2, ChevronRight, Clock,
-  AlertTriangle, FileText, ExternalLink,
+  CheckCircle,
+  Copy,
+  Share2,
+  ChevronRight,
+  Clock,
+  AlertTriangle,
+  FileText,
+  ExternalLink,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout, StickyFooter } from '../../components/layout/PageLayout';
@@ -80,17 +86,17 @@ export function OrderReceiptPage() {
       <PageContent grow>
         {/* Success animation area */}
         <div className="flex flex-col items-center py-6 gap-3">
-          <div className="w-16 h-16 rounded-full flex items-center justify-center"
+          <div
+            className="w-16 h-16 rounded-full flex items-center justify-center"
             style={{
               background: `${sideColor}15`,
               boxShadow: `0 0 0 8px ${sideColor}08`,
-            }}>
+            }}
+          >
             <CheckCircle size={32} color={sideColor} />
           </div>
           <div className="text-center">
-            <p style={{ color: c.text1, fontSize: 18, fontWeight: 700 }}>
-              Đặt lệnh thành công!
-            </p>
+            <p style={{ color: c.text1, fontSize: 18, fontWeight: 700 }}>Đặt lệnh thành công!</p>
             <p style={{ color: c.text2, fontSize: 13 }}>
               Lệnh {order.side === 'buy' ? 'Mua' : 'Bán'} {order.symbol} đang được xử lý
             </p>
@@ -100,20 +106,26 @@ export function OrderReceiptPage() {
         {/* Order summary card */}
         <TrCard rounded="md" className="p-4 mx-5">
           {/* Header */}
-          <div className="flex items-center justify-between pb-3 mb-3"
-            style={{ borderBottom: `1px solid ${c.divider}` }}>
+          <div
+            className="flex items-center justify-between pb-3 mb-3"
+            style={{ borderBottom: `1px solid ${c.divider}` }}
+          >
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-1 rounded-lg text-xs font-bold"
+              <span
+                className="px-2.5 py-1 rounded-lg text-xs font-bold"
                 style={{
                   background: `${sideColor}15`,
                   color: sideColor,
-                }}>
+                }}
+              >
                 {order.side === 'buy' ? 'MUA' : 'BÁN'}
               </span>
               <span style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>{order.symbol}</span>
             </div>
-            <div className="flex items-center gap-1 px-2 py-1 rounded-lg"
-              style={{ background: 'rgba(59,130,246,0.08)' }}>
+            <div
+              className="flex items-center gap-1 px-2 py-1 rounded-lg"
+              style={{ background: 'rgba(59,130,246,0.08)' }}
+            >
               <Clock size={11} color="#3B82F6" />
               <span style={{ color: '#3B82F6', fontSize: 11, fontWeight: 600 }}>
                 {order.status === 'submitted' ? 'Đã gửi' : 'Đang xử lý'}
@@ -123,18 +135,25 @@ export function OrderReceiptPage() {
 
           {/* Detail rows */}
           <div className="flex flex-col gap-2.5">
-            <Row label="Order ID" value={order.orderId} trailing={
-              <button onClick={handleCopyId} className="ml-1"><Copy size={12} color={c.text3} /></button>
-            } />
+            <Row
+              label="Order ID"
+              value={order.orderId}
+              trailing={
+                <button onClick={handleCopyId} className="ml-1">
+                  <Copy size={12} color={c.text3} />
+                </button>
+              }
+            />
             <Row label="Loại lệnh" value={order.orderType} />
-            <Row label="Giá" value={order.orderType === 'Thị trường' ? 'Giá thị trường' : fmtUsd(order.price)} />
+            <Row
+              label="Giá"
+              value={order.orderType === 'Thị trường' ? 'Giá thị trường' : fmtUsd(order.price)}
+            />
             <Row label="Khối lượng" value={`${fmtAmount(order.amount, 6)} ${order.baseAsset}`} />
             <div className="h-px" style={{ background: c.divider }} />
             <Row label="Thành tiền" value={fmtUsd(order.total)} highlight />
             <Row label="Phí giao dịch" value={`${fmtUsd(order.fee)} (${order.feeRate})`} />
-            {order.estimatedFill && (
-              <Row label="Thời gian ước tính" value={order.estimatedFill} />
-            )}
+            {order.estimatedFill && <Row label="Thời gian ước tính" value={order.estimatedFill} />}
             {order.slippage !== undefined && (
               <Row label="Trượt giá ước tính" value={`${order.slippage.toFixed(2)}%`} />
             )}
@@ -149,19 +168,43 @@ export function OrderReceiptPage() {
               </p>
               <div className="flex gap-3">
                 {order.tpPrice && (
-                  <div className="flex-1 rounded-lg p-2.5"
-                    style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}>
+                  <div
+                    className="flex-1 rounded-lg p-2.5"
+                    style={{
+                      background: 'rgba(16,185,129,0.06)',
+                      border: '1px solid rgba(16,185,129,0.15)',
+                    }}
+                  >
                     <p style={{ color: '#10B981', fontSize: 10, fontWeight: 600 }}>Take Profit</p>
-                    <p style={{ color: '#10B981', fontSize: 14, fontWeight: 700, fontFamily: 'monospace' }}>
+                    <p
+                      style={{
+                        color: '#10B981',
+                        fontSize: 14,
+                        fontWeight: 700,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       {fmtPrice(order.tpPrice)}
                     </p>
                   </div>
                 )}
                 {order.slPrice && (
-                  <div className="flex-1 rounded-lg p-2.5"
-                    style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)' }}>
+                  <div
+                    className="flex-1 rounded-lg p-2.5"
+                    style={{
+                      background: 'rgba(239,68,68,0.06)',
+                      border: '1px solid rgba(239,68,68,0.15)',
+                    }}
+                  >
                     <p style={{ color: '#EF4444', fontSize: 10, fontWeight: 600 }}>Stop Loss</p>
-                    <p style={{ color: '#EF4444', fontSize: 14, fontWeight: 700, fontFamily: 'monospace' }}>
+                    <p
+                      style={{
+                        color: '#EF4444',
+                        fontSize: 14,
+                        fontWeight: 700,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       {fmtPrice(order.slPrice)}
                     </p>
                   </div>
@@ -172,11 +215,14 @@ export function OrderReceiptPage() {
         </TrCard>
 
         {/* Warning */}
-        <div className="mx-5 mt-3 flex items-start gap-2 rounded-xl px-3 py-2.5"
-          style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}>
+        <div
+          className="mx-5 mt-3 flex items-start gap-2 rounded-xl px-3 py-2.5"
+          style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
+        >
           <AlertTriangle size={13} color="#F59E0B" className="shrink-0 mt-0.5" />
           <p style={{ color: '#F59E0B', fontSize: 11, lineHeight: 1.5 }}>
-            Lệnh có thể bị khớp 1 phần hoặc hủy nếu giá thay đổi nhanh. Kiểm tra trạng thái tại Lệnh đang mở.
+            Lệnh có thể bị khớp 1 phần hoặc hủy nếu giá thay đổi nhanh. Kiểm tra trạng thái tại Lệnh
+            đang mở.
           </p>
         </div>
 
@@ -189,7 +235,9 @@ export function OrderReceiptPage() {
           >
             <div className="flex items-center gap-2">
               <FileText size={16} color={c.text2} />
-              <span style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>Xem lệnh đang mở</span>
+              <span style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>
+                Xem lệnh đang mở
+              </span>
             </div>
             <ChevronRight size={16} color={c.text3} />
           </button>
@@ -207,7 +255,9 @@ export function OrderReceiptPage() {
             <span style={{ color: c.text2, fontSize: 14, fontWeight: 600 }}>Chia sẻ</span>
           </button>
           <button
-            onClick={() => navigate(`${prefix}/trade/${order.symbol.replace('/', '-').toLowerCase()}`)}
+            onClick={() =>
+              navigate(`${prefix}/trade/${order.symbol.replace('/', '-').toLowerCase()}`)
+            }
             className="flex-[2] h-12 rounded-xl flex items-center justify-center font-bold text-white"
             style={{
               background: `linear-gradient(135deg, ${sideColor} 0%, ${order.side === 'buy' ? '#059669' : '#dc2626'} 100%)`,
@@ -222,20 +272,30 @@ export function OrderReceiptPage() {
   );
 }
 
-function Row({ label, value, highlight, trailing }: {
-  label: string; value: string; highlight?: boolean; trailing?: React.ReactNode;
+function Row({
+  label,
+  value,
+  highlight,
+  trailing,
+}: {
+  label: string;
+  value: string;
+  highlight?: boolean;
+  trailing?: React.ReactNode;
 }) {
   const c = useThemeColors();
   return (
     <div className="flex items-center justify-between">
       <span style={{ color: c.text3, fontSize: 12 }}>{label}</span>
       <div className="flex items-center">
-        <span style={{
-          color: highlight ? c.text1 : c.text2,
-          fontSize: highlight ? 14 : 12,
-          fontWeight: highlight ? 700 : 500,
-          fontFamily: 'monospace',
-        }}>
+        <span
+          style={{
+            color: highlight ? c.text1 : c.text2,
+            fontSize: highlight ? 14 : 12,
+            fontWeight: highlight ? 700 : 500,
+            fontFamily: 'monospace',
+          }}
+        >
           {value}
         </span>
         {trailing}

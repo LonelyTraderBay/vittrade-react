@@ -10,9 +10,19 @@
 import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import {
-  ArrowRightLeft, Wallet, ArrowDownLeft, ArrowUpRight,
-  Info, AlertTriangle, CheckCircle, ChevronRight, Zap,
-  Shield, Clock, Eye, EyeOff,
+  ArrowRightLeft,
+  Wallet,
+  ArrowDownLeft,
+  ArrowUpRight,
+  Info,
+  AlertTriangle,
+  CheckCircle,
+  ChevronRight,
+  Zap,
+  Shield,
+  Clock,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -38,8 +48,8 @@ interface WalletBalance {
 }
 
 const MOCK_BALANCES: WalletBalance[] = [
-  { wallet: 'p2p', asset: 'USDT', available: 12_450.50, logo: '💵' },
-  { wallet: 'main', asset: 'USDT', available: 45_200.00, logo: '💵' },
+  { wallet: 'p2p', asset: 'USDT', available: 12_450.5, logo: '💵' },
+  { wallet: 'main', asset: 'USDT', available: 45_200.0, logo: '💵' },
   { wallet: 'p2p', asset: 'BTC', available: 0.0524, logo: '₿' },
   { wallet: 'main', asset: 'BTC', available: 0.1234, logo: '₿' },
   { wallet: 'p2p', asset: 'VND', available: 45_600_000, logo: '₫' },
@@ -57,15 +67,15 @@ export function P2PWalletTransferPage() {
   const [searchParams] = useSearchParams();
 
   const initialAsset = searchParams.get('asset') || 'USDT';
-  const initialType = searchParams.get('type') as 'deposit' | 'withdraw' || 'deposit';
+  const initialType = (searchParams.get('type') as 'deposit' | 'withdraw') || 'deposit';
 
   const [asset, setAsset] = useState(initialAsset);
   const [transferType, setTransferType] = useState<'deposit' | 'withdraw'>(initialType);
   const [amount, setAmount] = useState('');
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const p2pBalance = MOCK_BALANCES.find(b => b.wallet === 'p2p' && b.asset === asset);
-  const mainBalance = MOCK_BALANCES.find(b => b.wallet === 'main' && b.asset === asset);
+  const p2pBalance = MOCK_BALANCES.find((b) => b.wallet === 'p2p' && b.asset === asset);
+  const mainBalance = MOCK_BALANCES.find((b) => b.wallet === 'main' && b.asset === asset);
 
   const sourceBalance = transferType === 'deposit' ? mainBalance : p2pBalance;
   const destBalance = transferType === 'deposit' ? p2pBalance : mainBalance;
@@ -85,7 +95,7 @@ export function P2PWalletTransferPage() {
 
   const handleSwitchDirection = () => {
     hapticSelection();
-    setTransferType(prev => prev === 'deposit' ? 'withdraw' : 'deposit');
+    setTransferType((prev) => (prev === 'deposit' ? 'withdraw' : 'deposit'));
   };
 
   const handleConfirm = () => {
@@ -156,9 +166,7 @@ export function P2PWalletTransferPage() {
                   <ArrowDownLeft size={16} color="#10B981" />
                   <span style={{ color: c.text3, fontSize: 11 }}>Đến</span>
                 </div>
-                <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
-                  {destLabel}
-                </span>
+                <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>{destLabel}</span>
               </div>
             </div>
 
@@ -176,9 +184,7 @@ export function P2PWalletTransferPage() {
                 <span style={{ color: c.text3, fontSize: 11 }}>Thời gian</span>
                 <div className="flex items-center gap-1">
                   <Clock size={12} color="#3B82F6" />
-                  <span style={{ color: '#3B82F6', fontSize: φ.sm, fontWeight: 700 }}>
-                    Tức thì
-                  </span>
+                  <span style={{ color: '#3B82F6', fontSize: φ.sm, fontWeight: 700 }}>Tức thì</span>
                 </div>
               </div>
               <div className="flex items-center justify-between">
@@ -193,11 +199,15 @@ export function P2PWalletTransferPage() {
           {/* Security Notice */}
           <div
             className="p-3 rounded-lg flex items-start gap-2 mb-6"
-            style={{ background: hexToRgba('#10B981', 10), border: `1px solid ${hexToRgba('#10B981', 30)}` }}
+            style={{
+              background: hexToRgba('#10B981', 10),
+              border: `1px solid ${hexToRgba('#10B981', 30)}`,
+            }}
           >
             <Shield size={14} color="#10B981" className="shrink-0 mt-0.5" />
             <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-              Giao dịch nội bộ giữa P2P Wallet và Main Wallet được xử lý tức thì và hoàn toàn miễn phí.
+              Giao dịch nội bộ giữa P2P Wallet và Main Wallet được xử lý tức thì và hoàn toàn miễn
+              phí.
             </p>
           </div>
 
@@ -213,11 +223,7 @@ export function P2PWalletTransferPage() {
             >
               Quay lại
             </button>
-            <CTAButton
-              label="Xác nhận"
-              onClick={handleExecute}
-              icon={CheckCircle}
-            />
+            <CTAButton label="Xác nhận" onClick={handleExecute} icon={CheckCircle} />
           </div>
         </div>
       </PageLayout>
@@ -226,11 +232,7 @@ export function P2PWalletTransferPage() {
 
   return (
     <PageLayout>
-      <Header
-        title="Chuyển tiền"
-        subtitle="Ví · P2P"
-        back
-      />
+      <Header title="Chuyển tiền" subtitle="Ví · P2P" back />
 
       {/* Transfer Direction Card */}
       <div className="px-5 py-4">
@@ -266,9 +268,7 @@ export function P2PWalletTransferPage() {
               <p style={{ color: c.text3, fontSize: 10, marginBottom: 4 }}>Đến</p>
               <div className="flex items-center gap-2">
                 <Wallet size={16} color={transferType === 'deposit' ? '#F59E0B' : '#3B82F6'} />
-                <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
-                  {destLabel}
-                </span>
+                <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>{destLabel}</span>
               </div>
               {destBalance && (
                 <p style={{ color: c.text3, fontSize: 10, marginTop: 4 }}>
@@ -287,9 +287,9 @@ export function P2PWalletTransferPage() {
         </h3>
 
         <div className="grid grid-cols-3 gap-3">
-          {['USDT', 'BTC', 'VND'].map(a => {
+          {['USDT', 'BTC', 'VND'].map((a) => {
             const isSelected = asset === a;
-            const balance = MOCK_BALANCES.find(b => b.wallet === 'p2p' && b.asset === a);
+            const balance = MOCK_BALANCES.find((b) => b.wallet === 'p2p' && b.asset === a);
 
             return (
               <button
@@ -301,16 +301,18 @@ export function P2PWalletTransferPage() {
                 }}
                 className="p-3 rounded-xl text-center"
                 style={{
-                  background: isSelected ? hexToRgba('#3B82F6', 12) : c.surface1,
+                  background: isSelected ? hexToRgba('#3B82F6', 12) : c.surface,
                   border: `1px solid ${isSelected ? '#3B82F6' : c.borderSolid}`,
                 }}
               >
                 <div className="text-2xl mb-2">{balance?.logo}</div>
-                <p style={{
-                  color: isSelected ? '#3B82F6' : c.text1,
-                  fontSize: φ.xs,
-                  fontWeight: 700,
-                }}>
+                <p
+                  style={{
+                    color: isSelected ? '#3B82F6' : c.text1,
+                    fontSize: φ.xs,
+                    fontWeight: 700,
+                  }}
+                >
                   {a}
                 </p>
               </button>
@@ -322,9 +324,7 @@ export function P2PWalletTransferPage() {
       {/* Amount Input */}
       <div className="px-5 mb-6">
         <div className="flex items-center justify-between mb-2">
-          <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
-            Số tiền
-          </h3>
+          <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Số tiền</h3>
           <button
             onClick={handleSetMax}
             className="px-2 py-1 rounded-md text-xs font-semibold"
@@ -345,9 +345,7 @@ export function P2PWalletTransferPage() {
         {numAmount > 0 && sourceBalance && numAmount > sourceBalance.available && (
           <div className="flex items-center gap-1.5 mt-2">
             <AlertTriangle size={12} color="#EF4444" />
-            <p style={{ color: '#EF4444', fontSize: 10 }}>
-              Số dư không đủ
-            </p>
+            <p style={{ color: '#EF4444', fontSize: 10 }}>Số dư không đủ</p>
           </div>
         )}
       </div>
@@ -356,7 +354,7 @@ export function P2PWalletTransferPage() {
       {sourceBalance && (
         <div className="px-5 mb-6">
           <div className="grid grid-cols-4 gap-2">
-            {[25, 50, 75, 100].map(percent => {
+            {[25, 50, 75, 100].map((percent) => {
               const quickAmount = (sourceBalance.available * percent) / 100;
               const decimals = asset === 'BTC' ? 8 : asset === 'USDT' ? 2 : 0;
 
@@ -382,7 +380,10 @@ export function P2PWalletTransferPage() {
       <div className="px-5 mb-6 flex flex-col gap-3">
         <div
           className="p-3 rounded-lg flex items-start gap-2"
-          style={{ background: hexToRgba('#10B981', 10), border: `1px solid ${hexToRgba('#10B981', 30)}` }}
+          style={{
+            background: hexToRgba('#10B981', 10),
+            border: `1px solid ${hexToRgba('#10B981', 30)}`,
+          }}
         >
           <Zap size={14} color="#10B981" className="shrink-0 mt-0.5" />
           <div>
@@ -397,11 +398,15 @@ export function P2PWalletTransferPage() {
 
         <div
           className="p-3 rounded-lg flex items-start gap-2"
-          style={{ background: hexToRgba('#3B82F6', 10), border: `1px solid ${hexToRgba('#3B82F6', 30)}` }}
+          style={{
+            background: hexToRgba('#3B82F6', 10),
+            border: `1px solid ${hexToRgba('#3B82F6', 30)}`,
+          }}
         >
           <Info size={14} color="#3B82F6" className="shrink-0 mt-0.5" />
           <p style={{ color: c.text2, fontSize: 10, lineHeight: 1.5 }}>
-            P2P Wallet và Main Wallet hoạt động độc lập để đảm bảo an toàn. Số dư trong escrow không thể chuyển.
+            P2P Wallet và Main Wallet hoạt động độc lập để đảm bảo an toàn. Số dư trong escrow không
+            thể chuyển.
           </p>
         </div>
       </div>

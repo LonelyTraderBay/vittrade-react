@@ -2,18 +2,18 @@
  * ══════════════════════════════════════════════════════════════
  *  CopyNotificationsPage — Phase 1 Week 3: Notifications Feed
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Real-time notification feed for copy trading events
  * - Filter by type (trades/risk/updates/system)
  * - Mark read/unread
  * - Navigate to relevant detail pages
- * 
+ *
  * Compliance:
  * - Critical risk alerts must be prominent
  * - Trade notifications with P/L disclosure
  * - Provider update notifications
- * 
+ *
  * Guidelines:
  * - PageLayout + TabBar filter
  * - Empty state for no notifications
@@ -23,10 +23,22 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { 
-  Bell, TrendingUp, TrendingDown, AlertTriangle, Info,
-  Settings, Activity, FileText, CheckCircle, Eye,
-  Clock, DollarSign, Target, Zap, Users
+import {
+  Bell,
+  TrendingUp,
+  TrendingDown,
+  AlertTriangle,
+  Info,
+  Settings,
+  Activity,
+  FileText,
+  CheckCircle,
+  Eye,
+  Clock,
+  DollarSign,
+  Target,
+  Zap,
+  Users,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -154,30 +166,28 @@ export function CopyNotificationsPage() {
   const c = useThemeColors();
   const navigate = useNavigate();
   const prefix = useRoutePrefix();
-  
+
   const [filter, setFilter] = useState<FilterType>('all');
   const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
 
-  const filteredNotifications = notifications.filter(n => {
+  const filteredNotifications = notifications.filter((n) => {
     if (filter === 'all') return true;
     if (filter === 'unread') return !n.read;
     return n.type === filter;
   });
 
-  const unreadCount = notifications.filter(n => !n.read).length;
-  const tradeCount = notifications.filter(n => n.type === 'trade' && !n.read).length;
-  const riskCount = notifications.filter(n => n.type === 'risk' && !n.read).length;
-  const updateCount = notifications.filter(n => n.type === 'update' && !n.read).length;
-  const systemCount = notifications.filter(n => n.type === 'system' && !n.read).length;
+  const unreadCount = notifications.filter((n) => !n.read).length;
+  const tradeCount = notifications.filter((n) => n.type === 'trade' && !n.read).length;
+  const riskCount = notifications.filter((n) => n.type === 'risk' && !n.read).length;
+  const updateCount = notifications.filter((n) => n.type === 'update' && !n.read).length;
+  const systemCount = notifications.filter((n) => n.type === 'system' && !n.read).length;
 
   const markAsRead = (id: string) => {
-    setNotifications(notifications.map(n => 
-      n.id === id ? { ...n, read: true } : n
-    ));
+    setNotifications(notifications.map((n) => (n.id === id ? { ...n, read: true } : n)));
   };
 
   const markAllAsRead = () => {
-    setNotifications(notifications.map(n => ({ ...n, read: true })));
+    setNotifications(notifications.map((n) => ({ ...n, read: true })));
   };
 
   const handleNotificationClick = (notification: Notification) => {
@@ -206,8 +216,8 @@ export function CopyNotificationsPage() {
 
   return (
     <PageLayout>
-      <Header 
-        title="Thông báo" 
+      <Header
+        title="Thông báo"
         back
         action={{
           icon: Settings,
@@ -218,7 +228,10 @@ export function CopyNotificationsPage() {
       <PageContent gap="relaxed">
         {/* Unread Summary */}
         {unreadCount > 0 && (
-          <div className="flex items-center justify-between p-3 rounded-xl" style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}>
+          <div
+            className="flex items-center justify-between p-3 rounded-xl"
+            style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}
+          >
             <div className="flex items-center gap-2">
               <Bell size={16} color={c.primary} />
               <span style={{ color: c.primary, fontSize: 12, fontWeight: 600 }}>
@@ -227,7 +240,12 @@ export function CopyNotificationsPage() {
             </div>
             <button
               onClick={markAllAsRead}
-              style={{ color: c.primary, fontSize: 11, fontWeight: 600, textDecoration: 'underline' }}
+              style={{
+                color: c.primary,
+                fontSize: 11,
+                fontWeight: 600,
+                textDecoration: 'underline',
+              }}
             >
               Đánh dấu tất cả đã đọc
             </button>
@@ -252,24 +270,22 @@ export function CopyNotificationsPage() {
         {/* Notifications List */}
         {filteredNotifications.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16">
-            <div 
+            <div
               className="w-20 h-20 rounded-full flex items-center justify-center mb-4"
               style={{ background: c.surface2 }}
             >
               <Bell size={32} color={c.text3} />
             </div>
             <p style={{ color: c.text3, fontSize: 13, textAlign: 'center' }}>
-              {filter === 'unread' 
-                ? 'Không có thông báo chưa đọc'
-                : 'Chưa có thông báo nào'}
+              {filter === 'unread' ? 'Không có thông báo chưa đọc' : 'Chưa có thông báo nào'}
             </p>
           </div>
         ) : (
           <div className="space-y-2">
-            {filteredNotifications.map(notification => {
+            {filteredNotifications.map((notification) => {
               const Icon = getIcon(notification.type, notification.severity);
               const color = getColor(notification.type, notification.severity);
-              
+
               return (
                 <button
                   key={notification.id}
@@ -282,7 +298,7 @@ export function CopyNotificationsPage() {
                   }}
                 >
                   <div className="flex gap-3">
-                    <div 
+                    <div
                       className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
                       style={{ background: color + '22' }}
                     >
@@ -291,28 +307,32 @@ export function CopyNotificationsPage() {
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between mb-1">
-                        <h4 style={{ 
-                          color: c.text1, 
-                          fontSize: 13, 
-                          fontWeight: notification.read ? 600 : 700,
-                          marginRight: 8,
-                        }}>
+                        <h4
+                          style={{
+                            color: c.text1,
+                            fontSize: 13,
+                            fontWeight: notification.read ? 600 : 700,
+                            marginRight: 8,
+                          }}
+                        >
                           {notification.title}
                         </h4>
                         {!notification.read && (
-                          <div 
+                          <div
                             className="w-2 h-2 rounded-full shrink-0 mt-1"
                             style={{ background: c.primary }}
                           />
                         )}
                       </div>
 
-                      <p style={{ 
-                        color: c.text2, 
-                        fontSize: 11, 
-                        lineHeight: 1.5,
-                        marginBottom: 6,
-                      }}>
+                      <p
+                        style={{
+                          color: c.text2,
+                          fontSize: 11,
+                          lineHeight: 1.5,
+                          marginBottom: 6,
+                        }}
+                      >
                         {notification.message}
                       </p>
 
@@ -339,25 +359,29 @@ export function CopyNotificationsPage() {
                         {notification.metadata?.pnl !== undefined && (
                           <>
                             <span style={{ color: c.text3, fontSize: 10 }}>•</span>
-                            <span style={{ 
-                              color: notification.metadata.pnl >= 0 ? '#10B981' : '#EF4444',
-                              fontSize: 10,
-                              fontWeight: 600,
-                            }}>
-                              {notification.metadata.pnl >= 0 ? '+' : ''}${notification.metadata.pnl}
+                            <span
+                              style={{
+                                color: notification.metadata.pnl >= 0 ? '#10B981' : '#EF4444',
+                                fontSize: 10,
+                                fontWeight: 600,
+                              }}
+                            >
+                              {notification.metadata.pnl >= 0 ? '+' : ''}$
+                              {notification.metadata.pnl}
                             </span>
                           </>
                         )}
                       </div>
 
                       {notification.metadata?.pair && (
-                        <div className="mt-2 inline-flex items-center gap-1 px-2 py-1 rounded" style={{ background: color + '15' }}>
+                        <div
+                          className="mt-2 inline-flex items-center gap-1 px-2 py-1 rounded"
+                          style={{ background: color + '15' }}
+                        >
                           <span style={{ color, fontSize: 10, fontWeight: 600 }}>
                             {notification.metadata.side?.toUpperCase()}
                           </span>
-                          <span style={{ color, fontSize: 10 }}>
-                            {notification.metadata.pair}
-                          </span>
+                          <span style={{ color, fontSize: 10 }}>{notification.metadata.pair}</span>
                         </div>
                       )}
                     </div>

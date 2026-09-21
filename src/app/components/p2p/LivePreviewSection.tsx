@@ -1,7 +1,16 @@
 import React, { useMemo } from 'react';
 import {
-  Eye, Shield, Clock, CheckCircle, ChevronDown, ChevronUp,
-  CreditCard, Star, Users, Radio, AlertTriangle,
+  Eye,
+  Shield,
+  Clock,
+  CheckCircle,
+  ChevronDown,
+  ChevronUp,
+  CreditCard,
+  Star,
+  Users,
+  Radio,
+  AlertTriangle,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { fmtVnd, fmtAbsPct } from '../../data/formatNumber';
@@ -45,12 +54,21 @@ function useCompletionScore(props: LivePreviewProps) {
     const checks = [
       { label: 'Giá', done: props.effectivePrice > 0 },
       { label: 'Số lượng', done: parseFloat(props.totalAmount || '0') > 0 },
-      { label: 'Giới hạn', done: parseFloat(props.minLimit || '0') > 0 && parseFloat(props.maxLimit || '0') > 0 },
+      {
+        label: 'Giới hạn',
+        done: parseFloat(props.minLimit || '0') > 0 && parseFloat(props.maxLimit || '0') > 0,
+      },
       { label: 'Thanh toán', done: props.selectedPayments.length > 0 },
     ];
-    const done = checks.filter(c => c.done).length;
+    const done = checks.filter((c) => c.done).length;
     return { checks, done, total: checks.length, pct: Math.round((done / checks.length) * 100) };
-  }, [props.effectivePrice, props.totalAmount, props.minLimit, props.maxLimit, props.selectedPayments]);
+  }, [
+    props.effectivePrice,
+    props.totalAmount,
+    props.minLimit,
+    props.maxLimit,
+    props.selectedPayments,
+  ]);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -62,7 +80,10 @@ export function LivePreviewSection(props: LivePreviewProps) {
   const { checks, done, total, pct } = useCompletionScore(props);
 
   const tradeColor = props.adType === 'buy' ? '#10B981' : '#EF4444';
-  const hasAnyData = props.effectivePrice > 0 || parseFloat(props.totalAmount || '0') > 0 || props.selectedPayments.length > 0;
+  const hasAnyData =
+    props.effectivePrice > 0 ||
+    parseFloat(props.totalAmount || '0') > 0 ||
+    props.selectedPayments.length > 0;
 
   return (
     <div>
@@ -70,10 +91,16 @@ export function LivePreviewSection(props: LivePreviewProps) {
       <button
         onClick={onToggle}
         className="w-full rounded-2xl overflow-hidden"
-        style={{ border: `1.5px solid ${props.isValid ? tradeColor + '40' : c.borderSolid}`, transition: 'border-color 0.3s ease' }}
+        style={{
+          border: `1.5px solid ${props.isValid ? tradeColor + '40' : c.borderSolid}`,
+          transition: 'border-color 0.3s ease',
+        }}
       >
         {/* Top bar */}
-        <div className="flex items-center justify-between px-4 py-3" style={{ background: c.surface2 }}>
+        <div
+          className="flex items-center justify-between px-4 py-3"
+          style={{ background: c.surface2 }}
+        >
           <div className="flex items-center gap-2.5">
             <div className="relative">
               <Eye size={15} color={tradeColor} />
@@ -85,9 +112,7 @@ export function LivePreviewSection(props: LivePreviewProps) {
                 style={{ background: '#10B981' }}
               />
             </div>
-            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
-              Live Preview
-            </span>
+            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Live Preview</span>
             <span
               className="px-1.5 py-0.5 rounded text-xs"
               style={{
@@ -109,11 +134,13 @@ export function LivePreviewSection(props: LivePreviewProps) {
                   background: pct === 100 ? '#10B981' + '18' : c.surface3,
                 }}
               >
-                <span style={{
-                  color: pct === 100 ? '#10B981' : c.text3,
-                  fontSize: 8,
-                  fontWeight: 700,
-                }}>
+                <span
+                  style={{
+                    color: pct === 100 ? '#10B981' : c.text3,
+                    fontSize: 8,
+                    fontWeight: 700,
+                  }}
+                >
                   {pct}%
                 </span>
               </div>
@@ -140,7 +167,9 @@ export function LivePreviewSection(props: LivePreviewProps) {
             >
               {props.adType === 'buy' ? 'MUA' : 'BÁN'}
             </span>
-            <span style={{ color: c.text1, fontSize: 13, fontWeight: 700, fontFamily: 'monospace' }}>
+            <span
+              style={{ color: c.text1, fontSize: 13, fontWeight: 700, fontFamily: 'monospace' }}
+            >
               {props.effectivePrice > 0 ? fmtVnd(props.effectivePrice) : '—'}
             </span>
             <span style={{ color: c.text3, fontSize: 10 }}>
@@ -167,24 +196,28 @@ export function LivePreviewSection(props: LivePreviewProps) {
             <div className="pt-3 flex flex-col gap-3">
               {/* Completion Checklist */}
               <div className="flex items-center gap-2">
-                {checks.map(ch => (
+                {checks.map((ch) => (
                   <div key={ch.label} className="flex items-center gap-1">
                     <CheckCircle
                       size={10}
                       color={ch.done ? '#10B981' : c.text3}
                       fill={ch.done ? 'rgba(16,185,129,0.15)' : 'transparent'}
                     />
-                    <span style={{
-                      color: ch.done ? '#10B981' : c.text3,
-                      fontSize: 9,
-                      fontWeight: ch.done ? 600 : 400,
-                    }}>
+                    <span
+                      style={{
+                        color: ch.done ? '#10B981' : c.text3,
+                        fontSize: 9,
+                        fontWeight: ch.done ? 600 : 400,
+                      }}
+                    >
                       {ch.label}
                     </span>
                   </div>
                 ))}
                 <div className="flex-1" />
-                <span style={{ color: pct === 100 ? '#10B981' : c.text3, fontSize: 9, fontWeight: 600 }}>
+                <span
+                  style={{ color: pct === 100 ? '#10B981' : c.text3, fontSize: 9, fontWeight: 600 }}
+                >
                   {done}/{total}
                 </span>
               </div>
@@ -200,7 +233,12 @@ export function LivePreviewSection(props: LivePreviewProps) {
               </div>
 
               {/* ─── Marketplace Card Preview ─── */}
-              <div className="rounded-xl p-0.5" style={{ background: `linear-gradient(135deg, ${hexToRgba(tradeColor, 30)}, ${c.borderSolid})` }}>
+              <div
+                className="rounded-xl p-0.5"
+                style={{
+                  background: `linear-gradient(135deg, ${hexToRgba(tradeColor, 30)}, ${c.borderSolid})`,
+                }}
+              >
                 <TrCard className="p-4 !rounded-[10px]">
                   {/* Merchant Row */}
                   <div className="flex items-center gap-3 mb-3">
@@ -260,7 +298,11 @@ export function LivePreviewSection(props: LivePreviewProps) {
                     {props.priceType === 'floating' && (
                       <span
                         className="inline-block mt-1 px-1.5 py-0.5 rounded text-xs"
-                        style={{ background: 'rgba(168,85,247,0.1)', color: '#A855F7', fontWeight: 600 }}
+                        style={{
+                          background: 'rgba(168,85,247,0.1)',
+                          color: '#A855F7',
+                          fontWeight: 600,
+                        }}
                       >
                         Thả nổi {props.priceMargin || '0'}%
                       </span>
@@ -268,7 +310,11 @@ export function LivePreviewSection(props: LivePreviewProps) {
                     {props.effectivePrice > 0 && props.priceDiff !== 0 && (
                       <span
                         className="inline-block ml-2 text-xs"
-                        style={{ color: props.priceDiff >= 0 ? '#10B981' : '#EF4444', fontWeight: 600, fontSize: 10 }}
+                        style={{
+                          color: props.priceDiff >= 0 ? '#10B981' : '#EF4444',
+                          fontWeight: 600,
+                          fontSize: 10,
+                        }}
                       >
                         {props.priceDiff >= 0 ? '▲' : '▼'} {fmtAbsPct(props.priceDiff)}
                       </span>
@@ -276,14 +322,22 @@ export function LivePreviewSection(props: LivePreviewProps) {
                   </div>
 
                   {/* Amount & Limits */}
-                  <div className="flex items-center justify-between mb-3 pb-3" style={{ borderBottom: `1px solid ${c.divider}` }}>
+                  <div
+                    className="flex items-center justify-between mb-3 pb-3"
+                    style={{ borderBottom: `1px solid ${c.divider}` }}
+                  >
                     <div>
                       <p style={{ color: c.text3, fontSize: 9 }}>Khả dụng</p>
                       <motion.p
                         key={props.totalAmount}
                         initial={{ opacity: 0.5 }}
                         animate={{ opacity: 1 }}
-                        style={{ color: c.text1, fontSize: 12, fontWeight: 600, fontFamily: 'monospace' }}
+                        style={{
+                          color: c.text1,
+                          fontSize: 12,
+                          fontWeight: 600,
+                          fontFamily: 'monospace',
+                        }}
                       >
                         {props.totalAmount || '0'} {props.asset}
                       </motion.p>
@@ -291,7 +345,8 @@ export function LivePreviewSection(props: LivePreviewProps) {
                     <div className="text-right">
                       <p style={{ color: c.text3, fontSize: 9 }}>Giới hạn</p>
                       <p style={{ color: c.text1, fontSize: 10, fontFamily: 'monospace' }}>
-                        {fmtVnd(parseFloat(props.minLimit || '0'))} – {fmtVnd(parseFloat(props.maxLimit || '0'))}
+                        {fmtVnd(parseFloat(props.minLimit || '0'))} –{' '}
+                        {fmtVnd(parseFloat(props.maxLimit || '0'))}
                       </p>
                     </div>
                   </div>
@@ -300,14 +355,19 @@ export function LivePreviewSection(props: LivePreviewProps) {
                   <div className="mb-3">
                     {props.selectedPayments.length > 0 ? (
                       <div className="flex flex-wrap gap-1.5">
-                        {props.selectedPayments.map(pm => (
+                        {props.selectedPayments.map((pm) => (
                           <motion.span
                             key={pm}
                             initial={{ scale: 0.8, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             transition={{ duration: 0.2 }}
                             className="px-2 py-1 rounded-lg text-xs"
-                            style={{ background: 'rgba(59,130,246,0.08)', color: '#3B82F6', fontWeight: 600, fontSize: 10 }}
+                            style={{
+                              background: 'rgba(59,130,246,0.08)',
+                              color: '#3B82F6',
+                              fontWeight: 600,
+                              fontSize: 10,
+                            }}
                           >
                             {pm}
                           </motion.span>
@@ -336,13 +396,17 @@ export function LivePreviewSection(props: LivePreviewProps) {
                     {props.reqKyc && (
                       <div className="flex items-center gap-1">
                         <Shield size={9} color="#3B82F6" />
-                        <span style={{ color: '#3B82F6', fontSize: 9 }}>KYC {props.reqKycLevel}+</span>
+                        <span style={{ color: '#3B82F6', fontSize: 9 }}>
+                          KYC {props.reqKycLevel}+
+                        </span>
                       </div>
                     )}
                     {parseFloat(props.reqMinTrades || '0') > 0 && (
                       <div className="flex items-center gap-1">
                         <Users size={9} color={c.text3} />
-                        <span style={{ color: c.text3, fontSize: 9 }}>{props.reqMinTrades}+ đơn</span>
+                        <span style={{ color: c.text3, fontSize: 9 }}>
+                          {props.reqMinTrades}+ đơn
+                        </span>
                       </div>
                     )}
                   </div>
@@ -362,19 +426,33 @@ export function LivePreviewSection(props: LivePreviewProps) {
 
               {/* Valid indicator */}
               {props.isValid ? (
-                <div className="flex items-center gap-2 px-3 py-2 rounded-xl"
-                  style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}>
+                <div
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl"
+                  style={{
+                    background: 'rgba(16,185,129,0.06)',
+                    border: '1px solid rgba(16,185,129,0.15)',
+                  }}
+                >
                   <CheckCircle size={12} color="#10B981" />
                   <span style={{ color: '#10B981', fontSize: 10, fontWeight: 600 }}>
                     Quảng cáo sẵn sàng đăng! Nhấn nút bên dưới để tiếp tục.
                   </span>
                 </div>
               ) : (
-                <div className="flex items-center gap-2 px-3 py-2 rounded-xl"
-                  style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}>
+                <div
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl"
+                  style={{
+                    background: 'rgba(245,158,11,0.06)',
+                    border: '1px solid rgba(245,158,11,0.15)',
+                  }}
+                >
                   <AlertTriangle size={12} color="#F59E0B" />
                   <span style={{ color: '#F59E0B', fontSize: 10 }}>
-                    Điền đầy đủ: {checks.filter(ch => !ch.done).map(ch => ch.label).join(', ')}
+                    Điền đầy đủ:{' '}
+                    {checks
+                      .filter((ch) => !ch.done)
+                      .map((ch) => ch.label)
+                      .join(', ')}
                   </span>
                 </div>
               )}

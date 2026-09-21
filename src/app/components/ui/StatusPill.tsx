@@ -33,14 +33,7 @@ import { φ, φIcon } from '../../utils/golden';
  */
 
 /* ─── Preset status palette ─── */
-type PresetStatus =
-  | 'success'
-  | 'warning'
-  | 'error'
-  | 'info'
-  | 'neutral'
-  | 'purple'
-  | 'orange';
+type PresetStatus = 'success' | 'warning' | 'error' | 'info' | 'neutral' | 'purple' | 'orange';
 
 type PillSize = 'sm' | 'md' | 'lg';
 
@@ -107,7 +100,10 @@ const PRESETS: Record<PresetStatus, { bg: string; text: string; border: string }
 };
 
 /* ─── Size presets ─── */
-const SIZES: Record<PillSize, { height: number; fontSize: number; iconSize: number; px: number; gap: number }> = {
+const SIZES: Record<
+  PillSize,
+  { height: number; fontSize: number; iconSize: number; px: number; gap: number }
+> = {
   sm: { height: 20, fontSize: φ.xs, iconSize: 10, px: 6, gap: 3 },
   md: { height: 26, fontSize: φ.sm, iconSize: 12, px: 10, gap: 4 },
   lg: { height: 32, fontSize: φ.body, iconSize: 14, px: 12, gap: 5 },
@@ -171,12 +167,7 @@ export function StatusPill({
 
       {/* Leading icon */}
       {Icon && !pulse && (
-        <Icon
-          size={s.iconSize}
-          color={palette.text}
-          strokeWidth={2.2}
-          className="shrink-0"
-        />
+        <Icon size={s.iconSize} color={palette.text} strokeWidth={2.2} className="shrink-0" />
       )}
 
       {/* Label */}
@@ -221,36 +212,36 @@ export function StatusPill({
 /** P2P Order statuses — pre-mapped */
 export const P2P_STATUS_MAP: Record<string, { status: PresetStatus; label: string }> = {
   pending_payment: { status: 'warning', label: 'Chờ thanh toán' },
-  paid:            { status: 'info',    label: 'Đã thanh toán' },
-  released:        { status: 'success', label: 'Đã giải phóng' },
-  completed:       { status: 'success', label: 'Hoàn tất' },
-  cancelled:       { status: 'neutral', label: 'Đã hủy' },
-  expired:         { status: 'neutral', label: 'Hết hạn' },
-  disputed:        { status: 'error',   label: 'Tranh chấp' },
-  appealed:        { status: 'orange',  label: 'Kháng cáo' },
+  paid: { status: 'info', label: 'Đã thanh toán' },
+  released: { status: 'success', label: 'Đã giải phóng' },
+  completed: { status: 'success', label: 'Hoàn tất' },
+  cancelled: { status: 'neutral', label: 'Đã hủy' },
+  expired: { status: 'neutral', label: 'Hết hạn' },
+  disputed: { status: 'error', label: 'Tranh chấp' },
+  appealed: { status: 'orange', label: 'Kháng cáo' },
 };
 
 /** Trade order statuses */
 export const TRADE_STATUS_MAP: Record<string, { status: PresetStatus; label: string }> = {
-  open:      { status: 'info',    label: 'Đang mở' },
-  partial:   { status: 'warning', label: 'Khớp 1 phần' },
-  filled:    { status: 'success', label: 'Đã khớp' },
+  open: { status: 'info', label: 'Đang mở' },
+  partial: { status: 'warning', label: 'Khớp 1 phần' },
+  filled: { status: 'success', label: 'Đã khớp' },
   cancelled: { status: 'neutral', label: 'Đã hủy' },
-  rejected:  { status: 'error',   label: 'Bị từ chối' },
+  rejected: { status: 'error', label: 'Bị từ chối' },
 };
 
 /** KYC statuses */
 export const KYC_STATUS_MAP: Record<string, { status: PresetStatus; label: string }> = {
-  unverified: { status: 'error',   label: 'Chưa xác minh' },
-  pending:    { status: 'warning', label: 'Đang xem xét' },
-  verified:   { status: 'success', label: 'Đã xác minh' },
-  rejected:   { status: 'error',   label: 'Bị từ chối' },
+  unverified: { status: 'error', label: 'Chưa xác minh' },
+  pending: { status: 'warning', label: 'Đang xem xét' },
+  verified: { status: 'success', label: 'Đã xác minh' },
+  rejected: { status: 'error', label: 'Bị từ chối' },
 };
 
 /** DCA plan statuses */
 export const DCA_STATUS_MAP: Record<string, { status: PresetStatus; label: string }> = {
-  active:    { status: 'success', label: 'Đang chạy' },
-  paused:    { status: 'warning', label: 'Tạm dừng' },
-  error:     { status: 'error',   label: 'Lỗi' },
+  active: { status: 'success', label: 'Đang chạy' },
+  paused: { status: 'warning', label: 'Tạm dừng' },
+  error: { status: 'error', label: 'Lỗi' },
   completed: { status: 'neutral', label: 'Hoàn tất' },
 };

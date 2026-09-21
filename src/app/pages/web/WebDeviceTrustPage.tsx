@@ -1,10 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import {
-  Monitor, Smartphone, Globe, MapPin, Clock,
-  ShieldCheck, ShieldAlert, AlertTriangle, ArrowLeft,
-  ArrowRight, Mail, KeyRound, CheckCircle, XCircle,
-  Info, Fingerprint, Chrome,
+  Monitor,
+  Smartphone,
+  Globe,
+  MapPin,
+  Clock,
+  ShieldCheck,
+  ShieldAlert,
+  AlertTriangle,
+  ArrowLeft,
+  ArrowRight,
+  Mail,
+  KeyRound,
+  CheckCircle,
+  XCircle,
+  Info,
+  Fingerprint,
+  Chrome,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useThemeColors } from '../../hooks/useThemeColors';
@@ -44,21 +57,41 @@ const MOCK_DEVICE = {
 type VerifyMethod = 'email' | 'authenticator';
 type RiskLevel = 'low' | 'medium' | 'high';
 
-const RISK_CONFIG: Record<RiskLevel, { color: string; label: string; bg: string; border: string }> = {
-  low: { color: '#10B981', label: 'Rủi ro thấp', bg: 'rgba(16,185,129,0.06)', border: 'rgba(16,185,129,0.15)' },
-  medium: { color: '#F59E0B', label: 'Cần xác minh', bg: 'rgba(245,158,11,0.06)', border: 'rgba(245,158,11,0.15)' },
-  high: { color: '#EF4444', label: 'Rủi ro cao', bg: 'rgba(239,68,68,0.06)', border: 'rgba(239,68,68,0.15)' },
-};
+const RISK_CONFIG: Record<RiskLevel, { color: string; label: string; bg: string; border: string }> =
+  {
+    low: {
+      color: '#10B981',
+      label: 'Rủi ro thấp',
+      bg: 'rgba(16,185,129,0.06)',
+      border: 'rgba(16,185,129,0.15)',
+    },
+    medium: {
+      color: '#F59E0B',
+      label: 'Cần xác minh',
+      bg: 'rgba(245,158,11,0.06)',
+      border: 'rgba(245,158,11,0.15)',
+    },
+    high: {
+      color: '#EF4444',
+      label: 'Rủi ro cao',
+      bg: 'rgba(239,68,68,0.06)',
+      border: 'rgba(239,68,68,0.15)',
+    },
+  };
 
 /* ═══ Spinner ═══ */
 function Spinner() {
   return (
-    <div style={{
-      width: 18, height: 18, borderRadius: '50%',
-      border: '2px solid rgba(255,255,255,0.3)',
-      borderTopColor: '#fff',
-      animation: 'spin 0.7s linear infinite',
-    }} />
+    <div
+      style={{
+        width: 18,
+        height: 18,
+        borderRadius: '50%',
+        border: '2px solid rgba(255,255,255,0.3)',
+        borderTopColor: '#fff',
+        animation: 'spin 0.7s linear infinite',
+      }}
+    />
   );
 }
 
@@ -94,8 +127,11 @@ export function WebDeviceTrustPage() {
   /* ─── Resend countdown ─── */
   useEffect(() => {
     if (step !== 1 || canResend) return;
-    if (countdown <= 0) { setCanResend(true); return; }
-    const id = setInterval(() => setCountdown(p => p - 1), 1000);
+    if (countdown <= 0) {
+      setCanResend(true);
+      return;
+    }
+    const id = setInterval(() => setCountdown((p) => p - 1), 1000);
     return () => clearInterval(id);
   }, [step, countdown, canResend]);
 
@@ -134,7 +170,7 @@ export function WebDeviceTrustPage() {
   /* ─── Step actions ─── */
   const handleSendCode = async () => {
     setIsLoading(true);
-    await new Promise(r => setTimeout(r, 800));
+    await new Promise((r) => setTimeout(r, 800));
     setIsLoading(false);
     setStep(1);
     setCountdown(60);
@@ -144,9 +180,12 @@ export function WebDeviceTrustPage() {
 
   const handleVerify = async () => {
     const code = otp.join('');
-    if (code.length < 6) { setError('Vui lòng nhập đủ 6 chữ số'); return; }
+    if (code.length < 6) {
+      setError('Vui lòng nhập đủ 6 chữ số');
+      return;
+    }
     setIsLoading(true);
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise((r) => setTimeout(r, 1000));
 
     if (code === '123456') {
       setSuccess(true);
@@ -169,7 +208,7 @@ export function WebDeviceTrustPage() {
     setCanResend(false);
     setCountdown(60);
     setIsLoading(true);
-    await new Promise(r => setTimeout(r, 800));
+    await new Promise((r) => setTimeout(r, 800));
     setIsLoading(false);
   };
 
@@ -183,17 +222,36 @@ export function WebDeviceTrustPage() {
         <div
           className="flex items-center justify-center"
           style={{
-            width: 72, height: 72, borderRadius: 20,
-            background: risk.bg, border: `2px solid ${risk.border}`,
+            width: 72,
+            height: 72,
+            borderRadius: 20,
+            background: risk.bg,
+            border: `2px solid ${risk.border}`,
             marginBottom: 20,
           }}
         >
           <ShieldAlert size={32} color={risk.color} />
         </div>
-        <h1 style={{ color: c.text1, fontSize: WEB_FONT['2xl'], fontWeight: 700, marginBottom: 6, textAlign: 'center' }}>
+        <h1
+          style={{
+            color: c.text1,
+            fontSize: WEB_FONT['2xl'],
+            fontWeight: 700,
+            marginBottom: 6,
+            textAlign: 'center',
+          }}
+        >
           Thiết bị mới được phát hiện
         </h1>
-        <p style={{ color: c.text2, fontSize: WEB_FONT.md, lineHeight: 1.5, textAlign: 'center', maxWidth: 380 }}>
+        <p
+          style={{
+            color: c.text2,
+            fontSize: WEB_FONT.md,
+            lineHeight: 1.5,
+            textAlign: 'center',
+            maxWidth: 380,
+          }}
+        >
           Đăng nhập từ thiết bị chưa được nhận dạng. Xác minh danh tính để tiếp tục.
         </p>
       </div>
@@ -203,26 +261,34 @@ export function WebDeviceTrustPage() {
         <div
           className="flex items-center gap-2"
           style={{
-            padding: '6px 14px', borderRadius: 20,
-            background: risk.bg, border: `1px solid ${risk.border}`,
+            padding: '6px 14px',
+            borderRadius: 20,
+            background: risk.bg,
+            border: `1px solid ${risk.border}`,
           }}
         >
           <div style={{ width: 8, height: 8, borderRadius: '50%', background: risk.color }} />
-          <span style={{ color: risk.color, fontSize: WEB_FONT.sm, fontWeight: 600 }}>{risk.label}</span>
+          <span style={{ color: risk.color, fontSize: WEB_FONT.sm, fontWeight: 600 }}>
+            {risk.label}
+          </span>
         </div>
       </div>
 
       {/* Device info card */}
       <div
         style={{
-          padding: '18px 20px', borderRadius: 14,
-          background: c.surface, border: `1px solid ${c.borderSolid}`,
+          padding: '18px 20px',
+          borderRadius: 14,
+          background: c.surface,
+          border: `1px solid ${c.borderSolid}`,
           marginBottom: 24,
         }}
       >
         <div className="flex items-center gap-2" style={{ marginBottom: 14 }}>
           <Monitor size={16} color={c.text2} />
-          <span style={{ color: c.text1, fontSize: WEB_FONT.md, fontWeight: 600 }}>Thông tin thiết bị</span>
+          <span style={{ color: c.text1, fontSize: WEB_FONT.md, fontWeight: 600 }}>
+            Thông tin thiết bị
+          </span>
         </div>
 
         <div className="flex flex-col" style={{ gap: 10 }}>
@@ -232,13 +298,15 @@ export function WebDeviceTrustPage() {
             { icon: Globe, label: 'Địa chỉ IP', value: device.ip },
             { icon: MapPin, label: 'Vị trí', value: device.location },
             { icon: Clock, label: 'Thời gian', value: device.time },
-          ].map(item => (
+          ].map((item) => (
             <div key={item.label} className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <item.icon size={13} color={c.text3} />
                 <span style={{ color: c.text3, fontSize: WEB_FONT.sm }}>{item.label}</span>
               </div>
-              <span style={{ color: c.text1, fontSize: WEB_FONT.sm, fontWeight: 500 }}>{item.value}</span>
+              <span style={{ color: c.text1, fontSize: WEB_FONT.sm, fontWeight: 500 }}>
+                {item.value}
+              </span>
             </div>
           ))}
         </div>
@@ -248,8 +316,10 @@ export function WebDeviceTrustPage() {
       <div
         className="flex items-start gap-3"
         style={{
-          padding: '12px 16px', borderRadius: 10,
-          background: 'rgba(239,68,68,0.04)', border: '1px solid rgba(239,68,68,0.1)',
+          padding: '12px 16px',
+          borderRadius: 10,
+          background: 'rgba(239,68,68,0.04)',
+          border: '1px solid rgba(239,68,68,0.1)',
           marginBottom: 24,
         }}
       >
@@ -263,11 +333,18 @@ export function WebDeviceTrustPage() {
             <button
               onClick={() => navigate('/w/auth/forgot-password')}
               className="hover:underline"
-              style={{ color: '#3B82F6', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600, padding: 0 }}
+              style={{
+                color: '#3B82F6',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontWeight: 600,
+                padding: 0,
+              }}
             >
               đổi mật khẩu ngay
-            </button>
-            {' '}và liên hệ hỗ trợ.
+            </button>{' '}
+            và liên hệ hỗ trợ.
           </p>
         </div>
       </div>
@@ -278,45 +355,69 @@ export function WebDeviceTrustPage() {
       </p>
 
       <div className="flex flex-col" style={{ gap: 10, marginBottom: 24 }}>
-        {([
-          { key: 'email' as const, icon: Mail, label: 'Mã qua email', desc: `Gửi mã 6 chữ số đến ${maskEmail(email)}` },
-          { key: 'authenticator' as const, icon: KeyRound, label: 'Authenticator app', desc: 'Nhập mã từ Google/Microsoft Authenticator' },
-        ]).map(opt => (
+        {[
+          {
+            key: 'email' as const,
+            icon: Mail,
+            label: 'Mã qua email',
+            desc: `Gửi mã 6 chữ số đến ${maskEmail(email)}`,
+          },
+          {
+            key: 'authenticator' as const,
+            icon: KeyRound,
+            label: 'Authenticator app',
+            desc: 'Nhập mã từ Google/Microsoft Authenticator',
+          },
+        ].map((opt) => (
           <button
             key={opt.key}
             onClick={() => setMethod(opt.key)}
             className="flex items-center"
             style={{
-              gap: 14, padding: '14px 16px', borderRadius: 12,
+              gap: 14,
+              padding: '14px 16px',
+              borderRadius: 12,
               background: method === opt.key ? 'rgba(59,130,246,0.04)' : c.surface,
               border: `1.5px solid ${method === opt.key ? '#3B82F6' : c.borderSolid}`,
-              cursor: 'pointer', width: '100%', textAlign: 'left',
+              cursor: 'pointer',
+              width: '100%',
+              textAlign: 'left',
               transition: 'all 0.15s ease',
             }}
           >
             <div
               className="flex items-center justify-center shrink-0"
               style={{
-                width: 40, height: 40, borderRadius: 10,
+                width: 40,
+                height: 40,
+                borderRadius: 10,
                 background: method === opt.key ? 'rgba(59,130,246,0.08)' : c.bg,
               }}
             >
               <opt.icon size={18} color={method === opt.key ? '#3B82F6' : c.text3} />
             </div>
             <div className="flex-1">
-              <p style={{ color: c.text1, fontSize: WEB_FONT.md, fontWeight: 500, marginBottom: 2 }}>{opt.label}</p>
+              <p
+                style={{ color: c.text1, fontSize: WEB_FONT.md, fontWeight: 500, marginBottom: 2 }}
+              >
+                {opt.label}
+              </p>
               <p style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.3 }}>{opt.desc}</p>
             </div>
             <div
               className="flex items-center justify-center shrink-0"
               style={{
-                width: 20, height: 20, borderRadius: '50%',
+                width: 20,
+                height: 20,
+                borderRadius: '50%',
                 border: `2px solid ${method === opt.key ? '#3B82F6' : c.borderSolid}`,
                 background: method === opt.key ? '#3B82F6' : 'transparent',
                 transition: 'all 0.15s ease',
               }}
             >
-              {method === opt.key && <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#fff' }} />}
+              {method === opt.key && (
+                <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#fff' }} />
+              )}
             </div>
           </button>
         ))}
@@ -328,14 +429,21 @@ export function WebDeviceTrustPage() {
         disabled={isLoading}
         className="flex items-center justify-center gap-2"
         style={{
-          height: WEB_BUTTON.lg, borderRadius: 10, width: '100%',
+          height: WEB_BUTTON.lg,
+          borderRadius: 10,
+          width: '100%',
           background: isLoading ? c.surface2 : 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
-          color: '#fff', fontSize: WEB_FONT.md, fontWeight: 600,
-          cursor: isLoading ? 'not-allowed' : 'pointer', border: 'none',
+          color: '#fff',
+          fontSize: WEB_FONT.md,
+          fontWeight: 600,
+          cursor: isLoading ? 'not-allowed' : 'pointer',
+          border: 'none',
           boxShadow: isLoading ? 'none' : '0 4px 16px rgba(59,130,246,0.25)',
         }}
       >
-        {isLoading ? <Spinner /> : (
+        {isLoading ? (
+          <Spinner />
+        ) : (
           <div className="flex items-center gap-2">
             {method === 'email' ? 'Gửi mã xác minh' : 'Nhập mã xác minh'}
             <ArrowRight size={16} />
@@ -352,9 +460,21 @@ export function WebDeviceTrustPage() {
     <div>
       {/* Back */}
       <button
-        onClick={() => { setStep(0); setOtp(['', '', '', '', '', '']); setError(''); }}
+        onClick={() => {
+          setStep(0);
+          setOtp(['', '', '', '', '', '']);
+          setError('');
+        }}
         className="flex items-center hover:underline"
-        style={{ gap: 6, color: c.text2, fontSize: WEB_FONT.sm, marginBottom: 24, background: 'none', border: 'none', cursor: 'pointer' }}
+        style={{
+          gap: 6,
+          color: c.text2,
+          fontSize: WEB_FONT.sm,
+          marginBottom: 24,
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+        }}
       >
         <ArrowLeft size={16} />
         Chọn phương thức khác
@@ -364,19 +484,47 @@ export function WebDeviceTrustPage() {
         <div
           className="flex items-center justify-center"
           style={{
-            width: 64, height: 64, borderRadius: 18,
-            background: 'rgba(59,130,246,0.06)', marginBottom: 16,
+            width: 64,
+            height: 64,
+            borderRadius: 18,
+            background: 'rgba(59,130,246,0.06)',
+            marginBottom: 16,
           }}
         >
-          {method === 'email' ? <Mail size={28} color="#3B82F6" /> : <KeyRound size={28} color="#3B82F6" />}
+          {method === 'email' ? (
+            <Mail size={28} color="#3B82F6" />
+          ) : (
+            <KeyRound size={28} color="#3B82F6" />
+          )}
         </div>
-        <h2 style={{ color: c.text1, fontSize: WEB_FONT.xl, fontWeight: 700, marginBottom: 6, textAlign: 'center' }}>
+        <h2
+          style={{
+            color: c.text1,
+            fontSize: WEB_FONT.xl,
+            fontWeight: 700,
+            marginBottom: 6,
+            textAlign: 'center',
+          }}
+        >
           {method === 'email' ? 'Nhập mã xác minh' : 'Nhập mã từ Authenticator'}
         </h2>
-        <p style={{ color: c.text2, fontSize: WEB_FONT.sm, lineHeight: 1.5, textAlign: 'center', maxWidth: 360 }}>
-          {method === 'email'
-            ? <>Mã 6 chữ số đã được gửi đến <span style={{ color: c.text1, fontWeight: 500 }}>{maskEmail(email)}</span></>
-            : 'Mở ứng dụng Authenticator và nhập mã 6 chữ số hiển thị.'}
+        <p
+          style={{
+            color: c.text2,
+            fontSize: WEB_FONT.sm,
+            lineHeight: 1.5,
+            textAlign: 'center',
+            maxWidth: 360,
+          }}
+        >
+          {method === 'email' ? (
+            <>
+              Mã 6 chữ số đã được gửi đến{' '}
+              <span style={{ color: c.text1, fontWeight: 500 }}>{maskEmail(email)}</span>
+            </>
+          ) : (
+            'Mở ứng dụng Authenticator và nhập mã 6 chữ số hiển thị.'
+          )}
         </p>
       </div>
 
@@ -385,20 +533,26 @@ export function WebDeviceTrustPage() {
         {otp.map((digit, i) => (
           <input
             key={i}
-            ref={el => { inputRefs.current[i] = el; }}
+            ref={(el) => {
+              inputRefs.current[i] = el;
+            }}
             type="text"
             inputMode="numeric"
             maxLength={1}
             value={digit}
-            onChange={e => handleOTPChange(i, e.target.value)}
-            onKeyDown={e => handleOTPKeyDown(i, e)}
+            onChange={(e) => handleOTPChange(i, e.target.value)}
+            onKeyDown={(e) => handleOTPKeyDown(i, e)}
             onPaste={i === 0 ? handleOTPPaste : undefined}
             className="text-center outline-none"
             style={{
-              width: 48, height: 56, borderRadius: 12,
+              width: 48,
+              height: 56,
+              borderRadius: 12,
               border: `1.5px solid ${error ? '#EF4444' : digit ? '#3B82F6' : c.borderSolid}`,
               background: digit ? 'rgba(59,130,246,0.03)' : c.surface,
-              color: c.text1, fontSize: 22, fontWeight: 700,
+              color: c.text1,
+              fontSize: 22,
+              fontWeight: 700,
               fontFamily: 'monospace',
               transition: 'border-color 0.15s ease',
             }}
@@ -408,7 +562,10 @@ export function WebDeviceTrustPage() {
 
       {/* Error */}
       {error && (
-        <div className="flex items-center justify-center gap-1.5" style={{ marginBottom: 12, marginTop: 8 }}>
+        <div
+          className="flex items-center justify-center gap-1.5"
+          style={{ marginBottom: 12, marginTop: 8 }}
+        >
           <XCircle size={13} color="#EF4444" />
           <span style={{ color: '#EF4444', fontSize: WEB_FONT.sm }}>{error}</span>
         </div>
@@ -421,13 +578,23 @@ export function WebDeviceTrustPage() {
             <button
               onClick={handleResend}
               className="hover:underline"
-              style={{ color: '#3B82F6', fontSize: WEB_FONT.sm, fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer' }}
+              style={{
+                color: '#3B82F6',
+                fontSize: WEB_FONT.sm,
+                fontWeight: 500,
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+              }}
             >
               Gửi lại mã
             </button>
           ) : (
             <span style={{ color: c.text3, fontSize: WEB_FONT.sm }}>
-              Gửi lại sau <span style={{ color: c.text1, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>{countdown}s</span>
+              Gửi lại sau{' '}
+              <span style={{ color: c.text1, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
+                {countdown}s
+              </span>
             </span>
           )}
         </div>
@@ -439,20 +606,40 @@ export function WebDeviceTrustPage() {
         disabled={isLoading || otp.join('').length < 6}
         className="flex items-center justify-center gap-2"
         style={{
-          height: WEB_BUTTON.lg, borderRadius: 10, width: '100%', marginTop: method === 'authenticator' ? 20 : 0,
-          background: (isLoading || otp.join('').length < 6) ? c.surface2 : 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
-          color: '#fff', fontSize: WEB_FONT.md, fontWeight: 600,
-          cursor: (isLoading || otp.join('').length < 6) ? 'not-allowed' : 'pointer',
-          border: 'none', boxShadow: (isLoading || otp.join('').length < 6) ? 'none' : '0 4px 16px rgba(59,130,246,0.25)',
+          height: WEB_BUTTON.lg,
+          borderRadius: 10,
+          width: '100%',
+          marginTop: method === 'authenticator' ? 20 : 0,
+          background:
+            isLoading || otp.join('').length < 6
+              ? c.surface2
+              : 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
+          color: '#fff',
+          fontSize: WEB_FONT.md,
+          fontWeight: 600,
+          cursor: isLoading || otp.join('').length < 6 ? 'not-allowed' : 'pointer',
+          border: 'none',
+          boxShadow:
+            isLoading || otp.join('').length < 6 ? 'none' : '0 4px 16px rgba(59,130,246,0.25)',
         }}
       >
         {isLoading ? <Spinner /> : 'Xác minh thiết bị'}
       </button>
 
       {/* Demo hint */}
-      <div className="flex items-center justify-center" style={{ marginTop: 16, padding: '6px 12px', borderRadius: 8, background: 'rgba(59,130,246,0.04)', border: '1px dashed rgba(59,130,246,0.2)' }}>
+      <div
+        className="flex items-center justify-center"
+        style={{
+          marginTop: 16,
+          padding: '6px 12px',
+          borderRadius: 8,
+          background: 'rgba(59,130,246,0.04)',
+          border: '1px dashed rgba(59,130,246,0.2)',
+        }}
+      >
         <span style={{ color: c.text3, fontSize: WEB_FONT.xs }}>
-          Demo: nhập <span style={{ color: '#3B82F6', fontWeight: 600, fontFamily: 'monospace' }}>123456</span>
+          Demo: nhập{' '}
+          <span style={{ color: '#3B82F6', fontWeight: 600, fontFamily: 'monospace' }}>123456</span>
         </span>
       </div>
     </div>
@@ -468,17 +655,36 @@ export function WebDeviceTrustPage() {
         <div
           className="flex items-center justify-center"
           style={{
-            width: 72, height: 72, borderRadius: 20,
-            background: 'rgba(16,185,129,0.08)', border: '2px solid rgba(16,185,129,0.15)',
+            width: 72,
+            height: 72,
+            borderRadius: 20,
+            background: 'rgba(16,185,129,0.08)',
+            border: '2px solid rgba(16,185,129,0.15)',
             marginBottom: 20,
           }}
         >
           <ShieldCheck size={32} color="#10B981" />
         </div>
-        <h1 style={{ color: c.text1, fontSize: WEB_FONT['2xl'], fontWeight: 700, marginBottom: 6, textAlign: 'center' }}>
+        <h1
+          style={{
+            color: c.text1,
+            fontSize: WEB_FONT['2xl'],
+            fontWeight: 700,
+            marginBottom: 6,
+            textAlign: 'center',
+          }}
+        >
           Xác minh thành công!
         </h1>
-        <p style={{ color: c.text2, fontSize: WEB_FONT.md, lineHeight: 1.5, textAlign: 'center', maxWidth: 360 }}>
+        <p
+          style={{
+            color: c.text2,
+            fontSize: WEB_FONT.md,
+            lineHeight: 1.5,
+            textAlign: 'center',
+            maxWidth: 360,
+          }}
+        >
           Thiết bị đã được xác minh. Chọn có tin tưởng thiết bị này hay không.
         </p>
       </div>
@@ -486,7 +692,8 @@ export function WebDeviceTrustPage() {
       {/* Trust device toggle */}
       <div
         style={{
-          padding: '18px 20px', borderRadius: 14,
+          padding: '18px 20px',
+          borderRadius: 14,
           background: trustDevice ? 'rgba(59,130,246,0.03)' : c.surface,
           border: `1.5px solid ${trustDevice ? '#3B82F6' : c.borderSolid}`,
           marginBottom: 16,
@@ -496,12 +703,21 @@ export function WebDeviceTrustPage() {
         <button
           onClick={() => setTrustDevice(!trustDevice)}
           className="flex items-center"
-          style={{ gap: 14, width: '100%', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left' }}
+          style={{
+            gap: 14,
+            width: '100%',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            textAlign: 'left',
+          }}
         >
           <div
             className="flex items-center justify-center shrink-0"
             style={{
-              width: 22, height: 22, borderRadius: 6,
+              width: 22,
+              height: 22,
+              borderRadius: 6,
               background: trustDevice ? '#3B82F6' : 'transparent',
               border: `2px solid ${trustDevice ? '#3B82F6' : c.borderSolid}`,
               transition: 'all 0.15s ease',
@@ -526,22 +742,25 @@ export function WebDeviceTrustPage() {
               Thời gian tin tưởng
             </p>
             <div className="flex" style={{ gap: 8 }}>
-              {([
+              {[
                 { days: 30 as const, label: '30 ngày' },
                 { days: 90 as const, label: '90 ngày' },
                 { days: 365 as const, label: '1 năm' },
-              ]).map(opt => (
+              ].map((opt) => (
                 <button
                   key={opt.days}
                   onClick={() => setTrustDuration(opt.days)}
                   className="flex-1 flex items-center justify-center"
                   style={{
-                    height: 36, borderRadius: 8,
+                    height: 36,
+                    borderRadius: 8,
                     background: trustDuration === opt.days ? '#3B82F6' : c.bg,
                     color: trustDuration === opt.days ? '#fff' : c.text2,
-                    fontSize: WEB_FONT.sm, fontWeight: 500,
+                    fontSize: WEB_FONT.sm,
+                    fontWeight: 500,
                     border: `1px solid ${trustDuration === opt.days ? '#3B82F6' : c.borderSolid}`,
-                    cursor: 'pointer', transition: 'all 0.15s ease',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s ease',
                   }}
                 >
                   {opt.label}
@@ -556,16 +775,20 @@ export function WebDeviceTrustPage() {
       <div
         className="flex items-start gap-3"
         style={{
-          padding: '12px 16px', borderRadius: 10,
-          background: 'rgba(59,130,246,0.03)', border: '1px solid rgba(59,130,246,0.1)',
+          padding: '12px 16px',
+          borderRadius: 10,
+          background: 'rgba(59,130,246,0.03)',
+          border: '1px solid rgba(59,130,246,0.1)',
           marginBottom: 24,
         }}
       >
         <Info size={14} color="#3B82F6" className="shrink-0" style={{ marginTop: 2 }} />
         <p style={{ color: c.text2, fontSize: WEB_FONT.xs, lineHeight: 1.5 }}>
           Bạn có thể quản lý thiết bị tin tưởng trong{' '}
-          <span style={{ color: '#3B82F6', fontWeight: 500 }}>Cài đặt bảo mật → Quản lý thiết bị</span>.
-          Gỡ bỏ thiết bị bất cứ lúc nào để bảo vệ tài khoản.
+          <span style={{ color: '#3B82F6', fontWeight: 500 }}>
+            Cài đặt bảo mật → Quản lý thiết bị
+          </span>
+          . Gỡ bỏ thiết bị bất cứ lúc nào để bảo vệ tài khoản.
         </p>
       </div>
 
@@ -573,22 +796,28 @@ export function WebDeviceTrustPage() {
       <div
         className="flex items-center gap-3"
         style={{
-          padding: '12px 16px', borderRadius: 10,
-          background: c.surface, border: `1px solid ${c.borderSolid}`,
+          padding: '12px 16px',
+          borderRadius: 10,
+          background: c.surface,
+          border: `1px solid ${c.borderSolid}`,
           marginBottom: 24,
         }}
       >
         <Monitor size={18} color={c.text2} />
         <div className="flex-1">
           <p style={{ color: c.text1, fontSize: WEB_FONT.sm, fontWeight: 500 }}>{device.name}</p>
-          <p style={{ color: c.text3, fontSize: WEB_FONT.xs }}>{device.location} · {device.ip}</p>
+          <p style={{ color: c.text3, fontSize: WEB_FONT.xs }}>
+            {device.location} · {device.ip}
+          </p>
         </div>
         <div
           className="flex items-center gap-1"
           style={{ padding: '3px 10px', borderRadius: 12, background: 'rgba(16,185,129,0.06)' }}
         >
           <CheckCircle size={11} color="#10B981" />
-          <span style={{ color: '#10B981', fontSize: WEB_FONT.xs, fontWeight: 600 }}>Đã xác minh</span>
+          <span style={{ color: '#10B981', fontSize: WEB_FONT.xs, fontWeight: 600 }}>
+            Đã xác minh
+          </span>
         </div>
       </div>
 
@@ -597,10 +826,15 @@ export function WebDeviceTrustPage() {
         onClick={handleComplete}
         className="flex items-center justify-center gap-2"
         style={{
-          height: WEB_BUTTON.lg, borderRadius: 10, width: '100%',
+          height: WEB_BUTTON.lg,
+          borderRadius: 10,
+          width: '100%',
           background: 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
-          color: '#fff', fontSize: WEB_FONT.md, fontWeight: 600,
-          cursor: 'pointer', border: 'none',
+          color: '#fff',
+          fontSize: WEB_FONT.md,
+          fontWeight: 600,
+          cursor: 'pointer',
+          border: 'none',
           boxShadow: '0 4px 16px rgba(59,130,246,0.25)',
         }}
       >
@@ -620,7 +854,15 @@ export function WebDeviceTrustPage() {
           <button
             onClick={() => navigate('/w/auth/login')}
             className="flex items-center hover:underline"
-            style={{ gap: 6, color: c.text2, fontSize: WEB_FONT.sm, marginBottom: 24, background: 'none', border: 'none', cursor: 'pointer' }}
+            style={{
+              gap: 6,
+              color: c.text2,
+              fontSize: WEB_FONT.sm,
+              marginBottom: 24,
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+            }}
           >
             <ArrowLeft size={16} />
             Quay lại đăng nhập

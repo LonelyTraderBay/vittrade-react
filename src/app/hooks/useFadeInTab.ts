@@ -59,11 +59,7 @@ interface UseFadeInTabReturn {
 const injectedKeyframes = new Set<string>();
 
 export function useFadeInTab(options?: UseFadeInTabOptions): UseFadeInTabReturn {
-  const {
-    animationName = 'fadeInTab',
-    duration = 180,
-    translateY = 4,
-  } = options ?? {};
+  const { animationName = 'fadeInTab', duration = 180, translateY = 4 } = options ?? {};
 
   const hasMounted = useRef(false);
 

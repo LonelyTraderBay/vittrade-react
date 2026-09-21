@@ -69,10 +69,7 @@ const WEB_PLATFORM: PlatformInfo = {
 function WebLoadingFallback() {
   const c = useThemeColors();
   return (
-    <div
-      className="flex items-center justify-center"
-      style={{ minHeight: '60vh', color: c.text3 }}
-    >
+    <div className="flex items-center justify-center" style={{ minHeight: '60vh', color: c.text3 }}>
       <div className="flex flex-col items-center gap-3">
         <div
           style={{
@@ -101,11 +98,7 @@ export function WebShell() {
   if (isAuthRoute) {
     return (
       <PlatformProvider value={WEB_PLATFORM}>
-        <div
-          data-platform="web"
-          className="h-screen overflow-hidden"
-          style={{ background: c.bg }}
-        >
+        <div data-platform="web" className="h-screen overflow-hidden" style={{ background: c.bg }}>
           <div className="h-full overflow-y-auto scrollbar-none">
             <Suspense fallback={<WebLoadingFallback />}>
               <Outlet />

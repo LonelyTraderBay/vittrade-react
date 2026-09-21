@@ -1,24 +1,36 @@
 /**
  * ══════════════════════════════════════════════════════════════
- *  CopyPerformancePage.test.tsx — Performance Analytics Tests
+ *  CopyPerformancePage.test.tsx — Performance Analysis Tests
  * ══════════════════════════════════════════════════════════════
- * 
+ *
+ * Written against the current component: a you-vs-provider
+ * performance comparison with 4 tabs (Tổng quan / Trades / Chi phí
+ * / Metrics), covering the summary gap card, equity-curve section,
+ * slippage distribution stats, per-trade execution comparison,
+ * cost attribution and risk-adjusted metrics.
+ *
  * Test Coverage (10 tests):
- * 1. ✅ Dual equity curves render
- * 2. ✅ Slippage analysis chart works
- * 3. ✅ Trade comparison table accurate
- * 4. ✅ Cost attribution pie chart shows
- * 5. ✅ Risk-adjusted metrics displayed
- * 6. ✅ Tab switching works (4 tabs)
- * 7. ✅ Export functionality available
- * 8. ✅ Filters work (time range)
- * 9. ✅ Tooltips show details
- * 10. ✅ Mobile responsive
+ * 1. ✅ Summary comparison card (returns + performance gap + causes)
+ * 2. ✅ Overview tab shows equity curve section and gap reasons
+ * 3. ✅ Slippage distribution stats (yours vs provider average)
+ * 4. ✅ Tab switching swaps content
+ * 5. ✅ Trades tab lists the 3 trade comparisons
+ * 6. ✅ Trade cards show entries/exits/P&L, delay and slippage
+ * 7. ✅ Costs tab shows cost attribution items and total
+ * 8. ✅ Costs tab shows gross → net return impact
+ * 9. ✅ Metrics tab shows risk-adjusted metric pairs
+ * 10. ✅ Metrics tab explains why your metrics are lower
+ *
+ * Dropped from the old suite (features no longer exist):
+ * - Export functionality
+ * - Time-range filtering
+ * - Chart tooltip detail assertions (recharts internals)
+ * - Responsive viewport behavior
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { screen, waitFor, within } from '@testing-library/react';
-import { renderWithRouter, userEvent, mockNavigate } from '../../../test/utils/test-utils';
+import { renderWithRouter, userEvent } from '@/test/test-utils-navigation';
 import { CopyPerformancePage } from '../CopyPerformancePage';
 
 describe('CopyPerformancePage', () => {
@@ -26,259 +38,181 @@ describe('CopyPerformancePage', () => {
     vi.clearAllMocks();
   });
 
-  it('should render dual equity curves (Provider vs You)', () => {
+  it('should render the summary comparison card', () => {
     renderWithRouter(<CopyPerformancePage />, {
-      initialRoute: '/trade/copy-trading/copy-123/performance',
+      initialRoute: '/trade/copy-trading/copy-1/performance',
     });
 
-    // Chart title
-    expect(screen.getByText(/equity curve comparison/i)).toBeInTheDocument();
+    expect(screen.getByText('Phân tích hiệu suất')).toBeInTheDocument();
+    expect(screen.getByText('Tổng quan so sánh')).toBeInTheDocument();
 
-    // Legend
-    expect(screen.getByText(/provider equity/i)).toBeInTheDocument();
-    expect(screen.getByText(/your equity/i)).toBeInTheDocument();
+    // You: +13.0% ($5,000 → $5,650); Provider: +15.6% ($5,000 → $5,780)
+    expect(screen.getByText('Hiệu suất của bạn')).toBeInTheDocument();
+    expect(screen.getByText('+13.0%')).toBeInTheDocument();
+    expect(screen.getByText('$5,000 → $5,650')).toBeInTheDocument();
+    expect(screen.getByText('Provider lý thuyết')).toBeInTheDocument();
+    expect(screen.getByText('+15.6%')).toBeInTheDocument();
+    expect(screen.getByText('$5,000 → $5,780')).toBeInTheDocument();
 
-    // Should show performance divergence
-    expect(screen.getByText(/tracking difference/i)).toBeInTheDocument();
-    expect(screen.getByText(/-2\.3%/)).toBeInTheDocument(); // Slippage impact
+    // Gap: provider outperforms by 2.60% (rendered positive), attributed to
+    // slippage (0.68%) and costs ($290)
+    expect(screen.getByText('Chênh lệch hiệu suất')).toBeInTheDocument();
+    expect(screen.getByText('2.60%')).toBeInTheDocument();
+    expect(
+      screen.getByText(/Nguyên nhân chính: slippage \(0\.68%\) và chi phí \(\$290\)/i),
+    ).toBeInTheDocument();
   });
 
-  it('should display slippage analysis chart', async () => {
+  it('should show equity curve section with gap reasons on overview tab', () => {
+    renderWithRouter(<CopyPerformancePage />);
+
+    expect(screen.getByText('Đường vốn so sánh (30 ngày)')).toBeInTheDocument();
+    expect(screen.getByText('Tại sao có chênh lệch?')).toBeInTheDocument();
+    expect(screen.getByText(/Slippage: Copy orders thực thi chậm hơn 0\.5-3s/i)).toBeInTheDocument();
+    expect(screen.getByText(/Chi phí: Trading fees \+ performance fees/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Position sizing: Fixed mode sử dụng 50% capital/i),
+    ).toBeInTheDocument();
+  });
+
+  it('should show slippage distribution stats', () => {
+    renderWithRouter(<CopyPerformancePage />);
+
+    expect(screen.getByText('Phân bố Slippage')).toBeInTheDocument();
+    expect(screen.getByText('Slippage TB của bạn')).toBeInTheDocument();
+    expect(screen.getByText('0.68%')).toBeInTheDocument();
+    expect(screen.getByText('Provider TB')).toBeInTheDocument();
+    expect(screen.getByText('0.48%')).toBeInTheDocument();
+  });
+
+  it('should switch between the 4 tabs', async () => {
     const user = userEvent.setup();
-    renderWithRouter(<CopyPerformancePage />, {
-      initialRoute: '/trade/copy-trading/copy-123/performance',
-    });
+    renderWithRouter(<CopyPerformancePage />);
 
-    // Switch to Slippage tab
-    const slippageTab = screen.getByRole('tab', { name: /slippage/i });
-    await user.click(slippageTab);
+    ['Tổng quan', 'Trades', 'Chi phí', 'Metrics'].forEach((label) =>
+      expect(screen.getByRole('tab', { name: label })).toBeInTheDocument(),
+    );
 
-    // Slippage chart should render
+    // Switch to Trades
+    await user.click(screen.getByRole('tab', { name: 'Trades' }));
     await waitFor(() => {
-      expect(screen.getByText(/slippage analysis/i)).toBeInTheDocument();
+      expect(screen.getByText('BTC/USDT')).toBeInTheDocument();
+      expect(screen.queryByText('Đường vốn so sánh (30 ngày)')).not.toBeInTheDocument();
     });
 
-    // Should show cumulative slippage cost
-    expect(screen.getByText(/total slippage cost/i)).toBeInTheDocument();
-    expect(screen.getByText(/\$45\.20/)).toBeInTheDocument();
-
-    // Should show average slippage per trade
-    expect(screen.getByText(/avg slippage/i)).toBeInTheDocument();
-    expect(screen.getByText(/0\.12%/)).toBeInTheDocument();
+    // Switch to Metrics
+    await user.click(screen.getByRole('tab', { name: 'Metrics' }));
+    await waitFor(() => {
+      expect(screen.getByText('Metrics điều chỉnh rủi ro')).toBeInTheDocument();
+      expect(screen.queryByText('BTC/USDT')).not.toBeInTheDocument();
+    });
   });
 
-  it('should show accurate trade comparison table', async () => {
+  it('should list the 3 trade comparisons on the trades tab', async () => {
     const user = userEvent.setup();
-    renderWithRouter(<CopyPerformancePage />, {
-      initialRoute: '/trade/copy-trading/copy-123/performance',
-    });
+    renderWithRouter(<CopyPerformancePage />);
 
-    // Switch to Trades tab
-    const tradesTab = screen.getByRole('tab', { name: /trades/i });
-    await user.click(tradesTab);
+    await user.click(screen.getByRole('tab', { name: 'Trades' }));
 
-    // Table headers
-    await waitFor(() => {
-      expect(screen.getByText(/symbol/i)).toBeInTheDocument();
-      expect(screen.getByText(/provider price/i)).toBeInTheDocument();
-      expect(screen.getByText(/your price/i)).toBeInTheDocument();
-      expect(screen.getByText(/slippage/i)).toBeInTheDocument();
-    });
+    expect(
+      screen.getByText(/So sánh từng giao dịch giữa bạn và provider/i),
+    ).toBeInTheDocument();
 
-    // Sample trade row
-    expect(screen.getByText(/BTCUSDT/)).toBeInTheDocument();
-    expect(screen.getByText(/\$68,500/)).toBeInTheDocument(); // Provider price
-    expect(screen.getByText(/\$68,525/)).toBeInTheDocument(); // Your price
-    expect(screen.getByText(/0\.036%/)).toBeInTheDocument(); // Slippage
+    ['BTC/USDT', 'ETH/USDT', 'SOL/USDT'].forEach((pair) =>
+      expect(screen.getByText(pair)).toBeInTheDocument(),
+    );
+    expect(screen.getByText('2024-03-05 14:23')).toBeInTheDocument();
+    expect(screen.getByText('2024-03-04 09:15')).toBeInTheDocument();
+    expect(screen.getByText('2024-03-03 16:42')).toBeInTheDocument();
   });
 
-  it('should display cost attribution pie chart', async () => {
+  it('should show entries, exits, P/L, delay and slippage per trade', async () => {
     const user = userEvent.setup();
-    renderWithRouter(<CopyPerformancePage />, {
-      initialRoute: '/trade/copy-trading/copy-123/performance',
-    });
+    renderWithRouter(<CopyPerformancePage />);
 
-    // Switch to Costs tab
-    const costsTab = screen.getByRole('tab', { name: /costs/i });
-    await user.click(costsTab);
+    await user.click(screen.getByRole('tab', { name: 'Trades' }));
 
-    // Cost breakdown
-    await waitFor(() => {
-      expect(screen.getByText(/cost breakdown/i)).toBeInTheDocument();
-    });
+    // BTC trade card
+    const btcCard = screen.getByText('BTC/USDT').closest('.rounded-2xl') as HTMLElement;
+    expect(btcCard).not.toBeNull();
+    expect(screen.getAllByText('Entry').length).toBe(6); // provider + you per trade card
+    expect(within(btcCard).getAllByText('$67800').length).toBeGreaterThan(0); // provider entry
+    expect(within(btcCard).getAllByText('$68500').length).toBeGreaterThan(0); // provider exit
+    expect(within(btcCard).getByText('+$35')).toBeInTheDocument(); // provider P/L
+    expect(within(btcCard).getByText('+$32')).toBeInTheDocument(); // your P/L
+    expect(within(btcCard).getByText('Delay: 2.1s')).toBeInTheDocument();
+    expect(within(btcCard).getByText('Slippage: 0.52%')).toBeInTheDocument();
 
-    // Performance fees
-    expect(screen.getByText(/performance fees/i)).toBeInTheDocument();
-    expect(screen.getByText(/\$25\.00/)).toBeInTheDocument();
-
-    // Platform fees
-    expect(screen.getByText(/platform fees/i)).toBeInTheDocument();
-    expect(screen.getByText(/\$2\.00/)).toBeInTheDocument();
-
-    // Slippage costs
-    expect(screen.getByText(/slippage costs/i)).toBeInTheDocument();
-    expect(screen.getByText(/\$45\.20/)).toBeInTheDocument();
-
-    // Total costs
-    expect(screen.getByText(/total costs/i)).toBeInTheDocument();
-    expect(screen.getByText(/\$72\.20/)).toBeInTheDocument();
+    // Losing SOL trade renders negative P/L for both sides
+    const solCard = screen.getByText('SOL/USDT').closest('.rounded-2xl') as HTMLElement;
+    expect(within(solCard).getByText('$-40')).toBeInTheDocument();
+    expect(within(solCard).getByText('$-43')).toBeInTheDocument();
   });
 
-  it('should display risk-adjusted metrics', () => {
-    renderWithRouter(<CopyPerformancePage />, {
-      initialRoute: '/trade/copy-trading/copy-123/performance',
-    });
-
-    // Sharpe Ratio
-    expect(screen.getByText(/sharpe ratio/i)).toBeInTheDocument();
-    expect(screen.getByText(/2\.1/)).toBeInTheDocument();
-
-    // Sortino Ratio
-    expect(screen.getByText(/sortino ratio/i)).toBeInTheDocument();
-    expect(screen.getByText(/2\.8/)).toBeInTheDocument();
-
-    // Max Drawdown
-    expect(screen.getByText(/max drawdown/i)).toBeInTheDocument();
-    expect(screen.getByText(/-15\.3%/)).toBeInTheDocument();
-
-    // Win Rate
-    expect(screen.getByText(/win rate/i)).toBeInTheDocument();
-    expect(screen.getByText(/78%/)).toBeInTheDocument();
-  });
-
-  it('should support tab switching between 4 views', async () => {
+  it('should show cost attribution items and total on the costs tab', async () => {
     const user = userEvent.setup();
-    renderWithRouter(<CopyPerformancePage />, {
-      initialRoute: '/trade/copy-trading/copy-123/performance',
-    });
+    renderWithRouter(<CopyPerformancePage />);
 
-    // Tab 1: Overview (default)
-    expect(screen.getByText(/equity curve comparison/i)).toBeInTheDocument();
+    await user.click(screen.getByRole('tab', { name: 'Chi phí' }));
 
-    // Switch to Tab 2: Slippage
-    const slippageTab = screen.getByRole('tab', { name: /slippage/i });
-    await user.click(slippageTab);
-    await waitFor(() => {
-      expect(screen.getByText(/slippage analysis/i)).toBeInTheDocument();
-    });
-
-    // Switch to Tab 3: Trades
-    const tradesTab = screen.getByRole('tab', { name: /trades/i });
-    await user.click(tradesTab);
-    await waitFor(() => {
-      expect(screen.getByText(/provider price/i)).toBeInTheDocument();
-    });
-
-    // Switch to Tab 4: Costs
-    const costsTab = screen.getByRole('tab', { name: /costs/i });
-    await user.click(costsTab);
-    await waitFor(() => {
-      expect(screen.getByText(/cost breakdown/i)).toBeInTheDocument();
-    });
+    expect(screen.getByText('Phân bổ chi phí')).toBeInTheDocument();
+    ['Trading Fees', 'Performance Fee', 'Slippage', 'Platform Fee'].forEach((name) =>
+      expect(screen.getByText(name)).toBeInTheDocument(),
+    );
+    expect(screen.getByText('$125')).toBeInTheDocument();
+    expect(screen.getByText('$65')).toBeInTheDocument();
+    expect(screen.getByText('$95')).toBeInTheDocument();
+    expect(screen.getByText('$5')).toBeInTheDocument();
+    expect(screen.getByText('Tổng chi phí')).toBeInTheDocument();
+    expect(screen.getByText('$290')).toBeInTheDocument();
   });
 
-  it('should have export functionality', async () => {
+  it('should show gross → net return impact on the costs tab', async () => {
     const user = userEvent.setup();
-    renderWithRouter(<CopyPerformancePage />, {
-      initialRoute: '/trade/copy-trading/copy-123/performance',
-    });
+    renderWithRouter(<CopyPerformancePage />);
 
-    // Export button
-    const exportBtn = screen.getByRole('button', { name: /export/i });
-    expect(exportBtn).toBeInTheDocument();
+    await user.click(screen.getByRole('tab', { name: 'Chi phí' }));
 
-    await user.click(exportBtn);
-
-    // Export options
-    await waitFor(() => {
-      expect(screen.getByText(/export as csv/i)).toBeInTheDocument();
-      expect(screen.getByText(/export as pdf/i)).toBeInTheDocument();
-    });
-
-    // Click CSV export
-    const csvBtn = screen.getByRole('button', { name: /export as csv/i });
-    await user.click(csvBtn);
-
-    // Should trigger download (mock)
-    await waitFor(() => {
-      expect(screen.getByText(/export started/i)).toBeInTheDocument();
-    });
+    expect(screen.getByText('Ảnh hưởng đến lợi nhuận')).toBeInTheDocument();
+    expect(screen.getByText('Return gross')).toBeInTheDocument();
+    expect(screen.getByText('+18.8%')).toBeInTheDocument();
+    expect(screen.getByText('- Chi phí (5.8%)')).toBeInTheDocument();
+    expect(screen.getByText('-5.8%')).toBeInTheDocument();
+    expect(screen.getByText('Return net')).toBeInTheDocument();
+    // Net +13.0% appears both in the summary card and here
+    expect(screen.getAllByText('+13.0%').length).toBe(2);
   });
 
-  it('should filter data by time range', async () => {
+  it('should show risk-adjusted metric pairs on the metrics tab', async () => {
     const user = userEvent.setup();
-    renderWithRouter(<CopyPerformancePage />, {
-      initialRoute: '/trade/copy-trading/copy-123/performance',
-    });
+    renderWithRouter(<CopyPerformancePage />);
 
-    // Time range selector
-    expect(screen.getByRole('button', { name: /7d/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /30d/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /90d/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /all/i })).toBeInTheDocument();
+    await user.click(screen.getByRole('tab', { name: 'Metrics' }));
 
-    // Default should be 30d
-    const thirtyDayBtn = screen.getByRole('button', { name: /30d/i });
-    expect(thirtyDayBtn).toHaveAttribute('aria-selected', 'true');
-
-    // Switch to 7d
-    const sevenDayBtn = screen.getByRole('button', { name: /7d/i });
-    await user.click(sevenDayBtn);
-
-    // Chart should update
-    await waitFor(() => {
-      expect(sevenDayBtn).toHaveAttribute('aria-selected', 'true');
-      expect(thirtyDayBtn).toHaveAttribute('aria-selected', 'false');
-    });
-
-    // Data should reload for 7 days
-    // (In real app, this would fetch new data)
+    expect(screen.getByText('Metrics điều chỉnh rủi ro')).toBeInTheDocument();
+    expect(screen.getByText('Sharpe Ratio')).toBeInTheDocument();
+    expect(screen.getByText('1.82')).toBeInTheDocument();
+    expect(screen.getByText('2.15')).toBeInTheDocument();
+    expect(screen.getByText('Max Drawdown')).toBeInTheDocument();
+    expect(screen.getByText('-8.50')).toBeInTheDocument();
+    expect(screen.getByText('-6.20')).toBeInTheDocument();
+    expect(screen.getByText('Win Rate')).toBeInTheDocument();
+    expect(screen.getByText('62.50%')).toBeInTheDocument();
+    expect(screen.getByText('68.30%')).toBeInTheDocument();
+    expect(screen.getByText('Avg Win/Loss')).toBeInTheDocument();
+    expect(screen.getByText('1.42')).toBeInTheDocument();
+    expect(screen.getByText('1.68')).toBeInTheDocument();
   });
 
-  it('should show tooltips with detailed information', async () => {
+  it('should explain why your metrics are lower', async () => {
     const user = userEvent.setup();
-    renderWithRouter(<CopyPerformancePage />, {
-      initialRoute: '/trade/copy-trading/copy-123/performance',
-    });
+    renderWithRouter(<CopyPerformancePage />);
 
-    // Hover over Sharpe Ratio
-    const sharpeLabel = screen.getByText(/sharpe ratio/i);
-    await user.hover(sharpeLabel);
+    await user.click(screen.getByRole('tab', { name: 'Metrics' }));
 
-    // Tooltip should appear
-    await waitFor(() => {
-      expect(screen.getByText(/risk-adjusted return measure/i)).toBeInTheDocument();
-      expect(screen.getByText(/higher is better/i)).toBeInTheDocument();
-    });
-
-    // Hover over Max Drawdown
-    const drawdownLabel = screen.getByText(/max drawdown/i);
-    await user.hover(drawdownLabel);
-
-    await waitFor(() => {
-      expect(screen.getByText(/largest peak-to-trough decline/i)).toBeInTheDocument();
-    });
-  });
-
-  it('should be responsive on mobile viewports', () => {
-    // Set mobile viewport
-    global.innerWidth = 390;
-    global.innerHeight = 844;
-
-    renderWithRouter(<CopyPerformancePage />, {
-      initialRoute: '/trade/copy-trading/copy-123/performance',
-    });
-
-    // Should still show key metrics
-    expect(screen.getByText(/equity curve comparison/i)).toBeInTheDocument();
-    expect(screen.getByText(/sharpe ratio/i)).toBeInTheDocument();
-
-    // Tabs should be horizontally scrollable on mobile
-    const tabContainer = screen.getByRole('tablist');
-    expect(tabContainer).toHaveClass(expect.stringContaining('overflow-x-auto'));
-
-    // Charts should be touch-optimized
-    const chartContainer = screen.getByText(/equity curve/i).closest('div');
-    expect(chartContainer).toBeInTheDocument();
+    expect(screen.getByText('Tại sao metrics của bạn thấp hơn?')).toBeInTheDocument();
+    expect(
+      screen.getByText(/Slippage và execution delay làm giảm Sharpe Ratio và tăng Max Drawdown/i),
+    ).toBeInTheDocument();
   });
 });

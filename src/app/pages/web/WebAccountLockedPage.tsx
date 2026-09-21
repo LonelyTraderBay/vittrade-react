@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import {
-  Lock, ArrowLeft, Clock, ShieldAlert, Mail,
-  HelpCircle, AlertTriangle, ArrowRight,
+  Lock,
+  ArrowLeft,
+  Clock,
+  ShieldAlert,
+  Mail,
+  HelpCircle,
+  AlertTriangle,
+  ArrowRight,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { WEB_FONT, WEB_BUTTON } from '../../components/layout/webConstants';
@@ -37,9 +43,11 @@ export function WebAccountLockedPage() {
 
   const email = state?.email || '';
   const attempts = state?.attempts || MAX_ATTEMPTS;
-  const unlockTime = state?.unlockTime || (Date.now() + DEFAULT_LOCK_MINUTES * 60 * 1000);
+  const unlockTime = state?.unlockTime || Date.now() + DEFAULT_LOCK_MINUTES * 60 * 1000;
 
-  const [remaining, setRemaining] = useState(() => Math.max(0, Math.ceil((unlockTime - Date.now()) / 1000)));
+  const [remaining, setRemaining] = useState(() =>
+    Math.max(0, Math.ceil((unlockTime - Date.now()) / 1000)),
+  );
   const [unlockEmailSent, setUnlockEmailSent] = useState(false);
   const [isSending, setIsSending] = useState(false);
 
@@ -64,7 +72,7 @@ export function WebAccountLockedPage() {
   /* ─── Send unlock email (demo) ─── */
   const handleSendUnlockEmail = async () => {
     setIsSending(true);
-    await new Promise(r => setTimeout(r, 1200));
+    await new Promise((r) => setTimeout(r, 1200));
     setIsSending(false);
     setUnlockEmailSent(true);
   };
@@ -86,8 +94,13 @@ export function WebAccountLockedPage() {
           onClick={() => navigate('/w/auth/login')}
           className="flex items-center hover:underline"
           style={{
-            gap: 6, color: c.text2, fontSize: WEB_FONT.sm,
-            marginBottom: 32, background: 'none', border: 'none', cursor: 'pointer',
+            gap: 6,
+            color: c.text2,
+            fontSize: WEB_FONT.sm,
+            marginBottom: 32,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
           }}
         >
           <ArrowLeft size={16} />
@@ -104,25 +117,40 @@ export function WebAccountLockedPage() {
               <div
                 className="flex items-center justify-center"
                 style={{
-                  width: 72, height: 72, borderRadius: 20,
-                  background: 'rgba(239,68,68,0.08)', marginBottom: 20,
+                  width: 72,
+                  height: 72,
+                  borderRadius: 20,
+                  background: 'rgba(239,68,68,0.08)',
+                  marginBottom: 20,
                   border: '2px solid rgba(239,68,68,0.15)',
                 }}
               >
                 <Lock size={32} color="#EF4444" />
               </div>
-              <h1 style={{
-                color: c.text1, fontSize: WEB_FONT['2xl'], fontWeight: 700,
-                marginBottom: 8, textAlign: 'center',
-              }}>
+              <h1
+                style={{
+                  color: c.text1,
+                  fontSize: WEB_FONT['2xl'],
+                  fontWeight: 700,
+                  marginBottom: 8,
+                  textAlign: 'center',
+                }}
+              >
                 Tài khoản tạm khóa
               </h1>
-              <p style={{
-                color: c.text2, fontSize: WEB_FONT.md, lineHeight: 1.5,
-                textAlign: 'center', maxWidth: 360,
-              }}>
+              <p
+                style={{
+                  color: c.text2,
+                  fontSize: WEB_FONT.md,
+                  lineHeight: 1.5,
+                  textAlign: 'center',
+                  maxWidth: 360,
+                }}
+              >
                 Tài khoản đã bị khóa tạm thời sau{' '}
-                <span style={{ color: '#EF4444', fontWeight: 600 }}>{attempts} lần đăng nhập thất bại</span>{' '}
+                <span style={{ color: '#EF4444', fontWeight: 600 }}>
+                  {attempts} lần đăng nhập thất bại
+                </span>{' '}
                 liên tiếp.
               </p>
             </div>
@@ -131,7 +159,8 @@ export function WebAccountLockedPage() {
             <div
               className="flex flex-col items-center"
               style={{
-                padding: '24px 20px', borderRadius: 16,
+                padding: '24px 20px',
+                borderRadius: 16,
                 background: 'rgba(239,68,68,0.04)',
                 border: '1px solid rgba(239,68,68,0.12)',
                 marginBottom: 24,
@@ -143,23 +172,32 @@ export function WebAccountLockedPage() {
                   Tự động mở khóa sau
                 </span>
               </div>
-              <div style={{
-                color: '#EF4444', fontSize: 36, fontWeight: 700,
-                fontVariantNumeric: 'tabular-nums', letterSpacing: 2,
-                fontFamily: 'monospace',
-              }}>
+              <div
+                style={{
+                  color: '#EF4444',
+                  fontSize: 36,
+                  fontWeight: 700,
+                  fontVariantNumeric: 'tabular-nums',
+                  letterSpacing: 2,
+                  fontFamily: 'monospace',
+                }}
+              >
                 {formatTime(remaining)}
               </div>
               <div
                 style={{
-                  width: '100%', height: 4, borderRadius: 2, marginTop: 16,
+                  width: '100%',
+                  height: 4,
+                  borderRadius: 2,
+                  marginTop: 16,
                   background: 'rgba(239,68,68,0.1)',
                   overflow: 'hidden',
                 }}
               >
                 <div
                   style={{
-                    height: '100%', borderRadius: 2,
+                    height: '100%',
+                    borderRadius: 2,
                     background: '#EF4444',
                     width: `${Math.max(0, (remaining / (DEFAULT_LOCK_MINUTES * 60)) * 100)}%`,
                     transition: 'width 1s linear',
@@ -173,8 +211,10 @@ export function WebAccountLockedPage() {
               <div
                 className="flex items-center gap-3"
                 style={{
-                  padding: '12px 16px', borderRadius: 10,
-                  background: c.surface, border: `1px solid ${c.borderSolid}`,
+                  padding: '12px 16px',
+                  borderRadius: 10,
+                  background: c.surface,
+                  border: `1px solid ${c.borderSolid}`,
                   marginBottom: 20,
                 }}
               >
@@ -197,9 +237,15 @@ export function WebAccountLockedPage() {
                 disabled={isSending}
                 className="flex items-center justify-center gap-2"
                 style={{
-                  height: WEB_BUTTON.lg, borderRadius: 10, width: '100%',
-                  background: isSending ? c.surface2 : 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
-                  color: '#fff', fontSize: WEB_FONT.md, fontWeight: 600,
+                  height: WEB_BUTTON.lg,
+                  borderRadius: 10,
+                  width: '100%',
+                  background: isSending
+                    ? c.surface2
+                    : 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
+                  color: '#fff',
+                  fontSize: WEB_FONT.md,
+                  fontWeight: 600,
                   cursor: isSending ? 'not-allowed' : 'pointer',
                   border: 'none',
                   boxShadow: isSending ? 'none' : '0 4px 16px rgba(59,130,246,0.25)',
@@ -208,12 +254,16 @@ export function WebAccountLockedPage() {
                 }}
               >
                 {isSending ? (
-                  <div style={{
-                    width: 18, height: 18, borderRadius: '50%',
-                    border: '2px solid rgba(255,255,255,0.3)',
-                    borderTopColor: '#fff',
-                    animation: 'spin 0.7s linear infinite',
-                  }} />
+                  <div
+                    style={{
+                      width: 18,
+                      height: 18,
+                      borderRadius: '50%',
+                      border: '2px solid rgba(255,255,255,0.3)',
+                      borderTopColor: '#fff',
+                      animation: 'spin 0.7s linear infinite',
+                    }}
+                  />
                 ) : (
                   <div className="flex items-center" style={{ gap: 8 }}>
                     <Mail size={16} />
@@ -225,7 +275,8 @@ export function WebAccountLockedPage() {
               <div
                 className="flex items-start gap-3"
                 style={{
-                  padding: '14px 16px', borderRadius: 10,
+                  padding: '14px 16px',
+                  borderRadius: 10,
                   background: 'rgba(16,185,129,0.06)',
                   border: '1px solid rgba(16,185,129,0.15)',
                   marginBottom: 12,
@@ -233,11 +284,19 @@ export function WebAccountLockedPage() {
               >
                 <Mail size={18} color="#10B981" className="shrink-0" style={{ marginTop: 1 }} />
                 <div>
-                  <p style={{ color: '#10B981', fontSize: WEB_FONT.sm, fontWeight: 600, marginBottom: 2 }}>
+                  <p
+                    style={{
+                      color: '#10B981',
+                      fontSize: WEB_FONT.sm,
+                      fontWeight: 600,
+                      marginBottom: 2,
+                    }}
+                  >
                     Email mở khóa đã gửi!
                   </p>
                   <p style={{ color: c.text2, fontSize: WEB_FONT.xs, lineHeight: 1.4 }}>
-                    Kiểm tra hộp thư <span style={{ fontWeight: 500, color: c.text1 }}>{maskEmail(email)}</span> và
+                    Kiểm tra hộp thư{' '}
+                    <span style={{ fontWeight: 500, color: c.text1 }}>{maskEmail(email)}</span> và
                     nhấn link để mở khóa tài khoản ngay lập tức.
                   </p>
                 </div>
@@ -249,9 +308,13 @@ export function WebAccountLockedPage() {
               onClick={() => navigate('/w/auth/forgot-password')}
               className="flex items-center justify-center gap-2"
               style={{
-                height: WEB_BUTTON.lg, borderRadius: 10, width: '100%',
-                background: c.surface, color: c.text1,
-                fontSize: WEB_FONT.md, fontWeight: 500,
+                height: WEB_BUTTON.lg,
+                borderRadius: 10,
+                width: '100%',
+                background: c.surface,
+                color: c.text1,
+                fontSize: WEB_FONT.md,
+                fontWeight: 500,
                 cursor: 'pointer',
                 border: `1.5px solid ${c.borderSolid}`,
                 marginBottom: 24,
@@ -265,7 +328,8 @@ export function WebAccountLockedPage() {
             {/* Security tips */}
             <div
               style={{
-                padding: '16px 18px', borderRadius: 12,
+                padding: '16px 18px',
+                borderRadius: 12,
                 background: 'rgba(245,158,11,0.04)',
                 border: '1px solid rgba(245,158,11,0.12)',
                 marginBottom: 20,
@@ -277,10 +341,24 @@ export function WebAccountLockedPage() {
                   Gợi ý bảo mật
                 </span>
               </div>
-              <ul style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.7, paddingLeft: 16, margin: 0 }}>
-                <li>Nếu bạn không thực hiện các lần đăng nhập này, hãy <strong style={{ color: c.text1 }}>đổi mật khẩu ngay</strong></li>
+              <ul
+                style={{
+                  color: c.text3,
+                  fontSize: WEB_FONT.xs,
+                  lineHeight: 1.7,
+                  paddingLeft: 16,
+                  margin: 0,
+                }}
+              >
+                <li>
+                  Nếu bạn không thực hiện các lần đăng nhập này, hãy{' '}
+                  <strong style={{ color: c.text1 }}>đổi mật khẩu ngay</strong>
+                </li>
                 <li>Sử dụng mật khẩu mạnh, không trùng với dịch vụ khác</li>
-                <li>Bật <strong style={{ color: c.text1 }}>xác thực 2 bước (2FA)</strong> để tăng cường bảo mật</li>
+                <li>
+                  Bật <strong style={{ color: c.text1 }}>xác thực 2 bước (2FA)</strong> để tăng
+                  cường bảo mật
+                </li>
                 <li>Kiểm tra lại thiết bị đã đăng nhập trong cài đặt bảo mật</li>
               </ul>
             </div>
@@ -292,7 +370,13 @@ export function WebAccountLockedPage() {
                 Cần trợ giúp?{' '}
                 <button
                   className="hover:underline"
-                  style={{ color: '#3B82F6', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 500 }}
+                  style={{
+                    color: '#3B82F6',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontWeight: 500,
+                  }}
                 >
                   Liên hệ hỗ trợ
                 </button>
@@ -308,24 +392,38 @@ export function WebAccountLockedPage() {
               <div
                 className="flex items-center justify-center"
                 style={{
-                  width: 72, height: 72, borderRadius: 20,
-                  background: 'rgba(16,185,129,0.08)', marginBottom: 20,
+                  width: 72,
+                  height: 72,
+                  borderRadius: 20,
+                  background: 'rgba(16,185,129,0.08)',
+                  marginBottom: 20,
                   border: '2px solid rgba(16,185,129,0.15)',
                 }}
               >
                 <ShieldAlert size={32} color="#10B981" />
               </div>
-              <h1 style={{
-                color: c.text1, fontSize: WEB_FONT['2xl'], fontWeight: 700,
-                marginBottom: 8, textAlign: 'center',
-              }}>
+              <h1
+                style={{
+                  color: c.text1,
+                  fontSize: WEB_FONT['2xl'],
+                  fontWeight: 700,
+                  marginBottom: 8,
+                  textAlign: 'center',
+                }}
+              >
                 Tài khoản đã mở khóa
               </h1>
-              <p style={{
-                color: c.text2, fontSize: WEB_FONT.md, lineHeight: 1.5,
-                textAlign: 'center', maxWidth: 360,
-              }}>
-                Thời gian khóa đã hết. Bạn có thể thử đăng nhập lại. Lưu ý kiểm tra mật khẩu trước khi đăng nhập.
+              <p
+                style={{
+                  color: c.text2,
+                  fontSize: WEB_FONT.md,
+                  lineHeight: 1.5,
+                  textAlign: 'center',
+                  maxWidth: 360,
+                }}
+              >
+                Thời gian khóa đã hết. Bạn có thể thử đăng nhập lại. Lưu ý kiểm tra mật khẩu trước
+                khi đăng nhập.
               </p>
             </div>
 
@@ -333,16 +431,22 @@ export function WebAccountLockedPage() {
             <div
               className="flex items-start gap-3"
               style={{
-                padding: '12px 16px', borderRadius: 10,
+                padding: '12px 16px',
+                borderRadius: 10,
                 background: 'rgba(245,158,11,0.06)',
                 border: '1px solid rgba(245,158,11,0.15)',
                 marginBottom: 24,
               }}
             >
-              <AlertTriangle size={16} color="#F59E0B" className="shrink-0" style={{ marginTop: 1 }} />
+              <AlertTriangle
+                size={16}
+                color="#F59E0B"
+                className="shrink-0"
+                style={{ marginTop: 1 }}
+              />
               <p style={{ color: c.text2, fontSize: WEB_FONT.sm, lineHeight: 1.5 }}>
-                Tài khoản sẽ bị khóa lại nếu tiếp tục nhập sai. 
-                Hãy <strong style={{ color: c.text1 }}>đặt lại mật khẩu</strong> nếu không nhớ.
+                Tài khoản sẽ bị khóa lại nếu tiếp tục nhập sai. Hãy{' '}
+                <strong style={{ color: c.text1 }}>đặt lại mật khẩu</strong> nếu không nhớ.
               </p>
             </div>
 
@@ -351,10 +455,15 @@ export function WebAccountLockedPage() {
               onClick={() => navigate('/w/auth/login', { replace: true })}
               className="flex items-center justify-center gap-2"
               style={{
-                height: WEB_BUTTON.lg, borderRadius: 10, width: '100%',
+                height: WEB_BUTTON.lg,
+                borderRadius: 10,
+                width: '100%',
                 background: 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
-                color: '#fff', fontSize: WEB_FONT.md, fontWeight: 600,
-                cursor: 'pointer', border: 'none',
+                color: '#fff',
+                fontSize: WEB_FONT.md,
+                fontWeight: 600,
+                cursor: 'pointer',
+                border: 'none',
                 boxShadow: '0 4px 16px rgba(59,130,246,0.25)',
                 marginBottom: 12,
               }}
@@ -367,9 +476,13 @@ export function WebAccountLockedPage() {
               onClick={() => navigate('/w/auth/forgot-password')}
               className="flex items-center justify-center gap-2"
               style={{
-                height: WEB_BUTTON.lg, borderRadius: 10, width: '100%',
-                background: c.surface, color: c.text1,
-                fontSize: WEB_FONT.md, fontWeight: 500,
+                height: WEB_BUTTON.lg,
+                borderRadius: 10,
+                width: '100%',
+                background: c.surface,
+                color: c.text1,
+                fontSize: WEB_FONT.md,
+                fontWeight: 500,
                 cursor: 'pointer',
                 border: `1.5px solid ${c.borderSolid}`,
               }}

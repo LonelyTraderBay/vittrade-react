@@ -5,12 +5,25 @@ import { PageLayout } from '../../../components/layout/PageLayout';
 import { PageContent, PageSection } from '../../../components/layout/PageContent';
 import { useThemeColors } from '../../../hooks/useThemeColors';
 import { TrCard } from '../../../components/ui/TrCard';
-import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
+import {
+  LineChart,
+  Line,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
+} from 'recharts';
 
 const STRATEGIES = [
-  { 
-    id: 'dca', 
-    name: 'DCA Bot', 
+  {
+    id: 'dca',
+    name: 'DCA Bot',
     color: '#3B82F6',
     metrics: {
       totalReturn: 42.3,
@@ -23,9 +36,9 @@ const STRATEGIES = [
       volatility: 12.4,
     },
   },
-  { 
-    id: 'grid', 
-    name: 'Grid Bot', 
+  {
+    id: 'grid',
+    name: 'Grid Bot',
     color: '#F59E0B',
     metrics: {
       totalReturn: 68.7,
@@ -38,9 +51,9 @@ const STRATEGIES = [
       volatility: 18.7,
     },
   },
-  { 
-    id: 'momentum', 
-    name: 'Momentum Bot', 
+  {
+    id: 'momentum',
+    name: 'Momentum Bot',
     color: '#10B981',
     metrics: {
       totalReturn: 55.9,
@@ -53,9 +66,9 @@ const STRATEGIES = [
       volatility: 22.3,
     },
   },
-  { 
-    id: 'martingale', 
-    name: 'Martingale Bot', 
+  {
+    id: 'martingale',
+    name: 'Martingale Bot',
     color: '#8B5CF6',
     metrics: {
       totalReturn: 89.4,
@@ -87,7 +100,7 @@ export function BotStrategyComparePage() {
   const toggleStrategy = (id: string) => {
     if (selectedStrategies.includes(id)) {
       if (selectedStrategies.length > 1) {
-        setSelectedStrategies(selectedStrategies.filter(s => s !== id));
+        setSelectedStrategies(selectedStrategies.filter((s) => s !== id));
       }
     } else {
       if (selectedStrategies.length < 4) {
@@ -96,33 +109,58 @@ export function BotStrategyComparePage() {
     }
   };
 
-  const compareData = selectedStrategies.map(id => STRATEGIES.find(s => s.id === id)!);
-  const bestStrategy = compareData.reduce((best, current) => 
-    current.metrics.sharpeRatio > best.metrics.sharpeRatio ? current : best
+  const compareData = selectedStrategies.map((id) => STRATEGIES.find((s) => s.id === id)!);
+  const bestStrategy = compareData.reduce((best, current) =>
+    current.metrics.sharpeRatio > best.metrics.sharpeRatio ? current : best,
   );
 
   // Radar chart data
   const radarData = [
-    { metric: 'Return', ...Object.fromEntries(selectedStrategies.map(id => {
-      const strat = STRATEGIES.find(s => s.id === id)!;
-      return [strat.name, (strat.metrics.totalReturn / 100) * 100];
-    })) },
-    { metric: 'Sharpe', ...Object.fromEntries(selectedStrategies.map(id => {
-      const strat = STRATEGIES.find(s => s.id === id)!;
-      return [strat.name, (strat.metrics.sharpeRatio / 3) * 100];
-    })) },
-    { metric: 'Win Rate', ...Object.fromEntries(selectedStrategies.map(id => {
-      const strat = STRATEGIES.find(s => s.id === id)!;
-      return [strat.name, strat.metrics.winRate];
-    })) },
-    { metric: 'Profit Factor', ...Object.fromEntries(selectedStrategies.map(id => {
-      const strat = STRATEGIES.find(s => s.id === id)!;
-      return [strat.name, (strat.metrics.profitFactor / 3) * 100];
-    })) },
-    { metric: 'Low Risk', ...Object.fromEntries(selectedStrategies.map(id => {
-      const strat = STRATEGIES.find(s => s.id === id)!;
-      return [strat.name, Math.max(0, 100 + strat.metrics.maxDrawdown)];
-    })) },
+    {
+      metric: 'Return',
+      ...Object.fromEntries(
+        selectedStrategies.map((id) => {
+          const strat = STRATEGIES.find((s) => s.id === id)!;
+          return [strat.name, (strat.metrics.totalReturn / 100) * 100];
+        }),
+      ),
+    },
+    {
+      metric: 'Sharpe',
+      ...Object.fromEntries(
+        selectedStrategies.map((id) => {
+          const strat = STRATEGIES.find((s) => s.id === id)!;
+          return [strat.name, (strat.metrics.sharpeRatio / 3) * 100];
+        }),
+      ),
+    },
+    {
+      metric: 'Win Rate',
+      ...Object.fromEntries(
+        selectedStrategies.map((id) => {
+          const strat = STRATEGIES.find((s) => s.id === id)!;
+          return [strat.name, strat.metrics.winRate];
+        }),
+      ),
+    },
+    {
+      metric: 'Profit Factor',
+      ...Object.fromEntries(
+        selectedStrategies.map((id) => {
+          const strat = STRATEGIES.find((s) => s.id === id)!;
+          return [strat.name, (strat.metrics.profitFactor / 3) * 100];
+        }),
+      ),
+    },
+    {
+      metric: 'Low Risk',
+      ...Object.fromEntries(
+        selectedStrategies.map((id) => {
+          const strat = STRATEGIES.find((s) => s.id === id)!;
+          return [strat.name, Math.max(0, 100 + strat.metrics.maxDrawdown)];
+        }),
+      ),
+    },
   ];
 
   return (
@@ -133,7 +171,7 @@ export function BotStrategyComparePage() {
         {/* Strategy Selection */}
         <PageSection label="Select Strategies (2-4)">
           <div className="grid grid-cols-2 gap-2">
-            {STRATEGIES.map(strategy => {
+            {STRATEGIES.map((strategy) => {
               const isSelected = selectedStrategies.includes(strategy.id);
               return (
                 <button
@@ -144,13 +182,22 @@ export function BotStrategyComparePage() {
                     background: isSelected ? `${strategy.color}15` : c.surface,
                     border: `2px solid ${isSelected ? strategy.color : c.borderSolid}`,
                     opacity: isSelected || selectedStrategies.length < 4 ? 1 : 0.5,
-                  }}>
+                  }}
+                >
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="w-5 h-5 rounded-md border-2 flex items-center justify-center"
-                      style={{ borderColor: isSelected ? strategy.color : c.borderSolid }}>
+                    <div
+                      className="w-5 h-5 rounded-md border-2 flex items-center justify-center"
+                      style={{ borderColor: isSelected ? strategy.color : c.borderSolid }}
+                    >
                       {isSelected && <CheckCircle2 size={14} color={strategy.color} />}
                     </div>
-                    <p style={{ color: isSelected ? strategy.color : c.text1, fontSize: 13, fontWeight: 700 }}>
+                    <p
+                      style={{
+                        color: isSelected ? strategy.color : c.text1,
+                        fontSize: 13,
+                        fontWeight: 700,
+                      }}
+                    >
                       {strategy.name}
                     </p>
                   </div>
@@ -175,17 +222,30 @@ export function BotStrategyComparePage() {
         </PageSection>
 
         {/* Best Strategy */}
-        <div className="rounded-2xl p-4" 
-          style={{ background: `${bestStrategy.color}08`, border: `2px solid ${bestStrategy.color}30` }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{
+            background: `${bestStrategy.color}08`,
+            border: `2px solid ${bestStrategy.color}30`,
+          }}
+        >
           <div className="flex gap-3">
             <Award size={24} color={bestStrategy.color} className="shrink-0" />
             <div>
-              <p style={{ color: bestStrategy.color, fontSize: 16, fontWeight: 700, marginBottom: 4 }}>
+              <p
+                style={{
+                  color: bestStrategy.color,
+                  fontSize: 16,
+                  fontWeight: 700,
+                  marginBottom: 4,
+                }}
+              >
                 Best Risk-Adjusted Returns
               </p>
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                <strong>{bestStrategy.name}</strong> has the highest Sharpe ratio ({bestStrategy.metrics.sharpeRatio}) 
-                among selected strategies, indicating superior risk-adjusted performance.
+                <strong>{bestStrategy.name}</strong> has the highest Sharpe ratio (
+                {bestStrategy.metrics.sharpeRatio}) among selected strategies, indicating superior
+                risk-adjusted performance.
               </p>
             </div>
           </div>
@@ -196,37 +256,38 @@ export function BotStrategyComparePage() {
           <TrCard className="p-4">
             <ResponsiveContainer width="100%" height={220}>
               <LineChart data={EQUITY_DATA}>
-                <XAxis 
+                <XAxis
                   key="x-axis"
-                  dataKey="date" 
-                  stroke={c.text3} 
+                  dataKey="date"
+                  stroke={c.text3}
                   style={{ fontSize: 10 }}
                   tickLine={false}
                 />
-                <YAxis 
+                <YAxis
                   key="y-axis"
-                  stroke={c.text3} 
+                  stroke={c.text3}
                   style={{ fontSize: 10 }}
                   tickLine={false}
                   tickFormatter={(val) => `$${val}`}
                 />
                 <Tooltip
-                  contentStyle={{ background: c.surface, border: `1px solid ${c.borderSolid}`, borderRadius: 8, fontSize: 11 }}
+                  contentStyle={{
+                    background: c.surface,
+                    border: `1px solid ${c.borderSolid}`,
+                    borderRadius: 8,
+                    fontSize: 11,
+                  }}
                   labelStyle={{ color: c.text1, fontWeight: 700 }}
                 />
-                <Legend 
-                  key="legend"
-                  wrapperStyle={{ fontSize: 11 }}
-                  iconType="line"
-                />
-                {selectedStrategies.map(id => {
-                  const strat = STRATEGIES.find(s => s.id === id)!;
+                <Legend key="legend" wrapperStyle={{ fontSize: 11 }} iconType="line" />
+                {selectedStrategies.map((id) => {
+                  const strat = STRATEGIES.find((s) => s.id === id)!;
                   return (
-                    <Line 
+                    <Line
                       key={id}
-                      type="monotone" 
-                      dataKey={id} 
-                      stroke={strat.color} 
+                      type="monotone"
+                      dataKey={id}
+                      stroke={strat.color}
                       strokeWidth={2}
                       dot={false}
                       name={strat.name}
@@ -244,21 +305,21 @@ export function BotStrategyComparePage() {
             <ResponsiveContainer width="100%" height={280}>
               <RadarChart data={radarData}>
                 <PolarGrid key="polar-grid" stroke={c.borderSolid} />
-                <PolarAngleAxis 
+                <PolarAngleAxis
                   key="polar-angle"
-                  dataKey="metric" 
+                  dataKey="metric"
                   stroke={c.text2}
                   style={{ fontSize: 11 }}
                 />
-                <PolarRadiusAxis 
+                <PolarRadiusAxis
                   key="polar-radius"
-                  angle={90} 
+                  angle={90}
                   domain={[0, 100]}
                   stroke={c.text3}
                   style={{ fontSize: 9 }}
                 />
-                {selectedStrategies.map(id => {
-                  const strat = STRATEGIES.find(s => s.id === id)!;
+                {selectedStrategies.map((id) => {
+                  const strat = STRATEGIES.find((s) => s.id === id)!;
                   return (
                     <Radar
                       key={id}
@@ -284,11 +345,28 @@ export function BotStrategyComparePage() {
               <table className="w-full">
                 <thead>
                   <tr style={{ borderBottom: `1px solid ${c.borderSolid}` }}>
-                    <th style={{ color: c.text3, fontSize: 10, fontWeight: 600, textAlign: 'left', paddingBottom: 8 }}>
+                    <th
+                      style={{
+                        color: c.text3,
+                        fontSize: 10,
+                        fontWeight: 600,
+                        textAlign: 'left',
+                        paddingBottom: 8,
+                      }}
+                    >
                       Metric
                     </th>
-                    {compareData.map(strat => (
-                      <th key={strat.id} style={{ color: strat.color, fontSize: 10, fontWeight: 700, textAlign: 'center', paddingBottom: 8 }}>
+                    {compareData.map((strat) => (
+                      <th
+                        key={strat.id}
+                        style={{
+                          color: strat.color,
+                          fontSize: 10,
+                          fontWeight: 700,
+                          textAlign: 'center',
+                          paddingBottom: 8,
+                        }}
+                      >
                         {strat.name}
                       </th>
                     ))}
@@ -305,31 +383,43 @@ export function BotStrategyComparePage() {
                     { key: 'avgTradeDuration', label: 'Avg Duration', suffix: '', best: 'neutral' },
                     { key: 'volatility', label: 'Volatility', suffix: '%', best: 'lowest' },
                   ].map((row, idx) => {
-                    const values = compareData.map(s => s.metrics[row.key as keyof typeof s.metrics]);
-                    const bestValue = row.best === 'highest' 
-                      ? Math.max(...values.filter(v => typeof v === 'number') as number[])
-                      : row.best === 'lowest'
-                      ? Math.min(...values.filter(v => typeof v === 'number') as number[])
-                      : null;
+                    const values = compareData.map(
+                      (s) => s.metrics[row.key as keyof typeof s.metrics],
+                    );
+                    const bestValue =
+                      row.best === 'highest'
+                        ? Math.max(...(values.filter((v) => typeof v === 'number') as number[]))
+                        : row.best === 'lowest'
+                          ? Math.min(...(values.filter((v) => typeof v === 'number') as number[]))
+                          : null;
 
                     return (
-                      <tr key={row.key} style={{ borderBottom: idx < 7 ? `1px solid ${c.borderSolid}` : 'none' }}>
-                        <td style={{ color: c.text2, fontSize: 11, paddingTop: 8, paddingBottom: 8 }}>
+                      <tr
+                        key={row.key}
+                        style={{ borderBottom: idx < 7 ? `1px solid ${c.borderSolid}` : 'none' }}
+                      >
+                        <td
+                          style={{ color: c.text2, fontSize: 11, paddingTop: 8, paddingBottom: 8 }}
+                        >
                           {row.label}
                         </td>
-                        {compareData.map(strat => {
+                        {compareData.map((strat) => {
                           const value = strat.metrics[row.key as keyof typeof strat.metrics];
                           const isBest = bestValue !== null && value === bestValue;
                           return (
-                            <td key={strat.id} style={{ 
-                              color: isBest ? strat.color : c.text1, 
-                              fontSize: 11, 
-                              fontWeight: isBest ? 700 : 600,
-                              textAlign: 'center',
-                              paddingTop: 8, 
-                              paddingBottom: 8,
-                            }}>
-                              {typeof value === 'number' ? value : value}{row.suffix}
+                            <td
+                              key={strat.id}
+                              style={{
+                                color: isBest ? strat.color : c.text1,
+                                fontSize: 11,
+                                fontWeight: isBest ? 700 : 600,
+                                textAlign: 'center',
+                                paddingTop: 8,
+                                paddingBottom: 8,
+                              }}
+                            >
+                              {typeof value === 'number' ? value : value}
+                              {row.suffix}
                               {isBest && ' ★'}
                             </td>
                           );
@@ -351,31 +441,37 @@ export function BotStrategyComparePage() {
                 title: 'For Beginners',
                 strategy: 'DCA Bot',
                 color: '#3B82F6',
-                reason: 'Lowest risk (drawdown -8.4%), simplest to understand, steady returns over time.',
+                reason:
+                  'Lowest risk (drawdown -8.4%), simplest to understand, steady returns over time.',
               },
               {
                 title: 'For Sideways Markets',
                 strategy: 'Grid Bot',
                 color: '#F59E0B',
-                reason: 'Best Sharpe ratio (2.14), high win rate (72.3%), optimized for range-bound trading.',
+                reason:
+                  'Best Sharpe ratio (2.14), high win rate (72.3%), optimized for range-bound trading.',
               },
               {
                 title: 'For Trending Markets',
                 strategy: 'Momentum Bot',
                 color: '#10B981',
-                reason: 'Captures trends effectively, balanced risk-reward, good for bull/bear markets.',
+                reason:
+                  'Captures trends effectively, balanced risk-reward, good for bull/bear markets.',
               },
               {
                 title: 'For Experienced Traders',
                 strategy: 'Martingale Bot',
                 color: '#8B5CF6',
-                reason: 'Highest returns (+89.4%) but high risk (drawdown -28.7%). Requires large capital.',
+                reason:
+                  'Highest returns (+89.4%) but high risk (drawdown -28.7%). Requires large capital.',
               },
-            ].map(rec => (
+            ].map((rec) => (
               <TrCard key={rec.title} className="p-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                    style={{ background: `${rec.color}15` }}>
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                    style={{ background: `${rec.color}15` }}
+                  >
                     <TrendingUp size={20} color={rec.color} />
                   </div>
                   <div className="flex-1">
@@ -383,9 +479,7 @@ export function BotStrategyComparePage() {
                     <p style={{ color: rec.color, fontSize: 14, fontWeight: 700, marginBottom: 4 }}>
                       {rec.strategy}
                     </p>
-                    <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                      {rec.reason}
-                    </p>
+                    <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>{rec.reason}</p>
                   </div>
                 </div>
               </TrCard>
@@ -399,8 +493,8 @@ export function BotStrategyComparePage() {
             Analysis Period
           </p>
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6 }}>
-            All strategies backtested on BTC/USDT from Sep 2025 - Mar 2026 with $1,000 initial capital. 
-            Results assume same market conditions - actual performance will vary.
+            All strategies backtested on BTC/USDT from Sep 2025 - Mar 2026 with $1,000 initial
+            capital. Results assume same market conditions - actual performance will vary.
           </p>
         </div>
       </PageContent>

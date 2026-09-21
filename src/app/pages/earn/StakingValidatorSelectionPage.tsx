@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { Shield, TrendingUp, Clock, Users, AlertTriangle, CheckCircle2, Star, Filter, Search } from 'lucide-react';
+import {
+  Shield,
+  TrendingUp,
+  Clock,
+  Users,
+  AlertTriangle,
+  CheckCircle2,
+  Star,
+  Filter,
+  Search,
+} from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { PageContent, PageSection } from '../../components/layout/PageContent';
@@ -50,7 +60,7 @@ const VALIDATORS: Validator[] = [
     logo: '🐙',
     address: '0xabcd...ef12',
     commission: 10,
-    apy: 5.80,
+    apy: 5.8,
     uptime: 99.95,
     totalStaked: 98500,
     delegators: 32150,
@@ -158,24 +168,28 @@ export function StakingValidatorSelectionPage() {
   const [filterTier, setFilterTier] = useState<'all' | 'top' | 'recommended' | 'standard'>('all');
   const [showFilters, setShowFilters] = useState(false);
 
-  const filtered = VALIDATORS
-    .filter(v => {
-      const matchSearch = v.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         v.address.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchTier = filterTier === 'all' || v.tier === filterTier;
-      return matchSearch && matchTier;
-    })
-    .sort((a, b) => {
-      switch (sortBy) {
-        case 'apy': return b.apy - a.apy;
-        case 'uptime': return b.uptime - a.uptime;
-        case 'commission': return a.commission - b.commission;
-        case 'staked': return b.totalStaked - a.totalStaked;
-        default: return 0;
-      }
-    });
+  const filtered = VALIDATORS.filter((v) => {
+    const matchSearch =
+      v.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      v.address.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchTier = filterTier === 'all' || v.tier === filterTier;
+    return matchSearch && matchTier;
+  }).sort((a, b) => {
+    switch (sortBy) {
+      case 'apy':
+        return b.apy - a.apy;
+      case 'uptime':
+        return b.uptime - a.uptime;
+      case 'commission':
+        return a.commission - b.commission;
+      case 'staked':
+        return b.totalStaked - a.totalStaked;
+      default:
+        return 0;
+    }
+  });
 
-  const topValidator = VALIDATORS.reduce((best, v) => v.apy > best.apy ? v : best);
+  const topValidator = VALIDATORS.reduce((best, v) => (v.apy > best.apy ? v : best));
   const avgCommission = VALIDATORS.reduce((sum, v) => sum + v.commission, 0) / VALIDATORS.length;
   const avgUptime = VALIDATORS.reduce((sum, v) => sum + v.uptime, 0) / VALIDATORS.length;
 
@@ -187,7 +201,8 @@ export function StakingValidatorSelectionPage() {
       <BottomSheetV2
         open={showFilters}
         onClose={() => setShowFilters(false)}
-        title="Bộ lọc & Sắp xếp">
+        title="Bộ lọc & Sắp xếp"
+      >
         <div className="flex flex-col gap-4">
           <div>
             <p style={{ color: c.text2, fontSize: 13, marginBottom: 8 }}>Sắp xếp theo</p>
@@ -197,7 +212,7 @@ export function StakingValidatorSelectionPage() {
                 { id: 'uptime' as const, label: 'Uptime cao nhất' },
                 { id: 'commission' as const, label: 'Phí thấp nhất' },
                 { id: 'staked' as const, label: 'Stake nhiều nhất' },
-              ].map(sort => (
+              ].map((sort) => (
                 <button
                   key={sort.id}
                   onClick={() => setSortBy(sort.id)}
@@ -206,7 +221,8 @@ export function StakingValidatorSelectionPage() {
                     background: sortBy === sort.id ? c.chipActiveBg : c.chipBg,
                     color: sortBy === sort.id ? c.chipActiveText : c.chipText,
                     border: `1px solid ${sortBy === sort.id ? c.chipActiveBorder : c.chipBorder}`,
-                  }}>
+                  }}
+                >
                   {sort.label}
                 </button>
               ))}
@@ -221,7 +237,7 @@ export function StakingValidatorSelectionPage() {
                 { id: 'top' as const, label: 'Top Tier' },
                 { id: 'recommended' as const, label: 'Recommended' },
                 { id: 'standard' as const, label: 'Standard' },
-              ].map(tier => (
+              ].map((tier) => (
                 <button
                   key={tier.id}
                   onClick={() => setFilterTier(tier.id)}
@@ -230,7 +246,8 @@ export function StakingValidatorSelectionPage() {
                     background: filterTier === tier.id ? c.chipActiveBg : c.chipBg,
                     color: filterTier === tier.id ? c.chipActiveText : c.chipText,
                     border: `1px solid ${filterTier === tier.id ? c.chipActiveBorder : c.chipBorder}`,
-                  }}>
+                  }}
+                >
                   {tier.label}
                 </button>
               ))}
@@ -243,12 +260,15 @@ export function StakingValidatorSelectionPage() {
       <BottomSheetV2
         open={!!selectedValidator}
         onClose={() => setSelectedValidator(null)}
-        title="Chi tiết Validator">
+        title="Chi tiết Validator"
+      >
         {selectedValidator && (
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-4xl"
-                style={{ background: c.surface2 }}>
+              <div
+                className="w-16 h-16 rounded-2xl flex items-center justify-center text-4xl"
+                style={{ background: c.surface2 }}
+              >
                 {selectedValidator.logo}
               </div>
               <div className="flex-1">
@@ -256,9 +276,7 @@ export function StakingValidatorSelectionPage() {
                   <p style={{ color: c.text1, fontSize: 18, fontWeight: 700 }}>
                     {selectedValidator.name}
                   </p>
-                  {selectedValidator.verified && (
-                    <CheckCircle2 size={16} color="#10B981" />
-                  )}
+                  {selectedValidator.verified && <CheckCircle2 size={16} color="#10B981" />}
                 </div>
                 <p style={{ color: c.text3, fontSize: 11, fontFamily: 'monospace' }}>
                   {selectedValidator.address}
@@ -267,14 +285,32 @@ export function StakingValidatorSelectionPage() {
             </div>
 
             <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
-              <BottomSheetRow label="APY" value={`${selectedValidator.apy}%`} valueColor="#10B981" />
+              <BottomSheetRow
+                label="APY"
+                value={`${selectedValidator.apy}%`}
+                valueColor="#10B981"
+              />
               <BottomSheetRow label="Commission" value={`${selectedValidator.commission}%`} />
-              <BottomSheetRow label="Uptime" value={`${selectedValidator.uptime}%`} valueColor="#3B82F6" />
-              <BottomSheetRow label="Total Staked" value={`${fmtAmount(selectedValidator.totalStaked)} ETH`} />
-              <BottomSheetRow label="Delegators" value={selectedValidator.delegators.toLocaleString()} />
+              <BottomSheetRow
+                label="Uptime"
+                value={`${selectedValidator.uptime}%`}
+                valueColor="#3B82F6"
+              />
+              <BottomSheetRow
+                label="Total Staked"
+                value={`${fmtAmount(selectedValidator.totalStaked)} ETH`}
+              />
+              <BottomSheetRow
+                label="Delegators"
+                value={selectedValidator.delegators.toLocaleString()}
+              />
               <BottomSheetRow
                 label="Slashing Events"
-                value={selectedValidator.slashingHistory === 0 ? 'None' : selectedValidator.slashingHistory.toString()}
+                value={
+                  selectedValidator.slashingHistory === 0
+                    ? 'None'
+                    : selectedValidator.slashingHistory.toString()
+                }
                 valueColor={selectedValidator.slashingHistory === 0 ? '#10B981' : '#EF4444'}
               />
             </div>
@@ -293,7 +329,8 @@ export function StakingValidatorSelectionPage() {
                   <span
                     key={idx}
                     className="px-3 py-1.5 rounded-lg text-xs font-semibold"
-                    style={{ background: c.surface2, color: c.text1 }}>
+                    style={{ background: c.surface2, color: c.text1 }}
+                  >
                     {feature}
                   </span>
                 ))}
@@ -306,20 +343,29 @@ export function StakingValidatorSelectionPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-3 rounded-xl text-center text-sm font-semibold"
-                style={{ background: c.surface2, color: '#3B82F6' }}>
+                style={{ background: c.surface2, color: '#3B82F6' }}
+              >
                 Xem website →
               </a>
             )}
 
             <button
               className="w-full py-3.5 rounded-xl font-semibold"
-              style={{ background: c.primary, color: '#FFF' }}>
+              style={{ background: c.primary, color: '#FFF' }}
+            >
               Chọn Validator này
             </button>
 
-            <div className="rounded-xl p-3" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
+            <div
+              className="rounded-xl p-3"
+              style={{
+                background: 'rgba(245,158,11,0.08)',
+                border: '1px solid rgba(245,158,11,0.2)',
+              }}
+            >
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                ⚠️ Khi chọn validator riêng, bạn chịu hoàn toàn rủi ro slashing nếu validator vi phạm. Chúng tôi khuyến nghị chọn validator Top Tier hoặc Recommended.
+                ⚠️ Khi chọn validator riêng, bạn chịu hoàn toàn rủi ro slashing nếu validator vi
+                phạm. Chúng tôi khuyến nghị chọn validator Top Tier hoặc Recommended.
               </p>
             </div>
           </div>
@@ -328,7 +374,13 @@ export function StakingValidatorSelectionPage() {
 
       <PageContent>
         {/* Info Banner */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(59,130,246,0.08)', border: '1.5px solid rgba(59,130,246,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{
+            background: 'rgba(59,130,246,0.08)',
+            border: '1.5px solid rgba(59,130,246,0.2)',
+          }}
+        >
           <div className="flex gap-3">
             <Shield size={20} color="#3B82F6" className="shrink-0 mt-0.5" />
             <div>
@@ -336,7 +388,8 @@ export function StakingValidatorSelectionPage() {
                 Tính năng Nâng cao
               </p>
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                Chọn validator riêng để tối ưu APY và kiểm soát rủi ro. Mặc định, chúng tôi tự động phân phối qua nhiều validator uy tín.
+                Chọn validator riêng để tối ưu APY và kiểm soát rủi ro. Mặc định, chúng tôi tự động
+                phân phối qua nhiều validator uy tín.
               </p>
             </div>
           </div>
@@ -350,9 +403,7 @@ export function StakingValidatorSelectionPage() {
                 <TrendingUp size={14} color="#10B981" />
                 <p style={{ color: c.text3, fontSize: 11 }}>APY tốt nhất</p>
               </div>
-              <p style={{ color: '#10B981', fontSize: 18, fontWeight: 700 }}>
-                {topValidator.apy}%
-              </p>
+              <p style={{ color: '#10B981', fontSize: 18, fontWeight: 700 }}>{topValidator.apy}%</p>
               <p style={{ color: c.text3, fontSize: 10 }}>{topValidator.name}</p>
             </div>
             <div>
@@ -378,13 +429,16 @@ export function StakingValidatorSelectionPage() {
 
         {/* Search & Filter */}
         <div className="flex gap-2">
-          <div className="flex-1 flex items-center gap-2 px-4 rounded-xl" style={{ background: c.surface2, height: 44 }}>
+          <div
+            className="flex-1 flex items-center gap-2 px-4 rounded-xl"
+            style={{ background: c.surface2, height: 44 }}
+          >
             <Search size={18} color={c.text3} />
             <input
               type="text"
               placeholder="Tìm validator..."
               value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="flex-1 bg-transparent outline-none"
               style={{ color: c.text1, fontSize: 14 }}
             />
@@ -393,9 +447,10 @@ export function StakingValidatorSelectionPage() {
             onClick={() => setShowFilters(true)}
             className="w-11 h-11 rounded-xl flex items-center justify-center"
             style={{
-              background: (sortBy !== 'apy' || filterTier !== 'all') ? c.primary : c.surface2,
-              color: (sortBy !== 'apy' || filterTier !== 'all') ? '#FFF' : c.text1,
-            }}>
+              background: sortBy !== 'apy' || filterTier !== 'all' ? c.primary : c.surface2,
+              color: sortBy !== 'apy' || filterTier !== 'all' ? '#FFF' : c.text1,
+            }}
+          >
             <Filter size={18} />
           </button>
         </div>
@@ -407,29 +462,42 @@ export function StakingValidatorSelectionPage() {
             {(searchQuery || filterTier !== 'all') && ` (đã lọc từ ${VALIDATORS.length})`}
           </p>
           <p style={{ color: c.text3, fontSize: 11 }}>
-            Sắp xếp: {sortBy === 'apy' ? 'APY cao' : sortBy === 'uptime' ? 'Uptime cao' : sortBy === 'commission' ? 'Phí thấp' : 'Stake nhiều'}
+            Sắp xếp:{' '}
+            {sortBy === 'apy'
+              ? 'APY cao'
+              : sortBy === 'uptime'
+                ? 'Uptime cao'
+                : sortBy === 'commission'
+                  ? 'Phí thấp'
+                  : 'Stake nhiều'}
           </p>
         </div>
 
         {/* Validator List */}
         <PageSection label="">
           <div className="flex flex-col gap-3">
-            {filtered.map(validator => {
+            {filtered.map((validator) => {
               const tierConfig = TIER_CONFIG[validator.tier];
               return (
                 <TrCard
                   key={validator.id}
                   hover
                   className="p-4"
-                  onClick={() => setSelectedValidator(validator)}>
+                  onClick={() => setSelectedValidator(validator)}
+                >
                   <div className="flex items-start gap-3 mb-3">
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
-                      style={{ background: c.surface2 }}>
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
+                      style={{ background: c.surface2 }}
+                    >
                       {validator.logo}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }} className="text-truncate">
+                        <p
+                          style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}
+                          className="text-truncate"
+                        >
                           {validator.name}
                         </p>
                         {validator.verified && (
@@ -439,12 +507,15 @@ export function StakingValidatorSelectionPage() {
                       <div className="flex items-center gap-2 flex-wrap">
                         <span
                           className="px-2 py-0.5 rounded-md text-xs font-bold"
-                          style={{ background: tierConfig.bg, color: tierConfig.color }}>
+                          style={{ background: tierConfig.bg, color: tierConfig.color }}
+                        >
                           {tierConfig.label}
                         </span>
                         {validator.slashingHistory === 0 && (
-                          <span className="px-2 py-0.5 rounded-md text-xs font-bold"
-                            style={{ background: 'rgba(16,185,129,0.12)', color: '#10B981' }}>
+                          <span
+                            className="px-2 py-0.5 rounded-md text-xs font-bold"
+                            style={{ background: 'rgba(16,185,129,0.12)', color: '#10B981' }}
+                          >
                             No Slashing
                           </span>
                         )}
@@ -480,8 +551,10 @@ export function StakingValidatorSelectionPage() {
                   </div>
 
                   {validator.slashingHistory > 0 && (
-                    <div className="flex items-center gap-2 mt-2 p-2 rounded-lg"
-                      style={{ background: 'rgba(239,68,68,0.08)' }}>
+                    <div
+                      className="flex items-center gap-2 mt-2 p-2 rounded-lg"
+                      style={{ background: 'rgba(239,68,68,0.08)' }}
+                    >
                       <AlertTriangle size={14} color="#EF4444" />
                       <p style={{ color: '#EF4444', fontSize: 11 }}>
                         {validator.slashingHistory} slashing event(s) in history
@@ -497,7 +570,9 @@ export function StakingValidatorSelectionPage() {
         {/* Bottom Info */}
         <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6, textAlign: 'center' }}>
-            Thông tin validator được cập nhật theo thời gian thực từ blockchain. APY có thể thay đổi dựa trên hiệu suất validator và điều kiện mạng. Chúng tôi khuyến nghị chọn validator có uptime &gt;99.9% và không có lịch sử slashing.
+            Thông tin validator được cập nhật theo thời gian thực từ blockchain. APY có thể thay đổi
+            dựa trên hiệu suất validator và điều kiện mạng. Chúng tôi khuyến nghị chọn validator có
+            uptime &gt;99.9% và không có lịch sử slashing.
           </p>
         </div>
       </PageContent>

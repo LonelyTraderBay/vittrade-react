@@ -31,7 +31,14 @@ interface MenuItemProps {
   onClick: () => void;
 }
 
-function MenuItem({ icon, title, subtitle, badge, badgeColor = '#3B82F6', onClick }: MenuItemProps) {
+function MenuItem({
+  icon,
+  title,
+  subtitle,
+  badge,
+  badgeColor = '#3B82F6',
+  onClick,
+}: MenuItemProps) {
   const c = useThemeColors();
 
   return (
@@ -68,9 +75,7 @@ function MenuItem({ icon, title, subtitle, badge, badgeColor = '#3B82F6', onClic
             </span>
           )}
         </div>
-        <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, lineHeight: 1.4 }}>
-          {subtitle}
-        </p>
+        <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, lineHeight: 1.4 }}>{subtitle}</p>
       </div>
       <ChevronRight size={ICON_SIZE.sm} color={c.text3} strokeWidth={ICON_STROKE.standard} />
     </button>
@@ -126,7 +131,8 @@ export function MarginTradingMenu() {
       </div>
 
       <p style={{ color: c.text3, fontSize: FONT_SCALE.sm, lineHeight: 1.6, marginBottom: 16 }}>
-        Enterprise-level margin trading với đầy đủ regulatory compliance, advanced controls và market intelligence.
+        Enterprise-level margin trading với đầy đủ regulatory compliance, advanced controls và
+        market intelligence.
       </p>
 
       <div className="flex flex-col gap-3">
@@ -150,11 +156,19 @@ export function MarginTradingMenu() {
       >
         <Shield size={14} color="#8B5CF6" className="shrink-0 mt-0.5" />
         <div className="flex-1">
-          <p style={{ color: '#8B5CF6', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, marginBottom: 2 }}>
+          <p
+            style={{
+              color: '#8B5CF6',
+              fontSize: FONT_SCALE.xs,
+              fontWeight: FONT_WEIGHT.bold,
+              marginBottom: 2,
+            }}
+          >
             Fully Compliant
           </p>
           <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
-            Đáp ứng MiFID II, ESMA, FCA, MAS regulations. Bao gồm appropriateness test, leverage limits, cost disclosure.
+            Đáp ứng MiFID II, ESMA, FCA, MAS regulations. Bao gồm appropriateness test, leverage
+            limits, cost disclosure.
           </p>
         </div>
       </div>
@@ -179,10 +193,13 @@ export function MarginTradingQuickAccess() {
           border: `1px solid ${withAlpha('#10B981', ALPHA.soft)}`,
         }}
       >
-        <TrendingUp size={20} color="#10B981" strokeWidth={ICON_STROKE.bold} className="mx-auto mb-1" />
-        <p style={{ color: '#10B981', fontSize: 11, fontWeight: FONT_WEIGHT.bold }}>
-          Margin
-        </p>
+        <TrendingUp
+          size={20}
+          color="#10B981"
+          strokeWidth={ICON_STROKE.bold}
+          className="mx-auto mb-1"
+        />
+        <p style={{ color: '#10B981', fontSize: 11, fontWeight: FONT_WEIGHT.bold }}>Margin</p>
       </button>
 
       <button
@@ -193,10 +210,13 @@ export function MarginTradingQuickAccess() {
           border: `1px solid ${withAlpha('#3B82F6', ALPHA.soft)}`,
         }}
       >
-        <Settings size={20} color="#3B82F6" strokeWidth={ICON_STROKE.bold} className="mx-auto mb-1" />
-        <p style={{ color: '#3B82F6', fontSize: 11, fontWeight: FONT_WEIGHT.bold }}>
-          Advanced
-        </p>
+        <Settings
+          size={20}
+          color="#3B82F6"
+          strokeWidth={ICON_STROKE.bold}
+          className="mx-auto mb-1"
+        />
+        <p style={{ color: '#3B82F6', fontSize: 11, fontWeight: FONT_WEIGHT.bold }}>Advanced</p>
       </button>
 
       <button
@@ -207,10 +227,13 @@ export function MarginTradingQuickAccess() {
           border: `1px solid ${withAlpha('#F59E0B', ALPHA.soft)}`,
         }}
       >
-        <Activity size={20} color="#F59E0B" strokeWidth={ICON_STROKE.bold} className="mx-auto mb-1" />
-        <p style={{ color: '#F59E0B', fontSize: 11, fontWeight: FONT_WEIGHT.bold }}>
-          Analytics
-        </p>
+        <Activity
+          size={20}
+          color="#F59E0B"
+          strokeWidth={ICON_STROKE.bold}
+          className="mx-auto mb-1"
+        />
+        <p style={{ color: '#F59E0B', fontSize: 11, fontWeight: FONT_WEIGHT.bold }}>Analytics</p>
       </button>
     </div>
   );

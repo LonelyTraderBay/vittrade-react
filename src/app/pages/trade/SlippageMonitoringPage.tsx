@@ -2,20 +2,20 @@
  * ══════════════════════════════════════════════════════════════
  *  SlippageMonitoringPage — Phase 4 Sprint 1 Day 11-12
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Real-time slippage tracking & monitoring
  * - Provider-level slippage benchmarks
  * - Alerts for excessive slippage (>1%)
  * - Historical slippage analysis
  * - Client protection mechanism
- * 
+ *
  * Compliance:
  * - Best Execution obligation (MiFID II)
  * - Client disclosure requirement
  * - Transaction Cost Analysis (TCA)
  * - Performance monitoring
- * 
+ *
  * Features:
  * - Real-time slippage feed
  * - Provider comparison
@@ -23,7 +23,7 @@
  * - Alert threshold configuration
  * - Historical trends
  * - Export capabilities
- * 
+ *
  * Guidelines:
  * - PageLayout + TabBar pattern
  * - Real-time updates simulation
@@ -35,9 +35,22 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  AlertTriangle, TrendingUp, TrendingDown, Activity, BarChart3,
-  Clock, Target, CheckCircle, XCircle, Filter, Download,
-  ChevronRight, Shield, Info, Bell, Settings
+  AlertTriangle,
+  TrendingUp,
+  TrendingDown,
+  Activity,
+  BarChart3,
+  Clock,
+  Target,
+  CheckCircle,
+  XCircle,
+  Filter,
+  Download,
+  ChevronRight,
+  Shield,
+  Info,
+  Bell,
+  Settings,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -48,8 +61,15 @@ import { useRoutePrefix } from '../../hooks/useRoutePrefix';
 import { TrCard } from '../../components/ui/TrCard';
 import { fmtUsd, fmtNum, fmtPct } from '../../data/formatNumber';
 import {
-  LineChart, Line, BarChart, Bar, XAxis, YAxis,
-  CartesianGrid, Tooltip, ResponsiveContainer
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
 } from 'recharts';
 
 type TabType = 'realtime' | 'providers' | 'history' | 'alerts';
@@ -133,7 +153,7 @@ const SLIPPAGE_EVENTS: SlippageEvent[] = [
     expectedPrice: 68600,
     executedPrice: 68250,
     slippageBps: 51.0,
-    slippagePct: 0.510,
+    slippagePct: 0.51,
     volume: 0.25,
     value: 17062.5,
     severity: 'warning',
@@ -194,7 +214,10 @@ const SLIPPAGE_HISTORY = [
   { date: '03-08', avg: 28.3, max: 117.6 },
 ];
 
-const SEVERITY_CONFIG: Record<SlippageSeverity, { color: string; label: string; threshold: string }> = {
+const SEVERITY_CONFIG: Record<
+  SlippageSeverity,
+  { color: string; label: string; threshold: string }
+> = {
   normal: { color: '#10B981', label: 'Normal', threshold: '<0.5%' },
   warning: { color: '#F59E0B', label: 'Warning', threshold: '0.5-1%' },
   critical: { color: '#EF4444', label: 'Critical', threshold: '>1%' },
@@ -209,12 +232,12 @@ export function SlippageMonitoringPage() {
   // Calculate totals
   const totals = useMemo(() => {
     const total = SLIPPAGE_EVENTS.length;
-    const normal = SLIPPAGE_EVENTS.filter(e => e.severity === 'normal').length;
-    const warning = SLIPPAGE_EVENTS.filter(e => e.severity === 'warning').length;
-    const critical = SLIPPAGE_EVENTS.filter(e => e.severity === 'critical').length;
+    const normal = SLIPPAGE_EVENTS.filter((e) => e.severity === 'normal').length;
+    const warning = SLIPPAGE_EVENTS.filter((e) => e.severity === 'warning').length;
+    const critical = SLIPPAGE_EVENTS.filter((e) => e.severity === 'critical').length;
     const avgSlippage = SLIPPAGE_EVENTS.reduce((s, e) => s + e.slippageBps, 0) / total;
-    const maxSlippage = Math.max(...SLIPPAGE_EVENTS.map(e => e.slippageBps));
-    
+    const maxSlippage = Math.max(...SLIPPAGE_EVENTS.map((e) => e.slippageBps));
+
     return { total, normal, warning, critical, avgSlippage, maxSlippage };
   }, []);
 
@@ -240,14 +263,18 @@ export function SlippageMonitoringPage() {
       <PageContent gap="relaxed">
         {/* Alert Banner */}
         {totals.critical > 0 && (
-          <div className="rounded-2xl p-3 flex gap-2.5" style={{ background: c.errorBg, border: `1px solid ${c.errorBorder}` }}>
-            <AlertTriangle size={16} color={c.errorText} className="shrink-0 mt-0.5" />
+          <div
+            className="rounded-2xl p-3 flex gap-2.5"
+            style={{ background: c.sellAlpha10, border: `1px solid ${c.sellAlpha20}` }}
+          >
+            <AlertTriangle size={16} color={c.error} className="shrink-0 mt-0.5" />
             <div>
-              <p style={{ color: c.errorText, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
+              <p style={{ color: c.error, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
                 {totals.critical} Critical Slippage Event{totals.critical > 1 ? 's' : ''} Detected
               </p>
-              <p style={{ color: c.errorText, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
-                Slippage exceeded 1% threshold. Review affected trades and consider provider adjustments.
+              <p style={{ color: c.error, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
+                Slippage exceeded 1% threshold. Review affected trades and consider provider
+                adjustments.
               </p>
             </div>
           </div>
@@ -261,9 +288,7 @@ export function SlippageMonitoringPage() {
               <span style={{ color: c.text3, fontSize: 10 }}>Total Events</span>
             </div>
             <p style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}>{totals.total}</p>
-            <p style={{ color: c.text3, fontSize: 9, marginTop: 2 }}>
-              Last 24h
-            </p>
+            <p style={{ color: c.text3, fontSize: 9, marginTop: 2 }}>Last 24h</p>
           </TrCard>
 
           <TrCard className="p-3">
@@ -298,14 +323,12 @@ export function SlippageMonitoringPage() {
               <span style={{ color: c.text3, fontSize: 10 }}>Critical</span>
             </div>
             <p style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}>{totals.critical}</p>
-            <p style={{ color: '#EF4444', fontSize: 9, marginTop: 2 }}>
-              {totals.warning} warning
-            </p>
+            <p style={{ color: '#EF4444', fontSize: 9, marginTop: 2 }}>{totals.warning} warning</p>
           </TrCard>
         </div>
 
         {/* Tabs */}
-        <TabBar tabs={TABS} active={tab} onChange={setTab} variant="underline" />
+        <TabBar<TabType> tabs={TABS} active={tab} onChange={setTab} variant="underline" />
 
         {/* Content */}
         {tab === 'realtime' && (
@@ -319,8 +342,10 @@ export function SlippageMonitoringPage() {
                   <TrCard key={event.id} className="p-3">
                     <div className="flex items-start gap-3">
                       {/* Severity Indicator */}
-                      <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                        style={{ background: severity.color + '15' }}>
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                        style={{ background: severity.color + '15' }}
+                      >
                         {event.severity === 'critical' ? (
                           <XCircle size={18} color={severity.color} />
                         ) : event.severity === 'warning' ? (
@@ -338,11 +363,14 @@ export function SlippageMonitoringPage() {
                               <span style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
                                 {event.instrument}
                               </span>
-                              <span className="px-1.5 py-0.5 rounded text-[9px] font-semibold"
+                              <span
+                                className="px-1.5 py-0.5 rounded text-[9px] font-semibold"
                                 style={{
-                                  background: event.side === 'buy' ? '#10B981' + '15' : '#EF4444' + '15',
+                                  background:
+                                    event.side === 'buy' ? '#10B981' + '15' : '#EF4444' + '15',
                                   color: event.side === 'buy' ? '#10B981' : '#EF4444',
-                                }}>
+                                }}
+                              >
                                 {event.side.toUpperCase()}
                               </span>
                             </div>
@@ -351,8 +379,10 @@ export function SlippageMonitoringPage() {
                             </p>
                           </div>
 
-                          <span className="px-2.5 py-1 rounded-lg text-[10px] font-semibold whitespace-nowrap"
-                            style={{ background: severity.color + '15', color: severity.color }}>
+                          <span
+                            className="px-2.5 py-1 rounded-lg text-[10px] font-semibold whitespace-nowrap"
+                            style={{ background: severity.color + '15', color: severity.color }}
+                          >
                             {severity.label}
                           </span>
                         </div>
@@ -361,32 +391,61 @@ export function SlippageMonitoringPage() {
                         <div className="grid grid-cols-3 gap-2 mb-2">
                           <div className="rounded-lg p-2" style={{ background: c.surface2 }}>
                             <p style={{ color: c.text3, fontSize: 9 }}>Expected</p>
-                            <p style={{ color: c.text2, fontSize: 11, fontWeight: 600, marginTop: 1 }}>
+                            <p
+                              style={{
+                                color: c.text2,
+                                fontSize: 11,
+                                fontWeight: 600,
+                                marginTop: 1,
+                              }}
+                            >
                               ${event.expectedPrice.toLocaleString()}
                             </p>
                           </div>
 
                           <div className="rounded-lg p-2" style={{ background: c.surface2 }}>
                             <p style={{ color: c.text3, fontSize: 9 }}>Executed</p>
-                            <p style={{ color: c.text2, fontSize: 11, fontWeight: 600, marginTop: 1 }}>
+                            <p
+                              style={{
+                                color: c.text2,
+                                fontSize: 11,
+                                fontWeight: 600,
+                                marginTop: 1,
+                              }}
+                            >
                               ${event.executedPrice.toLocaleString()}
                             </p>
                           </div>
 
-                          <div className="rounded-lg p-2" style={{ background: severity.color + '15' }}>
+                          <div
+                            className="rounded-lg p-2"
+                            style={{ background: severity.color + '15' }}
+                          >
                             <p style={{ color: c.text3, fontSize: 9 }}>Slippage</p>
-                            <p style={{ color: severity.color, fontSize: 11, fontWeight: 700, marginTop: 1 }}>
+                            <p
+                              style={{
+                                color: severity.color,
+                                fontSize: 11,
+                                fontWeight: 700,
+                                marginTop: 1,
+                              }}
+                            >
                               {event.slippagePct.toFixed(3)}%
                             </p>
                           </div>
                         </div>
 
                         {/* Impact */}
-                        <div className="flex items-center justify-between p-2 rounded-lg"
-                          style={{ background: c.surface2 }}>
+                        <div
+                          className="flex items-center justify-between p-2 rounded-lg"
+                          style={{ background: c.surface2 }}
+                        >
                           <span style={{ color: c.text3, fontSize: 10 }}>Cost Impact:</span>
                           <span style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>
-                            ${Math.abs((event.executedPrice - event.expectedPrice) * event.volume).toFixed(2)}
+                            $
+                            {Math.abs(
+                              (event.executedPrice - event.expectedPrice) * event.volume,
+                            ).toFixed(2)}
                           </span>
                         </div>
                       </div>
@@ -407,11 +466,18 @@ export function SlippageMonitoringPage() {
                     <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>
                       {provider.provider}
                     </p>
-                    <span style={{
-                      color: provider.criticalCount > 0 ? '#EF4444' : provider.avgSlippage > 30 ? '#F59E0B' : '#10B981',
-                      fontSize: 16,
-                      fontWeight: 700
-                    }}>
+                    <span
+                      style={{
+                        color:
+                          provider.criticalCount > 0
+                            ? '#EF4444'
+                            : provider.avgSlippage > 30
+                              ? '#F59E0B'
+                              : '#10B981',
+                        fontSize: 16,
+                        fontWeight: 700,
+                      }}
+                    >
                       {provider.avgSlippage.toFixed(1)} bps
                     </span>
                   </div>
@@ -442,11 +508,15 @@ export function SlippageMonitoringPage() {
                   <div className="flex items-center gap-3">
                     <div className="flex items-center gap-1.5">
                       <div className="w-2 h-2 rounded-full" style={{ background: '#EF4444' }} />
-                      <span style={{ color: c.text3, fontSize: 10 }}>{provider.criticalCount} critical</span>
+                      <span style={{ color: c.text3, fontSize: 10 }}>
+                        {provider.criticalCount} critical
+                      </span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <div className="w-2 h-2 rounded-full" style={{ background: '#F59E0B' }} />
-                      <span style={{ color: c.text3, fontSize: 10 }}>{provider.warningCount} warning</span>
+                      <span style={{ color: c.text3, fontSize: 10 }}>
+                        {provider.warningCount} warning
+                      </span>
                     </div>
                   </div>
                 </TrCard>
@@ -472,8 +542,22 @@ export function SlippageMonitoringPage() {
                       fontSize: 11,
                     }}
                   />
-                  <Line key="line-avg" type="monotone" dataKey="avg" name="Avg Slippage (bps)" stroke="#3B82F6" strokeWidth={2} />
-                  <Line key="line-max" type="monotone" dataKey="max" name="Max Slippage (bps)" stroke="#EF4444" strokeWidth={2} />
+                  <Line
+                    key="line-avg"
+                    type="monotone"
+                    dataKey="avg"
+                    name="Avg Slippage (bps)"
+                    stroke="#3B82F6"
+                    strokeWidth={2}
+                  />
+                  <Line
+                    key="line-max"
+                    type="monotone"
+                    dataKey="max"
+                    name="Max Slippage (bps)"
+                    stroke="#EF4444"
+                    strokeWidth={2}
+                  />
                 </LineChart>
               </ResponsiveContainer>
 
@@ -499,8 +583,10 @@ export function SlippageMonitoringPage() {
                       Notify when slippage exceeds 1%
                     </p>
                   </div>
-                  <div className="w-12 h-6 rounded-full relative transition-all"
-                    style={{ background: c.primary }}>
+                  <div
+                    className="w-12 h-6 rounded-full relative transition-all"
+                    style={{ background: c.primary }}
+                  >
                     <div className="absolute right-1 top-1 w-4 h-4 rounded-full bg-white" />
                   </div>
                 </div>
@@ -520,8 +606,10 @@ export function SlippageMonitoringPage() {
                       Notify when slippage exceeds 0.5%
                     </p>
                   </div>
-                  <div className="w-12 h-6 rounded-full relative transition-all"
-                    style={{ background: c.primary }}>
+                  <div
+                    className="w-12 h-6 rounded-full relative transition-all"
+                    style={{ background: c.primary }}
+                  >
                     <div className="absolute right-1 top-1 w-4 h-4 rounded-full bg-white" />
                   </div>
                 </div>
@@ -541,8 +629,10 @@ export function SlippageMonitoringPage() {
                       Receive daily slippage report at 9:00 AM
                     </p>
                   </div>
-                  <div className="w-12 h-6 rounded-full relative transition-all"
-                    style={{ background: c.surface2 }}>
+                  <div
+                    className="w-12 h-6 rounded-full relative transition-all"
+                    style={{ background: c.surface2 }}
+                  >
                     <div className="absolute left-1 top-1 w-4 h-4 rounded-full bg-white" />
                   </div>
                 </div>

@@ -13,8 +13,21 @@ import { useScrollLock } from '../hooks/useScrollLock';
 
 describe('useScrollLock', () => {
   let scrollElement: HTMLDivElement;
+  let stubbedScrollY: number;
+  const originalScrollTo = window.scrollTo;
 
   beforeEach(() => {
+    // jsdom does not implement scrolling — stub window.scrollTo so it
+    // actually moves a controllable scrollY that the hook can observe.
+    stubbedScrollY = 0;
+    Object.defineProperty(window, 'scrollY', {
+      configurable: true,
+      get: () => stubbedScrollY,
+    });
+    window.scrollTo = ((_x: number, y: number) => {
+      stubbedScrollY = y;
+    }) as unknown as typeof window.scrollTo;
+
     // Reset body styles
     document.body.style.overflow = '';
     document.body.style.position = '';
@@ -35,6 +48,10 @@ describe('useScrollLock', () => {
     if (scrollElement && scrollElement.parentNode) {
       scrollElement.parentNode.removeChild(scrollElement);
     }
+
+    // Restore scrolling globals
+    window.scrollTo = originalScrollTo;
+    delete (window as { scrollY?: number }).scrollY;
 
     // Reset body styles
     document.body.style.overflow = '';
@@ -61,10 +78,9 @@ describe('useScrollLock', () => {
     });
 
     it('should unlock scroll when isLocked changes to false', () => {
-      const { rerender } = renderHook(
-        ({ locked }) => useScrollLock(locked),
-        { initialProps: { locked: true } }
-      );
+      const { rerender } = renderHook(({ locked }) => useScrollLock(locked), {
+        initialProps: { locked: true },
+      });
 
       expect(document.body.style.overflow).toBe('hidden');
 
@@ -76,10 +92,9 @@ describe('useScrollLock', () => {
     });
 
     it('should lock scroll when isLocked changes to true', () => {
-      const { rerender } = renderHook(
-        ({ locked }) => useScrollLock(locked),
-        { initialProps: { locked: false } }
-      );
+      const { rerender } = renderHook(({ locked }) => useScrollLock(locked), {
+        initialProps: { locked: false },
+      });
 
       expect(document.body.style.overflow).toBe('');
 
@@ -99,10 +114,9 @@ describe('useScrollLock', () => {
     });
 
     it('should unlock pull-scroll element when unlocked', () => {
-      const { rerender } = renderHook(
-        ({ locked }) => useScrollLock(locked),
-        { initialProps: { locked: true } }
-      );
+      const { rerender } = renderHook(({ locked }) => useScrollLock(locked), {
+        initialProps: { locked: true },
+      });
 
       expect(scrollElement.style.overflowY).toBe('hidden');
 
@@ -128,10 +142,9 @@ describe('useScrollLock', () => {
       // Set initial scroll position
       window.scrollTo(0, 100);
 
-      const { rerender } = renderHook(
-        ({ locked }) => useScrollLock(locked),
-        { initialProps: { locked: false } }
-      );
+      const { rerender } = renderHook(({ locked }) => useScrollLock(locked), {
+        initialProps: { locked: false },
+      });
 
       // Lock scroll
       rerender({ locked: true });
@@ -148,12 +161,12 @@ describe('useScrollLock', () => {
     it('should handle zero scroll position', () => {
       window.scrollTo(0, 0);
 
-      const { rerender } = renderHook(
-        ({ locked }) => useScrollLock(locked),
-        { initialProps: { locked: true } }
-      );
+      const { rerender } = renderHook(({ locked }) => useScrollLock(locked), {
+        initialProps: { locked: true },
+      });
 
-      expect(document.body.style.top).toBe('-0px');
+      // CSSOM serializes -0px as 0px
+      expect(document.body.style.top).toBe('0px');
 
       rerender({ locked: false });
 
@@ -244,10 +257,9 @@ describe('useScrollLock', () => {
 
   describe('Real-world Scenarios', () => {
     it('should support modal opening and closing', () => {
-      const { rerender } = renderHook(
-        ({ isOpen }) => useScrollLock(isOpen),
-        { initialProps: { isOpen: false } }
-      );
+      const { rerender } = renderHook(({ isOpen }) => useScrollLock(isOpen), {
+        initialProps: { isOpen: false },
+      });
 
       // Modal opens
       rerender({ isOpen: true });
@@ -259,10 +271,9 @@ describe('useScrollLock', () => {
     });
 
     it('should support bottom sheet opening', () => {
-      const { rerender } = renderHook(
-        ({ isOpen }) => useScrollLock(isOpen),
-        { initialProps: { isOpen: false } }
-      );
+      const { rerender } = renderHook(({ isOpen }) => useScrollLock(isOpen), {
+        initialProps: { isOpen: false },
+      });
 
       // Sheet opens
       rerender({ isOpen: true });
@@ -274,18 +285,16 @@ describe('useScrollLock', () => {
 
     it('should support stacked modals', () => {
       // First modal opens
-      const { rerender: rerender1 } = renderHook(
-        ({ isOpen }) => useScrollLock(isOpen),
-        { initialProps: { isOpen: true } }
-      );
+      const { rerender: rerender1 } = renderHook(({ isOpen }) => useScrollLock(isOpen), {
+        initialProps: { isOpen: true },
+      });
 
       expect(document.body.style.overflow).toBe('hidden');
 
       // Second modal opens
-      const { rerender: rerender2 } = renderHook(
-        ({ isOpen }) => useScrollLock(isOpen),
-        { initialProps: { isOpen: true } }
-      );
+      const { rerender: rerender2 } = renderHook(({ isOpen }) => useScrollLock(isOpen), {
+        initialProps: { isOpen: true },
+      });
 
       expect(document.body.style.overflow).toBe('hidden');
 
@@ -305,10 +314,9 @@ describe('useScrollLock', () => {
 
   describe('Edge Cases', () => {
     it('should handle rapid lock/unlock cycles', () => {
-      const { rerender } = renderHook(
-        ({ locked }) => useScrollLock(locked),
-        { initialProps: { locked: false } }
-      );
+      const { rerender } = renderHook(({ locked }) => useScrollLock(locked), {
+        initialProps: { locked: false },
+      });
 
       for (let i = 0; i < 10; i++) {
         rerender({ locked: true });
@@ -319,10 +327,9 @@ describe('useScrollLock', () => {
     });
 
     it('should handle multiple rerenders with same lock state', () => {
-      const { rerender } = renderHook(
-        ({ locked }) => useScrollLock(locked),
-        { initialProps: { locked: true } }
-      );
+      const { rerender } = renderHook(({ locked }) => useScrollLock(locked), {
+        initialProps: { locked: true },
+      });
 
       rerender({ locked: true });
       rerender({ locked: true });
@@ -336,10 +343,9 @@ describe('useScrollLock', () => {
         scrollElement.parentNode.removeChild(scrollElement);
       }
 
-      const { rerender } = renderHook(
-        ({ locked }) => useScrollLock(locked),
-        { initialProps: { locked: true } }
-      );
+      const { rerender } = renderHook(({ locked }) => useScrollLock(locked), {
+        initialProps: { locked: true },
+      });
 
       expect(document.body.style.overflow).toBe('hidden');
 
@@ -351,10 +357,9 @@ describe('useScrollLock', () => {
     it('should handle large scroll positions', () => {
       window.scrollTo(0, 10000);
 
-      const { rerender } = renderHook(
-        ({ locked }) => useScrollLock(locked),
-        { initialProps: { locked: true } }
-      );
+      const { rerender } = renderHook(({ locked }) => useScrollLock(locked), {
+        initialProps: { locked: true },
+      });
 
       expect(document.body.style.top).toBe('-10000px');
 
@@ -366,19 +371,21 @@ describe('useScrollLock', () => {
 
   describe('Style Management', () => {
     it('should set all required body styles when locked', () => {
+      // Scroll down first so the saved offset is a real negative value
+      window.scrollTo(0, 50);
+
       renderHook(() => useScrollLock(true));
 
       expect(document.body.style.overflow).toBe('hidden');
       expect(document.body.style.position).toBe('fixed');
       expect(document.body.style.width).toBe('100%');
-      expect(document.body.style.top).toMatch(/^-\d+px$/);
+      expect(document.body.style.top).toBe('-50px');
     });
 
     it('should clear all body styles when unlocked', () => {
-      const { rerender } = renderHook(
-        ({ locked }) => useScrollLock(locked),
-        { initialProps: { locked: true } }
-      );
+      const { rerender } = renderHook(({ locked }) => useScrollLock(locked), {
+        initialProps: { locked: true },
+      });
 
       rerender({ locked: false });
 
@@ -396,10 +403,9 @@ describe('useScrollLock', () => {
     });
 
     it('should clear scroll element styles when unlocked', () => {
-      const { rerender } = renderHook(
-        ({ locked }) => useScrollLock(locked),
-        { initialProps: { locked: true } }
-      );
+      const { rerender } = renderHook(({ locked }) => useScrollLock(locked), {
+        initialProps: { locked: true },
+      });
 
       rerender({ locked: false });
 
@@ -410,10 +416,9 @@ describe('useScrollLock', () => {
 
   describe('Performance', () => {
     it('should handle high-frequency lock state changes', () => {
-      const { rerender } = renderHook(
-        ({ locked }) => useScrollLock(locked),
-        { initialProps: { locked: false } }
-      );
+      const { rerender } = renderHook(({ locked }) => useScrollLock(locked), {
+        initialProps: { locked: false },
+      });
 
       for (let i = 0; i < 100; i++) {
         rerender({ locked: i % 2 === 0 });

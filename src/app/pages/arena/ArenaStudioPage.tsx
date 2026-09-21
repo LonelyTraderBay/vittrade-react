@@ -1,11 +1,36 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import {
-  ChevronRight, ChevronLeft, AlertTriangle, Info, Plus, Minus,
-  Check, Lock, Clock, Eye, EyeOff, Shield, Users, Zap,
-  Calendar, FileText, Save, Send, WifiOff, RefreshCw,
-  Download, Upload, Share2, ChevronDown, Search, Target, Sparkles,
-  Percent, Receipt, FileEdit,
+  ChevronRight,
+  ChevronLeft,
+  AlertTriangle,
+  Info,
+  Plus,
+  Minus,
+  Check,
+  Lock,
+  Clock,
+  Eye,
+  EyeOff,
+  Shield,
+  Users,
+  Zap,
+  Calendar,
+  FileText,
+  Save,
+  Send,
+  WifiOff,
+  RefreshCw,
+  Download,
+  Upload,
+  Share2,
+  ChevronDown,
+  Search,
+  Target,
+  Sparkles,
+  Percent,
+  Receipt,
+  FileEdit,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useThemeColors } from '../../hooks/useThemeColors';
@@ -22,19 +47,37 @@ import { ArenaLoadingSkeleton } from '../../components/arena/ArenaStates';
 import { FormatChip, ResolutionChip, TrustBadge } from '../../components/arena/ArenaChips';
 import { ArenaPageFooter } from '../../components/arena/ArenaPageFooter';
 import {
-  RuleClarityCard, ResolutionRiskChip, ResolutionRiskMatrix,
-  PublishEligibilityPanel, RoomSafetySnapshotCard, PolicyVersionTag,
-  GovernanceHintBanner, EligibilityNoteCard,
-  computeClarityScore, resolutionRisk,
-  type GovernanceStatus, type EligibilityCheck, type SafetySnapshot,
-  ParticipantPreviewSheet, type PreviewData,
+  RuleClarityCard,
+  ResolutionRiskChip,
+  ResolutionRiskMatrix,
+  PublishEligibilityPanel,
+  RoomSafetySnapshotCard,
+  PolicyVersionTag,
+  GovernanceHintBanner,
+  EligibilityNoteCard,
+  computeClarityScore,
+  resolutionRisk,
+  type GovernanceStatus,
+  type EligibilityCheck,
+  type SafetySnapshot,
+  ParticipantPreviewSheet,
+  type PreviewData,
 } from '../../components/arena/ArenaStudioGovernance';
 import { TOAST } from '../../data/toastMessages';
 import { StepUpAuthSheet } from '../../components/arena/ArenaEnhancements';
 import { φ, φRadius } from '../../utils/golden';
 import { hexToRgba } from '../../utils/helpers/string';
-import { ARENA_TEMPLATES, fmtPoints, MY_ARENA_STATS, type ArenaTemplate } from '../../data/arenaData';
-import { BridgeSourceBar, ModuleBoundaryBanner, type SharedTopicId } from '../../components/bridges/ArenaPredictionFoundation';
+import {
+  ARENA_TEMPLATES,
+  fmtPoints,
+  MY_ARENA_STATS,
+  type ArenaTemplate,
+} from '../../data/arenaData';
+import {
+  BridgeSourceBar,
+  ModuleBoundaryBanner,
+} from '../../components/bridges/ArenaPredictionFoundation';
+import { type SharedTopicId } from '../../components/bridges/ArenaPredictionBridges';
 import { DistributionComparisonSheet } from '../../components/arena/ArenaRewardComponents';
 
 /* ─── Prediction Bridge Context ─── */
@@ -88,8 +131,28 @@ const RESOLUTION_METHODS: { id: ResolutionMethod; label: string; desc: string; i
 const CATEGORIES = ['Crypto', 'Macro', 'Sports', 'Tech', 'Community', 'Fun', 'Other'];
 
 /* ─── Dropdown options for Step 3 Governed ─── */
-type DomainId = 'sports' | 'esports' | 'crypto' | 'tech' | 'science' | 'health' | 'entertainment' | 'work' | 'community' | 'other';
-type ChallengeType = 'yes_no' | 'multi_choice' | 'closest_guess' | 'highest_wins' | 'lowest_wins' | 'first_to_finish' | 'team_score' | 'referee_decision' | 'community_vote' | 'proof_challenge';
+type DomainId =
+  | 'sports'
+  | 'esports'
+  | 'crypto'
+  | 'tech'
+  | 'science'
+  | 'health'
+  | 'entertainment'
+  | 'work'
+  | 'community'
+  | 'other';
+type ChallengeType =
+  | 'yes_no'
+  | 'multi_choice'
+  | 'closest_guess'
+  | 'highest_wins'
+  | 'lowest_wins'
+  | 'first_to_finish'
+  | 'team_score'
+  | 'referee_decision'
+  | 'community_vote'
+  | 'proof_challenge';
 
 const DOMAIN_PACKS: { id: DomainId; icon: string; label: string }[] = [
   { id: 'sports', icon: '⚽', label: 'Thể thao' },
@@ -153,65 +216,152 @@ const WIN_CONDITION_OPTIONS = [
 ];
 
 /* ─── Reward Distribution Types ─── */
-type RewardDistType = 'winner_all' | 'top3' | 'top5' | 'top10pct' | 'proportional' | 'equal_split' | 'tiered_custom';
+type RewardDistType =
+  'winner_all' | 'top3' | 'top5' | 'top10pct' | 'proportional' | 'equal_split' | 'tiered_custom';
 
 interface RewardTier {
   rank: string;
   pct: number;
 }
 
-const REWARD_DIST_OPTIONS: { id: RewardDistType; icon: string; label: string; desc: string; tiers: RewardTier[] }[] = [
+const REWARD_DIST_OPTIONS: {
+  id: RewardDistType;
+  icon: string;
+  label: string;
+  desc: string;
+  tiers: RewardTier[];
+}[] = [
   {
-    id: 'winner_all', icon: '🏆', label: 'Winner Takes All',
+    id: 'winner_all',
+    icon: '🏆',
+    label: 'Winner Takes All',
     desc: '100% pool cho người thắng duy nhất',
     tiers: [{ rank: '🥇 1st', pct: 100 }],
   },
   {
-    id: 'top3', icon: '🥇', label: 'Top 3',
+    id: 'top3',
+    icon: '🥇',
+    label: 'Top 3',
     desc: 'Chia cho 3 người đứng đầu',
-    tiers: [{ rank: '🥇 1st', pct: 60 }, { rank: '🥈 2nd', pct: 25 }, { rank: '🥉 3rd', pct: 15 }],
+    tiers: [
+      { rank: '🥇 1st', pct: 60 },
+      { rank: '🥈 2nd', pct: 25 },
+      { rank: '🥉 3rd', pct: 15 },
+    ],
   },
   {
-    id: 'top5', icon: '🏅', label: 'Top 5',
+    id: 'top5',
+    icon: '🏅',
+    label: 'Top 5',
     desc: 'Chia cho 5 người đứng đầu',
-    tiers: [{ rank: '🥇 1st', pct: 40 }, { rank: '🥈 2nd', pct: 25 }, { rank: '🥉 3rd', pct: 15 }, { rank: '4th', pct: 12 }, { rank: '5th', pct: 8 }],
+    tiers: [
+      { rank: '🥇 1st', pct: 40 },
+      { rank: '🥈 2nd', pct: 25 },
+      { rank: '🥉 3rd', pct: 15 },
+      { rank: '4th', pct: 12 },
+      { rank: '5th', pct: 8 },
+    ],
   },
   {
-    id: 'top10pct', icon: '📊', label: 'Top 10%',
+    id: 'top10pct',
+    icon: '📊',
+    label: 'Top 10%',
     desc: 'Chia đều cho top 10% người chơi',
     tiers: [{ rank: 'Top 10%', pct: 100 }],
   },
   {
-    id: 'proportional', icon: '📈', label: 'Tỷ lệ theo điểm',
+    id: 'proportional',
+    icon: '📈',
+    label: 'Tỷ lệ theo điểm',
     desc: 'Pool chia theo tỷ lệ điểm đạt được',
     tiers: [{ rank: 'Theo điểm', pct: 100 }],
   },
   {
-    id: 'equal_split', icon: '⚖️', label: 'Chia đều (đúng)',
+    id: 'equal_split',
+    icon: '⚖️',
+    label: 'Chia đều (đúng)',
     desc: 'Tất cả trả lời đúng chia đều pool',
     tiers: [{ rank: 'Tất cả đúng', pct: 100 }],
   },
   {
-    id: 'tiered_custom', icon: '✏️', label: 'Tùy chỉnh bậc',
+    id: 'tiered_custom',
+    icon: '✏️',
+    label: 'Tùy chỉnh bậc',
     desc: 'Tự thiết lập % cho từng hạng',
-    tiers: [{ rank: '🥇 1st', pct: 50 }, { rank: '🥈 2nd', pct: 30 }, { rank: '🥉 3rd', pct: 20 }],
+    tiers: [
+      { rank: '🥇 1st', pct: 50 },
+      { rank: '🥈 2nd', pct: 30 },
+      { rank: '🥉 3rd', pct: 20 },
+    ],
   },
 ];
 
-const TIER_COLORS = ['#F59E0B', '#94A3B8', '#CD7F32', '#8B5CF6', '#3B82F6', '#10B981', '#EF4444', '#EC4899'];
+const TIER_COLORS = [
+  '#F59E0B',
+  '#94A3B8',
+  '#CD7F32',
+  '#8B5CF6',
+  '#3B82F6',
+  '#10B981',
+  '#EF4444',
+  '#EC4899',
+];
 
 /* ─── Challenge Type → Reward Preset Mapping ─── */
-const CHALLENGE_REWARD_PRESETS: Record<ChallengeType, { dist: RewardDistType; label: string; reason: string }> = {
-  yes_no: { dist: 'winner_all', label: 'Winner Takes All', reason: 'Yes/No chỉ có 1 đáp án đúng → thắng hết' },
-  multi_choice: { dist: 'equal_split', label: 'Chia đều (đúng)', reason: 'Multi-choice → tất cả đáp đúng chia đều' },
-  closest_guess: { dist: 'top3', label: 'Top 3', reason: 'Closest Guess → chia cho 3 người gần nhất' },
-  highest_wins: { dist: 'top5', label: 'Top 5', reason: 'Highest Wins → chia cho top 5 người cao điểm nhất' },
-  lowest_wins: { dist: 'top5', label: 'Top 5', reason: 'Lowest Wins → chia cho top 5 người thấp nhất' },
-  first_to_finish: { dist: 'top3', label: 'Top 3', reason: 'First To Finish → chia cho 3 người hoàn thành sớm nhất' },
-  team_score: { dist: 'winner_all', label: 'Winner Takes All', reason: 'Team Score → team thắng chia nội bộ' },
-  referee_decision: { dist: 'winner_all', label: 'Winner Takes All', reason: 'Referee quyết định → 1 bên thắng' },
-  community_vote: { dist: 'proportional', label: 'Tỷ lệ theo điểm', reason: 'Community Vote → chia theo % vote' },
-  proof_challenge: { dist: 'top3', label: 'Top 3', reason: 'Proof Challenge → chia cho top 3 bằng chứng tốt nhất' },
+const CHALLENGE_REWARD_PRESETS: Record<
+  ChallengeType,
+  { dist: RewardDistType; label: string; reason: string }
+> = {
+  yes_no: {
+    dist: 'winner_all',
+    label: 'Winner Takes All',
+    reason: 'Yes/No chỉ có 1 đáp án đúng → thắng hết',
+  },
+  multi_choice: {
+    dist: 'equal_split',
+    label: 'Chia đều (đúng)',
+    reason: 'Multi-choice → tất cả đáp đúng chia đều',
+  },
+  closest_guess: {
+    dist: 'top3',
+    label: 'Top 3',
+    reason: 'Closest Guess → chia cho 3 người gần nhất',
+  },
+  highest_wins: {
+    dist: 'top5',
+    label: 'Top 5',
+    reason: 'Highest Wins → chia cho top 5 người cao điểm nhất',
+  },
+  lowest_wins: {
+    dist: 'top5',
+    label: 'Top 5',
+    reason: 'Lowest Wins → chia cho top 5 người thấp nhất',
+  },
+  first_to_finish: {
+    dist: 'top3',
+    label: 'Top 3',
+    reason: 'First To Finish → chia cho 3 người hoàn thành sớm nhất',
+  },
+  team_score: {
+    dist: 'winner_all',
+    label: 'Winner Takes All',
+    reason: 'Team Score → team thắng chia nội bộ',
+  },
+  referee_decision: {
+    dist: 'winner_all',
+    label: 'Winner Takes All',
+    reason: 'Referee quyết định → 1 bên thắng',
+  },
+  community_vote: {
+    dist: 'proportional',
+    label: 'Tỷ lệ theo điểm',
+    reason: 'Community Vote → chia theo % vote',
+  },
+  proof_challenge: {
+    dist: 'top3',
+    label: 'Top 3',
+    reason: 'Proof Challenge → chia cho top 3 bằng chứng tốt nhất',
+  },
 };
 
 /* ─── Dynamic Pool Participant Presets ─── */
@@ -297,7 +447,11 @@ const initialState: WizardState = {
   voteDuration: 24,
   entryPoints: 100,
   rewardDist: 'top3',
-  customTiers: [{ rank: '🥇 1st', pct: 50 }, { rank: '🥈 2nd', pct: 30 }, { rank: '🥉 3rd', pct: 20 }],
+  customTiers: [
+    { rank: '🥇 1st', pct: 50 },
+    { rank: '🥈 2nd', pct: 30 },
+    { rank: '🥉 3rd', pct: 20 },
+  ],
   bonusPool: 0,
   creatorCut: 0,
   consolationEnabled: false,
@@ -322,16 +476,17 @@ function ProgressStepper({ current, total }: { current: number; total: number })
       {/* Dots + lines */}
       <div className="flex items-center gap-0">
         {STEPS.map((step, i) => (
-          <div key={step.id} className="flex items-center" style={{ flex: i < total - 1 ? 1 : 'none' }}>
+          <div
+            key={step.id}
+            className="flex items-center"
+            style={{ flex: i < total - 1 ? 1 : 'none' }}
+          >
             <div className="flex flex-col items-center" style={{ minWidth: 28 }}>
               <div
                 className="w-7 h-7 rounded-full flex items-center justify-center shrink-0"
                 style={{
-                  background: step.id < current
-                    ? '#10B981'
-                    : step.id === current
-                      ? '#8B5CF6'
-                      : c.surface2,
+                  background:
+                    step.id < current ? '#10B981' : step.id === current ? '#8B5CF6' : c.surface2,
                   border: step.id === current ? '2px solid rgba(139,92,246,0.3)' : 'none',
                   transition: 'all 0.2s',
                 }}
@@ -339,22 +494,26 @@ function ProgressStepper({ current, total }: { current: number; total: number })
                 {step.id < current ? (
                   <Check size={12} color="#fff" strokeWidth={3} />
                 ) : (
-                  <span style={{
-                    color: step.id === current ? '#fff' : c.text3,
-                    fontSize: 10,
-                    fontWeight: 700,
-                  }}>
+                  <span
+                    style={{
+                      color: step.id === current ? '#fff' : c.text3,
+                      fontSize: 10,
+                      fontWeight: 700,
+                    }}
+                  >
                     {step.id}
                   </span>
                 )}
               </div>
-              <span style={{
-                color: step.id === current ? '#8B5CF6' : step.id < current ? '#10B981' : c.text3,
-                fontSize: 8,
-                fontWeight: 600,
-                marginTop: 2,
-                whiteSpace: 'nowrap',
-              }}>
+              <span
+                style={{
+                  color: step.id === current ? '#8B5CF6' : step.id < current ? '#10B981' : c.text3,
+                  fontSize: 8,
+                  fontWeight: 600,
+                  marginTop: 2,
+                  whiteSpace: 'nowrap',
+                }}
+              >
                 {step.label}
               </span>
             </div>
@@ -384,20 +543,25 @@ function ProgressStepper({ current, total }: { current: number; total: number })
 function FieldLabel({ children, hint }: { children: React.ReactNode; hint?: string }) {
   const c = useThemeColors();
   return (
-    <div className="mb-1.5">
+    <div>
       <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>{children}</span>
-      {hint && (
-        <span style={{ color: c.text3, fontSize: φ.xs, marginLeft: 8 }}>{hint}</span>
-      )}
+      {hint && <span style={{ color: c.text3, fontSize: φ.xs, marginLeft: 8 }}>{hint}</span>}
     </div>
   );
 }
 
 function TextInput({
-  value, onChange, placeholder, multiline, rows = 3,
+  value,
+  onChange,
+  placeholder,
+  multiline,
+  rows = 3,
 }: {
-  value: string; onChange: (v: string) => void; placeholder: string;
-  multiline?: boolean; rows?: number;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder: string;
+  multiline?: boolean;
+  rows?: number;
 }) {
   const c = useThemeColors();
   const shared: React.CSSProperties = {
@@ -413,7 +577,7 @@ function TextInput({
     return (
       <textarea
         value={value}
-        onChange={e => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         rows={rows}
         className="w-full px-4 py-3 rounded-xl resize-none"
@@ -425,7 +589,7 @@ function TextInput({
     <input
       type="text"
       value={value}
-      onChange={e => onChange(e.target.value)}
+      onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       className="w-full px-4 py-3 rounded-xl"
       style={shared}
@@ -434,11 +598,21 @@ function TextInput({
 }
 
 function NumberStepper({
-  value, onChange, min, max, step = 1, label, suffix = '',
+  value,
+  onChange,
+  min,
+  max,
+  step = 1,
+  label,
+  suffix = '',
 }: {
-  value: number; onChange: (v: number) => void;
-  min: number; max: number; step?: number;
-  label: string; suffix?: string;
+  value: number;
+  onChange: (v: number) => void;
+  min: number;
+  max: number;
+  step?: number;
+  label: string;
+  suffix?: string;
 }) {
   const c = useThemeColors();
   const { hapticSelection } = useHaptic();
@@ -447,21 +621,34 @@ function NumberStepper({
       <span style={{ color: c.text2, fontSize: φ.sm }}>{label}</span>
       <div className="flex items-center gap-2">
         <button
-          onClick={() => { onChange(Math.max(min, value - step)); hapticSelection(); }}
+          onClick={() => {
+            onChange(Math.max(min, value - step));
+            hapticSelection();
+          }}
           className="w-11 h-11 rounded-xl flex items-center justify-center active:opacity-70"
           style={{ background: c.surface2 }}
           aria-label={`Giảm ${label}`}
         >
           <Minus size={16} color={c.text2} />
         </button>
-        <span style={{
-          color: c.text1, fontSize: φ.body, fontWeight: 700,
-          fontFamily: 'monospace', width: 48, textAlign: 'center',
-        }}>
-          {value}{suffix}
+        <span
+          style={{
+            color: c.text1,
+            fontSize: φ.body,
+            fontWeight: 700,
+            fontFamily: 'monospace',
+            width: 48,
+            textAlign: 'center',
+          }}
+        >
+          {value}
+          {suffix}
         </span>
         <button
-          onClick={() => { onChange(Math.min(max, value + step)); hapticSelection(); }}
+          onClick={() => {
+            onChange(Math.min(max, value + step));
+            hapticSelection();
+          }}
           className="w-11 h-11 rounded-xl flex items-center justify-center active:opacity-70"
           style={{ background: c.surface2 }}
           aria-label={`Tăng ${label}`}
@@ -474,9 +661,15 @@ function NumberStepper({
 }
 
 function ToggleRow({
-  label, desc, value, onChange,
+  label,
+  desc,
+  value,
+  onChange,
 }: {
-  label: string; desc?: string; value: boolean; onChange: (v: boolean) => void;
+  label: string;
+  desc?: string;
+  value: boolean;
+  onChange: (v: boolean) => void;
 }) {
   const c = useThemeColors();
   return (
@@ -503,7 +696,12 @@ function ToggleRow({
 
 /* ─── SelectDropdown — Searchable dropdown for Step 3 Governed ─── */
 function SelectDropdown({
-  label, options, value, onChange, placeholder, color = '#8B5CF6',
+  label,
+  options,
+  value,
+  onChange,
+  placeholder,
+  color = '#8B5CF6',
 }: {
   label: string;
   options: { id: string; label: string; icon?: string; desc?: string }[];
@@ -517,15 +715,16 @@ function SelectDropdown({
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
 
-  const filtered = options.filter(o =>
-    o.label.toLowerCase().includes(search.toLowerCase())
-  );
-  const selected = options.find(o => o.id === value);
+  const filtered = options.filter((o) => o.label.toLowerCase().includes(search.toLowerCase()));
+  const selected = options.find((o) => o.id === value);
 
   return (
     <div className="relative">
       <button
-        onClick={() => { setOpen(!open); hapticSelection(); }}
+        onClick={() => {
+          setOpen(!open);
+          hapticSelection();
+        }}
         className="w-full flex items-center justify-between px-4 py-3 rounded-xl active:opacity-70"
         style={{
           background: c.searchBg,
@@ -537,10 +736,14 @@ function SelectDropdown({
           {selected ? (
             <div className="flex items-center gap-2">
               {selected.icon && <span style={{ fontSize: 14 }}>{selected.icon}</span>}
-              <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>{selected.label}</span>
+              <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
+                {selected.label}
+              </span>
             </div>
           ) : (
-            <span style={{ color: c.text3, fontSize: φ.sm }}>{placeholder || `Chọn ${label.toLowerCase()}...`}</span>
+            <span style={{ color: c.text3, fontSize: φ.sm }}>
+              {placeholder || `Chọn ${label.toLowerCase()}...`}
+            </span>
           )}
         </div>
         <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
@@ -555,17 +758,38 @@ function SelectDropdown({
             exit={{ opacity: 0, y: -8, height: 0 }}
             transition={{ duration: 0.2 }}
             className="mt-2 rounded-xl overflow-hidden z-30 relative"
-            style={{ background: c.surface, border: `1.5px solid ${c.borderSolid}`, boxShadow: '0 8px 32px rgba(0,0,0,0.15)' }}
+            style={{
+              background: c.surface,
+              border: `1.5px solid ${c.borderSolid}`,
+              boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+            }}
           >
             {options.length > 4 && (
-              <div className="flex items-center gap-2 px-3 py-2.5" style={{ borderBottom: `1px solid ${c.divider}` }}>
+              <div
+                className="flex items-center gap-2 px-3 py-2.5"
+                style={{ borderBottom: `1px solid ${c.divider}` }}
+              >
                 <Search size={14} color={c.text3} />
-                <input type="text" value={search} onChange={e => setSearch(e.target.value)}
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                   placeholder={`Tìm ${label.toLowerCase()}...`}
                   className="flex-1 bg-transparent outline-none"
-                  style={{ color: c.text1, fontSize: φ.xs }} autoFocus />
+                  style={{ color: c.text1, fontSize: φ.xs }}
+                  autoFocus
+                />
                 {search && (
-                  <button onClick={() => setSearch('')} style={{ minWidth: 28, minHeight: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <button
+                    onClick={() => setSearch('')}
+                    style={{
+                      minWidth: 28,
+                      minHeight: 28,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
                     <span style={{ color: c.text3, fontSize: 14, lineHeight: 1 }}>✕</span>
                   </button>
                 )}
@@ -576,30 +800,45 @@ function SelectDropdown({
                 <div className="px-4 py-6 text-center">
                   <p style={{ color: c.text3, fontSize: φ.xs }}>Không tìm thấy kết quả</p>
                 </div>
-              ) : filtered.map(opt => {
-                const active = value === opt.id;
-                return (
-                  <button
-                    key={opt.id}
-                    onClick={() => { onChange(opt.id); setOpen(false); setSearch(''); hapticSelection(); }}
-                    className="w-full flex items-center gap-2.5 px-4 py-3 active:opacity-70 text-left"
-                    style={{
-                      background: active ? hexToRgba(color, 10) : 'transparent',
-                      borderBottom: `1px solid ${c.divider}`,
-                      minHeight: 44,
-                    }}
-                  >
-                    {opt.icon && <span style={{ fontSize: 14 }}>{opt.icon}</span>}
-                    <div className="flex-1 min-w-0">
-                      <span style={{ color: active ? color : c.text1, fontSize: φ.sm, fontWeight: active ? 700 : 500 }}>
-                        {opt.label}
-                      </span>
-                      {opt.desc && <p style={{ color: c.text3, fontSize: 10, marginTop: 1 }}>{opt.desc}</p>}
-                    </div>
-                    {active && <Check size={14} color={color} strokeWidth={3} />}
-                  </button>
-                );
-              })}
+              ) : (
+                filtered.map((opt) => {
+                  const active = value === opt.id;
+                  return (
+                    <button
+                      key={opt.id}
+                      onClick={() => {
+                        onChange(opt.id);
+                        setOpen(false);
+                        setSearch('');
+                        hapticSelection();
+                      }}
+                      className="w-full flex items-center gap-2.5 px-4 py-3 active:opacity-70 text-left"
+                      style={{
+                        background: active ? hexToRgba(color, 10) : 'transparent',
+                        borderBottom: `1px solid ${c.divider}`,
+                        minHeight: 44,
+                      }}
+                    >
+                      {opt.icon && <span style={{ fontSize: 14 }}>{opt.icon}</span>}
+                      <div className="flex-1 min-w-0">
+                        <span
+                          style={{
+                            color: active ? color : c.text1,
+                            fontSize: φ.sm,
+                            fontWeight: active ? 700 : 500,
+                          }}
+                        >
+                          {opt.label}
+                        </span>
+                        {opt.desc && (
+                          <p style={{ color: c.text3, fontSize: 10, marginTop: 1 }}>{opt.desc}</p>
+                        )}
+                      </div>
+                      {active && <Check size={14} color={color} strokeWidth={3} />}
+                    </button>
+                  );
+                })
+              )}
             </div>
           </motion.div>
         )}
@@ -609,10 +848,14 @@ function SelectDropdown({
 }
 
 function ChipSelector<T extends string>({
-  options, value, onChange, columns = 0,
+  options,
+  value,
+  onChange,
+  columns = 0,
 }: {
   options: { id: T; label: string; icon?: string; desc?: string }[];
-  value: T; onChange: (v: T) => void;
+  value: T;
+  onChange: (v: T) => void;
   columns?: number;
 }) {
   const c = useThemeColors();
@@ -622,12 +865,15 @@ function ChipSelector<T extends string>({
 
   return (
     <div className={gridClass} style={gridStyle}>
-      {options.map(opt => {
+      {options.map((opt) => {
         const active = value === opt.id;
         return (
           <button
             key={opt.id}
-            onClick={() => { onChange(opt.id); hapticSelection(); }}
+            onClick={() => {
+              onChange(opt.id);
+              hapticSelection();
+            }}
             className={`${columns ? '' : 'flex-1'} py-2.5 px-3 rounded-xl text-left active:opacity-70`}
             style={{
               background: active ? c.chipActiveBg : c.chipBg,
@@ -637,16 +883,25 @@ function ChipSelector<T extends string>({
           >
             <div className="flex items-center gap-2">
               {opt.icon && <span style={{ fontSize: 16 }}>{opt.icon}</span>}
-              <span style={{
-                color: active ? c.chipActiveText : c.chipText,
-                fontSize: φ.xs,
-                fontWeight: 600,
-              }}>
+              <span
+                style={{
+                  color: active ? c.chipActiveText : c.chipText,
+                  fontSize: φ.xs,
+                  fontWeight: 600,
+                }}
+              >
                 {opt.label}
               </span>
             </div>
             {opt.desc && (
-              <p style={{ color: c.text3, fontSize: 10, marginTop: 2, marginLeft: opt.icon ? 26 : 0 }}>
+              <p
+                style={{
+                  color: c.text3,
+                  fontSize: 10,
+                  marginTop: 2,
+                  marginLeft: opt.icon ? 26 : 0,
+                }}
+              >
                 {opt.desc}
               </p>
             )}
@@ -690,31 +945,46 @@ function FeeTooltip({ amount, onClose }: { amount: number; onClose: () => void }
           <Receipt size={13} color="#F59E0B" />
           <span style={{ color: c.text1, fontSize: φ.xs, fontWeight: 700 }}>Chi tiết phí 10%</span>
         </div>
-        <button onClick={onClose} className="p-1 -mr-1 active:opacity-70" style={{ minHeight: 28, minWidth: 28 }}>
+        <button
+          onClick={onClose}
+          className="p-1 -mr-1 active:opacity-70"
+          style={{ minHeight: 28, minWidth: 28 }}
+        >
           <span style={{ color: c.text3, fontSize: 16, lineHeight: 1 }}>×</span>
         </button>
       </div>
       <div className="flex flex-col gap-1.5">
         {FEE_TOOLTIP_ITEMS.map((item, i) => (
-          <div key={i} className="flex items-center justify-between py-1 px-2 rounded-lg"
-            style={{ background: 'rgba(245,158,11,0.04)' }}>
+          <div
+            key={i}
+            className="flex items-center justify-between py-1 px-2 rounded-lg"
+            style={{ background: 'rgba(245,158,11,0.04)' }}
+          >
             <div className="flex items-center gap-2">
               <span style={{ fontSize: 11 }}>{item.icon}</span>
               <span style={{ color: c.text2, fontSize: 10, lineHeight: 1.3 }}>{item.label}</span>
             </div>
-            <span style={{ color: '#F59E0B', fontSize: 10, fontWeight: 700, fontFamily: 'monospace' }}>{item.pct}</span>
+            <span
+              style={{ color: '#F59E0B', fontSize: 10, fontWeight: 700, fontFamily: 'monospace' }}
+            >
+              {item.pct}
+            </span>
           </div>
         ))}
       </div>
-      <div className="mt-2.5 pt-2 flex items-center justify-between"
-        style={{ borderTop: `1px solid ${c.divider}` }}>
+      <div
+        className="mt-2.5 pt-2 flex items-center justify-between"
+        style={{ borderTop: `1px solid ${c.divider}` }}
+      >
         <span style={{ color: c.text1, fontSize: 11, fontWeight: 700 }}>Tổng phí</span>
         <span style={{ color: '#EF4444', fontSize: 11, fontWeight: 700, fontFamily: 'monospace' }}>
           −{fmtPoints(amount)} pts (10%)
         </span>
       </div>
-      <div className="flex items-start gap-1.5 mt-2 px-2 py-1.5 rounded-lg"
-        style={{ background: 'rgba(16,185,129,0.04)', border: '1px solid rgba(16,185,129,0.08)' }}>
+      <div
+        className="flex items-start gap-1.5 mt-2 px-2 py-1.5 rounded-lg"
+        style={{ background: 'rgba(16,185,129,0.04)', border: '1px solid rgba(16,185,129,0.08)' }}
+      >
         <Check size={9} color="#10B981" className="shrink-0 mt-0.5" />
         <span style={{ color: '#10B981', fontSize: 8, fontWeight: 600, lineHeight: 1.4 }}>
           Mức phí cố định, không có phí ẩn nào khác
@@ -728,7 +998,13 @@ function FeeTooltip({ amount, onClose }: { amount: number; onClose: () => void }
    Platform Fee Banner (10% transparency)
    ═══════════════════════════════════════════ */
 
-function PlatformFeeBanner({ variant = 'full', animated = false }: { variant?: 'full' | 'compact' | 'reminder'; animated?: boolean }) {
+function PlatformFeeBanner({
+  variant = 'full',
+  animated = false,
+}: {
+  variant?: 'full' | 'compact' | 'reminder';
+  animated?: boolean;
+}) {
   const c = useThemeColors();
   const [expanded, setExpanded] = useState(false);
 
@@ -740,7 +1016,8 @@ function PlatformFeeBanner({ variant = 'full', animated = false }: { variant?: '
       >
         <Receipt size={12} color="#F59E0B" className="shrink-0" />
         <span style={{ color: c.text3, fontSize: 10, lineHeight: 1.4 }}>
-          Phí vận hành <strong style={{ color: '#F59E0B', fontWeight: 700 }}>10%</strong> tổng pool sẽ được trích tự động
+          Phí vận hành <strong style={{ color: '#F59E0B', fontWeight: 700 }}>10%</strong> tổng pool
+          sẽ được trích tự động
         </span>
       </div>
     );
@@ -782,16 +1059,24 @@ function PlatformFeeBanner({ variant = 'full', animated = false }: { variant?: '
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Phí vận hành platform</span>
+            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
+              Phí vận hành platform
+            </span>
             <span
               className="px-1.5 py-0.5 rounded-md"
-              style={{ background: 'rgba(245,158,11,0.12)', color: '#F59E0B', fontSize: 10, fontWeight: 700 }}
+              style={{
+                background: 'rgba(245,158,11,0.12)',
+                color: '#F59E0B',
+                fontSize: 10,
+                fontWeight: 700,
+              }}
             >
               10%
             </span>
           </div>
           <p style={{ color: c.text2, fontSize: φ.xs, lineHeight: 1.5, marginBottom: 2 }}>
-            Mọi challenge đều được trích <strong style={{ color: '#F59E0B' }}>10% tổng pool</strong> để duy trì hệ thống. Phần này được hiển thị công khai cho tất cả người tham gia.
+            Mọi challenge đều được trích <strong style={{ color: '#F59E0B' }}>10% tổng pool</strong>{' '}
+            để duy trì hệ thống. Phần này được hiển thị công khai cho tất cả người tham gia.
           </p>
 
           <button
@@ -817,24 +1102,57 @@ function PlatformFeeBanner({ variant = 'full', animated = false }: { variant?: '
                 transition={{ duration: 0.2 }}
                 className="overflow-hidden"
               >
-                <div className="flex flex-col gap-2 mt-3 pt-3" style={{ borderTop: `1px solid rgba(245,158,11,0.1)` }}>
+                <div
+                  className="flex flex-col gap-2 mt-3 pt-3"
+                  style={{ borderTop: `1px solid rgba(245,158,11,0.1)` }}
+                >
                   {[
-                    { icon: '🛡️', label: 'Kiểm duyệt tự động', desc: 'AI + manual review trước khi hiển thị công khai' },
-                    { icon: '🔒', label: 'Hệ thống Escrow', desc: 'Points được giữ an toàn trong suốt challenge' },
-                    { icon: '⚖️', label: 'Dispute Resolution', desc: 'Xử lý tranh chấp công bằng & minh bạch' },
-                    { icon: '🖥️', label: 'Bảo trì & Hạ tầng', desc: 'Server, storage, real-time updates' },
+                    {
+                      icon: '🛡️',
+                      label: 'Kiểm duyệt tự động',
+                      desc: 'AI + manual review trước khi hiển thị công khai',
+                    },
+                    {
+                      icon: '🔒',
+                      label: 'Hệ thống Escrow',
+                      desc: 'Points được giữ an toàn trong suốt challenge',
+                    },
+                    {
+                      icon: '⚖️',
+                      label: 'Dispute Resolution',
+                      desc: 'Xử lý tranh chấp công bằng & minh bạch',
+                    },
+                    {
+                      icon: '🖥️',
+                      label: 'Bảo trì & Hạ tầng',
+                      desc: 'Server, storage, real-time updates',
+                    },
                   ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-2.5 px-3 py-2 rounded-lg"
-                      style={{ background: 'rgba(245,158,11,0.04)' }}>
+                    <div
+                      key={i}
+                      className="flex items-start gap-2.5 px-3 py-2 rounded-lg"
+                      style={{ background: 'rgba(245,158,11,0.04)' }}
+                    >
                       <span style={{ fontSize: 13, lineHeight: 1 }}>{item.icon}</span>
                       <div className="flex-1 min-w-0">
-                        <p style={{ color: c.text1, fontSize: 11, fontWeight: 600, lineHeight: 1.3 }}>{item.label}</p>
-                        <p style={{ color: c.text3, fontSize: 9, lineHeight: 1.4, marginTop: 1 }}>{item.desc}</p>
+                        <p
+                          style={{ color: c.text1, fontSize: 11, fontWeight: 600, lineHeight: 1.3 }}
+                        >
+                          {item.label}
+                        </p>
+                        <p style={{ color: c.text3, fontSize: 9, lineHeight: 1.4, marginTop: 1 }}>
+                          {item.desc}
+                        </p>
                       </div>
                     </div>
                   ))}
-                  <div className="flex items-start gap-2 px-3 py-2 rounded-lg"
-                    style={{ background: 'rgba(16,185,129,0.04)', border: '1px solid rgba(16,185,129,0.1)' }}>
+                  <div
+                    className="flex items-start gap-2 px-3 py-2 rounded-lg"
+                    style={{
+                      background: 'rgba(16,185,129,0.04)',
+                      border: '1px solid rgba(16,185,129,0.1)',
+                    }}
+                  >
                     <Check size={11} color="#10B981" className="shrink-0 mt-0.5" />
                     <p style={{ color: '#10B981', fontSize: 9, lineHeight: 1.4, fontWeight: 600 }}>
                       Kh��ng có phí ẩn. 10% là mức duy nhất và cố định cho mọi challenge.
@@ -880,7 +1198,15 @@ function PlatformFeeBanner({ variant = 'full', animated = false }: { variant?: '
    Step 1 — Choose Template
    ═══════════════════════════════════════════ */
 
-function Step1({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dispatch<React.SetStateAction<WizardState>>; predictionCtx?: PredictionBridgeContext | null }) {
+function Step1({
+  ws,
+  setWs,
+  predictionCtx,
+}: {
+  ws: WizardState;
+  setWs: React.Dispatch<React.SetStateAction<WizardState>>;
+  predictionCtx?: PredictionBridgeContext | null;
+}) {
   const c = useThemeColors();
   const { hapticSelection } = useHaptic();
 
@@ -890,11 +1216,14 @@ function Step1({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
     <>
       {/* 09D: Prediction context note */}
       {predictionCtx && (
-        <div className="flex items-start gap-2.5 px-3.5 py-3 rounded-xl"
-          style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}>
+        <div
+          className="flex items-start gap-2.5 px-3.5 py-3 rounded-xl"
+          style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
+        >
           <Info size={14} color="#F59E0B" className="shrink-0 mt-0.5" />
           <p style={{ color: c.text2, fontSize: φ.xs, lineHeight: 1.5 }}>
-            Bạn đang tạo room <strong style={{ color: '#F59E0B' }}>points-only</strong> lấy cảm hứng từ Prediction event. Template được gợi ý dựa trên bối cảnh event.
+            Bạn đang tạo room <strong style={{ color: '#F59E0B' }}>points-only</strong> lấy cảm hứng
+            từ Prediction event. Template được gợi ý dựa trên bối cảnh event.
           </p>
         </div>
       )}
@@ -903,7 +1232,7 @@ function Step1({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
 
       <SectionHeader title="Chọn template" accent accentColor="#8B5CF6" />
       <div className="flex flex-col gap-3">
-        {ARENA_TEMPLATES.map(t => {
+        {ARENA_TEMPLATES.map((t) => {
           const active = ws.templateId === t.id;
           const disabled = !!t.verifiedOnly;
           const cx = COMPLEXITY_LABELS[t.complexity];
@@ -912,16 +1241,16 @@ function Step1({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
             <button
               key={t.id}
               onClick={() => {
-                if (!disabled) { setWs(prev => ({ ...prev, templateId: t.id })); hapticSelection(); }
+                if (!disabled) {
+                  setWs((prev) => ({ ...prev, templateId: t.id }));
+                  hapticSelection();
+                }
               }}
               disabled={disabled}
               className="w-full text-left active:opacity-70"
               style={{ opacity: disabled ? 0.45 : 1 }}
             >
-              <TrCard
-                className="p-4"
-                accentBorder={active ? t.color : undefined}
-              >
+              <TrCard className="p-4" accentBorder={active ? t.color : undefined}>
                 <div className="flex items-start gap-3">
                   <div
                     className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
@@ -931,11 +1260,13 @@ function Step1({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span style={{
-                        color: active ? t.color : c.text1,
-                        fontSize: φ.body,
-                        fontWeight: 700,
-                      }}>
+                      <span
+                        style={{
+                          color: active ? t.color : c.text1,
+                          fontSize: φ.body,
+                          fontWeight: 700,
+                        }}
+                      >
                         {t.title}
                       </span>
                       {active && <Check size={14} color={t.color} strokeWidth={3} />}
@@ -946,29 +1277,65 @@ function Step1({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
 
                     {/* Tags row */}
                     <div className="flex flex-wrap gap-1.5">
-                      {t.formatTags.map(tag => (
-                        <span key={tag} className="px-2 py-0.5 rounded-md"
-                          style={{ background: c.chipBg, color: c.chipText, fontSize: 9, fontWeight: 600 }}>
+                      {t.formatTags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2 py-0.5 rounded-md"
+                          style={{
+                            background: c.chipBg,
+                            color: c.chipText,
+                            fontSize: 9,
+                            fontWeight: 600,
+                          }}
+                        >
                           {tag}
                         </span>
                       ))}
-                      <span className="px-2 py-0.5 rounded-md"
-                        style={{ background: hexToRgba(cx.color, 15), color: cx.color, fontSize: 9, fontWeight: 600 }}>
+                      <span
+                        className="px-2 py-0.5 rounded-md"
+                        style={{
+                          background: hexToRgba(cx.color, 15),
+                          color: cx.color,
+                          fontSize: 9,
+                          fontWeight: 600,
+                        }}
+                      >
                         {cx.label}
                       </span>
-                      <span className="px-2 py-0.5 rounded-md"
-                        style={{ background: 'rgba(245,158,11,0.1)', color: '#F59E0B', fontSize: 9, fontWeight: 600 }}>
+                      <span
+                        className="px-2 py-0.5 rounded-md"
+                        style={{
+                          background: 'rgba(245,158,11,0.1)',
+                          color: '#F59E0B',
+                          fontSize: 9,
+                          fontWeight: 600,
+                        }}
+                      >
                         Points-only
                       </span>
                       {disabled && (
-                        <span className="px-2 py-0.5 rounded-md flex items-center gap-1"
-                          style={{ background: 'rgba(139,92,246,0.1)', color: '#8B5CF6', fontSize: 9, fontWeight: 600 }}>
+                        <span
+                          className="px-2 py-0.5 rounded-md flex items-center gap-1"
+                          style={{
+                            background: 'rgba(139,92,246,0.1)',
+                            color: '#8B5CF6',
+                            fontSize: 9,
+                            fontWeight: 600,
+                          }}
+                        >
                           <Lock size={8} /> Verified only
                         </span>
                       )}
                       {predictionCtx && suggestedTemplates.includes(t.id) && (
-                        <span className="px-2 py-0.5 rounded-md flex items-center gap-1"
-                          style={{ background: 'rgba(59,130,246,0.1)', color: '#3B82F6', fontSize: 9, fontWeight: 700 }}>
+                        <span
+                          className="px-2 py-0.5 rounded-md flex items-center gap-1"
+                          style={{
+                            background: 'rgba(59,130,246,0.1)',
+                            color: '#3B82F6',
+                            fontSize: 9,
+                            fontWeight: 700,
+                          }}
+                        >
                           ✦ Gợi ý
                         </span>
                       )}
@@ -988,7 +1355,13 @@ function Step1({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
    Step 2 — Match Structure
    ═══════════════════════════════════════════ */
 
-function Step2({ ws, setWs }: { ws: WizardState; setWs: React.Dispatch<React.SetStateAction<WizardState>> }) {
+function Step2({
+  ws,
+  setWs,
+}: {
+  ws: WizardState;
+  setWs: React.Dispatch<React.SetStateAction<WizardState>>;
+}) {
   const c = useThemeColors();
 
   return (
@@ -1001,7 +1374,7 @@ function Step2({ ws, setWs }: { ws: WizardState; setWs: React.Dispatch<React.Set
         <ChipSelector
           options={MATCH_FORMATS}
           value={ws.matchFormat}
-          onChange={v => setWs(prev => ({ ...prev, matchFormat: v }))}
+          onChange={(v) => setWs((prev) => ({ ...prev, matchFormat: v }))}
           columns={2}
         />
       </div>
@@ -1012,22 +1385,25 @@ function Step2({ ws, setWs }: { ws: WizardState; setWs: React.Dispatch<React.Set
           <NumberStepper
             label="Team size"
             value={ws.teamSize}
-            onChange={v => setWs(prev => ({ ...prev, teamSize: v }))}
-            min={1} max={50}
+            onChange={(v) => setWs((prev) => ({ ...prev, teamSize: v }))}
+            min={1}
+            max={50}
           />
         )}
         <NumberStepper
           label="Số slot tối đa"
           value={ws.maxParticipants}
-          onChange={v => setWs(prev => ({ ...prev, maxParticipants: v }))}
-          min={2} max={200} step={5}
+          onChange={(v) => setWs((prev) => ({ ...prev, maxParticipants: v }))}
+          min={2}
+          max={200}
+          step={5}
           suffix=" người"
         />
         <ToggleRow
           label="Captain mode"
           desc="Mỗi team có 1 captain quyết định"
           value={ws.captainEnabled}
-          onChange={v => setWs(prev => ({ ...prev, captainEnabled: v }))}
+          onChange={(v) => setWs((prev) => ({ ...prev, captainEnabled: v }))}
         />
       </TrCard>
 
@@ -1037,7 +1413,7 @@ function Step2({ ws, setWs }: { ws: WizardState; setWs: React.Dispatch<React.Set
         <ChipSelector
           options={JOIN_STYLES}
           value={ws.joinStyle}
-          onChange={v => setWs(prev => ({ ...prev, joinStyle: v }))}
+          onChange={(v) => setWs((prev) => ({ ...prev, joinStyle: v }))}
         />
       </div>
 
@@ -1054,13 +1430,21 @@ function Step2({ ws, setWs }: { ws: WizardState; setWs: React.Dispatch<React.Set
    Step 3 — Rules
    ═══════════════════════════════════════════ */
 
-function Step3({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dispatch<React.SetStateAction<WizardState>>; predictionCtx?: PredictionBridgeContext | null }) {
+function Step3({
+  ws,
+  setWs,
+  predictionCtx,
+}: {
+  ws: WizardState;
+  setWs: React.Dispatch<React.SetStateAction<WizardState>>;
+  predictionCtx?: PredictionBridgeContext | null;
+}) {
   const c = useThemeColors();
 
   /* 09D: Prefill from prediction context on first render */
   React.useEffect(() => {
     if (predictionCtx && !ws.title) {
-      setWs(prev => ({
+      setWs((prev) => ({
         ...prev,
         title: prev.title || `Arena: ${predictionCtx.eventTitle.slice(0, 40)}`,
         category: predictionCtx.category || prev.category,
@@ -1089,11 +1473,14 @@ function Step3({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
 
       {/* 09D: Prediction context rules reminder */}
       {predictionCtx && (
-        <div className="flex items-start gap-2.5 px-3.5 py-3 rounded-xl"
-          style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.12)' }}>
+        <div
+          className="flex items-start gap-2.5 px-3.5 py-3 rounded-xl"
+          style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.12)' }}
+        >
           <Shield size={14} color="#3B82F6" className="shrink-0 mt-0.5" />
           <p style={{ color: c.text2, fontSize: φ.xs, lineHeight: 1.5 }}>
-            Kết quả room Arena <strong style={{ color: c.text1 }}>không thay đổi</strong> vị thế Prediction. Title và category đã được gợi ý từ event nguồn.
+            Kết quả room Arena <strong style={{ color: c.text1 }}>không thay đổi</strong> vị thế
+            Prediction. Title và category đã được gợi ý từ event nguồn.
           </p>
         </div>
       )}
@@ -1102,7 +1489,7 @@ function Step3({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
         <FieldLabel hint="Bắt buộc">Tên challenge</FieldLabel>
         <TextInput
           value={ws.title}
-          onChange={v => setWs(prev => ({ ...prev, title: v }))}
+          onChange={(v) => setWs((prev) => ({ ...prev, title: v }))}
           placeholder="VD: BTC Weekly Predict — Tuần 10"
         />
       </div>
@@ -1111,12 +1498,14 @@ function Step3({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
       <div>
         <FieldLabel hint="Bắt buộc">Lĩnh vực</FieldLabel>
         <div className="flex flex-wrap gap-1.5">
-          {DOMAIN_PACKS.map(d => {
+          {DOMAIN_PACKS.map((d) => {
             const active = ws.category === d.id;
             return (
               <button
                 key={d.id}
-                onClick={() => { setWs(prev => ({ ...prev, category: d.id })); }}
+                onClick={() => {
+                  setWs((prev) => ({ ...prev, category: d.id }));
+                }}
                 className="flex items-center gap-1.5 px-3 py-2 rounded-xl active:opacity-70"
                 style={{
                   background: active ? c.chipActiveBg : c.chipBg,
@@ -1125,7 +1514,15 @@ function Step3({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
                 }}
               >
                 <span style={{ fontSize: 13 }}>{d.icon}</span>
-                <span style={{ color: active ? c.chipActiveText : c.chipText, fontSize: 11, fontWeight: 600 }}>{d.label}</span>
+                <span
+                  style={{
+                    color: active ? c.chipActiveText : c.chipText,
+                    fontSize: 11,
+                    fontWeight: 600,
+                  }}
+                >
+                  {d.label}
+                </span>
               </button>
             );
           })}
@@ -1136,14 +1533,14 @@ function Step3({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
       <div>
         <FieldLabel hint="Bắt buộc">Loại challenge</FieldLabel>
         <div className="grid grid-cols-2 gap-1.5">
-          {CHALLENGE_TYPES.map(ct => {
+          {CHALLENGE_TYPES.map((ct) => {
             const active = ws.winCondition === ct.id;
             return (
               <button
                 key={ct.id}
                 onClick={() => {
                   const preset = CHALLENGE_REWARD_PRESETS[ct.id];
-                  setWs(prev => ({
+                  setWs((prev) => ({
                     ...prev,
                     winCondition: ct.id,
                     ...(preset ? { rewardDist: preset.dist } : {}),
@@ -1158,9 +1555,27 @@ function Step3({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
               >
                 <div className="flex items-center gap-1.5">
                   <span style={{ fontSize: 13 }}>{ct.icon}</span>
-                  <span style={{ color: active ? c.chipActiveText : c.chipText, fontSize: 11, fontWeight: 600 }}>{ct.label}</span>
+                  <span
+                    style={{
+                      color: active ? c.chipActiveText : c.chipText,
+                      fontSize: 11,
+                      fontWeight: 600,
+                    }}
+                  >
+                    {ct.label}
+                  </span>
                 </div>
-                <p style={{ color: c.text3, fontSize: 9, marginTop: 2, marginLeft: 20, lineHeight: 1.3 }}>{ct.desc}</p>
+                <p
+                  style={{
+                    color: c.text3,
+                    fontSize: 9,
+                    marginTop: 2,
+                    marginLeft: 20,
+                    lineHeight: 1.3,
+                  }}
+                >
+                  {ct.desc}
+                </p>
               </button>
             );
           })}
@@ -1172,7 +1587,7 @@ function Step3({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
         <FieldLabel hint="Bắt buộc">Mô tả</FieldLabel>
         <TextInput
           value={ws.description}
-          onChange={v => setWs(prev => ({ ...prev, description: v }))}
+          onChange={(v) => setWs((prev) => ({ ...prev, description: v }))}
           placeholder="Mô tả bối cảnh và chi tiết challenge..."
           multiline
         />
@@ -1185,26 +1600,30 @@ function Step3({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
           label="Điều kiện thắng"
           options={WIN_CONDITION_OPTIONS}
           value={(() => {
-            const match = WIN_CONDITION_OPTIONS.find(o => o.id === ws.winCondition || ws.winCondition === o.id);
+            const match = WIN_CONDITION_OPTIONS.find(
+              (o) => o.id === ws.winCondition || ws.winCondition === o.id,
+            );
             return match ? match.id : '';
           })()}
-          onChange={v => {
+          onChange={(v) => {
             if (v === 'custom') {
-              setWs(prev => ({ ...prev, winCondition: '' }));
+              setWs((prev) => ({ ...prev, winCondition: '' }));
             } else {
-              const opt = WIN_CONDITION_OPTIONS.find(o => o.id === v);
-              setWs(prev => ({ ...prev, winCondition: opt ? opt.label : v }));
+              const opt = WIN_CONDITION_OPTIONS.find((o) => o.id === v);
+              setWs((prev) => ({ ...prev, winCondition: opt ? opt.label : v }));
             }
           }}
           placeholder="Chọn điều kiện thắng..."
           color="#10B981"
         />
         {/* Custom fallback */}
-        {(ws.winCondition === '' || !WIN_CONDITION_OPTIONS.find(o => o.label === ws.winCondition) && !CHALLENGE_TYPES.find(o => o.id === ws.winCondition)) && (
+        {(ws.winCondition === '' ||
+          (!WIN_CONDITION_OPTIONS.find((o) => o.label === ws.winCondition) &&
+            !CHALLENGE_TYPES.find((o) => o.id === ws.winCondition))) && (
           <div className="mt-2">
             <TextInput
               value={ws.winCondition}
-              onChange={v => setWs(prev => ({ ...prev, winCondition: v }))}
+              onChange={(v) => setWs((prev) => ({ ...prev, winCondition: v }))}
               placeholder="VD: Người đoán gần nhất với giá BTC lúc 23:59 UTC"
             />
           </div>
@@ -1217,7 +1636,7 @@ function Step3({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
         <input
           type="date"
           value={ws.endDate}
-          onChange={e => setWs(prev => ({ ...prev, endDate: e.target.value }))}
+          onChange={(e) => setWs((prev) => ({ ...prev, endDate: e.target.value }))}
           className="w-full px-4 py-3 rounded-xl"
           style={{
             background: c.searchBg,
@@ -1242,12 +1661,14 @@ function Step3({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
             label="Luật hòa"
             options={TIE_RULE_OPTIONS}
             value={(() => {
-              const match = TIE_RULE_OPTIONS.find(o => o.label === ws.tieRule || o.id === ws.tieRule);
+              const match = TIE_RULE_OPTIONS.find(
+                (o) => o.label === ws.tieRule || o.id === ws.tieRule,
+              );
               return match ? match.id : '';
             })()}
-            onChange={v => {
-              const opt = TIE_RULE_OPTIONS.find(o => o.id === v);
-              setWs(prev => ({ ...prev, tieRule: opt ? opt.label : v }));
+            onChange={(v) => {
+              const opt = TIE_RULE_OPTIONS.find((o) => o.id === v);
+              setWs((prev) => ({ ...prev, tieRule: opt ? opt.label : v }));
             }}
             placeholder="Chọn luật hòa..."
             color="#F97316"
@@ -1259,12 +1680,14 @@ function Step3({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
             label="Luật hủy bỏ"
             options={VOID_RULE_OPTIONS}
             value={(() => {
-              const match = VOID_RULE_OPTIONS.find(o => o.label === ws.voidRule || o.id === ws.voidRule);
+              const match = VOID_RULE_OPTIONS.find(
+                (o) => o.label === ws.voidRule || o.id === ws.voidRule,
+              );
               return match ? match.id : '';
             })()}
-            onChange={v => {
-              const opt = VOID_RULE_OPTIONS.find(o => o.id === v);
-              setWs(prev => ({ ...prev, voidRule: opt ? opt.label : v }));
+            onChange={(v) => {
+              const opt = VOID_RULE_OPTIONS.find((o) => o.id === v);
+              setWs((prev) => ({ ...prev, voidRule: opt ? opt.label : v }));
             }}
             placeholder="Chọn luật hủy bỏ..."
             color="#EF4444"
@@ -1276,12 +1699,14 @@ function Step3({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
             label="Deadline"
             options={RESULT_DEADLINE_OPTIONS}
             value={(() => {
-              const match = RESULT_DEADLINE_OPTIONS.find(o => o.label === ws.resultDeadline || o.id === ws.resultDeadline);
+              const match = RESULT_DEADLINE_OPTIONS.find(
+                (o) => o.label === ws.resultDeadline || o.id === ws.resultDeadline,
+              );
               return match ? match.id : '';
             })()}
-            onChange={v => {
-              const opt = RESULT_DEADLINE_OPTIONS.find(o => o.id === v);
-              setWs(prev => ({ ...prev, resultDeadline: opt ? opt.label : v }));
+            onChange={(v) => {
+              const opt = RESULT_DEADLINE_OPTIONS.find((o) => o.id === v);
+              setWs((prev) => ({ ...prev, resultDeadline: opt ? opt.label : v }));
             }}
             placeholder="Chọn thời hạn kết quả..."
             color="#94A3B8"
@@ -1293,13 +1718,13 @@ function Step3({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
             label="Cho phép rematch"
             desc="Người chơi có thể yêu cầu chơi lại"
             value={ws.rematchEnabled}
-            onChange={v => setWs(prev => ({ ...prev, rematchEnabled: v }))}
+            onChange={(v) => setWs((prev) => ({ ...prev, rematchEnabled: v }))}
           />
           <ToggleRow
             label="Lưu thành reusable mode"
             desc="Người khác có thể clone luật chơi này"
             value={ws.saveAsMode}
-            onChange={v => setWs(prev => ({ ...prev, saveAsMode: v }))}
+            onChange={(v) => setWs((prev) => ({ ...prev, saveAsMode: v }))}
           />
         </div>
       </TrCard>
@@ -1311,20 +1736,30 @@ function Step3({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
    Step 4 — Resolution Method
    ═══════════════════════════════════════════ */
 
-function Step4({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dispatch<React.SetStateAction<WizardState>>; predictionCtx?: PredictionBridgeContext | null }) {
+function Step4({
+  ws,
+  setWs,
+  predictionCtx,
+}: {
+  ws: WizardState;
+  setWs: React.Dispatch<React.SetStateAction<WizardState>>;
+  predictionCtx?: PredictionBridgeContext | null;
+}) {
   const c = useThemeColors();
 
   /* 09D: Prefill sourceLabel from prediction context */
   React.useEffect(() => {
     if (predictionCtx && ws.resolution === 'auto' && !ws.sourceLabel) {
-      setWs(prev => ({
+      setWs((prev) => ({
         ...prev,
-        sourceLabel: prev.sourceLabel || `Prediction Event: ${predictionCtx.eventTitle.slice(0, 50)}`,
+        sourceLabel:
+          prev.sourceLabel || `Prediction Event: ${predictionCtx.eventTitle.slice(0, 50)}`,
       }));
     }
   }, [predictionCtx, ws.resolution]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const showResolutionWarning = predictionCtx && (ws.resolution === 'community_vote' || ws.resolution === 'mutual');
+  const showResolutionWarning =
+    predictionCtx && (ws.resolution === 'community_vote' || ws.resolution === 'mutual');
 
   return (
     <div className="flex flex-col gap-4">
@@ -1332,39 +1767,50 @@ function Step4({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
 
       {/* 09D: Warning when choosing non-auto resolution from prediction context */}
       {showResolutionWarning && (
-        <div className="flex items-start gap-2.5 px-3.5 py-3 rounded-xl"
-          style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}>
+        <div
+          className="flex items-start gap-2.5 px-3.5 py-3 rounded-xl"
+          style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
+        >
           <AlertTriangle size={14} color="#F59E0B" className="shrink-0 mt-0.5" />
           <p style={{ color: c.text2, fontSize: φ.xs, lineHeight: 1.5 }}>
-            Bạn đang rời khỏi cơ chế resolve của market gốc. Kết quả room Arena sẽ do <strong style={{ color: '#F59E0B' }}>{ws.resolution === 'community_vote' ? 'cộng đồng bình chọn' : 'cả 2 bên xác nhận'}</strong> thay vì nguồn tự động.
+            Bạn đang rời khỏi cơ chế resolve của market gốc. Kết quả room Arena sẽ do{' '}
+            <strong style={{ color: '#F59E0B' }}>
+              {ws.resolution === 'community_vote' ? 'cộng đồng bình chọn' : 'cả 2 bên xác nhận'}
+            </strong>{' '}
+            thay vì nguồn tự động.
           </p>
         </div>
       )}
 
       <div className="flex flex-col gap-3">
-        {RESOLUTION_METHODS.map(m => {
+        {RESOLUTION_METHODS.map((m) => {
           const active = ws.resolution === m.id;
           return (
             <button
               key={m.id}
-              onClick={() => setWs(prev => ({ ...prev, resolution: m.id }))}
+              onClick={() => setWs((prev) => ({ ...prev, resolution: m.id }))}
               className="w-full text-left active:opacity-70"
             >
               <TrCard className="p-4" accentBorder={active ? '#10B981' : undefined}>
                 <div className="flex items-center gap-3">
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                    style={{ background: active ? 'rgba(16,185,129,0.12)' : c.surface2, fontSize: 18 }}
+                    style={{
+                      background: active ? 'rgba(16,185,129,0.12)' : c.surface2,
+                      fontSize: 18,
+                    }}
                   >
                     {m.icon}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <span style={{
-                        color: active ? '#10B981' : c.text1,
-                        fontSize: φ.sm,
-                        fontWeight: 700,
-                      }}>
+                      <span
+                        style={{
+                          color: active ? '#10B981' : c.text1,
+                          fontSize: φ.sm,
+                          fontWeight: 700,
+                        }}
+                      >
                         {m.label}
                       </span>
                       {active && <Check size={12} color="#10B981" strokeWidth={3} />}
@@ -1385,7 +1831,7 @@ function Step4({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
             <FieldLabel>Nguồn dữ liệu</FieldLabel>
             <TextInput
               value={ws.sourceLabel}
-              onChange={v => setWs(prev => ({ ...prev, sourceLabel: v }))}
+              onChange={(v) => setWs((prev) => ({ ...prev, sourceLabel: v }))}
               placeholder="VD: CoinGecko BTC/USDT"
             />
           </div>
@@ -1393,7 +1839,7 @@ function Step4({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
             <FieldLabel hint="Tùy chọn">URL nguồn</FieldLabel>
             <TextInput
               value={ws.sourceUrl}
-              onChange={v => setWs(prev => ({ ...prev, sourceUrl: v }))}
+              onChange={(v) => setWs((prev) => ({ ...prev, sourceUrl: v }))}
               placeholder="https://api.coingecko.com/..."
             />
           </div>
@@ -1414,7 +1860,7 @@ function Step4({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
           <FieldLabel>Người phân xử</FieldLabel>
           <TextInput
             value={ws.refereeName}
-            onChange={v => setWs(prev => ({ ...prev, refereeName: v }))}
+            onChange={(v) => setWs((prev) => ({ ...prev, refereeName: v }))}
             placeholder="Nhập tên hoặc ID người phân xử"
           />
         </TrCard>
@@ -1425,14 +1871,17 @@ function Step4({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
           <NumberStepper
             label="Số phiếu tối thiểu"
             value={ws.minVotes}
-            onChange={v => setWs(prev => ({ ...prev, minVotes: v }))}
-            min={3} max={100}
+            onChange={(v) => setWs((prev) => ({ ...prev, minVotes: v }))}
+            min={3}
+            max={100}
           />
           <NumberStepper
             label="Thời gian vote"
             value={ws.voteDuration}
-            onChange={v => setWs(prev => ({ ...prev, voteDuration: v }))}
-            min={1} max={168} step={1}
+            onChange={(v) => setWs((prev) => ({ ...prev, voteDuration: v }))}
+            min={1}
+            max={168}
+            step={1}
             suffix="h"
           />
         </TrCard>
@@ -1494,10 +1943,13 @@ function RewardDistBar({ tiers, netPool }: { tiers: RewardTier[]; netPool: numbe
       {/* Legend */}
       <div className="flex flex-wrap gap-x-4 gap-y-1.5 mt-3">
         {tiers.map((t, i) => {
-          const pts = Math.round(netPool * t.pct / 100);
+          const pts = Math.round((netPool * t.pct) / 100);
           return (
             <div key={i} className="flex items-center gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ background: TIER_COLORS[i % TIER_COLORS.length] }} />
+              <div
+                className="w-2.5 h-2.5 rounded-sm shrink-0"
+                style={{ background: TIER_COLORS[i % TIER_COLORS.length] }}
+              />
               <span style={{ color: c.text2, fontSize: 10, fontWeight: 600 }}>{t.rank}</span>
               <span style={{ color: c.text3, fontSize: 10, fontFamily: 'monospace' }}>
                 {t.pct}% · {fmtPoints(pts)} pts
@@ -1514,7 +1966,13 @@ function RewardDistBar({ tiers, netPool }: { tiers: RewardTier[]; netPool: numbe
    Custom Tier Editor
    ═══════════════════════════════════════════ */
 
-function CustomTierEditor({ tiers, onChange }: { tiers: RewardTier[]; onChange: (t: RewardTier[]) => void }) {
+function CustomTierEditor({
+  tiers,
+  onChange,
+}: {
+  tiers: RewardTier[];
+  onChange: (t: RewardTier[]) => void;
+}) {
   const c = useThemeColors();
   const { hapticSelection } = useHaptic();
   const total = tiers.reduce((s, t) => s + t.pct, 0);
@@ -1536,7 +1994,10 @@ function CustomTierEditor({ tiers, onChange }: { tiers: RewardTier[]; onChange: 
     if (tiers.length >= 8) return;
     const remaining = Math.max(0, 100 - total);
     hapticSelection();
-    onChange([...tiers, { rank: `${tiers.length + 1}th`, pct: remaining > 0 ? Math.min(remaining, 10) : 5 }]);
+    onChange([
+      ...tiers,
+      { rank: `${tiers.length + 1}th`, pct: remaining > 0 ? Math.min(remaining, 10) : 5 },
+    ]);
   };
 
   const removeTier = (idx: number) => {
@@ -1556,7 +2017,7 @@ function CustomTierEditor({ tiers, onChange }: { tiers: RewardTier[]; onChange: 
           <input
             type="text"
             value={t.rank}
-            onChange={e => updateRank(i, e.target.value)}
+            onChange={(e) => updateRank(i, e.target.value)}
             className="flex-1 px-3 py-2 rounded-lg"
             style={{
               background: c.searchBg,
@@ -1577,14 +2038,16 @@ function CustomTierEditor({ tiers, onChange }: { tiers: RewardTier[]; onChange: 
             >
               <Minus size={12} color={c.text3} />
             </button>
-            <span style={{
-              color: TIER_COLORS[i % TIER_COLORS.length],
-              fontSize: 13,
-              fontWeight: 700,
-              fontFamily: 'monospace',
-              width: 36,
-              textAlign: 'center',
-            }}>
+            <span
+              style={{
+                color: TIER_COLORS[i % TIER_COLORS.length],
+                fontSize: 13,
+                fontWeight: 700,
+                fontFamily: 'monospace',
+                width: 36,
+                textAlign: 'center',
+              }}
+            >
               {t.pct}%
             </span>
             <button
@@ -1627,12 +2090,14 @@ function CustomTierEditor({ tiers, onChange }: { tiers: RewardTier[]; onChange: 
         </button>
         <div className="flex items-center gap-2">
           <span style={{ color: c.text3, fontSize: 11 }}>Tổng:</span>
-          <span style={{
-            color: isValid ? '#10B981' : '#EF4444',
-            fontSize: 13,
-            fontWeight: 700,
-            fontFamily: 'monospace',
-          }}>
+          <span
+            style={{
+              color: isValid ? '#10B981' : '#EF4444',
+              fontSize: 13,
+              fontWeight: 700,
+              fontFamily: 'monospace',
+            }}
+          >
             {total}%
           </span>
           {isValid ? (
@@ -1643,11 +2108,14 @@ function CustomTierEditor({ tiers, onChange }: { tiers: RewardTier[]; onChange: 
         </div>
       </div>
       {!isValid && (
-        <div className="flex items-start gap-2 px-3 py-2 rounded-lg"
-          style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.12)' }}>
+        <div
+          className="flex items-start gap-2 px-3 py-2 rounded-lg"
+          style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.12)' }}
+        >
           <AlertTriangle size={12} color="#EF4444" className="shrink-0 mt-0.5" />
           <span style={{ color: '#EF4444', fontSize: 10, lineHeight: 1.4 }}>
-            Tổng % phải bằng 100%. Hiện tại: {total}% ({total > 100 ? `thừa ${total - 100}%` : `thiếu ${100 - total}%`})
+            Tổng % phải bằng 100%. Hiện tại: {total}% (
+            {total > 100 ? `thừa ${total - 100}%` : `thiếu ${100 - total}%`})
           </span>
         </div>
       )}
@@ -1659,23 +2127,35 @@ function CustomTierEditor({ tiers, onChange }: { tiers: RewardTier[]; onChange: 
    Step 5 — Points, Reward Distribution & Privacy
    ═══════════════════════════════════════════ */
 
-function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dispatch<React.SetStateAction<WizardState>>; predictionCtx?: PredictionBridgeContext | null }) {
+function Step5({
+  ws,
+  setWs,
+  predictionCtx,
+}: {
+  ws: WizardState;
+  setWs: React.Dispatch<React.SetStateAction<WizardState>>;
+  predictionCtx?: PredictionBridgeContext | null;
+}) {
   const c = useThemeColors();
   const { hapticSelection } = useHaptic();
   const [feeTooltipOpen, setFeeTooltipOpen] = useState(false);
   const [comparisonOpen, setComparisonOpen] = useState(false);
   const estPool = ws.entryPoints * ws.maxParticipants + ws.bonusPool;
   const platformFee = Math.round(estPool * 0.1);
-  const creatorAmount = Math.round(estPool * ws.creatorCut / 100);
-  const consolationAmount = ws.consolationEnabled ? Math.round((estPool - platformFee - creatorAmount) * ws.consolationPct / 100) : 0;
+  const creatorAmount = Math.round((estPool * ws.creatorCut) / 100);
+  const consolationAmount = ws.consolationEnabled
+    ? Math.round(((estPool - platformFee - creatorAmount) * ws.consolationPct) / 100)
+    : 0;
   const netPool = estPool - platformFee - creatorAmount - consolationAmount;
 
-  const activeDist = REWARD_DIST_OPTIONS.find(d => d.id === ws.rewardDist);
-  const displayTiers = ws.rewardDist === 'tiered_custom' ? ws.customTiers : (activeDist?.tiers || []);
-  const customTotalValid = ws.rewardDist !== 'tiered_custom' || ws.customTiers.reduce((s, t) => s + t.pct, 0) === 100;
+  const activeDist = REWARD_DIST_OPTIONS.find((d) => d.id === ws.rewardDist);
+  const displayTiers = ws.rewardDist === 'tiered_custom' ? ws.customTiers : activeDist?.tiers || [];
+  const customTotalValid =
+    ws.rewardDist !== 'tiered_custom' || ws.customTiers.reduce((s, t) => s + t.pct, 0) === 100;
 
   /* ─── Challenge Type → Reward Preset logic ─── */
-  const challengeTypeId = CHALLENGE_TYPES.find(ct => ct.id === ws.winCondition)?.id as ChallengeType | undefined;
+  const challengeTypeId = CHALLENGE_TYPES.find((ct) => ct.id === ws.winCondition)?.id as
+    ChallengeType | undefined;
   const suggestedPreset = challengeTypeId ? CHALLENGE_REWARD_PRESETS[challengeTypeId] : null;
   const isPresetApplied = suggestedPreset && ws.rewardDist === suggestedPreset.dist;
 
@@ -1683,12 +2163,15 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
   const dynPreviewCount = ws.dynamicPoolEnabled ? ws.dynamicPoolPreviewCount : ws.maxParticipants;
   const dynEstPool = ws.entryPoints * dynPreviewCount + ws.bonusPool;
   const dynPlatformFee = Math.round(dynEstPool * 0.1);
-  const dynCreatorAmt = Math.round(dynEstPool * ws.creatorCut / 100);
-  const dynConsolation = ws.consolationEnabled ? Math.round((dynEstPool - dynPlatformFee - dynCreatorAmt) * ws.consolationPct / 100) : 0;
-  const dynNetPool = dynEstPool - dynPlatformFee - dynCreatorAmt - dynConsolation;
-  const dynConsolationPerPerson = ws.consolationEnabled && dynPreviewCount > displayTiers.length
-    ? Math.round(dynConsolation / Math.max(1, dynPreviewCount - displayTiers.length))
+  const dynCreatorAmt = Math.round((dynEstPool * ws.creatorCut) / 100);
+  const dynConsolation = ws.consolationEnabled
+    ? Math.round(((dynEstPool - dynPlatformFee - dynCreatorAmt) * ws.consolationPct) / 100)
     : 0;
+  const dynNetPool = dynEstPool - dynPlatformFee - dynCreatorAmt - dynConsolation;
+  const dynConsolationPerPerson =
+    ws.consolationEnabled && dynPreviewCount > displayTiers.length
+      ? Math.round(dynConsolation / Math.max(1, dynPreviewCount - displayTiers.length))
+      : 0;
 
   return (
     <>
@@ -1696,27 +2179,49 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
 
       {/* ─── Preset Suggestion Banner ─── */}
       {suggestedPreset && (
-        <TrCard className="p-3.5" accentBorder={isPresetApplied ? 'rgba(16,185,129,0.3)' : 'rgba(245,158,11,0.3)'}>
+        <TrCard
+          className="p-3.5"
+          accentBorder={isPresetApplied ? 'rgba(16,185,129,0.3)' : 'rgba(245,158,11,0.3)'}
+        >
           <div className="flex items-start gap-2.5">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-              style={{ background: isPresetApplied ? 'rgba(16,185,129,0.1)' : 'rgba(245,158,11,0.1)' }}>
-              {isPresetApplied ? <Check size={14} color="#10B981" strokeWidth={3} /> : <Sparkles size={14} color="#F59E0B" />}
+            <div
+              className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+              style={{
+                background: isPresetApplied ? 'rgba(16,185,129,0.1)' : 'rgba(245,158,11,0.1)',
+              }}
+            >
+              {isPresetApplied ? (
+                <Check size={14} color="#10B981" strokeWidth={3} />
+              ) : (
+                <Sparkles size={14} color="#F59E0B" />
+              )}
             </div>
             <div className="flex-1 min-w-0">
               <p style={{ color: c.text1, fontSize: φ.xs, fontWeight: 700, marginBottom: 2 }}>
                 {isPresetApplied ? 'Preset đã áp dụng' : 'Gợi ý preset cho challenge type'}
               </p>
-              <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.4, marginBottom: isPresetApplied ? 0 : 8 }}>
+              <p
+                style={{
+                  color: c.text3,
+                  fontSize: 10,
+                  lineHeight: 1.4,
+                  marginBottom: isPresetApplied ? 0 : 8,
+                }}
+              >
                 {suggestedPreset.reason}
               </p>
               {!isPresetApplied && (
                 <button
                   onClick={() => {
                     hapticSelection();
-                    setWs(prev => ({ ...prev, rewardDist: suggestedPreset.dist }));
+                    setWs((prev) => ({ ...prev, rewardDist: suggestedPreset.dist }));
                   }}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg active:opacity-70"
-                  style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)', minHeight: 32 }}
+                  style={{
+                    background: 'rgba(245,158,11,0.1)',
+                    border: '1px solid rgba(245,158,11,0.2)',
+                    minHeight: 32,
+                  }}
                 >
                   <Sparkles size={11} color="#F59E0B" />
                   <span style={{ color: '#F59E0B', fontSize: 11, fontWeight: 600 }}>
@@ -1735,18 +2240,31 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
           <span style={{ color: c.text2, fontSize: φ.sm }}>Entry Points</span>
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setWs(prev => ({ ...prev, entryPoints: Math.max(10, prev.entryPoints - 10) }))}
+              onClick={() =>
+                setWs((prev) => ({ ...prev, entryPoints: Math.max(10, prev.entryPoints - 10) }))
+              }
               className="w-11 h-11 rounded-xl flex items-center justify-center active:opacity-70"
               style={{ background: c.surface2 }}
               aria-label="Giảm entry points"
             >
               <Minus size={16} color={c.text2} />
             </button>
-            <span style={{ color: '#F59E0B', fontSize: φ.body, fontWeight: 700, fontFamily: 'monospace', width: 48, textAlign: 'center' }}>
+            <span
+              style={{
+                color: '#F59E0B',
+                fontSize: φ.body,
+                fontWeight: 700,
+                fontFamily: 'monospace',
+                width: 48,
+                textAlign: 'center',
+              }}
+            >
               {ws.entryPoints}
             </span>
             <button
-              onClick={() => setWs(prev => ({ ...prev, entryPoints: Math.min(5000, prev.entryPoints + 10) }))}
+              onClick={() =>
+                setWs((prev) => ({ ...prev, entryPoints: Math.min(5000, prev.entryPoints + 10) }))
+              }
               className="w-11 h-11 rounded-xl flex items-center justify-center active:opacity-70"
               style={{ background: c.surface2 }}
               aria-label="Tăng entry points"
@@ -1761,24 +2279,34 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
           <NumberStepper
             label="Bonus pool (thêm từ host)"
             value={ws.bonusPool}
-            onChange={v => setWs(prev => ({ ...prev, bonusPool: v }))}
-            min={0} max={10000} step={50}
+            onChange={(v) => setWs((prev) => ({ ...prev, bonusPool: v }))}
+            min={0}
+            max={10000}
+            step={50}
             suffix=" pts"
           />
         </div>
         <NumberStepper
           label="Creator cut"
           value={ws.creatorCut}
-          onChange={v => setWs(prev => ({ ...prev, creatorCut: v }))}
-          min={0} max={20} step={1}
+          onChange={(v) => setWs((prev) => ({ ...prev, creatorCut: v }))}
+          min={0}
+          max={20}
+          step={1}
           suffix="%"
         />
         {ws.creatorCut > 0 && (
-          <div className="flex items-start gap-2 px-3 py-2 rounded-lg"
-            style={{ background: 'rgba(139,92,246,0.06)', border: '1px solid rgba(139,92,246,0.1)' }}>
+          <div
+            className="flex items-start gap-2 px-3 py-2 rounded-lg"
+            style={{
+              background: 'rgba(139,92,246,0.06)',
+              border: '1px solid rgba(139,92,246,0.1)',
+            }}
+          >
             <Info size={12} color="#8B5CF6" className="shrink-0 mt-0.5" />
             <span style={{ color: c.text2, fontSize: 10, lineHeight: 1.4 }}>
-              Host nhận {ws.creatorCut}% pool ({fmtPoints(creatorAmount)} pts) như phần thưởng tổ chức. Phần này được hiển thị công khai cho người chơi.
+              Host nhận {ws.creatorCut}% pool ({fmtPoints(creatorAmount)} pts) như phần thưởng tổ
+              chức. Phần này được hiển thị công khai cho người chơi.
             </span>
           </div>
         )}
@@ -1786,24 +2314,43 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
 
       {/* ─── Reward Pool Summary ─── */}
       <TrCard className="p-4">
-        <p style={{ color: c.text2, fontSize: φ.xs, fontWeight: 600, marginBottom: 8, letterSpacing: 0.5 }}>
+        <p
+          style={{
+            color: c.text2,
+            fontSize: φ.xs,
+            fontWeight: 600,
+            marginBottom: 8,
+            letterSpacing: 0.5,
+          }}
+        >
           Reward Pool (ước tính)
         </p>
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <span style={{ color: c.text3, fontSize: φ.xs }}>Entry × {ws.maxParticipants} người</span>
-            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, fontFamily: 'monospace' }}>{fmtPoints(ws.entryPoints * ws.maxParticipants)} pts</span>
+            <span style={{ color: c.text3, fontSize: φ.xs }}>
+              Entry × {ws.maxParticipants} người
+            </span>
+            <span
+              style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, fontFamily: 'monospace' }}
+            >
+              {fmtPoints(ws.entryPoints * ws.maxParticipants)} pts
+            </span>
           </div>
           {ws.bonusPool > 0 && (
             <div className="flex items-center justify-between">
               <span style={{ color: c.text3, fontSize: φ.xs }}>Bonus pool (host)</span>
-              <span style={{ color: '#8B5CF6', fontSize: φ.sm, fontFamily: 'monospace' }}>+{fmtPoints(ws.bonusPool)}</span>
+              <span style={{ color: '#8B5CF6', fontSize: φ.sm, fontFamily: 'monospace' }}>
+                +{fmtPoints(ws.bonusPool)}
+              </span>
             </div>
           )}
           {/* Enhanced platform fee row with tooltip */}
           <div className="relative">
             <button
-              onClick={() => { setFeeTooltipOpen(!feeTooltipOpen); hapticSelection(); }}
+              onClick={() => {
+                setFeeTooltipOpen(!feeTooltipOpen);
+                hapticSelection();
+              }}
               className="w-full rounded-lg px-3 py-2.5 text-left active:opacity-80"
               style={{
                 background: feeTooltipOpen ? 'rgba(245,158,11,0.08)' : 'rgba(245,158,11,0.04)',
@@ -1815,14 +2362,35 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Receipt size={12} color="#F59E0B" className="shrink-0" />
-                  <span style={{ color: '#F59E0B', fontSize: φ.xs, fontWeight: 600 }}>Phí vận hành (10%)</span>
+                  <span style={{ color: '#F59E0B', fontSize: φ.xs, fontWeight: 600 }}>
+                    Phí vận hành (10%)
+                  </span>
                   <Info size={10} color="#F59E0B" style={{ opacity: 0.6 }} />
                 </div>
-                <span style={{ color: '#EF4444', fontSize: φ.sm, fontWeight: 600, fontFamily: 'monospace' }}>−{fmtPoints(platformFee)} pts</span>
+                <span
+                  style={{
+                    color: '#EF4444',
+                    fontSize: φ.sm,
+                    fontWeight: 600,
+                    fontFamily: 'monospace',
+                  }}
+                >
+                  −{fmtPoints(platformFee)} pts
+                </span>
               </div>
-              <p style={{ color: c.text3, fontSize: 9, lineHeight: 1.4, marginTop: 3, marginLeft: 20 }}>
+              <p
+                style={{
+                  color: c.text3,
+                  fontSize: 9,
+                  lineHeight: 1.4,
+                  marginTop: 3,
+                  marginLeft: 20,
+                }}
+              >
                 Bao gồm: kiểm duyệt, escrow, dispute resolution, hạ tầng
-                <span style={{ color: '#F59E0B', marginLeft: 4, fontSize: 8, fontWeight: 600 }}>Xem chi tiết ▸</span>
+                <span style={{ color: '#F59E0B', marginLeft: 4, fontSize: 8, fontWeight: 600 }}>
+                  Xem chi tiết ▸
+                </span>
               </p>
             </button>
             <AnimatePresence>
@@ -1834,28 +2402,50 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
           {ws.creatorCut > 0 && (
             <div className="flex items-center justify-between">
               <span style={{ color: c.text3, fontSize: φ.xs }}>Creator cut ({ws.creatorCut}%)</span>
-              <span style={{ color: '#EF4444', fontSize: φ.sm, fontFamily: 'monospace' }}>−{fmtPoints(creatorAmount)}</span>
+              <span style={{ color: '#EF4444', fontSize: φ.sm, fontFamily: 'monospace' }}>
+                −{fmtPoints(creatorAmount)}
+              </span>
             </div>
           )}
           {ws.consolationEnabled && consolationAmount > 0 && (
             <div className="flex items-center justify-between">
-              <span style={{ color: c.text3, fontSize: φ.xs }}>Thưởng an ủi ({ws.consolationPct}%)</span>
-              <span style={{ color: '#8B5CF6', fontSize: φ.sm, fontFamily: 'monospace' }}>−{fmtPoints(consolationAmount)}</span>
+              <span style={{ color: c.text3, fontSize: φ.xs }}>
+                Thưởng an ủi ({ws.consolationPct}%)
+              </span>
+              <span style={{ color: '#8B5CF6', fontSize: φ.sm, fontFamily: 'monospace' }}>
+                −{fmtPoints(consolationAmount)}
+              </span>
             </div>
           )}
           <div
             className="flex items-center justify-between pt-2"
             style={{ borderTop: `1px solid ${c.divider}` }}
           >
-            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Net pool (chia cho người thắng)</span>
-            <span style={{ color: '#10B981', fontSize: φ.body, fontWeight: 700, fontFamily: 'monospace' }}>
+            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
+              Net pool (chia cho người thắng)
+            </span>
+            <span
+              style={{
+                color: '#10B981',
+                fontSize: φ.body,
+                fontWeight: 700,
+                fontFamily: 'monospace',
+              }}
+            >
               {fmtPoints(netPool)} pts
             </span>
           </div>
           {ws.consolationEnabled && consolationAmount > 0 && (
             <div className="flex items-center justify-between pt-1">
               <span style={{ color: c.text3, fontSize: φ.xs }}>Consolation pool (không thắng)</span>
-              <span style={{ color: '#8B5CF6', fontSize: φ.sm, fontWeight: 600, fontFamily: 'monospace' }}>
+              <span
+                style={{
+                  color: '#8B5CF6',
+                  fontSize: φ.sm,
+                  fontWeight: 600,
+                  fontFamily: 'monospace',
+                }}
+              >
                 {fmtPoints(consolationAmount)} pts
               </span>
             </div>
@@ -1873,7 +2463,7 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
 
         {/* Distribution type selector — scrollable cards */}
         <div className="flex flex-col gap-2">
-          {REWARD_DIST_OPTIONS.map(opt => {
+          {REWARD_DIST_OPTIONS.map((opt) => {
             const active = ws.rewardDist === opt.id;
             const isRecommended = suggestedPreset && suggestedPreset.dist === opt.id;
             return (
@@ -1881,7 +2471,7 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
                 key={opt.id}
                 onClick={() => {
                   hapticSelection();
-                  setWs(prev => ({
+                  setWs((prev) => ({
                     ...prev,
                     rewardDist: opt.id,
                     ...(opt.id === 'tiered_custom' ? {} : {}),
@@ -1891,39 +2481,63 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
               >
                 <TrCard
                   className="p-3.5"
-                  accentBorder={active ? '#F59E0B' : isRecommended ? 'rgba(16,185,129,0.25)' : undefined}
+                  accentBorder={
+                    active ? '#F59E0B' : isRecommended ? 'rgba(16,185,129,0.25)' : undefined
+                  }
                 >
                   <div className="flex items-center gap-3">
                     <div
                       className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ background: active ? 'rgba(245,158,11,0.12)' : isRecommended ? 'rgba(16,185,129,0.08)' : c.surface2, fontSize: 18 }}
+                      style={{
+                        background: active
+                          ? 'rgba(245,158,11,0.12)'
+                          : isRecommended
+                            ? 'rgba(16,185,129,0.08)'
+                            : c.surface2,
+                        fontSize: 18,
+                      }}
                     >
                       {opt.icon}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span style={{
-                          color: active ? '#F59E0B' : c.text1,
-                          fontSize: φ.sm,
-                          fontWeight: 700,
-                        }}>
+                        <span
+                          style={{
+                            color: active ? '#F59E0B' : c.text1,
+                            fontSize: φ.sm,
+                            fontWeight: 700,
+                          }}
+                        >
                           {opt.label}
                         </span>
                         {active && <Check size={12} color="#F59E0B" strokeWidth={3} />}
                         {isRecommended && (
-                          <span className="px-1.5 py-0.5 rounded-md flex items-center gap-1"
+                          <span
+                            className="px-1.5 py-0.5 rounded-md flex items-center gap-1"
                             style={{
-                              background: active ? 'rgba(16,185,129,0.12)' : 'rgba(16,185,129,0.08)',
+                              background: active
+                                ? 'rgba(16,185,129,0.12)'
+                                : 'rgba(16,185,129,0.08)',
                               border: '1px solid rgba(16,185,129,0.2)',
-                            }}>
+                            }}
+                          >
                             <Sparkles size={8} color="#10B981" />
-                            <span style={{ color: '#10B981', fontSize: 8, fontWeight: 700, letterSpacing: 0.3 }}>
+                            <span
+                              style={{
+                                color: '#10B981',
+                                fontSize: 8,
+                                fontWeight: 700,
+                                letterSpacing: 0.3,
+                              }}
+                            >
                               RECOMMENDED
                             </span>
                           </span>
                         )}
                       </div>
-                      <p style={{ color: c.text3, fontSize: 10, marginTop: 1, lineHeight: 1.3 }}>{opt.desc}</p>
+                      <p style={{ color: c.text3, fontSize: 10, marginTop: 1, lineHeight: 1.3 }}>
+                        {opt.desc}
+                      </p>
                       {isRecommended && !active && (
                         <p style={{ color: '#10B981', fontSize: 9, marginTop: 2, lineHeight: 1.3 }}>
                           Phù hợp nhất cho challenge type đã chọn
@@ -1934,8 +2548,16 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
                     {active && opt.tiers.length > 1 && opt.id !== 'tiered_custom' && (
                       <div className="flex gap-0.5">
                         {opt.tiers.slice(0, 3).map((t, i) => (
-                          <span key={i} className="px-1.5 py-0.5 rounded"
-                            style={{ background: hexToRgba(TIER_COLORS[i], 20), color: TIER_COLORS[i], fontSize: 8, fontWeight: 700 }}>
+                          <span
+                            key={i}
+                            className="px-1.5 py-0.5 rounded"
+                            style={{
+                              background: hexToRgba(TIER_COLORS[i], 20),
+                              color: TIER_COLORS[i],
+                              fontSize: 8,
+                              fontWeight: 700,
+                            }}
+                          >
                             {t.pct}%
                           </span>
                         ))}
@@ -1957,8 +2579,15 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
             Phân chia chi tiết
           </span>
           {activeDist && (
-            <span className="px-2 py-0.5 rounded-md"
-              style={{ background: 'rgba(245,158,11,0.1)', color: '#F59E0B', fontSize: 9, fontWeight: 700 }}>
+            <span
+              className="px-2 py-0.5 rounded-md"
+              style={{
+                background: 'rgba(245,158,11,0.1)',
+                color: '#F59E0B',
+                fontSize: 9,
+                fontWeight: 700,
+              }}
+            >
               {activeDist.label}
             </span>
           )}
@@ -1975,29 +2604,53 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
             </p>
             <CustomTierEditor
               tiers={ws.customTiers}
-              onChange={t => setWs(prev => ({ ...prev, customTiers: t }))}
+              onChange={(t) => setWs((prev) => ({ ...prev, customTiers: t }))}
             />
           </div>
         )}
 
         {/* Example payout for top tiers */}
         {displayTiers.length > 1 && displayTiers.length <= 5 && (
-          <div className="mt-4 pt-3 flex flex-col gap-1.5" style={{ borderTop: `1px solid ${c.divider}` }}>
-            <p style={{ color: c.text3, fontSize: 10, fontWeight: 600, letterSpacing: 0.3, marginBottom: 2 }}>
+          <div
+            className="mt-4 pt-3 flex flex-col gap-1.5"
+            style={{ borderTop: `1px solid ${c.divider}` }}
+          >
+            <p
+              style={{
+                color: c.text3,
+                fontSize: 10,
+                fontWeight: 600,
+                letterSpacing: 0.3,
+                marginBottom: 2,
+              }}
+            >
               Ước tính thưởng (nếu {ws.maxParticipants} người tham gia)
             </p>
             {displayTiers.map((t, i) => {
-              const pts = Math.round(netPool * t.pct / 100);
+              const pts = Math.round((netPool * t.pct) / 100);
               const roi = ws.entryPoints > 0 ? ((pts / ws.entryPoints - 1) * 100).toFixed(0) : '0';
               return (
-                <div key={i} className="flex items-center justify-between px-3 py-2 rounded-lg"
-                  style={{ background: hexToRgba(TIER_COLORS[i % TIER_COLORS.length], 8) }}>
+                <div
+                  key={i}
+                  className="flex items-center justify-between px-3 py-2 rounded-lg"
+                  style={{ background: hexToRgba(TIER_COLORS[i % TIER_COLORS.length], 8) }}
+                >
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-sm" style={{ background: TIER_COLORS[i % TIER_COLORS.length] }} />
+                    <div
+                      className="w-2 h-2 rounded-sm"
+                      style={{ background: TIER_COLORS[i % TIER_COLORS.length] }}
+                    />
                     <span style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>{t.rank}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span style={{ color: TIER_COLORS[i % TIER_COLORS.length], fontSize: 12, fontWeight: 700, fontFamily: 'monospace' }}>
+                    <span
+                      style={{
+                        color: TIER_COLORS[i % TIER_COLORS.length],
+                        fontSize: 12,
+                        fontWeight: 700,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       {fmtPoints(pts)} pts
                     </span>
                     {Number(roi) > 0 && (
@@ -2015,11 +2668,18 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
 
       {/* ─── N7: Compare distribution types button ─── */}
       <button
-        onClick={() => { setComparisonOpen(true); hapticSelection(); }}
+        onClick={() => {
+          setComparisonOpen(true);
+          hapticSelection();
+        }}
         className="w-full flex items-center justify-center gap-2 py-3 rounded-xl active:opacity-70"
         style={{
-          background: 'rgba(139,92,246,0.06)', border: '1.5px solid rgba(139,92,246,0.15)',
-          color: '#8B5CF6', fontSize: φ.xs, fontWeight: 600, minHeight: 44,
+          background: 'rgba(139,92,246,0.06)',
+          border: '1.5px solid rgba(139,92,246,0.15)',
+          color: '#8B5CF6',
+          fontSize: φ.xs,
+          fontWeight: 600,
+          minHeight: 44,
         }}
       >
         <Target size={13} />
@@ -2038,13 +2698,15 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
       <TrCard className="p-4">
         <div className="flex items-center gap-2 mb-3">
           <span style={{ fontSize: 16 }}>🎁</span>
-          <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Thưởng an ủi (Consolation Prize)</span>
+          <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
+            Thưởng an ủi (Consolation Prize)
+          </span>
         </div>
         <ToggleRow
           label="Bật thưởng an ủi"
           desc="Chia nhỏ % pool cho người tham gia không thắng"
           value={ws.consolationEnabled}
-          onChange={v => setWs(prev => ({ ...prev, consolationEnabled: v }))}
+          onChange={(v) => setWs((prev) => ({ ...prev, consolationEnabled: v }))}
         />
         <AnimatePresence>
           {ws.consolationEnabled && (
@@ -2055,31 +2717,54 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
               transition={{ duration: 0.2 }}
               className="overflow-hidden"
             >
-              <div className="pt-3 flex flex-col gap-3" style={{ borderTop: `1px solid ${c.divider}` }}>
+              <div
+                className="pt-3 flex flex-col gap-3"
+                style={{ borderTop: `1px solid ${c.divider}` }}
+              >
                 <NumberStepper
                   label="% pool cho consolation"
                   value={ws.consolationPct}
-                  onChange={v => setWs(prev => ({ ...prev, consolationPct: v }))}
-                  min={1} max={30} step={1}
+                  onChange={(v) => setWs((prev) => ({ ...prev, consolationPct: v }))}
+                  min={1}
+                  max={30}
+                  step={1}
                   suffix="%"
                 />
-                <div className="flex items-start gap-2 px-3 py-2.5 rounded-lg"
-                  style={{ background: 'rgba(139,92,246,0.06)', border: '1px solid rgba(139,92,246,0.1)' }}>
+                <div
+                  className="flex items-start gap-2 px-3 py-2.5 rounded-lg"
+                  style={{
+                    background: 'rgba(139,92,246,0.06)',
+                    border: '1px solid rgba(139,92,246,0.1)',
+                  }}
+                >
                   <Info size={12} color="#8B5CF6" className="shrink-0 mt-0.5" />
                   <div className="flex-1 min-w-0">
                     <p style={{ color: c.text2, fontSize: 10, lineHeight: 1.5, marginBottom: 4 }}>
-                      {ws.consolationPct}% net pool ({fmtPoints(consolationAmount)} pts) sẽ được chia đều cho những người tham gia không nằm trong top thắng.
+                      {ws.consolationPct}% net pool ({fmtPoints(consolationAmount)} pts) sẽ được
+                      chia đều cho những người tham gia không nằm trong top thắng.
                     </p>
                     {ws.maxParticipants > displayTiers.length && (
                       <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.4 }}>
-                        Ước tính: ~{fmtPoints(Math.round(consolationAmount / Math.max(1, ws.maxParticipants - displayTiers.length)))} pts/người × {ws.maxParticipants - displayTiers.length} người không thắng
+                        Ước tính: ~
+                        {fmtPoints(
+                          Math.round(
+                            consolationAmount /
+                              Math.max(1, ws.maxParticipants - displayTiers.length),
+                          ),
+                        )}{' '}
+                        pts/người × {ws.maxParticipants - displayTiers.length} người không thắng
                       </p>
                     )}
                   </div>
                 </div>
                 {ws.consolationPct > 20 && (
-                  <div className="flex items-start gap-2 px-3 py-2 rounded-lg"
-                    style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.12)' }}>
+                  <div
+                    className="flex items-start gap-2 px-3 py-2 rounded-lg"
+                    style={{
+                      background: 'rgba(245,158,11,0.06)',
+                      border: '1px solid rgba(245,158,11,0.12)',
+                    }}
+                  >
                     <AlertTriangle size={12} color="#F59E0B" className="shrink-0 mt-0.5" />
                     <span style={{ color: '#F59E0B', fontSize: 10, lineHeight: 1.4 }}>
                       Consolation prize trên 20% có thể giảm động lực cạnh tranh cho người chơi top.
@@ -2097,8 +2782,16 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
         <div className="flex items-center gap-2 mb-3">
           <Users size={16} color="#3B82F6" />
           <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Dynamic Pool</span>
-          <span className="px-1.5 py-0.5 rounded"
-            style={{ background: 'rgba(59,130,246,0.08)', color: '#3B82F6', fontSize: 8, fontWeight: 700, letterSpacing: 0.5 }}>
+          <span
+            className="px-1.5 py-0.5 rounded"
+            style={{
+              background: 'rgba(59,130,246,0.08)',
+              color: '#3B82F6',
+              fontSize: 8,
+              fontWeight: 700,
+              letterSpacing: 0.5,
+            }}
+          >
             PREVIEW
           </span>
         </div>
@@ -2106,7 +2799,7 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
           label="Bật Dynamic Pool"
           desc="Pool thay đổi theo số người tham gia thực tế"
           value={ws.dynamicPoolEnabled}
-          onChange={v => setWs(prev => ({ ...prev, dynamicPoolEnabled: v }))}
+          onChange={(v) => setWs((prev) => ({ ...prev, dynamicPoolEnabled: v }))}
         />
         <AnimatePresence>
           {ws.dynamicPoolEnabled && (
@@ -2117,12 +2810,24 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
               transition={{ duration: 0.2 }}
               className="overflow-hidden"
             >
-              <div className="pt-3 flex flex-col gap-3" style={{ borderTop: `1px solid ${c.divider}` }}>
+              <div
+                className="pt-3 flex flex-col gap-3"
+                style={{ borderTop: `1px solid ${c.divider}` }}
+              >
                 {/* Participant slider */}
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span style={{ color: c.text2, fontSize: φ.xs }}>Số người tham gia (preview)</span>
-                    <span style={{ color: '#3B82F6', fontSize: φ.sm, fontWeight: 700, fontFamily: 'monospace' }}>
+                    <span style={{ color: c.text2, fontSize: φ.xs }}>
+                      Số người tham gia (preview)
+                    </span>
+                    <span
+                      style={{
+                        color: '#3B82F6',
+                        fontSize: φ.sm,
+                        fontWeight: 700,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       {ws.dynamicPoolPreviewCount} người
                     </span>
                   </div>
@@ -2132,26 +2837,43 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
                     max={Math.max(ws.maxParticipants * 2, 100)}
                     step={1}
                     value={ws.dynamicPoolPreviewCount}
-                    onChange={e => setWs(prev => ({ ...prev, dynamicPoolPreviewCount: Number(e.target.value) }))}
+                    onChange={(e) =>
+                      setWs((prev) => ({
+                        ...prev,
+                        dynamicPoolPreviewCount: Number(e.target.value),
+                      }))
+                    }
                     className="w-full"
                     style={{ accentColor: '#3B82F6', height: 4 }}
                   />
                   {/* Quick marks */}
                   <div className="flex justify-between mt-1.5">
-                    {DYNAMIC_POOL_MARKS.filter(m => m <= Math.max(ws.maxParticipants * 2, 100)).map(mark => (
+                    {DYNAMIC_POOL_MARKS.filter(
+                      (m) => m <= Math.max(ws.maxParticipants * 2, 100),
+                    ).map((mark) => (
                       <button
                         key={mark}
-                        onClick={() => { setWs(prev => ({ ...prev, dynamicPoolPreviewCount: mark })); hapticSelection(); }}
+                        onClick={() => {
+                          setWs((prev) => ({ ...prev, dynamicPoolPreviewCount: mark }));
+                          hapticSelection();
+                        }}
                         className="px-1.5 py-0.5 rounded active:opacity-70"
                         style={{
-                          background: ws.dynamicPoolPreviewCount === mark ? 'rgba(59,130,246,0.12)' : 'transparent',
-                          minWidth: 28, minHeight: 24,
+                          background:
+                            ws.dynamicPoolPreviewCount === mark
+                              ? 'rgba(59,130,246,0.12)'
+                              : 'transparent',
+                          minWidth: 28,
+                          minHeight: 24,
                         }}
                       >
-                        <span style={{
-                          color: ws.dynamicPoolPreviewCount === mark ? '#3B82F6' : c.text3,
-                          fontSize: 9, fontWeight: 600,
-                        }}>
+                        <span
+                          style={{
+                            color: ws.dynamicPoolPreviewCount === mark ? '#3B82F6' : c.text3,
+                            fontSize: 9,
+                            fontWeight: 600,
+                          }}
+                        >
                           {mark}
                         </span>
                       </button>
@@ -2160,9 +2882,22 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
                 </div>
 
                 {/* Dynamic Pool Realtime Preview */}
-                <div className="rounded-xl p-3" style={{ background: 'rgba(59,130,246,0.04)', border: '1px solid rgba(59,130,246,0.1)' }}>
+                <div
+                  className="rounded-xl p-3"
+                  style={{
+                    background: 'rgba(59,130,246,0.04)',
+                    border: '1px solid rgba(59,130,246,0.1)',
+                  }}
+                >
                   <div className="flex items-center gap-2 mb-2">
-                    <p style={{ color: '#3B82F6', fontSize: 10, fontWeight: 700, letterSpacing: 0.5 }}>
+                    <p
+                      style={{
+                        color: '#3B82F6',
+                        fontSize: 10,
+                        fontWeight: 700,
+                        letterSpacing: 0.5,
+                      }}
+                    >
                       PREVIEW: {ws.dynamicPoolPreviewCount} NGƯỜI THAM GIA
                     </p>
                     {ws.dynamicPoolPreviewCount < ws.dynamicPoolMinParticipants && (
@@ -2170,41 +2905,84 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         className="px-1.5 py-0.5 rounded"
-                        style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.2)' }}
+                        style={{
+                          background: 'rgba(239,68,68,0.12)',
+                          border: '1px solid rgba(239,68,68,0.2)',
+                        }}
                       >
-                        <span style={{ color: '#EF4444', fontSize: 8, fontWeight: 700 }}>DƯỚI NGƯỠNG — TỰ HỦY</span>
+                        <span style={{ color: '#EF4444', fontSize: 8, fontWeight: 700 }}>
+                          DƯỚI NGƯỠNG — TỰ HỦY
+                        </span>
                       </motion.span>
                     )}
                   </div>
                   <div className="flex flex-col gap-1.5">
                     <div className="flex items-center justify-between">
                       <span style={{ color: c.text3, fontSize: 10 }}>Gross pool</span>
-                      <span style={{ color: c.text1, fontSize: 11, fontWeight: 600, fontFamily: 'monospace' }}>
+                      <span
+                        style={{
+                          color: c.text1,
+                          fontSize: 11,
+                          fontWeight: 600,
+                          fontFamily: 'monospace',
+                        }}
+                      >
                         {fmtPoints(dynEstPool)} pts
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1.5">
                         <Receipt size={10} color="#F59E0B" className="shrink-0" />
-                        <span style={{ color: '#F59E0B', fontSize: 10, fontWeight: 600 }}>Phí vận hành (10%)</span>
+                        <span style={{ color: '#F59E0B', fontSize: 10, fontWeight: 600 }}>
+                          Phí vận hành (10%)
+                        </span>
                       </div>
-                      <span style={{ color: '#EF4444', fontSize: 11, fontWeight: 600, fontFamily: 'monospace' }}>−{fmtPoints(dynPlatformFee)}</span>
+                      <span
+                        style={{
+                          color: '#EF4444',
+                          fontSize: 11,
+                          fontWeight: 600,
+                          fontFamily: 'monospace',
+                        }}
+                      >
+                        −{fmtPoints(dynPlatformFee)}
+                      </span>
                     </div>
                     {ws.creatorCut > 0 && (
                       <div className="flex items-center justify-between">
-                        <span style={{ color: c.text3, fontSize: 10 }}>Creator cut ({ws.creatorCut}%)</span>
-                        <span style={{ color: '#EF4444', fontSize: 11, fontFamily: 'monospace' }}>−{fmtPoints(dynCreatorAmt)}</span>
+                        <span style={{ color: c.text3, fontSize: 10 }}>
+                          Creator cut ({ws.creatorCut}%)
+                        </span>
+                        <span style={{ color: '#EF4444', fontSize: 11, fontFamily: 'monospace' }}>
+                          −{fmtPoints(dynCreatorAmt)}
+                        </span>
                       </div>
                     )}
                     {ws.consolationEnabled && dynConsolation > 0 && (
                       <div className="flex items-center justify-between">
-                        <span style={{ color: c.text3, fontSize: 10 }}>Consolation ({ws.consolationPct}%)</span>
-                        <span style={{ color: '#8B5CF6', fontSize: 11, fontFamily: 'monospace' }}>−{fmtPoints(dynConsolation)}</span>
+                        <span style={{ color: c.text3, fontSize: 10 }}>
+                          Consolation ({ws.consolationPct}%)
+                        </span>
+                        <span style={{ color: '#8B5CF6', fontSize: 11, fontFamily: 'monospace' }}>
+                          −{fmtPoints(dynConsolation)}
+                        </span>
                       </div>
                     )}
-                    <div className="flex items-center justify-between pt-1.5" style={{ borderTop: `1px solid rgba(59,130,246,0.1)` }}>
-                      <span style={{ color: c.text1, fontSize: 11, fontWeight: 700 }}>Net pool (winners)</span>
-                      <span style={{ color: '#10B981', fontSize: 13, fontWeight: 700, fontFamily: 'monospace' }}>
+                    <div
+                      className="flex items-center justify-between pt-1.5"
+                      style={{ borderTop: `1px solid rgba(59,130,246,0.1)` }}
+                    >
+                      <span style={{ color: c.text1, fontSize: 11, fontWeight: 700 }}>
+                        Net pool (winners)
+                      </span>
+                      <span
+                        style={{
+                          color: '#10B981',
+                          fontSize: 13,
+                          fontWeight: 700,
+                          fontFamily: 'monospace',
+                        }}
+                      >
                         {fmtPoints(dynNetPool)} pts
                       </span>
                     </div>
@@ -2212,39 +2990,81 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
 
                   {/* Per-tier breakdown */}
                   {displayTiers.length > 0 && displayTiers.length <= 5 && (
-                    <div className="mt-3 pt-2.5 flex flex-col gap-1" style={{ borderTop: '1px solid rgba(59,130,246,0.08)' }}>
-                      <p style={{ color: c.text3, fontSize: 9, fontWeight: 600, letterSpacing: 0.3, marginBottom: 2 }}>
+                    <div
+                      className="mt-3 pt-2.5 flex flex-col gap-1"
+                      style={{ borderTop: '1px solid rgba(59,130,246,0.08)' }}
+                    >
+                      <p
+                        style={{
+                          color: c.text3,
+                          fontSize: 9,
+                          fontWeight: 600,
+                          letterSpacing: 0.3,
+                          marginBottom: 2,
+                        }}
+                      >
                         Ước tính thưởng theo hạng
                       </p>
                       {displayTiers.map((t, i) => {
-                        const pts = Math.round(dynNetPool * t.pct / 100);
-                        const roi = ws.entryPoints > 0 ? ((pts / ws.entryPoints - 1) * 100).toFixed(0) : '0';
+                        const pts = Math.round((dynNetPool * t.pct) / 100);
+                        const roi =
+                          ws.entryPoints > 0 ? ((pts / ws.entryPoints - 1) * 100).toFixed(0) : '0';
                         return (
-                          <div key={i} className="flex items-center justify-between px-2 py-1 rounded"
-                            style={{ background: hexToRgba(TIER_COLORS[i % TIER_COLORS.length], 8) }}>
+                          <div
+                            key={i}
+                            className="flex items-center justify-between px-2 py-1 rounded"
+                            style={{
+                              background: hexToRgba(TIER_COLORS[i % TIER_COLORS.length], 8),
+                            }}
+                          >
                             <div className="flex items-center gap-1.5">
-                              <div className="w-1.5 h-1.5 rounded-sm" style={{ background: TIER_COLORS[i % TIER_COLORS.length] }} />
-                              <span style={{ color: c.text2, fontSize: 10, fontWeight: 600 }}>{t.rank}</span>
+                              <div
+                                className="w-1.5 h-1.5 rounded-sm"
+                                style={{ background: TIER_COLORS[i % TIER_COLORS.length] }}
+                              />
+                              <span style={{ color: c.text2, fontSize: 10, fontWeight: 600 }}>
+                                {t.rank}
+                              </span>
                             </div>
                             <div className="flex items-center gap-2">
-                              <span style={{ color: TIER_COLORS[i % TIER_COLORS.length], fontSize: 11, fontWeight: 700, fontFamily: 'monospace' }}>
+                              <span
+                                style={{
+                                  color: TIER_COLORS[i % TIER_COLORS.length],
+                                  fontSize: 11,
+                                  fontWeight: 700,
+                                  fontFamily: 'monospace',
+                                }}
+                              >
                                 {fmtPoints(pts)} pts
                               </span>
                               {Number(roi) > 0 && (
-                                <span style={{ color: '#10B981', fontSize: 8, fontWeight: 600 }}>+{roi}%</span>
+                                <span style={{ color: '#10B981', fontSize: 8, fontWeight: 600 }}>
+                                  +{roi}%
+                                </span>
                               )}
                             </div>
                           </div>
                         );
                       })}
                       {ws.consolationEnabled && dynConsolationPerPerson > 0 && (
-                        <div className="flex items-center justify-between px-2 py-1 rounded"
-                          style={{ background: 'rgba(139,92,246,0.04)' }}>
+                        <div
+                          className="flex items-center justify-between px-2 py-1 rounded"
+                          style={{ background: 'rgba(139,92,246,0.04)' }}
+                        >
                           <div className="flex items-center gap-1.5">
                             <span style={{ fontSize: 9 }}>🎁</span>
-                            <span style={{ color: c.text3, fontSize: 10 }}>Mỗi người không thắng</span>
+                            <span style={{ color: c.text3, fontSize: 10 }}>
+                              Mỗi người không thắng
+                            </span>
                           </div>
-                          <span style={{ color: '#8B5CF6', fontSize: 11, fontWeight: 600, fontFamily: 'monospace' }}>
+                          <span
+                            style={{
+                              color: '#8B5CF6',
+                              fontSize: 11,
+                              fontWeight: 600,
+                              fontFamily: 'monospace',
+                            }}
+                          >
                             ~{fmtPoints(dynConsolationPerPerson)} pts
                           </span>
                         </div>
@@ -2253,8 +3073,19 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
                   )}
 
                   {/* Pool size comparison bar — animated */}
-                  <div className="mt-3 pt-2.5" style={{ borderTop: '1px solid rgba(59,130,246,0.08)' }}>
-                    <p style={{ color: c.text3, fontSize: 9, fontWeight: 600, letterSpacing: 0.3, marginBottom: 6 }}>
+                  <div
+                    className="mt-3 pt-2.5"
+                    style={{ borderTop: '1px solid rgba(59,130,246,0.08)' }}
+                  >
+                    <p
+                      style={{
+                        color: c.text3,
+                        fontSize: 9,
+                        fontWeight: 600,
+                        letterSpacing: 0.3,
+                        marginBottom: 6,
+                      }}
+                    >
                       Pool theo số người (so sánh)
                     </p>
                     <div className="flex flex-col gap-1">
@@ -2266,27 +3097,51 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
                         { count: ws.maxParticipants * 2, label: '200%' },
                       ].map(({ count, label }) => {
                         const pool = count * ws.entryPoints + ws.bonusPool;
-                        const net = pool - Math.round(pool * 0.1) - Math.round(pool * ws.creatorCut / 100)
-                          - (ws.consolationEnabled ? Math.round((pool - Math.round(pool * 0.1) - Math.round(pool * ws.creatorCut / 100)) * ws.consolationPct / 100) : 0);
+                        const net =
+                          pool -
+                          Math.round(pool * 0.1) -
+                          Math.round((pool * ws.creatorCut) / 100) -
+                          (ws.consolationEnabled
+                            ? Math.round(
+                                ((pool -
+                                  Math.round(pool * 0.1) -
+                                  Math.round((pool * ws.creatorCut) / 100)) *
+                                  ws.consolationPct) /
+                                  100,
+                              )
+                            : 0);
                         const maxNet = ws.maxParticipants * 2 * ws.entryPoints + ws.bonusPool;
                         const barPct = Math.max(5, (net / maxNet) * 100);
                         const isCurrent = count === ws.dynamicPoolPreviewCount;
                         const belowMin = count < ws.dynamicPoolMinParticipants;
                         return (
                           <div key={label} className="flex items-center gap-2">
-                            <span style={{
-                              color: belowMin ? '#EF4444' : isCurrent ? '#3B82F6' : c.text3,
-                              fontSize: 9, fontWeight: isCurrent ? 700 : 500, minWidth: 28, textAlign: 'right',
-                              textDecoration: belowMin ? 'line-through' : 'none',
-                            }}>
+                            <span
+                              style={{
+                                color: belowMin ? '#EF4444' : isCurrent ? '#3B82F6' : c.text3,
+                                fontSize: 9,
+                                fontWeight: isCurrent ? 700 : 500,
+                                minWidth: 28,
+                                textAlign: 'right',
+                                textDecoration: belowMin ? 'line-through' : 'none',
+                              }}
+                            >
                               {count}p
                             </span>
-                            <div className="flex-1 h-3 rounded-sm overflow-hidden relative" style={{ background: c.surface2 }}>
+                            <div
+                              className="flex-1 h-3 rounded-sm overflow-hidden relative"
+                              style={{ background: c.surface2 }}
+                            >
                               <motion.div
                                 className="h-full rounded-sm"
                                 initial={{ width: 0 }}
                                 animate={{ width: `${barPct}%` }}
-                                transition={{ type: 'spring', stiffness: 120, damping: 18, mass: 0.8 }}
+                                transition={{
+                                  type: 'spring',
+                                  stiffness: 120,
+                                  damping: 18,
+                                  mass: 0.8,
+                                }}
                                 style={{
                                   background: belowMin
                                     ? 'rgba(239,68,68,0.3)'
@@ -2297,7 +3152,16 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
                               />
                               {belowMin && (
                                 <div className="absolute inset-0 flex items-center justify-center">
-                                  <span style={{ color: '#EF4444', fontSize: 7, fontWeight: 700, letterSpacing: 0.3 }}>HỦY</span>
+                                  <span
+                                    style={{
+                                      color: '#EF4444',
+                                      fontSize: 7,
+                                      fontWeight: 700,
+                                      letterSpacing: 0.3,
+                                    }}
+                                  >
+                                    HỦY
+                                  </span>
                                 </div>
                               )}
                             </div>
@@ -2308,8 +3172,11 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
                               transition={{ duration: 0.25 }}
                               style={{
                                 color: belowMin ? '#EF4444' : isCurrent ? '#3B82F6' : c.text3,
-                                fontSize: 9, fontWeight: isCurrent ? 700 : 500,
-                                fontFamily: 'monospace', minWidth: 52, textAlign: 'right',
+                                fontSize: 9,
+                                fontWeight: isCurrent ? 700 : 500,
+                                fontFamily: 'monospace',
+                                minWidth: 52,
+                                textAlign: 'right',
                               }}
                             >
                               {belowMin ? 'Hoàn tiền' : fmtPoints(net)}
@@ -2330,44 +3197,70 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
                 </div>
 
                 {/* ─── Minimum Participants Threshold ─── */}
-                <div className="rounded-xl p-3" style={{ background: 'rgba(239,68,68,0.04)', border: '1px solid rgba(239,68,68,0.1)' }}>
+                <div
+                  className="rounded-xl p-3"
+                  style={{
+                    background: 'rgba(239,68,68,0.04)',
+                    border: '1px solid rgba(239,68,68,0.1)',
+                  }}
+                >
                   <div className="flex items-center gap-2 mb-2">
                     <AlertTriangle size={12} color="#EF4444" />
-                    <span style={{ color: c.text1, fontSize: φ.xs, fontWeight: 700 }}>Ngưỡng tối thiểu</span>
+                    <span style={{ color: c.text1, fontSize: φ.xs, fontWeight: 700 }}>
+                      Ngưỡng tối thiểu
+                    </span>
                   </div>
                   <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.4, marginBottom: 8 }}>
-                    Nếu không đủ người tham gia trước hạn chót, challenge sẽ tự động hủy và hoàn lại entry points.
+                    Nếu không đủ người tham gia trước hạn chót, challenge sẽ tự động hủy và hoàn lại
+                    entry points.
                   </p>
                   <NumberStepper
                     label="Tối thiểu"
                     value={ws.dynamicPoolMinParticipants}
-                    onChange={v => setWs(prev => ({ ...prev, dynamicPoolMinParticipants: v }))}
-                    min={2} max={Math.min(ws.maxParticipants, 100)} step={1}
+                    onChange={(v) => setWs((prev) => ({ ...prev, dynamicPoolMinParticipants: v }))}
+                    min={2}
+                    max={Math.min(ws.maxParticipants, 100)}
+                    step={1}
                     suffix=" người"
                   />
                   {ws.dynamicPoolMinParticipants < 3 && (
-                    <div className="flex items-start gap-2 mt-2 px-2.5 py-2 rounded-lg"
-                      style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.12)' }}>
+                    <div
+                      className="flex items-start gap-2 mt-2 px-2.5 py-2 rounded-lg"
+                      style={{
+                        background: 'rgba(245,158,11,0.06)',
+                        border: '1px solid rgba(245,158,11,0.12)',
+                      }}
+                    >
                       <AlertTriangle size={10} color="#F59E0B" className="shrink-0 mt-0.5" />
                       <span style={{ color: '#F59E0B', fontSize: 9, lineHeight: 1.4 }}>
                         Ngưỡng thấp (dưới 3 người) có thể dẫn đến challenge không cạnh tranh.
                       </span>
                     </div>
                   )}
-                  <div className="flex items-center gap-1.5 mt-2 px-2.5 py-1.5 rounded-lg"
-                    style={{ background: 'rgba(239,68,68,0.04)' }}>
+                  <div
+                    className="flex items-center gap-1.5 mt-2 px-2.5 py-1.5 rounded-lg"
+                    style={{ background: 'rgba(239,68,68,0.04)' }}
+                  >
                     <span style={{ fontSize: 10 }}>🚫</span>
-                    <span style={{ color: '#EF4444', fontSize: 9, fontWeight: 600, lineHeight: 1.4 }}>
+                    <span
+                      style={{ color: '#EF4444', fontSize: 9, fontWeight: 600, lineHeight: 1.4 }}
+                    >
                       Dưới {ws.dynamicPoolMinParticipants} người → tự hủy + hoàn tiền 100%
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2 px-3 py-2 rounded-lg"
-                  style={{ background: 'rgba(59,130,246,0.04)', border: '1px solid rgba(59,130,246,0.08)' }}>
+                <div
+                  className="flex items-start gap-2 px-3 py-2 rounded-lg"
+                  style={{
+                    background: 'rgba(59,130,246,0.04)',
+                    border: '1px solid rgba(59,130,246,0.08)',
+                  }}
+                >
                   <Info size={12} color="#3B82F6" className="shrink-0 mt-0.5" />
                   <span style={{ color: c.text3, fontSize: 10, lineHeight: 1.4 }}>
-                    Dynamic Pool: pool thay đổi theo số người tham gia thực tế. Phần thưởng chỉ được tính khi challenge kết thúc.
+                    Dynamic Pool: pool thay đổi theo số người tham gia thực tế. Phần thưởng chỉ được
+                    tính khi challenge kết thúc.
                   </span>
                 </div>
               </div>
@@ -2386,7 +3279,7 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
             { id: 'friends_only' as Visibility, label: 'Bạn bè', icon: '👥' },
           ]}
           value={ws.visibility}
-          onChange={v => setWs(prev => ({ ...prev, visibility: v }))}
+          onChange={(v) => setWs((prev) => ({ ...prev, visibility: v }))}
         />
       </div>
 
@@ -2396,7 +3289,7 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
         <input
           type="date"
           value={ws.joinDeadline}
-          onChange={e => setWs(prev => ({ ...prev, joinDeadline: e.target.value }))}
+          onChange={(e) => setWs((prev) => ({ ...prev, joinDeadline: e.target.value }))}
           className="w-full px-4 py-3 rounded-xl"
           style={{
             background: c.searchBg,
@@ -2414,7 +3307,7 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
           label="Yêu cầu bằng chứng"
           desc="Người chơi phải gửi ảnh/video minh chứng"
           value={ws.evidenceRequired}
-          onChange={v => setWs(prev => ({ ...prev, evidenceRequired: v }))}
+          onChange={(v) => setWs((prev) => ({ ...prev, evidenceRequired: v }))}
         />
       </TrCard>
 
@@ -2422,26 +3315,36 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
       <TrCard className="p-4">
         <div className="flex items-center gap-2 mb-3">
           <Shield size={14} color="#8B5CF6" />
-          <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>House Rules (tự sinh)</span>
+          <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
+            House Rules (tự sinh)
+          </span>
         </div>
         <div className="flex flex-col gap-1.5">
           {[
             'Entry points bị trừ ngay khi tham gia',
             ws.evidenceRequired ? 'Bằng chứng bắt buộc trước khi claim' : null,
-            `Kết quả chốt bằng: ${RESOLUTION_METHODS.find(r => r.id === ws.resolution)?.label}`,
-            `Chia thưởng: ${activeDist?.label || 'Top 3'} (${displayTiers.map(t => `${t.rank}: ${t.pct}%`).join(', ')})`,
+            `Kết quả chốt bằng: ${RESOLUTION_METHODS.find((r) => r.id === ws.resolution)?.label}`,
+            `Chia thưởng: ${activeDist?.label || 'Top 3'} (${displayTiers.map((t) => `${t.rank}: ${t.pct}%`).join(', ')})`,
             ws.tieRule ? `Tie rule: ${ws.tieRule}` : 'Nếu hòa: pool chia đều',
             ws.bonusPool > 0 ? `Host thêm ${fmtPoints(ws.bonusPool)} pts vào pool` : null,
             ws.creatorCut > 0 ? `Creator cut: ${ws.creatorCut}% pool` : null,
-            ws.consolationEnabled ? `Thưởng an ủi: ${ws.consolationPct}% net pool chia cho người kh��ng thắng` : null,
-            ws.dynamicPoolEnabled ? `Dynamic Pool: phần thưởng thay đổi theo số người tham gia thực tế (tối thiểu ${ws.dynamicPoolMinParticipants} người, dưới ngưỡng → tự hủy)` : null,
+            ws.consolationEnabled
+              ? `Thưởng an ủi: ${ws.consolationPct}% net pool chia cho người kh��ng thắng`
+              : null,
+            ws.dynamicPoolEnabled
+              ? `Dynamic Pool: phần thưởng thay đổi theo số người tham gia thực tế (tối thiểu ${ws.dynamicPoolMinParticipants} người, dưới ngưỡng → tự hủy)`
+              : null,
             ws.rematchEnabled ? 'Cho phép rematch' : null,
-          ].filter(Boolean).map((rule, i) => (
-            <div key={i} className="flex items-start gap-2">
-              <span style={{ color: c.text3, fontSize: 10, fontWeight: 600, minWidth: 14 }}>{i + 1}.</span>
-              <span style={{ color: c.text2, fontSize: φ.xs, lineHeight: 1.5 }}>{rule}</span>
-            </div>
-          ))}
+          ]
+            .filter(Boolean)
+            .map((rule, i) => (
+              <div key={i} className="flex items-start gap-2">
+                <span style={{ color: c.text3, fontSize: 10, fontWeight: 600, minWidth: 14 }}>
+                  {i + 1}.
+                </span>
+                <span style={{ color: c.text2, fontSize: φ.xs, lineHeight: 1.5 }}>{rule}</span>
+              </div>
+            ))}
           {/* Platform fee — highlighted rule */}
           <div
             className="flex items-start gap-2.5 px-3 py-2.5 rounded-xl mt-1"
@@ -2477,17 +3380,24 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
       <TrCard className="p-3 flex items-start gap-2">
         <Info size={14} color="#3B82F6" className="shrink-0 mt-0.5" />
         <p style={{ color: c.text3, fontSize: φ.xs, lineHeight: 1.5 }}>
-          Challenge sẽ được kiểm duyệt tự động. Nội dung vi phạm sẽ bị ẩn. Arena Points không phải tài sản tài chính.
+          Challenge sẽ được kiểm duyệt tự động. Nội dung vi phạm sẽ bị ẩn. Arena Points không phải
+          tài sản tài chính.
         </p>
       </TrCard>
 
       {/* 07A Governance: Room Safety Snapshot */}
       <RoomSafetySnapshotCard
         snapshot={{
-          format: MATCH_FORMATS.find(f => f.id === ws.matchFormat)?.label || ws.matchFormat,
-          resolution: RESOLUTION_METHODS.find(r => r.id === ws.resolution)?.label || ws.resolution,
+          format: MATCH_FORMATS.find((f) => f.id === ws.matchFormat)?.label || ws.matchFormat,
+          resolution:
+            RESOLUTION_METHODS.find((r) => r.id === ws.resolution)?.label || ws.resolution,
           evidence: ws.evidenceRequired ? 'Bắt buộc' : 'Không bắt buộc',
-          privacy: ws.visibility === 'public' ? 'Công khai' : ws.visibility === 'private' ? 'Riêng tư' : 'Bạn bè',
+          privacy:
+            ws.visibility === 'public'
+              ? 'Công khai'
+              : ws.visibility === 'private'
+                ? 'Riêng tư'
+                : 'Bạn bè',
           voidRule: ws.voidRule || 'Chưa thiết lập',
           riskTier: resolutionRisk(ws.resolution),
         }}
@@ -2498,20 +3408,35 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
         <TrCard className="p-4" accentBorder="rgba(59,130,246,0.3)">
           <div className="flex items-center gap-2 mb-3">
             <Shield size={14} color="#3B82F6" />
-            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Bridge Safety Snapshot</span>
+            <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
+              Bridge Safety Snapshot
+            </span>
           </div>
           <div className="flex flex-col gap-2">
             {[
               { icon: '🎮', label: 'Arena Points only', desc: 'Không liên quan tài sản thật' },
-              { icon: '🔗', label: 'Market context linked', desc: `Từ: ${predictionCtx.eventTitle.slice(0, 35)}…` },
-              { icon: '🔒', label: 'Wallet independent', desc: 'Không kết nối ví, không ảnh hưởng vị thế' },
+              {
+                icon: '🔗',
+                label: 'Market context linked',
+                desc: `Từ: ${predictionCtx.eventTitle.slice(0, 35)}…`,
+              },
+              {
+                icon: '🔒',
+                label: 'Wallet independent',
+                desc: 'Không kết nối ví, không ảnh hưởng vị thế',
+              },
             ].map((item, i) => (
-              <div key={i} className="flex items-start gap-2.5 px-3 py-2 rounded-lg"
-                style={{ background: 'rgba(59,130,246,0.04)' }}>
+              <div
+                key={i}
+                className="flex items-start gap-2.5 px-3 py-2 rounded-lg"
+                style={{ background: 'rgba(59,130,246,0.04)' }}
+              >
                 <span style={{ fontSize: 13 }}>{item.icon}</span>
                 <div className="flex-1 min-w-0">
                   <p style={{ color: c.text1, fontSize: φ.xs, fontWeight: 600 }}>{item.label}</p>
-                  <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.4 }} className="truncate">{item.desc}</p>
+                  <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.4 }} className="truncate">
+                    {item.desc}
+                  </p>
                 </div>
                 <Check size={12} color="#10B981" className="shrink-0 mt-1" />
               </div>
@@ -2523,21 +3448,66 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
       {/* 07A Governance: Publish Eligibility */}
       {(() => {
         const clarityScore = computeClarityScore({
-          title: ws.title, description: ws.description, winCondition: ws.winCondition,
-          tieRule: ws.tieRule, voidRule: ws.voidRule, resultDeadline: ws.resultDeadline,
-          evidenceRequired: ws.evidenceRequired, joinStyle: ws.joinStyle,
+          title: ws.title,
+          description: ws.description,
+          winCondition: ws.winCondition,
+          tieRule: ws.tieRule,
+          voidRule: ws.voidRule,
+          resultDeadline: ws.resultDeadline,
+          evidenceRequired: ws.evidenceRequired,
+          joinStyle: ws.joinStyle,
         });
         const checks: EligibilityCheck[] = [
-          { id: 'title', label: 'Tên challenge', passed: ws.title.length >= 3, hint: 'Cần ít nhất 3 ký tự' },
-          { id: 'desc', label: 'Mô tả đầy đủ', passed: ws.description.length >= 10, hint: 'Mô tả cần ít nhất 10 ký tự' },
-          { id: 'win', label: 'Điều kiện thắng', passed: ws.winCondition.length >= 5, hint: 'Cần mô tả rõ cách xác định người thắng' },
-          { id: 'tie', label: 'Luật hòa (tie rule)', passed: ws.tieRule.length >= 2, hint: 'Nên có luật hòa để tránh tranh chấp' },
-          { id: 'void', label: 'Luật hủy bỏ (void rule)', passed: ws.voidRule.length >= 2, hint: 'Nên có void rule cho trường hợp bất khả kháng' },
-          { id: 'deadline', label: 'Thời hạn kết quả', passed: ws.resultDeadline.length >= 1, hint: 'Cần xác định thời hạn chốt kết quả' },
-          { id: 'referee', label: 'Referee đã chỉ định', passed: ws.resolution !== 'referee' || ws.refereeName.length >= 2, hint: 'Cần chỉ định người phân xử' },
-          { id: 'clarity', label: `Rule clarity >= 40 (hiện: ${clarityScore})`, passed: clarityScore >= 40, hint: 'Cần bổ sung thêm thông tin luật chơi' },
+          {
+            id: 'title',
+            label: 'Tên challenge',
+            passed: ws.title.length >= 3,
+            hint: 'Cần ít nhất 3 ký tự',
+          },
+          {
+            id: 'desc',
+            label: 'Mô tả đầy đủ',
+            passed: ws.description.length >= 10,
+            hint: 'Mô tả cần ít nhất 10 ký tự',
+          },
+          {
+            id: 'win',
+            label: 'Điều kiện thắng',
+            passed: ws.winCondition.length >= 5,
+            hint: 'Cần mô tả rõ cách xác định người thắng',
+          },
+          {
+            id: 'tie',
+            label: 'Luật hòa (tie rule)',
+            passed: ws.tieRule.length >= 2,
+            hint: 'Nên có luật hòa để tránh tranh chấp',
+          },
+          {
+            id: 'void',
+            label: 'Luật hủy bỏ (void rule)',
+            passed: ws.voidRule.length >= 2,
+            hint: 'Nên có void rule cho trường hợp bất khả kháng',
+          },
+          {
+            id: 'deadline',
+            label: 'Thời hạn kết quả',
+            passed: ws.resultDeadline.length >= 1,
+            hint: 'Cần xác định thời hạn chốt kết quả',
+          },
+          {
+            id: 'referee',
+            label: 'Referee đã chỉ định',
+            passed: ws.resolution !== 'referee' || ws.refereeName.length >= 2,
+            hint: 'Cần chỉ định người phân xử',
+          },
+          {
+            id: 'clarity',
+            label: `Rule clarity >= 40 (hiện: ${clarityScore})`,
+            passed: clarityScore >= 40,
+            hint: 'Cần bổ sung thêm thông tin luật chơi',
+          },
         ];
-        const allPassed = checks.every(ch => ch.passed);
+        const allPassed = checks.every((ch) => ch.passed);
         const missingReferee = ws.resolution === 'referee' && ws.refereeName.length < 2;
         const isHighRisk = resolutionRisk(ws.resolution) === 'high';
         const missingRules = clarityScore < 40;
@@ -2558,20 +3528,34 @@ function Step5({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
    Step 6 — Review & Publish
    ═══════════════════════════════════════════ */
 
-function Step6({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dispatch<React.SetStateAction<WizardState>>; predictionCtx?: PredictionBridgeContext | null }) {
+function Step6({
+  ws,
+  setWs,
+  predictionCtx,
+}: {
+  ws: WizardState;
+  setWs: React.Dispatch<React.SetStateAction<WizardState>>;
+  predictionCtx?: PredictionBridgeContext | null;
+}) {
   const c = useThemeColors();
-  const template = ARENA_TEMPLATES.find(t => t.id === ws.templateId);
-  const resolution = RESOLUTION_METHODS.find(r => r.id === ws.resolution);
+  const template = ARENA_TEMPLATES.find((t) => t.id === ws.templateId);
+  const resolution = RESOLUTION_METHODS.find((r) => r.id === ws.resolution);
   const estPool = ws.entryPoints * ws.maxParticipants + ws.bonusPool;
   const platformFee6 = Math.round(estPool * 0.1);
-  const creatorAmt6 = Math.round(estPool * ws.creatorCut / 100);
-  const consolationAmt6 = ws.consolationEnabled ? Math.round((estPool - platformFee6 - creatorAmt6) * ws.consolationPct / 100) : 0;
+  const creatorAmt6 = Math.round((estPool * ws.creatorCut) / 100);
+  const consolationAmt6 = ws.consolationEnabled
+    ? Math.round(((estPool - platformFee6 - creatorAmt6) * ws.consolationPct) / 100)
+    : 0;
   const netPool = estPool - platformFee6 - creatorAmt6 - consolationAmt6;
-  const activeDist6 = REWARD_DIST_OPTIONS.find(d => d.id === ws.rewardDist);
-  const displayTiers6 = ws.rewardDist === 'tiered_custom' ? ws.customTiers : (activeDist6?.tiers || []);
+  const activeDist6 = REWARD_DIST_OPTIONS.find((d) => d.id === ws.rewardDist);
+  const displayTiers6 =
+    ws.rewardDist === 'tiered_custom' ? ws.customTiers : activeDist6?.tiers || [];
 
   /* ─── Map resolution method id to chip type ─── */
-  const resolutionMap: Record<ResolutionMethod, 'auto' | 'mutual_confirm' | 'referee' | 'community_vote'> = {
+  const resolutionMap: Record<
+    ResolutionMethod,
+    'auto' | 'mutual_confirm' | 'referee' | 'community_vote'
+  > = {
     auto: 'auto',
     mutual: 'mutual_confirm',
     referee: 'referee',
@@ -2579,14 +3563,19 @@ function Step6({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
   };
 
   const rows: { label: string; value: string; color?: string }[] = [
-    ...(predictionCtx ? [
-      { label: 'Linked Event', value: predictionCtx.eventTitle.slice(0, 40), color: '#3B82F6' },
-      { label: 'Topic', value: predictionCtx.topic, color: '#3B82F6' },
-      { label: 'Context Source', value: 'Prediction Market', color: '#3B82F6' },
-    ] : []),
+    ...(predictionCtx
+      ? [
+          { label: 'Linked Event', value: predictionCtx.eventTitle.slice(0, 40), color: '#3B82F6' },
+          { label: 'Topic', value: predictionCtx.topic, color: '#3B82F6' },
+          { label: 'Context Source', value: 'Prediction Market', color: '#3B82F6' },
+        ]
+      : []),
     { label: 'Template', value: template ? `${template.icon} ${template.title}` : '—' },
     { label: 'Creator / Host', value: 'CryptoTrader_VN' },
-    { label: 'Format', value: MATCH_FORMATS.find(f => f.id === ws.matchFormat)?.label || ws.matchFormat },
+    {
+      label: 'Format',
+      value: MATCH_FORMATS.find((f) => f.id === ws.matchFormat)?.label || ws.matchFormat,
+    },
     { label: 'Số slot', value: `${ws.maxParticipants} người` },
     { label: 'Tên', value: ws.title || '—' },
     { label: 'Category', value: ws.category },
@@ -2597,16 +3586,42 @@ function Step6({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
     { label: 'Bằng chứng', value: ws.evidenceRequired ? 'Bắt buộc' : 'Không' },
     { label: 'Kết thúc', value: ws.endDate },
     { label: 'Chốt KQ trước', value: ws.resultDeadline },
-    { label: 'Quyền riêng tư', value: ws.visibility === 'public' ? 'Công khai' : ws.visibility === 'private' ? 'Riêng tư' : 'Bạn bè' },
+    {
+      label: 'Quyền riêng tư',
+      value:
+        ws.visibility === 'public'
+          ? 'Công khai'
+          : ws.visibility === 'private'
+            ? 'Riêng tư'
+            : 'Bạn bè',
+    },
     { label: 'Chia thưởng', value: activeDist6?.label || 'Top 3', color: '#F59E0B' },
     { label: 'Entry', value: `${ws.entryPoints} pts`, color: '#F59E0B' },
-    ...(ws.bonusPool > 0 ? [{ label: 'Bonus pool', value: `+${fmtPoints(ws.bonusPool)} pts`, color: '#8B5CF6' }] : []),
-    ...(ws.creatorCut > 0 ? [{ label: 'Creator cut', value: `${ws.creatorCut}%`, color: '#EF4444' }] : []),
-    ...(ws.consolationEnabled ? [{ label: 'Thưởng an ủi', value: `${ws.consolationPct}% (${fmtPoints(consolationAmt6)} pts)`, color: '#8B5CF6' }] : []),
-    ...(ws.dynamicPoolEnabled ? [
-      { label: 'Dynamic Pool', value: 'Bật — pool thay đổi theo số người', color: '#3B82F6' },
-      { label: 'Tối thiểu tham gia', value: `${ws.dynamicPoolMinParticipants} người (dưới → tự hủy)`, color: '#EF4444' },
-    ] : []),
+    ...(ws.bonusPool > 0
+      ? [{ label: 'Bonus pool', value: `+${fmtPoints(ws.bonusPool)} pts`, color: '#8B5CF6' }]
+      : []),
+    ...(ws.creatorCut > 0
+      ? [{ label: 'Creator cut', value: `${ws.creatorCut}%`, color: '#EF4444' }]
+      : []),
+    ...(ws.consolationEnabled
+      ? [
+          {
+            label: 'Thưởng an ủi',
+            value: `${ws.consolationPct}% (${fmtPoints(consolationAmt6)} pts)`,
+            color: '#8B5CF6',
+          },
+        ]
+      : []),
+    ...(ws.dynamicPoolEnabled
+      ? [
+          { label: 'Dynamic Pool', value: 'Bật — pool thay đổi theo số người', color: '#3B82F6' },
+          {
+            label: 'Tối thiểu tham gia',
+            value: `${ws.dynamicPoolMinParticipants} người (dưới → tự hủy)`,
+            color: '#EF4444',
+          },
+        ]
+      : []),
     { label: 'Net Pool (est.)', value: `${fmtPoints(netPool)} pts`, color: '#10B981' },
   ];
 
@@ -2630,7 +3645,10 @@ function Step6({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
             <div
               key={i}
               className="flex items-start justify-between gap-3"
-              style={{ paddingBottom: i < rows.length - 1 ? 8 : 0, borderBottom: i < rows.length - 1 ? `1px solid ${c.divider}` : 'none' }}
+              style={{
+                paddingBottom: i < rows.length - 1 ? 8 : 0,
+                borderBottom: i < rows.length - 1 ? `1px solid ${c.divider}` : 'none',
+              }}
             >
               <span style={{ color: c.text3, fontSize: φ.xs, minWidth: 80 }}>{r.label}</span>
               <span
@@ -2653,7 +3671,9 @@ function Step6({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
       {/* Description preview */}
       {ws.description && (
         <TrCard className="p-4">
-          <p style={{ color: c.text2, fontSize: φ.xs, fontWeight: 600, marginBottom: 4 }}>Mô tả luật chơi</p>
+          <p style={{ color: c.text2, fontSize: φ.xs, fontWeight: 600, marginBottom: 4 }}>
+            Mô tả luật chơi
+          </p>
           <p style={{ color: c.text1, fontSize: φ.xs, lineHeight: 1.5 }}>{ws.description}</p>
         </TrCard>
       )}
@@ -2663,35 +3683,53 @@ function Step6({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
         <div className="flex items-center gap-2 mb-3">
           <Sparkles size={14} color="#F59E0B" />
           <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Phân chia thưởng</span>
-          <span className="px-2 py-0.5 rounded-md"
-            style={{ background: 'rgba(245,158,11,0.1)', color: '#F59E0B', fontSize: 9, fontWeight: 700 }}>
+          <span
+            className="px-2 py-0.5 rounded-md"
+            style={{
+              background: 'rgba(245,158,11,0.1)',
+              color: '#F59E0B',
+              fontSize: 9,
+              fontWeight: 700,
+            }}
+          >
             {activeDist6?.label}
           </span>
         </div>
         <RewardDistBar tiers={displayTiers6} netPool={netPool} />
         {ws.consolationEnabled && (
-          <div className="flex items-center gap-2 mt-3 px-3 py-2 rounded-lg"
-            style={{ background: 'rgba(139,92,246,0.06)' }}>
+          <div
+            className="flex items-center gap-2 mt-3 px-3 py-2 rounded-lg"
+            style={{ background: 'rgba(139,92,246,0.06)' }}
+          >
             <span style={{ fontSize: 13 }}>🎁</span>
             <span style={{ color: c.text2, fontSize: 10, lineHeight: 1.4 }}>
-              Thưởng an ủi: {ws.consolationPct}% net pool ({fmtPoints(consolationAmt6)} pts) chia cho người không thắng
+              Thưởng an ủi: {ws.consolationPct}% net pool ({fmtPoints(consolationAmt6)} pts) chia
+              cho người không thắng
             </span>
           </div>
         )}
         {ws.dynamicPoolEnabled && (
           <div className="flex flex-col gap-2 mt-2">
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg"
-              style={{ background: 'rgba(59,130,246,0.06)' }}>
+            <div
+              className="flex items-center gap-2 px-3 py-2 rounded-lg"
+              style={{ background: 'rgba(59,130,246,0.06)' }}
+            >
               <Users size={12} color="#3B82F6" />
               <span style={{ color: c.text2, fontSize: 10, lineHeight: 1.4 }}>
                 Dynamic Pool bật — pool sẽ thay đổi theo số người tham gia thực tế
               </span>
             </div>
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg"
-              style={{ background: 'rgba(239,68,68,0.04)', border: '1px solid rgba(239,68,68,0.1)' }}>
+            <div
+              className="flex items-center gap-2 px-3 py-2 rounded-lg"
+              style={{
+                background: 'rgba(239,68,68,0.04)',
+                border: '1px solid rgba(239,68,68,0.1)',
+              }}
+            >
               <AlertTriangle size={11} color="#EF4444" />
               <span style={{ color: '#EF4444', fontSize: 10, lineHeight: 1.4 }}>
-                Tối thiểu {ws.dynamicPoolMinParticipants} người tham gia — dưới ngưỡng sẽ tự hủy + hoàn 100% entry
+                Tối thiểu {ws.dynamicPoolMinParticipants} người tham gia — dưới ngưỡng sẽ tự hủy +
+                hoàn 100% entry
               </span>
             </div>
           </div>
@@ -2703,7 +3741,7 @@ function Step6({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
 
       {/* 07A Governance: Confirm checkbox */}
       <button
-        onClick={() => setWs(prev => ({ ...prev, confirmClarity: !prev.confirmClarity }))}
+        onClick={() => setWs((prev) => ({ ...prev, confirmClarity: !prev.confirmClarity }))}
         className="flex items-start gap-3 py-3 px-4 rounded-xl active:opacity-70"
         style={{
           background: ws.confirmClarity ? 'rgba(16,185,129,0.08)' : c.surface2,
@@ -2720,7 +3758,9 @@ function Step6({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
         >
           {ws.confirmClarity && <Check size={12} color="#fff" strokeWidth={3} />}
         </div>
-        <span style={{ color: c.text1, fontSize: φ.xs, lineHeight: 1.5, textAlign: 'left' as const }}>
+        <span
+          style={{ color: c.text1, fontSize: φ.xs, lineHeight: 1.5, textAlign: 'left' as const }}
+        >
           Tôi xác nhận luật rõ ràng và có thể kiểm chứng. Challenge tuân thủ Arena Policy.
         </span>
       </button>
@@ -2729,7 +3769,8 @@ function Step6({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
       <TrCard className="p-3 flex items-start gap-2" accentBorder="rgba(245,158,11,0.3)">
         <AlertTriangle size={14} color="#F59E0B" className="shrink-0 mt-0.5" />
         <p style={{ color: c.text2, fontSize: φ.xs, lineHeight: 1.5 }}>
-          Sau khi mở phòng, challenge sẽ được kiểm duyệt tự động trước khi hiển thị công khai. Quá trình này mất khoảng 1–5 phút.
+          Sau khi mở phòng, challenge sẽ được kiểm duyệt tự động trước khi hiển thị công khai. Quá
+          trình này mất khoảng 1–5 phút.
         </p>
       </TrCard>
     </>
@@ -2740,7 +3781,13 @@ function Step6({ ws, setWs, predictionCtx }: { ws: WizardState; setWs: React.Dis
    State Screens
    ═══════════════════════════════════════════ */
 
-function DraftState({ onResume, onDiscard, savedAt, draftStep, draftWs }: {
+function DraftState({
+  onResume,
+  onDiscard,
+  savedAt,
+  draftStep,
+  draftWs,
+}: {
   onResume: () => void;
   onDiscard: () => void;
   savedAt: number | null;
@@ -2752,7 +3799,7 @@ function DraftState({ onResume, onDiscard, savedAt, draftStep, draftWs }: {
   const ageText = savedAt ? draftAgeLabel(savedAt) : null;
   const isStale = age >= 3;
   const templateLabel = draftWs.templateId
-    ? ARENA_TEMPLATES.find(t => t.id === draftWs.templateId)?.label
+    ? ARENA_TEMPLATES.find((t) => t.id === draftWs.templateId)?.title
     : null;
 
   return (
@@ -2765,7 +3812,9 @@ function DraftState({ onResume, onDiscard, savedAt, draftStep, draftWs }: {
         >
           <FileText size={26} color="#8B5CF6" />
         </div>
-        <p style={{ color: c.text1, fontSize: φ.md, fontWeight: 700, marginBottom: 4 }}>Có bản nháp chưa hoàn thành</p>
+        <p style={{ color: c.text1, fontSize: φ.md, fontWeight: 700, marginBottom: 4 }}>
+          Có bản nháp chưa hoàn thành
+        </p>
         <p style={{ color: c.text2, fontSize: φ.xs, lineHeight: 1.5 }}>
           Bạn đang soạn dở 1 challenge. Tiếp tục từ nơi đã dừng hoặc bắt đầu lại.
         </p>
@@ -2782,14 +3831,27 @@ function DraftState({ onResume, onDiscard, savedAt, draftStep, draftWs }: {
             <FileEdit size={18} color="#8B5CF6" />
           </div>
           <div className="flex-1 min-w-0">
-            <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700, lineHeight: 1.3, marginBottom: 2 }}>
+            <p
+              style={{
+                color: c.text1,
+                fontSize: φ.sm,
+                fontWeight: 700,
+                lineHeight: 1.3,
+                marginBottom: 2,
+              }}
+            >
               {draftWs.title || 'Challenge chưa đặt tên'}
             </p>
             <div className="flex items-center gap-2 flex-wrap">
               {templateLabel && (
                 <span
                   className="px-2 py-0.5 rounded-md"
-                  style={{ background: 'rgba(139,92,246,0.08)', color: '#8B5CF6', fontSize: 10, fontWeight: 600 }}
+                  style={{
+                    background: 'rgba(139,92,246,0.08)',
+                    color: '#8B5CF6',
+                    fontSize: 10,
+                    fontWeight: 600,
+                  }}
                 >
                   {templateLabel}
                 </span>
@@ -2823,11 +3885,15 @@ function DraftState({ onResume, onDiscard, savedAt, draftStep, draftWs }: {
             </span>
           </div>
           <div className="flex gap-1.5 mb-2.5">
-            {STEPS.map(s => {
+            {STEPS.map((s) => {
               const done = s.id < draftStep;
               const current = s.id === draftStep;
               return (
-                <div key={s.id} className="flex-1 relative" style={{ height: 4, borderRadius: 2, overflow: 'hidden' }}>
+                <div
+                  key={s.id}
+                  className="flex-1 relative"
+                  style={{ height: 4, borderRadius: 2, overflow: 'hidden' }}
+                >
                   <div
                     className="absolute inset-0"
                     style={{
@@ -2844,17 +3910,19 @@ function DraftState({ onResume, onDiscard, savedAt, draftStep, draftWs }: {
             })}
           </div>
           <div className="flex gap-1.5">
-            {STEPS.map(s => {
+            {STEPS.map((s) => {
               const done = s.id < draftStep;
               const current = s.id === draftStep;
               return (
                 <div key={s.id} className="flex-1 text-center">
-                  <span style={{
-                    fontSize: 8,
-                    fontWeight: current ? 700 : 500,
-                    color: current ? '#8B5CF6' : done ? c.text2 : c.text3,
-                    lineHeight: 1.2,
-                  }}>
+                  <span
+                    style={{
+                      fontSize: 8,
+                      fontWeight: current ? 700 : 500,
+                      color: current ? '#8B5CF6' : done ? c.text2 : c.text3,
+                      lineHeight: 1.2,
+                    }}
+                  >
                     {s.label}
                   </span>
                 </div>
@@ -2865,11 +3933,18 @@ function DraftState({ onResume, onDiscard, savedAt, draftStep, draftWs }: {
 
         {/* Current step detail */}
         <div className="flex items-center gap-2 mt-3 px-1">
-          <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: 'rgba(139,92,246,0.1)' }}>
+          <div
+            className="w-5 h-5 rounded-md flex items-center justify-center"
+            style={{ background: 'rgba(139,92,246,0.1)' }}
+          >
             <span style={{ color: '#8B5CF6', fontSize: 10, fontWeight: 800 }}>{draftStep}</span>
           </div>
           <span style={{ color: c.text2, fontSize: φ.xs, lineHeight: 1.4 }}>
-            Đang ở bước <strong style={{ color: c.text1 }}>{STEPS.find(s => s.id === draftStep)?.label}</strong> — bấm Tiếp tục để soạn tiếp
+            Đang ở bước{' '}
+            <strong style={{ color: c.text1 }}>
+              {STEPS.find((s) => s.id === draftStep)?.label}
+            </strong>{' '}
+            — bấm Tiếp tục để soạn tiếp
           </span>
         </div>
       </TrCard>
@@ -2882,14 +3957,17 @@ function DraftState({ onResume, onDiscard, savedAt, draftStep, draftWs }: {
         >
           <AlertTriangle size={14} color="#F59E0B" className="shrink-0 mt-0.5" />
           <p style={{ color: c.text2, fontSize: φ.xs, lineHeight: 1.5 }}>
-            Bản nháp đã cũ <strong>{age} ngày</strong>. Thị trường và điều kiện có thể đã thay đổi. Hãy kiểm tra lại trước khi publish.
+            Bản nháp đã cũ <strong>{age} ngày</strong>. Thị trường và điều kiện có thể đã thay đổi.
+            Hãy kiểm tra lại trước khi publish.
           </p>
         </div>
       )}
 
       {/* Privacy note */}
-      <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl mb-6"
-        style={{ background: c.searchBg }}>
+      <div
+        className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl mb-6"
+        style={{ background: c.searchBg }}
+      >
         <Lock size={12} color={c.text3} className="shrink-0" />
         <span style={{ color: c.text3, fontSize: 10, lineHeight: 1.4 }}>
           Bản nháp chỉ hiển thị với bạn. Chưa ai khác nhìn thấy.
@@ -2899,8 +3977,18 @@ function DraftState({ onResume, onDiscard, savedAt, draftStep, draftWs }: {
       {/* Actions — push to bottom */}
       <div className="flex-1" />
       <div className="flex gap-3 pb-6">
-        <button onClick={onDiscard} className="flex-1 py-3 rounded-xl active:opacity-70"
-          style={{ background: c.chipBg, border: `1px solid ${c.chipBorder}`, color: c.chipText, fontSize: φ.sm, fontWeight: 600, minHeight: 48 }}>
+        <button
+          onClick={onDiscard}
+          className="flex-1 py-3 rounded-xl active:opacity-70"
+          style={{
+            background: c.chipBg,
+            border: `1px solid ${c.chipBorder}`,
+            color: c.chipText,
+            fontSize: φ.sm,
+            fontWeight: 600,
+            minHeight: 48,
+          }}
+        >
           Bỏ nháp
         </button>
         <div className="flex-1">
@@ -2927,10 +4015,15 @@ function ErrorState({ onRetry }: { onRetry: () => void }) {
   const c = useThemeColors();
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-8 text-center">
-      <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4" style={{ background: 'rgba(239,68,68,0.1)', fontSize: 32 }}>
+      <div
+        className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4"
+        style={{ background: 'rgba(239,68,68,0.1)', fontSize: 32 }}
+      >
         <AlertTriangle size={32} color="#EF4444" />
       </div>
-      <p style={{ color: c.text1, fontSize: φ.md, fontWeight: 700, marginBottom: 4 }}>Không thể tạo challenge</p>
+      <p style={{ color: c.text1, fontSize: φ.md, fontWeight: 700, marginBottom: 4 }}>
+        Không thể tạo challenge
+      </p>
       <p style={{ color: c.text2, fontSize: φ.sm, lineHeight: 1.5, marginBottom: 20 }}>
         Đã xảy ra lỗi khi gửi challenge. Vui lòng kiểm tra kết nối mạng và thử lại.
       </p>
@@ -2943,12 +4036,18 @@ function UnderReviewState({ onHome }: { onHome: () => void }) {
   const c = useThemeColors();
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-8 text-center">
-      <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4" style={{ background: 'rgba(139,92,246,0.1)', fontSize: 32 }}>
+      <div
+        className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4"
+        style={{ background: 'rgba(139,92,246,0.1)', fontSize: 32 }}
+      >
         <Clock size={32} color="#8B5CF6" />
       </div>
-      <p style={{ color: c.text1, fontSize: φ.md, fontWeight: 700, marginBottom: 4 }}>Đang kiểm duyệt</p>
+      <p style={{ color: c.text1, fontSize: φ.md, fontWeight: 700, marginBottom: 4 }}>
+        Đang kiểm duyệt
+      </p>
       <p style={{ color: c.text2, fontSize: φ.sm, lineHeight: 1.5, marginBottom: 8 }}>
-        Challenge của bạn đã được gửi thành công và đang chờ kiểm duyệt tự động. Thường mất 1–5 phút.
+        Challenge của bạn đã được gửi thành công và đang chờ kiểm duyệt tự động. Thường mất 1–5
+        phút.
       </p>
       <p style={{ color: c.text3, fontSize: φ.xs, marginBottom: 20 }}>
         Bạn sẽ nhận thông báo khi challenge được duyệt.
@@ -2962,10 +4061,15 @@ function OfflineState({ onRetry }: { onRetry: () => void }) {
   const c = useThemeColors();
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-8 text-center">
-      <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4" style={{ background: 'rgba(148,163,184,0.1)', fontSize: 32 }}>
+      <div
+        className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4"
+        style={{ background: 'rgba(148,163,184,0.1)', fontSize: 32 }}
+      >
         <WifiOff size={32} color="#94A3B8" />
       </div>
-      <p style={{ color: c.text1, fontSize: φ.md, fontWeight: 700, marginBottom: 4 }}>Không có kết nối</p>
+      <p style={{ color: c.text1, fontSize: φ.md, fontWeight: 700, marginBottom: 4 }}>
+        Không có kết nối
+      </p>
       <p style={{ color: c.text2, fontSize: φ.sm, lineHeight: 1.5, marginBottom: 20 }}>
         Không thể kết nối server. Bản nháp đã được lưu tự động. Hãy thử lại khi có mạng.
       </p>
@@ -3075,14 +4179,18 @@ function saveDraftToStorage(ws: WizardState, step: number): void {
       ws,
     };
     localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(envelope));
-  } catch { /* storage full */ }
+  } catch {
+    /* storage full */
+  }
 }
 
 function clearDraftStorage(): void {
   try {
     localStorage.removeItem(DRAFT_STORAGE_KEY);
     localStorage.removeItem('arena_studio_step'); // legacy cleanup
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
 }
 
 /* ─── Export / Import helpers ─── */
@@ -3109,7 +4217,9 @@ function exportDraftAsJSON(ws: WizardState, step: number): void {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  const safeName = (ws.title || 'untitled').replace(/[^a-zA-Z0-9_\-\u00C0-\u1EF9]/g, '_').slice(0, 40);
+  const safeName = (ws.title || 'untitled')
+    .replace(/[^a-zA-Z0-9_\-\u00C0-\u1EF9]/g, '_')
+    .slice(0, 40);
   a.download = `arena-template-${safeName}.json`;
   document.body.appendChild(a);
   a.click();
@@ -3169,7 +4279,7 @@ export function ArenaStudioPage() {
   /* ─── 09D: Prediction Bridge Context from navigation state ─── */
   const locationState = location.state as PredictionBridgeContext | null;
   const [predictionCtx, setPredictionCtx] = useState<PredictionBridgeContext | null>(
-    locationState?.fromPrediction ? locationState : null
+    locationState?.fromPrediction ? locationState : null,
   );
 
   /* ─── Load saved draft on mount ─── */
@@ -3192,7 +4302,9 @@ export function ArenaStudioPage() {
     const timer = setTimeout(() => {
       saveDraftToStorage(ws, step);
       const now = new Date();
-      setAutoSaveLabel(`${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`);
+      setAutoSaveLabel(
+        `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`,
+      );
     }, 1500);
     return () => clearTimeout(timer);
   }, [ws, step, pageState]);
@@ -3200,9 +4312,12 @@ export function ArenaStudioPage() {
   /* ─── Step validation ─── */
   const canProceed = useMemo(() => {
     switch (step) {
-      case 1: return !!ws.templateId;
-      case 2: return ws.maxParticipants >= 2;
-      case 3: return ws.title.length >= 3 && ws.description.length >= 10 && ws.winCondition.length >= 5;
+      case 1:
+        return !!ws.templateId;
+      case 2:
+        return ws.maxParticipants >= 2;
+      case 3:
+        return ws.title.length >= 3 && ws.description.length >= 10 && ws.winCondition.length >= 5;
       case 4: {
         if (ws.resolution === 'auto') return ws.sourceLabel.length >= 2;
         if (ws.resolution === 'referee') return ws.refereeName.length >= 2;
@@ -3216,8 +4331,10 @@ export function ArenaStudioPage() {
         }
         return true;
       }
-      case 6: return ws.confirmClarity;
-      default: return false;
+      case 6:
+        return ws.confirmClarity;
+      default:
+        return false;
     }
   }, [step, ws]);
 
@@ -3259,28 +4376,31 @@ export function ArenaStudioPage() {
     actionToast.success('Đã xuất template');
   };
 
-  const handleImportFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const text = reader.result as string;
-      const result = parseImportedJSON(text);
-      if ('error' in result) {
-        actionToast.error(result.error);
-      } else {
-        setWs(result.ws);
-        setStep(result.step);
-        saveDraftToStorage(result.ws, result.step);
-        setPageState('wizard');
-        actionToast.success('Đã nhập template thành công');
-      }
-    };
-    reader.onerror = () => actionToast.error('Không thể đọc file');
-    reader.readAsText(file);
-    // Reset input so same file can be imported again
-    e.target.value = '';
-  }, [actionToast]);
+  const handleImportFile = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const text = reader.result as string;
+        const result = parseImportedJSON(text);
+        if ('error' in result) {
+          actionToast.error(result.error);
+        } else {
+          setWs(result.ws);
+          setStep(result.step);
+          saveDraftToStorage(result.ws, result.step);
+          setPageState('wizard');
+          actionToast.success('Đã nhập template thành công');
+        }
+      };
+      reader.onerror = () => actionToast.error('Không thể đọc file');
+      reader.readAsText(file);
+      // Reset input so same file can be imported again
+      e.target.value = '';
+    },
+    [actionToast],
+  );
 
   /* ─── State screens ─── */
   if (pageState === 'draft') {
@@ -3289,7 +4409,12 @@ export function ArenaStudioPage() {
         <Header title="Arena Studio" subtitle="Bản nháp · Open Arena" back />
         <DraftState
           onResume={() => setPageState('wizard')}
-          onDiscard={() => { clearDraftStorage(); setWs(initialState); setStep(1); setPageState('wizard'); }}
+          onDiscard={() => {
+            clearDraftStorage();
+            setWs(initialState);
+            setStep(1);
+            setPageState('wizard');
+          }}
           savedAt={draftSavedAt}
           draftStep={step}
           draftWs={ws}
@@ -3311,7 +4436,12 @@ export function ArenaStudioPage() {
     return (
       <PageLayout>
         <Header title="Arena Studio" subtitle="Lỗi · Open Arena" back />
-        <ErrorState onRetry={() => { setPageState('wizard'); setStep(6); }} />
+        <ErrorState
+          onRetry={() => {
+            setPageState('wizard');
+            setStep(6);
+          }}
+        />
       </PageLayout>
     );
   }
@@ -3335,22 +4465,11 @@ export function ArenaStudioPage() {
   }
 
   /* ─── Step labels ─── */
-  const stepLabels = [
-    'Tiếp tục',
-    'Tiếp tục',
-    'Tiếp tục',
-    'Tiếp tục',
-    'Tiếp tục',
-    'Mở phòng',
-  ];
+  const stepLabels = ['Tiếp tục', 'Tiếp tục', 'Tiếp tục', 'Tiếp tục', 'Tiếp tục', 'Mở phòng'];
 
   return (
     <PageLayout variant="flush">
-      <Header
-        title="Arena Studio"
-        subtitle="Tạo challenge mới"
-        back
-      />
+      <Header title="Arena Studio" subtitle="Tạo challenge mới" back />
 
       <PageContent gap="default" grow>
         {/* Progress stepper */}
@@ -3362,7 +4481,10 @@ export function ArenaStudioPage() {
             eventTitle={predictionCtx.eventTitle}
             topic={predictionCtx.topic}
             eventId={predictionCtx.eventId}
-            onRemove={() => { setPredictionCtx(null); hapticSelection(); }}
+            onRemove={() => {
+              setPredictionCtx(null);
+              hapticSelection();
+            }}
           />
         )}
 
@@ -3377,92 +4499,100 @@ export function ArenaStudioPage() {
 
       <StickyFooter>
         <div className="flex flex-col gap-3">
-        <div className="flex gap-3">
-          {step > 1 && (
-            <button
-              onClick={handleBack}
-              className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 active:opacity-70"
-              style={{ background: c.surface2, border: `1px solid ${c.borderSolid}` }}
-            >
-              <ChevronLeft size={18} color={c.text2} />
-            </button>
-          )}
-          <div className="flex-1">
-            <CTAButton onClick={handleNext} disabled={!canProceed}>
-              {step === 6 ? (
-                <div className="flex items-center gap-2 justify-center">
-                  <Send size={14} /> {predictionCtx ? 'Mở room Arena' : 'Mở phòng'}
-                </div>
-              ) : (
-                <div className="flex items-center gap-2 justify-center">
-                  {stepLabels[step - 1]} <ChevronRight size={14} />
-                </div>
-              )}
-            </CTAButton>
-          </div>
-        </div>
-
-        {/* Secondary actions — row 1 */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1">
-            <button
-              onClick={handleSaveDraft}
-              className="flex items-center gap-1.5 py-3 px-2 -ml-2 active:opacity-70"
-              style={{ background: 'none', border: 'none', minHeight: 44 }}
-            >
-              <Save size={14} color={c.text3} />
-              <span style={{ color: c.text3, fontSize: φ.xs }}>Lưu</span>
-            </button>
-            <button
-              onClick={handleExport}
-              className="flex items-center gap-1.5 py-3 px-2 active:opacity-70"
-              style={{ background: 'none', border: 'none', minHeight: 44 }}
-              aria-label="Xuất template JSON"
-            >
-              <Download size={13} color={c.text3} />
-              <span style={{ color: c.text3, fontSize: φ.xs }}>Xuất</span>
-            </button>
-            <button
-              onClick={() => { fileInputRef.current?.click(); hapticSelection(); }}
-              className="flex items-center gap-1.5 py-3 px-2 active:opacity-70"
-              style={{ background: 'none', border: 'none', minHeight: 44 }}
-              aria-label="Nhập template JSON"
-            >
-              <Upload size={13} color={c.text3} />
-              <span style={{ color: c.text3, fontSize: φ.xs }}>Nhập</span>
-            </button>
-            {step === 6 && (
+          <div className="flex gap-3">
+            {step > 1 && (
               <button
-                onClick={() => { setPreviewOpen(true); hapticSelection(); }}
-                className="flex items-center gap-1.5 py-3 px-2 active:opacity-70"
-                style={{ background: 'none', border: 'none', minHeight: 44 }}
+                onClick={handleBack}
+                className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 active:opacity-70"
+                style={{ background: c.surface2, border: `1px solid ${c.borderSolid}` }}
               >
-                <Eye size={14} color="#8B5CF6" />
-                <span style={{ color: '#8B5CF6', fontSize: φ.xs, fontWeight: 600 }}>Xem trước</span>
+                <ChevronLeft size={18} color={c.text2} />
               </button>
             )}
+            <div className="flex-1">
+              <CTAButton onClick={handleNext} disabled={!canProceed}>
+                {step === 6 ? (
+                  <div className="flex items-center gap-2 justify-center">
+                    <Send size={14} /> {predictionCtx ? 'Mở room Arena' : 'Mở phòng'}
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 justify-center">
+                    {stepLabels[step - 1]} <ChevronRight size={14} />
+                  </div>
+                )}
+              </CTAButton>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            {autoSaveLabel && (
-              <span style={{ color: '#10B981', fontSize: 9, fontWeight: 600 }}>
-                Đã lưu {autoSaveLabel}
-              </span>
-            )}
-            <span style={{ color: c.text3, fontSize: φ.xs }}>
-              Bước {step} / {STEPS.length}
-            </span>
-          </div>
-        </div>
 
-        {/* Hidden file input for import */}
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".json,application/json"
-          onChange={handleImportFile}
-          style={{ display: 'none' }}
-          aria-hidden="true"
-        />
+          {/* Secondary actions — row 1 */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1">
+              <button
+                onClick={handleSaveDraft}
+                className="flex items-center gap-1.5 py-3 px-2 -ml-2 active:opacity-70"
+                style={{ background: 'none', border: 'none', minHeight: 44 }}
+              >
+                <Save size={14} color={c.text3} />
+                <span style={{ color: c.text3, fontSize: φ.xs }}>Lưu</span>
+              </button>
+              <button
+                onClick={handleExport}
+                className="flex items-center gap-1.5 py-3 px-2 active:opacity-70"
+                style={{ background: 'none', border: 'none', minHeight: 44 }}
+                aria-label="Xuất template JSON"
+              >
+                <Download size={13} color={c.text3} />
+                <span style={{ color: c.text3, fontSize: φ.xs }}>Xuất</span>
+              </button>
+              <button
+                onClick={() => {
+                  fileInputRef.current?.click();
+                  hapticSelection();
+                }}
+                className="flex items-center gap-1.5 py-3 px-2 active:opacity-70"
+                style={{ background: 'none', border: 'none', minHeight: 44 }}
+                aria-label="Nhập template JSON"
+              >
+                <Upload size={13} color={c.text3} />
+                <span style={{ color: c.text3, fontSize: φ.xs }}>Nhập</span>
+              </button>
+              {step === 6 && (
+                <button
+                  onClick={() => {
+                    setPreviewOpen(true);
+                    hapticSelection();
+                  }}
+                  className="flex items-center gap-1.5 py-3 px-2 active:opacity-70"
+                  style={{ background: 'none', border: 'none', minHeight: 44 }}
+                >
+                  <Eye size={14} color="#8B5CF6" />
+                  <span style={{ color: '#8B5CF6', fontSize: φ.xs, fontWeight: 600 }}>
+                    Xem trước
+                  </span>
+                </button>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              {autoSaveLabel && (
+                <span style={{ color: '#10B981', fontSize: 9, fontWeight: 600 }}>
+                  Đã lưu {autoSaveLabel}
+                </span>
+              )}
+              <span style={{ color: c.text3, fontSize: φ.xs }}>
+                Bước {step} / {STEPS.length}
+              </span>
+            </div>
+          </div>
+
+          {/* Hidden file input for import */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json,application/json"
+            onChange={handleImportFile}
+            style={{ display: 'none' }}
+            aria-hidden="true"
+          />
         </div>
       </StickyFooter>
 
@@ -3473,12 +4603,19 @@ export function ArenaStudioPage() {
         data={{
           title: ws.title,
           description: ws.description,
-          matchFormat: MATCH_FORMATS.find(f => f.id === ws.matchFormat)?.label || ws.matchFormat,
+          matchFormat: MATCH_FORMATS.find((f) => f.id === ws.matchFormat)?.label || ws.matchFormat,
           maxParticipants: ws.maxParticipants,
           entryPoints: ws.entryPoints,
-          prizePool: Math.round((ws.entryPoints * ws.maxParticipants + ws.bonusPool) * (0.9 - ws.creatorCut / 100)),
+          prizePool: Math.round(
+            (ws.entryPoints * ws.maxParticipants + ws.bonusPool) * (0.9 - ws.creatorCut / 100),
+          ),
           endDate: ws.endDate,
-          privacy: ws.visibility === 'public' ? 'Công khai' : ws.visibility === 'private' ? 'Riêng tư' : 'Bạn bè',
+          privacy:
+            ws.visibility === 'public'
+              ? 'Công khai'
+              : ws.visibility === 'private'
+                ? 'Riêng tư'
+                : 'Bạn bè',
           resolutionMethod: ws.resolution,
           evidenceRequired: ws.evidenceRequired,
           voidRule: ws.voidRule,

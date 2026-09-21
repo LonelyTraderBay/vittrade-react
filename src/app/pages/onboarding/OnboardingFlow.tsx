@@ -1,12 +1,12 @@
 /**
  * Onboarding Flow Orchestrator
- * 
+ *
  * Manages the complete onboarding flow with animated transitions:
  *   welcome → modules → boundaries → trust → goals → complete
- * 
+ *
  * Uses Motion (AnimatePresence) for smooth directional page transitions.
  * Integrates with OnboardingService for state persistence.
- * 
+ *
  * @module pages/onboarding/OnboardingFlow
  * @version 2.0 (Phase 3 — with Motion transitions)
  */
@@ -80,7 +80,7 @@ export default function OnboardingFlow() {
 
   const [currentStep, setCurrentStep] = useState<OnboardingStep>(initialStep);
   const [selectedGoals, setSelectedGoals] = useState<UserGoal[]>(
-    existingState?.selectedGoals || []
+    existingState?.selectedGoals || [],
   );
 
   // Direction: 1 = forward, -1 = backward
@@ -118,59 +118,41 @@ export default function OnboardingFlow() {
     navigate('/home');
   }, [navigate]);
 
-  const handleGoalsNext = useCallback((goals: UserGoal[]) => {
-    setSelectedGoals(goals);
-    onboardingService.setGoals(DEMO_USER_ID, goals);
-    goToStep('complete', 1);
-  }, [goToStep]);
+  const handleGoalsNext = useCallback(
+    (goals: UserGoal[]) => {
+      setSelectedGoals(goals);
+      onboardingService.setGoals(DEMO_USER_ID, goals);
+      goToStep('complete', 1);
+    },
+    [goToStep],
+  );
 
   const handleFinish = useCallback(() => {
     onboardingService.completeOnboarding(DEMO_USER_ID);
   }, []);
 
-  const handleGoToRoute = useCallback((route: string) => {
-    navigate(route);
-  }, [navigate]);
+  const handleGoToRoute = useCallback(
+    (route: string) => {
+      navigate(route);
+    },
+    [navigate],
+  );
 
   /* ─── Render step content ─── */
 
   const renderStep = () => {
     switch (currentStep) {
       case 'welcome':
-        return (
-          <OnboardingWelcome
-            onNext={goNext}
-            onSkip={handleSkip}
-          />
-        );
+        return <OnboardingWelcome onNext={goNext} onSkip={handleSkip} />;
       case 'modules':
-        return (
-          <OnboardingModules
-            onNext={goNext}
-            onBack={goBack}
-          />
-        );
+        return <OnboardingModules onNext={goNext} onBack={goBack} />;
       case 'boundaries':
-        return (
-          <OnboardingBoundaries
-            onNext={goNext}
-            onBack={goBack}
-          />
-        );
+        return <OnboardingBoundaries onNext={goNext} onBack={goBack} />;
       case 'trust':
-        return (
-          <OnboardingTrust
-            onNext={goNext}
-            onBack={goBack}
-          />
-        );
+        return <OnboardingTrust onNext={goNext} onBack={goBack} />;
       case 'goals':
         return (
-          <OnboardingGoals
-            onNext={handleGoalsNext}
-            onBack={goBack}
-            initialGoals={selectedGoals}
-          />
+          <OnboardingGoals onNext={handleGoalsNext} onBack={goBack} initialGoals={selectedGoals} />
         );
       case 'complete':
         return (
@@ -181,12 +163,7 @@ export default function OnboardingFlow() {
           />
         );
       default:
-        return (
-          <OnboardingWelcome
-            onNext={goNext}
-            onSkip={handleSkip}
-          />
-        );
+        return <OnboardingWelcome onNext={goNext} onSkip={handleSkip} />;
     }
   };
 

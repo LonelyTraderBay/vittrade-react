@@ -5,8 +5,8 @@ export type Breakpoint = 'mobile-s' | 'mobile-l' | 'tablet' | 'desktop';
 const BREAKPOINTS = {
   'mobile-s': 0,
   'mobile-l': 376,
-  'tablet': 768,
-  'desktop': 1024,
+  tablet: 768,
+  desktop: 1024,
 } as const;
 
 function getBreakpoint(width: number): Breakpoint {

@@ -1,15 +1,15 @@
 /**
  * WalletDCAShortcut - Quick Access to DCA from Wallet
- * 
+ *
  * Displays DCA summary and provides quick navigation to DCA page.
  * Shows active plans count, total invested, and next execution.
- * 
+ *
  * Integrated with:
  * - Analytics tracking (impressions, clicks)
  * - Feature flags (show/hide based on rollout)
  * - A/B testing (full vs compact variant)
  * - Funnel tracking (wallet to creation journey)
- * 
+ *
  * @module components/dca/WalletDCAShortcut
  * @version 2.0 (Phase 2 - Sprint 2)
  */
@@ -29,7 +29,7 @@ import { Repeat, ChevronRight, Clock, TrendingUp, Sparkles } from 'lucide-react'
 import { useDCAAnalytics } from '../../hooks/useDCAAnalytics';
 import { useDCAWalletShortcut } from '../../hooks/useFeatureFlag';
 import { useWalletShortcutTest } from '../../hooks/useABTest';
-import { useWalletToCreationFunnel } from '../../hooks/useFunnelTracking';
+import { useWalletToCreationFunnel, useFirstTimeUserFunnel } from '../../hooks/useFunnelTracking';
 
 /* ═══════════════════════════════════════════
    COMPONENT
@@ -70,10 +70,7 @@ export function WalletDCAShortcut({ variant = 'full' }: WalletDCAShortcutProps) 
   const { trackWalletShortcut } = useDCAAnalytics();
 
   // Funnel: Track wallet to creation journey
-  const {
-    trackShortcutImpression,
-    trackShortcutClick,
-  } = useWalletToCreationFunnel();
+  const { trackShortcutImpression, trackShortcutClick } = useWalletToCreationFunnel();
 
   // Track impression on mount
   useEffect(() => {
@@ -81,16 +78,22 @@ export function WalletDCAShortcut({ variant = 'full' }: WalletDCAShortcutProps) 
       trackShortcutImpression();
       trackWalletShortcut('impression', abTestVariant);
     }
-  }, [plans.length, isShortcutEnabled, trackShortcutImpression, trackWalletShortcut, abTestVariant]);
+  }, [
+    plans.length,
+    isShortcutEnabled,
+    trackShortcutImpression,
+    trackWalletShortcut,
+    abTestVariant,
+  ]);
 
   const handleClick = () => {
     hapticSelection();
-    
+
     // Track click in all systems
     trackShortcutClick();
     trackABTestClick();
     trackWalletShortcut('click', abTestVariant);
-    
+
     navigate(`${routePrefix}/dca`);
   };
 
@@ -134,9 +137,7 @@ export function WalletDCAShortcut({ variant = 'full' }: WalletDCAShortcutProps) 
 
           {/* Content */}
           <div className="flex-1 text-left">
-            <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
-              Mua định kỳ (DCA)
-            </p>
+            <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>Mua định kỳ (DCA)</p>
             <p style={{ color: c.text3, fontSize: φ.xs }}>
               {overview.activePlans} kế hoạch • {fmtVnd(overview.totalInvested)} đã đầu tư
             </p>
@@ -175,23 +176,16 @@ export function WalletDCAShortcut({ variant = 'full' }: WalletDCAShortcutProps) 
 
         <div className="flex-1 text-left">
           <div className="flex items-center gap-2">
-            <p style={{ color: c.text1, fontSize: φ.base, fontWeight: 600 }}>
-              Mua định kỳ (DCA)
-            </p>
+            <p style={{ color: c.text1, fontSize: φ.base, fontWeight: 600 }}>Mua định kỳ (DCA)</p>
             {overview.profitLoss > 0 && (
-              <div
-                className="px-2 py-0.5 rounded"
-                style={{ background: 'rgba(16,185,129,0.12)' }}
-              >
+              <div className="px-2 py-0.5 rounded" style={{ background: 'rgba(16,185,129,0.12)' }}>
                 <span style={{ color: '#10B981', fontSize: 11, fontWeight: 600 }}>
                   +{((overview.profitLoss / overview.totalInvested) * 100).toFixed(1)}%
                 </span>
               </div>
             )}
           </div>
-          <p style={{ color: c.text3, fontSize: φ.xs }}>
-            Tự động mua crypto theo lịch trình
-          </p>
+          <p style={{ color: c.text3, fontSize: φ.xs }}>Tự động mua crypto theo lịch trình</p>
         </div>
 
         <ChevronRight size={φIcon.md} color={c.text3} />
@@ -215,9 +209,7 @@ export function WalletDCAShortcut({ variant = 'full' }: WalletDCAShortcutProps) 
             <Repeat size={16} color="#8B5CF6" />
           </div>
           <div className="flex-1">
-            <p style={{ color: c.text3, fontSize: 11, marginBottom: 2 }}>
-              Kế hoạch đang chạy
-            </p>
+            <p style={{ color: c.text3, fontSize: 11, marginBottom: 2 }}>Kế hoạch đang chạy</p>
             <p style={{ color: c.text1, fontSize: φ.base, fontWeight: 700 }}>
               {overview.activePlans}
             </p>
@@ -237,10 +229,10 @@ export function WalletDCAShortcut({ variant = 'full' }: WalletDCAShortcutProps) 
             <TrendingUp size={16} color="#3B82F6" />
           </div>
           <div className="flex-1">
-            <p style={{ color: c.text3, fontSize: 11, marginBottom: 2 }}>
-              Đã đầu tư
-            </p>
-            <p style={{ color: c.text1, fontSize: φ.base, fontWeight: 700, fontFamily: 'monospace' }}>
+            <p style={{ color: c.text3, fontSize: 11, marginBottom: 2 }}>Đã đầu tư</p>
+            <p
+              style={{ color: c.text1, fontSize: φ.base, fontWeight: 700, fontFamily: 'monospace' }}
+            >
               {fmtVnd(overview.totalInvested)}
             </p>
           </div>
@@ -260,9 +252,7 @@ export function WalletDCAShortcut({ variant = 'full' }: WalletDCAShortcutProps) 
               <Clock size={16} color="#F59E0B" />
             </div>
             <div className="flex-1">
-              <p style={{ color: c.text3, fontSize: 11, marginBottom: 2 }}>
-                Giao dịch tiếp theo
-              </p>
+              <p style={{ color: c.text3, fontSize: 11, marginBottom: 2 }}>Giao dịch tiếp theo</p>
               <div className="flex items-center gap-2">
                 <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
                   {overview.nextExecution.relativeTime}
@@ -279,10 +269,7 @@ export function WalletDCAShortcut({ variant = 'full' }: WalletDCAShortcutProps) 
 
       {/* New User Hint (if no active plans) */}
       {overview.activePlans === 0 && plans.length > 0 && (
-        <div
-          className="mt-3 px-3 py-2 rounded-lg"
-          style={{ background: 'rgba(245,158,11,0.08)' }}
-        >
+        <div className="mt-3 px-3 py-2 rounded-lg" style={{ background: 'rgba(245,158,11,0.08)' }}>
           <div className="flex items-center gap-2">
             <Sparkles size={14} color="#F59E0B" />
             <p style={{ color: '#F59E0B', fontSize: 11 }}>
@@ -309,11 +296,7 @@ export function WalletDCAEmptyState() {
   const { trackEmptyState } = useDCAAnalytics();
 
   // Funnel: Track first-time user journey
-  const { useFirstTimeUserFunnel } = require('../../hooks/useFunnelTracking');
-  const {
-    trackEmptyStateImpression,
-    trackEmptyStateClick,
-  } = useFirstTimeUserFunnel();
+  const { trackEmptyStateImpression, trackEmptyStateClick } = useFirstTimeUserFunnel();
 
   // Track impression on mount
   useEffect(() => {
@@ -323,11 +306,11 @@ export function WalletDCAEmptyState() {
 
   const handleClick = () => {
     hapticSelection();
-    
+
     // Track click
     trackEmptyStateClick();
     trackEmptyState('click');
-    
+
     navigate(`${routePrefix}/dca`);
   };
 
@@ -363,13 +346,8 @@ export function WalletDCAEmptyState() {
         </div>
 
         {/* Badge */}
-        <div
-          className="px-2.5 py-1 rounded-lg"
-          style={{ background: 'rgba(139,92,246,0.12)' }}
-        >
-          <span style={{ color: '#8B5CF6', fontSize: 11, fontWeight: 600 }}>
-            Mới
-          </span>
+        <div className="px-2.5 py-1 rounded-lg" style={{ background: 'rgba(139,92,246,0.12)' }}>
+          <span style={{ color: '#8B5CF6', fontSize: 11, fontWeight: 600 }}>Mới</span>
         </div>
 
         {/* Chevron */}

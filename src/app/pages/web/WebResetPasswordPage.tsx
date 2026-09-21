@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import {
-  Lock, Eye, EyeOff, ArrowRight, AlertCircle,
-  CheckCircle, XCircle, ShieldCheck,
+  Lock,
+  Eye,
+  EyeOff,
+  ArrowRight,
+  AlertCircle,
+  CheckCircle,
+  XCircle,
+  ShieldCheck,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { WEB_FONT, WEB_BUTTON } from '../../components/layout/webConstants';
@@ -29,18 +35,20 @@ function PwStrength({ password }: { password: string }) {
     { label: 'Có số', ok: /\d/.test(password) },
     { label: 'Ký tự đặc biệt', ok: /[!@#$%^&*]/.test(password) },
   ];
-  const score = checks.filter(ch => ch.ok).length;
+  const score = checks.filter((ch) => ch.ok).length;
   const colors = ['#EF4444', '#F59E0B', '#F59E0B', '#10B981', '#10B981'];
   const labels = ['', 'Yếu', 'Trung bình', 'Mạnh', 'Rất mạnh'];
 
   return (
     <div style={{ marginTop: 8 }}>
       <div className="flex" style={{ gap: 4, marginBottom: 6 }}>
-        {[0, 1, 2, 3].map(i => (
+        {[0, 1, 2, 3].map((i) => (
           <div
             key={i}
             style={{
-              flex: 1, height: 3, borderRadius: 2,
+              flex: 1,
+              height: 3,
+              borderRadius: 2,
               background: i < score ? colors[score] : c.borderSolid,
               transition: 'background 0.2s ease',
             }}
@@ -48,10 +56,16 @@ function PwStrength({ password }: { password: string }) {
         ))}
       </div>
       <div className="flex flex-wrap" style={{ gap: 8 }}>
-        {checks.map(ch => (
+        {checks.map((ch) => (
           <div key={ch.label} className="flex items-center" style={{ gap: 4 }}>
-            {ch.ok ? <CheckCircle size={11} color="#10B981" /> : <XCircle size={11} color={c.text3} />}
-            <span style={{ color: ch.ok ? '#10B981' : c.text3, fontSize: WEB_FONT.xs }}>{ch.label}</span>
+            {ch.ok ? (
+              <CheckCircle size={11} color="#10B981" />
+            ) : (
+              <XCircle size={11} color={c.text3} />
+            )}
+            <span style={{ color: ch.ok ? '#10B981' : c.text3, fontSize: WEB_FONT.xs }}>
+              {ch.label}
+            </span>
           </div>
         ))}
       </div>
@@ -98,18 +112,26 @@ export function WebResetPasswordPage() {
   const handleConfirmBlur = () => {
     setFocusField(null);
     if (confirmPassword && newPassword && confirmPassword !== newPassword) {
-      setErrors(prev => ({ ...prev, confirm: 'Mật khẩu xác nhận không khớp' }));
+      setErrors((prev) => ({ ...prev, confirm: 'Mật khẩu xác nhận không khớp' }));
     } else {
-      setErrors(prev => { const n = { ...prev }; delete n.confirm; return n; });
+      setErrors((prev) => {
+        const n = { ...prev };
+        delete n.confirm;
+        return n;
+      });
     }
   };
 
   const handlePasswordBlur = () => {
     setFocusField(null);
     if (confirmPassword && newPassword && confirmPassword !== newPassword) {
-      setErrors(prev => ({ ...prev, confirm: 'Mật khẩu xác nhận không khớp' }));
+      setErrors((prev) => ({ ...prev, confirm: 'Mật khẩu xác nhận không khớp' }));
     } else if (confirmPassword && newPassword && confirmPassword === newPassword) {
-      setErrors(prev => { const n = { ...prev }; delete n.confirm; return n; });
+      setErrors((prev) => {
+        const n = { ...prev };
+        delete n.confirm;
+        return n;
+      });
     }
   };
 
@@ -120,7 +142,7 @@ export function WebResetPasswordPage() {
     setErrors(e);
     if (Object.keys(e).length > 0) return;
     setIsLoading(true);
-    await new Promise(r => setTimeout(r, 1200));
+    await new Promise((r) => setTimeout(r, 1200));
     setIsLoading(false);
     setSuccess(true);
   };
@@ -139,27 +161,51 @@ export function WebResetPasswordPage() {
             <div
               className="flex items-center justify-center"
               style={{
-                width: 64, height: 64, borderRadius: 20,
+                width: 64,
+                height: 64,
+                borderRadius: 20,
                 background: 'rgba(239,68,68,0.08)',
                 marginBottom: 20,
               }}
             >
               <AlertCircle size={32} color="#EF4444" />
             </div>
-            <h1 style={{ color: c.text1, fontSize: WEB_FONT['2xl'], fontWeight: 700, marginBottom: 8, textAlign: 'center' }}>
+            <h1
+              style={{
+                color: c.text1,
+                fontSize: WEB_FONT['2xl'],
+                fontWeight: 700,
+                marginBottom: 8,
+                textAlign: 'center',
+              }}
+            >
               Liên kết không hợp lệ
             </h1>
-            <p style={{ color: c.text2, fontSize: WEB_FONT.md, lineHeight: 1.5, textAlign: 'center', maxWidth: 340, marginBottom: 28 }}>
+            <p
+              style={{
+                color: c.text2,
+                fontSize: WEB_FONT.md,
+                lineHeight: 1.5,
+                textAlign: 'center',
+                maxWidth: 340,
+                marginBottom: 28,
+              }}
+            >
               Liên kết đặt lại mật khẩu đã hết hạn hoặc không hợp lệ. Vui lòng yêu cầu liên kết mới.
             </p>
             <button
               onClick={() => navigate('/w/auth/forgot-password')}
               className="flex items-center justify-center gap-2"
               style={{
-                height: WEB_BUTTON.lg, borderRadius: 10, width: '100%',
+                height: WEB_BUTTON.lg,
+                borderRadius: 10,
+                width: '100%',
                 background: 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
-                color: '#fff', fontSize: WEB_FONT.md, fontWeight: 600,
-                cursor: 'pointer', border: 'none',
+                color: '#fff',
+                fontSize: WEB_FONT.md,
+                fontWeight: 600,
+                cursor: 'pointer',
+                border: 'none',
                 boxShadow: '0 4px 16px rgba(59,130,246,0.25)',
               }}
             >
@@ -177,16 +223,35 @@ export function WebResetPasswordPage() {
               <div
                 className="flex items-center justify-center"
                 style={{
-                  width: 56, height: 56, borderRadius: 16,
-                  background: 'rgba(59,130,246,0.08)', marginBottom: 16,
+                  width: 56,
+                  height: 56,
+                  borderRadius: 16,
+                  background: 'rgba(59,130,246,0.08)',
+                  marginBottom: 16,
                 }}
               >
                 <Lock size={28} color="#3B82F6" />
               </div>
-              <h1 style={{ color: c.text1, fontSize: WEB_FONT['2xl'], fontWeight: 700, marginBottom: 6, textAlign: 'center' }}>
+              <h1
+                style={{
+                  color: c.text1,
+                  fontSize: WEB_FONT['2xl'],
+                  fontWeight: 700,
+                  marginBottom: 6,
+                  textAlign: 'center',
+                }}
+              >
                 Đặt mật khẩu mới
               </h1>
-              <p style={{ color: c.text2, fontSize: WEB_FONT.md, lineHeight: 1.5, textAlign: 'center', maxWidth: 360 }}>
+              <p
+                style={{
+                  color: c.text2,
+                  fontSize: WEB_FONT.md,
+                  lineHeight: 1.5,
+                  textAlign: 'center',
+                  maxWidth: 360,
+                }}
+              >
                 Tạo mật khẩu mới mạnh mẽ cho tài khoản{' '}
                 <span style={{ fontWeight: 600, color: c.text1 }}>{email}</span>
               </p>
@@ -196,38 +261,64 @@ export function WebResetPasswordPage() {
             <div
               className="flex items-start gap-3"
               style={{
-                padding: '12px 16px', borderRadius: 10,
+                padding: '12px 16px',
+                borderRadius: 10,
                 background: 'rgba(59,130,246,0.06)',
                 border: '1px solid rgba(59,130,246,0.12)',
                 marginBottom: 24,
               }}
             >
-              <ShieldCheck size={18} color="#3B82F6" className="shrink-0" style={{ marginTop: 1 }} />
+              <ShieldCheck
+                size={18}
+                color="#3B82F6"
+                className="shrink-0"
+                style={{ marginTop: 1 }}
+              />
               <p style={{ color: c.text2, fontSize: WEB_FONT.sm, lineHeight: 1.5 }}>
-                Sau khi đổi mật khẩu, tất cả phiên đăng nhập hiện tại sẽ bị đăng xuất. Bạn cần đăng nhập lại bằng mật khẩu mới.
+                Sau khi đổi mật khẩu, tất cả phiên đăng nhập hiện tại sẽ bị đăng xuất. Bạn cần đăng
+                nhập lại bằng mật khẩu mới.
               </p>
             </div>
 
             <div className="flex flex-col" style={{ gap: 18 }}>
               {/* New password */}
               <div>
-                <label style={{ display: 'block', color: c.text2, fontSize: WEB_FONT.sm, fontWeight: 500, marginBottom: 6 }}>
+                <label
+                  style={{
+                    display: 'block',
+                    color: c.text2,
+                    fontSize: WEB_FONT.sm,
+                    fontWeight: 500,
+                    marginBottom: 6,
+                  }}
+                >
                   Mật khẩu mới
                 </label>
                 <div
                   className="flex items-center"
                   style={{
-                    height: WEB_BUTTON.lg, borderRadius: 10,
+                    height: WEB_BUTTON.lg,
+                    borderRadius: 10,
                     border: `1.5px solid ${inputBorder('password')}`,
-                    background: c.surface, padding: '0 14px', gap: 10,
+                    background: c.surface,
+                    padding: '0 14px',
+                    gap: 10,
                     transition: 'border-color 0.15s ease',
                   }}
                 >
                   <Lock size={16} color={c.text3} className="shrink-0" />
                   <input
-                    type={showPw ? 'text' : 'password'} placeholder="••••••••"
+                    type={showPw ? 'text' : 'password'}
+                    placeholder="••••••••"
                     value={newPassword}
-                    onChange={e => { setNewPassword(e.target.value); setErrors(prev => { const n = { ...prev }; delete n.password; return n; }); }}
+                    onChange={(e) => {
+                      setNewPassword(e.target.value);
+                      setErrors((prev) => {
+                        const n = { ...prev };
+                        delete n.password;
+                        return n;
+                      });
+                    }}
                     onFocus={() => setFocusField('password')}
                     onBlur={handlePasswordBlur}
                     autoComplete="new-password"
@@ -237,10 +328,21 @@ export function WebResetPasswordPage() {
                   <button
                     onClick={() => setShowPw(!showPw)}
                     className="shrink-0 flex items-center justify-center"
-                    style={{ width: 28, height: 28, borderRadius: 6, background: 'none', border: 'none', cursor: 'pointer' }}
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: 6,
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                    }}
                     aria-label={showPw ? 'Ẩn' : 'Hiện'}
                   >
-                    {showPw ? <EyeOff size={16} color={c.text3} /> : <Eye size={16} color={c.text3} />}
+                    {showPw ? (
+                      <EyeOff size={16} color={c.text3} />
+                    ) : (
+                      <Eye size={16} color={c.text3} />
+                    )}
                   </button>
                 </div>
                 {errors.password && !newPassword && <FieldError msg={errors.password} />}
@@ -249,26 +351,45 @@ export function WebResetPasswordPage() {
 
               {/* Confirm new password */}
               <div>
-                <label style={{ display: 'block', color: c.text2, fontSize: WEB_FONT.sm, fontWeight: 500, marginBottom: 6 }}>
+                <label
+                  style={{
+                    display: 'block',
+                    color: c.text2,
+                    fontSize: WEB_FONT.sm,
+                    fontWeight: 500,
+                    marginBottom: 6,
+                  }}
+                >
                   Xác nhận mật khẩu mới
                 </label>
                 <div
                   className="flex items-center"
                   style={{
-                    height: WEB_BUTTON.lg, borderRadius: 10,
+                    height: WEB_BUTTON.lg,
+                    borderRadius: 10,
                     border: `1.5px solid ${inputBorder('confirm')}`,
-                    background: c.surface, padding: '0 14px', gap: 10,
+                    background: c.surface,
+                    padding: '0 14px',
+                    gap: 10,
                     transition: 'border-color 0.15s ease',
                   }}
                 >
                   <Lock size={16} color={c.text3} className="shrink-0" />
                   <input
-                    type={showConfirmPw ? 'text' : 'password'} placeholder="••••••••"
+                    type={showConfirmPw ? 'text' : 'password'}
+                    placeholder="••••••••"
                     value={confirmPassword}
-                    onChange={e => { setConfirmPassword(e.target.value); setErrors(prev => { const n = { ...prev }; delete n.confirm; return n; }); }}
+                    onChange={(e) => {
+                      setConfirmPassword(e.target.value);
+                      setErrors((prev) => {
+                        const n = { ...prev };
+                        delete n.confirm;
+                        return n;
+                      });
+                    }}
                     onFocus={() => setFocusField('confirm')}
                     onBlur={handleConfirmBlur}
-                    onKeyDown={e => e.key === 'Enter' && handleReset()}
+                    onKeyDown={(e) => e.key === 'Enter' && handleReset()}
                     autoComplete="new-password"
                     className="flex-1 bg-transparent outline-none min-w-0"
                     style={{ color: c.text1, fontSize: WEB_FONT.md, height: '100%' }}
@@ -276,19 +397,42 @@ export function WebResetPasswordPage() {
                   <button
                     onClick={() => setShowConfirmPw(!showConfirmPw)}
                     className="shrink-0 flex items-center justify-center"
-                    style={{ width: 28, height: 28, borderRadius: 6, background: 'none', border: 'none', cursor: 'pointer' }}
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: 6,
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                    }}
                     aria-label={showConfirmPw ? 'Ẩn' : 'Hiện'}
                   >
-                    {showConfirmPw ? <EyeOff size={16} color={c.text3} /> : <Eye size={16} color={c.text3} />}
+                    {showConfirmPw ? (
+                      <EyeOff size={16} color={c.text3} />
+                    ) : (
+                      <Eye size={16} color={c.text3} />
+                    )}
                   </button>
                 </div>
                 <FieldError msg={focusField !== 'confirm' ? errors.confirm : undefined} />
                 {/* Realtime match indicator */}
                 {confirmPassword && newPassword && !errors.confirm && focusField === 'confirm' && (
                   <div className="flex items-center gap-1.5" style={{ marginTop: 4 }}>
-                    {confirmPassword === newPassword
-                      ? <><CheckCircle size={12} color="#10B981" /><span style={{ color: '#10B981', fontSize: WEB_FONT.xs }}>Mật khẩu khớp</span></>
-                      : <><AlertCircle size={12} color="#F59E0B" /><span style={{ color: '#F59E0B', fontSize: WEB_FONT.xs }}>Chưa khớp...</span></>}
+                    {confirmPassword === newPassword ? (
+                      <>
+                        <CheckCircle size={12} color="#10B981" />
+                        <span style={{ color: '#10B981', fontSize: WEB_FONT.xs }}>
+                          Mật khẩu khớp
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <AlertCircle size={12} color="#F59E0B" />
+                        <span style={{ color: '#F59E0B', fontSize: WEB_FONT.xs }}>
+                          Chưa khớp...
+                        </span>
+                      </>
+                    )}
                   </div>
                 )}
               </div>
@@ -299,22 +443,33 @@ export function WebResetPasswordPage() {
                 disabled={isLoading}
                 className="flex items-center justify-center gap-2"
                 style={{
-                  height: WEB_BUTTON.lg, borderRadius: 10, width: '100%',
-                  background: isLoading ? c.surface2 : 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
-                  color: '#fff', fontSize: WEB_FONT.md, fontWeight: 600,
+                  height: WEB_BUTTON.lg,
+                  borderRadius: 10,
+                  width: '100%',
+                  background: isLoading
+                    ? c.surface2
+                    : 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
+                  color: '#fff',
+                  fontSize: WEB_FONT.md,
+                  fontWeight: 600,
                   cursor: isLoading ? 'not-allowed' : 'pointer',
                   border: 'none',
                   boxShadow: isLoading ? 'none' : '0 4px 16px rgba(59,130,246,0.25)',
-                  transition: 'all 0.15s ease', marginTop: 4,
+                  transition: 'all 0.15s ease',
+                  marginTop: 4,
                 }}
               >
                 {isLoading ? (
-                  <div style={{
-                    width: 18, height: 18, borderRadius: '50%',
-                    border: '2px solid rgba(255,255,255,0.3)',
-                    borderTopColor: '#fff',
-                    animation: 'spin 0.7s linear infinite',
-                  }} />
+                  <div
+                    style={{
+                      width: 18,
+                      height: 18,
+                      borderRadius: '50%',
+                      border: '2px solid rgba(255,255,255,0.3)',
+                      borderTopColor: '#fff',
+                      animation: 'spin 0.7s linear infinite',
+                    }}
+                  />
                 ) : (
                   <div className="flex items-center" style={{ gap: 8 }}>
                     Đặt lại mật khẩu
@@ -332,40 +487,73 @@ export function WebResetPasswordPage() {
             <div
               className="flex items-center justify-center"
               style={{
-                width: 72, height: 72, borderRadius: 24,
-                background: 'rgba(16,185,129,0.08)', marginBottom: 20,
+                width: 72,
+                height: 72,
+                borderRadius: 24,
+                background: 'rgba(16,185,129,0.08)',
+                marginBottom: 20,
               }}
             >
               <ShieldCheck size={36} color="#10B981" />
             </div>
-            <h1 style={{ color: c.text1, fontSize: WEB_FONT['2xl'], fontWeight: 700, marginBottom: 8, textAlign: 'center' }}>
+            <h1
+              style={{
+                color: c.text1,
+                fontSize: WEB_FONT['2xl'],
+                fontWeight: 700,
+                marginBottom: 8,
+                textAlign: 'center',
+              }}
+            >
               Đặt lại thành công!
             </h1>
-            <p style={{ color: c.text2, fontSize: WEB_FONT.md, lineHeight: 1.5, textAlign: 'center', maxWidth: 340, marginBottom: 12 }}>
+            <p
+              style={{
+                color: c.text2,
+                fontSize: WEB_FONT.md,
+                lineHeight: 1.5,
+                textAlign: 'center',
+                maxWidth: 340,
+                marginBottom: 12,
+              }}
+            >
               Mật khẩu của bạn đã được cập nhật thành công. Tất cả phiên cũ đã bị đăng xuất.
             </p>
             <div
               className="flex items-start gap-3"
               style={{
-                padding: '12px 16px', borderRadius: 10,
+                padding: '12px 16px',
+                borderRadius: 10,
                 background: 'rgba(16,185,129,0.06)',
                 border: '1px solid rgba(16,185,129,0.12)',
-                width: '100%', marginBottom: 28,
+                width: '100%',
+                marginBottom: 28,
               }}
             >
-              <CheckCircle size={16} color="#10B981" className="shrink-0" style={{ marginTop: 2 }} />
+              <CheckCircle
+                size={16}
+                color="#10B981"
+                className="shrink-0"
+                style={{ marginTop: 2 }}
+              />
               <p style={{ color: c.text2, fontSize: WEB_FONT.sm, lineHeight: 1.5 }}>
-                Bạn có thể đăng nhập bằng mật khẩu mới ngay bây giờ. Khuyến nghị bật 2FA để tăng bảo mật.
+                Bạn có thể đăng nhập bằng mật khẩu mới ngay bây giờ. Khuyến nghị bật 2FA để tăng bảo
+                mật.
               </p>
             </div>
             <button
               onClick={() => navigate('/w/auth/login')}
               className="flex items-center justify-center gap-2"
               style={{
-                height: WEB_BUTTON.lg, borderRadius: 10, width: '100%',
+                height: WEB_BUTTON.lg,
+                borderRadius: 10,
+                width: '100%',
                 background: 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
-                color: '#fff', fontSize: WEB_FONT.md, fontWeight: 600,
-                cursor: 'pointer', border: 'none',
+                color: '#fff',
+                fontSize: WEB_FONT.md,
+                fontWeight: 600,
+                cursor: 'pointer',
+                border: 'none',
                 boxShadow: '0 4px 16px rgba(59,130,246,0.25)',
               }}
             >
@@ -379,7 +567,16 @@ export function WebResetPasswordPage() {
         <div style={{ marginTop: 40, textAlign: 'center' }}>
           <p style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.5 }}>
             Cần trợ giúp?{' '}
-            <button className="hover:underline" style={{ color: '#3B82F6', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 500 }}>
+            <button
+              className="hover:underline"
+              style={{
+                color: '#3B82F6',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontWeight: 500,
+              }}
+            >
               Liên hệ hỗ trợ
             </button>
           </p>

@@ -263,12 +263,8 @@ function StakingProductCard({ product }: { product: StakingProduct }) {
           APY ước tính
         </div>
         <div className="flex items-baseline gap-2">
-          <span style={{ color: '#10B981', fontSize: 28, fontWeight: 800 }}>
-            {product.apy}%
-          </span>
-          <span style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
-            /năm
-          </span>
+          <span style={{ color: '#10B981', fontSize: 28, fontWeight: 800 }}>{product.apy}%</span>
+          <span style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>/năm</span>
         </div>
       </div>
 
@@ -322,7 +318,10 @@ function PositionCard({ position }: { position: StakingPosition }) {
   const c = useThemeColors();
 
   const daysRemaining = position.endDate
-    ? Math.max(0, Math.ceil((new Date(position.endDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+    ? Math.max(
+        0,
+        Math.ceil((new Date(position.endDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)),
+      )
     : null;
 
   const progress = position.endDate
@@ -330,7 +329,7 @@ function PositionCard({ position }: { position: StakingPosition }) {
         100,
         ((Date.now() - new Date(position.startDate).getTime()) /
           (new Date(position.endDate).getTime() - new Date(position.startDate).getTime())) *
-          100
+          100,
       )
     : null;
 
@@ -473,7 +472,7 @@ export function WebEarnStakingPage() {
   const [selectedType, setSelectedType] = useState<'all' | StakingType>('all');
 
   const filteredProducts = STAKING_PRODUCTS.filter(
-    (p) => selectedType === 'all' || p.type === selectedType
+    (p) => selectedType === 'all' || p.type === selectedType,
   );
 
   const totalStaked = ACTIVE_POSITIONS.reduce((sum, p) => sum + p.amount, 0);
@@ -481,203 +480,227 @@ export function WebEarnStakingPage() {
 
   return (
     <PageLayout>
-    <div className="flex" style={{ minHeight: '100%' }}>
-      {/* ═══ LEFT SIDEBAR (300px) ═══ */}
-      <div
-        className="flex flex-col"
-        style={{
-          width: 300,
-          background: c.surface,
-          borderRight: `1px solid ${c.divider}`,
-          position: 'sticky',
-          top: 0,
-          alignSelf: 'flex-start',
-          maxHeight: '100vh',
-          overflowY: 'auto',
-        }}
-      >
-        {/* Header */}
+      <div className="flex" style={{ minHeight: '100%' }}>
+        {/* ═══ LEFT SIDEBAR (300px) ═══ */}
         <div
-          className="flex items-center justify-between px-5"
+          className="flex flex-col"
           style={{
-            height: 60,
-            borderBottom: `1px solid ${c.divider}`,
+            width: 300,
+            background: c.surface,
+            borderRight: `1px solid ${c.divider}`,
+            position: 'sticky',
+            top: 0,
+            alignSelf: 'flex-start',
+            maxHeight: '100vh',
+            overflowY: 'auto',
           }}
         >
-          <h2
-            style={{
-              color: c.text1,
-              fontSize: WEB_FONT.SIZE.H2,
-              fontWeight: 700,
-              margin: 0,
-            }}
-          >
-            Staking
-          </h2>
-        </div>
-
-        {/* My Positions Summary */}
-        <div className="p-4">
-          <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 12 }}>
-            Vị thế của tôi
-          </div>
-          <div className="flex flex-col gap-3">
-            <div
-              className="p-3 rounded-lg"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-              }}
-            >
-              <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, marginBottom: 4 }}>
-                Tổng đã stake
-              </div>
-              <div style={{ color: c.text1, fontSize: 20, fontWeight: 800 }}>
-                {ACTIVE_POSITIONS.length}
-                <span style={{ fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, color: c.text3 }}>
-                  {' '}vị thế
-                </span>
-              </div>
-            </div>
-            <div
-              className="p-3 rounded-lg"
-              style={{
-                background: '#10B98115',
-                border: `1px solid #10B98140`,
-              }}
-            >
-              <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, marginBottom: 4 }}>
-                Đã nhận rewards
-              </div>
-              <div style={{ color: '#10B981', fontSize: 20, fontWeight: 800 }}>
-                ${totalEarned.toFixed(2)}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Filters */}
-        <div className="px-4 pb-4">
-          <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 12 }}>
-            Lọc sản phẩm
-          </div>
-          <div className="flex flex-col gap-1">
-            {[
-              { value: 'all' as const, label: 'Tất cả', icon: TrendingUp },
-              { value: 'flexible' as const, label: 'Linh hoạt', icon: Unlock },
-              { value: 'locked' as const, label: 'Khóa', icon: Lock },
-            ].map((filter) => {
-              const Icon = filter.icon;
-              const isActive = selectedType === filter.value;
-              return (
-                <button
-                  key={filter.value}
-                  onClick={() => setSelectedType(filter.value)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-left"
-                  style={{
-                    background: isActive ? '#3B82F615' : 'transparent',
-                    color: isActive ? '#3B82F6' : c.text2,
-                    fontSize: WEB_FONT.SIZE.CAPTION,
-                    fontWeight: isActive ? 600 : 500,
-                  }}
-                >
-                  <Icon size={14} />
-                  {filter.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Risk Disclosure */}
-        <div className="px-4 pb-4 mt-auto">
+          {/* Header */}
           <div
-            className="p-3 rounded-lg"
+            className="flex items-center justify-between px-5"
             style={{
-              background: '#EF444415',
-              border: `1px solid #EF444440`,
+              height: 60,
+              borderBottom: `1px solid ${c.divider}`,
             }}
           >
-            <div className="flex items-start gap-2">
-              <AlertTriangle size={14} color="#EF4444" className="flex-shrink-0 mt-0.5" />
-              <div>
-                <div style={{ color: '#EF4444', fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 4 }}>
-                  Cảnh báo rủi ro
+            <h2
+              style={{
+                color: c.text1,
+                fontSize: WEB_FONT.SIZE.H2,
+                fontWeight: 700,
+                margin: 0,
+              }}
+            >
+              Staking
+            </h2>
+          </div>
+
+          {/* My Positions Summary */}
+          <div className="p-4">
+            <div
+              style={{
+                color: c.text2,
+                fontSize: WEB_FONT.SIZE.CAPTION,
+                fontWeight: 600,
+                marginBottom: 12,
+              }}
+            >
+              Vị thế của tôi
+            </div>
+            <div className="flex flex-col gap-3">
+              <div
+                className="p-3 rounded-lg"
+                style={{
+                  background: c.bg,
+                  border: `1px solid ${c.border}`,
+                }}
+              >
+                <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, marginBottom: 4 }}>
+                  Tổng đã stake
                 </div>
-                <div style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
-                  Staking có rủi ro mất vốn. APY không đảm bảo. Đọc điều khoản trước khi tham gia.
+                <div style={{ color: c.text1, fontSize: 20, fontWeight: 800 }}>
+                  {ACTIVE_POSITIONS.length}
+                  <span
+                    style={{ fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, color: c.text3 }}
+                  >
+                    {' '}
+                    vị thế
+                  </span>
+                </div>
+              </div>
+              <div
+                className="p-3 rounded-lg"
+                style={{
+                  background: '#10B98115',
+                  border: `1px solid #10B98140`,
+                }}
+              >
+                <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, marginBottom: 4 }}>
+                  Đã nhận rewards
+                </div>
+                <div style={{ color: '#10B981', fontSize: 20, fontWeight: 800 }}>
+                  ${totalEarned.toFixed(2)}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Filters */}
+          <div className="px-4 pb-4">
+            <div
+              style={{
+                color: c.text2,
+                fontSize: WEB_FONT.SIZE.CAPTION,
+                fontWeight: 600,
+                marginBottom: 12,
+              }}
+            >
+              Lọc sản phẩm
+            </div>
+            <div className="flex flex-col gap-1">
+              {[
+                { value: 'all' as const, label: 'Tất cả', icon: TrendingUp },
+                { value: 'flexible' as const, label: 'Linh hoạt', icon: Unlock },
+                { value: 'locked' as const, label: 'Khóa', icon: Lock },
+              ].map((filter) => {
+                const Icon = filter.icon;
+                const isActive = selectedType === filter.value;
+                return (
+                  <button
+                    key={filter.value}
+                    onClick={() => setSelectedType(filter.value)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-left"
+                    style={{
+                      background: isActive ? '#3B82F615' : 'transparent',
+                      color: isActive ? '#3B82F6' : c.text2,
+                      fontSize: WEB_FONT.SIZE.CAPTION,
+                      fontWeight: isActive ? 600 : 500,
+                    }}
+                  >
+                    <Icon size={14} />
+                    {filter.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Risk Disclosure */}
+          <div className="px-4 pb-4 mt-auto">
+            <div
+              className="p-3 rounded-lg"
+              style={{
+                background: '#EF444415',
+                border: `1px solid #EF444440`,
+              }}
+            >
+              <div className="flex items-start gap-2">
+                <AlertTriangle size={14} color="#EF4444" className="flex-shrink-0 mt-0.5" />
+                <div>
+                  <div
+                    style={{
+                      color: '#EF4444',
+                      fontSize: WEB_FONT.SIZE.CAPTION,
+                      fontWeight: 600,
+                      marginBottom: 4,
+                    }}
+                  >
+                    Cảnh báo rủi ro
+                  </div>
+                  <div style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
+                    Staking có rủi ro mất vốn. APY không đảm bảo. Đọc điều khoản trước khi tham gia.
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* ═══ MAIN CONTENT ═══ */}
-      <div className="flex-1 min-w-0">
-        <div className="max-w-6xl mx-auto p-8">
-          {/* Active Positions */}
-          {ACTIVE_POSITIONS.length > 0 && (
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-4">
+        {/* ═══ MAIN CONTENT ═══ */}
+        <div className="flex-1 min-w-0">
+          <div className="max-w-6xl mx-auto p-8">
+            {/* Active Positions */}
+            {ACTIVE_POSITIONS.length > 0 && (
+              <div className="mb-8">
+                <div className="flex items-center justify-between mb-4">
+                  <h3
+                    style={{
+                      color: c.text1,
+                      fontSize: WEB_FONT.SIZE.H3,
+                      fontWeight: 700,
+                    }}
+                  >
+                    Vị thế đang hoạt động
+                  </h3>
+                  <button
+                    className="flex items-center gap-1 px-3 py-2 rounded-lg transition-colors"
+                    style={{
+                      background: c.surface,
+                      border: `1px solid ${c.border}`,
+                      color: c.text2,
+                      fontSize: WEB_FONT.SIZE.CAPTION,
+                      fontWeight: 600,
+                    }}
+                  >
+                    Xem tất cả
+                    <ChevronRight size={14} />
+                  </button>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  {ACTIVE_POSITIONS.slice(0, 2).map((position) => (
+                    <PositionCard key={position.id} position={position} />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Available Products */}
+            <div>
+              <div className="mb-4">
                 <h3
                   style={{
                     color: c.text1,
                     fontSize: WEB_FONT.SIZE.H3,
                     fontWeight: 700,
+                    marginBottom: 8,
                   }}
                 >
-                  Vị thế đang hoạt động
+                  Sản phẩm staking
                 </h3>
-                <button
-                  className="flex items-center gap-1 px-3 py-2 rounded-lg transition-colors"
-                  style={{
-                    background: c.surface,
-                    border: `1px solid ${c.border}`,
-                    color: c.text2,
-                    fontSize: WEB_FONT.SIZE.CAPTION,
-                    fontWeight: 600,
-                  }}
-                >
-                  Xem tất cả
-                  <ChevronRight size={14} />
-                </button>
+                <p style={{ color: c.text2, fontSize: WEB_FONT.SIZE.BODY, margin: 0 }}>
+                  {filteredProducts.length} sản phẩm khả dụng
+                </p>
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                {ACTIVE_POSITIONS.slice(0, 2).map((position) => (
-                  <PositionCard key={position.id} position={position} />
+
+              <div className="grid grid-cols-3 gap-4">
+                {filteredProducts.map((product) => (
+                  <StakingProductCard key={product.id} product={product} />
                 ))}
               </div>
-            </div>
-          )}
-
-          {/* Available Products */}
-          <div>
-            <div className="mb-4">
-              <h3
-                style={{
-                  color: c.text1,
-                  fontSize: WEB_FONT.SIZE.H3,
-                  fontWeight: 700,
-                  marginBottom: 8,
-                }}
-              >
-                Sản phẩm staking
-              </h3>
-              <p style={{ color: c.text2, fontSize: WEB_FONT.SIZE.BODY, margin: 0 }}>
-                {filteredProducts.length} sản phẩm khả dụng
-              </p>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4">
-              {filteredProducts.map((product) => (
-                <StakingProductCard key={product.id} product={product} />
-              ))}
             </div>
           </div>
         </div>
       </div>
-    </div>
     </PageLayout>
   );
 }

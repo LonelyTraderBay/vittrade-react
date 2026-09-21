@@ -134,17 +134,20 @@ export function SearchBar({
   }, [autoFocus]);
 
   /* ─── Handle input change (with optional debounce) ─── */
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    setLocalValue(newValue);
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newValue = e.target.value;
+      setLocalValue(newValue);
 
-    if (debounce > 0) {
-      if (debounceTimer.current) clearTimeout(debounceTimer.current);
-      debounceTimer.current = setTimeout(() => onChange(newValue), debounce);
-    } else {
-      onChange(newValue);
-    }
-  }, [onChange, debounce]);
+      if (debounce > 0) {
+        if (debounceTimer.current) clearTimeout(debounceTimer.current);
+        debounceTimer.current = setTimeout(() => onChange(newValue), debounce);
+      } else {
+        onChange(newValue);
+      }
+    },
+    [onChange, debounce],
+  );
 
   /* ─── Handle clear ─── */
   const handleClear = useCallback(() => {
@@ -155,20 +158,20 @@ export function SearchBar({
   }, [onChange, onClear]);
 
   /* ─── Handle submit ─── */
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && onSubmit) {
-      onSubmit(localValue);
-    }
-  }, [onSubmit, localValue]);
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter' && onSubmit) {
+        onSubmit(localValue);
+      }
+    },
+    [onSubmit, localValue],
+  );
 
   /* ─── Filter button ─── */
   const showFilter = onFilterToggle != null;
 
   return (
-    <div
-      className={`flex items-center gap-2 ${className}`}
-      style={style}
-    >
+    <div className={`flex items-center gap-2 ${className}`} style={style}>
       {/* Back button (header variant) */}
       {variant === 'header' && onBack && (
         <button
@@ -195,11 +198,7 @@ export function SearchBar({
           transition: 'border-color var(--tr-duration-normal) ease',
         }}
       >
-        <Search
-          size={variant === 'compact' ? 14 : 16}
-          color={c.text3}
-          className="shrink-0"
-        />
+        <Search size={variant === 'compact' ? 14 : 16} color={c.text3} className="shrink-0" />
 
         <input
           ref={inputRef}

@@ -80,18 +80,11 @@ export function MarginTradingHubPage() {
 
   return (
     <PageLayout>
-      <Header
-        title="Margin Trading Hub"
-        subtitle="Enterprise Features"
-        back
-      />
+      <Header title="Margin Trading Hub" subtitle="Enterprise Features" back />
 
       <PageContent gap="default">
         {/* Hero card */}
-        <TrCard
-          variant="hero"
-          className="p-6"
-        >
+        <TrCard variant="hero" className="p-6">
           <div className="flex items-center gap-3 mb-4">
             <div
               className="w-16 h-16 rounded-2xl flex items-center justify-center"
@@ -118,7 +111,7 @@ export function MarginTradingHubPage() {
 
           {/* Stats grid */}
           <div className="grid grid-cols-4 gap-2">
-            {stats.map(stat => (
+            {stats.map((stat) => (
               <div
                 key={stat.label}
                 className="rounded-xl p-3 text-center"
@@ -135,9 +128,7 @@ export function MarginTradingHubPage() {
                 >
                   {stat.value}
                 </p>
-                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 10 }}>
-                  {stat.label}
-                </p>
+                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 10 }}>{stat.label}</p>
               </div>
             ))}
           </div>
@@ -157,10 +148,20 @@ export function MarginTradingHubPage() {
                     className="w-10 h-10 rounded-xl flex items-center justify-center"
                     style={{ background: withAlpha(feature.color, ALPHA.muted) }}
                   >
-                    <Icon size={ICON_SIZE.md} color={feature.color} strokeWidth={ICON_STROKE.bold} />
+                    <Icon
+                      size={ICON_SIZE.md}
+                      color={feature.color}
+                      strokeWidth={ICON_STROKE.bold}
+                    />
                   </div>
                   <div className="flex-1">
-                    <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>
+                    <p
+                      style={{
+                        color: c.text1,
+                        fontSize: FONT_SCALE.sm,
+                        fontWeight: FONT_WEIGHT.bold,
+                      }}
+                    >
                       {feature.title}
                     </p>
                     <p
@@ -181,14 +182,8 @@ export function MarginTradingHubPage() {
                 <div className="flex flex-col gap-2">
                   {feature.items.map((item, i) => (
                     <div key={i} className="flex items-start gap-2">
-                      <CheckCircle
-                        size={14}
-                        color={feature.color}
-                        className="shrink-0 mt-0.5"
-                      />
-                      <p style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>
-                        {item}
-                      </p>
+                      <CheckCircle size={14} color={feature.color} className="shrink-0 mt-0.5" />
+                      <p style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>{item}</p>
                     </div>
                   ))}
                 </div>
@@ -208,23 +203,37 @@ export function MarginTradingHubPage() {
           <div className="flex items-center gap-3">
             <Shield size={ICON_SIZE.xl} color="#10B981" strokeWidth={ICON_STROKE.bold} />
             <div className="flex-1">
-              <p style={{ color: '#10B981', fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold, marginBottom: 2 }}>
+              <p
+                style={{
+                  color: '#10B981',
+                  fontSize: FONT_SCALE.base,
+                  fontWeight: FONT_WEIGHT.bold,
+                  marginBottom: 2,
+                }}
+              >
                 Fully Regulatory Compliant
               </p>
               <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>
-                Đáp ứng MiFID II, ESMA, FCA (UK), MAS (Singapore) regulations. Production-ready cho EU, UK, SG markets.
+                Đáp ứng MiFID II, ESMA, FCA (UK), MAS (Singapore) regulations. Production-ready cho
+                EU, UK, SG markets.
               </p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-2 mt-3">
-            {['MiFID II ✓', 'ESMA ✓', 'FCA (UK) ✓', 'MAS (SG) ✓'].map(reg => (
+            {['MiFID II ✓', 'ESMA ✓', 'FCA (UK) ✓', 'MAS (SG) ✓'].map((reg) => (
               <div
                 key={reg}
                 className="rounded-lg px-3 py-2 text-center"
                 style={{ background: withAlpha('#10B981', ALPHA.soft) }}
               >
-                <p style={{ color: '#10B981', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+                <p
+                  style={{
+                    color: '#10B981',
+                    fontSize: FONT_SCALE.xs,
+                    fontWeight: FONT_WEIGHT.semibold,
+                  }}
+                >
                   {reg}
                 </p>
               </div>

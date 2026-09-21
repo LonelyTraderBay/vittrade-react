@@ -31,7 +31,7 @@ export function ResponsiveTxHistoryPage() {
   const { isDesktop, isTablet } = useBreakpoint();
   const [filter, setFilter] = useState('Tất cả');
 
-  const filtered = TRANSACTIONS.filter(tx => {
+  const filtered = TRANSACTIONS.filter((tx) => {
     if (filter === 'Nạp') return tx.type === 'deposit';
     if (filter === 'Rút') return tx.type === 'withdraw';
     if (filter === 'Giao dịch') return tx.type.startsWith('trade');
@@ -47,10 +47,17 @@ export function ResponsiveTxHistoryPage() {
 
       {/* Filter tabs */}
       <div className="flex gap-2 px-5 py-3 overflow-x-auto scrollbar-none">
-        {FILTERS.map(f => (
-          <button key={f} onClick={() => setFilter(f)}
+        {FILTERS.map((f) => (
+          <button
+            key={f}
+            onClick={() => setFilter(f)}
             className="shrink-0 px-3 py-1.5 rounded-xl text-xs font-semibold"
-            style={{ background: filter === f ? c.chipActiveBg : c.chipBg, color: filter === f ? c.chipActiveText : c.chipText, border: `1px solid ${filter === f ? c.chipActiveBorder : c.chipBorder}` }}>
+            style={{
+              background: filter === f ? c.chipActiveBg : c.chipBg,
+              color: filter === f ? c.chipActiveText : c.chipText,
+              border: `1px solid ${filter === f ? c.chipActiveBorder : c.chipBorder}`,
+            }}
+          >
             {f}
           </button>
         ))}
@@ -58,15 +65,24 @@ export function ResponsiveTxHistoryPage() {
 
       {/* Desktop/Tablet: table header */}
       {showExtendedColumns && (
-        <div className="flex items-center px-5 py-2" style={{ borderBottom: `1px solid ${c.divider}` }}>
+        <div
+          className="flex items-center px-5 py-2"
+          style={{ borderBottom: `1px solid ${c.divider}` }}
+        >
           <span style={{ color: c.text3, fontSize: 11, width: 40 }}></span>
           <span style={{ color: c.text3, fontSize: 11, flex: 2 }}>Loại / Tài sản</span>
           <span style={{ color: c.text3, fontSize: 11, flex: 1 }}>Thời gian</span>
           {isDesktop && <span style={{ color: c.text3, fontSize: 11, flex: 1 }}>Mạng</span>}
           {isDesktop && <span style={{ color: c.text3, fontSize: 11, flex: 1.5 }}>TxHash</span>}
-          <span style={{ color: c.text3, fontSize: 11, flex: 1, textAlign: 'right' }}>Số lượng</span>
-          {isDesktop && <span style={{ color: c.text3, fontSize: 11, flex: 0.5, textAlign: 'right' }}>Phí</span>}
-          <span style={{ color: c.text3, fontSize: 11, width: 80, textAlign: 'right' }}>Trạng thái</span>
+          <span style={{ color: c.text3, fontSize: 11, flex: 1, textAlign: 'right' }}>
+            Số lượng
+          </span>
+          {isDesktop && (
+            <span style={{ color: c.text3, fontSize: 11, flex: 0.5, textAlign: 'right' }}>Phí</span>
+          )}
+          <span style={{ color: c.text3, fontSize: 11, width: 80, textAlign: 'right' }}>
+            Trạng thái
+          </span>
           <span style={{ width: 24 }}></span>
         </div>
       )}
@@ -82,22 +98,30 @@ export function ResponsiveTxHistoryPage() {
           filtered.map((tx, i) => {
             const typeInfo = TYPE_LABELS[tx.type];
             const statusInfo = STATUS_LABELS[tx.status];
-            const isDebit = tx.type === 'withdraw' || tx.type === 'trade_sell' || tx.type === 'p2p_sell';
+            const isDebit =
+              tx.type === 'withdraw' || tx.type === 'trade_sell' || tx.type === 'p2p_sell';
 
             if (showExtendedColumns) {
               // Desktop/Tablet: table-like row with more columns
               return (
-                <button key={tx.id} onClick={() => navigate(`/r/wallet/transaction/${tx.id}`)}
+                <button
+                  key={tx.id}
+                  onClick={() => navigate(`/r/wallet/transaction/${tx.id}`)}
                   className="flex items-center px-5 py-3 w-full active:opacity-70 transition-opacity"
-                  style={{ borderBottom: `1px solid ${c.divider}` }}>
+                  style={{ borderBottom: `1px solid ${c.divider}` }}
+                >
                   {/* Icon */}
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-base mr-3"
-                    style={{ background: typeInfo.color + '18' }}>
+                  <div
+                    className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-base mr-3"
+                    style={{ background: typeInfo.color + '18' }}
+                  >
                     {typeInfo.icon}
                   </div>
                   {/* Type + Asset */}
                   <div className="flex flex-col text-left" style={{ flex: 2 }}>
-                    <span style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>{typeInfo.label} {tx.asset}</span>
+                    <span style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>
+                      {typeInfo.label} {tx.asset}
+                    </span>
                     <span style={{ color: c.text3, fontSize: 12 }}>{tx.createdAt}</span>
                   </div>
                   {/* Time */}
@@ -114,7 +138,9 @@ export function ResponsiveTxHistoryPage() {
                   {isDesktop && (
                     <div style={{ flex: 1.5 }}>
                       {tx.txHash ? (
-                        <span style={{ color: '#3B82F6', fontSize: 11, fontFamily: 'monospace' }}>{tx.txHash}</span>
+                        <span style={{ color: '#3B82F6', fontSize: 11, fontFamily: 'monospace' }}>
+                          {tx.txHash}
+                        </span>
                       ) : (
                         <span style={{ color: c.text3, fontSize: 11 }}>—</span>
                       )}
@@ -122,8 +148,16 @@ export function ResponsiveTxHistoryPage() {
                   )}
                   {/* Amount */}
                   <div className="text-right" style={{ flex: 1 }}>
-                    <span style={{ color: typeInfo.color, fontSize: 14, fontWeight: 700, fontFamily: 'monospace' }}>
-                      {isDebit ? '-' : '+'}{fmtAmount(tx.amount)} {tx.asset}
+                    <span
+                      style={{
+                        color: typeInfo.color,
+                        fontSize: 14,
+                        fontWeight: 700,
+                        fontFamily: 'monospace',
+                      }}
+                    >
+                      {isDebit ? '-' : '+'}
+                      {fmtAmount(tx.amount)} {tx.asset}
                     </span>
                   </div>
                   {/* Fee (desktop) */}
@@ -136,8 +170,10 @@ export function ResponsiveTxHistoryPage() {
                   )}
                   {/* Status */}
                   <div className="text-right" style={{ width: 80 }}>
-                    <span className="px-1.5 py-0.5 rounded text-xs font-semibold"
-                      style={{ background: statusInfo.color + '18', color: statusInfo.color }}>
+                    <span
+                      className="px-1.5 py-0.5 rounded text-xs font-semibold"
+                      style={{ background: statusInfo.color + '18', color: statusInfo.color }}
+                    >
                       {statusInfo.label}
                     </span>
                   </div>
@@ -148,23 +184,40 @@ export function ResponsiveTxHistoryPage() {
 
             // Mobile: compact row (same as original)
             return (
-              <button key={tx.id} onClick={() => navigate(`/r/wallet/transaction/${tx.id}`)}
+              <button
+                key={tx.id}
+                onClick={() => navigate(`/r/wallet/transaction/${tx.id}`)}
                 className="flex items-center gap-3 px-5 py-3 w-full active:opacity-70"
-                style={{ borderBottom: `1px solid ${c.divider}` }}>
-                <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 text-lg"
-                  style={{ background: typeInfo.color + '18' }}>
+                style={{ borderBottom: `1px solid ${c.divider}` }}
+              >
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 text-lg"
+                  style={{ background: typeInfo.color + '18' }}
+                >
                   {typeInfo.icon}
                 </div>
                 <div className="flex flex-col flex-1 min-w-0">
-                  <span style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>{typeInfo.label} {tx.asset}</span>
+                  <span style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>
+                    {typeInfo.label} {tx.asset}
+                  </span>
                   <span style={{ color: c.text3, fontSize: 12 }}>{tx.createdAt}</span>
                 </div>
                 <div className="flex flex-col items-end shrink-0">
-                  <span style={{ color: typeInfo.color, fontSize: 15, fontWeight: 700, fontFamily: 'monospace' }}>
-                    {isDebit ? '-' : '+'}{fmtAmount(tx.amount)} {tx.asset}
+                  <span
+                    style={{
+                      color: typeInfo.color,
+                      fontSize: 15,
+                      fontWeight: 700,
+                      fontFamily: 'monospace',
+                    }}
+                  >
+                    {isDebit ? '-' : '+'}
+                    {fmtAmount(tx.amount)} {tx.asset}
                   </span>
-                  <span className="px-1.5 py-0.5 rounded text-xs font-semibold"
-                    style={{ background: statusInfo.color + '18', color: statusInfo.color }}>
+                  <span
+                    className="px-1.5 py-0.5 rounded text-xs font-semibold"
+                    style={{ background: statusInfo.color + '18', color: statusInfo.color }}
+                  >
                     {statusInfo.label}
                   </span>
                 </div>

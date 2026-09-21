@@ -11,9 +11,19 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  TrendingUp, Lock, Shield, ChevronRight, Info,
-  AlertCircle, CheckCircle, Clock, FileText, ArrowUp,
-  DollarSign, Calendar, BarChart3,
+  TrendingUp,
+  Lock,
+  Shield,
+  ChevronRight,
+  Info,
+  AlertCircle,
+  CheckCircle,
+  Clock,
+  FileText,
+  ArrowUp,
+  DollarSign,
+  Calendar,
+  BarChart3,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -124,9 +134,7 @@ function LimitCard({
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
-        <span style={{ color: c.text2, fontSize: 11, fontWeight: 600 }}>
-          {label}
-        </span>
+        <span style={{ color: c.text2, fontSize: 11, fontWeight: 600 }}>{label}</span>
         <span style={{ color: c.text3, fontSize: 10 }}>
           {fmtAmount(current, 0)} / {fmtAmount(max, 0)} {unit}
         </span>
@@ -134,10 +142,7 @@ function LimitCard({
 
       {showProgress && (
         <>
-          <div
-            className="h-2 rounded-full overflow-hidden mb-1"
-            style={{ background: c.surface2 }}
-          >
+          <div className="h-2 rounded-full overflow-hidden mb-1" style={{ background: c.surface2 }}>
             <div
               className="h-full rounded-full transition-all duration-500"
               style={{
@@ -177,8 +182,8 @@ export function P2PTransactionLimitsPage() {
   const { hapticSelection } = useHaptic();
   const prefix = useRoutePrefix();
 
-  const currentTierData = LIMIT_TIERS.find(t => t.tier === CURRENT_TIER)!;
-  const nextTierData = LIMIT_TIERS.find(t => t.tier === CURRENT_TIER + 1);
+  const currentTierData = LIMIT_TIERS.find((t) => t.tier === CURRENT_TIER)!;
+  const nextTierData = LIMIT_TIERS.find((t) => t.tier === CURRENT_TIER + 1);
 
   return (
     <PageLayout>
@@ -188,6 +193,7 @@ export function P2PTransactionLimitsPage() {
         back
         action={{
           icon: BarChart3,
+          onClick: () => {},
         }}
       />
 
@@ -212,22 +218,14 @@ export function P2PTransactionLimitsPage() {
                 Giới hạn hiện tại của bạn
               </p>
             </div>
-            <div
-              className="px-3 py-1.5 rounded-lg"
-              style={{ background: 'rgba(255,255,255,0.2)' }}
-            >
-              <span style={{ color: '#FFFFFF', fontSize: 10, fontWeight: 700 }}>
-                Đang dùng
-              </span>
+            <div className="px-3 py-1.5 rounded-lg" style={{ background: 'rgba(255,255,255,0.2)' }}>
+              <span style={{ color: '#FFFFFF', fontSize: 10, fontWeight: 700 }}>Đang dùng</span>
             </div>
           </div>
 
           {/* Quick Stats */}
           <div className="grid grid-cols-2 gap-3">
-            <div
-              className="p-3 rounded-lg"
-              style={{ background: 'rgba(255,255,255,0.15)' }}
-            >
+            <div className="p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.15)' }}>
               <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 10, marginBottom: 4 }}>
                 Mua/ngày
               </p>
@@ -235,10 +233,7 @@ export function P2PTransactionLimitsPage() {
                 {fmtAmount(currentTierData.limits.dailyBuy / 1_000_000, 0)}M VND
               </p>
             </div>
-            <div
-              className="p-3 rounded-lg"
-              style={{ background: 'rgba(255,255,255,0.15)' }}
-            >
+            <div className="p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.15)' }}>
               <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 10, marginBottom: 4 }}>
                 Bán/ngày
               </p>
@@ -253,9 +248,7 @@ export function P2PTransactionLimitsPage() {
       {/* Current Usage */}
       <div className="px-5 mb-6">
         <div className="flex items-center justify-between mb-3">
-          <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
-            Sử dụng hiện tại
-          </h3>
+          <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Sử dụng hiện tại</h3>
           <button
             onClick={() => {
               hapticSelection();
@@ -307,11 +300,36 @@ export function P2PTransactionLimitsPage() {
 
         <TrCard rounded="lg" className="overflow-hidden">
           {[
-            { label: 'Mua tối đa/ngày', value: currentTierData.limits.dailyBuy, icon: TrendingUp, color: '#10B981' },
-            { label: 'Bán tối đa/ngày', value: currentTierData.limits.dailySell, icon: TrendingUp, color: '#3B82F6' },
-            { label: 'Tổng/tuần', value: currentTierData.limits.weeklyTotal, icon: Calendar, color: '#8B5CF6' },
-            { label: 'Tổng/tháng', value: currentTierData.limits.monthlyTotal, icon: Calendar, color: '#F59E0B' },
-            { label: 'Tối đa/giao dịch', value: currentTierData.limits.perTransaction, icon: DollarSign, color: '#EF4444' },
+            {
+              label: 'Mua tối đa/ngày',
+              value: currentTierData.limits.dailyBuy,
+              icon: TrendingUp,
+              color: '#10B981',
+            },
+            {
+              label: 'Bán tối đa/ngày',
+              value: currentTierData.limits.dailySell,
+              icon: TrendingUp,
+              color: '#3B82F6',
+            },
+            {
+              label: 'Tổng/tuần',
+              value: currentTierData.limits.weeklyTotal,
+              icon: Calendar,
+              color: '#8B5CF6',
+            },
+            {
+              label: 'Tổng/tháng',
+              value: currentTierData.limits.monthlyTotal,
+              icon: Calendar,
+              color: '#F59E0B',
+            },
+            {
+              label: 'Tối đa/giao dịch',
+              value: currentTierData.limits.perTransaction,
+              icon: DollarSign,
+              color: '#EF4444',
+            },
           ].map((item, idx) => {
             const ItemIcon = item.icon;
             const isLast = idx === 4;
@@ -331,9 +349,7 @@ export function P2PTransactionLimitsPage() {
                   <ItemIcon size={18} color={item.color} />
                 </div>
                 <div className="flex-1">
-                  <p style={{ color: c.text2, fontSize: 11, marginBottom: 2 }}>
-                    {item.label}
-                  </p>
+                  <p style={{ color: c.text2, fontSize: 11, marginBottom: 2 }}>{item.label}</p>
                   <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
                     {fmtAmount(item.value, 0)} VND
                   </p>
@@ -381,9 +397,7 @@ export function P2PTransactionLimitsPage() {
                 {nextTierData.requirements.map((req, idx) => (
                   <div key={idx} className="flex items-start gap-2">
                     <Lock size={12} color={c.text3} className="shrink-0 mt-1" />
-                    <span style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                      {req}
-                    </span>
+                    <span style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>{req}</span>
                   </div>
                 ))}
               </div>
@@ -408,7 +422,10 @@ export function P2PTransactionLimitsPage() {
       <div className="px-5">
         <div
           className="p-3 rounded-lg flex items-start gap-2"
-          style={{ background: hexToRgba('#3B82F6', 10), border: `1px solid ${hexToRgba('#3B82F6', 30)}` }}
+          style={{
+            background: hexToRgba('#3B82F6', 10),
+            border: `1px solid ${hexToRgba('#3B82F6', 30)}`,
+          }}
         >
           <Info size={14} color="#3B82F6" className="shrink-0 mt-0.5" />
           <div>

@@ -20,8 +20,16 @@ import { PullToRefresh } from '../../components/ui/PullToRefresh';
 import { useLoadingState } from '../../hooks/useLoadingState';
 import { φ, φIcon } from '../../utils/golden';
 import {
-  Wifi, WifiOff, AlertTriangle, CheckCircle, Clock,
-  Zap, TrendingUp, RefreshCw, Activity, ChevronRight,
+  Wifi,
+  WifiOff,
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  Zap,
+  TrendingUp,
+  RefreshCw,
+  Activity,
+  ChevronRight,
 } from 'lucide-react';
 
 type NetworkHealth = 'operational' | 'degraded' | 'congested' | 'down';
@@ -43,10 +51,23 @@ interface NetworkInfo {
   notes?: string;
 }
 
-const HEALTH_CONFIG: Record<NetworkHealth, { label: string; color: string; bg: string; icon: typeof CheckCircle }> = {
-  operational: { label: 'Hoạt động tốt', color: '#10B981', bg: 'rgba(16,185,129,0.12)', icon: CheckCircle },
+const HEALTH_CONFIG: Record<
+  NetworkHealth,
+  { label: string; color: string; bg: string; icon: typeof CheckCircle }
+> = {
+  operational: {
+    label: 'Hoạt động tốt',
+    color: '#10B981',
+    bg: 'rgba(16,185,129,0.12)',
+    icon: CheckCircle,
+  },
   degraded: { label: 'Chậm', color: '#F59E0B', bg: 'rgba(245,158,11,0.12)', icon: AlertTriangle },
-  congested: { label: 'Tắc nghẽn', color: '#EF4444', bg: 'rgba(239,68,68,0.12)', icon: AlertTriangle },
+  congested: {
+    label: 'Tắc nghẽn',
+    color: '#EF4444',
+    bg: 'rgba(239,68,68,0.12)',
+    icon: AlertTriangle,
+  },
   down: { label: 'Bảo trì', color: '#94A3B8', bg: 'rgba(148,163,184,0.12)', icon: WifiOff },
 };
 
@@ -164,36 +185,52 @@ function CongestionBar({ pct, color }: { pct: number; color: string }) {
   const c = useThemeColors();
   const barColor = pct > 70 ? '#EF4444' : pct > 40 ? '#F59E0B' : '#10B981';
   return (
-    <div className="w-full rounded-full overflow-hidden" style={{ height: 4, background: c.surface2 }}>
-      <div className="h-full rounded-full transition-all duration-500"
-        style={{ width: `${Math.max(pct, 3)}%`, background: barColor }} />
+    <div
+      className="w-full rounded-full overflow-hidden"
+      style={{ height: 4, background: c.surface2 }}
+    >
+      <div
+        className="h-full rounded-full transition-all duration-500"
+        style={{ width: `${Math.max(pct, 3)}%`, background: barColor }}
+      />
     </div>
   );
 }
 
 export function NetworkStatusPage() {
   const c = useThemeColors();
-  const { isLoading, isRefreshing, refresh, lastRefreshedLabel, refreshCount } = useLoadingState({ initialDelay: 400 });
+  const { isLoading, isRefreshing, refresh, lastRefreshedLabel, refreshCount } = useLoadingState({
+    initialDelay: 400,
+  });
 
   // Simulate live block height updates
   const [networks, setNetworks] = useState(MOCK_NETWORKS);
   useEffect(() => {
     const timer = setInterval(() => {
-      setNetworks(prev => prev.map(n => ({
-        ...n,
-        blockHeight: n.health !== 'down' ? n.blockHeight + Math.floor(Math.random() * 3) : n.blockHeight,
-        txPending: n.health !== 'down' ? Math.max(0, n.txPending + Math.floor((Math.random() - 0.5) * 200)) : 0,
-        congestionPct: n.health !== 'down'
-          ? Math.max(0, Math.min(100, n.congestionPct + Math.floor((Math.random() - 0.5) * 5)))
-          : 0,
-      })));
+      setNetworks((prev) =>
+        prev.map((n) => ({
+          ...n,
+          blockHeight:
+            n.health !== 'down' ? n.blockHeight + Math.floor(Math.random() * 3) : n.blockHeight,
+          txPending:
+            n.health !== 'down'
+              ? Math.max(0, n.txPending + Math.floor((Math.random() - 0.5) * 200))
+              : 0,
+          congestionPct:
+            n.health !== 'down'
+              ? Math.max(0, Math.min(100, n.congestionPct + Math.floor((Math.random() - 0.5) * 5)))
+              : 0,
+        })),
+      );
     }, 4000);
     return () => clearInterval(timer);
   }, []);
 
-  const operationalCount = networks.filter(n => n.health === 'operational').length;
-  const degradedCount = networks.filter(n => n.health === 'degraded' || n.health === 'congested').length;
-  const downCount = networks.filter(n => n.health === 'down').length;
+  const operationalCount = networks.filter((n) => n.health === 'operational').length;
+  const degradedCount = networks.filter(
+    (n) => n.health === 'degraded' || n.health === 'congested',
+  ).length;
+  const downCount = networks.filter((n) => n.health === 'down').length;
 
   return (
     <PageLayout>
@@ -203,16 +240,24 @@ export function NetworkStatusPage() {
         {/* Global status summary */}
         <TrCard variant="hero" rounded="lg" className="p-5">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-11 h-11 rounded-2xl flex items-center justify-center"
+            <div
+              className="w-11 h-11 rounded-2xl flex items-center justify-center"
               style={{
-                background: downCount > 0 ? 'rgba(239,68,68,0.15)' : degradedCount > 0 ? 'rgba(245,158,11,0.15)' : 'rgba(16,185,129,0.15)',
-              }}>
-              {downCount > 0
-                ? <AlertTriangle size={22} color="#EF4444" />
-                : degradedCount > 0
-                  ? <AlertTriangle size={22} color="#F59E0B" />
-                  : <Wifi size={22} color="#10B981" />
-              }
+                background:
+                  downCount > 0
+                    ? 'rgba(239,68,68,0.15)'
+                    : degradedCount > 0
+                      ? 'rgba(245,158,11,0.15)'
+                      : 'rgba(16,185,129,0.15)',
+              }}
+            >
+              {downCount > 0 ? (
+                <AlertTriangle size={22} color="#EF4444" />
+              ) : degradedCount > 0 ? (
+                <AlertTriangle size={22} color="#F59E0B" />
+              ) : (
+                <Wifi size={22} color="#10B981" />
+              )}
             </div>
             <div className="flex-1">
               <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 700 }}>
@@ -220,14 +265,15 @@ export function NetworkStatusPage() {
                   ? `${downCount} mạng đang bảo trì`
                   : degradedCount > 0
                     ? `${degradedCount} mạng đang chậm`
-                    : 'Tất cả mạng hoạt động tốt'
-                }
+                    : 'Tất cả mạng hoạt động tốt'}
               </p>
-              <p style={{ color: c.text3, fontSize: φ.xs }}>
-                Cập nhật tự động mỗi 4 giây
-              </p>
+              <p style={{ color: c.text3, fontSize: φ.xs }}>Cập nhật tự động mỗi 4 giây</p>
             </div>
-            <button onClick={() => refresh()} className="p-2 rounded-xl" style={{ background: c.hoverBg }}>
+            <button
+              onClick={() => refresh()}
+              className="p-2 rounded-xl"
+              style={{ background: c.hoverBg }}
+            >
               <RefreshCw size={16} color={c.text2} />
             </button>
           </div>
@@ -238,9 +284,12 @@ export function NetworkStatusPage() {
               { label: 'Hoạt động', value: operationalCount, color: '#10B981' },
               { label: 'Chậm / Tắc', value: degradedCount, color: '#F59E0B' },
               { label: 'Bảo trì', value: downCount, color: '#EF4444' },
-            ].map(s => (
-              <div key={s.label} className="rounded-xl p-2.5 text-center"
-                style={{ background: c.portfolioBtnGhost }}>
+            ].map((s) => (
+              <div
+                key={s.label}
+                className="rounded-xl p-2.5 text-center"
+                style={{ background: c.portfolioBtnGhost }}
+              >
                 <p style={{ color: s.color, fontSize: 18, fontWeight: 700 }}>{s.value}</p>
                 <p style={{ color: c.portfolioTextMuted, fontSize: 9 }}>{s.label}</p>
               </div>
@@ -249,9 +298,13 @@ export function NetworkStatusPage() {
         </TrCard>
 
         {/* Network cards */}
-        <PullToRefresh onRefresh={refresh} lastRefreshedLabel={lastRefreshedLabel} refreshCount={refreshCount}>
+        <PullToRefresh
+          onRefresh={refresh}
+          lastRefreshedLabel={lastRefreshedLabel}
+          refreshCount={refreshCount}
+        >
           <div className="flex flex-col gap-3">
-            {networks.map(net => {
+            {networks.map((net) => {
               const hcfg = HEALTH_CONFIG[net.health];
               const HealthIcon = hcfg.icon;
 
@@ -259,19 +312,34 @@ export function NetworkStatusPage() {
                 <TrCard key={net.id} className="p-4">
                   {/* Header */}
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-2xl flex items-center justify-center"
-                      style={{ background: `${net.color}18` }}>
-                      <span style={{ color: net.color, fontSize: 11, fontWeight: 700 }}>{net.symbol}</span>
+                    <div
+                      className="w-10 h-10 rounded-2xl flex items-center justify-center"
+                      style={{ background: `${net.color}18` }}
+                    >
+                      <span style={{ color: net.color, fontSize: 11, fontWeight: 700 }}>
+                        {net.symbol}
+                      </span>
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <span style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>{net.name}</span>
-                        <span className="px-1.5 py-0.5 rounded"
-                          style={{ background: hcfg.bg, color: hcfg.color, fontSize: 9, fontWeight: 700 }}>
+                        <span style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>
+                          {net.name}
+                        </span>
+                        <span
+                          className="px-1.5 py-0.5 rounded"
+                          style={{
+                            background: hcfg.bg,
+                            color: hcfg.color,
+                            fontSize: 9,
+                            fontWeight: 700,
+                          }}
+                        >
                           {hcfg.label}
                         </span>
                       </div>
-                      <p style={{ color: c.text3, fontSize: 10 }}>Block #{net.blockHeight.toLocaleString()}</p>
+                      <p style={{ color: c.text3, fontSize: 10 }}>
+                        Block #{net.blockHeight.toLocaleString()}
+                      </p>
                     </div>
                     <HealthIcon size={18} color={hcfg.color} />
                   </div>
@@ -280,10 +348,18 @@ export function NetworkStatusPage() {
                   <div className="mb-3">
                     <div className="flex justify-between mb-1">
                       <span style={{ color: c.text3, fontSize: 10 }}>Mức tải mạng</span>
-                      <span style={{
-                        color: net.congestionPct > 70 ? '#EF4444' : net.congestionPct > 40 ? '#F59E0B' : '#10B981',
-                        fontSize: 10, fontWeight: 600,
-                      }}>
+                      <span
+                        style={{
+                          color:
+                            net.congestionPct > 70
+                              ? '#EF4444'
+                              : net.congestionPct > 40
+                                ? '#F59E0B'
+                                : '#10B981',
+                          fontSize: 10,
+                          fontWeight: 600,
+                        }}
+                      >
                         {net.congestionPct}%
                       </span>
                     </div>
@@ -294,16 +370,31 @@ export function NetworkStatusPage() {
                   <div className="grid grid-cols-2 gap-2 mb-3">
                     {[
                       { icon: Clock, label: 'Xác nhận', value: net.avgConfirmTime },
-                      { icon: Activity, label: 'TX đang chờ', value: net.txPending.toLocaleString() },
+                      {
+                        icon: Activity,
+                        label: 'TX đang chờ',
+                        value: net.txPending.toLocaleString(),
+                      },
                       { icon: Zap, label: 'Gas / Phí', value: net.gasFee },
                       { icon: TrendingUp, label: 'Block mới', value: net.lastBlock },
-                    ].map(stat => (
-                      <div key={stat.label} className="flex items-center gap-2 rounded-xl px-2.5 py-2"
-                        style={{ background: c.surface2 }}>
+                    ].map((stat) => (
+                      <div
+                        key={stat.label}
+                        className="flex items-center gap-2 rounded-xl px-2.5 py-2"
+                        style={{ background: c.surface2 }}
+                      >
                         <stat.icon size={12} color={c.text3} />
                         <div className="flex-1 min-w-0">
                           <p style={{ color: c.text3, fontSize: 9 }}>{stat.label}</p>
-                          <p className="truncate" style={{ color: c.text1, fontSize: 11, fontWeight: 600, fontFamily: 'monospace' }}>
+                          <p
+                            className="truncate"
+                            style={{
+                              color: c.text1,
+                              fontSize: 11,
+                              fontWeight: 600,
+                              fontFamily: 'monospace',
+                            }}
+                          >
                             {stat.value}
                           </p>
                         </div>
@@ -316,21 +407,29 @@ export function NetworkStatusPage() {
                     {[
                       { label: 'Nạp', enabled: net.depositEnabled },
                       { label: 'Rút', enabled: net.withdrawEnabled },
-                    ].map(action => (
-                      <div key={action.label} className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-xl"
+                    ].map((action) => (
+                      <div
+                        key={action.label}
+                        className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-xl"
                         style={{
-                          background: action.enabled ? 'rgba(16,185,129,0.08)' : 'rgba(239,68,68,0.08)',
+                          background: action.enabled
+                            ? 'rgba(16,185,129,0.08)'
+                            : 'rgba(239,68,68,0.08)',
                           border: `1px solid ${action.enabled ? 'rgba(16,185,129,0.2)' : 'rgba(239,68,68,0.2)'}`,
-                        }}>
-                        {action.enabled
-                          ? <CheckCircle size={11} color="#10B981" />
-                          : <WifiOff size={11} color="#EF4444" />
-                        }
-                        <span style={{
-                          color: action.enabled ? '#10B981' : '#EF4444',
-                          fontSize: 11,
-                          fontWeight: 600,
-                        }}>
+                        }}
+                      >
+                        {action.enabled ? (
+                          <CheckCircle size={11} color="#10B981" />
+                        ) : (
+                          <WifiOff size={11} color="#EF4444" />
+                        )}
+                        <span
+                          style={{
+                            color: action.enabled ? '#10B981' : '#EF4444',
+                            fontSize: 11,
+                            fontWeight: 600,
+                          }}
+                        >
                           {action.label} {action.enabled ? 'OK' : 'Tạm dừng'}
                         </span>
                       </div>
@@ -339,8 +438,10 @@ export function NetworkStatusPage() {
 
                   {/* Notes */}
                   {net.notes && (
-                    <div className="flex items-start gap-2 mt-2.5 rounded-xl px-3 py-2"
-                      style={{ background: 'rgba(245,158,11,0.06)' }}>
+                    <div
+                      className="flex items-start gap-2 mt-2.5 rounded-xl px-3 py-2"
+                      style={{ background: 'rgba(245,158,11,0.06)' }}
+                    >
                       <AlertTriangle size={11} color="#F59E0B" className="shrink-0 mt-0.5" />
                       <p style={{ color: '#D97706', fontSize: 10, lineHeight: 1.5 }}>{net.notes}</p>
                     </div>
@@ -353,14 +454,18 @@ export function NetworkStatusPage() {
 
         {/* Legend */}
         <TrCard className="p-4">
-          <p style={{ color: c.text2, fontSize: 12, fontWeight: 600, marginBottom: 8 }}>Chú thích trạng thái</p>
+          <p style={{ color: c.text2, fontSize: 12, fontWeight: 600, marginBottom: 8 }}>
+            Chú thích trạng thái
+          </p>
           <div className="grid grid-cols-2 gap-2">
             {Object.entries(HEALTH_CONFIG).map(([key, cfg]) => {
               const Icon = cfg.icon;
               return (
                 <div key={key} className="flex items-center gap-2">
-                  <div className="w-5 h-5 rounded-md flex items-center justify-center"
-                    style={{ background: cfg.bg }}>
+                  <div
+                    className="w-5 h-5 rounded-md flex items-center justify-center"
+                    style={{ background: cfg.bg }}
+                  >
                     <Icon size={10} color={cfg.color} />
                   </div>
                   <span style={{ color: c.text2, fontSize: 11 }}>{cfg.label}</span>
@@ -371,8 +476,10 @@ export function NetworkStatusPage() {
         </TrCard>
 
         {/* Disclaimer */}
-        <div className="flex items-start gap-2 rounded-2xl px-4 py-3"
-          style={{ background: c.primaryAlpha08, border: `1px solid ${c.primaryAlpha15}` }}>
+        <div
+          className="flex items-start gap-2 rounded-2xl px-4 py-3"
+          style={{ background: c.primaryAlpha08, border: `1px solid ${c.primaryAlpha15}` }}
+        >
           <AlertTriangle size={13} color={c.primary} className="shrink-0 mt-0.5" />
           <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.6 }}>
             Dữ liệu trạng thái mạng được cập nhật tự động. Thời gian xác nhận thực tế có thể khác

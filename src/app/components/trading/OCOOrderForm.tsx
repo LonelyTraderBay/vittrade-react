@@ -25,15 +25,15 @@ export interface OCOOrderParams {
   symbol: string;
   baseAsset: string;
   currentPrice: number;
-  
+
   // Take Profit Leg
   takeProfitPrice: string;
   takeProfitAmount: string;
-  
+
   // Stop Loss Leg
   stopLossPrice: string;
   stopLossAmount: string;
-  
+
   // Shared settings
   amountType: 'same' | 'split'; // Both legs same amount or different
 }
@@ -44,7 +44,7 @@ interface OCOOrderFormProps {
   baseAsset: string;
   currentPrice: number;
   available: number;
-  
+
   onSubmit: (params: OCOOrderParams) => void;
   onCancel: () => void;
 }
@@ -66,15 +66,15 @@ export function OCOOrderForm({
   const { hapticSuccess, hapticWarning, hapticSelection } = useHaptic();
 
   const [amountType, setAmountType] = useState<'same' | 'split'>('same');
-  
+
   // Take Profit (TP)
   const [tpPrice, setTpPrice] = useState('');
   const [tpAmount, setTpAmount] = useState('');
-  
+
   // Stop Loss (SL)
   const [slPrice, setSlPrice] = useState('');
   const [slAmount, setSlAmount] = useState('');
-  
+
   const [showInfo, setShowInfo] = useState(false);
 
   /* ─── Calculations ─── */
@@ -91,18 +91,20 @@ export function OCOOrderForm({
   const slPctChange = ((slPriceNum - currentPrice) / currentPrice) * 100;
 
   // Risk/Reward ratio
-  const riskAmount = Math.abs(slTotal - (currentPrice * slAmountNum));
-  const rewardAmount = Math.abs(tpTotal - (currentPrice * tpAmountNum));
+  const riskAmount = Math.abs(slTotal - currentPrice * slAmountNum);
+  const rewardAmount = Math.abs(tpTotal - currentPrice * tpAmountNum);
   const rrRatio = riskAmount > 0 ? rewardAmount / riskAmount : 0;
 
   /* ─── Validation ─── */
-  const isValidTP = tpPriceNum > 0 && tpAmountNum > 0 && (
-    side === 'buy' ? tpPriceNum > currentPrice : tpPriceNum < currentPrice
-  );
-  
-  const isValidSL = slPriceNum > 0 && slAmountNum > 0 && (
-    side === 'buy' ? slPriceNum < currentPrice : slPriceNum > currentPrice
-  );
+  const isValidTP =
+    tpPriceNum > 0 &&
+    tpAmountNum > 0 &&
+    (side === 'buy' ? tpPriceNum > currentPrice : tpPriceNum < currentPrice);
+
+  const isValidSL =
+    slPriceNum > 0 &&
+    slAmountNum > 0 &&
+    (side === 'buy' ? slPriceNum < currentPrice : slPriceNum > currentPrice);
 
   const canSubmit = isValidTP && isValidSL;
 
@@ -143,7 +145,10 @@ export function OCOOrderForm({
             </p>
           </div>
           <button
-            onClick={() => { setShowInfo(!showInfo); hapticSelection(); }}
+            onClick={() => {
+              setShowInfo(!showInfo);
+              hapticSelection();
+            }}
             className="w-8 h-8 rounded-lg flex items-center justify-center"
             style={{ background: c.surface2 }}
           >
@@ -152,17 +157,31 @@ export function OCOOrderForm({
         </div>
 
         {showInfo && (
-          <div className="p-3 rounded-xl mb-3" style={{ background: 'rgba(59,130,246,0.08)', border: `1px solid rgba(59,130,246,0.2)` }}>
+          <div
+            className="p-3 rounded-xl mb-3"
+            style={{
+              background: 'rgba(59,130,246,0.08)',
+              border: `1px solid rgba(59,130,246,0.2)`,
+            }}
+          >
             <p style={{ fontSize: FONT_SCALE.xs, color: c.text2, lineHeight: 1.6 }}>
-              <strong style={{ color: '#3B82F6' }}>Lệnh OCO (One-Cancels-Other)</strong> cho phép đặt 2 lệnh cùng lúc:
-              Take Profit (chốt lời) và Stop Loss (cắt lỗ). Khi 1 lệnh khớp, lệnh còn lại tự động hủy.
+              <strong style={{ color: '#3B82F6' }}>Lệnh OCO (One-Cancels-Other)</strong> cho phép
+              đặt 2 lệnh cùng lúc: Take Profit (chốt lời) và Stop Loss (cắt lỗ). Khi 1 lệnh khớp,
+              lệnh còn lại tự động hủy.
             </p>
           </div>
         )}
 
         <div className="flex items-center justify-between">
           <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Giá hiện tại</span>
-          <span style={{ fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+          <span
+            style={{
+              fontSize: FONT_SCALE.base,
+              fontWeight: FONT_WEIGHT.bold,
+              color: c.text1,
+              fontFamily: 'monospace',
+            }}
+          >
             {fmtPrice(currentPrice)}
           </span>
         </div>
@@ -170,22 +189,24 @@ export function OCOOrderForm({
 
       {/* Amount Type Toggle */}
       <div className="flex gap-2">
-        {['same', 'split'].map(type => (
+        {['same', 'split'].map((type) => (
           <button
             key={type}
-            onClick={() => { setAmountType(type as any); hapticSelection(); }}
+            onClick={() => {
+              setAmountType(type as any);
+              hapticSelection();
+            }}
             className="flex-1 px-3 py-2 rounded-xl min-h-10 flex items-center justify-center gap-2"
             style={{
               fontSize: FONT_SCALE.xs,
               fontWeight: amountType === type ? FONT_WEIGHT.bold : FONT_WEIGHT.semibold,
               background: amountType === type ? c.chipActiveBg : c.surface2,
               color: amountType === type ? c.chipActiveText : c.text2,
-              border: amountType === type
-                ? `2px solid ${c.chipActiveBorder}`
-                : `1.5px solid ${c.borderSolid}`,
-              boxShadow: amountType === type
-                ? '0 1px 3px rgba(59,130,246,0.15)'
-                : 'none',
+              border:
+                amountType === type
+                  ? `2px solid ${c.chipActiveBorder}`
+                  : `1.5px solid ${c.borderSolid}`,
+              boxShadow: amountType === type ? '0 1px 3px rgba(59,130,246,0.15)' : 'none',
             }}
           >
             {type === 'same' ? 'Cùng khối lượng' : 'Khối lượng riêng'}
@@ -205,7 +226,9 @@ export function OCOOrderForm({
 
         {/* TP Price */}
         <div className="mb-3">
-          <label style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}>
+          <label
+            style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}
+          >
             Giá chốt lời
           </label>
           <div className="relative">
@@ -213,7 +236,7 @@ export function OCOOrderForm({
               type="text"
               inputMode="decimal"
               value={tpPrice}
-              onChange={e => setTpPrice(formatNum(e.target.value))}
+              onChange={(e) => setTpPrice(formatNum(e.target.value))}
               placeholder={side === 'buy' ? '> Giá hiện tại' : '< Giá hiện tại'}
               className="w-full px-3 py-3 rounded-xl min-h-11"
               style={{
@@ -233,15 +256,24 @@ export function OCOOrderForm({
             </span>
           </div>
           {tpPriceNum > 0 && (
-            <p style={{ fontSize: FONT_SCALE.micro, color: isValidTP ? '#10B981' : '#EF4444', marginTop: 4 }}>
-              {isValidTP ? '✓' : '✗'} {fmtPct(Math.abs(tpPctChange))} {tpPctChange >= 0 ? 'lời' : 'lỗ'}
+            <p
+              style={{
+                fontSize: FONT_SCALE.micro,
+                color: isValidTP ? '#10B981' : '#EF4444',
+                marginTop: 4,
+              }}
+            >
+              {isValidTP ? '✓' : '✗'} {fmtPct(Math.abs(tpPctChange))}{' '}
+              {tpPctChange >= 0 ? 'lời' : 'lỗ'}
             </p>
           )}
         </div>
 
         {/* TP Amount */}
         <div>
-          <label style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}>
+          <label
+            style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}
+          >
             Khối lượng
           </label>
           <div className="relative">
@@ -249,7 +281,7 @@ export function OCOOrderForm({
               type="text"
               inputMode="decimal"
               value={tpAmount}
-              onChange={e => setTpAmount(formatNum(e.target.value))}
+              onChange={(e) => setTpAmount(formatNum(e.target.value))}
               placeholder="0.00"
               className="w-full px-3 py-3 rounded-xl min-h-11"
               style={{
@@ -287,7 +319,9 @@ export function OCOOrderForm({
 
         {/* SL Price */}
         <div className="mb-3">
-          <label style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}>
+          <label
+            style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}
+          >
             Giá cắt lỗ
           </label>
           <div className="relative">
@@ -295,7 +329,7 @@ export function OCOOrderForm({
               type="text"
               inputMode="decimal"
               value={slPrice}
-              onChange={e => setSlPrice(formatNum(e.target.value))}
+              onChange={(e) => setSlPrice(formatNum(e.target.value))}
               placeholder={side === 'buy' ? '< Giá hiện tại' : '> Giá hiện tại'}
               className="w-full px-3 py-3 rounded-xl min-h-11"
               style={{
@@ -315,8 +349,15 @@ export function OCOOrderForm({
             </span>
           </div>
           {slPriceNum > 0 && (
-            <p style={{ fontSize: FONT_SCALE.micro, color: isValidSL ? '#EF4444' : '#F59E0B', marginTop: 4 }}>
-              {isValidSL ? '✓' : '✗'} {fmtPct(Math.abs(slPctChange))} {slPctChange >= 0 ? 'lời' : 'lỗ'}
+            <p
+              style={{
+                fontSize: FONT_SCALE.micro,
+                color: isValidSL ? '#EF4444' : '#F59E0B',
+                marginTop: 4,
+              }}
+            >
+              {isValidSL ? '✓' : '✗'} {fmtPct(Math.abs(slPctChange))}{' '}
+              {slPctChange >= 0 ? 'lời' : 'lỗ'}
             </p>
           )}
         </div>
@@ -324,7 +365,9 @@ export function OCOOrderForm({
         {/* SL Amount (only if split mode) */}
         {amountType === 'split' && (
           <div>
-            <label style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}>
+            <label
+              style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}
+            >
               Khối lượng
             </label>
             <div className="relative">
@@ -332,7 +375,7 @@ export function OCOOrderForm({
                 type="text"
                 inputMode="decimal"
                 value={slAmount}
-                onChange={e => setSlAmount(formatNum(e.target.value))}
+                onChange={(e) => setSlAmount(formatNum(e.target.value))}
                 placeholder="0.00"
                 className="w-full px-3 py-3 rounded-xl min-h-11"
                 style={{
@@ -367,23 +410,40 @@ export function OCOOrderForm({
             Risk/Reward Ratio
           </p>
           <div className="flex items-baseline gap-2">
-            <span style={{ fontSize: FONT_SCALE.xl, fontWeight: FONT_WEIGHT.bold, color: rrRatio >= 2 ? '#10B981' : rrRatio >= 1 ? '#F59E0B' : '#EF4444' }}>
+            <span
+              style={{
+                fontSize: FONT_SCALE.xl,
+                fontWeight: FONT_WEIGHT.bold,
+                color: rrRatio >= 2 ? '#10B981' : rrRatio >= 1 ? '#F59E0B' : '#EF4444',
+              }}
+            >
               1:{rrRatio.toFixed(2)}
             </span>
             <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>
-              {rrRatio >= 2 ? '✓ Tỉ lệ tốt' : rrRatio >= 1 ? '⚠ Tỉ lệ chấp nhận được' : '✗ Tỉ lệ thấp'}
+              {rrRatio >= 2
+                ? '✓ Tỉ lệ tốt'
+                : rrRatio >= 1
+                  ? '⚠ Tỉ lệ chấp nhận được'
+                  : '✗ Tỉ lệ thấp'}
             </span>
           </div>
-          <div className="flex justify-between mt-3 pt-3" style={{ borderTop: `1px solid ${c.divider}` }}>
+          <div
+            className="flex justify-between mt-3 pt-3"
+            style={{ borderTop: `1px solid ${c.divider}` }}
+          >
             <div>
               <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>Tiềm năng lời</p>
-              <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: '#10B981' }}>
+              <p
+                style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: '#10B981' }}
+              >
                 +{fmtUsd(rewardAmount)}
               </p>
             </div>
             <div className="text-right">
               <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>Rủi ro tối đa</p>
-              <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: '#EF4444' }}>
+              <p
+                style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: '#EF4444' }}
+              >
                 -{fmtUsd(riskAmount)}
               </p>
             </div>
@@ -393,10 +453,14 @@ export function OCOOrderForm({
 
       {/* Warning */}
       {canSubmit && rrRatio < 1.5 && (
-        <div className="flex items-start gap-2 rounded-xl px-3 py-3" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
+        <div
+          className="flex items-start gap-2 rounded-xl px-3 py-3"
+          style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}
+        >
           <AlertTriangle size={14} color="#F59E0B" className="shrink-0 mt-1" />
           <p style={{ color: '#F59E0B', fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>
-            Tỉ lệ Risk/Reward thấp hơn khuyến nghị (1:1.5). Nên điều chỉnh Take Profit cao hơn hoặc Stop Loss gần hơn.
+            Tỉ lệ Risk/Reward thấp hơn khuyến nghị (1:1.5). Nên điều chỉnh Take Profit cao hơn hoặc
+            Stop Loss gần hơn.
           </p>
         </div>
       )}

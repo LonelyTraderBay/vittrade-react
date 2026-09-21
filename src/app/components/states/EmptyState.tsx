@@ -12,7 +12,14 @@ interface EmptyStateProps {
   emoji?: string;
 }
 
-export function EmptyState({ icon: Icon, title, subtitle, ctaLabel, onCta, emoji }: EmptyStateProps) {
+export function EmptyState({
+  icon: Icon,
+  title,
+  subtitle,
+  ctaLabel,
+  onCta,
+  emoji,
+}: EmptyStateProps) {
   const c = useThemeColors();
   return (
     <div className="flex flex-col items-center py-16 gap-4 px-8">
@@ -28,14 +35,8 @@ export function EmptyState({ icon: Icon, title, subtitle, ctaLabel, onCta, emoji
       </div>
 
       <div className="text-center">
-        <p style={{ color: c.text2, fontSize: 16, fontWeight: 600, marginBottom: 4 }}>
-          {title}
-        </p>
-        {subtitle && (
-          <p style={{ color: c.text3, fontSize: 13, lineHeight: 1.5 }}>
-            {subtitle}
-          </p>
-        )}
+        <p style={{ color: c.text2, fontSize: 16, fontWeight: 600, marginBottom: 4 }}>{title}</p>
+        {subtitle && <p style={{ color: c.text3, fontSize: 13, lineHeight: 1.5 }}>{subtitle}</p>}
       </div>
 
       {ctaLabel && onCta && (

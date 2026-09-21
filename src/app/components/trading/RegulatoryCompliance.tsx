@@ -51,11 +51,13 @@ const MARGIN_TRADING_QUESTIONS: Question[] = [
       'Chỉ dành cho nhà đầu tư tổ chức',
     ],
     correctIndex: 1,
-    explanation: 'Margin trading cho phép bạn vay tiền để giao dịch lớn hơn vốn có, nhưng điều này cũng khuếch đại lỗ.',
+    explanation:
+      'Margin trading cho phép bạn vay tiền để giao dịch lớn hơn vốn có, nhưng điều này cũng khuếch đại lỗ.',
   },
   {
     id: 'q2',
-    question: 'Điều gì xảy ra nếu margin level của bạn giảm xuống dưới Maintenance Margin Ratio (MMR)?',
+    question:
+      'Điều gì xảy ra nếu margin level của bạn giảm xuống dưới Maintenance Margin Ratio (MMR)?',
     options: [
       'Không có gì, bạn vẫn giữ vị thế',
       'Bạn nhận được cảnh báo nhưng không bị ảnh hưởng',
@@ -63,19 +65,16 @@ const MARGIN_TRADING_QUESTIONS: Question[] = [
       'Bạn được thêm margin miễn phí',
     ],
     correctIndex: 2,
-    explanation: 'Khi margin level < MMR, hệ thống sẽ tự động thanh lý vị thế của bạn để bảo vệ nền tảng khỏi lỗ.',
+    explanation:
+      'Khi margin level < MMR, hệ thống sẽ tự động thanh lý vị thế của bạn để bảo vệ nền tảng khỏi lỗ.',
   },
   {
     id: 'q3',
     question: 'Với đòn bẩy 10x, nếu giá biến động ngược chiều bao nhiêu % thì bạn bị thanh lý?',
-    options: [
-      'Khoảng 10%',
-      'Khoảng 50%',
-      'Khoảng 1%',
-      'Khoảng 90-100% (chỉ khi giá về 0)',
-    ],
+    options: ['Khoảng 10%', 'Khoảng 50%', 'Khoảng 1%', 'Khoảng 90-100% (chỉ khi giá về 0)'],
     correctIndex: 0,
-    explanation: 'Với 10x leverage, giá chỉ cần biến động ngược ~10% (chính xác hơn là 100%/10 = 10%) là bạn mất hết margin.',
+    explanation:
+      'Với 10x leverage, giá chỉ cần biến động ngược ~10% (chính xác hơn là 100%/10 = 10%) là bạn mất hết margin.',
   },
   {
     id: 'q4',
@@ -87,7 +86,8 @@ const MARGIN_TRADING_QUESTIONS: Question[] = [
       'Chỉ dành cho pro trader, beginner không cần',
     ],
     correctIndex: 0,
-    explanation: 'Stop Loss là công cụ quản lý rủi ro quan trọng nhất, tự động cắt lỗ khi giá đi ngược dự đoán.',
+    explanation:
+      'Stop Loss là công cụ quản lý rủi ro quan trọng nhất, tự động cắt lỗ khi giá đi ngược dự đoán.',
   },
   {
     id: 'q5',
@@ -99,7 +99,8 @@ const MARGIN_TRADING_QUESTIONS: Question[] = [
       'Bị hack tài khoản',
     ],
     correctIndex: 1,
-    explanation: 'Rủi ro lớn nhất là thanh lý - bạn có thể mất 100% margin nếu thị trường biến động mạnh.',
+    explanation:
+      'Rủi ro lớn nhất là thanh lý - bạn có thể mất 100% margin nếu thị trường biến động mạnh.',
   },
 ];
 
@@ -109,7 +110,8 @@ const QUESTIONS_FOR_HIGH_LEVERAGE: Question[] = [
     question: 'Với đòn bẩy 50x, giá chỉ cần biến động bao nhiêu % là bạn bị thanh lý?',
     options: ['~2%', '~10%', '~25%', '~50%'],
     correctIndex: 0,
-    explanation: 'Với 50x, giá chỉ cần di chuyển ~2% (100%/50) ngược chiều là bạn mất toàn bộ margin.',
+    explanation:
+      'Với 50x, giá chỉ cần di chuyển ~2% (100%/50) ngược chiều là bạn mất toàn bộ margin.',
   },
   {
     id: 'hq2',
@@ -125,7 +127,13 @@ const QUESTIONS_FOR_HIGH_LEVERAGE: Question[] = [
   },
 ];
 
-export function AppropriatenessTest({ leverageRequested, onPass, onFail, open, onClose }: AppropriatenessTestProps) {
+export function AppropriatenessTest({
+  leverageRequested,
+  onPass,
+  onFail,
+  open,
+  onClose,
+}: AppropriatenessTestProps) {
   const c = useThemeColors();
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
@@ -197,7 +205,14 @@ export function AppropriatenessTest({ leverageRequested, onPass, onFail, open, o
 
           {/* Question */}
           <TrCard className="p-4">
-            <p style={{ color: c.text1, fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold, lineHeight: 1.5 }}>
+            <p
+              style={{
+                color: c.text1,
+                fontSize: FONT_SCALE.base,
+                fontWeight: FONT_WEIGHT.bold,
+                lineHeight: 1.5,
+              }}
+            >
               {questions[currentQ].question}
             </p>
           </TrCard>
@@ -221,7 +236,13 @@ export function AppropriatenessTest({ leverageRequested, onPass, onFail, open, o
                     className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
                     style={{ background: c.surface2 }}
                   >
-                    <span style={{ color: c.text2, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>
+                    <span
+                      style={{
+                        color: c.text2,
+                        fontSize: FONT_SCALE.sm,
+                        fontWeight: FONT_WEIGHT.bold,
+                      }}
+                    >
                       {String.fromCharCode(65 + i)}
                     </span>
                   </div>
@@ -237,13 +258,19 @@ export function AppropriatenessTest({ leverageRequested, onPass, onFail, open, o
           <TrCard
             className="p-6 text-center"
             style={{
-              background: passed ? withAlpha('#10B981', ALPHA.hover) : withAlpha('#EF4444', ALPHA.hover),
+              background: passed
+                ? withAlpha('#10B981', ALPHA.hover)
+                : withAlpha('#EF4444', ALPHA.hover),
               border: `1.5px solid ${passed ? withAlpha('#10B981', ALPHA.soft) : withAlpha('#EF4444', ALPHA.soft)}`,
             }}
           >
             <div
               className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
-              style={{ background: passed ? withAlpha('#10B981', ALPHA.muted) : withAlpha('#EF4444', ALPHA.muted) }}
+              style={{
+                background: passed
+                  ? withAlpha('#10B981', ALPHA.muted)
+                  : withAlpha('#EF4444', ALPHA.muted),
+              }}
             >
               {passed ? (
                 <CheckCircle size={ICON_SIZE.xl} color="#10B981" strokeWidth={ICON_STROKE.bold} />
@@ -261,8 +288,16 @@ export function AppropriatenessTest({ leverageRequested, onPass, onFail, open, o
             >
               {passed ? 'Đạt yêu cầu!' : 'Chưa đạt yêu cầu'}
             </p>
-            <p style={{ color: c.text1, fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.semibold, marginBottom: 4 }}>
-              Điểm: {correctCount}/{questions.length} ({((correctCount / questions.length) * 100).toFixed(0)}%)
+            <p
+              style={{
+                color: c.text1,
+                fontSize: FONT_SCALE.base,
+                fontWeight: FONT_WEIGHT.semibold,
+                marginBottom: 4,
+              }}
+            >
+              Điểm: {correctCount}/{questions.length} (
+              {((correctCount / questions.length) * 100).toFixed(0)}%)
             </p>
             <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>
               {passed
@@ -280,12 +315,22 @@ export function AppropriatenessTest({ leverageRequested, onPass, onFail, open, o
                 <TrCard key={q.id} className="p-3">
                   <div className="flex items-start gap-2 mb-2">
                     {isCorrect ? (
-                      <CheckCircle size={ICON_SIZE.sm} color="#10B981" className="shrink-0 mt-0.5" />
+                      <CheckCircle
+                        size={ICON_SIZE.sm}
+                        color="#10B981"
+                        className="shrink-0 mt-0.5"
+                      />
                     ) : (
                       <XCircle size={ICON_SIZE.sm} color="#EF4444" className="shrink-0 mt-0.5" />
                     )}
                     <div className="flex-1">
-                      <p style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+                      <p
+                        style={{
+                          color: c.text1,
+                          fontSize: FONT_SCALE.xs,
+                          fontWeight: FONT_WEIGHT.semibold,
+                        }}
+                      >
                         Câu {i + 1}: {q.question}
                       </p>
                       <p
@@ -331,7 +376,11 @@ interface ClientCategoryBannerProps {
   className?: string;
 }
 
-export function ClientCategoryBanner({ category, onRequestUpgrade, className = '' }: ClientCategoryBannerProps) {
+export function ClientCategoryBanner({
+  category,
+  onRequestUpgrade,
+  className = '',
+}: ClientCategoryBannerProps) {
   const c = useThemeColors();
 
   const config = {
@@ -340,14 +389,22 @@ export function ClientCategoryBanner({ category, onRequestUpgrade, className = '
       icon: Shield,
       title: 'Retail Client',
       description: 'Bạn được hưởng bảo vệ cao nhất theo quy định MiFID II/FCA',
-      limits: ['Leverage tối đa: 30x (crypto)', 'Negative balance protection', 'Best execution guarantee'],
+      limits: [
+        'Leverage tối đa: 30x (crypto)',
+        'Negative balance protection',
+        'Best execution guarantee',
+      ],
     },
     professional: {
       color: '#3B82F6',
       icon: Shield,
       title: 'Professional Client',
       description: 'Bạn có quyền truy cập leverage cao hơn nhưng mất một số quyền bảo vệ',
-      limits: ['Leverage tối đa: 100x', 'Reduced investor protection', 'Must meet MiFID II criteria'],
+      limits: [
+        'Leverage tối đa: 100x',
+        'Reduced investor protection',
+        'Must meet MiFID II criteria',
+      ],
     },
     eligible_counterparty: {
       color: '#8B5CF6',
@@ -472,15 +529,17 @@ interface LeverageBlockerProps {
   open: boolean;
 }
 
-export function LeverageBlocker({ requestedLeverage, maxAllowed, reason, onClose, open }: LeverageBlockerProps) {
+export function LeverageBlocker({
+  requestedLeverage,
+  maxAllowed,
+  reason,
+  onClose,
+  open,
+}: LeverageBlockerProps) {
   const c = useThemeColors();
 
   return (
-    <BottomSheetV2
-      open={open}
-      onClose={onClose}
-      title="Đòn bẩy bị giới hạn"
-    >
+    <BottomSheetV2 open={open} onClose={onClose} title="Đòn bẩy bị giới hạn">
       <div className="flex flex-col gap-4">
         <TrCard
           className="p-6 text-center"
@@ -495,15 +554,20 @@ export function LeverageBlocker({ requestedLeverage, maxAllowed, reason, onClose
           >
             <AlertTriangle size={ICON_SIZE.xl} color="#EF4444" strokeWidth={ICON_STROKE.bold} />
           </div>
-          <p style={{ color: '#EF4444', fontSize: FONT_SCALE.lg, fontWeight: FONT_WEIGHT.bold, marginBottom: 8 }}>
+          <p
+            style={{
+              color: '#EF4444',
+              fontSize: FONT_SCALE.lg,
+              fontWeight: FONT_WEIGHT.bold,
+              marginBottom: 8,
+            }}
+          >
             Không thể dùng {requestedLeverage}x
           </p>
           <p style={{ color: c.text1, fontSize: FONT_SCALE.base, marginBottom: 4 }}>
             Đòn bẩy tối đa cho tài khoản của bạn: <strong>{maxAllowed}x</strong>
           </p>
-          <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>
-            {reason}
-          </p>
+          <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>{reason}</p>
         </TrCard>
 
         <CTAButton onClick={onClose} variant="secondary">
@@ -523,7 +587,10 @@ interface MarginCloseoutWarningProps {
   className?: string;
 }
 
-export function MarginCloseoutWarning({ equityPercentage, className = '' }: MarginCloseoutWarningProps) {
+export function MarginCloseoutWarning({
+  equityPercentage,
+  className = '',
+}: MarginCloseoutWarningProps) {
   const c = useThemeColors();
 
   // EU/UK rules: Close positions when equity < 50% of initial margin
@@ -548,14 +615,24 @@ export function MarginCloseoutWarning({ equityPercentage, className = '' }: Marg
           <AlertTriangle size={ICON_SIZE.md} color="#EF4444" strokeWidth={ICON_STROKE.bold} />
         </div>
         <div className="flex-1">
-          <p style={{ color: '#EF4444', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, marginBottom: 4 }}>
+          <p
+            style={{
+              color: '#EF4444',
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.bold,
+              marginBottom: 4,
+            }}
+          >
             50% Margin Close-out Rule
           </p>
           <p style={{ color: c.text1, fontSize: FONT_SCALE.xs, lineHeight: 1.5, marginBottom: 6 }}>
-            Equity của bạn hiện ở <strong style={{ color: '#EF4444' }}>{equityPercentage.toFixed(1)}%</strong> initial margin.
+            Equity của bạn hiện ở{' '}
+            <strong style={{ color: '#EF4444' }}>{equityPercentage.toFixed(1)}%</strong> initial
+            margin.
           </p>
           <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>
-            Theo quy định EU/UK, nếu equity giảm xuống dưới 50%, hệ thống sẽ <strong>tự động đóng toàn bộ vị thế</strong> để bảo vệ bạn khỏi lỗ thêm.
+            Theo quy định EU/UK, nếu equity giảm xuống dưới 50%, hệ thống sẽ{' '}
+            <strong>tự động đóng toàn bộ vị thế</strong> để bảo vệ bạn khỏi lỗ thêm.
           </p>
 
           {/* Progress bar */}
@@ -572,7 +649,9 @@ export function MarginCloseoutWarning({ equityPercentage, className = '' }: Marg
             </div>
             <div className="flex justify-between mt-1">
               <span style={{ color: c.text3, fontSize: 9 }}>0%</span>
-              <span style={{ color: '#EF4444', fontSize: 9, fontWeight: FONT_WEIGHT.bold }}>50% = Auto Close</span>
+              <span style={{ color: '#EF4444', fontSize: 9, fontWeight: FONT_WEIGHT.bold }}>
+                50% = Auto Close
+              </span>
               <span style={{ color: c.text3, fontSize: 9 }}>100%</span>
             </div>
           </div>
@@ -599,11 +678,19 @@ export function BestExecutionDisclosure({ className = '' }: { className?: string
           <FileText size={ICON_SIZE.md} color="#3B82F6" strokeWidth={ICON_STROKE.bold} />
         </div>
         <div className="flex-1">
-          <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, marginBottom: 4 }}>
+          <p
+            style={{
+              color: c.text1,
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.bold,
+              marginBottom: 4,
+            }}
+          >
             Best Execution Policy
           </p>
           <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.5, marginBottom: 6 }}>
-            Chúng tôi cam kết thực hiện lệnh của bạn theo <strong style={{ color: c.text1 }}>Best Execution</strong> theo quy định MiFID II:
+            Chúng tôi cam kết thực hiện lệnh của bạn theo{' '}
+            <strong style={{ color: c.text1 }}>Best Execution</strong> theo quy định MiFID II:
           </p>
           <div className="flex flex-col gap-1.5">
             {[

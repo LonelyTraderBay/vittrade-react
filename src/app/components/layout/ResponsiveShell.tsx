@@ -60,7 +60,10 @@ export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShel
             <span style={{ color: c.text2, fontSize: 13 }}>VitTrade Desktop</span>
             <div className="flex items-center gap-2">
               {isOffline && (
-                <span className="px-2 py-1 rounded-lg text-xs" style={{ background: '#92400E', color: '#FDE68A' }}>
+                <span
+                  className="px-2 py-1 rounded-lg text-xs"
+                  style={{ background: '#92400E', color: '#FDE68A' }}
+                >
                   Offline
                 </span>
               )}
@@ -69,8 +72,10 @@ export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShel
           </div>
 
           {/* Main content */}
-          <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-none"
-            style={{ overscrollBehaviorY: 'contain', WebkitOverflowScrolling: 'touch' }}>
+          <div
+            className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-none"
+            style={{ overscrollBehaviorY: 'contain', WebkitOverflowScrolling: 'touch' }}
+          >
             <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
               <Suspense fallback={<PageLoadingFallback />}>
                 <Outlet />
@@ -105,8 +110,10 @@ export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShel
           <div className="flex flex-col h-full">
             <StatusBar />
             {isOffline && (
-              <div className="flex items-center justify-center gap-2 py-1.5 text-xs font-medium"
-                style={{ background: '#92400E', color: '#FDE68A' }}>
+              <div
+                className="flex items-center justify-center gap-2 py-1.5 text-xs font-medium"
+                style={{ background: '#92400E', color: '#FDE68A' }}
+              >
                 <span>●</span>
                 <span>Mất kết nối</span>
               </div>
@@ -127,17 +134,28 @@ export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShel
   // ─── Tablet: wider content, still ResponsiveBottomNav ───
   if (isTablet) {
     return (
-      <div className="relative flex flex-col h-screen overflow-hidden" style={{ background: c.bg, overscrollBehavior: 'none' }}>
+      <div
+        className="relative flex flex-col h-screen overflow-hidden"
+        style={{ background: c.bg, overscrollBehavior: 'none' }}
+      >
         <StatusBar />
         {isOffline && (
-          <div className="flex items-center justify-center gap-2 py-1.5 text-xs font-medium"
-            style={{ background: '#92400E', color: '#FDE68A' }}>
+          <div
+            className="flex items-center justify-center gap-2 py-1.5 text-xs font-medium"
+            style={{ background: '#92400E', color: '#FDE68A' }}
+          >
             <span>●</span>
             <span>Mất kết nối — Đang hiển thị dữ liệu lưu trữ</span>
           </div>
         )}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-none"
-          style={{ paddingBottom: 80, overscrollBehaviorY: 'contain', WebkitOverflowScrolling: 'touch' }}>
+        <div
+          className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-none"
+          style={{
+            paddingBottom: 80,
+            overscrollBehaviorY: 'contain',
+            WebkitOverflowScrolling: 'touch',
+          }}
+        >
           <div style={{ maxWidth: 720, margin: '0 auto', padding: '0 16px' }}>
             <Suspense fallback={<PageLoadingFallback />}>
               <Outlet />
@@ -158,14 +176,22 @@ export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShel
     >
       <StatusBar />
       {isOffline && (
-        <div className="flex items-center justify-center gap-2 py-1.5 text-xs font-medium"
-          style={{ background: '#92400E', color: '#FDE68A' }}>
+        <div
+          className="flex items-center justify-center gap-2 py-1.5 text-xs font-medium"
+          style={{ background: '#92400E', color: '#FDE68A' }}
+        >
           <span>●</span>
           <span>Mất kết nối — Đang hiển thị dữ liệu lưu trữ</span>
         </div>
       )}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-none"
-        style={{ paddingBottom: 80, overscrollBehaviorY: 'contain', WebkitOverflowScrolling: 'touch' }}>
+      <div
+        className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-none"
+        style={{
+          paddingBottom: 80,
+          overscrollBehaviorY: 'contain',
+          WebkitOverflowScrolling: 'touch',
+        }}
+      >
         <Suspense fallback={<PageLoadingFallback />}>
           <Outlet />
         </Suspense>

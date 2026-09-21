@@ -47,14 +47,72 @@ interface WatchlistPair {
 }
 
 const WATCHLIST_PAIRS: WatchlistPair[] = [
-  { symbol: 'BTC', name: 'Bitcoin', price: 98500, change24h: 2.45, volume24h: 45600000000, hasAlert: true, folder: 'Favorites' },
-  { symbol: 'ETH', name: 'Ethereum', price: 3420, change24h: 3.82, volume24h: 28400000000, hasAlert: true, folder: 'Favorites' },
-  { symbol: 'SOL', name: 'Solana', price: 142.5, change24h: 8.56, volume24h: 3200000000, folder: 'DeFi' },
-  { symbol: 'AVAX', name: 'Avalanche', price: 42.3, change24h: -2.34, volume24h: 540000000, folder: 'DeFi' },
-  { symbol: 'MATIC', name: 'Polygon', price: 1.15, change24h: 5.67, volume24h: 890000000, folder: 'Layer 2' },
-  { symbol: 'ARB', name: 'Arbitrum', price: 1.85, change24h: 4.23, volume24h: 280000000, folder: 'Layer 2' },
-  { symbol: 'OP', name: 'Optimism', price: 2.42, change24h: -1.12, volume24h: 195000000, folder: 'Layer 2' },
-  { symbol: 'LINK', name: 'Chainlink', price: 18.75, change24h: 6.78, volume24h: 620000000, hasAlert: false },
+  {
+    symbol: 'BTC',
+    name: 'Bitcoin',
+    price: 98500,
+    change24h: 2.45,
+    volume24h: 45600000000,
+    hasAlert: true,
+    folder: 'Favorites',
+  },
+  {
+    symbol: 'ETH',
+    name: 'Ethereum',
+    price: 3420,
+    change24h: 3.82,
+    volume24h: 28400000000,
+    hasAlert: true,
+    folder: 'Favorites',
+  },
+  {
+    symbol: 'SOL',
+    name: 'Solana',
+    price: 142.5,
+    change24h: 8.56,
+    volume24h: 3200000000,
+    folder: 'DeFi',
+  },
+  {
+    symbol: 'AVAX',
+    name: 'Avalanche',
+    price: 42.3,
+    change24h: -2.34,
+    volume24h: 540000000,
+    folder: 'DeFi',
+  },
+  {
+    symbol: 'MATIC',
+    name: 'Polygon',
+    price: 1.15,
+    change24h: 5.67,
+    volume24h: 890000000,
+    folder: 'Layer 2',
+  },
+  {
+    symbol: 'ARB',
+    name: 'Arbitrum',
+    price: 1.85,
+    change24h: 4.23,
+    volume24h: 280000000,
+    folder: 'Layer 2',
+  },
+  {
+    symbol: 'OP',
+    name: 'Optimism',
+    price: 2.42,
+    change24h: -1.12,
+    volume24h: 195000000,
+    folder: 'Layer 2',
+  },
+  {
+    symbol: 'LINK',
+    name: 'Chainlink',
+    price: 18.75,
+    change24h: 6.78,
+    volume24h: 620000000,
+    hasAlert: false,
+  },
 ];
 
 type FilterTab = 'all' | 'favorites' | 'defi' | 'layer2';
@@ -137,7 +195,6 @@ export function WebMarketsWatchlistPage() {
         }
       />
       <div style={{ maxWidth: 1600, margin: '0 auto', padding: `${WEB_SPACING.cardRelaxed}px` }}>
-
         {/* ─── Filters & Search ─── */}
         <div className="flex items-center gap-4 mb-6">
           {/* Folder Tabs */}
@@ -264,7 +321,8 @@ export function WebMarketsWatchlistPage() {
                     gridTemplateColumns: '50px 1fr 140px 120px 140px 180px',
                     padding: '0 20px',
                     height: WEB_SPACING.rowDefault,
-                    borderBottom: idx < filteredPairs.length - 1 ? `1px solid ${c.divider}` : 'none',
+                    borderBottom:
+                      idx < filteredPairs.length - 1 ? `1px solid ${c.divider}` : 'none',
                   }}
                   onClick={() => handlePairClick(pair.symbol)}
                 >
@@ -421,10 +479,14 @@ export function WebMarketsWatchlistPage() {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text1, marginBottom: 16 }}>
+            <h3
+              style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: c.text1, marginBottom: 16 }}
+            >
               Thêm cặp vào watchlist
             </h3>
-            <p style={{ fontSize: WEB_FONT.sm, color: c.text3, marginBottom: 20 }}>Coming soon...</p>
+            <p style={{ fontSize: WEB_FONT.sm, color: c.text3, marginBottom: 20 }}>
+              Coming soon...
+            </p>
             <button
               onClick={() => setShowAddModal(false)}
               className="rounded-xl w-full"

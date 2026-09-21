@@ -12,9 +12,9 @@ import type { Asset } from './common';
 /* ─── Market Data ─── */
 
 export interface TradingPair {
-  symbol: string;              // e.g., "BTCUSDT"
-  baseAsset: string;           // e.g., "BTC"
-  quoteAsset: string;          // e.g., "USDT"
+  symbol: string; // e.g., "BTCUSDT"
+  baseAsset: string; // e.g., "BTC"
+  quoteAsset: string; // e.g., "USDT"
   status: 'active' | 'suspended' | 'delisted';
   minOrderSize: number;
   maxOrderSize: number;
@@ -51,7 +51,8 @@ export interface OrderBookEntry {
 
 export type OrderSide = 'buy' | 'sell';
 export type OrderType = 'market' | 'limit' | 'stop_limit' | 'stop_market';
-export type OrderStatus = 'pending' | 'open' | 'filled' | 'partially_filled' | 'cancelled' | 'expired' | 'rejected';
+export type OrderStatus =
+  'pending' | 'open' | 'filled' | 'partially_filled' | 'cancelled' | 'expired' | 'rejected';
 export type TimeInForce = 'GTC' | 'IOC' | 'FOK';
 
 export interface Order {
@@ -60,7 +61,7 @@ export interface Order {
   side: OrderSide;
   type: OrderType;
   status: OrderStatus;
-  price?: number;              // undefined for market orders
+  price?: number; // undefined for market orders
   quantity: number;
   filledQuantity: number;
   remainingQuantity: number;
@@ -69,7 +70,7 @@ export interface Order {
   fee?: number;
   feeAsset?: string;
   timeInForce?: TimeInForce;
-  stopPrice?: number;          // for stop orders
+  stopPrice?: number; // for stop orders
   createdAt: Date;
   updatedAt: Date;
   filledAt?: Date;
@@ -94,14 +95,14 @@ export interface Position {
   lockedQuantity: number;
   averagePrice: number;
   currentPrice: number;
-  value: number;                // quantity * currentPrice
+  value: number; // quantity * currentPrice
   pnl: number;
   pnlPercentage: number;
-  allocation: number;           // % of total portfolio
+  allocation: number; // % of total portfolio
 }
 
 export interface Portfolio {
-  totalValue: number;           // in quote currency (USDT)
+  totalValue: number; // in quote currency (USDT)
   totalPnl: number;
   totalPnlPercentage: number;
   positions: Position[];

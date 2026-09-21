@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { Bell, BellOff, Clock, TrendingUp, AlertTriangle, DollarSign, Calendar, Zap } from 'lucide-react';
+import {
+  Bell,
+  BellOff,
+  Clock,
+  TrendingUp,
+  AlertTriangle,
+  DollarSign,
+  Calendar,
+  Zap,
+} from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { PageContent, PageSection } from '../../components/layout/PageContent';
@@ -96,7 +105,8 @@ const NOTIFICATION_HISTORY: NotificationHistory[] = [
     id: 'n1',
     type: 'maturity',
     title: 'SOL Fixed 30D sắp đáo hạn',
-    message: 'Vị thế của bạn sẽ đáo hạn vào 03/03/2026. Nhớ kiểm tra và quyết định stake lại hoặc rút về.',
+    message:
+      'Vị thế của bạn sẽ đáo hạn vào 03/03/2026. Nhớ kiểm tra và quyết định stake lại hoặc rút về.',
     time: '2 giờ trước',
     read: false,
   },
@@ -128,7 +138,8 @@ const NOTIFICATION_HISTORY: NotificationHistory[] = [
     id: 'n5',
     type: 'risk',
     title: 'Cảnh báo: Validator uptime thấp',
-    message: 'Validator "Staked.us" có uptime 98.5% (thấp hơn 99%). Cân nhắc chuyển sang validator khác.',
+    message:
+      'Validator "Staked.us" có uptime 98.5% (thấp hơn 99%). Cân nhắc chuyển sang validator khác.',
     time: '3 ngày trước',
     read: true,
   },
@@ -148,18 +159,18 @@ export function StakingNotificationsPage() {
   const [history, setHistory] = useState(NOTIFICATION_HISTORY);
 
   const toggleSetting = (id: string) => {
-    setSettings(settings.map(s => s.id === id ? { ...s, enabled: !s.enabled } : s));
+    setSettings(settings.map((s) => (s.id === id ? { ...s, enabled: !s.enabled } : s)));
   };
 
   const markAsRead = (id: string) => {
-    setHistory(history.map(n => n.id === id ? { ...n, read: true } : n));
+    setHistory(history.map((n) => (n.id === id ? { ...n, read: true } : n)));
   };
 
   const markAllAsRead = () => {
-    setHistory(history.map(n => ({ ...n, read: true })));
+    setHistory(history.map((n) => ({ ...n, read: true })));
   };
 
-  const unreadCount = history.filter(n => !n.read).length;
+  const unreadCount = history.filter((n) => !n.read).length;
 
   return (
     <PageLayout>
@@ -167,7 +178,13 @@ export function StakingNotificationsPage() {
 
       <PageContent>
         {/* Info Banner */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(59,130,246,0.08)', border: '1.5px solid rgba(59,130,246,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{
+            background: 'rgba(59,130,246,0.08)',
+            border: '1.5px solid rgba(59,130,246,0.2)',
+          }}
+        >
           <div className="flex gap-3">
             <Bell size={20} color="#3B82F6" className="shrink-0 mt-0.5" />
             <div>
@@ -175,7 +192,8 @@ export function StakingNotificationsPage() {
                 Quản lý Thông báo
               </p>
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                Tùy chỉnh thông báo để không bỏ lỡ sự kiện quan trọng. Chúng tôi chỉ gửi thông báo thật sự cần thiết.
+                Tùy chỉnh thông báo để không bỏ lỡ sự kiện quan trọng. Chúng tôi chỉ gửi thông báo
+                thật sự cần thiết.
               </p>
             </div>
           </div>
@@ -184,7 +202,7 @@ export function StakingNotificationsPage() {
         {/* Notification Settings */}
         <PageSection label="Cài đặt Thông báo">
           <div className="flex flex-col gap-2">
-            {settings.map(setting => {
+            {settings.map((setting) => {
               const Icon = setting.icon;
               return (
                 <TrCard key={setting.id} className="p-4">
@@ -192,21 +210,29 @@ export function StakingNotificationsPage() {
                     <div
                       className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                       style={{
-                        background: setting.priority === 'high' ? 'rgba(239,68,68,0.12)' :
-                                   setting.priority === 'medium' ? 'rgba(59,130,246,0.12)' :
-                                   'rgba(107,114,128,0.12)',
+                        background:
+                          setting.priority === 'high'
+                            ? 'rgba(239,68,68,0.12)'
+                            : setting.priority === 'medium'
+                              ? 'rgba(59,130,246,0.12)'
+                              : 'rgba(107,114,128,0.12)',
                         border: `1.5px solid ${
-                          setting.priority === 'high' ? 'rgba(239,68,68,0.3)' :
-                          setting.priority === 'medium' ? 'rgba(59,130,246,0.3)' :
-                          'rgba(107,114,128,0.3)'
+                          setting.priority === 'high'
+                            ? 'rgba(239,68,68,0.3)'
+                            : setting.priority === 'medium'
+                              ? 'rgba(59,130,246,0.3)'
+                              : 'rgba(107,114,128,0.3)'
                         }`,
-                      }}>
+                      }}
+                    >
                       <Icon
                         size={18}
                         color={
-                          setting.priority === 'high' ? '#EF4444' :
-                          setting.priority === 'medium' ? '#3B82F6' :
-                          '#6B7280'
+                          setting.priority === 'high'
+                            ? '#EF4444'
+                            : setting.priority === 'medium'
+                              ? '#3B82F6'
+                              : '#6B7280'
                         }
                       />
                     </div>
@@ -216,8 +242,10 @@ export function StakingNotificationsPage() {
                           {setting.title}
                         </p>
                         {setting.priority === 'high' && (
-                          <span className="px-1.5 py-0.5 rounded text-xs font-bold"
-                            style={{ background: 'rgba(239,68,68,0.15)', color: '#EF4444' }}>
+                          <span
+                            className="px-1.5 py-0.5 rounded text-xs font-bold"
+                            style={{ background: 'rgba(239,68,68,0.15)', color: '#EF4444' }}
+                          >
                             Quan trọng
                           </span>
                         )}
@@ -237,7 +265,8 @@ export function StakingNotificationsPage() {
                         className="absolute cursor-pointer top-0 left-0 right-0 bottom-0 rounded-full transition-all"
                         style={{
                           background: setting.enabled ? '#10B981' : c.borderSolid,
-                        }}>
+                        }}
+                      >
                         <span
                           className="absolute left-1 bottom-1 bg-white w-4 h-4 rounded-full transition-all"
                           style={{
@@ -261,11 +290,9 @@ export function StakingNotificationsPage() {
                 { id: 'push', label: 'Push Notification (App)', enabled: true },
                 { id: 'email', label: 'Email', enabled: true },
                 { id: 'sms', label: 'SMS (chỉ High priority)', enabled: false },
-              ].map(channel => (
+              ].map((channel) => (
                 <div key={channel.id} className="flex items-center justify-between">
-                  <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>
-                    {channel.label}
-                  </p>
+                  <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>{channel.label}</p>
                   <label className="relative inline-block w-12 h-6">
                     <input
                       type="checkbox"
@@ -277,7 +304,8 @@ export function StakingNotificationsPage() {
                       className="absolute cursor-pointer top-0 left-0 right-0 bottom-0 rounded-full transition-all"
                       style={{
                         background: channel.enabled ? '#10B981' : c.borderSolid,
-                      }}>
+                      }}
+                    >
                       <span
                         className="absolute left-1 bottom-1 bg-white w-4 h-4 rounded-full transition-all"
                         style={{
@@ -295,21 +323,20 @@ export function StakingNotificationsPage() {
         {/* Notification History */}
         <PageSection label={`Lịch sử (${unreadCount} chưa đọc)`}>
           <div className="flex items-center justify-between mb-3">
-            <p style={{ color: c.text2, fontSize: 13 }}>
-              {history.length} thông báo gần đây
-            </p>
+            <p style={{ color: c.text2, fontSize: 13 }}>{history.length} thông báo gần đây</p>
             {unreadCount > 0 && (
               <button
                 onClick={markAllAsRead}
                 className="text-xs font-semibold"
-                style={{ color: '#3B82F6' }}>
+                style={{ color: '#3B82F6' }}
+              >
                 Đánh dấu tất cả đã đọc
               </button>
             )}
           </div>
 
           <div className="flex flex-col gap-2">
-            {history.map(notif => {
+            {history.map((notif) => {
               const config = TYPE_CONFIG[notif.type];
               const Icon = config.icon;
               return (
@@ -320,21 +347,27 @@ export function StakingNotificationsPage() {
                   onClick={() => markAsRead(notif.id)}
                   style={{
                     background: notif.read ? c.surface : 'rgba(59,130,246,0.03)',
-                    border: notif.read ? `1px solid ${c.borderSolid}` : '1px solid rgba(59,130,246,0.15)',
-                  }}>
+                    border: notif.read
+                      ? `1px solid ${c.borderSolid}`
+                      : '1px solid rgba(59,130,246,0.15)',
+                  }}
+                >
                   <div className="flex items-start gap-3">
                     <div
                       className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ background: config.bg, border: `1.5px solid ${config.color}44` }}>
+                      style={{ background: config.bg, border: `1.5px solid ${config.color}44` }}
+                    >
                       <Icon size={18} color={config.color} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <p style={{
-                          color: c.text1,
-                          fontSize: 14,
-                          fontWeight: notif.read ? 600 : 700,
-                        }}>
+                        <p
+                          style={{
+                            color: c.text1,
+                            fontSize: 14,
+                            fontWeight: notif.read ? 600 : 700,
+                          }}
+                        >
                           {notif.title}
                         </p>
                         {!notif.read && (
@@ -344,9 +377,7 @@ export function StakingNotificationsPage() {
                       <p style={{ color: c.text2, fontSize: 13, lineHeight: 1.5, marginBottom: 4 }}>
                         {notif.message}
                       </p>
-                      <p style={{ color: c.text3, fontSize: 11 }}>
-                        {notif.time}
-                      </p>
+                      <p style={{ color: c.text3, fontSize: 11 }}>{notif.time}</p>
                     </div>
                   </div>
                 </TrCard>
@@ -367,17 +398,12 @@ export function StakingNotificationsPage() {
                 Tắt tất cả thông báo từ 22:00-07:00 (trừ High priority)
               </p>
               <label className="relative inline-block w-12 h-6">
-                <input
-                  type="checkbox"
-                  defaultChecked={false}
-                  className="opacity-0 w-0 h-0"
-                />
+                <input type="checkbox" defaultChecked={false} className="opacity-0 w-0 h-0" />
                 <span
                   className="absolute cursor-pointer top-0 left-0 right-0 bottom-0 rounded-full transition-all"
-                  style={{ background: c.borderSolid }}>
-                  <span
-                    className="absolute left-1 bottom-1 bg-white w-4 h-4 rounded-full transition-all"
-                  />
+                  style={{ background: c.borderSolid }}
+                >
+                  <span className="absolute left-1 bottom-1 bg-white w-4 h-4 rounded-full transition-all" />
                 </span>
               </label>
             </div>
@@ -387,7 +413,8 @@ export function StakingNotificationsPage() {
         {/* Footer Info */}
         <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6, textAlign: 'center' }}>
-            Thông báo giúp bạn không bỏ lỡ các sự kiện quan trọng. Chúng tôi cam kết không spam và chỉ gửi thông báo có giá trị thật sự.
+            Thông báo giúp bạn không bỏ lỡ các sự kiện quan trọng. Chúng tôi cam kết không spam và
+            chỉ gửi thông báo có giá trị thật sự.
           </p>
         </div>
       </PageContent>

@@ -2,19 +2,28 @@
  * ══════════════════════════════════════════════════════════════
  *  ProviderGovernancePage.test.tsx — Provider Governance Tests
  * ══════════════════════════════════════════════════════════════
- * 
+ *
+ * Rewritten for the current 4-tab page
+ * (Modifications / Communication / Fees / Compliance).
+ *
  * Test Coverage (6 tests):
- * 1. ✅ Strategy modification log shown
- * 2. ✅ 24h notice requirement enforced
- * 3. ✅ Follower communication works
- * 4. ✅ Fee waterfall report accurate
- * 5. ✅ Compliance checklist complete
- * 6. ✅ Transparency score displayed
+ * 1. ✅ Provider dashboard summary stats render
+ * 2. ✅ Strategy modification log with 24h notice requirement
+ * 3. ✅ Follower communication center lists broadcasts
+ * 4. ✅ Performance fee waterfall with high-water mark disclosure
+ * 5. ✅ Compliance checklist is complete with score
+ * 6. ✅ Broadcast message modal opens, sends, and closes
+ *
+ * DROPPED from the old suite (features no longer exist on the page):
+ * - Upcoming/scheduled changes with countdown ("effective in 18 hours")
+ * - View-announcement modal with read receipts
+ * - Gross/platform/net fee waterfall amounts (now earnings + contributors)
+ * - Transparency score with progressbar
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { screen, waitFor, within } from '@testing-library/react';
-import { renderWithRouter, userEvent } from '../../../test/utils/test-utils';
+import { screen, waitFor } from '@testing-library/react';
+import { renderWithRouter, userEvent } from '@/test/test-utils-navigation';
 import { ProviderGovernancePage } from '../ProviderGovernancePage';
 
 describe('ProviderGovernancePage', () => {
@@ -22,158 +31,179 @@ describe('ProviderGovernancePage', () => {
     vi.clearAllMocks();
   });
 
-  it('should display strategy modification log', () => {
+  it('should display provider dashboard summary stats', () => {
     renderWithRouter(<ProviderGovernancePage />, {
       initialRoute: '/trade/copy-provider/provider-123/governance',
     });
 
-    // Page title
-    expect(screen.getByText(/provider governance/i)).toBeInTheDocument();
+    expect(screen.getByText('Provider Governance')).toBeInTheDocument();
+    expect(screen.getByText('Provider Dashboard')).toBeInTheDocument();
+    expect(screen.getByText('Managing 245 followers')).toBeInTheDocument();
 
-    // Modification log
-    expect(screen.getByText(/strategy modification log/i)).toBeInTheDocument();
+    // Stats: AUM, monthly fees, compliance (fee values interpolate raw numbers)
+    expect(screen.getByText('AUM')).toBeInTheDocument();
+    expect(screen.getByText('$125K')).toBeInTheDocument();
+    expect(screen.getByText('This Month')).toBeInTheDocument();
+    expect(screen.getByText('$1850')).toBeInTheDocument();
+    // "Compliance" appears in the stats card AND as a tab name
+    expect(screen.getAllByText('Compliance').length).toBe(2);
+    expect(screen.getByText('95/100')).toBeInTheDocument();
 
-    // Recent modifications
-    expect(screen.getByText(/march 1.*risk parameters updated/i)).toBeInTheDocument();
-    expect(screen.getByText(/feb 15.*max position size increased/i)).toBeInTheDocument();
-
-    // Modification details
-    expect(screen.getByText(/max drawdown.*10%.*15%/i)).toBeInTheDocument();
-    expect(screen.getByText(/position size.*\$5,000.*\$7,500/i)).toBeInTheDocument();
-
-    // Follower impact
-    expect(screen.getByText(/affects.*2,500 followers/i)).toBeInTheDocument();
+    // 4 tabs
+    expect(screen.getAllByRole('tab')).toHaveLength(4);
   });
 
-  it('should enforce 24h notice requirement', async () => {
+  it('should show strategy modification log with 24h notice requirement', () => {
+    renderWithRouter(<ProviderGovernancePage />, {
+      initialRoute: '/trade/copy-provider/provider-123/governance',
+    });
+
+    // 24-hour notice banner (default Modifications tab)
+    expect(screen.getByText(/24-Hour Notice Required/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/notify all followers at least 24 hours before/i),
+    ).toBeInTheDocument();
+
+    // Modification log with the three mock entries
+    expect(screen.getByText('Strategy Modification Log')).toBeInTheDocument();
+    expect(screen.getByText('strategy change', { exact: true })).toBeInTheDocument();
+    expect(screen.getByText('risk level', { exact: true })).toBeInTheDocument();
+    expect(screen.getByText('fee structure', { exact: true })).toBeInTheDocument();
+
+    // Old → new value pairs
+    expect(screen.getByText('Swing Trading')).toBeInTheDocument();
+    expect(screen.getByText('Scalping')).toBeInTheDocument();
+    expect(screen.getByText('Medium')).toBeInTheDocument();
+    expect(screen.getByText('High')).toBeInTheDocument();
+    expect(screen.getByText('15% performance fee')).toBeInTheDocument();
+    expect(screen.getByText('10% performance fee')).toBeInTheDocument();
+
+    // Follower impact + notification confirmation (shown on every logged mod)
+    expect(screen.getByText('245 followers impacted')).toBeInTheDocument();
+    expect(screen.getByText('320 followers impacted')).toBeInTheDocument();
+    expect(screen.getAllByText('✓ Notification sent 24h before implementation')).toHaveLength(3);
+
+    // Entry point for requesting a modification
+    expect(
+      screen.getByRole('button', { name: /Request Strategy Modification/i }),
+    ).toBeInTheDocument();
+  });
+
+  it('should list follower communications on the Communication tab', async () => {
     const user = userEvent.setup();
     renderWithRouter(<ProviderGovernancePage />, {
       initialRoute: '/trade/copy-provider/provider-123/governance',
     });
 
-    // Notice requirement banner
-    expect(screen.getByText(/24.*hour notice/i)).toBeInTheDocument();
-    expect(screen.getByText(/all strategy changes.*24h advance notice/i)).toBeInTheDocument();
+    await user.click(screen.getByRole('tab', { name: 'Communication' }));
 
-    // Upcoming changes section
-    expect(screen.getByText(/upcoming changes/i)).toBeInTheDocument();
+    expect(screen.getByText('Follower Communication Center')).toBeInTheDocument();
 
-    // Scheduled change
-    expect(screen.getByText(/march 10.*max positions.*20.*25/i)).toBeInTheDocument();
-    expect(screen.getByText(/effective in.*18 hours/i)).toBeInTheDocument();
+    // Broadcast CTA
+    expect(screen.getAllByText('Broadcast Message').length).toBeGreaterThan(0);
+    expect(screen.getByText('Send announcement to all 245 followers')).toBeInTheDocument();
 
-    // Should show countdown
-    const countdown = screen.getByText(/18 hours/i);
-    expect(countdown).toBeInTheDocument();
-
-    // Past changes should show "Implemented"
-    expect(screen.getByText(/implemented/i)).toBeInTheDocument();
+    // The two mock announcements with engagement stats
+    expect(
+      screen.getByText('Strategy Change Notification: Swing → Scalping'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Risk Level Adjustment Notice')).toBeInTheDocument();
+    expect(screen.getByText('245 recipients')).toBeInTheDocument();
+    expect(screen.getByText('180 recipients')).toBeInTheDocument();
+    expect(screen.getByText('78% open rate')).toBeInTheDocument();
+    expect(screen.getByText('85% open rate')).toBeInTheDocument();
+    expect(screen.getByText('2026-03-04')).toBeInTheDocument();
   });
 
-  it('should enable follower communication', async () => {
+  it('should display fee waterfall with high-water mark disclosure', async () => {
     const user = userEvent.setup();
     renderWithRouter(<ProviderGovernancePage />, {
       initialRoute: '/trade/copy-provider/provider-123/governance',
     });
 
-    // Communication section
-    expect(screen.getByText(/follower communication/i)).toBeInTheDocument();
+    await user.click(screen.getByRole('tab', { name: 'Fees' }));
 
-    // Recent announcements
-    expect(screen.getByText(/march 5.*strategy update/i)).toBeInTheDocument();
-    expect(screen.getByText(/adjusting risk parameters/i)).toBeInTheDocument();
+    expect(screen.getByText('Performance Fee Waterfall')).toBeInTheDocument();
 
-    // Read announcement
-    const viewBtn = screen.getByRole('button', { name: /view announcement/i });
-    await user.click(viewBtn);
+    // Earnings summary (This Month value also appears in the dashboard card)
+    expect(screen.getAllByText('$1850').length).toBe(2);
+    expect(screen.getByText('All-Time')).toBeInTheDocument();
+    expect(screen.getByText('$12400')).toBeInTheDocument();
 
-    // Announcement modal
+    // High-water mark fairness disclosure
+    expect(screen.getByText('High-Water Mark System')).toBeInTheDocument();
+    expect(
+      screen.getByText(/only earn performance fees when followers are in profit/i),
+    ).toBeInTheDocument();
+
+    // Top contributors with profit → fee math (10% fee)
+    expect(screen.getByText('Top Fee Contributors (This Month)')).toBeInTheDocument();
+    expect(screen.getByText('Follower #001')).toBeInTheDocument();
+    expect(screen.getByText('Profit: $450 (10% fee)')).toBeInTheDocument();
+    expect(screen.getByText('$45')).toBeInTheDocument();
+    expect(screen.getByText('Follower #089')).toBeInTheDocument();
+    expect(screen.getByText('$25')).toBeInTheDocument();
+  });
+
+  it('should show the complete compliance checklist', async () => {
+    const user = userEvent.setup();
+    renderWithRouter(<ProviderGovernancePage />, {
+      initialRoute: '/trade/copy-provider/provider-123/governance',
+    });
+
+    await user.click(screen.getByRole('tab', { name: 'Compliance' }));
+
+    expect(screen.getByText('Compliance Checklist')).toBeInTheDocument();
+
+    // All six obligations with last-check dates
+    const items = [
+      'KYC verification up-to-date',
+      'Risk disclosure accurate',
+      'Fee structure transparent',
+      'No conflicts of interest undisclosed',
+      'Strategy description current',
+      'Communication obligations met',
+    ];
+    items.forEach((item) => {
+      expect(screen.getByText(item)).toBeInTheDocument();
+    });
+    expect(screen.getAllByText(/Last check: 2026-0\d-\d{2}/).length).toBe(6);
+
+    // Score card
+    expect(screen.getByText('Compliance Score: 95/100')).toBeInTheDocument();
+    expect(screen.getByText('Excellent standing — All requirements met')).toBeInTheDocument();
+  });
+
+  it('should open the broadcast modal, send a message, and close it', async () => {
+    const user = userEvent.setup();
+    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
+
+    renderWithRouter(<ProviderGovernancePage />, {
+      initialRoute: '/trade/copy-provider/provider-123/governance',
+    });
+
+    await user.click(screen.getByRole('tab', { name: 'Communication' }));
+    await user.click(screen.getByRole('button', { name: /Broadcast Message/i }));
+
+    // Modal with subject + message fields (labels are not linked via htmlFor)
+    expect(screen.getByText('Send announcement to all followers')).toBeInTheDocument();
+    const subjectInput = screen.getByPlaceholderText('e.g., Strategy Change Notification');
+    const messageInput = screen.getByPlaceholderText('Enter your message...');
+    expect(subjectInput).toBeInTheDocument();
+    expect(messageInput).toBeInTheDocument();
+
+    await user.type(subjectInput, 'Strategy update');
+    await user.type(messageInput, 'We are adjusting risk parameters.');
+
+    // Send → alert + close
+    await user.click(screen.getByRole('button', { name: 'Send' }));
+    expect(alertSpy).toHaveBeenCalledWith('Message sent to all followers!');
     await waitFor(() => {
-      expect(screen.getByText(/full announcement/i)).toBeInTheDocument();
-      expect(screen.getByText(/posted.*march 5/i)).toBeInTheDocument();
+      expect(
+        screen.queryByPlaceholderText('e.g., Strategy Change Notification'),
+      ).not.toBeInTheDocument();
     });
 
-    // Should show read receipt count
-    expect(screen.getByText(/read by.*1,850.*2,500 followers/i)).toBeInTheDocument();
-  });
-
-  it('should display accurate fee waterfall report', () => {
-    renderWithRouter(<ProviderGovernancePage />, {
-      initialRoute: '/trade/copy-provider/provider-123/governance',
-    });
-
-    // Fee waterfall section
-    expect(screen.getByText(/fee waterfall/i)).toBeInTheDocument();
-
-    // Gross profit
-    expect(screen.getByText(/gross profit/i)).toBeInTheDocument();
-    expect(screen.getByText(/\$10,000/)).toBeInTheDocument();
-
-    // Platform fees (0.1% monthly)
-    expect(screen.getByText(/platform fees/i)).toBeInTheDocument();
-    expect(screen.getByText(/-\$100/)).toBeInTheDocument();
-
-    // Performance fees (10%)
-    expect(screen.getByText(/performance fees/i)).toBeInTheDocument();
-    expect(screen.getByText(/-\$1,000/)).toBeInTheDocument();
-
-    // Net to provider
-    expect(screen.getByText(/net to provider/i)).toBeInTheDocument();
-    expect(screen.getByText(/\$8,900/)).toBeInTheDocument();
-
-    // Transparency note
-    expect(screen.getByText(/all fees disclosed.*advance/i)).toBeInTheDocument();
-  });
-
-  it('should show complete compliance checklist', () => {
-    renderWithRouter(<ProviderGovernancePage />, {
-      initialRoute: '/trade/copy-provider/provider-123/governance',
-    });
-
-    // Compliance checklist
-    expect(screen.getByText(/compliance checklist/i)).toBeInTheDocument();
-
-    // Checklist items with status
-    expect(screen.getByText(/kyc verified/i)).toBeInTheDocument();
-    expect(screen.getByText(/2fa enabled/i)).toBeInTheDocument();
-    expect(screen.getByText(/disclosure obligations met/i)).toBeInTheDocument();
-    expect(screen.getByText(/24h notice compliance/i)).toBeInTheDocument();
-    expect(screen.getByText(/fee transparency/i)).toBeInTheDocument();
-    expect(screen.getByText(/conflict of interest disclosed/i)).toBeInTheDocument();
-
-    // All should have checkmarks
-    const checkmarks = screen.getAllByTestId('check-icon');
-    expect(checkmarks.length).toBeGreaterThanOrEqual(6);
-
-    // Compliance score
-    expect(screen.getByText(/compliance score.*100%/i)).toBeInTheDocument();
-  });
-
-  it('should display transparency score', () => {
-    renderWithRouter(<ProviderGovernancePage />, {
-      initialRoute: '/trade/copy-provider/provider-123/governance',
-    });
-
-    // Transparency score section
-    expect(screen.getByText(/transparency score/i)).toBeInTheDocument();
-
-    // Overall score (0-100)
-    expect(screen.getByText(/92.*100/)).toBeInTheDocument();
-    expect(screen.getByText(/excellent transparency/i)).toBeInTheDocument();
-
-    // Score breakdown
-    expect(screen.getByText(/communication frequency/i)).toBeInTheDocument();
-    expect(screen.getByText(/95/)).toBeInTheDocument();
-
-    expect(screen.getByText(/disclosure quality/i)).toBeInTheDocument();
-    expect(screen.getByText(/98/)).toBeInTheDocument();
-
-    expect(screen.getByText(/response time/i)).toBeInTheDocument();
-    expect(screen.getByText(/85/)).toBeInTheDocument();
-
-    // Visual indicator (progress bar)
-    const scoreBar = screen.getByRole('progressbar', { name: /transparency/i });
-    expect(scoreBar).toBeInTheDocument();
-    expect(scoreBar).toHaveAttribute('aria-valuenow', '92');
+    alertSpy.mockRestore();
   });
 });

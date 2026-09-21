@@ -8,8 +8,22 @@ import { useThemeColors } from '../../hooks/useThemeColors';
 import { TrCard } from '../../components/ui/TrCard';
 
 const API_KEYS = [
-  { id: 'key1', name: 'Production API', key: 'sk_live_4f8b...2a3c', created: '2026-01-15', lastUsed: '2 mins ago', requests: 12543 },
-  { id: 'key2', name: 'Test Environment', key: 'sk_test_9d1e...7b4f', created: '2025-12-01', lastUsed: '1 day ago', requests: 892 },
+  {
+    id: 'key1',
+    name: 'Production API',
+    key: 'sk_live_4f8b...2a3c',
+    created: '2026-01-15',
+    lastUsed: '2 mins ago',
+    requests: 12543,
+  },
+  {
+    id: 'key2',
+    name: 'Test Environment',
+    key: 'sk_test_9d1e...7b4f',
+    created: '2025-12-01',
+    lastUsed: '1 day ago',
+    requests: 892,
+  },
 ];
 
 const RECENT_REQUESTS = [
@@ -27,7 +41,13 @@ export function StakingDeveloperConsolePage() {
       <Header title="Developer Console" back />
 
       <PageContent>
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(139,92,246,0.08)', border: '1.5px solid rgba(139,92,246,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{
+            background: 'rgba(139,92,246,0.08)',
+            border: '1.5px solid rgba(139,92,246,0.2)',
+          }}
+        >
           <p style={{ color: c.text1, fontSize: 14, fontWeight: 700, marginBottom: 4 }}>
             API Management
           </p>
@@ -43,7 +63,10 @@ export function StakingDeveloperConsolePage() {
               <p style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>13.4K</p>
               <p style={{ color: c.text3, fontSize: 9 }}>Requests/day</p>
             </div>
-            <div className="text-center p-2 rounded-xl" style={{ background: 'rgba(16,185,129,0.08)' }}>
+            <div
+              className="text-center p-2 rounded-xl"
+              style={{ background: 'rgba(16,185,129,0.08)' }}
+            >
               <p style={{ color: '#10B981', fontSize: 16, fontWeight: 700 }}>99.9%</p>
               <p style={{ color: c.text3, fontSize: 9 }}>Uptime</p>
             </div>
@@ -67,7 +90,7 @@ export function StakingDeveloperConsolePage() {
         {tab === 'keys' && (
           <PageSection label="API Keys">
             <div className="flex flex-col gap-2">
-              {API_KEYS.map(key => (
+              {API_KEYS.map((key) => (
                 <TrCard key={key.id} className="p-3">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
@@ -96,7 +119,10 @@ export function StakingDeveloperConsolePage() {
                 </TrCard>
               ))}
             </div>
-            <button className="w-full py-3 rounded-[14px] text-sm font-semibold" style={{ background: c.primary, color: '#FFF' }}>
+            <button
+              className="w-full py-3 rounded-[14px] text-sm font-semibold"
+              style={{ background: c.primary, color: '#FFF' }}
+            >
               Create New API Key
             </button>
           </PageSection>

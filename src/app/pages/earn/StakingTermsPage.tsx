@@ -287,8 +287,8 @@ export function StakingTermsPage() {
   const [hasAccepted, setHasAccepted] = useState(false);
 
   const toggleSection = (id: string) => {
-    setExpandedSections(prev =>
-      prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]
+    setExpandedSections((prev) =>
+      prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id],
     );
   };
 
@@ -305,8 +305,13 @@ export function StakingTermsPage() {
         {/* Header Info */}
         <TrCard className="p-4">
           <div className="flex items-start gap-3 mb-3">
-            <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
-              style={{ background: 'rgba(59,130,246,0.12)', border: '1.5px solid rgba(59,130,246,0.3)' }}>
+            <div
+              className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
+              style={{
+                background: 'rgba(59,130,246,0.12)',
+                border: '1.5px solid rgba(59,130,246,0.3)',
+              }}
+            >
               <FileText size={24} color="#3B82F6" />
             </div>
             <div className="flex-1">
@@ -325,25 +330,36 @@ export function StakingTermsPage() {
             </div>
           </div>
 
-          <div className="rounded-xl p-3 mb-3" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
+          <div
+            className="rounded-xl p-3 mb-3"
+            style={{
+              background: 'rgba(245,158,11,0.08)',
+              border: '1px solid rgba(245,158,11,0.2)',
+            }}
+          >
             <div className="flex gap-2">
               <AlertCircle size={16} color="#F59E0B" className="shrink-0 mt-0.5" />
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.5 }}>
-                Vui lòng đọc kỹ điều khoản này trước khi sử dụng dịch vụ staking. Bằng việc đăng ký staking, bạn đồng ý tuân thủ các điều khoản dưới đây.
+                Vui lòng đọc kỹ điều khoản này trước khi sử dụng dịch vụ staking. Bằng việc đăng ký
+                staking, bạn đồng ý tuân thủ các điều khoản dưới đây.
               </p>
             </div>
           </div>
 
           <div className="flex gap-2">
-            <button onClick={handlePrint}
+            <button
+              onClick={handlePrint}
               className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl"
-              style={{ background: c.surface2, color: c.text2, fontSize: 13, fontWeight: 600 }}>
+              style={{ background: c.surface2, color: c.text2, fontSize: 13, fontWeight: 600 }}
+            >
               <Printer size={16} />
               In trang
             </button>
-            <button onClick={handleDownload}
+            <button
+              onClick={handleDownload}
               className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl"
-              style={{ background: c.primary, color: '#FFF', fontSize: 13, fontWeight: 600 }}>
+              style={{ background: c.primary, color: '#FFF', fontSize: 13, fontWeight: 600 }}
+            >
               <Download size={16} />
               Tải PDF
             </button>
@@ -352,14 +368,15 @@ export function StakingTermsPage() {
 
         {/* Sections */}
         <div className="flex flex-col gap-3">
-          {TERMS_SECTIONS.map(section => {
+          {TERMS_SECTIONS.map((section) => {
             const isExpanded = expandedSections.includes(section.id);
             return (
               <TrCard key={section.id} className="overflow-hidden">
                 <button
                   onClick={() => toggleSection(section.id)}
                   className="w-full flex items-center justify-between p-4"
-                  style={{ textAlign: 'left' }}>
+                  style={{ textAlign: 'left' }}
+                >
                   <span style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>
                     {section.title}
                   </span>
@@ -371,7 +388,8 @@ export function StakingTermsPage() {
                     style={{
                       transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
                       transition: 'transform 0.2s ease',
-                    }}>
+                    }}
+                  >
                     <path
                       d="M5 7.5L10 12.5L15 7.5"
                       stroke={c.text3}
@@ -388,17 +406,24 @@ export function StakingTermsPage() {
                     gridTemplateRows: isExpanded ? '1fr' : '0fr',
                     transition: 'grid-template-rows 0.3s ease',
                     overflow: 'hidden',
-                  }}>
+                  }}
+                >
                   <div style={{ minHeight: 0 }}>
-                    <div className="px-4 pb-4" style={{ borderTop: `1px solid ${c.divider}`, paddingTop: 16 }}>
+                    <div
+                      className="px-4 pb-4"
+                      style={{ borderTop: `1px solid ${c.divider}`, paddingTop: 16 }}
+                    >
                       {section.content.map((paragraph, idx) => (
-                        <p key={idx} style={{
-                          color: c.text2,
-                          fontSize: 13,
-                          lineHeight: 1.7,
-                          marginBottom: paragraph.startsWith('•') ? 4 : 12,
-                          paddingLeft: paragraph.startsWith('•') ? 16 : 0,
-                        }}>
+                        <p
+                          key={idx}
+                          style={{
+                            color: c.text2,
+                            fontSize: 13,
+                            lineHeight: 1.7,
+                            marginBottom: paragraph.startsWith('•') ? 4 : 12,
+                            paddingLeft: paragraph.startsWith('•') ? 16 : 0,
+                          }}
+                        >
                           {paragraph}
                         </p>
                       ))}
@@ -412,23 +437,27 @@ export function StakingTermsPage() {
 
         {/* Acceptance Checkbox */}
         <TrCard className="p-4">
-          <button
-            onClick={() => setHasAccepted(!hasAccepted)}
-            className="flex items-start gap-3">
+          <button onClick={() => setHasAccepted(!hasAccepted)} className="flex items-start gap-3">
             <div
               className="w-5 h-5 rounded-md border flex items-center justify-center shrink-0 mt-0.5"
               style={{
                 borderColor: hasAccepted ? '#10B981' : c.borderSolid,
                 background: hasAccepted ? '#10B981' : 'transparent',
-              }}>
+              }}
+            >
               {hasAccepted && <CheckCircle size={13} color="#fff" />}
             </div>
             <div className="flex-1">
               <p style={{ color: c.text2, fontSize: 13, lineHeight: 1.6, textAlign: 'left' }}>
-                Tôi đã đọc, hiểu và đồng ý với <span style={{ color: '#3B82F6', fontWeight: 600 }}>Điều khoản Dịch vụ Staking</span> phiên bản {VERSION} ngày {LAST_UPDATED}.
+                Tôi đã đọc, hiểu và đồng ý với{' '}
+                <span style={{ color: '#3B82F6', fontWeight: 600 }}>
+                  Điều khoản Dịch vụ Staking
+                </span>{' '}
+                phiên bản {VERSION} ngày {LAST_UPDATED}.
               </p>
               <p style={{ color: c.text3, fontSize: 11, marginTop: 6, textAlign: 'left' }}>
-                Bằng việc đánh dấu ô này và tiếp tục sử dụng dịch vụ, bạn tạo ra một thỏa thuận có tính ràng buộc pháp lý giữa bạn và nền tảng.
+                Bằng việc đánh dấu ô này và tiếp tục sử dụng dịch vụ, bạn tạo ra một thỏa thuận có
+                tính ràng buộc pháp lý giữa bạn và nền tảng.
               </p>
             </div>
           </button>
@@ -437,7 +466,9 @@ export function StakingTermsPage() {
         {/* Footer Disclaimer */}
         <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6, textAlign: 'center' }}>
-            Điều khoản này có hiệu lực từ {LAST_UPDATED}. Phiên bản cũ có thể được xem trong mục "Lịch sử phiên bản". Nếu bạn có câu hỏi, vui lòng liên hệ <span style={{ color: '#3B82F6' }}>legal@platform.com</span>.
+            Điều khoản này có hiệu lực từ {LAST_UPDATED}. Phiên bản cũ có thể được xem trong mục
+            "Lịch sử phiên bản". Nếu bạn có câu hỏi, vui lòng liên hệ{' '}
+            <span style={{ color: '#3B82F6' }}>legal@platform.com</span>.
           </p>
         </div>
       </PageContent>

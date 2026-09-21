@@ -78,12 +78,13 @@ function SignalCard({ signal, onClick }: { signal: AISignal; onClick?: () => voi
     signal.confidence >= 80
       ? '#10B981'
       : signal.confidence >= 60
-      ? '#3B82F6'
-      : signal.confidence >= 40
-      ? '#F59E0B'
-      : '#EF4444';
+        ? '#3B82F6'
+        : signal.confidence >= 40
+          ? '#F59E0B'
+          : '#EF4444';
 
-  const rrColor = signal.riskRewardRatio >= 3 ? '#10B981' : signal.riskRewardRatio >= 2 ? '#3B82F6' : '#F59E0B';
+  const rrColor =
+    signal.riskRewardRatio >= 3 ? '#10B981' : signal.riskRewardRatio >= 2 ? '#3B82F6' : '#F59E0B';
 
   return (
     <button
@@ -119,9 +120,7 @@ function SignalCard({ signal, onClick }: { signal: AISignal; onClick?: () => voi
               >
                 {config.label}
               </span>
-              <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>
-                {signal.timeframe}
-              </span>
+              <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>{signal.timeframe}</span>
             </div>
           </div>
         </div>
@@ -132,9 +131,7 @@ function SignalCard({ signal, onClick }: { signal: AISignal; onClick?: () => voi
       {/* Confidence + Risk/Reward */}
       <div className="grid grid-cols-2 gap-2 mb-3">
         <div className="rounded-xl p-2" style={{ background: c.surface2 }}>
-          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
-            Confidence
-          </p>
+          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>Confidence</p>
           <div className="flex items-center gap-1.5">
             <div className="flex-1 h-1.5 rounded-full" style={{ background: c.borderSolid }}>
               <div
@@ -155,9 +152,7 @@ function SignalCard({ signal, onClick }: { signal: AISignal; onClick?: () => voi
         </div>
 
         <div className="rounded-xl p-2" style={{ background: c.surface2 }}>
-          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
-            Risk/Reward
-          </p>
+          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>Risk/Reward</p>
           <p
             style={{
               color: rrColor,
@@ -218,20 +213,19 @@ function SignalCard({ signal, onClick }: { signal: AISignal; onClick?: () => voi
         {signal.reasoning.slice(0, 2).map((reason, i) => (
           <div key={i} className="flex items-start gap-2">
             <CheckCircle size={12} color={config.color} className="shrink-0 mt-0.5" />
-            <p style={{ color: c.text2, fontSize: 10, lineHeight: 1.4 }}>
-              {reason}
-            </p>
+            <p style={{ color: c.text2, fontSize: 10, lineHeight: 1.4 }}>{reason}</p>
           </div>
         ))}
       </div>
 
       {/* Model Info */}
-      <div className="flex items-center justify-between mt-3 pt-3" style={{ borderTop: `1px solid ${c.borderSolid}` }}>
+      <div
+        className="flex items-center justify-between mt-3 pt-3"
+        style={{ borderTop: `1px solid ${c.borderSolid}` }}
+      >
         <div className="flex items-center gap-1.5">
           <Brain size={12} color={c.text3} />
-          <span style={{ color: c.text3, fontSize: 10 }}>
-            {signal.modelVersion}
-          </span>
+          <span style={{ color: c.text3, fontSize: 10 }}>{signal.modelVersion}</span>
         </div>
         {signal.accuracy && (
           <span
@@ -282,9 +276,7 @@ function FeatureBreakdown({ features }: { features: AISignal['features'] }) {
               <div className="flex items-center justify-between mb-1">
                 <div className="flex items-center gap-1.5">
                   <Icon size={14} color={c.text3} strokeWidth={ICON_STROKE.standard} />
-                  <span style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>
-                    {item.label}
-                  </span>
+                  <span style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>{item.label}</span>
                 </div>
                 <span
                   style={{
@@ -320,16 +312,17 @@ export function AITradingSignals({ pair, signals, onSignalClick }: AITradingSign
 
   const filteredSignals = useMemo(() => {
     if (filter === 'all') return signals;
-    return signals.filter(s => s.direction === filter);
+    return signals.filter((s) => s.direction === filter);
   }, [signals, filter]);
 
-  const activeSignals = signals.filter(s => s.status === 'active');
-  const avgConfidence = activeSignals.length > 0
-    ? activeSignals.reduce((sum, s) => sum + s.confidence, 0) / activeSignals.length
-    : 0;
+  const activeSignals = signals.filter((s) => s.status === 'active');
+  const avgConfidence =
+    activeSignals.length > 0
+      ? activeSignals.reduce((sum, s) => sum + s.confidence, 0) / activeSignals.length
+      : 0;
 
-  const longSignals = activeSignals.filter(s => s.direction === 'long').length;
-  const shortSignals = activeSignals.filter(s => s.direction === 'short').length;
+  const longSignals = activeSignals.filter((s) => s.direction === 'long').length;
+  const shortSignals = activeSignals.filter((s) => s.direction === 'short').length;
 
   return (
     <TrCard className="p-5">
@@ -393,7 +386,7 @@ export function AITradingSignals({ pair, signals, onSignalClick }: AITradingSign
 
       {/* Filters */}
       <div className="flex gap-2 mb-4">
-        {(['all', 'long', 'short'] as const).map(f => (
+        {(['all', 'long', 'short'] as const).map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
@@ -424,12 +417,8 @@ export function AITradingSignals({ pair, signals, onSignalClick }: AITradingSign
         </div>
       ) : (
         <div className="flex flex-col gap-3">
-          {filteredSignals.map(signal => (
-            <SignalCard
-              key={signal.id}
-              signal={signal}
-              onClick={() => onSignalClick?.(signal)}
-            />
+          {filteredSignals.map((signal) => (
+            <SignalCard key={signal.id} signal={signal} onClick={() => onSignalClick?.(signal)} />
           ))}
         </div>
       )}
@@ -452,7 +441,8 @@ export function AITradingSignals({ pair, signals, onSignalClick }: AITradingSign
             AI Prediction Disclaimer
           </p>
           <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
-            Signals are predictions, not guarantees. Always conduct your own research and risk management. Past accuracy does not guarantee future results.
+            Signals are predictions, not guarantees. Always conduct your own research and risk
+            management. Past accuracy does not guarantee future results.
           </p>
         </div>
       </div>
@@ -496,9 +486,7 @@ export function SignalDetailView({ signal }: { signal: AISignal }) {
               >
                 {i + 1}
               </span>
-              <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>
-                {reason}
-              </p>
+              <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>{reason}</p>
             </div>
           ))}
         </div>

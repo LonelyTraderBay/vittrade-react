@@ -21,7 +21,10 @@ interface DepthLevel {
   cumulative: number;
 }
 
-function generateDepthData(midPrice: number, levels: number): { bids: DepthLevel[]; asks: DepthLevel[] } {
+function generateDepthData(
+  midPrice: number,
+  levels: number,
+): { bids: DepthLevel[]; asks: DepthLevel[] } {
   const bids: DepthLevel[] = [];
   const asks: DepthLevel[] = [];
   let cumBid = 0;
@@ -29,15 +32,21 @@ function generateDepthData(midPrice: number, levels: number): { bids: DepthLevel
   const spread = midPrice * 0.0002;
 
   for (let i = 0; i < levels; i++) {
-    const bidPrice = midPrice - spread * (i + 1) - (Math.random() * spread * 0.5);
-    const askPrice = midPrice + spread * (i + 1) + (Math.random() * spread * 0.5);
+    const bidPrice = midPrice - spread * (i + 1) - Math.random() * spread * 0.5;
+    const askPrice = midPrice + spread * (i + 1) + Math.random() * spread * 0.5;
     // Volume tends to increase further from mid
     const bidVol = (Math.random() * 3 + 0.5) * (1 + i * 0.15);
     const askVol = (Math.random() * 3 + 0.5) * (1 + i * 0.15);
     cumBid += bidVol;
     cumAsk += askVol;
-    bids.push({ price: parseFloat(bidPrice.toFixed(2)), cumulative: parseFloat(cumBid.toFixed(4)) });
-    asks.push({ price: parseFloat(askPrice.toFixed(2)), cumulative: parseFloat(cumAsk.toFixed(4)) });
+    bids.push({
+      price: parseFloat(bidPrice.toFixed(2)),
+      cumulative: parseFloat(cumBid.toFixed(4)),
+    });
+    asks.push({
+      price: parseFloat(askPrice.toFixed(2)),
+      cumulative: parseFloat(cumAsk.toFixed(4)),
+    });
   }
 
   return { bids, asks };
@@ -55,7 +64,7 @@ export function DepthChart({ midPrice, levels = 30 }: DepthChartProps) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ro = new ResizeObserver(() => setResizeKey(k => k + 1));
+    const ro = new ResizeObserver(() => setResizeKey((k) => k + 1));
     ro.observe(canvas.parentElement || canvas);
     return () => ro.disconnect();
   }, []);
@@ -195,7 +204,10 @@ export function DepthChart({ midPrice, levels = 30 }: DepthChartProps) {
     ctx.font = '11px monospace';
     ctx.fillStyle = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.5)';
     ctx.textAlign = 'center';
-    const priceStr = midPrice >= 100 ? midPrice.toLocaleString('en-US', { maximumFractionDigits: 2 }) : midPrice.toFixed(4);
+    const priceStr =
+      midPrice >= 100
+        ? midPrice.toLocaleString('en-US', { maximumFractionDigits: 2 })
+        : midPrice.toFixed(4);
     ctx.fillText(`$${priceStr}`, midX, 15);
 
     // Bid / Ask labels
@@ -216,7 +228,6 @@ export function DepthChart({ midPrice, levels = 30 }: DepthChartProps) {
       const y = py(vol);
       ctx.fillText(vol.toFixed(1), W - 4, y - 2);
     }
-
   }, [data, isDark, resizeKey]);
 
   return <canvas ref={canvasRef} className="w-full h-full" style={{ display: 'block' }} />;

@@ -1,22 +1,15 @@
 /**
  * Onboarding Trust Screen
- * 
+ *
  * Step 4: Trust & safety principles.
  * Builds confidence in the platform's safety-by-design approach.
  * Per Guidelines.md §1 — North Star Principles.
- * 
+ *
  * @module pages/onboarding/OnboardingTrust
  * @version 1.0 (Phase 3)
  */
 
-import {
-  Shield,
-  Eye,
-  Lock,
-  AlertCircle,
-  CheckCircle2,
-  ChevronLeft,
-} from 'lucide-react';
+import { Shield, Eye, Lock, AlertCircle, CheckCircle2, ChevronLeft } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { OnboardingProgress } from '../../components/onboarding/OnboardingProgress';
 import { φ, φSpace, φRadius } from '../../utils/golden';
@@ -73,10 +66,7 @@ const COMMITMENTS = [
    COMPONENT
    ═══════════════════════════════════════════ */
 
-export default function OnboardingTrust({
-  onNext,
-  onBack,
-}: OnboardingTrustProps) {
+export default function OnboardingTrust({ onNext, onBack }: OnboardingTrustProps) {
   const c = useThemeColors();
 
   return (
@@ -138,19 +128,23 @@ export default function OnboardingTrust({
                   <Icon size={20} color={pillar.color} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p style={{
-                    fontSize: φ.sm,
-                    fontWeight: 600,
-                    color: c.text1,
-                    marginBottom: 3,
-                  }}>
+                  <p
+                    style={{
+                      fontSize: φ.sm,
+                      fontWeight: 600,
+                      color: c.text1,
+                      marginBottom: 3,
+                    }}
+                  >
                     {pillar.title}
                   </p>
-                  <p style={{
-                    fontSize: 12,
-                    color: c.text2,
-                    lineHeight: 1.5,
-                  }}>
+                  <p
+                    style={{
+                      fontSize: 12,
+                      color: c.text2,
+                      lineHeight: 1.5,
+                    }}
+                  >
                     {pillar.description}
                   </p>
                 </div>
@@ -169,21 +163,21 @@ export default function OnboardingTrust({
             border: '1px solid rgba(16,185,129,0.15)',
           }}
         >
-          <p style={{
-            fontSize: φ.sm,
-            fontWeight: 600,
-            color: '#10B981',
-            marginBottom: φSpace[3],
-          }}>
+          <p
+            style={{
+              fontSize: φ.sm,
+              fontWeight: 600,
+              color: '#10B981',
+              marginBottom: φSpace[3],
+            }}
+          >
             Cam kết của chúng tôi
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: φSpace[2] }}>
             {COMMITMENTS.map((item, idx) => (
               <div key={idx} className="flex items-center gap-2">
                 <CheckCircle2 size={14} color="#10B981" className="shrink-0" />
-                <p style={{ fontSize: 12, color: c.text2, lineHeight: 1.4 }}>
-                  {item}
-                </p>
+                <p style={{ fontSize: 12, color: c.text2, lineHeight: 1.4 }}>{item}</p>
               </div>
             ))}
           </div>
@@ -215,9 +209,7 @@ export default function OnboardingTrust({
               background: 'linear-gradient(90deg, #8B5CF6 0%, #A78BFA 100%)',
             }}
           >
-            <span style={{ color: 'white', fontSize: φ.base, fontWeight: 600 }}>
-              Tiếp theo
-            </span>
+            <span style={{ color: 'white', fontSize: φ.base, fontWeight: 600 }}>Tiếp theo</span>
           </button>
         </div>
       </div>

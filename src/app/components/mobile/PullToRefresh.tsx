@@ -13,7 +13,11 @@ interface PullToRefreshIndicatorProps {
  * Hiển thị spinner + progress khi user kéo xuống
  * Đặt ở top của scroll container
  */
-export function PullToRefreshIndicator({ pullDistance, isRefreshing, progress }: PullToRefreshIndicatorProps) {
+export function PullToRefreshIndicator({
+  pullDistance,
+  isRefreshing,
+  progress,
+}: PullToRefreshIndicatorProps) {
   const c = useThemeColors();
   if (pullDistance <= 0 && !isRefreshing) return null;
 
@@ -124,7 +128,11 @@ export function PullToRefresh({ children, onRefresh }: PullToRefreshProps) {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <PullToRefreshIndicator pullDistance={pullDistance} isRefreshing={isRefreshing} progress={progress} />
+      <PullToRefreshIndicator
+        pullDistance={pullDistance}
+        isRefreshing={isRefreshing}
+        progress={progress}
+      />
       <div className="mt-10">{children}</div>
     </div>
   );

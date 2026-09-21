@@ -3,7 +3,7 @@
  *  CHART PERFORMANCE MONITOR
  * ══════════════════════════════════════════════════════════════════
  *  Dev tool for monitoring chart render performance
- *  
+ *
  *  Usage:
  *  <ChartPerformanceMonitor enabled={isDev}>
  *    <MiniChart ... />
@@ -31,7 +31,7 @@ export function ChartPerformanceMonitor({
 
   useEffect(() => {
     if (!enabled) return;
-    
+
     mountStartRef.current = performance.now();
 
     return () => {
@@ -44,7 +44,7 @@ export function ChartPerformanceMonitor({
     if (!enabled) return;
 
     const startTime = performance.now();
-    
+
     // Measure after render
     requestAnimationFrame(() => {
       const endTime = performance.now();
@@ -63,9 +63,9 @@ export function ChartPerformanceMonitor({
   return (
     <div className="relative">
       {children}
-      
+
       {/* Performance Overlay */}
-      <div 
+      <div
         className="absolute top-0 right-0 px-2 py-1 rounded-bl-lg text-xs font-mono"
         style={{
           background: isSlowMount || isSlowRender ? '#EF4444' : '#10B981',
@@ -97,12 +97,12 @@ export function useChartPerformance(enabled: boolean = false) {
 
   useEffect(() => {
     if (!enabled) return;
-    
+
     mountStartRef.current = performance.now();
 
     return () => {
       const mountTime = performance.now() - mountStartRef.current;
-      setMetrics(prev => ({ ...prev, mountTime }));
+      setMetrics((prev) => ({ ...prev, mountTime }));
     };
   }, [enabled]);
 
@@ -110,10 +110,10 @@ export function useChartPerformance(enabled: boolean = false) {
     if (!enabled) return;
 
     renderStartRef.current = performance.now();
-    
+
     requestAnimationFrame(() => {
       const renderTime = performance.now() - renderStartRef.current;
-      setMetrics(prev => ({
+      setMetrics((prev) => ({
         ...prev,
         renderTime,
         updateCount: prev.updateCount + 1,
@@ -148,7 +148,7 @@ export function analyzeChartBundleSize() {
   console.log('Total: ~52KB (gzipped ~15KB)');
   console.log('');
   console.log('Performance target: <100ms initial render ✅');
-  
+
   return {
     totalSize: '~52KB',
     gzippedSize: '~15KB',

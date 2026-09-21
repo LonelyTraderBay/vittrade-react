@@ -4,7 +4,15 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { DollarSign, Briefcase, TrendingUp, Home, Gift, CheckCircle, ChevronRight } from 'lucide-react';
+import {
+  DollarSign,
+  Briefcase,
+  TrendingUp,
+  Home,
+  Gift,
+  CheckCircle,
+  ChevronRight,
+} from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { useThemeColors } from '../../hooks/useThemeColors';
@@ -36,7 +44,9 @@ export function P2PSourceOfFundsPage() {
   const mountedRef = useRef(true);
 
   useEffect(() => {
-    return () => { mountedRef.current = false; };
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   const handleSubmit = () => {
@@ -56,7 +66,10 @@ export function P2PSourceOfFundsPage() {
       <div className="px-5 py-4">
         <TrCard rounded="lg" className="p-4" style={{ background: hexToRgba('#3B82F6', 8) }}>
           <div className="flex items-start gap-3">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: '#3B82F6' }}>
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+              style={{ background: '#3B82F6' }}
+            >
               <DollarSign size={24} color="#FFFFFF" />
             </div>
             <div className="flex-1">
@@ -72,26 +85,41 @@ export function P2PSourceOfFundsPage() {
       </div>
 
       <div className="px-5 mb-6">
-        <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700, marginBottom: 12 }}>Nguồn tiền chính</h3>
+        <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700, marginBottom: 12 }}>
+          Nguồn tiền chính
+        </h3>
         <div className="flex flex-col gap-3">
-          {FUND_SOURCES.map(source => {
+          {FUND_SOURCES.map((source) => {
             const SourceIcon = source.icon;
             const isSelected = selectedSource === source.id;
             return (
               <button
                 key={source.id}
-                onClick={() => { hapticSelection(); setSelectedSource(source.id); }}
+                onClick={() => {
+                  hapticSelection();
+                  setSelectedSource(source.id);
+                }}
                 className="p-4 rounded-xl text-left"
                 style={{
-                  background: isSelected ? hexToRgba('#3B82F6', 12) : c.surface1,
+                  background: isSelected ? hexToRgba('#3B82F6', 12) : c.surface,
                   border: `1px solid ${isSelected ? '#3B82F6' : c.borderSolid}`,
                 }}
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: isSelected ? hexToRgba('#3B82F6', 20) : c.surface2 }}>
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                    style={{ background: isSelected ? hexToRgba('#3B82F6', 20) : c.surface2 }}
+                  >
                     <SourceIcon size={18} color={isSelected ? '#3B82F6' : c.text3} />
                   </div>
-                  <p style={{ color: isSelected ? '#3B82F6' : c.text1, fontSize: φ.sm, fontWeight: 700, flex: 1 }}>
+                  <p
+                    style={{
+                      color: isSelected ? '#3B82F6' : c.text1,
+                      fontSize: φ.sm,
+                      fontWeight: 700,
+                      flex: 1,
+                    }}
+                  >
                     {source.label}
                   </p>
                   {isSelected && <CheckCircle size={18} color="#3B82F6" />}
@@ -108,8 +136,6 @@ export function P2PSourceOfFundsPage() {
           placeholder="VD: Lương từ công ty ABC, vị trí Senior Engineer"
           value={details}
           onChange={(e) => setDetails(e.target.value)}
-          multiline
-          rows={4}
         />
       </div>
 

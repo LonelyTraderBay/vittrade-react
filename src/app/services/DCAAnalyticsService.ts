@@ -1,6 +1,6 @@
 /**
  * DCA Analytics Service
- * 
+ *
  * Handles all DCA-specific analytics tracking.
  * Features:
  * - Event batching for performance
@@ -8,7 +8,7 @@
  * - Debug mode for development
  * - GDPR-compliant (no PII)
  * - Type-safe event tracking
- * 
+ *
  * @module services/DCAAnalyticsService
  * @version 2.0 (Phase 2 - Sprint 2)
  */
@@ -26,6 +26,17 @@ import {
 } from '../types/analytics';
 import { DCAFrequency } from '../types/dca';
 
+/**
+ * camelCase view of a queued AnalyticsEvent, for admin dashboards.
+ */
+export interface QueuedAnalyticsEvent {
+  eventId: string;
+  eventName: string;
+  timestamp: number;
+  userId?: string;
+  properties: Record<string, unknown>;
+}
+
 /* ═══════════════════════════════════════════
    SERVICE CLASS
    ═══════════════════════════════════════════ */
@@ -42,17 +53,17 @@ class DCAAnalyticsService implements IAnalyticsService {
     this.config = { ...DEFAULT_ANALYTICS_CONFIG, ...config };
     this.sessionId = this.generateSessionId();
     this.loadUserConsent();
-    
+
     // Start auto-flush timer
     if (this.config.flushInterval > 0) {
       this.startAutoFlush();
     }
-    
+
     // Load offline queue
     if (this.config.offlineQueue) {
       this.loadOfflineQueue();
     }
-    
+
     // Listen for page unload to flush
     if (typeof window !== 'undefined') {
       window.addEventListener('beforeunload', () => {
@@ -100,10 +111,10 @@ class DCAAnalyticsService implements IAnalyticsService {
       source?: DCAEventSource;
       variant?: string;
       properties?: Record<string, any>;
-    }
+    },
   ): void {
     const { properties, ...contextWithoutProps } = context;
-    
+
     this.trackEvent(eventName, {
       ...contextWithoutProps,
       ...properties,
@@ -169,7 +180,13 @@ class DCAAnalyticsService implements IAnalyticsService {
   /**
    * Track DCA plan creation
    */
-  trackPlanCreation(planId: string, coinSymbol: string, frequency: DCAFrequency, amount: number, source?: DCAEventSource): void {
+  trackPlanCreation(
+    planId: string,
+    coinSymbol: string,
+    frequency: DCAFrequency,
+    amount: number,
+    source?: DCAEventSource,
+  ): void {
     this.trackDCAEvent('dca_plan_created', {
       planId,
       coinSymbol,
@@ -189,9 +206,13 @@ class DCAAnalyticsService implements IAnalyticsService {
   /**
    * Track plan status change
    */
-  trackPlanStatusChange(planId: string, newStatus: 'active' | 'paused', source?: DCAEventSource): void {
+  trackPlanStatusChange(
+    planId: string,
+    newStatus: 'active' | 'paused',
+    source?: DCAEventSource,
+  ): void {
     const eventName = newStatus === 'active' ? 'dca_plan_activated' : 'dca_plan_paused';
-    
+
     this.trackDCAEvent(eventName as DCAEventName, {
       planId,
       source,
@@ -212,10 +233,9 @@ class DCAAnalyticsService implements IAnalyticsService {
    * Track wallet shortcut interaction
    */
   trackWalletShortcut(action: 'impression' | 'click', variant?: 'full' | 'compact'): void {
-    const eventName = action === 'impression' 
-      ? 'dca_wallet_shortcut_impression'
-      : 'dca_wallet_shortcut_click';
-    
+    const eventName =
+      action === 'impression' ? 'dca_wallet_shortcut_impression' : 'dca_wallet_shortcut_click';
+
     this.trackDCAEvent(eventName as DCAEventName, {
       variant,
       source: 'wallet',
@@ -226,10 +246,11 @@ class DCAAnalyticsService implements IAnalyticsService {
    * Track asset detail button
    */
   trackAssetDetailButton(action: 'impression' | 'click', coinSymbol: string): void {
-    const eventName = action === 'impression'
-      ? 'dca_asset_detail_button_impression'
-      : 'dca_asset_detail_button_click';
-    
+    const eventName =
+      action === 'impression'
+        ? 'dca_asset_detail_button_impression'
+        : 'dca_asset_detail_button_click';
+
     this.trackDCAEvent(eventName as DCAEventName, {
       coinSymbol,
       source: 'asset_detail',
@@ -257,10 +278,9 @@ class DCAAnalyticsService implements IAnalyticsService {
    * Track empty state interaction
    */
   trackEmptyState(action: 'impression' | 'click'): void {
-    const eventName = action === 'impression'
-      ? 'dca_empty_state_impression'
-      : 'dca_empty_state_click';
-    
+    const eventName =
+      action === 'impression' ? 'dca_empty_state_impression' : 'dca_empty_state_click';
+
     this.trackDCAEvent(eventName as DCAEventName, {
       source: 'wallet',
     });
@@ -271,7 +291,7 @@ class DCAAnalyticsService implements IAnalyticsService {
    */
   trackExecution(planId: string, success: boolean, error?: string): void {
     const eventName = success ? 'dca_execution_success' : 'dca_execution_failed';
-    
+
     this.trackDCAEvent(eventName as DCAEventName, {
       planId,
       properties: { error },
@@ -301,10 +321,9 @@ class DCAAnalyticsService implements IAnalyticsService {
    * Track pair detail banner (new entry point)
    */
   trackPairDetailBanner(action: 'impression' | 'click', coinSymbol: string): void {
-    const eventName = action === 'impression'
-      ? 'dca_pair_detail_banner_impression'
-      : 'dca_pair_detail_click';
-    
+    const eventName =
+      action === 'impression' ? 'dca_pair_detail_banner_impression' : 'dca_pair_detail_click';
+
     this.trackDCAEvent(eventName as DCAEventName, {
       coinSymbol,
       properties: { source: 'pair_detail' },
@@ -323,6 +342,20 @@ class DCAAnalyticsService implements IAnalyticsService {
   /* ─────────────────────────────────────────
      QUEUE MANAGEMENT
      ───────────────────────────────────────── */
+
+  /**
+   * Read-only camelCase view of the queued events.
+   * Consumed by the admin dashboards (RealTimeMetrics, AnalyticsDashboard, AdminHome).
+   */
+  getQueue(): QueuedAnalyticsEvent[] {
+    return this.eventQueue.map((event) => ({
+      eventId: event.event_id,
+      eventName: event.event_name,
+      timestamp: event.timestamp,
+      userId: event.user_id,
+      properties: event.properties ?? {},
+    }));
+  }
 
   /**
    * Enqueue event for batching
@@ -355,11 +388,13 @@ class DCAAnalyticsService implements IAnalyticsService {
       // For now, just log in debug mode
       if (this.config.debug) {
         console.log('[DCA Analytics] Flushing events:', events.length);
-        console.table(events.map(e => ({
-          event: e.event_name,
-          time: new Date(e.timestamp).toLocaleTimeString(),
-          ...e.properties,
-        })));
+        console.table(
+          events.map((e) => ({
+            event: e.event_name,
+            time: new Date(e.timestamp).toLocaleTimeString(),
+            ...e.properties,
+          })),
+        );
       }
 
       // Simulate API call
@@ -371,10 +406,10 @@ class DCAAnalyticsService implements IAnalyticsService {
       }
     } catch (error) {
       console.error('[DCA Analytics] Flush error:', error);
-      
+
       // Re-queue events on failure
       this.eventQueue = [...events, ...this.eventQueue];
-      
+
       // Trim if too large
       if (this.eventQueue.length > this.config.maxQueueSize) {
         this.eventQueue = this.eventQueue.slice(-this.config.maxQueueSize);

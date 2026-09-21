@@ -1,23 +1,16 @@
 /**
  * Onboarding Boundaries Screen
- * 
+ *
  * Step 3: Teaches module boundaries.
  * Trading/P2P = value-based vs Arena = points-only.
  * Critical per Guidelines.md §6 — Module boundaries.
- * 
+ *
  * @module pages/onboarding/OnboardingBoundaries
  * @version 1.0 (Phase 3)
  */
 
 import { useState } from 'react';
-import {
-  TrendingUp,
-  Trophy,
-  Shield,
-  AlertTriangle,
-  Check,
-  ChevronLeft,
-} from 'lucide-react';
+import { TrendingUp, Trophy, Shield, AlertTriangle, Check, ChevronLeft } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { OnboardingProgress } from '../../components/onboarding/OnboardingProgress';
 import { φ, φSpace, φRadius } from '../../utils/golden';
@@ -85,10 +78,7 @@ const SEPARATION_RULES = [
    COMPONENT
    ═══════════════════════════════════════════ */
 
-export default function OnboardingBoundaries({
-  onNext,
-  onBack,
-}: OnboardingBoundariesProps) {
+export default function OnboardingBoundaries({ onNext, onBack }: OnboardingBoundariesProps) {
   const c = useThemeColors();
   const [selectedBoundary, setSelectedBoundary] = useState<string | null>(null);
 
@@ -157,7 +147,9 @@ export default function OnboardingBoundaries({
                     <Icon size={22} color={boundary.color} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p style={{ fontSize: φ.base, fontWeight: 600, color: c.text1, marginBottom: 2 }}>
+                    <p
+                      style={{ fontSize: φ.base, fontWeight: 600, color: c.text1, marginBottom: 2 }}
+                    >
                       {boundary.title}
                     </p>
                     <p style={{ fontSize: 11, color: boundary.color, fontWeight: 500 }}>
@@ -167,7 +159,14 @@ export default function OnboardingBoundaries({
                 </div>
 
                 {/* Subtitle */}
-                <p style={{ fontSize: φ.sm, color: c.text2, marginBottom: φSpace[3], lineHeight: 1.4 }}>
+                <p
+                  style={{
+                    fontSize: φ.sm,
+                    color: c.text2,
+                    marginBottom: φSpace[3],
+                    lineHeight: 1.4,
+                  }}
+                >
                   {boundary.subtitle}
                 </p>
 
@@ -182,9 +181,7 @@ export default function OnboardingBoundaries({
                           className="shrink-0"
                           style={{ marginTop: 2 }}
                         />
-                        <p style={{ fontSize: 12, color: c.text2, lineHeight: 1.4 }}>
-                          {example}
-                        </p>
+                        <p style={{ fontSize: 12, color: c.text2, lineHeight: 1.4 }}>{example}</p>
                       </div>
                     ))}
                   </div>
@@ -192,9 +189,7 @@ export default function OnboardingBoundaries({
 
                 {/* Tap hint */}
                 {!isSelected && (
-                  <p style={{ fontSize: 11, color: c.text3 }}>
-                    Chạm để xem chi tiết
-                  </p>
+                  <p style={{ fontSize: 11, color: c.text3 }}>Chạm để xem chi tiết</p>
                 )}
               </button>
             );
@@ -213,17 +208,13 @@ export default function OnboardingBoundaries({
         >
           <div className="flex items-center gap-2" style={{ marginBottom: φSpace[3] }}>
             <AlertTriangle size={16} color="#F59E0B" />
-            <p style={{ fontSize: φ.sm, fontWeight: 600, color: '#F59E0B' }}>
-              Quy tắc tách biệt
-            </p>
+            <p style={{ fontSize: φ.sm, fontWeight: 600, color: '#F59E0B' }}>Quy tắc tách biệt</p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: φSpace[2] }}>
             {SEPARATION_RULES.map((rule, idx) => (
               <div key={idx} className="flex items-start gap-2">
                 <Shield size={12} color="#F59E0B" className="shrink-0" style={{ marginTop: 2 }} />
-                <p style={{ fontSize: 12, color: c.text2, lineHeight: 1.4 }}>
-                  {rule}
-                </p>
+                <p style={{ fontSize: 12, color: c.text2, lineHeight: 1.4 }}>{rule}</p>
               </div>
             ))}
           </div>
@@ -255,9 +246,7 @@ export default function OnboardingBoundaries({
               background: 'linear-gradient(90deg, #8B5CF6 0%, #A78BFA 100%)',
             }}
           >
-            <span style={{ color: 'white', fontSize: φ.base, fontWeight: 600 }}>
-              Đã hiểu
-            </span>
+            <span style={{ color: 'white', fontSize: φ.base, fontWeight: 600 }}>Đã hiểu</span>
           </button>
         </div>
       </div>

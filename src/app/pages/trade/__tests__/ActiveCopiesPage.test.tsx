@@ -1,289 +1,279 @@
 /**
  * ══════════════════════════════════════════════════════════════
- *  ActiveCopiesPage.test.tsx — Active Copies Monitoring Tests
+ *  ActiveCopiesPage.test.tsx — Real-time Copy Monitoring Tests
  * ══════════════════════════════════════════════════════════════
- * 
+ *
+ * Written against the current Vietnamese-localized component which
+ * renders three mock copies (AlphaHunter_VN, SteadyGains_Pro active,
+ * RiskMaster_88 cooling-off) from COPY_TRADERS.
+ *
  * Test Coverage (12 tests):
- * 1. ✅ Renders active copies list
- * 2. ✅ Real-time P/L updates
- * 3. ✅ Trade feed shows recent trades
- * 4. ✅ Circuit breaker visible
- * 5. ✅ Emergency stop button prominent
- * 6. ✅ Pause copy action works
- * 7. ✅ Reduce allocation works
- * 8. ✅ Stop & close positions works
- * 9. ✅ Modify settings navigates
- * 10. ✅ Alert panel shows notifications
- * 11. ✅ Empty state when no copies
- * 12. ✅ Filters work (active/paused)
+ * 1. ✅ Renders the copy list with header and provider cards
+ * 2. ✅ Portfolio overview aggregates capital / value / total P/L
+ * 3. ✅ Per-copy P/L values and profit color-coding
+ * 4. ✅ Cooling-off copy shows activation deadline and disabled stop
+ * 5. ✅ Expanded card shows recent trades feed
+ * 6. ✅ Expanded card shows stats (trades / win rate / copy mode / stop-loss)
+ * 7. ✅ Stop copy flow requires typing STOP before confirming
+ * 8. ✅ Stop copy modal can be cancelled
+ * 9. ✅ "Điều chỉnh" navigates to the copy configuration page
+ * 10. ✅ "Xem tất cả" navigates to provider detail page
+ * 11. ✅ Header "+" action navigates to the copy trading hub
+ * 12. ✅ Tab filters (Tất cả / Đang chạy / Tạm dừng / Lịch sử)
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { screen, waitFor, within } from '@testing-library/react';
-import { renderWithRouter, userEvent, mockNavigate } from '../../../test/utils/test-utils';
+import { renderWithRouter, userEvent, mockNavigate } from '@/test/test-utils-navigation';
 import { ActiveCopiesPage } from '../ActiveCopiesPage';
-import { createMockCopyRelationship } from '../../../test/mocks/copy-trading-mocks';
+
+/** Returns the outermost card element for a given provider name. */
+function getCard(providerName: string): HTMLElement {
+  return screen.getByText(providerName).closest('.rounded-2xl') as HTMLElement;
+}
+
+/** Cards start collapsed with a single chevron toggle button. */
+async function expandCard(providerName: string) {
+  const user = userEvent.setup();
+  const card = getCard(providerName);
+  await user.click(within(card).getByRole('button'));
+  return card;
+}
 
 describe('ActiveCopiesPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('should render active copies list', () => {
+  it('should render the active copies list with provider cards', () => {
     renderWithRouter(<ActiveCopiesPage />);
 
-    // Page header
-    expect(screen.getByText(/active copies/i)).toBeInTheDocument();
+    // Page header (Vietnamese)
+    expect(screen.getByText('Copy đang chạy')).toBeInTheDocument();
 
-    // Should show at least one active copy
-    expect(screen.getByText(/CryptoKing/i)).toBeInTheDocument();
+    // One card per mock copy
+    expect(screen.getByText('AlphaHunter_VN')).toBeInTheDocument();
+    expect(screen.getByText('SteadyGains_Pro')).toBeInTheDocument();
+    expect(screen.getByText('RiskMaster_88')).toBeInTheDocument();
 
-    // Should show copy status
-    expect(screen.getByText(/active/i)).toBeInTheDocument();
-
-    // Should show allocation
-    expect(screen.getByText(/\$1,500/)).toBeInTheDocument();
+    // Status badges: 2 running copies + 1 cooling-off
+    expect(screen.getByText('Chờ kích hoạt')).toBeInTheDocument();
+    expect(within(getCard('AlphaHunter_VN')).getByText('Đang chạy')).toBeInTheDocument();
+    expect(within(getCard('SteadyGains_Pro')).getByText('Đang chạy')).toBeInTheDocument();
   });
 
-  it('should display real-time P/L updates', () => {
+  it('should display portfolio overview aggregates', () => {
     renderWithRouter(<ActiveCopiesPage />);
 
-    // Should show P/L for each copy
-    expect(screen.getByText(/\+\$125\.50/)).toBeInTheDocument();
-    expect(screen.getByText(/\+8\.37%/)).toBeInTheDocument();
+    expect(screen.getByText('Tổng quan portfolio')).toBeInTheDocument();
 
-    // P/L should be color-coded (green for profit)
-    const pnlElement = screen.getByText(/\+\$125\.50/);
-    expect(pnlElement).toHaveStyle({ color: expect.stringContaining('green') });
+    // 5000 + 3000 + 2000 = $10,000 capital; $10,500 current value
+    expect(screen.getByText('Vốn đầu tư')).toBeInTheDocument();
+    expect(screen.getByText('$10000')).toBeInTheDocument();
+    expect(screen.getByText('Giá trị hiện tại')).toBeInTheDocument();
+    expect(screen.getByText('$10500')).toBeInTheDocument();
 
-    // Should show today's P/L separately
-    expect(screen.getByText(/today/i)).toBeInTheDocument();
-    expect(screen.getByText(/\+\$12\.50/)).toBeInTheDocument();
+    // Total P/L = +500 (+5.00%), 2 running copies
+    expect(screen.getByText('P/L tổng')).toBeInTheDocument();
+    expect(screen.getByText('+$500')).toBeInTheDocument();
+    expect(screen.getByText('+5.00%')).toBeInTheDocument();
+    expect(screen.getByText('2 active')).toBeInTheDocument();
   });
 
-  it('should show recent trades in live feed', () => {
+  it('should display per-copy P/L values with profit color-coding', () => {
     renderWithRouter(<ActiveCopiesPage />);
 
-    // Trade feed section
-    expect(screen.getByText(/recent trades/i)).toBeInTheDocument();
+    const winner = getCard('AlphaHunter_VN');
+    expect(within(winner).getByText('$5000')).toBeInTheDocument(); // Vốn
+    expect(within(winner).getByText('$5650')).toBeInTheDocument(); // Hiện tại
+    expect(within(winner).getByText('+$650')).toBeInTheDocument(); // P/L
+    expect(within(winner).getByText('+13.00%')).toBeInTheDocument(); // Return
 
-    // Should show trade details
-    expect(screen.getByText(/BTCUSDT/)).toBeInTheDocument();
-    expect(screen.getByText(/BUY/i)).toBeInTheDocument();
-    expect(screen.getByText(/0\.05 BTC/)).toBeInTheDocument();
+    const loser = getCard('SteadyGains_Pro');
+    // Negative amounts render as "$-150" (literal $ before the signed number)
+    expect(within(loser).getByText('$-150')).toBeInTheDocument();
+    expect(within(loser).getByText('-5.00%')).toBeInTheDocument();
 
-    // Should show time
-    expect(screen.getByText(/2 min ago/i)).toBeInTheDocument();
+    // Profitable P/L is rendered in the green palette color
+    const pnlElement = within(winner).getByText('+$650');
+    expect(pnlElement).toHaveStyle({ color: '#10B981' });
 
-    // Should show slippage
-    expect(screen.getByText(/slippage.*0\.036%/i)).toBeInTheDocument();
+    // Loss is rendered in the red palette color
+    expect(within(loser).getByText('$-150')).toHaveStyle({ color: '#EF4444' });
   });
 
-  it('should display circuit breaker status', () => {
+  it('should show cooling-off deadline and disable stop for cooling-off copy', async () => {
     renderWithRouter(<ActiveCopiesPage />);
 
-    // Circuit breaker section
-    expect(screen.getByText(/circuit breakers/i)).toBeInTheDocument();
+    const card = await expandCard('RiskMaster_88');
 
-    // Daily loss limit
-    expect(screen.getByText(/daily loss.*5%/i)).toBeInTheDocument();
-    expect(screen.getByText(/used.*2\.3%/i)).toBeInTheDocument();
+    // Cooling-off until timestamp
+    expect(within(card).getByText(/đến 2026-03-09 14:30/)).toBeInTheDocument();
 
-    // Total loss limit
-    expect(screen.getByText(/total loss.*20%/i)).toBeInTheDocument();
-
-    // Visual indicator (progress bar)
-    const dailyProgress = screen.getByRole('progressbar', { name: /daily loss/i });
-    expect(dailyProgress).toBeInTheDocument();
-    expect(dailyProgress).toHaveAttribute('aria-valuenow', '46'); // 2.3/5 = 46%
+    // Destructive stop action must be disabled while cooling off
+    const stopButton = within(card).getByRole('button', { name: /dừng copy/i });
+    expect(stopButton).toBeDisabled();
   });
 
-  it('should have prominent emergency stop button', () => {
+  it('should show recent trades feed when card expanded', async () => {
     renderWithRouter(<ActiveCopiesPage />);
 
-    // Emergency stop should be highly visible
-    const emergencyBtn = screen.getByRole('button', { name: /emergency stop/i });
-    expect(emergencyBtn).toBeInTheDocument();
+    const card = await expandCard('AlphaHunter_VN');
 
-    // Should have destructive styling
-    expect(emergencyBtn).toHaveClass(expect.stringContaining('danger'));
+    expect(within(card).getByText('Trades gần đây')).toBeInTheDocument();
+    expect(within(card).getAllByText('BTC/USDT').length).toBe(2); // two BTC trades
+    expect(within(card).getByText('ETH/USDT')).toBeInTheDocument();
 
-    // Should show warning icon
-    const warningIcon = within(emergencyBtn).getByTestId('alert-triangle-icon');
-    expect(warningIcon).toBeInTheDocument();
+    // Trade sides, sizes and timestamps
+    expect(within(card).getAllByText('sell').length).toBe(1);
+    expect(within(card).getAllByText('buy').length).toBe(2);
+    expect(within(card).getByText('0.05 @ $68500')).toBeInTheDocument();
+    expect(within(card).getByText('2h ago')).toBeInTheDocument();
   });
 
-  it('should pause copy when pause button clicked', async () => {
+  it('should show expanded stats: trades, win rate, copy mode and stop-loss', async () => {
+    renderWithRouter(<ActiveCopiesPage />);
+
+    const card = await expandCard('AlphaHunter_VN');
+
+    expect(within(card).getByText('Số lượng trades')).toBeInTheDocument();
+    expect(within(card).getByText('48')).toBeInTheDocument();
+    expect(within(card).getByText('Win rate')).toBeInTheDocument();
+    expect(within(card).getByText('62.5%')).toBeInTheDocument();
+    expect(within(card).getByText('Copy mode')).toBeInTheDocument();
+    expect(within(card).getByText('Fixed 50%')).toBeInTheDocument();
+    expect(within(card).getByText('Stop-loss')).toBeInTheDocument();
+    expect(within(card).getByText('-10%')).toBeInTheDocument();
+
+    // Mirror copy (SteadyGains_Pro) has no custom stop-loss → falls back to provider
+    const mirrorCard = getCard('SteadyGains_Pro');
+    await userEvent.setup().click(within(mirrorCard).getByRole('button'));
+    expect(within(mirrorCard).getByText('Mirror')).toBeInTheDocument();
+    expect(within(mirrorCard).getByText('Provider')).toBeInTheDocument();
+  });
+
+  it('should require typing STOP before confirming stop copy', async () => {
     const user = userEvent.setup();
     renderWithRouter(<ActiveCopiesPage />);
 
-    // Find pause button for active copy
-    const pauseBtn = screen.getByRole('button', { name: /pause/i });
-    await user.click(pauseBtn);
+    const card = await expandCard('AlphaHunter_VN');
+    await user.click(within(card).getByRole('button', { name: /dừng copy/i }));
 
-    // Should show confirmation dialog
-    await waitFor(() => {
-      expect(screen.getByText(/pause copy/i)).toBeInTheDocument();
-      expect(screen.getByText(/no new trades.*current positions remain/i)).toBeInTheDocument();
-    });
+    // Confirmation modal with destructive warning
+    const modal = screen.getByText('Dừng copy?').closest('div.fixed') as HTMLElement;
+    expect(modal).not.toBeNull();
+    expect(
+      within(modal).getByText(/Bạn không thể hoàn tác hành động này/i),
+    ).toBeInTheDocument();
+    // Label text is "Nhập <strong>STOP</strong> để xác nhận" (split by the strong tag)
+    expect(
+      within(modal).getByText(
+        (_, element) =>
+          element?.tagName === 'LABEL' && element.textContent === 'Nhập STOP để xác nhận',
+      ),
+    ).toBeInTheDocument();
 
-    // Confirm pause
-    const confirmBtn = screen.getByRole('button', { name: /confirm pause/i });
-    await user.click(confirmBtn);
+    // Summary of what stopping means
+    expect(within(modal).getByText('Vị thế đang mở')).toBeInTheDocument();
+    expect(within(modal).getByText('Vốn sẽ về ví')).toBeInTheDocument();
+    expect(within(modal).getByText('$5650')).toBeInTheDocument();
 
-    // Should show success message
-    await waitFor(() => {
-      expect(screen.getByText(/copy paused/i)).toBeInTheDocument();
-    });
+    // Confirm disabled until "STOP" is typed
+    const confirmBtn = within(modal).getByRole('button', { name: 'Dừng copy' });
+    expect(confirmBtn).toBeDisabled();
 
-    // Status should update to "Paused"
-    expect(screen.getByText(/paused/i)).toBeInTheDocument();
-  });
-
-  it('should reduce allocation when reduce button clicked', async () => {
-    const user = userEvent.setup();
-    renderWithRouter(<ActiveCopiesPage />);
-
-    // Find reduce allocation button
-    const reduceBtn = screen.getByRole('button', { name: /reduce/i });
-    await user.click(reduceBtn);
-
-    // Should show reduce allocation modal
-    await waitFor(() => {
-      expect(screen.getByText(/reduce allocation/i)).toBeInTheDocument();
-      expect(screen.getByText(/current.*\$1,500/i)).toBeInTheDocument();
-    });
-
-    // Enter new allocation
-    const newAllocationInput = screen.getByLabelText(/new allocation/i);
-    await user.clear(newAllocationInput);
-    await user.type(newAllocationInput, '1000');
-
-    // Should show impact
-    await waitFor(() => {
-      expect(screen.getByText(/33% reduction/i)).toBeInTheDocument();
-    });
-
-    // Confirm
-    const confirmBtn = screen.getByRole('button', { name: /confirm reduce/i });
-    await user.click(confirmBtn);
-
-    // Should update allocation
-    await waitFor(() => {
-      expect(screen.getByText(/\$1,000/)).toBeInTheDocument();
-    });
-  });
-
-  it('should stop and close positions when stop clicked', async () => {
-    const user = userEvent.setup();
-    renderWithRouter(<ActiveCopiesPage />);
-
-    // Find stop button
-    const stopBtn = screen.getByRole('button', { name: /stop/i });
-    await user.click(stopBtn);
-
-    // Should show DANGEROUS confirmation
-    await waitFor(() => {
-      expect(screen.getByText(/stop copy.*close all positions/i)).toBeInTheDocument();
-      expect(screen.getByText(/this action cannot be undone/i)).toBeInTheDocument();
-    });
-
-    // Should require typing "CONFIRM"
-    const confirmInput = screen.getByPlaceholderText(/type.*confirm/i);
-    await user.type(confirmInput, 'CONFIRM');
-
-    // Confirm button should enable
-    const confirmBtn = screen.getByRole('button', { name: /stop.*close/i });
-    expect(confirmBtn).not.toBeDisabled();
+    await user.type(within(modal).getByPlaceholderText('STOP'), 'STOP');
+    expect(confirmBtn).toBeEnabled();
 
     await user.click(confirmBtn);
 
-    // Should show success
+    // Modal closes after confirming
     await waitFor(() => {
-      expect(screen.getByText(/copy stopped/i)).toBeInTheDocument();
-      expect(screen.getByText(/positions closed/i)).toBeInTheDocument();
+      expect(screen.queryByText('Dừng copy?')).not.toBeInTheDocument();
     });
   });
 
-  it('should navigate to settings when modify clicked', async () => {
+  it('should close the stop modal without stopping when cancelled', async () => {
     const user = userEvent.setup();
     renderWithRouter(<ActiveCopiesPage />);
 
-    // Find modify settings button
-    const modifyBtn = screen.getByRole('button', { name: /modify/i });
-    await user.click(modifyBtn);
+    const card = await expandCard('AlphaHunter_VN');
+    await user.click(within(card).getByRole('button', { name: /dừng copy/i }));
 
-    // Should navigate to copy settings
-    await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith(
-        expect.stringContaining('/copy-trading/settings')
-      );
-    });
+    await user.click(screen.getByRole('button', { name: 'Hủy' }));
+
+    expect(screen.queryByText('Dừng copy?')).not.toBeInTheDocument();
+    // Copy card still visible and running
+    expect(screen.getByText('AlphaHunter_VN')).toBeInTheDocument();
   });
 
-  it('should display alert panel with notifications', () => {
-    renderWithRouter(<ActiveCopiesPage />);
-
-    // Alert panel
-    expect(screen.getByText(/alerts/i)).toBeInTheDocument();
-
-    // Should show active alerts
-    expect(screen.getByText(/high slippage detected/i)).toBeInTheDocument();
-    expect(screen.getByText(/0\.8%.*ETHUSDT/i)).toBeInTheDocument();
-
-    // Should show alert severity
-    const alertItem = screen.getByText(/high slippage/i).closest('div');
-    expect(alertItem).toHaveClass(expect.stringContaining('warning'));
-
-    // Should have dismiss button
-    const dismissBtn = within(alertItem!).getByRole('button', { name: /dismiss/i });
-    expect(dismissBtn).toBeInTheDocument();
-  });
-
-  it('should show empty state when no active copies', () => {
-    // Mock empty state
-    vi.spyOn(global, 'fetch').mockResolvedValue({
-      ok: true,
-      json: async () => ({ data: [] }),
-    } as Response);
-
-    renderWithRouter(<ActiveCopiesPage />);
-
-    // Empty state message
-    expect(screen.getByText(/no active copies/i)).toBeInTheDocument();
-    expect(screen.getByText(/browse providers/i)).toBeInTheDocument();
-
-    // CTA to browse providers
-    const browseBtn = screen.getByRole('button', { name: /browse providers/i });
-    expect(browseBtn).toBeInTheDocument();
-  });
-
-  it('should filter copies by status', async () => {
+  it('should navigate to configuration when "Điều chỉnh" clicked', async () => {
     const user = userEvent.setup();
     renderWithRouter(<ActiveCopiesPage />);
 
-    // Should show all copies by default
-    expect(screen.getByText(/CryptoKing/i)).toBeInTheDocument();
-    expect(screen.getByText(/SwingMaster/i)).toBeInTheDocument();
+    const card = await expandCard('AlphaHunter_VN');
+    await user.click(within(card).getByRole('button', { name: 'Điều chỉnh' }));
 
-    // Click "Paused" filter
-    const pausedFilter = screen.getByRole('button', { name: /paused/i });
-    await user.click(pausedFilter);
-
-    // Should only show paused copies
     await waitFor(() => {
-      expect(screen.getByText(/SwingMaster/i)).toBeInTheDocument();
-      expect(screen.queryByText(/CryptoKing/i)).not.toBeInTheDocument();
+      expect(mockNavigate).toHaveBeenCalledWith('/trade/copy-provider/trader-1/configuration');
+    });
+  });
+
+  it('should navigate to provider detail when "Xem tất cả" clicked', async () => {
+    const user = userEvent.setup();
+    renderWithRouter(<ActiveCopiesPage />);
+
+    const card = await expandCard('AlphaHunter_VN');
+    await user.click(within(card).getByRole('button', { name: 'Xem tất cả' }));
+
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith('/trade/copy-provider/trader-1');
+    });
+  });
+
+  it('should navigate to copy trading hub from header action', async () => {
+    const user = userEvent.setup();
+    renderWithRouter(<ActiveCopiesPage />);
+
+    await user.click(screen.getByRole('button', { name: 'Action' }));
+
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith('/trade/copy-trading');
+    });
+  });
+
+  it('should filter copies by tab', async () => {
+    const user = userEvent.setup();
+    renderWithRouter(<ActiveCopiesPage />);
+
+    // "Tất cả" shows all three copies
+    expect(screen.getByRole('tab', { name: /tất cả/i })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+    expect(screen.getByText('AlphaHunter_VN')).toBeInTheDocument();
+    expect(screen.getByText('SteadyGains_Pro')).toBeInTheDocument();
+    expect(screen.getByText('RiskMaster_88')).toBeInTheDocument();
+
+    // "Tạm dừng" has no copies in mock data
+    await user.click(screen.getByRole('tab', { name: /tạm dừng/i }));
+    await waitFor(() => {
+      expect(screen.queryByText('AlphaHunter_VN')).not.toBeInTheDocument();
+      expect(screen.queryByText('SteadyGains_Pro')).not.toBeInTheDocument();
     });
 
-    // Click "Active" filter
-    const activeFilter = screen.getByRole('button', { name: /^active$/i });
-    await user.click(activeFilter);
-
-    // Should only show active copies
+    // "Lịch sử" shows the placeholder
+    await user.click(screen.getByRole('tab', { name: /lịch sử/i }));
     await waitFor(() => {
-      expect(screen.getByText(/CryptoKing/i)).toBeInTheDocument();
-      expect(screen.queryByText(/SwingMaster/i)).not.toBeInTheDocument();
+      expect(screen.getByText('Lịch sử copy sẽ hiển thị ở đây')).toBeInTheDocument();
+    });
+
+    // "Đang chạy" includes running and cooling-off copies
+    await user.click(screen.getByRole('tab', { name: /đang chạy/i }));
+    await waitFor(() => {
+      expect(screen.getByText('AlphaHunter_VN')).toBeInTheDocument();
+      expect(screen.getByText('SteadyGains_Pro')).toBeInTheDocument();
+      expect(screen.getByText('RiskMaster_88')).toBeInTheDocument();
     });
   });
 });

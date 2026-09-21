@@ -13,14 +13,11 @@ interface ChartSkeletonProps {
   showVolume?: boolean;
 }
 
-export function ChartSkeleton({ 
-  height = 120,
-  showVolume = true,
-}: ChartSkeletonProps) {
+export function ChartSkeleton({ height = 120, showVolume = true }: ChartSkeletonProps) {
   const c = useThemeColors();
 
   return (
-    <div 
+    <div
       className="relative rounded-xl overflow-hidden"
       style={{
         background: c.surface,
@@ -29,7 +26,7 @@ export function ChartSkeleton({
       }}
     >
       {/* Shimmer Effect */}
-      <div 
+      <div
         className="absolute inset-0 shimmer"
         style={{
           background: `linear-gradient(90deg, transparent 0%, ${c.surface2}40 50%, transparent 100%)`,
@@ -43,9 +40,9 @@ export function ChartSkeleton({
         {Array.from({ length: 24 }).map((_, i) => {
           const isUp = Math.random() > 0.5;
           const heightPct = 30 + Math.random() * 60;
-          
+
           return (
-            <div 
+            <div
               key={i}
               className="flex-1 max-w-[6px] rounded-sm opacity-30"
               style={{
@@ -59,14 +56,16 @@ export function ChartSkeleton({
 
       {/* Fake Volume Bars (if enabled) */}
       {showVolume && (
-        <div className="absolute bottom-0 left-0 right-0 flex items-end justify-around px-3 pb-2 gap-1" 
-          style={{ height: '20%' }}>
+        <div
+          className="absolute bottom-0 left-0 right-0 flex items-end justify-around px-3 pb-2 gap-1"
+          style={{ height: '20%' }}
+        >
           {Array.from({ length: 24 }).map((_, i) => {
             const heightPct = 20 + Math.random() * 80;
             const isUp = Math.random() > 0.5;
-            
+
             return (
-              <div 
+              <div
                 key={i}
                 className="flex-1 max-w-[6px] rounded-sm opacity-20"
                 style={{
@@ -80,7 +79,7 @@ export function ChartSkeleton({
       )}
 
       {/* Loading Text */}
-      <div 
+      <div
         className="absolute top-2 left-2 px-2 py-1 rounded-md"
         style={{
           background: c.surface2,

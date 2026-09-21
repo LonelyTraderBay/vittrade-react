@@ -9,8 +9,13 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  ArrowUpRight, ArrowDownRight, TrendingUp,
-  PieChart, BarChart3, Eye, EyeOff,
+  ArrowUpRight,
+  ArrowDownRight,
+  TrendingUp,
+  PieChart,
+  BarChart3,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -24,7 +29,9 @@ import { useHaptic } from '../../hooks/useHaptic';
 import { fmtUsd, fmtPct, fmtCompact, fmtPrice } from '../../data/formatNumber';
 import { FONT_SCALE, FONT_WEIGHT } from '../../constants/typography';
 import {
-  PORTFOLIO_HOLDINGS, PORTFOLIO_STATS, PORTFOLIO_PERFORMANCE,
+  PORTFOLIO_HOLDINGS,
+  PORTFOLIO_STATS,
+  PORTFOLIO_PERFORMANCE,
   type PortfolioHolding,
 } from '../../data/marketP2Data';
 
@@ -47,14 +54,18 @@ export function PortfolioTrackerPage() {
   const sortedHoldings = useMemo(() => {
     const items = [...PORTFOLIO_HOLDINGS];
     switch (sortBy) {
-      case 'value': return items.sort((a, b) => b.value - a.value);
-      case 'pnl': return items.sort((a, b) => b.pnlPct - a.pnlPct);
-      case 'change': return items.sort((a, b) => b.change24h - a.change24h);
-      default: return items;
+      case 'value':
+        return items.sort((a, b) => b.value - a.value);
+      case 'pnl':
+        return items.sort((a, b) => b.pnlPct - a.pnlPct);
+      case 'change':
+        return items.sort((a, b) => b.change24h - a.change24h);
+      default:
+        return items;
     }
   }, [sortBy]);
 
-  const maskedValue = (val: string) => hideBalance ? '••••••' : val;
+  const maskedValue = (val: string) => (hideBalance ? '••••••' : val);
 
   return (
     <PageLayout>
@@ -68,30 +79,47 @@ export function PortfolioTrackerPage() {
             {/* Total value hero */}
             <TrCard variant="hero" className="p-4">
               <div className="flex items-center justify-between mb-1">
-                <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.medium }}>
+                <p
+                  style={{
+                    color: c.text3,
+                    fontSize: FONT_SCALE.xs,
+                    fontWeight: FONT_WEIGHT.medium,
+                  }}
+                >
                   Tổng giá trị
                 </p>
-                <button onClick={() => { setHideBalance(!hideBalance); hapticLight(); }}>
-                  {hideBalance
-                    ? <EyeOff size={16} color={c.text3} />
-                    : <Eye size={16} color={c.text3} />
-                  }
+                <button
+                  onClick={() => {
+                    setHideBalance(!hideBalance);
+                    hapticLight();
+                  }}
+                >
+                  {hideBalance ? (
+                    <EyeOff size={16} color={c.text3} />
+                  ) : (
+                    <Eye size={16} color={c.text3} />
+                  )}
                 </button>
               </div>
               <p style={{ color: c.text1, fontSize: FONT_SCALE.xl, fontWeight: FONT_WEIGHT.bold }}>
                 {maskedValue(fmtUsd(stats.totalValue))}
               </p>
               <div className="flex items-center gap-2 mt-1">
-                {stats.totalPnl >= 0
-                  ? <ArrowUpRight size={14} color="#10B981" />
-                  : <ArrowDownRight size={14} color="#EF4444" />
-                }
-                <span style={{
-                  color: stats.totalPnl >= 0 ? '#10B981' : '#EF4444',
-                  fontSize: FONT_SCALE.sm,
-                  fontWeight: FONT_WEIGHT.semibold,
-                }}>
-                  {maskedValue(`${fmtUsd(Math.abs(stats.totalPnl))} (${fmtPct(stats.totalPnlPct)})`)}
+                {stats.totalPnl >= 0 ? (
+                  <ArrowUpRight size={14} color="#10B981" />
+                ) : (
+                  <ArrowDownRight size={14} color="#EF4444" />
+                )}
+                <span
+                  style={{
+                    color: stats.totalPnl >= 0 ? '#10B981' : '#EF4444',
+                    fontSize: FONT_SCALE.sm,
+                    fontWeight: FONT_WEIGHT.semibold,
+                  }}
+                >
+                  {maskedValue(
+                    `${fmtUsd(Math.abs(stats.totalPnl))} (${fmtPct(stats.totalPnlPct)})`,
+                  )}
                 </span>
               </div>
             </TrCard>
@@ -99,20 +127,40 @@ export function PortfolioTrackerPage() {
             {/* Quick stats */}
             <div className="grid grid-cols-3 gap-2">
               <TrCard className="p-3 text-center">
-                <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 4 }}>Vốn đầu tư</p>
-                <p style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+                <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 4 }}>
+                  Vốn đầu tư
+                </p>
+                <p
+                  style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}
+                >
                   {maskedValue(fmtCompact(stats.totalCost, { prefix: '$' }))}
                 </p>
               </TrCard>
               <TrCard className="p-3 text-center">
-                <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 4 }}>Tốt nhất 24h</p>
-                <p style={{ color: '#10B981', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+                <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 4 }}>
+                  Tốt nhất 24h
+                </p>
+                <p
+                  style={{
+                    color: '#10B981',
+                    fontSize: FONT_SCALE.xs,
+                    fontWeight: FONT_WEIGHT.bold,
+                  }}
+                >
                   {stats.best24h.symbol} {fmtPct(stats.best24h.change)}
                 </p>
               </TrCard>
               <TrCard className="p-3 text-center">
-                <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 4 }}>Kém nhất 24h</p>
-                <p style={{ color: '#EF4444', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+                <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 4 }}>
+                  Kém nhất 24h
+                </p>
+                <p
+                  style={{
+                    color: '#EF4444',
+                    fontSize: FONT_SCALE.xs,
+                    fontWeight: FONT_WEIGHT.bold,
+                  }}
+                >
                   {stats.worst24h.symbol} {fmtPct(stats.worst24h.change)}
                 </p>
               </TrCard>
@@ -120,19 +168,35 @@ export function PortfolioTrackerPage() {
 
             {/* Allocation donut */}
             <TrCard className="p-4">
-              <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, marginBottom: 12 }}>
+              <p
+                style={{
+                  color: c.text2,
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.semibold,
+                  marginBottom: 12,
+                }}
+              >
                 Phân bổ tài sản
               </p>
               <div className="flex items-center gap-4">
                 <AllocationDonut holdings={PORTFOLIO_HOLDINGS} c={c} />
                 <div className="flex-1 flex flex-col gap-2">
-                  {PORTFOLIO_HOLDINGS.slice(0, 5).map(h => (
+                  {PORTFOLIO_HOLDINGS.slice(0, 5).map((h) => (
                     <div key={h.id} className="flex items-center gap-2">
-                      <div className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ background: h.color }} />
+                      <div
+                        className="w-2.5 h-2.5 rounded-sm shrink-0"
+                        style={{ background: h.color }}
+                      />
                       <span style={{ color: c.text2, fontSize: FONT_SCALE.micro, flex: 1 }}>
                         {h.symbol}
                       </span>
-                      <span style={{ color: c.text1, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.semibold }}>
+                      <span
+                        style={{
+                          color: c.text1,
+                          fontSize: FONT_SCALE.micro,
+                          fontWeight: FONT_WEIGHT.semibold,
+                        }}
+                      >
                         {h.allocation.toFixed(1)}%
                       </span>
                     </div>
@@ -144,13 +208,16 @@ export function PortfolioTrackerPage() {
             {/* Top holdings */}
             <PageSection label="Tài sản chính" accentColor="#3B82F6">
               <div className="flex flex-col" style={{ gap: 2 }}>
-                {PORTFOLIO_HOLDINGS.slice(0, 4).map(holding => (
+                {PORTFOLIO_HOLDINGS.slice(0, 4).map((holding) => (
                   <HoldingRow
                     key={holding.id}
                     holding={holding}
                     c={c}
                     hideBalance={hideBalance}
-                    onTap={() => { navigate(`${prefix}/pair/${holding.id}usdt`); hapticLight(); }}
+                    onTap={() => {
+                      navigate(`${prefix}/pair/${holding.id}usdt`);
+                      hapticLight();
+                    }}
                   />
                 ))}
               </div>
@@ -159,13 +226,20 @@ export function PortfolioTrackerPage() {
             {/* Risk indicator */}
             <TrCard className="p-4">
               <div className="flex items-center justify-between mb-2">
-                <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+                <p
+                  style={{
+                    color: c.text2,
+                    fontSize: FONT_SCALE.xs,
+                    fontWeight: FONT_WEIGHT.semibold,
+                  }}
+                >
                   Đánh giá rủi ro
                 </p>
                 <span
                   className="px-2 py-0.5 rounded"
                   style={{
-                    background: stats.stableAllocation > 20 ? 'rgba(16,185,129,0.1)' : 'rgba(245,158,11,0.1)',
+                    background:
+                      stats.stableAllocation > 20 ? 'rgba(16,185,129,0.1)' : 'rgba(245,158,11,0.1)',
                     color: stats.stableAllocation > 20 ? '#10B981' : '#F59E0B',
                     fontSize: FONT_SCALE.micro,
                     fontWeight: FONT_WEIGHT.semibold,
@@ -178,11 +252,20 @@ export function PortfolioTrackerPage() {
                 <div className="flex-1">
                   <div className="flex justify-between mb-1">
                     <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Stablecoin</span>
-                    <span style={{ color: c.text1, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.medium }}>
+                    <span
+                      style={{
+                        color: c.text1,
+                        fontSize: FONT_SCALE.micro,
+                        fontWeight: FONT_WEIGHT.medium,
+                      }}
+                    >
                       {stats.stableAllocation}%
                     </span>
                   </div>
-                  <div className="w-full rounded-full overflow-hidden" style={{ height: 5, background: c.surface2 }}>
+                  <div
+                    className="w-full rounded-full overflow-hidden"
+                    style={{ height: 5, background: c.surface2 }}
+                  >
                     <div
                       className="h-full rounded-full"
                       style={{
@@ -193,9 +276,16 @@ export function PortfolioTrackerPage() {
                   </div>
                 </div>
               </div>
-              <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginTop: 8, lineHeight: 1.5 }}>
-                Danh mục có {stats.stableAllocation}% stablecoin, giúp giảm biến động. 
-                Khuyến nghị duy trì ít nhất 10-20% stablecoin cho quản lý rủi ro.
+              <p
+                style={{
+                  color: c.text3,
+                  fontSize: FONT_SCALE.micro,
+                  marginTop: 8,
+                  lineHeight: 1.5,
+                }}
+              >
+                Danh mục có {stats.stableAllocation}% stablecoin, giúp giảm biến động. Khuyến nghị
+                duy trì ít nhất 10-20% stablecoin cho quản lý rủi ro.
               </p>
             </TrCard>
           </>
@@ -206,14 +296,17 @@ export function PortfolioTrackerPage() {
           <>
             {/* Sort options */}
             <div className="flex gap-2">
-              {([
+              {[
                 { id: 'value' as const, label: 'Giá trị' },
                 { id: 'pnl' as const, label: 'Lãi/Lỗ' },
                 { id: 'change' as const, label: 'Thay đổi 24h' },
-              ]).map(opt => (
+              ].map((opt) => (
                 <button
                   key={opt.id}
-                  onClick={() => { setSortBy(opt.id); hapticSelection(); }}
+                  onClick={() => {
+                    setSortBy(opt.id);
+                    hapticSelection();
+                  }}
                   className="px-3 py-1.5 rounded-xl"
                   style={{
                     background: sortBy === opt.id ? c.chipActiveBg : c.surface2,
@@ -230,13 +323,16 @@ export function PortfolioTrackerPage() {
 
             {/* Full holdings list */}
             <div className="flex flex-col" style={{ gap: 4 }}>
-              {sortedHoldings.map(holding => (
+              {sortedHoldings.map((holding) => (
                 <HoldingDetailCard
                   key={holding.id}
                   holding={holding}
                   c={c}
                   hideBalance={hideBalance}
-                  onTap={() => { navigate(`${prefix}/pair/${holding.id}usdt`); hapticLight(); }}
+                  onTap={() => {
+                    navigate(`${prefix}/pair/${holding.id}usdt`);
+                    hapticLight();
+                  }}
                 />
               ))}
             </div>
@@ -248,10 +344,13 @@ export function PortfolioTrackerPage() {
           <>
             {/* Time filter */}
             <div className="flex gap-2">
-              {TIME_FILTERS.map(tf => (
+              {TIME_FILTERS.map((tf) => (
                 <button
                   key={tf}
-                  onClick={() => { setTimeFilter(tf); hapticSelection(); }}
+                  onClick={() => {
+                    setTimeFilter(tf);
+                    hapticSelection();
+                  }}
                   className="px-3 py-1.5 rounded-xl"
                   style={{
                     background: timeFilter === tf ? c.chipActiveBg : c.surface2,
@@ -269,14 +368,22 @@ export function PortfolioTrackerPage() {
             {/* Performance chart */}
             <TrCard className="p-4">
               <div className="flex items-center justify-between mb-3">
-                <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+                <p
+                  style={{
+                    color: c.text2,
+                    fontSize: FONT_SCALE.xs,
+                    fontWeight: FONT_WEIGHT.semibold,
+                  }}
+                >
                   Giá trị danh mục
                 </p>
-                <span style={{
-                  color: '#10B981',
-                  fontSize: FONT_SCALE.xs,
-                  fontWeight: FONT_WEIGHT.semibold,
-                }}>
+                <span
+                  style={{
+                    color: '#10B981',
+                    fontSize: FONT_SCALE.xs,
+                    fontWeight: FONT_WEIGHT.semibold,
+                  }}
+                >
                   {fmtPct(stats.totalPnlPct)}
                 </span>
               </div>
@@ -286,36 +393,56 @@ export function PortfolioTrackerPage() {
             {/* PnL breakdown */}
             <PageSection label="Lãi/Lỗ theo tài sản" accentColor="#10B981">
               <div className="flex flex-col" style={{ gap: 2 }}>
-                {PORTFOLIO_HOLDINGS
-                  .filter(h => h.symbol !== 'USDT')
+                {PORTFOLIO_HOLDINGS.filter((h) => h.symbol !== 'USDT')
                   .sort((a, b) => b.pnl - a.pnl)
-                  .map(holding => {
-                    const maxPnl = Math.max(...PORTFOLIO_HOLDINGS.map(h => Math.abs(h.pnl)));
+                  .map((holding) => {
+                    const maxPnl = Math.max(...PORTFOLIO_HOLDINGS.map((h) => Math.abs(h.pnl)));
                     const barWidth = Math.min(100, (Math.abs(holding.pnl) / maxPnl) * 100);
                     return (
-                      <div key={holding.id} className="flex items-center gap-3 px-4 py-3 rounded-xl" style={{ background: c.surface }}>
+                      <div
+                        key={holding.id}
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl"
+                        style={{ background: c.surface }}
+                      >
                         <div
                           className="w-7 h-7 rounded-full flex items-center justify-center shrink-0"
                           style={{ background: `${holding.color}18` }}
                         >
-                          <span style={{ color: holding.color, fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.bold }}>
+                          <span
+                            style={{
+                              color: holding.color,
+                              fontSize: FONT_SCALE.micro,
+                              fontWeight: FONT_WEIGHT.bold,
+                            }}
+                          >
                             {holding.symbol.slice(0, 2)}
                           </span>
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between mb-1">
-                            <span style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+                            <span
+                              style={{
+                                color: c.text1,
+                                fontSize: FONT_SCALE.xs,
+                                fontWeight: FONT_WEIGHT.semibold,
+                              }}
+                            >
                               {holding.symbol}
                             </span>
-                            <span style={{
-                              color: holding.pnl >= 0 ? '#10B981' : '#EF4444',
-                              fontSize: FONT_SCALE.xs,
-                              fontWeight: FONT_WEIGHT.bold,
-                            }}>
+                            <span
+                              style={{
+                                color: holding.pnl >= 0 ? '#10B981' : '#EF4444',
+                                fontSize: FONT_SCALE.xs,
+                                fontWeight: FONT_WEIGHT.bold,
+                              }}
+                            >
                               {maskedValue(`${holding.pnl >= 0 ? '+' : ''}${fmtUsd(holding.pnl)}`)}
                             </span>
                           </div>
-                          <div className="w-full rounded-full overflow-hidden" style={{ height: 4, background: c.surface2 }}>
+                          <div
+                            className="w-full rounded-full overflow-hidden"
+                            style={{ height: 4, background: c.surface2 }}
+                          >
                             <div
                               className="h-full rounded-full"
                               style={{
@@ -334,22 +461,30 @@ export function PortfolioTrackerPage() {
             {/* Summary stats */}
             <div className="grid grid-cols-2 gap-2">
               <TrCard className="p-3">
-                <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 4 }}>Tổng lãi/lỗ</p>
-                <p style={{
-                  color: stats.totalPnl >= 0 ? '#10B981' : '#EF4444',
-                  fontSize: FONT_SCALE.base,
-                  fontWeight: FONT_WEIGHT.bold,
-                }}>
+                <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 4 }}>
+                  Tổng lãi/lỗ
+                </p>
+                <p
+                  style={{
+                    color: stats.totalPnl >= 0 ? '#10B981' : '#EF4444',
+                    fontSize: FONT_SCALE.base,
+                    fontWeight: FONT_WEIGHT.bold,
+                  }}
+                >
                   {maskedValue(`${stats.totalPnl >= 0 ? '+' : ''}${fmtUsd(stats.totalPnl)}`)}
                 </p>
               </TrCard>
               <TrCard className="p-3">
-                <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 4 }}>ROI tổng</p>
-                <p style={{
-                  color: stats.totalPnlPct >= 0 ? '#10B981' : '#EF4444',
-                  fontSize: FONT_SCALE.base,
-                  fontWeight: FONT_WEIGHT.bold,
-                }}>
+                <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 4 }}>
+                  ROI tổng
+                </p>
+                <p
+                  style={{
+                    color: stats.totalPnlPct >= 0 ? '#10B981' : '#EF4444',
+                    fontSize: FONT_SCALE.base,
+                    fontWeight: FONT_WEIGHT.bold,
+                  }}
+                >
                   {fmtPct(stats.totalPnlPct)}
                 </p>
               </TrCard>
@@ -363,7 +498,10 @@ export function PortfolioTrackerPage() {
 
 /* ─── Sub-components ─── */
 
-function AllocationDonut({ holdings, c }: {
+function AllocationDonut({
+  holdings,
+  c,
+}: {
   holdings: PortfolioHolding[];
   c: ReturnType<typeof useThemeColors>;
 }) {
@@ -392,7 +530,7 @@ function AllocationDonut({ holdings, c }: {
 
     let startAngle = -Math.PI / 2;
 
-    holdings.forEach(h => {
+    holdings.forEach((h) => {
       const sliceAngle = (h.allocation / 100) * 2 * Math.PI;
       const endAngle = startAngle + sliceAngle;
 
@@ -418,19 +556,23 @@ function AllocationDonut({ holdings, c }: {
     ctx.fillStyle = c.text3;
     ctx.font = `500 9px system-ui`;
     ctx.fillText('tài sản', cx, cy + 8);
-
   }, [holdings, c]);
 
   return <canvas ref={canvasRef} />;
 }
 
-function HoldingRow({ holding, c, hideBalance, onTap }: {
+function HoldingRow({
+  holding,
+  c,
+  hideBalance,
+  onTap,
+}: {
   holding: PortfolioHolding;
   c: ReturnType<typeof useThemeColors>;
   hideBalance: boolean;
   onTap: () => void;
 }) {
-  const masked = (v: string) => hideBalance ? '••••' : v;
+  const masked = (v: string) => (hideBalance ? '••••' : v);
 
   return (
     <button
@@ -442,7 +584,9 @@ function HoldingRow({ holding, c, hideBalance, onTap }: {
         className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
         style={{ background: `${holding.color}18` }}
       >
-        <span style={{ color: holding.color, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+        <span
+          style={{ color: holding.color, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}
+        >
           {holding.symbol.slice(0, 2)}
         </span>
       </div>
@@ -455,17 +599,24 @@ function HoldingRow({ holding, c, hideBalance, onTap }: {
         </p>
       </div>
       <div className="shrink-0">
-        <SparklineChart data={holding.sparkline} isPositive={holding.change24h >= 0} width={48} height={20} />
+        <SparklineChart
+          data={holding.sparkline}
+          isPositive={holding.change24h >= 0}
+          width={48}
+          height={20}
+        />
       </div>
       <div className="text-right shrink-0" style={{ minWidth: 72 }}>
         <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold }}>
           {masked(fmtUsd(holding.value))}
         </p>
-        <span style={{
-          color: holding.pnlPct >= 0 ? '#10B981' : '#EF4444',
-          fontSize: FONT_SCALE.micro,
-          fontWeight: FONT_WEIGHT.medium,
-        }}>
+        <span
+          style={{
+            color: holding.pnlPct >= 0 ? '#10B981' : '#EF4444',
+            fontSize: FONT_SCALE.micro,
+            fontWeight: FONT_WEIGHT.medium,
+          }}
+        >
           {fmtPct(holding.pnlPct)}
         </span>
       </div>
@@ -473,13 +624,18 @@ function HoldingRow({ holding, c, hideBalance, onTap }: {
   );
 }
 
-function HoldingDetailCard({ holding, c, hideBalance, onTap }: {
+function HoldingDetailCard({
+  holding,
+  c,
+  hideBalance,
+  onTap,
+}: {
   holding: PortfolioHolding;
   c: ReturnType<typeof useThemeColors>;
   hideBalance: boolean;
   onTap: () => void;
 }) {
-  const masked = (v: string) => hideBalance ? '••••••' : v;
+  const masked = (v: string) => (hideBalance ? '••••••' : v);
 
   return (
     <TrCard as="button" hover className="p-4 w-full text-left" onClick={onTap}>
@@ -489,7 +645,9 @@ function HoldingDetailCard({ holding, c, hideBalance, onTap }: {
           className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
           style={{ background: `${holding.color}18` }}
         >
-          <span style={{ color: holding.color, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+          <span
+            style={{ color: holding.color, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}
+          >
             {holding.symbol.slice(0, 2)}
           </span>
         </div>
@@ -531,11 +689,13 @@ function HoldingDetailCard({ holding, c, hideBalance, onTap }: {
         </div>
         <div>
           <p style={{ color: c.text3, fontSize: 10 }}>Lãi/Lỗ</p>
-          <p style={{
-            color: holding.pnl >= 0 ? '#10B981' : '#EF4444',
-            fontSize: FONT_SCALE.xs,
-            fontWeight: FONT_WEIGHT.bold,
-          }}>
+          <p
+            style={{
+              color: holding.pnl >= 0 ? '#10B981' : '#EF4444',
+              fontSize: FONT_SCALE.xs,
+              fontWeight: FONT_WEIGHT.bold,
+            }}
+          >
             {masked(fmtPct(holding.pnlPct))}
           </p>
         </div>
@@ -544,7 +704,10 @@ function HoldingDetailCard({ holding, c, hideBalance, onTap }: {
   );
 }
 
-function PerformanceChart({ data, c }: {
+function PerformanceChart({
+  data,
+  c,
+}: {
   data: { date: string; value: number }[];
   c: ReturnType<typeof useThemeColors>;
 }) {
@@ -570,7 +733,7 @@ function PerformanceChart({ data, c }: {
     ctx.scale(dpr, dpr);
     ctx.clearRect(0, 0, width, height);
 
-    const values = data.map(d => d.value);
+    const values = data.map((d) => d.value);
     const minVal = Math.min(...values) * 0.995;
     const maxVal = Math.max(...values) * 1.005;
     const range = maxVal - minVal;
@@ -628,11 +791,10 @@ function PerformanceChart({ data, c }: {
     ctx.fillStyle = c.text3;
     ctx.font = '9px system-ui';
     ctx.textAlign = 'center';
-    [0, Math.floor(data.length / 2), data.length - 1].forEach(i => {
+    [0, Math.floor(data.length / 2), data.length - 1].forEach((i) => {
       const x = padding.left + (i / (data.length - 1)) * chartW;
       ctx.fillText(data[i].date, x, height - 4);
     });
-
   }, [data, c]);
 
   return (

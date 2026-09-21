@@ -1,12 +1,12 @@
 /**
  * DCA Smart Schedule Configuration Page
- * 
+ *
  * Configure market-aware scheduling:
  * - Strategy selection
  * - Time preferences
  * - Delay/advance limits
  * - Thresholds
- * 
+ *
  * @module pages/dca/DCAScheduleConfig
  * @version 1.0 (Phase 2 - Sprint 3)
  */
@@ -21,7 +21,7 @@ import {
   BarChart3,
   Info,
   Save,
-  AlertCircle
+  AlertCircle,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useRoutePrefix } from '../../hooks/useRoutePrefix';
@@ -33,7 +33,7 @@ import { φ } from '../../utils/golden';
 import {
   smartSchedulingService,
   type SchedulingStrategy,
-  type TimePreference
+  type TimePreference,
 } from '../../services/DCASmartSchedulingService';
 
 /* ═══════════════════════════════════════════
@@ -114,7 +114,7 @@ export default function DCAScheduleConfig() {
   const [gasPriceThreshold, setGasPriceThreshold] = useState(30);
   const [enabled, setEnabled] = useState(true);
 
-  const selectedStrategy = STRATEGIES.find(s => s.value === strategy);
+  const selectedStrategy = STRATEGIES.find((s) => s.value === strategy);
 
   const handleSave = () => {
     const config = smartSchedulingService.createConfig({
@@ -124,8 +124,10 @@ export default function DCAScheduleConfig() {
       timePreference,
       maxDelayHours,
       maxAdvanceHours,
-      volatilityThreshold: strategy === 'volatility' || strategy === 'hybrid' ? volatilityThreshold : undefined,
-      gasPriceThreshold: strategy === 'gas-optimized' || strategy === 'hybrid' ? gasPriceThreshold : undefined,
+      volatilityThreshold:
+        strategy === 'volatility' || strategy === 'hybrid' ? volatilityThreshold : undefined,
+      gasPriceThreshold:
+        strategy === 'gas-optimized' || strategy === 'hybrid' ? gasPriceThreshold : undefined,
       enabled,
     });
 
@@ -135,11 +137,7 @@ export default function DCAScheduleConfig() {
 
   return (
     <PageLayout>
-      <Header
-        title="Smart Scheduling"
-        subtitle="Lịch mua · DCA"
-        back
-      />
+      <Header title="Smart Scheduling" subtitle="Lịch mua · DCA" back />
 
       <PageContent gap="default">
         {/* Info Banner */}
@@ -168,9 +166,7 @@ export default function DCAScheduleConfig() {
         <div>
           <div className="flex items-center gap-2 mb-3">
             <Zap size={18} color={c.text1} />
-            <h2 style={{ color: c.text1, fontSize: φ.base, fontWeight: 600 }}>
-              Chiến lược
-            </h2>
+            <h2 style={{ color: c.text1, fontSize: φ.base, fontWeight: 600 }}>Chiến lược</h2>
           </div>
 
           <div className="space-y-2">
@@ -199,12 +195,8 @@ export default function DCAScheduleConfig() {
                     </div>
 
                     <div className="flex-1 text-left">
-                      <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
-                        {s.label}
-                      </p>
-                      <p style={{ color: c.text3, fontSize: 11 }}>
-                        {s.description}
-                      </p>
+                      <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>{s.label}</p>
+                      <p style={{ color: c.text3, fontSize: 11 }}>{s.description}</p>
                     </div>
 
                     {isSelected && (
@@ -226,9 +218,7 @@ export default function DCAScheduleConfig() {
         <div>
           <div className="flex items-center gap-2 mb-3">
             <Clock size={18} color={c.text1} />
-            <h2 style={{ color: c.text1, fontSize: φ.base, fontWeight: 600 }}>
-              Khung giờ ưu tiên
-            </h2>
+            <h2 style={{ color: c.text1, fontSize: φ.base, fontWeight: 600 }}>Khung giờ ưu tiên</h2>
           </div>
 
           <div className="grid grid-cols-2 gap-2">
@@ -241,9 +231,7 @@ export default function DCAScheduleConfig() {
                   onClick={() => setTimePreference(tp.value)}
                   className="p-3 rounded-xl transition-all"
                   style={{
-                    background: isSelected
-                      ? `${selectedStrategy?.color}15`
-                      : c.surface2,
+                    background: isSelected ? `${selectedStrategy?.color}15` : c.surface2,
                     border: isSelected
                       ? `2px solid ${selectedStrategy?.color}`
                       : '2px solid transparent',
@@ -259,9 +247,7 @@ export default function DCAScheduleConfig() {
                   >
                     {tp.label}
                   </p>
-                  <p style={{ color: c.text3, fontSize: 10 }}>
-                    {tp.hours}
-                  </p>
+                  <p style={{ color: c.text3, fontSize: 10 }}>{tp.hours}</p>
                 </button>
               );
             })}
@@ -278,9 +264,7 @@ export default function DCAScheduleConfig() {
             {/* Max Delay */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span style={{ color: c.text2, fontSize: 12 }}>
-                  Trễ tối đa
-                </span>
+                <span style={{ color: c.text2, fontSize: 12 }}>Trễ tối đa</span>
                 <span style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
                   {maxDelayHours}h
                 </span>
@@ -302,9 +286,7 @@ export default function DCAScheduleConfig() {
             {/* Max Advance */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span style={{ color: c.text2, fontSize: 12 }}>
-                  Sớm tối đa
-                </span>
+                <span style={{ color: c.text2, fontSize: 12 }}>Sớm tối đa</span>
                 <span style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
                   {maxAdvanceHours}h
                 </span>
@@ -337,10 +319,10 @@ export default function DCAScheduleConfig() {
 
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span style={{ color: c.text2, fontSize: 12 }}>
-                  Ngưỡng volatility
-                </span>
-                <span style={{ color: c.text1, fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}>
+                <span style={{ color: c.text2, fontSize: 12 }}>Ngưỡng volatility</span>
+                <span
+                  style={{ color: c.text1, fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}
+                >
                   {volatilityThreshold.toFixed(1)}%
                 </span>
               </div>
@@ -364,17 +346,15 @@ export default function DCAScheduleConfig() {
           <TrCard className="p-4">
             <div className="flex items-center gap-2 mb-3">
               <Zap size={18} color="#F59E0B" />
-              <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
-                Gas Settings
-              </h3>
+              <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>Gas Settings</h3>
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span style={{ color: c.text2, fontSize: 12 }}>
-                  Ngưỡng gas price
-                </span>
-                <span style={{ color: c.text1, fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}>
+                <span style={{ color: c.text2, fontSize: 12 }}>Ngưỡng gas price</span>
+                <span
+                  style={{ color: c.text1, fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}
+                >
                   {gasPriceThreshold} gwei
                 </span>
               </div>
@@ -401,9 +381,7 @@ export default function DCAScheduleConfig() {
               <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
                 Kích hoạt Smart Scheduling
               </p>
-              <p style={{ color: c.text3, fontSize: 11 }}>
-                Tự động tối ưu thời gian thực thi
-              </p>
+              <p style={{ color: c.text3, fontSize: 11 }}>Tự động tối ưu thời gian thực thi</p>
             </div>
             <button
               onClick={() => setEnabled(!enabled)}
@@ -434,8 +412,8 @@ export default function DCAScheduleConfig() {
             <div className="flex items-start gap-2">
               <AlertCircle size={16} color="#F59E0B" className="shrink-0 mt-0.5" />
               <p style={{ color: '#F59E0B', fontSize: 11 }}>
-                Chiến lược "Cố định" sẽ không tối ưu thời gian thực thi.
-                Khuyên dùng "Hybrid" để có kết quả tốt nhất.
+                Chiến lược "Cố định" sẽ không tối ưu thời gian thực thi. Khuyên dùng "Hybrid" để có
+                kết quả tốt nhất.
               </p>
             </div>
           </TrCard>
@@ -450,9 +428,7 @@ export default function DCAScheduleConfig() {
           }}
         >
           <Save size={20} color="white" />
-          <span style={{ color: 'white', fontSize: φ.base, fontWeight: 600 }}>
-            Lưu cấu hình
-          </span>
+          <span style={{ color: 'white', fontSize: φ.base, fontWeight: 600 }}>Lưu cấu hình</span>
         </button>
       </PageContent>
     </PageLayout>

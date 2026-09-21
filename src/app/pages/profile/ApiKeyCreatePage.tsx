@@ -1,8 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Eye, Lock, RefreshCw, Shield, CheckCircle, X, Plus,
-  AlertTriangle, Copy, Globe, Key,
+  Eye,
+  Lock,
+  RefreshCw,
+  Shield,
+  CheckCircle,
+  X,
+  Plus,
+  AlertTriangle,
+  Copy,
+  Globe,
+  Key,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -25,9 +34,24 @@ import { motion } from 'motion/react';
  */
 
 const PERMISSION_CONFIG = {
-  read: { label: 'Đọc dữ liệu', desc: 'Xem số dư, lịch sử giao dịch, thông tin tài khoản', color: '#3B82F6', icon: Eye },
-  trade: { label: 'Giao dịch', desc: 'Đặt lệnh, hủy lệnh, chỉnh sửa lệnh', color: '#F59E0B', icon: RefreshCw },
-  withdraw: { label: 'Rút tiền', desc: 'Rút tài sản ra ví ngoài — quyền nguy hiểm', color: '#EF4444', icon: Lock },
+  read: {
+    label: 'Đọc dữ liệu',
+    desc: 'Xem số dư, lịch sử giao dịch, thông tin tài khoản',
+    color: '#3B82F6',
+    icon: Eye,
+  },
+  trade: {
+    label: 'Giao dịch',
+    desc: 'Đặt lệnh, hủy lệnh, chỉnh sửa lệnh',
+    color: '#F59E0B',
+    icon: RefreshCw,
+  },
+  withdraw: {
+    label: 'Rút tiền',
+    desc: 'Rút tài sản ra ví ngoài — quyền nguy hiểm',
+    color: '#EF4444',
+    icon: Lock,
+  },
 } as const;
 
 type Permission = keyof typeof PERMISSION_CONFIG;
@@ -54,9 +78,7 @@ export function ApiKeyCreatePage() {
     if (p === 'read') return; // read is always on
     if (p === 'withdraw') hapticWarning();
     else hapticLight();
-    setPermissions(prev =>
-      prev.includes(p) ? prev.filter(x => x !== p) : [...prev, p]
-    );
+    setPermissions((prev) => (prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]));
   };
 
   const addIp = () => {
@@ -65,19 +87,28 @@ export function ApiKeyCreatePage() {
     // Basic IP validation
     if (!/^(\d{1,3}\.){3}\d{1,3}(\/\d{1,2})?$/.test(trimmed)) return;
     if (!ips.includes(trimmed)) {
-      setIps(prev => [...prev, trimmed]);
+      setIps((prev) => [...prev, trimmed]);
       hapticLight();
     }
     setIpInput('');
   };
 
   const handleCreate = () => {
-    const key = 'vt_live_' + Array.from({ length: 32 }, () =>
-      'abcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random() * 36)]
-    ).join('');
-    const secret = 'sk_live_' + Array.from({ length: 32 }, () =>
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random() * 62)]
-    ).join('');
+    const key =
+      'vt_live_' +
+      Array.from(
+        { length: 32 },
+        () => 'abcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random() * 36)],
+      ).join('');
+    const secret =
+      'sk_live_' +
+      Array.from(
+        { length: 32 },
+        () =>
+          'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'[
+            Math.floor(Math.random() * 62)
+          ],
+      ).join('');
     setNewKey({ key, secret });
     setStep('result');
     hapticSuccess();
@@ -113,8 +144,13 @@ export function ApiKeyCreatePage() {
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             className="flex flex-col items-center gap-3"
           >
-            <div className="w-20 h-20 rounded-3xl flex items-center justify-center"
-              style={{ background: 'rgba(16,185,129,0.1)', border: '1.5px solid rgba(16,185,129,0.25)' }}>
+            <div
+              className="w-20 h-20 rounded-3xl flex items-center justify-center"
+              style={{
+                background: 'rgba(16,185,129,0.1)',
+                border: '1.5px solid rgba(16,185,129,0.25)',
+              }}
+            >
               <CheckCircle size={40} color="#10B981" />
             </div>
             <p style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}>Tạo thành công!</p>
@@ -126,7 +162,10 @@ export function ApiKeyCreatePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             className="flex items-start gap-3 rounded-2xl px-4 py-3"
-            style={{ background: 'rgba(239,68,68,0.06)', border: '1.5px solid rgba(239,68,68,0.2)' }}
+            style={{
+              background: 'rgba(239,68,68,0.06)',
+              border: '1.5px solid rgba(239,68,68,0.2)',
+            }}
           >
             <AlertTriangle size={16} color="#EF4444" className="shrink-0 mt-0.5" />
             <div>
@@ -134,8 +173,9 @@ export function ApiKeyCreatePage() {
                 Lưu Secret Key ngay!
               </p>
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                Secret Key chỉ hiển thị <span style={{ fontWeight: 700, color: '#EF4444' }}>MỘT LẦN DUY NHẤT</span>.
-                Sau khi rời trang này, bạn sẽ không thể xem lại.
+                Secret Key chỉ hiển thị{' '}
+                <span style={{ fontWeight: 700, color: '#EF4444' }}>MỘT LẦN DUY NHẤT</span>. Sau khi
+                rời trang này, bạn sẽ không thể xem lại.
               </p>
             </div>
           </motion.div>
@@ -148,21 +188,51 @@ export function ApiKeyCreatePage() {
           >
             <TrCard className="p-4">
               <div className="flex items-center justify-between mb-2">
-                <span style={{ color: c.text3, fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                <span
+                  style={{
+                    color: c.text3,
+                    fontSize: 11,
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5,
+                  }}
+                >
                   API Key
                 </span>
                 <button
                   onClick={() => handleCopy('key', newKey.key)}
                   className="flex items-center gap-1 px-2.5 py-1 rounded-lg"
-                  style={{ background: copiedField === 'key' ? 'rgba(16,185,129,0.12)' : 'rgba(59,130,246,0.1)', border: `1px solid ${copiedField === 'key' ? 'rgba(16,185,129,0.3)' : 'rgba(59,130,246,0.2)'}` }}
+                  style={{
+                    background:
+                      copiedField === 'key' ? 'rgba(16,185,129,0.12)' : 'rgba(59,130,246,0.1)',
+                    border: `1px solid ${copiedField === 'key' ? 'rgba(16,185,129,0.3)' : 'rgba(59,130,246,0.2)'}`,
+                  }}
                 >
-                  {copiedField === 'key' ? <CheckCircle size={12} color="#10B981" /> : <Copy size={12} color="#3B82F6" />}
-                  <span style={{ fontSize: 11, fontWeight: 600, color: copiedField === 'key' ? '#10B981' : '#3B82F6' }}>
+                  {copiedField === 'key' ? (
+                    <CheckCircle size={12} color="#10B981" />
+                  ) : (
+                    <Copy size={12} color="#3B82F6" />
+                  )}
+                  <span
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 600,
+                      color: copiedField === 'key' ? '#10B981' : '#3B82F6',
+                    }}
+                  >
                     {copiedField === 'key' ? 'Đã copy' : 'Sao chép'}
                   </span>
                 </button>
               </div>
-              <p style={{ color: c.text1, fontSize: 12, fontFamily: 'monospace', wordBreak: 'break-all', lineHeight: 1.6 }}>
+              <p
+                style={{
+                  color: c.text1,
+                  fontSize: 12,
+                  fontFamily: 'monospace',
+                  wordBreak: 'break-all',
+                  lineHeight: 1.6,
+                }}
+              >
                 {newKey.key}
               </p>
             </TrCard>
@@ -176,42 +246,77 @@ export function ApiKeyCreatePage() {
           >
             <TrCard className="p-4" accentBorder="rgba(239,68,68,0.2)">
               <div className="flex items-center justify-between mb-2">
-                <span style={{ color: '#EF4444', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                <span
+                  style={{
+                    color: '#EF4444',
+                    fontSize: 11,
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5,
+                  }}
+                >
                   Secret Key
                 </span>
                 <button
                   onClick={() => handleCopy('secret', newKey.secret)}
                   className="flex items-center gap-1 px-2.5 py-1 rounded-lg"
-                  style={{ background: copiedField === 'secret' ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.08)', border: `1px solid ${copiedField === 'secret' ? 'rgba(16,185,129,0.3)' : 'rgba(239,68,68,0.15)'}` }}
+                  style={{
+                    background:
+                      copiedField === 'secret' ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.08)',
+                    border: `1px solid ${copiedField === 'secret' ? 'rgba(16,185,129,0.3)' : 'rgba(239,68,68,0.15)'}`,
+                  }}
                 >
-                  {copiedField === 'secret' ? <CheckCircle size={12} color="#10B981" /> : <Copy size={12} color="#EF4444" />}
-                  <span style={{ fontSize: 11, fontWeight: 600, color: copiedField === 'secret' ? '#10B981' : '#EF4444' }}>
+                  {copiedField === 'secret' ? (
+                    <CheckCircle size={12} color="#10B981" />
+                  ) : (
+                    <Copy size={12} color="#EF4444" />
+                  )}
+                  <span
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 600,
+                      color: copiedField === 'secret' ? '#10B981' : '#EF4444',
+                    }}
+                  >
                     {copiedField === 'secret' ? 'Đã copy' : 'Sao chép'}
                   </span>
                 </button>
               </div>
-              <p style={{ color: c.text1, fontSize: 12, fontFamily: 'monospace', wordBreak: 'break-all', lineHeight: 1.6 }}>
+              <p
+                style={{
+                  color: c.text1,
+                  fontSize: 12,
+                  fontFamily: 'monospace',
+                  wordBreak: 'break-all',
+                  lineHeight: 1.6,
+                }}
+              >
                 {newKey.secret}
               </p>
             </TrCard>
           </motion.div>
 
           {/* Summary */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
             <TrCard className="p-4">
-              <p style={{ color: c.text3, fontSize: 11, fontWeight: 600, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+              <p
+                style={{
+                  color: c.text3,
+                  fontSize: 11,
+                  fontWeight: 600,
+                  marginBottom: 8,
+                  textTransform: 'uppercase',
+                  letterSpacing: 0.5,
+                }}
+              >
                 Chi tiết
               </p>
               {[
                 { k: 'Tên', v: name },
-                { k: 'Quyền', v: permissions.map(p => PERMISSION_CONFIG[p].label).join(', ') },
+                { k: 'Quyền', v: permissions.map((p) => PERMISSION_CONFIG[p].label).join(', ') },
                 { k: 'IP Whitelist', v: ips.length > 0 ? `${ips.length} IPs` : 'Không giới hạn' },
-                { k: 'Hết hạn', v: EXPIRY_OPTIONS.find(e => e.id === expiry)?.label || 'Không' },
-              ].map(row => (
+                { k: 'Hết hạn', v: EXPIRY_OPTIONS.find((e) => e.id === expiry)?.label || 'Không' },
+              ].map((row) => (
                 <div key={row.k} className="flex justify-between py-1.5">
                   <span style={{ color: c.text3, fontSize: 12 }}>{row.k}</span>
                   <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>{row.v}</span>
@@ -222,9 +327,7 @@ export function ApiKeyCreatePage() {
         </PageContent>
 
         <PageContent padding="compact">
-          <CTAButton onClick={() => navigate(`${prefix}/profile/api`)}>
-            Đã lưu, quay lại
-          </CTAButton>
+          <CTAButton onClick={() => navigate(`${prefix}/profile/api`)}>Đã lưu, quay lại</CTAButton>
         </PageContent>
       </PageLayout>
     );
@@ -244,8 +347,13 @@ export function ApiKeyCreatePage() {
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             className="flex flex-col items-center gap-3"
           >
-            <div className="w-20 h-20 rounded-3xl flex items-center justify-center"
-              style={{ background: 'rgba(16,185,129,0.1)', border: '1.5px solid rgba(16,185,129,0.25)' }}>
+            <div
+              className="w-20 h-20 rounded-3xl flex items-center justify-center"
+              style={{
+                background: 'rgba(16,185,129,0.1)',
+                border: '1.5px solid rgba(16,185,129,0.25)',
+              }}
+            >
               <CheckCircle size={40} color="#10B981" />
             </div>
             <p style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}>Xác nhận tạo API Key</p>
@@ -254,37 +362,71 @@ export function ApiKeyCreatePage() {
           <TrCard className="p-4">
             {[
               { k: 'Tên API Key', v: name },
-              { k: 'Quyền truy cập', v: permissions.map(p => PERMISSION_CONFIG[p].label).join(', ') },
+              {
+                k: 'Quyền truy cập',
+                v: permissions.map((p) => PERMISSION_CONFIG[p].label).join(', '),
+              },
               { k: 'IP Whitelist', v: ips.length > 0 ? ips.join(', ') : 'Không giới hạn' },
-              { k: 'Thời hạn', v: EXPIRY_OPTIONS.find(e => e.id === expiry)?.label || 'Không hết hạn' },
-            ].map(row => (
-              <div key={row.k} className="flex justify-between py-2" style={{ borderBottom: `1px solid ${c.divider}` }}>
+              {
+                k: 'Thời hạn',
+                v: EXPIRY_OPTIONS.find((e) => e.id === expiry)?.label || 'Không hết hạn',
+              },
+            ].map((row) => (
+              <div
+                key={row.k}
+                className="flex justify-between py-2"
+                style={{ borderBottom: `1px solid ${c.divider}` }}
+              >
                 <span style={{ color: c.text2, fontSize: 13 }}>{row.k}</span>
-                <span style={{ color: c.text1, fontSize: 13, fontWeight: 600, maxWidth: '60%', textAlign: 'right' }}>{row.v}</span>
+                <span
+                  style={{
+                    color: c.text1,
+                    fontSize: 13,
+                    fontWeight: 600,
+                    maxWidth: '60%',
+                    textAlign: 'right',
+                  }}
+                >
+                  {row.v}
+                </span>
               </div>
             ))}
           </TrCard>
 
           {permissions.includes('withdraw') && (
-            <div className="flex items-start gap-3 rounded-2xl px-4 py-3"
-              style={{ background: 'rgba(239,68,68,0.06)', border: '1.5px solid rgba(239,68,68,0.2)' }}>
+            <div
+              className="flex items-start gap-3 rounded-2xl px-4 py-3"
+              style={{
+                background: 'rgba(239,68,68,0.06)',
+                border: '1.5px solid rgba(239,68,68,0.2)',
+              }}
+            >
               <AlertTriangle size={16} color="#EF4444" className="shrink-0 mt-0.5" />
               <div>
-                <p style={{ color: '#EF4444', fontSize: 13, fontWeight: 700, marginBottom: 2 }}>Cảnh báo bảo mật</p>
+                <p style={{ color: '#EF4444', fontSize: 13, fontWeight: 700, marginBottom: 2 }}>
+                  Cảnh báo bảo mật
+                </p>
                 <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                  API Key này có quyền <span style={{ fontWeight: 700, color: '#EF4444' }}>rút tiền</span>.
-                  Hãy chắc chắn giới hạn IP và bảo mật key cẩn thận.
+                  API Key này có quyền{' '}
+                  <span style={{ fontWeight: 700, color: '#EF4444' }}>rút tiền</span>. Hãy chắc chắn
+                  giới hạn IP và bảo mật key cẩn thận.
                 </p>
               </div>
             </div>
           )}
 
           {ips.length === 0 && (
-            <div className="flex items-start gap-3 rounded-2xl px-4 py-3"
-              style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}>
+            <div
+              className="flex items-start gap-3 rounded-2xl px-4 py-3"
+              style={{
+                background: 'rgba(245,158,11,0.06)',
+                border: '1px solid rgba(245,158,11,0.15)',
+              }}
+            >
               <AlertTriangle size={16} color="#F59E0B" className="shrink-0 mt-0.5" />
               <p style={{ color: '#F59E0B', fontSize: 12, lineHeight: 1.6 }}>
-                Key không giới hạn IP. Bất kỳ ai có key đều có thể truy cập. Khuyến nghị thêm IP whitelist.
+                Key không giới hạn IP. Bất kỳ ai có key đều có thể truy cập. Khuyến nghị thêm IP
+                whitelist.
               </p>
             </div>
           )}
@@ -292,11 +434,14 @@ export function ApiKeyCreatePage() {
 
         <PageContent padding="compact">
           <div className="flex flex-col gap-3">
-            <CTAButton onClick={handleCreate}>
-              Tạo API Key
-            </CTAButton>
-            <button onClick={() => { setStep('form'); hapticLight(); }}
-              style={{ color: c.text2, fontSize: 14, fontWeight: 600, padding: '8px 0' }}>
+            <CTAButton onClick={handleCreate}>Tạo API Key</CTAButton>
+            <button
+              onClick={() => {
+                setStep('form');
+                hapticLight();
+              }}
+              style={{ color: c.text2, fontSize: 14, fontWeight: 600, padding: '8px 0' }}
+            >
               Quay lại chỉnh sửa
             </button>
           </div>
@@ -313,12 +458,20 @@ export function ApiKeyCreatePage() {
       <PageContent gap="relaxed" grow>
         {/* ═══ Name ═══ */}
         <div>
-          <label style={{ color: c.text2, fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 8 }}>
+          <label
+            style={{
+              color: c.text2,
+              fontSize: 13,
+              fontWeight: 600,
+              display: 'block',
+              marginBottom: 8,
+            }}
+          >
             Tên API Key <span style={{ color: '#EF4444' }}>*</span>
           </label>
           <input
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             placeholder="VD: Trading Bot Alpha, Portfolio Tracker..."
             maxLength={30}
             className="w-full rounded-2xl px-4"
@@ -342,11 +495,24 @@ export function ApiKeyCreatePage() {
 
         {/* ═══ Permissions ═══ */}
         <div>
-          <label style={{ color: c.text2, fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 8 }}>
+          <label
+            style={{
+              color: c.text2,
+              fontSize: 13,
+              fontWeight: 600,
+              display: 'block',
+              marginBottom: 8,
+            }}
+          >
             Quyền truy cập <span style={{ color: '#EF4444' }}>*</span>
           </label>
           <div className="flex flex-col gap-2.5">
-            {(Object.entries(PERMISSION_CONFIG) as [Permission, typeof PERMISSION_CONFIG[Permission]][]).map(([key, cfg]) => {
+            {(
+              Object.entries(PERMISSION_CONFIG) as [
+                Permission,
+                (typeof PERMISSION_CONFIG)[Permission],
+              ][]
+            ).map(([key, cfg]) => {
               const isActive = permissions.includes(key);
               const Icon = cfg.icon;
               return (
@@ -360,23 +526,34 @@ export function ApiKeyCreatePage() {
                     transition: 'all 0.2s ease',
                   }}
                 >
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                    style={{ background: isActive ? cfg.color + '15' : c.surface, border: `1px solid ${isActive ? cfg.color + '33' : c.borderSolid}` }}>
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    style={{
+                      background: isActive ? cfg.color + '15' : c.surface,
+                      border: `1px solid ${isActive ? cfg.color + '33' : c.borderSolid}`,
+                    }}
+                  >
                     <Icon size={18} color={isActive ? cfg.color : c.text3} />
                   </div>
                   <div className="flex-1 text-left">
-                    <p style={{ color: isActive ? c.text1 : c.text2, fontSize: 14, fontWeight: 600 }}>
+                    <p
+                      style={{ color: isActive ? c.text1 : c.text2, fontSize: 14, fontWeight: 600 }}
+                    >
                       {cfg.label}
-                      {key === 'read' && <span style={{ color: c.text3, fontWeight: 400 }}> (bắt buộc)</span>}
+                      {key === 'read' && (
+                        <span style={{ color: c.text3, fontWeight: 400 }}> (bắt buộc)</span>
+                      )}
                     </p>
                     <p style={{ color: c.text3, fontSize: 12 }}>{cfg.desc}</p>
                   </div>
-                  <div className="w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0"
+                  <div
+                    className="w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0"
                     style={{
                       borderColor: isActive ? cfg.color : c.borderSolid,
                       background: isActive ? cfg.color : 'transparent',
                       transition: 'all 0.2s ease',
-                    }}>
+                    }}
+                  >
                     {isActive && <CheckCircle size={14} color="#fff" />}
                   </div>
                 </button>
@@ -387,13 +564,21 @@ export function ApiKeyCreatePage() {
 
         {/* ═══ IP Whitelist ═══ */}
         <div>
-          <label style={{ color: c.text2, fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 8 }}>
+          <label
+            style={{
+              color: c.text2,
+              fontSize: 13,
+              fontWeight: 600,
+              display: 'block',
+              marginBottom: 8,
+            }}
+          >
             IP Whitelist <span style={{ color: c.text3, fontWeight: 400 }}>(khuyến nghị)</span>
           </label>
           <div className="flex gap-2">
             <input
               value={ipInput}
-              onChange={e => setIpInput(e.target.value)}
+              onChange={(e) => setIpInput(e.target.value)}
               placeholder="VD: 192.168.1.100"
               className="flex-1 rounded-2xl px-4"
               style={{
@@ -405,7 +590,7 @@ export function ApiKeyCreatePage() {
                 outline: 'none',
                 fontFamily: 'monospace',
               }}
-              onKeyDown={e => e.key === 'Enter' && addIp()}
+              onKeyDown={(e) => e.key === 'Enter' && addIp()}
             />
             <button
               onClick={addIp}
@@ -418,11 +603,21 @@ export function ApiKeyCreatePage() {
           {ips.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mt-3">
               {ips.map((ip, i) => (
-                <span key={ip} className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl"
-                  style={{ background: 'rgba(16,185,129,0.08)', color: '#10B981', border: '1px solid rgba(16,185,129,0.2)', fontSize: 12, fontWeight: 600, fontFamily: 'monospace' }}>
+                <span
+                  key={ip}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl"
+                  style={{
+                    background: 'rgba(16,185,129,0.08)',
+                    color: '#10B981',
+                    border: '1px solid rgba(16,185,129,0.2)',
+                    fontSize: 12,
+                    fontWeight: 600,
+                    fontFamily: 'monospace',
+                  }}
+                >
                   <Globe size={11} />
                   {ip}
-                  <button onClick={() => setIps(prev => prev.filter((_, j) => j !== i))}>
+                  <button onClick={() => setIps((prev) => prev.filter((_, j) => j !== i))}>
                     <X size={11} color="#10B981" />
                   </button>
                 </span>
@@ -438,14 +633,25 @@ export function ApiKeyCreatePage() {
 
         {/* ═══ Expiry ═══ */}
         <div>
-          <label style={{ color: c.text2, fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 8 }}>
+          <label
+            style={{
+              color: c.text2,
+              fontSize: 13,
+              fontWeight: 600,
+              display: 'block',
+              marginBottom: 8,
+            }}
+          >
             Thời hạn
           </label>
           <div className="grid grid-cols-2 gap-2">
-            {EXPIRY_OPTIONS.map(opt => (
+            {EXPIRY_OPTIONS.map((opt) => (
               <button
                 key={opt.id}
-                onClick={() => { setExpiry(opt.id); hapticLight(); }}
+                onClick={() => {
+                  setExpiry(opt.id);
+                  hapticLight();
+                }}
                 className="flex flex-col items-start px-3 py-2.5 rounded-xl"
                 style={{
                   background: expiry === opt.id ? c.chipActiveBg : c.surface2,
@@ -463,14 +669,21 @@ export function ApiKeyCreatePage() {
 
         {/* ═══ Withdraw warning ═══ */}
         {permissions.includes('withdraw') && (
-          <div className="flex items-start gap-3 rounded-2xl px-4 py-3"
-            style={{ background: 'rgba(239,68,68,0.06)', border: '1.5px solid rgba(239,68,68,0.2)' }}>
+          <div
+            className="flex items-start gap-3 rounded-2xl px-4 py-3"
+            style={{
+              background: 'rgba(239,68,68,0.06)',
+              border: '1.5px solid rgba(239,68,68,0.2)',
+            }}
+          >
             <AlertTriangle size={16} color="#EF4444" className="shrink-0 mt-0.5" />
             <div>
-              <p style={{ color: '#EF4444', fontSize: 13, fontWeight: 700, marginBottom: 2 }}>Cảnh báo: Quyền rút tiền</p>
+              <p style={{ color: '#EF4444', fontSize: 13, fontWeight: 700, marginBottom: 2 }}>
+                Cảnh báo: Quyền rút tiền
+              </p>
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                Quyền rút tiền rất nguy hiểm. Chỉ bật khi thực sự cần thiết.
-                Luôn giới hạn IP khi cấp quyền này.
+                Quyền rút tiền rất nguy hiểm. Chỉ bật khi thực sự cần thiết. Luôn giới hạn IP khi
+                cấp quyền này.
               </p>
             </div>
           </div>
@@ -490,8 +703,10 @@ export function ApiKeyCreatePage() {
               'Chỉ cấp quyền tối thiểu cần thiết',
             ].map((tip, i) => (
               <div key={i} className="flex items-start gap-2">
-                <div className="w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5"
-                  style={{ background: 'rgba(59,130,246,0.12)' }}>
+                <div
+                  className="w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5"
+                  style={{ background: 'rgba(59,130,246,0.12)' }}
+                >
                   <span style={{ color: '#3B82F6', fontSize: 9, fontWeight: 700 }}>{i + 1}</span>
                 </div>
                 <span style={{ color: c.text2, fontSize: 12, lineHeight: 1.5 }}>{tip}</span>
@@ -503,7 +718,13 @@ export function ApiKeyCreatePage() {
 
       {/* ═══ CTA ═══ */}
       <PageContent padding="compact">
-        <CTAButton onClick={() => { setStep('confirm'); hapticLight(); }} disabled={!canProceed}>
+        <CTAButton
+          onClick={() => {
+            setStep('confirm');
+            hapticLight();
+          }}
+          disabled={!canProceed}
+        >
           Tiếp tục
         </CTAButton>
       </PageContent>

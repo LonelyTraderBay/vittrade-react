@@ -1,11 +1,29 @@
 import React, { useState } from 'react';
-import { AlertTriangle, Shield, TrendingDown, Activity, ChevronRight, AlertCircle } from 'lucide-react';
+import {
+  AlertTriangle,
+  Shield,
+  TrendingDown,
+  Activity,
+  ChevronRight,
+  AlertCircle,
+} from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { TrCard } from '../../components/ui/TrCard';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from 'recharts';
 import { fmtUsd } from '../../data/formatNumber';
 import { useNavigate } from 'react-router';
 
@@ -130,7 +148,8 @@ export function StakingRiskDashboardPage() {
             <p style={{ color: c.text3, fontSize: 12, marginBottom: 8 }}>Overall Risk Score</p>
             <div
               className="w-32 h-32 rounded-full mx-auto flex items-center justify-center mb-4"
-              style={{ background: `${overallColor}22`, border: `4px solid ${overallColor}` }}>
+              style={{ background: `${overallColor}22`, border: `4px solid ${overallColor}` }}
+            >
               <div>
                 <p style={{ color: overallColor, fontSize: 36, fontWeight: 700, lineHeight: 1 }}>
                   {OVERALL_RISK_SCORE}
@@ -140,35 +159,40 @@ export function StakingRiskDashboardPage() {
             </div>
             <div
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-2"
-              style={{ background: `${overallColor}22` }}>
+              style={{ background: `${overallColor}22` }}
+            >
               <Shield size={16} color={overallColor} />
-              <p style={{ color: overallColor, fontSize: 14, fontWeight: 700 }}>
-                {overallLabel}
-              </p>
+              <p style={{ color: overallColor, fontSize: 14, fontWeight: 700 }}>{overallLabel}</p>
             </div>
-            <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6, maxWidth: 300, margin: '0 auto' }}>
-              Your staking portfolio has {overallLabel.toLowerCase()}. No immediate action required, but monitor market volatility.
+            <p
+              style={{
+                color: c.text2,
+                fontSize: 12,
+                lineHeight: 1.6,
+                maxWidth: 300,
+                margin: '0 auto',
+              }}
+            >
+              Your staking portfolio has {overallLabel.toLowerCase()}. No immediate action required,
+              but monitor market volatility.
             </p>
           </div>
 
           <div className="grid grid-cols-3 gap-3">
             <div className="text-center p-3 rounded-xl" style={{ background: c.surface2 }}>
               <p style={{ color: c.text3, fontSize: 10, marginBottom: 4 }}>Total Staked</p>
-              <p style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>
-                {fmtUsd(100000)}
-              </p>
+              <p style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>{fmtUsd(100000)}</p>
             </div>
             <div className="text-center p-3 rounded-xl" style={{ background: c.surface2 }}>
               <p style={{ color: c.text3, fontSize: 10, marginBottom: 4 }}>At Risk</p>
-              <p style={{ color: '#F59E0B', fontSize: 16, fontWeight: 700 }}>
-                {fmtUsd(5000)}
-              </p>
+              <p style={{ color: '#F59E0B', fontSize: 16, fontWeight: 700 }}>{fmtUsd(5000)}</p>
             </div>
-            <div className="text-center p-3 rounded-xl" style={{ background: 'rgba(16,185,129,0.08)' }}>
+            <div
+              className="text-center p-3 rounded-xl"
+              style={{ background: 'rgba(16,185,129,0.08)' }}
+            >
               <p style={{ color: c.text3, fontSize: 10, marginBottom: 4 }}>Protected</p>
-              <p style={{ color: '#10B981', fontSize: 16, fontWeight: 700 }}>
-                95%
-              </p>
+              <p style={{ color: '#10B981', fontSize: 16, fontWeight: 700 }}>95%</p>
             </div>
           </div>
         </TrCard>
@@ -185,15 +209,20 @@ export function StakingRiskDashboardPage() {
                   className="p-4"
                   onClick={() => {
                     if (metric.action) {
-                      if (metric.category === 'Validator Health') navigate('/earn/validator-health-monitor');
-                      else if (metric.category === 'Slashing Risk') navigate('/earn/slashing-history');
-                      else if (metric.category === 'Smart Contract Risk') navigate('/earn/audit-reports');
+                      if (metric.category === 'Validator Health')
+                        navigate('/earn/validator-health-monitor');
+                      else if (metric.category === 'Slashing Risk')
+                        navigate('/earn/slashing-history');
+                      else if (metric.category === 'Smart Contract Risk')
+                        navigate('/earn/audit-reports');
                     }
-                  }}>
+                  }}
+                >
                   <div className="flex items-start gap-3 mb-3">
                     <div
                       className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ background: `${color}22` }}>
+                      style={{ background: `${color}22` }}
+                    >
                       {metric.status === 'low' ? (
                         <Shield size={20} color={color} />
                       ) : metric.status === 'critical' ? (
@@ -210,7 +239,8 @@ export function StakingRiskDashboardPage() {
                         <div className="flex items-center gap-2">
                           <span
                             className="px-2 py-0.5 rounded-md text-xs font-bold"
-                            style={{ background: `${color}22`, color }}>
+                            style={{ background: `${color}22`, color }}
+                          >
                             {metric.score}/100
                           </span>
                           {metric.action && <ChevronRight size={16} color={c.text3} />}
@@ -222,7 +252,10 @@ export function StakingRiskDashboardPage() {
                     </div>
                   </div>
 
-                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
+                  <div
+                    className="h-1.5 rounded-full overflow-hidden"
+                    style={{ background: c.surface2 }}
+                  >
                     <div
                       className="h-full transition-all duration-500"
                       style={{ background: color, width: `${metric.score}%` }}
@@ -248,13 +281,17 @@ export function StakingRiskDashboardPage() {
                   label={({ asset, percentage }) => `${asset} ${percentage}%`}
                   outerRadius={60}
                   fill="#8884d8"
-                  dataKey="value">
+                  dataKey="value"
+                >
                   {EXPOSURE_DATA.map((entry, index) => (
                     <Cell
                       key={`exp-cell-${index}`}
                       fill={
-                        entry.risk === 'low' ? '#10B981' :
-                        entry.risk === 'medium' ? '#F59E0B' : '#EF4444'
+                        entry.risk === 'low'
+                          ? '#10B981'
+                          : entry.risk === 'medium'
+                            ? '#F59E0B'
+                            : '#EF4444'
                       }
                     />
                   ))}
@@ -274,13 +311,21 @@ export function StakingRiskDashboardPage() {
 
             <div className="space-y-2 mt-3">
               {EXPOSURE_DATA.map((item, idx) => (
-                <div key={idx} className="flex items-center justify-between p-2 rounded-lg" style={{ background: c.surface2 }}>
+                <div
+                  key={idx}
+                  className="flex items-center justify-between p-2 rounded-lg"
+                  style={{ background: c.surface2 }}
+                >
                   <div className="flex items-center gap-2">
                     <div
                       className="w-3 h-3 rounded-full"
                       style={{
-                        background: item.risk === 'low' ? '#10B981' :
-                                   item.risk === 'medium' ? '#F59E0B' : '#EF4444'
+                        background:
+                          item.risk === 'low'
+                            ? '#10B981'
+                            : item.risk === 'medium'
+                              ? '#F59E0B'
+                              : '#EF4444',
                       }}
                     />
                     <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>{item.asset}</p>
@@ -300,13 +345,19 @@ export function StakingRiskDashboardPage() {
         {/* Recent Risk Events */}
         <PageSection label="Recent Risk Events">
           <div className="flex flex-col gap-2">
-            {RISK_EVENTS.map(event => {
+            {RISK_EVENTS.map((event) => {
               const iconColor =
-                event.type === 'warning' ? '#F59E0B' :
-                event.type === 'info' ? '#3B82F6' : '#10B981';
+                event.type === 'warning'
+                  ? '#F59E0B'
+                  : event.type === 'info'
+                    ? '#3B82F6'
+                    : '#10B981';
               const bgColor =
-                event.type === 'warning' ? 'rgba(245,158,11,0.08)' :
-                event.type === 'info' ? 'rgba(59,130,246,0.08)' : 'rgba(16,185,129,0.08)';
+                event.type === 'warning'
+                  ? 'rgba(245,158,11,0.08)'
+                  : event.type === 'info'
+                    ? 'rgba(59,130,246,0.08)'
+                    : 'rgba(16,185,129,0.08)';
 
               return (
                 <TrCard key={event.id} className="p-3" style={{ background: bgColor }}>
@@ -329,9 +380,7 @@ export function StakingRiskDashboardPage() {
                           {new Date(event.date).toLocaleDateString('en-GB')}
                         </p>
                       </div>
-                      <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.5 }}>
-                        {event.desc}
-                      </p>
+                      <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.5 }}>{event.desc}</p>
                     </div>
                   </div>
                 </TrCard>
@@ -377,7 +426,8 @@ export function StakingRiskDashboardPage() {
         {/* Footer */}
         <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6, textAlign: 'center' }}>
-            Risk scores are updated every 10 minutes. Historical data available for 12 months. Risk metrics are for informational purposes only and do not constitute financial advice.
+            Risk scores are updated every 10 minutes. Historical data available for 12 months. Risk
+            metrics are for informational purposes only and do not constitute financial advice.
           </p>
         </div>
       </PageContent>

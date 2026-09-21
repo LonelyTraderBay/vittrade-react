@@ -2,14 +2,14 @@
  * ══════════════════════════════════════════════════════════════
  *  ClientMoneyProtectionPage — Phase 4 Sprint 2 Day 7-8
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - FCA CASS (Client Assets Sourcebook) compliance dashboard
  * - Segregated client money accounts
  * - Daily reconciliation statements
  * - Insolvency protection disclosure
  * - Trust account information
- * 
+ *
  * Compliance:
  * - CASS 7: Client money rules (UK)
  * - Segregated accounts required
@@ -21,8 +21,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Shield, Lock, CheckCircle, FileText, Download, Eye,
-  TrendingUp, Activity, Clock, Info, ChevronRight
+  Shield,
+  Lock,
+  CheckCircle,
+  FileText,
+  Download,
+  Eye,
+  TrendingUp,
+  Activity,
+  Clock,
+  Info,
+  ChevronRight,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -53,14 +62,18 @@ export function ClientMoneyProtectionPage() {
 
       <PageContent gap="relaxed">
         {/* Protection Notice */}
-        <div className="rounded-2xl p-3 flex gap-2.5" style={{ background: c.successBg, border: `1px solid ${c.successBorder}` }}>
-          <Shield size={16} color={c.successText} className="shrink-0 mt-0.5" />
+        <div
+          className="rounded-2xl p-3 flex gap-2.5"
+          style={{ background: c.buyAlpha10, border: `1px solid ${c.buyAlpha20}` }}
+        >
+          <Shield size={16} color={c.success} className="shrink-0 mt-0.5" />
           <div>
-            <p style={{ color: c.successText, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
+            <p style={{ color: c.success, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
               Your Funds Are Protected
             </p>
-            <p style={{ color: c.successText, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
-              All client money is held in segregated bank accounts and reconciled daily per FCA CASS 7 rules.
+            <p style={{ color: c.success, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
+              All client money is held in segregated bank accounts and reconciled daily per FCA CASS
+              7 rules.
             </p>
           </div>
         </div>
@@ -68,15 +81,17 @@ export function ClientMoneyProtectionPage() {
         {/* Account Summary */}
         <TrCard className="p-4">
           <div className="flex items-start gap-3 mb-4">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
-              style={{ background: '#10B981' + '15' }}>
+            <div
+              className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
+              style={{ background: '#10B981' + '15' }}
+            >
               <Lock size={28} color="#10B981" />
             </div>
 
             <div className="flex-1">
               <p style={{ color: c.text3, fontSize: 11 }}>Your Segregated Balance</p>
               <p style={{ color: c.text1, fontSize: 24, fontWeight: 700, marginTop: 4 }}>
-                {fmtUsd(45230.50)}
+                {fmtUsd(45230.5)}
               </p>
               <p style={{ color: '#10B981', fontSize: 11, marginTop: 2 }}>
                 ✓ Fully segregated and protected
@@ -102,7 +117,7 @@ export function ClientMoneyProtectionPage() {
         </TrCard>
 
         {/* Tabs */}
-        <TabBar tabs={TABS} active={tab} onChange={setTab} variant="underline" />
+        <TabBar<TabType> tabs={TABS} active={tab} onChange={setTab} variant="underline" />
 
         {/* Content */}
         {tab === 'overview' && (
@@ -117,7 +132,8 @@ export function ClientMoneyProtectionPage() {
                         Segregated Bank Accounts
                       </p>
                       <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.4, marginTop: 2 }}>
-                        Your funds are held in trust accounts separate from company funds. This means your money is protected even if the company becomes insolvent.
+                        Your funds are held in trust accounts separate from company funds. This
+                        means your money is protected even if the company becomes insolvent.
                       </p>
                     </div>
                   </div>
@@ -129,7 +145,8 @@ export function ClientMoneyProtectionPage() {
                         Daily Reconciliation
                       </p>
                       <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.4, marginTop: 2 }}>
-                        We reconcile all client money daily to ensure accuracy and compliance with FCA regulations.
+                        We reconcile all client money daily to ensure accuracy and compliance with
+                        FCA regulations.
                       </p>
                     </div>
                   </div>
@@ -141,7 +158,8 @@ export function ClientMoneyProtectionPage() {
                         FCA Supervision
                       </p>
                       <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.4, marginTop: 2 }}>
-                        Our client money handling is supervised by the Financial Conduct Authority (FCA) under CASS 7 rules.
+                        Our client money handling is supervised by the Financial Conduct Authority
+                        (FCA) under CASS 7 rules.
                       </p>
                     </div>
                   </div>
@@ -151,17 +169,24 @@ export function ClientMoneyProtectionPage() {
 
             <PageSection label="In Case of Insolvency">
               <TrCard className="p-4">
-                <div className="rounded-lg p-3 mb-3" style={{ background: c.infoBg }}>
+                <div
+                  className="rounded-lg p-3 mb-3"
+                  style={{ background: 'rgba(59,130,246,0.08)' }}
+                >
                   <div className="flex gap-2">
-                    <Info size={14} color={c.infoText} className="shrink-0 mt-0.5" />
-                    <p style={{ color: c.infoText, fontSize: 10, lineHeight: 1.4 }}>
-                      <strong>Client Money Protection:</strong> If we become insolvent, your segregated funds will be distributed to clients proportionally, not used to pay company debts.
+                    <Info size={14} color={c.info} className="shrink-0 mt-0.5" />
+                    <p style={{ color: c.info, fontSize: 10, lineHeight: 1.4 }}>
+                      <strong>Client Money Protection:</strong> If we become insolvent, your
+                      segregated funds will be distributed to clients proportionally, not used to
+                      pay company debts.
                     </p>
                   </div>
                 </div>
 
                 <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                  Segregated client money is held on trust and is not available to general creditors. The FCA's client money rules ensure you have priority access to your funds in an insolvency scenario.
+                  Segregated client money is held on trust and is not available to general
+                  creditors. The FCA's client money rules ensure you have priority access to your
+                  funds in an insolvency scenario.
                 </p>
               </TrCard>
             </PageSection>
@@ -175,31 +200,44 @@ export function ClientMoneyProtectionPage() {
                 <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
                   Latest Reconciliation
                 </p>
-                <span className="px-2.5 py-1 rounded-lg text-[10px] font-semibold"
-                  style={{ background: '#10B981' + '15', color: '#10B981' }}>
+                <span
+                  className="px-2.5 py-1 rounded-lg text-[10px] font-semibold"
+                  style={{ background: '#10B981' + '15', color: '#10B981' }}
+                >
                   MATCHED
                 </span>
               </div>
 
               <div className="space-y-2">
-                <div className="flex items-center justify-between p-2.5 rounded-lg" style={{ background: c.surface2 }}>
+                <div
+                  className="flex items-center justify-between p-2.5 rounded-lg"
+                  style={{ background: c.surface2 }}
+                >
                   <span style={{ color: c.text3, fontSize: 11 }}>Client Ledger Balance</span>
                   <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
-                    {fmtUsd(45230.50)}
+                    {fmtUsd(45230.5)}
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between p-2.5 rounded-lg" style={{ background: c.surface2 }}>
+                <div
+                  className="flex items-center justify-between p-2.5 rounded-lg"
+                  style={{ background: c.surface2 }}
+                >
                   <span style={{ color: c.text3, fontSize: 11 }}>Bank Account Balance</span>
                   <span style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
-                    {fmtUsd(45230.50)}
+                    {fmtUsd(45230.5)}
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between p-2.5 rounded-lg" style={{ background: '#10B981' + '15' }}>
-                  <span style={{ color: '#10B981', fontSize: 11, fontWeight: 600 }}>Difference</span>
+                <div
+                  className="flex items-center justify-between p-2.5 rounded-lg"
+                  style={{ background: '#10B981' + '15' }}
+                >
+                  <span style={{ color: '#10B981', fontSize: 11, fontWeight: 600 }}>
+                    Difference
+                  </span>
                   <span style={{ color: '#10B981', fontSize: 12, fontWeight: 700 }}>
-                    {fmtUsd(0.00)}
+                    {fmtUsd(0.0)}
                   </span>
                 </div>
               </div>
@@ -219,7 +257,8 @@ export function ClientMoneyProtectionPage() {
                 fontWeight: 600,
                 fontSize: 13,
                 border: `1px solid ${c.border}`,
-              }}>
+              }}
+            >
               <Eye size={16} />
               <span>View Full Reconciliation History</span>
               <ChevronRight size={14} />
@@ -233,8 +272,10 @@ export function ClientMoneyProtectionPage() {
               <TrCard className="p-3" hover>
                 <button className="w-full flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                      style={{ background: c.primary + '15' }}>
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center"
+                      style={{ background: c.primary + '15' }}
+                    >
                       <FileText size={18} color={c.primary} />
                     </div>
                     <div className="text-left">
@@ -253,8 +294,10 @@ export function ClientMoneyProtectionPage() {
               <TrCard className="p-3" hover>
                 <button className="w-full flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                      style={{ background: '#10B981' + '15' }}>
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center"
+                      style={{ background: '#10B981' + '15' }}
+                    >
                       <FileText size={18} color="#10B981" />
                     </div>
                     <div className="text-left">
@@ -273,8 +316,10 @@ export function ClientMoneyProtectionPage() {
               <TrCard className="p-3" hover>
                 <button className="w-full flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                      style={{ background: '#F59E0B' + '15' }}>
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center"
+                      style={{ background: '#F59E0B' + '15' }}
+                    >
                       <Shield size={18} color="#F59E0B" />
                     </div>
                     <div className="text-left">

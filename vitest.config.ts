@@ -9,6 +9,8 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
     css: true,
+    // Margin-trading suite has its own config + setup — run via `npm run test:margin`
+    exclude: ['**/node_modules/**', '**/dist/**', 'tests/margin-trading/**'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

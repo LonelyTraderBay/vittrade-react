@@ -90,14 +90,14 @@ const PADDING_MAP: Record<PaddingPreset, string> = {
   compact: 'pt-2',
   default: 'pt-3',
   relaxed: 'pt-4',
-  none:    '',
+  none: '',
 };
 
 const GAP_MAP: Record<GapPreset, number> = {
-  tight:   8,
+  tight: 8,
   default: 16,
   relaxed: 24,
-  loose:   32,
+  loose: 32,
 };
 
 const DENSITY_PADDING_MAP: Record<VitDensity, PaddingPreset> = {
@@ -134,13 +134,9 @@ export function PageContent({
 
   return (
     <div
-      className={[
-        'flex flex-col',
-        hPadding,
-        paddingClass,
-        grow ? 'flex-1' : '',
-        className,
-      ].filter(Boolean).join(' ')}
+      className={['flex flex-col', hPadding, paddingClass, grow ? 'flex-1' : '', className]
+        .filter(Boolean)
+        .join(' ')}
       style={{
         gap: gapValue,
         minHeight: grow ? 0 : undefined,
@@ -218,10 +214,7 @@ export function PageSection({
           mb={8}
         />
       )}
-      <div
-        className="flex flex-col"
-        style={{ gap: gapValue }}
-      >
+      <div className="flex flex-col" style={{ gap: gapValue }}>
         {children}
       </div>
     </div>

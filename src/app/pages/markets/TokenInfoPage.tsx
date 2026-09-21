@@ -9,10 +9,26 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import {
-  Globe, FileText, Github, Twitter, Send,
-  TrendingUp, TrendingDown, Copy, Check, ExternalLink,
-  ArrowUpRight, ArrowDownRight, Info, ChevronRight,
-  Activity, Users, Layers, Shield, Clock, BarChart3,
+  Globe,
+  FileText,
+  Github,
+  Twitter,
+  Send,
+  TrendingUp,
+  TrendingDown,
+  Copy,
+  Check,
+  ExternalLink,
+  ArrowUpRight,
+  ArrowDownRight,
+  Info,
+  ChevronRight,
+  Activity,
+  Users,
+  Layers,
+  Shield,
+  Clock,
+  BarChart3,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -32,7 +48,12 @@ const TABS = ['Tổng quan', 'On-chain', 'Dự án'];
 
 /* ─── Info Row ─── */
 function InfoRow({
-  label, value, valueColor, suffix, icon: Icon, iconColor,
+  label,
+  value,
+  valueColor,
+  suffix,
+  icon: Icon,
+  iconColor,
 }: {
   label: string;
   value: string;
@@ -43,33 +64,42 @@ function InfoRow({
 }) {
   const c = useThemeColors();
   return (
-    <div className="flex items-center justify-between py-3" style={{ borderBottom: `1px solid ${c.divider}` }}>
+    <div
+      className="flex items-center justify-between py-3"
+      style={{ borderBottom: `1px solid ${c.divider}` }}
+    >
       <div className="flex items-center gap-2">
         {Icon && <Icon size={12} color={iconColor ?? c.text3} />}
         <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>{label}</span>
       </div>
       <div className="flex items-center gap-1">
-        <span style={{
-          fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold,
-          color: valueColor ?? c.text1, fontFamily: 'monospace',
-        }}>
+        <span
+          style={{
+            fontSize: FONT_SCALE.sm,
+            fontWeight: FONT_WEIGHT.semibold,
+            color: valueColor ?? c.text1,
+            fontFamily: 'monospace',
+          }}
+        >
           {value}
         </span>
-        {suffix && (
-          <span style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>{suffix}</span>
-        )}
+        {suffix && <span style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>{suffix}</span>}
       </div>
     </div>
   );
 }
 
 /* ─── Supply Distribution Pie Chart (CSS-only) ─── */
-function SupplyPieChart({ distribution }: { distribution: TokenFundamentals['supplyDistribution'] }) {
+function SupplyPieChart({
+  distribution,
+}: {
+  distribution: TokenFundamentals['supplyDistribution'];
+}) {
   const c = useThemeColors();
 
   // Build conic gradient
   let cumulative = 0;
-  const gradientParts = distribution.map(d => {
+  const gradientParts = distribution.map((d) => {
     const start = cumulative;
     cumulative += d.percentage;
     return `${d.color} ${start}% ${cumulative}%`;
@@ -81,7 +111,8 @@ function SupplyPieChart({ distribution }: { distribution: TokenFundamentals['sup
       <div
         className="shrink-0 rounded-full"
         style={{
-          width: 80, height: 80,
+          width: 80,
+          height: 80,
           background: gradient,
           position: 'relative',
         }}
@@ -90,7 +121,10 @@ function SupplyPieChart({ distribution }: { distribution: TokenFundamentals['sup
         <div
           className="absolute rounded-full"
           style={{
-            top: 16, left: 16, right: 16, bottom: 16,
+            top: 16,
+            left: 16,
+            right: 16,
+            bottom: 16,
             background: c.surface,
           }}
         />
@@ -100,7 +134,14 @@ function SupplyPieChart({ distribution }: { distribution: TokenFundamentals['sup
           <div key={i} className="flex items-center gap-2">
             <div className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ background: d.color }} />
             <span style={{ fontSize: FONT_SCALE.xs, color: c.text2, flex: 1 }}>{d.label}</span>
-            <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+            <span
+              style={{
+                fontSize: FONT_SCALE.xs,
+                fontWeight: FONT_WEIGHT.bold,
+                color: c.text1,
+                fontFamily: 'monospace',
+              }}
+            >
               {d.percentage}%
             </span>
           </div>
@@ -126,15 +167,29 @@ function ContractRow({ network, address }: { network: string; address: string })
   const masked = `${address.slice(0, 8)}...${address.slice(-6)}`;
 
   return (
-    <div className="flex items-center gap-2 py-3" style={{ borderBottom: `1px solid ${c.divider}` }}>
+    <div
+      className="flex items-center gap-2 py-3"
+      style={{ borderBottom: `1px solid ${c.divider}` }}
+    >
       <Shield size={12} color={c.text3} />
       <div className="flex-1 min-w-0">
         <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>{network}</p>
-        <p style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.medium, color: c.text1, fontFamily: 'monospace' }}>
+        <p
+          style={{
+            fontSize: FONT_SCALE.xs,
+            fontWeight: FONT_WEIGHT.medium,
+            color: c.text1,
+            fontFamily: 'monospace',
+          }}
+        >
           {masked}
         </p>
       </div>
-      <button onClick={handleCopy} className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: c.surface2 }}>
+      <button
+        onClick={handleCopy}
+        className="w-7 h-7 rounded-lg flex items-center justify-center"
+        style={{ background: c.surface2 }}
+      >
         {copied ? <Check size={12} color="#10B981" /> : <Copy size={12} color={c.text3} />}
       </button>
     </div>
@@ -142,8 +197,16 @@ function ContractRow({ network, address }: { network: string; address: string })
 }
 
 /* ─── Link Button ─── */
-function LinkButton({ icon: Icon, label, url, color }: {
-  icon: React.ElementType; label: string; url: string; color: string;
+function LinkButton({
+  icon: Icon,
+  label,
+  url,
+  color,
+}: {
+  icon: React.ElementType;
+  label: string;
+  url: string;
+  color: string;
 }) {
   const c = useThemeColors();
   if (!url) return null;
@@ -155,10 +218,21 @@ function LinkButton({ icon: Icon, label, url, color }: {
       className="p-3 flex items-center gap-2"
       onClick={() => window.open(url, '_blank')}
     >
-      <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${color}12` }}>
+      <div
+        className="w-8 h-8 rounded-lg flex items-center justify-center"
+        style={{ background: `${color}12` }}
+      >
         <Icon size={14} color={color} />
       </div>
-      <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.medium, color: c.text1, flex: 1, textAlign: 'left' }}>
+      <span
+        style={{
+          fontSize: FONT_SCALE.xs,
+          fontWeight: FONT_WEIGHT.medium,
+          color: c.text1,
+          flex: 1,
+          textAlign: 'left',
+        }}
+      >
         {label}
       </span>
       <ExternalLink size={12} color={c.text3} />
@@ -177,7 +251,7 @@ export function TokenInfoPage() {
   const { hapticSelection } = useHaptic();
   const [tab, setTab] = useState(TABS[0]);
 
-  const pair = CRYPTO_PAIRS.find(p => p.id === pairId) ?? CRYPTO_PAIRS[0];
+  const pair = CRYPTO_PAIRS.find((p) => p.id === pairId) ?? CRYPTO_PAIRS[0];
   const fundamentals = getTokenFundamentals(pairId ?? '');
 
   // Fallback if no fundamentals data
@@ -188,17 +262,24 @@ export function TokenInfoPage() {
         <PageContent gap="default">
           <TrCard className="p-6 flex flex-col items-center gap-3">
             <Info size={32} color={c.text3} />
-            <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold, color: c.text1 }}>
+            <p
+              style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold, color: c.text1 }}
+            >
               Chưa có dữ liệu chi tiết
             </p>
             <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, textAlign: 'center' }}>
-              Thông tin cơ bản về {pair.baseAsset} sẽ được cập nhật sớm.
-              Bạn có thể xem biểu đồ giá và sổ lệnh tại trang chi tiết.
+              Thông tin cơ bản về {pair.baseAsset} sẽ được cập nhật sớm. Bạn có thể xem biểu đồ giá
+              và sổ lệnh tại trang chi tiết.
             </p>
             <button
               onClick={() => navigate(`${prefix}/pair/${pairId}`)}
               className="rounded-xl px-4 py-2 mt-2"
-              style={{ background: c.chipActiveBg, color: c.chipActiveText, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold }}
+              style={{
+                background: c.chipActiveBg,
+                color: c.chipActiveText,
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.semibold,
+              }}
             >
               Xem biểu đồ giá
             </button>
@@ -208,11 +289,18 @@ export function TokenInfoPage() {
           <PageSection label="Thông tin cơ bản" accentColor={pair.logoColor}>
             <TrCard className="px-4">
               <InfoRow label="Giá hiện tại" value={fmtPrice(pair.price)} />
-              <InfoRow label="Thay đổi 24h" value={fmtPct(pair.change24h)} valueColor={pair.change24h >= 0 ? '#10B981' : '#EF4444'} />
+              <InfoRow
+                label="Thay đổi 24h"
+                value={fmtPct(pair.change24h)}
+                valueColor={pair.change24h >= 0 ? '#10B981' : '#EF4444'}
+              />
               <InfoRow label="Cao 24h" value={fmtPrice(pair.high24h)} valueColor="#10B981" />
               <InfoRow label="Thấp 24h" value={fmtPrice(pair.low24h)} valueColor="#EF4444" />
               <InfoRow label="Khối lượng 24h" value={fmtCompact(pair.volume24h, { prefix: '$' })} />
-              <InfoRow label="Vốn hóa thị trường" value={fmtCompact(pair.marketCap, { prefix: '$' })} />
+              <InfoRow
+                label="Vốn hóa thị trường"
+                value={fmtCompact(pair.marketCap, { prefix: '$' })}
+              />
             </TrCard>
           </PageSection>
         </PageContent>
@@ -221,7 +309,7 @@ export function TokenInfoPage() {
   }
 
   const f = fundamentals;
-  const supplyPct = f.maxSupply ? ((f.circulatingSupply / f.maxSupply) * 100) : null;
+  const supplyPct = f.maxSupply ? (f.circulatingSupply / f.maxSupply) * 100 : null;
   const athDropPct = ((pair.price - f.allTimeHigh) / f.allTimeHigh) * 100;
   const atlGainPct = ((pair.price - f.allTimeLow) / f.allTimeLow) * 100;
 
@@ -231,11 +319,13 @@ export function TokenInfoPage() {
       <TabBar
         tabs={TABS}
         active={tab}
-        onChange={(t) => { setTab(t); hapticSelection(); }}
+        onChange={(t) => {
+          setTab(t);
+          hapticSelection();
+        }}
         variant="underline"
       />
       <PageContent gap="default">
-
         {/* ─── Tab: Tổng quan ─── */}
         {tab === 'Tổng quan' && (
           <>
@@ -246,29 +336,44 @@ export function TokenInfoPage() {
                   className="w-11 h-11 rounded-2xl flex items-center justify-center"
                   style={{ background: `${pair.logoColor}20` }}
                 >
-                  <span style={{ fontSize: 14, fontWeight: FONT_WEIGHT.bold, color: pair.logoColor }}>
+                  <span
+                    style={{ fontSize: 14, fontWeight: FONT_WEIGHT.bold, color: pair.logoColor }}
+                  >
                     {f.symbol}
                   </span>
                 </div>
                 <div>
-                  <p style={{ fontSize: FONT_SCALE.lg, fontWeight: FONT_WEIGHT.bold, color: c.text1 }}>
+                  <p
+                    style={{
+                      fontSize: FONT_SCALE.lg,
+                      fontWeight: FONT_WEIGHT.bold,
+                      color: c.text1,
+                    }}
+                  >
                     {f.name}
                   </p>
-                  <p style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>
-                    {f.consensus}
-                  </p>
+                  <p style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>{f.consensus}</p>
                 </div>
               </div>
               <div className="flex items-end gap-3">
-                <span style={{ fontSize: FONT_SCALE.xl, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+                <span
+                  style={{
+                    fontSize: FONT_SCALE.xl,
+                    fontWeight: FONT_WEIGHT.bold,
+                    color: c.text1,
+                    fontFamily: 'monospace',
+                  }}
+                >
                   {fmtPrice(pair.price)}
                 </span>
                 <span
                   className="rounded-lg px-2 py-0.5 mb-1"
                   style={{
-                    fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold,
+                    fontSize: FONT_SCALE.xs,
+                    fontWeight: FONT_WEIGHT.bold,
                     color: pair.change24h >= 0 ? '#10B981' : '#EF4444',
-                    background: pair.change24h >= 0 ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
+                    background:
+                      pair.change24h >= 0 ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
                   }}
                 >
                   {pair.change24h >= 0 ? '▲' : '▼'} {fmtPct(Math.abs(pair.change24h))}
@@ -279,11 +384,37 @@ export function TokenInfoPage() {
             {/* Market Stats */}
             <PageSection label="Thống kê thị trường" accentColor={pair.logoColor}>
               <TrCard className="px-4">
-                <InfoRow label="Vốn hóa thị trường" value={fmtCompact(pair.marketCap, { prefix: '$' })} icon={BarChart3} iconColor="#3B82F6" />
-                <InfoRow label="FDV" value={fmtCompact(f.fullyDilutedValuation, { prefix: '$' })} icon={Layers} iconColor="#8B5CF6" />
-                <InfoRow label="Khối lượng 24h" value={fmtCompact(pair.volume24h, { prefix: '$' })} icon={Activity} iconColor="#10B981" />
-                <InfoRow label="Vol/MCap" value={((pair.volume24h / pair.marketCap) * 100).toFixed(2) + '%'} icon={TrendingUp} iconColor="#F59E0B" />
-                <InfoRow label="ROI 1 năm" value={fmtPct(f.roi1y)} valueColor={f.roi1y >= 0 ? '#10B981' : '#EF4444'} icon={ArrowUpRight} iconColor={f.roi1y >= 0 ? '#10B981' : '#EF4444'} />
+                <InfoRow
+                  label="Vốn hóa thị trường"
+                  value={fmtCompact(pair.marketCap, { prefix: '$' })}
+                  icon={BarChart3}
+                  iconColor="#3B82F6"
+                />
+                <InfoRow
+                  label="FDV"
+                  value={fmtCompact(f.fullyDilutedValuation, { prefix: '$' })}
+                  icon={Layers}
+                  iconColor="#8B5CF6"
+                />
+                <InfoRow
+                  label="Khối lượng 24h"
+                  value={fmtCompact(pair.volume24h, { prefix: '$' })}
+                  icon={Activity}
+                  iconColor="#10B981"
+                />
+                <InfoRow
+                  label="Vol/MCap"
+                  value={((pair.volume24h / pair.marketCap) * 100).toFixed(2) + '%'}
+                  icon={TrendingUp}
+                  iconColor="#F59E0B"
+                />
+                <InfoRow
+                  label="ROI 1 năm"
+                  value={fmtPct(f.roi1y)}
+                  valueColor={f.roi1y >= 0 ? '#10B981' : '#EF4444'}
+                  icon={ArrowUpRight}
+                  iconColor={f.roi1y >= 0 ? '#10B981' : '#EF4444'}
+                />
               </TrCard>
             </PageSection>
 
@@ -293,41 +424,83 @@ export function TokenInfoPage() {
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center justify-between">
                     <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Lưu hành</span>
-                    <span style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+                    <span
+                      style={{
+                        fontSize: FONT_SCALE.sm,
+                        fontWeight: FONT_WEIGHT.bold,
+                        color: c.text1,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       {fmtCompact(f.circulatingSupply)} {f.symbol}
                     </span>
                   </div>
                   {supplyPct !== null && (
                     <div className="flex items-center gap-2">
-                      <div className="flex-1 rounded-full overflow-hidden" style={{ height: 6, background: c.surface2 }}>
-                        <div className="rounded-full" style={{ width: `${supplyPct}%`, height: '100%', background: pair.logoColor }} />
+                      <div
+                        className="flex-1 rounded-full overflow-hidden"
+                        style={{ height: 6, background: c.surface2 }}
+                      >
+                        <div
+                          className="rounded-full"
+                          style={{
+                            width: `${supplyPct}%`,
+                            height: '100%',
+                            background: pair.logoColor,
+                          }}
+                        />
                       </div>
-                      <span style={{ fontSize: FONT_SCALE.micro, color: c.text3, fontFamily: 'monospace' }}>
+                      <span
+                        style={{
+                          fontSize: FONT_SCALE.micro,
+                          color: c.text3,
+                          fontFamily: 'monospace',
+                        }}
+                      >
                         {supplyPct.toFixed(1)}%
                       </span>
                     </div>
                   )}
                   <div className="flex items-center justify-between">
                     <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Tổng cung</span>
-                    <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text2, fontFamily: 'monospace' }}>
+                    <span
+                      style={{
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: FONT_WEIGHT.semibold,
+                        color: c.text2,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       {fmtCompact(f.totalSupply)} {f.symbol}
                     </span>
                   </div>
                   {f.maxSupply !== null && (
                     <div className="flex items-center justify-between">
                       <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Cung tối đa</span>
-                      <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text2, fontFamily: 'monospace' }}>
+                      <span
+                        style={{
+                          fontSize: FONT_SCALE.xs,
+                          fontWeight: FONT_WEIGHT.semibold,
+                          color: c.text2,
+                          fontFamily: 'monospace',
+                        }}
+                      >
                         {fmtCompact(f.maxSupply)} {f.symbol}
                       </span>
                     </div>
                   )}
                   <div className="flex items-center justify-between">
                     <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Tỷ lệ lạm phát</span>
-                    <span style={{
-                      fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold,
-                      color: f.inflationRate > 0 ? '#F59E0B' : '#10B981', fontFamily: 'monospace',
-                    }}>
-                      {f.inflationRate > 0 ? '+' : ''}{f.inflationRate}%
+                    <span
+                      style={{
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: FONT_WEIGHT.semibold,
+                        color: f.inflationRate > 0 ? '#F59E0B' : '#10B981',
+                        fontFamily: 'monospace',
+                      }}
+                    >
+                      {f.inflationRate > 0 ? '+' : ''}
+                      {f.inflationRate}%
                     </span>
                   </div>
                 </div>
@@ -347,17 +520,36 @@ export function TokenInfoPage() {
                 <TrCard className="p-3" accentBorder="rgba(16,185,129,0.15)">
                   <div className="flex items-center gap-2 mb-2">
                     <TrendingUp size={12} color="#10B981" />
-                    <span style={{ fontSize: FONT_SCALE.micro, color: '#10B981', fontWeight: FONT_WEIGHT.semibold }}>
+                    <span
+                      style={{
+                        fontSize: FONT_SCALE.micro,
+                        color: '#10B981',
+                        fontWeight: FONT_WEIGHT.semibold,
+                      }}
+                    >
                       ATH
                     </span>
                   </div>
-                  <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+                  <p
+                    style={{
+                      fontSize: FONT_SCALE.sm,
+                      fontWeight: FONT_WEIGHT.bold,
+                      color: c.text1,
+                      fontFamily: 'monospace',
+                    }}
+                  >
                     {fmtPrice(f.allTimeHigh)}
                   </p>
-                  <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>
-                    {f.allTimeHighDate}
-                  </p>
-                  <p style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, color: '#EF4444', fontFamily: 'monospace', marginTop: 4 }}>
+                  <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>{f.allTimeHighDate}</p>
+                  <p
+                    style={{
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.bold,
+                      color: '#EF4444',
+                      fontFamily: 'monospace',
+                      marginTop: 4,
+                    }}
+                  >
                     {athDropPct.toFixed(1)}% so với ATH
                   </p>
                 </TrCard>
@@ -365,17 +557,36 @@ export function TokenInfoPage() {
                 <TrCard className="p-3" accentBorder="rgba(239,68,68,0.15)">
                   <div className="flex items-center gap-2 mb-2">
                     <TrendingDown size={12} color="#EF4444" />
-                    <span style={{ fontSize: FONT_SCALE.micro, color: '#EF4444', fontWeight: FONT_WEIGHT.semibold }}>
+                    <span
+                      style={{
+                        fontSize: FONT_SCALE.micro,
+                        color: '#EF4444',
+                        fontWeight: FONT_WEIGHT.semibold,
+                      }}
+                    >
                       ATL
                     </span>
                   </div>
-                  <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+                  <p
+                    style={{
+                      fontSize: FONT_SCALE.sm,
+                      fontWeight: FONT_WEIGHT.bold,
+                      color: c.text1,
+                      fontFamily: 'monospace',
+                    }}
+                  >
                     {fmtPrice(f.allTimeLow)}
                   </p>
-                  <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>
-                    {f.allTimeLowDate}
-                  </p>
-                  <p style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, color: '#10B981', fontFamily: 'monospace', marginTop: 4 }}>
+                  <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>{f.allTimeLowDate}</p>
+                  <p
+                    style={{
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.bold,
+                      color: '#10B981',
+                      fontFamily: 'monospace',
+                      marginTop: 4,
+                    }}
+                  >
                     +{fmtCompact(atlGainPct)}% so với ATL
                   </p>
                 </TrCard>
@@ -389,11 +600,20 @@ export function TokenInfoPage() {
               className="p-4 flex items-center gap-3"
               onClick={() => navigate(`${prefix}/pair/${pairId}`)}
             >
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(59,130,246,0.1)' }}>
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                style={{ background: 'rgba(59,130,246,0.1)' }}
+              >
                 <BarChart3 size={18} color="#3B82F6" />
               </div>
               <div className="flex-1 text-left">
-                <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold, color: c.text1 }}>
+                <p
+                  style={{
+                    fontSize: FONT_SCALE.sm,
+                    fontWeight: FONT_WEIGHT.semibold,
+                    color: c.text1,
+                  }}
+                >
                   Xem biểu đồ & giao dịch
                 </p>
                 <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>
@@ -411,7 +631,13 @@ export function TokenInfoPage() {
             <TrCard className="p-4">
               <div className="flex items-center gap-2 mb-3">
                 <Activity size={14} color="#10B981" />
-                <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text2 }}>
+                <span
+                  style={{
+                    fontSize: FONT_SCALE.xs,
+                    fontWeight: FONT_WEIGHT.semibold,
+                    color: c.text2,
+                  }}
+                >
                   Hoạt động mạng lưới (24h)
                 </span>
               </div>
@@ -419,26 +645,54 @@ export function TokenInfoPage() {
               <div className="grid grid-cols-2 gap-3">
                 <div className="rounded-xl p-3" style={{ background: c.surface2 }}>
                   <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>Địa chỉ hoạt động</p>
-                  <p style={{ fontSize: FONT_SCALE.lg, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+                  <p
+                    style={{
+                      fontSize: FONT_SCALE.lg,
+                      fontWeight: FONT_WEIGHT.bold,
+                      color: c.text1,
+                      fontFamily: 'monospace',
+                    }}
+                  >
                     {fmtCompact(f.activeAddresses24h)}
                   </p>
                 </div>
                 <div className="rounded-xl p-3" style={{ background: c.surface2 }}>
                   <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>Giao dịch</p>
-                  <p style={{ fontSize: FONT_SCALE.lg, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+                  <p
+                    style={{
+                      fontSize: FONT_SCALE.lg,
+                      fontWeight: FONT_WEIGHT.bold,
+                      color: c.text1,
+                      fontFamily: 'monospace',
+                    }}
+                  >
                     {fmtCompact(f.txCount24h)}
                   </p>
                 </div>
                 <div className="rounded-xl p-3" style={{ background: c.surface2 }}>
                   <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>Tổng holders</p>
-                  <p style={{ fontSize: FONT_SCALE.lg, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+                  <p
+                    style={{
+                      fontSize: FONT_SCALE.lg,
+                      fontWeight: FONT_WEIGHT.bold,
+                      color: c.text1,
+                      fontFamily: 'monospace',
+                    }}
+                  >
                     {fmtCompact(f.holders)}
                   </p>
                 </div>
                 {f.tvl !== undefined && (
                   <div className="rounded-xl p-3" style={{ background: c.surface2 }}>
                     <p style={{ fontSize: FONT_SCALE.micro, color: c.text3 }}>TVL</p>
-                    <p style={{ fontSize: FONT_SCALE.lg, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+                    <p
+                      style={{
+                        fontSize: FONT_SCALE.lg,
+                        fontWeight: FONT_WEIGHT.bold,
+                        color: c.text1,
+                        fontFamily: 'monospace',
+                      }}
+                    >
                       {fmtCompact(f.tvl, { prefix: '$' })}
                     </p>
                   </div>
@@ -451,7 +705,12 @@ export function TokenInfoPage() {
               <TrCard className="px-4">
                 <InfoRow label="Mạng lưới" value={f.network} icon={Globe} iconColor="#3B82F6" />
                 <InfoRow label="Đồng thuận" value={f.consensus} icon={Shield} iconColor="#8B5CF6" />
-                <InfoRow label="Ngày ra mắt" value={f.launchDate} icon={Clock} iconColor="#F59E0B" />
+                <InfoRow
+                  label="Ngày ra mắt"
+                  value={f.launchDate}
+                  icon={Clock}
+                  iconColor="#F59E0B"
+                />
               </TrCard>
             </PageSection>
 
@@ -472,7 +731,9 @@ export function TokenInfoPage() {
                 <div className="flex items-center gap-2">
                   <Info size={14} color={c.text3} />
                   <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>
-                    {f.symbol === 'BTC' ? 'Bitcoin là blockchain gốc, không có hợp đồng token.' : 'Chưa có thông tin hợp đồng.'}
+                    {f.symbol === 'BTC'
+                      ? 'Bitcoin là blockchain gốc, không có hợp đồng token.'
+                      : 'Chưa có thông tin hợp đồng.'}
                   </span>
                 </div>
               </TrCard>
@@ -487,7 +748,13 @@ export function TokenInfoPage() {
             <TrCard className="p-4">
               <div className="flex items-center gap-2 mb-2">
                 <FileText size={14} color="#3B82F6" />
-                <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text2 }}>
+                <span
+                  style={{
+                    fontSize: FONT_SCALE.xs,
+                    fontWeight: FONT_WEIGHT.semibold,
+                    color: c.text2,
+                  }}
+                >
                   Giới thiệu
                 </span>
               </div>
@@ -503,7 +770,9 @@ export function TokenInfoPage() {
                 <LinkButton icon={FileText} label="Whitepaper" url={f.whitepaper} color="#8B5CF6" />
                 <LinkButton icon={Github} label="GitHub" url={f.github} color="#6B7280" />
                 <LinkButton icon={Twitter} label="Twitter" url={f.twitter} color="#1DA1F2" />
-                {f.telegram && <LinkButton icon={Send} label="Telegram" url={f.telegram} color="#0088CC" />}
+                {f.telegram && (
+                  <LinkButton icon={Send} label="Telegram" url={f.telegram} color="#0088CC" />
+                )}
               </div>
             </PageSection>
 
@@ -512,22 +781,34 @@ export function TokenInfoPage() {
               <TrCard className="px-4">
                 <InfoRow label="Vốn hóa" value={fmtCompact(pair.marketCap, { prefix: '$' })} />
                 <InfoRow label="FDV" value={fmtCompact(f.fullyDilutedValuation, { prefix: '$' })} />
-                <InfoRow label="Cung lưu hành" value={`${fmtCompact(f.circulatingSupply)} ${f.symbol}`} />
+                <InfoRow
+                  label="Cung lưu hành"
+                  value={`${fmtCompact(f.circulatingSupply)} ${f.symbol}`}
+                />
                 <InfoRow label="Tổng cung" value={`${fmtCompact(f.totalSupply)} ${f.symbol}`} />
-                {f.maxSupply && <InfoRow label="Cung tối đa" value={`${fmtCompact(f.maxSupply)} ${f.symbol}`} />}
-                <InfoRow label="ROI 1 năm" value={`${f.roi1y > 0 ? '+' : ''}${f.roi1y}%`} valueColor={f.roi1y >= 0 ? '#10B981' : '#EF4444'} />
+                {f.maxSupply && (
+                  <InfoRow label="Cung tối đa" value={`${fmtCompact(f.maxSupply)} ${f.symbol}`} />
+                )}
+                <InfoRow
+                  label="ROI 1 năm"
+                  value={`${f.roi1y > 0 ? '+' : ''}${f.roi1y}%`}
+                  valueColor={f.roi1y >= 0 ? '#10B981' : '#EF4444'}
+                />
               </TrCard>
             </PageSection>
           </>
         )}
 
         {/* Footer disclaimer */}
-        <div className="rounded-xl px-3 py-2" style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}>
+        <div
+          className="rounded-xl px-3 py-2"
+          style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
+        >
           <div className="flex items-start gap-2">
             <Info size={12} color="#F59E0B" className="shrink-0 mt-1" />
             <p style={{ fontSize: FONT_SCALE.micro, color: '#F59E0B', lineHeight: 1.5 }}>
-              Thông tin mang tính tham khảo, không phải lời khuyên đầu tư.
-              Hãy tự nghiên cứu trước khi đưa ra quyết định.
+              Thông tin mang tính tham khảo, không phải lời khuyên đầu tư. Hãy tự nghiên cứu trước
+              khi đưa ra quyết định.
             </p>
           </div>
         </div>

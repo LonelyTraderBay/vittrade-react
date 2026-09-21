@@ -28,19 +28,43 @@ export function StakingRiskScoreCalculatorPage() {
 
   const riskScore = calculateRisk();
   const riskLabel =
-    riskScore < 25 ? 'Low Risk' :
-    riskScore < 50 ? 'Moderate Risk' :
-    riskScore < 75 ? 'High Risk' : 'Critical Risk';
+    riskScore < 25
+      ? 'Low Risk'
+      : riskScore < 50
+        ? 'Moderate Risk'
+        : riskScore < 75
+          ? 'High Risk'
+          : 'Critical Risk';
   const riskColor =
-    riskScore < 25 ? '#10B981' :
-    riskScore < 50 ? '#F59E0B' :
-    riskScore < 75 ? '#F97316' : '#EF4444';
+    riskScore < 25
+      ? '#10B981'
+      : riskScore < 50
+        ? '#F59E0B'
+        : riskScore < 75
+          ? '#F97316'
+          : '#EF4444';
 
   const radarData = [
-    { subject: 'Amount', value: parseFloat(amount) > 50000 ? 80 : parseFloat(amount) > 10000 ? 40 : 20, fullMark: 100 },
-    { subject: 'Duration', value: duration === 'fixed-180' ? 75 : duration === 'fixed-90' ? 50 : 25, fullMark: 100 },
-    { subject: 'Asset Volatility', value: asset === 'SOL' ? 75 : asset === 'ETH' ? 45 : 20, fullMark: 100 },
-    { subject: 'Diversification', value: diversification < 3 ? 80 : diversification < 5 ? 40 : 20, fullMark: 100 },
+    {
+      subject: 'Amount',
+      value: parseFloat(amount) > 50000 ? 80 : parseFloat(amount) > 10000 ? 40 : 20,
+      fullMark: 100,
+    },
+    {
+      subject: 'Duration',
+      value: duration === 'fixed-180' ? 75 : duration === 'fixed-90' ? 50 : 25,
+      fullMark: 100,
+    },
+    {
+      subject: 'Asset Volatility',
+      value: asset === 'SOL' ? 75 : asset === 'ETH' ? 45 : 20,
+      fullMark: 100,
+    },
+    {
+      subject: 'Diversification',
+      value: diversification < 3 ? 80 : diversification < 5 ? 40 : 20,
+      fullMark: 100,
+    },
     { subject: 'Market Risk', value: 45, fullMark: 100 },
   ];
 
@@ -63,9 +87,13 @@ export function StakingRiskScoreCalculatorPage() {
               <input
                 type="number"
                 value={amount}
-                onChange={e => setAmount(e.target.value)}
+                onChange={(e) => setAmount(e.target.value)}
                 className="w-full p-3 rounded-xl text-sm"
-                style={{ background: c.surface2, color: c.text1, border: `1px solid ${c.borderSolid}` }}
+                style={{
+                  background: c.surface2,
+                  color: c.text1,
+                  border: `1px solid ${c.borderSolid}`,
+                }}
               />
             </div>
 
@@ -75,9 +103,14 @@ export function StakingRiskScoreCalculatorPage() {
               </label>
               <select
                 value={asset}
-                onChange={e => setAsset(e.target.value)}
+                onChange={(e) => setAsset(e.target.value)}
                 className="w-full p-3 rounded-xl text-sm"
-                style={{ background: c.surface2, color: c.text1, border: `1px solid ${c.borderSolid}` }}>
+                style={{
+                  background: c.surface2,
+                  color: c.text1,
+                  border: `1px solid ${c.borderSolid}`,
+                }}
+              >
                 <option value="USDT">USDT (Stablecoin)</option>
                 <option value="BTC">BTC (Low Volatility)</option>
                 <option value="ETH">ETH (Medium Volatility)</option>
@@ -91,9 +124,14 @@ export function StakingRiskScoreCalculatorPage() {
               </label>
               <select
                 value={duration}
-                onChange={e => setDuration(e.target.value)}
+                onChange={(e) => setDuration(e.target.value)}
                 className="w-full p-3 rounded-xl text-sm"
-                style={{ background: c.surface2, color: c.text1, border: `1px solid ${c.borderSolid}` }}>
+                style={{
+                  background: c.surface2,
+                  color: c.text1,
+                  border: `1px solid ${c.borderSolid}`,
+                }}
+              >
                 <option value="flexible">Flexible (No lock)</option>
                 <option value="fixed-30">Fixed 30 Days</option>
                 <option value="fixed-60">Fixed 60 Days</option>
@@ -111,10 +149,10 @@ export function StakingRiskScoreCalculatorPage() {
                 min="1"
                 max="10"
                 value={diversification}
-                onChange={e => setDiversification(Number(e.target.value))}
+                onChange={(e) => setDiversification(Number(e.target.value))}
                 className="w-full h-2 rounded-full appearance-none cursor-pointer"
                 style={{
-                  background: `linear-gradient(to right, ${c.primary} 0%, ${c.primary} ${(diversification - 1) / 9 * 100}%, ${c.surface2} ${(diversification - 1) / 9 * 100}%, ${c.surface2} 100%)`,
+                  background: `linear-gradient(to right, ${c.primary} 0%, ${c.primary} ${((diversification - 1) / 9) * 100}%, ${c.surface2} ${((diversification - 1) / 9) * 100}%, ${c.surface2} 100%)`,
                 }}
               />
             </div>
@@ -127,7 +165,8 @@ export function StakingRiskScoreCalculatorPage() {
             <p style={{ color: c.text3, fontSize: 12, marginBottom: 8 }}>Calculated Risk Score</p>
             <div
               className="w-32 h-32 rounded-full mx-auto flex items-center justify-center mb-4"
-              style={{ background: `${riskColor}22`, border: `4px solid ${riskColor}` }}>
+              style={{ background: `${riskColor}22`, border: `4px solid ${riskColor}` }}
+            >
               <div>
                 <p style={{ color: riskColor, fontSize: 36, fontWeight: 700, lineHeight: 1 }}>
                   {riskScore}
@@ -137,19 +176,29 @@ export function StakingRiskScoreCalculatorPage() {
             </div>
             <div
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full"
-              style={{ background: `${riskColor}22` }}>
+              style={{ background: `${riskColor}22` }}
+            >
               <AlertTriangle size={16} color={riskColor} />
-              <p style={{ color: riskColor, fontSize: 14, fontWeight: 700 }}>
-                {riskLabel}
-              </p>
+              <p style={{ color: riskColor, fontSize: 14, fontWeight: 700 }}>{riskLabel}</p>
             </div>
           </div>
 
           <ResponsiveContainer width="100%" height={220}>
             <RadarChart data={radarData}>
               <PolarGrid key="polar-grid" stroke={c.borderSolid} />
-              <PolarAngleAxis key="polar-angle" dataKey="subject" tick={{ fill: c.text3, fontSize: 10 }} />
-              <Radar key="radar" name="Risk Profile" dataKey="value" stroke={riskColor} fill={riskColor} fillOpacity={0.3} />
+              <PolarAngleAxis
+                key="polar-angle"
+                dataKey="subject"
+                tick={{ fill: c.text3, fontSize: 10 }}
+              />
+              <Radar
+                key="radar"
+                name="Risk Profile"
+                dataKey="value"
+                stroke={riskColor}
+                fill={riskColor}
+                fillOpacity={0.3}
+              />
             </RadarChart>
           </ResponsiveContainer>
         </TrCard>
@@ -194,7 +243,8 @@ export function StakingRiskScoreCalculatorPage() {
       <StickyFooter>
         <button
           className="w-full py-3 rounded-[14px] text-sm font-semibold"
-          style={{ background: c.primary, color: '#FFF' }}>
+          style={{ background: c.primary, color: '#FFF' }}
+        >
           Proceed with This Configuration
         </button>
       </StickyFooter>

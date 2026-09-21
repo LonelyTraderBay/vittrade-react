@@ -3,8 +3,12 @@
 :root {
   /* Primary: Be Vietnam Pro — VitTrade Flutter canonical font for Vietnamese
      Fallback: Inter for UI elements if Be Vietnam Pro fails to load */
-  --font-sans: 'Be Vietnam Pro', 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-  --font-ui: 'Be Vietnam Pro', 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  --font-sans:
+    'Be Vietnam Pro', 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI',
+    sans-serif;
+  --font-ui:
+    'Be Vietnam Pro', 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI',
+    sans-serif;
   --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', 'Consolas', monospace;
 
   font-family: var(--font-sans);

@@ -17,18 +17,12 @@ import { PageContent } from '../../components/layout/PageContent';
 import { TabBar } from '../../components/layout/TabBar';
 import { TrCard } from '../../components/ui/TrCard';
 import { BottomSheetV2 } from '../../components/ui/BottomSheetV2';
-import {
-  SlippageControl,
-  type SlippageSettings,
-} from '../../components/trading/SlippageControl';
+import { SlippageControl, type SlippageSettings } from '../../components/trading/SlippageControl';
 import {
   ExecutionReport,
   type ExecutionReportData,
 } from '../../components/trading/ExecutionReport';
-import {
-  OrderAmendment,
-  type OpenOrder,
-} from '../../components/trading/OrderAmendment';
+import { OrderAmendment, type OpenOrder } from '../../components/trading/OrderAmendment';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useRoutePrefix } from '../../hooks/useRoutePrefix';
 import { useHaptic } from '../../hooks/useHaptic';
@@ -50,21 +44,21 @@ const MOCK_EXECUTION: ExecutionReportData = {
       venue: 'Binance',
       amount: 0.5,
       price: 69001,
-      fee: 34.50,
+      fee: 34.5,
       timestamp: '2026-03-11T10:15:32.120Z',
     },
     {
       venue: 'OKX',
       amount: 0.3,
       price: 69000,
-      fee: 20.70,
+      fee: 20.7,
       timestamp: '2026-03-11T10:15:32.245Z',
     },
     {
       venue: 'Kraken',
       amount: 0.2,
       price: 68999,
-      fee: 13.80,
+      fee: 13.8,
       timestamp: '2026-03-11T10:15:32.380Z',
     },
   ],
@@ -75,7 +69,7 @@ const MOCK_EXECUTION: ExecutionReportData = {
   completedAt: '2026-03-11T10:15:32.480Z',
   executionTimeMs: 480,
   slippagePct: 0.0004,
-  savingsVsSingleVenue: 2.50,
+  savingsVsSingleVenue: 2.5,
   executionQuality: 'A',
 };
 
@@ -118,10 +112,7 @@ export function ExecutionQualityDemoPage() {
     console.log('Amend order:', { orderId, newPrice, newAmount });
     setShowAmendSheet(false);
     hapticSuccess();
-    actionToast.success({
-      title: 'Order Modified',
-      message: `Price updated to $${newPrice.toLocaleString()}`,
-    });
+    actionToast.success(`Order Modified — Price updated to $${newPrice.toLocaleString()}`);
   };
 
   return (
@@ -139,12 +130,19 @@ export function ExecutionQualityDemoPage() {
               <Zap size={20} color="#3B82F6" />
             </div>
             <div className="flex-1">
-              <p style={{ fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold, color: c.text1, marginBottom: 6 }}>
+              <p
+                style={{
+                  fontSize: FONT_SCALE.base,
+                  fontWeight: FONT_WEIGHT.bold,
+                  color: c.text1,
+                  marginBottom: 6,
+                }}
+              >
                 Phase 2: Execution Quality
               </p>
               <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, lineHeight: 1.6 }}>
-                3 công cụ đảm bảo execution tối ưu: bảo vệ khỏi slippage xấu,
-                transparency về routing, và modify orders không mất queue position.
+                3 công cụ đảm bảo execution tối ưu: bảo vệ khỏi slippage xấu, transparency về
+                routing, và modify orders không mất queue position.
               </p>
             </div>
           </div>
@@ -170,7 +168,14 @@ export function ExecutionQualityDemoPage() {
                 <Shield size={24} color="#10B981" />
               </div>
               <div className="flex-1 text-left">
-                <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, marginBottom: 4 }}>
+                <p
+                  style={{
+                    fontSize: FONT_SCALE.sm,
+                    fontWeight: FONT_WEIGHT.bold,
+                    color: c.text1,
+                    marginBottom: 4,
+                  }}
+                >
                   Slippage Protection
                 </p>
                 <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, lineHeight: 1.5 }}>
@@ -199,7 +204,14 @@ export function ExecutionQualityDemoPage() {
                 <BarChart3 size={24} color="#F59E0B" />
               </div>
               <div className="flex-1 text-left">
-                <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, marginBottom: 4 }}>
+                <p
+                  style={{
+                    fontSize: FONT_SCALE.sm,
+                    fontWeight: FONT_WEIGHT.bold,
+                    color: c.text1,
+                    marginBottom: 4,
+                  }}
+                >
                   Execution Report
                 </p>
                 <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, lineHeight: 1.5 }}>
@@ -228,7 +240,14 @@ export function ExecutionQualityDemoPage() {
                 <Edit3 size={24} color="#8B5CF6" />
               </div>
               <div className="flex-1 text-left">
-                <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, marginBottom: 4 }}>
+                <p
+                  style={{
+                    fontSize: FONT_SCALE.sm,
+                    fontWeight: FONT_WEIGHT.bold,
+                    color: c.text1,
+                    marginBottom: 4,
+                  }}
+                >
                   Order Amendment
                 </p>
                 <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, lineHeight: 1.5 }}>
@@ -242,7 +261,14 @@ export function ExecutionQualityDemoPage() {
 
         {/* Benefits */}
         <TrCard className="p-4">
-          <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, marginBottom: 12 }}>
+          <p
+            style={{
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.bold,
+              color: c.text1,
+              marginBottom: 12,
+            }}
+          >
             Execution Quality Improvements
           </p>
           <div className="flex flex-col gap-3">
@@ -255,7 +281,14 @@ export function ExecutionQualityDemoPage() {
               <div key={i} className="flex items-start gap-3">
                 <span style={{ fontSize: FONT_SCALE.lg }}>{item.icon}</span>
                 <div className="flex-1">
-                  <p style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, color: c.text1, marginBottom: 2 }}>
+                  <p
+                    style={{
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.semibold,
+                      color: c.text1,
+                      marginBottom: 2,
+                    }}
+                  >
                     {item.title}
                   </p>
                   <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, lineHeight: 1.4 }}>
@@ -269,7 +302,14 @@ export function ExecutionQualityDemoPage() {
 
         {/* Implementation Status */}
         <TrCard className="p-4">
-          <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, marginBottom: 12 }}>
+          <p
+            style={{
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.bold,
+              color: c.text1,
+              marginBottom: 12,
+            }}
+          >
             Phase 2 Progress
           </p>
           <div className="flex flex-col gap-2">
@@ -282,16 +322,17 @@ export function ExecutionQualityDemoPage() {
               { label: 'Order amendment API', status: 'pending' },
             ].map((item, i) => (
               <div key={i} className="flex items-center justify-between">
-                <span style={{ fontSize: FONT_SCALE.xs, color: c.text2 }}>
-                  {item.label}
-                </span>
+                <span style={{ fontSize: FONT_SCALE.xs, color: c.text2 }}>{item.label}</span>
                 <span
                   className="px-2 py-1 rounded"
                   style={{
                     fontSize: FONT_SCALE.micro,
                     fontWeight: FONT_WEIGHT.bold,
                     color: item.status === 'complete' ? '#10B981' : '#F59E0B',
-                    background: item.status === 'complete' ? 'rgba(16,185,129,0.12)' : 'rgba(245,158,11,0.12)',
+                    background:
+                      item.status === 'complete'
+                        ? 'rgba(16,185,129,0.12)'
+                        : 'rgba(245,158,11,0.12)',
                   }}
                 >
                   {item.status === 'complete' ? '✓ Complete' : '⏳ Pending'}
@@ -306,12 +347,20 @@ export function ExecutionQualityDemoPage() {
           <div className="flex items-start gap-3">
             <CheckCircle size={18} color="#10B981" className="shrink-0 mt-1" />
             <div className="flex-1">
-              <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: '#10B981', marginBottom: 4 }}>
+              <p
+                style={{
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  color: '#10B981',
+                  marginBottom: 4,
+                }}
+              >
                 Tier-1 Exchange Parity Achieved
               </p>
               <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, lineHeight: 1.5 }}>
-                Phase 1 + Phase 2 = 100% feature parity với Binance/Coinbase Pro cho execution quality.
-                Order amendment + slippage protection là standard features trên các sàn hàng đầu.
+                Phase 1 + Phase 2 = 100% feature parity với Binance/Coinbase Pro cho execution
+                quality. Order amendment + slippage protection là standard features trên các sàn
+                hàng đầu.
               </p>
             </div>
           </div>
@@ -322,7 +371,10 @@ export function ExecutionQualityDemoPage() {
       <TabBar
         tabs={TABS}
         active={tab}
-        onChange={(t) => { setTab(t); hapticSelection(); }}
+        onChange={(t) => {
+          setTab(t);
+          hapticSelection();
+        }}
         variant="pill"
       />
 
@@ -419,10 +471,7 @@ export function ExecutionQualityDemoPage() {
         onClose={() => setShowExecutionSheet(false)}
         title="Execution Report"
       >
-        <ExecutionReport
-          data={MOCK_EXECUTION}
-          onClose={() => setShowExecutionSheet(false)}
-        />
+        <ExecutionReport data={MOCK_EXECUTION} onClose={() => setShowExecutionSheet(false)} />
       </BottomSheetV2>
 
       {/* Order Amendment Sheet */}

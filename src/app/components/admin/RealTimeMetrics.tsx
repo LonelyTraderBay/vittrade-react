@@ -1,14 +1,14 @@
 /**
  * Real-Time Metrics - Live Analytics Feed
- * 
+ *
  * Real-time analytics component showing:
  * - Live event stream
  * - Active users counter
  * - Recent conversions
  * - System health
- * 
+ *
  * Auto-refreshes every 5 seconds
- * 
+ *
  * @module components/admin/RealTimeMetrics
  * @version 1.0 (Phase 2 - Sprint 3)
  */
@@ -19,6 +19,22 @@ import { useThemeColors } from '../../hooks/useThemeColors';
 import { TrCard } from '../ui/TrCard';
 import { φ } from '../../utils/golden';
 import { dcaAnalytics } from '../../services/DCAAnalyticsService';
+
+/**
+ * Structural view of the analytics queue this component was written against.
+ * DCAAnalyticsService keeps its event queue private (snake_case AnalyticsEvent)
+ * and does not expose getQueue() — see DCAAnalyticsService for the service-side
+ * fix. This type-only view preserves current runtime behavior.
+ */
+interface QueuedAnalyticsEvent {
+  timestamp: number;
+  userId?: string;
+  eventName: string;
+}
+
+const analyticsQueueSource = dcaAnalytics as unknown as {
+  getQueue: () => QueuedAnalyticsEvent[];
+};
 
 /* ═══════════════════════════════════════════
    COMPONENT
@@ -41,48 +57,49 @@ export function RealTimeMetrics() {
   }, [isLive]);
 
   // Get recent events (last 5 minutes)
-  const recentEvents = dcaAnalytics.getQueue().filter(e => {
+  const recentEvents = analyticsQueueSource.getQueue().filter((e: QueuedAnalyticsEvent) => {
     const fiveMinutesAgo = Date.now() - 5 * 60 * 1000;
     return e.timestamp >= fiveMinutesAgo;
   });
 
   // Calculate active users (unique users in last 5 minutes)
-  const activeUsers = new Set(recentEvents.map(e => e.userId || 'anonymous')).size;
+  const activeUsers = new Set(recentEvents.map((e) => e.userId || 'anonymous')).size;
 
   // Events per minute
-  const eventsPerMinute = recentEvents.length > 0
-    ? (recentEvents.length / 5).toFixed(1)
-    : '0';
+  const eventsPerMinute = recentEvents.length > 0 ? (recentEvents.length / 5).toFixed(1) : '0';
 
   // Recent conversions (last 10)
   const recentConversions = recentEvents
-    .filter(e => 
-      e.eventName.includes('created') || 
-      e.eventName.includes('completed') ||
-      e.eventName.includes('conversion')
+    .filter(
+      (e) =>
+        e.eventName.includes('created') ||
+        e.eventName.includes('completed') ||
+        e.eventName.includes('conversion'),
     )
     .slice(-10)
     .reverse();
 
   // System health (based on error events)
-  const errorEvents = recentEvents.filter(e => 
-    e.eventName.includes('error') || 
-    e.eventName.includes('failed')
+  const errorEvents = recentEvents.filter(
+    (e) => e.eventName.includes('error') || e.eventName.includes('failed'),
   );
-  const errorRate = recentEvents.length > 0
-    ? (errorEvents.length / recentEvents.length) * 100
-    : 0;
-  
+  const errorRate = recentEvents.length > 0 ? (errorEvents.length / recentEvents.length) * 100 : 0;
+
   const healthStatus = errorRate < 1 ? 'good' : errorRate < 5 ? 'warning' : 'error';
-  const healthColor = healthStatus === 'good' ? '#10B981' : healthStatus === 'warning' ? '#F59E0B' : '#EF4444';
-  const healthLabel = healthStatus === 'good' ? 'Tốt' : healthStatus === 'warning' ? 'Cảnh báo' : 'Lỗi';
+  const healthColor =
+    healthStatus === 'good' ? '#10B981' : healthStatus === 'warning' ? '#F59E0B' : '#EF4444';
+  const healthLabel =
+    healthStatus === 'good' ? 'Tốt' : healthStatus === 'warning' ? 'Cảnh báo' : 'Lỗi';
 
   return (
     <div className="space-y-3">
       {/* Live Indicator */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className={`w-2 h-2 rounded-full ${isLive ? 'animate-pulse' : ''}`} style={{ background: '#10B981' }} />
+          <div
+            className={`w-2 h-2 rounded-full ${isLive ? 'animate-pulse' : ''}`}
+            style={{ background: '#10B981' }}
+          />
           <p style={{ color: c.text2, fontSize: 13, fontWeight: 600 }}>
             {isLive ? 'LIVE' : 'PAUSED'}
           </p>
@@ -127,9 +144,7 @@ export function RealTimeMetrics() {
             <Circle size={14} color={healthColor} />
             <p style={{ color: c.text3, fontSize: 10 }}>Health</p>
           </div>
-          <p style={{ color: healthColor, fontSize: 18, fontWeight: 700 }}>
-            {healthLabel}
-          </p>
+          <p style={{ color: healthColor, fontSize: 18, fontWeight: 700 }}>{healthLabel}</p>
         </TrCard>
       </div>
 
@@ -138,46 +153,41 @@ export function RealTimeMetrics() {
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <Zap size={16} color={c.text1} />
-            <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
-              Live Event Stream
-            </h3>
+            <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>Live Event Stream</h3>
           </div>
-          <p style={{ color: c.text3, fontSize: 10 }}>
-            {recentEvents.length} sự kiện (5 phút)
-          </p>
+          <p style={{ color: c.text3, fontSize: 10 }}>{recentEvents.length} sự kiện (5 phút)</p>
         </div>
 
         <div className="space-y-1 max-h-[200px] overflow-y-auto">
-          {recentEvents.slice(-10).reverse().map((event, idx) => {
-            const timeAgo = Math.floor((Date.now() - event.timestamp) / 1000);
-            const timeLabel = timeAgo < 60 
-              ? `${timeAgo}s`
-              : `${Math.floor(timeAgo / 60)}m`;
+          {recentEvents
+            .slice(-10)
+            .reverse()
+            .map((event, idx) => {
+              const timeAgo = Math.floor((Date.now() - event.timestamp) / 1000);
+              const timeLabel = timeAgo < 60 ? `${timeAgo}s` : `${Math.floor(timeAgo / 60)}m`;
 
-            return (
-              <div 
-                key={`${event.eventName}-${event.timestamp}-${idx}`}
-                className="flex items-center gap-2 py-1.5 px-2 rounded hover:bg-[var(--surface-2)] transition-colors"
-              >
-                <div className="w-1.5 h-1.5 rounded-full" style={{ background: '#8B5CF6' }} />
-                <p 
-                  style={{ color: c.text1, fontSize: 11, fontWeight: 500 }}
-                  className="flex-1 truncate"
+              return (
+                <div
+                  key={`${event.eventName}-${event.timestamp}-${idx}`}
+                  className="flex items-center gap-2 py-1.5 px-2 rounded hover:bg-[var(--surface-2)] transition-colors"
                 >
-                  {event.eventName}
-                </p>
-                <p style={{ color: c.text3, fontSize: 10, fontFamily: 'monospace' }}>
-                  {timeLabel}
-                </p>
-              </div>
-            );
-          })}
+                  <div className="w-1.5 h-1.5 rounded-full" style={{ background: '#8B5CF6' }} />
+                  <p
+                    style={{ color: c.text1, fontSize: 11, fontWeight: 500 }}
+                    className="flex-1 truncate"
+                  >
+                    {event.eventName}
+                  </p>
+                  <p style={{ color: c.text3, fontSize: 10, fontFamily: 'monospace' }}>
+                    {timeLabel}
+                  </p>
+                </div>
+              );
+            })}
 
           {recentEvents.length === 0 && (
             <div className="text-center py-4">
-              <p style={{ color: c.text3, fontSize: 11 }}>
-                Không có sự kiện mới
-              </p>
+              <p style={{ color: c.text3, fontSize: 11 }}>Không có sự kiện mới</p>
             </div>
           )}
         </div>
@@ -188,20 +198,17 @@ export function RealTimeMetrics() {
         <TrCard className="p-4">
           <div className="flex items-center gap-2 mb-3">
             <TrendingUp size={16} color={c.text1} />
-            <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
-              Conversions gần đây
-            </h3>
+            <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>Conversions gần đây</h3>
           </div>
 
           <div className="space-y-1">
             {recentConversions.map((event, idx) => {
               const timeAgo = Math.floor((Date.now() - event.timestamp) / 1000);
-              const timeLabel = timeAgo < 60 
-                ? `${timeAgo}s trước`
-                : `${Math.floor(timeAgo / 60)}m trước`;
+              const timeLabel =
+                timeAgo < 60 ? `${timeAgo}s trước` : `${Math.floor(timeAgo / 60)}m trước`;
 
               return (
-                <div 
+                <div
                   key={`${event.eventName}-${event.timestamp}-${idx}`}
                   className="flex items-start gap-2 py-1.5 px-2 rounded hover:bg-[var(--surface-2)] transition-colors"
                 >
@@ -215,9 +222,7 @@ export function RealTimeMetrics() {
                     <p style={{ color: c.text1, fontSize: 11, fontWeight: 500 }}>
                       {event.eventName}
                     </p>
-                    <p style={{ color: c.text3, fontSize: 10 }}>
-                      {timeLabel}
-                    </p>
+                    <p style={{ color: c.text3, fontSize: 10 }}>{timeLabel}</p>
                   </div>
                 </div>
               );

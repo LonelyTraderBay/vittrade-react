@@ -13,8 +13,20 @@
 
 import React, { useState } from 'react';
 import {
-  TrendingUp, TrendingDown, Target, Shield, Sliders, Plus, Minus,
-  Trash2, Settings, Info, AlertTriangle, CheckCircle, X, ChevronRight,
+  TrendingUp,
+  TrendingDown,
+  Target,
+  Shield,
+  Sliders,
+  Plus,
+  Minus,
+  Trash2,
+  Settings,
+  Info,
+  AlertTriangle,
+  CheckCircle,
+  X,
+  ChevronRight,
 } from 'lucide-react';
 import { TrCard } from '../ui/TrCard';
 import { CTAButton } from '../ui/CTAButton';
@@ -82,7 +94,10 @@ export function PartialCloseSheet({
             <span
               className="px-2 py-0.5 rounded-lg"
               style={{
-                background: side === 'long' ? withAlpha('#10B981', ALPHA.soft) : withAlpha('#EF4444', ALPHA.soft),
+                background:
+                  side === 'long'
+                    ? withAlpha('#10B981', ALPHA.soft)
+                    : withAlpha('#EF4444', ALPHA.soft),
                 color: side === 'long' ? '#10B981' : '#EF4444',
                 fontSize: FONT_SCALE.micro,
                 fontWeight: FONT_WEIGHT.bold,
@@ -93,7 +108,14 @@ export function PartialCloseSheet({
           </div>
           <div className="flex items-center justify-between">
             <span style={{ color: c.text2, fontSize: FONT_SCALE.sm }}>Size</span>
-            <span style={{ color: c.text1, fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}>
+            <span
+              style={{
+                color: c.text1,
+                fontSize: FONT_SCALE.base,
+                fontWeight: FONT_WEIGHT.bold,
+                fontFamily: 'monospace',
+              }}
+            >
               {currentSize.toFixed(4)} {pair.split('/')[0]}
             </span>
           </div>
@@ -114,19 +136,28 @@ export function PartialCloseSheet({
 
         {/* Percentage presets */}
         <div>
-          <label style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, marginBottom: 8, display: 'block' }}>
+          <label
+            style={{
+              color: c.text2,
+              fontSize: FONT_SCALE.xs,
+              fontWeight: FONT_WEIGHT.semibold,
+              marginBottom: 8,
+              display: 'block',
+            }}
+          >
             Chọn % đóng
           </label>
           <div className="grid grid-cols-4 gap-2">
-            {presets.map(pct => (
+            {presets.map((pct) => (
               <button
                 key={pct}
                 onClick={() => setSelectedPct(pct)}
                 className="py-3 rounded-xl transition-all"
                 style={{
-                  background: selectedPct === pct
-                    ? `linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)`
-                    : c.surface2,
+                  background:
+                    selectedPct === pct
+                      ? `linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)`
+                      : c.surface2,
                   color: selectedPct === pct ? '#fff' : c.text2,
                   fontSize: FONT_SCALE.base,
                   fontWeight: FONT_WEIGHT.bold,
@@ -142,7 +173,15 @@ export function PartialCloseSheet({
 
         {/* Custom percentage slider */}
         <div>
-          <label style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, marginBottom: 8, display: 'block' }}>
+          <label
+            style={{
+              color: c.text2,
+              fontSize: FONT_SCALE.xs,
+              fontWeight: FONT_WEIGHT.semibold,
+              marginBottom: 8,
+              display: 'block',
+            }}
+          >
             Hoặc chọn tùy chỉnh
           </label>
           <input
@@ -151,13 +190,15 @@ export function PartialCloseSheet({
             max={100}
             step={1}
             value={selectedPct}
-            onChange={e => setSelectedPct(parseInt(e.target.value))}
+            onChange={(e) => setSelectedPct(parseInt(e.target.value))}
             className="w-full"
             style={{ accentColor: '#3B82F6' }}
           />
           <div className="flex justify-between mt-1">
             <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>1%</span>
-            <span style={{ color: '#3B82F6', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>
+            <span
+              style={{ color: '#3B82F6', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}
+            >
               {selectedPct}%
             </span>
             <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>100%</span>
@@ -172,13 +213,27 @@ export function PartialCloseSheet({
             border: `1.5px solid ${withAlpha('#3B82F6', ALPHA.soft)}`,
           }}
         >
-          <p style={{ color: '#3B82F6', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, marginBottom: 8 }}>
+          <p
+            style={{
+              color: '#3B82F6',
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.bold,
+              marginBottom: 8,
+            }}
+          >
             Ước tính sau khi đóng {selectedPct}%
           </p>
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
               <span style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>Size sẽ đóng</span>
-              <span style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold, fontFamily: 'monospace' }}>
+              <span
+                style={{
+                  color: c.text1,
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.semibold,
+                  fontFamily: 'monospace',
+                }}
+              >
                 {closeSize.toFixed(4)} {pair.split('/')[0]}
               </span>
             </div>
@@ -195,10 +250,7 @@ export function PartialCloseSheet({
                 {realizePnl >= 0 ? '+' : ''}${realizePnl.toFixed(2)}
               </span>
             </div>
-            <div
-              className="pt-2 mt-2"
-              style={{ borderTop: `1px solid ${c.divider}` }}
-            >
+            <div className="pt-2 mt-2" style={{ borderTop: `1px solid ${c.divider}` }}>
               <div className="flex items-center justify-between mb-1">
                 <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Size còn lại</span>
                 <span style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontFamily: 'monospace' }}>
@@ -285,44 +337,43 @@ export function LadderTPSLSheet({
 
   const addTPLevel = () => {
     const lastTP = tpLevels[tpLevels.length - 1];
-    const newPrice = side === 'long'
-      ? lastTP.price * 1.03
-      : lastTP.price * 0.97;
-    setTpLevels([
-      ...tpLevels,
-      { id: `tp${tpLevels.length + 1}`, price: newPrice, percentage: 25 },
-    ]);
+    const newPrice = side === 'long' ? lastTP.price * 1.03 : lastTP.price * 0.97;
+    setTpLevels([...tpLevels, { id: `tp${tpLevels.length + 1}`, price: newPrice, percentage: 25 }]);
   };
 
   const addSLLevel = () => {
     setSlLevels([
       ...slLevels,
-      { id: `sl${slLevels.length + 1}`, price: entryPrice * (side === 'long' ? 0.90 : 1.10), percentage: 50 },
+      {
+        id: `sl${slLevels.length + 1}`,
+        price: entryPrice * (side === 'long' ? 0.9 : 1.1),
+        percentage: 50,
+      },
     ]);
   };
 
   const removeTPLevel = (id: string) => {
-    setTpLevels(tpLevels.filter(tp => tp.id !== id));
+    setTpLevels(tpLevels.filter((tp) => tp.id !== id));
   };
 
   const removeSLLevel = (id: string) => {
-    setSlLevels(slLevels.filter(sl => sl.id !== id));
+    setSlLevels(slLevels.filter((sl) => sl.id !== id));
   };
 
   const updateTPPrice = (id: string, price: number) => {
-    setTpLevels(tpLevels.map(tp => tp.id === id ? { ...tp, price } : tp));
+    setTpLevels(tpLevels.map((tp) => (tp.id === id ? { ...tp, price } : tp)));
   };
 
   const updateTPPercentage = (id: string, percentage: number) => {
-    setTpLevels(tpLevels.map(tp => tp.id === id ? { ...tp, percentage } : tp));
+    setTpLevels(tpLevels.map((tp) => (tp.id === id ? { ...tp, percentage } : tp)));
   };
 
   const updateSLPrice = (id: string, price: number) => {
-    setSlLevels(slLevels.map(sl => sl.id === id ? { ...sl, price } : sl));
+    setSlLevels(slLevels.map((sl) => (sl.id === id ? { ...sl, price } : sl)));
   };
 
   const updateSLPercentage = (id: string, percentage: number) => {
-    setSlLevels(slLevels.map(sl => sl.id === id ? { ...sl, percentage } : sl));
+    setSlLevels(slLevels.map((sl) => (sl.id === id ? { ...sl, percentage } : sl)));
   };
 
   const totalTPPercentage = tpLevels.reduce((sum, tp) => sum + tp.percentage, 0);
@@ -375,12 +426,23 @@ export function LadderTPSLSheet({
         {tab === 'tp' && (
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <span style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+              <span
+                style={{
+                  color: c.text2,
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.semibold,
+                }}
+              >
                 TP Levels ({tpLevels.length})
               </span>
               <span
                 style={{
-                  color: totalTPPercentage === 100 ? '#10B981' : totalTPPercentage > 100 ? '#EF4444' : '#F59E0B',
+                  color:
+                    totalTPPercentage === 100
+                      ? '#10B981'
+                      : totalTPPercentage > 100
+                        ? '#EF4444'
+                        : '#F59E0B',
                   fontSize: FONT_SCALE.xs,
                   fontWeight: FONT_WEIGHT.bold,
                 }}
@@ -392,24 +454,41 @@ export function LadderTPSLSheet({
             {tpLevels.map((tp, index) => (
               <TrCard key={tp.id} className="p-3">
                 <div className="flex items-center justify-between mb-2">
-                  <span style={{ color: '#10B981', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+                  <span
+                    style={{
+                      color: '#10B981',
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.bold,
+                    }}
+                  >
                     TP {index + 1}
                   </span>
                   {tpLevels.length > 1 && (
                     <button onClick={() => removeTPLevel(tp.id)}>
-                      <Trash2 size={ICON_SIZE.sm} color="#EF4444" strokeWidth={ICON_STROKE.standard} />
+                      <Trash2
+                        size={ICON_SIZE.sm}
+                        color="#EF4444"
+                        strokeWidth={ICON_STROKE.standard}
+                      />
                     </button>
                   )}
                 </div>
                 <div className="flex flex-col gap-2">
                   <div>
-                    <label style={{ color: c.text3, fontSize: FONT_SCALE.micro, display: 'block', marginBottom: 4 }}>
+                    <label
+                      style={{
+                        color: c.text3,
+                        fontSize: FONT_SCALE.micro,
+                        display: 'block',
+                        marginBottom: 4,
+                      }}
+                    >
                       Trigger Price (USDT)
                     </label>
                     <input
                       type="number"
                       value={tp.price}
-                      onChange={e => updateTPPrice(tp.id, parseFloat(e.target.value))}
+                      onChange={(e) => updateTPPrice(tp.id, parseFloat(e.target.value))}
                       className="w-full rounded-xl px-3 py-2 outline-none"
                       style={{
                         background: c.surface2,
@@ -421,11 +500,18 @@ export function LadderTPSLSheet({
                     />
                   </div>
                   <div>
-                    <label style={{ color: c.text3, fontSize: FONT_SCALE.micro, display: 'block', marginBottom: 4 }}>
+                    <label
+                      style={{
+                        color: c.text3,
+                        fontSize: FONT_SCALE.micro,
+                        display: 'block',
+                        marginBottom: 4,
+                      }}
+                    >
                       Close % of position
                     </label>
                     <div className="flex gap-2">
-                      {[25, 50, 75, 100].map(pct => (
+                      {[25, 50, 75, 100].map((pct) => (
                         <button
                           key={pct}
                           onClick={() => updateTPPercentage(tp.id, pct)}
@@ -446,7 +532,8 @@ export function LadderTPSLSheet({
                     style={{ background: withAlpha('#10B981', ALPHA.hover) }}
                   >
                     <p style={{ color: c.text3, fontSize: 10 }}>
-                      Khi giá chạm ${tp.price.toFixed(2)}, đóng {tp.percentage}% position (≈{((currentSize * tp.percentage) / 100).toFixed(4)} {pair.split('/')[0]})
+                      Khi giá chạm ${tp.price.toFixed(2)}, đóng {tp.percentage}% position (≈
+                      {((currentSize * tp.percentage) / 100).toFixed(4)} {pair.split('/')[0]})
                     </p>
                   </div>
                 </div>
@@ -486,12 +573,23 @@ export function LadderTPSLSheet({
         {tab === 'sl' && (
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <span style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+              <span
+                style={{
+                  color: c.text2,
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.semibold,
+                }}
+              >
                 SL Levels ({slLevels.length})
               </span>
               <span
                 style={{
-                  color: totalSLPercentage === 100 ? '#10B981' : totalSLPercentage > 100 ? '#EF4444' : '#F59E0B',
+                  color:
+                    totalSLPercentage === 100
+                      ? '#10B981'
+                      : totalSLPercentage > 100
+                        ? '#EF4444'
+                        : '#F59E0B',
                   fontSize: FONT_SCALE.xs,
                   fontWeight: FONT_WEIGHT.bold,
                 }}
@@ -503,24 +601,41 @@ export function LadderTPSLSheet({
             {slLevels.map((sl, index) => (
               <TrCard key={sl.id} className="p-3">
                 <div className="flex items-center justify-between mb-2">
-                  <span style={{ color: '#EF4444', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+                  <span
+                    style={{
+                      color: '#EF4444',
+                      fontSize: FONT_SCALE.xs,
+                      fontWeight: FONT_WEIGHT.bold,
+                    }}
+                  >
                     SL {index + 1}
                   </span>
                   {slLevels.length > 1 && (
                     <button onClick={() => removeSLLevel(sl.id)}>
-                      <Trash2 size={ICON_SIZE.sm} color="#EF4444" strokeWidth={ICON_STROKE.standard} />
+                      <Trash2
+                        size={ICON_SIZE.sm}
+                        color="#EF4444"
+                        strokeWidth={ICON_STROKE.standard}
+                      />
                     </button>
                   )}
                 </div>
                 <div className="flex flex-col gap-2">
                   <div>
-                    <label style={{ color: c.text3, fontSize: FONT_SCALE.micro, display: 'block', marginBottom: 4 }}>
+                    <label
+                      style={{
+                        color: c.text3,
+                        fontSize: FONT_SCALE.micro,
+                        display: 'block',
+                        marginBottom: 4,
+                      }}
+                    >
                       Trigger Price (USDT)
                     </label>
                     <input
                       type="number"
                       value={sl.price}
-                      onChange={e => updateSLPrice(sl.id, parseFloat(e.target.value))}
+                      onChange={(e) => updateSLPrice(sl.id, parseFloat(e.target.value))}
                       className="w-full rounded-xl px-3 py-2 outline-none"
                       style={{
                         background: c.surface2,
@@ -532,11 +647,18 @@ export function LadderTPSLSheet({
                     />
                   </div>
                   <div>
-                    <label style={{ color: c.text3, fontSize: FONT_SCALE.micro, display: 'block', marginBottom: 4 }}>
+                    <label
+                      style={{
+                        color: c.text3,
+                        fontSize: FONT_SCALE.micro,
+                        display: 'block',
+                        marginBottom: 4,
+                      }}
+                    >
                       Close % of position
                     </label>
                     <div className="flex gap-2">
-                      {[25, 50, 75, 100].map(pct => (
+                      {[25, 50, 75, 100].map((pct) => (
                         <button
                           key={pct}
                           onClick={() => updateSLPercentage(sl.id, pct)}
@@ -627,11 +749,12 @@ export function TrailingStopSheet({
   const [trailDistance, setTrailDistance] = useState(5); // 5% or $5
 
   const activationPrice = currentPrice;
-  const currentStopPrice = trailType === 'percentage'
-    ? currentPrice * (side === 'long' ? (1 - trailDistance / 100) : (1 + trailDistance / 100))
-    : side === 'long'
-      ? currentPrice - trailDistance
-      : currentPrice + trailDistance;
+  const currentStopPrice =
+    trailType === 'percentage'
+      ? currentPrice * (side === 'long' ? 1 - trailDistance / 100 : 1 + trailDistance / 100)
+      : side === 'long'
+        ? currentPrice - trailDistance
+        : currentPrice + trailDistance;
 
   const handleConfirm = () => {
     onConfirm(trailDistance, trailType);
@@ -649,16 +772,27 @@ export function TrailingStopSheet({
         {/* Info banner */}
         <TrCard
           className="p-3"
-          style={{ background: withAlpha('#3B82F6', ALPHA.hover), border: `1px solid ${withAlpha('#3B82F6', ALPHA.soft)}` }}
+          style={{
+            background: withAlpha('#3B82F6', ALPHA.hover),
+            border: `1px solid ${withAlpha('#3B82F6', ALPHA.soft)}`,
+          }}
         >
           <div className="flex items-start gap-2">
             <Info size={14} color="#3B82F6" className="shrink-0 mt-0.5" />
             <div>
-              <p style={{ color: '#3B82F6', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, marginBottom: 2 }}>
+              <p
+                style={{
+                  color: '#3B82F6',
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.bold,
+                  marginBottom: 2,
+                }}
+              >
                 Trailing Stop tự động điều chỉnh
               </p>
               <p style={{ color: c.text2, fontSize: FONT_SCALE.micro, lineHeight: 1.5 }}>
-                Stop loss sẽ tự động tăng/giảm theo giá thị trường, giúp bảo vệ lợi nhuận khi giá đi đúng hướng.
+                Stop loss sẽ tự động tăng/giảm theo giá thị trường, giúp bảo vệ lợi nhuận khi giá đi
+                đúng hướng.
               </p>
             </div>
           </div>
@@ -666,7 +800,15 @@ export function TrailingStopSheet({
 
         {/* Trail type selector */}
         <div>
-          <label style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, marginBottom: 8, display: 'block' }}>
+          <label
+            style={{
+              color: c.text2,
+              fontSize: FONT_SCALE.xs,
+              fontWeight: FONT_WEIGHT.semibold,
+              marginBottom: 8,
+              display: 'block',
+            }}
+          >
             Loại khoảng cách
           </label>
           <div className="flex rounded-2xl p-1 gap-1" style={{ background: c.surface2 }}>
@@ -699,7 +841,15 @@ export function TrailingStopSheet({
 
         {/* Trail distance input */}
         <div>
-          <label style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, marginBottom: 8, display: 'block' }}>
+          <label
+            style={{
+              color: c.text2,
+              fontSize: FONT_SCALE.xs,
+              fontWeight: FONT_WEIGHT.semibold,
+              marginBottom: 8,
+              display: 'block',
+            }}
+          >
             Khoảng cách trail {trailType === 'percentage' ? '(%)' : '(USDT)'}
           </label>
           <div
@@ -709,16 +859,21 @@ export function TrailingStopSheet({
             <input
               type="number"
               value={trailDistance}
-              onChange={e => setTrailDistance(parseFloat(e.target.value))}
+              onChange={(e) => setTrailDistance(parseFloat(e.target.value))}
               placeholder={trailType === 'percentage' ? '5' : '100'}
               className="w-full bg-transparent outline-none"
-              style={{ color: c.text1, fontSize: FONT_SCALE.lg, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}
+              style={{
+                color: c.text1,
+                fontSize: FONT_SCALE.lg,
+                fontWeight: FONT_WEIGHT.bold,
+                fontFamily: 'monospace',
+              }}
             />
           </div>
           {/* Presets */}
           <div className="flex gap-2 mt-2">
             {trailType === 'percentage'
-              ? [2, 3, 5, 7, 10].map(pct => (
+              ? [2, 3, 5, 7, 10].map((pct) => (
                   <button
                     key={pct}
                     onClick={() => setTrailDistance(pct)}
@@ -732,7 +887,7 @@ export function TrailingStopSheet({
                     {pct}%
                   </button>
                 ))
-              : [50, 100, 200, 500].map(price => (
+              : [50, 100, 200, 500].map((price) => (
                   <button
                     key={price}
                     onClick={() => setTrailDistance(price)}
@@ -751,26 +906,44 @@ export function TrailingStopSheet({
 
         {/* Visual explanation */}
         <TrCard className="p-4">
-          <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, marginBottom: 8 }}>
+          <p
+            style={{
+              color: c.text1,
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.bold,
+              marginBottom: 8,
+            }}
+          >
             Cách hoạt động
           </p>
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
               <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>Giá hiện tại</span>
-              <span style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold, fontFamily: 'monospace' }}>
+              <span
+                style={{
+                  color: c.text1,
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.semibold,
+                  fontFamily: 'monospace',
+                }}
+              >
                 ${currentPrice.toFixed(2)}
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>Stop price ban đầu</span>
-              <span style={{ color: '#EF4444', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}>
+              <span
+                style={{
+                  color: '#EF4444',
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  fontFamily: 'monospace',
+                }}
+              >
                 ${currentStopPrice.toFixed(2)}
               </span>
             </div>
-            <div
-              className="px-2.5 py-2 rounded-lg mt-1"
-              style={{ background: c.surface2 }}
-            >
+            <div className="px-2.5 py-2 rounded-lg mt-1" style={{ background: c.surface2 }}>
               <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
                 {side === 'long'
                   ? `Khi giá tăng, stop price sẽ tự động tăng theo. Khi giá giảm ${trailType === 'percentage' ? `${trailDistance}%` : `$${trailDistance}`} từ đỉnh, vị thế sẽ đóng.`
@@ -857,17 +1030,22 @@ export function PositionModeToggle({ currentMode, onChange, className = '' }: Po
         </p>
       </TrCard>
 
-      <BottomSheetV2
-        open={showInfo}
-        onClose={() => setShowInfo(false)}
-        title="Position Mode"
-      >
+      <BottomSheetV2 open={showInfo} onClose={() => setShowInfo(false)} title="Position Mode">
         <div className="flex flex-col gap-4">
           <TrCard className="p-4">
-            <p style={{ color: '#3B82F6', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, marginBottom: 6 }}>
+            <p
+              style={{
+                color: '#3B82F6',
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.bold,
+                marginBottom: 6,
+              }}
+            >
               One-Way Mode
             </p>
-            <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.6, marginBottom: 8 }}>
+            <p
+              style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.6, marginBottom: 8 }}
+            >
               Chế độ 1 chiều - chỉ được giữ Long HOẶC Short cho mỗi cặp tiền.
             </p>
             <div className="flex flex-col gap-2">
@@ -885,10 +1063,19 @@ export function PositionModeToggle({ currentMode, onChange, className = '' }: Po
           </TrCard>
 
           <TrCard className="p-4">
-            <p style={{ color: '#8B5CF6', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, marginBottom: 6 }}>
+            <p
+              style={{
+                color: '#8B5CF6',
+                fontSize: FONT_SCALE.sm,
+                fontWeight: FONT_WEIGHT.bold,
+                marginBottom: 6,
+              }}
+            >
               Hedge Mode
             </p>
-            <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.6, marginBottom: 8 }}>
+            <p
+              style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.6, marginBottom: 8 }}
+            >
               Chế độ hedge - có thể giữ đồng thời Long VÀ Short cho cùng 1 cặp.
             </p>
             <div className="flex flex-col gap-2">
@@ -950,9 +1137,10 @@ export function MarginAdjustSheet({
 
   const amountNum = parseFloat(amount || '0');
   const newMargin = action === 'add' ? currentMargin + amountNum : currentMargin - amountNum;
-  const newLiqPrice = action === 'add'
-    ? liquidationPrice * (currentMargin / newMargin) // Simplified calculation
-    : liquidationPrice * (currentMargin / newMargin);
+  const newLiqPrice =
+    action === 'add'
+      ? liquidationPrice * (currentMargin / newMargin) // Simplified calculation
+      : liquidationPrice * (currentMargin / newMargin);
 
   const handleConfirm = () => {
     if (amountNum > 0) {
@@ -1004,13 +1192,27 @@ export function MarginAdjustSheet({
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
               <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>Margin hiện tại</span>
-              <span style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}>
+              <span
+                style={{
+                  color: c.text1,
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  fontFamily: 'monospace',
+                }}
+              >
                 ${currentMargin.toFixed(2)}
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>Giá thanh lý</span>
-              <span style={{ color: '#EF4444', fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}>
+              <span
+                style={{
+                  color: '#EF4444',
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  fontFamily: 'monospace',
+                }}
+              >
                 ${liquidationPrice.toFixed(2)}
               </span>
             </div>
@@ -1027,7 +1229,15 @@ export function MarginAdjustSheet({
 
         {/* Amount input */}
         <div>
-          <label style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, marginBottom: 8, display: 'block' }}>
+          <label
+            style={{
+              color: c.text2,
+              fontSize: FONT_SCALE.xs,
+              fontWeight: FONT_WEIGHT.semibold,
+              marginBottom: 8,
+              display: 'block',
+            }}
+          >
             Số lượng (USDT)
           </label>
           <div
@@ -1037,13 +1247,22 @@ export function MarginAdjustSheet({
             <input
               type="number"
               value={amount}
-              onChange={e => setAmount(e.target.value)}
+              onChange={(e) => setAmount(e.target.value)}
               placeholder="0.00"
               className="flex-1 bg-transparent outline-none"
-              style={{ color: c.text1, fontSize: FONT_SCALE.lg, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}
+              style={{
+                color: c.text1,
+                fontSize: FONT_SCALE.lg,
+                fontWeight: FONT_WEIGHT.bold,
+                fontFamily: 'monospace',
+              }}
             />
             <button
-              onClick={() => setAmount(action === 'add' ? availableBalance.toString() : (currentMargin * 0.5).toString())}
+              onClick={() =>
+                setAmount(
+                  action === 'add' ? availableBalance.toString() : (currentMargin * 0.5).toString(),
+                )
+              }
               className="px-3 py-1.5 rounded-lg"
               style={{
                 background: withAlpha(c.primary, ALPHA.soft),
@@ -1062,7 +1281,10 @@ export function MarginAdjustSheet({
           <TrCard
             className="p-4"
             style={{
-              background: action === 'add' ? withAlpha('#10B981', ALPHA.hover) : withAlpha('#EF4444', ALPHA.hover),
+              background:
+                action === 'add'
+                  ? withAlpha('#10B981', ALPHA.hover)
+                  : withAlpha('#EF4444', ALPHA.hover),
               border: `1.5px solid ${action === 'add' ? withAlpha('#10B981', ALPHA.soft) : withAlpha('#EF4444', ALPHA.soft)}`,
             }}
           >
@@ -1079,7 +1301,14 @@ export function MarginAdjustSheet({
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between">
                 <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>Margin mới</span>
-                <span style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, fontFamily: 'monospace' }}>
+                <span
+                  style={{
+                    color: c.text1,
+                    fontSize: FONT_SCALE.sm,
+                    fontWeight: FONT_WEIGHT.bold,
+                    fontFamily: 'monospace',
+                  }}
+                >
                   ${newMargin.toFixed(2)}
                 </span>
               </div>
@@ -1095,7 +1324,11 @@ export function MarginAdjustSheet({
                 >
                   ${newLiqPrice.toFixed(2)}
                   <span style={{ fontSize: FONT_SCALE.micro, marginLeft: 4 }}>
-                    ({action === 'add' ? '▼' : '▲'} {Math.abs(((newLiqPrice - liquidationPrice) / liquidationPrice) * 100).toFixed(2)}%)
+                    ({action === 'add' ? '▼' : '▲'}{' '}
+                    {Math.abs(((newLiqPrice - liquidationPrice) / liquidationPrice) * 100).toFixed(
+                      2,
+                    )}
+                    %)
                   </span>
                 </span>
               </div>

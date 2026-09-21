@@ -9,7 +9,8 @@
 
 /* ─── Arena Core Types ─── */
 
-export type ArenaRoomStatus = 'draft' | 'pending_review' | 'published' | 'active' | 'settling' | 'settled' | 'void';
+export type ArenaRoomStatus =
+  'draft' | 'pending_review' | 'published' | 'active' | 'settling' | 'settled' | 'void';
 export type ArenaRoomVisibility = 'public' | 'unlisted' | 'private';
 
 export interface ArenaRoom {
@@ -24,36 +25,36 @@ export interface ArenaRoom {
   category: ArenaCategory;
   visibility: ArenaRoomVisibility;
   status: ArenaRoomStatus;
-  
+
   // Rules
   rules: ArenaRules;
-  
+
   // Pool
-  totalPool: number;           // Arena Points
-  entryFee: number;            // Arena Points
+  totalPool: number; // Arena Points
+  entryFee: number; // Arena Points
   minParticipants: number;
   maxParticipants: number;
   currentParticipants: number;
-  
+
   // Timeline
   createdAt: Date;
   startsAt: Date;
   endsAt: Date;
   settledAt?: Date;
-  
+
   // Trust & Safety
   trustScore?: number;
   safetyTier?: 'safe' | 'moderate' | 'risky';
   reportCount?: number;
-  
+
   // Governance
   publishEligibility?: 'approved' | 'pending' | 'rejected';
   ruleClarityScore?: number;
 }
 
 export interface ArenaRules {
-  domain: string;              // e.g., "crypto", "sports", "prediction"
-  challengeType: string;       // e.g., "price_target", "event_outcome"
+  domain: string; // e.g., "crypto", "sports", "prediction"
+  challengeType: string; // e.g., "price_target", "event_outcome"
   winCondition: string;
   tieRule: string;
   voidRule: string;
@@ -61,14 +62,8 @@ export interface ArenaRules {
   customRules?: string;
 }
 
-export type ArenaCategory = 
-  | 'crypto' 
-  | 'sports' 
-  | 'politics' 
-  | 'entertainment' 
-  | 'tech' 
-  | 'gaming'
-  | 'community';
+export type ArenaCategory =
+  'crypto' | 'sports' | 'politics' | 'entertainment' | 'tech' | 'gaming' | 'community';
 
 /* ─── Arena Mode (Template) ─── */
 
@@ -77,7 +72,7 @@ export interface ArenaMode {
   name: string;
   description: string;
   category: ArenaCategory;
-  template: string;            // e.g., "price_target", "event_outcome"
+  template: string; // e.g., "price_target", "event_outcome"
   isOfficial: boolean;
   creatorId?: string;
   usageCount: number;
@@ -87,15 +82,16 @@ export interface ArenaMode {
 
 /* ─── Arena Participation ─── */
 
-export type ParticipationStatus = 'joined' | 'active' | 'won' | 'lost' | 'tie' | 'void' | 'abandoned';
+export type ParticipationStatus =
+  'joined' | 'active' | 'won' | 'lost' | 'tie' | 'void' | 'abandoned';
 
 export interface ArenaParticipation {
   id: string;
   roomId: string;
   userId: string;
   status: ParticipationStatus;
-  entryFee: number;            // Arena Points paid
-  payout?: number;             // Arena Points received
+  entryFee: number; // Arena Points paid
+  payout?: number; // Arena Points received
   prediction?: string;
   joinedAt: Date;
   resultAt?: Date;
@@ -103,20 +99,15 @@ export interface ArenaParticipation {
 
 /* ─── Arena Points Ledger ─── */
 
-export type PointsTransactionType = 
-  | 'entry_fee' 
-  | 'payout' 
-  | 'refund' 
-  | 'bonus' 
-  | 'penalty' 
-  | 'daily_reward';
+export type PointsTransactionType =
+  'entry_fee' | 'payout' | 'refund' | 'bonus' | 'penalty' | 'daily_reward';
 
 export interface PointsTransaction {
   id: string;
   userId: string;
   type: PointsTransactionType;
-  amount: number;              // positive = credit, negative = debit
-  balance: number;             // balance after transaction
+  amount: number; // positive = credit, negative = debit
+  balance: number; // balance after transaction
   reason: string;
   roomId?: string;
   challengeId?: string;
@@ -128,14 +119,14 @@ export interface PointsTransaction {
 
 export interface TrustMetric {
   label: string;
-  value: number;               // 0-100
-  weight: number;              // importance 0-1
+  value: number; // 0-100
+  weight: number; // importance 0-1
   description?: string;
 }
 
 export interface CreatorTrust {
   userId: string;
-  overallScore: number;        // 0-100
+  overallScore: number; // 0-100
   fairPlay: number;
   completionRate: number;
   disputeRate: number;
@@ -229,7 +220,8 @@ export interface PublishEligibilityCheck {
 
 /* ─── Arena Leaderboard ─── */
 
-export type LeaderboardMetric = 'fair_play' | 'creator_quality' | 'completion' | 'trust' | 'activity';
+export type LeaderboardMetric =
+  'fair_play' | 'creator_quality' | 'completion' | 'trust' | 'activity';
 
 export interface LeaderboardEntry {
   rank: number;

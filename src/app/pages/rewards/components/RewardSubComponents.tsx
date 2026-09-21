@@ -8,8 +8,18 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import {
-  CheckCircle, Gift, Zap, Timer, RotateCw, Star, Box,
-  TrendingUp, Unlock, Lock, ChevronDown, Sparkles,
+  CheckCircle,
+  Gift,
+  Zap,
+  Timer,
+  RotateCw,
+  Star,
+  Box,
+  TrendingUp,
+  Unlock,
+  Lock,
+  ChevronDown,
+  Sparkles,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useThemeColors } from '../../../hooks/useThemeColors';
@@ -58,7 +68,10 @@ export function RewardsSkeletonLoading() {
       <style>{shimmerCSS}</style>
       <div className="flex flex-col gap-4 px-5 pt-2">
         {/* Hero skeleton */}
-        <div className="rounded-2xl p-4" style={{ background: c.surface2, border: `1px solid ${c.border}` }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{ background: c.surface2, border: `1px solid ${c.border}` }}
+        >
           <div className="flex items-center gap-3 mb-4">
             <Shimmer style={{ width: 44, height: 44, borderRadius: 12, flexShrink: 0 }} />
             <div className="flex-1 flex flex-col gap-2">
@@ -155,10 +168,7 @@ export function CollapsibleSection({
           {title}
         </span>
         {badge && <div className="mr-2">{badge}</div>}
-        <motion.div
-          animate={{ rotate: open ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
-        >
+        <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
           <ChevronDown size={16} color={c.text3} />
         </motion.div>
       </button>
@@ -171,9 +181,7 @@ export function CollapsibleSection({
             transition={{ duration: 0.25, ease: 'easeInOut' }}
             style={{ overflow: 'hidden' }}
           >
-            <div className="pt-2 pb-1 flex flex-col gap-3">
-              {children}
-            </div>
+            <div className="pt-2 pb-1 flex flex-col gap-3">{children}</div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -200,7 +208,10 @@ export function ConfettiBurst({ active, onComplete }: { active: boolean; onCompl
   const [particles, setParticles] = useState<ConfettiParticle[]>([]);
 
   useEffect(() => {
-    if (!active) { setParticles([]); return; }
+    if (!active) {
+      setParticles([]);
+      return;
+    }
 
     // Check prefers-reduced-motion
     const prefersReduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
@@ -233,7 +244,7 @@ export function ConfettiBurst({ active, onComplete }: { active: boolean; onCompl
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden z-50">
       <div className="absolute top-1/2 left-1/2">
-        {particles.map(p => (
+        {particles.map((p) => (
           <motion.div
             key={p.id}
             initial={{ x: 0, y: 0, opacity: 1, scale: 0, rotate: 0 }}
@@ -260,17 +271,23 @@ export function ConfettiBurst({ active, onComplete }: { active: boolean; onCompl
    Daily Check-in Row
    ═══════════════════════════════════════════ */
 
-export function CheckInRow({ items, onClaim }: { items: DailyCheckIn[]; onClaim: (day: number) => void }) {
+export function CheckInRow({
+  items,
+  onClaim,
+}: {
+  items: DailyCheckIn[];
+  onClaim: (day: number) => void;
+}) {
   const c = useThemeColors();
 
   return (
     <div className="flex gap-1.5">
-      {items.map(item => {
+      {items.map((item) => {
         const isBonusDay = item.day === 7;
         return (
           <button
             key={item.day}
-            onClick={() => item.isToday && !item.isClaimed ? onClaim(item.day) : undefined}
+            onClick={() => (item.isToday && !item.isClaimed ? onClaim(item.day) : undefined)}
             disabled={item.isFuture || item.isClaimed}
             className="flex-1 flex flex-col items-center py-2 rounded-xl relative"
             aria-label={`Ngày ${item.day}${item.isClaimed ? ' - Đã nhận' : item.isToday ? ' - Nhận ngay' : ''}`}
@@ -280,9 +297,10 @@ export function CheckInRow({ items, onClaim }: { items: DailyCheckIn[]; onClaim:
                 : item.isToday
                   ? 'rgba(139,92,246,0.15)'
                   : c.surface2,
-              border: item.isToday && !item.isClaimed
-                ? '1.5px solid rgba(139,92,246,0.4)'
-                : `1px solid ${item.isClaimed ? 'rgba(16,185,129,0.2)' : 'transparent'}`,
+              border:
+                item.isToday && !item.isClaimed
+                  ? '1.5px solid rgba(139,92,246,0.4)'
+                  : `1px solid ${item.isClaimed ? 'rgba(16,185,129,0.2)' : 'transparent'}`,
               opacity: item.isFuture ? 0.4 : 1,
               minHeight: 48,
             }}
@@ -295,12 +313,14 @@ export function CheckInRow({ items, onClaim }: { items: DailyCheckIn[]; onClaim:
             ) : (
               <span style={{ fontSize: isBonusDay ? 14 : 12 }}>{isBonusDay ? '🎁' : '🪙'}</span>
             )}
-            <span style={{
-              color: item.isClaimed ? '#10B981' : isBonusDay ? '#F59E0B' : c.text2,
-              fontSize: 9,
-              fontWeight: 600,
-              marginTop: 2,
-            }}>
+            <span
+              style={{
+                color: item.isClaimed ? '#10B981' : isBonusDay ? '#F59E0B' : c.text2,
+                fontSize: 9,
+                fontWeight: 600,
+                marginTop: 2,
+              }}
+            >
               +{item.points}
             </span>
           </button>
@@ -376,14 +396,18 @@ export function SmartPromptBanner({
           <p className="flex-1 min-w-0 truncate" style={{ color: c.text1, fontSize: 12 }}>
             <span style={{ color: '#EF4444', fontWeight: 600 }}>{expiringCount} nhiệm vụ</span>
             {' sắp hết hạn'}
-            {expiringTitle && (
-              <span style={{ color: c.text3 }}> — {expiringTitle}</span>
-            )}
+            {expiringTitle && <span style={{ color: c.text3 }}> — {expiringTitle}</span>}
           </p>
           <button
             onClick={onViewExpiring}
             className="px-2.5 py-1 rounded-md shrink-0 active:opacity-70"
-            style={{ background: 'rgba(239,68,68,0.1)', color: '#EF4444', fontSize: 10, fontWeight: 600, minHeight: 28 }}
+            style={{
+              background: 'rgba(239,68,68,0.1)',
+              color: '#EF4444',
+              fontSize: 10,
+              fontWeight: 600,
+              minHeight: 28,
+            }}
           >
             Xem
           </button>
@@ -415,34 +439,51 @@ export function UnifiedTaskCard({
   const hasDual = !!task.usdtReward && !!task.pointsReward;
 
   /* Status label — non-color indicator (a11y) */
-  const statusLabel = task.status === 'claimed' || justClaimed
-    ? 'Đã nhận'
-    : isClaimable
-      ? 'Chờ nhận'
-      : task.status === 'expired'
-        ? 'Hết hạn'
-        : expiring
-          ? `Còn ${expireDays === 0 ? 'hôm nay' : `${expireDays}d`}`
-          : 'Đang làm';
+  const statusLabel =
+    task.status === 'claimed' || justClaimed
+      ? 'Đã nhận'
+      : isClaimable
+        ? 'Chờ nhận'
+        : task.status === 'expired'
+          ? 'Hết hạn'
+          : expiring
+            ? `Còn ${expireDays === 0 ? 'hôm nay' : `${expireDays}d`}`
+            : 'Đang làm';
 
   return (
     <motion.div
       layout
-      animate={justClaimed ? {
-        scale: [1, 1.02, 0.99, 1],
-        boxShadow: [
-          '0 0 0 0 rgba(16,185,129,0)',
-          '0 0 0 4px rgba(16,185,129,0.2)',
-          '0 0 0 8px rgba(16,185,129,0.05)',
-          '0 0 0 0 rgba(16,185,129,0)',
-        ],
-      } : {}}
-      transition={justClaimed ? { duration: 0.5, ease: 'easeOut' } : { layout: { duration: 0.3, ease: 'easeInOut' } }}
+      animate={
+        justClaimed
+          ? {
+              scale: [1, 1.02, 0.99, 1],
+              boxShadow: [
+                '0 0 0 0 rgba(16,185,129,0)',
+                '0 0 0 4px rgba(16,185,129,0.2)',
+                '0 0 0 8px rgba(16,185,129,0.05)',
+                '0 0 0 0 rgba(16,185,129,0)',
+              ],
+            }
+          : {}
+      }
+      transition={
+        justClaimed
+          ? { duration: 0.5, ease: 'easeOut' }
+          : { layout: { duration: 0.3, ease: 'easeInOut' } }
+      }
       className="rounded-2xl"
     >
       <TrCard
         className="p-4 relative overflow-hidden"
-        accentBorder={justClaimed ? 'rgba(16,185,129,0.4)' : isClaimable ? 'rgba(245,158,11,0.3)' : expiring ? 'rgba(239,68,68,0.2)' : undefined}
+        accentBorder={
+          justClaimed
+            ? 'rgba(16,185,129,0.4)'
+            : isClaimable
+              ? 'rgba(245,158,11,0.3)'
+              : expiring
+                ? 'rgba(239,68,68,0.2)'
+                : undefined
+        }
         style={{ opacity: task.status === 'expired' ? 0.5 : 1 }}
       >
         {/* Claim success overlay */}
@@ -454,7 +495,10 @@ export function UnifiedTaskCard({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
-              style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(16,185,129,0.02) 100%)' }}
+              style={{
+                background:
+                  'linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(16,185,129,0.02) 100%)',
+              }}
             />
           )}
         </AnimatePresence>
@@ -463,7 +507,10 @@ export function UnifiedTaskCard({
           {/* Icon */}
           <div
             className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-            style={{ background: justClaimed ? 'rgba(16,185,129,0.15)' : cat.color + '15', fontSize: 20 }}
+            style={{
+              background: justClaimed ? 'rgba(16,185,129,0.15)' : cat.color + '15',
+              fontSize: 20,
+            }}
           >
             {justClaimed ? <CheckCircle size={22} color="#10B981" /> : task.icon}
           </div>
@@ -471,9 +518,13 @@ export function UnifiedTaskCard({
           <div className="flex-1 min-w-0">
             {/* Title row + status badge (non-color a11y) */}
             <div className="flex items-center gap-2">
-              <span style={{ color: c.text1, fontSize: 14, fontWeight: 600 }} className="truncate">{task.title}</span>
+              <span style={{ color: c.text1, fontSize: 14, fontWeight: 600 }} className="truncate">
+                {task.title}
+              </span>
               {/* Category badge */}
-              {(task.category === 'flash' || task.category === 'learn' || task.category === 'arena') && (
+              {(task.category === 'flash' ||
+                task.category === 'learn' ||
+                task.category === 'arena') && (
                 <span
                   className="px-1.5 py-0.5 rounded-md shrink-0"
                   style={{
@@ -483,13 +534,22 @@ export function UnifiedTaskCard({
                     fontWeight: 600,
                   }}
                 >
-                  {task.category === 'flash' ? 'Flash' : task.category === 'learn' ? 'Học' : 'Arena'}
+                  {task.category === 'flash'
+                    ? 'Flash'
+                    : task.category === 'learn'
+                      ? 'Học'
+                      : 'Arena'}
                 </span>
               )}
               {task.multiplier && task.multiplier > 1 && (
                 <span
                   className="px-1.5 py-0.5 rounded-md shrink-0"
-                  style={{ background: 'rgba(245,158,11,0.15)', color: '#F59E0B', fontSize: 9, fontWeight: 700 }}
+                  style={{
+                    background: 'rgba(245,158,11,0.15)',
+                    color: '#F59E0B',
+                    fontSize: 9,
+                    fontWeight: 700,
+                  }}
                 >
                   x{task.multiplier}
                 </span>
@@ -517,7 +577,9 @@ export function UnifiedTaskCard({
                       ? `${task.progress.toLocaleString()} / ${task.maxProgress.toLocaleString()}`
                       : `${task.progress} / ${task.maxProgress}`}
                   </span>
-                  <span style={{ color: cat.color, fontSize: 10, fontWeight: 600 }}>{progressPct.toFixed(0)}%</span>
+                  <span style={{ color: cat.color, fontSize: 10, fontWeight: 600 }}>
+                    {progressPct.toFixed(0)}%
+                  </span>
                 </div>
                 <div className="h-1.5 rounded-full" style={{ background: c.surface2 }}>
                   <div
@@ -534,14 +596,18 @@ export function UnifiedTaskCard({
                 {task.usdtReward && (
                   <div className="flex items-center gap-1">
                     <Gift size={11} color="#F59E0B" />
-                    <span style={{ color: '#F59E0B', fontSize: 11, fontWeight: 600 }}>{task.usdtReward}</span>
+                    <span style={{ color: '#F59E0B', fontSize: 11, fontWeight: 600 }}>
+                      {task.usdtReward}
+                    </span>
                   </div>
                 )}
                 {hasDual && <span style={{ color: c.text3, fontSize: 10 }}>+</span>}
                 {task.pointsReward && (
                   <div className="flex items-center gap-1">
                     <Zap size={11} color="#8B5CF6" />
-                    <span style={{ color: '#8B5CF6', fontSize: 11, fontWeight: 600 }}>{task.pointsReward} pts</span>
+                    <span style={{ color: '#8B5CF6', fontSize: 11, fontWeight: 600 }}>
+                      {task.pointsReward} pts
+                    </span>
                   </div>
                 )}
               </div>
@@ -570,7 +636,10 @@ export function UnifiedTaskCard({
                 </div>
               )}
               {task.status === 'active' && !expiring && task.expiresAt && (
-                <span className="shrink-0 flex items-center gap-1" style={{ color: c.text3, fontSize: 10 }}>
+                <span
+                  className="shrink-0 flex items-center gap-1"
+                  style={{ color: c.text3, fontSize: 10 }}
+                >
                   <Timer size={10} color={c.text3} />
                   {task.expiresAt.slice(5)}
                 </span>
@@ -609,23 +678,29 @@ export function CompactSpinCard({
     let winIdx = 0;
     for (let i = 0; i < SPIN_PRIZES.length; i++) {
       rand -= SPIN_PRIZES[i].weight;
-      if (rand <= 0) { winIdx = i; break; }
+      if (rand <= 0) {
+        winIdx = i;
+        break;
+      }
     }
 
     // Animate highlight cycling through prizes
     let tick = 0;
     const totalTicks = 24 + winIdx;
-    const interval = setInterval(() => {
-      setHighlightIdx(tick % SPIN_PRIZES.length);
-      tick++;
-      if (tick >= totalTicks) {
-        clearInterval(interval);
-        setHighlightIdx(winIdx);
-        setSpinning(false);
-        setSelectedPrize(SPIN_PRIZES[winIdx].label);
-        onSpin(SPIN_PRIZES[winIdx].label);
-      }
-    }, spinning ? Math.min(60 + tick * 8, 200) : 100);
+    const interval = setInterval(
+      () => {
+        setHighlightIdx(tick % SPIN_PRIZES.length);
+        tick++;
+        if (tick >= totalTicks) {
+          clearInterval(interval);
+          setHighlightIdx(winIdx);
+          setSpinning(false);
+          setSelectedPrize(SPIN_PRIZES[winIdx].label);
+          onSpin(SPIN_PRIZES[winIdx].label);
+        }
+      },
+      spinning ? Math.min(60 + tick * 8, 200) : 100,
+    );
 
     return () => clearInterval(interval);
   };
@@ -651,7 +726,9 @@ export function CompactSpinCard({
           style={{ background: hasSpunToday ? 'rgba(148,163,184,0.1)' : 'rgba(16,185,129,0.1)' }}
         >
           <Star size={10} color={hasSpunToday ? '#94A3B8' : '#10B981'} />
-          <span style={{ color: hasSpunToday ? '#94A3B8' : '#10B981', fontSize: 9, fontWeight: 700 }}>
+          <span
+            style={{ color: hasSpunToday ? '#94A3B8' : '#10B981', fontSize: 9, fontWeight: 700 }}
+          >
             {hasSpunToday ? '0/1' : '1/1'}
           </span>
         </div>
@@ -664,20 +741,30 @@ export function CompactSpinCard({
             key={i}
             className="flex items-center justify-center py-2.5 rounded-lg transition-all"
             style={{
-              background: highlightIdx === i
-                ? `${p.color}25`
-                : selectedPrize === p.label
-                  ? `${p.color}20`
-                  : c.surface2,
-              border: highlightIdx === i
-                ? `2px solid ${p.color}`
-                : selectedPrize === p.label
+              background:
+                highlightIdx === i
+                  ? `${p.color}25`
+                  : selectedPrize === p.label
+                    ? `${p.color}20`
+                    : c.surface2,
+              border:
+                highlightIdx === i
                   ? `2px solid ${p.color}`
-                  : `1px solid ${c.border}`,
+                  : selectedPrize === p.label
+                    ? `2px solid ${p.color}`
+                    : `1px solid ${c.border}`,
               transform: highlightIdx === i ? 'scale(1.05)' : 'scale(1)',
             }}
           >
-            <span style={{ color: highlightIdx === i || selectedPrize === p.label ? p.color : c.text2, fontSize: 10, fontWeight: 600, textAlign: 'center', lineHeight: 1.3 }}>
+            <span
+              style={{
+                color: highlightIdx === i || selectedPrize === p.label ? p.color : c.text2,
+                fontSize: 10,
+                fontWeight: 600,
+                textAlign: 'center',
+                lineHeight: 1.3,
+              }}
+            >
               {p.label}
             </span>
           </div>
@@ -724,7 +811,13 @@ export function CompactSpinCard({
    Combo Multiplier Banner (v2 — no infinite anim)
    ═══════════════════════════════════════════ */
 
-export function ComboMultiplierBanner({ completedToday, streak }: { completedToday: number; streak: number }) {
+export function ComboMultiplierBanner({
+  completedToday,
+  streak,
+}: {
+  completedToday: number;
+  streak: number;
+}) {
   const c = useThemeColors();
 
   const getMultiplier = () => {
@@ -735,7 +828,8 @@ export function ComboMultiplierBanner({ completedToday, streak }: { completedTod
   };
 
   const combo = getMultiplier();
-  const nextMilestone = completedToday < 1 ? 1 : completedToday < 3 ? 3 : completedToday < 5 ? 5 : null;
+  const nextMilestone =
+    completedToday < 1 ? 1 : completedToday < 3 ? 3 : completedToday < 5 ? 5 : null;
   const milestones = [
     { at: 1, mult: '1.2x', color: '#10B981' },
     { at: 3, mult: '1.5x', color: '#F59E0B' },
@@ -753,10 +847,17 @@ export function ComboMultiplierBanner({ completedToday, streak }: { completedTod
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span style={{ color: combo.color, fontSize: 16, fontWeight: 700 }}>x{combo.value}</span>
+            <span style={{ color: combo.color, fontSize: 16, fontWeight: 700 }}>
+              x{combo.value}
+            </span>
             <span
               className="px-2 py-0.5 rounded-md"
-              style={{ background: `${combo.color}12`, color: combo.color, fontSize: 9, fontWeight: 700 }}
+              style={{
+                background: `${combo.color}12`,
+                color: combo.color,
+                fontSize: 9,
+                fontWeight: 700,
+              }}
             >
               {combo.label}
             </span>
@@ -781,7 +882,10 @@ export function ComboMultiplierBanner({ completedToday, streak }: { completedTod
           const reached = completedToday >= m.at;
           return (
             <div key={i} className="flex items-center gap-1 flex-1">
-              <div className="flex-1 h-1.5 rounded-full" style={{ background: reached ? m.color : c.surface2 }} />
+              <div
+                className="flex-1 h-1.5 rounded-full"
+                style={{ background: reached ? m.color : c.surface2 }}
+              />
               <span style={{ color: reached ? m.color : c.text3, fontSize: 8, fontWeight: 700 }}>
                 {m.mult}
               </span>
@@ -791,7 +895,11 @@ export function ComboMultiplierBanner({ completedToday, streak }: { completedTod
       </div>
       {nextMilestone && (
         <p style={{ color: c.text3, fontSize: 10, marginTop: 4, textAlign: 'center' }}>
-          Thêm <span style={{ color: combo.value !== '1.0' ? combo.color : '#10B981', fontWeight: 700 }}>{nextMilestone - completedToday}</span> NV để tăng nhân thưởng
+          Thêm{' '}
+          <span style={{ color: combo.value !== '1.0' ? combo.color : '#10B981', fontWeight: 700 }}>
+            {nextMilestone - completedToday}
+          </span>{' '}
+          NV để tăng nhân thưởng
         </p>
       )}
     </TrCard>
@@ -817,16 +925,14 @@ export function CompactMysteryRow({
     <TrCard className="p-4">
       <div className="flex items-center gap-2 mb-3">
         <Box size={14} color="#8B5CF6" />
-        <span style={{ color: c.text2, fontSize: 12, fontWeight: 600 }}>
-          Hộp quà bí ẩn
-        </span>
+        <span style={{ color: c.text2, fontSize: 12, fontWeight: 600 }}>Hộp quà bí ẩn</span>
         <span style={{ color: c.text3, fontSize: 10, marginLeft: 'auto' }}>
           {openedBoxes.size}/{MYSTERY_BOXES.length} đã mở
         </span>
       </div>
 
       <div className="flex gap-2">
-        {MYSTERY_BOXES.map(box => {
+        {MYSTERY_BOXES.map((box) => {
           const canOpen = totalClaimed >= box.requiredTasks && !openedBoxes.has(box.id);
           const isOpened = openedBoxes.has(box.id);
           const isLocked = totalClaimed < box.requiredTasks;
@@ -855,7 +961,15 @@ export function CompactMysteryRow({
                       style={{ width: `${progress}%`, background: box.color }}
                     />
                   </div>
-                  <span style={{ color: c.text3, fontSize: 8, display: 'block', textAlign: 'center', marginTop: 2 }}>
+                  <span
+                    style={{
+                      color: c.text3,
+                      fontSize: 8,
+                      display: 'block',
+                      textAlign: 'center',
+                      marginTop: 2,
+                    }}
+                  >
                     {totalClaimed}/{box.requiredTasks}
                   </span>
                 </div>
@@ -895,28 +1009,47 @@ export function CompactMysteryRow({
    Balance Breakdown (Hero)
    ═══════════════════════════════════════════ */
 
-export function BalanceBreakdown({ totalBalance, lockedBalance }: { totalBalance: number; lockedBalance: number }) {
+export function BalanceBreakdown({
+  totalBalance,
+  lockedBalance,
+}: {
+  totalBalance: number;
+  lockedBalance: number;
+}) {
   const availableBalance = totalBalance - lockedBalance;
   const lockedPct = totalBalance > 0 ? Math.round((lockedBalance / totalBalance) * 100) : 0;
 
   return (
     <div className="mt-3 relative z-10">
-      <div className="h-2 rounded-full flex overflow-hidden mb-2" style={{ background: 'rgba(255,255,255,0.1)' }}>
-        <div className="h-full rounded-l-full" style={{ width: `${100 - lockedPct}%`, background: '#10B981' }} />
-        <div className="h-full rounded-r-full" style={{ width: `${lockedPct}%`, background: '#F59E0B' }} />
+      <div
+        className="h-2 rounded-full flex overflow-hidden mb-2"
+        style={{ background: 'rgba(255,255,255,0.1)' }}
+      >
+        <div
+          className="h-full rounded-l-full"
+          style={{ width: `${100 - lockedPct}%`, background: '#10B981' }}
+        />
+        <div
+          className="h-full rounded-r-full"
+          style={{ width: `${lockedPct}%`, background: '#F59E0B' }}
+        />
       </div>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5">
           <Unlock size={11} color="#10B981" />
           <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11 }}>Khả dụng</span>
-          <span style={{ color: '#10B981', fontSize: 11, fontWeight: 700, fontFamily: 'monospace' }}>
+          <span
+            style={{ color: '#10B981', fontSize: 11, fontWeight: 700, fontFamily: 'monospace' }}
+          >
             {fmtPoints(availableBalance)}
           </span>
         </div>
         <div className="flex items-center gap-1.5">
           <Lock size={11} color="#F59E0B" />
           <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11 }}>Đang khóa</span>
-          <span style={{ color: '#F59E0B', fontSize: 11, fontWeight: 700, fontFamily: 'monospace' }}>
+          <span
+            style={{ color: '#F59E0B', fontSize: 11, fontWeight: 700, fontFamily: 'monospace' }}
+          >
             {fmtPoints(lockedBalance)}
           </span>
         </div>
@@ -949,7 +1082,9 @@ export function BatchClaimPreview({ tasks }: { tasks: UnifiedTask[] }) {
           {totalUsdt > 0 && (
             <div className="flex items-center gap-1">
               <Gift size={12} color="#F59E0B" />
-              <span style={{ color: '#F59E0B', fontSize: 13, fontWeight: 700, fontFamily: 'monospace' }}>
+              <span
+                style={{ color: '#F59E0B', fontSize: 13, fontWeight: 700, fontFamily: 'monospace' }}
+              >
                 {totalUsdt.toFixed(1)} USDT
               </span>
             </div>
@@ -957,7 +1092,9 @@ export function BatchClaimPreview({ tasks }: { tasks: UnifiedTask[] }) {
           {totalPts > 0 && (
             <div className="flex items-center gap-1">
               <Zap size={12} color="#8B5CF6" />
-              <span style={{ color: '#8B5CF6', fontSize: 13, fontWeight: 700, fontFamily: 'monospace' }}>
+              <span
+                style={{ color: '#8B5CF6', fontSize: 13, fontWeight: 700, fontFamily: 'monospace' }}
+              >
                 {fmtPoints(totalPts)} pts
               </span>
             </div>
@@ -966,7 +1103,10 @@ export function BatchClaimPreview({ tasks }: { tasks: UnifiedTask[] }) {
       </div>
 
       {/* Item list */}
-      <div className="max-h-40 overflow-y-auto rounded-xl" style={{ border: `1px solid ${c.border}` }}>
+      <div
+        className="max-h-40 overflow-y-auto rounded-xl"
+        style={{ border: `1px solid ${c.border}` }}
+      >
         {tasks.map((t, i) => (
           <div
             key={t.id}
@@ -974,12 +1114,23 @@ export function BatchClaimPreview({ tasks }: { tasks: UnifiedTask[] }) {
             style={{ borderBottom: i < tasks.length - 1 ? `1px solid ${c.border}` : 'none' }}
           >
             <span style={{ fontSize: 14 }}>{t.icon}</span>
-            <span className="flex-1 truncate" style={{ color: c.text1, fontSize: 11, fontWeight: 500 }}>
+            <span
+              className="flex-1 truncate"
+              style={{ color: c.text1, fontSize: 11, fontWeight: 500 }}
+            >
               {t.title}
             </span>
             <div className="flex items-center gap-1.5 shrink-0">
-              {t.usdtReward && <span style={{ color: '#F59E0B', fontSize: 10, fontWeight: 600 }}>{t.usdtReward}</span>}
-              {t.pointsReward && <span style={{ color: '#8B5CF6', fontSize: 10, fontWeight: 600 }}>{t.pointsReward}pts</span>}
+              {t.usdtReward && (
+                <span style={{ color: '#F59E0B', fontSize: 10, fontWeight: 600 }}>
+                  {t.usdtReward}
+                </span>
+              )}
+              {t.pointsReward && (
+                <span style={{ color: '#8B5CF6', fontSize: 10, fontWeight: 600 }}>
+                  {t.pointsReward}pts
+                </span>
+              )}
             </div>
           </div>
         ))}

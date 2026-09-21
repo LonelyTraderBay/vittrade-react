@@ -33,9 +33,9 @@ const TOKENS = {
   riskWarning: 'var(--tr-warn)',
 
   // Semantic aliases (map to existing CSS variables)
-  success: 'var(--tr-buy)',      // #10B981 — green
-  error: 'var(--tr-sell)',       // #EF4444 — red
-  warning: 'var(--tr-warn)',     // #F0A63A — amber warning
+  success: 'var(--tr-buy)', // #10B981 — green
+  error: 'var(--tr-sell)', // #EF4444 — red
+  warning: 'var(--tr-warn)', // #F0A63A — amber warning
 
   text1: 'var(--tr-text-1)',
   text2: 'var(--tr-text-2)',
@@ -161,6 +161,14 @@ const TOKENS = {
   surfaceHover: 'var(--tr-hover-bg)',
   /** @deprecated Use `primary` */
   primaryHover: 'var(--tr-primary)',
+  /** @deprecated Use `error` */
+  danger: 'var(--tr-sell)',
+  /** @deprecated Use `text2` */
+  textSec: 'var(--tr-text-2)',
+  /** @deprecated Use `text3` */
+  textTer: 'var(--tr-text-3)',
+  /** @deprecated Use `primary` */
+  ring: 'var(--tr-primary)',
 } as const;
 
 export type ThemeColors = typeof TOKENS;

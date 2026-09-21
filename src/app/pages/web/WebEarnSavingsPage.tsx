@@ -195,9 +195,21 @@ const MY_ACTIVE_SAVINGS = [
 
 const PRODUCT_CATEGORIES = [
   { id: 'all', label: 'Tất cả sản phẩm', count: ALL_PRODUCTS.length },
-  { id: 'flexible', label: 'Tiết kiệm linh hoạt', count: ALL_PRODUCTS.filter(p => p.type === 'flexible').length },
-  { id: 'locked', label: 'Tiết kiệm có kỳ hạn', count: ALL_PRODUCTS.filter(p => p.type === 'locked').length },
-  { id: 'defi', label: 'DeFi Staking', count: ALL_PRODUCTS.filter(p => p.type === 'defi').length },
+  {
+    id: 'flexible',
+    label: 'Tiết kiệm linh hoạt',
+    count: ALL_PRODUCTS.filter((p) => p.type === 'flexible').length,
+  },
+  {
+    id: 'locked',
+    label: 'Tiết kiệm có kỳ hạn',
+    count: ALL_PRODUCTS.filter((p) => p.type === 'locked').length,
+  },
+  {
+    id: 'defi',
+    label: 'DeFi Staking',
+    count: ALL_PRODUCTS.filter((p) => p.type === 'defi').length,
+  },
   { id: 'my-active', label: 'Sản phẩm của tôi', count: MY_ACTIVE_SAVINGS.length },
 ];
 
@@ -205,7 +217,13 @@ const STATS_OVERVIEW = [
   { label: 'Tổng tiết kiệm', value: '$5,127.50', change: '+12.5%', icon: Wallet, color: '#3B82F6' },
   { label: 'Sản phẩm đang hoạt động', value: '2', change: '', icon: Activity, color: '#10B981' },
   { label: 'APY trung bình', value: '8.4%', change: '+0.8%', icon: TrendingUp, color: '#F59E0B' },
-  { label: 'Tổng lãi kiếm được', value: '$127.50', change: '+$42.50 (7 ngày)', icon: Award, color: '#8B5CF6' },
+  {
+    label: 'Tổng lãi kiếm được',
+    value: '$127.50',
+    change: '+$42.50 (7 ngày)',
+    icon: Award,
+    color: '#8B5CF6',
+  },
 ];
 
 /* ═══════════════════════════════════════════════════════════
@@ -222,7 +240,9 @@ export function WebEarnSavingsPage() {
   const filteredProducts = ALL_PRODUCTS.filter((product) => {
     const matchesCategory =
       selectedCategory === 'all' ||
-      (selectedCategory === 'my-active' ? MY_ACTIVE_SAVINGS.some(s => s.productId === product.id) : product.type === selectedCategory);
+      (selectedCategory === 'my-active'
+        ? MY_ACTIVE_SAVINGS.some((s) => s.productId === product.id)
+        : product.type === selectedCategory);
     const matchesSearch =
       searchQuery === '' ||
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -375,7 +395,14 @@ export function WebEarnSavingsPage() {
                     border: `1px solid ${c.border}`,
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      marginBottom: '12px',
+                    }}
+                  >
                     <div
                       style={{
                         width: 40,
@@ -389,9 +416,7 @@ export function WebEarnSavingsPage() {
                     >
                       <Icon size={WEB_ICON.lg} style={{ color: stat.color }} />
                     </div>
-                    <span style={{ fontSize: WEB_FONT.sm, color: c.text3 }}>
-                      {stat.label}
-                    </span>
+                    <span style={{ fontSize: WEB_FONT.sm, color: c.text3 }}>{stat.label}</span>
                   </div>
                   <div style={{ fontSize: WEB_FONT.lg, fontWeight: 700, color: c.text1 }}>
                     {stat.value}
@@ -503,7 +528,8 @@ export function WebEarnSavingsPage() {
                       padding: '10px 12px',
                       borderRadius: '8px',
                       border: 'none',
-                      backgroundColor: selectedCategory === category.id ? `${c.primary}15` : 'transparent',
+                      backgroundColor:
+                        selectedCategory === category.id ? `${c.primary}15` : 'transparent',
                       color: selectedCategory === category.id ? c.primary : c.text1,
                       fontSize: WEB_FONT.base,
                       fontWeight: selectedCategory === category.id ? 500 : 400,
@@ -550,7 +576,10 @@ export function WebEarnSavingsPage() {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                <Shield size={WEB_ICON.md} style={{ color: c.primary, flexShrink: 0, marginTop: '2px' }} />
+                <Shield
+                  size={WEB_ICON.md}
+                  style={{ color: c.primary, flexShrink: 0, marginTop: '2px' }}
+                />
                 <div>
                   <div
                     style={{
@@ -563,7 +592,8 @@ export function WebEarnSavingsPage() {
                     Thông tin rủi ro
                   </div>
                   <div style={{ fontSize: WEB_FONT.xs, color: c.text3, lineHeight: '1.5' }}>
-                    APY hiển thị là ước tính và có thể thay đổi. Sản phẩm DeFi có rủi ro cao hơn. Đọc kỹ điều khoản trước khi đầu tư.
+                    APY hiển thị là ước tính và có thể thay đổi. Sản phẩm DeFi có rủi ro cao hơn.
+                    Đọc kỹ điều khoản trước khi đầu tư.
                   </div>
                 </div>
               </div>
@@ -644,7 +674,9 @@ export function WebEarnSavingsPage() {
                   background: `linear-gradient(135deg, ${c.primary}15 0%, ${c.surface} 100%)`,
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                >
                   <div>
                     <h2
                       style={{
@@ -696,20 +728,31 @@ export function WebEarnSavingsPage() {
                         border: `1px solid ${c.border}`,
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginBottom: '12px',
+                        }}
+                      >
                         <div>
                           <div style={{ fontSize: WEB_FONT.base, fontWeight: 600, color: c.text1 }}>
                             {saving.name}
                           </div>
                           <div style={{ fontSize: WEB_FONT.sm, color: c.text3, marginTop: '2px' }}>
-                            {saving.type === 'flexible' ? 'Linh hoạt' : `Kỳ hạn ${saving.maturityDate}`}
+                            {saving.type === 'flexible'
+                              ? 'Linh hoạt'
+                              : `Kỳ hạn ${saving.maturityDate}`}
                           </div>
                         </div>
                         <div style={{ textAlign: 'right' }}>
                           <div style={{ fontSize: WEB_FONT.base, fontWeight: 700, color: c.text1 }}>
                             {saving.amount} {saving.symbol}
                           </div>
-                          <div style={{ fontSize: WEB_FONT.sm, color: '#10B981', marginTop: '2px' }}>
+                          <div
+                            style={{ fontSize: WEB_FONT.sm, color: '#10B981', marginTop: '2px' }}
+                          >
                             APY {saving.currentAPY}%
                           </div>
                         </div>
@@ -724,7 +767,10 @@ export function WebEarnSavingsPage() {
                         }}
                       >
                         <div style={{ fontSize: WEB_FONT.sm, color: c.text3 }}>
-                          Lãi đã kiếm: <span style={{ color: '#10B981', fontWeight: 500 }}>+{saving.currentEarnings} {saving.symbol}</span>
+                          Lãi đã kiếm:{' '}
+                          <span style={{ color: '#10B981', fontWeight: 500 }}>
+                            +{saving.currentEarnings} {saving.symbol}
+                          </span>
                         </div>
                         <button
                           onClick={() => navigate(`/earn/savings/receipt/${saving.id}`)}
@@ -811,7 +857,14 @@ export function WebEarnSavingsPage() {
                     )}
 
                     {/* Product Header */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        marginBottom: '16px',
+                      }}
+                    >
                       <div
                         style={{
                           width: WEB_ICON.CONTAINER.XLARGE,
@@ -849,7 +902,9 @@ export function WebEarnSavingsPage() {
                         Lãi suất ước tính (APY)
                       </div>
                       <div style={{ fontSize: WEB_FONT.xl, fontWeight: 700, color: '#10B981' }}>
-                        {product.apyMin === product.apyMax ? `${product.apyMax}%` : `${product.apyMin}% - ${product.apyMax}%`}
+                        {product.apyMin === product.apyMax
+                          ? `${product.apyMax}%`
+                          : `${product.apyMin}% - ${product.apyMax}%`}
                       </div>
                     </div>
 
@@ -915,7 +970,11 @@ export function WebEarnSavingsPage() {
                           fontWeight: 600,
                         }}
                       >
-                        {product.risk === 'low' ? 'Rủi ro thấp' : product.risk === 'medium' ? 'Rủi ro trung bình' : 'Rủi ro cao'}
+                        {product.risk === 'low'
+                          ? 'Rủi ro thấp'
+                          : product.risk === 'medium'
+                            ? 'Rủi ro trung bình'
+                            : 'Rủi ro cao'}
                       </div>
                     </div>
 
@@ -969,7 +1028,14 @@ export function WebEarnSavingsPage() {
                 }}
               >
                 <Search size={48} style={{ color: c.text3, margin: '0 auto 16px' }} />
-                <div style={{ fontSize: WEB_FONT.base, fontWeight: 500, color: c.text1, marginBottom: '8px' }}>
+                <div
+                  style={{
+                    fontSize: WEB_FONT.base,
+                    fontWeight: 500,
+                    color: c.text1,
+                    marginBottom: '8px',
+                  }}
+                >
                   Không tìm thấy sản phẩm
                 </div>
                 <div style={{ fontSize: WEB_FONT.sm, color: c.text3 }}>

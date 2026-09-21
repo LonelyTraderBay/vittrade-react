@@ -2,20 +2,20 @@
  * ══════════════════════════════════════════════════════════════
  *  CopyPerformancePage — Phase 1 Week 3: Performance Analysis
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Dual equity curve comparison (You vs Provider)
  * - Slippage impact visualization
  * - Trade-by-trade execution comparison
  * - Cost attribution breakdown
  * - Risk-adjusted metrics comparison
- * 
+ *
  * Compliance:
  * - Full transparency on underperformance vs provider
  * - Slippage disclosure (ESMA requirement)
  * - All costs itemized and attributed
  * - No misleading comparisons
- * 
+ *
  * Guidelines:
  * - PageLayout + TabBar pattern
  * - Trust-first: show all performance gaps
@@ -25,10 +25,21 @@
 
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
-import { 
-  TrendingUp, TrendingDown, Activity, DollarSign, AlertCircle,
-  BarChart3, PieChart, ArrowRight, Info, Clock, Target,
-  Zap, Eye, ChevronRight
+import {
+  TrendingUp,
+  TrendingDown,
+  Activity,
+  DollarSign,
+  AlertCircle,
+  BarChart3,
+  PieChart,
+  ArrowRight,
+  Info,
+  Clock,
+  Target,
+  Zap,
+  Eye,
+  ChevronRight,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -36,9 +47,20 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { TabBar } from '../../components/layout/TabBar';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useRoutePrefix } from '../../hooks/useRoutePrefix';
-import { 
-  LineChart, Line, BarChart, Bar, PieChart as RechartsPie, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  PieChart as RechartsPie,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
 } from 'recharts';
 
 type TabType = 'overview' | 'trades' | 'costs' | 'metrics';
@@ -114,20 +136,20 @@ export function CopyPerformancePage() {
   const c = useThemeColors();
   const navigate = useNavigate();
   const prefix = useRoutePrefix();
-  
+
   const [activeTab, setActiveTab] = useState<TabType>('overview');
 
   // Summary stats
   const yourReturn = 13.0; // +13%
   const providerReturn = 15.6; // +15.6%
   const performanceGap = providerReturn - yourReturn; // -2.6%
-  
+
   const yourSharpe = 1.82;
   const providerSharpe = 2.15;
-  
+
   const yourMaxDD = -8.5;
   const providerMaxDD = -6.2;
-  
+
   const totalCosts = COST_ATTRIBUTION.reduce((sum, item) => sum + item.value, 0);
   const avgSlippage = 0.68;
 
@@ -137,13 +159,19 @@ export function CopyPerformancePage() {
 
       <PageContent gap="relaxed">
         {/* Performance Gap Summary */}
-        <div className="p-4 rounded-2xl" style={{ background: c.surface, border: `1px solid ${c.border}` }}>
+        <div
+          className="p-4 rounded-2xl"
+          style={{ background: c.surface, border: `1px solid ${c.border}` }}
+        >
           <h3 style={{ color: c.text1, fontSize: 15, fontWeight: 700, marginBottom: 12 }}>
             Tổng quan so sánh
           </h3>
 
           <div className="grid grid-cols-2 gap-3">
-            <div className="p-3 rounded-xl" style={{ background: '#EFF6FF', border: '1px solid #3B82F6' }}>
+            <div
+              className="p-3 rounded-xl"
+              style={{ background: '#EFF6FF', border: '1px solid #3B82F6' }}
+            >
               <p style={{ color: '#1E3A8A', fontSize: 11, marginBottom: 4 }}>Hiệu suất của bạn</p>
               <p style={{ color: '#3B82F6', fontSize: 20, fontWeight: 700, marginBottom: 2 }}>
                 +{yourReturn.toFixed(1)}%
@@ -151,7 +179,10 @@ export function CopyPerformancePage() {
               <p style={{ color: '#1E3A8A', fontSize: 9 }}>$5,000 → $5,650</p>
             </div>
 
-            <div className="p-3 rounded-xl" style={{ background: '#F5F3FF', border: '1px solid #8B5CF6' }}>
+            <div
+              className="p-3 rounded-xl"
+              style={{ background: '#F5F3FF', border: '1px solid #8B5CF6' }}
+            >
               <p style={{ color: '#4C1D95', fontSize: 11, marginBottom: 4 }}>Provider lý thuyết</p>
               <p style={{ color: '#8B5CF6', fontSize: 20, fontWeight: 700, marginBottom: 2 }}>
                 +{providerReturn.toFixed(1)}%
@@ -160,31 +191,40 @@ export function CopyPerformancePage() {
             </div>
           </div>
 
-          <div className="mt-3 p-3 rounded-xl" style={{ 
-            background: performanceGap < 0 ? c.warningBg : '#F0FDF4',
-            border: `1px solid ${performanceGap < 0 ? c.warningBorder : '#10B981'}`
-          }}>
+          <div
+            className="mt-3 p-3 rounded-xl"
+            style={{
+              background: performanceGap < 0 ? c.warningBg : '#F0FDF4',
+              border: `1px solid ${performanceGap < 0 ? c.warningBorder : '#10B981'}`,
+            }}
+          >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <AlertCircle size={14} color={performanceGap < 0 ? c.warningText : '#10B981'} />
-                <span style={{ color: performanceGap < 0 ? c.warningText : '#166534', fontSize: 11 }}>
+                <span
+                  style={{ color: performanceGap < 0 ? c.warningText : '#166534', fontSize: 11 }}
+                >
                   Chênh lệch hiệu suất
                 </span>
               </div>
-              <span style={{ 
-                color: performanceGap < 0 ? c.warningText : '#10B981',
-                fontSize: 16,
-                fontWeight: 700
-              }}>
+              <span
+                style={{
+                  color: performanceGap < 0 ? c.warningText : '#10B981',
+                  fontSize: 16,
+                  fontWeight: 700,
+                }}
+              >
                 {performanceGap.toFixed(2)}%
               </span>
             </div>
-            <p style={{ 
-              color: performanceGap < 0 ? c.warningText : '#166534',
-              fontSize: 10,
-              marginTop: 4,
-              lineHeight: 1.4
-            }}>
+            <p
+              style={{
+                color: performanceGap < 0 ? c.warningText : '#166534',
+                fontSize: 10,
+                marginTop: 4,
+                lineHeight: 1.4,
+              }}
+            >
               Nguyên nhân chính: slippage ({avgSlippage.toFixed(2)}%) và chi phí (${totalCosts})
             </p>
           </div>
@@ -210,16 +250,19 @@ export function CopyPerformancePage() {
             <PageSection label="Đường vốn so sánh (30 ngày)" accentColor={c.primary}>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={EQUITY_CURVE_DATA} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+                  <LineChart
+                    data={EQUITY_CURVE_DATA}
+                    margin={{ top: 5, right: 10, left: 0, bottom: 5 }}
+                  >
                     <CartesianGrid key="grid" strokeDasharray="3 3" stroke={c.border} />
-                    <XAxis 
+                    <XAxis
                       key="xaxis"
-                      dataKey="day" 
+                      dataKey="day"
                       stroke={c.text3}
                       style={{ fontSize: 10 }}
                       label={{ value: 'Ngày', position: 'insideBottom', offset: -5, fontSize: 10 }}
                     />
-                    <YAxis 
+                    <YAxis
                       key="yaxis"
                       stroke={c.text3}
                       style={{ fontSize: 10 }}
@@ -235,25 +278,21 @@ export function CopyPerformancePage() {
                       }}
                       formatter={(value: any) => `$${value.toFixed(0)}`}
                     />
-                    <Legend 
-                      key="legend"
-                      wrapperStyle={{ fontSize: 11 }}
-                      iconType="line"
-                    />
-                    <Line 
+                    <Legend key="legend" wrapperStyle={{ fontSize: 11 }} iconType="line" />
+                    <Line
                       key="line-you"
-                      type="monotone" 
-                      dataKey="you" 
-                      stroke="#3B82F6" 
+                      type="monotone"
+                      dataKey="you"
+                      stroke="#3B82F6"
                       strokeWidth={2}
                       name="Bạn"
                       dot={false}
                     />
-                    <Line 
+                    <Line
                       key="line-provider"
-                      type="monotone" 
-                      dataKey="provider" 
-                      stroke="#8B5CF6" 
+                      type="monotone"
+                      dataKey="provider"
+                      stroke="#8B5CF6"
                       strokeWidth={2}
                       strokeDasharray="5 5"
                       name="Provider (lý thuyết)"
@@ -274,7 +313,10 @@ export function CopyPerformancePage() {
                     'Chi phí: Trading fees + performance fees',
                     'Position sizing: Fixed mode sử dụng 50% capital',
                   ].map((reason, i) => (
-                    <li key={i} style={{ color: c.text2, fontSize: 10, lineHeight: 1.4, paddingLeft: 12 }}>
+                    <li
+                      key={i}
+                      style={{ color: c.text2, fontSize: 10, lineHeight: 1.4, paddingLeft: 12 }}
+                    >
                       • {reason}
                     </li>
                   ))}
@@ -288,17 +330,17 @@ export function CopyPerformancePage() {
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={SLIPPAGE_DATA} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
                     <CartesianGrid key="grid" strokeDasharray="3 3" stroke={c.border} />
-                    <XAxis 
-                      key="xaxis"
-                      dataKey="range" 
-                      stroke={c.text3}
-                      style={{ fontSize: 10 }}
-                    />
-                    <YAxis 
+                    <XAxis key="xaxis" dataKey="range" stroke={c.text3} style={{ fontSize: 10 }} />
+                    <YAxis
                       key="yaxis"
                       stroke={c.text3}
                       style={{ fontSize: 10 }}
-                      label={{ value: '% Trades', angle: -90, position: 'insideLeft', fontSize: 10 }}
+                      label={{
+                        value: '% Trades',
+                        angle: -90,
+                        position: 'insideLeft',
+                        fontSize: 10,
+                      }}
                     />
                     <Tooltip
                       key="tooltip"
@@ -319,8 +361,12 @@ export function CopyPerformancePage() {
 
               <div className="mt-3 grid grid-cols-2 gap-2">
                 <div className="p-2 rounded-lg" style={{ background: c.surface2 }}>
-                  <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Slippage TB của bạn</p>
-                  <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>{avgSlippage.toFixed(2)}%</p>
+                  <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
+                    Slippage TB của bạn
+                  </p>
+                  <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>
+                    {avgSlippage.toFixed(2)}%
+                  </p>
                 </div>
                 <div className="p-2 rounded-lg" style={{ background: c.surface2 }}>
                   <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>Provider TB</p>
@@ -335,55 +381,67 @@ export function CopyPerformancePage() {
           <div className="space-y-3">
             <div className="p-3 rounded-xl" style={{ background: c.surface2 }}>
               <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
-                So sánh từng giao dịch giữa bạn và provider. Chênh lệch chủ yếu do slippage và execution delay.
+                So sánh từng giao dịch giữa bạn và provider. Chênh lệch chủ yếu do slippage và
+                execution delay.
               </p>
             </div>
 
-            {TRADE_COMPARISON.map(trade => (
-              <div 
+            {TRADE_COMPARISON.map((trade) => (
+              <div
                 key={trade.id}
                 className="p-4 rounded-2xl"
                 style={{ background: c.surface, border: `1px solid ${c.border}` }}
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <span 
+                    <span
                       className="px-2 py-1 rounded text-xs"
                       style={{
                         background: trade.side === 'buy' ? '#10B981' : '#EF4444',
                         color: '#fff',
                         fontWeight: 600,
-                        textTransform: 'uppercase'
+                        textTransform: 'uppercase',
                       }}
                     >
                       {trade.side}
                     </span>
-                    <span style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>{trade.pair}</span>
+                    <span style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>
+                      {trade.pair}
+                    </span>
                   </div>
                   <span style={{ color: c.text3, fontSize: 10 }}>{trade.timestamp}</span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 mb-3">
                   {/* Provider Column */}
-                  <div className="p-3 rounded-lg" style={{ background: '#F5F3FF', border: '1px solid #8B5CF6' }}>
+                  <div
+                    className="p-3 rounded-lg"
+                    style={{ background: '#F5F3FF', border: '1px solid #8B5CF6' }}
+                  >
                     <p style={{ color: '#4C1D95', fontSize: 10, marginBottom: 6 }}>Provider</p>
                     <div className="space-y-1">
                       <div className="flex justify-between">
                         <span style={{ color: '#6B21A8', fontSize: 9 }}>Entry</span>
-                        <span style={{ color: '#8B5CF6', fontSize: 11, fontWeight: 600 }}>${trade.providerEntry}</span>
+                        <span style={{ color: '#8B5CF6', fontSize: 11, fontWeight: 600 }}>
+                          ${trade.providerEntry}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span style={{ color: '#6B21A8', fontSize: 9 }}>Exit</span>
-                        <span style={{ color: '#8B5CF6', fontSize: 11, fontWeight: 600 }}>${trade.providerExit}</span>
+                        <span style={{ color: '#8B5CF6', fontSize: 11, fontWeight: 600 }}>
+                          ${trade.providerExit}
+                        </span>
                       </div>
                       <div className="h-px" style={{ background: '#8B5CF6' }} />
                       <div className="flex justify-between">
                         <span style={{ color: '#6B21A8', fontSize: 9 }}>P/L</span>
-                        <span style={{ 
-                          color: trade.providerPnL >= 0 ? '#10B981' : '#EF4444',
-                          fontSize: 12,
-                          fontWeight: 700
-                        }}>
+                        <span
+                          style={{
+                            color: trade.providerPnL >= 0 ? '#10B981' : '#EF4444',
+                            fontSize: 12,
+                            fontWeight: 700,
+                          }}
+                        >
                           {trade.providerPnL >= 0 ? '+' : ''}${trade.providerPnL}
                         </span>
                       </div>
@@ -391,25 +449,34 @@ export function CopyPerformancePage() {
                   </div>
 
                   {/* Your Column */}
-                  <div className="p-3 rounded-lg" style={{ background: '#EFF6FF', border: '1px solid #3B82F6' }}>
+                  <div
+                    className="p-3 rounded-lg"
+                    style={{ background: '#EFF6FF', border: '1px solid #3B82F6' }}
+                  >
                     <p style={{ color: '#1E3A8A', fontSize: 10, marginBottom: 6 }}>Bạn</p>
                     <div className="space-y-1">
                       <div className="flex justify-between">
                         <span style={{ color: '#1E40AF', fontSize: 9 }}>Entry</span>
-                        <span style={{ color: '#3B82F6', fontSize: 11, fontWeight: 600 }}>${trade.yourEntry}</span>
+                        <span style={{ color: '#3B82F6', fontSize: 11, fontWeight: 600 }}>
+                          ${trade.yourEntry}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span style={{ color: '#1E40AF', fontSize: 9 }}>Exit</span>
-                        <span style={{ color: '#3B82F6', fontSize: 11, fontWeight: 600 }}>${trade.yourExit}</span>
+                        <span style={{ color: '#3B82F6', fontSize: 11, fontWeight: 600 }}>
+                          ${trade.yourExit}
+                        </span>
                       </div>
                       <div className="h-px" style={{ background: '#3B82F6' }} />
                       <div className="flex justify-between">
                         <span style={{ color: '#1E40AF', fontSize: 9 }}>P/L</span>
-                        <span style={{ 
-                          color: trade.yourPnL >= 0 ? '#10B981' : '#EF4444',
-                          fontSize: 12,
-                          fontWeight: 700
-                        }}>
+                        <span
+                          style={{
+                            color: trade.yourPnL >= 0 ? '#10B981' : '#EF4444',
+                            fontSize: 12,
+                            fontWeight: 700,
+                          }}
+                        >
                           {trade.yourPnL >= 0 ? '+' : ''}${trade.yourPnL}
                         </span>
                       </div>
@@ -417,14 +484,19 @@ export function CopyPerformancePage() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between p-2 rounded-lg" style={{ background: c.surface2 }}>
+                <div
+                  className="flex items-center justify-between p-2 rounded-lg"
+                  style={{ background: c.surface2 }}
+                >
                   <div className="flex items-center gap-2">
                     <Clock size={12} color={c.text3} />
                     <span style={{ color: c.text3, fontSize: 10 }}>Delay: {trade.delay}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Activity size={12} color={c.text3} />
-                    <span style={{ color: c.text3, fontSize: 10 }}>Slippage: {trade.slippage}%</span>
+                    <span style={{ color: c.text3, fontSize: 10 }}>
+                      Slippage: {trade.slippage}%
+                    </span>
                   </div>
                 </div>
               </div>
@@ -469,32 +541,38 @@ export function CopyPerformancePage() {
               </div>
 
               <div className="space-y-2">
-                {COST_ATTRIBUTION.map(item => (
-                  <div 
+                {COST_ATTRIBUTION.map((item) => (
+                  <div
                     key={item.name}
                     className="flex items-center justify-between p-2 rounded-lg"
                     style={{ background: c.surface2 }}
                   >
                     <div className="flex items-center gap-2">
-                      <div 
-                        className="w-3 h-3 rounded-full"
-                        style={{ background: item.color }}
-                      />
+                      <div className="w-3 h-3 rounded-full" style={{ background: item.color }} />
                       <span style={{ color: c.text2, fontSize: 11 }}>{item.name}</span>
                     </div>
-                    <span style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>${item.value}</span>
+                    <span style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>
+                      ${item.value}
+                    </span>
                   </div>
                 ))}
                 <div className="h-px" style={{ background: c.border }} />
                 <div className="flex items-center justify-between p-2">
-                  <span style={{ color: c.text1, fontSize: 12, fontWeight: 700 }}>Tổng chi phí</span>
-                  <span style={{ color: '#EF4444', fontSize: 16, fontWeight: 700 }}>${totalCosts}</span>
+                  <span style={{ color: c.text1, fontSize: 12, fontWeight: 700 }}>
+                    Tổng chi phí
+                  </span>
+                  <span style={{ color: '#EF4444', fontSize: 16, fontWeight: 700 }}>
+                    ${totalCosts}
+                  </span>
                 </div>
               </div>
             </PageSection>
 
             {/* Impact on Returns */}
-            <div className="p-4 rounded-2xl" style={{ background: c.surface, border: `1px solid ${c.border}` }}>
+            <div
+              className="p-4 rounded-2xl"
+              style={{ background: c.surface, border: `1px solid ${c.border}` }}
+            >
               <h4 style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 8 }}>
                 Ảnh hưởng đến lợi nhuận
               </h4>
@@ -504,7 +582,9 @@ export function CopyPerformancePage() {
                   <span style={{ color: '#10B981', fontSize: 13, fontWeight: 600 }}>+18.8%</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span style={{ color: c.text3, fontSize: 11 }}>- Chi phí ({((totalCosts / 5000) * 100).toFixed(1)}%)</span>
+                  <span style={{ color: c.text3, fontSize: 11 }}>
+                    - Chi phí ({((totalCosts / 5000) * 100).toFixed(1)}%)
+                  </span>
                   <span style={{ color: '#EF4444', fontSize: 13, fontWeight: 600 }}>-5.8%</span>
                 </div>
                 <div className="h-px" style={{ background: c.border }} />
@@ -523,39 +603,55 @@ export function CopyPerformancePage() {
             <PageSection label="Metrics điều chỉnh rủi ro" accentColor={c.primary}>
               <div className="space-y-3">
                 {[
-                  { name: 'Sharpe Ratio', you: yourSharpe, provider: providerSharpe, good: 'higher' },
+                  {
+                    name: 'Sharpe Ratio',
+                    you: yourSharpe,
+                    provider: providerSharpe,
+                    good: 'higher',
+                  },
                   { name: 'Max Drawdown', you: yourMaxDD, provider: providerMaxDD, good: 'lower' },
                   { name: 'Win Rate', you: 62.5, provider: 68.3, good: 'higher' },
                   { name: 'Avg Win/Loss', you: 1.42, provider: 1.68, good: 'higher' },
-                ].map(metric => {
-                  const youBetter = metric.good === 'higher' 
-                    ? metric.you > metric.provider 
-                    : metric.you < metric.provider;
-                  
+                ].map((metric) => {
+                  const youBetter =
+                    metric.good === 'higher'
+                      ? metric.you > metric.provider
+                      : metric.you < metric.provider;
+
                   return (
-                    <div key={metric.name} className="p-3 rounded-xl" style={{ background: c.surface2 }}>
+                    <div
+                      key={metric.name}
+                      className="p-3 rounded-xl"
+                      style={{ background: c.surface2 }}
+                    >
                       <p style={{ color: c.text1, fontSize: 12, fontWeight: 600, marginBottom: 8 }}>
                         {metric.name}
                       </p>
                       <div className="grid grid-cols-2 gap-2">
                         <div className="text-center">
                           <p style={{ color: c.text3, fontSize: 9, marginBottom: 2 }}>Bạn</p>
-                          <p style={{ 
-                            color: youBetter ? '#10B981' : '#F59E0B',
-                            fontSize: 16,
-                            fontWeight: 700
-                          }}>
-                            {metric.you.toFixed(2)}{metric.name === 'Win Rate' ? '%' : ''}
+                          <p
+                            style={{
+                              color: youBetter ? '#10B981' : '#F59E0B',
+                              fontSize: 16,
+                              fontWeight: 700,
+                            }}
+                          >
+                            {metric.you.toFixed(2)}
+                            {metric.name === 'Win Rate' ? '%' : ''}
                           </p>
                         </div>
                         <div className="text-center">
                           <p style={{ color: c.text3, fontSize: 9, marginBottom: 2 }}>Provider</p>
-                          <p style={{ 
-                            color: !youBetter ? '#10B981' : '#F59E0B',
-                            fontSize: 16,
-                            fontWeight: 700
-                          }}>
-                            {metric.provider.toFixed(2)}{metric.name === 'Win Rate' ? '%' : ''}
+                          <p
+                            style={{
+                              color: !youBetter ? '#10B981' : '#F59E0B',
+                              fontSize: 16,
+                              fontWeight: 700,
+                            }}
+                          >
+                            {metric.provider.toFixed(2)}
+                            {metric.name === 'Win Rate' ? '%' : ''}
                           </p>
                         </div>
                       </div>
@@ -566,7 +662,10 @@ export function CopyPerformancePage() {
             </PageSection>
 
             {/* Explanation */}
-            <div className="p-4 rounded-xl" style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}>
+            <div
+              className="p-4 rounded-xl"
+              style={{ background: c.primary + '15', border: `1px solid ${c.primary}` }}
+            >
               <div className="flex items-start gap-2">
                 <Info size={14} color={c.primary} className="shrink-0 mt-0.5" />
                 <div>
@@ -574,8 +673,8 @@ export function CopyPerformancePage() {
                     Tại sao metrics của bạn thấp hơn?
                   </p>
                   <p style={{ color: c.primary, fontSize: 10, lineHeight: 1.5 }}>
-                    Slippage và execution delay làm giảm Sharpe Ratio và tăng Max Drawdown. 
-                    Đây là điều bình thường trong copy trading và không thể tránh hoàn toàn.
+                    Slippage và execution delay làm giảm Sharpe Ratio và tăng Max Drawdown. Đây là
+                    điều bình thường trong copy trading và không thể tránh hoàn toàn.
                   </p>
                 </div>
               </div>

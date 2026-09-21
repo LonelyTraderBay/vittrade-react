@@ -17,13 +17,31 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  Droplets, TrendingUp, DollarSign, Percent, AlertTriangle,
-  Plus, Minus, BarChart3, Activity, Info, Clock,
+  Droplets,
+  TrendingUp,
+  DollarSign,
+  Percent,
+  AlertTriangle,
+  Plus,
+  Minus,
+  BarChart3,
+  Activity,
+  Info,
+  Clock,
 } from 'lucide-react';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+} from 'recharts';
 
 const TABS = ['Cung cap', 'Vi the', 'Thu nhap'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface LiquidityPosition {
   id: string;
@@ -89,9 +107,10 @@ export function PredictionMarketMakerPage() {
   const netReturn = totalValue - totalLiquidity + totalFees + totalIL;
   const netReturnPercent = totalLiquidity > 0 ? (netReturn / totalLiquidity) * 100 : 0;
 
-  const avgAPR = MOCK_POSITIONS.length > 0
-    ? MOCK_POSITIONS.reduce((sum, p) => sum + p.apr, 0) / MOCK_POSITIONS.length
-    : 0;
+  const avgAPR =
+    MOCK_POSITIONS.length > 0
+      ? MOCK_POSITIONS.reduce((sum, p) => sum + p.apr, 0) / MOCK_POSITIONS.length
+      : 0;
 
   return (
     <PageLayout>
@@ -119,7 +138,9 @@ export function PredictionMarketMakerPage() {
                   <Droplets size={24} color="#3B82F6" />
                 </div>
                 <div>
-                  <p style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>Liquidity Provider</p>
+                  <p style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>
+                    Liquidity Provider
+                  </p>
                   <p style={{ color: c.text3, fontSize: 12 }}>Thu nhap tu phi giao dich</p>
                 </div>
               </div>
@@ -147,7 +168,9 @@ export function PredictionMarketMakerPage() {
                 style={{ background: c.surface, border: `1px solid ${c.border}` }}
               >
                 <div className="mb-4">
-                  <label style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}
+                  >
                     Select Event
                   </label>
                   <input
@@ -156,12 +179,19 @@ export function PredictionMarketMakerPage() {
                     onChange={(e) => setEventName(e.target.value)}
                     placeholder="Event name..."
                     className="w-full px-4 py-2.5 rounded-xl outline-none"
-                    style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 14 }}
+                    style={{
+                      background: c.bg,
+                      border: `1px solid ${c.border}`,
+                      color: c.text1,
+                      fontSize: 14,
+                    }}
                   />
                 </div>
 
                 <div className="mb-4">
-                  <label style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}
+                  >
                     Liquidity Amount (USD)
                   </label>
                   <div className="flex items-center gap-2">
@@ -172,13 +202,20 @@ export function PredictionMarketMakerPage() {
                       onChange={(e) => setLiquidityAmount(e.target.value)}
                       placeholder="0.00"
                       className="flex-1 px-4 py-2.5 rounded-xl outline-none"
-                      style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 14 }}
+                      style={{
+                        background: c.bg,
+                        border: `1px solid ${c.border}`,
+                        color: c.text1,
+                        fontSize: 14,
+                      }}
                     />
                   </div>
                 </div>
 
                 <div className="mb-4">
-                  <label style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}
+                  >
                     Spread (basis points)
                   </label>
                   <div className="grid grid-cols-4 gap-2 mb-2">
@@ -204,7 +241,9 @@ export function PredictionMarketMakerPage() {
                 </div>
 
                 <div className="mb-4">
-                  <label style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}>
+                  <label
+                    style={{ color: c.text2, fontSize: 12, display: 'block', marginBottom: 8 }}
+                  >
                     Minimum Depth (USD)
                   </label>
                   <input
@@ -213,7 +252,12 @@ export function PredictionMarketMakerPage() {
                     onChange={(e) => setMinDepth(e.target.value)}
                     placeholder="1000"
                     className="w-full px-4 py-2.5 rounded-xl outline-none"
-                    style={{ background: c.bg, border: `1px solid ${c.border}`, color: c.text1, fontSize: 14 }}
+                    style={{
+                      background: c.bg,
+                      border: `1px solid ${c.border}`,
+                      color: c.text1,
+                      fontSize: 14,
+                    }}
                   />
                   <p style={{ color: c.text3, fontSize: 11, marginTop: 4 }}>
                     Thanh khoan toi thieu moi ben
@@ -224,7 +268,10 @@ export function PredictionMarketMakerPage() {
                 {liquidityAmount && (
                   <div
                     className="rounded-xl p-3 mb-4"
-                    style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}
+                    style={{
+                      background: 'rgba(16,185,129,0.06)',
+                      border: '1px solid rgba(16,185,129,0.15)',
+                    }}
                   >
                     <p style={{ color: c.text1, fontSize: 12, fontWeight: 600, marginBottom: 8 }}>
                       Estimated Returns
@@ -238,9 +285,7 @@ export function PredictionMarketMakerPage() {
                       </div>
                       <div>
                         <p style={{ color: c.text3, fontSize: 10 }}>Est. APR</p>
-                        <p style={{ color: c.buy, fontSize: 13, fontWeight: 700 }}>
-                          ~22.5%
-                        </p>
+                        <p style={{ color: c.buy, fontSize: 13, fontWeight: 700 }}>~22.5%</p>
                       </div>
                     </div>
                     <p style={{ color: c.text3, fontSize: 9, marginTop: 6 }}>
@@ -270,12 +315,15 @@ export function PredictionMarketMakerPage() {
             {/* Risk Warning - §9.6 compliance */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
+              style={{
+                background: 'rgba(245,158,11,0.06)',
+                border: '1px solid rgba(245,158,11,0.15)',
+              }}
             >
               <AlertTriangle size={14} color="#F59E0B" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Cung cap thanh khoan co rui ro impermanent loss. APR khong co dinh va phu thuoc vao volume giao dich.
-                Khong dam bao loi nhuan.
+                Cung cap thanh khoan co rui ro impermanent loss. APR khong co dinh va phu thuoc vao
+                volume giao dich. Khong dam bao loi nhuan.
               </p>
             </div>
           </>
@@ -322,7 +370,9 @@ export function PredictionMarketMakerPage() {
               </div>
               <div
                 className="rounded-xl p-2 flex items-center justify-between"
-                style={{ background: netReturn >= 0 ? 'rgba(16,185,129,0.08)' : 'rgba(239,68,68,0.08)' }}
+                style={{
+                  background: netReturn >= 0 ? 'rgba(16,185,129,0.08)' : 'rgba(239,68,68,0.08)',
+                }}
               >
                 <p style={{ color: c.text3, fontSize: 11 }}>Total Return %</p>
                 <p
@@ -332,7 +382,8 @@ export function PredictionMarketMakerPage() {
                     fontWeight: 700,
                   }}
                 >
-                  {netReturnPercent >= 0 ? '+' : ''}{netReturnPercent.toFixed(2)}%
+                  {netReturnPercent >= 0 ? '+' : ''}
+                  {netReturnPercent.toFixed(2)}%
                 </p>
               </div>
             </div>
@@ -340,7 +391,11 @@ export function PredictionMarketMakerPage() {
             {/* Positions List */}
             <PageSection label="Cac vi the">
               {MOCK_POSITIONS.map((position) => {
-                const netPnL = position.currentValue - position.liquidityProvided + position.feesEarned + position.impermanentLoss;
+                const netPnL =
+                  position.currentValue -
+                  position.liquidityProvided +
+                  position.feesEarned +
+                  position.impermanentLoss;
                 const netPnLPercent = (netPnL / position.liquidityProvided) * 100;
                 return (
                   <div
@@ -350,7 +405,9 @@ export function PredictionMarketMakerPage() {
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div>
-                        <p style={{ color: c.text1, fontSize: 14, fontWeight: 600, marginBottom: 4 }}>
+                        <p
+                          style={{ color: c.text1, fontSize: 14, fontWeight: 600, marginBottom: 4 }}
+                        >
                           {position.eventName}
                         </p>
                         <div className="flex items-center gap-2">
@@ -408,7 +465,9 @@ export function PredictionMarketMakerPage() {
                           fontWeight: 700,
                         }}
                       >
-                        {netPnL >= 0 ? '+' : ''}${netPnL.toFixed(2)} ({netPnLPercent >= 0 ? '+' : ''}{netPnLPercent.toFixed(2)}%)
+                        {netPnL >= 0 ? '+' : ''}${netPnL.toFixed(2)} (
+                        {netPnLPercent >= 0 ? '+' : ''}
+                        {netPnLPercent.toFixed(2)}%)
                       </p>
                     </div>
 
@@ -498,10 +557,7 @@ export function PredictionMarketMakerPage() {
                     tick={{ fill: c.text3, fontSize: 10 }}
                     axisLine={{ stroke: c.border }}
                   />
-                  <YAxis
-                    tick={{ fill: c.text3, fontSize: 10 }}
-                    axisLine={{ stroke: c.border }}
-                  />
+                  <YAxis tick={{ fill: c.text3, fontSize: 10 }} axisLine={{ stroke: c.border }} />
                   <Tooltip
                     contentStyle={{
                       background: c.surface,
@@ -557,11 +613,15 @@ export function PredictionMarketMakerPage() {
             {/* Disclaimer */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+              style={{
+                background: 'rgba(59,130,246,0.06)',
+                border: '1px solid rgba(59,130,246,0.15)',
+              }}
             >
               <Info size={14} color="#3B82F6" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Thu nhap qua khu khong dam bao ket qua tuong lai. APR thay doi theo volume va volatility.
+                Thu nhap qua khu khong dam bao ket qua tuong lai. APR thay doi theo volume va
+                volatility.
               </p>
             </div>
           </>

@@ -127,11 +127,12 @@ export function BotFAQPage() {
   const [searchQuery, setSearchQuery] = useState('');
 
   const currentFAQs = FAQ_CATEGORIES[category];
-  
+
   const filteredFAQs = searchQuery
-    ? currentFAQs.filter(faq => 
-        faq.q.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        faq.a.toLowerCase().includes(searchQuery.toLowerCase())
+    ? currentFAQs.filter(
+        (faq) =>
+          faq.q.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          faq.a.toLowerCase().includes(searchQuery.toLowerCase()),
       )
     : currentFAQs;
 
@@ -162,7 +163,9 @@ export function BotFAQPage() {
         />
 
         {/* FAQ List */}
-        <PageSection label={`${category.charAt(0).toUpperCase() + category.slice(1)} (${filteredFAQs.length})`}>
+        <PageSection
+          label={`${category.charAt(0).toUpperCase() + category.slice(1)} (${filteredFAQs.length})`}
+        >
           {filteredFAQs.length === 0 ? (
             <div className="flex flex-col items-center py-12 gap-3">
               <HelpCircle size={48} color={c.text3} />
@@ -176,10 +179,13 @@ export function BotFAQPage() {
                   <TrCard key={idx} className="overflow-hidden">
                     <button
                       onClick={() => setExpandedQ(isExpanded ? null : idx)}
-                      className="w-full p-4 text-left flex items-start gap-3">
+                      className="w-full p-4 text-left flex items-start gap-3"
+                    >
                       <HelpCircle size={20} color={c.primary} className="shrink-0 mt-0.5" />
                       <div className="flex-1">
-                        <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, lineHeight: 1.5 }}>
+                        <p
+                          style={{ color: c.text1, fontSize: 13, fontWeight: 600, lineHeight: 1.5 }}
+                        >
                           {faq.q}
                         </p>
                       </div>
@@ -192,9 +198,7 @@ export function BotFAQPage() {
                     {isExpanded && (
                       <div className="px-4 pb-4 pl-14">
                         <div className="rounded-xl p-3" style={{ background: c.surface2 }}>
-                          <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.7 }}>
-                            {faq.a}
-                          </p>
+                          <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.7 }}>{faq.a}</p>
                         </div>
                       </div>
                     )}
@@ -222,7 +226,10 @@ export function BotFAQPage() {
         </div>
 
         {/* Still Need Help */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}
+        >
           <p style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 6 }}>
             Still need help?
           </p>
@@ -230,10 +237,16 @@ export function BotFAQPage() {
             Can't find your answer? Our support team is here to help 24/7.
           </p>
           <div className="flex gap-2">
-            <button className="flex-1 py-2 rounded-xl text-xs font-semibold" style={{ background: c.surface2, color: c.text1 }}>
+            <button
+              className="flex-1 py-2 rounded-xl text-xs font-semibold"
+              style={{ background: c.surface2, color: c.text1 }}
+            >
               Live Chat
             </button>
-            <button className="flex-1 py-2 rounded-xl text-xs font-semibold" style={{ background: c.primary, color: '#FFF' }}>
+            <button
+              className="flex-1 py-2 rounded-xl text-xs font-semibold"
+              style={{ background: c.primary, color: '#FFF' }}
+            >
               Contact Support
             </button>
           </div>

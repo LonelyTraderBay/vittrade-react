@@ -17,17 +17,37 @@ import { PageContent, PageSection } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  TrendingUp, TrendingDown, Wallet, BarChart3, Target,
-  DollarSign, Activity, Clock, ArrowRight, RefreshCw,
-  ShoppingCart, Zap, Info,
+  TrendingUp,
+  TrendingDown,
+  Wallet,
+  BarChart3,
+  Target,
+  DollarSign,
+  Activity,
+  Clock,
+  ArrowRight,
+  RefreshCw,
+  ShoppingCart,
+  Zap,
+  Info,
 } from 'lucide-react';
 import {
-  PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar,
-  XAxis, YAxis, Tooltip, Legend, LineChart, Line,
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  LineChart,
+  Line,
 } from 'recharts';
 
 const TABS = ['Tong quan', 'Phan tich', 'Lich su'] as const;
-type Tab = typeof TABS[number];
+type Tab = (typeof TABS)[number];
 
 interface ModulePosition {
   module: 'wallet' | 'trading' | 'p2p' | 'predictions' | 'arena' | 'dca';
@@ -128,11 +148,11 @@ export function UnifiedPortfolioDashboard() {
   // Calculate totals (exclude Arena points-only)
   const totalValue = MODULE_DATA.filter((m) => m.module !== 'arena').reduce(
     (sum, m) => sum + m.value,
-    0
+    0,
   );
   const totalPnL = MODULE_DATA.filter((m) => m.module !== 'arena').reduce(
     (sum, m) => sum + m.pnl,
-    0
+    0,
   );
   const totalPnLPercent = (totalPnL / (totalValue - totalPnL)) * 100;
   const totalPositions = MODULE_DATA.reduce((sum, m) => sum + m.activePositions, 0);
@@ -174,7 +194,8 @@ export function UnifiedPortfolioDashboard() {
                       fontWeight: 600,
                     }}
                   >
-                    {totalPnL >= 0 ? '+' : ''}${totalPnL.toLocaleString()} ({totalPnLPercent >= 0 ? '+' : ''}
+                    {totalPnL >= 0 ? '+' : ''}${totalPnL.toLocaleString()} (
+                    {totalPnLPercent >= 0 ? '+' : ''}
                     {totalPnLPercent.toFixed(2)}%)
                   </p>
                 </div>
@@ -246,7 +267,9 @@ export function UnifiedPortfolioDashboard() {
               <div className="grid grid-cols-2 gap-2 mt-4">
                 {pieData.map((item) => (
                   <div key={item.name} className="flex items-center gap-2">
-                    <div style={{ width: 12, height: 12, borderRadius: 2, background: item.color }} />
+                    <div
+                      style={{ width: 12, height: 12, borderRadius: 2, background: item.color }}
+                    />
                     <p style={{ color: c.text2, fontSize: 11 }}>{item.name.split(' ')[0]}</p>
                   </div>
                 ))}
@@ -286,11 +309,19 @@ export function UnifiedPortfolioDashboard() {
                             <Icon size={18} color={mod.color} />
                           </div>
                           <div>
-                            <p style={{ color: c.text1, fontSize: 14, fontWeight: 600, marginBottom: 2 }}>
+                            <p
+                              style={{
+                                color: c.text1,
+                                fontSize: 14,
+                                fontWeight: 600,
+                                marginBottom: 2,
+                              }}
+                            >
                               {mod.moduleName}
                             </p>
                             <p style={{ color: c.text3, fontSize: 11 }}>
-                              {mod.activePositions} active position{mod.activePositions !== 1 ? 's' : ''}
+                              {mod.activePositions} active position
+                              {mod.activePositions !== 1 ? 's' : ''}
                             </p>
                           </div>
                         </div>
@@ -300,7 +331,10 @@ export function UnifiedPortfolioDashboard() {
                       {mod.module === 'arena' ? (
                         <div
                           className="rounded-xl p-2"
-                          style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
+                          style={{
+                            background: 'rgba(245,158,11,0.06)',
+                            border: '1px solid rgba(245,158,11,0.15)',
+                          }}
                         >
                           <p style={{ color: '#F59E0B', fontSize: 11, fontWeight: 600 }}>
                             Arena Points Only - Not included in portfolio value
@@ -316,7 +350,9 @@ export function UnifiedPortfolioDashboard() {
                               </p>
                             </div>
                             <div>
-                              <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>24h Change</p>
+                              <p style={{ color: c.text3, fontSize: 10, marginBottom: 2 }}>
+                                24h Change
+                              </p>
                               <p
                                 style={{
                                   color: mod.change24h >= 0 ? '#10B981' : '#EF4444',
@@ -382,12 +418,15 @@ export function UnifiedPortfolioDashboard() {
             {/* Module Boundary Info */}
             <div
               className="rounded-xl p-3 flex items-start gap-2"
-              style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
+              style={{
+                background: 'rgba(59,130,246,0.06)',
+                border: '1px solid rgba(59,130,246,0.15)',
+              }}
             >
               <Info size={14} color="#3B82F6" style={{ marginTop: 2, flexShrink: 0 }} />
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-                Arena Points are not included in portfolio value as they are points-only and not financial assets.
-                Each module maintains separate accounting.
+                Arena Points are not included in portfolio value as they are points-only and not
+                financial assets. Each module maintains separate accounting.
               </p>
             </div>
           </>
@@ -479,7 +518,12 @@ export function UnifiedPortfolioDashboard() {
                           </div>
                           <div>
                             <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
-                              {mod.moduleName.replace(' Holdings', '').replace(' Positions', '').replace(' Orders', '').replace(' Markets', '').replace(' Plans', '')}
+                              {mod.moduleName
+                                .replace(' Holdings', '')
+                                .replace(' Positions', '')
+                                .replace(' Orders', '')
+                                .replace(' Markets', '')
+                                .replace(' Plans', '')}
                             </p>
                             <p style={{ color: c.text3, fontSize: 10 }}>
                               ${mod.value.toLocaleString()}
@@ -523,7 +567,12 @@ export function UnifiedPortfolioDashboard() {
                     <div key={mod.module}>
                       <div className="flex items-center justify-between mb-1">
                         <p style={{ color: c.text2, fontSize: 11 }}>
-                          {mod.moduleName.replace(' Holdings', '').replace(' Positions', '').replace(' Orders', '').replace(' Markets', '').replace(' Plans', '')}
+                          {mod.moduleName
+                            .replace(' Holdings', '')
+                            .replace(' Positions', '')
+                            .replace(' Orders', '')
+                            .replace(' Markets', '')
+                            .replace(' Plans', '')}
                         </p>
                         <div className="flex items-center gap-2">
                           <p style={{ color: c.text1, fontSize: 12, fontWeight: 600 }}>
@@ -532,7 +581,8 @@ export function UnifiedPortfolioDashboard() {
                           <span
                             className="px-1.5 py-0.5 rounded text-[10px] font-semibold"
                             style={{
-                              background: returnPercent >= 0 ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)',
+                              background:
+                                returnPercent >= 0 ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)',
                               color: returnPercent >= 0 ? '#10B981' : '#EF4444',
                             }}
                           >
@@ -595,11 +645,41 @@ export function UnifiedPortfolioDashboard() {
                     }}
                   />
                   <Legend key="legend" />
-                  <Line key="line-wallet" type="monotone" dataKey="wallet" stroke={MODULE_COLORS.wallet} strokeWidth={2} />
-                  <Line key="line-trading" type="monotone" dataKey="trading" stroke={MODULE_COLORS.trading} strokeWidth={2} />
-                  <Line key="line-p2p" type="monotone" dataKey="p2p" stroke={MODULE_COLORS.p2p} strokeWidth={2} />
-                  <Line key="line-predictions" type="monotone" dataKey="predictions" stroke={MODULE_COLORS.predictions} strokeWidth={2} />
-                  <Line key="line-dca" type="monotone" dataKey="dca" stroke={MODULE_COLORS.dca} strokeWidth={2} />
+                  <Line
+                    key="line-wallet"
+                    type="monotone"
+                    dataKey="wallet"
+                    stroke={MODULE_COLORS.wallet}
+                    strokeWidth={2}
+                  />
+                  <Line
+                    key="line-trading"
+                    type="monotone"
+                    dataKey="trading"
+                    stroke={MODULE_COLORS.trading}
+                    strokeWidth={2}
+                  />
+                  <Line
+                    key="line-p2p"
+                    type="monotone"
+                    dataKey="p2p"
+                    stroke={MODULE_COLORS.p2p}
+                    strokeWidth={2}
+                  />
+                  <Line
+                    key="line-predictions"
+                    type="monotone"
+                    dataKey="predictions"
+                    stroke={MODULE_COLORS.predictions}
+                    strokeWidth={2}
+                  />
+                  <Line
+                    key="line-dca"
+                    type="monotone"
+                    dataKey="dca"
+                    stroke={MODULE_COLORS.dca}
+                    strokeWidth={2}
+                  />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -608,7 +688,9 @@ export function UnifiedPortfolioDashboard() {
             <PageSection label="Module Growth (6 months)">
               <div className="space-y-2">
                 {MODULE_DATA.filter((m) => m.module !== 'arena').map((mod) => {
-                  const oldValue = PERFORMANCE_HISTORY[0][mod.module as keyof typeof PERFORMANCE_HISTORY[0]] as number;
+                  const oldValue = PERFORMANCE_HISTORY[0][
+                    mod.module as keyof (typeof PERFORMANCE_HISTORY)[0]
+                  ] as number;
                   const newValue = mod.value;
                   const growth = ((newValue - oldValue) / oldValue) * 100;
                   return (

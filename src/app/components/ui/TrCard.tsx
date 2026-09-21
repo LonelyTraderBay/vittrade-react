@@ -32,28 +32,29 @@ import { type VitRadius, VitRadii } from '../../theme/radii';
 type CardVariant = 'standard' | 'hero' | 'inner' | 'ghost';
 type CardContentAlign = 'start' | 'center';
 
-const VARIANT_STYLES = (c: ThemeColors) => ({
-  standard: {
-    background: c.surface,
-    border: `1px solid ${c.cardBorder}`,
-    boxShadow: c.cardShadow,
-  },
-  hero: {
-    background: c.portfolioBg,
-    border: `1px solid ${c.portfolioBorder}`,
-    boxShadow: c.portfolioShadow,
-  },
-  inner: {
-    background: c.surface2,
-    border: 'none',
-    boxShadow: 'none',
-  },
-  ghost: {
-    background: 'transparent',
-    border: 'none',
-    boxShadow: 'none',
-  },
-} as const);
+const VARIANT_STYLES = (c: ThemeColors) =>
+  ({
+    standard: {
+      background: c.surface,
+      border: `1px solid ${c.cardBorder}`,
+      boxShadow: c.cardShadow,
+    },
+    hero: {
+      background: c.portfolioBg,
+      border: `1px solid ${c.portfolioBorder}`,
+      boxShadow: c.portfolioShadow,
+    },
+    inner: {
+      background: c.surface2,
+      border: 'none',
+      boxShadow: 'none',
+    },
+    ghost: {
+      background: 'transparent',
+      border: 'none',
+      boxShadow: 'none',
+    },
+  }) as const;
 
 /* ─── Props ─────────────────────────────────────── */
 
@@ -140,9 +141,12 @@ export function TrCard({
   const c = useThemeColors();
   const variantStyle = VARIANT_STYLES(c)[variant];
 
-  const resolvedPadding = padding !== undefined
-    ? (typeof padding === 'number' ? `${padding}px` : padding)
-    : resolveCardPadding(density, undefined);
+  const resolvedPadding =
+    padding !== undefined
+      ? typeof padding === 'number'
+        ? `${padding}px`
+        : padding
+      : resolveCardPadding(density, undefined);
 
   const mergedStyle: React.CSSProperties = {
     ...variantStyle,
@@ -159,22 +163,19 @@ export function TrCard({
     overflow ? 'overflow-hidden' : '',
     hover ? 'hover-card' : '',
     className,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
-  const content = contentAlign === 'center'
-    ? (
-      <div className="flex flex-col items-center justify-center w-full h-full">
-        {children}
-      </div>
-    )
-    : children;
+  const content =
+    contentAlign === 'center' ? (
+      <div className="flex flex-col items-center justify-center w-full h-full">{children}</div>
+    ) : (
+      children
+    );
 
   return (
-    <Component
-      className={classes}
-      style={mergedStyle}
-      {...rest}
-    >
+    <Component className={classes} style={mergedStyle} {...rest}>
       {content}
     </Component>
   );
@@ -191,13 +192,14 @@ interface TrCardStatProps {
 
 export function TrCardStat({ children, density, className = '', style }: TrCardStatProps) {
   const c = useThemeColors();
-  const padding = density === 'compact' || density === 'tool'
-    ? '8px'
-    : density === 'relaxed' || density === 'hero'
-      ? '16px'
-      : density === 'standard'
-        ? '12px'
-        : undefined;
+  const padding =
+    density === 'compact' || density === 'tool'
+      ? '8px'
+      : density === 'relaxed' || density === 'hero'
+        ? '16px'
+        : density === 'standard'
+          ? '12px'
+          : undefined;
   return (
     <div
       className={`rounded-xl ${density ? '' : 'p-2.5'} ${className}`}

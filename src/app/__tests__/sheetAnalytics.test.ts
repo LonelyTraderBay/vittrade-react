@@ -82,7 +82,7 @@ describe('sheetAnalytics', () => {
 
       const log = getSheetEventLog();
       expect(log).toHaveLength(3);
-      log.forEach(e => expect(e.sheetName).toBe('p2p-home-quick-actions'));
+      log.forEach((e) => expect(e.sheetName).toBe('p2p-home-quick-actions'));
     });
 
     it('should have monotonically increasing timestamps', () => {
@@ -161,7 +161,7 @@ describe('sheetAnalytics', () => {
         'p2p-recurring-dca-create',
       ];
 
-      sheets.forEach(name => trackSheetOpen(name));
+      sheets.forEach((name) => trackSheetOpen(name));
 
       const log = getSheetEventLog();
       expect(log).toHaveLength(sheets.length);

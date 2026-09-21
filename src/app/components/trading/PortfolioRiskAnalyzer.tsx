@@ -31,25 +31,25 @@ export interface RiskMetrics {
   var95: number; // 95% VaR (1-day)
   var99: number; // 99% VaR (1-day)
   varWeekly: number; // 95% VaR (7-day)
-  
+
   // Performance Metrics
   sharpeRatio: number; // Risk-adjusted return
   sortinoRatio: number; // Downside risk-adjusted return
   calmarRatio: number; // Return / Max Drawdown
-  
+
   // Drawdown
   maxDrawdown: number; // Largest peak-to-trough decline
   currentDrawdown: number; // Current decline from peak
   drawdownDuration: number; // Days in drawdown
-  
+
   // Volatility
   volatility: number; // 30-day volatility (annualized)
   downsideVolatility: number; // Only negative returns
-  
+
   // Portfolio Stats
   beta: number; // Correlation to market (BTC)
   correlation: number; // Correlation coefficient
-  
+
   // Risk Score
   overallRiskScore: number; // 0-100 (composite)
   riskLevel: 'very_low' | 'low' | 'medium' | 'high' | 'very_high';
@@ -87,9 +87,7 @@ function RiskScoreGauge({ score, level }: { score: number; level: RiskMetrics['r
             <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>
               Risk Score
             </p>
-            <p style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>
-              {config.label}
-            </p>
+            <p style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>{config.label}</p>
           </div>
         </div>
         <div className="text-right">
@@ -108,7 +106,10 @@ function RiskScoreGauge({ score, level }: { score: number; level: RiskMetrics['r
       </div>
 
       {/* Gauge Bar */}
-      <div className="relative h-3 rounded-full overflow-hidden" style={{ background: c.borderSolid }}>
+      <div
+        className="relative h-3 rounded-full overflow-hidden"
+        style={{ background: c.borderSolid }}
+      >
         {/* Gradient zones */}
         <div className="absolute inset-0 flex">
           <div style={{ width: '20%', background: '#10B981' }} />
@@ -186,11 +187,7 @@ function MetricCard({
         >
           {value.toFixed(2)}
         </p>
-        {unit && (
-          <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>
-            {unit}
-          </span>
-        )}
+        {unit && <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>{unit}</span>}
       </div>
 
       {benchmark && (
@@ -199,9 +196,7 @@ function MetricCard({
         </p>
       )}
 
-      <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.4 }}>
-        {description}
-      </p>
+      <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.4 }}>{description}</p>
     </div>
   );
 }
@@ -255,13 +250,15 @@ function VaRBreakdown({
 
       <div className="flex flex-col gap-2">
         {items.map((item, i) => (
-          <div
-            key={i}
-            className="rounded-xl p-3"
-            style={{ background: c.surface2 }}
-          >
+          <div key={i} className="rounded-xl p-3" style={{ background: c.surface2 }}>
             <div className="flex items-center justify-between mb-1">
-              <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+              <p
+                style={{
+                  color: c.text2,
+                  fontSize: FONT_SCALE.xs,
+                  fontWeight: FONT_WEIGHT.semibold,
+                }}
+              >
                 {item.label}
               </p>
               <p
@@ -275,9 +272,7 @@ function VaRBreakdown({
               </p>
             </div>
             <div className="flex items-center justify-between">
-              <p style={{ color: c.text3, fontSize: 10 }}>
-                {item.description}
-              </p>
+              <p style={{ color: c.text3, fontSize: 10 }}>{item.description}</p>
               <p
                 style={{
                   color: '#EF4444',
@@ -299,7 +294,8 @@ function VaRBreakdown({
       >
         <Activity size={12} color="#3B82F6" className="shrink-0 mt-0.5" />
         <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
-          VaR estimates maximum potential loss at given confidence level. Does not represent guaranteed maximum loss (tail risk exists).
+          VaR estimates maximum potential loss at given confidence level. Does not represent
+          guaranteed maximum loss (tail risk exists).
         </p>
       </div>
     </TrCard>
@@ -377,7 +373,9 @@ export function PortfolioRiskAnalyzer({
             label="Sharpe"
             value={metrics.sharpeRatio}
             benchmark={{ value: 1.0, label: 'Good' }}
-            status={metrics.sharpeRatio >= 1 ? 'good' : metrics.sharpeRatio >= 0.5 ? 'neutral' : 'bad'}
+            status={
+              metrics.sharpeRatio >= 1 ? 'good' : metrics.sharpeRatio >= 0.5 ? 'neutral' : 'bad'
+            }
             description="Risk-adjusted return"
           />
           <MetricCard
@@ -385,7 +383,9 @@ export function PortfolioRiskAnalyzer({
             label="Sortino"
             value={metrics.sortinoRatio}
             benchmark={{ value: 1.5, label: 'Good' }}
-            status={metrics.sortinoRatio >= 1.5 ? 'good' : metrics.sortinoRatio >= 1 ? 'neutral' : 'bad'}
+            status={
+              metrics.sortinoRatio >= 1.5 ? 'good' : metrics.sortinoRatio >= 1 ? 'neutral' : 'bad'
+            }
             description="Downside risk-adjusted"
           />
           <MetricCard
@@ -393,7 +393,9 @@ export function PortfolioRiskAnalyzer({
             label="Calmar"
             value={metrics.calmarRatio}
             benchmark={{ value: 3.0, label: 'Good' }}
-            status={metrics.calmarRatio >= 3 ? 'good' : metrics.calmarRatio >= 2 ? 'neutral' : 'bad'}
+            status={
+              metrics.calmarRatio >= 3 ? 'good' : metrics.calmarRatio >= 2 ? 'neutral' : 'bad'
+            }
             description="Return / Max DD"
           />
         </div>
@@ -452,13 +454,16 @@ export function PortfolioRiskAnalyzer({
             className="h-full rounded-full"
             style={{
               width: `${(metrics.currentDrawdown / metrics.maxDrawdown) * 100}%`,
-              background: metrics.currentDrawdown > metrics.maxDrawdown * 0.8 ? '#EF4444' : '#F59E0B',
+              background:
+                metrics.currentDrawdown > metrics.maxDrawdown * 0.8 ? '#EF4444' : '#F59E0B',
             }}
           />
         </div>
         <div className="flex justify-between mt-1">
           <span style={{ color: c.text3, fontSize: 9 }}>0%</span>
-          <span style={{ color: c.text3, fontSize: 9 }}>Max: {metrics.maxDrawdown.toFixed(1)}%</span>
+          <span style={{ color: c.text3, fontSize: 9 }}>
+            Max: {metrics.maxDrawdown.toFixed(1)}%
+          </span>
         </div>
       </TrCard>
 
@@ -482,16 +487,19 @@ export function PortfolioRiskAnalyzer({
             </div>
             <p
               style={{
-                color: metrics.volatility > 60 ? '#EF4444' : metrics.volatility > 40 ? '#F59E0B' : '#10B981',
+                color:
+                  metrics.volatility > 60
+                    ? '#EF4444'
+                    : metrics.volatility > 40
+                      ? '#F59E0B'
+                      : '#10B981',
                 fontSize: FONT_SCALE.lg,
                 fontWeight: FONT_WEIGHT.bold,
               }}
             >
               {metrics.volatility.toFixed(1)}%
             </p>
-            <p style={{ color: c.text3, fontSize: 10 }}>
-              Annualized
-            </p>
+            <p style={{ color: c.text3, fontSize: 10 }}>Annualized</p>
           </div>
           <div className="rounded-xl p-3" style={{ background: c.surface2 }}>
             <div className="flex items-center gap-1.5 mb-1">

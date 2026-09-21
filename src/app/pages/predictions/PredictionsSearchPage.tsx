@@ -1,8 +1,16 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Search, X, SlidersHorizontal, BarChart3, Clock,
-  TrendingUp, Sparkles, Users, Target, Filter,
+  Search,
+  X,
+  SlidersHorizontal,
+  BarChart3,
+  Clock,
+  TrendingUp,
+  Sparkles,
+  Users,
+  Target,
+  Filter,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useHaptic } from '../../hooks/useHaptic';
@@ -41,8 +49,8 @@ const STATUS_FILTERS = [
   { id: 'all', label: 'All' },
 ] as const;
 
-type SortOption = typeof SORT_OPTIONS[number]['id'];
-type StatusFilter = typeof STATUS_FILTERS[number]['id'];
+type SortOption = (typeof SORT_OPTIONS)[number]['id'];
+type StatusFilter = (typeof STATUS_FILTERS)[number]['id'];
 
 function sortEvents(events: PredictionEvent[], sort: SortOption): PredictionEvent[] {
   switch (sort) {
@@ -53,9 +61,13 @@ function sortEvents(events: PredictionEvent[], sort: SortOption): PredictionEven
     case 'volume':
       return [...events].sort((a, b) => b.volume24h - a.volume24h);
     case 'newest':
-      return [...events].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      return [...events].sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      );
     case 'ending':
-      return [...events].sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime());
+      return [...events].sort(
+        (a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime(),
+      );
     case 'competitive':
       return [...events].sort((a, b) => {
         const aSpread = Math.abs(a.outcomes[0].chance - 50);
@@ -78,9 +90,15 @@ function SearchResultItem({ event }: { event: PredictionEvent }) {
   const isResolved = event.status === 'resolved';
 
   return (
-    <TrCard hover as="button"
-      onClick={() => { hapticSelection(); navigate(`${prefix}/markets/predictions/event/${event.id}`); }}
-      className="p-4 w-full text-left">
+    <TrCard
+      hover
+      as="button"
+      onClick={() => {
+        hapticSelection();
+        navigate(`${prefix}/markets/predictions/event/${event.id}`);
+      }}
+      className="p-4 w-full text-left"
+    >
       <div className="flex items-start gap-3">
         {/* Probability circle */}
         <div
@@ -95,11 +113,7 @@ function SearchResultItem({ event }: { event: PredictionEvent }) {
         >
           <span
             style={{
-              color: isResolved
-                ? '#64748B'
-                : topOutcome.chance >= 50
-                  ? c.buy
-                  : c.sell,
+              color: isResolved ? '#64748B' : topOutcome.chance >= 50 ? c.buy : c.sell,
               fontSize: 16,
               fontWeight: 700,
             }}
@@ -110,7 +124,15 @@ function SearchResultItem({ event }: { event: PredictionEvent }) {
 
         <div className="flex-1 min-w-0">
           {/* Title */}
-          <p style={{ color: c.text1, fontSize: 13, fontWeight: 700, lineHeight: 1.4, marginBottom: 4 }}>
+          <p
+            style={{
+              color: c.text1,
+              fontSize: 13,
+              fontWeight: 700,
+              lineHeight: 1.4,
+              marginBottom: 4,
+            }}
+          >
             {event.title}
           </p>
 
@@ -118,14 +140,24 @@ function SearchResultItem({ event }: { event: PredictionEvent }) {
           <div className="flex items-center gap-2 flex-wrap">
             <span
               className="px-1.5 py-0.5 rounded"
-              style={{ background: c.primaryAlpha12, color: c.primary, fontSize: 9, fontWeight: 600 }}
+              style={{
+                background: c.primaryAlpha12,
+                color: c.primary,
+                fontSize: 9,
+                fontWeight: 600,
+              }}
             >
               {event.category}
             </span>
             {isResolved && (
               <span
                 className="px-1.5 py-0.5 rounded"
-                style={{ background: 'rgba(100,116,139,0.12)', color: '#64748B', fontSize: 9, fontWeight: 600 }}
+                style={{
+                  background: 'rgba(100,116,139,0.12)',
+                  color: '#64748B',
+                  fontSize: 9,
+                  fontWeight: 600,
+                }}
               >
                 RESOLVED
               </span>
@@ -133,8 +165,15 @@ function SearchResultItem({ event }: { event: PredictionEvent }) {
             <span style={{ color: c.text3, fontSize: 10 }}>Vol {fmtVolume(event.volume24h)}</span>
             <span style={{ color: c.text3, fontSize: 10 }}>{remaining}</span>
             {event.change24h !== 0 && (
-              <span style={{ color: event.change24h > 0 ? c.buy : c.sell, fontSize: 16, fontWeight: 600 }}>
-                {event.change24h > 0 ? '+' : ''}{event.change24h}%
+              <span
+                style={{
+                  color: event.change24h > 0 ? c.buy : c.sell,
+                  fontSize: 16,
+                  fontWeight: 600,
+                }}
+              >
+                {event.change24h > 0 ? '+' : ''}
+                {event.change24h}%
               </span>
             )}
           </div>
@@ -159,28 +198,30 @@ export function PredictionsSearchPage() {
   const [hasError, setHasError] = useState(false);
   const [isOffline] = useState(false);
 
-  const hasActiveFilters = sort !== 'trending' || statusFilter !== 'active' || selectedCategory !== null;
+  const hasActiveFilters =
+    sort !== 'trending' || statusFilter !== 'active' || selectedCategory !== null;
 
   const results = useMemo(() => {
     let events = [...PREDICTION_EVENTS];
 
     // Status filter
     if (statusFilter !== 'all') {
-      events = events.filter(e => e.status === statusFilter);
+      events = events.filter((e) => e.status === statusFilter);
     }
 
     // Category filter
     if (selectedCategory) {
-      events = events.filter(e => e.category === selectedCategory);
+      events = events.filter((e) => e.category === selectedCategory);
     }
 
     // Search
     if (search) {
       const q = search.toLowerCase();
-      events = events.filter(e =>
-        e.title.toLowerCase().includes(q) ||
-        e.tags.some(t => t.toLowerCase().includes(q)) ||
-        e.category.toLowerCase().includes(q)
+      events = events.filter(
+        (e) =>
+          e.title.toLowerCase().includes(q) ||
+          e.tags.some((t) => t.toLowerCase().includes(q)) ||
+          e.category.toLowerCase().includes(q),
       );
     }
 
@@ -219,170 +260,188 @@ export function PredictionsSearchPage() {
             onAction={() => setHasError(false)}
           />
         ) : (
-        <PageContent>
-        {/* Search bar */}
-        <div
-          className="flex items-center gap-3 px-4"
-          style={{
-            background: c.searchBg,
-            border: `1.5px solid ${c.searchBorder}`,
-            height: 48,
-            borderRadius: φRadius.md,
-          }}
-        >
-          <Search size={18} color={c.searchPlaceholder} />
-          <input
-            type="text"
-            placeholder="Search by title, tag, category..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            autoFocus
-            style={{
-              background: 'transparent',
-              border: 'none',
-              outline: 'none',
-              color: c.text1,
-              fontSize: 15,
-              flex: 1,
-            }}
-          />
-          {search && (
-            <button onClick={() => setSearch('')}>
-              <X size={14} color={c.text3} />
-            </button>
-          )}
-          <button
-            onClick={() => { setShowFilters(!showFilters); hapticSelection(); }}
-            className="flex items-center justify-center rounded-lg p-1.5"
-            style={{
-              background: showFilters ? 'rgba(59,130,246,0.15)' : 'transparent',
-              color: showFilters ? c.primary : c.text3,
-            }}
-          >
-            <SlidersHorizontal size={16} />
-          </button>
-        </div>
-
-        {/* Filter panel */}
-        {showFilters && (
-          <TrCard className="p-4">
-            {/* Sort */}
-            <p style={{ color: c.text2, fontSize: 11, fontWeight: 600, marginBottom: 8 }}>Sort by</p>
-            <div className="flex flex-wrap gap-2 mb-4">
-              {SORT_OPTIONS.map(opt => {
-                const active = sort === opt.id;
-                const Icon = opt.icon;
-                return (
-                  <button
-                    key={opt.id}
-                    onClick={() => { setSort(opt.id); hapticSelection(); }}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl"
-                    style={{
-                      background: active ? c.chipActiveBg : c.surface2,
-                      color: active ? c.chipActiveText : c.text2,
-                      border: `1px solid ${active ? c.chipActiveBorder : c.borderSolid}`,
-                      fontSize: 11,
-                      fontWeight: active ? 600 : 400,
-                    }}
-                  >
-                    <Icon size={11} />
-                    {opt.label}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Status */}
-            <p style={{ color: c.text2, fontSize: 11, fontWeight: 600, marginBottom: 8 }}>Event Status</p>
-            <div className="flex gap-2 mb-4">
-              {STATUS_FILTERS.map(sf => {
-                const active = statusFilter === sf.id;
-                return (
-                  <button
-                    key={sf.id}
-                    onClick={() => { setStatusFilter(sf.id); hapticSelection(); }}
-                    className="flex-1 py-2 rounded-xl"
-                    style={{
-                      background: active ? c.chipActiveBg : c.surface2,
-                      color: active ? c.chipActiveText : c.text2,
-                      border: `1px solid ${active ? c.chipActiveBorder : c.borderSolid}`,
-                      fontSize: 12,
-                      fontWeight: active ? 600 : 400,
-                      textAlign: 'center',
-                    }}
-                  >
-                    {sf.label}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Category */}
-            <p style={{ color: c.text2, fontSize: 11, fontWeight: 600, marginBottom: 8 }}>Category</p>
-            <div className="flex flex-wrap gap-2 mb-3">
-              {PREDICTION_CATEGORIES.map(cat => {
-                const active = selectedCategory === cat;
-                return (
-                  <button
-                    key={cat}
-                    onClick={() => { setSelectedCategory(active ? null : cat); hapticSelection(); }}
-                    className="px-3 py-1.5 rounded-lg"
-                    style={{
-                      background: active ? c.primaryAlpha12 : c.surface2,
-                      color: active ? c.primary : c.text3,
-                      fontSize: 11,
-                      fontWeight: 600,
-                      border: `1px solid ${active ? c.primaryAlpha12 : c.borderSolid}`,
-                    }}
-                  >
-                    {cat}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Clear */}
-            {hasActiveFilters && (
-              <button
-                onClick={clearFilters}
-                className="w-full py-2.5 rounded-xl flex items-center justify-center gap-1.5"
+          <PageContent>
+            {/* Search bar */}
+            <div
+              className="flex items-center gap-3 px-4"
+              style={{
+                background: c.searchBg,
+                border: `1.5px solid ${c.searchBorder}`,
+                height: 48,
+                borderRadius: φRadius.md,
+              }}
+            >
+              <Search size={18} color={c.searchPlaceholder} />
+              <input
+                type="text"
+                placeholder="Search by title, tag, category..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                autoFocus
                 style={{
-                  background: c.sellAlpha10,
-                  border: `1px solid ${c.sellAlpha15}`,
-                  color: c.sell,
-                  fontSize: 12,
-                  fontWeight: 600,
+                  background: 'transparent',
+                  border: 'none',
+                  outline: 'none',
+                  color: c.text1,
+                  fontSize: 15,
+                  flex: 1,
+                }}
+              />
+              {search && (
+                <button onClick={() => setSearch('')}>
+                  <X size={14} color={c.text3} />
+                </button>
+              )}
+              <button
+                onClick={() => {
+                  setShowFilters(!showFilters);
+                  hapticSelection();
+                }}
+                className="flex items-center justify-center rounded-lg p-1.5"
+                style={{
+                  background: showFilters ? 'rgba(59,130,246,0.15)' : 'transparent',
+                  color: showFilters ? c.primary : c.text3,
                 }}
               >
-                <X size={13} />
-                Clear all filters
+                <SlidersHorizontal size={16} />
               </button>
+            </div>
+
+            {/* Filter panel */}
+            {showFilters && (
+              <TrCard className="p-4">
+                {/* Sort */}
+                <p style={{ color: c.text2, fontSize: 11, fontWeight: 600, marginBottom: 8 }}>
+                  Sort by
+                </p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {SORT_OPTIONS.map((opt) => {
+                    const active = sort === opt.id;
+                    const Icon = opt.icon;
+                    return (
+                      <button
+                        key={opt.id}
+                        onClick={() => {
+                          setSort(opt.id);
+                          hapticSelection();
+                        }}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl"
+                        style={{
+                          background: active ? c.chipActiveBg : c.surface2,
+                          color: active ? c.chipActiveText : c.text2,
+                          border: `1px solid ${active ? c.chipActiveBorder : c.borderSolid}`,
+                          fontSize: 11,
+                          fontWeight: active ? 600 : 400,
+                        }}
+                      >
+                        <Icon size={11} />
+                        {opt.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Status */}
+                <p style={{ color: c.text2, fontSize: 11, fontWeight: 600, marginBottom: 8 }}>
+                  Event Status
+                </p>
+                <div className="flex gap-2 mb-4">
+                  {STATUS_FILTERS.map((sf) => {
+                    const active = statusFilter === sf.id;
+                    return (
+                      <button
+                        key={sf.id}
+                        onClick={() => {
+                          setStatusFilter(sf.id);
+                          hapticSelection();
+                        }}
+                        className="flex-1 py-2 rounded-xl"
+                        style={{
+                          background: active ? c.chipActiveBg : c.surface2,
+                          color: active ? c.chipActiveText : c.text2,
+                          border: `1px solid ${active ? c.chipActiveBorder : c.borderSolid}`,
+                          fontSize: 12,
+                          fontWeight: active ? 600 : 400,
+                          textAlign: 'center',
+                        }}
+                      >
+                        {sf.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Category */}
+                <p style={{ color: c.text2, fontSize: 11, fontWeight: 600, marginBottom: 8 }}>
+                  Category
+                </p>
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {PREDICTION_CATEGORIES.map((cat) => {
+                    const active = selectedCategory === cat;
+                    return (
+                      <button
+                        key={cat}
+                        onClick={() => {
+                          setSelectedCategory(active ? null : cat);
+                          hapticSelection();
+                        }}
+                        className="px-3 py-1.5 rounded-lg"
+                        style={{
+                          background: active ? c.primaryAlpha12 : c.surface2,
+                          color: active ? c.primary : c.text3,
+                          fontSize: 11,
+                          fontWeight: 600,
+                          border: `1px solid ${active ? c.primaryAlpha12 : c.borderSolid}`,
+                        }}
+                      >
+                        {cat}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Clear */}
+                {hasActiveFilters && (
+                  <button
+                    onClick={clearFilters}
+                    className="w-full py-2.5 rounded-xl flex items-center justify-center gap-1.5"
+                    style={{
+                      background: c.sellAlpha10,
+                      border: `1px solid ${c.sellAlpha15}`,
+                      color: c.sell,
+                      fontSize: 12,
+                      fontWeight: 600,
+                    }}
+                  >
+                    <X size={13} />
+                    Clear all filters
+                  </button>
+                )}
+              </TrCard>
             )}
-          </TrCard>
-        )}
 
-        {/* Results count */}
-        <p style={{ color: c.text3, fontSize: 11 }}>
-          {results.length} event{results.length !== 1 ? 's' : ''} found
-        </p>
+            {/* Results count */}
+            <p style={{ color: c.text3, fontSize: 11 }}>
+              {results.length} event{results.length !== 1 ? 's' : ''} found
+            </p>
 
-        {/* Results */}
-        {results.length === 0 ? (
-          <EmptyState
-            icon={Search}
-            title={search ? `No results for "${search}"` : 'No events match filters'}
-            subtitle="Try adjusting your search or filter criteria"
-            ctaLabel="Clear filters"
-            onCta={clearFilters}
-          />
-        ) : (
-          <div className="flex flex-col gap-2.5">
-            {results.map(event => (
-              <SearchResultItem key={event.id} event={event} />
-            ))}
-          </div>
-        )}
-        </PageContent>
+            {/* Results */}
+            {results.length === 0 ? (
+              <EmptyState
+                icon={Search}
+                title={search ? `No results for "${search}"` : 'No events match filters'}
+                subtitle="Try adjusting your search or filter criteria"
+                ctaLabel="Clear filters"
+                onCta={clearFilters}
+              />
+            ) : (
+              <div className="flex flex-col gap-2.5">
+                {results.map((event) => (
+                  <SearchResultItem key={event.id} event={event} />
+                ))}
+              </div>
+            )}
+          </PageContent>
         )}
       </div>
     </PageLayout>

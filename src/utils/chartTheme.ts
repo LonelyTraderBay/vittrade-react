@@ -6,6 +6,7 @@
  */
 
 import type { DeepPartial, ChartOptions } from 'lightweight-charts';
+import { ColorType } from 'lightweight-charts';
 import type { ChartTheme, MiniChartConfig } from '../types/chart.types';
 
 /* ═══════════════════════════════════════════════════════════════
@@ -88,14 +89,14 @@ export function buildChartOptions(
   theme: ChartTheme,
   width: number,
   height: number,
-  showVolume: boolean = true
+  showVolume: boolean = true,
 ): DeepPartial<ChartOptions> {
   return {
     width,
     height,
     layout: {
-      background: { 
-        type: 'solid' as const, 
+      background: {
+        type: ColorType.Solid,
         color: 'transparent', // Use container background
       },
       textColor: theme.textColor,
@@ -103,10 +104,10 @@ export function buildChartOptions(
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     },
     grid: {
-      vertLines: { 
+      vertLines: {
         visible: false, // Cleaner look for mini chart
       },
-      horzLines: { 
+      horzLines: {
         color: theme.gridColor,
         style: 1, // Solid
         visible: true,
@@ -128,11 +129,11 @@ export function buildChartOptions(
       secondsVisible: false,
     },
     crosshair: {
-      vertLine: { 
+      vertLine: {
         visible: false, // No crosshair for mini chart
         labelVisible: false,
       },
-      horzLine: { 
+      horzLine: {
         visible: false,
         labelVisible: false,
       },
@@ -150,7 +151,7 @@ export function buildMiniChartConfig(
   theme: ChartTheme,
   width: number,
   height: number,
-  showVolume: boolean = true
+  showVolume: boolean = true,
 ): MiniChartConfig {
   return {
     width,
@@ -172,10 +173,8 @@ export function buildMiniChartConfig(
         type: 'volume',
       },
       priceScaleId: '', // Separate Y-axis
-      scaleMargins: {
-        top: 0.8, // Volume at bottom 20%
-        bottom: 0,
-      },
+      // Note: scaleMargins for the volume overlay are applied by consumers
+      // via series.priceScale().applyOptions() — not part of series options in v5.
     },
     priceLineOptions: {
       color: theme.candleUpColor,
@@ -215,10 +214,7 @@ export const CHART_GRADIENTS = {
 /**
  * Get gradient based on price trend
  */
-export function getChartGradient(
-  isPositive: boolean,
-  isDarkMode: boolean = false
-): string {
+export function getChartGradient(isPositive: boolean, isDarkMode: boolean = false): string {
   if (isPositive) {
     return isDarkMode ? CHART_GRADIENTS.bullish.dark : CHART_GRADIENTS.bullish.light;
   } else {

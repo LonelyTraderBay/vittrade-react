@@ -1,11 +1,28 @@
 import React, { useState } from 'react';
-import { Shield, AlertTriangle, TrendingDown, Activity, DollarSign, Zap, AlertOctagon } from 'lucide-react';
+import {
+  Shield,
+  AlertTriangle,
+  TrendingDown,
+  Activity,
+  DollarSign,
+  Zap,
+  AlertOctagon,
+} from 'lucide-react';
 import { Header } from '../../../components/layout/Header';
 import { PageLayout } from '../../../components/layout/PageLayout';
 import { PageContent, PageSection } from '../../../components/layout/PageContent';
 import { useThemeColors } from '../../../hooks/useThemeColors';
 import { TrCard } from '../../../components/ui/TrCard';
-import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip, Area, AreaChart } from 'recharts';
+import {
+  LineChart,
+  Line,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Area,
+  AreaChart,
+} from 'recharts';
 import { useNavigate } from 'react-router';
 
 // Mock real-time data
@@ -38,7 +55,7 @@ const VAR_HISTORY = [
 export function BotRiskDashboardPage() {
   const c = useThemeColors();
   const navigate = useNavigate();
-  
+
   // Mock real-time risk data
   const [riskData] = useState({
     currentDrawdown: -15.2,
@@ -73,13 +90,13 @@ export function BotRiskDashboardPage() {
 
   return (
     <PageLayout>
-      <Header 
-        title="Risk Dashboard" 
-        back 
-        action={{ 
-          icon: AlertOctagon, 
-          onClick: () => navigate('/trade/bots/emergency-stop') 
-        }} 
+      <Header
+        title="Risk Dashboard"
+        back
+        action={{
+          icon: AlertOctagon,
+          onClick: () => navigate('/trade/bots/emergency-stop'),
+        }}
       />
 
       <PageContent>
@@ -95,22 +112,33 @@ export function BotRiskDashboardPage() {
                 {getRiskLabel(riskData.riskScore)}
               </p>
             </div>
-            <div className="w-24 h-24 rounded-full flex items-center justify-center"
-              style={{ 
+            <div
+              className="w-24 h-24 rounded-full flex items-center justify-center"
+              style={{
                 background: `conic-gradient(${riskColor} ${riskData.riskScore * 3.6}deg, ${c.surface2} 0deg)`,
-              }}>
-              <div className="w-20 h-20 rounded-full flex items-center justify-center"
-                style={{ background: c.surface }}>
+              }}
+            >
+              <div
+                className="w-20 h-20 rounded-full flex items-center justify-center"
+                style={{ background: c.surface }}
+              >
                 <Shield size={32} color={riskColor} />
               </div>
             </div>
           </div>
-          
-          <div className="rounded-xl p-3" style={{ background: `${riskColor}10`, border: `1px solid ${riskColor}30` }}>
+
+          <div
+            className="rounded-xl p-3"
+            style={{ background: `${riskColor}10`, border: `1px solid ${riskColor}30` }}
+          >
             <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-              {riskData.riskScore < 40 && 'Your portfolio is within safe risk limits. Continue monitoring performance.'}
-              {riskData.riskScore >= 40 && riskData.riskScore < 70 && 'Moderate risk detected. Consider reducing position sizes or stopping high-risk bots.'}
-              {riskData.riskScore >= 70 && '⚠️ High risk! Drawdown approaching limit. Consider emergency stop or reducing exposure immediately.'}
+              {riskData.riskScore < 40 &&
+                'Your portfolio is within safe risk limits. Continue monitoring performance.'}
+              {riskData.riskScore >= 40 &&
+                riskData.riskScore < 70 &&
+                'Moderate risk detected. Consider reducing position sizes or stopping high-risk bots.'}
+              {riskData.riskScore >= 70 &&
+                '⚠️ High risk! Drawdown approaching limit. Consider emergency stop or reducing exposure immediately.'}
             </p>
           </div>
         </TrCard>
@@ -131,10 +159,15 @@ export function BotRiskDashboardPage() {
                 Limit: {riskData.maxDrawdownLimit}%
               </p>
               <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
-                <div 
+                <div
                   className="h-full"
-                  style={{ 
-                    background: drawdownPercent > 80 ? '#EF4444' : drawdownPercent > 60 ? '#F59E0B' : '#10B981',
+                  style={{
+                    background:
+                      drawdownPercent > 80
+                        ? '#EF4444'
+                        : drawdownPercent > 60
+                          ? '#F59E0B'
+                          : '#10B981',
                     width: `${Math.min(drawdownPercent, 100)}%`,
                   }}
                 />
@@ -154,10 +187,11 @@ export function BotRiskDashboardPage() {
                 Limit: -${Math.abs(riskData.dailyLossLimit)}
               </p>
               <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
-                <div 
+                <div
                   className="h-full"
-                  style={{ 
-                    background: lossPercent > 80 ? '#EF4444' : lossPercent > 60 ? '#F59E0B' : '#10B981',
+                  style={{
+                    background:
+                      lossPercent > 80 ? '#EF4444' : lossPercent > 60 ? '#F59E0B' : '#10B981',
                     width: `${Math.min(lossPercent, 100)}%`,
                   }}
                 />
@@ -177,10 +211,15 @@ export function BotRiskDashboardPage() {
                 Max: ${riskData.maxExposure.toLocaleString()}
               </p>
               <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
-                <div 
+                <div
                   className="h-full"
-                  style={{ 
-                    background: exposurePercent > 80 ? '#EF4444' : exposurePercent > 60 ? '#F59E0B' : '#10B981',
+                  style={{
+                    background:
+                      exposurePercent > 80
+                        ? '#EF4444'
+                        : exposurePercent > 60
+                          ? '#F59E0B'
+                          : '#10B981',
                     width: `${Math.min(exposurePercent, 100)}%`,
                   }}
                 />
@@ -196,9 +235,7 @@ export function BotRiskDashboardPage() {
               <p style={{ color: c.text1, fontSize: 20, fontWeight: 700, marginBottom: 2 }}>
                 ${riskData.var95}
               </p>
-              <p style={{ color: c.text3, fontSize: 10, marginBottom: 8 }}>
-                Max 1-day loss (95%)
-              </p>
+              <p style={{ color: c.text3, fontSize: 10, marginBottom: 8 }}>Max 1-day loss (95%)</p>
               <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
                 <div className="h-full" style={{ background: '#8B5CF6', width: '72%' }} />
               </div>
@@ -213,37 +250,42 @@ export function BotRiskDashboardPage() {
               <AreaChart data={DRAWDOWN_DATA}>
                 <defs key="gradient-defs">
                   <linearGradient id="drawdownGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#EF4444" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#EF4444" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#EF4444" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#EF4444" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <XAxis 
+                <XAxis
                   key="x-axis-dd"
-                  dataKey="time" 
-                  stroke={c.text3} 
+                  dataKey="time"
+                  stroke={c.text3}
                   style={{ fontSize: 10 }}
                   tickLine={false}
                 />
-                <YAxis 
+                <YAxis
                   key="y-axis-dd"
-                  stroke={c.text3} 
+                  stroke={c.text3}
                   style={{ fontSize: 10 }}
                   tickLine={false}
                   tickFormatter={(val) => `${val}%`}
                 />
                 <Tooltip
                   key="tooltip-dd"
-                  contentStyle={{ background: c.surface, border: `1px solid ${c.borderSolid}`, borderRadius: 8, fontSize: 11 }}
+                  contentStyle={{
+                    background: c.surface,
+                    border: `1px solid ${c.borderSolid}`,
+                    borderRadius: 8,
+                    fontSize: 11,
+                  }}
                   labelStyle={{ color: c.text1, fontWeight: 700 }}
                   formatter={(value: any) => [`${value}%`, 'Drawdown']}
                 />
-                <Area 
+                <Area
                   key="area-dd"
-                  type="monotone" 
-                  dataKey="drawdown" 
-                  stroke="#EF4444" 
+                  type="monotone"
+                  dataKey="drawdown"
+                  stroke="#EF4444"
                   strokeWidth={2}
-                  fill="url(#drawdownGradient)" 
+                  fill="url(#drawdownGradient)"
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -254,7 +296,7 @@ export function BotRiskDashboardPage() {
         <PageSection label="Exposure by Asset">
           <TrCard className="p-4">
             <div className="space-y-3">
-              {EXPOSURE_DATA.map(asset => (
+              {EXPOSURE_DATA.map((asset) => (
                 <div key={asset.asset}>
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
@@ -265,11 +307,19 @@ export function BotRiskDashboardPage() {
                       ${asset.exposure.toLocaleString()}
                     </p>
                   </div>
-                  <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
-                    <div 
+                  <div
+                    className="h-2 rounded-full overflow-hidden"
+                    style={{ background: c.surface2 }}
+                  >
+                    <div
                       className="h-full"
-                      style={{ 
-                        background: asset.asset === 'BTC' ? '#F7931A' : asset.asset === 'ETH' ? '#627EEA' : '#14F195',
+                      style={{
+                        background:
+                          asset.asset === 'BTC'
+                            ? '#F7931A'
+                            : asset.asset === 'ETH'
+                              ? '#627EEA'
+                              : '#14F195',
                         width: `${asset.percentage}%`,
                       }}
                     />
@@ -291,30 +341,35 @@ export function BotRiskDashboardPage() {
           <TrCard className="p-4">
             <ResponsiveContainer width="100%" height={140}>
               <LineChart data={VAR_HISTORY}>
-                <XAxis 
+                <XAxis
                   key="x-axis-var"
-                  dataKey="date" 
-                  stroke={c.text3} 
+                  dataKey="date"
+                  stroke={c.text3}
                   style={{ fontSize: 10 }}
                   tickLine={false}
                 />
-                <YAxis 
+                <YAxis
                   key="y-axis-var"
-                  stroke={c.text3} 
+                  stroke={c.text3}
                   style={{ fontSize: 10 }}
                   tickLine={false}
                   tickFormatter={(val) => `$${val}`}
                 />
                 <Tooltip
                   key="tooltip-var"
-                  contentStyle={{ background: c.surface, border: `1px solid ${c.borderSolid}`, borderRadius: 8, fontSize: 11 }}
+                  contentStyle={{
+                    background: c.surface,
+                    border: `1px solid ${c.borderSolid}`,
+                    borderRadius: 8,
+                    fontSize: 11,
+                  }}
                   formatter={(value: any) => [`$${value}`, 'Max 1-day loss']}
                 />
-                <Line 
+                <Line
                   key="line-var"
-                  type="monotone" 
-                  dataKey="var" 
-                  stroke="#8B5CF6" 
+                  type="monotone"
+                  dataKey="var"
+                  stroke="#8B5CF6"
                   strokeWidth={2}
                   dot={{ fill: '#8B5CF6', r: 4 }}
                 />
@@ -328,11 +383,13 @@ export function BotRiskDashboardPage() {
           <TrCard className="p-4">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-3 h-3 rounded-full" 
-                  style={{ 
+                <div
+                  className="w-3 h-3 rounded-full"
+                  style={{
                     background: riskData.circuitBreakerStatus === 'active' ? '#10B981' : '#EF4444',
-                    boxShadow: riskData.circuitBreakerStatus === 'active' ? '0 0 8px #10B981' : 'none',
-                  }} 
+                    boxShadow:
+                      riskData.circuitBreakerStatus === 'active' ? '0 0 8px #10B981' : 'none',
+                  }}
                 />
                 <div>
                   <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>Circuit Breaker</p>
@@ -349,7 +406,11 @@ export function BotRiskDashboardPage() {
                 { label: 'Max position size', value: '$1,000', status: 'safe' },
                 { label: 'Emergency stop', value: 'Enabled', status: 'safe' },
               ].map((control, idx) => (
-                <div key={idx} className="flex items-center justify-between p-2 rounded-lg" style={{ background: c.surface2 }}>
+                <div
+                  key={idx}
+                  className="flex items-center justify-between p-2 rounded-lg"
+                  style={{ background: c.surface2 }}
+                >
                   <p style={{ color: c.text2, fontSize: 11 }}>{control.label}</p>
                   <div className="flex items-center gap-2">
                     <p style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>{control.value}</p>
@@ -366,12 +427,17 @@ export function BotRiskDashboardPage() {
           <button
             onClick={() => navigate('/trade/bots/emergency-stop')}
             className="w-full p-4 rounded-xl flex items-center justify-between"
-            style={{ background: 'rgba(239,68,68,0.08)', border: '2px solid rgba(239,68,68,0.3)' }}>
+            style={{ background: 'rgba(239,68,68,0.08)', border: '2px solid rgba(239,68,68,0.3)' }}
+          >
             <div className="flex items-center gap-3">
               <AlertOctagon size={24} color="#EF4444" />
               <div className="text-left">
-                <p style={{ color: '#EF4444', fontSize: 14, fontWeight: 700 }}>Emergency Stop All Bots</p>
-                <p style={{ color: c.text3, fontSize: 11 }}>Stop all {riskData.runningBots} running bots immediately</p>
+                <p style={{ color: '#EF4444', fontSize: 14, fontWeight: 700 }}>
+                  Emergency Stop All Bots
+                </p>
+                <p style={{ color: c.text3, fontSize: 11 }}>
+                  Stop all {riskData.runningBots} running bots immediately
+                </p>
               </div>
             </div>
             <div style={{ color: c.text3 }}>→</div>

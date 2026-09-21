@@ -1,6 +1,6 @@
 /**
  * DCA (Dollar Cost Averaging) Type Definitions
- * 
+ *
  * @module types/dca
  */
 

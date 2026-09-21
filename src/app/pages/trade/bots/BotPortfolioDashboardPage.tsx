@@ -5,7 +5,17 @@ import { PageLayout } from '../../../components/layout/PageLayout';
 import { PageContent, PageSection } from '../../../components/layout/PageContent';
 import { useThemeColors } from '../../../hooks/useThemeColors';
 import { TrCard } from '../../../components/ui/TrCard';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, LineChart, Line, XAxis, YAxis } from 'recharts';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+} from 'recharts';
 import { useNavigate } from 'react-router';
 
 const PORTFOLIO_DATA = {
@@ -19,11 +29,16 @@ const PORTFOLIO_DATA = {
   totalTrades: 479,
 };
 
-const ALLOCATION_DATA = [
+const ALLOCATION_DATA: Array<{
+  strategy: string;
+  value: number;
+  pnl: number;
+  color: string | ((colors: ReturnType<typeof useThemeColors>) => string);
+}> = [
   { strategy: 'DCA', value: 1000, pnl: 84, color: '#3B82F6' },
   { strategy: 'Grid', value: 500, pnl: 127, color: '#F59E0B' },
   { strategy: 'Momentum', value: 500, pnl: -12, color: '#10B981' },
-  { strategy: 'Cash Reserve', value: 1245, pnl: 0, color: c => c.text3 },
+  { strategy: 'Cash Reserve', value: 1245, pnl: 0, color: (c) => c.text3 },
 ];
 
 const PORTFOLIO_EQUITY = [
@@ -91,13 +106,37 @@ export function BotPortfolioDashboardPage() {
           <TrCard className="p-4">
             <ResponsiveContainer width="100%" height={180}>
               <LineChart data={PORTFOLIO_EQUITY}>
-                <XAxis key="x-axis" dataKey="date" stroke={c.text3} style={{ fontSize: 10 }} tickLine={false} />
-                <YAxis key="y-axis" stroke={c.text3} style={{ fontSize: 10 }} tickLine={false} tickFormatter={v => `$${v}`} />
+                <XAxis
+                  key="x-axis"
+                  dataKey="date"
+                  stroke={c.text3}
+                  style={{ fontSize: 10 }}
+                  tickLine={false}
+                />
+                <YAxis
+                  key="y-axis"
+                  stroke={c.text3}
+                  style={{ fontSize: 10 }}
+                  tickLine={false}
+                  tickFormatter={(v) => `$${v}`}
+                />
                 <Tooltip
-                  contentStyle={{ background: c.surface, border: `1px solid ${c.borderSolid}`, borderRadius: 8, fontSize: 11 }}
+                  contentStyle={{
+                    background: c.surface,
+                    border: `1px solid ${c.borderSolid}`,
+                    borderRadius: 8,
+                    fontSize: 11,
+                  }}
                   formatter={(value: any) => [`$${value}`, 'Equity']}
                 />
-                <Line key="line-equity" type="monotone" dataKey="equity" stroke="#10B981" strokeWidth={3} dot={false} />
+                <Line
+                  key="line-equity"
+                  type="monotone"
+                  dataKey="equity"
+                  stroke="#10B981"
+                  strokeWidth={3}
+                  dot={false}
+                />
               </LineChart>
             </ResponsiveContainer>
           </TrCard>
@@ -115,21 +154,35 @@ export function BotPortfolioDashboardPage() {
                   innerRadius={50}
                   outerRadius={80}
                   paddingAngle={2}
-                  dataKey="value">
+                  dataKey="value"
+                >
                   {ALLOCATION_DATA.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={typeof entry.color === 'function' ? entry.color(c) : entry.color} />
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={typeof entry.color === 'function' ? entry.color(c) : entry.color}
+                    />
                   ))}
                 </Pie>
                 <Tooltip
-                  contentStyle={{ background: c.surface, border: `1px solid ${c.borderSolid}`, borderRadius: 8, fontSize: 11 }}
+                  contentStyle={{
+                    background: c.surface,
+                    border: `1px solid ${c.borderSolid}`,
+                    borderRadius: 8,
+                    fontSize: 11,
+                  }}
                   formatter={(value: any) => [`$${value}`, 'Value']}
                 />
               </PieChart>
             </ResponsiveContainer>
             <div className="grid grid-cols-2 gap-2 mt-4">
-              {ALLOCATION_DATA.map(item => (
+              {ALLOCATION_DATA.map((item) => (
                 <div key={item.strategy} className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full" style={{ background: typeof item.color === 'function' ? item.color(c) : item.color }} />
+                  <div
+                    className="w-3 h-3 rounded-full"
+                    style={{
+                      background: typeof item.color === 'function' ? item.color(c) : item.color,
+                    }}
+                  />
                   <div className="flex-1">
                     <p style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>{item.strategy}</p>
                     <p style={{ color: c.text3, fontSize: 9 }}>${item.value}</p>
@@ -146,30 +199,62 @@ export function BotPortfolioDashboardPage() {
             <table className="w-full">
               <thead>
                 <tr>
-                  <th style={{ color: c.text3, fontSize: 10, textAlign: 'left', paddingBottom: 8 }}>Bot</th>
-                  {CORRELATION_MATRIX.map(row => (
-                    <th key={row.bot} style={{ color: c.text3, fontSize: 10, textAlign: 'center', paddingBottom: 8 }}>
+                  <th style={{ color: c.text3, fontSize: 10, textAlign: 'left', paddingBottom: 8 }}>
+                    Bot
+                  </th>
+                  {CORRELATION_MATRIX.map((row) => (
+                    <th
+                      key={row.bot}
+                      style={{
+                        color: c.text3,
+                        fontSize: 10,
+                        textAlign: 'center',
+                        paddingBottom: 8,
+                      }}
+                    >
                       {row.bot}
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {CORRELATION_MATRIX.map(row => (
+                {CORRELATION_MATRIX.map((row) => (
                   <tr key={row.bot}>
-                    <td style={{ color: c.text1, fontSize: 11, fontWeight: 600, paddingTop: 6, paddingBottom: 6 }}>
+                    <td
+                      style={{
+                        color: c.text1,
+                        fontSize: 11,
+                        fontWeight: 600,
+                        paddingTop: 6,
+                        paddingBottom: 6,
+                      }}
+                    >
                       {row.bot}
                     </td>
-                    {Object.entries(row).filter(([key]) => key !== 'bot').map(([key, val]) => {
-                      const color = Math.abs(val) < 0.2 ? '#10B981' : Math.abs(val) < 0.5 ? '#F59E0B' : '#EF4444';
-                      return (
-                        <td key={key} style={{ textAlign: 'center', paddingTop: 6, paddingBottom: 6 }}>
-                          <span className="px-2 py-1 rounded text-xs font-bold" style={{ background: `${color}15`, color }}>
-                            {val.toFixed(2)}
-                          </span>
-                        </td>
-                      );
-                    })}
+                    {Object.entries(row)
+                      .filter(([key]) => key !== 'bot')
+                      .map(([key, val]) => {
+                        const num = Number(val);
+                        const color =
+                          Math.abs(num) < 0.2
+                            ? '#10B981'
+                            : Math.abs(num) < 0.5
+                              ? '#F59E0B'
+                              : '#EF4444';
+                        return (
+                          <td
+                            key={key}
+                            style={{ textAlign: 'center', paddingTop: 6, paddingBottom: 6 }}
+                          >
+                            <span
+                              className="px-2 py-1 rounded text-xs font-bold"
+                              style={{ background: `${color}15`, color }}
+                            >
+                              {num.toFixed(2)}
+                            </span>
+                          </td>
+                        );
+                      })}
                   </tr>
                 ))}
               </tbody>
@@ -181,14 +266,19 @@ export function BotPortfolioDashboardPage() {
         </PageSection>
 
         {/* Recommendations */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}
+        >
           <p style={{ color: '#10B981', fontSize: 13, fontWeight: 700, marginBottom: 6 }}>
             ✅ Portfolio Health: Excellent
           </p>
           <ul className="space-y-2">
             <li className="flex gap-2">
               <span style={{ color: c.text3 }}>•</span>
-              <p style={{ color: c.text2, fontSize: 11 }}>Strong diversification (correlation &lt; 0.4)</p>
+              <p style={{ color: c.text2, fontSize: 11 }}>
+                Strong diversification (correlation &lt; 0.4)
+              </p>
             </li>
             <li className="flex gap-2">
               <span style={{ color: c.text3 }}>•</span>
@@ -196,7 +286,9 @@ export function BotPortfolioDashboardPage() {
             </li>
             <li className="flex gap-2">
               <span style={{ color: c.text3 }}>•</span>
-              <p style={{ color: c.text2, fontSize: 11 }}>Portfolio Sharpe above 1.5 (excellent risk-adjusted returns)</p>
+              <p style={{ color: c.text2, fontSize: 11 }}>
+                Portfolio Sharpe above 1.5 (excellent risk-adjusted returns)
+              </p>
             </li>
           </ul>
         </div>

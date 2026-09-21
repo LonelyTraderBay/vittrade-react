@@ -2,20 +2,20 @@
  * ══════════════════════════════════════════════════════════════
  *  BestExecutionReportsPage — Phase 4 Sprint 1 Day 7-8
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - MiFID II RTS 27/28 compliance (Best Execution reports)
  * - Quarterly Top 5 execution venues disclosure
  * - Quality of execution metrics
  * - Client-facing transparency reports
- * 
+ *
  * Compliance:
  * - RTS 27: Annual Top 5 venues (retail clients)
  * - RTS 28: Quarterly Top 5 venues (professional clients)
  * - Quality criteria: Price, costs, speed, likelihood, settlement
  * - Public disclosure requirement
  * - PDF/XML export for regulatory submission
- * 
+ *
  * Features:
  * - Quarterly reports archive
  * - Top 5 execution venues ranking
@@ -23,7 +23,7 @@
  * - Volume & value statistics
  * - PDF export capability
  * - Regulator-ready format
- * 
+ *
  * Guidelines:
  * - PageLayout + TabBar pattern
  * - Professional report layout
@@ -34,9 +34,21 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  FileText, Download, TrendingUp, Target, Clock, DollarSign,
-  CheckCircle, Award, BarChart3, Calendar, ExternalLink, Shield,
-  ChevronRight, Info, Eye
+  FileText,
+  Download,
+  TrendingUp,
+  Target,
+  Clock,
+  DollarSign,
+  CheckCircle,
+  Award,
+  BarChart3,
+  Calendar,
+  ExternalLink,
+  Shield,
+  ChevronRight,
+  Info,
+  Eye,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -102,7 +114,7 @@ const CURRENT_TOP_5: ExecutionVenue[] = [
     volume: 6780,
     value: 465000000,
     avgPrice: 68550,
-    avgCost: 0.10,
+    avgCost: 0.1,
     avgSpeed: 0.4,
     fillRate: 99.3,
     score: 93.8,
@@ -199,14 +211,18 @@ export function BestExecutionReportsPage() {
 
       <PageContent gap="relaxed">
         {/* Compliance Notice */}
-        <div className="rounded-2xl p-3 flex gap-2.5" style={{ background: c.infoBg, border: `1px solid ${c.infoBorder}` }}>
-          <Shield size={16} color={c.infoText} className="shrink-0 mt-0.5" />
+        <div
+          className="rounded-2xl p-3 flex gap-2.5"
+          style={{ background: 'rgba(59,130,246,0.08)', border: `1px solid rgba(59,130,246,0.20)` }}
+        >
+          <Shield size={16} color={c.info} className="shrink-0 mt-0.5" />
           <div>
-            <p style={{ color: c.infoText, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
+            <p style={{ color: c.info, fontSize: 11, fontWeight: 600, marginBottom: 2 }}>
               MiFID II RTS 27/28 Compliance
             </p>
-            <p style={{ color: c.infoText, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
-              Quarterly disclosure of Top 5 execution venues by trading volume. Reports assessed on price, cost, speed, likelihood of execution, and settlement.
+            <p style={{ color: c.info, fontSize: 10, lineHeight: 1.4, opacity: 0.9 }}>
+              Quarterly disclosure of Top 5 execution venues by trading volume. Reports assessed on
+              price, cost, speed, likelihood of execution, and settlement.
             </p>
           </div>
         </div>
@@ -221,9 +237,7 @@ export function BestExecutionReportsPage() {
             <p style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}>
               {fmtNum(CURRENT_TOP_5.reduce((s, v) => s + v.volume, 0))}
             </p>
-            <p style={{ color: c.text3, fontSize: 9, marginTop: 2 }}>
-              Q1 2026 (YTD)
-            </p>
+            <p style={{ color: c.text3, fontSize: 9, marginTop: 2 }}>Q1 2026 (YTD)</p>
           </TrCard>
 
           <TrCard className="p-3">
@@ -234,9 +248,7 @@ export function BestExecutionReportsPage() {
             <p style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}>
               ${(CURRENT_TOP_5.reduce((s, v) => s + v.value, 0) / 1000000000).toFixed(2)}B
             </p>
-            <p style={{ color: c.text3, fontSize: 9, marginTop: 2 }}>
-              Executed value
-            </p>
+            <p style={{ color: c.text3, fontSize: 9, marginTop: 2 }}>Executed value</p>
           </TrCard>
 
           <TrCard className="p-3">
@@ -247,14 +259,12 @@ export function BestExecutionReportsPage() {
             <p style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}>
               {(CURRENT_TOP_5.reduce((s, v) => s + v.score, 0) / CURRENT_TOP_5.length).toFixed(1)}
             </p>
-            <p style={{ color: c.text3, fontSize: 9, marginTop: 2 }}>
-              Quality index
-            </p>
+            <p style={{ color: c.text3, fontSize: 9, marginTop: 2 }}>Quality index</p>
           </TrCard>
         </div>
 
         {/* Tabs */}
-        <TabBar tabs={TABS} active={tab} onChange={setTab} variant="underline" />
+        <TabBar<TabType> tabs={TABS} active={tab} onChange={setTab} variant="underline" />
 
         {/* Content */}
         {tab === 'current' && (
@@ -266,16 +276,20 @@ export function BestExecutionReportsPage() {
                   <TrCard key={venue.rank} className="p-4">
                     <div className="flex items-start gap-3 mb-3">
                       {/* Rank Badge */}
-                      <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                         style={{
                           background: venue.rank === 1 ? '#F59E0B' + '15' : c.surface2,
                           border: venue.rank === 1 ? `2px solid #F59E0B` : 'none',
-                        }}>
-                        <span style={{
-                          color: venue.rank === 1 ? '#F59E0B' : c.text1,
-                          fontSize: 18,
-                          fontWeight: 700
-                        }}>
+                        }}
+                      >
+                        <span
+                          style={{
+                            color: venue.rank === 1 ? '#F59E0B' : c.text1,
+                            fontSize: 18,
+                            fontWeight: 700,
+                          }}
+                        >
                           #{venue.rank}
                         </span>
                       </div>
@@ -286,9 +300,7 @@ export function BestExecutionReportsPage() {
                           <span style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>
                             {venue.venue}
                           </span>
-                          {venue.rank === 1 && (
-                            <Award size={14} color="#F59E0B" />
-                          )}
+                          {venue.rank === 1 && <Award size={14} color="#F59E0B" />}
                         </div>
                         <p style={{ color: c.text3, fontSize: 10 }}>
                           {fmtNum(venue.volume)} orders • {fmtUsd(venue.value)} value
@@ -343,11 +355,22 @@ export function BestExecutionReportsPage() {
                           {venue.score.toFixed(1)}/100
                         </span>
                       </div>
-                      <div className="h-1.5 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
-                        <div className="h-full rounded-full" style={{
-                          width: `${venue.score}%`,
-                          background: venue.score >= 90 ? '#10B981' : venue.score >= 80 ? '#F59E0B' : '#EF4444'
-                        }} />
+                      <div
+                        className="h-1.5 rounded-full overflow-hidden"
+                        style={{ background: c.surface2 }}
+                      >
+                        <div
+                          className="h-full rounded-full"
+                          style={{
+                            width: `${venue.score}%`,
+                            background:
+                              venue.score >= 90
+                                ? '#10B981'
+                                : venue.score >= 80
+                                  ? '#F59E0B'
+                                  : '#EF4444',
+                          }}
+                        />
                       </div>
                     </div>
                   </TrCard>
@@ -364,7 +387,8 @@ export function BestExecutionReportsPage() {
                   fontWeight: 600,
                   fontSize: 13,
                   border: `1px solid ${c.border}`,
-                }}>
+                }}
+              >
                 <BarChart3 size={16} />
                 <span>View Detailed Analysis</span>
                 <ChevronRight size={14} />
@@ -375,8 +399,10 @@ export function BestExecutionReportsPage() {
             <PageSection label="Report Actions">
               <TrCard className="p-4">
                 <div className="flex items-start gap-3 mb-3">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                    style={{ background: c.primary + '15' }}>
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                    style={{ background: c.primary + '15' }}
+                  >
                     <FileText size={22} color={c.primary} />
                   </div>
                   <div className="flex-1">
@@ -399,7 +425,8 @@ export function BestExecutionReportsPage() {
                       fontSize: 12,
                       fontWeight: 600,
                       border: `1px solid ${c.border}`,
-                    }}>
+                    }}
+                  >
                     <Download size={14} />
                     <span>Export PDF</span>
                   </button>
@@ -412,7 +439,8 @@ export function BestExecutionReportsPage() {
                       color: '#fff',
                       fontSize: 12,
                       fontWeight: 600,
-                    }}>
+                    }}
+                  >
                     <ExternalLink size={14} />
                     <span>Publish Report</span>
                   </button>
@@ -429,8 +457,10 @@ export function BestExecutionReportsPage() {
                 <TrCard key={report.id} className="p-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                        style={{ background: c.primary + '15' }}>
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center"
+                        style={{ background: c.primary + '15' }}
+                      >
                         <Calendar size={18} color={c.primary} />
                       </div>
                       <div>
@@ -444,18 +474,21 @@ export function BestExecutionReportsPage() {
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span className="px-2 py-1 rounded-lg text-[10px] font-semibold"
+                      <span
+                        className="px-2 py-1 rounded-lg text-[10px] font-semibold"
                         style={{
                           background: report.status === 'published' ? '#10B981' + '15' : c.surface2,
                           color: report.status === 'published' ? '#10B981' : c.text3,
-                        }}>
+                        }}
+                      >
                         {report.status === 'published' ? 'Published' : 'Draft'}
                       </span>
 
                       <button
                         onClick={() => handleExportPDF(report.id)}
                         className="w-8 h-8 rounded-lg flex items-center justify-center transition-all"
-                        style={{ background: c.surface2 }}>
+                        style={{ background: c.surface2 }}
+                      >
                         <Download size={14} color={c.text3} />
                       </button>
                     </div>

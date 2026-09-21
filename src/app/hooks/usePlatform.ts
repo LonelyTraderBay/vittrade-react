@@ -50,7 +50,10 @@ export interface PlatformInfo {
   commandBarHeight: number;
 }
 
-const PLATFORM_CONFIG: Record<Platform, Omit<PlatformInfo, 'platform' | 'prefix' | 'isPhone' | 'isTablet' | 'isWeb'>> = {
+const PLATFORM_CONFIG: Record<
+  Platform,
+  Omit<PlatformInfo, 'platform' | 'prefix' | 'isPhone' | 'isTablet' | 'isWeb'>
+> = {
   phone: {
     contentMaxWidth: 440,
     contentPadding: 20,
@@ -104,9 +107,12 @@ export function detectPlatformFromViewport(): Platform {
 /** Get route prefix for a platform */
 export function getPlatformPrefix(platform: Platform): string {
   switch (platform) {
-    case 'web': return '/w';
-    case 'tablet': return '/t';
-    default: return '';
+    case 'web':
+      return '/w';
+    case 'tablet':
+      return '/t';
+    default:
+      return '';
   }
 }
 

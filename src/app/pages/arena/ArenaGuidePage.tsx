@@ -5,8 +5,18 @@ import { PageContent } from '../../components/layout/PageContent';
 import { Header } from '../../components/layout/Header';
 import { TabBar } from '../../components/layout/TabBar';
 import {
-  Sparkles, ChevronDown, ChevronRight, CheckCircle, Play,
-  HelpCircle, BookOpen, AlertTriangle, Info, Lightbulb, Zap, Shield,
+  Sparkles,
+  ChevronDown,
+  ChevronRight,
+  CheckCircle,
+  Play,
+  HelpCircle,
+  BookOpen,
+  AlertTriangle,
+  Info,
+  Lightbulb,
+  Zap,
+  Shield,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useHaptic } from '../../hooks/useHaptic';
@@ -46,30 +56,33 @@ export function ArenaGuidePage() {
   const [expandedTip, setExpandedTip] = useState<number | null>(null);
   const [showAllTips, setShowAllTips] = useState(false);
 
-  const steps = useMemo(
-    () => (guideMode === 'create' ? STEPS_CREATE : STEPS_JOIN),
-    [guideMode]
+  const steps = useMemo(() => (guideMode === 'create' ? STEPS_CREATE : STEPS_JOIN), [guideMode]);
+
+  const visibleTips = useMemo(() => (showAllTips ? PRO_TIPS : PRO_TIPS.slice(0, 5)), [showAllTips]);
+
+  const handleGuideModeChange = useCallback(
+    (mode: 'create' | 'join') => {
+      setGuideMode(mode);
+      hapticSelection();
+    },
+    [hapticSelection],
   );
 
-  const visibleTips = useMemo(
-    () => (showAllTips ? PRO_TIPS : PRO_TIPS.slice(0, 5)),
-    [showAllTips]
+  const handleTipToggle = useCallback(
+    (index: number) => {
+      setExpandedTip((prev) => (prev === index ? null : index));
+      hapticSelection();
+    },
+    [hapticSelection],
   );
 
-  const handleGuideModeChange = useCallback((mode: 'create' | 'join') => {
-    setGuideMode(mode);
-    hapticSelection();
-  }, [hapticSelection]);
-
-  const handleTipToggle = useCallback((index: number) => {
-    setExpandedTip(prev => prev === index ? null : index);
-    hapticSelection();
-  }, [hapticSelection]);
-
-  const handleFaqToggle = useCallback((index: number) => {
-    setExpandedFaq(prev => prev === index ? null : index);
-    hapticSelection();
-  }, [hapticSelection]);
+  const handleFaqToggle = useCallback(
+    (index: number) => {
+      setExpandedFaq((prev) => (prev === index ? null : index));
+      hapticSelection();
+    },
+    [hapticSelection],
+  );
 
   return (
     <PageLayout>
@@ -80,7 +93,6 @@ export function ArenaGuidePage() {
 
       {/* ─── Content ─── */}
       <PageContent>
-
         {/* ═══ TAB 1: Hướng dẫn ═══ */}
         {tab === 'Hướng dẫn' && (
           <div className="flex flex-col gap-4">
@@ -97,11 +109,27 @@ export function ArenaGuidePage() {
               <div className="relative z-10">
                 <div className="flex items-center gap-2 mb-2">
                   <BookOpen size={16} color="#C4B5FD" />
-                  <span style={{ color: '#C4B5FD', fontSize: 10, fontWeight: 700, letterSpacing: 0.5, textTransform: 'uppercase' }}>
+                  <span
+                    style={{
+                      color: '#C4B5FD',
+                      fontSize: 10,
+                      fontWeight: 700,
+                      letterSpacing: 0.5,
+                      textTransform: 'uppercase',
+                    }}
+                  >
                     Hướng dẫn nhanh
                   </span>
                 </div>
-                <p style={{ color: '#FFFFFF', fontSize: φ.md, fontWeight: 700, lineHeight: 1.3, marginBottom: 4 }}>
+                <p
+                  style={{
+                    color: '#FFFFFF',
+                    fontSize: φ.md,
+                    fontWeight: 700,
+                    lineHeight: 1.3,
+                    marginBottom: 4,
+                  }}
+                >
                   Tạo challenge đầu tiên trong 5 phút
                 </p>
                 <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: φ.sm, lineHeight: 1.5 }}>
@@ -116,9 +144,14 @@ export function ArenaGuidePage() {
                 onClick={() => handleGuideModeChange('create')}
                 className="flex-1 py-2.5 rounded-lg flex items-center justify-center gap-1.5"
                 style={{
-                  background: guideMode === 'create' ? 'linear-gradient(135deg, #8B5CF6, #7C3AED)' : 'transparent',
+                  background:
+                    guideMode === 'create'
+                      ? 'linear-gradient(135deg, #8B5CF6, #7C3AED)'
+                      : 'transparent',
                   color: guideMode === 'create' ? '#fff' : c.text3,
-                  fontWeight: 700, fontSize: 13, minHeight: 44,
+                  fontWeight: 700,
+                  fontSize: 13,
+                  minHeight: 44,
                   transition: 'background 150ms ease, color 150ms ease',
                 }}
               >
@@ -128,9 +161,14 @@ export function ArenaGuidePage() {
                 onClick={() => handleGuideModeChange('join')}
                 className="flex-1 py-2.5 rounded-lg flex items-center justify-center gap-1.5"
                 style={{
-                  background: guideMode === 'join' ? 'linear-gradient(135deg, #3B82F6, #1d4ed8)' : 'transparent',
+                  background:
+                    guideMode === 'join'
+                      ? 'linear-gradient(135deg, #3B82F6, #1d4ed8)'
+                      : 'transparent',
                   color: guideMode === 'join' ? '#fff' : c.text3,
-                  fontWeight: 700, fontSize: 13, minHeight: 44,
+                  fontWeight: 700,
+                  fontSize: 13,
+                  minHeight: 44,
                   transition: 'background 150ms ease, color 150ms ease',
                 }}
               >
@@ -140,9 +178,15 @@ export function ArenaGuidePage() {
 
             {/* Steps with timeline */}
             <div className="flex flex-col gap-0 relative">
-              <div className="absolute left-[18px] top-6 bottom-6 w-0.5" style={{ background: c.divider }} />
-              {steps.map(s => (
-                <div key={`${guideMode}-${s.step}`} className="flex items-start gap-4 py-3 relative z-10">
+              <div
+                className="absolute left-[18px] top-6 bottom-6 w-0.5"
+                style={{ background: c.divider }}
+              />
+              {steps.map((s) => (
+                <div
+                  key={`${guideMode}-${s.step}`}
+                  className="flex items-start gap-4 py-3 relative z-10"
+                >
                   <div
                     className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
                     style={{ background: s.color + '18', border: `2px solid ${s.color}` }}
@@ -153,20 +197,34 @@ export function ArenaGuidePage() {
                     <div className="flex items-center gap-2 mb-1">
                       <span
                         className="px-1.5 py-0.5 rounded"
-                        style={{ background: s.color + '14', color: s.color, fontWeight: 700, fontSize: 9 }}
+                        style={{
+                          background: s.color + '14',
+                          color: s.color,
+                          fontWeight: 700,
+                          fontSize: 9,
+                        }}
                       >
                         Bước {s.step}
                       </span>
-                      <span style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>{s.title}</span>
+                      <span style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>
+                        {s.title}
+                      </span>
                     </div>
-                    <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.6, marginBottom: 6 }}>{s.desc}</p>
+                    <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.6, marginBottom: 6 }}>
+                      {s.desc}
+                    </p>
                     {s.tip && (
                       <div
                         className="flex items-start gap-1.5 px-2.5 py-2 rounded-lg"
-                        style={{ background: 'rgba(139,92,246,0.06)', border: '1px solid rgba(139,92,246,0.12)' }}
+                        style={{
+                          background: 'rgba(139,92,246,0.06)',
+                          border: '1px solid rgba(139,92,246,0.12)',
+                        }}
                       >
                         <Lightbulb size={11} color="#8B5CF6" className="shrink-0 mt-0.5" />
-                        <span style={{ color: '#8B5CF6', fontSize: 10, lineHeight: 1.5 }}>{s.tip}</span>
+                        <span style={{ color: '#8B5CF6', fontSize: 10, lineHeight: 1.5 }}>
+                          {s.tip}
+                        </span>
                       </div>
                     )}
                   </div>
@@ -177,20 +235,26 @@ export function ArenaGuidePage() {
             {/* Quick Start CTA */}
             <TrCard className="p-4" accentBorder="rgba(139,92,246,0.2)">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                  style={{ background: 'rgba(139,92,246,0.12)' }}>
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  style={{ background: 'rgba(139,92,246,0.12)' }}
+                >
                   <Zap size={18} color="#8B5CF6" />
                 </div>
                 <div>
                   <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>Sẵn sàng bắt đầu!</p>
                   <p style={{ color: c.text3, fontSize: 10 }}>
-                    {guideMode === 'create' ? 'Tạo challenge đầu tiên của bạn' : 'Tham gia challenge ngay'}
+                    {guideMode === 'create'
+                      ? 'Tạo challenge đầu tiên của bạn'
+                      : 'Tham gia challenge ngay'}
                   </p>
                 </div>
               </div>
               <div className="flex gap-2">
                 <CTAButton
-                  onClick={() => navigate(guideMode === 'create' ? `${prefix}/arena/studio` : `${prefix}/arena`)}
+                  onClick={() =>
+                    navigate(guideMode === 'create' ? `${prefix}/arena/studio` : `${prefix}/arena`)
+                  }
                   bg="linear-gradient(135deg, #8B5CF6, #7C3AED)"
                   fullWidth
                 >
@@ -215,17 +279,27 @@ export function ArenaGuidePage() {
                         <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>{ex.title}</p>
                         <span
                           className="px-2 py-0.5 rounded-md shrink-0 ml-2"
-                          style={{ background: ex.ratingColor + '14', color: ex.ratingColor, fontSize: 10, fontWeight: 700 }}
+                          style={{
+                            background: ex.ratingColor + '14',
+                            color: ex.ratingColor,
+                            fontSize: 10,
+                            fontWeight: 700,
+                          }}
                         >
                           {ex.rating}
                         </span>
                       </div>
                       <div className="flex flex-wrap gap-1.5 mb-2.5">
-                        {[ex.template, ex.format, `${ex.entry} pts`, ex.resolution].map(tag => (
+                        {[ex.template, ex.format, `${ex.entry} pts`, ex.resolution].map((tag) => (
                           <span
                             key={tag}
                             className="px-2 py-0.5 rounded-md"
-                            style={{ background: c.surface2, color: c.text3, fontSize: 10, fontWeight: 600 }}
+                            style={{
+                              background: c.surface2,
+                              color: c.text3,
+                              fontSize: 10,
+                              fontWeight: 600,
+                            }}
                           >
                             {tag}
                           </span>
@@ -239,7 +313,9 @@ export function ArenaGuidePage() {
                             ) : (
                               <AlertTriangle size={10} color="#F59E0B" className="shrink-0" />
                             )}
-                            <span style={{ color: c.text2, fontSize: 10, lineHeight: 1.5 }}>{r}</span>
+                            <span style={{ color: c.text2, fontSize: 10, lineHeight: 1.5 }}>
+                              {r}
+                            </span>
                           </div>
                         ))}
                       </div>
@@ -255,10 +331,18 @@ export function ArenaGuidePage() {
                 Thuật ngữ quan trọng
               </p>
               <div className="flex flex-col gap-2">
-                {KEY_CONCEPTS.map(item => (
-                  <div key={item.term} className="rounded-xl px-3 py-2.5" style={{ background: c.surface2 }}>
-                    <span style={{ color: '#8B5CF6', fontSize: 11, fontWeight: 700 }}>{item.term}: </span>
-                    <span style={{ color: c.text2, fontSize: 11, lineHeight: 1.6 }}>{item.def}</span>
+                {KEY_CONCEPTS.map((item) => (
+                  <div
+                    key={item.term}
+                    className="rounded-xl px-3 py-2.5"
+                    style={{ background: c.surface2 }}
+                  >
+                    <span style={{ color: '#8B5CF6', fontSize: 11, fontWeight: 700 }}>
+                      {item.term}:{' '}
+                    </span>
+                    <span style={{ color: c.text2, fontSize: 11, lineHeight: 1.6 }}>
+                      {item.def}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -284,7 +368,8 @@ export function ArenaGuidePage() {
                 </span>
               </div>
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.6 }}>
-                Những bí quyết giúp challenge của bạn nổi bật, thu hút nhiều người chơi và giảm tranh chấp.
+                Những bí quyết giúp challenge của bạn nổi bật, thu hút nhiều người chơi và giảm
+                tranh chấp.
               </p>
             </div>
 
@@ -316,29 +401,50 @@ export function ArenaGuidePage() {
                       <span style={{ fontSize: 20 }}>{tip.icon}</span>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <p className="truncate" style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>
+                          <p
+                            className="truncate"
+                            style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}
+                          >
                             {tip.title}
                           </p>
-                          <div className="w-2 h-2 rounded-full shrink-0" style={{ background: impactColor }} />
+                          <div
+                            className="w-2 h-2 rounded-full shrink-0"
+                            style={{ background: impactColor }}
+                          />
                         </div>
                       </div>
-                      <div style={{
-                        transition: 'transform 200ms ease',
-                        transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
-                      }}>
+                      <div
+                        style={{
+                          transition: 'transform 200ms ease',
+                          transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                        }}
+                      >
                         <ChevronDown size={14} color={c.text3} />
                       </div>
                     </button>
                     {/* CSS grid-template-rows accordion */}
-                    <div style={{
-                      display: 'grid',
-                      gridTemplateRows: isExpanded ? '1fr' : '0fr',
-                      opacity: isExpanded ? 1 : 0,
-                      transition: 'grid-template-rows 250ms cubic-bezier(0.4,0,0.2,1), opacity 200ms ease',
-                    }}>
+                    <div
+                      style={{
+                        display: 'grid',
+                        gridTemplateRows: isExpanded ? '1fr' : '0fr',
+                        opacity: isExpanded ? 1 : 0,
+                        transition:
+                          'grid-template-rows 250ms cubic-bezier(0.4,0,0.2,1), opacity 200ms ease',
+                      }}
+                    >
                       <div style={{ overflow: 'hidden' }}>
-                        <div className="px-3.5 pb-3.5 pt-0" style={{ borderTop: `1px solid ${c.divider}` }}>
-                          <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.7, paddingTop: 10 }}>
+                        <div
+                          className="px-3.5 pb-3.5 pt-0"
+                          style={{ borderTop: `1px solid ${c.divider}` }}
+                        >
+                          <p
+                            style={{
+                              color: c.text2,
+                              fontSize: 11,
+                              lineHeight: 1.7,
+                              paddingTop: 10,
+                            }}
+                          >
                             {tip.desc}
                           </p>
                         </div>
@@ -352,7 +458,10 @@ export function ArenaGuidePage() {
             {/* Show More */}
             {!showAllTips && PRO_TIPS.length > 5 && (
               <button
-                onClick={() => { setShowAllTips(true); hapticSelection(); }}
+                onClick={() => {
+                  setShowAllTips(true);
+                  hapticSelection();
+                }}
                 className="flex items-center justify-center gap-1 py-2"
                 style={{ color: '#8B5CF6', fontSize: 12, fontWeight: 600, minHeight: 44 }}
               >
@@ -407,18 +516,23 @@ export function ArenaGuidePage() {
             >
               <div className="flex items-center gap-2.5 mb-2">
                 <Shield size={16} color="#10B981" />
-                <span style={{ color: '#10B981', fontSize: 14, fontWeight: 700 }}>An toàn trong Arena</span>
+                <span style={{ color: '#10B981', fontSize: 14, fontWeight: 700 }}>
+                  An toàn trong Arena
+                </span>
               </div>
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.6 }}>
-                Open Arena sử dụng Arena Points (không phải tiền thật), hệ thống Trust Score, Fair Play và quy trình tranh chấp minh bạch để bảo vệ cộng đồng.
+                Open Arena sử dụng Arena Points (không phải tiền thật), hệ thống Trust Score, Fair
+                Play và quy trình tranh chấp minh bạch để bảo vệ cộng đồng.
               </p>
             </div>
 
             {/* Points = Not Money Banner */}
             <TrCard className="p-3.5" accentBorder="rgba(59,130,246,0.2)">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                  style={{ background: 'rgba(59,130,246,0.12)' }}>
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                  style={{ background: 'rgba(59,130,246,0.12)' }}
+                >
                   <Info size={18} color="#3B82F6" />
                 </div>
                 <div className="flex-1">
@@ -437,8 +551,10 @@ export function ArenaGuidePage() {
               {SAFETY_TIPS.map((s, i) => (
                 <TrCard key={i} className="p-3.5">
                   <div className="flex items-start gap-3">
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ background: s.color + '14' }}>
+                    <div
+                      className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                      style={{ background: s.color + '14' }}
+                    >
                       <s.icon size={16} color={s.color} />
                     </div>
                     <div className="flex-1 pt-0.5">
@@ -454,9 +570,14 @@ export function ArenaGuidePage() {
 
             {/* Safety Center Link */}
             <TrCard hover className="p-4 w-full">
-              <button onClick={() => navigate(`${prefix}/arena/safety`)} className="flex items-center gap-3 w-full text-left">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                  style={{ background: 'rgba(139,92,246,0.12)' }}>
+              <button
+                onClick={() => navigate(`${prefix}/arena/safety`)}
+                className="flex items-center gap-3 w-full text-left"
+              >
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                  style={{ background: 'rgba(139,92,246,0.12)' }}
+                >
                   <Shield size={18} color="#8B5CF6" />
                 </div>
                 <div className="flex-1">
@@ -480,7 +601,12 @@ export function ArenaGuidePage() {
               </span>
               <span
                 className="px-1.5 py-0.5 rounded-md ml-1"
-                style={{ background: 'rgba(139,92,246,0.1)', color: '#8B5CF6', fontSize: 10, fontWeight: 700 }}
+                style={{
+                  background: 'rgba(139,92,246,0.1)',
+                  color: '#8B5CF6',
+                  fontSize: 10,
+                  fontWeight: 700,
+                }}
               >
                 {FAQ_DATA.length}
               </span>
@@ -504,26 +630,39 @@ export function ArenaGuidePage() {
                     >
                       <HelpCircle size={13} color={isOpen ? '#8B5CF6' : c.text3} />
                     </div>
-                    <p className="flex-1 min-w-0" style={{ color: c.text1, fontSize: 12, fontWeight: 600, lineHeight: 1.4 }}>
+                    <p
+                      className="flex-1 min-w-0"
+                      style={{ color: c.text1, fontSize: 12, fontWeight: 600, lineHeight: 1.4 }}
+                    >
                       {item.q}
                     </p>
-                    <div style={{
-                      transition: 'transform 200ms ease',
-                      transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                    }}>
+                    <div
+                      style={{
+                        transition: 'transform 200ms ease',
+                        transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                      }}
+                    >
                       <ChevronDown size={14} color={isOpen ? '#8B5CF6' : c.text3} />
                     </div>
                   </button>
                   {/* CSS grid-template-rows accordion */}
-                  <div style={{
-                    display: 'grid',
-                    gridTemplateRows: isOpen ? '1fr' : '0fr',
-                    opacity: isOpen ? 1 : 0,
-                    transition: 'grid-template-rows 250ms cubic-bezier(0.4,0,0.2,1), opacity 200ms ease',
-                  }}>
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateRows: isOpen ? '1fr' : '0fr',
+                      opacity: isOpen ? 1 : 0,
+                      transition:
+                        'grid-template-rows 250ms cubic-bezier(0.4,0,0.2,1), opacity 200ms ease',
+                    }}
+                  >
                     <div style={{ overflow: 'hidden' }}>
-                      <div className="px-3.5 pb-3.5" style={{ borderTop: `1px solid ${c.divider}` }}>
-                        <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.7, paddingTop: 10 }}>
+                      <div
+                        className="px-3.5 pb-3.5"
+                        style={{ borderTop: `1px solid ${c.divider}` }}
+                      >
+                        <p
+                          style={{ color: c.text2, fontSize: 11, lineHeight: 1.7, paddingTop: 10 }}
+                        >
                           {item.a}
                         </p>
                       </div>
@@ -536,8 +675,10 @@ export function ArenaGuidePage() {
             {/* Still need help */}
             <TrCard className="p-4 mt-2" accentBorder="rgba(139,92,246,0.15)">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                  style={{ background: 'rgba(139,92,246,0.12)' }}>
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                  style={{ background: 'rgba(139,92,246,0.12)' }}
+                >
                   <HelpCircle size={18} color="#8B5CF6" />
                 </div>
                 <div className="flex-1">

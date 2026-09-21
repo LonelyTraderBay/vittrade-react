@@ -4,10 +4,29 @@ import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { PageContent } from '../../components/layout/PageContent';
 import {
-  Copy, CheckCircle, AlertTriangle, Clock, MessageCircle, Flag,
-  Lock, Star, Upload, X, Shield, Image, QrCode, CopyCheck,
-  ArrowDownToLine, ExternalLink, FileCheck,
-  UserX, HelpCircle, Users, ChevronRight, BookOpen, Undo2,
+  Copy,
+  CheckCircle,
+  AlertTriangle,
+  Clock,
+  MessageCircle,
+  Flag,
+  Lock,
+  Star,
+  Upload,
+  X,
+  Shield,
+  Image,
+  QrCode,
+  CopyCheck,
+  ArrowDownToLine,
+  ExternalLink,
+  FileCheck,
+  UserX,
+  HelpCircle,
+  Users,
+  ChevronRight,
+  BookOpen,
+  Undo2,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { toast } from 'sonner';
@@ -30,7 +49,15 @@ import { BiometricPrompt, useBiometricPrompt } from '../../components/states/Bio
 /* ═══════════════════════════════════════════════════════════
    QR Code Visual Component (simulated pattern for prototype)
    ═══════════════════════════════════════════════════════════ */
-function QRCodeVisual({ data, size = 140, color = '#000' }: { data: string; size?: number; color?: string }) {
+function QRCodeVisual({
+  data,
+  size = 140,
+  color = '#000',
+}: {
+  data: string;
+  size?: number;
+  color?: string;
+}) {
   // Deterministic pseudo-random pattern from data string
   const seed = data.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
   const gridSize = 21;
@@ -54,7 +81,7 @@ function QRCodeVisual({ data, size = 140, color = '#000' }: { data: string; size
         cells[r][col] = isOuter || isInner;
       } else {
         // Pseudo-random data area
-        const hash = ((seed * (r * gridSize + col + 1) * 31) % 100);
+        const hash = (seed * (r * gridSize + col + 1) * 31) % 100;
         cells[r][col] = hash < 42;
       }
     }
@@ -74,8 +101,8 @@ function QRCodeVisual({ data, size = 140, color = '#000' }: { data: string; size
               height={cellSize}
               fill={color}
             />
-          ) : null
-        )
+          ) : null,
+        ),
       )}
     </svg>
   );
@@ -96,12 +123,13 @@ interface TimelineEvent {
 function TransactionTimeline({ events }: { events: TimelineEvent[] }) {
   const c = useThemeColors();
 
-  const statusStyles: Record<string, { bg: string; color: string; border: string; line: string }> = {
-    completed: { bg: c.buyAlpha10, color: c.buy, border: c.buy, line: c.buy },
-    active: { bg: c.primaryAlpha12, color: c.primary, border: c.primary, line: c.primary },
-    pending: { bg: c.surface2, color: c.text3, border: c.borderSolid, line: c.borderSolid },
-    error: { bg: c.sellAlpha10, color: c.sell, border: c.sell, line: c.sell },
-  };
+  const statusStyles: Record<string, { bg: string; color: string; border: string; line: string }> =
+    {
+      completed: { bg: c.buyAlpha10, color: c.buy, border: c.buy, line: c.buy },
+      active: { bg: c.primaryAlpha12, color: c.primary, border: c.primary, line: c.primary },
+      pending: { bg: c.surface2, color: c.text3, border: c.borderSolid, line: c.borderSolid },
+      error: { bg: c.sellAlpha10, color: c.sell, border: c.sell, line: c.sell },
+    };
 
   return (
     <div className="flex flex-col">
@@ -142,10 +170,13 @@ function TransactionTimeline({ events }: { events: TimelineEvent[] }) {
               className="flex-1 pb-4"
             >
               <div className="flex items-center justify-between">
-                <span style={{
-                  color: event.status === 'pending' ? c.text3 : c.text1,
-                  fontSize: φ.sm, fontWeight: 600,
-                }}>
+                <span
+                  style={{
+                    color: event.status === 'pending' ? c.text3 : c.text1,
+                    fontSize: φ.sm,
+                    fontWeight: 600,
+                  }}
+                >
                   {event.label}
                 </span>
                 <span style={{ color: c.text3, fontSize: 9, fontFamily: 'monospace' }}>
@@ -153,9 +184,7 @@ function TransactionTimeline({ events }: { events: TimelineEvent[] }) {
                 </span>
               </div>
               {event.description && (
-                <p style={{ color: c.text3, fontSize: φ.xs, marginTop: 2 }}>
-                  {event.description}
-                </p>
+                <p style={{ color: c.text3, fontSize: φ.xs, marginTop: 2 }}>{event.description}</p>
               )}
             </motion.div>
           </div>
@@ -169,13 +198,14 @@ function TransactionTimeline({ events }: { events: TimelineEvent[] }) {
    Countdown Timer
    ═════════════════════════════════════════════════ */
 function CountdownTimer({ seconds: initSec, onExpire }: { seconds: number; onExpire: () => void }) {
+  const c = useThemeColors();
   const [seconds, setSeconds] = useState(initSec);
   const onExpireRef = React.useRef(onExpire);
   onExpireRef.current = onExpire;
 
   useEffect(() => {
     const id = setInterval(() => {
-      setSeconds(s => {
+      setSeconds((s) => {
         if (s <= 1) {
           clearInterval(id);
           onExpireRef.current();
@@ -193,10 +223,23 @@ function CountdownTimer({ seconds: initSec, onExpire }: { seconds: number; onExp
   const pct = (seconds / initSec) * 100;
   return (
     <div className="flex items-center gap-2">
-      <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: c.warnAlpha15, maxWidth: 80 }}>
-        <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: isUrgent ? c.sell : c.warn }} />
+      <div
+        className="flex-1 h-1.5 rounded-full overflow-hidden"
+        style={{ background: c.warnAlpha15, maxWidth: 80 }}
+      >
+        <div
+          className="h-full rounded-full transition-all"
+          style={{ width: `${pct}%`, background: isUrgent ? c.sell : c.warn }}
+        />
       </div>
-      <span style={{ color: isUrgent ? c.sell : c.warn, fontWeight: 700, fontFamily: 'monospace', fontSize: 16 }}>
+      <span
+        style={{
+          color: isUrgent ? c.sell : c.warn,
+          fontWeight: 700,
+          fontFamily: 'monospace',
+          fontSize: 16,
+        }}
+      >
         {mins.toString().padStart(2, '0')}:{secs.toString().padStart(2, '0')}
       </span>
     </div>
@@ -213,21 +256,29 @@ export function P2POrderPage() {
   const { orderId } = useParams();
   const prefix = useRoutePrefix();
   const actionToast = useActionToast();
-  const order = (orderId ? P2P_ORDERS.find(o => o.id === orderId) : null) || P2P_ORDER;
+  const order = (orderId ? P2P_ORDERS.find((o) => o.id === orderId) : null) || P2P_ORDER;
 
   // Initialize step based on order status
   const initialStep = (): 'payment' | 'confirm' | 'complete' | 'cancelled' | 'expired' => {
     switch (order.status) {
-      case 'pending_payment': return 'payment';
-      case 'paid': return 'confirm';
-      case 'released': return 'complete';
-      case 'cancelled': return 'cancelled';
-      case 'expired': return 'expired';
-      default: return 'payment';
+      case 'pending_payment':
+        return 'payment';
+      case 'paid':
+        return 'confirm';
+      case 'released':
+        return 'complete';
+      case 'cancelled':
+        return 'cancelled';
+      case 'expired':
+        return 'expired';
+      default:
+        return 'payment';
     }
   };
 
-  const [step, setStep] = useState<'payment' | 'confirm' | 'complete' | 'cancelled' | 'expired'>(initialStep);
+  const [step, setStep] = useState<'payment' | 'confirm' | 'complete' | 'cancelled' | 'expired'>(
+    initialStep,
+  );
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [showPinConfirm, setShowPinConfirm] = useState(false);
   const [pin, setPin] = useState('');
@@ -266,12 +317,17 @@ export function P2POrderPage() {
   }, []);
 
   /* ─── Enhanced Copy with Toast ─── */
-  const handleCopy = useCallback((text: string, field: string, label?: string) => {
-    navigator.clipboard.writeText(text).catch(() => {});
-    setCopiedField(field);
-    actionToast.success(label ? TOAST.COPY.withLabel(label) : TOAST.COPY.DEFAULT, { haptic: 'selection' });
-    setTimeout(() => setCopiedField(null), 2500);
-  }, [actionToast]);
+  const handleCopy = useCallback(
+    (text: string, field: string, label?: string) => {
+      navigator.clipboard.writeText(text).catch(() => {});
+      setCopiedField(field);
+      actionToast.success(label ? TOAST.COPY.withLabel(label) : TOAST.COPY.DEFAULT, {
+        haptic: 'selection',
+      });
+      setTimeout(() => setCopiedField(null), 2500);
+    },
+    [actionToast],
+  );
 
   /* ─── Copy All Payment Info ─── */
   const handleCopyAll = useCallback(() => {
@@ -303,7 +359,7 @@ export function P2POrderPage() {
     // Start visual countdown
     if (undoIntervalRef.current) clearInterval(undoIntervalRef.current);
     undoIntervalRef.current = setInterval(() => {
-      setUndoCountdown(prev => {
+      setUndoCountdown((prev) => {
         if (prev <= 1) {
           if (undoIntervalRef.current) clearInterval(undoIntervalRef.current);
           return 0;
@@ -343,7 +399,9 @@ export function P2POrderPage() {
     // For prototype: just show the UX flow
     hapticSuccess();
     setStep('complete');
-    toast.success('Auto-release: Coin đã tự động giải phóng do merchant không phản hồi!', { duration: 4000 });
+    toast.success('Auto-release: Coin đã tự động giải phóng do merchant không phản hồi!', {
+      duration: 4000,
+    });
   }, [hapticSuccess]);
 
   const handleComplete = () => {
@@ -415,7 +473,12 @@ export function P2POrderPage() {
     }
 
     if (step === 'confirm') {
-      const paidTime = order.paidAt?.split(' ')[1]?.slice(0, 5) || createdTime.replace(/(\d+):(\d+)/, (_, h, m) => `${h}:${String(parseInt(m) + 5).padStart(2, '0')}`);
+      const paidTime =
+        order.paidAt?.split(' ')[1]?.slice(0, 5) ||
+        createdTime.replace(
+          /(\d+):(\d+)/,
+          (_, h, m) => `${h}:${String(parseInt(m) + 5).padStart(2, '0')}`,
+        );
       events.push({
         id: 'payment_done',
         label: 'Đã thanh toán',
@@ -521,9 +584,13 @@ export function P2POrderPage() {
       <Header title="Chi tiết đơn hàng" subtitle="Đơn hàng · P2P" back />
 
       {/* Status Banner */}
-      <div className="flex items-center justify-between py-3"
-        style={{ background: current.color + '12', borderBottom: `1px solid ${current.color}25` }}>
-        <span style={{ color: current.color, fontSize: φ.sm, fontWeight: 600 }}>{current.label}</span>
+      <div
+        className="flex items-center justify-between py-3"
+        style={{ background: current.color + '12', borderBottom: `1px solid ${current.color}25` }}
+      >
+        <span style={{ color: current.color, fontSize: φ.sm, fontWeight: 600 }}>
+          {current.label}
+        </span>
         {step === 'payment' && <CountdownTimer seconds={900} onExpire={handleExpire} />}
         {step === 'confirm' && <CountdownTimer seconds={1800} onExpire={handleAutoRelease} />}
       </div>
@@ -532,19 +599,32 @@ export function P2POrderPage() {
       {step !== 'cancelled' && step !== 'expired' && (
         <div className="flex items-center gap-2 py-4">
           {['Đặt lệnh', 'Thanh toán', 'Nhận tiền'].map((s, i) => (
-            <div key={s} className="flex items-center gap-2" style={{ flex: i < 2 ? 1 : undefined }}>
+            <div
+              key={s}
+              className="flex items-center gap-2"
+              style={{ flex: i < 2 ? 1 : undefined }}
+            >
               <div className="flex flex-col items-center gap-1">
-                <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold"
+                <div
+                  className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold"
                   style={{
                     background: i < current.step ? c.primary : c.surface2,
                     color: i < current.step ? '#fff' : c.text3,
                     border: `1.5px solid ${i < current.step ? c.primary : c.borderSolid}`,
-                  }}>
+                  }}
+                >
                   {i < current.step ? <CheckCircle size={14} /> : i + 1}
                 </div>
-                <span style={{ color: i < current.step ? c.primary : c.text3, fontSize: 10 }}>{s}</span>
+                <span style={{ color: i < current.step ? c.primary : c.text3, fontSize: 10 }}>
+                  {s}
+                </span>
               </div>
-              {i < 2 && <div className="flex-1 h-0.5 mb-4" style={{ background: i < current.step - 1 ? c.primary : c.borderSolid }} />}
+              {i < 2 && (
+                <div
+                  className="flex-1 h-0.5 mb-4"
+                  style={{ background: i < current.step - 1 ? c.primary : c.borderSolid }}
+                />
+              )}
             </div>
           ))}
         </div>
@@ -553,17 +633,30 @@ export function P2POrderPage() {
       <PageContent gap="default">
         {/* ═══ Anti-Scam Safety Banner (persistent) ═══ */}
         {(step === 'payment' || step === 'confirm') && (
-          <div className="rounded-xl p-3" style={{ background: c.sellAlpha10, border: `1px solid ${c.sellAlpha15}` }}>
+          <div
+            className="rounded-xl p-3"
+            style={{ background: c.sellAlpha10, border: `1px solid ${c.sellAlpha15}` }}
+          >
             <div className="flex items-start gap-2.5">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                style={{ background: c.sellAlpha10 }}>
+              <div
+                className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                style={{ background: c.sellAlpha10 }}
+              >
                 <Shield size={16} color={c.sell} />
               </div>
               <div className="flex-1">
                 <p style={{ color: c.sell, fontSize: 12, fontWeight: 700, marginBottom: 2 }}>
                   Lưu ý an toàn giao dịch P2P
                 </p>
-                <ul style={{ color: '#F87171', fontSize: 11, lineHeight: 1.7, margin: 0, paddingLeft: 14 }}>
+                <ul
+                  style={{
+                    color: '#F87171',
+                    fontSize: 11,
+                    lineHeight: 1.7,
+                    margin: 0,
+                    paddingLeft: 14,
+                  }}
+                >
                   <li>Không giao dịch ngoài nền tảng</li>
                   <li>Chỉ nhấn "Đã thanh toán" khi đã chuyển khoản thật</li>
                   <li>Không chia sẻ mã OTP hoặc mật khẩu cho bất kỳ ai</li>
@@ -575,15 +668,24 @@ export function P2POrderPage() {
         )}
 
         {/* Escrow Info */}
-        <div className="rounded-xl p-3 flex items-center gap-3"
-          style={{ background: c.buyAlpha10, border: `1px solid ${c.buyAlpha15}` }}>
+        <div
+          className="rounded-xl p-3 flex items-center gap-3"
+          style={{ background: c.buyAlpha10, border: `1px solid ${c.buyAlpha15}` }}
+        >
           <Lock size={16} color={c.buy} />
           <div className="flex-1">
-            <p style={{ color: c.buy, fontSize: φ.xs, fontWeight: 600 }}>Escrow: {fmtAmount(order.escrowAmount)} {order.asset} đã khóa</p>
-            <p style={{ color: c.text3, fontSize: 10 }}>Tài sản được bảo vệ cho đến khi xác nhận thanh toán</p>
+            <p style={{ color: c.buy, fontSize: φ.xs, fontWeight: 600 }}>
+              Escrow: {fmtAmount(order.escrowAmount)} {order.asset} đã khóa
+            </p>
+            <p style={{ color: c.text3, fontSize: 10 }}>
+              Tài sản được bảo vệ cho đến khi xác nhận thanh toán
+            </p>
           </div>
           <button
-            onClick={() => { navigate(`${prefix}/p2p/escrow/${order.id}`); hapticSelection(); }}
+            onClick={() => {
+              navigate(`${prefix}/p2p/escrow/${order.id}`);
+              hapticSelection();
+            }}
             className="shrink-0 flex items-center gap-1 px-2 py-1 rounded-lg"
             style={{ background: c.buyAlpha10, minHeight: 28 }}
           >
@@ -594,8 +696,10 @@ export function P2POrderPage() {
 
         {/* Auto-Release Banner (confirm step) */}
         {step === 'confirm' && (
-          <div className="rounded-xl p-3"
-            style={{ background: c.primaryAlpha08, border: `1px solid ${c.primaryAlpha12}` }}>
+          <div
+            className="rounded-xl p-3"
+            style={{ background: c.primaryAlpha08, border: `1px solid ${c.primaryAlpha12}` }}
+          >
             <div className="flex items-start gap-2">
               <Clock size={14} color={c.primary} className="shrink-0 mt-0.5" />
               <div>
@@ -603,7 +707,8 @@ export function P2POrderPage() {
                   Auto-release đang hoạt động
                 </p>
                 <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6 }}>
-                  Nếu merchant không xác nhận trong 30 phút, coin sẽ tự động được giải phóng cho bạn.
+                  Nếu merchant không xác nhận trong 30 phút, coin sẽ tự động được giải phóng cho
+                  bạn.
                 </p>
               </div>
             </div>
@@ -634,24 +739,53 @@ export function P2POrderPage() {
         <TrCard className="p-4">
           <div className="flex items-center justify-between mb-3">
             <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Đơn hàng</h3>
-            <button onClick={() => handleCopy(order.orderNumber, 'orderNum', 'mã đơn')}
+            <button
+              onClick={() => handleCopy(order.orderNumber, 'orderNum', 'mã đơn')}
               className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs"
-              style={{ background: copiedField === 'orderNum' ? 'rgba(16,185,129,0.1)' : c.surface2, color: copiedField === 'orderNum' ? '#10B981' : c.text2 }}>
+              style={{
+                background: copiedField === 'orderNum' ? 'rgba(16,185,129,0.1)' : c.surface2,
+                color: copiedField === 'orderNum' ? '#10B981' : c.text2,
+              }}
+            >
               {copiedField === 'orderNum' ? <CopyCheck size={10} /> : <Copy size={10} />}
               {order.orderNumber}
             </button>
           </div>
           {[
-            { label: 'Giao dịch', value: `${order.type === 'buy' ? 'Mua' : 'Bán'} ${fmtAmount(order.amount)} ${order.asset}`, highlight: true },
+            {
+              label: 'Giao dịch',
+              value: `${order.type === 'buy' ? 'Mua' : 'Bán'} ${fmtAmount(order.amount)} ${order.asset}`,
+              highlight: true,
+            },
             { label: 'Giá', value: `${fmtVnd(order.price)} VND/${order.asset}` },
-            { label: 'Cần thanh toán', value: `${fmtVnd(order.total)} ${order.currency}`, highlight: true },
+            {
+              label: 'Cần thanh toán',
+              value: `${fmtVnd(order.total)} ${order.currency}`,
+              highlight: true,
+            },
             { label: 'Thanh toán qua', value: order.paymentMethod },
             { label: 'Người bán', value: order.merchant },
-            { label: 'Phí', value: order.fee > 0 ? `${fmtAmount(order.fee)} ${order.asset}` : 'Miễn phí' },
-          ].map(row => (
-            <div key={row.label} className="flex justify-between items-center py-2" style={{ borderBottom: `1px solid ${c.divider}` }}>
+            {
+              label: 'Phí',
+              value: order.fee > 0 ? `${fmtAmount(order.fee)} ${order.asset}` : 'Miễn phí',
+            },
+          ].map((row) => (
+            <div
+              key={row.label}
+              className="flex justify-between items-center py-2"
+              style={{ borderBottom: `1px solid ${c.divider}` }}
+            >
               <span style={{ color: c.text2, fontSize: φ.sm }}>{row.label}</span>
-              <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: row.highlight ? 700 : 400, fontFamily: row.highlight ? 'monospace' : 'inherit' }}>{row.value}</span>
+              <span
+                style={{
+                  color: c.text1,
+                  fontSize: φ.sm,
+                  fontWeight: row.highlight ? 700 : 400,
+                  fontFamily: row.highlight ? 'monospace' : 'inherit',
+                }}
+              >
+                {row.value}
+              </span>
             </div>
           ))}
         </TrCard>
@@ -663,17 +797,20 @@ export function P2POrderPage() {
           <TrCard className="p-4" accentBorder="rgba(59,130,246,0.2)">
             <div className="flex items-center justify-between mb-3">
               <h3 style={{ color: '#3B82F6', fontSize: φ.sm, fontWeight: 700 }}>
-                <Shield size={14} className="inline mr-1" />Thông tin chuyển khoản
+                <Shield size={14} className="inline mr-1" />
+                Thông tin chuyển khoản
               </h3>
               {/* Copy All Button */}
               <button
                 onClick={handleCopyAll}
                 className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg"
                 style={{
-                  background: copiedField === 'all' ? 'rgba(16,185,129,0.12)' : 'rgba(59,130,246,0.08)',
+                  background:
+                    copiedField === 'all' ? 'rgba(16,185,129,0.12)' : 'rgba(59,130,246,0.08)',
                   color: copiedField === 'all' ? '#10B981' : '#3B82F6',
                   border: `1px solid ${copiedField === 'all' ? 'rgba(16,185,129,0.3)' : 'rgba(59,130,246,0.2)'}`,
-                  fontSize: 11, fontWeight: 600,
+                  fontSize: 11,
+                  fontWeight: 600,
                   transition: 'all 0.2s ease',
                 }}
               >
@@ -685,12 +822,17 @@ export function P2POrderPage() {
             {/* QR Code Section */}
             <div className="mb-4">
               <button
-                onClick={() => { setShowQR(!showQR); hapticSelection(); }}
+                onClick={() => {
+                  setShowQR(!showQR);
+                  hapticSelection();
+                }}
                 className="w-full flex items-center justify-between py-2 mb-2"
               >
                 <div className="flex items-center gap-2">
                   <QrCode size={14} color="#3B82F6" />
-                  <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>Mã QR chuyển khoản</span>
+                  <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
+                    Mã QR chuyển khoản
+                  </span>
                 </div>
                 <span style={{ color: '#3B82F6', fontSize: φ.xs }}>
                   {showQR ? 'Thu gọn' : 'Hiển thị'}
@@ -709,21 +851,34 @@ export function P2POrderPage() {
                       className="flex flex-col items-center rounded-2xl p-4 mb-3"
                       style={{ background: c.surface2, border: `1px dashed ${c.borderSolid}` }}
                     >
-                      <div className="rounded-xl overflow-hidden mb-3 p-2" style={{ background: '#fff' }}>
+                      <div
+                        className="rounded-xl overflow-hidden mb-3 p-2"
+                        style={{ background: '#fff' }}
+                      >
                         <QRCodeVisual data={qrData} size={140} color="#1a1a2e" />
                       </div>
-                      <p style={{ color: c.text2, fontSize: φ.xs, fontWeight: 600, marginBottom: 2 }}>
+                      <p
+                        style={{ color: c.text2, fontSize: φ.xs, fontWeight: 600, marginBottom: 2 }}
+                      >
                         Quét mã bằng app ngân hàng
                       </p>
                       <p style={{ color: c.text3, fontSize: 9 }}>
                         {order.paymentInfo.bankName} · {order.paymentInfo.accountName}
                       </p>
                       <button
-                        onClick={() => { hapticSelection(); }}
+                        onClick={() => {
+                          hapticSelection();
+                        }}
                         className="flex items-center gap-1.5 mt-2 px-3 py-1.5 rounded-lg"
-                        style={{ background: 'rgba(59,130,246,0.08)', color: '#3B82F6', fontSize: φ.xs, fontWeight: 600 }}
+                        style={{
+                          background: 'rgba(59,130,246,0.08)',
+                          color: '#3B82F6',
+                          fontSize: φ.xs,
+                          fontWeight: 600,
+                        }}
                       >
-                        <ExternalLink size={11} />Mở app ngân hàng
+                        <ExternalLink size={11} />
+                        Mở app ngân hàng
                       </button>
                     </div>
                   </motion.div>
@@ -738,17 +893,32 @@ export function P2POrderPage() {
               { label: 'Tên chủ TK', value: order.paymentInfo.accountName, field: 'name' },
               { label: 'Số tiền', value: `${fmtVnd(order.total)} VND`, field: 'amount' },
               { label: 'Nội dung CK', value: `VITTA ${order.id.toUpperCase()}`, field: 'content' },
-            ].map(row => (
-              <div key={row.label} className="flex items-center justify-between py-2.5" style={{ borderBottom: `1px solid ${c.divider}` }}>
+            ].map((row) => (
+              <div
+                key={row.label}
+                className="flex items-center justify-between py-2.5"
+                style={{ borderBottom: `1px solid ${c.divider}` }}
+              >
                 <div className="flex-1 min-w-0">
                   <p style={{ color: c.text3, fontSize: 11 }}>{row.label}</p>
-                  <p style={{
-                    color: c.text1,
-                    fontSize: row.field === 'account' || row.field === 'amount' || row.field === 'content' ? φ.base : φ.sm,
-                    fontWeight: row.field === 'account' || row.field === 'amount' || row.field === 'content' ? 700 : 600,
-                    fontFamily: row.field === 'account' || row.field === 'content' ? 'monospace' : 'inherit',
-                    letterSpacing: row.field === 'account' ? '0.5px' : undefined,
-                  }}>
+                  <p
+                    style={{
+                      color: c.text1,
+                      fontSize:
+                        row.field === 'account' || row.field === 'amount' || row.field === 'content'
+                          ? φ.base
+                          : φ.sm,
+                      fontWeight:
+                        row.field === 'account' || row.field === 'amount' || row.field === 'content'
+                          ? 700
+                          : 600,
+                      fontFamily:
+                        row.field === 'account' || row.field === 'content'
+                          ? 'monospace'
+                          : 'inherit',
+                      letterSpacing: row.field === 'account' ? '0.5px' : undefined,
+                    }}
+                  >
                     {row.value}
                   </p>
                 </div>
@@ -757,9 +927,11 @@ export function P2POrderPage() {
                   whileTap={{ scale: 0.9 }}
                   className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg ml-2 flex-shrink-0"
                   style={{
-                    background: copiedField === row.field ? 'rgba(16,185,129,0.15)' : 'rgba(59,130,246,0.1)',
+                    background:
+                      copiedField === row.field ? 'rgba(16,185,129,0.15)' : 'rgba(59,130,246,0.1)',
                     color: copiedField === row.field ? '#10B981' : '#3B82F6',
-                    fontSize: 12, fontWeight: 600,
+                    fontSize: 12,
+                    fontWeight: 600,
                     transition: 'all 0.2s ease',
                   }}
                 >
@@ -795,7 +967,13 @@ export function P2POrderPage() {
             ))}
 
             {/* Transfer Note Warning */}
-            <div className="mt-3 rounded-xl p-3" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
+            <div
+              className="mt-3 rounded-xl p-3"
+              style={{
+                background: 'rgba(245,158,11,0.08)',
+                border: '1px solid rgba(245,158,11,0.2)',
+              }}
+            >
               <div className="flex items-start gap-2">
                 <AlertTriangle size={12} color="#F59E0B" className="shrink-0 mt-0.5" />
                 <div>
@@ -803,7 +981,8 @@ export function P2POrderPage() {
                     Lưu ý quan trọng
                   </p>
                   <p style={{ color: '#D97706', fontSize: 11, lineHeight: 1.6 }}>
-                    Nội dung chuyển khoản phải ghi chính xác: <strong>VITTA {order.id.toUpperCase()}</strong>. Không ghi nội dung khác.
+                    Nội dung chuyển khoản phải ghi chính xác:{' '}
+                    <strong>VITTA {order.id.toUpperCase()}</strong>. Không ghi nội dung khác.
                   </p>
                 </div>
               </div>
@@ -816,18 +995,23 @@ export function P2POrderPage() {
           <TrCard className="p-4">
             <div className="flex items-center justify-between mb-3">
               <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
-                <Upload size={14} className="inline mr-1" />Bằng chứng thanh toán
+                <Upload size={14} className="inline mr-1" />
+                Bằng chứng thanh toán
               </h3>
               {step === 'payment' && (
-                <button onClick={() => navigate(`${prefix}/p2p/order/proof/${order.id}`)}
+                <button
+                  onClick={() => navigate(`${prefix}/p2p/order/proof/${order.id}`)}
                   className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-semibold"
-                  style={{ background: 'rgba(59,130,246,0.1)', color: '#3B82F6' }}>
+                  style={{ background: 'rgba(59,130,246,0.1)', color: '#3B82F6' }}
+                >
                   <Upload size={12} /> Tải lên
                 </button>
               )}
             </div>
             <p style={{ color: c.text3, fontSize: φ.xs }}>
-              {step === 'payment' ? 'Tải ảnh chụp giao dịch ngân hàng trước khi xác nhận thanh toán' : 'Đang chờ merchant xác nhận'}
+              {step === 'payment'
+                ? 'Tải ảnh chụp giao dịch ngân hàng trước khi xác nhận thanh toán'
+                : 'Đang chờ merchant xác nhận'}
             </p>
           </TrCard>
         )}
@@ -838,14 +1022,19 @@ export function P2POrderPage() {
         <TrCard className="p-4">
           <div className="flex items-center gap-2 mb-4">
             <Clock size={14} color={c.text2} />
-            <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Tiến trình giao dịch</h3>
+            <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
+              Tiến trình giao dịch
+            </h3>
           </div>
           <TransactionTimeline events={buildTimelineEvents()} />
         </TrCard>
 
         {/* Warning */}
         {(step === 'payment' || step === 'confirm') && (
-          <div className="rounded-xl p-3" style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)' }}>
+          <div
+            className="rounded-xl p-3"
+            style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)' }}
+          >
             <div className="flex items-start gap-2">
               <AlertTriangle size={14} color="#EF4444" className="shrink-0 mt-0.5" />
               <p style={{ color: '#F87171', fontSize: 12, lineHeight: 1.6 }}>
@@ -859,56 +1048,116 @@ export function P2POrderPage() {
 
         {/* Cancelled/Expired info */}
         {(step === 'cancelled' || step === 'expired') && (
-          <div className="rounded-2xl p-5 flex flex-col items-center gap-3"
-            style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)' }}>
-            <div className="w-16 h-16 rounded-2xl flex items-center justify-center"
-              style={{ background: 'rgba(239,68,68,0.1)' }}>
-              {step === 'cancelled' ? <X size={32} color="#EF4444" /> : <Clock size={32} color="#6B7280" />}
+          <div
+            className="rounded-2xl p-5 flex flex-col items-center gap-3"
+            style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)' }}
+          >
+            <div
+              className="w-16 h-16 rounded-2xl flex items-center justify-center"
+              style={{ background: 'rgba(239,68,68,0.1)' }}
+            >
+              {step === 'cancelled' ? (
+                <X size={32} color="#EF4444" />
+              ) : (
+                <Clock size={32} color="#6B7280" />
+              )}
             </div>
-            <p style={{ color: step === 'cancelled' ? '#EF4444' : '#6B7280', fontSize: φ.base, fontWeight: 700 }}>
+            <p
+              style={{
+                color: step === 'cancelled' ? '#EF4444' : '#6B7280',
+                fontSize: φ.base,
+                fontWeight: 700,
+              }}
+            >
               {step === 'cancelled' ? 'Đơn hàng đã bị hủy' : 'Đơn hàng đã hết hạn'}
             </p>
-            {order.cancelReason && <p style={{ color: c.text2, fontSize: φ.sm }}>Lý do: {order.cancelReason}</p>}
-            <p style={{ color: c.text3, fontSize: φ.xs }}>Escrow {fmtAmount(order.escrowAmount)} {order.asset} đã được hoàn trả</p>
+            {order.cancelReason && (
+              <p style={{ color: c.text2, fontSize: φ.sm }}>Lý do: {order.cancelReason}</p>
+            )}
+            <p style={{ color: c.text3, fontSize: φ.xs }}>
+              Escrow {fmtAmount(order.escrowAmount)} {order.asset} đã được hoàn trả
+            </p>
           </div>
         )}
 
         {/* Complete celebration */}
         {step === 'complete' && (
-          <div className="rounded-2xl p-5 flex flex-col items-center gap-3"
-            style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}>
-            <div className="w-16 h-16 rounded-2xl flex items-center justify-center"
-              style={{ background: 'rgba(16,185,129,0.15)' }}>
+          <div
+            className="rounded-2xl p-5 flex flex-col items-center gap-3"
+            style={{
+              background: 'rgba(16,185,129,0.06)',
+              border: '1px solid rgba(16,185,129,0.15)',
+            }}
+          >
+            <div
+              className="w-16 h-16 rounded-2xl flex items-center justify-center"
+              style={{ background: 'rgba(16,185,129,0.15)' }}
+            >
               <CheckCircle size={32} color="#10B981" />
             </div>
-            <p style={{ color: '#10B981', fontSize: φ.base, fontWeight: 700 }}>Giao dịch hoàn thành!</p>
-            <p style={{ color: c.text2, fontSize: φ.sm }}>+{fmtAmount(order.amount)} {order.asset} đã vào ví</p>
+            <p style={{ color: '#10B981', fontSize: φ.base, fontWeight: 700 }}>
+              Giao dịch hoàn thành!
+            </p>
+            <p style={{ color: c.text2, fontSize: φ.sm }}>
+              +{fmtAmount(order.amount)} {order.asset} đã vào ví
+            </p>
           </div>
         )}
 
         {/* Actions */}
         <div className="flex gap-3 mt-auto">
-          <CTAButton onClick={() => navigate(`${prefix}/p2p/chat/${order.id}`)} variant="ghost" bg={c.surface2} textColor={c.text2}
-            fullWidth={false} className="flex-1" style={{ border: `1px solid ${c.borderSolid}`, fontSize: 15, boxShadow: 'none' }}>
+          <CTAButton
+            onClick={() => navigate(`${prefix}/p2p/chat/${order.id}`)}
+            variant="ghost"
+            bg={c.surface2}
+            textColor={c.text2}
+            fullWidth={false}
+            className="flex-1"
+            style={{ border: `1px solid ${c.borderSolid}`, fontSize: 15, boxShadow: 'none' }}
+          >
             <MessageCircle size={18} /> Nhắn tin
           </CTAButton>
           {step === 'payment' && (
-            <CTAButton onClick={handleMarkPaid} variant="success" fullWidth={false} className="flex-1" style={{ fontSize: 15 }}>
+            <CTAButton
+              onClick={handleMarkPaid}
+              variant="success"
+              fullWidth={false}
+              className="flex-1"
+              style={{ fontSize: 15 }}
+            >
               <CheckCircle size={16} /> Đã thanh toán
             </CTAButton>
           )}
           {step === 'confirm' && (
-            <CTAButton onClick={() => setShowPinConfirm(true)} variant="primary" fullWidth={false} className="flex-1" style={{ fontSize: 15 }}>
+            <CTAButton
+              onClick={() => setShowPinConfirm(true)}
+              variant="primary"
+              fullWidth={false}
+              className="flex-1"
+              style={{ fontSize: 15 }}
+            >
               <Clock size={16} /> Chờ xác nhận…
             </CTAButton>
           )}
           {step === 'complete' && (
-            <CTAButton onClick={() => navigate(`${prefix}/p2p`)} variant="success" fullWidth={false} className="flex-1" style={{ fontSize: 15 }}>
+            <CTAButton
+              onClick={() => navigate(`${prefix}/p2p`)}
+              variant="success"
+              fullWidth={false}
+              className="flex-1"
+              style={{ fontSize: 15 }}
+            >
               Hoàn tất
             </CTAButton>
           )}
           {(step === 'cancelled' || step === 'expired') && (
-            <CTAButton onClick={() => navigate(`${prefix}/p2p`)} variant="primary" fullWidth={false} className="flex-1" style={{ fontSize: 15 }}>
+            <CTAButton
+              onClick={() => navigate(`${prefix}/p2p`)}
+              variant="primary"
+              fullWidth={false}
+              className="flex-1"
+              style={{ fontSize: 15 }}
+            >
               Quay lại P2P
             </CTAButton>
           )}
@@ -916,14 +1165,20 @@ export function P2POrderPage() {
 
         {/* Secondary actions */}
         {step === 'payment' && (
-          <button onClick={() => navigate(`${prefix}/p2p/order/cancel/${order.id}`)} className="flex items-center justify-center gap-2 py-2"
-            style={{ color: '#EF4444', fontSize: φ.sm }}>
+          <button
+            onClick={() => navigate(`${prefix}/p2p/order/cancel/${order.id}`)}
+            className="flex items-center justify-center gap-2 py-2"
+            style={{ color: '#EF4444', fontSize: φ.sm }}
+          >
             <X size={14} /> Hủy đơn hàng
           </button>
         )}
         {step === 'confirm' && (
-          <button onClick={() => navigate(`${prefix}/p2p/dispute/${order.id}`)} className="flex items-center justify-center gap-2 py-2"
-            style={{ color: '#EF4444', fontSize: φ.sm }}>
+          <button
+            onClick={() => navigate(`${prefix}/p2p/dispute/${order.id}`)}
+            className="flex items-center justify-center gap-2 py-2"
+            style={{ color: '#EF4444', fontSize: φ.sm }}
+          >
             <Flag size={14} /> Khiếu nại đơn hàng
           </button>
         )}
@@ -932,11 +1187,16 @@ export function P2POrderPage() {
         {step === 'confirm' && (
           <TrCard className="p-3" accentBorder="rgba(239,68,68,0.2)">
             <button
-              onClick={() => { navigate(`${prefix}/p2p/dispute/${order.id}`); hapticSelection(); }}
+              onClick={() => {
+                navigate(`${prefix}/p2p/dispute/${order.id}`);
+                hapticSelection();
+              }}
               className="w-full flex items-center gap-3"
             >
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-                style={{ background: 'rgba(239,68,68,0.1)' }}>
+              <div
+                className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                style={{ background: 'rgba(239,68,68,0.1)' }}
+              >
                 <Flag size={14} color="#EF4444" />
               </div>
               <div className="flex-1 text-left">
@@ -953,10 +1213,23 @@ export function P2POrderPage() {
         {/* ═══ Quick Actions Bar ═══ */}
         {(step === 'payment' || step === 'confirm') && (
           <TrCard className="p-3">
-            <p style={{ color: c.text3, fontSize: 9, fontWeight: 600, marginBottom: 6, letterSpacing: 0.5 }}>HÀNH ĐỘNG NHANH</p>
+            <p
+              style={{
+                color: c.text3,
+                fontSize: 9,
+                fontWeight: 600,
+                marginBottom: 6,
+                letterSpacing: 0.5,
+              }}
+            >
+              HÀNH ĐỘNG NHANH
+            </p>
             <div className="flex gap-2">
               <button
-                onClick={() => { navigate(`${prefix}/p2p/merchant/${order.merchantId || 'mc001'}`); hapticSelection(); }}
+                onClick={() => {
+                  navigate(`${prefix}/p2p/merchant/${order.merchantId || 'mc001'}`);
+                  hapticSelection();
+                }}
                 className="flex-1 flex items-center gap-1.5 justify-center py-2 rounded-xl"
                 style={{ background: c.surface2, border: `1px solid ${c.borderSolid}` }}
               >
@@ -964,25 +1237,43 @@ export function P2POrderPage() {
                 <span style={{ color: c.text2, fontSize: 10, fontWeight: 600 }}>Merchant</span>
               </button>
               <button
-                onClick={() => { navigate(`${prefix}/p2p/blacklist`); hapticSelection(); }}
+                onClick={() => {
+                  navigate(`${prefix}/p2p/blacklist`);
+                  hapticSelection();
+                }}
                 className="flex-1 flex items-center gap-1.5 justify-center py-2 rounded-xl"
-                style={{ background: 'rgba(239,68,68,0.04)', border: '1px solid rgba(239,68,68,0.1)' }}
+                style={{
+                  background: 'rgba(239,68,68,0.04)',
+                  border: '1px solid rgba(239,68,68,0.1)',
+                }}
               >
                 <UserX size={11} color="#EF4444" />
                 <span style={{ color: '#EF4444', fontSize: 10, fontWeight: 600 }}>Chặn</span>
               </button>
               <button
-                onClick={() => { navigate(`${prefix}/p2p/guide`); hapticSelection(); }}
+                onClick={() => {
+                  navigate(`${prefix}/p2p/guide`);
+                  hapticSelection();
+                }}
                 className="flex-1 flex items-center gap-1.5 justify-center py-2 rounded-xl"
-                style={{ background: 'rgba(139,92,246,0.04)', border: '1px solid rgba(139,92,246,0.1)' }}
+                style={{
+                  background: 'rgba(139,92,246,0.04)',
+                  border: '1px solid rgba(139,92,246,0.1)',
+                }}
               >
                 <BookOpen size={11} color="#8B5CF6" />
                 <span style={{ color: '#8B5CF6', fontSize: 10, fontWeight: 600 }}>Hướng dẫn</span>
               </button>
               <button
-                onClick={() => { navigate(`${prefix}/support/help`); hapticSelection(); }}
+                onClick={() => {
+                  navigate(`${prefix}/support/help`);
+                  hapticSelection();
+                }}
                 className="flex-1 flex items-center gap-1.5 justify-center py-2 rounded-xl"
-                style={{ background: 'rgba(16,185,129,0.04)', border: '1px solid rgba(16,185,129,0.1)' }}
+                style={{
+                  background: 'rgba(16,185,129,0.04)',
+                  border: '1px solid rgba(16,185,129,0.1)',
+                }}
               >
                 <HelpCircle size={11} color="#10B981" />
                 <span style={{ color: '#10B981', fontSize: 10, fontWeight: 600 }}>Hỗ trợ</span>
@@ -995,7 +1286,10 @@ export function P2POrderPage() {
       {/* PIN Confirm Modal → BottomSheetV2 center — Destructive Typed Confirm */}
       <BottomSheetV2
         open={showPinConfirm}
-        onClose={() => { setShowPinConfirm(false); setReleaseTyped(''); }}
+        onClose={() => {
+          setShowPinConfirm(false);
+          setReleaseTyped('');
+        }}
         variant="center"
         title="Xác nhận giải phóng Crypto"
         showHandle={false}
@@ -1003,8 +1297,10 @@ export function P2POrderPage() {
         onAfterOpen={onPinSheetOpen}
       >
         <div className="flex flex-col items-center gap-4">
-          <div className="flex items-center justify-center w-14 h-14 rounded-2xl"
-            style={{ background: 'rgba(239,68,68,0.1)' }}>
+          <div
+            className="flex items-center justify-center w-14 h-14 rounded-2xl"
+            style={{ background: 'rgba(239,68,68,0.1)' }}
+          >
             <AlertTriangle size={28} color="#EF4444" />
           </div>
 
@@ -1018,14 +1314,25 @@ export function P2POrderPage() {
           </div>
 
           {/* Destructive warning box */}
-          <div className="w-full rounded-xl p-3" style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.2)' }}>
+          <div
+            className="w-full rounded-xl p-3"
+            style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.2)' }}
+          >
             <div className="flex items-start gap-2">
               <Shield size={14} color="#EF4444" className="shrink-0 mt-0.5" />
               <div>
                 <p style={{ color: '#EF4444', fontSize: 12, fontWeight: 700, marginBottom: 2 }}>
                   Hành động không thể hoàn tác
                 </p>
-                <ul style={{ color: '#F87171', fontSize: 11, lineHeight: 1.7, margin: 0, paddingLeft: 14 }}>
+                <ul
+                  style={{
+                    color: '#F87171',
+                    fontSize: 11,
+                    lineHeight: 1.7,
+                    margin: 0,
+                    paddingLeft: 14,
+                  }}
+                >
                   <li>Xác nhận rằng bạn đã nhận đủ tiền</li>
                   <li>Kiểm tra kỹ số tiền trong tài khoản ngân hàng</li>
                   <li>Không giải phóng nếu chưa nhận được tiền thật</li>
@@ -1035,25 +1342,49 @@ export function P2POrderPage() {
           </div>
 
           {/* Summary */}
-          <div className="w-full flex flex-col gap-2 rounded-xl p-3" style={{ background: c.surface2 }}>
+          <div
+            className="w-full flex flex-col gap-2 rounded-xl p-3"
+            style={{ background: c.surface2 }}
+          >
             <div className="flex justify-between">
               <span style={{ color: c.text3, fontSize: 12 }}>Số tiền nhận</span>
-              <span style={{ color: c.text1, fontSize: 13, fontWeight: 700, fontFamily: 'monospace' }}>{fmtVnd(order.total)} VND</span>
+              <span
+                style={{ color: c.text1, fontSize: 13, fontWeight: 700, fontFamily: 'monospace' }}
+              >
+                {fmtVnd(order.total)} VND
+              </span>
             </div>
             <div className="flex justify-between">
               <span style={{ color: c.text3, fontSize: 12 }}>Giải phóng</span>
-              <span style={{ color: c.text1, fontSize: 13, fontWeight: 700, fontFamily: 'monospace' }}>{fmtAmount(order.escrowAmount)} {order.asset}</span>
+              <span
+                style={{ color: c.text1, fontSize: 13, fontWeight: 700, fontFamily: 'monospace' }}
+              >
+                {fmtAmount(order.escrowAmount)} {order.asset}
+              </span>
             </div>
             <div className="flex justify-between">
               <span style={{ color: c.text3, fontSize: 12 }}>Người mua</span>
-              <span style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>{order.merchant}</span>
+              <span style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
+                {order.merchant}
+              </span>
             </div>
           </div>
 
           {/* Typed confirmation — type "RELEASE" to unlock */}
           <div className="w-full">
             <p style={{ color: c.text2, fontSize: 12, marginBottom: 6, lineHeight: 1.5 }}>
-              Nhập <span style={{ color: '#EF4444', fontWeight: 700, fontFamily: 'monospace', letterSpacing: 1 }}>RELEASE</span> để xác nhận:
+              Nhập{' '}
+              <span
+                style={{
+                  color: '#EF4444',
+                  fontWeight: 700,
+                  fontFamily: 'monospace',
+                  letterSpacing: 1,
+                }}
+              >
+                RELEASE
+              </span>{' '}
+              để xác nhận:
             </p>
             <div className="relative">
               <input
@@ -1101,9 +1432,10 @@ export function P2POrderPage() {
             disabled={releaseTyped !== 'RELEASE'}
             className="w-full py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all"
             style={{
-              background: releaseTyped === 'RELEASE'
-                ? 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)'
-                : c.surface2,
+              background:
+                releaseTyped === 'RELEASE'
+                  ? 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)'
+                  : c.surface2,
               color: releaseTyped === 'RELEASE' ? '#fff' : c.text3,
               fontSize: 15,
               fontWeight: 700,
@@ -1116,8 +1448,14 @@ export function P2POrderPage() {
             {releaseTyped === 'RELEASE' ? 'Xác nhận giải phóng Crypto' : 'Nhập RELEASE để mở khoá'}
           </button>
 
-          <button onClick={() => { setShowPinConfirm(false); setReleaseTyped(''); }} className="w-full py-3 text-center"
-            style={{ color: c.text2, fontSize: 14, fontWeight: 600 }}>
+          <button
+            onClick={() => {
+              setShowPinConfirm(false);
+              setReleaseTyped('');
+            }}
+            className="w-full py-3 text-center"
+            style={{ color: c.text2, fontSize: 14, fontWeight: 600 }}
+          >
             Hủy — Chưa nhận được tiền
           </button>
         </div>

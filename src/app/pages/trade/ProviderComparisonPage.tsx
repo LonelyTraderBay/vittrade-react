@@ -2,19 +2,19 @@
  * ══════════════════════════════════════════════════════════════
  *  ProviderComparisonPage — Phase 2: Provider Side-by-Side
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Compare up to 5 providers side-by-side
  * - Metrics comparison table
  * - Fee impact comparison
  * - Execution quality comparison
  * - Risk-adjusted performance
- * 
+ *
  * Compliance:
  * - Equal prominence for all providers
  * - No ranking without context
  * - Past performance disclaimers
- * 
+ *
  * Guidelines:
  * - Horizontal scroll table on mobile
  * - Sticky first column (provider names)
@@ -23,9 +23,19 @@
 
 import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
-import { 
-  TrendingUp, TrendingDown, Shield, DollarSign, Activity,
-  Clock, Target, Eye, Plus, X, ChevronRight, AlertTriangle
+import {
+  TrendingUp,
+  TrendingDown,
+  Shield,
+  DollarSign,
+  Activity,
+  Clock,
+  Target,
+  Eye,
+  Plus,
+  X,
+  ChevronRight,
+  AlertTriangle,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -44,25 +54,103 @@ interface ComparisonMetric {
 
 const COMPARISON_METRICS: ComparisonMetric[] = [
   // Performance
-  { label: 'Total ROI', key: 'totalPnlPct', format: (v) => `${v >= 0 ? '+' : ''}${v.toFixed(1)}%`, higherIsBetter: true, category: 'performance' },
-  { label: '30D Return', key: 'monthlyReturn', format: (v) => `${v >= 0 ? '+' : ''}${v.toFixed(1)}%`, higherIsBetter: true, category: 'performance' },
-  { label: 'Win Rate', key: 'winRate', format: (v) => `${v.toFixed(1)}%`, higherIsBetter: true, category: 'performance' },
-  { label: 'Avg Trade', key: 'avgTrade', format: (v) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`, higherIsBetter: true, category: 'performance' },
-  
+  {
+    label: 'Total ROI',
+    key: 'totalPnlPct',
+    format: (v) => `${v >= 0 ? '+' : ''}${v.toFixed(1)}%`,
+    higherIsBetter: true,
+    category: 'performance',
+  },
+  {
+    label: '30D Return',
+    key: 'monthlyReturn',
+    format: (v) => `${v >= 0 ? '+' : ''}${v.toFixed(1)}%`,
+    higherIsBetter: true,
+    category: 'performance',
+  },
+  {
+    label: 'Win Rate',
+    key: 'winRate',
+    format: (v) => `${v.toFixed(1)}%`,
+    higherIsBetter: true,
+    category: 'performance',
+  },
+  {
+    label: 'Avg Trade',
+    key: 'avgTrade',
+    format: (v) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`,
+    higherIsBetter: true,
+    category: 'performance',
+  },
+
   // Risk
-  { label: 'Sharpe Ratio', key: 'sharpeRatio', format: (v) => v.toFixed(2), higherIsBetter: true, category: 'risk' },
-  { label: 'Max Drawdown', key: 'maxDrawdown', format: (v) => `${v.toFixed(1)}%`, higherIsBetter: false, category: 'risk' },
-  { label: 'Volatility', key: 'volatility', format: (v) => `${v.toFixed(1)}%`, higherIsBetter: false, category: 'risk' },
-  { label: 'Risk Score', key: 'riskScore', format: (v) => v.toFixed(0), higherIsBetter: false, category: 'risk' },
-  
+  {
+    label: 'Sharpe Ratio',
+    key: 'sharpeRatio',
+    format: (v) => v.toFixed(2),
+    higherIsBetter: true,
+    category: 'risk',
+  },
+  {
+    label: 'Max Drawdown',
+    key: 'maxDrawdown',
+    format: (v) => `${v.toFixed(1)}%`,
+    higherIsBetter: false,
+    category: 'risk',
+  },
+  {
+    label: 'Volatility',
+    key: 'volatility',
+    format: (v) => `${v.toFixed(1)}%`,
+    higherIsBetter: false,
+    category: 'risk',
+  },
+  {
+    label: 'Risk Score',
+    key: 'riskScore',
+    format: (v) => v.toFixed(0),
+    higherIsBetter: false,
+    category: 'risk',
+  },
+
   // Execution
-  { label: 'Avg Slippage', key: 'avgSlippage', format: (v) => `${v.toFixed(2)}%`, higherIsBetter: false, category: 'execution' },
-  { label: 'Avg Delay', key: 'avgDelay', format: (v) => `${v.toFixed(1)}s`, higherIsBetter: false, category: 'execution' },
-  { label: 'Fill Rate', key: 'fillRate', format: (v) => `${v.toFixed(1)}%`, higherIsBetter: true, category: 'execution' },
-  
+  {
+    label: 'Avg Slippage',
+    key: 'avgSlippage',
+    format: (v) => `${v.toFixed(2)}%`,
+    higherIsBetter: false,
+    category: 'execution',
+  },
+  {
+    label: 'Avg Delay',
+    key: 'avgDelay',
+    format: (v) => `${v.toFixed(1)}s`,
+    higherIsBetter: false,
+    category: 'execution',
+  },
+  {
+    label: 'Fill Rate',
+    key: 'fillRate',
+    format: (v) => `${v.toFixed(1)}%`,
+    higherIsBetter: true,
+    category: 'execution',
+  },
+
   // Cost
-  { label: 'Performance Fee', key: 'performanceFee', format: (v) => `${v}%`, higherIsBetter: false, category: 'cost' },
-  { label: 'Est. Monthly Cost', key: 'monthlyCost', format: (v) => `$${v.toFixed(0)}`, higherIsBetter: false, category: 'cost' },
+  {
+    label: 'Performance Fee',
+    key: 'performanceFee',
+    format: (v) => `${v}%`,
+    higherIsBetter: false,
+    category: 'cost',
+  },
+  {
+    label: 'Est. Monthly Cost',
+    key: 'monthlyCost',
+    format: (v) => `$${v.toFixed(0)}`,
+    higherIsBetter: false,
+    category: 'cost',
+  },
 ];
 
 export function ProviderComparisonPage() {
@@ -70,17 +158,17 @@ export function ProviderComparisonPage() {
   const navigate = useNavigate();
   const prefix = useRoutePrefix();
   const [searchParams] = useSearchParams();
-  
+
   // Get provider IDs from URL params
   const initialIds = searchParams.get('ids')?.split(',') || ['trader-1', 'trader-2', 'trader-3'];
   const [selectedIds, setSelectedIds] = useState<string[]>(initialIds.slice(0, 5));
-  
+
   const selectedProviders = selectedIds
-    .map(id => COPY_TRADERS.find(t => t.id === id))
+    .map((id) => COPY_TRADERS.find((t) => t.id === id))
     .filter(Boolean) as typeof COPY_TRADERS;
 
   // Add mock data for comparison
-  const providersWithData = selectedProviders.map(p => ({
+  const providersWithData = selectedProviders.map((p) => ({
     ...p,
     monthlyReturn: p.totalPnlPct * 0.3,
     avgTrade: p.totalPnlPct / p.totalTrades,
@@ -94,10 +182,8 @@ export function ProviderComparisonPage() {
   }));
 
   const getBestValue = (metric: ComparisonMetric) => {
-    const values = providersWithData.map(p => (p as any)[metric.key]);
-    return metric.higherIsBetter 
-      ? Math.max(...values)
-      : Math.min(...values);
+    const values = providersWithData.map((p) => (p as any)[metric.key]);
+    return metric.higherIsBetter ? Math.max(...values) : Math.min(...values);
   };
 
   const isbestValue = (metric: ComparisonMetric, value: any) => {
@@ -107,14 +193,14 @@ export function ProviderComparisonPage() {
 
   const removeProvider = (id: string) => {
     if (selectedIds.length > 2) {
-      setSelectedIds(selectedIds.filter(pid => pid !== id));
+      setSelectedIds(selectedIds.filter((pid) => pid !== id));
     }
   };
 
   return (
     <PageLayout>
-      <Header 
-        title="So sánh Providers" 
+      <Header
+        title="So sánh Providers"
         back
         action={{
           icon: Plus,
@@ -124,7 +210,10 @@ export function ProviderComparisonPage() {
 
       <PageContent gap="relaxed">
         {/* Warning Banner */}
-        <div className="p-3 rounded-xl" style={{ background: c.warningBg, border: `1px solid ${c.warningBorder}` }}>
+        <div
+          className="p-3 rounded-xl"
+          style={{ background: c.warningBg, border: `1px solid ${c.warningBorder}` }}
+        >
           <div className="flex items-start gap-2">
             <AlertTriangle size={14} color={c.warningText} className="shrink-0 mt-0.5" />
             <p style={{ color: c.warningText, fontSize: 10, lineHeight: 1.5 }}>
@@ -154,26 +243,37 @@ export function ProviderComparisonPage() {
           <table className="w-full" style={{ minWidth: 600 }}>
             <thead>
               <tr>
-                <th className="sticky left-0 z-10 p-3 text-left" style={{ background: c.bg, minWidth: 120 }}>
+                <th
+                  className="sticky left-0 z-10 p-3 text-left"
+                  style={{ background: c.bg, minWidth: 120 }}
+                >
                   <span style={{ color: c.text3, fontSize: 10 }}>Metric</span>
                 </th>
-                {providersWithData.map(provider => (
-                  <th key={provider.id} className="p-3 text-center relative" style={{ minWidth: 100 }}>
+                {providersWithData.map((provider) => (
+                  <th
+                    key={provider.id}
+                    className="p-3 text-center relative"
+                    style={{ minWidth: 100 }}
+                  >
                     <button
                       onClick={() => removeProvider(provider.id)}
                       className="absolute top-1 right-1 w-5 h-5 rounded-full flex items-center justify-center"
-                      style={{ background: c.dangerBg }}
+                      style={{ background: c.sellAlpha10 }}
                     >
-                      <X size={10} color={c.dangerText} />
+                      <X size={10} color={c.error} />
                     </button>
                     <div className="flex flex-col items-center gap-2">
-                      <div 
+                      <div
                         className="w-10 h-10 rounded-full flex items-center justify-center"
                         style={{ background: c.primary + '22', border: `2px solid ${c.primary}` }}
                       >
-                        <span style={{ color: c.primary, fontSize: 14, fontWeight: 700 }}>{provider.avatar}</span>
+                        <span style={{ color: c.primary, fontSize: 14, fontWeight: 700 }}>
+                          {provider.avatar}
+                        </span>
                       </div>
-                      <span style={{ color: c.text1, fontSize: 10, fontWeight: 600 }}>{provider.name}</span>
+                      <span style={{ color: c.text1, fontSize: 10, fontWeight: 600 }}>
+                        {provider.name}
+                      </span>
                     </div>
                   </th>
                 ))}
@@ -185,25 +285,29 @@ export function ProviderComparisonPage() {
                 <td colSpan={selectedIds.length + 1} className="p-2">
                   <div className="flex items-center gap-2">
                     <TrendingUp size={12} color={c.primary} />
-                    <span style={{ color: c.primary, fontSize: 11, fontWeight: 700 }}>Performance</span>
+                    <span style={{ color: c.primary, fontSize: 11, fontWeight: 700 }}>
+                      Performance
+                    </span>
                   </div>
                 </td>
               </tr>
-              {COMPARISON_METRICS.filter(m => m.category === 'performance').map(metric => (
+              {COMPARISON_METRICS.filter((m) => m.category === 'performance').map((metric) => (
                 <tr key={metric.key}>
                   <td className="sticky left-0 z-10 p-3" style={{ background: c.bg }}>
                     <span style={{ color: c.text2, fontSize: 11 }}>{metric.label}</span>
                   </td>
-                  {providersWithData.map(provider => {
+                  {providersWithData.map((provider) => {
                     const value = (provider as any)[metric.key];
                     const isBest = isbestValue(metric, value);
                     return (
                       <td key={provider.id} className="p-3 text-center">
-                        <span style={{ 
-                          color: isBest ? '#10B981' : c.text1,
-                          fontSize: 12,
-                          fontWeight: isBest ? 700 : 600
-                        }}>
+                        <span
+                          style={{
+                            color: isBest ? '#10B981' : c.text1,
+                            fontSize: 12,
+                            fontWeight: isBest ? 700 : 600,
+                          }}
+                        >
                           {metric.format(value)}
                         </span>
                       </td>
@@ -221,21 +325,23 @@ export function ProviderComparisonPage() {
                   </div>
                 </td>
               </tr>
-              {COMPARISON_METRICS.filter(m => m.category === 'risk').map(metric => (
+              {COMPARISON_METRICS.filter((m) => m.category === 'risk').map((metric) => (
                 <tr key={metric.key}>
                   <td className="sticky left-0 z-10 p-3" style={{ background: c.bg }}>
                     <span style={{ color: c.text2, fontSize: 11 }}>{metric.label}</span>
                   </td>
-                  {providersWithData.map(provider => {
+                  {providersWithData.map((provider) => {
                     const value = (provider as any)[metric.key];
                     const isBest = isbestValue(metric, value);
                     return (
                       <td key={provider.id} className="p-3 text-center">
-                        <span style={{ 
-                          color: isBest ? '#10B981' : c.text1,
-                          fontSize: 12,
-                          fontWeight: isBest ? 700 : 600
-                        }}>
+                        <span
+                          style={{
+                            color: isBest ? '#10B981' : c.text1,
+                            fontSize: 12,
+                            fontWeight: isBest ? 700 : 600,
+                          }}
+                        >
                           {metric.format(value)}
                         </span>
                       </td>
@@ -249,25 +355,29 @@ export function ProviderComparisonPage() {
                 <td colSpan={selectedIds.length + 1} className="p-2 pt-4">
                   <div className="flex items-center gap-2">
                     <Activity size={12} color="#3B82F6" />
-                    <span style={{ color: '#3B82F6', fontSize: 11, fontWeight: 700 }}>Execution</span>
+                    <span style={{ color: '#3B82F6', fontSize: 11, fontWeight: 700 }}>
+                      Execution
+                    </span>
                   </div>
                 </td>
               </tr>
-              {COMPARISON_METRICS.filter(m => m.category === 'execution').map(metric => (
+              {COMPARISON_METRICS.filter((m) => m.category === 'execution').map((metric) => (
                 <tr key={metric.key}>
                   <td className="sticky left-0 z-10 p-3" style={{ background: c.bg }}>
                     <span style={{ color: c.text2, fontSize: 11 }}>{metric.label}</span>
                   </td>
-                  {providersWithData.map(provider => {
+                  {providersWithData.map((provider) => {
                     const value = (provider as any)[metric.key];
                     const isBest = isbestValue(metric, value);
                     return (
                       <td key={provider.id} className="p-3 text-center">
-                        <span style={{ 
-                          color: isBest ? '#10B981' : c.text1,
-                          fontSize: 12,
-                          fontWeight: isBest ? 700 : 600
-                        }}>
+                        <span
+                          style={{
+                            color: isBest ? '#10B981' : c.text1,
+                            fontSize: 12,
+                            fontWeight: isBest ? 700 : 600,
+                          }}
+                        >
                           {metric.format(value)}
                         </span>
                       </td>
@@ -285,21 +395,23 @@ export function ProviderComparisonPage() {
                   </div>
                 </td>
               </tr>
-              {COMPARISON_METRICS.filter(m => m.category === 'cost').map(metric => (
+              {COMPARISON_METRICS.filter((m) => m.category === 'cost').map((metric) => (
                 <tr key={metric.key}>
                   <td className="sticky left-0 z-10 p-3" style={{ background: c.bg }}>
                     <span style={{ color: c.text2, fontSize: 11 }}>{metric.label}</span>
                   </td>
-                  {providersWithData.map(provider => {
+                  {providersWithData.map((provider) => {
                     const value = (provider as any)[metric.key];
                     const isBest = isbestValue(metric, value);
                     return (
                       <td key={provider.id} className="p-3 text-center">
-                        <span style={{ 
-                          color: isBest ? '#10B981' : c.text1,
-                          fontSize: 12,
-                          fontWeight: isBest ? 700 : 600
-                        }}>
+                        <span
+                          style={{
+                            color: isBest ? '#10B981' : c.text1,
+                            fontSize: 12,
+                            fontWeight: isBest ? 700 : 600,
+                          }}
+                        >
                           {metric.format(value)}
                         </span>
                       </td>
@@ -318,13 +430,14 @@ export function ProviderComparisonPage() {
             <span style={{ color: c.text3, fontSize: 10 }}>= Giá trị tốt nhất trong nhóm</span>
           </div>
           <p style={{ color: c.text3, fontSize: 9, lineHeight: 1.4 }}>
-            "Tốt nhất" không có nghĩa là "phù hợp nhất". Xem xét risk tolerance và mục tiêu đầu tư của bạn.
+            "Tốt nhất" không có nghĩa là "phù hợp nhất". Xem xét risk tolerance và mục tiêu đầu tư
+            của bạn.
           </p>
         </div>
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 gap-2">
-          {providersWithData.map(provider => (
+          {providersWithData.map((provider) => (
             <button
               key={provider.id}
               onClick={() => navigate(`${prefix}/trade/copy-provider/${provider.id}`)}
@@ -332,19 +445,19 @@ export function ProviderComparisonPage() {
               style={{ background: c.surface, border: `1px solid ${c.border}` }}
             >
               <div className="flex items-center gap-3">
-                <div 
+                <div
                   className="w-10 h-10 rounded-full flex items-center justify-center"
                   style={{ background: c.primary + '22', border: `2px solid ${c.primary}` }}
                 >
-                  <span style={{ color: c.primary, fontSize: 14, fontWeight: 700 }}>{provider.avatar}</span>
+                  <span style={{ color: c.primary, fontSize: 14, fontWeight: 700 }}>
+                    {provider.avatar}
+                  </span>
                 </div>
                 <div className="text-left">
                   <p style={{ color: c.text1, fontSize: 12, fontWeight: 600, marginBottom: 2 }}>
                     {provider.name}
                   </p>
-                  <p style={{ color: c.text3, fontSize: 10 }}>
-                    Xem chi tiết & bắt đầu copy
-                  </p>
+                  <p style={{ color: c.text3, fontSize: 10 }}>Xem chi tiết & bắt đầu copy</p>
                 </div>
               </div>
               <ChevronRight size={16} color={c.text3} />

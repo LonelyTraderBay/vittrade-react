@@ -82,7 +82,7 @@ export function TabletTopBar() {
           <span key={crumb.path} className="flex items-center gap-1.5 shrink-0">
             {i > 0 && <ChevronRight size={14} color={c.text3} className="shrink-0" />}
             <button
-              onClick={() => i < crumbs.length - 1 ? navigate(crumb.path) : undefined}
+              onClick={() => (i < crumbs.length - 1 ? navigate(crumb.path) : undefined)}
               className="shrink-0"
               style={{
                 color: i === crumbs.length - 1 ? c.text1 : c.text3,

@@ -14,9 +14,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import {
-  AlertTriangle, CheckCircle2, Clock, ChevronRight,
-  Shield, Info, ArrowUp, ArrowDown, Copy, HelpCircle,
-  Share2, Bell, X, Zap,
+  AlertTriangle,
+  CheckCircle2,
+  Clock,
+  ChevronRight,
+  Shield,
+  Info,
+  ArrowUp,
+  ArrowDown,
+  Copy,
+  HelpCircle,
+  Share2,
+  Bell,
+  X,
+  Zap,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useThemeColors } from '../../hooks/useThemeColors';
@@ -34,7 +45,8 @@ import { ModerationTimelineRow } from '../../components/arena/ArenaGovernance';
 import { TOAST } from '../../data/toastMessages';
 import { φ } from '../../utils/golden';
 import {
-  getPredictionOrderById, PREDICTION_ORDER_STATUS_CONFIG,
+  getPredictionOrderById,
+  PREDICTION_ORDER_STATUS_CONFIG,
 } from '../../data/predictionMockData';
 
 /* ═══════════════════════════════════════════
@@ -49,7 +61,13 @@ interface FillNotificationProps {
   onDismiss: () => void;
 }
 
-function FillNotificationBanner({ visible, shares, price, outcome, onDismiss }: FillNotificationProps) {
+function FillNotificationBanner({
+  visible,
+  shares,
+  price,
+  outcome,
+  onDismiss,
+}: FillNotificationProps) {
   const c = useThemeColors();
 
   return (
@@ -67,8 +85,10 @@ function FillNotificationBanner({ visible, shares, price, outcome, onDismiss }: 
           }}
         >
           <div className="flex items-start gap-3 px-4 py-3.5">
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-              style={{ background: 'rgba(16,185,129,0.15)' }}>
+            <div
+              className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+              style={{ background: 'rgba(16,185,129,0.15)' }}
+            >
               <Bell size={16} color="#10B981" />
             </div>
             <div className="flex-1 min-w-0">
@@ -149,7 +169,11 @@ export function PredictionOrderReceiptPage() {
     return (
       <PageLayout>
         <Header title="Chi tiết lệnh" subtitle="Biên lai · Prediction" back />
-        <EmptyState icon={AlertTriangle} title="Không tìm thấy" subtitle="Lệnh không tồn tại hoặc đã bị xoá" />
+        <EmptyState
+          icon={AlertTriangle}
+          title="Không tìm thấy"
+          subtitle="Lệnh không tồn tại hoặc đã bị xoá"
+        />
       </PageLayout>
     );
   }
@@ -166,160 +190,229 @@ export function PredictionOrderReceiptPage() {
     <PageLayout>
       <Header title="Chi tiết lệnh" subtitle="Biên lai · Prediction" back />
       <PageContent>
-      <div className="flex flex-col gap-4 pt-3">
+        <div className="flex flex-col gap-4 pt-3">
+          {/* ─── Mock Push Notification ─── */}
+          <FillNotificationBanner
+            visible={showFillNotification}
+            shares={mockFillShares}
+            price={mockFillPrice}
+            outcome={order.outcome}
+            onDismiss={handleDismissNotification}
+          />
 
-        {/* ─── Mock Push Notification ─── */}
-        <FillNotificationBanner
-          visible={showFillNotification}
-          shares={mockFillShares}
-          price={mockFillPrice}
-          outcome={order.outcome}
-          onDismiss={handleDismissNotification}
-        />
-
-        <div className="flex flex-col gap-4">
-
-          {/* ─── Status + Order Type Hero ─── */}
-          <TrCard className="p-5 text-center">
-            <div className="flex items-center justify-center gap-2 mb-3">
-              <span className="px-3 py-1 rounded-lg"
-                style={{ background: isBuy ? c.buyAlpha10 : c.sellAlpha10, color: isBuy ? c.buy : c.sell, fontSize: φ.sm, fontWeight: 700 }}>
-                {isBuy ? '↑ Buy' : '↓ Sell'}
-              </span>
-              <span className="px-3 py-1 rounded-lg"
-                style={{ background: statusCfg.bg, color: statusCfg.color, fontSize: φ.sm, fontWeight: 600 }}>
-                {statusCfg.label}
-              </span>
-            </div>
-            <p style={{ color: c.text1, fontSize: φ.base, fontWeight: 700, lineHeight: 1.3, marginBottom: 4 }}>
-              {order.outcome}
-            </p>
-            <p style={{ color: c.text3, fontSize: φ.xs }} className="truncate">
-              {order.eventTitle}
-            </p>
-          </TrCard>
-
-          {/* ─── Order Summary ─── */}
-          <div>
-            <SectionHeader title="Tổng quan lệnh" accent accentColor="#3B82F6" mb={8} />
-            <TrCard className="p-4">
-              <div className="flex flex-col gap-3">
-                {[
-                  { label: 'Loại lệnh', value: order.orderType === 'market' ? 'Market' : 'Limit' },
-                  { label: 'Outcome', value: order.outcome },
-                  { label: 'Shares', value: `${order.filledShares}/${order.shares}`, mono: true },
-                  { label: 'Giá đặt', value: `$${order.price.toFixed(2)}`, mono: true },
-                  ...(order.avgPrice > 0 ? [{ label: 'Giá khớp TB', value: `$${order.avgPrice.toFixed(2)}`, mono: true }] : []),
-                  { label: 'Tổng giá trị', value: `$${order.total.toFixed(2)}`, mono: true },
-                  { label: 'Phí (2%)', value: `$${order.fee.toFixed(2)}`, mono: true },
-                ].map(row => (
-                  <div key={row.label} className="flex items-center justify-between">
-                    <span style={{ color: c.text3, fontSize: φ.xs }}>{row.label}</span>
-                    <span style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600, fontFamily: (row as any).mono ? 'monospace' : 'inherit' }}>
-                      {row.value}
-                    </span>
-                  </div>
-                ))}
+          <div className="flex flex-col gap-4">
+            {/* ─── Status + Order Type Hero ─── */}
+            <TrCard className="p-5 text-center">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <span
+                  className="px-3 py-1 rounded-lg"
+                  style={{
+                    background: isBuy ? c.buyAlpha10 : c.sellAlpha10,
+                    color: isBuy ? c.buy : c.sell,
+                    fontSize: φ.sm,
+                    fontWeight: 700,
+                  }}
+                >
+                  {isBuy ? '↑ Buy' : '↓ Sell'}
+                </span>
+                <span
+                  className="px-3 py-1 rounded-lg"
+                  style={{
+                    background: statusCfg.bg,
+                    color: statusCfg.color,
+                    fontSize: φ.sm,
+                    fontWeight: 600,
+                  }}
+                >
+                  {statusCfg.label}
+                </span>
               </div>
+              <p
+                style={{
+                  color: c.text1,
+                  fontSize: φ.base,
+                  fontWeight: 700,
+                  lineHeight: 1.3,
+                  marginBottom: 4,
+                }}
+              >
+                {order.outcome}
+              </p>
+              <p style={{ color: c.text3, fontSize: φ.xs }} className="truncate">
+                {order.eventTitle}
+              </p>
+            </TrCard>
 
-              {/* Fill progress */}
-              {order.status !== 'canceled' && order.status !== 'rejected' && (
-                <div className="mt-3 pt-3" style={{ borderTop: `1px solid ${c.divider}` }}>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span style={{ color: c.text3, fontSize: 10 }}>Tiến trình khớp</span>
-                    <span style={{ color: c.text1, fontSize: 10, fontWeight: 600 }}>{fillPct}%</span>
-                  </div>
-                  <div className="h-2 rounded-full" style={{ background: c.surface2 }}>
-                    <div className="h-full rounded-full" style={{
-                      width: `${fillPct}%`,
-                      background: fillPct === 100 ? c.buy : c.warn,
-                      transition: 'width 0.4s ease-out',
-                    }} />
-                  </div>
+            {/* ─── Order Summary ─── */}
+            <div>
+              <SectionHeader title="Tổng quan lệnh" accent accentColor="#3B82F6" mb={8} />
+              <TrCard className="p-4">
+                <div className="flex flex-col gap-3">
+                  {[
+                    {
+                      label: 'Loại lệnh',
+                      value: order.orderType === 'market' ? 'Market' : 'Limit',
+                    },
+                    { label: 'Outcome', value: order.outcome },
+                    { label: 'Shares', value: `${order.filledShares}/${order.shares}`, mono: true },
+                    { label: 'Giá đặt', value: `$${order.price.toFixed(2)}`, mono: true },
+                    ...(order.avgPrice > 0
+                      ? [
+                          {
+                            label: 'Giá khớp TB',
+                            value: `$${order.avgPrice.toFixed(2)}`,
+                            mono: true,
+                          },
+                        ]
+                      : []),
+                    { label: 'Tổng giá trị', value: `$${order.total.toFixed(2)}`, mono: true },
+                    { label: 'Phí (2%)', value: `$${order.fee.toFixed(2)}`, mono: true },
+                  ].map((row) => (
+                    <div key={row.label} className="flex items-center justify-between">
+                      <span style={{ color: c.text3, fontSize: φ.xs }}>{row.label}</span>
+                      <span
+                        style={{
+                          color: c.text1,
+                          fontSize: φ.sm,
+                          fontWeight: 600,
+                          fontFamily: (row as any).mono ? 'monospace' : 'inherit',
+                        }}
+                      >
+                        {row.value}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-              )}
-            </TrCard>
-          </div>
 
-          {/* ─── Timeline ─── */}
-          <div>
-            <SectionHeader title="Tiến trình" accent accentColor="#10B981" mb={8} />
-            <TrCard className="p-4">
-              {order.timeline.map((step, i) => (
-                <ModerationTimelineRow
-                  key={i}
-                  label={step.label}
-                  date={step.date}
-                  done={step.done}
-                  isLast={i === order.timeline.length - 1}
-                />
-              ))}
-            </TrCard>
-          </div>
-
-          {/* ─── Timestamps ─── */}
-          <TrCard className="p-4">
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center justify-between">
-                <span style={{ color: c.text3, fontSize: φ.xs }}>Tạo lúc</span>
-                <span style={{ color: c.text1, fontSize: φ.sm }}>{order.createdAt}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span style={{ color: c.text3, fontSize: φ.xs }}>Cập nhật</span>
-                <span style={{ color: c.text1, fontSize: φ.sm }}>{order.updatedAt}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span style={{ color: c.text3, fontSize: φ.xs }}>Mã lệnh</span>
-                <button
-                  onClick={() => { actionToast.success(TOAST.COPY.withLabel('mã lệnh')); hapticSelection(); }}
-                  className="flex items-center gap-1.5 active:opacity-70"
-                  style={{ color: '#8B5CF6', fontSize: φ.xs, fontWeight: 600, fontFamily: 'monospace', minHeight: 28 }}>
-                  {order.id.toUpperCase()} <Copy size={10} />
-                </button>
-              </div>
+                {/* Fill progress */}
+                {order.status !== 'canceled' && order.status !== 'rejected' && (
+                  <div className="mt-3 pt-3" style={{ borderTop: `1px solid ${c.divider}` }}>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span style={{ color: c.text3, fontSize: 10 }}>Tiến trình khớp</span>
+                      <span style={{ color: c.text1, fontSize: 10, fontWeight: 600 }}>
+                        {fillPct}%
+                      </span>
+                    </div>
+                    <div className="h-2 rounded-full" style={{ background: c.surface2 }}>
+                      <div
+                        className="h-full rounded-full"
+                        style={{
+                          width: `${fillPct}%`,
+                          background: fillPct === 100 ? c.buy : c.warn,
+                          transition: 'width 0.4s ease-out',
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+              </TrCard>
             </div>
-          </TrCard>
 
-          {/* ─── Share Receipt ─── */}
-          <button
-            onClick={handleShareReceipt}
-            className="w-full py-3 rounded-2xl flex items-center justify-center gap-2.5 active:opacity-70"
-            style={{
-              background: c.primaryAlpha12,
-              border: `1.5px solid ${c.primaryAlpha12}`,
-              color: c.primary,
-              fontSize: φ.sm,
-              fontWeight: 600,
-              minHeight: 44,
-            }}
-          >
-            <Share2 size={14} />
-            Chia sẻ chi tiết lệnh
-          </button>
+            {/* ─── Timeline ─── */}
+            <div>
+              <SectionHeader title="Tiến trình" accent accentColor="#10B981" mb={8} />
+              <TrCard className="p-4">
+                {order.timeline.map((step, i) => (
+                  <ModerationTimelineRow
+                    key={i}
+                    label={step.label}
+                    date={step.date}
+                    done={step.done}
+                    isLast={i === order.timeline.length - 1}
+                  />
+                ))}
+              </TrCard>
+            </div>
 
-          {/* ─── Disclaimer ─── */}
-          <TrCard className="p-3 flex items-start gap-2">
-            <Shield size={13} color="#8B5CF6" className="shrink-0 mt-0.5" />
-            <p style={{ color: c.text3, fontSize: φ.xs, lineHeight: 1.5 }}>
-              Probability không phải certainty. Giá thị trường dự đoán phản ánh ước lượng cộng đồng và có thể thay đổi bất cứ lúc nào. Đây không phải lời khuyên đầu tư.
-            </p>
-          </TrCard>
+            {/* ─── Timestamps ─── */}
+            <TrCard className="p-4">
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <span style={{ color: c.text3, fontSize: φ.xs }}>Tạo lúc</span>
+                  <span style={{ color: c.text1, fontSize: φ.sm }}>{order.createdAt}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span style={{ color: c.text3, fontSize: φ.xs }}>Cập nhật</span>
+                  <span style={{ color: c.text1, fontSize: φ.sm }}>{order.updatedAt}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span style={{ color: c.text3, fontSize: φ.xs }}>Mã lệnh</span>
+                  <button
+                    onClick={() => {
+                      actionToast.success(TOAST.COPY.withLabel('mã lệnh'));
+                      hapticSelection();
+                    }}
+                    className="flex items-center gap-1.5 active:opacity-70"
+                    style={{
+                      color: '#8B5CF6',
+                      fontSize: φ.xs,
+                      fontWeight: 600,
+                      fontFamily: 'monospace',
+                      minHeight: 28,
+                    }}
+                  >
+                    {order.id.toUpperCase()} <Copy size={10} />
+                  </button>
+                </div>
+              </div>
+            </TrCard>
 
-          {/* ─── CTAs ─── */}
-          <div className="flex flex-col gap-3">
-            <CTAButton onClick={() => { navigate(`${prefix}/markets/predictions/event/${order.eventId}`); hapticSelection(); }}>
-              Xem sự kiện
-            </CTAButton>
+            {/* ─── Share Receipt ─── */}
             <button
-              onClick={() => { navigate(`${prefix}/profile/predictions`); hapticSelection(); }}
-              className="w-full py-3 rounded-2xl flex items-center justify-center gap-2 active:opacity-70"
-              style={{ background: c.chipBg, border: `1.5px solid ${c.chipBorder}`, color: c.chipText, fontSize: φ.sm, fontWeight: 600, minHeight: 44 }}>
-              Xem danh mục
+              onClick={handleShareReceipt}
+              className="w-full py-3 rounded-2xl flex items-center justify-center gap-2.5 active:opacity-70"
+              style={{
+                background: c.primaryAlpha12,
+                border: `1.5px solid ${c.primaryAlpha12}`,
+                color: c.primary,
+                fontSize: φ.sm,
+                fontWeight: 600,
+                minHeight: 44,
+              }}
+            >
+              <Share2 size={14} />
+              Chia sẻ chi tiết lệnh
             </button>
-          </div>
 
+            {/* ─── Disclaimer ─── */}
+            <TrCard className="p-3 flex items-start gap-2">
+              <Shield size={13} color="#8B5CF6" className="shrink-0 mt-0.5" />
+              <p style={{ color: c.text3, fontSize: φ.xs, lineHeight: 1.5 }}>
+                Probability không phải certainty. Giá thị trường dự đoán phản ánh ước lượng cộng
+                đồng và có thể thay đổi bất cứ lúc nào. Đây không phải lời khuyên đầu tư.
+              </p>
+            </TrCard>
+
+            {/* ─── CTAs ─── */}
+            <div className="flex flex-col gap-3">
+              <CTAButton
+                onClick={() => {
+                  navigate(`${prefix}/markets/predictions/event/${order.eventId}`);
+                  hapticSelection();
+                }}
+              >
+                Xem sự kiện
+              </CTAButton>
+              <button
+                onClick={() => {
+                  navigate(`${prefix}/profile/predictions`);
+                  hapticSelection();
+                }}
+                className="w-full py-3 rounded-2xl flex items-center justify-center gap-2 active:opacity-70"
+                style={{
+                  background: c.chipBg,
+                  border: `1.5px solid ${c.chipBorder}`,
+                  color: c.chipText,
+                  fontSize: φ.sm,
+                  fontWeight: 600,
+                  minHeight: 44,
+                }}
+              >
+                Xem danh mục
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
       </PageContent>
     </PageLayout>
   );

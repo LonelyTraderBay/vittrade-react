@@ -171,11 +171,12 @@ export function BiometricPrompt({
         <div
           className="w-[120px] h-[120px] rounded-full flex items-center justify-center"
           style={{
-            background: state === 'success'
-              ? 'rgba(16,185,129,0.12)'
-              : state === 'failed'
-                ? 'rgba(239,68,68,0.12)'
-                : 'rgba(59,130,246,0.08)',
+            background:
+              state === 'success'
+                ? 'rgba(16,185,129,0.12)'
+                : state === 'failed'
+                  ? 'rgba(239,68,68,0.12)'
+                  : 'rgba(59,130,246,0.08)',
             transition: 'background 0.3s ease',
           }}
         >
@@ -288,9 +289,7 @@ interface BiometricRequest {
   promptProps: BiometricPromptProps;
 }
 
-export function useBiometricPrompt(
-  options: UseBiometricOptions = {}
-): BiometricRequest {
+export function useBiometricPrompt(options: UseBiometricOptions = {}): BiometricRequest {
   const [open, setOpen] = useState(false);
   const [actionLabel, setActionLabel] = useState('Xác nhận hành động');
   const resolverRef = React.useRef<((value: boolean) => void) | null>(null);

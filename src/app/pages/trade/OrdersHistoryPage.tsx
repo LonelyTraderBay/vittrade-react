@@ -21,10 +21,12 @@ const STATUS_CONFIG = {
   cancelled: { label: 'Đã hủy', color: '#8B95B3', icon: XCircle },
 };
 
-const TYPE_LABELS = {
+const TYPE_LABELS: Record<'market' | 'limit' | 'stop' | 'oco' | 'bracket', string> = {
   market: 'Market',
   limit: 'Limit',
   stop: 'Stop',
+  oco: 'OCO',
+  bracket: 'Bracket',
 };
 
 export function OrdersHistoryPage() {
@@ -36,13 +38,11 @@ export function OrdersHistoryPage() {
   const { isLoading, isRefreshing, refresh, lastRefreshedLabel, refreshCount } = useLoadingState();
   const actionToast = useActionToast();
 
-  const openOrders = filterType === 'all'
-    ? OPEN_ORDERS 
-    : OPEN_ORDERS.filter(o => o.side === filterType);
+  const openOrders =
+    filterType === 'all' ? OPEN_ORDERS : OPEN_ORDERS.filter((o) => o.side === filterType);
 
-  const historyOrders = filterType === 'all'
-    ? ORDER_HISTORY
-    : ORDER_HISTORY.filter(o => o.side === filterType);
+  const historyOrders =
+    filterType === 'all' ? ORDER_HISTORY : ORDER_HISTORY.filter((o) => o.side === filterType);
 
   const displayOrders = activeTab === 'open' ? openOrders : historyOrders;
 
@@ -56,23 +56,24 @@ export function OrdersHistoryPage() {
     const fillPercent = order.status === 'partial' ? (order.filled / order.amount) * 100 : 0;
 
     return (
-      <div key={order.id} className="px-5 py-3"
-        style={{ borderBottom: `1px solid ${c.divider}` }}>
+      <div key={order.id} className="px-5 py-3" style={{ borderBottom: `1px solid ${c.divider}` }}>
         {/* Header */}
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
-            <span style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>
-              {order.symbol}
-            </span>
-            <span className="px-2 py-1 rounded text-xs font-bold"
+            <span style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>{order.symbol}</span>
+            <span
+              className="px-2 py-1 rounded text-xs font-bold"
               style={{
                 background: isBuy ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)',
                 color: isBuy ? '#10B981' : '#EF4444',
-              }}>
+              }}
+            >
               {isBuy ? 'MUA' : 'BÁN'}
             </span>
-            <span className="px-2 py-1 rounded text-xs font-semibold"
-              style={{ background: c.surface3, color: c.text2 }}>
+            <span
+              className="px-2 py-1 rounded text-xs font-semibold"
+              style={{ background: c.surface3, color: c.text2 }}
+            >
               {TYPE_LABELS[order.type]}
             </span>
           </div>
@@ -102,7 +103,14 @@ export function OrdersHistoryPage() {
             <div className="contents">
               <div>
                 <p style={{ color: c.text3, fontSize: 12 }}>Đã khớp</p>
-                <p style={{ color: '#10B981', fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}>
+                <p
+                  style={{
+                    color: '#10B981',
+                    fontSize: 13,
+                    fontWeight: 600,
+                    fontFamily: 'monospace',
+                  }}
+                >
                   {order.filled.toFixed(4)} ({fillPercent.toFixed(0)}%)
                 </p>
               </div>
@@ -118,9 +126,7 @@ export function OrdersHistoryPage() {
           )}
           <div className="col-span-2">
             <p style={{ color: c.text3, fontSize: 12 }}>Thời gian</p>
-            <p style={{ color: c.text2, fontSize: 12 }}>
-              {order.createdAt}
-            </p>
+            <p style={{ color: c.text2, fontSize: 12 }}>{order.createdAt}</p>
           </div>
         </div>
 
@@ -128,11 +134,13 @@ export function OrdersHistoryPage() {
         {order.status === 'partial' && (
           <div className="mb-2">
             <div className="h-1.5 rounded-full" style={{ background: c.borderSolid }}>
-              <div className="h-full rounded-full" 
-                style={{ 
+              <div
+                className="h-full rounded-full"
+                style={{
                   background: 'linear-gradient(90deg, #10B981, #34D399)',
                   width: `${fillPercent}%`,
-                }} />
+                }}
+              />
             </div>
           </div>
         )}
@@ -142,7 +150,13 @@ export function OrdersHistoryPage() {
           <button
             onClick={() => handleCancelOrder(order.id)}
             className="w-full h-9 rounded-xl font-semibold"
-            style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', color: '#EF4444', fontSize: 13 }}>
+            style={{
+              background: 'rgba(239,68,68,0.1)',
+              border: '1px solid rgba(239,68,68,0.3)',
+              color: '#EF4444',
+              fontSize: 13,
+            }}
+          >
             Hủy lệnh
           </button>
         ) : null}
@@ -154,24 +168,43 @@ export function OrdersHistoryPage() {
     <PageLayout>
       <Header title="Lịch sử lệnh" subtitle="Lệnh · Trade" back />
 
-      <PullToRefresh onRefresh={refresh} lastRefreshedLabel={lastRefreshedLabel} refreshCount={refreshCount} className="flex-1">
+      <PullToRefresh
+        onRefresh={refresh}
+        lastRefreshedLabel={lastRefreshedLabel}
+        refreshCount={refreshCount}
+        className="flex-1"
+      >
         {/* Tabs */}
-        <div className="flex gap-2 px-4 py-3" style={{ background: c.surface, borderBottom: `1px solid ${c.divider}`, boxShadow: c.cardShadow }}>
+        <div
+          className="flex gap-2 px-4 py-3"
+          style={{
+            background: c.surface,
+            borderBottom: `1px solid ${c.divider}`,
+            boxShadow: c.cardShadow,
+          }}
+        >
           {[
             { id: 'open', label: 'Lệnh mở', count: OPEN_ORDERS.length },
             { id: 'history', label: 'Lịch sử', count: ORDER_HISTORY.length },
-          ].map(tab => (
-            <button key={tab.id}
-              onClick={() => { setActiveTab(tab.id as any); hapticSelection(); }}
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => {
+                setActiveTab(tab.id as any);
+                hapticSelection();
+              }}
               className="flex-1 h-10 rounded-xl font-semibold flex items-center justify-center gap-2"
               style={{
                 background: activeTab === tab.id ? '#3B82F6' : c.hoverBg,
                 color: activeTab === tab.id ? '#fff' : c.text2,
                 fontSize: 14,
-              }}>
+              }}
+            >
               {tab.label}
-              <span className="px-2 py-1 rounded text-xs"
-                style={{ background: activeTab === tab.id ? 'rgba(255,255,255,0.2)' : c.surface3 }}>
+              <span
+                className="px-2 py-1 rounded text-xs"
+                style={{ background: activeTab === tab.id ? 'rgba(255,255,255,0.2)' : c.surface3 }}
+              >
                 {tab.count}
               </span>
             </button>
@@ -184,15 +217,17 @@ export function OrdersHistoryPage() {
             { id: 'all', label: 'Tất cả' },
             { id: 'buy', label: 'Mua', color: '#10B981' },
             { id: 'sell', label: 'Bán', color: '#EF4444' },
-          ].map(f => (
-            <button key={f.id}
+          ].map((f) => (
+            <button
+              key={f.id}
               onClick={() => setFilterType(f.id as any)}
               className="px-3 py-2 rounded-lg text-xs font-semibold"
               style={{
                 background: filterType === f.id ? (f.color ? f.color + '22' : '#3B82F6') : c.chipBg,
-                color: filterType === f.id ? (f.color || '#3B82F6') : c.chipText,
+                color: filterType === f.id ? f.color || '#3B82F6' : c.chipText,
                 border: `1px solid ${filterType === f.id ? (f.color || '#3B82F6') + '44' : c.chipBorder}`,
-              }}>
+              }}
+            >
               {f.label}
             </button>
           ))}
@@ -215,13 +250,9 @@ export function OrdersHistoryPage() {
           lastRefreshedLabel={lastRefreshedLabel}
           refreshCount={refreshCount}
         >
-          <div
-            key={`${activeTab}-${filterType}`}
-          >
+          <div key={`${activeTab}-${filterType}`}>
             {displayOrders.map((order, idx) => (
-              <div key={order.id}>
-                {renderOrder(order)}
-              </div>
+              <div key={order.id}>{renderOrder(order)}</div>
             ))}
           </div>
         </RefreshableSkeletonList>

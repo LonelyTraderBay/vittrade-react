@@ -10,7 +10,16 @@
  */
 
 import React, { useState } from 'react';
-import { TrendingUp, TrendingDown, Target, BarChart3, PieChart, Calendar, Info, ChevronRight } from 'lucide-react';
+import {
+  TrendingUp,
+  TrendingDown,
+  Target,
+  BarChart3,
+  PieChart,
+  Calendar,
+  Info,
+  ChevronRight,
+} from 'lucide-react';
 import { TrCard } from '../ui/TrCard';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { FONT_SCALE, FONT_WEIGHT } from '../../constants/typography';
@@ -28,7 +37,12 @@ interface PnLSummaryProps {
   className?: string;
 }
 
-export function PnLSummary({ realizedPnL, unrealizedPnL, totalEquity, className = '' }: PnLSummaryProps) {
+export function PnLSummary({
+  realizedPnL,
+  unrealizedPnL,
+  totalEquity,
+  className = '',
+}: PnLSummaryProps) {
   const c = useThemeColors();
 
   const totalPnL = realizedPnL + unrealizedPnL;
@@ -63,7 +77,8 @@ export function PnLSummary({ realizedPnL, unrealizedPnL, totalEquity, className 
               marginTop: 4,
             }}
           >
-            {totalPct >= 0 ? '+' : ''}{totalPct.toFixed(2)}%
+            {totalPct >= 0 ? '+' : ''}
+            {totalPct.toFixed(2)}%
           </p>
         </div>
         <div
@@ -90,7 +105,14 @@ export function PnLSummary({ realizedPnL, unrealizedPnL, totalEquity, className 
         >
           <div className="flex items-center gap-2 mb-2">
             <Target size={14} color="#10B981" strokeWidth={ICON_STROKE.standard} />
-            <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.bold, letterSpacing: 0.5 }}>
+            <span
+              style={{
+                color: 'rgba(255,255,255,0.6)',
+                fontSize: FONT_SCALE.micro,
+                fontWeight: FONT_WEIGHT.bold,
+                letterSpacing: 0.5,
+              }}
+            >
               REALIZED
             </span>
           </div>
@@ -105,7 +127,8 @@ export function PnLSummary({ realizedPnL, unrealizedPnL, totalEquity, className 
             {realizedPnL >= 0 ? '+' : ''}${realizedPnL.toFixed(2)}
           </p>
           <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: FONT_SCALE.micro, marginTop: 2 }}>
-            {realizedPct >= 0 ? '+' : ''}{realizedPct.toFixed(2)}% ROI
+            {realizedPct >= 0 ? '+' : ''}
+            {realizedPct.toFixed(2)}% ROI
           </p>
         </div>
 
@@ -119,7 +142,14 @@ export function PnLSummary({ realizedPnL, unrealizedPnL, totalEquity, className 
         >
           <div className="flex items-center gap-2 mb-2">
             <BarChart3 size={14} color="#F59E0B" strokeWidth={ICON_STROKE.standard} />
-            <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: FONT_SCALE.micro, fontWeight: FONT_WEIGHT.bold, letterSpacing: 0.5 }}>
+            <span
+              style={{
+                color: 'rgba(255,255,255,0.6)',
+                fontSize: FONT_SCALE.micro,
+                fontWeight: FONT_WEIGHT.bold,
+                letterSpacing: 0.5,
+              }}
+            >
               UNREALIZED
             </span>
           </div>
@@ -134,7 +164,8 @@ export function PnLSummary({ realizedPnL, unrealizedPnL, totalEquity, className 
             {unrealizedPnL >= 0 ? '+' : ''}${unrealizedPnL.toFixed(2)}
           </p>
           <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: FONT_SCALE.micro, marginTop: 2 }}>
-            {unrealizedPct >= 0 ? '+' : ''}{unrealizedPct.toFixed(2)}% ROI
+            {unrealizedPct >= 0 ? '+' : ''}
+            {unrealizedPct.toFixed(2)}% ROI
           </p>
         </div>
       </div>
@@ -146,8 +177,9 @@ export function PnLSummary({ realizedPnL, unrealizedPnL, totalEquity, className 
       >
         <Info size={12} color="rgba(255,255,255,0.4)" className="shrink-0 mt-0.5" />
         <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10, lineHeight: 1.5 }}>
-          <strong style={{ color: 'rgba(255,255,255,0.6)' }}>Realized:</strong> Lợi nhuận/lỗ đã chốt từ vị thế đóng.{' '}
-          <strong style={{ color: 'rgba(255,255,255,0.6)' }}>Unrealized:</strong> PnL chưa chốt từ vị thế đang mở.
+          <strong style={{ color: 'rgba(255,255,255,0.6)' }}>Realized:</strong> Lợi nhuận/lỗ đã chốt
+          từ vị thế đóng. <strong style={{ color: 'rgba(255,255,255,0.6)' }}>Unrealized:</strong>{' '}
+          PnL chưa chốt từ vị thế đang mở.
         </p>
       </div>
     </TrCard>
@@ -179,7 +211,8 @@ export function PerformanceStats({ metrics, className = '' }: PerformanceStatsPr
   const c = useThemeColors();
 
   const winRate = metrics.totalTrades > 0 ? (metrics.winningTrades / metrics.totalTrades) * 100 : 0;
-  const profitFactor = metrics.totalLoss !== 0 ? Math.abs(metrics.totalProfit / metrics.totalLoss) : 0;
+  const profitFactor =
+    metrics.totalLoss !== 0 ? Math.abs(metrics.totalProfit / metrics.totalLoss) : 0;
   const avgWinLossRatio = metrics.avgLoss !== 0 ? Math.abs(metrics.avgWin / metrics.avgLoss) : 0;
 
   const stats = [
@@ -218,7 +251,7 @@ export function PerformanceStats({ metrics, className = '' }: PerformanceStatsPr
       </div>
 
       <div className="grid grid-cols-3 gap-2 mb-3">
-        {stats.map(stat => {
+        {stats.map((stat) => {
           const Icon = stat.icon;
           return (
             <div
@@ -239,12 +272,8 @@ export function PerformanceStats({ metrics, className = '' }: PerformanceStatsPr
               >
                 {stat.value}
               </p>
-              <p style={{ color: c.text3, fontSize: 10, marginTop: 2 }}>
-                {stat.label}
-              </p>
-              <p style={{ color: c.text3, fontSize: 9, marginTop: 1 }}>
-                {stat.subValue}
-              </p>
+              <p style={{ color: c.text3, fontSize: 10, marginTop: 2 }}>{stat.label}</p>
+              <p style={{ color: c.text3, fontSize: 9, marginTop: 1 }}>{stat.subValue}</p>
             </div>
           );
         })}
@@ -252,13 +281,8 @@ export function PerformanceStats({ metrics, className = '' }: PerformanceStatsPr
 
       {/* Best/Worst trades */}
       <div className="grid grid-cols-2 gap-2">
-        <div
-          className="rounded-xl p-2.5"
-          style={{ background: withAlpha('#10B981', ALPHA.hover) }}
-        >
-          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
-            Largest Win
-          </p>
+        <div className="rounded-xl p-2.5" style={{ background: withAlpha('#10B981', ALPHA.hover) }}>
+          <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>Largest Win</p>
           <p
             style={{
               color: '#10B981',
@@ -270,10 +294,7 @@ export function PerformanceStats({ metrics, className = '' }: PerformanceStatsPr
             +${metrics.largestWin.toFixed(2)}
           </p>
         </div>
-        <div
-          className="rounded-xl p-2.5"
-          style={{ background: withAlpha('#EF4444', ALPHA.hover) }}
-        >
+        <div className="rounded-xl p-2.5" style={{ background: withAlpha('#EF4444', ALPHA.hover) }}>
           <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginBottom: 2 }}>
             Largest Loss
           </p>
@@ -344,7 +365,7 @@ export function PeriodPerformance({ periods, className = '' }: PeriodPerformance
 
       {/* Period selector */}
       <div className="flex rounded-2xl p-1 gap-1 mb-3" style={{ background: c.surface2 }}>
-        {(['daily', 'weekly', 'monthly'] as const).map(period => (
+        {(['daily', 'weekly', 'monthly'] as const).map((period) => (
           <button
             key={period}
             onClick={() => setSelectedPeriod(period)}
@@ -370,7 +391,13 @@ export function PeriodPerformance({ periods, className = '' }: PeriodPerformance
             style={{ background: c.surface2 }}
           >
             <div className="flex-1">
-              <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.semibold }}>
+              <p
+                style={{
+                  color: c.text1,
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.semibold,
+                }}
+              >
                 {data.period}
               </p>
               <p style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>
@@ -436,12 +463,21 @@ export function PnLAttribution({ positions, totalPnL, className = '' }: PnLAttri
   const c = useThemeColors();
 
   // Sort by absolute contribution
-  const sortedPositions = [...positions].sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution));
+  const sortedPositions = [...positions].sort(
+    (a, b) => Math.abs(b.contribution) - Math.abs(a.contribution),
+  );
   const topPositions = sortedPositions.slice(0, 5);
 
   return (
     <TrCard className={`p-4 ${className}`}>
-      <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, marginBottom: 8 }}>
+      <p
+        style={{
+          color: c.text1,
+          fontSize: FONT_SCALE.sm,
+          fontWeight: FONT_WEIGHT.bold,
+          marginBottom: 8,
+        }}
+      >
         Top PnL Contributors
       </p>
       <p style={{ color: c.text3, fontSize: FONT_SCALE.xs, marginBottom: 12 }}>
@@ -463,7 +499,10 @@ export function PnLAttribution({ positions, totalPnL, className = '' }: PnLAttri
                 <span
                   className="w-6 h-6 rounded-lg flex items-center justify-center"
                   style={{
-                    background: pos.pnl >= 0 ? withAlpha('#10B981', ALPHA.muted) : withAlpha('#EF4444', ALPHA.muted),
+                    background:
+                      pos.pnl >= 0
+                        ? withAlpha('#10B981', ALPHA.muted)
+                        : withAlpha('#EF4444', ALPHA.muted),
                     color: pos.pnl >= 0 ? '#10B981' : '#EF4444',
                     fontSize: FONT_SCALE.micro,
                     fontWeight: FONT_WEIGHT.bold,
@@ -472,7 +511,13 @@ export function PnLAttribution({ positions, totalPnL, className = '' }: PnLAttri
                   {index + 1}
                 </span>
                 <div>
-                  <p style={{ color: c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>
+                  <p
+                    style={{
+                      color: c.text1,
+                      fontSize: FONT_SCALE.sm,
+                      fontWeight: FONT_WEIGHT.bold,
+                    }}
+                  >
                     {pos.pair}
                   </p>
                   <p style={{ color: c.text3, fontSize: 10 }}>
@@ -492,7 +537,8 @@ export function PnLAttribution({ positions, totalPnL, className = '' }: PnLAttri
                   {pos.pnl >= 0 ? '+' : ''}${pos.pnl.toFixed(2)}
                 </p>
                 <p style={{ color: c.text3, fontSize: 10 }}>
-                  {pos.contribution >= 0 ? '+' : ''}{pos.contribution.toFixed(1)}% of total
+                  {pos.contribution >= 0 ? '+' : ''}
+                  {pos.contribution.toFixed(1)}% of total
                 </p>
               </div>
             </div>

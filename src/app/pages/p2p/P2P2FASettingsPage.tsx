@@ -10,9 +10,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Smartphone, Mail, Key, Shield, CheckCircle, ChevronRight,
-  Info, AlertTriangle, Settings, QrCode, Copy, RefreshCw,
-  Lock, DollarSign, Clock, X,
+  Smartphone,
+  Mail,
+  Key,
+  Shield,
+  CheckCircle,
+  ChevronRight,
+  Info,
+  AlertTriangle,
+  Settings,
+  QrCode,
+  Copy,
+  RefreshCw,
+  Lock,
+  DollarSign,
+  Clock,
+  X,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Header } from '../../components/layout/Header';
@@ -25,7 +38,7 @@ import { hexToRgba } from '../../utils/helpers/string';
 import { TrCard } from '../../components/ui/TrCard';
 import { CTAButton } from '../../components/ui/CTAButton';
 import { BottomSheetV2 } from '../../components/ui/BottomSheetV2';
-import { useSheetAnalytics } from '../../hooks/useSheetAnalytics';
+import { trackSheetOpen } from '../../utils/sheetAnalytics';
 import { InputField } from '../../components/ui/InputField';
 import { toast } from 'sonner';
 import { fmtAmount } from '../../data/formatNumber';
@@ -131,10 +144,12 @@ export function P2P2FASettingsPage() {
   const [thresholdSheet, setThresholdSheet] = useState<ThresholdSetting | null>(null);
   const [editedValue, setEditedValue] = useState('');
 
-  const { trackSheetOpen, trackSheetClose, trackSheetAction } = useSheetAnalytics('P2P2FASettings');
+  // Sheet analytics util only tracks opens; close/action tracking are local no-ops.
+  const trackSheetClose = (_sheetName: string) => {};
+  const trackSheetAction = (_action: string) => {};
 
   const handleToggleMethod = (methodId: string) => {
-    const method = methods.find(m => m.id === methodId);
+    const method = methods.find((m) => m.id === methodId);
     if (!method) return;
 
     if (method.setupRequired && !method.enabled) {
@@ -146,21 +161,17 @@ export function P2P2FASettingsPage() {
     }
 
     // Direct toggle
-    setMethods(prev =>
-      prev.map(m =>
-        m.id === methodId ? { ...m, enabled: !m.enabled } : m
-      )
-    );
+    setMethods((prev) => prev.map((m) => (m.id === methodId ? { ...m, enabled: !m.enabled } : m)));
     hapticSuccess();
     toast.success(method.enabled ? '2FA đã tắt' : '2FA đã bật');
   };
 
   const handleSetPrimary = (methodId: string) => {
-    setMethods(prev =>
-      prev.map(m => ({
+    setMethods((prev) =>
+      prev.map((m) => ({
         ...m,
         isPrimary: m.id === methodId,
-      }))
+      })),
     );
     hapticSuccess();
     toast.success('Đã đặt làm phương thức chính');
@@ -183,10 +194,8 @@ export function P2P2FASettingsPage() {
       return;
     }
 
-    setThresholds(prev =>
-      prev.map(t =>
-        t.id === thresholdSheet.id ? { ...t, value: newValue } : t
-      )
+    setThresholds((prev) =>
+      prev.map((t) => (t.id === thresholdSheet.id ? { ...t, value: newValue } : t)),
     );
 
     hapticSuccess();
@@ -195,16 +204,12 @@ export function P2P2FASettingsPage() {
     trackSheetAction('threshold_saved');
   };
 
-  const enabledMethods = methods.filter(m => m.enabled);
-  const primaryMethod = methods.find(m => m.isPrimary);
+  const enabledMethods = methods.filter((m) => m.enabled);
+  const primaryMethod = methods.find((m) => m.isPrimary);
 
   return (
     <PageLayout>
-      <Header
-        title="2FA cho P2P"
-        subtitle="Bảo mật · P2P"
-        back
-      />
+      <Header title="2FA cho P2P" subtitle="Bảo mật · P2P" back />
 
       {/* Status Card */}
       <div className="px-5 py-4">
@@ -212,22 +217,21 @@ export function P2P2FASettingsPage() {
           rounded="lg"
           className="p-4"
           style={{
-            background: enabledMethods.length > 0
-              ? 'linear-gradient(135deg, #10B981 0%, #059669 100%)'
-              : hexToRgba('#F59E0B', 10),
+            background:
+              enabledMethods.length > 0
+                ? 'linear-gradient(135deg, #10B981 0%, #059669 100%)'
+                : hexToRgba('#F59E0B', 10),
           }}
         >
           <div className="flex items-start gap-3">
             <div
               className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
               style={{
-                background: enabledMethods.length > 0 ? 'rgba(255,255,255,0.2)' : hexToRgba('#F59E0B', 20),
+                background:
+                  enabledMethods.length > 0 ? 'rgba(255,255,255,0.2)' : hexToRgba('#F59E0B', 20),
               }}
             >
-              <Shield
-                size={24}
-                color={enabledMethods.length > 0 ? '#FFFFFF' : '#F59E0B'}
-              />
+              <Shield size={24} color={enabledMethods.length > 0 ? '#FFFFFF' : '#F59E0B'} />
             </div>
             <div className="flex-1">
               <h2
@@ -284,10 +288,7 @@ export function P2P2FASettingsPage() {
                       background: method.enabled ? hexToRgba(method.color, 12) : c.surface2,
                     }}
                   >
-                    <MethodIcon
-                      size={18}
-                      color={method.enabled ? method.color : c.text3}
-                    />
+                    <MethodIcon size={18} color={method.enabled ? method.color : c.text3} />
                   </div>
 
                   <div className="flex-1 min-w-0">
@@ -307,9 +308,7 @@ export function P2P2FASettingsPage() {
                         </span>
                       )}
                     </div>
-                    <p style={{ color: c.text3, fontSize: 11 }}>
-                      {method.description}
-                    </p>
+                    <p style={{ color: c.text3, fontSize: 11 }}>{method.description}</p>
                   </div>
 
                   {/* Toggle */}
@@ -360,9 +359,7 @@ export function P2P2FASettingsPage() {
       {/* Transaction Thresholds */}
       <div className="px-5 mb-6">
         <div className="flex items-center justify-between mb-3">
-          <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>
-            Ngưỡng giao dịch
-          </h3>
+          <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Ngưỡng giao dịch</h3>
           <Info size={14} color={c.text3} />
         </div>
 
@@ -414,10 +411,8 @@ export function P2P2FASettingsPage() {
                 {/* Toggle */}
                 <button
                   onClick={() => {
-                    setThresholds(prev =>
-                      prev.map(t =>
-                        t.id === threshold.id ? { ...t, enabled: !t.enabled } : t
-                      )
+                    setThresholds((prev) =>
+                      prev.map((t) => (t.id === threshold.id ? { ...t, enabled: !t.enabled } : t)),
                     );
                     hapticSuccess();
                   }}
@@ -443,7 +438,10 @@ export function P2P2FASettingsPage() {
       <div className="px-5">
         <div
           className="p-3 rounded-lg flex items-start gap-2"
-          style={{ background: hexToRgba('#3B82F6', 10), border: `1px solid ${hexToRgba('#3B82F6', 30)}` }}
+          style={{
+            background: hexToRgba('#3B82F6', 10),
+            border: `1px solid ${hexToRgba('#3B82F6', 30)}`,
+          }}
         >
           <Info size={14} color="#3B82F6" className="shrink-0 mt-0.5" />
           <div>
@@ -451,7 +449,8 @@ export function P2P2FASettingsPage() {
               Khuyến nghị bảo mật
             </p>
             <p style={{ color: c.text2, fontSize: 10, lineHeight: 1.5 }}>
-              Nên bật ít nhất 2 phương thức 2FA và đặt threshold thấp để đảm bảo an toàn cho tài khoản P2P.
+              Nên bật ít nhất 2 phương thức 2FA và đặt threshold thấp để đảm bảo an toàn cho tài
+              khoản P2P.
             </p>
           </div>
         </div>
@@ -511,7 +510,7 @@ export function P2P2FASettingsPage() {
                     toast.success('Đã copy');
                   }}
                   className="p-2 rounded-lg"
-                  style={{ background: c.surface1 }}
+                  style={{ background: c.surface }}
                 >
                   <Copy size={14} color={c.text2} />
                 </button>
@@ -519,20 +518,15 @@ export function P2P2FASettingsPage() {
             </div>
 
             {/* Verify Code */}
-            <InputField
-              label="Nhập mã xác thực"
-              placeholder="000000"
-              type="text"
-              maxLength={6}
-            />
+            <InputField label="Nhập mã xác thực" placeholder="000000" type="text" maxLength={6} />
 
             <CTAButton
               label="Xác nhận & Kích hoạt"
               onClick={() => {
-                setMethods(prev =>
-                  prev.map(m =>
-                    m.id === setupSheet.id ? { ...m, enabled: true, setupRequired: false } : m
-                  )
+                setMethods((prev) =>
+                  prev.map((m) =>
+                    m.id === setupSheet.id ? { ...m, enabled: true, setupRequired: false } : m,
+                  ),
                 );
                 hapticSuccess();
                 toast.success('Đã kích hoạt Authenticator');
@@ -575,7 +569,7 @@ export function P2P2FASettingsPage() {
             />
 
             <div className="grid grid-cols-3 gap-2 mb-6">
-              {[5_000_000, 10_000_000, 50_000_000].map(preset => (
+              {[5_000_000, 10_000_000, 50_000_000].map((preset) => (
                 <button
                   key={preset}
                   onClick={() => {
@@ -590,11 +584,7 @@ export function P2P2FASettingsPage() {
               ))}
             </div>
 
-            <CTAButton
-              label="Lưu thay đổi"
-              onClick={handleSaveThreshold}
-              icon={CheckCircle}
-            />
+            <CTAButton label="Lưu thay đổi" onClick={handleSaveThreshold} icon={CheckCircle} />
           </div>
         )}
       </BottomSheetV2>

@@ -1,25 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router';
-import {
-  CheckCircle, ArrowRight, Shield, TrendingUp,
-  Wallet, Globe, Sparkles,
-} from 'lucide-react';
+import { CheckCircle, ArrowRight, Shield, TrendingUp, Wallet, Globe, Sparkles } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { WEB_FONT, WEB_BUTTON } from '../../components/layout/webConstants';
 import { WebAuthBrandPanel, WebAuthFormShell } from '../../components/web/WebAuthBrandPanel';
 
 /**
  * WebAuthSuccessPage — Shared welcome/success screen after auth flows complete.
- * 
+ *
  * Route: /w/auth/success
  * Receives via location.state: { purpose, from }
- * 
+ *
  * Purposes:
  *   - register   → Welcome + onboarding suggestions
  *   - 2fa-setup  → 2FA activated confirmation
  *   - reset      → Password changed, redirecting to login
  *   - generic    → General success state
- * 
+ *
  * Features:
  *   - Auto-redirect countdown (configurable per purpose)
  *   - Quick actions / next steps
@@ -36,15 +33,18 @@ interface QuickAction {
   color: string;
 }
 
-const PURPOSE_CONFIG: Record<Purpose, {
-  title: string;
-  subtitle: string;
-  redirectRoute: string;
-  redirectLabel: string;
-  countdown: number;
-  accentColor: string;
-  brandTagline: string;
-}> = {
+const PURPOSE_CONFIG: Record<
+  Purpose,
+  {
+    title: string;
+    subtitle: string;
+    redirectRoute: string;
+    redirectLabel: string;
+    countdown: number;
+    accentColor: string;
+    brandTagline: string;
+  }
+> = {
   register: {
     title: 'Chào mừng bạn đến VitTrade!',
     subtitle: 'Tài khoản đã được tạo thành công. Hãy bắt đầu khám phá nền tảng.',
@@ -52,7 +52,8 @@ const PURPOSE_CONFIG: Record<Purpose, {
     redirectLabel: 'Vào trang chủ',
     countdown: 15,
     accentColor: '#3B82F6',
-    brandTagline: 'Chào mừng thành viên mới! Khám phá Spot, P2P, Prediction Markets và Open Arena ngay hôm nay.',
+    brandTagline:
+      'Chào mừng thành viên mới! Khám phá Spot, P2P, Prediction Markets và Open Arena ngay hôm nay.',
   },
   '2fa-setup': {
     title: 'Bảo mật đã được nâng cấp!',
@@ -61,7 +62,8 @@ const PURPOSE_CONFIG: Record<Purpose, {
     redirectLabel: 'Vào trang chủ',
     countdown: 10,
     accentColor: '#10B981',
-    brandTagline: 'Tài khoản đã được bảo vệ bằng xác thực hai bước. Mọi đăng nhập đều cần mã xác thực.',
+    brandTagline:
+      'Tài khoản đã được bảo vệ bằng xác thực hai bước. Mọi đăng nhập đều cần mã xác thực.',
   },
   reset: {
     title: 'Mật khẩu đã được đổi!',
@@ -79,7 +81,8 @@ const PURPOSE_CONFIG: Record<Purpose, {
     redirectLabel: 'Về trang chủ',
     countdown: 10,
     accentColor: '#3B82F6',
-    brandTagline: 'Nền tảng giao dịch thông minh — kết nối Spot, P2P, Prediction Markets và Open Arena.',
+    brandTagline:
+      'Nền tảng giao dịch thông minh — kết nối Spot, P2P, Prediction Markets và Open Arena.',
   },
 };
 
@@ -150,13 +153,16 @@ export function WebAuthSuccessPage() {
       navigate(config.redirectRoute, { replace: true });
       return;
     }
-    const id = setInterval(() => setCountdown(prev => prev - 1), 1000);
+    const id = setInterval(() => setCountdown((prev) => prev - 1), 1000);
     return () => clearInterval(id);
   }, [countdown, paused, navigate, config.redirectRoute]);
 
-  const quickActions = purpose === 'register' ? QUICK_ACTIONS_REGISTER
-    : purpose === '2fa-setup' ? QUICK_ACTIONS_2FA
-    : [];
+  const quickActions =
+    purpose === 'register'
+      ? QUICK_ACTIONS_REGISTER
+      : purpose === '2fa-setup'
+        ? QUICK_ACTIONS_2FA
+        : [];
 
   return (
     <div className="flex" style={{ minHeight: '100vh', background: c.bg }}>
@@ -169,17 +175,23 @@ export function WebAuthSuccessPage() {
             {/* Outer glow ring */}
             <div
               style={{
-                width: 88, height: 88, borderRadius: '50%',
+                width: 88,
+                height: 88,
+                borderRadius: '50%',
                 background: `${config.accentColor}08`,
                 border: `2px solid ${config.accentColor}20`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
               {/* Inner circle */}
               <div
                 className="flex items-center justify-center"
                 style={{
-                  width: 64, height: 64, borderRadius: '50%',
+                  width: 64,
+                  height: 64,
+                  borderRadius: '50%',
                   background: `${config.accentColor}12`,
                 }}
               >
@@ -194,16 +206,26 @@ export function WebAuthSuccessPage() {
             />
           </div>
 
-          <h1 style={{
-            color: c.text1, fontSize: WEB_FONT['2xl'], fontWeight: 700,
-            marginBottom: 8, textAlign: 'center',
-          }}>
+          <h1
+            style={{
+              color: c.text1,
+              fontSize: WEB_FONT['2xl'],
+              fontWeight: 700,
+              marginBottom: 8,
+              textAlign: 'center',
+            }}
+          >
             {config.title}
           </h1>
-          <p style={{
-            color: c.text2, fontSize: WEB_FONT.md, lineHeight: 1.5,
-            textAlign: 'center', maxWidth: 380,
-          }}>
+          <p
+            style={{
+              color: c.text2,
+              fontSize: WEB_FONT.md,
+              lineHeight: 1.5,
+              textAlign: 'center',
+              maxWidth: 380,
+            }}
+          >
             {config.subtitle}
           </p>
         </div>
@@ -213,7 +235,8 @@ export function WebAuthSuccessPage() {
           <div
             className="flex items-center gap-3"
             style={{
-              padding: '14px 18px', borderRadius: 12,
+              padding: '14px 18px',
+              borderRadius: 12,
               background: `${config.accentColor}06`,
               border: `1px solid ${config.accentColor}15`,
               marginBottom: 24,
@@ -221,7 +244,9 @@ export function WebAuthSuccessPage() {
           >
             <Shield size={20} color={config.accentColor} className="shrink-0" />
             <div>
-              <p style={{ color: c.text1, fontSize: WEB_FONT.sm, fontWeight: 600, marginBottom: 2 }}>
+              <p
+                style={{ color: c.text1, fontSize: WEB_FONT.sm, fontWeight: 600, marginBottom: 2 }}
+              >
                 {purpose === '2fa-setup' ? '2FA đã kích hoạt' : 'Tài khoản đã bảo mật'}
               </p>
               <p style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.4 }}>
@@ -236,10 +261,14 @@ export function WebAuthSuccessPage() {
         {/* ─── Quick actions grid ─── */}
         {quickActions.length > 0 && (
           <div style={{ marginBottom: 24 }}>
-            <p style={{
-              color: c.text2, fontSize: WEB_FONT.sm, fontWeight: 600,
-              marginBottom: 12,
-            }}>
+            <p
+              style={{
+                color: c.text2,
+                fontSize: WEB_FONT.sm,
+                fontWeight: 600,
+                marginBottom: 12,
+              }}
+            >
               Bước tiếp theo
             </p>
             <div className="flex flex-col" style={{ gap: 10 }}>
@@ -252,17 +281,20 @@ export function WebAuthSuccessPage() {
                   }}
                   className="flex items-center text-left"
                   style={{
-                    gap: 14, padding: '14px 16px', borderRadius: 12,
+                    gap: 14,
+                    padding: '14px 16px',
+                    borderRadius: 12,
                     background: c.surface,
                     border: `1px solid ${c.borderSolid}`,
-                    cursor: 'pointer', width: '100%',
+                    cursor: 'pointer',
+                    width: '100%',
                     transition: 'all 0.15s ease',
                   }}
-                  onMouseEnter={e => {
+                  onMouseEnter={(e) => {
                     (e.currentTarget as HTMLElement).style.borderColor = action.color;
                     (e.currentTarget as HTMLElement).style.background = `${action.color}06`;
                   }}
-                  onMouseLeave={e => {
+                  onMouseLeave={(e) => {
                     (e.currentTarget as HTMLElement).style.borderColor = c.borderSolid;
                     (e.currentTarget as HTMLElement).style.background = c.surface;
                   }}
@@ -270,14 +302,23 @@ export function WebAuthSuccessPage() {
                   <div
                     className="flex items-center justify-center shrink-0"
                     style={{
-                      width: 40, height: 40, borderRadius: 10,
+                      width: 40,
+                      height: 40,
+                      borderRadius: 10,
                       background: `${action.color}10`,
                     }}
                   >
                     <action.icon size={18} color={action.color} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p style={{ color: c.text1, fontSize: WEB_FONT.sm, fontWeight: 600, marginBottom: 2 }}>
+                    <p
+                      style={{
+                        color: c.text1,
+                        fontSize: WEB_FONT.sm,
+                        fontWeight: 600,
+                        marginBottom: 2,
+                      }}
+                    >
                       {action.label}
                     </p>
                     <p style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.3 }}>
@@ -296,10 +337,15 @@ export function WebAuthSuccessPage() {
           onClick={() => navigate(config.redirectRoute, { replace: true })}
           className="flex items-center justify-center gap-2"
           style={{
-            height: WEB_BUTTON.lg, borderRadius: 10, width: '100%',
+            height: WEB_BUTTON.lg,
+            borderRadius: 10,
+            width: '100%',
             background: `linear-gradient(135deg, ${config.accentColor} 0%, ${config.accentColor}dd 100%)`,
-            color: '#fff', fontSize: WEB_FONT.md, fontWeight: 600,
-            cursor: 'pointer', border: 'none',
+            color: '#fff',
+            fontSize: WEB_FONT.md,
+            fontWeight: 600,
+            cursor: 'pointer',
+            border: 'none',
             boxShadow: `0 4px 16px ${config.accentColor}40`,
             transition: 'all 0.15s ease',
           }}
@@ -312,15 +358,21 @@ export function WebAuthSuccessPage() {
         <div className="flex items-center justify-center" style={{ marginTop: 16, gap: 8 }}>
           {!paused ? (
             <div className="flex items-center" style={{ gap: 6 }}>
-              <div style={{
-                width: 14, height: 14, borderRadius: '50%',
-                border: `2px solid ${config.accentColor}30`,
-                borderTopColor: config.accentColor,
-                animation: 'spin 1s linear infinite',
-              }} />
+              <div
+                style={{
+                  width: 14,
+                  height: 14,
+                  borderRadius: '50%',
+                  border: `2px solid ${config.accentColor}30`,
+                  borderTopColor: config.accentColor,
+                  animation: 'spin 1s linear infinite',
+                }}
+              />
               <span style={{ color: c.text3, fontSize: WEB_FONT.xs }}>
                 Tự động chuyển hướng sau{' '}
-                <span style={{ color: c.text1, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
+                <span
+                  style={{ color: c.text1, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}
+                >
                   {countdown}s
                 </span>
               </span>
@@ -328,8 +380,11 @@ export function WebAuthSuccessPage() {
                 onClick={() => setPaused(true)}
                 className="hover:underline"
                 style={{
-                  color: c.text3, fontSize: WEB_FONT.xs,
-                  background: 'none', border: 'none', cursor: 'pointer',
+                  color: c.text3,
+                  fontSize: WEB_FONT.xs,
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
                   marginLeft: 4,
                 }}
               >
@@ -347,11 +402,29 @@ export function WebAuthSuccessPage() {
         <div style={{ marginTop: 40, textAlign: 'center' }}>
           <p style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.5 }}>
             Cần trợ giúp?{' '}
-            <button className="hover:underline" style={{ color: '#3B82F6', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 500 }}>
+            <button
+              className="hover:underline"
+              style={{
+                color: '#3B82F6',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontWeight: 500,
+              }}
+            >
               Liên hệ hỗ trợ
-            </button>
-            {' '}·{' '}
-            <button className="hover:underline" style={{ color: '#3B82F6', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 500 }}>
+            </button>{' '}
+            ·{' '}
+            <button
+              className="hover:underline"
+              style={{
+                color: '#3B82F6',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontWeight: 500,
+              }}
+            >
               Trung tâm trợ giúp
             </button>
           </p>

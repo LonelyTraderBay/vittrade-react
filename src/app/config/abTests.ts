@@ -1,9 +1,9 @@
 /**
  * A/B Test Definitions
- * 
+ *
  * Defines all active A/B tests for the DCA module.
  * Each test specifies variants, success metrics, and targeting.
- * 
+ *
  * @module config/abTests
  * @version 2.0 (Phase 2 - Sprint 2)
  */
@@ -18,37 +18,37 @@
 export interface ABTest {
   /** Test ID */
   id: string;
-  
+
   /** Test name */
   name: string;
-  
+
   /** Description */
   description: string;
-  
+
   /** Is test active */
   active: boolean;
-  
+
   /** Start date */
   startDate: Date;
-  
+
   /** End date (optional) */
   endDate?: Date;
-  
+
   /** Test variants */
   variants: ABTestVariant[];
-  
+
   /** Success metric */
   successMetric: ABTestMetric;
-  
+
   /** Minimum sample size per variant */
   minSampleSize: number;
-  
+
   /** Target significance level (e.g., 0.95 for 95%) */
   targetSignificance: number;
-  
+
   /** User segment (optional) */
   targetSegment?: string;
-  
+
   /** Metadata */
   metadata?: Record<string, any>;
 }
@@ -59,19 +59,19 @@ export interface ABTest {
 export interface ABTestVariant {
   /** Variant ID */
   id: string;
-  
+
   /** Variant name */
   name: string;
-  
+
   /** Description */
   description: string;
-  
+
   /** Traffic allocation (0-100) */
   allocation: number;
-  
+
   /** Is control group */
   isControl: boolean;
-  
+
   /** Configuration for this variant */
   config: Record<string, any>;
 }
@@ -82,16 +82,16 @@ export interface ABTestVariant {
 export interface ABTestMetric {
   /** Metric name */
   name: string;
-  
+
   /** Metric type */
   type: 'conversion' | 'revenue' | 'engagement' | 'retention';
-  
+
   /** Event name to track */
   eventName: string;
-  
+
   /** Goal value (optional) */
   goalValue?: number;
-  
+
   /** Higher is better? */
   higherIsBetter: boolean;
 }
@@ -102,19 +102,19 @@ export interface ABTestMetric {
 export interface ABTestResults {
   /** Test ID */
   testId: string;
-  
+
   /** Variant results */
   variants: VariantResults[];
-  
+
   /** Winner (if determined) */
   winner?: string;
-  
+
   /** Statistical significance */
   significance: number;
-  
+
   /** Confidence level */
   confidence: number;
-  
+
   /** Last updated */
   lastUpdated: Date;
 }
@@ -125,25 +125,25 @@ export interface ABTestResults {
 export interface VariantResults {
   /** Variant ID */
   variantId: string;
-  
+
   /** Exposures (users who saw this variant) */
   exposures: number;
-  
+
   /** Conversions */
   conversions: number;
-  
+
   /** Conversion rate */
   conversionRate: number;
-  
+
   /** Revenue (if applicable) */
   revenue?: number;
-  
+
   /** Average revenue per user */
   arpu?: number;
-  
+
   /** Standard error */
   standardError: number;
-  
+
   /** Confidence interval */
   confidenceInterval: [number, number];
 }
@@ -154,9 +154,9 @@ export interface VariantResults {
 
 /**
  * Test 1: Wallet Shortcut Variant
- * 
+ *
  * Hypothesis: A compact shortcut will have higher CTR due to less cognitive load
- * 
+ *
  * Variants:
  * - Control (A): Full card with detailed stats
  * - Variant (B): Compact card with minimal info
@@ -208,9 +208,9 @@ export const WALLET_SHORTCUT_TEST: ABTest = {
 
 /**
  * Test 2: Onboarding Flow
- * 
+ *
  * Hypothesis: A simplified 2-step flow will increase completion rate
- * 
+ *
  * Variants:
  * - Control (A): Current 3-step form
  * - Variant (B): Simplified 2-step
@@ -273,9 +273,9 @@ export const ONBOARDING_FLOW_TEST: ABTest = {
 
 /**
  * Test 3: Frequency Presets
- * 
+ *
  * Hypothesis: Adding "Every 2 weeks" option will increase plan creation
- * 
+ *
  * Variants:
  * - Control (A): Daily/Weekly/Monthly
  * - Variant (B): Add "Every 2 weeks"
@@ -320,9 +320,9 @@ export const FREQUENCY_PRESETS_TEST: ABTest = {
 
 /**
  * Test 4: Create Form Layout
- * 
+ *
  * Hypothesis: Multi-step form reduces cognitive load and increases completion
- * 
+ *
  * Variants:
  * - Control (A): Single page form
  * - Variant (B): Multi-step wizard
@@ -369,15 +369,15 @@ export const CREATE_FORM_LAYOUT_TEST: ABTest = {
 
 /**
  * Test 5: Pair Detail Banner Placement
- * 
+ *
  * Hypothesis: Placing the DCA banner BEFORE the risk warning
  * (closer to chart/content) will have higher CTR than placing it
  * AFTER the risk warning (closer to CTA buttons).
- * 
+ *
  * Context: Users may stop scrolling after seeing the risk warning.
  * Banner above risk warning catches attention while user is still
  * engaged with market data.
- * 
+ *
  * Variants:
  * - Control (A): "after_risk" — Banner between Risk Warning and CTA (current)
  * - Variant (B): "before_risk" — Banner between Content and Risk Warning
@@ -457,7 +457,7 @@ export const AB_TESTS: ABTest[] = [
  * Active tests only
  */
 export function getActiveTests(): ABTest[] {
-  return Object.values(ALL_AB_TESTS).filter(test => test.active);
+  return Object.values(ALL_AB_TESTS).filter((test) => test.active);
 }
 
 /**
@@ -473,13 +473,13 @@ export function getTestById(testId: string): ABTest | undefined {
 export function getTestByFlagKey(flagKey: string): ABTest | undefined {
   // Map feature flag keys to test IDs
   const flagToTestMap: Record<string, string> = {
-    'dca_shortcut_variant': WALLET_SHORTCUT_TEST.id,
-    'dca_onboarding_flow': ONBOARDING_FLOW_TEST.id,
-    'dca_frequency_presets': FREQUENCY_PRESETS_TEST.id,
-    'dca_create_form_layout': CREATE_FORM_LAYOUT_TEST.id,
-    'dca_pair_detail_placement': PAIR_DETAIL_PLACEMENT_TEST.id,
+    dca_shortcut_variant: WALLET_SHORTCUT_TEST.id,
+    dca_onboarding_flow: ONBOARDING_FLOW_TEST.id,
+    dca_frequency_presets: FREQUENCY_PRESETS_TEST.id,
+    dca_create_form_layout: CREATE_FORM_LAYOUT_TEST.id,
+    dca_pair_detail_placement: PAIR_DETAIL_PLACEMENT_TEST.id,
   };
-  
+
   const testId = flagToTestMap[flagKey];
   return testId ? ALL_AB_TESTS[testId] : undefined;
 }

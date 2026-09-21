@@ -2,302 +2,234 @@
  * ══════════════════════════════════════════════════════════════
  *  CopyAuditLogPage.test.tsx — Audit Log Tests
  * ══════════════════════════════════════════════════════════════
- * 
+ *
+ * Written against the current component: a filterable event timeline
+ * (7 mock MiFID II audit events), keyword search, per-event trade
+ * reconciliation metadata, summary stats and a CSV/PDF/JSON export
+ * modal.
+ *
  * Test Coverage (8 tests):
- * 1. ✅ Event timeline renders
- * 2. ✅ Filters work (type/provider/date)
- * 3. ✅ Trade reconciliation view accurate
- * 4. ✅ Slippage report generates
- * 5. ✅ Export CSV works
- * 6. ✅ Export PDF works
- * 7. ✅ Export JSON works
- * 8. ✅ Pagination works
+ * 1. ✅ Event timeline renders all audit events + compliance notice
+ * 2. ✅ Type filter tabs narrow the timeline
+ * 3. ✅ Keyword search narrows the timeline / empty result state
+ * 4. ✅ Trade events show reconciliation metadata (prices, slippage, P/L)
+ * 5. ✅ Config events show old → new value diff
+ * 6. ✅ Summary stats section counts event types
+ * 7. ✅ Export modal offers CSV/PDF/JSON and exports CSV
+ * 8. ✅ Export PDF/JSON work and modal can be cancelled
+ *
+ * Dropped from the old suite (features no longer exist):
+ * - Dedicated reconciliation table tab (replaced by per-event metadata)
+ * - Slippage report generator modal
+ * - Pagination (the mock timeline is a single flat list)
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { screen, waitFor, within } from '@testing-library/react';
-import { renderWithRouter, userEvent } from '../../../test/utils/test-utils';
+import { renderWithRouter, userEvent } from '@/test/test-utils-navigation';
 import { CopyAuditLogPage } from '../CopyAuditLogPage';
 
 describe('CopyAuditLogPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.spyOn(window, 'alert').mockImplementation(() => {});
   });
 
-  it('should render event timeline with all events', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('should render the event timeline with all audit events and compliance notice', () => {
     renderWithRouter(<CopyAuditLogPage />, {
       initialRoute: '/trade/copy-trading/copy-123/audit',
     });
 
-    // Timeline header
-    expect(screen.getByText(/audit log/i)).toBeInTheDocument();
-    expect(screen.getByText(/event timeline/i)).toBeInTheDocument();
+    // Header + MiFID II retention notice
+    expect(screen.getByText('Audit Log')).toBeInTheDocument();
+    expect(screen.getByText('MiFID II Compliant Audit Trail')).toBeInTheDocument();
+    expect(screen.getByText(/lưu trữ 5 năm/i)).toBeInTheDocument();
 
-    // Event types
-    expect(screen.getByText(/copy started/i)).toBeInTheDocument();
-    expect(screen.getByText(/trade executed/i)).toBeInTheDocument();
-    expect(screen.getByText(/configuration changed/i)).toBeInTheDocument();
-    expect(screen.getByText(/circuit breaker triggered/i)).toBeInTheDocument();
+    // All 7 mock event titles
+    ['Trade Executed', 'Risk Alert Triggered', 'Stop-Loss Updated', 'Position Closed'].forEach(
+      (title) => expect(screen.getByText(title)).toBeInTheDocument(),
+    );
+    [
+      'Copy Activated',
+      'Copy Configuration Created',
+      'Risk Assessment Completed',
+    ].forEach((title) => expect(screen.getByText(title)).toBeInTheDocument());
 
-    // Timestamps
-    expect(screen.getByText(/2 hours ago/i)).toBeInTheDocument();
-    expect(screen.getByText(/1 day ago/i)).toBeInTheDocument();
+    // Reverse-chronological timestamps and event details
+    expect(screen.getByText('2026-03-08 14:23:15')).toBeInTheDocument();
+    expect(screen.getByText('BUY 0.05 BTC @ $67,835 (Provider: $67,800)')).toBeInTheDocument();
 
-    // Event details
-    expect(screen.getByText(/BTCUSDT/)).toBeInTheDocument();
-    expect(screen.getByText(/BUY/i)).toBeInTheDocument();
-    expect(screen.getByText(/0\.05 BTC/)).toBeInTheDocument();
+    // Type chips: 2 trade, 2 config, 1 risk, 2 system
+    expect(screen.getAllByText('trade').length).toBe(2);
+    expect(screen.getAllByText('config').length).toBe(2);
+    expect(screen.getAllByText('risk').length).toBe(1);
+    expect(screen.getAllByText('system').length).toBe(2);
   });
 
-  it('should filter events by type, provider, and date', async () => {
+  it('should filter events by type tab', async () => {
     const user = userEvent.setup();
     renderWithRouter(<CopyAuditLogPage />, {
       initialRoute: '/trade/copy-trading/copy-123/audit',
     });
 
-    // Filter by event type
-    const typeFilter = screen.getByLabelText(/event type/i);
-    await user.click(typeFilter);
-
+    // Trades tab → only the 2 trade events
+    await user.click(screen.getByRole('tab', { name: 'Trades' }));
     await waitFor(() => {
-      expect(screen.getByText(/trades only/i)).toBeInTheDocument();
+      expect(screen.getAllByText('trade').length).toBe(2);
+      expect(screen.queryByText('config')).not.toBeInTheDocument();
+      expect(screen.queryByText('Risk Alert Triggered')).not.toBeInTheDocument();
+      expect(screen.getByText('Trade Executed')).toBeInTheDocument();
+      expect(screen.getByText('Position Closed')).toBeInTheDocument();
     });
 
-    const tradesOption = screen.getByText(/trades only/i);
-    await user.click(tradesOption);
-
-    // Should only show trade events
+    // Risk tab → only the risk alert
+    await user.click(screen.getByRole('tab', { name: 'Risk' }));
     await waitFor(() => {
-      expect(screen.getAllByText(/trade executed/i).length).toBeGreaterThan(0);
-      expect(screen.queryByText(/copy started/i)).not.toBeInTheDocument();
+      expect(screen.getByText('Risk Alert Triggered')).toBeInTheDocument();
+      expect(screen.queryByText('Trade Executed')).not.toBeInTheDocument();
     });
 
-    // Filter by date range
-    const dateFilter = screen.getByLabelText(/date range/i);
-    await user.click(dateFilter);
-
-    const last7Days = screen.getByText(/last 7 days/i);
-    await user.click(last7Days);
-
-    // Should filter to last 7 days
+    // System tab → activation + risk assessment
+    await user.click(screen.getByRole('tab', { name: 'System' }));
     await waitFor(() => {
-      const oldEvent = screen.queryByText(/30 days ago/i);
-      expect(oldEvent).not.toBeInTheDocument();
-    });
-
-    // Filter by provider
-    const providerFilter = screen.getByLabelText(/provider/i);
-    await user.click(providerFilter);
-
-    const cryptoKing = screen.getByText(/CryptoKing/i);
-    await user.click(cryptoKing);
-
-    // Should only show CryptoKing events
-    await waitFor(() => {
-      const allEvents = screen.getAllByText(/CryptoKing/i);
-      expect(allEvents.length).toBeGreaterThan(0);
+      expect(screen.getByText('Copy Activated')).toBeInTheDocument();
+      expect(screen.getByText('Risk Assessment Completed')).toBeInTheDocument();
+      expect(screen.queryByText('Trade Executed')).not.toBeInTheDocument();
     });
   });
 
-  it('should display accurate trade reconciliation view', async () => {
+  it('should search events by keyword and show empty result state', async () => {
     const user = userEvent.setup();
     renderWithRouter(<CopyAuditLogPage />, {
       initialRoute: '/trade/copy-trading/copy-123/audit',
     });
 
-    // Switch to Reconciliation tab
-    const reconTab = screen.getByRole('tab', { name: /reconciliation/i });
-    await user.click(reconTab);
+    const searchInput = screen.getByPlaceholderText('Tìm kiếm event, pair, ID...');
 
-    // Reconciliation table
+    // "ETH" matches only the Position Closed event
+    await user.type(searchInput, 'ETH');
     await waitFor(() => {
-      expect(screen.getByText(/trade reconciliation/i)).toBeInTheDocument();
+      expect(screen.getByText('Position Closed')).toBeInTheDocument();
+      expect(screen.queryByText('Trade Executed')).not.toBeInTheDocument();
+      expect(screen.queryByText('Copy Activated')).not.toBeInTheDocument();
     });
 
-    // Table headers
-    expect(screen.getByText(/provider trade id/i)).toBeInTheDocument();
-    expect(screen.getByText(/your trade id/i)).toBeInTheDocument();
-    expect(screen.getByText(/provider price/i)).toBeInTheDocument();
-    expect(screen.getByText(/your price/i)).toBeInTheDocument();
-    expect(screen.getByText(/slippage/i)).toBeInTheDocument();
-    expect(screen.getByText(/status/i)).toBeInTheDocument();
-
-    // Sample row
-    expect(screen.getByText(/PT-123456/)).toBeInTheDocument(); // Provider trade ID
-    expect(screen.getByText(/UT-789012/)).toBeInTheDocument(); // Your trade ID
-    expect(screen.getByText(/\$68,500/)).toBeInTheDocument();
-    expect(screen.getByText(/\$68,525/)).toBeInTheDocument();
-    expect(screen.getByText(/0\.036%/)).toBeInTheDocument();
-
-    // Status indicators
-    expect(screen.getByText(/matched/i)).toBeInTheDocument();
+    // Gibberish → no results message
+    await user.clear(searchInput);
+    await user.type(searchInput, 'xyz-nonexistent');
+    await waitFor(() => {
+      expect(screen.getByText('Không tìm thấy event phù hợp')).toBeInTheDocument();
+    });
   });
 
-  it('should generate slippage report', async () => {
+  it('should display trade reconciliation metadata on trade events', () => {
+    renderWithRouter(<CopyAuditLogPage />, {
+      initialRoute: '/trade/copy-trading/copy-123/audit',
+    });
+
+    // BTC trade event (amounts rendered via toLocaleString — compute the same way)
+    const fmt = (n: number) => `$${n.toLocaleString()}`;
+    expect(screen.getAllByText('Provider Price').length).toBe(2); // both trade events
+    expect(screen.getByText(fmt(67800))).toBeInTheDocument();
+    expect(screen.getByText(fmt(67835))).toBeInTheDocument();
+    expect(screen.getByText('0.52%')).toBeInTheDocument();
+
+    // ETH position closed event carries P/L
+    expect(screen.getAllByText('Your Price').length).toBe(2);
+    expect(screen.getByText(fmt(3848))).toBeInTheDocument();
+    expect(screen.getByText('0.31%')).toBeInTheDocument();
+
+    // P/L metadata lives inside the "Position Closed" event card
+    const closedEvent = screen.getByText('Position Closed').closest('.rounded-2xl') as HTMLElement;
+    expect(within(closedEvent).getByText('P/L')).toBeInTheDocument();
+    expect(within(closedEvent).getByText('+$45')).toBeInTheDocument();
+  });
+
+  it('should display old → new value diff on config events', () => {
+    renderWithRouter(<CopyAuditLogPage />, {
+      initialRoute: '/trade/copy-trading/copy-123/audit',
+    });
+
+    expect(screen.getByText('Stop-Loss Updated')).toBeInTheDocument();
+    expect(screen.getByText('-15% → -10%')).toBeInTheDocument();
+  });
+
+  it('should display summary stats for event types', () => {
+    renderWithRouter(<CopyAuditLogPage />, {
+      initialRoute: '/trade/copy-trading/copy-123/audit',
+    });
+
+    expect(screen.getByText('Thống kê tổng quan')).toBeInTheDocument();
+
+    // Total Events = 7
+    const totalTile = screen.getByText('Total Events').closest('div');
+    expect(within(totalTile as HTMLElement).getByText('7')).toBeInTheDocument();
+
+    // Trades = 2, Config Changes = 2, Risk Alerts = 1
+    const tradesTile = screen.getByText('Trades', { selector: 'p' }).closest('div');
+    expect(within(tradesTile as HTMLElement).getByText('2')).toBeInTheDocument();
+    const configTile = screen.getByText('Config Changes').closest('div');
+    expect(within(configTile as HTMLElement).getByText('2')).toBeInTheDocument();
+    const riskTile = screen.getByText('Risk Alerts').closest('div');
+    expect(within(riskTile as HTMLElement).getByText('1')).toBeInTheDocument();
+  });
+
+  it('should open export modal and export the audit log as CSV', async () => {
     const user = userEvent.setup();
     renderWithRouter(<CopyAuditLogPage />, {
       initialRoute: '/trade/copy-trading/copy-123/audit',
     });
 
-    // Slippage Report button
-    const slippageReportBtn = screen.getByRole('button', { name: /slippage report/i });
-    expect(slippageReportBtn).toBeInTheDocument();
+    // Download icon in the header opens the export modal
+    await user.click(screen.getByRole('button', { name: 'Action' }));
 
-    await user.click(slippageReportBtn);
+    const modal = screen.getByText('Export Audit Log').closest('div.fixed') as HTMLElement;
+    expect(modal).not.toBeNull();
+    expect(within(modal).getByText('Chọn định dạng export')).toBeInTheDocument();
+    expect(within(modal).getByText('Excel-compatible spreadsheet')).toBeInTheDocument();
 
-    // Report modal
+    await user.click(within(modal).getByRole('button', { name: /CSV/ }));
+
+    expect(window.alert).toHaveBeenCalledWith(expect.stringContaining('CSV'));
+    // Modal closes after export
     await waitFor(() => {
-      expect(screen.getByText(/slippage analysis report/i)).toBeInTheDocument();
+      expect(screen.queryByText('Export Audit Log')).not.toBeInTheDocument();
     });
-
-    // Summary metrics
-    expect(screen.getByText(/total slippage cost/i)).toBeInTheDocument();
-    expect(screen.getByText(/\$45\.20/)).toBeInTheDocument();
-
-    expect(screen.getByText(/average slippage/i)).toBeInTheDocument();
-    expect(screen.getByText(/0\.12%/)).toBeInTheDocument();
-
-    // Slippage breakdown by pair
-    expect(screen.getByText(/by trading pair/i)).toBeInTheDocument();
-    expect(screen.getByText(/BTCUSDT.*0\.08%/)).toBeInTheDocument();
-    expect(screen.getByText(/ETHUSDT.*0\.15%/)).toBeInTheDocument();
-
-    // Download report button
-    const downloadBtn = screen.getByRole('button', { name: /download report/i });
-    expect(downloadBtn).toBeInTheDocument();
   });
 
-  it('should export audit log as CSV', async () => {
+  it('should export as PDF/JSON and support cancelling the modal', async () => {
     const user = userEvent.setup();
     renderWithRouter(<CopyAuditLogPage />, {
       initialRoute: '/trade/copy-trading/copy-123/audit',
     });
 
-    // Export dropdown
-    const exportBtn = screen.getByRole('button', { name: /export/i });
-    await user.click(exportBtn);
-
-    // CSV option
+    // PDF export
+    await user.click(screen.getByRole('button', { name: 'Action' }));
+    let modal = screen.getByText('Export Audit Log').closest('div.fixed') as HTMLElement;
+    await user.click(within(modal).getByRole('button', { name: /PDF/ }));
+    expect(window.alert).toHaveBeenCalledWith(expect.stringContaining('PDF'));
     await waitFor(() => {
-      expect(screen.getByText(/export as csv/i)).toBeInTheDocument();
+      expect(screen.queryByText('Export Audit Log')).not.toBeInTheDocument();
     });
 
-    const csvBtn = screen.getByRole('button', { name: /export as csv/i });
-    await user.click(csvBtn);
-
-    // Should trigger download
+    // JSON export
+    await user.click(screen.getByRole('button', { name: 'Action' }));
+    modal = screen.getByText('Export Audit Log').closest('div.fixed') as HTMLElement;
+    await user.click(within(modal).getByRole('button', { name: /JSON/ }));
+    expect(window.alert).toHaveBeenCalledWith(expect.stringContaining('JSON'));
     await waitFor(() => {
-      expect(screen.getByText(/preparing csv/i)).toBeInTheDocument();
+      expect(screen.queryByText('Export Audit Log')).not.toBeInTheDocument();
     });
 
-    await waitFor(() => {
-      expect(screen.getByText(/export complete/i)).toBeInTheDocument();
-    });
-
-    // Should download file with correct name
-    // (In real app, would check download was triggered)
-  });
-
-  it('should export audit log as PDF', async () => {
-    const user = userEvent.setup();
-    renderWithRouter(<CopyAuditLogPage />, {
-      initialRoute: '/trade/copy-trading/copy-123/audit',
-    });
-
-    // Export dropdown
-    const exportBtn = screen.getByRole('button', { name: /export/i });
-    await user.click(exportBtn);
-
-    // PDF option
-    await waitFor(() => {
-      expect(screen.getByText(/export as pdf/i)).toBeInTheDocument();
-    });
-
-    const pdfBtn = screen.getByRole('button', { name: /export as pdf/i });
-    await user.click(pdfBtn);
-
-    // Should show PDF generation progress
-    await waitFor(() => {
-      expect(screen.getByText(/generating pdf/i)).toBeInTheDocument();
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText(/export complete/i)).toBeInTheDocument();
-    });
-  });
-
-  it('should export audit log as JSON', async () => {
-    const user = userEvent.setup();
-    renderWithRouter(<CopyAuditLogPage />, {
-      initialRoute: '/trade/copy-trading/copy-123/audit',
-    });
-
-    // Export dropdown
-    const exportBtn = screen.getByRole('button', { name: /export/i });
-    await user.click(exportBtn);
-
-    // JSON option
-    await waitFor(() => {
-      expect(screen.getByText(/export as json/i)).toBeInTheDocument();
-    });
-
-    const jsonBtn = screen.getByRole('button', { name: /export as json/i });
-    await user.click(jsonBtn);
-
-    // Should trigger immediate download (JSON is fast)
-    await waitFor(() => {
-      expect(screen.getByText(/export complete/i)).toBeInTheDocument();
-    });
-
-    // Should include all event fields in JSON
-    // (In real app, would validate JSON structure)
-  });
-
-  it('should paginate through events', async () => {
-    const user = userEvent.setup();
-    renderWithRouter(<CopyAuditLogPage />, {
-      initialRoute: '/trade/copy-trading/copy-123/audit',
-    });
-
-    // Pagination controls
-    expect(screen.getByText(/showing 1-50 of 250/i)).toBeInTheDocument();
-
-    // Next page button
-    const nextBtn = screen.getByRole('button', { name: /next/i });
-    expect(nextBtn).toBeInTheDocument();
-    expect(nextBtn).not.toBeDisabled();
-
-    await user.click(nextBtn);
-
-    // Should load page 2
-    await waitFor(() => {
-      expect(screen.getByText(/showing 51-100 of 250/i)).toBeInTheDocument();
-    });
-
-    // Previous button should now be enabled
-    const prevBtn = screen.getByRole('button', { name: /previous/i });
-    expect(prevBtn).not.toBeDisabled();
-
-    await user.click(prevBtn);
-
-    // Should go back to page 1
-    await waitFor(() => {
-      expect(screen.getByText(/showing 1-50 of 250/i)).toBeInTheDocument();
-    });
-
-    // Previous button should be disabled on page 1
-    expect(prevBtn).toBeDisabled();
-
-    // Page size selector
-    const pageSizeSelect = screen.getByLabelText(/items per page/i);
-    await user.click(pageSizeSelect);
-
-    const size100 = screen.getByText(/100/);
-    await user.click(size100);
-
-    // Should show 100 items
-    await waitFor(() => {
-      expect(screen.getByText(/showing 1-100 of 250/i)).toBeInTheDocument();
-    });
+    // Cancel button closes without exporting
+    await user.click(screen.getByRole('button', { name: 'Action' }));
+    modal = screen.getByText('Export Audit Log').closest('div.fixed') as HTMLElement;
+    await user.click(within(modal).getByRole('button', { name: 'Hủy' }));
+    expect(window.alert).not.toHaveBeenCalledWith(expect.stringContaining('Hủy'));
+    expect(screen.queryByText('Export Audit Log')).not.toBeInTheDocument();
   });
 });

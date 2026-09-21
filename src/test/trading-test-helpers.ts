@@ -5,7 +5,7 @@
  *  Shared testing helpers for Phase 1-3 components
  */
 
-import { expect } from '@jest/globals';
+import { expect } from 'vitest';
 
 /* ═══════════════════════════════════════════════════════════════
    NUMBER COMPARISON HELPERS
@@ -99,13 +99,13 @@ export function validateOCOOrder(order: any) {
   expect(order).toHaveProperty('takeProfit');
   expect(order).toHaveProperty('stopLoss');
   expect(order).toHaveProperty('amount');
-  
+
   expectValidPrice(order.entryPrice);
   expectValidPrice(order.takeProfit);
   expectValidPrice(order.stopLoss);
-  
+
   expect(order.amount).toBeGreaterThan(0);
-  
+
   // Validate TP/SL relationship
   if (order.side === 'buy') {
     expect(order.takeProfit).toBeGreaterThan(order.entryPrice);
@@ -144,16 +144,16 @@ export function testPnLCalculation(
   currentPrice: number,
   amount: number,
   side: 'long' | 'short',
-  expectedPnL: number
+  expectedPnL: number,
 ) {
   let calculatedPnL: number;
-  
+
   if (side === 'long') {
     calculatedPnL = (currentPrice - entryPrice) * amount;
   } else {
     calculatedPnL = (entryPrice - currentPrice) * amount;
   }
-  
+
   expectClose(calculatedPnL, expectedPnL, 0.01);
 }
 
@@ -165,12 +165,12 @@ export function testPositionSizeCalculation(
   riskPercentage: number,
   entryPrice: number,
   stopLoss: number,
-  expectedSize: number
+  expectedSize: number,
 ) {
   const riskAmount = accountBalance * (riskPercentage / 100);
   const priceRisk = Math.abs(entryPrice - stopLoss);
   const calculatedSize = riskAmount / priceRisk;
-  
+
   expectClose(calculatedSize, expectedSize, 0.0001);
 }
 
@@ -180,7 +180,7 @@ export function testPositionSizeCalculation(
 export function testSlippageCalculation(
   expectedPrice: number,
   actualPrice: number,
-  expectedSlippagePct: number
+  expectedSlippagePct: number,
 ) {
   const calculatedSlippage = ((actualPrice - expectedPrice) / expectedPrice) * 100;
   expectClose(calculatedSlippage, expectedSlippagePct, 0.001);
@@ -195,26 +195,26 @@ export function testSlippageCalculation(
  */
 export const EDGE_CASES = {
   prices: [
-    0.0001,      // Very small
-    1,           // Unit
-    1000,        // Normal
-    100000,      // Large
-    0.00000001,  // Crypto minimum
+    0.0001, // Very small
+    1, // Unit
+    1000, // Normal
+    100000, // Large
+    0.00000001, // Crypto minimum
   ],
   amounts: [
-    0.00000001,  // Minimum
-    0.1,         // Small
-    1,           // Normal
-    100,         // Large
-    1000,        // Very large
+    0.00000001, // Minimum
+    0.1, // Small
+    1, // Normal
+    100, // Large
+    1000, // Very large
   ],
   percentages: [
-    0,           // Zero
-    0.01,        // Very small
-    1,           // Small
-    50,          // Medium
-    99.99,       // Near max
-    100,         // Max
+    0, // Zero
+    0.01, // Very small
+    1, // Small
+    50, // Medium
+    99.99, // Near max
+    100, // Max
   ],
   invalid: {
     negative: -100,
@@ -346,14 +346,14 @@ export function buildSlippageScenarios() {
  */
 export async function measurePerformance<T>(
   fn: () => T | Promise<T>,
-  label: string
+  label: string,
 ): Promise<{ result: T; duration: number }> {
   const start = performance.now();
   const result = await fn();
   const duration = performance.now() - start;
-  
+
   console.log(`[Performance] ${label}: ${duration.toFixed(2)}ms`);
-  
+
   return { result, duration };
 }
 
@@ -363,7 +363,7 @@ export async function measurePerformance<T>(
 export async function expectPerformance<T>(
   fn: () => T | Promise<T>,
   maxDuration: number,
-  label: string = 'Operation'
+  label: string = 'Operation',
 ) {
   const { duration } = await measurePerformance(fn, label);
   expect(duration).toBeLessThanOrEqual(maxDuration);

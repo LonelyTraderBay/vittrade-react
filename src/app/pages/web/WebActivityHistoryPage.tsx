@@ -53,7 +53,8 @@ import { PageLayout } from '../../components/layout/PageLayout';
    TYPES & MOCK DATA
    ═══════════════════════════════════════════════════════════ */
 
-type ActivityType = 'login' | 'logout' | 'security' | 'trade' | 'withdrawal' | 'deposit' | 'settings' | 'api';
+type ActivityType =
+  'login' | 'logout' | 'security' | 'trade' | 'withdrawal' | 'deposit' | 'settings' | 'api';
 type ActivityStatus = 'success' | 'failed' | 'pending';
 
 interface ActivityLog {
@@ -167,7 +168,10 @@ const ACTIVITY_LOGS: ActivityLog[] = [
   },
 ];
 
-const ACTIVITY_TYPE_CONFIG: Record<ActivityType, { label: string; color: string; icon: React.ElementType }> = {
+const ACTIVITY_TYPE_CONFIG: Record<
+  ActivityType,
+  { label: string; color: string; icon: React.ElementType }
+> = {
   login: { label: 'Đăng nhập', color: '#10B981', icon: LogIn },
   logout: { label: 'Đăng xuất', color: '#94A3B8', icon: LogOut },
   security: { label: 'Bảo mật', color: '#EF4444', icon: Shield },
@@ -178,7 +182,10 @@ const ACTIVITY_TYPE_CONFIG: Record<ActivityType, { label: string; color: string;
   api: { label: 'API', color: '#EC4899', icon: Key },
 };
 
-const STATUS_CONFIG: Record<ActivityStatus, { label: string; color: string; icon: React.ElementType }> = {
+const STATUS_CONFIG: Record<
+  ActivityStatus,
+  { label: string; color: string; icon: React.ElementType }
+> = {
   success: { label: 'Thành công', color: '#10B981', icon: CheckCircle2 },
   failed: { label: 'Thất bại', color: '#EF4444', icon: XCircle },
   pending: { label: 'Đang xử lý', color: '#F59E0B', icon: Clock },
@@ -219,12 +226,17 @@ function ActivityLogItem({ log }: { log: ActivityLog }) {
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-3 mb-2">
           <div className="flex-1">
-            <div style={{ color: c.text1, fontSize: WEB_FONT.SIZE.BODY, fontWeight: 700, marginBottom: 4 }}>
+            <div
+              style={{
+                color: c.text1,
+                fontSize: WEB_FONT.SIZE.BODY,
+                fontWeight: 700,
+                marginBottom: 4,
+              }}
+            >
               {log.action}
             </div>
-            <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION }}>
-              {log.description}
-            </div>
+            <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION }}>{log.description}</div>
           </div>
 
           <div className="flex items-center gap-2 flex-shrink-0">
@@ -255,7 +267,10 @@ function ActivityLogItem({ log }: { log: ActivityLog }) {
         </div>
 
         {/* Meta Info */}
-        <div className="flex items-center gap-4 flex-wrap" style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
+        <div
+          className="flex items-center gap-4 flex-wrap"
+          style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}
+        >
           <span className="flex items-center gap-1">
             <Clock size={12} />
             {new Date(log.timestamp).toLocaleString('vi-VN')}
@@ -319,186 +334,195 @@ export function WebActivityHistoryPage() {
 
   return (
     <PageLayout>
-    <div className="flex" style={{ minHeight: '100%' }}>
-      {/* ═══ LEFT SIDEBAR (280px) ═══ */}
-      <div
-        className="flex flex-col"
-        style={{
-          width: 280,
-          background: c.surface,
-          borderRight: `1px solid ${c.divider}`,
-          position: 'sticky',
-          top: 0,
-          alignSelf: 'flex-start',
-          maxHeight: '100vh',
-          overflowY: 'auto',
-        }}
-      >
-        {/* Header */}
+      <div className="flex" style={{ minHeight: '100%' }}>
+        {/* ═══ LEFT SIDEBAR (280px) ═══ */}
         <div
-          className="flex items-center justify-between px-5"
+          className="flex flex-col"
           style={{
-            height: 60,
-            borderBottom: `1px solid ${c.divider}`,
+            width: 280,
+            background: c.surface,
+            borderRight: `1px solid ${c.divider}`,
+            position: 'sticky',
+            top: 0,
+            alignSelf: 'flex-start',
+            maxHeight: '100vh',
+            overflowY: 'auto',
           }}
         >
-          <h2
-            style={{
-              color: c.text1,
-              fontSize: WEB_FONT.SIZE.H2,
-              fontWeight: 700,
-              margin: 0,
-            }}
-          >
-            Hoạt động
-          </h2>
-        </div>
-
-        {/* Search */}
-        <div className="p-4">
+          {/* Header */}
           <div
-            className="flex items-center gap-2 px-3 py-2 rounded-lg"
+            className="flex items-center justify-between px-5"
             style={{
-              background: c.bg,
-              border: `1px solid ${c.border}`,
+              height: 60,
+              borderBottom: `1px solid ${c.divider}`,
             }}
           >
-            <Search size={16} color={c.text3} />
-            <input
-              type="text"
-              placeholder="Tìm kiếm..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+            <h2
               style={{
-                flex: 1,
-                background: 'transparent',
-                border: 'none',
-                outline: 'none',
                 color: c.text1,
-                fontSize: WEB_FONT.SIZE.CAPTION,
-              }}
-            />
-          </div>
-        </div>
-
-        {/* Filters */}
-        <div className="px-4 pb-4">
-          <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 12 }}>
-            Lọc theo loại
-          </div>
-          <div className="flex flex-col gap-1">
-            <button
-              onClick={() => setSelectedType('all')}
-              className="flex items-center justify-between px-3 py-2 rounded-lg transition-all text-left"
-              style={{
-                background: selectedType === 'all' ? '#3B82F615' : 'transparent',
-                color: selectedType === 'all' ? '#3B82F6' : c.text2,
-                fontSize: WEB_FONT.SIZE.CAPTION,
-                fontWeight: selectedType === 'all' ? 600 : 500,
+                fontSize: WEB_FONT.SIZE.H2,
+                fontWeight: 700,
+                margin: 0,
               }}
             >
-              <span className="flex items-center gap-2">
-                <Activity size={14} />
-                Tất cả
-              </span>
-              <span style={{ fontSize: 12 }}>{activityCounts.all}</span>
-            </button>
-
-            {Object.entries(ACTIVITY_TYPE_CONFIG).slice(0, 5).map(([type, config]) => {
-              const Icon = config.icon;
-              const isActive = selectedType === type;
-              const count = ACTIVITY_LOGS.filter((l) => l.type === type).length;
-
-              return (
-                <button
-                  key={type}
-                  onClick={() => setSelectedType(type as ActivityType)}
-                  className="flex items-center justify-between px-3 py-2 rounded-lg transition-all text-left"
-                  style={{
-                    background: isActive ? `${config.color}15` : 'transparent',
-                    color: isActive ? config.color : c.text2,
-                    fontSize: WEB_FONT.SIZE.CAPTION,
-                    fontWeight: isActive ? 600 : 500,
-                  }}
-                >
-                  <span className="flex items-center gap-2">
-                    <Icon size={14} />
-                    {config.label}
-                  </span>
-                  <span style={{ fontSize: 12 }}>{count}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Export Button */}
-        <div className="px-4 pb-4 mt-auto">
-          <button
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-colors"
-            style={{
-              background: c.bg,
-              border: `1px solid ${c.border}`,
-              color: c.text2,
-              fontSize: WEB_FONT.SIZE.CAPTION,
-              fontWeight: 600,
-            }}
-          >
-            <Download size={14} />
-            Xuất lịch sử
-          </button>
-        </div>
-      </div>
-
-      {/* ═══ MAIN CONTENT ═══ */}
-      <div className="flex-1 min-w-0">
-        <div className="max-w-4xl mx-auto p-8">
-          {/* Page Header */}
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h3
-                style={{
-                  color: c.text1,
-                  fontSize: WEB_FONT.SIZE.H3,
-                  fontWeight: 700,
-                  marginBottom: 8,
-                }}
-              >
-                Lịch sử hoạt động
-              </h3>
-              <p style={{ color: c.text2, fontSize: WEB_FONT.SIZE.BODY, margin: 0 }}>
-                {filteredLogs.length} hoạt động
-              </p>
-            </div>
+              Hoạt động
+            </h2>
           </div>
 
-          {/* Activity List */}
-          {filteredLogs.length > 0 ? (
-            <div className="flex flex-col gap-3">
-              {filteredLogs.map((log) => (
-                <ActivityLogItem key={log.id} log={log} />
-              ))}
-            </div>
-          ) : (
+          {/* Search */}
+          <div className="p-4">
             <div
-              className="flex flex-col items-center justify-center py-16 rounded-xl"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg"
               style={{
-                background: c.surface,
+                background: c.bg,
                 border: `1px solid ${c.border}`,
               }}
             >
-              <Activity size={48} color={c.text3} className="mb-4" />
-              <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.BODY, marginBottom: 8 }}>
-                Không tìm thấy hoạt động
-              </div>
-              <div style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
-                Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm
+              <Search size={16} color={c.text3} />
+              <input
+                type="text"
+                placeholder="Tìm kiếm..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                style={{
+                  flex: 1,
+                  background: 'transparent',
+                  border: 'none',
+                  outline: 'none',
+                  color: c.text1,
+                  fontSize: WEB_FONT.SIZE.CAPTION,
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Filters */}
+          <div className="px-4 pb-4">
+            <div
+              style={{
+                color: c.text2,
+                fontSize: WEB_FONT.SIZE.CAPTION,
+                fontWeight: 600,
+                marginBottom: 12,
+              }}
+            >
+              Lọc theo loại
+            </div>
+            <div className="flex flex-col gap-1">
+              <button
+                onClick={() => setSelectedType('all')}
+                className="flex items-center justify-between px-3 py-2 rounded-lg transition-all text-left"
+                style={{
+                  background: selectedType === 'all' ? '#3B82F615' : 'transparent',
+                  color: selectedType === 'all' ? '#3B82F6' : c.text2,
+                  fontSize: WEB_FONT.SIZE.CAPTION,
+                  fontWeight: selectedType === 'all' ? 600 : 500,
+                }}
+              >
+                <span className="flex items-center gap-2">
+                  <Activity size={14} />
+                  Tất cả
+                </span>
+                <span style={{ fontSize: 12 }}>{activityCounts.all}</span>
+              </button>
+
+              {Object.entries(ACTIVITY_TYPE_CONFIG)
+                .slice(0, 5)
+                .map(([type, config]) => {
+                  const Icon = config.icon;
+                  const isActive = selectedType === type;
+                  const count = ACTIVITY_LOGS.filter((l) => l.type === type).length;
+
+                  return (
+                    <button
+                      key={type}
+                      onClick={() => setSelectedType(type as ActivityType)}
+                      className="flex items-center justify-between px-3 py-2 rounded-lg transition-all text-left"
+                      style={{
+                        background: isActive ? `${config.color}15` : 'transparent',
+                        color: isActive ? config.color : c.text2,
+                        fontSize: WEB_FONT.SIZE.CAPTION,
+                        fontWeight: isActive ? 600 : 500,
+                      }}
+                    >
+                      <span className="flex items-center gap-2">
+                        <Icon size={14} />
+                        {config.label}
+                      </span>
+                      <span style={{ fontSize: 12 }}>{count}</span>
+                    </button>
+                  );
+                })}
+            </div>
+          </div>
+
+          {/* Export Button */}
+          <div className="px-4 pb-4 mt-auto">
+            <button
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-colors"
+              style={{
+                background: c.bg,
+                border: `1px solid ${c.border}`,
+                color: c.text2,
+                fontSize: WEB_FONT.SIZE.CAPTION,
+                fontWeight: 600,
+              }}
+            >
+              <Download size={14} />
+              Xuất lịch sử
+            </button>
+          </div>
+        </div>
+
+        {/* ═══ MAIN CONTENT ═══ */}
+        <div className="flex-1 min-w-0">
+          <div className="max-w-4xl mx-auto p-8">
+            {/* Page Header */}
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h3
+                  style={{
+                    color: c.text1,
+                    fontSize: WEB_FONT.SIZE.H3,
+                    fontWeight: 700,
+                    marginBottom: 8,
+                  }}
+                >
+                  Lịch sử hoạt động
+                </h3>
+                <p style={{ color: c.text2, fontSize: WEB_FONT.SIZE.BODY, margin: 0 }}>
+                  {filteredLogs.length} hoạt động
+                </p>
               </div>
             </div>
-          )}
+
+            {/* Activity List */}
+            {filteredLogs.length > 0 ? (
+              <div className="flex flex-col gap-3">
+                {filteredLogs.map((log) => (
+                  <ActivityLogItem key={log.id} log={log} />
+                ))}
+              </div>
+            ) : (
+              <div
+                className="flex flex-col items-center justify-center py-16 rounded-xl"
+                style={{
+                  background: c.surface,
+                  border: `1px solid ${c.border}`,
+                }}
+              >
+                <Activity size={48} color={c.text3} className="mb-4" />
+                <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.BODY, marginBottom: 8 }}>
+                  Không tìm thấy hoạt động
+                </div>
+                <div style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
+                  Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
     </PageLayout>
   );
 }

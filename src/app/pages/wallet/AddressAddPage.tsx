@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import {
-  QrCode, AlertTriangle, CheckCircle, Shield,
-  ArrowLeft, Clipboard,
-} from 'lucide-react';
+import { QrCode, AlertTriangle, CheckCircle, Shield, ArrowLeft, Clipboard } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout, StickyFooter } from '../../components/layout/PageLayout';
 import { PageContent } from '../../components/layout/PageContent';
@@ -37,12 +34,12 @@ const ASSETS = ['BTC', 'ETH', 'USDT', 'BNB', 'SOL', 'MATIC'];
 
 /** Network → Address format hint */
 const ADDRESS_HINTS: Record<string, string> = {
-  'BTC': 'Bắt đầu với bc1... hoặc 1... hoặc 3...',
+  BTC: 'Bắt đầu với bc1... hoặc 1... hoặc 3...',
   'ETH (ERC20)': 'Bắt đầu với 0x... (42 ký tự)',
   'BSC (BEP20)': 'Bắt đầu với 0x... (42 ký tự)',
-  'TRC20': 'Bắt đầu với T... (34 ký tự)',
-  'SOL': 'Base58, 32-44 ký tự',
-  'Polygon': 'Bắt đầu với 0x... (42 ký tự)',
+  TRC20: 'Bắt đầu với T... (34 ký tự)',
+  SOL: 'Base58, 32-44 ký tự',
+  Polygon: 'Bắt đầu với 0x... (42 ký tự)',
 };
 
 export function AddressAddPage() {
@@ -95,7 +92,10 @@ export function AddressAddPage() {
             animate={{ scale: 1 }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             className="w-20 h-20 rounded-3xl flex items-center justify-center"
-            style={{ background: 'rgba(16,185,129,0.1)', border: '1.5px solid rgba(16,185,129,0.25)' }}
+            style={{
+              background: 'rgba(16,185,129,0.1)',
+              border: '1.5px solid rgba(16,185,129,0.25)',
+            }}
           >
             <CheckCircle size={40} color="#10B981" />
           </motion.div>
@@ -115,7 +115,10 @@ export function AddressAddPage() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
             className="flex items-center gap-2 px-4 py-2.5 rounded-2xl"
-            style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}
+            style={{
+              background: 'rgba(16,185,129,0.06)',
+              border: '1px solid rgba(16,185,129,0.15)',
+            }}
           >
             <Shield size={14} color="#10B981" />
             <span style={{ color: '#10B981', fontSize: 12, fontWeight: 600 }}>
@@ -134,12 +137,20 @@ export function AddressAddPage() {
       <PageContent gap="relaxed" grow>
         {/* ═══ Label ═══ */}
         <div>
-          <label style={{ color: c.text2, fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 8 }}>
+          <label
+            style={{
+              color: c.text2,
+              fontSize: 13,
+              fontWeight: 600,
+              display: 'block',
+              marginBottom: 8,
+            }}
+          >
             Tên địa chỉ <span style={{ color: '#EF4444' }}>*</span>
           </label>
           <input
             value={label}
-            onChange={e => setLabel(e.target.value)}
+            onChange={(e) => setLabel(e.target.value)}
             placeholder="VD: Ví lạnh cá nhân, Sàn Binance..."
             maxLength={30}
             className="w-full rounded-2xl px-4"
@@ -163,14 +174,25 @@ export function AddressAddPage() {
 
         {/* ═══ Network ═══ */}
         <div>
-          <label style={{ color: c.text2, fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 8 }}>
+          <label
+            style={{
+              color: c.text2,
+              fontSize: 13,
+              fontWeight: 600,
+              display: 'block',
+              marginBottom: 8,
+            }}
+          >
             Mạng lưới <span style={{ color: '#EF4444' }}>*</span>
           </label>
           <div className="grid grid-cols-3 gap-2">
-            {NETWORKS.map(n => (
+            {NETWORKS.map((n) => (
               <button
                 key={n.id}
-                onClick={() => { setNetwork(n.label); hapticLight(); }}
+                onClick={() => {
+                  setNetwork(n.label);
+                  hapticLight();
+                }}
                 className="flex items-center gap-2 px-3 py-2.5 rounded-xl"
                 style={{
                   background: network === n.label ? c.chipActiveBg : c.surface2,
@@ -188,14 +210,25 @@ export function AddressAddPage() {
 
         {/* ═══ Asset ═══ */}
         <div>
-          <label style={{ color: c.text2, fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 8 }}>
+          <label
+            style={{
+              color: c.text2,
+              fontSize: 13,
+              fontWeight: 600,
+              display: 'block',
+              marginBottom: 8,
+            }}
+          >
             Tài sản
           </label>
           <div className="flex flex-wrap gap-2">
-            {ASSETS.map(a => (
+            {ASSETS.map((a) => (
               <button
                 key={a}
-                onClick={() => { setAsset(a); hapticLight(); }}
+                onClick={() => {
+                  setAsset(a);
+                  hapticLight();
+                }}
                 className="px-4 py-2 rounded-xl"
                 style={{
                   background: asset === a ? c.chipActiveBg : c.chipBg,
@@ -213,7 +246,15 @@ export function AddressAddPage() {
 
         {/* ═══ Address ═══ */}
         <div>
-          <label style={{ color: c.text2, fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 8 }}>
+          <label
+            style={{
+              color: c.text2,
+              fontSize: 13,
+              fontWeight: 600,
+              display: 'block',
+              marginBottom: 8,
+            }}
+          >
             Địa chỉ ví <span style={{ color: '#EF4444' }}>*</span>
           </label>
           <div
@@ -228,7 +269,7 @@ export function AddressAddPage() {
           >
             <input
               value={address}
-              onChange={e => setAddress(e.target.value)}
+              onChange={(e) => setAddress(e.target.value)}
               placeholder="Nhập hoặc dán địa chỉ..."
               className="flex-1"
               style={{
@@ -240,26 +281,40 @@ export function AddressAddPage() {
                 fontFamily: 'monospace',
               }}
             />
-            <button onClick={handlePaste} className="shrink-0 p-1.5 rounded-lg" style={{ background: c.hoverBg }}>
+            <button
+              onClick={handlePaste}
+              className="shrink-0 p-1.5 rounded-lg"
+              style={{ background: c.hoverBg }}
+            >
               <Clipboard size={16} color={c.text2} />
             </button>
             <button className="shrink-0 p-1.5 rounded-lg" style={{ background: c.hoverBg }}>
               <QrCode size={16} color={c.text2} />
             </button>
           </div>
-          <span style={{ color: c.text3, fontSize: 11, marginTop: 4, display: 'block', paddingLeft: 4 }}>
+          <span
+            style={{ color: c.text3, fontSize: 11, marginTop: 4, display: 'block', paddingLeft: 4 }}
+          >
             {ADDRESS_HINTS[network] || 'Nhập chính xác địa chỉ ví'}
           </span>
         </div>
 
         {/* ═══ Memo (Optional) ═══ */}
         <div>
-          <label style={{ color: c.text2, fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 8 }}>
+          <label
+            style={{
+              color: c.text2,
+              fontSize: 13,
+              fontWeight: 600,
+              display: 'block',
+              marginBottom: 8,
+            }}
+          >
             Memo / Tag <span style={{ color: c.text3, fontWeight: 400 }}>(tùy chọn)</span>
           </label>
           <input
             value={memo}
-            onChange={e => setMemo(e.target.value)}
+            onChange={(e) => setMemo(e.target.value)}
             placeholder="Nhập memo nếu cần..."
             className="w-full rounded-2xl px-4"
             style={{
@@ -275,22 +330,36 @@ export function AddressAddPage() {
 
         {/* ═══ Whitelist toggle ═══ */}
         <TrCard className="p-4">
-          <button onClick={() => { setWhitelist(!whitelist); hapticLight(); }} className="flex items-center gap-3 w-full">
-            <div className="w-10 h-10 rounded-2xl flex items-center justify-center"
-              style={{ background: whitelist ? 'rgba(16,185,129,0.1)' : c.surface2, border: `1px solid ${whitelist ? 'rgba(16,185,129,0.3)' : c.borderSolid}` }}>
+          <button
+            onClick={() => {
+              setWhitelist(!whitelist);
+              hapticLight();
+            }}
+            className="flex items-center gap-3 w-full"
+          >
+            <div
+              className="w-10 h-10 rounded-2xl flex items-center justify-center"
+              style={{
+                background: whitelist ? 'rgba(16,185,129,0.1)' : c.surface2,
+                border: `1px solid ${whitelist ? 'rgba(16,185,129,0.3)' : c.borderSolid}`,
+              }}
+            >
               <Shield size={18} color={whitelist ? '#10B981' : c.text3} />
             </div>
             <div className="flex-1 text-left">
               <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>Thêm vào Whitelist</p>
               <p style={{ color: c.text3, fontSize: 12 }}>Chỉ rút tiền đến địa chỉ whitelist</p>
             </div>
-            <div className="w-11 h-6 rounded-full relative"
+            <div
+              className="w-11 h-6 rounded-full relative"
               style={{
                 background: whitelist ? '#10B981' : c.surface2,
                 border: `1.5px solid ${whitelist ? '#10B981' : c.borderSolid}`,
                 transition: 'all 0.2s ease',
-              }}>
-              <div className="absolute top-0.5 w-4 h-4 rounded-full bg-white shadow"
+              }}
+            >
+              <div
+                className="absolute top-0.5 w-4 h-4 rounded-full bg-white shadow"
                 style={{
                   left: whitelist ? 22 : 3,
                   transition: 'left 0.2s ease',
@@ -301,43 +370,60 @@ export function AddressAddPage() {
         </TrCard>
 
         {/* ═══ Warning ═══ */}
-        <div className="flex items-start gap-3 rounded-2xl px-4 py-3"
-          style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}>
+        <div
+          className="flex items-start gap-3 rounded-2xl px-4 py-3"
+          style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
+        >
           <AlertTriangle size={16} color="#F59E0B" className="shrink-0 mt-0.5" />
           <div>
-            <p style={{ color: '#F59E0B', fontSize: 13, fontWeight: 600, marginBottom: 4 }}>Lưu ý quan trọng</p>
+            <p style={{ color: '#F59E0B', fontSize: 13, fontWeight: 600, marginBottom: 4 }}>
+              Lưu ý quan trọng
+            </p>
             <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-              Kiểm tra kỹ địa chỉ và mạng lưới trước khi lưu.
-              Rút tiền sai địa chỉ hoặc sai mạng sẽ mất vĩnh viễn
-              và không thể khôi phục.
+              Kiểm tra kỹ địa chỉ và mạng lưới trước khi lưu. Rút tiền sai địa chỉ hoặc sai mạng sẽ
+              mất vĩnh viễn và không thể khôi phục.
             </p>
           </div>
         </div>
 
         {/* ═══ Agreement ═══ */}
-        <button onClick={() => { setAgreed(!agreed); hapticLight(); }} className="flex items-start gap-3">
-          <div className="w-6 h-6 rounded-lg border-2 flex items-center justify-center shrink-0 mt-0.5"
+        <button
+          onClick={() => {
+            setAgreed(!agreed);
+            hapticLight();
+          }}
+          className="flex items-start gap-3"
+        >
+          <div
+            className="w-6 h-6 rounded-lg border-2 flex items-center justify-center shrink-0 mt-0.5"
             style={{
               borderColor: agreed ? '#10B981' : c.borderSolid,
               background: agreed ? '#10B981' : 'transparent',
               transition: 'all 0.2s ease',
-            }}>
+            }}
+          >
             {agreed && <CheckCircle size={14} color="#fff" />}
           </div>
           <span style={{ color: c.text2, fontSize: 13, lineHeight: 1.5, textAlign: 'left' }}>
-            Tôi xác nhận địa chỉ ví và mạng lưới chính xác.
-            Tôi hiểu rằng gửi tiền sai địa chỉ sẽ không thể hoàn lại.
+            Tôi xác nhận địa chỉ ví và mạng lưới chính xác. Tôi hiểu rằng gửi tiền sai địa chỉ sẽ
+            không thể hoàn lại.
           </span>
         </button>
 
         {/* ═══ Preview card ═══ */}
         {label.trim() && address.trim() && (
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
             <TrCard className="p-4">
-              <p style={{ color: c.text3, fontSize: 11, fontWeight: 600, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+              <p
+                style={{
+                  color: c.text3,
+                  fontSize: 11,
+                  fontWeight: 600,
+                  marginBottom: 8,
+                  textTransform: 'uppercase',
+                  letterSpacing: 0.5,
+                }}
+              >
                 Xem trước
               </p>
               <div className="flex flex-col gap-2">
@@ -345,13 +431,23 @@ export function AddressAddPage() {
                   { k: 'Tên', v: label },
                   { k: 'Mạng', v: network },
                   { k: 'Tài sản', v: asset },
-                  { k: 'Địa chỉ', v: `${address.slice(0, 16)}...${address.length > 16 ? address.slice(-8) : ''}` },
+                  {
+                    k: 'Địa chỉ',
+                    v: `${address.slice(0, 16)}...${address.length > 16 ? address.slice(-8) : ''}`,
+                  },
                   ...(memo ? [{ k: 'Memo', v: memo }] : []),
                   { k: 'Whitelist', v: whitelist ? '✓ Có' : '✕ Không' },
-                ].map(row => (
+                ].map((row) => (
                   <div key={row.k} className="flex justify-between">
                     <span style={{ color: c.text3, fontSize: 12 }}>{row.k}</span>
-                    <span style={{ color: c.text1, fontSize: 12, fontWeight: 600, fontFamily: row.k === 'Địa chỉ' ? 'monospace' : 'inherit' }}>
+                    <span
+                      style={{
+                        color: c.text1,
+                        fontSize: 12,
+                        fontWeight: 600,
+                        fontFamily: row.k === 'Địa chỉ' ? 'monospace' : 'inherit',
+                      }}
+                    >
                       {row.v}
                     </span>
                   </div>

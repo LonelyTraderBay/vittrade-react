@@ -17,20 +17,40 @@ import { useThemeColors } from '../../hooks/useThemeColors';
 import { TrCard } from '../../components/ui/TrCard';
 import { CTAButton } from '../../components/ui/CTAButton';
 import {
-  Users, Shield, ShieldCheck, Clock, CheckCircle, XCircle,
-  ChevronDown, ChevronUp, Copy, Check, AlertTriangle,
-  Zap, Plus, Info, X, Lock,
-  FileText, PenLine,
+  Users,
+  Shield,
+  ShieldCheck,
+  Clock,
+  CheckCircle,
+  XCircle,
+  ChevronDown,
+  ChevronUp,
+  Copy,
+  Check,
+  AlertTriangle,
+  Zap,
+  Plus,
+  Info,
+  X,
+  Lock,
+  FileText,
+  PenLine,
 } from 'lucide-react';
 import {
-  loadMultisigTxs, saveMultisigTxs,
+  loadMultisigTxs,
+  saveMultisigTxs,
   MOCK_MULTISIG_SAFES,
-  type MultisigTransaction, type MultisigSafe, type MultisigTxStatus,
+  type MultisigTransaction,
+  type MultisigSafe,
+  type MultisigTxStatus,
 } from './launchpadData';
 
 const TABS = ['queue', 'history', 'safes'];
 
-const STATUS_CONFIG: Record<MultisigTxStatus, { label: string; color: string; icon: typeof Clock }> = {
+const STATUS_CONFIG: Record<
+  MultisigTxStatus,
+  { label: string; color: string; icon: typeof Clock }
+> = {
   draft: { label: 'Draft', color: '#8B95B3', icon: FileText },
   pending_signatures: { label: 'Chờ ký', color: '#F59E0B', icon: PenLine },
   ready: { label: 'San sang', color: '#10B981', icon: CheckCircle },
@@ -49,15 +69,26 @@ export function LaunchpadMultisigPage() {
   const [showCreate, setShowCreate] = useState(false);
   const [selectedSafe, setSelectedSafe] = useState<string>(MOCK_MULTISIG_SAFES[0].address);
 
-  const currentSafe = MOCK_MULTISIG_SAFES.find(s => s.address === selectedSafe)!;
+  const currentSafe = MOCK_MULTISIG_SAFES.find((s) => s.address === selectedSafe)!;
 
-  const queueTxs = useMemo(() => txs.filter(t =>
-    ['draft', 'pending_signatures', 'ready', 'executing'].includes(t.status) && t.safeAddress === selectedSafe
-  ), [txs, selectedSafe]);
+  const queueTxs = useMemo(
+    () =>
+      txs.filter(
+        (t) =>
+          ['draft', 'pending_signatures', 'ready', 'executing'].includes(t.status) &&
+          t.safeAddress === selectedSafe,
+      ),
+    [txs, selectedSafe],
+  );
 
-  const historyTxs = useMemo(() => txs.filter(t =>
-    ['executed', 'expired', 'cancelled'].includes(t.status) && t.safeAddress === selectedSafe
-  ), [txs, selectedSafe]);
+  const historyTxs = useMemo(
+    () =>
+      txs.filter(
+        (t) =>
+          ['executed', 'expired', 'cancelled'].includes(t.status) && t.safeAddress === selectedSafe,
+      ),
+    [txs, selectedSafe],
+  );
 
   const handleCopy = async (text: string, field: string) => {
     await navigator.clipboard.writeText(text);
@@ -66,14 +97,14 @@ export function LaunchpadMultisigPage() {
   };
 
   const handleSign = (txId: string) => {
-    const updated = txs.map(tx => {
+    const updated = txs.map((tx) => {
       if (tx.id !== txId) return tx;
-      const signers = tx.signers.map(s =>
+      const signers = tx.signers.map((s) =>
         s.address === '0x8Ba1...BA72' && !s.signed
           ? { ...s, signed: true, signedAt: new Date().toLocaleString() }
-          : s
+          : s,
       );
-      const signedCount = signers.filter(s => s.signed).length;
+      const signedCount = signers.filter((s) => s.signed).length;
       const status: MultisigTxStatus = signedCount >= tx.threshold ? 'ready' : 'pending_signatures';
       return { ...tx, signers, signedCount, status };
     });
@@ -82,10 +113,11 @@ export function LaunchpadMultisigPage() {
   };
 
   const handleExecute = (txId: string) => {
-    const updated = txs.map(tx => {
+    const updated = txs.map((tx) => {
       if (tx.id !== txId) return tx;
       return {
-        ...tx, status: 'executed' as MultisigTxStatus,
+        ...tx,
+        status: 'executed' as MultisigTxStatus,
         executedAt: new Date().toLocaleString(),
         executeTxHash: '0xExec...' + Math.random().toString(36).slice(2, 6),
       };
@@ -101,25 +133,42 @@ export function LaunchpadMultisigPage() {
       {/* Safe selector */}
       <div className="px-5 pt-2 pb-1">
         <div className="flex gap-2">
-          {MOCK_MULTISIG_SAFES.map(safe => (
-            <button key={safe.address} onClick={() => setSelectedSafe(safe.address)}
+          {MOCK_MULTISIG_SAFES.map((safe) => (
+            <button
+              key={safe.address}
+              onClick={() => setSelectedSafe(safe.address)}
               className="flex-1 rounded-2xl p-3 text-left hover:opacity-90 transition-opacity active:scale-[0.98]"
               style={{
                 background: selectedSafe === safe.address ? safe.chainColor + '10' : c.surface2,
                 border: `1.5px solid ${selectedSafe === safe.address ? safe.chainColor + '35' : 'transparent'}`,
-              }}>
+              }}
+            >
               <div className="flex items-center gap-2 mb-1">
-                <div className="w-6 h-6 rounded-md flex items-center justify-center"
-                  style={{ background: safe.chainColor + '18' }}>
+                <div
+                  className="w-6 h-6 rounded-md flex items-center justify-center"
+                  style={{ background: safe.chainColor + '18' }}
+                >
                   <Shield size={12} color={safe.chainColor} />
                 </div>
                 <span style={{ color: c.text1, fontSize: 11, fontWeight: 700 }}>{safe.label}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span style={{ color: safe.chainColor, fontSize: 9, fontWeight: 600 }}>{safe.chain}</span>
-                <span style={{ color: c.text3, fontSize: 9 }}>{safe.threshold}/{safe.owners.length}</span>
+                <span style={{ color: safe.chainColor, fontSize: 9, fontWeight: 600 }}>
+                  {safe.chain}
+                </span>
+                <span style={{ color: c.text3, fontSize: 9 }}>
+                  {safe.threshold}/{safe.owners.length}
+                </span>
               </div>
-              <p style={{ color: c.text1, fontSize: 13, fontWeight: 800, fontFamily: 'monospace', marginTop: 4 }}>
+              <p
+                style={{
+                  color: c.text1,
+                  fontSize: 13,
+                  fontWeight: 800,
+                  fontFamily: 'monospace',
+                  marginTop: 4,
+                }}
+              >
                 {safe.balance}
               </p>
             </button>
@@ -130,16 +179,31 @@ export function LaunchpadMultisigPage() {
       {/* Safe stats */}
       <div className="px-5 pt-1 pb-1">
         <div className="grid grid-cols-3 gap-2">
-          <div className="rounded-xl px-2 py-2 text-center" style={{ background: 'rgba(99,102,241,0.06)' }}>
-            <p style={{ color: '#6366F1', fontSize: 14, fontWeight: 800, fontFamily: 'monospace' }}>{currentSafe.threshold}/{currentSafe.owners.length}</p>
+          <div
+            className="rounded-xl px-2 py-2 text-center"
+            style={{ background: 'rgba(99,102,241,0.06)' }}
+          >
+            <p style={{ color: '#6366F1', fontSize: 14, fontWeight: 800, fontFamily: 'monospace' }}>
+              {currentSafe.threshold}/{currentSafe.owners.length}
+            </p>
             <p style={{ color: c.text3, fontSize: 9 }}>Threshold</p>
           </div>
-          <div className="rounded-xl px-2 py-2 text-center" style={{ background: 'rgba(245,158,11,0.06)' }}>
-            <p style={{ color: '#F59E0B', fontSize: 14, fontWeight: 800, fontFamily: 'monospace' }}>{queueTxs.length}</p>
+          <div
+            className="rounded-xl px-2 py-2 text-center"
+            style={{ background: 'rgba(245,158,11,0.06)' }}
+          >
+            <p style={{ color: '#F59E0B', fontSize: 14, fontWeight: 800, fontFamily: 'monospace' }}>
+              {queueTxs.length}
+            </p>
             <p style={{ color: c.text3, fontSize: 9 }}>Pending</p>
           </div>
-          <div className="rounded-xl px-2 py-2 text-center" style={{ background: 'rgba(16,185,129,0.06)' }}>
-            <p style={{ color: '#10B981', fontSize: 14, fontWeight: 800, fontFamily: 'monospace' }}>{currentSafe.txCount}</p>
+          <div
+            className="rounded-xl px-2 py-2 text-center"
+            style={{ background: 'rgba(16,185,129,0.06)' }}
+          >
+            <p style={{ color: '#10B981', fontSize: 14, fontWeight: 800, fontFamily: 'monospace' }}>
+              {currentSafe.txCount}
+            </p>
             <p style={{ color: c.text3, fontSize: 9 }}>Total Tx</p>
           </div>
         </div>
@@ -151,11 +215,18 @@ export function LaunchpadMultisigPage() {
         {tab === 'queue' && (
           <>
             {/* Create tx button */}
-            <button onClick={() => setShowCreate(true)}
+            <button
+              onClick={() => setShowCreate(true)}
               className="w-full rounded-2xl p-3 flex items-center gap-3 hover:opacity-90 transition-opacity active:scale-[0.98]"
-              style={{ background: 'rgba(99,102,241,0.06)', border: '1px dashed rgba(99,102,241,0.3)' }}>
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                style={{ background: 'rgba(99,102,241,0.12)' }}>
+              style={{
+                background: 'rgba(99,102,241,0.06)',
+                border: '1px dashed rgba(99,102,241,0.3)',
+              }}
+            >
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                style={{ background: 'rgba(99,102,241,0.12)' }}
+              >
                 <Plus size={18} color="#6366F1" />
               </div>
               <div className="text-left">
@@ -167,8 +238,10 @@ export function LaunchpadMultisigPage() {
             {/* Queue */}
             <PageSection label="Hàng đợi giao dịch" accentColor="#F59E0B">
               <div className="flex flex-col gap-2">
-                {queueTxs.map(tx => (
-                  <TxCard key={tx.id} tx={tx}
+                {queueTxs.map((tx) => (
+                  <TxCard
+                    key={tx.id}
+                    tx={tx}
                     expanded={expandedTx === tx.id}
                     onToggle={() => setExpandedTx(expandedTx === tx.id ? null : tx.id)}
                     onSign={() => handleSign(tx.id)}
@@ -183,8 +256,12 @@ export function LaunchpadMultisigPage() {
             {queueTxs.length === 0 && (
               <TrCard className="p-8 text-center">
                 <Users size={32} color={c.text3} className="mx-auto mb-3 opacity-40" />
-                <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>Khong co giao dich cho xu ly</p>
-                <p style={{ color: c.text3, fontSize: 11, marginTop: 4 }}>Tao giao dich moi de bat dau</p>
+                <p style={{ color: c.text1, fontSize: 14, fontWeight: 600 }}>
+                  Khong co giao dich cho xu ly
+                </p>
+                <p style={{ color: c.text3, fontSize: 11, marginTop: 4 }}>
+                  Tao giao dich moi de bat dau
+                </p>
               </TrCard>
             )}
           </>
@@ -193,8 +270,10 @@ export function LaunchpadMultisigPage() {
         {tab === 'history' && (
           <PageSection label="Giao dịch đã hoàn tất" accentColor="#10B981">
             <div className="flex flex-col gap-2">
-              {historyTxs.map(tx => (
-                <TxCard key={tx.id} tx={tx}
+              {historyTxs.map((tx) => (
+                <TxCard
+                  key={tx.id}
+                  tx={tx}
                   expanded={expandedTx === tx.id}
                   onToggle={() => setExpandedTx(expandedTx === tx.id ? null : tx.id)}
                   copiedField={copiedField}
@@ -214,33 +293,55 @@ export function LaunchpadMultisigPage() {
         {tab === 'safes' && (
           <PageSection label="Owners & Signers" accentColor="#8B5CF6">
             <div className="flex flex-col gap-2">
-              {currentSafe.owners.map(owner => (
+              {currentSafe.owners.map((owner) => (
                 <TrCard key={owner.address} className="p-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ background: owner.role === 'owner' ? 'rgba(139,92,246,0.12)' : 'rgba(59,130,246,0.12)' }}>
-                      {owner.role === 'owner'
-                        ? <ShieldCheck size={16} color="#8B5CF6" />
-                        : <Users size={16} color="#3B82F6" />}
+                    <div
+                      className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                      style={{
+                        background:
+                          owner.role === 'owner'
+                            ? 'rgba(139,92,246,0.12)'
+                            : 'rgba(59,130,246,0.12)',
+                      }}
+                    >
+                      {owner.role === 'owner' ? (
+                        <ShieldCheck size={16} color="#8B5CF6" />
+                      ) : (
+                        <Users size={16} color="#3B82F6" />
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5">
-                        <span style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>{owner.label}</span>
-                        <span className="px-1.5 py-px rounded"
+                        <span style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>
+                          {owner.label}
+                        </span>
+                        <span
+                          className="px-1.5 py-px rounded"
                           style={{
-                            background: owner.role === 'owner' ? 'rgba(139,92,246,0.1)' : 'rgba(59,130,246,0.1)',
+                            background:
+                              owner.role === 'owner'
+                                ? 'rgba(139,92,246,0.1)'
+                                : 'rgba(59,130,246,0.1)',
                             color: owner.role === 'owner' ? '#8B5CF6' : '#3B82F6',
-                            fontSize: 8, fontWeight: 700, textTransform: 'uppercase',
-                          }}>
+                            fontSize: 8,
+                            fontWeight: 700,
+                            textTransform: 'uppercase',
+                          }}
+                        >
                           {owner.role}
                         </span>
                       </div>
-                      <p style={{ color: c.text3, fontSize: 10, fontFamily: 'monospace' }}>{owner.address}</p>
+                      <p style={{ color: c.text3, fontSize: 10, fontFamily: 'monospace' }}>
+                        {owner.address}
+                      </p>
                     </div>
                     <button onClick={() => handleCopy(owner.address, owner.label)} className="p-1">
-                      {copiedField === owner.label
-                        ? <Check size={12} color="#10B981" />
-                        : <Copy size={12} color={c.text3} />}
+                      {copiedField === owner.label ? (
+                        <Check size={12} color="#10B981" />
+                      ) : (
+                        <Copy size={12} color={c.text3} />
+                      )}
                     </button>
                   </div>
                 </TrCard>
@@ -250,20 +351,35 @@ export function LaunchpadMultisigPage() {
             <TrCard className="p-3 mt-3">
               <div className="flex items-center gap-2">
                 <Info size={12} color="#6366F1" />
-                <span style={{ color: c.text1, fontSize: 12, fontWeight: 700 }}>Thong tin Safe</span>
+                <span style={{ color: c.text1, fontSize: 12, fontWeight: 700 }}>
+                  Thong tin Safe
+                </span>
               </div>
               <div className="flex flex-col gap-0 mt-2">
                 {[
                   { label: 'Address', value: currentSafe.address, mono: true },
                   { label: 'Chain', value: currentSafe.chain },
-                  { label: 'Threshold', value: `${currentSafe.threshold} of ${currentSafe.owners.length}` },
+                  {
+                    label: 'Threshold',
+                    value: `${currentSafe.threshold} of ${currentSafe.owners.length}`,
+                  },
                   { label: 'Balance', value: currentSafe.balance },
                   { label: 'Total Tx', value: `${currentSafe.txCount}` },
-                ].map(row => (
-                  <div key={row.label} className="flex items-center justify-between py-1.5"
-                    style={{ borderBottom: `1px solid ${c.border}` }}>
+                ].map((row) => (
+                  <div
+                    key={row.label}
+                    className="flex items-center justify-between py-1.5"
+                    style={{ borderBottom: `1px solid ${c.border}` }}
+                  >
                     <span style={{ color: c.text3, fontSize: 10 }}>{row.label}</span>
-                    <span style={{ color: c.text1, fontSize: 10, fontWeight: 600, fontFamily: row.mono ? 'monospace' : undefined }}>
+                    <span
+                      style={{
+                        color: c.text1,
+                        fontSize: 10,
+                        fontWeight: 600,
+                        fontFamily: row.mono ? 'monospace' : undefined,
+                      }}
+                    >
                       {row.value}
                     </span>
                   </div>
@@ -274,12 +390,15 @@ export function LaunchpadMultisigPage() {
         )}
 
         {/* Security notice */}
-        <div className="rounded-xl p-3 flex items-start gap-2"
-          style={{ background: 'rgba(139,92,246,0.06)', border: '1px solid rgba(139,92,246,0.12)' }}>
+        <div
+          className="rounded-xl p-3 flex items-start gap-2"
+          style={{ background: 'rgba(139,92,246,0.06)', border: '1px solid rgba(139,92,246,0.12)' }}
+        >
           <Lock size={13} color="#8B5CF6" className="shrink-0 mt-0.5" />
           <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
-            Multi-sig yeu cau {currentSafe.threshold}/{currentSafe.owners.length} chu ky truoc khi thuc hien.
-            Moi giao dich co thoi han 7 ngay. Dam bao tat ca signers xac nhan truoc khi het han.
+            Multi-sig yeu cau {currentSafe.threshold}/{currentSafe.owners.length} chu ky truoc khi
+            thuc hien. Moi giao dich co thoi han 7 ngay. Dam bao tat ca signers xac nhan truoc khi
+            het han.
           </p>
         </div>
 
@@ -307,7 +426,15 @@ export function LaunchpadMultisigPage() {
    TxCard — single multisig transaction
    ═══════════════════════════════════════════════════════════ */
 
-function TxCard({ tx, expanded, onToggle, onSign, onExecute, copiedField, onCopy }: {
+function TxCard({
+  tx,
+  expanded,
+  onToggle,
+  onSign,
+  onExecute,
+  copiedField,
+  onCopy,
+}: {
   tx: MultisigTransaction;
   expanded: boolean;
   onToggle: () => void;
@@ -324,15 +451,26 @@ function TxCard({ tx, expanded, onToggle, onSign, onExecute, copiedField, onCopy
     <TrCard className="overflow-hidden" style={{ borderLeft: `3px solid ${statusCfg.color}` }}>
       <button className="w-full p-3 text-left" onClick={onToggle}>
         <div className="flex items-start gap-2.5">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-            style={{ background: tx.chainColor + '12' }}>
+          <div
+            className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+            style={{ background: tx.chainColor + '12' }}
+          >
             <StatusIcon size={14} color={statusCfg.color} />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5 mb-0.5">
-              <span className="truncate" style={{ color: c.text1, fontSize: 12, fontWeight: 700 }}>{tx.label}</span>
-              <span className="px-1.5 py-px rounded shrink-0"
-                style={{ background: statusCfg.color + '12', color: statusCfg.color, fontSize: 8, fontWeight: 700 }}>
+              <span className="truncate" style={{ color: c.text1, fontSize: 12, fontWeight: 700 }}>
+                {tx.label}
+              </span>
+              <span
+                className="px-1.5 py-px rounded shrink-0"
+                style={{
+                  background: statusCfg.color + '12',
+                  color: statusCfg.color,
+                  fontSize: 8,
+                  fontWeight: 700,
+                }}
+              >
                 {statusCfg.label}
               </span>
             </div>
@@ -340,28 +478,47 @@ function TxCard({ tx, expanded, onToggle, onSign, onExecute, copiedField, onCopy
               <span style={{ color: c.text3, fontSize: 10 }}>
                 {tx.signedCount}/{tx.threshold} signed
               </span>
-              <span className="px-1 py-px rounded" style={{ background: tx.chainColor + '10', color: tx.chainColor, fontSize: 8, fontWeight: 600 }}>
+              <span
+                className="px-1 py-px rounded"
+                style={{
+                  background: tx.chainColor + '10',
+                  color: tx.chainColor,
+                  fontSize: 8,
+                  fontWeight: 600,
+                }}
+              >
                 {tx.chain}
               </span>
               <span style={{ color: c.text3, fontSize: 10 }}>#{tx.nonce}</span>
             </div>
 
             {/* Signature progress bar */}
-            <div className="mt-1.5 h-1.5 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
-              <div className="h-full rounded-full transition-all duration-300"
+            <div
+              className="mt-1.5 h-1.5 rounded-full overflow-hidden"
+              style={{ background: c.surface2 }}
+            >
+              <div
+                className="h-full rounded-full transition-all duration-300"
                 style={{
                   width: `${(tx.signedCount / tx.signers.length) * 100}%`,
                   background: tx.signedCount >= tx.threshold ? '#10B981' : '#F59E0B',
-                }} />
+                }}
+              />
             </div>
           </div>
-          {expanded ? <ChevronUp size={14} color={c.text3} /> : <ChevronDown size={14} color={c.text3} />}
+          {expanded ? (
+            <ChevronUp size={14} color={c.text3} />
+          ) : (
+            <ChevronDown size={14} color={c.text3} />
+          )}
         </div>
       </button>
 
       {expanded && (
         <div className="px-3 pb-3" style={{ borderTop: `1px solid ${c.border}` }}>
-          <p className="mt-2 mb-2" style={{ color: c.text2, fontSize: 11 }}>{tx.description}</p>
+          <p className="mt-2 mb-2" style={{ color: c.text2, fontSize: 11 }}>
+            {tx.description}
+          </p>
 
           {/* Metadata */}
           <div className="flex flex-col gap-0 mb-2">
@@ -373,12 +530,24 @@ function TxCard({ tx, expanded, onToggle, onSign, onExecute, copiedField, onCopy
               { label: 'Created', value: tx.createdAt },
               { label: 'Expires', value: tx.expiresAt },
               ...(tx.executedAt ? [{ label: 'Executed', value: tx.executedAt }] : []),
-              ...(tx.executeTxHash ? [{ label: 'Tx Hash', value: tx.executeTxHash, mono: true }] : []),
-            ].map(row => (
-              <div key={row.label} className="flex items-center justify-between py-1"
-                style={{ borderBottom: `1px solid ${c.border}` }}>
+              ...(tx.executeTxHash
+                ? [{ label: 'Tx Hash', value: tx.executeTxHash, mono: true }]
+                : []),
+            ].map((row) => (
+              <div
+                key={row.label}
+                className="flex items-center justify-between py-1"
+                style={{ borderBottom: `1px solid ${c.border}` }}
+              >
                 <span style={{ color: c.text3, fontSize: 10 }}>{row.label}</span>
-                <span style={{ color: c.text1, fontSize: 10, fontWeight: 600, fontFamily: row.mono ? 'monospace' : undefined }}>
+                <span
+                  style={{
+                    color: c.text1,
+                    fontSize: 10,
+                    fontWeight: 600,
+                    fontFamily: row.mono ? 'monospace' : undefined,
+                  }}
+                >
                   {row.value}
                 </span>
               </div>
@@ -392,8 +561,12 @@ function TxCard({ tx, expanded, onToggle, onSign, onExecute, copiedField, onCopy
               <div className="rounded-lg p-2" style={{ background: c.surface2 }}>
                 {Object.entries(tx.params).map(([k, v]) => (
                   <div key={k} className="flex justify-between py-0.5">
-                    <span style={{ color: c.text3, fontSize: 10, fontFamily: 'monospace' }}>{k}:</span>
-                    <span style={{ color: c.text1, fontSize: 10, fontFamily: 'monospace' }}>{v}</span>
+                    <span style={{ color: c.text3, fontSize: 10, fontFamily: 'monospace' }}>
+                      {k}:
+                    </span>
+                    <span style={{ color: c.text1, fontSize: 10, fontFamily: 'monospace' }}>
+                      {v}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -402,18 +575,31 @@ function TxCard({ tx, expanded, onToggle, onSign, onExecute, copiedField, onCopy
 
           {/* Signers */}
           <div className="mb-2">
-            <p style={{ color: c.text3, fontSize: 9, marginBottom: 4 }}>Signers ({tx.signedCount}/{tx.threshold} required)</p>
+            <p style={{ color: c.text3, fontSize: 9, marginBottom: 4 }}>
+              Signers ({tx.signedCount}/{tx.threshold} required)
+            </p>
             <div className="flex flex-col gap-1">
-              {tx.signers.map(signer => (
-                <div key={signer.address} className="flex items-center gap-2 py-1 px-2 rounded-lg"
-                  style={{ background: signer.signed ? 'rgba(16,185,129,0.04)' : c.surface2 }}>
-                  {signer.signed
-                    ? <CheckCircle size={12} color="#10B981" />
-                    : <Clock size={12} color={c.text3} />}
-                  <span style={{ color: c.text1, fontSize: 10, fontWeight: 600 }}>{signer.label}</span>
-                  <span style={{ color: c.text3, fontSize: 9, fontFamily: 'monospace' }}>{signer.address}</span>
+              {tx.signers.map((signer) => (
+                <div
+                  key={signer.address}
+                  className="flex items-center gap-2 py-1 px-2 rounded-lg"
+                  style={{ background: signer.signed ? 'rgba(16,185,129,0.04)' : c.surface2 }}
+                >
+                  {signer.signed ? (
+                    <CheckCircle size={12} color="#10B981" />
+                  ) : (
+                    <Clock size={12} color={c.text3} />
+                  )}
+                  <span style={{ color: c.text1, fontSize: 10, fontWeight: 600 }}>
+                    {signer.label}
+                  </span>
+                  <span style={{ color: c.text3, fontSize: 9, fontFamily: 'monospace' }}>
+                    {signer.address}
+                  </span>
                   {signer.signedAt && (
-                    <span className="ml-auto" style={{ color: '#10B981', fontSize: 8 }}>{signer.signedAt}</span>
+                    <span className="ml-auto" style={{ color: '#10B981', fontSize: 8 }}>
+                      {signer.signedAt}
+                    </span>
                   )}
                 </div>
               ))}
@@ -441,7 +627,11 @@ function TxCard({ tx, expanded, onToggle, onSign, onExecute, copiedField, onCopy
    CreateTxSheet — bottom sheet for creating new multisig tx
    ═══════════════════════════════════════════════════════════ */
 
-function CreateTxSheet({ safe, onClose, onCreate }: {
+function CreateTxSheet({
+  safe,
+  onClose,
+  onCreate,
+}: {
   safe: MultisigSafe;
   onClose: () => void;
   onCreate: (tx: MultisigTransaction) => void;
@@ -461,82 +651,163 @@ function CreateTxSheet({ safe, onClose, onCreate }: {
     const fmt = (d: Date) => d.toLocaleString();
 
     onCreate({
-      id: `mtx_${Date.now()}`, label: label.trim(), description: description.trim(),
-      contractAddress: contractAddr.trim(), chain: safe.chain, chainColor: safe.chainColor,
-      functionName: functionName.trim(), params: {}, value: value || '0',
-      estimatedGas: '$0.10', status: 'pending_signatures', threshold: safe.threshold,
-      signers: safe.owners.map(o => ({ ...o, signed: false, signedAt: undefined })),
-      signedCount: 0, createdAt: fmt(now), expiresAt: fmt(expires),
-      nonce: safe.txCount + 1, safeAddress: safe.address,
+      id: `mtx_${Date.now()}`,
+      label: label.trim(),
+      description: description.trim(),
+      contractAddress: contractAddr.trim(),
+      chain: safe.chain,
+      chainColor: safe.chainColor,
+      functionName: functionName.trim(),
+      params: {},
+      value: value || '0',
+      estimatedGas: '$0.10',
+      status: 'pending_signatures',
+      threshold: safe.threshold,
+      signers: safe.owners.map((o) => ({ ...o, signed: false, signedAt: undefined })),
+      signedCount: 0,
+      createdAt: fmt(now),
+      expiresAt: fmt(expires),
+      nonce: safe.txCount + 1,
+      safeAddress: safe.address,
     });
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center" style={{ background: 'rgba(0,0,0,0.5)' }}
-      onClick={onClose}>
-      <div className="w-full max-w-[428px] rounded-t-3xl max-h-[85vh] overflow-y-auto" style={{ background: c.bg }}
-        onClick={e => e.stopPropagation()}>
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center"
+      style={{ background: 'rgba(0,0,0,0.5)' }}
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-[428px] rounded-t-3xl max-h-[85vh] overflow-y-auto"
+        style={{ background: c.bg }}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex justify-center pt-3 pb-1">
           <div className="w-10 h-1 rounded-full" style={{ background: c.border }} />
         </div>
         <div className="px-5 pb-2 flex items-center justify-between">
           <p style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>Tao giao dich Multi-sig</p>
-          <button onClick={onClose} className="p-1"><X size={18} color={c.text3} /></button>
+          <button onClick={onClose} className="p-1">
+            <X size={18} color={c.text3} />
+          </button>
         </div>
 
         <div className="px-5 pb-6 flex flex-col gap-4">
-          <div className="flex items-center gap-2 px-3 py-2 rounded-xl" style={{ background: 'rgba(139,92,246,0.06)' }}>
+          <div
+            className="flex items-center gap-2 px-3 py-2 rounded-xl"
+            style={{ background: 'rgba(139,92,246,0.06)' }}
+          >
             <Shield size={14} color="#8B5CF6" />
             <span style={{ color: c.text1, fontSize: 11, fontWeight: 600 }}>{safe.label}</span>
-            <span style={{ color: '#8B5CF6', fontSize: 10 }}>{safe.threshold}/{safe.owners.length}</span>
+            <span style={{ color: '#8B5CF6', fontSize: 10 }}>
+              {safe.threshold}/{safe.owners.length}
+            </span>
           </div>
 
           <div>
             <label style={{ color: c.text2, fontSize: 11, fontWeight: 600 }}>Ten giao dich</label>
-            <input value={label} onChange={e => setLabel(e.target.value)}
+            <input
+              value={label}
+              onChange={(e) => setLabel(e.target.value)}
               placeholder="VD: Withdraw rewards"
               className="w-full mt-1 rounded-xl px-3 py-2.5"
-              style={{ background: c.surface2, color: c.text1, fontSize: 13, border: `1px solid ${c.border}`, outline: 'none' }} />
+              style={{
+                background: c.surface2,
+                color: c.text1,
+                fontSize: 13,
+                border: `1px solid ${c.border}`,
+                outline: 'none',
+              }}
+            />
           </div>
 
           <div>
             <label style={{ color: c.text2, fontSize: 11, fontWeight: 600 }}>Mo ta</label>
-            <textarea value={description} onChange={e => setDescription(e.target.value)}
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               placeholder="Chi tiet giao dich..."
               rows={2}
               className="w-full mt-1 rounded-xl px-3 py-2.5 resize-none"
-              style={{ background: c.surface2, color: c.text1, fontSize: 13, border: `1px solid ${c.border}`, outline: 'none' }} />
+              style={{
+                background: c.surface2,
+                color: c.text1,
+                fontSize: 13,
+                border: `1px solid ${c.border}`,
+                outline: 'none',
+              }}
+            />
           </div>
 
           <div>
-            <label style={{ color: c.text2, fontSize: 11, fontWeight: 600 }}>Contract Address</label>
-            <input value={contractAddr} onChange={e => setContractAddr(e.target.value)}
+            <label style={{ color: c.text2, fontSize: 11, fontWeight: 600 }}>
+              Contract Address
+            </label>
+            <input
+              value={contractAddr}
+              onChange={(e) => setContractAddr(e.target.value)}
               placeholder="0x..."
               className="w-full mt-1 rounded-xl px-3 py-2.5"
-              style={{ background: c.surface2, color: c.text1, fontSize: 13, border: `1px solid ${c.border}`, outline: 'none', fontFamily: 'monospace' }} />
+              style={{
+                background: c.surface2,
+                color: c.text1,
+                fontSize: 13,
+                border: `1px solid ${c.border}`,
+                outline: 'none',
+                fontFamily: 'monospace',
+              }}
+            />
           </div>
 
           <div>
             <label style={{ color: c.text2, fontSize: 11, fontWeight: 600 }}>Function Name</label>
-            <input value={functionName} onChange={e => setFunctionName(e.target.value)}
+            <input
+              value={functionName}
+              onChange={(e) => setFunctionName(e.target.value)}
               placeholder="VD: transfer, approve, claimRewards"
               className="w-full mt-1 rounded-xl px-3 py-2.5"
-              style={{ background: c.surface2, color: c.text1, fontSize: 13, border: `1px solid ${c.border}`, outline: 'none', fontFamily: 'monospace' }} />
+              style={{
+                background: c.surface2,
+                color: c.text1,
+                fontSize: 13,
+                border: `1px solid ${c.border}`,
+                outline: 'none',
+                fontFamily: 'monospace',
+              }}
+            />
           </div>
 
           <div>
-            <label style={{ color: c.text2, fontSize: 11, fontWeight: 600 }}>Value (native token)</label>
-            <input value={value} onChange={e => setValue(e.target.value)}
+            <label style={{ color: c.text2, fontSize: 11, fontWeight: 600 }}>
+              Value (native token)
+            </label>
+            <input
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
               placeholder="0"
               className="w-full mt-1 rounded-xl px-3 py-2.5"
-              style={{ background: c.surface2, color: c.text1, fontSize: 13, border: `1px solid ${c.border}`, outline: 'none' }} />
+              style={{
+                background: c.surface2,
+                color: c.text1,
+                fontSize: 13,
+                border: `1px solid ${c.border}`,
+                outline: 'none',
+              }}
+            />
           </div>
 
-          <div className="rounded-xl p-2.5 flex items-start gap-2"
-            style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.12)' }}>
+          <div
+            className="rounded-xl p-2.5 flex items-start gap-2"
+            style={{
+              background: 'rgba(245,158,11,0.06)',
+              border: '1px solid rgba(245,158,11,0.12)',
+            }}
+          >
             <AlertTriangle size={12} color="#F59E0B" className="shrink-0 mt-0.5" />
             <p style={{ color: c.text2, fontSize: 10, lineHeight: 1.5 }}>
-              Can {safe.threshold} chu ky tu {safe.owners.length} signers. Giao dich het han sau 7 ngay.
+              Can {safe.threshold} chu ky tu {safe.owners.length} signers. Giao dich het han sau 7
+              ngay.
             </p>
           </div>
 

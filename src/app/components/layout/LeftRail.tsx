@@ -1,4 +1,13 @@
-import { Home, BarChart2, ArrowLeftRight, Wallet, User, Settings, Bell, HelpCircle } from 'lucide-react';
+import {
+  Home,
+  BarChart2,
+  ArrowLeftRight,
+  Wallet,
+  User,
+  Settings,
+  Bell,
+  HelpCircle,
+} from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router';
@@ -47,13 +56,19 @@ export function LeftRail() {
         }}
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path d="M3 10L8 5L12 9L17 4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path
+            d="M3 10L8 5L12 9L17 4"
+            stroke="#fff"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       </div>
 
       {/* Main nav */}
       <div className="flex flex-col items-center gap-1 flex-1">
-        {NAV_ITEMS.map(item => {
+        {NAV_ITEMS.map((item) => {
           const isActive = getIsActive(item.path);
           const Icon = item.icon;
 
@@ -74,7 +89,9 @@ export function LeftRail() {
                 >
                   <Icon size={20} color="#fff" strokeWidth={2.5} />
                 </div>
-                <span style={{ fontSize: 9, color: isActive ? '#3B82F6' : c.text3 }}>{item.label}</span>
+                <span style={{ fontSize: 9, color: isActive ? '#3B82F6' : c.text3 }}>
+                  {item.label}
+                </span>
               </button>
             );
           }
@@ -94,11 +111,13 @@ export function LeftRail() {
                 strokeWidth={isActive ? 2.5 : 1.8}
                 color={isActive ? '#3B82F6' : c.navInactive}
               />
-              <span style={{
-                fontSize: 9,
-                color: isActive ? '#3B82F6' : c.navInactive,
-                fontWeight: isActive ? 600 : 400,
-              }}>
+              <span
+                style={{
+                  fontSize: 9,
+                  color: isActive ? '#3B82F6' : c.navInactive,
+                  fontWeight: isActive ? 600 : 400,
+                }}
+              >
                 {item.label}
               </span>
             </button>
@@ -107,8 +126,11 @@ export function LeftRail() {
       </div>
 
       {/* Bottom items */}
-      <div className="flex flex-col items-center gap-1 mt-auto pt-4" style={{ borderTop: `1px solid ${c.navBorder}` }}>
-        {BOTTOM_ITEMS.map(item => {
+      <div
+        className="flex flex-col items-center gap-1 mt-auto pt-4"
+        style={{ borderTop: `1px solid ${c.navBorder}` }}
+      >
+        {BOTTOM_ITEMS.map((item) => {
           const Icon = item.icon;
           return (
             <button

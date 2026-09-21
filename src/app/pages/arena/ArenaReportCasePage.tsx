@@ -10,8 +10,14 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router';
 import {
-  Flag, User, Trophy, AlertTriangle, ChevronRight,
-  FileText, Shield, Info,
+  Flag,
+  User,
+  Trophy,
+  AlertTriangle,
+  ChevronRight,
+  FileText,
+  Shield,
+  Info,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useRoutePrefix } from '../../hooks/useRoutePrefix';
@@ -28,10 +34,7 @@ import { ReportStatusChip, ModerationTimelineRow } from '../../components/arena/
 import { AppealBanner, CaseActionCard } from '../../components/arena/ArenaModerationCases';
 import { TOAST } from '../../data/toastMessages';
 import { φ } from '../../utils/golden';
-import {
-  getReportCaseById, ARENA_REPORT_CASES,
-  type ArenaReportCase,
-} from '../../data/arenaData';
+import { getReportCaseById, ARENA_REPORT_CASES, type ArenaReportCase } from '../../data/arenaData';
 
 export function ArenaReportCasePage() {
   const { caseId } = useParams<{ caseId: string }>();
@@ -52,8 +55,20 @@ export function ArenaReportCasePage() {
     );
   }
 
-  const targetIcon = reportCase.targetType === 'challenge' ? Trophy : reportCase.targetType === 'mode' ? FileText : User;
-  const targetLabel = reportCase.targetType === 'challenge' ? 'Challenge' : reportCase.targetType === 'mode' ? 'Mode' : 'Người dùng';
+  const targetIcon =
+    reportCase.targetType === 'challenge'
+      ? Trophy
+      : reportCase.targetType === 'mode'
+        ? FileText
+        : User;
+  // JSX requires a capitalized binding to render a component from a variable
+  const TargetIcon = targetIcon;
+  const targetLabel =
+    reportCase.targetType === 'challenge'
+      ? 'Challenge'
+      : reportCase.targetType === 'mode'
+        ? 'Mode'
+        : 'Người dùng';
 
   const handlePrimaryCTA = () => {
     hapticSuccess();
@@ -91,7 +106,6 @@ export function ArenaReportCasePage() {
       <Header title="Chi tiết báo cáo" subtitle="An toàn · Open Arena" back />
 
       <PageContent gap="default">
-
         {/* ─── Status + Case ID ─── */}
         <TrCard className="p-4">
           <div className="flex items-center justify-between mb-3">
@@ -105,7 +119,7 @@ export function ArenaReportCasePage() {
               className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
               style={{ background: 'rgba(239,68,68,0.1)' }}
             >
-              <targetIcon size={18} color="#EF4444" />
+              <TargetIcon size={18} color="#EF4444" />
             </div>
             <div className="flex-1 min-w-0">
               <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 600 }}>
@@ -173,13 +187,17 @@ export function ArenaReportCasePage() {
         {/* ─── Related challenge link ─── */}
         {reportCase.relatedChallenge && (
           <TrCard
-            hover as="button"
+            hover
+            as="button"
             onClick={handleViewChallenge}
             className="flex items-center gap-3 p-4 w-full active:opacity-70"
             style={{ minHeight: 52 }}
           >
             <Trophy size={16} color="#8B5CF6" />
-            <span className="flex-1 text-left" style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
+            <span
+              className="flex-1 text-left"
+              style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}
+            >
               Xem challenge liên quan
             </span>
             <ChevronRight size={16} color={c.text3} />
@@ -199,13 +217,20 @@ export function ArenaReportCasePage() {
 
         {/* ─── View all reports link ─── */}
         <TrCard
-          hover as="button"
-          onClick={() => { navigate(`${prefix}/arena/my-reports`); hapticSelection(); }}
+          hover
+          as="button"
+          onClick={() => {
+            navigate(`${prefix}/arena/my-reports`);
+            hapticSelection();
+          }}
           className="flex items-center gap-3 p-4 w-full active:opacity-70"
           style={{ minHeight: 52 }}
         >
           <Flag size={16} color="#6B7280" />
-          <span className="flex-1 text-left" style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}>
+          <span
+            className="flex-1 text-left"
+            style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}
+          >
             Xem tất cả báo cáo
           </span>
           <ChevronRight size={16} color={c.text3} />
@@ -213,23 +238,32 @@ export function ArenaReportCasePage() {
 
         {/* ─── Other reports ─── */}
         <div className="flex flex-col gap-2">
-          {ARENA_REPORT_CASES.filter(r => r.id !== reportCase.id).slice(0, 2).map(r => (
-            <TrCard
-              key={r.id}
-              hover as="button"
-              onClick={() => { navigate(`${prefix}/arena/report/${r.id}`); hapticSelection(); }}
-              className="flex items-center gap-3 p-3.5 w-full active:opacity-70"
-              style={{ minHeight: 48 }}
-            >
-              <div className="flex-1 min-w-0 text-left">
-                <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }} className="truncate">
-                  {r.targetName} — {r.reason}
-                </p>
-                <p style={{ color: c.text3, fontSize: φ.xs }}>{r.createdAt}</p>
-              </div>
-              <ReportStatusChip status={r.status} />
-            </TrCard>
-          ))}
+          {ARENA_REPORT_CASES.filter((r) => r.id !== reportCase.id)
+            .slice(0, 2)
+            .map((r) => (
+              <TrCard
+                key={r.id}
+                hover
+                as="button"
+                onClick={() => {
+                  navigate(`${prefix}/arena/report/${r.id}`);
+                  hapticSelection();
+                }}
+                className="flex items-center gap-3 p-3.5 w-full active:opacity-70"
+                style={{ minHeight: 48 }}
+              >
+                <div className="flex-1 min-w-0 text-left">
+                  <p
+                    style={{ color: c.text1, fontSize: φ.sm, fontWeight: 600 }}
+                    className="truncate"
+                  >
+                    {r.targetName} — {r.reason}
+                  </p>
+                  <p style={{ color: c.text3, fontSize: φ.xs }}>{r.createdAt}</p>
+                </div>
+                <ReportStatusChip status={r.status} />
+              </TrCard>
+            ))}
         </div>
 
         {/* ─── CTA ─── */}

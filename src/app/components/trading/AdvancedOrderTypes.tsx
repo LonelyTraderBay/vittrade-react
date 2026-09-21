@@ -12,7 +12,7 @@
  */
 
 import React, { useState } from 'react';
-import { Info, AlertTriangle, CheckCircle, Snowflake, Eye, EyeOff } from 'lucide-react';
+import { Info, AlertTriangle, CheckCircle, Snowflake, Eye, EyeOff, Shield } from 'lucide-react';
 import { TrCard } from '../ui/TrCard';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { FONT_SCALE, FONT_WEIGHT } from '../../constants/typography';
@@ -23,17 +23,12 @@ import { ALPHA, withAlpha } from '../../constants/colors';
    ORDER TYPE DEFINITIONS
    ═══════════════════════════════════════════════════════════════ */
 
-export type OrderType = 
-  | 'market'
-  | 'limit'
-  | 'stop-market'
-  | 'stop-limit'
-  | 'trailing-stop';
+export type OrderType = 'market' | 'limit' | 'stop-market' | 'stop-limit' | 'trailing-stop';
 
-export type OrderTimeInForce = 
-  | 'GTC'  // Good Till Cancel
-  | 'IOC'  // Immediate or Cancel
-  | 'FOK'  // Fill or Kill
+export type OrderTimeInForce =
+  | 'GTC' // Good Till Cancel
+  | 'IOC' // Immediate or Cancel
+  | 'FOK' // Fill or Kill
   | 'GTX'; // Good Till Crossing (Post-only)
 
 export interface OrderOptions {
@@ -74,27 +69,61 @@ export function OrderTypeSelector({
   const orderTypes: { value: OrderType; label: string; description: string }[] = [
     { value: 'market', label: 'Market', description: 'Khớp ngay lập tức với giá tốt nhất' },
     { value: 'limit', label: 'Limit', description: 'Đặt giá mong muốn, chờ khớp' },
-    { value: 'stop-market', label: 'Stop Market', description: 'Kích hoạt Market khi chạm trigger' },
+    {
+      value: 'stop-market',
+      label: 'Stop Market',
+      description: 'Kích hoạt Market khi chạm trigger',
+    },
     { value: 'stop-limit', label: 'Stop Limit', description: 'Kích hoạt Limit khi chạm trigger' },
-    { value: 'trailing-stop', label: 'Trailing Stop', description: 'Stop tự động điều chỉnh theo giá' },
+    {
+      value: 'trailing-stop',
+      label: 'Trailing Stop',
+      description: 'Stop tự động điều chỉnh theo giá',
+    },
   ];
 
-  const timeInForce: { value: OrderTimeInForce; label: string; description: string; disabled?: boolean }[] = [
-    { value: 'GTC', label: 'GTC', description: 'Good Till Cancel - Lệnh tồn tại cho đến khi khớp hoặc hủy' },
-    { value: 'IOC', label: 'IOC', description: 'Immediate or Cancel - Khớp ngay phần có thể, hủy phần còn lại' },
+  const timeInForce: {
+    value: OrderTimeInForce;
+    label: string;
+    description: string;
+    disabled?: boolean;
+  }[] = [
+    {
+      value: 'GTC',
+      label: 'GTC',
+      description: 'Good Till Cancel - Lệnh tồn tại cho đến khi khớp hoặc hủy',
+    },
+    {
+      value: 'IOC',
+      label: 'IOC',
+      description: 'Immediate or Cancel - Khớp ngay phần có thể, hủy phần còn lại',
+    },
     { value: 'FOK', label: 'FOK', description: 'Fill or Kill - Khớp toàn bộ ngay hoặc hủy' },
-    { value: 'GTX', label: 'Post-Only', description: 'Chỉ làm maker, không bao giờ ăn sổ lệnh (taker)', disabled: selectedType === 'market' },
+    {
+      value: 'GTX',
+      label: 'Post-Only',
+      description: 'Chỉ làm maker, không bao giờ ăn sổ lệnh (taker)',
+      disabled: selectedType === 'market',
+    },
   ];
 
   return (
     <div className={`flex flex-col gap-3 ${className}`}>
       {/* Basic Order Type */}
       <div>
-        <label style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, marginBottom: 8, display: 'block' }}>
+        <label
+          style={{
+            color: c.text2,
+            fontSize: FONT_SCALE.xs,
+            fontWeight: FONT_WEIGHT.semibold,
+            marginBottom: 8,
+            display: 'block',
+          }}
+        >
           Loại lệnh
         </label>
         <div className="grid grid-cols-2 gap-2">
-          {orderTypes.slice(0, 2).map(type => (
+          {orderTypes.slice(0, 2).map((type) => (
             <button
               key={type.value}
               onClick={() => onTypeChange(type.value)}
@@ -104,7 +133,13 @@ export function OrderTypeSelector({
                 border: `1.5px solid ${selectedType === type.value ? c.chipActiveBorder : c.borderSolid}`,
               }}
             >
-              <p style={{ color: selectedType === type.value ? c.chipActiveText : c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>
+              <p
+                style={{
+                  color: selectedType === type.value ? c.chipActiveText : c.text1,
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                }}
+              >
                 {type.label}
               </p>
               <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginTop: 2 }}>
@@ -131,7 +166,7 @@ export function OrderTypeSelector({
 
       {showAdvanced && (
         <div className="flex flex-col gap-2">
-          {orderTypes.slice(2).map(type => (
+          {orderTypes.slice(2).map((type) => (
             <button
               key={type.value}
               onClick={() => onTypeChange(type.value)}
@@ -141,7 +176,13 @@ export function OrderTypeSelector({
                 border: `1.5px solid ${selectedType === type.value ? c.chipActiveBorder : c.borderSolid}`,
               }}
             >
-              <p style={{ color: selectedType === type.value ? c.chipActiveText : c.text1, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold }}>
+              <p
+                style={{
+                  color: selectedType === type.value ? c.chipActiveText : c.text1,
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                }}
+              >
                 {type.label}
               </p>
               <p style={{ color: c.text3, fontSize: FONT_SCALE.micro, marginTop: 2 }}>
@@ -155,11 +196,19 @@ export function OrderTypeSelector({
       {/* Time In Force (for Limit orders) */}
       {(selectedType === 'limit' || selectedType === 'stop-limit') && (
         <div>
-          <label style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold, marginBottom: 8, display: 'block' }}>
+          <label
+            style={{
+              color: c.text2,
+              fontSize: FONT_SCALE.xs,
+              fontWeight: FONT_WEIGHT.semibold,
+              marginBottom: 8,
+              display: 'block',
+            }}
+          >
             Time In Force
           </label>
           <div className="grid grid-cols-2 gap-2">
-            {timeInForce.map(tif => (
+            {timeInForce.map((tif) => (
               <button
                 key={tif.value}
                 onClick={() => !tif.disabled && onTIFChange(tif.value)}
@@ -184,7 +233,14 @@ export function OrderTypeSelector({
 
       {/* Order Options */}
       <TrCard className="p-3">
-        <p style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, marginBottom: 8 }}>
+        <p
+          style={{
+            color: c.text1,
+            fontSize: FONT_SCALE.xs,
+            fontWeight: FONT_WEIGHT.bold,
+            marginBottom: 8,
+          }}
+        >
           Tùy chọn lệnh
         </p>
         <div className="flex flex-col gap-2">
@@ -194,11 +250,17 @@ export function OrderTypeSelector({
               <input
                 type="checkbox"
                 checked={options.reduceOnly || false}
-                onChange={e => onOptionsChange({ ...options, reduceOnly: e.target.checked })}
+                onChange={(e) => onOptionsChange({ ...options, reduceOnly: e.target.checked })}
                 style={{ accentColor: c.primary }}
               />
               <div>
-                <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+                <p
+                  style={{
+                    color: c.text2,
+                    fontSize: FONT_SCALE.xs,
+                    fontWeight: FONT_WEIGHT.semibold,
+                  }}
+                >
                   Reduce-Only
                 </p>
                 <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.4 }}>
@@ -215,16 +277,27 @@ export function OrderTypeSelector({
                 <input
                   type="checkbox"
                   checked={options.iceberg?.enabled || false}
-                  onChange={e => onOptionsChange({ 
-                    ...options, 
-                    iceberg: { enabled: e.target.checked, visibleSize: options.iceberg?.visibleSize || 10 }
-                  })}
+                  onChange={(e) =>
+                    onOptionsChange({
+                      ...options,
+                      iceberg: {
+                        enabled: e.target.checked,
+                        visibleSize: options.iceberg?.visibleSize || 10,
+                      },
+                    })
+                  }
                   style={{ accentColor: c.primary }}
                 />
                 <div>
                   <div className="flex items-center gap-1.5">
                     <Snowflake size={12} color={c.primary} />
-                    <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+                    <p
+                      style={{
+                        color: c.text2,
+                        fontSize: FONT_SCALE.xs,
+                        fontWeight: FONT_WEIGHT.semibold,
+                      }}
+                    >
                       Iceberg Order
                     </p>
                   </div>
@@ -288,19 +361,22 @@ export function OrderTypeInfo({ type, className = '' }: OrderTypeInfoProps) {
         'Đảm bảo khớp đủ size hoặc không khớp',
         'Dùng khi cần chắc chắn execution size',
       ],
-      example: 'Muốn mua chính xác 1 BTC. Nếu không đủ thanh khoản để khớp 1 BTC, lệnh bị hủy hoàn toàn.',
+      example:
+        'Muốn mua chính xác 1 BTC. Nếu không đủ thanh khoản để khớp 1 BTC, lệnh bị hủy hoàn toàn.',
     },
     GTX: {
       title: 'GTX / Post-Only (Maker-Only)',
       color: '#10B981',
       icon: CheckCircle,
-      description: 'Lệnh chỉ làm maker, không bao giờ ăn sổ lệnh (taker). Đảm bảo được phí maker thấp hơn.',
+      description:
+        'Lệnh chỉ làm maker, không bao giờ ăn sổ lệnh (taker). Đảm bảo được phí maker thấp hơn.',
       features: [
         'Chỉ được khớp khi là maker',
         'Hưởng maker fee rebate (phí thấp hơn hoặc nhận rebate)',
         'Lệnh tự động hủy nếu sẽ khớp ngay (taker)',
       ],
-      example: 'Đặt limit $65,000 khi giá market là $65,100. Nếu giá giảm xuống $65,000, lệnh khớp với phí maker. Nếu bạn đặt $65,100 (giá market), lệnh sẽ bị hủy ngay vì sẽ là taker.',
+      example:
+        'Đặt limit $65,000 khi giá market là $65,100. Nếu giá giảm xuống $65,000, lệnh khớp với phí maker. Nếu bạn đặt $65,100 (giá market), lệnh sẽ bị hủy ngay vì sẽ là taker.',
     },
   };
 
@@ -310,7 +386,10 @@ export function OrderTypeInfo({ type, className = '' }: OrderTypeInfoProps) {
   return (
     <TrCard
       className={`p-4 ${className}`}
-      style={{ background: withAlpha(config.color, ALPHA.hover), border: `1.5px solid ${withAlpha(config.color, ALPHA.soft)}` }}
+      style={{
+        background: withAlpha(config.color, ALPHA.hover),
+        border: `1.5px solid ${withAlpha(config.color, ALPHA.soft)}`,
+      }}
     >
       <div className="flex items-start gap-3">
         <div
@@ -320,7 +399,14 @@ export function OrderTypeInfo({ type, className = '' }: OrderTypeInfoProps) {
           <Icon size={ICON_SIZE.md} color={config.color} strokeWidth={ICON_STROKE.bold} />
         </div>
         <div className="flex-1">
-          <p style={{ color: config.color, fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, marginBottom: 4 }}>
+          <p
+            style={{
+              color: config.color,
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.bold,
+              marginBottom: 4,
+            }}
+          >
             {config.title}
           </p>
           <p style={{ color: c.text2, fontSize: FONT_SCALE.xs, lineHeight: 1.5, marginBottom: 8 }}>
@@ -336,10 +422,7 @@ export function OrderTypeInfo({ type, className = '' }: OrderTypeInfoProps) {
             ))}
           </div>
 
-          <div
-            className="px-2.5 py-2 rounded-lg"
-            style={{ background: c.surface2 }}
-          >
+          <div className="px-2.5 py-2 rounded-lg" style={{ background: c.surface2 }}>
             <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
               <strong style={{ color: c.text2 }}>Ví dụ:</strong> {config.example}
             </p>
@@ -361,7 +444,12 @@ interface IcebergConfigProps {
   className?: string;
 }
 
-export function IcebergConfig({ totalSize, visibleSize, onVisibleSizeChange, className = '' }: IcebergConfigProps) {
+export function IcebergConfig({
+  totalSize,
+  visibleSize,
+  onVisibleSizeChange,
+  className = '',
+}: IcebergConfigProps) {
   const c = useThemeColors();
 
   const visiblePercentage = (visibleSize / totalSize) * 100;
@@ -382,7 +470,9 @@ export function IcebergConfig({ totalSize, visibleSize, onVisibleSizeChange, cla
           <div className="flex-1">
             <div className="flex items-center justify-between mb-1">
               <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Visible</span>
-              <span style={{ color: '#3B82F6', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+              <span
+                style={{ color: '#3B82F6', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}
+              >
                 {visibleSize.toFixed(4)}
               </span>
             </div>
@@ -398,7 +488,9 @@ export function IcebergConfig({ totalSize, visibleSize, onVisibleSizeChange, cla
           </div>
           <div className="flex items-center gap-1">
             <Eye size={16} color="#3B82F6" />
-            <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>{visiblePercentage.toFixed(0)}%</span>
+            <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>
+              {visiblePercentage.toFixed(0)}%
+            </span>
           </div>
         </div>
 
@@ -406,7 +498,9 @@ export function IcebergConfig({ totalSize, visibleSize, onVisibleSizeChange, cla
           <div className="flex-1">
             <div className="flex items-center justify-between mb-1">
               <span style={{ color: c.text3, fontSize: FONT_SCALE.micro }}>Hidden</span>
-              <span style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+              <span
+                style={{ color: c.text2, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}
+              >
                 {hiddenSize.toFixed(4)}
               </span>
             </div>
@@ -422,28 +516,34 @@ export function IcebergConfig({ totalSize, visibleSize, onVisibleSizeChange, cla
           </div>
           <div className="flex items-center gap-1">
             <EyeOff size={16} color={c.text3} />
-            <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>{(100 - visiblePercentage).toFixed(0)}%</span>
+            <span style={{ color: c.text3, fontSize: FONT_SCALE.xs }}>
+              {(100 - visiblePercentage).toFixed(0)}%
+            </span>
           </div>
         </div>
 
         {/* Slider */}
         <div>
-          <label style={{ color: c.text2, fontSize: FONT_SCALE.xs, display: 'block', marginBottom: 4 }}>
+          <label
+            style={{ color: c.text2, fontSize: FONT_SCALE.xs, display: 'block', marginBottom: 4 }}
+          >
             Visible size
           </label>
           <input
             type="range"
             min={totalSize * 0.05} // Minimum 5%
-            max={totalSize * 0.5}  // Maximum 50%
+            max={totalSize * 0.5} // Maximum 50%
             step={totalSize * 0.01}
             value={visibleSize}
-            onChange={e => onVisibleSizeChange(parseFloat(e.target.value))}
+            onChange={(e) => onVisibleSizeChange(parseFloat(e.target.value))}
             className="w-full"
             style={{ accentColor: '#3B82F6' }}
           />
           <div className="flex justify-between mt-1">
             <span style={{ color: c.text3, fontSize: 10 }}>5%</span>
-            <span style={{ color: '#3B82F6', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
+            <span
+              style={{ color: '#3B82F6', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}
+            >
               {visibleSize.toFixed(4)}
             </span>
             <span style={{ color: c.text3, fontSize: 10 }}>50%</span>
@@ -457,7 +557,8 @@ export function IcebergConfig({ totalSize, visibleSize, onVisibleSizeChange, cla
         >
           <Info size={12} color="#3B82F6" className="shrink-0 mt-0.5" />
           <p style={{ color: c.text3, fontSize: 10, lineHeight: 1.5 }}>
-            Iceberg order ẩn size thực tế. Chỉ {visibleSize.toFixed(4)} hiện trên sổ lệnh. Khi phần visible khớp, phần hidden sẽ tự động lộ ra từng phần cho đến hết.
+            Iceberg order ẩn size thực tế. Chỉ {visibleSize.toFixed(4)} hiện trên sổ lệnh. Khi phần
+            visible khớp, phần hidden sẽ tự động lộ ra từng phần cho đến hết.
           </p>
         </div>
       </div>
@@ -476,7 +577,12 @@ interface ReduceOnlyIndicatorProps {
   className?: string;
 }
 
-export function ReduceOnlyIndicator({ enabled, currentPosition, orderSize, className = '' }: ReduceOnlyIndicatorProps) {
+export function ReduceOnlyIndicator({
+  enabled,
+  currentPosition,
+  orderSize,
+  className = '',
+}: ReduceOnlyIndicatorProps) {
   const c = useThemeColors();
 
   if (!enabled) return null;
@@ -486,12 +592,22 @@ export function ReduceOnlyIndicator({ enabled, currentPosition, orderSize, class
   return (
     <TrCard
       className={`p-3 ${className}`}
-      style={{ background: withAlpha('#8B5CF6', ALPHA.hover), border: `1.5px solid ${withAlpha('#8B5CF6', ALPHA.soft)}` }}
+      style={{
+        background: withAlpha('#8B5CF6', ALPHA.hover),
+        border: `1.5px solid ${withAlpha('#8B5CF6', ALPHA.soft)}`,
+      }}
     >
       <div className="flex items-start gap-2">
         <Shield size={ICON_SIZE.sm} color="#8B5CF6" className="shrink-0 mt-0.5" />
         <div className="flex-1">
-          <p style={{ color: '#8B5CF6', fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, marginBottom: 2 }}>
+          <p
+            style={{
+              color: '#8B5CF6',
+              fontSize: FONT_SCALE.xs,
+              fontWeight: FONT_WEIGHT.bold,
+              marginBottom: 2,
+            }}
+          >
             Reduce-Only Mode
           </p>
           <p style={{ color: c.text2, fontSize: FONT_SCALE.micro, lineHeight: 1.5 }}>

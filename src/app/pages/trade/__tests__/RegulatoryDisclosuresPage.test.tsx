@@ -2,15 +2,22 @@
  * ══════════════════════════════════════════════════════════════
  *  RegulatoryDisclosuresPage.test.tsx — Regulatory Tests
  * ══════════════════════════════════════════════════════════════
- * 
+ *
+ * Rewritten for the current 5-tab disclosure page
+ * (MiFID II / Protection / Restrictions / Liability / Contact).
+ *
  * Test Coverage (2 tests):
- * 1. ✅ MiFID II statement complete
- * 2. ✅ All regulatory disclosures visible
+ * 1. ✅ MiFID II compliance statement is complete (Art. 24/25/27/58)
+ * 2. ✅ All other disclosure tabs render their required content
+ *
+ * DROPPED from the old suite (features no longer exist on the page):
+ * - GDPR / data privacy section, "last updated" date, PDF download,
+ *   acknowledgment checkbox, negative balance protection wording.
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
-import { screen } from '@testing-library/react';
-import { renderWithRouter } from '../../../test/utils/test-utils';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { screen, waitFor } from '@testing-library/react';
+import { renderWithRouter, userEvent } from '@/test/test-utils-navigation';
 import { RegulatoryDisclosuresPage } from '../RegulatoryDisclosuresPage';
 
 describe('RegulatoryDisclosuresPage', () => {
@@ -18,71 +25,83 @@ describe('RegulatoryDisclosuresPage', () => {
     vi.clearAllMocks();
   });
 
-  it('should display complete MiFID II statement', () => {
+  it('should display the complete MiFID II statement', () => {
     renderWithRouter(<RegulatoryDisclosuresPage />);
 
-    // Page title
-    expect(screen.getByText(/regulatory disclosures/i)).toBeInTheDocument();
+    // Page header + hero banner
+    expect(screen.getByText('Regulatory Disclosures')).toBeInTheDocument();
+    expect(screen.getByText('Legal & Regulatory Framework')).toBeInTheDocument();
+    expect(screen.getByText(/rights and protections under MiFID II/i)).toBeInTheDocument();
 
-    // MiFID II header
-    expect(screen.getByText(/mifid ii/i)).toBeInTheDocument();
-    expect(screen.getByText(/markets in financial instruments directive/i)).toBeInTheDocument();
+    // MiFID II tab is active by default with all four article cards
+    expect(screen.getByText('MiFID II Compliance Statement')).toBeInTheDocument();
+    expect(screen.getByText('Article 24: Information to Clients')).toBeInTheDocument();
+    expect(screen.getByText('Article 25: Assessment of Suitability and Appropriateness')).toBeInTheDocument();
+    expect(screen.getByText('Article 27: Best Execution Obligation')).toBeInTheDocument();
+    expect(screen.getByText('Article 58: Record Keeping')).toBeInTheDocument();
 
-    // Art. 25.3 Appropriateness Assessment
-    expect(screen.getByText(/article 25\.3/i)).toBeInTheDocument();
-    expect(screen.getByText(/appropriateness assessment/i)).toBeInTheDocument();
-    expect(screen.getByText(/required.*copy trading/i)).toBeInTheDocument();
+    // Appropriateness assessment criteria (Art. 25)
+    expect(screen.getByText(/knowledge and experience with copy trading/i)).toBeInTheDocument();
+    expect(screen.getByText(/ability to bear financial losses/i)).toBeInTheDocument();
 
-    // Art. 24.4 Best Execution
-    expect(screen.getByText(/article 24\.4/i)).toBeInTheDocument();
-    expect(screen.getByText(/best execution/i)).toBeInTheDocument();
+    // Record retention (Art. 58)
+    expect(screen.getByText(/retained for a minimum of 5 years/i)).toBeInTheDocument();
 
-    // ESMA Guidelines
-    expect(screen.getByText(/esma.*guidelines/i)).toBeInTheDocument();
-    expect(screen.getByText(/leverage warnings/i)).toBeInTheDocument();
-    expect(screen.getByText(/performance warnings/i)).toBeInTheDocument();
+    // Commitment note
+    expect(screen.getByText(/Our Commitment:/i)).toBeInTheDocument();
 
-    // Investor Protection
-    expect(screen.getByText(/investor protection/i)).toBeInTheDocument();
-    expect(screen.getByText(/segregated accounts/i)).toBeInTheDocument();
-    expect(screen.getByText(/negative balance protection/i)).toBeInTheDocument();
-
-    // Risk Warnings (prominently displayed)
-    expect(screen.getByText(/risk warning/i)).toBeInTheDocument();
-    expect(screen.getByText(/can lose.*capital/i)).toBeInTheDocument();
-    expect(screen.getByText(/past performance.*not indicative/i)).toBeInTheDocument();
+    // 5 tabs available
+    expect(screen.getAllByRole('tab')).toHaveLength(5);
   });
 
-  it('should show all required regulatory disclosures', () => {
+  it('should show all other required disclosures via tab navigation', async () => {
+    const user = userEvent.setup();
     renderWithRouter(<RegulatoryDisclosuresPage />);
 
-    // Jurisdictional restrictions
-    expect(screen.getByText(/jurisdictional restrictions/i)).toBeInTheDocument();
-    expect(screen.getByText(/not available.*certain jurisdictions/i)).toBeInTheDocument();
-    expect(screen.getByText(/united states.*prohibited/i)).toBeInTheDocument();
+    // Protection tab
+    await user.click(screen.getByRole('tab', { name: 'Protection' }));
+    await waitFor(() => {
+      expect(screen.getByText('Investor Protection Scheme')).toBeInTheDocument();
+    });
+    expect(screen.getByText('Coverage Limit')).toBeInTheDocument();
+    expect(screen.getByText(/€20,000 per user/i)).toBeInTheDocument();
+    expect(screen.getByText("What's NOT Covered")).toBeInTheDocument();
+    expect(screen.getByText(/Trading losses \(market risk\)/i)).toBeInTheDocument();
+    expect(screen.getByText('How to File a Claim')).toBeInTheDocument();
+    expect(screen.getByText('ICS Operator Contact')).toBeInTheDocument();
 
-    // Liability limitations
-    expect(screen.getByText(/liability limitations/i)).toBeInTheDocument();
-    expect(screen.getByText(/platform.*not liable.*provider actions/i)).toBeInTheDocument();
-    expect(screen.getByText(/copy at your own risk/i)).toBeInTheDocument();
+    // Restrictions tab
+    await user.click(screen.getByRole('tab', { name: 'Restrictions' }));
+    await waitFor(() => {
+      expect(screen.getByText('Jurisdictional Restrictions')).toBeInTheDocument();
+    });
+    expect(screen.getByText('Copy Trading Not Available In:')).toBeInTheDocument();
+    expect(screen.getByText(/United States \(US residents\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/Countries under OFAC sanctions/i)).toBeInTheDocument();
+    expect(screen.getByText('Leverage Restrictions by Region')).toBeInTheDocument();
+    expect(screen.getByText('Tax Reporting Obligations')).toBeInTheDocument();
 
-    // Data privacy (GDPR)
-    expect(screen.getByText(/data privacy/i)).toBeInTheDocument();
-    expect(screen.getByText(/gdpr compliant/i)).toBeInTheDocument();
-    expect(screen.getByText(/data protection.*eu regulation/i)).toBeInTheDocument();
+    // Liability tab
+    await user.click(screen.getByRole('tab', { name: 'Liability' }));
+    await waitFor(() => {
+      expect(screen.getByText('Liability Limitations')).toBeInTheDocument();
+    });
+    expect(screen.getByText('Platform Role')).toBeInTheDocument();
+    expect(screen.getByText(/not an investment advisor/i)).toBeInTheDocument();
+    expect(screen.getByText('User Responsibility')).toBeInTheDocument();
+    expect(screen.getByText('Indemnification')).toBeInTheDocument();
+    expect(screen.getByText('Limitation of Liability')).toBeInTheDocument();
 
-    // Regulatory contacts
-    expect(screen.getByText(/regulatory contacts/i)).toBeInTheDocument();
-    expect(screen.getByText(/financial conduct authority/i)).toBeInTheDocument();
-    expect(screen.getByText(/complaints.*financial ombudsman/i)).toBeInTheDocument();
-
-    // Last updated date
-    expect(screen.getByText(/last updated.*march.*2026/i)).toBeInTheDocument();
-
-    // Download disclosures
-    expect(screen.getByRole('button', { name: /download pdf/i })).toBeInTheDocument();
-
-    // Acknowledgment checkbox
-    expect(screen.getByRole('checkbox', { name: /acknowledge.*read/i })).toBeInTheDocument();
+    // Contact tab
+    await user.click(screen.getByRole('tab', { name: 'Contact' }));
+    await waitFor(() => {
+      expect(screen.getByText('Regulatory Contact Information')).toBeInTheDocument();
+    });
+    expect(screen.getByText('Financial Conduct Authority (FCA)')).toBeInTheDocument();
+    expect(screen.getByText('European Securities and Markets Authority (ESMA)')).toBeInTheDocument();
+    expect(screen.getByText('Financial Ombudsman Service')).toBeInTheDocument();
+    expect(screen.getByText('Whistleblower Protection')).toBeInTheDocument();
+    expect(screen.getByText('Copy Trading Terms of Service')).toBeInTheDocument();
+    expect(screen.getByText('Privacy Policy (Data Handling)')).toBeInTheDocument();
   });
 });

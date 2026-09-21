@@ -132,7 +132,12 @@ const USER_KYC: UserKYCStatus = {
   },
 };
 
-const DOCUMENT_TYPES: { id: DocumentType; label: string; icon: React.ElementType; description: string }[] = [
+const DOCUMENT_TYPES: {
+  id: DocumentType;
+  label: string;
+  icon: React.ElementType;
+  description: string;
+}[] = [
   {
     id: 'id_front',
     label: 'CMND/CCCD mặt trước',
@@ -163,7 +168,13 @@ const DOCUMENT_TYPES: { id: DocumentType; label: string; icon: React.ElementType
    COMPONENTS
    ═══════════════════════════════════════════════════════════ */
 
-function LevelProgressCard({ userKYC, levels }: { userKYC: UserKYCStatus; levels: KYCLevelInfo[] }) {
+function LevelProgressCard({
+  userKYC,
+  levels,
+}: {
+  userKYC: UserKYCStatus;
+  levels: KYCLevelInfo[];
+}) {
   const c = useThemeColors();
   const currentLevel = levels[userKYC.currentLevel];
   const nextLevel = levels[userKYC.currentLevel + 1];
@@ -230,22 +241,19 @@ function LevelProgressCard({ userKYC, levels }: { userKYC: UserKYCStatus; levels
           <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, marginBottom: 4 }}>
             KYC hiện tại
           </div>
-          <div style={{ color: c.text1, fontSize: 20, fontWeight: 800 }}>
-            {currentLevel.name}
-          </div>
+          <div style={{ color: c.text1, fontSize: 20, fontWeight: 800 }}>{currentLevel.name}</div>
           <div className="flex items-center gap-2 mt-2">
             {getStatusIcon()}
-            <span style={{ color: getStatusColor(), fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 700 }}>
+            <span
+              style={{ color: getStatusColor(), fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 700 }}
+            >
               {getStatusText()}
             </span>
           </div>
         </div>
       </div>
 
-      <div
-        className="pt-4 mt-4"
-        style={{ borderTop: `1px solid ${c.divider}` }}
-      >
+      <div className="pt-4 mt-4" style={{ borderTop: `1px solid ${c.divider}` }}>
         <div className="grid grid-cols-2 gap-3">
           <div>
             <div style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION, marginBottom: 4 }}>
@@ -284,7 +292,13 @@ function LevelProgressCard({ userKYC, levels }: { userKYC: UserKYCStatus; levels
   );
 }
 
-function DocumentUploadCard({ doc, userDoc }: { doc: typeof DOCUMENT_TYPES[0]; userDoc?: UserKYCStatus['documents'][DocumentType] }) {
+function DocumentUploadCard({
+  doc,
+  userDoc,
+}: {
+  doc: (typeof DOCUMENT_TYPES)[0];
+  userDoc?: UserKYCStatus['documents'][DocumentType];
+}) {
   const c = useThemeColors();
   const Icon = doc.icon;
 
@@ -376,7 +390,14 @@ function DocumentUploadCard({ doc, userDoc }: { doc: typeof DOCUMENT_TYPES[0]; u
           <Icon size={24} color={userDoc?.status === 'approved' ? '#10B981' : c.text3} />
         </div>
         <div className="flex-1 min-w-0">
-          <div style={{ color: c.text1, fontSize: WEB_FONT.SIZE.BODY, fontWeight: 700, marginBottom: 4 }}>
+          <div
+            style={{
+              color: c.text1,
+              fontSize: WEB_FONT.SIZE.BODY,
+              fontWeight: 700,
+              marginBottom: 4,
+            }}
+          >
             {doc.label}
           </div>
           <div style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION, lineHeight: 1.4 }}>
@@ -432,348 +453,394 @@ export function WebKYCPage() {
 
   return (
     <PageLayout>
-    <div className="flex" style={{ minHeight: '100%' }}>
-      {/* ═══ LEFT SIDEBAR (300px) ═══ */}
-      <div
-        className="flex flex-col"
-        style={{
-          width: 300,
-          background: c.surface,
-          borderRight: `1px solid ${c.divider}`,
-          position: 'sticky',
-          top: 0,
-          alignSelf: 'flex-start',
-          maxHeight: '100vh',
-          overflowY: 'auto',
-        }}
-      >
-        {/* Header */}
+      <div className="flex" style={{ minHeight: '100%' }}>
+        {/* ═══ LEFT SIDEBAR (300px) ═══ */}
         <div
-          className="flex items-center justify-between px-5"
+          className="flex flex-col"
           style={{
-            height: 60,
-            borderBottom: `1px solid ${c.divider}`,
+            width: 300,
+            background: c.surface,
+            borderRight: `1px solid ${c.divider}`,
+            position: 'sticky',
+            top: 0,
+            alignSelf: 'flex-start',
+            maxHeight: '100vh',
+            overflowY: 'auto',
           }}
         >
-          <h2
-            style={{
-              color: c.text1,
-              fontSize: WEB_FONT.SIZE.H2,
-              fontWeight: 700,
-              margin: 0,
-            }}
-          >
-            Xác minh KYC
-          </h2>
-        </div>
-
-        {/* Current Level Card */}
-        <div className="p-4">
-          <LevelProgressCard userKYC={USER_KYC} levels={KYC_LEVELS} />
-        </div>
-
-        {/* Compliance Notice */}
-        <div className="px-4 pb-4">
+          {/* Header */}
           <div
-            className="p-3 rounded-lg"
+            className="flex items-center justify-between px-5"
             style={{
-              background: '#3B82F615',
-              border: `1px solid #3B82F640`,
+              height: 60,
+              borderBottom: `1px solid ${c.divider}`,
             }}
           >
-            <div className="flex items-start gap-2">
-              <Info size={16} color="#3B82F6" className="flex-shrink-0 mt-0.5" />
-              <div>
-                <div style={{ color: '#3B82F6', fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 4 }}>
-                  Bảo mật & Tuân thủ
-                </div>
-                <div style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
-                  Thông tin của bạn được mã hóa và bảo vệ theo tiêu chuẩn quốc tế. Chúng tôi tuân thủ quy định AML/KYC.
+            <h2
+              style={{
+                color: c.text1,
+                fontSize: WEB_FONT.SIZE.H2,
+                fontWeight: 700,
+                margin: 0,
+              }}
+            >
+              Xác minh KYC
+            </h2>
+          </div>
+
+          {/* Current Level Card */}
+          <div className="p-4">
+            <LevelProgressCard userKYC={USER_KYC} levels={KYC_LEVELS} />
+          </div>
+
+          {/* Compliance Notice */}
+          <div className="px-4 pb-4">
+            <div
+              className="p-3 rounded-lg"
+              style={{
+                background: '#3B82F615',
+                border: `1px solid #3B82F640`,
+              }}
+            >
+              <div className="flex items-start gap-2">
+                <Info size={16} color="#3B82F6" className="flex-shrink-0 mt-0.5" />
+                <div>
+                  <div
+                    style={{
+                      color: '#3B82F6',
+                      fontSize: WEB_FONT.SIZE.CAPTION,
+                      fontWeight: 600,
+                      marginBottom: 4,
+                    }}
+                  >
+                    Bảo mật & Tuân thủ
+                  </div>
+                  <div style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
+                    Thông tin của bạn được mã hóa và bảo vệ theo tiêu chuẩn quốc tế. Chúng tôi tuân
+                    thủ quy định AML/KYC.
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Quick Links */}
-        <div className="px-4 pb-4">
-          <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 12 }}>
-            Tài liệu hỗ trợ
-          </div>
-          <div className="flex flex-col gap-2">
-            <button
-              className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-left"
+          {/* Quick Links */}
+          <div className="px-4 pb-4">
+            <div
               style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
                 color: c.text2,
                 fontSize: WEB_FONT.SIZE.CAPTION,
                 fontWeight: 600,
+                marginBottom: 12,
               }}
             >
-              <FileText size={14} />
-              Hướng dẫn KYC
-            </button>
-            <button
-              className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-left"
-              style={{
-                background: c.bg,
-                border: `1px solid ${c.border}`,
-                color: c.text2,
-                fontSize: WEB_FONT.SIZE.CAPTION,
-                fontWeight: 600,
-              }}
-            >
-              <Download size={14} />
-              Mẫu giấy tờ
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* ═══ MAIN CONTENT ═══ */}
-      <div className="flex-1 min-w-0">
-        <div className="max-w-5xl mx-auto p-8">
-          {/* Tabs */}
-          <div className="flex items-center gap-2 mb-6">
-            <button
-              onClick={() => setActiveTab('overview')}
-              className="px-4 py-2 rounded-lg transition-all"
-              style={{
-                background: activeTab === 'overview' ? '#3B82F6' : 'transparent',
-                color: activeTab === 'overview' ? '#fff' : c.text2,
-                fontSize: WEB_FONT.SIZE.BODY,
-                fontWeight: 600,
-                border: activeTab === 'overview' ? 'none' : `1px solid ${c.border}`,
-              }}
-            >
-              Tổng quan cấp độ
-            </button>
-            <button
-              onClick={() => setActiveTab('upload')}
-              className="px-4 py-2 rounded-lg transition-all"
-              style={{
-                background: activeTab === 'upload' ? '#3B82F6' : 'transparent',
-                color: activeTab === 'upload' ? '#fff' : c.text2,
-                fontSize: WEB_FONT.SIZE.BODY,
-                fontWeight: 600,
-                border: activeTab === 'upload' ? 'none' : `1px solid ${c.border}`,
-              }}
-            >
-              Tải giấy tờ
-            </button>
-          </div>
-
-          {/* Overview Tab */}
-          {activeTab === 'overview' && (
-            <section>
-              <h3
-                className="mb-4"
+              Tài liệu hỗ trợ
+            </div>
+            <div className="flex flex-col gap-2">
+              <button
+                className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-left"
                 style={{
-                  color: c.text1,
-                  fontSize: WEB_FONT.SIZE.H3,
-                  fontWeight: 700,
-                }}
-              >
-                So sánh cấp độ KYC
-              </h3>
-
-              <div
-                className="rounded-xl overflow-hidden"
-                style={{
-                  background: c.surface,
+                  background: c.bg,
                   border: `1px solid ${c.border}`,
+                  color: c.text2,
+                  fontSize: WEB_FONT.SIZE.CAPTION,
+                  fontWeight: 600,
                 }}
               >
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                  <thead>
-                    <tr style={{ background: c.bg }}>
-                      <th
-                        style={{
-                          textAlign: 'left',
-                          padding: 16,
-                          color: c.text2,
-                          fontSize: WEB_FONT.SIZE.CAPTION,
-                          fontWeight: 600,
-                          borderBottom: `1px solid ${c.divider}`,
-                        }}
-                      >
-                        Cấp độ
-                      </th>
-                      <th
-                        style={{
-                          textAlign: 'right',
-                          padding: 16,
-                          color: c.text2,
-                          fontSize: WEB_FONT.SIZE.CAPTION,
-                          fontWeight: 600,
-                          borderBottom: `1px solid ${c.divider}`,
-                        }}
-                      >
-                        Nạp/ngày
-                      </th>
-                      <th
-                        style={{
-                          textAlign: 'right',
-                          padding: 16,
-                          color: c.text2,
-                          fontSize: WEB_FONT.SIZE.CAPTION,
-                          fontWeight: 600,
-                          borderBottom: `1px solid ${c.divider}`,
-                        }}
-                      >
-                        Rút/ngày
-                      </th>
-                      <th
-                        style={{
-                          textAlign: 'left',
-                          padding: 16,
-                          color: c.text2,
-                          fontSize: WEB_FONT.SIZE.CAPTION,
-                          fontWeight: 600,
-                          borderBottom: `1px solid ${c.divider}`,
-                        }}
-                      >
-                        Tính năng
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {KYC_LEVELS.map((level) => {
-                      const isCurrent = level.level === USER_KYC.currentLevel;
-                      return (
-                        <tr
-                          key={level.level}
+                <FileText size={14} />
+                Hướng dẫn KYC
+              </button>
+              <button
+                className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-left"
+                style={{
+                  background: c.bg,
+                  border: `1px solid ${c.border}`,
+                  color: c.text2,
+                  fontSize: WEB_FONT.SIZE.CAPTION,
+                  fontWeight: 600,
+                }}
+              >
+                <Download size={14} />
+                Mẫu giấy tờ
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* ═══ MAIN CONTENT ═══ */}
+        <div className="flex-1 min-w-0">
+          <div className="max-w-5xl mx-auto p-8">
+            {/* Tabs */}
+            <div className="flex items-center gap-2 mb-6">
+              <button
+                onClick={() => setActiveTab('overview')}
+                className="px-4 py-2 rounded-lg transition-all"
+                style={{
+                  background: activeTab === 'overview' ? '#3B82F6' : 'transparent',
+                  color: activeTab === 'overview' ? '#fff' : c.text2,
+                  fontSize: WEB_FONT.SIZE.BODY,
+                  fontWeight: 600,
+                  border: activeTab === 'overview' ? 'none' : `1px solid ${c.border}`,
+                }}
+              >
+                Tổng quan cấp độ
+              </button>
+              <button
+                onClick={() => setActiveTab('upload')}
+                className="px-4 py-2 rounded-lg transition-all"
+                style={{
+                  background: activeTab === 'upload' ? '#3B82F6' : 'transparent',
+                  color: activeTab === 'upload' ? '#fff' : c.text2,
+                  fontSize: WEB_FONT.SIZE.BODY,
+                  fontWeight: 600,
+                  border: activeTab === 'upload' ? 'none' : `1px solid ${c.border}`,
+                }}
+              >
+                Tải giấy tờ
+              </button>
+            </div>
+
+            {/* Overview Tab */}
+            {activeTab === 'overview' && (
+              <section>
+                <h3
+                  className="mb-4"
+                  style={{
+                    color: c.text1,
+                    fontSize: WEB_FONT.SIZE.H3,
+                    fontWeight: 700,
+                  }}
+                >
+                  So sánh cấp độ KYC
+                </h3>
+
+                <div
+                  className="rounded-xl overflow-hidden"
+                  style={{
+                    background: c.surface,
+                    border: `1px solid ${c.border}`,
+                  }}
+                >
+                  <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                    <thead>
+                      <tr style={{ background: c.bg }}>
+                        <th
                           style={{
-                            background: isCurrent ? `${level.color}10` : 'transparent',
+                            textAlign: 'left',
+                            padding: 16,
+                            color: c.text2,
+                            fontSize: WEB_FONT.SIZE.CAPTION,
+                            fontWeight: 600,
                             borderBottom: `1px solid ${c.divider}`,
                           }}
                         >
-                          <td style={{ padding: 16 }}>
-                            <div className="flex items-center gap-3">
-                              <div
-                                className="flex items-center justify-center rounded-lg"
-                                style={{
-                                  width: 40,
-                                  height: 40,
-                                  background: level.color,
-                                }}
-                              >
-                                <ShieldCheck size={20} color="#fff" />
-                              </div>
-                              <div>
-                                <div style={{ color: c.text1, fontSize: WEB_FONT.SIZE.BODY, fontWeight: 700 }}>
-                                  {level.name}
-                                </div>
-                                {isCurrent && (
-                                  <div style={{ color: level.color, fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600 }}>
-                                    Hiện tại
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          </td>
-                          <td
+                          Cấp độ
+                        </th>
+                        <th
+                          style={{
+                            textAlign: 'right',
+                            padding: 16,
+                            color: c.text2,
+                            fontSize: WEB_FONT.SIZE.CAPTION,
+                            fontWeight: 600,
+                            borderBottom: `1px solid ${c.divider}`,
+                          }}
+                        >
+                          Nạp/ngày
+                        </th>
+                        <th
+                          style={{
+                            textAlign: 'right',
+                            padding: 16,
+                            color: c.text2,
+                            fontSize: WEB_FONT.SIZE.CAPTION,
+                            fontWeight: 600,
+                            borderBottom: `1px solid ${c.divider}`,
+                          }}
+                        >
+                          Rút/ngày
+                        </th>
+                        <th
+                          style={{
+                            textAlign: 'left',
+                            padding: 16,
+                            color: c.text2,
+                            fontSize: WEB_FONT.SIZE.CAPTION,
+                            fontWeight: 600,
+                            borderBottom: `1px solid ${c.divider}`,
+                          }}
+                        >
+                          Tính năng
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {KYC_LEVELS.map((level) => {
+                        const isCurrent = level.level === USER_KYC.currentLevel;
+                        return (
+                          <tr
+                            key={level.level}
                             style={{
-                              textAlign: 'right',
-                              padding: 16,
-                              color: c.text1,
-                              fontSize: WEB_FONT.SIZE.BODY,
-                              fontWeight: 600,
+                              background: isCurrent ? `${level.color}10` : 'transparent',
+                              borderBottom: `1px solid ${c.divider}`,
                             }}
                           >
-                            {level.depositLimit}
-                          </td>
-                          <td
-                            style={{
-                              textAlign: 'right',
-                              padding: 16,
-                              color: c.text1,
-                              fontSize: WEB_FONT.SIZE.BODY,
-                              fontWeight: 600,
-                            }}
-                          >
-                            {level.withdrawalLimit}
-                          </td>
-                          <td style={{ padding: 16 }}>
-                            <div className="flex flex-wrap gap-1">
-                              {level.features.slice(0, 2).map((feature, i) => (
-                                <span
-                                  key={i}
-                                  className="px-2 py-1 rounded"
+                            <td style={{ padding: 16 }}>
+                              <div className="flex items-center gap-3">
+                                <div
+                                  className="flex items-center justify-center rounded-lg"
                                   style={{
-                                    background: `${level.color}15`,
-                                    color: level.color,
-                                    fontSize: WEB_FONT.SIZE.CAPTION,
-                                    fontWeight: 600,
+                                    width: 40,
+                                    height: 40,
+                                    background: level.color,
                                   }}
                                 >
-                                  {feature}
-                                </span>
-                              ))}
-                              {level.features.length > 2 && (
-                                <span style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
-                                  +{level.features.length - 2}
-                                </span>
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          )}
+                                  <ShieldCheck size={20} color="#fff" />
+                                </div>
+                                <div>
+                                  <div
+                                    style={{
+                                      color: c.text1,
+                                      fontSize: WEB_FONT.SIZE.BODY,
+                                      fontWeight: 700,
+                                    }}
+                                  >
+                                    {level.name}
+                                  </div>
+                                  {isCurrent && (
+                                    <div
+                                      style={{
+                                        color: level.color,
+                                        fontSize: WEB_FONT.SIZE.CAPTION,
+                                        fontWeight: 600,
+                                      }}
+                                    >
+                                      Hiện tại
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </td>
+                            <td
+                              style={{
+                                textAlign: 'right',
+                                padding: 16,
+                                color: c.text1,
+                                fontSize: WEB_FONT.SIZE.BODY,
+                                fontWeight: 600,
+                              }}
+                            >
+                              {level.depositLimit}
+                            </td>
+                            <td
+                              style={{
+                                textAlign: 'right',
+                                padding: 16,
+                                color: c.text1,
+                                fontSize: WEB_FONT.SIZE.BODY,
+                                fontWeight: 600,
+                              }}
+                            >
+                              {level.withdrawalLimit}
+                            </td>
+                            <td style={{ padding: 16 }}>
+                              <div className="flex flex-wrap gap-1">
+                                {level.features.slice(0, 2).map((feature, i) => (
+                                  <span
+                                    key={i}
+                                    className="px-2 py-1 rounded"
+                                    style={{
+                                      background: `${level.color}15`,
+                                      color: level.color,
+                                      fontSize: WEB_FONT.SIZE.CAPTION,
+                                      fontWeight: 600,
+                                    }}
+                                  >
+                                    {feature}
+                                  </span>
+                                ))}
+                                {level.features.length > 2 && (
+                                  <span style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
+                                    +{level.features.length - 2}
+                                  </span>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            )}
 
-          {/* Upload Tab */}
-          {activeTab === 'upload' && (
-            <section>
-              <h3
-                className="mb-4"
-                style={{
-                  color: c.text1,
-                  fontSize: WEB_FONT.SIZE.H3,
-                  fontWeight: 700,
-                }}
-              >
-                Tải lên giấy tờ xác minh
-              </h3>
+            {/* Upload Tab */}
+            {activeTab === 'upload' && (
+              <section>
+                <h3
+                  className="mb-4"
+                  style={{
+                    color: c.text1,
+                    fontSize: WEB_FONT.SIZE.H3,
+                    fontWeight: 700,
+                  }}
+                >
+                  Tải lên giấy tờ xác minh
+                </h3>
 
-              <div className="grid grid-cols-2 gap-4">
-                {DOCUMENT_TYPES.map((doc) => (
-                  <DocumentUploadCard key={doc.id} doc={doc} userDoc={USER_KYC.documents[doc.id]} />
-                ))}
-              </div>
+                <div className="grid grid-cols-2 gap-4">
+                  {DOCUMENT_TYPES.map((doc) => (
+                    <DocumentUploadCard
+                      key={doc.id}
+                      doc={doc}
+                      userDoc={USER_KYC.documents[doc.id]}
+                    />
+                  ))}
+                </div>
 
-              <div
-                className="mt-6 p-4 rounded-xl"
-                style={{
-                  background: '#F59E0B15',
-                  border: `1px solid #F59E0B40`,
-                }}
-              >
-                <div className="flex items-start gap-3">
-                  <AlertTriangle size={20} color="#F59E0B" className="flex-shrink-0 mt-0.5" />
-                  <div>
-                    <div style={{ color: '#F59E0B', fontSize: WEB_FONT.SIZE.BODY, fontWeight: 700, marginBottom: 8 }}>
-                      Lưu ý quan trọng
+                <div
+                  className="mt-6 p-4 rounded-xl"
+                  style={{
+                    background: '#F59E0B15',
+                    border: `1px solid #F59E0B40`,
+                  }}
+                >
+                  <div className="flex items-start gap-3">
+                    <AlertTriangle size={20} color="#F59E0B" className="flex-shrink-0 mt-0.5" />
+                    <div>
+                      <div
+                        style={{
+                          color: '#F59E0B',
+                          fontSize: WEB_FONT.SIZE.BODY,
+                          fontWeight: 700,
+                          marginBottom: 8,
+                        }}
+                      >
+                        Lưu ý quan trọng
+                      </div>
+                      <ul
+                        style={{
+                          color: c.text2,
+                          fontSize: WEB_FONT.SIZE.CAPTION,
+                          lineHeight: 1.6,
+                          margin: 0,
+                          paddingLeft: 20,
+                        }}
+                      >
+                        <li>Ảnh rõ nét, đầy đủ 4 góc, không bị mờ hoặc chói sáng</li>
+                        <li>Thông tin trên giấy tờ phải khớp với thông tin đã đăng ký</li>
+                        <li>Chấp nhận định dạng: JPG, PNG. Dung lượng tối đa: 5MB</li>
+                        <li>Thời gian xử lý: 1-3 ngày làm việc</li>
+                      </ul>
                     </div>
-                    <ul style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, lineHeight: 1.6, margin: 0, paddingLeft: 20 }}>
-                      <li>Ảnh rõ nét, đầy đủ 4 góc, không bị mờ hoặc chói sáng</li>
-                      <li>Thông tin trên giấy tờ phải khớp với thông tin đã đăng ký</li>
-                      <li>Chấp nhận định dạng: JPG, PNG. Dung lượng tối đa: 5MB</li>
-                      <li>Thời gian xử lý: 1-3 ngày làm việc</li>
-                    </ul>
                   </div>
                 </div>
-              </div>
-            </section>
-          )}
+              </section>
+            )}
+          </div>
         </div>
       </div>
-    </div>
     </PageLayout>
   );
 }

@@ -1,269 +1,240 @@
 /**
  * ══════════════════════════════════════════════════════════════
- *  CopySettingsPage.test.tsx — Settings Tests
+ *  CopySettingsPage.test.tsx — Copy Trading Settings Tests
  * ══════════════════════════════════════════════════════════════
- * 
+ *
+ * Written against the current component: default copy mode/ratio/
+ * SL/TP pickers, risk limits (max allocation, max active copies,
+ * circuit breaker), notification toggles + channels, emergency
+ * contact form, privacy toggle and a save button with feedback.
+ *
  * Test Coverage (8 tests):
- * 1. ✅ Global defaults editable
- * 2. ✅ Circuit breaker config works
- * 3. ✅ Notification preferences saveable
- * 4. ✅ Auto-stop rules configurable
- * 5. ✅ Emergency contact setup works
- * 6. ✅ Save button works
- * 7. ✅ Reset to defaults works
- * 8. ✅ Validation enforced
+ * 1. ✅ Default settings render (mode, ratio, SL/TP)
+ * 2. ✅ Copy mode selection shows/hides the ratio control
+ * 3. ✅ Risk limits render and sliders update values
+ * 4. ✅ Circuit breaker toggle shows/hides threshold control
+ * 5. ✅ Notification toggles and channel buttons switch state
+ * 6. ✅ Emergency contact inputs accept values
+ * 7. ✅ Privacy toggle switches portfolio visibility
+ * 8. ✅ Save button shows success feedback
+ *
+ * Dropped from the old suite (features no longer exist):
+ * - Reset-to-defaults action
+ * - Settings validation errors (no validation in this version)
+ * - Auto-stop rules beyond the circuit breaker threshold
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { screen, waitFor, within } from '@testing-library/react';
-import { renderWithRouter, userEvent } from '../../../test/utils/test-utils';
+import { screen, waitFor, within, fireEvent } from '@testing-library/react';
+import { renderWithRouter, userEvent } from '@/test/test-utils-navigation';
 import { CopySettingsPage } from '../CopySettingsPage';
+
+/** The settings card (div.p-3) containing a given label text. */
+function getCard(label: string): HTMLElement {
+  return screen.getByText(label).closest('div.p-3') as HTMLElement;
+}
 
 describe('CopySettingsPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('should allow editing global defaults', async () => {
-    const user = userEvent.setup();
+  it('should render default settings with current values', () => {
     renderWithRouter(<CopySettingsPage />);
 
-    // Default position sizing
-    const positionSizingInput = screen.getByLabelText(/default position sizing/i);
-    expect(positionSizingInput).toHaveValue('50');
+    expect(screen.getByText('Cài đặt Copy Trading')).toBeInTheDocument();
+    expect(screen.getByText('Cài đặt mặc định')).toBeInTheDocument();
 
-    await user.clear(positionSizingInput);
-    await user.type(positionSizingInput, '75');
-
-    expect(positionSizingInput).toHaveValue('75');
-
-    // Default max positions
-    const maxPositionsInput = screen.getByLabelText(/default max positions/i);
-    expect(maxPositionsInput).toHaveValue('20');
-
-    await user.clear(maxPositionsInput);
-    await user.type(maxPositionsInput, '15');
-
-    expect(maxPositionsInput).toHaveValue('15');
-  });
-
-  it('should configure circuit breaker settings', async () => {
-    const user = userEvent.setup();
-    renderWithRouter(<CopySettingsPage />);
-
-    // Circuit breaker section
-    expect(screen.getByText(/circuit breakers/i)).toBeInTheDocument();
-
-    // Daily loss limit
-    const dailyLossInput = screen.getByLabelText(/daily loss limit/i);
-    await user.clear(dailyLossInput);
-    await user.type(dailyLossInput, '3');
-
-    // Total loss limit
-    const totalLossInput = screen.getByLabelText(/total loss limit/i);
-    await user.clear(totalLossInput);
-    await user.type(totalLossInput, '15');
-
-    // Auto-pause toggle
-    const autoPauseToggle = screen.getByRole('switch', { name: /auto-pause when triggered/i });
-    expect(autoPauseToggle).toBeInTheDocument();
-    
-    await user.click(autoPauseToggle);
-    expect(autoPauseToggle).toBeChecked();
-
-    // Should show explanation
-    expect(screen.getByText(/automatically pause.*limit reached/i)).toBeInTheDocument();
-  });
-
-  it('should save notification preferences', async () => {
-    const user = userEvent.setup();
-    renderWithRouter(<CopySettingsPage />);
-
-    // Notification preferences section
-    expect(screen.getByText(/notifications/i)).toBeInTheDocument();
-
-    // Email notifications
-    const emailToggle = screen.getByRole('switch', { name: /email notifications/i });
-    await user.click(emailToggle);
-    expect(emailToggle).toBeChecked();
-
-    // Push notifications
-    const pushToggle = screen.getByRole('switch', { name: /push notifications/i });
-    await user.click(pushToggle);
-    expect(pushToggle).toBeChecked();
-
-    // Notification types
-    const tradeNotifs = screen.getByRole('checkbox', { name: /new trades/i });
-    const circuitBreakerNotifs = screen.getByRole('checkbox', { name: /circuit breaker/i });
-    const pnlNotifs = screen.getByRole('checkbox', { name: /p&l updates/i });
-
-    await user.click(tradeNotifs);
-    await user.click(circuitBreakerNotifs);
-    await user.click(pnlNotifs);
-
-    expect(tradeNotifs).toBeChecked();
-    expect(circuitBreakerNotifs).toBeChecked();
-    expect(pnlNotifs).toBeChecked();
-  });
-
-  it('should configure auto-stop rules', async () => {
-    const user = userEvent.setup();
-    renderWithRouter(<CopySettingsPage />);
-
-    // Auto-stop section
-    expect(screen.getByText(/auto-stop rules/i)).toBeInTheDocument();
-
-    // Stop on drawdown
-    const drawdownToggle = screen.getByRole('switch', { name: /stop on max drawdown/i });
-    await user.click(drawdownToggle);
-    expect(drawdownToggle).toBeChecked();
-
-    // Drawdown threshold
-    const drawdownInput = screen.getByLabelText(/drawdown threshold/i);
-    await user.clear(drawdownInput);
-    await user.type(drawdownInput, '25');
-
-    // Stop on provider tier downgrade
-    const tierToggle = screen.getByRole('switch', { name: /stop on tier downgrade/i });
-    await user.click(tierToggle);
-    expect(tierToggle).toBeChecked();
-
-    // Should show explanation
-    expect(screen.getByText(/automatically stop.*provider loses verification/i)).toBeInTheDocument();
-  });
-
-  it('should setup emergency contact', async () => {
-    const user = userEvent.setup();
-    renderWithRouter(<CopySettingsPage />);
-
-    // Emergency contact section
-    expect(screen.getByText(/emergency contact/i)).toBeInTheDocument();
-
-    // Email
-    const emailInput = screen.getByLabelText(/emergency email/i);
-    await user.clear(emailInput);
-    await user.type(emailInput, 'emergency@example.com');
-    expect(emailInput).toHaveValue('emergency@example.com');
-
-    // Phone
-    const phoneInput = screen.getByLabelText(/emergency phone/i);
-    await user.clear(phoneInput);
-    await user.type(phoneInput, '+1234567890');
-    expect(phoneInput).toHaveValue('+1234567890');
-
-    // Trigger conditions
-    const majorLossCheckbox = screen.getByRole('checkbox', { name: /major loss/i });
-    const circuitBreakerCheckbox = screen.getByRole('checkbox', { name: /circuit breaker/i });
-
-    await user.click(majorLossCheckbox);
-    await user.click(circuitBreakerCheckbox);
-
-    expect(majorLossCheckbox).toBeChecked();
-    expect(circuitBreakerCheckbox).toBeChecked();
-  });
-
-  it('should save all settings', async () => {
-    const user = userEvent.setup();
-    const localStorageSpy = vi.spyOn(Storage.prototype, 'setItem');
-
-    renderWithRouter(<CopySettingsPage />);
-
-    // Make some changes
-    const positionSizingInput = screen.getByLabelText(/default position sizing/i);
-    await user.clear(positionSizingInput);
-    await user.type(positionSizingInput, '60');
-
-    // Save button
-    const saveBtn = screen.getByRole('button', { name: /save settings/i });
-    expect(saveBtn).toBeInTheDocument();
-
-    await user.click(saveBtn);
-
-    // Should save to localStorage
-    await waitFor(() => {
-      expect(localStorageSpy).toHaveBeenCalledWith(
-        expect.stringContaining('copySettings'),
-        expect.any(String)
-      );
+    // Copy mode picker with Fixed as the default (primary background)
+    expect(screen.getByRole('button', { name: 'Fixed' })).toHaveStyle({
+      background: '#3B82F6',
+    });
+    expect(screen.getByRole('button', { name: 'Mirror' })).not.toHaveStyle({
+      background: '#3B82F6',
     });
 
-    // Success message
+    // Default ratio 50% with its helper text
+    expect(screen.getByText('Copy Ratio mặc định')).toBeInTheDocument();
+    expect(screen.getByText('50%')).toBeInTheDocument();
+    expect(screen.getByText('Copy 50% position size của provider')).toBeInTheDocument();
+
+    // Default SL -10% and TP +20%
+    expect(screen.getByText('Stop-Loss mặc định')).toBeInTheDocument();
+    expect(screen.getByText('-10%')).toBeInTheDocument();
+    expect(screen.getByText('Take-Profit mặc định')).toBeInTheDocument();
+    expect(screen.getByText('+20%')).toBeInTheDocument();
+  });
+
+  it('should show the ratio control only for Fixed mode', async () => {
+    const user = userEvent.setup();
+    renderWithRouter(<CopySettingsPage />);
+
+    expect(screen.getByText('Copy Ratio mặc định')).toBeInTheDocument();
+
+    // Switch to Smart → ratio control disappears, Smart highlighted
+    await user.click(screen.getByRole('button', { name: 'Smart' }));
     await waitFor(() => {
-      expect(screen.getByText(/settings saved/i)).toBeInTheDocument();
+      expect(screen.queryByText('Copy Ratio mặc định')).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Smart' })).toHaveStyle({ background: '#3B82F6' });
+    });
+
+    // Back to Mirror → still no ratio control
+    await user.click(screen.getByRole('button', { name: 'Mirror' }));
+    expect(screen.queryByText('Copy Ratio mặc định')).not.toBeInTheDocument();
+
+    // Back to Fixed → ratio control returns
+    await user.click(screen.getByRole('button', { name: 'Fixed' }));
+    await waitFor(() => {
+      expect(screen.getByText('Copy Ratio mặc định')).toBeInTheDocument();
     });
   });
 
-  it('should reset to default values', async () => {
-    const user = userEvent.setup();
+  it('should render risk limits and update values via sliders', () => {
     renderWithRouter(<CopySettingsPage />);
 
-    // Change some values
-    const positionSizingInput = screen.getByLabelText(/default position sizing/i);
-    await user.clear(positionSizingInput);
-    await user.type(positionSizingInput, '80');
+    expect(screen.getByText('Giới hạn rủi ro')).toBeInTheDocument();
 
-    expect(positionSizingInput).toHaveValue('80');
+    // Max allocation per provider defaults to 20%
+    const allocCard = getCard('Max allocation per provider');
+    expect(within(allocCard).getByText('20%')).toBeInTheDocument();
+    expect(
+      within(allocCard).getByText('Không copy quá X% tổng portfolio vào 1 provider'),
+    ).toBeInTheDocument();
 
-    // Reset button
-    const resetBtn = screen.getByRole('button', { name: /reset to defaults/i });
-    await user.click(resetBtn);
+    // Max active copies defaults to 5; slider moves it to 8
+    const copiesCard = getCard('Max số copy đồng thời');
+    expect(within(copiesCard).getByText('5')).toBeInTheDocument();
+    const copiesSlider = within(copiesCard).getByRole('slider');
+    expect(copiesSlider).toHaveAttribute('min', '1');
+    expect(copiesSlider).toHaveAttribute('max', '10');
 
-    // Confirmation dialog
-    await waitFor(() => {
-      expect(screen.getByText(/reset all settings to default/i)).toBeInTheDocument();
-    });
-
-    const confirmBtn = screen.getByRole('button', { name: /confirm reset/i });
-    await user.click(confirmBtn);
-
-    // Should reset to 50
-    await waitFor(() => {
-      expect(positionSizingInput).toHaveValue('50');
-    });
-
-    // Success message
-    expect(screen.getByText(/settings reset/i)).toBeInTheDocument();
+    // jsdom does not implement range keyboard semantics — drive the change event
+    fireEvent.change(copiesSlider, { target: { value: '8' } });
+    expect(within(copiesCard).getByText('8')).toBeInTheDocument();
   });
 
-  it('should enforce validation on settings', async () => {
+  it('should toggle the circuit breaker and its threshold control', async () => {
     const user = userEvent.setup();
     renderWithRouter(<CopySettingsPage />);
 
-    // Invalid position sizing (>100)
-    const positionSizingInput = screen.getByLabelText(/default position sizing/i);
-    await user.clear(positionSizingInput);
-    await user.type(positionSizingInput, '150');
+    const card = getCard('Circuit Breaker');
+    expect(
+      within(card).getByText(/Tự động dừng TẤT CẢ copy khi tổng portfolio lỗ quá X%/i),
+    ).toBeInTheDocument();
 
-    // Try to save
-    const saveBtn = screen.getByRole('button', { name: /save settings/i });
-    await user.click(saveBtn);
+    // Enabled by default with a -15% threshold
+    expect(within(card).getByText('Ngưỡng kích hoạt')).toBeInTheDocument();
+    expect(within(card).getByText('-15%')).toBeInTheDocument();
 
-    // Validation error
+    // Toggle off → threshold control disappears
+    await user.click(within(card).getByRole('button'));
     await waitFor(() => {
-      expect(screen.getByText(/position sizing must be between 1 and 100/i)).toBeInTheDocument();
+      expect(within(card).queryByText('Ngưỡng kích hoạt')).not.toBeInTheDocument();
     });
 
-    // Save button should be disabled
-    expect(saveBtn).toBeDisabled();
-
-    // Fix validation error
-    await user.clear(positionSizingInput);
-    await user.type(positionSizingInput, '70');
-
-    // Save button should re-enable
+    // Toggle back on → threshold control returns
+    await user.click(within(card).getByRole('button'));
     await waitFor(() => {
-      expect(saveBtn).not.toBeDisabled();
+      expect(within(card).getByText('Ngưỡng kích hoạt')).toBeInTheDocument();
+    });
+  });
+
+  it('should toggle notification preferences and channels', async () => {
+    const user = userEvent.setup();
+    renderWithRouter(<CopySettingsPage />);
+
+    expect(screen.getByText('Thông báo')).toBeInTheDocument();
+
+    // Four preference rows; first three default on, provider updates off
+    const rows = [
+      'Trades mới',
+      'Thay đổi P/L',
+      'Cảnh báo rủi ro',
+      'Cập nhật provider',
+    ].map((label) => getCard(label));
+
+    expect(within(rows[0]).getByText('Thông báo mỗi khi provider mở/đóng lệnh')).toBeInTheDocument();
+    expect(within(rows[3]).getByText('Thông báo khi provider thay đổi chiến lược')).toBeInTheDocument();
+
+    rows.slice(0, 3).forEach((row) => {
+      expect(within(row).getByRole('button')).toHaveStyle({ background: '#3B82F6' });
+    });
+    expect(within(rows[3]).getByRole('button')).toHaveStyle({ background: '#E5E7EB' });
+
+    // Toggle provider updates on
+    await user.click(within(rows[3]).getByRole('button'));
+    await waitFor(() => {
+      expect(within(rows[3]).getByRole('button')).toHaveStyle({ background: '#3B82F6' });
     });
 
-    // Invalid daily loss limit (negative)
-    const dailyLossInput = screen.getByLabelText(/daily loss limit/i);
-    await user.clear(dailyLossInput);
-    await user.type(dailyLossInput, '-5');
+    // Channel buttons (Email + Push) default to highlighted state
+    const emailBtn = screen.getByRole('button', { name: /Email/ });
+    const pushBtn = screen.getByRole('button', { name: /Push/ });
+    expect(emailBtn).toHaveStyle({ background: '#3B82F615' });
+    expect(pushBtn).toHaveStyle({ background: '#3B82F615' });
 
+    // Turning off email updates its style
+    await user.click(emailBtn);
+    await waitFor(() => {
+      expect(emailBtn).toHaveStyle({ background: '#F3F4F6' });
+    });
+  });
+
+  it('should accept emergency contact details', async () => {
+    const user = userEvent.setup();
+    renderWithRouter(<CopySettingsPage />);
+
+    expect(screen.getByText('Liên hệ khẩn cấp')).toBeInTheDocument();
+    expect(
+      screen.getByText(/Người liên hệ khẩn cấp sẽ được thông báo/i),
+    ).toBeInTheDocument();
+
+    const email = screen.getByPlaceholderText('emergency@example.com');
+    const phone = screen.getByPlaceholderText('+84 xxx xxx xxx');
+
+    await user.type(email, 'guardian@example.com');
+    await user.type(phone, '+84 901 234 567');
+
+    expect(email).toHaveValue('guardian@example.com');
+    expect(phone).toHaveValue('+84 901 234 567');
+  });
+
+  it('should toggle public portfolio visibility', async () => {
+    const user = userEvent.setup();
+    renderWithRouter(<CopySettingsPage />);
+
+    const card = getCard('Hiển thị portfolio công khai');
+    expect(
+      within(card).getByText(/Cho phép người khác xem portfolio copy của bạn/i),
+    ).toBeInTheDocument();
+
+    // Off by default
+    const toggle = within(card).getByRole('button');
+    expect(toggle).toHaveStyle({ background: '#E5E7EB' });
+
+    await user.click(toggle);
+    await waitFor(() => {
+      expect(toggle).toHaveStyle({ background: '#3B82F6' });
+    });
+  });
+
+  it('should show success feedback after saving', async () => {
+    const user = userEvent.setup();
+    renderWithRouter(<CopySettingsPage />);
+
+    const saveBtn = screen.getByRole('button', { name: /Lưu cài đặt/i });
     await user.click(saveBtn);
 
     await waitFor(() => {
-      expect(screen.getByText(/loss limit must be positive/i)).toBeInTheDocument();
+      expect(screen.getByText('Đã lưu!')).toBeInTheDocument();
     });
+    // Reverts to the normal label after the 2s feedback window
+    await waitFor(
+      () => {
+        expect(screen.queryByText('Đã lưu!')).not.toBeInTheDocument();
+      },
+      { timeout: 3000 },
+    );
+    expect(screen.getByRole('button', { name: /Lưu cài đặt/i })).toBeInTheDocument();
   });
 });

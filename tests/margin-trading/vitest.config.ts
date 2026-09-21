@@ -13,7 +13,9 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./setup.ts'],
+    setupFiles: [path.resolve(__dirname, './setup.ts')],
+    // Scope to this suite only — the root vitest.config.ts covers the app tests.
+    include: ['tests/margin-trading/**/*.test.{ts,tsx}'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

@@ -131,16 +131,17 @@ export function P2PInsurancePolicyPage() {
         {/* Header card */}
         <TrCard className="p-5">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: 'rgba(59,130,246,0.1)' }}>
+            <div
+              className="w-12 h-12 rounded-2xl flex items-center justify-center"
+              style={{ background: 'rgba(59,130,246,0.1)' }}
+            >
               <Shield size={24} color="#3B82F6" />
             </div>
             <div>
               <p style={{ color: c.text1, fontSize: φ.base, fontWeight: 700, lineHeight: 1.3 }}>
                 Điều khoản & Chính sách
               </p>
-              <p style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>
-                Quỹ Bảo Hiểm P2P
-              </p>
+              <p style={{ color: c.text3, fontSize: φ.sm, lineHeight: 1.5 }}>Quỹ Bảo Hiểm P2P</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -162,18 +163,23 @@ export function P2PInsurancePolicyPage() {
         >
           <AlertTriangle size={16} color="#3B82F6" className="shrink-0 mt-0.5" />
           <p style={{ color: '#3B82F6', fontSize: φ.sm, lineHeight: 1.6 }}>
-            Vui lòng đọc kỹ các điều khoản trước khi sử dụng dịch vụ bảo hiểm P2P.
-            Bằng việc gửi yêu cầu bồi thường, bạn xác nhận đã đọc và đồng ý với toàn bộ điều khoản này.
+            Vui lòng đọc kỹ các điều khoản trước khi sử dụng dịch vụ bảo hiểm P2P. Bằng việc gửi yêu
+            cầu bồi thường, bạn xác nhận đã đọc và đồng ý với toàn bộ điều khoản này.
           </p>
         </div>
 
         {/* Policy sections */}
-        {POLICY_SECTIONS.map(section => (
+        {POLICY_SECTIONS.map((section) => (
           <TrCard key={section.id} className="p-5">
-            <p style={{
-              color: c.text1, fontSize: φ.body, fontWeight: 700,
-              lineHeight: 1.5, marginBottom: 12,
-            }}>
+            <p
+              style={{
+                color: c.text1,
+                fontSize: φ.body,
+                fontWeight: 700,
+                lineHeight: 1.5,
+                marginBottom: 12,
+              }}
+            >
               {section.title}
             </p>
             <div className="flex flex-col gap-3">
@@ -183,9 +189,7 @@ export function P2PInsurancePolicyPage() {
                     className="w-1.5 h-1.5 rounded-full shrink-0 mt-2"
                     style={{ background: c.text3 }}
                   />
-                  <p style={{ color: c.text2, fontSize: φ.sm, lineHeight: 1.6 }}>
-                    {item}
-                  </p>
+                  <p style={{ color: c.text2, fontSize: φ.sm, lineHeight: 1.6 }}>{item}</p>
                 </div>
               ))}
             </div>
@@ -199,8 +203,8 @@ export function P2PInsurancePolicyPage() {
         >
           <Lock size={12} color={c.text3} className="shrink-0 mt-0.5" />
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
-            Tài liệu này tuân thủ quy định bảo vệ dữ liệu cá nhân và được lưu trữ an toàn.
-            Mọi thắc mắc vui lòng liên hệ support@platform.com.
+            Tài liệu này tuân thủ quy định bảo vệ dữ liệu cá nhân và được lưu trữ an toàn. Mọi thắc
+            mắc vui lòng liên hệ support@platform.com.
           </p>
         </div>
 

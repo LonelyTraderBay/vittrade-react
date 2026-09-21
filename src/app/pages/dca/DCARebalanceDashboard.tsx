@@ -1,12 +1,12 @@
 /**
  * DCA Rebalance Dashboard
- * 
+ *
  * Monitor and execute portfolio rebalancing:
  * - Current drift status
  * - Rebalance preview
  * - Execute rebalance
  * - View history
- * 
+ *
  * @module pages/dca/DCARebalanceDashboard
  * @version 1.0 (Phase 2 - Sprint 3)
  */
@@ -23,25 +23,16 @@ import {
   History,
   Settings,
   CheckCircle,
-  ChevronRight
+  ChevronRight,
 } from 'lucide-react';
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  Tooltip
-} from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useRoutePrefix } from '../../hooks/useRoutePrefix';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { TrCard } from '../../components/ui/TrCard';
 import { φ } from '../../utils/golden';
-import {
-  rebalanceService,
-  type PortfolioHolding
-} from '../../services/DCARebalanceService';
+import { rebalanceService, type PortfolioHolding } from '../../services/DCARebalanceService';
 
 /* ═══════════════════════════════════════════
    MOCK DATA
@@ -83,11 +74,11 @@ export default function DCARebalanceDashboard() {
   const historyStats = rebalanceService.getHistoryStats(config.id);
 
   // Find max drift
-  const maxDrift = Math.max(...driftAnalysis.map(d => d.absDrift));
+  const maxDrift = Math.max(...driftAnalysis.map((d) => d.absDrift));
 
   // Chart data
   const currentChartData = config.targets.map((target) => {
-    const holding = MOCK_HOLDINGS.find(h => h.symbol === target.symbol);
+    const holding = MOCK_HOLDINGS.find((h) => h.symbol === target.symbol);
     return {
       name: target.symbol,
       value: holding?.value || 0,
@@ -122,7 +113,13 @@ export default function DCARebalanceDashboard() {
           <button
             onClick={() => navigate(`${routePrefix}/dca/rebalance/${configId}/edit`)}
             className="flex items-center justify-center hover-ghost"
-            style={{ width: 36, height: 36, borderRadius: 10, background: c.searchBg, border: `1px solid ${c.border}` }}
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 10,
+              background: c.searchBg,
+              border: `1px solid ${c.border}`,
+            }}
             aria-label="Settings"
           >
             <Settings size={18} color={c.text2} />
@@ -146,9 +143,7 @@ export default function DCARebalanceDashboard() {
                 <p style={{ color: '#F59E0B', fontSize: 13, fontWeight: 600, marginBottom: 4 }}>
                   Rebalance cần thiết
                 </p>
-                <p style={{ color: c.text2, fontSize: 12 }}>
-                  {needsRebalance.reason}
-                </p>
+                <p style={{ color: c.text2, fontSize: 12 }}>{needsRebalance.reason}</p>
               </div>
             </div>
           </TrCard>
@@ -163,12 +158,8 @@ export default function DCARebalanceDashboard() {
             <div className="flex items-center gap-3">
               <CheckCircle size={20} color="#10B981" />
               <div>
-                <p style={{ color: '#10B981', fontSize: 13, fontWeight: 600 }}>
-                  Danh mục cân bằng
-                </p>
-                <p style={{ color: c.text3, fontSize: 11 }}>
-                  Drift tối đa: {maxDrift.toFixed(2)}%
-                </p>
+                <p style={{ color: '#10B981', fontSize: 13, fontWeight: 600 }}>Danh mục cân bằng</p>
+                <p style={{ color: c.text3, fontSize: 11 }}>Drift tối đa: {maxDrift.toFixed(2)}%</p>
               </div>
             </div>
           </TrCard>
@@ -191,8 +182,9 @@ export default function DCARebalanceDashboard() {
                   cx="50%"
                   cy="50%"
                   outerRadius={80}
-                  label={(entry) => `${entry.name}: ${((entry.value / rebalancePlan.portfolioValueBefore) * 100).toFixed(1)}%`}
-                  labelStyle={{ fontSize: 11, fontWeight: 600 }}
+                  label={(entry) =>
+                    `${entry.name}: ${((entry.value / rebalancePlan.portfolioValueBefore) * 100).toFixed(1)}%`
+                  }
                 >
                   {currentChartData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -223,9 +215,7 @@ export default function DCARebalanceDashboard() {
         <div>
           <div className="flex items-center gap-2 mb-3">
             <Target size={18} color={c.text1} />
-            <h2 style={{ color: c.text1, fontSize: φ.base, fontWeight: 600 }}>
-              Phân tích Drift
-            </h2>
+            <h2 style={{ color: c.text1, fontSize: φ.base, fontWeight: 600 }}>Phân tích Drift</h2>
           </div>
 
           <div className="space-y-2">
@@ -241,17 +231,22 @@ export default function DCARebalanceDashboard() {
                         className="w-8 h-8 rounded-lg flex items-center justify-center"
                         style={{ background: COLORS[idx % COLORS.length] + '20' }}
                       >
-                        <span style={{ color: COLORS[idx % COLORS.length], fontSize: 12, fontWeight: 700 }}>
+                        <span
+                          style={{
+                            color: COLORS[idx % COLORS.length],
+                            fontSize: 12,
+                            fontWeight: 700,
+                          }}
+                        >
                           {analysis.symbol}
                         </span>
                       </div>
                       <div>
                         <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
-                          {analysis.currentPercent.toFixed(1)}% → {analysis.targetPercent.toFixed(1)}%
+                          {analysis.currentPercent.toFixed(1)}% →{' '}
+                          {analysis.targetPercent.toFixed(1)}%
                         </p>
-                        <p style={{ color: c.text3, fontSize: 10 }}>
-                          Current → Target
-                        </p>
+                        <p style={{ color: c.text3, fontSize: 10 }}>Current → Target</p>
                       </div>
                     </div>
 
@@ -259,7 +254,9 @@ export default function DCARebalanceDashboard() {
                       <div
                         className="px-2 py-1 rounded"
                         style={{
-                          background: isOverweight ? 'rgba(239,68,68,0.12)' : 'rgba(59,130,246,0.12)',
+                          background: isOverweight
+                            ? 'rgba(239,68,68,0.12)'
+                            : 'rgba(59,130,246,0.12)',
                         }}
                       >
                         <span
@@ -287,24 +284,34 @@ export default function DCARebalanceDashboard() {
                         ) : null}
                         <span
                           style={{
-                            color: analysis.isDrifting ? (isOverweight ? '#EF4444' : '#3B82F6') : c.text2,
+                            color: analysis.isDrifting
+                              ? isOverweight
+                                ? '#EF4444'
+                                : '#3B82F6'
+                              : c.text2,
                             fontSize: 11,
                             fontWeight: 600,
                             fontFamily: 'monospace',
                           }}
                         >
-                          {analysis.drift > 0 ? '+' : ''}{analysis.drift.toFixed(2)}%
+                          {analysis.drift > 0 ? '+' : ''}
+                          {analysis.drift.toFixed(2)}%
                         </span>
                       </div>
                     </div>
 
-                    <div className="h-2 rounded-full overflow-hidden" style={{ background: c.surface2 }}>
+                    <div
+                      className="h-2 rounded-full overflow-hidden"
+                      style={{ background: c.surface2 }}
+                    >
                       <div
                         className="h-full transition-all"
                         style={{
                           width: `${analysis.severity * 100}%`,
                           background: analysis.isDrifting
-                            ? (isOverweight ? '#EF4444' : '#3B82F6')
+                            ? isOverweight
+                              ? '#EF4444'
+                              : '#3B82F6'
                             : '#10B981',
                         }}
                       />
@@ -328,16 +335,17 @@ export default function DCARebalanceDashboard() {
 
             <div className="space-y-2">
               {rebalancePlan.actions
-                .filter(a => a.action !== 'hold')
+                .filter((a) => a.action !== 'hold')
                 .map((action) => (
                   <TrCard key={action.symbol} className="p-4">
                     <div className="flex items-center gap-3">
                       <div
                         className="w-10 h-10 rounded-xl flex items-center justify-center"
                         style={{
-                          background: action.action === 'buy'
-                            ? 'rgba(16,185,129,0.15)'
-                            : 'rgba(239,68,68,0.15)',
+                          background:
+                            action.action === 'buy'
+                              ? 'rgba(16,185,129,0.15)'
+                              : 'rgba(239,68,68,0.15)',
                         }}
                       >
                         {action.action === 'buy' ? (
@@ -379,7 +387,14 @@ export default function DCARebalanceDashboard() {
               <TrCard className="p-3" style={{ background: c.surface2 }}>
                 <div className="flex items-center justify-between">
                   <span style={{ color: c.text3, fontSize: 11 }}>Phí dự kiến</span>
-                  <span style={{ color: c.text1, fontSize: 12, fontWeight: 600, fontFamily: 'monospace' }}>
+                  <span
+                    style={{
+                      color: c.text1,
+                      fontSize: 12,
+                      fontWeight: 600,
+                      fontFamily: 'monospace',
+                    }}
+                  >
                     ${rebalancePlan.estimatedFees.toFixed(2)}
                   </span>
                 </div>
@@ -403,7 +418,13 @@ export default function DCARebalanceDashboard() {
             </button>
 
             {rebalancePlan.warnings.length > 0 && (
-              <TrCard className="p-3 mt-2" style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}>
+              <TrCard
+                className="p-3 mt-2"
+                style={{
+                  background: 'rgba(239,68,68,0.08)',
+                  border: '1px solid rgba(239,68,68,0.2)',
+                }}
+              >
                 <div className="flex items-start gap-2">
                   <AlertTriangle size={14} color="#EF4444" className="shrink-0 mt-0.5" />
                   <div>
@@ -424,9 +445,7 @@ export default function DCARebalanceDashboard() {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <History size={18} color={c.text1} />
-              <h2 style={{ color: c.text1, fontSize: φ.base, fontWeight: 600 }}>
-                Lịch sử
-              </h2>
+              <h2 style={{ color: c.text1, fontSize: φ.base, fontWeight: 600 }}>Lịch sử</h2>
             </div>
             <button
               onClick={() => navigate(`${routePrefix}/dca/rebalance/${configId}/history`)}
@@ -448,7 +467,9 @@ export default function DCARebalanceDashboard() {
 
             <TrCard className="p-3">
               <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Tỷ lệ thành công</p>
-              <p style={{ color: '#10B981', fontSize: 18, fontWeight: 700, fontFamily: 'monospace' }}>
+              <p
+                style={{ color: '#10B981', fontSize: 18, fontWeight: 700, fontFamily: 'monospace' }}
+              >
                 {historyStats.successRate.toFixed(0)}%
               </p>
             </TrCard>
@@ -487,15 +508,23 @@ export default function DCARebalanceDashboard() {
             </h3>
 
             <div className="space-y-2">
-              <div className="flex items-center justify-between p-3 rounded-lg" style={{ background: c.surface2 }}>
+              <div
+                className="flex items-center justify-between p-3 rounded-lg"
+                style={{ background: c.surface2 }}
+              >
                 <span style={{ color: c.text3, fontSize: 12 }}>Tổng giao dịch</span>
                 <span style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
-                  {rebalancePlan.actions.filter(a => a.action !== 'hold').length}
+                  {rebalancePlan.actions.filter((a) => a.action !== 'hold').length}
                 </span>
               </div>
-              <div className="flex items-center justify-between p-3 rounded-lg" style={{ background: c.surface2 }}>
+              <div
+                className="flex items-center justify-between p-3 rounded-lg"
+                style={{ background: c.surface2 }}
+              >
                 <span style={{ color: c.text3, fontSize: 12 }}>Phí dự kiến</span>
-                <span style={{ color: c.text1, fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}>
+                <span
+                  style={{ color: c.text1, fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}
+                >
                   ${rebalancePlan.estimatedFees.toFixed(2)}
                 </span>
               </div>

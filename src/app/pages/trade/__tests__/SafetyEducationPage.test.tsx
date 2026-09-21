@@ -2,19 +2,28 @@
  * ══════════════════════════════════════════════════════════════
  *  SafetyEducationPage.test.tsx — Safety Education Tests
  * ══════════════════════════════════════════════════════════════
- * 
+ *
+ * Rewritten for the current Vietnamese 4-tab page
+ * (Scams phổ biến / Red Flags / Verification / Report).
+ *
  * Test Coverage (6 tests):
- * 1. ✅ 5 scam types listed
- * 2. ✅ Red flags checklist complete
- * 3. ✅ Verification tier guide shown
- * 4. ✅ Report form accessible
- * 5. ✅ Tab navigation works
- * 6. ✅ Educational content clear
+ * 1. ✅ Hero + all 5 scam types listed on the default tab
+ * 2. ✅ Scam accordion expands to examples & prevention tips
+ * 3. ✅ Red flags checklist grouped by severity
+ * 4. ✅ Verification tier guide (Pro / Verified / Basic)
+ * 5. ✅ Report form fills and submits with confirmation alert
+ * 6. ✅ Tab navigation switches between the 4 views
+ *
+ * DROPPED from the old suite (features no longer exist on the page):
+ * - Old scam set (withdrawal restrictions / fee manipulation / front-running)
+ * - Acknowledgment checkboxes on the red-flag list
+ * - Trust-level labels, external resource links, knowledge quiz,
+ *   key takeaways section.
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { screen, waitFor, within } from '@testing-library/react';
-import { renderWithRouter, userEvent, mockNavigate } from '../../../test/utils/test-utils';
+import { screen, waitFor } from '@testing-library/react';
+import { renderWithRouter, userEvent, mockNavigate } from '@/test/test-utils-navigation';
 import { SafetyEducationPage } from '../SafetyEducationPage';
 
 describe('SafetyEducationPage', () => {
@@ -22,203 +31,180 @@ describe('SafetyEducationPage', () => {
     vi.clearAllMocks();
   });
 
-  it('should list all 5 common scam types', () => {
+  it('should list all 5 common scam types on the default tab', () => {
     renderWithRouter(<SafetyEducationPage />);
 
-    // Page title
-    expect(screen.getByText(/safety.*education/i)).toBeInTheDocument();
+    // Header + hero
+    expect(screen.getByText('An toàn & Bảo mật')).toBeInTheDocument();
+    expect(screen.getByText('Bảo vệ bản thân khỏi scams')).toBeInTheDocument();
+    expect(
+      screen.getByText(/Đọc kỹ guide này trước khi copy bất kỳ ai/i),
+    ).toBeInTheDocument();
 
-    // Scam Type 1: Pump and Dump
-    expect(screen.getByText(/pump.*dump/i)).toBeInTheDocument();
-    expect(screen.getByText(/artificially inflate.*quickly sell/i)).toBeInTheDocument();
+    // Intro count line + all five scam titles
+    expect(screen.getByText(/5 loại scam phổ biến trong copy trading/i)).toBeInTheDocument();
+    expect(screen.getByText('Hứa hẹn lợi nhuận đảm bảo')).toBeInTheDocument();
+    expect(screen.getByText('Giả mạo hiệu suất')).toBeInTheDocument();
+    expect(screen.getByText('Pump & Dump scheme')).toBeInTheDocument();
+    expect(screen.getByText('Giả danh trader nổi tiếng')).toBeInTheDocument();
+    expect(screen.getByText('Exit Scam', { exact: true })).toBeInTheDocument();
 
-    // Scam Type 2: Fake Performance
-    expect(screen.getByText(/fake performance/i)).toBeInTheDocument();
-    expect(screen.getByText(/doctored screenshots/i)).toBeInTheDocument();
+    // Short description visible for each collapsed card
+    expect(screen.getByText(/Provider hứa "đảm bảo 100% lời"/i)).toBeInTheDocument();
+    expect(screen.getByText(/edit screenshots hoặc chọn lọc trades/i)).toBeInTheDocument();
 
-    // Scam Type 3: Withdrawal Restrictions
-    expect(screen.getByText(/withdrawal restrictions/i)).toBeInTheDocument();
-    expect(screen.getByText(/prevent followers.*withdraw/i)).toBeInTheDocument();
-
-    // Scam Type 4: Fee Manipulation
-    expect(screen.getByText(/fee manipulation/i)).toBeInTheDocument();
-    expect(screen.getByText(/hidden fees/i)).toBeInTheDocument();
-
-    // Scam Type 5: Front-Running
-    expect(screen.getByText(/front-running/i)).toBeInTheDocument();
-    expect(screen.getByText(/provider trades before.*followers/i)).toBeInTheDocument();
-
-    // Each scam should have example and prevention tips
-    expect(screen.getAllByText(/how to avoid/i).length).toBe(5);
+    // Examples are hidden until expanded
+    expect(screen.queryByText(/Trade altcoin volume thấp/i)).not.toBeInTheDocument();
   });
 
-  it('should display complete red flags checklist', () => {
-    renderWithRouter(<SafetyEducationPage />);
-
-    // Red flags section
-    expect(screen.getByText(/red flags checklist/i)).toBeInTheDocument();
-
-    // Red flag 1: Unrealistic returns
-    expect(screen.getByText(/guaranteed.*returns/i)).toBeInTheDocument();
-    expect(screen.getByText(/100%.*month/i)).toBeInTheDocument();
-
-    // Red flag 2: No verification
-    expect(screen.getByText(/unverified provider/i)).toBeInTheDocument();
-    expect(screen.getByText(/refuses to verify/i)).toBeInTheDocument();
-
-    // Red flag 3: Pressure tactics
-    expect(screen.getByText(/pressure.*urgency/i)).toBeInTheDocument();
-    expect(screen.getByText(/limited.*spots/i)).toBeInTheDocument();
-
-    // Red flag 4: Poor communication
-    expect(screen.getByText(/poor communication/i)).toBeInTheDocument();
-    expect(screen.getByText(/delays.*responses/i)).toBeInTheDocument();
-
-    // Red flag 5: Frequent strategy changes
-    expect(screen.getByText(/frequent.*changes/i)).toBeInTheDocument();
-
-    // Red flag 6: Withdrawal issues
-    expect(screen.getByText(/withdrawal.*problems/i)).toBeInTheDocument();
-
-    // Checkboxes for user to acknowledge
-    const checkboxes = screen.getAllByRole('checkbox', { name: /acknowledge/i });
-    expect(checkboxes.length).toBeGreaterThanOrEqual(6);
-  });
-
-  it('should show verification tier guide', () => {
-    renderWithRouter(<SafetyEducationPage />);
-
-    // Verification tiers section
-    expect(screen.getByText(/verification tiers/i)).toBeInTheDocument();
-
-    // Tier 1: Basic
-    expect(screen.getByText(/basic.*tier/i)).toBeInTheDocument();
-    expect(screen.getByText(/email.*2fa verified/i)).toBeInTheDocument();
-
-    // Tier 2: Verified
-    expect(screen.getByText(/verified.*tier/i)).toBeInTheDocument();
-    expect(screen.getByText(/kyc.*identity verified/i)).toBeInTheDocument();
-
-    // Tier 3: Pro
-    expect(screen.getByText(/pro.*tier/i)).toBeInTheDocument();
-    expect(screen.getByText(/enhanced verification/i)).toBeInTheDocument();
-    expect(screen.getByText(/trading history/i)).toBeInTheDocument();
-
-    // Trust level indicators
-    expect(screen.getByText(/low trust/i)).toBeInTheDocument();
-    expect(screen.getByText(/medium trust/i)).toBeInTheDocument();
-    expect(screen.getByText(/high trust/i)).toBeInTheDocument();
-
-    // Recommendation
-    expect(screen.getByText(/recommended.*verified.*above/i)).toBeInTheDocument();
-  });
-
-  it('should make report form easily accessible', async () => {
+  it('should expand a scam card to show examples and avoidance tips', async () => {
     const user = userEvent.setup();
     renderWithRouter(<SafetyEducationPage />);
 
-    // Report button should be prominent
-    const reportBtn = screen.getByRole('button', { name: /report.*scam/i });
-    expect(reportBtn).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: /Pump & Dump scheme/ }));
 
-    await user.click(reportBtn);
+    // Examples section
+    expect(screen.getByText('Ví dụ:', { exact: true })).toBeInTheDocument();
+    expect(screen.getByText(/Trade altcoin volume thấp/i)).toBeInTheDocument();
+    expect(screen.getByText(/Provider sell ngay sau khi followers buy/i)).toBeInTheDocument();
 
-    // Report form modal
-    await waitFor(() => {
-      expect(screen.getByText(/report.*suspicious activity/i)).toBeInTheDocument();
-    });
+    // Prevention tips
+    expect(screen.getByText('Cách tránh:', { exact: true })).toBeInTheDocument();
+    expect(screen.getByText(/Kiểm tra Conflict of Interest disclosure/i)).toBeInTheDocument();
+    expect(screen.getByText(/Đọc trade history trước khi copy/i)).toBeInTheDocument();
 
-    // Form fields
-    expect(screen.getByLabelText(/provider name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/issue type/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/description/i)).toBeInTheDocument();
+    // Collapsing hides the detail again
+    await user.click(screen.getByRole('button', { name: /Pump & Dump scheme/ }));
+    expect(screen.queryByText('Ví dụ:', { exact: true })).not.toBeInTheDocument();
+  });
 
-    // Evidence upload
-    expect(screen.getByText(/upload evidence/i)).toBeInTheDocument();
-    expect(screen.getByText(/screenshots.*chat logs/i)).toBeInTheDocument();
+  it('should display the red flags checklist grouped by severity', async () => {
+    const user = userEvent.setup();
+    renderWithRouter(<SafetyEducationPage />);
 
-    // Submit button
-    const submitBtn = screen.getByRole('button', { name: /submit report/i });
-    expect(submitBtn).toBeInTheDocument();
+    await user.click(screen.getByRole('tab', { name: 'Red Flags' }));
 
-    // Fill in form
-    const providerInput = screen.getByLabelText(/provider name/i);
+    // Guidance intro
+    expect(screen.getByText(/≥2 red flags nghiêm trọng, KHÔNG nên copy/i)).toBeInTheDocument();
+
+    // Three severity groups
+    expect(screen.getByText('🚨 Critical (Tuyệt đối không copy)')).toBeInTheDocument();
+    expect(screen.getByText('⚠️ Warning (Cần thận trọng)')).toBeInTheDocument();
+    expect(screen.getByText('ℹ️ Caution (Kiểm tra kỹ)')).toBeInTheDocument();
+
+    // Critical flags
+    expect(screen.getByText(/ROI quá cao so với risk \(>100% với DD <10%\)/i)).toBeInTheDocument();
+    expect(screen.getByText('Tất cả trades đều lời (win rate 100%)')).toBeInTheDocument();
+    expect(screen.getByText(/Hứa lợi nhuận cố định \(VD: 5% mỗi tuần\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/Chắc chắn là scam/i)).toBeInTheDocument();
+
+    // Warning flags
+    expect(screen.getByText('Không công khai Max Drawdown')).toBeInTheDocument();
+    expect(screen.getByText(/Có thể đang chuẩn bị pump & dump/i)).toBeInTheDocument();
+
+    // Caution flags
+    expect(screen.getByText('Sample size quá nhỏ (<50 trades)')).toBeInTheDocument();
+    expect(screen.getByText(/Có thể may mắn ngắn hạn/i)).toBeInTheDocument();
+  });
+
+  it('should show the verification tier guide', async () => {
+    const user = userEvent.setup();
+    renderWithRouter(<SafetyEducationPage />);
+
+    await user.click(screen.getByRole('tab', { name: 'Verification' }));
+
+    // Intro: what verification protects against
+    expect(screen.getByText(/Provider verified đã qua kiểm tra KYC/i)).toBeInTheDocument();
+
+    // Three tiers with their requirement lists
+    expect(screen.getByText('Verification Tiers')).toBeInTheDocument();
+    expect(screen.getAllByText('Pro').length).toBeGreaterThan(0);
+    expect(screen.getByText('Verified', { exact: true })).toBeInTheDocument();
+    expect(screen.getByText('Basic', { exact: true })).toBeInTheDocument();
+
+    expect(screen.getByText(/KYC Level 2 \(ID \+ Selfie \+ PoA\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/Vốn tối thiểu \$50,000/)).toBeInTheDocument();
+    expect(screen.getByText(/Sharpe Ratio >1\.5/)).toBeInTheDocument();
+    expect(screen.getByText(/Vốn tối thiểu \$10,000/)).toBeInTheDocument();
+    expect(screen.getByText(/KYC Level 1 \(Email \+ Phone\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/KHÔNG khuyến nghị copy/)).toBeInTheDocument();
+
+    // Caveat: verification is not a performance guarantee
+    expect(
+      screen.getByText(/KHÔNG đảm bảo provider sẽ tiếp tục thành công trong tương lai/i),
+    ).toBeInTheDocument();
+  });
+
+  it('should fill and submit the report provider form', async () => {
+    const user = userEvent.setup();
+    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
+
+    renderWithRouter(<SafetyEducationPage />);
+
+    await user.click(screen.getByRole('tab', { name: 'Report' }));
+
+    // When to report
+    expect(screen.getByText('Khi nào nên report?')).toBeInTheDocument();
+    expect(screen.getByText(/Provider hứa lợi nhuận đảm bảo/i)).toBeInTheDocument();
+    expect(screen.getByText(/hành vi market manipulation/i)).toBeInTheDocument();
+
+    // Form fields (labels are not linked via htmlFor — use placeholders)
+    expect(screen.getByText('Report Provider')).toBeInTheDocument();
+    const providerInput = screen.getByPlaceholderText(/CryptoKing hoặc trader-1/);
+    const reasonSelect = screen.getByRole('combobox');
+    const detailInput = screen.getByPlaceholderText(/Mô tả chi tiết vấn đề/i);
+
     await user.type(providerInput, 'SuspiciousProvider');
+    await user.selectOptions(reasonSelect, 'Fake performance');
+    await user.type(detailInput, 'Screenshots do not match verified stats.');
+    expect(reasonSelect).toHaveValue('Fake performance');
 
-    const descriptionInput = screen.getByLabelText(/description/i);
-    await user.type(descriptionInput, 'This provider is offering guaranteed 100% returns.');
+    // Submit → confirmation alert
+    await user.click(screen.getByRole('button', { name: 'Submit Report' }));
+    expect(alertSpy).toHaveBeenCalledWith(
+      'Report submitted! Team sẽ review trong 24-48h.',
+    );
 
-    // Submit
-    await user.click(submitBtn);
+    // False-report warning
+    expect(screen.getByText(/Reports giả mạo có thể dẫn đến tài khoản của bạn bị khóa/i)).toBeInTheDocument();
 
-    // Confirmation
-    await waitFor(() => {
-      expect(screen.getByText(/report submitted/i)).toBeInTheDocument();
-      expect(screen.getByText(/investigate within 24-48 hours/i)).toBeInTheDocument();
-    });
+    alertSpy.mockRestore();
   });
 
-  it('should support tab navigation', async () => {
+  it('should support tab navigation between the four views', async () => {
     const user = userEvent.setup();
     renderWithRouter(<SafetyEducationPage />);
 
-    // Tab 1: Scam Types (default)
-    expect(screen.getByText(/pump.*dump/i)).toBeInTheDocument();
+    // 4 tabs, Scams active by default
+    expect(screen.getAllByRole('tab')).toHaveLength(4);
+    const scamsTab = screen.getByRole('tab', { name: 'Scams phổ biến' });
+    expect(scamsTab).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByText('Exit Scam', { exact: true })).toBeInTheDocument();
 
-    // Switch to Tab 2: Red Flags
-    const redFlagsTab = screen.getByRole('tab', { name: /red flags/i });
-    await user.click(redFlagsTab);
-
+    // Red Flags
+    await user.click(screen.getByRole('tab', { name: 'Red Flags' }));
     await waitFor(() => {
-      expect(screen.getByText(/red flags checklist/i)).toBeInTheDocument();
+      expect(screen.getByText('🚨 Critical (Tuyệt đối không copy)')).toBeInTheDocument();
+    });
+    expect(screen.queryByText('Exit Scam', { exact: true })).not.toBeInTheDocument();
+
+    // Verification
+    await user.click(screen.getByRole('tab', { name: 'Verification' }));
+    await waitFor(() => {
+      expect(screen.getByText('Verification Tiers')).toBeInTheDocument();
     });
 
-    // Switch to Tab 3: Verification
-    const verificationTab = screen.getByRole('tab', { name: /verification/i });
-    await user.click(verificationTab);
-
+    // Report
+    await user.click(screen.getByRole('tab', { name: 'Report' }));
     await waitFor(() => {
-      expect(screen.getByText(/verification tiers/i)).toBeInTheDocument();
+      expect(screen.getByText('Report Provider')).toBeInTheDocument();
     });
+    expect(scamsTab).toHaveAttribute('aria-selected', 'false');
 
-    // Switch to Tab 4: How to Report
-    const reportTab = screen.getByRole('tab', { name: /how to report/i });
-    await user.click(reportTab);
-
+    // Header back button uses router history
+    await user.click(screen.getByRole('button', { name: 'Quay lại' }));
     await waitFor(() => {
-      expect(screen.getByText(/reporting process/i)).toBeInTheDocument();
+      expect(mockNavigate).toHaveBeenCalledWith(-1);
     });
-
-    // All tabs should be accessible
-    expect(screen.getAllByRole('tab').length).toBe(4);
-  });
-
-  it('should present educational content clearly', () => {
-    renderWithRouter(<SafetyEducationPage />);
-
-    // Clear headings
-    expect(screen.getByRole('heading', { name: /safety.*education/i })).toBeInTheDocument();
-
-    // Visual aids (icons for each scam type)
-    const warningIcons = screen.getAllByTestId('alert-triangle-icon');
-    expect(warningIcons.length).toBeGreaterThan(0);
-
-    // Real-world examples
-    expect(screen.getByText(/example:/i)).toBeInTheDocument();
-
-    // Actionable advice
-    expect(screen.getByText(/always verify/i)).toBeInTheDocument();
-    expect(screen.getByText(/never share/i)).toBeInTheDocument();
-    expect(screen.getByText(/be skeptical/i)).toBeInTheDocument();
-
-    // Key takeaways summary
-    expect(screen.getByText(/key takeaways/i)).toBeInTheDocument();
-
-    // Links to external resources
-    expect(screen.getByText(/learn more/i)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /regulatory guidelines/i })).toBeInTheDocument();
-
-    // Quiz to test understanding
-    expect(screen.getByRole('button', { name: /test your knowledge/i })).toBeInTheDocument();
   });
 });

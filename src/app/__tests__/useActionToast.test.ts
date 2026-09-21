@@ -14,14 +14,11 @@ import { toast } from 'sonner';
 
 // Mock sonner
 vi.mock('sonner', () => ({
-  toast: Object.assign(
-    vi.fn(),
-    {
-      success: vi.fn(),
-      error: vi.fn(),
-      warning: vi.fn(),
-    }
-  ),
+  toast: Object.assign(vi.fn(), {
+    success: vi.fn(),
+    error: vi.fn(),
+    warning: vi.fn(),
+  }),
 }));
 
 describe('useActionToast', () => {
@@ -583,10 +580,9 @@ describe('useActionToast', () => {
 
       result.current.error('Vui lòng nhập đầy đủ thông tin');
 
-      expect(toast.error).toHaveBeenCalledWith(
-        'Vui lòng nhập đầy đủ thông tin',
-        { duration: 2000 }
-      );
+      expect(toast.error).toHaveBeenCalledWith('Vui lòng nhập đầy đủ thông tin', {
+        duration: 2000,
+      });
     });
 
     it('should support Vietnamese warning messages', () => {

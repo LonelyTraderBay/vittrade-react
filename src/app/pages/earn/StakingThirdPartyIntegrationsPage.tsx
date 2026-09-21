@@ -23,7 +23,13 @@ export function StakingThirdPartyIntegrationsPage() {
       <Header title="Integrations" back />
 
       <PageContent>
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(139,92,246,0.08)', border: '1.5px solid rgba(139,92,246,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{
+            background: 'rgba(139,92,246,0.08)',
+            border: '1.5px solid rgba(139,92,246,0.2)',
+          }}
+        >
           <p style={{ color: c.text1, fontSize: 14, fontWeight: 700, marginBottom: 4 }}>
             Connect Your Tools
           </p>
@@ -37,7 +43,10 @@ export function StakingThirdPartyIntegrationsPage() {
             {INTEGRATIONS.map((integration, idx) => (
               <TrCard key={idx} hover className="p-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" style={{ background: c.surface2 }}>
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+                    style={{ background: c.surface2 }}
+                  >
                     {integration.logo}
                   </div>
                   <div className="flex-1">
@@ -49,7 +58,10 @@ export function StakingThirdPartyIntegrationsPage() {
                   {integration.status === 'connected' ? (
                     <CheckCircle2 size={20} color="#10B981" />
                   ) : (
-                    <button className="px-3 py-1.5 rounded-lg text-xs font-semibold" style={{ background: c.primary, color: '#FFF' }}>
+                    <button
+                      className="px-3 py-1.5 rounded-lg text-xs font-semibold"
+                      style={{ background: c.primary, color: '#FFF' }}
+                    >
                       Connect
                     </button>
                   )}
@@ -69,7 +81,10 @@ export function StakingThirdPartyIntegrationsPage() {
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6, marginBottom: 8 }}>
                 Build custom integrations using our API. Full documentation available.
               </p>
-              <button className="flex items-center gap-1 text-xs font-semibold" style={{ color: '#3B82F6' }}>
+              <button
+                className="flex items-center gap-1 text-xs font-semibold"
+                style={{ color: '#3B82F6' }}
+              >
                 View API Docs
                 <ExternalLink size={12} />
               </button>

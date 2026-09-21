@@ -3,7 +3,7 @@
  *  MINI CHART COMPONENT v2.0
  * ══════════════════════════════════════════════════════════════════
  *  TradingView Lightweight Charts integration for Trade page
- *  
+ *
  *  Features:
  *  - 24h candlestick chart (120px height)
  *  - Volume bars below
@@ -16,14 +16,30 @@
  */
 
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { createChart, ColorType, CandlestickSeries, HistogramSeries, LineSeries } from 'lightweight-charts';
-import type { IChartApi, ISeriesApi } from 'lightweight-charts';
+import {
+  createChart,
+  ColorType,
+  CandlestickSeries,
+  HistogramSeries,
+  LineSeries,
+} from 'lightweight-charts';
+import type {
+  IChartApi,
+  ISeriesApi,
+  CandlestickData,
+  HistogramData,
+  UTCTimestamp,
+} from 'lightweight-charts';
 import { useThemeColors } from '../../app/hooks/useThemeColors';
 import { useHaptic } from '../../app/hooks/useHaptic';
 import { useNavigate } from 'react-router';
 import { useRoutePrefix } from '../../app/hooks/useRoutePrefix';
 import { generatePairChartData, type Timeframe } from '../../utils/chartDataGenerator';
-import { buildMiniChartConfig, getChartGradient, getResponsiveChartHeight } from '../../utils/chartTheme';
+import {
+  buildMiniChartConfig,
+  getChartGradient,
+  getResponsiveChartHeight,
+} from '../../utils/chartTheme';
 import { ChartSkeleton } from './ChartSkeleton';
 import { TimeframePills } from './TimeframeSelector';
 import type { MiniChartProps } from '../../types/chart.types';
@@ -42,12 +58,12 @@ export function MiniChart({
   const candlestickSeriesRef = useRef<ISeriesApi<'Candlestick'> | null>(null);
   const volumeSeriesRef = useRef<ISeriesApi<'Histogram'> | null>(null);
   const priceLineSeriesRef = useRef<ISeriesApi<'Line'> | null>(null);
-  
+
   const c = useThemeColors();
   const { hapticSelection } = useHaptic();
   const navigate = useNavigate();
   const routePrefix = useRoutePrefix();
-  
+
   const [isLoading, setIsLoading] = useState(true);
   const [priceChange, setPriceChange] = useState<'up' | 'down' | 'neutral'>('neutral');
   const [timeframe, setTimeframe] = useState<Timeframe>('1h');
@@ -61,7 +77,9 @@ export function MiniChart({
   // ═══ Detect Dark Mode ═══
   const isDarkMode = useMemo(() => {
     // Simple heuristic: if bg is dark, we're in dark mode
-    return c.bg === '#0F172A' || c.bg === '#1E293B';
+    // (c.bg is a literal CSS-var token; widen for the hex comparison)
+    const bgColor = c.bg as string;
+    return bgColor === '#0F172A' || bgColor === '#1E293B';
   }, [c.bg]);
 
   useEffect(() => {
@@ -69,9 +87,11 @@ export function MiniChart({
 
     // ═══ Generate Pair-Specific Data ═══
     const { candleData, volumeData, stats } = generatePairChartData(pairId, timeframe);
-    
+
     // Determine price trend
-    const isPositive = stats.changePct24h >= 0;
+    // (generator stats expose changePercent; changePct24h is absent from their
+    // type — same value flows through at runtime)
+    const isPositive = (stats as unknown as { changePct24h: number }).changePct24h >= 0;
     setPriceChange(isPositive ? 'up' : 'down');
 
     // ═══ Build Theme Config ═══
@@ -92,7 +112,7 @@ export function MiniChart({
       chartTheme,
       chartContainerRef.current.clientWidth,
       height,
-      showVolume
+      showVolume,
     );
 
     // ═══ Create Chart Instance ═══
@@ -102,7 +122,8 @@ export function MiniChart({
     // ═══ Add Candlestick Series ═══
     const candlestickSeries = chart.addSeries(CandlestickSeries, config.candlestickOptions);
     candlestickSeriesRef.current = candlestickSeries;
-    candlestickSeries.setData(candleData);
+    // Generator data uses plain unix-second times; lightweight-charts brands them as UTCTimestamp
+    candlestickSeries.setData(candleData as CandlestickData<UTCTimestamp>[]);
 
     // ═══ Add Volume Series ═══
     if (showVolume) {
@@ -114,7 +135,7 @@ export function MiniChart({
         },
       });
       volumeSeriesRef.current = volumeSeries;
-      volumeSeries.setData(volumeData);
+      volumeSeries.setData(volumeData as HistogramData<UTCTimestamp>[]);
     }
 
     // ═══ Add Current Price Line ═══
@@ -128,8 +149,8 @@ export function MiniChart({
       });
 
       priceLine.setData([
-        { time: candleData[0].time, value: currentPrice },
-        { time: lastCandle.time, value: currentPrice },
+        { time: candleData[0].time as UTCTimestamp, value: currentPrice },
+        { time: lastCandle.time as UTCTimestamp, value: currentPrice },
       ]);
 
       priceLineSeriesRef.current = priceLine;
@@ -148,7 +169,17 @@ export function MiniChart({
       volumeSeriesRef.current = null;
       priceLineSeriesRef.current = null;
     };
-  }, [pairId, height, showVolume, showCurrentPrice, c.surface, c.text3, c.borderSolid, isDarkMode, timeframe]);
+  }, [
+    pairId,
+    height,
+    showVolume,
+    showCurrentPrice,
+    c.surface,
+    c.text3,
+    c.borderSolid,
+    isDarkMode,
+    timeframe,
+  ]);
 
   // ═══ Resize Handler ═══
   useEffect(() => {
@@ -167,12 +198,12 @@ export function MiniChart({
   // ═══ Handle Tap (with touch optimization) ═══
   const handleChartTap = (e: React.MouseEvent | React.TouchEvent) => {
     if (!interactive) return;
-    
+
     // Prevent default to avoid double-tap zoom on mobile
     e.preventDefault();
-    
+
     hapticSelection();
-    
+
     if (onTap) {
       onTap();
     } else {
@@ -188,9 +219,7 @@ export function MiniChart({
   return (
     <div className="relative" style={{ height }}>
       {/* Loading Skeleton */}
-      {isLoading && (
-        <ChartSkeleton height={height} showVolume={showVolume} />
-      )}
+      {isLoading && <ChartSkeleton height={height} showVolume={showVolume} />}
 
       {/* Chart Container with Gradient */}
       <div
@@ -208,7 +237,7 @@ export function MiniChart({
 
       {/* Tap to Expand Hint (subtle) */}
       {interactive && !isLoading && (
-        <div 
+        <div
           className="absolute bottom-2 right-2 px-2 py-1 rounded-md backdrop-blur-sm"
           style={{
             background: c.surface2 + 'CC', // 80% opacity
@@ -224,12 +253,11 @@ export function MiniChart({
 
       {/* 24h Change Badge (top-left) */}
       {!isLoading && (
-        <div 
+        <div
           className="absolute top-2 left-2 px-2 py-1 rounded-md backdrop-blur-sm"
           style={{
-            background: priceChange === 'up' 
-              ? 'rgba(16, 185, 129, 0.15)' 
-              : 'rgba(239, 68, 68, 0.15)',
+            background:
+              priceChange === 'up' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)',
             color: priceChange === 'up' ? '#10B981' : '#EF4444',
             fontSize: 11,
             fontWeight: 700,
@@ -243,10 +271,7 @@ export function MiniChart({
       {/* Timeframe Selector (top-right) */}
       {showTimeframeSelector && !isLoading && (
         <div className="absolute top-2 right-2">
-          <TimeframePills
-            active={timeframe}
-            onChange={setTimeframe}
-          />
+          <TimeframePills active={timeframe} onChange={setTimeframe} />
         </div>
       )}
     </div>

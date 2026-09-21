@@ -10,11 +10,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { useSheetAnalytics } from '../hooks/useSheetAnalytics';
-import {
-  trackSheetOpen,
-  getSheetEventLog,
-  clearSheetEventLog,
-} from '../utils/sheetAnalytics';
+import { trackSheetOpen, getSheetEventLog, clearSheetEventLog } from '../utils/sheetAnalytics';
 
 describe('useSheetAnalytics', () => {
   beforeEach(() => {
@@ -34,9 +30,7 @@ describe('useSheetAnalytics', () => {
     });
 
     it('should provide stable onAfterOpen reference', () => {
-      const { result, rerender } = renderHook(() =>
-        useSheetAnalytics('test-sheet')
-      );
+      const { result, rerender } = renderHook(() => useSheetAnalytics('test-sheet'));
 
       const callback1 = result.current.onAfterOpen;
 
@@ -71,12 +65,8 @@ describe('useSheetAnalytics', () => {
     });
 
     it('should track different sheet names', () => {
-      const { result: result1 } = renderHook(() =>
-        useSheetAnalytics('sheet-1')
-      );
-      const { result: result2 } = renderHook(() =>
-        useSheetAnalytics('sheet-2')
-      );
+      const { result: result1 } = renderHook(() => useSheetAnalytics('sheet-1'));
+      const { result: result2 } = renderHook(() => useSheetAnalytics('sheet-2'));
 
       result1.current.onAfterOpen();
       result2.current.onAfterOpen();
@@ -125,9 +115,7 @@ describe('useSheetAnalytics', () => {
 
   describe('Callback Stability', () => {
     it('should not recreate callback when sheetName is stable', () => {
-      const { result, rerender } = renderHook(() =>
-        useSheetAnalytics('stable-sheet')
-      );
+      const { result, rerender } = renderHook(() => useSheetAnalytics('stable-sheet'));
 
       const callback1 = result.current.onAfterOpen;
 
@@ -141,10 +129,9 @@ describe('useSheetAnalytics', () => {
     });
 
     it('should recreate callback when sheetName changes', () => {
-      const { result, rerender } = renderHook(
-        ({ name }) => useSheetAnalytics(name),
-        { initialProps: { name: 'sheet-1' } }
-      );
+      const { result, rerender } = renderHook(({ name }) => useSheetAnalytics(name), {
+        initialProps: { name: 'sheet-1' },
+      });
 
       const callback1 = result.current.onAfterOpen;
 
@@ -156,10 +143,9 @@ describe('useSheetAnalytics', () => {
     });
 
     it('should track correct sheet after name change', () => {
-      const { result, rerender } = renderHook(
-        ({ name }) => useSheetAnalytics(name),
-        { initialProps: { name: 'sheet-1' } }
-      );
+      const { result, rerender } = renderHook(({ name }) => useSheetAnalytics(name), {
+        initialProps: { name: 'sheet-1' },
+      });
 
       result.current.onAfterOpen();
 
@@ -176,9 +162,7 @@ describe('useSheetAnalytics', () => {
 
   describe('Real-world Scenarios', () => {
     it('should support BottomSheetV2 integration', () => {
-      const { result } = renderHook(() =>
-        useSheetAnalytics('p2p-payment-method')
-      );
+      const { result } = renderHook(() => useSheetAnalytics('p2p-payment-method'));
 
       // Simulate BottomSheetV2 opening
       result.current.onAfterOpen();
@@ -189,9 +173,7 @@ describe('useSheetAnalytics', () => {
     });
 
     it('should track P2P chat image upload sheet', () => {
-      const { result } = renderHook(() =>
-        useSheetAnalytics('p2p-chat-image-upload')
-      );
+      const { result } = renderHook(() => useSheetAnalytics('p2p-chat-image-upload'));
 
       result.current.onAfterOpen();
 
@@ -200,9 +182,7 @@ describe('useSheetAnalytics', () => {
     });
 
     it('should track wallet withdrawal confirmation', () => {
-      const { result } = renderHook(() =>
-        useSheetAnalytics('wallet-withdraw-confirm')
-      );
+      const { result } = renderHook(() => useSheetAnalytics('wallet-withdraw-confirm'));
 
       result.current.onAfterOpen();
 
@@ -211,9 +191,7 @@ describe('useSheetAnalytics', () => {
     });
 
     it('should track trading order confirmation', () => {
-      const { result } = renderHook(() =>
-        useSheetAnalytics('trade-order-confirm')
-      );
+      const { result } = renderHook(() => useSheetAnalytics('trade-order-confirm'));
 
       result.current.onAfterOpen();
 
@@ -222,12 +200,8 @@ describe('useSheetAnalytics', () => {
     });
 
     it('should support multiple sheets in same session', () => {
-      const sheet1 = renderHook(() =>
-        useSheetAnalytics('profile-settings')
-      );
-      const sheet2 = renderHook(() =>
-        useSheetAnalytics('profile-security')
-      );
+      const sheet1 = renderHook(() => useSheetAnalytics('profile-settings'));
+      const sheet2 = renderHook(() => useSheetAnalytics('profile-security'));
       const sheet3 = renderHook(() => useSheetAnalytics('profile-kyc'));
 
       sheet1.result.current.onAfterOpen();
@@ -284,9 +258,7 @@ describe('useSheetAnalytics', () => {
 
   describe('Naming Conventions', () => {
     it('should support kebab-case names', () => {
-      const { result } = renderHook(() =>
-        useSheetAnalytics('my-custom-sheet')
-      );
+      const { result } = renderHook(() => useSheetAnalytics('my-custom-sheet'));
 
       result.current.onAfterOpen();
 
@@ -295,9 +267,7 @@ describe('useSheetAnalytics', () => {
     });
 
     it('should support module-action-detail naming', () => {
-      const { result } = renderHook(() =>
-        useSheetAnalytics('p2p-order-pin-confirm')
-      );
+      const { result } = renderHook(() => useSheetAnalytics('p2p-order-pin-confirm'));
 
       result.current.onAfterOpen();
 
@@ -306,9 +276,7 @@ describe('useSheetAnalytics', () => {
     });
 
     it('should support descriptive names', () => {
-      const { result } = renderHook(() =>
-        useSheetAnalytics('wallet-network-selector')
-      );
+      const { result } = renderHook(() => useSheetAnalytics('wallet-network-selector'));
 
       result.current.onAfterOpen();
 
@@ -339,9 +307,7 @@ describe('useSheetAnalytics', () => {
     });
 
     it('should handle special characters in name', () => {
-      const { result } = renderHook(() =>
-        useSheetAnalytics('sheet@#$%^&*()')
-      );
+      const { result } = renderHook(() => useSheetAnalytics('sheet@#$%^&*()'));
 
       result.current.onAfterOpen();
 
@@ -361,9 +327,7 @@ describe('useSheetAnalytics', () => {
     });
 
     it('should handle unmount without calling callback', () => {
-      const { unmount } = renderHook(() =>
-        useSheetAnalytics('unmounted-sheet')
-      );
+      const { unmount } = renderHook(() => useSheetAnalytics('unmounted-sheet'));
 
       expect(() => unmount()).not.toThrow();
 
@@ -374,9 +338,7 @@ describe('useSheetAnalytics', () => {
 
   describe('Performance', () => {
     it('should handle high-frequency tracking', () => {
-      const { result } = renderHook(() =>
-        useSheetAnalytics('perf-test-sheet')
-      );
+      const { result } = renderHook(() => useSheetAnalytics('perf-test-sheet'));
 
       for (let i = 0; i < 100; i++) {
         result.current.onAfterOpen();
@@ -387,9 +349,7 @@ describe('useSheetAnalytics', () => {
     });
 
     it('should maintain correct timestamps in bulk tracking', () => {
-      const { result } = renderHook(() =>
-        useSheetAnalytics('timestamp-test')
-      );
+      const { result } = renderHook(() => useSheetAnalytics('timestamp-test'));
 
       const timestamps: number[] = [];
 
@@ -448,12 +408,7 @@ describe('useSheetAnalytics', () => {
       hook2.current.onAfterOpen();
 
       const log = getSheetEventLog();
-      expect(log.map((e) => e.sheetName)).toEqual([
-        'manual-1',
-        'hook-1',
-        'manual-2',
-        'hook-2',
-      ]);
+      expect(log.map((e) => e.sheetName)).toEqual(['manual-1', 'hook-1', 'manual-2', 'hook-2']);
     });
   });
 });

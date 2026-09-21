@@ -97,7 +97,11 @@ const TIMEZONE_OPTIONS = [
    COMPONENTS
    ═══════════════════════════════════════════════════════════ */
 
-function SettingRow({ setting, onToggle, onSelect }: {
+function SettingRow({
+  setting,
+  onToggle,
+  onSelect,
+}: {
   setting: SettingItem;
   onToggle?: (id: string) => void;
   onSelect?: (id: string, value: string) => void;
@@ -115,7 +119,14 @@ function SettingRow({ setting, onToggle, onSelect }: {
         onClick={() => onToggle?.(setting.id)}
       >
         <div className="flex-1">
-          <div style={{ color: c.text1, fontSize: WEB_FONT.SIZE.BODY, fontWeight: 600, marginBottom: 4 }}>
+          <div
+            style={{
+              color: c.text1,
+              fontSize: WEB_FONT.SIZE.BODY,
+              fontWeight: 600,
+              marginBottom: 4,
+            }}
+          >
             {setting.label}
           </div>
           <div style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
@@ -156,7 +167,14 @@ function SettingRow({ setting, onToggle, onSelect }: {
         }}
       >
         <div className="flex-1">
-          <div style={{ color: c.text1, fontSize: WEB_FONT.SIZE.BODY, fontWeight: 600, marginBottom: 4 }}>
+          <div
+            style={{
+              color: c.text1,
+              fontSize: WEB_FONT.SIZE.BODY,
+              fontWeight: 600,
+              marginBottom: 4,
+            }}
+          >
             {setting.label}
           </div>
           <div style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
@@ -198,7 +216,14 @@ function SettingRow({ setting, onToggle, onSelect }: {
         }}
       >
         <div className="flex-1">
-          <div style={{ color: c.text1, fontSize: WEB_FONT.SIZE.BODY, fontWeight: 600, marginBottom: 4 }}>
+          <div
+            style={{
+              color: c.text1,
+              fontSize: WEB_FONT.SIZE.BODY,
+              fontWeight: 600,
+              marginBottom: 4,
+            }}
+          >
             {setting.label}
           </div>
           <div style={{ color: c.text3, fontSize: WEB_FONT.SIZE.CAPTION }}>
@@ -419,166 +444,180 @@ export function WebSettingsPage() {
 
   return (
     <PageLayout>
-    <div className="flex" style={{ minHeight: '100%' }}>
-      {/* ═══ LEFT SIDEBAR (280px) ═══ */}
-      <div
-        className="flex flex-col"
-        style={{
-          width: 280,
-          background: c.surface,
-          borderRight: `1px solid ${c.divider}`,
-          position: 'sticky',
-          top: 0,
-          alignSelf: 'flex-start',
-          maxHeight: '100vh',
-          overflowY: 'auto',
-        }}
-      >
-        {/* Header */}
+      <div className="flex" style={{ minHeight: '100%' }}>
+        {/* ═══ LEFT SIDEBAR (280px) ═══ */}
         <div
-          className="flex items-center justify-between px-5"
+          className="flex flex-col"
           style={{
-            height: 60,
-            borderBottom: `1px solid ${c.divider}`,
+            width: 280,
+            background: c.surface,
+            borderRight: `1px solid ${c.divider}`,
+            position: 'sticky',
+            top: 0,
+            alignSelf: 'flex-start',
+            maxHeight: '100vh',
+            overflowY: 'auto',
           }}
         >
-          <h2
-            style={{
-              color: c.text1,
-              fontSize: WEB_FONT.SIZE.H2,
-              fontWeight: 700,
-              margin: 0,
-            }}
-          >
-            Cài đặt
-          </h2>
-        </div>
-
-        {/* Quick Jump */}
-        <div className="p-4">
-          <div style={{ color: c.text2, fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 12 }}>
-            Danh mục
-          </div>
-          <div className="flex flex-col gap-1">
-            {SETTING_SECTIONS.map((section) => {
-              const Icon = section.icon;
-              return (
-                <button
-                  key={section.id}
-                  onClick={() => {
-                    document.getElementById(section.id)?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-left"
-                  style={{
-                    background: 'transparent',
-                    color: c.text2,
-                    fontSize: WEB_FONT.SIZE.CAPTION,
-                    fontWeight: 500,
-                  }}
-                >
-                  <Icon size={14} color={section.color} />
-                  {section.title}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Info */}
-        <div className="px-4 pb-4 mt-auto">
+          {/* Header */}
           <div
-            className="p-3 rounded-lg"
+            className="flex items-center justify-between px-5"
             style={{
-              background: '#3B82F615',
-              border: `1px solid #3B82F640`,
+              height: 60,
+              borderBottom: `1px solid ${c.divider}`,
             }}
           >
-            <div className="flex items-start gap-2">
-              <Info size={14} color="#3B82F6" className="flex-shrink-0 mt-0.5" />
-              <div>
-                <div style={{ color: '#3B82F6', fontSize: WEB_FONT.SIZE.CAPTION, fontWeight: 600, marginBottom: 4 }}>
-                  Cài đặt được lưu tự động
-                </div>
-                <div style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
-                  Mọi thay đổi được áp dụng ngay lập tức và đồng bộ trên tất cả thiết bị.
+            <h2
+              style={{
+                color: c.text1,
+                fontSize: WEB_FONT.SIZE.H2,
+                fontWeight: 700,
+                margin: 0,
+              }}
+            >
+              Cài đặt
+            </h2>
+          </div>
+
+          {/* Quick Jump */}
+          <div className="p-4">
+            <div
+              style={{
+                color: c.text2,
+                fontSize: WEB_FONT.SIZE.CAPTION,
+                fontWeight: 600,
+                marginBottom: 12,
+              }}
+            >
+              Danh mục
+            </div>
+            <div className="flex flex-col gap-1">
+              {SETTING_SECTIONS.map((section) => {
+                const Icon = section.icon;
+                return (
+                  <button
+                    key={section.id}
+                    onClick={() => {
+                      document.getElementById(section.id)?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-left"
+                    style={{
+                      background: 'transparent',
+                      color: c.text2,
+                      fontSize: WEB_FONT.SIZE.CAPTION,
+                      fontWeight: 500,
+                    }}
+                  >
+                    <Icon size={14} color={section.color} />
+                    {section.title}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Info */}
+          <div className="px-4 pb-4 mt-auto">
+            <div
+              className="p-3 rounded-lg"
+              style={{
+                background: '#3B82F615',
+                border: `1px solid #3B82F640`,
+              }}
+            >
+              <div className="flex items-start gap-2">
+                <Info size={14} color="#3B82F6" className="flex-shrink-0 mt-0.5" />
+                <div>
+                  <div
+                    style={{
+                      color: '#3B82F6',
+                      fontSize: WEB_FONT.SIZE.CAPTION,
+                      fontWeight: 600,
+                      marginBottom: 4,
+                    }}
+                  >
+                    Cài đặt được lưu tự động
+                  </div>
+                  <div style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
+                    Mọi thay đổi được áp dụng ngay lập tức và đồng bộ trên tất cả thiết bị.
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* ═══ MAIN CONTENT ═══ */}
-      <div className="flex-1 min-w-0">
-        <div className="max-w-4xl mx-auto p-8">
-          {/* Page Header */}
-          <div className="mb-8">
-            <h3
-              style={{
-                color: c.text1,
-                fontSize: WEB_FONT.SIZE.H3,
-                fontWeight: 700,
-                marginBottom: 8,
-              }}
-            >
-              Cài đặt chung
-            </h3>
-            <p style={{ color: c.text2, fontSize: WEB_FONT.SIZE.BODY, margin: 0 }}>
-              Tùy chỉnh trải nghiệm sử dụng theo sở thích của bạn
-            </p>
-          </div>
+        {/* ═══ MAIN CONTENT ═══ */}
+        <div className="flex-1 min-w-0">
+          <div className="max-w-4xl mx-auto p-8">
+            {/* Page Header */}
+            <div className="mb-8">
+              <h3
+                style={{
+                  color: c.text1,
+                  fontSize: WEB_FONT.SIZE.H3,
+                  fontWeight: 700,
+                  marginBottom: 8,
+                }}
+              >
+                Cài đặt chung
+              </h3>
+              <p style={{ color: c.text2, fontSize: WEB_FONT.SIZE.BODY, margin: 0 }}>
+                Tùy chỉnh trải nghiệm sử dụng theo sở thích của bạn
+              </p>
+            </div>
 
-          {/* Settings Sections */}
-          <div className="flex flex-col gap-8">
-            {SETTING_SECTIONS.map((section) => {
-              const Icon = section.icon;
-              return (
-                <section key={section.id} id={section.id}>
-                  <div className="flex items-center gap-3 mb-4">
-                    <div
-                      className="flex items-center justify-center rounded-lg"
-                      style={{
-                        width: 40,
-                        height: 40,
-                        background: `${section.color}15`,
-                      }}
-                    >
-                      <Icon size={20} color={section.color} />
-                    </div>
-                    <h4
-                      style={{
-                        color: c.text1,
-                        fontSize: WEB_FONT.SIZE.BODY,
-                        fontWeight: 700,
-                        margin: 0,
-                      }}
-                    >
-                      {section.title}
-                    </h4>
-                  </div>
-
-                  <div className="flex flex-col gap-3">
-                    {section.settings.map((setting) => (
-                      <SettingRow
-                        key={setting.id}
-                        setting={setting}
-                        onToggle={(id) => handleToggle(section.id, id)}
-                        onSelect={(id, value) => {
-                          if (id === 'language') setLanguage(value);
-                          else if (id === 'currency') setCurrency(value);
-                          else if (id === 'timezone') setTimezone(value);
-                          else if (id === 'theme') setTheme(value as 'light' | 'dark');
+            {/* Settings Sections */}
+            <div className="flex flex-col gap-8">
+              {SETTING_SECTIONS.map((section) => {
+                const Icon = section.icon;
+                return (
+                  <section key={section.id} id={section.id}>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div
+                        className="flex items-center justify-center rounded-lg"
+                        style={{
+                          width: 40,
+                          height: 40,
+                          background: `${section.color}15`,
                         }}
-                      />
-                    ))}
-                  </div>
-                </section>
-              );
-            })}
+                      >
+                        <Icon size={20} color={section.color} />
+                      </div>
+                      <h4
+                        style={{
+                          color: c.text1,
+                          fontSize: WEB_FONT.SIZE.BODY,
+                          fontWeight: 700,
+                          margin: 0,
+                        }}
+                      >
+                        {section.title}
+                      </h4>
+                    </div>
+
+                    <div className="flex flex-col gap-3">
+                      {section.settings.map((setting) => (
+                        <SettingRow
+                          key={setting.id}
+                          setting={setting}
+                          onToggle={(id) => handleToggle(section.id, id)}
+                          onSelect={(id, value) => {
+                            if (id === 'language') setLanguage(value);
+                            else if (id === 'currency') setCurrency(value);
+                            else if (id === 'timezone') setTimezone(value);
+                            else if (id === 'theme') setTheme(value as 'light' | 'dark');
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </section>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </PageLayout>
   );
 }

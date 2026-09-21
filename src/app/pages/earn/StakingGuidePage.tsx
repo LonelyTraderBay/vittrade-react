@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { BookOpen, PlayCircle, CheckCircle2, ChevronRight, Lightbulb, Shield, TrendingUp, AlertTriangle } from 'lucide-react';
+import {
+  BookOpen,
+  PlayCircle,
+  CheckCircle2,
+  ChevronRight,
+  Lightbulb,
+  Shield,
+  TrendingUp,
+  AlertTriangle,
+} from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { PageContent, PageSection } from '../../components/layout/PageContent';
@@ -34,7 +43,8 @@ const TUTORIALS: Tutorial[] = [
       {
         id: 's1',
         title: 'Staking là gì?',
-        description: 'Staking là cách "khóa" crypto của bạn để hỗ trợ mạng blockchain và nhận phần thưởng. Giống như gửi tiết kiệm ngân hàng, nhưng APY cao hơn (4-20%).',
+        description:
+          'Staking là cách "khóa" crypto của bạn để hỗ trợ mạng blockchain và nhận phần thưởng. Giống như gửi tiết kiệm ngân hàng, nhưng APY cao hơn (4-20%).',
         icon: Lightbulb,
         tips: [
           'APY thường cao hơn lãi suất ngân hàng 5-10 lần',
@@ -45,7 +55,8 @@ const TUTORIALS: Tutorial[] = [
       {
         id: 's2',
         title: 'Chọn loại Staking',
-        description: 'Có 3 loại chính: Flexible (rút bất kỳ lúc nào), Fixed (khóa thời gian cố định, APY cao hơn), và DeFi (thanh khoản pool, rủi ro cao hơn).',
+        description:
+          'Có 3 loại chính: Flexible (rút bất kỳ lúc nào), Fixed (khóa thời gian cố định, APY cao hơn), và DeFi (thanh khoản pool, rủi ro cao hơn).',
         icon: TrendingUp,
         tips: [
           'Flexible: APY 4-6%, rút bất kỳ lúc nào',
@@ -56,7 +67,8 @@ const TUTORIALS: Tutorial[] = [
       {
         id: 's3',
         title: 'Tính toán Lợi nhuận',
-        description: 'Dùng công thức: Lãi hàng năm = Số lượng stake × APY%. Ví dụ: Stake $10,000 với APY 7.5% = $750/năm = $62.5/tháng.',
+        description:
+          'Dùng công thức: Lãi hàng năm = Số lượng stake × APY%. Ví dụ: Stake $10,000 với APY 7.5% = $750/năm = $62.5/tháng.',
         icon: CheckCircle2,
         tips: [
           'Dùng tính năng Auto-compound để tối đa hóa lợi nhuận',
@@ -75,7 +87,8 @@ const TUTORIALS: Tutorial[] = [
       {
         id: 'a1',
         title: 'Chọn Validator',
-        description: 'Validator là người vận hành node blockchain. Chọn validator uy tín với uptime cao (&gt;99.9%), phí hợp lý (5-10%), và không có lịch sử slashing.',
+        description:
+          'Validator là người vận hành node blockchain. Chọn validator uy tín với uptime cao (&gt;99.9%), phí hợp lý (5-10%), và không có lịch sử slashing.',
         icon: Shield,
         tips: [
           'Ưu tiên validator Top Tier hoặc Recommended',
@@ -86,7 +99,8 @@ const TUTORIALS: Tutorial[] = [
       {
         id: 'a2',
         title: 'Auto-Compound Strategy',
-        description: 'Auto-compound tự động tái đầu tư phần thưởng để tạo lãi kép. Tần suất Daily cho APY tối đa, nhưng phí gas cao hơn. Weekly/Monthly cân bằng hơn.',
+        description:
+          'Auto-compound tự động tái đầu tư phần thưởng để tạo lãi kép. Tần suất Daily cho APY tối đa, nhưng phí gas cao hơn. Weekly/Monthly cân bằng hơn.',
         icon: TrendingUp,
         tips: [
           'Daily compound: +0.5-1% APY extra',
@@ -97,7 +111,8 @@ const TUTORIALS: Tutorial[] = [
       {
         id: 'a3',
         title: 'Liquid Staking',
-        description: 'Nhận liquid token (stETH, rETH) khi stake để vẫn giữ thanh khoản. Có thể swap, dùng làm collateral, hoặc farm thêm ở DeFi.',
+        description:
+          'Nhận liquid token (stETH, rETH) khi stake để vẫn giữ thanh khoản. Có thể swap, dùng làm collateral, hoặc farm thêm ở DeFi.',
         icon: Lightbulb,
         tips: [
           'stETH từ Lido có thanh khoản tốt nhất',
@@ -116,7 +131,8 @@ const TUTORIALS: Tutorial[] = [
       {
         id: 'r1',
         title: 'Hiểu các loại Rủi ro',
-        description: 'Staking có 4 rủi ro chính: Slashing (validator vi phạm), Smart contract bug, Market risk (giá giảm), và Liquidity risk (không rút được).',
+        description:
+          'Staking có 4 rủi ro chính: Slashing (validator vi phạm), Smart contract bug, Market risk (giá giảm), và Liquidity risk (không rút được).',
         icon: AlertTriangle,
         tips: [
           'Slashing: Mất 0.01-5% nếu validator vi phạm',
@@ -127,7 +143,8 @@ const TUTORIALS: Tutorial[] = [
       {
         id: 'r2',
         title: 'Sử dụng Insurance',
-        description: 'Mua insurance để bồi thường 25-75% thiệt hại nếu bị slashing. Phí chỉ 0.5-1.5% APY/năm, rất đáng với số lượng lớn.',
+        description:
+          'Mua insurance để bồi thường 25-75% thiệt hại nếu bị slashing. Phí chỉ 0.5-1.5% APY/năm, rất đáng với số lượng lớn.',
         icon: Shield,
         tips: [
           'Standard plan (50% coverage) phù hợp nhất',
@@ -138,7 +155,8 @@ const TUTORIALS: Tutorial[] = [
       {
         id: 'r3',
         title: 'Diversification Strategy',
-        description: 'Đừng stake tất cả vào 1 nơi. Phân bổ 50% Flexible, 30% Fixed, 20% DeFi. Hoặc chia qua nhiều validator/protocol khác nhau.',
+        description:
+          'Đừng stake tất cả vào 1 nơi. Phân bổ 50% Flexible, 30% Fixed, 20% DeFi. Hoặc chia qua nhiều validator/protocol khác nhau.',
         icon: TrendingUp,
         tips: [
           'Không stake quá 50% tổng tài sản',
@@ -165,7 +183,7 @@ export function StakingGuidePage() {
   const [selectedTutorial, setSelectedTutorial] = useState<Tutorial | null>(null);
   const [currentStep, setCurrentStep] = useState(0);
 
-  const filteredTutorials = TUTORIALS.filter(t => t.difficulty === tab);
+  const filteredTutorials = TUTORIALS.filter((t) => t.difficulty === tab);
 
   return (
     <PageLayout>
@@ -178,7 +196,8 @@ export function StakingGuidePage() {
           setSelectedTutorial(null);
           setCurrentStep(0);
         }}
-        title={selectedTutorial?.title || ''}>
+        title={selectedTutorial?.title || ''}
+      >
         {selectedTutorial && (
           <div className="flex flex-col gap-4">
             {/* Progress */}
@@ -188,7 +207,8 @@ export function StakingGuidePage() {
                   Bước {currentStep + 1}/{selectedTutorial.steps.length}
                 </p>
                 <p style={{ color: c.text3, fontSize: 12 }}>
-                  {Math.round(((currentStep + 1) / selectedTutorial.steps.length) * 100)}% hoàn thành
+                  {Math.round(((currentStep + 1) / selectedTutorial.steps.length) * 100)}% hoàn
+                  thành
                 </p>
               </div>
               <div className="h-1.5 rounded-full" style={{ background: c.borderSolid }}>
@@ -209,14 +229,17 @@ export function StakingGuidePage() {
               return (
                 <div>
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center"
-                      style={{ background: 'rgba(59,130,246,0.12)', border: '1.5px solid rgba(59,130,246,0.3)' }}>
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center"
+                      style={{
+                        background: 'rgba(59,130,246,0.12)',
+                        border: '1.5px solid rgba(59,130,246,0.3)',
+                      }}
+                    >
                       <Icon size={24} color="#3B82F6" />
                     </div>
                     <div className="flex-1">
-                      <p style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>
-                        {step.title}
-                      </p>
+                      <p style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>{step.title}</p>
                       <p style={{ color: c.text3, fontSize: 11 }}>
                         Bước {currentStep + 1} / {selectedTutorial.steps.length}
                       </p>
@@ -233,7 +256,9 @@ export function StakingGuidePage() {
                     </p>
                     <ul style={{ color: c.text2, fontSize: 12, lineHeight: 1.7, paddingLeft: 16 }}>
                       {step.tips.map((tip, idx) => (
-                        <li key={idx} style={{ marginBottom: 4 }}>{tip}</li>
+                        <li key={idx} style={{ marginBottom: 4 }}>
+                          {tip}
+                        </li>
                       ))}
                     </ul>
                   </div>
@@ -251,14 +276,16 @@ export function StakingGuidePage() {
                   background: currentStep === 0 ? c.surface2 : c.surface2,
                   color: currentStep === 0 ? c.text3 : c.text1,
                   opacity: currentStep === 0 ? 0.5 : 1,
-                }}>
+                }}
+              >
                 Trước
               </button>
               {currentStep < selectedTutorial.steps.length - 1 ? (
                 <button
                   onClick={() => setCurrentStep(currentStep + 1)}
                   className="flex-1 py-3 rounded-xl text-sm font-semibold"
-                  style={{ background: c.primary, color: '#FFF' }}>
+                  style={{ background: c.primary, color: '#FFF' }}
+                >
                   Tiếp theo
                 </button>
               ) : (
@@ -268,7 +295,8 @@ export function StakingGuidePage() {
                     setCurrentStep(0);
                   }}
                   className="flex-1 py-3 rounded-xl text-sm font-semibold"
-                  style={{ background: '#10B981', color: '#FFF' }}>
+                  style={{ background: '#10B981', color: '#FFF' }}
+                >
                   Hoàn thành ✓
                 </button>
               )}
@@ -279,7 +307,13 @@ export function StakingGuidePage() {
 
       <PageContent>
         {/* Hero Banner */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(59,130,246,0.08)', border: '1.5px solid rgba(59,130,246,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{
+            background: 'rgba(59,130,246,0.08)',
+            border: '1.5px solid rgba(59,130,246,0.2)',
+          }}
+        >
           <div className="flex gap-3">
             <BookOpen size={20} color="#3B82F6" className="shrink-0 mt-0.5" />
             <div>
@@ -287,7 +321,8 @@ export function StakingGuidePage() {
                 Học Staking từ Zero
               </p>
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                Hướng dẫn từng bước để bạn bắt đầu kiếm passive income từ crypto. Từ cơ bản đến nâng cao.
+                Hướng dẫn từng bước để bạn bắt đầu kiếm passive income từ crypto. Từ cơ bản đến nâng
+                cao.
               </p>
             </div>
           </div>
@@ -307,11 +342,21 @@ export function StakingGuidePage() {
         {/* Tutorials */}
         <PageSection label="Tutorials">
           <div className="flex flex-col gap-3">
-            {filteredTutorials.map(tutorial => (
-              <TrCard key={tutorial.id} hover className="p-4" onClick={() => setSelectedTutorial(tutorial)}>
+            {filteredTutorials.map((tutorial) => (
+              <TrCard
+                key={tutorial.id}
+                hover
+                className="p-4"
+                onClick={() => setSelectedTutorial(tutorial)}
+              >
                 <div className="flex items-start gap-3 mb-3">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                    style={{ background: 'rgba(59,130,246,0.12)', border: '1.5px solid rgba(59,130,246,0.3)' }}>
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                    style={{
+                      background: 'rgba(59,130,246,0.12)',
+                      border: '1.5px solid rgba(59,130,246,0.3)',
+                    }}
+                  >
                     <PlayCircle size={24} color="#3B82F6" />
                   </div>
                   <div className="flex-1">
@@ -319,15 +364,23 @@ export function StakingGuidePage() {
                       {tutorial.title}
                     </p>
                     <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 rounded-md text-xs font-bold"
+                      <span
+                        className="px-2 py-0.5 rounded-md text-xs font-bold"
                         style={{
-                          background: tutorial.difficulty === 'beginner' ? 'rgba(16,185,129,0.15)' :
-                                     tutorial.difficulty === 'intermediate' ? 'rgba(59,130,246,0.15)' :
-                                     'rgba(245,158,11,0.15)',
-                          color: tutorial.difficulty === 'beginner' ? '#10B981' :
-                                 tutorial.difficulty === 'intermediate' ? '#3B82F6' :
-                                 '#F59E0B',
-                        }}>
+                          background:
+                            tutorial.difficulty === 'beginner'
+                              ? 'rgba(16,185,129,0.15)'
+                              : tutorial.difficulty === 'intermediate'
+                                ? 'rgba(59,130,246,0.15)'
+                                : 'rgba(245,158,11,0.15)',
+                          color:
+                            tutorial.difficulty === 'beginner'
+                              ? '#10B981'
+                              : tutorial.difficulty === 'intermediate'
+                                ? '#3B82F6'
+                                : '#F59E0B',
+                        }}
+                      >
                         {tutorial.difficulty}
                       </span>
                       <span style={{ color: c.text3, fontSize: 11 }}>
@@ -351,9 +404,7 @@ export function StakingGuidePage() {
                 <p style={{ color: c.text1, fontSize: 12, fontWeight: 700, marginBottom: 2 }}>
                   {tip.title}
                 </p>
-                <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
-                  {tip.desc}
-                </p>
+                <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>{tip.desc}</p>
               </TrCard>
             ))}
           </div>
@@ -385,7 +436,11 @@ export function StakingGuidePage() {
                   color: '#F59E0B',
                 },
               ].map((mistake, idx) => (
-                <div key={idx} className="flex gap-3 p-3 rounded-xl" style={{ background: c.surface2 }}>
+                <div
+                  key={idx}
+                  className="flex gap-3 p-3 rounded-xl"
+                  style={{ background: c.surface2 }}
+                >
                   <AlertTriangle size={18} color={mistake.color} className="shrink-0 mt-0.5" />
                   <div className="flex-1">
                     <p style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 2 }}>
@@ -402,7 +457,13 @@ export function StakingGuidePage() {
         </PageSection>
 
         {/* CTA */}
-        <div className="rounded-2xl p-4 text-center" style={{ background: 'rgba(16,185,129,0.08)', border: '1.5px solid rgba(16,185,129,0.2)' }}>
+        <div
+          className="rounded-2xl p-4 text-center"
+          style={{
+            background: 'rgba(16,185,129,0.08)',
+            border: '1.5px solid rgba(16,185,129,0.2)',
+          }}
+        >
           <p style={{ color: c.text1, fontSize: 14, fontWeight: 700, marginBottom: 8 }}>
             Sẵn sàng bắt đầu?
           </p>
@@ -411,7 +472,8 @@ export function StakingGuidePage() {
           </p>
           <button
             className="px-6 py-3 rounded-xl text-sm font-semibold"
-            style={{ background: c.primary, color: '#FFF' }}>
+            style={{ background: c.primary, color: '#FFF' }}
+          >
             Stake ngay →
           </button>
         </div>

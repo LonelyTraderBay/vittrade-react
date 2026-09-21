@@ -9,15 +9,10 @@
 
 /* ─── Prediction Event ─── */
 
-export type PredictionEventStatus = 'upcoming' | 'trading' | 'closed' | 'settling' | 'settled' | 'void';
-export type PredictionCategory = 
-  | 'crypto' 
-  | 'macro' 
-  | 'politics' 
-  | 'sports' 
-  | 'tech' 
-  | 'ai' 
-  | 'culture';
+export type PredictionEventStatus =
+  'upcoming' | 'trading' | 'closed' | 'settling' | 'settled' | 'void';
+export type PredictionCategory =
+  'crypto' | 'macro' | 'politics' | 'sports' | 'tech' | 'ai' | 'culture';
 
 export interface PredictionEvent {
   id: string;
@@ -25,26 +20,26 @@ export interface PredictionEvent {
   description: string;
   category: PredictionCategory;
   status: PredictionEventStatus;
-  
+
   // Outcomes
   outcomes: PredictionOutcome[];
-  
+
   // Market Info
   totalVolume: number;
   totalShares: number;
   liquidity: number;
-  
+
   // Timeline
   createdAt: Date;
   tradingStartsAt: Date;
   tradingEndsAt: Date;
   resolutionDate: Date;
   settledAt?: Date;
-  
+
   // Resolution
   resolutionSource: string;
   winningOutcomeId?: string;
-  
+
   // Engagement
   totalTrades: number;
   uniqueTraders: number;
@@ -58,7 +53,7 @@ export interface PredictionOutcome {
   eventId: string;
   name: string;
   description?: string;
-  probability: number;         // 0-100
+  probability: number; // 0-100
   totalShares: number;
   lastPrice: number;
   change24h: number;
@@ -69,7 +64,8 @@ export interface PredictionOutcome {
 
 export type PredictionOrderSide = 'buy' | 'sell';
 export type PredictionOrderType = 'market' | 'limit';
-export type PredictionOrderStatus = 'pending' | 'open' | 'filled' | 'partially_filled' | 'cancelled' | 'expired';
+export type PredictionOrderStatus =
+  'pending' | 'open' | 'filled' | 'partially_filled' | 'cancelled' | 'expired';
 
 export interface PredictionOrder {
   id: string;
@@ -79,18 +75,18 @@ export interface PredictionOrder {
   side: PredictionOrderSide;
   type: PredictionOrderType;
   status: PredictionOrderStatus;
-  
+
   // Order Details
   shares: number;
   filledShares: number;
-  price?: number;              // for limit orders
+  price?: number; // for limit orders
   averagePrice?: number;
   totalCost?: number;
-  
+
   // Fees
   fee: number;
   feePercentage: number;
-  
+
   // Timeline
   createdAt: Date;
   updatedAt: Date;
@@ -104,7 +100,7 @@ export interface CreatePredictionOrderParams {
   side: PredictionOrderSide;
   type: PredictionOrderType;
   shares: number;
-  price?: number;              // required for limit orders
+  price?: number; // required for limit orders
 }
 
 /* ─── Prediction Position ─── */
@@ -114,21 +110,21 @@ export interface PredictionPosition {
   eventId: string;
   outcomeId: string;
   userId: string;
-  
+
   // Holdings
   shares: number;
   averagePrice: number;
   totalCost: number;
   currentValue: number;
-  
+
   // Performance
   pnl: number;
   pnlPercentage: number;
-  
+
   // Status
   isSettled: boolean;
   payout?: number;
-  
+
   // Timeline
   openedAt: Date;
   closedAt?: Date;
@@ -211,14 +207,15 @@ export interface PredictionResolution {
 
 /* ─── Prediction Rewards ─── */
 
-export type RewardType = 'trading_fee_rebate' | 'liquidity_mining' | 'leaderboard' | 'referral' | 'bonus';
+export type RewardType =
+  'trading_fee_rebate' | 'liquidity_mining' | 'leaderboard' | 'referral' | 'bonus';
 
 export interface PredictionReward {
   id: string;
   userId: string;
   type: RewardType;
   amount: number;
-  currency: string;           // e.g., "USDT"
+  currency: string; // e.g., "USDT"
   eventId?: string;
   reason: string;
   claimedAt?: Date;
@@ -244,12 +241,12 @@ export interface PredictionLeaderboardEntry {
 
 /* ─── Prediction Activity ─── */
 
-export type ActivityType = 
-  | 'order_placed' 
-  | 'order_filled' 
-  | 'position_opened' 
-  | 'position_closed' 
-  | 'event_created' 
+export type ActivityType =
+  | 'order_placed'
+  | 'order_filled'
+  | 'position_opened'
+  | 'position_closed'
+  | 'event_created'
   | 'event_settled';
 
 export interface PredictionActivity {

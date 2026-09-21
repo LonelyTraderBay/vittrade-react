@@ -37,7 +37,7 @@ const PlaceholderPage: React.FC<PlaceholderPageProps> = ({ pageName, path }) => 
 export function safeLazyLoad(
   importFn: () => Promise<{ default: React.ComponentType<any> }>,
   pageName: string,
-  path: string
+  path: string,
 ): React.LazyExoticComponent<React.ComponentType<any>> {
   return React.lazy(async () => {
     try {

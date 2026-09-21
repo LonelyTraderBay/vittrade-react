@@ -22,14 +22,18 @@ export function StakingVotingPage() {
 
       <PageContent grow padding="relaxed">
         <TrCard className="p-4">
-          <span className="px-2 py-1 rounded-md text-xs inline-block mb-3" style={{ background: c.surface2, color: c.text3 }}>
+          <span
+            className="px-2 py-1 rounded-md text-xs inline-block mb-3"
+            style={{ background: c.surface2, color: c.text3 }}
+          >
             Fees
           </span>
           <p style={{ color: c.text1, fontSize: 16, fontWeight: 700, marginBottom: 8 }}>
             Lower ETH Staking Fees from 1.5% to 1%
           </p>
           <p style={{ color: c.text2, fontSize: 13, lineHeight: 1.6, marginBottom: 12 }}>
-            This proposal aims to reduce platform fees for ETH staking from 1.5% to 1% to remain competitive with other platforms. Revenue impact: -$500K/year, offset by higher volume.
+            This proposal aims to reduce platform fees for ETH staking from 1.5% to 1% to remain
+            competitive with other platforms. Revenue impact: -$500K/year, offset by higher volume.
           </p>
 
           <div className="rounded-xl p-3" style={{ background: c.surface2 }}>
@@ -65,9 +69,21 @@ export function StakingVotingPage() {
               hover
               className="p-4"
               onClick={() => setVote('yes')}
-              style={{ border: vote === 'yes' ? `2px solid #10B981` : undefined }}>
-              <ThumbsUp size={24} color={vote === 'yes' ? '#10B981' : c.text3} className="mx-auto mb-2" />
-              <p style={{ color: vote === 'yes' ? '#10B981' : c.text1, fontSize: 14, fontWeight: 700, textAlign: 'center' }}>
+              style={{ border: vote === 'yes' ? `2px solid #10B981` : undefined }}
+            >
+              <ThumbsUp
+                size={24}
+                color={vote === 'yes' ? '#10B981' : c.text3}
+                className="mx-auto mb-2"
+              />
+              <p
+                style={{
+                  color: vote === 'yes' ? '#10B981' : c.text1,
+                  fontSize: 14,
+                  fontWeight: 700,
+                  textAlign: 'center',
+                }}
+              >
                 Yes
               </p>
             </TrCard>
@@ -75,9 +91,21 @@ export function StakingVotingPage() {
               hover
               className="p-4"
               onClick={() => setVote('no')}
-              style={{ border: vote === 'no' ? `2px solid #EF4444` : undefined }}>
-              <ThumbsDown size={24} color={vote === 'no' ? '#EF4444' : c.text3} className="mx-auto mb-2" />
-              <p style={{ color: vote === 'no' ? '#EF4444' : c.text1, fontSize: 14, fontWeight: 700, textAlign: 'center' }}>
+              style={{ border: vote === 'no' ? `2px solid #EF4444` : undefined }}
+            >
+              <ThumbsDown
+                size={24}
+                color={vote === 'no' ? '#EF4444' : c.text3}
+                className="mx-auto mb-2"
+              />
+              <p
+                style={{
+                  color: vote === 'no' ? '#EF4444' : c.text1,
+                  fontSize: 14,
+                  fontWeight: 700,
+                  textAlign: 'center',
+                }}
+              >
                 No
               </p>
             </TrCard>
@@ -86,7 +114,8 @@ export function StakingVotingPage() {
 
         <TrCard className="p-3">
           <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-            💡 Your voting power: <strong>12,500 votes</strong> (based on staked tokens). Votes are final and cannot be changed.
+            💡 Your voting power: <strong>12,500 votes</strong> (based on staked tokens). Votes are
+            final and cannot be changed.
           </p>
         </TrCard>
       </PageContent>
@@ -100,7 +129,8 @@ export function StakingVotingPage() {
             background: vote ? c.primary : c.surface2,
             color: vote ? '#FFF' : c.text3,
             opacity: vote ? 1 : 0.5,
-          }}>
+          }}
+        >
           Submit Vote
         </button>
       </StickyFooter>

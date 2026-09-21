@@ -10,7 +10,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { DCAProvider, useDCA } from '../contexts/DCAContext';
-import type { CreateDCAPlanRequest, UpdateDCAPlanRequest } from '../types/dca';
+import type { CreateDCAPlanRequest, UpdateDCAPlanRequest, DCAPlan } from '../types/dca';
 
 describe('DCAContext', () => {
   describe('Initial State', () => {
@@ -238,13 +238,19 @@ describe('DCAContext', () => {
             isCreatingDuringCall = true;
           }
         },
-        { timeout: 100 }
+        { timeout: 100 },
       );
 
-      // Wait for completion
-      await waitFor(() => {
-        expect(result.current.isCreating).toBe(false);
-      });
+      // The loading flag must have been observed while the request was in flight
+      expect(isCreatingDuringCall).toBe(true);
+
+      // Wait for completion (createPlan simulates a 1000ms API delay)
+      await waitFor(
+        () => {
+          expect(result.current.isCreating).toBe(false);
+        },
+        { timeout: 2500 },
+      );
     });
 
     it('should create plan with custom start date', async () => {
@@ -261,7 +267,7 @@ describe('DCAContext', () => {
         startDate: futureDate,
       };
 
-      let createdPlan;
+      let createdPlan: DCAPlan | undefined;
       await act(async () => {
         createdPlan = await result.current.createPlan(newPlanRequest);
       });
@@ -558,9 +564,7 @@ describe('DCAContext', () => {
       });
 
       result.current.plans.forEach((plan) => {
-        const planPurchases = result.current.purchaseHistory.filter(
-          (p) => p.planId === plan.id
-        );
+        const planPurchases = result.current.purchaseHistory.filter((p) => p.planId === plan.id);
         expect(planPurchases.length).toBeGreaterThan(0);
       });
     });
@@ -571,7 +575,7 @@ describe('DCAContext', () => {
       });
 
       const completedPurchases = result.current.purchaseHistory.filter(
-        (p) => p.status === 'completed'
+        (p) => p.status === 'completed',
       );
       expect(completedPurchases.length).toBeGreaterThan(0);
     });
@@ -607,9 +611,7 @@ describe('DCAContext', () => {
       const history = result.current.portfolioHistory;
 
       for (let i = 1; i < history.length; i++) {
-        expect(history[i].date.getTime()).toBeGreaterThanOrEqual(
-          history[i - 1].date.getTime()
-        );
+        expect(history[i].date.getTime()).toBeGreaterThanOrEqual(history[i - 1].date.getTime());
       }
     });
   });
@@ -749,7 +751,7 @@ describe('DCAContext', () => {
         amountPerPurchase: 100_000,
       };
 
-      let createdPlan;
+      let createdPlan: DCAPlan | undefined;
       await act(async () => {
         createdPlan = await result.current.createPlan(minimalRequest);
       });
@@ -765,20 +767,34 @@ describe('DCAContext', () => {
         wrapper: DCAProvider,
       });
 
+      // Each operation runs in its own act() so React commits state between
+      // operations and the context callbacks observe fresh `plans`.
+      let planId = '';
       await act(async () => {
         const plan1 = await result.current.createPlan({
           coinSymbol: 'BNB',
           frequency: 'daily',
           amountPerPurchase: 50_000,
         });
+        planId = plan1.id;
+      });
 
-        await result.current.updatePlan(plan1.id, { amountPerPurchase: 75_000 });
-        await result.current.togglePlanStatus(plan1.id);
-        await result.current.deletePlan(plan1.id);
+      await act(async () => {
+        await result.current.updatePlan(planId, { amountPerPurchase: 75_000 });
+      });
+
+      await act(async () => {
+        await result.current.togglePlanStatus(planId);
+      });
+
+      await act(async () => {
+        await result.current.deletePlan(planId);
       });
 
       // Should not crash
       expect(result.current.plans).toBeDefined();
+      // The plan should be gone
+      expect(result.current.plans.find((p) => p.id === planId)).toBeUndefined();
     });
   });
 
@@ -788,14 +804,18 @@ describe('DCAContext', () => {
         wrapper: DCAProvider,
       });
 
+      // Start all creations concurrently — each simulates its own 1000ms
+      // API delay, so the batch completes in ~1s instead of 10s.
       await act(async () => {
-        for (let i = 0; i < 10; i++) {
-          await result.current.createPlan({
-            coinSymbol: i % 2 === 0 ? 'BTC' : 'ETH',
-            frequency: 'weekly',
-            amountPerPurchase: 100_000,
-          });
-        }
+        await Promise.all(
+          Array.from({ length: 10 }, (_, i) =>
+            result.current.createPlan({
+              coinSymbol: i % 2 === 0 ? 'BTC' : 'ETH',
+              frequency: 'weekly',
+              amountPerPurchase: 100_000,
+            }),
+          ),
+        );
       });
 
       expect(result.current.plans.length).toBeGreaterThanOrEqual(10);

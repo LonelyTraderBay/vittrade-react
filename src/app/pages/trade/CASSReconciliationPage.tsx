@@ -2,14 +2,14 @@
  * ══════════════════════════════════════════════════════════════
  *  CASSReconciliationPage — Phase 4 Sprint 2 Day 9-10
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Daily CASS reconciliation statements
  * - Client money vs. bank balance matching
  * - Discrepancy alerts & resolution
  * - Historical reconciliation records
  * - Regulatory audit trail
- * 
+ *
  * Compliance:
  * - CASS 7.15: Daily reconciliation mandatory
  * - Discrepancies must be identified & resolved
@@ -39,10 +39,35 @@ interface ReconciliationRecord {
 }
 
 const RECORDS: ReconciliationRecord[] = [
-  { date: '2026-03-08', clientLedger: 45230.50, bankBalance: 45230.50, difference: 0, status: 'matched' },
-  { date: '2026-03-07', clientLedger: 44890.25, bankBalance: 44890.25, difference: 0, status: 'matched' },
-  { date: '2026-03-06', clientLedger: 43500.00, bankBalance: 43520.00, difference: 20, status: 'discrepancy-resolved', notes: 'Pending deposit cleared' },
-  { date: '2026-03-05', clientLedger: 42100.75, bankBalance: 42100.75, difference: 0, status: 'matched' },
+  {
+    date: '2026-03-08',
+    clientLedger: 45230.5,
+    bankBalance: 45230.5,
+    difference: 0,
+    status: 'matched',
+  },
+  {
+    date: '2026-03-07',
+    clientLedger: 44890.25,
+    bankBalance: 44890.25,
+    difference: 0,
+    status: 'matched',
+  },
+  {
+    date: '2026-03-06',
+    clientLedger: 43500.0,
+    bankBalance: 43520.0,
+    difference: 20,
+    status: 'discrepancy-resolved',
+    notes: 'Pending deposit cleared',
+  },
+  {
+    date: '2026-03-05',
+    clientLedger: 42100.75,
+    bankBalance: 42100.75,
+    difference: 0,
+    status: 'matched',
+  },
 ];
 
 export function CASSReconciliationPage() {
@@ -70,7 +95,7 @@ export function CASSReconciliationPage() {
           <TrCard className="p-3">
             <p style={{ color: c.text3, fontSize: 10 }}>Reconciled</p>
             <p style={{ color: c.text1, fontSize: 20, fontWeight: 700, marginTop: 4 }}>
-              {RECORDS.filter(r => r.status === 'matched').length}
+              {RECORDS.filter((r) => r.status === 'matched').length}
             </p>
             <p style={{ color: '#10B981', fontSize: 9, marginTop: 2 }}>Last 7 days</p>
           </TrCard>
@@ -78,7 +103,7 @@ export function CASSReconciliationPage() {
           <TrCard className="p-3">
             <p style={{ color: c.text3, fontSize: 10 }}>Resolved</p>
             <p style={{ color: c.text1, fontSize: 20, fontWeight: 700, marginTop: 4 }}>
-              {RECORDS.filter(r => r.status === 'discrepancy-resolved').length}
+              {RECORDS.filter((r) => r.status === 'discrepancy-resolved').length}
             </p>
             <p style={{ color: c.text3, fontSize: 9, marginTop: 2 }}>Discrepancies</p>
           </TrCard>
@@ -91,7 +116,7 @@ export function CASSReconciliationPage() {
         </div>
 
         {/* Tabs */}
-        <TabBar tabs={TABS} active={tab} onChange={setTab} variant="underline" />
+        <TabBar<TabType> tabs={TABS} active={tab} onChange={setTab} variant="underline" />
 
         {/* Records */}
         <PageSection label="Reconciliation Records">
@@ -103,8 +128,10 @@ export function CASSReconciliationPage() {
               return (
                 <TrCard key={idx} className="p-4">
                   <div className="flex items-start gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ background: statusCfg.color + '15' }}>
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                      style={{ background: statusCfg.color + '15' }}
+                    >
                       <StatusIcon size={18} color={statusCfg.color} />
                     </div>
 
@@ -114,19 +141,19 @@ export function CASSReconciliationPage() {
                           {new Date(record.date).toLocaleDateString('en-US', {
                             month: 'long',
                             day: 'numeric',
-                            year: 'numeric'
+                            year: 'numeric',
                           })}
                         </span>
-                        <span className="px-2 py-0.5 rounded text-[9px] font-semibold"
-                          style={{ background: statusCfg.color + '15', color: statusCfg.color }}>
+                        <span
+                          className="px-2 py-0.5 rounded text-[9px] font-semibold"
+                          style={{ background: statusCfg.color + '15', color: statusCfg.color }}
+                        >
                           {statusCfg.label}
                         </span>
                       </div>
 
                       {record.notes && (
-                        <p style={{ color: c.text3, fontSize: 10, marginTop: 2 }}>
-                          {record.notes}
-                        </p>
+                        <p style={{ color: c.text3, fontSize: 10, marginTop: 2 }}>{record.notes}</p>
                       )}
                     </div>
                   </div>
@@ -146,16 +173,22 @@ export function CASSReconciliationPage() {
                       </p>
                     </div>
 
-                    <div className="rounded-lg p-2" style={{
-                      background: record.difference === 0 ? '#10B981' + '15' : statusCfg.color + '15'
-                    }}>
+                    <div
+                      className="rounded-lg p-2"
+                      style={{
+                        background:
+                          record.difference === 0 ? '#10B981' + '15' : statusCfg.color + '15',
+                      }}
+                    >
                       <p style={{ color: c.text3, fontSize: 9 }}>Difference</p>
-                      <p style={{
-                        color: record.difference === 0 ? '#10B981' : statusCfg.color,
-                        fontSize: 11,
-                        fontWeight: 700,
-                        marginTop: 1
-                      }}>
+                      <p
+                        style={{
+                          color: record.difference === 0 ? '#10B981' : statusCfg.color,
+                          fontSize: 11,
+                          fontWeight: 700,
+                          marginTop: 1,
+                        }}
+                      >
                         {fmtUsd(Math.abs(record.difference))}
                       </p>
                     </div>
@@ -176,7 +209,8 @@ export function CASSReconciliationPage() {
             fontWeight: 600,
             fontSize: 13,
             border: `1px solid ${c.border}`,
-          }}>
+          }}
+        >
           <Download size={16} />
           <span>Export Reconciliation Report (CSV)</span>
         </button>

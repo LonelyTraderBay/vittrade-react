@@ -36,14 +36,16 @@ export function P2PLargeTransactionJustificationPage() {
   const prefix = useRoutePrefix();
 
   const amount = parseFloat(searchParams.get('amount') || '100000000');
-  
+
   const [purpose, setPurpose] = useState('');
   const [customPurpose, setCustomPurpose] = useState('');
   const [details, setDetails] = useState('');
   const mountedRef = useRef(true);
 
   useEffect(() => {
-    return () => { mountedRef.current = false; };
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   const handleSubmit = () => {
@@ -64,7 +66,10 @@ export function P2PLargeTransactionJustificationPage() {
       <div className="px-5 py-4">
         <TrCard rounded="lg" className="p-4" style={{ background: hexToRgba('#F59E0B', 10) }}>
           <div className="flex items-start gap-3">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: hexToRgba('#F59E0B', 20) }}>
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+              style={{ background: hexToRgba('#F59E0B', 20) }}
+            >
               <AlertCircle size={24} color="#F59E0B" />
             </div>
             <div className="flex-1">
@@ -80,19 +85,32 @@ export function P2PLargeTransactionJustificationPage() {
       </div>
 
       <div className="px-5 mb-6">
-        <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700, marginBottom: 12 }}>Mục đích giao dịch</h3>
+        <h3 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700, marginBottom: 12 }}>
+          Mục đích giao dịch
+        </h3>
         <div className="flex flex-col gap-2">
-          {PURPOSES.map(p => (
+          {PURPOSES.map((p) => (
             <button
               key={p}
-              onClick={() => { hapticSelection(); setPurpose(p); }}
+              onClick={() => {
+                hapticSelection();
+                setPurpose(p);
+              }}
               className="p-3 rounded-lg text-left"
               style={{
-                background: purpose === p ? hexToRgba('#3B82F6', 12) : c.surface1,
+                background: purpose === p ? hexToRgba('#3B82F6', 12) : c.surface,
                 border: `1px solid ${purpose === p ? '#3B82F6' : c.borderSolid}`,
               }}
             >
-              <p style={{ color: purpose === p ? '#3B82F6' : c.text1, fontSize: φ.xs, fontWeight: 600 }}>{p}</p>
+              <p
+                style={{
+                  color: purpose === p ? '#3B82F6' : c.text1,
+                  fontSize: φ.xs,
+                  fontWeight: 600,
+                }}
+              >
+                {p}
+              </p>
             </button>
           ))}
         </div>
@@ -115,8 +133,6 @@ export function P2PLargeTransactionJustificationPage() {
           placeholder="VD: Mua BTC để nắm giữ dài hạn, dự kiến hold 1-2 năm..."
           value={details}
           onChange={(e) => setDetails(e.target.value)}
-          multiline
-          rows={5}
         />
       </div>
 

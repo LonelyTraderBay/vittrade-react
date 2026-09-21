@@ -8,6 +8,7 @@ import React, { ReactElement } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
 import { BrowserRouter } from 'react-router';
 import { vi } from 'vitest';
+import { UIProvider } from '../app/contexts/UIContext';
 
 /**
  * Custom render function with all required providers
@@ -18,12 +19,16 @@ interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
 
 export function renderWithRouter(
   ui: ReactElement,
-  { initialRoute = '/', ...renderOptions }: CustomRenderOptions = {}
+  { initialRoute = '/', ...renderOptions }: CustomRenderOptions = {},
 ) {
   window.history.pushState({}, 'Test page', initialRoute);
 
   function Wrapper({ children }: { children: React.ReactNode }) {
-    return <BrowserRouter>{children}</BrowserRouter>;
+    return (
+      <BrowserRouter>
+        <UIProvider>{children}</UIProvider>
+      </BrowserRouter>
+    );
   }
 
   return {
@@ -46,14 +51,12 @@ vi.mock('react-router', async () => {
 /**
  * Wait for async updates
  */
-export const waitForAsync = () =>
-  new Promise(resolve => setTimeout(resolve, 0));
+export const waitForAsync = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 /**
  * Simulate user wait/delay
  */
-export const wait = (ms: number) =>
-  new Promise(resolve => setTimeout(resolve, ms));
+export const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 /**
  * Mock theme colors (matches useThemeColors hook)
@@ -88,22 +91,21 @@ export const mockThemeColors = {
 /**
  * Mock useThemeColors hook
  */
-vi.mock('../../app/hooks/useThemeColors', () => ({
+vi.mock('../app/hooks/useThemeColors', () => ({
   useThemeColors: () => mockThemeColors,
 }));
 
 /**
  * Mock useRoutePrefix hook
  */
-vi.mock('../../app/hooks/useRoutePrefix', () => ({
+vi.mock('../app/hooks/useRoutePrefix', () => ({
   useRoutePrefix: () => '',
 }));
 
 /**
  * Get element by test ID
  */
-export const getByTestId = (id: string) =>
-  document.querySelector(`[data-testid="${id}"]`);
+export const getByTestId = (id: string) => document.querySelector(`[data-testid="${id}"]`);
 
 /**
  * Check if element has class

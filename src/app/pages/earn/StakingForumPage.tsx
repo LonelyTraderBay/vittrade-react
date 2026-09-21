@@ -14,9 +14,27 @@ const CATEGORIES = [
 ];
 
 const TRENDING_THREADS = [
-  { title: 'Best validators for ETH staking in 2026?', replies: 234, views: 5678, pinned: true, author: 'CryptoGuru' },
-  { title: 'Proposal #127 discussion: Lower fees', replies: 156, views: 3421, pinned: false, author: 'StakeMax' },
-  { title: 'How to maximize rewards with auto-compound', replies: 89, views: 2103, pinned: false, author: 'YieldHunter' },
+  {
+    title: 'Best validators for ETH staking in 2026?',
+    replies: 234,
+    views: 5678,
+    pinned: true,
+    author: 'CryptoGuru',
+  },
+  {
+    title: 'Proposal #127 discussion: Lower fees',
+    replies: 156,
+    views: 3421,
+    pinned: false,
+    author: 'StakeMax',
+  },
+  {
+    title: 'How to maximize rewards with auto-compound',
+    replies: 89,
+    views: 2103,
+    pinned: false,
+    author: 'YieldHunter',
+  },
 ];
 
 export function StakingForumPage() {
@@ -27,7 +45,13 @@ export function StakingForumPage() {
       <Header title="Forum" back />
 
       <PageContent>
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(59,130,246,0.08)', border: '1.5px solid rgba(59,130,246,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{
+            background: 'rgba(59,130,246,0.08)',
+            border: '1.5px solid rgba(59,130,246,0.2)',
+          }}
+        >
           <p style={{ color: c.text1, fontSize: 14, fontWeight: 700, marginBottom: 4 }}>
             Community Forum
           </p>
@@ -77,7 +101,10 @@ export function StakingForumPage() {
           </div>
         </PageSection>
 
-        <button className="w-full py-3 rounded-[14px] text-sm font-semibold" style={{ background: c.primary, color: '#FFF' }}>
+        <button
+          className="w-full py-3 rounded-[14px] text-sm font-semibold"
+          style={{ background: c.primary, color: '#FFF' }}
+        >
           Create New Thread
         </button>
       </PageContent>

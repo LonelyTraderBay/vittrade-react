@@ -409,8 +409,10 @@ describe('ThemeContext', () => {
         }
       });
 
-      // After 100 iterations (even number), should be light
-      expect(result.current.theme).toBe('light');
+      // The last iteration (i = 99, odd) sets 'dark' — React batches the
+      // rapid updates and the final call wins.
+      expect(result.current.theme).toBe('dark');
+      expect(document.documentElement.className).toContain('dark');
     });
 
     it('should not leak memory on multiple theme changes', () => {

@@ -1,15 +1,16 @@
 /**
  * useFunnelTracking Hook
- * 
+ *
  * React hook for conversion funnel tracking.
  * Automatically tracks events and progresses funnels.
- * 
+ *
  * @module hooks/useFunnelTracking
  * @version 2.0 (Phase 2 - Sprint 2)
  */
 
 import { useEffect, useCallback, useMemo } from 'react';
 import { funnelTracker, FunnelAnalytics } from '../services/ConversionFunnelTracker';
+import { useDCAAnalytics } from './useDCAAnalytics';
 import {
   WALLET_TO_CREATION_FUNNEL,
   ASSET_TO_CREATION_FUNNEL,
@@ -30,7 +31,7 @@ export function useFunnelTracking(userId?: string) {
     (eventName: string, properties?: Record<string, any>) => {
       funnelTracker.trackEvent(eventName, userId, properties);
     },
-    [userId]
+    [userId],
   );
 
   return { trackEvent };
@@ -57,7 +58,7 @@ export function useFunnelPageView(pageName: string, userId?: string) {
 export function useFunnelEvent(
   eventName: string,
   properties?: Record<string, any>,
-  userId?: string
+  userId?: string,
 ) {
   const { trackEvent } = useFunnelTracking(userId);
 
@@ -285,7 +286,7 @@ export function useAllFunnelAnalytics() {
 
 /**
  * Combined DCA tracking (Analytics + Funnels)
- * 
+ *
  * This hook combines both analytics and funnel tracking
  * for convenience.
  */
@@ -293,7 +294,6 @@ export function useDCATracking(userId?: string) {
   const { trackEvent: trackFunnelEvent } = useFunnelTracking(userId);
 
   // Import analytics hook
-  const { useDCAAnalytics } = require('./useDCAAnalytics');
   const analyticsHook = useDCAAnalytics();
 
   // Combined tracking function
@@ -303,7 +303,7 @@ export function useDCATracking(userId?: string) {
       analyticsHook.trackEvent(eventName, properties);
       trackFunnelEvent(eventName, properties);
     },
-    [analyticsHook, trackFunnelEvent]
+    [analyticsHook, trackFunnelEvent],
   );
 
   return {
@@ -322,7 +322,7 @@ export function useDCATracking(userId?: string) {
 export function useCleanOldSessions(maxAge: number = 86400000) {
   useEffect(() => {
     funnelTracker.cleanOldSessions(maxAge);
-    
+
     // Clean every hour
     const interval = setInterval(() => {
       funnelTracker.cleanOldSessions(maxAge);
@@ -347,7 +347,7 @@ export function useFunnelDebug(funnelId: string) {
       completedSessions: analytics.completedSessions,
       completionRate: `${(analytics.completionRate * 100).toFixed(2)}%`,
       avgCompletionTime: `${(analytics.avgCompletionTime / 1000).toFixed(2)}s`,
-      steps: analytics.stepAnalytics.map(step => ({
+      steps: analytics.stepAnalytics.map((step) => ({
         step: step.stepName,
         reached: step.reached,
         completed: step.completed,
@@ -355,7 +355,7 @@ export function useFunnelDebug(funnelId: string) {
         avgTime: `${(step.avgTimeToComplete / 1000).toFixed(2)}s`,
         dropout: `${(step.dropoutRate * 100).toFixed(2)}%`,
       })),
-      dropouts: analytics.dropoutAnalysis.map(d => ({
+      dropouts: analytics.dropoutAnalysis.map((d) => ({
         step: d.step,
         count: d.count,
         rate: `${(d.rate * 100).toFixed(2)}%`,

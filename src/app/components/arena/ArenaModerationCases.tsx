@@ -13,8 +13,16 @@
 
 import React from 'react';
 import {
-  Shield, AlertTriangle, Ban, Eye, ChevronRight,
-  Clock, Info, Flag, Scale, FileText,
+  Shield,
+  AlertTriangle,
+  Ban,
+  Eye,
+  ChevronRight,
+  Clock,
+  Info,
+  Flag,
+  Scale,
+  FileText,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useHaptic } from '../../hooks/useHaptic';
@@ -41,10 +49,7 @@ export function AppealBanner({ onAppeal, daysLeft = 7, className }: AppealBanner
   const c = useThemeColors();
 
   return (
-    <TrCard
-      className={`p-4 ${className ?? ''}`}
-      accentBorder="rgba(245,158,11,0.25)"
-    >
+    <TrCard className={`p-4 ${className ?? ''}`} accentBorder="rgba(245,158,11,0.25)">
       <div className="flex items-start gap-3">
         <div
           className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
@@ -57,7 +62,8 @@ export function AppealBanner({ onAppeal, daysLeft = 7, className }: AppealBanner
             Bạn có thể khiếu nại
           </p>
           <p style={{ color: c.text2, fontSize: φ.xs, lineHeight: 1.5 }}>
-            Nếu bạn cho rằng kết luận chưa chính xác, bạn có thể mở khiếu nại trong {daysLeft} ngày kể từ ngày kết luận.
+            Nếu bạn cho rằng kết luận chưa chính xác, bạn có thể mở khiếu nại trong {daysLeft} ngày
+            kể từ ngày kết luận.
           </p>
           {onAppeal && (
             <button
@@ -71,11 +77,12 @@ export function AppealBanner({ onAppeal, daysLeft = 7, className }: AppealBanner
           )}
         </div>
       </div>
-      <div className="flex items-center gap-1.5 mt-3 pt-3" style={{ borderTop: `1px solid ${c.divider}` }}>
+      <div
+        className="flex items-center gap-1.5 mt-3 pt-3"
+        style={{ borderTop: `1px solid ${c.divider}` }}
+      >
         <Clock size={10} color={c.text3} />
-        <span style={{ color: c.text3, fontSize: 10 }}>
-          Còn {daysLeft} ngày để mở khiếu nại
-        </span>
+        <span style={{ color: c.text3, fontSize: 10 }}>Còn {daysLeft} ngày để mở khiếu nại</span>
       </div>
     </TrCard>
   );
@@ -97,8 +104,14 @@ interface BlockedUserRowProps {
 }
 
 export function BlockedUserRow({
-  avatar, name, reason, blockedAt, sourceLabel,
-  onUnblock, onViewProfile, isLast,
+  avatar,
+  name,
+  reason,
+  blockedAt,
+  sourceLabel,
+  onUnblock,
+  onViewProfile,
+  isLast,
 }: BlockedUserRowProps) {
   const c = useThemeColors();
   const { hapticSelection } = useHaptic();
@@ -124,9 +137,7 @@ export function BlockedUserRow({
         <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 600 }} className="truncate">
           {name}
         </p>
-        <p style={{ color: c.text3, fontSize: φ.xs, lineHeight: 1.4, marginTop: 1 }}>
-          {reason}
-        </p>
+        <p style={{ color: c.text3, fontSize: φ.xs, lineHeight: 1.4, marginTop: 1 }}>{reason}</p>
         <div className="flex items-center gap-2 mt-1">
           <span style={{ color: c.text3, fontSize: 10 }}>{blockedAt}</span>
           <span style={{ color: c.text3, fontSize: 10 }}>·</span>
@@ -137,7 +148,10 @@ export function BlockedUserRow({
       {/* Actions */}
       <div className="flex flex-col gap-1.5 shrink-0 ml-2">
         <button
-          onClick={() => { onUnblock(); hapticSelection(); }}
+          onClick={() => {
+            onUnblock();
+            hapticSelection();
+          }}
           className="px-3 py-1.5 rounded-lg active:opacity-70"
           style={{
             background: 'rgba(245,158,11,0.1)',
@@ -152,7 +166,10 @@ export function BlockedUserRow({
         </button>
         {onViewProfile && (
           <button
-            onClick={() => { onViewProfile(); hapticSelection(); }}
+            onClick={() => {
+              onViewProfile();
+              hapticSelection();
+            }}
             className="px-3 py-1.5 rounded-lg active:opacity-70"
             style={{
               background: c.surface2,
@@ -190,7 +207,12 @@ const ACTION_ICONS: Record<string, { icon: typeof Shield; color: string }> = {
   appeal_open: { icon: AlertTriangle, color: '#EF4444' },
 };
 
-export function CaseActionCard({ actionTaken, systemNote, status, className }: CaseActionCardProps) {
+export function CaseActionCard({
+  actionTaken,
+  systemNote,
+  status,
+  className,
+}: CaseActionCardProps) {
   const c = useThemeColors();
   const cfg = ACTION_ICONS[status] || ACTION_ICONS.closed;
   const Icon = cfg.icon;
@@ -208,21 +230,14 @@ export function CaseActionCard({ actionTaken, systemNote, status, className }: C
           <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700, marginBottom: 2 }}>
             Hành động đã thực hiện
           </p>
-          <p style={{ color: c.text1, fontSize: φ.sm, lineHeight: 1.6 }}>
-            {actionTaken}
-          </p>
+          <p style={{ color: c.text1, fontSize: φ.sm, lineHeight: 1.6 }}>{actionTaken}</p>
         </div>
       </div>
 
       {systemNote && (
-        <div
-          className="flex items-start gap-2 p-3 rounded-xl"
-          style={{ background: c.surface2 }}
-        >
+        <div className="flex items-start gap-2 p-3 rounded-xl" style={{ background: c.surface2 }}>
           <Info size={12} color={c.text3} className="shrink-0 mt-0.5" />
-          <p style={{ color: c.text2, fontSize: φ.xs, lineHeight: 1.5 }}>
-            {systemNote}
-          </p>
+          <p style={{ color: c.text2, fontSize: φ.xs, lineHeight: 1.5 }}>{systemNote}</p>
         </div>
       )}
     </TrCard>
@@ -258,7 +273,15 @@ const TARGET_LABELS: Record<string, string> = {
 };
 
 export function ReportCaseRow({
-  id, targetName, targetType, reason, createdAt, updatedAt, status, onPress, isLast,
+  id,
+  targetName,
+  targetType,
+  reason,
+  createdAt,
+  updatedAt,
+  status,
+  onPress,
+  isLast,
 }: ReportCaseRowProps) {
   const c = useThemeColors();
   const cfg = TARGET_ICONS[targetType] || TARGET_ICONS.user;
@@ -284,7 +307,10 @@ export function ReportCaseRow({
       {/* Info */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 600 }} className="truncate flex-1 min-w-0">
+          <p
+            style={{ color: c.text1, fontSize: φ.body, fontWeight: 600 }}
+            className="truncate flex-1 min-w-0"
+          >
             {targetName}
           </p>
           <ReportStatusChip status={status} size="sm" />

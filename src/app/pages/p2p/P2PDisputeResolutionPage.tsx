@@ -21,7 +21,8 @@ import { toast } from 'sonner';
 const RESOLUTION = {
   decision: 'in_favor_of_buyer',
   amount: 24000000,
-  reason: 'Seller không release sau khi buyer đã thanh toán. Evidence cho thấy buyer đã chuyển đúng số tiền.',
+  reason:
+    'Seller không release sau khi buyer đã thanh toán. Evidence cho thấy buyer đã chuyển đúng số tiền.',
   mediator: 'Support Team #A5',
   decidedAt: '2026-03-05 16:00',
   appealDeadline: '2026-03-07 16:00',
@@ -36,7 +37,9 @@ export function P2PDisputeResolutionPage() {
   const mountedRef = useRef(true);
 
   useEffect(() => {
-    return () => { mountedRef.current = false; };
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   const isFavorOfBuyer = RESOLUTION.decision === 'in_favor_of_buyer';
@@ -46,13 +49,33 @@ export function P2PDisputeResolutionPage() {
       <Header title="Kết quả giải quyết" subtitle="Tranh chấp · P2P" back />
 
       <div className="px-5 py-4">
-        <TrCard rounded="lg" className="p-4" style={{ background: isFavorOfBuyer ? hexToRgba('#10B981', 10) : hexToRgba('#EF4444', 10) }}>
+        <TrCard
+          rounded="lg"
+          className="p-4"
+          style={{
+            background: isFavorOfBuyer ? hexToRgba('#10B981', 10) : hexToRgba('#EF4444', 10),
+          }}
+        >
           <div className="flex items-start gap-3">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: isFavorOfBuyer ? '#10B981' : '#EF4444' }}>
-              {isFavorOfBuyer ? <CheckCircle size={24} color="#FFFFFF" /> : <AlertTriangle size={24} color="#FFFFFF" />}
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+              style={{ background: isFavorOfBuyer ? '#10B981' : '#EF4444' }}
+            >
+              {isFavorOfBuyer ? (
+                <CheckCircle size={24} color="#FFFFFF" />
+              ) : (
+                <AlertTriangle size={24} color="#FFFFFF" />
+              )}
             </div>
             <div className="flex-1">
-              <h2 style={{ color: isFavorOfBuyer ? '#10B981' : '#EF4444', fontSize: φ.md, fontWeight: 700, marginBottom: 4 }}>
+              <h2
+                style={{
+                  color: isFavorOfBuyer ? '#10B981' : '#EF4444',
+                  fontSize: φ.md,
+                  fontWeight: 700,
+                  marginBottom: 4,
+                }}
+              >
                 Quyết định: {isFavorOfBuyer ? 'Bên mua thắng' : 'Bên bán thắng'}
               </h2>
               <p style={{ color: c.text2, fontSize: φ.xs }}>Dispute #{id}</p>
@@ -63,11 +86,15 @@ export function P2PDisputeResolutionPage() {
 
       <div className="px-5 mb-6">
         <TrCard rounded="md" className="p-4">
-          <h4 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700, marginBottom: 12 }}>Chi tiết quyết định</h4>
+          <h4 style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700, marginBottom: 12 }}>
+            Chi tiết quyết định
+          </h4>
           <div className="flex flex-col gap-3">
             <div>
               <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Số tiền hoàn trả</p>
-              <p style={{ color: c.text1, fontSize: φ.md, fontWeight: 700 }}>{fmtVnd(RESOLUTION.amount)}</p>
+              <p style={{ color: c.text1, fontSize: φ.md, fontWeight: 700 }}>
+                {fmtVnd(RESOLUTION.amount)}
+              </p>
             </div>
             <div>
               <p style={{ color: c.text3, fontSize: 11, marginBottom: 4 }}>Lý do</p>
@@ -90,12 +117,17 @@ export function P2PDisputeResolutionPage() {
           <div className="flex items-start gap-2">
             <MessageCircle size={16} color="#F59E0B" className="shrink-0 mt-0.5" />
             <div>
-              <h4 style={{ color: '#F59E0B', fontSize: φ.sm, fontWeight: 700, marginBottom: 4 }}>Quyền kháng cáo</h4>
+              <h4 style={{ color: '#F59E0B', fontSize: φ.sm, fontWeight: 700, marginBottom: 4 }}>
+                Quyền kháng cáo
+              </h4>
               <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5, marginBottom: 8 }}>
                 Bạn có thể kháng cáo quyết định này trước {RESOLUTION.appealDeadline}
               </p>
               <button
-                onClick={() => { hapticSuccess(); toast.success('Đã mở form kháng cáo'); }}
+                onClick={() => {
+                  hapticSuccess();
+                  toast.success('Đã mở form kháng cáo');
+                }}
                 className="px-3 py-1.5 rounded-lg text-xs font-semibold"
                 style={{ background: '#F59E0B', color: '#FFFFFF' }}
               >

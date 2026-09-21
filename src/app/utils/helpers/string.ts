@@ -43,7 +43,7 @@ export function capitalize(str: string): string {
 export function capitalizeWords(str: string): string {
   return str
     .split(' ')
-    .map(word => capitalize(word))
+    .map((word) => capitalize(word))
     .join(' ');
 }
 
@@ -65,9 +65,7 @@ export function slugify(str: string): string {
  * @example camelCase("hello-world") // "helloWorld"
  */
 export function camelCase(str: string): string {
-  return str
-    .toLowerCase()
-    .replace(/[^a-zA-Z0-9]+(.)/g, (_, chr) => chr.toUpperCase());
+  return str.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (_, chr) => chr.toUpperCase());
 }
 
 /**
@@ -87,7 +85,7 @@ export function snakeCase(str: string): string {
  * @example pluralize(2, "item") // "2 items"
  */
 export function pluralize(count: number, singular: string, plural?: string): string {
-  const word = count === 1 ? singular : (plural || singular + 's');
+  const word = count === 1 ? singular : plural || singular + 's';
   return `${count} ${word}`;
 }
 
@@ -219,7 +217,7 @@ export function highlightSearch(text: string, query: string): string {
 export function getInitials(name: string, maxLength: number = 2): string {
   return name
     .split(' ')
-    .map(word => word[0])
+    .map((word) => word[0])
     .join('')
     .toUpperCase()
     .slice(0, maxLength);
@@ -263,14 +261,14 @@ export function readingTime(str: string, wordsPerMinute: number = 200): number {
 export function hexToRgba(hex: string, opacity: number): string {
   // Remove # if present
   const cleanHex = hex.replace('#', '');
-  
+
   // Parse RGB values
   const r = parseInt(cleanHex.substring(0, 2), 16);
   const g = parseInt(cleanHex.substring(2, 4), 16);
   const b = parseInt(cleanHex.substring(4, 6), 16);
-  
+
   // Convert opacity from 0-100 to 0-1
   const alpha = opacity / 100;
-  
+
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }

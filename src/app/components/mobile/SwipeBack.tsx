@@ -28,17 +28,20 @@ export function SwipeBack({ children, disabled = false, threshold = 80 }: SwipeB
   /** true once user has confirmed horizontal swipe past dead zone */
   const activated = useRef(false);
 
-  const onTouchStart = useCallback((e: React.TouchEvent) => {
-    if (disabled) return;
-    const touch = e.touches[0];
-    // Chỉ track khi bắt đầu từ edge trái (12px) — tránh trùng nút back (starts at px-5 = 20px)
-    if (touch.clientX > 12) return;
-    startX.current = touch.clientX;
-    startY.current = touch.clientY;
-    isTracking.current = true;
-    isHorizontal.current = null;
-    activated.current = false;
-  }, [disabled]);
+  const onTouchStart = useCallback(
+    (e: React.TouchEvent) => {
+      if (disabled) return;
+      const touch = e.touches[0];
+      // Chỉ track khi bắt đầu từ edge trái (12px) — tránh trùng nút back (starts at px-5 = 20px)
+      if (touch.clientX > 12) return;
+      startX.current = touch.clientX;
+      startY.current = touch.clientY;
+      isTracking.current = true;
+      isHorizontal.current = null;
+      activated.current = false;
+    },
+    [disabled],
+  );
 
   const onTouchMove = useCallback((e: React.TouchEvent) => {
     if (!isTracking.current) return;
@@ -117,7 +120,13 @@ export function SwipeBack({ children, disabled = false, threshold = 80 }: SwipeB
             }}
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M10 3L5 8L10 13" stroke="#3B82F6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path
+                d="M10 3L5 8L10 13"
+                stroke="#3B82F6"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </div>
 

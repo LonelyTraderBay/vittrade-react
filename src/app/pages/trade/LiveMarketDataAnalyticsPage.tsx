@@ -60,7 +60,7 @@ function LiveMarketDataContent() {
     const oiScore = openInterest.change24hPct > 3 ? 65 : openInterest.change24hPct < -3 ? 35 : 50;
 
     const overallScore = Math.round(
-      lsScore * 0.25 + ttScore * 0.25 + frScore * 0.15 + oiScore * 0.2 + 60 * 0.15
+      lsScore * 0.25 + ttScore * 0.25 + frScore * 0.15 + oiScore * 0.2 + 60 * 0.15,
     );
 
     let overall: 'extreme_greed' | 'greed' | 'neutral' | 'fear' | 'extreme_fear';
@@ -88,9 +88,13 @@ function LiveMarketDataContent() {
   const mockLiqStats = useMemo(() => {
     const last24h = liveLiquidations.slice(0, 30);
     const totalSize = last24h.reduce((sum, liq) => sum + liq.size, 0);
-    const longSize = last24h.filter(l => l.side === 'long').reduce((sum, liq) => sum + liq.size, 0);
-    const shortSize = last24h.filter(l => l.side === 'short').reduce((sum, liq) => sum + liq.size, 0);
-    const largest = Math.max(...last24h.map(l => l.size));
+    const longSize = last24h
+      .filter((l) => l.side === 'long')
+      .reduce((sum, liq) => sum + liq.size, 0);
+    const shortSize = last24h
+      .filter((l) => l.side === 'short')
+      .reduce((sum, liq) => sum + liq.size, 0);
+    const largest = Math.max(...last24h.map((l) => l.size));
 
     return {
       last24h: {
@@ -121,12 +125,42 @@ function LiveMarketDataContent() {
 
   // Mock liquidation clusters
   const mockLiquidationClusters = [
-    { price: 70000, longLiquidations: 45000000, shortLiquidations: 12000000, total: 57000000, intensity: 95 },
-    { price: 68500, longLiquidations: 32000000, shortLiquidations: 8000000, total: 40000000, intensity: 70 },
+    {
+      price: 70000,
+      longLiquidations: 45000000,
+      shortLiquidations: 12000000,
+      total: 57000000,
+      intensity: 95,
+    },
+    {
+      price: 68500,
+      longLiquidations: 32000000,
+      shortLiquidations: 8000000,
+      total: 40000000,
+      intensity: 70,
+    },
     { price: 67543, longLiquidations: 0, shortLiquidations: 0, total: 0, intensity: 0 },
-    { price: 66000, longLiquidations: 15000000, shortLiquidations: 28000000, total: 43000000, intensity: 75 },
-    { price: 65000, longLiquidations: 8000000, shortLiquidations: 52000000, total: 60000000, intensity: 100 },
-    { price: 64000, longLiquidations: 12000000, shortLiquidations: 35000000, total: 47000000, intensity: 80 },
+    {
+      price: 66000,
+      longLiquidations: 15000000,
+      shortLiquidations: 28000000,
+      total: 43000000,
+      intensity: 75,
+    },
+    {
+      price: 65000,
+      longLiquidations: 8000000,
+      shortLiquidations: 52000000,
+      total: 60000000,
+      intensity: 100,
+    },
+    {
+      price: 64000,
+      longLiquidations: 12000000,
+      shortLiquidations: 35000000,
+      total: 47000000,
+      intensity: 80,
+    },
   ];
 
   return (
@@ -195,17 +229,11 @@ function LiveMarketDataContent() {
         {/* MARKET DATA TAB - LIVE */}
         {tab === 'market' && (
           <div className="flex flex-col gap-3">
-            {openInterest && (
-              <OpenInterestWidget pair={selectedPair} data={openInterest} />
-            )}
+            {openInterest && <OpenInterestWidget pair={selectedPair} data={openInterest} />}
 
-            {longShortRatio && (
-              <LongShortRatio pair={selectedPair} data={longShortRatio} />
-            )}
+            {longShortRatio && <LongShortRatio pair={selectedPair} data={longShortRatio} />}
 
-            {topTraders && (
-              <TopTraderPositions pair={selectedPair} data={topTraders} />
-            )}
+            {topTraders && <TopTraderPositions pair={selectedPair} data={topTraders} />}
 
             {fundingRate && (
               <FundingRateHistory
@@ -239,10 +267,7 @@ function LiveMarketDataContent() {
             <MarketSentiment pair={selectedPair} data={sentiment} />
 
             {/* Real-time data sources */}
-            <div
-              className="rounded-2xl p-4"
-              style={{ background: c.surface }}
-            >
+            <div className="rounded-2xl p-4" style={{ background: c.surface }}>
               <p
                 style={{
                   color: c.text1,

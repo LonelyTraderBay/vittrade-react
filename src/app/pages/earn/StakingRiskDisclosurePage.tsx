@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { AlertTriangle, TrendingDown, Lock, Code, Building2, Scale, Globe, ChevronRight } from 'lucide-react';
+import {
+  AlertTriangle,
+  TrendingDown,
+  Lock,
+  Code,
+  Building2,
+  Scale,
+  Globe,
+  ChevronRight,
+} from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { PageContent, PageSection } from '../../components/layout/PageContent';
@@ -26,7 +35,8 @@ const RISK_CATEGORIES: RiskCategory[] = [
     icon: TrendingDown,
     title: 'Rủi ro Thị trường',
     level: 'high',
-    description: 'Giá trị tài sản số có thể biến động mạnh trong kỳ hạn khóa, dẫn đến thua lỗ vốn gốc dù vẫn nhận phần thưởng staking.',
+    description:
+      'Giá trị tài sản số có thể biến động mạnh trong kỳ hạn khóa, dẫn đến thua lỗ vốn gốc dù vẫn nhận phần thưởng staking.',
     details: [
       'Giá tài sản số có thể giảm 20-80% trong thời gian ngắn do:',
       '• Tin tức tiêu cực về dự án',
@@ -56,7 +66,8 @@ const RISK_CATEGORIES: RiskCategory[] = [
     icon: Lock,
     title: 'Rủi ro Thanh khoản',
     level: 'high',
-    description: 'Tài sản bị khóa trong kỳ hạn, không thể bán hoặc chuyển đổi ngay lập tức, dẫn đến mất cơ hội đầu tư khác hoặc không thể ứng phó với tình huống khẩn cấp.',
+    description:
+      'Tài sản bị khóa trong kỳ hạn, không thể bán hoặc chuyển đổi ngay lập tức, dẫn đến mất cơ hội đầu tư khác hoặc không thể ứng phó với tình huống khẩn cấp.',
     details: [
       'Fixed Staking: Tài sản bị khóa hoàn toàn trong 30-365 ngày.',
       'Flexible Staking: Có thể rút nhưng cần chờ unbonding period 1-21 ngày.',
@@ -86,7 +97,8 @@ const RISK_CATEGORIES: RiskCategory[] = [
     icon: AlertTriangle,
     title: 'Rủi ro Slashing',
     level: 'medium',
-    description: 'Validator vi phạm quy tắc mạng (downtime, double signing) sẽ bị phạt, dẫn đến mất một phần tài sản đã staking. Bạn chia sẻ rủi ro này với validator.',
+    description:
+      'Validator vi phạm quy tắc mạng (downtime, double signing) sẽ bị phạt, dẫn đến mất một phần tài sản đã staking. Bạn chia sẻ rủi ro này với validator.',
     details: [
       'Slashing là hình phạt tự động do mạng blockchain áp dụng.',
       'Các hành vi bị slashing:',
@@ -119,7 +131,8 @@ const RISK_CATEGORIES: RiskCategory[] = [
     icon: Code,
     title: 'Rủi ro Smart Contract',
     level: 'high',
-    description: 'Đối với DeFi Staking, smart contract có thể có lỗ hổng bảo mật, bị hack, hoặc có bug dẫn đến mất toàn bộ tài sản.',
+    description:
+      'Đối với DeFi Staking, smart contract có thể có lỗ hổng bảo mật, bị hack, hoặc có bug dẫn đến mất toàn bộ tài sản.',
     details: [
       'Smart contract là code chạy trên blockchain, không thể sửa đổi sau khi deploy.',
       'Rủi ro bảo mật:',
@@ -152,7 +165,8 @@ const RISK_CATEGORIES: RiskCategory[] = [
     icon: Building2,
     title: 'Rủi ro Đối tác',
     level: 'medium',
-    description: 'Nền tảng hoặc validator có thể gặp sự cố kỹ thuật, bị hack, phá sản, hoặc hành động gian lận, dẫn đến mất tài sản.',
+    description:
+      'Nền tảng hoặc validator có thể gặp sự cố kỹ thuật, bị hack, phá sản, hoặc hành động gian lận, dẫn đến mất tài sản.',
     details: [
       'Nền tảng giữ custody (quyền giữ tài sản) của bạn.',
       'Rủi ro từ nền tảng:',
@@ -186,7 +200,8 @@ const RISK_CATEGORIES: RiskCategory[] = [
     icon: Scale,
     title: 'Rủi ro Pháp lý',
     level: 'medium',
-    description: 'Quy định về staking có thể thay đổi, dẫn đến dịch vụ bị cấm, thuế tăng, hoặc tài sản bị đóng băng.',
+    description:
+      'Quy định về staking có thể thay đổi, dẫn đến dịch vụ bị cấm, thuế tăng, hoặc tài sản bị đóng băng.',
     details: [
       'Staking chưa có khung pháp lý rõ ràng ở nhiều quốc gia.',
       'Rủi ro pháp lý:',
@@ -218,7 +233,8 @@ const RISK_CATEGORIES: RiskCategory[] = [
     icon: Globe,
     title: 'Rủi ro Kỹ thuật',
     level: 'low',
-    description: 'Sự cố kỹ thuật trên blockchain hoặc nền tảng có thể dẫn đến mất phần thưởng, delay rút tiền, hoặc dữ liệu sai.',
+    description:
+      'Sự cố kỹ thuật trên blockchain hoặc nền tảng có thể dẫn đến mất phần thưởng, delay rút tiền, hoặc dữ liệu sai.',
     details: [
       'Rủi ro từ blockchain:',
       '• Hard fork: Blockchain tách thành 2 chain, gây rối loạn',
@@ -267,7 +283,10 @@ export function StakingRiskDisclosurePage() {
 
       <PageContent>
         {/* Warning Banner */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(239,68,68,0.08)', border: '1.5px solid rgba(239,68,68,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{ background: 'rgba(239,68,68,0.08)', border: '1.5px solid rgba(239,68,68,0.2)' }}
+        >
           <div className="flex gap-3">
             <AlertTriangle size={24} color="#EF4444" className="shrink-0" />
             <div>
@@ -275,7 +294,8 @@ export function StakingRiskDisclosurePage() {
                 Cảnh báo Rủi ro Quan trọng
               </p>
               <p style={{ color: c.text2, fontSize: 13, lineHeight: 1.6 }}>
-                Staking tài sản số có rủi ro mất vốn. Phần thưởng không được đảm bảo. Chỉ stake số tiền bạn có thể chấp nhận mất. Đọc kỹ các rủi ro dưới đây trước khi tham gia.
+                Staking tài sản số có rủi ro mất vốn. Phần thưởng không được đảm bảo. Chỉ stake số
+                tiền bạn có thể chấp nhận mất. Đọc kỹ các rủi ro dưới đây trước khi tham gia.
               </p>
             </div>
           </div>
@@ -297,15 +317,22 @@ export function StakingRiskDisclosurePage() {
             <PageSection label="Tóm tắt Rủi ro">
               <TrCard className="p-4">
                 <p style={{ color: c.text2, fontSize: 13, lineHeight: 1.7, marginBottom: 12 }}>
-                  Staking là hoạt động khóa tài sản số để tham gia vào mạng blockchain và nhận phần thưởng. Mặc dù có lợi nhuận tiềm năng, staking đi kèm với nhiều rủi ro có thể dẫn đến mất một phần hoặc toàn bộ tài sản.
+                  Staking là hoạt động khóa tài sản số để tham gia vào mạng blockchain và nhận phần
+                  thưởng. Mặc dù có lợi nhuận tiềm năng, staking đi kèm với nhiều rủi ro có thể dẫn
+                  đến mất một phần hoặc toàn bộ tài sản.
                 </p>
                 <div className="grid grid-cols-3 gap-2">
                   {Object.entries(RISK_LEVELS).map(([level, config]) => {
-                    const count = RISK_CATEGORIES.filter(r => r.level === level).length;
+                    const count = RISK_CATEGORIES.filter((r) => r.level === level).length;
                     return (
-                      <div key={level} className="rounded-xl p-3 text-center"
-                        style={{ background: config.bg, border: `1px solid ${config.color}33` }}>
-                        <p style={{ color: config.color, fontSize: 20, fontWeight: 700 }}>{count}</p>
+                      <div
+                        key={level}
+                        className="rounded-xl p-3 text-center"
+                        style={{ background: config.bg, border: `1px solid ${config.color}33` }}
+                      >
+                        <p style={{ color: config.color, fontSize: 20, fontWeight: 700 }}>
+                          {count}
+                        </p>
                         <p style={{ color: c.text3, fontSize: 10 }}>Rủi ro {config.label}</p>
                       </div>
                     );
@@ -316,25 +343,47 @@ export function StakingRiskDisclosurePage() {
 
             <PageSection label="Rủi ro theo Sản phẩm">
               {[
-                { name: 'Staking Linh hoạt', risks: ['market', 'liquidity', 'counterparty'], riskLevel: 'medium' as const },
-                { name: 'Staking Cố định', risks: ['market', 'liquidity', 'slashing', 'counterparty'], riskLevel: 'high' as const },
-                { name: 'DeFi Staking', risks: ['market', 'liquidity', 'smart-contract', 'counterparty'], riskLevel: 'high' as const },
-              ].map(product => (
+                {
+                  name: 'Staking Linh hoạt',
+                  risks: ['market', 'liquidity', 'counterparty'],
+                  riskLevel: 'medium' as const,
+                },
+                {
+                  name: 'Staking Cố định',
+                  risks: ['market', 'liquidity', 'slashing', 'counterparty'],
+                  riskLevel: 'high' as const,
+                },
+                {
+                  name: 'DeFi Staking',
+                  risks: ['market', 'liquidity', 'smart-contract', 'counterparty'],
+                  riskLevel: 'high' as const,
+                },
+              ].map((product) => (
                 <TrCard key={product.name} className="p-4">
                   <div className="flex items-center justify-between mb-3">
-                    <span style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>{product.name}</span>
-                    <span className="px-2 py-1 rounded-lg text-xs font-bold"
-                      style={{ background: RISK_LEVELS[product.riskLevel].bg, color: RISK_LEVELS[product.riskLevel].color }}>
+                    <span style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>
+                      {product.name}
+                    </span>
+                    <span
+                      className="px-2 py-1 rounded-lg text-xs font-bold"
+                      style={{
+                        background: RISK_LEVELS[product.riskLevel].bg,
+                        color: RISK_LEVELS[product.riskLevel].color,
+                      }}
+                    >
                       Rủi ro {RISK_LEVELS[product.riskLevel].label}
                     </span>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
-                    {product.risks.map(riskId => {
-                      const risk = RISK_CATEGORIES.find(r => r.id === riskId);
+                    {product.risks.map((riskId) => {
+                      const risk = RISK_CATEGORIES.find((r) => r.id === riskId);
                       if (!risk) return null;
                       return (
-                        <span key={riskId} className="px-2 py-1 rounded-lg text-xs"
-                          style={{ background: c.surface2, color: c.text2 }}>
+                        <span
+                          key={riskId}
+                          className="px-2 py-1 rounded-lg text-xs"
+                          style={{ background: c.surface2, color: c.text2 }}
+                        >
                           {risk.title}
                         </span>
                       );
@@ -346,7 +395,9 @@ export function StakingRiskDisclosurePage() {
 
             <TrCard className="p-4">
               <p style={{ color: c.text3, fontSize: 12, lineHeight: 1.6, textAlign: 'center' }}>
-                Nền tảng KHÔNG đảm bảo lợi nhuận, bảo toàn vốn, hoặc thanh khoản. Bạn chịu hoàn toàn rủi ro khi tham gia staking. Vui lòng đọc kỹ từng loại rủi ro trong tab "Các loại rủi ro".
+                Nền tảng KHÔNG đảm bảo lợi nhuận, bảo toàn vốn, hoặc thanh khoản. Bạn chịu hoàn toàn
+                rủi ro khi tham gia staking. Vui lòng đọc kỹ từng loại rủi ro trong tab "Các loại
+                rủi ro".
               </p>
             </TrCard>
           </>
@@ -354,7 +405,7 @@ export function StakingRiskDisclosurePage() {
 
         {tab === 'categories' && (
           <div className="flex flex-col gap-3">
-            {RISK_CATEGORIES.map(risk => {
+            {RISK_CATEGORIES.map((risk) => {
               const Icon = risk.icon;
               const config = RISK_LEVELS[risk.level];
               const isExpanded = expandedRisk === risk.id;
@@ -362,17 +413,24 @@ export function StakingRiskDisclosurePage() {
                 <TrCard key={risk.id} className="overflow-hidden">
                   <button
                     onClick={() => setExpandedRisk(isExpanded ? null : risk.id)}
-                    className="w-full p-4">
+                    className="w-full p-4"
+                  >
                     <div className="flex items-start gap-3 mb-2">
-                      <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                        style={{ background: config.bg, border: `1.5px solid ${config.color}33` }}>
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                        style={{ background: config.bg, border: `1.5px solid ${config.color}33` }}
+                      >
                         <Icon size={20} color={config.color} />
                       </div>
                       <div className="flex-1 text-left">
                         <div className="flex items-center gap-2 mb-1">
-                          <span style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>{risk.title}</span>
-                          <span className="px-2 py-0.5 rounded-md text-xs font-bold"
-                            style={{ background: config.bg, color: config.color }}>
+                          <span style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>
+                            {risk.title}
+                          </span>
+                          <span
+                            className="px-2 py-0.5 rounded-md text-xs font-bold"
+                            style={{ background: config.bg, color: config.color }}
+                          >
                             {config.label}
                           </span>
                         </div>
@@ -397,39 +455,84 @@ export function StakingRiskDisclosurePage() {
                       gridTemplateRows: isExpanded ? '1fr' : '0fr',
                       transition: 'grid-template-rows 0.3s ease',
                       overflow: 'hidden',
-                    }}>
+                    }}
+                  >
                     <div style={{ minHeight: 0 }}>
-                      <div className="px-4 pb-4" style={{ borderTop: `1px solid ${c.divider}`, paddingTop: 16 }}>
+                      <div
+                        className="px-4 pb-4"
+                        style={{ borderTop: `1px solid ${c.divider}`, paddingTop: 16 }}
+                      >
                         <div className="mb-4">
-                          <p style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 6 }}>Chi tiết:</p>
+                          <p
+                            style={{
+                              color: c.text1,
+                              fontSize: 13,
+                              fontWeight: 700,
+                              marginBottom: 6,
+                            }}
+                          >
+                            Chi tiết:
+                          </p>
                           {risk.details.map((detail, idx) => (
-                            <p key={idx} style={{
-                              color: c.text2,
-                              fontSize: 12,
-                              lineHeight: 1.6,
-                              marginBottom: detail.startsWith('•') ? 2 : 8,
-                              paddingLeft: detail.startsWith('•') ? 12 : 0,
-                            }}>
+                            <p
+                              key={idx}
+                              style={{
+                                color: c.text2,
+                                fontSize: 12,
+                                lineHeight: 1.6,
+                                marginBottom: detail.startsWith('•') ? 2 : 8,
+                                paddingLeft: detail.startsWith('•') ? 12 : 0,
+                              }}
+                            >
                               {detail}
                             </p>
                           ))}
                         </div>
 
                         <div className="mb-4">
-                          <p style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 6 }}>Ví dụ thực tế:</p>
+                          <p
+                            style={{
+                              color: c.text1,
+                              fontSize: 13,
+                              fontWeight: 700,
+                              marginBottom: 6,
+                            }}
+                          >
+                            Ví dụ thực tế:
+                          </p>
                           {risk.examples.map((example, idx) => (
-                            <div key={idx} className="rounded-lg p-2 mb-2" style={{ background: 'rgba(239,68,68,0.06)' }}>
-                              <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>• {example}</p>
+                            <div
+                              key={idx}
+                              className="rounded-lg p-2 mb-2"
+                              style={{ background: 'rgba(239,68,68,0.06)' }}
+                            >
+                              <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.5 }}>
+                                • {example}
+                              </p>
                             </div>
                           ))}
                         </div>
 
                         <div>
-                          <p style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 6 }}>Cách giảm thiểu:</p>
+                          <p
+                            style={{
+                              color: c.text1,
+                              fontSize: 13,
+                              fontWeight: 700,
+                              marginBottom: 6,
+                            }}
+                          >
+                            Cách giảm thiểu:
+                          </p>
                           {risk.mitigation.map((item, idx) => (
                             <div key={idx} className="flex items-start gap-2 mb-2">
-                              <div className="w-1 h-1 rounded-full mt-2 shrink-0" style={{ background: '#10B981' }} />
-                              <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.5 }}>{item}</p>
+                              <div
+                                className="w-1 h-1 rounded-full mt-2 shrink-0"
+                                style={{ background: '#10B981' }}
+                              />
+                              <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.5 }}>
+                                {item}
+                              </p>
                             </div>
                           ))}
                         </div>
@@ -446,8 +549,13 @@ export function StakingRiskDisclosurePage() {
           <>
             <TrCard className="p-4">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
-                  style={{ background: 'rgba(59,130,246,0.12)', border: '1.5px solid rgba(59,130,246,0.3)' }}>
+                <div
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center"
+                  style={{
+                    background: 'rgba(59,130,246,0.12)',
+                    border: '1.5px solid rgba(59,130,246,0.3)',
+                  }}
+                >
                   <Scale size={24} color="#3B82F6" />
                 </div>
                 <div className="flex-1">
@@ -460,12 +568,14 @@ export function StakingRiskDisclosurePage() {
                 </div>
               </div>
               <p style={{ color: c.text2, fontSize: 13, lineHeight: 1.6, marginBottom: 16 }}>
-                Trước khi stake, bạn nên đánh giá khả năng chấp nhận rủi ro của mình. Làm bài quiz ngắn để nhận gợi ý sản phẩm phù hợp.
+                Trước khi stake, bạn nên đánh giá khả năng chấp nhận rủi ro của mình. Làm bài quiz
+                ngắn để nhận gợi ý sản phẩm phù hợp.
               </p>
               <button
                 onClick={() => navigate(`${prefix}/earn/risk-assessment`)}
                 className="w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2"
-                style={{ background: c.primary, color: '#FFF' }}>
+                style={{ background: c.primary, color: '#FFF' }}
+              >
                 Bắt đầu đánh giá rủi ro
                 <ChevronRight size={18} />
               </button>
@@ -475,28 +585,26 @@ export function StakingRiskDisclosurePage() {
               {[
                 {
                   q: 'Tôi có thể mất hết tiền khi stake không?',
-                  a: 'Có. Trong trường hợp xấu nhất (ví dụ: smart contract bị hack, nền tảng phá sản, hoặc validator bị slashing 100%), bạn có thể mất toàn bộ tài sản. Tuy nhiên, xác suất này thường <5% nếu bạn chọn nền tảng uy tín.'
+                  a: 'Có. Trong trường hợp xấu nhất (ví dụ: smart contract bị hack, nền tảng phá sản, hoặc validator bị slashing 100%), bạn có thể mất toàn bộ tài sản. Tuy nhiên, xác suất này thường <5% nếu bạn chọn nền tảng uy tín.',
                 },
                 {
                   q: 'APY có được đảm bảo không?',
-                  a: 'Fixed Staking: APY được đảm bảo tại thời điểm đăng ký. Flexible/DeFi Staking: APY có thể thay đổi hàng ngày dựa trên điều kiện thị trường.'
+                  a: 'Fixed Staking: APY được đảm bảo tại thời điểm đăng ký. Flexible/DeFi Staking: APY có thể thay đổi hàng ngày dựa trên điều kiện thị trường.',
                 },
                 {
                   q: 'Nếu tôi rút sớm thì sao?',
-                  a: 'Fixed Staking: Bạn sẽ mất 50-100% phần thưởng đã tích lũy. Flexible Staking: Rút bất kỳ lúc nào nhưng cần chờ unbonding 1-21 ngày.'
+                  a: 'Fixed Staking: Bạn sẽ mất 50-100% phần thưởng đã tích lũy. Flexible Staking: Rút bất kỳ lúc nào nhưng cần chờ unbonding 1-21 ngày.',
                 },
                 {
                   q: 'Có bảo hiểm nào không?',
-                  a: 'Một số sản phẩm có Slashing Insurance (bồi thường tối đa 50% thiệt hại) với phí 0.5-1% APY. DeFi pools có thể tham gia insurance protocol như Nexus Mutual.'
+                  a: 'Một số sản phẩm có Slashing Insurance (bồi thường tối đa 50% thiệt hại) với phí 0.5-1% APY. DeFi pools có thể tham gia insurance protocol như Nexus Mutual.',
                 },
               ].map((item, idx) => (
                 <TrCard key={idx} className="p-4">
                   <p style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 6 }}>
                     {item.q}
                   </p>
-                  <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                    {item.a}
-                  </p>
+                  <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>{item.a}</p>
                 </TrCard>
               ))}
             </PageSection>

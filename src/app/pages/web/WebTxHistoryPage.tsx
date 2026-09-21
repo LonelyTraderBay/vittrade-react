@@ -1,9 +1,19 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Search, Download, ArrowUpDown, RefreshCw, X,
-  ArrowDownLeft, ArrowUpRight, ArrowLeftRight, Users, Clock,
-  ChevronLeft, ChevronRight, Filter,
+  Search,
+  Download,
+  ArrowUpDown,
+  RefreshCw,
+  X,
+  ArrowDownLeft,
+  ArrowUpRight,
+  ArrowLeftRight,
+  Users,
+  Clock,
+  ChevronLeft,
+  ChevronRight,
+  Filter,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useRoutePrefix } from '../../hooks/useRoutePrefix';
@@ -69,38 +79,43 @@ export function WebTxHistoryPage() {
   const pageSize = 15;
 
   const handleSort = (key: SortKey) => {
-    if (sortKey === key) setSortDir(d => d === 'asc' ? 'desc' : 'asc');
-    else { setSortKey(key); setSortDir('desc'); }
+    if (sortKey === key) setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'));
+    else {
+      setSortKey(key);
+      setSortDir('desc');
+    }
   };
 
   const filtered = useMemo(() => {
     let list = [...TRANSACTIONS];
 
     // Type filter
-    if (typeFilter === 'deposit') list = list.filter(tx => tx.type === 'deposit');
-    else if (typeFilter === 'withdraw') list = list.filter(tx => tx.type === 'withdraw');
-    else if (typeFilter === 'trade') list = list.filter(tx => tx.type.startsWith('trade'));
-    else if (typeFilter === 'p2p') list = list.filter(tx => tx.type.startsWith('p2p'));
+    if (typeFilter === 'deposit') list = list.filter((tx) => tx.type === 'deposit');
+    else if (typeFilter === 'withdraw') list = list.filter((tx) => tx.type === 'withdraw');
+    else if (typeFilter === 'trade') list = list.filter((tx) => tx.type.startsWith('trade'));
+    else if (typeFilter === 'p2p') list = list.filter((tx) => tx.type.startsWith('p2p'));
 
     // Status filter
-    if (statusFilter === 'Hoàn thành') list = list.filter(tx => tx.status === 'completed');
-    else if (statusFilter === 'Đang xử lý') list = list.filter(tx => tx.status === 'pending');
-    else if (statusFilter === 'Thất bại') list = list.filter(tx => tx.status === 'failed');
+    if (statusFilter === 'Hoàn thành') list = list.filter((tx) => tx.status === 'completed');
+    else if (statusFilter === 'Đang xử lý') list = list.filter((tx) => tx.status === 'pending');
+    else if (statusFilter === 'Thất bại') list = list.filter((tx) => tx.status === 'failed');
 
     // Search
     if (search) {
       const q = search.toLowerCase();
-      list = list.filter(tx =>
-        tx.asset.toLowerCase().includes(q) ||
-        (tx.txHash && tx.txHash.toLowerCase().includes(q)) ||
-        (tx.network && tx.network.toLowerCase().includes(q))
+      list = list.filter(
+        (tx) =>
+          tx.asset.toLowerCase().includes(q) ||
+          (tx.txHash && tx.txHash.toLowerCase().includes(q)) ||
+          (tx.network && tx.network.toLowerCase().includes(q)),
       );
     }
 
     // Sort
     list.sort((a, b) => {
       let diff = 0;
-      if (sortKey === 'time') diff = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      if (sortKey === 'time')
+        diff = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
       else if (sortKey === 'amount') diff = a.amount - b.amount;
       else if (sortKey === 'type') diff = a.type.localeCompare(b.type);
       return sortDir === 'asc' ? diff : -diff;
@@ -113,9 +128,13 @@ export function WebTxHistoryPage() {
   const paginated = filtered.slice((page - 1) * pageSize, page * pageSize);
 
   // Stats
-  const totalDeposits = TRANSACTIONS.filter(tx => tx.type === 'deposit' && tx.status === 'completed').reduce((s, tx) => s + tx.amount, 0);
-  const totalWithdraws = TRANSACTIONS.filter(tx => tx.type === 'withdraw' && tx.status === 'completed').reduce((s, tx) => s + tx.amount, 0);
-  const pendingCount = TRANSACTIONS.filter(tx => tx.status === 'pending').length;
+  const totalDeposits = TRANSACTIONS.filter(
+    (tx) => tx.type === 'deposit' && tx.status === 'completed',
+  ).reduce((s, tx) => s + tx.amount, 0);
+  const totalWithdraws = TRANSACTIONS.filter(
+    (tx) => tx.type === 'withdraw' && tx.status === 'completed',
+  ).reduce((s, tx) => s + tx.amount, 0);
+  const pendingCount = TRANSACTIONS.filter((tx) => tx.status === 'pending').length;
 
   return (
     <PageLayout>
@@ -125,8 +144,15 @@ export function WebTxHistoryPage() {
         subtitle={`${TRANSACTIONS.length} giao dịch`}
         back
         right={
-          <button className="web-cmd-btn flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors"
-            style={{ border: `1px solid ${c.border}`, fontSize: WEB_FONT.sm, fontWeight: 600, color: c.text2 }}>
+          <button
+            className="web-cmd-btn flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors"
+            style={{
+              border: `1px solid ${c.border}`,
+              fontSize: WEB_FONT.sm,
+              fontWeight: 600,
+              color: c.text2,
+            }}
+          >
             <Download size={13} /> Xuất CSV
           </button>
         }
@@ -135,14 +161,38 @@ export function WebTxHistoryPage() {
         {/* Quick stats */}
         <div className="grid grid-cols-3 gap-4">
           {[
-            { label: 'Tổng nạp (USDT)', value: `${fmtAmount(totalDeposits, 2)} USDT`, color: '#10B981' },
-            { label: 'Tổng rút (USDT)', value: `${fmtAmount(totalWithdraws, 2)} USDT`, color: '#EF4444' },
+            {
+              label: 'Tổng nạp (USDT)',
+              value: `${fmtAmount(totalDeposits, 2)} USDT`,
+              color: '#10B981',
+            },
+            {
+              label: 'Tổng rút (USDT)',
+              value: `${fmtAmount(totalWithdraws, 2)} USDT`,
+              color: '#EF4444',
+            },
             { label: 'Đang xử lý', value: `${pendingCount} giao dịch`, color: '#F59E0B' },
-          ].map(s => (
-            <div key={s.label} className="rounded-xl p-4"
-              style={{ background: c.surface, border: `1px solid ${c.border}` }}>
-              <p style={{ color: c.text3, fontSize: WEB_FONT.xs, fontWeight: 600, marginBottom: 4 }}>{s.label}</p>
-              <p style={{ color: s.color, fontSize: WEB_FONT.lg, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>{s.value}</p>
+          ].map((s) => (
+            <div
+              key={s.label}
+              className="rounded-xl p-4"
+              style={{ background: c.surface, border: `1px solid ${c.border}` }}
+            >
+              <p
+                style={{ color: c.text3, fontSize: WEB_FONT.xs, fontWeight: 600, marginBottom: 4 }}
+              >
+                {s.label}
+              </p>
+              <p
+                style={{
+                  color: s.color,
+                  fontSize: WEB_FONT.lg,
+                  fontWeight: 700,
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
+                {s.value}
+              </p>
             </div>
           ))}
         </div>
@@ -151,15 +201,24 @@ export function WebTxHistoryPage() {
         <div className="flex items-center gap-3">
           {/* Type filter */}
           <div className="flex gap-1">
-            {FILTERS.map(f => (
-              <button key={f.id} onClick={() => { setTypeFilter(f.id); setPage(1); }}
+            {FILTERS.map((f) => (
+              <button
+                key={f.id}
+                onClick={() => {
+                  setTypeFilter(f.id);
+                  setPage(1);
+                }}
                 className="px-3 py-1.5 rounded-md transition-colors"
                 style={{
                   background: typeFilter === f.id ? c.chipActiveBg : 'transparent',
                   color: typeFilter === f.id ? c.chipActiveText : c.text3,
-                  fontSize: WEB_FONT.sm, fontWeight: typeFilter === f.id ? 600 : 500,
+                  fontSize: WEB_FONT.sm,
+                  fontWeight: typeFilter === f.id ? 600 : 500,
                   border: `1px solid ${typeFilter === f.id ? c.chipActiveBorder : 'transparent'}`,
-                }}>{f.label}</button>
+                }}
+              >
+                {f.label}
+              </button>
             ))}
           </div>
 
@@ -167,56 +226,129 @@ export function WebTxHistoryPage() {
 
           {/* Status filter */}
           <div className="flex gap-1">
-            {STATUS_FILTERS.map(s => (
-              <button key={s} onClick={() => { setStatusFilter(s); setPage(1); }}
+            {STATUS_FILTERS.map((s) => (
+              <button
+                key={s}
+                onClick={() => {
+                  setStatusFilter(s);
+                  setPage(1);
+                }}
                 className="px-2.5 py-1 rounded-md transition-colors"
                 style={{
                   background: statusFilter === s ? c.chipActiveBg : 'transparent',
                   color: statusFilter === s ? c.chipActiveText : c.text3,
-                  fontSize: WEB_FONT.xs, fontWeight: statusFilter === s ? 600 : 500,
-                }}>{s}</button>
+                  fontSize: WEB_FONT.xs,
+                  fontWeight: statusFilter === s ? 600 : 500,
+                }}
+              >
+                {s}
+              </button>
             ))}
           </div>
 
           <div className="flex-1" />
 
           {/* Search */}
-          <div className="flex items-center gap-2 rounded-lg px-3"
-            style={{ background: c.searchBg, border: `1px solid ${c.searchBorder}`, height: 34, width: 220 }}>
+          <div
+            className="flex items-center gap-2 rounded-lg px-3"
+            style={{
+              background: c.searchBg,
+              border: `1px solid ${c.searchBorder}`,
+              height: 34,
+              width: 220,
+            }}
+          >
             <Search size={13} color={c.text3} />
-            <input placeholder="Tìm asset, txHash..." value={search}
-              onChange={e => { setSearch(e.target.value); setPage(1); }}
+            <input
+              placeholder="Tìm asset, txHash..."
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
               className="flex-1 bg-transparent outline-none"
-              style={{ color: c.text1, fontSize: WEB_FONT.sm }} />
-            {search && <button onClick={() => setSearch('')}><X size={12} color={c.text3} /></button>}
+              style={{ color: c.text1, fontSize: WEB_FONT.sm }}
+            />
+            {search && (
+              <button onClick={() => setSearch('')}>
+                <X size={12} color={c.text3} />
+              </button>
+            )}
           </div>
         </div>
 
         {/* Data Table */}
-        <div className="rounded-xl overflow-hidden" style={{ background: c.surface, border: `1px solid ${c.border}` }}>
+        <div
+          className="rounded-xl overflow-hidden"
+          style={{ background: c.surface, border: `1px solid ${c.border}` }}
+        >
           {/* Table header */}
-          <div className="grid items-center px-5 py-2.5"
+          <div
+            className="grid items-center px-5 py-2.5"
             style={{
               gridTemplateColumns: '36px 1.5fr 1fr 1fr 1.2fr 1fr 80px 80px',
               borderBottom: `1px solid ${c.divider}`,
-            }}>
+            }}
+          >
             <span />
-            <button onClick={() => handleSort('type')} className="flex items-center gap-1"
-              style={{ color: sortKey === 'type' ? '#3B82F6' : c.text3, fontSize: WEB_FONT.xs, fontWeight: 600 }}>
+            <button
+              onClick={() => handleSort('type')}
+              className="flex items-center gap-1"
+              style={{
+                color: sortKey === 'type' ? '#3B82F6' : c.text3,
+                fontSize: WEB_FONT.xs,
+                fontWeight: 600,
+              }}
+            >
               Loại {sortKey === 'type' && <ArrowUpDown size={9} />}
             </button>
-            <span style={{ color: c.text3, fontSize: WEB_FONT.xs, fontWeight: 600, textAlign: 'right' }}>Tài sản</span>
-            <button onClick={() => handleSort('amount')} className="flex items-center gap-1 justify-end"
-              style={{ color: sortKey === 'amount' ? '#3B82F6' : c.text3, fontSize: WEB_FONT.xs, fontWeight: 600 }}>
+            <span
+              style={{ color: c.text3, fontSize: WEB_FONT.xs, fontWeight: 600, textAlign: 'right' }}
+            >
+              Tài sản
+            </span>
+            <button
+              onClick={() => handleSort('amount')}
+              className="flex items-center gap-1 justify-end"
+              style={{
+                color: sortKey === 'amount' ? '#3B82F6' : c.text3,
+                fontSize: WEB_FONT.xs,
+                fontWeight: 600,
+              }}
+            >
               Số lượng {sortKey === 'amount' && <ArrowUpDown size={9} />}
             </button>
-            <button onClick={() => handleSort('time')} className="flex items-center gap-1 justify-end"
-              style={{ color: sortKey === 'time' ? '#3B82F6' : c.text3, fontSize: WEB_FONT.xs, fontWeight: 600 }}>
+            <button
+              onClick={() => handleSort('time')}
+              className="flex items-center gap-1 justify-end"
+              style={{
+                color: sortKey === 'time' ? '#3B82F6' : c.text3,
+                fontSize: WEB_FONT.xs,
+                fontWeight: 600,
+              }}
+            >
               Thời gian {sortKey === 'time' && <ArrowUpDown size={9} />}
             </button>
-            <span style={{ color: c.text3, fontSize: WEB_FONT.xs, fontWeight: 600, textAlign: 'right' }}>Mạng</span>
-            <span style={{ color: c.text3, fontSize: WEB_FONT.xs, fontWeight: 600, textAlign: 'right' }}>Phí</span>
-            <span style={{ color: c.text3, fontSize: WEB_FONT.xs, fontWeight: 600, textAlign: 'center' }}>Trạng thái</span>
+            <span
+              style={{ color: c.text3, fontSize: WEB_FONT.xs, fontWeight: 600, textAlign: 'right' }}
+            >
+              Mạng
+            </span>
+            <span
+              style={{ color: c.text3, fontSize: WEB_FONT.xs, fontWeight: 600, textAlign: 'right' }}
+            >
+              Phí
+            </span>
+            <span
+              style={{
+                color: c.text3,
+                fontSize: WEB_FONT.xs,
+                fontWeight: 600,
+                textAlign: 'center',
+              }}
+            >
+              Trạng thái
+            </span>
           </div>
 
           {/* Rows */}
@@ -230,43 +362,73 @@ export function WebTxHistoryPage() {
               const type = TYPE_MAP[tx.type] || { label: tx.type, color: '#8B95B3', icon: Clock };
               const status = STATUS_MAP[tx.status] || { label: tx.status, color: '#8B95B3' };
               const Icon = type.icon;
-              const isDebit = tx.type === 'withdraw' || tx.type === 'trade_sell' || tx.type === 'p2p_sell';
+              const isDebit =
+                tx.type === 'withdraw' || tx.type === 'trade_sell' || tx.type === 'p2p_sell';
 
               return (
-                <div key={tx.id}
+                <div
+                  key={tx.id}
                   className="web-cmd-btn grid items-center px-5 py-2.5 transition-colors cursor-pointer"
                   style={{
                     gridTemplateColumns: '36px 1.5fr 1fr 1fr 1.2fr 1fr 80px 80px',
                     borderBottom: i < paginated.length - 1 ? `1px solid ${c.divider}` : 'none',
-                  }}>
+                  }}
+                >
                   {/* Icon */}
-                  <div className="w-7 h-7 rounded-md flex items-center justify-center"
-                    style={{ background: type.color + '12' }}>
+                  <div
+                    className="w-7 h-7 rounded-md flex items-center justify-center"
+                    style={{ background: type.color + '12' }}
+                  >
                     <Icon size={13} color={type.color} />
                   </div>
 
                   {/* Type */}
                   <div className="flex items-center gap-2">
-                    <span style={{ color: c.text1, fontSize: WEB_FONT.sm, fontWeight: 600 }}>{type.label}</span>
+                    <span style={{ color: c.text1, fontSize: WEB_FONT.sm, fontWeight: 600 }}>
+                      {type.label}
+                    </span>
                     {tx.txHash && (
-                      <span style={{ color: c.text3, fontSize: 10, fontFamily: 'monospace' }}>{tx.txHash}</span>
+                      <span style={{ color: c.text3, fontSize: 10, fontFamily: 'monospace' }}>
+                        {tx.txHash}
+                      </span>
                     )}
                   </div>
 
                   {/* Asset */}
-                  <span style={{ color: c.text1, fontSize: WEB_FONT.sm, fontWeight: 600, textAlign: 'right' }}>{tx.asset}</span>
+                  <span
+                    style={{
+                      color: c.text1,
+                      fontSize: WEB_FONT.sm,
+                      fontWeight: 600,
+                      textAlign: 'right',
+                    }}
+                  >
+                    {tx.asset}
+                  </span>
 
                   {/* Amount */}
-                  <span style={{
-                    color: isDebit ? '#EF4444' : '#10B981',
-                    fontSize: WEB_FONT.sm, fontWeight: 600, fontVariantNumeric: 'tabular-nums',
-                    textAlign: 'right',
-                  }}>
-                    {isDebit ? '-' : '+'}{fmtAmount(tx.amount)} {tx.asset}
+                  <span
+                    style={{
+                      color: isDebit ? '#EF4444' : '#10B981',
+                      fontSize: WEB_FONT.sm,
+                      fontWeight: 600,
+                      fontVariantNumeric: 'tabular-nums',
+                      textAlign: 'right',
+                    }}
+                  >
+                    {isDebit ? '-' : '+'}
+                    {fmtAmount(tx.amount)} {tx.asset}
                   </span>
 
                   {/* Time */}
-                  <span style={{ color: c.text2, fontSize: WEB_FONT.xs, fontVariantNumeric: 'tabular-nums', textAlign: 'right' }}>
+                  <span
+                    style={{
+                      color: c.text2,
+                      fontSize: WEB_FONT.xs,
+                      fontVariantNumeric: 'tabular-nums',
+                      textAlign: 'right',
+                    }}
+                  >
                     {tx.createdAt}
                   </span>
 
@@ -276,18 +438,30 @@ export function WebTxHistoryPage() {
                   </span>
 
                   {/* Fee */}
-                  <span style={{ color: c.text3, fontSize: WEB_FONT.xs, fontVariantNumeric: 'tabular-nums', textAlign: 'right' }}>
+                  <span
+                    style={{
+                      color: c.text3,
+                      fontSize: WEB_FONT.xs,
+                      fontVariantNumeric: 'tabular-nums',
+                      textAlign: 'right',
+                    }}
+                  >
                     {tx.fee ? fmtFee(tx.fee) : '—'}
                   </span>
 
                   {/* Status */}
                   <div className="flex justify-center">
-                    <span className="rounded px-1.5 py-0.5"
+                    <span
+                      className="rounded px-1.5 py-0.5"
                       style={{
                         background: status.color + '12',
                         color: status.color,
-                        fontSize: 10, fontWeight: 600,
-                      }}>{status.label}</span>
+                        fontSize: 10,
+                        fontWeight: 600,
+                      }}
+                    >
+                      {status.label}
+                    </span>
                   </div>
                 </div>
               );
@@ -302,27 +476,39 @@ export function WebTxHistoryPage() {
               Trang {page}/{totalPages} · {filtered.length} kết quả
             </span>
             <div className="flex items-center gap-1">
-              <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1}
+              <button
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={page <= 1}
                 className="web-cmd-btn w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
-                style={{ border: `1px solid ${c.border}`, opacity: page <= 1 ? 0.3 : 1 }}>
+                style={{ border: `1px solid ${c.border}`, opacity: page <= 1 ? 0.3 : 1 }}
+              >
                 <ChevronLeft size={14} color={c.text2} />
               </button>
               {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                 const p = Math.max(1, Math.min(page - 2, totalPages - 4)) + i;
                 if (p > totalPages) return null;
                 return (
-                  <button key={p} onClick={() => setPage(p)}
+                  <button
+                    key={p}
+                    onClick={() => setPage(p)}
                     className="w-8 h-8 rounded-lg flex items-center justify-center"
                     style={{
                       background: page === p ? '#3B82F6' : 'transparent',
                       color: page === p ? '#fff' : c.text2,
-                      fontSize: WEB_FONT.sm, fontWeight: page === p ? 700 : 500,
-                    }}>{p}</button>
+                      fontSize: WEB_FONT.sm,
+                      fontWeight: page === p ? 700 : 500,
+                    }}
+                  >
+                    {p}
+                  </button>
                 );
               })}
-              <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page >= totalPages}
+              <button
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={page >= totalPages}
                 className="web-cmd-btn w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
-                style={{ border: `1px solid ${c.border}`, opacity: page >= totalPages ? 0.3 : 1 }}>
+                style={{ border: `1px solid ${c.border}`, opacity: page >= totalPages ? 0.3 : 1 }}
+              >
                 <ChevronRight size={14} color={c.text2} />
               </button>
             </div>

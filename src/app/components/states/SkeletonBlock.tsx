@@ -13,7 +13,15 @@ const shimmerStyle = `
 }
 `;
 
-function Shimmer({ className, style, fast }: { className?: string; style?: React.CSSProperties; fast?: boolean }) {
+function Shimmer({
+  className,
+  style,
+  fast,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+  fast?: boolean;
+}) {
   const c = useThemeColors();
   return (
     <div
@@ -37,8 +45,10 @@ function Shimmer({ className, style, fast }: { className?: string; style?: React
 export function SkeletonRow({ fast }: { fast?: boolean }) {
   const c = useThemeColors();
   return (
-    <div className="flex items-center gap-3 px-5 py-3"
-      style={{ borderBottom: `1px solid ${c.border}` }}>
+    <div
+      className="flex items-center gap-3 px-5 py-3"
+      style={{ borderBottom: `1px solid ${c.border}` }}
+    >
       <Shimmer fast={fast} style={{ width: 40, height: 40, borderRadius: '50%', flexShrink: 0 }} />
       <div className="flex-1 flex flex-col gap-2">
         <Shimmer fast={fast} style={{ width: '55%', height: 14 }} />
@@ -56,7 +66,10 @@ export function SkeletonRow({ fast }: { fast?: boolean }) {
 export function SkeletonCard() {
   const c = useThemeColors();
   return (
-    <div className="rounded-2xl p-4" style={{ background: c.surface, border: `1px solid ${c.borderSolid}` }}>
+    <div
+      className="rounded-2xl p-4"
+      style={{ background: c.surface, border: `1px solid ${c.borderSolid}` }}
+    >
       <div className="flex items-center gap-3 mb-4">
         <Shimmer style={{ width: 40, height: 40, borderRadius: '50%', flexShrink: 0 }} />
         <div className="flex-1 flex flex-col gap-2">
@@ -77,7 +90,13 @@ export function SkeletonCard() {
 }
 
 /* ─── Skeleton: full list (N rows) ─── */
-export function SkeletonList({ rows = 6, isRefreshing }: { rows?: number; isRefreshing?: boolean }) {
+export function SkeletonList({
+  rows = 6,
+  isRefreshing,
+}: {
+  rows?: number;
+  isRefreshing?: boolean;
+}) {
   return (
     <div className="contents">
       <style>{shimmerStyle}</style>

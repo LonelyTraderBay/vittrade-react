@@ -71,7 +71,8 @@ const COMMON_ISSUES = [
     category: 'wallet',
     title: 'Tại sao nạp tiền chưa về?',
     description: 'Giao dịch nạp tiền đang pending hoặc chưa hiển thị trong tài khoản',
-    solution: 'Kiểm tra TxHash trên blockchain explorer. Nạp tiền thường mất 5-30 phút tùy mạng. Nếu quá 1 giờ, liên hệ support với TxHash.',
+    solution:
+      'Kiểm tra TxHash trên blockchain explorer. Nạp tiền thường mất 5-30 phút tùy mạng. Nếu quá 1 giờ, liên hệ support với TxHash.',
     tags: ['Nạp tiền', 'Pending', 'Blockchain'],
   },
   {
@@ -79,7 +80,8 @@ const COMMON_ISSUES = [
     category: 'wallet',
     title: 'Rút tiền thất bại',
     description: 'Giao dịch rút tiền bị từ chối hoặc failed',
-    solution: 'Kiểm tra: (1) Số dư khả dụng đủ, (2) Địa chỉ ví đúng định dạng, (3) Mạng rút khớp với mạng ví nhận, (4) Đã xác thực 2FA.',
+    solution:
+      'Kiểm tra: (1) Số dư khả dụng đủ, (2) Địa chỉ ví đúng định dạng, (3) Mạng rút khớp với mạng ví nhận, (4) Đã xác thực 2FA.',
     tags: ['Rút tiền', 'Failed', 'Address'],
   },
   {
@@ -87,7 +89,8 @@ const COMMON_ISSUES = [
     category: 'account',
     title: 'KYC bị từ chối',
     description: 'Hồ sơ KYC không được duyệt',
-    solution: 'Lý do thường gặp: ảnh mờ, thông tin không khớp, giấy tờ hết hạn. Tải lại ảnh rõ nét, đảm bảo thông tin khớp 100% với giấy tờ.',
+    solution:
+      'Lý do thường gặp: ảnh mờ, thông tin không khớp, giấy tờ hết hạn. Tải lại ảnh rõ nét, đảm bảo thông tin khớp 100% với giấy tờ.',
     tags: ['KYC', 'Verification', 'Identity'],
   },
   {
@@ -95,7 +98,8 @@ const COMMON_ISSUES = [
     category: 'trading',
     title: 'Lệnh không được khớp',
     description: 'Đặt lệnh limit nhưng không thành công',
-    solution: 'Lệnh limit chỉ khớp khi giá thị trường chạm mức giá đặt. Kiểm tra giá đặt có hợp lý không. Dùng lệnh market để khớp ngay.',
+    solution:
+      'Lệnh limit chỉ khớp khi giá thị trường chạm mức giá đặt. Kiểm tra giá đặt có hợp lý không. Dùng lệnh market để khớp ngay.',
     tags: ['Trading', 'Order', 'Limit'],
   },
   {
@@ -103,7 +107,8 @@ const COMMON_ISSUES = [
     category: 'p2p',
     title: 'Tranh chấp P2P',
     description: 'Đối tác không release coin sau khi đã chuyển tiền',
-    solution: 'Mở tranh chấp trong Order Detail → Cung cấp bằng chứng chuyển khoản (screenshot/bill) → Support sẽ xử lý trong 24h.',
+    solution:
+      'Mở tranh chấp trong Order Detail → Cung cấp bằng chứng chuyển khoản (screenshot/bill) → Support sẽ xử lý trong 24h.',
     tags: ['P2P', 'Dispute', 'Escrow'],
   },
   {
@@ -111,7 +116,8 @@ const COMMON_ISSUES = [
     category: 'security',
     title: 'Mất mã 2FA',
     description: 'Không truy cập được ứng dụng Google Authenticator',
-    solution: 'Dùng backup code đã lưu khi bật 2FA. Nếu mất backup code, liên hệ support với: (1) Email đăng ký, (2) Ảnh selfie + CMND, (3) Video xác thực.',
+    solution:
+      'Dùng backup code đã lưu khi bật 2FA. Nếu mất backup code, liên hệ support với: (1) Email đăng ký, (2) Ảnh selfie + CMND, (3) Video xác thực.',
     tags: ['Security', '2FA', 'Recovery'],
   },
 ];
@@ -119,7 +125,8 @@ const COMMON_ISSUES = [
 const FAQ_ITEMS = [
   {
     question: 'Phí giao dịch là bao nhiêu?',
-    answer: 'Phí Maker: 0.1%, Phí Taker: 0.1%. VIP level càng cao phí càng thấp. Xem chi tiết tại Tài khoản → VIP Level.',
+    answer:
+      'Phí Maker: 0.1%, Phí Taker: 0.1%. VIP level càng cao phí càng thấp. Xem chi tiết tại Tài khoản → VIP Level.',
     category: 'trading',
   },
   {
@@ -129,12 +136,14 @@ const FAQ_ITEMS = [
   },
   {
     question: 'KYC có bắt buộc không?',
-    answer: 'KYC Level 1 bắt buộc để rút tiền. KYC Level 2 cần cho giao dịch P2P và hạn mức cao hơn.',
+    answer:
+      'KYC Level 1 bắt buộc để rút tiền. KYC Level 2 cần cho giao dịch P2P và hạn mức cao hơn.',
     category: 'account',
   },
   {
     question: 'P2P có an toàn không?',
-    answer: 'P2P dùng hệ thống escrow: coin bị khóa cho đến khi 2 bên xác nhận. Chỉ giao dịch với merchant có rating cao.',
+    answer:
+      'P2P dùng hệ thống escrow: coin bị khóa cho đến khi 2 bên xác nhận. Chỉ giao dịch với merchant có rating cao.',
     category: 'p2p',
   },
 ];
@@ -333,9 +342,7 @@ export function WebSupportPage() {
                     >
                       {item.label}
                     </div>
-                    <div style={{ fontSize: WEB_FONT.sm, color: c.text2 }}>
-                      {item.description}
-                    </div>
+                    <div style={{ fontSize: WEB_FONT.sm, color: c.text2 }}>{item.description}</div>
                   </div>
                   <ChevronRight size={WEB_ICON.md} style={{ color: c.text2 }} />
                 </button>
@@ -436,7 +443,8 @@ export function WebSupportPage() {
                         padding: '10px 12px',
                         borderRadius: '8px',
                         border: 'none',
-                        backgroundColor: selectedCategory === category.id ? `${category.color}15` : 'transparent',
+                        backgroundColor:
+                          selectedCategory === category.id ? `${category.color}15` : 'transparent',
                         color: selectedCategory === category.id ? category.color : c.text1,
                         fontSize: WEB_FONT.base,
                         fontWeight: selectedCategory === category.id ? 500 : 400,
@@ -574,8 +582,17 @@ export function WebSupportPage() {
                           e.currentTarget.style.backgroundColor = c.background;
                         }}
                       >
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                          <span style={{ fontSize: WEB_FONT.xs, color: c.text2 }}>#{ticket.id}</span>
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            marginBottom: '8px',
+                          }}
+                        >
+                          <span style={{ fontSize: WEB_FONT.xs, color: c.text2 }}>
+                            #{ticket.id}
+                          </span>
                           <div
                             style={{
                               padding: '4px 10px',
@@ -593,11 +610,18 @@ export function WebSupportPage() {
                             {status.label}
                           </div>
                         </div>
-                        <div style={{ fontSize: WEB_FONT.base, fontWeight: 600, color: c.text1, marginBottom: '4px' }}>
+                        <div
+                          style={{
+                            fontSize: WEB_FONT.base,
+                            fontWeight: 600,
+                            color: c.text1,
+                            marginBottom: '4px',
+                          }}
+                        >
                           {ticket.subject}
                         </div>
                         <div style={{ fontSize: WEB_FONT.sm, color: c.text2 }}>
-                          Cập nhật: {ticket.lastUpdate}
+                          Cập nhật: {ticket.updatedAt}
                         </div>
                       </div>
                     );
@@ -636,10 +660,24 @@ export function WebSupportPage() {
                       border: `1px solid ${c.border}`,
                     }}
                   >
-                    <div style={{ fontSize: WEB_FONT.base, fontWeight: 700, color: c.text1, marginBottom: '8px' }}>
+                    <div
+                      style={{
+                        fontSize: WEB_FONT.base,
+                        fontWeight: 700,
+                        color: c.text1,
+                        marginBottom: '8px',
+                      }}
+                    >
                       {issue.title}
                     </div>
-                    <div style={{ fontSize: WEB_FONT.base, color: c.text2, marginBottom: '12px', lineHeight: '1.5' }}>
+                    <div
+                      style={{
+                        fontSize: WEB_FONT.base,
+                        color: c.text2,
+                        marginBottom: '12px',
+                        lineHeight: '1.5',
+                      }}
+                    >
                       {issue.description}
                     </div>
                     <div
@@ -651,7 +689,14 @@ export function WebSupportPage() {
                         marginBottom: '12px',
                       }}
                     >
-                      <div style={{ fontSize: WEB_FONT.xs, fontWeight: 600, color: c.primary, marginBottom: '4px' }}>
+                      <div
+                        style={{
+                          fontSize: WEB_FONT.xs,
+                          fontWeight: 600,
+                          color: c.primary,
+                          marginBottom: '4px',
+                        }}
+                      >
                         Giải pháp:
                       </div>
                       <div style={{ fontSize: WEB_FONT.sm, color: c.text1, lineHeight: '1.6' }}>
@@ -720,10 +765,20 @@ export function WebSupportPage() {
                         gap: '8px',
                       }}
                     >
-                      <HelpCircle size={WEB_ICON.md} style={{ color: c.primary, flexShrink: 0, marginTop: '2px' }} />
+                      <HelpCircle
+                        size={WEB_ICON.md}
+                        style={{ color: c.primary, flexShrink: 0, marginTop: '2px' }}
+                      />
                       <span>{faq.question}</span>
                     </div>
-                    <div style={{ fontSize: WEB_FONT.base, color: c.text2, lineHeight: '1.6', paddingLeft: '28px' }}>
+                    <div
+                      style={{
+                        fontSize: WEB_FONT.base,
+                        color: c.text2,
+                        lineHeight: '1.6',
+                        paddingLeft: '28px',
+                      }}
+                    >
                       {faq.answer}
                     </div>
                   </div>
@@ -743,7 +798,14 @@ export function WebSupportPage() {
                 }}
               >
                 <Search size={48} style={{ color: c.text2, margin: '0 auto 16px' }} />
-                <div style={{ fontSize: WEB_FONT.base, fontWeight: 500, color: c.text1, marginBottom: '8px' }}>
+                <div
+                  style={{
+                    fontSize: WEB_FONT.base,
+                    fontWeight: 500,
+                    color: c.text1,
+                    marginBottom: '8px',
+                  }}
+                >
                   Không tìm thấy kết quả
                 </div>
                 <div style={{ fontSize: WEB_FONT.sm, color: c.text2 }}>

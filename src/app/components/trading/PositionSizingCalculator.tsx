@@ -28,11 +28,11 @@ interface PositionSizingCalculatorProps {
   baseAsset: string;
   currentPrice: number;
   accountBalance: number;
-  
+
   // Optional: Pre-fill values
   initialEntryPrice?: number;
   initialStopLoss?: number;
-  
+
   // Callbacks
   onCalculate?: (result: PositionSizeResult) => void;
   onApply?: (amount: number) => void;
@@ -73,7 +73,9 @@ export function PositionSizingCalculator({
 
   // Inputs
   const [riskPct, setRiskPct] = useState(2); // Default 2%
-  const [entryPrice, setEntryPrice] = useState(initialEntryPrice?.toString() || currentPrice.toString());
+  const [entryPrice, setEntryPrice] = useState(
+    initialEntryPrice?.toString() || currentPrice.toString(),
+  );
   const [stopLossPrice, setStopLossPrice] = useState(initialStopLoss?.toString() || '');
   const [showInfo, setShowInfo] = useState(false);
 
@@ -89,10 +91,10 @@ export function PositionSizingCalculator({
     const riskAmount = accountBalance * (riskPct / 100);
     const stopLossDistance = Math.abs(entryPriceNum - stopLossPriceNum);
     const stopLossPct = (stopLossDistance / entryPriceNum) * 100;
-    
+
     // Risk per unit = price distance between entry and SL
     const riskPerUnit = stopLossDistance;
-    
+
     // Suggested amount = Total risk / Risk per unit
     const suggestedAmount = riskPerUnit > 0 ? riskAmount / riskPerUnit : 0;
     const totalCost = suggestedAmount * entryPriceNum;
@@ -139,13 +141,14 @@ export function PositionSizingCalculator({
               <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1 }}>
                 Position Sizing Calculator
               </p>
-              <p style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>
-                {symbol}
-              </p>
+              <p style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>{symbol}</p>
             </div>
           </div>
           <button
-            onClick={() => { setShowInfo(!showInfo); hapticSelection(); }}
+            onClick={() => {
+              setShowInfo(!showInfo);
+              hapticSelection();
+            }}
             className="w-8 h-8 rounded-lg flex items-center justify-center"
             style={{ background: c.surface2 }}
           >
@@ -154,17 +157,31 @@ export function PositionSizingCalculator({
         </div>
 
         {showInfo && (
-          <div className="p-3 rounded-xl mb-3" style={{ background: 'rgba(59,130,246,0.08)', border: `1px solid rgba(59,130,246,0.2)` }}>
+          <div
+            className="p-3 rounded-xl mb-3"
+            style={{
+              background: 'rgba(59,130,246,0.08)',
+              border: `1px solid rgba(59,130,246,0.2)`,
+            }}
+          >
             <p style={{ fontSize: FONT_SCALE.xs, color: c.text2, lineHeight: 1.6 }}>
-              Công cụ tính toán khối lượng lệnh tối ưu dựa trên <strong style={{ color: '#3B82F6' }}>tỷ lệ rủi ro</strong> bạn chấp nhận.
-              Điều này giúp bạn không bị over-leverage và bảo vệ tài khoản.
+              Công cụ tính toán khối lượng lệnh tối ưu dựa trên{' '}
+              <strong style={{ color: '#3B82F6' }}>tỷ lệ rủi ro</strong> bạn chấp nhận. Điều này
+              giúp bạn không bị over-leverage và bảo vệ tài khoản.
             </p>
           </div>
         )}
 
         <div className="flex items-center justify-between">
           <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Số dư khả dụng</span>
-          <span style={{ fontSize: FONT_SCALE.base, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+          <span
+            style={{
+              fontSize: FONT_SCALE.base,
+              fontWeight: FONT_WEIGHT.bold,
+              color: c.text1,
+              fontFamily: 'monospace',
+            }}
+          >
             {fmtUsd(accountBalance)}
           </span>
         </div>
@@ -172,42 +189,47 @@ export function PositionSizingCalculator({
 
       {/* Risk % Selector */}
       <div>
-        <label style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}>
+        <label
+          style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}
+        >
           Rủi ro mỗi lệnh
         </label>
         <div className="grid grid-cols-2 gap-2">
-          {RISK_PRESETS.map(preset => (
+          {RISK_PRESETS.map((preset) => (
             <button
               key={preset.value}
-              onClick={() => { setRiskPct(preset.value); hapticSelection(); }}
+              onClick={() => {
+                setRiskPct(preset.value);
+                hapticSelection();
+              }}
               className="px-3 py-3 rounded-xl min-h-11 text-left"
               style={{
                 background: riskPct === preset.value ? c.chipActiveBg : c.surface2,
-                border: riskPct === preset.value
-                  ? `2px solid ${c.chipActiveBorder}`
-                  : `1.5px solid ${c.borderSolid}`,
-                boxShadow: riskPct === preset.value
-                  ? '0 1px 3px rgba(59,130,246,0.15)'
-                  : 'none',
+                border:
+                  riskPct === preset.value
+                    ? `2px solid ${c.chipActiveBorder}`
+                    : `1.5px solid ${c.borderSolid}`,
+                boxShadow: riskPct === preset.value ? '0 1px 3px rgba(59,130,246,0.15)' : 'none',
               }}
             >
               <div className="flex items-center justify-between">
-                <span style={{
-                  fontSize: FONT_SCALE.xs,
-                  fontWeight: riskPct === preset.value ? FONT_WEIGHT.bold : FONT_WEIGHT.semibold,
-                  color: riskPct === preset.value ? c.chipActiveText : c.text2,
-                }}>
+                <span
+                  style={{
+                    fontSize: FONT_SCALE.xs,
+                    fontWeight: riskPct === preset.value ? FONT_WEIGHT.bold : FONT_WEIGHT.semibold,
+                    color: riskPct === preset.value ? c.chipActiveText : c.text2,
+                  }}
+                >
                   {preset.value}%
                 </span>
-                <div
-                  className="w-2 h-2 rounded-full"
-                  style={{ background: preset.color }}
-                />
+                <div className="w-2 h-2 rounded-full" style={{ background: preset.color }} />
               </div>
-              <span style={{
-                fontSize: FONT_SCALE.micro,
-                color: riskPct === preset.value ? c.chipActiveText : c.text3,
-              }}>
+              <span
+                style={{
+                  fontSize: FONT_SCALE.micro,
+                  color: riskPct === preset.value ? c.chipActiveText : c.text3,
+                }}
+              >
                 {preset.label.split(' ')[1].replace(/[()]/g, '')}
               </span>
             </button>
@@ -220,7 +242,9 @@ export function PositionSizingCalculator({
 
       {/* Entry Price */}
       <div>
-        <label style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}>
+        <label
+          style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}
+        >
           Giá vào lệnh
         </label>
         <div className="relative">
@@ -228,7 +252,7 @@ export function PositionSizingCalculator({
             type="text"
             inputMode="decimal"
             value={entryPrice}
-            onChange={e => setEntryPrice(formatNum(e.target.value))}
+            onChange={(e) => setEntryPrice(formatNum(e.target.value))}
             placeholder="0.00"
             className="w-full px-3 py-3 rounded-xl min-h-11"
             style={{
@@ -249,14 +273,18 @@ export function PositionSizingCalculator({
         </div>
         {entryPriceNum > 0 && entryPriceNum !== currentPrice && (
           <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginTop: 4 }}>
-            Current: {fmtPrice(currentPrice)} ({fmtPct(Math.abs((entryPriceNum - currentPrice) / currentPrice * 100))} {entryPriceNum > currentPrice ? 'cao hơn' : 'thấp hơn'})
+            Current: {fmtPrice(currentPrice)} (
+            {fmtPct(Math.abs(((entryPriceNum - currentPrice) / currentPrice) * 100))}{' '}
+            {entryPriceNum > currentPrice ? 'cao hơn' : 'thấp hơn'})
           </p>
         )}
       </div>
 
       {/* Stop Loss Price */}
       <div>
-        <label style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}>
+        <label
+          style={{ fontSize: FONT_SCALE.xs, color: c.text3, display: 'block', marginBottom: 8 }}
+        >
           Giá Stop Loss
         </label>
         <div className="relative">
@@ -264,7 +292,7 @@ export function PositionSizingCalculator({
             type="text"
             inputMode="decimal"
             value={stopLossPrice}
-            onChange={e => setStopLossPrice(formatNum(e.target.value))}
+            onChange={(e) => setStopLossPrice(formatNum(e.target.value))}
             placeholder="0.00"
             className="w-full px-3 py-3 rounded-xl min-h-11"
             style={{
@@ -284,11 +312,16 @@ export function PositionSizingCalculator({
           </span>
         </div>
         {stopLossPriceNum > 0 && entryPriceNum > 0 && (
-          <p style={{ fontSize: FONT_SCALE.micro, color: isValidStopLoss ? '#EF4444' : '#F59E0B', marginTop: 4 }}>
+          <p
+            style={{
+              fontSize: FONT_SCALE.micro,
+              color: isValidStopLoss ? '#EF4444' : '#F59E0B',
+              marginTop: 4,
+            }}
+          >
             {isValidStopLoss
-              ? `✓ ${fmtPct(Math.abs((stopLossPriceNum - entryPriceNum) / entryPriceNum * 100))} từ entry`
-              : '✗ Stop loss phải khác entry price'
-            }
+              ? `✓ ${fmtPct(Math.abs(((stopLossPriceNum - entryPriceNum) / entryPriceNum) * 100))} từ entry`
+              : '✗ Stop loss phải khác entry price'}
           </p>
         )}
       </div>
@@ -304,17 +337,28 @@ export function PositionSizingCalculator({
           </div>
 
           {/* Suggested Amount - HIGHLIGHT */}
-          <div className="p-3 rounded-xl mb-3" style={{ background: 'rgba(59,130,246,0.08)', border: `1px solid rgba(59,130,246,0.2)` }}>
+          <div
+            className="p-3 rounded-xl mb-3"
+            style={{
+              background: 'rgba(59,130,246,0.08)',
+              border: `1px solid rgba(59,130,246,0.2)`,
+            }}
+          >
             <p style={{ fontSize: FONT_SCALE.xs, color: c.text3, marginBottom: 6 }}>
               Khối lượng đề xuất
             </p>
             <div className="flex items-baseline gap-2">
-              <span style={{ fontSize: FONT_SCALE.xl, fontWeight: FONT_WEIGHT.bold, color: '#3B82F6', fontFamily: 'monospace' }}>
+              <span
+                style={{
+                  fontSize: FONT_SCALE.xl,
+                  fontWeight: FONT_WEIGHT.bold,
+                  color: '#3B82F6',
+                  fontFamily: 'monospace',
+                }}
+              >
                 {fmtAmount(result.suggestedAmount)}
               </span>
-              <span style={{ fontSize: FONT_SCALE.sm, color: c.text2 }}>
-                {baseAsset}
-              </span>
+              <span style={{ fontSize: FONT_SCALE.sm, color: c.text2 }}>{baseAsset}</span>
             </div>
           </div>
 
@@ -324,7 +368,14 @@ export function PositionSizingCalculator({
               <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 4 }}>
                 Tổng chi phí
               </p>
-              <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: c.text1, fontFamily: 'monospace' }}>
+              <p
+                style={{
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  color: c.text1,
+                  fontFamily: 'monospace',
+                }}
+              >
                 {fmtUsd(result.totalCost)}
               </p>
             </div>
@@ -332,7 +383,14 @@ export function PositionSizingCalculator({
               <p style={{ fontSize: FONT_SCALE.micro, color: c.text3, marginBottom: 4 }}>
                 Rủi ro tối đa
               </p>
-              <p style={{ fontSize: FONT_SCALE.sm, fontWeight: FONT_WEIGHT.bold, color: '#EF4444', fontFamily: 'monospace' }}>
+              <p
+                style={{
+                  fontSize: FONT_SCALE.sm,
+                  fontWeight: FONT_WEIGHT.bold,
+                  color: '#EF4444',
+                  fontFamily: 'monospace',
+                }}
+              >
                 {fmtUsd(result.riskAmount)}
               </p>
             </div>
@@ -340,10 +398,10 @@ export function PositionSizingCalculator({
 
           <div className="mt-3 pt-3" style={{ borderTop: `1px solid ${c.divider}` }}>
             <div className="flex items-center justify-between">
-              <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>
-                Nếu stop loss chạm:
-              </span>
-              <span style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, color: '#EF4444' }}>
+              <span style={{ fontSize: FONT_SCALE.xs, color: c.text3 }}>Nếu stop loss chạm:</span>
+              <span
+                style={{ fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold, color: '#EF4444' }}
+              >
                 -{fmtUsd(result.riskAmount)} ({fmtPct(result.riskPct)})
               </span>
             </div>
@@ -353,7 +411,10 @@ export function PositionSizingCalculator({
 
       {/* Warnings */}
       {result && !hasEnoughBalance && (
-        <div className="flex items-start gap-2 rounded-xl px-3 py-3" style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}>
+        <div
+          className="flex items-start gap-2 rounded-xl px-3 py-3"
+          style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}
+        >
           <AlertTriangle size={14} color="#EF4444" className="shrink-0 mt-1" />
           <p style={{ color: '#EF4444', fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>
             Không đủ số dư! Cần {fmtUsd(result.totalCost)} nhưng chỉ có {fmtUsd(accountBalance)}.
@@ -362,7 +423,10 @@ export function PositionSizingCalculator({
       )}
 
       {result && result.stopLossPct > 15 && (
-        <div className="flex items-start gap-2 rounded-xl px-3 py-3" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
+        <div
+          className="flex items-start gap-2 rounded-xl px-3 py-3"
+          style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}
+        >
           <AlertTriangle size={14} color="#F59E0B" className="shrink-0 mt-1" />
           <p style={{ color: '#F59E0B', fontSize: FONT_SCALE.xs, lineHeight: 1.5 }}>
             Stop loss xa entry ({fmtPct(result.stopLossPct)}). Nên đặt gần hơn để tối ưu R:R ratio.
@@ -380,9 +444,7 @@ export function PositionSizingCalculator({
             fontSize: FONT_SCALE.sm,
             fontWeight: FONT_WEIGHT.bold,
             color: '#fff',
-            background: canApply
-              ? 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)'
-              : c.surface2,
+            background: canApply ? 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)' : c.surface2,
             boxShadow: canApply ? '0 4px 16px rgba(59,130,246,0.3)' : 'none',
             opacity: canApply ? 1 : 0.5,
           }}

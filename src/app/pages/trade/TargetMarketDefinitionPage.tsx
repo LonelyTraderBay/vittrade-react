@@ -2,14 +2,14 @@
  * ══════════════════════════════════════════════════════════════
  *  TargetMarketDefinitionPage — Phase 4 Sprint 2 Day 5-6
  * ══════════════════════════════════════════════════════════════
- * 
+ *
  * Purpose:
  * - Detailed target market definition for a specific product
  * - Client categorization suitability
  * - Risk/return profile matching
  * - Distribution strategy
  * - Negative target market specification
- * 
+ *
  * Compliance:
  * - MiFID II Product Governance
  * - ESMA Guidelines target market criteria
@@ -20,8 +20,14 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router';
 import {
-  Target, Users, TrendingUp, Shield, AlertCircle,
-  CheckCircle, Info, ChevronLeft
+  Target,
+  Users,
+  TrendingUp,
+  Shield,
+  AlertCircle,
+  CheckCircle,
+  Info,
+  ChevronLeft,
 } from 'lucide-react';
 import { Header } from '../../components/layout/Header';
 import { PageLayout } from '../../components/layout/PageLayout';
@@ -74,8 +80,10 @@ export function TargetMarketDefinitionPage() {
         {/* Summary */}
         <TrCard className="p-4">
           <div className="flex items-start gap-3">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-              style={{ background: c.primary + '15' }}>
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+              style={{ background: c.primary + '15' }}
+            >
               <Target size={22} color={c.primary} />
             </div>
 

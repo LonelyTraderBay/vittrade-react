@@ -16,9 +16,19 @@ const GOVERNANCE_STATS = {
 };
 
 const RECENT_DECISIONS = [
-  { proposal: 'Reduce ETH staking fees from 2% to 1.5%', status: 'passed', votes: 89234, date: '2026-02-15' },
+  {
+    proposal: 'Reduce ETH staking fees from 2% to 1.5%',
+    status: 'passed',
+    votes: 89234,
+    date: '2026-02-15',
+  },
   { proposal: 'Add Polygon validator support', status: 'passed', votes: 67821, date: '2026-01-20' },
-  { proposal: 'Increase insurance fund contribution to 3%', status: 'passed', votes: 54123, date: '2025-12-10' },
+  {
+    proposal: 'Increase insurance fund contribution to 3%',
+    status: 'passed',
+    votes: 54123,
+    date: '2025-12-10',
+  },
 ];
 
 export function StakingCommunityGovernancePage() {
@@ -31,7 +41,13 @@ export function StakingCommunityGovernancePage() {
 
       <PageContent>
         {/* Info Banner */}
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(139,92,246,0.08)', border: '1.5px solid rgba(139,92,246,0.2)' }}>
+        <div
+          className="rounded-2xl p-4"
+          style={{
+            background: 'rgba(139,92,246,0.08)',
+            border: '1.5px solid rgba(139,92,246,0.2)',
+          }}
+        >
           <div className="flex gap-3">
             <Vote size={20} color="#8B5CF6" className="shrink-0 mt-0.5" />
             <div>
@@ -39,7 +55,8 @@ export function StakingCommunityGovernancePage() {
                 Community-Driven Decisions
               </p>
               <p style={{ color: c.text2, fontSize: 12, lineHeight: 1.6 }}>
-                Stakers vote on fee structures, new asset support, insurance fund policies, and platform improvements. Your stake = your voting power.
+                Stakers vote on fee structures, new asset support, insurance fund policies, and
+                platform improvements. Your stake = your voting power.
               </p>
             </div>
           </div>
@@ -89,8 +106,10 @@ export function StakingCommunityGovernancePage() {
               <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>
                 View All Active Proposals
               </p>
-              <span className="px-2 py-1 rounded-lg text-xs font-bold"
-                style={{ background: 'rgba(245,158,11,0.15)', color: '#F59E0B' }}>
+              <span
+                className="px-2 py-1 rounded-lg text-xs font-bold"
+                style={{ background: 'rgba(245,158,11,0.15)', color: '#F59E0B' }}
+              >
                 3 Active
               </span>
             </div>
@@ -111,11 +130,14 @@ export function StakingCommunityGovernancePage() {
                       {decision.proposal}
                     </p>
                     <p style={{ color: c.text3, fontSize: 11 }}>
-                      {decision.votes.toLocaleString()} votes • {new Date(decision.date).toLocaleDateString('en-GB')}
+                      {decision.votes.toLocaleString()} votes •{' '}
+                      {new Date(decision.date).toLocaleDateString('en-GB')}
                     </p>
                   </div>
-                  <span className="px-2 py-1 rounded-md text-xs font-bold shrink-0"
-                    style={{ background: 'rgba(16,185,129,0.15)', color: '#10B981' }}>
+                  <span
+                    className="px-2 py-1 rounded-md text-xs font-bold shrink-0"
+                    style={{ background: 'rgba(16,185,129,0.15)', color: '#10B981' }}
+                  >
                     Passed
                   </span>
                 </div>
@@ -129,23 +151,39 @@ export function StakingCommunityGovernancePage() {
           <TrCard className="p-4">
             <div className="space-y-3">
               {[
-                { step: 1, title: 'Proposal Creation', desc: 'Community members with ≥10,000 tokens can create proposals' },
-                { step: 2, title: 'Discussion Period', desc: '7-day discussion on forum before voting opens' },
+                {
+                  step: 1,
+                  title: 'Proposal Creation',
+                  desc: 'Community members with ≥10,000 tokens can create proposals',
+                },
+                {
+                  step: 2,
+                  title: 'Discussion Period',
+                  desc: '7-day discussion on forum before voting opens',
+                },
                 { step: 3, title: 'Voting Period', desc: '14-day voting window. 1 token = 1 vote' },
-                { step: 4, title: 'Execution', desc: 'Passed proposals (>50% approval, >10% quorum) executed within 7 days' },
-              ].map(item => (
-                <div key={item.step} className="flex gap-3 pb-3 border-b last:border-b-0" style={{ borderColor: c.borderSolid }}>
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
-                    style={{ background: '#8B5CF6', color: '#FFF', fontSize: 14, fontWeight: 700 }}>
+                {
+                  step: 4,
+                  title: 'Execution',
+                  desc: 'Passed proposals (>50% approval, >10% quorum) executed within 7 days',
+                },
+              ].map((item) => (
+                <div
+                  key={item.step}
+                  className="flex gap-3 pb-3 border-b last:border-b-0"
+                  style={{ borderColor: c.borderSolid }}
+                >
+                  <div
+                    className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+                    style={{ background: '#8B5CF6', color: '#FFF', fontSize: 14, fontWeight: 700 }}
+                  >
                     {item.step}
                   </div>
                   <div className="flex-1">
                     <p style={{ color: c.text1, fontSize: 13, fontWeight: 700, marginBottom: 2 }}>
                       {item.title}
                     </p>
-                    <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>
-                      {item.desc}
-                    </p>
+                    <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.5 }}>{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -156,8 +194,10 @@ export function StakingCommunityGovernancePage() {
         {/* Your Voting Power */}
         <TrCard className="p-4">
           <div className="flex items-start gap-3 mb-3">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center"
-              style={{ background: 'rgba(139,92,246,0.12)' }}>
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center"
+              style={{ background: 'rgba(139,92,246,0.12)' }}
+            >
               <Shield size={24} color="#8B5CF6" />
             </div>
             <div className="flex-1">
@@ -171,9 +211,7 @@ export function StakingCommunityGovernancePage() {
           </div>
           <div className="rounded-xl p-3" style={{ background: c.surface2 }}>
             <div className="flex items-baseline gap-2">
-              <p style={{ color: c.text1, fontSize: 24, fontWeight: 700 }}>
-                12,500
-              </p>
+              <p style={{ color: c.text1, fontSize: 24, fontWeight: 700 }}>12,500</p>
               <p style={{ color: c.text3, fontSize: 12 }}>votes (1.25% of total)</p>
             </div>
           </div>
@@ -184,13 +222,15 @@ export function StakingCommunityGovernancePage() {
           <button
             onClick={() => navigate('/earn/proposals')}
             className="w-full py-3 rounded-[14px] text-sm font-semibold"
-            style={{ background: c.primary, color: '#FFF' }}>
+            style={{ background: c.primary, color: '#FFF' }}
+          >
             View Active Proposals
           </button>
           <button
             onClick={() => navigate('/earn/forum')}
             className="w-full py-3 rounded-[14px] text-sm font-semibold"
-            style={{ background: c.surface2, color: c.text1 }}>
+            style={{ background: c.surface2, color: c.text1 }}
+          >
             Join Governance Forum
           </button>
         </div>
@@ -198,7 +238,8 @@ export function StakingCommunityGovernancePage() {
         {/* Footer */}
         <div className="rounded-2xl p-4" style={{ background: c.surface2 }}>
           <p style={{ color: c.text3, fontSize: 11, lineHeight: 1.6, textAlign: 'center' }}>
-            Governance is on-chain and transparent. All votes are recorded on Ethereum. Proposal outcomes are binding and executed via smart contracts.
+            Governance is on-chain and transparent. All votes are recorded on Ethereum. Proposal
+            outcomes are binding and executed via smart contracts.
           </p>
         </div>
       </PageContent>
