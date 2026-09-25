@@ -1,0 +1,156 @@
+openapi: 3.1.0
+info:
+  title: VitTrade DCA API
+  version: 0.1.0
+  description: Contract-first DCA plan and portfolio snapshot API.
+servers:
+  - url: https://api.example.invalid/v1
+security:
+  - sessionCookie: []
+paths:
+  /dca/snapshot:
+    get:
+      operationId: getDCASnapshot
+      x-required-permissions: [dca:read]
+      responses:
+        '200':
+          description: DCA plans, history and server-calculated overview.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/DCASnapshot' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /dca/plans:
+    post:
+      operationId: createDCAPlan
+      x-required-permissions: [dca:write]
+      parameters:
+        - {
+            name: Idempotency-Key,
+            in: header,
+            required: true,
+            schema: { type: string, minLength: 8 },
+          }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreateDCAPlanRequest' }
+      responses:
+        '201':
+          description: DCA plan created.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/DCAPlan' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /dca/plans/{planId}:
+    patch:
+      operationId: updateDCAPlan
+      x-required-permissions: [dca:write]
+      parameters:
+        - { name: planId, in: path, required: true, schema: { type: string } }
+        - {
+            name: Idempotency-Key,
+            in: header,
+            required: true,
+            schema: { type: string, minLength: 8 },
+          }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/UpdateDCAPlanRequest' }
+      responses:
+        '200':
+          description: DCA plan updated.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/DCAPlan' }
+        '404': { description: DCA plan not found. }
+    delete:
+      operationId: deleteDCAPlan
+      x-required-permissions: [dca:write]
+      parameters:
+        - { name: planId, in: path, required: true, schema: { type: string } }
+        - {
+            name: Idempotency-Key,
+            in: header,
+            required: true,
+            schema: { type: string, minLength: 8 },
+          }
+      responses:
+        '204': { description: DCA plan deleted. }
+        '404': { description: DCA plan not found. }
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: vittrade_session
+  responses:
+    Unauthorized:
+      description: Session is missing or expired.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+  schemas:
+    ApiError:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string }
+        message: { type: string }
+        details: {}
+    CreateDCAPlanRequest:
+      type: object
+      required: [coinSymbol, frequency, amountPerPurchase]
+      properties:
+        coinSymbol: { type: string }
+        frequency: { type: string, enum: [daily, weekly, monthly] }
+        amountPerPurchase: { type: number, exclusiveMinimum: 0 }
+        startDate: { type: string, format: date-time }
+    UpdateDCAPlanRequest:
+      type: object
+      minProperties: 1
+      properties:
+        amountPerPurchase: { type: number, exclusiveMinimum: 0 }
+        frequency: { type: string, enum: [daily, weekly, monthly] }
+        status: { type: string, enum: [active, paused, error] }
+    DCAPlan:
+      type: object
+      required:
+        [
+          id,
+          coinSymbol,
+          coinName,
+          coinIcon,
+          frequency,
+          amountPerPurchase,
+          nextExecution,
+          status,
+          totalInvested,
+          currentHoldings,
+          averageCost,
+          createdAt,
+        ]
+      properties:
+        id: { type: string }
+        coinSymbol: { type: string }
+        coinName: { type: string }
+        coinIcon: { type: string }
+        frequency: { type: string, enum: [daily, weekly, monthly] }
+        amountPerPurchase: { type: number, exclusiveMinimum: 0 }
+        nextExecution: { type: string, format: date-time }
+        status: { type: string, enum: [active, paused, error] }
+        totalInvested: { type: number, minimum: 0 }
+        currentHoldings: { type: number, minimum: 0 }
+        averageCost: { type: number, minimum: 0 }
+        createdAt: { type: string, format: date-time }
+        lastPurchaseAt: { type: string, format: date-time }
+    DCASnapshot:
+      type: object
+      required: [overview, plans, purchaseHistory, portfolioHistory]
+      properties:
+        overview: { type: object, additionalProperties: true }
+        plans: { type: array, items: { $ref: '#/components/schemas/DCAPlan' } }
+        purchaseHistory: { type: array, items: { type: object, additionalProperties: true } }
+        portfolioHistory: { type: array, items: { type: object, additionalProperties: true } }

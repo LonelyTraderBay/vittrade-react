@@ -31,7 +31,7 @@ export default tseslint.config(
       'react-hooks/exhaustive-deps': 'warn',
       'react-refresh/only-export-components': [
         'warn',
-        { allowConstantExport: true },
+        { allowConstantExport: true, extraHOCs: ['safeLazyLoad'] },
       ],
 
       // Gradual strictness for the existing codebase

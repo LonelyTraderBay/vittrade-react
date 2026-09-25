@@ -9,7 +9,8 @@
 
 import { describe, it, expect } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { UIProvider, useUI } from '../contexts/UIContext';
+import { UIProvider } from '../contexts/UIContext';
+import { useUI } from '../hooks/useUI';
 
 describe('UIContext', () => {
   describe('Initial State', () => {

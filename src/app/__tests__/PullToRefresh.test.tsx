@@ -9,7 +9,7 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { Mock } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { renderToString } from 'react-dom/server';
 import { renderWithProviders } from '../../test/test-utils';
 import { ThemeProvider } from '../contexts/ThemeContext';
@@ -34,7 +34,7 @@ describe('PullToRefresh', () => {
     });
 
     it('should wrap children in container', () => {
-      const { container } = renderWithProviders(
+      renderWithProviders(
         <PullToRefresh onRefresh={mockOnRefresh}>
           <div data-testid="child">Content</div>
         </PullToRefresh>,

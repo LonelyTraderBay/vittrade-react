@@ -3,7 +3,7 @@ import { Outlet } from 'react-router';
 import { TabletSidebar } from './TabletSidebar';
 import { TabletTopBar } from './TabletTopBar';
 import { useThemeColors } from '../../hooks/useThemeColors';
-import { useUI } from '../../contexts/UIContext';
+import { useUI } from '../../hooks/useUI';
 import { PlatformProvider } from '../../hooks/usePlatform';
 import type { PlatformInfo } from '../../hooks/usePlatform';
 

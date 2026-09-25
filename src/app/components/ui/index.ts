@@ -4,7 +4,7 @@
  * ══════════════════════════════════════════════════════════
  *
  *  Single import point for all UI components:
- *  import { IconButton, StatCard, TrCard } from '@/components/ui';
+ *  import { IconButton, StatCard, TrCard } from '@/app/components/ui';
  */
 
 /* ─── Custom UI Components ─── */

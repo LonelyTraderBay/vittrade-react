@@ -12,7 +12,12 @@
 
 import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
-import { afterEach, vi } from 'vitest';
+import { afterEach, beforeEach, vi } from 'vitest';
+import { testDcaApi } from './dca-test-adapter';
+
+beforeEach(() => {
+  testDcaApi.reset();
+});
 
 // Cleanup after each test
 afterEach(() => {
@@ -32,6 +37,12 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
   })),
+});
+
+// jsdom does not implement scrolling; keep layout effects deterministic and quiet.
+Object.defineProperty(window, 'scrollTo', {
+  writable: true,
+  value: vi.fn(),
 });
 
 // Mock IntersectionObserver (required for lazy loading)

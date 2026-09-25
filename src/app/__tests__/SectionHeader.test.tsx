@@ -119,7 +119,6 @@ describe('SectionHeader', () => {
     it('should not show accent bar by default', () => {
       const { container } = render(<SectionHeader title="Test" />);
 
-      const accentBar = container.querySelector('.shrink-0');
       // Check if there's a div with specific width/height (accent bar)
       const divs = container.querySelectorAll('div');
       const hasAccent = Array.from(divs).some((div) => {

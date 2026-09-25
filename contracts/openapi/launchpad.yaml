@@ -1,0 +1,116 @@
+openapi: 3.1.0
+info:
+  title: VitTrade Launchpad API
+  version: 1.0.0
+paths:
+  /launchpad/projects:
+    get:
+      operationId: listLaunchpadProjects
+      security:
+        - sessionCookie: []
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [upcoming, active, ended]
+        - in: query
+          name: type
+          schema:
+            type: string
+            enum: [ido, ieo, launchpool]
+        - in: query
+          name: search
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Launchpad project summaries
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LaunchpadProjectListResponse'
+  /launchpad/projects/{projectId}:
+    get:
+      operationId: getLaunchpadProject
+      security:
+        - sessionCookie: []
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Launchpad project detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LaunchpadProjectDetail'
+        '404':
+          description: Project not found
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: vittrade_session
+  schemas:
+    LaunchpadProjectSummary:
+      type: object
+      required: [id, name, symbol, type, status, progress, participants, chain]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        symbol: { type: string }
+        logo: { type: string }
+        logoColor: { type: string }
+        description: { type: string }
+        type: { type: string, enum: [ido, ieo, launchpool] }
+        status: { type: string, enum: [upcoming, active, ended] }
+        totalRaise: { type: string }
+        price: { type: number }
+        priceUnit: { type: string }
+        startDate: { type: string }
+        endDate: { type: string }
+        listingDate: { type: string }
+        progress: { type: number, minimum: 0, maximum: 100 }
+        participants: { type: integer, minimum: 0 }
+        subscribed: { type: number, minimum: 0 }
+        allocation: { type: number, minimum: 0 }
+        roi: { type: number }
+        tags: { type: array, items: { type: string } }
+        kyc: { type: boolean }
+        kycLevel: { type: integer, minimum: 0 }
+        whitelist: { type: boolean }
+        chain: { type: string }
+    LaunchpadProjectDetail:
+      allOf:
+        - $ref: '#/components/schemas/LaunchpadProjectSummary'
+        - type: object
+          required: [longDescription, hardCap, minBuy, maxBuy, contractAddress, tokenomics, vesting, team, audit]
+          properties:
+            longDescription: { type: string }
+            hardCap: { type: string }
+            minBuy: { type: number }
+            maxBuy: { type: number }
+            contractAddress: { type: string }
+            website: { type: string }
+            twitter: { type: string }
+            telegram: { type: string }
+            tokenomics: { type: array, items: { type: object } }
+            vesting: { type: array, items: { type: object } }
+            team: { type: array, items: { type: object } }
+            audit: { type: object }
+            platformFee: { type: number }
+            restrictions: { type: array, items: { type: string } }
+    LaunchpadProjectListResponse:
+      type: object
+      required: [projects, total, activeCount]
+      properties:
+        projects:
+          type: array
+          items: { $ref: '#/components/schemas/LaunchpadProjectSummary' }
+        total: { type: integer, minimum: 0 }
+        activeCount: { type: integer, minimum: 0 }

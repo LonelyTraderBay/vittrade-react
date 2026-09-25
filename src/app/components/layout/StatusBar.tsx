@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DEVICE } from './MobileFrame';
+import { DEVICE } from './device-layout';
 import { useThemeColors } from '../../hooks/useThemeColors';
 
 /**

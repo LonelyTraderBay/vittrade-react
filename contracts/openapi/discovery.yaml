@@ -1,0 +1,160 @@
+openapi: 3.1.0
+info:
+  title: VitTrade Discovery API
+  version: 0.1.0
+  description: Contract-first cross-module discovery read models.
+servers:
+  - url: https://api.example.invalid/v1
+security:
+  - sessionCookie: []
+paths:
+  /discovery/search:
+    get:
+      operationId: searchDiscovery
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema: { type: string, minLength: 2, maxLength: 120 }
+      responses:
+        '200':
+          description: Segmented discovery results.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/DiscoverySearchResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /discovery/topics/{topicId}:
+    get:
+      operationId: getDiscoveryTopic
+      parameters:
+        - name: topicId
+          in: path
+          required: true
+          schema: { $ref: '#/components/schemas/DiscoveryTopicId' }
+      responses:
+        '200':
+          description: Topic feed segmented by module.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/DiscoveryTopicResponse' }
+        '404': { $ref: '#/components/responses/NotFound' }
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: vittrade_session
+  responses:
+    BadRequest: { description: Invalid discovery query. }
+    NotFound: { description: Topic not found. }
+  schemas:
+    DiscoveryTopicId:
+      type: string
+      enum: [crypto, macro, politics, sports, tech, ai, culture, community]
+    DiscoveryTopic:
+      type: object
+      required: [id, label, color, description]
+      properties:
+        id: { $ref: '#/components/schemas/DiscoveryTopicId' }
+        label: { type: string }
+        color: { type: string }
+        description: { type: string }
+    DiscoveryPrediction:
+      type: object
+      required: [id, title, category, tags, topOutcome, volume24h, participants, status]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        category: { type: string }
+        tags: { type: array, items: { type: string } }
+        topOutcome:
+          type: object
+          required: [label, chance, color]
+          properties:
+            label: { type: string }
+            chance: { type: number, minimum: 0, maximum: 100 }
+            color: { type: string }
+        volume24h: { type: number, minimum: 0 }
+        participants: { type: integer, minimum: 0 }
+        status: { type: string, enum: [active, resolved] }
+        isTrending: { type: boolean }
+    DiscoveryArenaMode:
+      type: object
+      required: [id, title, description, tags, cloneCount, activeChallenges, fairPlay, creator]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        description: { type: string }
+        tags: { type: array, items: { type: string } }
+        cloneCount: { type: integer, minimum: 0 }
+        activeChallenges: { type: integer, minimum: 0 }
+        fairPlay: { type: boolean }
+        creator: { $ref: '#/components/schemas/DiscoveryCreatorRef' }
+    DiscoveryArenaRoom:
+      type: object
+      required: [id, title, modeId, format, slotsTotal, slotsFilled, entryPoints, status, creator]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        modeId: { type: string }
+        format: { type: string }
+        slotsTotal: { type: integer, minimum: 1 }
+        slotsFilled: { type: integer, minimum: 0 }
+        entryPoints: { type: number, minimum: 0 }
+        status: { type: string, enum: [waiting, in_progress, completed] }
+        creator: { $ref: '#/components/schemas/DiscoveryCreatorRef' }
+    DiscoveryCreatorRef:
+      type: object
+      required: [id, name, avatar]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        avatar: { type: string }
+    DiscoveryCreator:
+      allOf:
+        - $ref: '#/components/schemas/DiscoveryCreatorRef'
+        - type: object
+          required: [trustScore, fairPlayBadge]
+          properties:
+            bio: { type: string }
+            trustScore: { type: number, minimum: 0, maximum: 100 }
+            fairPlayBadge: { type: boolean }
+    DiscoveryTradingPair:
+      type: object
+      required: [id, symbol, baseAsset, quoteAsset, price, change24h, volume24h, logoColor]
+      properties:
+        id: { type: string }
+        symbol: { type: string }
+        baseAsset: { type: string }
+        quoteAsset: { type: string }
+        price: { type: number }
+        change24h: { type: number }
+        volume24h: { type: number, minimum: 0 }
+        logoColor: { type: string }
+    DiscoverySearchResponse:
+      type: object
+      required: [query, predictions, arenaModes, arenaRooms, creators, tradingPairs]
+      properties:
+        query: { type: string }
+        predictions: { type: array, items: { $ref: '#/components/schemas/DiscoveryPrediction' } }
+        arenaModes: { type: array, items: { $ref: '#/components/schemas/DiscoveryArenaMode' } }
+        arenaRooms: { type: array, items: { $ref: '#/components/schemas/DiscoveryArenaRoom' } }
+        creators: { type: array, items: { $ref: '#/components/schemas/DiscoveryCreator' } }
+        tradingPairs: { type: array, items: { $ref: '#/components/schemas/DiscoveryTradingPair' } }
+    DiscoveryTopicResponse:
+      type: object
+      required: [topic, stats, predictions, arenaRooms, arenaModes, creators]
+      properties:
+        topic: { $ref: '#/components/schemas/DiscoveryTopic' }
+        stats:
+          type: object
+          required: [events, rooms, modes, creators]
+          properties:
+            events: { type: integer, minimum: 0 }
+            rooms: { type: integer, minimum: 0 }
+            modes: { type: integer, minimum: 0 }
+            creators: { type: integer, minimum: 0 }
+        predictions: { type: array, items: { $ref: '#/components/schemas/DiscoveryPrediction' } }
+        arenaRooms: { type: array, items: { $ref: '#/components/schemas/DiscoveryArenaRoom' } }
+        arenaModes: { type: array, items: { $ref: '#/components/schemas/DiscoveryArenaMode' } }
+        creators: { type: array, items: { $ref: '#/components/schemas/DiscoveryCreator' } }

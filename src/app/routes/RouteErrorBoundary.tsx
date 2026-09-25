@@ -1,4 +1,7 @@
+import { useEffect } from 'react';
 import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router';
+import { env } from '../config/env';
+import { captureException } from '../../shared/telemetry/telemetry';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -31,6 +34,18 @@ export function RouteErrorBoundary() {
   const error = useRouteError();
   const navigate = useNavigate();
   const { title, detail } = getErrorMessage(error);
+
+  useEffect(() => {
+    captureException(error, {
+      area: 'router',
+      operation: 'route-error',
+      release: env.releaseVersion,
+      metadata: {
+        status: isRouteErrorResponse(error) ? error.status : undefined,
+        path: window.location.pathname,
+      },
+    });
+  }, [error]);
 
   return (
     <div

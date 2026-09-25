@@ -12,6 +12,8 @@
  * @version 1.0 (Phase 3 - Product Positioning)
  */
 
+import { browserStorage } from '@/shared/lib/browser-storage';
+
 /* ═══════════════════════════════════════════
    TYPES
    ═══════════════════════════════════════════ */
@@ -280,7 +282,7 @@ class CoachmarkService {
 
   private loadFromStorage(): CoachmarkState {
     try {
-      const data = localStorage.getItem(STORAGE_KEY);
+      const data = browserStorage.local.getItem(STORAGE_KEY);
       if (data) {
         return JSON.parse(data);
       }
@@ -297,7 +299,7 @@ class CoachmarkService {
 
   private saveToStorage() {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
+      browserStorage.local.setItem(STORAGE_KEY, JSON.stringify(this.state));
     } catch (error) {
       console.warn('Failed to save coachmark state:', error);
     }

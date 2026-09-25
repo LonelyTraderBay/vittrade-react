@@ -8,7 +8,7 @@
  */
 
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { renderWithProviders } from '../../test/test-utils';
 import {
@@ -16,7 +16,6 @@ import {
   StatItem,
   StatGrid,
   PercentageStat,
-  type StatTrend,
   type StatSize,
 } from '../components/ui/StatCard';
 import { Wallet, TrendingUp } from 'lucide-react';
@@ -92,18 +91,14 @@ describe('StatCard', () => {
     });
 
     it('should apply correct color for up trend value', () => {
-      const { container } = renderWithProviders(
-        <StatCard label="Profit" value="+$50" trend="up" />,
-      );
+      renderWithProviders(<StatCard label="Profit" value="+$50" trend="up" />);
 
       const valueSpan = screen.getByText('+$50');
       expect(valueSpan).toHaveStyle({ color: '#10B981' });
     });
 
     it('should apply correct color for down trend value', () => {
-      const { container } = renderWithProviders(
-        <StatCard label="Loss" value="-$50" trend="down" />,
-      );
+      renderWithProviders(<StatCard label="Loss" value="-$50" trend="down" />);
 
       const valueSpan = screen.getByText('-$50');
       expect(valueSpan).toHaveStyle({ color: '#EF4444' });
@@ -265,7 +260,7 @@ describe('StatCard', () => {
     });
 
     it('should apply font weight 500 to label', () => {
-      const { container } = renderWithProviders(<StatCard label="Label weight" value="100" />);
+      renderWithProviders(<StatCard label="Label weight" value="100" />);
 
       const labelSpan = screen.getByText('Label weight');
       expect(labelSpan).toHaveStyle({ fontWeight: '500' });
@@ -294,7 +289,7 @@ describe('StatItem', () => {
     });
 
     it('should render in compact mode', () => {
-      const { container } = renderWithProviders(<StatItem label="Compact" value="100" compact />);
+      renderWithProviders(<StatItem label="Compact" value="100" compact />);
 
       expect(screen.getByText('Compact')).toBeInTheDocument();
       expect(screen.getByText('100')).toBeInTheDocument();
@@ -478,7 +473,7 @@ describe('PercentageStat', () => {
   });
 
   it('should disable auto trend when autoTrend is false', () => {
-    const { container } = renderWithProviders(
+    renderWithProviders(
       <PercentageStat label="Manual" value="" percentage={5.0} autoTrend={false} />,
     );
 

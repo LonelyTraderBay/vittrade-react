@@ -334,7 +334,6 @@ interface WebBadgeProps {
 }
 
 export function WebBadge({ label, color, bg, size = 'md' }: WebBadgeProps) {
-  const autoColor = color + (bg ? '' : '');
   const autoBg = bg || color.replace(')', ',0.1)').replace('rgb(', 'rgba(');
   return (
     <span

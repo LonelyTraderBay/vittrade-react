@@ -17,7 +17,7 @@
  *
  *  ARCHITECTURE:
  *  ────────────────────────────────────────────────────────────
- *  1. STRICT GUARD  — Hard-fail on 39 already-fixed files
+ *  1. STRICT GUARD  — Hard-fail on canonical files already fixed
  *  2. DISCOVERY SCAN — Report-only on all pages (no fail)
  *  3. DEEP SCAN      — Check sub-component root margins
  *
@@ -32,72 +32,66 @@ import * as path from 'path';
 /* ─── Constants ─── */
 
 const SRC_ROOT = path.resolve(__dirname, '../../..');
-const PAGES_DIR = path.resolve(__dirname, '../pages');
+const PAGE_ROOTS = [
+  path.resolve(SRC_ROOT, 'src/app/pages'),
+  path.resolve(SRC_ROOT, 'src/features'),
+  path.resolve(SRC_ROOT, 'src/dev/legacy'),
+];
 
 /**
  * Files that have been fixed and MUST NOT regress.
  * Paths relative to src/ root.
  */
 const GUARDED_FILES = [
-  'src/app/pages/market/HomePage.tsx',
-  'src/app/pages/arena/ArenaHomePage.tsx',
-  'src/app/pages/arena/ArenaModeDetailPage.tsx',
-  'src/app/pages/arena/MyArenaPage.tsx',
-  'src/app/pages/arena/ArenaCreatorPage.tsx',
-  'src/app/pages/arena/ArenaLeaderboardPage.tsx',
-  'src/app/pages/arena/ArenaPredictionBridgeFoundationPage.tsx',
-  'src/app/pages/arena/ArenaProductionReadyPage.tsx',
-  'src/app/pages/arena/MyArenaReportsPage.tsx',
+  'src/features/market/pages/MarketHomePage.tsx',
+  'src/dev/legacy/arena/ArenaHomePage.tsx',
+  'src/features/arena/pages/ArenaContractPages.tsx',
+  'src/dev/legacy/arena/MyArenaPage.tsx',
+  'src/dev/legacy/arena/ArenaCreatorPage.tsx',
+  'src/dev/legacy/arena/ArenaLeaderboardPage.tsx',
+  'src/dev/legacy/arena/ArenaPredictionBridgeFoundationPage.tsx',
+  'src/dev/legacy/arena/ArenaProductionReadyPage.tsx',
+  'src/dev/legacy/arena/MyArenaReportsPage.tsx',
   // Sprint 7-8 Arena migrations (10 files)
-  'src/app/pages/arena/ArenaStudioPage.tsx',
-  'src/app/pages/arena/ArenaUniversalPresetLibraryPage.tsx',
-  'src/app/pages/arena/ConnectedEcosystemProductionPage.tsx',
-  'src/app/pages/arena/ArenaPointsLedgerPage.tsx',
-  'src/app/pages/arena/ArenaResolutionCenterPage.tsx',
-  'src/app/pages/arena/ArenaBlockedUsersPage.tsx',
-  'src/app/pages/arena/ArenaReportCasePage.tsx',
-  'src/app/pages/arena/ArenaChallengeDetailPage.tsx',
-  'src/app/pages/arena/ArenaJoinPage.tsx',
-  'src/app/pages/arena/ArenaPointsEntryDetailPage.tsx',
-  'src/app/pages/earn/StakingEarnPage.tsx',
+  'src/dev/legacy/arena/ArenaStudioPage.tsx',
+  'src/dev/legacy/arena/ArenaUniversalPresetLibraryPage.tsx',
+  'src/dev/legacy/arena/ConnectedEcosystemProductionPage.tsx',
+  'src/dev/legacy/arena/ArenaPointsLedgerPage.tsx',
+  'src/dev/legacy/arena/ArenaResolutionCenterPage.tsx',
+  'src/dev/legacy/arena/ArenaBlockedUsersPage.tsx',
+  'src/dev/legacy/arena/ArenaReportCasePage.tsx',
+  'src/dev/legacy/arena/ArenaJoinPage.tsx',
+  'src/dev/legacy/arena/ArenaPointsEntryDetailPage.tsx',
+  'src/features/earn/pages/EarnPage.tsx',
   'src/app/pages/p2p/P2PHomePage.tsx',
-  'src/app/pages/p2p/P2PMyAdsPage.tsx',
-  'src/app/pages/p2p/P2PReviewsPage.tsx',
-  'src/app/pages/p2p/P2PAdDetailPage.tsx',
-  'src/app/pages/p2p/P2POrderPage.tsx',
-  'src/app/pages/p2p/P2PCreateAdPage.tsx',
-  'src/app/pages/p2p/P2PPaymentMethodsPage.tsx',
+  'src/features/p2p/pages/P2PMyAdsContractPage.tsx',
+  'src/features/p2p/pages/P2PReviewsPage.tsx',
+  'src/dev/legacy/p2p/P2PAdDetailPage.tsx',
+  'src/features/p2p/pages/P2PEscrowDetailPage.tsx',
+  'src/features/p2p/pages/P2PCreateAdContractPage.tsx',
+  'src/features/p2p/pages/P2PPaymentMethodsPage.tsx',
   // Sprint 9 P2P Insurance migrations
-  'src/app/pages/p2p/P2PInsuranceFundPage.tsx',
-  'src/app/pages/p2p/P2PContributionHistoryPage.tsx',
-  'src/app/pages/profile/ProfilePage.tsx',
-  'src/app/pages/profile/SettingsPage.tsx',
-  'src/app/pages/profile/SecurityPage.tsx',
-  'src/app/pages/profile/DeviceManagementPage.tsx',
-  'src/app/pages/profile/SubAccountPage.tsx',
-  'src/app/pages/profile/VIPPage.tsx',
-  'src/app/pages/predictions/PredictionsHomePage.tsx',
-  'src/app/pages/predictions/PredictionsBreakingPage.tsx',
-  'src/app/pages/predictions/PredictionsRewardsPage.tsx',
-  'src/app/pages/predictions/PredictionsGlobalActivityPage.tsx',
-  'src/app/pages/predictions/PredictionsLeaderboardPage.tsx',
-  'src/app/pages/predictions/PredictionsSearchPage.tsx',
-  'src/app/pages/predictions/PredictionsPortfolioPage.tsx',
-  'src/app/pages/predictions/PredictionEventDetailPage.tsx',
-  'src/app/pages/wallet/WalletPage.tsx',
-  'src/app/pages/wallet/DepositPage.tsx',
-  'src/app/pages/wallet/WithdrawPage.tsx',
-  'src/app/pages/wallet/AddressBookPage.tsx',
-  'src/app/pages/wallet/AddressAddPage.tsx',
-  'src/app/pages/wallet/BuyCryptoPage.tsx',
-  'src/app/pages/wallet/TransactionHistoryPage.tsx',
-  'src/app/pages/wallet/TransactionDetailPage.tsx',
-  'src/app/pages/wallet/PortfolioAnalyticsPage.tsx',
+  'src/dev/legacy/p2p/P2PInsuranceFundPage.tsx',
+  'src/dev/legacy/p2p/P2PContributionHistoryPage.tsx',
+  'src/features/profile/pages/ProfileContractPage.tsx',
+  'src/dev/legacy/profile/SettingsPage.tsx',
+  'src/features/profile/pages/SecurityContractPage.tsx',
+  'src/features/profile/pages/DeviceManagementContractPage.tsx',
+  'src/features/profile/pages/SubAccountContractPage.tsx',
+  'src/dev/legacy/profile/VIPPage.tsx',
+  'src/features/predictions/pages/PredictionContractPages.tsx',
+  'src/features/wallet/pages/WalletDepositContractPage.tsx',
+  'src/features/wallet/pages/WithdrawPage.tsx',
+  'src/features/wallet/pages/AddressBookPage.tsx',
+  'src/features/wallet/pages/AddressAddPage.tsx',
+  'src/dev/legacy/wallet/BuyCryptoPage.tsx',
+  'src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx',
+  'src/features/wallet/pages/TransactionDetailPage.tsx',
+  'src/features/wallet/pages/PortfolioAnalyticsContractPage.tsx',
   'src/app/pages/wallet/AssetDetailPage.tsx',
-  'src/app/pages/wallet/TransferPage.tsx',
-  'src/app/pages/market/MarketListPage.tsx',
-  'src/app/pages/trade/ConvertPage.tsx',
-  'src/app/pages/trade/TradePage.tsx',
+  'src/features/wallet/pages/WalletTransferContractPage.tsx',
+  'src/features/market/pages/MarketListPage.tsx',
+  'src/dev/legacy/trading/ConvertPage.tsx',
 ];
 
 /**
@@ -141,7 +135,6 @@ function scanFile(filePath: string): Violation[] {
   if (!content.includes('<PageContent')) return [];
 
   let insidePageContent = false;
-  let pageContentIndent = -1; // indent of <PageContent>
   let childIndent = -1; // indent of direct children
   let isMultiLinePageContentTag = false;
 
@@ -153,8 +146,6 @@ function scanFile(filePath: string): Violation[] {
 
     // ── Detect <PageContent opening ──
     if (trimmed.startsWith('<PageContent') && !trimmed.startsWith('</PageContent')) {
-      pageContentIndent = indent;
-
       // Check if tag closes on this line
       if (trimmed.includes('>') && !trimmed.endsWith('/>')) {
         insidePageContent = true;
@@ -184,7 +175,6 @@ function scanFile(filePath: string): Violation[] {
     // ── Detect </PageContent> ──
     if (insidePageContent && trimmed.startsWith('</PageContent>')) {
       insidePageContent = false;
-      pageContentIndent = -1;
       childIndent = -1;
       continue;
     }
@@ -345,10 +335,10 @@ describe('Layout Anti-Pattern Lint', () => {
   // ════════════════════════════════════════════════
   describe('Discovery Scan — All pages (report only)', () => {
     it('scans all page files and reports potential violations', () => {
-      const allPages = findTsxFiles(PAGES_DIR);
+      const allPages = PAGE_ROOTS.flatMap(findTsxFiles);
       const guardedSet = new Set(GUARDED_FILES);
       const unguardedPages = allPages.filter((f) => {
-        const rel = path.relative(SRC_ROOT, f);
+        const rel = path.relative(SRC_ROOT, f).split(path.sep).join('/');
         return !guardedSet.has(rel);
       });
 

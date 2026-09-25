@@ -1,0 +1,331 @@
+openapi: 3.1.0
+info:
+  title: VitTrade Auth API
+  version: 0.1.0
+  description: Contract-first session, login and MFA boundary.
+servers:
+  - url: https://api.example.invalid/v1
+security:
+  - sessionCookie: []
+paths:
+  /auth/login:
+    post:
+      operationId: login
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Authenticated session or an MFA challenge response.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/AuthenticatedLoginResult'
+                  - $ref: '#/components/schemas/MfaRequiredLoginResult'
+                discriminator:
+                  propertyName: status
+                  mapping:
+                    authenticated: '#/components/schemas/AuthenticatedLoginResult'
+                    mfa_required: '#/components/schemas/MfaRequiredLoginResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '423':
+          $ref: '#/components/responses/AccountLocked'
+  /auth/login/mfa/verify:
+    post:
+      operationId: verifyLoginMfaChallenge
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginMfaVerificationRequest'
+      responses:
+        '200':
+          description: Login MFA challenge verified and authenticated session issued.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSession'
+        '400':
+          description: Verification code is invalid.
+          $ref: '#/components/responses/InvalidRequest'
+        '410':
+          $ref: '#/components/responses/ExpiredLoginMfaChallenge'
+        '423':
+          $ref: '#/components/responses/AccountLocked'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /auth/session:
+    get:
+      operationId: getSession
+      responses:
+        '200':
+          description: Current session, or null when no session exists.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/AuthSession'
+                  - type: 'null'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /auth/refresh:
+    post:
+      operationId: refreshSession
+      responses:
+        '200':
+          description: Refreshed in-memory access token metadata.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/AuthSession'
+                  - type: 'null'
+  /auth/logout:
+    post:
+      operationId: logout
+      responses:
+        '204':
+          description: Session revoked.
+  /auth/mfa/verify:
+    post:
+      operationId: verifyMfa
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MfaVerificationRequest'
+      responses:
+        '200':
+          description: MFA verified and session issued.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSession'
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+  /auth/mfa/setup/confirm:
+    post:
+      operationId: confirmMfaSetup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MfaSetupConfirmationRequest'
+      responses:
+        '200':
+          description: MFA setup confirmed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSession'
+  /auth/mfa/setup:
+    post:
+      operationId: beginMfaSetup
+      responses:
+        '200':
+          description: One-time setup challenge. The server must generate all values.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MfaSetupChallenge'
+  /auth/password-reset/request:
+    post:
+      operationId: requestPasswordResetCode
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email: { type: string, format: email }
+      responses:
+        '204': { description: Code requested. }
+        '400': { $ref: '#/components/responses/InvalidRequest' }
+  /auth/password/verify-current:
+    post:
+      operationId: verifyCurrentPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [currentPassword]
+              properties:
+                currentPassword: { type: string, minLength: 1, writeOnly: true }
+      responses:
+        '204': { description: Current password verified. }
+        '400': { $ref: '#/components/responses/InvalidRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /auth/password/change:
+    post:
+      operationId: changePassword
+      parameters:
+        - { name: Idempotency-Key, in: header, required: true, schema: { type: string, minLength: 8 } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [currentPassword, newPassword, mfaCode, mfaMethod]
+              properties:
+                currentPassword: { type: string, minLength: 1, writeOnly: true }
+                newPassword: { type: string, minLength: 12, writeOnly: true }
+                mfaCode: { type: string, pattern: '^\\d{6}$', writeOnly: true }
+                mfaMethod: { type: string, enum: [totp, sms] }
+      responses:
+        '204': { description: Password changed. }
+        '400': { $ref: '#/components/responses/InvalidRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /auth/password-reset/verify:
+    post:
+      operationId: verifyPasswordResetCode
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, code]
+              properties:
+                email: { type: string, format: email }
+                code: { type: string, pattern: '^\\d{6}$' }
+      responses:
+        '200':
+          description: Short-lived password reset token.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [resetToken]
+                properties:
+                  resetToken: { type: string }
+        '400': { $ref: '#/components/responses/InvalidRequest' }
+  /auth/password-reset/confirm:
+    post:
+      operationId: confirmPasswordReset
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, resetToken, newPassword]
+              properties:
+                email: { type: string, format: email }
+                resetToken: { type: string }
+                newPassword: { type: string, minLength: 12, writeOnly: true }
+      responses:
+        '204': { description: Password reset completed. }
+        '400': { $ref: '#/components/responses/InvalidRequest' }
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: vittrade_session
+  schemas:
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string, format: email }
+        password: { type: string, minLength: 1, writeOnly: true }
+    AuthenticatedLoginResult:
+      type: object
+      required: [status, session]
+      properties:
+        status: { const: authenticated }
+        session: { $ref: '#/components/schemas/AuthSession' }
+    MfaRequiredLoginResult:
+      type: object
+      required: [status, challenge]
+      properties:
+        status: { const: mfa_required }
+        challenge: { $ref: '#/components/schemas/LoginMfaChallenge' }
+    LoginMfaChallenge:
+      type: object
+      required: [id, method, expiresAt]
+      properties:
+        id: { type: string, minLength: 1 }
+        method: { type: string, enum: [totp, sms, email] }
+        maskedDestination: { type: string }
+        expiresAt: { type: string, format: date-time }
+    LoginMfaVerificationRequest:
+      type: object
+      additionalProperties: false
+      required: [challengeId, code]
+      properties:
+        challengeId: { type: string, minLength: 1 }
+        code: { type: string, pattern: '^\d{6}$' }
+    MfaVerificationRequest:
+      type: object
+      required: [contact, code]
+      properties:
+        contact: { type: string, minLength: 1 }
+        code: { type: string, pattern: '^\\d{6}$' }
+        purpose: { type: string }
+    MfaSetupConfirmationRequest:
+      type: object
+      required: [code]
+      properties:
+        code: { type: string, pattern: '^\\d{6}$' }
+    MfaSetupChallenge:
+      type: object
+      required: [secret, qrCodeUrl, backupCodes]
+      properties:
+        secret: { type: string }
+        qrCodeUrl:
+          type: string
+          description: Server-generated otpauth QR data URL or trusted image URL.
+        backupCodes:
+          type: array
+          minItems: 1
+          items: { type: string }
+        expiresAt: { type: string, format: date-time }
+    AuthSession:
+      type: object
+      required: [user, accessTokenExpiresAt]
+      properties:
+        accessToken:
+          type: string
+          description: Returned to the client for memory-only storage.
+        accessTokenExpiresAt: { type: string, format: date-time }
+        user: { $ref: '#/components/schemas/User' }
+    User:
+      type: object
+      required: [id, email, fullName, roles, permissions, kycStatus]
+      properties:
+        id: { type: string }
+        email: { type: string, format: email }
+        fullName: { type: string }
+        roles: { type: array, items: { type: string } }
+        permissions: { type: array, items: { type: string } }
+        kycStatus: { type: string, enum: [pending, verified, rejected, not_started] }
+  responses:
+    Unauthorized:
+      description: Session is missing or expired.
+    AccountLocked:
+      description: Account is locked by policy.
+    InvalidRequest:
+      description: Request validation failed.
+    ExpiredLoginMfaChallenge:
+      description: Login MFA challenge is expired, consumed, or no longer valid.
+    RateLimited:
+      description: Login MFA verification attempts are rate limited.

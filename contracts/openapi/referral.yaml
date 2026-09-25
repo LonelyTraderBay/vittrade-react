@@ -1,0 +1,92 @@
+openapi: 3.1.0
+info:
+  title: VitTrade Referral API
+  version: 0.1.0
+  description: Contract-first referral overview and commission read model.
+servers:
+  - url: https://api.example.invalid/v1
+security:
+  - sessionCookie: []
+paths:
+  /referral/overview:
+    get:
+      operationId: getReferralOverview
+      responses:
+        '200':
+          description: Authenticated referral overview.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ReferralOverviewResponse' }
+        '401': { description: Authentication required. }
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: vittrade_session
+  schemas:
+    ReferralTier:
+      type: object
+      required: [name, nameEn, friends, commission, color, icon, kycBonus]
+      properties:
+        name: { type: string }
+        nameEn: { type: string }
+        friends: { type: integer, minimum: 0 }
+        commission: { type: number, minimum: 0 }
+        color: { type: string }
+        icon: { type: string }
+        kycBonus: { type: number, minimum: 0 }
+    ReferralStats:
+      type: object
+      required:
+        [
+          totalFriends,
+          activeFriends,
+          kycCompleted,
+          totalCommission,
+          pendingCommission,
+          totalVolume,
+          thisMonthCommission,
+          thisMonthFriends,
+        ]
+      properties:
+        totalFriends: { type: integer, minimum: 0 }
+        activeFriends: { type: integer, minimum: 0 }
+        kycCompleted: { type: integer, minimum: 0 }
+        totalCommission: { type: number, minimum: 0 }
+        pendingCommission: { type: number, minimum: 0 }
+        totalVolume: { type: number, minimum: 0 }
+        thisMonthCommission: { type: number, minimum: 0 }
+        thisMonthFriends: { type: integer, minimum: 0 }
+    ReferralFriend:
+      type: object
+      required: [id, name, avatar, joinedDate, status, totalVolume, totalCommission, isActive]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        avatar: { type: string }
+        joinedDate: { type: string }
+        status: { type: string, enum: [pending_kyc, kyc_done, active_trader, inactive] }
+        totalVolume: { type: number, minimum: 0 }
+        totalCommission: { type: number, minimum: 0 }
+        isActive: { type: boolean }
+    ReferralCampaign:
+      type: object
+      required: [id, title, description, bonusLabel, daysLeft, totalParticipants]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        description: { type: string }
+        bonusLabel: { type: string }
+        daysLeft: { type: integer, minimum: 0 }
+        totalParticipants: { type: integer, minimum: 0 }
+    ReferralOverviewResponse:
+      type: object
+      required: [referralCode, stats, currentTier, friends, campaign]
+      properties:
+        referralCode: { type: string }
+        stats: { $ref: '#/components/schemas/ReferralStats' }
+        currentTier: { $ref: '#/components/schemas/ReferralTier' }
+        nextTier: { $ref: '#/components/schemas/ReferralTier' }
+        friends: { type: array, items: { $ref: '#/components/schemas/ReferralFriend' } }
+        campaign: { $ref: '#/components/schemas/ReferralCampaign' }

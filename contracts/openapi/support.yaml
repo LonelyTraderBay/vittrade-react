@@ -1,0 +1,196 @@
+openapi: 3.1.0
+info:
+  title: VitTrade Support and Content API
+  version: 0.1.0
+servers: [{ url: https://api.example.invalid/v1 }]
+security: [{ sessionCookie: [] }]
+paths:
+  /content/news:
+    get:
+      operationId: listNews
+      x-required-permissions: [support:read]
+      responses:
+        '200':
+          description: News and announcements visible to the user.
+          content:
+            { application/json: { schema: { $ref: '#/components/schemas/NewsListResponse' } } }
+  /notifications:
+    get:
+      operationId: listNotifications
+      x-required-permissions: [notifications:read]
+      responses:
+        '200':
+          description: User-owned notifications.
+          content:
+            {
+              application/json:
+                { schema: { $ref: '#/components/schemas/NotificationListResponse' } },
+            }
+
+  /notifications/{notificationId}/read:
+    post:
+      operationId: markNotificationRead
+      x-required-permissions: [notifications:write]
+      parameters:
+        - { name: notificationId, in: path, required: true, schema: { type: string } }
+        - {
+            name: Idempotency-Key,
+            in: header,
+            required: true,
+            schema: { type: string, minLength: 8 },
+          }
+      responses:
+        '204': { description: Notification marked as read. }
+        '404': { description: Notification not found. }
+  /support/help:
+    get:
+      operationId: getHelpCenter
+      x-required-permissions: [support:read]
+      responses:
+        '200':
+          description: Help categories and searchable articles.
+          content: { application/json: { schema: { $ref: '#/components/schemas/HelpResponse' } } }
+  /support/tickets:
+    get:
+      operationId: listSupportTickets
+      x-required-permissions: [support:read]
+      responses:
+        '200':
+          description: User-owned support tickets.
+          content:
+            { application/json: { schema: { $ref: '#/components/schemas/TicketListResponse' } } }
+    post:
+      operationId: createSupportTicket
+      x-required-permissions: [support:write]
+      parameters:
+        - {
+            name: Idempotency-Key,
+            in: header,
+            required: true,
+            schema: { type: string, minLength: 8 },
+          }
+      requestBody:
+        required: true
+        content:
+          { application/json: { schema: { $ref: '#/components/schemas/CreateTicketRequest' } } }
+      responses:
+        '201':
+          description: Ticket created.
+          content: { application/json: { schema: { $ref: '#/components/schemas/SupportTicket' } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+components:
+  securitySchemes: { sessionCookie: { type: apiKey, in: cookie, name: vittrade_session } }
+  responses:
+    BadRequest:
+      description: Invalid support request.
+      content: { application/json: { schema: { $ref: '#/components/schemas/ApiError' } } }
+  schemas:
+    NewsArticle:
+      type: object
+      required: [id, type, title, summary, content, publishedAt, isPinned, tags]
+      properties:
+        id: { type: string }
+        type:
+          { type: string, enum: [maintenance, new_feature, promotion, security, listing, general] }
+        title: { type: string }
+        summary: { type: string }
+        content: { type: string }
+        imageUrl: { type: string }
+        publishedAt: { type: string, format: date-time }
+        isPinned: { type: boolean }
+        tags: { type: array, items: { type: string } }
+    NewsListResponse:
+      type: object
+      required: [items]
+      properties: { items: { type: array, items: { $ref: '#/components/schemas/NewsArticle' } } }
+    Notification:
+      type: object
+      required: [id, type, title, message, time, isRead]
+      properties:
+        id: { type: string }
+        type:
+          {
+            type: string,
+            enum: [trade, deposit, withdraw, security, system, p2p, price_alert, referral, arena],
+          }
+        title: { type: string }
+        message: { type: string }
+        time: { type: string }
+        isRead: { type: boolean }
+        icon: { type: string }
+        iconColor: { type: string }
+        actionUrl: { type: string }
+    NotificationListResponse:
+      type: object
+      required: [items]
+      properties: { items: { type: array, items: { $ref: '#/components/schemas/Notification' } } }
+    HelpCategory:
+      type: object
+      required: [id, name, icon, count]
+      properties:
+        {
+          id: { type: string },
+          name: { type: string },
+          icon: { type: string },
+          count: { type: integer, minimum: 0 },
+        }
+    HelpArticle:
+      type: object
+      required: [id, category, categoryIcon, title, summary, views]
+      properties:
+        {
+          id: { type: string },
+          category: { type: string },
+          categoryIcon: { type: string },
+          title: { type: string },
+          summary: { type: string },
+          views: { type: integer, minimum: 0 },
+        }
+    HelpResponse:
+      type: object
+      required: [categories, articles]
+      properties:
+        categories: { type: array, items: { $ref: '#/components/schemas/HelpCategory' } }
+        articles: { type: array, items: { $ref: '#/components/schemas/HelpArticle' } }
+    SupportMessage:
+      type: object
+      required: [id, sender, text, time]
+      properties:
+        {
+          id: { type: string },
+          sender: { type: string, enum: [user, support] },
+          text: { type: string },
+          time: { type: string },
+          attachments: { type: array, items: { type: string } },
+        }
+    SupportTicket:
+      type: object
+      required:
+        [id, subject, category, status, priority, description, createdAt, updatedAt, messages]
+      properties:
+        id: { type: string }
+        subject: { type: string }
+        category: { type: string }
+        status: { type: string, enum: [open, in_progress, resolved, closed] }
+        priority: { type: string }
+        description: { type: string }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+        messages: { type: array, items: { $ref: '#/components/schemas/SupportMessage' } }
+    TicketListResponse:
+      type: object
+      required: [items]
+      properties: { items: { type: array, items: { $ref: '#/components/schemas/SupportTicket' } } }
+    CreateTicketRequest:
+      type: object
+      required: [subject, category, description]
+      properties:
+        {
+          subject: { type: string, minLength: 1 },
+          category: { type: string },
+          description: { type: string, minLength: 1 },
+        }
+    ApiError:
+      type: object
+      required: [code, message]
+      properties: { code: { type: string }, message: { type: string }, details: {} }

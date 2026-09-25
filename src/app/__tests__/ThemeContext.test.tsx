@@ -9,7 +9,8 @@
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { ThemeProvider, useTheme } from '../contexts/ThemeContext';
+import { ThemeProvider } from '../contexts/ThemeContext';
+import { useTheme } from '@/shared/theme/useTheme';
 
 describe('ThemeContext', () => {
   // Clean up document classes before and after each test

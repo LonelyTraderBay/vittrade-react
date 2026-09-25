@@ -1,0 +1,32 @@
+# VitTrade frontend ownership baseline.
+# Team handles are intentionally centralized here so ownership changes do not
+# require editing source files or the generated architecture inventory.
+
+* @vittrade/frontend-platform
+/src/app/ @vittrade/frontend-platform
+/src/features/auth/ @vittrade/frontend-platform
+/src/features/market/ @vittrade/market
+/src/features/trading/ @vittrade/trading
+/src/features/wallet/ @vittrade/wallet
+/src/features/p2p/ @vittrade/p2p-compliance
+/src/features/dca/ @vittrade/dca
+/src/features/earn/ @vittrade/earn
+/src/features/launchpad/ @vittrade/launchpad
+/src/features/arena/ @vittrade/arena
+/src/features/predictions/ @vittrade/predictions
+/src/features/referral/ @vittrade/referral
+/src/features/discovery/ @vittrade/discovery
+/src/features/profile/ @vittrade/account
+/src/features/admin/ @vittrade/admin
+/src/features/support/ @vittrade/support
+/src/app/pages/trade/ @vittrade/trading
+/src/app/pages/wallet/ @vittrade/wallet
+/src/app/pages/p2p/ @vittrade/p2p-compliance
+/src/app/pages/earn/ @vittrade/earn
+/src/app/pages/launchpad/ @vittrade/launchpad
+/src/app/pages/arena/ @vittrade/arena
+/src/app/pages/predictions/ @vittrade/predictions
+/contracts/ @vittrade/frontend-platform
+/scripts/ @vittrade/frontend-platform
+/src/test/ @vittrade/frontend-platform
+/tests/ @vittrade/frontend-platform

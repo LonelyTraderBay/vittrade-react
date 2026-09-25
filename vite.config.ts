@@ -1,7 +1,7 @@
-import { defineConfig } from 'vite'
-import path from 'path'
-import tailwindcss from '@tailwindcss/vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import path from 'path';
+import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [
@@ -24,8 +24,6 @@ export default defineConfig({
       'react/jsx-runtime',
       'react/jsx-dev-runtime',
       'react-router',
-      '@emotion/react',
-      '@emotion/styled',
       '@radix-ui/react-context',
       '@radix-ui/react-primitive',
       'vaul',
@@ -35,16 +33,23 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'react-router'],
-          'vendor-mui': [
-            '@mui/material',
-            '@mui/icons-material',
-            '@emotion/react',
-            '@emotion/styled',
-          ],
-          'vendor-charts': ['recharts', 'lightweight-charts'],
-          'vendor-motion': ['motion'],
+        manualChunks(id) {
+          const normalizedId = id.replaceAll('\\', '/');
+          if (normalizedId.includes('/node_modules/victory-vendor/')) return 'vendor-chart-math';
+          if (normalizedId.includes('/node_modules/recharts/')) return 'vendor-recharts';
+          if (normalizedId.includes('/node_modules/lightweight-charts/')) {
+            return 'vendor-lightweight-charts';
+          }
+          if (normalizedId.includes('/node_modules/motion/')) return 'vendor-motion';
+          if (
+            [
+              '/node_modules/react/',
+              '/node_modules/react-dom/',
+              '/node_modules/react-router/',
+            ].some((packagePath) => normalizedId.includes(packagePath))
+          ) {
+            return 'vendor-react';
+          }
         },
       },
     },
@@ -52,4 +57,4 @@ export default defineConfig({
 
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
-})
+});

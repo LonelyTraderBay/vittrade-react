@@ -1,0 +1,185 @@
+openapi: 3.1.0
+info:
+  title: VitTrade Open Arena API
+  version: 0.1.0
+  description: Contract-first Arena mode, challenge and audited join lifecycle.
+servers:
+  - url: https://api.example.invalid/v1
+security:
+  - sessionCookie: []
+paths:
+  /arena/modes/{modeId}:
+    get:
+      operationId: getArenaMode
+      parameters:
+        - { name: modeId, in: path, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: Arena mode detail.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ArenaModeDetail' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /arena/challenges/{challengeId}:
+    get:
+      operationId: getArenaChallenge
+      parameters:
+        - { name: challengeId, in: path, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: Arena challenge state and participants.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ArenaChallengeDetail' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /arena/challenges/{challengeId}/join:
+    post:
+      operationId: joinArenaChallenge
+      x-required-permissions: [arena:join]
+      parameters:
+        - { name: challengeId, in: path, required: true, schema: { type: string } }
+        - {
+            name: Idempotency-Key,
+            in: header,
+            required: true,
+            schema: { type: string, minLength: 8 },
+          }
+      responses:
+        '201':
+          description: Updated challenge and audit event identifier.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/JoinArenaChallengeResponse' }
+        '409': { description: Challenge is full, closed or state-conflicted. }
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: vittrade_session
+  responses:
+    NotFound: { description: Arena resource not found. }
+  schemas:
+    ArenaCreator:
+      type: object
+      required: [id, name, avatar, trustScore, fairPlayBadge]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        avatar: { type: string }
+        trustScore: { type: number, minimum: 0, maximum: 100 }
+        fairPlayBadge: { type: boolean }
+    ArenaRoom:
+      type: object
+      required: [id, title, format, slotsTotal, slotsFilled, entryPoints, status]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        format: { type: string }
+        slotsTotal: { type: integer, minimum: 1 }
+        slotsFilled: { type: integer, minimum: 0 }
+        entryPoints: { type: number, minimum: 0 }
+        status: { type: string, enum: [waiting, in_progress, completed] }
+    ArenaModeSummary:
+      type: object
+      required: [id, title, description, cloneCount, activeChallenges, fairPlay]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        description: { type: string }
+        cloneCount: { type: integer, minimum: 0 }
+        activeChallenges: { type: integer, minimum: 0 }
+        fairPlay: { type: boolean }
+    ArenaModeDetail:
+      allOf:
+        - $ref: '#/components/schemas/ArenaModeSummary'
+        - type: object
+          required:
+            [template, creator, tags, completionRate, allowedFormats, relatedRooms, relatedModes]
+          properties:
+            template:
+              type: object
+              required: [id, title, icon, color, complexity]
+              properties:
+                id: { type: string }
+                title: { type: string }
+                icon: { type: string }
+                color: { type: string }
+                complexity: { type: string, enum: [easy, medium, advanced] }
+            creator: { $ref: '#/components/schemas/ArenaCreator' }
+            tags: { type: array, items: { type: string } }
+            completionRate: { type: number, minimum: 0, maximum: 100 }
+            allowedFormats: { type: array, items: { type: string } }
+            winCondition: { type: string }
+            resolutionType: { type: string }
+            avgDuration: { type: string }
+            disputeRiskLevel: { type: string, enum: [low, medium, high] }
+            relatedRooms: { type: array, items: { $ref: '#/components/schemas/ArenaRoom' } }
+            relatedModes: { type: array, items: { $ref: '#/components/schemas/ArenaModeSummary' } }
+    ArenaParticipant:
+      type: object
+      required: [id, name, avatar, role, status]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        avatar: { type: string }
+        role: { type: string, enum: [host, player, captain] }
+        status: { type: string, enum: [joined, invited, waiting, confirmed, left] }
+        teamId: { type: string }
+    ArenaChallengeDetail:
+      type: object
+      required:
+        [
+          id,
+          title,
+          description,
+          modeId,
+          modeName,
+          creator,
+          entryPoints,
+          prizePool,
+          slotsTotal,
+          slotsFilled,
+          status,
+          privacy,
+          format,
+          rules,
+          startAt,
+          endAt,
+          leaderboard,
+          participants,
+        ]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        description: { type: string }
+        modeId: { type: string }
+        modeName: { type: string }
+        creator: { $ref: '#/components/schemas/ArenaCreator' }
+        entryPoints: { type: number, minimum: 0 }
+        prizePool: { type: number, minimum: 0 }
+        slotsTotal: { type: integer, minimum: 1 }
+        slotsFilled: { type: integer, minimum: 0 }
+        status: { type: string, enum: [waiting, in_progress, completed] }
+        privacy: { type: string, enum: [public, private, friends_only] }
+        format: { type: string }
+        rules: { type: array, items: { type: string } }
+        startAt: { type: string, format: date-time }
+        endAt: { type: string, format: date-time }
+        leaderboard: { type: array, items: { type: object } }
+        challengeState: { type: string }
+        participantLayout: { type: string }
+        participants: { type: array, items: { $ref: '#/components/schemas/ArenaParticipant' } }
+        winCondition: { type: string }
+        resolutionMethod: { type: string }
+        evidenceRequirement: { type: string }
+        voidRule: { type: string }
+        warningBanners: { type: array, items: { type: string } }
+        rewardTiers: { type: array, items: { type: object } }
+        refundPolicy: { type: string }
+    JoinArenaChallengeResponse:
+      type: object
+      required: [challenge, auditEventId]
+      properties:
+        challenge: { $ref: '#/components/schemas/ArenaChallengeDetail' }
+        auditEventId: { type: string }

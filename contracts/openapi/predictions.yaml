@@ -1,0 +1,321 @@
+openapi: 3.1.0
+info:
+  title: VitTrade Prediction Markets API
+  version: 0.1.0
+  description: Contract-first prediction-market read models and order lifecycle.
+servers:
+  - url: https://api.example.invalid/v1
+security:
+  - sessionCookie: []
+paths:
+  /predictions/events:
+    get:
+      operationId: listPredictionEvents
+      parameters:
+        - { name: category, in: query, schema: { type: string } }
+        - { name: search, in: query, schema: { type: string } }
+        - { name: status, in: query, schema: { type: string, enum: [active, resolved] } }
+      responses:
+        '200':
+          description: Prediction events.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PredictionEventList' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /predictions/events/{eventId}:
+    get:
+      operationId: getPredictionEvent
+      parameters:
+        - { name: eventId, in: path, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: Prediction event detail.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PredictionEvent' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /predictions/positions:
+    get:
+      operationId: listPredictionPositions
+      responses:
+        '200':
+          description: Authenticated user's positions.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PredictionPositionList' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /predictions/rewards:
+    get:
+      operationId: listPredictionRewards
+      responses:
+        '200':
+          description: Liquidity and market-maker reward opportunities.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PredictionRewardList' }
+  /predictions/leaderboard:
+    get:
+      operationId: listPredictionLeaderboard
+      parameters:
+        - { name: period, in: query, schema: { type: string, default: today } }
+      responses:
+        '200':
+          description: Ranked prediction traders.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/LeaderboardList' }
+  /predictions/activity:
+    get:
+      operationId: listPredictionActivity
+      responses:
+        '200':
+          description: Public prediction trading activity.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PredictionActivityList' }
+  /predictions/orders:
+    post:
+      operationId: placePredictionOrder
+      x-required-permissions: [predictions:trade]
+      parameters:
+        - {
+            name: Idempotency-Key,
+            in: header,
+            required: true,
+            schema: { type: string, minLength: 8 },
+          }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PlacePredictionOrderRequest' }
+      responses:
+        '201':
+          description: Prediction order receipt.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PredictionOrderReceipt' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '409': { description: Duplicate idempotency key or market state conflict. }
+  /predictions/orders/{orderId}:
+    get:
+      operationId: getPredictionOrderReceipt
+      parameters:
+        - { name: orderId, in: path, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: Prediction order receipt.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PredictionOrderReceipt' }
+        '404': { $ref: '#/components/responses/NotFound' }
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: vittrade_session
+  responses:
+    Unauthorized: { description: Authentication required. }
+    NotFound: { description: Resource not found. }
+    BadRequest: { description: Request validation failed. }
+  schemas:
+    PredictionOutcome:
+      type: object
+      required: [label, chance, color]
+      properties:
+        label: { type: string }
+        chance: { type: number, minimum: 0, maximum: 100 }
+        color: { type: string }
+    PredictionEvent:
+      type: object
+      required:
+        [
+          id,
+          title,
+          category,
+          tags,
+          outcomes,
+          volume24h,
+          totalVolume,
+          endDate,
+          liquidity,
+          participants,
+          status,
+          change24h,
+          createdAt,
+        ]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        category: { type: string }
+        tags: { type: array, items: { type: string } }
+        outcomes: { type: array, items: { $ref: '#/components/schemas/PredictionOutcome' } }
+        volume24h: { type: number }
+        totalVolume: { type: number }
+        endDate: { type: string, format: date-time }
+        liquidity: { type: number }
+        participants: { type: integer }
+        status: { type: string, enum: [active, resolved] }
+        resolvedOutcome: { type: string }
+        isNew: { type: boolean }
+        isTrending: { type: boolean }
+        change24h: { type: number }
+        createdAt: { type: string, format: date-time }
+    PredictionEventList:
+      type: object
+      required: [items]
+      properties:
+        { items: { type: array, items: { $ref: '#/components/schemas/PredictionEvent' } } }
+    PredictionPosition:
+      type: object
+      required:
+        [
+          id,
+          eventId,
+          outcome,
+          shares,
+          avgPrice,
+          currentPrice,
+          investedAmount,
+          currentValue,
+          pnl,
+          pnlPct,
+          status,
+          purchasedAt,
+        ]
+      properties:
+        id: { type: string }
+        eventId: { type: string }
+        outcome: { type: string }
+        shares: { type: number }
+        avgPrice: { type: number }
+        currentPrice: { type: number }
+        investedAmount: { type: number }
+        currentValue: { type: number }
+        pnl: { type: number }
+        pnlPct: { type: number }
+        status: { type: string, enum: [open, won, lost] }
+        purchasedAt: { type: string, format: date-time }
+    PredictionPositionList:
+      type: object
+      required: [items]
+      properties:
+        { items: { type: array, items: { $ref: '#/components/schemas/PredictionPosition' } } }
+    PredictionReward:
+      type: object
+      required:
+        [id, eventId, category, maxSpread, minShares, dailyReward, earningsPct, priceChange24h]
+      properties:
+        id: { type: string }
+        eventId: { type: string }
+        category: { type: string }
+        maxSpread: { type: number }
+        minShares: { type: number }
+        dailyReward: { type: number }
+        earningsPct: { type: number }
+        priceChange24h: { type: number }
+        isFavorite: { type: boolean }
+    PredictionRewardList:
+      type: object
+      required: [items]
+      properties:
+        { items: { type: array, items: { $ref: '#/components/schemas/PredictionReward' } } }
+    LeaderboardTrader:
+      type: object
+      required: [rank, user, avatar, pnl, pnlPct, volume, trades, winRate]
+      properties:
+        rank: { type: integer }
+        user: { type: string }
+        avatar: { type: string }
+        pnl: { type: number }
+        pnlPct: { type: number }
+        volume: { type: number }
+        trades: { type: integer }
+        winRate: { type: number }
+        biggestWin: { type: number }
+        biggestWinMarket: { type: string }
+    LeaderboardList:
+      type: object
+      required: [items]
+      properties:
+        { items: { type: array, items: { $ref: '#/components/schemas/LeaderboardTrader' } } }
+    PredictionActivity:
+      type: object
+      required: [id, user, avatar, action, outcome, eventId, price, amount, shares, timestamp]
+      properties:
+        id: { type: string }
+        user: { type: string }
+        avatar: { type: string }
+        action: { type: string, enum: [bought, sold] }
+        outcome: { type: string }
+        eventId: { type: string }
+        price: { type: number }
+        amount: { type: number }
+        shares: { type: number }
+        timestamp: { type: string }
+    PredictionActivityList:
+      type: object
+      required: [items]
+      properties:
+        { items: { type: array, items: { $ref: '#/components/schemas/PredictionActivity' } } }
+    PlacePredictionOrderRequest:
+      type: object
+      required: [eventId, outcome, side, orderType, shares]
+      properties:
+        eventId: { type: string }
+        outcome: { type: string }
+        side: { type: string, enum: [buy, sell] }
+        orderType: { type: string, enum: [market, limit] }
+        shares: { type: number, exclusiveMinimum: 0 }
+        price: { type: number, minimum: 0, maximum: 1 }
+    PredictionOrderReceipt:
+      type: object
+      required:
+        [
+          id,
+          eventId,
+          eventTitle,
+          outcome,
+          side,
+          orderType,
+          shares,
+          filledShares,
+          price,
+          avgPrice,
+          total,
+          fee,
+          status,
+          createdAt,
+          updatedAt,
+          timeline,
+        ]
+      properties:
+        id: { type: string }
+        eventId: { type: string }
+        eventTitle: { type: string }
+        outcome: { type: string }
+        side: { type: string, enum: [buy, sell] }
+        orderType: { type: string, enum: [market, limit] }
+        shares: { type: number }
+        filledShares: { type: number }
+        price: { type: number }
+        avgPrice: { type: number }
+        total: { type: number }
+        fee: { type: number }
+        status:
+          {
+            type: string,
+            enum: [submitted, accepted, partially_filled, filled, canceled, rejected],
+          }
+        createdAt: { type: string }
+        updatedAt: { type: string }
+        timeline:
+          type: array
+          items:
+            type: object
+            required: [label, date, done]
+            properties:
+              label: { type: string }
+              date: { type: string }
+              done: { type: boolean }

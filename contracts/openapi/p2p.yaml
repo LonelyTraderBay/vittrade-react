@@ -1,0 +1,1531 @@
+openapi: 3.1.0
+info:
+  title: VitTrade P2P Marketplace API
+  version: 0.1.0
+  description: Contract-first read model for P2P marketplace offers.
+servers:
+  - url: https://api.example.invalid/v1
+security:
+  - sessionCookie: []
+paths:
+  /p2p/overview:
+    get:
+      operationId: getP2POverview
+      responses:
+        '200':
+          description: User level, trading levels and public marketplace statistics.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2POverviewResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /p2p/dashboard:
+    get:
+      operationId: getP2PDashboard
+      responses:
+        '200':
+          description: Authenticated user's P2P trading analytics.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PDashboardResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /p2p/achievements:
+    get:
+      operationId: getP2PAchievements
+      responses:
+        '200':
+          description: Authenticated user's P2P achievements and progress.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PAchievementsResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /p2p/ads/{adId}/analytics:
+    get:
+      operationId: getP2PAdAnalytics
+      parameters:
+        - name: adId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Authenticated merchant analytics for one P2P offer.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PAdAnalytics' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /p2p/merchants/{merchantId}:
+    get:
+      operationId: getP2PMerchantProfile
+      parameters:
+        - name: merchantId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Public merchant profile, active ads and reviews.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PMerchantProfileResponse' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /p2p/reports/merchants:
+    post:
+      operationId: reportP2PMerchant
+      parameters:
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/P2PReportCreateRequest' }
+      responses:
+        '201':
+          description: Merchant report submitted for compliance review.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PReportReceipt' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /p2p/payment-methods:
+    get:
+      operationId: listP2PPaymentMethods
+      responses:
+        '200':
+          description: Payment methods owned by the authenticated P2P user.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PPaymentMethodsResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    post:
+      operationId: createP2PPaymentMethod
+      parameters:
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/P2PPaymentMethodCreateRequest' }
+      responses:
+        '201':
+          description: Payment method created.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PPaymentMethod' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '409': { description: A duplicate payment method already exists. }
+  /p2p/payment-methods/{methodId}:
+    patch:
+      operationId: updateP2PPaymentMethod
+      parameters:
+        - name: methodId
+          in: path
+          required: true
+          schema: { type: string }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/P2PPaymentMethodUpdateRequest' }
+      responses:
+        '200':
+          description: Payment method updated.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PPaymentMethod' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    delete:
+      operationId: deleteP2PPaymentMethod
+      parameters:
+        - name: methodId
+          in: path
+          required: true
+          schema: { type: string }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      responses:
+        '204': { description: Payment method deleted. }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /p2p/disputes:
+    get:
+      operationId: listP2PDisputes
+      parameters:
+        - name: status
+          in: query
+          schema: { type: string, enum: [submitted, under_review, resolved, rejected] }
+      responses:
+        '200':
+          description: Disputes owned by the authenticated P2P user.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PDisputesResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /p2p/disputes/{disputeId}:
+    get:
+      operationId: getP2PDispute
+      parameters:
+        - name: disputeId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Dispute detail, timeline and support conversation.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PDispute' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /p2p/disputes/{disputeId}/messages:
+    post:
+      operationId: sendP2PDisputeMessage
+      parameters:
+        - name: disputeId
+          in: path
+          required: true
+          schema: { type: string }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/P2PDisputeMessageRequest' }
+      responses:
+        '200':
+          description: Dispute with appended support message.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PDispute' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /p2p/disputes/{disputeId}/escalate:
+    post:
+      operationId: escalateP2PDispute
+      parameters:
+        - name: disputeId
+          in: path
+          required: true
+          schema: { type: string }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/P2PDisputeEscalationRequest' }
+      responses:
+        '200':
+          description: Dispute moved to the requested escalation level.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PDispute' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /p2p/blacklist:
+    get:
+      operationId: listP2PBlacklist
+      parameters:
+        - name: search
+          in: query
+          schema: { type: string }
+        - name: reason
+          in: query
+          schema: { type: string, enum: [scam, unresponsive, fake_payment, harassment, other] }
+      responses:
+        '200':
+          description: Counterparties blocked by the authenticated user.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PBlacklistResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    post:
+      operationId: createP2PBlacklistEntry
+      parameters:
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/P2PBlacklistCreateRequest' }
+      responses:
+        '201':
+          description: Counterparty blocked.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PBlacklistEntry' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /p2p/blacklist/{entryId}:
+    delete:
+      operationId: removeP2PBlacklistEntry
+      parameters:
+        - name: entryId
+          in: path
+          required: true
+          schema: { type: string }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      responses:
+        '204': { description: Counterparty unblocked. }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /p2p/reviews:
+    get:
+      operationId: listP2PReviews
+      parameters:
+        - name: scope
+          in: query
+          schema: { type: string, enum: [received, given], default: received }
+      responses:
+        '200':
+          description: Reviews received or written by the authenticated user.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PReviewsResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /p2p/security/2fa/settings:
+    get:
+      operationId: getP2P2FASettings
+      responses:
+        '200':
+          description: Current P2FA methods and transaction thresholds.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2P2FASettingsResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /p2p/security/2fa/methods/{methodId}:
+    patch:
+      operationId: updateP2P2FAMethod
+      parameters:
+        - {
+            name: methodId,
+            in: path,
+            required: true,
+            schema: { type: string, enum: [2fa_sms, 2fa_authenticator, 2fa_email] },
+          }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [enabled]
+              properties:
+                enabled: { type: boolean }
+      responses:
+        '200':
+          description: Updated P2FA settings.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2P2FASettingsResponse' }
+  /p2p/security/2fa/primary:
+    post:
+      operationId: setP2P2FAPrimaryMethod
+      parameters:
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [methodId]
+              properties:
+                methodId: { type: string, enum: [2fa_sms, 2fa_authenticator, 2fa_email] }
+      responses:
+        '200':
+          description: Updated P2FA settings.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2P2FASettingsResponse' }
+  /p2p/security/2fa/thresholds/{thresholdId}:
+    patch:
+      operationId: updateP2P2FAThreshold
+      parameters:
+        - {
+            name: thresholdId,
+            in: path,
+            required: true,
+            schema: { type: string, enum: [release, create_order, cancel_order] },
+          }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                value: { type: number, minimum: 0 }
+                enabled: { type: boolean }
+      responses:
+        '200':
+          description: Updated P2FA settings.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2P2FASettingsResponse' }
+  /p2p/security/2fa/authenticator/setup:
+    post:
+      operationId: beginP2PAuthenticatorSetup
+      parameters:
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      responses:
+        '200':
+          description: Authenticator enrollment challenge.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PAuthenticatorSetupChallenge' }
+  /p2p/security/2fa/authenticator/confirm:
+    post:
+      operationId: confirmP2PAuthenticatorSetup
+      parameters:
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [code]
+              properties:
+                code: { type: string, pattern: '^\\d{6}$' }
+      responses:
+        '200':
+          description: Authenticator method enabled.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2P2FASettingsResponse' }
+        '401': { description: Authenticator code is invalid. }
+  /p2p/ads:
+    post:
+      operationId: createP2PAd
+      parameters:
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/P2PAdCreateRequest' }
+      responses:
+        '201':
+          description: P2P offer created.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PAd' }
+        '409':
+          description: Duplicate or conflicting offer request.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiError' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    get:
+      operationId: listP2PAds
+      parameters:
+        - { name: asset, in: query, schema: { type: string } }
+        - { name: currency, in: query, schema: { type: string } }
+        - { name: type, in: query, schema: { type: string, enum: [buy, sell] } }
+        - { name: mine, in: query, schema: { type: boolean, default: false } }
+      responses:
+        '200':
+          description: Active P2P marketplace offers.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PAdsResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /p2p/ads/{adId}:
+    patch:
+      operationId: updateP2PAdStatus
+      parameters:
+        - name: adId
+          in: path
+          required: true
+          schema: { type: string }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/P2PAdStatusUpdateRequest' }
+      responses:
+        '200':
+          description: P2P offer status updated.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PAd' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    delete:
+      operationId: deleteP2PAd
+      parameters:
+        - name: adId
+          in: path
+          required: true
+          schema: { type: string }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      responses:
+        '204': { description: P2P offer deleted. }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    get:
+      operationId: getP2PAd
+      parameters:
+        - name: adId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: P2P offer detail.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PAd' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /p2p/orders:
+    get:
+      operationId: listP2POrders
+      parameters:
+        - name: status
+          in: query
+          schema:
+            { type: string, enum: [pending_payment, paid, released, disputed, cancelled, expired] }
+        - name: cursor
+          in: query
+          schema: { type: string }
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100, default: 50 }
+      responses:
+        '200':
+          description: Current user's P2P order history.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items, total]
+                properties:
+                  items: { type: array, items: { $ref: '#/components/schemas/P2POrder' } }
+                  total: { type: integer, minimum: 0 }
+                  nextCursor: { type: string }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    post:
+      operationId: createP2POrder
+      parameters:
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/P2POrderRequest' }
+      responses:
+        '201':
+          description: Escrow order created.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2POrderReceipt' }
+        '409':
+          description: Duplicate or conflicting order request.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiError' }
+  /p2p/orders/{orderId}:
+    get:
+      operationId: getP2POrder
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Escrow order detail and payment instructions.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2POrder' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /p2p/orders/{orderId}/mark-paid:
+    post:
+      operationId: markP2POrderPaid
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema: { type: string }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      responses:
+        '200':
+          description: Payment marked by the buyer.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2POrder' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { description: Order cannot transition to paid. }
+  /p2p/orders/{orderId}/release:
+    post:
+      operationId: releaseP2POrderEscrow
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema: { type: string }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [verificationToken]
+              properties:
+                verificationToken: { type: string, minLength: 1 }
+      responses:
+        '200':
+          description: Escrow released after authorization.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2POrder' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { description: Order cannot transition to released. }
+  /p2p/orders/{orderId}/release/challenge:
+    post:
+      operationId: createP2PReleaseChallenge
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '201':
+          description: One-time MFA challenge for escrow release.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PReleaseChallenge' }
+        '403': { description: Release authorization is not available. }
+  /p2p/orders/{orderId}/release/challenge/{challengeId}/verify:
+    post:
+      operationId: verifyP2PReleaseChallenge
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema: { type: string }
+        - name: challengeId
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [code]
+              properties:
+                code: { type: string, pattern: '^\\d{6}$' }
+      responses:
+        '200':
+          description: Short-lived token authorizing escrow release.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PReleaseVerification' }
+        '401': { description: Invalid or expired MFA code. }
+  /p2p/orders/{orderId}/cancel:
+    post:
+      operationId: cancelP2POrder
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema: { type: string }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reason]
+              properties:
+                reason: { type: string, minLength: 1, maxLength: 500 }
+      responses:
+        '200':
+          description: Order cancelled and escrow state updated.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2POrder' }
+        '400': { description: Cancellation reason is invalid. }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { description: Order cannot transition to cancelled. }
+  /p2p/orders/{orderId}/rate:
+    post:
+      operationId: rateP2POrder
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema: { type: string }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [rating]
+              properties:
+                rating: { type: integer, minimum: 1, maximum: 5 }
+                review: { type: string, maxLength: 2000 }
+                tags: { type: array, items: { type: string, maxLength: 80 }, maxItems: 10 }
+      responses:
+        '200':
+          description: Order rating recorded.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2POrder' }
+        '400': { description: Rating is invalid. }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { description: Order cannot be rated. }
+  /p2p/orders/{orderId}/payment-proof:
+    post:
+      operationId: submitP2PPaymentProof
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema: { type: string }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [files]
+              properties:
+                files:
+                  type: array
+                  minItems: 1
+                  maxItems: 3
+                  items: { type: string, format: binary }
+      responses:
+        '200':
+          description: Payment proof attached to the order.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2POrder' }
+        '400': { description: Proof files are missing or invalid. }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { description: Order cannot accept payment proof. }
+  /p2p/orders/{orderId}/chat:
+    get:
+      operationId: getP2POrderChat
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: E2E chat history associated with an order.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PChatResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /p2p/orders/{orderId}/chat/messages:
+    post:
+      operationId: sendP2PChatMessage
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema: { type: string }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/P2PChatMessageRequest' }
+      responses:
+        '200':
+          description: Updated E2E chat state.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PChatResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+components:
+  parameters:
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema: { type: string, minLength: 16 }
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: vittrade_session
+  responses:
+    Unauthorized:
+      description: Session is missing or expired.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+    NotFound:
+      description: Resource was not found.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+    BadRequest:
+      description: Request validation failed.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+  schemas:
+    ApiError:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string }
+        message: { type: string }
+        details: {}
+    P2PAdsResponse:
+      type: object
+      required: [items]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/P2PAd' } }
+        nextCursor: { type: string }
+    P2PPaymentMethodsResponse:
+      type: object
+      required: [items]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/P2PPaymentMethod' } }
+    P2PPaymentMethodCreateRequest:
+      type: object
+      required: [type, bankName, accountNumber, accountName]
+      properties:
+        type: { type: string, enum: [bank, ewallet] }
+        bankName: { type: string, minLength: 1 }
+        accountNumber: { type: string, minLength: 1 }
+        accountName: { type: string, minLength: 1 }
+        qrCodeUrl: { type: string, format: uri }
+    P2PPaymentMethodUpdateRequest:
+      type: object
+      properties:
+        isDefault: { type: boolean }
+    P2PPaymentMethod:
+      type: object
+      required: [id, type, bankName, accountNumber, accountName, isDefault, isVerified, createdAt]
+      properties:
+        id: { type: string }
+        type: { type: string, enum: [bank, ewallet] }
+        bankName: { type: string }
+        accountNumber: { type: string }
+        accountName: { type: string }
+        qrCodeUrl: { type: string, format: uri }
+        isDefault: { type: boolean }
+        isVerified: { type: boolean }
+        createdAt: { type: string, format: date-time }
+    P2PDisputesResponse:
+      type: object
+      required: [items, total]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/P2PDispute' } }
+        total: { type: integer, minimum: 0 }
+    P2PBlacklistResponse:
+      type: object
+      required: [items, total]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/P2PBlacklistEntry' } }
+        total: { type: integer, minimum: 0 }
+    P2PBlacklistCreateRequest:
+      type: object
+      required: [username, reason]
+      properties:
+        username: { type: string, minLength: 1, maxLength: 120 }
+        reason: { type: string, enum: [scam, unresponsive, fake_payment, harassment, other] }
+        note: { type: string, maxLength: 2000 }
+    P2PBlacklistEntry:
+      type: object
+      required: [id, userId, username, reason, blockedAt, tradesBefore, completionRate, isVerified]
+      properties:
+        id: { type: string }
+        userId: { type: string }
+        username: { type: string }
+        reason: { type: string, enum: [scam, unresponsive, fake_payment, harassment, other] }
+        reasonText: { type: string }
+        blockedAt: { type: string, format: date-time }
+        orderId: { type: string }
+        tradesBefore: { type: integer, minimum: 0 }
+        completionRate: { type: number, minimum: 0, maximum: 100 }
+        isVerified: { type: boolean }
+        badge: { type: string, enum: [elite, pro] }
+    P2PReviewsResponse:
+      type: object
+      required: [items, total, averageRating, positiveCount, negativeCount]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/P2PReview' } }
+        total: { type: integer, minimum: 0 }
+        averageRating: { type: number, minimum: 0, maximum: 5 }
+        positiveCount: { type: integer, minimum: 0 }
+        negativeCount: { type: integer, minimum: 0 }
+    P2PReview:
+      type: object
+      required:
+        [id, orderId, fromUser, fromUserId, toUser, toUserId, rating, comment, createdAt, type]
+      properties:
+        id: { type: string }
+        orderId: { type: string }
+        fromUser: { type: string }
+        fromUserId: { type: string }
+        toUser: { type: string }
+        toUserId: { type: string }
+        rating: { type: integer, minimum: 1, maximum: 5 }
+        comment: { type: string }
+        createdAt: { type: string, format: date-time }
+        reply: { type: string }
+        replyAt: { type: string, format: date-time }
+        type: { type: string, enum: [positive, negative] }
+    P2PChatMessageRequest:
+      type: object
+      required: [text]
+      properties:
+        text: { type: string, minLength: 1, maxLength: 4000 }
+        type: { type: string, enum: [text, image], default: text }
+        attachmentUrl: { type: string, format: uri }
+    P2PChatResponse:
+      type: object
+      required: [orderId, counterparty, e2eEncrypted, messages]
+      properties:
+        orderId: { type: string }
+        counterparty: { type: string }
+        e2eEncrypted: { type: boolean }
+        messages:
+          type: array
+          items: { $ref: '#/components/schemas/P2PChatMessage' }
+    P2PChatMessage:
+      type: object
+      required: [id, sender, text, sentAt, type]
+      properties:
+        id: { type: string }
+        sender: { type: string, enum: [user, counterparty, system] }
+        text: { type: string }
+        sentAt: { type: string }
+        type: { type: string, enum: [text, image, system] }
+        attachmentUrl: { type: string, format: uri }
+        readAt: { type: string, format: date-time }
+    P2PDisputeMessageRequest:
+      type: object
+      required: [text]
+      properties:
+        text: { type: string, minLength: 1, maxLength: 4000 }
+    P2PDisputeEscalationRequest:
+      type: object
+      required: [level]
+      properties:
+        level: { type: integer, minimum: 1, maximum: 4 }
+    P2PDispute:
+      type: object
+      required:
+        [
+          id,
+          orderId,
+          orderNumber,
+          reason,
+          description,
+          evidence,
+          status,
+          createdAt,
+          timeline,
+          supportMessages,
+          escalationLevel,
+        ]
+      properties:
+        id: { type: string }
+        orderId: { type: string }
+        orderNumber: { type: string }
+        reason: { type: string }
+        description: { type: string }
+        evidence: { type: array, items: { type: string } }
+        status: { type: string, enum: [submitted, under_review, resolved, rejected] }
+        resolution: { type: string }
+        createdAt: { type: string }
+        resolvedAt: { type: string }
+        timeline:
+          type: array
+          items:
+            type: object
+            required: [time, event]
+            properties:
+              time: { type: string }
+              event: { type: string }
+              detail: { type: string }
+        supportMessages:
+          type: array
+          items:
+            type: object
+            required: [sender, text, time]
+            properties:
+              sender: { type: string, enum: [user, support] }
+              text: { type: string }
+              time: { type: string }
+        escalationLevel: { type: integer, minimum: 1, maximum: 4 }
+    P2POverviewResponse:
+      type: object
+      required: [userLevel, tradingLevels, platformStats]
+      properties:
+        userLevel: { $ref: '#/components/schemas/P2PUserLevel' }
+        tradingLevels: { type: array, items: { $ref: '#/components/schemas/P2PTradingLevel' } }
+        platformStats: { $ref: '#/components/schemas/P2PPlatformStats' }
+    P2PDashboardResponse:
+      type: object
+      required:
+        [stats, ordersByMonth, volumeByWeek, assetDistribution, topMerchants, recentActivity]
+      properties:
+        stats: { $ref: '#/components/schemas/P2PDashboardStats' }
+        ordersByMonth: { type: array, items: { $ref: '#/components/schemas/P2POrdersByMonth' } }
+        volumeByWeek: { type: array, items: { $ref: '#/components/schemas/P2PVolumeByWeek' } }
+        assetDistribution:
+          { type: array, items: { $ref: '#/components/schemas/P2PAssetDistribution' } }
+        topMerchants: { type: array, items: { $ref: '#/components/schemas/P2PTopMerchant' } }
+        recentActivity: { type: array, items: { $ref: '#/components/schemas/P2PRecentActivity' } }
+    P2PDashboardStats:
+      type: object
+      required:
+        [
+          totalOrders,
+          completedOrders,
+          cancelledOrders,
+          disputedOrders,
+          completionRate,
+          avgCompletionTime,
+          totalVolume7d,
+          totalVolume30d,
+          totalVolumeAll,
+          buyVolume30d,
+          sellVolume30d,
+          spreadRevenue30d,
+          avgOrderSize,
+          uniqueCounterparties,
+          repeatCustomerRate,
+          avgRatingGiven,
+          avgRatingReceived,
+          positiveReviewRate,
+          responseTimeAvg,
+          platformAvgCompletionRate,
+          platformAvgResponseTime,
+        ]
+      properties:
+        totalOrders: { type: integer, minimum: 0 }
+        completedOrders: { type: integer, minimum: 0 }
+        cancelledOrders: { type: integer, minimum: 0 }
+        disputedOrders: { type: integer, minimum: 0 }
+        completionRate: { type: number, minimum: 0, maximum: 100 }
+        avgCompletionTime: { type: string }
+        totalVolume7d: { type: number, minimum: 0 }
+        totalVolume30d: { type: number, minimum: 0 }
+        totalVolumeAll: { type: number, minimum: 0 }
+        buyVolume30d: { type: number, minimum: 0 }
+        sellVolume30d: { type: number, minimum: 0 }
+        spreadRevenue30d: { type: number, minimum: 0 }
+        avgOrderSize: { type: number, minimum: 0 }
+        uniqueCounterparties: { type: integer, minimum: 0 }
+        repeatCustomerRate: { type: number, minimum: 0, maximum: 100 }
+        avgRatingGiven: { type: number, minimum: 0, maximum: 5 }
+        avgRatingReceived: { type: number, minimum: 0, maximum: 5 }
+        positiveReviewRate: { type: number, minimum: 0, maximum: 100 }
+        responseTimeAvg: { type: string }
+        platformAvgCompletionRate: { type: number, minimum: 0, maximum: 100 }
+        platformAvgResponseTime: { type: string }
+    P2PAchievementsResponse:
+      type: object
+      required: [items, totalUnlocked, totalPoints, badgeCount, currentLevel]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/P2PAchievement' } }
+        totalUnlocked: { type: integer, minimum: 0 }
+        totalPoints: { type: integer, minimum: 0 }
+        badgeCount: { type: integer, minimum: 0 }
+        currentLevel: { type: integer, minimum: 0 }
+    P2PAchievement:
+      type: object
+      required:
+        [id, title, description, progress, currentValue, targetValue, unit, unlocked, category]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        description: { type: string }
+        progress: { type: number, minimum: 0, maximum: 100 }
+        currentValue: { type: number, minimum: 0 }
+        targetValue: { type: number, exclusiveMinimum: 0 }
+        unit: { type: string }
+        unlocked: { type: boolean }
+        unlockedAt: { type: string, format: date-time }
+        reward: { type: string }
+        category: { type: string, enum: [volume, trades, trust, special] }
+    P2PAdAnalytics:
+      type: object
+      required:
+        [
+          adId,
+          impressions,
+          clicks,
+          ordersCreated,
+          ordersCompleted,
+          ordersDisputed,
+          ordersCancelled,
+          totalVolume,
+          totalRevenue,
+          avgOrderValue,
+          avgResponseTime,
+          avgCompletionTime,
+          conversionRate,
+          completionRate,
+          rating,
+          reviewsCount,
+          ranking,
+          totalActiveAds,
+          dailyPerformance,
+          hourlyHeatmap,
+          paymentBreakdown,
+          competitorComparison,
+        ]
+      properties:
+        adId: { type: string }
+        impressions: { type: integer, minimum: 0 }
+        clicks: { type: integer, minimum: 0 }
+        ordersCreated: { type: integer, minimum: 0 }
+        ordersCompleted: { type: integer, minimum: 0 }
+        ordersDisputed: { type: integer, minimum: 0 }
+        ordersCancelled: { type: integer, minimum: 0 }
+        totalVolume: { type: number, minimum: 0 }
+        totalRevenue: { type: number, minimum: 0 }
+        avgOrderValue: { type: number, minimum: 0 }
+        avgResponseTime: { type: number, minimum: 0 }
+        avgCompletionTime: { type: number, minimum: 0 }
+        conversionRate: { type: number, minimum: 0, maximum: 100 }
+        completionRate: { type: number, minimum: 0, maximum: 100 }
+        rating: { type: number, minimum: 0, maximum: 5 }
+        reviewsCount: { type: integer, minimum: 0 }
+        ranking: { type: integer, minimum: 1 }
+        totalActiveAds: { type: integer, minimum: 0 }
+        dailyPerformance:
+          type: array
+          items:
+            type: object
+            required: [date, impressions, orders, volume]
+            properties:
+              date: { type: string }
+              impressions: { type: integer, minimum: 0 }
+              orders: { type: integer, minimum: 0 }
+              volume: { type: number, minimum: 0 }
+        hourlyHeatmap:
+          type: array
+          items:
+            type: object
+            required: [hour, orders]
+            properties:
+              hour: { type: integer, minimum: 0, maximum: 23 }
+              orders: { type: integer, minimum: 0 }
+        paymentBreakdown:
+          type: array
+          items:
+            type: object
+            required: [method, count, volume]
+            properties:
+              method: { type: string }
+              count: { type: integer, minimum: 0 }
+              volume: { type: number, minimum: 0 }
+        competitorComparison:
+          type: array
+          items:
+            type: object
+            required: [metric, yours, avg, top]
+            properties:
+              metric: { type: string }
+              yours: { type: number }
+              avg: { type: number }
+              top: { type: number }
+    P2PMerchantProfileResponse:
+      type: object
+      required: [merchant, ads, reviews]
+      properties:
+        merchant: { $ref: '#/components/schemas/P2PMerchantProfile' }
+        ads: { type: array, items: { $ref: '#/components/schemas/P2PAd' } }
+        reviews: { type: array, items: { $ref: '#/components/schemas/P2PReview' } }
+    P2PMerchantProfile:
+      type: object
+      required:
+        [
+          id,
+          name,
+          level,
+          kycVerified,
+          joinDate,
+          totalTrades,
+          totalTrades30d,
+          completionRate,
+          avgReleaseTime,
+          avgPayTime,
+          totalVolume30d,
+          isOnline,
+          lastActive,
+          positiveRate,
+          negativeCount,
+          activeAds,
+        ]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        avatar: { type: string }
+        level: { type: integer, minimum: 0 }
+        kycVerified: { type: boolean }
+        joinDate: { type: string, format: date }
+        totalTrades: { type: integer, minimum: 0 }
+        totalTrades30d: { type: integer, minimum: 0 }
+        completionRate: { type: number, minimum: 0, maximum: 100 }
+        avgReleaseTime: { type: string }
+        avgPayTime: { type: string }
+        totalVolume30d: { type: number, minimum: 0 }
+        isOnline: { type: boolean }
+        lastActive: { type: string }
+        positiveRate: { type: number, minimum: 0, maximum: 100 }
+        negativeCount: { type: integer, minimum: 0 }
+        activeAds: { type: integer, minimum: 0 }
+    P2PReportCreateRequest:
+      type: object
+      required: [merchantId, reason]
+      properties:
+        merchantId: { type: string }
+        reason:
+          {
+            type: string,
+            enum: [scam, fake_payment, harassment, price_manipulation, identity, other],
+          }
+        detail: { type: string, maxLength: 4000 }
+    P2PReportReceipt:
+      type: object
+      required: [reportId, status, createdAt]
+      properties:
+        reportId: { type: string }
+        status: { type: string, enum: [submitted] }
+        createdAt: { type: string, format: date-time }
+    P2POrdersByMonth:
+      type: object
+      required: [month, buy, sell]
+      properties:
+        month: { type: string }
+        buy: { type: integer, minimum: 0 }
+        sell: { type: integer, minimum: 0 }
+    P2PVolumeByWeek:
+      type: object
+      required: [week, volume]
+      properties:
+        week: { type: string }
+        volume: { type: number, minimum: 0 }
+    P2PAssetDistribution:
+      type: object
+      required: [asset, percentage, volume]
+      properties:
+        asset: { type: string }
+        percentage: { type: number, minimum: 0, maximum: 100 }
+        volume: { type: number, minimum: 0 }
+    P2PTopMerchant:
+      type: object
+      required: [name, id, trades, volume, rating]
+      properties:
+        name: { type: string }
+        id: { type: string }
+        trades: { type: integer, minimum: 0 }
+        volume: { type: number, minimum: 0 }
+        rating: { type: number, minimum: 0, maximum: 5 }
+    P2PRecentActivity:
+      type: object
+      required: [date, type, asset, amount, total, merchant, status]
+      properties:
+        date: { type: string }
+        type: { type: string }
+        asset: { type: string }
+        amount: { type: number }
+        total: { type: number }
+        merchant: { type: string }
+        status: { type: string }
+    P2PUserLevel:
+      type: object
+      required:
+        [
+          currentLevel,
+          completedOrders,
+          accumulatedVolume,
+          dailyUsed,
+          dailyLimit,
+          fee,
+          nextLevelProgress,
+        ]
+      properties:
+        currentLevel: { type: integer }
+        completedOrders: { type: integer }
+        accumulatedVolume: { type: number }
+        dailyUsed: { type: number }
+        dailyLimit: { type: number }
+        fee: { type: number }
+        nextLevelProgress: { type: number }
+    P2PTradingLevel:
+      type: object
+      required: [id, name, nameVi, fee, dailyLimit, perOrderLimit, requirements, color, gradient]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        nameVi: { type: string }
+        fee: { type: number }
+        dailyLimit: { type: number }
+        perOrderLimit: { type: number }
+        requirements: { type: array, items: { type: string } }
+        color: { type: string }
+        gradient: { type: string }
+    P2PPlatformStats:
+      type: object
+      required:
+        [
+          volume24h,
+          volume24hChange,
+          totalTrades24h,
+          activeMerchants,
+          onlineTraders,
+          avgCompletionRate,
+          avgCompletionTime,
+          totalUsers,
+          supportedFiats,
+          escrowProtected,
+        ]
+      properties:
+        volume24h: { type: number }
+        volume24hChange: { type: number }
+        totalTrades24h: { type: integer }
+        activeMerchants: { type: integer }
+        onlineTraders: { type: integer }
+        avgCompletionRate: { type: number }
+        avgCompletionTime: { type: string }
+        totalUsers: { type: integer }
+        supportedFiats: { type: integer }
+        escrowProtected: { type: number }
+    P2PAdCreateRequest:
+      type: object
+      required:
+        [type, asset, currency, priceType, price, available, minLimit, maxLimit, paymentMethods]
+      properties:
+        type: { type: string, enum: [buy, sell] }
+        asset: { type: string }
+        currency: { type: string }
+        priceType: { type: string, enum: [fixed, floating] }
+        price: { type: number, exclusiveMinimum: 0 }
+        priceMargin: { type: number }
+        available: { type: number, exclusiveMinimum: 0 }
+        minLimit: { type: number, minimum: 0 }
+        maxLimit: { type: number, exclusiveMinimum: 0 }
+        paymentMethods: { type: array, minItems: 1, items: { type: string } }
+        remarks: { type: string }
+        autoReply: { type: string }
+        counterpartyRequirements: { type: object, additionalProperties: true }
+        tradingHours: { type: string }
+        paymentWindow: { type: integer, minimum: 1 }
+    P2PAdStatusUpdateRequest:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string, enum: [active, paused] }
+    P2PAd:
+      type: object
+      required:
+        [
+          id,
+          type,
+          asset,
+          merchant,
+          merchantId,
+          merchantLevel,
+          merchantVerified,
+          merchantJoinDate,
+          completionRate,
+          completedOrders,
+          totalVolume30d,
+          price,
+          currency,
+          priceType,
+          minLimit,
+          maxLimit,
+          available,
+          paymentMethods,
+          avgResponseTime,
+          isOnline,
+          createdAt,
+          status,
+        ]
+      properties:
+        id: { type: string }
+        type: { type: string, enum: [buy, sell] }
+        asset: { type: string }
+        merchant: { type: string }
+        merchantId: { type: string }
+        merchantAvatar: { type: string }
+        merchantLevel: { type: integer, minimum: 0 }
+        merchantVerified: { type: boolean }
+        merchantJoinDate: { type: string }
+        completionRate: { type: number, minimum: 0, maximum: 100 }
+        completedOrders: { type: integer, minimum: 0 }
+        totalVolume30d: { type: number, minimum: 0 }
+        price: { type: number, exclusiveMinimum: 0 }
+        currency: { type: string }
+        priceType: { type: string, enum: [fixed, floating] }
+        priceMargin: { type: number }
+        minLimit: { type: number, minimum: 0 }
+        maxLimit: { type: number, exclusiveMinimum: 0 }
+        available: { type: number, exclusiveMinimum: 0 }
+        paymentMethods: { type: array, items: { type: string } }
+        avgResponseTime: { type: string }
+        isOnline: { type: boolean }
+        lastActive: { type: string }
+        remarks: { type: string }
+        autoReply: { type: string }
+        counterpartyRequirements: { type: object, additionalProperties: true }
+        tradingHours: { type: string }
+        createdAt: { type: string }
+        status: { type: string, enum: [active, paused, expired] }
+        merchantRating: { type: number, minimum: 0, maximum: 5 }
+        merchantBadge: { type: string, enum: [elite, pro, null] }
+        merchantFlag: { type: string }
+        viewerCount: { type: integer, minimum: 0 }
+        isNewMerchant: { type: boolean }
+        timeAgo: { type: string }
+        paymentWindow: { type: integer, minimum: 1 }
+        referencePrice: { type: number, exclusiveMinimum: 0 }
+    P2POrderRequest:
+      type: object
+      required: [adId, asset, currency, amount, fiatAmount, paymentMethod]
+      properties:
+        adId: { type: string }
+        asset: { type: string }
+        currency: { type: string }
+        amount: { type: number, exclusiveMinimum: 0 }
+        fiatAmount: { type: number, exclusiveMinimum: 0 }
+        paymentMethod: { type: string }
+    P2POrderReceipt:
+      type: object
+      required: [orderId, status, expiresAt]
+      properties:
+        orderId: { type: string }
+        status: { type: string, enum: [created, pending] }
+        expiresAt: { type: string, format: date-time }
+    P2P2FASettingsResponse:
+      type: object
+      required: [methods, thresholds]
+      properties:
+        methods: { type: array, items: { $ref: '#/components/schemas/P2P2FAMethod' } }
+        thresholds: { type: array, items: { $ref: '#/components/schemas/P2P2FAThreshold' } }
+    P2P2FAMethod:
+      type: object
+      required: [id, label, description, enabled, isPrimary, setupRequired, color]
+      properties:
+        id: { type: string, enum: [2fa_sms, 2fa_authenticator, 2fa_email] }
+        label: { type: string }
+        description: { type: string }
+        enabled: { type: boolean }
+        isPrimary: { type: boolean }
+        setupRequired: { type: boolean }
+        color: { type: string }
+    P2P2FAThreshold:
+      type: object
+      required: [id, label, description, value, unit, enabled]
+      properties:
+        id: { type: string, enum: [release, create_order, cancel_order] }
+        label: { type: string }
+        description: { type: string }
+        value: { type: number, minimum: 0 }
+        unit: { type: string, enum: [VND, USDT] }
+        enabled: { type: boolean }
+    P2PAuthenticatorSetupChallenge:
+      type: object
+      required: [secret, qrCodeUrl, expiresAt]
+      properties:
+        secret: { type: string }
+        qrCodeUrl: { type: string }
+        expiresAt: { type: string, format: date-time }
+    P2PReleaseChallenge:
+      type: object
+      required: [id, method, expiresAt]
+      properties:
+        id: { type: string }
+        method: { type: string, enum: [totp, sms] }
+        maskedDestination: { type: string }
+        expiresAt: { type: string, format: date-time }
+    P2PReleaseVerification:
+      type: object
+      required: [verificationToken, expiresAt]
+      properties:
+        verificationToken: { type: string, minLength: 1 }
+        expiresAt: { type: string, format: date-time }
+    P2POrder:
+      type: object
+      required:
+        [
+          id,
+          orderNumber,
+          adId,
+          type,
+          asset,
+          amount,
+          price,
+          total,
+          currency,
+          status,
+          merchant,
+          merchantId,
+          counterparty,
+          paymentMethod,
+          createdAt,
+          expiresAt,
+          escrowAmount,
+          fee,
+        ]
+      properties:
+        id: { type: string }
+        orderNumber: { type: string }
+        adId: { type: string }
+        type: { type: string, enum: [buy, sell] }
+        asset: { type: string }
+        amount: { type: number, exclusiveMinimum: 0 }
+        price: { type: number, exclusiveMinimum: 0 }
+        total: { type: number, exclusiveMinimum: 0 }
+        currency: { type: string }
+        status:
+          { type: string, enum: [pending_payment, paid, released, disputed, cancelled, expired] }
+        merchant: { type: string }
+        merchantId: { type: string }
+        counterparty: { type: string }
+        paymentMethod: { type: string }
+        createdAt: { type: string, format: date-time }
+        expiresAt: { type: string, format: date-time }
+        paidAt: { type: string, format: date-time }
+        releasedAt: { type: string, format: date-time }
+        cancelledAt: { type: string, format: date-time }
+        cancelReason: { type: string }
+        escrowAmount: { type: number, minimum: 0 }
+        fee: { type: number, minimum: 0 }
+        paymentProof: { type: array, items: { type: string } }
+        rating: { type: number, minimum: 0, maximum: 5 }
+        review: { type: string }
+        disputeReason: { type: string }
+        disputeEvidence: { type: array, items: { type: string } }
+        paymentInfo:
+          type: object
+          required: [bankName, accountNumber, accountName]
+          properties:
+            bankName: { type: string }
+            accountNumber: { type: string }
+            accountName: { type: string }
+            qrCodeUrl: { type: string }

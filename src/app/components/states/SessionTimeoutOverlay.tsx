@@ -22,8 +22,6 @@ interface SessionWarningBarProps {
 }
 
 export function SessionWarningBar({ remainingSeconds, onExtend }: SessionWarningBarProps) {
-  const c = useThemeColors();
-
   return (
     <div
       className="flex items-center justify-between gap-3 px-4 animate-fade-in-up"

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { Search, Bell, ChevronRight, Moon, Sun } from 'lucide-react';
+import { Search, Bell, ChevronRight } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
-import { useUI } from '../../contexts/UIContext';
+import { useUI } from '../../hooks/useUI';
 
 /**
  * ══════════════════════════════════════════════════════════

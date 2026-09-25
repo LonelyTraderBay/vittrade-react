@@ -1,0 +1,5 @@
+{
+  "schemaVersion": 1,
+  "note": "Add a page only after contract, adapter, authorization, integration-test and staging-verification evidence is available. The inventory generator also rejects mock references, direct runtime access, development-only routes, unavailable staging commits and certified source inputs that changed after staging.",
+  "pages": []
+}

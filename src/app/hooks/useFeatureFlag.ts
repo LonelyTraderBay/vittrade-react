@@ -8,9 +8,10 @@
  * @version 2.0 (Phase 2 - Sprint 2)
  */
 
-import { useMemo, useCallback, useSyncExternalStore } from 'react';
+import { useCallback, useSyncExternalStore } from 'react';
 import { featureFlags } from '../services/FeatureFlagService';
-import { UserContext, DCAFeatureFlag, DCAABTestFlag } from '../types/featureFlags';
+import type { UserContext } from '@/shared/types/feature-flags';
+import { DCAFeatureFlag, DCAABTestFlag } from '@/features/dca/model/dca-feature-flags';
 
 /* ═══════════════════════════════════════════
    HOOKS
@@ -23,17 +24,8 @@ export function useFeatureFlag(
   flagKey: DCAFeatureFlag | DCAABTestFlag | string,
   userContext?: UserContext,
 ): boolean {
-  // Subscribe to flag changes (for future real-time updates)
-  const isEnabled = useSyncExternalStore(
-    (callback) => {
-      // TODO: Implement actual subscription when we have real-time updates
-      return () => {};
-    },
-    () => featureFlags.isEnabled(flagKey, userContext),
-    () => featureFlags.isEnabled(flagKey, userContext),
-  );
-
-  return isEnabled;
+  useSyncExternalStore(featureFlags.subscribe, featureFlags.getVersion, featureFlags.getVersion);
+  return featureFlags.isEnabled(flagKey, userContext);
 }
 
 /**
@@ -44,15 +36,8 @@ export function useFeatureFlagValue<T>(
   defaultValue: T,
   userContext?: UserContext,
 ): T {
-  const value = useSyncExternalStore(
-    (callback) => {
-      return () => {};
-    },
-    () => featureFlags.getValue(flagKey, defaultValue, userContext),
-    () => featureFlags.getValue(flagKey, defaultValue, userContext),
-  );
-
-  return value;
+  useSyncExternalStore(featureFlags.subscribe, featureFlags.getVersion, featureFlags.getVersion);
+  return featureFlags.getValue(flagKey, defaultValue, userContext);
 }
 
 /**
@@ -62,15 +47,8 @@ export function useABTestVariant(
   flagKey: DCAABTestFlag | string,
   userContext?: UserContext,
 ): string {
-  const variant = useSyncExternalStore(
-    (callback) => {
-      return () => {};
-    },
-    () => featureFlags.getVariant(flagKey, userContext),
-    () => featureFlags.getVariant(flagKey, userContext),
-  );
-
-  return variant;
+  useSyncExternalStore(featureFlags.subscribe, featureFlags.getVersion, featureFlags.getVersion);
+  return featureFlags.getVariant(flagKey, userContext);
 }
 
 /**
@@ -80,20 +58,20 @@ export function useFeatureFlags(
   flagKeys: (DCAFeatureFlag | DCAABTestFlag | string)[],
   userContext?: UserContext,
 ): Record<string, boolean> {
-  return useMemo(() => {
-    const flags: Record<string, boolean> = {};
-    for (const key of flagKeys) {
-      flags[key] = featureFlags.isEnabled(key, userContext);
-    }
-    return flags;
-  }, [flagKeys, userContext]);
+  useSyncExternalStore(featureFlags.subscribe, featureFlags.getVersion, featureFlags.getVersion);
+
+  const flags: Record<string, boolean> = {};
+  for (const key of flagKeys) {
+    flags[key] = featureFlags.isEnabled(key, userContext);
+  }
+  return flags;
 }
 
 /**
  * Feature flag utilities
  */
 export function useFeatureFlagUtils() {
-  const override = useCallback((flagKey: string, value: any) => {
+  const override = useCallback((flagKey: string, value: unknown) => {
     featureFlags.override(flagKey, value);
   }, []);
 

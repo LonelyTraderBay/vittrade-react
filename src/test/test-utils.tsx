@@ -1,11 +1,13 @@
 import React, { ReactElement } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
 import { MemoryRouter, MemoryRouterProps } from 'react-router';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '../app/contexts/AuthContext';
+import type { AuthAdapter } from '../app/contexts/AuthContext';
 import { ThemeProvider } from '../app/contexts/ThemeContext';
 import { UIProvider } from '../app/contexts/UIContext';
 import { AppProvider } from '../app/contexts/AppContext';
-import { DCAProvider } from '../app/contexts/DCAContext';
+import { testAuthAdapter } from './auth-test-adapter';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -18,26 +20,37 @@ import { DCAProvider } from '../app/contexts/DCAContext';
 interface AllTheProvidersProps {
   children: React.ReactNode;
   routerProps?: MemoryRouterProps;
+  authAdapter?: AuthAdapter;
 }
 
 /**
  * All Providers Wrapper
  * Wraps components with all app contexts in the correct order
  */
-function AllTheProviders({ children, routerProps = {} }: AllTheProvidersProps) {
+function AllTheProviders({
+  children,
+  routerProps = {},
+  authAdapter = testAuthAdapter,
+}: AllTheProvidersProps) {
   const { initialEntries = ['/'], ...otherRouterProps } = routerProps;
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: { retry: false },
+      mutations: { retry: false },
+    },
+  });
 
   return (
     <MemoryRouter initialEntries={initialEntries} {...otherRouterProps}>
-      <ThemeProvider>
-        <AuthProvider>
-          <UIProvider>
-            <AppProvider>
-              <DCAProvider>{children}</DCAProvider>
-            </AppProvider>
-          </UIProvider>
-        </AuthProvider>
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <AuthProvider adapter={authAdapter}>
+            <UIProvider>
+              <AppProvider authAdapter={authAdapter}>{children}</AppProvider>
+            </UIProvider>
+          </AuthProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
     </MemoryRouter>
   );
 }
@@ -47,14 +60,17 @@ function AllTheProviders({ children, routerProps = {} }: AllTheProvidersProps) {
  */
 interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
   routerProps?: MemoryRouterProps;
+  authAdapter?: AuthAdapter;
 }
 
 export function renderWithProviders(ui: ReactElement, options?: CustomRenderOptions) {
-  const { routerProps, ...renderOptions } = options ?? {};
+  const { routerProps, authAdapter, ...renderOptions } = options ?? {};
 
   return render(ui, {
     wrapper: ({ children }) => (
-      <AllTheProviders routerProps={routerProps}>{children}</AllTheProviders>
+      <AllTheProviders routerProps={routerProps} authAdapter={authAdapter}>
+        {children}
+      </AllTheProviders>
     ),
     ...renderOptions,
   });

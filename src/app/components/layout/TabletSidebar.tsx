@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import {
   Home,
   BarChart2,
   ArrowLeftRight,
   Wallet,
-  User,
   Bell,
   HelpCircle,
   Settings,
-  Shield,
   ChevronLeft,
   ChevronRight,
   Layers,
@@ -17,9 +15,9 @@ import {
   Globe,
   TrendingUp,
   Target,
-  Star,
   PieChart,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 
 /**
@@ -46,7 +44,7 @@ const PREFIX = '/t';
 
 interface NavItem {
   path: string;
-  icon: React.ComponentType<any>;
+  icon: LucideIcon;
   label: string;
   badge?: number;
 }

@@ -13,16 +13,17 @@ import {
   AlertTriangle,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { fmtVnd, fmtAbsPct } from '../../data/formatNumber';
+import { fmtVnd, fmtAbsPct } from '@/shared/lib/formatNumber';
 import { φ } from '../../utils/golden';
 import { TrCard } from '../ui/TrCard';
 import { hexToRgba } from '../../utils/helpers/string';
+import type { ThemeColors } from '@/shared/hooks/useThemeColors';
 
 /* ═══════════════════════════════════════════════════════════
    Types
    ═══════════════════════════════════════════════════════════ */
 interface LivePreviewProps {
-  c: Record<string, any>;
+  c: ThemeColors;
   expanded: boolean;
   onToggle: () => void;
   adType: 'buy' | 'sell';

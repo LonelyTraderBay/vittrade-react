@@ -1,0 +1,529 @@
+openapi: 3.1.0
+info:
+  title: VitTrade Trading API
+  version: 0.1.0
+  description: Contract-first order lifecycle API for the core trading vertical slice.
+servers:
+  - url: https://api.example.invalid/v1
+security:
+  - sessionCookie: []
+paths:
+  /trading/copy/providers:
+    get:
+      operationId: listCopyProviders
+      parameters:
+        - name: risk
+          in: query
+          schema: { type: string, enum: [low, medium, high] }
+        - name: verified
+          in: query
+          schema: { type: boolean }
+        - name: sort
+          in: query
+          schema: { type: string, enum: [roi, sharpe, followers, recent, aum], default: roi }
+      responses:
+        '200':
+          description: Ranked copy-trading providers with risk disclosures.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CopyProvidersResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /trading/copy/providers/{providerId}:
+    get:
+      operationId: getCopyProviderProfile
+      parameters:
+        - name: providerId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Provider profile, performance history and recent trades.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CopyProviderProfileResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { description: Provider not found. }
+  /trading/copy/relationships:
+    get:
+      operationId: listCopyRelationships
+      responses:
+        '200':
+          description: Authenticated user's copy-trading relationships.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CopyRelationshipsResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    post:
+      operationId: createCopyRelationship
+      parameters:
+        - {
+            name: Idempotency-Key,
+            in: header,
+            required: true,
+            schema: { type: string, minLength: 8 },
+          }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CopyConfigurationRequest' }
+      responses:
+        '201':
+          description: Copy relationship activated.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CopyActivationReceipt' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '409': { description: Duplicate idempotency key, insufficient balance, or policy conflict. }
+  /trading/copy/relationships/{copyId}/stop:
+    post:
+      operationId: stopCopyRelationship
+      parameters:
+        - { name: copyId, in: path, required: true, schema: { type: string } }
+        - {
+            name: Idempotency-Key,
+            in: header,
+            required: true,
+            schema: { type: string, minLength: 8 },
+          }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/StopCopyRequest' }
+      responses:
+        '200':
+          description: Copy relationship stopped.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CopyRelationship' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { description: Copy relationship not found. }
+  /trading/analytics:
+    get:
+      operationId: getTradingAnalytics
+      parameters:
+        - name: period
+          in: query
+          schema: { type: string, enum: [7D, 1M, 3M, 1Y], default: 1M }
+      responses:
+        '200':
+          description: Authenticated trading performance analytics.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TradingAnalyticsResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /trading/orders:
+    get:
+      operationId: listOpenOrders
+      parameters:
+        - { name: symbol, in: query, schema: { type: string } }
+        - { name: cursor, in: query, schema: { type: string } }
+        - {
+            name: limit,
+            in: query,
+            schema: { type: integer, minimum: 1, maximum: 100, default: 50 },
+          }
+        - { name: status, in: query, schema: { type: string, enum: [open] } }
+      responses:
+        '200':
+          description: Open orders page.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OrderListResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    post:
+      operationId: placeOrder
+      parameters:
+        - {
+            name: Idempotency-Key,
+            in: header,
+            required: true,
+            schema: { type: string, minLength: 8 },
+          }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PlaceOrderRequest' }
+      responses:
+        '201':
+          description: Order accepted.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TradingOrder' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '409': { description: Duplicate idempotency key or insufficient balance. }
+  /trading/orders/history:
+    get:
+      operationId: listOrderHistory
+      parameters:
+        - { name: symbol, in: query, schema: { type: string } }
+        - {
+            name: status,
+            in: query,
+            schema: { type: string, enum: [filled, partial, cancelled, rejected] },
+          }
+        - { name: cursor, in: query, schema: { type: string } }
+        - {
+            name: limit,
+            in: query,
+            schema: { type: integer, minimum: 1, maximum: 100, default: 50 },
+          }
+      responses:
+        '200':
+          description: Historical orders page.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OrderListResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /trading/orders/{orderId}:
+    patch:
+      operationId: modifyOrder
+      parameters:
+        - { name: orderId, in: path, required: true, schema: { type: string } }
+        - {
+            name: Idempotency-Key,
+            in: header,
+            required: true,
+            schema: { type: string, minLength: 8 },
+          }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ModifyOrderRequest' }
+      responses:
+        '200':
+          description: Updated order.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TradingOrder' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { description: Order not found. }
+  /trading/orders/{orderId}/cancel:
+    post:
+      operationId: cancelOrder
+      parameters:
+        - { name: orderId, in: path, required: true, schema: { type: string } }
+        - {
+            name: Idempotency-Key,
+            in: header,
+            required: true,
+            schema: { type: string, minLength: 8 },
+          }
+      responses:
+        '200':
+          description: Cancelled order.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TradingOrder' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { description: Order not found. }
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: vittrade_session
+  responses:
+    BadRequest:
+      description: Invalid order request.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+    Unauthorized:
+      description: Session is missing or expired.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+  schemas:
+    CopyProvidersResponse:
+      type: object
+      required: [items]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/CopyTrader' } }
+    CopyTrader:
+      type: object
+      required:
+        [
+          id,
+          name,
+          avatar,
+          winRate,
+          totalPnl,
+          totalPnlPct,
+          aum,
+          copiers,
+          maxCopiers,
+          sharpeRatio,
+          maxDrawdown,
+          totalTrades,
+          avgHoldingTime,
+          weeklyPnl,
+          tags,
+          isFollowing,
+          riskLevel,
+          verified,
+        ]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        avatar: { type: string }
+        winRate: { type: number, minimum: 0, maximum: 100 }
+        totalPnl: { type: number }
+        totalPnlPct: { type: number }
+        aum: { type: number, minimum: 0 }
+        copiers: { type: integer, minimum: 0 }
+        maxCopiers: { type: integer, minimum: 1 }
+        sharpeRatio: { type: number }
+        maxDrawdown: { type: number }
+        totalTrades: { type: integer, minimum: 0 }
+        avgHoldingTime: { type: string }
+        weeklyPnl: { type: array, items: { type: number } }
+        tags: { type: array, items: { type: string } }
+        isFollowing: { type: boolean }
+        riskLevel: { type: string, enum: [low, medium, high] }
+        verified: { type: boolean }
+    CopyProviderProfileResponse:
+      type: object
+      required: [provider, pnlHistory, recentTrades]
+      properties:
+        provider: { $ref: '#/components/schemas/CopyTrader' }
+        pnlHistory:
+          type: array
+          items:
+            type: object
+            required: [day, pnl, cumPnl]
+            properties:
+              day: { type: string }
+              pnl: { type: number }
+              cumPnl: { type: number }
+        recentTrades:
+          type: array
+          items:
+            type: object
+            required: [id, pair, side, entry, pnl, pnlPct, time, status]
+            properties:
+              id: { type: string }
+              pair: { type: string }
+              side: { type: string, enum: [long, short] }
+              entry: { type: number }
+              exit: { type: number }
+              pnl: { type: number }
+              pnlPct: { type: number }
+              time: { type: string }
+              status: { type: string, enum: [open, closed] }
+    CopyRelationshipsResponse:
+      type: object
+      required: [items]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/CopyRelationship' } }
+    CopyRelationship:
+      type: object
+      required:
+        [
+          id,
+          provider,
+          status,
+          copyMode,
+          positionSizing,
+          capital,
+          currentValue,
+          pnl,
+          pnlPct,
+          trades,
+          winRate,
+          hasCustomStopLoss,
+          performanceHistory,
+        ]
+      properties:
+        id: { type: string }
+        provider: { $ref: '#/components/schemas/CopyTrader' }
+        status: { type: string, enum: [active, paused, cooling-off, stopped] }
+        copyMode: { type: string, enum: [mirror, fixed, smart] }
+        positionSizing: { type: string, enum: [percentage, fixed] }
+        copyRatio: { type: number, minimum: 0, maximum: 100 }
+        capital: { type: number, exclusiveMinimum: 0 }
+        currentValue: { type: number, minimum: 0 }
+        pnl: { type: number }
+        pnlPct: { type: number }
+        trades: { type: integer, minimum: 0 }
+        winRate: { type: number, minimum: 0, maximum: 100 }
+        coolingOffUntil: { type: string, format: date-time }
+        hasCustomStopLoss: { type: boolean }
+        stopLossLevel: { type: number, exclusiveMinimum: 0 }
+        performanceHistory:
+          type: array
+          items:
+            type: object
+            required: [date, value]
+            properties:
+              date: { type: string, format: date-time }
+              value: { type: number, minimum: 0 }
+    CopyConfigurationRequest:
+      type: object
+      required: [providerId, capital, copyMode, positionSizing]
+      properties:
+        providerId: { type: string }
+        capital: { type: number, exclusiveMinimum: 0 }
+        copyMode: { type: string, enum: [mirror, fixed, smart] }
+        positionSizing: { type: string, enum: [percentage, fixed] }
+        copyRatio: { type: number, minimum: 0, maximum: 100 }
+        customStopLoss: { type: number, exclusiveMinimum: 0 }
+        customTakeProfit: { type: number, exclusiveMinimum: 0 }
+        trailingStopPercent: { type: number, exclusiveMinimum: 0 }
+    CopyActivationReceipt:
+      type: object
+      required: [copyId, status]
+      properties:
+        copyId: { type: string }
+        status: { type: string, enum: [active, cooling-off] }
+        coolingOffUntil: { type: string, format: date-time }
+    StopCopyRequest:
+      type: object
+      required: [reason, closeOpenPositions]
+      properties:
+        reason: { type: string, minLength: 3, maxLength: 500 }
+        closeOpenPositions: { type: boolean }
+    ApiError:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string }
+        message: { type: string }
+        details: {}
+    TradingAnalyticsResponse:
+      type: object
+      required:
+        [period, summary, dailyPnl, bestTrades, worstTrades, assetBreakdown, hourlyDistribution]
+      properties:
+        period: { type: string, enum: [7D, 1M, 3M, 1Y] }
+        summary:
+          type: object
+          required:
+            [
+              totalPnl,
+              totalTrades,
+              winRate,
+              profitFactor,
+              averageTradePnl,
+              maxDrawdown,
+              bestDay,
+              worstDay,
+              largestWin,
+              largestLoss,
+            ]
+          properties:
+            totalPnl: { type: number }
+            totalTrades: { type: integer, minimum: 0 }
+            winRate: { type: number, minimum: 0, maximum: 100 }
+            profitFactor: { type: number, minimum: 0 }
+            averageTradePnl: { type: number }
+            maxDrawdown: { type: number, minimum: 0 }
+            bestDay: { type: number }
+            worstDay: { type: number }
+            largestWin: { type: number }
+            largestLoss: { type: number }
+        dailyPnl:
+          type: array
+          items:
+            type: object
+            required: [date, pnl, cumPnl, trades, wins]
+            properties:
+              date: { type: string }
+              pnl: { type: number }
+              cumPnl: { type: number }
+              trades: { type: integer, minimum: 0 }
+              wins: { type: integer, minimum: 0 }
+        bestTrades: { type: array, items: { $ref: '#/components/schemas/TradingAnalyticsTrade' } }
+        worstTrades: { type: array, items: { $ref: '#/components/schemas/TradingAnalyticsTrade' } }
+        assetBreakdown:
+          { type: array, items: { $ref: '#/components/schemas/TradingAnalyticsAsset' } }
+        hourlyDistribution:
+          { type: array, items: { $ref: '#/components/schemas/TradingAnalyticsTimeBucket' } }
+    TradingAnalyticsTrade:
+      type: object
+      required: [id, pair, side, entry, exit, quantity, pnl, roi, date]
+      properties:
+        id: { type: string }
+        pair: { type: string }
+        side: { type: string, enum: [buy, sell] }
+        entry: { type: number }
+        exit: { type: number }
+        quantity: { type: number, exclusiveMinimum: 0 }
+        pnl: { type: number }
+        roi: { type: number }
+        date: { type: string }
+    TradingAnalyticsAsset:
+      type: object
+      required: [asset, color, trades, pnl, winRate]
+      properties:
+        asset: { type: string }
+        color: { type: string }
+        trades: { type: integer, minimum: 0 }
+        pnl: { type: number }
+        winRate: { type: number, minimum: 0, maximum: 100 }
+    TradingAnalyticsTimeBucket:
+      type: object
+      required: [hour, trades, pnl]
+      properties:
+        hour: { type: string }
+        trades: { type: integer, minimum: 0 }
+        pnl: { type: number }
+    OrderListResponse:
+      type: object
+      required: [items]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/TradingOrder' } }
+        nextCursor: { type: string }
+    PlaceOrderRequest:
+      type: object
+      required: [symbol, side, type, amount]
+      properties:
+        symbol: { type: string }
+        side: { type: string, enum: [buy, sell] }
+        type: { type: string, enum: [market, limit, stop, stop-limit, trailing, oco, bracket] }
+        amount: { type: number, exclusiveMinimum: 0 }
+        price: { type: number, exclusiveMinimum: 0 }
+        clientOrderId: { type: string }
+        tpPrice: { type: number, exclusiveMinimum: 0 }
+        slPrice: { type: number, exclusiveMinimum: 0 }
+        tpAmount: { type: number, exclusiveMinimum: 0 }
+        slAmount: { type: number, exclusiveMinimum: 0 }
+        amountType: { type: string, enum: [same, split] }
+    ModifyOrderRequest:
+      type: object
+      minProperties: 1
+      properties:
+        price: { type: number, exclusiveMinimum: 0 }
+        amount: { type: number, exclusiveMinimum: 0 }
+    TradingOrder:
+      type: object
+      required: [id, symbol, side, type, price, amount, filled, status, createdAt, fee]
+      description: >-
+        An order snapshot has a positive requested amount and execution price,
+        non-negative fee and fill, and an RFC3339 timestamp. The filled amount
+        cannot exceed the requested amount. A filled order must be fully filled;
+        a partial order must have a non-zero fill below the requested amount.
+      properties:
+        id: { type: string }
+        clientOrderId: { type: string }
+        symbol: { type: string }
+        side: { type: string, enum: [buy, sell] }
+        type: { type: string, enum: [market, limit, stop, stop-limit, trailing, oco, bracket] }
+        price: { type: number, exclusiveMinimum: 0 }
+        amount: { type: number, exclusiveMinimum: 0 }
+        filled: { type: number, minimum: 0 }
+        status: { type: string, enum: [open, filled, partial, cancelled, rejected] }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+        fee: { type: number, minimum: 0 }
+        tpPrice: { type: number }
+        slPrice: { type: number }
+        bracketMode: { type: boolean }
+        ocoLinked: { type: boolean }

@@ -1,0 +1,263 @@
+openapi: 3.1.0
+info:
+  title: VitTrade Profile API
+  version: 0.1.0
+  description: Contract-first profile, device and audit surfaces.
+servers:
+  - url: https://api.example.invalid/v1
+security:
+  - sessionCookie: []
+paths:
+  /profile:
+    get:
+      operationId: getProfile
+      x-required-permissions: [profile:read]
+      responses:
+        '200':
+          description: Authenticated profile.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Profile' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    patch:
+      operationId: updateProfile
+      x-required-permissions: [profile:write]
+      parameters:
+        - {
+            name: Idempotency-Key,
+            in: header,
+            required: true,
+            schema: { type: string, minLength: 8 },
+          }
+      requestBody:
+        required: true
+        content:
+          { application/json: { schema: { $ref: '#/components/schemas/UpdateProfileRequest' } } }
+      responses:
+        '200':
+          description: Updated profile.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Profile' } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /profile/devices:
+    get:
+      operationId: listTrustedDevices
+      x-required-permissions: [profile:read]
+      responses:
+        '200':
+          description: Authenticated devices.
+          content:
+            { application/json: { schema: { $ref: '#/components/schemas/DeviceListResponse' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /profile/devices/{deviceId}/revoke:
+    post:
+      operationId: revokeDevice
+      x-required-permissions: [profile:security:write]
+      parameters:
+        - { name: deviceId, in: path, required: true, schema: { type: string } }
+        - {
+            name: Idempotency-Key,
+            in: header,
+            required: true,
+            schema: { type: string, minLength: 8 },
+          }
+      responses:
+        '204': { description: Device revoked. }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { description: Device not found. }
+  /profile/devices/{deviceId}/trust:
+    patch:
+      operationId: setDeviceTrust
+      x-required-permissions: [profile:security:write]
+      parameters:
+        - { name: deviceId, in: path, required: true, schema: { type: string } }
+        - {
+            name: Idempotency-Key,
+            in: header,
+            required: true,
+            schema: { type: string, minLength: 8 },
+          }
+      requestBody:
+        required: true
+        content:
+          {
+            application/json:
+              {
+                schema:
+                  { type: object, required: [trusted], properties: { trusted: { type: boolean } } },
+              },
+          }
+      responses:
+        '200':
+          description: Updated device trust state.
+          content:
+            {
+              application/json:
+                {
+                  schema:
+                    {
+                      type: object,
+                      required: [item],
+                      properties: { item: { $ref: '#/components/schemas/TrustedDevice' } },
+                    },
+                },
+            }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { description: Device not found. }
+  /profile/activity:
+    get:
+      operationId: listProfileActivity
+      x-required-permissions: [profile:read]
+      responses:
+        '200':
+          description: Immutable account activity audit events.
+          content:
+            { application/json: { schema: { $ref: '#/components/schemas/ActivityListResponse' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /profile/sub-accounts:
+    get:
+      operationId: listSubAccounts
+      x-required-permissions: [profile:read]
+      responses:
+        '200':
+          description: Authenticated user's sub-accounts.
+          content:
+            {
+              application/json: { schema: { $ref: '#/components/schemas/SubAccountListResponse' } },
+            }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+components:
+  securitySchemes:
+    sessionCookie: { type: apiKey, in: cookie, name: vittrade_session }
+  responses:
+    BadRequest:
+      description: Invalid profile request.
+      content: { application/json: { schema: { $ref: '#/components/schemas/ApiError' } } }
+    Unauthorized:
+      description: Session is missing or expired.
+      content: { application/json: { schema: { $ref: '#/components/schemas/ApiError' } } }
+  schemas:
+    Profile:
+      type: object
+      required:
+        [
+          id,
+          email,
+          phone,
+          fullName,
+          username,
+          avatar,
+          kycLevel,
+          kycStatus,
+          referralCode,
+          vipLevel,
+          joinDate,
+          has2FA,
+          totalBalance,
+        ]
+      properties:
+        id: { type: string }
+        email: { type: string, format: email }
+        phone: { type: string }
+        fullName: { type: string }
+        username: { type: string }
+        avatar: { type: string, nullable: true }
+        kycLevel: { type: integer, minimum: 0 }
+        kycStatus: { type: string, enum: [pending, verified, rejected, not_started] }
+        referralCode: { type: string }
+        vipLevel: { type: integer, minimum: 0 }
+        joinDate: { type: string, format: date }
+        has2FA: { type: boolean }
+        totalBalance: { type: number, minimum: 0 }
+    UpdateProfileRequest:
+      type: object
+      required: [fullName, phone]
+      properties:
+        fullName: { type: string, minLength: 1, maxLength: 120 }
+        phone: { type: string, maxLength: 30 }
+    TrustedDevice:
+      type: object
+      required:
+        [id, name, type, browser, os, ip, location, lastActive, isCurrent, isTrusted, loginAt]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        type: { type: string, enum: [desktop, mobile, tablet] }
+        browser: { type: string }
+        os: { type: string }
+        ip: { type: string }
+        location: { type: string }
+        lastActive: { type: string }
+        isCurrent: { type: boolean }
+        isTrusted: { type: boolean }
+        loginAt: { type: string, format: date-time }
+    DeviceListResponse:
+      type: object
+      required: [items]
+      properties: { items: { type: array, items: { $ref: '#/components/schemas/TrustedDevice' } } }
+    ActivityLog:
+      type: object
+      required: [id, type, description, ipAddress, device, location, status, timestamp]
+      properties:
+        id: { type: string }
+        type:
+          {
+            type: string,
+            enum:
+              [
+                login,
+                logout,
+                password_change,
+                2fa_enable,
+                2fa_disable,
+                kyc_submit,
+                api_create,
+                api_delete,
+              ],
+          }
+        description: { type: string }
+        ipAddress: { type: string }
+        device: { type: string }
+        location: { type: string }
+        status: { type: string, enum: [success, failed, suspicious] }
+        timestamp: { type: string, format: date-time }
+    ActivityListResponse:
+      type: object
+      required: [items]
+      properties: { items: { type: array, items: { $ref: '#/components/schemas/ActivityLog' } } }
+    SubAccount:
+      type: object
+      required:
+        [
+          id,
+          name,
+          email,
+          type,
+          status,
+          balance,
+          pnl30d,
+          permissions,
+          createdAt,
+          lastActive,
+          apiKeyCount,
+          tradingVolume30d,
+        ]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        email: { type: string, format: email }
+        type: { type: string, enum: [spot, margin, futures, all] }
+        status: { type: string, enum: [active, frozen, pending] }
+        balance: { type: number }
+        pnl30d: { type: number }
+        permissions: { type: array, items: { type: string } }
+        createdAt: { type: string, format: date }
+        lastActive: { type: string }
+        apiKeyCount: { type: integer, minimum: 0 }
+        tradingVolume30d: { type: number, minimum: 0 }
+    SubAccountListResponse:
+      type: object
+      required: [items]
+      properties: { items: { type: array, items: { $ref: '#/components/schemas/SubAccount' } } }
+    ApiError:
+      type: object
+      required: [code, message]
+      properties: { code: { type: string }, message: { type: string }, details: {} }

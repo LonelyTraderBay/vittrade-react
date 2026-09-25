@@ -7,8 +7,6 @@
  *  market data, charts, portfolios.
  */
 
-import type { Asset } from './common';
-
 /* ─── Market Data ─── */
 
 export interface TradingPair {

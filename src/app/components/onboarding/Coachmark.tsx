@@ -339,28 +339,3 @@ export function Coachmark({ screen, onAction, onComplete }: CoachmarkProps) {
     </AnimatePresence>
   );
 }
-
-/* ═══════════════════════════════════════════
-   COACHMARK TRIGGER HOOK
-   ═══════════════════════════════════════════ */
-
-/**
- * Hook to check if coachmarks should be shown for a screen.
- * Only shows after onboarding is completed.
- */
-export function useCoachmark(screen: CoachmarkScreen) {
-  const [shouldShow, setShouldShow] = useState(false);
-
-  useEffect(() => {
-    // Check if onboarding is completed and there are unseen tips
-    const hasUnseen = coachmarkService.hasUnseenForScreen(screen);
-    const isDisabled = coachmarkService.isDisabled();
-    setShouldShow(hasUnseen && !isDisabled);
-  }, [screen]);
-
-  const dismiss = useCallback(() => {
-    setShouldShow(false);
-  }, []);
-
-  return { shouldShow, dismiss };
-}

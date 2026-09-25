@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 import { RouterProvider } from 'react-router';
-import { router } from './routes';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { router } from './router';
+import { assertProductionEnv, env } from './config/env';
+import { queryClient } from '../shared/api/query-client';
+import { captureException } from '../shared/telemetry/telemetry';
 
 /**
  * VitTrade — Enterprise Crypto Trading App
@@ -8,16 +12,26 @@ import { router } from './routes';
  * Build: 2026-03-13 (Enterprise Font Size Pass)
  */
 export default function App() {
-  // Prevent unhandled rejections from crashing the app
+  assertProductionEnv();
+
+  // Report unhandled failures without suppressing the browser's diagnostics.
   useEffect(() => {
     const handleError = (event: ErrorEvent) => {
       console.error('[App] Unhandled error:', event.error);
-      event.preventDefault();
+      captureException(event.error ?? new Error(event.message), {
+        area: 'app',
+        operation: 'unhandled-error',
+        release: env.releaseVersion,
+      });
     };
 
     const handleRejection = (event: PromiseRejectionEvent) => {
       console.error('[App] Unhandled promise rejection:', event.reason);
-      event.preventDefault();
+      captureException(event.reason, {
+        area: 'app',
+        operation: 'unhandled-rejection',
+        release: env.releaseVersion,
+      });
     };
 
     window.addEventListener('error', handleError);
@@ -59,7 +73,9 @@ export default function App() {
         </div>
       }
     >
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </React.Suspense>
   );
 }

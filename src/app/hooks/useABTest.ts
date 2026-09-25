@@ -10,8 +10,7 @@
 
 import { useEffect, useMemo, useCallback } from 'react';
 import { useABTestVariant } from './useFeatureFlag';
-import { abTestAnalytics } from '../services/ABTestAnalytics';
-import { getTestById, getTestByFlagKey, ABTest } from '../config/abTests';
+import { abTestAnalytics, getTestById, getTestByFlagKey } from '@/features/dca';
 
 /* ═══════════════════════════════════════════
    MAIN HOOK
@@ -267,7 +266,7 @@ export function useVariantRenderer(testId: string, userId?: string) {
 /**
  * Conditional props based on variant
  */
-export function useVariantProps<T extends Record<string, any>>(
+export function useVariantProps<T extends object>(
   testId: string,
   propsMap: Record<string, T>,
   userId?: string,

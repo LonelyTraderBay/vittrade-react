@@ -1,45 +1,30 @@
-import React, { createContext, useContext, useState, useCallback, useMemo } from 'react';
-import { USER_PROFILE } from '../data/mockData';
+import React from 'react';
+import { AuthSessionProvider as SharedAuthSessionProvider } from '@/shared/session/AuthContext';
+import type { AuthAdapter } from '@/shared/session/auth-context-types';
+import { apiClient } from '@/shared/api/app-client';
+import { createAuthApi } from '@/features/auth/api/auth-api';
 
-interface AuthState {
-  isAuthenticated: boolean;
-  user: typeof USER_PROFILE | null;
+const productionAuthAdapter: AuthAdapter = createAuthApi(apiClient);
+
+interface AppAuthSessionProviderProps {
+  children: React.ReactNode;
+  adapter?: AuthAdapter;
 }
 
-interface AuthContextType extends AuthState {
-  login: (email: string, password: string) => void;
-  logout: () => void;
+/** App composition adapter; the shared session boundary itself has no feature dependency. */
+export function AuthSessionProvider({ children, adapter }: AppAuthSessionProviderProps) {
+  return (
+    <SharedAuthSessionProvider adapter={adapter ?? productionAuthAdapter}>
+      {children}
+    </SharedAuthSessionProvider>
+  );
 }
 
-const defaultAuth: AuthContextType = {
-  isAuthenticated: true,
-  user: USER_PROFILE,
-  login: () => {},
-  logout: () => {},
-};
-
-const AuthContext = createContext<AuthContextType>(defaultAuth);
-
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [state, setState] = useState<AuthState>({
-    isAuthenticated: true,
-    user: USER_PROFILE,
-  });
-
-  const login = useCallback((_email: string, _password: string) => {
-    setState({ isAuthenticated: true, user: USER_PROFILE });
-  }, []);
-
-  const logout = useCallback(() => {
-    setState({ isAuthenticated: false, user: null });
-  }, []);
-
-  // Memoize context value to prevent unnecessary re-renders
-  const value = useMemo(() => ({ ...state, login, logout }), [state, login, logout]);
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+export function AuthProvider({ children, adapter }: AppAuthSessionProviderProps) {
+  return <AuthSessionProvider adapter={adapter}>{children}</AuthSessionProvider>;
 }
-
-export function useAuth() {
-  return useContext(AuthContext);
-}
+export type {
+  AuthAdapter,
+  AuthContextValue,
+  AuthStatus,
+} from '@/shared/session/auth-context-types';

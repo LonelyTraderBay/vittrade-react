@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router';
 import { StatusBar } from './StatusBar';
 import { useThemeColors } from '../../hooks/useThemeColors';
-import { DEVICE } from './MobileFrame';
+import { DEVICE } from './device-layout';
 
 export function AuthLayout() {
   const c = useThemeColors();

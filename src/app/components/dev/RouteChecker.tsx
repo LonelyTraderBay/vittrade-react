@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { CheckCircle2, XCircle, ExternalLink } from 'lucide-react';
+import { CheckCircle2, ExternalLink } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 
 const STAKING_ROUTES = [

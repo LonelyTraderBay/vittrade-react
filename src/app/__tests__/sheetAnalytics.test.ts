@@ -5,17 +5,25 @@
  * (requires vitest installed)
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { configureTelemetry } from '@/shared/telemetry/telemetry';
 import {
   trackSheetOpen,
   getSheetEventLog,
   clearSheetEventLog,
-  type SheetEvent,
-} from '../utils/sheetAnalytics';
+} from '@/shared/telemetry/sheet-analytics';
 
 describe('sheetAnalytics', () => {
   beforeEach(() => {
     clearSheetEventLog();
+  });
+
+  afterEach(() => {
+    configureTelemetry({
+      captureException: () => undefined,
+      captureEvent: () => undefined,
+      setUser: () => undefined,
+    });
   });
 
   describe('trackSheetOpen', () => {
@@ -115,19 +123,28 @@ describe('sheetAnalytics', () => {
     });
   });
 
-  describe('console.info behavior', () => {
-    it('should log to console in non-test environment', () => {
-      // In test environment (NODE_ENV=test), console.info should be suppressed
-      // This test verifies the guard condition works
-      const spy = vi.spyOn(console, 'info').mockImplementation(() => {});
+  describe('telemetry integration', () => {
+    it('forwards sheet events to the shared telemetry sink', () => {
+      const captureEvent = vi.fn();
+      configureTelemetry({
+        captureException: () => undefined,
+        captureEvent,
+        setUser: () => undefined,
+      });
 
-      // The function checks NODE_ENV !== 'test', so in tests it won't log
-      trackSheetOpen('silent-sheet');
+      const event = trackSheetOpen('p2p-home-quick-actions');
 
-      // In test env, console.info should NOT have been called
-      // (our implementation checks process.env.NODE_ENV !== 'test')
-      spy.mockRestore();
+      expect(captureEvent).toHaveBeenCalledWith('sheet_opened', event);
     });
+  });
+
+  it('retains only a bounded recent event history', () => {
+    for (let index = 0; index < 105; index += 1) trackSheetOpen(`sheet-${index}`);
+
+    const history = getSheetEventLog();
+    expect(history).toHaveLength(100);
+    expect(history[0].sheetName).toBe('sheet-5');
+    expect(history[99].sheetName).toBe('sheet-104');
   });
 
   describe('useSheetAnalytics hook contract', () => {

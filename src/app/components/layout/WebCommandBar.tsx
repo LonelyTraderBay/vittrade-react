@@ -1,18 +1,8 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import {
-  Search,
-  Bell,
-  Moon,
-  Sun,
-  ChevronRight,
-  Command,
-  Keyboard,
-  Maximize2,
-  Minimize2,
-} from 'lucide-react';
+import { Search, Bell, Moon, Sun, ChevronRight } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
-import { useUI } from '../../contexts/UIContext';
+import { useUI } from '../../hooks/useUI';
 import { WEB_COMMAND_BAR_HEIGHT } from './webConstants';
 
 /**

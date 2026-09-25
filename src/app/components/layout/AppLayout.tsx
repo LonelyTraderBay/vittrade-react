@@ -2,7 +2,7 @@ import React, { useRef, useCallback, useState, useEffect, useContext, Suspense }
 import { Outlet, useLocation } from 'react-router';
 import { BottomNav } from './BottomNav';
 import { StatusBar } from './StatusBar';
-import { UIContext } from '../../contexts/UIContext';
+import { UIContext } from '../../contexts/ui-context';
 import { ErrorBoundary } from '../mobile/ErrorBoundary';
 import { PullToRefreshIndicator } from '../mobile/PullToRefresh';
 import { ScrollToTopFAB } from '../mobile/ScrollToTopFAB';
@@ -15,7 +15,7 @@ import { OfflineBanner } from '../states/OfflineBanner';
 import { NetworkStatusBanner } from '../states/NetworkStatusBanner';
 import { SessionWarningBar, SessionTimedOutModal } from '../states/SessionTimeoutOverlay';
 import { useSessionTimeout } from '../../hooks/useSessionTimeout';
-import { DEVICE } from './MobileFrame';
+import { DEVICE } from './device-layout';
 import { useThemeColors } from '../../hooks/useThemeColors';
 
 // ... existing code ...

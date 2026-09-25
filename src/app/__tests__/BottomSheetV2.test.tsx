@@ -8,7 +8,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { renderWithProviders } from '../../test/test-utils';
 import { BottomSheetV2, BottomSheetRow } from '../components/ui/BottomSheetV2';
@@ -347,7 +347,7 @@ describe('BottomSheetV2', () => {
     });
 
     it('should have 44x44 close button (WCAG compliant)', () => {
-      const { container } = renderWithProviders(
+      renderWithProviders(
         <BottomSheetV2 open={true} onClose={() => {}}>
           <div>Content</div>
         </BottomSheetV2>,
@@ -792,7 +792,7 @@ describe('BottomSheetRow', () => {
     });
 
     it('should use default color when valueColor not provided', () => {
-      const { container } = renderWithProviders(<BottomSheetRow label="Amount" value="$100.00" />);
+      renderWithProviders(<BottomSheetRow label="Amount" value="$100.00" />);
 
       const valueSpan = screen.getByText('$100.00');
       expect(valueSpan).toBeTruthy();

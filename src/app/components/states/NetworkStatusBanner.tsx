@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Wifi, WifiOff, RefreshCw } from 'lucide-react';
-import { useThemeColors } from '../../hooks/useThemeColors';
 import { useOnlineStatus } from '../../hooks/useOnlineStatus';
 import { φ } from '../../utils/golden';
 

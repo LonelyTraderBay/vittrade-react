@@ -1,0 +1,624 @@
+openapi: 3.1.0
+info:
+  title: VitTrade Wallet API
+  version: 0.1.0
+  description: Contract-first wallet contract for balances, history, funding and internal transfers.
+servers:
+  - url: https://api.example.invalid/v1
+security:
+  - sessionCookie: []
+paths:
+  /wallet/assets:
+    get:
+      operationId: getWalletAssets
+      responses:
+        '200':
+          description: Current wallet balances and valuation summary.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WalletAssetsResponse' }
+        '401':
+          description: Session is missing or expired.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiError' }
+  /wallet/accounts:
+    get:
+      operationId: getWalletAccounts
+      responses:
+        '200':
+          description: Balances by internal wallet account.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WalletAccountsResponse' }
+  /wallet/address-book:
+    get:
+      operationId: getWalletAddressBook
+      responses:
+        '200':
+          description: Saved withdrawal addresses owned by the current user.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WalletAddressBookResponse' }
+    post:
+      operationId: createWalletAddressBookEntry
+      parameters:
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/WalletAddressBookCreateRequest' }
+      responses:
+        '201':
+          description: Saved address created. Backend must apply account security policy and audit the action.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WalletAddressBookItem' }
+  /wallet/address-book/settings:
+    patch:
+      operationId: updateWalletAddressBookSettings
+      parameters:
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [whitelistEnabled]
+              properties:
+                whitelistEnabled: { type: boolean }
+      responses:
+        '200':
+          description: Updated withdrawal address security settings.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WalletAddressBookResponse' }
+  /wallet/address-book/{addressId}:
+    patch:
+      operationId: updateWalletAddressBookEntry
+      parameters:
+        - name: addressId
+          in: path
+          required: true
+          schema: { type: string, minLength: 1 }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/WalletAddressBookUpdateRequest' }
+      responses:
+        '200':
+          description: Updated saved withdrawal address.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WalletAddressBookItem' }
+    delete:
+      operationId: deleteWalletAddressBookEntry
+      parameters:
+        - name: addressId
+          in: path
+          required: true
+          schema: { type: string, minLength: 1 }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      responses:
+        '204': { description: Saved address deleted. }
+  /wallet/analytics/portfolio:
+    get:
+      operationId: getPortfolioAnalytics
+      parameters:
+        - name: period
+          in: query
+          required: true
+          schema: { $ref: '#/components/schemas/PortfolioAnalyticsPeriod' }
+      responses:
+        '200':
+          description: Portfolio history, performance and realized analytics.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PortfolioAnalyticsResponse' }
+  /wallet/dust-conversions/quote:
+    get:
+      operationId: quoteWalletDustConversion
+      parameters:
+        - name: assets
+          in: query
+          required: true
+          schema: { type: string, minLength: 1 }
+        - name: targetAsset
+          in: query
+          required: true
+          schema: { type: string, minLength: 2 }
+      responses:
+        '200':
+          description: Current dust conversion quote.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/DustConversionQuote' }
+  /wallet/dust-conversions:
+    post:
+      operationId: createWalletDustConversion
+      parameters:
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/DustConversionRequest' }
+      responses:
+        '201':
+          description: Dust conversion submitted.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/DustConversionReceipt' }
+  /wallet/transactions:
+    get:
+      operationId: getWalletTransactions
+      parameters:
+        - { $ref: '#/components/parameters/Asset' }
+        - { $ref: '#/components/parameters/TransactionType' }
+        - { $ref: '#/components/parameters/TransactionStatus' }
+        - { $ref: '#/components/parameters/Cursor' }
+        - { $ref: '#/components/parameters/Limit' }
+      responses:
+        '200':
+          description: Paginated wallet transaction history.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WalletTransactionsResponse' }
+        '401':
+          description: Session is missing or expired.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiError' }
+  /wallet/transactions/{transactionId}:
+    get:
+      operationId: getWalletTransaction
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Wallet transaction detail.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WalletTransaction' }
+        '404':
+          description: Transaction was not found.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiError' }
+  /wallet/deposit/networks:
+    get:
+      operationId: getWalletDepositNetworks
+      parameters:
+        - { $ref: '#/components/parameters/AssetRequired' }
+      responses:
+        '200':
+          description: Deposit networks and assigned addresses for the asset.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [networks]
+                properties:
+                  networks:
+                    { type: array, items: { $ref: '#/components/schemas/WalletDepositNetwork' } }
+  /wallet/withdrawal/networks:
+    get:
+      operationId: getWalletWithdrawalNetworks
+      parameters:
+        - { $ref: '#/components/parameters/AssetRequired' }
+      responses:
+        '200':
+          description: Withdrawal limits and fee policy for the asset.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [networks]
+                properties:
+                  networks:
+                    { type: array, items: { $ref: '#/components/schemas/WalletWithdrawalNetwork' } }
+  /wallet/transfers:
+    post:
+      operationId: createWalletTransfer
+      parameters:
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/WalletTransferRequest' }
+      responses:
+        '201':
+          description: Internal wallet transfer accepted.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WalletTransferReceipt' }
+        '409':
+          description: Duplicate idempotency key or conflicting transfer.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiError' }
+  /wallet/withdrawals/challenge:
+    post:
+      operationId: createWalletWithdrawalChallenge
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/WalletWithdrawalChallengeRequest' }
+      responses:
+        '201':
+          description: One-time withdrawal MFA challenge.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WalletWithdrawalChallenge' }
+        '403':
+          description: Additional verification is not available for the account.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiError' }
+  /wallet/withdrawals/challenge/{challengeId}/verify:
+    post:
+      operationId: verifyWalletWithdrawalChallenge
+      parameters:
+        - name: challengeId
+          in: path
+          required: true
+          schema: { type: string, minLength: 1 }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [code]
+              properties:
+                code: { type: string, pattern: '^\\d{6}$' }
+      responses:
+        '200':
+          description: Short-lived token authorizing the withdrawal submission.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WalletWithdrawalVerification' }
+        '401':
+          description: Invalid or expired MFA code.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiError' }
+  /wallet/withdrawals:
+    post:
+      operationId: createWalletWithdrawal
+      parameters:
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/WalletWithdrawalRequest' }
+      responses:
+        '201':
+          description: Withdrawal request accepted for processing.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WalletWithdrawalReceipt' }
+        '409':
+          description: Duplicate request or insufficient funds.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiError' }
+components:
+  parameters:
+    Asset:
+      name: asset
+      in: query
+      required: false
+      schema: { type: string }
+    AssetRequired:
+      name: asset
+      in: query
+      required: true
+      schema: { type: string, minLength: 2 }
+    TransactionType:
+      name: type
+      in: query
+      required: false
+      schema: { $ref: '#/components/schemas/WalletTransactionType' }
+    TransactionStatus:
+      name: status
+      in: query
+      required: false
+      schema: { $ref: '#/components/schemas/WalletTransactionStatus' }
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      schema: { type: string }
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema: { type: integer, minimum: 1, maximum: 100, default: 50 }
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema: { type: string, minLength: 16 }
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: vittrade_session
+  schemas:
+    ApiError:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string }
+        message: { type: string }
+        details: {}
+    WalletAssetsResponse:
+      type: object
+      required: [items, summary]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/WalletAsset' } }
+        summary: { $ref: '#/components/schemas/WalletSummary' }
+    WalletAccountsResponse:
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          items: { $ref: '#/components/schemas/WalletAccount' }
+    WalletAddressBookItem:
+      type: object
+      required: [id, label, address, network, asset, isFavorite, createdAt, isWhitelisted]
+      properties:
+        id: { type: string }
+        label: { type: string, minLength: 1, maxLength: 64 }
+        address: { type: string, minLength: 20 }
+        network: { type: string, minLength: 1 }
+        asset: { type: string, minLength: 1 }
+        memo: { type: string }
+        isFavorite: { type: boolean }
+        createdAt: { type: string, format: date-time }
+        lastUsed: { type: string, format: date-time }
+        isWhitelisted: { type: boolean }
+    WalletAddressBookResponse:
+      type: object
+      required: [items, total, whitelistEnabled]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/WalletAddressBookItem' } }
+        total: { type: integer, minimum: 0 }
+        whitelistEnabled: { type: boolean }
+    WalletAddressBookCreateRequest:
+      type: object
+      required: [label, address, network, asset, isWhitelisted]
+      properties:
+        label: { type: string, minLength: 1, maxLength: 64 }
+        address: { type: string, minLength: 20 }
+        network: { type: string, minLength: 1 }
+        asset: { type: string, minLength: 1 }
+        memo: { type: string }
+        isWhitelisted: { type: boolean }
+    WalletAddressBookUpdateRequest:
+      type: object
+      minProperties: 1
+      properties:
+        label: { type: string, minLength: 1, maxLength: 64 }
+        memo: { type: string }
+        isFavorite: { type: boolean }
+        isWhitelisted: { type: boolean }
+    WalletAccount:
+      type: object
+      required: [id, name, balanceUsd]
+      properties:
+        id: { type: string, enum: [spot, funding, futures] }
+        name: { type: string }
+        balanceUsd: { type: number, minimum: 0 }
+    WalletAsset:
+      type: object
+      required:
+        [id, symbol, name, balance, available, frozen, inOrder, usdValue, change24h, logoColor]
+      properties:
+        id: { type: string }
+        symbol: { type: string }
+        name: { type: string }
+        balance: { type: number, minimum: 0 }
+        available: { type: number, minimum: 0 }
+        frozen: { type: number, minimum: 0 }
+        inOrder: { type: number, minimum: 0 }
+        usdValue: { type: number, minimum: 0 }
+        change24h: { type: number }
+        logoColor: { type: string }
+    WalletSummary:
+      type: object
+      required: [totalUsd, totalBtc, availableUsd, inOrderUsd, frozenUsd]
+      properties:
+        totalUsd: { type: number, minimum: 0 }
+        totalBtc: { type: number, minimum: 0 }
+        availableUsd: { type: number, minimum: 0 }
+        inOrderUsd: { type: number, minimum: 0 }
+        frozenUsd: { type: number, minimum: 0 }
+    PortfolioAnalyticsPeriod:
+      type: string
+      enum: [1D, 1W, 1M, 3M, 1Y, ALL]
+    PortfolioHistoryPoint:
+      type: object
+      required: [timestamp, value, pnl]
+      properties:
+        timestamp: { type: string, format: date-time }
+        value: { type: number, minimum: 0 }
+        pnl: { type: number }
+    PortfolioMonthlyPnl:
+      type: object
+      required: [month, pnl]
+      properties:
+        month: { type: string }
+        pnl: { type: number }
+    PortfolioPerformer:
+      type: object
+      required: [symbol, name, change, usd, color]
+      properties:
+        symbol: { type: string }
+        name: { type: string }
+        change: { type: number }
+        usd: { type: number }
+        color: { type: string }
+    PortfolioAnalyticsResponse:
+      type: object
+      required:
+        [period, history, monthlyPnl, topPerformers, worstPerformers, totalTrades, totalFeesUsd]
+      properties:
+        period: { $ref: '#/components/schemas/PortfolioAnalyticsPeriod' }
+        history: { type: array, items: { $ref: '#/components/schemas/PortfolioHistoryPoint' } }
+        monthlyPnl: { type: array, items: { $ref: '#/components/schemas/PortfolioMonthlyPnl' } }
+        topPerformers: { type: array, items: { $ref: '#/components/schemas/PortfolioPerformer' } }
+        worstPerformers: { type: array, items: { $ref: '#/components/schemas/PortfolioPerformer' } }
+        totalTrades: { type: integer, minimum: 0 }
+        totalFeesUsd: { type: number, minimum: 0 }
+    DustConversionRequest:
+      type: object
+      required: [sourceAssetIds, targetAsset]
+      properties:
+        sourceAssetIds: { type: array, minItems: 1, items: { type: string } }
+        targetAsset: { type: string, minLength: 2 }
+    DustConversionQuote:
+      type: object
+      required: [targetAsset, grossUsd, feePct, feeUsd, receivedUsd, targetAmount]
+      properties:
+        targetAsset: { type: string }
+        grossUsd: { type: number, minimum: 0 }
+        feePct: { type: number, minimum: 0 }
+        feeUsd: { type: number, minimum: 0 }
+        receivedUsd: { type: number, minimum: 0 }
+        targetAmount: { type: number, minimum: 0 }
+    DustConversionReceipt:
+      allOf:
+        - { $ref: '#/components/schemas/DustConversionQuote' }
+        - type: object
+          required: [id, status, createdAt]
+          properties:
+            id: { type: string }
+            status: { type: string, enum: [completed, pending] }
+            createdAt: { type: string, format: date-time }
+    WalletTransactionType:
+      type: string
+      enum: [deposit, withdraw, trade_buy, trade_sell, p2p_buy, p2p_sell]
+    WalletTransactionStatus:
+      type: string
+      enum: [completed, pending, failed]
+    WalletTransaction:
+      type: object
+      required: [id, type, asset, amount, status, createdAt]
+      properties:
+        id: { type: string }
+        type: { $ref: '#/components/schemas/WalletTransactionType' }
+        asset: { type: string }
+        amount: { type: number, minimum: 0 }
+        status: { $ref: '#/components/schemas/WalletTransactionStatus' }
+        txHash: { type: string }
+        address: { type: string }
+        network: { type: string }
+        createdAt: { type: string, format: date-time }
+        fee: { type: number, minimum: 0 }
+    WalletTransactionsResponse:
+      type: object
+      required: [items, total]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/WalletTransaction' } }
+        total: { type: integer, minimum: 0 }
+        nextCursor: { type: string }
+    WalletDepositNetwork:
+      type: object
+      required: [id, name, fee, minDeposit, address, arrivalTime, confirmations]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        fee: { type: string }
+        minDeposit: { type: number, minimum: 0 }
+        address: { type: string }
+        arrivalTime: { type: string }
+        confirmations: { type: integer, minimum: 0 }
+        memo: { type: string }
+        memoLabel: { type: string }
+    WalletWithdrawalNetwork:
+      type: object
+      required: [id, name, fee, minWithdraw, maxWithdraw]
+      description: The maximum withdrawal limit must be greater than or equal to the minimum withdrawal limit.
+      properties:
+        id: { type: string }
+        name: { type: string }
+        fee: { type: number, minimum: 0 }
+        minWithdraw: { type: number, minimum: 0 }
+        maxWithdraw: { type: number, exclusiveMinimum: 0 }
+        requiresMemo: { type: boolean }
+        memoLabel: { type: string }
+        memoPlaceholder: { type: string }
+    WalletTransferRequest:
+      type: object
+      required: [fromWallet, toWallet, asset, amount]
+      description: The source wallet and destination wallet must differ.
+      properties:
+        fromWallet: { type: string, enum: [spot, funding, futures] }
+        toWallet: { type: string, enum: [spot, funding, futures] }
+        asset: { type: string }
+        amount: { type: number, exclusiveMinimum: 0 }
+    WalletTransferReceipt:
+      allOf:
+        - { $ref: '#/components/schemas/WalletTransferRequest' }
+        - type: object
+          required: [id, status, createdAt]
+          properties:
+            id: { type: string }
+            status: { type: string, enum: [completed, pending] }
+            createdAt: { type: string, format: date-time }
+    WalletWithdrawalRequest:
+      type: object
+      required: [asset, networkId, address, amount, verificationToken]
+      properties:
+        asset: { type: string }
+        networkId: { type: string }
+        address: { type: string, minLength: 20 }
+        memo: { type: string }
+        amount: { type: number, exclusiveMinimum: 0 }
+        verificationToken: { type: string, minLength: 1 }
+    WalletWithdrawalChallengeRequest:
+      type: object
+      required: [asset, networkId, address, amount]
+      properties:
+        asset: { type: string }
+        networkId: { type: string }
+        address: { type: string, minLength: 20 }
+        memo: { type: string }
+        amount: { type: number, exclusiveMinimum: 0 }
+    WalletWithdrawalChallenge:
+      type: object
+      required: [id, method, expiresAt]
+      properties:
+        id: { type: string }
+        method: { type: string, enum: [totp, sms] }
+        maskedDestination: { type: string }
+        expiresAt: { type: string, format: date-time }
+    WalletWithdrawalVerification:
+      type: object
+      required: [verificationToken, expiresAt]
+      properties:
+        verificationToken: { type: string, minLength: 1 }
+        expiresAt: { type: string, format: date-time }
+    WalletWithdrawalReceipt:
+      type: object
+      required: [id, transactionId, asset, amount, status, createdAt]
+      properties:
+        id: { type: string }
+        transactionId: { type: string }
+        asset: { type: string }
+        amount: { type: number, exclusiveMinimum: 0 }
+        status: { type: string, enum: [pending, completed, failed] }
+        createdAt: { type: string, format: date-time }

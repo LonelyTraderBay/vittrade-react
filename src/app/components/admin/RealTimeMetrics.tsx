@@ -18,23 +18,7 @@ import { Activity, Users, Zap, TrendingUp, Circle, Clock } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { TrCard } from '../ui/TrCard';
 import { φ } from '../../utils/golden';
-import { dcaAnalytics } from '../../services/DCAAnalyticsService';
-
-/**
- * Structural view of the analytics queue this component was written against.
- * DCAAnalyticsService keeps its event queue private (snake_case AnalyticsEvent)
- * and does not expose getQueue() — see DCAAnalyticsService for the service-side
- * fix. This type-only view preserves current runtime behavior.
- */
-interface QueuedAnalyticsEvent {
-  timestamp: number;
-  userId?: string;
-  eventName: string;
-}
-
-const analyticsQueueSource = dcaAnalytics as unknown as {
-  getQueue: () => QueuedAnalyticsEvent[];
-};
+import { dcaAnalytics, type QueuedAnalyticsEvent } from '@/features/dca';
 
 /* ═══════════════════════════════════════════
    COMPONENT
@@ -57,7 +41,7 @@ export function RealTimeMetrics() {
   }, [isLive]);
 
   // Get recent events (last 5 minutes)
-  const recentEvents = analyticsQueueSource.getQueue().filter((e: QueuedAnalyticsEvent) => {
+  const recentEvents = dcaAnalytics.getQueue().filter((e: QueuedAnalyticsEvent) => {
     const fiveMinutesAgo = Date.now() - 5 * 60 * 1000;
     return e.timestamp >= fiveMinutesAgo;
   });

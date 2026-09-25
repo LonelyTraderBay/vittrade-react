@@ -1,8 +1,12 @@
-import React, { createContext, useContext } from 'react';
-import { USER_PROFILE } from '../data/mockData';
-import { AuthProvider, useAuth } from './AuthContext';
-import { ThemeProvider, useTheme } from './ThemeContext';
-import { UIProvider, useUI } from './UIContext';
+import React from 'react';
+import { useLayoutEffect, useRef } from 'react';
+import { AuthSessionProvider } from './AuthContext';
+import type { AuthAdapter } from './AuthContext';
+import { ThemeProvider } from './ThemeContext';
+import { UIProvider } from './UIContext';
+import { TradingContext } from './trading-context';
+import { queryClient } from '@/shared/api/query-client';
+import { useAuth } from '@/shared/session/useAuth';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -22,49 +26,43 @@ import { UIProvider, useUI } from './UIContext';
  *  - TradingContext (selectedPair, lastPriceUpdate) moved to useApp facade
  */
 
-interface AppContextType {
-  // Auth
-  isAuthenticated: boolean;
-  user: typeof USER_PROFILE | null;
-  login: (email: string, password: string) => void;
-  logout: () => void;
-  // Theme
-  theme: 'dark' | 'light';
-  setTheme: (theme: 'dark' | 'light') => void;
-  // UI
-  isBalanceHidden: boolean;
-  isOffline: boolean;
-  notifications: number;
-  toggleBalanceHidden: () => void;
-  setIsOffline: (offline: boolean) => void;
-  // Trading (kept local for now)
-  selectedPair: string;
-  setSelectedPair: (pair: string) => void;
-  lastPriceUpdate: Date;
-}
-
 /**
  * AppProvider — wraps all 3 context providers + trading state
  */
-export function AppProvider({ children }: { children: React.ReactNode }) {
+export function AppProvider({
+  children,
+  authAdapter,
+}: {
+  children: React.ReactNode;
+  authAdapter?: AuthAdapter;
+}) {
   return (
     <ThemeProvider>
-      <AuthProvider>
+      <AuthSessionProvider adapter={authAdapter}>
         <UIProvider>
-          <TradingBridge>{children}</TradingBridge>
+          <SessionQueryCacheBoundary>
+            <TradingBridge>{children}</TradingBridge>
+          </SessionQueryCacheBoundary>
         </UIProvider>
-      </AuthProvider>
+      </AuthSessionProvider>
     </ThemeProvider>
   );
 }
 
-// Internal: trading state that doesn't warrant its own context yet
-const TradingContext = createContext<{
-  selectedPair: string;
-  setSelectedPair: (pair: string) => void;
-  lastPriceUpdate: Date;
-} | null>(null);
+function SessionQueryCacheBoundary({ children }: { children: React.ReactNode }) {
+  const { user } = useAuth();
+  const previousUserId = useRef(user?.id ?? null);
 
+  useLayoutEffect(() => {
+    const currentUserId = user?.id ?? null;
+    if (previousUserId.current !== currentUserId) queryClient.clear();
+    previousUserId.current = currentUserId;
+  }, [user?.id]);
+
+  return children;
+}
+
+// Internal: trading state that doesn't warrant its own context yet
 function TradingBridge({ children }: { children: React.ReactNode }) {
   const [selectedPair, setSelectedPair] = React.useState('BTC/USDT');
   const [lastPriceUpdate] = React.useState(() => new Date());
@@ -76,29 +74,4 @@ function TradingBridge({ children }: { children: React.ReactNode }) {
   );
 
   return <TradingContext.Provider value={value}>{children}</TradingContext.Provider>;
-}
-
-/**
- * useApp() — backward-compatible facade
- * Composes all 3 contexts into one return object.
- * PERF NOTE: changes in ANY sub-context will trigger re-render.
- * For perf-sensitive components, use useAuth/useTheme/useUI directly.
- */
-export function useApp(): AppContextType {
-  const auth = useAuth();
-  const theme = useTheme();
-  const ui = useUI();
-  const trading = useContext(TradingContext);
-  if (!trading) throw new Error('useApp must be used inside AppProvider');
-
-  // Memoize return object to prevent creating new reference on each call
-  return React.useMemo(
-    () => ({
-      ...auth,
-      ...theme,
-      ...ui,
-      ...trading,
-    }),
-    [auth, theme, ui, trading],
-  );
 }

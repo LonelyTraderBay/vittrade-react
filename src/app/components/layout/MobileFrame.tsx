@@ -1,5 +1,6 @@
 import React from 'react';
 import { useThemeColors } from '../../hooks/useThemeColors';
+import { DEVICE } from './device-layout';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -18,21 +19,6 @@ import { useThemeColors } from '../../hooks/useThemeColors';
  *  Frame design: Natural Titanium finish with subtle
  *  depth layers matching real device aesthetics
  */
-
-// ── iPhone 16 Pro Max Constants ──
-const DEVICE = {
-  WIDTH: 440,
-  HEIGHT: 956,
-  STATUS_BAR: 59,
-  TAB_BAR: 52,
-  HOME_INDICATOR: 20,
-  BOTTOM_CHROME: 72, // TAB_BAR + HOME_INDICATOR
-  CONTENT_AREA: 825, // HEIGHT - STATUS_BAR - BOTTOM_CHROME
-  DYNAMIC_ISLAND: { width: 126, height: 37, top: 11, radius: 22 },
-  HOME_BAR: { width: 134, height: 5, radius: 3, bottomPad: 8 },
-} as const;
-
-export { DEVICE };
 
 interface MobileFrameProps {
   children: React.ReactNode;

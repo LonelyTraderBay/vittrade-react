@@ -10,7 +10,11 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { useSheetAnalytics } from '../hooks/useSheetAnalytics';
-import { trackSheetOpen, getSheetEventLog, clearSheetEventLog } from '../utils/sheetAnalytics';
+import {
+  trackSheetOpen,
+  getSheetEventLog,
+  clearSheetEventLog,
+} from '@/shared/telemetry/sheet-analytics';
 
 describe('useSheetAnalytics', () => {
   beforeEach(() => {
@@ -372,7 +376,7 @@ describe('useSheetAnalytics', () => {
         hooks.push(renderHook(() => useSheetAnalytics(`sheet-${i}`)));
       }
 
-      hooks.forEach((hook, i) => {
+      hooks.forEach((hook) => {
         hook.result.current.onAfterOpen();
       });
 

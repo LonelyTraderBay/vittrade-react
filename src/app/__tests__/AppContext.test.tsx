@@ -1,7 +1,7 @@
 /**
- * ══════════════════════════════════════════════════════════
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  *  AppContext Tests
- * ══════════════════════════════════════════════════════════
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  *  Comprehensive tests for composed app context facade
  *
  *  Run: npx vitest run src/app/__tests__/AppContext.test.tsx
@@ -9,11 +9,20 @@
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { AppProvider, useApp } from '../contexts/AppContext';
+import type { ReactNode } from 'react';
+import { AppProvider } from '../contexts/AppContext';
+import { useApp } from '../hooks/useApp';
 import { AuthProvider } from '../contexts/AuthContext';
 import { ThemeProvider } from '../contexts/ThemeContext';
 import { UIProvider } from '../contexts/UIContext';
-import { USER_PROFILE } from '../data/mockData';
+import { TEST_AUTH_USER } from '@/test/fixtures/auth-user';
+import { testAuthAdapter, testAuthSession } from '../../test/auth-test-adapter';
+import { queryClient } from '@/shared/api/query-client';
+import { useAuth } from '@/shared/session/useAuth';
+
+const TestAppProvider = ({ children }: { children: ReactNode }) => (
+  <AppProvider authAdapter={testAuthAdapter}>{children}</AppProvider>
+);
 
 describe('AppContext', () => {
   // Clean up document classes
@@ -28,18 +37,54 @@ describe('AppContext', () => {
   describe('Initial State', () => {
     it('should provide all auth properties', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       expect(result.current.isAuthenticated).toBe(true);
-      expect(result.current.user).toEqual(USER_PROFILE);
+      expect(result.current.user).toEqual(TEST_AUTH_USER);
       expect(typeof result.current.login).toBe('function');
       expect(typeof result.current.logout).toBe('function');
     });
 
+    it('clears cached account data on account switch and sign out', async () => {
+      const adapter = {
+        initialSession: testAuthSession,
+        async login() {
+          return {
+            status: 'authenticated' as const,
+            session: {
+              ...testAuthSession,
+              user: { ...TEST_AUTH_USER, id: 'usr002', email: 'second@example.com' },
+            },
+          };
+        },
+        getSession: testAuthAdapter.getSession,
+        logout: testAuthAdapter.logout,
+        refresh: testAuthAdapter.refresh,
+      };
+      const wrapper = ({ children }: { children: ReactNode }) => (
+        <AppProvider authAdapter={adapter}>{children}</AppProvider>
+      );
+      const { result } = renderHook(() => useAuth(), { wrapper });
+      queryClient.setQueryData(['wallet', 'assets'], { items: [{ id: 'private-asset' }] });
+      queryClient.setQueryData(['market', 'watchlist', TEST_AUTH_USER.id], { items: [] });
+
+      await act(async () =>
+        result.current.signIn({ email: 'second@example.com', password: 'test' }),
+      );
+
+      expect(queryClient.getQueryData(['wallet', 'assets'])).toBeUndefined();
+      expect(queryClient.getQueryData(['market', 'watchlist', TEST_AUTH_USER.id])).toBeUndefined();
+      expect(result.current.user?.id).toBe('usr002');
+
+      queryClient.setQueryData(['wallet', 'assets'], { items: [{ id: 'second-user-asset' }] });
+      await act(async () => result.current.logout());
+      expect(queryClient.getQueryData(['wallet', 'assets'])).toBeUndefined();
+    });
+
     it('should provide all theme properties', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       expect(result.current.theme).toBe('light');
@@ -48,7 +93,7 @@ describe('AppContext', () => {
 
     it('should provide all UI properties', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       expect(result.current.isBalanceHidden).toBe(false);
@@ -60,7 +105,7 @@ describe('AppContext', () => {
 
     it('should provide trading properties', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       expect(result.current.selectedPair).toBe('BTC/USDT');
@@ -72,7 +117,7 @@ describe('AppContext', () => {
   describe('Auth Integration', () => {
     it('should allow login through useApp', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       // Logout first
@@ -89,12 +134,12 @@ describe('AppContext', () => {
       });
 
       expect(result.current.isAuthenticated).toBe(true);
-      expect(result.current.user).toEqual(USER_PROFILE);
+      expect(result.current.user).toEqual(TEST_AUTH_USER);
     });
 
     it('should allow logout through useApp', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       expect(result.current.isAuthenticated).toBe(true);
@@ -109,7 +154,7 @@ describe('AppContext', () => {
 
     it('should reflect user profile correctly', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       expect(result.current.user).toHaveProperty('id');
@@ -121,7 +166,7 @@ describe('AppContext', () => {
   describe('Theme Integration', () => {
     it('should allow theme changes through useApp', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       expect(result.current.theme).toBe('light');
@@ -135,7 +180,7 @@ describe('AppContext', () => {
 
     it('should update document classes when theme changes', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       act(() => {
@@ -148,7 +193,7 @@ describe('AppContext', () => {
 
     it('should toggle between light and dark themes', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       act(() => {
@@ -166,7 +211,7 @@ describe('AppContext', () => {
   describe('UI Integration', () => {
     it('should toggle balance visibility through useApp', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       expect(result.current.isBalanceHidden).toBe(false);
@@ -180,7 +225,7 @@ describe('AppContext', () => {
 
     it('should set offline state through useApp', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       expect(result.current.isOffline).toBe(false);
@@ -194,7 +239,7 @@ describe('AppContext', () => {
 
     it('should update notifications count', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       expect(result.current.notifications).toBe(3);
@@ -204,7 +249,7 @@ describe('AppContext', () => {
   describe('Trading Integration', () => {
     it('should have default trading pair BTC/USDT', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       expect(result.current.selectedPair).toBe('BTC/USDT');
@@ -212,7 +257,7 @@ describe('AppContext', () => {
 
     it('should allow changing selected trading pair', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       act(() => {
@@ -224,7 +269,7 @@ describe('AppContext', () => {
 
     it('should support multiple trading pair changes', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       act(() => {
@@ -245,7 +290,7 @@ describe('AppContext', () => {
 
     it('should have lastPriceUpdate as Date object', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       expect(result.current.lastPriceUpdate).toBeInstanceOf(Date);
@@ -253,7 +298,7 @@ describe('AppContext', () => {
 
     it('should have valid lastPriceUpdate timestamp', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       const timestamp = result.current.lastPriceUpdate.getTime();
@@ -265,7 +310,7 @@ describe('AppContext', () => {
   describe('Combined State Updates', () => {
     it('should handle auth, theme, and UI changes together', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       act(() => {
@@ -283,7 +328,7 @@ describe('AppContext', () => {
 
     it('should handle all state changes independently', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       // Change theme
@@ -310,7 +355,7 @@ describe('AppContext', () => {
 
     it('should support complex app flows', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       // User logs out
@@ -342,13 +387,13 @@ describe('AppContext', () => {
 
   describe('Error Handling', () => {
     it('should throw error when useApp is used outside AppProvider', () => {
-      // Provide the sub-contexts so their own guards do not fire first —
+      // Provide the sub-contexts so their own guards do not fire first â€”
       // this isolates useApp's own "outside AppProvider" error.
       expect(() => {
         renderHook(() => useApp(), {
           wrapper: ({ children }) => (
             <ThemeProvider>
-              <AuthProvider>
+              <AuthProvider adapter={testAuthAdapter}>
                 <UIProvider>{children}</UIProvider>
               </AuthProvider>
             </ThemeProvider>
@@ -361,7 +406,7 @@ describe('AppContext', () => {
   describe('Memoization', () => {
     it('should memoize return value', () => {
       const { result, rerender } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       const value1 = result.current;
@@ -377,7 +422,7 @@ describe('AppContext', () => {
 
     it('should update memoized value when state changes', () => {
       const { result, rerender } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       const value1 = result.current;
@@ -400,7 +445,7 @@ describe('AppContext', () => {
   describe('Type Safety', () => {
     it('should have correctly typed auth properties', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       expect(typeof result.current.isAuthenticated).toBe('boolean');
@@ -410,7 +455,7 @@ describe('AppContext', () => {
 
     it('should have correctly typed theme properties', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       expect(['light', 'dark']).toContain(result.current.theme);
@@ -419,7 +464,7 @@ describe('AppContext', () => {
 
     it('should have correctly typed UI properties', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       expect(typeof result.current.isBalanceHidden).toBe('boolean');
@@ -429,7 +474,7 @@ describe('AppContext', () => {
 
     it('should have correctly typed trading properties', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       expect(typeof result.current.selectedPair).toBe('string');
@@ -441,7 +486,7 @@ describe('AppContext', () => {
   describe('Provider Composition', () => {
     it('should compose ThemeProvider, AuthProvider, UIProvider correctly', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       // All contexts should be available
@@ -452,7 +497,7 @@ describe('AppContext', () => {
 
     it('should apply theme class on mount', () => {
       renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       expect(document.documentElement.classList.contains('light')).toBe(true);
@@ -462,7 +507,7 @@ describe('AppContext', () => {
   describe('Real-world Scenarios', () => {
     it('should support typical app initialization', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       // Check initial app state
@@ -474,7 +519,7 @@ describe('AppContext', () => {
 
     it('should support user session flow', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       // User logs in
@@ -506,7 +551,7 @@ describe('AppContext', () => {
 
     it('should support network status changes', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       // App goes offline
@@ -524,7 +569,7 @@ describe('AppContext', () => {
 
     it('should support theme switching based on preferences', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       // User prefers dark mode
@@ -539,7 +584,7 @@ describe('AppContext', () => {
   describe('Edge Cases', () => {
     it('should handle rapid state changes', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       act(() => {
@@ -556,7 +601,7 @@ describe('AppContext', () => {
 
     it('should handle provider unmount and remount', () => {
       const { result, unmount } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       act(() => {
@@ -571,7 +616,7 @@ describe('AppContext', () => {
 
       // Remount - should reset to initial state
       const { result: result2 } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       expect(result2.current.theme).toBe('light');
@@ -580,7 +625,7 @@ describe('AppContext', () => {
 
     it('should handle all trading pairs', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       const pairs = ['BTC/USDT', 'ETH/USDT', 'BNB/USDT', 'SOL/USDT', 'ADA/USDT'];
@@ -597,7 +642,7 @@ describe('AppContext', () => {
   describe('Performance', () => {
     it('should not create new reference on unrelated rerenders', () => {
       const { result, rerender } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       const setThemeRef = result.current.setTheme;
@@ -611,7 +656,7 @@ describe('AppContext', () => {
 
     it('should handle high-frequency trading pair changes', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       act(() => {
@@ -627,7 +672,7 @@ describe('AppContext', () => {
   describe('Backward Compatibility', () => {
     it('should maintain backward compatibility with legacy code', () => {
       const { result } = renderHook(() => useApp(), {
-        wrapper: AppProvider,
+        wrapper: TestAppProvider,
       });
 
       // Legacy code expects all these properties

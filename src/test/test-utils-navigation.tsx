@@ -8,6 +8,7 @@ import React, { ReactElement } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
 import { BrowserRouter } from 'react-router';
 import { vi } from 'vitest';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { UIProvider } from '../app/contexts/UIContext';
 
 /**
@@ -22,11 +23,16 @@ export function renderWithRouter(
   { initialRoute = '/', ...renderOptions }: CustomRenderOptions = {},
 ) {
   window.history.pushState({}, 'Test page', initialRoute);
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
+  });
 
   function Wrapper({ children }: { children: React.ReactNode }) {
     return (
       <BrowserRouter>
-        <UIProvider>{children}</UIProvider>
+        <QueryClientProvider client={queryClient}>
+          <UIProvider>{children}</UIProvider>
+        </QueryClientProvider>
       </BrowserRouter>
     );
   }

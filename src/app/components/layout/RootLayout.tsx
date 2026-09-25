@@ -1,7 +1,6 @@
 import React from 'react';
 import { Outlet, useLocation } from 'react-router';
 import { AppProvider } from '../../contexts/AppContext';
-import { DCAProvider } from '../../contexts/DCAContext';
 import { MobileFrame } from './MobileFrame';
 import { ErrorBoundary } from '../mobile/ErrorBoundary';
 import { ThemedToaster } from '../ui/ThemedToaster';
@@ -43,19 +42,17 @@ export function RootLayout() {
   return (
     <ErrorBoundary section="VitTrade App">
       <AppProvider>
-        <DCAProvider>
-          <React.Suspense fallback={<RouteChunkFallback />}>
-            {needsMobileFrame ? (
-              <MobileFrame>
-                <Outlet />
-              </MobileFrame>
-            ) : (
+        <React.Suspense fallback={<RouteChunkFallback />}>
+          {needsMobileFrame ? (
+            <MobileFrame>
               <Outlet />
-            )}
-          </React.Suspense>
-          <ThemedToaster />
-          <PlatformSwitcher />
-        </DCAProvider>
+            </MobileFrame>
+          ) : (
+            <Outlet />
+          )}
+        </React.Suspense>
+        <ThemedToaster />
+        <PlatformSwitcher />
       </AppProvider>
     </ErrorBoundary>
   );

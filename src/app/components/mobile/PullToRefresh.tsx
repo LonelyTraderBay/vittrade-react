@@ -89,8 +89,6 @@ interface PullToRefreshProps {
  * Đặt ở top của scroll container
  */
 export function PullToRefresh({ children, onRefresh }: PullToRefreshProps) {
-  const c = useThemeColors();
-
   const [pullDistance, setPullDistance] = React.useState(0);
   const [isRefreshing, setIsRefreshing] = React.useState(false);
   const [progress, setProgress] = React.useState(0);

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { trackSheetOpen } from '../utils/sheetAnalytics';
+import { trackSheetOpen } from '@/shared/telemetry/sheet-analytics';
 
 /**
  * Hook that returns a stable `onAfterOpen` callback for BottomSheetV2.

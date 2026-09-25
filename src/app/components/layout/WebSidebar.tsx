@@ -1,11 +1,9 @@
-import React from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import {
   Home,
   BarChart2,
   ArrowLeftRight,
   Wallet,
-  User,
   Bell,
   HelpCircle,
   Settings,
@@ -15,17 +13,13 @@ import {
   Globe,
   TrendingUp,
   Target,
-  Star,
   PieChart,
   Activity,
-  BookOpen,
   FileText,
-  Lock,
-  BarChart,
   Award,
   Users,
-  Database,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { WEB_SIDEBAR_WIDTH, WEB_COMMAND_BAR_HEIGHT } from './webConstants';
 
@@ -53,7 +47,7 @@ const PREFIX = '/w';
 
 interface NavItem {
   path: string;
-  icon: React.ComponentType<any>;
+  icon: LucideIcon;
   label: string;
   badge?: number;
   children?: { path: string; label: string }[];

@@ -1,22 +1,5 @@
-import React, { createContext, useContext, useState, useCallback, useMemo } from 'react';
-
-interface UIState {
-  isBalanceHidden: boolean;
-  isOffline: boolean;
-  notifications: number;
-  pendingRewards: number;
-}
-
-interface UIContextType extends UIState {
-  toggleBalanceHidden: () => void;
-  setIsOffline: (offline: boolean) => void;
-  setNotifications: (count: number) => void;
-  setPendingRewards: (count: number) => void;
-}
-
-const UIContext = createContext<UIContextType | null>(null);
-
-export { UIContext };
+import React, { useState, useCallback, useMemo } from 'react';
+import { UIContext, type UIContextValue, type UIState } from './ui-context';
 
 export function UIProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<UIState>({
@@ -43,7 +26,7 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   // Memoize context value to prevent unnecessary re-renders when parent re-renders
-  const value = useMemo(
+  const value = useMemo<UIContextValue>(
     () => ({
       ...state,
       toggleBalanceHidden,
@@ -55,10 +38,4 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
   );
 
   return <UIContext.Provider value={value}>{children}</UIContext.Provider>;
-}
-
-export function useUI() {
-  const ctx = useContext(UIContext);
-  if (!ctx) throw new Error('useUI must be used inside UIProvider');
-  return ctx;
 }

@@ -1,0 +1,4 @@
+{
+  "warnings": 522,
+  "policy": "This is a temporary migration ceiling. Every vertical slice must reduce it; the Production-Ready certification target is zero."
+}

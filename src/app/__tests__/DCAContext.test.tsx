@@ -7,16 +7,23 @@
  *  Run: npx vitest run src/app/__tests__/DCAContext.test.tsx
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
-import { DCAProvider, useDCA } from '../contexts/DCAContext';
-import type { CreateDCAPlanRequest, UpdateDCAPlanRequest, DCAPlan } from '../types/dca';
+import type { ReactNode } from 'react';
+import { DCAProvider } from '../contexts/DCAContext';
+import { useDCA } from '../hooks/useDCA';
+import type { CreateDCAPlanRequest, UpdateDCAPlanRequest, DCAPlan } from '@/features/dca';
+import { testDcaApi } from '@/test/dca-test-adapter';
+
+const TestDCAProvider = ({ children }: { children: ReactNode }) => (
+  <DCAProvider api={testDcaApi}>{children}</DCAProvider>
+);
 
 describe('DCAContext', () => {
   describe('Initial State', () => {
     it('should provide initial plans', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       expect(result.current.plans).toHaveLength(3);
@@ -24,7 +31,7 @@ describe('DCAContext', () => {
 
     it('should have BTC plan', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const btcPlan = result.current.plans.find((p) => p.coinSymbol === 'BTC');
@@ -35,7 +42,7 @@ describe('DCAContext', () => {
 
     it('should have ETH plan', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const ethPlan = result.current.plans.find((p) => p.coinSymbol === 'ETH');
@@ -45,7 +52,7 @@ describe('DCAContext', () => {
 
     it('should have SOL plan', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const solPlan = result.current.plans.find((p) => p.coinSymbol === 'SOL');
@@ -56,7 +63,7 @@ describe('DCAContext', () => {
 
     it('should not be loading initially', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       expect(result.current.isLoading).toBe(false);
@@ -65,7 +72,7 @@ describe('DCAContext', () => {
 
     it('should provide overview data', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       expect(result.current.overview).toBeDefined();
@@ -77,7 +84,7 @@ describe('DCAContext', () => {
 
     it('should provide purchase history', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       expect(result.current.purchaseHistory).toBeDefined();
@@ -86,7 +93,7 @@ describe('DCAContext', () => {
 
     it('should provide portfolio history', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       expect(result.current.portfolioHistory).toBeDefined();
@@ -97,7 +104,7 @@ describe('DCAContext', () => {
   describe('Overview Calculations', () => {
     it('should calculate total invested', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       expect(result.current.overview.totalInvested).toBeGreaterThan(0);
@@ -106,7 +113,7 @@ describe('DCAContext', () => {
 
     it('should calculate current value', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       expect(result.current.overview.currentValue).toBeGreaterThan(0);
@@ -115,7 +122,7 @@ describe('DCAContext', () => {
 
     it('should calculate profit/loss', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       expect(typeof result.current.overview.profitLoss).toBe('number');
@@ -123,7 +130,7 @@ describe('DCAContext', () => {
 
     it('should calculate profit/loss percentage', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       expect(typeof result.current.overview.profitLossPercent).toBe('number');
@@ -131,7 +138,7 @@ describe('DCAContext', () => {
 
     it('should count active plans correctly', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const activePlans = result.current.plans.filter((p) => p.status === 'active').length;
@@ -140,7 +147,7 @@ describe('DCAContext', () => {
 
     it('should count paused plans correctly', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const pausedPlans = result.current.plans.filter((p) => p.status === 'paused').length;
@@ -149,7 +156,7 @@ describe('DCAContext', () => {
 
     it('should count error plans correctly', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const errorPlans = result.current.plans.filter((p) => p.status === 'error').length;
@@ -158,7 +165,7 @@ describe('DCAContext', () => {
 
     it('should provide next execution info', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       if (result.current.overview.nextExecution) {
@@ -171,7 +178,7 @@ describe('DCAContext', () => {
   describe('Create Plan', () => {
     it('should create a new plan', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const initialCount = result.current.plans.length;
@@ -191,7 +198,7 @@ describe('DCAContext', () => {
 
     it('should return created plan', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const newPlanRequest: CreateDCAPlanRequest = {
@@ -214,7 +221,7 @@ describe('DCAContext', () => {
 
     it('should set isCreating to true during creation', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const newPlanRequest: CreateDCAPlanRequest = {
@@ -255,7 +262,7 @@ describe('DCAContext', () => {
 
     it('should create plan with custom start date', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const futureDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
@@ -278,7 +285,7 @@ describe('DCAContext', () => {
 
     it('should create multiple plans', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const initialCount = result.current.plans.length;
@@ -304,7 +311,7 @@ describe('DCAContext', () => {
   describe('Update Plan', () => {
     it('should update plan amount', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const plan = result.current.plans[0];
@@ -324,7 +331,7 @@ describe('DCAContext', () => {
 
     it('should update plan frequency', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const plan = result.current.plans[0];
@@ -343,7 +350,7 @@ describe('DCAContext', () => {
 
     it('should update plan status', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const plan = result.current.plans[0];
@@ -362,7 +369,7 @@ describe('DCAContext', () => {
 
     it('should set isLoading during update', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const plan = result.current.plans[0];
@@ -379,7 +386,7 @@ describe('DCAContext', () => {
 
     it('should update multiple fields at once', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const plan = result.current.plans[0];
@@ -404,7 +411,7 @@ describe('DCAContext', () => {
   describe('Delete Plan', () => {
     it('should delete a plan', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const initialCount = result.current.plans.length;
@@ -420,7 +427,7 @@ describe('DCAContext', () => {
 
     it('should delete multiple plans', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const initialCount = result.current.plans.length;
@@ -437,7 +444,7 @@ describe('DCAContext', () => {
 
     it('should set isLoading during deletion', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const plan = result.current.plans[0];
@@ -453,7 +460,7 @@ describe('DCAContext', () => {
 
     it('should update overview after deletion', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const initialActivePlans = result.current.overview.activePlans;
@@ -472,7 +479,7 @@ describe('DCAContext', () => {
   describe('Toggle Plan Status', () => {
     it('should toggle active plan to paused', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const activePlan = result.current.plans.find((p) => p.status === 'active');
@@ -489,7 +496,7 @@ describe('DCAContext', () => {
 
     it('should toggle paused plan to active', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const activePlan = result.current.plans.find((p) => p.status === 'active');
@@ -515,7 +522,7 @@ describe('DCAContext', () => {
 
     it('should update overview after status toggle', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const initialActivePlans = result.current.overview.activePlans;
@@ -535,7 +542,7 @@ describe('DCAContext', () => {
   describe('Purchase History', () => {
     it('should generate purchase history for plans', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       expect(result.current.purchaseHistory.length).toBeGreaterThan(0);
@@ -543,7 +550,7 @@ describe('DCAContext', () => {
 
     it('should have valid purchase history entries', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const purchase = result.current.purchaseHistory[0];
@@ -560,7 +567,7 @@ describe('DCAContext', () => {
 
     it('should have purchases for each plan', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       result.current.plans.forEach((plan) => {
@@ -571,7 +578,7 @@ describe('DCAContext', () => {
 
     it('should have completed status for purchases', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const completedPurchases = result.current.purchaseHistory.filter(
@@ -584,7 +591,7 @@ describe('DCAContext', () => {
   describe('Portfolio History', () => {
     it('should generate portfolio history', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       expect(result.current.portfolioHistory.length).toBeGreaterThan(0);
@@ -592,7 +599,7 @@ describe('DCAContext', () => {
 
     it('should have valid portfolio history points', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const point = result.current.portfolioHistory[0];
@@ -605,7 +612,7 @@ describe('DCAContext', () => {
 
     it('should have chronological portfolio history', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const history = result.current.portfolioHistory;
@@ -625,7 +632,7 @@ describe('DCAContext', () => {
 
     it('should throw error when updating non-existent plan', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       await expect(async () => {
@@ -639,7 +646,7 @@ describe('DCAContext', () => {
 
     it('should throw error when toggling non-existent plan', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       await expect(async () => {
@@ -653,7 +660,7 @@ describe('DCAContext', () => {
   describe('Real-world Scenarios', () => {
     it('should support creating and managing a DCA strategy', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       // Create new plan
@@ -683,7 +690,7 @@ describe('DCAContext', () => {
 
     it('should support pausing and resuming plans', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const activePlan = result.current.plans.find((p) => p.status === 'active');
@@ -709,7 +716,7 @@ describe('DCAContext', () => {
 
     it('should track portfolio performance over time', () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const { overview } = result.current;
@@ -724,7 +731,7 @@ describe('DCAContext', () => {
   describe('Edge Cases', () => {
     it('should handle deleting all plans', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const planIds = result.current.plans.map((p) => p.id);
@@ -742,7 +749,7 @@ describe('DCAContext', () => {
 
     it('should handle creating plan with minimal data', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       const minimalRequest: CreateDCAPlanRequest = {
@@ -764,7 +771,7 @@ describe('DCAContext', () => {
 
     it('should handle rapid plan operations', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       // Each operation runs in its own act() so React commits state between
@@ -801,7 +808,7 @@ describe('DCAContext', () => {
   describe('Performance', () => {
     it('should handle large number of plans', async () => {
       const { result } = renderHook(() => useDCA(), {
-        wrapper: DCAProvider,
+        wrapper: TestDCAProvider,
       });
 
       // Start all creations concurrently — each simulates its own 1000ms

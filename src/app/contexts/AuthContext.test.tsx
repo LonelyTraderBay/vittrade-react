@@ -1,12 +1,19 @@
 import { describe, it, expect } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { AuthProvider, useAuth } from './AuthContext';
-import { USER_PROFILE } from '../data/mockData';
+import type { ReactNode } from 'react';
+import { AuthProvider } from './AuthContext';
+import { useAuth } from '@/shared/session/useAuth';
+import { TEST_AUTH_USER } from '@/test/fixtures/auth-user';
+import { testAuthAdapter } from '../../test/auth-test-adapter';
+
+const TestAuthProvider = ({ children }: { children: ReactNode }) => (
+  <AuthProvider adapter={testAuthAdapter}>{children}</AuthProvider>
+);
 
 /**
- * ══════════════════════════════════════════════════════════
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  *  AuthContext Tests
- * ══════════════════════════════════════════════════════════
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  *  Tests authentication state management
  */
 
@@ -14,16 +21,16 @@ describe('AuthContext', () => {
   describe('Initial State', () => {
     it('should start with authenticated state and user profile', () => {
       const { result } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
+        wrapper: TestAuthProvider,
       });
 
       expect(result.current.isAuthenticated).toBe(true);
-      expect(result.current.user).toEqual(USER_PROFILE);
+      expect(result.current.user).toEqual(TEST_AUTH_USER);
     });
 
     it('should provide login function', () => {
       const { result } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
+        wrapper: TestAuthProvider,
       });
 
       expect(typeof result.current.login).toBe('function');
@@ -31,7 +38,7 @@ describe('AuthContext', () => {
 
     it('should provide logout function', () => {
       const { result } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
+        wrapper: TestAuthProvider,
       });
 
       expect(typeof result.current.logout).toBe('function');
@@ -41,7 +48,7 @@ describe('AuthContext', () => {
   describe('Login Functionality', () => {
     it('should set authenticated state on login', () => {
       const { result } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
+        wrapper: TestAuthProvider,
       });
 
       // First logout
@@ -58,12 +65,12 @@ describe('AuthContext', () => {
       });
 
       expect(result.current.isAuthenticated).toBe(true);
-      expect(result.current.user).toEqual(USER_PROFILE);
+      expect(result.current.user).toEqual(TEST_AUTH_USER);
     });
 
     it('should accept any credentials (mock mode)', () => {
       const { result } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
+        wrapper: TestAuthProvider,
       });
 
       act(() => {
@@ -75,14 +82,14 @@ describe('AuthContext', () => {
       });
 
       expect(result.current.isAuthenticated).toBe(true);
-      expect(result.current.user).toEqual(USER_PROFILE);
+      expect(result.current.user).toEqual(TEST_AUTH_USER);
     });
   });
 
   describe('Logout Functionality', () => {
     it('should clear authenticated state on logout', () => {
       const { result } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
+        wrapper: TestAuthProvider,
       });
 
       expect(result.current.isAuthenticated).toBe(true);
@@ -98,7 +105,7 @@ describe('AuthContext', () => {
 
     it('should allow login after logout', () => {
       const { result } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
+        wrapper: TestAuthProvider,
       });
 
       // Logout
@@ -114,14 +121,14 @@ describe('AuthContext', () => {
       });
 
       expect(result.current.isAuthenticated).toBe(true);
-      expect(result.current.user).toEqual(USER_PROFILE);
+      expect(result.current.user).toEqual(TEST_AUTH_USER);
     });
   });
 
   describe('User Profile', () => {
     it('should provide complete user profile when authenticated', () => {
       const { result } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
+        wrapper: TestAuthProvider,
       });
 
       expect(result.current.user).toHaveProperty('id');
@@ -133,7 +140,7 @@ describe('AuthContext', () => {
 
     it('should have null user when not authenticated', () => {
       const { result } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
+        wrapper: TestAuthProvider,
       });
 
       act(() => {
@@ -146,12 +153,11 @@ describe('AuthContext', () => {
 
   describe('Context Sharing', () => {
     it('should share auth state across multiple useAuth calls', () => {
-      // Two consumers of ONE provider — separate renderHook calls would
+      // Two consumers of ONE provider â€” separate renderHook calls would
       // mount separate providers with independent state.
-      const { result } = renderHook(
-        () => ({ first: useAuth(), second: useAuth() }),
-        { wrapper: AuthProvider },
-      );
+      const { result } = renderHook(() => ({ first: useAuth(), second: useAuth() }), {
+        wrapper: TestAuthProvider,
+      });
 
       // Both should start authenticated
       expect(result.current.first.isAuthenticated).toBe(true);
@@ -171,7 +177,7 @@ describe('AuthContext', () => {
   describe('Memoization', () => {
     it('should not recreate login/logout functions on re-render', () => {
       const { result, rerender } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
+        wrapper: TestAuthProvider,
       });
 
       const initialLogin = result.current.login;
@@ -188,7 +194,7 @@ describe('AuthContext', () => {
   describe('Edge Cases', () => {
     it('should handle multiple consecutive logins', () => {
       const { result } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
+        wrapper: TestAuthProvider,
       });
 
       act(() => {
@@ -209,7 +215,7 @@ describe('AuthContext', () => {
 
     it('should handle multiple consecutive logouts', () => {
       const { result } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
+        wrapper: TestAuthProvider,
       });
 
       act(() => {
@@ -227,7 +233,7 @@ describe('AuthContext', () => {
 
     it('should handle empty string credentials', () => {
       const { result } = renderHook(() => useAuth(), {
-        wrapper: AuthProvider,
+        wrapper: TestAuthProvider,
       });
 
       act(() => {

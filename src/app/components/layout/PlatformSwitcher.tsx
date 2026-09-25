@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { Smartphone, Tablet, Monitor } from 'lucide-react';
-import { useThemeColors } from '../../hooks/useThemeColors';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -50,7 +49,6 @@ function getRoutePath(pathname: string): string {
 export function PlatformSwitcher() {
   const navigate = useNavigate();
   const location = useLocation();
-  const c = useThemeColors();
   const lastAutoPrefix = useRef<string | null>(null);
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 

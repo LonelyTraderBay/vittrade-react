@@ -1,5 +1,7 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { AlertTriangle, RefreshCw, Home, Bug } from 'lucide-react';
+import { env } from '../../config/env';
+import { captureException } from '../../../shared/telemetry/telemetry';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -33,6 +35,15 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     this.setState({ errorInfo });
+    captureException(error, {
+      area: 'react',
+      operation: 'render',
+      release: env.releaseVersion,
+      metadata: {
+        section: this.props.section ?? 'unknown',
+        componentStack: errorInfo.componentStack,
+      },
+    });
     console.error(
       `[ErrorBoundary${this.props.section ? ` — ${this.props.section}` : ''}]`,
       error,

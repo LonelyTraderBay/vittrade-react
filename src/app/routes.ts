@@ -1,4 +1,6 @@
 import { lazy } from 'react';
+import { IntegrationPendingPage } from './pages/system/IntegrationPendingPage';
+import { isDevelopmentBuild } from './config/env';
 /**
  * ══════════════════════════════════════════════════════════
  *  App Router — 3 Platform Shells (Phone / Tablet / Web)
@@ -26,405 +28,409 @@ import { ProtectedRoute } from './components/layout/ProtectedRoute';
 import { ResponsiveAppLayout } from './components/layout/ResponsiveShell';
 import { TabletShell } from './components/layout/TabletShell';
 import { WebShell } from './components/layout/WebShell';
-const ShellTemplatePage = lazy(() =>
-  import('./pages/responsive/ShellTemplatePage').then((m) => ({ default: m.ShellTemplatePage })),
-);
+const ShellTemplatePage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/responsive/ShellTemplatePage').then((m) => ({
+        default: m.ShellTemplatePage,
+      })),
+    )
+  : IntegrationPendingPage;
 
 // Shared route builders
 import {
   createAuthBlock,
-  createWebAuthBlock,
   createPublicRoutes,
   createProtectedRoutes,
   type ShellOverrides,
 } from './routeConfig';
+import { createAuthRoutes } from '@/features/auth/routes';
+import { createTradingWebRoutes } from '@/features/trading/routes';
+import { createWalletWebRoutes } from '@/features/wallet';
+import { createMarketWebRoutes } from '@/features/market/routes';
+import { p2pWebRoutes } from '@/features/p2p/routes';
 
 // ─── Mobile Shell Components ───
-const HomePage = lazy(() =>
-  import('./pages/market/HomePage').then((m) => ({ default: m.HomePage })),
+const MarketHomePage = lazy(() =>
+  import('@/features/market/pages/MarketHomePage').then((m) => ({
+    default: m.MarketHomePage,
+  })),
 );
+const HomePage = MarketHomePage;
 const MarketListPage = lazy(() =>
-  import('./pages/market/MarketListPage').then((m) => ({ default: m.MarketListPage })),
+  import('@/features/market/pages/MarketListPage').then((m) => ({ default: m.MarketListPage })),
 );
 const PairDetailPage = lazy(() =>
-  import('./pages/market/PairDetailPage').then((m) => ({ default: m.PairDetailPage })),
+  import('@/features/market/pages/PairDetailPage').then((m) => ({ default: m.PairDetailPage })),
 );
 const TradePage = lazy(() =>
-  import('./pages/trade/TradePage').then((m) => ({ default: m.TradePage })),
+  import('@/features/trading/pages/TradePage').then((m) => ({ default: m.TradePage })),
 );
-const WalletPage = lazy(() =>
-  import('./pages/wallet/WalletPage').then((m) => ({ default: m.WalletPage })),
+const WalletContractPage = lazy(() =>
+  import('@/features/wallet/pages/WalletOverviewContractPage').then((m) => ({
+    default: m.WalletOverviewContractPage,
+  })),
 );
-const TransactionHistoryPage = lazy(() =>
-  import('./pages/wallet/TransactionHistoryPage').then((m) => ({
-    default: m.TransactionHistoryPage,
+const TxHistoryContractPage = lazy(() =>
+  import('@/features/wallet/pages/WalletTransactionHistoryContractPage').then((m) => ({
+    default: m.WalletTransactionHistoryContractPage,
   })),
 );
 const ProfilePage = lazy(() =>
-  import('./pages/profile/ProfilePage').then((m) => ({ default: m.ProfilePage })),
+  import('@/features/profile/pages/ProfileContractPage').then((m) => ({
+    default: m.ProfileContractPage,
+  })),
 );
 const P2PHomePage = lazy(() =>
   import('./pages/p2p/P2PHomePage').then((m) => ({ default: m.P2PHomePage })),
 );
 
 // ─── Responsive Shell Components (legacy + shared) ───
-const ResponsiveHomePage = lazy(() =>
-  import('./pages/responsive/ResponsiveHomePage').then((m) => ({ default: m.ResponsiveHomePage })),
-);
-const ResponsiveMarketListPage = lazy(() =>
-  import('./pages/responsive/ResponsiveMarketListPage').then((m) => ({
-    default: m.ResponsiveMarketListPage,
-  })),
-);
-const ResponsivePairDetailPage = lazy(() =>
-  import('./pages/responsive/ResponsivePairDetailPage').then((m) => ({
-    default: m.ResponsivePairDetailPage,
-  })),
-);
-const ResponsiveTradePage = lazy(() =>
-  import('./pages/responsive/ResponsiveTradePage').then((m) => ({
-    default: m.ResponsiveTradePage,
-  })),
-);
-const ResponsiveWalletPage = lazy(() =>
-  import('./pages/responsive/ResponsiveWalletPage').then((m) => ({
-    default: m.ResponsiveWalletPage,
-  })),
-);
-const ResponsiveTxHistoryPage = lazy(() =>
-  import('./pages/responsive/ResponsiveTxHistoryPage').then((m) => ({
-    default: m.ResponsiveTxHistoryPage,
-  })),
-);
+const ResponsiveHomePage = MarketHomePage;
+const ResponsiveMarketListPage = MarketListPage;
+const ResponsivePairDetailPage = PairDetailPage;
+const ResponsiveTradePage = TradePage;
 const ResponsiveProfilePage = lazy(() =>
-  import('./pages/responsive/ResponsiveProfilePage').then((m) => ({
-    default: m.ResponsiveProfilePage,
+  import('@/features/profile/pages/ProfileContractPage').then((m) => ({
+    default: m.ProfileContractPage,
   })),
 );
 const ResponsiveP2PHomePage = lazy(() =>
-  import('./pages/responsive/ResponsiveP2PHomePage').then((m) => ({
-    default: m.ResponsiveP2PHomePage,
-  })),
+  import('./pages/p2p/P2PHomePage').then((m) => ({ default: m.P2PHomePage })),
 );
-
-// ─── Demo Pages ───
-const CopyTradingCardDemo = lazy(() => import('./pages/demo/CopyTradingCardDemo'));
-
-// ─── Dev / Showcase Pages ───
-const MissingScreensShowcasePage = lazy(() =>
-  import('./pages/v2/MissingScreensShowcasePage').then((m) => ({
-    default: m.MissingScreensShowcasePage,
-  })),
-);
-const DesignSystemPage = lazy(() =>
-  import('./pages/v2/DesignSystemPage').then((m) => ({ default: m.DesignSystemPage })),
-);
-const DCAOverviewDemo = lazy(() => import('./pages/dca/DCAOverviewDemo'));
-const DCAPage = lazy(() => import('./pages/dca/DCAPage'));
 
 // ─── Onboarding ───
-const OnboardingFlow = lazy(() => import('./pages/onboarding/OnboardingFlow'));
+const OnboardingFlow = isDevelopmentBuild
+  ? lazy(() => import('@/dev/legacy/onboarding/OnboardingFlow'))
+  : IntegrationPendingPage;
 
 // ─── Web-Specific Pages ───
-const WebHomePage = lazy(() =>
-  import('./pages/web/WebHomePage').then((m) => ({ default: m.WebHomePage })),
-);
-const WebMarketListPage = lazy(() =>
-  import('./pages/web/WebMarketListPage').then((m) => ({ default: m.WebMarketListPage })),
-);
-const WebWalletPage = lazy(() =>
-  import('./pages/web/WebWalletPage').then((m) => ({ default: m.WebWalletPage })),
-);
+const WebHomePage = MarketHomePage;
+const WebMarketListPage = MarketListPage;
 const WebProfilePage = lazy(() =>
-  import('./pages/web/WebProfilePage').then((m) => ({ default: m.WebProfilePage })),
-);
-const WebP2PHomePage = lazy(() =>
-  import('./pages/web/WebP2PHomePage').then((m) => ({ default: m.WebP2PHomePage })),
-);
-const WebTradePage = lazy(() =>
-  import('./pages/web/WebTradePage').then((m) => ({ default: m.WebTradePage })),
-);
-const WebTxHistoryPage = lazy(() =>
-  import('./pages/web/WebTxHistoryPage').then((m) => ({ default: m.WebTxHistoryPage })),
-);
-const WebPairDetailPage = lazy(() =>
-  import('./pages/web/WebPairDetailPage').then((m) => ({ default: m.WebPairDetailPage })),
-);
-const WebTradeAnalyticsPage = lazy(() =>
-  import('./pages/web/WebTradeAnalyticsPage').then((m) => ({ default: m.WebTradeAnalyticsPage })),
-);
-const WebMarketScannerPage = lazy(() =>
-  import('./pages/web/WebMarketScannerPage').then((m) => ({ default: m.WebMarketScannerPage })),
-);
-const WebMarketsOverviewPage = lazy(() =>
-  import('./pages/web/WebMarketsOverviewPage').then((m) => ({ default: m.WebMarketsOverviewPage })),
-);
-const WebMarketsMoversPage = lazy(() =>
-  import('./pages/web/WebMarketsMoversPage').then((m) => ({ default: m.WebMarketsMoversPage })),
-);
-const WebMarketsWatchlistPage = lazy(() =>
-  import('./pages/web/WebMarketsWatchlistPage').then((m) => ({
-    default: m.WebMarketsWatchlistPage,
+  import('@/features/profile/pages/ProfileContractPage').then((m) => ({
+    default: m.ProfileContractPage,
   })),
 );
-const WebMarketsHeatmapPage = lazy(() =>
-  import('./pages/web/WebMarketsHeatmapPage').then((m) => ({ default: m.WebMarketsHeatmapPage })),
+const WebEditProfilePage = lazy(() =>
+  import('@/features/profile/pages/EditProfileContractPage').then((m) => ({
+    default: m.EditProfileContractPage,
+  })),
 );
-const WebTradingBotsPage = lazy(() =>
-  import('./pages/web/WebTradingBotsPage').then((m) => ({ default: m.WebTradingBotsPage })),
+const WebSubAccountPage = lazy(() =>
+  import('@/features/profile/pages/SubAccountContractPage').then((m) => ({
+    default: m.SubAccountContractPage,
+  })),
 );
+const WebP2PHomePage = lazy(() =>
+  import('./pages/p2p/P2PHomePage').then((m) => ({ default: m.P2PHomePage })),
+);
+const WebTradePage = TradePage;
+const WebPairDetailPage = PairDetailPage;
+const WebTradingBotsPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/trading/WebTradingBotsDemoPage').then((m) => ({
+        default: m.WebTradingBotsDemoPage,
+      })),
+    )
+  : IntegrationPendingPage;
 const WebPredictionsPage = lazy(() =>
-  import('./pages/web/WebPredictionsPage').then((m) => ({ default: m.WebPredictionsPage })),
+  import('@/features/predictions/pages/PredictionContractPages').then((m) => ({
+    default: m.PredictionsHomeContractPage,
+  })),
 );
 const WebEarnSavingsPage = lazy(() =>
-  import('./pages/web/WebEarnSavingsPage').then((m) => ({ default: m.WebEarnSavingsPage })),
+  import('@/features/earn/pages/EarnPage').then((m) => ({ default: m.SavingsPage })),
 );
 const WebNotificationsPage = lazy(() =>
-  import('./pages/web/WebNotificationsPage').then((m) => ({ default: m.WebNotificationsPage })),
+  import('@/features/support/pages/NotificationsContractPage').then((m) => ({
+    default: m.NotificationsContractPage,
+  })),
 );
 const WebSupportPage = lazy(() =>
-  import('./pages/web/WebSupportPage').then((m) => ({ default: m.WebSupportPage })),
-);
-const WebSecurityCenterPage = lazy(() =>
-  import('./pages/web/WebSecurityCenterPage').then((m) => ({ default: m.WebSecurityCenterPage })),
-);
-const WebVIPProgramPage = lazy(() =>
-  import('./pages/web/WebVIPProgramPage').then((m) => ({ default: m.WebVIPProgramPage })),
-);
-const WebReferralPage = lazy(() =>
-  import('./pages/web/WebReferralPage').then((m) => ({ default: m.WebReferralPage })),
+  import('@/features/support/pages/SupportContractPage').then((m) => ({
+    default: m.SupportContractPage,
+  })),
 );
 const WebNewsPage = lazy(() =>
-  import('./pages/web/WebNewsPage').then((m) => ({ default: m.WebNewsPage })),
-);
-const WebKYCPage = lazy(() =>
-  import('./pages/web/WebKYCPage').then((m) => ({ default: m.WebKYCPage })),
-);
-const WebAPIManagementPage = lazy(() =>
-  import('./pages/web/WebAPIManagementPage').then((m) => ({ default: m.WebAPIManagementPage })),
+  import('@/features/support/pages/NewsContractPage').then((m) => ({
+    default: m.NewsContractPage,
+  })),
 );
 const WebDeviceManagementPage = lazy(() =>
-  import('./pages/web/WebDeviceManagementPage').then((m) => ({
-    default: m.WebDeviceManagementPage,
+  import('@/features/profile/pages/DeviceManagementContractPage').then((m) => ({
+    default: m.DeviceManagementContractPage,
   })),
 );
 const WebActivityHistoryPage = lazy(() =>
-  import('./pages/web/WebActivityHistoryPage').then((m) => ({ default: m.WebActivityHistoryPage })),
-);
-const WebSettingsPage = lazy(() =>
-  import('./pages/web/WebSettingsPage').then((m) => ({ default: m.WebSettingsPage })),
+  import('@/features/profile/pages/ActivityLogContractPage').then((m) => ({
+    default: m.ActivityLogContractPage,
+  })),
 );
 const WebEarnStakingPage = lazy(() =>
-  import('./pages/web/WebEarnStakingPage').then((m) => ({ default: m.WebEarnStakingPage })),
-);
-const WebPortfolioAnalyticsPage = lazy(() =>
-  import('./pages/web/WebPortfolioAnalyticsPage').then((m) => ({
-    default: m.WebPortfolioAnalyticsPage,
-  })),
+  import('@/features/earn/pages/EarnPage').then((m) => ({ default: m.StakingPage })),
 );
 const WebAddressBookPage = lazy(() =>
-  import('./pages/web/WebAddressBookPage').then((m) => ({ default: m.WebAddressBookPage })),
+  import('@/features/wallet/pages/AddressBookPage').then((m) => ({ default: m.AddressBookPage })),
 );
-const WebP2PMyOrdersPage = lazy(() =>
-  import('./pages/web/WebP2PMyOrdersPage').then((m) => ({ default: m.WebP2PMyOrdersPage })),
-);
-const WebP2PCreateOfferPage = lazy(() =>
-  import('./pages/web/WebP2PCreateOfferPage').then((m) => ({ default: m.WebP2PCreateOfferPage })),
-);
-const WebP2POrderRoomPage = lazy(() =>
-  import('./pages/web/WebP2POrderRoomPage').then((m) => ({ default: m.WebP2POrderRoomPage })),
-);
-const WebBotFAQPage = lazy(() =>
-  import('./pages/web/WebBotFAQPage').then((m) => ({ default: m.WebBotFAQPage })),
-);
-const WebBotGuidePage = lazy(() =>
-  import('./pages/web/WebBotGuidePage').then((m) => ({ default: m.WebBotGuidePage })),
-);
-const WebBotRiskDisclosurePage = lazy(() =>
-  import('./pages/web/WebBotRiskDisclosurePage').then((m) => ({
-    default: m.WebBotRiskDisclosurePage,
-  })),
-);
-const WebBotBacktestingPage = lazy(() =>
-  import('./pages/web/WebBotBacktestingPage').then((m) => ({ default: m.WebBotBacktestingPage })),
-);
-const WebBotTermsOfServicePage = lazy(() =>
-  import('./pages/web/WebBotCompliancePages').then((m) => ({
-    default: m.WebBotTermsOfServicePage,
-  })),
-);
-const WebBotSuitabilityAssessmentPage = lazy(() =>
-  import('./pages/web/WebBotCompliancePages').then((m) => ({
-    default: m.WebBotSuitabilityAssessmentPage,
-  })),
-);
-const WebBotEmergencyStopPage = lazy(() =>
-  import('./pages/web/WebBotCompliancePages').then((m) => ({ default: m.WebBotEmergencyStopPage })),
-);
-const WebBotSecuritySettingsPage = lazy(() =>
-  import('./pages/web/WebBotCompliancePages').then((m) => ({
-    default: m.WebBotSecuritySettingsPage,
-  })),
-);
-const WebBotHistoryPage = lazy(() =>
-  import('./pages/web/WebBotAnalyticsPages').then((m) => ({ default: m.WebBotHistoryPage })),
-);
-const WebBotPerformanceAnalyticsPage = lazy(() =>
-  import('./pages/web/WebBotAnalyticsPages').then((m) => ({
-    default: m.WebBotPerformanceAnalyticsPage,
-  })),
-);
-const WebBotRiskDashboardPage = lazy(() =>
-  import('./pages/web/WebBotAnalyticsPages').then((m) => ({ default: m.WebBotRiskDashboardPage })),
-);
-const WebBotPortfolioDashboardPage = lazy(() =>
-  import('./pages/web/WebBotAnalyticsPages').then((m) => ({
-    default: m.WebBotPortfolioDashboardPage,
-  })),
-);
-const WebBotStrategyComparePage = lazy(() =>
-  import('./pages/web/WebBotAnalyticsPages').then((m) => ({
-    default: m.WebBotStrategyComparePage,
-  })),
-);
-const WebBotOptimizationPage = lazy(() =>
-  import('./pages/web/WebBotAnalyticsPages').then((m) => ({ default: m.WebBotOptimizationPage })),
-);
-const WebBotDrawdownAnalyzerPage = lazy(() =>
-  import('./pages/web/WebBotAnalyticsPages').then((m) => ({
-    default: m.WebBotDrawdownAnalyzerPage,
-  })),
-);
-const WebBotEquityCurvePage = lazy(() =>
-  import('./pages/web/WebBotAnalyticsPages').then((m) => ({ default: m.WebBotEquityCurvePage })),
-);
-const WebBotTaxReportingPage = lazy(() =>
-  import('./pages/web/WebBotUtilityPages').then((m) => ({ default: m.WebBotTaxReportingPage })),
-);
-const WebBotAPIDocumentationPage = lazy(() =>
-  import('./pages/web/WebBotUtilityPages').then((m) => ({ default: m.WebBotAPIDocumentationPage })),
-);
-const WebCopyTradingPage = lazy(() =>
-  import('./pages/web/WebCopyTradingPage').then((m) => ({ default: m.WebCopyTradingPage })),
-);
-const WebCopyProviderDetailPage = lazy(() =>
-  import('./pages/web/WebCopyProviderDetailPage').then((m) => ({
-    default: m.WebCopyProviderDetailPage,
-  })),
-);
-const WebPreCopyAssessmentPage = lazy(() =>
-  import('./pages/web/WebPreCopyAssessmentPage').then((m) => ({
-    default: m.WebPreCopyAssessmentPage,
-  })),
-);
-const WebCopyConfigurationPage = lazy(() =>
-  import('./pages/web/WebCopyTradingPages').then((m) => ({ default: m.WebCopyConfigurationPage })),
-);
-const WebCopyConfirmationPage = lazy(() =>
-  import('./pages/web/WebCopyTradingPages').then((m) => ({ default: m.WebCopyConfirmationPage })),
-);
-const WebCopyPerformancePage = lazy(() =>
-  import('./pages/web/WebCopyTradingPages').then((m) => ({ default: m.WebCopyPerformancePage })),
-);
-const WebCopyEducationPage = lazy(() =>
-  import('./pages/web/WebCopyTradingPages').then((m) => ({ default: m.WebCopyEducationPage })),
-);
-const WebCopyActiveCopiesPage = lazy(() =>
-  import('./pages/web/WebCopyManagementPages').then((m) => ({
-    default: m.WebCopyActiveCopiesPage,
-  })),
-);
+const WebBotFAQPage = isDevelopmentBuild
+  ? lazy(() => import('@/dev/legacy/web/WebBotFAQPage').then((m) => ({ default: m.WebBotFAQPage })))
+  : IntegrationPendingPage;
+const WebBotGuidePage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebBotGuidePage').then((m) => ({ default: m.WebBotGuidePage })),
+    )
+  : IntegrationPendingPage;
+const WebBotRiskDisclosurePage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebBotRiskDisclosurePage').then((m) => ({
+        default: m.WebBotRiskDisclosurePage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebBotBacktestingPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebBotBacktestingPage').then((m) => ({
+        default: m.WebBotBacktestingPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebBotTermsOfServicePage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebBotCompliancePages').then((m) => ({
+        default: m.WebBotTermsOfServicePage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebBotSuitabilityAssessmentPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebBotCompliancePages').then((m) => ({
+        default: m.WebBotSuitabilityAssessmentPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebBotEmergencyStopPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebBotCompliancePages').then((m) => ({
+        default: m.WebBotEmergencyStopPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebBotSecuritySettingsPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebBotCompliancePages').then((m) => ({
+        default: m.WebBotSecuritySettingsPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebBotHistoryPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebBotAnalyticsPages').then((m) => ({
+        default: m.WebBotHistoryPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebBotPerformanceAnalyticsPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebBotAnalyticsPages').then((m) => ({
+        default: m.WebBotPerformanceAnalyticsPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebBotRiskDashboardPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebBotAnalyticsPages').then((m) => ({
+        default: m.WebBotRiskDashboardPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebBotPortfolioDashboardPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebBotAnalyticsPages').then((m) => ({
+        default: m.WebBotPortfolioDashboardPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebBotStrategyComparePage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebBotAnalyticsPages').then((m) => ({
+        default: m.WebBotStrategyComparePage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebBotOptimizationPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebBotAnalyticsPages').then((m) => ({
+        default: m.WebBotOptimizationPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebBotDrawdownAnalyzerPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebBotAnalyticsPages').then((m) => ({
+        default: m.WebBotDrawdownAnalyzerPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebBotEquityCurvePage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebBotAnalyticsPages').then((m) => ({
+        default: m.WebBotEquityCurvePage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebBotTaxReportingPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebBotUtilityPages').then((m) => ({
+        default: m.WebBotTaxReportingPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebBotAPIDocumentationPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebBotUtilityPages').then((m) => ({
+        default: m.WebBotAPIDocumentationPage,
+      })),
+    )
+  : IntegrationPendingPage;
 const WebOrdersHistoryPage = lazy(() =>
-  import('./pages/web/WebOrdersHistoryPage').then((m) => ({ default: m.WebOrdersHistoryPage })),
+  import('@/features/trading/pages/OrdersHistoryPage').then((m) => ({
+    default: m.OrdersHistoryPage,
+  })),
 );
 const WebLoginPage = lazy(() =>
-  import('./pages/web/WebLoginPage').then((m) => ({ default: m.WebLoginPage })),
+  import('@/features/auth/pages/WebLoginPage').then((m) => ({ default: m.WebLoginPage })),
 );
-const WebRegisterPage = lazy(() =>
-  import('./pages/web/WebRegisterPage').then((m) => ({ default: m.WebRegisterPage })),
-);
+// Account creation remains development-only until the registration contract exists.
+const WebRegisterPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/auth/WebRegisterForm').then((m) => ({
+        default: m.WebRegisterPage,
+      })),
+    )
+  : IntegrationPendingPage;
 const WebForgotPasswordPage = lazy(() =>
-  import('./pages/web/WebForgotPasswordPage').then((m) => ({ default: m.WebForgotPasswordPage })),
+  import('@/features/auth/pages/PasswordResetPages').then((m) => ({
+    default: m.ForgotPasswordContractPage,
+  })),
 );
 const WebResetPasswordPage = lazy(() =>
-  import('./pages/web/WebResetPasswordPage').then((m) => ({ default: m.WebResetPasswordPage })),
+  import('@/features/auth/pages/PasswordResetPages').then((m) => ({
+    default: m.ResetPasswordContractPage,
+  })),
 );
 const WebOTPPage = lazy(() =>
-  import('./pages/web/WebOTPPage').then((m) => ({ default: m.WebOTPPage })),
+  import('@/features/auth/pages/WebOTPPage').then((m) => ({ default: m.WebOTPPage })),
 );
 const Web2FASetupPage = lazy(() =>
-  import('./pages/web/Web2FASetupPage').then((m) => ({ default: m.Web2FASetupPage })),
+  import('@/features/auth/pages/Web2FASetupPage').then((m) => ({ default: m.Web2FASetupPage })),
 );
 const WebAuthSuccessPage = lazy(() =>
-  import('./pages/web/WebAuthSuccessPage').then((m) => ({ default: m.WebAuthSuccessPage })),
+  import('@/features/auth/pages/WebAuthSuccessPage').then((m) => ({
+    default: m.WebAuthSuccessPage,
+  })),
 );
 const WebAccountLockedPage = lazy(() =>
-  import('./pages/web/WebAccountLockedPage').then((m) => ({ default: m.WebAccountLockedPage })),
+  import('@/features/auth/pages/WebAccountLockedPage').then((m) => ({
+    default: m.WebAccountLockedPage,
+  })),
 );
 const WebSessionExpiredPage = lazy(() =>
-  import('./pages/web/WebSessionExpiredPage').then((m) => ({ default: m.WebSessionExpiredPage })),
-);
-const WebDeviceTrustPage = lazy(() =>
-  import('./pages/web/WebDeviceTrustPage').then((m) => ({ default: m.WebDeviceTrustPage })),
-);
-const WebAntiPhishingSetupPage = lazy(() =>
-  import('./pages/web/WebAntiPhishingSetupPage').then((m) => ({
-    default: m.WebAntiPhishingSetupPage,
+  import('@/features/auth/pages/WebSessionExpiredPage').then((m) => ({
+    default: m.WebSessionExpiredPage,
   })),
 );
-const WebPasskeySetupPage = lazy(() =>
-  import('./pages/web/WebPasskeySetupPage').then((m) => ({ default: m.WebPasskeySetupPage })),
-);
-const WebLoginActivityPage = lazy(() =>
-  import('./pages/web/WebLoginActivityPage').then((m) => ({ default: m.WebLoginActivityPage })),
-);
-const WebWithdrawalWhitelistPage = lazy(() =>
-  import('./pages/web/WebWithdrawalWhitelistPage').then((m) => ({
-    default: m.WebWithdrawalWhitelistPage,
+const WebDeviceTrustPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebDeviceTrustPage').then((m) => ({
+        default: m.WebDeviceTrustPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebAntiPhishingSetupPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebAntiPhishingSetupPage').then((m) => ({
+        default: m.WebAntiPhishingSetupPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebPasskeySetupPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebPasskeySetupPage').then((m) => ({
+        default: m.WebPasskeySetupPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebLoginActivityPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebLoginActivityPage').then((m) => ({
+        default: m.WebLoginActivityPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebSecurityAuditPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebSecurityAuditPage').then((m) => ({
+        default: m.WebSecurityAuditPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebSecurityNotificationsPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebSecurityNotificationsPage').then((m) => ({
+        default: m.WebSecurityNotificationsPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebSessionManagementPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebSessionManagementPage').then((m) => ({
+        default: m.WebSessionManagementPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const PasswordChangePage = lazy(() =>
+  import('@/features/auth/pages/PasswordChangePage').then((m) => ({
+    default: m.PasswordChangePage,
   })),
 );
-const WebSecurityAuditPage = lazy(() =>
-  import('./pages/web/WebSecurityAuditPage').then((m) => ({ default: m.WebSecurityAuditPage })),
-);
-const WebSecurityNotificationsPage = lazy(() =>
-  import('./pages/web/WebSecurityNotificationsPage').then((m) => ({
-    default: m.WebSecurityNotificationsPage,
-  })),
-);
-const WebSessionManagementPage = lazy(() =>
-  import('./pages/web/WebSessionManagementPage').then((m) => ({
-    default: m.WebSessionManagementPage,
-  })),
-);
-const WebChangePasswordPage = lazy(() =>
-  import('./pages/web/WebChangePasswordPage').then((m) => ({ default: m.WebChangePasswordPage })),
-);
-const WebSecurityAlertDetailPage = lazy(() =>
-  import('./pages/web/WebSecurityAlertDetailPage').then((m) => ({
-    default: m.WebSecurityAlertDetailPage,
-  })),
-);
-const WebSecurityAlertListPage = lazy(() =>
-  import('./pages/web/WebSecurityAlertListPage').then((m) => ({
-    default: m.WebSecurityAlertListPage,
-  })),
-);
-const WebTwoFAManagementPage = lazy(() =>
-  import('./pages/web/WebTwoFAManagementPage').then((m) => ({ default: m.WebTwoFAManagementPage })),
-);
-const WebDeviceTrustDetailPage = lazy(() =>
-  import('./pages/web/WebDeviceTrustDetailPage').then((m) => ({
-    default: m.WebDeviceTrustDetailPage,
-  })),
-);
+const WebSecurityAlertDetailPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebSecurityAlertDetailPage').then((m) => ({
+        default: m.WebSecurityAlertDetailPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebSecurityAlertListPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebSecurityAlertListPage').then((m) => ({
+        default: m.WebSecurityAlertListPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebTwoFAManagementPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebTwoFAManagementPage').then((m) => ({
+        default: m.WebTwoFAManagementPage,
+      })),
+    )
+  : IntegrationPendingPage;
+const WebDeviceTrustDetailPage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebDeviceTrustDetailPage').then((m) => ({
+        default: m.WebDeviceTrustDetailPage,
+      })),
+    )
+  : IntegrationPendingPage;
 const WebPredictionEventDetailPage = lazy(() =>
-  import('./pages/web/WebPredictionEventDetailPage').then((m) => ({
-    default: m.WebPredictionEventDetailPage,
+  import('@/features/predictions/pages/PredictionContractPages').then((m) => ({
+    default: m.PredictionEventContractPage,
   })),
 );
-const WebArenaHomePage = lazy(() =>
-  import('./pages/web/WebArenaHomePage').then((m) => ({ default: m.WebArenaHomePage })),
-);
+const WebArenaHomePage = isDevelopmentBuild
+  ? lazy(() =>
+      import('@/dev/legacy/web/WebArenaHomePage').then((m) => ({ default: m.WebArenaHomePage })),
+    )
+  : IntegrationPendingPage;
 
 /* ══════════════════════════════════════════
    Shell Overrides — Components that differ
@@ -437,8 +443,8 @@ const phoneOverrides: ShellOverrides = {
   MarketListPage,
   PairDetailPage,
   TradePage,
-  WalletPage,
-  TxHistoryPage: TransactionHistoryPage,
+  WalletPage: WalletContractPage,
+  TxHistoryPage: TxHistoryContractPage,
   ProfilePage,
   P2PHomePage,
 };
@@ -452,8 +458,8 @@ const tabletOverrides: ShellOverrides = {
   MarketListPage: ResponsiveMarketListPage,
   PairDetailPage: ResponsivePairDetailPage,
   TradePage: ResponsiveTradePage,
-  WalletPage: ResponsiveWalletPage,
-  TxHistoryPage: ResponsiveTxHistoryPage,
+  WalletPage: WalletContractPage,
+  TxHistoryPage: TxHistoryContractPage,
   ProfilePage: ResponsiveProfilePage,
   P2PHomePage: ResponsiveP2PHomePage,
 };
@@ -467,8 +473,8 @@ const webOverrides: ShellOverrides = {
   MarketListPage: WebMarketListPage,
   PairDetailPage: WebPairDetailPage,
   TradePage: WebTradePage,
-  WalletPage: WebWalletPage,
-  TxHistoryPage: WebTxHistoryPage,
+  WalletPage: WalletContractPage,
+  TxHistoryPage: TxHistoryContractPage,
   ProfilePage: WebProfilePage,
   P2PHomePage: WebP2PHomePage,
 };
@@ -476,11 +482,41 @@ const webOverrides: ShellOverrides = {
 /** Legacy responsive overrides (backward compat) */
 const responsiveOverrides: ShellOverrides = tabletOverrides;
 
+/**
+ * Demo/showcase routes are created only in development builds. Keeping the
+ * dynamic imports inside the DEV branch prevents demo chunks from becoming a
+ * production route or an accidental production dependency.
+ */
+const developmentRoutes = isDevelopmentBuild
+  ? [
+      {
+        path: 'dev/showcase',
+        Component: lazy(() =>
+          import('@/dev/legacy/v2/MissingScreensShowcasePage').then((m) => ({
+            default: m.MissingScreensShowcasePage,
+          })),
+        ),
+      },
+      {
+        path: 'dev/design-system',
+        Component: lazy(() =>
+          import('@/dev/legacy/v2/DesignSystemPage').then((m) => ({ default: m.DesignSystemPage })),
+        ),
+      },
+      {
+        path: 'dev/dca-overview',
+        Component: lazy(() => import('@/dev/legacy/dca/DCAOverviewDemo')),
+      },
+      {
+        path: 'demo/copy-card',
+        Component: lazy(() => import('@/dev/legacy/demo/CopyTradingCardDemo')),
+      },
+    ]
+  : [];
+
 /* ═══════════════════════════════════════════
    Router Definition — 3 Platform Shells
    ═══════════════════════════════════════════ */
-
-console.log('[Router] Initializing 3-shell architecture @', new Date().toISOString());
 
 export const router = createBrowserRouter([
   {
@@ -504,10 +540,7 @@ export const router = createBrowserRouter([
         Component: AppLayout,
         children: [
           ...createPublicRoutes(phoneOverrides),
-          { path: 'dev/showcase', Component: MissingScreensShowcasePage },
-          { path: 'dev/design-system', Component: DesignSystemPage },
-          { path: 'dev/dca-overview', Component: DCAOverviewDemo },
-          { path: 'demo/copy-card', Component: CopyTradingCardDemo },
+          ...developmentRoutes,
           {
             Component: ProtectedRoute,
             children: createProtectedRoutes(phoneOverrides),
@@ -540,18 +573,21 @@ export const router = createBrowserRouter([
         Component: WebShell,
         children: [
           { index: true, element: React.createElement(Navigate, { to: '/w/home', replace: true }) },
-          createWebAuthBlock(
-            WebLoginPage,
-            WebRegisterPage,
-            WebForgotPasswordPage,
-            WebResetPasswordPage,
-            WebOTPPage,
-            Web2FASetupPage,
-            WebAuthSuccessPage,
-            WebAccountLockedPage,
-            WebSessionExpiredPage,
-            WebDeviceTrustPage,
-          ),
+          {
+            path: 'auth',
+            children: createAuthRoutes({
+              login: WebLoginPage,
+              register: WebRegisterPage,
+              otp: WebOTPPage,
+              twoFASetup: Web2FASetupPage,
+              forgotPassword: WebForgotPasswordPage,
+              resetPassword: WebResetPasswordPage,
+              success: WebAuthSuccessPage,
+              accountLocked: WebAccountLockedPage,
+              sessionExpired: WebSessionExpiredPage,
+              deviceTrust: WebDeviceTrustPage,
+            }),
+          },
           ...createPublicRoutes(webOverrides),
           {
             Component: ProtectedRoute,
@@ -584,76 +620,43 @@ export const router = createBrowserRouter([
               { path: 'trade/bots/api-documentation', Component: WebBotAPIDocumentationPage },
               ...createProtectedRoutes(webOverrides),
               // ─── Web-only pages ───
-              { path: 'trade/analytics', Component: WebTradeAnalyticsPage },
-              { path: 'scanner', Component: WebMarketScannerPage },
-              // ─── Markets pages ───
-              { path: 'markets/overview', Component: WebMarketsOverviewPage },
-              { path: 'markets/movers', Component: WebMarketsMoversPage },
-              { path: 'markets/watchlist', Component: WebMarketsWatchlistPage },
-              { path: 'markets/heatmap', Component: WebMarketsHeatmapPage },
+              ...createMarketWebRoutes(),
               // ─── Predictions ───
               { path: 'predictions', Component: WebPredictionsPage },
               { path: 'predictions/event/:eventId', Component: WebPredictionEventDetailPage },
               // ─── Earn & Savings ───
               { path: 'earn/savings', Component: WebEarnSavingsPage },
               { path: 'earn/staking', Component: WebEarnStakingPage },
-              { path: 'portfolio/analytics', Component: WebPortfolioAnalyticsPage },
+              ...createWalletWebRoutes(),
               { path: 'address-book', Component: WebAddressBookPage },
-              { path: 'p2p/my-orders', Component: WebP2PMyOrdersPage },
-              { path: 'p2p/create-offer', Component: WebP2PCreateOfferPage },
-              { path: 'p2p/order-room', Component: WebP2POrderRoomPage },
-              { path: 'p2p/order/:orderId', Component: WebP2POrderRoomPage },
+              ...p2pWebRoutes,
               // ─── Notifications ───
               { path: 'notifications', Component: WebNotificationsPage },
               // ─── Support ───
               { path: 'support', Component: WebSupportPage },
               // ─── Profile pages ───
-              { path: 'profile/security', Component: WebSecurityCenterPage },
+              { path: 'profile/edit', Component: WebEditProfilePage },
+              { path: 'profile/sub-accounts', Component: WebSubAccountPage },
               { path: 'profile/security/anti-phishing', Component: WebAntiPhishingSetupPage },
               { path: 'profile/security/passkey', Component: WebPasskeySetupPage },
               { path: 'profile/security/login-activity', Component: WebLoginActivityPage },
-              {
-                path: 'profile/security/withdrawal-whitelist',
-                Component: WebWithdrawalWhitelistPage,
-              },
               { path: 'profile/security/security-audit', Component: WebSecurityAuditPage },
               { path: 'profile/security/notifications', Component: WebSecurityNotificationsPage },
               { path: 'profile/security/session-management', Component: WebSessionManagementPage },
-              { path: 'profile/security/change-password', Component: WebChangePasswordPage },
+              { path: 'profile/security/change-password', Component: PasswordChangePage },
               { path: 'profile/security/alert-detail', Component: WebSecurityAlertDetailPage },
               { path: 'profile/security/alerts/:alertId', Component: WebSecurityAlertDetailPage },
               { path: 'profile/security/alert-list', Component: WebSecurityAlertListPage },
               { path: 'profile/security/two-factor-auth', Component: WebTwoFAManagementPage },
               { path: 'profile/security/device-trust', Component: WebDeviceTrustDetailPage },
               { path: 'profile/security/devices/:deviceId', Component: WebDeviceTrustDetailPage },
-              { path: 'profile/vip', Component: WebVIPProgramPage },
-              { path: 'profile/kyc', Component: WebKYCPage },
-              { path: 'profile/api', Component: WebAPIManagementPage },
               { path: 'profile/devices', Component: WebDeviceManagementPage },
               { path: 'profile/activity', Component: WebActivityHistoryPage },
-              { path: 'profile/settings', Component: WebSettingsPage },
               // ─── Referral ───
-              { path: 'referral', Component: WebReferralPage },
               // ─── News ───
               { path: 'news', Component: WebNewsPage },
               // ─── Copy Trading (Web versions) ───
-              { path: 'trade/copy', Component: WebCopyTradingPage },
-              { path: 'trade/copy/provider/:providerId', Component: WebCopyProviderDetailPage },
-              {
-                path: 'trade/copy/provider/:providerId/assessment',
-                Component: WebPreCopyAssessmentPage,
-              },
-              {
-                path: 'trade/copy/provider/:providerId/configuration',
-                Component: WebCopyConfigurationPage,
-              },
-              {
-                path: 'trade/copy/provider/:providerId/confirmation',
-                Component: WebCopyConfirmationPage,
-              },
-              { path: 'trade/copy/active', Component: WebCopyActiveCopiesPage },
-              { path: 'trade/copy/performance/:copyId', Component: WebCopyPerformancePage },
-              { path: 'trade/copy/education', Component: WebCopyEducationPage },
+              ...createTradingWebRoutes(),
               // ─── Orders ───
               { path: 'trade/orders', Component: WebOrdersHistoryPage },
               // ─── Arena ───

@@ -7,7 +7,7 @@ on:
 
 jobs:
   verify:
-    name: Typecheck · Lint · Test · Build
+    name: Production gates
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -16,11 +16,14 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
           cache: npm
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
 
       - name: Typecheck
         run: npm run typecheck
@@ -28,11 +31,59 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Test
+      - name: Lint warning budget
+        run: npm run lint:check
+
+      - name: Format check
+        run: npm run format:check
+
+      - name: Unit and integration tests
         run: npm run test:run
 
-      - name: Test (margin-trading suite)
+      - name: Coverage gate
+        run: npm run test:coverage -- --reporter=dot
+
+      - name: Test margin-trading suite
         run: npm run test:margin
+
+      - name: E2E smoke and accessibility
+        run: npm run test:e2e
+
+      - name: Dependency audit
+        run: npm run audit:high
+
+      - name: Dependency license policy
+        run: npm run licenses:check
+
+      - name: Security boundary policy
+        run: npm run security:check
+
+      - name: Environment boundary policy
+        run: npm run env:check
+
+      - name: OpenAPI contract policy
+        run: npm run contracts:check
+
+      - name: Architecture check
+        run: npm run architecture:check
+
+      - name: Architecture inventory
+        run: npm run architecture:inventory:check
+
+      - name: Page size gate
+        run: npm run page-size:check
+
+      - name: Production mock import budget
+        run: npm run production-mock-imports:check
+
+      - name: Production route boundaries
+        run: npm run production-routes:check
 
       - name: Build
         run: npm run build
+
+      - name: Production mock exclusion
+        run: npm run production-mocks:check
+
+      - name: Bundle budget
+        run: npm run bundle:check

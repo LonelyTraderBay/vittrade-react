@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Activity, Zap, Package, Clock, TrendingDown } from 'lucide-react';
 import { Header } from '../layout/Header';
-import { PageLayout } from '../layout/PageLayout';
-import { PageContent, PageSection } from '../layout/PageContent';
+import { PageLayout } from '@/shared/ui/layout/PageLayout';
+import { PageContent, PageSection } from '@/shared/ui/layout/PageContent';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { TrCard } from '../ui/TrCard';
 
@@ -49,7 +49,8 @@ export function PerformanceMonitor() {
       // Get LCP
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
-        const lastEntry = entries[entries.length - 1] as any;
+        const lastEntry = entries[entries.length - 1];
+        if (!lastEntry) return;
         setMetrics((prev) =>
           prev ? { ...prev, largestContentfulPaint: lastEntry.startTime } : null,
         );
@@ -58,7 +59,11 @@ export function PerformanceMonitor() {
 
       // Get memory (if available)
       if ('memory' in performance) {
-        const mem = (performance as any).memory;
+        const mem = (
+          performance as Performance & {
+            memory: { usedJSHeapSize: number; jsHeapSizeLimit: number };
+          }
+        ).memory;
         metrics.memoryUsed = mem.usedJSHeapSize / 1048576; // MB
         metrics.memoryLimit = mem.jsHeapSizeLimit / 1048576; // MB
       }

@@ -9,7 +9,6 @@
 
 import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { renderWithProviders } from '../../test/test-utils';
 import { TrCard, TrCardStat } from '../components/ui/TrCard';
 
 describe('TrCard', () => {

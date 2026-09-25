@@ -57,6 +57,7 @@
   --tr-warn: #f0a63a;
   --tr-caution: #f59e0b;
   --tr-info: #3b82f6;
+  --tr-link: #60a5fa;
   --tr-accent: #8b5cf6;
   --tr-text-1: #f5f7fa;
   --tr-text-2: #a7afbf;
@@ -333,6 +334,7 @@
   --tr-buy: #10b981;
   --tr-sell: #ef4444;
   --tr-warn: #f0a63a;
+  --tr-link: #60a5fa;
   --tr-accent: #8b5cf6;
   --tr-text-1: #f5f7fa;
   --tr-text-2: #a7afbf;
@@ -396,6 +398,7 @@
   --tr-buy: #10b981;
   --tr-sell: #ef4444;
   --tr-warn: #f0a63a;
+  --tr-link: #1d4ed8;
   --tr-accent: #8b5cf6;
   --tr-text-1: #111827;
   --tr-text-2: #6b7280;

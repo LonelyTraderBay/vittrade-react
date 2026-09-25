@@ -1,0 +1,307 @@
+openapi: 3.0.3
+info:
+  title: VitTrade Admin and Analytics API
+  version: 0.1.0
+  description: |
+    Contract-first boundary cho dashboard quản trị, analytics và feature flags.
+    Mọi quyền admin phải được backend kiểm tra và ghi audit event.
+servers:
+  - url: https://api.example.invalid/v1
+tags:
+  - name: Admin analytics
+  - name: Feature flags
+paths:
+  /admin/overview:
+    get:
+      tags: [Admin analytics]
+      operationId: getAdminOverview
+      x-required-permissions: [admin:read]
+      security:
+        - sessionCookie: []
+      responses:
+        '200':
+          description: Tổng quan vận hành và tăng trưởng
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminOverview'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /admin/analytics/funnel:
+    get:
+      tags: [Admin analytics]
+      operationId: getAdminFunnel
+      x-required-permissions: [admin:read]
+      security:
+        - sessionCookie: []
+      parameters:
+        - $ref: '#/components/parameters/From'
+        - $ref: '#/components/parameters/To'
+      responses:
+        '200':
+          description: Dữ liệu funnel đã tổng hợp
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [steps]
+                properties:
+                  steps:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FunnelStep'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /admin/analytics/ab-tests:
+    get:
+      tags: [Admin analytics]
+      operationId: listAdminAbTests
+      x-required-permissions: [admin:read]
+      security:
+        - sessionCookie: []
+      responses:
+        '200':
+          description: Danh sách thử nghiệm A/B
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [tests]
+                properties:
+                  tests:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AbTest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /admin/analytics/ab-tests/{testId}:
+    get:
+      tags: [Admin analytics]
+      operationId: getAdminAbTest
+      x-required-permissions: [admin:read]
+      security:
+        - sessionCookie: []
+      parameters:
+        - $ref: '#/components/parameters/TestId'
+      responses:
+        '200':
+          description: Chi tiết thử nghiệm A/B
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AbTest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /admin/feature-flags/{flagKey}:
+    patch:
+      tags: [Feature flags]
+      operationId: updateAdminFeatureFlag
+      x-required-permissions: [admin:write]
+      security:
+        - sessionCookie: []
+      parameters:
+        - $ref: '#/components/parameters/FlagKey'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [enabled, rolloutPercentage, expiresAt]
+              properties:
+                enabled:
+                  type: boolean
+                rolloutPercentage:
+                  type: integer
+                  minimum: 0
+                  maximum: 100
+                expiresAt:
+                  type: string
+                  format: date-time
+                rollbackBehavior:
+                  type: string
+                  enum: [disable, previous-version, manual]
+      responses:
+        '200':
+          description: Feature flag đã cập nhật
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeatureFlag'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: Version conflict hoặc rollout không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: vittrade_session
+  parameters:
+    From:
+      name: from
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date-time
+    To:
+      name: to
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date-time
+    TestId:
+      name: testId
+      in: path
+      required: true
+      schema:
+        type: string
+    FlagKey:
+      name: flagKey
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: '^[a-z0-9][a-z0-9._-]{1,63}$'
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema:
+        type: string
+        minLength: 16
+        maxLength: 128
+  responses:
+    BadRequest:
+      description: Request không hợp lệ
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Chưa xác thực
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Không có quyền admin
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Không tìm thấy tài nguyên
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    AdminOverview:
+      type: object
+      required: [activeUsers, verifiedUsers, grossVolume, generatedAt]
+      properties:
+        activeUsers:
+          type: integer
+          minimum: 0
+        verifiedUsers:
+          type: integer
+          minimum: 0
+        grossVolume:
+          type: string
+          description: Decimal string theo currency policy của backend
+        generatedAt:
+          type: string
+          format: date-time
+    FunnelStep:
+      type: object
+      required: [key, count, conversionRate]
+      properties:
+        key:
+          type: string
+        count:
+          type: integer
+          minimum: 0
+        conversionRate:
+          type: number
+          minimum: 0
+          maximum: 1
+    AbTest:
+      type: object
+      required: [id, key, status, owner, expiresAt, variants]
+      properties:
+        id:
+          type: string
+        key:
+          type: string
+        status:
+          type: string
+          enum: [draft, running, paused, completed, expired]
+        owner:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+        variants:
+          type: array
+          items:
+            type: object
+            required: [key, rolloutPercentage]
+            properties:
+              key:
+                type: string
+              rolloutPercentage:
+                type: integer
+                minimum: 0
+                maximum: 100
+    FeatureFlag:
+      type: object
+      required: [key, enabled, rolloutPercentage, owner, expiresAt]
+      properties:
+        key:
+          type: string
+        enabled:
+          type: boolean
+        rolloutPercentage:
+          type: integer
+          minimum: 0
+          maximum: 100
+        owner:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+        rollbackBehavior:
+          type: string
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          nullable: true

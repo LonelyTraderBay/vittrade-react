@@ -1,0 +1,228 @@
+openapi: 3.1.0
+info:
+  title: VitTrade Earn API
+  version: 0.1.0
+  description: Contract-first savings and staking products, positions and mutations.
+servers:
+  - url: https://api.example.invalid/v1
+security:
+  - sessionCookie: []
+paths:
+  /earn/snapshot:
+    get:
+      operationId: getEarnSnapshot
+      x-required-permissions: [earn:read]
+      responses:
+        '200':
+          description: Available products, user positions and balances.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/EarnSnapshot' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /earn/transactions:
+    get:
+      operationId: listEarnTransactions
+      x-required-permissions: [earn:read]
+      parameters:
+        - name: domain
+          in: query
+          required: true
+          schema: { type: string, enum: [savings, staking] }
+        - name: cursor
+          in: query
+          required: false
+          schema: { type: string }
+        - name: limit
+          in: query
+          required: false
+          schema: { type: integer, minimum: 1, maximum: 100, default: 25 }
+      responses:
+        '200':
+          description: A page of the authenticated user's Earn transactions.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/EarnTransactionPage' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /earn/subscriptions:
+    post:
+      operationId: createEarnSubscription
+      x-required-permissions: [earn:subscribe]
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema: { type: string, minLength: 8 }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreateEarnPositionRequest' }
+      responses:
+        '201':
+          description: Subscription accepted.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/EarnReceipt' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /earn/redemptions:
+    post:
+      operationId: redeemEarnPosition
+      x-required-permissions: [earn:redeem]
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema: { type: string, minLength: 8 }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RedeemEarnPositionRequest' }
+      responses:
+        '201':
+          description: Redemption accepted.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/EarnReceipt' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: vittrade_session
+  responses:
+    BadRequest:
+      description: Validation failed.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+    Unauthorized:
+      description: Session is missing or expired.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
+  schemas:
+    ApiError:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string }
+        message: { type: string }
+        details: {}
+    EarnProduct:
+      type: object
+      required:
+        [
+          id,
+          domain,
+          type,
+          name,
+          asset,
+          apy,
+          minAmount,
+          remainingQuota,
+          participants,
+          totalStaked,
+          color,
+          riskLevel,
+        ]
+      properties:
+        id: { type: string }
+        domain: { type: string, enum: [savings, staking] }
+        type: { type: string, enum: [flexible, fixed, defi] }
+        name: { type: string }
+        asset: { type: string }
+        apy: { type: number, minimum: 0 }
+        apyBoost: { type: number, minimum: 0 }
+        minAmount: { type: number, exclusiveMinimum: 0 }
+        remainingQuota: { type: string }
+        participants: { type: integer, minimum: 0 }
+        totalStaked: { type: string }
+        lockDays: { type: integer, exclusiveMinimum: 0 }
+        color: { type: string }
+        riskLevel: { type: string, enum: [low, medium, high] }
+        isHot: { type: boolean }
+        isNew: { type: boolean }
+    EarnPosition:
+      type: object
+      required:
+        [id, productId, product, asset, amount, earned, apy, startDate, type, color, riskLevel]
+      properties:
+        id: { type: string }
+        productId: { type: string }
+        product: { type: string }
+        asset: { type: string }
+        amount: { type: number, minimum: 0 }
+        earned: { type: number, minimum: 0 }
+        apy: { type: number, minimum: 0 }
+        startDate: { type: string, format: date-time }
+        endDate: { type: string, format: date-time }
+        type: { type: string, enum: [flexible, fixed, defi] }
+        color: { type: string }
+        riskLevel: { type: string, enum: [low, medium, high] }
+        lockDays: { type: integer, exclusiveMinimum: 0 }
+    EarnSnapshot:
+      type: object
+      required: [products, positions, balances, summary]
+      properties:
+        products: { type: array, items: { $ref: '#/components/schemas/EarnProduct' } }
+        positions: { type: array, items: { $ref: '#/components/schemas/EarnPosition' } }
+        balances: { type: object, additionalProperties: { type: number, minimum: 0 } }
+        summary: { $ref: '#/components/schemas/EarnSummary' }
+    EarnSummary:
+      type: object
+      required: [totalDepositedUsd, totalEarnedUsd, averageApy, activePositions]
+      properties:
+        totalDepositedUsd: { type: number, minimum: 0 }
+        totalEarnedUsd: { type: number, minimum: 0 }
+        averageApy: { type: number, minimum: 0 }
+        activePositions: { type: integer, minimum: 0 }
+    CreateEarnPositionRequest:
+      type: object
+      required: [productId, amount]
+      properties:
+        productId: { type: string }
+        amount: { type: number, exclusiveMinimum: 0 }
+    RedeemEarnPositionRequest:
+      type: object
+      required: [positionId, amount]
+      properties:
+        positionId: { type: string }
+        amount: { type: number, exclusiveMinimum: 0 }
+    EarnReceipt:
+      type: object
+      required: [id, operation, productId, asset, amount, status, createdAt]
+      properties:
+        id: { type: string }
+        operation: { type: string, enum: [subscribe, redeem] }
+        productId: { type: string }
+        positionId: { type: string }
+        asset: { type: string }
+        amount: { type: number, exclusiveMinimum: 0 }
+        status: { type: string, enum: [pending, completed] }
+        createdAt: { type: string, format: date-time }
+    EarnTransaction:
+      type: object
+      required: [id, domain, operation, productId, product, asset, amount, status, createdAt]
+      properties:
+        id: { type: string }
+        domain: { type: string, enum: [savings, staking] }
+        operation: { type: string, enum: [subscribe, redeem] }
+        productId: { type: string }
+        product: { type: string }
+        asset: { type: string }
+        amount: { type: number, exclusiveMinimum: 0 }
+        status: { type: string, enum: [pending, completed, failed] }
+        createdAt: { type: string, format: date-time }
+    EarnTransactionPage:
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          maxItems: 100
+          items: { $ref: '#/components/schemas/EarnTransaction' }
+        nextCursor: { type: string }

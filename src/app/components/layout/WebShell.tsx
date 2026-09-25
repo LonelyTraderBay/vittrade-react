@@ -3,7 +3,7 @@ import { Outlet, useLocation } from 'react-router';
 import { WebSidebar } from './WebSidebar';
 import { WebCommandBar } from './WebCommandBar';
 import { useThemeColors } from '../../hooks/useThemeColors';
-import { useUI } from '../../contexts/UIContext';
+import { useUI } from '../../hooks/useUI';
 import { PlatformProvider } from '../../hooks/usePlatform';
 import type { PlatformInfo } from '../../hooks/usePlatform';
 import {

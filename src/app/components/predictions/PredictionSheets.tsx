@@ -9,11 +9,9 @@
 
 import React, { useState } from 'react';
 import {
-  X,
   AlertTriangle,
   Shield,
   Info,
-  ChevronRight,
   ArrowUp,
   ArrowDown,
   TrendingUp,
@@ -22,14 +20,13 @@ import {
   Flag,
   Ban,
   Link2,
-  MessageCircle,
   CheckCircle2,
 } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import { useHaptic } from '../../hooks/useHaptic';
 import { CTAButton } from '../ui/CTAButton';
 import { TrCard } from '../ui/TrCard';
-import { BottomSheetV2, BottomSheetRow } from '../ui/BottomSheetV2';
+import { BottomSheetV2 } from '../ui/BottomSheetV2';
 import { φ } from '../../utils/golden';
 import { hexToRgba } from '../../utils/helpers/string';
 

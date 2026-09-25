@@ -4,7 +4,7 @@ import { ResponsiveBottomNav } from './ResponsiveBottomNav';
 import { LeftRail } from './LeftRail';
 import { StatusBar } from './StatusBar';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
-import { useUI } from '../../contexts/UIContext';
+import { useUI } from '../../hooks/useUI';
 import { useThemeColors } from '../../hooks/useThemeColors';
 
 /** Suspense Fallback for lazy-loaded responsive pages */
@@ -37,7 +37,7 @@ interface ResponsiveShellProps {
 }
 
 export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShellProps) {
-  const { bp, isMobile, isTablet, isDesktop } = useBreakpoint();
+  const { isTablet, isDesktop } = useBreakpoint();
   const { isOffline } = useUI();
   const c = useThemeColors();
 

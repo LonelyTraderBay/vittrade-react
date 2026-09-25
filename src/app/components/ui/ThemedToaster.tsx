@@ -1,7 +1,7 @@
 import React from 'react';
 import { Toaster } from 'sonner';
 import { useThemeColors } from '../../hooks/useThemeColors';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '@/shared/theme/useTheme';
 
 /**
  * ══════════════════════════════════════════════════════════

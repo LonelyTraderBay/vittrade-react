@@ -16,7 +16,7 @@
  */
 
 import React from 'react';
-import { Copy, TrendingUp, Users, UserCheck } from 'lucide-react';
+import { Copy, TrendingUp, Users, UserCheck, type LucideIcon } from 'lucide-react';
 import { useThemeColors } from '../../hooks/useThemeColors';
 
 interface CopyTradingHeroCardProps {
@@ -116,7 +116,7 @@ function HeroMetricVariant({
     <div
       className="rounded-2xl p-5 relative overflow-hidden"
       style={{
-        background: `linear-gradient(135deg, ${c.primary}08 0%, ${c.primary}04 100%)`,
+        background: `linear-gradient(135deg, ${c.primaryAlpha08} 0%, ${c.primaryAlpha08} 100%)`,
         border: `1px solid ${c.border}`,
         boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
       }}
@@ -125,7 +125,7 @@ function HeroMetricVariant({
       <div
         className="absolute -top-20 -right-20 w-48 h-48 rounded-full opacity-30 pointer-events-none"
         style={{
-          background: `radial-gradient(circle, ${c.primary}40 0%, transparent 70%)`,
+          background: `radial-gradient(circle, ${c.primaryAlpha30} 0%, transparent 70%)`,
           filter: 'blur(40px)',
         }}
       />
@@ -275,8 +275,8 @@ function LegacyCleanVariant({
     <div
       className="rounded-[20px] p-5 relative overflow-hidden"
       style={{
-        background: `linear-gradient(135deg, ${c.primary}12 0%, ${c.primary}08 100%)`,
-        border: `1px solid ${c.primary}20`,
+        background: `linear-gradient(135deg, ${c.primaryAlpha08} 0%, ${c.primaryAlpha08} 100%)`,
+        border: `1px solid ${c.primaryAlpha12}`,
       }}
     >
       <div
@@ -340,7 +340,7 @@ function LegacyStatCard({
   value,
   color,
 }: {
-  icon: any;
+  icon: LucideIcon;
   label: string;
   value: string;
   color: string;
@@ -600,7 +600,7 @@ function LegacyGlassStatCard({
   value,
   accentColor,
 }: {
-  icon: any;
+  icon: LucideIcon;
   label: string;
   value: string;
   accentColor: string;

@@ -11,7 +11,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { X, Camera, ClipboardPaste, AlertTriangle } from 'lucide-react';
-import { useThemeColors } from '../../hooks/useThemeColors';
 import { useHaptic } from '../../hooks/useHaptic';
 import { φ } from '../../utils/golden';
 
@@ -28,8 +27,7 @@ export function QRScannerOverlay({
   onScan,
   title = 'Quét mã QR',
 }: QRScannerOverlayProps) {
-  const c = useThemeColors();
-  const { hapticMedium, hapticSuccess } = useHaptic();
+  const { hapticSuccess } = useHaptic();
   const [scanLineY, setScanLineY] = useState(0);
   const [pasteError, setPasteError] = useState('');
 
@@ -130,7 +128,7 @@ export function QRScannerOverlay({
             { bottom: -2, left: -2 },
             { bottom: -2, right: -2 },
           ].map((pos, i) => (
-            <div key={i} className="absolute w-8 h-8" style={pos as any}>
+            <div key={i} className="absolute w-8 h-8" style={pos}>
               <div
                 className="absolute rounded-sm"
                 style={{
