@@ -9,6 +9,7 @@ import type {
   MfaSetupConfirmationRequest,
   MfaVerificationRequest,
 } from '@/shared/session/session-types';
+import type { RegistrationChallenge, RegistrationRequest } from '../model/registration-types';
 
 export type {
   AuthSession,
@@ -22,10 +23,13 @@ export type {
   MfaSetupChallenge,
   MfaSetupConfirmationRequest,
   MfaVerificationRequest,
+  ContactMfaVerificationRequest,
+  RegistrationMfaVerificationRequest,
 } from '@/shared/session/session-types';
 
 export interface AuthApi {
   login(request: LoginRequest): Promise<LoginResult>;
+  register(request: RegistrationRequest, idempotencyKey: string): Promise<RegistrationChallenge>;
   verifyLoginMfa(request: LoginMfaVerificationRequest): Promise<AuthSession>;
   verifyMfa(request: MfaVerificationRequest): Promise<AuthSession>;
   beginMfaSetup(): Promise<MfaSetupChallenge>;
@@ -35,10 +39,10 @@ export interface AuthApi {
   refresh(): Promise<AuthSession | null>;
 }
 
-const authSessionSchema = z.object({
-  user: z.object({
+const authUserSchema = z
+  .object({
     id: z.string().min(1),
-    email: z.string().email(),
+    email: z.string().email().optional(),
     fullName: z.string().min(1),
     roles: z.array(z.string()),
     permissions: z.array(z.string()),
@@ -52,7 +56,10 @@ const authSessionSchema = z.object({
     has2FA: z.boolean().optional(),
     totalBalance: z.number().nonnegative().optional(),
     accountStatus: z.enum(['active', 'locked', 'suspended']).optional(),
-  }),
+  })
+  .refine((user) => Boolean(user.email || user.phone), 'User requires email or phone contact');
+const authSessionSchema = z.object({
+  user: authUserSchema,
   accessTokenExpiresAt: z.string().datetime({ offset: true }),
   accessToken: z.string().min(1).optional(),
 });
@@ -79,6 +86,12 @@ const loginResultSchema = z.discriminatedUnion('status', [
     }),
   }),
 ]);
+const registrationChallengeSchema = z.object({
+  challengeId: z.string().trim().min(1),
+  channel: z.enum(['email', 'phone']),
+  maskedDestination: z.string().trim().min(1),
+  expiresAt: z.string().datetime({ offset: true }),
+}) satisfies z.ZodType<RegistrationChallenge>;
 
 function parseNullableSession(response: unknown): AuthSession | null {
   return response === null ? null : authSessionSchema.parse(response);
@@ -95,6 +108,19 @@ export function createAuthApi(client: HttpClient): AuthApi {
           body: request,
           skipUnauthorizedHandler: true,
         }),
+      ),
+    register: async (request, idempotencyKey) =>
+      registrationChallengeSchema.parse(
+        await client.request<unknown>(
+          {
+            method: 'POST',
+            path: '/auth/register',
+            body: request,
+            idempotencyKey,
+            skipUnauthorizedHandler: true,
+          },
+          { retries: 0 },
+        ),
       ),
     verifyLoginMfa: async (request) =>
       authSessionSchema.parse(

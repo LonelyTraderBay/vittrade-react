@@ -8,6 +8,17 @@ servers:
 security:
   - sessionCookie: []
 paths:
+  /dca/advanced/overview:
+    get:
+      operationId: getDCAAdvancedOverview
+      x-required-permissions: [dca:read]
+      responses:
+        '200':
+          description: Read-only integration state for advanced DCA views. A backend must supply the underlying portfolio, price and schedule data before any result or action is enabled.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/DCAAdvancedOverview' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
   /dca/snapshot:
     get:
       operationId: getDCASnapshot
@@ -93,6 +104,35 @@ components:
         application/json:
           schema: { $ref: '#/components/schemas/ApiError' }
   schemas:
+    DCAAdvancedViewState:
+      type: object
+      required: [id, state]
+      properties:
+        id:
+          type: string
+          enum:
+            [
+              backtester,
+              dynamic-amount,
+              multi-asset,
+              performance-compare,
+              portfolio-optimizer,
+              rebalance-config,
+              rebalance-dashboard,
+              schedule-analytics,
+              schedule-config,
+              smart-rules,
+            ]
+        state: { type: string, enum: [backend-required] }
+    DCAAdvancedOverview:
+      type: object
+      required: [views]
+      properties:
+        views:
+          type: array
+          minItems: 10
+          maxItems: 10
+          items: { $ref: '#/components/schemas/DCAAdvancedViewState' }
     ApiError:
       type: object
       required: [code, message]

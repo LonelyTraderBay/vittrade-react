@@ -1,5 +1,5 @@
 import React from 'react';
-import { useThemeColors } from '../../hooks/useThemeColors';
+import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { DEVICE } from './device-layout';
 
 /**

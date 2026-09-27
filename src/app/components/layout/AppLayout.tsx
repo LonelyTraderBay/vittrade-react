@@ -1,5 +1,5 @@
 import React, { useRef, useCallback, useState, useEffect, useContext, Suspense } from 'react';
-import { Outlet, useLocation } from 'react-router';
+import { Outlet, useLocation, useNavigate } from 'react-router';
 import { BottomNav } from './BottomNav';
 import { StatusBar } from './StatusBar';
 import { UIContext } from '../../contexts/ui-context';
@@ -10,13 +10,14 @@ import { SwipeBack } from '../mobile/SwipeBack';
 import { PageTransition } from '../mobile/PageTransition';
 import { usePullToRefresh } from '../../hooks/usePullToRefresh';
 import { useScrollPosition } from '../../hooks/useScrollPosition';
-import { useHaptic } from '../../hooks/useHaptic';
-import { OfflineBanner } from '../states/OfflineBanner';
+import { useHaptic } from '@/shared/hooks/useHaptic';
+import { OfflineBanner } from '@/shared/ui/OfflineBanner';
 import { NetworkStatusBanner } from '../states/NetworkStatusBanner';
 import { SessionWarningBar, SessionTimedOutModal } from '../states/SessionTimeoutOverlay';
 import { useSessionTimeout } from '../../hooks/useSessionTimeout';
 import { DEVICE } from './device-layout';
-import { useThemeColors } from '../../hooks/useThemeColors';
+import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { useAuth } from '@/shared/session/useAuth';
 
 // ... existing code ...
 
@@ -47,6 +48,8 @@ export function AppLayout() {
   const uiCtx = useContext(UIContext);
   const isOffline = uiCtx?.isOffline ?? false;
   const location = useLocation();
+  const navigate = useNavigate();
+  const { isAuthenticated, signOut } = useAuth();
   const scrollRef = useRef<HTMLDivElement>(null);
   const { hapticLight } = useHaptic();
   const [isReconnecting, setIsReconnecting] = useState(false);
@@ -56,10 +59,8 @@ export function AppLayout() {
   const sessionTimeout = useSessionTimeout({
     timeout: 5 * 60 * 1000,
     warningBefore: 60 * 1000,
-    onTimeout: () => {
-      /* handled by isTimedOut state */
-    },
-    enabled: true,
+    onTimeout: () => void signOut(),
+    enabled: isAuthenticated,
   });
 
   // ─── Pull-to-refresh ───
@@ -170,7 +171,10 @@ export function AppLayout() {
       <div id="sheet-portal" />
 
       {/* Session timed-out modal */}
-      <SessionTimedOutModal open={sessionTimeout.isTimedOut} onReauth={sessionTimeout.resetTimer} />
+      <SessionTimedOutModal
+        open={sessionTimeout.isTimedOut}
+        onReauth={() => navigate('/auth/login', { replace: true })}
+      />
     </div>
   );
 }

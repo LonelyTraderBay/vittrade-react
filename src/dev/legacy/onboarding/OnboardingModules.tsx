@@ -109,12 +109,6 @@ export default function OnboardingModules({ onNext, onBack }: OnboardingModulesP
   const currentModule = MODULES[currentIndex];
   const Icon = currentModule.icon;
 
-  const handlePrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    }
-  };
-
   const handleNext = () => {
     if (currentIndex < MODULES.length - 1) {
       setCurrentIndex(currentIndex + 1);

@@ -1029,7 +1029,7 @@ export function applyFilters(projects: LaunchProject[], filter: FilterCriteria):
   // Sort
   switch (filter.sortBy) {
     case 'ending_soon':
-      result.sort((a, b) => (a.status === 'active' ? -1 : 1));
+      result.sort((a, b) => Number(b.status === 'active') - Number(a.status === 'active'));
       break;
     case 'most_raised':
       result.sort((a, b) => b.subscribed - a.subscribed);

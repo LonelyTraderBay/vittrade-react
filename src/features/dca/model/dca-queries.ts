@@ -1,11 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { dcaApi } from '../api/dca-api';
+import { dcaAdvancedApi } from '../api/dca-advanced-api';
 import type { CreateDCAPlanRequest, UpdateDCAPlanRequest } from './dca-types';
 
 export const dcaQueryKeys = {
   all: ['dca'] as const,
   snapshot: ['dca', 'snapshot'] as const,
+  advancedOverview: ['dca', 'advanced-overview'] as const,
 };
+
+export function useDCAAdvancedOverviewQuery() {
+  return useQuery({
+    queryKey: dcaQueryKeys.advancedOverview,
+    queryFn: ({ signal }) => dcaAdvancedApi.getOverview(signal),
+    staleTime: 60_000,
+  });
+}
 
 export function useDCASnapshotQuery(options: { enabled?: boolean } = {}) {
   return useQuery({

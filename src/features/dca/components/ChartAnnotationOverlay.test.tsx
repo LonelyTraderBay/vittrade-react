@@ -63,6 +63,18 @@ describe('ChartAnnotationOverlay', () => {
     expect(ref.current?.hasAnnotations()).toBe(false);
   });
 
+  it('sizes the canvas when annotation mode opens after the chart layout is measured', () => {
+    const { container, onClose, ref, rerender } = renderOverlay({ active: false });
+
+    rerender(
+      <ChartAnnotationOverlay ref={ref} active onClose={onClose} width={400} height={300} />,
+    );
+
+    const canvas = container.querySelector('canvas')!;
+    expect(canvas.width).toBe(800);
+    expect(canvas.height).toBe(600);
+  });
+
   it('draws, edits, duplicates, erases and clears annotations through its toolbar', () => {
     const { canvas, ref } = renderOverlay();
 
@@ -153,5 +165,139 @@ describe('ChartAnnotationOverlay', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Xong' }));
     expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('moves and duplicates text and pen annotations, then clears the remaining annotation', () => {
+    vi.clearAllMocks();
+    const { canvas, ref } = renderOverlay();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Ghi chú' }));
+    fireEvent.mouseDown(canvas, { clientX: 50, clientY: 60 });
+    fireEvent.change(screen.getByPlaceholderText('Ghi chú...'), {
+      target: { value: 'Mốc mua' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Xác nhận' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Chọn / Di chuyển' }));
+    fireEvent.mouseDown(canvas, { clientX: 50, clientY: 60 });
+    vi.mocked(context.fillText).mockClear();
+    fireEvent.mouseMove(canvas, { clientX: 60, clientY: 70 });
+
+    expect(context.fillText).toHaveBeenCalledWith('Mốc mua', 120, 140);
+    fireEvent.mouseUp(canvas, { clientX: 60, clientY: 70 });
+    fireEvent.click(screen.getByRole('button', { name: 'Nhân đôi ghi chú' }));
+    expect(context.fillText).toHaveBeenCalledWith('Mốc mua', 150, 170);
+    expect(screen.getByText('2 ghi chú')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Vẽ tay' }));
+    fireEvent.mouseDown(canvas, { clientX: 20, clientY: 20 });
+    fireEvent.mouseMove(canvas, { clientX: 30, clientY: 30 });
+    fireEvent.mouseUp(canvas, { clientX: 30, clientY: 30 });
+    expect(screen.getByText('3 ghi chú')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Chọn / Di chuyển' }));
+    fireEvent.mouseDown(canvas, { clientX: 25, clientY: 25 });
+    expect(screen.getByText('Kéo để di chuyển')).toBeInTheDocument();
+    vi.mocked(context.moveTo).mockClear();
+    vi.mocked(context.lineTo).mockClear();
+    fireEvent.mouseMove(canvas, { clientX: 35, clientY: 35 });
+
+    expect(
+      vi.mocked(context.moveTo).mock.calls.some(([x, y]) => Math.abs(x - 60) < 1 && y === 60),
+    ).toBe(true);
+    expect(
+      vi.mocked(context.lineTo).mock.calls.some(([x, y]) => Math.abs(x - 80) < 1 && y === 80),
+    ).toBe(true);
+    fireEvent.mouseUp(canvas, { clientX: 35, clientY: 35 });
+    fireEvent.click(screen.getByRole('button', { name: 'Nhân đôi ghi chú' }));
+    expect(context.moveTo).toHaveBeenCalledWith(90, 90);
+    expect(screen.getByText('4 ghi chú')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Xóa mục đã chọn' }));
+    expect(screen.getByText('3 ghi chú')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Xóa tất cả' }));
+    expect(ref.current?.hasAnnotations()).toBe(false);
+  });
+
+  it('moves arrow bodies and either endpoint without changing the other endpoint', () => {
+    vi.clearAllMocks();
+    const { canvas } = renderOverlay();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Mũi tên' }));
+    fireEvent.mouseDown(canvas, { clientX: 20, clientY: 20 });
+    fireEvent.mouseUp(canvas, { clientX: 100, clientY: 100 });
+    fireEvent.click(screen.getByRole('button', { name: 'Chọn / Di chuyển' }));
+
+    fireEvent.mouseDown(canvas, { clientX: 60, clientY: 60 });
+    fireEvent.mouseUp(canvas, { clientX: 60, clientY: 60 });
+    fireEvent.mouseDown(canvas, { clientX: 100, clientY: 100 });
+    expect(screen.getByText(/Kéo để di chuyển · Kéo đầu mũi tên/)).toBeInTheDocument();
+    vi.mocked(context.moveTo).mockClear();
+    vi.mocked(context.lineTo).mockClear();
+    fireEvent.mouseMove(canvas, { clientX: 110, clientY: 100 });
+    expect(
+      vi.mocked(context.moveTo).mock.calls.some(([x, y]) => Math.abs(x - 40) < 1 && y === 40),
+    ).toBe(true);
+    expect(
+      vi.mocked(context.lineTo).mock.calls.some(([x, y]) => Math.abs(x - 220) < 1 && y === 200),
+    ).toBe(true);
+    fireEvent.mouseUp(canvas, { clientX: 110, clientY: 100 });
+
+    fireEvent.mouseDown(canvas, { clientX: 20, clientY: 20 });
+    vi.mocked(context.moveTo).mockClear();
+    vi.mocked(context.lineTo).mockClear();
+    fireEvent.mouseMove(canvas, { clientX: 15, clientY: 25 });
+    expect(
+      vi.mocked(context.moveTo).mock.calls.some(([x, y]) => Math.abs(x - 30) < 1 && y === 50),
+    ).toBe(true);
+    expect(
+      vi.mocked(context.lineTo).mock.calls.some(([x, y]) => Math.abs(x - 220) < 1 && y === 200),
+    ).toBe(true);
+    fireEvent.mouseUp(canvas, { clientX: 15, clientY: 25 });
+
+    fireEvent.mouseDown(canvas, { clientX: 60, clientY: 60 });
+    vi.mocked(context.moveTo).mockClear();
+    vi.mocked(context.lineTo).mockClear();
+    fireEvent.mouseMove(canvas, { clientX: 65, clientY: 65 });
+    expect(
+      vi.mocked(context.moveTo).mock.calls.some(([x, y]) => Math.abs(x - 40) < 1 && y === 60),
+    ).toBe(true);
+    expect(
+      vi.mocked(context.lineTo).mock.calls.some(([x, y]) => Math.abs(x - 230) < 1 && y === 210),
+    ).toBe(true);
+    fireEvent.mouseUp(canvas, { clientX: 65, clientY: 65 });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Nhân đôi ghi chú' }));
+    expect(
+      vi.mocked(context.moveTo).mock.calls.some(([x, y]) => Math.abs(x - 70) < 1 && y === 90),
+    ).toBe(true);
+    expect(
+      vi.mocked(context.lineTo).mock.calls.some(([x, y]) => Math.abs(x - 260) < 1 && y === 240),
+    ).toBe(true);
+    expect(screen.getByText('2 ghi chú')).toBeInTheDocument();
+  });
+
+  it('ignores empty text and only erases an annotation after a hit', () => {
+    vi.clearAllMocks();
+    const { canvas, ref } = renderOverlay();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Ghi chú' }));
+    fireEvent.mouseDown(canvas, { clientX: 50, clientY: 60 });
+    fireEvent.click(screen.getByRole('button', { name: 'Xác nhận' }));
+    expect(ref.current?.hasAnnotations()).toBe(false);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Ghi chú' }));
+    fireEvent.mouseDown(canvas, { clientX: 50, clientY: 60 });
+    fireEvent.change(screen.getByPlaceholderText('Ghi chú...'), {
+      target: { value: 'Giữ lại' },
+    });
+    fireEvent.keyDown(screen.getByPlaceholderText('Ghi chú...'), { key: 'Enter' });
+    expect(ref.current?.hasAnnotations()).toBe(true);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Xóa ghi chú' }));
+    fireEvent.mouseMove(canvas, { clientX: 300, clientY: 250 });
+    fireEvent.mouseDown(canvas, { clientX: 300, clientY: 250 });
+    expect(ref.current?.hasAnnotations()).toBe(true);
+    fireEvent.mouseMove(canvas, { clientX: 50, clientY: 60 });
+    fireEvent.mouseDown(canvas, { clientX: 50, clientY: 60 });
+    expect(ref.current?.hasAnnotations()).toBe(false);
   });
 });

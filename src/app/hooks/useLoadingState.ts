@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useRefresh } from './useRefresh';
+import { useRefresh } from '@/shared/hooks/useRefresh';
 
 /**
  * ══════════════════════════════════════════════════════════

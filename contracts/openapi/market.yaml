@@ -39,6 +39,129 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/MarketMoversResponse' }
+  /market/news:
+    get:
+      operationId: getMarketNews
+      security: []
+      parameters:
+        - name: category
+          in: query
+          schema: { type: string, enum: [market, macro, regulation, project] }
+        - name: sentiment
+          in: query
+          schema: { type: string, enum: [bullish, neutral, bearish] }
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100, default: 50 }
+      responses:
+        '200':
+          description: Recent market news from configured sources.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MarketNewsResponse' }
+        '503':
+          description: No news source is configured or available.
+  /market/calendar:
+    get:
+      operationId: getMarketCalendar
+      security: []
+      parameters:
+        - name: type
+          in: query
+          schema:
+            {
+              type: string,
+              enum: [unlock, upgrade, halving, airdrop, listing, fork, burn, conference, report],
+            }
+        - name: impact
+          in: query
+          schema: { type: string, enum: [high, medium, low] }
+      responses:
+        '200':
+          description: Upcoming market events ordered by event time.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MarketCalendarResponse' }
+        '503':
+          description: No event source is configured or available.
+  /market/correlations:
+    get:
+      operationId: getMarketCorrelations
+      security: []
+      parameters:
+        - name: window
+          in: query
+          required: true
+          schema: { type: string, enum: [7d, 30d, 90d] }
+      responses:
+        '200':
+          description: Historical asset correlation pairs for the requested window.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MarketCorrelationsResponse' }
+        '503':
+          description: No correlation data source is configured or available.
+  /market/unlocks:
+    get:
+      operationId: getMarketTokenUnlocks
+      security: []
+      parameters:
+        - name: window
+          in: query
+          required: true
+          schema: { type: string, enum: [7d, 30d, 90d] }
+        - name: category
+          in: query
+          schema: { type: string, enum: [team, investor, ecosystem, community, foundation] }
+      responses:
+        '200':
+          description: Upcoming token unlock schedules from the configured source.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MarketTokenUnlocksResponse' }
+        '503':
+          description: No token unlock source is configured or available.
+  /market/derivatives:
+    get:
+      operationId: getMarketDerivatives
+      security: []
+      responses:
+        '200':
+          description: Read-only derivatives market snapshot from the configured data source.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MarketDerivativesResponse' }
+        '503':
+          description: No derivatives data source is configured or available.
+  /market/sentiment:
+    get:
+      operationId: getMarketSentiment
+      security: []
+      parameters:
+        - name: window
+          in: query
+          required: true
+          schema: { type: string, enum: [24h, 7d, 30d] }
+      responses:
+        '200':
+          description: Source-reported public social sentiment snapshot for the selected window.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MarketSentimentResponse' }
+        '503':
+          description: No social sentiment data source is configured or available.
+  /market/signals:
+    get:
+      operationId: getMarketSignals
+      security: []
+      responses:
+        '200':
+          description: Latest source-reported social trading signals; informational only and never executed by this endpoint.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MarketSignalsResponse' }
+        '503':
+          description: No social signals data source is configured or available.
   /market/price-alerts:
     get:
       operationId: listMarketPriceAlerts
@@ -524,6 +647,356 @@ components:
       properties:
         items: { type: array, items: { $ref: '#/components/schemas/MarketMoverSummary' } }
         updatedAt: { type: string, format: date-time }
+    MarketNewsItem:
+      type: object
+      required:
+        [
+          id,
+          title,
+          summary,
+          category,
+          sentiment,
+          source,
+          articleUrl,
+          publishedAt,
+          relatedPairs,
+          isBreaking,
+        ]
+      properties:
+        id: { type: string, minLength: 1 }
+        title: { type: string, minLength: 1 }
+        summary: { type: string, minLength: 1 }
+        category: { type: string, enum: [market, macro, regulation, project] }
+        sentiment: { type: string, enum: [bullish, neutral, bearish] }
+        source: { type: string, minLength: 1 }
+        articleUrl: { type: string, format: uri, description: HTTPS URL to the original article. }
+        publishedAt: { type: string, format: date-time }
+        relatedPairs:
+          type: array
+          items:
+            type: object
+            required: [pairId, symbol]
+            properties:
+              pairId: { type: string, minLength: 1 }
+              symbol: { type: string, minLength: 1 }
+        isBreaking: { type: boolean }
+    MarketNewsResponse:
+      type: object
+      required: [items, updatedAt]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/MarketNewsItem' } }
+        updatedAt: { type: string, format: date-time }
+    MarketCalendarEvent:
+      type: object
+      required: [id, title, type, eventAt, impact, description, confirmed]
+      properties:
+        id: { type: string, minLength: 1 }
+        title: { type: string, minLength: 1 }
+        type:
+          {
+            type: string,
+            enum: [unlock, upgrade, halving, airdrop, listing, fork, burn, conference, report],
+          }
+        eventAt: { type: string, format: date-time }
+        symbol: { type: string, minLength: 1 }
+        impact: { type: string, enum: [high, medium, low] }
+        description: { type: string, minLength: 1 }
+        sourceUrl: { type: string, format: uri, description: Optional HTTPS source link. }
+        confirmed: { type: boolean }
+    MarketCalendarResponse:
+      type: object
+      required: [items, updatedAt]
+      properties:
+        items:
+          type: array
+          description: Upcoming events ordered by eventAt ascending.
+          items: { $ref: '#/components/schemas/MarketCalendarEvent' }
+        updatedAt: { type: string, format: date-time }
+    MarketCorrelationPair:
+      type: object
+      required: [assetA, assetB, coefficient, observations]
+      properties:
+        assetA: { type: string, minLength: 1 }
+        assetB: { type: string, minLength: 1 }
+        coefficient: { type: number, minimum: -1, maximum: 1 }
+        observations: { type: integer, minimum: 2 }
+    MarketCorrelationsResponse:
+      type: object
+      required: [window, method, provider, items, updatedAt]
+      properties:
+        window: { type: string, enum: [7d, 30d, 90d] }
+        method: { type: string, enum: [pearson, spearman] }
+        provider: { type: string, minLength: 1 }
+        items:
+          type: array
+          description: Each unordered asset pair appears once; self-pairs are excluded.
+          items: { $ref: '#/components/schemas/MarketCorrelationPair' }
+        updatedAt: { type: string, format: date-time }
+    MarketTokenUnlock:
+      type: object
+      required:
+        [
+          id,
+          symbol,
+          name,
+          eventAt,
+          amount,
+          circulatingSupplyPercent,
+          category,
+          scheduleType,
+          status,
+          sourceUrl,
+        ]
+      properties:
+        id: { type: string, minLength: 1 }
+        symbol: { type: string, minLength: 1 }
+        name: { type: string, minLength: 1 }
+        eventAt: { type: string, format: date-time }
+        amount: { type: number, minimum: 0, description: Amount denominated in the token. }
+        circulatingSupplyPercent:
+          {
+            type: number,
+            minimum: 0,
+            maximum: 100,
+            description: Percent of the source-reported circulating supply.,
+          }
+        category: { type: string, enum: [team, investor, ecosystem, community, foundation] }
+        scheduleType: { type: string, enum: [cliff, linear, milestone] }
+        status: { type: string, enum: [confirmed, estimated] }
+        sourceUrl: { type: string, format: uri, description: HTTPS link to the source schedule. }
+    MarketTokenUnlocksResponse:
+      type: object
+      required: [window, provider, items, updatedAt]
+      properties:
+        window: { type: string, enum: [7d, 30d, 90d] }
+        provider: { type: string, minLength: 1 }
+        items:
+          type: array
+          description: Events within the requested window ordered by eventAt ascending.
+          items: { $ref: '#/components/schemas/MarketTokenUnlock' }
+        updatedAt: { type: string, format: date-time }
+    MarketDerivativesResponse:
+      type: object
+      required: [provider, updatedAt, stats, pairs, liquidationHistory]
+      properties:
+        provider: { type: string, minLength: 1 }
+        updatedAt: { type: string, format: date-time }
+        stats:
+          type: object
+          required:
+            [
+              totalOpenInterest,
+              openInterestChange24h,
+              totalVolume24h,
+              volumeChange24h,
+              totalLiquidations24h,
+              longLiquidations24h,
+              shortLiquidations24h,
+              averageFundingRate8h,
+              btcLongShortRatio,
+            ]
+          properties:
+            totalOpenInterest: { type: number, minimum: 0, description: USD value. }
+            openInterestChange24h: { type: number, description: Percent change over 24 hours. }
+            totalVolume24h: { type: number, minimum: 0, description: USD value. }
+            volumeChange24h: { type: number, description: Percent change over 24 hours. }
+            totalLiquidations24h: { type: number, minimum: 0, description: USD value. }
+            longLiquidations24h: { type: number, minimum: 0, description: USD value. }
+            shortLiquidations24h: { type: number, minimum: 0, description: USD value. }
+            averageFundingRate8h:
+              { type: number, description: Funding rate as a decimal ratio for an 8-hour interval. }
+            btcLongShortRatio: { type: number, exclusiveMinimum: 0 }
+        pairs:
+          type: array
+          items:
+            type: object
+            required:
+              [
+                id,
+                symbol,
+                name,
+                price,
+                change24h,
+                fundingRate,
+                openInterest,
+                openInterestChange24h,
+                volume24h,
+                longSharePercent,
+                liquidations24h,
+              ]
+            properties:
+              id: { type: string, minLength: 1 }
+              symbol: { type: string, minLength: 1 }
+              name: { type: string, minLength: 1 }
+              price: { type: number, minimum: 0 }
+              change24h: { type: number, description: Percent change over 24 hours. }
+              fundingRate: { type: number, description: Funding rate as a decimal ratio. }
+              openInterest: { type: number, minimum: 0, description: USD value. }
+              openInterestChange24h: { type: number, description: Percent change over 24 hours. }
+              volume24h: { type: number, minimum: 0, description: USD value. }
+              longSharePercent: { type: number, minimum: 0, maximum: 100 }
+              liquidations24h:
+                type: object
+                required: [long, short]
+                properties:
+                  long: { type: number, minimum: 0, description: USD value. }
+                  short: { type: number, minimum: 0, description: USD value. }
+        liquidationHistory:
+          type: array
+          items:
+            type: object
+            required: [bucketAt, long, short]
+            properties:
+              bucketAt: { type: string, format: date-time }
+              long: { type: number, minimum: 0, description: USD value. }
+              short: { type: number, minimum: 0, description: USD value. }
+    MarketSentimentResponse:
+      type: object
+      required: [window, provider, updatedAt, overall, timeline, tokens, trendingTopics]
+      properties:
+        window: { type: string, enum: [24h, 7d, 30d] }
+        provider: { type: string, minLength: 1 }
+        updatedAt: { type: string, format: date-time }
+        overall:
+          type: object
+          required:
+            [
+              score,
+              sentiment,
+              totalMentions24h,
+              mentionsChange24h,
+              trendingTokenCount,
+              socialDominance,
+            ]
+          properties:
+            score: { type: number, minimum: -100, maximum: 100 }
+            sentiment: { type: string, enum: [bullish, neutral, bearish] }
+            totalMentions24h: { type: integer, minimum: 0 }
+            mentionsChange24h: { type: number }
+            trendingTokenCount: { type: integer, minimum: 0 }
+            socialDominance:
+              type: object
+              description: Source-reported shares of social mentions; percentages sum to 100 within rounding tolerance.
+              required: [btcPercent, ethPercent, otherPercent]
+              properties:
+                btcPercent: { type: number, minimum: 0, maximum: 100 }
+                ethPercent: { type: number, minimum: 0, maximum: 100 }
+                otherPercent: { type: number, minimum: 0, maximum: 100 }
+        timeline:
+          type: array
+          description: Ordered source-reported observations for the selected window.
+          items:
+            type: object
+            required: [at, score, mentions]
+            properties:
+              at: { type: string, format: date-time }
+              score: { type: number, minimum: -100, maximum: 100 }
+              mentions: { type: integer, minimum: 0 }
+        tokens:
+          type: array
+          items:
+            type: object
+            required:
+              [
+                id,
+                symbol,
+                name,
+                score,
+                sentiment,
+                mentions24h,
+                mentionsChange24h,
+                sentimentSharePercent,
+                topTopics,
+              ]
+            properties:
+              id: { type: string, minLength: 1 }
+              symbol: { type: string, minLength: 1 }
+              name: { type: string, minLength: 1 }
+              score: { type: number, minimum: -100, maximum: 100 }
+              sentiment: { type: string, enum: [bullish, neutral, bearish] }
+              mentions24h: { type: integer, minimum: 0 }
+              mentionsChange24h: { type: number }
+              sentimentSharePercent:
+                type: object
+                description: Bullish, neutral and bearish shares; percentages sum to 100 within rounding tolerance.
+                required: [bullish, neutral, bearish]
+                properties:
+                  bullish: { type: number, minimum: 0, maximum: 100 }
+                  neutral: { type: number, minimum: 0, maximum: 100 }
+                  bearish: { type: number, minimum: 0, maximum: 100 }
+              trendingRank: { type: integer, minimum: 1 }
+              topTopics:
+                type: array
+                items: { type: string, minLength: 1 }
+        trendingTopics:
+          type: array
+          items:
+            type: object
+            required: [topic, mentions24h, change24h]
+            properties:
+              topic: { type: string, minLength: 1 }
+              mentions24h: { type: integer, minimum: 0 }
+              change24h: { type: number }
+    MarketSignalsResponse:
+      type: object
+      required: [provider, updatedAt, items]
+      properties:
+        provider:
+          { type: string, minLength: 1, description: Data provider that supplied the response. }
+        updatedAt: { type: string, format: date-time }
+        items:
+          type: array
+          maxItems: 100
+          description: Latest source-reported signals ordered by publication time, newest first.
+          items:
+            type: object
+            required:
+              [
+                id,
+                providerName,
+                symbol,
+                direction,
+                category,
+                status,
+                publishedAt,
+                rationale,
+                sourceUrl,
+              ]
+            properties:
+              id: { type: string, minLength: 1 }
+              providerName:
+                { type: string, minLength: 1, description: Source-reported signal publisher. }
+              symbol: { type: string, minLength: 1 }
+              direction: { type: string, enum: [long, short] }
+              category: { type: string, enum: [scalp, swing, position] }
+              status:
+                {
+                  type: string,
+                  enum: [active, closed, expired],
+                  description: Source-reported status.,
+                }
+              publishedAt: { type: string, format: date-time }
+              expiresAt:
+                {
+                  type: string,
+                  format: date-time,
+                  description: If present,
+                  must be after publishedAt.,
+                }
+              rationale:
+                {
+                  type: string,
+                  minLength: 1,
+                  description: Source-provided rationale; informational,
+                  not a recommendation.,
+                }
+              sourceUrl:
+                {
+                  type: string,
+                  format: uri,
+                  pattern: '^https://',
+                  description: HTTPS link to the original signal.,
+                }
     MarketPriceAlert:
       type: object
       required: [id, pairId, symbol, condition, targetPrice, currentPrice, isActive, createdAt]

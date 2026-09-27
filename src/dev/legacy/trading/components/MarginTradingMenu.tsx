@@ -180,7 +180,6 @@ export function MarginTradingMenu() {
  * Compact version for Home page quick access
  */
 export function MarginTradingQuickAccess() {
-  const c = useThemeColors();
   const navigate = useNavigate();
 
   return (

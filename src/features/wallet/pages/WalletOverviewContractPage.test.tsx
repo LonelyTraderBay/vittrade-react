@@ -3,8 +3,10 @@ import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import type { AuthAdapter } from '@/shared/session/AuthContext';
 import { useLocation } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
+import { testAuthAdapter } from '@/test/auth-test-adapter';
 import { WalletOverviewContractPage } from './WalletOverviewContractPage';
 
 const server = setupServer();
@@ -71,6 +73,32 @@ function installHandlers() {
 }
 
 describe('Wallet overview contract page', () => {
+  it('does not request balances or activity without wallet read permission', async () => {
+    let requests = 0;
+    const noWalletReadAdapter: AuthAdapter = {
+      ...testAuthAdapter,
+      initialSession: {
+        ...testAuthAdapter.initialSession!,
+        user: { ...testAuthAdapter.initialSession!.user, permissions: [] },
+      },
+    };
+    server.use(
+      http.get('*/wallet/assets', () => {
+        requests += 1;
+        return HttpResponse.json(assets);
+      }),
+      http.get('*/wallet/transactions', () => {
+        requests += 1;
+        return HttpResponse.json(transactions);
+      }),
+    );
+
+    renderWithProviders(<WalletOverviewContractPage />, { authAdapter: noWalletReadAdapter });
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Wallet read permission');
+    expect(requests).toBe(0);
+  });
+
   it('renders typed balances, assets and recent activity', async () => {
     installHandlers();
 

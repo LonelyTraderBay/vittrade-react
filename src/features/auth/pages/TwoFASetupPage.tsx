@@ -35,6 +35,8 @@ export function TwoFASetupPage() {
   const [savedCodes, setSavedCodes] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [setup, setSetup] = useState<MfaSetupChallenge | null>(null);
+  const [setupAttempt, setSetupAttempt] = useState(0);
+  const [setupError, setSetupError] = useState<string | null>(null);
   const navigate = useNavigate();
   const actionToast = useActionToast();
 
@@ -42,38 +44,52 @@ export function TwoFASetupPage() {
     let active = true;
     void beginMfaSetup()
       .then((challenge) => {
-        if (active) setSetup(challenge);
+        if (active) {
+          setSetup(challenge);
+          setSetupError(null);
+        }
       })
       .catch(() => {
-        if (active) actionToast.error('Không thể khởi tạo thiết lập 2FA. Vui lòng thử lại.');
+        if (active) setSetupError('Không thể khởi tạo thiết lập 2FA. Vui lòng thử lại.');
       });
     return () => {
       active = false;
     };
-  }, [actionToast, beginMfaSetup]);
+  }, [beginMfaSetup, setupAttempt]);
 
-  const handleCopyKey = () => {
+  const handleCopyKey = async () => {
     if (!setup) return;
-    navigator.clipboard.writeText(setup.secret).catch(() => {});
-    setCopied(true);
-    actionToast.success(TOAST.COPY.SECRET_KEY);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(setup.secret);
+      setCopied(true);
+      actionToast.success(TOAST.COPY.SECRET_KEY);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      actionToast.error('Không thể sao chép khóa bảo mật. Vui lòng sao chép thủ công.');
+    }
   };
   const handleConfirm = async () => {
-    setIsLoading(true);
-    if (step === 2) {
-      try {
-        await confirmMfaSetup({ code: otp });
-        setStep(3);
-      } catch {
-        actionToast.error('Mã xác thực không đúng hoặc đã hết hạn. Vui lòng thử lại.');
-      }
-    } else if (step === 3) {
-      navigate(`${prefix}/home`, { replace: true });
-    } else {
-      setStep((s) => s + 1);
+    if (isLoading) return;
+    if (step === 1) {
+      if (setup) setStep(2);
+      return;
     }
-    setIsLoading(false);
+    if (step === 3) {
+      if (!savedCodes) return;
+      navigate(`${prefix}/home`, { replace: true });
+      return;
+    }
+    if (step !== 2 || !setup || otp.length !== 6) return;
+
+    setIsLoading(true);
+    try {
+      await confirmMfaSetup({ code: otp });
+      setStep(3);
+    } catch {
+      actionToast.error('Mã xác thực không đúng hoặc đã hết hạn. Vui lòng thử lại.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -104,6 +120,21 @@ export function TwoFASetupPage() {
       <PageContent gap={20} className="flex-1">
         {step === 1 && (
           <div className="contents">
+            {setupError && (
+              <div role="alert" className="rounded-2xl p-3 text-sm text-red-600">
+                <p>{setupError}</p>
+                <button
+                  type="button"
+                  className="mt-2 font-semibold underline"
+                  onClick={() => {
+                    setSetupError(null);
+                    setSetupAttempt((attempt) => attempt + 1);
+                  }}
+                >
+                  Thử lại thiết lập 2FA
+                </button>
+              </div>
+            )}
             <div className="text-center">
               <div
                 className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
@@ -148,6 +179,7 @@ export function TwoFASetupPage() {
                   {setup?.secret ?? 'Đang tải khóa bảo mật...'}
                 </span>
                 <button
+                  type="button"
                   onClick={handleCopyKey}
                   className="flex items-center gap-1.5 rounded-xl px-3 py-2"
                   style={{
@@ -170,7 +202,7 @@ export function TwoFASetupPage() {
             >
               <p style={{ color: '#F59E0B', fontSize: 12 }}>⚠️ Giữ bí mật khóa này.</p>
             </div>
-            <CTAButton onClick={() => setStep(2)} variant="primary">
+            <CTAButton onClick={handleConfirm} disabled={!setup} variant="primary">
               Tiếp theo <ChevronRight size={18} />
             </CTAButton>
           </div>
@@ -205,6 +237,8 @@ export function TwoFASetupPage() {
                 type="tel"
                 inputMode="numeric"
                 maxLength={6}
+                autoComplete="one-time-code"
+                aria-label="Mã xác thực 6 chữ số"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
                 className="opacity-0 absolute"
@@ -273,7 +307,12 @@ export function TwoFASetupPage() {
                 ⚠️ Mỗi mã chỉ dùng được 1 lần.
               </p>
             </div>
-            <button onClick={() => setSavedCodes(!savedCodes)} className="flex items-center gap-3">
+            <button
+              type="button"
+              aria-pressed={savedCodes}
+              onClick={() => setSavedCodes(!savedCodes)}
+              className="flex items-center gap-3"
+            >
               <div
                 className="w-5 h-5 rounded-md flex items-center justify-center"
                 style={{

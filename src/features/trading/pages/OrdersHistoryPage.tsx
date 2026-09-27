@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { AlertCircle, CheckCircle, Clock, TrendingUp, XCircle } from 'lucide-react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { Header } from '@/shared/ui/layout/Header';
@@ -10,13 +10,17 @@ import {
   useCancelOrderMutation,
   useOpenOrdersQuery,
   useOrderHistoryQuery,
+  type OrderSide,
   type OrderStatus,
   type OrderType,
   type TradingOrder,
 } from '@/features/trading';
 
 type OrderTab = 'open' | 'history';
-type SideFilter = 'all' | 'buy' | 'sell';
+type SideFilter = 'all' | OrderSide;
+
+const ORDER_PAGE_SIZE = 50;
+const EMPTY_ORDERS: TradingOrder[] = [];
 
 const STATUS_CONFIG: Record<OrderStatus, { label: string; color: string; icon: typeof Clock }> = {
   open: { label: 'Đang mở', color: '#3B82F6', icon: Clock },
@@ -44,21 +48,25 @@ export function OrdersHistoryPage() {
   const colors = useThemeColors();
   const [tab, setTab] = useState<OrderTab>('open');
   const [side, setSide] = useState<SideFilter>('all');
-  const openOrdersQuery = useOpenOrdersQuery();
-  const historyQuery = useOrderHistoryQuery();
-  const cancelMutation = useCancelOrderMutation();
+  const [cursors, setCursors] = useState<(string | undefined)[]>([undefined]);
+  const cursor = cursors[cursors.length - 1];
+  const filters = {
+    side: side === 'all' ? undefined : side,
+    cursor,
+    limit: ORDER_PAGE_SIZE,
+  };
   const { hasPermission } = useAuth();
+  const canReadOrders = hasPermission('trade:read');
+  const openOrdersQuery = useOpenOrdersQuery(filters, canReadOrders && tab === 'open');
+  const historyQuery = useOrderHistoryQuery(filters, canReadOrders && tab === 'history');
+  const cancelMutation = useCancelOrderMutation();
   const canCancelOrders = hasPermission('trading:write') || hasPermission('trade:write');
 
   const activeQuery = tab === 'open' ? openOrdersQuery : historyQuery;
-  const orders = useMemo(() => {
-    const items = activeQuery.data?.items ?? [];
-    return side === 'all' ? items : items.filter((order) => order.side === side);
-  }, [activeQuery.data?.items, side]);
+  const orders = activeQuery.data?.items ?? EMPTY_ORDERS;
 
   const retry = () => {
-    void openOrdersQuery.refetch();
-    void historyQuery.refetch();
+    void activeQuery.refetch();
   };
 
   return (
@@ -69,16 +77,16 @@ export function OrdersHistoryPage() {
         style={{ background: colors.surface, borderBottom: `1px solid ${colors.divider}` }}
       >
         {[
-          { id: 'open' as const, label: 'Lệnh mở', count: openOrdersQuery.data?.items.length ?? 0 },
-          {
-            id: 'history' as const,
-            label: 'Lịch sử',
-            count: historyQuery.data?.items.length ?? 0,
-          },
+          { id: 'open' as const, label: 'Lệnh mở' },
+          { id: 'history' as const, label: 'Lịch sử' },
         ].map((item) => (
           <button
             key={item.id}
-            onClick={() => setTab(item.id)}
+            aria-pressed={tab === item.id}
+            onClick={() => {
+              setTab(item.id);
+              setCursors([undefined]);
+            }}
             className="flex-1 h-10 rounded-xl font-semibold"
             style={{
               background: tab === item.id ? '#3B82F6' : colors.hoverBg,
@@ -86,7 +94,7 @@ export function OrdersHistoryPage() {
               fontSize: 14,
             }}
           >
-            {item.label} <span className="ml-1 text-xs opacity-80">{item.count}</span>
+            {item.label}
           </button>
         ))}
       </div>
@@ -98,7 +106,11 @@ export function OrdersHistoryPage() {
         ].map((item) => (
           <button
             key={item.id}
-            onClick={() => setSide(item.id)}
+            aria-pressed={side === item.id}
+            onClick={() => {
+              setSide(item.id);
+              setCursors([undefined]);
+            }}
             className="px-3 py-2 rounded-lg text-xs font-semibold"
             style={{
               background: side === item.id ? `${item.color ?? '#3B82F6'}22` : colors.chipBg,
@@ -111,7 +123,11 @@ export function OrdersHistoryPage() {
         ))}
       </div>
 
-      {activeQuery.isPending ? (
+      {!canReadOrders ? (
+        <p role="alert" className="px-5 py-12 text-center" style={{ color: colors.text2 }}>
+          Tài khoản của bạn không có quyền xem lệnh.
+        </p>
+      ) : activeQuery.isPending ? (
         <p className="px-5 py-12 text-center" style={{ color: colors.text2 }}>
           Đang tải dữ liệu lệnh…
         </p>
@@ -145,6 +161,50 @@ export function OrdersHistoryPage() {
               }
             />
           ))}
+        </div>
+      )}
+
+      {activeQuery.data && (cursors.length > 1 || activeQuery.data.nextCursor) && (
+        <div
+          aria-label="Phân trang lịch sử lệnh"
+          className="flex items-center justify-between px-5 py-3 text-xs"
+          style={{ color: colors.text3 }}
+        >
+          <span>Trang {cursors.length}</span>
+          <div className="flex gap-3">
+            <button
+              type="button"
+              disabled={cursors.length === 1 || activeQuery.isFetching}
+              onClick={() => setCursors((current) => current.slice(0, -1))}
+              style={{ color: cursors.length === 1 ? colors.text3 : colors.primary }}
+            >
+              Trước
+            </button>
+            <button
+              type="button"
+              disabled={
+                !activeQuery.data.nextCursor ||
+                activeQuery.data.nextCursor === cursor ||
+                activeQuery.isFetching
+              }
+              onClick={() => {
+                const nextCursor = activeQuery.data.nextCursor;
+                if (nextCursor) {
+                  setCursors((current) =>
+                    current[current.length - 1] === nextCursor ? current : [...current, nextCursor],
+                  );
+                }
+              }}
+              style={{
+                color:
+                  activeQuery.data.nextCursor && activeQuery.data.nextCursor !== cursor
+                    ? colors.primary
+                    : colors.text3,
+              }}
+            >
+              Sau
+            </button>
+          </div>
         </div>
       )}
     </PageLayout>

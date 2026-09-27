@@ -1,7 +1,8 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen, waitFor } from '@testing-library/react';
+import { useLocation } from 'react-router';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
@@ -53,6 +54,11 @@ const analytics = {
   trackPlanDeletion: vi.fn(),
 };
 
+function RouteStateProbe() {
+  const location = useLocation();
+  return <output data-testid="route-state">{JSON.stringify(location.state ?? null)}</output>;
+}
+
 describe('DCA feature page', () => {
   it('does not request private DCA data while the feature flag is disabled', async () => {
     let requestCount = 0;
@@ -103,6 +109,181 @@ describe('DCA feature page', () => {
     expect(await screen.findByText('Mua tự động (DCA)')).toBeInTheDocument();
     expect(await screen.findByText('Tổng danh mục DCA (VND)')).toBeInTheDocument();
     expect(trackWalletPageView).toHaveBeenCalledTimes(1);
+  });
+
+  it('refreshes the snapshot and reports the refresh time and count', async () => {
+    let requestCount = 0;
+    server.use(
+      http.get('*/dca/snapshot', () => {
+        requestCount += 1;
+        return HttpResponse.json(snapshot);
+      }),
+    );
+    const { container } = renderWithProviders(
+      <DCAMainPage
+        isEnabled
+        isDevelopment={false}
+        analytics={analytics}
+        funnels={{
+          trackWalletPageView: vi.fn(),
+          trackWalletCreateSheetOpened: vi.fn(),
+          trackAssetCreateSheetOpened: vi.fn(),
+          trackPreselectedCoinUsed: vi.fn(),
+        }}
+      />,
+    );
+
+    await screen.findByText('Mua tự động (DCA)');
+    const refreshSurface = container.querySelector('.relative.flex-1')!;
+    fireEvent.touchStart(refreshSurface, { touches: [{ clientY: 0 }] });
+    fireEvent.touchMove(refreshSurface, { touches: [{ clientY: 160 }] });
+    fireEvent.touchEnd(refreshSurface);
+
+    await waitFor(() => expect(requestCount).toBe(2));
+    expect(await screen.findByText(/^Cập nhật:/)).toBeInTheDocument();
+  });
+
+  it('shows the empty state and tracks overview actions without mutating when no plan is active', async () => {
+    const emptySnapshot = {
+      ...snapshot,
+      overview: { ...snapshot.overview, activePlans: 0, pausedPlans: 0, nextExecution: null },
+      plans: [],
+    };
+    let updateRequests = 0;
+    let resolveSnapshot: (() => void) | undefined;
+    const trackWalletCreateSheetOpened = vi.fn();
+    analytics.trackEvent.mockClear();
+    server.use(
+      http.get(
+        '*/dca/snapshot',
+        () =>
+          new Promise((resolve) => {
+            resolveSnapshot = () => resolve(HttpResponse.json(emptySnapshot));
+          }),
+      ),
+      http.patch('*/dca/plans/:planId', () => {
+        updateRequests += 1;
+        return HttpResponse.json(snapshot.plans[0]);
+      }),
+    );
+    const user = userEvent.setup();
+
+    renderWithProviders(
+      <DCAMainPage
+        isEnabled
+        isDevelopment={false}
+        analytics={analytics}
+        funnels={{
+          trackWalletPageView: vi.fn(),
+          trackWalletCreateSheetOpened,
+          trackAssetCreateSheetOpened: vi.fn(),
+          trackPreselectedCoinUsed: vi.fn(),
+        }}
+      />,
+    );
+
+    await waitFor(() => expect(resolveSnapshot).toBeTypeOf('function'));
+    expect(screen.queryByText('Chưa có kế hoạch DCA')).not.toBeInTheDocument();
+    await act(async () => resolveSnapshot?.());
+    expect(await screen.findByText('Chưa có kế hoạch DCA')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Tạm dừng' }));
+    expect(updateRequests).toBe(0);
+    await user.click(screen.getByRole('button', { name: 'Tạo mới' }));
+
+    expect(await screen.findByText('Tạo Kế Hoạch DCA Mới')).toBeInTheDocument();
+    expect(trackWalletCreateSheetOpened).toHaveBeenCalledTimes(1);
+    expect(analytics.trackEvent).toHaveBeenCalledWith('dca_create_sheet_opened', {
+      source: 'overview_card',
+    });
+  });
+
+  it('opens chart history from the overview action and the plan tab', async () => {
+    server.use(http.get('*/dca/snapshot', () => HttpResponse.json(snapshot)));
+    analytics.trackEvent.mockClear();
+    const user = userEvent.setup();
+
+    renderWithProviders(
+      <DCAMainPage
+        isEnabled
+        isDevelopment={false}
+        analytics={analytics}
+        funnels={{
+          trackWalletPageView: vi.fn(),
+          trackWalletCreateSheetOpened: vi.fn(),
+          trackAssetCreateSheetOpened: vi.fn(),
+          trackPreselectedCoinUsed: vi.fn(),
+        }}
+      />,
+    );
+
+    await screen.findByText('Kế hoạch (1)');
+    await user.click(screen.getAllByRole('button', { name: 'Lịch sử' })[0]);
+    expect(await screen.findByText('Chưa có lịch sử')).toBeInTheDocument();
+    expect(analytics.trackEvent).toHaveBeenCalledWith('dca_tab_switched', { tab: 'history' });
+
+    await user.click(screen.getByRole('button', { name: 'Kế hoạch (1)' }));
+    await user.click(screen.getAllByRole('button', { name: 'Lịch sử' })[1]);
+    expect(screen.getByText('Chưa có lịch sử')).toBeInTheDocument();
+  });
+
+  it('consumes a wallet DCA deep link and creates the normalized preselected coin', async () => {
+    let createRequestBody: unknown;
+    const trackDeepLink = vi.fn();
+    const trackAssetCreateSheetOpened = vi.fn();
+    const trackPreselectedCoinUsed = vi.fn();
+    const trackPlanCreation = vi.fn();
+    server.use(
+      http.get('*/dca/snapshot', () => HttpResponse.json(snapshot)),
+      http.post('*/dca/plans', async ({ request }) => {
+        createRequestBody = await request.json();
+        return HttpResponse.json({ ...snapshot.plans[0], id: 'plan-created-1' }, { status: 201 });
+      }),
+    );
+
+    renderWithProviders(
+      <>
+        <DCAMainPage
+          isEnabled
+          isDevelopment={false}
+          analytics={{ ...analytics, trackDeepLink, trackPlanCreation }}
+          funnels={{
+            trackWalletPageView: vi.fn(),
+            trackWalletCreateSheetOpened: vi.fn(),
+            trackAssetCreateSheetOpened,
+            trackPreselectedCoinUsed,
+          }}
+        />
+        <RouteStateProbe />
+      </>,
+      {
+        routerProps: {
+          initialEntries: [{ pathname: '/w/wallet/dca', state: { preselectedCoin: ' eth ' } }],
+        },
+      },
+    );
+
+    expect(await screen.findByText('Tạo Kế Hoạch DCA Mới')).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByTestId('route-state')).toHaveTextContent('null'));
+    expect(trackDeepLink).toHaveBeenCalledWith('ETH', true);
+    expect(trackAssetCreateSheetOpened).toHaveBeenCalledTimes(1);
+
+    await userEvent.setup().click(screen.getByRole('button', { name: 'Tạo Kế Hoạch' }));
+
+    await waitFor(() =>
+      expect(createRequestBody).toEqual({
+        coinSymbol: 'ETH',
+        frequency: 'weekly',
+        amountPerPurchase: 500_000,
+      }),
+    );
+    expect(trackPlanCreation).toHaveBeenCalledWith(
+      'plan-created-1',
+      'ETH',
+      'weekly',
+      500_000,
+      'asset_detail',
+    );
+    expect(trackPreselectedCoinUsed).toHaveBeenCalledTimes(1);
   });
 
   it('recovers from a snapshot failure after the user retries', async () => {

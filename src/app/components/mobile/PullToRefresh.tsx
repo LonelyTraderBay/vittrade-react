@@ -1,6 +1,5 @@
-import React from 'react';
 import { RefreshCw } from 'lucide-react';
-import { useThemeColors } from '../../hooks/useThemeColors';
+import { useThemeColors } from '@/shared/hooks/useThemeColors';
 
 interface PullToRefreshIndicatorProps {
   pullDistance: number;
@@ -71,67 +70,9 @@ export function PullToRefreshIndicator({
             opacity: 0.8,
           }}
         >
-          Th\u1ea3 \u0111\u1ec3 l\u00e0m m\u1edbi
+          Thả để làm mới
         </span>
       )}
-    </div>
-  );
-}
-
-interface PullToRefreshProps {
-  children: React.ReactNode;
-  onRefresh: () => Promise<void>;
-}
-
-/**
- * Enterprise Fintech — Pull-to-Refresh Container
- * Hiển thị spinner + progress khi user kéo xuống
- * Đặt ở top của scroll container
- */
-export function PullToRefresh({ children, onRefresh }: PullToRefreshProps) {
-  const [pullDistance, setPullDistance] = React.useState(0);
-  const [isRefreshing, setIsRefreshing] = React.useState(false);
-  const [progress, setProgress] = React.useState(0);
-
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (pullDistance > 0) return;
-    setPullDistance(e.touches[0].clientY);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (isRefreshing) return;
-    const currentY = e.touches[0].clientY;
-    const distance = currentY - pullDistance;
-    if (distance > 0) {
-      setPullDistance(distance);
-      setProgress(distance / 100);
-    }
-  };
-
-  const handleTouchEnd = async () => {
-    if (isRefreshing) return;
-    if (progress >= 1) {
-      setIsRefreshing(true);
-      await onRefresh();
-      setIsRefreshing(false);
-    }
-    setPullDistance(0);
-    setProgress(0);
-  };
-
-  return (
-    <div
-      className="relative"
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
-      <PullToRefreshIndicator
-        pullDistance={pullDistance}
-        isRefreshing={isRefreshing}
-        progress={progress}
-      />
-      <div className="mt-10">{children}</div>
     </div>
   );
 }

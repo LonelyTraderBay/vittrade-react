@@ -28,6 +28,7 @@ export interface OrderListQuery extends Record<
   string | number | boolean | null | undefined
 > {
   symbol?: string;
+  side?: OrderSide;
   status?: OrderStatus;
   cursor?: string;
   limit?: number;
@@ -35,6 +36,37 @@ export interface OrderListQuery extends Record<
 
 export interface OrderListResponse {
   items: TradingOrder[];
+  nextCursor?: string;
+}
+
+export type TradingProductType = 'spot' | 'futures' | 'margin';
+
+export interface TradingPosition {
+  id: string;
+  symbol: string;
+  productType: TradingProductType;
+  side: 'long' | 'short';
+  baseAsset: string;
+  quoteAsset: string;
+  quantity: number;
+  entryPrice: number;
+  markPrice: number;
+  unrealizedPnl: number;
+  openedAt: string;
+}
+
+export interface TradingPositionsQuery extends Record<
+  string,
+  string | number | boolean | null | undefined
+> {
+  productType?: TradingProductType;
+  cursor?: string;
+  limit?: number;
+}
+
+export interface TradingPositionsResponse {
+  items: TradingPosition[];
+  updatedAt: string;
   nextCursor?: string;
 }
 
@@ -47,10 +79,20 @@ export interface PlaceOrderRequest {
   clientOrderId?: string;
   tpPrice?: number;
   slPrice?: number;
+  bracketMode?: boolean;
   tpAmount?: number;
   slAmount?: number;
   amountType?: 'same' | 'split';
   idempotencyKey: string;
+}
+
+export interface TPSLValues {
+  enabled: boolean;
+  tpPrice: string;
+  slPrice: string;
+  tpTriggerType: 'last' | 'mark';
+  slTriggerType: 'last' | 'mark';
+  bracketMode?: boolean;
 }
 
 export interface ModifyOrderRequest {

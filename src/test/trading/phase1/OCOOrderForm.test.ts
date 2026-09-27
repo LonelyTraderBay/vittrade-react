@@ -7,11 +7,9 @@
 
 import { describe, it, expect } from 'vitest';
 import {
-  expectValidPrice,
   validateOCOOrder,
   validateRiskReward,
   buildOCOScenarios,
-  EDGE_CASES,
 } from '@/test/trading-test-helpers';
 
 /* ═══════════════════════════════════════════════════════════════
@@ -140,7 +138,6 @@ describe('OCO Order Validation', () => {
     });
 
     it('should accept valid long OCO order', () => {
-      const side = 'buy';
       const entryPrice = 69000;
       const takeProfit = 72000; // Valid: above entry
       const stopLoss = 67500; // Valid: below entry
@@ -153,7 +150,6 @@ describe('OCO Order Validation', () => {
     });
 
     it('should accept valid short OCO order', () => {
-      const side = 'sell';
       const entryPrice = 69000;
       const takeProfit = 66000; // Valid: below entry
       const stopLoss = 70500; // Valid: above entry

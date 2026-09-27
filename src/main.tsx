@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import App from './app/App.tsx';
-import { isDevelopmentBuild } from './app/config/env';
+import { isDevelopmentBuild } from '@/shared/config/env';
 import './styles/index.css';
 
 async function bootstrap() {

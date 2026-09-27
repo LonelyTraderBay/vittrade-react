@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Search, Bell, ChevronRight } from 'lucide-react';
-import { useThemeColors } from '../../hooks/useThemeColors';
+import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useUI } from '../../hooks/useUI';
 
 /**

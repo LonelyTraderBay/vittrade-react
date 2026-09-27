@@ -76,6 +76,11 @@ import {
 import { getTestDcaSnapshot } from './dca-fixtures';
 import { getTestEarnSnapshot, getTestEarnTransactionsPage } from './earn-fixtures';
 import { getTradingAnalytics } from './trading-analytics-fixtures';
+import {
+  COPY_FRONTEND_VIEW_STATES,
+  DCA_ADVANCED_OVERVIEW,
+  P2P_FRONTEND_VIEW_STATES,
+} from './advanced-feature-fixtures';
 
 const user = {
   id: 'dev-user-1',
@@ -88,6 +93,19 @@ const user = {
 };
 
 let authenticated = false;
+interface DevRegistrationChallengeState {
+  channel: 'email' | 'phone';
+  contact: string;
+  fullName: string;
+  expiresAt: string;
+}
+const devRegistrationChallenges = new Map<string, DevRegistrationChallengeState>();
+const devRegistrationChallengesByKey = new Map<
+  string,
+  { challengeId: string; channel: 'email' | 'phone'; maskedDestination: string; expiresAt: string }
+>();
+const devRegistrationSessions = new Map<string, unknown>();
+let devRegistrationSequence = 0;
 const devPriceAlerts = PRICE_ALERTS.map((alert) => ({ ...alert }));
 const devP2pAds = P2P_ADS.map((ad) => ({ ...ad }));
 const devP2pMineAds = P2P_MY_ADS.map((ad) => ({ ...ad }));
@@ -449,6 +467,14 @@ function createSession() {
     accessToken: 'dev-only-in-memory-token',
     accessTokenExpiresAt: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
   };
+}
+
+function maskRegistrationContact(contact: string, channel: 'email' | 'phone'): string {
+  if (channel === 'email') {
+    const [local = '', domain = ''] = contact.split('@');
+    return `${local.slice(0, 1)}***@${domain}`;
+  }
+  return contact.replace(/\d(?=(?:\D*\d){2})/g, '•');
 }
 
 const pairs = [
@@ -900,6 +926,21 @@ function launchpadProjects(request: Request) {
 }
 
 export const handlers = [
+  http.get('*/dca/advanced/overview', () => HttpResponse.json(DCA_ADVANCED_OVERVIEW)),
+  http.get('*/p2p/frontend-view-status', ({ request }) => {
+    const view = new URL(request.url).searchParams.get('view');
+    const state = P2P_FRONTEND_VIEW_STATES.find((item) => item.view === view);
+    return state
+      ? HttpResponse.json(state)
+      : HttpResponse.json({ code: 'P2P_VIEW_NOT_FOUND' }, { status: 400 });
+  }),
+  http.get('*/trading/copy/frontend-view-status', ({ request }) => {
+    const view = new URL(request.url).searchParams.get('view');
+    const state = COPY_FRONTEND_VIEW_STATES.find((item) => item.view === view);
+    return state
+      ? HttpResponse.json(state)
+      : HttpResponse.json({ code: 'COPY_VIEW_NOT_FOUND' }, { status: 400 });
+  }),
   http.get('*/auth/session', () =>
     authenticated
       ? HttpResponse.json(createSession())
@@ -908,6 +949,51 @@ export const handlers = [
           { status: 401 },
         ),
   ),
+  http.post('*/auth/register', async ({ request }) => {
+    const body = (await request.json()) as {
+      fullName?: string;
+      channel?: 'email' | 'phone';
+      contact?: string;
+      password?: string;
+      acceptedTerms?: boolean;
+    };
+    const idempotencyKey = request.headers.get('Idempotency-Key');
+    if (!idempotencyKey || idempotencyKey.length < 8) {
+      return HttpResponse.json({ code: 'IDEMPOTENCY_KEY_REQUIRED' }, { status: 400 });
+    }
+    const previous = devRegistrationChallengesByKey.get(idempotencyKey);
+    if (previous) return HttpResponse.json(previous, { status: 202 });
+    if (
+      !body.fullName?.trim() ||
+      !body.contact?.trim() ||
+      !body.password ||
+      body.password.length < 8 ||
+      body.acceptedTerms !== true ||
+      !body.channel ||
+      !['email', 'phone'].includes(body.channel)
+    ) {
+      return HttpResponse.json({ code: 'INVALID_REGISTRATION' }, { status: 400 });
+    }
+    if (body.channel === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.contact)) {
+      return HttpResponse.json({ code: 'INVALID_REGISTRATION' }, { status: 400 });
+    }
+    const challengeId = `dev-registration-${++devRegistrationSequence}`;
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+    const challenge = {
+      challengeId,
+      channel: body.channel,
+      maskedDestination: maskRegistrationContact(body.contact.trim(), body.channel),
+      expiresAt,
+    };
+    devRegistrationChallenges.set(challengeId, {
+      channel: body.channel,
+      contact: body.contact.trim(),
+      fullName: body.fullName.trim(),
+      expiresAt,
+    });
+    devRegistrationChallengesByKey.set(idempotencyKey, challenge);
+    return HttpResponse.json(challenge, { status: 202 });
+  }),
   http.post('*/auth/login', async ({ request }) => {
     const body = (await request.json()) as { email?: string; password?: string };
     if (!body.email || !body.password) {
@@ -928,7 +1014,41 @@ export const handlers = [
     authenticated = false;
     return new HttpResponse(null, { status: 204 });
   }),
-  http.post('*/auth/mfa/verify', () => {
+  http.post('*/auth/mfa/verify', async ({ request }) => {
+    const body = (await request.json()) as {
+      challengeId?: string;
+      code?: string;
+      purpose?: string;
+    };
+    if (body.purpose === 'register') {
+      const challengeId = body.challengeId ?? '';
+      const completed = devRegistrationSessions.get(challengeId);
+      if (completed) return HttpResponse.json(completed);
+      const challenge = devRegistrationChallenges.get(challengeId);
+      if (!challenge || Date.parse(challenge.expiresAt) <= Date.now()) {
+        devRegistrationChallenges.delete(challengeId);
+        return HttpResponse.json({ code: 'REGISTRATION_CHALLENGE_EXPIRED' }, { status: 410 });
+      }
+      if (body.code !== '123456') {
+        return HttpResponse.json({ code: 'INVALID_VERIFICATION_CODE' }, { status: 400 });
+      }
+      const session = {
+        ...createSession(),
+        user: {
+          ...user,
+          id: `dev-user-${challengeId}`,
+          fullName: challenge.fullName,
+          ...(challenge.channel === 'email'
+            ? { email: challenge.contact, phone: undefined }
+            : { email: undefined, phone: challenge.contact }),
+          kycStatus: 'not_started' as const,
+        },
+      };
+      authenticated = true;
+      devRegistrationChallenges.delete(challengeId);
+      devRegistrationSessions.set(challengeId, session);
+      return HttpResponse.json(session);
+    }
     authenticated = true;
     return HttpResponse.json(createSession());
   }),
@@ -1251,6 +1371,48 @@ export const handlers = [
     devPredictionIdempotency.set(idempotencyKey, receipt.id);
     return HttpResponse.json(receipt, { status: 201 });
   }),
+  http.get('*/arena/discovery', () => {
+    const modes = ARENA_MODES.flatMap((mode) => {
+      const template = ARENA_TEMPLATES.find((item) => item.id === mode.templateId);
+      if (!template) return [];
+      return [
+        {
+          id: mode.id,
+          title: mode.title,
+          description: mode.description,
+          cloneCount: mode.cloneCount,
+          activeChallenges: mode.activeChallenges,
+          fairPlay: mode.fairPlay,
+          icon: template.icon,
+          color: template.color,
+          complexity: template.complexity,
+          creator: arenaCreatorSummary(mode.creator),
+          completionRate: mode.completionRate,
+          tags: mode.tags,
+        },
+      ];
+    });
+    const challenges = ARENA_CHALLENGES.filter(
+      (challenge) =>
+        challenge.privacy === 'public' &&
+        challenge.challengeState === 'open' &&
+        challenge.slotsFilled < challenge.slotsTotal,
+    ).map((challenge) => ({
+      id: challenge.id,
+      title: challenge.title,
+      description: challenge.description,
+      modeId: challenge.modeId,
+      modeName: challenge.modeName,
+      creator: arenaCreatorSummary(challenge.creator),
+      entryPoints: challenge.entryPoints,
+      prizePool: challenge.prizePool,
+      slotsTotal: challenge.slotsTotal,
+      slotsFilled: challenge.slotsFilled,
+      format: challenge.format,
+      startsAt: challenge.startAt,
+    }));
+    return HttpResponse.json({ modes, challenges });
+  }),
   http.get('*/arena/modes/:modeId', ({ params }) => {
     const mode = arenaModeDetail(String(params.modeId));
     return mode
@@ -1413,6 +1575,57 @@ export const handlers = [
       updatedAt: new Date().toISOString(),
     });
   }),
+  http.get('*/market/news', () =>
+    HttpResponse.json(
+      { code: 'news_source_unavailable', message: 'No market news source is configured.' },
+      { status: 503 },
+    ),
+  ),
+  http.get('*/market/calendar', () =>
+    HttpResponse.json(
+      { code: 'calendar_source_unavailable', message: 'No market event source is configured.' },
+      { status: 503 },
+    ),
+  ),
+  http.get('*/market/correlations', () =>
+    HttpResponse.json(
+      {
+        code: 'correlation_source_unavailable',
+        message: 'No market correlation source is configured.',
+      },
+      { status: 503 },
+    ),
+  ),
+  http.get('*/market/unlocks', () =>
+    HttpResponse.json(
+      { code: 'unlock_source_unavailable', message: 'No token unlock source is configured.' },
+      { status: 503 },
+    ),
+  ),
+  http.get('*/market/derivatives', () =>
+    HttpResponse.json(
+      {
+        code: 'derivatives_source_unavailable',
+        message: 'No derivatives data source is configured.',
+      },
+      { status: 503 },
+    ),
+  ),
+  http.get('*/market/sentiment', () =>
+    HttpResponse.json(
+      {
+        code: 'sentiment_source_unavailable',
+        message: 'No market sentiment source is configured.',
+      },
+      { status: 503 },
+    ),
+  ),
+  http.get('*/market/signals', () =>
+    HttpResponse.json(
+      { code: 'signals_source_unavailable', message: 'No social signals source is configured.' },
+      { status: 503 },
+    ),
+  ),
   http.get('*/market/price-alerts', ({ request }) => {
     const status = new URL(request.url).searchParams.get('status');
     return HttpResponse.json({
@@ -2727,6 +2940,15 @@ export const handlers = [
     const asset = new URL(request.url).searchParams.get('asset') ?? 'USDT';
     return HttpResponse.json({ networks: WITHDRAW_NETWORKS[asset] ?? WITHDRAW_NETWORKS.USDT });
   }),
+  http.get('*/wallet/network-status', () =>
+    HttpResponse.json(
+      {
+        code: 'WALLET_NETWORK_STATUS_UNAVAILABLE',
+        message: 'Network status source is not configured in this frontend-only workspace.',
+      },
+      { status: 503 },
+    ),
+  ),
   http.get('*/wallet/analytics/portfolio', ({ request }) => {
     const period = new URL(request.url).searchParams.get('period') ?? '1M';
     return HttpResponse.json({ period, ...portfolioAnalytics });
@@ -2850,6 +3072,15 @@ export const handlers = [
       { status: 201 },
     );
   }),
+  http.get('*/trading/positions', () =>
+    HttpResponse.json(
+      {
+        code: 'positions_source_unavailable',
+        message: 'Trading positions require a configured account data source.',
+      },
+      { status: 503 },
+    ),
+  ),
   http.get('*/trading/orders/history', ({ request }) =>
     HttpResponse.json({ items: filterDevTradingOrders(request, false) }),
   ),

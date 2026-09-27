@@ -23,6 +23,7 @@ import type {
   WalletWithdrawalVerification,
   WalletWithdrawalRequest,
   WalletWithdrawalNetwork,
+  WalletNetworkStatusResponse,
   WalletAddressBookCreateRequest,
   WalletAddressBookItem,
   WalletAddressBookResponse,
@@ -110,6 +111,34 @@ const withdrawalNetworkSchema = z
   .refine((network) => network.maxWithdraw >= network.minWithdraw, {
     path: ['maxWithdraw'],
     message: 'Maximum withdrawal must be greater than or equal to the minimum.',
+  });
+
+const walletNetworkStatusResponseSchema = z
+  .object({
+    items: z.array(
+      z.object({
+        id: z.string().min(1),
+        name: z.string().min(1),
+        status: z.enum(['operational', 'degraded', 'congested', 'maintenance']),
+        depositEnabled: z.boolean(),
+        withdrawalEnabled: z.boolean(),
+        updatedAt: z.string().datetime({ offset: true }),
+        message: z.string().max(240).optional(),
+      }),
+    ),
+  })
+  .superRefine(({ items }, context) => {
+    const ids = new Set<string>();
+    items.forEach((network, index) => {
+      if (ids.has(network.id)) {
+        context.addIssue({
+          code: 'custom',
+          path: ['items', index, 'id'],
+          message: 'Network IDs must be unique.',
+        });
+      }
+      ids.add(network.id);
+    });
   });
 
 const transferReceiptSchema = z
@@ -224,6 +253,7 @@ export interface WalletApi {
   getTransaction(id: string, signal?: AbortSignal): Promise<WalletTransaction>;
   getDepositNetworks(asset: string, signal?: AbortSignal): Promise<WalletDepositNetwork[]>;
   getWithdrawalNetworks(asset: string, signal?: AbortSignal): Promise<WalletWithdrawalNetwork[]>;
+  getNetworkStatus(signal?: AbortSignal): Promise<WalletNetworkStatusResponse>;
   getAddressBook(signal?: AbortSignal): Promise<WalletAddressBookResponse>;
   createAddressBookEntry(
     request: WalletAddressBookCreateRequest,
@@ -339,6 +369,13 @@ export const walletApi: WalletApi = {
       { retries: 2 },
     );
     return z.object({ networks: z.array(withdrawalNetworkSchema) }).parse(response).networks;
+  },
+  async getNetworkStatus(signal) {
+    const response = await apiClient.request<unknown>(
+      { method: 'GET', path: '/wallet/network-status', signal },
+      { retries: 2 },
+    );
+    return walletNetworkStatusResponseSchema.parse(response);
   },
   async getAddressBook(signal) {
     const response = await apiClient.request<unknown>(

@@ -24,6 +24,72 @@ const session = {
 };
 
 describe('auth API contract', () => {
+  it('starts registration with an idempotency key and validates the masked challenge', async () => {
+    server.use(
+      http.post('http://localhost:3000/api/auth/register', async ({ request }) => {
+        expect(request.headers.get('Idempotency-Key')).toBe('registration-key-001');
+        expect(await request.json()).toEqual({
+          fullName: 'Test User',
+          channel: 'phone',
+          contact: '+84912345678',
+          password: 'StrongPass1!',
+          acceptedTerms: true,
+        });
+        return HttpResponse.json(
+          {
+            challengeId: 'registration-challenge-001',
+            channel: 'phone',
+            maskedDestination: '+84 ••• ••• 678',
+            expiresAt: '2026-09-27T20:00:00.000Z',
+          },
+          { status: 202 },
+        );
+      }),
+    );
+    await expect(
+      authApiForTest.register(
+        {
+          fullName: 'Test User',
+          channel: 'phone',
+          contact: '+84912345678',
+          password: 'StrongPass1!',
+          acceptedTerms: true,
+        },
+        'registration-key-001',
+      ),
+    ).resolves.toMatchObject({ challengeId: 'registration-challenge-001' });
+  });
+
+  it('verifies registration using only the server challenge ID and code', async () => {
+    server.use(
+      http.post('http://localhost:3000/api/auth/mfa/verify', async ({ request }) => {
+        expect(await request.json()).toEqual({
+          challengeId: 'registration-challenge-001',
+          code: '123456',
+          purpose: 'register',
+        });
+        return HttpResponse.json({
+          ...session,
+          user: {
+            id: 'phone-user-1',
+            fullName: 'Phone User',
+            phone: '+84912345678',
+            roles: ['user'],
+            permissions: [],
+            kycStatus: 'not_started',
+          },
+        });
+      }),
+    );
+    await expect(
+      authApiForTest.verifyMfa({
+        challengeId: 'registration-challenge-001',
+        code: '123456',
+        purpose: 'register',
+      }),
+    ).resolves.toMatchObject({ user: { phone: '+84912345678' } });
+  });
+
   it('sends credentials to the login contract', async () => {
     server.use(
       http.post('http://localhost:3000/api/auth/login', async ({ request }) => {

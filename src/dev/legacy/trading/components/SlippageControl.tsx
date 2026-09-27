@@ -11,7 +11,7 @@
  */
 
 import React, { useState } from 'react';
-import { Shield, AlertTriangle, Info, TrendingUp, Zap } from 'lucide-react';
+import { Shield, Info, Zap } from 'lucide-react';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useHaptic } from '@/shared/hooks/useHaptic';

@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { useState } from 'react';
 import { renderWithProviders } from '@/test/test-utils';
 import type { MarketPair } from '@/features/market';
-import type { TPSLValues } from './TPSLForm';
+import type { TPSLValues } from '../model/trading-types';
 import { TradingOrderEntryPanel } from './TradingOrderEntryPanel';
 
 vi.mock('./OCOOrderForm', () => ({

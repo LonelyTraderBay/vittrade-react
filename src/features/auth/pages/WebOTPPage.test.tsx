@@ -65,6 +65,21 @@ describe('WebOTPPage login MFA challenge', () => {
     );
   });
 
+  it('does not steal focus after the user focuses another OTP digit', () => {
+    vi.useFakeTimers();
+    const rendered = renderWebOTP(challengeState);
+    try {
+      const inputs = document.querySelectorAll<HTMLInputElement>('input[maxlength="1"]');
+      act(() => inputs[2].focus());
+      act(() => vi.advanceTimersByTime(200));
+
+      expect(inputs[2]).toHaveFocus();
+    } finally {
+      rendered.unmount();
+      vi.useRealTimers();
+    }
+  });
+
   it('shows the authenticator instructions and returns to login from a TOTP challenge', async () => {
     const user = userEvent.setup();
     renderWebOTP({ ...challengeState, method: 'totp', maskedDestination: undefined });
@@ -105,11 +120,17 @@ describe('WebOTPPage login MFA challenge', () => {
     expect(await screen.findByText('Xác thực thành công!')).toBeInTheDocument();
   });
 
-  it('keeps development registration OTP on its generic registration contract', async () => {
+  it('verifies registration using only its server challenge ID and code', async () => {
     const user = userEvent.setup();
     const verifyMfa = vi.fn(async () => testAuthAdapter.initialSession!);
     renderWebOTP(
-      { contact: 'new-user@example.com', type: 'email', purpose: 'register' },
+      {
+        challengeId: 'registration-challenge-001',
+        channel: 'email',
+        maskedDestination: 'n***@example.com',
+        expiresAt: '2099-01-01T00:05:00.000Z',
+        purpose: 'register',
+      },
       { verifyMfa },
     );
 
@@ -119,7 +140,7 @@ describe('WebOTPPage login MFA challenge', () => {
 
     await waitFor(() =>
       expect(verifyMfa).toHaveBeenCalledWith({
-        contact: 'new-user@example.com',
+        challengeId: 'registration-challenge-001',
         code: '111111',
         purpose: 'register',
       }),

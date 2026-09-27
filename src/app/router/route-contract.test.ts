@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { RouteObject } from 'react-router';
 import { createProtectedRoutes, createPublicRoutes, type ShellOverrides } from '../routeConfig';
+import { collectRoutePaths } from './index';
 
 const Stub = () => null;
 const overrides: ShellOverrides = {
@@ -46,8 +47,11 @@ describe('protected route contract', () => {
     expect(paths).toEqual(
       expect.arrayContaining([
         'trade',
+        'trade/positions',
         'trade/orders-history',
         'wallet',
+        'wallet/network-status',
+        'markets/portfolio-tracker',
         'profile',
         'p2p',
         'referral',
@@ -70,11 +74,33 @@ describe('protected route contract', () => {
         'launchpad/contract/:id',
       ]),
     );
+    expect(collectPaths(createPublicRoutes(overrides))).not.toContain('markets/portfolio-tracker');
 
     const launchpadDetailRoutes = createProtectedRoutes(overrides).filter(
       (route) => route.path === 'launchpad/:id' || route.path === 'launchpad/contract/:id',
     );
     expect(launchpadDetailRoutes).toHaveLength(2);
     expect(launchpadDetailRoutes[0]?.Component).toBe(launchpadDetailRoutes[1]?.Component);
+  });
+});
+
+describe('platform router topology', () => {
+  it('composes core routes for each shell and keeps diagnostics in development', () => {
+    const paths = collectRoutePaths();
+
+    expect(paths).toEqual(
+      expect.arrayContaining([
+        '/home',
+        '/t/home',
+        '/w/home',
+        '/r',
+        '/auth/login',
+        '/w/auth/login',
+        '/wallet/transfer',
+        '/w/wallet/transfer',
+        '/dev/route-checker',
+        '/dev/performance-monitor',
+      ]),
+    );
   });
 });

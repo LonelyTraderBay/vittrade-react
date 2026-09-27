@@ -15,6 +15,7 @@ const user: AuthUser = {
   permissions: ['trade:read', 'trade:write'],
   kycStatus: 'verified',
 };
+const userEmail = 'user@example.com';
 
 const session: AuthSession = {
   user,
@@ -109,14 +110,14 @@ describe('AuthSessionProvider', () => {
     });
 
     await act(async () => {
-      await result.current.login(user.email, 'secret');
-      await result.current.verifyMfa({ contact: user.email, code: '123456' });
+      await result.current.login(userEmail, 'secret');
+      await result.current.verifyMfa({ contact: userEmail, code: '123456' });
       await result.current.beginMfaSetup();
       await result.current.confirmMfaSetup({ code: '654321' });
     });
 
-    expect(loginSync).toHaveBeenCalledWith({ email: user.email, password: 'secret' });
-    expect(verifyMfa).toHaveBeenCalledWith({ contact: user.email, code: '123456' });
+    expect(loginSync).toHaveBeenCalledWith({ email: userEmail, password: 'secret' });
+    expect(verifyMfa).toHaveBeenCalledWith({ contact: userEmail, code: '123456' });
     expect(beginMfaSetup).toHaveBeenCalledOnce();
     expect(confirmMfaSetup).toHaveBeenCalledWith({ code: '654321' });
     expect(result.current.isAuthenticated).toBe(true);
@@ -132,7 +133,7 @@ describe('AuthSessionProvider', () => {
 
     await waitFor(() => expect(result.current.status).toBe('unauthenticated'));
     await act(async () => {
-      await result.current.signIn({ email: user.email, password: 'secret' });
+      await result.current.signIn({ email: userEmail, password: 'secret' });
     });
 
     expect(result.current.user).toEqual(user);
@@ -163,7 +164,7 @@ describe('AuthSessionProvider', () => {
     let loginResult: LoginResult | undefined;
     await act(async () => {
       loginResult = await result.current.signIn({
-        email: user.email,
+        email: userEmail,
         password: 'secret',
       });
     });
@@ -199,7 +200,7 @@ describe('AuthSessionProvider', () => {
     });
     await waitFor(() => expect(result.current.status).toBe('unauthenticated'));
     await act(async () => {
-      await result.current.signIn({ email: user.email, password: 'secret' });
+      await result.current.signIn({ email: userEmail, password: 'secret' });
     });
     expect(result.current.isAuthenticated).toBe(false);
 
@@ -242,7 +243,7 @@ describe('AuthSessionProvider', () => {
     });
     await waitFor(() => expect(result.current.status).toBe('unauthenticated'));
     await act(async () => {
-      await result.current.signIn({ email: user.email, password: 'secret' });
+      await result.current.signIn({ email: userEmail, password: 'secret' });
     });
     await act(async () => {
       await expect(
@@ -271,7 +272,7 @@ describe('AuthSessionProvider', () => {
     let rejected: unknown;
     await act(async () => {
       try {
-        await result.current.signIn({ email: user.email, password: 'wrong' });
+        await result.current.signIn({ email: userEmail, password: 'wrong' });
       } catch (error: unknown) {
         rejected = error;
       }

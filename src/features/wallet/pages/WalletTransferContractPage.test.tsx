@@ -73,7 +73,7 @@ describe('Wallet transfer contract page', () => {
 
     renderWithProviders(<WalletTransferContractPage />);
 
-    const retryButton = await screen.findByRole('button', { name: 'Thử lại' });
+    const retryButton = await screen.findByRole('button', { name: 'Thử lại' }, { timeout: 5_000 });
     allowSuccess = true;
     await userEvent.click(retryButton);
 

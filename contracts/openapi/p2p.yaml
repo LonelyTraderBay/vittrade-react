@@ -8,6 +8,33 @@ servers:
 security:
   - sessionCookie: []
 paths:
+  /p2p/frontend-view-status:
+    get:
+      operationId: getP2PFrontendViewStatus
+      parameters:
+        - name: view
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              [
+                insurance-fund,
+                contribution-history,
+                kyc-requirements,
+                kyc-status,
+                security-center,
+                transaction-limits,
+                wallet,
+              ]
+      responses:
+        '200':
+          description: Read-only frontend module status. This response does not replace account, compliance, wallet, or escrow data contracts.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/P2PFrontendViewStatus' }
+        '400': { description: Unknown frontend view. }
+        '401': { $ref: '#/components/responses/Unauthorized' }
   /p2p/overview:
     get:
       operationId: getP2POverview
@@ -788,6 +815,23 @@ components:
         application/json:
           schema: { $ref: '#/components/schemas/ApiError' }
   schemas:
+    P2PFrontendViewStatus:
+      type: object
+      required: [view, state]
+      properties:
+        view:
+          type: string
+          enum:
+            [
+              insurance-fund,
+              contribution-history,
+              kyc-requirements,
+              kyc-status,
+              security-center,
+              transaction-limits,
+              wallet,
+            ]
+        state: { type: string, enum: [backend-required] }
     ApiError:
       type: object
       required: [code, message]

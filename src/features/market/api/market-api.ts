@@ -1,5 +1,14 @@
 import { z } from 'zod';
 import { apiClient } from '@/shared/api/app-client';
+import {
+  marketCalendarResponseSchema,
+  marketCorrelationsResponseSchema,
+  marketDerivativesResponseSchema,
+  marketNewsResponseSchema,
+  marketSignalsResponseSchema,
+  marketSentimentResponseSchema,
+  marketTokenUnlocksResponseSchema,
+} from './market-research-schemas';
 import type {
   MarketPair,
   MarketPairsQuery,
@@ -15,6 +24,18 @@ import type {
   MarketOverviewResponse,
   MarketMoversQuery,
   MarketMoversResponse,
+  MarketNewsQuery,
+  MarketNewsResponse,
+  MarketCalendarQuery,
+  MarketCalendarResponse,
+  MarketCorrelationsQuery,
+  MarketCorrelationsResponse,
+  MarketUnlocksQuery,
+  MarketTokenUnlocksResponse,
+  MarketDerivativesResponse,
+  MarketSentimentQuery,
+  MarketSentimentResponse,
+  MarketSignalsResponse,
   MarketPriceAlert,
   MarketPriceAlertCreateRequest,
   MarketPriceAlertUpdateRequest,
@@ -244,6 +265,19 @@ export interface MarketApi {
   ): Promise<MarketCandlesResponse>;
   getOverview(signal?: AbortSignal): Promise<MarketOverviewResponse>;
   getMovers(query: MarketMoversQuery, signal?: AbortSignal): Promise<MarketMoversResponse>;
+  getNews(query?: MarketNewsQuery, signal?: AbortSignal): Promise<MarketNewsResponse>;
+  getCalendar(query?: MarketCalendarQuery, signal?: AbortSignal): Promise<MarketCalendarResponse>;
+  getCorrelations(
+    query: MarketCorrelationsQuery,
+    signal?: AbortSignal,
+  ): Promise<MarketCorrelationsResponse>;
+  getTokenUnlocks(
+    query: MarketUnlocksQuery,
+    signal?: AbortSignal,
+  ): Promise<MarketTokenUnlocksResponse>;
+  getDerivatives(signal?: AbortSignal): Promise<MarketDerivativesResponse>;
+  getSentiment(query: MarketSentimentQuery, signal?: AbortSignal): Promise<MarketSentimentResponse>;
+  getSignals(signal?: AbortSignal): Promise<MarketSignalsResponse>;
   listPriceAlerts(
     query?: MarketPriceAlertsQuery,
     signal?: AbortSignal,
@@ -361,6 +395,67 @@ export const marketApi: MarketApi = {
       { retries: 2 },
     );
     return marketMoversResponseSchema.parse(response);
+  },
+  async getNews(query = {}, signal) {
+    const response = await apiClient.request<unknown>(
+      { method: 'GET', path: '/market/news', query, signal },
+      { retries: 2 },
+    );
+    return marketNewsResponseSchema.parse(response);
+  },
+  async getCalendar(query = {}, signal) {
+    const response = await apiClient.request<unknown>(
+      { method: 'GET', path: '/market/calendar', query, signal },
+      { retries: 2 },
+    );
+    return marketCalendarResponseSchema.parse(response);
+  },
+  async getCorrelations(query, signal) {
+    const response = await apiClient.request<unknown>(
+      { method: 'GET', path: '/market/correlations', query, signal },
+      { retries: 2 },
+    );
+    const result = marketCorrelationsResponseSchema.parse(response);
+    if (result.window !== query.window) {
+      throw new Error('Market correlation response window does not match the requested window.');
+    }
+    return result;
+  },
+  async getTokenUnlocks(query, signal) {
+    const response = await apiClient.request<unknown>(
+      { method: 'GET', path: '/market/unlocks', query, signal },
+      { retries: 2 },
+    );
+    const result = marketTokenUnlocksResponseSchema.parse(response);
+    if (result.window !== query.window) {
+      throw new Error('Token unlock response window does not match the requested window.');
+    }
+    return result;
+  },
+  async getDerivatives(signal) {
+    const response = await apiClient.request<unknown>(
+      { method: 'GET', path: '/market/derivatives', signal },
+      { retries: 2 },
+    );
+    return marketDerivativesResponseSchema.parse(response);
+  },
+  async getSentiment(query, signal) {
+    const response = await apiClient.request<unknown>(
+      { method: 'GET', path: '/market/sentiment', query, signal },
+      { retries: 2 },
+    );
+    const result = marketSentimentResponseSchema.parse(response);
+    if (result.window !== query.window) {
+      throw new Error('Market sentiment response window does not match the requested window.');
+    }
+    return result;
+  },
+  async getSignals(signal) {
+    const response = await apiClient.request<unknown>(
+      { method: 'GET', path: '/market/signals', signal },
+      { retries: 2 },
+    );
+    return marketSignalsResponseSchema.parse(response);
   },
   async listPriceAlerts(query, signal) {
     const response = await apiClient.request<unknown>(

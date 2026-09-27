@@ -75,4 +75,11 @@ describe('development trading adapter', () => {
     expect(response.status).toBe(400);
     expect(await response.json()).toMatchObject({ code: 'IDEMPOTENCY_KEY_REQUIRED' });
   });
+
+  it('does not invent account positions when no position source is configured', async () => {
+    const response = await fetch('http://localhost:3000/api/trading/positions');
+
+    expect(response.status).toBe(503);
+    expect(await response.json()).toMatchObject({ code: 'positions_source_unavailable' });
+  });
 });

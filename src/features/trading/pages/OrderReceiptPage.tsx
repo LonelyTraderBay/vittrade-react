@@ -167,7 +167,7 @@ export function OrderReceiptPage() {
         </TrCard>
 
         <div
-          className="mx-5 mt-3 flex items-start gap-2 rounded-xl px-3 py-2.5"
+          className="mx-5 flex items-start gap-2 rounded-xl px-3 py-2.5"
           style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
         >
           <AlertTriangle size={13} color="#F59E0B" className="shrink-0 mt-0.5" />

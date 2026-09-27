@@ -59,6 +59,48 @@ const challenge = {
 };
 
 describe('arena API contract', () => {
+  it('loads and validates public discovery data', async () => {
+    server.use(
+      http.get('http://localhost:3000/api/arena/discovery', () =>
+        HttpResponse.json({
+          modes: [
+            {
+              id: 'mode001',
+              title: 'BTC Weekly Predict',
+              description: 'Predict BTC.',
+              cloneCount: 10,
+              activeChallenges: 2,
+              fairPlay: true,
+              icon: '🎯',
+              color: '#F59E0B',
+              complexity: 'easy',
+              creator,
+              completionRate: 90,
+              tags: ['Crypto'],
+            },
+          ],
+          challenges: [],
+        }),
+      ),
+    );
+    await expect(arenaApi.getDiscovery()).resolves.toMatchObject({
+      modes: [{ id: 'mode001' }],
+      challenges: [],
+    });
+  });
+
+  it('rejects malformed discovery data', async () => {
+    server.use(
+      http.get('http://localhost:3000/api/arena/discovery', () =>
+        HttpResponse.json({
+          modes: [{ id: 'mode001', color: 'url(javascript:alert(1))' }],
+          challenges: [],
+        }),
+      ),
+    );
+    await expect(arenaApi.getDiscovery()).rejects.toThrow();
+  });
+
   it('loads and validates a mode detail', async () => {
     server.use(
       http.get('http://localhost:3000/api/arena/modes/mode001', () => HttpResponse.json(mode)),

@@ -15,6 +15,17 @@ beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
+const tradeReadAdapter: AuthAdapter = {
+  ...testAuthAdapter,
+  initialSession: {
+    ...testAuthAdapter.initialSession!,
+    user: {
+      ...testAuthAdapter.initialSession!.user,
+      permissions: [...testAuthAdapter.initialSession!.user.permissions, 'trade:read'],
+    },
+  },
+};
+
 const provider = {
   id: 'provider-1',
   name: 'Provider One',
@@ -65,7 +76,10 @@ describe('Active copies contract page', () => {
         <Route path="/trade/copy-trading/active" element={<ActiveCopiesContractPage />} />
         <Route path="/trade/copy-provider/:providerId" element={<p>Provider details reached</p>} />
       </Routes>,
-      { routerProps: { initialEntries: ['/trade/copy-trading/active'] } },
+      {
+        routerProps: { initialEntries: ['/trade/copy-trading/active'] },
+        authAdapter: tradeReadAdapter,
+      },
     );
 
     await user.click(await screen.findByRole('button', { name: 'Chi tiết' }));
@@ -84,6 +98,7 @@ describe('Active copies contract page', () => {
 
     renderWithProviders(<ActiveCopiesContractPage />, {
       routerProps: { initialEntries: ['/trade/copy-trading/active'] },
+      authAdapter: tradeReadAdapter,
     });
 
     expect(await screen.findByText('-5.00%')).toBeInTheDocument();
@@ -104,6 +119,7 @@ describe('Active copies contract page', () => {
     const user = userEvent.setup();
     renderWithProviders(<ActiveCopiesContractPage />, {
       routerProps: { initialEntries: ['/trade/copy-trading/active'] },
+      authAdapter: tradeReadAdapter,
     });
 
     expect(await screen.findByText('Provider One')).toBeInTheDocument();
@@ -138,6 +154,7 @@ describe('Active copies contract page', () => {
     const user = userEvent.setup();
     renderWithProviders(<ActiveCopiesContractPage />, {
       routerProps: { initialEntries: ['/trade/copy-trading/active'] },
+      authAdapter: tradeReadAdapter,
     });
 
     expect(await screen.findByText('Provider One')).toBeInTheDocument();
@@ -190,5 +207,31 @@ describe('Active copies contract page', () => {
     expect(screen.getByRole('button', { name: 'Dừng' })).toBeDisabled();
     expect(screen.getByRole('status')).toHaveTextContent('Cần quyền giao dịch');
     expect(stopRequestCount).toBe(0);
+  });
+
+  it('does not request or render relationships without trade read permission', () => {
+    let requestCount = 0;
+    server.use(
+      http.get('*/trading/copy/relationships', () => {
+        requestCount += 1;
+        return HttpResponse.json({ items: [relationship] });
+      }),
+    );
+    const noReadAdapter: AuthAdapter = {
+      ...testAuthAdapter,
+      initialSession: {
+        ...testAuthAdapter.initialSession!,
+        user: { ...testAuthAdapter.initialSession!.user, permissions: [] },
+      },
+    };
+
+    renderWithProviders(<ActiveCopiesContractPage />, {
+      routerProps: { initialEntries: ['/trade/copy-trading/active'] },
+      authAdapter: noReadAdapter,
+    });
+
+    expect(screen.getByRole('alert')).toHaveTextContent('không có quyền xem quan hệ copy');
+    expect(screen.queryByText('Provider One')).not.toBeInTheDocument();
+    expect(requestCount).toBe(0);
   });
 });

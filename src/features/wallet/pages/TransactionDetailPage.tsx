@@ -10,6 +10,7 @@ import { Copy, CheckCircle, Clock, XCircle, MessageSquare, Check, AlertCircle } 
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useWalletTransactionQuery } from '@/features/wallet/model/wallet-queries';
+import { useAuth } from '@/shared/session/useAuth';
 import type {
   WalletTransactionStatus,
   WalletTransactionType,
@@ -81,7 +82,22 @@ export function TransactionDetailPage() {
   const c = useThemeColors();
   const { txId } = useParams();
   const prefix = useRoutePrefix();
-  const { data: tx, error, isLoading } = useWalletTransactionQuery(txId);
+  const { hasPermission } = useAuth();
+  const canReadWallet = hasPermission('wallet:read');
+  const { data: tx, error, isLoading } = useWalletTransactionQuery(txId, canReadWallet);
+
+  if (!canReadWallet) {
+    return (
+      <PageLayout>
+        <Header title="Chi tiết giao dịch" subtitle="Lịch sử · Wallet" back />
+        <PageContent>
+          <p role="alert" style={{ color: c.error }}>
+            Wallet read permission is required to view transaction details.
+          </p>
+        </PageContent>
+      </PageLayout>
+    );
+  }
 
   if (isLoading) {
     return (

@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { Header } from '@/shared/ui/layout/Header';
 import { ShieldCheck } from 'lucide-react';
-import { isDevelopmentBuild } from '@/shared/config/env';
 import { useAuth } from '@/shared/session/useAuth';
 import { isApiError } from '@/shared/api/api-error';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
@@ -11,6 +10,7 @@ import { CTAButton } from '@/shared/ui/CTAButton';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { parseLoginMfaChallengeState } from '../lib/login-mfa-route-state';
+import { parseRegistrationChallengeState } from '../lib/registration-route-state';
 
 export function OTPPage() {
   const navigate = useNavigate();
@@ -18,15 +18,14 @@ export function OTPPage() {
   const { verifyMfa, verifyLoginMfa } = useAuth();
   const c = useThemeColors();
   const prefix = useRoutePrefix();
-  const state = location.state as { contact?: string; type?: string; purpose?: string } | null;
-  const registrationFlow =
-    state?.purpose === 'register' && Boolean(state.contact) && isDevelopmentBuild;
-  const loginChallenge = parseLoginMfaChallengeState(state);
+  const registrationChallenge = parseRegistrationChallengeState(location.state);
+  const registrationFlow = Boolean(registrationChallenge);
+  const loginChallenge = parseLoginMfaChallengeState(location.state);
   const isRouteValid = registrationFlow || Boolean(loginChallenge);
   const contact = loginChallenge
     ? (loginChallenge.maskedDestination ?? 'ứng dụng xác thực')
-    : (state?.contact ?? '');
-  const loginChallengeExpiry = loginChallenge?.expiresAt;
+    : (registrationChallenge?.maskedDestination ?? '');
+  const challengeExpiry = registrationChallenge?.expiresAt ?? loginChallenge?.expiresAt;
 
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [isLoading, setIsLoading] = useState(false);
@@ -41,22 +40,22 @@ export function OTPPage() {
     if (!isRouteValid) navigate(`${prefix}/auth/login`, { replace: true });
   }, [isRouteValid, navigate, prefix]);
   useEffect(() => {
-    if (!loginChallengeExpiry) return;
+    if (!challengeExpiry) return;
     let timeout: ReturnType<typeof setTimeout>;
     const checkExpiry = () => {
-      const remaining = Date.parse(loginChallengeExpiry) - Date.now();
+      const remaining = Date.parse(challengeExpiry) - Date.now();
       if (remaining <= 0) {
-        navigate(`${prefix}/auth/login`, { replace: true });
+        navigate(`${prefix}/auth/${registrationFlow ? 'register' : 'login'}`, { replace: true });
       } else {
         timeout = setTimeout(checkExpiry, Math.min(remaining, 2_147_483_647));
       }
     };
     timeout = setTimeout(
       checkExpiry,
-      Math.min(Math.max(0, Date.parse(loginChallengeExpiry) - Date.now()), 2_147_483_647),
+      Math.min(Math.max(0, Date.parse(challengeExpiry) - Date.now()), 2_147_483_647),
     );
     return () => clearTimeout(timeout);
-  }, [loginChallengeExpiry, navigate, prefix]);
+  }, [challengeExpiry, navigate, prefix, registrationFlow]);
   const handleChange = (index: number, value: string) => {
     const digit = value.replace(/\D/g, '').slice(-1);
     const newOtp = [...otp];
@@ -80,8 +79,8 @@ export function OTPPage() {
   };
   const handleVerify = async (code: string) => {
     if (!isRouteValid || isLoading) return;
-    if (loginChallenge && Date.now() >= Date.parse(loginChallenge.expiresAt)) {
-      navigate(`${prefix}/auth/login`, { replace: true });
+    if (challengeExpiry && Date.now() >= Date.parse(challengeExpiry)) {
+      navigate(`${prefix}/auth/${registrationFlow ? 'register' : 'login'}`, { replace: true });
       return;
     }
     setIsLoading(true);
@@ -91,12 +90,34 @@ export function OTPPage() {
       if (loginChallenge) {
         await verifyLoginMfa({ challengeId: loginChallenge.id, code });
         navigate(`${prefix}/home`, { replace: true });
-      } else {
-        await verifyMfa({ contact, code, purpose: 'register' });
+      } else if (registrationChallenge) {
+        await verifyMfa({
+          challengeId: registrationChallenge.challengeId,
+          code,
+          purpose: 'register',
+        });
         navigate(`${prefix}/auth/2fa-setup`, { replace: true });
+      } else {
+        navigate(`${prefix}/auth/login`, { replace: true });
       }
     } catch (verifyError) {
-      if (loginChallenge && isApiError(verifyError)) {
+      if (registrationChallenge && isApiError(verifyError)) {
+        if (verifyError.status === 410) {
+          navigate(`${prefix}/auth/register`, { replace: true });
+          setIsLoading(false);
+          return;
+        }
+        if (verifyError.status === 429) {
+          setError('Quá nhiều lần xác thực. Hãy bắt đầu yêu cầu đăng ký mới sau một lúc.');
+          setReturnToLogin(true);
+        } else if (verifyError.status === 400) {
+          setError('Mã OTP không đúng. Vui lòng thử lại.');
+          setOtp(['', '', '', '', '', '']);
+          inputRefs.current[0]?.focus();
+        } else {
+          setError('Không thể xác minh lúc này. Vui lòng thử lại.');
+        }
+      } else if (loginChallenge && isApiError(verifyError)) {
         if (verifyError.status === 410) {
           navigate(`${prefix}/auth/login`, { replace: true });
           setIsLoading(false);
@@ -121,11 +142,7 @@ export function OTPPage() {
           setError('Không thể xác minh lúc này. Vui lòng thử lại.');
         }
       } else {
-        setError(
-          loginChallenge
-            ? 'Không thể xác minh lúc này. Vui lòng thử lại.'
-            : 'Mã OTP không đúng. Vui lòng thử lại.',
-        );
+        setError('Không thể xác minh lúc này. Vui lòng thử lại.');
         setOtp(['', '', '', '', '', '']);
         inputRefs.current[0]?.focus();
       }
@@ -220,11 +237,15 @@ export function OTPPage() {
             <p style={{ color: '#EF4444', fontSize: 13, textAlign: 'center' }}>{error}</p>
             {returnToLogin && (
               <button
-                onClick={() => navigate(`${prefix}/auth/login`, { replace: true })}
+                onClick={() =>
+                  navigate(`${prefix}/auth/${registrationFlow ? 'register' : 'login'}`, {
+                    replace: true,
+                  })
+                }
                 className="mt-2 w-full text-center"
                 style={{ color: '#3B82F6', fontSize: 13, fontWeight: 600 }}
               >
-                Quay lại đăng nhập
+                {registrationFlow ? 'Quay lại đăng ký' : 'Quay lại đăng nhập'}
               </button>
             )}
           </div>

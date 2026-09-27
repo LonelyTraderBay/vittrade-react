@@ -1,6 +1,6 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { AlertTriangle, RefreshCw, Home, Bug } from 'lucide-react';
-import { env } from '../../config/env';
+import { env } from '@/shared/config/env';
 import { captureException } from '../../../shared/telemetry/telemetry';
 
 interface ErrorBoundaryProps {

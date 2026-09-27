@@ -52,45 +52,54 @@ async function runMutation(hook: () => unknown, variables?: unknown) {
 }
 
 const queryCases = [
-  { title: 'assets', hook: () => queries.useWalletAssetsQuery(), api: 'getAssets' },
-  { title: 'accounts', hook: () => queries.useWalletAccountsQuery(), api: 'getAccounts' },
+  { title: 'assets', hook: () => queries.useWalletAssetsQuery(true), api: 'getAssets' },
+  { title: 'accounts', hook: () => queries.useWalletAccountsQuery(true), api: 'getAccounts' },
   {
     title: 'transactions',
-    hook: () => queries.useWalletTransactionsQuery({ asset: 'BTC', status: 'pending', limit: 20 }),
+    hook: () =>
+      queries.useWalletTransactionsQuery({ asset: 'BTC', status: 'pending', limit: 20 }, true),
     api: 'getTransactions',
   },
   {
     title: 'transaction detail',
-    hook: () => queries.useWalletTransactionQuery('transaction-1'),
+    hook: () => queries.useWalletTransactionQuery('transaction-1', true),
     api: 'getTransaction',
   },
   {
     title: 'deposit networks',
-    hook: () => queries.useWalletDepositNetworksQuery('BTC'),
+    hook: () => queries.useWalletDepositNetworksQuery('BTC', true),
     api: 'getDepositNetworks',
   },
   {
     title: 'withdrawal networks',
-    hook: () => queries.useWalletWithdrawalNetworksQuery('BTC'),
+    hook: () => queries.useWalletWithdrawalNetworksQuery('BTC', true),
     api: 'getWithdrawalNetworks',
   },
   {
+    title: 'network status',
+    hook: () => queries.useWalletNetworkStatusQuery(true),
+    api: 'getNetworkStatus',
+  },
+  {
     title: 'address book',
-    hook: () => queries.useWalletAddressBookQuery(),
+    hook: () => queries.useWalletAddressBookQuery(true),
     api: 'getAddressBook',
   },
   {
     title: 'portfolio analytics',
-    hook: () => queries.useWalletPortfolioAnalyticsQuery('1M'),
+    hook: () => queries.useWalletPortfolioAnalyticsQuery('1M', true),
     api: 'getPortfolioAnalytics',
   },
   {
     title: 'dust quote',
     hook: () =>
-      queries.useWalletDustConversionQuoteQuery({
-        sourceAssetIds: ['asset-1'],
-        targetAsset: 'BTC',
-      }),
+      queries.useWalletDustConversionQuoteQuery(
+        {
+          sourceAssetIds: ['asset-1'],
+          targetAsset: 'BTC',
+        },
+        true,
+      ),
     api: 'getDustConversionQuote',
   },
 ] satisfies Array<{ title: string; hook: () => unknown; api: string }>;
@@ -189,15 +198,21 @@ describe('Wallet query hooks', () => {
 
   it('waits for IDs and selected assets before running scoped queries', () => {
     const disabledQueries = [
-      { hook: () => queries.useWalletTransactionQuery(undefined), api: 'getTransaction' },
-      { hook: () => queries.useWalletDepositNetworksQuery(undefined), api: 'getDepositNetworks' },
+      { hook: () => queries.useWalletTransactionQuery(undefined, true), api: 'getTransaction' },
       {
-        hook: () => queries.useWalletWithdrawalNetworksQuery(undefined),
+        hook: () => queries.useWalletDepositNetworksQuery(undefined, true),
+        api: 'getDepositNetworks',
+      },
+      {
+        hook: () => queries.useWalletWithdrawalNetworksQuery(undefined, true),
         api: 'getWithdrawalNetworks',
       },
       {
         hook: () =>
-          queries.useWalletDustConversionQuoteQuery({ sourceAssetIds: [], targetAsset: 'BTC' }),
+          queries.useWalletDustConversionQuoteQuery(
+            { sourceAssetIds: [], targetAsset: 'BTC' },
+            true,
+          ),
         api: 'getDustConversionQuote',
       },
     ];
@@ -210,6 +225,51 @@ describe('Wallet query hooks', () => {
       expect(result.current.fetchStatus).toBe('idle');
       expect(apiMethods[api]).not.toHaveBeenCalled();
       unmount();
+    }
+  });
+
+  it('does not issue account-owned requests when wallet read is disabled', () => {
+    const disabledQueries = [
+      () => queries.useWalletAssetsQuery(false),
+      () => queries.useWalletAccountsQuery(false),
+      () => queries.useWalletTransactionsQuery({}, false),
+      () => queries.usePendingDepositsQuery(false),
+      () => queries.useWalletTransactionQuery('transaction-1', false),
+      () => queries.useWalletDepositNetworksQuery('BTC', false),
+      () => queries.useWalletWithdrawalNetworksQuery('BTC', false),
+      () => queries.useWalletNetworkStatusQuery(false),
+      () => queries.useWalletAddressBookQuery(false),
+      () => queries.useWalletPortfolioAnalyticsQuery('1M', false),
+      () =>
+        queries.useWalletDustConversionQuoteQuery(
+          { sourceAssetIds: ['asset-1'], targetAsset: 'BTC' },
+          false,
+        ),
+    ];
+
+    for (const hook of disabledQueries) {
+      const client = createQueryClient();
+      const { result, unmount } = renderHook(
+        () => hook() as unknown as UseQueryResult<unknown, Error>,
+        { wrapper: createWrapper(client) },
+      );
+      expect(result.current.fetchStatus).toBe('idle');
+      unmount();
+    }
+
+    for (const method of [
+      'getAssets',
+      'getAccounts',
+      'getTransactions',
+      'getTransaction',
+      'getDepositNetworks',
+      'getWithdrawalNetworks',
+      'getNetworkStatus',
+      'getAddressBook',
+      'getPortfolioAnalytics',
+      'getDustConversionQuote',
+    ]) {
+      expect(apiMethods[method]).not.toHaveBeenCalled();
     }
   });
 });

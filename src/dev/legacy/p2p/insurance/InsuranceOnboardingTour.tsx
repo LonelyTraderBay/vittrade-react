@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Shield,
   FileText,
@@ -294,28 +294,7 @@ export function InsuranceOnboardingTour({
   const completeTour = () => setCurrentStep(4);
   const skipTour = () => setCurrentStep(0);
 
-  const tourSteps = useMemo(
-    () => buildTourSteps(user, variant.id),
-    [
-      user.tier,
-      user.tradingVolume30d,
-      user.totalTrades,
-      user.kycLevel,
-      user.has2FA,
-      user.claimCount,
-      user.accountAgeDays,
-      variant.id,
-    ],
-  );
-
-  // Step duration tracking for A/B test
-  const stepStartTimeRef = useRef<number>(Date.now());
-
-  useEffect(() => {
-    if (open) {
-      stepStartTimeRef.current = Date.now();
-    }
-  }, [currentStep, open]);
+  const tourSteps = useMemo(() => buildTourSteps(user, variant.id), [user, variant.id]);
 
   // Animate sheet entrance
   useEffect(() => {
@@ -332,8 +311,6 @@ export function InsuranceOnboardingTour({
   const isLast = currentStep === tourSteps.length - 1;
 
   const goNext = () => {
-    // Track step duration for A/B test
-    const stepDuration = Date.now() - stepStartTimeRef.current;
     trackCTAClick(); // Track CTA engagement
 
     if (isLast) {
@@ -351,7 +328,6 @@ export function InsuranceOnboardingTour({
     setTimeout(() => {
       advanceTourProgress(); // Advance tour progress (persisted)
       setAnimating(false);
-      stepStartTimeRef.current = Date.now(); // Reset timer for next step
     }, 200);
   };
 
@@ -363,7 +339,6 @@ export function InsuranceOnboardingTour({
     setTimeout(() => {
       retreatTourProgress(); // Go back in tour progress
       setAnimating(false);
-      stepStartTimeRef.current = Date.now();
     }, 200);
   };
 

@@ -116,6 +116,65 @@ describe('DustConverterPage', () => {
     expect(screen.getByRole('button', { name: 'Chọn tài sản để chuyển đổi' })).toBeDisabled();
   });
 
+  it('clears selected dust assets when the conversion target changes', async () => {
+    server.use(
+      http.get('*/wallet/assets', () => HttpResponse.json(assets)),
+      http.get('*/wallet/dust-conversions/quote', () =>
+        HttpResponse.json({
+          targetAsset: 'USDT',
+          grossUsd: 0.25,
+          feePct: 1,
+          feeUsd: 0.0025,
+          receivedUsd: 0.2475,
+          targetAmount: 0.2475,
+        }),
+      ),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<DustConverterPage />);
+
+    await screen.findByText('DUST');
+    await user.click(screen.getByRole('button', { name: 'Chọn tất cả' }));
+    expect(await screen.findByRole('button', { name: /Chuyển đổi 1 tài sản/ })).toBeEnabled();
+
+    await user.click(screen.getByRole('button', { name: /BNB/ }));
+
+    expect(screen.getByRole('button', { name: 'Chọn tài sản để chuyển đổi' })).toBeDisabled();
+  });
+
+  it('retries the failed quote request when the user retries conversion data', async () => {
+    let quoteRequests = 0;
+    let quoteAvailable = false;
+    server.use(
+      http.get('*/wallet/assets', () => HttpResponse.json(assets)),
+      http.get('*/wallet/dust-conversions/quote', () => {
+        quoteRequests += 1;
+        return quoteAvailable
+          ? HttpResponse.json({
+              targetAsset: 'USDT',
+              grossUsd: 0.25,
+              feePct: 1,
+              feeUsd: 0.0025,
+              receivedUsd: 0.2475,
+              targetAmount: 0.2475,
+            })
+          : HttpResponse.json({ code: 'TEMPORARY_FAILURE' }, { status: 503 });
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<DustConverterPage />);
+
+    await screen.findByText('DUST');
+    await user.click(screen.getByRole('button', { name: 'Chọn tất cả' }));
+    const retry = await screen.findByRole('button', { name: 'Thử lại' });
+    expect(quoteRequests).toBe(3);
+    quoteAvailable = true;
+    await user.click(retry);
+
+    expect(await screen.findByRole('button', { name: /Chuyển đổi 1 tài sản/ })).toBeEnabled();
+    expect(quoteRequests).toBe(4);
+  });
+
   it('reuses the idempotency key when retrying the same conversion after a transient failure', async () => {
     const idempotencyKeys: string[] = [];
     let requests = 0;

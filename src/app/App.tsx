@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { RouterProvider } from 'react-router';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { router } from './router';
-import { assertProductionEnv, env } from './config/env';
+import { assertProductionEnv, env } from '@/shared/config/env';
 import { queryClient } from '../shared/api/query-client';
 import { captureException } from '../shared/telemetry/telemetry';
 

@@ -1,18 +1,32 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route, Routes } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
+import type { AuthAdapter } from '@/shared/session/AuthContext';
+import { testAuthAdapter } from '@/test/auth-test-adapter';
 import { CopyTradingPage } from './CopyTradingPage';
 import { CopyProviderDetailContractPage } from './CopyProviderDetailContractPage';
 import { PreCopyAssessmentContractPage } from './PreCopyAssessmentContractPage';
 import { CopyConfigurationContractPage } from './CopyConfigurationContractPage';
 import { CopyConfirmationContractPage } from './CopyConfirmationContractPage';
 import { ActiveCopiesContractPage } from './ActiveCopiesContractPage';
+import { ProviderComparisonContractPage } from './ProviderComparisonContractPage';
 
 const server = setupServer();
+
+const tradeReadAdapter: AuthAdapter = {
+  ...testAuthAdapter,
+  initialSession: {
+    ...testAuthAdapter.initialSession!,
+    user: {
+      ...testAuthAdapter.initialSession!.user,
+      permissions: [...testAuthAdapter.initialSession!.user.permissions, 'trade:read'],
+    },
+  },
+};
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());
@@ -99,6 +113,34 @@ describe('contract-backed copy trading pages', () => {
 
     expect(await screen.findByRole('button', { name: 'Thử lại' })).toBeInTheDocument();
     expect(screen.queryByText('Provider One')).not.toBeInTheDocument();
+  });
+
+  it('compares only the selected providers returned by the trading API', async () => {
+    const secondProvider = {
+      ...provider,
+      id: 'provider-2',
+      name: 'Provider Two',
+      totalPnlPct: 8.4,
+    };
+    server.use(
+      http.get('*/trading/copy/providers', () =>
+        HttpResponse.json({ items: [provider, secondProvider] }),
+      ),
+    );
+
+    renderWithProviders(
+      <Routes>
+        <Route path="/trade/copy-trading/comparison" element={<ProviderComparisonContractPage />} />
+      </Routes>,
+      { routerProps: { initialEntries: ['/trade/copy-trading/comparison?ids=provider-1'] } },
+    );
+
+    const table = await screen.findByRole('table');
+    expect(within(table).getByRole('columnheader', { name: 'Provider One' })).toBeInTheDocument();
+    expect(
+      within(table).queryByRole('columnheader', { name: 'Provider Two' }),
+    ).not.toBeInTheDocument();
+    expect(within(table).getByText('12.5%')).toBeInTheDocument();
   });
 
   it('shows the provider profile and links to the required risk assessment', async () => {
@@ -272,7 +314,7 @@ describe('contract-backed copy trading pages', () => {
 
   it('renders an empty active-copy state when the API has no relationships', async () => {
     server.use(http.get('*/trading/copy/relationships', () => HttpResponse.json({ items: [] })));
-    renderWithProviders(<ActiveCopiesContractPage />);
+    renderWithProviders(<ActiveCopiesContractPage />, { authAdapter: tradeReadAdapter });
 
     expect(await screen.findByText('Chưa có copy relationship nào.')).toBeInTheDocument();
   });
@@ -283,7 +325,7 @@ describe('contract-backed copy trading pages', () => {
         HttpResponse.json({ code: 'COPY_RELATIONSHIPS_UNAVAILABLE' }, { status: 503 }),
       ),
     );
-    renderWithProviders(<ActiveCopiesContractPage />);
+    renderWithProviders(<ActiveCopiesContractPage />, { authAdapter: tradeReadAdapter });
 
     expect(await screen.findByRole('button', { name: 'Thử lại' })).toBeInTheDocument();
   });

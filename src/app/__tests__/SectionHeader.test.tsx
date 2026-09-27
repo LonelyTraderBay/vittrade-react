@@ -10,7 +10,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { SectionHeader } from '../components/ui/SectionHeader';
+import { SectionHeader } from '@/shared/ui/SectionHeader';
 
 describe('SectionHeader', () => {
   describe('Basic Rendering', () => {

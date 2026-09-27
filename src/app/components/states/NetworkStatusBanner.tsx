@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Wifi, WifiOff, RefreshCw } from 'lucide-react';
 import { useOnlineStatus } from '../../hooks/useOnlineStatus';
-import { φ } from '../../utils/golden';
+import { φ } from '@/shared/lib/golden';
 
 /**
  * ══════════════════════════════════════════════════════════

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DEVICE } from './device-layout';
-import { useThemeColors } from '../../hooks/useThemeColors';
+import { useThemeColors } from '@/shared/hooks/useThemeColors';
 
 /**
  * ══════════════════════════════════════════════════════════

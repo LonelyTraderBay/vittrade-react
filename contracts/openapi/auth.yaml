@@ -8,6 +8,31 @@ servers:
 security:
   - sessionCookie: []
 paths:
+  /auth/register:
+    post:
+      operationId: register
+      security: []
+      description: Starts email or phone registration. Responses must not reveal whether a contact already has an account.
+      parameters:
+        - {
+            name: Idempotency-Key,
+            in: header,
+            required: true,
+            schema: { type: string, minLength: 8 },
+          }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RegistrationRequest' }
+      responses:
+        '202':
+          description: Verification challenge issued or accepted for delivery.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RegistrationChallenge' }
+        '400': { $ref: '#/components/responses/InvalidRequest' }
+        '429': { $ref: '#/components/responses/RateLimited' }
   /auth/login:
     post:
       operationId: login
@@ -174,7 +199,12 @@ paths:
     post:
       operationId: changePassword
       parameters:
-        - { name: Idempotency-Key, in: header, required: true, schema: { type: string, minLength: 8 } }
+        - {
+            name: Idempotency-Key,
+            in: header,
+            required: true,
+            schema: { type: string, minLength: 8 },
+          }
       requestBody:
         required: true
         content:
@@ -275,12 +305,45 @@ components:
         challengeId: { type: string, minLength: 1 }
         code: { type: string, pattern: '^\d{6}$' }
     MfaVerificationRequest:
+      oneOf:
+        - $ref: '#/components/schemas/RegistrationMfaVerificationRequest'
+        - $ref: '#/components/schemas/ContactMfaVerificationRequest'
+    RegistrationRequest:
       type: object
+      additionalProperties: false
+      required: [fullName, channel, contact, password, acceptedTerms]
+      properties:
+        fullName: { type: string, minLength: 1 }
+        channel: { type: string, enum: [email, phone] }
+        contact: { type: string, minLength: 1 }
+        password: { type: string, minLength: 8, writeOnly: true }
+        referralCode: { type: string }
+        acceptedTerms: { const: true }
+    RegistrationChallenge:
+      type: object
+      additionalProperties: false
+      required: [challengeId, channel, maskedDestination, expiresAt]
+      properties:
+        challengeId: { type: string, minLength: 1 }
+        channel: { type: string, enum: [email, phone] }
+        maskedDestination: { type: string, minLength: 1 }
+        expiresAt: { type: string, format: date-time }
+    RegistrationMfaVerificationRequest:
+      type: object
+      additionalProperties: false
+      required: [challengeId, code, purpose]
+      properties:
+        challengeId: { type: string, minLength: 1 }
+        code: { type: string, pattern: '^\d{6}$' }
+        purpose: { const: register }
+    ContactMfaVerificationRequest:
+      type: object
+      additionalProperties: false
       required: [contact, code]
       properties:
         contact: { type: string, minLength: 1 }
         code: { type: string, pattern: '^\\d{6}$' }
-        purpose: { type: string }
+        purpose: { type: string, enum: [2fa] }
     MfaSetupConfirmationRequest:
       type: object
       required: [code]
@@ -310,10 +373,14 @@ components:
         user: { $ref: '#/components/schemas/User' }
     User:
       type: object
-      required: [id, email, fullName, roles, permissions, kycStatus]
+      required: [id, fullName, roles, permissions, kycStatus]
+      anyOf:
+        - required: [email]
+        - required: [phone]
       properties:
         id: { type: string }
         email: { type: string, format: email }
+        phone: { type: string }
         fullName: { type: string }
         roles: { type: array, items: { type: string } }
         permissions: { type: array, items: { type: string } }

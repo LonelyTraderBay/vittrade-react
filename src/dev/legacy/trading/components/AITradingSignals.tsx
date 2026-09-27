@@ -16,11 +16,9 @@ import {
   TrendingDown,
   Activity,
   Brain,
-  Target,
   AlertCircle,
   ChevronRight,
   Zap,
-  Eye,
   BarChart3,
   CheckCircle,
 } from 'lucide-react';
@@ -306,7 +304,7 @@ function FeatureBreakdown({ features }: { features: AISignal['features'] }) {
    MAIN COMPONENT
    ═══════════════════════════════════════════════════════════════ */
 
-export function AITradingSignals({ pair, signals, onSignalClick }: AITradingSignalsProps) {
+export function AITradingSignals({ pair: _pair, signals, onSignalClick }: AITradingSignalsProps) {
   const c = useThemeColors();
   const [filter, setFilter] = useState<'all' | 'long' | 'short'>('all');
 

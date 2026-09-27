@@ -1,28 +1,15 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { ArrowLeft, AlertCircle, ShieldCheck, Smartphone, Mail } from 'lucide-react';
-import { isDevelopmentBuild } from '@/shared/config/env';
 import { isApiError } from '@/shared/api/api-error';
 import { useAuth } from '@/shared/session/useAuth';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { WEB_FONT, WEB_BUTTON } from '@/shared/theme/webTokens';
 import { WebAuthBrandPanel, WebAuthFormShell } from '@/shared/ui/auth/WebAuthBrandPanel';
 import { parseLoginMfaChallengeState } from '../lib/login-mfa-route-state';
+import { parseRegistrationChallengeState } from '../lib/registration-route-state';
 
-/**
- * WebOTPPage — Enterprise Desktop OTP Verification
- * 2-column layout with animated brand panel.
- *
- * Features:
- * - 6-digit input boxes with auto-focus + auto-advance
- * - Paste support (full 6-digit paste)
- * - Auto-submit when all 6 digits entered
- * - Supports contract-backed MFA login and development-only registration
- * - Success state with animated checkmark
- *
- * Route: /w/auth/otp
- * Receives a login challenge via location.state, or a development registration state.
- */
+/** Web OTP flow for server-issued login MFA and registration challenges. */
 
 type Purpose = 'register' | '2fa';
 
@@ -32,26 +19,17 @@ export function WebOTPPage() {
   const { verifyMfa, verifyLoginMfa } = useAuth();
   const c = useThemeColors();
 
-  const state = location.state as {
-    challengeId?: string;
-    method?: string;
-    maskedDestination?: string;
-    expiresAt?: string;
-    contact?: string;
-    type?: string;
-    purpose?: string;
-  } | null;
-  const registrationFlow =
-    state?.purpose === 'register' && Boolean(state.contact) && isDevelopmentBuild;
-  const loginChallenge = parseLoginMfaChallengeState(state);
-  const loginChallengeExpiry = loginChallenge?.expiresAt;
+  const registrationChallenge = parseRegistrationChallengeState(location.state);
+  const registrationFlow = Boolean(registrationChallenge);
+  const loginChallenge = parseLoginMfaChallengeState(location.state);
+  const challengeExpiry = registrationChallenge?.expiresAt ?? loginChallenge?.expiresAt;
   const challengeIsValid = registrationFlow || Boolean(loginChallenge);
   const purpose: Purpose = registrationFlow ? 'register' : '2fa';
   const contact = registrationFlow
-    ? (state?.contact ?? '')
+    ? (registrationChallenge?.maskedDestination ?? '')
     : (loginChallenge?.maskedDestination ?? '');
   const contactType = registrationFlow
-    ? (state?.type ?? 'email')
+    ? (registrationChallenge?.channel ?? 'email')
     : loginChallenge?.method === 'sms'
       ? 'phone'
       : loginChallenge?.method === 'totp'
@@ -66,36 +44,38 @@ export function WebOTPPage() {
 
   /* ─── Auto-focus first input ─── */
   useEffect(() => {
-    const t = setTimeout(() => inputRefs.current[0]?.focus(), 200);
+    const t = setTimeout(() => {
+      if (document.activeElement === document.body) inputRefs.current[0]?.focus();
+    }, 200);
     return () => clearTimeout(t);
   }, []);
   useEffect(() => {
     if (!challengeIsValid) navigate('/w/auth/login', { replace: true });
   }, [challengeIsValid, navigate]);
   useEffect(() => {
-    if (!loginChallengeExpiry) return;
+    if (!challengeExpiry) return;
     let timeout: ReturnType<typeof setTimeout>;
     const checkExpiry = () => {
-      const remaining = Date.parse(loginChallengeExpiry) - Date.now();
+      const remaining = Date.parse(challengeExpiry) - Date.now();
       if (remaining <= 0) {
-        navigate('/w/auth/login', { replace: true });
+        navigate(registrationFlow ? '/w/auth/register' : '/w/auth/login', { replace: true });
       } else {
         timeout = setTimeout(checkExpiry, Math.min(remaining, 2_147_483_647));
       }
     };
     timeout = setTimeout(
       checkExpiry,
-      Math.min(Math.max(0, Date.parse(loginChallengeExpiry) - Date.now()), 2_147_483_647),
+      Math.min(Math.max(0, Date.parse(challengeExpiry) - Date.now()), 2_147_483_647),
     );
     return () => clearTimeout(timeout);
-  }, [loginChallengeExpiry, navigate]);
+  }, [challengeExpiry, navigate, registrationFlow]);
 
   /* ─── Verify OTP ─── */
   const handleVerify = useCallback(
     async (code: string) => {
       if (!challengeIsValid || isLoading) return;
-      if (loginChallenge && Date.now() >= Date.parse(loginChallenge.expiresAt)) {
-        navigate('/w/auth/login', { replace: true });
+      if (challengeExpiry && Date.now() >= Date.parse(challengeExpiry)) {
+        navigate(registrationFlow ? '/w/auth/register' : '/w/auth/login', { replace: true });
         return;
       }
       setIsLoading(true);
@@ -103,8 +83,15 @@ export function WebOTPPage() {
       try {
         if (loginChallenge) {
           await verifyLoginMfa({ challengeId: loginChallenge.id, code });
+        } else if (registrationChallenge) {
+          await verifyMfa({
+            challengeId: registrationChallenge.challengeId,
+            code,
+            purpose: 'register',
+          });
         } else {
-          await verifyMfa({ contact, code, purpose: 'register' });
+          navigate('/w/auth/login', { replace: true });
+          return;
         }
         setSuccess(true);
         setIsLoading(false);
@@ -117,7 +104,22 @@ export function WebOTPPage() {
           }
         }, 1800);
       } catch (verifyError) {
-        if (loginChallenge && isApiError(verifyError)) {
+        if (registrationChallenge && isApiError(verifyError)) {
+          if (verifyError.status === 410) {
+            navigate('/w/auth/register', { replace: true });
+            setIsLoading(false);
+            return;
+          }
+          if (verifyError.status === 429) {
+            setError('Quá nhiều lần xác thực. Hãy bắt đầu yêu cầu đăng ký mới sau một lúc.');
+          } else if (verifyError.status === 400) {
+            setError('Mã xác thực không đúng. Vui lòng kiểm tra lại.');
+            setOtp(['', '', '', '', '', '']);
+            setTimeout(() => inputRefs.current[0]?.focus(), 100);
+          } else {
+            setError('Không thể xác minh lúc này. Vui lòng thử lại.');
+          }
+        } else if (loginChallenge && isApiError(verifyError)) {
           if (verifyError.status === 410) {
             navigate('/w/auth/login', { replace: true });
             setIsLoading(false);
@@ -138,11 +140,7 @@ export function WebOTPPage() {
             setError('Không thể xác minh lúc này. Vui lòng thử lại.');
           }
         } else {
-          setError(
-            loginChallenge
-              ? 'Không thể xác minh lúc này. Vui lòng thử lại.'
-              : 'Mã xác thực không đúng. Vui lòng kiểm tra lại.',
-          );
+          setError('Không thể xác minh lúc này. Vui lòng thử lại.');
           setOtp(['', '', '', '', '', '']);
           setTimeout(() => inputRefs.current[0]?.focus(), 100);
         }
@@ -156,8 +154,10 @@ export function WebOTPPage() {
       navigate,
       verifyMfa,
       verifyLoginMfa,
-      contact,
       loginChallenge,
+      registrationChallenge,
+      registrationFlow,
+      challengeExpiry,
     ],
   );
 
@@ -223,7 +223,7 @@ export function WebOTPPage() {
     '2fa': 'Nhập mã xác thực 2FA để đăng nhập vào tài khoản.',
   };
 
-  const backRoute = purpose === 'register' ? '/w/auth/register' : '/w/auth/login';
+  const backRoute = registrationFlow ? '/w/auth/register' : '/w/auth/login';
 
   const filled = otp.filter((d) => d !== '').length;
 
@@ -353,7 +353,7 @@ export function WebOTPPage() {
                 <ShieldCheck size={14} color={c.text3} />
               )}
               <span style={{ color: c.text1, fontSize: WEB_FONT.md, fontWeight: 500 }}>
-                {maskContact(contact)}
+                {registrationFlow ? contact : maskContact(contact)}
               </span>
             </div>
 
@@ -443,11 +443,10 @@ export function WebOTPPage() {
               </div>
             )}
 
-            {/* The MFA contract has no resend or remembered-device operation yet. */}
             <div className="flex flex-col items-center" style={{ gap: 8, marginBottom: 28 }}>
               <span style={{ color: c.text3, fontSize: WEB_FONT.sm }}>Không nhận được mã?</span>
               <button
-                onClick={() => navigate('/w/auth/login', { replace: true })}
+                onClick={() => navigate(backRoute, { replace: true })}
                 className="hover:underline"
                 style={{
                   color: '#3B82F6',
@@ -458,7 +457,7 @@ export function WebOTPPage() {
                   cursor: 'pointer',
                 }}
               >
-                Quay lại đăng nhập để thử lại
+                {registrationFlow ? 'Quay lại đăng ký để thử lại' : 'Quay lại đăng nhập để thử lại'}
               </button>
             </div>
 
@@ -491,7 +490,6 @@ export function WebOTPPage() {
                     ? 'Đảm bảo đồng hồ trên thiết bị và ứng dụng xác thực đang đồng bộ.'
                     : `Đảm bảo ${contactType === 'email' ? 'email' : 'số điện thoại'} ${maskContact(contact)} chính xác.`}
                 </li>
-                {purpose === 'register' && <li>Thử gửi lại mã sau khi hết thời gian chờ</li>}
                 <li>
                   Liên hệ{' '}
                   <button

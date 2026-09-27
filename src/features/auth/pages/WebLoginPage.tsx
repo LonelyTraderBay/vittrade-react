@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Eye, EyeOff, AlertCircle, Fingerprint, Lock, Mail, ArrowRight } from 'lucide-react';
+import { isApiError } from '@/shared/api/api-error';
 import { useAuth } from '@/shared/session/useAuth';
 import { env } from '@/shared/config/env';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
@@ -80,13 +81,7 @@ export function WebLoginPage() {
       setIsLoading(false);
 
       if (newAttempts >= MAX_ATTEMPTS) {
-        navigate('/w/auth/account-locked', {
-          state: {
-            email,
-            attempts: newAttempts,
-            unlockTime: Date.now() + 15 * 60 * 1000,
-          },
-        });
+        navigate('/w/auth/account-locked');
         return;
       }
 
@@ -107,7 +102,11 @@ export function WebLoginPage() {
     try {
       const loginResult = await signIn({ email, password });
       navigateAfterLogin(loginResult);
-    } catch {
+    } catch (loginError) {
+      if (isApiError(loginError) && loginError.status === 423) {
+        navigate('/w/auth/account-locked', { replace: true });
+        return;
+      }
       setError('Đăng nhập thất bại. Vui lòng kiểm tra thông tin và thử lại.');
     } finally {
       setIsLoading(false);

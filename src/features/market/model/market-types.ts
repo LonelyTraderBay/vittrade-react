@@ -192,6 +192,239 @@ export interface MarketMoversResponse {
   updatedAt: string;
 }
 
+export type MarketNewsCategory = 'market' | 'macro' | 'regulation' | 'project';
+export type MarketNewsSentiment = 'bullish' | 'neutral' | 'bearish';
+
+export interface MarketNewsQuery extends Record<
+  string,
+  string | number | boolean | null | undefined
+> {
+  category?: MarketNewsCategory;
+  sentiment?: MarketNewsSentiment;
+  limit?: number;
+}
+
+export interface MarketNewsItem {
+  id: string;
+  title: string;
+  summary: string;
+  category: MarketNewsCategory;
+  sentiment: MarketNewsSentiment;
+  source: string;
+  articleUrl: string;
+  publishedAt: string;
+  relatedPairs: Array<{ pairId: string; symbol: string }>;
+  isBreaking: boolean;
+}
+
+export interface MarketNewsResponse {
+  items: MarketNewsItem[];
+  updatedAt: string;
+}
+
+export type MarketCalendarEventType =
+  | 'unlock'
+  | 'upgrade'
+  | 'halving'
+  | 'airdrop'
+  | 'listing'
+  | 'fork'
+  | 'burn'
+  | 'conference'
+  | 'report';
+export type MarketEventImpact = 'high' | 'medium' | 'low';
+
+export interface MarketCalendarQuery extends Record<
+  string,
+  string | number | boolean | null | undefined
+> {
+  type?: MarketCalendarEventType;
+  impact?: MarketEventImpact;
+}
+
+export interface MarketCalendarEvent {
+  id: string;
+  title: string;
+  type: MarketCalendarEventType;
+  eventAt: string;
+  symbol?: string;
+  impact: MarketEventImpact;
+  description: string;
+  sourceUrl?: string;
+  confirmed: boolean;
+}
+
+export interface MarketCalendarResponse {
+  items: MarketCalendarEvent[];
+  updatedAt: string;
+}
+
+export type MarketCorrelationWindow = '7d' | '30d' | '90d';
+
+export interface MarketCorrelationsQuery extends Record<
+  string,
+  string | number | boolean | null | undefined
+> {
+  window: MarketCorrelationWindow;
+}
+
+export interface MarketCorrelationPair {
+  assetA: string;
+  assetB: string;
+  coefficient: number;
+  observations: number;
+}
+
+export interface MarketCorrelationsResponse {
+  window: MarketCorrelationWindow;
+  method: 'pearson' | 'spearman';
+  provider: string;
+  items: MarketCorrelationPair[];
+  updatedAt: string;
+}
+
+export type MarketUnlockWindow = MarketCorrelationWindow;
+export type MarketUnlockCategory = 'team' | 'investor' | 'ecosystem' | 'community' | 'foundation';
+export type MarketUnlockScheduleType = 'cliff' | 'linear' | 'milestone';
+export type MarketUnlockStatus = 'confirmed' | 'estimated';
+
+export interface MarketUnlocksQuery extends Record<
+  string,
+  string | number | boolean | null | undefined
+> {
+  window: MarketUnlockWindow;
+  category?: MarketUnlockCategory;
+}
+
+export interface MarketTokenUnlock {
+  id: string;
+  symbol: string;
+  name: string;
+  eventAt: string;
+  amount: number;
+  circulatingSupplyPercent: number;
+  category: MarketUnlockCategory;
+  scheduleType: MarketUnlockScheduleType;
+  status: MarketUnlockStatus;
+  sourceUrl: string;
+}
+
+export interface MarketTokenUnlocksResponse {
+  window: MarketUnlockWindow;
+  provider: string;
+  items: MarketTokenUnlock[];
+  updatedAt: string;
+}
+
+export interface MarketDerivativesStats {
+  totalOpenInterest: number;
+  openInterestChange24h: number;
+  totalVolume24h: number;
+  volumeChange24h: number;
+  totalLiquidations24h: number;
+  longLiquidations24h: number;
+  shortLiquidations24h: number;
+  averageFundingRate8h: number;
+  btcLongShortRatio: number;
+}
+
+export interface MarketDerivativePair {
+  id: string;
+  symbol: string;
+  name: string;
+  price: number;
+  change24h: number;
+  fundingRate: number;
+  openInterest: number;
+  openInterestChange24h: number;
+  volume24h: number;
+  longSharePercent: number;
+  liquidations24h: { long: number; short: number };
+}
+
+export interface MarketLiquidationBucket {
+  bucketAt: string;
+  long: number;
+  short: number;
+}
+
+export interface MarketDerivativesResponse {
+  provider: string;
+  updatedAt: string;
+  stats: MarketDerivativesStats;
+  pairs: MarketDerivativePair[];
+  liquidationHistory: MarketLiquidationBucket[];
+}
+
+export type MarketSentimentWindow = '24h' | '7d' | '30d';
+export type MarketSentimentLabel = 'bullish' | 'neutral' | 'bearish';
+
+export interface MarketSentimentQuery extends Record<
+  string,
+  string | number | boolean | null | undefined
+> {
+  window: MarketSentimentWindow;
+}
+
+export interface MarketSentimentShare {
+  bullish: number;
+  neutral: number;
+  bearish: number;
+}
+
+export interface MarketSentimentToken {
+  id: string;
+  symbol: string;
+  name: string;
+  score: number;
+  sentiment: MarketSentimentLabel;
+  mentions24h: number;
+  mentionsChange24h: number;
+  sentimentSharePercent: MarketSentimentShare;
+  trendingRank?: number;
+  topTopics: string[];
+}
+
+export interface MarketSentimentResponse {
+  window: MarketSentimentWindow;
+  provider: string;
+  updatedAt: string;
+  overall: {
+    score: number;
+    sentiment: MarketSentimentLabel;
+    totalMentions24h: number;
+    mentionsChange24h: number;
+    trendingTokenCount: number;
+    socialDominance: { btcPercent: number; ethPercent: number; otherPercent: number };
+  };
+  timeline: Array<{ at: string; score: number; mentions: number }>;
+  tokens: MarketSentimentToken[];
+  trendingTopics: Array<{ topic: string; mentions24h: number; change24h: number }>;
+}
+
+export type MarketSignalDirection = 'long' | 'short';
+export type MarketSignalCategory = 'scalp' | 'swing' | 'position';
+export type MarketSignalStatus = 'active' | 'closed' | 'expired';
+
+export interface MarketSignal {
+  id: string;
+  providerName: string;
+  symbol: string;
+  direction: MarketSignalDirection;
+  category: MarketSignalCategory;
+  status: MarketSignalStatus;
+  publishedAt: string;
+  expiresAt?: string;
+  rationale: string;
+  sourceUrl: string;
+}
+
+export interface MarketSignalsResponse {
+  provider: string;
+  updatedAt: string;
+  items: MarketSignal[];
+}
+
 export type MarketPriceAlertCondition = 'above' | 'below';
 export type MarketPriceAlertFilter = 'all' | 'active' | 'triggered';
 

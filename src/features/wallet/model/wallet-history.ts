@@ -4,9 +4,11 @@ import type { WalletTransactionType } from './wallet-types';
 export const TYPE_FILTERS = [
   { id: 'all', label: 'All' },
   { id: 'deposit', label: 'Deposit' },
-  { id: 'withdraw', label: 'Withdraw' },
-  { id: 'trade', label: 'Trade' },
-  { id: 'p2p', label: 'P2P' },
+  { id: 'withdraw', label: 'Withdrawal' },
+  { id: 'trade_buy', label: 'Trade buy' },
+  { id: 'trade_sell', label: 'Trade sell' },
+  { id: 'p2p_buy', label: 'P2P buy' },
+  { id: 'p2p_sell', label: 'P2P sell' },
 ] as const;
 
 export const STATUS_FILTERS = [
@@ -18,25 +20,8 @@ export const STATUS_FILTERS = [
 
 export type TypeFilter = (typeof TYPE_FILTERS)[number]['id'];
 export type StatusFilter = (typeof STATUS_FILTERS)[number]['id'];
-export type SortKey = 'time' | 'amount' | 'type';
-export type SortDirection = 'asc' | 'desc';
 
-export const PAGE_SIZE = 15;
-
-export function toggleSort(
-  key: SortKey,
-  currentKey: SortKey,
-  currentDirection: SortDirection,
-  setKey: (key: SortKey) => void,
-  setDirection: (direction: SortDirection) => void,
-) {
-  if (key === currentKey) {
-    setDirection(currentDirection === 'asc' ? 'desc' : 'asc');
-    return;
-  }
-  setKey(key);
-  setDirection('desc');
-}
+export const PAGE_SIZE = 50;
 
 export function transactionMetadata(type: WalletTransactionType): {
   label: string;

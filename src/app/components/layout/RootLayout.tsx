@@ -3,7 +3,7 @@ import { Outlet, useLocation } from 'react-router';
 import { AppProvider } from '../../contexts/AppContext';
 import { MobileFrame } from './MobileFrame';
 import { ErrorBoundary } from '../mobile/ErrorBoundary';
-import { ThemedToaster } from '../ui/ThemedToaster';
+import { ThemedToaster } from '@/shared/ui/ThemedToaster';
 import { PlatformSwitcher } from './PlatformSwitcher';
 
 /**

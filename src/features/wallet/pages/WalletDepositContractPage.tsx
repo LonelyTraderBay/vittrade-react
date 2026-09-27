@@ -8,6 +8,7 @@ import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { useAuth } from '@/shared/session/useAuth';
 import { useWalletDepositNetworksQuery } from '../model/wallet-queries';
 import type { WalletDepositNetwork } from '../model/wallet-types';
 
@@ -16,7 +17,9 @@ const EMPTY_NETWORKS: WalletDepositNetwork[] = [];
 export function WalletDepositContractPage() {
   const { asset = 'USDT' } = useParams();
   const colors = useThemeColors();
-  const networksQuery = useWalletDepositNetworksQuery(asset);
+  const { hasPermission } = useAuth();
+  const canReadWallet = hasPermission('wallet:read');
+  const networksQuery = useWalletDepositNetworksQuery(asset, canReadWallet);
   const networks = networksQuery.data ?? EMPTY_NETWORKS;
   const [selectedNetworkId, setSelectedNetworkId] = useState('');
   const [copied, setCopied] = useState<'address' | 'memo'>();
@@ -38,6 +41,19 @@ export function WalletDepositContractPage() {
     () => networks.find((network) => network.id === selectedNetworkId) ?? networks[0],
     [networks, selectedNetworkId],
   );
+
+  if (!canReadWallet) {
+    return (
+      <PageLayout>
+        <Header title={`Deposit ${asset}`} subtitle="Wallet contract" back />
+        <PageContent>
+          <p role="alert" style={{ color: colors.error }}>
+            Wallet read permission is required to view assigned deposit addresses.
+          </p>
+        </PageContent>
+      </PageLayout>
+    );
+  }
 
   if (networksQuery.isPending) {
     return (

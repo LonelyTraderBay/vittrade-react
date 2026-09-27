@@ -18,13 +18,21 @@ import type {
   DiscoveryTradingPair,
 } from '../model/discovery-types';
 
-function LoadingPage({ title }: { title: string }) {
+function LoadingMessage() {
   const colors = useThemeColors();
+  return (
+    <p role="status" style={{ color: colors.text2 }}>
+      Đang tải dữ liệu Discovery API…
+    </p>
+  );
+}
+
+function LoadingPage({ title }: { title: string }) {
   return (
     <PageLayout>
       <Header title={title} back />
       <PageContent>
-        <p style={{ color: colors.text2 }}>Đang tải dữ liệu Discovery API…</p>
+        <LoadingMessage />
       </PageContent>
     </PageLayout>
   );
@@ -170,7 +178,7 @@ export function DiscoverySearchContractPage() {
           />
         </label>
         {result.isError && <ErrorState onAction={() => void result.refetch()} />}
-        {result.isPending && submittedQuery.length >= 2 && <LoadingPage title="Search" />}
+        {result.isPending && submittedQuery.length >= 2 && <LoadingMessage />}
         {data && (
           <>
             <ResultSection title="Prediction markets" count={data.predictions.length}>

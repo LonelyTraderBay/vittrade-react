@@ -38,7 +38,7 @@ const STEPS: OnboardingStep[] = ['welcome', 'modules', 'boundaries', 'trust', 'g
 export function OnboardingProgress({
   currentStep,
   totalSteps = 6,
-  completedSteps = [],
+  completedSteps: _completedSteps = [],
 }: OnboardingProgressProps) {
   const c = useThemeColors();
 

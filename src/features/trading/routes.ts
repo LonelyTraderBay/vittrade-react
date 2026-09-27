@@ -49,10 +49,31 @@ const TradingWebAnalyticsPage = lazyRoute(() =>
     default: module.TradeAnalyticsContractPage,
   })),
 );
+const OrdersHistoryPage = lazyRoute(() =>
+  import('./pages/OrdersHistoryPage').then((module) => ({ default: module.OrdersHistoryPage })),
+);
+const OpenPositionsPage = lazyRoute(() =>
+  import('./pages/OpenPositionsPage').then((module) => ({ default: module.OpenPositionsPage })),
+);
+const OrderReceiptPage = lazyRoute(() =>
+  import('./pages/OrderReceiptPage').then((module) => ({ default: module.OrderReceiptPage })),
+);
+const TradeSettingsPage = lazyRoute(() =>
+  import('./pages/TradeSettingsPage').then((module) => ({ default: module.TradeSettingsPage })),
+);
+const TraderProfilePage = lazyRoute(() =>
+  import('./pages/TraderProfilePage').then((module) => ({ default: module.TraderProfilePage })),
+);
+const ProviderLeaderboardPage = lazyRoute(() =>
+  import('./pages/ProviderLeaderboardPage').then((module) => ({
+    default: module.ProviderLeaderboardPage,
+  })),
+);
 
 // Các URL copy-trading web cũ vẫn được giữ, nhưng implementation thuộc feature này.
 export function createTradingWebRoutes(): RouteObject[] {
   return [
+    { path: 'trade/positions', Component: OpenPositionsPage },
     { path: 'trade/copy', Component: CopyTradingPage },
     { path: 'trade/copy/provider/:providerId', Component: CopyProviderDetailPage },
     {
@@ -68,6 +89,7 @@ export function createTradingWebRoutes(): RouteObject[] {
       Component: CopyConfirmationPage,
     },
     { path: 'trade/copy/active', Component: ActiveCopiesPage },
+    { path: 'trade/orders', Component: OrdersHistoryPage },
     { path: 'trade/copy/performance/:copyId', Component: TradingWebCopyPerformancePage },
     { path: 'trade/copy/education', Component: CopyEducationPage },
     { path: 'trade/copy-trading/education', Component: CopyEducationPage },
@@ -78,8 +100,16 @@ export function createTradingWebRoutes(): RouteObject[] {
 /** Production route boundary for the contract-backed copy-trading slice. */
 export function createTradingRoutes(): RouteObject[] {
   return [
+    { path: 'trade/positions', Component: OpenPositionsPage },
+    { path: 'trade/copy-performance/:copyId', Component: TradingWebCopyPerformancePage },
+    { path: 'trade/copy-trading/v2', Component: CopyTradingPage },
     { path: 'trade/copy-trading', Component: CopyTradingPage },
+    { path: 'trade/orders-history', Component: OrdersHistoryPage },
+    { path: 'trade/order-receipt', Component: OrderReceiptPage },
+    { path: 'trade/settings', Component: TradeSettingsPage },
+    { path: 'trade/trader/:traderId', Component: TraderProfilePage },
     { path: 'trade/copy-trading/active', Component: ActiveCopiesPage },
+    { path: 'trade/copy-trading/leaderboard', Component: ProviderLeaderboardPage },
     { path: 'trade/copy-provider/:providerId', Component: CopyProviderDetailPage },
     { path: 'trade/copy-provider/:providerId/assessment', Component: PreCopyAssessmentPage },
     { path: 'trade/copy-provider/:providerId/configuration', Component: CopyConfigurationPage },

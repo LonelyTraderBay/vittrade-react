@@ -3,6 +3,8 @@ import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import type { AuthAdapter } from '@/shared/session/AuthContext';
+import { testAuthAdapter } from '@/test/auth-test-adapter';
 import { renderWithProviders } from '@/test/test-utils';
 import { TradeAnalyticsContractPage } from './TradeAnalyticsContractPage';
 
@@ -11,6 +13,16 @@ const server = setupServer();
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
+
+function adapterWithPermissions(permissions: string[]): AuthAdapter {
+  return {
+    ...testAuthAdapter,
+    initialSession: {
+      ...testAuthAdapter.initialSession!,
+      user: { ...testAuthAdapter.initialSession!.user, permissions },
+    },
+  };
+}
 
 const response = {
   period: '1M',
@@ -37,7 +49,9 @@ describe('Trade analytics contract page', () => {
   it('renders server-owned summary and switches to asset view', async () => {
     server.use(http.get('*/trading/analytics', () => HttpResponse.json(response)));
 
-    renderWithProviders(<TradeAnalyticsContractPage />);
+    renderWithProviders(<TradeAnalyticsContractPage />, {
+      authAdapter: adapterWithPermissions(['trade:read']),
+    });
 
     expect(await screen.findByText('Performance summary')).toBeInTheDocument();
     expect(screen.getByText('+$1,259.35')).toBeInTheDocument();
@@ -54,9 +68,29 @@ describe('Trade analytics contract page', () => {
       ),
     );
 
-    renderWithProviders(<TradeAnalyticsContractPage />);
+    renderWithProviders(<TradeAnalyticsContractPage />, {
+      authAdapter: adapterWithPermissions(['trade:read']),
+    });
 
     expect(await screen.findByRole('button')).toBeInTheDocument();
     expect(screen.queryByText('Performance summary')).not.toBeInTheDocument();
+  });
+
+  it('does not request or render account analytics without trade read permission', () => {
+    let requestCount = 0;
+    server.use(
+      http.get('*/trading/analytics', () => {
+        requestCount += 1;
+        return HttpResponse.json(response);
+      }),
+    );
+
+    renderWithProviders(<TradeAnalyticsContractPage />, {
+      authAdapter: adapterWithPermissions([]),
+    });
+
+    expect(screen.getByRole('alert')).toHaveTextContent('không có quyền xem dữ liệu giao dịch');
+    expect(screen.queryByText('Performance summary')).not.toBeInTheDocument();
+    expect(requestCount).toBe(0);
   });
 });

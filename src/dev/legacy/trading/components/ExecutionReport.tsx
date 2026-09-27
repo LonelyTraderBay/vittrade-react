@@ -12,15 +12,7 @@
  */
 
 import React from 'react';
-import {
-  CheckCircle,
-  TrendingUp,
-  TrendingDown,
-  Clock,
-  Award,
-  ExternalLink,
-  Activity,
-} from 'lucide-react';
+import { CheckCircle, TrendingUp, TrendingDown, Clock, Award, Activity } from 'lucide-react';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { FONT_SCALE, FONT_WEIGHT } from '@/shared/theme/legacyTypography';

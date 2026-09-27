@@ -25,6 +25,7 @@ import {
   useWalletTransactionsQuery,
 } from '@/features/wallet/model/wallet-queries';
 import { normalizeCoinSymbol } from '@/shared/types/route-state';
+import { useAuth } from '@/shared/session/useAuth';
 
 export interface WalletAssetDetailIntegrations {
   showDCAButton?: boolean;
@@ -42,6 +43,8 @@ export function WalletAssetDetailPage({
   const prefix = useRoutePrefix();
   const c = useThemeColors();
   const { hapticSelection } = useHaptic();
+  const { hasPermission } = useAuth();
+  const canReadWallet = hasPermission('wallet:read');
   const [period, setPeriod] = useState('1M');
 
   const {
@@ -49,7 +52,7 @@ export function WalletAssetDetailPage({
     isLoading: assetsLoading,
     error: assetsError,
     refetch: refetchAssets,
-  } = useWalletAssetsQuery();
+  } = useWalletAssetsQuery(canReadWallet);
   const {
     data: marketData,
     isLoading: marketLoading,
@@ -64,7 +67,10 @@ export function WalletAssetDetailPage({
     isLoading: transactionsLoading,
     error: transactionsError,
     refetch: refetchTransactions,
-  } = useWalletTransactionsQuery({ asset: asset?.symbol ?? assetId?.toUpperCase(), limit: 20 });
+  } = useWalletTransactionsQuery(
+    { asset: asset?.symbol ?? assetId?.toUpperCase(), limit: 20 },
+    canReadWallet,
+  );
   const pair = marketData?.items.find((item) => item.baseAsset === asset?.symbol);
   const assetTxs = transactionsData?.items ?? [];
   const chartData =
@@ -76,6 +82,19 @@ export function WalletAssetDetailPage({
       onDCAImpression?.(asset.symbol);
     }
   }, [showDCAButton, asset, onDCAImpression]);
+
+  if (!canReadWallet) {
+    return (
+      <PageLayout>
+        <Header title="Tài sản" subtitle="Chi tiết · Wallet" back />
+        <PageContent>
+          <p role="alert" style={{ color: c.error }}>
+            Wallet read permission is required to view asset balances and transactions.
+          </p>
+        </PageContent>
+      </PageLayout>
+    );
+  }
 
   if (assetsLoading || marketLoading || transactionsLoading) {
     return (
@@ -277,6 +296,7 @@ export function WalletAssetDetailPage({
                   <button
                     key={p}
                     onClick={() => setPeriod(p)}
+                    aria-pressed={period === p}
                     className="px-3 py-1 rounded-lg text-xs"
                     style={{
                       background: period === p ? c.chipActiveBg : 'transparent',

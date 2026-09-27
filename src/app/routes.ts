@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 import { IntegrationPendingPage } from './pages/system/IntegrationPendingPage';
-import { isDevelopmentBuild } from './config/env';
+import { isDevelopmentBuild } from '@/shared/config/env';
 /**
  * ══════════════════════════════════════════════════════════
  *  App Router — 3 Platform Shells (Phone / Tablet / Web)
@@ -99,9 +99,7 @@ const ResponsiveP2PHomePage = lazy(() =>
 );
 
 // ─── Onboarding ───
-const OnboardingFlow = isDevelopmentBuild
-  ? lazy(() => import('@/dev/legacy/onboarding/OnboardingFlow'))
-  : IntegrationPendingPage;
+const OnboardingFlow = IntegrationPendingPage;
 
 // ─── Web-Specific Pages ───
 const WebHomePage = MarketHomePage;
@@ -126,13 +124,7 @@ const WebP2PHomePage = lazy(() =>
 );
 const WebTradePage = TradePage;
 const WebPairDetailPage = PairDetailPage;
-const WebTradingBotsPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/trading/WebTradingBotsDemoPage').then((m) => ({
-        default: m.WebTradingBotsDemoPage,
-      })),
-    )
-  : IntegrationPendingPage;
+const WebTradingBotsPage = IntegrationPendingPage;
 const WebPredictionsPage = lazy(() =>
   import('@/features/predictions/pages/PredictionContractPages').then((m) => ({
     default: m.PredictionsHomeContractPage,
@@ -172,140 +164,31 @@ const WebEarnStakingPage = lazy(() =>
 const WebAddressBookPage = lazy(() =>
   import('@/features/wallet/pages/AddressBookPage').then((m) => ({ default: m.AddressBookPage })),
 );
-const WebBotFAQPage = isDevelopmentBuild
-  ? lazy(() => import('@/dev/legacy/web/WebBotFAQPage').then((m) => ({ default: m.WebBotFAQPage })))
-  : IntegrationPendingPage;
-const WebBotGuidePage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebBotGuidePage').then((m) => ({ default: m.WebBotGuidePage })),
-    )
-  : IntegrationPendingPage;
-const WebBotRiskDisclosurePage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebBotRiskDisclosurePage').then((m) => ({
-        default: m.WebBotRiskDisclosurePage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebBotBacktestingPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebBotBacktestingPage').then((m) => ({
-        default: m.WebBotBacktestingPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebBotTermsOfServicePage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebBotCompliancePages').then((m) => ({
-        default: m.WebBotTermsOfServicePage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebBotSuitabilityAssessmentPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebBotCompliancePages').then((m) => ({
-        default: m.WebBotSuitabilityAssessmentPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebBotEmergencyStopPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebBotCompliancePages').then((m) => ({
-        default: m.WebBotEmergencyStopPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebBotSecuritySettingsPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebBotCompliancePages').then((m) => ({
-        default: m.WebBotSecuritySettingsPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebBotHistoryPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebBotAnalyticsPages').then((m) => ({
-        default: m.WebBotHistoryPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebBotPerformanceAnalyticsPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebBotAnalyticsPages').then((m) => ({
-        default: m.WebBotPerformanceAnalyticsPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebBotRiskDashboardPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebBotAnalyticsPages').then((m) => ({
-        default: m.WebBotRiskDashboardPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebBotPortfolioDashboardPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebBotAnalyticsPages').then((m) => ({
-        default: m.WebBotPortfolioDashboardPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebBotStrategyComparePage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebBotAnalyticsPages').then((m) => ({
-        default: m.WebBotStrategyComparePage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebBotOptimizationPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebBotAnalyticsPages').then((m) => ({
-        default: m.WebBotOptimizationPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebBotDrawdownAnalyzerPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebBotAnalyticsPages').then((m) => ({
-        default: m.WebBotDrawdownAnalyzerPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebBotEquityCurvePage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebBotAnalyticsPages').then((m) => ({
-        default: m.WebBotEquityCurvePage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebBotTaxReportingPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebBotUtilityPages').then((m) => ({
-        default: m.WebBotTaxReportingPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebBotAPIDocumentationPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebBotUtilityPages').then((m) => ({
-        default: m.WebBotAPIDocumentationPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebOrdersHistoryPage = lazy(() =>
-  import('@/features/trading/pages/OrdersHistoryPage').then((m) => ({
-    default: m.OrdersHistoryPage,
-  })),
-);
+const WebBotFAQPage = IntegrationPendingPage;
+const WebBotGuidePage = IntegrationPendingPage;
+const WebBotRiskDisclosurePage = IntegrationPendingPage;
+const WebBotBacktestingPage = IntegrationPendingPage;
+const WebBotTermsOfServicePage = IntegrationPendingPage;
+const WebBotSuitabilityAssessmentPage = IntegrationPendingPage;
+const WebBotEmergencyStopPage = IntegrationPendingPage;
+const WebBotSecuritySettingsPage = IntegrationPendingPage;
+const WebBotHistoryPage = IntegrationPendingPage;
+const WebBotPerformanceAnalyticsPage = IntegrationPendingPage;
+const WebBotRiskDashboardPage = IntegrationPendingPage;
+const WebBotPortfolioDashboardPage = IntegrationPendingPage;
+const WebBotStrategyComparePage = IntegrationPendingPage;
+const WebBotOptimizationPage = IntegrationPendingPage;
+const WebBotDrawdownAnalyzerPage = IntegrationPendingPage;
+const WebBotEquityCurvePage = IntegrationPendingPage;
+const WebBotTaxReportingPage = IntegrationPendingPage;
+const WebBotAPIDocumentationPage = IntegrationPendingPage;
 const WebLoginPage = lazy(() =>
   import('@/features/auth/pages/WebLoginPage').then((m) => ({ default: m.WebLoginPage })),
 );
-// Account creation remains development-only until the registration contract exists.
+// Account creation uses its typed frontend contract in development; production awaits backend integration.
 const WebRegisterPage = isDevelopmentBuild
   ? lazy(() =>
-      import('@/dev/legacy/auth/WebRegisterForm').then((m) => ({
-        default: m.WebRegisterPage,
-      })),
+      import('@/features/auth/pages/WebRegisterPage').then((m) => ({ default: m.WebRegisterPage })),
     )
   : IntegrationPendingPage;
 const WebForgotPasswordPage = lazy(() =>
@@ -339,88 +222,11 @@ const WebSessionExpiredPage = lazy(() =>
     default: m.WebSessionExpiredPage,
   })),
 );
-const WebDeviceTrustPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebDeviceTrustPage').then((m) => ({
-        default: m.WebDeviceTrustPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebAntiPhishingSetupPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebAntiPhishingSetupPage').then((m) => ({
-        default: m.WebAntiPhishingSetupPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebPasskeySetupPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebPasskeySetupPage').then((m) => ({
-        default: m.WebPasskeySetupPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebLoginActivityPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebLoginActivityPage').then((m) => ({
-        default: m.WebLoginActivityPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebSecurityAuditPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebSecurityAuditPage').then((m) => ({
-        default: m.WebSecurityAuditPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebSecurityNotificationsPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebSecurityNotificationsPage').then((m) => ({
-        default: m.WebSecurityNotificationsPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebSessionManagementPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebSessionManagementPage').then((m) => ({
-        default: m.WebSessionManagementPage,
-      })),
-    )
-  : IntegrationPendingPage;
 const PasswordChangePage = lazy(() =>
   import('@/features/auth/pages/PasswordChangePage').then((m) => ({
     default: m.PasswordChangePage,
   })),
 );
-const WebSecurityAlertDetailPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebSecurityAlertDetailPage').then((m) => ({
-        default: m.WebSecurityAlertDetailPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebSecurityAlertListPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebSecurityAlertListPage').then((m) => ({
-        default: m.WebSecurityAlertListPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebTwoFAManagementPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebTwoFAManagementPage').then((m) => ({
-        default: m.WebTwoFAManagementPage,
-      })),
-    )
-  : IntegrationPendingPage;
-const WebDeviceTrustDetailPage = isDevelopmentBuild
-  ? lazy(() =>
-      import('@/dev/legacy/web/WebDeviceTrustDetailPage').then((m) => ({
-        default: m.WebDeviceTrustDetailPage,
-      })),
-    )
-  : IntegrationPendingPage;
 const WebPredictionEventDetailPage = lazy(() =>
   import('@/features/predictions/pages/PredictionContractPages').then((m) => ({
     default: m.PredictionEventContractPage,
@@ -428,7 +234,9 @@ const WebPredictionEventDetailPage = lazy(() =>
 );
 const WebArenaHomePage = isDevelopmentBuild
   ? lazy(() =>
-      import('@/dev/legacy/web/WebArenaHomePage').then((m) => ({ default: m.WebArenaHomePage })),
+      import('@/features/arena/pages/ArenaDiscoveryPage').then((m) => ({
+        default: m.ArenaDiscoveryPage,
+      })),
     )
   : IntegrationPendingPage;
 
@@ -491,17 +299,11 @@ const developmentRoutes = isDevelopmentBuild
   ? [
       {
         path: 'dev/showcase',
-        Component: lazy(() =>
-          import('@/dev/legacy/v2/MissingScreensShowcasePage').then((m) => ({
-            default: m.MissingScreensShowcasePage,
-          })),
-        ),
+        Component: IntegrationPendingPage,
       },
       {
         path: 'dev/design-system',
-        Component: lazy(() =>
-          import('@/dev/legacy/v2/DesignSystemPage').then((m) => ({ default: m.DesignSystemPage })),
-        ),
+        Component: IntegrationPendingPage,
       },
       {
         path: 'dev/dca-overview',
@@ -509,7 +311,7 @@ const developmentRoutes = isDevelopmentBuild
       },
       {
         path: 'demo/copy-card',
-        Component: lazy(() => import('@/dev/legacy/demo/CopyTradingCardDemo')),
+        Component: IntegrationPendingPage,
       },
     ]
   : [];
@@ -585,7 +387,7 @@ export const router = createBrowserRouter([
               success: WebAuthSuccessPage,
               accountLocked: WebAccountLockedPage,
               sessionExpired: WebSessionExpiredPage,
-              deviceTrust: WebDeviceTrustPage,
+              deviceTrust: IntegrationPendingPage,
             }),
           },
           ...createPublicRoutes(webOverrides),
@@ -637,19 +439,19 @@ export const router = createBrowserRouter([
               // ─── Profile pages ───
               { path: 'profile/edit', Component: WebEditProfilePage },
               { path: 'profile/sub-accounts', Component: WebSubAccountPage },
-              { path: 'profile/security/anti-phishing', Component: WebAntiPhishingSetupPage },
-              { path: 'profile/security/passkey', Component: WebPasskeySetupPage },
-              { path: 'profile/security/login-activity', Component: WebLoginActivityPage },
-              { path: 'profile/security/security-audit', Component: WebSecurityAuditPage },
-              { path: 'profile/security/notifications', Component: WebSecurityNotificationsPage },
-              { path: 'profile/security/session-management', Component: WebSessionManagementPage },
+              { path: 'profile/security/anti-phishing', Component: IntegrationPendingPage },
+              { path: 'profile/security/passkey', Component: IntegrationPendingPage },
+              { path: 'profile/security/login-activity', Component: IntegrationPendingPage },
+              { path: 'profile/security/security-audit', Component: IntegrationPendingPage },
+              { path: 'profile/security/notifications', Component: IntegrationPendingPage },
+              { path: 'profile/security/session-management', Component: IntegrationPendingPage },
               { path: 'profile/security/change-password', Component: PasswordChangePage },
-              { path: 'profile/security/alert-detail', Component: WebSecurityAlertDetailPage },
-              { path: 'profile/security/alerts/:alertId', Component: WebSecurityAlertDetailPage },
-              { path: 'profile/security/alert-list', Component: WebSecurityAlertListPage },
-              { path: 'profile/security/two-factor-auth', Component: WebTwoFAManagementPage },
-              { path: 'profile/security/device-trust', Component: WebDeviceTrustDetailPage },
-              { path: 'profile/security/devices/:deviceId', Component: WebDeviceTrustDetailPage },
+              { path: 'profile/security/alert-detail', Component: IntegrationPendingPage },
+              { path: 'profile/security/alerts/:alertId', Component: IntegrationPendingPage },
+              { path: 'profile/security/alert-list', Component: IntegrationPendingPage },
+              { path: 'profile/security/two-factor-auth', Component: IntegrationPendingPage },
+              { path: 'profile/security/device-trust', Component: IntegrationPendingPage },
+              { path: 'profile/security/devices/:deviceId', Component: IntegrationPendingPage },
               { path: 'profile/devices', Component: WebDeviceManagementPage },
               { path: 'profile/activity', Component: WebActivityHistoryPage },
               // ─── Referral ───
@@ -658,7 +460,6 @@ export const router = createBrowserRouter([
               // ─── Copy Trading (Web versions) ───
               ...createTradingWebRoutes(),
               // ─── Orders ───
-              { path: 'trade/orders', Component: WebOrdersHistoryPage },
               // ─── Arena ───
               { path: 'arena', Component: WebArenaHomePage },
             ],

@@ -8,6 +8,7 @@ import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
+import { useAuth } from '@/shared/session/useAuth';
 import { useWalletAssetsQuery, useWalletTransactionsQuery } from '../model/wallet-queries';
 import type { WalletAsset, WalletTransaction } from '../model/wallet-types';
 
@@ -21,11 +22,13 @@ export function WalletOverviewContractPage() {
   const colors = useThemeColors();
   const navigate = useNavigate();
   const shellPrefix = useRoutePrefix();
+  const { hasPermission } = useAuth();
+  const canReadWallet = hasPermission('wallet:read');
   const [search, setSearch] = useState('');
   const [hideSmall, setHideSmall] = useState(false);
   const [balanceHidden, setBalanceHidden] = useState(false);
-  const assetsQuery = useWalletAssetsQuery();
-  const transactionsQuery = useWalletTransactionsQuery({ limit: 10 });
+  const assetsQuery = useWalletAssetsQuery(canReadWallet);
+  const transactionsQuery = useWalletTransactionsQuery({ limit: 10 }, canReadWallet);
 
   const filteredAssets = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -35,6 +38,19 @@ export function WalletOverviewContractPage() {
       return asset.symbol.toLowerCase().includes(query) || asset.name.toLowerCase().includes(query);
     });
   }, [assetsQuery.data?.items, hideSmall, search]);
+
+  if (!canReadWallet) {
+    return (
+      <PageLayout>
+        <Header title="Wallet" subtitle="Wallet contract" back />
+        <PageContent>
+          <p role="alert" style={{ color: colors.error }}>
+            Wallet read permission is required to view balances and activity.
+          </p>
+        </PageContent>
+      </PageLayout>
+    );
+  }
 
   if (assetsQuery.isPending || transactionsQuery.isPending) {
     return (

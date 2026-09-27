@@ -11,8 +11,8 @@
  *  - Customizable lot sizes
  */
 
-import React, { useState, useRef, useEffect } from 'react';
-import { TrendingUp, TrendingDown, X, Target, DollarSign, Minus, Plus } from 'lucide-react';
+import React, { useState } from 'react';
+import { TrendingUp, TrendingDown, X, Target, Minus, Plus } from 'lucide-react';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useHaptic } from '@/shared/hooks/useHaptic';
@@ -82,7 +82,7 @@ export function LadderTrading({
   lotSizes = [0.1, 0.5, 1.0, 2.0],
   onPlaceOrder,
   onCancelOrder,
-  onModifyOrder,
+  onModifyOrder: _onModifyOrder,
 }: LadderTradingProps) {
   const c = useThemeColors();
   const { hapticSuccess, hapticLight } = useHaptic();
@@ -167,11 +167,11 @@ export function LadderTrading({
 
       {/* Click Mode Toggle */}
       <div className="flex gap-1">
-        {['buy', 'auto', 'sell'].map((mode) => (
+        {(['buy', 'auto', 'sell'] as const).map((mode) => (
           <button
             key={mode}
             onClick={() => {
-              setClickMode(mode as any);
+              setClickMode(mode);
               hapticLight();
             }}
             className="flex-1 px-3 py-2 rounded-lg min-h-9"

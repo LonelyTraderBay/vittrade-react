@@ -9,7 +9,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { TrCard, TrCardStat } from '../components/ui/TrCard';
+import { TrCard, TrCardStat } from '@/shared/ui/TrCard';
 
 describe('TrCard', () => {
   describe('Basic Rendering', () => {

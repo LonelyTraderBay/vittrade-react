@@ -26,10 +26,13 @@ export function MarketSectorsPage() {
   const selectedId = searchParams.get('id');
   const overviewQuery = useMarketOverviewQuery();
   const selectedSector = overviewQuery.data?.sectors.find((sector) => sector.id === selectedId);
-  const pairsQuery = useMarketPairsQuery({
-    category: selectedSector?.name,
-    limit: 100,
-  });
+  const pairsQuery = useMarketPairsQuery(
+    {
+      category: selectedSector?.name,
+      limit: 100,
+    },
+    { enabled: Boolean(selectedSector) },
+  );
 
   if (overviewQuery.isPending) {
     return (
@@ -57,6 +60,8 @@ export function MarketSectorsPage() {
         sector={selectedSector}
         pairs={pairsQuery.data?.items ?? []}
         isLoading={pairsQuery.isPending}
+        hasError={pairsQuery.isError && !pairsQuery.data}
+        onRetry={() => void pairsQuery.refetch()}
         onBack={() => setSearchParams({})}
       />
     );
@@ -252,6 +257,8 @@ function SectorDetail({
   sector,
   pairs,
   isLoading,
+  hasError,
+  onRetry,
   onBack,
 }: {
   sector: MarketSectorSummary;
@@ -265,6 +272,8 @@ function SectorDetail({
     logoColor: string;
   }>;
   isLoading: boolean;
+  hasError: boolean;
+  onRetry: () => void;
   onBack: () => void;
 }) {
   const colors = useThemeColors();
@@ -303,6 +312,8 @@ function SectorDetail({
         </TrCard>
         {isLoading ? (
           <p style={{ color: colors.text2, fontSize: 12 }}>Đang tải tài sản trong ngành…</p>
+        ) : hasError ? (
+          <ErrorState onAction={onRetry} />
         ) : (
           <TrCard className="px-4">
             {topPairs.map((pair) => (

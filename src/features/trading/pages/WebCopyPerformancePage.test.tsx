@@ -2,6 +2,8 @@ import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { screen } from '@testing-library/react';
+import type { AuthAdapter } from '@/shared/session/AuthContext';
+import { testAuthAdapter } from '@/test/auth-test-adapter';
 import { Route, Routes } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
 import { WebCopyPerformancePage } from './WebCopyPerformancePage';
@@ -11,6 +13,16 @@ const server = setupServer();
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
+
+function adapterWithPermissions(permissions: string[]): AuthAdapter {
+  return {
+    ...testAuthAdapter,
+    initialSession: {
+      ...testAuthAdapter.initialSession!,
+      user: { ...testAuthAdapter.initialSession!.user, permissions },
+    },
+  };
+}
 
 describe('web copy performance page', () => {
   it('renders the selected relationship from the trading API', async () => {
@@ -62,11 +74,33 @@ describe('web copy performance page', () => {
       <Routes>
         <Route path="/trade/copy/performance/:copyId" element={<WebCopyPerformancePage />} />
       </Routes>,
-      { routerProps: { initialEntries: ['/trade/copy/performance/copy-1'] } },
+      {
+        routerProps: { initialEntries: ['/trade/copy/performance/copy-1'] },
+        authAdapter: adapterWithPermissions(['trade:read']),
+      },
     );
 
     expect(await screen.findByText('Provider One')).toBeInTheDocument();
     expect(screen.getByText('7.50%')).toBeInTheDocument();
     expect(screen.getByText('$1,075')).toBeInTheDocument();
+  });
+
+  it('does not request or show copy performance without trade read permission', () => {
+    let requestCount = 0;
+    server.use(
+      http.get('*/trading/copy/relationships', () => {
+        requestCount += 1;
+        return HttpResponse.json({ items: [] });
+      }),
+    );
+
+    renderWithProviders(<WebCopyPerformancePage />, {
+      routerProps: { initialEntries: ['/trade/copy/performance/copy-1'] },
+      authAdapter: adapterWithPermissions([]),
+    });
+
+    expect(screen.getByRole('alert')).toHaveTextContent('không có quyền xem quan hệ copy');
+    expect(screen.queryByText('Provider One')).not.toBeInTheDocument();
+    expect(requestCount).toBe(0);
   });
 });

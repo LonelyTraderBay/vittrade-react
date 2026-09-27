@@ -8,7 +8,8 @@ import { fmtAmount, fmtUsd } from '@/shared/lib/formatNumber';
 import { ORDER_TYPE_ADVANCED, ORDER_TYPE_BASIC, PCT_BUTTONS } from './trading-order-config';
 import { TradingFeeNotice } from './TradingFeeNotice';
 import { OCOOrderForm, type OCOOrderParams } from './OCOOrderForm';
-import { TPSLForm, type TPSLValues } from './TPSLForm';
+import { TPSLForm } from './TPSLForm';
+import type { TPSLValues } from '../model/trading-types';
 import type { MarketPair } from '@/features/market';
 
 interface TradingOrderEntryPanelProps {

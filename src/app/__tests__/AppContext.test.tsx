@@ -13,7 +13,7 @@ import type { ReactNode } from 'react';
 import { AppProvider } from '../contexts/AppContext';
 import { useApp } from '../hooks/useApp';
 import { AuthProvider } from '../contexts/AuthContext';
-import { ThemeProvider } from '../contexts/ThemeContext';
+import { ThemeProvider } from '@/shared/theme/ThemeContext';
 import { UIProvider } from '../contexts/UIContext';
 import { TEST_AUTH_USER } from '@/test/fixtures/auth-user';
 import { testAuthAdapter, testAuthSession } from '../../test/auth-test-adapter';

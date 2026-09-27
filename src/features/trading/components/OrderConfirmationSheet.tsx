@@ -3,7 +3,7 @@ import { BottomSheetRow, BottomSheetV2 } from '@/shared/ui/BottomSheetV2';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { fmtUsd } from '@/shared/lib/formatNumber';
 import type { OrderSide } from '../model/trading-types';
-import type { TPSLValues } from './TPSLForm';
+import type { TPSLValues } from '../model/trading-types';
 
 export interface OrderConfirmationSheetProps {
   open: boolean;

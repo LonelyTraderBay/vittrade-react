@@ -43,8 +43,6 @@ export function PnLSummary({
   totalEquity,
   className = '',
 }: PnLSummaryProps) {
-  const c = useThemeColors();
-
   const totalPnL = realizedPnL + unrealizedPnL;
   const realizedPct = totalEquity > 0 ? (realizedPnL / totalEquity) * 100 : 0;
   const unrealizedPct = totalEquity > 0 ? (unrealizedPnL / totalEquity) * 100 : 0;
@@ -459,7 +457,7 @@ interface PnLAttributionProps {
   className?: string;
 }
 
-export function PnLAttribution({ positions, totalPnL, className = '' }: PnLAttributionProps) {
+export function PnLAttribution({ positions, className = '' }: PnLAttributionProps) {
   const c = useThemeColors();
 
   // Sort by absolute contribution

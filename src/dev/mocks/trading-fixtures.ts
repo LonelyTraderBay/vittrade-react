@@ -417,21 +417,14 @@ export function generateOrderBook(midPrice: number): {
 } {
   const asks: OrderBookEntry[] = [];
   const bids: OrderBookEntry[] = [];
-  let runningAsk = 0;
-  let runningBid = 0;
-  const maxAsk = 15;
-  const maxBid = 12;
-
   for (let i = 0; i < 14; i++) {
     const price = midPrice + (i + 1) * (midPrice * 0.0002);
     const amount = parseFloat((Math.random() * 2 + 0.01).toFixed(4));
-    runningAsk += amount;
     asks.push({ price, amount, total: price * amount, depth: 0 });
   }
   for (let i = 0; i < 14; i++) {
     const price = midPrice - (i + 1) * (midPrice * 0.0002);
     const amount = parseFloat((Math.random() * 2.5 + 0.01).toFixed(4));
-    runningBid += amount;
     bids.push({ price, amount, total: price * amount, depth: 0 });
   }
 

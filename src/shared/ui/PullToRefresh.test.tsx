@@ -1,10 +1,12 @@
 import { act, fireEvent, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { toast } from 'sonner';
 import { renderWithProviders } from '@/test/test-utils';
 import { PullToRefresh } from './PullToRefresh';
 
 afterEach(() => {
   vi.useRealTimers();
+  vi.restoreAllMocks();
 });
 
 describe('PullToRefresh', () => {
@@ -79,5 +81,50 @@ describe('PullToRefresh', () => {
     fireEvent.touchMove(surface, { touches: [{ clientY: 110 }] });
     expect(screen.getByText('Kéo xuống để làm mới')).toBeInTheDocument();
     expect(surface.firstElementChild).toHaveStyle({ height: '0px' });
+  });
+
+  it('does not refresh after a tap or an upward gesture', () => {
+    const onRefresh = vi.fn().mockResolvedValue(undefined);
+    const { container } = renderWithProviders(
+      <PullToRefresh onRefresh={onRefresh} threshold={30}>
+        <div>Content</div>
+      </PullToRefresh>,
+    );
+    const surface = container.querySelector('.relative.flex-1')!;
+
+    fireEvent.touchStart(surface, { touches: [{ clientY: 50 }] });
+    fireEvent.touchMove(surface, { touches: [{ clientY: 55 }] });
+    fireEvent.touchEnd(surface);
+    fireEvent.touchStart(surface, { touches: [{ clientY: 100 }] });
+    fireEvent.touchMove(surface, { touches: [{ clientY: 70 }] });
+    fireEvent.touchEnd(surface);
+
+    expect(onRefresh).not.toHaveBeenCalled();
+    expect(screen.getByText('Kéo xuống để làm mới')).toBeInTheDocument();
+  });
+
+  it('reports a failed refresh and returns the gesture to idle', async () => {
+    vi.useFakeTimers();
+    const onRefresh = vi.fn().mockRejectedValue(new Error('offline'));
+    const toastError = vi.spyOn(toast, 'error');
+    const { container } = renderWithProviders(
+      <PullToRefresh onRefresh={onRefresh} threshold={30}>
+        <div>Content</div>
+      </PullToRefresh>,
+    );
+    const surface = container.querySelector('.relative.flex-1')!;
+
+    fireEvent.touchStart(surface, { touches: [{ clientY: 0 }] });
+    fireEvent.touchMove(surface, { touches: [{ clientY: 100 }] });
+    fireEvent.touchEnd(surface);
+
+    expect(onRefresh).toHaveBeenCalledTimes(1);
+    await act(async () => {
+      await Promise.resolve();
+      await vi.advanceTimersByTimeAsync(300);
+    });
+
+    expect(toastError).toHaveBeenCalledWith('Làm mới thất bại', { duration: 2000 });
+    expect(screen.getByText('Kéo xuống để làm mới')).toBeInTheDocument();
   });
 });

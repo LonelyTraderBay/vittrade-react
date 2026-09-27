@@ -12,6 +12,35 @@ const MarketMoversPage = lazyRoute(() =>
     default: module.MarketMoversPage,
   })),
 );
+const MarketNewsFeedPage = lazyRoute(() =>
+  import('./pages/MarketNewsFeedPage').then((module) => ({ default: module.MarketNewsFeedPage })),
+);
+const MarketEventCalendarPage = lazyRoute(() =>
+  import('./pages/MarketEventCalendarPage').then((module) => ({
+    default: module.MarketEventCalendarPage,
+  })),
+);
+const MarketCorrelationPairsPage = lazyRoute(() =>
+  import('./pages/MarketCorrelationPairsPage').then((module) => ({
+    default: module.MarketCorrelationPairsPage,
+  })),
+);
+const TokenUnlockSchedulePage = lazyRoute(() =>
+  import('./pages/TokenUnlockSchedulePage').then((module) => ({
+    default: module.TokenUnlockSchedulePage,
+  })),
+);
+const MarketDerivativesPage = lazyRoute(() =>
+  import('./pages/MarketDerivativesPage').then((module) => ({
+    default: module.MarketDerivativesPage,
+  })),
+);
+const MarketSentimentPage = lazyRoute(() =>
+  import('./pages/MarketSentimentPage').then((module) => ({ default: module.MarketSentimentPage })),
+);
+const MarketSignalsPage = lazyRoute(() =>
+  import('./pages/MarketSignalsPage').then((module) => ({ default: module.MarketSignalsPage })),
+);
 const MarketSectorsPage = lazyRoute(() =>
   import('./pages/MarketSectorsPage').then((module) => ({
     default: module.MarketSectorsPage,
@@ -61,6 +90,13 @@ export function createMarketPublicRoutes(components: MarketRouteComponents): Rou
   return [
     { path: 'markets/overview', Component: MarketOverviewPage },
     { path: 'markets/movers', Component: MarketMoversPage },
+    { path: 'markets/news', Component: MarketNewsFeedPage },
+    { path: 'markets/calendar', Component: MarketEventCalendarPage },
+    { path: 'markets/correlations', Component: MarketCorrelationPairsPage },
+    { path: 'markets/unlocks', Component: TokenUnlockSchedulePage },
+    { path: 'markets/derivatives', Component: MarketDerivativesPage },
+    { path: 'markets/social-sentiment', Component: MarketSentimentPage },
+    { path: 'markets/signals', Component: MarketSignalsPage },
     { path: 'markets/sectors', Component: MarketSectorsPage },
     { path: 'markets/watchlist', Component: WatchlistPage },
     { path: 'markets/heatmap', Component: MarketHeatmapPage },

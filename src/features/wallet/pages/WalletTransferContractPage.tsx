@@ -23,8 +23,9 @@ export function WalletTransferContractPage() {
   const colors = useThemeColors();
   const shellPrefix = useRoutePrefix();
   const { hasPermission } = useAuth();
-  const accountsQuery = useWalletAccountsQuery();
-  const assetsQuery = useWalletAssetsQuery();
+  const canReadWallet = hasPermission('wallet:read');
+  const accountsQuery = useWalletAccountsQuery(canReadWallet);
+  const assetsQuery = useWalletAssetsQuery(canReadWallet);
   const transferMutation = useWalletTransferMutation();
   const [fromWallet, setFromWallet] = useState<WalletAccountId>('spot');
   const [toWallet, setToWallet] = useState<WalletAccountId>('funding');
@@ -53,6 +54,19 @@ export function WalletTransferContractPage() {
     hasPermission('wallet:write') ||
     hasPermission('wallet:transfer') ||
     hasPermission('transfer:write');
+
+  if (!canReadWallet) {
+    return (
+      <PageLayout>
+        <Header title="Internal transfer" subtitle="Wallet contract" back />
+        <PageContent>
+          <p role="alert" style={{ color: colors.error }}>
+            Wallet read permission is required to view transfer balances.
+          </p>
+        </PageContent>
+      </PageLayout>
+    );
+  }
 
   if (loading) {
     return (

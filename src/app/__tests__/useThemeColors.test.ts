@@ -9,7 +9,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { renderHook } from '@testing-library/react';
-import { useThemeColors } from '../hooks/useThemeColors';
+import { useThemeColors } from '@/shared/hooks/useThemeColors';
 
 describe('useThemeColors', () => {
   describe('Return Value', () => {

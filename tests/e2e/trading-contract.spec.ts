@@ -68,7 +68,7 @@ const session = {
     email: 'e2e@example.com',
     fullName: 'E2E User',
     roles: ['user'],
-    permissions: ['trade:read', 'trade:write'],
+    permissions: ['trade:read', 'trade:write', 'wallet:read'],
     kycStatus: 'verified',
     kycLevel: 2,
     accountStatus: 'active',
@@ -210,6 +210,109 @@ test.describe('trading contract smoke on staging build', () => {
 
     await expect.poll(() => cancelledOrderId).toBe('e2e-open-order');
     expect(idempotencyKey).toBeTruthy();
+  });
+
+  test('filters and paginates open and historical orders through server cursors', async ({
+    page,
+  }) => {
+    const requests: Array<{ path: string; side: string | null; cursor: string | null }> = [];
+    const makeOrder = (
+      id: string,
+      symbol: string,
+      side: 'buy' | 'sell',
+      status: 'open' | 'partial' | 'filled' | 'cancelled',
+      filled = 0,
+    ) => ({
+      id,
+      symbol,
+      side,
+      type: 'limit',
+      price: 65_000,
+      amount: 0.1,
+      filled,
+      status,
+      createdAt: '2026-09-25T10:00:00.000Z',
+      fee: 0.65,
+    });
+
+    await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
+    await page.route('**/trading/orders**', async (route) => {
+      const url = new URL(route.request().url());
+      const side = url.searchParams.get('side');
+      const cursor = url.searchParams.get('cursor');
+      requests.push({ path: url.pathname, side, cursor });
+
+      if (url.pathname.endsWith('/history')) {
+        return cursor
+          ? route.fulfill({
+              json: { items: [makeOrder('history-2', 'ETH/USDT', 'sell', 'filled', 0.1)] },
+            })
+          : route.fulfill({
+              json: {
+                items: [makeOrder('history-1', 'BNB/USDT', 'sell', 'cancelled')],
+                nextCursor: 'history-page-2',
+              },
+            });
+      }
+
+      if (side === 'sell' && cursor) {
+        return route.fulfill({
+          json: { items: [makeOrder('open-2', 'ADA/USDT', 'sell', 'partial', 0.05)] },
+        });
+      }
+      return route.fulfill({
+        json: {
+          items: [
+            makeOrder(
+              side === 'sell' ? 'open-sell' : 'open-buy',
+              side === 'sell' ? 'SELL/USDT' : 'BTC/USDT',
+              side === 'sell' ? 'sell' : 'buy',
+              'open',
+            ),
+          ],
+          nextCursor: 'open-page-2',
+        },
+      });
+    });
+
+    await page.goto('/w/trade/orders');
+    await expect(page.getByText('BTC/USDT', { exact: true })).toBeVisible();
+    expect(requests[0].path).toMatch(/\/trading\/orders$/);
+    expect(requests[0]).toMatchObject({ side: null, cursor: null });
+
+    const sideResponse = page.waitForResponse(
+      (response) =>
+        response.request().method() === 'GET' &&
+        new URL(response.url()).searchParams.get('side') === 'sell',
+    );
+    await page.getByRole('button', { name: 'Bán' }).click();
+    await sideResponse;
+    await expect(page.getByText('SELL/USDT', { exact: true })).toBeVisible();
+
+    const openCursorResponse = page.waitForResponse(
+      (response) => new URL(response.url()).searchParams.get('cursor') === 'open-page-2',
+    );
+    await page.getByRole('button', { name: 'Sau' }).click();
+    await openCursorResponse;
+    await expect(page.getByText('ADA/USDT', { exact: true })).toBeVisible();
+
+    const historyResponse = page.waitForResponse(
+      (response) =>
+        new URL(response.url()).pathname.endsWith('/trading/orders/history') &&
+        !new URL(response.url()).searchParams.has('cursor'),
+    );
+    await page.getByRole('button', { name: 'Lịch sử', exact: true }).click();
+    await historyResponse;
+    await expect(page.getByText('BNB/USDT', { exact: true })).toBeVisible();
+    expect(requests.at(-1)?.path).toMatch(/\/trading\/orders\/history$/);
+    expect(requests.at(-1)).toMatchObject({ side: 'sell', cursor: null });
+
+    const historyCursorResponse = page.waitForResponse(
+      (response) => new URL(response.url()).searchParams.get('cursor') === 'history-page-2',
+    );
+    await page.getByRole('button', { name: 'Sau' }).click();
+    await historyCursorResponse;
+    await expect(page.getByText('ETH/USDT', { exact: true })).toBeVisible();
   });
 
   test('modifies an open order with positive values and an idempotency key', async ({ page }) => {

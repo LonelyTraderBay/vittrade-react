@@ -11,7 +11,7 @@
  */
 
 import React, { useState } from 'react';
-import { CheckCircle, XCircle, AlertTriangle, Shield, FileText, Info } from 'lucide-react';
+import { CheckCircle, XCircle, AlertTriangle, Shield, FileText } from 'lucide-react';
 import { TrCard } from '@/shared/ui/TrCard';
 import { CTAButton } from '@/shared/ui/CTAButton';
 import { BottomSheetV2 } from '@/shared/ui/BottomSheetV2';

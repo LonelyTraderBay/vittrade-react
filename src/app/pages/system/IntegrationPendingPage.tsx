@@ -4,9 +4,9 @@ import { useLocation, useNavigate } from 'react-router';
 import { Header } from '../../components/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
-import { TrCard } from '../../components/ui/TrCard';
-import { useRoutePrefix } from '../../hooks/useRoutePrefix';
-import { useThemeColors } from '../../hooks/useThemeColors';
+import { TrCard } from '@/shared/ui/TrCard';
+import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
+import { useThemeColors } from '@/shared/hooks/useThemeColors';
 
 /**
  * Boundary an toàn cho route chưa có backend contract hoàn chỉnh.

@@ -3,8 +3,13 @@ import { marketApi } from '../api/market-api';
 import type {
   MarketCandlesQuery,
   MarketMoversQuery,
+  MarketNewsQuery,
+  MarketCalendarQuery,
+  MarketCorrelationsQuery,
+  MarketUnlocksQuery,
   MarketPairsQuery,
   MarketPriceAlertsQuery,
+  MarketSentimentQuery,
 } from './market-types';
 
 export const marketQueryKeys = {
@@ -19,13 +24,24 @@ export const marketQueryKeys = {
     ['market', 'candles', pairId, query] as const,
   overview: ['market', 'overview'] as const,
   movers: (query: MarketMoversQuery) => ['market', 'movers', query] as const,
+  news: (query: MarketNewsQuery = {}) => ['market', 'news', query] as const,
+  calendar: (query: MarketCalendarQuery = {}) => ['market', 'calendar', query] as const,
+  correlations: (query: MarketCorrelationsQuery) => ['market', 'correlations', query] as const,
+  unlocks: (query: MarketUnlocksQuery) => ['market', 'unlocks', query] as const,
+  derivatives: ['market', 'derivatives'] as const,
+  sentiment: (query: MarketSentimentQuery) => ['market', 'sentiment', query] as const,
+  signals: ['market', 'signals'] as const,
   priceAlerts: (query: MarketPriceAlertsQuery = {}) => ['market', 'price-alerts', query] as const,
 };
 
-export function useMarketPairsQuery(query: MarketPairsQuery = {}) {
+export function useMarketPairsQuery(
+  query: MarketPairsQuery = {},
+  options: { enabled?: boolean } = {},
+) {
   return useQuery({
     queryKey: marketQueryKeys.pairs(query),
     queryFn: ({ signal }) => marketApi.listPairs(query, signal),
+    enabled: options.enabled ?? true,
     staleTime: 10_000,
     refetchInterval: 15_000,
   });
@@ -145,6 +161,69 @@ export function useMarketMoversQuery(query: MarketMoversQuery) {
     queryFn: ({ signal }) => marketApi.getMovers(query, signal),
     staleTime: 10_000,
     refetchInterval: 15_000,
+  });
+}
+
+export function useMarketNewsQuery(query: MarketNewsQuery = {}) {
+  return useQuery({
+    queryKey: marketQueryKeys.news(query),
+    queryFn: ({ signal }) => marketApi.getNews(query, signal),
+    staleTime: 60_000,
+    refetchInterval: 60_000,
+  });
+}
+
+export function useMarketCalendarQuery(query: MarketCalendarQuery = {}) {
+  return useQuery({
+    queryKey: marketQueryKeys.calendar(query),
+    queryFn: ({ signal }) => marketApi.getCalendar(query, signal),
+    staleTime: 60_000,
+    refetchInterval: 60_000,
+  });
+}
+
+export function useMarketCorrelationsQuery(query: MarketCorrelationsQuery) {
+  return useQuery({
+    queryKey: marketQueryKeys.correlations(query),
+    queryFn: ({ signal }) => marketApi.getCorrelations(query, signal),
+    staleTime: 60_000,
+    refetchInterval: 60_000,
+  });
+}
+
+export function useMarketTokenUnlocksQuery(query: MarketUnlocksQuery) {
+  return useQuery({
+    queryKey: marketQueryKeys.unlocks(query),
+    queryFn: ({ signal }) => marketApi.getTokenUnlocks(query, signal),
+    staleTime: 60_000,
+    refetchInterval: 60_000,
+  });
+}
+
+export function useMarketDerivativesQuery() {
+  return useQuery({
+    queryKey: marketQueryKeys.derivatives,
+    queryFn: ({ signal }) => marketApi.getDerivatives(signal),
+    staleTime: 30_000,
+    refetchInterval: 30_000,
+  });
+}
+
+export function useMarketSentimentQuery(query: MarketSentimentQuery) {
+  return useQuery({
+    queryKey: marketQueryKeys.sentiment(query),
+    queryFn: ({ signal }) => marketApi.getSentiment(query, signal),
+    staleTime: 60_000,
+    refetchInterval: 60_000,
+  });
+}
+
+export function useMarketSignalsQuery() {
+  return useQuery({
+    queryKey: marketQueryKeys.signals,
+    queryFn: ({ signal }) => marketApi.getSignals(signal),
+    staleTime: 30_000,
+    refetchInterval: 60_000,
   });
 }
 

@@ -9,7 +9,7 @@
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
-import { useRefresh } from '../hooks/useRefresh';
+import { useRefresh } from '@/shared/hooks/useRefresh';
 
 describe('useRefresh', () => {
   beforeEach(() => {

@@ -126,8 +126,6 @@ interface OfflineStateProps {
 }
 
 export function OfflineState({ onRetry }: OfflineStateProps) {
-  const c = useThemeColors();
-
   return (
     <div
       className="p-3 rounded-xl flex items-center gap-3"
@@ -235,8 +233,6 @@ interface ClaimExpiryWarningProps {
 }
 
 export function ClaimExpiryWarning({ expiryDate, daysRemaining }: ClaimExpiryWarningProps) {
-  const c = useThemeColors();
-
   const isUrgent = daysRemaining <= 2;
   const color = isUrgent ? '#EF4444' : '#F59E0B';
   const bgColor = isUrgent ? 'rgba(239,68,68,0.08)' : 'rgba(245,158,11,0.08)';

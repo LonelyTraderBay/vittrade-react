@@ -18,23 +18,115 @@ const order = {
   createdAt: '2026-09-21T10:00:00.000Z',
   fee: 0,
 };
+const position = {
+  id: 'position-1',
+  symbol: 'BTC/USDT',
+  productType: 'spot' as const,
+  side: 'long' as const,
+  baseAsset: 'BTC',
+  quoteAsset: 'USDT',
+  quantity: 0.025,
+  entryPrice: 65_000,
+  markPrice: 66_000,
+  unrealizedPnl: 25,
+  openedAt: '2026-09-21T10:00:00.000Z',
+};
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe('trading API contract', () => {
-  it('lists open orders and sends the status filter', async () => {
+  it('lists open orders using the requested server filters and cursor', async () => {
     server.use(
       http.get('http://localhost:3000/api/trading/orders', ({ request }) => {
-        expect(new URL(request.url).searchParams.get('status')).toBe('open');
+        const query = new URL(request.url).searchParams;
+        expect(query.get('status')).toBe('open');
+        expect(query.get('symbol')).toBe('BTC/USDT');
+        expect(query.get('side')).toBe('sell');
+        expect(query.get('cursor')).toBe('open-next');
+        expect(query.get('limit')).toBe('50');
         return HttpResponse.json({ items: [order] });
       }),
     );
 
-    await expect(tradingApi.listOpenOrders({ symbol: 'BTC/USDT' })).resolves.toEqual({
-      items: [order],
+    await expect(
+      tradingApi.listOpenOrders({
+        symbol: 'BTC/USDT',
+        side: 'sell',
+        cursor: 'open-next',
+        limit: 50,
+      }),
+    ).resolves.toEqual({ items: [order] });
+  });
+
+  it('lists account positions using server-side filters and cursor pagination', async () => {
+    server.use(
+      http.get('http://localhost:3000/api/trading/positions', ({ request }) => {
+        const query = new URL(request.url).searchParams;
+        expect(query.get('productType')).toBe('futures');
+        expect(query.get('cursor')).toBe('positions-page-2');
+        expect(query.get('limit')).toBe('50');
+        return HttpResponse.json({
+          items: [{ ...position, productType: 'futures' }],
+          updatedAt: '2026-09-21T10:05:00.000Z',
+          nextCursor: 'positions-page-3',
+        });
+      }),
+    );
+
+    await expect(
+      tradingApi.listOpenPositions({
+        productType: 'futures',
+        cursor: 'positions-page-2',
+        limit: 50,
+      }),
+    ).resolves.toEqual({
+      items: [{ ...position, productType: 'futures' }],
+      updatedAt: '2026-09-21T10:05:00.000Z',
+      nextCursor: 'positions-page-3',
     });
+  });
+
+  it.each([
+    ['duplicate IDs', [position, position]],
+    ['short spot position', [{ ...position, side: 'short' }]],
+    [
+      'non-descending order',
+      [position, { ...position, id: 'position-2', openedAt: '2026-09-21T11:00:00.000Z' }],
+    ],
+    ['future open time', [{ ...position, openedAt: '2026-09-21T10:06:00.000Z' }]],
+  ])('rejects position pages with %s', async (_case, items) => {
+    server.use(
+      http.get('http://localhost:3000/api/trading/positions', () =>
+        HttpResponse.json({ items, updatedAt: '2026-09-21T10:05:00.000Z' }),
+      ),
+    );
+
+    await expect(tradingApi.listOpenPositions()).rejects.toThrow();
+  });
+
+  it('lists historical orders using side, status and cursor filters', async () => {
+    const historyOrder = { ...order, status: 'cancelled' as const };
+    server.use(
+      http.get('http://localhost:3000/api/trading/orders/history', ({ request }) => {
+        const query = new URL(request.url).searchParams;
+        expect(query.get('side')).toBe('sell');
+        expect(query.get('status')).toBe('cancelled');
+        expect(query.get('cursor')).toBe('history-next');
+        expect(query.get('limit')).toBe('50');
+        return HttpResponse.json({ items: [historyOrder], nextCursor: 'history-page-3' });
+      }),
+    );
+
+    await expect(
+      tradingApi.listOrderHistory({
+        side: 'sell',
+        status: 'cancelled',
+        cursor: 'history-next',
+        limit: 50,
+      }),
+    ).resolves.toEqual({ items: [historyOrder], nextCursor: 'history-page-3' });
   });
 
   it('places an order with an idempotency key and validates the response', async () => {

@@ -8,6 +8,25 @@ servers:
 security:
   - sessionCookie: []
 paths:
+  /trading/copy/frontend-view-status:
+    get:
+      operationId: getCopyFrontendViewStatus
+      parameters:
+        - name: view
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              [safety-center, provider-application, provider-governance, performance-attribution]
+      responses:
+        '200':
+          description: Read-only frontend module status. This response does not replace copy-trading account, provider, or performance contracts.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CopyFrontendViewStatus' }
+        '400': { description: Unknown frontend view. }
+        '401': { $ref: '#/components/responses/Unauthorized' }
   /trading/copy/providers:
     get:
       operationId: listCopyProviders
@@ -47,6 +66,7 @@ paths:
   /trading/copy/relationships:
     get:
       operationId: listCopyRelationships
+      x-required-permissions: [trade:read]
       responses:
         '200':
           description: Authenticated user's copy-trading relationships.
@@ -54,8 +74,10 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/CopyRelationshipsResponse' }
         '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
     post:
       operationId: createCopyRelationship
+      x-required-permissions: [trade:write]
       parameters:
         - {
             name: Idempotency-Key,
@@ -76,10 +98,12 @@ paths:
               schema: { $ref: '#/components/schemas/CopyActivationReceipt' }
         '400': { $ref: '#/components/responses/BadRequest' }
         '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
         '409': { description: Duplicate idempotency key, insufficient balance, or policy conflict. }
   /trading/copy/relationships/{copyId}/stop:
     post:
       operationId: stopCopyRelationship
+      x-required-permissions: [trade:write]
       parameters:
         - { name: copyId, in: path, required: true, schema: { type: string } }
         - {
@@ -101,10 +125,12 @@ paths:
               schema: { $ref: '#/components/schemas/CopyRelationship' }
         '400': { $ref: '#/components/responses/BadRequest' }
         '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
         '404': { description: Copy relationship not found. }
   /trading/analytics:
     get:
       operationId: getTradingAnalytics
+      x-required-permissions: [trade:read]
       parameters:
         - name: period
           in: query
@@ -116,12 +142,23 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/TradingAnalyticsResponse' }
         '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
   /trading/orders:
     get:
       operationId: listOpenOrders
+      x-required-permissions: [trade:read]
+      description: >-
+        Returns open orders matching the supplied filters, ordered by createdAt descending
+        and then id descending. The opaque cursor continues that stable order.
       parameters:
         - { name: symbol, in: query, schema: { type: string } }
-        - { name: cursor, in: query, schema: { type: string } }
+        - { name: side, in: query, schema: { type: string, enum: [buy, sell] } }
+        - {
+            name: cursor,
+            in: query,
+            description: Opaque cursor returned by the previous page.,
+            schema: { type: string },
+          }
         - {
             name: limit,
             in: query,
@@ -135,8 +172,10 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/OrderListResponse' }
         '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
     post:
       operationId: placeOrder
+      x-required-permissions: [trade:write]
       parameters:
         - {
             name: Idempotency-Key,
@@ -157,18 +196,60 @@ paths:
               schema: { $ref: '#/components/schemas/TradingOrder' }
         '400': { $ref: '#/components/responses/BadRequest' }
         '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
         '409': { description: Duplicate idempotency key or insufficient balance. }
+  /trading/positions:
+    get:
+      operationId: listOpenPositions
+      x-required-permissions: [trade:read]
+      description: >-
+        Returns open positions for the account identified by the authenticated session. The
+        response is a server-owned snapshot; the client must not aggregate values across assets.
+        Results are ordered by openedAt descending and then id descending. Each opaque cursor
+        continues the same account-scoped snapshot and ordering.
+      parameters:
+        - { name: productType, in: query, schema: { type: string, enum: [spot, futures, margin] } }
+        - {
+            name: cursor,
+            in: query,
+            description: Opaque cursor returned by the previous page.,
+            schema: { type: string },
+          }
+        - {
+            name: limit,
+            in: query,
+            schema: { type: integer, minimum: 1, maximum: 100, default: 50 },
+          }
+      responses:
+        '200':
+          description: Account-scoped open position snapshot page.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TradingPositionListResponse' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '503': { description: The positions source is unavailable. }
   /trading/orders/history:
     get:
       operationId: listOrderHistory
+      x-required-permissions: [trade:read]
+      description: >-
+        Returns historical orders matching the supplied filters, ordered by createdAt descending
+        and then id descending. The opaque cursor continues that stable order.
       parameters:
         - { name: symbol, in: query, schema: { type: string } }
+        - { name: side, in: query, schema: { type: string, enum: [buy, sell] } }
         - {
             name: status,
             in: query,
             schema: { type: string, enum: [filled, partial, cancelled, rejected] },
           }
-        - { name: cursor, in: query, schema: { type: string } }
+        - {
+            name: cursor,
+            in: query,
+            description: Opaque cursor returned by the previous page.,
+            schema: { type: string },
+          }
         - {
             name: limit,
             in: query,
@@ -181,9 +262,11 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/OrderListResponse' }
         '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
   /trading/orders/{orderId}:
     patch:
       operationId: modifyOrder
+      x-required-permissions: [trade:write]
       parameters:
         - { name: orderId, in: path, required: true, schema: { type: string } }
         - {
@@ -204,10 +287,12 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/TradingOrder' }
         '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
         '404': { description: Order not found. }
   /trading/orders/{orderId}/cancel:
     post:
       operationId: cancelOrder
+      x-required-permissions: [trade:write]
       parameters:
         - { name: orderId, in: path, required: true, schema: { type: string } }
         - {
@@ -223,6 +308,7 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/TradingOrder' }
         '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
         '404': { description: Order not found. }
 components:
   securitySchemes:
@@ -241,7 +327,20 @@ components:
       content:
         application/json:
           schema: { $ref: '#/components/schemas/ApiError' }
+    Forbidden:
+      description: The authenticated account does not have the required permission.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
   schemas:
+    CopyFrontendViewStatus:
+      type: object
+      required: [view, state]
+      properties:
+        view:
+          type: string
+          enum: [safety-center, provider-application, provider-governance, performance-attribution]
+        state: { type: string, enum: [backend-required] }
     CopyProvidersResponse:
       type: object
       required: [items]
@@ -480,7 +579,56 @@ components:
       required: [items]
       properties:
         items: { type: array, items: { $ref: '#/components/schemas/TradingOrder' } }
-        nextCursor: { type: string }
+        nextCursor:
+          type: string
+          description: Opaque cursor for the next page, omitted when no more results exist.
+    TradingPositionListResponse:
+      type: object
+      required: [items, updatedAt]
+      properties:
+        items:
+          type: array
+          maxItems: 100
+          items: { $ref: '#/components/schemas/TradingPosition' }
+        updatedAt: { type: string, format: date-time }
+        nextCursor:
+          type: string
+          description: Opaque cursor for the next page, omitted when no more results exist.
+    TradingPosition:
+      type: object
+      required:
+        [
+          id,
+          symbol,
+          productType,
+          side,
+          baseAsset,
+          quoteAsset,
+          quantity,
+          entryPrice,
+          markPrice,
+          unrealizedPnl,
+          openedAt,
+        ]
+      description: >-
+        One currently open account position. quantity is denominated in baseAsset;
+        entryPrice and markPrice are quoteAsset per baseAsset; unrealizedPnl is in quoteAsset.
+        Values are supplied by the server and must not be combined across quote assets.
+      properties:
+        id: { type: string, minLength: 1 }
+        symbol: { type: string, minLength: 1 }
+        productType: { type: string, enum: [spot, futures, margin] }
+        side:
+          type: string
+          enum: [long, short]
+          description: Spot positions are long; futures and margin positions may be long or short.
+        baseAsset: { type: string, minLength: 1 }
+        quoteAsset: { type: string, minLength: 1 }
+        quantity: { type: number, exclusiveMinimum: 0 }
+        entryPrice: { type: number, exclusiveMinimum: 0 }
+        markPrice: { type: number, exclusiveMinimum: 0 }
+        unrealizedPnl: { type: number }
+        openedAt: { type: string, format: date-time }
     PlaceOrderRequest:
       type: object
       required: [symbol, side, type, amount]
@@ -493,6 +641,9 @@ components:
         clientOrderId: { type: string }
         tpPrice: { type: number, exclusiveMinimum: 0 }
         slPrice: { type: number, exclusiveMinimum: 0 }
+        bracketMode:
+          type: boolean
+          description: Whether the TP and SL are submitted as a bracket pair.
         tpAmount: { type: number, exclusiveMinimum: 0 }
         slAmount: { type: number, exclusiveMinimum: 0 }
         amountType: { type: string, enum: [same, split] }

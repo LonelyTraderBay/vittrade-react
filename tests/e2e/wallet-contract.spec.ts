@@ -156,6 +156,192 @@ test.describe('wallet contract smoke on staging build', () => {
     await expect(page.getByText('12 confirmations')).toBeVisible();
   });
 
+  test('loads pending deposits with server filters and cursor pagination', async ({ page }) => {
+    const cursors: Array<string | null> = [];
+    await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
+    await page.route('**/wallet/transactions**', async (route) => {
+      const url = new URL(route.request().url());
+      expect(url.searchParams.get('type')).toBe('deposit');
+      expect(url.searchParams.get('status')).toBe('pending');
+      expect(url.searchParams.get('limit')).toBe('100');
+      const cursor = url.searchParams.get('cursor');
+      cursors.push(cursor);
+      return route.fulfill({
+        json: cursor
+          ? {
+              items: [
+                {
+                  id: 'pending-eth',
+                  type: 'deposit',
+                  asset: 'ETH',
+                  amount: 0.75,
+                  status: 'pending',
+                  createdAt: '2026-09-25T10:00:00.000Z',
+                  network: 'Ethereum',
+                },
+              ],
+              total: 2,
+            }
+          : {
+              items: [
+                {
+                  id: 'pending-btc',
+                  type: 'deposit',
+                  asset: 'BTC',
+                  amount: 0.5,
+                  status: 'pending',
+                  createdAt: '2026-09-24T10:00:00.000Z',
+                  network: 'Bitcoin',
+                },
+              ],
+              total: 2,
+              nextCursor: 'next-page',
+            },
+      });
+    });
+
+    await page.goto('/wallet/pending-deposits');
+    await expect(page.getByText('BTC deposit · Bitcoin')).toBeVisible();
+    await page.getByRole('button', { name: 'Load more' }).click();
+    await expect(page.getByText('ETH deposit · Ethereum')).toBeVisible();
+    expect(cursors).toEqual([null, 'next-page']);
+  });
+
+  test('loads wallet history with server filters and cursor pagination', async ({ page }) => {
+    const queries: Array<{
+      asset: string | null;
+      type: string | null;
+      status: string | null;
+      cursor: string | null;
+      limit: string | null;
+    }> = [];
+    await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
+    await page.route('**/wallet/transactions**', async (route) => {
+      const params = new URL(route.request().url()).searchParams;
+      queries.push({
+        asset: params.get('asset'),
+        type: params.get('type'),
+        status: params.get('status'),
+        cursor: params.get('cursor'),
+        limit: params.get('limit'),
+      });
+
+      if (params.get('type') === 'trade_buy') {
+        return route.fulfill({
+          json: {
+            items: [
+              {
+                id: 'history-trade',
+                type: 'trade_buy',
+                asset: 'BTC',
+                amount: 0.01,
+                status: 'pending',
+                createdAt: '2026-09-25T10:00:00.000Z',
+              },
+            ],
+            total: 1,
+          },
+        });
+      }
+
+      return route.fulfill({
+        json: params.get('cursor')
+          ? {
+              items: [
+                {
+                  id: 'history-withdraw',
+                  type: 'withdraw',
+                  asset: 'ETH',
+                  amount: 0.25,
+                  status: 'completed',
+                  createdAt: '2026-09-24T10:00:00.000Z',
+                },
+              ],
+              total: 2,
+            }
+          : {
+              items: [
+                {
+                  id: 'history-deposit',
+                  type: 'deposit',
+                  asset: 'USDT',
+                  amount: 25,
+                  status: 'completed',
+                  createdAt: '2026-09-25T10:00:00.000Z',
+                },
+              ],
+              total: 2,
+              nextCursor: 'history-page-2',
+            },
+      });
+    });
+
+    await page.goto('/wallet/history');
+    await expect(page.getByText('+25', { exact: true })).toBeVisible();
+    expect(queries[0]).toEqual({
+      asset: null,
+      type: null,
+      status: null,
+      cursor: null,
+      limit: '50',
+    });
+
+    await page.getByRole('button', { name: 'Next' }).click();
+    await expect(page.getByText('-0.25', { exact: true })).toBeVisible();
+    expect(queries.at(-1)?.cursor).toBe('history-page-2');
+    await page.getByRole('button', { name: 'Previous' }).click();
+    await expect(page.getByText('+25', { exact: true })).toBeVisible();
+    await page.getByRole('button', { name: 'Next' }).click();
+    await expect(page.getByText('-0.25', { exact: true })).toBeVisible();
+
+    const typeResponse = page.waitForResponse(
+      (response) =>
+        response.request().method() === 'GET' &&
+        new URL(response.url()).searchParams.get('type') === 'trade_buy',
+    );
+    await page.getByRole('button', { name: 'Trade buy' }).click();
+    await typeResponse;
+    expect(queries.at(-1)?.cursor).toBeNull();
+    const statusResponse = page.waitForResponse(
+      (response) =>
+        response.request().method() === 'GET' &&
+        new URL(response.url()).searchParams.get('status') === 'pending',
+    );
+    await page.getByRole('button', { name: 'Pending' }).click();
+    await statusResponse;
+    await page.getByLabel('Filter by asset').fill('btc');
+    const assetResponse = page.waitForResponse(
+      (response) =>
+        response.request().method() === 'GET' &&
+        new URL(response.url()).searchParams.get('asset') === 'BTC',
+    );
+    await page.getByRole('button', { name: 'Apply' }).click();
+    await assetResponse;
+    await expect(page.getByText('+0.01', { exact: true })).toBeVisible();
+    expect(queries.at(-1)).toEqual({
+      asset: 'BTC',
+      type: 'trade_buy',
+      status: 'pending',
+      cursor: null,
+      limit: '50',
+    });
+  });
+
+  test('renders withdrawal limits returned for the selected asset', async ({ page }) => {
+    await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
+    await page.route('**/wallet/assets', (route) => route.fulfill({ json: assets }));
+    await page.route('**/wallet/withdrawal/networks**', (route) =>
+      route.fulfill({ json: withdrawalNetworks }),
+    );
+
+    await page.goto('/wallet/limits');
+
+    await expect(page.getByText('Ethereum')).toBeVisible();
+    await expect(page.getByText('5 USDT', { exact: true })).toBeVisible();
+    await expect(page.getByText('50 USDT', { exact: true })).toBeVisible();
+    await expect(page.getByText('0.5 USDT', { exact: true })).toBeVisible();
+  });
+
   test('submits a network-limited withdrawal after MFA verification', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     let challengeBody: Record<string, unknown> | undefined;
@@ -206,14 +392,22 @@ test.describe('wallet contract smoke on staging build', () => {
     });
 
     await page.goto('/wallet/withdraw/USDT');
+    await expect(page).toHaveURL(/\/w\/wallet\/withdraw\/USDT$/);
     await expect(page.getByLabel('Mạng lưới')).toHaveValue('ethereum');
     await page
       .locator('#withdraw-address')
       .fill('wallet-address-long-enough-for-validation-123456');
     await page.getByRole('button', { name: 'Tất cả' }).click();
     await expect(page.locator('#withdraw-amount')).toHaveValue('50.000000');
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.waitForTimeout(350);
+    await expect(page).toHaveURL(/\/w\/wallet\/withdraw\/USDT$/);
+    await expect(page.locator('#withdraw-address')).toHaveValue(
+      'wallet-address-long-enough-for-validation-123456',
+    );
+    await expect(page.locator('#withdraw-amount')).toHaveValue('50.000000');
     await page.getByRole('button', { name: /Tiếp tục/ }).click();
-    await page.getByRole('button', { name: /Xác minh 2FA/ }).click({ force: true });
+    await page.getByRole('button', { name: /Xác minh 2FA/ }).click();
 
     await expect(page.getByLabel(/Mã xác minh/i)).toBeVisible();
     expect(challengeBody).toEqual({

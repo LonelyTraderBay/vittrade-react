@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router';
-import { env } from '../config/env';
+import { env } from '@/shared/config/env';
 import { captureException } from '../../shared/telemetry/telemetry';
 
 /**

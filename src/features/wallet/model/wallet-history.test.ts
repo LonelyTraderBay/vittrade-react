@@ -1,28 +1,19 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { ArrowDownLeft, ArrowLeftRight, ArrowUpRight, Users } from 'lucide-react';
-import { formatAmount, toggleSort, transactionMetadata } from './wallet-history';
+import { formatAmount, STATUS_FILTERS, transactionMetadata, TYPE_FILTERS } from './wallet-history';
 
 describe('wallet history helpers', () => {
-  it('toggles direction when the active sort key is selected again', () => {
-    const setKey = vi.fn();
-    const setDirection = vi.fn();
-
-    toggleSort('time', 'time', 'asc', setKey, setDirection);
-    expect(setDirection).toHaveBeenCalledWith('desc');
-    expect(setKey).not.toHaveBeenCalled();
-
-    toggleSort('time', 'time', 'desc', setKey, setDirection);
-    expect(setDirection).toHaveBeenLastCalledWith('asc');
-  });
-
-  it('selects a new sort key and starts with descending order', () => {
-    const setKey = vi.fn();
-    const setDirection = vi.fn();
-
-    toggleSort('amount', 'time', 'asc', setKey, setDirection);
-
-    expect(setKey).toHaveBeenCalledWith('amount');
-    expect(setDirection).toHaveBeenCalledWith('desc');
+  it('offers only filters supported by the wallet transaction contract', () => {
+    expect(TYPE_FILTERS.map(({ id }) => id)).toEqual([
+      'all',
+      'deposit',
+      'withdraw',
+      'trade_buy',
+      'trade_sell',
+      'p2p_buy',
+      'p2p_sell',
+    ]);
+    expect(STATUS_FILTERS.map(({ id }) => id)).toEqual(['all', 'completed', 'pending', 'failed']);
   });
 
   it.each([

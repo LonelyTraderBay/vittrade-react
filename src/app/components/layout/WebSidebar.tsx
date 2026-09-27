@@ -20,7 +20,7 @@ import {
   Users,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { useThemeColors } from '../../hooks/useThemeColors';
+import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { WEB_SIDEBAR_WIDTH, WEB_COMMAND_BAR_HEIGHT } from './webConstants';
 
 /**

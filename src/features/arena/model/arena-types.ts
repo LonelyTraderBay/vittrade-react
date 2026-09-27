@@ -39,6 +39,35 @@ export interface ArenaModeSummary {
   fairPlay: boolean;
 }
 
+export interface ArenaDiscoveryMode extends ArenaModeSummary {
+  icon: string;
+  color: string;
+  complexity: ArenaComplexity;
+  creator: ArenaCreatorSummary;
+  completionRate: number;
+  tags: string[];
+}
+
+export interface ArenaDiscoveryChallenge {
+  id: string;
+  title: string;
+  description: string;
+  modeId: string;
+  modeName: string;
+  creator: ArenaCreatorSummary;
+  entryPoints: number;
+  prizePool: number;
+  slotsTotal: number;
+  slotsFilled: number;
+  format: string;
+  startsAt: string;
+}
+
+export interface ArenaDiscoveryResponse {
+  modes: ArenaDiscoveryMode[];
+  challenges: ArenaDiscoveryChallenge[];
+}
+
 export interface ArenaModeDetail extends ArenaModeSummary {
   template: {
     id: string;

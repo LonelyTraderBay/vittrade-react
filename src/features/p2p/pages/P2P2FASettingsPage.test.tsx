@@ -121,6 +121,29 @@ describe('P2P 2FA settings contract page', () => {
     );
   });
 
+  it('keeps Authenticator disabled when creating its setup challenge fails', async () => {
+    const toastError = vi.spyOn(toast, 'error');
+    server.use(
+      http.get('*/p2p/security/2fa/settings', () => HttpResponse.json(settings)),
+      http.post('*/p2p/security/2fa/authenticator/setup', () =>
+        HttpResponse.json({ code: 'TEMPORARY_FAILURE' }, { status: 503 }),
+      ),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<P2P2FASettingsPage />);
+
+    await screen.findByText('Authenticator App');
+    await user.click(screen.getByRole('button', { name: 'Bật hoặc tắt Authenticator App' }));
+
+    await waitFor(() =>
+      expect(toastError).toHaveBeenCalledWith(
+        'Không thể tạo phiên setup Authenticator.',
+        expect.anything(),
+      ),
+    );
+    expect(screen.queryByAltText('QR setup Authenticator')).not.toBeInTheDocument();
+  });
+
   it('sets a primary method and saves a validated transaction threshold', async () => {
     const primaryBody = vi.fn();
     const thresholdBody = vi.fn();
@@ -169,6 +192,29 @@ describe('P2P 2FA settings contract page', () => {
     fireEvent.change(thresholdInput, { target: { value: '2500' } });
     await user.click(screen.getByRole('button', { name: 'Lưu thay đổi' }));
     await waitFor(() => expect(thresholdBody).toHaveBeenCalledWith({ value: 2_500 }));
+  });
+
+  it('updates the 2FA threshold policy through the contract', async () => {
+    const thresholdRequest = vi.fn();
+    server.use(
+      http.get('*/p2p/security/2fa/settings', () => HttpResponse.json(settings)),
+      http.patch('*/p2p/security/2fa/thresholds/release', async ({ request }) => {
+        expect(request.headers.get('Idempotency-Key')).toBeTruthy();
+        thresholdRequest(await request.json());
+        return HttpResponse.json({
+          ...settings,
+          thresholds: settings.thresholds.map((threshold) => ({ ...threshold, enabled: false })),
+        });
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<P2P2FASettingsPage />);
+
+    await screen.findByText('2FA đã bật (1 phương thức)');
+    await user.click(screen.getByRole('button', { name: 'Bật hoặc tắt Release order' }));
+
+    await waitFor(() => expect(thresholdRequest).toHaveBeenCalledWith({ enabled: false }));
+    await waitFor(() => expect(screen.queryByText('≥ 1,000 USDT')).not.toBeInTheDocument());
   });
 
   it('rejects a negative threshold locally and surfaces a failed method update', async () => {

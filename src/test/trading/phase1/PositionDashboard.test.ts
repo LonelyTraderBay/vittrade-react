@@ -6,13 +6,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import {
-  expectClose,
-  expectValidPercentage,
-  testPnLCalculation,
-  createMockPosition,
-  EDGE_CASES,
-} from '@/test/trading-test-helpers';
+import { expectClose } from '@/test/trading-test-helpers';
 
 /* ═══════════════════════════════════════════════════════════════
    P&L CALCULATION TESTS
@@ -372,7 +366,6 @@ describe('Real-Time Position Updates', () => {
 
   it('should update P&L percentage accurately', () => {
     const entryPrice = 69000;
-    const amount = 1.0;
 
     const priceUpdates = [69690, 70380, 68310]; // +1%, +2%, -1%
     const pnlPcts = priceUpdates.map((price) => ((price - entryPrice) / entryPrice) * 100);

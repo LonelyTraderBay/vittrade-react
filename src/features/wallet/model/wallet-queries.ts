@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { walletApi } from '../api/wallet-api';
 import type {
   DustConversionQuoteRequest,
@@ -16,8 +16,10 @@ export const walletQueryKeys = {
   transactions: (filters: WalletTransactionFilters = {}) =>
     ['wallet', 'transactions', filters] as const,
   transaction: (id: string) => ['wallet', 'transactions', id] as const,
+  pendingDeposits: ['wallet', 'pending-deposits'] as const,
   depositNetworks: (asset: string) => ['wallet', 'deposit-networks', asset] as const,
   withdrawalNetworks: (asset: string) => ['wallet', 'withdrawal-networks', asset] as const,
+  networkStatus: ['wallet', 'network-status'] as const,
   addressBook: ['wallet', 'address-book'] as const,
   portfolioAnalytics: (period: PortfolioAnalyticsPeriod) =>
     ['wallet', 'portfolio-analytics', period] as const,
@@ -25,62 +27,91 @@ export const walletQueryKeys = {
     ['wallet', 'dust-conversion-quote', request] as const,
 };
 
-export function useWalletAssetsQuery() {
+export function useWalletAssetsQuery(enabled: boolean) {
   return useQuery({
     queryKey: walletQueryKeys.assets,
     queryFn: ({ signal }) => walletApi.getAssets(signal),
+    enabled,
     staleTime: 5_000,
     refetchInterval: 15_000,
   });
 }
 
-export function useWalletAccountsQuery() {
+export function useWalletAccountsQuery(enabled: boolean) {
   return useQuery({
     queryKey: walletQueryKeys.accounts,
     queryFn: ({ signal }) => walletApi.getAccounts(signal),
+    enabled,
     staleTime: 5_000,
   });
 }
 
-export function useWalletTransactionsQuery(filters: WalletTransactionFilters = {}) {
+export function useWalletTransactionsQuery(filters: WalletTransactionFilters, enabled: boolean) {
   return useQuery({
     queryKey: walletQueryKeys.transactions(filters),
     queryFn: ({ signal }) => walletApi.getTransactions(filters, signal),
+    enabled,
     staleTime: 5_000,
   });
 }
 
-export function useWalletTransactionQuery(id: string | undefined) {
+export function usePendingDepositsQuery(enabled: boolean) {
+  return useInfiniteQuery({
+    queryKey: walletQueryKeys.pendingDeposits,
+    initialPageParam: undefined as string | undefined,
+    queryFn: ({ pageParam, signal }) =>
+      walletApi.getTransactions(
+        { type: 'deposit', status: 'pending', limit: 100, cursor: pageParam },
+        signal,
+      ),
+    getNextPageParam: (page) => page.nextCursor,
+    enabled,
+    staleTime: 5_000,
+  });
+}
+
+export function useWalletTransactionQuery(id: string | undefined, enabled: boolean) {
   return useQuery({
     queryKey: walletQueryKeys.transaction(id ?? ''),
     queryFn: ({ signal }) => walletApi.getTransaction(id!, signal),
-    enabled: Boolean(id),
+    enabled: Boolean(id) && enabled,
     staleTime: 30_000,
   });
 }
 
-export function useWalletDepositNetworksQuery(asset: string | undefined) {
+export function useWalletDepositNetworksQuery(asset: string | undefined, enabled: boolean) {
   return useQuery({
     queryKey: walletQueryKeys.depositNetworks(asset ?? ''),
     queryFn: ({ signal }) => walletApi.getDepositNetworks(asset!, signal),
-    enabled: Boolean(asset),
+    enabled: Boolean(asset) && enabled,
     staleTime: 60_000,
   });
 }
 
-export function useWalletWithdrawalNetworksQuery(asset: string | undefined) {
+export function useWalletWithdrawalNetworksQuery(asset: string | undefined, enabled: boolean) {
   return useQuery({
     queryKey: walletQueryKeys.withdrawalNetworks(asset ?? ''),
     queryFn: ({ signal }) => walletApi.getWithdrawalNetworks(asset!, signal),
-    enabled: Boolean(asset),
+    enabled: Boolean(asset) && enabled,
     staleTime: 60_000,
   });
 }
 
-export function useWalletAddressBookQuery() {
+export function useWalletNetworkStatusQuery(enabled: boolean) {
+  return useQuery({
+    queryKey: walletQueryKeys.networkStatus,
+    queryFn: ({ signal }) => walletApi.getNetworkStatus(signal),
+    enabled,
+    staleTime: 15_000,
+    refetchInterval: 30_000,
+  });
+}
+
+export function useWalletAddressBookQuery(enabled: boolean) {
   return useQuery({
     queryKey: walletQueryKeys.addressBook,
     queryFn: ({ signal }) => walletApi.getAddressBook(signal),
+    enabled,
     staleTime: 30_000,
   });
 }
@@ -163,19 +194,26 @@ export function useWalletWithdrawalVerificationMutation() {
   });
 }
 
-export function useWalletPortfolioAnalyticsQuery(period: PortfolioAnalyticsPeriod) {
+export function useWalletPortfolioAnalyticsQuery(
+  period: PortfolioAnalyticsPeriod,
+  enabled: boolean,
+) {
   return useQuery({
     queryKey: walletQueryKeys.portfolioAnalytics(period),
     queryFn: ({ signal }) => walletApi.getPortfolioAnalytics(period, signal),
+    enabled,
     staleTime: 60_000,
   });
 }
 
-export function useWalletDustConversionQuoteQuery(request: DustConversionQuoteRequest) {
+export function useWalletDustConversionQuoteQuery(
+  request: DustConversionQuoteRequest,
+  enabled: boolean,
+) {
   return useQuery({
     queryKey: walletQueryKeys.dustConversionQuote(request),
     queryFn: ({ signal }) => walletApi.getDustConversionQuote(request, signal),
-    enabled: request.sourceAssetIds.length > 0,
+    enabled: request.sourceAssetIds.length > 0 && enabled,
     staleTime: 30_000,
   });
 }

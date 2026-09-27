@@ -7,7 +7,7 @@
  * @module components/dca
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BottomSheetV2 } from '@/shared/ui/BottomSheetV2';
 import type { CreateDCAPlanRequest, DCAFrequency } from '../model/dca-types';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
@@ -63,6 +63,10 @@ export function DCACreatePlanSheet({
   const [coinSymbol, setCoinSymbol] = useState<string>(preselectedCoin || 'BTC');
   const [frequency, setFrequency] = useState<DCAFrequency>('weekly');
   const [amount, setAmount] = useState<string>('500000');
+
+  useEffect(() => {
+    if (preselectedCoin) setCoinSymbol(preselectedCoin);
+  }, [preselectedCoin]);
 
   const handleCreate = async () => {
     const request: CreateDCAPlanRequest = {

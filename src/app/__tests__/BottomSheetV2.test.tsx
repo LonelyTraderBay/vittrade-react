@@ -8,10 +8,10 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { renderWithProviders } from '../../test/test-utils';
-import { BottomSheetV2, BottomSheetRow } from '../components/ui/BottomSheetV2';
+import { BottomSheetV2, BottomSheetRow } from '@/shared/ui/BottomSheetV2';
 
 describe('BottomSheetV2', () => {
   let portalRoot: HTMLDivElement;
@@ -405,6 +405,25 @@ describe('BottomSheetV2', () => {
       // Focus should move within dialog
       expect(document.activeElement).toBeTruthy();
     });
+
+    it('wraps focus at the first and last controls when tabbing', () => {
+      renderWithProviders(
+        <BottomSheetV2 open={true} onClose={() => {}}>
+          <button>First</button>
+          <button>Last</button>
+        </BottomSheetV2>,
+      );
+
+      const dialog = screen.getByRole('dialog');
+      const controls = [...dialog.querySelectorAll<HTMLElement>('button')];
+      controls[0].focus();
+      fireEvent.keyDown(dialog, { key: 'Tab', shiftKey: true });
+      expect(document.activeElement).toBe(controls.at(-1));
+
+      controls.at(-1)?.focus();
+      fireEvent.keyDown(dialog, { key: 'Tab' });
+      expect(document.activeElement).toBe(controls[0]);
+    });
   });
 
   describe('Max Height', () => {
@@ -644,6 +663,44 @@ describe('BottomSheetV2', () => {
       sheet?.dispatchEvent(touchEnd);
 
       // Should not close
+      expect(handleClose).not.toHaveBeenCalled();
+    });
+
+    it('closes after a downward mouse drag that starts outside the scroll content', () => {
+      const handleClose = vi.fn();
+      renderWithProviders(
+        <BottomSheetV2 open={true} onClose={handleClose} title="Drag handle">
+          <button>Content action</button>
+        </BottomSheetV2>,
+      );
+
+      const dialog = screen.getByRole('dialog');
+      fireEvent.mouseDown(dialog.querySelector('h3')!, { clientY: 100 });
+      fireEvent.mouseMove(window, { clientY: 220 });
+      fireEvent.mouseUp(window);
+
+      expect(handleClose).toHaveBeenCalledOnce();
+    });
+
+    it('does not start a mouse swipe from content or close below the drag threshold', () => {
+      const handleClose = vi.fn();
+      renderWithProviders(
+        <BottomSheetV2 open={true} onClose={handleClose} title="Drag handle">
+          <button>Content action</button>
+        </BottomSheetV2>,
+      );
+
+      const dialog = screen.getByRole('dialog');
+      fireEvent.mouseDown(screen.getByRole('button', { name: 'Content action' }), {
+        clientY: 100,
+      });
+      fireEvent.mouseMove(window, { clientY: 250 });
+      fireEvent.mouseUp(window);
+      expect(handleClose).not.toHaveBeenCalled();
+
+      fireEvent.mouseDown(dialog.querySelector('h3')!, { clientY: 100 });
+      fireEvent.mouseMove(window, { clientY: 150 });
+      fireEvent.mouseUp(window);
       expect(handleClose).not.toHaveBeenCalled();
     });
   });

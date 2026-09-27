@@ -5,7 +5,7 @@ import { LeftRail } from './LeftRail';
 import { StatusBar } from './StatusBar';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
 import { useUI } from '../../hooks/useUI';
-import { useThemeColors } from '../../hooks/useThemeColors';
+import { useThemeColors } from '@/shared/hooks/useThemeColors';
 
 /** Suspense Fallback for lazy-loaded responsive pages */
 function PageLoadingFallback() {

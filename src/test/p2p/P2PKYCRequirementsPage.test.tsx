@@ -1,32 +1,32 @@
 import type { ComponentType } from 'react';
-import { useLocation } from 'react-router';
-import { describe, expect, it } from 'vitest';
-import { renderWithProviders, screen, userEvent } from '@/test/test-utils';
-import { P2PKYCRequirementsPage } from '@/dev/legacy/p2p/P2PKYCRequirementsPage';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
+import { renderWithProviders, screen } from '@/test/test-utils';
+import { P2PKYCRequirementsPage } from '@/features/p2p/pages/P2PFrontendStatusPages';
 
-function CurrentPath() {
-  const location = useLocation();
-  return <output data-testid="current-path">{`${location.pathname}${location.search}`}</output>;
-}
+const server = setupServer(
+  http.get('*/p2p/frontend-view-status', () =>
+    HttpResponse.json({ view: 'kyc-requirements', state: 'backend-required' }),
+  ),
+);
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 function renderPage(Page: ComponentType, path: string) {
-  return renderWithProviders(
-    <>
-      <Page />
-      <CurrentPath />
-    </>,
-    { routerProps: { initialEntries: [path] } },
-  );
+  return renderWithProviders(<Page />, { routerProps: { initialEntries: [path] } });
 }
 
-describe('development-only P2P KYC requirements preview', () => {
-  it('renders the demo tier and routes an upgrade to its verification preview', async () => {
-    const user = userEvent.setup();
+describe('P2P KYC requirements frontend route', () => {
+  it('states that policy is unavailable until a backend source exists', async () => {
     renderPage(P2PKYCRequirementsPage, '/p2p/kyc/requirements');
 
-    expect(screen.getByText('P2P KYC Requirements', { exact: true })).toBeInTheDocument();
-    expect(screen.getByText('Đang dùng')).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: 'Nâng cấp lên Tier 2' }));
-    expect(screen.getByTestId('current-path')).toHaveTextContent('/p2p/kyc/verify?tier=2');
+    expect(await screen.findByText('Yêu cầu xác minh P2P', { exact: true })).toBeInTheDocument();
+    expect(
+      await screen.findByText(/Danh sách giấy tờ phụ thuộc chính sách xác minh/),
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole('button')).toHaveLength(1);
+    expect(screen.getByRole('button', { name: 'Quay lại' })).toBeInTheDocument();
   });
 });

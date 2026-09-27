@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router';
 import type { AuthAdapter } from '../../contexts/AuthContext';
-import type { AuthSession } from '../../api/auth-api';
+import type { AuthSession } from '@/features/auth/api/auth-api';
 import { AuthSessionProvider } from '../../contexts/AuthContext';
 import { ProtectedRoute } from './ProtectedRoute';
 

@@ -1,5 +1,5 @@
 import { Home, BarChart2, ArrowLeftRight, Wallet, User } from 'lucide-react';
-import { useThemeColors } from '../../hooks/useThemeColors';
+import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router';
 

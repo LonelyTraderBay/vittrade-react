@@ -3,9 +3,18 @@ import { arenaApi } from '../api/arena-api';
 
 export const arenaQueryKeys = {
   all: ['arena'] as const,
+  discovery: () => ['arena', 'discovery'] as const,
   mode: (id: string) => ['arena', 'mode', id] as const,
   challenge: (id: string) => ['arena', 'challenge', id] as const,
 };
+
+export function useArenaDiscoveryQuery() {
+  return useQuery({
+    queryKey: arenaQueryKeys.discovery(),
+    queryFn: ({ signal }) => arenaApi.getDiscovery(signal),
+    staleTime: 30_000,
+  });
+}
 
 export function useArenaModeQuery(id: string) {
   return useQuery({

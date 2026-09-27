@@ -1,7 +1,7 @@
 import React from 'react';
 import { Clock, Shield, RefreshCw } from 'lucide-react';
-import { useThemeColors } from '../../hooks/useThemeColors';
-import { φ } from '../../utils/golden';
+import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { φ } from '@/shared/lib/golden';
 
 /**
  * ══════════════════════════════════════════════════════════

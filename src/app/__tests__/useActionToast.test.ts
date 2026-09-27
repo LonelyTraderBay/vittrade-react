@@ -9,7 +9,7 @@
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { renderHook } from '@testing-library/react';
-import { useActionToast } from '../hooks/useActionToast';
+import { useActionToast } from '@/shared/hooks/useActionToast';
 import { toast } from 'sonner';
 
 // Mock sonner

@@ -13,6 +13,13 @@ describe('Market feature routes', () => {
     expect(paths).toEqual(
       expect.arrayContaining([
         'markets/overview',
+        'markets/news',
+        'markets/calendar',
+        'markets/correlations',
+        'markets/unlocks',
+        'markets/derivatives',
+        'markets/social-sentiment',
+        'markets/signals',
         'markets/watchlist',
         'markets/advanced-charts',
         'pair/:pairId',

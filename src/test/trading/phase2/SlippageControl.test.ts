@@ -197,7 +197,7 @@ describe('Auto-Reject on Exceed', () => {
   it('should execute order if within tolerance', () => {
     const expectedPrice = 69000;
     const actualPrice = 69200;
-    const maxAcceptablePrice = 69345; // 0.5% tolerance
+    const maxAcceptablePrice = expectedPrice * 1.005;
 
     const shouldExecute = actualPrice <= maxAcceptablePrice;
 
@@ -207,7 +207,7 @@ describe('Auto-Reject on Exceed', () => {
   it('should reject order if exceeds tolerance', () => {
     const expectedPrice = 69000;
     const actualPrice = 69400;
-    const maxAcceptablePrice = 69345; // 0.5% tolerance
+    const maxAcceptablePrice = expectedPrice * 1.005;
 
     const shouldReject = actualPrice > maxAcceptablePrice;
 
@@ -216,8 +216,8 @@ describe('Auto-Reject on Exceed', () => {
 
   it('should handle boundary case (exactly at tolerance)', () => {
     const expectedPrice = 69000;
-    const actualPrice = 69345;
-    const maxAcceptablePrice = 69345;
+    const actualPrice = expectedPrice * 1.005;
+    const maxAcceptablePrice = expectedPrice * 1.005;
 
     const shouldExecute = actualPrice <= maxAcceptablePrice;
 
@@ -340,7 +340,7 @@ describe('Slippage Edge Cases', () => {
     const orderSize = 1.0;
     const availableLiquidity = 0;
 
-    const canExecute = availableLiquidity > 0;
+    const canExecute = availableLiquidity >= orderSize;
 
     expect(canExecute).toBe(false);
   });
@@ -377,10 +377,10 @@ describe('Slippage Best Practices', () => {
 
   it('should recommend 1-2% for altcoins', () => {
     const symbol = 'ALT/USDT';
-    const recommendedTolerance = 1.5;
+    const recommendedTolerance = { [symbol]: 1.5 };
 
-    expect(recommendedTolerance).toBeGreaterThanOrEqual(1);
-    expect(recommendedTolerance).toBeLessThanOrEqual(2);
+    expect(recommendedTolerance[symbol]).toBeGreaterThanOrEqual(1);
+    expect(recommendedTolerance[symbol]).toBeLessThanOrEqual(2);
   });
 
   it('should adjust tolerance based on market hours', () => {

@@ -35,11 +35,12 @@ export function WithdrawPage() {
   const { asset = 'USDT' } = useParams();
   const colors = useThemeColors();
   const { hasPermission } = useAuth();
+  const canReadWallet = hasPermission('wallet:read');
   const canWithdraw = hasPermission('wallet:write') || hasPermission('wallet:withdraw');
   const toast = useActionToast();
   const { hapticSelection, hapticWarning, hapticMedium } = useHaptic();
-  const networksQuery = useWalletWithdrawalNetworksQuery(asset);
-  const assetsQuery = useWalletAssetsQuery();
+  const networksQuery = useWalletWithdrawalNetworksQuery(asset, canReadWallet);
+  const assetsQuery = useWalletAssetsQuery(canReadWallet);
   const challengeMutation = useWalletWithdrawalChallengeMutation();
   const verificationMutation = useWalletWithdrawalVerificationMutation();
   const withdrawalMutation = useWalletWithdrawalMutation();
@@ -70,6 +71,19 @@ export function WithdrawPage() {
   const received = Math.max(0, amountValue - fee);
   const busy =
     challengeMutation.isPending || verificationMutation.isPending || withdrawalMutation.isPending;
+
+  if (!canReadWallet) {
+    return (
+      <PageLayout>
+        <Header title={`Rút ${asset}`} subtitle="Rút tiền · Wallet" back />
+        <PageContent>
+          <p role="alert" style={{ color: colors.error }}>
+            Wallet read permission is required to view withdrawal balances and network policies.
+          </p>
+        </PageContent>
+      </PageLayout>
+    );
+  }
 
   if (networksQuery.isLoading || assetsQuery.isLoading) {
     return <WithdrawalLoadingState asset={asset} colors={colors} />;

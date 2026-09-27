@@ -11,7 +11,6 @@ import {
   expectValidPercentage,
   testPositionSizeCalculation,
   buildPositionSizingScenarios,
-  EDGE_CASES,
 } from '@/test/trading-test-helpers';
 
 /* ═══════════════════════════════════════════════════════════════
@@ -267,8 +266,6 @@ describe('Kelly Criterion (Advanced)', () => {
     const winRate = 0.6; // 60% win rate
     const avgWin = 1000; // Avg win: $1000
     const avgLoss = 500; // Avg loss: $500
-    const accountBalance = 10000;
-
     const winLossRatio = avgWin / avgLoss; // 2.0
     const kelly = (winRate * winLossRatio - (1 - winRate)) / winLossRatio;
     const kellyPct = kelly * 100;
