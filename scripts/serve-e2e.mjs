@@ -24,7 +24,7 @@ build.on('exit', (code) => {
 
   const preview = spawn(
     process.execPath,
-    [viteCli, 'preview', '--host', '127.0.0.1', '--port', '4173'],
+    [viteCli, 'preview', '--host', '127.0.0.1', '--port', '4173', '--strictPort'],
     { cwd: projectRoot, stdio: 'inherit' },
   );
 

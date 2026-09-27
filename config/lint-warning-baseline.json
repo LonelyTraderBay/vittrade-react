@@ -1,4 +1,4 @@
 {
-  "warnings": 522,
-  "policy": "This is a temporary migration ceiling. Every vertical slice must reduce it; the Production-Ready certification target is zero."
+  "warnings": 0,
+  "policy": "ESLint warnings must remain at zero; new and existing warnings block the quality gate."
 }
