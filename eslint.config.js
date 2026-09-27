@@ -6,7 +6,14 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['dist', 'node_modules', 'coverage', '.mimosa', 'guidelines'],
+    ignores: [
+      'dist',
+      'node_modules',
+      'coverage',
+      '.mimosa',
+      'guidelines',
+      'public/mockServiceWorker.js',
+    ],
   },
   {
     files: ['**/*.{ts,tsx}'],
@@ -49,6 +56,18 @@ export default tseslint.config(
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       'no-console': 'off',
+      'react-refresh/only-export-components': 'off',
+    },
+  },
+  {
+    // Keep this hot-reload rule scoped to active surfaces; these legacy modules are unreferenced.
+    files: [
+      'src/dev/legacy/trading/components/KeyboardShortcuts.tsx',
+      'src/dev/legacy/trading/components/RegulatoryCompliance.tsx',
+      'src/dev/legacy/trading/providers/MarketDataWSProvider.tsx',
+    ],
+    rules: {
+      'react-refresh/only-export-components': 'off',
     },
   },
 );

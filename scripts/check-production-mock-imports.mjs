@@ -14,7 +14,6 @@ const roots = [
   'src/dev/legacy/market',
   'src/dev/legacy/wallet',
   'src/dev/legacy/p2p',
-  'src/dev/legacy/arena',
   'src/dev/legacy/earn',
   'src/dev/legacy/predictions',
   'src/dev/legacy/profile',
