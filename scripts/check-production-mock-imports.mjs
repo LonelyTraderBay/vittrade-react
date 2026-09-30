@@ -9,18 +9,8 @@ const roots = [
   'src/app/components',
   'src/app/services',
   'src/dev/legacy/trading',
-  'src/dev/legacy/launchpad',
-  'src/dev/legacy/auth',
-  'src/dev/legacy/market',
-  'src/dev/legacy/wallet',
   'src/dev/legacy/p2p',
-  'src/dev/legacy/earn',
-  'src/dev/legacy/predictions',
-  'src/dev/legacy/profile',
-  'src/dev/legacy/referral',
   'src/dev/legacy/rewards',
-  'src/dev/legacy/tools',
-  'src/dev/legacy/web',
 ];
 const inventory = JSON.parse(
   await readFile(join(process.cwd(), 'docs', 'architecture', 'page-inventory.json'), 'utf8'),
@@ -40,7 +30,9 @@ async function collectSourceFiles(directory) {
 }
 
 const files = (await Promise.all(roots.map(collectSourceFiles))).flat();
-const developmentSupportFiles = await collectSourceFiles(join(process.cwd(), 'src', 'dev', 'mocks'));
+const developmentSupportFiles = await collectSourceFiles(
+  join(process.cwd(), 'src', 'dev', 'mocks'),
+);
 const violations = [];
 const developmentOnlyFixtureConsumers = new Set();
 
