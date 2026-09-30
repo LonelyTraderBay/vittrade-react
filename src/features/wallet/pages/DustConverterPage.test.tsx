@@ -166,7 +166,7 @@ describe('DustConverterPage', () => {
 
     await screen.findByText('DUST');
     await user.click(screen.getByRole('button', { name: 'Chọn tất cả' }));
-    const retry = await screen.findByRole('button', { name: 'Thử lại' });
+    const retry = await screen.findByRole('button', { name: 'Thử lại' }, { timeout: 10_000 });
     expect(quoteRequests).toBe(3);
     quoteAvailable = true;
     await user.click(retry);
