@@ -75,6 +75,48 @@ describe('ArenaDiscoveryPage', () => {
     expect(screen.getByText(/100 Arena Points để tham gia/i)).toBeInTheDocument();
   });
 
+  it('shows loading until the discovery request resolves', async () => {
+    let releaseDiscovery = () => {};
+    const pendingDiscovery = new Promise<void>((resolve) => {
+      releaseDiscovery = resolve;
+    });
+    server.use(
+      http.get('http://localhost:3000/api/arena/discovery', async () => {
+        await pendingDiscovery;
+        return HttpResponse.json(response);
+      }),
+    );
+
+    renderPage();
+
+    expect(await screen.findByRole('status')).toHaveTextContent('Đang tải dữ liệu Arena…');
+    releaseDiscovery();
+    expect(await screen.findByRole('heading', { name: 'BTC $70K?' })).toBeInTheDocument();
+  });
+
+  it('shows a retryable error after a discovery transport failure', async () => {
+    let requestCount = 0;
+    server.use(
+      http.get('http://localhost:3000/api/arena/discovery', () => {
+        requestCount += 1;
+        return requestCount <= 3 ? HttpResponse.error() : HttpResponse.json(response);
+      }),
+    );
+
+    renderPage();
+
+    expect(await screen.findByText('Có lỗi xảy ra')).toBeInTheDocument();
+    expect(requestCount).toBe(3);
+    const retryButton = screen.getByRole('button', { name: 'Thử lại' });
+    expect(retryButton).toBeVisible();
+    expect(screen.queryByText('Chưa có challenge nào khả dụng.')).not.toBeInTheDocument();
+
+    await userEvent.click(retryButton);
+
+    expect(await screen.findByRole('heading', { name: 'BTC $70K?' })).toBeInTheDocument();
+    expect(requestCount).toBe(4);
+  });
+
   it('filters the active discovery tab and switches to modes', async () => {
     server.use(
       http.get('http://localhost:3000/api/arena/discovery', () => HttpResponse.json(response)),
@@ -91,5 +133,24 @@ describe('ArenaDiscoveryPage', () => {
     await userEvent.clear(screen.getByRole('textbox', { name: 'Tìm trong Open Arena' }));
     await userEvent.click(screen.getByRole('tab', { name: 'Mode' }));
     expect(await screen.findByRole('heading', { name: 'BTC Weekly Predict' })).toBeInTheDocument();
+  });
+
+  it('shows explicit empty states without presenting join as failed', async () => {
+    server.use(
+      http.get('http://localhost:3000/api/arena/discovery', () =>
+        HttpResponse.json({ modes: [], challenges: [] }),
+      ),
+    );
+
+    renderPage();
+
+    expect(await screen.findByText('Chưa có challenge nào khả dụng.')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Tham gia challenge' })).not.toBeInTheDocument();
+    expect(screen.queryByText('Không thể tham gia. Vui lòng thử lại.')).not.toBeInTheDocument();
+
+    const modeTab = screen.getByRole('tab', { name: 'Mode' });
+    await userEvent.click(modeTab);
+    expect(modeTab).toHaveAttribute('aria-selected', 'true');
+    expect(await screen.findByText('Chưa có mode nào khả dụng.')).toBeInTheDocument();
   });
 });

@@ -71,6 +71,7 @@ describe('Savings history contract page', () => {
 
     expect(await screen.findByText('Đăng ký · USDT Flexible')).toBeInTheDocument();
     expect(screen.getByText('Rút vốn · USDT Flexible')).toBeInTheDocument();
+    expect(screen.getByText('Đang xử lý')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Đăng ký' }));
     expect(screen.queryByText('Rút vốn · USDT Flexible')).not.toBeInTheDocument();
     expect(screen.getByText('Đăng ký · USDT Flexible')).toBeInTheDocument();

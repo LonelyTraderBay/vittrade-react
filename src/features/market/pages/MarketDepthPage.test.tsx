@@ -50,13 +50,14 @@ function installHandlers(book = orderBook) {
   );
 }
 
-function renderMarketDepth() {
+function renderMarketDepth(initialEntry = '/pair/btc-usdt/depth') {
   return renderWithProviders(
     <Routes>
       <Route path="/pair/:pairId/depth" element={<MarketDepthPage />} />
+      <Route path="/markets/depth" element={<MarketDepthPage />} />
       <Route path="/trade/:pairId" element={<p>Trade destination</p>} />
     </Routes>,
-    { routerProps: { initialEntries: ['/pair/btc-usdt/depth'] } },
+    { routerProps: { initialEntries: [initialEntry] } },
   );
 }
 
@@ -116,5 +117,23 @@ describe('Market depth page', () => {
       'aria-pressed',
       'true',
     );
+  });
+
+  it('shows a retry state when the default pair cannot be loaded and recovers on retry', async () => {
+    let shouldFail = true;
+    server.use(
+      http.get('*/market/pairs', () =>
+        shouldFail ? HttpResponse.error() : HttpResponse.json({ items: [pair] }),
+      ),
+      http.get('*/market/pairs/btc-usdt', () => HttpResponse.json(pair)),
+      http.get('*/market/pairs/btc-usdt/orderbook', () => HttpResponse.json(orderBook)),
+    );
+    const user = userEvent.setup();
+    renderMarketDepth('/markets/depth');
+
+    expect(await screen.findByText('Có lỗi xảy ra')).toBeVisible();
+    shouldFail = false;
+    await user.click(screen.getByRole('button', { name: 'Thử lại' }));
+    expect(await screen.findByText('BTC/USDT')).toBeVisible();
   });
 });

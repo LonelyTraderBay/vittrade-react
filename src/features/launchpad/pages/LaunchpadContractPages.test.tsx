@@ -67,6 +67,18 @@ describe('Launchpad contract pages', () => {
     expect(screen.getByText('67%')).toBeInTheDocument();
   });
 
+  it('renders the empty-list message for a successful empty API response', async () => {
+    server.use(
+      http.get('*/launchpad/projects', () =>
+        HttpResponse.json({ projects: [], total: 0, activeCount: 0 }),
+      ),
+    );
+
+    renderWithProviders(<LaunchpadContractPage />);
+
+    expect(await screen.findByText('Không có dự án phù hợp.')).toBeInTheDocument();
+  });
+
   it('renders the detail contract boundary without simulating a transaction', async () => {
     server.use(http.get('*/launchpad/projects/proj1', () => HttpResponse.json(project)));
 

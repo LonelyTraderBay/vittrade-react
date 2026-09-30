@@ -133,4 +133,21 @@ describe('OpenPositionsPage', () => {
     );
     expect(requested).toBe(false);
   });
+
+  it('shows an explicit permission-denied state for a contract-declared 403', async () => {
+    server.use(
+      http.get('http://localhost:3000/api/trading/positions', () =>
+        HttpResponse.json({ code: 'PREVIEW_FORBIDDEN' }, { status: 403 }),
+      ),
+    );
+
+    renderWithProviders(<OpenPositionsPage />, {
+      authAdapter: adapterWithPermissions(['trade:read']),
+    });
+
+    expect(await screen.findByText('Không có quyền xem vị thế')).toBeVisible();
+    expect(screen.getByText('Tài khoản của bạn không có quyền xem vị thế.')).toBeVisible();
+    expect(screen.queryByText('Không có vị thế phù hợp.')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Thử lại' })).not.toBeInTheDocument();
+  });
 });

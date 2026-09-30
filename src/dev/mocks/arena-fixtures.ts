@@ -6,6 +6,8 @@
  *  Tất cả data hardcode cho prototype.
  */
 
+import { nextDevMockRandom } from './scenario-runtime';
+
 /* ─── Types ─── */
 
 export interface ArenaTemplate {
@@ -1582,10 +1584,10 @@ export interface LeaderboardTeamEntry {
 export const LEADERBOARD_CREATORS: LeaderboardCreatorEntry[] = ARENA_CREATORS.map((cr, i) => ({
   rank: i + 1,
   creator: cr,
-  fairPlayScore: cr.trustScore - Math.floor(Math.random() * 5),
-  winRate: 60 + Math.floor(Math.random() * 30),
-  completionQuality: cr.completionRate || 85 + Math.floor(Math.random() * 10),
-  activity: Math.floor(Math.random() * 15) + 3,
+  fairPlayScore: cr.trustScore - Math.floor(nextDevMockRandom() * 5),
+  winRate: 60 + Math.floor(nextDevMockRandom() * 30),
+  completionQuality: cr.completionRate || 85 + Math.floor(nextDevMockRandom() * 10),
+  activity: Math.floor(nextDevMockRandom() * 15) + 3,
 }))
   .sort((a, b) => b.fairPlayScore - a.fairPlayScore)
   .map((e, i) => ({ ...e, rank: i + 1 }));

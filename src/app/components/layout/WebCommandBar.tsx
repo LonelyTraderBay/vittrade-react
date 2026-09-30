@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Search, Bell, Moon, Sun, ChevronRight } from 'lucide-react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { useAuth } from '@/shared/session/useAuth';
 import { useUI } from '../../hooks/useUI';
 import { WEB_COMMAND_BAR_HEIGHT } from './webConstants';
 
@@ -79,7 +80,15 @@ export function WebCommandBar() {
   const location = useLocation();
   const navigate = useNavigate();
   const c = useThemeColors();
+  const { isAuthenticated, isLoading, user } = useAuth();
   const { notifications } = useUI();
+  const account = !isLoading && isAuthenticated ? user : null;
+  const accountName = account
+    ? account.fullName.trim() || account.username || account.email || 'Tài khoản'
+    : isLoading
+      ? 'Đang kiểm tra phiên đăng nhập'
+      : 'Chưa đăng nhập';
+  const accountDetail = account?.vipLevel != null ? `VIP ${account.vipLevel}` : '';
   const crumbs = getBreadcrumbs(location.pathname);
   const unreadCount = typeof notifications === 'number' ? notifications : 0;
   const [searchFocused, setSearchFocused] = useState(false);
@@ -288,11 +297,18 @@ export function WebCommandBar() {
               background: 'linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)',
             }}
           >
-            <span style={{ color: '#fff', fontSize: 12, fontWeight: 700 }}>V</span>
+            <span style={{ color: '#fff', fontSize: 12, fontWeight: 700 }}>
+              {account ? accountName.charAt(0).toUpperCase() : '…'}
+            </span>
           </div>
           <div className="flex flex-col text-left">
-            <span style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>VitTrader</span>
-            <span style={{ color: c.text3, fontSize: 11 }}>VIP 3</span>
+            <span
+              aria-live={isLoading ? 'polite' : undefined}
+              style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}
+            >
+              {accountName}
+            </span>
+            {accountDetail && <span style={{ color: c.text3, fontSize: 11 }}>{accountDetail}</span>}
           </div>
         </button>
       </div>

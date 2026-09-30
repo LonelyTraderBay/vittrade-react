@@ -1,4 +1,5 @@
 import { browserStorage } from '@/shared/lib/browser-storage';
+import { devMockNowMs, nextDevMockRandom } from './scenario-runtime';
 
 /**
  * ══════════════════════════════════════════════════════════════
@@ -539,7 +540,7 @@ export function formatCountdown(targetDateStr: string): string {
   const parts = targetDateStr.match(/(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2})/);
   if (!parts) return '--';
   const target = new Date(+parts[3], +parts[2] - 1, +parts[1], +parts[4], +parts[5]);
-  const now = new Date();
+  const now = new Date(devMockNowMs());
   const diff = target.getTime() - now.getTime();
   if (diff <= 0) return 'Đã kết thúc';
   const d = Math.floor(diff / 86400000);
@@ -2101,7 +2102,7 @@ export function simulateABIDetection(address: string, chain: string): ABIDetecti
         recommendation: 'Chỉ approve số lượng cần thiết, tránh unlimited approve',
       },
     ],
-    detectionTime: 1200 + Math.random() * 800,
+    detectionTime: 1200 + nextDevMockRandom() * 800,
   };
 }
 
@@ -2454,7 +2455,7 @@ export function createBridgeOrderDetail(
   tx: BridgeTxRecord,
   scenario: 'success' | 'slow' | 'fail' = 'success',
 ): BridgeOrderDetail {
-  const now = new Date();
+  const now = new Date(devMockNowMs());
   const ts = (d: Date) =>
     `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}:${String(d.getSeconds()).padStart(2, '0')}`;
   const baseSteps: BridgePollingStep[] = [
@@ -2654,7 +2655,7 @@ export function markAllVestingNotifsRead(): VestingNotification[] {
 }
 
 const tsNow = () => {
-  const d = new Date();
+  const d = new Date(devMockNowMs());
   return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
 };
 
@@ -2675,7 +2676,7 @@ export function generateVestingNotifSequence(
       delayMs: 3000,
       notif: {
         ...base,
-        id: `vn_${Date.now()}_1`,
+        id: `vn_${devMockNowMs()}_1`,
         type: 'unlock_soon',
         title: 'Sắp mở khóa',
         message: `${unlocking.amount.toLocaleString()} ${receipt.rewardToken} (${unlocking.label}) sẽ được mở khóa.`,
@@ -2691,7 +2692,7 @@ export function generateVestingNotifSequence(
       delayMs: 8000,
       notif: {
         ...base,
-        id: `vn_${Date.now()}_2`,
+        id: `vn_${devMockNowMs()}_2`,
         type: 'claimable',
         title: 'Có thể nhận thưởng!',
         message: `${unlocking.amount.toLocaleString()} ${receipt.rewardToken} đã mở khóa và sẵn sàng để nhận.`,
@@ -2711,7 +2712,7 @@ export function generateVestingNotifSequence(
       delayMs: 14000,
       notif: {
         ...base,
-        id: `vn_${Date.now()}_3`,
+        id: `vn_${devMockNowMs()}_3`,
         type: 'reward_milestone',
         title: 'Milestone đạt được!',
         message: `Bạn đã đạt 75% tổng phần thưởng (${milestoneAmount.toLocaleString()} ${receipt.rewardToken}).`,
@@ -2728,7 +2729,7 @@ export function generateVestingNotifSequence(
       delayMs: 20000,
       notif: {
         ...base,
-        id: `vn_${Date.now()}_4`,
+        id: `vn_${devMockNowMs()}_4`,
         type: 'unlock_soon',
         title: 'Đợt tiếp theo',
         message: `${nextLocked.amount.toLocaleString()} ${receipt.rewardToken} (${nextLocked.label}) sẽ mở khóa vào ${nextLocked.unlockDate}.`,
@@ -2768,7 +2769,7 @@ export function generateBridgeEventLog(
   const events: { event: BridgeWsEvent; delayMs: number }[] = [];
   let seq = 0;
   const ts = () => {
-    const d = new Date(Date.now() + seq * 100);
+    const d = new Date(devMockNowMs() + seq * 100);
     return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}:${String(d.getSeconds()).padStart(2, '0')}.${String(d.getMilliseconds()).padStart(3, '0')}`;
   };
   const evt = (
@@ -2843,7 +2844,7 @@ export function generateBridgeEventLog(
   for (let i = 1; i <= 6; i++) {
     evt(5000 + i * 400, 'debug', 'confirm', `Block confirmation ${i}/12 on ${order.sourceChain}`, {
       block: 18234000 + i,
-      gasUsed: 52000 + Math.floor(Math.random() * 5000),
+      gasUsed: 52000 + Math.floor(nextDevMockRandom() * 5000),
     });
   }
   evt(7600, 'info', 'bridge', '6/12 confirmations reached. Bridge relay activated.', undefined);
@@ -3325,8 +3326,8 @@ export function generateRouteComparison(
   );
 
   return {
-    id: `comp_${Date.now()}`,
-    timestamp: new Date().toLocaleString(),
+    id: `comp_${devMockNowMs()}`,
+    timestamp: new Date(devMockNowMs()).toLocaleString(),
     sourceChain,
     targetChain,
     inputToken,
@@ -3500,7 +3501,7 @@ export interface EventLogEntry {
 }
 
 export function generateMockEventLog(): EventLogEntry[] {
-  const now = Date.now();
+  const now = devMockNowMs();
   return [
     {
       id: 'ev01',
@@ -3644,7 +3645,7 @@ export function generateMockEventLog(): EventLogEntry[] {
 }
 
 export function formatEventLogForClipboard(entries: EventLogEntry[]): string {
-  const header = `=== Launchpad Event Log ===\nExported: ${new Date().toLocaleString()}\nEntries: ${entries.length}\n${'='.repeat(40)}\n\n`;
+  const header = `=== Launchpad Event Log ===\nExported: ${new Date(devMockNowMs()).toLocaleString()}\nEntries: ${entries.length}\n${'='.repeat(40)}\n\n`;
   const body = entries
     .map((e) => {
       const lines = [`[${e.timestamp}] [${e.level.toUpperCase()}] ${e.source}`, `  ${e.message}`];
@@ -3663,7 +3664,7 @@ export function formatEventLogForClipboard(entries: EventLogEntry[]): string {
 
 export function formatEventLogAsJSON(entries: EventLogEntry[]): string {
   return JSON.stringify(
-    { exported: new Date().toISOString(), count: entries.length, entries },
+    { exported: new Date(devMockNowMs()).toISOString(), count: entries.length, entries },
     null,
     2,
   );
@@ -4417,13 +4418,13 @@ export function generateGasHistory(chain: string): GasHistoryPoint[] {
   };
   const base = baseValues[chain] || 18;
   for (let i = 24; i >= 0; i--) {
-    const h = new Date(Date.now() - i * 3600000);
+    const h = new Date(devMockNowMs() - i * 3600000);
     const variance = 0.3;
     const noise = () =>
       base *
       (1 +
         (Math.sin(i * 0.5) + Math.cos(i * 0.3)) * variance * 0.5 +
-        (Math.random() - 0.5) * variance * 0.3);
+        (nextDevMockRandom() - 0.5) * variance * 0.3);
     points.push({
       time: `${String(h.getHours()).padStart(2, '0')}:00`,
       slow: Math.max(0.01, noise() * 0.7),
@@ -5155,7 +5156,7 @@ export function calculateAirdropStats(claims: AirdropClaim[]): AirdropStats {
   const totalClaimableUSD = claimable.reduce((sum, c) => sum + parseUsd(c.usdValue), 0);
   const totalClaimedUSD = claimed.reduce((sum, c) => sum + parseUsd(c.usdValue), 0);
 
-  const now = Date.now();
+  const now = devMockNowMs();
   const expiringSoon = claimable.filter((c) => {
     const daysUntil = (new Date(c.claimDeadline).getTime() - now) / (1000 * 60 * 60 * 24);
     return daysUntil <= 7;
@@ -5363,7 +5364,7 @@ export function generateLPHistory(poolId: string): LPHistoryPoint[] {
 
   const points: LPHistoryPoint[] = [];
   for (let i = 24; i >= 0; i--) {
-    const h = new Date(Date.now() - i * 3600000);
+    const h = new Date(devMockNowMs() - i * 3600000);
     const wave = Math.sin(i * 0.45) * 0.06 + Math.cos(i * 0.25) * 0.04;
     points.push({
       time: `${String(h.getHours()).padStart(2, '0')}:00`,
@@ -5624,7 +5625,7 @@ export interface VestingStats {
 }
 
 export function calculateVestingStats(schedules: VestingSchedule[]): VestingStats {
-  const now = Date.now();
+  const now = devMockNowMs();
   const upcoming = schedules
     .filter((s) => s.status === 'active')
     .flatMap((s) =>

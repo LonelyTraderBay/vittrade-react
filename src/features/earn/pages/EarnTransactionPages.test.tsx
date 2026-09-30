@@ -100,7 +100,10 @@ describe('Earn transaction pages', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('Subscription service unavailable');
     await user.click(screen.getByRole('button', { name: 'Xác nhận đăng ký' }));
 
-    expect(await screen.findByText('Giao dịch đã ghi nhận')).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { name: 'Giao dịch đã hoàn tất' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('Hoàn tất');
     expect(attempts).toBe(2);
     expect(keys[0]).toMatch(/^earn-subscribe-/);
     expect(keys[1]).toBe(keys[0]);
@@ -139,7 +142,11 @@ describe('Earn transaction pages', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('Redemption service unavailable');
     await user.click(screen.getByRole('button', { name: 'Xác nhận rút vốn' }));
 
-    expect(await screen.findByText('Giao dịch đã ghi nhận')).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Yêu cầu đang xử lý' })).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('Đang xử lý');
+    expect(
+      screen.queryByRole('heading', { name: 'Giao dịch đã hoàn tất' }),
+    ).not.toBeInTheDocument();
     expect(attempts).toBe(2);
     expect(keys[0]).toMatch(/^earn-redeem-/);
     expect(keys[1]).toBe(keys[0]);

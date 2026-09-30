@@ -93,6 +93,44 @@ describe('SupportContractPage', () => {
     expect(screen.getByLabelText('Tiêu đề ticket')).toHaveValue('');
   });
 
+  it('locks the ticket form and prevents a second submission while the request is in flight', async () => {
+    let attempts = 0;
+    let resolveCreate!: (response: Response) => void;
+    server.use(
+      http.get('*/support/tickets', () => HttpResponse.json({ items: [] })),
+      http.post(
+        '*/support/tickets',
+        () =>
+          new Promise<Response>((resolve) => {
+            attempts += 1;
+            resolveCreate = resolve;
+          }),
+      ),
+    );
+    renderWithProviders(<SupportContractPage />, { authAdapter: supportWriteAdapter() });
+
+    const user = userEvent.setup();
+    const subjectField = await screen.findByLabelText('Tiêu đề ticket');
+    const descriptionField = screen.getByLabelText('Nội dung ticket');
+    await user.type(subjectField, 'Login issue');
+    await user.type(descriptionField, 'Cannot sign in');
+    await user.click(screen.getByRole('button', { name: 'Gửi ticket' }));
+
+    const pendingButton = await screen.findByRole('button', { name: 'Đang gửi…' });
+    expect(pendingButton).toBeDisabled();
+    expect(pendingButton).toHaveAttribute('aria-busy', 'true');
+    expect(subjectField).toBeDisabled();
+    expect(descriptionField).toBeDisabled();
+    expect(attempts).toBe(1);
+
+    resolveCreate(HttpResponse.json(ticket, { status: 201 }));
+    await waitFor(() =>
+      expect(toast.success).toHaveBeenCalledWith('Đã gửi yêu cầu hỗ trợ.', { duration: 1500 }),
+    );
+    expect(attempts).toBe(1);
+    expect(screen.getByLabelText('Tiêu đề ticket')).toHaveValue('');
+  });
+
   it('reports ticket creation failures and retains the entered content', async () => {
     let attempts = 0;
     const idempotencyKeys: string[] = [];
@@ -133,6 +171,18 @@ describe('SupportContractPage', () => {
     renderWithProviders(<SupportContractPage />, { authAdapter: supportWriteAdapter() });
 
     expect(await screen.findByRole('status')).toHaveTextContent('Bạn chưa có yêu cầu hỗ trợ nào.');
+  });
+
+  it('shows a ticket read failure instead of treating it as an empty list', async () => {
+    server.use(
+      http.get('*/support/tickets', () =>
+        HttpResponse.json({ message: 'Ticket service unavailable' }, { status: 503 }),
+      ),
+    );
+    renderWithProviders(<SupportContractPage />, { authAdapter: supportWriteAdapter() });
+
+    expect(await screen.findByRole('button', { name: 'Thử lại' })).toBeVisible();
+    expect(screen.queryByText('Bạn chưa có yêu cầu hỗ trợ nào.')).not.toBeInTheDocument();
   });
 });
 

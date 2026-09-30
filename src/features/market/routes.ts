@@ -49,14 +49,14 @@ const MarketSectorsPage = lazyRoute(() =>
 const WatchlistPage = lazyRoute(() =>
   import('./pages/WatchlistPage').then((module) => ({ default: module.WatchlistPage })),
 );
-const MarketHeatmapPage = lazyRoute(() =>
-  import('./pages/MarketHeatmapPage').then((module) => ({
-    default: module.MarketHeatmapPage,
-  })),
-);
 const MarketPriceAlertsPage = lazyRoute(() =>
   import('./pages/MarketPriceAlertsPage').then((module) => ({
     default: module.MarketPriceAlertsPage,
+  })),
+);
+const MarketHeatmapPage = lazyRoute(() =>
+  import('./pages/MarketHeatmapPage').then((module) => ({
+    default: module.MarketHeatmapPage,
   })),
 );
 const MarketScreenerPage = lazyRoute(() =>
@@ -98,9 +98,7 @@ export function createMarketPublicRoutes(components: MarketRouteComponents): Rou
     { path: 'markets/social-sentiment', Component: MarketSentimentPage },
     { path: 'markets/signals', Component: MarketSignalsPage },
     { path: 'markets/sectors', Component: MarketSectorsPage },
-    { path: 'markets/watchlist', Component: WatchlistPage },
     { path: 'markets/heatmap', Component: MarketHeatmapPage },
-    { path: 'markets/alerts', Component: MarketPriceAlertsPage },
     { path: 'markets/screener', Component: MarketScreenerPage },
     { path: 'markets/compare', Component: MarketComparisonPage },
     { path: 'markets/depth', Component: MarketDepthPage },
@@ -117,12 +115,15 @@ export function createMarketWebRoutes(): RouteObject[] {
     { path: 'scanner', Component: MarketScreenerPage },
     { path: 'markets/overview', Component: MarketOverviewPage },
     { path: 'markets/movers', Component: MarketMoversPage },
-    { path: 'markets/watchlist', Component: WatchlistPage },
     { path: 'markets/heatmap', Component: MarketHeatmapPage },
   ];
 }
 
-/** Biến thể route market được bảo vệ; màn hình trade dùng lại cùng page contract. */
+/** Market pages backed by session-protected API operations. */
 export function createMarketProtectedRoutes(): RouteObject[] {
-  return [{ path: 'trade/advanced-chart/:pairId', Component: AdvancedChartsPage }];
+  return [
+    { path: 'markets/watchlist', Component: WatchlistPage },
+    { path: 'markets/alerts', Component: MarketPriceAlertsPage },
+    { path: 'trade/advanced-chart/:pairId', Component: AdvancedChartsPage },
+  ];
 }

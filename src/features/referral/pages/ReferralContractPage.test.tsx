@@ -116,4 +116,46 @@ describe('ReferralContractPage', () => {
     await user.click(screen.getByRole('button', { name: 'Thử lại' }));
     expect(await screen.findByText('Invite and earn')).toBeVisible();
   });
+
+  it('shows an explicit no-referrals state while retaining overview content', async () => {
+    server.use(
+      http.get('*/referral/overview', () =>
+        HttpResponse.json({
+          ...overview(),
+          stats: {
+            totalFriends: 0,
+            activeFriends: 0,
+            kycCompleted: 0,
+            totalCommission: 0,
+            pendingCommission: 0,
+            totalVolume: 0,
+            thisMonthCommission: 0,
+            thisMonthFriends: 0,
+          },
+          friends: [],
+        }),
+      ),
+    );
+    renderWithProviders(<ReferralContractPage />);
+
+    expect(
+      await screen.findByText('Chưa có người được giới thiệu. Hãy chia sẻ mã để bắt đầu.'),
+    ).toBeVisible();
+    expect(screen.getByText('Invite and earn')).toBeVisible();
+    expect(screen.getByText('$0.00')).toBeVisible();
+    expect(screen.queryByText('Nguyễn An')).not.toBeInTheDocument();
+  });
+
+  it('shows a permission state instead of retrying a forbidden overview', async () => {
+    server.use(
+      http.get('*/referral/overview', () =>
+        HttpResponse.json({ code: 'REFERRAL_FORBIDDEN' }, { status: 403 }),
+      ),
+    );
+    renderWithProviders(<ReferralContractPage />);
+
+    const permissionAlert = await screen.findByRole('alert');
+    expect(permissionAlert).toHaveTextContent('Không có quyền truy cập Referral');
+    expect(screen.queryByRole('button', { name: 'Thử lại' })).not.toBeInTheDocument();
+  });
 });

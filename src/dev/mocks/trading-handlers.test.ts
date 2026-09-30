@@ -1,12 +1,16 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { setupServer } from 'msw/node';
 import { handlers, resetDevTradingState } from './handlers';
+import { configureDevMockScenario, resetDevMockRuntime } from './scenario-runtime';
 
 const server = setupServer(...handlers);
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 beforeEach(() => resetDevTradingState());
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+  server.resetHandlers();
+  resetDevMockRuntime();
+});
 afterAll(() => server.close());
 
 describe('development trading adapter', () => {
@@ -74,6 +78,29 @@ describe('development trading adapter', () => {
 
     expect(response.status).toBe(400);
     expect(await response.json()).toMatchObject({ code: 'IDEMPOTENCY_KEY_REQUIRED' });
+  });
+
+  it('recreates the same order ID and timestamp after resetting the scenario', async () => {
+    configureDevMockScenario({ now: Date.parse('2026-09-27T20:00:00.000Z') });
+    const createRequest = () =>
+      fetch('http://localhost:3000/api/trading/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Idempotency-Key': 'repeatable-order-123',
+        },
+        body: JSON.stringify({ symbol: 'BTC/USDT', side: 'buy', type: 'limit', amount: 0.1 }),
+      });
+
+    const firstResponse = await createRequest();
+    const firstOrder = await firstResponse.json();
+    expect(firstResponse.status).toBe(201);
+
+    resetDevTradingState();
+    const replayResponse = await createRequest();
+
+    expect(replayResponse.status).toBe(201);
+    expect(await replayResponse.json()).toEqual(firstOrder);
   });
 
   it('does not invent account positions when no position source is configured', async () => {

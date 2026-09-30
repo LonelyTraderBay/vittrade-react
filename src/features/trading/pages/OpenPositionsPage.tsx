@@ -64,6 +64,14 @@ export function OpenPositionsPage() {
           <TrCard className="p-5">
             <p style={{ color: colors.text2, fontSize: 12 }}>Đang tải vị thế…</p>
           </TrCard>
+        ) : query.isError &&
+          !query.data &&
+          query.error instanceof ApiError &&
+          query.error.status === 403 ? (
+          <ErrorState
+            title="Không có quyền xem vị thế"
+            message="Tài khoản của bạn không có quyền xem vị thế."
+          />
         ) : query.isError && !query.data ? (
           <ErrorState
             title={

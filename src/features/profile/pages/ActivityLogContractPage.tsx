@@ -49,29 +49,37 @@ export function ActivityLogContractPage() {
             </button>
           ))}
         </div>
-        {logs.map((log) => (
-          <TrCard className="p-4" key={log.id}>
-            <div className="flex justify-between gap-3">
-              <div>
-                <p style={{ color: colors.text1, fontWeight: 700 }}>{log.description}</p>
-                <p style={{ color: colors.text2, fontSize: 12 }}>
-                  {log.device} · {log.location}
-                </p>
-                <p style={{ color: colors.text3, fontSize: 11 }}>
-                  {log.ipAddress} · {log.timestamp}
-                </p>
+        {logs.length === 0 ? (
+          <p role="status" style={{ color: colors.text2, fontSize: 13 }}>
+            {query.data.items.length === 0
+              ? 'Chưa có hoạt động tài khoản nào.'
+              : 'Không có hoạt động phù hợp bộ lọc.'}
+          </p>
+        ) : (
+          logs.map((log) => (
+            <TrCard className="p-4" key={log.id}>
+              <div className="flex justify-between gap-3">
+                <div>
+                  <p style={{ color: colors.text1, fontWeight: 700 }}>{log.description}</p>
+                  <p style={{ color: colors.text2, fontSize: 12 }}>
+                    {log.device} · {log.location}
+                  </p>
+                  <p style={{ color: colors.text3, fontSize: 11 }}>
+                    {log.ipAddress} · {log.timestamp}
+                  </p>
+                </div>
+                <span
+                  style={{
+                    color: log.status === 'success' ? colors.success : '#EF4444',
+                    fontSize: 11,
+                  }}
+                >
+                  {log.status}
+                </span>
               </div>
-              <span
-                style={{
-                  color: log.status === 'success' ? colors.success : '#EF4444',
-                  fontSize: 11,
-                }}
-              >
-                {log.status}
-              </span>
-            </div>
-          </TrCard>
-        ))}
+            </TrCard>
+          ))
+        )}
       </PageContent>
     </PageLayout>
   );

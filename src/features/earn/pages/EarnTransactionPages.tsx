@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CheckCircle2, LockKeyhole, ShieldCheck } from 'lucide-react';
+import { CheckCircle2, Clock3, LockKeyhole, ShieldCheck } from 'lucide-react';
 import { useLocation, useNavigate, useParams } from 'react-router';
 import {
   useCreateEarnSubscriptionMutation,
@@ -304,15 +304,24 @@ export function EarnReceiptPage() {
         />
       </PageLayout>
     );
+  const isPending = receipt.status === 'pending';
   return (
     <PageLayout>
       <Header title="Biên nhận" subtitle="Earn · Giao dịch" back />
       <PageContent gap="relaxed">
         <div className="flex flex-col items-center gap-3 py-6">
-          <CheckCircle2 size={56} color="#10B981" />
-          <h1 className="text-xl font-bold">Giao dịch đã ghi nhận</h1>
+          {isPending ? (
+            <Clock3 size={56} color="#D97706" aria-hidden="true" />
+          ) : (
+            <CheckCircle2 size={56} color="#10B981" aria-hidden="true" />
+          )}
+          <h1 className="text-xl font-bold">
+            {isPending ? 'Yêu cầu đang xử lý' : 'Giao dịch đã hoàn tất'}
+          </h1>
           <p className="text-center text-sm opacity-70">
-            Trạng thái và kết quả cuối cùng sẽ được đồng bộ từ backend.
+            {isPending
+              ? 'Yêu cầu đã được tiếp nhận. Kết quả cuối cùng vẫn đang chờ backend xác nhận.'
+              : 'Backend đã xác nhận giao dịch hoàn tất.'}
           </p>
         </div>
         <TrCard className="flex flex-col gap-3 p-4">
@@ -330,7 +339,12 @@ export function EarnReceiptPage() {
           </div>
           <div className="flex justify-between text-sm">
             <span className="opacity-70">Trạng thái</span>
-            <span className="font-semibold text-emerald-500">{receipt.status}</span>
+            <span
+              role="status"
+              className={`font-semibold ${isPending ? 'text-amber-600' : 'text-emerald-500'}`}
+            >
+              {isPending ? 'Đang xử lý' : 'Hoàn tất'}
+            </span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="opacity-70">Mã giao dịch</span>

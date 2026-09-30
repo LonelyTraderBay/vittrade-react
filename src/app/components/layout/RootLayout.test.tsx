@@ -39,6 +39,21 @@ function renderAt(path: string) {
 }
 
 describe('RootLayout platform shells', () => {
+  it('renders the development control supplied by route composition', () => {
+    const PreviewControl = () => <div data-testid="preview-control-stub">Mock controls</div>;
+    render(
+      <MemoryRouter initialEntries={['/w/home']}>
+        <Routes>
+          <Route element={<RootLayout developmentPreviewControls={PreviewControl} />}>
+            <Route path="*" element={<div>Route content</div>} />
+          </Route>
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByTestId('preview-control-stub')).toHaveTextContent('Mock controls');
+  });
+
   it.each(['/home', '/markets'])('wraps phone route %s in MobileFrame', (path) => {
     renderAt(path);
 

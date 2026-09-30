@@ -66,5 +66,6 @@ describe('SubAccountContractPage', () => {
 
     expect(await screen.findByText('$0')).toBeVisible();
     expect(screen.getByText('0 tài khoản phụ')).toBeVisible();
+    expect(screen.getByRole('status')).toHaveTextContent('Chưa có tài khoản phụ nào.');
   });
 });

@@ -2,6 +2,8 @@
 // MOCK DATA — VitTrade App
 // ============================================================
 
+import { devMockNowMs, nextDevMockRandom } from './scenario-runtime';
+
 export interface CryptoPair {
   id: string;
   symbol: string;
@@ -419,12 +421,12 @@ export function generateOrderBook(midPrice: number): {
   const bids: OrderBookEntry[] = [];
   for (let i = 0; i < 14; i++) {
     const price = midPrice + (i + 1) * (midPrice * 0.0002);
-    const amount = parseFloat((Math.random() * 2 + 0.01).toFixed(4));
+    const amount = parseFloat((nextDevMockRandom() * 2 + 0.01).toFixed(4));
     asks.push({ price, amount, total: price * amount, depth: 0 });
   }
   for (let i = 0; i < 14; i++) {
     const price = midPrice - (i + 1) * (midPrice * 0.0002);
-    const amount = parseFloat((Math.random() * 2.5 + 0.01).toFixed(4));
+    const amount = parseFloat((nextDevMockRandom() * 2.5 + 0.01).toFixed(4));
     bids.push({ price, amount, total: price * amount, depth: 0 });
   }
 
@@ -439,15 +441,15 @@ export function generateOrderBook(midPrice: number): {
 // ─── Recent Trades ────────────────────────────────────────────
 export function generateRecentTrades(price: number): RecentTrade[] {
   const trades: RecentTrade[] = [];
-  const now = new Date();
+  const now = new Date(devMockNowMs());
   for (let i = 0; i < 25; i++) {
-    const side = Math.random() > 0.5 ? 'buy' : 'sell';
-    const tradePrice = price * (1 + (Math.random() - 0.5) * 0.002);
+    const side = nextDevMockRandom() > 0.5 ? 'buy' : 'sell';
+    const tradePrice = price * (1 + (nextDevMockRandom() - 0.5) * 0.002);
     const d = new Date(now.getTime() - i * 3000);
     trades.push({
       id: `t${i}`,
       price: parseFloat(tradePrice.toFixed(2)),
-      amount: parseFloat((Math.random() * 1.5 + 0.001).toFixed(4)),
+      amount: parseFloat((nextDevMockRandom() * 1.5 + 0.001).toFixed(4)),
       side,
       time: `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}:${d.getSeconds().toString().padStart(2, '0')}`,
     });
@@ -470,14 +472,14 @@ export function generateChartData(
 }[] {
   const data = [];
   let price = basePrice * 0.92;
-  const now = Date.now();
+  const now = devMockNowMs();
   for (let i = points; i >= 0; i--) {
-    const change = (Math.random() - 0.48) * price * 0.008;
+    const change = (nextDevMockRandom() - 0.48) * price * 0.008;
     price = Math.max(basePrice * 0.85, Math.min(basePrice * 1.1, price + change));
     const open = price;
-    const close = price + (Math.random() - 0.5) * price * 0.004;
-    const high = Math.max(open, close) + Math.random() * price * 0.003;
-    const low = Math.min(open, close) - Math.random() * price * 0.003;
+    const close = price + (nextDevMockRandom() - 0.5) * price * 0.004;
+    const high = Math.max(open, close) + nextDevMockRandom() * price * 0.003;
+    const low = Math.min(open, close) - nextDevMockRandom() * price * 0.003;
     const ts = new Date(now - i * 3600000);
     data.push({
       time: `${ts.getHours().toString().padStart(2, '0')}:00`,
@@ -486,7 +488,7 @@ export function generateChartData(
       high: parseFloat(high.toFixed(2)),
       low: parseFloat(low.toFixed(2)),
       close: parseFloat(close.toFixed(2)),
-      volume: parseFloat((Math.random() * 100 + 10).toFixed(2)),
+      volume: parseFloat((nextDevMockRandom() * 100 + 10).toFixed(2)),
     });
   }
   return data;
@@ -1247,8 +1249,8 @@ export const P2P_ORDER: P2POrder = {
   merchantId: 'mc001',
   counterparty: 'Nguyễn Văn A',
   paymentMethod: 'Vietcombank',
-  createdAt: '2024-02-21 11:00:00',
-  expiresAt: '2024-02-21 11:15:00',
+  createdAt: '2024-02-21T11:00:00+07:00',
+  expiresAt: '2024-02-21T11:15:00+07:00',
   escrowAmount: 200,
   fee: 0,
   paymentInfo: {
@@ -1274,8 +1276,8 @@ export const P2P_ORDERS: P2POrder[] = [
     merchantId: 'mc001',
     counterparty: 'Nguyễn Văn A',
     paymentMethod: 'Vietcombank',
-    createdAt: '2024-02-23 11:00:00',
-    expiresAt: '2024-02-23 11:15:00',
+    createdAt: '2024-02-23T11:00:00+07:00',
+    expiresAt: '2024-02-23T11:15:00+07:00',
     escrowAmount: 200,
     fee: 0,
     paymentInfo: {
@@ -1299,11 +1301,11 @@ export const P2P_ORDERS: P2POrder[] = [
     merchantId: 'mc004',
     counterparty: 'Trần Thị B',
     paymentMethod: 'BIDV',
-    createdAt: '2024-02-23 09:15:00',
-    expiresAt: '2024-02-23 09:30:00',
+    createdAt: '2024-02-23T09:15:00+07:00',
+    expiresAt: '2024-02-23T09:30:00+07:00',
     escrowAmount: 500,
     fee: 0,
-    paidAt: '2024-02-23 09:20:00',
+    paidAt: '2024-02-23T09:20:00+07:00',
     paymentInfo: { bankName: 'BIDV', accountNumber: '9876543210', accountName: 'TRAN THI B' },
   },
   {
@@ -1321,12 +1323,12 @@ export const P2P_ORDERS: P2POrder[] = [
     merchantId: 'mc002',
     counterparty: 'Nguyễn Văn A',
     paymentMethod: 'Techcombank',
-    createdAt: '2024-02-22 14:30:00',
-    expiresAt: '2024-02-22 14:45:00',
+    createdAt: '2024-02-22T14:30:00+07:00',
+    expiresAt: '2024-02-22T14:45:00+07:00',
     escrowAmount: 1000,
     fee: 0,
-    paidAt: '2024-02-22 14:35:00',
-    releasedAt: '2024-02-22 14:40:00',
+    paidAt: '2024-02-22T14:35:00+07:00',
+    releasedAt: '2024-02-22T14:40:00+07:00',
     rating: 5,
     review: 'Giao dịch nhanh',
     paymentInfo: {
@@ -1350,12 +1352,12 @@ export const P2P_ORDERS: P2POrder[] = [
     merchantId: 'mc003',
     counterparty: 'Nguyễn Văn A',
     paymentMethod: 'Momo',
-    createdAt: '2024-02-21 16:45:00',
-    expiresAt: '2024-02-21 17:00:00',
+    createdAt: '2024-02-21T16:45:00+07:00',
+    expiresAt: '2024-02-21T17:00:00+07:00',
     escrowAmount: 150,
     fee: 0,
-    paidAt: '2024-02-21 16:50:00',
-    releasedAt: '2024-02-21 16:58:00',
+    paidAt: '2024-02-21T16:50:00+07:00',
+    releasedAt: '2024-02-21T16:58:00+07:00',
     rating: 5,
     paymentInfo: { bankName: 'Momo', accountNumber: '0901234567', accountName: 'NGUYEN VAN A' },
   },
@@ -1374,11 +1376,11 @@ export const P2P_ORDERS: P2POrder[] = [
     merchantId: 'mc005',
     counterparty: 'Lê Văn C',
     paymentMethod: 'VietinBank',
-    createdAt: '2024-02-20 10:20:00',
-    expiresAt: '2024-02-20 10:35:00',
+    createdAt: '2024-02-20T10:20:00+07:00',
+    expiresAt: '2024-02-20T10:35:00+07:00',
     escrowAmount: 300,
     fee: 0,
-    cancelledAt: '2024-02-20 10:30:00',
+    cancelledAt: '2024-02-20T10:30:00+07:00',
     cancelReason: 'Đã tìm được giá tốt hơn',
   },
   {
@@ -1396,11 +1398,11 @@ export const P2P_ORDERS: P2POrder[] = [
     merchantId: 'mc007',
     counterparty: 'Nguyễn Văn A',
     paymentMethod: 'Vietcombank',
-    createdAt: '2024-02-19 08:10:00',
-    expiresAt: '2024-02-19 08:25:00',
+    createdAt: '2024-02-19T08:10:00+07:00',
+    expiresAt: '2024-02-19T08:25:00+07:00',
     escrowAmount: 800,
     fee: 0,
-    paidAt: '2024-02-19 08:15:00',
+    paidAt: '2024-02-19T08:15:00+07:00',
     disputeReason: 'Đã thanh toán nhưng người bán không xác nhận',
     paymentInfo: {
       bankName: 'Vietcombank',
@@ -1423,12 +1425,12 @@ export const P2P_ORDERS: P2POrder[] = [
     merchantId: 'mc006',
     counterparty: 'Nguyễn Văn A',
     paymentMethod: 'Vietcombank',
-    createdAt: '2024-02-18 12:00:00',
-    expiresAt: '2024-02-18 12:15:00',
+    createdAt: '2024-02-18T12:00:00+07:00',
+    expiresAt: '2024-02-18T12:15:00+07:00',
     escrowAmount: 0.05,
     fee: 0,
-    paidAt: '2024-02-18 12:05:00',
-    releasedAt: '2024-02-18 12:08:00',
+    paidAt: '2024-02-18T12:05:00+07:00',
+    releasedAt: '2024-02-18T12:08:00+07:00',
     rating: 5,
     paymentInfo: {
       bankName: 'Vietcombank',

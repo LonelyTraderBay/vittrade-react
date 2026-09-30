@@ -196,6 +196,22 @@ describe('Discovery contract pages', () => {
     expect(requests).toBe(2);
   });
 
+  it('shows permission denial instead of retry when Discovery search returns 403', async () => {
+    server.use(
+      http.get('*/discovery/search', () =>
+        HttpResponse.json({ code: 'DISCOVERY_FORBIDDEN' }, { status: 403 }),
+      ),
+    );
+
+    renderWithProviders(<DiscoverySearchContractPage />);
+    fireEvent.change(screen.getByPlaceholderText('Tìm market, mode, creator hoặc pair…'), {
+      target: { value: 'bitcoin' },
+    });
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Không có quyền truy cập Discovery');
+    expect(screen.queryByRole('button', { name: 'Thử lại' })).not.toBeInTheDocument();
+  });
+
   it('falls back to the crypto topic for unknown IDs and navigates between topics in the web shell', async () => {
     const requestedTopics: string[] = [];
     server.use(
@@ -254,5 +270,23 @@ describe('Discovery contract pages', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Thử lại' }));
     expect(await screen.findByRole('heading', { name: 'Crypto' })).toBeInTheDocument();
     expect(requests).toBe(2);
+  });
+
+  it('shows permission denial instead of retry when a Discovery topic returns 403', async () => {
+    server.use(
+      http.get('*/discovery/topics/:topicId', () =>
+        HttpResponse.json({ code: 'DISCOVERY_FORBIDDEN' }, { status: 403 }),
+      ),
+    );
+
+    renderWithProviders(
+      <Routes>
+        <Route path="/w/topic/:topicId" element={<DiscoveryTopicContractPage />} />
+      </Routes>,
+      { routerProps: { initialEntries: ['/w/topic/crypto'] } },
+    );
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Không có quyền truy cập Discovery');
+    expect(screen.queryByRole('button', { name: 'Thử lại' })).not.toBeInTheDocument();
   });
 });

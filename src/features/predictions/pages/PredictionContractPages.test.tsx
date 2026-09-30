@@ -59,11 +59,14 @@ describe('PredictionEventContractPage', () => {
 
     renderWithProviders(
       <Routes>
-        <Route path="/predictions/event/:eventId" element={<PredictionEventContractPage />} />
+        <Route
+          path="/markets/predictions/event/:eventId"
+          element={<PredictionEventContractPage />}
+        />
       </Routes>,
       {
         authAdapter: readOnlyAdapter,
-        routerProps: { initialEntries: ['/predictions/event/event-1'] },
+        routerProps: { initialEntries: ['/markets/predictions/event/event-1'] },
       },
     );
 
@@ -71,6 +74,30 @@ describe('PredictionEventContractPage', () => {
       await screen.findByText('Prediction trading permission is required to place an order.'),
     ).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Mua Yes/i })).toBeDisabled();
+  });
+
+  it('routes a prediction card to its canonical responsive event URL', async () => {
+    server.use(http.get('*/predictions/events', () => HttpResponse.json({ items: [event] })));
+
+    function EventRoute() {
+      const location = useLocation();
+      return <output data-testid="event-route">{location.pathname}</output>;
+    }
+
+    renderWithProviders(
+      <Routes>
+        <Route path="/r/markets/predictions" element={<PredictionsContractPage />} />
+        <Route path="/r/markets/predictions/event/:eventId" element={<EventRoute />} />
+      </Routes>,
+      { routerProps: { initialEntries: ['/r/markets/predictions'] } },
+    );
+
+    expect(await screen.findByText(event.title)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: new RegExp(event.title) }));
+
+    expect(await screen.findByTestId('event-route')).toHaveTextContent(
+      '/r/markets/predictions/event/event-1',
+    );
   });
 
   it('submits the selected outcome and shares, then routes to the returned receipt', async () => {
@@ -109,10 +136,13 @@ describe('PredictionEventContractPage', () => {
 
     renderWithProviders(
       <Routes>
-        <Route path="/predictions/event/:eventId" element={<PredictionEventContractPage />} />
-        <Route path="/predictions/receipt/:orderId" element={<ReceiptRoute />} />
+        <Route
+          path="/r/markets/predictions/event/:eventId"
+          element={<PredictionEventContractPage />}
+        />
+        <Route path="/r/markets/predictions/receipt/:orderId" element={<ReceiptRoute />} />
       </Routes>,
-      { routerProps: { initialEntries: ['/predictions/event/event-1'] } },
+      { routerProps: { initialEntries: ['/r/markets/predictions/event/event-1'] } },
     );
 
     expect(await screen.findByText(event.title)).toBeInTheDocument();
@@ -121,7 +151,7 @@ describe('PredictionEventContractPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Mua No' }));
 
     expect(await screen.findByTestId('receipt-path')).toHaveTextContent(
-      '/predictions/receipt/prediction-receipt-1',
+      '/r/markets/predictions/receipt/prediction-receipt-1',
     );
     await waitFor(() => {
       expect(requestBody).toEqual({
@@ -133,6 +163,28 @@ describe('PredictionEventContractPage', () => {
       });
       expect(idempotencyKey).toMatch(/^prediction-order-/);
     });
+  });
+
+  it('shows recoverable inline feedback for a declared order conflict', async () => {
+    server.use(
+      http.get('*/predictions/events/event-1', () => HttpResponse.json(event)),
+      http.post('*/predictions/orders', () => new HttpResponse(null, { status: 409 })),
+    );
+
+    renderWithProviders(
+      <Routes>
+        <Route
+          path="/markets/predictions/event/:eventId"
+          element={<PredictionEventContractPage />}
+        />
+      </Routes>,
+      { routerProps: { initialEntries: ['/markets/predictions/event/event-1'] } },
+    );
+
+    expect(await screen.findByText(event.title)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Mua Yes' }));
+
+    expect(await screen.findByText('Không thể gửi lệnh. Vui lòng thử lại.')).toBeVisible();
   });
 });
 
@@ -292,6 +344,35 @@ describe('prediction contract read pages', () => {
     expect(await screen.findByText(/Trader Two bought Yes/)).toBeInTheDocument();
   });
 
+  it('shows explicit empty states for each Prediction collection page', async () => {
+    server.use(
+      http.get('*/predictions/events', () => HttpResponse.json({ items: [] })),
+      http.get('*/predictions/positions', () => HttpResponse.json({ items: [] })),
+      http.get('*/predictions/rewards', () => HttpResponse.json({ items: [] })),
+      http.get('*/predictions/leaderboard', () => HttpResponse.json({ items: [] })),
+      http.get('*/predictions/activity', () => HttpResponse.json({ items: [] })),
+    );
+
+    const events = renderWithProviders(<PredictionsContractPage />);
+    expect(await screen.findByText('Không có prediction market phù hợp.')).toBeInTheDocument();
+    events.unmount();
+
+    const portfolio = renderWithProviders(<PredictionPortfolioContractPage />);
+    expect(await screen.findByText('Chưa có vị thế.')).toBeInTheDocument();
+    portfolio.unmount();
+
+    const rewards = renderWithProviders(<PredictionRewardsContractPage />);
+    expect(await screen.findByText('Chưa có phần thưởng.')).toBeInTheDocument();
+    rewards.unmount();
+
+    const leaderboard = renderWithProviders(<PredictionLeaderboardContractPage />);
+    expect(await screen.findByText('Chưa có dữ liệu bảng xếp hạng.')).toBeInTheDocument();
+    leaderboard.unmount();
+
+    renderWithProviders(<PredictionActivityContractPage />);
+    expect(await screen.findByText('Chưa có hoạt động dự đoán.')).toBeInTheDocument();
+  });
+
   it('renders order status and completion timeline from the receipt contract', async () => {
     server.use(
       http.get('*/predictions/orders/order-1', () =>
@@ -317,9 +398,12 @@ describe('prediction contract read pages', () => {
     );
     renderWithProviders(
       <Routes>
-        <Route path="/predictions/receipt/:orderId" element={<PredictionReceiptContractPage />} />
+        <Route
+          path="/markets/predictions/receipt/:orderId"
+          element={<PredictionReceiptContractPage />}
+        />
       </Routes>,
-      { routerProps: { initialEntries: ['/predictions/receipt/order-1'] } },
+      { routerProps: { initialEntries: ['/markets/predictions/receipt/order-1'] } },
     );
 
     expect(await screen.findByText('filled')).toBeInTheDocument();

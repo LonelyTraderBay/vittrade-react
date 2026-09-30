@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 import { IntegrationPendingPage } from './pages/system/IntegrationPendingPage';
-import { isDevelopmentBuild } from '@/shared/config/env';
+import { env, isDevelopmentBuild } from '@/shared/config/env';
 /**
  * ══════════════════════════════════════════════════════════
  *  App Router — 3 Platform Shells (Phone / Tablet / Web)
@@ -35,6 +35,14 @@ const ShellTemplatePage = isDevelopmentBuild
       })),
     )
   : IntegrationPendingPage;
+const DevelopmentPreviewControls =
+  isDevelopmentBuild && env.dataSource === 'mock'
+    ? lazy(() =>
+        import('@/dev/PreviewControls').then((module) => ({
+          default: module.PreviewControls,
+        })),
+      )
+    : undefined;
 
 // Shared route builders
 import {
@@ -285,6 +293,7 @@ const webOverrides: ShellOverrides = {
   TxHistoryPage: TxHistoryContractPage,
   ProfilePage: WebProfilePage,
   P2PHomePage: WebP2PHomePage,
+  ArenaHomePage: WebArenaHomePage,
 };
 
 /** Legacy responsive overrides (backward compat) */
@@ -323,7 +332,9 @@ const developmentRoutes = isDevelopmentBuild
 export const router = createBrowserRouter([
   {
     path: '/',
-    Component: RootLayout,
+    element: React.createElement(RootLayout, {
+      developmentPreviewControls: DevelopmentPreviewControls,
+    }),
     errorElement: React.createElement(RouteErrorBoundary),
     children: [
       // ─── Default: redirect / → /home ───
@@ -460,8 +471,6 @@ export const router = createBrowserRouter([
               // ─── Copy Trading (Web versions) ───
               ...createTradingWebRoutes(),
               // ─── Orders ───
-              // ─── Arena ───
-              { path: 'arena', Component: WebArenaHomePage },
             ],
           },
         ],

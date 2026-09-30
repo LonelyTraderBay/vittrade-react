@@ -93,6 +93,7 @@ test.describe('production shell smoke', () => {
   test('keeps the static prediction chart demo behind the production integration boundary', async ({
     page,
   }) => {
+    await page.route('**/auth/session', (route) => route.fulfill({ json: authenticatedSession }));
     await page.goto('/markets/predictions/advanced-chart/BTC-USD');
 
     await expect(

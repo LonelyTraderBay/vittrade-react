@@ -1,6 +1,7 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 import { renderWithProviders } from '@/test/test-utils';
+import { testAuthAdapter, testAuthSession } from '@/test/auth-test-adapter';
 import { WebCommandBar } from './WebCommandBar';
 
 afterEach(() => {
@@ -43,7 +44,22 @@ describe('WebCommandBar', () => {
     fireEvent.click(screen.getByTitle('Thông báo'));
     expect(screen.getByRole('button', { name: 'Thông báo' })).toBeInTheDocument();
 
-    fireEvent.click(screen.getByText('VitTrader'));
+    expect(screen.getByText(testAuthSession.user.fullName)).toBeInTheDocument();
+    fireEvent.click(screen.getByText(testAuthSession.user.fullName));
     expect(screen.getByRole('button', { name: 'Tài khoản' })).toBeInTheDocument();
+  });
+
+  it('does not show a fixture identity while the session is loading', () => {
+    renderWithProviders(<WebCommandBar />, {
+      authAdapter: {
+        ...testAuthAdapter,
+        initialSession: undefined,
+        getSession: () => new Promise(() => {}),
+      },
+    });
+
+    expect(screen.getByText('Đang kiểm tra phiên đăng nhập')).toBeInTheDocument();
+    expect(screen.queryByText('VitTrader')).not.toBeInTheDocument();
+    expect(screen.queryByText('VIP 3')).not.toBeInTheDocument();
   });
 });

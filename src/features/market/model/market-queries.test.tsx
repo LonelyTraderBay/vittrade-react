@@ -166,6 +166,39 @@ describe('market query hooks', () => {
     expect(marketApi.getPair).toHaveBeenCalledTimes(1);
   });
 
+  it('aborts an in-flight pair request when the query observer leaves', async () => {
+    vi.restoreAllMocks();
+    let onFetchStarted!: () => void;
+    const fetchStarted = new Promise<void>((resolve) => {
+      onFetchStarted = resolve;
+    });
+    const requestSignal: { current: AbortSignal | null } = { current: null };
+    const fetchImpl = vi.spyOn(globalThis, 'fetch').mockImplementation((_input, init) => {
+      requestSignal.current = init?.signal ?? null;
+      onFetchStarted();
+      return new Promise<Response>((_resolve, reject) => {
+        const signal = requestSignal.current;
+        if (signal?.aborted) {
+          reject(new DOMException('Aborted', 'AbortError'));
+          return;
+        }
+        signal?.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')), {
+          once: true,
+        });
+      });
+    });
+    const client = createQueryClient();
+    const rendered = renderHook(() => useMarketPairQuery('btc-usdt'), {
+      wrapper: createWrapper(client),
+    });
+
+    await fetchStarted;
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+    rendered.unmount();
+    await waitFor(() => expect(requestSignal.current?.aborted).toBe(true));
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
   it('loads the watchlist under a user-scoped key and honors the disabled option', async () => {
     const { client } = await renderQuery(() => useMarketWatchlistQuery({ userId: 'account-a' }));
     expect(marketApi.getWatchlist).toHaveBeenCalledWith(expect.anything());

@@ -204,7 +204,9 @@ export function ArenaDiscoveryPage() {
             ))
           ) : (
             <p role="status" style={{ color: colors.text2 }}>
-              Không tìm thấy challenge phù hợp.
+              {normalizedSearch
+                ? 'Không tìm thấy challenge phù hợp.'
+                : 'Chưa có challenge nào khả dụng.'}
             </p>
           )
         ) : modes.length ? (
@@ -217,7 +219,7 @@ export function ArenaDiscoveryPage() {
           ))
         ) : (
           <p role="status" style={{ color: colors.text2 }}>
-            Không tìm thấy mode phù hợp.
+            {normalizedSearch ? 'Không tìm thấy mode phù hợp.' : 'Chưa có mode nào khả dụng.'}
           </p>
         )}
       </PageContent>

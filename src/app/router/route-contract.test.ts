@@ -25,23 +25,26 @@ function collectPaths(routes: RouteObject[], parent = ''): string[] {
 }
 
 describe('public route contract', () => {
-  it('preserves the core discovery and prediction URLs', () => {
+  it('keeps the market landing page public while gating contract-secured predictions', () => {
     const paths = collectPaths(createPublicRoutes(overrides));
-    expect(paths).toEqual(
-      expect.arrayContaining([
-        'home',
-        'markets',
-        'markets/predictions',
-        'markets/predictions/search',
-        'markets/predictions/event/:eventId',
-        'markets/predictions/portfolio',
-        'markets/predictions/receipt/:orderId',
-      ]),
-    );
+    expect(paths).toEqual(expect.arrayContaining(['home', 'markets']));
+    expect(paths).not.toContain('markets/predictions');
+    expect(paths).not.toContain('markets/predictions/search');
+    expect(paths).not.toContain('markets/predictions/event/:eventId');
   });
 });
 
 describe('protected route contract', () => {
+  it('uses the Web Arena home override instead of the shared integration placeholder', () => {
+    const arenaHome = () => null;
+    const routes = createProtectedRoutes({ ...overrides, ArenaHomePage: arenaHome });
+
+    expect(routes.find((route) => route.path === 'arena')?.Component).toBe(arenaHome);
+    expect(
+      createProtectedRoutes(overrides).find((route) => route.path === 'arena')?.Component,
+    ).not.toBe(arenaHome);
+  });
+
   it('keeps account, trading, wallet and p2p route families composed', () => {
     const paths = collectPaths(createProtectedRoutes(overrides));
     expect(paths).toEqual(
@@ -52,6 +55,13 @@ describe('protected route contract', () => {
         'wallet',
         'wallet/network-status',
         'markets/portfolio-tracker',
+        'markets/predictions',
+        'markets/predictions/search',
+        'markets/predictions/event/:eventId',
+        'markets/predictions/portfolio',
+        'markets/predictions/receipt/:orderId',
+        'markets/watchlist',
+        'markets/alerts',
         'profile',
         'p2p',
         'referral',
@@ -74,6 +84,8 @@ describe('protected route contract', () => {
         'launchpad/contract/:id',
       ]),
     );
+    expect(collectPaths(createPublicRoutes(overrides))).not.toContain('markets/watchlist');
+    expect(collectPaths(createPublicRoutes(overrides))).not.toContain('markets/alerts');
     expect(collectPaths(createPublicRoutes(overrides))).not.toContain('markets/portfolio-tracker');
 
     const launchpadDetailRoutes = createProtectedRoutes(overrides).filter(

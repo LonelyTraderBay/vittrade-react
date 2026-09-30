@@ -29,6 +29,14 @@ describe('development Arena adapter', () => {
     });
     expect(replayResponse.status).toBe(200);
     expect(await replayResponse.json()).toEqual(first);
+
+    resetDevArenaState();
+    const resetResponse = await fetch('http://localhost:3000/api/arena/challenges/ch001/join', {
+      method: 'POST',
+      headers,
+    });
+    expect(resetResponse.status).toBe(201);
+    expect(await resetResponse.json()).toEqual(first);
   });
 
   it('rejects a join without an idempotency key', async () => {

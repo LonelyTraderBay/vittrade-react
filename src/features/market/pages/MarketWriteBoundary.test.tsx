@@ -91,6 +91,21 @@ function writeAdapter(): AuthAdapter {
 }
 
 describe('Market write permission boundary', () => {
+  it('shows permission denial for a forbidden price-alert read instead of an empty state', async () => {
+    server.use(
+      http.get('*/market/price-alerts', () =>
+        HttpResponse.json({ code: 'FORBIDDEN' }, { status: 403 }),
+      ),
+      http.get('*/market/pairs', () => HttpResponse.json({ items: [pair] })),
+    );
+
+    renderWithProviders(<MarketPriceAlertsPage />, { authAdapter: readOnlyAdapter() });
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Không có quyền xem cảnh báo giá');
+    expect(screen.queryByText('Chưa có cảnh báo phù hợp.')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Thử lại' })).not.toBeInTheDocument();
+  });
+
   it('keeps price-alert mutations disabled for read-only market sessions', async () => {
     server.use(
       http.get('*/market/price-alerts', () => HttpResponse.json({ items: [alert] })),

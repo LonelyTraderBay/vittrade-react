@@ -1,9 +1,9 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, type DefaultBodyType } from 'msw';
 import { setupServer } from 'msw/node';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Route, Routes } from 'react-router';
+import { Route, Routes, useLocation } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
@@ -89,6 +89,20 @@ function guestAdapter(): AuthAdapter {
   return { ...testAuthAdapter, initialSession: null };
 }
 
+function LocationProbe() {
+  const location = useLocation();
+  const from =
+    typeof location.state === 'object' && location.state !== null && 'from' in location.state
+      ? location.state.from
+      : '';
+  return (
+    <>
+      <output data-testid="current-path">{location.pathname}</output>
+      <output data-testid="return-to">{String(from)}</output>
+    </>
+  );
+}
+
 function installMarketReadHandlers(watchlist: { items: Array<Record<string, unknown>> }) {
   server.use(
     http.get('*/market/pairs/btc-usdt', () => HttpResponse.json(pair)),
@@ -103,7 +117,9 @@ function renderPairDetail(authAdapter?: AuthAdapter, initialEntries = ['/pair/bt
     <Routes>
       <Route path="/markets" element={<p>Market list destination</p>} />
       <Route path="/pair/:pairId" element={<PairDetailPage />} />
-      <Route path="/login" element={<p>Login destination</p>} />
+      <Route path="/auth/login" element={<p>Login destination</p>} />
+      <Route path="/r/pair/:pairId" element={<PairDetailPage />} />
+      <Route path="/r/auth/login" element={<p>Login destination</p>} />
       <Route path="/trade/:pairId" element={<p>Trade destination</p>} />
     </Routes>,
     {
@@ -172,6 +188,39 @@ describe('Market pair detail page', () => {
     expect(screen.getByText('0.125000')).toBeVisible();
   });
 
+  it('shows tab loading states while order-book and recent-trade requests are pending', async () => {
+    installMarketReadHandlers({ items: [] });
+    let resolveOrderBook!: (response: HttpResponse<DefaultBodyType>) => void;
+    let resolveRecentTrades!: (response: HttpResponse<DefaultBodyType>) => void;
+    const pendingOrderBook = new Promise<HttpResponse<DefaultBodyType>>((resolve) => {
+      resolveOrderBook = resolve;
+    });
+    const pendingRecentTrades = new Promise<HttpResponse<DefaultBodyType>>((resolve) => {
+      resolveRecentTrades = resolve;
+    });
+    server.use(
+      http.get('*/market/pairs/btc-usdt/orderbook', () => pendingOrderBook),
+      http.get('*/market/pairs/btc-usdt/trades', () => pendingRecentTrades),
+    );
+
+    renderPairDetail();
+    expect(await screen.findAllByText('BTC/USDT')).not.toHaveLength(0);
+
+    const user = userEvent.setup();
+    await user.click(screen.getByRole('button', { name: 'Sổ lệnh' }));
+    expect(await screen.findByText('Đang tải sổ lệnh…')).toBeVisible();
+
+    await user.click(screen.getByRole('button', { name: 'Giao dịch' }));
+    expect(await screen.findByText('Đang tải giao dịch…')).toBeVisible();
+
+    resolveOrderBook(HttpResponse.json(orderBook));
+    resolveRecentTrades(HttpResponse.json(recentTrades));
+    expect(await screen.findByText('0.125000')).toBeVisible();
+
+    await user.click(screen.getByRole('button', { name: 'Sổ lệnh' }));
+    expect(await screen.findByText('0.500000')).toBeVisible();
+  });
+
   it('redirects unauthenticated users to login when they try to follow a pair', async () => {
     installMarketReadHandlers({ items: [] });
     renderPairDetail(guestAdapter());
@@ -180,6 +229,27 @@ describe('Market pair detail page', () => {
     await user.click(await screen.findByRole('button', { name: 'Theo dõi cặp giao dịch' }));
 
     expect(await screen.findByText('Login destination')).toBeVisible();
+  });
+
+  it('uses the responsive auth route and preserves the requested pair as the return target', async () => {
+    installMarketReadHandlers({ items: [] });
+    renderWithProviders(
+      <>
+        <Routes>
+          <Route path="/r/pair/:pairId" element={<PairDetailPage />} />
+          <Route path="/r/auth/login" element={<p>Login destination</p>} />
+        </Routes>
+        <LocationProbe />
+      </>,
+      { authAdapter: guestAdapter(), routerProps: { initialEntries: ['/r/pair/btc-usdt'] } },
+    );
+
+    const user = userEvent.setup();
+    await user.click(await screen.findByRole('button', { name: 'Theo dõi cặp giao dịch' }));
+
+    expect(await screen.findByText('Login destination')).toBeVisible();
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/r/auth/login');
+    expect(screen.getByTestId('return-to')).toHaveTextContent('/r/pair/btc-usdt');
   });
 
   it('navigates to trading from both buy and sell actions', async () => {

@@ -357,6 +357,7 @@ export interface ShellOverrides {
   HomePage: React.ComponentType;
   MarketListPage: React.ComponentType;
   PairDetailPage: React.ComponentType;
+  ArenaHomePage?: React.ComponentType;
 }
 
 /* ═══════════════════════════════════════════
@@ -367,33 +368,7 @@ export function createPublicRoutes(o: ShellOverrides): RouteObject[] {
     { path: 'home', Component: o.HomePage },
     {
       path: 'markets',
-      children: [
-        { index: true, Component: o.MarketListPage },
-        {
-          path: 'predictions',
-          children: [
-            ...createPredictionRoutes({
-              home: PredictionsHomePage,
-              search: PredictionsSearchPage,
-              breaking: PredictionsBreakingPage,
-              event: PredictionEventDetailPage,
-              portfolio: PredictionsPortfolioPage,
-              rewards: PredictionsRewardsPage,
-              leaderboard: PredictionsLeaderboardPage,
-              activity: PredictionsGlobalActivityPage,
-              receipt: PredictionOrderReceiptPage,
-            }),
-            { path: 'risk-calculator', Component: PredictionRiskCalculatorPage },
-            { path: 'market-maker', Component: IntegrationPendingPage },
-            { path: 'portfolio-analyzer', Component: IntegrationPendingPage },
-            { path: 'event-calendar', Component: IntegrationPendingPage },
-            { path: 'social', Component: IntegrationPendingPage },
-            { path: 'advanced-chart/:pairId', Component: IntegrationPendingPage },
-            { path: 'tournaments', Component: IntegrationPendingPage },
-            { path: 'data-integration', Component: IntegrationPendingPage },
-          ],
-        },
-      ],
+      children: [{ index: true, Component: o.MarketListPage }],
     },
     ...createMarketPublicRoutes({ pairDetail: o.PairDetailPage }),
 
@@ -407,6 +382,31 @@ export function createPublicRoutes(o: ShellOverrides): RouteObject[] {
 export function createProtectedRoutes(o: ShellOverrides): RouteObject[] {
   return [
     ...createTradingProtectedRoutes(o.TradePage),
+
+    {
+      path: 'markets/predictions',
+      children: [
+        ...createPredictionRoutes({
+          home: PredictionsHomePage,
+          search: PredictionsSearchPage,
+          breaking: PredictionsBreakingPage,
+          event: PredictionEventDetailPage,
+          portfolio: PredictionsPortfolioPage,
+          rewards: PredictionsRewardsPage,
+          leaderboard: PredictionsLeaderboardPage,
+          activity: PredictionsGlobalActivityPage,
+          receipt: PredictionOrderReceiptPage,
+        }),
+        { path: 'risk-calculator', Component: PredictionRiskCalculatorPage },
+        { path: 'market-maker', Component: IntegrationPendingPage },
+        { path: 'portfolio-analyzer', Component: IntegrationPendingPage },
+        { path: 'event-calendar', Component: IntegrationPendingPage },
+        { path: 'social', Component: IntegrationPendingPage },
+        { path: 'advanced-chart/:pairId', Component: IntegrationPendingPage },
+        { path: 'tournaments', Component: IntegrationPendingPage },
+        { path: 'data-integration', Component: IntegrationPendingPage },
+      ],
+    },
 
     // ═══════════════════════════���═══════════════════════════════
     //  WALLET — Core + Sub-pages
@@ -449,7 +449,7 @@ export function createProtectedRoutes(o: ShellOverrides): RouteObject[] {
     //  ARENA — /arena/* (Guidelines §5.3)
     //  Creator-driven, points-only social module
     // ═══════════════════════════════════════════════════════════
-    { path: 'arena', Component: ArenaHomePage },
+    { path: 'arena', Component: o.ArenaHomePage ?? ArenaHomePage },
     { path: 'arena/studio', Component: ArenaStudioPage },
     { path: 'arena/studio/smart-rules', Component: ArenaSmartRuleBuilderPage },
     { path: 'arena/studio/presets', Component: ArenaUniversalPresetLibraryPage },

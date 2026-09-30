@@ -1,10 +1,10 @@
-import { ErrorState } from '@/shared/ui/ErrorState';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useAdminOverviewQuery } from '../model/admin-queries';
+import { AdminQueryErrorState } from './AdminQueryErrorState';
 
 export function AdminOverviewContractPage() {
   const colors = useThemeColors();
@@ -21,7 +21,9 @@ export function AdminOverviewContractPage() {
     );
   }
 
-  if (query.isError || !query.data) return <ErrorState onAction={() => void query.refetch()} />;
+  if (query.isError || !query.data) {
+    return <AdminQueryErrorState error={query.error} onRetry={() => void query.refetch()} />;
+  }
 
   return (
     <PageLayout>

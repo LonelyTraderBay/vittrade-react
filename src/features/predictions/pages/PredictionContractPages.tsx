@@ -42,7 +42,7 @@ function PredictionCard({ event }: { event: PredictionEvent }) {
     <button
       type="button"
       className="text-left"
-      onClick={() => navigate(`${prefix}/predictions/event/${event.id}`)}
+      onClick={() => navigate(`${prefix}/markets/predictions/event/${event.id}`)}
     >
       <TrCard className="p-4">
         <div className="flex items-start justify-between gap-3">
@@ -168,7 +168,7 @@ export function PredictionEventContractPage() {
       },
       idempotencyKey: `prediction-order-${crypto.randomUUID()}`,
     });
-    navigate(`${prefix}/predictions/receipt/${receipt.id}`);
+    navigate(`${prefix}/markets/predictions/receipt/${receipt.id}`);
   };
   return (
     <PageLayout>
@@ -227,7 +227,7 @@ export function PredictionEventContractPage() {
             <button
               type="button"
               disabled={!canTrade || order.isPending || Number(shares) <= 0}
-              onClick={() => void submit()}
+              onClick={() => void submit().catch(() => undefined)}
               className="rounded-xl px-4 py-3 font-semibold"
               style={{
                 background: canTrade ? colors.primary : colors.surface2,
@@ -307,6 +307,7 @@ export function PredictionRewardsContractPage() {
             </p>
           </TrCard>
         ))}
+        {!query.data?.items.length && <p style={{ color: colors.text2 }}>Chưa có phần thưởng.</p>}
       </PageContent>
     </PageLayout>
   );
@@ -338,6 +339,9 @@ export function PredictionLeaderboardContractPage() {
             </p>
           </TrCard>
         ))}
+        {!query.data?.items.length && (
+          <p style={{ color: colors.text2 }}>Chưa có dữ liệu bảng xếp hạng.</p>
+        )}
       </PageContent>
     </PageLayout>
   );
@@ -367,6 +371,9 @@ export function PredictionActivityContractPage() {
             </p>
           </TrCard>
         ))}
+        {!query.data?.items.length && (
+          <p style={{ color: colors.text2 }}>Chưa có hoạt động dự đoán.</p>
+        )}
       </PageContent>
     </PageLayout>
   );

@@ -78,6 +78,25 @@ function installWatchlistHandlers() {
 }
 
 describe('WatchlistPage', () => {
+  it('shows permission denial when the protected watchlist request returns 403', async () => {
+    server.use(
+      http.get('http://localhost:3000/api/market/pairs', () =>
+        HttpResponse.json({ items: [pair] }),
+      ),
+      http.get('http://localhost:3000/api/market/watchlist', () =>
+        HttpResponse.json({ code: 'FORBIDDEN' }, { status: 403 }),
+      ),
+    );
+
+    renderWithProviders(<WatchlistPage />, { authAdapter });
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Không có quyền xem danh sách theo dõi',
+    );
+    expect(screen.queryByText('Chưa có cặp trong danh sách theo dõi')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Thử lại' })).not.toBeInTheDocument();
+  });
+
   it('reuses the delete key after a transient failure and reports the failure', async () => {
     const idempotencyKeys: string[] = [];
     let attempts = 0;

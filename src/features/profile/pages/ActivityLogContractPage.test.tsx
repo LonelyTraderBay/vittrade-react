@@ -47,6 +47,24 @@ const logs: ActivityLog[] = [
 ];
 
 describe('ActivityLogContractPage', () => {
+  it('shows an explicit empty state when the server has no account activity', async () => {
+    server.use(http.get('*/profile/activity', () => HttpResponse.json({ items: [] })));
+    renderWithProviders(<ActivityLogContractPage />);
+
+    expect(await screen.findByRole('status')).toHaveTextContent('Chưa có hoạt động tài khoản nào.');
+  });
+
+  it('distinguishes an empty filter result from an empty activity history', async () => {
+    server.use(http.get('*/profile/activity', () => HttpResponse.json({ items: [logs[0]] })));
+    const user = userEvent.setup();
+    renderWithProviders(<ActivityLogContractPage />);
+
+    expect(await screen.findByText('Đăng nhập từ thiết bị mới')).toBeVisible();
+    await user.click(screen.getByRole('button', { name: 'security' }));
+
+    expect(screen.getByRole('status')).toHaveTextContent('Không có hoạt động phù hợp bộ lọc.');
+  });
+
   it('filters server-owned login and security events without dropping audit details', async () => {
     server.use(http.get('*/profile/activity', () => HttpResponse.json({ items: logs })));
     const user = userEvent.setup();
