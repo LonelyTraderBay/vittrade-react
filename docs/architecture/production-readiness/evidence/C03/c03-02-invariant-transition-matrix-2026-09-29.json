@@ -1,0 +1,359 @@
+{
+  "schemaVersion": 1,
+  "stepId": "C03.02",
+  "title": "Auth/order/wallet/P2P/DCA invariant and transition audit",
+  "observedAt": "2026-09-29T14:51:52.000Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "scope": [
+    "auth/session",
+    "trading orders",
+    "wallet transfer/withdrawal",
+    "P2P escrow",
+    "DCA plans"
+  ],
+  "method": {
+    "basis": "Current OpenAPI contract, current frontend owner/adapter code, direct tests, and the auth MFA/session specification. Current dirty worktree files are identified by SHA-256 below; HEAD alone does not represent them.",
+    "interpretation": "Contract declaration, frontend implementation, test simulation, and backend runtime proof are separate evidence classes. A test using MSW proves frontend behavior only. Missing or ambiguous backend semantics remain unknown.",
+    "focusedTestRun": {
+      "command": "node node_modules/vitest/vitest.mjs run --reporter=dot src/app/contexts/AuthSessionProvider.test.tsx src/shared/session/auth-context.test.ts src/features/auth/api/auth-api.test.ts src/features/trading/api/trading-api.test.ts src/features/wallet/api/wallet-api.test.ts src/features/p2p/api/p2p-api.test.ts src/features/dca/api/dca-api.test.ts",
+      "result": "pass",
+      "testFiles": "7/7",
+      "tests": "101/101",
+      "environment": "Windows 11 Pro; Node.js v24.19.0; Vitest 4.1.11; local test adapters/MSW; no backend or staging connection"
+    }
+  },
+  "domainFindings": [
+    {
+      "domain": "auth/session",
+      "contractRefs": ["contracts/openapi/auth.yaml:36-120", "contracts/openapi/auth.yaml:122-153"],
+      "designRefs": [
+        "docs/architecture/auth-login-mfa-spec.md:38-58",
+        "docs/architecture/auth-login-mfa-spec.md:91-132"
+      ],
+      "ownerRefs": [
+        "src/shared/session/AuthContext.tsx:75-103",
+        "src/shared/session/AuthContext.tsx:111-165",
+        "src/shared/session/AuthContext.tsx:199-221"
+      ],
+      "testRefs": [
+        "src/app/contexts/AuthSessionProvider.test.tsx",
+        "src/features/auth/api/auth-api.test.ts"
+      ],
+      "observed": [
+        "POST /auth/login returns authenticated or mfa_required; the provider only applies a session for authenticated. Login MFA verification returns a session only after a successful challenge verification.",
+        "The auth spec says the challenge must belong to that login, be unexpired and unused. Contract responses include invalid 400, expired 410, locked 423 and rate-limited 429; exact duplicate-verification response is not declared.",
+        "AuthContext uses an operation serial. Local logout clears session/token before I/O and increments the serial; stale auth results cannot overwrite a newer local state. Provider tests cover late refresh/bootstrap/login/MFA results and cross-tab logout races.",
+        "Session revocation is described by the API as logout 204, but frontend tests do not prove server-side cookie/token invalidation."
+      ],
+      "invariants": [
+        {
+          "id": "AUTH-01",
+          "rule": "Do not create authenticated frontend state from the mfa_required login branch; apply session only after a verified response.",
+          "evidence": "contract_and_frontend",
+          "result": "observed_and_tested"
+        },
+        {
+          "id": "AUTH-02",
+          "rule": "An obsolete in-flight auth operation must not restore session, token, or error after a newer auth operation/logout.",
+          "evidence": "frontend_only",
+          "result": "observed_and_tested_locally"
+        },
+        {
+          "id": "AUTH-03",
+          "rule": "Backend challenge single-use, expiry, rate limit, lockout, and actual session revocation must hold server-side.",
+          "evidence": "contract_design_only",
+          "result": "backend_not_verified"
+        }
+      ],
+      "gaps": [
+        "Login/MFA requests have no Idempotency-Key rule; duplicate login/challenge issuance semantics are unspecified.",
+        "Near-concurrent requests are serialized only for local provider state; backend session issuance/revocation ordering is not established.",
+        "A client timeout or lost response after login/logout/refresh cannot establish whether the server changed its cookie/session."
+      ]
+    },
+    {
+      "domain": "trading-order",
+      "contractRefs": [
+        "contracts/openapi/trading.yaml:176-200",
+        "contracts/openapi/trading.yaml:266-312",
+        "contracts/openapi/trading.yaml:632-680"
+      ],
+      "ownerRefs": [
+        "src/features/trading/api/trading-api.ts:21-62",
+        "src/features/trading/api/trading-api.ts:310-348"
+      ],
+      "testRefs": ["src/features/trading/api/trading-api.test.ts:132-170"],
+      "observed": [
+        "placeOrder requires an idempotency key and declares 201, 400 and 409 (duplicate key or insufficient balance). modifyOrder/cancelOrder require keys and declare success plus 404; their conflict/replay rules are not declared.",
+        "Order snapshots require amount > 0, filled >= 0, filled <= amount; filled status requires full fill and partial status requires a nonzero fill below amount. The status enum is open/filled/partial/cancelled/rejected.",
+        "Adapter methods send mutations with retries: 0 and validate returned order shape. API tests cover the key and response parsing. One cancel test simulates 409 ORDER_ALREADY_CLOSED although the current cancel OpenAPI response list has no 409; this is a test/contract mismatch, not a confirmed backend behavior."
+      ],
+      "invariants": [
+        {
+          "id": "ORDER-01",
+          "rule": "Reject malformed order snapshots and inconsistent fill/status combinations at the adapter boundary.",
+          "evidence": "contract_and_frontend",
+          "result": "implemented_and_tested"
+        },
+        {
+          "id": "ORDER-02",
+          "rule": "Place-order request must include a key; create conflict/duplicate is represented as 409 by contract.",
+          "evidence": "contract_and_frontend",
+          "result": "key_and_declared_status_tested_only"
+        },
+        {
+          "id": "ORDER-03",
+          "rule": "Modify/cancel only legal from server-approved order states; stale concurrent writes must not reverse terminal state.",
+          "evidence": "missing_transition_contract",
+          "result": "unknown_backend_rule"
+        }
+      ],
+      "gaps": [
+        "No exact key scope, replay result, payload-conflict policy, retention period, or reconciliation query is declared.",
+        "Allowed source states and outcomes for modify/cancel, out-of-order actions and near-concurrent fill/cancel are unspecified.",
+        "The cancel 409 test fixture is not listed in current OpenAPI; reconcile contract vs test before treating it as supported.",
+        "Timeout after an order may have been accepted has no operation lookup/reconciliation contract in this path."
+      ]
+    },
+    {
+      "domain": "wallet-transfer-withdrawal",
+      "contractRefs": [
+        "contracts/openapi/wallet.yaml:278-377",
+        "contracts/openapi/wallet.yaml:417-421"
+      ],
+      "ownerRefs": [
+        "src/features/wallet/api/wallet-api.ts:245-297",
+        "src/features/wallet/api/wallet-api.ts:429-492"
+      ],
+      "testRefs": ["src/features/wallet/api/wallet-api.test.ts:228-360"],
+      "observed": [
+        "Transfers require wallet:transfer and a key of at least 16 characters; 201 is accepted, 409 combines duplicate key/conflicting transfer. Withdrawals similarly declare 201 and 409 for duplicate request/insufficient funds.",
+        "Withdrawal challenge issuance returns a one-time challenge; verification returns a short-lived authorization token and 401 for invalid/expired code. The OpenAPI explicitly leaves issuance replay and one-time verification replay semantics undefined.",
+        "Adapter sends transfer/withdrawal/challenge mutations with retries: 0. Direct tests prove configured headers and response parsing only; they do not prove backend replay or persistence."
+      ],
+      "invariants": [
+        {
+          "id": "WALLET-01",
+          "rule": "Do not treat transfer/withdrawal as successful without a validated receipt; the same business request carries a required idempotency key.",
+          "evidence": "contract_and_frontend",
+          "result": "implemented_and_header_tested"
+        },
+        {
+          "id": "WALLET-02",
+          "rule": "Withdrawal sequence is challenge issuance -> verification token -> withdrawal submission; verification failure must not authorize submit.",
+          "evidence": "contract_and_frontend",
+          "result": "declared_sequence_frontend_tested"
+        },
+        {
+          "id": "WALLET-03",
+          "rule": "Resolve a timeout/lost response or duplicate safely before allowing the user to repeat a money movement.",
+          "evidence": "missing_backend_reconciliation_contract",
+          "result": "blocked_by_user_confirmation"
+        }
+      ],
+      "gaps": [
+        "The user confirmed the Wallet unknown/duplicate backend contract is not available. A generic 409 declaration is insufficient to resolve an unknown-after-I/O outcome.",
+        "No lookup/correlation operation for a receipt-less transfer/withdrawal, authoritative replay response, same-key payload mismatch rule, or backend retention window is identified.",
+        "Challenge issue/verify duplicate and concurrent consumption semantics are explicitly not specified; do not auto-retry them."
+      ]
+    },
+    {
+      "domain": "p2p-escrow",
+      "contractRefs": [
+        "contracts/openapi/p2p.yaml:606-628",
+        "contracts/openapi/p2p.yaml:645-740",
+        "contracts/openapi/p2p.yaml:1645-1659"
+      ],
+      "ownerRefs": [
+        "src/features/p2p/api/p2p-api.ts:196-275",
+        "src/features/p2p/model/p2p-order-action-queries.ts"
+      ],
+      "testRefs": [
+        "src/features/p2p/api/p2p-api.test.ts:190-300",
+        "src/features/p2p/model/p2p-queries.test.tsx"
+      ],
+      "observed": [
+        "Create-order uses Idempotency-Key and declares 201/409. mark-paid and escrow release use keys, return an order on 200 and declare 409 when the order cannot transition to paid/released.",
+        "Order status values are pending_payment/paid/released/disputed/cancelled/expired. The enum is not a full allowed-transition table; it does not specify actor/state preconditions for each endpoint beyond broad 409.",
+        "Release challenge issuance and verification are one-time challenge flow exceptions with replay semantics explicitly unspecified. The permission annotations for create/pay/release remain draft_frontend with unresolved backend ownership and enforcement questions."
+      ],
+      "invariants": [
+        {
+          "id": "P2P-01",
+          "rule": "A successful paid/released status comes from the validated server response; only a transition accepted by server is reflected.",
+          "evidence": "contract_and_frontend",
+          "result": "adapter_flow_tested_with_fixtures"
+        },
+        {
+          "id": "P2P-02",
+          "rule": "Invalid paid/release transition returns 409 as declared; caller/actor/resource authorization is enforced by backend.",
+          "evidence": "partial_contract_draft_permissions",
+          "result": "guard_contract_incomplete"
+        },
+        {
+          "id": "P2P-03",
+          "rule": "Concurrent paid/release or timeout/replay must not release escrow more than once or falsely report success.",
+          "evidence": "missing_backend_atomicity_replay_contract",
+          "result": "not_verified"
+        }
+      ],
+      "gaps": [
+        "Exact allowed from/to states, buyer/seller/merchant ownership, atomic transition and concurrency winner are not fully declared.",
+        "Idempotency behavior for mark-paid/release (same-key replay, conflicting payload and retention) is not defined; the transition 409 is not a replay protocol.",
+        "Release challenge/verify replay is unspecified; permission scopes are draft_frontend, not evidence of server authorization.",
+        "Unknown-after-I/O has no authoritative reconciliation path evidenced here."
+      ]
+    },
+    {
+      "domain": "dca-plans",
+      "contractRefs": ["contracts/openapi/dca.yaml:33-93", "contracts/openapi/dca.yaml:163-205"],
+      "ownerRefs": [
+        "src/features/dca/api/dca-api.ts:10-31",
+        "src/features/dca/api/dca-api.ts:83-142",
+        "src/features/dca/model/dca-queries.ts:30-76"
+      ],
+      "testRefs": ["src/features/dca/api/dca-api.test.ts:72-100"],
+      "observed": [
+        "create/update/delete require Idempotency-Key; create returns 201, update 200, delete 204, and update/delete declare 404 for a missing plan. Plan status values are active/paused/error; amountPerPurchase must be positive.",
+        "DCA query mutations invalidate the snapshot on successful writes. API methods explicitly use retries: 0; tests assert a key is sent and a fixture response is parsed.",
+        "The OpenAPI does not declare duplicate/conflict status, version/If-Match precondition, status transition matrix, or concurrency/replay policy."
+      ],
+      "invariants": [
+        {
+          "id": "DCA-01",
+          "rule": "Accept only schema-valid plan snapshots and positive purchase amounts; re-read the server snapshot after successful mutation.",
+          "evidence": "contract_and_frontend",
+          "result": "implemented_and_header_tested"
+        },
+        {
+          "id": "DCA-02",
+          "rule": "A stale update/delete must not silently overwrite a newer plan or purchase schedule.",
+          "evidence": "missing_version_transition_contract",
+          "result": "unknown_backend_rule"
+        },
+        {
+          "id": "DCA-03",
+          "rule": "Resolve duplicate or unknown-after-I/O plan mutations before reporting definitive state.",
+          "evidence": "missing_replay_reconciliation_contract",
+          "result": "not_verified"
+        }
+      ],
+      "gaps": [
+        "Idempotency-Key presence is not a replay guarantee; duplicate status/response and retention are undefined.",
+        "No concurrency version/precondition or exact allowed state transition is declared.",
+        "A timed-out plan mutation can have committed; no mutation receipt lookup is evident from this operation contract."
+      ]
+    }
+  ],
+  "crossCuttingCases": [
+    {
+      "case": "valid_guard",
+      "finding": "Auth MFA gate, trading request/snapshot schemas, wallet receipt/challenge types, P2P response schemas and DCA plan schemas are visible in contracts/adapters. This establishes client boundaries, not server enforcement.",
+      "coverage": "mixed; see domain findings"
+    },
+    {
+      "case": "invalid_guard",
+      "finding": "Auth and P2P declare selected rejection codes; place-order declares 400; wallet declares selected 401/403/409; DCA has 404 only for missing plans. No full backend guard matrix exists.",
+      "coverage": "partial_contract"
+    },
+    {
+      "case": "duplicate_or_replay",
+      "finding": "Keys are required for several mutations; duplicate behavior is explicit only for selected create paths. Key lifecycle, payload conflict, exact replay result and retention are missing; Wallet unknown/duplicate lookup remains a user-confirmed blocker.",
+      "coverage": "contract_gaps"
+    },
+    {
+      "case": "out_of_order",
+      "finding": "Auth MFA sequence and broad P2P impossible-transition 409 are described. Trading modify/cancel, Wallet challenge replay, and DCA status transitions lack complete transition contracts.",
+      "coverage": "partial_contract"
+    },
+    {
+      "case": "near_concurrent",
+      "finding": "Auth provider serial prevents stale local state writes and its race tests pass. Backend atomicity/order for trading, wallet, P2P escrow and DCA is not declared or tested against a real server.",
+      "coverage": "frontend_only_for_auth"
+    },
+    {
+      "case": "timeout",
+      "finding": "Shared HTTP client deadline defaults to 15,000 ms; mutation adapters use retries: 0. A timeout/abort after request dispatch does not prove the server did not commit.",
+      "coverage": "implementation_observed; mutation_outcome_unknown"
+    },
+    {
+      "case": "unknown_after_io",
+      "finding": "No general operation-status/correlation recovery flow is established for receipt-less writes. Do not tell users a money/order mutation failed or auto-resubmit solely from timeout; require an approved backend lookup/replay contract.",
+      "coverage": "open_blocker"
+    }
+  ],
+  "blockers": [
+    {
+      "id": "BLK-WALLET-UNKNOWN-DUPLICATE",
+      "status": "open",
+      "owner": "backend contract owner not identified in this frontend checkout",
+      "detail": "User confirmed no approved Wallet unknown/duplicate contract is available. Define authoritative lookup/correlation, replay, conflicting-payload and recovery behavior before certifying transfer/withdrawal handling."
+    },
+    {
+      "id": "BLK-ESCROW-CONCURRENCY",
+      "status": "open",
+      "owner": "backend owner not identified",
+      "detail": "P2P permission annotations are draft_frontend; define server-side actor/ownership/state guards, atomic near-concurrent transitions and replay behavior."
+    },
+    {
+      "id": "BLK-MUTATION-UNKNOWN-OUTCOME",
+      "status": "open",
+      "owner": "API owners",
+      "detail": "Trading/P2P/DCA (and auth session writes) lack sufficient operation reconciliation semantics after timeout/lost response."
+    },
+    {
+      "id": "BLK-TEST-CONTRACT-MISMATCH",
+      "status": "open",
+      "owner": "Trading API contract owner",
+      "detail": "trading-api.test.ts simulates cancelOrder 409 ORDER_ALREADY_CLOSED while contracts/openapi/trading.yaml currently omits 409 for cancelOrder. Reconcile the declared contract or the test fixture before relying on this outcome."
+    }
+  ],
+  "sourceFiles": [
+    "contracts/openapi/auth.yaml",
+    "contracts/openapi/dca.yaml",
+    "contracts/openapi/p2p.yaml",
+    "contracts/openapi/trading.yaml",
+    "contracts/openapi/wallet.yaml",
+    "docs/architecture/auth-login-mfa-spec.md",
+    "src/app/contexts/AuthSessionProvider.test.tsx",
+    "src/features/auth/api/auth-api.test.ts",
+    "src/features/auth/api/auth-api.ts",
+    "src/features/dca/api/dca-api.test.ts",
+    "src/features/dca/api/dca-api.ts",
+    "src/features/dca/model/dca-queries.ts",
+    "src/features/p2p/api/p2p-api.test.ts",
+    "src/features/p2p/api/p2p-api.ts",
+    "src/features/p2p/model/p2p-order-action-queries.ts",
+    "src/features/trading/api/trading-api.test.ts",
+    "src/features/trading/api/trading-api.ts",
+    "src/features/wallet/api/wallet-api.test.ts",
+    "src/features/wallet/api/wallet-api.ts",
+    "src/shared/api/http-client.ts",
+    "src/shared/session/AuthContext.tsx",
+    "src/shared/session/auth-context.test.ts"
+  ],
+  "sourceSha256": {
+    "contracts/openapi/auth.yaml": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b",
+    "contracts/openapi/dca.yaml": "105ad6cbe91891cf20336ac20cd26485c22c3dbd26055d1a4dcc4d0a45bf5b5d",
+    "contracts/openapi/p2p.yaml": "17d7e0c1b198d6adadc9d5a0519c029084257c82132e8e4391891c5e92c2c576",
+    "contracts/openapi/trading.yaml": "ea87584c03ab69a0d552d80590e36e15ab7b38851cc1583d9c892bbb91f19437",
+    "contracts/openapi/wallet.yaml": "a7b2e6fbdf62f2e6a789de25e712767d79014355870e86a87c8e809938f9e7b7",
+    "docs/architecture/auth-login-mfa-spec.md": "3c4081a26abd257d9decaebed8d898b6d226146978949605e22fe3a33508864f",
+    "src/app/contexts/AuthSessionProvider.test.tsx": "3fa6f81dd63f56020842500b8feee35ad2522f0d30ad1551faebb0e0f78841e1",
+    "src/features/auth/api/auth-api.test.ts": "fe89e39a51b52b0de60e565e601453308a8d7b6ea7e2f616f97491abad9d933e",
+    "src/features/auth/api/auth-api.ts": "050846c48de49be56f6bdf6a73669b5d3a6230c559e33851cd07840609fca078",
+    "src/features/dca/api/dca-api.test.ts": "777f0335c75cdfb85a29f18975a07e3bf65e22d4763f6b9da42c4fe0484a9449",
+    "src/features/dca/api/dca-api.ts": "dd9c9a077e7b8c4ff137d59680e5c69722dd391d69088b75e2ec2fa28256a997",
+    "src/features/dca/model/dca-queries.ts": "73a9680a7b246dea4141e06682e3eb8557799682445c9e53cc5e4cbdee7a1d65",
+    "src/features/p2p/api/p2p-api.test.ts": "cf7a453e5aee717321a7e476f47b11aabe722c64724812f049edff7d488f4343",
+    "src/features/p2p/api/p2p-api.ts": "164f6424133e159b1b8dd5a6e23a0bdcd3c5a14c294d1a808cba09d552230b83",
+    "src/features/p2p/model/p2p-order-action-queries.ts": "1ce6436aec2ec390e2c060b86743468375b2c478aab0e42f1a8c1963140a625e",
+    "src/features/trading/api/trading-api.test.ts": "b8ba8b5f5e3765531107893aef8fa60fa0b353a792e5c70a07b487c441a82b3f",
+    "src/features/trading/api/trading-api.ts": "bfd385aba4911e0640567e88dd5b5c9352eea553cda7518cfb28f9009a1c32fa",
+    "src/features/wallet/api/wallet-api.test.ts": "7614abef4e737a5738a1bf342890caf2bb7f2f1d0672a146812fd5d6922448db",
+    "src/features/wallet/api/wallet-api.ts": "6f1918992ebdf61e559492ec2d16ba794edb04ef83cde3f248dcdacf6ba91d8a",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/session/auth-context.test.ts": "e19a31637e727cffce28de7b042623174fc16a0840200e735de14aa2ca867627",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2"
+  }
+}

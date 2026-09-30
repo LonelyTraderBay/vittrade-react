@@ -1,0 +1,28 @@
+{
+  "task": "A05.02",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "installedLibraryEvidence": {
+    "msw": "2.15.0 from package-lock.json",
+    "callbackType": "(request: Request, print: { warning(): void; error(): void }) => void",
+    "source": "node_modules/msw/lib/core/utils/request/onUnhandledRequest.d.ts and installed implementation",
+    "assetClassifier": "isCommonAssetRequest from the installed MSW public API; recognizes Vite @vite paths, node_modules and common static file extensions."
+  },
+  "bootstrapOrder": [
+    "assertRuntimeEnv()",
+    "if (isDevelopmentBuild && env.dataSource === 'mock') dynamically import src/dev/mocks/browser",
+    "start worker with the API-only unhandled callback",
+    "createRoot and render App"
+  ],
+  "requestPolicy": {
+    "apiMatch": "same origin as configured VITE_API_BASE_URL plus its path-segment boundary; otherwise same-origin /api fallback",
+    "unhandledApi": "MSW print.error()",
+    "otherOriginOrPath": "no warning/error callback, so MSW lets the request pass through",
+    "viteAndStatic": "MSW common asset requests pass through; /apiary does not falsely match /api"
+  },
+  "testEvidence": {
+    "red": "7 failures before implementation: 3 bootstrap expectations caught absent validation/API gating; 4 policy tests could not import setupWorker under Vitest's non-browser runtime. The policy was moved to a pure module and the final tests then exercised it directly.",
+    "green": "15/15 pass across 4 files: env 7, bootstrap 3, request policy 4, and the existing App consumer regression 1. Mock mode verifies validation -> worker import -> worker start -> render order; API and non-development modes import/start no worker."
+  },
+  "staticEvidence": "Both TS projects, targeted ESLint/Prettier, environment boundary (808 files), and diff check pass.",
+  "limits": "Worker mode is proven with a mocked worker module in Vitest, and policy callback with real Request objects. No browser ServiceWorker, page reload/offline session, backend endpoint or staging run has been exercised; production bundle exclusion remains A05.05."
+}

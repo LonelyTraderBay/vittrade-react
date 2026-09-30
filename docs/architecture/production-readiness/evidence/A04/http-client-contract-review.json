@@ -1,0 +1,66 @@
+{
+  "observedAt": "2026-09-27T13:45:08.200Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "sourceHashes": {
+    "httpClient": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "httpClientTests": "aa2b7f8725a65508cb42f48dc62c28492b2129f79b60e845c80fac5da5c3f312",
+    "walletApiTests": "7614abef4e737a5738a1bf342890caf2bb7f2f1d0672a146812fd5d6922448db"
+  },
+  "requestDeadline": {
+    "defaultMs": 15000,
+    "scope": "one logical request across attempts and retry delays",
+    "measuredScenario": {
+      "timeoutMs": 150,
+      "retryDelayMs": 100,
+      "configuredRetries": 2,
+      "fetchCalls": 2,
+      "resultCode": "REQUEST_TIMEOUT"
+    }
+  },
+  "retryPolicy": {
+    "defaultRetries": {
+      "idempotentMethod": 2,
+      "otherMethod": 0
+    },
+    "maxConfiguredRetries": 2,
+    "invalidConfiguration": "non-integer, negative, or greater than 2 rejects with RangeError before fetch",
+    "retryableStatuses": [
+      408,
+      425,
+      429,
+      502,
+      503,
+      504
+    ]
+  },
+  "currentCallsites": {
+    "positiveLiteralRetryOverrides": 55,
+    "methods": {
+      "GET": 55
+    },
+    "unmapped": 0,
+    "nonIdempotent": 0
+  },
+  "retryAfter": {
+    "openApiHeaderDeclared": false,
+    "decision": "No Retry-After parsing added without a contract."
+  },
+  "stableHeaders": {
+    "correlationIdCreatedOutsideAttemptLoop": true,
+    "idempotencyKeyReadFromStableRequestConfig": true,
+    "verifiedBy": "http-client.test.ts"
+  },
+  "mutationOutcome": {
+    "scenario": "POST fetch rejects with TypeError after possible send",
+    "fetchCalls": 1,
+    "status": 0,
+    "code": "NETWORK_ERROR",
+    "interpretation": "No automatic retry or definitive server business rejection is inferred."
+  },
+  "schemaBoundary": {
+    "adapter": "walletApi.getAssets",
+    "adapterRetries": 2,
+    "invalidSchemaResponseCalls": 1,
+    "interpretation": "HTTP client returns the 200 payload; wallet schema rejects it outside the retry loop."
+  }
+}

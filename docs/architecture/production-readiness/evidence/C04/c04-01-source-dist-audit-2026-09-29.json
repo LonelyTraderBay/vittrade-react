@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C04",
+  "stepId": "C04.01",
+  "observedAt": "2026-09-29T15:25:25Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "environment": "Windows 11 Pro x64; Node.js v24.19.0; Vite 6.4.3; read-only source/dist inspection; local build gate commands; no backend or staging connection.",
+  "sourceEvidence": {
+    "sourceSnapshot": {
+      "fileCount": 835,
+      "sha256": "901c3ed30f35619599fbad2e8511fea8c780032bb6b2d3db84c3ef96e1dbf1d8",
+      "matchesC0204BuildInputs": true,
+      "method": "Recomputed with the same C02.04 profiler algorithm: sorted relative paths, NUL separators and file bytes across src/, public/, index.html, vite.config.ts, package manifests, TS configs and scripts/build.mjs."
+    },
+    "owners": [
+      {
+        "path": "scripts/build.mjs",
+        "lines": "5-24",
+        "sha256": "f0fc29ad7e07ec8ddad72e05f4f55b9830994b0ebdfbee419063dbe52cbc4884",
+        "behavior": "The npm build script runs application TypeScript check, scripts TypeScript check, then invokes Vite build and forwards CLI arguments."
+      },
+      {
+        "path": "package.json",
+        "lines": "8,127-130",
+        "sha256": "1066f2ff1ad1757dc1619861732b0af534e1f5f0b713d4a1b3c21299a7b04a18",
+        "behavior": "The normal build has no isolated outDir/manifest arguments; MSW workerDirectory points to public/."
+      },
+      {
+        "path": "vite.config.ts",
+        "lines": "33-55",
+        "sha256": "036e2eb63aa03b9fd114d7a13cf3fd5ab55ba84e9161b729e4a5e4d872230828",
+        "behavior": "The build config customizes Rollup chunking but does not override publicDir or build.copyPublicDir."
+      },
+      {
+        "path": "src/main.tsx",
+        "lines": "11-20",
+        "sha256": "845215ef1b767caaa0f6ff7eeaebe49f471bdfba3aac223b8969671770783bd6",
+        "behavior": "MSW browser worker import/start and stale-worker retirement are guarded by the compile-time development flag and data-source mode."
+      },
+      {
+        "path": "src/app/routes.ts",
+        "lines": "31-46,197-251,307-336",
+        "sha256": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+        "behavior": "Preview controls and development-only legacy/mock routes are conditional on isDevelopmentBuild; source route boundary check reports 17 explicit guards, 2 routed mock pages and 2 routed demo pages as development-only."
+      },
+      {
+        "path": "src/dev/mocks/browser.ts",
+        "lines": "1-8",
+        "sha256": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+        "behavior": "setupWorker and mock handlers are owned under the development mock entrypoint."
+      },
+      {
+        "path": "public/mockServiceWorker.js",
+        "lines": "1-4",
+        "sha256": "26171599d94d5445297303f3a1f1cedec26835ea3d0057dcfa92ec520cb35cca",
+        "behavior": "MSW-generated worker currently lives in the Vite public directory; public currently contains only this one file."
+      }
+    ],
+    "installedViteDefaults": {
+      "version": "6.4.3",
+      "source": "node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js",
+      "defaults": {
+        "publicDir": {
+          "value": "public",
+          "line": 48620
+        },
+        "build.copyPublicDir": {
+          "value": true,
+          "line": 46054
+        },
+        "copyOperation": {
+          "value": "copyDir(publicDir, outDir) when copyPublicDir is enabled",
+          "line": 46421
+        }
+      }
+    }
+  },
+  "observedBuilds": {
+    "currentRepositoryDist": {
+      "path": "dist/",
+      "lastWriteUtc": "2026-09-29T02:42:18.9491859Z",
+      "fileCount": 224,
+      "javascriptFilesIncludingWorker": 222,
+      "bundledChunksExcludingWorker": 221,
+      "totalBytes": 2704523,
+      "worker": {
+        "path": "mockServiceWorker.js",
+        "bytes": 9666,
+        "sha256": "26171599d94d5445297303f3a1f1cedec26835ea3d0057dcfa92ec520cb35cca",
+        "matchesPublicWorkerByteForByte": true
+      },
+      "manifest": {
+        "viteManifestPresent": false,
+        "indexHtmlPresent": true,
+        "treeFingerprintSha256": "9f421b74f5bcc82faa80ef8bda650ff2439584625fa905149e0e9fe27d3f5e0b"
+      },
+      "bundleMarkers": {
+        "msw/browser": false,
+        "setupWorker": false,
+        "previewScenarioHandler": false,
+        "developer@vittrade.local": false,
+        "Preview-123!": false,
+        "previewControlsModuleChunkPresent": false,
+        "developmentPreviewControlsRootLayoutPropStringPresent": true
+      },
+      "comparisonToC0204IsolatedProfile": {
+        "profileCapturedAt": "2026-09-29T14:08:10.951Z",
+        "profileOutputWasIsolatedTempDirectory": true,
+        "profileSourceSnapshotMatchesCurrentSource": true,
+        "profileJavaScriptAssets": 221,
+        "repositoryDistJavaScriptChunks": 221,
+        "assetsWithExactPathAndSha256Match": 16,
+        "assetsWithDifferentOrMissingPath": 205,
+        "interpretation": "The checked-in-worktree dist directory is an older artifact, not the output revalidated by C02.04/C02.05; the near-equal total byte count does not prove equivalence."
+      }
+    },
+    "c0204CurrentSourceIsolatedProfile": {
+      "artifact": "docs/architecture/production-readiness/evidence/C02/c02-04-production-build-profile-2026-09-29.json",
+      "outputDirectory": "isolated temporary directory outside repository",
+      "manifestEntries": 221,
+      "topLevelArtifacts": [".vite", "assets", "index.html", "mockServiceWorker.js"],
+      "workerBytes": 9666,
+      "workerSha256": "26171599d94d5445297303f3a1f1cedec26835ea3d0057dcfa92ec520cb35cca"
+    }
+  },
+  "checks": {
+    "productionMockImportBoundary": {
+      "command": "node scripts/check-production-mock-imports.mjs",
+      "result": "pass",
+      "actual": "0 legacy fixture page consumers; fixture data isolated under src/dev/mocks."
+    },
+    "productionRouteBoundary": {
+      "command": "node scripts/check-production-route-boundaries.mjs",
+      "result": "pass",
+      "actual": "17 explicit route guards; 2 routed mock pages and 2 routed demo pages are development-only."
+    },
+    "productionArtifactMarkerGate": {
+      "command": "node scripts/check-production-mocks.mjs",
+      "result": "pass",
+      "actual": "222 JavaScript files inspected; no listed text markers found, while mockServiceWorker.js is present as a 9,666-byte public asset."
+    }
+  },
+  "finding": {
+    "severity": "P2",
+    "owner": "vite.config.ts build.copyPublicDir and scripts/check-production-mocks.mjs artifact inventory",
+    "observedCause": "The worker is not pulled into the production source import graph. Vite's enabled default public-directory copy copies public/mockServiceWorker.js byte-for-byte into build output; the marker-only check accepts that worker because it does not assert a forbidden file manifest/path.",
+    "risk": "Every current production build carries the development MSW service-worker script (9,666 raw bytes; C02.04 recorded 3,226 gzip-9 and 2,718 Brotli-q11 bytes). It can be directly requested and may be registered by an old client; this audit proves presence and copy behavior, not actual registration in production.",
+    "acceptanceDirection": "Keep public/mockServiceWorker.js available to the Vite development server while proving an isolated production build omits it and all non-production files. Add artifact-level negative checks in C04.03 so a copied worker fails even if its content has no forbidden marker.",
+    "rollbackNote": "Keep the original public worker source; restore the build-copy setting if a legitimate release asset in public must be shipped, after classifying and explicitly checking it. The existing dist directory must remain preserved during isolated builds."
+  },
+  "conclusion": "C04.01 source and output audit complete. Fresh C02 isolated build inputs still match current source, but repository dist is older and differs in 205 of 221 chunk paths/content. Both the fresh profile and current dist contain the public worker. Source import gates pass; the current JS-marker gate does not detect this file-level leak.",
+  "limits": [
+    "No source, build configuration, or dist file was changed during this audit.",
+    "The current dist was not rebuilt in this step; the C02.04 manifest is an isolated-temp build artifact and was used as an input-matched comparison.",
+    "The audit did not run a production deployment, register the worker in a production browser, or verify backend/staging behavior."
+  ]
+}

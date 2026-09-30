@@ -1,0 +1,13 @@
+{
+  "observedAt": "2026-09-27T15:13:34Z",
+  "taskId": "A05",
+  "stepId": "A05.05",
+  "kind": "browser",
+  "environment": "Windows; Node 24.19.0; Vite 6.4.3; Codex In-app Browser; API dev server on 127.0.0.1:4180; API base 127.0.0.1:4199.",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "expected": "API mode shows no mock preview, demo credentials, or fixture fallback; an unavailable API leaves the user on login and displays a visible error.",
+  "actual": "The latest source loaded at /w/auth/login with no preview panel, mock warning, demo button, or demo hints. A synthetic local-only login submission received the visible error 'Đăng nhập thất bại. Vui lòng kiểm tra thông tin và thử lại.' and remained on the login page. Test-NetConnection to 127.0.0.1:4199 returned False at 2026-09-27T15:09:27Z; the API endpoint was not listening. No backend, real credential, or financial operation was used.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/A05/api-mode-offline-smoke.json",
+  "notes": "This is browser UI evidence for an unavailable endpoint, not API contract or backend certification. Test input values are intentionally not retained."
+}

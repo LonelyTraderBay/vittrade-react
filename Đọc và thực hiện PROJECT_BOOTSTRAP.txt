@@ -1,0 +1,1 @@
+Đọc và thực hiện PROJECT_BOOTSTRAP_PROMPT.txt trong dự án hiện tại, dùng cùng AI_RULES.md phiên bản 3.1; chỉ khảo sát và tạo/cập nhật tài liệu.

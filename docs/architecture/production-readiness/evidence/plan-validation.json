@@ -1,0 +1,106 @@
+{
+  "observedAt": "2026-09-27T12:20:40.698Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "scope": "Plan artifact validation only, no application gate rerun",
+  "counts": {
+    "tasks": 38,
+    "steps": 205,
+    "pages": 128,
+    "routes": 428,
+    "operations": 154,
+    "files": 882
+  },
+  "results": [
+    {
+      "check": "local-links-PLAN.md",
+      "links": 561,
+      "broken": [],
+      "passed": true
+    },
+    {
+      "check": "local-links-SCOPE.md",
+      "links": 916,
+      "broken": [],
+      "passed": true
+    },
+    {
+      "check": "baseline",
+      "expectedExit": 0,
+      "exitCode": 0,
+      "errorCount": 0,
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "check": "missing-page",
+      "expectedExit": 1,
+      "exitCode": 1,
+      "errorCount": 4,
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "check": "missing-route",
+      "expectedExit": 1,
+      "exitCode": 1,
+      "errorCount": 4,
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "check": "missing-operation",
+      "expectedExit": 1,
+      "exitCode": 1,
+      "errorCount": 2,
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "check": "missing-file",
+      "expectedExit": 1,
+      "exitCode": 1,
+      "errorCount": 2,
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "check": "false-task-completion",
+      "expectedExit": 1,
+      "exitCode": 1,
+      "errorCount": 4,
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "check": "false-backend-completion",
+      "expectedExit": 1,
+      "exitCode": 1,
+      "errorCount": 4,
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "check": "duplicate-id",
+      "expectedExit": 1,
+      "exitCode": 1,
+      "errorCount": 7,
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "check": "false-milestone-completion",
+      "expectedExit": 1,
+      "exitCode": 1,
+      "errorCount": 6,
+      "passed": true,
+      "stderr": ""
+    },
+    {
+      "check": "baseline-tracked-files-unchanged",
+      "files": 882,
+      "changed": [],
+      "passed": true
+    }
+  ],
+  "passed": true
+}

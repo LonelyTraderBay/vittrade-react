@@ -36,6 +36,19 @@ remain behind development-only or integration-pending boundaries.
 
 Write operations should declare `x-required-permissions` in the OpenAPI operation and mirror
 that boundary in the feature UI. Backend authorization remains the final enforcement point.
+Business mutations outside the authentication/challenge exceptions must declare a non-empty
+permission list and an `Idempotency-Key` parameter with `required: true`. Permissions marked
+`x-required-permissions-status: draft_frontend` are frontend-observed candidates only; the
+operation must carry an owner question, and the metadata does not prove server enforcement.
+
+Authentication and session operations under `/auth/` use operation-specific credential,
+challenge and session semantics, so the generic business-mutation rule does not decide their
+idempotency policy. The four explicit non-auth challenge exceptions are the two Wallet
+withdrawal MFA operations and the two P2P release MFA operations; each records
+`x-idempotency-exception-reason` on the operation. Wallet keeps its existing
+`wallet:withdraw` permission metadata. Other paths that contain the word `challenge` do not
+receive an automatic exemption. These exceptions do not claim that challenge replay behavior
+or backend authorization has been verified.
 
 The inventory at `docs/architecture/page-inventory.json` remains the source of
 truth for every page's owner and route status. A contract-backed core slice may
@@ -46,7 +59,8 @@ Chạy `npm run contracts:check` để parse toàn bộ OpenAPI YAML và kiểm 
 
 - OpenAPI 3.x, `info`, `paths` và `securitySchemes` hợp lệ.
 - Mỗi operation có `operationId`, response và security declaration rõ ràng.
-- Business mutation ngoài auth/challenge bắt buộc có `Idempotency-Key`.
+- Mỗi business mutation ngoài auth/challenge có permission list và `Idempotency-Key` bắt buộc;
+  challenge exception phải khớp operation/path đã liệt kê và có lý do riêng.
 
 Gate này chỉ xác nhận tính nhất quán của contract frontend; không thay thế backend
 staging verification, authorization test, audit event hoặc E2E transaction thật.

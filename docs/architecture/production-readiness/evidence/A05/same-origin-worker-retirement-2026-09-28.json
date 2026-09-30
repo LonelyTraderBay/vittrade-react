@@ -1,0 +1,78 @@
+{
+  "recordId": "EV-20260928-001",
+  "taskId": "A05",
+  "stepId": "A05.05",
+  "result": "pass",
+  "observedAt": "2026-09-27T17:13:17Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "environment": {
+    "os": "Windows",
+    "server": "Vite development server",
+    "browser": "Chromium with Playwright persistent context and Service Workers enabled",
+    "profile": "Temporary isolated browser profile; did not reuse or alter the user's existing Chrome profile",
+    "existingPreview": "http://127.0.0.1:4173 remained listening throughout this check",
+    "apiBaseUrl": "http://127.0.0.1:4199",
+    "apiBaseListener": false
+  },
+  "commandOrSteps": [
+    "Start the application in mock mode on the isolated origin http://127.0.0.1:4174 and open /w/auth/login in a persistent Chromium browser context.",
+    "Wait until the Service Worker is activated; read navigator.serviceWorker.getRegistrations() from the page on that origin and record the scope and script URL.",
+    "Stop only the isolated Vite server, restart it in API mode on the same host and port, and load /w/auth/login in the same page and browser context.",
+    "Wait for API-mode bootstrap and its automatic reload; read registrations again from the same origin and inspect the rendered login UI. Do not unregister workers manually and do not submit credentials or trade actions."
+  ],
+  "expected": "The mock-mode page has an active /mockServiceWorker.js registration. After API-mode bootstrap on the same origin, the old registration is gone, and mock-only warnings, hints, and controls are absent.",
+  "before": {
+    "url": "http://127.0.0.1:4174/w/auth/login",
+    "origin": "http://127.0.0.1:4174",
+    "registrations": [
+      {
+        "scope": "http://127.0.0.1:4174/",
+        "workers": [
+          {
+            "scriptURL": "http://127.0.0.1:4174/mockServiceWorker.js",
+            "state": "activated"
+          }
+        ]
+      }
+    ],
+    "mockWarningVisible": true,
+    "demoHintsVisible": true
+  },
+  "transition": {
+    "sameOrigin": true,
+    "sameBrowserContext": true,
+    "samePage": true,
+    "automaticMainFrameNavigations": 2,
+    "manualUnregister": false
+  },
+  "after": {
+    "url": "http://127.0.0.1:4174/w/auth/login",
+    "origin": "http://127.0.0.1:4174",
+    "registrations": [],
+    "mockWarningVisible": false,
+    "demoHintsVisible": false,
+    "previewControlVisible": false,
+    "loginScreenRendered": true
+  },
+  "supplementalVisualCheck": {
+    "surface": "Chrome tab opened at http://127.0.0.1:4174/w/auth/login",
+    "result": "Login screen rendered without mock warning, demo hints, or preview controls.",
+    "screenshot": "docs/architecture/production-readiness/evidence/A05/api-mode-worker-retired-ui.png",
+    "screenshotSha256": "130668d8b3d3b436d6f8bafe4bccc6a7d0a05f83b740e81f1740450a256fc063",
+    "inputValues": "Email and password fields had zero entered characters; the password placeholder is decorative."
+  },
+  "safetyAndScope": {
+    "credentialsSubmitted": false,
+    "tradeOrMoneyActions": false,
+    "realBackendCertified": false,
+    "productionStaticWorkerRemovalCertified": false,
+    "notes": "The local API endpoint was intentionally unavailable. This observation certifies only same-origin worker retirement and API-mode UI bootstrap. The static mockServiceWorker.js asset remains tracked separately by C04.02; real backend/staging behavior is still unverified."
+  },
+  "dirtyFileHashes": {
+    "src/main.tsx": "845215ef1b767caaa0f6ff7eeaebe49f471bdfba3aac223b8969671770783bd6",
+    "src/dev/mocks/retire-worker.ts": "544f4a52dd539d2bcca25e3910a1c464344a75903ee413508e009601acc5f1e1",
+    "src/dev/mocks/browser-policy.ts": "de011b88d9e53034136828f5171cdcc7d0be60ca0239f9c9fd2cfd485b8b5969",
+    "src/features/auth/pages/LoginPage.tsx": "1b566e51b42153890f7000e55a1c0622b69cf2afc615b12453dbf570b1fbdbdd",
+    "src/features/auth/pages/WebLoginPage.tsx": "468e9266881f2ccdabfb544642150f88dcd344dbf9a46183ab4279c4ae63602b"
+  }
+}

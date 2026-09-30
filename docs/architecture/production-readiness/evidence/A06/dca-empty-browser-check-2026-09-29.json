@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-29T02:46:31.666Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "origin": "http://127.0.0.1:4173",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sourceHashes": {
+    "contracts/openapi/dca.yaml": "105ad6cbe91891cf20336ac20cd26485c22c3dbd26055d1a4dcc4d0a45bf5b5d",
+    "docs/architecture/production-readiness/evidence/A06/run-dca-empty-browser-check.mjs": "25131aedc40cc1ab08028cb92dfcc07d4a25bd819a6214ea65316be3db92e767",
+    "src/app/pages/dca/DCAPage.tsx": "3fe3bbb605365348e12fc40a53799c2f270a1c0e2d6c7d07f8484c7fa30acfb4",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/dev/PreviewControls.tsx": "8532ab8fbe4578c3ff7cff31f559ec996fa146e63d70539a67ea668fc6d160ea",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/dca-fixtures.ts": "33f7f6e4cee03ce1d9b6099ce7b9046c40f3600000da618138fdfed3108c6b2e",
+    "src/dev/mocks/handlers.ts": "52d20d96c8f1c508e7803cad807003d53f9d1c801276874b4597b92a4b876bbb",
+    "src/dev/mocks/personas.ts": "4f159d020319b86f5f991c49e7c9063a73afddedea9a4e16d8a7d2fb679a105f",
+    "src/dev/mocks/preview-scenario-handler.ts": "310abf70387ff528daf7f61b0d4103a3ed0449619549e1dcfefbfa39f0ca0f48",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/dca/api/dca-api.ts": "dd9c9a077e7b8c4ff137d59680e5c69722dd391d69088b75e2ec2fa28256a997",
+    "src/features/dca/components/DCACreatePlanSheet.tsx": "db90a53c0470d4655fab3a68c76a25c9088801a3fb13878140b134d6ccfb8867",
+    "src/features/dca/model/dca-queries.ts": "73a9680a7b246dea4141e06682e3eb8557799682445c9e53cc5e4cbdee7a1d65",
+    "src/features/dca/pages/DCAMainPage.tsx": "8373f9f7ac00f923247058de7360630f440debc54ceed6ea3d648ff96448227c"
+  },
+  "scenario": {
+    "id": "dca.empty",
+    "domain": "dca",
+    "state": "empty",
+    "status": "passed",
+    "observedAt": "2026-09-29T02:46:31.666Z",
+    "persona": "dca (local MSW fixture)",
+    "role": "user",
+    "permissions": ["dca:read", "dca:write"],
+    "route": "/w/dca",
+    "finalRoute": "/w/dca",
+    "operationIds": [
+      "getDCAAdvancedOverview",
+      "getDCASnapshot",
+      "createDCAPlan",
+      "updateDCAPlan",
+      "deleteDCAPlan"
+    ],
+    "observedOperationIds": ["getDCASnapshot"],
+    "operationRequestCounts": {
+      "getDCAAdvancedOverview": 0,
+      "getDCASnapshot": 1,
+      "createDCAPlan": 0,
+      "updateDCAPlan": 0,
+      "deleteDCAPlan": 0
+    },
+    "requests": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "resourceType": "fetch"
+      }
+    ],
+    "responses": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 10
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 11
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      }
+    ],
+    "initialSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "loginResponse": {
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    "scenarioSelected": true,
+    "emptyStateVisible": true,
+    "createActionOpened": true,
+    "pauseFeedbackVisible": true,
+    "snapshot": {
+      "status": 200,
+      "plans": 0,
+      "purchaseHistory": 0,
+      "portfolioHistoryPoints": 91,
+      "overview": {
+        "currentValue": 0,
+        "totalInvested": 0,
+        "profitLoss": 0,
+        "profitLossPercent": 0,
+        "activePlans": 0,
+        "pausedPlans": 0,
+        "errorPlans": 0,
+        "nextExecution": null
+      },
+      "allPortfolioPointsZeroAndNoPurchase": true
+    },
+    "mutationRequests": [],
+    "externalApiOrigins": [],
+    "externalAssetOrigins": [],
+    "elapsedMs": 1023,
+    "screenshots": ["preview-dca-empty-2026-09-29.png"],
+    "failures": [],
+    "knownUiFindings": [
+      "At /w/dca, the shell heading still reads Dashboard and the sidebar highlights Trang chủ; resolve the active-navigation mapping before UI acceptance."
+    ],
+    "note": "Chromium verified the local MSW GET snapshot empty state and the create-plan CTA. Only getDCASnapshot was observed (1/5 DCA operations); no mutation was submitted. This does not verify backend persistence, scheduling, authorization, staging, production, or user acceptance."
+  }
+}

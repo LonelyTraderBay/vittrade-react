@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C04",
+  "stepId": "C04.05",
+  "observedAt": "2026-09-29T16:19:52.168Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "environment": "Windows 11 Pro x64; Node.js v24.19.0; Vite 6.4.3; Playwright 1.63.0 Chromium; isolated production output; no backend or staging.",
+  "build": {
+    "command": "node scripts/build.mjs --outDir C:/Users/Joker-PC/AppData/Local/Temp/vittrade-c04-05-production-configured-20260929-1635 --manifest",
+    "mode": "production",
+    "environmentSource": ".env.production.example values; VITE_DATA_SOURCE=api, VITE_API_BASE_URL=https://api.example.invalid, VITE_WS_URL=wss://ws.example.invalid, analytics=false, devtools=false.",
+    "result": "pass; scripts/build.mjs completed both TypeScript project checks and Vite production build.",
+    "discardedAttempt": "A first isolated build without injected production URLs failed closed in the browser with Production environment is incomplete: VITE_API_BASE_URL, VITE_WS_URL. That artifact was not accepted for preview; the build was repeated using the documented placeholder URLs.",
+    "artifact": {
+      "path": "C:/Users/Joker-PC/AppData/Local/Temp/vittrade-c04-05-production-configured-20260929-1635",
+      "files": 224,
+      "javascript": 221,
+      "css": 1,
+      "html": 1,
+      "viteManifests": 1,
+      "manifestEntries": 221,
+      "mockServiceWorkerFiles": 0,
+      "manifestDevelopmentReferences": 0,
+      "bytes": 2797998,
+      "indexHtmlSha256": "b3072fa4062175fe24550935694433a1c6333063bea6a7341c730f92551476e3f",
+      "viteManifestSha256": "b310885a384e38f297a966ef06b3149a842ff327572aadf07cf70a1a2e918f57"
+    },
+    "warnings": "Vite build exited 0 with the existing outside-root outDir notice and two dependency Zod PURE-comment notices."
+  },
+  "validation": {
+    "artifactGate": {
+      "command": "node scripts/check-production-mocks.mjs run from an isolated temp root containing the production artifact at dist/",
+      "exitCode": 0,
+      "actual": "224 output files inventoried; 221 JavaScript files and 1 manifest inspected; no worker path, manifest reference, or configured development marker found."
+    },
+    "artifactGateTests": {
+      "command": "node --test scripts/check-production-mocks.test.mjs",
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0
+    },
+    "sourceBoundaries": {
+      "productionMockImports": "pass; 0 legacy fixture page consumers.",
+      "productionRoutes": "pass; 17 explicit guards; 2 mock pages and 2 demo pages are development-only.",
+      "environmentBoundary": "pass; 822 source files inspected.",
+      "architectureInventory": "pass; 129 pages, 427 route declarations, 149 components, 0 data modules, 32 services, 28 mocks."
+    },
+    "productionShellE2E": {
+      "command": "Playwright Chromium production-shell.spec.ts against the isolated production artifact at http://127.0.0.1:5187; one worker, no retries.",
+      "passed": 27,
+      "failed": 0,
+      "skipped": 0,
+      "durationSeconds": 22.7,
+      "backend": "None; test routes stub API responses locally."
+    },
+    "browserSmoke": {
+      "artifactServed": "The exact isolated Vite production output was served by vite preview at http://127.0.0.1:5187.",
+      "routes": [
+        {
+          "requested": "/",
+          "resolved": "/w/home",
+          "httpStatus": 200,
+          "observed": "VitTrade production shell rendered; 352 body-text characters."
+        },
+        {
+          "requested": "/auth/login",
+          "resolved": "/auth/login",
+          "httpStatus": 200,
+          "observed": "Login action was visible."
+        },
+        {
+          "requested": "/markets/predictions/advanced-chart/BTC-USD",
+          "resolved": "/w/markets/predictions/advanced-chart/BTC-USD",
+          "httpStatus": 200,
+          "observed": "Authenticated route rendered the production integration boundary; static demo content was not exposed."
+        }
+      ],
+      "localApiStubs": "The configured .invalid API host was intercepted in Chromium: auth/session returned 401 for the unauthenticated shell and 200 for the authenticated route; market/pairs returned 503. These are local test responses, not backend observations.",
+      "pageErrors": 0,
+      "failedRequests": 0,
+      "consoleErrors": 4,
+      "consoleErrorMeaning": "Expected browser console messages for the locally stubbed HTTP 401/503 responses; no uncaught page error occurred."
+    },
+    "serviceWorker": {
+      "serviceWorkerApiSupported": true,
+      "registrations": 0,
+      "registerCalls": 0,
+      "responsesFromServiceWorker": 0,
+      "workerPathFetch": {
+        "path": "/mockServiceWorker.js",
+        "httpStatus": 200,
+        "contentType": "text/html",
+        "interpretation": "Vite preview SPA fallback returned index HTML for the missing path; it did not serve worker JavaScript. The emitted artifact gate independently confirms the worker file is absent."
+      }
+    },
+    "repositoryDist": {
+      "buildTargetedDist": false,
+      "observedFiles": 224,
+      "observedBytes": 2704523,
+      "directoryLastWriteUtc": "2026-09-29T02:42:18.9491859Z",
+      "gitStatus": "No tracked diff under dist/; all builds and previews used unique temp output directories.",
+      "context": "The old repository dist remains preserved and contains the development worker; C04.02 previously recorded an unchanged before/after tree fingerprint. It is not the isolated artifact validated here."
+    },
+    "finalChecks": {
+      "prettier": "pass for the changed E2E spec and production artifact checker/test.",
+      "eslint": "pass for the changed E2E spec and production artifact checker/test.",
+      "nodeSyntax": "pass for production artifact checker/test.",
+      "gitDiffCheck": "pass after PLAN.md/TRACKING.json update; exit 0, with existing LF-to-CRLF notices only."
+    }
+  },
+  "result": "pass",
+  "limits": [
+    "The API and WebSocket hostnames are documented .invalid placeholders. No backend, staging, persistence, real identity, or real-time data was exercised.",
+    "This verifies 27 production-shell tests and three representative routes; it does not constitute user acceptance of all 128 pages or every resolved route.",
+    "The preserved repository dist remains an older build containing mockServiceWorker.js. It was deliberately not overwritten; use a deliberate release rebuild before treating repository dist as releasable.",
+    "A previous full Vitest run remains 2385/2386 because one existing WebLoginPage error-copy expectation lacks product-intent evidence; this step did not change that behavior.",
+    "The source route/import checks cover declared route guards and literal imports; they do not prove arbitrary computed dynamic-import or runtime fallback behavior."
+  ]
+}

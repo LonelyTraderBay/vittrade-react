@@ -165,6 +165,25 @@ describe('architecture inventory route evidence', () => {
     ]);
   });
 
+  it('records layout routes whose element is constructed with React.createElement', () => {
+    const source = `
+      createBrowserRouter([
+        {
+          path: '/',
+          element: React.createElement(RootLayout, { developmentPreviewControls }),
+          children: [
+            { index: true, element: React.createElement(Navigate, { to: '/home' }) },
+          ],
+        },
+      ]);
+    `;
+
+    const routes = extractRouteRecords('src/app/routes.ts', source);
+
+    expect(routes).toHaveLength(1);
+    expect(routes[0]).toMatchObject({ path: '/', component: 'RootLayout' });
+  });
+
   it('resolves injected feature, shim, inline and development-only route targets', () => {
     const source = `
       const PairDetailPage = lazy(() => import('@/features/market/pages/PairDetailPage'));

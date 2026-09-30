@@ -1,0 +1,26 @@
+{
+  "checkedJavaScriptFiles": 222,
+  "checkedMarkers": [
+    "Preview-123!",
+    "developer@vittrade.local",
+    "mfa@vittrade.local",
+    "locked@vittrade.local",
+    "demo@vittrade.vn",
+    "wrong@test.com",
+    "device@test.com",
+    "Trải nghiệm Demo",
+    "Đăng nhập Demo",
+    "Demo flows:",
+    "DỮ LIỆU MÔ PHỎNG",
+    "msw/browser",
+    "setupWorker"
+  ],
+  "findings": [],
+  "copiedMockWorkerAssets": [
+    {
+      "file": "mockServiceWorker.js",
+      "bytes": 9666
+    }
+  ],
+  "developmentControlChunkFiles": []
+}

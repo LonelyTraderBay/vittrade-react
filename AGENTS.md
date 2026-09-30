@@ -58,6 +58,16 @@ Các quy định này áp dụng cho mọi AI agent viết hoặc sửa mã tron
 - Trước khi kết luận, xem lại diff để xác nhận thay đổi đúng phạm vi, mã phản ánh đúng thiết kế, không có độ phức tạp không được biện minh và các kiểm chứng đã chạy được báo cáo chính xác.
 - Báo rõ những gì đã đổi, lý do, kiểm chứng đã thực hiện và giới hạn còn lại. Không tuyên bố mức an toàn, độ bao phủ hoặc khả năng production cao hơn bằng chứng thực tế.
 
+## 8. Workflow chung, plugin và skill
+
+- Bộ Universal được tiếp nhận là [AI_RULES.md](AI_RULES.md) và [PROJECT_BOOTSTRAP_PROMPT.txt](PROJECT_BOOTSTRAP_PROMPT.txt) phiên bản 3.1. Luôn đọc HỢP ĐỒNG DÙNG CHUNG, KHỞI ĐỘNG và các mục theo lộ trình liên quan trong AI_RULES; giữ nguyên hai file khi áp dụng. Hồ sơ riêng và căn cứ khảo sát nằm tại [docs/PROJECT_CONTEXT.md](docs/PROJECT_CONTEXT.md), không thay vai trò các quy định ở tài liệu này.
+- Khi bắt đầu công việc trong repo, đọc [workflow cho AI và người mới](docs/ai/WORKFLOW.md), sau đó chỉ đọc tài liệu và phần mã liên quan. Workflow quy định cách chọn skill, kiểm chứng và bàn giao; các mục trên tiếp tục quy định chất lượng thay đổi.
+- Khi triển khai roadmap, đọc [PLAN.md](docs/architecture/production-readiness/PLAN.md) và checkpoint trong [TRACKING.json](docs/architecture/production-readiness/TRACKING.json). Tiếp tục đúng ưu tiên/phụ thuộc; kiểm chứng và ghi nhận từng bước trước khi chuyển bước phụ thuộc. Chủ động tiếp tục công việc đã được giao, không hỏi lại sau mỗi bước.
+- Chọn skill theo mục tiêu và công cụ thực sự khả dụng; thường một skill chuyên môn chính là đủ. Khi người dùng gọi rõ skill, đọc và áp dụng hướng dẫn đó; chỉ thêm skill khác khi có nhu cầu cụ thể. Nêu ngắn gọn skill sử dụng và lý do, không nạp toàn bộ catalog.
+- Skill không thay đổi phạm vi được giao, contract, tiêu chí nghiệm thu hoặc quyền công cụ. Khi có xung đột, nêu rõ và xử lý theo chỉ dẫn đang áp dụng; nếu yêu cầu mới thay đổi thiết kế đã chốt, ghi quyết định và cập nhật tài liệu liên quan. Không âm thầm hạ yêu cầu để đạt test xanh.
+- Quy trình repo phải thực hiện được cả khi không có plugin. Khi thiếu skill/công cụ, ghi rõ giới hạn và dùng phương án tương đương nếu chứng minh được cùng tiêu chí; kiểm tra bắt buộc chưa chạy vẫn là chưa đạt. Không tự cài plugin, đổi quyền, model hoặc cấu hình cá nhân để thực hiện workflow.
+- Giữ một nguồn cho mỗi loại thông tin: kiến trúc ở `ARCHITECTURE.md`, quy trình ở `docs/ai/WORKFLOW.md`, công việc ở `PLAN.md`, tiến độ ở `TRACKING.json`. Dùng liên kết thay vì sao chép quy định hoặc tạo sổ tiến độ song song. Cập nhật hướng dẫn và ví dụ khi thay đổi làm chúng hết hiệu lực.
+
 ## Nguyên tắc chốt
 
 Ưu tiên hệ thống nhỏ, rõ và dễ kiểm tra nhất mà vẫn đáp ứng đầy đủ yêu cầu. Mọi trạng thái, kết nối, tự động hóa và lớp trừu tượng mới đều cần lý do; nếu không chứng minh được là cần, hãy thử bỏ nó.

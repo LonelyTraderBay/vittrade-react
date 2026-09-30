@@ -1,0 +1,402 @@
+{
+  "checkedAt": "2026-09-30T00:03:13.667Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "origin": "http://127.0.0.1:4173",
+  "scenario": {
+    "id": "trading.success",
+    "status": "passed",
+    "route": "/w/trade/btcusdt",
+    "operationIds": [
+      "getCopyFrontendViewStatus",
+      "listCopyProviders",
+      "getCopyProviderProfile",
+      "listCopyRelationships",
+      "createCopyRelationship",
+      "stopCopyRelationship",
+      "getTradingAnalytics",
+      "listOpenOrders",
+      "placeOrder",
+      "listOrderHistory",
+      "modifyOrder",
+      "cancelOrder"
+    ],
+    "observedOperationIds": [
+      "getCopyFrontendViewStatus",
+      "listCopyProviders",
+      "getCopyProviderProfile",
+      "listCopyRelationships",
+      "createCopyRelationship",
+      "stopCopyRelationship",
+      "getTradingAnalytics",
+      "listOpenOrders",
+      "placeOrder",
+      "listOrderHistory",
+      "modifyOrder",
+      "cancelOrder"
+    ],
+    "expectedOperationIds": [
+      "getCopyFrontendViewStatus",
+      "listCopyProviders",
+      "getCopyProviderProfile",
+      "listCopyRelationships",
+      "createCopyRelationship",
+      "stopCopyRelationship",
+      "getTradingAnalytics",
+      "listOpenOrders",
+      "placeOrder",
+      "listOrderHistory",
+      "modifyOrder",
+      "cancelOrder",
+      "listOpenPositions"
+    ],
+    "coverage": "representative_success_operations; listOpenPositions returns declared 503",
+    "operationRequestCounts": {
+      "getCopyFrontendViewStatus": 1,
+      "listCopyProviders": 1,
+      "getCopyProviderProfile": 1,
+      "listCopyRelationships": 2,
+      "createCopyRelationship": 1,
+      "stopCopyRelationship": 1,
+      "getTradingAnalytics": 1,
+      "listOpenOrders": 4,
+      "placeOrder": 1,
+      "listOpenPositions": 6,
+      "listOrderHistory": 4,
+      "modifyOrder": 1,
+      "cancelOrder": 1
+    },
+    "responses": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "status": 204,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/copy/frontend-view-status",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/copy/providers",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/copy/providers/ct003",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/trading/copy/relationships",
+        "status": 201,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/copy/relationships",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/trading/copy/relationships/copy-relationship-2/stop",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/copy/relationships",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/analytics",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "status": 503,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "status": 503,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "status": 503,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "status": 503,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "status": 503,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "status": 503,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/wallet/assets",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/orders",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/orders/history",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt/candles",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/trading/orders",
+        "status": 201,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/orders",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/orders/history",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "PATCH",
+        "path": "/api/trading/orders/dev-order-0001",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/orders",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/orders/history",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/trading/orders/dev-order-0001/cancel",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/orders",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/orders/history",
+        "status": 200,
+        "fromServiceWorker": true
+      }
+    ],
+    "copyRelationship": {
+      "providerId": "ct003",
+      "copyId": "copy-relationship-2",
+      "createStatus": 201,
+      "createIdempotencyKeyLength": 41,
+      "stopStatus": 200,
+      "stopIdempotencyKeyLength": 61,
+      "relationshipVisibleAfterCreate": true,
+      "stoppedRelationshipStatus": "stopped",
+      "stoppedRelationshipHiddenFromActiveUi": true,
+      "relationshipRetainedAsStoppedInMockRead": true
+    },
+    "orderLifecycle": {
+      "id": "dev-order-0001",
+      "placeStatus": 201,
+      "placeIdempotencyKeyLength": 36,
+      "receiptRoute": "/w/trade/order-receipt",
+      "modifyStatus": 200,
+      "modifiedPrice": 65100,
+      "cancelStatus": 200,
+      "finalStatus": "cancelled",
+      "historyContainsCancelledOrder": true
+    },
+    "positions": {
+      "status": 503,
+      "responseCode": "positions_source_unavailable",
+      "visibleUnavailableState": true,
+      "falseEmptyStateVisible": false,
+      "successfulCoverage": false
+    },
+    "visibleUi": {
+      "copyFrontendStatus": "backend-required",
+      "providerName": "RiskMaster_88",
+      "analyticsSummaryVisible": true,
+      "cancelledOrderVisibleInHistory": true
+    },
+    "screenshots": {
+      "frontendStatus": "preview-trading-success-status-2026-09-30.png",
+      "copyRelationship": "preview-trading-success-copy-2026-09-30.png",
+      "orderReceipt": "preview-trading-success-order-receipt-2026-09-30.png",
+      "positionsUnavailable": "preview-trading-success-positions-unavailable-2026-09-30.png",
+      "analytics": "preview-trading-success-analytics-2026-09-30.png",
+      "orderHistory": "preview-trading-success-order-history-2026-09-30.png"
+    }
+  },
+  "operationRequestCounts": {
+    "getCopyFrontendViewStatus": 1,
+    "listCopyProviders": 1,
+    "getCopyProviderProfile": 1,
+    "listCopyRelationships": 2,
+    "createCopyRelationship": 1,
+    "stopCopyRelationship": 1,
+    "getTradingAnalytics": 1,
+    "listOpenOrders": 4,
+    "placeOrder": 1,
+    "listOpenPositions": 6,
+    "listOrderHistory": 4,
+    "modifyOrder": 1,
+    "cancelOrder": 1
+  },
+  "apiRequestCount": 34,
+  "apiResponseCount": 34,
+  "apiRequestFailureEvents": [
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "failure": "net::ERR_ABORTED",
+      "hadResponse": true
+    }
+  ],
+  "unmatchedApiRequestFailureCount": 0,
+  "pageErrors": [],
+  "externalApiOrigins": [],
+  "elapsedMs": 11040,
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false,
+    "externalApiOrigins": [],
+    "scenarioSuccessfulOperationCount": 12,
+    "expectedScenarioOperationCount": 13,
+    "positionsSuccessfulCoverage": false
+  },
+  "sourceHashes": {
+    "contracts/openapi/trading.yaml": "ea87584c03ab69a0d552d80590e36e15ab7b38851cc1583d9c892bbb91f19437",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "8382400738090945e6c3ec53286f288f0ed2d41c90dbd407eec2b48d36d347ae",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "6deef3b43c51e05c9cd058d8743b23b64a86579f474ce0486830359ac50ac200",
+    "src/dev/mocks/trading-fixtures.ts": "b082e4bc4094a4d7b36f41897ce9b27ea4c487fd3bf714622baf2f91fe2153cf",
+    "src/dev/mocks/trading-analytics-fixtures.ts": "1105f815adebfc8c3d18a0a4f3eeed89dea37264e75d9a644a888f0de20f934b",
+    "src/dev/mocks/trading-screen-fixtures.ts": "2b9ac8dd7bc8acc3106d8510ac62fde205cd81574bd4690a713a6a6efbecb9a7",
+    "src/dev/mocks/market-data-simulator.ts": "711e421335b34a7181502bbb0f5afd283ee455c63126f64c584cd512fc8fce08",
+    "src/dev/mocks/market-preview-fixtures.ts": "dadee8830469930227b85c8f77985de8df0657f42807a8ca814bc7014e907ae9",
+    "src/features/trading/routes.ts": "cb268f664e4c0fadd39ab1cd1430dd968b1700dc49dab56fb1f4782b524d0385",
+    "src/features/trading/api/trading-api.ts": "bfd385aba4911e0640567e88dd5b5c9352eea553cda7518cfb28f9009a1c32fa",
+    "src/features/trading/api/analytics-api.ts": "1a4c15649ab297927035385317e39160be8ae7c6a3db60f5010bda75644a39ce",
+    "src/features/trading/api/copy-frontend-view-status-api.ts": "2e3e65255560784c53727363f4e63592f183f0d001cce1ec69c15dc129af1bd4",
+    "src/features/trading/model/trading-queries.ts": "344352bcfc5ea4a209fb0a28a69417330f5f2e5cb87775fd90661b3a51202e5b",
+    "src/features/trading/model/analytics-queries.ts": "21384841f5e8196adcc6ed36c601d10a8c32b6a85fc7ae25569dae67c363f195",
+    "src/features/trading/model/copy-frontend-view-queries.ts": "872755742f5df1aa98180cf5737d4e7bd3c53a3edbaef8a044a953253b86c859",
+    "src/features/trading/pages/TradePage.tsx": "5436507bcc3b3c31868c4f0e8908797a2346215f9bb4a83e5956cf9189140076",
+    "src/features/trading/pages/TradeAnalyticsContractPage.tsx": "90e0deeee0aa9dae6fc732ffb8e958a5a35d1f5d19aae25258d0f4f82dc94e49",
+    "src/features/trading/pages/OpenPositionsPage.tsx": "709874871e1a37f5ec0d8096188357a72349a08fb6495536c1c9ddf85097c2b1",
+    "src/features/trading/pages/OrderReceiptPage.tsx": "488a08a66812f412a823bb1b48d5c8652deb2c6ba03a6d7be35ef0f4a09d9a0a",
+    "src/features/trading/pages/CopyFrontendStatusPages.tsx": "2b97d375a433035d6cc15dff95c116db35f445a65a6243d6965bc5b941a808a2",
+    "src/features/trading/pages/CopyTradingPage.tsx": "e133191226c13174238f846a32378c4b7c2ef01a9bdb82882296ce5e86e7c687",
+    "src/features/trading/pages/CopyProviderDetailContractPage.tsx": "c676b52b31a2e0ab1b49ab9592a8acb35b93d8adc4349314d6c820b58d7d0944",
+    "src/features/trading/pages/PreCopyAssessmentContractPage.tsx": "94c1a813f397fcb49df96ec76f9d7050ba8c2973885bd08db084fa38b7caace0",
+    "src/features/trading/pages/CopyConfigurationContractPage.tsx": "adcb2a8c2de7e1ab8522a3975de5e1b1c75f02d435bf247f9ec84acdbabf505b",
+    "src/features/trading/pages/CopyConfirmationContractPage.tsx": "b47057f47f389c71761099b18f38ae2d90acd50f6d467d9fe8b9c59f94033ac1",
+    "src/features/trading/pages/ActiveCopiesContractPage.tsx": "0a999118168bbba17c3fb6a59ac0a6f721a9176e7269e816af852cd90f144a14",
+    "src/features/trading/components/TradeTerminal.tsx": "bd8f1eba1344da1c39449e5189649de0a9b047cd7528175414a8033e2bc56990",
+    "src/features/trading/components/TradingOrderEntryPanel.tsx": "a5cff4a90b567ec81b1eb9ea4505639ea3e5f23fbe868f8c5fe0d002aaa691b6",
+    "src/features/trading/components/OrderConfirmationSheet.tsx": "c714bcf831f964d31bda4314bf5595ace66f9804ed31013f6943f87d6d4c51e7",
+    "src/features/trading/components/OrderModifySheet.tsx": "97b0af463695464315f099870e0058abf503ba26c838058ba07fa4c58d052637",
+    "src/features/trading/components/OpenOrdersPanel.tsx": "7c515de1a8b648b1273a6fabe303e04292a2dea9d3ed31bfad3d69eabdbb40f7",
+    "src/features/trading/components/OrderHistoryPanel.tsx": "79504695e05ae6ea16746615d53f0c4133024571d78a5d0bdacfc7ac4ff23abd",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",
+    "docs/architecture/production-readiness/evidence/A06/run-trading-success-browser-check.mjs": "57526d39f29292cccb53be318d9ec6053ecf1b293132d6e3022e3b10ab19e179"
+  },
+  "evidenceBoundary": "Chromium browser evidence for local preview and MSW only. It does not establish backend persistence, authorization, exchange execution, same-key replay, staging or user acceptance. listOpenPositions deliberately returns its contract-declared 503 because no account position source is configured."
+}

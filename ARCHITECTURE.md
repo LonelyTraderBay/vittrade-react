@@ -6,15 +6,30 @@ VitTrade được tổ chức theo feature/domain boundaries. `app` chỉ chịu
 bootstrap ứng dụng, provider composition và route composition. Business logic phải
 thuộc về feature tương ứng; infrastructure dùng chung phải nằm trong `shared`.
 
+## Cách áp dụng khi phát triển
+
+Đọc [Universal AI rules v3.1](AI_RULES.md), [project context](docs/PROJECT_CONTEXT.md),
+[AGENTS.md](AGENTS.md) và [workflow phát triển](docs/ai/WORKFLOW.md) trước khi
+thay đổi. Project context ghi nhận sự thật và giới hạn đã khảo sát; tài liệu này
+quản lý ranh giới kiến trúc; workflow quản lý cách chọn quy trình, skill, kiểm
+chứng và bàn giao. Thứ tự chuẩn hóa và bằng chứng tiến độ nằm tại
+[PLAN.md](docs/architecture/production-readiness/PLAN.md) và
+[TRACKING.json](docs/architecture/production-readiness/TRACKING.json).
+Các số baseline bên dưới là bằng chứng lịch sử, cần kiểm tra lại khi dùng để kết
+luận trạng thái hiện tại. Preview UI bằng mock theo kế hoạch không thay đổi điều
+kiện chứng nhận route production bằng backend/staging thật.
+
 ## Trạng thái baseline
 
-- Inventory hiện tại bao phủ 128 source page files, 428 route entries, 149
-  components, 0 legacy data modules, 32 service/API files và 22 mock sources.
+- Inventory được sinh và kiểm tra ngày 2026-09-30 bao phủ 129 source page
+  files, 427 route entries, 149 components, 0 legacy data modules, 32
+  service/API files và 28 mock sources.
 - Route composition preserves the public shell URLs `/`, `/t`, `/w`, `/r`; unused
   route-less app-page aliases have been removed. Owners and status live in the
   generated inventory.
-- Inventory hiện ghi nhận 0 page có import fixture/mock trực tiếp và 0 page có
-  truy cập runtime trực tiếp; các adapter mô phỏng nằm trong `src/dev/mocks`.
+- Inventory hiện ghi nhận 0 page import fixture dataset trực tiếp; 2 trang auth
+  tham chiếu `isAuthFixtureMode`, 0 page truy cập runtime trực tiếp. Các adapter
+  mô phỏng nằm trong `src/dev/mocks`.
 - Unbacked Launchpad simulators were retired; their public routes resolve to
   `IntegrationPendingPage`, and the production artifact gate rejects any future
   fixture module marker.
@@ -25,19 +40,19 @@ thuộc về feature tương ứng; infrastructure dùng chung phải nằm tron
 ## Roadmap completion audit
 
 The current checkout does not yet complete the full architecture roadmap.
-The current project scope is frontend development only; a backend does not yet
-exist. Frontend architecture work continues with explicit API contracts and
-isolated development adapters. Real staging verification belongs to the later
+This repository covers frontend development. It contains API contracts and
+isolated development adapters, but this checkout does not provide evidence of a
+backend implementation or deployment. Real staging verification belongs to the
 integration phase, and the production certification manifest remains empty.
 
 | Requirement | Current evidence | Remaining work |
 | --- | --- | --- |
-| Safe working tree | Work continues on `codex/vittrade-architecture-completion`; changes remain unstaged and uncommitted. | Review and deliver the combined changes when authorized. |
-| Truthful inventory | The generated inventory has 0 production, 126 integration-pending, 2 development-only sandbox and 0 not-implemented pages across 428 routes. | Keep backend-dependent routes pending; certify them only after real backend and staging evidence exist. |
-| Dependency boundaries | Dependency-cruiser passed with 0 violations across 840 modules and 4,503 dependencies. Feature tests define local MSW responses and do not import development adapters. | Keep these rules enabled for subsequent migrations. |
+| Safe working tree | The current checkout contains staged, unstaged and untracked changes; inspect `git status` before editing or delivery. | Preserve pre-existing work and verify a clean, revision-bound source state before production certification. |
+| Truthful inventory | The generated inventory has 0 production, 125 integration-pending, 2 development-only demo and 2 route-less `not-implemented` source files across 427 routes (checked 2026-09-30). | Keep backend-dependent routes pending; review route-less source classification separately from URL coverage; certify routes only after real backend and staging evidence exist. |
+| Dependency boundaries | Dependency-cruiser passed with 0 violations across 858 modules and 4,619 dependencies on 2026-09-29. All 15 feature domains expose `index.ts`; feature-to-feature deep imports are rejected by the configured rule. | Keep these rules enabled for subsequent migrations. |
 | Domain migration | The 24 user-facing prototypes now resolve to feature-owned frontend pages and typed API adapters/contracts with development MSW responses. P2P, Copy Trading and advanced DCA responses expose integration status only and do not simulate account, compliance or trade outcomes. | Implement and verify domain operations only after their backend contracts and invariants are defined. |
-| Legacy cleanup | The routed prototypes and their unsafe canned actions were retired; the two non-user-facing visual sandboxes remain development-only. There are no deprecated aliases, legacy page data modules or route-less `not-implemented` pages. | Keep the production route and mock-isolation gates enabled. |
-| Current-turn verification | Full Vitest coverage run passed: 2,188 tests across 271 files; 90.00% statements, 91.79% lines, 86.91% functions and 84.62% branches. Chromium contract E2E passed 51/51 against mocked API endpoints in the staging-mode build. Both TypeScript projects, zero-warning lint, formatting, dependency boundaries, inventory, page-size, 15 OpenAPI contracts/154 operations, 17 production-route guards, mock-import isolation, security/environment/license checks, production build, production-mock inspection and bundle budget passed. | GitHub Ubuntu CI and real backend/staging integration remain unverified. MSW does not certify a backend or staging environment. |
+| Legacy cleanup | The routed prototypes and their unsafe canned actions were retired; the two non-user-facing visual sandboxes remain development-only. There are no deprecated aliases or legacy page data modules; the current inventory has 2 route-less `not-implemented` source-file records, which do not create URL registrations. | Keep the production route and mock-isolation gates enabled; do not treat route-less source-file classification as UI acceptance. |
+| Last recorded full verification | The last recorded full Vitest run passed 2,188 tests across 271 files; 90.00% statements, 91.79% lines, 86.91% functions and 84.62% branches. Chromium contract E2E passed 51/51 against mocked API endpoints in a staging-mode build. The record also reports both TypeScript projects, zero-warning lint, formatting, dependency boundaries, inventory, page-size, 15 OpenAPI contracts/154 operations, production-route guards, mock-import isolation, security/environment/license checks, production build, production-mock inspection and bundle budget passed. | This full suite was not rerun in A08.01. GitHub Ubuntu CI and real backend/staging integration remain unverified; MSW does not certify backend or staging behavior. |
 
 The production build succeeded with two non-fatal Rollup annotation warnings in
 Zod v4 under `node_modules`; the bundle budget and production-mock gates passed.
@@ -134,10 +149,10 @@ an explicit migration status and dependency observations. Run
 `npm run architecture:inventory:check` in CI to prevent stale ownership data or
 untracked architectural growth.
 
-Current generated inventory: 128 source pages, 428 routes, 149 components,
-0 legacy data modules, 32 services and 22 mock sources. It records 126
-`integration-pending`, 2 development-only `demo`, no `deprecated` aliases and 0
-route-less `not-implemented` source pages. Route-less app-page
+Current generated inventory (checked 2026-09-30): 129 source page files, 427
+routes, 149 components, 0 legacy data modules, 32 services and 28 mock sources.
+It records 125 `integration-pending`, 2 development-only `demo`, no `deprecated`
+aliases and 2 route-less `not-implemented` source-file records. Route-less app-page
 re-export shims with no source consumers have been removed; routed composition
 adapters remain only where the shell supplies app-owned behavior. The route
 extractor resolves
@@ -1453,15 +1468,18 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
 
 ## Inventory status evidence
 
-- Current generated inventory contains 128 source pages, 428 routes, 149 components,
-  0 legacy data modules, 32 service/API files and 22 mock sources.
-- Sorting uses runtime-neutral code-unit ordering; inventory checks pass with
-  Node 22.23.3 and Node 24.19.0.
-- Page status is classified as 126 `integration-pending`, 2 development-only
-  `demo`, no `deprecated` aliases and 0 route-less
-  `not-implemented` source pages. The inventory resolves nested route paths, index routes and injected
+- Current generated inventory (checked 2026-09-30) contains 129 source page
+  files, 427 routes, 149 components, 0 legacy data modules, 32 service/API files
+  and 28 mock sources.
+- Sorting uses runtime-neutral code-unit ordering. This refresh and inventory
+  check passed with local Node 24.19.0; prior recorded checks also passed with
+  Node 22.23.3. Node 22 was not rerun during this documentation sweep.
+- Page status is classified as 125 `integration-pending`, 2 development-only
+  `demo`, no `deprecated` aliases and 2 route-less `not-implemented` source-file
+  records. This source-file classification does not imply standalone screens.
+  The inventory resolves nested route paths, index routes and injected
   component targets from route factories. The `not-implemented` status means a
-  source page file has no route evidence; it is not a production certification.
+  source file has no route evidence; it is not a production certification.
   Page status describes implementation readiness; route exposure is recorded
   separately, so a feature page can be `integration-pending` while its URL is
   deliberately restricted to development builds.

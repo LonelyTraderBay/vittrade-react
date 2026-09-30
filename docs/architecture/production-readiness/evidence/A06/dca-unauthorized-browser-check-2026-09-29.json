@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-29T02:47:26.628Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "origin": "http://127.0.0.1:4173",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b",
+    "contracts/openapi/dca.yaml": "105ad6cbe91891cf20336ac20cd26485c22c3dbd26055d1a4dcc4d0a45bf5b5d",
+    "docs/architecture/production-readiness/evidence/A06/run-dca-unauthorized-browser-check.mjs": "9038d45f27353dc79f7cbceccaf14408a114b369d5d1c32d7c8136e2bc706b05",
+    "src/app/components/layout/ProtectedRoute.tsx": "c5cb74de4707d257a40f4782ea7c7c177ce3b8bd2de4f4cccb5e4450c9f4c5d4",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/dev/PreviewControls.tsx": "8532ab8fbe4578c3ff7cff31f559ec996fa146e63d70539a67ea668fc6d160ea",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "52d20d96c8f1c508e7803cad807003d53f9d1c801276874b4597b92a4b876bbb",
+    "src/dev/mocks/personas.ts": "4f159d020319b86f5f991c49e7c9063a73afddedea9a4e16d8a7d2fb679a105f",
+    "src/dev/mocks/preview-scenario-handler.ts": "310abf70387ff528daf7f61b0d4103a3ed0449619549e1dcfefbfa39f0ca0f48",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/auth/api/auth-api.ts": "050846c48de49be56f6bdf6a73669b5d3a6230c559e33851cd07840609fca078",
+    "src/features/auth/pages/WebLoginPage.tsx": "d938bac40bb63145ffbb3919140b1b3d267b96e86872a93f29a4ebac24980e41",
+    "src/features/dca/api/dca-api.ts": "dd9c9a077e7b8c4ff137d59680e5c69722dd391d69088b75e2ec2fa28256a997",
+    "src/features/dca/model/dca-queries.ts": "73a9680a7b246dea4141e06682e3eb8557799682445c9e53cc5e4cbdee7a1d65",
+    "src/features/dca/pages/DCAMainPage.tsx": "8373f9f7ac00f923247058de7360630f440debc54ceed6ea3d648ff96448227c",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2"
+  },
+  "scenario": {
+    "id": "dca.unauthorized",
+    "domain": "dca",
+    "state": "unauthorized",
+    "status": "passed",
+    "observedAt": "2026-09-29T02:47:26.628Z",
+    "persona": "dca (local MSW fixture)",
+    "role": "user",
+    "permissions": ["dca:read", "dca:write"],
+    "route": "/w/dca",
+    "finalRoute": "/auth/login",
+    "operationIds": [
+      "getDCAAdvancedOverview",
+      "getDCASnapshot",
+      "createDCAPlan",
+      "updateDCAPlan",
+      "deleteDCAPlan"
+    ],
+    "observedOperationIds": ["getDCASnapshot"],
+    "operationRequestCounts": {
+      "getDCAAdvancedOverview": 0,
+      "getDCASnapshot": 1,
+      "createDCAPlan": 0,
+      "updateDCAPlan": 0,
+      "deleteDCAPlan": 0
+    },
+    "requests": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session"
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist"
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot"
+      },
+      {
+        "operationId": "refreshSession",
+        "method": "POST",
+        "path": "/api/auth/refresh"
+      }
+    ],
+    "responses": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 12
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 7
+      },
+      {
+        "operationId": "refreshSession",
+        "method": "POST",
+        "path": "/api/auth/refresh",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 0
+      }
+    ],
+    "initialSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "loginResponse": {
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    "dcaSnapshotResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "scenarioSelected": true,
+    "loginFormVisible": true,
+    "protectedContentVisible": false,
+    "externalApiOrigins": [],
+    "externalAssetOrigins": [],
+    "elapsedMs": 704,
+    "screenshots": ["preview-dca-unauthorized-2026-09-29.png"],
+    "failures": [],
+    "knownContractLimitations": [
+      "Only GET /dca/snapshot is used here; PATCH and DELETE do not declare 401.",
+      "The shared local auth refresh handler returns 401 although the Auth OpenAPI refresh operation declares only 200/null; do not treat that refresh response as DCA contract evidence.",
+      "At /w/dca, the shell heading still reads Dashboard and the sidebar highlights Trang chủ; resolve the active-navigation mapping before UI acceptance."
+    ],
+    "note": "The DCA snapshot GET declares 401 and returned 401 from local MSW; the protected route redirected to login with no visible DCA content and no DCA write. The Auth refresh contract mismatch remains excluded from DCA contract evidence; no backend authorization or staging is certified."
+  }
+}

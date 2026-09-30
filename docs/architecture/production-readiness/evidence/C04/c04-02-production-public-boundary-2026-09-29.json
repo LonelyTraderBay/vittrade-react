@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C04",
+  "stepId": "C04.02",
+  "observedAt": "2026-09-29T15:34:15Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "environment": "Windows 11 Pro x64; Node.js v24.19.0; Vite 6.4.3; Vitest 4.1.11; local isolated build and development server; no backend/staging.",
+  "change": {
+    "file": "vite.config.ts",
+    "beforeSha256": "036e2eb63aa03b9fd114d7a13cf3fd5ab55ba84e9161b729e4a5e4d872230828",
+    "afterSha256": "0ea310f7fd0ea7e31eb704aba9e755554fd7204c1e223db4338beda4bf186b7f",
+    "setting": "build.copyPublicDir = false",
+    "reason": "Current public/ contains only public/mockServiceWorker.js, which is required by Vite dev but is not a production source dependency. The publicDir setting remains enabled; only production copying is disabled. The worker source file is preserved."
+  },
+  "productionBuild": {
+    "command": "node scripts/build.mjs --outDir C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-c04-02-production-20260929-1527 --manifest",
+    "exitCode": 0,
+    "typescriptChecks": "Both application and scripts TypeScript checks passed because the build script completed the Vite build.",
+    "viteBuiltInDurationSeconds": 4.41,
+    "isolatedOutput": "C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-c04-02-production-20260929-1527",
+    "outputInventory": {
+      "fileCountIncludingManifest": 224,
+      "javascriptChunks": 221,
+      "cssFiles": 1,
+      "htmlFiles": 1,
+      "viteManifestPresent": true,
+      "mockServiceWorkerPresent": false,
+      "totalBytes": 2797757,
+      "treeFingerprintSha256": "1b7edb335bb238ee95f5fc5410204f36d676f0550a7730283cb959111400a273"
+    },
+    "comparisonToInputMatchedC0204Profile": {
+      "sourceFingerprintMatches": true,
+      "exactJavaScriptPathAndHashMatches": "221/221",
+      "interpretation": "Production chunks match the prior C02.04 output for the same 835 source/config inputs; the development public worker is the excluded artifact."
+    },
+    "markerGate": {
+      "command": "node scripts/check-production-mocks.mjs",
+      "runAgainstIsolatedOutput": true,
+      "exitCode": 0,
+      "actual": "Production mock gate passed after inspecting 221 JavaScript files."
+    },
+    "nonBlockingBuildOutput": [
+      "Vite warned that an outDir outside the project root is not emptied; the directory was verified new before the build.",
+      "Rollup reported two existing PURE-comment placement warnings in zod dependency files and removed those comments; build completed successfully."
+    ]
+  },
+  "developmentVerification": {
+    "serverCommand": "node node_modules/vite/bin/vite.js --host 127.0.0.1 --port 5185 --strictPort",
+    "serverStarted": true,
+    "request": "GET http://127.0.0.1:5185/mockServiceWorker.js",
+    "httpStatus": 200,
+    "contentType": "text/javascript",
+    "bodyBytes": 9666,
+    "bodySha256": "26171599d94d5445297303f3a1f1cedec26835ea3d0057dcfa92ec520cb35cca",
+    "matchesPreservedPublicWorker": true,
+    "serverStoppedAfterCheck": true,
+    "bootstrapTest": {
+      "command": "node node_modules/vitest/vitest.mjs run --reporter=dot src/main.test.tsx",
+      "exitCode": 0,
+      "filesPassed": 1,
+      "testsPassed": 4
+    }
+  },
+  "otherChecks": {
+    "productionMockImportBoundary": "pass; 0 legacy fixture page consumers",
+    "productionRouteBoundary": "pass; 17 guards, 2 mock routes and 2 demo routes are development-only",
+    "gitDiffCheck": "pass; only existing CRLF conversion notices were printed"
+  },
+  "distPreservation": {
+    "repositoryDistTreeFingerprintBefore": "9f421b74f5bcc82faa80ef8bda650ff2439584625fa905149e0e9fe27d3f5e0b",
+    "repositoryDistTreeFingerprintAfter": "9f421b74f5bcc82faa80ef8bda650ff2439584625fa905149e0e9fe27d3f5e0b",
+    "repositoryDistUnchanged": true,
+    "workerStillPresentInPreservedDist": true,
+    "note": "The repository dist remains the same older user/build artifact identified in C04.01. The verified new production output is isolated under the system temporary directory."
+  },
+  "result": "pass",
+  "limits": [
+    "The development check proves Vite serves the worker and the bootstrap unit tests call the worker start path; it does not constitute browser-level UI acceptance or backend verification.",
+    "The existing repository dist was intentionally left unchanged; users who run that old dist will still see the worker until a new normal production build replaces it.",
+    "The current marker checker still does not reject a worker path by itself; C04.03 must add file/manifest-level negative assertions."
+  ]
+}

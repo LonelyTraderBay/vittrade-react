@@ -1,0 +1,342 @@
+{
+  "scope": "literal client.request(..., { retries: positiveNumber }) calls in src/**/*.ts(x)",
+  "typescriptVersion": "5.9.3",
+  "explicitRetryCallsites": 55,
+  "byMethod": {
+    "GET": 55
+  },
+  "nonIdempotent": [],
+  "unmapped": [],
+  "callSites": [
+    {
+      "file": "src\\features\\dca\\api\\dca-advanced-api.ts",
+      "line": 26,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\dca\\api\\dca-api.ts",
+      "line": 101,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\earn\\api\\earn-api.ts",
+      "line": 110,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\earn\\api\\earn-api.ts",
+      "line": 117,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\market\\api\\market-api.ts",
+      "line": 301,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\market\\api\\market-api.ts",
+      "line": 309,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\market\\api\\market-api.ts",
+      "line": 316,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\market\\api\\market-api.ts",
+      "line": 360,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\market\\api\\market-api.ts",
+      "line": 367,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\market\\api\\market-api.ts",
+      "line": 374,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\market\\api\\market-api.ts",
+      "line": 386,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\market\\api\\market-api.ts",
+      "line": 393,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\market\\api\\market-api.ts",
+      "line": 400,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\market\\api\\market-api.ts",
+      "line": 407,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\market\\api\\market-api.ts",
+      "line": 414,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\market\\api\\market-api.ts",
+      "line": 425,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\market\\api\\market-api.ts",
+      "line": 436,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\market\\api\\market-api.ts",
+      "line": 443,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\market\\api\\market-api.ts",
+      "line": 454,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\market\\api\\market-api.ts",
+      "line": 461,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\p2p\\api\\frontend-view-status-api.ts",
+      "line": 12,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\p2p\\api\\p2p-api.ts",
+      "line": 33,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\p2p\\api\\p2p-api.ts",
+      "line": 81,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\p2p\\api\\p2p-api.ts",
+      "line": 88,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\p2p\\api\\p2p-api.ts",
+      "line": 95,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\p2p\\api\\p2p-api.ts",
+      "line": 126,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\p2p\\api\\p2p-api.ts",
+      "line": 133,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\p2p\\api\\p2p-api.ts",
+      "line": 153,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\p2p\\api\\p2p-api.ts",
+      "line": 160,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\p2p\\api\\p2p-api.ts",
+      "line": 167,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\p2p\\api\\p2p-api.ts",
+      "line": 187,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\p2p\\api\\p2p-api.ts",
+      "line": 207,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\p2p\\api\\p2p-api.ts",
+      "line": 214,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\p2p\\api\\p2p-api.ts",
+      "line": 264,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\p2p\\api\\p2p-api.ts",
+      "line": 371,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\p2p\\api\\p2p-api.ts",
+      "line": 415,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\p2p\\api\\p2p-api.ts",
+      "line": 422,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\trading\\api\\copy-frontend-view-status-api.ts",
+      "line": 12,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\trading\\api\\trading-api.ts",
+      "line": 240,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\trading\\api\\trading-api.ts",
+      "line": 247,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\trading\\api\\trading-api.ts",
+      "line": 254,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\trading\\api\\trading-api.ts",
+      "line": 287,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\trading\\api\\trading-api.ts",
+      "line": 295,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\trading\\api\\trading-api.ts",
+      "line": 303,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\wallet\\api\\wallet-api.ts",
+      "line": 311,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\wallet\\api\\wallet-api.ts",
+      "line": 318,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\wallet\\api\\wallet-api.ts",
+      "line": 325,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\wallet\\api\\wallet-api.ts",
+      "line": 343,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\wallet\\api\\wallet-api.ts",
+      "line": 350,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\wallet\\api\\wallet-api.ts",
+      "line": 362,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\wallet\\api\\wallet-api.ts",
+      "line": 374,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\wallet\\api\\wallet-api.ts",
+      "line": 381,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\wallet\\api\\wallet-api.ts",
+      "line": 488,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\features\\wallet\\api\\wallet-api.ts",
+      "line": 500,
+      "method": "GET",
+      "retries": 2
+    },
+    {
+      "file": "src\\shared\\api\\http-client.test.ts",
+      "line": 121,
+      "method": "GET",
+      "retries": 2
+    }
+  ]
+}

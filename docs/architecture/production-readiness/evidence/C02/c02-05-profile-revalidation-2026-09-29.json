@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-29T14:15:52.484Z",
+  "taskId": "C02",
+  "stepId": "C02.05",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "sourceBranch": "codex/vittrade-architecture-completion",
+  "method": "Re-run the existing manifest profiler on the C02.04 isolated production build. Compare source snapshot, manifest/HTML hashes, every JS/CSS/worker asset hash and sizes, aggregate sizes, and all six route static-import graphs with the C02.04 evidence.",
+  "priorEvidence": {
+    "artifact": "docs/architecture/production-readiness/evidence/C02/c02-04-production-build-profile-2026-09-29.json",
+    "capturedAt": "2026-09-29T14:08:10.951Z",
+    "sourceSnapshotSha256": "901c3ed30f35619599fbad2e8511fea8c780032bb6b2d3db84c3ef96e1dbf1d8",
+    "manifestSha256": "a4badd91b31a03dd394b0630f881d7edbcf325dcc3a7825efe408fbc49f98884"
+  },
+  "currentObservation": {
+    "capturedAt": "2026-09-29T14:15:52.484Z",
+    "sourceSnapshotSha256": "901c3ed30f35619599fbad2e8511fea8c780032bb6b2d3db84c3ef96e1dbf1d8",
+    "sourceFileCount": 835,
+    "manifestSha256": "a4badd91b31a03dd394b0630f881d7edbcf325dcc3a7825efe408fbc49f98884",
+    "manifestEntries": 221,
+    "jsChunkCount": 221,
+    "gateFailures": 0
+  },
+  "comparison": {
+    "sourceSnapshotSha256": true,
+    "sourceFileCount": true,
+    "manifestSha256": true,
+    "htmlSha256": true,
+    "javascriptAssets": true,
+    "cssAssets": true,
+    "mockServiceWorker": true,
+    "javascriptTotals": true,
+    "allSixRouteGraphs": true,
+    "allChecksMatch": true,
+    "routeGraphs": [
+      {
+        "name": "Login form",
+        "route": "/w/auth/login",
+        "matches": true
+      },
+      {
+        "name": "Markets overview",
+        "route": "/w/markets/overview",
+        "matches": true
+      },
+      {
+        "name": "Trading terminal",
+        "route": "/w/trade/btcusdt",
+        "matches": true
+      },
+      {
+        "name": "Wallet overview",
+        "route": "/w/wallet",
+        "matches": true
+      },
+      {
+        "name": "P2P order detail",
+        "route": "/w/p2p/order/p2p001",
+        "matches": true
+      },
+      {
+        "name": "DCA savings",
+        "route": "/w/earn/savings/dca",
+        "matches": true
+      }
+    ]
+  },
+  "decision": "No application source/production-config changes occurred within the measured fingerprint since C02.04; the current artifact, all 221 JS assets, global CSS, mockServiceWorker artifact, totals, and six route graphs match exactly. Therefore no before/after optimization was triggered and none is claimed. RUM remains assigned to B08; the existing per-chunk budget remains an unapproved proposal pending an approved production SLO.",
+  "limitations": [
+    "This revalidation used the existing isolated build output rather than rebuilding because the measured source snapshot and build configuration fingerprint match exactly.",
+    "The fingerprint excludes .env files and process environment values; artifact hashes establish the inspected output, not deployed-server settings.",
+    "Static manifest graph measurements are not actual network transfer, production RUM, backend/staging, or user acceptance evidence."
+  ]
+}

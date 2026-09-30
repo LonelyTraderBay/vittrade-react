@@ -49,6 +49,28 @@ const protectedShellPages = [
 
 const developmentOnlyBindings = ['RouteChecker', 'PerformanceMonitor'];
 
+// Public auth pages stay production routes, while their preview-only fixture
+// controls are guarded by this non-production mode flag.
+const fixtureGatedAuthPages = new Set([
+  'src/features/auth/pages/LoginPage.tsx',
+  'src/features/auth/pages/WebLoginPage.tsx',
+]);
+const authFixtureModeDeclaration =
+  /const\s+isAuthFixtureMode\s*=\s*!isProductionBuild\s*&&\s*\(\s*env\.isTest\s*\|\|\s*\(\s*env\.isDev\s*&&\s*env\.dataSource\s*===\s*['"]mock['"]\s*\)\s*\)\s*;/;
+
+async function hasVerifiedAuthFixtureGate(page) {
+  if (!fixtureGatedAuthPages.has(page.path)) return false;
+  if (
+    page.dependencies.mockReferences.length !== 1 ||
+    page.dependencies.mockReferences[0] !== 'isAuthFixtureMode'
+  ) {
+    return false;
+  }
+
+  const pageSource = await readFile(join(repositoryRoot, page.path), 'utf8');
+  return authFixtureModeDeclaration.test(pageSource);
+}
+
 // Một số web-shell route dùng tên component khác tên file legacy.
 const protectedInventoryAliases = new Set(['P2POrderPage']);
 
@@ -189,19 +211,24 @@ const routedMockPagesWithoutBoundary = inventory.pages
   })
   .map((page) => page.path);
 
-const routedMockPagesWithoutDevelopmentBoundary = inventory.pages
-  .filter((page) => page.routePaths.length > 0 && page.dependencies.mockReferences.length > 0)
-  .filter((page) => {
-    const fileName = page.path
-      .split('/')
-      .pop()
-      ?.replace(/\.[^.]+$/, '');
-    const routes = inventory.routes.filter(
-      (route) => route.component === fileName || route.target?.split('/').pop() === fileName,
-    );
-    return routes.length === 0 || routes.some((route) => !route.developmentOnly);
-  })
-  .map((page) => `routed mock page is not development-only: ${page.path}`);
+const routedMockPagesWithoutDevelopmentBoundary = [];
+for (const page of inventory.pages) {
+  if (page.routePaths.length === 0 || page.dependencies.mockReferences.length === 0) continue;
+
+  const fileName = page.path
+    .split('/')
+    .pop()
+    ?.replace(/\.[^.]+$/, '');
+  const routes = inventory.routes.filter(
+    (route) => route.component === fileName || route.target?.split('/').pop() === fileName,
+  );
+  if (routes.length > 0 && routes.every((route) => route.developmentOnly)) continue;
+  if (await hasVerifiedAuthFixtureGate(page)) continue;
+
+  routedMockPagesWithoutDevelopmentBoundary.push(
+    `routed mock page is not development-only: ${page.path}`,
+  );
+}
 violations.push(...routedMockPagesWithoutDevelopmentBoundary);
 
 const routedDemoPagesWithoutDevelopmentBoundary = inventory.pages

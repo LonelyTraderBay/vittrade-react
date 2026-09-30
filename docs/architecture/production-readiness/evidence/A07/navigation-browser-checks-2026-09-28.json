@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "taskId": "A07",
+  "stepId": "A07.04",
+  "observedAt": "2026-09-27T20:07:00Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "environment": {
+    "browser": "Codex In-app Browser (agent-created tab)",
+    "origin": "http://127.0.0.1:4173",
+    "operatingSystem": "Windows x64",
+    "appMode": "local preview with mock-data controls",
+    "observation": "Rendered UI/accessibility tree; local mock banner visible on data pages",
+    "viewport": "browser-managed viewport; this check does not certify a device-size matrix"
+  },
+  "checks": [
+    {
+      "id": "core-tabs",
+      "start": "/r/markets",
+      "action": "Inspect the legacy shell bottom navigation.",
+      "expected": "The five core destinations are available.",
+      "actual": "Trang chủ, Thị trường, Giao dịch, Ví, Tôi were present as navigation buttons.",
+      "result": "pass"
+    },
+    {
+      "id": "prediction-menu-cta-and-back",
+      "start": "/r/markets",
+      "action": "Click the Prediction Markets card, then its Quay lại button.",
+      "expected": "CTA opens its target and back returns to the originating market page.",
+      "actual": "The CTA opened /r/markets/predictions with 12 event cards; in-app back returned to /r/markets.",
+      "result": "pass"
+    },
+    {
+      "id": "direct-link-and-refresh",
+      "start": "/w/markets/predictions",
+      "action": "Open the URL directly and reload the browser page.",
+      "expected": "The nested route remains addressable after a hard browser entry and reload.",
+      "actual": "Both before and after reload the URL remained /w/markets/predictions and 12 event cards rendered.",
+      "result": "pass"
+    },
+    {
+      "id": "not-found",
+      "start": "/w/__route-probe-not-found-20260928__",
+      "action": "Open a deliberately unknown route.",
+      "expected": "The application renders its not-found page rather than a blank screen.",
+      "actual": "Rendered “404 — Not Found”, explanatory text and Quay lại/Tải lại trang actions.",
+      "result": "pass"
+    },
+    {
+      "id": "protected-direct-route",
+      "start": "/w/wallet?source=a07&tab=assets#summary",
+      "action": "Open a protected wallet URL while the preview persona reports guest/logged out.",
+      "expected": "Anonymous access redirects to login.",
+      "actual": "The browser URL changed to /auth/login and the login form rendered. The original query/hash were not visible in the address bar after redirect; preservation of the return destination is asserted by PairDetailPage.test.tsx.",
+      "result": "pass"
+    },
+    {
+      "id": "protected-cta",
+      "start": "/w/markets",
+      "action": "Click Open Arena while the preview persona reports guest/logged out.",
+      "expected": "The protected destination redirects to login.",
+      "actual": "The browser URL changed to /auth/login and the login form rendered.",
+      "result": "pass"
+    }
+  ],
+  "navigationFindings": {
+    "menuTargets": {
+      "artifact": "docs/architecture/production-readiness/evidence/A07/navigation-targets-2026-09-28.json",
+      "uniqueTargets": 44,
+      "unresolvedTargets": 0
+    },
+    "actionSites": {
+      "artifact": "docs/architecture/production-readiness/evidence/A07/navigation-action-sites-2026-09-28.json",
+      "sourceFiles": 110,
+      "sites": 257,
+      "unclassified": 0,
+      "unresolvedLiteralTargets": 3
+    },
+    "openGap": {
+      "source": "src/features/auth/pages/OTPPage.tsx:127",
+      "targetCandidates": [
+        "/auth/account-locked",
+        "/t/auth/account-locked",
+        "/r/auth/account-locked"
+      ],
+      "ownerTaskId": "U01",
+      "ownerPageId": "PAGE-d3e238577d76",
+      "relatedExistingRouteId": "ROUTE-094a1e1d228e",
+      "existingRouteUrl": "/w/auth/account-locked",
+      "note": "Only the web-shell declaration exists. The root, phone and legacy candidate paths do not resolve to a route; do not imply the existing web page covers those shells."
+    }
+  },
+  "limitations": [
+    "Preview data is mocked; no backend request or staging account was certified.",
+    "This is a representative browser route check, not acceptance of all 128 source pages or a responsive device matrix.",
+    "The protected redirect query/hash are not visible after redirect; return-state preservation is verified by the targeted React test, not inferred from the URL."
+  ]
+}

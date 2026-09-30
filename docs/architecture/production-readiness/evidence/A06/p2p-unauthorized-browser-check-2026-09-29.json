@@ -1,0 +1,83 @@
+{
+  "checkedAt": "2026-09-29T09:40:16.395Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "branch": "codex/vittrade-architecture-completion",
+  "origin": "http://127.0.0.1:4173",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "p2p.unauthorized",
+    "status": "passed",
+    "persona": "developer (preview only)",
+    "protectedRoute": "/w/p2p/order-room",
+    "resultRoute": "/auth/login",
+    "operationIds": ["listP2POrders"],
+    "expectedDomainOperationCount": 42,
+    "coverage": "representative_browser_observed"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "realBackendRequestSent": false,
+    "externalApiOrigins": []
+  },
+  "measurements": {
+    "totalFlowMs": 722,
+    "loginRedirectMs": 51,
+    "p2pResponseCount": 1,
+    "authRefreshResponseCount": 1,
+    "totalApiRequestCount": 5,
+    "pageErrorCount": 0
+  },
+  "assertions": {
+    "listP2POrders": [
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders",
+        "status": 401,
+        "fromServiceWorker": true
+      }
+    ],
+    "authRefresh": [
+      {
+        "method": "POST",
+        "path": "/api/auth/refresh",
+        "status": 401,
+        "fromServiceWorker": true
+      }
+    ],
+    "loginRedirect": {
+      "route": "/auth/login",
+      "staleOrderVisible": false,
+      "orderListErrorVisible": false
+    },
+    "p2pMutations": [],
+    "p2pRequestFailures": [],
+    "pageErrors": []
+  },
+  "screenshot": "preview-p2p-unauthorized-login-2026-09-29.png",
+  "sourceHashes": {
+    "contracts/openapi/p2p.yaml": "561131d2a9263d5788e3b103deb0bff8a32ca5b5dee780c5939ba1e1e98b0ea4",
+    "contracts/openapi/auth.yaml": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b",
+    "src/dev/PreviewControls.tsx": "4d68e898a2b468cf25c36d0528df0b546fb037e5c4dc6bfcda944be3ecd18759",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "eee0cedd943c91585fb29756b9d06557412ed53d5ef05f378e67fd7aaffd27e0",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/p2p/api/p2p-api.ts": "164f6424133e159b1b8dd5a6e23a0bdcd3c5a14c294d1a808cba09d552230b83",
+    "src/features/p2p/model/p2p-order-queries.ts": "c8cc053c96a51f9fd3830631ba7f016714477f87b79a01039cb01424d0192394",
+    "src/features/p2p/pages/P2POrdersContractPage.tsx": "4a9e8002772f515dd1117d1ac5386a2ace5136290ca8303c5a67e88b05ef8a67",
+    "src/features/p2p/routes.ts": "70de2d9cae22dfb45031be5cbe5fe858a863aa2bb82b266bea39ce4137e1dbee",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "docs/architecture/production-readiness/evidence/A06/run-p2p-unauthorized-browser-check.mjs": "6574ae67a7a894f57e361a342ee34fa1cd1f0548ab62f73bffbc96588b18fb72"
+  },
+  "limitations": [
+    "GET /p2p/orders declares 401 in the P2P OpenAPI contract. The local service worker also returns 401 for POST /auth/refresh, which the Auth OpenAPI does not declare; treat the refresh result as synthetic preview behavior.",
+    "Local Chromium/MSW evidence does not verify backend authorization, session revocation, persistence, staging or user acceptance.",
+    "Only listP2POrders was observed, one of 42 linked P2P operations; coverage remains representative.",
+    "The /w/p2p/my-orders route alias is not included in this fresh run."
+  ]
+}

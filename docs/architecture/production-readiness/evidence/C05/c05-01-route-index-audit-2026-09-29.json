@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C05",
+  "stepId": "C05.01",
+  "observedAt": "2026-09-29T16:49:12.242Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "environment": {
+    "os": "Windows",
+    "shell": "PowerShell",
+    "node": "v24.19.0",
+    "backend": "not connected",
+    "browser": "not run in this step"
+  },
+  "outcome": "pass",
+  "stepDisposition": "done",
+  "expected": "Produce an auditable route acceptance index from current route/page/operation ledgers, grouped by shell and domain; include route-specific fields and evidence provenance without assigning acceptance or inventing unsupported behavior.",
+  "actual": {
+    "activeRouteDeclarations": 427,
+    "retiredDeclarations": [
+      {
+        "routeId": "ROUTE-076da8bdac7d",
+        "path": "arena",
+        "reason": "Source registration is now represented by the canonical routeConfig/createProtectedRoutes route; this is a ledger identity reconciliation, not URL removal."
+      }
+    ],
+    "urlRegistrations": 1458,
+    "uniqueResolvedPreviewUrls": 1389,
+    "shellUrlRegistrations": {
+      "phone": 352,
+      "tablet": 347,
+      "web": 410,
+      "responsive": 349
+    },
+    "domainGroups": 19,
+    "routeDeclarationsWithPageRecords": 417,
+    "routeDeclarationsWithoutPageRecords": 10,
+    "directScenarioLinks": {
+      "routes": 9,
+      "links": 17
+    },
+    "operationIntersectionCandidates": {
+      "routes": 32,
+      "links": 283
+    },
+    "routeRowsWithAllRequiredFields": 427,
+    "historicalPreviewUrlSetParity": {
+      "routes": 427,
+      "total": 427
+    },
+    "historicalSourceFreshness": {
+      "changedSourceFiles": [
+        "src/app/routeConfig.ts",
+        "src/app/routes.ts",
+        "src/features/market/routes.ts",
+        "src/features/p2p/routes.ts"
+      ],
+      "routeDeclarationsWithStaleSource": 213,
+      "routeDeclarationsWithMatchingSource": 214
+    },
+    "dynamicFixtureCandidates": {
+      "parameterOccurrences": 71,
+      "statusCounts": {
+        "mock-fixture": 55,
+        "mock-fixture-domain-candidate": 2,
+        "reserved-preview-id": 2,
+        "test-fixture-only": 12
+      },
+      "sourceFilesPresent": 10,
+      "sourceFilesReferenced": 10
+    },
+    "scenarioEvidence": {
+      "defined": 105,
+      "freshBrowserRows": 0,
+      "runtimeEvidenceFresh": false
+    },
+    "personaMappingsAssigned": 0,
+    "userAcceptedPages": "0/128",
+    "trackedPageRecords": 330,
+    "backendOperationsVerified": "0/154"
+  },
+  "validation": {
+    "checkedAt": "2026-09-29T16:55:40.709Z",
+    "generatorSyntax": "pass",
+    "generatorESLint": "pass",
+    "generatorWriteAndCheck": "pass",
+    "scenarioMatrixCheck": "pass",
+    "routeIndexInvariants": "pass (6/6 structural checks)",
+    "markdownLocalLinks": "pass (0 missing links)",
+    "trackingChecker": "pass (errorCount=0)",
+    "prettier": "pass (all six scoped artifacts)",
+    "gitDiffCheck": "pass (no whitespace errors; Git printed existing LF-to-CRLF notices for dirty working-tree files)"
+  },
+  "inputSha256": {
+    "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs": "9956babbd8a911a17f18fbc99810460d698f7ea73b7d7bdb297f80219f849b3b",
+    "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json": "373be84acd96df4ecbe4510944d05965c7acae695dca789f4c2accbf98a7ada0",
+    "docs/architecture/production-readiness/UI-ACCEPTANCE.md": "fdb6231cf86ec4b18daa1b9491a6e4fe0f356ce27b376c4096aa03ad51f3107c",
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "3c4b4033abbabd3bfa7904ae77a82ab2ca1fdbcd99d8f454bd0ed0bd0b21a3d9",
+    "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs": "9a4e828e2c87fe903fd3d0a3175add98709ae3c0bd66f7a95551f2c20231eec2",
+    "docs/architecture/production-readiness/evidence/A07/route-url-resolution-2026-09-28.json": "5e7c524a973be47e0af1a60f14d2269159cb32304a641e2834ba31932c4732f5",
+    "docs/architecture/page-inventory.json": "5020bee660d40dd9f8908e88c39e6cbff08ca42668f0334a5f9704db2a3c43aa",
+    "docs/architecture/production-readiness/UI-RUNBOOK.md": "a6bc4f9f6aa8ccd68883dab1faf4422b5b40bffcedeb8e9a8ebbef855b0f8e28",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/handlers.ts": "93fd4a5f1a7637be2b10775edd8dfbd6e2562f1db3c90112dc3a5959519ca398",
+    "src/dev/mocks/auth-handlers.test.ts": "239aa0d73df4ba5a4b19ac64724c04d5bd6ba8c1d1ab4673693262f97687885a"
+  },
+  "scenarioMatrixRefresh": {
+    "beforeSha256": "DD8AB3230B806E08E09086D780D5E09D3C3A807549463C494FF041F4F37D5AC5",
+    "afterSha256": "3c4b4033abbabd3bfa7904ae77a82ab2ca1fdbcd99d8f454bd0ed0bd0b21a3d9",
+    "reason": "Regenerated against current source hashes; historical browser rows were not fresh, so the matrix correctly reports 0/105 rather than retaining stale coverage."
+  },
+  "remainingGaps": [
+    "No route-specific persona mapping is recorded: 0/427.",
+    "Only 17 direct scenario links exist across 9 routes; 283 operation-overlap candidates across 32 other routes remain candidates pending route review.",
+    "A06 has 0/105 fresh browser rows because source hashes for historical browser evidence are stale.",
+    "213/427 active route declarations use four source files whose historical A07 hashes changed; current URL sample strings still match the old A07 preview sets 427/427, but runtime route registration must be rechecked in C05.02.",
+    "Historical dynamic fixture references have 10/10 source files present and current hashes captured; fixture behavior and scenario seed values were not browser-verified in this step.",
+    "User acceptance remains 0/128 baseline pages; 330 detailed page records remain pending. Backend operations remain 0/154 verified.",
+    "Wallet unknown/duplicate contract remains unavailable per user confirmation; retain blocker and continue scenarios that do not depend on that contract."
+  ],
+  "artifacts": {
+    "index": "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json",
+    "reader": "docs/architecture/production-readiness/UI-ACCEPTANCE.md",
+    "generator": "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs",
+    "scenarioMatrix": "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
+    "historicalRouteResolver": "docs/architecture/production-readiness/evidence/A07/route-url-resolution-2026-09-28.json"
+  },
+  "planningRecord": {
+    "path": "docs/architecture/production-readiness/PLAN.md",
+    "sha256": "aea00834ad65417f10731e5de32e7b9259d1a620643596de5cb71662058d3245",
+    "checkpoint": "C05.01 done; C05.02 next"
+  }
+}

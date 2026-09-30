@@ -1,0 +1,2054 @@
+{
+  "schemaVersion": 1,
+  "stepId": "C02.03",
+  "observedAt": "2026-09-29T13:43:38.009Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "environment": {
+    "baseUrl": "http://127.0.0.1:4173",
+    "dataSource": "Vite development + local MSW fixtures",
+    "browser": "153.0.8010.12",
+    "viewport": {
+      "width": 1440,
+      "height": 900,
+      "deviceScaleFactor": 1
+    },
+    "platform": "win32",
+    "osRelease": "10.0.26200",
+    "architecture": "x64",
+    "logicalCpuCount": 24,
+    "cpuModel": "Intel(R) Core(TM) Ultra 7 270K Plus",
+    "hardwareConcurrency": 24,
+    "throttling": "none configured; loopback"
+  },
+  "methodology": {
+    "persona": "developer local preview fixture",
+    "interactionCycles": 8,
+    "mountCycles": 10,
+    "actionToTwoPaints": "Performance marks around Playwright user interaction; stop after target DOM is observed and two requestAnimationFrame callbacks.",
+    "interactionTiming": "Chromium PerformanceEventTiming entries are sampled only when available and duration >= 16 ms.",
+    "memory": "Request V8 garbage collection, then sample Runtime.getHeapUsage, Memory.getDOMCounters and Performance metrics after each interaction or route cycle. Browser GC is non-deterministic; treat as lab observations.",
+    "profiling": "Separate traced pass uses Chromium CDP Tracing and V8 CPU Profiler; trace event args are omitted from saved artifact.",
+    "routeCycle": "SPA navigation /w/trade/btcusdt -> /w/markets/overview -> /w/trade/btcusdt, repeated without a full reload.",
+    "finalReset": "After the profiler pass, SPA navigate from ETH/USDT back to the baseline BTC/USDT terminal, wait for the route marker and motion to settle, request GC, then capture the final heap/DOM/listener snapshot. A hard document reload is excluded because the local preview auth state does not persist into a stable protected route.",
+    "stream": "Observe WebSocket creation during the active Trading route; source search finds no production feature consumer of connectMarketStream.",
+    "writes": "Only preview login POST; no order, watchlist, wallet or other business mutation.",
+    "clock": "Local wall clock; no mocked network throttling."
+  },
+  "sourceHashes": {
+    "src/features/trading/components/TradeTerminal.tsx": "bd8f1eba1344da1c39449e5189649de0a9b047cd7528175414a8033e2bc56990",
+    "src/features/trading/components/TradingMarketPanel.tsx": "8ad1c9ed4d015ff8143d5d38832c255542a47337a64c8f6a3e949a41ff4c911e",
+    "src/features/trading/components/QuickPairSwitcher.tsx": "6c9ce3b739f0b0524807b907ab2fd383bc40added57f9bce2d7e286c129b4208",
+    "src/features/market/model/market-queries.ts": "bfb11787528086c9bdd12691ae19a451ff193c3d89c7d2c10d50242739052e85",
+    "src/features/market/api/market-stream.ts": "2f180b41cdf104f587c5379a461eddfc999e63002be21b85cfef693a1d0173ec",
+    "src/shared/ui/BottomSheetV2.tsx": "66cc0b65a5a462ac49c4df6ea63867d99cbc15e08390e75317eb4448254855be",
+    "src/features/trading/routes.ts": "cb268f664e4c0fadd39ab1cd1430dd968b1700dc49dab56fb1f4782b524d0385",
+    "src/dev/mocks/handlers.ts": "93fd4a5f1a7637be2b10775edd8dfbd6e2562f1db3c90112dc3a5959519ca398",
+    "src/dev/legacy/trading/providers/MarketDataWSProvider.tsx": "f6f5c2712a2cab70c52c9ea9f408180c45228e8261d50deafc68d0e7600ea868",
+    "src/dev/mocks/trading-fixtures.ts": "b082e4bc4094a4d7b36f41897ce9b27ea4c487fd3bf714622baf2f91fe2153cf",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "docs/architecture/production-readiness/evidence/C02/run-c02-03-interaction-profile.mjs": "7540acfccfcecff2942b0fe64d4a3676dce7c492b29b6c83cba1ecb9418b7624"
+  },
+  "interactionSummary": {
+    "open-pair-switcher": {
+      "samples": 16,
+      "medianMs": 432.6,
+      "p95Ms": 457.1,
+      "minMs": 409.3,
+      "maxMs": 457.1
+    },
+    "filter-category-defi": {
+      "samples": 8,
+      "medianMs": 182.3,
+      "p95Ms": 225.7,
+      "minMs": 161.8,
+      "maxMs": 225.7
+    },
+    "filter-category-layer-1": {
+      "samples": 8,
+      "medianMs": 108.5,
+      "p95Ms": 124.4,
+      "minMs": 84.3,
+      "maxMs": 124.4
+    },
+    "filter-search-eth": {
+      "samples": 8,
+      "medianMs": 52,
+      "p95Ms": 55.5,
+      "minMs": 45.1,
+      "maxMs": 55.5
+    },
+    "select-pair-ethusdt": {
+      "samples": 8,
+      "medianMs": 888.4,
+      "p95Ms": 901.2,
+      "minMs": 116.4,
+      "maxMs": 901.2
+    },
+    "filter-search-btc": {
+      "samples": 8,
+      "medianMs": 52,
+      "p95Ms": 56.4,
+      "minMs": 44.9,
+      "maxMs": 56.4
+    },
+    "select-pair-btcusdt": {
+      "samples": 8,
+      "medianMs": 941.4,
+      "p95Ms": 959.3,
+      "minMs": 900.3,
+      "maxMs": 959.3
+    },
+    "profile-open-pair-switcher": {
+      "samples": 1,
+      "medianMs": 433.3,
+      "p95Ms": 433.3,
+      "minMs": 433.3,
+      "maxMs": 433.3
+    },
+    "profile-filter-search-eth": {
+      "samples": 1,
+      "medianMs": 54.4,
+      "p95Ms": 54.4,
+      "minMs": 54.4,
+      "maxMs": 54.4
+    },
+    "profile-select-pair-ethusdt": {
+      "samples": 1,
+      "medianMs": 929,
+      "p95Ms": 929,
+      "minMs": 929,
+      "maxMs": 929
+    }
+  },
+  "eventTimingSummary": {
+    "observedInteractions": 33,
+    "p75Ms": 64,
+    "p95Ms": 88,
+    "maxMs": 88
+  },
+  "interactions": [
+    {
+      "cycle": 0,
+      "kind": "open-pair-switcher",
+      "observedAt": "2026-09-29T13:43:39.457Z",
+      "actionToTwoPaintsMs": 425.8,
+      "start": 889.4000000357628,
+      "end": 1315.2000000476837,
+      "hostObservedMs": 426.887,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5715,
+          "startTime": 920.7,
+          "durationMs": 48,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 0,
+      "initialPairRows": 2,
+      "categoryPairRows": 0,
+      "kind": "filter-category-defi",
+      "observedAt": "2026-09-29T13:43:39.643Z",
+      "actionToTwoPaintsMs": 182.3,
+      "start": 1318.9000000357628,
+      "end": 1501.2000000476837,
+      "hostObservedMs": 183.245,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 0,
+      "kind": "filter-category-layer-1",
+      "observedAt": "2026-09-29T13:43:39.770Z",
+      "actionToTwoPaintsMs": 124.4,
+      "start": 1504.5,
+      "end": 1628.9000000357628,
+      "hostObservedMs": 125.209,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 0,
+      "kind": "filter-search-eth",
+      "observedAt": "2026-09-29T13:43:39.817Z",
+      "actionToTwoPaintsMs": 45.1,
+      "start": 1630.6000000238419,
+      "end": 1675.7000000476837,
+      "hostObservedMs": 45.84,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 0,
+      "kind": "select-pair-ethusdt",
+      "observedAt": "2026-09-29T13:43:39.936Z",
+      "actionToTwoPaintsMs": 116.4,
+      "start": 1677.9000000357628,
+      "end": 1794.300000011921,
+      "hostObservedMs": 117.177,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": [
+        {
+          "method": "GET",
+          "path": "/api/market/pairs/ethusdt",
+          "status": 200,
+          "fromServiceWorker": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/market/pairs/ethusdt/candles",
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ]
+    },
+    {
+      "cycle": 0,
+      "kind": "open-pair-switcher",
+      "observedAt": "2026-09-29T13:43:40.360Z",
+      "actionToTwoPaintsMs": 421.8,
+      "start": 1797,
+      "end": 2218.800000011921,
+      "hostObservedMs": 422.698,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5743,
+          "startTime": 1820.6,
+          "durationMs": 56,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 0,
+      "kind": "filter-search-btc",
+      "observedAt": "2026-09-29T13:43:40.407Z",
+      "actionToTwoPaintsMs": 44.9,
+      "start": 2220.7000000476837,
+      "end": 2265.600000023842,
+      "hostObservedMs": 45.696,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 0,
+      "kind": "select-pair-btcusdt",
+      "observedAt": "2026-09-29T13:43:41.326Z",
+      "actionToTwoPaintsMs": 918,
+      "start": 2267.300000011921,
+      "end": 3185.300000011921,
+      "hostObservedMs": 918.794,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5750,
+          "startTime": 2360.6,
+          "durationMs": 48,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 1,
+      "kind": "open-pair-switcher",
+      "observedAt": "2026-09-29T13:43:41.770Z",
+      "actionToTwoPaintsMs": 425.7,
+      "start": 3202.900000035763,
+      "end": 3628.600000023842,
+      "hostObservedMs": 426.869,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5757,
+          "startTime": 3219.8,
+          "durationMs": 48,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 1,
+      "initialPairRows": 2,
+      "categoryPairRows": 0,
+      "kind": "filter-category-defi",
+      "observedAt": "2026-09-29T13:43:41.974Z",
+      "actionToTwoPaintsMs": 199.1,
+      "start": 3632.7000000476837,
+      "end": 3831.800000011921,
+      "hostObservedMs": 199.935,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 1,
+      "kind": "filter-category-layer-1",
+      "observedAt": "2026-09-29T13:43:42.091Z",
+      "actionToTwoPaintsMs": 114.2,
+      "start": 3835.400000035763,
+      "end": 3949.600000023842,
+      "hostObservedMs": 114.991,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 1,
+      "kind": "filter-search-eth",
+      "observedAt": "2026-09-29T13:43:42.148Z",
+      "actionToTwoPaintsMs": 53.1,
+      "start": 3953.5,
+      "end": 4006.600000023842,
+      "hostObservedMs": 55.516,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 1,
+      "kind": "select-pair-ethusdt",
+      "observedAt": "2026-09-29T13:43:43.043Z",
+      "actionToTwoPaintsMs": 893,
+      "start": 4009.100000023842,
+      "end": 4902.100000023842,
+      "hostObservedMs": 893.637,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5778,
+          "startTime": 4063.8,
+          "durationMs": 80,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 1,
+      "kind": "open-pair-switcher",
+      "observedAt": "2026-09-29T13:43:43.469Z",
+      "actionToTwoPaintsMs": 424.1,
+      "start": 4903.600000023842,
+      "end": 5327.700000047684,
+      "hostObservedMs": 425.163,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5785,
+          "startTime": 4936.6,
+          "durationMs": 48,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 1,
+      "kind": "filter-search-btc",
+      "observedAt": "2026-09-29T13:43:43.528Z",
+      "actionToTwoPaintsMs": 56.4,
+      "start": 5330.100000023842,
+      "end": 5386.5,
+      "hostObservedMs": 57.298,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 1,
+      "kind": "select-pair-btcusdt",
+      "observedAt": "2026-09-29T13:43:44.477Z",
+      "actionToTwoPaintsMs": 946.9,
+      "start": 5388.600000023842,
+      "end": 6335.5,
+      "hostObservedMs": 947.657,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5792,
+          "startTime": 5508.6,
+          "durationMs": 40,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 2,
+      "kind": "open-pair-switcher",
+      "observedAt": "2026-09-29T13:43:44.913Z",
+      "actionToTwoPaintsMs": 417.1,
+      "start": 6353.600000023842,
+      "end": 6770.700000047684,
+      "hostObservedMs": 418.352,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5799,
+          "startTime": 6370.9,
+          "durationMs": 48,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 2,
+      "initialPairRows": 2,
+      "categoryPairRows": 0,
+      "kind": "filter-category-defi",
+      "observedAt": "2026-09-29T13:43:45.133Z",
+      "actionToTwoPaintsMs": 216.4,
+      "start": 6774.900000035763,
+      "end": 6991.300000011921,
+      "hostObservedMs": 217.332,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 2,
+      "kind": "filter-category-layer-1",
+      "observedAt": "2026-09-29T13:43:45.248Z",
+      "actionToTwoPaintsMs": 111.1,
+      "start": 6994.800000011921,
+      "end": 7105.900000035763,
+      "hostObservedMs": 111.93,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 2,
+      "kind": "filter-search-eth",
+      "observedAt": "2026-09-29T13:43:45.301Z",
+      "actionToTwoPaintsMs": 51.4,
+      "start": 7108.200000047684,
+      "end": 7159.600000023842,
+      "hostObservedMs": 52.313,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 2,
+      "kind": "select-pair-ethusdt",
+      "observedAt": "2026-09-29T13:43:46.176Z",
+      "actionToTwoPaintsMs": 873,
+      "start": 7162,
+      "end": 8035,
+      "hostObservedMs": 873.739,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5820,
+          "startTime": 7216.2,
+          "durationMs": 80,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": [
+        {
+          "method": "GET",
+          "path": "/api/market/pairs/ethusdt",
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ]
+    },
+    {
+      "cycle": 2,
+      "kind": "open-pair-switcher",
+      "observedAt": "2026-09-29T13:43:46.611Z",
+      "actionToTwoPaintsMs": 432.6,
+      "start": 8036.400000035763,
+      "end": 8469,
+      "hostObservedMs": 433.51,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5827,
+          "startTime": 8070,
+          "durationMs": 48,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 2,
+      "kind": "filter-search-btc",
+      "observedAt": "2026-09-29T13:43:46.665Z",
+      "actionToTwoPaintsMs": 52,
+      "start": 8471.5,
+      "end": 8523.5,
+      "hostObservedMs": 52.923,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 2,
+      "kind": "select-pair-btcusdt",
+      "observedAt": "2026-09-29T13:43:47.593Z",
+      "actionToTwoPaintsMs": 926.3,
+      "start": 8525.700000047684,
+      "end": 9452,
+      "hostObservedMs": 927.091,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5834,
+          "startTime": 8636.6,
+          "durationMs": 56,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": [
+        {
+          "method": "GET",
+          "path": "/api/market/pairs/btcusdt",
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ]
+    },
+    {
+      "cycle": 3,
+      "kind": "open-pair-switcher",
+      "observedAt": "2026-09-29T13:43:48.049Z",
+      "actionToTwoPaintsMs": 435,
+      "start": 9471.800000011921,
+      "end": 9906.800000011921,
+      "hostObservedMs": 436.182,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5841,
+          "startTime": 9486.8,
+          "durationMs": 48,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 3,
+      "initialPairRows": 2,
+      "categoryPairRows": 0,
+      "kind": "filter-category-defi",
+      "observedAt": "2026-09-29T13:43:48.222Z",
+      "actionToTwoPaintsMs": 169.6,
+      "start": 9911.100000023842,
+      "end": 10080.700000047684,
+      "hostObservedMs": 170.417,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 3,
+      "kind": "filter-category-layer-1",
+      "observedAt": "2026-09-29T13:43:48.310Z",
+      "actionToTwoPaintsMs": 84.3,
+      "start": 10084.300000011921,
+      "end": 10168.600000023842,
+      "hostObservedMs": 85.151,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 3,
+      "kind": "filter-search-eth",
+      "observedAt": "2026-09-29T13:43:48.365Z",
+      "actionToTwoPaintsMs": 52.5,
+      "start": 10170.5,
+      "end": 10223,
+      "hostObservedMs": 53.366,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 3,
+      "kind": "select-pair-ethusdt",
+      "observedAt": "2026-09-29T13:43:49.259Z",
+      "actionToTwoPaintsMs": 892.7,
+      "start": 10225.5,
+      "end": 11118.200000047684,
+      "hostObservedMs": 893.546,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5862,
+          "startTime": 10281.9,
+          "durationMs": 88,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": [
+        {
+          "method": "GET",
+          "path": "/api/trading/orders",
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ]
+    },
+    {
+      "cycle": 3,
+      "kind": "open-pair-switcher",
+      "observedAt": "2026-09-29T13:43:49.719Z",
+      "actionToTwoPaintsMs": 457.1,
+      "start": 11119.700000047684,
+      "end": 11576.800000011921,
+      "hostObservedMs": 457.906,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5869,
+          "startTime": 11153.1,
+          "durationMs": 48,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 3,
+      "kind": "filter-search-btc",
+      "observedAt": "2026-09-29T13:43:49.774Z",
+      "actionToTwoPaintsMs": 52.7,
+      "start": 11579.5,
+      "end": 11632.200000047684,
+      "hostObservedMs": 53.639,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 3,
+      "kind": "select-pair-btcusdt",
+      "observedAt": "2026-09-29T13:43:50.676Z",
+      "actionToTwoPaintsMs": 900.3,
+      "start": 11634.700000047684,
+      "end": 12535,
+      "hostObservedMs": 901.42,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5876,
+          "startTime": 11686.7,
+          "durationMs": 80,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": [
+        {
+          "method": "GET",
+          "path": "/api/market/pairs/btcusdt/candles",
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ]
+    },
+    {
+      "cycle": 4,
+      "kind": "open-pair-switcher",
+      "observedAt": "2026-09-29T13:43:51.104Z",
+      "actionToTwoPaintsMs": 409.3,
+      "start": 12553.100000023842,
+      "end": 12962.400000035763,
+      "hostObservedMs": 410.487,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5883,
+          "startTime": 12570.2,
+          "durationMs": 48,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 4,
+      "initialPairRows": 2,
+      "categoryPairRows": 0,
+      "kind": "filter-category-defi",
+      "observedAt": "2026-09-29T13:43:51.322Z",
+      "actionToTwoPaintsMs": 213.5,
+      "start": 12966.700000047684,
+      "end": 13180.200000047684,
+      "hostObservedMs": 214.286,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 4,
+      "kind": "filter-category-layer-1",
+      "observedAt": "2026-09-29T13:43:51.432Z",
+      "actionToTwoPaintsMs": 106.2,
+      "start": 13183.800000011921,
+      "end": 13290,
+      "hostObservedMs": 106.972,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 4,
+      "kind": "filter-search-eth",
+      "observedAt": "2026-09-29T13:43:51.490Z",
+      "actionToTwoPaintsMs": 55.5,
+      "start": 13292.300000011921,
+      "end": 13347.800000011921,
+      "hostObservedMs": 56.48,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 4,
+      "kind": "select-pair-ethusdt",
+      "observedAt": "2026-09-29T13:43:52.393Z",
+      "actionToTwoPaintsMs": 901.2,
+      "start": 13350.5,
+      "end": 14251.700000047684,
+      "hostObservedMs": 901.951,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5904,
+          "startTime": 13407.3,
+          "durationMs": 64,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": [
+        {
+          "method": "GET",
+          "path": "/api/market/pairs/ethusdt/candles",
+          "status": 200,
+          "fromServiceWorker": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/market/pairs/ethusdt",
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ]
+    },
+    {
+      "cycle": 4,
+      "kind": "open-pair-switcher",
+      "observedAt": "2026-09-29T13:43:52.842Z",
+      "actionToTwoPaintsMs": 446.8,
+      "start": 14253.100000023842,
+      "end": 14699.900000035763,
+      "hostObservedMs": 447.584,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5911,
+          "startTime": 14286.3,
+          "durationMs": 48,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 4,
+      "kind": "filter-search-btc",
+      "observedAt": "2026-09-29T13:43:52.897Z",
+      "actionToTwoPaintsMs": 52.5,
+      "start": 14702.400000035763,
+      "end": 14754.900000035763,
+      "hostObservedMs": 53.479,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 4,
+      "kind": "select-pair-btcusdt",
+      "observedAt": "2026-09-29T13:43:53.842Z",
+      "actionToTwoPaintsMs": 944,
+      "start": 14757.300000011921,
+      "end": 15701.300000011921,
+      "hostObservedMs": 944.927,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5918,
+          "startTime": 14866.1,
+          "durationMs": 32,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": [
+        {
+          "method": "GET",
+          "path": "/api/market/pairs/btcusdt",
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ]
+    },
+    {
+      "cycle": 5,
+      "kind": "open-pair-switcher",
+      "observedAt": "2026-09-29T13:43:54.292Z",
+      "actionToTwoPaintsMs": 431.3,
+      "start": 15719.200000047684,
+      "end": 16150.5,
+      "hostObservedMs": 432.341,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5925,
+          "startTime": 15740.1,
+          "durationMs": 48,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": [
+        {
+          "method": "GET",
+          "path": "/api/wallet/assets",
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ]
+    },
+    {
+      "cycle": 5,
+      "initialPairRows": 2,
+      "categoryPairRows": 0,
+      "kind": "filter-category-defi",
+      "observedAt": "2026-09-29T13:43:54.522Z",
+      "actionToTwoPaintsMs": 225.7,
+      "start": 16154.600000023842,
+      "end": 16380.300000011921,
+      "hostObservedMs": 226.786,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 5,
+      "kind": "filter-category-layer-1",
+      "observedAt": "2026-09-29T13:43:54.611Z",
+      "actionToTwoPaintsMs": 85.4,
+      "start": 16384.100000023842,
+      "end": 16469.5,
+      "hostObservedMs": 86.088,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 5,
+      "kind": "filter-search-eth",
+      "observedAt": "2026-09-29T13:43:54.665Z",
+      "actionToTwoPaintsMs": 52,
+      "start": 16471.200000047684,
+      "end": 16523.200000047684,
+      "hostObservedMs": 52.753,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 5,
+      "kind": "select-pair-ethusdt",
+      "observedAt": "2026-09-29T13:43:55.543Z",
+      "actionToTwoPaintsMs": 876.6,
+      "start": 16525.600000023842,
+      "end": 17402.200000047684,
+      "hostObservedMs": 877.414,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5946,
+          "startTime": 16579.8,
+          "durationMs": 80,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": [
+        {
+          "method": "GET",
+          "path": "/api/market/pairs",
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ]
+    },
+    {
+      "cycle": 5,
+      "kind": "open-pair-switcher",
+      "observedAt": "2026-09-29T13:43:55.994Z",
+      "actionToTwoPaintsMs": 447.9,
+      "start": 17403.900000035763,
+      "end": 17851.80000001192,
+      "hostObservedMs": 449.047,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5953,
+          "startTime": 17436.6,
+          "durationMs": 48,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 5,
+      "kind": "filter-search-btc",
+      "observedAt": "2026-09-29T13:43:56.048Z",
+      "actionToTwoPaintsMs": 52.1,
+      "start": 17854.400000035763,
+      "end": 17906.5,
+      "hostObservedMs": 53.094,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 5,
+      "kind": "select-pair-btcusdt",
+      "observedAt": "2026-09-29T13:43:57.009Z",
+      "actionToTwoPaintsMs": 959.3,
+      "start": 17908.700000047684,
+      "end": 18868,
+      "hostObservedMs": 960.25,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5960,
+          "startTime": 18016.9,
+          "durationMs": 32,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 6,
+      "kind": "open-pair-switcher",
+      "observedAt": "2026-09-29T13:43:57.465Z",
+      "actionToTwoPaintsMs": 436.9,
+      "start": 18885.600000023842,
+      "end": 19322.5,
+      "hostObservedMs": 437.858,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5967,
+          "startTime": 18903.5,
+          "durationMs": 48,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 6,
+      "initialPairRows": 2,
+      "categoryPairRows": 0,
+      "kind": "filter-category-defi",
+      "observedAt": "2026-09-29T13:43:57.644Z",
+      "actionToTwoPaintsMs": 173.8,
+      "start": 19326.80000001192,
+      "end": 19500.600000023842,
+      "hostObservedMs": 174.578,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 6,
+      "kind": "filter-category-layer-1",
+      "observedAt": "2026-09-29T13:43:57.756Z",
+      "actionToTwoPaintsMs": 108.5,
+      "start": 19505.5,
+      "end": 19614,
+      "hostObservedMs": 109.287,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 6,
+      "kind": "filter-search-eth",
+      "observedAt": "2026-09-29T13:43:57.809Z",
+      "actionToTwoPaintsMs": 50.4,
+      "start": 19616.30000001192,
+      "end": 19666.700000047684,
+      "hostObservedMs": 51.389,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 6,
+      "kind": "select-pair-ethusdt",
+      "observedAt": "2026-09-29T13:43:58.709Z",
+      "actionToTwoPaintsMs": 898.8,
+      "start": 19669.400000035763,
+      "end": 20568.200000047684,
+      "hostObservedMs": 899.832,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5988,
+          "startTime": 19723.6,
+          "durationMs": 88,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": [
+        {
+          "method": "GET",
+          "path": "/api/market/pairs/ethusdt",
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ]
+    },
+    {
+      "cycle": 6,
+      "kind": "open-pair-switcher",
+      "observedAt": "2026-09-29T13:43:59.145Z",
+      "actionToTwoPaintsMs": 433.1,
+      "start": 20570,
+      "end": 21003.100000023842,
+      "hostObservedMs": 434.088,
+      "eventTimingEntries": [
+        {
+          "interactionId": 5995,
+          "startTime": 20603.1,
+          "durationMs": 48,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": [
+        {
+          "method": "GET",
+          "path": "/api/trading/orders",
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ]
+    },
+    {
+      "cycle": 6,
+      "kind": "filter-search-btc",
+      "observedAt": "2026-09-29T13:43:59.198Z",
+      "actionToTwoPaintsMs": 50.7,
+      "start": 21005.400000035763,
+      "end": 21056.100000023842,
+      "hostObservedMs": 51.807,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 6,
+      "kind": "select-pair-btcusdt",
+      "observedAt": "2026-09-29T13:44:00.143Z",
+      "actionToTwoPaintsMs": 943.2,
+      "start": 21058.600000023842,
+      "end": 22001.80000001192,
+      "hostObservedMs": 944.092,
+      "eventTimingEntries": [
+        {
+          "interactionId": 6002,
+          "startTime": 21163.9,
+          "durationMs": 56,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": [
+        {
+          "method": "GET",
+          "path": "/api/market/pairs/btcusdt",
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ]
+    },
+    {
+      "cycle": 7,
+      "kind": "open-pair-switcher",
+      "observedAt": "2026-09-29T13:44:00.601Z",
+      "actionToTwoPaintsMs": 438.3,
+      "start": 22020.30000001192,
+      "end": 22458.600000023842,
+      "hostObservedMs": 439.474,
+      "eventTimingEntries": [
+        {
+          "interactionId": 6009,
+          "startTime": 22036.4,
+          "durationMs": 48,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 7,
+      "initialPairRows": 2,
+      "categoryPairRows": 0,
+      "kind": "filter-category-defi",
+      "observedAt": "2026-09-29T13:44:00.766Z",
+      "actionToTwoPaintsMs": 161.8,
+      "start": 22462.900000035763,
+      "end": 22624.700000047684,
+      "hostObservedMs": 162.692,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 7,
+      "kind": "filter-category-layer-1",
+      "observedAt": "2026-09-29T13:44:00.881Z",
+      "actionToTwoPaintsMs": 111.2,
+      "start": 22628.200000047684,
+      "end": 22739.400000035763,
+      "hostObservedMs": 112.055,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 7,
+      "kind": "filter-search-eth",
+      "observedAt": "2026-09-29T13:44:00.936Z",
+      "actionToTwoPaintsMs": 52.1,
+      "start": 22741.600000023842,
+      "end": 22793.700000047684,
+      "hostObservedMs": 52.999,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 7,
+      "kind": "select-pair-ethusdt",
+      "observedAt": "2026-09-29T13:44:01.826Z",
+      "actionToTwoPaintsMs": 888.4,
+      "start": 22796.30000001192,
+      "end": 23684.700000047684,
+      "hostObservedMs": 889.216,
+      "eventTimingEntries": [
+        {
+          "interactionId": 6030,
+          "startTime": 22852,
+          "durationMs": 80,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 7,
+      "kind": "open-pair-switcher",
+      "observedAt": "2026-09-29T13:44:02.263Z",
+      "actionToTwoPaintsMs": 435,
+      "start": 23686.30000001192,
+      "end": 24121.30000001192,
+      "hostObservedMs": 435.96,
+      "eventTimingEntries": [
+        {
+          "interactionId": 6037,
+          "startTime": 23719.9,
+          "durationMs": 48,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 7,
+      "kind": "filter-search-btc",
+      "observedAt": "2026-09-29T13:44:02.317Z",
+      "actionToTwoPaintsMs": 51.3,
+      "start": 24123.80000001192,
+      "end": 24175.100000023842,
+      "hostObservedMs": 52.272,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": 7,
+      "kind": "select-pair-btcusdt",
+      "observedAt": "2026-09-29T13:44:03.260Z",
+      "actionToTwoPaintsMs": 941.4,
+      "start": 24177.400000035763,
+      "end": 25118.80000001192,
+      "hostObservedMs": 942.243,
+      "eventTimingEntries": [
+        {
+          "interactionId": 6044,
+          "startTime": 24284.2,
+          "durationMs": 88,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": [
+        {
+          "method": "GET",
+          "path": "/api/market/pairs/btcusdt/candles",
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ]
+    },
+    {
+      "cycle": "profile",
+      "kind": "profile-open-pair-switcher",
+      "observedAt": "2026-09-29T13:44:07.988Z",
+      "actionToTwoPaintsMs": 433.3,
+      "start": 29412.80000001192,
+      "end": 29846.100000023842,
+      "hostObservedMs": 434.701,
+      "eventTimingEntries": [
+        {
+          "interactionId": 6051,
+          "startTime": 29435.8,
+          "durationMs": 48,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": "profile",
+      "kind": "profile-filter-search-eth",
+      "observedAt": "2026-09-29T13:44:08.045Z",
+      "actionToTwoPaintsMs": 54.4,
+      "start": 29849,
+      "end": 29903.400000035763,
+      "hostObservedMs": 55.362,
+      "eventTimingEntries": [],
+      "apiResponsesDuringAction": []
+    },
+    {
+      "cycle": "profile",
+      "kind": "profile-select-pair-ethusdt",
+      "observedAt": "2026-09-29T13:44:08.976Z",
+      "actionToTwoPaintsMs": 929,
+      "start": 29905.80000001192,
+      "end": 30834.80000001192,
+      "hostObservedMs": 929.781,
+      "eventTimingEntries": [
+        {
+          "interactionId": 6058,
+          "startTime": 29993.7,
+          "durationMs": 64,
+          "eventNames": ["pointerdown", "pointerup", "click"],
+          "presentationTimeMs": null
+        }
+      ],
+      "apiResponsesDuringAction": [
+        {
+          "method": "GET",
+          "path": "/api/market/pairs/ethusdt/candles",
+          "status": 200,
+          "fromServiceWorker": true
+        },
+        {
+          "method": "GET",
+          "path": "/api/market/pairs/ethusdt",
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ]
+    }
+  ],
+  "memorySnapshots": [
+    {
+      "label": "baseline-terminal-btc-after-gc",
+      "observedAt": "2026-09-29T13:43:39.011Z",
+      "garbageCollectionRequested": true,
+      "heap": {
+        "usedSizeBytes": 21406808,
+        "totalSizeBytes": 23048192,
+        "embedderHeapUsedSizeBytes": 3078312
+      },
+      "dom": {
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 387
+      },
+      "metrics": {
+        "jsHeapUsedBytes": 21406808,
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 387
+      }
+    },
+    {
+      "label": "after-interaction-cycle-1",
+      "observedAt": "2026-09-29T13:43:41.326Z",
+      "garbageCollectionRequested": true,
+      "heap": {
+        "usedSizeBytes": 22878328,
+        "totalSizeBytes": 24096768,
+        "embedderHeapUsedSizeBytes": 2885824
+      },
+      "dom": {
+        "documents": 1,
+        "nodes": 463,
+        "jsEventListeners": 388
+      },
+      "metrics": {
+        "jsHeapUsedBytes": 22878328,
+        "documents": 1,
+        "nodes": 463,
+        "jsEventListeners": 388
+      }
+    },
+    {
+      "label": "after-interaction-cycle-2",
+      "observedAt": "2026-09-29T13:43:44.477Z",
+      "garbageCollectionRequested": true,
+      "heap": {
+        "usedSizeBytes": 23279308,
+        "totalSizeBytes": 24096768,
+        "embedderHeapUsedSizeBytes": 2913528
+      },
+      "dom": {
+        "documents": 1,
+        "nodes": 463,
+        "jsEventListeners": 388
+      },
+      "metrics": {
+        "jsHeapUsedBytes": 23279308,
+        "documents": 1,
+        "nodes": 463,
+        "jsEventListeners": 388
+      }
+    },
+    {
+      "label": "after-interaction-cycle-3",
+      "observedAt": "2026-09-29T13:43:47.593Z",
+      "garbageCollectionRequested": true,
+      "heap": {
+        "usedSizeBytes": 23610092,
+        "totalSizeBytes": 24358912,
+        "embedderHeapUsedSizeBytes": 2892048
+      },
+      "dom": {
+        "documents": 1,
+        "nodes": 463,
+        "jsEventListeners": 388
+      },
+      "metrics": {
+        "jsHeapUsedBytes": 23610092,
+        "documents": 1,
+        "nodes": 463,
+        "jsEventListeners": 388
+      }
+    },
+    {
+      "label": "after-interaction-cycle-4",
+      "observedAt": "2026-09-29T13:43:50.676Z",
+      "garbageCollectionRequested": true,
+      "heap": {
+        "usedSizeBytes": 24040468,
+        "totalSizeBytes": 25407488,
+        "embedderHeapUsedSizeBytes": 2922944
+      },
+      "dom": {
+        "documents": 1,
+        "nodes": 463,
+        "jsEventListeners": 388
+      },
+      "metrics": {
+        "jsHeapUsedBytes": 24040468,
+        "documents": 1,
+        "nodes": 463,
+        "jsEventListeners": 388
+      }
+    },
+    {
+      "label": "after-interaction-cycle-5",
+      "observedAt": "2026-09-29T13:43:53.842Z",
+      "garbageCollectionRequested": true,
+      "heap": {
+        "usedSizeBytes": 24207908,
+        "totalSizeBytes": 25407488,
+        "embedderHeapUsedSizeBytes": 2911784
+      },
+      "dom": {
+        "documents": 1,
+        "nodes": 463,
+        "jsEventListeners": 388
+      },
+      "metrics": {
+        "jsHeapUsedBytes": 24207908,
+        "documents": 1,
+        "nodes": 463,
+        "jsEventListeners": 388
+      }
+    },
+    {
+      "label": "after-interaction-cycle-6",
+      "observedAt": "2026-09-29T13:43:57.009Z",
+      "garbageCollectionRequested": true,
+      "heap": {
+        "usedSizeBytes": 24284804,
+        "totalSizeBytes": 25407488,
+        "embedderHeapUsedSizeBytes": 2925472
+      },
+      "dom": {
+        "documents": 1,
+        "nodes": 463,
+        "jsEventListeners": 388
+      },
+      "metrics": {
+        "jsHeapUsedBytes": 24284804,
+        "documents": 1,
+        "nodes": 463,
+        "jsEventListeners": 388
+      }
+    },
+    {
+      "label": "after-interaction-cycle-7",
+      "observedAt": "2026-09-29T13:44:00.143Z",
+      "garbageCollectionRequested": true,
+      "heap": {
+        "usedSizeBytes": 24376020,
+        "totalSizeBytes": 25931776,
+        "embedderHeapUsedSizeBytes": 2964328
+      },
+      "dom": {
+        "documents": 1,
+        "nodes": 463,
+        "jsEventListeners": 388
+      },
+      "metrics": {
+        "jsHeapUsedBytes": 24376020,
+        "documents": 1,
+        "nodes": 463,
+        "jsEventListeners": 388
+      }
+    },
+    {
+      "label": "after-interaction-cycle-8",
+      "observedAt": "2026-09-29T13:44:03.260Z",
+      "garbageCollectionRequested": true,
+      "heap": {
+        "usedSizeBytes": 24457928,
+        "totalSizeBytes": 25407488,
+        "embedderHeapUsedSizeBytes": 2951056
+      },
+      "dom": {
+        "documents": 1,
+        "nodes": 463,
+        "jsEventListeners": 388
+      },
+      "metrics": {
+        "jsHeapUsedBytes": 24457928,
+        "documents": 1,
+        "nodes": 463,
+        "jsEventListeners": 388
+      }
+    },
+    {
+      "label": "after-route-mount-unmount-1",
+      "observedAt": "2026-09-29T13:44:03.719Z",
+      "garbageCollectionRequested": true,
+      "heap": {
+        "usedSizeBytes": 24690412,
+        "totalSizeBytes": 25407488,
+        "embedderHeapUsedSizeBytes": 3072392
+      },
+      "dom": {
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 388
+      },
+      "metrics": {
+        "jsHeapUsedBytes": 24690412,
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 388
+      }
+    },
+    {
+      "label": "after-route-mount-unmount-2",
+      "observedAt": "2026-09-29T13:44:04.137Z",
+      "garbageCollectionRequested": true,
+      "heap": {
+        "usedSizeBytes": 24727152,
+        "totalSizeBytes": 25669632,
+        "embedderHeapUsedSizeBytes": 3047976
+      },
+      "dom": {
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 388
+      },
+      "metrics": {
+        "jsHeapUsedBytes": 24727152,
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 388
+      }
+    },
+    {
+      "label": "after-route-mount-unmount-3",
+      "observedAt": "2026-09-29T13:44:04.555Z",
+      "garbageCollectionRequested": true,
+      "heap": {
+        "usedSizeBytes": 24800276,
+        "totalSizeBytes": 25669632,
+        "embedderHeapUsedSizeBytes": 3052160
+      },
+      "dom": {
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 388
+      },
+      "metrics": {
+        "jsHeapUsedBytes": 24800276,
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 388
+      }
+    },
+    {
+      "label": "after-route-mount-unmount-4",
+      "observedAt": "2026-09-29T13:44:04.956Z",
+      "garbageCollectionRequested": true,
+      "heap": {
+        "usedSizeBytes": 24848264,
+        "totalSizeBytes": 25669632,
+        "embedderHeapUsedSizeBytes": 3062264
+      },
+      "dom": {
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 388
+      },
+      "metrics": {
+        "jsHeapUsedBytes": 24848264,
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 388
+      }
+    },
+    {
+      "label": "after-route-mount-unmount-5",
+      "observedAt": "2026-09-29T13:44:05.357Z",
+      "garbageCollectionRequested": true,
+      "heap": {
+        "usedSizeBytes": 24913556,
+        "totalSizeBytes": 25669632,
+        "embedderHeapUsedSizeBytes": 3066184
+      },
+      "dom": {
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 388
+      },
+      "metrics": {
+        "jsHeapUsedBytes": 24913556,
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 388
+      }
+    },
+    {
+      "label": "after-route-mount-unmount-6",
+      "observedAt": "2026-09-29T13:44:05.759Z",
+      "garbageCollectionRequested": true,
+      "heap": {
+        "usedSizeBytes": 24958484,
+        "totalSizeBytes": 25669632,
+        "embedderHeapUsedSizeBytes": 3068152
+      },
+      "dom": {
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 388
+      },
+      "metrics": {
+        "jsHeapUsedBytes": 24958484,
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 388
+      }
+    },
+    {
+      "label": "after-route-mount-unmount-7",
+      "observedAt": "2026-09-29T13:44:06.160Z",
+      "garbageCollectionRequested": true,
+      "heap": {
+        "usedSizeBytes": 24983580,
+        "totalSizeBytes": 25931776,
+        "embedderHeapUsedSizeBytes": 3070296
+      },
+      "dom": {
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 388
+      },
+      "metrics": {
+        "jsHeapUsedBytes": 24983580,
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 388
+      }
+    },
+    {
+      "label": "after-route-mount-unmount-8",
+      "observedAt": "2026-09-29T13:44:06.561Z",
+      "garbageCollectionRequested": true,
+      "heap": {
+        "usedSizeBytes": 25063556,
+        "totalSizeBytes": 26193920,
+        "embedderHeapUsedSizeBytes": 3072592
+      },
+      "dom": {
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 388
+      },
+      "metrics": {
+        "jsHeapUsedBytes": 25063556,
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 388
+      }
+    },
+    {
+      "label": "after-route-mount-unmount-9",
+      "observedAt": "2026-09-29T13:44:06.963Z",
+      "garbageCollectionRequested": true,
+      "heap": {
+        "usedSizeBytes": 25101432,
+        "totalSizeBytes": 26193920,
+        "embedderHeapUsedSizeBytes": 3074736
+      },
+      "dom": {
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 388
+      },
+      "metrics": {
+        "jsHeapUsedBytes": 25101432,
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 388
+      }
+    },
+    {
+      "label": "after-route-mount-unmount-10",
+      "observedAt": "2026-09-29T13:44:07.362Z",
+      "garbageCollectionRequested": true,
+      "heap": {
+        "usedSizeBytes": 25117588,
+        "totalSizeBytes": 26193920,
+        "embedderHeapUsedSizeBytes": 3077008
+      },
+      "dom": {
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 388
+      },
+      "metrics": {
+        "jsHeapUsedBytes": 25117588,
+        "documents": 1,
+        "nodes": 462,
+        "jsEventListeners": 388
+      }
+    },
+    {
+      "label": "after-spa-reset-to-btc",
+      "observedAt": "2026-09-29T13:44:09.380Z",
+      "garbageCollectionRequested": true,
+      "heap": {
+        "usedSizeBytes": 25560988,
+        "totalSizeBytes": 27504640,
+        "embedderHeapUsedSizeBytes": 3027992
+      },
+      "dom": {
+        "documents": 1,
+        "nodes": 463,
+        "jsEventListeners": 388
+      },
+      "metrics": {
+        "jsHeapUsedBytes": 25560988,
+        "documents": 1,
+        "nodes": 463,
+        "jsEventListeners": 388
+      }
+    }
+  ],
+  "finalState": {
+    "url": "http://127.0.0.1:4173/w/trade/btcusdt",
+    "terminalMarkerObserved": true,
+    "resetKind": "SPA navigation from profiled ETH terminal to baseline BTC terminal; document reload excluded because the local preview session does not persist as a stable authenticated route across reload.",
+    "apiResponseCount": 32,
+    "apiRequestCount": 32,
+    "nonGetApiRequests": [
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "origin": "http://127.0.0.1:4173",
+        "resourceType": "fetch"
+      }
+    ],
+    "externalApiRequests": [],
+    "websocketConnectionCount": 1,
+    "websocketConnections": [
+      {
+        "origin": "ws://127.0.0.1:4173",
+        "path": "/"
+      }
+    ],
+    "eventTimingAvailable": true,
+    "eventTimingEntryCount": 1636,
+    "requestFailures": [],
+    "pageErrors": []
+  },
+  "trace": {
+    "file": "c02-03-interaction-profile-trace-2026-09-29.json",
+    "eventCount": 3943,
+    "topCompleteEvents": [
+      {
+        "name": "v8.callFunction",
+        "count": 443,
+        "totalUs": 59310,
+        "maxUs": 6604,
+        "totalMs": 59.31
+      },
+      {
+        "name": "FunctionCall",
+        "count": 419,
+        "totalUs": 38946,
+        "maxUs": 6562,
+        "totalMs": 38.946
+      },
+      {
+        "name": "EventDispatch",
+        "count": 101,
+        "totalUs": 18074,
+        "maxUs": 5312,
+        "totalMs": 18.074
+      },
+      {
+        "name": "Paint",
+        "count": 60,
+        "totalUs": 16729,
+        "maxUs": 447,
+        "totalMs": 16.729
+      },
+      {
+        "name": "UpdateLayoutTree",
+        "count": 83,
+        "totalUs": 12314,
+        "maxUs": 815,
+        "totalMs": 12.314
+      },
+      {
+        "name": "FireAnimationFrame",
+        "count": 60,
+        "totalUs": 11215,
+        "maxUs": 2881,
+        "totalMs": 11.215
+      },
+      {
+        "name": "Layerize",
+        "count": 49,
+        "totalUs": 8742,
+        "maxUs": 257,
+        "totalMs": 8.742
+      },
+      {
+        "name": "PrePaint",
+        "count": 84,
+        "totalUs": 6121,
+        "maxUs": 373,
+        "totalMs": 6.121
+      },
+      {
+        "name": "TimerFire",
+        "count": 10,
+        "totalUs": 3553,
+        "maxUs": 1855,
+        "totalMs": 3.553
+      },
+      {
+        "name": "Layout",
+        "count": 23,
+        "totalUs": 2957,
+        "maxUs": 367,
+        "totalMs": 2.957
+      },
+      {
+        "name": "V8.GC_SCAVENGER_BACKGROUND_SCAVENGE_PARALLEL",
+        "count": 11,
+        "totalUs": 2496,
+        "maxUs": 309,
+        "totalMs": 2.496
+      },
+      {
+        "name": "MinorGC",
+        "count": 5,
+        "totalUs": 2415,
+        "maxUs": 637,
+        "totalMs": 2.415
+      },
+      {
+        "name": "V8.GCScavenger",
+        "count": 5,
+        "totalUs": 2254,
+        "maxUs": 591,
+        "totalMs": 2.254
+      },
+      {
+        "name": "V8.GC_SCAVENGER",
+        "count": 5,
+        "totalUs": 2170,
+        "maxUs": 548,
+        "totalMs": 2.17
+      },
+      {
+        "name": "V8.GC_SCAVENGER_SCAVENGE",
+        "count": 5,
+        "totalUs": 2111,
+        "maxUs": 539,
+        "totalMs": 2.111
+      },
+      {
+        "name": "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE",
+        "count": 5,
+        "totalUs": 1297,
+        "maxUs": 349,
+        "totalMs": 1.297
+      },
+      {
+        "name": "HitTest",
+        "count": 31,
+        "totalUs": 712,
+        "maxUs": 98,
+        "totalMs": 0.712
+      },
+      {
+        "name": "V8.GC_BACKGROUND_SAFEPOINT",
+        "count": 1,
+        "totalUs": 574,
+        "maxUs": 574,
+        "totalMs": 0.574
+      },
+      {
+        "name": "V8.GC_SCAVENGER_SCAVENGE_PARALLEL",
+        "count": 1,
+        "totalUs": 247,
+        "maxUs": 247,
+        "totalMs": 0.247
+      },
+      {
+        "name": "V8.GC_SCAVENGER_SCAVENGE_FINALIZE",
+        "count": 5,
+        "totalUs": 229,
+        "maxUs": 62,
+        "totalMs": 0.229
+      }
+    ],
+    "cpuProfile": {
+      "startTime": 299344930947,
+      "endTime": 299346561548,
+      "sampleCount": 1425,
+      "topFunctions": [
+        {
+          "functionName": "(idle)",
+          "url": "",
+          "lineNumber": -1,
+          "selfHitCount": 917
+        },
+        {
+          "functionName": "(program)",
+          "url": "",
+          "lineNumber": -1,
+          "selfHitCount": 46
+        },
+        {
+          "functionName": "evaluate",
+          "url": "",
+          "lineNumber": 304,
+          "selfHitCount": 2
+        },
+        {
+          "functionName": "getAllDocumentCookies",
+          "url": "http://127.0.0.1:4173/node_modules/.vite/deps/msw.js?v=01d3aefe",
+          "lineNumber": 426,
+          "selfHitCount": 2
+        },
+        {
+          "functionName": "getElementComputedStyle",
+          "url": "",
+          "lineNumber": 3132,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "getImplicitAriaRole",
+          "url": "",
+          "lineNumber": 3410,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "isElementHiddenForAria",
+          "url": "",
+          "lineNumber": 3545,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "elementsFromPoint",
+          "url": "",
+          "lineNumber": -1,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "createPortal",
+          "url": "http://127.0.0.1:4173/node_modules/.vite/deps/chunk-H343HIDT.js?v=01d3aefe",
+          "lineNumber": 20705,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "fmtUsd",
+          "url": "http://127.0.0.1:4173/src/shared/lib/formatNumber.ts",
+          "lineNumber": 0,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "getRootHostContext",
+          "url": "http://127.0.0.1:4173/node_modules/.vite/deps/chunk-H343HIDT.js?v=01d3aefe",
+          "lineNumber": 8314,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "applyLock",
+          "url": "http://127.0.0.1:4173/src/shared/hooks/useScrollLock.ts",
+          "lineNumber": 3,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "clearRect",
+          "url": "",
+          "lineNumber": -1,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "(garbage collector)",
+          "url": "",
+          "lineNumber": -1,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "queueMicrotask",
+          "url": "",
+          "lineNumber": -1,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "matchRouteBranch",
+          "url": "http://127.0.0.1:4173/node_modules/.vite/deps/react-router.js?v=01d3aefe",
+          "lineNumber": 1130,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "schedule",
+          "url": "http://127.0.0.1:4173/node_modules/.vite/deps/motion_react.js?v=01d3aefe",
+          "lineNumber": 337,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "MotionValue.updateAndNotify",
+          "url": "http://127.0.0.1:4173/node_modules/.vite/deps/motion_react.js?v=01d3aefe",
+          "lineNumber": 2639,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "WebCommandBar",
+          "url": "http://127.0.0.1:4173/src/app/components/layout/WebCommandBar.tsx?t=1790641059818",
+          "lineNumber": 72,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "PreviewControls",
+          "url": "http://127.0.0.1:4173/src/dev/PreviewControls.tsx?t=1790677125261",
+          "lineNumber": 136,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "commitRoot",
+          "url": "http://127.0.0.1:4173/node_modules/.vite/deps/chunk-H343HIDT.js?v=01d3aefe",
+          "lineNumber": 19323,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "useLayoutId",
+          "url": "http://127.0.0.1:4173/node_modules/.vite/deps/motion_react.js?v=01d3aefe",
+          "lineNumber": 9389,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "renderWithHooks",
+          "url": "http://127.0.0.1:4173/node_modules/.vite/deps/chunk-H343HIDT.js?v=01d3aefe",
+          "lineNumber": 11575,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "diffProperties",
+          "url": "http://127.0.0.1:4173/node_modules/.vite/deps/chunk-H343HIDT.js?v=01d3aefe",
+          "lineNumber": 7649,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "checkBarItem",
+          "url": "http://127.0.0.1:4173/node_modules/.vite/deps/lightweight-charts.js?v=01d3aefe",
+          "lineNumber": 12329,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "URL",
+          "url": "",
+          "lineNumber": -1,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "postMessage",
+          "url": "",
+          "lineNumber": -1,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "_private__parseColor",
+          "url": "http://127.0.0.1:4173/node_modules/.vite/deps/lightweight-charts.js?v=01d3aefe",
+          "lineNumber": 729,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "_internal_priceToCoordinate",
+          "url": "http://127.0.0.1:4173/node_modules/.vite/deps/lightweight-charts.js?v=01d3aefe",
+          "lineNumber": 4888,
+          "selfHitCount": 1
+        },
+        {
+          "functionName": "fillRect",
+          "url": "",
+          "lineNumber": -1,
+          "selfHitCount": 1
+        }
+      ],
+      "measuredAfterInteractionIndex": 64
+    },
+    "error": null
+  },
+  "limitations": [
+    "Results describe this Windows development browser and local MSW fixtures; they are not production build, backend or RUM measurements.",
+    "The active TradeTerminal route did not create a WebSocket in this run; no real stream render cost or stream lifecycle memory can be measured until a product route consumes the adapter.",
+    "Runtime.getHeapUsage and DOM/listener counters after requested GC are snapshots, not proof of a leak or leak-free behavior; compare trends and verify with longer soak tests before setting a budget.",
+    "Two animation frames after target DOM observation are a repeatable interaction-to-paint proxy, not a React Profiler commit duration or a user-perceived INP guarantee."
+  ]
+}

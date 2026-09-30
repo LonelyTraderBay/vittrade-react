@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-29T02:46:18.014Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "origin": "http://127.0.0.1:5173",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
+    "docs/architecture/production-readiness/evidence/A06/run-auth-empty-browser-check.mjs": "8097b934c7a2e6c607aebc2553ebfbb1e1787b1efdd537dc37316cc13771a15b",
+    "src/app/components/layout/WebCommandBar.tsx": "2a0abe86df7d053470cfec285ad03613c954f00408a02848ca8076ef1698954c",
+    "src/app/components/layout/WebSidebar.tsx": "6e294d2589c6106430121d8da43fc8a02b89a321907bf92db47452df97f3b90f",
+    "src/app/contexts/AuthContext.tsx": "ed4902f682cbb4c11081acb1e87cfd2195fa0d06570ef1473ef962181b0d54b3",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/dev/PreviewControls.tsx": "8532ab8fbe4578c3ff7cff31f559ec996fa146e63d70539a67ea668fc6d160ea",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "52d20d96c8f1c508e7803cad807003d53f9d1c801276874b4597b92a4b876bbb",
+    "src/dev/mocks/preview-scenario-handler.ts": "310abf70387ff528daf7f61b0d4103a3ed0449619549e1dcfefbfa39f0ca0f48",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/auth/api/auth-api.ts": "050846c48de49be56f6bdf6a73669b5d3a6230c559e33851cd07840609fca078",
+    "src/features/auth/pages/WebLoginPage.tsx": "d938bac40bb63145ffbb3919140b1b3d267b96e86872a93f29a4ebac24980e41",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2"
+  },
+  "scenario": {
+    "id": "auth.empty",
+    "domain": "auth",
+    "state": "empty",
+    "status": "passed",
+    "observedAt": "2026-09-29T02:46:18.014Z",
+    "persona": "guest (no authenticated session)",
+    "role": "unauthenticated",
+    "permissions": [],
+    "route": "/w/auth/login",
+    "protectedRoute": "/w/trade/positions",
+    "finalRoute": "/auth/login",
+    "operationIds": [
+      "register",
+      "login",
+      "verifyLoginMfaChallenge",
+      "getSession",
+      "refreshSession",
+      "logout",
+      "verifyMfa",
+      "confirmMfaSetup",
+      "beginMfaSetup",
+      "requestPasswordResetCode",
+      "verifyCurrentPassword",
+      "changePassword",
+      "verifyPasswordResetCode",
+      "confirmPasswordReset"
+    ],
+    "observedOperationIds": ["getSession"],
+    "operationRequestCounts": {
+      "getSession": 3
+    },
+    "requests": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "startedAtMs": 1790649977433
+      },
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "startedAtMs": 1790649977691
+      },
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "startedAtMs": 1790649977916
+      }
+    ],
+    "responses": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 200,
+        "fromServiceWorker": true
+      }
+    ],
+    "initialSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "emptySessionResponse": {
+      "status": 200,
+      "body": null,
+      "fromServiceWorker": true
+    },
+    "loginFormVisible": true,
+    "loginErrorVisible": false,
+    "activeScenarioVisible": true,
+    "protectedRouteRedirectedToLogin": true,
+    "externalApiOrigins": [],
+    "writeRequestCount": 0,
+    "elapsedMs": 746,
+    "screenshots": ["preview-auth-empty-session-2026-09-29.png"],
+    "note": "The Auth preview empty scenario uses the contract-permitted GET /auth/session 200 with JSON null. The login form remains usable and the protected /w/trade/positions route redirects to an Auth login route. /w/home is public in routeConfig and is intentionally not used as the protected-route assertion. The initial 401 is only the pre-scenario unauthenticated bootstrap; only getSession is counted as observed for auth.empty (1/14 linked Auth operations). All requests are local MSW and read-only. This does not prove backend session/cookie behavior, staging, or production."
+  }
+}

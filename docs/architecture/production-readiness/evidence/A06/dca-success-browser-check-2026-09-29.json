@@ -1,0 +1,333 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-29T02:46:30.039Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "origin": "http://127.0.0.1:4173",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sourceHashes": {
+    "contracts/openapi/dca.yaml": "105ad6cbe91891cf20336ac20cd26485c22c3dbd26055d1a4dcc4d0a45bf5b5d",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
+    "docs/architecture/production-readiness/evidence/A06/run-dca-success-browser-check.mjs": "2b070b4338a4bd9b2bd61bf430f02e6d0d6fa669f8d30e2a7aac6892db72a908",
+    "src/app/pages/dca/DCAPage.tsx": "3fe3bbb605365348e12fc40a53799c2f270a1c0e2d6c7d07f8484c7fa30acfb4",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/dev/PreviewControls.tsx": "8532ab8fbe4578c3ff7cff31f559ec996fa146e63d70539a67ea668fc6d160ea",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/dca-fixtures.ts": "33f7f6e4cee03ce1d9b6099ce7b9046c40f3600000da618138fdfed3108c6b2e",
+    "src/dev/mocks/handlers.ts": "52d20d96c8f1c508e7803cad807003d53f9d1c801276874b4597b92a4b876bbb",
+    "src/dev/mocks/personas.ts": "4f159d020319b86f5f991c49e7c9063a73afddedea9a4e16d8a7d2fb679a105f",
+    "src/dev/mocks/preview-scenario-handler.ts": "310abf70387ff528daf7f61b0d4103a3ed0449619549e1dcfefbfa39f0ca0f48",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/dca/api/dca-api.ts": "dd9c9a077e7b8c4ff137d59680e5c69722dd391d69088b75e2ec2fa28256a997",
+    "src/features/dca/components/DCACreatePlanSheet.tsx": "db90a53c0470d4655fab3a68c76a25c9088801a3fb13878140b134d6ccfb8867",
+    "src/features/dca/components/DCAPlanCard.tsx": "7f98cc03d62d2aed1b7d7d1c812d6f036224cbe2a5da930f8a6814af45db7955",
+    "src/features/dca/model/dca-queries.ts": "73a9680a7b246dea4141e06682e3eb8557799682445c9e53cc5e4cbdee7a1d65",
+    "src/features/dca/pages/DCAAdvancedPreviewPage.tsx": "573c8b47da920ff891f04daa488c0fef69b644a181b94142e3a4a5dc7b6ef811",
+    "src/features/dca/pages/DCAMainPage.tsx": "8373f9f7ac00f923247058de7360630f440debc54ceed6ea3d648ff96448227c"
+  },
+  "scenario": {
+    "id": "dca.success",
+    "domain": "dca",
+    "state": "success",
+    "status": "passed",
+    "observedAt": "2026-09-29T02:46:30.039Z",
+    "persona": "dca (local MSW fixture)",
+    "role": "user",
+    "permissions": ["dca:read", "dca:write"],
+    "route": "/w/dca",
+    "finalRoute": "/w/dca/rebalance/config",
+    "operationIds": [
+      "getDCAAdvancedOverview",
+      "getDCASnapshot",
+      "createDCAPlan",
+      "updateDCAPlan",
+      "deleteDCAPlan"
+    ],
+    "observedOperationIds": [
+      "createDCAPlan",
+      "deleteDCAPlan",
+      "getDCAAdvancedOverview",
+      "getDCASnapshot",
+      "updateDCAPlan"
+    ],
+    "operationRequestCounts": {
+      "getDCAAdvancedOverview": 1,
+      "getDCASnapshot": 4,
+      "createDCAPlan": 1,
+      "updateDCAPlan": 1,
+      "deleteDCAPlan": 1
+    },
+    "requests": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": "createDCAPlan",
+        "method": "POST",
+        "path": "/api/dca/plans",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": true
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/",
+        "resourceType": "image",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": "updateDCAPlan",
+        "method": "PATCH",
+        "path": "/api/dca/plans/dev-plan-0001",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": true
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": "deleteDCAPlan",
+        "method": "DELETE",
+        "path": "/api/dca/plans/dev-plan-0001",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": true
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": "getDCAAdvancedOverview",
+        "method": "GET",
+        "path": "/api/dca/advanced/overview",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      }
+    ],
+    "responses": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 12
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 19
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 10
+      },
+      {
+        "operationId": "createDCAPlan",
+        "method": "POST",
+        "path": "/api/dca/plans",
+        "status": 201,
+        "fromServiceWorker": true,
+        "elapsedMs": 29
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 6
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 72
+      },
+      {
+        "operationId": "updateDCAPlan",
+        "method": "PATCH",
+        "path": "/api/dca/plans/dev-plan-0001",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 22
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 6
+      },
+      {
+        "operationId": "deleteDCAPlan",
+        "method": "DELETE",
+        "path": "/api/dca/plans/dev-plan-0001",
+        "status": 204,
+        "fromServiceWorker": true,
+        "elapsedMs": 21
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 6
+      },
+      {
+        "operationId": "getDCAAdvancedOverview",
+        "method": "GET",
+        "path": "/api/dca/advanced/overview",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      }
+    ],
+    "initialSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "loginResponse": {
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    "scenarioSelected": true,
+    "createdPlanId": "dev-plan-0001",
+    "idempotencyKeyPresent": {
+      "create": true,
+      "update": true,
+      "delete": true
+    },
+    "contractResponses": {
+      "getDCAAdvancedOverview": [
+        {
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ],
+      "getDCASnapshot": [
+        {
+          "status": 200,
+          "fromServiceWorker": true
+        },
+        {
+          "status": 200,
+          "fromServiceWorker": true
+        },
+        {
+          "status": 200,
+          "fromServiceWorker": true
+        },
+        {
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ],
+      "createDCAPlan": [
+        {
+          "status": 201,
+          "fromServiceWorker": true
+        }
+      ],
+      "updateDCAPlan": [
+        {
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ],
+      "deleteDCAPlan": [
+        {
+          "status": 204,
+          "fromServiceWorker": true
+        }
+      ]
+    },
+    "backendRequiredNoticeVisible": true,
+    "externalApiOrigins": [],
+    "externalAssetOrigins": ["https://ui-avatars.com"],
+    "elapsedMs": 5828,
+    "screenshots": [
+      "preview-dca-success-plans-2026-09-29.png",
+      "preview-dca-success-plan-created-2026-09-29.png",
+      "preview-dca-success-plan-paused-2026-09-29.png",
+      "preview-dca-success-backend-required-2026-09-29.png"
+    ],
+    "failures": [],
+    "note": "Chromium exercised all five DCA contract operations through the local MSW service worker: snapshot and advanced overview GET, plan create 201, update 200, and delete 204. A dedicated least-privilege DCA preview persona displayed the controls. The new plan was created, persisted across refetch, paused, and deleted from the in-memory development fixture. Required Idempotency-Key headers were observed, but server replay semantics were not tested or inferred. Advanced DCA correctly displays that backend integration is still required. No real investment or backend/staging request was made; this is local preview evidence, not user acceptance or production certification."
+  }
+}

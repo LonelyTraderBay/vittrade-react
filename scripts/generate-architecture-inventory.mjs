@@ -530,6 +530,18 @@ function extractRouteRecords(repoPath, contents) {
       const pathProperty = getProperty(node, 'path');
       const indexProperty = getProperty(node, 'index');
       const componentProperty = getProperty(node, 'Component');
+      const elementProperty = getProperty(node, 'element');
+      const elementExpression = elementProperty?.initializer;
+      const isReactCreateElement =
+        elementExpression &&
+        ts.isCallExpression(elementExpression) &&
+        ts.isPropertyAccessExpression(elementExpression.expression) &&
+        ts.isIdentifier(elementExpression.expression.expression) &&
+        elementExpression.expression.expression.text === 'React' &&
+        elementExpression.expression.name.text === 'createElement';
+      const componentExpression =
+        componentProperty?.initializer ??
+        (isReactCreateElement ? elementExpression.arguments[0] : undefined);
       const declaredPath =
         pathProperty && ts.isStringLiteral(pathProperty.initializer)
           ? pathProperty.initializer.text
@@ -541,12 +553,11 @@ function extractRouteRecords(repoPath, contents) {
             ? inheritedPath
             : undefined;
 
-      if (routePath && componentProperty) {
-        const { component, componentSlot, targetPath, targetDevelopmentOnly } = getComponentTarget(
-          componentProperty.initializer,
-        );
+      if (routePath && componentExpression) {
+        const { component, componentSlot, targetPath, targetDevelopmentOnly } =
+          getComponentTarget(componentExpression);
 
-        if (component) {
+        if (component && component !== 'Navigate') {
           routes.push({
             path: routePath,
             component,

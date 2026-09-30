@@ -1,0 +1,32 @@
+{
+  "purpose": "Record the real local browser observation for the mock preview; not user acceptance or backend certification.",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "observedAt": "2026-09-27T14:37:48Z",
+  "environment": {
+    "os": "Windows",
+    "browser": "Codex In-app Browser",
+    "viteVersion": "6.4.3",
+    "nodeVersion": "24.19.0",
+    "dataSource": "mock",
+    "serverCommand": "node node_modules/vite/bin/vite.js --host 127.0.0.1 --port 4173 --strictPort"
+  },
+  "url": "http://127.0.0.1:4173/w/markets",
+  "httpStatus": 200,
+  "observed": {
+    "mockWarningVisible": "DỮ LIỆU MÔ PHỎNG · KHÔNG PHẢI GIAO DỊCH THẬT",
+    "previewPanelOpen": true,
+    "persona": "Khách · đăng xuất",
+    "scenarioShortcut": "Thị trường",
+    "shortcutNotice": "Đã mở Thị trường. Lối tắt này chỉ chuyển trang, không đổi trạng thái dữ liệu.",
+    "rows": [
+      { "pair": "BTC/USDT", "price": "67,543.21", "change": "+2.34%" },
+      { "pair": "ETH/USDT", "price": "3,521.45", "change": "-1.23%" }
+    ],
+    "rowCount": "2 / 2"
+  },
+  "limitations": [
+    "The control panel and two fixture rows were visible in the browser; this is not a review or acceptance of every page.",
+    "No real API/backend was contacted and no financial transaction was performed.",
+    "A screenshot was displayed in the current Codex tool result; no screenshot file was saved in the repository."
+  ]
+}

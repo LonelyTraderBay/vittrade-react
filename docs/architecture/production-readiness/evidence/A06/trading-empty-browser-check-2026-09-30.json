@@ -1,0 +1,288 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-30T00:11:19.472Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "branch": "codex/vittrade-architecture-completion",
+  "origin": "http://127.0.0.1:4173",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "trading.empty",
+    "status": "passed",
+    "persona": "developer",
+    "route": "/w/trade/positions",
+    "operationIds": ["listOpenOrders", "listOrderHistory", "listOpenPositions"],
+    "observedOperationIds": ["listOpenOrders", "listOrderHistory", "listOpenPositions"],
+    "expectedDomainOperationCount": 3,
+    "coverage": "full_scenario_operations_browser_observed",
+    "visibleEmptyStates": {
+      "openOrders": true,
+      "orderHistory": true,
+      "positions": true,
+      "positionsUnavailable": false
+    },
+    "payloadItemCounts": {
+      "listOpenOrders": 0,
+      "listOrderHistory": 0,
+      "listOpenPositions": 0
+    },
+    "operationRequestCounts": {
+      "listOpenOrders": 1,
+      "listOrderHistory": 1,
+      "listOpenPositions": 1
+    },
+    "operationResponseCounts": {
+      "listOpenOrders": 1,
+      "listOrderHistory": 1,
+      "listOpenPositions": 1
+    },
+    "writeRequestCount": 0,
+    "screenshots": {
+      "openOrders": "preview-trading-empty-open-orders-2026-09-30.png",
+      "orderHistory": "preview-trading-empty-history-2026-09-30.png",
+      "positions": "preview-trading-empty-positions-2026-09-30.png"
+    }
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false,
+    "tradingWriteRequestCount": 0,
+    "unexpectedTradingRequestCount": 0
+  },
+  "measurements": {
+    "totalFlowMs": 885,
+    "apiRequestCount": 11,
+    "apiResponseCount": 11,
+    "operationResponses": [
+      {
+        "method": "GET",
+        "path": "/api/trading/orders",
+        "operationId": "listOpenOrders",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 6
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/orders/history",
+        "operationId": "listOrderHistory",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 14
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "operationId": "listOpenPositions",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      }
+    ],
+    "apiFailures": [
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null,
+        "failure": "net::ERR_ABORTED",
+        "hadResponse": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null,
+        "failure": "net::ERR_ABORTED",
+        "hadResponse": true
+      }
+    ],
+    "unmatchedApiFailureCount": 0,
+    "pageErrors": [],
+    "externalApiOriginCount": 0
+  },
+  "apiRequests": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "operationId": null,
+      "startedAt": 1790727079830
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1790727079873
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "startedAt": 1790727080043
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1790727080043
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": null,
+      "startedAt": 1790727080057
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1790727080059
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1790727080072
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "operationId": null,
+      "startedAt": 1790727080072
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/orders",
+      "operationId": "listOpenOrders",
+      "startedAt": 1790727080234
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/orders/history",
+      "operationId": "listOrderHistory",
+      "startedAt": 1790727080324
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "startedAt": 1790727080426
+    }
+  ],
+  "apiResponses": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "operationId": null,
+      "status": 401,
+      "fromServiceWorker": true,
+      "elapsedMs": 17
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "status": 204,
+      "fromServiceWorker": true,
+      "elapsedMs": 14
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 15
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 3
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 5
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 7
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 7
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/orders",
+      "operationId": "listOpenOrders",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 6
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/orders/history",
+      "operationId": "listOrderHistory",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 14
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 3
+    }
+  ],
+  "sourceHashes": {
+    "contracts/openapi/trading.yaml": "ea87584c03ab69a0d552d80590e36e15ab7b38851cc1583d9c892bbb91f19437",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "8382400738090945e6c3ec53286f288f0ed2d41c90dbd407eec2b48d36d347ae",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "6deef3b43c51e05c9cd058d8743b23b64a86579f474ce0486830359ac50ac200",
+    "src/dev/mocks/trading-fixtures.ts": "b082e4bc4094a4d7b36f41897ce9b27ea4c487fd3bf714622baf2f91fe2153cf",
+    "src/features/trading/routes.ts": "cb268f664e4c0fadd39ab1cd1430dd968b1700dc49dab56fb1f4782b524d0385",
+    "src/features/trading/api/trading-api.ts": "bfd385aba4911e0640567e88dd5b5c9352eea553cda7518cfb28f9009a1c32fa",
+    "src/features/trading/model/trading-queries.ts": "344352bcfc5ea4a209fb0a28a69417330f5f2e5cb87775fd90661b3a51202e5b",
+    "src/features/trading/pages/OrdersHistoryPage.tsx": "09ffca5acbed32f1368ed88cd2547935f41083c98eb7d8c8d736c9fea820dfdb",
+    "src/features/trading/pages/OpenPositionsPage.tsx": "709874871e1a37f5ec0d8096188357a72349a08fb6495536c1c9ddf85097c2b1",
+    "src/features/trading/components/OpenOrdersPanel.tsx": "7c515de1a8b648b1273a6fabe303e04292a2dea9d3ed31bfad3d69eabdbb40f7",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/useAuth.ts": "65d58cfe61d4618a1849da066ecd4d6ae7c94c036af7361a91a1383a6b383e0b",
+    "docs/architecture/production-readiness/evidence/A06/run-trading-empty-browser-check.mjs": "ebd9593d38ef6c2f7f8d300375e62a65729998fc5a632072124555d8ff1720ea"
+  },
+  "limitations": "Local Chromium and service-worker/MSW evidence only. Empty fixture responses do not establish backend completeness, account position state, persistence, user acceptance or staging readiness."
+}

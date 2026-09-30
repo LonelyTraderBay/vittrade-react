@@ -1,0 +1,63 @@
+{
+  "observedAt": "2026-09-27T15:17:54Z",
+  "taskId": "A05",
+  "stepId": "A05.05",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "commandResults": [
+    {
+      "command": "node node_modules/vitest/vitest.mjs run src/features/auth/pages",
+      "result": "pass",
+      "actual": "12 test files passed; 70/70 tests passed.",
+      "artifact": "auth-tests.log"
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc --noEmit -p tsconfig.json",
+      "result": "pass",
+      "actual": "Exit 0; no diagnostics.",
+      "artifact": "app-types.log"
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc --noEmit -p tsconfig.node.json",
+      "result": "pass",
+      "actual": "Exit 0; no diagnostics.",
+      "artifact": "node-types.log"
+    },
+    {
+      "command": "node node_modules/eslint/bin/eslint.js <two auth pages, two API-mode tests, env.ts, and production gate>",
+      "result": "pass",
+      "actual": "Exit 0; no lint diagnostics.",
+      "artifact": "auth-eslint.log"
+    },
+    {
+      "command": "node node_modules/prettier/bin/prettier.cjs --check <changed auth/env/gate files and production-readiness runbook/plan/evidence helper>",
+      "result": "pass",
+      "actual": "All matched files use project formatting.",
+      "artifact": "format.log"
+    },
+    {
+      "command": "node scripts/check-env-boundary.mjs",
+      "result": "pass",
+      "actual": "815 source files inspected.",
+      "artifact": "environment-boundary.log"
+    },
+    {
+      "command": "node scripts/check-production-mock-imports.mjs",
+      "result": "pass",
+      "actual": "0 legacy fixture page consumers; fixture data isolated under src/dev/mocks.",
+      "artifact": "mock-import-boundary.log"
+    },
+    {
+      "command": "node scripts/check-production-route-boundaries.mjs",
+      "result": "pass",
+      "actual": "17 explicit route guards; 0 routed mock pages; 2 routed demo pages development-only.",
+      "artifact": "route-boundary.log"
+    },
+    {
+      "command": "node node_modules/dependency-cruiser/bin/dependency-cruiser.mjs src --config .dependency-cruiser.cjs --validate",
+      "result": "pass",
+      "actual": "851 modules, 4,565 dependencies, 0 violations.",
+      "artifact": "architecture.log"
+    }
+  ],
+  "note": "An initial direct import.meta.env read from feature pages was rejected by the repository env boundary; isProductionBuild was moved into src/shared/config/env.ts and the final env boundary check passed."
+}

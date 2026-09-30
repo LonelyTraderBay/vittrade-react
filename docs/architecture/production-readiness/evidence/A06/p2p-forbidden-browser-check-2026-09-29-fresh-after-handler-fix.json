@@ -1,0 +1,95 @@
+{
+  "checkedAt": "2026-09-29T17:45:13.004Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "branch": "codex/vittrade-architecture-completion",
+  "origin": "http://127.0.0.1:5190",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "p2p.forbidden",
+    "status": "passed",
+    "persona": "developer (preview only)",
+    "route": "/w/p2p/escrow/p2p002",
+    "operationIds": ["getP2POrder", "createP2PReleaseChallenge"],
+    "expectedDomainOperationCount": 42,
+    "coverage": "representative_browser_observed"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allP2PResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false
+  },
+  "measurements": {
+    "totalFlowMs": 1903,
+    "orderAndChallengeFlowMs": 248,
+    "p2pResponseCount": 2,
+    "p2pMutationCount": 1,
+    "verifyRequestCount": 0,
+    "releaseRequestCount": 0,
+    "totalApiRequestCount": 5,
+    "pageErrorCount": 0
+  },
+  "assertions": {
+    "getP2POrder": {
+      "method": "GET",
+      "path": "/api/p2p/orders/p2p002",
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    "createP2PReleaseChallenge": {
+      "method": "POST",
+      "path": "/api/p2p/orders/p2p002/release/challenge",
+      "status": 403,
+      "fromServiceWorker": true,
+      "permissionDeniedMessageVisible": true
+    },
+    "verifyRequests": [],
+    "releaseRequests": [],
+    "route": "/w/p2p/escrow/p2p002",
+    "p2pResponses": [
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders/p2p002",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders/p2p002/release/challenge",
+        "status": 403,
+        "fromServiceWorker": true
+      }
+    ],
+    "p2pMutations": [
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders/p2p002/release/challenge"
+      }
+    ],
+    "p2pRequestFailures": [],
+    "pageErrors": []
+  },
+  "screenshot": "preview-p2p-forbidden-escrow-2026-09-29-fresh-after-handler-fix.png",
+  "sourceHashes": {
+    "contracts/openapi/p2p.yaml": "17d7e0c1b198d6adadc9d5a0519c029084257c82132e8e4391891c5e92c2c576",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "6deef3b43c51e05c9cd058d8743b23b64a86579f474ce0486830359ac50ac200",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/p2p/api/p2p-api.ts": "164f6424133e159b1b8dd5a6e23a0bdcd3c5a14c294d1a808cba09d552230b83",
+    "src/features/p2p/model/p2p-queries.ts": "ffd2c7858077214151b372380619090eb9b6dcac677e418891209ec46822001c",
+    "src/features/p2p/pages/P2PEscrowDetailPage.tsx": "90f39e38073ff3f7f1a9e650bb1f5f5d43a29f6131b3910ee742e7074b07c4a8",
+    "src/features/p2p/routes.ts": "70de2d9cae22dfb45031be5cbe5fe858a863aa2bb82b266bea39ce4137e1dbee",
+    "docs/architecture/production-readiness/evidence/A06/run-p2p-forbidden-browser-check.mjs": "59e17d013c122138fdc4a7b007148266876dd978f3eeb9bfa71bf99f78feb4a4"
+  },
+  "limitations": [
+    "The OpenAPI contract declares 403 for createP2PReleaseChallenge. The response and least-privilege boundary are still exercised through local MSW only, not backend authorization.",
+    "Only getP2POrder and createP2PReleaseChallenge were observed, two of 42 linked P2P operations; coverage remains representative.",
+    "No challenge verification or escrow release was sent. This does not establish user acceptance or the /w/p2p/my-orders alias."
+  ]
+}

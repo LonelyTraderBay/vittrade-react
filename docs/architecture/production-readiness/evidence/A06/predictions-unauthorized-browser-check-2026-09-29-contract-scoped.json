@@ -1,0 +1,209 @@
+{
+  "checkedAt": "2026-09-29T19:33:03.136Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "branch": "codex/vittrade-architecture-completion",
+  "origin": "http://127.0.0.1:4173",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "predictions.unauthorized",
+    "status": "passed",
+    "persona": "developer (preview only)",
+    "operationIds": [
+      "listPredictionEvents",
+      "getPredictionEvent",
+      "listPredictionPositions",
+      "listPredictionRewards",
+      "listPredictionLeaderboard",
+      "listPredictionActivity",
+      "placePredictionOrder",
+      "getPredictionOrderReceipt"
+    ],
+    "observedOperationIds": ["listPredictionEvents", "listPredictionPositions"],
+    "contractUnauthorizedOperationIds": ["listPredictionEvents", "listPredictionPositions"],
+    "expectedDomainOperationCount": 8,
+    "coverage": "representative_browser_observed"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "observedNetworkApiResponseCount": 9,
+    "runnerInterceptedAuthRefreshResponsesAreNotNetworkResponses": true,
+    "authRefreshContractFixtures": [
+      {
+        "method": "POST",
+        "path": "/api/auth/refresh",
+        "status": 200,
+        "body": null,
+        "source": "runner-local contract fixture; request not sent to service worker or backend"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/refresh",
+        "status": 200,
+        "body": null,
+        "source": "runner-local contract fixture; request not sent to service worker or backend"
+      }
+    ],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false,
+    "externalApiOrigins": []
+  },
+  "measurements": {
+    "totalFlowMs": 683,
+    "networkApiResponseCount": 9,
+    "predictionRequestCount": 2,
+    "prediction401ResponseCount": 2,
+    "authRefreshContractFixtureCount": 2,
+    "unauthorizedRedirectCount": 2,
+    "unsupportedPredictionRequestCount": 0,
+    "pageErrorCount": 0
+  },
+  "assertions": {
+    "routes": [
+      {
+        "protectedRoute": "/w/markets/predictions",
+        "resultRoute": "/auth/login",
+        "response": {
+          "method": "GET",
+          "path": "/api/predictions/events?status=active",
+          "operationId": "listPredictionEvents",
+          "status": 401,
+          "fromServiceWorker": true
+        },
+        "staleProtectedRouteVisible": false
+      },
+      {
+        "protectedRoute": "/w/markets/predictions/portfolio",
+        "resultRoute": "/auth/login",
+        "response": {
+          "method": "GET",
+          "path": "/api/predictions/positions",
+          "operationId": "listPredictionPositions",
+          "status": 401,
+          "fromServiceWorker": true
+        },
+        "staleProtectedRouteVisible": false
+      }
+    ],
+    "apiResponses": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "status": 204,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "status": 204,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs?limit=50",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/positions",
+        "status": 401,
+        "fromServiceWorker": true
+      }
+    ],
+    "predictionRequests": [
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "operationId": "listPredictionEvents"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/positions",
+        "operationId": "listPredictionPositions"
+      }
+    ],
+    "predictionResponses": [
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "operationId": "listPredictionEvents",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/positions",
+        "operationId": "listPredictionPositions",
+        "status": 401,
+        "fromServiceWorker": true
+      }
+    ],
+    "unsupportedPredictionRequests": [],
+    "predictionRequestFailures": [],
+    "pageErrors": []
+  },
+  "screenshots": {
+    "events": "preview-predictions-unauthorized-events-2026-09-29-contract-scoped.png",
+    "portfolio": "preview-predictions-unauthorized-portfolio-2026-09-29-contract-scoped.png"
+  },
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b",
+    "contracts/openapi/predictions.yaml": "146a0442f6879fc50dc53c9f74d104837092d06edcfcf3e68537454b3e8c556b",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "93fd4a5f1a7637be2b10775edd8dfbd6e2562f1db3c90112dc3a5959519ca398",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "6deef3b43c51e05c9cd058d8743b23b64a86579f474ce0486830359ac50ac200",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/auth/api/auth-api.ts": "050846c48de49be56f6bdf6a73669b5d3a6230c559e33851cd07840609fca078",
+    "src/features/predictions/api/predictions-api.ts": "122853909253981bc9274bba29e022111d6b5ca58da81d9d9a28f0c59cbf7b87",
+    "src/features/predictions/model/prediction-queries.ts": "03dd010790608dd086de73d18e88b33c0295b61dd73e9c1ad35227e6076470ca",
+    "src/features/predictions/pages/PredictionContractPages.tsx": "74fa8076f0f69751850ab77ba7032a199fcc611c68dca7d11ef5bbe55522bdfe",
+    "src/features/predictions/routes.ts": "1356d898100c0bd6c6dc5b266d85fe62dc268dc09f353db574a782c4763ad4f3",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",
+    "docs/architecture/production-readiness/evidence/A06/run-predictions-unauthorized-browser-check.mjs": "1aa66294bacddce2100a72c9155ac7d30a09a2d1539864eddac83276b13e6590"
+  },
+  "limitations": [
+    "The Predictions OpenAPI contract declares 401 for listPredictionEvents and listPredictionPositions only; the other six domain operations were not exercised in this unauthorized scenario.",
+    "The local preview scenario handler applies 401 to Predictions requests. This runner visits only the two contract-declared protected reads and asserts no other Predictions operation was requested.",
+    "Auth OpenAPI does not declare 401 for refreshSession. The runner intercepts that fetch before network dispatch and returns its contract-declared 200/null response; it does not claim service-worker or backend evidence for refresh.",
+    "Local Chromium/MSW and the runner-local refresh fixture do not verify backend authorization, persistence, staging, production or user acceptance."
+  ]
+}

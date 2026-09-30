@@ -1,0 +1,37 @@
+{
+  "evidenceId": "EV-20260929-445",
+  "taskId": "A08",
+  "stepId": "A08.04",
+  "observedAt": "2026-09-29T12:29:20.000Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "environment": "Windows local checkout; Node.js; Vitest 4.1.11; temporary OpenAPI fixture directories",
+  "command": "node node_modules/vitest/vitest.mjs run scripts/check-openapi-contracts.test.mjs",
+  "result": "pass",
+  "counts": {
+    "testFilesPassed": 1,
+    "testsPassed": 10,
+    "testsFailed": 0
+  },
+  "cases": [
+    "Valid inherited /auth policy with no generic Idempotency-Key/permission requirement, plus all four exact reason-bearing Wallet/P2P challenge exceptions",
+    "Business mutation missing Idempotency-Key",
+    "Optional Idempotency-Key",
+    "Missing business permission list",
+    "Duplicate operationId",
+    "Empty mutation responses",
+    "Missing operation or inherited security declaration",
+    "Changed reason for a listed challenge exception",
+    "Removed listed challenge exception",
+    "Unlisted challenge-like business mutation remains subject to generic guards"
+  ],
+  "fixtureExecution": "Each test launches the real checker as a child process against an isolated temporary contracts/openapi fixture and removes the fixture directory afterward.",
+  "sourceHashes": {
+    "scripts/check-openapi-contracts.mjs": "8367c9b873a5f9934c329a315b622a1e61a573d82f7f9d400c77481015c516f1",
+    "scripts/check-openapi-contracts.test.mjs": "1b9166e1ccb8ae2aa6150b5bca3d4dcb2003b2414ade1642fd323c51527266bc"
+  },
+  "limitations": [
+    "Exercises the frontend repository contract gate and policy fixtures only; does not prove backend authorization, runtime idempotency, persistence, staging or production behavior.",
+    "Permission candidates for 23 P2P operations remain draft_frontend pending backend owner review.",
+    "UI acceptance remains 0/128; backend/staging remains 0/154."
+  ]
+}

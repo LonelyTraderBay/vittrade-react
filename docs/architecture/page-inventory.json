@@ -10,25 +10,25 @@
     "src/app/services"
   ],
   "summary": {
-    "pageCount": 128,
-    "routeCount": 428,
+    "pageCount": 129,
+    "routeCount": 427,
     "componentCount": 149,
     "dataModuleCount": 0,
     "serviceCount": 32,
-    "mockCount": 22,
+    "mockCount": 28,
     "pageStatus": {
       "production": 0,
-      "integration-pending": 126,
+      "integration-pending": 125,
       "demo": 2,
       "deprecated": 0,
-      "not-implemented": 0
+      "not-implemented": 2
     },
     "pageOwner": {
       "features/dca": 5,
       "features/p2p": 28,
       "app/platform": 2,
       "features/wallet": 16,
-      "features/admin": 3,
+      "features/admin": 4,
       "features/arena": 2,
       "features/auth": 13,
       "features/discovery": 1,
@@ -41,7 +41,7 @@
       "features/support": 4,
       "features/trading": 18
     },
-    "pagesWithMockReferences": 0,
+    "pagesWithMockReferences": 2,
     "pagesWithDirectRuntimeAccess": 0
   },
   "pages": [
@@ -276,15 +276,16 @@
       "domain": "admin",
       "owner": "features/admin",
       "status": "integration-pending",
-      "lines": 56,
+      "lines": 64,
       "routePaths": [
         "admin/abtests"
       ],
       "dependencies": {
         "localImports": [
           "../model/admin-queries",
+          "./AdminQueryErrorState",
           "@/shared/hooks/useThemeColors",
-          "@/shared/ui/ErrorState",
+          "@/shared/ui/EmptyState",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
@@ -303,15 +304,16 @@
       "domain": "admin",
       "owner": "features/admin",
       "status": "integration-pending",
-      "lines": 47,
+      "lines": 55,
       "routePaths": [
         "admin/funnels"
       ],
       "dependencies": {
         "localImports": [
           "../model/admin-queries",
+          "./AdminQueryErrorState",
           "@/shared/hooks/useThemeColors",
-          "@/shared/ui/ErrorState",
+          "@/shared/ui/EmptyState",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
@@ -330,7 +332,7 @@
       "domain": "admin",
       "owner": "features/admin",
       "status": "integration-pending",
-      "lines": 57,
+      "lines": 59,
       "routePaths": [
         "admin",
         "admin/analytics"
@@ -338,12 +340,32 @@
       "dependencies": {
         "localImports": [
           "../model/admin-queries",
+          "./AdminQueryErrorState",
           "@/shared/hooks/useThemeColors",
-          "@/shared/ui/ErrorState",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
           "@/shared/ui/layout/PageLayout"
+        ],
+        "mockReferences": [],
+        "directRuntimeAccess": {
+          "fetch": false,
+          "websocket": false,
+          "storage": false
+        }
+      }
+    },
+    {
+      "path": "src/features/admin/pages/AdminQueryErrorState.tsx",
+      "domain": "admin",
+      "owner": "features/admin",
+      "status": "not-implemented",
+      "lines": 21,
+      "routePaths": [],
+      "dependencies": {
+        "localImports": [
+          "@/shared/api/api-error",
+          "@/shared/ui/ErrorState"
         ],
         "mockReferences": [],
         "directRuntimeAccess": {
@@ -390,7 +412,7 @@
       "domain": "arena",
       "owner": "features/arena",
       "status": "integration-pending",
-      "lines": 227,
+      "lines": 229,
       "routePaths": [
         "arena"
       ],
@@ -419,7 +441,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 217,
+      "lines": 219,
       "routePaths": [
         "login"
       ],
@@ -434,7 +456,9 @@
           "@/shared/ui/layout/PageContent",
           "@/shared/ui/layout/PageLayout"
         ],
-        "mockReferences": [],
+        "mockReferences": [
+          "isAuthFixtureMode"
+        ],
         "directRuntimeAccess": {
           "fetch": false,
           "websocket": false,
@@ -657,7 +681,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 438,
+      "lines": 464,
       "routePaths": [
         "login"
       ],
@@ -670,7 +694,9 @@
           "@/shared/theme/webTokens",
           "@/shared/ui/auth/WebAuthBrandPanel"
         ],
-        "mockReferences": [],
+        "mockReferences": [
+          "isAuthFixtureMode"
+        ],
         "directRuntimeAccess": {
           "fetch": false,
           "websocket": false,
@@ -860,7 +886,7 @@
       "domain": "discovery",
       "owner": "features/discovery",
       "status": "integration-pending",
-      "lines": 326,
+      "lines": 348,
       "routePaths": [
         "search",
         "topic/:topicId",
@@ -870,6 +896,7 @@
         "localImports": [
           "../model/discovery-queries",
           "../model/discovery-types",
+          "@/shared/api/api-error",
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/ui/ErrorState",
@@ -956,7 +983,7 @@
       "domain": "earn",
       "owner": "features/earn",
       "status": "integration-pending",
-      "lines": 345,
+      "lines": 359,
       "routePaths": [
         "earn/savings/product/:productId",
         "earn/savings/receipt",
@@ -1169,7 +1196,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 372,
+      "lines": 375,
       "routePaths": [
         "markets/depth",
         "pair/:pairId/depth"
@@ -1433,13 +1460,14 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 415,
+      "lines": 433,
       "routePaths": [
         "markets/alerts"
       ],
       "dependencies": {
         "localImports": [
           "@/features/market",
+          "@/shared/api/api-error",
           "@/shared/hooks/useThemeColors",
           "@/shared/lib/formatNumber",
           "@/shared/session/useAuth",
@@ -1666,7 +1694,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 286,
+      "lines": 302,
       "routePaths": [
         "markets/watchlist"
       ],
@@ -1674,6 +1702,7 @@
         "localImports": [
           "../lib/mutation-attempts",
           "@/features/market",
+          "@/shared/api/api-error",
           "@/shared/hooks/useThemeColors",
           "@/shared/lib/formatNumber",
           "@/shared/navigation/useRoutePrefix",
@@ -1782,7 +1811,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 231,
+      "lines": 239,
       "routePaths": [
         "p2p/ad/:id"
       ],
@@ -1790,6 +1819,7 @@
         "localImports": [
           "../model/p2p-ad-queries",
           "../model/p2p-order-creation-queries",
+          "@/shared/api/api-error",
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
@@ -2018,15 +2048,13 @@
       "path": "src/features/p2p/pages/P2PEscrowDetailPage.tsx",
       "domain": "p2p",
       "owner": "features/p2p",
-      "status": "integration-pending",
-      "lines": 340,
-      "routePaths": [
-        "p2p/escrow/:orderId",
-        "p2p/order/:orderId"
-      ],
+      "status": "not-implemented",
+      "lines": 374,
+      "routePaths": [],
       "dependencies": {
         "localImports": [
           "../model/p2p-order-action-queries",
+          "@/shared/api/api-error",
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
@@ -2332,7 +2360,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 263,
+      "lines": 276,
       "routePaths": [
         "p2p/my-orders",
         "p2p/order-room"
@@ -2513,7 +2541,7 @@
       "domain": "predictions",
       "owner": "features/predictions",
       "status": "integration-pending",
-      "lines": 429,
+      "lines": 436,
       "routePaths": [
         "activity",
         "breaking",
@@ -2579,7 +2607,7 @@
       "domain": "profile",
       "owner": "features/profile",
       "status": "integration-pending",
-      "lines": 79,
+      "lines": 87,
       "routePaths": [
         "profile/activity"
       ],
@@ -2721,7 +2749,7 @@
       "domain": "profile",
       "owner": "features/profile",
       "status": "integration-pending",
-      "lines": 67,
+      "lines": 73,
       "routePaths": [
         "profile/sub-accounts"
       ],
@@ -2748,13 +2776,14 @@
       "domain": "referral",
       "owner": "features/referral",
       "status": "integration-pending",
-      "lines": 132,
+      "lines": 156,
       "routePaths": [
         "referral"
       ],
       "dependencies": {
         "localImports": [
           "../model/referral-queries",
+          "@/shared/api/api-error",
           "@/shared/hooks/useThemeColors",
           "@/shared/ui/ErrorState",
           "@/shared/ui/TrCard",
@@ -2859,7 +2888,7 @@
       "domain": "support",
       "owner": "features/support",
       "status": "integration-pending",
-      "lines": 129,
+      "lines": 130,
       "routePaths": [
         "support"
       ],
@@ -3105,7 +3134,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 208,
+      "lines": 216,
       "routePaths": [
         "trade/positions"
       ],
@@ -3700,7 +3729,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 396,
+      "lines": 418,
       "routePaths": [
         "wallet"
       ],
@@ -3762,7 +3791,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 362,
+      "lines": 398,
       "routePaths": [
         "wallet/transfer"
       ],
@@ -3815,7 +3844,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 272,
+      "lines": 282,
       "routePaths": [
         "wallet/withdraw",
         "wallet/withdraw/:asset"
@@ -3964,15 +3993,11 @@
     {
       "path": "arena",
       "component": "ArenaHomePage",
-      "developmentOnly": false,
-      "source": "src/app/routeConfig.ts"
-    },
-    {
-      "path": "arena",
-      "component": "WebArenaHomePage",
       "target": "@/features/arena/pages/ArenaDiscoveryPage",
-      "developmentOnly": true,
-      "source": "src/app/routes.ts",
+      "developmentOnly": false,
+      "source": "src/app/routeConfig.ts",
+      "componentSlot": "ArenaHomePage",
+      "routeFactory": "createProtectedRoutes",
       "pageTarget": "src/features/arena/pages/ArenaDiscoveryPage.tsx"
     },
     {
@@ -5091,11 +5116,9 @@
     },
     {
       "path": "p2p/escrow/:orderId",
-      "component": "P2PEscrowDetailPage",
-      "target": "./pages/P2PEscrowDetailPage",
+      "component": "P2PEscrowDetailRoute",
       "developmentOnly": false,
-      "source": "src/features/p2p/routes.ts",
-      "pageTarget": "src/features/p2p/pages/P2PEscrowDetailPage.tsx"
+      "source": "src/features/p2p/routes.ts"
     },
     {
       "path": "p2p/escrow/balance",
@@ -5283,11 +5306,9 @@
     },
     {
       "path": "p2p/order/:orderId",
-      "component": "P2PEscrowDetailPage",
-      "target": "./pages/P2PEscrowDetailPage",
+      "component": "P2PEscrowDetailRoute",
       "developmentOnly": false,
-      "source": "src/features/p2p/routes.ts",
-      "pageTarget": "src/features/p2p/pages/P2PEscrowDetailPage.tsx"
+      "source": "src/features/p2p/routes.ts"
     },
     {
       "path": "p2p/order/cancel/:orderId",
@@ -7654,6 +7675,10 @@
       "domain": "platform"
     },
     {
+      "path": "src/dev/mocks/browser-policy.ts",
+      "domain": "platform"
+    },
+    {
       "path": "src/dev/mocks/browser.ts",
       "domain": "platform"
     },
@@ -7694,6 +7719,14 @@
       "domain": "platform"
     },
     {
+      "path": "src/dev/mocks/market-preview-fixtures.ts",
+      "domain": "platform"
+    },
+    {
+      "path": "src/dev/mocks/personas.ts",
+      "domain": "platform"
+    },
+    {
       "path": "src/dev/mocks/prediction-chart-fixtures.ts",
       "domain": "platform"
     },
@@ -7702,11 +7735,23 @@
       "domain": "platform"
     },
     {
+      "path": "src/dev/mocks/preview-scenario-handler.ts",
+      "domain": "platform"
+    },
+    {
       "path": "src/dev/mocks/referral-fixtures.ts",
       "domain": "platform"
     },
     {
+      "path": "src/dev/mocks/retire-worker.ts",
+      "domain": "platform"
+    },
+    {
       "path": "src/dev/mocks/rewards-fixtures.ts",
+      "domain": "platform"
+    },
+    {
+      "path": "src/dev/mocks/scenario-runtime.ts",
       "domain": "platform"
     },
     {

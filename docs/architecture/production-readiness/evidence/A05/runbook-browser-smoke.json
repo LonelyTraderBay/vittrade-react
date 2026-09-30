@@ -1,0 +1,45 @@
+{
+  "purpose": "Verify the documented local browser entry points and distinguish the mock preview from an API-mode shell; not backend certification.",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "observedAt": "2026-09-27T14:46:26Z",
+  "environment": {
+    "os": "Windows",
+    "browser": "Codex In-app Browser",
+    "nodeVersion": "24.19.0",
+    "viteVersion": "6.4.3"
+  },
+  "mockMode": {
+    "url": "http://127.0.0.1:4173/w/markets",
+    "hostHttpStatus": 200,
+    "browserObservation": "The Markets page shows the mock warning, preview panel, and 2/2 BTC/USDT and ETH/USDT fixture rows.",
+    "evidence": "docs/architecture/production-readiness/evidence/A05/preview-ui-smoke.json"
+  },
+  "apiMode": {
+    "dataSource": "api",
+    "apiBaseUrl": "https://api.example.invalid",
+    "url": "http://127.0.0.1:4174/w/auth/login",
+    "hostHttpStatus": 200,
+    "browserObservation": {
+      "loginHeadingVisible": true,
+      "mockWarningVisible": false,
+      "previewControlPanelPresent": false,
+      "developmentDemoCredentialsVisible": true
+    },
+    "submittedLogin": false,
+    "backendRequestsCertified": false,
+    "note": "Development-only demo credentials and the Demo button still appear on the login page in API mode. Do not submit them to a backend; A05.05 tracks hiding mock-only login hints and verifying API-mode error behavior."
+  },
+  "runbookValidation": {
+    "localMarkdownLinks": 17,
+    "missingLinks": 0,
+    "prettier": "pass",
+    "mockUrlProbe": "HTTP 200",
+    "apiUrlProbe": "HTTP 200",
+    "runCommand": "node .\node_modules\vite\bin\vite.js --host 127.0.0.1 --port 4174 --strictPort"
+  },
+  "limitations": [
+    "Both Vite development servers used local fixture or placeholder API configuration; no real backend was contacted for certification.",
+    "No login form was submitted and no transaction was performed.",
+    "This checks the documented entry pages and commands, not every page or route."
+  ]
+}

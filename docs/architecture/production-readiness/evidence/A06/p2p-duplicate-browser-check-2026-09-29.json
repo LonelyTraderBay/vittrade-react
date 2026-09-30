@@ -1,0 +1,216 @@
+{
+  "checkedAt": "2026-09-29T10:05:46.795Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "branch": "codex/vittrade-architecture-completion",
+  "origin": "http://127.0.0.1:4173",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "p2p.duplicate",
+    "status": "passed",
+    "persona": "developer (preview only)",
+    "route": "/w/p2p/escrow/p2p002",
+    "additionalRoutes": ["/w/p2p/ad/ad001", "/w/p2p/escrow/p2p001"],
+    "operationIds": ["createP2POrder", "getP2POrder", "markP2POrderPaid", "releaseP2POrderEscrow"],
+    "observedOperationIds": [
+      "createP2POrder",
+      "getP2POrder",
+      "markP2POrderPaid",
+      "releaseP2POrderEscrow"
+    ],
+    "supportingOperationIds": [
+      "getP2PAd",
+      "createP2PReleaseChallenge",
+      "verifyP2PReleaseChallenge"
+    ],
+    "expectedDomainOperationCount": 42,
+    "coverage": "representative_browser_observed"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allP2PResponsesFromServiceWorker": true,
+    "localConflictFixturesOnly": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false
+  },
+  "measurements": {
+    "totalFlowMs": 2743,
+    "p2pResponseCount": 10,
+    "p2pMutationCount": 5,
+    "createConflictResponseMs": 17,
+    "markPaidConflictResponseMs": 14,
+    "releaseConflictResponseMs": 15,
+    "totalApiRequestCount": 15,
+    "observationWindowAfterEachConflictMs": 500,
+    "pageErrorCount": 0
+  },
+  "assertions": {
+    "ad": {
+      "status": 200,
+      "id": "ad001"
+    },
+    "create": {
+      "status": 409,
+      "code": "P2P_ORDER_CONFLICT",
+      "idempotencyKeyPresent": true,
+      "requestCount": 1,
+      "conflictGuidanceVisible": true,
+      "route": "/w/p2p/ad/ad001",
+      "responseTimeMs": 17
+    },
+    "markPaid": {
+      "initialOrderStatus": "pending_payment",
+      "status": 409,
+      "code": "P2P_ORDER_CONFLICT",
+      "idempotencyKeyPresent": true,
+      "requestCount": 1,
+      "refreshedOrderStatus": "pending_payment",
+      "conflictGuidanceVisible": true,
+      "route": "/w/p2p/escrow/p2p001",
+      "responseTimeMs": 14
+    },
+    "release": {
+      "initialOrderStatus": "paid",
+      "challengeStatus": 201,
+      "verificationStatus": 200,
+      "status": 409,
+      "code": "P2P_ORDER_CONFLICT",
+      "idempotencyKeyPresent": true,
+      "requestCount": 1,
+      "refreshedOrderStatus": "paid",
+      "conflictGuidanceVisible": true,
+      "route": "/w/p2p/escrow/p2p002",
+      "responseTimeMs": 15
+    },
+    "p2pResponses": [
+      {
+        "method": "GET",
+        "path": "/api/p2p/ads/ad001",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 4
+      },
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders",
+        "status": 409,
+        "fromServiceWorker": true,
+        "responseTimeMs": 17
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders/p2p001",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 3
+      },
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders/p2p001/mark-paid",
+        "status": 409,
+        "fromServiceWorker": true,
+        "responseTimeMs": 14
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders/p2p001",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 4
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders/p2p002",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 3
+      },
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders/p2p002/release/challenge",
+        "status": 201,
+        "fromServiceWorker": true,
+        "responseTimeMs": 16
+      },
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders/p2p002/release/challenge/dev-p2p-release-challenge-0001/verify",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 15
+      },
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders/p2p002/release",
+        "status": 409,
+        "fromServiceWorker": true,
+        "responseTimeMs": 15
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders/p2p002",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 4
+      }
+    ],
+    "p2pMutations": [
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders",
+        "idempotencyKey": "p2p-ad-order-4362a258-2170-4b87-8241-a96e78d53484"
+      },
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders/p2p001/mark-paid",
+        "idempotencyKey": "p2p-mark-paid-p2p001-4c09cdb1-9605-4f71-9cc8-4ed37d968da8"
+      },
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders/p2p002/release/challenge",
+        "idempotencyKey": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders/p2p002/release/challenge/dev-p2p-release-challenge-0001/verify",
+        "idempotencyKey": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders/p2p002/release",
+        "idempotencyKey": "p2p-escrow-release-p2p002-7002f4a4-0fe8-4b5f-813d-4940b27c6e04"
+      }
+    ],
+    "requestFailures": [],
+    "pageErrors": []
+  },
+  "screenshots": {
+    "create": "preview-p2p-duplicate-create-2026-09-29.png",
+    "mark-paid": "preview-p2p-duplicate-mark-paid-2026-09-29.png",
+    "release": "preview-p2p-duplicate-release-2026-09-29.png"
+  },
+  "sourceHashes": {
+    "contracts/openapi/p2p.yaml": "561131d2a9263d5788e3b103deb0bff8a32ca5b5dee780c5939ba1e1e98b0ea4",
+    "src/dev/PreviewControls.tsx": "4d68e898a2b468cf25c36d0528df0b546fb037e5c4dc6bfcda944be3ecd18759",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "93fd4a5f1a7637be2b10775edd8dfbd6e2562f1db3c90112dc3a5959519ca398",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "eee0cedd943c91585fb29756b9d06557412ed53d5ef05f378e67fd7aaffd27e0",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/p2p/api/p2p-api.ts": "164f6424133e159b1b8dd5a6e23a0bdcd3c5a14c294d1a808cba09d552230b83",
+    "src/features/p2p/model/p2p-order-creation-queries.ts": "b609efdfc5dca0e37f67a1a644829fed8ecf09fdf4ddf646ba763bc05c188f6c",
+    "src/features/p2p/model/p2p-order-action-queries.ts": "1ce6436aec2ec390e2c060b86743468375b2c478aab0e42f1a8c1963140a625e",
+    "src/features/p2p/pages/P2PAdDetailContractPage.tsx": "ed40c1cd81af7d8fdb506128cd549eb6593273880224c76938fe079b92036f65",
+    "src/features/p2p/pages/P2PEscrowDetailPage.tsx": "90f39e38073ff3f7f1a9e650bb1f5f5d43a29f6131b3910ee742e7074b07c4a8",
+    "src/features/p2p/routes.ts": "70de2d9cae22dfb45031be5cbe5fe858a863aa2bb82b266bea39ce4137e1dbee"
+  },
+  "limitations": [
+    "All conflict responses came from local MSW; this does not prove backend conflict or idempotency enforcement.",
+    "The UI preserved each route, displayed guidance, refreshed the known order after mark-paid/release conflicts, and sent each conflict mutation once during a 500 ms observation window.",
+    "A required Idempotency-Key being sent does not prove deduplication, same-key replay, persistence or safe unknown-outcome recovery.",
+    "Four of 42 linked P2P operations were observed; challenge/verify were supporting local operations."
+  ]
+}

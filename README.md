@@ -2,6 +2,18 @@
 
 Enterprise crypto trading frontend: React 18 + TypeScript (strict) + Vite + Tailwind 4 + Radix/shadcn UI, three platform shells (Phone `/` · Tablet `/t` · Web `/w`).
 
+## Bắt đầu đóng góp
+
+AI và người mới bắt đầu từ [AGENTS.md](AGENTS.md) và
+[workflow phát triển](docs/ai/WORKFLOW.md): cách đọc ngữ cảnh, chọn skill,
+kiểm chứng và bàn giao. [Hồ sơ dự án](docs/PROJECT_CONTEXT.md) ghi phạm vi khảo sát,
+thành phần, bộ Universal 3.1, lệnh có căn cứ và giới hạn bằng chứng; hai file Universal
+được giữ nguyên khi áp dụng. Khi tiếp tục chuẩn hóa frontend, dùng
+[PLAN.md](docs/architecture/production-readiness/PLAN.md) để chọn công việc và
+[TRACKING.json](docs/architecture/production-readiness/TRACKING.json) để xác minh
+checkpoint, bằng chứng và phần còn thiếu. Plugin là công cụ hỗ trợ tùy môi trường;
+tiêu chí nghiệm thu của repo áp dụng cho mọi người thực hiện.
+
 ## Commands
 
 | Command | Purpose |

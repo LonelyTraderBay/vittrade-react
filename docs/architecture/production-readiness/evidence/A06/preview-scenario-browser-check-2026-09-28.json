@@ -1,0 +1,59 @@
+{
+  "checkedAt": "2026-09-27T21:42:49.952Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "sourceHashes": {
+    "src/dev/PreviewControls.tsx": "6b0f333f99ccdfe089bfe5ef4928c7bc656820ed3cae9904561082d574a3d3dd",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/preview-scenario-handler.ts": "c78fd08df5f5e21b73d2358d0720b6bf7836e180872e613a149d25a07083bf68",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/market/api/market-api.ts": "3ab429a7948f319f4a3e1e0dc7973ab9e7f1c3ea78d7a217fb3a3093f68ea7fa",
+    "src/features/market/model/market-queries.ts": "bfb11787528086c9bdd12691ae19a451ff193c3d89c7d2c10d50242739052e85",
+    "src/features/market/pages/MarketOverviewPage.tsx": "6bd365548714f1ae9d20ff21c87099294675e33820f7cc8e9dbd1faabad9c879"
+  },
+  "origin": "http://127.0.0.1:4173",
+  "route": "/w/markets/overview",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenarios": [
+    {
+      "id": "market.loading",
+      "status": "passed",
+      "visibleLoadingState": true
+    },
+    {
+      "id": "market.error",
+      "status": "passed",
+      "visibleRetryAction": true
+    },
+    {
+      "id": "market.success",
+      "status": "passed",
+      "fixtureContentVisible": true
+    }
+  ],
+  "loadingResponse": {
+    "status": 200,
+    "fromServiceWorker": true
+  },
+  "errorResponse": {
+    "status": 503,
+    "fromServiceWorker": true
+  },
+  "resetToFixtureResponse": {
+    "status": 200,
+    "fromServiceWorker": true
+  },
+  "clearedScenarioResponse": {
+    "status": 200,
+    "fromServiceWorker": true
+  },
+  "externalApiOrigins": [],
+  "externalAssetOrigins": ["https://fonts.googleapis.com", "https://fonts.gstatic.com"],
+  "screenshot": "preview-market-error-2026-09-28.png",
+  "limits": [
+    "Development mock and one market overview route only; not a real backend or staging certification.",
+    "This run does not verify empty or financial pending/unknown/duplicate cases."
+  ]
+}

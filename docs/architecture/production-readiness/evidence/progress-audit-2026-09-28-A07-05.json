@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "taskId": "A07",
+  "stepId": "A07.05",
+  "observedAt": "2026-09-27T20:37:18Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "statusPurpose": "A07.05 route/shell verification and roadmap progress; not a production certification.",
+  "progress": {
+    "tasksDone": 6,
+    "tasksTotal": 38,
+    "tasksInProgress": 0,
+    "stepsDone": 30,
+    "stepsTotal": 205,
+    "stepsPercent": 14.6,
+    "taskA07StepsDone": 5,
+    "taskA07StepsTotal": 5,
+    "taskA07Percent": 100,
+    "architectureTasksDone": 6,
+    "architectureTasksTotal": 8,
+    "architectureStepsDone": 30,
+    "architectureStepsTotal": 40,
+    "architectureStepsPercent": 75,
+    "nextStep": "A06.01",
+    "blockedTasks": 0,
+    "blockedSteps": 0,
+    "milestones": {
+      "M1": "todo",
+      "M2": "todo",
+      "M3": "todo",
+      "M4": "todo"
+    }
+  },
+  "readinessEvidence": {
+    "generatedInventory": {
+      "pages": 128,
+      "routes": 428,
+      "components": 149,
+      "dataModules": 0,
+      "services": 32,
+      "mocks": 25,
+      "pagesWithMockReferences": 2,
+      "pagesWithDirectRuntimeAccess": 0,
+      "checkPassed": true,
+      "notes": "The two auth-page references are isAuthFixtureMode guards; the pages do not import fixture datasets directly."
+    },
+    "routeDeclarations": {
+      "total": 428,
+      "sourceUnclassified": 0,
+      "runtimeUrlResolved": 428,
+      "urlRegistrations": 1459,
+      "uniqueUrlTemplates": 1389,
+      "missingRuntimeUrls": 0
+    },
+    "menuTargets": {
+      "total": 44,
+      "unresolved": 0,
+      "generatorCheckPassed": true
+    },
+    "navigationActionSites": {
+      "sourceFiles": 110,
+      "total": 257,
+      "unclassified": 0,
+      "unresolvedLiteralTargets": 3,
+      "generatorCheckPassed": true
+    },
+    "routeContractAndInventoryTests": {
+      "filesPassed": 2,
+      "testsPassed": 18,
+      "testsFailed": 0,
+      "command": "node ./node_modules/vitest/vitest.mjs run scripts/generate-architecture-inventory.test.mjs src/app/router/route-contract.test.ts"
+    },
+    "stagingModeBrowserSmoke": {
+      "passed": 5,
+      "failed": 0,
+      "tests": [
+        "root redirect",
+        "responsive shell at 390x844",
+        "unauthenticated login boundary",
+        "canonical and legacy Launchpad detail aliases",
+        "market portfolio alias"
+      ],
+      "environment": "Local Vite preview of a staging-mode frontend build on 127.0.0.1:4174; e2e.invalid API configuration; backend not connected."
+    },
+    "priorRepresentativeMockBrowserChecks": {
+      "passed": 6,
+      "failed": 0,
+      "mockData": true
+    },
+    "productionSourcePages": {
+      "total": 128,
+      "uiCheckpointDone": 0,
+      "userAccepted": 0
+    },
+    "backendOperations": {
+      "total": 154,
+      "stagingVerified": 0
+    }
+  },
+  "regressionFixed": {
+    "source": "scripts/generate-architecture-inventory.mjs",
+    "test": "scripts/generate-architecture-inventory.test.mjs",
+    "behavior": "The inventory now records a route element constructed as React.createElement(RootLayout, ...) and excludes a React.createElement(Navigate, ...) index redirect from page-route records.",
+    "verification": "The regression test failed before the extractor fix and passed afterward; the final inventory check passes."
+  },
+  "openFindings": [
+    {
+      "id": "OTP-ACCOUNT-LOCKED-SHELL-ROUTES",
+      "ownerTaskId": "U01",
+      "pageId": "PAGE-d3e238577d76",
+      "relatedRouteId": "ROUTE-094a1e1d228e",
+      "missingCandidates": [
+        "/auth/account-locked",
+        "/t/auth/account-locked",
+        "/r/auth/account-locked"
+      ],
+      "disposition": "Open under U01. The existing web route does not prove root, phone or legacy shell coverage."
+    }
+  ],
+  "verificationRuns": [
+    {
+      "commandOrSteps": "node scripts/generate-architecture-inventory.mjs --check",
+      "result": "pass",
+      "actual": "128 pages, 428 routes, 149 components, 0 data modules, 32 services and 25 mocks."
+    },
+    {
+      "commandOrSteps": "node docs/architecture/production-readiness/evidence/A07/generate-route-url-resolution.mjs",
+      "result": "pass",
+      "actual": "Fresh runtime URL map: 428/428 declarations, 1,459 URL registrations, 1,389 unique templates, 0 missing. The generator writes a timestamped artifact; downstream navigation evidence was regenerated afterward."
+    },
+    {
+      "commandOrSteps": "node docs/architecture/production-readiness/evidence/A07/generate-navigation-targets.mjs --check",
+      "result": "pass",
+      "actual": "44 unique menu targets, 0 unresolved."
+    },
+    {
+      "commandOrSteps": "node docs/architecture/production-readiness/evidence/A07/generate-navigation-action-sites.mjs --check",
+      "result": "pass",
+      "actual": "257 sites across 110 files, 0 unclassified; 3 known OTP targets remain open."
+    },
+    {
+      "commandOrSteps": "node ./node_modules/prettier/bin/prettier.cjs --check scripts/generate-architecture-inventory.mjs scripts/generate-architecture-inventory.test.mjs docs/architecture/production-readiness/evidence/A07/generate-navigation-targets.mjs docs/architecture/production-readiness/evidence/A07/generate-navigation-action-sites.mjs",
+      "result": "pass",
+      "actual": "All checked source files use Prettier code style."
+    },
+    {
+      "commandOrSteps": "Isolated staging-mode build and local preview followed by the selected tests in tests/e2e/production-shell.spec.ts.",
+      "result": "pass",
+      "actual": "Build succeeded and 5/5 browser tests passed. An initial attempt against the already-running dev server had 3 passes and 2 tests that require production/staging mode; the staging-mode rerun passed all 5. The isolated 4174 preview and generated a07-e2e-dist directory were stopped/removed; the user dev server on 4173 was left running."
+    }
+  ],
+  "evidenceArtifacts": [
+    "docs/architecture/production-readiness/evidence/A07/navigation-targets-2026-09-28.json",
+    "docs/architecture/production-readiness/evidence/A07/navigation-action-sites-2026-09-28.json",
+    "docs/architecture/production-readiness/evidence/A07/navigation-browser-checks-2026-09-28.json",
+    "docs/architecture/page-inventory.json",
+    "docs/architecture/production-readiness/evidence/A07/route-url-resolution-2026-09-28.json"
+  ],
+  "limits": [
+    "The 14.6% figure is completed roadmap steps, not a production-readiness score.",
+    "A local staging-mode bundle preview is not a deployed staging environment and used no real backend.",
+    "Five route/shell smoke tests do not mean all 128 pages passed UI acceptance; 0/128 pages are user-accepted.",
+    "Mock preview and browser tests do not certify any of the 154 backend operations; current verification is 0/154.",
+    "All four milestones M1-M4 remain todo; three OTP shell destinations remain assigned to U01."
+  ]
+}
