@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
-import { ArrowDownUp, CheckCircle, Info, Loader2, WalletCards } from 'lucide-react';
+import { ArrowDownUp, CheckCircle, Clock, Info, Loader2, WalletCards } from 'lucide-react';
 import { ErrorState } from '@/shared/ui/ErrorState';
 import { CTAButton } from '@/shared/ui/CTAButton';
 import { Header } from '@/shared/ui/layout/Header';
@@ -50,6 +50,12 @@ export function WalletTransferContractPage() {
   const toAccount = accounts.find((account) => account.id === toWallet);
   const loading = accountsQuery.isPending || assetsQuery.isPending;
   const submitting = transferMutation.isPending;
+  const samePendingTransfer =
+    receipt?.status === 'pending' &&
+    receipt.fromWallet === fromWallet &&
+    receipt.toWallet === toWallet &&
+    receipt.asset === selectedAsset?.symbol &&
+    receipt.amount === amountValue;
   const canWriteWallet =
     hasPermission('wallet:write') ||
     hasPermission('wallet:transfer') ||
@@ -125,6 +131,18 @@ export function WalletTransferContractPage() {
       asset: selectedAsset.symbol,
       amount: amountValue,
     };
+    if (
+      receipt?.status === 'pending' &&
+      receipt.fromWallet === request.fromWallet &&
+      receipt.toWallet === request.toWallet &&
+      receipt.asset === request.asset &&
+      receipt.amount === request.amount
+    ) {
+      setValidationError(
+        `This transfer is still pending. Check reference ${receipt.id} before submitting it again.`,
+      );
+      return;
+    }
     const signature = JSON.stringify(request);
     if (transferAttempt.current?.signature !== signature) {
       transferAttempt.current = {
@@ -138,9 +156,11 @@ export function WalletTransferContractPage() {
         request,
         idempotencyKey: transferAttempt.current.key,
       });
-      transferAttempt.current = null;
       setReceipt(result);
-      setAmount('');
+      if (result.status === 'completed') {
+        transferAttempt.current = null;
+        setAmount('');
+      }
     } catch {
       setValidationError('The transfer could not be completed. Please try again.');
     }
@@ -154,13 +174,22 @@ export function WalletTransferContractPage() {
           <div
             role="status"
             className="flex items-start gap-3 rounded-2xl px-4 py-3"
-            style={{ background: 'rgba(16,185,129,0.1)', color: '#10B981' }}
+            style={{
+              background: receipt.status === 'completed' ? colors.buyAlpha10 : colors.warnAlpha10,
+              color: receipt.status === 'completed' ? colors.success : colors.warning,
+            }}
           >
-            <CheckCircle size={19} className="mt-0.5 shrink-0" />
+            {receipt.status === 'pending' ? (
+              <Clock size={19} className="mt-0.5 shrink-0" />
+            ) : (
+              <CheckCircle size={19} className="mt-0.5 shrink-0" />
+            )}
             <div>
-              <strong>Transfer submitted</strong>
+              <strong>
+                {receipt.status === 'pending' ? 'Transfer pending' : 'Transfer completed'}
+              </strong>
               <p className="text-xs" style={{ color: colors.text2 }}>
-                {fmtAmount(receipt.amount)} {receipt.asset} · {receipt.status}
+                {fmtAmount(receipt.amount)} {receipt.asset} · Reference {receipt.id}
               </p>
             </div>
           </div>
@@ -270,13 +299,20 @@ export function WalletTransferContractPage() {
         >
           <Info size={15} color={colors.primary} className="mt-0.5 shrink-0" />
           <p className="text-xs leading-5" style={{ color: colors.text2 }}>
-            Internal transfers are immediate and do not incur a blockchain fee.
+            Transfers may remain pending. Keep the reference and do not repeat the same transfer
+            while its status is pending.
           </p>
         </div>
 
         {validationError && (
           <p role="alert" className="text-sm" style={{ color: '#EF4444' }}>
             {validationError}
+          </p>
+        )}
+
+        {samePendingTransfer && (
+          <p className="text-sm" style={{ color: colors.text2 }}>
+            This exact transfer is still pending. Check its reference before submitting it again.
           </p>
         )}
 
@@ -290,7 +326,7 @@ export function WalletTransferContractPage() {
           data-testid="wallet-transfer-submit"
           onClick={() => void submitTransfer()}
           loading={submitting}
-          disabled={submitting || !canWriteWallet}
+          disabled={submitting || !canWriteWallet || samePendingTransfer}
         >
           Confirm transfer
         </CTAButton>

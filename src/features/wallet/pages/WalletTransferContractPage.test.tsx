@@ -149,7 +149,7 @@ describe('Wallet transfer contract page', () => {
     });
   });
 
-  it('submits an idempotent transfer and renders the receipt', async () => {
+  it('submits an idempotent transfer and renders the completed receipt', async () => {
     installReadHandlers();
     let receivedBody: unknown;
     server.use(
@@ -175,13 +175,44 @@ describe('Wallet transfer contract page', () => {
     await userEvent.type(screen.getByLabelText('Transfer amount'), '12.5');
     await userEvent.click(screen.getByRole('button', { name: 'Confirm transfer' }));
 
-    expect(await screen.findByRole('status')).toHaveTextContent('Transfer submitted');
+    expect(await screen.findByRole('status')).toHaveTextContent('Transfer completed');
+    expect(screen.getByRole('status')).toHaveTextContent('Reference transfer-1');
     expect(receivedBody).toEqual({
       fromWallet: 'spot',
       toWallet: 'funding',
       asset: 'USDT',
       amount: 12.5,
     });
+  });
+
+  it('shows a pending transfer reference and blocks resubmitting the same intent', async () => {
+    installReadHandlers();
+    let requests = 0;
+    server.use(
+      http.post('*/wallet/transfers', () => {
+        requests += 1;
+        return HttpResponse.json({
+          id: 'transfer-pending-1',
+          fromWallet: 'spot',
+          toWallet: 'funding',
+          asset: 'USDT',
+          amount: 12.5,
+          status: 'pending',
+          createdAt: '2026-09-22T08:00:00.000Z',
+        });
+      }),
+    );
+
+    renderWithProviders(<WalletTransferContractPage />);
+    await userEvent.type(await screen.findByLabelText('Transfer amount'), '12.5');
+    await userEvent.click(screen.getByRole('button', { name: 'Confirm transfer' }));
+
+    expect(await screen.findByRole('status')).toHaveTextContent('Transfer pending');
+    expect(screen.getByRole('status')).toHaveTextContent('Reference transfer-pending-1');
+    const submit = screen.getByRole('button', { name: 'Confirm transfer' });
+    expect(submit).toBeDisabled();
+    await userEvent.click(submit);
+    expect(requests).toBe(1);
   });
 
   it('surfaces API failure without pretending the transfer succeeded', async () => {
@@ -234,7 +265,7 @@ describe('Wallet transfer contract page', () => {
     await waitFor(() => expect(submit).toBeEnabled());
     await userEvent.click(submit);
 
-    expect(await screen.findByRole('status')).toHaveTextContent('Transfer submitted');
+    expect(await screen.findByRole('status')).toHaveTextContent('Transfer completed');
     expect(requests).toBe(2);
     expect(idempotencyKeys[0]).toEqual(expect.any(String));
     expect(idempotencyKeys[1]).toBe(idempotencyKeys[0]);

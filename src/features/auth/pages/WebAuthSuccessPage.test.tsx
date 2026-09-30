@@ -65,6 +65,15 @@ describe('Web auth success page', () => {
     expect(screen.getByText('Đã tạm dừng chuyển hướng tự động')).toBeInTheDocument();
   });
 
+  it('routes identity verification to the existing profile KYC page', async () => {
+    const user = userEvent.setup();
+    renderSuccess('register');
+
+    await user.click(screen.getByRole('button', { name: /Xác minh danh tính/ }));
+
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/profile/kyc');
+  });
+
   it('shows the two-factor completion state and keeps its suggested routes', async () => {
     const user = userEvent.setup();
     renderSuccess('2fa-setup');
@@ -75,6 +84,15 @@ describe('Web auth success page', () => {
 
     expect(screen.getByTestId('location')).toHaveTextContent('/w/trade');
     expect(screen.getByText('Đã tạm dừng chuyển hướng tự động')).toBeInTheDocument();
+  });
+
+  it('routes the security shortcut to the existing profile security page', async () => {
+    const user = userEvent.setup();
+    renderSuccess('2fa-setup');
+
+    await user.click(screen.getByRole('button', { name: /Trung tâm bảo mật/ }));
+
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/profile/security');
   });
 
   it('routes a completed password reset to login', async () => {

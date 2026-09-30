@@ -45,7 +45,8 @@ export function useP2POrderActionCancelMutation(orderId: string | undefined) {
 export function useP2PMarkPaidMutation(orderId: string | undefined) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: () => p2pApi.markOrderPaid(orderId!),
+    mutationFn: ({ idempotencyKey }: { idempotencyKey: string }) =>
+      p2pApi.markOrderPaid(orderId!, idempotencyKey),
     onSuccess: async (order) => {
       queryClient.setQueryData(p2pOrderActionQueryKeys.order(orderId ?? ''), order);
       await queryClient.invalidateQueries({

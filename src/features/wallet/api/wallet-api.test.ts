@@ -43,16 +43,19 @@ describe('wallet API contract', () => {
   });
 
   it('rejects a response with negative balances', async () => {
+    let requestCount = 0;
     server.use(
-      http.get('http://localhost:3000/api/wallet/assets', () =>
-        HttpResponse.json({
+      http.get('http://localhost:3000/api/wallet/assets', () => {
+        requestCount += 1;
+        return HttpResponse.json({
           ...response,
           items: [{ ...response.items[0], available: -1 }],
-        }),
-      ),
+        });
+      }),
     );
 
     await expect(walletApi.getAssets()).rejects.toThrow();
+    expect(requestCount).toBe(1);
   });
 
   it('loads typed wallet accounts', async () => {

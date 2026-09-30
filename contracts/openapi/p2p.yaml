@@ -99,6 +99,10 @@ paths:
   /p2p/reports/merchants:
     post:
       operationId: reportP2PMerchant
+      x-required-permissions: [p2p:write, p2p:report]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - { $ref: '#/components/parameters/IdempotencyKey' }
       requestBody:
@@ -127,6 +131,10 @@ paths:
         '401': { $ref: '#/components/responses/Unauthorized' }
     post:
       operationId: createP2PPaymentMethod
+      x-required-permissions: [p2p:write, p2p:payment-methods:write]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - { $ref: '#/components/parameters/IdempotencyKey' }
       requestBody:
@@ -146,6 +154,10 @@ paths:
   /p2p/payment-methods/{methodId}:
     patch:
       operationId: updateP2PPaymentMethod
+      x-required-permissions: [p2p:write, p2p:payment-methods:write]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - name: methodId
           in: path
@@ -167,6 +179,10 @@ paths:
         '404': { $ref: '#/components/responses/NotFound' }
     delete:
       operationId: deleteP2PPaymentMethod
+      x-required-permissions: [p2p:write, p2p:payment-methods:write]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - name: methodId
           in: path
@@ -210,6 +226,10 @@ paths:
   /p2p/disputes/{disputeId}/messages:
     post:
       operationId: sendP2PDisputeMessage
+      x-required-permissions: [p2p:write, p2p:dispute:write]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - name: disputeId
           in: path
@@ -232,6 +252,10 @@ paths:
   /p2p/disputes/{disputeId}/escalate:
     post:
       operationId: escalateP2PDispute
+      x-required-permissions: [p2p:write, p2p:dispute:write]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - name: disputeId
           in: path
@@ -270,6 +294,10 @@ paths:
         '401': { $ref: '#/components/responses/Unauthorized' }
     post:
       operationId: createP2PBlacklistEntry
+      x-required-permissions: [p2p:write, p2p:blacklist:write]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - { $ref: '#/components/parameters/IdempotencyKey' }
       requestBody:
@@ -288,6 +316,10 @@ paths:
   /p2p/blacklist/{entryId}:
     delete:
       operationId: removeP2PBlacklistEntry
+      x-required-permissions: [p2p:write, p2p:blacklist:write]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - name: entryId
           in: path
@@ -325,6 +357,10 @@ paths:
   /p2p/security/2fa/methods/{methodId}:
     patch:
       operationId: updateP2P2FAMethod
+      x-required-permissions: [p2p:write, p2p:security:write]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - {
             name: methodId,
@@ -351,6 +387,10 @@ paths:
   /p2p/security/2fa/primary:
     post:
       operationId: setP2P2FAPrimaryMethod
+      x-required-permissions: [p2p:write, p2p:security:write]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - { $ref: '#/components/parameters/IdempotencyKey' }
       requestBody:
@@ -371,6 +411,10 @@ paths:
   /p2p/security/2fa/thresholds/{thresholdId}:
     patch:
       operationId: updateP2P2FAThreshold
+      x-required-permissions: [p2p:write, p2p:security:write]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - {
             name: thresholdId,
@@ -397,6 +441,10 @@ paths:
   /p2p/security/2fa/authenticator/setup:
     post:
       operationId: beginP2PAuthenticatorSetup
+      x-required-permissions: [p2p:write, p2p:security:write]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - { $ref: '#/components/parameters/IdempotencyKey' }
       responses:
@@ -408,6 +456,10 @@ paths:
   /p2p/security/2fa/authenticator/confirm:
     post:
       operationId: confirmP2PAuthenticatorSetup
+      x-required-permissions: [p2p:write, p2p:security:write]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - { $ref: '#/components/parameters/IdempotencyKey' }
       requestBody:
@@ -429,6 +481,10 @@ paths:
   /p2p/ads:
     post:
       operationId: createP2PAd
+      x-required-permissions: [p2p:write, p2p:ad:write]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - { $ref: '#/components/parameters/IdempotencyKey' }
       requestBody:
@@ -465,6 +521,10 @@ paths:
   /p2p/ads/{adId}:
     patch:
       operationId: updateP2PAdStatus
+      x-required-permissions: [p2p:write, p2p:ad:write]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - name: adId
           in: path
@@ -486,6 +546,10 @@ paths:
         '404': { $ref: '#/components/responses/NotFound' }
     delete:
       operationId: deleteP2PAd
+      x-required-permissions: [p2p:write, p2p:ad:write]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - name: adId
           in: path
@@ -540,6 +604,10 @@ paths:
         '401': { $ref: '#/components/responses/Unauthorized' }
     post:
       operationId: createP2POrder
+      x-required-permissions: [p2p:write, p2p:order:create]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - { $ref: '#/components/parameters/IdempotencyKey' }
       requestBody:
@@ -577,6 +645,10 @@ paths:
   /p2p/orders/{orderId}/mark-paid:
     post:
       operationId: markP2POrderPaid
+      x-required-permissions: [p2p:write, p2p:mark-paid]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - name: orderId
           in: path
@@ -594,6 +666,10 @@ paths:
   /p2p/orders/{orderId}/release:
     post:
       operationId: releaseP2POrderEscrow
+      x-required-permissions: [p2p:write, p2p:release]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - name: orderId
           in: path
@@ -620,6 +696,8 @@ paths:
   /p2p/orders/{orderId}/release/challenge:
     post:
       operationId: createP2PReleaseChallenge
+      x-idempotency-exception-reason: >-
+        Release MFA challenge issuance is a challenge-flow exception; replay semantics are unspecified and must be defined separately.
       parameters:
         - name: orderId
           in: path
@@ -635,6 +713,8 @@ paths:
   /p2p/orders/{orderId}/release/challenge/{challengeId}/verify:
     post:
       operationId: verifyP2PReleaseChallenge
+      x-idempotency-exception-reason: >-
+        Release MFA challenge verification is a challenge-flow exception; one-time verification and replay semantics must be defined separately.
       parameters:
         - name: orderId
           in: path
@@ -663,6 +743,10 @@ paths:
   /p2p/orders/{orderId}/cancel:
     post:
       operationId: cancelP2POrder
+      x-required-permissions: [p2p:write, p2p:cancel]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - name: orderId
           in: path
@@ -690,6 +774,10 @@ paths:
   /p2p/orders/{orderId}/rate:
     post:
       operationId: rateP2POrder
+      x-required-permissions: [p2p:write, p2p:rate]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - name: orderId
           in: path
@@ -719,6 +807,10 @@ paths:
   /p2p/orders/{orderId}/payment-proof:
     post:
       operationId: submitP2PPaymentProof
+      x-required-permissions: [p2p:write, p2p:payment-proof]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - name: orderId
           in: path
@@ -766,6 +858,10 @@ paths:
   /p2p/orders/{orderId}/chat/messages:
     post:
       operationId: sendP2PChatMessage
+      x-required-permissions: [p2p:write, p2p:chat:write]
+      x-required-permissions-status: draft_frontend
+      x-required-permissions-owner-question: >-
+        Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.
       parameters:
         - name: orderId
           in: path

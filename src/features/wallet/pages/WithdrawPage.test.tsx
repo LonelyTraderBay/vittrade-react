@@ -390,6 +390,9 @@ describe('WithdrawPage', () => {
     await waitFor(() =>
       expect(document.getElementById('withdraw-address')).not.toBeInTheDocument(),
     );
+    expect(screen.getByText('withdrawal-1')).toBeInTheDocument();
+    expect(screen.getByText('transaction-1')).toBeInTheDocument();
+    expect(screen.getByText('Đang xử lý')).toBeInTheDocument();
     expect(verificationBody).toEqual({ code: '000000' });
     expect(withdrawalBody).toEqual({
       asset: 'USDT',

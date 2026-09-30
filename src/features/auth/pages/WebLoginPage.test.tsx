@@ -234,7 +234,7 @@ describe('WebLoginPage', () => {
     await user.click(screen.getByTestId('auth-submit'));
 
     expect(
-      await screen.findByText('Đăng nhập thất bại. Vui lòng kiểm tra thông tin và thử lại.'),
+      await screen.findByText('Không thể đăng nhập lúc này. Vui lòng thử lại.'),
     ).toBeInTheDocument();
     expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/login');
   });

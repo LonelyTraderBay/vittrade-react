@@ -176,4 +176,19 @@ describe('P2P orders contract page', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Retry' }));
     expect(await screen.findByText('Unable to load P2P orders')).toBeInTheDocument();
   });
+
+  it('distinguishes a contract-valid empty order history from an empty filter result', async () => {
+    server.use(http.get('*/p2p/orders', () => HttpResponse.json({ items: [], total: 0 })));
+
+    renderWithProviders(<P2POrdersContractPage />);
+
+    expect(await screen.findByText('No P2P orders yet.')).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Your order history will appear here after you create or accept a P2P order.',
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByText('0 orders · contract-backed')).toBeInTheDocument();
+    expect(screen.queryByText('No orders match the selected view.')).not.toBeInTheDocument();
+  });
 });

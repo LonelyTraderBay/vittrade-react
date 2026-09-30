@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { ErrorState } from '@/shared/ui/ErrorState';
+import { isApiError } from '@/shared/api/api-error';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
@@ -79,7 +80,14 @@ export function P2PAdDetailContractPage() {
         idempotencyKey: `p2p-ad-order-${crypto.randomUUID()}`,
       });
       navigate(`${prefix}/p2p/order/${receipt.orderId}`, { replace: true });
-    } catch {
+    } catch (error) {
+      if (isApiError(error) && error.status === 409) {
+        setErrorMessage(
+          'Yêu cầu tạo đơn P2P bị trùng hoặc xung đột (HTTP 409). Hãy kiểm tra danh sách đơn trước khi gửi yêu cầu mới.',
+        );
+        setConfirmOpen(false);
+        return;
+      }
       setErrorMessage('Không thể tạo đơn P2P. Vui lòng thử lại.');
     }
   };

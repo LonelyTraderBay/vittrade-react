@@ -301,6 +301,8 @@ paths:
   /wallet/withdrawals/challenge:
     post:
       operationId: createWalletWithdrawalChallenge
+      x-idempotency-exception-reason: >-
+        Wallet withdrawal MFA challenge issuance remains outside the generic business Idempotency-Key rule; replay semantics are not specified and must be defined separately.
       x-required-permissions: [wallet:withdraw]
       requestBody:
         required: true
@@ -321,6 +323,8 @@ paths:
   /wallet/withdrawals/challenge/{challengeId}/verify:
     post:
       operationId: verifyWalletWithdrawalChallenge
+      x-idempotency-exception-reason: >-
+        Wallet withdrawal MFA challenge verification remains outside the generic business Idempotency-Key rule; one-time verification and replay semantics must be defined separately.
       x-required-permissions: [wallet:withdraw]
       parameters:
         - name: challengeId

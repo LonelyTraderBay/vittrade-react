@@ -28,6 +28,41 @@ export interface HttpClientConfig {
 
 const RETRYABLE_STATUSES = new Set([408, 425, 429, 502, 503, 504]);
 const IDEMPOTENT_METHODS = new Set<HttpMethod>(['GET', 'HEAD', 'OPTIONS', 'PUT', 'DELETE']);
+const MAX_RETRIES = 2;
+
+function waitForAbortableDelay(delayMs: number, signal: AbortSignal): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const onAbort = () => {
+      clearTimeout(timer);
+      signal.removeEventListener('abort', onAbort);
+      reject(signal.reason ?? new DOMException('Aborted', 'AbortError'));
+    };
+    const timer = setTimeout(() => {
+      signal.removeEventListener('abort', onAbort);
+      resolve();
+    }, delayMs);
+    signal.addEventListener('abort', onAbort, { once: true });
+    if (signal.aborted) onAbort();
+  });
+}
+
+function requestAbortedError(requestId: string, cause?: unknown): ApiError {
+  return new ApiError('Request aborted', {
+    status: 0,
+    code: 'REQUEST_ABORTED',
+    requestId,
+    cause,
+  });
+}
+
+function requestTimeoutError(requestId: string, cause?: unknown): ApiError {
+  return new ApiError('Request timed out', {
+    status: 0,
+    code: 'REQUEST_TIMEOUT',
+    requestId,
+    cause,
+  });
+}
 
 function buildUrl(baseUrl: string, path: string, query?: ApiRequest['query']): string {
   const normalizedPath = path.replace(/^\/+/, '');
@@ -70,55 +105,74 @@ export function createHttpClient(config: HttpClientConfig) {
     requestConfig: ApiRequest,
     options: RequestOptions = {},
   ): Promise<TResponse> {
-    const timeoutMs = options.timeoutMs ?? 15_000;
+    const configuredTimeoutMs = options.timeoutMs ?? 15_000;
+    const timeoutMs = Number.isFinite(configuredTimeoutMs)
+      ? Math.max(0, configuredTimeoutMs)
+      : 15_000;
+    const deadline = Date.now() + timeoutMs;
     const retries = options.retries ?? (IDEMPOTENT_METHODS.has(requestConfig.method) ? 2 : 0);
+    if (!Number.isInteger(retries) || retries < 0 || retries > MAX_RETRIES) {
+      throw new RangeError(`retries must be an integer between 0 and ${MAX_RETRIES}`);
+    }
     const retryDelayMs = options.retryDelayMs ?? 250;
     const correlationId = createCorrelationId();
 
     for (let attempt = 0; ; attempt += 1) {
+      if (requestConfig.signal?.aborted) {
+        throw requestAbortedError(correlationId, requestConfig.signal.reason);
+      }
+      const remainingTimeoutMs = deadline - Date.now();
+      if (remainingTimeoutMs <= 0) throw requestTimeoutError(correlationId);
+
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), timeoutMs);
+      const timeout = setTimeout(() => controller.abort(), remainingTimeoutMs);
       const abortFromCaller = () => controller.abort(requestConfig.signal?.reason);
       requestConfig.signal?.addEventListener('abort', abortFromCaller, { once: true });
 
       try {
         const token = config.getAccessToken?.();
-        const response = await fetchImpl(
-          buildUrl(config.baseUrl, requestConfig.path, requestConfig.query),
-          {
-            method: requestConfig.method,
-            headers: {
-              Accept: 'application/json',
-              ...(requestConfig.body === undefined || requestConfig.body instanceof FormData
-                ? {}
-                : { 'Content-Type': 'application/json' }),
-              ...(token ? { Authorization: `Bearer ${token}` } : {}),
-              ...(requestConfig.idempotencyKey
-                ? { 'Idempotency-Key': requestConfig.idempotencyKey }
-                : {}),
-              'X-Correlation-ID': correlationId,
-              ...requestConfig.headers,
-            },
-            body:
-              requestConfig.body === undefined
-                ? undefined
-                : requestConfig.body instanceof FormData
-                  ? requestConfig.body
-                  : JSON.stringify(requestConfig.body),
-            credentials: 'include',
-            signal: controller.signal,
+        const url = buildUrl(config.baseUrl, requestConfig.path, requestConfig.query);
+        const init: RequestInit = {
+          method: requestConfig.method,
+          headers: {
+            Accept: 'application/json',
+            ...(requestConfig.body === undefined || requestConfig.body instanceof FormData
+              ? {}
+              : { 'Content-Type': 'application/json' }),
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            ...(requestConfig.idempotencyKey
+              ? { 'Idempotency-Key': requestConfig.idempotencyKey }
+              : {}),
+            'X-Correlation-ID': correlationId,
+            ...requestConfig.headers,
           },
-        );
+          body:
+            requestConfig.body === undefined
+              ? undefined
+              : requestConfig.body instanceof FormData
+                ? requestConfig.body
+                : JSON.stringify(requestConfig.body),
+          credentials: 'include',
+          signal: controller.signal,
+        };
+        if (requestConfig.signal?.aborted) {
+          throw requestAbortedError(correlationId, requestConfig.signal.reason);
+        }
+        if (Date.now() >= deadline) throw requestTimeoutError(correlationId);
+
+        const response = await fetchImpl(url, init);
 
         const body = await parseResponseBody(response);
+        if (Date.now() >= deadline) throw requestTimeoutError(correlationId);
         if (response.ok) return body as TResponse;
 
         if (response.status === 401 && !requestConfig.skipUnauthorizedHandler) {
           await config.onUnauthorized?.();
+          if (Date.now() >= deadline) throw requestTimeoutError(correlationId);
         }
 
         if (attempt < retries && RETRYABLE_STATUSES.has(response.status)) {
-          await new Promise((resolve) => setTimeout(resolve, retryDelayMs * 2 ** attempt));
+          await waitForAbortableDelay(retryDelayMs * 2 ** attempt, controller.signal);
           continue;
         }
 
@@ -130,18 +184,13 @@ export function createHttpClient(config: HttpClientConfig) {
           details: errorFields.details,
         });
       } catch (error) {
-        if (error instanceof ApiError) throw error;
-        if (controller.signal.aborted) {
-          throw new ApiError(
-            requestConfig.signal?.aborted ? 'Request aborted' : 'Request timed out',
-            {
-              status: 0,
-              code: requestConfig.signal?.aborted ? 'REQUEST_ABORTED' : 'REQUEST_TIMEOUT',
-              requestId: correlationId,
-              cause: error,
-            },
-          );
+        if (requestConfig.signal?.aborted) {
+          throw requestAbortedError(correlationId, error);
         }
+        if (controller.signal.aborted) {
+          throw requestTimeoutError(correlationId, error);
+        }
+        if (error instanceof ApiError) throw error;
         if (attempt >= retries) {
           throw new ApiError(error instanceof Error ? error.message : 'Network request failed', {
             status: 0,
@@ -150,7 +199,17 @@ export function createHttpClient(config: HttpClientConfig) {
             cause: error,
           });
         }
-        await new Promise((resolve) => setTimeout(resolve, retryDelayMs * 2 ** attempt));
+        try {
+          await waitForAbortableDelay(retryDelayMs * 2 ** attempt, controller.signal);
+        } catch (retryDelayError) {
+          if (requestConfig.signal?.aborted) {
+            throw requestAbortedError(correlationId, retryDelayError);
+          }
+          if (controller.signal.aborted) {
+            throw requestTimeoutError(correlationId, retryDelayError);
+          }
+          throw retryDelayError;
+        }
       } finally {
         clearTimeout(timeout);
         requestConfig.signal?.removeEventListener('abort', abortFromCaller);

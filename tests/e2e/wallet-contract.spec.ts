@@ -132,7 +132,7 @@ test.describe('wallet contract smoke on staging build', () => {
     await page.getByTestId('wallet-transfer-submit').click();
 
     await expect((await transferResponse).status()).toBe(201);
-    await expect(page.getByRole('status')).toContainText('Transfer submitted');
+    await expect(page.getByRole('status')).toContainText('Transfer completed');
     expect(transferBody).toEqual({
       fromWallet: 'spot',
       toWallet: 'funding',
@@ -425,7 +425,9 @@ test.describe('wallet contract smoke on staging build', () => {
     await page.getByRole('button', { name: /Xác nhận rút tiền/ }).click();
 
     await expect((await withdrawalResponse).status()).toBe(201);
-    await expect(page.getByText('Yêu cầu đã gửi')).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText('e2e-withdrawal-1')).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText('e2e-transaction-1')).toBeVisible();
+    await expect(page.getByText('Đang xử lý', { exact: true })).toBeVisible();
     expect(verificationBody).toEqual({ code: '123456' });
     expect(withdrawalBody).toEqual({
       asset: 'USDT',

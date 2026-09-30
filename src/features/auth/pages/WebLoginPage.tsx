@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import { Eye, EyeOff, AlertCircle, Fingerprint, Lock, Mail, ArrowRight } from 'lucide-react';
 import { isApiError } from '@/shared/api/api-error';
 import { useAuth } from '@/shared/session/useAuth';
-import { env } from '@/shared/config/env';
+import { env, isProductionBuild } from '@/shared/config/env';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { WEB_FONT, WEB_BUTTON } from '@/shared/theme/webTokens';
 import { WebAuthBrandPanel, WebAuthFormShell } from '@/shared/ui/auth/WebAuthBrandPanel';
@@ -15,6 +15,8 @@ import { WebAuthBrandPanel, WebAuthFormShell } from '@/shared/ui/auth/WebAuthBra
  */
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const isAuthFixtureMode =
+  !isProductionBuild && (env.isTest || (env.isDev && env.dataSource === 'mock'));
 
 export function WebLoginPage() {
   const navigate = useNavigate();
@@ -73,9 +75,8 @@ export function WebLoginPage() {
     }
     setError('');
     setIsLoading(true);
-    // Development-only fixtures exercise the locked-account and challenge routes.
-    // Production always delegates authentication to the backend adapter below.
-    if ((env.isDev || env.isTest) && email === 'wrong@test.com') {
+    // Local fixture flows are available only in mock development and unit tests.
+    if (isAuthFixtureMode && email === 'wrong@test.com') {
       const newAttempts = failedAttempts + 1;
       setFailedAttempts(newAttempts);
       setIsLoading(false);
@@ -91,7 +92,7 @@ export function WebLoginPage() {
       return;
     }
 
-    if ((env.isDev || env.isTest) && email === 'device@test.com') {
+    if (isAuthFixtureMode && email === 'device@test.com') {
       setIsLoading(false);
       navigate('/w/auth/device-trust', {
         state: { email, returnTo: '/w/home' },
@@ -107,14 +108,14 @@ export function WebLoginPage() {
         navigate('/w/auth/account-locked', { replace: true });
         return;
       }
-      setError('Đăng nhập thất bại. Vui lòng kiểm tra thông tin và thử lại.');
+      setError('Không thể đăng nhập lúc này. Vui lòng thử lại.');
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleDemoLogin = async () => {
-    if (!env.isDev && !env.isTest) return;
+    if (!isAuthFixtureMode) return;
     setIsLoading(true);
     try {
       const loginResult = await signIn({ email: 'demo@vittrade.vn', password: 'demo' });
@@ -279,6 +280,7 @@ export function WebLoginPage() {
           {/* Error message */}
           {error && (
             <div
+              role="alert"
               className="flex items-center gap-2"
               style={{
                 padding: '10px 14px',
@@ -334,7 +336,7 @@ export function WebLoginPage() {
           </button>
 
           {/* Demo login is development/test-only and is excluded from production UI. */}
-          {(env.isDev || env.isTest) && (
+          {isAuthFixtureMode && (
             <button
               onClick={handleDemoLogin}
               disabled={isLoading}
@@ -399,7 +401,7 @@ export function WebLoginPage() {
         </div>
 
         {/* Demo flow hints */}
-        {(env.isDev || env.isTest) && (
+        {isAuthFixtureMode && (
           <div
             style={{
               marginTop: 16,
@@ -414,6 +416,30 @@ export function WebLoginPage() {
             </p>
             <div className="flex flex-col" style={{ gap: 3 }}>
               <p style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.5 }}>
+                <span style={{ color: '#3B82F6', fontFamily: 'monospace', fontWeight: 500 }}>
+                  developer@vittrade.local / Preview-123!
+                </span>{' '}
+                → đăng nhập trực tiếp
+              </p>
+              <p style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.5 }}>
+                <span style={{ color: '#3B82F6', fontFamily: 'monospace', fontWeight: 500 }}>
+                  mfa@vittrade.local / Preview-123!
+                </span>{' '}
+                → nhập mã email 123456
+              </p>
+              <p style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.5 }}>
+                <span style={{ color: '#EF4444', fontFamily: 'monospace', fontWeight: 500 }}>
+                  locked@vittrade.local / Preview-123!
+                </span>{' '}
+                → tài khoản tạm khóa
+              </p>
+              <p style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.5 }}>
+                <span style={{ color: '#3B82F6', fontFamily: 'monospace', fontWeight: 500 }}>
+                  demo@vittrade.vn / demo
+                </span>{' '}
+                → nút Trải nghiệm Demo
+              </p>
+              <p style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.5 }}>
                 <span style={{ color: '#8B5CF6', fontFamily: 'monospace', fontWeight: 500 }}>
                   device@test.com
                 </span>{' '}
@@ -426,7 +452,7 @@ export function WebLoginPage() {
                 → failed attempts → account locked (sau 5 lần)
               </p>
               <p style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.5 }}>
-                Bất kỳ email khác → đăng nhập thành công
+                Email khác → thông tin đăng nhập không hợp lệ
               </p>
             </div>
           </div>

@@ -6,7 +6,7 @@ import { InputField } from '@/shared/ui/InputField';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { useAuth } from '@/shared/session/useAuth';
-import { env } from '@/shared/config/env';
+import { env, isProductionBuild } from '@/shared/config/env';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 
@@ -15,6 +15,8 @@ export function LoginPage() {
   const navigate = useNavigate();
   const { signIn } = useAuth();
   const colors = useThemeColors();
+  const isAuthFixtureMode =
+    !isProductionBuild && (env.isTest || (env.isDev && env.dataSource === 'mock'));
   const prefix = useRoutePrefix();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -61,7 +63,7 @@ export function LoginPage() {
   };
 
   const handleDemoLogin = () => {
-    if (!env.isDev && !env.isTest) return;
+    if (!isAuthFixtureMode) return;
     void submit({ email: 'demo@vittrade.vn', password: 'demo' });
   };
 
@@ -175,7 +177,7 @@ export function LoginPage() {
             <div className="h-px flex-1" style={{ background: colors.borderSolid }} />
           </div>
 
-          {(env.isDev || env.isTest) && (
+          {isAuthFixtureMode && (
             <CTAButton
               onClick={handleDemoLogin}
               variant="ghost"

@@ -269,7 +269,8 @@ export function useP2POrderMutation() {
 export function useP2PMarkPaidMutation(orderId: string | undefined) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: () => p2pApi.markOrderPaid(orderId!),
+    mutationFn: ({ idempotencyKey }: { idempotencyKey: string }) =>
+      p2pApi.markOrderPaid(orderId!, idempotencyKey),
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: p2pQueryKeys.order(orderId ?? '') }),

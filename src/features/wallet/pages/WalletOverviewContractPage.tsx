@@ -13,9 +13,27 @@ import { useWalletAssetsQuery, useWalletTransactionsQuery } from '../model/walle
 import type { WalletAsset, WalletTransaction } from '../model/wallet-types';
 
 const ACTIONS = [
-  { label: 'Deposit', path: '/wallet/deposit/USDT', icon: Download, color: '#10B981' },
-  { label: 'Withdraw', path: '/wallet/withdraw/USDT', icon: Upload, color: '#EF4444' },
-  { label: 'Transfer', path: '/wallet/transfer', icon: ArrowDownUp, color: '#8B5CF6' },
+  {
+    label: 'Deposit',
+    path: '/wallet/deposit/USDT',
+    icon: Download,
+    color: '#10B981',
+    anyPermission: null,
+  },
+  {
+    label: 'Withdraw',
+    path: '/wallet/withdraw/USDT',
+    icon: Upload,
+    color: '#EF4444',
+    anyPermission: ['wallet:write', 'wallet:withdraw'],
+  },
+  {
+    label: 'Transfer',
+    path: '/wallet/transfer',
+    icon: ArrowDownUp,
+    color: '#8B5CF6',
+    anyPermission: ['wallet:write', 'wallet:transfer', 'transfer:write'],
+  },
 ] as const;
 
 export function WalletOverviewContractPage() {
@@ -24,6 +42,10 @@ export function WalletOverviewContractPage() {
   const shellPrefix = useRoutePrefix();
   const { hasPermission } = useAuth();
   const canReadWallet = hasPermission('wallet:read');
+  const visibleActions = ACTIONS.filter(
+    ({ anyPermission }) =>
+      !anyPermission || anyPermission.some((permission) => hasPermission(permission)),
+  );
   const [search, setSearch] = useState('');
   const [hideSmall, setHideSmall] = useState(false);
   const [balanceHidden, setBalanceHidden] = useState(false);
@@ -119,7 +141,7 @@ export function WalletOverviewContractPage() {
         />
 
         <div className="flex flex-wrap gap-2">
-          {ACTIONS.map(({ label, path, icon: Icon, color }) => (
+          {visibleActions.map(({ label, path, icon: Icon, color }) => (
             <button
               key={label}
               type="button"

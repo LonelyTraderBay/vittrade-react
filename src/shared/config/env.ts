@@ -1,9 +1,11 @@
 import { z } from 'zod';
 
 export type AppMode = 'development' | 'test' | 'staging' | 'production';
+export type AppDataSource = 'mock' | 'api';
 
 export interface AppEnv {
   readonly mode: AppMode;
+  readonly dataSource: AppDataSource;
   readonly isDev: boolean;
   readonly isTest: boolean;
   readonly isStaging: boolean;
@@ -20,6 +22,7 @@ const rawEnvSchema = z.object({
   MODE: z.string().default('development'),
   DEV: z.boolean().default(false),
   PROD: z.boolean().default(false),
+  VITE_DATA_SOURCE: z.enum(['mock', 'api']).optional(),
   VITE_API_BASE_URL: z.string().optional(),
   VITE_WS_URL: z.string().optional(),
   VITE_APP_NAME: z.string().optional(),
@@ -33,6 +36,7 @@ const raw = rawEnvSchema.parse(import.meta.env);
 // Vite can statically eliminate development-only imports only when the build
 // flag remains a compile-time value. Keep this access inside the env boundary.
 export const isDevelopmentBuild = import.meta.env.DEV;
+export const isProductionBuild = import.meta.env.PROD;
 
 function parseMode(value: string): AppMode {
   if (value === 'test' || value === 'staging' || value === 'production') return value;
@@ -46,9 +50,11 @@ function parseFlag(value: string | undefined, fallback: boolean): boolean {
 
 const mode = parseMode(raw.MODE);
 const isProd = raw.PROD || mode === 'production';
+const dataSource = raw.VITE_DATA_SOURCE ?? (raw.DEV ? 'mock' : 'api');
 
 export const env: AppEnv = {
   mode,
+  dataSource,
   isDev: raw.DEV,
   isTest: mode === 'test',
   isStaging: mode === 'staging',
@@ -70,7 +76,11 @@ function isAbsoluteUrl(value: string, protocols: string[]): boolean {
 }
 
 /** Fail fast at application startup instead of silently calling a placeholder backend. */
-export function assertProductionEnv(): void {
+export function assertRuntimeEnv(): void {
+  if ((env.isStaging || env.isProd) && env.dataSource === 'mock') {
+    throw new Error('Mock data source is not allowed in staging or production');
+  }
+
   if (!env.isProd) return;
 
   const missing: string[] = [];

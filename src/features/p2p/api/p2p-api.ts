@@ -217,9 +217,14 @@ export function createP2PApi(client: typeof apiClient = apiClient): P2PApi {
       );
       return ordersResponseSchema.parse(response);
     },
-    async markOrderPaid(orderId, signal) {
+    async markOrderPaid(orderId, idempotencyKey, signal) {
       const response = await client.request<unknown>(
-        { method: 'POST', path: `/p2p/orders/${encodeURIComponent(orderId)}/mark-paid`, signal },
+        {
+          method: 'POST',
+          path: `/p2p/orders/${encodeURIComponent(orderId)}/mark-paid`,
+          signal,
+          idempotencyKey,
+        },
         { retries: 0 },
       );
       return orderSchema.parse(response);
