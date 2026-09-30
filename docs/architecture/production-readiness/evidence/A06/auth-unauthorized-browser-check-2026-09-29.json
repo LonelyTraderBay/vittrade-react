@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-29T02:46:23.663Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "origin": "http://127.0.0.1:5173",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
+    "docs/architecture/production-readiness/evidence/A06/run-auth-unauthorized-browser-check.mjs": "c21d4cc245ee4618b3b9f6f9b3f5655cdae52bf427b1ed39dce5993833bb662f",
+    "src/app/components/layout/ProtectedRoute.tsx": "c5cb74de4707d257a40f4782ea7c7c177ce3b8bd2de4f4cccb5e4450c9f4c5d4",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/dev/PreviewControls.tsx": "8532ab8fbe4578c3ff7cff31f559ec996fa146e63d70539a67ea668fc6d160ea",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "52d20d96c8f1c508e7803cad807003d53f9d1c801276874b4597b92a4b876bbb",
+    "src/dev/mocks/preview-scenario-handler.ts": "310abf70387ff528daf7f61b0d4103a3ed0449619549e1dcfefbfa39f0ca0f48",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/auth/api/auth-api.ts": "050846c48de49be56f6bdf6a73669b5d3a6230c559e33851cd07840609fca078",
+    "src/features/auth/pages/WebLoginPage.tsx": "d938bac40bb63145ffbb3919140b1b3d267b96e86872a93f29a4ebac24980e41",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2"
+  },
+  "scenario": {
+    "id": "auth.unauthorized",
+    "domain": "auth",
+    "state": "unauthorized",
+    "status": "passed",
+    "observedAt": "2026-09-29T02:46:23.663Z",
+    "persona": "guest (no authenticated session)",
+    "role": "unauthenticated",
+    "permissions": [],
+    "route": "/w/trade/positions",
+    "finalRoute": "/auth/login",
+    "operationIds": [
+      "register",
+      "login",
+      "verifyLoginMfaChallenge",
+      "getSession",
+      "refreshSession",
+      "logout",
+      "verifyMfa",
+      "confirmMfaSetup",
+      "beginMfaSetup",
+      "requestPasswordResetCode",
+      "verifyCurrentPassword",
+      "changePassword",
+      "verifyPasswordResetCode",
+      "confirmPasswordReset"
+    ],
+    "observedOperationIds": ["getSession"],
+    "operationRequestCounts": {
+      "getSession": 1
+    },
+    "requests": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session"
+      }
+    ],
+    "responses": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true
+      }
+    ],
+    "initialSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "sessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "scenarioSelected": true,
+    "loginFormVisible": true,
+    "protectedContentVisible": false,
+    "externalApiOrigins": [],
+    "unexpectedWriteCount": 0,
+    "elapsedMs": 642,
+    "screenshots": ["preview-auth-unauthorized-session-2026-09-29.png"],
+    "failures": [],
+    "note": "Only GET /auth/session is exercised for this browser assertion because it explicitly declares 401 in Auth OpenAPI. The other Auth operations in the matrix are not inferred from this result; operations without a declared 401/403 remain unverified. This is local UI/MSW evidence only."
+  }
+}

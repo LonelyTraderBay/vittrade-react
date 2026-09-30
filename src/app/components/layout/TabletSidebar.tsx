@@ -18,7 +18,7 @@ import {
   PieChart,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { useThemeColors } from '../../hooks/useThemeColors';
+import { useThemeColors } from '@/shared/hooks/useThemeColors';
 
 /**
  * ══════════════════════════════════════════════════════════

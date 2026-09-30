@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-29T02:46:16.684Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "origin": "http://127.0.0.1:5173",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b",
+    "docs/architecture/production-readiness/evidence/A06/run-auth-success-browser-check.mjs": "bd8837e53eee2ff19863343c9fb54c1d0be34d9acfdd998987f2e9854a6b64a6",
+    "src/app/components/layout/WebCommandBar.tsx": "2a0abe86df7d053470cfec285ad03613c954f00408a02848ca8076ef1698954c",
+    "src/app/components/layout/WebSidebar.tsx": "6e294d2589c6106430121d8da43fc8a02b89a321907bf92db47452df97f3b90f",
+    "src/app/contexts/AuthContext.tsx": "ed4902f682cbb4c11081acb1e87cfd2195fa0d06570ef1473ef962181b0d54b3",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "52d20d96c8f1c508e7803cad807003d53f9d1c801276874b4597b92a4b876bbb",
+    "src/dev/mocks/personas.ts": "4f159d020319b86f5f991c49e7c9063a73afddedea9a4e16d8a7d2fb679a105f",
+    "src/features/auth/api/auth-api.ts": "050846c48de49be56f6bdf6a73669b5d3a6230c559e33851cd07840609fca078",
+    "src/features/auth/pages/WebLoginPage.tsx": "d938bac40bb63145ffbb3919140b1b3d267b96e86872a93f29a4ebac24980e41",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2"
+  },
+  "scenario": {
+    "id": "auth.success",
+    "domain": "auth",
+    "state": "success",
+    "status": "passed",
+    "observedAt": "2026-09-29T02:46:16.684Z",
+    "persona": "developer (local MSW fixture)",
+    "role": "user",
+    "permissions": [
+      "market:read",
+      "trading:write",
+      "wallet:read",
+      "trade:read",
+      "earn:write",
+      "p2p:write",
+      "predictions:trade"
+    ],
+    "route": "/w/auth/login",
+    "finalRoute": "/w/home",
+    "operationIds": [
+      "register",
+      "login",
+      "verifyLoginMfaChallenge",
+      "getSession",
+      "refreshSession",
+      "logout",
+      "verifyMfa",
+      "confirmMfaSetup",
+      "beginMfaSetup",
+      "requestPasswordResetCode",
+      "verifyCurrentPassword",
+      "changePassword",
+      "verifyPasswordResetCode",
+      "confirmPasswordReset"
+    ],
+    "observedOperationIds": ["login"],
+    "operationRequestCounts": {
+      "getSession": 1,
+      "login": 1,
+      "listMarketPairs": 1,
+      "getMarketWatchlist": 1
+    },
+    "requests": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "startedAtMs": 1790649976299
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "startedAtMs": 1790649976395
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "startedAtMs": 1790649976478
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "startedAtMs": 1790649976479
+      }
+    ],
+    "responses": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true
+      }
+    ],
+    "initialSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true,
+      "contractExpected": true
+    },
+    "loginResult": {
+      "status": "authenticated",
+      "userEmail": "developer@vittrade.local",
+      "userFullName": "VitTrade Developer",
+      "elapsedMs": 323
+    },
+    "visibleIdentity": true,
+    "visibleShellIdentity": null,
+    "identityMatchesSession": true,
+    "visibleHomeContent": true,
+    "pageTextLength": 844,
+    "externalApiOrigins": [],
+    "unrelatedApiWriteCount": 0,
+    "elapsedMs": 907,
+    "screenshots": ["preview-auth-success-login-2026-09-29.png"],
+    "note": "Direct browser login through the real WebLoginPage using only the local MSW developer persona. The initial GET /auth/session 401 is the contract-supported unauthenticated bootstrap and is not counted as a successful operation. Only POST /auth/login returned the successful 200 and is counted as observed for auth.success; the other 13 linked Auth operations remain unverified. Both web shell identity surfaces display VitTrade Developer from the resolved Auth session, with no former hard-coded VitTrader Pro identity. This does not prove backend authentication, cookie persistence, MFA, staging, or production behavior."
+  }
+}

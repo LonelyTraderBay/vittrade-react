@@ -8,6 +8,16 @@ servers:
 security:
   - sessionCookie: []
 paths:
+  /arena/discovery:
+    get:
+      operationId: getArenaDiscovery
+      description: Returns public Arena modes and open public challenges. All rewards and entry values are Arena Points only, not financial assets.
+      responses:
+        '200':
+          description: Public discovery data for Open Arena.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ArenaDiscoveryResponse' }
   /arena/modes/{modeId}:
     get:
       operationId: getArenaMode
@@ -90,6 +100,54 @@ components:
         cloneCount: { type: integer, minimum: 0 }
         activeChallenges: { type: integer, minimum: 0 }
         fairPlay: { type: boolean }
+    ArenaDiscoveryMode:
+      allOf:
+        - $ref: '#/components/schemas/ArenaModeSummary'
+        - type: object
+          required: [icon, color, complexity, creator, completionRate, tags]
+          properties:
+            icon: { type: string }
+            color: { type: string, pattern: '^#[0-9A-Fa-f]{6}$' }
+            complexity: { type: string, enum: [easy, medium, advanced] }
+            creator: { $ref: '#/components/schemas/ArenaCreator' }
+            completionRate: { type: number, minimum: 0, maximum: 100 }
+            tags: { type: array, items: { type: string } }
+    ArenaDiscoveryChallenge:
+      type: object
+      required:
+        [
+          id,
+          title,
+          description,
+          modeId,
+          modeName,
+          creator,
+          entryPoints,
+          prizePool,
+          slotsTotal,
+          slotsFilled,
+          format,
+          startsAt,
+        ]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        description: { type: string }
+        modeId: { type: string }
+        modeName: { type: string }
+        creator: { $ref: '#/components/schemas/ArenaCreator' }
+        entryPoints: { type: number, minimum: 0, description: Arena Points only. }
+        prizePool: { type: number, minimum: 0, description: Arena Points only. }
+        slotsTotal: { type: integer, minimum: 1 }
+        slotsFilled: { type: integer, minimum: 0 }
+        format: { type: string }
+        startsAt: { type: string, format: date-time }
+    ArenaDiscoveryResponse:
+      type: object
+      required: [modes, challenges]
+      properties:
+        modes: { type: array, items: { $ref: '#/components/schemas/ArenaDiscoveryMode' } }
+        challenges: { type: array, items: { $ref: '#/components/schemas/ArenaDiscoveryChallenge' } }
     ArenaModeDetail:
       allOf:
         - $ref: '#/components/schemas/ArenaModeSummary'

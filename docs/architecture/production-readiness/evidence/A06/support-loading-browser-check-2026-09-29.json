@@ -1,0 +1,321 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-29T23:42:01.744Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "branch": "codex/vittrade-architecture-completion",
+  "origin": "http://127.0.0.1:4173",
+  "browser": "Chromium via Playwright",
+  "viewport": { "width": 1440, "height": 900 },
+  "scenario": {
+    "id": "support.loading",
+    "status": "passed",
+    "persona": "support (development preview)",
+    "operationIds": [
+      "listNews",
+      "listNotifications",
+      "getHelpCenter",
+      "listSupportTickets"
+    ],
+    "observedOperationIds": [
+      "getHelpCenter",
+      "listNews",
+      "listNotifications",
+      "listSupportTickets"
+    ],
+    "expectedDomainOperationCount": 4,
+    "coverage": "full_scenario_operations_browser_observed"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "personaAndScenarioApplied": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "observedScenarioResponseCount": 4,
+    "localMockMutationCount": 0,
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false,
+    "externalApiOrigins": [],
+    "unexpectedScenarioRequestCount": 0,
+    "pageErrorCount": 0,
+    "scenarioTransportFailureCount": 0
+  },
+  "measurements": {
+    "totalFlowMs": 8673,
+    "completedAt": "2026-09-29T23:42:10.606Z",
+    "scenarioRequestCount": 4,
+    "scenarioResponseCount": 4,
+    "scenarioOperationRequestCounts": {
+      "listNews": 1,
+      "listNotifications": 1,
+      "getHelpCenter": 1,
+      "listSupportTickets": 1
+    },
+    "scenarioOperationResponseCounts": {
+      "listNews": 1,
+      "listNotifications": 1,
+      "getHelpCenter": 1,
+      "listSupportTickets": 1
+    },
+    "readOperations": [
+      {
+        "operationId": "listNews",
+        "route": "/w/news",
+        "status": 200,
+        "fromServiceWorker": true,
+        "loadingVisibleBeforeResponse": true,
+        "loadingVisibleMsBeforeResponse": 1989,
+        "requestToResponseMs": 2031
+      },
+      {
+        "operationId": "listNotifications",
+        "route": "/w/notifications",
+        "status": 200,
+        "fromServiceWorker": true,
+        "loadingVisibleBeforeResponse": true,
+        "loadingVisibleMsBeforeResponse": 1990,
+        "requestToResponseMs": 2028
+      },
+      {
+        "operationId": "getHelpCenter",
+        "route": "/w/support/help",
+        "status": 200,
+        "fromServiceWorker": true,
+        "loadingVisibleBeforeResponse": true,
+        "loadingVisibleMsBeforeResponse": 1999,
+        "requestToResponseMs": 2028
+      },
+      {
+        "operationId": "listSupportTickets",
+        "route": "/w/support",
+        "status": 200,
+        "fromServiceWorker": true,
+        "loadingVisibleBeforeResponse": true,
+        "loadingVisibleMsBeforeResponse": 1994,
+        "requestToResponseMs": 2023
+      }
+    ],
+    "excludedMutationOperationIds": [
+      "markNotificationRead",
+      "createSupportTicket"
+    ],
+    "excludedMutationRequestCount": 0,
+    "externalApiOriginCount": 0,
+    "scenarioTransportFailureCount": 0,
+    "pageErrorCount": 0
+  },
+  "assertions": {
+    "loadingVisibleBeforeEachResponse": true,
+    "resolvedContentVisibleAfterEachResponse": true,
+    "finalRoute": "/w/support",
+    "responses": [
+      {
+        "method": "GET",
+        "path": "/api/content/news",
+        "operationId": "listNews",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2012
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2015
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/help",
+        "operationId": "getHelpCenter",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2012
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/tickets",
+        "operationId": "listSupportTickets",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2010
+      }
+    ]
+  },
+  "apiRequests": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "operationId": null,
+      "startedAt": 1790725322098
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "startedAt": 1790725322279
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": null,
+      "startedAt": 1790725322293
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1790725322351
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "operationId": null,
+      "startedAt": 1790725322351
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "startedAt": 1790725322455
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "startedAt": 1790725324488
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "startedAt": 1790725326546
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "startedAt": 1790725328589
+    }
+  ],
+  "apiResponses": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "operationId": null,
+      "status": 401,
+      "fromServiceWorker": true,
+      "elapsedMs": 17
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "status": 204,
+      "fromServiceWorker": true,
+      "elapsedMs": 14
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 3
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 3
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 3
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 2012
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 2015
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 2012
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 2010
+    }
+  ],
+  "apiFailures": [
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "failure": "net::ERR_ABORTED",
+      "hadResponse": true
+    }
+  ],
+  "screenshots": {
+    "news": "preview-support-loading-news-2026-09-29.png",
+    "notifications": "preview-support-loading-notifications-2026-09-29.png",
+    "help": "preview-support-loading-help-2026-09-29.png",
+    "tickets": "preview-support-loading-tickets-2026-09-29.png"
+  },
+  "sourceHashes": {
+    "contracts/openapi/support.yaml": "765533b6f9f9892ac7ec2fa70031b54c53daf07ff5c77775fca155e23ef58d5a",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/app/components/layout/WebSidebar.tsx": "6e294d2589c6106430121d8da43fc8a02b89a321907bf92db47452df97f3b90f",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "8382400738090945e6c3ec53286f288f0ed2d41c90dbd407eec2b48d36d347ae",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "6deef3b43c51e05c9cd058d8743b23b64a86579f474ce0486830359ac50ac200",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/dev/mocks/trading-fixtures.ts": "b082e4bc4094a4d7b36f41897ce9b27ea4c487fd3bf714622baf2f91fe2153cf",
+    "src/features/support/api/support-api.ts": "60b08b775dfb638f873e71dae62158ea5bbf0526fceea48a6758fee049ec1726",
+    "src/features/support/model/support-queries.ts": "13c828363c47df778880ad1ba79fb724eb0b320bfa22a5a3f9e182625f14afcb",
+    "src/features/support/model/support-types.ts": "adfc8a68c8b4e5b757ae52c1ae6ef24d176ee66922d84b6d385ad99c18c8cc84",
+    "src/features/support/pages/HelpCenterContractPage.tsx": "9610248e71e3109b35923192be658284f7c8866b09ceeb3c662b17c7e60243c7",
+    "src/features/support/pages/NewsContractPage.tsx": "86d27ed0c445a6bb03b2daae12e04909a046c9abeefed52a14308c270ef1dd98",
+    "src/features/support/pages/NotificationsContractPage.tsx": "8d67ce36ed1ac55e491876b0bd72ef721e5b533b9169e0ff4d519618df1a270d",
+    "src/features/support/pages/SupportContractPage.tsx": "2199a7e3758fca690ad8b013e2ba8c51c70c068a973d611989132b562ffe778b",
+    "src/shared/api/app-client.ts": "038ad4426147147f31f44fab94770860991ef90aaa8ed394ec2a4940c83c7b81",
+    "src/shared/api/client.ts": "882197549d075a8be1f495c7d2271dcbf1530ff1606190531da59b75020977bb",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/useAuth.ts": "65d58cfe61d4618a1849da066ecd4d6ae7c94c036af7361a91a1383a6b383e0b",
+    "src/main.tsx": "845215ef1b767caaa0f6ff7eeaebe49f471bdfba3aac223b8969671770783bd6",
+    "docs/architecture/production-readiness/evidence/A06/run-support-loading-browser-check.mjs": "63727d5572a9a592bd7bd1ad5a26c19921c3370c4fd18989a8e6aa6b6efda820"
+  },
+  "limitations": [
+    "The fixed 2,000 ms wait is injected by the local MSW scenario handler and is not backend latency or an SLO measurement.",
+    "This scenario covers four collection GETs; notification-read and ticket-create mutations are deliberately not sent while reads are pending.",
+    "MSW does not establish backend authorization, persistence, staging behavior or user acceptance."
+  ]
+}

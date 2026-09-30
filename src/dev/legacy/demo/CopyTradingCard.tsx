@@ -1,4 +1,4 @@
-import { TrendingUp, Users, UserCheck } from 'lucide-react';
+import { Users, UserCheck } from 'lucide-react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 
 interface CopyTradingCardProps {

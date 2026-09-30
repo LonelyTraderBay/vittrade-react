@@ -1,0 +1,92 @@
+{
+  "id": "EV-20260929-439",
+  "taskId": "A08",
+  "stepId": "A08.01",
+  "capturedAt": "2026-09-29T11:46:19Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "scope": "Đối chiếu app composition, feature ownership, shared infrastructure, development/test boundaries và inventory tại working tree hiện tại.",
+  "findings": [
+    {
+      "area": "App composition",
+      "observed": "src/main.tsx kiểm tra runtime environment trước bootstrap, chỉ khởi động MSW cho development + mock, chỉ retire Service Worker cũ cho development + API, rồi render src/app/App.tsx. src/app/routes.ts và src/app/routeConfig.ts ghép route/page thuộc features; không chuyển business ownership sang app."
+    },
+    {
+      "area": "Feature ownership và public API",
+      "observed": "15/15 thư mục src/features/* có index.ts. Dependency-cruiser không phát hiện import feature sang app, shared đi ngược dependency direction, feature dùng deep import nội bộ feature khác, import development code trái phép hoặc dependency cycle. App route composition được phép tham chiếu route/page feature theo dependency direction đã ghi trong ARCHITECTURE.md."
+    },
+    {
+      "area": "Shared và runtime boundaries",
+      "observed": "Environment boundary scan 822 source files; security boundary scan 543 source files và giữ credential storage memory-only. Production mock gate scan 222 JavaScript files; mock import boundary có 0 legacy fixture page consumers. OpenAPI gate kiểm tra 15 contracts/154 operations."
+    },
+    {
+      "area": "Inventory",
+      "observed": "Generator và --check đồng ý: 129 source page files, 427 routes, 149 components, 0 legacy data modules, 32 services, 28 mock sources; 125 integration-pending, 2 demo và 2 route-less not-implemented source-file records. Inventory ghi nhận 2 login pages có mockReferences= isAuthFixtureMode và 0 page runtime access trực tiếp."
+    },
+    {
+      "area": "Production login fixture gate",
+      "observed": "Production route boundary check ban đầu phân loại hai login page như routed mock pages dù các fixture controls được bảo vệ bằng isAuthFixtureMode. Guard hiện chỉ miễn đúng LoginPage.tsx và WebLoginPage.tsx khi mockReferences chỉ có isAuthFixtureMode và source khớp điều kiện !isProductionBuild && (env.isTest || (env.isDev && env.dataSource === 'mock')); mọi routed mock page khác vẫn cần development-only route. Login và WebLogin API-mode tests xác nhận controls giả lập không hiện trong API mode."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Dependency boundaries",
+      "command": "node node_modules/dependency-cruiser/bin/dependency-cruiser.mjs src --config .dependency-cruiser.cjs --validate",
+      "result": "pass",
+      "actual": "0 violations; 858 modules; 4619 dependencies cruised."
+    },
+    {
+      "name": "Environment boundary",
+      "command": "node scripts/check-env-boundary.mjs",
+      "result": "pass",
+      "actual": "822 source files inspected."
+    },
+    {
+      "name": "Security boundary",
+      "command": "node scripts/check-security-boundaries.mjs",
+      "result": "pass",
+      "actual": "543 source files enforce memory-only credential storage."
+    },
+    {
+      "name": "Production mock isolation",
+      "command": "node scripts/check-production-mocks.mjs; node scripts/check-production-mock-imports.mjs",
+      "result": "pass",
+      "actual": "222 JavaScript files inspected; 0 legacy fixture page consumers."
+    },
+    {
+      "name": "OpenAPI contracts",
+      "command": "node scripts/check-openapi-contracts.mjs",
+      "result": "pass",
+      "actual": "15 contracts and 154 operations validated."
+    },
+    {
+      "name": "Production routes and auth API mode",
+      "command": "node scripts/check-production-route-boundaries.mjs; node node_modules/vitest/vitest.mjs run src/features/auth/pages/LoginPage.api-mode.test.tsx src/features/auth/pages/WebLoginPage.api-mode.test.tsx",
+      "result": "pass",
+      "actual": "Route boundary check passed; 2 test files and 5 tests passed."
+    },
+    {
+      "name": "Architecture inventory",
+      "command": "node scripts/generate-architecture-inventory.mjs --check",
+      "result": "pass",
+      "actual": "129 pages, 427 routes, 149 components, 0 data modules, 32 services and 28 mocks."
+    }
+  ],
+  "limits": [
+    "Đây là bằng chứng kiểm tra source/guard và test frontend cục bộ; không phải browser UI acceptance, backend thật, staging, CI Linux hay production certification.",
+    "A06.03 vẫn in_progress với 20 scenario rows not_verified; 18 rows có contract audit, wallet.unknown và wallet.duplicate giữ blocker theo DECISION-20260928-001.",
+    "UI acceptance hiện 0/128; backend/staging hiện 0/154. A08.01 không thay đổi các ngưỡng này hoặc tuyên bố project đạt Production-Ready."
+  ],
+  "ledgerReconciliation": {
+    "checkTrackingInitialFindings": [
+      "PLAN step A08.01 heading did not match the checker's required **A08.01** token.",
+      "src/features/admin/pages/AdminQueryErrorState.tsx was missing from tracking.pages although generated inventory includes it.",
+      "Arena and two P2P route identities in TRACKING.json did not match the current inventory route keys; stale Arena Web route identity was still active."
+    ],
+    "resolution": [
+      "Restored the PLAN step token and retained its detailed completion record.",
+      "Added PAGE-f4a52bb88b63 as a route-less active source-file record with UI/user acceptance still pending; noted it is a helper component, not a separately registered screen.",
+      "Updated the canonical Arena route to its current routeFactory/componentSlot target, retired the superseded duplicate Arena route identity with DECISION-20260929-001 while preserving the URL, and refreshed both P2P wrapper route keys without changing their route/page acceptance state."
+    ],
+    "finalLedgerCheck": "Passed after current page/route identities were reconciled; check-tracking reports errorCount=0 with 129 pages, 427 active route declarations and 154 OpenAPI operations."
+  }
+}

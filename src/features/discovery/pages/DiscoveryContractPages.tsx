@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BarChart3, Search, Shield, Star, Target, Zap } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router';
+import { isApiError } from '@/shared/api/api-error';
 import { ErrorState } from '@/shared/ui/ErrorState';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
@@ -18,16 +19,41 @@ import type {
   DiscoveryTradingPair,
 } from '../model/discovery-types';
 
-function LoadingPage({ title }: { title: string }) {
+function LoadingMessage() {
   const colors = useThemeColors();
+  return (
+    <p role="status" style={{ color: colors.text2 }}>
+      Đang tải dữ liệu Discovery API…
+    </p>
+  );
+}
+
+function LoadingPage({ title }: { title: string }) {
   return (
     <PageLayout>
       <Header title={title} back />
       <PageContent>
-        <p style={{ color: colors.text2 }}>Đang tải dữ liệu Discovery API…</p>
+        <LoadingMessage />
       </PageContent>
     </PageLayout>
   );
+}
+
+function DiscoveryRequestError({ error, onRetry }: { error: unknown; onRetry: () => void }) {
+  const colors = useThemeColors();
+  if (isApiError(error) && error.status === 403) {
+    return (
+      <div role="alert" className="px-5 py-12 text-center">
+        <p style={{ color: colors.text1, fontSize: 16, fontWeight: 600 }}>
+          Không có quyền truy cập Discovery
+        </p>
+        <p style={{ color: colors.text2, fontSize: 13, marginTop: 8 }}>
+          Tài khoản hiện tại không được phép xem nội dung khám phá này.
+        </p>
+      </div>
+    );
+  }
+  return <ErrorState onAction={onRetry} />;
 }
 
 function ModuleLabel({ type }: { type: 'prediction' | 'arena' | 'spot' }) {
@@ -169,8 +195,10 @@ export function DiscoverySearchContractPage() {
             style={{ color: colors.text1 }}
           />
         </label>
-        {result.isError && <ErrorState onAction={() => void result.refetch()} />}
-        {result.isPending && submittedQuery.length >= 2 && <LoadingPage title="Search" />}
+        {result.isError && (
+          <DiscoveryRequestError error={result.error} onRetry={() => void result.refetch()} />
+        )}
+        {result.isPending && submittedQuery.length >= 2 && <LoadingMessage />}
         {data && (
           <>
             <ResultSection title="Prediction markets" count={data.predictions.length}>
@@ -241,7 +269,9 @@ export function DiscoveryTopicContractPage() {
   const navigate = useNavigate();
   const prefix = useRoutePrefix();
   if (query.isPending) return <LoadingPage title="Topic" />;
-  if (query.isError || !query.data) return <ErrorState onAction={() => void query.refetch()} />;
+  if (query.isError || !query.data) {
+    return <DiscoveryRequestError error={query.error} onRetry={() => void query.refetch()} />;
+  }
   const { topic, stats } = query.data;
   return (
     <PageLayout>

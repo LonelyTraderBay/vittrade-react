@@ -1,0 +1,873 @@
+{
+  "checkedAt": "2026-09-29T20:49:22.820Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "branch": "codex/vittrade-architecture-completion",
+  "origin": "http://127.0.0.1:4173",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "profile.error",
+    "status": "passed",
+    "persona": "developer (preview only)",
+    "route": "/w/profile, /w/profile/devices, /w/profile/activity, /w/profile/sub-accounts",
+    "operationIds": ["getProfile", "listTrustedDevices", "listProfileActivity", "listSubAccounts"],
+    "observedOperationIds": [
+      "getProfile",
+      "listTrustedDevices",
+      "listProfileActivity",
+      "listSubAccounts"
+    ],
+    "expectedDomainOperationCount": 7,
+    "coverage": "representative_browser_observed_four_read_operations",
+    "injectedResponse": {
+      "status": 503,
+      "code": "PREVIEW_SERVER_ERROR",
+      "declaredByProfileOpenApi": false
+    }
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "observedNetworkApiResponseCount": 53,
+    "localMockMutationCount": 0,
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false,
+    "externalApiOrigins": []
+  },
+  "authorizationLimitations": {
+    "persona": "developer",
+    "mockSourcePermissions": ["profile:read", "profile:write", "profile:security:write"],
+    "mswEnforcesProfileReadPermission": false,
+    "backendAuthorizationVerified": false
+  },
+  "measurements": {
+    "totalFlowMs": 25071,
+    "apiRequestCount": 53,
+    "apiResponseCount": 53,
+    "operationCounts": {
+      "getProfile": 12,
+      "listTrustedDevices": 12,
+      "listProfileActivity": 12,
+      "listSubAccounts": 12
+    },
+    "readResults": [
+      {
+        "route": "/w/profile",
+        "operationId": "getProfile",
+        "initialRequestCount": 6,
+        "initialStatusCounts": {
+          "503": 6
+        },
+        "retryRequestCount": 6,
+        "retryStatusCounts": {
+          "503": 6
+        },
+        "allResponsesFromServiceWorker": true,
+        "errorStateVisibleAfterRetry": true,
+        "successFixtureHidden": true,
+        "routePreservedAfterRetry": "/w/profile",
+        "meanResponseTimeMs": 3,
+        "screenshot": "preview-profile-error-profile-2026-09-29.png"
+      },
+      {
+        "route": "/w/profile/devices",
+        "operationId": "listTrustedDevices",
+        "initialRequestCount": 6,
+        "initialStatusCounts": {
+          "503": 6
+        },
+        "retryRequestCount": 6,
+        "retryStatusCounts": {
+          "503": 6
+        },
+        "allResponsesFromServiceWorker": true,
+        "errorStateVisibleAfterRetry": true,
+        "successFixtureHidden": true,
+        "routePreservedAfterRetry": "/w/profile/devices",
+        "meanResponseTimeMs": 3,
+        "screenshot": "preview-profile-error-devices-2026-09-29.png"
+      },
+      {
+        "route": "/w/profile/activity",
+        "operationId": "listProfileActivity",
+        "initialRequestCount": 6,
+        "initialStatusCounts": {
+          "503": 6
+        },
+        "retryRequestCount": 6,
+        "retryStatusCounts": {
+          "503": 6
+        },
+        "allResponsesFromServiceWorker": true,
+        "errorStateVisibleAfterRetry": true,
+        "successFixtureHidden": true,
+        "routePreservedAfterRetry": "/w/profile/activity",
+        "meanResponseTimeMs": 3,
+        "screenshot": "preview-profile-error-activity-2026-09-29.png"
+      },
+      {
+        "route": "/w/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "initialRequestCount": 6,
+        "initialStatusCounts": {
+          "503": 6
+        },
+        "retryRequestCount": 6,
+        "retryStatusCounts": {
+          "503": 6
+        },
+        "allResponsesFromServiceWorker": true,
+        "errorStateVisibleAfterRetry": true,
+        "successFixtureHidden": true,
+        "routePreservedAfterRetry": "/w/profile/sub-accounts",
+        "meanResponseTimeMs": 3,
+        "screenshot": "preview-profile-error-subaccounts-2026-09-29.png"
+      }
+    ],
+    "profileWriteCount": 0,
+    "profileRequestFailureCount": 0,
+    "pageErrorCount": 0
+  },
+  "assertions": {
+    "apiRequests": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "operationId": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts"
+      }
+    ],
+    "apiResponses": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "operationId": null,
+        "status": 401,
+        "fromServiceWorker": true,
+        "responseTimeMs": 13
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null,
+        "status": 204,
+        "fromServiceWorker": true,
+        "responseTimeMs": 15
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 3
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 3
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 3
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 3
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 16
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 16
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 3
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 16
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 3
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 16
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 3
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "status": 503,
+        "fromServiceWorker": true,
+        "responseTimeMs": 1
+      }
+    ],
+    "profileRequestFailures": [],
+    "profileWrites": [],
+    "pageErrors": [],
+    "externalApiOrigins": []
+  },
+  "screenshots": {
+    "profile": "preview-profile-error-profile-2026-09-29.png",
+    "devices": "preview-profile-error-devices-2026-09-29.png",
+    "activity": "preview-profile-error-activity-2026-09-29.png",
+    "subAccounts": "preview-profile-error-subaccounts-2026-09-29.png"
+  },
+  "sourceHashes": {
+    "contracts/openapi/profile.yaml": "6830c4976f5b94b4f78e08b824eabd1c18b41bf96f23613412db065575f1d5d8",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "8382400738090945e6c3ec53286f288f0ed2d41c90dbd407eec2b48d36d347ae",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "6deef3b43c51e05c9cd058d8743b23b64a86579f474ce0486830359ac50ac200",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/profile/api/profile-api.ts": "acba23f32e4c8b2ad972e02c2184e6fbb616ce1ab4b1defeca60d2a825a9b707",
+    "src/features/profile/model/profile-queries.ts": "8849991f90d7d02df9a150cb2d139d0aa1fd7cb1c3b475382f0fc5582a8339b2",
+    "src/features/profile/model/profile-types.ts": "2c31759640a548270a76a9bb7ff17ef5af0cb1a684d968e063373f1157f93761",
+    "src/features/profile/pages/ActivityLogContractPage.tsx": "48be877678ceb63bb2ad01fa94eaf711bd291539508b3c60500632d0c24efb36",
+    "src/features/profile/pages/DeviceManagementContractPage.tsx": "fb32ff88b2c1d65420537814a3d8244cfde0f1a353a2c76356ae2329717dd286",
+    "src/features/profile/pages/EditProfileContractPage.tsx": "b3f1694edc7aa561c42bf016d543e870dba174767dc664edcc31474a89dc79be",
+    "src/features/profile/pages/ProfileContractPage.tsx": "0932157ef6be68cffad4f6e2481c90f010003ffcc3dbe179d562e7eab9d472bd",
+    "src/features/profile/pages/SubAccountContractPage.tsx": "4842a28e0bc17738d0895352d4dcb168f4a981ea2926feb747120ea9de94d0a0",
+    "src/features/profile/routes.ts": "231052711e6dd138f27c96272e63d401e06854ed33d425d8712f485c3b601418",
+    "src/shared/api/api-error.ts": "cd28d4480488b8b71582e085f110a637f80afde64e408b1a24717b67834e2644",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",
+    "src/shared/session/useAuth.ts": "65d58cfe61d4618a1849da066ecd4d6ae7c94c036af7361a91a1383a6b383e0b",
+    "src/shared/ui/ErrorState.tsx": "7e501dd15a90aea2bf93e33150e47d455bbe3a24a0da1f986cca180125d4acd2",
+    "src/main.tsx": "845215ef1b767caaa0f6ff7eeaebe49f471bdfba3aac223b8969671770783bd6",
+    "docs/architecture/production-readiness/evidence/A06/run-profile-error-browser-check.mjs": "fe10ae7914f752dadebf66a5fdab3127047ef4cc6bbfd4281ed852f62dfae7df"
+  },
+  "limitations": [
+    "The local Preview Controls inject HTTP 503 PREVIEW_SERVER_ERROR for Profile reads; the Profile OpenAPI declares 401 but does not declare 503.",
+    "This verifies a synthetic UI failure and retry path only, not a contract-supported server status or a real backend outage.",
+    "The HTTP client retries idempotent GET requests; observed request counts are local configuration evidence, not a production retry recommendation.",
+    "Only four Profile GET operations are covered; updateProfile, setDeviceTrust and revokeDevice mutations were not sent.",
+    "MSW does not enforce Profile permission scopes; backend authorization, persistence, staging and user acceptance are not verified."
+  ]
+}

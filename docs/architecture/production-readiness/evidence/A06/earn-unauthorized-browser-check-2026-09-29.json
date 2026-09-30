@@ -1,0 +1,291 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-29T04:35:00.618Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "origin": "http://127.0.0.1:4173",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b",
+    "contracts/openapi/earn.yaml": "f658455d5dcc1927fcee5a814c01b59e22dc5cae30640cb092e710e4ad7fa608",
+    "docs/architecture/production-readiness/evidence/A06/run-earn-unauthorized-browser-check.mjs": "739ff2b7f87a0c2bc5fb7e065e983a913dd8bd35797d44481c36963fb508726a",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/dev/PreviewControls.tsx": "8532ab8fbe4578c3ff7cff31f559ec996fa146e63d70539a67ea668fc6d160ea",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/earn-fixtures.ts": "d17fff1aef1404678d8e99fe23c2a19b0243d7a0ac6bd4650cdfb901cdb43941",
+    "src/dev/mocks/handlers.ts": "52d20d96c8f1c508e7803cad807003d53f9d1c801276874b4597b92a4b876bbb",
+    "src/dev/mocks/personas.ts": "4f159d020319b86f5f991c49e7c9063a73afddedea9a4e16d8a7d2fb679a105f",
+    "src/dev/mocks/preview-scenario-handler.test.ts": "0533af7a8f219681ee82b40e6ceb81edccbb619d3066dbdec72ab8eb6933aae4",
+    "src/dev/mocks/preview-scenario-handler.ts": "2cc344c10e509e9fe2bb4ddc01b817b3ba27b0187e2c79f4de4f0eec2673b62b",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/earn/api/earn-api.ts": "06715b9d001e7a5b13a7ff819251cded67bca32a32a7912b1b89e6acc8c3e545",
+    "src/features/earn/model/earn-queries.ts": "c3215c441db5e4254fed1a6e91c733b96ed01528dcf61bdc5db4c1390528d10a",
+    "src/features/earn/pages/EarnHistoryPage.tsx": "10853dcd2f40a4c60fc6bbbf698c497d59d3b0d31406a46d6ff7ecca55d426e1",
+    "src/features/earn/pages/EarnPage.tsx": "66fa32a766942e318f53bfde5b50ddc5c91ddb7a92392f5be418e9af60c10b65",
+    "src/shared/api/client.ts": "882197549d075a8be1f495c7d2271dcbf1530ff1606190531da59b75020977bb",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",
+    "src/shared/ui/ErrorState.tsx": "7e501dd15a90aea2bf93e33150e47d455bbe3a24a0da1f986cca180125d4acd2"
+  },
+  "scenario": {
+    "id": "earn.unauthorized",
+    "domain": "earn",
+    "state": "unauthorized",
+    "status": "passed",
+    "observedAt": "2026-09-29T04:35:00.618Z",
+    "persona": "developer (local MSW fixture)",
+    "role": "user",
+    "permissions": ["earn:write"],
+    "route": "/w/earn/savings/portfolio",
+    "routes": ["/w/earn/savings/portfolio", "/w/earn/savings/history"],
+    "finalRoute": "/auth/login",
+    "operationIds": [
+      "getEarnSnapshot",
+      "listEarnTransactions",
+      "createEarnSubscription",
+      "redeemEarnPosition"
+    ],
+    "observedOperationIds": ["getEarnSnapshot", "listEarnTransactions"],
+    "operationRequestCounts": {
+      "getEarnSnapshot": 1,
+      "listEarnTransactions": 1,
+      "createEarnSubscription": 0,
+      "redeemEarnPosition": 0
+    },
+    "requests": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "refreshSession",
+        "method": "POST",
+        "path": "/api/auth/refresh",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "refreshSession",
+        "method": "POST",
+        "path": "/api/auth/refresh",
+        "resourceType": "fetch"
+      }
+    ],
+    "responses": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 13
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 10
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 5
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 5
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      },
+      {
+        "operationId": "refreshSession",
+        "method": "POST",
+        "path": "/api/auth/refresh",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 1
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 14
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 12
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 12
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "operationId": "refreshSession",
+        "method": "POST",
+        "path": "/api/auth/refresh",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 7
+      }
+    ],
+    "observations": {
+      "getEarnSnapshot": {
+        "route": "/w/earn/savings/portfolio",
+        "http401Responses": 1,
+        "followUpSessionRefresh": {
+          "status": 200,
+          "body": null,
+          "contractSupported": true
+        },
+        "totalGetRequests": 1,
+        "allResponsesFromServiceWorker": true,
+        "redirectedToAuthentication": true,
+        "authenticationFormVisibleAfterRedirect": true,
+        "protectedContentSuppressed": true,
+        "emptyStateSuppressed": true
+      },
+      "listEarnTransactions": {
+        "route": "/w/earn/savings/history",
+        "http401Responses": 1,
+        "followUpSessionRefresh": {
+          "status": 200,
+          "body": null,
+          "contractSupported": true
+        },
+        "totalGetRequests": 1,
+        "allResponsesFromServiceWorker": true,
+        "redirectedToAuthentication": true,
+        "authenticationFormVisibleAfterRedirect": true,
+        "protectedContentSuppressed": true,
+        "emptyStateSuppressed": true
+      }
+    },
+    "initialSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "loginResponse": {
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    "scenarioSelected": true,
+    "externalApiOrigins": [],
+    "elapsedMs": 883,
+    "screenshots": [
+      "preview-earn-unauthorized-snapshot-session-expired-2026-09-29.png",
+      "preview-earn-unauthorized-history-session-expired-2026-09-29.png"
+    ],
+    "staleSourceHashesBeforeRun": [],
+    "failures": [],
+    "note": "Chromium/MSW observed contract-declared Earn HTTP 401 responses on snapshot and transaction-history reads. Each 401 triggered the shared auth refresh path; local MSW returned the contract-supported 200/null session result and the app redirected to the authentication form, with no protected Earn content shown. No Earn mutation or external API call occurred. Earn OpenAPI also declares 401 for subscription/redemption, but those POST operations were not exercised; the scenario therefore remains representative (2/4). This local result does not certify backend authorization or session behavior.",
+    "sourceHashReview": {
+      "reviewedPaths": [
+        "src/dev/mocks/preview-scenario-handler.test.ts",
+        "src/dev/mocks/preview-scenario-handler.ts"
+      ],
+      "priorHashes": {
+        "src/dev/mocks/preview-scenario-handler.test.ts": "a18e3b3ce8d872a9fa09def5cba6989c051747f82a20243901b8f1b4ea6836a8",
+        "src/dev/mocks/preview-scenario-handler.ts": "cfec53d5fc1867ae4e78654198c2264845fa7de8be1da13cb9e7be9da59b001c"
+      },
+      "scope": "The handler-only delta changes Earn unauthorized auth-refresh simulation from undeclared HTTP 401 to contract-supported HTTP 200/null. The test addition locks that response contract. Earn success/loading/error behavior and all non-Earn unauthorized branches are unchanged.",
+      "matrixBaselineRefreshedAfterFocusedTestAndBrowserReview": true
+    }
+  }
+}

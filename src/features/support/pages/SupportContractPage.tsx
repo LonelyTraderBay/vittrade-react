@@ -42,7 +42,7 @@ export function SupportContractPage() {
           <input
             aria-label="Tiêu đề ticket"
             value={form.subject}
-            disabled={!canCreateTicket}
+            disabled={!canCreateTicket || create.isPending}
             onChange={(event) => {
               setForm((current) => ({ ...current, subject: event.target.value }));
               setIdempotencyKey(crypto.randomUUID());
@@ -53,7 +53,7 @@ export function SupportContractPage() {
           <textarea
             aria-label="Nội dung ticket"
             value={form.description}
-            disabled={!canCreateTicket}
+            disabled={!canCreateTicket || create.isPending}
             onChange={(event) => {
               setForm((current) => ({ ...current, description: event.target.value }));
               setIdempotencyKey(crypto.randomUUID());
@@ -64,6 +64,7 @@ export function SupportContractPage() {
           />
           <button
             type="button"
+            aria-busy={create.isPending}
             disabled={
               !canCreateTicket ||
               !form.subject.trim() ||
@@ -99,7 +100,7 @@ export function SupportContractPage() {
                 });
             }}
           >
-            Gửi ticket
+            {create.isPending ? 'Đang gửi…' : 'Gửi ticket'}
           </button>
         </TrCard>
         {query.data.items.length === 0 ? (

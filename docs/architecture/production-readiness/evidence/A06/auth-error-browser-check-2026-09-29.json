@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-29T02:46:22.478Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "origin": "http://127.0.0.1:4173",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
+    "docs/architecture/production-readiness/evidence/A06/run-auth-error-browser-check.mjs": "528df500ffbcc8044a7d3ed09fd4cbc252ee2accfc2dd952ef40537cafd067ea",
+    "src/app/components/layout/ProtectedRoute.tsx": "c5cb74de4707d257a40f4782ea7c7c177ce3b8bd2de4f4cccb5e4450c9f4c5d4",
+    "src/app/contexts/AppContext.tsx": "5289f9bb33eb47a51f9369df8bc41bd373f83a8e80e98f13c87fdd5c5dac21ba",
+    "src/dev/PreviewControls.tsx": "8532ab8fbe4578c3ff7cff31f559ec996fa146e63d70539a67ea668fc6d160ea",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "52d20d96c8f1c508e7803cad807003d53f9d1c801276874b4597b92a4b876bbb",
+    "src/dev/mocks/preview-scenario-handler.ts": "310abf70387ff528daf7f61b0d4103a3ed0449619549e1dcfefbfa39f0ca0f48",
+    "src/features/auth/api/auth-api.ts": "050846c48de49be56f6bdf6a73669b5d3a6230c559e33851cd07840609fca078",
+    "src/features/auth/pages/WebLoginPage.tsx": "d938bac40bb63145ffbb3919140b1b3d267b96e86872a93f29a4ebac24980e41",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2"
+  },
+  "scenario": {
+    "id": "auth.error",
+    "domain": "auth",
+    "state": "error",
+    "status": "passed",
+    "observedAt": "2026-09-29T02:46:22.478Z",
+    "persona": "guest (no authenticated session)",
+    "role": "unauthenticated",
+    "permissions": [],
+    "route": "/w/auth/login",
+    "finalRoute": "/w/auth/login",
+    "operationIds": [
+      "register",
+      "login",
+      "verifyLoginMfaChallenge",
+      "getSession",
+      "refreshSession",
+      "logout",
+      "verifyMfa",
+      "confirmMfaSetup",
+      "beginMfaSetup",
+      "requestPasswordResetCode",
+      "verifyCurrentPassword",
+      "changePassword",
+      "verifyPasswordResetCode",
+      "confirmPasswordReset"
+    ],
+    "observedOperationIds": ["login"],
+    "operationRequestCounts": {
+      "login": 2,
+      "getSession": 0
+    },
+    "requests": [
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "observedAtMs": 1790649982127
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "observedAtMs": 1790649982358
+      }
+    ],
+    "responses": [],
+    "requestFailures": [
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "failure": "net::ERR_FAILED",
+        "observedAtMs": 1790649982139
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "failure": "net::ERR_FAILED",
+        "observedAtMs": 1790649982373
+      }
+    ],
+    "bootstrapSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "errorVisibleAfterInitialFailure": true,
+    "retryEnabledAfterInitialFailure": true,
+    "errorVisibleAfterRetry": true,
+    "retryEnabledAfterRetry": true,
+    "noSuccessfulLoginNavigation": true,
+    "externalApiOrigins": [],
+    "unexpectedWriteCount": 0,
+    "elapsedMs": 749,
+    "screenshots": [
+      "preview-auth-error-login-recoverable-2026-09-29.png",
+      "preview-auth-error-login-retry-2026-09-29.png"
+    ],
+    "failures": [],
+    "note": "The Auth OpenAPI contract declares no 5xx responses. The local preview injects a statusless transport failure only for POST /auth/login; guest session bootstrap continues through its contract-declared 401 handler. The login form stays visible, announces a neutral recoverable error, and permits retry without a successful navigation. This is local browser/MSW evidence only."
+  }
+}

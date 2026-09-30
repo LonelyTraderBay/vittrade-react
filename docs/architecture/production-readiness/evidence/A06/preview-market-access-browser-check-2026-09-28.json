@@ -1,0 +1,190 @@
+{
+  "checkedAt": "2026-09-27T22:52:14.358Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "sourceHashes": {
+    "src/dev/PreviewControls.tsx": "0a77f43cd86bcda1f625477a9449d1f3a7fc58e3c7c1853da39450cb370f6bc8",
+    "src/dev/mocks/preview-scenario-handler.ts": "a0abb66a844d82aec092717eec423d4b7ffacf265694970fc39c36e8b96b2d0a",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/market/pages/WatchlistPage.tsx": "26989ec1487c7f16faa14d6e4c165546b3355a33a021d66c49f74013248c2d11",
+    "src/features/market/pages/MarketPriceAlertsPage.tsx": "1fc40c3fa98721d75b7f30132d95ef7a8327d510c23ae15ef9933034a1d59225",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a"
+  },
+  "origin": "http://127.0.0.1:4173",
+  "route": "/w/markets/watchlist",
+  "persona": "developer mock",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenarios": [
+    {
+      "id": "market.forbidden",
+      "status": "passed",
+      "operationId": "getMarketWatchlist",
+      "operation": "GET /market/watchlist",
+      "responseStatus": 403,
+      "fromServiceWorker": true,
+      "publicPairsStatus": 200,
+      "visiblePermissionDeniedState": true,
+      "staleOrEmptyWatchlistVisible": false
+    },
+    {
+      "id": "market.unauthorized",
+      "status": "passed",
+      "operationId": "getMarketWatchlist",
+      "operation": "GET /market/watchlist",
+      "responseStatus": 401,
+      "fromServiceWorker": true,
+      "refreshStatus": 401,
+      "loginRouteAfterRefreshFailure": "/auth/login",
+      "protectedRouteNoLongerVisible": true
+    }
+  ],
+  "apiResponses": [
+    {
+      "method": "GET",
+      "path": "/src/shared/api/query-client.ts",
+      "status": 200,
+      "fromServiceWorker": false
+    },
+    {
+      "method": "GET",
+      "path": "/src/features/wallet/api/wallet-api.ts",
+      "status": 200,
+      "fromServiceWorker": false
+    },
+    {
+      "method": "GET",
+      "path": "/src/shared/api/app-client.ts",
+      "status": 200,
+      "fromServiceWorker": false
+    },
+    {
+      "method": "GET",
+      "path": "/src/features/auth/api/auth-api-instance.ts",
+      "status": 200,
+      "fromServiceWorker": false
+    },
+    {
+      "method": "GET",
+      "path": "/src/shared/api/client.ts",
+      "status": 200,
+      "fromServiceWorker": false
+    },
+    {
+      "method": "GET",
+      "path": "/src/features/auth/api/auth-api.ts",
+      "status": 200,
+      "fromServiceWorker": false
+    },
+    {
+      "method": "GET",
+      "path": "/src/shared/api/http-client.ts",
+      "status": 200,
+      "fromServiceWorker": false
+    },
+    {
+      "method": "GET",
+      "path": "/src/shared/api/api-error.ts",
+      "status": 200,
+      "fromServiceWorker": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "status": 204,
+      "fromServiceWorker": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    {
+      "method": "GET",
+      "path": "/src/features/market/api/market-api.ts",
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    {
+      "method": "GET",
+      "path": "/src/features/market/api/market-stream.ts",
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    {
+      "method": "GET",
+      "path": "/src/features/market/api/market-research-schemas.ts",
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "status": 403,
+      "fromServiceWorker": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "status": 403,
+      "fromServiceWorker": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/refresh",
+      "status": 401,
+      "fromServiceWorker": true
+    }
+  ],
+  "externalApiOrigins": [],
+  "screenshots": ["preview-market-forbidden-2026-09-28.png"],
+  "limits": [
+    "This browser check covers Market watchlist 401/403 behavior in development MSW only.",
+    "It does not establish real backend, staging, other market operations, other domains, or user acceptance."
+  ]
+}

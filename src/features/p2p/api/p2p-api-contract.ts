@@ -94,7 +94,7 @@ export interface P2PApi {
     idempotencyKey: string,
     signal?: AbortSignal,
   ): Promise<P2POrderReceipt>;
-  markOrderPaid(orderId: string, signal?: AbortSignal): Promise<P2POrder>;
+  markOrderPaid(orderId: string, idempotencyKey: string, signal?: AbortSignal): Promise<P2POrder>;
   createReleaseChallenge(orderId: string, signal?: AbortSignal): Promise<P2PReleaseChallenge>;
   verifyReleaseChallenge(
     orderId: string,

@@ -10,6 +10,7 @@ import {
   ToggleRight,
 } from 'lucide-react';
 import { ErrorState } from '@/shared/ui/ErrorState';
+import { isApiError } from '@/shared/api/api-error';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
@@ -125,14 +126,31 @@ export function MarketPriceAlertsPage() {
   }
 
   if (alertsQuery.isError || pairsQuery.isError) {
+    const hasForbiddenError = [alertsQuery.error, pairsQuery.error].some(
+      (error) => isApiError(error) && error.status === 403,
+    );
+
     return (
       <PageLayout>
         <Header title="Cảnh báo giá" back />
-        <ErrorState
-          onAction={() => {
-            void Promise.all([alertsQuery.refetch(), pairsQuery.refetch()]);
-          }}
-        />
+        <PageContent>
+          {hasForbiddenError ? (
+            <div role="alert" className="px-5 py-12 text-center">
+              <p style={{ color: colors.text1, fontSize: 16, fontWeight: 600 }}>
+                Không có quyền xem cảnh báo giá
+              </p>
+              <p style={{ color: colors.text2, fontSize: 13, marginTop: 8 }}>
+                Tài khoản hiện tại không được phép truy cập dữ liệu price alerts.
+              </p>
+            </div>
+          ) : (
+            <ErrorState
+              onAction={() => {
+                void Promise.all([alertsQuery.refetch(), pairsQuery.refetch()]);
+              }}
+            />
+          )}
+        </PageContent>
       </PageLayout>
     );
   }

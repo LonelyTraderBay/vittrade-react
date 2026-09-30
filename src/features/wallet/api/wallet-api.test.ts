@@ -43,16 +43,19 @@ describe('wallet API contract', () => {
   });
 
   it('rejects a response with negative balances', async () => {
+    let requestCount = 0;
     server.use(
-      http.get('http://localhost:3000/api/wallet/assets', () =>
-        HttpResponse.json({
+      http.get('http://localhost:3000/api/wallet/assets', () => {
+        requestCount += 1;
+        return HttpResponse.json({
           ...response,
           items: [{ ...response.items[0], available: -1 }],
-        }),
-      ),
+        });
+      }),
     );
 
     await expect(walletApi.getAssets()).rejects.toThrow();
+    expect(requestCount).toBe(1);
   });
 
   it('loads typed wallet accounts', async () => {
@@ -87,14 +90,25 @@ describe('wallet API contract', () => {
     };
     server.use(
       http.get('http://localhost:3000/api/wallet/transactions', ({ request }) => {
-        expect(new URL(request.url).searchParams.get('asset')).toBe('USDT');
+        const query = new URL(request.url).searchParams;
+        expect(query.get('asset')).toBe('USDT');
+        expect(query.get('type')).toBe('trade_buy');
+        expect(query.get('status')).toBe('pending');
+        expect(query.get('cursor')).toBe('opaque-cursor');
+        expect(query.get('limit')).toBe('50');
         return HttpResponse.json(transactions);
       }),
     );
 
-    await expect(walletApi.getTransactions({ asset: 'USDT', limit: 20 })).resolves.toEqual(
-      transactions,
-    );
+    await expect(
+      walletApi.getTransactions({
+        asset: 'USDT',
+        type: 'trade_buy',
+        status: 'pending',
+        cursor: 'opaque-cursor',
+        limit: 50,
+      }),
+    ).resolves.toEqual(transactions);
   });
 
   it('loads deposit and withdrawal network policies', async () => {
@@ -135,6 +149,78 @@ describe('wallet API contract', () => {
     await expect(walletApi.getWithdrawalNetworks('USDT')).resolves.toEqual(
       withdrawalNetworks.networks,
     );
+  });
+
+  it('loads network status using the supported health states and update timestamp', async () => {
+    const networkStatus = {
+      items: [
+        {
+          id: 'network-1',
+          name: 'Network One',
+          status: 'operational',
+          depositEnabled: true,
+          withdrawalEnabled: false,
+          updatedAt: '2026-09-25T10:00:00.000Z',
+        },
+      ],
+    };
+    server.use(
+      http.get('http://localhost:3000/api/wallet/network-status', () =>
+        HttpResponse.json(networkStatus),
+      ),
+    );
+
+    await expect(walletApi.getNetworkStatus()).resolves.toEqual(networkStatus);
+  });
+
+  it('rejects unknown wallet network status values', async () => {
+    server.use(
+      http.get('http://localhost:3000/api/wallet/network-status', () =>
+        HttpResponse.json({
+          items: [
+            {
+              id: 'network-1',
+              name: 'Network One',
+              status: 'unknown',
+              depositEnabled: true,
+              withdrawalEnabled: true,
+              updatedAt: '2026-09-25T10:00:00.000Z',
+            },
+          ],
+        }),
+      ),
+    );
+
+    await expect(walletApi.getNetworkStatus()).rejects.toThrow();
+  });
+
+  it('rejects duplicate network IDs in a status snapshot', async () => {
+    server.use(
+      http.get('http://localhost:3000/api/wallet/network-status', () =>
+        HttpResponse.json({
+          items: [
+            {
+              id: 'network-1',
+              name: 'Network One',
+              status: 'operational',
+              depositEnabled: true,
+              withdrawalEnabled: true,
+              updatedAt: '2026-09-25T10:00:00.000Z',
+            },
+            {
+              id: 'network-1',
+              name: 'Duplicate Network',
+              status: 'maintenance',
+              depositEnabled: false,
+              withdrawalEnabled: false,
+              updatedAt: '2026-09-25T10:00:00.000Z',
+            },
+          ],
+        }),
+      ),
+    );
+
+    await expect(walletApi.getNetworkStatus()).rejects.toThrow();
   });
 
   it('rejects withdrawal limits where the maximum is below the minimum', async () => {

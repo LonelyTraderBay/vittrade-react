@@ -1,0 +1,19 @@
+{
+  "observedAt": "2026-09-27T12:08:28.526Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "scope": "Unmodified MSW handlers + real auth adapter and HTTP client in isolated Node process, intercepted requests only; not browser or real backend proof",
+  "login": {
+    "passed": false,
+    "name": "ZodError",
+    "issues": [
+      {
+        "code": "invalid_union",
+        "path": [
+          "status"
+        ],
+        "note": "No matching discriminator"
+      }
+    ]
+  },
+  "loginMfaHandlerCount": 0
+}

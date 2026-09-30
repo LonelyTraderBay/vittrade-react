@@ -20,7 +20,8 @@ import {
   Users,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { useThemeColors } from '../../hooks/useThemeColors';
+import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { useAuth } from '@/shared/session/useAuth';
 import { WEB_SIDEBAR_WIDTH, WEB_COMMAND_BAR_HEIGHT } from './webConstants';
 
 /**
@@ -115,6 +116,14 @@ export function WebSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const c = useThemeColors();
+  const { isAuthenticated, isLoading, user } = useAuth();
+  const account = !isLoading && isAuthenticated ? user : null;
+  const accountName = account
+    ? account.fullName.trim() || account.username || account.email || 'Tài khoản'
+    : isLoading
+      ? 'Đang kiểm tra phiên đăng nhập'
+      : 'Chưa đăng nhập';
+  const accountDetail = account?.vipLevel != null ? `VIP ${account.vipLevel}` : '';
 
   const isActive = (path: string) => {
     // Exact match
@@ -340,7 +349,9 @@ export function WebSidebar() {
               background: 'linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)',
             }}
           >
-            <span style={{ color: '#fff', fontSize: 13, fontWeight: 700 }}>V</span>
+            <span style={{ color: '#fff', fontSize: 13, fontWeight: 700 }}>
+              {account ? accountName.charAt(0).toUpperCase() : '…'}
+            </span>
           </div>
           <div className="flex flex-col min-w-0 text-left">
             <span
@@ -353,9 +364,9 @@ export function WebSidebar() {
                 whiteSpace: 'nowrap',
               }}
             >
-              VitTrader Pro
+              <span aria-live={isLoading ? 'polite' : undefined}>{accountName}</span>
             </span>
-            <span style={{ color: c.text3, fontSize: 11 }}>VIP 3 · v2.4.1</span>
+            {accountDetail && <span style={{ color: c.text3, fontSize: 11 }}>{accountDetail}</span>}
           </div>
         </button>
       </div>

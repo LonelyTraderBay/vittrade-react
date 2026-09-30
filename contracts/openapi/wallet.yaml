@@ -11,6 +11,7 @@ paths:
   /wallet/assets:
     get:
       operationId: getWalletAssets
+      x-required-permissions: [wallet:read]
       responses:
         '200':
           description: Current wallet balances and valuation summary.
@@ -22,26 +23,32 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/ApiError' }
+        '403': { $ref: '#/components/responses/Forbidden' }
   /wallet/accounts:
     get:
       operationId: getWalletAccounts
+      x-required-permissions: [wallet:read]
       responses:
         '200':
           description: Balances by internal wallet account.
           content:
             application/json:
               schema: { $ref: '#/components/schemas/WalletAccountsResponse' }
+        '403': { $ref: '#/components/responses/Forbidden' }
   /wallet/address-book:
     get:
       operationId: getWalletAddressBook
+      x-required-permissions: [wallet:read]
       responses:
         '200':
           description: Saved withdrawal addresses owned by the current user.
           content:
             application/json:
               schema: { $ref: '#/components/schemas/WalletAddressBookResponse' }
+        '403': { $ref: '#/components/responses/Forbidden' }
     post:
       operationId: createWalletAddressBookEntry
+      x-required-permissions: [wallet:address-book]
       parameters:
         - { $ref: '#/components/parameters/IdempotencyKey' }
       requestBody:
@@ -55,9 +62,11 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/WalletAddressBookItem' }
+        '403': { $ref: '#/components/responses/Forbidden' }
   /wallet/address-book/settings:
     patch:
       operationId: updateWalletAddressBookSettings
+      x-required-permissions: [wallet:address-book]
       parameters:
         - { $ref: '#/components/parameters/IdempotencyKey' }
       requestBody:
@@ -75,9 +84,11 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/WalletAddressBookResponse' }
+        '403': { $ref: '#/components/responses/Forbidden' }
   /wallet/address-book/{addressId}:
     patch:
       operationId: updateWalletAddressBookEntry
+      x-required-permissions: [wallet:address-book]
       parameters:
         - name: addressId
           in: path
@@ -95,8 +106,10 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/WalletAddressBookItem' }
+        '403': { $ref: '#/components/responses/Forbidden' }
     delete:
       operationId: deleteWalletAddressBookEntry
+      x-required-permissions: [wallet:address-book]
       parameters:
         - name: addressId
           in: path
@@ -105,9 +118,11 @@ paths:
         - { $ref: '#/components/parameters/IdempotencyKey' }
       responses:
         '204': { description: Saved address deleted. }
+        '403': { $ref: '#/components/responses/Forbidden' }
   /wallet/analytics/portfolio:
     get:
       operationId: getPortfolioAnalytics
+      x-required-permissions: [wallet:read]
       parameters:
         - name: period
           in: query
@@ -119,9 +134,11 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/PortfolioAnalyticsResponse' }
+        '403': { $ref: '#/components/responses/Forbidden' }
   /wallet/dust-conversions/quote:
     get:
       operationId: quoteWalletDustConversion
+      x-required-permissions: [wallet:read]
       parameters:
         - name: assets
           in: query
@@ -137,9 +154,11 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/DustConversionQuote' }
+        '403': { $ref: '#/components/responses/Forbidden' }
   /wallet/dust-conversions:
     post:
       operationId: createWalletDustConversion
+      x-required-permissions: [wallet:dust-convert]
       parameters:
         - { $ref: '#/components/parameters/IdempotencyKey' }
       requestBody:
@@ -153,9 +172,14 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/DustConversionReceipt' }
+        '403': { $ref: '#/components/responses/Forbidden' }
   /wallet/transactions:
     get:
       operationId: getWalletTransactions
+      x-required-permissions: [wallet:read]
+      description: >-
+        Returns transactions matching the supplied filters, ordered by createdAt descending
+        and then id descending. The opaque cursor continues that stable order.
       parameters:
         - { $ref: '#/components/parameters/Asset' }
         - { $ref: '#/components/parameters/TransactionType' }
@@ -173,9 +197,11 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/ApiError' }
+        '403': { $ref: '#/components/responses/Forbidden' }
   /wallet/transactions/{transactionId}:
     get:
       operationId: getWalletTransaction
+      x-required-permissions: [wallet:read]
       parameters:
         - name: transactionId
           in: path
@@ -192,9 +218,11 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/ApiError' }
+        '403': { $ref: '#/components/responses/Forbidden' }
   /wallet/deposit/networks:
     get:
       operationId: getWalletDepositNetworks
+      x-required-permissions: [wallet:read]
       parameters:
         - { $ref: '#/components/parameters/AssetRequired' }
       responses:
@@ -208,9 +236,11 @@ paths:
                 properties:
                   networks:
                     { type: array, items: { $ref: '#/components/schemas/WalletDepositNetwork' } }
+        '403': { $ref: '#/components/responses/Forbidden' }
   /wallet/withdrawal/networks:
     get:
       operationId: getWalletWithdrawalNetworks
+      x-required-permissions: [wallet:read]
       parameters:
         - { $ref: '#/components/parameters/AssetRequired' }
       responses:
@@ -224,9 +254,31 @@ paths:
                 properties:
                   networks:
                     { type: array, items: { $ref: '#/components/schemas/WalletWithdrawalNetwork' } }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /wallet/network-status:
+    get:
+      operationId: getWalletNetworkStatus
+      x-required-permissions: [wallet:read]
+      description: >-
+        Return a current provider-backed snapshot. The backend must respond with 503 when the
+        provider is unavailable or its snapshot is too old; cached state must not be represented
+        as current.
+      responses:
+        '200':
+          description: Current network health and wallet deposit/withdraw availability.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WalletNetworkStatusResponse' }
+        '503':
+          description: Network status source is unavailable; no current status can be asserted.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiError' }
+        '403': { $ref: '#/components/responses/Forbidden' }
   /wallet/transfers:
     post:
       operationId: createWalletTransfer
+      x-required-permissions: [wallet:transfer]
       parameters:
         - { $ref: '#/components/parameters/IdempotencyKey' }
       requestBody:
@@ -245,9 +297,13 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/ApiError' }
+        '403': { $ref: '#/components/responses/Forbidden' }
   /wallet/withdrawals/challenge:
     post:
       operationId: createWalletWithdrawalChallenge
+      x-idempotency-exception-reason: >-
+        Wallet withdrawal MFA challenge issuance remains outside the generic business Idempotency-Key rule; replay semantics are not specified and must be defined separately.
+      x-required-permissions: [wallet:withdraw]
       requestBody:
         required: true
         content:
@@ -260,13 +316,16 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/WalletWithdrawalChallenge' }
         '403':
-          description: Additional verification is not available for the account.
+          description: Permission denied or additional verification is unavailable for the account.
           content:
             application/json:
               schema: { $ref: '#/components/schemas/ApiError' }
   /wallet/withdrawals/challenge/{challengeId}/verify:
     post:
       operationId: verifyWalletWithdrawalChallenge
+      x-idempotency-exception-reason: >-
+        Wallet withdrawal MFA challenge verification remains outside the generic business Idempotency-Key rule; one-time verification and replay semantics must be defined separately.
+      x-required-permissions: [wallet:withdraw]
       parameters:
         - name: challengeId
           in: path
@@ -292,9 +351,11 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/ApiError' }
+        '403': { $ref: '#/components/responses/Forbidden' }
   /wallet/withdrawals:
     post:
       operationId: createWalletWithdrawal
+      x-required-permissions: [wallet:withdraw]
       parameters:
         - { $ref: '#/components/parameters/IdempotencyKey' }
       requestBody:
@@ -313,7 +374,14 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/ApiError' }
+        '403': { $ref: '#/components/responses/Forbidden' }
 components:
+  responses:
+    Forbidden:
+      description: Authenticated user lacks the permission required for this operation.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ApiError' }
   parameters:
     Asset:
       name: asset
@@ -339,6 +407,7 @@ components:
       name: cursor
       in: query
       required: false
+      description: Opaque cursor returned by the previous page.
       schema: { type: string }
     Limit:
       name: limit
@@ -533,8 +602,13 @@ components:
       required: [items, total]
       properties:
         items: { type: array, items: { $ref: '#/components/schemas/WalletTransaction' } }
-        total: { type: integer, minimum: 0 }
-        nextCursor: { type: string }
+        total:
+          type: integer
+          minimum: 0
+          description: Total number of transactions matching the supplied filters.
+        nextCursor:
+          type: string
+          description: Opaque cursor for the next page, omitted when no more results exist.
     WalletDepositNetwork:
       type: object
       required: [id, name, fee, minDeposit, address, arrivalTime, confirmations]
@@ -561,6 +635,28 @@ components:
         requiresMemo: { type: boolean }
         memoLabel: { type: string }
         memoPlaceholder: { type: string }
+    WalletNetworkStatus:
+      type: object
+      required: [id, name, status, depositEnabled, withdrawalEnabled, updatedAt]
+      properties:
+        id: { type: string, minLength: 1 }
+        name: { type: string, minLength: 1 }
+        status: { $ref: '#/components/schemas/WalletNetworkHealth' }
+        depositEnabled: { type: boolean }
+        withdrawalEnabled: { type: boolean }
+        updatedAt:
+          type: string
+          format: date-time
+          description: Time of the provider observation represented by this status.
+        message: { type: string, maxLength: 240 }
+    WalletNetworkStatusResponse:
+      type: object
+      required: [items]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/WalletNetworkStatus' } }
+    WalletNetworkHealth:
+      type: string
+      enum: [operational, degraded, congested, maintenance]
     WalletTransferRequest:
       type: object
       required: [fromWallet, toWallet, asset, amount]

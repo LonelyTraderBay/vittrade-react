@@ -1,6 +1,6 @@
 export interface AuthUser {
   id: string;
-  email: string;
+  email?: string;
   fullName: string;
   roles: string[];
   permissions: string[];
@@ -52,11 +52,20 @@ export interface LoginRequest {
   password: string;
 }
 
-export interface MfaVerificationRequest {
+export interface RegistrationMfaVerificationRequest {
+  challengeId: string;
+  code: string;
+  purpose: 'register';
+}
+
+export interface ContactMfaVerificationRequest {
   contact: string;
   code: string;
-  purpose?: string;
+  purpose?: '2fa';
 }
+
+export type MfaVerificationRequest =
+  RegistrationMfaVerificationRequest | ContactMfaVerificationRequest;
 
 export interface MfaSetupConfirmationRequest {
   code: string;

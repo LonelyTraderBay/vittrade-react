@@ -31,6 +31,8 @@ export default defineConfig({
   },
 
   build: {
+    // `public/` contains the MSW worker for Vite development; keep it out of production output.
+    copyPublicDir: false,
     rollupOptions: {
       output: {
         manualChunks(id) {

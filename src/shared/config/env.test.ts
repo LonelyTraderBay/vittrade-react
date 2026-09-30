@@ -13,7 +13,7 @@ describe('runtime environment boundary', () => {
     vi.stubEnv('VITE_ENABLE_ANALYTICS', '1');
     vi.stubEnv('VITE_ENABLE_DEVTOOLS', 'false');
 
-    const { env, assertProductionEnv } = await import('./env');
+    const { env, assertRuntimeEnv } = await import('./env');
 
     expect(env.mode).toBe('development');
     expect(env.isDev).toBe(false);
@@ -22,9 +22,47 @@ describe('runtime environment boundary', () => {
     expect(env.isProd).toBe(false);
     expect(env.appName).toBe('VitTrade');
     expect(env.releaseVersion).toBe('v1.2.3');
+    expect(env.dataSource).toBe('api');
     expect(env.enableAnalytics).toBe(true);
     expect(env.enableDevtools).toBe(false);
-    expect(assertProductionEnv).not.toThrow();
+    expect(assertRuntimeEnv).not.toThrow();
+  });
+
+  it('defaults development to mocks and allows opting into the real API', async () => {
+    vi.stubEnv('MODE', 'development');
+    vi.stubEnv('DEV', true);
+    vi.stubEnv('PROD', false);
+
+    const { env: developmentEnv, assertRuntimeEnv } = await import('./env');
+
+    expect(developmentEnv.dataSource).toBe('mock');
+    expect(assertRuntimeEnv).not.toThrow();
+
+    vi.resetModules();
+    vi.stubEnv('VITE_DATA_SOURCE', 'api');
+
+    const { env: apiEnv, assertRuntimeEnv: assertApiEnv } = await import('./env');
+
+    expect(apiEnv.dataSource).toBe('api');
+    expect(assertApiEnv).not.toThrow();
+  });
+
+  it.each(['staging', 'production'] as const)('rejects mock data in %s', async (mode) => {
+    vi.stubEnv('MODE', mode);
+    vi.stubEnv('DEV', false);
+    vi.stubEnv('PROD', mode === 'production');
+    vi.stubEnv('VITE_DATA_SOURCE', 'mock');
+
+    const { env, assertRuntimeEnv } = await import('./env');
+
+    expect(env.dataSource).toBe('mock');
+    expect(assertRuntimeEnv).toThrow('Mock data source is not allowed in staging or production');
+  });
+
+  it('rejects unsupported data-source values', async () => {
+    vi.stubEnv('VITE_DATA_SOURCE', 'fixture');
+
+    await expect(import('./env')).rejects.toThrow();
   });
 
   it('fails closed when production endpoints use insecure protocols', async () => {
@@ -34,10 +72,10 @@ describe('runtime environment boundary', () => {
     vi.stubEnv('VITE_API_BASE_URL', 'http://api.example.test');
     vi.stubEnv('VITE_WS_URL', 'ws://api.example.test/socket');
 
-    const { env, assertProductionEnv } = await import('./env');
+    const { env, assertRuntimeEnv } = await import('./env');
 
     expect(env.isProd).toBe(true);
-    expect(assertProductionEnv).toThrow(
+    expect(assertRuntimeEnv).toThrow(
       'Production environment is incomplete: VITE_API_BASE_URL, VITE_WS_URL',
     );
   });
@@ -49,8 +87,8 @@ describe('runtime environment boundary', () => {
     vi.stubEnv('VITE_API_BASE_URL', 'https://api.example.test');
     vi.stubEnv('VITE_WS_URL', 'wss://api.example.test/socket');
 
-    const { assertProductionEnv } = await import('./env');
+    const { assertRuntimeEnv } = await import('./env');
 
-    expect(assertProductionEnv).not.toThrow();
+    expect(assertRuntimeEnv).not.toThrow();
   });
 });

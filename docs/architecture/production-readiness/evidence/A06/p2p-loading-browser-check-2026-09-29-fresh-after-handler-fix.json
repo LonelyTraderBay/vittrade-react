@@ -1,0 +1,91 @@
+{
+  "checkedAt": "2026-09-29T17:43:24.446Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "branch": "codex/vittrade-architecture-completion",
+  "origin": "http://127.0.0.1:5190",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "p2p.loading",
+    "status": "passed",
+    "persona": "developer (preview only)",
+    "route": "/w/p2p/order-room",
+    "operationIds": ["listP2POrders"],
+    "expectedDomainOperationCount": 42,
+    "coverage": "representative_browser_observed"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allP2PResponsesFromServiceWorker": true,
+    "responsePayload": {
+      "itemCount": 7,
+      "total": 7
+    },
+    "p2pMutations": [],
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false
+  },
+  "measurements": {
+    "totalFlowMs": 2550,
+    "loadingUiMs": 98,
+    "orderListResponseMs": 2057,
+    "responseToRenderedOrderMs": 9,
+    "p2pResponseCount": 1,
+    "totalApiRequestCount": 4,
+    "pageErrorCount": 0
+  },
+  "assertions": {
+    "listP2POrders": {
+      "method": "GET",
+      "path": "/api/p2p/orders",
+      "status": 200,
+      "fromServiceWorker": true,
+      "itemsLength": 7,
+      "total": 7
+    },
+    "loadingState": {
+      "visible": true,
+      "responseObservedWhileLoading": false,
+      "route": "/w/p2p/order-room"
+    },
+    "renderedOrder": {
+      "label": "#VT-P2P-20240223-001",
+      "orderNumber": "VT-P2P-20240223-001",
+      "visible": true
+    },
+    "p2pResponses": [
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders",
+        "status": 200,
+        "fromServiceWorker": true
+      }
+    ],
+    "p2pMutations": [],
+    "p2pRequestFailures": [],
+    "pageErrors": []
+  },
+  "screenshot": "preview-p2p-loading-orders-2026-09-29-fresh-after-handler-fix.png",
+  "loadingScreenshot": "preview-p2p-loading-pending-orders-2026-09-29-fresh-after-handler-fix.png",
+  "sourceHashes": {
+    "contracts/openapi/p2p.yaml": "17d7e0c1b198d6adadc9d5a0519c029084257c82132e8e4391891c5e92c2c576",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "6deef3b43c51e05c9cd058d8743b23b64a86579f474ce0486830359ac50ac200",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/p2p/api/p2p-api.ts": "164f6424133e159b1b8dd5a6e23a0bdcd3c5a14c294d1a808cba09d552230b83",
+    "src/features/p2p/model/p2p-order-queries.ts": "c8cc053c96a51f9fd3830631ba7f016714477f87b79a01039cb01424d0192394",
+    "src/features/p2p/pages/P2POrdersContractPage.tsx": "4a9e8002772f515dd1117d1ac5386a2ace5136290ca8303c5a67e88b05ef8a67",
+    "src/features/p2p/routes.ts": "70de2d9cae22dfb45031be5cbe5fe858a863aa2bb82b266bea39ce4137e1dbee",
+    "docs/architecture/production-readiness/evidence/A06/run-p2p-loading-browser-check.mjs": "6048f977f77786c6fa3577b01e84dce6d9c37c6bf40de4ffec7a9a84d4a2371f"
+  },
+  "limitations": [
+    "This is local Chromium/MSW evidence only; it does not verify backend persistence, authorization enforcement, staging or user acceptance.",
+    "Only listP2POrders was observed, one of 42 linked P2P operations; coverage remains representative.",
+    "The separate /w/p2p/my-orders route alias is not included in this fresh run."
+  ]
+}

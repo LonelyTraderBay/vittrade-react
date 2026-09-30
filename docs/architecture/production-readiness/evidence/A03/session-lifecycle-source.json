@@ -1,0 +1,35 @@
+{
+  "observedAt": "2026-09-27T13:00:59.120Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "baselineSourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "baselineFinding": {
+    "id": "F01",
+    "priority": "P1",
+    "type": "Defect reproduced",
+    "topic": "Logout liên tab bị phản hồi refresh cũ khôi phục phiên",
+    "evidence": "AUTH-REMOTE-LOGOUT-RACE: false/null -> true/token after late refresh; local logout control passes",
+    "owner": "Frontend platform / Auth",
+    "dependsOn": [],
+    "acceptance": "Đăng xuất từ tab hiện tại hoặc tab khác phải vô hiệu mọi getSession/login/refresh/MFA đã bắt đầu trước đó; kiểm thử late success và late error; token và cache không được phục hồi."
+  },
+  "currentSource": {
+    "file": "src/shared/session/AuthContext.tsx",
+    "baselineSha256": "d98fc6d357fc2a0510dff58c4495af3e138c5f6bb99aa78f8f59cfafa00f3303",
+    "currentSha256": "d98fc6d357fc2a0510dff58c4495af3e138c5f6bb99aa78f8f59cfafa00f3303",
+    "unchangedSinceBaseline": true,
+    "lines": {
+      "operationSerial": 62,
+      "bootstrapStart": 76,
+      "remoteLogoutHandler": 99,
+      "localLogoutInvalidation": 76,
+      "refreshSessionStart": 208
+    },
+    "observation": "Remote BroadcastChannel logout clears the session but does not increment operationRef; a pending refresh keeps a matching operation ID and can apply its late session. Local signOut increments operationRef before clearing the local session."
+  },
+  "relatedCacheOwner": {
+    "file": "src/app/contexts/AppContext.tsx",
+    "line": 58,
+    "behavior": "TanStack Query cache clears when the current user ID changes."
+  },
+  "scopeLimit": "This validates frontend state handling only. It does not establish server-side refresh-cookie or access-token revocation."
+}

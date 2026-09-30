@@ -75,8 +75,6 @@ export function OrderAmendment({
   // Parse values
   const newPriceNum = parseFloat(newPrice || '0');
   const newAmountNum = parseFloat(newAmount || '0');
-  const remainingNum = order.remaining;
-
   // Calculate changes
   const priceChanged = Math.abs(newPriceNum - order.price) > 0.01;
   const amountChanged = Math.abs(newAmountNum - order.amount) > 0.001;
@@ -243,11 +241,11 @@ export function OrderAmendment({
 
       {/* Edit Mode Toggle */}
       <div className="flex gap-2">
-        {['price', 'amount', 'both'].map((mode) => (
+        {(['price', 'amount', 'both'] as const).map((mode) => (
           <button
             key={mode}
             onClick={() => {
-              setEditMode(mode as any);
+              setEditMode(mode);
               hapticSelection();
             }}
             className="flex-1 px-3 py-2 rounded-xl min-h-10"

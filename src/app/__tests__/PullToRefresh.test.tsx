@@ -12,8 +12,8 @@ import type { Mock } from 'vitest';
 import { screen } from '@testing-library/react';
 import { renderToString } from 'react-dom/server';
 import { renderWithProviders } from '../../test/test-utils';
-import { ThemeProvider } from '../contexts/ThemeContext';
-import { PullToRefresh } from '../components/ui/PullToRefresh';
+import { ThemeProvider } from '@/shared/theme/ThemeContext';
+import { PullToRefresh } from '@/shared/ui/PullToRefresh';
 
 describe('PullToRefresh', () => {
   let mockOnRefresh: Mock<() => Promise<void>>;

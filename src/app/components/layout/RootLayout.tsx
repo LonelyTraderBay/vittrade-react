@@ -3,7 +3,7 @@ import { Outlet, useLocation } from 'react-router';
 import { AppProvider } from '../../contexts/AppContext';
 import { MobileFrame } from './MobileFrame';
 import { ErrorBoundary } from '../mobile/ErrorBoundary';
-import { ThemedToaster } from '../ui/ThemedToaster';
+import { ThemedToaster } from '@/shared/ui/ThemedToaster';
 import { PlatformSwitcher } from './PlatformSwitcher';
 
 /**
@@ -24,7 +24,11 @@ import { PlatformSwitcher } from './PlatformSwitcher';
  *  - Interaction model (gesture / touch / keyboard)
  *  - Modal system (sheets / floating / dialog)
  */
-export function RootLayout() {
+export function RootLayout({
+  developmentPreviewControls: DevelopmentPreviewControls,
+}: {
+  developmentPreviewControls?: React.ComponentType;
+}) {
   const location = useLocation();
 
   // Determine which platform shell we're in
@@ -53,6 +57,11 @@ export function RootLayout() {
         </React.Suspense>
         <ThemedToaster />
         <PlatformSwitcher />
+        {DevelopmentPreviewControls ? (
+          <React.Suspense fallback={null}>
+            <DevelopmentPreviewControls />
+          </React.Suspense>
+        ) : null}
       </AppProvider>
     </ErrorBoundary>
   );

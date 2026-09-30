@@ -9,8 +9,16 @@ function paths(routes: RouteObject[]): string[] {
 describe('trading route ownership', () => {
   it('keeps the contract-backed copy-trading routes inside the feature boundary', () => {
     expect(paths(createTradingRoutes())).toEqual([
+      'trade/positions',
+      'trade/copy-performance/:copyId',
+      'trade/copy-trading/v2',
       'trade/copy-trading',
+      'trade/orders-history',
+      'trade/order-receipt',
+      'trade/settings',
+      'trade/trader/:traderId',
       'trade/copy-trading/active',
+      'trade/copy-trading/leaderboard',
       'trade/copy-provider/:providerId',
       'trade/copy-provider/:providerId/assessment',
       'trade/copy-provider/:providerId/configuration',
@@ -22,12 +30,14 @@ describe('trading route ownership', () => {
 
   it('preserves the web shell URLs while using feature-owned implementations', () => {
     expect(paths(createTradingWebRoutes())).toEqual([
+      'trade/positions',
       'trade/copy',
       'trade/copy/provider/:providerId',
       'trade/copy/provider/:providerId/assessment',
       'trade/copy/provider/:providerId/configuration',
       'trade/copy/provider/:providerId/confirmation',
       'trade/copy/active',
+      'trade/orders',
       'trade/copy/performance/:copyId',
       'trade/copy/education',
       'trade/copy-trading/education',

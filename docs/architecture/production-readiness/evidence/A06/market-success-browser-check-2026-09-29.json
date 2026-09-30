@@ -1,0 +1,1267 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-29T06:24:16.103Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "origin": "http://127.0.0.1:4173",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b",
+    "contracts/openapi/market.yaml": "cca6ccf13d96a7a813c54734e5331a7620803f5a670355f6f3b72e4703a3e888",
+    "docs/architecture/production-readiness/evidence/A06/run-market-success-browser-check.mjs": "d32ace815ff4b13e6a3f9ecee36d7baad25e2a8f9bae5aab1dfa6ab15eddfe0c",
+    "src/app/components/layout/WebSidebar.tsx": "6e294d2589c6106430121d8da43fc8a02b89a321907bf92db47452df97f3b90f",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/dev/PreviewControls.tsx": "4d68e898a2b468cf25c36d0528df0b546fb037e5c4dc6bfcda944be3ecd18759",
+    "src/dev/mocks/auth-handlers.test.ts": "239aa0d73df4ba5a4b19ac64724c04d5bd6ba8c1d1ab4673693262f97687885a",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "93fd4a5f1a7637be2b10775edd8dfbd6e2562f1db3c90112dc3a5959519ca398",
+    "src/dev/mocks/market-data-simulator.ts": "711e421335b34a7181502bbb0f5afd283ee455c63126f64c584cd512fc8fce08",
+    "src/dev/mocks/market-overview-fixtures.ts": "e160b186a350ec8c561fea02037afff59662b395d59809f77c5225dbc7b57814",
+    "src/dev/mocks/market-preview-fixtures.ts": "dadee8830469930227b85c8f77985de8df0657f42807a8ca814bc7014e907ae9",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.test.ts": "fcd17d5dd95cf71c71721fcbdd2d35cda210180a9fbafb8ee91c98912ed5055a",
+    "src/dev/mocks/preview-scenario-handler.ts": "c89d7fb4a99f98f4dd3b76f2d74084679dfa93eddad0667ee2390b6303e26271",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/market/api/market-api.ts": "3ab429a7948f319f4a3e1e0dc7973ab9e7f1c3ea78d7a217fb3a3093f68ea7fa",
+    "src/features/market/api/market-research-schemas.ts": "7c81973c289d1d84e3e36bd72140fa6271e9048cbd51fe86000ee92e270a1b29",
+    "src/features/market/model/market-queries.ts": "bfb11787528086c9bdd12691ae19a451ff193c3d89c7d2c10d50242739052e85",
+    "src/features/market/model/market-types.ts": "edc3c4db22056bfcc439e74280fa9bd5fa6f7e65b88e1fc5381097acd4ea166b",
+    "src/features/market/pages/AdvancedChartsPage.tsx": "9f0915831407a38a78b0971e7f91940f7ae840a338e7c1efdbd8765e2b06563a",
+    "src/features/market/pages/MarketComparisonPage.tsx": "fbec2337a0623720b61a15917ccf58dabf2ade0edf40478004720b777c49512f",
+    "src/features/market/pages/MarketCorrelationPairsPage.tsx": "44854b822785c563f6eb9919afe74f6f4cda6398cb9403f18dcc0e7d74a38949",
+    "src/features/market/pages/MarketDepthPage.tsx": "0ffc85247b4193c11bc5b415e7fd76db3f70f7a4fe75352b2d186a00bcfd954a",
+    "src/features/market/pages/MarketDerivativesPage.tsx": "bed4580507d77fcab3ca62e41b88493f78a74286cf6377e48b9b959501faca6a",
+    "src/features/market/pages/MarketEventCalendarPage.tsx": "34d1b2a2ee341c8405a8be5ddf36f9cfe5dda4bb785dfa1ac402f47778970c13",
+    "src/features/market/pages/MarketHeatmapPage.tsx": "7b0a8a89fa8966e33cf440e1edf1f85f185957fe2c745489eed8940db4c946c1",
+    "src/features/market/pages/MarketHomePage.tsx": "473837995f85438514d174d9dbeba1411ba95dbb7fa5424788c7625fde6e34df",
+    "src/features/market/pages/MarketMoversPage.tsx": "8c9026df94a3933e199ef758d86f3732c2a5099392b828aa0789f94690302e4e",
+    "src/features/market/pages/MarketNewsFeedPage.tsx": "aedc9280943382a7d6cfb1bf7ccf81b5ab7276f897846ceb98c5cb2dc3d17ad6",
+    "src/features/market/pages/MarketOverviewPage.tsx": "6bd365548714f1ae9d20ff21c87099294675e33820f7cc8e9dbd1faabad9c879",
+    "src/features/market/pages/MarketPriceAlertsPage.tsx": "1fc40c3fa98721d75b7f30132d95ef7a8327d510c23ae15ef9933034a1d59225",
+    "src/features/market/pages/MarketScreenerPage.tsx": "49f0999ccb8d19285c9210ea6278bd60e16d330833728fe536b769adb2f9957f",
+    "src/features/market/pages/MarketSectorsPage.tsx": "09f837e567cd9f87efd6fe85bf339bb1f5bf20209ca7b26e06314758b014c513",
+    "src/features/market/pages/MarketSentimentPage.tsx": "298d0c0dd595432f2c0cb12802a255ea6169d992ed75febf71664db9ddf1c081",
+    "src/features/market/pages/MarketSignalsPage.tsx": "34a929883dbc899bc41388b6f0f1d5bec89f77a6f3afa1851c680076b34f510e",
+    "src/features/market/pages/PairDetailPage.tsx": "3a9e69f652aaf5d2d94fb1a1dfca3bd2d0a57721aef5ce549dc336805abd151c",
+    "src/features/market/pages/TokenInfoPage.tsx": "8807d10e05670ff981be7dae1c14d395e3aabe54c06000659f6e790484b5e144",
+    "src/features/market/pages/TokenUnlockSchedulePage.tsx": "3b837c6443bb2239ca9979a5ea2b704e7a275991f68ff8a9679c6e7b03539a99",
+    "src/features/market/pages/WatchlistPage.tsx": "26989ec1487c7f16faa14d6e4c165546b3355a33a021d66c49f74013248c2d11",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2"
+  },
+  "scenario": {
+    "id": "market.success",
+    "domain": "market",
+    "state": "success",
+    "status": "passed",
+    "observedAt": "2026-09-29T06:24:16.103Z",
+    "persona": "market QA (scoped permissions; isolated local MSW fixture)",
+    "role": "user",
+    "permissions": ["market:read", "market:watchlist:write", "market:alerts:write"],
+    "routes": [
+      {
+        "path": "/w/home",
+        "heading": "Thị trường",
+        "navigationMethod": "post-login route",
+        "expectedOperationIds": ["listMarketPairs", "getMarketWatchlist"],
+        "responseOperationIds": ["listMarketPairs", "getMarketWatchlist"],
+        "screenshot": "preview-market-success-home-2026-09-29.png",
+        "genericErrorVisible": false,
+        "bodyTextLength": 844
+      },
+      {
+        "path": "/w/markets/overview",
+        "heading": "Tổng quan thị trường",
+        "navigationMethod": "SPA history route entry; no full document reload",
+        "expectedOperationIds": ["getMarketOverview"],
+        "responseOperationIds": ["getMarketOverview"],
+        "screenshot": "preview-market-success-markets-overview-2026-09-29.png",
+        "genericErrorVisible": false,
+        "bodyTextLength": 1304
+      },
+      {
+        "path": "/w/markets/movers",
+        "heading": "Biến động thị trường",
+        "navigationMethod": "SPA history route entry; no full document reload",
+        "expectedOperationIds": ["getMarketMovers"],
+        "responseOperationIds": ["getMarketMovers"],
+        "screenshot": "preview-market-success-markets-movers-2026-09-29.png",
+        "genericErrorVisible": false,
+        "bodyTextLength": 966
+      },
+      {
+        "path": "/w/markets/news",
+        "heading": "Tin thị trường",
+        "navigationMethod": "SPA history route entry; no full document reload",
+        "expectedOperationIds": ["getMarketNews"],
+        "responseOperationIds": ["getMarketNews"],
+        "screenshot": "preview-market-success-markets-news-2026-09-29.png",
+        "genericErrorVisible": false,
+        "bodyTextLength": 957
+      },
+      {
+        "path": "/w/markets/calendar",
+        "heading": "Lịch sự kiện",
+        "navigationMethod": "SPA history route entry; no full document reload",
+        "expectedOperationIds": ["getMarketCalendar"],
+        "responseOperationIds": ["getMarketCalendar"],
+        "screenshot": "preview-market-success-markets-calendar-2026-09-29.png",
+        "genericErrorVisible": false,
+        "bodyTextLength": 901
+      },
+      {
+        "path": "/w/markets/correlations",
+        "heading": "Tương quan thị trường",
+        "navigationMethod": "SPA history route entry; no full document reload",
+        "expectedOperationIds": ["getMarketCorrelations"],
+        "responseOperationIds": ["getMarketCorrelations"],
+        "screenshot": "preview-market-success-markets-correlations-2026-09-29.png",
+        "genericErrorVisible": false,
+        "bodyTextLength": 817
+      },
+      {
+        "path": "/w/markets/unlocks",
+        "heading": "Lịch mở khóa token",
+        "navigationMethod": "SPA history route entry; no full document reload",
+        "expectedOperationIds": ["getMarketTokenUnlocks"],
+        "responseOperationIds": ["getMarketTokenUnlocks"],
+        "screenshot": "preview-market-success-markets-unlocks-2026-09-29.png",
+        "genericErrorVisible": false,
+        "bodyTextLength": 970
+      },
+      {
+        "path": "/w/markets/derivatives",
+        "heading": "Phái sinh",
+        "navigationMethod": "SPA history route entry; no full document reload",
+        "expectedOperationIds": ["getMarketDerivatives"],
+        "responseOperationIds": ["getMarketDerivatives"],
+        "screenshot": "preview-market-success-markets-derivatives-2026-09-29.png",
+        "genericErrorVisible": false,
+        "bodyTextLength": 784
+      },
+      {
+        "path": "/w/markets/social-sentiment",
+        "heading": "Tâm lý thị trường",
+        "navigationMethod": "SPA history route entry; no full document reload",
+        "expectedOperationIds": ["getMarketSentiment"],
+        "responseOperationIds": ["getMarketSentiment"],
+        "screenshot": "preview-market-success-markets-social-sentiment-2026-09-29.png",
+        "genericErrorVisible": false,
+        "bodyTextLength": 893
+      },
+      {
+        "path": "/w/markets/signals",
+        "heading": "Tín hiệu cộng đồng",
+        "navigationMethod": "SPA history route entry; no full document reload",
+        "expectedOperationIds": ["getMarketSignals"],
+        "responseOperationIds": ["getMarketSignals"],
+        "screenshot": "preview-market-success-markets-signals-2026-09-29.png",
+        "genericErrorVisible": false,
+        "bodyTextLength": 1048
+      },
+      {
+        "path": "/w/markets/alerts",
+        "heading": "Cảnh báo giá",
+        "navigationMethod": "SPA history route entry; no full document reload",
+        "expectedOperationIds": ["listMarketPriceAlerts", "listMarketPairs"],
+        "responseOperationIds": ["listMarketPriceAlerts"],
+        "screenshot": "preview-market-success-markets-alerts-2026-09-29.png",
+        "genericErrorVisible": false,
+        "bodyTextLength": 928
+      },
+      {
+        "path": "/w/markets/screener",
+        "heading": "Market screener",
+        "navigationMethod": "SPA history route entry; no full document reload",
+        "expectedOperationIds": ["listMarketPairs"],
+        "responseOperationIds": [],
+        "screenshot": "preview-market-success-markets-screener-2026-09-29.png",
+        "genericErrorVisible": false,
+        "bodyTextLength": 624
+      },
+      {
+        "path": "/w/markets/watchlist",
+        "heading": "Danh sách theo dõi",
+        "navigationMethod": "SPA history route entry; no full document reload",
+        "expectedOperationIds": ["listMarketPairs", "getMarketWatchlist"],
+        "responseOperationIds": [],
+        "screenshot": "preview-market-success-markets-watchlist-2026-09-29.png",
+        "genericErrorVisible": false,
+        "bodyTextLength": 717
+      },
+      {
+        "path": "/w/pair/btcusdt",
+        "heading": "BTC/USDT",
+        "navigationMethod": "SPA history route entry; no full document reload",
+        "expectedOperationIds": [
+          "getMarketPair",
+          "getMarketOrderBook",
+          "getMarketRecentTrades",
+          "getMarketWatchlist"
+        ],
+        "responseOperationIds": ["getMarketPair", "getMarketOrderBook", "getMarketRecentTrades"],
+        "screenshot": "preview-market-success-pair-btcusdt-2026-09-29.png",
+        "genericErrorVisible": false,
+        "bodyTextLength": 724
+      },
+      {
+        "path": "/w/markets/depth",
+        "heading": "BTC Depth",
+        "navigationMethod": "SPA history route entry; no full document reload",
+        "expectedOperationIds": ["listMarketPairs", "getMarketPair", "getMarketOrderBook"],
+        "responseOperationIds": [],
+        "screenshot": "preview-market-success-markets-depth-2026-09-29.png",
+        "genericErrorVisible": false,
+        "bodyTextLength": 1073
+      },
+      {
+        "path": "/w/trade/advanced-chart/btcusdt",
+        "heading": "Advanced charts",
+        "navigationMethod": "SPA history route entry; no full document reload",
+        "expectedOperationIds": ["listMarketPairs", "getMarketPair", "getMarketCandles"],
+        "responseOperationIds": ["getMarketCandles"],
+        "screenshot": "preview-market-success-trade-advanced-chart-btcusdt-2026-09-29.png",
+        "genericErrorVisible": false,
+        "bodyTextLength": 899
+      },
+      {
+        "path": "/w/pair/btcusdt/info",
+        "heading": "BTC info",
+        "navigationMethod": "SPA history route entry; no full document reload",
+        "expectedOperationIds": ["getMarketPair"],
+        "responseOperationIds": [],
+        "screenshot": "preview-market-success-pair-btcusdt-info-2026-09-29.png",
+        "genericErrorVisible": false,
+        "bodyTextLength": 814
+      },
+      {
+        "path": "/w/markets/sectors",
+        "heading": "Ngành thị trường",
+        "navigationMethod": "SPA history route entry; no full document reload",
+        "expectedOperationIds": ["getMarketOverview", "listMarketPairs"],
+        "responseOperationIds": [],
+        "screenshot": "preview-market-success-markets-sectors-2026-09-29.png",
+        "genericErrorVisible": false,
+        "bodyTextLength": 1320
+      },
+      {
+        "path": "/w/markets/heatmap",
+        "heading": "Market heatmap",
+        "navigationMethod": "SPA history route entry; no full document reload",
+        "expectedOperationIds": ["listMarketPairs"],
+        "responseOperationIds": [],
+        "screenshot": "preview-market-success-markets-heatmap-2026-09-29.png",
+        "genericErrorVisible": false,
+        "bodyTextLength": 575
+      },
+      {
+        "path": "/w/markets/compare",
+        "heading": "So sánh tài sản",
+        "navigationMethod": "SPA history route entry; no full document reload",
+        "expectedOperationIds": ["listMarketPairs"],
+        "responseOperationIds": [],
+        "screenshot": "preview-market-success-markets-compare-2026-09-29.png",
+        "genericErrorVisible": false,
+        "bodyTextLength": 547
+      }
+    ],
+    "finalRoute": "/w/markets/watchlist",
+    "operationIds": [
+      "addMarketWatchlistItem",
+      "createMarketPriceAlert",
+      "deleteMarketPriceAlert",
+      "deleteMarketWatchlistItem",
+      "getMarketCalendar",
+      "getMarketCandles",
+      "getMarketCorrelations",
+      "getMarketDerivatives",
+      "getMarketMovers",
+      "getMarketNews",
+      "getMarketOrderBook",
+      "getMarketOverview",
+      "getMarketPair",
+      "getMarketRecentTrades",
+      "getMarketSentiment",
+      "getMarketSignals",
+      "getMarketTokenUnlocks",
+      "getMarketWatchlist",
+      "listMarketPairs",
+      "listMarketPriceAlerts",
+      "updateMarketPriceAlert",
+      "updateMarketWatchlistItem"
+    ],
+    "observedOperationIds": [
+      "addMarketWatchlistItem",
+      "createMarketPriceAlert",
+      "deleteMarketPriceAlert",
+      "deleteMarketWatchlistItem",
+      "getMarketCalendar",
+      "getMarketCandles",
+      "getMarketCorrelations",
+      "getMarketDerivatives",
+      "getMarketMovers",
+      "getMarketNews",
+      "getMarketOrderBook",
+      "getMarketOverview",
+      "getMarketPair",
+      "getMarketRecentTrades",
+      "getMarketSentiment",
+      "getMarketSignals",
+      "getMarketTokenUnlocks",
+      "getMarketWatchlist",
+      "listMarketPairs",
+      "listMarketPriceAlerts",
+      "updateMarketPriceAlert",
+      "updateMarketWatchlistItem"
+    ],
+    "operationRequestCounts": {
+      "getMarketOverview": 1,
+      "getMarketMovers": 1,
+      "getMarketNews": 1,
+      "getMarketCalendar": 1,
+      "getMarketCorrelations": 1,
+      "getMarketTokenUnlocks": 1,
+      "getMarketDerivatives": 1,
+      "getMarketSentiment": 1,
+      "getMarketSignals": 1,
+      "listMarketPriceAlerts": 4,
+      "createMarketPriceAlert": 1,
+      "updateMarketPriceAlert": 1,
+      "deleteMarketPriceAlert": 1,
+      "listMarketPairs": 7,
+      "getMarketPair": 2,
+      "getMarketWatchlist": 4,
+      "addMarketWatchlistItem": 1,
+      "getMarketOrderBook": 2,
+      "getMarketRecentTrades": 2,
+      "getMarketCandles": 1,
+      "updateMarketWatchlistItem": 1,
+      "deleteMarketWatchlistItem": 1
+    },
+    "writeActions": [
+      {
+        "operationId": "createMarketPriceAlert",
+        "method": "POST",
+        "path": "/api/market/price-alerts",
+        "status": 201,
+        "fromServiceWorker": true
+      },
+      {
+        "operationId": "updateMarketPriceAlert",
+        "method": "PATCH",
+        "path": "/api/market/price-alerts/alert-0001",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "operationId": "deleteMarketPriceAlert",
+        "method": "DELETE",
+        "path": "/api/market/price-alerts/alert-0001",
+        "status": 204,
+        "fromServiceWorker": true
+      },
+      {
+        "operationId": "deleteMarketWatchlistItem",
+        "method": "DELETE",
+        "path": "/api/market/watchlist/watch002",
+        "status": 204,
+        "fromServiceWorker": true
+      },
+      {
+        "operationId": "addMarketWatchlistItem",
+        "method": "POST",
+        "path": "/api/market/watchlist",
+        "status": 201,
+        "fromServiceWorker": true
+      },
+      {
+        "operationId": "updateMarketWatchlistItem",
+        "method": "PATCH",
+        "path": "/api/market/watchlist/dev-watch-ethusdt",
+        "status": 200,
+        "fromServiceWorker": true
+      }
+    ],
+    "requests": [
+      {
+        "sequence": 2,
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "routeAtRequest": "/w/auth/login"
+      },
+      {
+        "sequence": 3,
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "routeAtRequest": "/w/home"
+      },
+      {
+        "sequence": 4,
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "routeAtRequest": "/w/home"
+      },
+      {
+        "sequence": 5,
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "path": "/api/market/overview",
+        "routeAtRequest": "/w/markets/overview"
+      },
+      {
+        "sequence": 6,
+        "operationId": "getMarketMovers",
+        "method": "GET",
+        "path": "/api/market/movers",
+        "routeAtRequest": "/w/markets/movers"
+      },
+      {
+        "sequence": 7,
+        "operationId": "getMarketNews",
+        "method": "GET",
+        "path": "/api/market/news",
+        "routeAtRequest": "/w/markets/news"
+      },
+      {
+        "sequence": 8,
+        "operationId": "getMarketCalendar",
+        "method": "GET",
+        "path": "/api/market/calendar",
+        "routeAtRequest": "/w/markets/calendar"
+      },
+      {
+        "sequence": 9,
+        "operationId": "getMarketCorrelations",
+        "method": "GET",
+        "path": "/api/market/correlations",
+        "routeAtRequest": "/w/markets/correlations"
+      },
+      {
+        "sequence": 10,
+        "operationId": "getMarketTokenUnlocks",
+        "method": "GET",
+        "path": "/api/market/unlocks",
+        "routeAtRequest": "/w/markets/unlocks"
+      },
+      {
+        "sequence": 11,
+        "operationId": "getMarketDerivatives",
+        "method": "GET",
+        "path": "/api/market/derivatives",
+        "routeAtRequest": "/w/markets/derivatives"
+      },
+      {
+        "sequence": 12,
+        "operationId": "getMarketSentiment",
+        "method": "GET",
+        "path": "/api/market/sentiment",
+        "routeAtRequest": "/w/markets/social-sentiment"
+      },
+      {
+        "sequence": 13,
+        "operationId": "getMarketSignals",
+        "method": "GET",
+        "path": "/api/market/signals",
+        "routeAtRequest": "/w/markets/signals"
+      },
+      {
+        "sequence": 14,
+        "operationId": "listMarketPriceAlerts",
+        "method": "GET",
+        "path": "/api/market/price-alerts",
+        "routeAtRequest": "/w/markets/alerts"
+      },
+      {
+        "sequence": 15,
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "routeAtRequest": "/w/markets/alerts"
+      },
+      {
+        "sequence": 16,
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "routeAtRequest": "/w/markets/watchlist"
+      },
+      {
+        "sequence": 17,
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt",
+        "routeAtRequest": "/w/pair/btcusdt"
+      },
+      {
+        "sequence": 18,
+        "operationId": "getMarketOrderBook",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt/orderbook",
+        "routeAtRequest": "/w/pair/btcusdt"
+      },
+      {
+        "sequence": 19,
+        "operationId": "getMarketRecentTrades",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt/trades",
+        "routeAtRequest": "/w/pair/btcusdt"
+      },
+      {
+        "sequence": 20,
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "routeAtRequest": "/w/markets/depth"
+      },
+      {
+        "sequence": 21,
+        "operationId": "getMarketCandles",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt/candles",
+        "routeAtRequest": "/w/trade/advanced-chart/btcusdt"
+      },
+      {
+        "sequence": 22,
+        "operationId": "createMarketPriceAlert",
+        "method": "POST",
+        "path": "/api/market/price-alerts",
+        "routeAtRequest": "/w/markets/alerts"
+      },
+      {
+        "sequence": 23,
+        "operationId": "listMarketPriceAlerts",
+        "method": "GET",
+        "path": "/api/market/price-alerts",
+        "routeAtRequest": "/w/markets/alerts"
+      },
+      {
+        "sequence": 24,
+        "operationId": "updateMarketPriceAlert",
+        "method": "PATCH",
+        "path": "/api/market/price-alerts/alert-0001",
+        "routeAtRequest": "/w/markets/alerts"
+      },
+      {
+        "sequence": 25,
+        "operationId": "listMarketPriceAlerts",
+        "method": "GET",
+        "path": "/api/market/price-alerts",
+        "routeAtRequest": "/w/markets/alerts"
+      },
+      {
+        "sequence": 26,
+        "operationId": "deleteMarketPriceAlert",
+        "method": "DELETE",
+        "path": "/api/market/price-alerts/alert-0001",
+        "routeAtRequest": "/w/markets/alerts"
+      },
+      {
+        "sequence": 27,
+        "operationId": "listMarketPriceAlerts",
+        "method": "GET",
+        "path": "/api/market/price-alerts",
+        "routeAtRequest": "/w/markets/alerts"
+      },
+      {
+        "sequence": 28,
+        "operationId": "deleteMarketWatchlistItem",
+        "method": "DELETE",
+        "path": "/api/market/watchlist/watch002",
+        "routeAtRequest": "/w/markets/watchlist"
+      },
+      {
+        "sequence": 29,
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "routeAtRequest": "/w/markets/watchlist"
+      },
+      {
+        "sequence": 30,
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "routeAtRequest": "/w/markets/watchlist"
+      },
+      {
+        "sequence": 31,
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "path": "/api/market/pairs/ethusdt",
+        "routeAtRequest": "/w/pair/ethusdt"
+      },
+      {
+        "sequence": 32,
+        "operationId": "getMarketOrderBook",
+        "method": "GET",
+        "path": "/api/market/pairs/ethusdt/orderbook",
+        "routeAtRequest": "/w/pair/ethusdt"
+      },
+      {
+        "sequence": 33,
+        "operationId": "getMarketRecentTrades",
+        "method": "GET",
+        "path": "/api/market/pairs/ethusdt/trades",
+        "routeAtRequest": "/w/pair/ethusdt"
+      },
+      {
+        "sequence": 34,
+        "operationId": "addMarketWatchlistItem",
+        "method": "POST",
+        "path": "/api/market/watchlist",
+        "routeAtRequest": "/w/pair/ethusdt"
+      },
+      {
+        "sequence": 35,
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "routeAtRequest": "/w/pair/ethusdt"
+      },
+      {
+        "sequence": 36,
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "routeAtRequest": "/w/markets/watchlist"
+      },
+      {
+        "sequence": 37,
+        "operationId": "updateMarketWatchlistItem",
+        "method": "PATCH",
+        "path": "/api/market/watchlist/dev-watch-ethusdt",
+        "routeAtRequest": "/w/markets/watchlist"
+      },
+      {
+        "sequence": 38,
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "routeAtRequest": "/w/markets/watchlist"
+      },
+      {
+        "sequence": 39,
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "routeAtRequest": "/w/markets/watchlist"
+      }
+    ],
+    "responses": [
+      {
+        "sequence": 2,
+        "observedAt": "2026-09-29T06:24:07.851Z",
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 13
+      },
+      {
+        "sequence": 3,
+        "observedAt": "2026-09-29T06:24:07.913Z",
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 7
+      },
+      {
+        "sequence": 4,
+        "observedAt": "2026-09-29T06:24:07.913Z",
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 6
+      },
+      {
+        "sequence": 5,
+        "observedAt": "2026-09-29T06:24:08.306Z",
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "path": "/api/market/overview",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      },
+      {
+        "sequence": 6,
+        "observedAt": "2026-09-29T06:24:08.711Z",
+        "operationId": "getMarketMovers",
+        "method": "GET",
+        "path": "/api/market/movers",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "sequence": 7,
+        "observedAt": "2026-09-29T06:24:09.053Z",
+        "operationId": "getMarketNews",
+        "method": "GET",
+        "path": "/api/market/news",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "sequence": 8,
+        "observedAt": "2026-09-29T06:24:09.366Z",
+        "operationId": "getMarketCalendar",
+        "method": "GET",
+        "path": "/api/market/calendar",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      },
+      {
+        "sequence": 9,
+        "observedAt": "2026-09-29T06:24:09.697Z",
+        "operationId": "getMarketCorrelations",
+        "method": "GET",
+        "path": "/api/market/correlations",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "sequence": 10,
+        "observedAt": "2026-09-29T06:24:10.013Z",
+        "operationId": "getMarketTokenUnlocks",
+        "method": "GET",
+        "path": "/api/market/unlocks",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "sequence": 11,
+        "observedAt": "2026-09-29T06:24:10.346Z",
+        "operationId": "getMarketDerivatives",
+        "method": "GET",
+        "path": "/api/market/derivatives",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 1
+      },
+      {
+        "sequence": 12,
+        "observedAt": "2026-09-29T06:24:10.671Z",
+        "operationId": "getMarketSentiment",
+        "method": "GET",
+        "path": "/api/market/sentiment",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      },
+      {
+        "sequence": 13,
+        "observedAt": "2026-09-29T06:24:11.025Z",
+        "operationId": "getMarketSignals",
+        "method": "GET",
+        "path": "/api/market/signals",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      },
+      {
+        "sequence": 14,
+        "observedAt": "2026-09-29T06:24:11.354Z",
+        "operationId": "listMarketPriceAlerts",
+        "method": "GET",
+        "path": "/api/market/price-alerts",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 5
+      },
+      {
+        "sequence": 15,
+        "observedAt": "2026-09-29T06:24:11.355Z",
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 5
+      },
+      {
+        "sequence": 16,
+        "observedAt": "2026-09-29T06:24:11.778Z",
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "sequence": 17,
+        "observedAt": "2026-09-29T06:24:12.115Z",
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 6
+      },
+      {
+        "sequence": 18,
+        "observedAt": "2026-09-29T06:24:12.116Z",
+        "operationId": "getMarketOrderBook",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt/orderbook",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 7
+      },
+      {
+        "sequence": 19,
+        "observedAt": "2026-09-29T06:24:12.117Z",
+        "operationId": "getMarketRecentTrades",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt/trades",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 8
+      },
+      {
+        "sequence": 20,
+        "observedAt": "2026-09-29T06:24:12.487Z",
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      },
+      {
+        "sequence": 21,
+        "observedAt": "2026-09-29T06:24:12.826Z",
+        "operationId": "getMarketCandles",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt/candles",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 7
+      },
+      {
+        "sequence": 22,
+        "observedAt": "2026-09-29T06:24:13.636Z",
+        "operationId": "createMarketPriceAlert",
+        "method": "POST",
+        "path": "/api/market/price-alerts",
+        "status": 201,
+        "fromServiceWorker": true,
+        "elapsedMs": 17
+      },
+      {
+        "sequence": 23,
+        "observedAt": "2026-09-29T06:24:13.639Z",
+        "operationId": "listMarketPriceAlerts",
+        "method": "GET",
+        "path": "/api/market/price-alerts",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "sequence": 24,
+        "observedAt": "2026-09-29T06:24:14.003Z",
+        "operationId": "updateMarketPriceAlert",
+        "method": "PATCH",
+        "path": "/api/market/price-alerts/alert-0001",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 17
+      },
+      {
+        "sequence": 25,
+        "observedAt": "2026-09-29T06:24:14.006Z",
+        "operationId": "listMarketPriceAlerts",
+        "method": "GET",
+        "path": "/api/market/price-alerts",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      },
+      {
+        "sequence": 26,
+        "observedAt": "2026-09-29T06:24:14.337Z",
+        "operationId": "deleteMarketPriceAlert",
+        "method": "DELETE",
+        "path": "/api/market/price-alerts/alert-0001",
+        "status": 204,
+        "fromServiceWorker": true,
+        "elapsedMs": 20
+      },
+      {
+        "sequence": 27,
+        "observedAt": "2026-09-29T06:24:14.339Z",
+        "operationId": "listMarketPriceAlerts",
+        "method": "GET",
+        "path": "/api/market/price-alerts",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "sequence": 28,
+        "observedAt": "2026-09-29T06:24:14.718Z",
+        "operationId": "deleteMarketWatchlistItem",
+        "method": "DELETE",
+        "path": "/api/market/watchlist/watch002",
+        "status": 204,
+        "fromServiceWorker": true,
+        "elapsedMs": 17
+      },
+      {
+        "sequence": 29,
+        "observedAt": "2026-09-29T06:24:14.722Z",
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      },
+      {
+        "sequence": 30,
+        "observedAt": "2026-09-29T06:24:14.727Z",
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "sequence": 31,
+        "observedAt": "2026-09-29T06:24:14.763Z",
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "path": "/api/market/pairs/ethusdt",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "sequence": 32,
+        "observedAt": "2026-09-29T06:24:14.764Z",
+        "operationId": "getMarketOrderBook",
+        "method": "GET",
+        "path": "/api/market/pairs/ethusdt/orderbook",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 5
+      },
+      {
+        "sequence": 33,
+        "observedAt": "2026-09-29T06:24:14.767Z",
+        "operationId": "getMarketRecentTrades",
+        "method": "GET",
+        "path": "/api/market/pairs/ethusdt/trades",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 8
+      },
+      {
+        "sequence": 34,
+        "observedAt": "2026-09-29T06:24:15.090Z",
+        "operationId": "addMarketWatchlistItem",
+        "method": "POST",
+        "path": "/api/market/watchlist",
+        "status": 201,
+        "fromServiceWorker": true,
+        "elapsedMs": 22
+      },
+      {
+        "sequence": 35,
+        "observedAt": "2026-09-29T06:24:15.091Z",
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 1
+      },
+      {
+        "sequence": 36,
+        "observedAt": "2026-09-29T06:24:15.416Z",
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 6
+      },
+      {
+        "sequence": 37,
+        "observedAt": "2026-09-29T06:24:15.768Z",
+        "operationId": "updateMarketWatchlistItem",
+        "method": "PATCH",
+        "path": "/api/market/watchlist/dev-watch-ethusdt",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 16
+      },
+      {
+        "sequence": 38,
+        "observedAt": "2026-09-29T06:24:15.772Z",
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      },
+      {
+        "sequence": 39,
+        "observedAt": "2026-09-29T06:24:15.775Z",
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      }
+    ],
+    "finishedRequests": [
+      {
+        "sequence": 2,
+        "observedAt": "2026-09-29T06:24:07.851Z"
+      },
+      {
+        "sequence": 3,
+        "observedAt": "2026-09-29T06:24:07.916Z"
+      },
+      {
+        "sequence": 4,
+        "observedAt": "2026-09-29T06:24:07.916Z"
+      },
+      {
+        "sequence": 5,
+        "observedAt": "2026-09-29T06:24:08.307Z"
+      },
+      {
+        "sequence": 6,
+        "observedAt": "2026-09-29T06:24:08.711Z"
+      },
+      {
+        "sequence": 7,
+        "observedAt": "2026-09-29T06:24:09.054Z"
+      },
+      {
+        "sequence": 8,
+        "observedAt": "2026-09-29T06:24:09.366Z"
+      },
+      {
+        "sequence": 9,
+        "observedAt": "2026-09-29T06:24:09.698Z"
+      },
+      {
+        "sequence": 10,
+        "observedAt": "2026-09-29T06:24:10.014Z"
+      },
+      {
+        "sequence": 11,
+        "observedAt": "2026-09-29T06:24:10.347Z"
+      },
+      {
+        "sequence": 12,
+        "observedAt": "2026-09-29T06:24:10.671Z"
+      },
+      {
+        "sequence": 13,
+        "observedAt": "2026-09-29T06:24:11.025Z"
+      },
+      {
+        "sequence": 14,
+        "observedAt": "2026-09-29T06:24:11.355Z"
+      },
+      {
+        "sequence": 15,
+        "observedAt": "2026-09-29T06:24:11.356Z"
+      },
+      {
+        "sequence": 16,
+        "observedAt": "2026-09-29T06:24:11.778Z"
+      },
+      {
+        "sequence": 17,
+        "observedAt": "2026-09-29T06:24:12.117Z"
+      },
+      {
+        "sequence": 18,
+        "observedAt": "2026-09-29T06:24:12.118Z"
+      },
+      {
+        "sequence": 19,
+        "observedAt": "2026-09-29T06:24:12.118Z"
+      },
+      {
+        "sequence": 20,
+        "observedAt": "2026-09-29T06:24:12.487Z"
+      },
+      {
+        "sequence": 21,
+        "observedAt": "2026-09-29T06:24:12.826Z"
+      },
+      {
+        "sequence": 22,
+        "observedAt": "2026-09-29T06:24:13.637Z"
+      },
+      {
+        "sequence": 23,
+        "observedAt": "2026-09-29T06:24:13.639Z"
+      },
+      {
+        "sequence": 24,
+        "observedAt": "2026-09-29T06:24:14.003Z"
+      },
+      {
+        "sequence": 25,
+        "observedAt": "2026-09-29T06:24:14.006Z"
+      },
+      {
+        "sequence": 27,
+        "observedAt": "2026-09-29T06:24:14.339Z"
+      },
+      {
+        "sequence": 29,
+        "observedAt": "2026-09-29T06:24:14.723Z"
+      },
+      {
+        "sequence": 30,
+        "observedAt": "2026-09-29T06:24:14.727Z"
+      },
+      {
+        "sequence": 31,
+        "observedAt": "2026-09-29T06:24:14.767Z"
+      },
+      {
+        "sequence": 32,
+        "observedAt": "2026-09-29T06:24:14.767Z"
+      },
+      {
+        "sequence": 33,
+        "observedAt": "2026-09-29T06:24:14.768Z"
+      },
+      {
+        "sequence": 34,
+        "observedAt": "2026-09-29T06:24:15.090Z"
+      },
+      {
+        "sequence": 35,
+        "observedAt": "2026-09-29T06:24:15.091Z"
+      },
+      {
+        "sequence": 36,
+        "observedAt": "2026-09-29T06:24:15.417Z"
+      },
+      {
+        "sequence": 37,
+        "observedAt": "2026-09-29T06:24:15.769Z"
+      },
+      {
+        "sequence": 38,
+        "observedAt": "2026-09-29T06:24:15.772Z"
+      },
+      {
+        "sequence": 39,
+        "observedAt": "2026-09-29T06:24:15.775Z"
+      }
+    ],
+    "requestFailures": [
+      {
+        "sequence": 26,
+        "observedAt": "2026-09-29T06:24:14.338Z",
+        "operationId": "deleteMarketPriceAlert",
+        "method": "DELETE",
+        "path": "/api/market/price-alerts/alert-0001",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "sequence": 28,
+        "observedAt": "2026-09-29T06:24:14.719Z",
+        "operationId": "deleteMarketWatchlistItem",
+        "method": "DELETE",
+        "path": "/api/market/watchlist/watch002",
+        "failure": "net::ERR_ABORTED"
+      }
+    ],
+    "requestFailureClassifications": [
+      {
+        "sequence": 26,
+        "operationId": "deleteMarketPriceAlert",
+        "classification": "aborted-callback-paired-with-successful-204-service-worker-response"
+      },
+      {
+        "sequence": 28,
+        "operationId": "deleteMarketWatchlistItem",
+        "classification": "aborted-callback-paired-with-successful-204-service-worker-response"
+      }
+    ],
+    "routeScreenshots": [
+      "preview-market-success-home-2026-09-29.png",
+      "preview-market-success-markets-overview-2026-09-29.png",
+      "preview-market-success-markets-movers-2026-09-29.png",
+      "preview-market-success-markets-news-2026-09-29.png",
+      "preview-market-success-markets-calendar-2026-09-29.png",
+      "preview-market-success-markets-correlations-2026-09-29.png",
+      "preview-market-success-markets-unlocks-2026-09-29.png",
+      "preview-market-success-markets-derivatives-2026-09-29.png",
+      "preview-market-success-markets-social-sentiment-2026-09-29.png",
+      "preview-market-success-markets-signals-2026-09-29.png",
+      "preview-market-success-markets-alerts-2026-09-29.png",
+      "preview-market-success-markets-screener-2026-09-29.png",
+      "preview-market-success-markets-watchlist-2026-09-29.png",
+      "preview-market-success-pair-btcusdt-2026-09-29.png",
+      "preview-market-success-markets-depth-2026-09-29.png",
+      "preview-market-success-trade-advanced-chart-btcusdt-2026-09-29.png",
+      "preview-market-success-pair-btcusdt-info-2026-09-29.png",
+      "preview-market-success-markets-sectors-2026-09-29.png",
+      "preview-market-success-markets-heatmap-2026-09-29.png",
+      "preview-market-success-markets-compare-2026-09-29.png",
+      "preview-market-success-market-writes-complete-2026-09-29.png"
+    ],
+    "externalApiOrigins": [],
+    "marketWriteCount": 6,
+    "elapsedMs": 8676,
+    "sourceHashesReviewed": 204,
+    "staleSourceHashesBeforeRun": [
+      "docs/architecture/production-readiness/evidence/A06/run-market-success-browser-check.mjs",
+      "src/dev/mocks/auth-handlers.test.ts",
+      "src/dev/mocks/handlers.ts",
+      "src/dev/mocks/personas.ts"
+    ],
+    "sourceHashReview": {
+      "reviewedPaths": [
+        "docs/architecture/production-readiness/evidence/A06/run-market-success-browser-check.mjs",
+        "src/dev/mocks/auth-handlers.test.ts",
+        "src/dev/mocks/handlers.ts",
+        "src/dev/mocks/personas.ts"
+      ],
+      "priorHashes": {
+        "docs/architecture/production-readiness/evidence/A06/run-market-success-browser-check.mjs": "be3c8edc91be23bfd158586a953c61084964ff21f71340fb3f46df46fefbc7e3",
+        "src/dev/mocks/auth-handlers.test.ts": "f67b76fa782be59866a51ee30f3d1fa8fa7b63c92983f826b9d717e6f26fbd71",
+        "src/dev/mocks/handlers.ts": "52d20d96c8f1c508e7803cad807003d53f9d1c801276874b4597b92a4b876bbb",
+        "src/dev/mocks/personas.ts": "4f159d020319b86f5f991c49e7c9063a73afddedea9a4e16d8a7d2fb679a105f"
+      },
+      "scope": "Added seven contract-shaped demo data responses only to the explicit market.success MSW preview scenario; normal unconfigured-provider handlers retain their documented 503. Added a least-privilege Market QA persona for the isolated browser context and exercised six watchlist/alert mutations against its local in-memory MSW handlers. No external API was called.",
+      "sourceHashBaselineRefreshedAfterBrowserRun": true
+    },
+    "pageErrors": [],
+    "failures": [],
+    "note": "Chromium rendered 20 Market routes in the local SPA preview and exercised all 22 Market operation IDs (16 GETs plus 6 scoped alert/watchlist writes). Seven source-backed GETs used demo fixtures only in market.success; default unconfigured-source handlers still return documented HTTP 503. All six writes reached the local MSW service worker, returned contract statuses and changed only isolated in-memory fixtures. 2 Playwright net::ERR_ABORTED callbacks were paired by request sequence with successful service-worker 204 DELETE responses and rendered-state assertions; no unmatched API request failure or external API origin was observed. This is local fixture/UI evidence, not backend, staging or user acceptance."
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-29T05:01:30.495Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "origin": "http://127.0.0.1:4173",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b",
+    "contracts/openapi/launchpad.yaml": "f91848569eda4fc8adbb96ec01c4015d3e8bea488ebfb54c9cbf807afbb7732e",
+    "docs/architecture/production-readiness/evidence/A06/run-launchpad-success-browser-check.mjs": "e2dbb4ace7622f992b592d617a305690da641799354e21fd4e1d0ba4bee1527f",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/dev/PreviewControls.tsx": "8532ab8fbe4578c3ff7cff31f559ec996fa146e63d70539a67ea668fc6d160ea",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "52d20d96c8f1c508e7803cad807003d53f9d1c801276874b4597b92a4b876bbb",
+    "src/dev/mocks/launchpad-fixtures.ts": "7c34266aecc5ab2cb73f4f25bc7f37f6901bcb5fd4c461faf1087f9985e78221",
+    "src/dev/mocks/personas.ts": "4f159d020319b86f5f991c49e7c9063a73afddedea9a4e16d8a7d2fb679a105f",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/launchpad/api/launchpad-api.ts": "6cd5169460507947e3baeeb164bb14d27d9c9bf12e6899ab73f631389a40b627",
+    "src/features/launchpad/model/launchpad-queries.ts": "6f90972e9bcf18645b97e9dd5b78a4c17b7377340f163bea451ff417f859b6f9",
+    "src/features/launchpad/pages/LaunchpadContractPages.tsx": "1c0b563300f776353a5b3a0dce37c1b011f3f3aae81c5ae2c4c1f8ea9bf5643c",
+    "src/shared/api/client.ts": "882197549d075a8be1f495c7d2271dcbf1530ff1606190531da59b75020977bb",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2"
+  },
+  "scenario": {
+    "id": "launchpad.success",
+    "domain": "launchpad",
+    "state": "success",
+    "status": "passed",
+    "observedAt": "2026-09-29T05:01:30.495Z",
+    "persona": "developer (local MSW fixture)",
+    "role": "user",
+    "routes": ["/w/launchpad", "/w/launchpad/proj1"],
+    "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
+    "observedOperationIds": ["getLaunchpadProject", "listLaunchpadProjects"],
+    "operationRequestCounts": {
+      "listLaunchpadProjects": 1,
+      "getLaunchpadProject": 1
+    },
+    "requests": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getLaunchpadProject",
+        "method": "GET",
+        "path": "/api/launchpad/projects/proj1",
+        "resourceType": "fetch"
+      }
+    ],
+    "responses": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 17
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 10
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 5
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 6
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "operationId": "getLaunchpadProject",
+        "method": "GET",
+        "path": "/api/launchpad/projects/proj1",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      }
+    ],
+    "listProjectCount": 5,
+    "listTotal": 5,
+    "activeCount": 2,
+    "detailProjectId": "proj1",
+    "detailProjectName": "NexaAI Protocol",
+    "scenarioSelected": true,
+    "externalApiOrigins": [],
+    "elapsedMs": 957,
+    "screenshots": [
+      "preview-launchpad-success-project-list-2026-09-29.png",
+      "preview-launchpad-success-project-detail-2026-09-29.png"
+    ],
+    "sourceHashesReviewed": 176,
+    "staleSourceHashesBeforeRun": [
+      "docs/architecture/production-readiness/evidence/A06/run-launchpad-success-browser-check.mjs"
+    ],
+    "failures": [],
+    "sourceHashReview": {
+      "reviewedPaths": [
+        "docs/architecture/production-readiness/evidence/A06/run-launchpad-success-browser-check.mjs"
+      ],
+      "priorHashes": {
+        "docs/architecture/production-readiness/evidence/A06/run-launchpad-success-browser-check.mjs": "ec24b787227090c528334f39c332c0c32843f9474eb781a43c5499816c2a24dd"
+      },
+      "scope": "The runner now navigates with the existing WebSidebar Launchpad button so the in-memory MSW login session survives; no product source or Launchpad UI behavior changed.",
+      "sourceHashBaselineRefreshedAfterBrowserRun": true
+    },
+    "note": "Local Chromium/MSW observed contract-valid 200 list and detail reads, populated Launchpad UI and a read-only detail boundary. Both mapped Launchpad operations were exercised; no purchase/subscription mutation or external API call occurred. Fixture UI evidence does not establish backend persistence, authorization or user acceptance."
+  }
+}

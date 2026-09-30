@@ -154,14 +154,27 @@ export function P2POrdersContractPage() {
         {filteredOrders.length === 0 ? (
           <TrCard className="p-8 text-center">
             <ShieldAlert size={30} color={colors.text3} className="mx-auto" />
-            <p className="mt-3" style={{ color: colors.text2, fontWeight: 600 }}>
-              No orders match the selected view.
-            </p>
-            <p className="mt-1 text-xs" style={{ color: colors.text3 }}>
-              {tab === 'disputed'
-                ? `${disputedCount} disputed orders recorded.`
-                : 'Try another filter or search term.'}
-            </p>
+            {orders.length === 0 && query.data.total === 0 ? (
+              <>
+                <p className="mt-3" style={{ color: colors.text2, fontWeight: 600 }}>
+                  No P2P orders yet.
+                </p>
+                <p className="mt-1 text-xs" style={{ color: colors.text3 }}>
+                  Your order history will appear here after you create or accept a P2P order.
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="mt-3" style={{ color: colors.text2, fontWeight: 600 }}>
+                  No orders match the selected view.
+                </p>
+                <p className="mt-1 text-xs" style={{ color: colors.text3 }}>
+                  {tab === 'disputed'
+                    ? `${disputedCount} disputed orders recorded.`
+                    : 'Try another filter or search term.'}
+                </p>
+              </>
+            )}
           </TrCard>
         ) : (
           <div className="grid gap-3">

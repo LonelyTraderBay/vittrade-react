@@ -29,7 +29,10 @@ export function MarketDepthPage() {
   const pairQuery = useMarketPairQuery(selectedPairId);
   const orderBookQuery = useMarketOrderBookQuery(selectedPairId);
 
-  if ((!pairId && pairsQuery.isPending) || pairQuery.isPending || orderBookQuery.isPending) {
+  if (
+    (!pairId && pairsQuery.isPending) ||
+    (Boolean(selectedPairId) && (pairQuery.isPending || orderBookQuery.isPending))
+  ) {
     return (
       <PageLayout>
         <Header title="Market depth" back />

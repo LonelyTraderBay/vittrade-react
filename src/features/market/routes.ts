@@ -12,6 +12,35 @@ const MarketMoversPage = lazyRoute(() =>
     default: module.MarketMoversPage,
   })),
 );
+const MarketNewsFeedPage = lazyRoute(() =>
+  import('./pages/MarketNewsFeedPage').then((module) => ({ default: module.MarketNewsFeedPage })),
+);
+const MarketEventCalendarPage = lazyRoute(() =>
+  import('./pages/MarketEventCalendarPage').then((module) => ({
+    default: module.MarketEventCalendarPage,
+  })),
+);
+const MarketCorrelationPairsPage = lazyRoute(() =>
+  import('./pages/MarketCorrelationPairsPage').then((module) => ({
+    default: module.MarketCorrelationPairsPage,
+  })),
+);
+const TokenUnlockSchedulePage = lazyRoute(() =>
+  import('./pages/TokenUnlockSchedulePage').then((module) => ({
+    default: module.TokenUnlockSchedulePage,
+  })),
+);
+const MarketDerivativesPage = lazyRoute(() =>
+  import('./pages/MarketDerivativesPage').then((module) => ({
+    default: module.MarketDerivativesPage,
+  })),
+);
+const MarketSentimentPage = lazyRoute(() =>
+  import('./pages/MarketSentimentPage').then((module) => ({ default: module.MarketSentimentPage })),
+);
+const MarketSignalsPage = lazyRoute(() =>
+  import('./pages/MarketSignalsPage').then((module) => ({ default: module.MarketSignalsPage })),
+);
 const MarketSectorsPage = lazyRoute(() =>
   import('./pages/MarketSectorsPage').then((module) => ({
     default: module.MarketSectorsPage,
@@ -20,14 +49,14 @@ const MarketSectorsPage = lazyRoute(() =>
 const WatchlistPage = lazyRoute(() =>
   import('./pages/WatchlistPage').then((module) => ({ default: module.WatchlistPage })),
 );
-const MarketHeatmapPage = lazyRoute(() =>
-  import('./pages/MarketHeatmapPage').then((module) => ({
-    default: module.MarketHeatmapPage,
-  })),
-);
 const MarketPriceAlertsPage = lazyRoute(() =>
   import('./pages/MarketPriceAlertsPage').then((module) => ({
     default: module.MarketPriceAlertsPage,
+  })),
+);
+const MarketHeatmapPage = lazyRoute(() =>
+  import('./pages/MarketHeatmapPage').then((module) => ({
+    default: module.MarketHeatmapPage,
   })),
 );
 const MarketScreenerPage = lazyRoute(() =>
@@ -61,10 +90,15 @@ export function createMarketPublicRoutes(components: MarketRouteComponents): Rou
   return [
     { path: 'markets/overview', Component: MarketOverviewPage },
     { path: 'markets/movers', Component: MarketMoversPage },
+    { path: 'markets/news', Component: MarketNewsFeedPage },
+    { path: 'markets/calendar', Component: MarketEventCalendarPage },
+    { path: 'markets/correlations', Component: MarketCorrelationPairsPage },
+    { path: 'markets/unlocks', Component: TokenUnlockSchedulePage },
+    { path: 'markets/derivatives', Component: MarketDerivativesPage },
+    { path: 'markets/social-sentiment', Component: MarketSentimentPage },
+    { path: 'markets/signals', Component: MarketSignalsPage },
     { path: 'markets/sectors', Component: MarketSectorsPage },
-    { path: 'markets/watchlist', Component: WatchlistPage },
     { path: 'markets/heatmap', Component: MarketHeatmapPage },
-    { path: 'markets/alerts', Component: MarketPriceAlertsPage },
     { path: 'markets/screener', Component: MarketScreenerPage },
     { path: 'markets/compare', Component: MarketComparisonPage },
     { path: 'markets/depth', Component: MarketDepthPage },
@@ -81,12 +115,15 @@ export function createMarketWebRoutes(): RouteObject[] {
     { path: 'scanner', Component: MarketScreenerPage },
     { path: 'markets/overview', Component: MarketOverviewPage },
     { path: 'markets/movers', Component: MarketMoversPage },
-    { path: 'markets/watchlist', Component: WatchlistPage },
     { path: 'markets/heatmap', Component: MarketHeatmapPage },
   ];
 }
 
-/** Biến thể route market được bảo vệ; màn hình trade dùng lại cùng page contract. */
+/** Market pages backed by session-protected API operations. */
 export function createMarketProtectedRoutes(): RouteObject[] {
-  return [{ path: 'trade/advanced-chart/:pairId', Component: AdvancedChartsPage }];
+  return [
+    { path: 'markets/watchlist', Component: WatchlistPage },
+    { path: 'markets/alerts', Component: MarketPriceAlertsPage },
+    { path: 'trade/advanced-chart/:pairId', Component: AdvancedChartsPage },
+  ];
 }

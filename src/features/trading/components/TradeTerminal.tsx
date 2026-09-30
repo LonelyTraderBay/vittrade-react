@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router';
-import { CheckCircle, X, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { TabBar } from '@/shared/ui/TabBar';
@@ -11,8 +11,8 @@ import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { useActionToast } from '@/shared/hooks/useActionToast';
 import { useAuth } from '@/shared/session/useAuth';
 import { TOAST } from '@/shared/constants/toastMessages';
-import { φ, φIcon } from '@/shared/lib/golden';
-import type { TPSLValues } from './TPSLForm';
+import type { TPSLValues } from '../model/trading-types';
+import { isTpslSubmissionValid } from '../model/tpsl-validation';
 import { QuickPairSwitcher } from './QuickPairSwitcher';
 import type { OCOOrderParams } from './OCOOrderForm';
 import { TradingOrderEntryPanel } from './TradingOrderEntryPanel';
@@ -63,48 +63,6 @@ function useRealtimePrice(basePrice: number) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   Success Toast
-   ═══════════════════════════════════════════════════════════ */
-function SuccessToast({
-  side,
-  symbol,
-  onClose,
-}: {
-  side: string;
-  symbol: string;
-  onClose: () => void;
-}) {
-  useEffect(() => {
-    const id = setTimeout(onClose, 3500);
-    return () => clearTimeout(id);
-  }, [onClose]);
-  const c = useThemeColors();
-  return (
-    <div
-      className="fixed top-24 left-4 right-4 z-50 rounded-2xl px-4 py-3 flex items-center gap-3 animate-fade-in-up"
-      style={{
-        background: c.surface,
-        border: `1px solid ${side === 'buy' ? '#10B981' : '#EF4444'}`,
-        boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
-        maxWidth: 440,
-        margin: '0 auto',
-      }}
-    >
-      <CheckCircle size={φIcon.md} color={side === 'buy' ? '#10B981' : '#EF4444'} />
-      <div className="flex-1">
-        <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>Đặt lệnh thành công!</p>
-        <p style={{ color: c.text2, fontSize: φ.xs }}>
-          Lệnh {side === 'buy' ? 'mua' : 'bán'} {symbol} đang được xử lý
-        </p>
-      </div>
-      <button onClick={onClose}>
-        <X size={φIcon.sm} color={c.text3} />
-      </button>
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════
    Main TradePage — All Sprints Integrated
    ═══════════════════════════════════════════════════════════ */
 export function TradeTerminal() {
@@ -118,11 +76,12 @@ export function TradeTerminal() {
   const routePrefix = useRoutePrefix();
   const actionToast = useActionToast();
   const { hasPermission } = useAuth();
+  const canReadTrading = hasPermission('trade:read');
   const selectedPairId = pairId ?? 'btcusdt';
   const marketPairQuery = useMarketPairQuery(selectedPairId);
-  const walletQuery = useWalletAssetsQuery();
-  const openOrdersQuery = useOpenOrdersQuery();
-  const orderHistoryQuery = useOrderHistoryQuery();
+  const walletQuery = useWalletAssetsQuery(hasPermission('wallet:read'));
+  const openOrdersQuery = useOpenOrdersQuery({}, canReadTrading);
+  const orderHistoryQuery = useOrderHistoryQuery({}, canReadTrading);
   const placeOrderMutation = usePlaceOrderMutation();
   const modifyOrderMutation = useModifyOrderMutation();
   const cancelOrderMutation = useCancelOrderMutation();
@@ -140,7 +99,6 @@ export function TradeTerminal() {
   const [limitPrice, setLimitPrice] = useState('');
   const [amount, setAmount] = useState('');
   const [showConfirm, setShowConfirm] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
   const [activeTab, setActiveTab] = useState<'order' | 'open' | 'history'>('order');
   const [activePct, setActivePct] = useState<number | null>(null);
   const [isPlacing, setIsPlacing] = useState(false);
@@ -238,13 +196,15 @@ export function TradeTerminal() {
     Number.isFinite(available) &&
     available >= 0 &&
     (side === 'buy' ? total <= available : amountNum <= available);
+  const bracketMode = tpsl.enabled ? (tpsl.bracketMode ?? tradeSettings.bracketMode) : undefined;
   const canPlace =
     canWriteTrading &&
     Number.isFinite(amountNum) &&
     amountNum > 0 &&
     Number.isFinite(effectivePrice) &&
     effectivePrice > 0 &&
-    withinAvailableBalance;
+    withinAvailableBalance &&
+    isTpslSubmissionValid(tpsl, side, effectivePrice, tradeSettings.bracketMode);
 
   const handleConfirmOrder = async () => {
     if (!canWriteTrading) {
@@ -264,6 +224,7 @@ export function TradeTerminal() {
       price: isMarket ? undefined : effectivePrice,
       tpPrice: tpsl.enabled && tpsl.tpPrice ? Number(tpsl.tpPrice) : undefined,
       slPrice: tpsl.enabled && tpsl.slPrice ? Number(tpsl.slPrice) : undefined,
+      bracketMode,
     });
     if (orderAttemptKey.current?.signature !== orderSignature) {
       orderAttemptKey.current = { signature: orderSignature, key: crypto.randomUUID() };
@@ -280,6 +241,7 @@ export function TradeTerminal() {
         price: isMarket ? undefined : effectivePrice,
         tpPrice: tpsl.enabled && tpsl.tpPrice ? parseFloat(tpsl.tpPrice) : undefined,
         slPrice: tpsl.enabled && tpsl.slPrice ? parseFloat(tpsl.slPrice) : undefined,
+        bracketMode,
         idempotencyKey: orderAttemptKey.current.key,
       });
     } catch (error) {
@@ -448,10 +410,6 @@ export function TradeTerminal() {
 
   return (
     <PageLayout>
-      {showSuccess && (
-        <SuccessToast side={side} symbol={pair.symbol} onClose={() => setShowSuccess(false)} />
-      )}
-
       {/* ═══ Quick Pair Switcher (Sprint 2B) ═══ */}
       <QuickPairSwitcher
         open={showPairSwitcher}
@@ -543,24 +501,34 @@ export function TradeTerminal() {
           onCancelOco={handleCancelOco}
         />
       )}
-      {activeTab === 'open' && (
-        <OpenOrdersPanel
-          orders={openOrders}
-          canWrite={canWriteTrading}
-          cancelPending={cancelOrderMutation.isPending}
-          onModifyOrder={handleModifyOrder}
-          onCancelOrder={(orderId) => void handleCancelOrder(orderId)}
-          onExportHistory={() => navigate(`${routePrefix}/trade/export`)}
-        />
-      )}
+      {activeTab === 'open' &&
+        (canReadTrading ? (
+          <OpenOrdersPanel
+            orders={openOrders}
+            canWrite={canWriteTrading}
+            cancelPending={cancelOrderMutation.isPending}
+            onModifyOrder={handleModifyOrder}
+            onCancelOrder={(orderId) => void handleCancelOrder(orderId)}
+            onExportHistory={() => navigate(`${routePrefix}/trade/export`)}
+          />
+        ) : (
+          <p role="alert" className="px-5 py-12 text-center" style={{ color: c.text2 }}>
+            Tài khoản của bạn không có quyền xem lệnh.
+          </p>
+        ))}
 
-      {activeTab === 'history' && (
-        <OrderHistoryPanel
-          orders={orderHistory}
-          onSelectOrder={handleSelectHistoryOrder}
-          onExportHistory={() => navigate(`${routePrefix}/trade/export`)}
-        />
-      )}
+      {activeTab === 'history' &&
+        (canReadTrading ? (
+          <OrderHistoryPanel
+            orders={orderHistory}
+            onSelectOrder={handleSelectHistoryOrder}
+            onExportHistory={() => navigate(`${routePrefix}/trade/export`)}
+          />
+        ) : (
+          <p role="alert" className="px-5 py-12 text-center" style={{ color: c.text2 }}>
+            Tài khoản của bạn không có quyền xem lệnh.
+          </p>
+        ))}
     </PageLayout>
   );
 }

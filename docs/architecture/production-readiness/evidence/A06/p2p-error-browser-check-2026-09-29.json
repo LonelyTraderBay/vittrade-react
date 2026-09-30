@@ -1,0 +1,148 @@
+{
+  "checkedAt": "2026-09-29T09:34:23.495Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "branch": "codex/vittrade-architecture-completion",
+  "origin": "http://127.0.0.1:4173",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "p2p.error",
+    "status": "passed",
+    "persona": "developer (preview only)",
+    "route": "/w/p2p/order-room",
+    "operationIds": ["listP2POrders"],
+    "expectedDomainOperationCount": 42,
+    "coverage": "representative_browser_observed"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allP2PResponsesFromServiceWorker": true,
+    "responseStatuses": [503],
+    "p2pMutations": [],
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false
+  },
+  "measurements": {
+    "totalFlowMs": 6040,
+    "initialErrorVisibleMs": 2874,
+    "initialP2pResponseCount": 6,
+    "retryP2pResponseCount": 6,
+    "retryCompletedMs": 5579,
+    "totalP2pResponseCount": 12,
+    "totalApiRequestCount": 15,
+    "pageErrorCount": 0
+  },
+  "assertions": {
+    "errorState": {
+      "titleVisible": true,
+      "retryVisibleBeforeRetry": true,
+      "retryVisibleAfterRetry": true,
+      "emptyMessageVisible": false,
+      "successCountVisible": false,
+      "route": "/w/p2p/order-room"
+    },
+    "p2pResponses": [
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders",
+        "status": 503,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders",
+        "status": 503,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders",
+        "status": 503,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders",
+        "status": 503,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders",
+        "status": 503,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders",
+        "status": 503,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders",
+        "status": 503,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders",
+        "status": 503,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders",
+        "status": 503,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders",
+        "status": 503,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders",
+        "status": 503,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders",
+        "status": 503,
+        "fromServiceWorker": true
+      }
+    ],
+    "p2pMutations": [],
+    "p2pRequestFailures": [],
+    "pageErrors": []
+  },
+  "screenshots": [
+    "preview-p2p-error-before-retry-2026-09-29.png",
+    "preview-p2p-error-after-retry-2026-09-29.png"
+  ],
+  "sourceHashes": {
+    "contracts/openapi/p2p.yaml": "561131d2a9263d5788e3b103deb0bff8a32ca5b5dee780c5939ba1e1e98b0ea4",
+    "src/dev/PreviewControls.tsx": "4d68e898a2b468cf25c36d0528df0b546fb037e5c4dc6bfcda944be3ecd18759",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "eee0cedd943c91585fb29756b9d06557412ed53d5ef05f378e67fd7aaffd27e0",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/p2p/api/p2p-api.ts": "164f6424133e159b1b8dd5a6e23a0bdcd3c5a14c294d1a808cba09d552230b83",
+    "src/features/p2p/model/p2p-order-queries.ts": "c8cc053c96a51f9fd3830631ba7f016714477f87b79a01039cb01424d0192394",
+    "src/features/p2p/pages/P2POrdersContractPage.tsx": "4a9e8002772f515dd1117d1ac5386a2ace5136290ca8303c5a67e88b05ef8a67",
+    "src/features/p2p/routes.ts": "70de2d9cae22dfb45031be5cbe5fe858a863aa2bb82b266bea39ce4137e1dbee",
+    "docs/architecture/production-readiness/evidence/A06/run-p2p-error-browser-check.mjs": "de75c39c20c901c74cf9fa574aa96a52d2696745359d6df75769df98fa5ac57b"
+  },
+  "limitations": [
+    "The P2P GET /p2p/orders OpenAPI contract declares 200 and 401, not 503. The preview injects a synthetic local 503 only to exercise the generic UI error/retry path; it is not backend contract evidence.",
+    "Local Chromium/MSW evidence does not verify backend persistence, authorization enforcement, staging or user acceptance.",
+    "Only listP2POrders was observed, one of 42 linked P2P operations; coverage remains representative.",
+    "The separate /w/p2p/my-orders route alias is not included in this fresh run."
+  ]
+}

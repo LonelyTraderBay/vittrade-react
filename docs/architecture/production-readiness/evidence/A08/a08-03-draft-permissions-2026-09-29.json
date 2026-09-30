@@ -1,0 +1,462 @@
+{
+  "id": "EV-20260929-443",
+  "taskId": "A08",
+  "stepId": "A08.03",
+  "capturedAt": "2026-09-29T12:19:08.707Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "scope": "Add frontend-observed draft permission metadata to P2P business mutation operations and require complete permission and idempotency declarations in the repository OpenAPI gate.",
+  "baselineReconciliation": {
+    "contractInventoryBeforePlanUpdate": "PLAN.md previously stated 53 business mutations.",
+    "currentSourceEnumeration": {
+      "contracts": 15,
+      "operations": 154,
+      "mutationOperations": 71,
+      "authenticationMutations": 13,
+      "explicitChallengeExceptions": 4,
+      "businessMutations": 54
+    },
+    "finding": "Full current source enumeration counts 54 non-auth/non-challenge business mutations; the prior PLAN snapshot undercounted this scope by one and is corrected. All 54 now carry permission lists and required=true Idempotency-Key parameters."
+  },
+  "p2pPermissionMetadata": {
+    "beforeAudit": "23/23 business candidates lacked x-required-permissions (EV-441)",
+    "after": [
+      {
+        "trackerOperationId": "API-00c3f91277f1",
+        "operationId": "reportP2PMerchant",
+        "method": "POST",
+        "path": "/p2p/reports/merchants",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:report"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-8deedf37c672",
+        "operationId": "createP2PPaymentMethod",
+        "method": "POST",
+        "path": "/p2p/payment-methods",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:payment-methods:write"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-b5ebebd342f3",
+        "operationId": "updateP2PPaymentMethod",
+        "method": "PATCH",
+        "path": "/p2p/payment-methods/{methodId}",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:payment-methods:write"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-c0b5d7bf11ab",
+        "operationId": "deleteP2PPaymentMethod",
+        "method": "DELETE",
+        "path": "/p2p/payment-methods/{methodId}",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:payment-methods:write"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-7c81f5d27bb7",
+        "operationId": "sendP2PDisputeMessage",
+        "method": "POST",
+        "path": "/p2p/disputes/{disputeId}/messages",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:dispute:write"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-2ecbe1cf4564",
+        "operationId": "escalateP2PDispute",
+        "method": "POST",
+        "path": "/p2p/disputes/{disputeId}/escalate",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:dispute:write"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-56eefa0baaaf",
+        "operationId": "createP2PBlacklistEntry",
+        "method": "POST",
+        "path": "/p2p/blacklist",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:blacklist:write"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-d2d86f6534f4",
+        "operationId": "removeP2PBlacklistEntry",
+        "method": "DELETE",
+        "path": "/p2p/blacklist/{entryId}",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:blacklist:write"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-c6a13cfad102",
+        "operationId": "updateP2P2FAMethod",
+        "method": "PATCH",
+        "path": "/p2p/security/2fa/methods/{methodId}",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:security:write"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-189d0ffcf613",
+        "operationId": "setP2P2FAPrimaryMethod",
+        "method": "POST",
+        "path": "/p2p/security/2fa/primary",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:security:write"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-adf2a40e19d1",
+        "operationId": "updateP2P2FAThreshold",
+        "method": "PATCH",
+        "path": "/p2p/security/2fa/thresholds/{thresholdId}",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:security:write"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-e3ef0681da66",
+        "operationId": "beginP2PAuthenticatorSetup",
+        "method": "POST",
+        "path": "/p2p/security/2fa/authenticator/setup",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:security:write"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-1bcc4c7c86d3",
+        "operationId": "confirmP2PAuthenticatorSetup",
+        "method": "POST",
+        "path": "/p2p/security/2fa/authenticator/confirm",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:security:write"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-7df8fe96ebe9",
+        "operationId": "createP2PAd",
+        "method": "POST",
+        "path": "/p2p/ads",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:ad:write"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-3d6cc4592909",
+        "operationId": "updateP2PAdStatus",
+        "method": "PATCH",
+        "path": "/p2p/ads/{adId}",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:ad:write"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-b0be5ff21813",
+        "operationId": "deleteP2PAd",
+        "method": "DELETE",
+        "path": "/p2p/ads/{adId}",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:ad:write"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-62209bc23b7a",
+        "operationId": "createP2POrder",
+        "method": "POST",
+        "path": "/p2p/orders",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:order:create"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-3b90783f6c7a",
+        "operationId": "markP2POrderPaid",
+        "method": "POST",
+        "path": "/p2p/orders/{orderId}/mark-paid",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:mark-paid"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-43fe3e6ad7e3",
+        "operationId": "releaseP2POrderEscrow",
+        "method": "POST",
+        "path": "/p2p/orders/{orderId}/release",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:release"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-bdee1b8b6e1f",
+        "operationId": "cancelP2POrder",
+        "method": "POST",
+        "path": "/p2p/orders/{orderId}/cancel",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:cancel"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-132d64f570fb",
+        "operationId": "rateP2POrder",
+        "method": "POST",
+        "path": "/p2p/orders/{orderId}/rate",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:rate"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-0001bd2af77b",
+        "operationId": "submitP2PPaymentProof",
+        "method": "POST",
+        "path": "/p2p/orders/{orderId}/payment-proof",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:payment-proof"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      },
+      {
+        "trackerOperationId": "API-ec0cf271119e",
+        "operationId": "sendP2PChatMessage",
+        "method": "POST",
+        "path": "/p2p/orders/{orderId}/chat/messages",
+        "frontendPermissionCandidates": ["p2p:write", "p2p:chat:write"],
+        "uiSemantics": "any_of_observed",
+        "metadataStatus": "draft_frontend",
+        "ownerQuestion": "Backend owner is not identified in this checkout. This list mirrors the frontend any-of UI gate; confirm any-of semantics, resource ownership/state/MFA constraints, server enforcement and the accountable backend owner before approval.",
+        "backendOwner": "not_identified_in_repository",
+        "serverAuthorization": "not_verified"
+      }
+    ]
+  },
+  "challengeExceptions": [
+    {
+      "contract": "p2p.yaml",
+      "operationId": "createP2PReleaseChallenge",
+      "method": "POST",
+      "path": "/p2p/orders/{orderId}/release/challenge",
+      "exceptionReason": "Release MFA challenge issuance is a challenge-flow exception; replay semantics are unspecified and must be defined separately.",
+      "retainedPermissions": [],
+      "gateStatus": "explicit_reason_recorded"
+    },
+    {
+      "contract": "p2p.yaml",
+      "operationId": "verifyP2PReleaseChallenge",
+      "method": "POST",
+      "path": "/p2p/orders/{orderId}/release/challenge/{challengeId}/verify",
+      "exceptionReason": "Release MFA challenge verification is a challenge-flow exception; one-time verification and replay semantics must be defined separately.",
+      "retainedPermissions": [],
+      "gateStatus": "explicit_reason_recorded"
+    },
+    {
+      "contract": "wallet.yaml",
+      "operationId": "createWalletWithdrawalChallenge",
+      "method": "POST",
+      "path": "/wallet/withdrawals/challenge",
+      "exceptionReason": "Wallet withdrawal MFA challenge issuance remains outside the generic business Idempotency-Key rule; replay semantics are not specified and must be defined separately.",
+      "retainedPermissions": ["wallet:withdraw"],
+      "gateStatus": "explicit_reason_recorded"
+    },
+    {
+      "contract": "wallet.yaml",
+      "operationId": "verifyWalletWithdrawalChallenge",
+      "method": "POST",
+      "path": "/wallet/withdrawals/challenge/{challengeId}/verify",
+      "exceptionReason": "Wallet withdrawal MFA challenge verification remains outside the generic business Idempotency-Key rule; one-time verification and replay semantics must be defined separately.",
+      "retainedPermissions": ["wallet:withdraw"],
+      "gateStatus": "explicit_reason_recorded"
+    }
+  ],
+  "authenticationExceptionPolicy": {
+    "pathPrefix": "/auth/",
+    "mutationOperations": 13,
+    "reason": "Authentication, credential, MFA and session operations follow operation-specific semantics; this path family is documented in contracts/README.md and the OpenAPI gate. Their status is not inferred from the business-mutation rule."
+  },
+  "gateChanges": {
+    "permissionList": "Every non-auth, non-explicit-challenge business mutation must have a non-empty unique string list.",
+    "idempotency": "Resolve local parameter references and require Idempotency-Key with in=header and required=true.",
+    "challengeExceptions": "Only four exact Wallet/P2P operations are exempt; each has a fixed operationId and exact non-empty x-idempotency-exception-reason. Unknown challenge paths stay in business scope.",
+    "draftQuestions": "draft_frontend permission metadata must include a non-empty owner question."
+  },
+  "counts": {
+    "businessMutations": 54,
+    "businessMutationsWithPermissions": 54,
+    "businessMutationsWithRequiredIdempotencyKey": 54,
+    "p2pDraftPermissionCandidates": 23,
+    "explicitChallengeExceptions": 4,
+    "authPathMutations": 13
+  },
+  "backendOwnership": {
+    "status": "not_identified_in_repository",
+    "permissionApproval": "not_confirmed",
+    "serverAuthorization": "not_verified"
+  },
+  "sourceHashes": {
+    "AGENTS.md": "96adbe762423e5d81d179ad8426ccc644557ab1184072609c59312440f045874",
+    "contracts/README.md": "59fa3b8e03d9f4c6c4a34e069e0fc2c254f8a9b87908900fbb839462a882498d",
+    "contracts/openapi/p2p.yaml": "17d7e0c1b198d6adadc9d5a0519c029084257c82132e8e4391891c5e92c2c576",
+    "contracts/openapi/wallet.yaml": "a7b2e6fbdf62f2e6a789de25e712767d79014355870e86a87c8e809938f9e7b7",
+    "docs/ai/WORKFLOW.md": "bb26ae15956c722a93c93568d93018fe662a18444620222c0df3bb0d65497d3e",
+    "docs/architecture/production-readiness/evidence/A08/p2p-permission-map-2026-09-29.json": "8053849608bf400f528129f2e86ea06708ab53f8169c17fdaabc5626fbe7fe25",
+    "scripts/check-openapi-contracts.mjs": "8367c9b873a5f9934c329a315b622a1e61a573d82f7f9d400c77481015c516f1",
+    "src/features/p2p/api/p2p-api.ts": "164f6424133e159b1b8dd5a6e23a0bdcd3c5a14c294d1a808cba09d552230b83",
+    "src/features/p2p/model/p2p-ad-create-queries.ts": "a55e1eda16c8ace80cd3cc4b5ed7eace8f361ae40e526c6aa54eb3c89b043f6e",
+    "src/features/p2p/model/p2p-blacklist-queries.ts": "cb46fc0f0aead6c936a97e71c8662527f90c9f4bb783779679ab4ca68e7bb41f",
+    "src/features/p2p/model/p2p-chat-queries.ts": "55bae1aebbb3c4b671bb4a4844a8da4ba9565d13439aded43a0aa183cd32e494",
+    "src/features/p2p/model/p2p-dispute-detail-queries.ts": "b2069c1436d2b7dec4bd287c35118ac48812c9be5e8fe779d780300c9be0a4d2",
+    "src/features/p2p/model/p2p-my-ads-queries.ts": "09acf298965d1c66b7bee91f70f3c2baac1b33cb7e3bc82e094ab187b5dd7b6e",
+    "src/features/p2p/model/p2p-order-action-queries.ts": "1ce6436aec2ec390e2c060b86743468375b2c478aab0e42f1a8c1963140a625e",
+    "src/features/p2p/model/p2p-order-creation-queries.ts": "b609efdfc5dca0e37f67a1a644829fed8ecf09fdf4ddf646ba763bc05c188f6c",
+    "src/features/p2p/model/p2p-payment-method-queries.ts": "c899fd2d4d10f367ed3dbba1cd6b8f5b558dbbc675b0691e569a820f5e89bbb8",
+    "src/features/p2p/model/p2p-security-queries.ts": "9518e7eecb09e0c025e89bd66396298d8661645d2a74cb5c040741e4ebd4c90d",
+    "src/features/p2p/model/p2p-trust-queries.ts": "ab50a8260c050fec53c2d90bfb1aca3d4455e32789b2bd446b4c9b6023a3e059",
+    "src/features/p2p/pages/P2P2FASettingsPage.test.tsx": "66710abb4fb5e6cab7587f6e0621977f7b807fee010a19fd3f89c7a20746dd6e",
+    "src/features/p2p/pages/P2P2FASettingsPage.tsx": "712c5b09cd780625241937df6e6041686213cbf04598d488673ec85c73d7bf49",
+    "src/features/p2p/pages/P2PAchievementsPage.test.tsx": "f94a813305694333132d5f943d783ccdada9542dca77b004ce6ffc6cb0867d44",
+    "src/features/p2p/pages/P2PAdAnalyticsPage.test.tsx": "b58e494663a054af4c78ba61c8022b364ade0a4e3b50cc65085d7ebc155ed952",
+    "src/features/p2p/pages/P2PAdDetailContractPage.test.tsx": "fd9cecee5a1aae69275750f712a91e8f757a9cbadf9084e52432035013114951",
+    "src/features/p2p/pages/P2PAdDetailContractPage.tsx": "ed40c1cd81af7d8fdb506128cd549eb6593273880224c76938fe079b92036f65",
+    "src/features/p2p/pages/P2PBlacklistAddPage.test.tsx": "918151f67c63afe0baee5347a1ecbee6e1f9d0ab713925a617d434e6ddc10ff3",
+    "src/features/p2p/pages/P2PBlacklistAddPage.tsx": "f4f35111cbbc687698f56a5fa89d79137dbd74063527a790701f2bcb480328c3",
+    "src/features/p2p/pages/P2PBlacklistPage.test.tsx": "e58bfe24a450538497a8f327e5de1d13b149b36738540ef55a2624c2b3ff6f1b",
+    "src/features/p2p/pages/P2PBlacklistPage.tsx": "8ae416cf18c092f8ba24ec12f0785e9852847af7603c24c4533a67190aaf5915",
+    "src/features/p2p/pages/P2PChatPage.test.tsx": "71a20ca6d16d16cd494a29524bbb648ea8fcceb9301f4236519241ce988f2b65",
+    "src/features/p2p/pages/P2PChatPage.tsx": "08ef2422a2b20b0d03ff63ddbd10ee1ca28609f4649833aba1f46dc3e168ae70",
+    "src/features/p2p/pages/P2PCreateAdContractPage.test.tsx": "1763a785e9cd45467136a1876458cc3b92af575a7490594be264ea227320898f",
+    "src/features/p2p/pages/P2PCreateAdContractPage.tsx": "6fb62f949ae2bca84b5bfcb01ee5dfebb0e9e58aac8b792f93a10340c15d4237",
+    "src/features/p2p/pages/P2PDashboardPage.test.tsx": "3dea9d7622dc5cdc1aa000f9d90192ccbbf88c76bbcbe91a9c1bae8c8d97a50c",
+    "src/features/p2p/pages/P2PDisputeDetailPage.test.tsx": "fe6131202cca768c24a41ecabf348413006d5ecf90d67e1d8d17a8482337241b",
+    "src/features/p2p/pages/P2PDisputeDetailPage.tsx": "729a5e48b849bea140a5f40929865f04775f8322169fd99b7a1e1932672f694e",
+    "src/features/p2p/pages/P2PDisputesPage.test.tsx": "d5969b59ceeb5cdd5959e7567aec82c9e24ee92de1e580b757d5774ad0842640",
+    "src/features/p2p/pages/P2PEscrowDetailPage.test.tsx": "0a8f66097457a5f9292ad34b3e0b128061f6866cbd4b8b8f0720f556a70d18e2",
+    "src/features/p2p/pages/P2PEscrowDetailPage.tsx": "90f39e38073ff3f7f1a9e650bb1f5f5d43a29f6131b3910ee742e7074b07c4a8",
+    "src/features/p2p/pages/P2PExpressConfirmPage.test.tsx": "00a4b8fd6637ca287c81322003a65cf2cd1622f78f1049ee5d7056dd26181fec",
+    "src/features/p2p/pages/P2PExpressConfirmPage.tsx": "726eecf2522f7e10b6ce4b54bb7aba7b11a620523a6432f397e14127043fa072",
+    "src/features/p2p/pages/P2PExpressPage.test.tsx": "1fa7cebe626f742873cfd7c4d45e033e5f3d872ceb9b73bc3365da701bf0cfa3",
+    "src/features/p2p/pages/P2PFrontendStatusPages.test.tsx": "bbf85385736cfd7336d382727255b473ac8898f64dfd07cd7d88b6e18f2a30b7",
+    "src/features/p2p/pages/P2PInformationalPages.test.tsx": "fe92a3897d6407963f3832b5f7fcaac68773c83fd786a7a935e116d16abc02a6",
+    "src/features/p2p/pages/P2PMarketplacePage.test.tsx": "408a4b644cc2ad7e35a3ce0b380947b6098f8246c8604c6a3a992e10e9e2fb99",
+    "src/features/p2p/pages/P2PMerchantProfilePage.test.tsx": "a180337fa62b4836ff8bd1ca62736b28dfdc2c48b1ca3cbfa561801fd923b199",
+    "src/features/p2p/pages/P2PMerchantProfilePage.tsx": "2440e7d9cc51a993d80193ab8b01388b6e7ca65bc8060bb01e0b20f2a4f572cb",
+    "src/features/p2p/pages/P2PMyAdsContractPage.test.tsx": "726d661b92efa2424dd38a2d1e9a8139b7a0f7811b62bbea63d67b194282e951",
+    "src/features/p2p/pages/P2PMyAdsContractPage.tsx": "cd328aa07511f9c40adc3c1ac8f863cddefea83f8380276cc91b33eca673c96a",
+    "src/features/p2p/pages/P2POrderActionPages.test.tsx": "ca2a10932c45483a23d69ce9ef67be64cc56555bca1c02ee821cbd1adc81fcfe",
+    "src/features/p2p/pages/P2POrderActionPages.tsx": "caeacaa8653dca379a3deb9ee8af06692fc672c912d7197a684178489c863ba7",
+    "src/features/p2p/pages/P2POrdersContractPage.test.tsx": "3ca9bea70703a15433a03a2847365d27a2000f745a435ecd4e1e930272dcff35",
+    "src/features/p2p/pages/P2PPaymentMethodAddPage.test.tsx": "b5302244f30791ded1eece33d3746afb72d13460092bb40afe8cb679145b6ad7",
+    "src/features/p2p/pages/P2PPaymentMethodAddPage.tsx": "0abf303126a266e244a7d5150e9070635a5f85792a9e909a078dcf828732e132",
+    "src/features/p2p/pages/P2PPaymentMethodsPage.test.tsx": "c0d34b51893e79be4bbc5b5ae78fdca6e8f4759d8f84280395cc774d953efb9c",
+    "src/features/p2p/pages/P2PPaymentMethodsPage.tsx": "d9d71e6e2611049b979c3f3ed67be06c0908fddb14d09c752392db3a6d91480b",
+    "src/features/p2p/pages/P2PReportMerchantPage.test.tsx": "a13e40d5eea8765db0c6e5df65be57154e25411d24556c915b816cb548b479fa",
+    "src/features/p2p/pages/P2PReportMerchantPage.tsx": "74d57272063d8b69444f58017f9bf8c440b7a0b46a51b34b17612755c33e9070",
+    "src/features/p2p/pages/P2PReviewsPage.test.tsx": "e6289522ab42b5923ca3d35e9891a337c12a9d30660af8018758f490190aec2c",
+    "src/features/p2p/pages/P2PTradingLevelPage.test.tsx": "d071fcfa50fecd9e604a056de8b3336f4ec03c6da2319baac63b58a92a04dd2f"
+  },
+  "checks": [
+    {
+      "name": "OpenAPI contract gate",
+      "command": "node scripts/check-openapi-contracts.mjs",
+      "result": "pass",
+      "actual": "15 contracts and 154 operations validated; gate enforces permissions and required=true Idempotency-Key for every business mutation."
+    },
+    {
+      "name": "Checker syntax",
+      "command": "node --check scripts/check-openapi-contracts.mjs",
+      "result": "pass",
+      "actual": "No syntax errors."
+    },
+    {
+      "name": "P2P page suite",
+      "command": "node node_modules/vitest/vitest.mjs run src/features/p2p/pages",
+      "result": "pass",
+      "actual": "26 test files and 87 tests passed."
+    },
+    {
+      "name": "Scoped formatting",
+      "command": "Prettier check on p2p.yaml, wallet.yaml, gate script, and README changed range",
+      "result": "pass",
+      "actual": "All selected files/range match Prettier."
+    },
+    {
+      "name": "Whitespace",
+      "command": "git diff --check -- contracts/openapi/p2p.yaml contracts/openapi/wallet.yaml contracts/README.md scripts/check-openapi-contracts.mjs",
+      "result": "pass",
+      "actual": "Exit code 0; only existing LF-to-CRLF working-tree notices."
+    }
+  ],
+  "limits": [
+    "All 23 P2P permission lists are draft_frontend candidates mirrored from current UI any-of checks; backend semantics, ownership and authorization remain unverified.",
+    "Wallet and P2P challenge exception reasons document the generic idempotency-gate boundary only; they do not define challenge replay guarantees.",
+    "Auth operations are outside the business-mutation rule due operation-specific credential/session semantics; backend authorization and auth replay semantics are not verified.",
+    "UI acceptance remains 0/128, backend/staging verification 0/154, and A06.03 retains 20 not_verified rows including the user-confirmed wallet.unknown/duplicate blocker."
+  ]
+}

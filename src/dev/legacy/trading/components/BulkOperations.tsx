@@ -12,16 +12,7 @@
  */
 
 import React, { useState, useMemo } from 'react';
-import {
-  CheckSquare,
-  Square,
-  Trash2,
-  Edit2,
-  Filter,
-  AlertTriangle,
-  X,
-  CheckCircle,
-} from 'lucide-react';
+import { CheckSquare, Square, Trash2, Edit2, AlertTriangle, X, CheckCircle } from 'lucide-react';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useHaptic } from '@/shared/hooks/useHaptic';

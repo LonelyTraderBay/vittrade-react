@@ -1,5 +1,5 @@
-import { lazy } from 'react';
-import type { RouteObject } from 'react-router';
+import { createElement, lazy } from 'react';
+import { useParams, type RouteObject } from 'react-router';
 
 const P2PDisputeDetailPage = lazy(() =>
   import('./pages/P2PDisputeDetailPage').then((module) => ({
@@ -20,6 +20,11 @@ const P2PEscrowDetailPage = lazy(() =>
     default: module.P2PEscrowDetailPage,
   })),
 );
+
+function P2PEscrowDetailRoute() {
+  const { orderId } = useParams();
+  return createElement(P2PEscrowDetailPage, { key: orderId });
+}
 
 const P2POrderTimelinePage = lazy(() =>
   import('./pages/P2POrderActionPages').then((module) => ({
@@ -162,19 +167,19 @@ export const p2pOrderCommunicationRoutes: RouteObject[] = [
 
 /** Routes owned by the migrated P2P escrow state-transition slice. */
 export const p2pEscrowRoutes: RouteObject[] = [
-  { path: 'p2p/escrow/:orderId', Component: P2PEscrowDetailPage },
+  { path: 'p2p/escrow/:orderId', Component: P2PEscrowDetailRoute },
 ];
 
 /** Canonical order URL now composes the same contract-backed lifecycle page. */
 export const p2pOrderRoutes: RouteObject[] = [
-  { path: 'p2p/order/:orderId', Component: P2PEscrowDetailPage },
+  { path: 'p2p/order/:orderId', Component: P2PEscrowDetailRoute },
 ];
 
 /** Web-shell aliases for contract-backed P2P create, orders and escrow pages. */
 export const p2pWebRoutes: RouteObject[] = [
   { path: 'p2p/create-offer', Component: P2PCreateAdContractPage },
   { path: 'p2p/order-room', Component: P2PWebOrdersPage },
-  { path: 'p2p/order/:orderId', Component: P2PEscrowDetailPage },
+  { path: 'p2p/order/:orderId', Component: P2PEscrowDetailRoute },
 ];
 
 /** Routes for the contract-backed order action lifecycle. */

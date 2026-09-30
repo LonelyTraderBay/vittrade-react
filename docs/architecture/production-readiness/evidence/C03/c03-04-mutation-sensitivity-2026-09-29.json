@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.04",
+  "observedAt": "2026-09-29T15:10:55Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "environment": "Windows 11 Pro; Node.js v24.19.0; Vitest 4.1.11; local tests/fake transports; no backend or staging connection.",
+  "method": "For each representative invariant, save the exact dirty working-tree bytes, apply one temporary mutation, run only its owner test, record whether the intended assertion fails, restore the saved bytes in a finally-safe sequence, then compare SHA-256 before and after restoration.",
+  "mutations": [
+    {
+      "id": "MUT-AUTH-STALE-RESULT-GUARD",
+      "file": "src/shared/session/AuthContext.tsx",
+      "invariant": "A refresh result from an obsolete operation must not overwrite a newer logout or login session.",
+      "mutation": "Changed the refresh success condition from operationId === operationRef.current to an unconditional applySession(session).",
+      "targetedCommand": "node node_modules/vitest/vitest.mjs run --reporter=dot src/app/contexts/AuthSessionProvider.test.tsx",
+      "exitCode": 1,
+      "expectedFailureObserved": true,
+      "failedAssertions": [
+        "ignores a late refresh success after a remote logout: expected true to be false",
+        "keeps a new login after remote logout when an older refresh succeeds: expected user-1 to be user-2",
+        "keeps a legacy synchronous login ahead of an older refresh response: expected user-1 to be user-2"
+      ],
+      "testsFailed": 3,
+      "testsPassed": 19,
+      "originalSha256": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",
+      "mutantSha256": "2f31bb92f6233355a66555c0727e5d92da7e29eca2238dd3b1188b11a6990aaf",
+      "restoredSha256": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",
+      "restoredExactly": true
+    },
+    {
+      "id": "MUT-WATCHLIST-QUERY-INVALIDATION",
+      "file": "src/features/market/model/market-queries.ts",
+      "invariant": "Creating a watchlist item invalidates both the watchlist and pair-list queries that can become stale.",
+      "mutation": "Removed pair-list invalidation from the watchlist-create mutation while retaining the watchlist invalidation.",
+      "targetedCommand": "node node_modules/vitest/vitest.mjs run --reporter=dot src/features/market/model/market-queries.test.tsx -t \"invalidates the watchlist and pair list after creating a watchlist item\"",
+      "exitCode": 1,
+      "expectedFailureObserved": true,
+      "failedAssertion": "Expected invalidateQueries to include ['market','pairs']; it was not called with that query key.",
+      "originalSha256": "bfb11787528086c9bdd12691ae19a451ff193c3d89c7d2c10d50242739052e85",
+      "mutantSha256": "15676a539958acb9953e08722a6bf3f91c99e105e4b6d70337b115c3b8a2db15",
+      "restoredSha256": "bfb11787528086c9bdd12691ae19a451ff193c3d89c7d2c10d50242739052e85",
+      "restoredExactly": true
+    },
+    {
+      "id": "MUT-IDEMPOTENCY-HEADER",
+      "file": "src/shared/api/http-client.ts",
+      "invariant": "A caller-supplied idempotency key remains on each retry so the server can deduplicate the logical mutation.",
+      "mutation": "Removed shared Idempotency-Key request-header construction.",
+      "targetedCommand": "node node_modules/vitest/vitest.mjs run --reporter=dot src/shared/api/http-client.test.ts -t \"keeps correlation and idempotency headers stable across retries\"",
+      "exitCode": 1,
+      "expectedFailureObserved": true,
+      "failedAssertion": "Expected Idempotency-Key 'address-update-1'; observed null.",
+      "originalSha256": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+      "mutantSha256": "bee46a1b45822daaaded8eb8e4691e37bf67fb15b79e4ad2541090fda180bb73",
+      "restoredSha256": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+      "restoredExactly": true
+    }
+  ],
+  "restorationVerification": {
+    "checkedAfterMutationRun": true,
+    "allThreeHashesMatchedOriginal": true,
+    "mutationsRemainingInWorkingTree": false,
+    "workingTreeApplicationFilesWereIntentionallyChanged": false
+  },
+  "result": "pass",
+  "limits": [
+    "This is mutation sensitivity evidence for three selected frontend invariants, not a statement about mutation score across the repository.",
+    "Tests used local frontend fixtures/fakes and do not prove backend authorization, persistence, replay handling, staging behavior, or production readiness.",
+    "C03.05 still needs a fresh full-suite and coverage run; the WebLoginPage error-copy assertion mismatch remains unresolved pending product-intent evidence."
+  ]
+}

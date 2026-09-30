@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { CheckCircle2, Copy, Gift, Users } from 'lucide-react';
+import { isApiError } from '@/shared/api/api-error';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
@@ -18,6 +19,23 @@ export function ReferralContractPage() {
         <Header title="Referral" back />
         <PageContent>
           <p style={{ color: colors.text2 }}>Đang tải dữ liệu Referral API…</p>
+        </PageContent>
+      </PageLayout>
+    );
+  }
+  if (query.isError && isApiError(query.error) && query.error.status === 403) {
+    return (
+      <PageLayout>
+        <Header title="Referral" back />
+        <PageContent>
+          <div role="alert" className="px-5 py-12 text-center">
+            <p style={{ color: colors.text1, fontSize: 16, fontWeight: 600 }}>
+              Không có quyền truy cập Referral
+            </p>
+            <p style={{ color: colors.text2, fontSize: 13, marginTop: 8 }}>
+              Tài khoản hiện tại không được phép xem dữ liệu giới thiệu.
+            </p>
+          </div>
         </PageContent>
       </PageLayout>
     );
@@ -88,29 +106,35 @@ export function ReferralContractPage() {
             <h2 style={{ color: colors.text1, fontSize: 14, fontWeight: 700 }}>Friends</h2>
             <span style={{ color: colors.text3, fontSize: 11 }}>{overview.friends.length}</span>
           </div>
-          {overview.friends.map((friend) => (
-            <TrCard key={friend.id} className="p-3">
-              <div className="flex items-center gap-2">
-                <span
-                  className="flex h-8 w-8 items-center justify-center rounded-full"
-                  style={{ background: colors.surface2 }}
-                >
-                  {friend.avatar}
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p style={{ color: colors.text1, fontSize: 12, fontWeight: 600 }}>
-                    {friend.name}
-                  </p>
-                  <p style={{ color: colors.text3, fontSize: 10 }}>
-                    {friend.joinedDate} · {friend.status}
-                  </p>
+          {overview.friends.length === 0 ? (
+            <p role="status" style={{ color: colors.text2, fontSize: 12 }}>
+              Chưa có người được giới thiệu. Hãy chia sẻ mã để bắt đầu.
+            </p>
+          ) : (
+            overview.friends.map((friend) => (
+              <TrCard key={friend.id} className="p-3">
+                <div className="flex items-center gap-2">
+                  <span
+                    className="flex h-8 w-8 items-center justify-center rounded-full"
+                    style={{ background: colors.surface2 }}
+                  >
+                    {friend.avatar}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p style={{ color: colors.text1, fontSize: 12, fontWeight: 600 }}>
+                      {friend.name}
+                    </p>
+                    <p style={{ color: colors.text3, fontSize: 10 }}>
+                      {friend.joinedDate} · {friend.status}
+                    </p>
+                  </div>
+                  <span style={{ color: colors.buy, fontSize: 11 }}>
+                    ${friend.totalCommission.toFixed(2)}
+                  </span>
                 </div>
-                <span style={{ color: colors.buy, fontSize: 11 }}>
-                  ${friend.totalCommission.toFixed(2)}
-                </span>
-              </div>
-            </TrCard>
-          ))}
+              </TrCard>
+            ))
+          )}
         </section>
       </PageContent>
     </PageLayout>

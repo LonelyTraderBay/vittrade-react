@@ -150,6 +150,7 @@ const mutationCases = [
   {
     title: 'mark paid',
     hook: () => queries.useP2PMarkPaidMutation('order-1'),
+    variables: { idempotencyKey: 'mark-paid-1' },
     api: 'markOrderPaid',
   },
   {
@@ -351,7 +352,9 @@ describe('P2P mutation hooks', () => {
       request: {},
       idempotencyKey: 'order-create-1',
     });
-    const paid = await runMutation(() => queries.useP2PMarkPaidMutation('order-1'));
+    const paid = await runMutation(() => queries.useP2PMarkPaidMutation('order-1'), {
+      idempotencyKey: 'mark-paid-1',
+    });
     const released = await runMutation(() => queries.useP2PReleaseOrderMutation('order-1'), {
       verificationToken: 'server-token',
       idempotencyKey: 'release-1',

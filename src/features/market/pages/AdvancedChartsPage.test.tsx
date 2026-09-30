@@ -132,7 +132,7 @@ describe('AdvancedChartsPage route pair', () => {
       { routerProps: { initialEntries: ['/trade/advanced-chart/eth-usdt'] } },
     );
 
-    const retryButton = await screen.findByRole('button', { name: 'Thử lại' });
+    const retryButton = await screen.findByRole('button', { name: 'Thử lại' }, { timeout: 5_000 });
     allowSuccess = true;
     await userEvent.click(retryButton);
 

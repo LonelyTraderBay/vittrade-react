@@ -1,0 +1,43 @@
+{
+  "checkedAt": "2026-09-28T10:22:55.244Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "sourceHashes": {
+    "contracts/openapi/trading.yaml": "ea87584c03ab69a0d552d80590e36e15ab7b38851cc1583d9c892bbb91f19437",
+    "src/dev/PreviewControls.tsx": "aef26b8b6e02acf661cc9745b116aa8d56240f328456a4b35d4d25c445d5a3a4",
+    "src/dev/mocks/handlers.ts": "82822b8b10be51b2c48067f919974d9eb5b78e85588103178c213101e8089323",
+    "src/dev/mocks/preview-scenario-handler.ts": "9dbd05c837339c6659502973cd8f9a55d56c20d14bc8998990acff765734e8c8",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/trading/components/TradeTerminal.tsx": "bd8f1eba1344da1c39449e5189649de0a9b047cd7528175414a8033e2bc56990",
+    "src/features/trading/components/OrderConfirmationSheet.tsx": "c714bcf831f964d31bda4314bf5595ace66f9804ed31013f6943f87d6d4c51e7",
+    "src/features/trading/pages/OrderReceiptPage.tsx": "488a08a66812f412a823bb1b48d5c8652deb2c6ba03a6d7be35ef0f4a09d9a0a"
+  },
+  "origin": "http://127.0.0.1:4173",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": "trading.pending",
+  "route": "/w/trade/btcusdt",
+  "request": {
+    "method": "POST",
+    "status": 201,
+    "fromServiceWorker": true,
+    "idempotencyKeyLength": 36,
+    "elapsedMs": 1215,
+    "delayedLongEnoughForUiCheck": true,
+    "submitDisabledWhileInFlight": true,
+    "postCount": 1
+  },
+  "response": {
+    "id": "dev-order-0001",
+    "status": "open",
+    "symbol": "BTC/USDT",
+    "side": "buy"
+  },
+  "receiptRoute": "/w/trade/order-receipt",
+  "receiptReferenceVisible": true,
+  "externalApiOrigins": [],
+  "screenshot": "preview-trading-pending-in-flight-2026-09-28.png",
+  "screenshotSha256": "bb67b7f506385590b8b0da869eb902218049a6684a73b7fd89015d5a6fdd9e3e",
+  "limitation": "Local Chromium + MSW preview only. Pending is a delayed request-in-flight UI state; the handler returns the normal contract-valid open order. This does not certify backend execution, exchange acceptance or staging."
+}

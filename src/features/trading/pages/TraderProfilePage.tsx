@@ -264,8 +264,8 @@ function TradeCard({
         </div>
       </div>
       <p style={{ color: colors.text3, fontSize: 10, marginTop: 6 }}>
-        Entry {trade.entry.toLocaleString()}{' '}
-        {trade.exit ? `· Exit ${trade.exit.toLocaleString()}` : '· Đang mở'} · {trade.time}
+        Entry {trade.entry.toLocaleString('vi-VN')}{' '}
+        {trade.exit ? `· Exit ${trade.exit.toLocaleString('vi-VN')}` : '· Đang mở'} · {trade.time}
       </p>
     </TrCard>
   );

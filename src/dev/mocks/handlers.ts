@@ -1,5 +1,13 @@
 import { http, HttpResponse } from 'msw';
 import {
+  devMockNowMs,
+  getDevPreviewScenario,
+  nextDevMockId,
+  resetDevMockIds,
+} from './scenario-runtime';
+import type { AuthUser } from '@/shared/session/session-types';
+import { DEV_PREVIEW_PERSONAS } from '@/dev/mocks/personas';
+import {
   DEPOSIT_NETWORKS,
   COPY_TRADERS,
   USER_PROFILE,
@@ -74,8 +82,14 @@ import {
   getProject as getLaunchpadProject,
 } from './launchpad-fixtures';
 import { getTestDcaSnapshot } from './dca-fixtures';
+import type { DCAPlan } from '@/features/dca';
 import { getTestEarnSnapshot, getTestEarnTransactionsPage } from './earn-fixtures';
 import { getTradingAnalytics } from './trading-analytics-fixtures';
+import {
+  COPY_FRONTEND_VIEW_STATES,
+  DCA_ADVANCED_OVERVIEW,
+  P2P_FRONTEND_VIEW_STATES,
+} from './advanced-feature-fixtures';
 
 const user = {
   id: 'dev-user-1',
@@ -88,6 +102,36 @@ const user = {
 };
 
 let authenticated = false;
+let currentUser: AuthUser = user;
+interface DevLoginChallengeState {
+  user: AuthUser;
+  expiresAt: string;
+}
+const devLoginChallenges = new Map<string, DevLoginChallengeState>();
+
+interface DevRegistrationChallengeState {
+  channel: 'email' | 'phone';
+  contact: string;
+  fullName: string;
+  expiresAt: string;
+}
+const devRegistrationChallenges = new Map<string, DevRegistrationChallengeState>();
+const devRegistrationChallengesByKey = new Map<
+  string,
+  { challengeId: string; channel: 'email' | 'phone'; maskedDestination: string; expiresAt: string }
+>();
+const devRegistrationSessions = new Map<string, unknown>();
+
+export function resetDevAuthState(): void {
+  authenticated = false;
+  currentUser = user;
+  devLoginChallenges.clear();
+  devRegistrationChallenges.clear();
+  devRegistrationChallengesByKey.clear();
+  devRegistrationSessions.clear();
+  resetDevMockIds('dev-login-mfa', 'dev-registration');
+}
+
 const devPriceAlerts = PRICE_ALERTS.map((alert) => ({ ...alert }));
 const devP2pAds = P2P_ADS.map((ad) => ({ ...ad }));
 const devP2pMineAds = P2P_MY_ADS.map((ad) => ({ ...ad }));
@@ -152,6 +196,19 @@ const devSupportTickets = SUPPORT_TICKETS.map((ticket) => ({
   ...ticket,
   messages: ticket.messages.map((message) => ({ ...message })),
 }));
+let activeSupportEmptyScenario: object | null = null;
+let activeSupportEmptyTickets: typeof devSupportTickets = [];
+
+function getDevSupportTickets(): typeof devSupportTickets {
+  const scenario = getDevPreviewScenario();
+  if (scenario?.domain !== 'support' || scenario.state !== 'empty') return devSupportTickets;
+
+  if (scenario !== activeSupportEmptyScenario) {
+    activeSupportEmptyScenario = scenario;
+    activeSupportEmptyTickets = [];
+  }
+  return activeSupportEmptyTickets;
+}
 const devHelpCategories = HELP_CATEGORIES.map((category) => ({ ...category }));
 const devHelpArticles = HELP_ARTICLES.map((article) => ({ ...article }));
 const devPredictionEvents = PREDICTION_EVENTS.map((event) => ({
@@ -187,6 +244,7 @@ const devArenaJoinResponses = new Map<string, unknown>();
 
 export function resetDevArenaState(): void {
   devArenaJoinResponses.clear();
+  resetDevMockIds('dev-arena-audit');
 }
 
 const devPredictionActivity = generateGlobalActivity();
@@ -443,12 +501,20 @@ function getP2P2FASettings() {
   };
 }
 
-function createSession() {
+function createSession(sessionUser: AuthUser = currentUser) {
   return {
-    user,
+    user: sessionUser,
     accessToken: 'dev-only-in-memory-token',
-    accessTokenExpiresAt: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+    accessTokenExpiresAt: new Date(devMockNowMs() + 60 * 60 * 1000).toISOString(),
   };
+}
+
+function maskRegistrationContact(contact: string, channel: 'email' | 'phone'): string {
+  if (channel === 'email') {
+    const [local = '', domain = ''] = contact.split('@');
+    return `${local.slice(0, 1)}***@${domain}`;
+  }
+  return contact.replace(/\d(?=(?:\D*\d){2})/g, '•');
 }
 
 const pairs = [
@@ -546,6 +612,7 @@ const devTradingIdempotency = new Map<string, string>();
 export function resetDevTradingState(): void {
   devTradingOrders.clear();
   devTradingIdempotency.clear();
+  resetDevMockIds('dev-order');
 }
 
 function getTradingIdempotencyScope(request: Request): string | null {
@@ -567,7 +634,12 @@ function filterDevTradingOrders(request: Request, includeOpen: boolean): DevTrad
     return true;
   });
 }
-const dcaSnapshot = getTestDcaSnapshot();
+let dcaSnapshot = getTestDcaSnapshot();
+
+export function resetDevDcaState(): void {
+  dcaSnapshot = getTestDcaSnapshot();
+  resetDevMockIds('dev-plan');
+}
 const earnSnapshot = getTestEarnSnapshot();
 const withdrawalChallenges = new Map<string, { code: string; verificationToken: string }>();
 const verifiedWithdrawalTokens = new Set<string>();
@@ -659,12 +731,7 @@ const portfolioAnalytics = {
 function serializeDcaSnapshot() {
   return {
     ...dcaSnapshot,
-    plans: dcaSnapshot.plans.map((plan) => ({
-      ...plan,
-      nextExecution: plan.nextExecution.toISOString(),
-      createdAt: plan.createdAt.toISOString(),
-      lastPurchaseAt: plan.lastPurchaseAt?.toISOString(),
-    })),
+    plans: dcaSnapshot.plans.map(serializeDcaPlan),
     purchaseHistory: dcaSnapshot.purchaseHistory.map((item) => ({
       ...item,
       date: item.date.toISOString(),
@@ -673,6 +740,15 @@ function serializeDcaSnapshot() {
       ...item,
       date: item.date.toISOString(),
     })),
+  };
+}
+
+function serializeDcaPlan(plan: DCAPlan) {
+  return {
+    ...plan,
+    nextExecution: plan.nextExecution.toISOString(),
+    createdAt: plan.createdAt.toISOString(),
+    lastPurchaseAt: plan.lastPurchaseAt?.toISOString(),
   };
 }
 
@@ -900,14 +976,74 @@ function launchpadProjects(request: Request) {
 }
 
 export const handlers = [
+  http.get('*/dca/advanced/overview', () => HttpResponse.json(DCA_ADVANCED_OVERVIEW)),
+  http.get('*/p2p/frontend-view-status', ({ request }) => {
+    const view = new URL(request.url).searchParams.get('view');
+    const state = P2P_FRONTEND_VIEW_STATES.find((item) => item.view === view);
+    return state
+      ? HttpResponse.json(state)
+      : HttpResponse.json({ code: 'P2P_VIEW_NOT_FOUND' }, { status: 400 });
+  }),
+  http.get('*/trading/copy/frontend-view-status', ({ request }) => {
+    const view = new URL(request.url).searchParams.get('view');
+    const state = COPY_FRONTEND_VIEW_STATES.find((item) => item.view === view);
+    return state
+      ? HttpResponse.json(state)
+      : HttpResponse.json({ code: 'COPY_VIEW_NOT_FOUND' }, { status: 400 });
+  }),
   http.get('*/auth/session', () =>
     authenticated
-      ? HttpResponse.json(createSession())
+      ? HttpResponse.json(createSession(currentUser))
       : HttpResponse.json(
           { code: 'UNAUTHENTICATED', message: 'No active session' },
           { status: 401 },
         ),
   ),
+  http.post('*/auth/register', async ({ request }) => {
+    const body = (await request.json()) as {
+      fullName?: string;
+      channel?: 'email' | 'phone';
+      contact?: string;
+      password?: string;
+      acceptedTerms?: boolean;
+    };
+    const idempotencyKey = request.headers.get('Idempotency-Key');
+    if (!idempotencyKey || idempotencyKey.length < 8) {
+      return HttpResponse.json({ code: 'IDEMPOTENCY_KEY_REQUIRED' }, { status: 400 });
+    }
+    const previous = devRegistrationChallengesByKey.get(idempotencyKey);
+    if (previous) return HttpResponse.json(previous, { status: 202 });
+    if (
+      !body.fullName?.trim() ||
+      !body.contact?.trim() ||
+      !body.password ||
+      body.password.length < 8 ||
+      body.acceptedTerms !== true ||
+      !body.channel ||
+      !['email', 'phone'].includes(body.channel)
+    ) {
+      return HttpResponse.json({ code: 'INVALID_REGISTRATION' }, { status: 400 });
+    }
+    if (body.channel === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.contact)) {
+      return HttpResponse.json({ code: 'INVALID_REGISTRATION' }, { status: 400 });
+    }
+    const challengeId = nextDevMockId('dev-registration');
+    const expiresAt = new Date(devMockNowMs() + 5 * 60 * 1000).toISOString();
+    const challenge = {
+      challengeId,
+      channel: body.channel,
+      maskedDestination: maskRegistrationContact(body.contact.trim(), body.channel),
+      expiresAt,
+    };
+    devRegistrationChallenges.set(challengeId, {
+      channel: body.channel,
+      contact: body.contact.trim(),
+      fullName: body.fullName.trim(),
+      expiresAt,
+    });
+    devRegistrationChallengesByKey.set(idempotencyKey, challenge);
+    return HttpResponse.json(challenge, { status: 202 });
+  }),
   http.post('*/auth/login', async ({ request }) => {
     const body = (await request.json()) as { email?: string; password?: string };
     if (!body.email || !body.password) {
@@ -916,21 +1052,140 @@ export const handlers = [
         { status: 400 },
       );
     }
+
+    const persona = DEV_PREVIEW_PERSONAS.find((candidate) => candidate.email === body.email);
+    if (!persona || persona.password !== body.password) {
+      return HttpResponse.json(
+        { code: 'INVALID_CREDENTIALS', message: 'Email or password is incorrect.' },
+        { status: 401 },
+      );
+    }
+    if (persona.id === 'locked') return new HttpResponse(null, { status: 423 });
+
+    const loginUser = {
+      ...user,
+      id: body.email === user.email ? user.id : `dev-${body.email}`,
+      email: body.email,
+      ...(persona.id === 'admin' ? { roles: ['admin'], permissions: ['admin:read'] } : {}),
+      ...(persona.id === 'developer'
+        ? {
+            permissions: [
+              ...user.permissions,
+              'trade:read',
+              'earn:write',
+              'p2p:write',
+              'predictions:trade',
+              'profile:read',
+              'profile:write',
+              'profile:security:write',
+            ],
+          }
+        : {}),
+      ...(persona.id === 'market'
+        ? {
+            permissions: ['market:read', 'market:watchlist:write', 'market:alerts:write'],
+          }
+        : {}),
+      ...(persona.id === 'arena' ? { permissions: ['arena:join'] } : {}),
+      ...(persona.id === 'wallet'
+        ? { permissions: [...user.permissions, 'wallet:transfer', 'wallet:withdraw'] }
+        : {}),
+      ...(persona.id === 'dca' ? { permissions: ['dca:read', 'dca:write'] } : {}),
+      ...(persona.id === 'support'
+        ? {
+            permissions: [
+              'support:read',
+              'support:write',
+              'notifications:read',
+              'notifications:write',
+            ],
+          }
+        : {}),
+    };
+    if (persona.id === 'mfa') {
+      authenticated = false;
+      const id = nextDevMockId('dev-login-mfa');
+      const expiresAt = new Date(devMockNowMs() + 5 * 60 * 1000).toISOString();
+      devLoginChallenges.set(id, { user: loginUser, expiresAt });
+      return HttpResponse.json({
+        status: 'mfa_required',
+        challenge: { id, method: 'email', maskedDestination: 'm***@vittrade.local', expiresAt },
+      });
+    }
+
     authenticated = true;
-    return HttpResponse.json(createSession());
+    currentUser = loginUser;
+    return HttpResponse.json({ status: 'authenticated', session: createSession(loginUser) });
   }),
   http.post('*/auth/refresh', () =>
     authenticated
-      ? HttpResponse.json(createSession())
+      ? HttpResponse.json(createSession(currentUser))
       : HttpResponse.json({ code: 'SESSION_EXPIRED', message: 'Session expired' }, { status: 401 }),
   ),
   http.post('*/auth/logout', () => {
     authenticated = false;
+    currentUser = user;
+    devLoginChallenges.clear();
     return new HttpResponse(null, { status: 204 });
   }),
-  http.post('*/auth/mfa/verify', () => {
+  http.post('*/auth/login/mfa/verify', async ({ request }) => {
+    const body = (await request.json()) as { challengeId?: string; code?: string };
+    const challengeId = body.challengeId ?? '';
+    const challenge = devLoginChallenges.get(challengeId);
+    if (!challenge || Date.parse(challenge.expiresAt) <= devMockNowMs()) {
+      devLoginChallenges.delete(challengeId);
+      return HttpResponse.json({ code: 'LOGIN_CHALLENGE_EXPIRED' }, { status: 410 });
+    }
+    if (body.code !== '123456') {
+      return HttpResponse.json({ code: 'INVALID_VERIFICATION_CODE' }, { status: 400 });
+    }
+
+    devLoginChallenges.delete(challengeId);
     authenticated = true;
-    return HttpResponse.json(createSession());
+    currentUser = challenge.user;
+    return HttpResponse.json(createSession(challenge.user));
+  }),
+  http.post('*/auth/mfa/verify', async ({ request }) => {
+    const body = (await request.json()) as {
+      challengeId?: string;
+      code?: string;
+      purpose?: string;
+    };
+    if (body.purpose === 'register') {
+      const challengeId = body.challengeId ?? '';
+      const completed = devRegistrationSessions.get(challengeId);
+      if (completed) {
+        currentUser = (completed as { user: AuthUser }).user;
+        return HttpResponse.json(completed);
+      }
+      const challenge = devRegistrationChallenges.get(challengeId);
+      if (!challenge || Date.parse(challenge.expiresAt) <= devMockNowMs()) {
+        devRegistrationChallenges.delete(challengeId);
+        return HttpResponse.json({ code: 'REGISTRATION_CHALLENGE_EXPIRED' }, { status: 410 });
+      }
+      if (body.code !== '123456') {
+        return HttpResponse.json({ code: 'INVALID_VERIFICATION_CODE' }, { status: 400 });
+      }
+      const session = {
+        ...createSession(),
+        user: {
+          ...user,
+          id: `dev-user-${challengeId}`,
+          fullName: challenge.fullName,
+          ...(challenge.channel === 'email'
+            ? { email: challenge.contact, phone: undefined }
+            : { email: undefined, phone: challenge.contact }),
+          kycStatus: 'not_started' as const,
+        },
+      };
+      authenticated = true;
+      currentUser = session.user;
+      devRegistrationChallenges.delete(challengeId);
+      devRegistrationSessions.set(challengeId, session);
+      return HttpResponse.json(session);
+    }
+    authenticated = true;
+    return HttpResponse.json(createSession(currentUser));
   }),
   http.post('*/auth/mfa/setup', () =>
     HttpResponse.json({
@@ -938,10 +1193,10 @@ export const handlers = [
       qrCodeUrl:
         'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="160" height="160"%3E%3Crect width="160" height="160" fill="white"/%3E%3Cpath d="M10 10h40v40H10zM110 10h40v40h-40zM10 110h40v40H10zM70 70h20v20H70zM110 110h10v10h-10z" fill="black"/%3E%3C/svg%3E',
       backupCodes: ['DEV-0001', 'DEV-0002'],
-      expiresAt: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
+      expiresAt: new Date(devMockNowMs() + 10 * 60 * 1000).toISOString(),
     }),
   ),
-  http.post('*/auth/mfa/setup/confirm', () => HttpResponse.json(createSession())),
+  http.post('*/auth/mfa/setup/confirm', () => HttpResponse.json(createSession(currentUser))),
   http.post('*/auth/password-reset/request', () => new HttpResponse(null, { status: 204 })),
   http.post('*/auth/password-reset/verify', () =>
     HttpResponse.json({ resetToken: 'dev-reset-token' }),
@@ -1096,7 +1351,7 @@ export const handlers = [
   ),
   http.get('*/support/tickets', () =>
     HttpResponse.json({
-      items: devSupportTickets.map((ticket) => ({
+      items: getDevSupportTickets().map((ticket) => ({
         ...ticket,
         messages: ticket.messages.map((message) => ({ ...message })),
       })),
@@ -1114,7 +1369,7 @@ export const handlers = [
         { status: 400 },
       );
     }
-    const now = new Date().toISOString();
+    const now = new Date(devMockNowMs()).toISOString();
     const category: 'technical' | 'trading' | 'deposit' | 'withdraw' | 'kyc' | 'other' =
       body.category === 'technical' ||
       body.category === 'trading' ||
@@ -1124,8 +1379,12 @@ export const handlers = [
       body.category === 'other'
         ? body.category
         : 'other';
+    const supportTickets = getDevSupportTickets();
     const ticket = {
-      id: `ticket-dev-${devSupportTickets.length + 1}`,
+      id:
+        supportTickets === devSupportTickets
+          ? `ticket-dev-${devSupportTickets.length + 1}`
+          : `ticket-preview-support-${supportTickets.length + 1}`,
       subject: body.subject.trim(),
       category,
       status: 'open' as const,
@@ -1135,7 +1394,7 @@ export const handlers = [
       updatedAt: now,
       messages: [],
     };
-    devSupportTickets.unshift(ticket);
+    supportTickets.unshift(ticket);
     return HttpResponse.json(ticket, { status: 201 });
   }),
   http.get('*/predictions/events', ({ request }) => {
@@ -1215,7 +1474,7 @@ export const handlers = [
       );
     }
     const outcome = body.outcome ?? selectedOutcome.label;
-    const now = new Date().toISOString();
+    const now = new Date(devMockNowMs()).toISOString();
     const price = body.price ?? selectedOutcome.chance / 100;
     const receipt = {
       id: `prediction-order-${devPredictionReceipts.length + 1}`,
@@ -1250,6 +1509,48 @@ export const handlers = [
     devPredictionReceipts.unshift(receipt);
     devPredictionIdempotency.set(idempotencyKey, receipt.id);
     return HttpResponse.json(receipt, { status: 201 });
+  }),
+  http.get('*/arena/discovery', () => {
+    const modes = ARENA_MODES.flatMap((mode) => {
+      const template = ARENA_TEMPLATES.find((item) => item.id === mode.templateId);
+      if (!template) return [];
+      return [
+        {
+          id: mode.id,
+          title: mode.title,
+          description: mode.description,
+          cloneCount: mode.cloneCount,
+          activeChallenges: mode.activeChallenges,
+          fairPlay: mode.fairPlay,
+          icon: template.icon,
+          color: template.color,
+          complexity: template.complexity,
+          creator: arenaCreatorSummary(mode.creator),
+          completionRate: mode.completionRate,
+          tags: mode.tags,
+        },
+      ];
+    });
+    const challenges = ARENA_CHALLENGES.filter(
+      (challenge) =>
+        challenge.privacy === 'public' &&
+        challenge.challengeState === 'open' &&
+        challenge.slotsFilled < challenge.slotsTotal,
+    ).map((challenge) => ({
+      id: challenge.id,
+      title: challenge.title,
+      description: challenge.description,
+      modeId: challenge.modeId,
+      modeName: challenge.modeName,
+      creator: arenaCreatorSummary(challenge.creator),
+      entryPoints: challenge.entryPoints,
+      prizePool: challenge.prizePool,
+      slotsTotal: challenge.slotsTotal,
+      slotsFilled: challenge.slotsFilled,
+      format: challenge.format,
+      startsAt: challenge.startAt,
+    }));
+    return HttpResponse.json({ modes, challenges });
   }),
   http.get('*/arena/modes/:modeId', ({ params }) => {
     const mode = arenaModeDetail(String(params.modeId));
@@ -1307,7 +1608,7 @@ export const handlers = [
         slotsFilled: challenge.slotsFilled + 1,
         participants: [...challenge.participants, joined],
       },
-      auditEventId: `dev-arena-audit-${Date.now()}`,
+      auditEventId: nextDevMockId('dev-arena-audit'),
     };
     devArenaJoinResponses.set(requestKey, response);
     return HttpResponse.json(response, { status: 201 });
@@ -1387,7 +1688,7 @@ export const handlers = [
       sectors: MARKET_SECTORS,
       topGainers: getTopGainers('24h', 5),
       topLosers: getTopLosers('24h', 5),
-      updatedAt: new Date().toISOString(),
+      updatedAt: new Date(devMockNowMs()).toISOString(),
     }),
   ),
   http.get('*/market/movers', ({ request }) => {
@@ -1410,9 +1711,60 @@ export const handlers = [
         category && category !== 'all'
           ? movers.filter((mover) => mover.category.toLowerCase() === category.toLowerCase())
           : movers,
-      updatedAt: new Date().toISOString(),
+      updatedAt: new Date(devMockNowMs()).toISOString(),
     });
   }),
+  http.get('*/market/news', () =>
+    HttpResponse.json(
+      { code: 'news_source_unavailable', message: 'No market news source is configured.' },
+      { status: 503 },
+    ),
+  ),
+  http.get('*/market/calendar', () =>
+    HttpResponse.json(
+      { code: 'calendar_source_unavailable', message: 'No market event source is configured.' },
+      { status: 503 },
+    ),
+  ),
+  http.get('*/market/correlations', () =>
+    HttpResponse.json(
+      {
+        code: 'correlation_source_unavailable',
+        message: 'No market correlation source is configured.',
+      },
+      { status: 503 },
+    ),
+  ),
+  http.get('*/market/unlocks', () =>
+    HttpResponse.json(
+      { code: 'unlock_source_unavailable', message: 'No token unlock source is configured.' },
+      { status: 503 },
+    ),
+  ),
+  http.get('*/market/derivatives', () =>
+    HttpResponse.json(
+      {
+        code: 'derivatives_source_unavailable',
+        message: 'No derivatives data source is configured.',
+      },
+      { status: 503 },
+    ),
+  ),
+  http.get('*/market/sentiment', () =>
+    HttpResponse.json(
+      {
+        code: 'sentiment_source_unavailable',
+        message: 'No market sentiment source is configured.',
+      },
+      { status: 503 },
+    ),
+  ),
+  http.get('*/market/signals', () =>
+    HttpResponse.json(
+      { code: 'signals_source_unavailable', message: 'No social signals source is configured.' },
+      { status: 503 },
+    ),
+  ),
   http.get('*/market/price-alerts', ({ request }) => {
     const status = new URL(request.url).searchParams.get('status');
     return HttpResponse.json({
@@ -1443,14 +1795,14 @@ export const handlers = [
       );
     }
     const alert = {
-      id: `alert-${Date.now()}`,
+      id: nextDevMockId('alert'),
       pairId: pair.id,
       symbol: pair.symbol,
       condition: body.condition,
       targetPrice: body.targetPrice,
       currentPrice: pair.price,
       isActive: true,
-      createdAt: new Date().toISOString(),
+      createdAt: new Date(devMockNowMs()).toISOString(),
     } as const;
     devPriceAlerts.push(alert);
     return HttpResponse.json(alert, { status: 201 });
@@ -1506,7 +1858,7 @@ export const handlers = [
     const step = intervalSeconds[interval] ?? intervalSeconds['1h'];
     const requestedLimit = Number(url.searchParams.get('limit') ?? 24);
     const limit = Math.min(Math.max(Number.isFinite(requestedLimit) ? requestedLimit : 24, 2), 500);
-    const now = Math.floor(Date.now() / 1000);
+    const now = Math.floor(devMockNowMs() / 1000);
     let previousClose = pair.price * (1 - pair.change24h / 100 / 2);
     const items = Array.from({ length: limit }, (_, index) => {
       const progress = index / Math.max(limit - 1, 1);
@@ -1526,7 +1878,7 @@ export const handlers = [
         volume: Number(((pair.volume24h / limit) * (0.75 + (index % 5) * 0.1)).toFixed(8)),
       };
     });
-    return HttpResponse.json({ items, updatedAt: new Date().toISOString() });
+    return HttpResponse.json({ items, updatedAt: new Date(devMockNowMs()).toISOString() });
   }),
   http.get('*/market/pairs/:pairId/orderbook', ({ params }) => {
     const pair = pairs.find((item) => item.id === params.pairId);
@@ -1546,7 +1898,7 @@ export const handlers = [
       const amount = Number((0.018 + index * 0.005).toFixed(6));
       return { price, amount, total: Number((price * amount).toFixed(2)), depth: (index + 1) / 8 };
     });
-    return HttpResponse.json({ bids, asks, updatedAt: new Date().toISOString() });
+    return HttpResponse.json({ bids, asks, updatedAt: new Date(devMockNowMs()).toISOString() });
   }),
   http.get('*/market/pairs/:pairId/trades', ({ params }) => {
     const pair = pairs.find((item) => item.id === params.pairId);
@@ -1562,7 +1914,7 @@ export const handlers = [
         price: Number((pair.price * (1 + (index % 2 === 0 ? 1 : -1) * index * 0.0002)).toFixed(2)),
         amount: Number((0.01 + index * 0.002).toFixed(6)),
         side: index % 2 === 0 ? 'buy' : 'sell',
-        time: new Date(Date.now() - index * 30_000).toISOString(),
+        time: new Date(devMockNowMs() - index * 30_000).toISOString(),
       })),
     });
   }),
@@ -1587,7 +1939,7 @@ export const handlers = [
     const item = {
       id: `dev-watch-${pair.id}`,
       pairId: pair.id,
-      addedAt: new Date().toISOString(),
+      addedAt: new Date(devMockNowMs()).toISOString(),
       note: body.note?.trim() || undefined,
     };
     marketWatchlist.push(item);
@@ -1669,7 +2021,7 @@ export const handlers = [
       secret: 'DEVONLY-P2P-SECRET',
       qrCodeUrl:
         'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="160" height="160"%3E%3Crect width="160" height="160" fill="white"/%3E%3Cpath d="M10 10h40v40H10zM110 10h40v40h-40zM10 110h40v40H10zM70 70h20v20H70z" fill="black"/%3E%3C/svg%3E',
-      expiresAt: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
+      expiresAt: new Date(devMockNowMs() + 10 * 60 * 1000).toISOString(),
     });
   }),
   http.post('*/p2p/security/2fa/authenticator/confirm', async ({ request }) => {
@@ -1775,7 +2127,7 @@ export const handlers = [
       trades: 0,
       winRate: 0,
       hasCustomStopLoss: false,
-      performanceHistory: [{ date: new Date().toISOString(), value: body.capital }],
+      performanceHistory: [{ date: new Date(devMockNowMs()).toISOString(), value: body.capital }],
     });
     return HttpResponse.json({ copyId: relationshipId, status: 'active' }, { status: 201 });
   }),
@@ -1828,10 +2180,10 @@ export const handlers = [
         { status: 400 },
       );
     }
-    const now = new Date().toISOString();
+    const now = new Date(devMockNowMs()).toISOString();
     const ad = {
       ...P2P_ADS[0],
-      id: `dev-p2p-ad-${Date.now()}`,
+      id: nextDevMockId('dev-p2p-ad'),
       type: body.type,
       asset: body.asset,
       currency: body.currency,
@@ -1928,8 +2280,8 @@ export const handlers = [
         { status: 404 },
       );
     }
-    const createdAt = new Date().toISOString();
-    const reportId = `dev-p2p-report-${Date.now()}`;
+    const createdAt = new Date(devMockNowMs()).toISOString();
+    const reportId = nextDevMockId('dev-p2p-report');
     devP2pReports.push({
       reportId,
       merchantId: merchant.id,
@@ -1984,9 +2336,9 @@ export const handlers = [
       paymentMethod: string;
     };
     const ad = P2P_ADS.find((item) => item.id === body.adId) ?? P2P_ADS[0];
-    const orderId = `dev-p2p-order-${Date.now()}`;
-    const createdAt = new Date().toISOString();
-    const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
+    const orderId = nextDevMockId('dev-p2p-order');
+    const createdAt = new Date(devMockNowMs()).toISOString();
+    const expiresAt = new Date(devMockNowMs() + 15 * 60 * 1000).toISOString();
     devP2pOrders.set(orderId, {
       ...P2P_ORDER,
       id: orderId,
@@ -2044,7 +2396,11 @@ export const handlers = [
         { status: 404 },
       );
     }
-    const updated = { ...order, status: 'paid' as const, paidAt: new Date().toISOString() };
+    const updated = {
+      ...order,
+      status: 'paid' as const,
+      paidAt: new Date(devMockNowMs()).toISOString(),
+    };
     devP2pOrders.set(orderId, updated);
     return HttpResponse.json(updated);
   }),
@@ -2057,15 +2413,15 @@ export const handlers = [
         { status: 404 },
       );
     }
-    const id = `dev-p2p-release-challenge-${Date.now()}`;
-    const verificationToken = `dev-p2p-release-${crypto.randomUUID()}`;
+    const id = nextDevMockId('dev-p2p-release-challenge');
+    const verificationToken = nextDevMockId('dev-p2p-release');
     p2pReleaseChallenges.set(id, { orderId, code: '000000', verificationToken });
     return HttpResponse.json(
       {
         id,
         method: 'totp',
         maskedDestination: 'Authenticator',
-        expiresAt: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
+        expiresAt: new Date(devMockNowMs() + 5 * 60 * 1000).toISOString(),
       },
       { status: 201 },
     );
@@ -2089,7 +2445,7 @@ export const handlers = [
       verifiedP2pReleaseTokens.add(challenge.verificationToken);
       return HttpResponse.json({
         verificationToken: challenge.verificationToken,
-        expiresAt: new Date(Date.now() + 2 * 60 * 1000).toISOString(),
+        expiresAt: new Date(devMockNowMs() + 2 * 60 * 1000).toISOString(),
       });
     },
   ),
@@ -2110,7 +2466,11 @@ export const handlers = [
       );
     }
     verifiedP2pReleaseTokens.delete(body.verificationToken);
-    const updated = { ...order, status: 'released' as const, releasedAt: new Date().toISOString() };
+    const updated = {
+      ...order,
+      status: 'released' as const,
+      releasedAt: new Date(devMockNowMs()).toISOString(),
+    };
     devP2pOrders.set(orderId, updated);
     return HttpResponse.json(updated);
   }),
@@ -2133,7 +2493,7 @@ export const handlers = [
     const updated = {
       ...order,
       status: 'cancelled' as const,
-      cancelledAt: new Date().toISOString(),
+      cancelledAt: new Date(devMockNowMs()).toISOString(),
       cancelReason: body.reason.trim(),
     };
     devP2pOrders.set(orderId, updated);
@@ -2232,10 +2592,10 @@ export const handlers = [
       );
     }
     devP2pChatMessages.push({
-      id: `dev-chat-${Date.now()}`,
+      id: nextDevMockId('dev-chat'),
       sender: 'me',
       text: body.text.trim(),
-      time: new Date().toISOString(),
+      time: new Date(devMockNowMs()).toISOString(),
       type: body.type === 'image' ? 'image' : 'text',
       imageUrl: typeof body.attachmentUrl === 'string' ? body.attachmentUrl : undefined,
       isRead: false,
@@ -2279,7 +2639,7 @@ export const handlers = [
       );
     }
     const method = {
-      id: `dev-p2p-payment-method-${Date.now()}`,
+      id: nextDevMockId('dev-p2p-payment-method'),
       type: body.type as 'bank' | 'ewallet',
       bankName: body.bankName.trim(),
       accountNumber: body.accountNumber.trim(),
@@ -2287,7 +2647,7 @@ export const handlers = [
       qrCodeUrl: body.qrCodeUrl,
       isDefault: devP2pPaymentMethods.length === 0,
       isVerified: false,
-      createdAt: new Date().toISOString(),
+      createdAt: new Date(devMockNowMs()).toISOString(),
     };
     devP2pPaymentMethods.push(method);
     return HttpResponse.json(method, { status: 201 });
@@ -2353,12 +2713,12 @@ export const handlers = [
       );
     }
     const entry = {
-      id: `dev-p2p-blacklist-${Date.now()}`,
-      userId: `dev-user-${Date.now()}`,
+      id: nextDevMockId('dev-p2p-blacklist'),
+      userId: nextDevMockId('dev-user'),
       username: body.username.trim(),
       reason: body.reason as (typeof devP2pBlacklist)[number]['reason'],
       reasonText: typeof body.note === 'string' ? body.note.trim() || undefined : undefined,
-      blockedAt: new Date().toISOString(),
+      blockedAt: new Date(devMockNowMs()).toISOString(),
       tradesBefore: 0,
       completionRate: 0,
       isVerified: false,
@@ -2433,7 +2793,7 @@ export const handlers = [
     dispute.supportMessages.push({
       sender: 'user',
       text: body.text.trim(),
-      time: new Date().toISOString(),
+      time: new Date(devMockNowMs()).toISOString(),
     });
     return HttpResponse.json({ ...dispute });
   }),
@@ -2463,7 +2823,7 @@ export const handlers = [
     dispute.escalationLevel = body.level;
     dispute.status = 'under_review';
     dispute.timeline.push({
-      time: new Date().toISOString(),
+      time: new Date(devMockNowMs()).toISOString(),
       event: 'Dispute escalated',
       detail: `Escalated to level ${body.level}`,
     });
@@ -2512,16 +2872,16 @@ export const handlers = [
       );
     }
     const position = {
-      id: `dev-earn-position-${Date.now()}`,
+      id: nextDevMockId('dev-earn-position'),
       productId: product.id,
       product: product.name,
       asset: product.asset,
       amount: body.amount,
       earned: 0,
       apy: product.apy,
-      startDate: new Date().toISOString(),
+      startDate: new Date(devMockNowMs()).toISOString(),
       endDate: product.lockDays
-        ? new Date(Date.now() + product.lockDays * 86_400_000).toISOString()
+        ? new Date(devMockNowMs() + product.lockDays * 86_400_000).toISOString()
         : undefined,
       type: product.type,
       color: product.color,
@@ -2532,14 +2892,14 @@ export const handlers = [
     earnSnapshot.summary.activePositions = earnSnapshot.positions.length;
     return HttpResponse.json(
       {
-        id: `dev-earn-subscription-${Date.now()}`,
+        id: nextDevMockId('dev-earn-subscription'),
         operation: 'subscribe',
         productId: product.id,
         positionId: position.id,
         asset: product.asset,
         amount: body.amount,
         status: 'completed',
-        createdAt: new Date().toISOString(),
+        createdAt: new Date(devMockNowMs()).toISOString(),
       },
       { status: 201 },
     );
@@ -2560,14 +2920,14 @@ export const handlers = [
     earnSnapshot.summary.activePositions = earnSnapshot.positions.length;
     return HttpResponse.json(
       {
-        id: `dev-earn-redemption-${Date.now()}`,
+        id: nextDevMockId('dev-earn-redemption'),
         operation: 'redeem',
         productId: position.productId,
         positionId: position.id,
         asset: position.asset,
         amount: body.amount,
         status: 'completed',
-        createdAt: new Date().toISOString(),
+        createdAt: new Date(devMockNowMs()).toISOString(),
       },
       { status: 201 },
     );
@@ -2580,39 +2940,54 @@ export const handlers = [
       amountPerPurchase: number;
       startDate?: string;
     };
-    const plan = {
-      id: `dev-plan-${Date.now()}`,
+    const plan: DCAPlan = {
+      id: nextDevMockId('dev-plan'),
       coinSymbol: body.coinSymbol,
       coinName: body.coinSymbol,
       coinIcon: `https://cryptologos.cc/logos/${body.coinSymbol.toLowerCase()}-logo.png`,
       frequency: body.frequency,
       amountPerPurchase: body.amountPerPurchase,
-      nextExecution: body.startDate ?? new Date(Date.now() + 86_400_000).toISOString(),
-      status: 'active' as const,
+      nextExecution: body.startDate
+        ? new Date(body.startDate)
+        : new Date(devMockNowMs() + 86_400_000),
+      status: 'active',
       totalInvested: 0,
       currentHoldings: 0,
       averageCost: 0,
-      createdAt: new Date().toISOString(),
+      createdAt: new Date(devMockNowMs()),
     };
-    return HttpResponse.json(plan, { status: 201 });
+    dcaSnapshot = getTestDcaSnapshot([...dcaSnapshot.plans, plan]);
+    return HttpResponse.json(serializeDcaPlan(plan), { status: 201 });
   }),
   http.patch('*/dca/plans/:planId', async ({ request, params }) => {
-    const body = (await request.json()) as Record<string, unknown>;
-    const plan = dcaSnapshot.plans.find((item) => item.id === params.planId);
-    if (!plan)
+    const body = (await request.json()) as Partial<
+      Pick<DCAPlan, 'amountPerPurchase' | 'frequency' | 'status'>
+    >;
+    const planIndex = dcaSnapshot.plans.findIndex((item) => item.id === params.planId);
+    const plan = dcaSnapshot.plans[planIndex];
+    if (!plan) {
       return HttpResponse.json(
         { code: 'DCA_PLAN_NOT_FOUND', message: 'Plan not found' },
         { status: 404 },
       );
-    return HttpResponse.json({
-      ...plan,
-      ...body,
-      nextExecution: plan.nextExecution.toISOString(),
-      createdAt: plan.createdAt.toISOString(),
-      lastPurchaseAt: plan.lastPurchaseAt?.toISOString(),
-    });
+    }
+    const updatedPlan = { ...plan, ...body };
+    const plans = [...dcaSnapshot.plans];
+    plans[planIndex] = updatedPlan;
+    dcaSnapshot = getTestDcaSnapshot(plans);
+    return HttpResponse.json(serializeDcaPlan(updatedPlan));
   }),
-  http.delete('*/dca/plans/:planId', () => new HttpResponse(null, { status: 204 })),
+  http.delete('*/dca/plans/:planId', ({ params }) => {
+    const plans = dcaSnapshot.plans.filter((plan) => plan.id !== params.planId);
+    if (plans.length === dcaSnapshot.plans.length) {
+      return HttpResponse.json(
+        { code: 'DCA_PLAN_NOT_FOUND', message: 'Plan not found' },
+        { status: 404 },
+      );
+    }
+    dcaSnapshot = getTestDcaSnapshot(plans);
+    return new HttpResponse(null, { status: 204 });
+  }),
   http.get('*/wallet/assets', () =>
     HttpResponse.json({
       items: assets,
@@ -2651,14 +3026,14 @@ export const handlers = [
       );
     }
     const item = {
-      id: `dev-address-${Date.now()}`,
+      id: nextDevMockId('dev-address'),
       label: body.label,
       address: body.address,
       network: body.network,
       asset: body.asset,
       memo: body.memo,
       isFavorite: false,
-      createdAt: new Date().toISOString(),
+      createdAt: new Date(devMockNowMs()).toISOString(),
       isWhitelisted: body.isWhitelisted === true,
     };
     walletAddressBook.push(item);
@@ -2727,6 +3102,15 @@ export const handlers = [
     const asset = new URL(request.url).searchParams.get('asset') ?? 'USDT';
     return HttpResponse.json({ networks: WITHDRAW_NETWORKS[asset] ?? WITHDRAW_NETWORKS.USDT });
   }),
+  http.get('*/wallet/network-status', () =>
+    HttpResponse.json(
+      {
+        code: 'WALLET_NETWORK_STATUS_UNAVAILABLE',
+        message: 'Network status source is not configured in this frontend-only workspace.',
+      },
+      { status: 503 },
+    ),
+  ),
   http.get('*/wallet/analytics/portfolio', ({ request }) => {
     const period = new URL(request.url).searchParams.get('period') ?? '1M';
     return HttpResponse.json({ period, ...portfolioAnalytics });
@@ -2762,9 +3146,9 @@ export const handlers = [
     const targetPrice = targetData ? targetData.usdValue / targetData.balance : 1;
     return HttpResponse.json(
       {
-        id: `dev-dust-${Date.now()}`,
+        id: nextDevMockId('dev-dust'),
         status: 'completed',
-        createdAt: new Date().toISOString(),
+        createdAt: new Date(devMockNowMs()).toISOString(),
         targetAsset: body.targetAsset,
         grossUsd,
         feePct,
@@ -2784,25 +3168,25 @@ export const handlers = [
     };
     return HttpResponse.json(
       {
-        id: `dev-transfer-${Date.now()}`,
+        id: nextDevMockId('dev-transfer'),
         ...body,
         status: 'completed',
-        createdAt: new Date().toISOString(),
+        createdAt: new Date(devMockNowMs()).toISOString(),
       },
       { status: 201 },
     );
   }),
   http.post('*/wallet/withdrawals/challenge', async ({ request }) => {
     const body = (await request.json()) as { asset?: string; amount?: number };
-    const id = `dev-withdrawal-challenge-${Date.now()}`;
-    const verificationToken = `dev-withdrawal-verification-${crypto.randomUUID()}`;
+    const id = nextDevMockId('dev-withdrawal-challenge');
+    const verificationToken = nextDevMockId('dev-withdrawal-verification');
     withdrawalChallenges.set(id, { code: '000000', verificationToken });
     return HttpResponse.json(
       {
         id,
         method: 'totp',
         maskedDestination: 'Authenticator',
-        expiresAt: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
+        expiresAt: new Date(devMockNowMs() + 5 * 60 * 1000).toISOString(),
         context: { asset: body.asset, amount: body.amount },
       },
       { status: 201 },
@@ -2821,7 +3205,7 @@ export const handlers = [
     verifiedWithdrawalTokens.add(challenge.verificationToken);
     return HttpResponse.json({
       verificationToken: challenge.verificationToken,
-      expiresAt: new Date(Date.now() + 2 * 60 * 1000).toISOString(),
+      expiresAt: new Date(devMockNowMs() + 2 * 60 * 1000).toISOString(),
     });
   }),
   http.post('*/wallet/withdrawals', async ({ request }) => {
@@ -2837,19 +3221,28 @@ export const handlers = [
       );
     }
     verifiedWithdrawalTokens.delete(body.verificationToken);
-    const transactionId = `dev-tx-${Date.now()}`;
+    const transactionId = nextDevMockId('dev-tx');
     return HttpResponse.json(
       {
-        id: `dev-withdrawal-${Date.now()}`,
+        id: nextDevMockId('dev-withdrawal'),
         transactionId,
         asset: body.asset,
         amount: body.amount,
         status: 'pending',
-        createdAt: new Date().toISOString(),
+        createdAt: new Date(devMockNowMs()).toISOString(),
       },
       { status: 201 },
     );
   }),
+  http.get('*/trading/positions', () =>
+    HttpResponse.json(
+      {
+        code: 'positions_source_unavailable',
+        message: 'Trading positions require a configured account data source.',
+      },
+      { status: 503 },
+    ),
+  ),
   http.get('*/trading/orders/history', ({ request }) =>
     HttpResponse.json({ items: filterDevTradingOrders(request, false) }),
   ),
@@ -2877,7 +3270,7 @@ export const handlers = [
 
     const body = (await request.json()) as Record<string, unknown>;
     const order: DevTradingOrder = {
-      id: `dev-order-${crypto.randomUUID()}`,
+      id: nextDevMockId('dev-order'),
       symbol: typeof body.symbol === 'string' ? body.symbol : 'BTC/USDT',
       side: body.side === 'sell' ? 'sell' : 'buy',
       type: typeof body.type === 'string' ? body.type : 'limit',
@@ -2885,7 +3278,7 @@ export const handlers = [
       amount: typeof body.amount === 'number' ? body.amount : 0,
       filled: 0,
       status: 'open',
-      createdAt: new Date().toISOString(),
+      createdAt: new Date(devMockNowMs()).toISOString(),
       fee: 0,
       ...(typeof body.clientOrderId === 'string' ? { clientOrderId: body.clientOrderId } : {}),
       ...(typeof body.tpPrice === 'number' ? { tpPrice: body.tpPrice } : {}),
@@ -2920,7 +3313,7 @@ export const handlers = [
     const body = (await request.json()) as Record<string, unknown>;
     if (typeof body.price === 'number') order.price = body.price;
     if (typeof body.amount === 'number') order.amount = body.amount;
-    order.updatedAt = new Date().toISOString();
+    order.updatedAt = new Date(devMockNowMs()).toISOString();
     devTradingIdempotency.set(idempotencyScope, order.id);
     return HttpResponse.json(order);
   }),
@@ -2953,7 +3346,7 @@ export const handlers = [
     }
 
     order.status = 'cancelled';
-    order.updatedAt = new Date().toISOString();
+    order.updatedAt = new Date(devMockNowMs()).toISOString();
     devTradingIdempotency.set(idempotencyScope, order.id);
     return HttpResponse.json(order);
   }),

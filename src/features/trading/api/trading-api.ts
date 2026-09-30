@@ -14,6 +14,8 @@ import type {
   CopyRelationship,
   CopyRelationshipsResponse,
   StopCopyRequest,
+  TradingPositionsQuery,
+  TradingPositionsResponse,
 } from '../model/trading-types';
 
 const orderSchema = z
@@ -63,6 +65,76 @@ const orderListResponseSchema = z.object({
   items: z.array(orderSchema),
   nextCursor: z.string().optional(),
 });
+
+const tradingPositionSchema = z
+  .object({
+    id: z.string().min(1),
+    symbol: z.string().min(1),
+    productType: z.enum(['spot', 'futures', 'margin']),
+    side: z.enum(['long', 'short']),
+    baseAsset: z.string().min(1),
+    quoteAsset: z.string().min(1),
+    quantity: z.number().finite().positive(),
+    entryPrice: z.number().finite().positive(),
+    markPrice: z.number().finite().positive(),
+    unrealizedPnl: z.number().finite(),
+    openedAt: z.string().datetime({ offset: true }),
+  })
+  .superRefine((position, context) => {
+    if (position.productType === 'spot' && position.side !== 'long') {
+      context.addIssue({
+        code: 'custom',
+        path: ['side'],
+        message: 'Spot positions must be long.',
+      });
+    }
+  });
+
+const tradingPositionsResponseSchema = z
+  .object({
+    items: z.array(tradingPositionSchema).max(100),
+    updatedAt: z.string().datetime({ offset: true }),
+    nextCursor: z.string().min(1).optional(),
+  })
+  .superRefine(({ items, updatedAt }, context) => {
+    const snapshotTime = Date.parse(updatedAt);
+    const ids = new Set<string>();
+
+    items.forEach((position, index) => {
+      if (ids.has(position.id)) {
+        context.addIssue({
+          code: 'custom',
+          path: ['items', index, 'id'],
+          message: 'Position IDs must be unique within a page.',
+        });
+      }
+      ids.add(position.id);
+
+      const openedAt = Date.parse(position.openedAt);
+      if (openedAt > snapshotTime) {
+        context.addIssue({
+          code: 'custom',
+          path: ['items', index, 'openedAt'],
+          message: 'A position cannot open after the response snapshot.',
+        });
+      }
+
+      const previous = items[index - 1];
+      if (previous) {
+        const previousOpenedAt = Date.parse(previous.openedAt);
+        if (
+          previousOpenedAt < openedAt ||
+          (previousOpenedAt === openedAt && previous.id < position.id)
+        ) {
+          context.addIssue({
+            code: 'custom',
+            path: ['items', index],
+            message: 'Positions must be ordered by openedAt and id descending.',
+          });
+        }
+      }
+    });
+  });
 
 const copyTraderSchema = z.object({
   id: z.string(),
@@ -149,6 +221,10 @@ export interface TradingApi {
     query?: Omit<OrderListQuery, 'status'>,
     signal?: AbortSignal,
   ): Promise<OrderListResponse>;
+  listOpenPositions(
+    query?: TradingPositionsQuery,
+    signal?: AbortSignal,
+  ): Promise<TradingPositionsResponse>;
   listOrderHistory(query?: OrderListQuery, signal?: AbortSignal): Promise<OrderListResponse>;
   placeOrder(request: PlaceOrderRequest, signal?: AbortSignal): Promise<TradingOrder>;
   modifyOrder(
@@ -213,6 +289,14 @@ export const tradingApi: TradingApi = {
       { retries: 2 },
     );
     return orderListResponseSchema.parse(response);
+  },
+
+  async listOpenPositions(query, signal) {
+    const response = await apiClient.request<unknown>(
+      { method: 'GET', path: '/trading/positions', query, signal },
+      { retries: 2 },
+    );
+    return tradingPositionsResponseSchema.parse(response);
   },
 
   async listOrderHistory(query, signal) {

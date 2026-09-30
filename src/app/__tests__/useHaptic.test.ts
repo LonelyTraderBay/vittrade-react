@@ -9,7 +9,7 @@
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { renderHook } from '@testing-library/react';
-import { useHaptic } from '../hooks/useHaptic';
+import { useHaptic } from '@/shared/hooks/useHaptic';
 
 describe('useHaptic', () => {
   let vibrateSpy: ReturnType<typeof vi.fn>;

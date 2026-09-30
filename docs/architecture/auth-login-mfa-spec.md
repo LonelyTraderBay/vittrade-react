@@ -81,3 +81,52 @@ xác thực để UI xử lý đúng.
 - Cả phone và web shell có test contract; demo/registration hiện hữu không đổi.
 - Typecheck, lint, format, unit/integration, production build, auth E2E và security
   boundary checks qua. Backend staging được ghi nhận là bằng chứng riêng.
+
+## Vòng đời session và vô hiệu hóa kết quả cũ
+
+`AuthSessionProvider` sở hữu session trong bộ nhớ và access token; các feature đọc
+trạng thái qua auth context. `operationRef.current` là số thứ tự của các thao tác
+auth đang chạy. Một phản hồi chỉ được áp dụng session/token khi số đã chụp lúc bắt
+đầu vẫn bằng số hiện tại.
+
+| Sự kiện | Hành vi hiện tại trong provider | Điều kiện được phép cập nhật session/token |
+|---|---|---|
+| Mount với `initialSession` xác định | Dùng session đã truyền, không gọi `getSession`; effect nạp access token vào bộ nhớ | Chỉ giá trị khởi tạo của provider |
+| Bootstrap `getSession` | Tăng số thao tác; cleanup khi unmount/đổi adapter; bỏ kết quả nếu thao tác không còn mới nhất | Provider còn hoạt động và số thao tác còn khớp |
+| Login thường | Tăng số thao tác, chuyển sang loading; chỉ nhánh `authenticated` nhận session; nhánh MFA giữ unauthenticated | Số thao tác login còn khớp |
+| Login đồng bộ tương thích (`loginSync`) | Chạy adapter đồng bộ; sau khi trả session thành công, tăng số thao tác rồi áp session/token | Login đồng bộ thành công vô hiệu mọi thao tác cũ; nếu adapter ném lỗi thì không đổi trạng thái |
+| Login MFA, MFA xác minh, hoặc xác nhận MFA setup | Mỗi request tăng số thao tác; success áp session, lỗi được xử lý theo từng API | Số thao tác tương ứng còn khớp |
+| Refresh do 401 hoặc timer gần hết hạn | `refreshSession` tăng số thao tác; success áp session/null; lỗi hiện trạng thái lỗi và xóa session | Số refresh còn khớp |
+| Logout tại tab hiện hành | Tăng số thao tác, xóa session/token ngay, phát `logout` qua `BroadcastChannel`, rồi gọi API logout; lỗi mạng không khôi phục phiên cục bộ | Không có response logout nào được phép đặt lại session/token |
+| Logout nhận từ tab khác | Tăng số thao tác trước khi gọi `applySession(null)` để xóa session/token | Mọi kết quả thành công/lỗi của operation bắt đầu trước message đều không thể ghi lại session, token hay lỗi lên provider |
+| Đổi user ID hoặc logout làm user ID đổi | `SessionQueryCacheBoundary` xóa TanStack Query cache | Cache cũ không được giữ qua ranh giới người dùng |
+
+### Bất biến và giới hạn
+
+1. Logout cục bộ hoặc thông báo logout từ tab khác phải làm cũ mọi auth operation
+   đã bắt đầu trước sự kiện đó; late success và late error không được ghi session,
+   token, trạng thái lỗi hay quyền lên provider. Promise cũ vẫn trả kết quả theo API
+   cho caller; route bảo vệ dựa trên auth context hiện tại để quyết định quyền truy cập.
+2. Login mới sau logout được phép; chỉ operation mới nhất của cùng provider có thể
+   cập nhật trạng thái của nó.
+3. Token vẫn chỉ lưu trong bộ nhớ. Cache được xóa khi user ID đổi; auth provider là
+   nguồn sự thật, không sao chép session vào feature.
+4. F01 được tái hiện trên HEAD baseline `41869d7`: state `false/null` đổi thành
+   `true/token` sau khi refresh cũ trả về sau logout từ tab khác. Regression A03.02
+   tái hiện lỗi trước sửa; listener hiện tăng `operationRef` trước khi xóa session.
+   Một regression riêng cũng bắt lỗi `loginSync` cũ ghi đè refresh đang chờ; login
+   đồng bộ thành công hiện tăng serial trước khi áp session.
+5. Kiểm thử frontend chỉ chứng minh trạng thái cục bộ. Thu hồi refresh cookie/token,
+   khả năng dùng token cũ tại backend và dữ liệu thật phải được xác nhận riêng trên
+   staging với backend.
+
+### Kết quả kiểm chứng A03
+
+- `AuthSessionProvider.test.tsx`, `AuthContext.tsx` và các auth tests liên quan: 18
+  file, 130 test pass. Ma trận có late refresh/bootstrap/login/MFA success, late
+  refresh error, login mới thắng kết quả cũ, `loginSync` thắng refresh cũ, và đóng
+  channel/gỡ listener sau unmount.
+- Hai TypeScript project checks, ESLint, Prettier và `git diff --check` pass; staging
+  build pass; auth browser E2E pass 5/5 trên build staging với API interception.
+- Đây là bằng chứng frontend dùng adapter/MSW/intercepted API. Chưa kiểm chứng cookie
+  flags, thu hồi token server-side, rate limit hoặc dữ liệu backend thật.

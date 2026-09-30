@@ -1,0 +1,1147 @@
+{
+  "observedAt": "2026-09-27T15:13:07.157Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "node": "v24.19.0",
+  "vite": "6.4.3",
+  "dataSource": "api",
+  "apiBase": "https://api.example.invalid",
+  "dotenvDirectory": "C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-a05-prod-Ko9OxH\\empty-env",
+  "outputDirectory": "C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-a05-prod-Ko9OxH\\dist",
+  "outputPreservedInTemp": true,
+  "buildExitCode": 0,
+  "productionMockGate": {
+    "exitCode": 0,
+    "output": "Production mock gate passed: 222 JavaScript files inspected."
+  },
+  "bundleBudgetGate": {
+    "exitCode": 0,
+    "output": "Bundle budget passed: 221 JS chunks <= 500 kB raw and 250 KiB gzip."
+  },
+  "allOutputFiles": 224,
+  "allOutputBytes": 2697515,
+  "scriptFiles": [
+    {
+      "file": "assets/index-gXiLg--k.js",
+      "rawBytes": 357572,
+      "gzipBytes": 99723
+    },
+    {
+      "file": "assets/vendor-recharts-Pc3DBjlp.js",
+      "rawBytes": 341233,
+      "gzipBytes": 87942
+    },
+    {
+      "file": "assets/DCAPage-CtcQONJE.js",
+      "rawBytes": 284657,
+      "gzipBytes": 71367
+    },
+    {
+      "file": "assets/vendor-react-C1U9WbQi.js",
+      "rawBytes": 238226,
+      "gzipBytes": 77907
+    },
+    {
+      "file": "assets/vendor-lightweight-charts-BmDnLhos.js",
+      "rawBytes": 173943,
+      "gzipBytes": 55974
+    },
+    {
+      "file": "assets/vendor-motion-BoizYIA3.js",
+      "rawBytes": 128966,
+      "gzipBytes": 42282
+    },
+    {
+      "file": "assets/TradePage-CExn9Qzl.js",
+      "rawBytes": 67118,
+      "gzipBytes": 16744
+    },
+    {
+      "file": "assets/vendor-chart-math-BCKNL-0i.js",
+      "rawBytes": 63192,
+      "gzipBytes": 20789
+    },
+    {
+      "file": "assets/P2PHomePage-9XYobxNd.js",
+      "rawBytes": 41830,
+      "gzipBytes": 11731
+    },
+    {
+      "file": "assets/useFeatureFlag-CpYZfVz9.js",
+      "rawBytes": 31190,
+      "gzipBytes": 8627
+    },
+    {
+      "file": "assets/CopyEducationPage-C_2uPxrZ.js",
+      "rawBytes": 26513,
+      "gzipBytes": 7421
+    },
+    {
+      "file": "assets/MarketListPage-B230mBN7.js",
+      "rawBytes": 22007,
+      "gzipBytes": 7820
+    },
+    {
+      "file": "assets/P2PFraudPreventionPage-ChTEIy3T.js",
+      "rawBytes": 16409,
+      "gzipBytes": 5180
+    },
+    {
+      "file": "assets/Web2FASetupPage-B53pjqNj.js",
+      "rawBytes": 15586,
+      "gzipBytes": 4521
+    },
+    {
+      "file": "assets/p2p-api-DM8JlyXV.js",
+      "rawBytes": 14713,
+      "gzipBytes": 3296
+    },
+    {
+      "file": "assets/P2PGuidePage-BpchAI2q.js",
+      "rawBytes": 14117,
+      "gzipBytes": 4583
+    },
+    {
+      "file": "assets/PredictionRiskCalculatorPage-CFuctNvy.js",
+      "rawBytes": 13947,
+      "gzipBytes": 3107
+    },
+    {
+      "file": "assets/PredictionContractPages-CYokyLw5.js",
+      "rawBytes": 13870,
+      "gzipBytes": 4047
+    },
+    {
+      "file": "assets/ArenaContractPages-Bu9JcCPM.js",
+      "rawBytes": 13382,
+      "gzipBytes": 3891
+    },
+    {
+      "file": "assets/DustConverterPage-BXnobSZ4.js",
+      "rawBytes": 12904,
+      "gzipBytes": 4120
+    },
+    {
+      "file": "assets/market-api-B03AbCfM.js",
+      "rawBytes": 12779,
+      "gzipBytes": 3198
+    },
+    {
+      "file": "assets/WithdrawPage-DxtT7Jj9.js",
+      "rawBytes": 12700,
+      "gzipBytes": 4322
+    },
+    {
+      "file": "assets/MarketSentimentPage-BEWrggBi.js",
+      "rawBytes": 11992,
+      "gzipBytes": 3331
+    },
+    {
+      "file": "assets/MarketOverviewPage-DKSxEIub.js",
+      "rawBytes": 10906,
+      "gzipBytes": 3313
+    },
+    {
+      "file": "assets/P2P2FASettingsPage-DqjAmdoi.js",
+      "rawBytes": 10888,
+      "gzipBytes": 3629
+    },
+    {
+      "file": "assets/WebOTPPage-BBBTno93.js",
+      "rawBytes": 10864,
+      "gzipBytes": 3588
+    },
+    {
+      "file": "assets/P2PCreateAdContractPage-Bw7ZX2B4.js",
+      "rawBytes": 10635,
+      "gzipBytes": 3499
+    },
+    {
+      "file": "assets/AddressBookPage-Uc-oMf4j.js",
+      "rawBytes": 10600,
+      "gzipBytes": 3751
+    },
+    {
+      "file": "assets/LaunchpadContractPages-D1P5W8w5.js",
+      "rawBytes": 9881,
+      "gzipBytes": 3365
+    },
+    {
+      "file": "assets/MarketDerivativesPage-5OYDqDJL.js",
+      "rawBytes": 9739,
+      "gzipBytes": 2852
+    },
+    {
+      "file": "assets/MarketPriceAlertsPage-CUhgvLlo.js",
+      "rawBytes": 9706,
+      "gzipBytes": 3298
+    },
+    {
+      "file": "mockServiceWorker.js",
+      "rawBytes": 9666,
+      "gzipBytes": 3226
+    },
+    {
+      "file": "assets/useQuery-CYEb9Y_w.js",
+      "rawBytes": 9519,
+      "gzipBytes": 3415
+    },
+    {
+      "file": "assets/PairDetailPage-_KXJ1cS5.js",
+      "rawBytes": 9093,
+      "gzipBytes": 3083
+    },
+    {
+      "file": "assets/AssetDetailPage-D8cOFVnj.js",
+      "rawBytes": 8987,
+      "gzipBytes": 3104
+    },
+    {
+      "file": "assets/EarnFeatureComponents-C571LGmR.js",
+      "rawBytes": 8924,
+      "gzipBytes": 2932
+    },
+    {
+      "file": "assets/DiscoveryContractPages-CFPZIz7C.js",
+      "rawBytes": 8908,
+      "gzipBytes": 2998
+    },
+    {
+      "file": "assets/EarnTransactionPages-eTgeXLNG.js",
+      "rawBytes": 8674,
+      "gzipBytes": 2812
+    },
+    {
+      "file": "assets/P2POrderActionPages-CBPjv37x.js",
+      "rawBytes": 8357,
+      "gzipBytes": 2995
+    },
+    {
+      "file": "assets/WebSessionExpiredPage-DbapZTto.js",
+      "rawBytes": 8217,
+      "gzipBytes": 2933
+    },
+    {
+      "file": "assets/WalletOverviewContractPage-5sESaxnT.js",
+      "rawBytes": 7918,
+      "gzipBytes": 2629
+    },
+    {
+      "file": "assets/WebAuthSuccessPage-BZDAf-Zl.js",
+      "rawBytes": 7865,
+      "gzipBytes": 2826
+    },
+    {
+      "file": "assets/TwoFASetupPage-DrT3yx22.js",
+      "rawBytes": 7763,
+      "gzipBytes": 2791
+    },
+    {
+      "file": "assets/WalletTransferContractPage-DNFSBWV8.js",
+      "rawBytes": 7591,
+      "gzipBytes": 2996
+    },
+    {
+      "file": "assets/trading-queries-kIvKBbHx.js",
+      "rawBytes": 7523,
+      "gzipBytes": 2332
+    },
+    {
+      "file": "assets/PasswordResetPages-D7p_30Qs.js",
+      "rawBytes": 7477,
+      "gzipBytes": 2659
+    },
+    {
+      "file": "assets/P2PDisputeDetailPage-Cdz3uxU9.js",
+      "rawBytes": 7320,
+      "gzipBytes": 2752
+    },
+    {
+      "file": "assets/P2PPaymentMethodsPage-BqPUFuPK.js",
+      "rawBytes": 7283,
+      "gzipBytes": 2738
+    },
+    {
+      "file": "assets/BottomSheetV2-PWXI4wOq.js",
+      "rawBytes": 7238,
+      "gzipBytes": 2551
+    },
+    {
+      "file": "assets/AddressAddPage-DoyjPlq0.js",
+      "rawBytes": 7139,
+      "gzipBytes": 2743
+    },
+    {
+      "file": "assets/MarketDepthPage-D_iyNOdp.js",
+      "rawBytes": 7134,
+      "gzipBytes": 2451
+    },
+    {
+      "file": "assets/MarketSectorsPage-BOLwVgfM.js",
+      "rawBytes": 7113,
+      "gzipBytes": 2426
+    },
+    {
+      "file": "assets/TraderProfilePage-C3Jj-fC6.js",
+      "rawBytes": 7069,
+      "gzipBytes": 2552
+    },
+    {
+      "file": "assets/P2PTradingLevelPage-CmjNBE5Z.js",
+      "rawBytes": 7060,
+      "gzipBytes": 2444
+    },
+    {
+      "file": "assets/P2PEscrowDetailPage-4-g5PMJb.js",
+      "rawBytes": 7059,
+      "gzipBytes": 2613
+    },
+    {
+      "file": "assets/P2PMyAdsContractPage-C9roHSCe.js",
+      "rawBytes": 6961,
+      "gzipBytes": 2539
+    },
+    {
+      "file": "assets/WatchlistPage-Df-Ihw4L.js",
+      "rawBytes": 6909,
+      "gzipBytes": 2483
+    },
+    {
+      "file": "assets/OrdersHistoryPage-sdxNjyFJ.js",
+      "rawBytes": 6845,
+      "gzipBytes": 2615
+    },
+    {
+      "file": "assets/TransactionDetailPage-DTzULFQe.js",
+      "rawBytes": 6688,
+      "gzipBytes": 2469
+    },
+    {
+      "file": "assets/TradeSettingsPage-BCYwG8Zs.js",
+      "rawBytes": 6672,
+      "gzipBytes": 2292
+    },
+    {
+      "file": "assets/P2POrdersContractPage-CgajAsKd.js",
+      "rawBytes": 6578,
+      "gzipBytes": 2583
+    },
+    {
+      "file": "assets/SavingsDCAContractPage-Bdc9xhcU.js",
+      "rawBytes": 6426,
+      "gzipBytes": 2407
+    },
+    {
+      "file": "assets/P2PChatPage-BBcWAMkE.js",
+      "rawBytes": 6404,
+      "gzipBytes": 2690
+    },
+    {
+      "file": "assets/TradeAnalyticsContractPage-DbNhw5VE.js",
+      "rawBytes": 6377,
+      "gzipBytes": 2117
+    },
+    {
+      "file": "assets/WebLoginPage-BHKpaxS_.js",
+      "rawBytes": 6351,
+      "gzipBytes": 2318
+    },
+    {
+      "file": "assets/MarketHomePage-C4-ykZ3-.js",
+      "rawBytes": 6256,
+      "gzipBytes": 2439
+    },
+    {
+      "file": "assets/OrderReceiptPage-DzraGw6P.js",
+      "rawBytes": 6226,
+      "gzipBytes": 2474
+    },
+    {
+      "file": "assets/WebAuthBrandPanel-D92n9jBC.js",
+      "rawBytes": 6190,
+      "gzipBytes": 2089
+    },
+    {
+      "file": "assets/OTPPage-DpzD3RmR.js",
+      "rawBytes": 6085,
+      "gzipBytes": 2514
+    },
+    {
+      "file": "assets/P2PMerchantProfilePage-Dq3YPIwu.js",
+      "rawBytes": 6048,
+      "gzipBytes": 2193
+    },
+    {
+      "file": "assets/PortfolioAnalyticsContractPage-DUpugjVD.js",
+      "rawBytes": 6025,
+      "gzipBytes": 1950
+    },
+    {
+      "file": "assets/WalletDepositContractPage-DFtt8ySg.js",
+      "rawBytes": 5900,
+      "gzipBytes": 2193
+    },
+    {
+      "file": "assets/P2PDashboardPage-orPiOIdV.js",
+      "rawBytes": 5739,
+      "gzipBytes": 1931
+    },
+    {
+      "file": "assets/P2PExpressPage-BT-UmZb4.js",
+      "rawBytes": 5668,
+      "gzipBytes": 2206
+    },
+    {
+      "file": "assets/ReferralContractPage-sSwwewnY.js",
+      "rawBytes": 5514,
+      "gzipBytes": 2120
+    },
+    {
+      "file": "assets/WalletTransactionHistoryContractPage-CxeXLoo3.js",
+      "rawBytes": 5468,
+      "gzipBytes": 2038
+    },
+    {
+      "file": "assets/P2PDisputesPage-B2wHiu0f.js",
+      "rawBytes": 5445,
+      "gzipBytes": 2152
+    },
+    {
+      "file": "assets/P2PAdDetailContractPage-Baesk8vL.js",
+      "rawBytes": 5439,
+      "gzipBytes": 2217
+    },
+    {
+      "file": "assets/P2PBlacklistPage-D_Jhx6yk.js",
+      "rawBytes": 5422,
+      "gzipBytes": 2331
+    },
+    {
+      "file": "assets/CopyTradingPage-_IRu2xjt.js",
+      "rawBytes": 5357,
+      "gzipBytes": 2250
+    },
+    {
+      "file": "assets/MarketNewsFeedPage-DZ5qpaOT.js",
+      "rawBytes": 5323,
+      "gzipBytes": 2223
+    },
+    {
+      "file": "assets/toastMessages-Da8Y2ler.js",
+      "rawBytes": 5284,
+      "gzipBytes": 2266
+    },
+    {
+      "file": "assets/MarketEventCalendarPage-D9CMXhB_.js",
+      "rawBytes": 5268,
+      "gzipBytes": 2195
+    },
+    {
+      "file": "assets/MarketMoversPage-DAV2R6sR.js",
+      "rawBytes": 5256,
+      "gzipBytes": 2233
+    },
+    {
+      "file": "assets/P2PExpressConfirmPage-Bu8ujrFv.js",
+      "rawBytes": 5224,
+      "gzipBytes": 2141
+    },
+    {
+      "file": "assets/AdvancedChartsPage-uvpumrGV.js",
+      "rawBytes": 5111,
+      "gzipBytes": 2171
+    },
+    {
+      "file": "assets/P2PReportMerchantPage-DVa2fUTs.js",
+      "rawBytes": 5069,
+      "gzipBytes": 2206
+    },
+    {
+      "file": "assets/OpenPositionsPage-DeRGmKS7.js",
+      "rawBytes": 4862,
+      "gzipBytes": 2056
+    },
+    {
+      "file": "assets/EarnPage-C5fHCuS0.js",
+      "rawBytes": 4857,
+      "gzipBytes": 2219
+    },
+    {
+      "file": "assets/ProviderLeaderboardPage-_EPcnN9q.js",
+      "rawBytes": 4756,
+      "gzipBytes": 1906
+    },
+    {
+      "file": "assets/EarnHistoryPage-pau45FTX.js",
+      "rawBytes": 4754,
+      "gzipBytes": 2225
+    },
+    {
+      "file": "assets/MarketComparisonPage-BeeoLvmU.js",
+      "rawBytes": 4738,
+      "gzipBytes": 1900
+    },
+    {
+      "file": "assets/TokenUnlockSchedulePage-DkDmbT9O.js",
+      "rawBytes": 4735,
+      "gzipBytes": 2083
+    },
+    {
+      "file": "assets/MarketScreenerPage-BLNxlhbb.js",
+      "rawBytes": 4726,
+      "gzipBytes": 1969
+    },
+    {
+      "file": "assets/TokenInfoPage-DNQPkjsg.js",
+      "rawBytes": 4591,
+      "gzipBytes": 1790
+    },
+    {
+      "file": "assets/P2PReviewsPage-BQKGuJgc.js",
+      "rawBytes": 4589,
+      "gzipBytes": 1871
+    },
+    {
+      "file": "assets/P2PPaymentMethodAddPage-Cwy34Ida.js",
+      "rawBytes": 4528,
+      "gzipBytes": 2023
+    },
+    {
+      "file": "assets/P2PAdAnalyticsPage-AwKxdMRT.js",
+      "rawBytes": 4422,
+      "gzipBytes": 1679
+    },
+    {
+      "file": "assets/market-queries-D9MVpK0j.js",
+      "rawBytes": 4359,
+      "gzipBytes": 1037
+    },
+    {
+      "file": "assets/LoginPage-BzGAaLCf.js",
+      "rawBytes": 4330,
+      "gzipBytes": 1893
+    },
+    {
+      "file": "assets/MarketHeatmapPage-XsQa7pqc.js",
+      "rawBytes": 4265,
+      "gzipBytes": 1874
+    },
+    {
+      "file": "assets/PasswordChangePage-DxFfgEr8.js",
+      "rawBytes": 4253,
+      "gzipBytes": 1845
+    },
+    {
+      "file": "assets/P2PBlacklistAddPage-Cya2PTGB.js",
+      "rawBytes": 4215,
+      "gzipBytes": 1892
+    },
+    {
+      "file": "assets/P2PAchievementsPage-C08QO-4f.js",
+      "rawBytes": 4149,
+      "gzipBytes": 1649
+    },
+    {
+      "file": "assets/MarketSignalsPage-DLLcjR1L.js",
+      "rawBytes": 4048,
+      "gzipBytes": 1739
+    },
+    {
+      "file": "assets/NetworkStatusPage-C7GoDbol.js",
+      "rawBytes": 4007,
+      "gzipBytes": 1783
+    },
+    {
+      "file": "assets/wallet-queries-DDzo8g2S.js",
+      "rawBytes": 3997,
+      "gzipBytes": 1049
+    },
+    {
+      "file": "assets/MarketCorrelationPairsPage-B6JHJaXa.js",
+      "rawBytes": 3976,
+      "gzipBytes": 1694
+    },
+    {
+      "file": "assets/PullToRefresh-CXGJ4SMH.js",
+      "rawBytes": 3956,
+      "gzipBytes": 1816
+    },
+    {
+      "file": "assets/CopyConfirmationContractPage-M7Zn6tmc.js",
+      "rawBytes": 3842,
+      "gzipBytes": 1884
+    },
+    {
+      "file": "assets/ActiveCopiesContractPage-vaj7BN1Y.js",
+      "rawBytes": 3389,
+      "gzipBytes": 1600
+    },
+    {
+      "file": "assets/useMutation-Dpi_AB0L.js",
+      "rawBytes": 3246,
+      "gzipBytes": 1326
+    },
+    {
+      "file": "assets/CopyConfigurationContractPage-CGPO3-nJ.js",
+      "rawBytes": 3214,
+      "gzipBytes": 1404
+    },
+    {
+      "file": "assets/profile-queries-BZ3wDgm_.js",
+      "rawBytes": 3204,
+      "gzipBytes": 1149
+    },
+    {
+      "file": "assets/CopyProviderDetailContractPage-BraSqe8W.js",
+      "rawBytes": 3164,
+      "gzipBytes": 1410
+    },
+    {
+      "file": "assets/SavingsPortfolioPage--IL38fAy.js",
+      "rawBytes": 3110,
+      "gzipBytes": 1677
+    },
+    {
+      "file": "assets/WebAccountLockedPage-DLt-LavJ.js",
+      "rawBytes": 3102,
+      "gzipBytes": 1347
+    },
+    {
+      "file": "assets/earn-queries-Dzv96N2N.js",
+      "rawBytes": 2952,
+      "gzipBytes": 1089
+    },
+    {
+      "file": "assets/SupportContractPage-BYADMXgA.js",
+      "rawBytes": 2941,
+      "gzipBytes": 1309
+    },
+    {
+      "file": "assets/DeviceManagementContractPage-BlS-LmcO.js",
+      "rawBytes": 2881,
+      "gzipBytes": 1288
+    },
+    {
+      "file": "assets/WithdrawalLimitsPage-3udQsCz3.js",
+      "rawBytes": 2694,
+      "gzipBytes": 1152
+    },
+    {
+      "file": "assets/PreCopyAssessmentContractPage-cgvgVUuG.js",
+      "rawBytes": 2660,
+      "gzipBytes": 1360
+    },
+    {
+      "file": "assets/support-queries-v4I7YzAb.js",
+      "rawBytes": 2652,
+      "gzipBytes": 1006
+    },
+    {
+      "file": "assets/EditProfileContractPage-B-YB6yjk.js",
+      "rawBytes": 2603,
+      "gzipBytes": 1208
+    },
+    {
+      "file": "assets/ProfileContractPage-zLDG-pYU.js",
+      "rawBytes": 2508,
+      "gzipBytes": 1223
+    },
+    {
+      "file": "assets/SavingsContractPages-CqX6nIt2.js",
+      "rawBytes": 2445,
+      "gzipBytes": 1248
+    },
+    {
+      "file": "assets/TabBar-QMzpyoq7.js",
+      "rawBytes": 2440,
+      "gzipBytes": 1036
+    },
+    {
+      "file": "assets/dca-advanced-api-DsDCL_3a.js",
+      "rawBytes": 2366,
+      "gzipBytes": 1077
+    },
+    {
+      "file": "assets/PendingDepositsPage-BtY-pjl5.js",
+      "rawBytes": 2343,
+      "gzipBytes": 1105
+    },
+    {
+      "file": "assets/ProviderComparisonContractPage-4juPjaOJ.js",
+      "rawBytes": 2285,
+      "gzipBytes": 1125
+    },
+    {
+      "file": "assets/NotificationsContractPage-BSr9-mUB.js",
+      "rawBytes": 2230,
+      "gzipBytes": 1135
+    },
+    {
+      "file": "assets/WebCopyPerformancePage-pMulYnLG.js",
+      "rawBytes": 2129,
+      "gzipBytes": 1024
+    },
+    {
+      "file": "assets/NewsContractPage-MNhUCVe9.js",
+      "rawBytes": 2083,
+      "gzipBytes": 933
+    },
+    {
+      "file": "assets/ConfirmationDialog-w7B_ktJ1.js",
+      "rawBytes": 2054,
+      "gzipBytes": 882
+    },
+    {
+      "file": "assets/HelpCenterContractPage-Do5DNIN4.js",
+      "rawBytes": 1936,
+      "gzipBytes": 1038
+    },
+    {
+      "file": "assets/SubAccountContractPage-Bd_cqOlq.js",
+      "rawBytes": 1841,
+      "gzipBytes": 818
+    },
+    {
+      "file": "assets/useTradeSettings-B2u3KzJG.js",
+      "rawBytes": 1827,
+      "gzipBytes": 856
+    },
+    {
+      "file": "assets/SecurityContractPage-C5l7HtBv.js",
+      "rawBytes": 1711,
+      "gzipBytes": 842
+    },
+    {
+      "file": "assets/ActivityLogContractPage-DPO66kkV.js",
+      "rawBytes": 1695,
+      "gzipBytes": 857
+    },
+    {
+      "file": "assets/ChartSkeleton-C6at4Rjn.js",
+      "rawBytes": 1661,
+      "gzipBytes": 787
+    },
+    {
+      "file": "assets/formatNumber-CYxNGl0u.js",
+      "rawBytes": 1642,
+      "gzipBytes": 518
+    },
+    {
+      "file": "assets/p2p-order-action-queries-CD7znCeo.js",
+      "rawBytes": 1606,
+      "gzipBytes": 519
+    },
+    {
+      "file": "assets/CTAButton-B21Dq67P.js",
+      "rawBytes": 1513,
+      "gzipBytes": 834
+    },
+    {
+      "file": "assets/InputField-BAZTMY-O.js",
+      "rawBytes": 1318,
+      "gzipBytes": 772
+    },
+    {
+      "file": "assets/ErrorState-esYMmGu_.js",
+      "rawBytes": 1312,
+      "gzipBytes": 639
+    },
+    {
+      "file": "assets/dca-queries-BuadjQKv.js",
+      "rawBytes": 1250,
+      "gzipBytes": 602
+    },
+    {
+      "file": "assets/useInfiniteQuery-D2sV9QjL.js",
+      "rawBytes": 1198,
+      "gzipBytes": 515
+    },
+    {
+      "file": "assets/AssetDetailPage-DaPdpgWE.js",
+      "rawBytes": 1196,
+      "gzipBytes": 621
+    },
+    {
+      "file": "assets/analytics-api-D_4Ccti9.js",
+      "rawBytes": 1049,
+      "gzipBytes": 489
+    },
+    {
+      "file": "assets/share-2-KobsT5py.js",
+      "rawBytes": 986,
+      "gzipBytes": 463
+    },
+    {
+      "file": "assets/EmptyState-nLglR2XB.js",
+      "rawBytes": 977,
+      "gzipBytes": 568
+    },
+    {
+      "file": "assets/useActionToast-Bh9Ew1fk.js",
+      "rawBytes": 952,
+      "gzipBytes": 406
+    },
+    {
+      "file": "assets/wallet-history-BJtA2blc.js",
+      "rawBytes": 915,
+      "gzipBytes": 462
+    },
+    {
+      "file": "assets/p2p-payment-method-queries-BGsPXTTs.js",
+      "rawBytes": 886,
+      "gzipBytes": 383
+    },
+    {
+      "file": "assets/useRefresh-_NIy5wmE.js",
+      "rawBytes": 880,
+      "gzipBytes": 551
+    },
+    {
+      "file": "assets/password-reset-api-C_Fp7n4V.js",
+      "rawBytes": 841,
+      "gzipBytes": 368
+    },
+    {
+      "file": "assets/registration-route-state-Dz1YFoEr.js",
+      "rawBytes": 808,
+      "gzipBytes": 432
+    },
+    {
+      "file": "assets/WebWithdrawalWhitelistPage-BMWU7gh4.js",
+      "rawBytes": 773,
+      "gzipBytes": 439
+    },
+    {
+      "file": "assets/sliders-horizontal-DR1GAtna.js",
+      "rawBytes": 758,
+      "gzipBytes": 372
+    },
+    {
+      "file": "assets/p2p-blacklist-queries--Tqvo2l8.js",
+      "rawBytes": 720,
+      "gzipBytes": 376
+    },
+    {
+      "file": "assets/SparklineChart-BLbSEbCn.js",
+      "rawBytes": 720,
+      "gzipBytes": 468
+    },
+    {
+      "file": "assets/sparkles-DSKR__HW.js",
+      "rawBytes": 681,
+      "gzipBytes": 404
+    },
+    {
+      "file": "assets/star-DRSaZ4pn.js",
+      "rawBytes": 645,
+      "gzipBytes": 403
+    },
+    {
+      "file": "assets/trophy-CQGOtSDJ.js",
+      "rawBytes": 638,
+      "gzipBytes": 392
+    },
+    {
+      "file": "assets/eye-off-DDQ6waLT.js",
+      "rawBytes": 603,
+      "gzipBytes": 381
+    },
+    {
+      "file": "assets/browser-storage-BEBGFPUd.js",
+      "rawBytes": 602,
+      "gzipBytes": 283
+    },
+    {
+      "file": "assets/p2p-ad-queries-CBSHoNy5.js",
+      "rawBytes": 573,
+      "gzipBytes": 308
+    },
+    {
+      "file": "assets/p2p-trust-queries-CSji1Il3.js",
+      "rawBytes": 561,
+      "gzipBytes": 335
+    },
+    {
+      "file": "assets/scale-CBisWJr6.js",
+      "rawBytes": 536,
+      "gzipBytes": 338
+    },
+    {
+      "file": "assets/trash-2-BC3B3WgI.js",
+      "rawBytes": 531,
+      "gzipBytes": 352
+    },
+    {
+      "file": "assets/shield-alert-BDbitdaF.js",
+      "rawBytes": 526,
+      "gzipBytes": 366
+    },
+    {
+      "file": "assets/key-round-By6VWQW0.js",
+      "rawBytes": 523,
+      "gzipBytes": 358
+    },
+    {
+      "file": "assets/user-x-CkQHJVVL.js",
+      "rawBytes": 479,
+      "gzipBytes": 335
+    },
+    {
+      "file": "assets/send-DB-b1EI8.js",
+      "rawBytes": 463,
+      "gzipBytes": 335
+    },
+    {
+      "file": "assets/shopping-cart-NsQyv8T9.js",
+      "rawBytes": 460,
+      "gzipBytes": 332
+    },
+    {
+      "file": "assets/book-open-Wqyp9YnO.js",
+      "rawBytes": 452,
+      "gzipBytes": 311
+    },
+    {
+      "file": "assets/pen-line-DP7IgqLo.js",
+      "rawBytes": 451,
+      "gzipBytes": 330
+    },
+    {
+      "file": "assets/repeat-Cpu8k--Z.js",
+      "rawBytes": 445,
+      "gzipBytes": 305
+    },
+    {
+      "file": "assets/download-qvlXcjBe.js",
+      "rawBytes": 435,
+      "gzipBytes": 323
+    },
+    {
+      "file": "assets/calendar-B7pXsmGf.js",
+      "rawBytes": 430,
+      "gzipBytes": 306
+    },
+    {
+      "file": "assets/upload-B9UJYrn4.js",
+      "rawBytes": 430,
+      "gzipBytes": 321
+    },
+    {
+      "file": "assets/lock-keyhole-CwHygguv.js",
+      "rawBytes": 428,
+      "gzipBytes": 324
+    },
+    {
+      "file": "assets/chart-column-2jcSpeiB.js",
+      "rawBytes": 424,
+      "gzipBytes": 299
+    },
+    {
+      "file": "assets/external-link-DfZBzs-k.js",
+      "rawBytes": 424,
+      "gzipBytes": 303
+    },
+    {
+      "file": "assets/eye-ySW2qedL.js",
+      "rawBytes": 424,
+      "gzipBytes": 303
+    },
+    {
+      "file": "assets/funnel-CjVaYkwW.js",
+      "rawBytes": 424,
+      "gzipBytes": 313
+    },
+    {
+      "file": "assets/circle-alert-C1xbDiU0.js",
+      "rawBytes": 423,
+      "gzipBytes": 294
+    },
+    {
+      "file": "assets/arrow-down-up-mcp1qxRA.js",
+      "rawBytes": 418,
+      "gzipBytes": 295
+    },
+    {
+      "file": "assets/copy-CdjaKqZn.js",
+      "rawBytes": 404,
+      "gzipBytes": 310
+    },
+    {
+      "file": "assets/dollar-sign-CApOsWZR.js",
+      "rawBytes": 392,
+      "gzipBytes": 296
+    },
+    {
+      "file": "assets/flag-KtEw1Bhx.js",
+      "rawBytes": 392,
+      "gzipBytes": 307
+    },
+    {
+      "file": "assets/lock-open-CH26cWxe.js",
+      "rawBytes": 383,
+      "gzipBytes": 298
+    },
+    {
+      "file": "assets/mail-DBpVE7xn.js",
+      "rawBytes": 383,
+      "gzipBytes": 301
+    },
+    {
+      "file": "assets/trending-down-dC_XKktb.js",
+      "rawBytes": 381,
+      "gzipBytes": 281
+    },
+    {
+      "file": "assets/credit-card-39kZ6P7I.js",
+      "rawBytes": 380,
+      "gzipBytes": 294
+    },
+    {
+      "file": "assets/circle-x-DOLyfIWP.js",
+      "rawBytes": 375,
+      "gzipBytes": 281
+    },
+    {
+      "file": "assets/lock-Ci9H2I1e.js",
+      "rawBytes": 374,
+      "gzipBytes": 293
+    },
+    {
+      "file": "assets/p2p-overview-queries-ChNwDh86.js",
+      "rawBytes": 374,
+      "gzipBytes": 240
+    },
+    {
+      "file": "assets/info-DU26kQTR.js",
+      "rawBytes": 372,
+      "gzipBytes": 280
+    },
+    {
+      "file": "assets/circle-check-big-C0CalCUF.js",
+      "rawBytes": 362,
+      "gzipBytes": 283
+    },
+    {
+      "file": "assets/clock-3-DT3skUMh.js",
+      "rawBytes": 355,
+      "gzipBytes": 277
+    },
+    {
+      "file": "assets/message-square-DfPjHey9.js",
+      "rawBytes": 352,
+      "gzipBytes": 271
+    },
+    {
+      "file": "assets/circle-check-CGMDlmH0.js",
+      "rawBytes": 346,
+      "gzipBytes": 272
+    },
+    {
+      "file": "assets/arrow-down-right-BQy2d2OA.js",
+      "rawBytes": 342,
+      "gzipBytes": 267
+    },
+    {
+      "file": "assets/ban-DkMIOu3b.js",
+      "rawBytes": 342,
+      "gzipBytes": 271
+    },
+    {
+      "file": "assets/arrow-down-left-HGuChDzU.js",
+      "rawBytes": 341,
+      "gzipBytes": 264
+    },
+    {
+      "file": "assets/arrow-up-right-DRwnfV5K.js",
+      "rawBytes": 340,
+      "gzipBytes": 265
+    },
+    {
+      "file": "assets/arrow-right-DI1eOjI-.js",
+      "rawBytes": 338,
+      "gzipBytes": 264
+    },
+    {
+      "file": "assets/arrow-up-BRlxPrUb.js",
+      "rawBytes": 335,
+      "gzipBytes": 263
+    },
+    {
+      "file": "assets/x-64YNqxr4.js",
+      "rawBytes": 327,
+      "gzipBytes": 257
+    },
+    {
+      "file": "assets/plus-DLQB3VXP.js",
+      "rawBytes": 326,
+      "gzipBytes": 254
+    },
+    {
+      "file": "assets/message-circle-DKBa8-dt.js",
+      "rawBytes": 321,
+      "gzipBytes": 262
+    },
+    {
+      "file": "assets/p2p-order-creation-queries-DwyLk1e8.js",
+      "rawBytes": 321,
+      "gzipBytes": 255
+    },
+    {
+      "file": "assets/loader-circle-BGgd7qhy.js",
+      "rawBytes": 312,
+      "gzipBytes": 258
+    },
+    {
+      "file": "assets/copy-route-zaAFT8OA.js",
+      "rawBytes": 307,
+      "gzipBytes": 174
+    },
+    {
+      "file": "assets/play-DX_KKd3N.js",
+      "rawBytes": 307,
+      "gzipBytes": 252
+    },
+    {
+      "file": "assets/chevron-down-93nIWtbs.js",
+      "rawBytes": 301,
+      "gzipBytes": 247
+    },
+    {
+      "file": "assets/check-CoOIAcQD.js",
+      "rawBytes": 292,
+      "gzipBytes": 244
+    },
+    {
+      "file": "assets/route-state-CKr3byck.js",
+      "rawBytes": 259,
+      "gzipBytes": 192
+    },
+    {
+      "file": "assets/mutation-attempts-x2QK16ys.js",
+      "rawBytes": 243,
+      "gzipBytes": 188
+    },
+    {
+      "file": "assets/formatters-CG5OqqNv.js",
+      "rawBytes": 218,
+      "gzipBytes": 202
+    },
+    {
+      "file": "assets/legacyTypography-BiNeRb3S.js",
+      "rawBytes": 111,
+      "gzipBytes": 119
+    }
+  ],
+  "totalScriptRawBytes": 2615848,
+  "sumOfPerScriptGzipBytes": 823979,
+  "assetJavaScriptChunkCount": 221,
+  "assetJavaScriptRawBytes": 2606182,
+  "assetJavaScriptSumOfPerChunkGzipBytes": 820753,
+  "markerScanFindings": [],
+  "copiedMockWorkerAssets": [
+    {
+      "file": "mockServiceWorker.js",
+      "bytes": 9666
+    }
+  ],
+  "developmentControlChunkFiles": []
+}

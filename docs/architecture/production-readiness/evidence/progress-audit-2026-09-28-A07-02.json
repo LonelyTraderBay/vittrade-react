@@ -1,0 +1,145 @@
+{
+  "generatedAt": "2026-09-27T18:39:16Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "workingTree": "dirty; pre-existing application/documentation changes preserved; no application route source modified in A07.02",
+  "scope": {
+    "tasks": 38,
+    "steps": 205,
+    "pages": 128,
+    "routeDeclarations": 428,
+    "uniqueRoutePaths": 380,
+    "developmentOnlyRouteDeclarations": 37,
+    "operations": 154,
+    "filesOutsidePlanArtifacts": 894
+  },
+  "progress": {
+    "tasksDone": 5,
+    "tasksDonePercent": 13.2,
+    "stepsDone": 27,
+    "stepsDonePercent": 13.2,
+    "stepsTodo": 178,
+    "stepsInProgress": 0,
+    "tasksBlocked": 0,
+    "groupA": {
+      "tasksDone": 5,
+      "tasksInProgress": 1,
+      "tasksTotal": 8,
+      "stepsDone": 27,
+      "stepsTotal": 40,
+      "stepsDonePercent": 67.5
+    },
+    "completedTasks": ["A01", "A02", "A03", "A04", "A05"],
+    "completedSteps": [
+      "A01.01",
+      "A01.02",
+      "A01.03",
+      "A01.04",
+      "A01.05",
+      "A02.01",
+      "A02.02",
+      "A02.03",
+      "A02.04",
+      "A02.05",
+      "A03.01",
+      "A03.02",
+      "A03.03",
+      "A03.04",
+      "A03.05",
+      "A04.01",
+      "A04.02",
+      "A04.03",
+      "A04.04",
+      "A04.05",
+      "A05.01",
+      "A05.02",
+      "A05.03",
+      "A05.04",
+      "A05.05",
+      "A07.01",
+      "A07.02"
+    ],
+    "uiPagesDone": 0,
+    "userAcceptedPages": 0,
+    "backendOperationsCertified": 0,
+    "milestones": {
+      "M1": "todo",
+      "M2": "todo",
+      "M3": "todo",
+      "M4": "todo"
+    },
+    "tasksInProgress": 1,
+    "unclassifiedRoutes": 0,
+    "routeDeclarationsWithResolvedUrls": 428,
+    "routeDeclarationsWithoutResolvedUrls": 0,
+    "routeClassifications": {
+      "development-only": 37,
+      "shell-or-guard": 5,
+      "factory-override": 22,
+      "component-alias": 132,
+      "integration-pending-placeholder": 82,
+      "page": 150,
+      "uncategorized": 0
+    },
+    "routeUrlResolution": {
+      "routeDeclarations": 428,
+      "routeDeclarationsWithRuntimeUrls": 428,
+      "routeDeclarationsMissingRuntimeUrls": 0,
+      "totalUrlRegistrations": 1459,
+      "uniqueUrlTemplates": 1389,
+      "dynamicRouteDeclarations": 71,
+      "dynamicParameterOccurrences": 71,
+      "dynamicFixtureStatuses": {
+        "mock-fixture": 55,
+        "mock-fixture-domain-candidate": 2,
+        "reserved-preview-id": 2,
+        "test-fixture-only": 12
+      },
+      "queryStateVariants": 3,
+      "otpRouteDeclarations": 2
+    }
+  },
+  "nextCheckpoint": {
+    "taskId": "A07",
+    "stepId": "A07.03",
+    "action": "Link every declaration to its actual page/export and U01–U15 owner; investigate the 224 route records without pageTarget."
+  },
+  "verification": {
+    "ledger": {
+      "command": "node docs/architecture/production-readiness/check-tracking.mjs",
+      "exitCode": 0,
+      "errorCount": 0
+    },
+    "format": {
+      "command": "node ./node_modules/prettier/bin/prettier.cjs --check docs/architecture/production-readiness/PLAN.md docs/architecture/production-readiness/TRACKING.json docs/architecture/production-readiness/check-tracking.mjs docs/architecture/production-readiness/evidence/A07/route-declaration-classification-2026-09-28.json docs/architecture/production-readiness/evidence/A07/runtime-route-tree-2026-09-28.json docs/architecture/production-readiness/evidence/A07/generate-route-url-resolution.mjs docs/architecture/production-readiness/evidence/A07/route-url-resolution-2026-09-28.json docs/architecture/production-readiness/evidence/progress-audit-2026-09-28-A07-01.json docs/architecture/production-readiness/evidence/progress-audit-2026-09-28-A07-02.json",
+      "exitCode": 0
+    },
+    "routeMatch": {
+      "command": "temporary Vitest audit with matchRoutes; file removed after execution",
+      "exitCode": 0,
+      "testFiles": 1,
+      "tests": 3,
+      "previewUrlsMatched": 1459,
+      "unmatched": 0,
+      "otpStateShapesAccepted": 2
+    },
+    "queryPage": {
+      "command": "node ./node_modules/vitest/vitest.mjs run src/features/p2p/pages/P2PExpressConfirmPage.test.tsx",
+      "exitCode": 0,
+      "testFiles": 1,
+      "tests": 2
+    },
+    "diff": {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "notes": "No whitespace errors. Git emitted only LF-to-CRLF normalization notices for pre-existing modified tracked files."
+    }
+  },
+  "openEvidenceAndLimits": [
+    "A07.03-A07.05 remain: page/export/domain ownership, navigation/back/reload/auth behavior and representative browser route/shell evidence. 428/428 route URLs are mapped, not browser-accepted.",
+    "A06 still needs preview fixtures for 12 test-only dynamic ID uses and 2 reserved IDs; 2 domain-candidate IDs need entity/contract review before page UI acceptance.",
+    "0/128 UI page records are done and 0/128 are user-accepted.",
+    "C04.02 remains open: the isolated production output still contains the 9,666-byte mockServiceWorker.js asset.",
+    "No real backend/staging environment or approved credentials were used; 0/154 backend operations are certified."
+  ],
+  "interpretation": "These percentages measure recorded plan work only. They are not a percentage of Production-Ready or Enterprise-Grade certification."
+}

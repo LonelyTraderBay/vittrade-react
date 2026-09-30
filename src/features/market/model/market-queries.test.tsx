@@ -11,7 +11,11 @@ import { marketApi } from '../api/market-api';
 import {
   marketQueryKeys,
   useMarketCandlesQuery,
+  useMarketCalendarQuery,
+  useMarketCorrelationsQuery,
+  useMarketDerivativesQuery,
   useMarketMoversQuery,
+  useMarketNewsQuery,
   useMarketOrderBookQuery,
   useMarketOverviewQuery,
   useMarketPairQuery,
@@ -21,6 +25,9 @@ import {
   useMarketPriceAlertUpdateMutation,
   useMarketPriceAlertsQuery,
   useMarketRecentTradesQuery,
+  useMarketSentimentQuery,
+  useMarketSignalsQuery,
+  useMarketTokenUnlocksQuery,
   useMarketWatchlistCreateMutation,
   useMarketWatchlistDeleteMutation,
   useMarketWatchlistQuery,
@@ -89,6 +96,27 @@ beforeEach(() => {
     {} as Awaited<ReturnType<typeof marketApi.getOverview>>,
   );
   vi.spyOn(marketApi, 'getMovers').mockResolvedValue({ items: [], updatedAt: '' });
+  vi.spyOn(marketApi, 'getNews').mockResolvedValue(
+    {} as Awaited<ReturnType<typeof marketApi.getNews>>,
+  );
+  vi.spyOn(marketApi, 'getCalendar').mockResolvedValue(
+    {} as Awaited<ReturnType<typeof marketApi.getCalendar>>,
+  );
+  vi.spyOn(marketApi, 'getCorrelations').mockResolvedValue(
+    {} as Awaited<ReturnType<typeof marketApi.getCorrelations>>,
+  );
+  vi.spyOn(marketApi, 'getTokenUnlocks').mockResolvedValue(
+    {} as Awaited<ReturnType<typeof marketApi.getTokenUnlocks>>,
+  );
+  vi.spyOn(marketApi, 'getDerivatives').mockResolvedValue(
+    {} as Awaited<ReturnType<typeof marketApi.getDerivatives>>,
+  );
+  vi.spyOn(marketApi, 'getSentiment').mockResolvedValue(
+    {} as Awaited<ReturnType<typeof marketApi.getSentiment>>,
+  );
+  vi.spyOn(marketApi, 'getSignals').mockResolvedValue(
+    {} as Awaited<ReturnType<typeof marketApi.getSignals>>,
+  );
   vi.spyOn(marketApi, 'listPriceAlerts').mockResolvedValue({ items: [] });
   vi.spyOn(marketApi, 'createPriceAlert').mockResolvedValue({
     id: 'alert-1',
@@ -136,6 +164,39 @@ describe('market query hooks', () => {
     });
     expect(result.current.fetchStatus).toBe('idle');
     expect(marketApi.getPair).toHaveBeenCalledTimes(1);
+  });
+
+  it('aborts an in-flight pair request when the query observer leaves', async () => {
+    vi.restoreAllMocks();
+    let onFetchStarted!: () => void;
+    const fetchStarted = new Promise<void>((resolve) => {
+      onFetchStarted = resolve;
+    });
+    const requestSignal: { current: AbortSignal | null } = { current: null };
+    const fetchImpl = vi.spyOn(globalThis, 'fetch').mockImplementation((_input, init) => {
+      requestSignal.current = init?.signal ?? null;
+      onFetchStarted();
+      return new Promise<Response>((_resolve, reject) => {
+        const signal = requestSignal.current;
+        if (signal?.aborted) {
+          reject(new DOMException('Aborted', 'AbortError'));
+          return;
+        }
+        signal?.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')), {
+          once: true,
+        });
+      });
+    });
+    const client = createQueryClient();
+    const rendered = renderHook(() => useMarketPairQuery('btc-usdt'), {
+      wrapper: createWrapper(client),
+    });
+
+    await fetchStarted;
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+    rendered.unmount();
+    await waitFor(() => expect(requestSignal.current?.aborted).toBe(true));
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
   });
 
   it('loads the watchlist under a user-scoped key and honors the disabled option', async () => {
@@ -204,6 +265,56 @@ describe('market query hooks', () => {
     expect(marketApi.getOverview).toHaveBeenCalledWith(expect.anything());
     expect(marketApi.getMovers).toHaveBeenCalledWith(movers, expect.anything());
     expect(marketApi.listPriceAlerts).toHaveBeenCalledWith(alerts, expect.anything());
+  });
+
+  it('loads the remaining market feeds with their filters and stable query keys', async () => {
+    const news = { category: 'macro', limit: 10 } as const;
+    const calendar = { category: 'token-unlock', limit: 25 } as const;
+    const correlations = { window: '30d' } as const;
+    const unlocks = { window: '30d', category: 'investor' } as const;
+    const sentiment = { window: '24h' } as const;
+
+    const newsQuery = await renderQuery(() => useMarketNewsQuery(news));
+    const calendarQuery = await renderQuery(() => useMarketCalendarQuery(calendar));
+    const correlationsQuery = await renderQuery(() => useMarketCorrelationsQuery(correlations));
+    const unlocksQuery = await renderQuery(() => useMarketTokenUnlocksQuery(unlocks));
+    const derivativesQuery = await renderQuery(() => useMarketDerivativesQuery());
+    const sentimentQuery = await renderQuery(() => useMarketSentimentQuery(sentiment));
+    const signalsQuery = await renderQuery(() => useMarketSignalsQuery());
+
+    expect(marketApi.getNews).toHaveBeenCalledWith(news, expect.anything());
+    expect(marketApi.getCalendar).toHaveBeenCalledWith(calendar, expect.anything());
+    expect(marketApi.getCorrelations).toHaveBeenCalledWith(correlations, expect.anything());
+    expect(marketApi.getTokenUnlocks).toHaveBeenCalledWith(unlocks, expect.anything());
+    expect(marketApi.getDerivatives).toHaveBeenCalledWith(expect.anything());
+    expect(marketApi.getSentiment).toHaveBeenCalledWith(sentiment, expect.anything());
+    expect(marketApi.getSignals).toHaveBeenCalledWith(expect.anything());
+
+    expect(
+      newsQuery.client.getQueryCache().find({ queryKey: marketQueryKeys.news(news) }),
+    ).toBeDefined();
+    expect(
+      calendarQuery.client.getQueryCache().find({ queryKey: marketQueryKeys.calendar(calendar) }),
+    ).toBeDefined();
+    expect(
+      correlationsQuery.client
+        .getQueryCache()
+        .find({ queryKey: marketQueryKeys.correlations(correlations) }),
+    ).toBeDefined();
+    expect(
+      unlocksQuery.client.getQueryCache().find({ queryKey: marketQueryKeys.unlocks(unlocks) }),
+    ).toBeDefined();
+    expect(
+      derivativesQuery.client.getQueryCache().find({ queryKey: marketQueryKeys.derivatives }),
+    ).toBeDefined();
+    expect(
+      sentimentQuery.client
+        .getQueryCache()
+        .find({ queryKey: marketQueryKeys.sentiment(sentiment) }),
+    ).toBeDefined();
+    expect(
+      signalsQuery.client.getQueryCache().find({ queryKey: marketQueryKeys.signals }),
+    ).toBeDefined();
   });
 });
 

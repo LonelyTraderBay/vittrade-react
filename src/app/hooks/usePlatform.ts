@@ -91,8 +91,8 @@ const PLATFORM_CONFIG: Record<
 
 /** Detect platform from route prefix */
 export function detectPlatformFromPath(pathname: string): Platform {
-  if (pathname.startsWith('/w/') || pathname.startsWith('/w')) return 'web';
-  if (pathname.startsWith('/t/') || pathname.startsWith('/t')) return 'tablet';
+  if (pathname === '/w' || pathname.startsWith('/w/')) return 'web';
+  if (pathname === '/t' || pathname.startsWith('/t/')) return 'tablet';
   return 'phone';
 }
 

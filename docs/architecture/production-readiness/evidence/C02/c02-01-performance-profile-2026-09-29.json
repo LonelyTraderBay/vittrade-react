@@ -1,0 +1,150 @@
+{
+  "evidenceId": "EV-20260929-449",
+  "taskId": "C02",
+  "stepId": "C02.01",
+  "observedAt": "2026-09-29T12:51:30.084Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "environment": {
+    "mode": "Vite development server with local MSW fixtures",
+    "baseUrl": "http://127.0.0.1:4173",
+    "endpointProbe": {
+      "status": 200,
+      "viteClient": true,
+      "htmlBytes": 604
+    },
+    "apiDataSource": "mock",
+    "browser": "Chromium 153.0.8010.12",
+    "browserViewport": {
+      "width": 1440,
+      "height": 900,
+      "dpr": 1,
+      "hardwareConcurrency": 24
+    },
+    "operatingSystem": "Windows_NT 10.0.26200",
+    "cpuModel": "Intel(R) Core(TM) Ultra 7 270K Plus",
+    "logicalCpus": 24,
+    "throttling": "No CPU or network throttling configured; loopback origin; MSW request time is local fixture time."
+  },
+  "selectedJourneys": [
+    {
+      "journey": "login",
+      "url": "/w/auth/login",
+      "persona": "developer",
+      "routeId": "ROUTE-1f4f526bb861"
+    },
+    {
+      "journey": "markets",
+      "url": "/w/markets/overview",
+      "persona": "market",
+      "routeId": "ROUTE-8c4f95308fee"
+    },
+    {
+      "journey": "terminal",
+      "url": "/w/trade/btcusdt",
+      "persona": "developer",
+      "routeId": "ROUTE-a362a35b4986",
+      "routeProof": [
+        "src/app/components/layout/WebSidebar.tsx",
+        "src/dev/mocks/trading-fixtures.ts"
+      ],
+      "routeProofNote": "The earlier E2E fixture test intercepts /market/pairs responses and does not prove the local MSW fixture accepts btc-usdt."
+    },
+    {
+      "journey": "wallet",
+      "url": "/w/wallet",
+      "persona": "wallet",
+      "routeId": "ROUTE-9b27a61ad22a"
+    },
+    {
+      "journey": "p2p-order-room",
+      "url": "/w/p2p/order/p2p001",
+      "persona": "developer",
+      "routeId": "ROUTE-4046874c3b80"
+    },
+    {
+      "journey": "dca-savings",
+      "url": "/w/earn/savings/dca",
+      "persona": "dca",
+      "routeId": "ROUTE-eecd0227de89"
+    }
+  ],
+  "fixtureSizes": {
+    "personas": 10,
+    "marketOverview": {
+      "movers": 21,
+      "sectors": 8,
+      "fearGreedHistory": 8,
+      "globalStatsFields": 14
+    },
+    "terminal": {
+      "pairs": 10,
+      "orderBookBids": 8,
+      "orderBookAsks": 8,
+      "recentTrades": 12,
+      "defaultCandles": 24
+    },
+    "wallet": {
+      "assets": 13,
+      "accounts": 3,
+      "transactions": 6
+    },
+    "p2p": {
+      "targetOrderId": "p2p001",
+      "sharedOrderRows": 7,
+      "chatMessages": 5
+    },
+    "dca": {
+      "plans": 3,
+      "purchases": 22,
+      "portfolioHistory": 91,
+      "purchaseCountsObservedAcrossSourceProbes": [21, 22],
+      "dynamicClock": "devMockNowMs uses wall time unless configureDevMockScenario sets a fixed clock"
+    }
+  },
+  "methodology": {
+    "coldTrialsPerJourney": 5,
+    "warmTrialsPerJourney": 5,
+    "cold": "Fresh browser context and empty site storage/cache before direct route load.",
+    "warm": "Repeat the route in the same context after the first successful render.",
+    "collect": [
+      "navigation duration",
+      "DOMContentLoaded/load",
+      "FCP/LCP when available",
+      "request count",
+      "JS/CSS transfer bytes",
+      "operation response status and duration",
+      "actual response item counts"
+    ],
+    "excludeFromBackendLatency": "All MSW response timing is local fixture timing, not backend latency."
+  },
+  "baselineStatus": "Profile and fixture sizes only; C02.02 has not collected cold/warm route timings and no performance budget is claimed.",
+  "sourceHashes": {
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/app/routes/tradingProtectedRoutes.ts": "f0178ccbcac4e11ddd3bcc63b4af67a926bcb047560eea016d797fdcf960e45e",
+    "src/features/auth/routes.ts": "6bc8b6448a95756b04515a6d11a831ce4a500d950b2a9e1168e1f19f5e50222f",
+    "src/features/market/routes.ts": "e740cab1f8617ce57b2e537a8a113ae0f301f6001f510ef080fa7fe0028c5ce3",
+    "src/features/trading/routes.ts": "cb268f664e4c0fadd39ab1cd1430dd968b1700dc49dab56fb1f4782b524d0385",
+    "src/features/wallet/routes.ts": "045e7499ef9dd47398d4986ab3a0c63ec339a29d572e79bfb9bbfb824b0ecc9c",
+    "src/features/p2p/routes.ts": "70de2d9cae22dfb45031be5cbe5fe858a863aa2bb82b266bea39ce4137e1dbee",
+    "src/features/dca/routes.ts": "e28ea3d4bc2776d67382a1b43560e9c924915d4514697c00926db95e867f07d4",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/handlers.ts": "93fd4a5f1a7637be2b10775edd8dfbd6e2562f1db3c90112dc3a5959519ca398",
+    "src/dev/mocks/trading-fixtures.ts": "b082e4bc4094a4d7b36f41897ce9b27ea4c487fd3bf714622baf2f91fe2153cf",
+    "src/dev/mocks/market-overview-fixtures.ts": "e160b186a350ec8c561fea02037afff59662b395d59809f77c5225dbc7b57814",
+    "src/dev/mocks/dca-fixtures.ts": "33f7f6e4cee03ce1d9b6099ce7b9046c40f3600000da618138fdfed3108c6b2e",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/shared/config/env.ts": "2c8c6d11cf10a16656e268181c91b3a34540f2677a9c4dc36394f67c066e38a6",
+    "docs/architecture/page-inventory.json": "5020bee660d40dd9f8908e88c39e6cbff08ca42668f0334a5f9704db2a3c43aa",
+    "docs/architecture/production-readiness/UI-RUNBOOK.md": "a6bc4f9f6aa8ccd68883dab1faf4422b5b40bffcedeb8e9a8ebbef855b0f8e28",
+    "tests/e2e/trading-contract.spec.ts": "d6ad87aa3b3cfdba5c7b05b2dde0427ce052ef980badf5459bfeefc713a0233b",
+    "src/app/components/layout/WebSidebar.tsx": "6e294d2589c6106430121d8da43fc8a02b89a321907bf92db47452df97f3b90f"
+  },
+  "routeCorrection": {
+    "detectedDuring": "C02.02",
+    "previousUrl": "/w/trade/btc-usdt",
+    "previousRouteResponseStatus": 404,
+    "correctedUrl": "/w/trade/btcusdt",
+    "correctedRouteApiStatus": 200,
+    "reason": "WebSidebar uses btcusdt and the local trading fixture pair ID is btcusdt."
+  }
+}

@@ -5,12 +5,27 @@ import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { useAuth } from '@/shared/session/useAuth';
 import { useCopyRelationshipsQuery } from '../model/trading-queries';
 
 export function WebCopyPerformancePage() {
   const { copyId } = useParams();
   const colors = useThemeColors();
-  const query = useCopyRelationshipsQuery();
+  const { hasPermission } = useAuth();
+  const canReadTrading = hasPermission('trade:read');
+  const query = useCopyRelationshipsQuery(canReadTrading);
+
+  if (!canReadTrading)
+    return (
+      <PageLayout>
+        <Header title="Hiệu suất Copy" back />
+        <PageContent>
+          <p role="alert" style={{ color: colors.text2 }}>
+            Tài khoản của bạn không có quyền xem quan hệ copy.
+          </p>
+        </PageContent>
+      </PageLayout>
+    );
 
   if (query.isPending)
     return (

@@ -14,15 +14,7 @@ import { Target, Shield, ChevronDown, ChevronUp, Info, AlertTriangle } from 'luc
 import { TrCard } from '@/shared/ui/TrCard';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { fmtPrice, fmtUsd, fmtPct } from '@/shared/lib/formatNumber';
-
-export interface TPSLValues {
-  enabled: boolean;
-  tpPrice: string;
-  slPrice: string;
-  tpTriggerType: 'last' | 'mark';
-  slTriggerType: 'last' | 'mark';
-  bracketMode?: boolean;
-}
+import type { TPSLValues } from '../model/trading-types';
 
 interface TPSLFormProps {
   side: 'buy' | 'sell';
@@ -91,6 +83,8 @@ export function TPSLForm({
     <div className="flex flex-col gap-2">
       {/* Toggle header */}
       <button
+        type="button"
+        aria-pressed={values.enabled}
         onClick={handleToggle}
         className="flex items-center justify-between py-2 px-3 rounded-xl transition-all"
         style={{
@@ -142,6 +136,8 @@ export function TPSLForm({
           {/* Bracket mode toggle */}
           <div className="flex items-center justify-between px-1">
             <button
+              type="button"
+              aria-expanded={expanded}
               onClick={() => setExpanded(!expanded)}
               className="flex items-center gap-1"
               style={{ color: c.text3, fontSize: 12 }}
@@ -150,6 +146,8 @@ export function TPSLForm({
               {expanded ? 'Thu gọn' : 'Mở rộng'}
             </button>
             <button
+              type="button"
+              aria-pressed={isBracket}
               onClick={toggleBracket}
               className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-all"
               style={{
@@ -203,6 +201,7 @@ export function TPSLForm({
           <div>
             <div className="flex items-center justify-between mb-1">
               <label
+                htmlFor="tpsl-tp-price"
                 className="flex items-center gap-1"
                 style={{ color: '#10B981', fontSize: 12, fontWeight: 600 }}
               >
@@ -231,8 +230,11 @@ export function TPSLForm({
               }}
             >
               <input
+                id="tpsl-tp-price"
                 type="number"
                 inputMode="decimal"
+                aria-invalid={!tpValid}
+                aria-describedby={!tpValid ? 'tpsl-tp-error' : undefined}
                 placeholder={
                   side === 'buy' ? `> ${fmtPrice(entryPrice)}` : `< ${fmtPrice(entryPrice)}`
                 }
@@ -254,7 +256,7 @@ export function TPSLForm({
               <span style={{ color: c.text3, fontSize: 12 }}>USDT</span>
             </div>
             {!tpValid && (
-              <p style={{ color: '#EF4444', fontSize: 11, marginTop: 2 }}>
+              <p id="tpsl-tp-error" style={{ color: '#EF4444', fontSize: 11, marginTop: 2 }}>
                 TP phải {side === 'buy' ? 'cao hơn' : 'thấp hơn'} giá vào
               </p>
             )}
@@ -264,6 +266,7 @@ export function TPSLForm({
           <div>
             <div className="flex items-center justify-between mb-1">
               <label
+                htmlFor="tpsl-sl-price"
                 className="flex items-center gap-1"
                 style={{ color: '#EF4444', fontSize: 12, fontWeight: 600 }}
               >
@@ -292,8 +295,11 @@ export function TPSLForm({
               }}
             >
               <input
+                id="tpsl-sl-price"
                 type="number"
                 inputMode="decimal"
+                aria-invalid={!slValid}
+                aria-describedby={!slValid ? 'tpsl-sl-error' : undefined}
                 placeholder={
                   side === 'buy' ? `< ${fmtPrice(entryPrice)}` : `> ${fmtPrice(entryPrice)}`
                 }
@@ -315,7 +321,7 @@ export function TPSLForm({
               <span style={{ color: c.text3, fontSize: 12 }}>USDT</span>
             </div>
             {!slValid && (
-              <p style={{ color: '#EF4444', fontSize: 11, marginTop: 2 }}>
+              <p id="tpsl-sl-error" style={{ color: '#EF4444', fontSize: 11, marginTop: 2 }}>
                 SL phải {side === 'buy' ? 'thấp hơn' : 'cao hơn'} giá vào
               </p>
             )}
@@ -397,6 +403,7 @@ export function TPSLForm({
                   return (
                     <button
                       key={preset.label}
+                      type="button"
                       onClick={() =>
                         onChange({
                           ...values,

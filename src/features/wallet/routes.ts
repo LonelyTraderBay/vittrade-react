@@ -19,6 +19,9 @@ const PortfolioAnalyticsPage = lazyRoute(() =>
     default: module.PortfolioAnalyticsContractPage,
   })),
 );
+const NetworkStatusPage = lazyRoute(() =>
+  import('./pages/NetworkStatusPage').then((module) => ({ default: module.NetworkStatusPage })),
+);
 const WithdrawalWhitelistPage = lazyRoute(() =>
   import('./pages/WebWithdrawalWhitelistPage').then((module) => ({
     default: module.WebWithdrawalWhitelistPage,
@@ -43,6 +46,14 @@ const WalletAssetDetailPage = lazyRoute(() =>
 const DustConverterPage = lazyRoute(() =>
   import('./pages/DustConverterPage').then((module) => ({ default: module.DustConverterPage })),
 );
+const PendingDepositsPage = lazyRoute(() =>
+  import('./pages/PendingDepositsPage').then((module) => ({ default: module.PendingDepositsPage })),
+);
+const WithdrawalLimitsPage = lazyRoute(() =>
+  import('./pages/WithdrawalLimitsPage').then((module) => ({
+    default: module.WithdrawalLimitsPage,
+  })),
+);
 
 /**
  * Route Wallet. The app can inject an adapter for cross-feature shell integrations such as DCA.
@@ -54,12 +65,16 @@ export function createWalletRoutes(
     { path: 'wallet/transaction/:txId', Component: TransactionDetailPage },
     { path: 'wallet/asset/:assetId', Component: overrides.assetDetail ?? WalletAssetDetailPage },
     { path: 'wallet/dust-converter', Component: DustConverterPage },
+    { path: 'wallet/pending-deposits', Component: PendingDepositsPage },
+    { path: 'wallet/limits', Component: WithdrawalLimitsPage },
+    { path: 'wallet/network-status', Component: NetworkStatusPage },
     { path: 'wallet/transfer', Component: WalletTransferPage },
     { path: 'wallet/deposit', Component: WalletDepositPage },
     { path: 'wallet/deposit/:asset', Component: WalletDepositPage },
     { path: 'wallet/withdraw', Component: WithdrawPage },
     { path: 'wallet/withdraw/:asset', Component: WithdrawPage },
     { path: 'wallet/portfolio-analytics', Component: PortfolioAnalyticsPage },
+    { path: 'markets/portfolio-tracker', Component: PortfolioAnalyticsPage },
     { path: 'wallet/address-book/add', Component: AddressAddPage },
     { path: 'wallet/address-book', Component: AddressBookPage },
   ];

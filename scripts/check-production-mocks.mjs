@@ -1,5 +1,5 @@
 import { readdir, readFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { basename, join, relative, sep } from 'node:path';
 
 const distRoot = join(process.cwd(), 'dist');
 const forbiddenMarkers = [
@@ -15,57 +15,16 @@ const forbiddenMarkers = [
   'launchpad-legacy-fixtures',
   'mockData',
   'predictionMockData',
-  'CopyTradingCardDemo',
-  'TradingBotsDemoPage',
-  'WebTradingBotsDemoPage',
   'ACTIVE_BOTS',
-  'AdvancedAnalyticsPage',
-  'AdvancedToolsDemoPage',
-  'AdvancedTradingDemoPage',
-  'BotEmergencyStopPage',
-  'BotRiskDisclosurePage',
-  'BotSecuritySettingsPage',
-  'BotSuitabilityAssessmentPage',
-  'BotTermsOfServicePage',
-  'ConvertPage',
   'CopyAuditLogPage',
-  'CopyNotificationsPage',
   'SLIPPAGE_DATA',
   'COST_ATTRIBUTION',
   'TRADE_COMPARISON',
-  'ExecutionQualityDemoPage',
-  'FuturesPage',
-  'LeveragePage',
-  'LiveMarketDataAnalyticsPage',
-  'MarginTradingHubPage',
-  'MarginTradingPage',
-  'MarketDataAnalyticsPage',
   'PerformanceAttributionPage',
-  'PortfolioRiskAnalysisPage',
   'PositionDashboardPage',
-  'RiskManagementDemoPage',
-  'SlippageMonitoringPage',
-  'TransactionReportingPage',
-  'LaunchpadABIDiffPage',
-  'LaunchpadAddressBookPage',
   'LaunchpadAirdropClaimPage',
-  'LaunchpadBatchClaimPage',
-  'LaunchpadBridgeComparePage',
-  'LaunchpadBridgeOrderPage',
-  'LaunchpadClaimReceiptPage',
-  'LaunchpadEventLogPage',
-  'LaunchpadGasTrackerPage',
-  'LaunchpadIDOBridgePage',
   'LaunchpadLPMonitorPage',
-  'LaunchpadMultisigPage',
-  'LaunchpadNotifSoundPage',
-  'LaunchpadPerformancePage',
-  'LaunchpadPortfolioPage',
-  'LaunchpadRebalancePage',
-  'LaunchpadReceiptPage',
-  'LaunchpadStakingPage',
   'LaunchpadVestingTrackerPage',
-  'LaunchpadWebhooksPage',
   'LaunchpadWhitelistCheckerPage',
   'PreCopyAssessmentPage',
   'ProviderComparisonPage',
@@ -79,91 +38,32 @@ const forbiddenMarkers = [
   'SocialSentimentPage',
   'SocialSignalsPage',
   'TokenUnlocksPage',
-  'BuyCryptoPage',
-  'NetworkStatusPage',
-  'PendingDepositsPage',
-  'WalletGasOptimizerPage',
-  'WalletHealthScorePage',
-  'WalletMultiManagerPage',
-  'WalletTokenApprovalPage',
-  'WithdrawLimitsPage',
-  'P2PAddressProofPage',
-  'P2PAntiPhishingCodePage',
-  'P2PClaimDetailPage',
   'P2PContributionHistoryPage',
-  'P2PDeviceManagementPage',
-  'P2PEscrowBalancePage',
-  'P2PIdentityVerificationPage',
   'P2PInsuranceFundPage',
   'P2PKYCStatusPage',
-  'P2PLoginHistoryPage',
-  'P2POrderBookPage',
   'P2POrderPage',
   'P2PSecurityCenterPage',
-  'P2PTaxReportingPage',
   'P2PWalletPage',
-  'P2PWalletTransferPage',
-  'ArenaBlockedUsersPage',
-  'ArenaCreatorPage',
-  'ArenaFlowMapPage',
-  'ArenaGovernanceGatePage',
-  'ArenaGuidePage',
-  'ArenaHomePage',
-  'ArenaLeaderboardPage',
-  'ArenaPointsEntryDetailPage',
-  'ArenaPointsLedgerPage',
-  'ArenaPointsPage',
-  'ArenaPredictionBridgeFoundationPage',
-  'ArenaProductionReadyPage',
-  'ArenaReportCasePage',
-  'ArenaResolutionCenterPage',
-  'ArenaSafetyCenterPage',
-  'ArenaSmartRuleBuilderPage',
-  'ArenaStudioPage',
-  'ArenaTrustBreakdownPage',
-  'ArenaUniversalPresetLibraryPage',
-  'ConnectedEcosystemProductionPage',
-  'MyArenaPage',
-  'MyArenaReportsPage',
-  'VerifiedChallengesPage',
   'ChartTestPage',
   'SavingsBacktestPage',
-  'LaunchpadDCABuilderPage',
-  'LaunchpadLimitOrdersPage',
-  'LaunchpadRiskAnalyticsPage',
-  'LaunchpadSwapAggregatorPage',
-  'PredictionDataIntegrationPage',
-  'PredictionEventCalendarPage',
-  'PredictionMarketMakerPage',
-  'PredictionPortfolioAnalyzerPage',
-  'PredictionSocialPage',
-  'PredictionTournamentsPage',
-  'ApiKeyCreatePage',
-  'ApiManagementPage',
-  'KYCPage',
-  'VIPPage',
-  'ReferralFriendDetailPage',
-  'ReferralHistoryPage',
-  'ReferralRewardsPage',
-  'ReferralRulesPage',
-  'RewardsHubPage',
-  'WebAntiPhishingSetupPage',
   'WebArenaHomePage',
-  'WebBotCompliancePages',
-  'WebBotRiskDisclosurePage',
-  'WebDeviceTrustDetailPage',
-  'WebDeviceTrustPage',
-  'WebLoginActivityPage',
-  'WebPasskeySetupPage',
-  'WebSecurityAlertDetailPage',
-  'WebSecurityAlertListPage',
-  'WebSecurityAuditPage',
-  'WebSecurityNotificationsPage',
-  'WebSessionManagementPage',
-  'WebTwoFAManagementPage',
+  'RouteChecker',
+  'PerformanceMonitor',
   'DCAPortfolioOptimizer',
   'DEVONLYSECRET',
   'dev-only-in-memory-token',
+  // Mock login credentials and demo controls are development-only data too.
+  'Preview-123!',
+  'developer@vittrade.local',
+  'mfa@vittrade.local',
+  'locked@vittrade.local',
+  'demo@vittrade.vn',
+  'wrong@test.com',
+  'device@test.com',
+  'Trải nghiệm Demo',
+  'Đăng nhập Demo',
+  'Demo flows:',
+  'DỮ LIỆU MÔ PHỎNG',
   'msw/browser',
   'setupWorker',
   'INITIAL_DCA_PLANS',
@@ -180,24 +80,49 @@ async function collectFiles(directory) {
   for (const entry of entries) {
     const path = join(directory, entry.name);
     if (entry.isDirectory()) files.push(...(await collectFiles(path)));
-    else if (entry.name.endsWith('.js') || entry.name.endsWith('.mjs')) files.push(path);
+    else files.push(path);
   }
   return files;
 }
 
 const files = await collectFiles(distRoot);
 const violations = [];
+const javascriptFiles = files.filter((file) => /\.(?:m?js)$/i.test(file));
 for (const file of files) {
-  const contents = await readFile(file, 'utf8');
-  for (const marker of forbiddenMarkers) {
-    if (contents.includes(marker)) violations.push(`${file}: ${marker}`);
+  const relativePath = relative(distRoot, file).split(sep).join('/');
+  if (basename(file).toLowerCase() === 'mockserviceworker.js') {
+    violations.push(`${relativePath}: forbidden development worker file path`);
+  }
+
+  if (/\.(?:m?js)$/i.test(file)) {
+    const contents = await readFile(file, 'utf8');
+    for (const marker of forbiddenMarkers) {
+      if (contents.includes(marker)) violations.push(`${relativePath}: ${marker}`);
+    }
+  }
+
+  if (basename(file).toLowerCase() === 'manifest.json') {
+    const contents = await readFile(file, 'utf8');
+    try {
+      JSON.parse(contents);
+    } catch {
+      violations.push(
+        `${relativePath}: invalid JSON manifest; development references cannot be checked`,
+      );
+      continue;
+    }
+    if (/mockserviceworker\.js/i.test(contents)) {
+      violations.push(`${relativePath}: references forbidden mockServiceWorker.js`);
+    }
   }
 }
 
 if (violations.length > 0) {
-  console.error('Production mock gate failed: development mock markers were found in dist.');
+  console.error('Production mock gate failed: development files or markers were found in dist.');
   console.error(violations.join('\n'));
   process.exit(1);
 }
 
-console.log(`Production mock gate passed: ${files.length} JavaScript files inspected.`);
+console.log(
+  `Production mock gate passed: ${files.length} output files inventoried, ${javascriptFiles.length} JavaScript files and ${files.filter((file) => basename(file).toLowerCase() === 'manifest.json').length} manifests inspected.`,
+);

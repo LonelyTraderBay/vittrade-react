@@ -165,6 +165,25 @@ describe('architecture inventory route evidence', () => {
     ]);
   });
 
+  it('records layout routes whose element is constructed with React.createElement', () => {
+    const source = `
+      createBrowserRouter([
+        {
+          path: '/',
+          element: React.createElement(RootLayout, { developmentPreviewControls }),
+          children: [
+            { index: true, element: React.createElement(Navigate, { to: '/home' }) },
+          ],
+        },
+      ]);
+    `;
+
+    const routes = extractRouteRecords('src/app/routes.ts', source);
+
+    expect(routes).toHaveLength(1);
+    expect(routes[0]).toMatchObject({ path: '/', component: 'RootLayout' });
+  });
+
   it('resolves injected feature, shim, inline and development-only route targets', () => {
     const source = `
       const PairDetailPage = lazy(() => import('@/features/market/pages/PairDetailPage'));
@@ -224,26 +243,12 @@ describe('architecture inventory route evidence', () => {
   it('marks unrouted source files separately from routed integration-pending pages', () => {
     const pagePath = 'src/features/example/pages/UnroutedPage.tsx';
 
-    expect(getStatus(pagePath, '', [], undefined, new Set(), new Set())).toBe('not-implemented');
+    expect(getStatus(pagePath, '', [], undefined)).toBe('not-implemented');
+    expect(getStatus('src/dev/legacy/earn/UnroutedSavingsPage.tsx', '', [], undefined)).toBe(
+      'not-implemented',
+    );
     expect(
-      getStatus(
-        'src/dev/legacy/earn/UnroutedSavingsPage.tsx',
-        '',
-        [],
-        undefined,
-        new Set(),
-        new Set(),
-      ),
-    ).toBe('not-implemented');
-    expect(
-      getStatus(
-        pagePath,
-        '',
-        [{ path: 'example', component: 'UnroutedPage' }],
-        undefined,
-        new Set(),
-        new Set(),
-      ),
+      getStatus(pagePath, '', [{ path: 'example', component: 'UnroutedPage' }], undefined),
     ).toBe('integration-pending');
     expect(
       getStatus(
@@ -251,8 +256,15 @@ describe('architecture inventory route evidence', () => {
         '',
         [{ path: 'example', component: 'UnroutedPage', developmentOnly: true }],
         undefined,
-        new Set(),
-        new Set(),
+      ),
+    ).toBe('integration-pending');
+
+    expect(
+      getStatus(
+        'src/dev/legacy/example/ExamplePage.tsx',
+        '',
+        [{ path: 'example', component: 'ExamplePage', developmentOnly: true }],
+        undefined,
       ),
     ).toBe('demo');
   });
@@ -264,8 +276,6 @@ describe('architecture inventory route evidence', () => {
         "export { P2POrderCancelContractPage as P2POrderCancelPage } from '@/features/p2p/pages/P2POrderActionPages';",
         [],
         undefined,
-        new Set(),
-        new Set(),
       ),
     ).toBe('deprecated');
 
@@ -275,8 +285,6 @@ describe('architecture inventory route evidence', () => {
         "export { CopyEducationPage as WebCopyEducationPage } from './CopyEducationPage';",
         [],
         undefined,
-        new Set(),
-        new Set(),
       ),
     ).toBe('deprecated');
 
@@ -286,13 +294,11 @@ describe('architecture inventory route evidence', () => {
         "export * from '@/dev/legacy/earn/SavingsBacktestPage';",
         [],
         undefined,
-        new Set(),
-        new Set(),
       ),
     ).toBe('deprecated');
   });
 
-  it('classifies routed compatibility pages from their route evidence', () => {
+  it('keeps page readiness separate from development-only route exposure', () => {
     const pagePath = 'src/features/auth/pages/Web2FASetupPage.tsx';
     const shim =
       "export { Web2FASetupFlow as Web2FASetupPage } from '../components/Web2FASetupFlow';";
@@ -308,20 +314,22 @@ describe('architecture inventory route evidence', () => {
       },
     ];
 
-    expect(getStatus(pagePath, shim, productionRoute, undefined, new Set(), new Set())).toBe(
-      'integration-pending',
-    );
-    expect(getStatus(pagePath, shim, developmentRoute, undefined, new Set(), new Set())).toBe(
-      'demo',
-    );
+    expect(getStatus(pagePath, shim, productionRoute, undefined)).toBe('integration-pending');
+    expect(getStatus(pagePath, shim, developmentRoute, undefined)).toBe('integration-pending');
+    const adminPagePath = 'src/features/admin/pages/AdminOverviewContractPage.tsx';
     expect(
       getStatus(
-        pagePath,
-        shim,
-        productionRoute,
-        { stagingVerification: 'verified' },
-        new Set(),
-        new Set(),
+        adminPagePath,
+        '',
+        [
+          {
+            path: 'admin',
+            component: 'AdminOverviewContractPage',
+            pageTarget: adminPagePath,
+            developmentOnly: true,
+          },
+        ],
+        undefined,
       ),
     ).toBe('integration-pending');
   });
@@ -330,19 +338,14 @@ describe('architecture inventory route evidence', () => {
     const pagePath = 'src/features/market/pages/MarketHomePage.tsx';
     const route = { path: 'markets', component: 'MarketHomePage', pageTarget: pagePath };
 
+    expect(getStatus(pagePath, '', [route], { stagingVerification: 'verified' })).toBe(
+      'integration-pending',
+    );
     expect(
-      getStatus(pagePath, '', [route], { stagingVerification: 'verified' }, new Set(), new Set()),
+      getStatus(pagePath, '', [{ ...route, developmentOnly: true }], {
+        stagingVerification: 'verified',
+      }),
     ).toBe('integration-pending');
-    expect(
-      getStatus(
-        pagePath,
-        '',
-        [{ ...route, developmentOnly: true }],
-        { stagingVerification: 'verified' },
-        new Set(),
-        new Set(),
-      ),
-    ).toBe('demo');
   });
 
   it('certifies production only from validated staging evidence covering each route', async () => {
@@ -353,9 +356,15 @@ describe('architecture inventory route evidence', () => {
     const certification = certifications.get(pagePath);
 
     try {
-      expect(getStatus(pagePath, '', routes, certification, new Set(), new Set())).toBe(
-        'production',
-      );
+      expect(getStatus(pagePath, '', routes, certification)).toBe('production');
+      expect(
+        getStatus(
+          pagePath,
+          '',
+          routes.map((route) => ({ ...route, developmentOnly: true })),
+          certification,
+        ),
+      ).toBe('integration-pending');
       expect(() =>
         validateProductionEvidence(
           pagePath,

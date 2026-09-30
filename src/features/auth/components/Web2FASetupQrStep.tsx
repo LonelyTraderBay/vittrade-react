@@ -147,22 +147,24 @@ export function Web2FASetupQrStep(props: Props) {
 
       {/* Next button */}
       <button
+        type="button"
         onClick={() => {
           setStep(1);
           setTimeout(() => inputRefs.current[0]?.focus(), 200);
         }}
+        disabled={!setup}
         className="flex items-center justify-center gap-2"
         style={{
           height: WEB_BUTTON.lg,
           borderRadius: 10,
           width: '100%',
-          background: 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
-          color: '#fff',
+          background: setup ? 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)' : c.surface2,
+          color: setup ? '#fff' : c.text3,
           fontSize: WEB_FONT.md,
           fontWeight: 600,
-          cursor: 'pointer',
+          cursor: setup ? 'pointer' : 'not-allowed',
           border: 'none',
-          boxShadow: '0 4px 16px rgba(59,130,246,0.25)',
+          boxShadow: setup ? '0 4px 16px rgba(59,130,246,0.25)' : 'none',
         }}
       >
         Tiếp theo — Xác minh mã

@@ -4,6 +4,7 @@ import type {
   DCAPortfolioHistoryPoint,
   DCAPurchaseHistory,
 } from '@/features/dca';
+import { devMockNowMs } from './scenario-runtime';
 
 export const INITIAL_DCA_PLANS: DCAPlan[] = [
   {
@@ -13,13 +14,13 @@ export const INITIAL_DCA_PLANS: DCAPlan[] = [
     coinIcon: 'https://cryptologos.cc/logos/bitcoin-btc-logo.png',
     frequency: 'weekly',
     amountPerPurchase: 500_000,
-    nextExecution: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+    nextExecution: new Date(devMockNowMs() + 2 * 24 * 60 * 60 * 1000),
     status: 'active',
     totalInvested: 12_000_000,
     currentHoldings: 0.0065,
     averageCost: 1_846_153_846,
-    createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000),
-    lastPurchaseAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+    createdAt: new Date(devMockNowMs() - 60 * 24 * 60 * 60 * 1000),
+    lastPurchaseAt: new Date(devMockNowMs() - 5 * 24 * 60 * 60 * 1000),
   },
   {
     id: 'plan-2',
@@ -28,13 +29,13 @@ export const INITIAL_DCA_PLANS: DCAPlan[] = [
     coinIcon: 'https://cryptologos.cc/logos/ethereum-eth-logo.png',
     frequency: 'weekly',
     amountPerPurchase: 300_000,
-    nextExecution: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000),
+    nextExecution: new Date(devMockNowMs() + 4 * 24 * 60 * 60 * 1000),
     status: 'active',
     totalInvested: 7_200_000,
     currentHoldings: 0.085,
     averageCost: 84_705_882,
-    createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000),
-    lastPurchaseAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+    createdAt: new Date(devMockNowMs() - 60 * 24 * 60 * 60 * 1000),
+    lastPurchaseAt: new Date(devMockNowMs() - 3 * 24 * 60 * 60 * 1000),
   },
   {
     id: 'plan-3',
@@ -43,13 +44,13 @@ export const INITIAL_DCA_PLANS: DCAPlan[] = [
     coinIcon: 'https://cryptologos.cc/logos/solana-sol-logo.png',
     frequency: 'monthly',
     amountPerPurchase: 1_000_000,
-    nextExecution: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
+    nextExecution: new Date(devMockNowMs() + 15 * 24 * 60 * 60 * 1000),
     status: 'active',
     totalInvested: 3_000_000,
     currentHoldings: 940,
     averageCost: 3_191_489,
-    createdAt: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000),
-    lastPurchaseAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000),
+    createdAt: new Date(devMockNowMs() - 90 * 24 * 60 * 60 * 1000),
+    lastPurchaseAt: new Date(devMockNowMs() - 15 * 24 * 60 * 60 * 1000),
   },
 ];
 
@@ -62,7 +63,7 @@ const TEST_PRICES: Record<string, number> = {
 };
 
 function getRelativeTime(date: Date): string {
-  const diff = date.getTime() - Date.now();
+  const diff = date.getTime() - devMockNowMs();
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   const hours = Math.floor(diff / (1000 * 60 * 60));
   if (days > 1) return `${days} ngày`;
@@ -74,7 +75,7 @@ export function generateTestPurchaseHistory(plan: DCAPlan): DCAPurchaseHistory[]
   const history: DCAPurchaseHistory[] = [];
   const interval = plan.frequency === 'daily' ? 1 : plan.frequency === 'weekly' ? 7 : 30;
   let currentDate = new Date(plan.createdAt);
-  while (currentDate < new Date() && history.length < 30) {
+  while (currentDate < new Date(devMockNowMs()) && history.length < 30) {
     const pricePerCoin =
       (TEST_PRICES[plan.coinSymbol] ?? 1) * (0.95 + (history.length % 5) * 0.025);
     history.push({
@@ -94,7 +95,7 @@ export function generateTestPurchaseHistory(plan: DCAPlan): DCAPurchaseHistory[]
 
 export function generateTestPortfolioHistory(plans: DCAPlan[]): DCAPortfolioHistoryPoint[] {
   const points: DCAPortfolioHistoryPoint[] = [];
-  const now = new Date();
+  const now = new Date(devMockNowMs());
   let totalInvested = 0;
   for (let day = 90; day >= 0; day -= 1) {
     const date = new Date(now.getTime() - day * 24 * 60 * 60 * 1000);

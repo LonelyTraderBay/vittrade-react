@@ -1,0 +1,570 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-30T00:33:53.714Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "branch": "codex/vittrade-architecture-completion",
+  "origin": "http://127.0.0.1:4173",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "trading.error",
+    "status": "passed",
+    "persona": "developer",
+    "route": "/w/trade/positions",
+    "operationIds": ["listOpenPositions"],
+    "observedOperationIds": ["listOpenPositions"],
+    "expectedDomainOperationCount": 1,
+    "coverage": "full_scenario_operations_browser_observed",
+    "responseStatus": 503,
+    "responseCode": "positions_source_unavailable",
+    "initialRequestCount": 6,
+    "initialResponseCount": 6,
+    "retryActionCount": 1,
+    "retryRequestCount": 6,
+    "retryResponseCount": 6,
+    "retryCycleMs": 2717,
+    "initialErrorElapsedMs": 3434,
+    "visibleUnavailableState": true,
+    "visibleEmptyState": false,
+    "retryButtonVisible": true,
+    "routePreserved": true,
+    "writeRequestCount": 0,
+    "screenshots": {
+      "initialError": "preview-trading-error-positions-2026-09-30.png",
+      "afterRetry": "preview-trading-error-positions-retry-2026-09-30.png"
+    }
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false,
+    "tradingWriteRequestCount": 0,
+    "unexpectedTradingRequestCount": 0
+  },
+  "measurements": {
+    "totalFlowMs": 6201,
+    "apiRequestCount": 20,
+    "apiResponseCount": 20,
+    "positionResponses": [
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "operationId": "listOpenPositions",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 6,
+        "body": {
+          "code": "positions_source_unavailable",
+          "message": "Trading positions require a configured account data source."
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "operationId": "listOpenPositions",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 3,
+        "body": {
+          "code": "positions_source_unavailable",
+          "message": "Trading positions require a configured account data source."
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "operationId": "listOpenPositions",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 3,
+        "body": {
+          "code": "positions_source_unavailable",
+          "message": "Trading positions require a configured account data source."
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "operationId": "listOpenPositions",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2,
+        "body": {
+          "code": "positions_source_unavailable",
+          "message": "Trading positions require a configured account data source."
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "operationId": "listOpenPositions",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2,
+        "body": {
+          "code": "positions_source_unavailable",
+          "message": "Trading positions require a configured account data source."
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "operationId": "listOpenPositions",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 4,
+        "body": {
+          "code": "positions_source_unavailable",
+          "message": "Trading positions require a configured account data source."
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "operationId": "listOpenPositions",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 15,
+        "body": {
+          "code": "positions_source_unavailable",
+          "message": "Trading positions require a configured account data source."
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "operationId": "listOpenPositions",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 4,
+        "body": {
+          "code": "positions_source_unavailable",
+          "message": "Trading positions require a configured account data source."
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "operationId": "listOpenPositions",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 4,
+        "body": {
+          "code": "positions_source_unavailable",
+          "message": "Trading positions require a configured account data source."
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "operationId": "listOpenPositions",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 5,
+        "body": {
+          "code": "positions_source_unavailable",
+          "message": "Trading positions require a configured account data source."
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "operationId": "listOpenPositions",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 3,
+        "body": {
+          "code": "positions_source_unavailable",
+          "message": "Trading positions require a configured account data source."
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "operationId": "listOpenPositions",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 4,
+        "body": {
+          "code": "positions_source_unavailable",
+          "message": "Trading positions require a configured account data source."
+        }
+      }
+    ],
+    "apiFailures": [
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null,
+        "failure": "net::ERR_ABORTED",
+        "hadResponse": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null,
+        "failure": "net::ERR_ABORTED",
+        "hadResponse": true
+      }
+    ],
+    "unmatchedApiFailureCount": 0,
+    "pageErrors": [],
+    "externalApiOriginCount": 0
+  },
+  "apiRequests": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "operationId": null,
+      "startedAt": 1790728434097
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1790728434138
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "startedAt": 1790728434321
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1790728434321
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": null,
+      "startedAt": 1790728434339
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1790728434341
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1790728434355
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "operationId": null,
+      "startedAt": 1790728434355
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "startedAt": 1790728434503
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "startedAt": 1790728434766
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "startedAt": 1790728435276
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "startedAt": 1790728436292
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "startedAt": 1790728436555
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "startedAt": 1790728437066
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "startedAt": 1790728437421
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "startedAt": 1790728437701
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "startedAt": 1790728438212
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "startedAt": 1790728439232
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "startedAt": 1790728439498
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "startedAt": 1790728440009
+    }
+  ],
+  "apiResponses": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "operationId": null,
+      "status": 401,
+      "fromServiceWorker": true,
+      "elapsedMs": 16
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "status": 204,
+      "fromServiceWorker": true,
+      "elapsedMs": 18
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 19
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 3
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 5
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 7
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 7
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 6,
+      "body": {
+        "code": "positions_source_unavailable",
+        "message": "Trading positions require a configured account data source."
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 3,
+      "body": {
+        "code": "positions_source_unavailable",
+        "message": "Trading positions require a configured account data source."
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 3,
+      "body": {
+        "code": "positions_source_unavailable",
+        "message": "Trading positions require a configured account data source."
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2,
+      "body": {
+        "code": "positions_source_unavailable",
+        "message": "Trading positions require a configured account data source."
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2,
+      "body": {
+        "code": "positions_source_unavailable",
+        "message": "Trading positions require a configured account data source."
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 4,
+      "body": {
+        "code": "positions_source_unavailable",
+        "message": "Trading positions require a configured account data source."
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 15,
+      "body": {
+        "code": "positions_source_unavailable",
+        "message": "Trading positions require a configured account data source."
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 4,
+      "body": {
+        "code": "positions_source_unavailable",
+        "message": "Trading positions require a configured account data source."
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 4,
+      "body": {
+        "code": "positions_source_unavailable",
+        "message": "Trading positions require a configured account data source."
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 5,
+      "body": {
+        "code": "positions_source_unavailable",
+        "message": "Trading positions require a configured account data source."
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 3,
+      "body": {
+        "code": "positions_source_unavailable",
+        "message": "Trading positions require a configured account data source."
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 4,
+      "body": {
+        "code": "positions_source_unavailable",
+        "message": "Trading positions require a configured account data source."
+      }
+    }
+  ],
+  "sourceHashes": {
+    "contracts/openapi/trading.yaml": "ea87584c03ab69a0d552d80590e36e15ab7b38851cc1583d9c892bbb91f19437",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "8382400738090945e6c3ec53286f288f0ed2d41c90dbd407eec2b48d36d347ae",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "6deef3b43c51e05c9cd058d8743b23b64a86579f474ce0486830359ac50ac200",
+    "src/features/trading/routes.ts": "cb268f664e4c0fadd39ab1cd1430dd968b1700dc49dab56fb1f4782b524d0385",
+    "src/features/trading/api/trading-api.ts": "bfd385aba4911e0640567e88dd5b5c9352eea553cda7518cfb28f9009a1c32fa",
+    "src/features/trading/model/trading-queries.ts": "344352bcfc5ea4a209fb0a28a69417330f5f2e5cb87775fd90661b3a51202e5b",
+    "src/features/trading/pages/OpenPositionsPage.tsx": "709874871e1a37f5ec0d8096188357a72349a08fb6495536c1c9ddf85097c2b1",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/ui/ErrorState.tsx": "7e501dd15a90aea2bf93e33150e47d455bbe3a24a0da1f986cca180125d4acd2",
+    "docs/architecture/production-readiness/evidence/A06/run-trading-error-browser-check.mjs": "401505eb766820f65788904c57fb64a02dfea8e92394f182bb1c5d5d1f3bedeb"
+  },
+  "limitations": "This local fixture exercises only listOpenPositions because the Trading OpenAPI contract declares 503 only for this operation. The existing handler returns positions_source_unavailable; six retries and timing are client/MSW behavior, not backend availability or latency evidence."
+}

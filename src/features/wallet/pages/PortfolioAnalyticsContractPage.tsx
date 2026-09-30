@@ -6,6 +6,7 @@ import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { useAuth } from '@/shared/session/useAuth';
 import { useWalletPortfolioAnalyticsQuery } from '../model/wallet-queries';
 import type {
   PortfolioAnalyticsPeriod,
@@ -17,8 +18,23 @@ const PERIODS: PortfolioAnalyticsPeriod[] = ['1W', '1M', '3M', '1Y', 'ALL'];
 
 export function PortfolioAnalyticsContractPage() {
   const colors = useThemeColors();
+  const { hasPermission } = useAuth();
+  const canReadWallet = hasPermission('wallet:read');
   const [period, setPeriod] = useState<PortfolioAnalyticsPeriod>('1M');
-  const query = useWalletPortfolioAnalyticsQuery(period);
+  const query = useWalletPortfolioAnalyticsQuery(period, canReadWallet);
+
+  if (!canReadWallet) {
+    return (
+      <PageLayout>
+        <Header title="Portfolio Analytics" subtitle="Wallet performance contract" back />
+        <PageContent>
+          <p role="alert" style={{ color: colors.error }}>
+            Wallet read permission is required to view portfolio analytics.
+          </p>
+        </PageContent>
+      </PageLayout>
+    );
+  }
 
   if (query.isPending) {
     return (

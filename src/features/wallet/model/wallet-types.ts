@@ -91,6 +91,22 @@ export interface WalletWithdrawalNetwork {
   memoPlaceholder?: string;
 }
 
+export type WalletNetworkHealth = 'operational' | 'degraded' | 'congested' | 'maintenance';
+
+export interface WalletNetworkStatus {
+  id: string;
+  name: string;
+  status: WalletNetworkHealth;
+  depositEnabled: boolean;
+  withdrawalEnabled: boolean;
+  updatedAt: string;
+  message?: string;
+}
+
+export interface WalletNetworkStatusResponse {
+  items: WalletNetworkStatus[];
+}
+
 export interface WalletTransferRequest {
   fromWallet: WalletAccountId;
   toWallet: WalletAccountId;

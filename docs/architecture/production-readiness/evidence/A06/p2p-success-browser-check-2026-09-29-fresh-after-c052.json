@@ -1,0 +1,137 @@
+{
+  "checkedAt": "2026-09-29T17:21:13.683Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "branch": "codex/vittrade-architecture-completion",
+  "origin": "http://127.0.0.1:5190",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "p2p.success",
+    "status": "passed",
+    "persona": "developer (preview only)",
+    "route": "/w/p2p/escrow/p2p002",
+    "additionalRoutes": ["/w/p2p/ad/ad001", "/w/p2p/order/dev-p2p-order-0001"],
+    "observedOperationIds": ["getP2POrder", "getP2PAd", "createP2POrder"],
+    "expectedDomainOperationCount": 42,
+    "coverage": "representative_browser_observed"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allP2PResponsesFromServiceWorker": true,
+    "p2pMutationsAreLocalInMemoryFixtureChanges": true,
+    "externalApiOrigins": [],
+    "realBackendMutationSent": false,
+    "escrowReleaseTriggered": false,
+    "markPaidTriggered": false
+  },
+  "measurements": {
+    "totalFlowMs": 4668,
+    "paidEscrowRouteMs": 64,
+    "adLoadAndCreateOrderFlowMs": 200,
+    "createOrderToCreatedDetailMs": 63,
+    "p2pApiResponseCount": 4,
+    "apiRequestCount": 9,
+    "pageErrorCount": 0
+  },
+  "assertions": {
+    "paidEscrowGet": {
+      "status": 200,
+      "fromServiceWorker": true,
+      "orderStatus": "paid"
+    },
+    "paidEscrowUi": {
+      "route": "/w/p2p/escrow/p2p002",
+      "paymentStateVisible": true,
+      "authorizedReleaseActionVisible": true,
+      "releaseClicked": false
+    },
+    "adGet": {
+      "status": 200,
+      "fromServiceWorker": true,
+      "adId": "ad001"
+    },
+    "createOrderPost": {
+      "status": 201,
+      "fromServiceWorker": true,
+      "resultStatus": "created",
+      "orderId": "dev-p2p-order-0001",
+      "idempotencyKeyPresent": true,
+      "idempotencyKeyPrefixValid": true,
+      "request": {
+        "adId": "ad001",
+        "asset": "USDT",
+        "currency": "VND",
+        "fiatAmount": 500000,
+        "paymentMethod": "Vietcombank",
+        "amount": 19.723865877712033
+      },
+      "createPostCount": 1
+    },
+    "createdOrderGet": {
+      "status": 200,
+      "fromServiceWorker": true,
+      "idMatchesReceipt": true,
+      "route": "/w/p2p/order/dev-p2p-order-0001"
+    },
+    "p2pMutationRequests": [
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders"
+      }
+    ],
+    "p2pResponses": [
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders/p2p002",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/ads/ad001",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders",
+        "status": 201,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders/dev-p2p-order-0001",
+        "status": 200,
+        "fromServiceWorker": true
+      }
+    ],
+    "p2pRequestFailures": [],
+    "pageErrors": []
+  },
+  "screenshots": {
+    "escrowPaid": "preview-p2p-success-escrow-paid-2026-09-29-fresh-after-c052.png",
+    "createdOrder": "preview-p2p-success-order-created-2026-09-29-fresh-after-c052.png"
+  },
+  "sourceHashes": {
+    "contracts/openapi/p2p.yaml": "17d7e0c1b198d6adadc9d5a0519c029084257c82132e8e4391891c5e92c2c576",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "c22970169c1bdc879a991e0e0baa1d71b2da6e79e49c633bf9d71d9430d8f016",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/p2p/api/p2p-api.ts": "164f6424133e159b1b8dd5a6e23a0bdcd3c5a14c294d1a808cba09d552230b83",
+    "src/features/p2p/model/p2p-order-creation-queries.ts": "b609efdfc5dca0e37f67a1a644829fed8ecf09fdf4ddf646ba763bc05c188f6c",
+    "src/features/p2p/pages/P2PAdDetailContractPage.tsx": "ed40c1cd81af7d8fdb506128cd549eb6593273880224c76938fe079b92036f65",
+    "src/features/p2p/pages/P2PEscrowDetailPage.tsx": "90f39e38073ff3f7f1a9e650bb1f5f5d43a29f6131b3910ee742e7074b07c4a8",
+    "src/features/p2p/routes.ts": "70de2d9cae22dfb45031be5cbe5fe858a863aa2bb82b266bea39ce4137e1dbee",
+    "docs/architecture/production-readiness/evidence/A06/run-p2p-success-browser-check.mjs": "d33ddc7456c013ae93dac0c728bccbf2eb8b9d79aef490e7d0db8621f35c29f9"
+  },
+  "limitations": [
+    "This is local Chromium/MSW UI and adapter evidence only; it does not verify backend persistence, authorization enforcement, reconciliation, staging or user acceptance.",
+    "Only three of 42 P2P operations were observed; p2p.success remains representative coverage.",
+    "The release action was checked for visibility and deliberately not invoked; paid does not mean released."
+  ]
+}

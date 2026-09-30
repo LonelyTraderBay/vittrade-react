@@ -6,7 +6,7 @@
  *  Market Sectors, Token Fundamentals
  */
 
-import { HEATMAP_COINS, CRYPTO_PAIRS } from '@/dev/mocks/trading-fixtures';
+import { HEATMAP_COINS } from '@/dev/mocks/trading-fixtures';
 
 // ─── Global Market Stats ──────────────────────────────────────
 export interface GlobalMarketStats {

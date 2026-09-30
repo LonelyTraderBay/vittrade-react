@@ -1,0 +1,78 @@
+{
+  "checkedAt": "2026-09-29T10:26:28.273Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "branch": "codex/vittrade-architecture-completion",
+  "origin": "http://127.0.0.1:4173",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "predictions.duplicate",
+    "status": "passed",
+    "persona": "developer (preview only)",
+    "route": "/w/markets/predictions/event/pred-1",
+    "operationIds": ["placePredictionOrder", "getPredictionOrderReceipt"],
+    "observedOperationIds": ["placePredictionOrder"],
+    "supportingOperationIds": ["getPredictionEvent"],
+    "expectedDomainOperationCount": 8,
+    "coverage": "representative_browser_observed"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "localContractStatusFixtureOnly": true,
+    "conflictBodyDefinedByContract": false,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false
+  },
+  "measurements": {
+    "totalFlowMs": 1486,
+    "apiRequestCount": 5,
+    "apiResponseCount": 5,
+    "predictionApiRequestCount": 2,
+    "predictionApiResponseCount": 2,
+    "orderMutationCount": 1,
+    "conflictResponseMs": 15,
+    "observationWindowAfterConflictMs": 500,
+    "requestFailureCount": 0,
+    "pageErrorCount": 0
+  },
+  "assertions": {
+    "event": {
+      "status": 200,
+      "serviceWorker": true
+    },
+    "conflict": {
+      "status": 409,
+      "responseBodyBytes": 0,
+      "idempotencyKeyPresent": true,
+      "requestCount": 1,
+      "genericErrorVisible": true,
+      "routePreserved": "/w/markets/predictions/event/pred-1",
+      "automaticReceiptLookup": false
+    },
+    "externalApiOrigins": [],
+    "requestFailures": [],
+    "pageErrors": []
+  },
+  "sourceHashes": {
+    "contracts/openapi/predictions.yaml": "146a0442f6879fc50dc53c9f74d104837092d06edcfcf3e68537454b3e8c556b",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/preview-scenario-handler.ts": "c22970169c1bdc879a991e0e0baa1d71b2da6e79e49c633bf9d71d9430d8f016",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/predictions/api/predictions-api.ts": "122853909253981bc9274bba29e022111d6b5ca58da81d9d9a28f0c59cbf7b87",
+    "src/features/predictions/model/prediction-queries.ts": "03dd010790608dd086de73d18e88b33c0295b61dd73e9c1ad35227e6076470ca",
+    "src/features/predictions/pages/PredictionContractPages.tsx": "74fa8076f0f69751850ab77ba7032a199fcc611c68dca7d11ef5bbe55522bdfe"
+  },
+  "artifacts": {
+    "screenshot": "preview-predictions-duplicate-conflict-2026-09-29.png",
+    "report": "predictions-duplicate-browser-check-2026-09-29.json"
+  },
+  "limitations": [
+    "Local MSW verifies only that the UI renders its generic error for the contract-declared 409 status.",
+    "The OpenAPI response has no body schema; this fixture returns no body and does not invent a server message.",
+    "This does not establish backend duplicate detection, same-key replay, order persistence, staging, or user acceptance.",
+    "Only placePredictionOrder was observed out of the two linked operations; the row is representative, not full coverage."
+  ]
+}

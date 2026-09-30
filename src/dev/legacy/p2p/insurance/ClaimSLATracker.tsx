@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Clock, AlertTriangle, CheckCircle, Zap } from 'lucide-react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
-import { φ, φSpace } from '@/shared/lib/golden';
+import { φ } from '@/shared/lib/golden';
 import { TrCard } from '@/shared/ui/TrCard';
 import { hexToRgba } from '@/shared/lib/string';
 

@@ -340,8 +340,7 @@ class DCAAnalyticsService implements IAnalyticsService {
      ───────────────────────────────────────── */
 
   /**
-   * Read-only camelCase view of the queued events.
-   * Consumed by the admin dashboards (RealTimeMetrics, AnalyticsDashboard, AdminHome).
+   * Read-only camelCase view of the queued events for diagnostics and tests.
    */
   getQueue(): QueuedAnalyticsEvent[] {
     return this.eventQueue.map((event) => ({

@@ -1,0 +1,1316 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-29T23:42:16.820Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "branch": "codex/vittrade-architecture-completion",
+  "origin": "http://127.0.0.1:4173",
+  "browser": "Chromium via Playwright",
+  "viewport": { "width": 1440, "height": 900 },
+  "scenario": {
+    "id": "support.error",
+    "status": "passed",
+    "persona": "support (development preview)",
+    "operationIds": [
+      "listNews",
+      "listNotifications",
+      "getHelpCenter",
+      "listSupportTickets"
+    ],
+    "observedOperationIds": [
+      "getHelpCenter",
+      "listNews",
+      "listNotifications",
+      "listSupportTickets"
+    ],
+    "expectedDomainOperationCount": 4,
+    "coverage": "full_scenario_operations_browser_observed"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "personaAndScenarioApplied": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "allScenarioResponsesAreLocalSynthetic503": true,
+    "observedScenarioResponseCount": 48,
+    "localMockMutationCount": 0,
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false,
+    "externalApiOrigins": [],
+    "unexpectedScenarioRequestCount": 0,
+    "pageErrorCount": 0,
+    "scenarioTransportFailureCount": 0
+  },
+  "measurements": {
+    "totalFlowMs": 22577,
+    "completedAt": "2026-09-29T23:42:39.568Z",
+    "scenarioRequestCount": 48,
+    "scenarioResponseCount": 48,
+    "scenarioOperationRequestCounts": {
+      "listNews": 12,
+      "listNotifications": 12,
+      "getHelpCenter": 12,
+      "listSupportTickets": 12
+    },
+    "scenarioOperationResponseCounts": {
+      "listNews": 12,
+      "listNotifications": 12,
+      "getHelpCenter": 12,
+      "listSupportTickets": 12
+    },
+    "readOperations": [
+      {
+        "operationId": "listNews",
+        "route": "/w/news",
+        "initialResponseCount": 6,
+        "initialStatusCounts": { "503": 6 },
+        "manualRetryResponseCount": 6,
+        "manualRetryStatusCounts": { "503": 6 },
+        "totalResponseCount": 12,
+        "localServiceWorkerResponses": true,
+        "errorStateVisibleAfterRetry": true,
+        "retryRoutePreserved": true,
+        "successContentHidden": true,
+        "manualRetryFlowMs": 2631,
+        "screenshot": "preview-support-error-news-2026-09-29.png"
+      },
+      {
+        "operationId": "listNotifications",
+        "route": "/w/notifications",
+        "initialResponseCount": 6,
+        "initialStatusCounts": { "503": 6 },
+        "manualRetryResponseCount": 6,
+        "manualRetryStatusCounts": { "503": 6 },
+        "totalResponseCount": 12,
+        "localServiceWorkerResponses": true,
+        "errorStateVisibleAfterRetry": true,
+        "retryRoutePreserved": true,
+        "successContentHidden": true,
+        "manualRetryFlowMs": 2642,
+        "screenshot": "preview-support-error-notifications-2026-09-29.png"
+      },
+      {
+        "operationId": "getHelpCenter",
+        "route": "/w/support/help",
+        "initialResponseCount": 6,
+        "initialStatusCounts": { "503": 6 },
+        "manualRetryResponseCount": 6,
+        "manualRetryStatusCounts": { "503": 6 },
+        "totalResponseCount": 12,
+        "localServiceWorkerResponses": true,
+        "errorStateVisibleAfterRetry": true,
+        "retryRoutePreserved": true,
+        "successContentHidden": true,
+        "manualRetryFlowMs": 2617,
+        "screenshot": "preview-support-error-help-2026-09-29.png"
+      },
+      {
+        "operationId": "listSupportTickets",
+        "route": "/w/support",
+        "initialResponseCount": 6,
+        "initialStatusCounts": { "503": 6 },
+        "manualRetryResponseCount": 6,
+        "manualRetryStatusCounts": { "503": 6 },
+        "totalResponseCount": 12,
+        "localServiceWorkerResponses": true,
+        "errorStateVisibleAfterRetry": true,
+        "retryRoutePreserved": true,
+        "successContentHidden": true,
+        "manualRetryFlowMs": 2633,
+        "screenshot": "preview-support-error-tickets-2026-09-29.png"
+      }
+    ],
+    "excludedMutationOperationIds": [
+      "markNotificationRead",
+      "createSupportTicket"
+    ],
+    "excludedMutationRequestCount": 0,
+    "externalApiOriginCount": 0,
+    "scenarioTransportFailureCount": 0,
+    "pageErrorCount": 0
+  },
+  "assertions": {
+    "errorStateAndRetryVisibleAfterEachReadFailure": true,
+    "staleSuccessContentHiddenAfterEachFailure": true,
+    "finalRoute": "/w/support",
+    "responses": [
+      {
+        "method": "GET",
+        "path": "/api/content/news",
+        "operationId": "listNews",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/content/news",
+        "operationId": "listNews",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/content/news",
+        "operationId": "listNews",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/content/news",
+        "operationId": "listNews",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/content/news",
+        "operationId": "listNews",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/content/news",
+        "operationId": "listNews",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/content/news",
+        "operationId": "listNews",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 16
+      },
+      {
+        "method": "GET",
+        "path": "/api/content/news",
+        "operationId": "listNews",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/content/news",
+        "operationId": "listNews",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/content/news",
+        "operationId": "listNews",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/content/news",
+        "operationId": "listNews",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/content/news",
+        "operationId": "listNews",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 16
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/help",
+        "operationId": "getHelpCenter",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/help",
+        "operationId": "getHelpCenter",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/help",
+        "operationId": "getHelpCenter",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/help",
+        "operationId": "getHelpCenter",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/help",
+        "operationId": "getHelpCenter",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/help",
+        "operationId": "getHelpCenter",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/help",
+        "operationId": "getHelpCenter",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 16
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/help",
+        "operationId": "getHelpCenter",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/help",
+        "operationId": "getHelpCenter",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/help",
+        "operationId": "getHelpCenter",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/help",
+        "operationId": "getHelpCenter",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/help",
+        "operationId": "getHelpCenter",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/tickets",
+        "operationId": "listSupportTickets",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/tickets",
+        "operationId": "listSupportTickets",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/tickets",
+        "operationId": "listSupportTickets",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/tickets",
+        "operationId": "listSupportTickets",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/tickets",
+        "operationId": "listSupportTickets",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/tickets",
+        "operationId": "listSupportTickets",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/tickets",
+        "operationId": "listSupportTickets",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 16
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/tickets",
+        "operationId": "listSupportTickets",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/tickets",
+        "operationId": "listSupportTickets",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/tickets",
+        "operationId": "listSupportTickets",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/tickets",
+        "operationId": "listSupportTickets",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/tickets",
+        "operationId": "listSupportTickets",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      }
+    ]
+  },
+  "apiRequests": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "operationId": null,
+      "startedAt": 1790725337155
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "startedAt": 1790725337304
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": null,
+      "startedAt": 1790725337310
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1790725337367
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "operationId": null,
+      "startedAt": 1790725337367
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "startedAt": 1790725337447
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "startedAt": 1790725337711
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "startedAt": 1790725338219
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "startedAt": 1790725339236
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "startedAt": 1790725339498
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "startedAt": 1790725340009
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "startedAt": 1790725340360
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "startedAt": 1790725340639
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "startedAt": 1790725341146
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "startedAt": 1790725342149
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "startedAt": 1790725342409
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "startedAt": 1790725342917
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "startedAt": 1790725342970
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "startedAt": 1790725343226
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "startedAt": 1790725343736
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "startedAt": 1790725344739
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "startedAt": 1790725345004
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "startedAt": 1790725345514
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "startedAt": 1790725345892
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "startedAt": 1790725346163
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "startedAt": 1790725346671
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "startedAt": 1790725347690
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "startedAt": 1790725347952
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "startedAt": 1790725348460
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "startedAt": 1790725348505
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "startedAt": 1790725348767
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "startedAt": 1790725349276
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "startedAt": 1790725350294
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "startedAt": 1790725350556
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "startedAt": 1790725351064
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "startedAt": 1790725351425
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "startedAt": 1790725351697
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "startedAt": 1790725352207
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "startedAt": 1790725353212
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "startedAt": 1790725353474
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "startedAt": 1790725353983
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "startedAt": 1790725354017
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "startedAt": 1790725354275
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "startedAt": 1790725354783
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "startedAt": 1790725355802
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "startedAt": 1790725356063
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "startedAt": 1790725356571
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "startedAt": 1790725356975
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "startedAt": 1790725357251
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "startedAt": 1790725357759
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "startedAt": 1790725358763
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "startedAt": 1790725359025
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "startedAt": 1790725359532
+    }
+  ],
+  "apiResponses": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "operationId": null,
+      "status": 401,
+      "fromServiceWorker": true,
+      "elapsedMs": 18
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "status": 204,
+      "fromServiceWorker": true,
+      "elapsedMs": 5
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 3
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 3
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 3
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 1
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 1
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 16
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 1
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 3
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 16
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 1
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 4
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 16
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 1
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 16
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 1
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 3
+    }
+  ],
+  "apiFailures": [
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "failure": "net::ERR_ABORTED",
+      "hadResponse": true
+    }
+  ],
+  "screenshots": {
+    "news": "preview-support-error-news-2026-09-29.png",
+    "notifications": "preview-support-error-notifications-2026-09-29.png",
+    "help": "preview-support-error-help-2026-09-29.png",
+    "tickets": "preview-support-error-tickets-2026-09-29.png"
+  },
+  "sourceHashes": {
+    "contracts/openapi/support.yaml": "765533b6f9f9892ac7ec2fa70031b54c53daf07ff5c77775fca155e23ef58d5a",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/app/components/layout/WebSidebar.tsx": "6e294d2589c6106430121d8da43fc8a02b89a321907bf92db47452df97f3b90f",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "8382400738090945e6c3ec53286f288f0ed2d41c90dbd407eec2b48d36d347ae",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "6deef3b43c51e05c9cd058d8743b23b64a86579f474ce0486830359ac50ac200",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/dev/mocks/trading-fixtures.ts": "b082e4bc4094a4d7b36f41897ce9b27ea4c487fd3bf714622baf2f91fe2153cf",
+    "src/features/support/api/support-api.ts": "60b08b775dfb638f873e71dae62158ea5bbf0526fceea48a6758fee049ec1726",
+    "src/features/support/model/support-queries.ts": "13c828363c47df778880ad1ba79fb724eb0b320bfa22a5a3f9e182625f14afcb",
+    "src/features/support/model/support-types.ts": "adfc8a68c8b4e5b757ae52c1ae6ef24d176ee66922d84b6d385ad99c18c8cc84",
+    "src/features/support/pages/HelpCenterContractPage.tsx": "9610248e71e3109b35923192be658284f7c8866b09ceeb3c662b17c7e60243c7",
+    "src/features/support/pages/NewsContractPage.tsx": "86d27ed0c445a6bb03b2daae12e04909a046c9abeefed52a14308c270ef1dd98",
+    "src/features/support/pages/NotificationsContractPage.tsx": "8d67ce36ed1ac55e491876b0bd72ef721e5b533b9169e0ff4d519618df1a270d",
+    "src/features/support/pages/SupportContractPage.tsx": "2199a7e3758fca690ad8b013e2ba8c51c70c068a973d611989132b562ffe778b",
+    "src/shared/ui/ErrorState.tsx": "7e501dd15a90aea2bf93e33150e47d455bbe3a24a0da1f986cca180125d4acd2",
+    "src/shared/api/app-client.ts": "038ad4426147147f31f44fab94770860991ef90aaa8ed394ec2a4940c83c7b81",
+    "src/shared/api/client.ts": "882197549d075a8be1f495c7d2271dcbf1530ff1606190531da59b75020977bb",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/useAuth.ts": "65d58cfe61d4618a1849da066ecd4d6ae7c94c036af7361a91a1383a6b383e0b",
+    "src/main.tsx": "845215ef1b767caaa0f6ff7eeaebe49f471bdfba3aac223b8969671770783bd6",
+    "docs/architecture/production-readiness/evidence/A06/run-support-error-browser-check.mjs": "05c0f842e776a6df001017c790302d3a98bef50e29cbab095022e3ae0af0a7ad"
+  },
+  "limitations": [
+    "Support OpenAPI does not declare a 5xx response; HTTP 503 is a synthetic local preview fixture and not a contract-supported backend status.",
+    "The observed retry fan-out is local HTTP-client and React Query behavior; it is not a production retry recommendation or backend measurement.",
+    "This scenario covers four collection GETs; notification-read and ticket-create mutations are not sent because a failed write can have an unknown outcome.",
+    "MSW does not establish backend authorization, persistence, staging behavior or user acceptance."
+  ]
+}

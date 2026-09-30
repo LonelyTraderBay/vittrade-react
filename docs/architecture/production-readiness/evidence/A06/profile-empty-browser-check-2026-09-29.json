@@ -1,0 +1,243 @@
+{
+  "checkedAt": "2026-09-29T20:16:49.645Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "branch": "codex/vittrade-architecture-completion",
+  "origin": "http://127.0.0.1:4173",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "profile.empty",
+    "status": "passed",
+    "persona": "developer (preview only)",
+    "route": "/w/profile/devices, /w/profile/activity, /w/profile/sub-accounts",
+    "operationIds": [
+      "listTrustedDevices",
+      "listProfileActivity",
+      "listSubAccounts"
+    ],
+    "observedOperationIds": [
+      "listTrustedDevices",
+      "listProfileActivity",
+      "listSubAccounts"
+    ],
+    "expectedDomainOperationCount": 3,
+    "coverage": "full_scenario_operations_browser_observed"
+  },
+  "supportingOperationIds": [
+    "getProfile"
+  ],
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "observedNetworkApiResponseCount": 9,
+    "localMockMutationCount": 0,
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false,
+    "externalApiOrigins": []
+  },
+  "authorizationLimitations": {
+    "persona": "developer",
+    "mockSourcePermissions": [
+      "profile:read",
+      "profile:write",
+      "profile:security:write"
+    ],
+    "mswEnforcesProfileReadPermission": false,
+    "backendAuthorizationVerified": false
+  },
+  "measurements": {
+    "totalFlowMs": 3407,
+    "apiRequestCount": 9,
+    "apiResponseCount": 9,
+    "operationCounts": {
+      "listTrustedDevices": 1,
+      "listProfileActivity": 1,
+      "listSubAccounts": 1,
+      "getProfile": 1
+    },
+    "emptyResults": [
+      {
+        "operationId": "listTrustedDevices",
+        "status": 200,
+        "itemCount": 0
+      },
+      {
+        "operationId": "listProfileActivity",
+        "status": 200,
+        "itemCount": 0
+      },
+      {
+        "operationId": "listSubAccounts",
+        "status": 200,
+        "itemCount": 0
+      }
+    ],
+    "profileRootObjectPreserved": true,
+    "profileRootName": "Nguyễn Văn A",
+    "profileRequestFailureCount": 0,
+    "pageErrorCount": 0
+  },
+  "assertions": {
+    "apiRequests": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "operationId": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile"
+      }
+    ],
+    "apiResponses": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "operationId": null,
+        "status": 401,
+        "fromServiceWorker": true,
+        "responseTimeMs": 12
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null,
+        "status": 204,
+        "fromServiceWorker": true,
+        "responseTimeMs": 14
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 3
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 3
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 3
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 3
+      }
+    ],
+    "profileRequestFailures": [],
+    "pageErrors": [],
+    "externalApiOrigins": []
+  },
+  "screenshots": {
+    "devices": "preview-profile-empty-devices-2026-09-29.png",
+    "activity": "preview-profile-empty-activity-2026-09-29.png",
+    "subAccounts": "preview-profile-empty-subaccounts-2026-09-29.png"
+  },
+  "sourceHashes": {
+    "contracts/openapi/profile.yaml": "6830c4976f5b94b4f78e08b824eabd1c18b41bf96f23613412db065575f1d5d8",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "8382400738090945e6c3ec53286f288f0ed2d41c90dbd407eec2b48d36d347ae",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "6deef3b43c51e05c9cd058d8743b23b64a86579f474ce0486830359ac50ac200",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/profile/api/profile-api.ts": "acba23f32e4c8b2ad972e02c2184e6fbb616ce1ab4b1defeca60d2a825a9b707",
+    "src/features/profile/model/profile-queries.ts": "8849991f90d7d02df9a150cb2d139d0aa1fd7cb1c3b475382f0fc5582a8339b2",
+    "src/features/profile/model/profile-types.ts": "2c31759640a548270a76a9bb7ff17ef5af0cb1a684d968e063373f1157f93761",
+    "src/features/profile/pages/ActivityLogContractPage.tsx": "48be877678ceb63bb2ad01fa94eaf711bd291539508b3c60500632d0c24efb36",
+    "src/features/profile/pages/DeviceManagementContractPage.tsx": "fb32ff88b2c1d65420537814a3d8244cfde0f1a353a2c76356ae2329717dd286",
+    "src/features/profile/pages/EditProfileContractPage.tsx": "b3f1694edc7aa561c42bf016d543e870dba174767dc664edcc31474a89dc79be",
+    "src/features/profile/pages/SubAccountContractPage.tsx": "4842a28e0bc17738d0895352d4dcb168f4a981ea2926feb747120ea9de94d0a0",
+    "src/features/profile/routes.ts": "231052711e6dd138f27c96272e63d401e06854ed33d425d8712f485c3b601418",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",
+    "src/shared/session/useAuth.ts": "65d58cfe61d4618a1849da066ecd4d6ae7c94c036af7361a91a1383a6b383e0b",
+    "src/main.tsx": "845215ef1b767caaa0f6ff7eeaebe49f471bdfba3aac223b8969671770783bd6",
+    "docs/architecture/production-readiness/evidence/A06/run-profile-empty-browser-check.mjs": "485bcc8aaa8d29dae30eb3cc05afc902f747b348e0a4094c2ae7c98c6f1141ea"
+  },
+  "limitations": [
+    "Profile collection responses were empty local MSW fixtures; no backend request or mutation was sent.",
+    "The required Profile object still returned its normal 200 fixture; empty collection responses do not imply a missing profile or failed authorization.",
+    "MSW does not enforce Profile permission scopes, so this run does not establish backend authorization.",
+    "This browser run does not verify persistence, staging, production, or user acceptance."
+  ]
+}

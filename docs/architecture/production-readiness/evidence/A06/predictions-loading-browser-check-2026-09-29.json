@@ -1,0 +1,413 @@
+{
+  "checkedAt": "2026-09-29T18:37:55.929Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "branch": "codex/vittrade-architecture-completion",
+  "origin": "http://127.0.0.1:5190",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "predictions.loading",
+    "status": "passed",
+    "persona": "developer (preview only)",
+    "route": "/w/markets/predictions",
+    "additionalRoutes": [
+      "/w/markets/predictions/event/pred-1",
+      "/w/markets/predictions/portfolio",
+      "/w/markets/predictions/rewards",
+      "/w/markets/predictions/leaderboard",
+      "/w/markets/predictions/activity",
+      "/w/markets/predictions/receipt/po-1"
+    ],
+    "operationIds": [
+      "listPredictionEvents",
+      "getPredictionEvent",
+      "listPredictionPositions",
+      "listPredictionRewards",
+      "listPredictionLeaderboard",
+      "listPredictionActivity",
+      "getPredictionOrderReceipt"
+    ],
+    "observedOperationIds": [
+      "listPredictionEvents",
+      "getPredictionEvent",
+      "listPredictionPositions",
+      "listPredictionRewards",
+      "listPredictionLeaderboard",
+      "listPredictionActivity",
+      "getPredictionOrderReceipt"
+    ],
+    "expectedDomainOperationCount": 7,
+    "coverage": "full_scenario_operations_browser_observed"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "localPredictionFixturesOnly": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false
+  },
+  "measurements": {
+    "totalFlowMs": 14694,
+    "apiRequestCount": 12,
+    "apiResponseCount": 12,
+    "predictionApiRequestCount": 7,
+    "requestCounts": {
+      "listPredictionEvents": 1,
+      "getPredictionEvent": 1,
+      "listPredictionPositions": 1,
+      "listPredictionRewards": 1,
+      "listPredictionLeaderboard": 1,
+      "listPredictionActivity": 1,
+      "getPredictionOrderReceipt": 1,
+      "placePredictionOrder": 0
+    },
+    "predictionMutationCount": 0,
+    "requestFailureCount": 1,
+    "predictionRequestFailureCount": 0,
+    "pageErrorCount": 0
+  },
+  "assertions": {
+    "pages": {
+      "listPredictionEvents": {
+        "route": "/w/markets/predictions",
+        "status": 200,
+        "responseTimeMs": 2008,
+        "loadingTextVisibleBeforeResponse": true,
+        "falseEmptyStateDuringLoad": false,
+        "dataVisibleAfterResponse": true,
+        "itemCount": 12,
+        "visibleTitle": "Bitcoin reaches $150K before July 2026?"
+      },
+      "getPredictionEvent": {
+        "route": "/w/markets/predictions/event/pred-1",
+        "status": 200,
+        "responseTimeMs": 2004,
+        "loadingTextVisibleBeforeResponse": true,
+        "falseEmptyStateDuringLoad": false,
+        "dataVisibleAfterResponse": true,
+        "eventId": "pred-1",
+        "title": "Bitcoin reaches $150K before July 2026?",
+        "visible": true
+      },
+      "listPredictionPositions": {
+        "route": "/w/markets/predictions/portfolio",
+        "status": 200,
+        "responseTimeMs": 2006,
+        "loadingTextVisibleBeforeResponse": true,
+        "falseEmptyStateDuringLoad": false,
+        "dataVisibleAfterResponse": true,
+        "itemCount": 7,
+        "visibleItem": "pred-1 · Yes"
+      },
+      "listPredictionRewards": {
+        "route": "/w/markets/predictions/rewards",
+        "status": 200,
+        "responseTimeMs": 2012,
+        "loadingTextVisibleBeforeResponse": true,
+        "falseEmptyStateDuringLoad": false,
+        "dataVisibleAfterResponse": true,
+        "itemCount": 10,
+        "visibleItem": "Live Crypto · pred-1"
+      },
+      "listPredictionLeaderboard": {
+        "route": "/w/markets/predictions/leaderboard",
+        "status": 200,
+        "responseTimeMs": 2006,
+        "loadingTextVisibleBeforeResponse": true,
+        "falseEmptyStateDuringLoad": false,
+        "dataVisibleAfterResponse": true,
+        "itemCount": 10,
+        "visibleUser": "CryptoKing"
+      },
+      "listPredictionActivity": {
+        "route": "/w/markets/predictions/activity",
+        "status": 200,
+        "responseTimeMs": 2010,
+        "loadingTextVisibleBeforeResponse": true,
+        "falseEmptyStateDuringLoad": false,
+        "dataVisibleAfterResponse": true,
+        "itemCount": 30,
+        "visibleUser": "whale_42"
+      },
+      "getPredictionOrderReceipt": {
+        "route": "/w/markets/predictions/receipt/po-1",
+        "status": 200,
+        "responseTimeMs": 2022,
+        "loadingTextVisibleBeforeResponse": true,
+        "falseEmptyStateDuringLoad": false,
+        "dataVisibleAfterResponse": true,
+        "receiptId": "po-1",
+        "receiptStatus": "submitted",
+        "visible": true
+      }
+    },
+    "responses": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "operationId": null,
+        "status": 401,
+        "fromServiceWorker": true,
+        "responseTimeMs": 12
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null,
+        "status": 204,
+        "fromServiceWorker": true,
+        "responseTimeMs": 15
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 11
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 11
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events",
+        "operationId": "listPredictionEvents",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2008
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events/pred-1",
+        "operationId": "getPredictionEvent",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2004
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/positions",
+        "operationId": "listPredictionPositions",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2006
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/rewards",
+        "operationId": "listPredictionRewards",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2012
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/leaderboard",
+        "operationId": "listPredictionLeaderboard",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2006
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/activity",
+        "operationId": "listPredictionActivity",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2010
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/orders/po-1",
+        "operationId": "getPredictionOrderReceipt",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2022
+      }
+    ],
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "operationId": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events",
+        "operationId": "listPredictionEvents"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events/pred-1",
+        "operationId": "getPredictionEvent"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/positions",
+        "operationId": "listPredictionPositions"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/rewards",
+        "operationId": "listPredictionRewards"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/leaderboard",
+        "operationId": "listPredictionLeaderboard"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/activity",
+        "operationId": "listPredictionActivity"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/orders/po-1",
+        "operationId": "getPredictionOrderReceipt"
+      }
+    ],
+    "externalApiOrigins": [],
+    "requestFailures": [
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "error": "net::ERR_ABORTED"
+      }
+    ],
+    "pageErrors": []
+  },
+  "requestTrace": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "operationId": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "operationId": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/events",
+      "operationId": "listPredictionEvents"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/events/pred-1",
+      "operationId": "getPredictionEvent"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/positions",
+      "operationId": "listPredictionPositions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/rewards",
+      "operationId": "listPredictionRewards"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/leaderboard",
+      "operationId": "listPredictionLeaderboard"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/activity",
+      "operationId": "listPredictionActivity"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/orders/po-1",
+      "operationId": "getPredictionOrderReceipt"
+    }
+  ],
+  "sourceHashes": {
+    "contracts/openapi/predictions.yaml": "146a0442f6879fc50dc53c9f74d104837092d06edcfcf3e68537454b3e8c556b",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "93fd4a5f1a7637be2b10775edd8dfbd6e2562f1db3c90112dc3a5959519ca398",
+    "src/dev/mocks/prediction-fixtures.ts": "19108d2497d121587f3385df8db99908d094efe1f8fc0b170f350c5f76c4096f",
+    "src/dev/mocks/preview-scenario-handler.ts": "6deef3b43c51e05c9cd058d8743b23b64a86579f474ce0486830359ac50ac200",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/predictions/api/predictions-api.ts": "122853909253981bc9274bba29e022111d6b5ca58da81d9d9a28f0c59cbf7b87",
+    "src/features/predictions/model/prediction-queries.ts": "03dd010790608dd086de73d18e88b33c0295b61dd73e9c1ad35227e6076470ca",
+    "src/features/predictions/model/prediction-types.ts": "abfcf3333848f7444fdf5877a2c38fc606bf497d86b6f9b4a82cd5b9616dff78",
+    "src/features/predictions/pages/PredictionContractPages.tsx": "74fa8076f0f69751850ab77ba7032a199fcc611c68dca7d11ef5bbe55522bdfe",
+    "src/features/predictions/routes.ts": "1356d898100c0bd6c6dc5b266d85fe62dc268dc09f353db574a782c4763ad4f3",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/config/env.ts": "2c8c6d11cf10a16656e268181c91b3a34540f2677a9c4dc36394f67c066e38a6",
+    "src/main.tsx": "845215ef1b767caaa0f6ff7eeaebe49f471bdfba3aac223b8969671770783bd6",
+    "docs/architecture/production-readiness/evidence/A06/run-predictions-loading-browser-check.mjs": "a7cadfa0110bc2227487b4f84a26d489e08202b029fb2612b27872589ffc8054"
+  },
+  "screenshots": {
+    "events": "preview-predictions-loading-events-2026-09-29.png",
+    "event": "preview-predictions-loading-event-2026-09-29.png",
+    "portfolio": "preview-predictions-loading-portfolio-2026-09-29.png",
+    "rewards": "preview-predictions-loading-rewards-2026-09-29.png",
+    "leaderboard": "preview-predictions-loading-leaderboard-2026-09-29.png",
+    "activity": "preview-predictions-loading-activity-2026-09-29.png",
+    "receipt": "preview-predictions-loading-receipt-2026-09-29.png"
+  },
+  "limitations": [
+    "All Prediction API responses came from the local MSW service worker and in-memory fixtures; each 2-second delay is a preview setting, not backend latency.",
+    "Preview sign-in may cancel POST /api/auth/logout during redirect while its MSW 204 response is recorded; request failures are scoped to Predictions operations.",
+    "This verifies local loading and post-response UI states only; it does not prove backend behavior, persistence, staging or user acceptance."
+  ]
+}

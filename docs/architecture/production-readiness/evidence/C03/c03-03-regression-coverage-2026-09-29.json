@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "stepId": "C03.03",
+  "title": "Regression coverage audit for reproduced A02/A03/A04 failures",
+  "observedAt": "2026-09-29T15:03:48.000Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "operation": "audit_and_verify_existing_regressions",
+  "result": "pass",
+  "workingTree": "Pre-existing dirty source/tests were preserved. This step added no application or test code because direct behavior tests already cover each reproduced A02/A03/A04 failure.",
+  "testRun": {
+    "command": "node node_modules/vitest/vitest.mjs run --reporter=dot src/dev/mocks/auth-handlers.test.ts src/features/auth/api/auth-api.test.ts src/features/auth/api/auth-openapi-contract.test.ts src/app/contexts/AuthSessionProvider.test.tsx src/shared/session/auth-context.test.ts src/shared/api/http-client.test.ts src/shared/api/query-client.test.ts src/features/market/model/market-queries.test.tsx src/features/wallet/api/wallet-api.test.ts",
+    "result": "pass",
+    "files": "9/9",
+    "tests": "101/101",
+    "environment": "Windows 11 Pro; Node.js v24.19.0; Vitest 4.1.11; local adapters/fake fetch/MSW; no backend or staging connection"
+  },
+  "regressionMap": [
+    {
+      "task": "A02",
+      "finding": "F13",
+      "originalFailure": "The baseline login envelope was rejected with Zod invalid_union at status, and no /auth/login/mfa/verify handler was registered (EV-20260927-006).",
+      "behaviorUnderTest": "The MSW login handler returns the contract discriminated union; the real auth adapter accepts authenticated and mfa_required shapes; verification requires the backend challenge ID/code and does not authenticate before success.",
+      "testRefs": [
+        "src/dev/mocks/auth-handlers.test.ts:17-36",
+        "src/dev/mocks/auth-handlers.test.ts:174-228",
+        "src/features/auth/api/auth-api.test.ts:93-156",
+        "src/features/auth/api/auth-openapi-contract.test.ts:44-101"
+      ],
+      "historicalRegressionEvidence": ["EV-20260927-006", "EV-20260927-007", "EV-20260927-008"],
+      "status": "direct_behavior_regression_present_and_current_suite_passes"
+    },
+    {
+      "task": "A03",
+      "finding": "F01",
+      "originalFailure": "A deferred refresh resolving after remote logout restored authenticated=true and a stale access token; the original test failed before the fix (EV-20260927-015).",
+      "behaviorUnderTest": "A response from an older auth operation cannot restore local session/token after remote logout. Neighboring tests also cover stale bootstrap/login/MFA success and refresh error, a later login winning, and loginSync winning over an older refresh.",
+      "testRefs": [
+        "src/app/contexts/AuthSessionProvider.test.tsx:389-418",
+        "src/app/contexts/AuthSessionProvider.test.tsx:420-467",
+        "src/app/contexts/AuthSessionProvider.test.tsx:566-668"
+      ],
+      "historicalRegressionEvidence": [
+        "EV-20260927-015",
+        "EV-20260927-016",
+        "EV-20260927-019",
+        "EV-20260927-020"
+      ],
+      "status": "direct_deferred_race_regression_present_and_current_suite_passes"
+    },
+    {
+      "task": "A04",
+      "finding": "F02",
+      "originalFailure": "Pre-aborted requests still called fetch; abort during retry backoff was not surfaced as REQUEST_ABORTED; explicit retry counts were unbounded (EV-20260927-026, EV-20260927-028, EV-20260927-031).",
+      "behaviorUnderTest": "The shared client does not dispatch a pre-aborted request, uses one total timeout budget, caps/validates retries, keeps correlation/idempotency headers stable, never retries an ambiguous POST by default, handles abort during unauthorized handling/backoff and cleans up the deferred request. The market query integration propagates observer unmount cancellation through the API/client to fetch.",
+      "testRefs": [
+        "src/shared/api/http-client.test.ts:36-149",
+        "src/shared/api/http-client.test.ts:151-191",
+        "src/shared/api/http-client.test.ts:203-310",
+        "src/features/market/model/market-queries.test.tsx:169-201",
+        "src/features/wallet/api/wallet-api.test.ts:226-322"
+      ],
+      "historicalRegressionEvidence": [
+        "EV-20260927-026",
+        "EV-20260927-028",
+        "EV-20260927-031",
+        "EV-20260927-039",
+        "EV-20260927-043"
+      ],
+      "status": "direct_owner_and_adapter_regressions_present_and_current_suite_passes"
+    }
+  ],
+  "decision": {
+    "additionalTests": 0,
+    "reason": "Each baseline-reproduced behavior is already asserted at its owning MSW/API/provider/HTTP/query boundary, including historical red-before-fix evidence. A duplicate test would add no independent failure signal.",
+    "unresolved": [
+      "The full suite mismatch recorded by C03.01 remains: WebLoginPage.test.tsx expects old transport-error copy while the current dirty source returns new copy. Product intent is not established in this step; carry it to C03.05 rather than changing the behavior or weakening the assertion.",
+      "Current tests prove frontend behavior only. They do not certify backend MFA policy, server session revocation, provider replay semantics, or real API behavior."
+    ]
+  },
+  "sourceFiles": [
+    "contracts/openapi/auth.yaml",
+    "src/app/contexts/AuthSessionProvider.test.tsx",
+    "src/dev/mocks/handlers.ts",
+    "src/dev/mocks/auth-handlers.test.ts",
+    "src/features/auth/api/auth-api.test.ts",
+    "src/features/auth/api/auth-api.ts",
+    "src/features/auth/api/auth-openapi-contract.test.ts",
+    "src/features/market/model/market-queries.test.tsx",
+    "src/features/market/model/market-queries.ts",
+    "src/features/wallet/api/wallet-api.test.ts",
+    "src/features/wallet/api/wallet-api.ts",
+    "src/shared/api/http-client.test.ts",
+    "src/shared/api/http-client.ts",
+    "src/shared/api/query-client.test.ts",
+    "src/shared/session/AuthContext.tsx",
+    "src/shared/session/auth-context.test.ts"
+  ],
+  "sourceSha256": {
+    "contracts/openapi/auth.yaml": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b",
+    "src/app/contexts/AuthSessionProvider.test.tsx": "3fa6f81dd63f56020842500b8feee35ad2522f0d30ad1551faebb0e0f78841e1",
+    "src/dev/mocks/auth-handlers.test.ts": "239aa0d73df4ba5a4b19ac64724c04d5bd6ba8c1d1ab4673693262f97687885a",
+    "src/dev/mocks/handlers.ts": "93fd4a5f1a7637be2b10775edd8dfbd6e2562f1db3c90112dc3a5959519ca398",
+    "src/features/auth/api/auth-api.test.ts": "fe89e39a51b52b0de60e565e601453308a8d7b6ea7e2f616f97491abad9d933e",
+    "src/features/auth/api/auth-api.ts": "050846c48de49be56f6bdf6a73669b5d3a6230c559e33851cd07840609fca078",
+    "src/features/auth/api/auth-openapi-contract.test.ts": "3bc108d70a0c88c25238fec67755f2fc973c55f5ec13793561d8b2fee73bcc1b",
+    "src/features/market/model/market-queries.test.tsx": "8264edd6a23a47da17cf81f970d7aa5b42334de798045a86e0fdb03ebc175065",
+    "src/features/market/model/market-queries.ts": "bfb11787528086c9bdd12691ae19a451ff193c3d89c7d2c10d50242739052e85",
+    "src/features/wallet/api/wallet-api.test.ts": "7614abef4e737a5738a1bf342890caf2bb7f2f1d0672a146812fd5d6922448db",
+    "src/features/wallet/api/wallet-api.ts": "6f1918992ebdf61e559492ec2d16ba794edb04ef83cde3f248dcdacf6ba91d8a",
+    "src/shared/api/http-client.test.ts": "aa2b7f8725a65508cb42f48dc62c28492b2129f79b60e845c80fac5da5c3f312",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/api/query-client.test.ts": "5d6d396f02f80d4b0bc448b29e28ac2245ad49a492feb7c8dc7aa8764052a5ea",
+    "src/shared/session/auth-context.test.ts": "e19a31637e727cffce28de7b042623174fc16a0840200e735de14aa2ca867627",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2"
+  }
+}

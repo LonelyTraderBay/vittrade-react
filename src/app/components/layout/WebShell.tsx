@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { Outlet, useLocation } from 'react-router';
 import { WebSidebar } from './WebSidebar';
 import { WebCommandBar } from './WebCommandBar';
-import { useThemeColors } from '../../hooks/useThemeColors';
+import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useUI } from '../../hooks/useUI';
 import { PlatformProvider } from '../../hooks/usePlatform';
 import type { PlatformInfo } from '../../hooks/usePlatform';

@@ -50,8 +50,6 @@ export function OpenInterestWidget({ pair, data, className = '' }: OpenInterestP
   const c = useThemeColors();
 
   const isIncreasing = data.change24h > 0;
-  const pairName = pair.replace('/', '');
-
   return (
     <TrCard className={`p-4 ${className}`}>
       <div className="flex items-center justify-between mb-3">
@@ -184,7 +182,7 @@ interface LongShortRatioProps {
   className?: string;
 }
 
-export function LongShortRatio({ pair, data, className = '' }: LongShortRatioProps) {
+export function LongShortRatio({ pair: _pair, data, className = '' }: LongShortRatioProps) {
   const c = useThemeColors();
   const [view, setView] = useState<'accounts' | 'volume'>('accounts');
 
@@ -374,7 +372,7 @@ interface TopTraderPositionsProps {
   className?: string;
 }
 
-export function TopTraderPositions({ pair, data, className = '' }: TopTraderPositionsProps) {
+export function TopTraderPositions({ pair: _pair, data, className = '' }: TopTraderPositionsProps) {
   const c = useThemeColors();
 
   const isLongBias = data.longPct > 50;
@@ -683,7 +681,7 @@ interface FundingRateHistoryProps {
 }
 
 export function FundingRateHistory({
-  pair,
+  pair: _pair,
   history,
   currentRate,
   nextFundingIn,

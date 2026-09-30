@@ -65,50 +65,6 @@ export const waitForAsync = () => new Promise((resolve) => setTimeout(resolve, 0
 export const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 /**
- * Mock theme colors (matches useThemeColors hook)
- */
-export const mockThemeColors = {
-  bg: '#FFFFFF',
-  surface: '#F9FAFB',
-  surface2: '#F3F4F6',
-  border: '#E5E7EB',
-  text1: '#111827',
-  text2: '#374151',
-  text3: '#6B7280',
-  primary: '#3B82F6',
-  success: '#10B981',
-  successBg: '#D1FAE5',
-  successBorder: '#6EE7B7',
-  successText: '#065F46',
-  danger: '#EF4444',
-  dangerBg: '#FEE2E2',
-  dangerBorder: '#FCA5A5',
-  dangerText: '#991B1B',
-  warning: '#F59E0B',
-  warningBg: '#FEF3C7',
-  warningBorder: '#FCD34D',
-  warningText: '#92400E',
-  info: '#3B82F6',
-  infoBg: '#DBEAFE',
-  infoBorder: '#93C5FD',
-  infoText: '#1E40AF',
-};
-
-/**
- * Mock useThemeColors hook
- */
-vi.mock('../app/hooks/useThemeColors', () => ({
-  useThemeColors: () => mockThemeColors,
-}));
-
-/**
- * Mock useRoutePrefix hook
- */
-vi.mock('../app/hooks/useRoutePrefix', () => ({
-  useRoutePrefix: () => '',
-}));
-
-/**
  * Get element by test ID
  */
 export const getByTestId = (id: string) => document.querySelector(`[data-testid="${id}"]`);

@@ -1,0 +1,204 @@
+{
+  "purpose": "Universal 3.1 docs-only bootstrap; source survey and document validation, not product certification",
+  "rulesVersion": "3.1",
+  "observedAt": "2026-09-30T03:08:38.568Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "branch": "codex/vittrade-architecture-completion",
+  "cwd": "repository root",
+  "baseline": {
+    "stagedFiles": 710,
+    "unstagedFiles": 0,
+    "untrackedFiles": 0,
+    "startedAt": "2026-09-30T03:08:38.568Z",
+    "protectedCount": 1479,
+    "protectedDigest": "4c9fa49fdc5bf6bddfeaa5b158339a18942c7d1d1d90579c2fcf0773c1ddf70d",
+    "indexDigest": "6face135162d62f804eb262839d24149b13955b46e61b6345ad706b54d9696e3",
+    "checkpointDigest": "8c4171fdff1e83ddbdbd52c008959e8982c510386fa2c91644578874c7723037",
+    "productTrackingDigest": "161cd9e0acf20c20b12f4a7a71b6e3a87e30418b34944bf04e6bc495e48156b2",
+    "hashes": {
+      "AGENTS.md": "96adbe762423e5d81d179ad8426ccc644557ab1184072609c59312440f045874",
+      "README.md": "035257e3367b16f6f873b5e56d9fe2986d289c78f0c9180bd9d9de70106434fe",
+      "docs/ai/WORKFLOW.md": "bb26ae15956c722a93c93568d93018fe662a18444620222c0df3bb0d65497d3e",
+      "docs/architecture/production-readiness/PLAN.md": "a4d359ed20ac6c17543a623d1041e356f6b38145971b8249a2d93c2f75bb5cb6",
+      "docs/architecture/production-readiness/TRACKING.json": "d8d429a7befeac5b1a3d53bf8b852e40d5aee4638fa97934caeb19b29a1c71a0"
+    }
+  },
+  "universalHashesBefore": {
+    "AI_RULES.md": "1662406d9ac9e63646130516ad6811934b2bd7f0a6b7d240403749200777f9e3",
+    "PROJECT_BOOTSTRAP_PROMPT.txt": "b1d692184f9b4bac87f6b55b25e1c49bab90af5d5eb1706a428a09d85212b686",
+    "Đọc và thực hiện PROJECT_BOOTSTRAP.txt": "a1b66a829042249ed5e01e3eae593ddc2d980bf400c8454b3f2de24539e15e28"
+  },
+  "toolchain": {
+    "node": "24.19.0",
+    "npm": "11.17.0",
+    "git": "2.45.1.windows.1",
+    "codexCli": "0.159.0",
+    "targetNode": ".nvmrc and CI: 22",
+    "os": "Windows PowerShell"
+  },
+  "sourceChecks": [
+    {
+      "id": "LEDGER-BASELINE",
+      "level": "V0/V1",
+      "command": "node docs/architecture/production-readiness/check-tracking.mjs",
+      "result": "fail",
+      "exitCode": 1,
+      "errorCount": 3,
+      "errors": [
+        "Files: missing ledger entry AI_RULES.md",
+        "Files: missing ledger entry PROJECT_BOOTSTRAP_PROMPT.txt",
+        "Files: missing ledger entry Đọc và thực hiện PROJECT_BOOTSTRAP.txt"
+      ],
+      "productProof": false
+    },
+    {
+      "id": "INVENTORY",
+      "level": "V0/V1",
+      "command": "node scripts/generate-architecture-inventory.mjs --check",
+      "result": "fail",
+      "exitCode": 1,
+      "actual": "Architecture inventory is stale: docs/architecture/page-inventory.json.",
+      "notes": "Existing output preserved. Cause is not established; no product defect or regenerated output is claimed."
+    },
+    {
+      "id": "RULES-SOURCE",
+      "level": "V0",
+      "result": "pass",
+      "actual": "Both Universal headers declare 3.1/2026-09-29; opening instruction points to the same pair.",
+      "notes": "Hash identifies local input, not quality or distribution authenticity."
+    }
+  ],
+  "generatorHashes": {
+    "scripts/generate-architecture-inventory.mjs": "676f082a7d7bb3a34a108c3e2942cf9ffd17983e60f45addf598ce2ce6070d17",
+    "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs": "f1d6e5398ac01c23c23b102c180eac4599f29af3a88a417fbe84cb9b01391c50",
+    "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs": "1f5c402d2620f2fb8e6bd502091f3dfce65a3ed7ed05ff5a7e8468cc1f5e3f93"
+  },
+  "instructionDiscovery": {
+    "observed": "Root AGENTS was supplied in current session and read from checkout; no repo override/nested AGENTS found.",
+    "officialReference": "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
+    "checkedOn": "2026-09-30",
+    "limit": "Online documentation is not pinned CLI source; no independent new session or personal configuration audit was run."
+  },
+  "checksAfter": [
+    {
+      "id": "DOC-LINK",
+      "level": "V0/V1",
+      "command": "node --input-type=module (stdin, local inline Markdown path/heading check)",
+      "expected": "All local inline link paths and heading anchors in AGENTS, README, WORKFLOW, PROJECT_CONTEXT and PLAN resolve.",
+      "result": "pass",
+      "exitCode": 0,
+      "linkCount": 982,
+      "anchorCount": 10,
+      "errors": [],
+      "pass": true,
+      "notes": "Remote URLs, prose correctness and runtime semantics are outside this link check."
+    },
+    {
+      "id": "DOC-FORMAT",
+      "level": "V1",
+      "command": "node --input-type=module (stdin, prettier.check with resolved repo config)",
+      "result": "pass",
+      "exitCode": 0,
+      "files": [
+        {
+          "path": "docs/PROJECT_CONTEXT.md",
+          "pass": true
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/bootstrap-3.1-2026-09-30.json",
+          "pass": true
+        },
+        {
+          "path": "docs/architecture/production-readiness/TRACKING.json",
+          "pass": true
+        }
+      ],
+      "notes": "New profile/evidence and updated ledger only; no whole-repo Markdown formatting. Added prose is self-reviewed in the diff."
+    },
+    {
+      "id": "LEDGER",
+      "level": "V0/V1",
+      "command": "node docs/architecture/production-readiness/check-tracking.mjs",
+      "result": "pass",
+      "exitCode": 0,
+      "scope": {
+        "tasks": 38,
+        "steps": 205,
+        "pages": 129,
+        "routeDeclarations": 427,
+        "operations": 154,
+        "filesOutsidePlan": 908
+      },
+      "progress": {
+        "tasksDone": 10,
+        "tasksBlocked": 0,
+        "tasksNotApplicable": 0,
+        "stepsDone": 54,
+        "uiPagesDone": 0,
+        "userAcceptedPages": 0,
+        "unclassifiedRoutes": 0,
+        "routeDeclarationsWithResolvedUrls": 427,
+        "routeDeclarationsWithoutResolvedUrls": 0,
+        "backendOperationsDone": 0
+      },
+      "errorCount": 0,
+      "errors": [],
+      "notes": "File registry repaired; product task/step/milestone and application checkpoint unchanged."
+    },
+    {
+      "id": "DIFF",
+      "level": "V0",
+      "command": "git diff --check",
+      "result": "pass",
+      "exitCode": 0
+    },
+    {
+      "id": "PRESERVATION",
+      "level": "V0",
+      "command": "Node SHA-256 comparison of git-listed files outside seven document writes, git ls-files --stage -z, checkpoint and product records",
+      "result": "pass",
+      "protectedCount": 1479,
+      "protectedDigest": "4c9fa49fdc5bf6bddfeaa5b158339a18942c7d1d1d90579c2fcf0773c1ddf70d",
+      "indexDigest": "6face135162d62f804eb262839d24149b13955b46e61b6345ad706b54d9696e3",
+      "checkpointDigest": "8c4171fdff1e83ddbdbd52c008959e8982c510386fa2c91644578874c7723037",
+      "productTrackingDigest": "161cd9e0acf20c20b12f4a7a71b6e3a87e30418b34944bf04e6bc495e48156b2",
+      "pass": true,
+      "notes": "Same 1,479 paths/digests, exact index and semantic product/checkpoint digests as baseline. No source/config/lockfile/generated artifact changes."
+    }
+  ],
+  "productChecksRun": [],
+  "limitations": [
+    "Application unit/integration/coverage/build/E2E, live backend, HTTPS staging and remote CI were not run.",
+    "Node 24 doc checks do not verify Node 22 target gates.",
+    "Existing generated architecture inventory check fails and is preserved.",
+    "Only self-review; no independent review or release approval claimed."
+  ],
+  "applicationCheckpointPreserved": true,
+  "productionClaim": "CHƯA XÁC MINH; insufficient product evidence",
+  "filesTouched": [
+    "AGENTS.md",
+    "README.md",
+    "docs/ai/WORKFLOW.md",
+    "docs/PROJECT_CONTEXT.md",
+    "docs/architecture/production-readiness/PLAN.md",
+    "docs/architecture/production-readiness/TRACKING.json",
+    "docs/architecture/production-readiness/evidence/bootstrap-3.1-2026-09-30.json"
+  ],
+  "completedAt": "2026-09-30T03:16:47.145Z",
+  "universalHashesAfter": {
+    "AI_RULES.md": "1662406d9ac9e63646130516ad6811934b2bd7f0a6b7d240403749200777f9e3",
+    "PROJECT_BOOTSTRAP_PROMPT.txt": "b1d692184f9b4bac87f6b55b25e1c49bab90af5d5eb1706a428a09d85212b686"
+  },
+  "repairedDocAnchors": [
+    "UI-RUNBOOK.md#p2p-success--escrow-và-tạo-đơn-trên-preview-local",
+    "UI-RUNBOOK.md#market-loading--2026-09-29",
+    "UI-RUNBOOK.md#market-error--2026-09-29"
+  ],
+  "documentHashes": {
+    "AGENTS.md": "f8298726071cc5cfc6509fddc37379c1c8dca9e830519458587701066bf1a697",
+    "README.md": "826775e86cc2bc0379271ccf2674d69e602ecdb793d2534c904ee655ebc6447e",
+    "docs/ai/WORKFLOW.md": "729792e0930948d9b1f1708f939596d29e91c1cea55ab1fdfe007ed0bb88b2e7",
+    "docs/PROJECT_CONTEXT.md": "6393762c45859788839a62815ed06b8204437d695d65c878719f67dc9f6f2f6e",
+    "docs/architecture/production-readiness/PLAN.md": "382ca0bb224eed688a6504fb82b1e3d9950fa1f8d8b7481a471ae72ea2e05333"
+  }
+}

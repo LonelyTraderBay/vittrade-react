@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, LogIn, KeyRound, ShieldCheck, Lock, Eye, EyeOff } from 'lucide-react';
+import { X, LogIn, KeyRound, Lock, Eye, EyeOff } from 'lucide-react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { BottomSheetV2 } from '@/shared/ui/BottomSheetV2';
 
@@ -125,13 +125,15 @@ export function ReauthSheet({ open, onSubmit, onClose }: ReauthSheetProps) {
     >
       {/* Method toggle */}
       <div className="flex rounded-xl p-1 mb-5" style={{ background: c.surface2 }}>
-        {[
-          { id: 'password', label: 'Mật khẩu' },
-          { id: '2fa', label: 'Mã 2FA' },
-        ].map((tab) => (
+        {(
+          [
+            { id: 'password', label: 'Mật khẩu' },
+            { id: '2fa', label: 'Mã 2FA' },
+          ] as const
+        ).map((tab) => (
           <button
             key={tab.id}
-            onClick={() => setMethod(tab.id as any)}
+            onClick={() => setMethod(tab.id)}
             className="flex-1 py-2 rounded-lg text-sm font-semibold"
             style={{
               background: method === tab.id ? c.chipActiveBg : 'transparent',

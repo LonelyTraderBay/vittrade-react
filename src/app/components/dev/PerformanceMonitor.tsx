@@ -3,8 +3,8 @@ import { Activity, Zap, Package, Clock, TrendingDown } from 'lucide-react';
 import { Header } from '../layout/Header';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { PageContent, PageSection } from '@/shared/ui/layout/PageContent';
-import { useThemeColors } from '../../hooks/useThemeColors';
-import { TrCard } from '../ui/TrCard';
+import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { TrCard } from '@/shared/ui/TrCard';
 
 interface PerformanceMetrics {
   loadTime: number;

@@ -1,0 +1,99 @@
+{
+  "evidenceId": "EV-20260929-447",
+  "taskId": "A08",
+  "stepId": "A08.05",
+  "observedAt": "2026-09-29T12:35:00.000Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "environment": "Windows local checkout; Node.js; installed repository scripts and dependency-cruiser 18.4.0",
+  "result": "pass",
+  "gates": {
+    "openapi": {
+      "command": "node scripts/check-openapi-contracts.mjs",
+      "result": "pass",
+      "contracts": 15,
+      "operations": 154
+    },
+    "architecture": {
+      "command": "node node_modules/dependency-cruiser/bin/dependency-cruiser.mjs src --config .dependency-cruiser.cjs --validate",
+      "result": "pass",
+      "violations": 0,
+      "modules": 858,
+      "dependencies": 4619
+    },
+    "securityBoundary": {
+      "command": "node scripts/check-security-boundaries.mjs",
+      "result": "pass",
+      "sourceFiles": 543,
+      "rule": "credentials remain memory-only"
+    },
+    "environmentBoundary": {
+      "command": "node scripts/check-env-boundary.mjs",
+      "result": "pass",
+      "sourceFiles": 822
+    },
+    "productionMocks": {
+      "command": "node scripts/check-production-mocks.mjs",
+      "result": "pass",
+      "javascriptFiles": 222
+    },
+    "mockImportBoundary": {
+      "command": "node scripts/check-production-mock-imports.mjs",
+      "result": "pass",
+      "legacyFixturePageConsumers": 0,
+      "fixtureLocation": "src/dev/mocks"
+    },
+    "productionRoutes": {
+      "command": "node scripts/check-production-route-boundaries.mjs",
+      "result": "pass",
+      "explicitRouteGuards": 17,
+      "developmentOnlyRoutedMockPages": 2,
+      "developmentOnlyRoutedDemoPages": 2
+    },
+    "architectureInventory": {
+      "command": "node scripts/generate-architecture-inventory.mjs --check",
+      "result": "pass",
+      "pages": 129,
+      "routes": 427,
+      "components": 149,
+      "dataModules": 0,
+      "services": 32,
+      "mocks": 28
+    }
+  },
+  "documentationReview": [
+    {
+      "path": "ARCHITECTURE.md",
+      "result": "reviewed_unchanged",
+      "basis": "States MSW is development/test-only, mock preview does not certify production, backend/staging evidence is required, and the roadmap remains incomplete."
+    },
+    {
+      "path": "contracts/README.md",
+      "result": "reviewed_unchanged",
+      "basis": "States draft_frontend permissions are candidates only, backend authorization is final, auth/challenge rules are explicit, and contracts gate does not replace staging verification."
+    },
+    {
+      "path": "docs/ai/WORKFLOW.md",
+      "result": "reviewed_unchanged",
+      "basis": "Separates mock UI, technical verification, user acceptance, and backend/staging verification; forbids production certification from mocks."
+    }
+  ],
+  "invocationNote": "npm.cmd run architecture:check reached its Windows wrapper but the nested command could not resolve node from PATH. The installed dependency-cruiser entrypoint was invoked directly with node and passed with zero violations.",
+  "limitations": [
+    "These are local frontend boundary and consistency gates, not a complete security audit, full application test suite, CI run, backend integration, staging verification, production certification, or user acceptance.",
+    "UI acceptance remains 0/128; backend/staging remains 0/154. A06.03 still has 20 not_verified scenarios, including the user-confirmed wallet.unknown/duplicate contract blocker."
+  ],
+  "sourceHashes": {
+    ".dependency-cruiser.cjs": "75f59859a0a1e8a374c1c8ac71762c4a45f644591fe4d53fc194a37d105bc1a1",
+    "scripts/check-openapi-contracts.mjs": "8367c9b873a5f9934c329a315b622a1e61a573d82f7f9d400c77481015c516f1",
+    "scripts/check-security-boundaries.mjs": "f5320b27e1c8be47b95452f5f629335d689ded796b8de608f42cb4c4e9b2cded",
+    "scripts/check-env-boundary.mjs": "a821ae60eacbe16f9714f3daefd3c599d6d9f10bca45ab8797d769a1ad9dd6d7",
+    "scripts/check-production-mocks.mjs": "80178e094d123de4519ccc6dd12f827713a1789da782e13551a62a481fd45589",
+    "scripts/check-production-mock-imports.mjs": "81db7ff9a1cf5071304d573e13353a7576148f786a900f42eb021dc7de55985d",
+    "scripts/check-production-route-boundaries.mjs": "ae892360a719787c28c4be9e5e62b3473bb7d7228c3bcbaada9a349e1e812abe",
+    "scripts/generate-architecture-inventory.mjs": "676f082a7d7bb3a34a108c3e2942cf9ffd17983e60f45addf598ce2ce6070d17",
+    "docs/architecture/page-inventory.json": "5020bee660d40dd9f8908e88c39e6cbff08ca42668f0334a5f9704db2a3c43aa",
+    "ARCHITECTURE.md": "931efebe0f2e66cc1276fe2742de4adf122bd521ab1bd01e5cfcdd07293e422c",
+    "contracts/README.md": "59fa3b8e03d9f4c6c4a34e069e0fc2c254f8a9b87908900fbb839462a882498d",
+    "docs/ai/WORKFLOW.md": "bb26ae15956c722a93c93568d93018fe662a18444620222c0df3bb0d65497d3e"
+  }
+}

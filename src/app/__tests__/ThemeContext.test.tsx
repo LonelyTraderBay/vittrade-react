@@ -9,7 +9,7 @@
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { ThemeProvider } from '../contexts/ThemeContext';
+import { ThemeProvider } from '@/shared/theme/ThemeContext';
 import { useTheme } from '@/shared/theme/useTheme';
 
 describe('ThemeContext', () => {

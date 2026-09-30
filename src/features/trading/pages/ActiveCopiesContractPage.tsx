@@ -20,12 +20,25 @@ export function ActiveCopiesContractPage() {
   const prefix = useRoutePrefix();
   const colors = useThemeColors();
   const { hasPermission } = useAuth();
+  const canReadTrading = hasPermission('trade:read');
   const canWriteTrading = hasPermission('trading:write') || hasPermission('trade:write');
-  const query = useCopyRelationshipsQuery();
+  const query = useCopyRelationshipsQuery(canReadTrading);
   const stopMutation = useStopCopyRelationshipMutation();
   const [reasonById, setReasonById] = useState<Record<string, string>>({});
   const stopAttempts = useRef(new Map<string, { signature: string; key: string }>());
 
+  if (!canReadTrading) {
+    return (
+      <PageLayout>
+        <Header title="Copy đang chạy" back />
+        <PageContent>
+          <p role="alert" style={{ color: colors.text2 }}>
+            Tài khoản của bạn không có quyền xem quan hệ copy.
+          </p>
+        </PageContent>
+      </PageLayout>
+    );
+  }
   if (query.isPending) {
     return (
       <PageLayout>

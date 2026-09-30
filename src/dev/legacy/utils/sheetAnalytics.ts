@@ -34,6 +34,7 @@ export function trackSheetOpen(sheetName: string): SheetEvent {
   // In a real app, fire to analytics SDK here:
   // analytics.track('sheet_opened', { sheet: sheetName });
   if (typeof process === 'undefined' || (process.env && process.env.NODE_ENV !== 'test')) {
+    // eslint-disable-next-line no-console -- This development-only adapter logs until an analytics SDK is configured.
     console.info(`[SheetAnalytics] Opened: "${sheetName}" at ${event.isoDate}`);
   }
 

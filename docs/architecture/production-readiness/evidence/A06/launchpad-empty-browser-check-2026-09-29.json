@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-29T05:16:06.956Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "origin": "http://127.0.0.1:4173",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b",
+    "contracts/openapi/launchpad.yaml": "f91848569eda4fc8adbb96ec01c4015d3e8bea488ebfb54c9cbf807afbb7732e",
+    "docs/architecture/production-readiness/evidence/A06/run-launchpad-empty-browser-check.mjs": "6c1a70d7c7fdfada83b418f16dae307937c427b407e1572bc1f4ab30b1f18dd8",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/dev/PreviewControls.test.tsx": "69c779d5a50a0df88dffe43956b3085e68e60cf080dc5c5a4232e4d71cad01c2",
+    "src/dev/PreviewControls.tsx": "4d68e898a2b468cf25c36d0528df0b546fb037e5c4dc6bfcda944be3ecd18759",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "52d20d96c8f1c508e7803cad807003d53f9d1c801276874b4597b92a4b876bbb",
+    "src/dev/mocks/launchpad-fixtures.ts": "7c34266aecc5ab2cb73f4f25bc7f37f6901bcb5fd4c461faf1087f9985e78221",
+    "src/dev/mocks/personas.ts": "4f159d020319b86f5f991c49e7c9063a73afddedea9a4e16d8a7d2fb679a105f",
+    "src/dev/mocks/preview-scenario-handler.test.ts": "f8f596369bf5b6e6868259c341b3b098c639fd78dec80ccc4c8a075ac4c8a6d1",
+    "src/dev/mocks/preview-scenario-handler.ts": "1d7826d8dbfc7a4e56374b750aa14dc93e578b563142970f2bd0a8d99251a766",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/launchpad/api/launchpad-api.ts": "6cd5169460507947e3baeeb164bb14d27d9c9bf12e6899ab73f631389a40b627",
+    "src/features/launchpad/model/launchpad-queries.ts": "6f90972e9bcf18645b97e9dd5b78a4c17b7377340f163bea451ff417f859b6f9",
+    "src/features/launchpad/pages/LaunchpadContractPages.test.tsx": "b499ce1d2bae9d77eb6576315483f8be9edbbdaa08936cf57c0178725f669fe5",
+    "src/features/launchpad/pages/LaunchpadContractPages.tsx": "1c0b563300f776353a5b3a0dce37c1b011f3f3aae81c5ae2c4c1f8ea9bf5643c",
+    "src/shared/api/client.ts": "882197549d075a8be1f495c7d2271dcbf1530ff1606190531da59b75020977bb",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2"
+  },
+  "scenario": {
+    "id": "launchpad.empty",
+    "domain": "launchpad",
+    "state": "empty",
+    "status": "passed",
+    "observedAt": "2026-09-29T05:16:06.956Z",
+    "persona": "developer (local MSW fixture)",
+    "role": "user",
+    "routes": ["/w/launchpad"],
+    "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
+    "observedOperationIds": ["listLaunchpadProjects"],
+    "operationRequestCounts": {
+      "listLaunchpadProjects": 1,
+      "getLaunchpadProject": 0
+    },
+    "requests": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "resourceType": "fetch"
+      }
+    ],
+    "responses": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 18
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 11
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 1
+      }
+    ],
+    "listProjectCount": 0,
+    "listTotal": 0,
+    "activeCount": 0,
+    "scenarioSelected": true,
+    "externalApiOrigins": [],
+    "elapsedMs": 948,
+    "screenshots": ["preview-launchpad-empty-2026-09-29.png"],
+    "sourceHashesReviewed": 178,
+    "staleSourceHashesBeforeRun": [
+      "docs/architecture/production-readiness/evidence/A06/run-launchpad-empty-browser-check.mjs"
+    ],
+    "failures": [],
+    "sourceHashReview": {
+      "reviewedPaths": [
+        "docs/architecture/production-readiness/evidence/A06/run-launchpad-empty-browser-check.mjs"
+      ],
+      "priorHashes": {
+        "docs/architecture/production-readiness/evidence/A06/run-launchpad-empty-browser-check.mjs": "733c322636ae3bafbc67ee6d6c608f0768ad2de420f2fe434d96386def25f673"
+      },
+      "scope": "Added only contract-shaped Launchpad empty collection behavior and enabled the empty scenario selector; normalized the browser report to list the single observed route once. Focused tests and this browser run cover the change; Launchpad detail remains the normal fixture read.",
+      "sourceHashBaselineRefreshedAfterBrowserRun": true
+    },
+    "note": "Local Chromium/MSW observed one contract-valid 200 empty Launchpad list response and the visible no-projects state. The list contract provides no eligibility-reason field, so none is invented. This row observes listLaunchpadProjects only (1/2 linked operations); detail remains outside the empty-list route flow. No write or external API call occurred; this is not backend or user-acceptance evidence."
+  }
+}

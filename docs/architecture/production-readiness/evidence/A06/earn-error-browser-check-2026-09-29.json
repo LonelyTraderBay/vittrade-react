@@ -1,0 +1,465 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-29T04:13:07.844Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "origin": "http://127.0.0.1:4173",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sourceHashes": {
+    "contracts/openapi/earn.yaml": "f658455d5dcc1927fcee5a814c01b59e22dc5cae30640cb092e710e4ad7fa608",
+    "docs/architecture/production-readiness/evidence/A06/run-earn-error-browser-check.mjs": "1f48bc3ecf916328689e0acc730f88d5556bec34ea3a40a85321c279273da9fc",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/dev/PreviewControls.tsx": "8532ab8fbe4578c3ff7cff31f559ec996fa146e63d70539a67ea668fc6d160ea",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/earn-fixtures.ts": "d17fff1aef1404678d8e99fe23c2a19b0243d7a0ac6bd4650cdfb901cdb43941",
+    "src/dev/mocks/handlers.ts": "52d20d96c8f1c508e7803cad807003d53f9d1c801276874b4597b92a4b876bbb",
+    "src/dev/mocks/personas.ts": "4f159d020319b86f5f991c49e7c9063a73afddedea9a4e16d8a7d2fb679a105f",
+    "src/dev/mocks/preview-scenario-handler.test.ts": "a18e3b3ce8d872a9fa09def5cba6989c051747f82a20243901b8f1b4ea6836a8",
+    "src/dev/mocks/preview-scenario-handler.ts": "cfec53d5fc1867ae4e78654198c2264845fa7de8be1da13cb9e7be9da59b001c",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/earn/api/earn-api.ts": "06715b9d001e7a5b13a7ff819251cded67bca32a32a7912b1b89e6acc8c3e545",
+    "src/features/earn/components/EarnFeatureComponents.tsx": "fbe519c1c8a5d1fc608b6adc5e0ec7fb796a0a35ee4184615b8c19dafa5c3ddf",
+    "src/features/earn/model/earn-queries.ts": "c3215c441db5e4254fed1a6e91c733b96ed01528dcf61bdc5db4c1390528d10a",
+    "src/features/earn/model/earn-types.ts": "1586e57532dec7ba44c78bc385b21f921902fe626b950ca50a4e450b0f6490f1",
+    "src/features/earn/pages/EarnHistoryPage.tsx": "10853dcd2f40a4c60fc6bbbf698c497d59d3b0d31406a46d6ff7ecca55d426e1",
+    "src/features/earn/pages/EarnPage.tsx": "66fa32a766942e318f53bfde5b50ddc5c91ddb7a92392f5be418e9af60c10b65",
+    "src/features/earn/routes.ts": "e9366bf0acd5d7e63069de10b5b3af71e26a63a9654f2961e44b1d3f41aa8c56",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/ui/ErrorState.tsx": "7e501dd15a90aea2bf93e33150e47d455bbe3a24a0da1f986cca180125d4acd2"
+  },
+  "scenario": {
+    "id": "earn.error",
+    "domain": "earn",
+    "state": "error",
+    "status": "passed",
+    "observedAt": "2026-09-29T04:13:07.844Z",
+    "persona": "developer (local MSW fixture)",
+    "role": "user",
+    "permissions": ["earn:write"],
+    "route": "/w/earn/savings/portfolio",
+    "routes": ["/w/earn/savings/portfolio", "/w/earn/savings/history"],
+    "finalRoute": "/w/earn/savings/history",
+    "operationIds": [
+      "getEarnSnapshot",
+      "listEarnTransactions",
+      "createEarnSubscription",
+      "redeemEarnPosition"
+    ],
+    "observedOperationIds": ["getEarnSnapshot", "listEarnTransactions"],
+    "operationRequestCounts": {
+      "getEarnSnapshot": 12,
+      "listEarnTransactions": 12,
+      "createEarnSubscription": 0,
+      "redeemEarnPosition": 0
+    },
+    "requests": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "resourceType": "fetch"
+      }
+    ],
+    "responses": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 12
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      }
+    ],
+    "requestFailures": [
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "failure": "net::ERR_FAILED"
+      }
+    ],
+    "observations": {
+      "getEarnSnapshot": {
+        "route": "/w/earn/savings/portfolio",
+        "apiPath": "/api/earn/snapshot",
+        "initialTransportFailures": 6,
+        "retryTransportFailures": 6,
+        "totalGetRequests": 12,
+        "httpResponses": 0,
+        "errorStateVisible": true,
+        "retryVisibleAndExercised": true,
+        "emptyStateSuppressed": true,
+        "observedFailureKinds": ["net::ERR_FAILED"]
+      },
+      "listEarnTransactions": {
+        "route": "/w/earn/savings/history",
+        "apiPath": "/api/earn/transactions",
+        "initialTransportFailures": 6,
+        "retryTransportFailures": 6,
+        "totalGetRequests": 12,
+        "httpResponses": 0,
+        "errorStateVisible": true,
+        "retryVisibleAndExercised": true,
+        "emptyStateSuppressed": true,
+        "observedFailureKinds": ["net::ERR_FAILED"]
+      }
+    },
+    "initialSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "loginResponse": {
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    "scenarioSelected": true,
+    "externalApiOrigins": [],
+    "elapsedMs": 12342,
+    "screenshots": [
+      "preview-earn-error-snapshot-2026-09-29.png",
+      "preview-earn-error-snapshot-retry-2026-09-29.png",
+      "preview-earn-error-history-2026-09-29.png",
+      "preview-earn-error-history-retry-2026-09-29.png"
+    ],
+    "sourceHashReview": {
+      "reviewedPaths": [
+        "src/dev/mocks/preview-scenario-handler.test.ts",
+        "src/dev/mocks/preview-scenario-handler.ts"
+      ],
+      "priorHashes": {
+        "src/dev/mocks/preview-scenario-handler.test.ts": "ab07d1da5fcccf3488766e34082db5370f91ff410de93f36353b42e3026b7dc9",
+        "src/dev/mocks/preview-scenario-handler.ts": "310abf70387ff528daf7f61b0d4103a3ed0449619549e1dcfefbfa39f0ca0f48"
+      },
+      "scope": "The only runtime delta adds transport failure for Earn GET snapshot/transactions when earn.error is active. The test-only delta asserts that contract boundary and keeps subscription writes on their normal handlers. Existing passed scenarios contain no earn.error case and do not enter the new branch.",
+      "matrixBaselineRefreshedAfterFocusedTestAndBrowserReview": true
+    },
+    "failures": [],
+    "note": "Local Chromium/MSW observed transport failures for the two Earn GET reads at both mapped UI routes. ErrorState and Retry remained visible, empty success was suppressed, clicking Retry caused additional failed GET requests, no HTTP status was returned, no Earn mutation was sent and no external API origin was used. OpenAPI Earn declares no 5xx; this is local transport/UI resilience evidence only, not backend availability or user acceptance."
+  }
+}

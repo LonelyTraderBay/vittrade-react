@@ -1,0 +1,7290 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.01",
+  "measuredAt": "2026-09-29T14:26:18.746Z",
+  "sourceRevision": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "worktree": {
+    "dirtyStatusEntries": 508,
+    "sourceFileCount": 435,
+    "testGraphRootCount": 282,
+    "inputFileCount": 720,
+    "inputFingerprintSha256": "c84200b95e4c8e2988efe3aca3304e2768161df32ddb0ea1d336e575c3fdf13a",
+    "vitestConfigSha256": "d997039fb3a5520b71c5479c435f11adf360d6259542f1d6de97a991db31db2f",
+    "packageJsonSha256": "1066f2ff1ad1757dc1619861732b0af534e1f5f0b713d4a1b3c21299a7b04a18"
+  },
+  "execution": {
+    "command": "node node_modules/vitest/vitest.mjs run --coverage --coverage.reportOnFailure --coverage.reportsDirectory %LOCALAPPDATA%/Temp/vittrade-c03-01-coverage-20260929",
+    "vitestVersion": "4.1.11",
+    "provider": "v8",
+    "include": ["src/app/**/*.{ts,tsx}", "src/features/**/*.{ts,tsx}", "src/shared/**/*.{ts,tsx}"],
+    "exclude": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "tests/e2e/**",
+      "**/*.test.{ts,tsx}",
+      "**/*.spec.{ts,tsx}",
+      "**/__tests__/**",
+      "**/routes.ts",
+      "src/test/",
+      "scripts/",
+      "src/dev/",
+      "src/app/components/dev/",
+      "**/*.d.ts",
+      "**/*.config.*",
+      "**/mockData",
+      "**/routeConfig.ts",
+      "src/app/routes/**",
+      "dist/"
+    ],
+    "thresholds": {
+      "statements": {
+        "required": 90,
+        "actual": 90.11,
+        "passed": true
+      },
+      "branches": {
+        "required": 80,
+        "actual": 84.84,
+        "passed": true
+      },
+      "functions": {
+        "required": 85,
+        "actual": 87.13,
+        "passed": true
+      },
+      "lines": {
+        "required": 90,
+        "actual": 91.89,
+        "passed": true
+      }
+    },
+    "testFiles": 282,
+    "testsPassed": 2385,
+    "testsFailed": 1,
+    "testsSkipped": 0,
+    "exitCode": 1,
+    "failedTest": {
+      "file": "src/features/auth/pages/WebLoginPage.test.tsx:237",
+      "title": "reports backend failure and keeps the user on the login route",
+      "expectedText": "Đăng nhập thất bại. Vui lòng kiểm tra thông tin và thử lại.",
+      "currentSourceText": "Không thể đăng nhập lúc này. Vui lòng thử lại.",
+      "note": "The current working-tree source file was already modified when this roadmap step began; its behavior and test were preserved. The assertion mismatch is carried forward for C03.03/C03.05 review."
+    },
+    "reportOnFailure": true,
+    "rawReport": {
+      "path": "%LOCALAPPDATA%/Temp/vittrade-c03-01-coverage-20260929/coverage-final.json",
+      "sha256": "a621c4c2cd734b20f10541f0edf49825bf16bfa28de38d7a582ab03f3dafbfae",
+      "bytes": 3717566
+    },
+    "existingBaselineArtifact": {
+      "path": "coverage/coverage-final.json (ignored, pre-existing, preserved)",
+      "observedMtime": "2026-09-27T10:40:11.304Z",
+      "sha256": "332a8c9ccdb9d690a189957e28745569a1910eb3beee579c4cea64de33ba3a8f",
+      "bytes": 3671202
+    }
+  },
+  "baseline": {
+    "fileCount": 434,
+    "summary": {
+      "statements": {
+        "covered": 10759,
+        "total": 11954,
+        "pct": 90
+      },
+      "branches": {
+        "covered": 8213,
+        "total": 9705,
+        "pct": 84.62
+      },
+      "functions": {
+        "covered": 3388,
+        "total": 3898,
+        "pct": 86.91
+      },
+      "lines": {
+        "covered": 10106,
+        "total": 11009,
+        "pct": 91.79
+      }
+    },
+    "statementFilesBelow80": 61,
+    "statementFilesAtZero": 33,
+    "lowFileRows": [
+      {
+        "file": "src/app/components/figma/ImageWithFallback.tsx",
+        "baseline": {
+          "file": "src/app/components/figma/ImageWithFallback.tsx",
+          "statements": {
+            "total": 6,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 4,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 6,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/app/components/figma/ImageWithFallback.tsx",
+          "statements": {
+            "total": 6,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 4,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 6,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+          "productionReachable": false,
+          "unitTestGraphReachable": false,
+          "directCallers": []
+        }
+      },
+      {
+        "file": "src/app/components/layout/AppLayout.tsx",
+        "baseline": {
+          "file": "src/app/components/layout/AppLayout.tsx",
+          "statements": {
+            "total": 33,
+            "covered": 24,
+            "skipped": 0,
+            "pct": 72.72
+          },
+          "branches": {
+            "total": 9,
+            "covered": 5,
+            "skipped": 0,
+            "pct": 55.55
+          },
+          "functions": {
+            "total": 11,
+            "covered": 6,
+            "skipped": 0,
+            "pct": 54.54
+          },
+          "lines": {
+            "total": 29,
+            "covered": 23,
+            "skipped": 0,
+            "pct": 79.31
+          }
+        },
+        "current": {
+          "file": "src/app/components/layout/AppLayout.tsx",
+          "statements": {
+            "total": 33,
+            "covered": 24,
+            "skipped": 0,
+            "pct": 72.72
+          },
+          "branches": {
+            "total": 9,
+            "covered": 5,
+            "skipped": 0,
+            "pct": 55.55
+          },
+          "functions": {
+            "total": 11,
+            "covered": 6,
+            "skipped": 0,
+            "pct": 54.54
+          },
+          "lines": {
+            "total": 29,
+            "covered": 23,
+            "skipped": 0,
+            "pct": 79.31
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/app/components/layout/AppLayout.test.tsx", "src/app/routes.ts"]
+        }
+      },
+      {
+        "file": "src/app/components/layout/MobileFrame.tsx",
+        "baseline": {
+          "file": "src/app/components/layout/MobileFrame.tsx",
+          "statements": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/app/components/layout/MobileFrame.tsx",
+          "statements": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/app/components/layout/RootLayout.tsx"]
+        }
+      },
+      {
+        "file": "src/app/components/layout/ResponsivePageHeader.tsx",
+        "baseline": {
+          "file": "src/app/components/layout/ResponsivePageHeader.tsx",
+          "statements": {
+            "total": 7,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 7,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 6,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/app/components/layout/ResponsivePageHeader.tsx",
+          "statements": {
+            "total": 7,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 7,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 6,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+          "productionReachable": false,
+          "unitTestGraphReachable": false,
+          "directCallers": []
+        }
+      },
+      {
+        "file": "src/app/components/layout/ResponsiveShell.tsx",
+        "baseline": {
+          "file": "src/app/components/layout/ResponsiveShell.tsx",
+          "statements": {
+            "total": 12,
+            "covered": 9,
+            "skipped": 0,
+            "pct": 75
+          },
+          "branches": {
+            "total": 19,
+            "covered": 13,
+            "skipped": 0,
+            "pct": 68.42
+          },
+          "functions": {
+            "total": 2,
+            "covered": 1,
+            "skipped": 0,
+            "pct": 50
+          },
+          "lines": {
+            "total": 12,
+            "covered": 9,
+            "skipped": 0,
+            "pct": 75
+          }
+        },
+        "current": {
+          "file": "src/app/components/layout/ResponsiveShell.tsx",
+          "statements": {
+            "total": 12,
+            "covered": 9,
+            "skipped": 0,
+            "pct": 75
+          },
+          "branches": {
+            "total": 19,
+            "covered": 13,
+            "skipped": 0,
+            "pct": 68.42
+          },
+          "functions": {
+            "total": 2,
+            "covered": 1,
+            "skipped": 0,
+            "pct": 50
+          },
+          "lines": {
+            "total": 12,
+            "covered": 9,
+            "skipped": 0,
+            "pct": 75
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": [
+            "src/app/components/layout/ResponsiveShell.test.tsx",
+            "src/app/routes.ts"
+          ]
+        }
+      },
+      {
+        "file": "src/app/components/layout/TabletShell.tsx",
+        "baseline": {
+          "file": "src/app/components/layout/TabletShell.tsx",
+          "statements": {
+            "total": 6,
+            "covered": 4,
+            "skipped": 0,
+            "pct": 66.66
+          },
+          "branches": {
+            "total": 2,
+            "covered": 1,
+            "skipped": 0,
+            "pct": 50
+          },
+          "functions": {
+            "total": 2,
+            "covered": 1,
+            "skipped": 0,
+            "pct": 50
+          },
+          "lines": {
+            "total": 6,
+            "covered": 4,
+            "skipped": 0,
+            "pct": 66.66
+          }
+        },
+        "current": {
+          "file": "src/app/components/layout/TabletShell.tsx",
+          "statements": {
+            "total": 6,
+            "covered": 4,
+            "skipped": 0,
+            "pct": 66.66
+          },
+          "branches": {
+            "total": 2,
+            "covered": 1,
+            "skipped": 0,
+            "pct": 50
+          },
+          "functions": {
+            "total": 2,
+            "covered": 1,
+            "skipped": 0,
+            "pct": 50
+          },
+          "lines": {
+            "total": 6,
+            "covered": 4,
+            "skipped": 0,
+            "pct": 66.66
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": [
+            "src/app/components/layout/ShellComposition.test.tsx",
+            "src/app/routes.ts"
+          ]
+        }
+      },
+      {
+        "file": "src/app/components/mobile/ErrorBoundary.tsx",
+        "baseline": {
+          "file": "src/app/components/mobile/ErrorBoundary.tsx",
+          "statements": {
+            "total": 18,
+            "covered": 14,
+            "skipped": 0,
+            "pct": 77.77
+          },
+          "branches": {
+            "total": 19,
+            "covered": 15,
+            "skipped": 0,
+            "pct": 78.94
+          },
+          "functions": {
+            "total": 7,
+            "covered": 5,
+            "skipped": 0,
+            "pct": 71.42
+          },
+          "lines": {
+            "total": 18,
+            "covered": 14,
+            "skipped": 0,
+            "pct": 77.77
+          }
+        },
+        "current": {
+          "file": "src/app/components/mobile/ErrorBoundary.tsx",
+          "statements": {
+            "total": 18,
+            "covered": 14,
+            "skipped": 0,
+            "pct": 77.77
+          },
+          "branches": {
+            "total": 19,
+            "covered": 15,
+            "skipped": 0,
+            "pct": 78.94
+          },
+          "functions": {
+            "total": 7,
+            "covered": 5,
+            "skipped": 0,
+            "pct": 71.42
+          },
+          "lines": {
+            "total": 18,
+            "covered": 14,
+            "skipped": 0,
+            "pct": 77.77
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": [
+            "src/app/components/layout/AppLayout.tsx",
+            "src/app/components/layout/RootLayout.tsx",
+            "src/app/components/mobile/ErrorBoundary.test.tsx"
+          ]
+        }
+      },
+      {
+        "file": "src/app/components/mobile/ScrollToTopFAB.tsx",
+        "baseline": {
+          "file": "src/app/components/mobile/ScrollToTopFAB.tsx",
+          "statements": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 6,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/app/components/mobile/ScrollToTopFAB.tsx",
+          "statements": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 6,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/app/components/layout/AppLayout.tsx"]
+        }
+      },
+      {
+        "file": "src/app/components/states/SessionTimeoutOverlay.tsx",
+        "baseline": {
+          "file": "src/app/components/states/SessionTimeoutOverlay.tsx",
+          "statements": {
+            "total": 6,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 5,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/app/components/states/SessionTimeoutOverlay.tsx",
+          "statements": {
+            "total": 6,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 5,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/app/components/layout/AppLayout.tsx"]
+        }
+      },
+      {
+        "file": "src/app/components/system/PlaceholderPage.tsx",
+        "baseline": {
+          "file": "src/app/components/system/PlaceholderPage.tsx",
+          "statements": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/app/components/system/PlaceholderPage.tsx",
+          "statements": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+          "productionReachable": false,
+          "unitTestGraphReachable": false,
+          "directCallers": []
+        }
+      },
+      {
+        "file": "src/app/hooks/usePlatform.ts",
+        "baseline": {
+          "file": "src/app/hooks/usePlatform.ts",
+          "statements": {
+            "total": 32,
+            "covered": 21,
+            "skipped": 0,
+            "pct": 65.62
+          },
+          "branches": {
+            "total": 21,
+            "covered": 15,
+            "skipped": 0,
+            "pct": 71.42
+          },
+          "functions": {
+            "total": 7,
+            "covered": 5,
+            "skipped": 0,
+            "pct": 71.42
+          },
+          "lines": {
+            "total": 25,
+            "covered": 17,
+            "skipped": 0,
+            "pct": 68
+          }
+        },
+        "current": {
+          "file": "src/app/hooks/usePlatform.ts",
+          "statements": {
+            "total": 32,
+            "covered": 21,
+            "skipped": 0,
+            "pct": 65.62
+          },
+          "branches": {
+            "total": 21,
+            "covered": 15,
+            "skipped": 0,
+            "pct": 71.42
+          },
+          "functions": {
+            "total": 7,
+            "covered": 5,
+            "skipped": 0,
+            "pct": 71.42
+          },
+          "lines": {
+            "total": 25,
+            "covered": 17,
+            "skipped": 0,
+            "pct": 68
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": [
+            "src/app/components/layout/ShellComposition.test.tsx",
+            "src/app/components/layout/TabletShell.tsx",
+            "src/app/components/layout/WebShell.tsx",
+            "src/app/hooks/usePlatform.test.ts"
+          ]
+        }
+      },
+      {
+        "file": "src/app/pages/dca/DCAPage.tsx",
+        "baseline": {
+          "file": "src/app/pages/dca/DCAPage.tsx",
+          "statements": {
+            "total": 6,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 6,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/app/pages/dca/DCAPage.tsx",
+          "statements": {
+            "total": 6,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 6,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/app/routeConfig.ts"]
+        }
+      },
+      {
+        "file": "src/app/pages/p2p/P2PHomePage.tsx",
+        "baseline": {
+          "file": "src/app/pages/p2p/P2PHomePage.tsx",
+          "statements": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/app/pages/p2p/P2PHomePage.tsx",
+          "statements": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/app/routes.ts"]
+        }
+      },
+      {
+        "file": "src/app/pages/wallet/AssetDetailPage.tsx",
+        "baseline": {
+          "file": "src/app/pages/wallet/AssetDetailPage.tsx",
+          "statements": {
+            "total": 10,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 10,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/app/pages/wallet/AssetDetailPage.tsx",
+          "statements": {
+            "total": 10,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 10,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/app/routes/walletProfileProtectedRoutes.ts"]
+        }
+      },
+      {
+        "file": "src/features/admin/index.ts",
+        "baseline": {
+          "file": "src/features/admin/index.ts",
+          "statements": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "lines": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/features/admin/index.ts",
+          "statements": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "lines": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "barrel/re-export",
+          "productionReachable": false,
+          "unitTestGraphReachable": false,
+          "directCallers": []
+        }
+      },
+      {
+        "file": "src/features/admin/model/admin-queries.ts",
+        "baseline": {
+          "file": "src/features/admin/model/admin-queries.ts",
+          "statements": {
+            "total": 16,
+            "covered": 8,
+            "skipped": 0,
+            "pct": 50
+          },
+          "branches": {
+            "total": 2,
+            "covered": 2,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 13,
+            "covered": 7,
+            "skipped": 0,
+            "pct": 53.84
+          },
+          "lines": {
+            "total": 16,
+            "covered": 8,
+            "skipped": 0,
+            "pct": 50
+          }
+        },
+        "current": {
+          "file": "src/features/admin/model/admin-queries.ts",
+          "statements": {
+            "total": 16,
+            "covered": 8,
+            "skipped": 0,
+            "pct": 50
+          },
+          "branches": {
+            "total": 2,
+            "covered": 2,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 13,
+            "covered": 7,
+            "skipped": 0,
+            "pct": 53.84
+          },
+          "lines": {
+            "total": 16,
+            "covered": 8,
+            "skipped": 0,
+            "pct": 50
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": [
+            "src/features/admin/index.ts",
+            "src/features/admin/pages/AdminAbTestsContractPage.tsx",
+            "src/features/admin/pages/AdminFunnelContractPage.tsx",
+            "src/features/admin/pages/AdminOverviewContractPage.tsx"
+          ]
+        }
+      },
+      {
+        "file": "src/features/admin/pages/AdminFunnelContractPage.tsx",
+        "baseline": {
+          "file": "src/features/admin/pages/AdminFunnelContractPage.tsx",
+          "statements": {
+            "total": 9,
+            "covered": 7,
+            "skipped": 0,
+            "pct": 77.77
+          },
+          "branches": {
+            "total": 6,
+            "covered": 5,
+            "skipped": 0,
+            "pct": 83.33
+          },
+          "functions": {
+            "total": 3,
+            "covered": 2,
+            "skipped": 0,
+            "pct": 66.66
+          },
+          "lines": {
+            "total": 7,
+            "covered": 7,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "current": {
+          "file": "src/features/admin/pages/AdminFunnelContractPage.tsx",
+          "statements": {
+            "total": 9,
+            "covered": 9,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 8,
+            "covered": 8,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 3,
+            "covered": 3,
+            "skipped": 0,
+            "pct": 100
+          },
+          "lines": {
+            "total": 8,
+            "covered": 8,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": [
+            "src/app/routeConfig.ts",
+            "src/features/admin/pages/AdminContractPages.test.tsx"
+          ]
+        }
+      },
+      {
+        "file": "src/features/arena/index.ts",
+        "baseline": {
+          "file": "src/features/arena/index.ts",
+          "statements": {
+            "total": 4,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "lines": {
+            "total": 4,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/features/arena/index.ts",
+          "statements": {
+            "total": 4,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "lines": {
+            "total": 4,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "barrel/re-export",
+          "productionReachable": false,
+          "unitTestGraphReachable": false,
+          "directCallers": []
+        }
+      },
+      {
+        "file": "src/features/arena/pages/ArenaContractPages.tsx",
+        "baseline": {
+          "file": "src/features/arena/pages/ArenaContractPages.tsx",
+          "statements": {
+            "total": 66,
+            "covered": 42,
+            "skipped": 0,
+            "pct": 63.63
+          },
+          "branches": {
+            "total": 88,
+            "covered": 43,
+            "skipped": 0,
+            "pct": 48.86
+          },
+          "functions": {
+            "total": 20,
+            "covered": 11,
+            "skipped": 0,
+            "pct": 55
+          },
+          "lines": {
+            "total": 55,
+            "covered": 39,
+            "skipped": 0,
+            "pct": 70.9
+          }
+        },
+        "current": {
+          "file": "src/features/arena/pages/ArenaContractPages.tsx",
+          "statements": {
+            "total": 66,
+            "covered": 42,
+            "skipped": 0,
+            "pct": 63.63
+          },
+          "branches": {
+            "total": 88,
+            "covered": 43,
+            "skipped": 0,
+            "pct": 48.86
+          },
+          "functions": {
+            "total": 20,
+            "covered": 11,
+            "skipped": 0,
+            "pct": 55
+          },
+          "lines": {
+            "total": 55,
+            "covered": 39,
+            "skipped": 0,
+            "pct": 70.9
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": [
+            "src/app/routeConfig.ts",
+            "src/features/arena/pages/ArenaJoinContractPage.test.tsx"
+          ]
+        }
+      },
+      {
+        "file": "src/features/auth/index.ts",
+        "baseline": {
+          "file": "src/features/auth/index.ts",
+          "statements": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "lines": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/features/auth/index.ts",
+          "statements": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "lines": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "barrel/re-export",
+          "productionReachable": false,
+          "unitTestGraphReachable": false,
+          "directCallers": []
+        }
+      },
+      {
+        "file": "src/features/auth/pages/OTPPage.tsx",
+        "baseline": {
+          "file": "src/features/auth/pages/OTPPage.tsx",
+          "statements": {
+            "total": 120,
+            "covered": 92,
+            "skipped": 0,
+            "pct": 76.66
+          },
+          "branches": {
+            "total": 97,
+            "covered": 73,
+            "skipped": 0,
+            "pct": 75.25
+          },
+          "functions": {
+            "total": 21,
+            "covered": 18,
+            "skipped": 0,
+            "pct": 85.71
+          },
+          "lines": {
+            "total": 112,
+            "covered": 86,
+            "skipped": 0,
+            "pct": 76.78
+          }
+        },
+        "current": {
+          "file": "src/features/auth/pages/OTPPage.tsx",
+          "statements": {
+            "total": 120,
+            "covered": 92,
+            "skipped": 0,
+            "pct": 76.66
+          },
+          "branches": {
+            "total": 97,
+            "covered": 73,
+            "skipped": 0,
+            "pct": 75.25
+          },
+          "functions": {
+            "total": 21,
+            "covered": 18,
+            "skipped": 0,
+            "pct": 85.71
+          },
+          "lines": {
+            "total": 112,
+            "covered": 86,
+            "skipped": 0,
+            "pct": 76.78
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/app/routeConfig.ts", "src/features/auth/pages/OTPPage.test.tsx"]
+        }
+      },
+      {
+        "file": "src/features/auth/pages/RegisterPage.tsx",
+        "baseline": {
+          "file": "src/features/auth/pages/RegisterPage.tsx",
+          "statements": {
+            "total": 5,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 5,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/features/auth/pages/RegisterPage.tsx",
+          "statements": {
+            "total": 5,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 5,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/app/routeConfig.ts"]
+        }
+      },
+      {
+        "file": "src/features/auth/pages/WebRegisterPage.tsx",
+        "baseline": {
+          "file": "src/features/auth/pages/WebRegisterPage.tsx",
+          "statements": {
+            "total": 4,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 4,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/features/auth/pages/WebRegisterPage.tsx",
+          "statements": {
+            "total": 4,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 4,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/app/routes.ts"]
+        }
+      },
+      {
+        "file": "src/features/dca/components/DCACreatePlanSheet.tsx",
+        "baseline": {
+          "file": "src/features/dca/components/DCACreatePlanSheet.tsx",
+          "statements": {
+            "total": 33,
+            "covered": 23,
+            "skipped": 0,
+            "pct": 69.69
+          },
+          "branches": {
+            "total": 33,
+            "covered": 23,
+            "skipped": 0,
+            "pct": 69.69
+          },
+          "functions": {
+            "total": 17,
+            "covered": 8,
+            "skipped": 0,
+            "pct": 47.05
+          },
+          "lines": {
+            "total": 32,
+            "covered": 22,
+            "skipped": 0,
+            "pct": 68.75
+          }
+        },
+        "current": {
+          "file": "src/features/dca/components/DCACreatePlanSheet.tsx",
+          "statements": {
+            "total": 33,
+            "covered": 23,
+            "skipped": 0,
+            "pct": 69.69
+          },
+          "branches": {
+            "total": 33,
+            "covered": 23,
+            "skipped": 0,
+            "pct": 69.69
+          },
+          "functions": {
+            "total": 17,
+            "covered": 8,
+            "skipped": 0,
+            "pct": 47.05
+          },
+          "lines": {
+            "total": 32,
+            "covered": 22,
+            "skipped": 0,
+            "pct": 68.75
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/features/dca/pages/DCAMainPage.tsx"]
+        }
+      },
+      {
+        "file": "src/features/dca/components/DCAPlanCard.tsx",
+        "baseline": {
+          "file": "src/features/dca/components/DCAPlanCard.tsx",
+          "statements": {
+            "total": 43,
+            "covered": 27,
+            "skipped": 0,
+            "pct": 62.79
+          },
+          "branches": {
+            "total": 77,
+            "covered": 47,
+            "skipped": 0,
+            "pct": 61.03
+          },
+          "functions": {
+            "total": 10,
+            "covered": 7,
+            "skipped": 0,
+            "pct": 70
+          },
+          "lines": {
+            "total": 39,
+            "covered": 26,
+            "skipped": 0,
+            "pct": 66.66
+          }
+        },
+        "current": {
+          "file": "src/features/dca/components/DCAPlanCard.tsx",
+          "statements": {
+            "total": 43,
+            "covered": 27,
+            "skipped": 0,
+            "pct": 62.79
+          },
+          "branches": {
+            "total": 77,
+            "covered": 47,
+            "skipped": 0,
+            "pct": 61.03
+          },
+          "functions": {
+            "total": 10,
+            "covered": 7,
+            "skipped": 0,
+            "pct": 70
+          },
+          "lines": {
+            "total": 39,
+            "covered": 26,
+            "skipped": 0,
+            "pct": 66.66
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/features/dca/pages/DCAMainPage.tsx"]
+        }
+      },
+      {
+        "file": "src/features/discovery/index.ts",
+        "baseline": {
+          "file": "src/features/discovery/index.ts",
+          "statements": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "lines": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/features/discovery/index.ts",
+          "statements": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "lines": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "barrel/re-export",
+          "productionReachable": false,
+          "unitTestGraphReachable": false,
+          "directCallers": []
+        }
+      },
+      {
+        "file": "src/features/market/pages/AdvancedChartsPage.tsx",
+        "baseline": {
+          "file": "src/features/market/pages/AdvancedChartsPage.tsx",
+          "statements": {
+            "total": 36,
+            "covered": 27,
+            "skipped": 0,
+            "pct": 75
+          },
+          "branches": {
+            "total": 45,
+            "covered": 35,
+            "skipped": 0,
+            "pct": 77.77
+          },
+          "functions": {
+            "total": 14,
+            "covered": 8,
+            "skipped": 0,
+            "pct": 57.14
+          },
+          "lines": {
+            "total": 34,
+            "covered": 26,
+            "skipped": 0,
+            "pct": 76.47
+          }
+        },
+        "current": {
+          "file": "src/features/market/pages/AdvancedChartsPage.tsx",
+          "statements": {
+            "total": 36,
+            "covered": 27,
+            "skipped": 0,
+            "pct": 75
+          },
+          "branches": {
+            "total": 45,
+            "covered": 35,
+            "skipped": 0,
+            "pct": 77.77
+          },
+          "functions": {
+            "total": 14,
+            "covered": 8,
+            "skipped": 0,
+            "pct": 57.14
+          },
+          "lines": {
+            "total": 34,
+            "covered": 26,
+            "skipped": 0,
+            "pct": 76.47
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": [
+            "src/features/market/pages/AdvancedChartsPage.test.tsx",
+            "src/features/market/routes.ts"
+          ]
+        }
+      },
+      {
+        "file": "src/features/p2p/components/P2PCreateAdSections.tsx",
+        "baseline": {
+          "file": "src/features/p2p/components/P2PCreateAdSections.tsx",
+          "statements": {
+            "total": 32,
+            "covered": 16,
+            "skipped": 0,
+            "pct": 50
+          },
+          "branches": {
+            "total": 31,
+            "covered": 28,
+            "skipped": 0,
+            "pct": 90.32
+          },
+          "functions": {
+            "total": 26,
+            "covered": 11,
+            "skipped": 0,
+            "pct": 42.3
+          },
+          "lines": {
+            "total": 31,
+            "covered": 15,
+            "skipped": 0,
+            "pct": 48.38
+          }
+        },
+        "current": {
+          "file": "src/features/p2p/components/P2PCreateAdSections.tsx",
+          "statements": {
+            "total": 32,
+            "covered": 16,
+            "skipped": 0,
+            "pct": 50
+          },
+          "branches": {
+            "total": 31,
+            "covered": 28,
+            "skipped": 0,
+            "pct": 90.32
+          },
+          "functions": {
+            "total": 26,
+            "covered": 11,
+            "skipped": 0,
+            "pct": 42.3
+          },
+          "lines": {
+            "total": 31,
+            "covered": 15,
+            "skipped": 0,
+            "pct": 48.38
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/features/p2p/pages/P2PCreateAdContractPage.tsx"]
+        }
+      },
+      {
+        "file": "src/features/p2p/components/P2PHomeActionSheets.tsx",
+        "baseline": {
+          "file": "src/features/p2p/components/P2PHomeActionSheets.tsx",
+          "statements": {
+            "total": 34,
+            "covered": 21,
+            "skipped": 0,
+            "pct": 61.76
+          },
+          "branches": {
+            "total": 16,
+            "covered": 10,
+            "skipped": 0,
+            "pct": 62.5
+          },
+          "functions": {
+            "total": 13,
+            "covered": 8,
+            "skipped": 0,
+            "pct": 61.53
+          },
+          "lines": {
+            "total": 33,
+            "covered": 20,
+            "skipped": 0,
+            "pct": 60.6
+          }
+        },
+        "current": {
+          "file": "src/features/p2p/components/P2PHomeActionSheets.tsx",
+          "statements": {
+            "total": 34,
+            "covered": 21,
+            "skipped": 0,
+            "pct": 61.76
+          },
+          "branches": {
+            "total": 16,
+            "covered": 10,
+            "skipped": 0,
+            "pct": 62.5
+          },
+          "functions": {
+            "total": 13,
+            "covered": 8,
+            "skipped": 0,
+            "pct": 61.53
+          },
+          "lines": {
+            "total": 33,
+            "covered": 20,
+            "skipped": 0,
+            "pct": 60.6
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/features/p2p/pages/P2PMarketplacePage.tsx"]
+        }
+      },
+      {
+        "file": "src/features/p2p/components/P2PMarketplaceSections.tsx",
+        "baseline": {
+          "file": "src/features/p2p/components/P2PMarketplaceSections.tsx",
+          "statements": {
+            "total": 37,
+            "covered": 23,
+            "skipped": 0,
+            "pct": 62.16
+          },
+          "branches": {
+            "total": 50,
+            "covered": 41,
+            "skipped": 0,
+            "pct": 82
+          },
+          "functions": {
+            "total": 19,
+            "covered": 11,
+            "skipped": 0,
+            "pct": 57.89
+          },
+          "lines": {
+            "total": 37,
+            "covered": 23,
+            "skipped": 0,
+            "pct": 62.16
+          }
+        },
+        "current": {
+          "file": "src/features/p2p/components/P2PMarketplaceSections.tsx",
+          "statements": {
+            "total": 37,
+            "covered": 23,
+            "skipped": 0,
+            "pct": 62.16
+          },
+          "branches": {
+            "total": 50,
+            "covered": 41,
+            "skipped": 0,
+            "pct": 82
+          },
+          "functions": {
+            "total": 19,
+            "covered": 11,
+            "skipped": 0,
+            "pct": 57.89
+          },
+          "lines": {
+            "total": 37,
+            "covered": 23,
+            "skipped": 0,
+            "pct": 62.16
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/features/p2p/pages/P2PMarketplacePage.tsx"]
+        }
+      },
+      {
+        "file": "src/features/p2p/lib/select-best-ad.ts",
+        "baseline": {
+          "file": "src/features/p2p/lib/select-best-ad.ts",
+          "statements": {
+            "total": 5,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 9,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 4,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 5,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/features/p2p/lib/select-best-ad.ts",
+          "statements": {
+            "total": 5,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 9,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 4,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 5,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "static caller exists but app entry does not reach it; review route/export boundary",
+          "productionReachable": false,
+          "unitTestGraphReachable": false,
+          "directCallers": ["src/features/p2p/index.ts"]
+        }
+      },
+      {
+        "file": "src/features/p2p/pages/P2PGuidePage.tsx",
+        "baseline": {
+          "file": "src/features/p2p/pages/P2PGuidePage.tsx",
+          "statements": {
+            "total": 29,
+            "covered": 22,
+            "skipped": 0,
+            "pct": 75.86
+          },
+          "branches": {
+            "total": 30,
+            "covered": 28,
+            "skipped": 0,
+            "pct": 93.33
+          },
+          "functions": {
+            "total": 14,
+            "covered": 9,
+            "skipped": 0,
+            "pct": 64.28
+          },
+          "lines": {
+            "total": 29,
+            "covered": 22,
+            "skipped": 0,
+            "pct": 75.86
+          }
+        },
+        "current": {
+          "file": "src/features/p2p/pages/P2PGuidePage.tsx",
+          "statements": {
+            "total": 29,
+            "covered": 22,
+            "skipped": 0,
+            "pct": 75.86
+          },
+          "branches": {
+            "total": 30,
+            "covered": 28,
+            "skipped": 0,
+            "pct": 93.33
+          },
+          "functions": {
+            "total": 14,
+            "covered": 9,
+            "skipped": 0,
+            "pct": 64.28
+          },
+          "lines": {
+            "total": 29,
+            "covered": 22,
+            "skipped": 0,
+            "pct": 75.86
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": [
+            "src/features/p2p/index.ts",
+            "src/features/p2p/pages/P2PInformationalPages.test.tsx",
+            "src/features/p2p/routes.ts"
+          ]
+        }
+      },
+      {
+        "file": "src/features/p2p/pages/P2PMyAdsContractPage.tsx",
+        "baseline": {
+          "file": "src/features/p2p/pages/P2PMyAdsContractPage.tsx",
+          "statements": {
+            "total": 58,
+            "covered": 42,
+            "skipped": 0,
+            "pct": 72.41
+          },
+          "branches": {
+            "total": 64,
+            "covered": 46,
+            "skipped": 0,
+            "pct": 71.87
+          },
+          "functions": {
+            "total": 22,
+            "covered": 14,
+            "skipped": 0,
+            "pct": 63.63
+          },
+          "lines": {
+            "total": 52,
+            "covered": 38,
+            "skipped": 0,
+            "pct": 73.07
+          }
+        },
+        "current": {
+          "file": "src/features/p2p/pages/P2PMyAdsContractPage.tsx",
+          "statements": {
+            "total": 58,
+            "covered": 42,
+            "skipped": 0,
+            "pct": 72.41
+          },
+          "branches": {
+            "total": 64,
+            "covered": 46,
+            "skipped": 0,
+            "pct": 71.87
+          },
+          "functions": {
+            "total": 22,
+            "covered": 14,
+            "skipped": 0,
+            "pct": 63.63
+          },
+          "lines": {
+            "total": 52,
+            "covered": 38,
+            "skipped": 0,
+            "pct": 73.07
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": [
+            "src/features/p2p/pages/P2PMyAdsContractPage.test.tsx",
+            "src/features/p2p/routes.ts"
+          ]
+        }
+      },
+      {
+        "file": "src/features/predictions/index.ts",
+        "baseline": {
+          "file": "src/features/predictions/index.ts",
+          "statements": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "lines": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/features/predictions/index.ts",
+          "statements": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "lines": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "barrel/re-export",
+          "productionReachable": false,
+          "unitTestGraphReachable": false,
+          "directCallers": []
+        }
+      },
+      {
+        "file": "src/features/predictions/pages/PredictionRiskCalculatorPage.tsx",
+        "baseline": {
+          "file": "src/features/predictions/pages/PredictionRiskCalculatorPage.tsx",
+          "statements": {
+            "total": 26,
+            "covered": 20,
+            "skipped": 0,
+            "pct": 76.92
+          },
+          "branches": {
+            "total": 44,
+            "covered": 33,
+            "skipped": 0,
+            "pct": 75
+          },
+          "functions": {
+            "total": 10,
+            "covered": 4,
+            "skipped": 0,
+            "pct": 40
+          },
+          "lines": {
+            "total": 26,
+            "covered": 20,
+            "skipped": 0,
+            "pct": 76.92
+          }
+        },
+        "current": {
+          "file": "src/features/predictions/pages/PredictionRiskCalculatorPage.tsx",
+          "statements": {
+            "total": 26,
+            "covered": 20,
+            "skipped": 0,
+            "pct": 76.92
+          },
+          "branches": {
+            "total": 44,
+            "covered": 33,
+            "skipped": 0,
+            "pct": 75
+          },
+          "functions": {
+            "total": 10,
+            "covered": 4,
+            "skipped": 0,
+            "pct": 40
+          },
+          "lines": {
+            "total": 26,
+            "covered": 20,
+            "skipped": 0,
+            "pct": 76.92
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": [
+            "src/app/routeConfig.ts",
+            "src/features/predictions/pages/PredictionRiskCalculatorPage.test.tsx"
+          ]
+        }
+      },
+      {
+        "file": "src/features/profile/pages/ProfileContractPage.tsx",
+        "baseline": {
+          "file": "src/features/profile/pages/ProfileContractPage.tsx",
+          "statements": {
+            "total": 19,
+            "covered": 14,
+            "skipped": 0,
+            "pct": 73.68
+          },
+          "branches": {
+            "total": 8,
+            "covered": 7,
+            "skipped": 0,
+            "pct": 87.5
+          },
+          "functions": {
+            "total": 7,
+            "covered": 3,
+            "skipped": 0,
+            "pct": 42.85
+          },
+          "lines": {
+            "total": 16,
+            "covered": 13,
+            "skipped": 0,
+            "pct": 81.25
+          }
+        },
+        "current": {
+          "file": "src/features/profile/pages/ProfileContractPage.tsx",
+          "statements": {
+            "total": 19,
+            "covered": 14,
+            "skipped": 0,
+            "pct": 73.68
+          },
+          "branches": {
+            "total": 8,
+            "covered": 7,
+            "skipped": 0,
+            "pct": 87.5
+          },
+          "functions": {
+            "total": 7,
+            "covered": 3,
+            "skipped": 0,
+            "pct": 42.85
+          },
+          "lines": {
+            "total": 16,
+            "covered": 13,
+            "skipped": 0,
+            "pct": 81.25
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": [
+            "src/app/routes.ts",
+            "src/features/profile/pages/ProfileContractPage.test.tsx"
+          ]
+        }
+      },
+      {
+        "file": "src/features/referral/index.ts",
+        "baseline": {
+          "file": "src/features/referral/index.ts",
+          "statements": {
+            "total": 4,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "lines": {
+            "total": 4,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/features/referral/index.ts",
+          "statements": {
+            "total": 4,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "lines": {
+            "total": 4,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "barrel/re-export",
+          "productionReachable": false,
+          "unitTestGraphReachable": false,
+          "directCallers": []
+        }
+      },
+      {
+        "file": "src/features/support/pages/NewsContractPage.tsx",
+        "baseline": {
+          "file": "src/features/support/pages/NewsContractPage.tsx",
+          "statements": {
+            "total": 17,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 20,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 8,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 14,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/features/support/pages/NewsContractPage.tsx",
+          "statements": {
+            "total": 17,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 20,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 8,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 14,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/app/routes.ts", "src/features/support/routes.ts"]
+        }
+      },
+      {
+        "file": "src/features/trading/components/QuickPairSwitcher.tsx",
+        "baseline": {
+          "file": "src/features/trading/components/QuickPairSwitcher.tsx",
+          "statements": {
+            "total": 44,
+            "covered": 31,
+            "skipped": 0,
+            "pct": 70.45
+          },
+          "branches": {
+            "total": 62,
+            "covered": 46,
+            "skipped": 0,
+            "pct": 74.19
+          },
+          "functions": {
+            "total": 16,
+            "covered": 10,
+            "skipped": 0,
+            "pct": 62.5
+          },
+          "lines": {
+            "total": 39,
+            "covered": 28,
+            "skipped": 0,
+            "pct": 71.79
+          }
+        },
+        "current": {
+          "file": "src/features/trading/components/QuickPairSwitcher.tsx",
+          "statements": {
+            "total": 44,
+            "covered": 31,
+            "skipped": 0,
+            "pct": 70.45
+          },
+          "branches": {
+            "total": 62,
+            "covered": 46,
+            "skipped": 0,
+            "pct": 74.19
+          },
+          "functions": {
+            "total": 16,
+            "covered": 10,
+            "skipped": 0,
+            "pct": 62.5
+          },
+          "lines": {
+            "total": 39,
+            "covered": 28,
+            "skipped": 0,
+            "pct": 71.79
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": [
+            "src/features/trading/components/QuickPairSwitcher.test.tsx",
+            "src/features/trading/components/TradeTerminal.tsx"
+          ]
+        }
+      },
+      {
+        "file": "src/features/trading/components/TradingFeeNotice.tsx",
+        "baseline": {
+          "file": "src/features/trading/components/TradingFeeNotice.tsx",
+          "statements": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/features/trading/components/TradingFeeNotice.tsx",
+          "statements": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/features/trading/components/TradingOrderEntryPanel.tsx"]
+        }
+      },
+      {
+        "file": "src/features/trading/pages/OrderReceiptPage.tsx",
+        "baseline": {
+          "file": "src/features/trading/pages/OrderReceiptPage.tsx",
+          "statements": {
+            "total": 27,
+            "covered": 20,
+            "skipped": 0,
+            "pct": 74.07
+          },
+          "branches": {
+            "total": 25,
+            "covered": 19,
+            "skipped": 0,
+            "pct": 76
+          },
+          "functions": {
+            "total": 8,
+            "covered": 4,
+            "skipped": 0,
+            "pct": 50
+          },
+          "lines": {
+            "total": 27,
+            "covered": 20,
+            "skipped": 0,
+            "pct": 74.07
+          }
+        },
+        "current": {
+          "file": "src/features/trading/pages/OrderReceiptPage.tsx",
+          "statements": {
+            "total": 27,
+            "covered": 20,
+            "skipped": 0,
+            "pct": 74.07
+          },
+          "branches": {
+            "total": 25,
+            "covered": 19,
+            "skipped": 0,
+            "pct": 76
+          },
+          "functions": {
+            "total": 8,
+            "covered": 4,
+            "skipped": 0,
+            "pct": 50
+          },
+          "lines": {
+            "total": 27,
+            "covered": 20,
+            "skipped": 0,
+            "pct": 74.07
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": [
+            "src/features/trading/index.ts",
+            "src/features/trading/pages/OrderReceiptPage.test.tsx",
+            "src/features/trading/routes.ts"
+          ]
+        }
+      },
+      {
+        "file": "src/features/trading/pages/TradePage.tsx",
+        "baseline": {
+          "file": "src/features/trading/pages/TradePage.tsx",
+          "statements": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/features/trading/pages/TradePage.tsx",
+          "statements": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/app/routes.ts"]
+        }
+      },
+      {
+        "file": "src/features/trading/pages/TradeSettingsPage.tsx",
+        "baseline": {
+          "file": "src/features/trading/pages/TradeSettingsPage.tsx",
+          "statements": {
+            "total": 41,
+            "covered": 30,
+            "skipped": 0,
+            "pct": 73.17
+          },
+          "branches": {
+            "total": 37,
+            "covered": 36,
+            "skipped": 0,
+            "pct": 97.29
+          },
+          "functions": {
+            "total": 20,
+            "covered": 9,
+            "skipped": 0,
+            "pct": 45
+          },
+          "lines": {
+            "total": 41,
+            "covered": 30,
+            "skipped": 0,
+            "pct": 73.17
+          }
+        },
+        "current": {
+          "file": "src/features/trading/pages/TradeSettingsPage.tsx",
+          "statements": {
+            "total": 41,
+            "covered": 30,
+            "skipped": 0,
+            "pct": 73.17
+          },
+          "branches": {
+            "total": 37,
+            "covered": 36,
+            "skipped": 0,
+            "pct": 97.29
+          },
+          "functions": {
+            "total": 20,
+            "covered": 9,
+            "skipped": 0,
+            "pct": 45
+          },
+          "lines": {
+            "total": 41,
+            "covered": 30,
+            "skipped": 0,
+            "pct": 73.17
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": [
+            "src/features/trading/pages/TradeSettingsPage.test.tsx",
+            "src/features/trading/routes.ts"
+          ]
+        }
+      },
+      {
+        "file": "src/features/wallet/pages/AddressBookPage.tsx",
+        "baseline": {
+          "file": "src/features/wallet/pages/AddressBookPage.tsx",
+          "statements": {
+            "total": 80,
+            "covered": 62,
+            "skipped": 0,
+            "pct": 77.5
+          },
+          "branches": {
+            "total": 83,
+            "covered": 72,
+            "skipped": 0,
+            "pct": 86.74
+          },
+          "functions": {
+            "total": 31,
+            "covered": 22,
+            "skipped": 0,
+            "pct": 70.96
+          },
+          "lines": {
+            "total": 74,
+            "covered": 60,
+            "skipped": 0,
+            "pct": 81.08
+          }
+        },
+        "current": {
+          "file": "src/features/wallet/pages/AddressBookPage.tsx",
+          "statements": {
+            "total": 80,
+            "covered": 62,
+            "skipped": 0,
+            "pct": 77.5
+          },
+          "branches": {
+            "total": 83,
+            "covered": 72,
+            "skipped": 0,
+            "pct": 86.74
+          },
+          "functions": {
+            "total": 31,
+            "covered": 22,
+            "skipped": 0,
+            "pct": 70.96
+          },
+          "lines": {
+            "total": 74,
+            "covered": 60,
+            "skipped": 0,
+            "pct": 81.08
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": [
+            "src/app/routes.ts",
+            "src/features/wallet/pages/AddressBookPage.test.tsx",
+            "src/features/wallet/pages/WebWithdrawalWhitelistPage.tsx",
+            "src/features/wallet/routes.ts"
+          ]
+        }
+      },
+      {
+        "file": "src/features/wallet/pages/WebWithdrawalWhitelistPage.tsx",
+        "baseline": {
+          "file": "src/features/wallet/pages/WebWithdrawalWhitelistPage.tsx",
+          "statements": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/features/wallet/pages/WebWithdrawalWhitelistPage.tsx",
+          "statements": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/features/wallet/routes.ts"]
+        }
+      },
+      {
+        "file": "src/shared/theme/colors.ts",
+        "baseline": {
+          "file": "src/shared/theme/colors.ts",
+          "statements": {
+            "total": 7,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 7,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/shared/theme/colors.ts",
+          "statements": {
+            "total": 7,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 7,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "development/legacy-only callers; not reachable from app entry",
+          "productionReachable": false,
+          "unitTestGraphReachable": false,
+          "directCallers": [
+            "src/dev/legacy/trading/components/AITradingSignals.tsx",
+            "src/dev/legacy/trading/components/AdvancedOrderTypes.tsx",
+            "src/dev/legacy/trading/components/AdvancedPositionControls.tsx",
+            "src/dev/legacy/trading/components/LiquidationHeatmap.tsx",
+            "src/dev/legacy/trading/components/LiquidationStats.tsx",
+            "src/dev/legacy/trading/components/MarginSafetyComponents.tsx",
+            "src/dev/legacy/trading/components/MarginTradingMenu.tsx",
+            "src/dev/legacy/trading/components/MarketIntelligence.tsx",
+            "src/dev/legacy/trading/components/PnLAnalytics.tsx",
+            "src/dev/legacy/trading/components/PortfolioRiskAnalyzer.tsx",
+            "src/dev/legacy/trading/components/RecentLiquidations.tsx",
+            "src/dev/legacy/trading/components/RegulatoryCompliance.tsx"
+          ]
+        }
+      },
+      {
+        "file": "src/shared/theme/density.ts",
+        "baseline": {
+          "file": "src/shared/theme/density.ts",
+          "statements": {
+            "total": 8,
+            "covered": 6,
+            "skipped": 0,
+            "pct": 75
+          },
+          "branches": {
+            "total": 5,
+            "covered": 3,
+            "skipped": 0,
+            "pct": 60
+          },
+          "functions": {
+            "total": 2,
+            "covered": 1,
+            "skipped": 0,
+            "pct": 50
+          },
+          "lines": {
+            "total": 6,
+            "covered": 5,
+            "skipped": 0,
+            "pct": 83.33
+          }
+        },
+        "current": {
+          "file": "src/shared/theme/density.ts",
+          "statements": {
+            "total": 8,
+            "covered": 6,
+            "skipped": 0,
+            "pct": 75
+          },
+          "branches": {
+            "total": 5,
+            "covered": 3,
+            "skipped": 0,
+            "pct": 60
+          },
+          "functions": {
+            "total": 2,
+            "covered": 1,
+            "skipped": 0,
+            "pct": 50
+          },
+          "lines": {
+            "total": 6,
+            "covered": 5,
+            "skipped": 0,
+            "pct": 83.33
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": [
+            "src/shared/theme/index.ts",
+            "src/shared/ui/SectionHeader.tsx",
+            "src/shared/ui/TrCard.tsx",
+            "src/shared/ui/layout/PageContent.tsx"
+          ]
+        }
+      },
+      {
+        "file": "src/shared/theme/icons.ts",
+        "baseline": {
+          "file": "src/shared/theme/icons.ts",
+          "statements": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "lines": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/shared/theme/icons.ts",
+          "statements": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "lines": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "static config/token/data",
+          "productionReachable": false,
+          "unitTestGraphReachable": false,
+          "directCallers": [
+            "src/dev/legacy/trading/components/AITradingSignals.tsx",
+            "src/dev/legacy/trading/components/AdvancedOrderTypes.tsx",
+            "src/dev/legacy/trading/components/AdvancedPositionControls.tsx",
+            "src/dev/legacy/trading/components/LiquidationHeatmap.tsx",
+            "src/dev/legacy/trading/components/LiquidationStats.tsx",
+            "src/dev/legacy/trading/components/MarginSafetyComponents.tsx",
+            "src/dev/legacy/trading/components/MarginTradingMenu.tsx",
+            "src/dev/legacy/trading/components/MarketIntelligence.tsx",
+            "src/dev/legacy/trading/components/PnLAnalytics.tsx",
+            "src/dev/legacy/trading/components/PortfolioRiskAnalyzer.tsx",
+            "src/dev/legacy/trading/components/RecentLiquidations.tsx",
+            "src/dev/legacy/trading/components/RegulatoryCompliance.tsx"
+          ]
+        }
+      },
+      {
+        "file": "src/shared/theme/index.ts",
+        "baseline": {
+          "file": "src/shared/theme/index.ts",
+          "statements": {
+            "total": 5,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "lines": {
+            "total": 5,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/shared/theme/index.ts",
+          "statements": {
+            "total": 5,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "lines": {
+            "total": 5,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "barrel/re-export",
+          "productionReachable": false,
+          "unitTestGraphReachable": false,
+          "directCallers": []
+        }
+      },
+      {
+        "file": "src/shared/theme/motion.ts",
+        "baseline": {
+          "file": "src/shared/theme/motion.ts",
+          "statements": {
+            "total": 15,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 15,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 5,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 12,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/shared/theme/motion.ts",
+          "statements": {
+            "total": 15,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 15,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 5,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 12,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "static caller exists but app entry does not reach it; review route/export boundary",
+          "productionReachable": false,
+          "unitTestGraphReachable": false,
+          "directCallers": ["src/shared/theme/index.ts"]
+        }
+      },
+      {
+        "file": "src/shared/theme/radii.ts",
+        "baseline": {
+          "file": "src/shared/theme/radii.ts",
+          "statements": {
+            "total": 7,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 6,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 6,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/shared/theme/radii.ts",
+          "statements": {
+            "total": 7,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 6,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 6,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/shared/theme/index.ts", "src/shared/ui/TrCard.tsx"]
+        }
+      },
+      {
+        "file": "src/shared/theme/typography.ts",
+        "baseline": {
+          "file": "src/shared/theme/typography.ts",
+          "statements": {
+            "total": 19,
+            "covered": 15,
+            "skipped": 0,
+            "pct": 78.94
+          },
+          "branches": {
+            "total": 14,
+            "covered": 7,
+            "skipped": 0,
+            "pct": 50
+          },
+          "functions": {
+            "total": 7,
+            "covered": 6,
+            "skipped": 0,
+            "pct": 85.71
+          },
+          "lines": {
+            "total": 16,
+            "covered": 15,
+            "skipped": 0,
+            "pct": 93.75
+          }
+        },
+        "current": {
+          "file": "src/shared/theme/typography.ts",
+          "statements": {
+            "total": 19,
+            "covered": 15,
+            "skipped": 0,
+            "pct": 78.94
+          },
+          "branches": {
+            "total": 14,
+            "covered": 7,
+            "skipped": 0,
+            "pct": 50
+          },
+          "functions": {
+            "total": 7,
+            "covered": 6,
+            "skipped": 0,
+            "pct": 85.71
+          },
+          "lines": {
+            "total": 16,
+            "covered": 15,
+            "skipped": 0,
+            "pct": 93.75
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": [
+            "src/shared/theme/index.ts",
+            "src/shared/ui/InputField.tsx",
+            "src/shared/ui/SectionHeader.tsx"
+          ]
+        }
+      },
+      {
+        "file": "src/shared/theme/useWebStyles.ts",
+        "baseline": {
+          "file": "src/shared/theme/useWebStyles.ts",
+          "statements": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/shared/theme/useWebStyles.ts",
+          "statements": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+          "productionReachable": false,
+          "unitTestGraphReachable": false,
+          "directCallers": []
+        }
+      },
+      {
+        "file": "src/shared/ui/charts/ChartGradientDefs.tsx",
+        "baseline": {
+          "file": "src/shared/ui/charts/ChartGradientDefs.tsx",
+          "statements": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 8,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/shared/ui/charts/ChartGradientDefs.tsx",
+          "statements": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 8,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 3,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+          "productionReachable": false,
+          "unitTestGraphReachable": false,
+          "directCallers": []
+        }
+      },
+      {
+        "file": "src/shared/ui/dialog.tsx",
+        "baseline": {
+          "file": "src/shared/ui/dialog.tsx",
+          "statements": {
+            "total": 11,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 10,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 11,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/shared/ui/dialog.tsx",
+          "statements": {
+            "total": 11,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 10,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 11,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+          "productionReachable": false,
+          "unitTestGraphReachable": false,
+          "directCallers": []
+        }
+      },
+      {
+        "file": "src/shared/ui/RefreshableSkeletonList.tsx",
+        "baseline": {
+          "file": "src/shared/ui/RefreshableSkeletonList.tsx",
+          "statements": {
+            "total": 9,
+            "covered": 5,
+            "skipped": 0,
+            "pct": 55.55
+          },
+          "branches": {
+            "total": 16,
+            "covered": 9,
+            "skipped": 0,
+            "pct": 56.25
+          },
+          "functions": {
+            "total": 2,
+            "covered": 1,
+            "skipped": 0,
+            "pct": 50
+          },
+          "lines": {
+            "total": 8,
+            "covered": 5,
+            "skipped": 0,
+            "pct": 62.5
+          }
+        },
+        "current": {
+          "file": "src/shared/ui/RefreshableSkeletonList.tsx",
+          "statements": {
+            "total": 9,
+            "covered": 5,
+            "skipped": 0,
+            "pct": 55.55
+          },
+          "branches": {
+            "total": 16,
+            "covered": 9,
+            "skipped": 0,
+            "pct": 56.25
+          },
+          "functions": {
+            "total": 2,
+            "covered": 1,
+            "skipped": 0,
+            "pct": 50
+          },
+          "lines": {
+            "total": 8,
+            "covered": 5,
+            "skipped": 0,
+            "pct": 62.5
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/features/market/components/MarketListSections.tsx"]
+        }
+      },
+      {
+        "file": "src/shared/ui/SkeletonBlock.tsx",
+        "baseline": {
+          "file": "src/shared/ui/SkeletonBlock.tsx",
+          "statements": {
+            "total": 13,
+            "covered": 7,
+            "skipped": 0,
+            "pct": 53.84
+          },
+          "branches": {
+            "total": 8,
+            "covered": 3,
+            "skipped": 0,
+            "pct": 37.5
+          },
+          "functions": {
+            "total": 8,
+            "covered": 4,
+            "skipped": 0,
+            "pct": 50
+          },
+          "lines": {
+            "total": 13,
+            "covered": 7,
+            "skipped": 0,
+            "pct": 53.84
+          }
+        },
+        "current": {
+          "file": "src/shared/ui/SkeletonBlock.tsx",
+          "statements": {
+            "total": 13,
+            "covered": 7,
+            "skipped": 0,
+            "pct": 53.84
+          },
+          "branches": {
+            "total": 8,
+            "covered": 3,
+            "skipped": 0,
+            "pct": 37.5
+          },
+          "functions": {
+            "total": 8,
+            "covered": 4,
+            "skipped": 0,
+            "pct": 50
+          },
+          "lines": {
+            "total": 13,
+            "covered": 7,
+            "skipped": 0,
+            "pct": 53.84
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/shared/ui/RefreshableSkeletonList.tsx"]
+        }
+      },
+      {
+        "file": "src/shared/ui/StatusPill.tsx",
+        "baseline": {
+          "file": "src/shared/ui/StatusPill.tsx",
+          "statements": {
+            "total": 7,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 23,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 7,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/shared/ui/StatusPill.tsx",
+          "statements": {
+            "total": 7,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 23,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 7,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+          "productionReachable": false,
+          "unitTestGraphReachable": false,
+          "directCallers": []
+        }
+      },
+      {
+        "file": "src/shared/ui/StickyHeader.tsx",
+        "baseline": {
+          "file": "src/shared/ui/StickyHeader.tsx",
+          "statements": {
+            "total": 7,
+            "covered": 5,
+            "skipped": 0,
+            "pct": 71.42
+          },
+          "branches": {
+            "total": 13,
+            "covered": 7,
+            "skipped": 0,
+            "pct": 53.84
+          },
+          "functions": {
+            "total": 4,
+            "covered": 3,
+            "skipped": 0,
+            "pct": 75
+          },
+          "lines": {
+            "total": 7,
+            "covered": 5,
+            "skipped": 0,
+            "pct": 71.42
+          }
+        },
+        "current": {
+          "file": "src/shared/ui/StickyHeader.tsx",
+          "statements": {
+            "total": 7,
+            "covered": 5,
+            "skipped": 0,
+            "pct": 71.42
+          },
+          "branches": {
+            "total": 13,
+            "covered": 7,
+            "skipped": 0,
+            "pct": 53.84
+          },
+          "functions": {
+            "total": 4,
+            "covered": 3,
+            "skipped": 0,
+            "pct": 75
+          },
+          "lines": {
+            "total": 7,
+            "covered": 5,
+            "skipped": 0,
+            "pct": 71.42
+          }
+        },
+        "classification": {
+          "classification": "production-reachable with partial statement execution",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/features/market/components/MarketListSections.tsx"]
+        }
+      },
+      {
+        "file": "src/shared/ui/ThemedToaster.tsx",
+        "baseline": {
+          "file": "src/shared/ui/ThemedToaster.tsx",
+          "statements": {
+            "total": 4,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 4,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/shared/ui/ThemedToaster.tsx",
+          "statements": {
+            "total": 4,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 2,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "lines": {
+            "total": 4,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+          "productionReachable": true,
+          "unitTestGraphReachable": true,
+          "directCallers": ["src/app/components/layout/RootLayout.tsx"]
+        }
+      },
+      {
+        "file": "src/shared/ui/toggle-variants.ts",
+        "baseline": {
+          "file": "src/shared/ui/toggle-variants.ts",
+          "statements": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "lines": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "current": {
+          "file": "src/shared/ui/toggle-variants.ts",
+          "statements": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "lines": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 0
+          }
+        },
+        "classification": {
+          "classification": "static config/token/data",
+          "productionReachable": false,
+          "unitTestGraphReachable": false,
+          "directCallers": []
+        }
+      }
+    ]
+  },
+  "current": {
+    "fileCount": 435,
+    "summary": {
+      "statements": {
+        "covered": 10868,
+        "total": 12060,
+        "pct": 90.11
+      },
+      "branches": {
+        "covered": 8420,
+        "total": 9924,
+        "pct": 84.84
+      },
+      "functions": {
+        "covered": 3406,
+        "total": 3909,
+        "pct": 87.13
+      },
+      "lines": {
+        "covered": 10213,
+        "total": 11114,
+        "pct": 91.89
+      }
+    },
+    "domainGroups": {
+      "app": {
+        "files": 58,
+        "below80Statements": 14,
+        "zeroStatements": 9,
+        "statements": {
+          "covered": 1092,
+          "total": 1246,
+          "pct": 87.64
+        },
+        "branches": {
+          "covered": 658,
+          "total": 824,
+          "pct": 79.85
+        },
+        "functions": {
+          "covered": 266,
+          "total": 316,
+          "pct": 84.18
+        },
+        "lines": {
+          "covered": 1017,
+          "total": 1143,
+          "pct": 88.98
+        }
+      },
+      "domain": {
+        "files": 295,
+        "below80Statements": 30,
+        "zeroStatements": 13,
+        "statements": {
+          "covered": 8345,
+          "total": 9218,
+          "pct": 90.53
+        },
+        "branches": {
+          "covered": 6489,
+          "total": 7571,
+          "pct": 85.71
+        },
+        "functions": {
+          "covered": 2753,
+          "total": 3157,
+          "pct": 87.2
+        },
+        "lines": {
+          "covered": 7877,
+          "total": 8528,
+          "pct": 92.37
+        }
+      },
+      "shared": {
+        "files": 82,
+        "below80Statements": 16,
+        "zeroStatements": 11,
+        "statements": {
+          "covered": 1431,
+          "total": 1596,
+          "pct": 89.66
+        },
+        "branches": {
+          "covered": 1273,
+          "total": 1529,
+          "pct": 83.26
+        },
+        "functions": {
+          "covered": 387,
+          "total": 436,
+          "pct": 88.76
+        },
+        "lines": {
+          "covered": 1319,
+          "total": 1443,
+          "pct": 91.41
+        }
+      }
+    },
+    "statementFilesBelow80": 60,
+    "statementFilesAtZero": 33,
+    "lowFileRows": [
+      {
+        "file": "src/app/components/figma/ImageWithFallback.tsx",
+        "statements": {
+          "total": 6,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 4,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 6,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/app/components/layout/AppLayout.tsx",
+        "statements": {
+          "total": 33,
+          "covered": 24,
+          "skipped": 0,
+          "pct": 72.72
+        },
+        "branches": {
+          "total": 9,
+          "covered": 5,
+          "skipped": 0,
+          "pct": 55.55
+        },
+        "functions": {
+          "total": 11,
+          "covered": 6,
+          "skipped": 0,
+          "pct": 54.54
+        },
+        "lines": {
+          "total": 29,
+          "covered": 23,
+          "skipped": 0,
+          "pct": 79.31
+        },
+        "baselineStatementPct": 72.72,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/components/layout/AppLayout.test.tsx", "src/app/routes.ts"]
+      },
+      {
+        "file": "src/app/components/layout/MobileFrame.tsx",
+        "statements": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/components/layout/RootLayout.tsx"]
+      },
+      {
+        "file": "src/app/components/layout/ResponsivePageHeader.tsx",
+        "statements": {
+          "total": 7,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 7,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 6,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/app/components/layout/ResponsiveShell.tsx",
+        "statements": {
+          "total": 12,
+          "covered": 9,
+          "skipped": 0,
+          "pct": 75
+        },
+        "branches": {
+          "total": 19,
+          "covered": 13,
+          "skipped": 0,
+          "pct": 68.42
+        },
+        "functions": {
+          "total": 2,
+          "covered": 1,
+          "skipped": 0,
+          "pct": 50
+        },
+        "lines": {
+          "total": 12,
+          "covered": 9,
+          "skipped": 0,
+          "pct": 75
+        },
+        "baselineStatementPct": 75,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/components/layout/ResponsiveShell.test.tsx", "src/app/routes.ts"]
+      },
+      {
+        "file": "src/app/components/layout/TabletShell.tsx",
+        "statements": {
+          "total": 6,
+          "covered": 4,
+          "skipped": 0,
+          "pct": 66.66
+        },
+        "branches": {
+          "total": 2,
+          "covered": 1,
+          "skipped": 0,
+          "pct": 50
+        },
+        "functions": {
+          "total": 2,
+          "covered": 1,
+          "skipped": 0,
+          "pct": 50
+        },
+        "lines": {
+          "total": 6,
+          "covered": 4,
+          "skipped": 0,
+          "pct": 66.66
+        },
+        "baselineStatementPct": 66.66,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": [
+          "src/app/components/layout/ShellComposition.test.tsx",
+          "src/app/routes.ts"
+        ]
+      },
+      {
+        "file": "src/app/components/mobile/ErrorBoundary.tsx",
+        "statements": {
+          "total": 18,
+          "covered": 14,
+          "skipped": 0,
+          "pct": 77.77
+        },
+        "branches": {
+          "total": 19,
+          "covered": 15,
+          "skipped": 0,
+          "pct": 78.94
+        },
+        "functions": {
+          "total": 7,
+          "covered": 5,
+          "skipped": 0,
+          "pct": 71.42
+        },
+        "lines": {
+          "total": 18,
+          "covered": 14,
+          "skipped": 0,
+          "pct": 77.77
+        },
+        "baselineStatementPct": 77.77,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": [
+          "src/app/components/layout/AppLayout.tsx",
+          "src/app/components/layout/RootLayout.tsx",
+          "src/app/components/mobile/ErrorBoundary.test.tsx"
+        ]
+      },
+      {
+        "file": "src/app/components/mobile/ScrollToTopFAB.tsx",
+        "statements": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 6,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/components/layout/AppLayout.tsx"]
+      },
+      {
+        "file": "src/app/components/states/SessionTimeoutOverlay.tsx",
+        "statements": {
+          "total": 6,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 5,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/components/layout/AppLayout.tsx"]
+      },
+      {
+        "file": "src/app/components/system/PlaceholderPage.tsx",
+        "statements": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/app/hooks/usePlatform.ts",
+        "statements": {
+          "total": 32,
+          "covered": 21,
+          "skipped": 0,
+          "pct": 65.62
+        },
+        "branches": {
+          "total": 21,
+          "covered": 15,
+          "skipped": 0,
+          "pct": 71.42
+        },
+        "functions": {
+          "total": 7,
+          "covered": 5,
+          "skipped": 0,
+          "pct": 71.42
+        },
+        "lines": {
+          "total": 25,
+          "covered": 17,
+          "skipped": 0,
+          "pct": 68
+        },
+        "baselineStatementPct": 65.62,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": [
+          "src/app/components/layout/ShellComposition.test.tsx",
+          "src/app/components/layout/TabletShell.tsx",
+          "src/app/components/layout/WebShell.tsx",
+          "src/app/hooks/usePlatform.test.ts"
+        ]
+      },
+      {
+        "file": "src/app/pages/dca/DCAPage.tsx",
+        "statements": {
+          "total": 6,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 6,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/routeConfig.ts"]
+      },
+      {
+        "file": "src/app/pages/p2p/P2PHomePage.tsx",
+        "statements": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/routes.ts"]
+      },
+      {
+        "file": "src/app/pages/wallet/AssetDetailPage.tsx",
+        "statements": {
+          "total": 10,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 10,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/routes/walletProfileProtectedRoutes.ts"]
+      },
+      {
+        "file": "src/features/admin/index.ts",
+        "statements": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "lines": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "barrel/re-export",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/features/admin/model/admin-queries.ts",
+        "statements": {
+          "total": 16,
+          "covered": 8,
+          "skipped": 0,
+          "pct": 50
+        },
+        "branches": {
+          "total": 2,
+          "covered": 2,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 13,
+          "covered": 7,
+          "skipped": 0,
+          "pct": 53.84
+        },
+        "lines": {
+          "total": 16,
+          "covered": 8,
+          "skipped": 0,
+          "pct": 50
+        },
+        "baselineStatementPct": 50,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": [
+          "src/features/admin/index.ts",
+          "src/features/admin/pages/AdminAbTestsContractPage.tsx",
+          "src/features/admin/pages/AdminFunnelContractPage.tsx",
+          "src/features/admin/pages/AdminOverviewContractPage.tsx"
+        ]
+      },
+      {
+        "file": "src/features/arena/index.ts",
+        "statements": {
+          "total": 4,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "lines": {
+          "total": 4,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "barrel/re-export",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/features/arena/pages/ArenaContractPages.tsx",
+        "statements": {
+          "total": 66,
+          "covered": 42,
+          "skipped": 0,
+          "pct": 63.63
+        },
+        "branches": {
+          "total": 88,
+          "covered": 43,
+          "skipped": 0,
+          "pct": 48.86
+        },
+        "functions": {
+          "total": 20,
+          "covered": 11,
+          "skipped": 0,
+          "pct": 55
+        },
+        "lines": {
+          "total": 55,
+          "covered": 39,
+          "skipped": 0,
+          "pct": 70.9
+        },
+        "baselineStatementPct": 63.63,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": [
+          "src/app/routeConfig.ts",
+          "src/features/arena/pages/ArenaJoinContractPage.test.tsx"
+        ]
+      },
+      {
+        "file": "src/features/auth/index.ts",
+        "statements": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "lines": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "barrel/re-export",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/features/auth/pages/OTPPage.tsx",
+        "statements": {
+          "total": 120,
+          "covered": 92,
+          "skipped": 0,
+          "pct": 76.66
+        },
+        "branches": {
+          "total": 97,
+          "covered": 73,
+          "skipped": 0,
+          "pct": 75.25
+        },
+        "functions": {
+          "total": 21,
+          "covered": 18,
+          "skipped": 0,
+          "pct": 85.71
+        },
+        "lines": {
+          "total": 112,
+          "covered": 86,
+          "skipped": 0,
+          "pct": 76.78
+        },
+        "baselineStatementPct": 76.66,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/routeConfig.ts", "src/features/auth/pages/OTPPage.test.tsx"]
+      },
+      {
+        "file": "src/features/auth/pages/RegisterPage.tsx",
+        "statements": {
+          "total": 5,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 5,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/routeConfig.ts"]
+      },
+      {
+        "file": "src/features/auth/pages/WebRegisterPage.tsx",
+        "statements": {
+          "total": 4,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 4,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/routes.ts"]
+      },
+      {
+        "file": "src/features/dca/components/DCACreatePlanSheet.tsx",
+        "statements": {
+          "total": 33,
+          "covered": 23,
+          "skipped": 0,
+          "pct": 69.69
+        },
+        "branches": {
+          "total": 33,
+          "covered": 23,
+          "skipped": 0,
+          "pct": 69.69
+        },
+        "functions": {
+          "total": 17,
+          "covered": 8,
+          "skipped": 0,
+          "pct": 47.05
+        },
+        "lines": {
+          "total": 32,
+          "covered": 22,
+          "skipped": 0,
+          "pct": 68.75
+        },
+        "baselineStatementPct": 69.69,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/features/dca/pages/DCAMainPage.tsx"]
+      },
+      {
+        "file": "src/features/dca/components/DCAPlanCard.tsx",
+        "statements": {
+          "total": 43,
+          "covered": 27,
+          "skipped": 0,
+          "pct": 62.79
+        },
+        "branches": {
+          "total": 77,
+          "covered": 47,
+          "skipped": 0,
+          "pct": 61.03
+        },
+        "functions": {
+          "total": 10,
+          "covered": 7,
+          "skipped": 0,
+          "pct": 70
+        },
+        "lines": {
+          "total": 39,
+          "covered": 26,
+          "skipped": 0,
+          "pct": 66.66
+        },
+        "baselineStatementPct": 62.79,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/features/dca/pages/DCAMainPage.tsx"]
+      },
+      {
+        "file": "src/features/discovery/index.ts",
+        "statements": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "lines": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "barrel/re-export",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/features/market/pages/AdvancedChartsPage.tsx",
+        "statements": {
+          "total": 36,
+          "covered": 27,
+          "skipped": 0,
+          "pct": 75
+        },
+        "branches": {
+          "total": 45,
+          "covered": 35,
+          "skipped": 0,
+          "pct": 77.77
+        },
+        "functions": {
+          "total": 14,
+          "covered": 8,
+          "skipped": 0,
+          "pct": 57.14
+        },
+        "lines": {
+          "total": 34,
+          "covered": 26,
+          "skipped": 0,
+          "pct": 76.47
+        },
+        "baselineStatementPct": 75,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": [
+          "src/features/market/pages/AdvancedChartsPage.test.tsx",
+          "src/features/market/routes.ts"
+        ]
+      },
+      {
+        "file": "src/features/p2p/components/P2PCreateAdSections.tsx",
+        "statements": {
+          "total": 32,
+          "covered": 16,
+          "skipped": 0,
+          "pct": 50
+        },
+        "branches": {
+          "total": 31,
+          "covered": 28,
+          "skipped": 0,
+          "pct": 90.32
+        },
+        "functions": {
+          "total": 26,
+          "covered": 11,
+          "skipped": 0,
+          "pct": 42.3
+        },
+        "lines": {
+          "total": 31,
+          "covered": 15,
+          "skipped": 0,
+          "pct": 48.38
+        },
+        "baselineStatementPct": 50,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/features/p2p/pages/P2PCreateAdContractPage.tsx"]
+      },
+      {
+        "file": "src/features/p2p/components/P2PHomeActionSheets.tsx",
+        "statements": {
+          "total": 34,
+          "covered": 21,
+          "skipped": 0,
+          "pct": 61.76
+        },
+        "branches": {
+          "total": 16,
+          "covered": 10,
+          "skipped": 0,
+          "pct": 62.5
+        },
+        "functions": {
+          "total": 13,
+          "covered": 8,
+          "skipped": 0,
+          "pct": 61.53
+        },
+        "lines": {
+          "total": 33,
+          "covered": 20,
+          "skipped": 0,
+          "pct": 60.6
+        },
+        "baselineStatementPct": 61.76,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/features/p2p/pages/P2PMarketplacePage.tsx"]
+      },
+      {
+        "file": "src/features/p2p/components/P2PMarketplaceSections.tsx",
+        "statements": {
+          "total": 37,
+          "covered": 23,
+          "skipped": 0,
+          "pct": 62.16
+        },
+        "branches": {
+          "total": 50,
+          "covered": 41,
+          "skipped": 0,
+          "pct": 82
+        },
+        "functions": {
+          "total": 19,
+          "covered": 11,
+          "skipped": 0,
+          "pct": 57.89
+        },
+        "lines": {
+          "total": 37,
+          "covered": 23,
+          "skipped": 0,
+          "pct": 62.16
+        },
+        "baselineStatementPct": 62.16,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/features/p2p/pages/P2PMarketplacePage.tsx"]
+      },
+      {
+        "file": "src/features/p2p/lib/select-best-ad.ts",
+        "statements": {
+          "total": 5,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 9,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 4,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 5,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "static caller exists but app entry does not reach it; review route/export boundary",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": ["src/features/p2p/index.ts"]
+      },
+      {
+        "file": "src/features/p2p/pages/P2PGuidePage.tsx",
+        "statements": {
+          "total": 29,
+          "covered": 22,
+          "skipped": 0,
+          "pct": 75.86
+        },
+        "branches": {
+          "total": 30,
+          "covered": 28,
+          "skipped": 0,
+          "pct": 93.33
+        },
+        "functions": {
+          "total": 14,
+          "covered": 9,
+          "skipped": 0,
+          "pct": 64.28
+        },
+        "lines": {
+          "total": 29,
+          "covered": 22,
+          "skipped": 0,
+          "pct": 75.86
+        },
+        "baselineStatementPct": 75.86,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": [
+          "src/features/p2p/index.ts",
+          "src/features/p2p/pages/P2PInformationalPages.test.tsx",
+          "src/features/p2p/routes.ts"
+        ]
+      },
+      {
+        "file": "src/features/p2p/pages/P2PMyAdsContractPage.tsx",
+        "statements": {
+          "total": 58,
+          "covered": 42,
+          "skipped": 0,
+          "pct": 72.41
+        },
+        "branches": {
+          "total": 64,
+          "covered": 46,
+          "skipped": 0,
+          "pct": 71.87
+        },
+        "functions": {
+          "total": 22,
+          "covered": 14,
+          "skipped": 0,
+          "pct": 63.63
+        },
+        "lines": {
+          "total": 52,
+          "covered": 38,
+          "skipped": 0,
+          "pct": 73.07
+        },
+        "baselineStatementPct": 72.41,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": [
+          "src/features/p2p/pages/P2PMyAdsContractPage.test.tsx",
+          "src/features/p2p/routes.ts"
+        ]
+      },
+      {
+        "file": "src/features/predictions/index.ts",
+        "statements": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "lines": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "barrel/re-export",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/features/predictions/pages/PredictionRiskCalculatorPage.tsx",
+        "statements": {
+          "total": 26,
+          "covered": 20,
+          "skipped": 0,
+          "pct": 76.92
+        },
+        "branches": {
+          "total": 44,
+          "covered": 33,
+          "skipped": 0,
+          "pct": 75
+        },
+        "functions": {
+          "total": 10,
+          "covered": 4,
+          "skipped": 0,
+          "pct": 40
+        },
+        "lines": {
+          "total": 26,
+          "covered": 20,
+          "skipped": 0,
+          "pct": 76.92
+        },
+        "baselineStatementPct": 76.92,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": [
+          "src/app/routeConfig.ts",
+          "src/features/predictions/pages/PredictionRiskCalculatorPage.test.tsx"
+        ]
+      },
+      {
+        "file": "src/features/profile/pages/ProfileContractPage.tsx",
+        "statements": {
+          "total": 19,
+          "covered": 14,
+          "skipped": 0,
+          "pct": 73.68
+        },
+        "branches": {
+          "total": 8,
+          "covered": 7,
+          "skipped": 0,
+          "pct": 87.5
+        },
+        "functions": {
+          "total": 7,
+          "covered": 3,
+          "skipped": 0,
+          "pct": 42.85
+        },
+        "lines": {
+          "total": 16,
+          "covered": 13,
+          "skipped": 0,
+          "pct": 81.25
+        },
+        "baselineStatementPct": 73.68,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": [
+          "src/app/routes.ts",
+          "src/features/profile/pages/ProfileContractPage.test.tsx"
+        ]
+      },
+      {
+        "file": "src/features/referral/index.ts",
+        "statements": {
+          "total": 4,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "lines": {
+          "total": 4,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "barrel/re-export",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/features/support/pages/NewsContractPage.tsx",
+        "statements": {
+          "total": 17,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 20,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 8,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 14,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/routes.ts", "src/features/support/routes.ts"]
+      },
+      {
+        "file": "src/features/trading/components/QuickPairSwitcher.tsx",
+        "statements": {
+          "total": 44,
+          "covered": 31,
+          "skipped": 0,
+          "pct": 70.45
+        },
+        "branches": {
+          "total": 62,
+          "covered": 46,
+          "skipped": 0,
+          "pct": 74.19
+        },
+        "functions": {
+          "total": 16,
+          "covered": 10,
+          "skipped": 0,
+          "pct": 62.5
+        },
+        "lines": {
+          "total": 39,
+          "covered": 28,
+          "skipped": 0,
+          "pct": 71.79
+        },
+        "baselineStatementPct": 70.45,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": [
+          "src/features/trading/components/QuickPairSwitcher.test.tsx",
+          "src/features/trading/components/TradeTerminal.tsx"
+        ]
+      },
+      {
+        "file": "src/features/trading/components/TradingFeeNotice.tsx",
+        "statements": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/features/trading/components/TradingOrderEntryPanel.tsx"]
+      },
+      {
+        "file": "src/features/trading/pages/OrderReceiptPage.tsx",
+        "statements": {
+          "total": 27,
+          "covered": 20,
+          "skipped": 0,
+          "pct": 74.07
+        },
+        "branches": {
+          "total": 25,
+          "covered": 19,
+          "skipped": 0,
+          "pct": 76
+        },
+        "functions": {
+          "total": 8,
+          "covered": 4,
+          "skipped": 0,
+          "pct": 50
+        },
+        "lines": {
+          "total": 27,
+          "covered": 20,
+          "skipped": 0,
+          "pct": 74.07
+        },
+        "baselineStatementPct": 74.07,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": [
+          "src/features/trading/index.ts",
+          "src/features/trading/pages/OrderReceiptPage.test.tsx",
+          "src/features/trading/routes.ts"
+        ]
+      },
+      {
+        "file": "src/features/trading/pages/TradePage.tsx",
+        "statements": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/routes.ts"]
+      },
+      {
+        "file": "src/features/trading/pages/TradeSettingsPage.tsx",
+        "statements": {
+          "total": 41,
+          "covered": 30,
+          "skipped": 0,
+          "pct": 73.17
+        },
+        "branches": {
+          "total": 37,
+          "covered": 36,
+          "skipped": 0,
+          "pct": 97.29
+        },
+        "functions": {
+          "total": 20,
+          "covered": 9,
+          "skipped": 0,
+          "pct": 45
+        },
+        "lines": {
+          "total": 41,
+          "covered": 30,
+          "skipped": 0,
+          "pct": 73.17
+        },
+        "baselineStatementPct": 73.17,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": [
+          "src/features/trading/pages/TradeSettingsPage.test.tsx",
+          "src/features/trading/routes.ts"
+        ]
+      },
+      {
+        "file": "src/features/wallet/pages/AddressBookPage.tsx",
+        "statements": {
+          "total": 80,
+          "covered": 62,
+          "skipped": 0,
+          "pct": 77.5
+        },
+        "branches": {
+          "total": 83,
+          "covered": 72,
+          "skipped": 0,
+          "pct": 86.74
+        },
+        "functions": {
+          "total": 31,
+          "covered": 22,
+          "skipped": 0,
+          "pct": 70.96
+        },
+        "lines": {
+          "total": 74,
+          "covered": 60,
+          "skipped": 0,
+          "pct": 81.08
+        },
+        "baselineStatementPct": 77.5,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": [
+          "src/app/routes.ts",
+          "src/features/wallet/pages/AddressBookPage.test.tsx",
+          "src/features/wallet/pages/WebWithdrawalWhitelistPage.tsx",
+          "src/features/wallet/routes.ts"
+        ]
+      },
+      {
+        "file": "src/features/wallet/pages/WebWithdrawalWhitelistPage.tsx",
+        "statements": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/features/wallet/routes.ts"]
+      },
+      {
+        "file": "src/shared/theme/colors.ts",
+        "statements": {
+          "total": 7,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 7,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "development/legacy-only callers; not reachable from app entry",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": [
+          "src/dev/legacy/trading/components/AITradingSignals.tsx",
+          "src/dev/legacy/trading/components/AdvancedOrderTypes.tsx",
+          "src/dev/legacy/trading/components/AdvancedPositionControls.tsx",
+          "src/dev/legacy/trading/components/LiquidationHeatmap.tsx",
+          "src/dev/legacy/trading/components/LiquidationStats.tsx",
+          "src/dev/legacy/trading/components/MarginSafetyComponents.tsx",
+          "src/dev/legacy/trading/components/MarginTradingMenu.tsx",
+          "src/dev/legacy/trading/components/MarketIntelligence.tsx",
+          "src/dev/legacy/trading/components/PnLAnalytics.tsx",
+          "src/dev/legacy/trading/components/PortfolioRiskAnalyzer.tsx",
+          "src/dev/legacy/trading/components/RecentLiquidations.tsx",
+          "src/dev/legacy/trading/components/RegulatoryCompliance.tsx"
+        ]
+      },
+      {
+        "file": "src/shared/theme/density.ts",
+        "statements": {
+          "total": 8,
+          "covered": 6,
+          "skipped": 0,
+          "pct": 75
+        },
+        "branches": {
+          "total": 5,
+          "covered": 3,
+          "skipped": 0,
+          "pct": 60
+        },
+        "functions": {
+          "total": 2,
+          "covered": 1,
+          "skipped": 0,
+          "pct": 50
+        },
+        "lines": {
+          "total": 6,
+          "covered": 5,
+          "skipped": 0,
+          "pct": 83.33
+        },
+        "baselineStatementPct": 75,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": [
+          "src/shared/theme/index.ts",
+          "src/shared/ui/SectionHeader.tsx",
+          "src/shared/ui/TrCard.tsx",
+          "src/shared/ui/layout/PageContent.tsx"
+        ]
+      },
+      {
+        "file": "src/shared/theme/icons.ts",
+        "statements": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "lines": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "static config/token/data",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": [
+          "src/dev/legacy/trading/components/AITradingSignals.tsx",
+          "src/dev/legacy/trading/components/AdvancedOrderTypes.tsx",
+          "src/dev/legacy/trading/components/AdvancedPositionControls.tsx",
+          "src/dev/legacy/trading/components/LiquidationHeatmap.tsx",
+          "src/dev/legacy/trading/components/LiquidationStats.tsx",
+          "src/dev/legacy/trading/components/MarginSafetyComponents.tsx",
+          "src/dev/legacy/trading/components/MarginTradingMenu.tsx",
+          "src/dev/legacy/trading/components/MarketIntelligence.tsx",
+          "src/dev/legacy/trading/components/PnLAnalytics.tsx",
+          "src/dev/legacy/trading/components/PortfolioRiskAnalyzer.tsx",
+          "src/dev/legacy/trading/components/RecentLiquidations.tsx",
+          "src/dev/legacy/trading/components/RegulatoryCompliance.tsx"
+        ]
+      },
+      {
+        "file": "src/shared/theme/index.ts",
+        "statements": {
+          "total": 5,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "lines": {
+          "total": 5,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "barrel/re-export",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/shared/theme/motion.ts",
+        "statements": {
+          "total": 15,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 15,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 5,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 12,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "static caller exists but app entry does not reach it; review route/export boundary",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": ["src/shared/theme/index.ts"]
+      },
+      {
+        "file": "src/shared/theme/radii.ts",
+        "statements": {
+          "total": 7,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 6,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 6,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/shared/theme/index.ts", "src/shared/ui/TrCard.tsx"]
+      },
+      {
+        "file": "src/shared/theme/typography.ts",
+        "statements": {
+          "total": 19,
+          "covered": 15,
+          "skipped": 0,
+          "pct": 78.94
+        },
+        "branches": {
+          "total": 14,
+          "covered": 7,
+          "skipped": 0,
+          "pct": 50
+        },
+        "functions": {
+          "total": 7,
+          "covered": 6,
+          "skipped": 0,
+          "pct": 85.71
+        },
+        "lines": {
+          "total": 16,
+          "covered": 15,
+          "skipped": 0,
+          "pct": 93.75
+        },
+        "baselineStatementPct": 78.94,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": [
+          "src/shared/theme/index.ts",
+          "src/shared/ui/InputField.tsx",
+          "src/shared/ui/SectionHeader.tsx"
+        ]
+      },
+      {
+        "file": "src/shared/theme/useWebStyles.ts",
+        "statements": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/shared/ui/charts/ChartGradientDefs.tsx",
+        "statements": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 8,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/shared/ui/dialog.tsx",
+        "statements": {
+          "total": 11,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 10,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 11,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/shared/ui/RefreshableSkeletonList.tsx",
+        "statements": {
+          "total": 9,
+          "covered": 5,
+          "skipped": 0,
+          "pct": 55.55
+        },
+        "branches": {
+          "total": 16,
+          "covered": 9,
+          "skipped": 0,
+          "pct": 56.25
+        },
+        "functions": {
+          "total": 2,
+          "covered": 1,
+          "skipped": 0,
+          "pct": 50
+        },
+        "lines": {
+          "total": 8,
+          "covered": 5,
+          "skipped": 0,
+          "pct": 62.5
+        },
+        "baselineStatementPct": 55.55,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/features/market/components/MarketListSections.tsx"]
+      },
+      {
+        "file": "src/shared/ui/SkeletonBlock.tsx",
+        "statements": {
+          "total": 13,
+          "covered": 7,
+          "skipped": 0,
+          "pct": 53.84
+        },
+        "branches": {
+          "total": 8,
+          "covered": 3,
+          "skipped": 0,
+          "pct": 37.5
+        },
+        "functions": {
+          "total": 8,
+          "covered": 4,
+          "skipped": 0,
+          "pct": 50
+        },
+        "lines": {
+          "total": 13,
+          "covered": 7,
+          "skipped": 0,
+          "pct": 53.84
+        },
+        "baselineStatementPct": 53.84,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/shared/ui/RefreshableSkeletonList.tsx"]
+      },
+      {
+        "file": "src/shared/ui/StatusPill.tsx",
+        "statements": {
+          "total": 7,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 23,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 7,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/shared/ui/StickyHeader.tsx",
+        "statements": {
+          "total": 7,
+          "covered": 5,
+          "skipped": 0,
+          "pct": 71.42
+        },
+        "branches": {
+          "total": 13,
+          "covered": 7,
+          "skipped": 0,
+          "pct": 53.84
+        },
+        "functions": {
+          "total": 4,
+          "covered": 3,
+          "skipped": 0,
+          "pct": 75
+        },
+        "lines": {
+          "total": 7,
+          "covered": 5,
+          "skipped": 0,
+          "pct": 71.42
+        },
+        "baselineStatementPct": 71.42,
+        "classification": "production-reachable with partial statement execution",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/features/market/components/MarketListSections.tsx"]
+      },
+      {
+        "file": "src/shared/ui/ThemedToaster.tsx",
+        "statements": {
+          "total": 4,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 4,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/components/layout/RootLayout.tsx"]
+      },
+      {
+        "file": "src/shared/ui/toggle-variants.ts",
+        "statements": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "lines": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "static config/token/data",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      }
+    ],
+    "zeroFileRows": [
+      {
+        "file": "src/app/components/figma/ImageWithFallback.tsx",
+        "statements": {
+          "total": 6,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 4,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 6,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/app/components/layout/MobileFrame.tsx",
+        "statements": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/components/layout/RootLayout.tsx"]
+      },
+      {
+        "file": "src/app/components/layout/ResponsivePageHeader.tsx",
+        "statements": {
+          "total": 7,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 7,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 6,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/app/components/mobile/ScrollToTopFAB.tsx",
+        "statements": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 6,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/components/layout/AppLayout.tsx"]
+      },
+      {
+        "file": "src/app/components/states/SessionTimeoutOverlay.tsx",
+        "statements": {
+          "total": 6,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 5,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/components/layout/AppLayout.tsx"]
+      },
+      {
+        "file": "src/app/components/system/PlaceholderPage.tsx",
+        "statements": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/app/pages/dca/DCAPage.tsx",
+        "statements": {
+          "total": 6,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 6,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/routeConfig.ts"]
+      },
+      {
+        "file": "src/app/pages/p2p/P2PHomePage.tsx",
+        "statements": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/routes.ts"]
+      },
+      {
+        "file": "src/app/pages/wallet/AssetDetailPage.tsx",
+        "statements": {
+          "total": 10,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 10,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/routes/walletProfileProtectedRoutes.ts"]
+      },
+      {
+        "file": "src/features/admin/index.ts",
+        "statements": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "lines": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "barrel/re-export",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/features/arena/index.ts",
+        "statements": {
+          "total": 4,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "lines": {
+          "total": 4,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "barrel/re-export",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/features/auth/index.ts",
+        "statements": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "lines": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "barrel/re-export",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/features/auth/pages/RegisterPage.tsx",
+        "statements": {
+          "total": 5,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 5,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/routeConfig.ts"]
+      },
+      {
+        "file": "src/features/auth/pages/WebRegisterPage.tsx",
+        "statements": {
+          "total": 4,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 4,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/routes.ts"]
+      },
+      {
+        "file": "src/features/discovery/index.ts",
+        "statements": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "lines": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "barrel/re-export",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/features/p2p/lib/select-best-ad.ts",
+        "statements": {
+          "total": 5,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 9,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 4,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 5,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "static caller exists but app entry does not reach it; review route/export boundary",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": ["src/features/p2p/index.ts"]
+      },
+      {
+        "file": "src/features/predictions/index.ts",
+        "statements": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "lines": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "barrel/re-export",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/features/referral/index.ts",
+        "statements": {
+          "total": 4,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "lines": {
+          "total": 4,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "barrel/re-export",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/features/support/pages/NewsContractPage.tsx",
+        "statements": {
+          "total": 17,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 20,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 8,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 14,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/routes.ts", "src/features/support/routes.ts"]
+      },
+      {
+        "file": "src/features/trading/components/TradingFeeNotice.tsx",
+        "statements": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/features/trading/components/TradingOrderEntryPanel.tsx"]
+      },
+      {
+        "file": "src/features/trading/pages/TradePage.tsx",
+        "statements": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/routes.ts"]
+      },
+      {
+        "file": "src/features/wallet/pages/WebWithdrawalWhitelistPage.tsx",
+        "statements": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/features/wallet/routes.ts"]
+      },
+      {
+        "file": "src/shared/theme/colors.ts",
+        "statements": {
+          "total": 7,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 7,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "development/legacy-only callers; not reachable from app entry",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": [
+          "src/dev/legacy/trading/components/AITradingSignals.tsx",
+          "src/dev/legacy/trading/components/AdvancedOrderTypes.tsx",
+          "src/dev/legacy/trading/components/AdvancedPositionControls.tsx",
+          "src/dev/legacy/trading/components/LiquidationHeatmap.tsx",
+          "src/dev/legacy/trading/components/LiquidationStats.tsx",
+          "src/dev/legacy/trading/components/MarginSafetyComponents.tsx",
+          "src/dev/legacy/trading/components/MarginTradingMenu.tsx",
+          "src/dev/legacy/trading/components/MarketIntelligence.tsx",
+          "src/dev/legacy/trading/components/PnLAnalytics.tsx",
+          "src/dev/legacy/trading/components/PortfolioRiskAnalyzer.tsx",
+          "src/dev/legacy/trading/components/RecentLiquidations.tsx",
+          "src/dev/legacy/trading/components/RegulatoryCompliance.tsx"
+        ]
+      },
+      {
+        "file": "src/shared/theme/icons.ts",
+        "statements": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "lines": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "static config/token/data",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": [
+          "src/dev/legacy/trading/components/AITradingSignals.tsx",
+          "src/dev/legacy/trading/components/AdvancedOrderTypes.tsx",
+          "src/dev/legacy/trading/components/AdvancedPositionControls.tsx",
+          "src/dev/legacy/trading/components/LiquidationHeatmap.tsx",
+          "src/dev/legacy/trading/components/LiquidationStats.tsx",
+          "src/dev/legacy/trading/components/MarginSafetyComponents.tsx",
+          "src/dev/legacy/trading/components/MarginTradingMenu.tsx",
+          "src/dev/legacy/trading/components/MarketIntelligence.tsx",
+          "src/dev/legacy/trading/components/PnLAnalytics.tsx",
+          "src/dev/legacy/trading/components/PortfolioRiskAnalyzer.tsx",
+          "src/dev/legacy/trading/components/RecentLiquidations.tsx",
+          "src/dev/legacy/trading/components/RegulatoryCompliance.tsx"
+        ]
+      },
+      {
+        "file": "src/shared/theme/index.ts",
+        "statements": {
+          "total": 5,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "lines": {
+          "total": 5,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "barrel/re-export",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/shared/theme/motion.ts",
+        "statements": {
+          "total": 15,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 15,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 5,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 12,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "static caller exists but app entry does not reach it; review route/export boundary",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": ["src/shared/theme/index.ts"]
+      },
+      {
+        "file": "src/shared/theme/radii.ts",
+        "statements": {
+          "total": 7,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 6,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 6,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/shared/theme/index.ts", "src/shared/ui/TrCard.tsx"]
+      },
+      {
+        "file": "src/shared/theme/useWebStyles.ts",
+        "statements": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/shared/ui/charts/ChartGradientDefs.tsx",
+        "statements": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 8,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 3,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/shared/ui/dialog.tsx",
+        "statements": {
+          "total": 11,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 10,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 11,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/shared/ui/StatusPill.tsx",
+        "statements": {
+          "total": 7,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 23,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 7,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "no static callers found; possible orphan, verify route/reflection before removal",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      },
+      {
+        "file": "src/shared/ui/ThemedToaster.tsx",
+        "statements": {
+          "total": 4,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 2,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "lines": {
+          "total": 4,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "production-reachable runtime; zero statement execution (test gap candidate)",
+        "productionReachable": true,
+        "unitTestGraphReachable": true,
+        "directCallers": ["src/app/components/layout/RootLayout.tsx"]
+      },
+      {
+        "file": "src/shared/ui/toggle-variants.ts",
+        "statements": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "lines": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "baselineStatementPct": 0,
+        "classification": "static config/token/data",
+        "productionReachable": false,
+        "unitTestGraphReachable": false,
+        "directCallers": []
+      }
+    ],
+    "newBelow80Files": [],
+    "recoveredBaselineLowFiles": [
+      {
+        "file": "src/features/admin/pages/AdminFunnelContractPage.tsx",
+        "currentStatementPct": 100
+      }
+    ],
+    "changedZeroFileSets": {
+      "noLongerZero": [],
+      "newlyZero": []
+    }
+  },
+  "comparison": {
+    "delta": {
+      "statements": {
+        "covered": 109,
+        "total": 106,
+        "percentagePoints": 0.11
+      },
+      "branches": {
+        "covered": 207,
+        "total": 219,
+        "percentagePoints": 0.22
+      },
+      "functions": {
+        "covered": 18,
+        "total": 11,
+        "percentagePoints": 0.22
+      },
+      "lines": {
+        "covered": 107,
+        "total": 105,
+        "percentagePoints": 0.1
+      }
+    }
+  },
+  "reachabilityMethod": "TypeScript AST import/export and literal dynamic-import graph from src/main.tsx and Vitest-like test roots in src/scripts/tests, excluding tests/e2e. Resolves relative and @/ imports; ignores type-only imports. This is a static triage index, not proof that a file is dead or that a route was rendered. Generated registries, reflection, and other aliases require manual verification.",
+  "conclusions": [
+    "Coverage thresholds pass at aggregate level; command exit code 1 is due to one existing UI assertion mismatch.",
+    "The old plan listed 61 files below 80% and 33 at 0%; the preserved local baseline report confirms those counts. Current measurement has 60 below 80% and 33 at 0%.",
+    "AdminFunnelContractPage.tsx is the one baseline-low file now at 100% statement coverage; there are no newly below-80% files and the same 33 files remain at 0%.",
+    "The baseline raw report has one fewer covered statement, branch, function, and line than the previous PLAN narrative. This evidence records the raw artifact values rather than repeating that narrative.",
+    "Path grouping: src/app is app; src/features is domain; src/shared is shared. No thresholds or coverage exclusions were changed."
+  ]
+}

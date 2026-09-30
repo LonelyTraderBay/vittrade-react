@@ -8,6 +8,39 @@ const authContract = parse(
 );
 
 describe('auth OpenAPI login MFA contract', () => {
+  it('starts registration with an idempotent challenge and keeps the address masked', () => {
+    const operation = authContract.paths['/auth/register'].post;
+    expect(operation.security).toEqual([]);
+    expect(operation.parameters).toContainEqual(
+      expect.objectContaining({ name: 'Idempotency-Key', in: 'header', required: true }),
+    );
+    expect(operation.responses['202'].content['application/json'].schema).toEqual({
+      $ref: '#/components/schemas/RegistrationChallenge',
+    });
+    expect(authContract.components.schemas.RegistrationRequest).toMatchObject({
+      required: ['fullName', 'channel', 'contact', 'password', 'acceptedTerms'],
+      properties: {
+        channel: { enum: ['email', 'phone'] },
+        password: { minLength: 8, writeOnly: true },
+        acceptedTerms: { const: true },
+      },
+    });
+    expect(authContract.components.schemas.RegistrationChallenge).toMatchObject({
+      required: ['challengeId', 'channel', 'maskedDestination', 'expiresAt'],
+    });
+  });
+
+  it('binds registration OTP verification to the challenge ID instead of the contact', () => {
+    expect(authContract.components.schemas.RegistrationMfaVerificationRequest).toMatchObject({
+      required: ['challengeId', 'code', 'purpose'],
+      properties: {
+        challengeId: { minLength: 1 },
+        code: { pattern: '^\\d{6}$' },
+        purpose: { const: 'register' },
+      },
+    });
+  });
+
   it('describes login as an authenticated session or backend-issued MFA challenge', () => {
     const responseSchema =
       authContract.paths['/auth/login'].post.responses['200'].content['application/json'].schema;

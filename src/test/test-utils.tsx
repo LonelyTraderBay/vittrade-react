@@ -4,7 +4,7 @@ import { MemoryRouter, MemoryRouterProps } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '../app/contexts/AuthContext';
 import type { AuthAdapter } from '../app/contexts/AuthContext';
-import { ThemeProvider } from '../app/contexts/ThemeContext';
+import { ThemeProvider } from '@/shared/theme/ThemeContext';
 import { UIProvider } from '../app/contexts/UIContext';
 import { AppProvider } from '../app/contexts/AppContext';
 import { testAuthAdapter } from './auth-test-adapter';

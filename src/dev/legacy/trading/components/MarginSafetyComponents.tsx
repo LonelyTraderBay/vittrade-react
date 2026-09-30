@@ -17,9 +17,6 @@ import {
   AlertTriangle,
   Info,
   Shield,
-  TrendingUp,
-  TrendingDown,
-  Bell,
   Target,
   DollarSign,
   Zap,
@@ -48,7 +45,6 @@ export function MarginLevelAlert({ marginLevel, className = '' }: MarginLevelAle
   const SAFE = 150;
   const CAUTION = 120;
   const WARNING = 110;
-  const DANGER = 105;
 
   const getAlertConfig = () => {
     if (marginLevel >= SAFE) {
@@ -913,7 +909,7 @@ interface FundingRateDisplayProps {
 export function FundingRateDisplay({
   currentRate,
   nextFundingIn,
-  predictedRate,
+  predictedRate: _predictedRate,
   positionSize = 0,
   side = 'long',
   className = '',

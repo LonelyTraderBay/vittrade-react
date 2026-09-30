@@ -13,17 +13,29 @@ describe('Market feature routes', () => {
     expect(paths).toEqual(
       expect.arrayContaining([
         'markets/overview',
-        'markets/watchlist',
+        'markets/news',
+        'markets/calendar',
+        'markets/correlations',
+        'markets/unlocks',
+        'markets/derivatives',
+        'markets/social-sentiment',
+        'markets/signals',
         'markets/advanced-charts',
         'pair/:pairId',
         'pair/:pairId/info',
       ]),
     );
+    expect(paths).not.toContain('markets/watchlist');
+    expect(paths).not.toContain('markets/alerts');
   });
 
-  it('keeps the advanced trade chart protected route explicit', () => {
-    expect(createMarketProtectedRoutes().map((route) => route.path)).toContain(
-      'trade/advanced-chart/:pairId',
+  it('keeps secured watchlist, alerts, and advanced chart routes behind the protected tree', () => {
+    expect(createMarketProtectedRoutes().map((route) => route.path)).toEqual(
+      expect.arrayContaining([
+        'markets/watchlist',
+        'markets/alerts',
+        'trade/advanced-chart/:pairId',
+      ]),
     );
   });
 
@@ -32,7 +44,6 @@ describe('Market feature routes', () => {
       'scanner',
       'markets/overview',
       'markets/movers',
-      'markets/watchlist',
       'markets/heatmap',
     ]);
   });

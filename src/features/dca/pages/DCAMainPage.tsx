@@ -488,7 +488,7 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
         )}
 
         {/* Empty State (no plans) */}
-        {plans.length === 0 && (
+        {plans.length === 0 && !snapshotQuery.isPending && (
           <div className="py-12 text-center">
             <div
               className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"

@@ -31,6 +31,7 @@ export function Web2FASetupFlow() {
   const [savedCodes, setSavedCodes] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [setup, setSetup] = useState<MfaSetupChallenge | null>(null);
+  const [setupAttempt, setSetupAttempt] = useState(0);
   const [error, setError] = useState('');
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -46,7 +47,7 @@ export function Web2FASetupFlow() {
     return () => {
       active = false;
     };
-  }, [beginMfaSetup]);
+  }, [beginMfaSetup, setupAttempt]);
 
   /* ─── Copy secret key ─── */
   const handleCopyKey = () => {
@@ -108,9 +109,7 @@ export function Web2FASetupFlow() {
   };
 
   /* ─── Complete setup ─── */
-  const handleComplete = async () => {
-    setIsLoading(true);
-    setIsLoading(false);
+  const handleComplete = () => {
     navigate('/w/auth/success', {
       replace: true,
       state: { purpose: 'register', from: '2fa-setup' },
@@ -150,14 +149,34 @@ export function Web2FASetupFlow() {
         {/* Step indicator */}
         <Web2FASetupStepIndicator current={step} c={c} />
         {step === 0 && (
-          <Web2FASetupQrStep
-            c={c}
-            setup={setup}
-            copied={copied}
-            handleCopyKey={handleCopyKey}
-            setStep={setStep}
-            inputRefs={inputRefs}
-          />
+          <>
+            {error && (
+              <div
+                role="alert"
+                className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700"
+              >
+                <p>{error}</p>
+                <button
+                  type="button"
+                  className="mt-2 font-semibold underline"
+                  onClick={() => {
+                    setError('');
+                    setSetupAttempt((attempt) => attempt + 1);
+                  }}
+                >
+                  Thử lại thiết lập 2FA
+                </button>
+              </div>
+            )}
+            <Web2FASetupQrStep
+              c={c}
+              setup={setup}
+              copied={copied}
+              handleCopyKey={handleCopyKey}
+              setStep={setStep}
+              inputRefs={inputRefs}
+            />
+          </>
         )}
         {step === 1 && (
           <Web2FASetupVerifyStep

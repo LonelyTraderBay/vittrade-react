@@ -42,6 +42,26 @@ const snapshot: EarnSnapshot = {
   },
 };
 
+const redemptionSnapshot: EarnSnapshot = {
+  ...snapshot,
+  positions: [
+    {
+      id: 'position-1',
+      productId: 'product-1',
+      product: 'Stable Savings',
+      asset: 'USDT',
+      amount: 500,
+      earned: 12.5,
+      apy: 8.5,
+      startDate: '2026-09-01T00:00:00.000Z',
+      type: 'flexible',
+      color: '#10B981',
+      riskLevel: 'low',
+    },
+  ],
+  summary: { ...snapshot.summary, totalDepositedUsd: 500, activePositions: 1 },
+};
+
 function renderEarn(authAdapter: AuthAdapter = testAuthAdapter) {
   return renderWithProviders(<EarnPage domain="savings" />, { authAdapter });
 }
@@ -114,6 +134,60 @@ describe('Earn page contract boundary', () => {
     expect(await screen.findByText('Đăng ký sản phẩm thành công.')).toBeInTheDocument();
     expect(attempts).toBe(2);
     expect(keys[0]).toMatch(/^earn-subscribe-/);
+    expect(keys[1]).toBe(keys[0]);
+  });
+
+  it('prevents over-redemption and reuses the idempotency key when retrying', async () => {
+    let attempts = 0;
+    const keys: string[] = [];
+    const requests: unknown[] = [];
+    server.use(
+      http.get('*/earn/snapshot', () => HttpResponse.json(redemptionSnapshot)),
+      http.post('*/earn/redemptions', async ({ request }) => {
+        attempts += 1;
+        keys.push(request.headers.get('Idempotency-Key') ?? '');
+        requests.push(await request.json());
+        return attempts === 1
+          ? HttpResponse.json({ message: 'Redemption service unavailable' }, { status: 503 })
+          : HttpResponse.json(
+              {
+                id: 'receipt-2',
+                operation: 'redeem',
+                productId: 'product-1',
+                positionId: 'position-1',
+                asset: 'USDT',
+                amount: 50,
+                status: 'completed',
+                createdAt: '2026-09-27T10:00:00.000Z',
+              },
+              { status: 201 },
+            );
+      }),
+    );
+
+    const user = userEvent.setup();
+    renderEarn();
+    await user.click(await screen.findByRole('tab', { name: 'Của tôi (1)' }));
+    await user.click(await screen.findByRole('button', { name: 'Rút vốn' }));
+
+    const amount = screen.getByRole('textbox', { name: 'Số lượng' });
+    const submit = screen.getByRole('button', { name: 'Xác nhận rút vốn' });
+    await user.type(amount, '501');
+    expect(submit).toBeDisabled();
+
+    await user.clear(amount);
+    await user.type(amount, '50');
+    await user.click(submit);
+    expect(await screen.findByRole('alert')).toHaveTextContent('Redemption service unavailable');
+    await user.click(submit);
+
+    expect(await screen.findByText('Yêu cầu rút vốn đã được ghi nhận.')).toBeInTheDocument();
+    expect(attempts).toBe(2);
+    expect(requests).toEqual([
+      { positionId: 'position-1', amount: 50 },
+      { positionId: 'position-1', amount: 50 },
+    ]);
+    expect(keys[0]).toMatch(/^earn-redeem-/);
     expect(keys[1]).toBe(keys[0]);
   });
 

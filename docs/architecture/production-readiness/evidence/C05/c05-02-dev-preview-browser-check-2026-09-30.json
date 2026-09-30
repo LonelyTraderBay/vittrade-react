@@ -1,0 +1,1649 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C05",
+  "stepId": "C05.02",
+  "observedAt": "2026-09-29T17:00:27.987Z",
+  "environment": {
+    "os": "Windows",
+    "runtime": "v24.19.0",
+    "browser": "Chromium 153.0.8010.12",
+    "url": "http://127.0.0.1:5189",
+    "apiDataSource": "mock",
+    "backendConnected": false,
+    "cleanBrowserContext": true
+  },
+  "routes": [
+    {
+      "routeId": "ROUTE-626b52f4ed7c",
+      "requestedPath": "/w/markets",
+      "finalPath": "/w/markets",
+      "status": 200,
+      "url": "http://127.0.0.1:5189/w/markets",
+      "title": "vittrade-react",
+      "headings": ["Thị trường"],
+      "mockBannerVisible": true,
+      "loginInputCount": 0,
+      "serviceWorkerController": "http://127.0.0.1:5189/mockServiceWorker.js",
+      "apiRequests": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:5189/api/auth/session",
+          "origin": "http://127.0.0.1:5189",
+          "crossOrigin": false
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:5189/api/market/pairs",
+          "origin": "http://127.0.0.1:5189",
+          "crossOrigin": false
+        }
+      ],
+      "apiResponses": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:5189/api/auth/session",
+          "origin": "http://127.0.0.1:5189",
+          "status": 401,
+          "fromServiceWorker": true
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:5189/api/market/pairs",
+          "origin": "http://127.0.0.1:5189",
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ]
+    },
+    {
+      "routeId": "ROUTE-1f4f526bb861",
+      "requestedPath": "/w/auth/login",
+      "finalPath": "/w/auth/login",
+      "status": 200,
+      "url": "http://127.0.0.1:5189/w/auth/login",
+      "title": "vittrade-react",
+      "headings": ["Đăng nhập"],
+      "mockBannerVisible": true,
+      "loginInputCount": 1,
+      "serviceWorkerController": "http://127.0.0.1:5189/mockServiceWorker.js",
+      "apiRequests": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:5189/api/auth/session",
+          "origin": "http://127.0.0.1:5189",
+          "crossOrigin": false
+        }
+      ],
+      "apiResponses": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:5189/api/auth/session",
+          "origin": "http://127.0.0.1:5189",
+          "status": 401,
+          "fromServiceWorker": true
+        }
+      ]
+    }
+  ],
+  "serviceWorkers": [
+    {
+      "scope": "http://127.0.0.1:5189/",
+      "activeScriptUrl": "http://127.0.0.1:5189/mockServiceWorker.js",
+      "waitingScriptUrl": null
+    }
+  ],
+  "apiRequests": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/api/auth/session",
+      "origin": "http://127.0.0.1:5189",
+      "crossOrigin": false
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/api/market/pairs",
+      "origin": "http://127.0.0.1:5189",
+      "crossOrigin": false
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/api/auth/session",
+      "origin": "http://127.0.0.1:5189",
+      "crossOrigin": false
+    }
+  ],
+  "apiResponses": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/api/auth/session",
+      "origin": "http://127.0.0.1:5189",
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/api/market/pairs",
+      "origin": "http://127.0.0.1:5189",
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/api/auth/session",
+      "origin": "http://127.0.0.1:5189",
+      "status": 401,
+      "fromServiceWorker": true
+    }
+  ],
+  "nonApiRequests": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/w/markets"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/@vite/client"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/main.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/@react-refresh"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/react-dom_client.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/App.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/config/env.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/styles/index.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/chunk-H343HIDT.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/chunk-VJA5E53X.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/chunk-SNAQBZPT.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/react.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/react-router.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/@tanstack_react-query.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/router/index.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/api/query-client.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/telemetry/telemetry.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/zod.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/api/api-error.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/chunk-QRIEPQWS.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/pages/system/IntegrationPendingPage.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/routes/RouteErrorBoundary.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/RootLayout.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/AppLayout.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/ProtectedRoute.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/ResponsiveShell.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/TabletShell.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/WebShell.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/routeConfig.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/auth/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/trading/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/index.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/market/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/p2p/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/lucide-react.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/Header.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/layout/PageContent.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/layout/PageLayout.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/TrCard.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/navigation/useRoutePrefix.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/hooks/useThemeColors.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/contexts/AppContext.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/MobileFrame.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/mobile/ErrorBoundary.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/ThemedToaster.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/PlatformSwitcher.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/session/useAuth.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/BottomNav.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/StatusBar.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/contexts/ui-context.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/mobile/PullToRefresh.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/mobile/ScrollToTopFAB.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/mobile/SwipeBack.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/mobile/PageTransition.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/hooks/usePullToRefresh.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/hooks/useScrollPosition.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/hooks/useHaptic.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/OfflineBanner.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/states/NetworkStatusBanner.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/states/SessionTimeoutOverlay.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/hooks/useSessionTimeout.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/device-layout.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/TabletSidebar.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/TabletTopBar.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/hooks/useUI.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/hooks/usePlatform.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/WebSidebar.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/WebCommandBar.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/webConstants.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/ResponsiveBottomNav.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/LeftRail.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/hooks/useBreakpoint.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/routes/p2pProtectedRoutes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/routes/tradingProtectedRoutes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/routes/walletProfileProtectedRoutes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/AuthLayout.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/earn/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/dca/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/launchpad/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/admin/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/predictions/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/arena/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/referral/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/support/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/discovery/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/lazy-route.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/api/wallet-api.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/pages/PortfolioAnalyticsContractPage.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/pages/WalletDepositContractPage.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/pages/WalletTransferContractPage.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/pages/WalletOverviewContractPage.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/model/wallet-queries.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/layout/Header.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/SectionHeader.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/theme/density.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/contexts/AuthContext.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/theme/ThemeContext.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/contexts/UIContext.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/contexts/trading-context.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/sonner.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/theme/useTheme.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/session/auth-context.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/motion_react.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/theme/webTokens.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/lib/golden.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/hooks/useOnlineStatus.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/profile/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/LazyRoute.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/ErrorState.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/CTAButton.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/lib/formatNumber.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/qrcode__react.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/api/app-client.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/components/WalletTransactionHistoryComponents.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/model/wallet-history.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/theme/typography.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/Breadcrumb.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/session/AuthContext.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/auth/api/auth-api-instance.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/theme/theme-context.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/theme/button.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/api/client.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/auth/api/auth-api.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/@radix-ui_react-slot.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/utils.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/api/http-client.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/clsx.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/tailwind-merge.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/chunk-U7P2NEEE.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Inter:wght@400;500;600;700&display=swap"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/browser.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/msw_browser.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/handlers.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/preview-scenario-handler.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/browser-policy.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/chunk-3EQ4YGYS.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/msw.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/dca-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/earn-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/referral-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/market-preview-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/scenario-runtime.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/personas.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/trading-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/market-overview-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/prediction-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/arena-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/arena-prediction-topics.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/launchpad-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/trading-analytics-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/advanced-feature-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/chunk-SOBQYPKD.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/dca/model/dca-advanced-types.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/lib/browser-storage.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/market/pages/MarketListPage.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/PreviewControls.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/market/components/DiscoverMoreSection.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/hooks/useActionToast.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/hooks/useRefresh.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/hooks/useInfiniteScroll.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/constants/toastMessages.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/market/index.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/market/components/MarketListSections.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/market/lib/mutation-attempts.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/lib/string.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/market/api/market-api.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/market/api/market-stream.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/market/model/market-queries.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/EmptyState.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/RefreshableSkeletonList.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/PullToRefresh.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/StickyHeader.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/market/components/MarketItem.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/theme/legacyTypography.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/market/api/market-research-schemas.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/SkeletonBlock.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/charts/SparklineChart.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm81Rb0.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/recharts.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm86Rb0bcw.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm87Rb0bcw.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/w/auth/login"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/@vite/client"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/main.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/@react-refresh"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/react-dom_client.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/App.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/config/env.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/styles/index.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/vite/dist/client/env.mjs"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/chunk-H343HIDT.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/chunk-VJA5E53X.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/chunk-SNAQBZPT.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/react.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/react-router.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/@tanstack_react-query.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/router/index.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/api/query-client.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/telemetry/telemetry.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/zod.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/api/api-error.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/chunk-QRIEPQWS.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/pages/system/IntegrationPendingPage.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/routes/RouteErrorBoundary.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/RootLayout.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/AppLayout.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/ProtectedRoute.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/ResponsiveShell.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/TabletShell.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/WebShell.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/routeConfig.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/auth/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/trading/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/index.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/market/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/p2p/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/lucide-react.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/Header.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/layout/PageContent.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/layout/PageLayout.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/TrCard.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/navigation/useRoutePrefix.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/hooks/useThemeColors.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/contexts/AppContext.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/MobileFrame.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/mobile/ErrorBoundary.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/ThemedToaster.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/PlatformSwitcher.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/BottomNav.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/StatusBar.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/contexts/ui-context.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/mobile/PullToRefresh.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/mobile/ScrollToTopFAB.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/mobile/SwipeBack.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/mobile/PageTransition.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/hooks/usePullToRefresh.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/hooks/useScrollPosition.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/hooks/useHaptic.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/OfflineBanner.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/states/NetworkStatusBanner.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/states/SessionTimeoutOverlay.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/hooks/useSessionTimeout.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/device-layout.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/session/useAuth.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/TabletSidebar.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/TabletTopBar.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/hooks/useUI.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/hooks/usePlatform.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/ResponsiveBottomNav.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/LeftRail.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/hooks/useBreakpoint.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/WebSidebar.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/WebCommandBar.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/webConstants.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/routes/p2pProtectedRoutes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/routes/tradingProtectedRoutes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/routes/walletProfileProtectedRoutes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/components/layout/AuthLayout.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/earn/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/dca/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/launchpad/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/admin/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/predictions/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/arena/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/referral/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/support/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/discovery/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/lazy-route.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/api/wallet-api.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/pages/PortfolioAnalyticsContractPage.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/pages/WalletDepositContractPage.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/pages/WalletTransferContractPage.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/pages/WalletOverviewContractPage.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/model/wallet-queries.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/layout/Header.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/SectionHeader.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/theme/density.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/contexts/AuthContext.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/theme/ThemeContext.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/contexts/UIContext.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/contexts/trading-context.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/sonner.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/theme/useTheme.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/motion_react.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/app/hooks/useOnlineStatus.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/lib/golden.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/session/auth-context.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/theme/webTokens.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/profile/routes.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/LazyRoute.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/api/app-client.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/ErrorState.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/qrcode__react.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/components/WalletTransactionHistoryComponents.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/wallet/model/wallet-history.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/CTAButton.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/lib/formatNumber.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/Breadcrumb.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/theme/typography.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/session/AuthContext.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/auth/api/auth-api-instance.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/theme/theme-context.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/api/client.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/theme/button.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/auth/api/auth-api.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/@radix-ui_react-slot.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/utils.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/api/http-client.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/clsx.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/tailwind-merge.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/chunk-U7P2NEEE.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Inter:wght@400;500;600;700&display=swap"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/browser.ts"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm86Rb0bcw.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm87Rb0bcw.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm81Rb0.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/msw_browser.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/handlers.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/preview-scenario-handler.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/browser-policy.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/msw.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/dca-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/earn-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/referral-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/market-preview-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/scenario-runtime.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/chunk-3EQ4YGYS.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/node_modules/.vite/deps/chunk-SOBQYPKD.js?v=01d3aefe"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/personas.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/trading-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/market-overview-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/prediction-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/arena-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/arena-prediction-topics.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/launchpad-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/trading-analytics-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/mocks/advanced-feature-fixtures.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/dca/model/dca-advanced-types.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/lib/browser-storage.ts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/features/auth/pages/WebLoginPage.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/dev/PreviewControls.tsx"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5189/src/shared/ui/auth/WebAuthBrandPanel.tsx"
+    }
+  ],
+  "failedRequests": [],
+  "pageErrors": [],
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+    "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+  ],
+  "sourceSha256": {
+    "src/main.tsx": "845215ef1b767caaa0f6ff7eeaebe49f471bdfba3aac223b8969671770783bd6",
+    "src/shared/config/env.ts": "2c8c6d11cf10a16656e268181c91b3a34540f2677a9c4dc36394f67c066e38a6",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/browser-policy.ts": "de011b88d9e53034136828f5171cdcc7d0be60ca0239f9c9fd2cfd485b8b5969",
+    "vite.config.ts": "0ea310f7fd0ea7e31eb704aba9e755554fd7204c1e223db4338beda4bf186b7f"
+  },
+  "screenshots": ["c05-02-dev-market-2026-09-30.png", "c05-02-dev-login-2026-09-30.png"],
+  "guestSessionUnauthorizedResponses": 2,
+  "unexpectedConsoleErrors": [],
+  "assertions": {
+    "routePagesRendered": true,
+    "mockBannerVisibleOnAllRoutes": true,
+    "mockServiceWorkerRegistered": true,
+    "apiResponsesObserved": true,
+    "allApiResponsesFromServiceWorker": true,
+    "noCrossOriginApiRequests": true,
+    "guestSession401MatchesConsoleSignals": true,
+    "noFailedApiRequests": true,
+    "noUncaughtPageErrors": true
+  },
+  "result": "pass",
+  "limitations": [
+    "This is a local development/mock check on two representative routes, not all 427 routes or 128 user-acceptance pages.",
+    "MSW responses and local fixtures do not verify backend, persistence, authorization, staging, production, or user acceptance.",
+    "Non-API browser requests are retained as observations; only API requests are used for the no-backend assertion."
+  ]
+}

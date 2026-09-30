@@ -1,0 +1,48 @@
+{
+  "purpose": "Ledger consistency only; not proof of UI acceptance or production readiness",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "baselineSourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "scope": {
+    "tasks": 38,
+    "steps": 205,
+    "pages": 128,
+    "routeDeclarations": 428,
+    "operations": 154,
+    "filesOutsidePlan": 891
+  },
+  "progress": {
+    "tasksDone": 4,
+    "tasksBlocked": 0,
+    "tasksNotApplicable": 0,
+    "stepsDone": 24,
+    "uiPagesDone": 0,
+    "userAcceptedPages": 0,
+    "unresolvedRoutes": 428,
+    "backendOperationsDone": 0
+  },
+  "changedFromBaseline": [
+    ".env.example",
+    ".env.production.example",
+    ".env.staging.example",
+    "docs/architecture/auth-login-mfa-spec.md",
+    "src/app/App.tsx",
+    "src/app/components/layout/RootLayout.test.tsx",
+    "src/app/components/layout/RootLayout.tsx",
+    "src/app/contexts/AuthSessionProvider.test.tsx",
+    "src/app/routes.ts",
+    "src/dev/mocks/browser.ts",
+    "src/dev/mocks/handlers.ts",
+    "src/features/auth/pages/WebLoginPage.tsx",
+    "src/features/market/model/market-queries.test.tsx",
+    "src/features/wallet/api/wallet-api.test.ts",
+    "src/main.tsx",
+    "src/shared/api/http-client.test.ts",
+    "src/shared/api/http-client.ts",
+    "src/shared/config/env.test.ts",
+    "src/shared/config/env.ts",
+    "src/shared/session/AuthContext.tsx",
+    "src/vite-env.d.ts"
+  ],
+  "errorCount": 0,
+  "errors": []
+}

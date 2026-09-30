@@ -32,34 +32,40 @@ export function SubAccountContractPage() {
           </p>
           <p style={{ color: colors.text3, fontSize: 11 }}>{accounts.length} tài khoản phụ</p>
         </TrCard>
-        {accounts.map((account) => (
-          <TrCard className="p-4" key={account.id}>
-            <div className="flex justify-between">
-              <div>
-                <h2 style={{ color: colors.text1, fontWeight: 700 }}>{account.name}</h2>
-                <p style={{ color: colors.text2, fontSize: 12 }}>
-                  {account.email} · {account.type}
-                </p>
+        {accounts.length === 0 ? (
+          <p role="status" style={{ color: colors.text2, fontSize: 13 }}>
+            Chưa có tài khoản phụ nào.
+          </p>
+        ) : (
+          accounts.map((account) => (
+            <TrCard className="p-4" key={account.id}>
+              <div className="flex justify-between">
+                <div>
+                  <h2 style={{ color: colors.text1, fontWeight: 700 }}>{account.name}</h2>
+                  <p style={{ color: colors.text2, fontSize: 12 }}>
+                    {account.email} · {account.type}
+                  </p>
+                </div>
+                <span
+                  style={{
+                    color: account.status === 'active' ? colors.success : colors.warningText,
+                    fontSize: 11,
+                  }}
+                >
+                  {account.status}
+                </span>
               </div>
-              <span
-                style={{
-                  color: account.status === 'active' ? colors.success : colors.warningText,
-                  fontSize: 11,
-                }}
+              <div
+                className="mt-3 grid grid-cols-3 gap-2"
+                style={{ color: colors.text2, fontSize: 11 }}
               >
-                {account.status}
-              </span>
-            </div>
-            <div
-              className="mt-3 grid grid-cols-3 gap-2"
-              style={{ color: colors.text2, fontSize: 11 }}
-            >
-              <span>Balance ${account.balance.toLocaleString('en-US')}</span>
-              <span>PnL ${account.pnl30d.toLocaleString('en-US')}</span>
-              <span>{account.apiKeyCount} API key</span>
-            </div>
-          </TrCard>
-        ))}
+                <span>Balance ${account.balance.toLocaleString('en-US')}</span>
+                <span>PnL ${account.pnl30d.toLocaleString('en-US')}</span>
+                <span>{account.apiKeyCount} API key</span>
+              </div>
+            </TrCard>
+          ))
+        )}
       </PageContent>
     </PageLayout>
   );

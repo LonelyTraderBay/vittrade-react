@@ -275,9 +275,10 @@ describe('P2P marketplace API contract', () => {
       fee: 0,
     };
     server.use(
-      http.post('http://localhost:3000/api/p2p/orders/order-1/mark-paid', () =>
-        HttpResponse.json(order),
-      ),
+      http.post('http://localhost:3000/api/p2p/orders/order-1/mark-paid', ({ request }) => {
+        expect(request.headers.get('Idempotency-Key')).toBe('p2p-mark-paid-key-001');
+        return HttpResponse.json(order);
+      }),
       http.post('http://localhost:3000/api/p2p/orders/order-1/release', ({ request }) => {
         expect(request.headers.get('Idempotency-Key')).toBe('p2p-release-key-001');
         return HttpResponse.json({
@@ -288,7 +289,9 @@ describe('P2P marketplace API contract', () => {
       }),
     );
 
-    await expect(p2pApi.markOrderPaid('order-1')).resolves.toMatchObject({ status: 'paid' });
+    await expect(p2pApi.markOrderPaid('order-1', 'p2p-mark-paid-key-001')).resolves.toMatchObject({
+      status: 'paid',
+    });
     await expect(
       p2pApi.releaseOrder('order-1', 'release-verification-1', 'p2p-release-key-001'),
     ).resolves.toMatchObject({ status: 'released' });

@@ -1,13 +1,4 @@
-/**
- * Chart Annotation Overlay
- *
- * Canvas-based overlay for annotations on top of the DCA chart.
- * Tools: Select (move/resize), Pen (freehand + width selector),
- *        Text, Arrow (snap-to-chart), Eraser (tap-to-delete).
- * Actions: Duplicate selected, Undo, Clear, Color picker.
- *
- * @module components/dca
- */
+/** Canvas overlay for drawing and editing annotations on the DCA chart. */
 
 import { useState, useRef, useCallback, useEffect, useImperativeHandle, forwardRef } from 'react';
 import { ChartAnnotationToolbar } from './ChartAnnotationToolbar';
@@ -190,7 +181,16 @@ export const ChartAnnotationOverlay = forwardRef<
     canvas.width = width * 2;
     canvas.height = height * 2;
     redrawCanvas(annotations, selectedIndex, eraserHoverIndex, activeSnap);
-  }, [width, height, redrawCanvas, annotations, selectedIndex, eraserHoverIndex, activeSnap]);
+  }, [
+    active,
+    width,
+    height,
+    redrawCanvas,
+    annotations,
+    selectedIndex,
+    eraserHoverIndex,
+    activeSnap,
+  ]);
 
   /* ── Deselect when switching tools ──────────────────────── */
   useEffect(() => {
@@ -425,11 +425,9 @@ export const ChartAnnotationOverlay = forwardRef<
 
       /* ── Pen: commit ─────────────────────────────────────── */
       if (tool === 'pen' && drawingRef.current.isDrawing) {
-        if (drawingRef.current.currentStroke.length > 1) {
-          setAnnotations((prev) => [
-            ...prev,
-            { type: 'pen', points: [...drawingRef.current.currentStroke], color, width: penWidth },
-          ]);
+        const points = [...drawingRef.current.currentStroke];
+        if (points.length > 1) {
+          setAnnotations((prev) => [...prev, { type: 'pen', points, color, width: penWidth }]);
         }
         drawingRef.current.isDrawing = false;
         drawingRef.current.currentStroke = [];

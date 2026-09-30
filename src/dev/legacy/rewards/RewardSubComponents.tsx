@@ -6,7 +6,7 @@
  * P2: Reduced motion, semantic tokens
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   CheckCircle,
   Gift,
@@ -19,7 +19,6 @@ import {
   Unlock,
   Lock,
   ChevronDown,
-  Sparkles,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
@@ -438,18 +437,6 @@ export function UnifiedTaskCard({
   const expiring = isExpiringSoon(task.expiresAt);
   const hasDual = !!task.usdtReward && !!task.pointsReward;
 
-  /* Status label — non-color indicator (a11y) */
-  const statusLabel =
-    task.status === 'claimed' || justClaimed
-      ? 'Đã nhận'
-      : isClaimable
-        ? 'Chờ nhận'
-        : task.status === 'expired'
-          ? 'Hết hạn'
-          : expiring
-            ? `Còn ${expireDays === 0 ? 'hôm nay' : `${expireDays}d`}`
-            : 'Đang làm';
-
   return (
     <motion.div
       layout
@@ -813,7 +800,7 @@ export function CompactSpinCard({
 
 export function ComboMultiplierBanner({
   completedToday,
-  streak,
+  streak: _streak,
 }: {
   completedToday: number;
   streak: number;

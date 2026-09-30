@@ -1,0 +1,46 @@
+{
+  "checkedJavaScriptFiles": 223,
+  "checkedMarkers": [
+    "Preview-123!",
+    "developer@vittrade.local",
+    "mfa@vittrade.local",
+    "locked@vittrade.local",
+    "Trải nghiệm Demo",
+    "DỮ LIỆU MÔ PHỎNG",
+    "msw/browser",
+    "setupWorker",
+    "PreviewControls"
+  ],
+  "findings": [
+    {
+      "file": "assets/index-c8ss9Tcr.js",
+      "marker": "PreviewControls"
+    },
+    {
+      "file": "assets/WebLoginPage-CLIjPhou.js",
+      "marker": "Preview-123!"
+    },
+    {
+      "file": "assets/WebLoginPage-CLIjPhou.js",
+      "marker": "developer@vittrade.local"
+    },
+    {
+      "file": "assets/WebLoginPage-CLIjPhou.js",
+      "marker": "mfa@vittrade.local"
+    },
+    {
+      "file": "assets/WebLoginPage-CLIjPhou.js",
+      "marker": "locked@vittrade.local"
+    },
+    {
+      "file": "assets/WebLoginPage-CLIjPhou.js",
+      "marker": "Trải nghiệm Demo"
+    }
+  ],
+  "copiedMockWorkerAssets": [
+    {
+      "file": "mockServiceWorker.js",
+      "bytes": 9666
+    }
+  ]
+}

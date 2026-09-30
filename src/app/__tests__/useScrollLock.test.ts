@@ -9,7 +9,7 @@
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { renderHook } from '@testing-library/react';
-import { useScrollLock } from '../hooks/useScrollLock';
+import { useScrollLock } from '@/shared/hooks/useScrollLock';
 
 describe('useScrollLock', () => {
   let scrollElement: HTMLDivElement;

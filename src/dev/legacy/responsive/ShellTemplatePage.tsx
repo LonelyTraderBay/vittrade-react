@@ -225,13 +225,15 @@ export function ShellTemplatePage() {
 
       {/* Section tabs */}
       <div className="flex mx-6 mb-6 rounded-2xl p-1" style={{ background: '#1C2235' }}>
-        {[
-          { id: 'templates', label: 'A — Shell Templates' },
-          { id: 'applied', label: 'B — Applied Hub Pages' },
-        ].map((tab) => (
+        {(
+          [
+            { id: 'templates', label: 'A — Shell Templates' },
+            { id: 'applied', label: 'B — Applied Hub Pages' },
+          ] as const
+        ).map((tab) => (
           <button
             key={tab.id}
-            onClick={() => setActiveSection(tab.id as any)}
+            onClick={() => setActiveSection(tab.id)}
             className="flex-1 py-2.5 rounded-xl text-sm font-semibold"
             style={{
               background: activeSection === tab.id ? '#3B82F6' : 'transparent',

@@ -31,8 +31,8 @@ export default defineConfig({
   ],
   webServer: {
     command: `${nodeExecutable} scripts/serve-e2e.mjs`,
-    url: 'http://127.0.0.1:4173',
-    reuseExistingServer: !process.env.CI,
+    // Wait for our preview process; another service can answer the port during the build.
+    wait: { stdout: /Local:\s+http:\/\/127\.0\.0\.1:4173\// },
     timeout: 120_000,
   },
 });

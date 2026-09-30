@@ -44,6 +44,7 @@ export function DustConverterPage() {
   const { hapticSelection, hapticSuccess, hapticMedium } = useHaptic();
   const actionToast = useActionToast();
   const { hasPermission } = useAuth();
+  const canReadWallet = hasPermission('wallet:read');
   const canConvertDust = hasPermission('wallet:write') || hasPermission('wallet:dust-convert');
 
   const [targetAsset, setTargetAsset] = useState('USDT');
@@ -51,7 +52,7 @@ export function DustConverterPage() {
   const [showConfirmSheet, setShowConfirmSheet] = useState(false);
   const [showSuccessSheet, setShowSuccessSheet] = useState(false);
   const conversionAttempt = useRef<{ signature: string; key: string } | null>(null);
-  const { data: assetsData, isLoading, error, refetch } = useWalletAssetsQuery();
+  const { data: assetsData, isLoading, error, refetch } = useWalletAssetsQuery(canReadWallet);
   const assets = assetsData?.items ?? EMPTY_ASSETS;
 
   // Filter dust assets (< threshold, not the target, not frozen/in-order)
@@ -95,7 +96,8 @@ export function DustConverterPage() {
     data: quote,
     isLoading: quoteLoading,
     error: quoteError,
-  } = useWalletDustConversionQuoteQuery(conversionRequest);
+    refetch: refetchQuote,
+  } = useWalletDustConversionQuoteQuery(conversionRequest, canReadWallet);
   const conversionMutation = useWalletDustConversionMutation();
   const totalDustUsd = quote?.grossUsd ?? 0;
   const conversionFee = quote?.feeUsd ?? 0;
@@ -125,6 +127,19 @@ export function DustConverterPage() {
     }
   };
 
+  if (!canReadWallet) {
+    return (
+      <PageLayout variant="flush">
+        <Header title="Chuyển đổi số dư nhỏ" back />
+        <PageContent>
+          <p role="alert" style={{ color: c.error }}>
+            Wallet read permission is required to view balances and conversion quotes.
+          </p>
+        </PageContent>
+      </PageLayout>
+    );
+  }
+
   if (isLoading) {
     return (
       <PageLayout variant="flush">
@@ -146,7 +161,8 @@ export function DustConverterPage() {
           <ErrorState
             title="Không thể tải dữ liệu chuyển đổi"
             onAction={() => {
-              void refetch();
+              if (error) void refetch();
+              if (quoteError) void refetchQuote();
             }}
           />
         </PageContent>

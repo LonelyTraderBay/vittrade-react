@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { act } from '@testing-library/react';
+import { act, fireEvent } from '@testing-library/react';
 import { Route, Routes, useLocation } from 'react-router';
 import { ApiError } from '@/shared/api/api-error';
 import { renderWithProviders, screen, userEvent, waitFor } from '@/test/test-utils';
@@ -35,26 +35,41 @@ function renderOTP(state: unknown, overrides: Partial<AuthAdapter> = {}) {
 }
 
 describe('OTPPage login MFA challenge', () => {
-  it('keeps generic registration verification in the development flow', async () => {
+  it('verifies registration using only its server challenge ID and code', async () => {
     const user = userEvent.setup();
     const verifyMfa = vi.fn(async () => testAuthAdapter.initialSession!);
-    renderOTP({ contact: 'new-user@example.com', purpose: 'register' }, { verifyMfa });
+    renderOTP(
+      {
+        purpose: 'register',
+        challengeId: 'registration-challenge-001',
+        channel: 'email',
+        maskedDestination: 'n***@example.com',
+        expiresAt: '2099-01-01T00:05:00.000Z',
+      },
+      { verifyMfa },
+    );
 
     const inputs = document.querySelectorAll<HTMLInputElement>('input[aria-label^="Ký tự OTP"]');
     for (const input of inputs) await user.type(input, '1');
 
     await waitFor(() =>
       expect(verifyMfa).toHaveBeenCalledWith({
-        contact: 'new-user@example.com',
+        challengeId: 'registration-challenge-001',
         code: '111111',
         purpose: 'register',
       }),
     );
   });
 
-  it('replaces the fake resend timer with a return to the development registration route', async () => {
+  it('returns to registration instead of offering a local resend action', async () => {
     const user = userEvent.setup();
-    renderOTP({ contact: 'new-user@example.com', purpose: 'register' });
+    renderOTP({
+      purpose: 'register',
+      challengeId: 'registration-challenge-001',
+      channel: 'email',
+      maskedDestination: 'n***@example.com',
+      expiresAt: '2099-01-01T00:05:00.000Z',
+    });
 
     expect(
       screen.getByText('Không nhận được mã? Hãy quay lại đăng ký để bắt đầu yêu cầu mới.'),
@@ -62,6 +77,24 @@ describe('OTPPage login MFA challenge', () => {
     expect(screen.queryByText(/Gửi lại sau/)).not.toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Quay lại đăng ký' }));
     expect(screen.getByTestId('current-path')).toHaveTextContent('/auth/register');
+  });
+
+  it('returns an expired registration challenge to registration without verifying', async () => {
+    const verifyMfa = vi.fn();
+    renderOTP(
+      {
+        purpose: 'register',
+        challengeId: 'registration-challenge-001',
+        channel: 'email',
+        maskedDestination: 'n***@example.com',
+        expiresAt: '2000-01-01T00:00:00.000Z',
+      },
+      { verifyMfa },
+    );
+    await waitFor(() =>
+      expect(screen.getByTestId('current-path')).toHaveTextContent('/auth/register'),
+    );
+    expect(verifyMfa).not.toHaveBeenCalled();
   });
 
   it('verifies using only challenge ID and code, then navigates home', async () => {
@@ -79,6 +112,22 @@ describe('OTPPage login MFA challenge', () => {
       }),
     );
     await waitFor(() => expect(screen.getByTestId('current-path')).toHaveTextContent('/home'));
+  });
+
+  it('normalizes a pasted code and verifies only its six digits', async () => {
+    const verifyLoginMfa = vi.fn(async () => testAuthAdapter.initialSession!);
+    renderOTP(challengeState, { verifyLoginMfa });
+
+    fireEvent.paste(document.querySelector('input[aria-label="Ký tự OTP 1"]')!, {
+      clipboardData: { getData: () => '12-a34 56' },
+    });
+
+    await waitFor(() =>
+      expect(verifyLoginMfa).toHaveBeenCalledWith({
+        challengeId: challengeState.challengeId,
+        code: '123456',
+      }),
+    );
   });
 
   it.each([
@@ -104,6 +153,21 @@ describe('OTPPage login MFA challenge', () => {
 
     expect(await screen.findByText('Mã OTP không đúng. Vui lòng thử lại.')).toBeInTheDocument();
     expect(screen.getByTestId('current-path')).toHaveTextContent('/auth/otp');
+  });
+
+  it('returns an expired server challenge to login after verification', async () => {
+    const user = userEvent.setup();
+    const verifyLoginMfa = vi.fn().mockRejectedValue(new ApiError('expired', { status: 410 }));
+    renderOTP(challengeState, { verifyLoginMfa });
+
+    const inputs = document.querySelectorAll<HTMLInputElement>('input[aria-label^="Ký tự OTP"]');
+    for (const input of inputs) await user.type(input, '1');
+
+    await waitFor(() =>
+      expect(screen.getByTestId('current-path')).toHaveTextContent('/auth/login'),
+    );
+    expect(verifyLoginMfa).toHaveBeenCalledTimes(1);
+    expect(screen.queryByText(/Mã OTP không đúng/)).not.toBeInTheDocument();
   });
 
   it('returns to login when the challenge expires while the OTP page is open', async () => {

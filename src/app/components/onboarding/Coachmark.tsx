@@ -16,13 +16,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, ChevronRight, Info, Shield } from 'lucide-react';
-import { useThemeColors } from '../../hooks/useThemeColors';
+import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import {
   coachmarkService,
   type CoachmarkDef,
   type CoachmarkScreen,
 } from '../../services/CoachmarkService';
-import { φ, φSpace, φRadius } from '../../utils/golden';
+import { φ, φSpace, φRadius } from '@/shared/lib/golden';
 
 /* ═══════════════════════════════════════════
    TYPES

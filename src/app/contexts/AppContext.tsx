@@ -2,7 +2,7 @@ import React from 'react';
 import { useLayoutEffect, useRef } from 'react';
 import { AuthSessionProvider } from './AuthContext';
 import type { AuthAdapter } from './AuthContext';
-import { ThemeProvider } from './ThemeContext';
+import { ThemeProvider } from '@/shared/theme/ThemeContext';
 import { UIProvider } from './UIContext';
 import { TradingContext } from './trading-context';
 import { queryClient } from '@/shared/api/query-client';

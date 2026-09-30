@@ -76,7 +76,7 @@ export function PairDetailPage() {
       actionToast.info('Vui lòng đăng nhập để lưu cặp giao dịch theo dõi.', {
         haptic: 'selection',
       });
-      navigate(`${prefix}/login`, { state: { from: `${prefix}/pair/${pair.id}` } });
+      navigate(`${prefix}/auth/login`, { state: { from: `${prefix}/pair/${pair.id}` } });
       return;
     }
     if (!canManageWatchlist) {

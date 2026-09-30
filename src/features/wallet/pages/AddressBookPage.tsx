@@ -44,9 +44,10 @@ export function AddressBookPage() {
   const prefix = useRoutePrefix();
   const toast = useActionToast();
   const { hasPermission } = useAuth();
+  const canReadWallet = hasPermission('wallet:read');
   const canManageAddressBook =
     hasPermission('wallet:write') || hasPermission('wallet:address-book');
-  const addressBookQuery = useWalletAddressBookQuery();
+  const addressBookQuery = useWalletAddressBookQuery(canReadWallet);
   const updateMutation = useWalletAddressBookUpdateMutation();
   const deleteMutation = useWalletAddressBookDeleteMutation();
   const settingsMutation = useWalletAddressBookSettingsMutation();
@@ -115,6 +116,19 @@ export function AddressBookPage() {
       .then(() => toast.info(enabled ? 'Whitelist đã bật.' : 'Whitelist đã tắt.'))
       .catch(() => toast.error('Không thể cập nhật chế độ whitelist.'));
   };
+
+  if (!canReadWallet) {
+    return (
+      <PageLayout>
+        <Header title="Sổ địa chỉ" subtitle="Wallet" back />
+        <PageContent>
+          <p role="alert" style={{ color: colors.error }}>
+            Wallet read permission is required to view withdrawal addresses.
+          </p>
+        </PageContent>
+      </PageLayout>
+    );
+  }
 
   if (addressBookQuery.isPending) {
     return (
@@ -195,8 +209,11 @@ export function AddressBookPage() {
           {copiedId === entry.id ? 'Đã copy' : 'Sao chép'}
         </button>
         <button
+          type="button"
           onClick={() => handleFavorite(entry)}
           disabled={!canManageAddressBook || updateMutation.isPending}
+          aria-label={`${entry.isFavorite ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'} ${entry.label}`}
+          aria-pressed={entry.isFavorite}
           className="w-9 h-9 flex items-center justify-center rounded-xl"
           style={{
             background: entry.isFavorite ? 'rgba(245,158,11,0.1)' : colors.surface2,
@@ -210,8 +227,10 @@ export function AddressBookPage() {
           )}
         </button>
         <button
+          type="button"
           disabled={!canManageAddressBook}
           onClick={() => setDeleteTarget(entry)}
+          aria-label={`Xóa địa chỉ ${entry.label}`}
           className="w-9 h-9 flex items-center justify-center rounded-xl"
           style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.15)' }}
         >
@@ -247,8 +266,10 @@ export function AddressBookPage() {
         back
         right={
           <button
+            type="button"
             disabled={!canManageAddressBook}
             onClick={() => navigate(`${prefix}/wallet/address-book/add`)}
+            aria-label="Thêm địa chỉ"
             className="w-10 h-10 flex items-center justify-center rounded-xl"
             style={{ background: 'rgba(59,130,246,0.15)' }}
           >
@@ -274,6 +295,7 @@ export function AddressBookPage() {
           <input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
+            aria-label="Tìm địa chỉ hoặc tên"
             placeholder="Tìm địa chỉ hoặc tên…"
             style={{
               background: 'transparent',
@@ -302,8 +324,11 @@ export function AddressBookPage() {
               </p>
             </div>
             <button
+              type="button"
               onClick={handleWhitelistToggle}
               disabled={!canManageAddressBook || settingsMutation.isPending}
+              aria-label={whitelistEnabled ? 'Tắt chế độ whitelist' : 'Bật chế độ whitelist'}
+              aria-pressed={whitelistEnabled}
               className="w-12 h-7 rounded-full relative"
               style={{
                 background: whitelistEnabled ? '#10B981' : colors.surface2,

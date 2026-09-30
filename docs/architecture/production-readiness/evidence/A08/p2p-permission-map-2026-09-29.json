@@ -1,0 +1,1011 @@
+{
+  "id": "EV-20260929-441",
+  "taskId": "A08",
+  "stepId": "A08.02",
+  "capturedAt": "2026-09-29T12:04:29.470Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "scope": "Audit the 23 P2P non-challenge business mutations with missing x-required-permissions; trace current UI permission gates through pages, React Query hooks and feature API adapter; search this checkout for backend owner/server implementation.",
+  "contractSnapshot": {
+    "file": "contracts/openapi/p2p.yaml",
+    "totalP2pMutations": 25,
+    "businessMutationsAudited": 23,
+    "businessMutationsMissingPermissionMetadata": 23,
+    "separateChallengeExceptions": 2,
+    "rootSecurity": [
+      {
+        "sessionCookie": []
+      }
+    ],
+    "operationSecurity": "operations inherit the root sessionCookie security declaration where no override is set"
+  },
+  "backendOwnership": {
+    "status": "not_identified_in_repository",
+    "repositoryBackendSource": "frontend-only workspace; no backend/server source paths were found by the scoped repository search",
+    "evidence": [
+      "ARCHITECTURE.md:67-69 describes contract scaffolding in a frontend-only workspace.",
+      "contracts/README.md:37-38 says backend authorization is the final enforcement point, but assigns no backend owner.",
+      "Scoped rg --files search for CODEOWNERS, OWNERS, backend/**, server/** and apps/api/** returned no matches."
+    ],
+    "serverAuthorization": "not_verified"
+  },
+  "businessMutations": [
+    {
+      "trackerOperationId": "API-00c3f91277f1",
+      "operationId": "reportP2PMerchant",
+      "method": "POST",
+      "path": "/p2p/reports/merchants",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "reportMerchant"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-trust-queries.ts",
+        "hook": "useP2PMerchantReportMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-c4f3955c0d12",
+          "path": "src/features/p2p/pages/P2PReportMerchantPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:report"],
+            "source": "src/features/p2p/pages/P2PReportMerchantPage.tsx:85"
+          },
+          "pageActionConditions": []
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-8deedf37c672",
+      "operationId": "createP2PPaymentMethod",
+      "method": "POST",
+      "path": "/p2p/payment-methods",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "createPaymentMethod"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-payment-method-queries.ts",
+        "hook": "useP2PPaymentMethodCreateMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-91b28f38e9a2",
+          "path": "src/features/p2p/pages/P2PPaymentMethodAddPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:payment-methods:write"],
+            "source": "src/features/p2p/pages/P2PPaymentMethodAddPage.tsx:45"
+          },
+          "pageActionConditions": []
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-b5ebebd342f3",
+      "operationId": "updateP2PPaymentMethod",
+      "method": "PATCH",
+      "path": "/p2p/payment-methods/{methodId}",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "updatePaymentMethod"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-payment-method-queries.ts",
+        "hook": "useP2PPaymentMethodUpdateMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-1438bcad5075",
+          "path": "src/features/p2p/pages/P2PPaymentMethodsPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:payment-methods:write"],
+            "source": "src/features/p2p/pages/P2PPaymentMethodsPage.tsx:44"
+          },
+          "pageActionConditions": []
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-c0b5d7bf11ab",
+      "operationId": "deleteP2PPaymentMethod",
+      "method": "DELETE",
+      "path": "/p2p/payment-methods/{methodId}",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "deletePaymentMethod"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-payment-method-queries.ts",
+        "hook": "useP2PPaymentMethodDeleteMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-1438bcad5075",
+          "path": "src/features/p2p/pages/P2PPaymentMethodsPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:payment-methods:write"],
+            "source": "src/features/p2p/pages/P2PPaymentMethodsPage.tsx:44"
+          },
+          "pageActionConditions": []
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-7c81f5d27bb7",
+      "operationId": "sendP2PDisputeMessage",
+      "method": "POST",
+      "path": "/p2p/disputes/{disputeId}/messages",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "sendDisputeMessage"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-dispute-detail-queries.ts",
+        "hook": "useP2PDisputeMessageMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-f272425548b6",
+          "path": "src/features/p2p/pages/P2PDisputeDetailPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:dispute:write"],
+            "source": "src/features/p2p/pages/P2PDisputeDetailPage.tsx:74"
+          },
+          "pageActionConditions": []
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-2ecbe1cf4564",
+      "operationId": "escalateP2PDispute",
+      "method": "POST",
+      "path": "/p2p/disputes/{disputeId}/escalate",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "escalateDispute"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-dispute-detail-queries.ts",
+        "hook": "useP2PDisputeEscalationMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-f272425548b6",
+          "path": "src/features/p2p/pages/P2PDisputeDetailPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:dispute:write"],
+            "source": "src/features/p2p/pages/P2PDisputeDetailPage.tsx:74"
+          },
+          "pageActionConditions": [
+            "canWriteDispute",
+            "valid escalation level",
+            "nonterminal dispute status"
+          ]
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-56eefa0baaaf",
+      "operationId": "createP2PBlacklistEntry",
+      "method": "POST",
+      "path": "/p2p/blacklist",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "createBlacklistEntry"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-blacklist-queries.ts",
+        "hook": "useP2PBlacklistCreateMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-ada4341befda",
+          "path": "src/features/p2p/pages/P2PBlacklistAddPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:blacklist:write"],
+            "source": "src/features/p2p/pages/P2PBlacklistAddPage.tsx:33"
+          },
+          "pageActionConditions": []
+        },
+        {
+          "pageId": "PAGE-e8f585dbb52f",
+          "path": "src/features/p2p/pages/P2PMerchantProfilePage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:blacklist:write"],
+            "source": "src/features/p2p/pages/P2PMerchantProfilePage.tsx:21"
+          },
+          "pageActionConditions": []
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-d2d86f6534f4",
+      "operationId": "removeP2PBlacklistEntry",
+      "method": "DELETE",
+      "path": "/p2p/blacklist/{entryId}",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "removeBlacklistEntry"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-blacklist-queries.ts",
+        "hook": "useP2PBlacklistRemoveMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-ddbb88dfac4c",
+          "path": "src/features/p2p/pages/P2PBlacklistPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:blacklist:write"],
+            "source": "src/features/p2p/pages/P2PBlacklistPage.tsx:50"
+          },
+          "pageActionConditions": []
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-c6a13cfad102",
+      "operationId": "updateP2P2FAMethod",
+      "method": "PATCH",
+      "path": "/p2p/security/2fa/methods/{methodId}",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "toggle2FAMethod"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-security-queries.ts",
+        "hook": "useP2P2FAMethodMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-75bc8741b761",
+          "path": "src/features/p2p/pages/P2P2FASettingsPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:security:write"],
+            "source": "src/features/p2p/pages/P2P2FASettingsPage.tsx:24"
+          },
+          "pageActionConditions": []
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-189d0ffcf613",
+      "operationId": "setP2P2FAPrimaryMethod",
+      "method": "POST",
+      "path": "/p2p/security/2fa/primary",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "setPrimary2FAMethod"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-security-queries.ts",
+        "hook": "useP2P2FAPrimaryMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-75bc8741b761",
+          "path": "src/features/p2p/pages/P2P2FASettingsPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:security:write"],
+            "source": "src/features/p2p/pages/P2P2FASettingsPage.tsx:24"
+          },
+          "pageActionConditions": []
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-adf2a40e19d1",
+      "operationId": "updateP2P2FAThreshold",
+      "method": "PATCH",
+      "path": "/p2p/security/2fa/thresholds/{thresholdId}",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "update2FAThreshold"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-security-queries.ts",
+        "hook": "useP2P2FAThresholdMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-75bc8741b761",
+          "path": "src/features/p2p/pages/P2P2FASettingsPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:security:write"],
+            "source": "src/features/p2p/pages/P2P2FASettingsPage.tsx:24"
+          },
+          "pageActionConditions": []
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-e3ef0681da66",
+      "operationId": "beginP2PAuthenticatorSetup",
+      "method": "POST",
+      "path": "/p2p/security/2fa/authenticator/setup",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "beginAuthenticatorSetup"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-security-queries.ts",
+        "hook": "useP2PAuthenticatorSetupMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-75bc8741b761",
+          "path": "src/features/p2p/pages/P2P2FASettingsPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:security:write"],
+            "source": "src/features/p2p/pages/P2P2FASettingsPage.tsx:24"
+          },
+          "pageActionConditions": []
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-1bcc4c7c86d3",
+      "operationId": "confirmP2PAuthenticatorSetup",
+      "method": "POST",
+      "path": "/p2p/security/2fa/authenticator/confirm",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "confirmAuthenticatorSetup"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-security-queries.ts",
+        "hook": "useP2PAuthenticatorConfirmMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-75bc8741b761",
+          "path": "src/features/p2p/pages/P2P2FASettingsPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:security:write"],
+            "source": "src/features/p2p/pages/P2P2FASettingsPage.tsx:24"
+          },
+          "pageActionConditions": []
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-7df8fe96ebe9",
+      "operationId": "createP2PAd",
+      "method": "POST",
+      "path": "/p2p/ads",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "createAd"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-ad-create-queries.ts",
+        "hook": "useP2PAdCreateMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-046661c1ebbf",
+          "path": "src/features/p2p/pages/P2PCreateAdContractPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:ad:write"],
+            "source": "src/features/p2p/pages/P2PCreateAdContractPage.tsx:19"
+          },
+          "pageActionConditions": []
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-3d6cc4592909",
+      "operationId": "updateP2PAdStatus",
+      "method": "PATCH",
+      "path": "/p2p/ads/{adId}",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "updateAdStatus"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-my-ads-queries.ts",
+        "hook": "useP2PAdStatusMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-2c16d028751b",
+          "path": "src/features/p2p/pages/P2PMyAdsContractPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:ad:write"],
+            "source": "src/features/p2p/pages/P2PMyAdsContractPage.tsx:32"
+          },
+          "pageActionConditions": []
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-b0be5ff21813",
+      "operationId": "deleteP2PAd",
+      "method": "DELETE",
+      "path": "/p2p/ads/{adId}",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "deleteAd"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-my-ads-queries.ts",
+        "hook": "useP2PAdDeleteMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-2c16d028751b",
+          "path": "src/features/p2p/pages/P2PMyAdsContractPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:ad:write"],
+            "source": "src/features/p2p/pages/P2PMyAdsContractPage.tsx:32"
+          },
+          "pageActionConditions": []
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-62209bc23b7a",
+      "operationId": "createP2POrder",
+      "method": "POST",
+      "path": "/p2p/orders",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "createOrder"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-order-creation-queries.ts",
+        "hook": "useP2POrderMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-1a59bd875a84",
+          "path": "src/features/p2p/pages/P2PAdDetailContractPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:order:create"],
+            "source": "src/features/p2p/pages/P2PAdDetailContractPage.tsx:23"
+          },
+          "pageActionConditions": []
+        },
+        {
+          "pageId": "PAGE-6f21b5bde22e",
+          "path": "src/features/p2p/pages/P2PExpressConfirmPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:order:create"],
+            "source": "src/features/p2p/pages/P2PExpressConfirmPage.tsx:29"
+          },
+          "pageActionConditions": []
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-3b90783f6c7a",
+      "operationId": "markP2POrderPaid",
+      "method": "POST",
+      "path": "/p2p/orders/{orderId}/mark-paid",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "markOrderPaid"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-order-action-queries.ts",
+        "hook": "useP2PMarkPaidMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-3df5fa285478",
+          "path": "src/features/p2p/pages/P2PEscrowDetailPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:mark-paid"],
+            "source": "src/features/p2p/pages/P2PEscrowDetailPage.tsx:157"
+          },
+          "pageActionConditions": ["order.status === pending_payment"]
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-43fe3e6ad7e3",
+      "operationId": "releaseP2POrderEscrow",
+      "method": "POST",
+      "path": "/p2p/orders/{orderId}/release",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "releaseOrder"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-order-action-queries.ts",
+        "hook": "useP2PReleaseOrderMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-3df5fa285478",
+          "path": "src/features/p2p/pages/P2PEscrowDetailPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:release"],
+            "source": "src/features/p2p/pages/P2PEscrowDetailPage.tsx:159"
+          },
+          "pageActionConditions": ["order.status === paid"]
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-bdee1b8b6e1f",
+      "operationId": "cancelP2POrder",
+      "method": "POST",
+      "path": "/p2p/orders/{orderId}/cancel",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "cancelOrder"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-order-action-queries.ts",
+        "hook": "useP2POrderActionCancelMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-07573ad831ae",
+          "path": "src/features/p2p/pages/P2POrderActionPages.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:cancel"],
+            "source": "src/features/p2p/pages/P2POrderActionPages.tsx:118"
+          },
+          "pageActionConditions": []
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-132d64f570fb",
+      "operationId": "rateP2POrder",
+      "method": "POST",
+      "path": "/p2p/orders/{orderId}/rate",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "rateOrder"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-order-action-queries.ts",
+        "hook": "useP2POrderActionRateMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-07573ad831ae",
+          "path": "src/features/p2p/pages/P2POrderActionPages.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:rate"],
+            "source": "src/features/p2p/pages/P2POrderActionPages.tsx:191"
+          },
+          "pageActionConditions": []
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-0001bd2af77b",
+      "operationId": "submitP2PPaymentProof",
+      "method": "POST",
+      "path": "/p2p/orders/{orderId}/payment-proof",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "submitPaymentProof"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-order-action-queries.ts",
+        "hook": "useP2POrderActionProofMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-07573ad831ae",
+          "path": "src/features/p2p/pages/P2POrderActionPages.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:payment-proof"],
+            "source": "src/features/p2p/pages/P2POrderActionPages.tsx:266"
+          },
+          "pageActionConditions": []
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    },
+    {
+      "trackerOperationId": "API-ec0cf271119e",
+      "operationId": "sendP2PChatMessage",
+      "method": "POST",
+      "path": "/p2p/orders/{orderId}/chat/messages",
+      "requiredPermissionMetadata": {
+        "extension": "x-required-permissions",
+        "current": "missing",
+        "backendApproval": "not_confirmed"
+      },
+      "frontendPermissionSemantics": "any_of_observed_from_or_expression; backend interpretation is unconfirmed",
+      "adapter": {
+        "file": "src/features/p2p/api/p2p-api.ts",
+        "method": "sendChatMessage"
+      },
+      "reactQueryMutation": {
+        "file": "src/features/p2p/model/p2p-chat-queries.ts",
+        "hook": "useP2PChatMessageMutation"
+      },
+      "uiConsumers": [
+        {
+          "pageId": "PAGE-8bb7d016ec6f",
+          "path": "src/features/p2p/pages/P2PChatPage.tsx",
+          "uiPermissionGate": {
+            "operator": "any_of",
+            "permissions": ["p2p:write", "p2p:chat:write"],
+            "source": "src/features/p2p/pages/P2PChatPage.tsx:31"
+          },
+          "pageActionConditions": []
+        }
+      ],
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      },
+      "serverAuthorization": "not_verified"
+    }
+  ],
+  "challengeExceptions": [
+    {
+      "trackerOperationId": "API-4d39f73bd15f",
+      "operationId": "createP2PReleaseChallenge",
+      "method": "POST",
+      "path": "/p2p/orders/{orderId}/release/challenge",
+      "classification": "separate_release_auth_challenge_exception",
+      "gateTreatment": "excluded by existing /challenge path exception; no business permission metadata is assigned in A08.02",
+      "uiPageId": "PAGE-3df5fa285478",
+      "uiAuthorization": "follows the release/MFA workflow; server enforcement is not verified",
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      }
+    },
+    {
+      "trackerOperationId": "API-a7ab7af7cad5",
+      "operationId": "verifyP2PReleaseChallenge",
+      "method": "POST",
+      "path": "/p2p/orders/{orderId}/release/challenge/{challengeId}/verify",
+      "classification": "separate_release_auth_challenge_exception",
+      "gateTreatment": "excluded by existing /challenge path exception; no business permission metadata is assigned in A08.02",
+      "uiPageId": "PAGE-3df5fa285478",
+      "uiAuthorization": "follows the release/MFA workflow; server enforcement is not verified",
+      "backendOwner": {
+        "status": "not_identified_in_repository",
+        "owner": null
+      }
+    }
+  ],
+  "sourceHashes": {
+    "AGENTS.md": "96adbe762423e5d81d179ad8426ccc644557ab1184072609c59312440f045874",
+    "ARCHITECTURE.md": "931efebe0f2e66cc1276fe2742de4adf122bd521ab1bd01e5cfcdd07293e422c",
+    "contracts/README.md": "4b4222ec02491cfdb966d7b0b8a448161189fcd111e29806743a45c06fc285b0",
+    "contracts/openapi/p2p.yaml": "561131d2a9263d5788e3b103deb0bff8a32ca5b5dee780c5939ba1e1e98b0ea4",
+    "docs/ai/WORKFLOW.md": "bb26ae15956c722a93c93568d93018fe662a18444620222c0df3bb0d65497d3e",
+    "scripts/check-openapi-contracts.mjs": "06c95226b77eedc5c2ba1e1b65ad47fceb84df0cbfed019e89108a48a4e87781",
+    "src/features/p2p/api/p2p-api.ts": "164f6424133e159b1b8dd5a6e23a0bdcd3c5a14c294d1a808cba09d552230b83",
+    "src/features/p2p/model/p2p-ad-create-queries.ts": "a55e1eda16c8ace80cd3cc4b5ed7eace8f361ae40e526c6aa54eb3c89b043f6e",
+    "src/features/p2p/model/p2p-blacklist-queries.ts": "cb46fc0f0aead6c936a97e71c8662527f90c9f4bb783779679ab4ca68e7bb41f",
+    "src/features/p2p/model/p2p-chat-queries.ts": "55bae1aebbb3c4b671bb4a4844a8da4ba9565d13439aded43a0aa183cd32e494",
+    "src/features/p2p/model/p2p-dispute-detail-queries.ts": "b2069c1436d2b7dec4bd287c35118ac48812c9be5e8fe779d780300c9be0a4d2",
+    "src/features/p2p/model/p2p-my-ads-queries.ts": "09acf298965d1c66b7bee91f70f3c2baac1b33cb7e3bc82e094ab187b5dd7b6e",
+    "src/features/p2p/model/p2p-order-action-queries.ts": "1ce6436aec2ec390e2c060b86743468375b2c478aab0e42f1a8c1963140a625e",
+    "src/features/p2p/model/p2p-order-creation-queries.ts": "b609efdfc5dca0e37f67a1a644829fed8ecf09fdf4ddf646ba763bc05c188f6c",
+    "src/features/p2p/model/p2p-payment-method-queries.ts": "c899fd2d4d10f367ed3dbba1cd6b8f5b558dbbc675b0691e569a820f5e89bbb8",
+    "src/features/p2p/model/p2p-security-queries.ts": "9518e7eecb09e0c025e89bd66396298d8661645d2a74cb5c040741e4ebd4c90d",
+    "src/features/p2p/model/p2p-trust-queries.ts": "ab50a8260c050fec53c2d90bfb1aca3d4455e32789b2bd446b4c9b6023a3e059",
+    "src/features/p2p/pages/P2P2FASettingsPage.tsx": "712c5b09cd780625241937df6e6041686213cbf04598d488673ec85c73d7bf49",
+    "src/features/p2p/pages/P2PAdDetailContractPage.tsx": "ed40c1cd81af7d8fdb506128cd549eb6593273880224c76938fe079b92036f65",
+    "src/features/p2p/pages/P2PBlacklistAddPage.tsx": "f4f35111cbbc687698f56a5fa89d79137dbd74063527a790701f2bcb480328c3",
+    "src/features/p2p/pages/P2PBlacklistPage.tsx": "8ae416cf18c092f8ba24ec12f0785e9852847af7603c24c4533a67190aaf5915",
+    "src/features/p2p/pages/P2PChatPage.tsx": "08ef2422a2b20b0d03ff63ddbd10ee1ca28609f4649833aba1f46dc3e168ae70",
+    "src/features/p2p/pages/P2PCreateAdContractPage.tsx": "6fb62f949ae2bca84b5bfcb01ee5dfebb0e9e58aac8b792f93a10340c15d4237",
+    "src/features/p2p/pages/P2PDisputeDetailPage.tsx": "729a5e48b849bea140a5f40929865f04775f8322169fd99b7a1e1932672f694e",
+    "src/features/p2p/pages/P2PEscrowDetailPage.tsx": "90f39e38073ff3f7f1a9e650bb1f5f5d43a29f6131b3910ee742e7074b07c4a8",
+    "src/features/p2p/pages/P2PExpressConfirmPage.tsx": "726eecf2522f7e10b6ce4b54bb7aba7b11a620523a6432f397e14127043fa072",
+    "src/features/p2p/pages/P2PMerchantProfilePage.tsx": "2440e7d9cc51a993d80193ab8b01388b6e7ca65bc8060bb01e0b20f2a4f572cb",
+    "src/features/p2p/pages/P2PMyAdsContractPage.tsx": "cd328aa07511f9c40adc3c1ac8f863cddefea83f8380276cc91b33eca673c96a",
+    "src/features/p2p/pages/P2POrderActionPages.tsx": "caeacaa8653dca379a3deb9ee8af06692fc672c912d7197a684178489c863ba7",
+    "src/features/p2p/pages/P2PPaymentMethodAddPage.tsx": "0abf303126a266e244a7d5150e9070635a5f85792a9e909a078dcf828732e132",
+    "src/features/p2p/pages/P2PPaymentMethodsPage.tsx": "d9d71e6e2611049b979c3f3ed67be06c0908fddb14d09c752392db3a6d91480b",
+    "src/features/p2p/pages/P2PReportMerchantPage.tsx": "74d57272063d8b69444f58017f9bf8c440b7a0b46a51b34b17612755c33e9070"
+  },
+  "checks": [
+    {
+      "name": "OpenAPI contract gate",
+      "command": "node scripts/check-openapi-contracts.mjs",
+      "result": "pass",
+      "actual": "15 contracts and 154 operations validated."
+    },
+    {
+      "name": "P2P page tests",
+      "command": "node node_modules/vitest/vitest.mjs run src/features/p2p/pages",
+      "result": "pass",
+      "actual": "26 test files and 87 tests passed; duration 6.71 seconds."
+    },
+    {
+      "name": "Baseline tracking ledger",
+      "command": "node docs/architecture/production-readiness/check-tracking.mjs",
+      "result": "pass",
+      "actual": "errorCount=0 before A08.02 operation/page-link reconciliation."
+    },
+    {
+      "name": "Backend owner search",
+      "command": "rg --files -g '**/CODEOWNERS' -g '**/OWNERS' -g 'backend/**' -g 'server/**' -g 'apps/api/**'",
+      "result": "not_found",
+      "actual": "No backend owner or backend/server source paths found in this checkout."
+    }
+  ],
+  "limits": [
+    "Permission values in this artifact describe current frontend UI guards only; they are candidate contract metadata, not backend-approved authorization policy.",
+    "OR expressions in UI show any-of behavior in the frontend; backend semantics and server enforcement remain unconfirmed.",
+    "No backend owner was identified in this frontend repository. A08.03 must retain draft_frontend status and an explicit owner question.",
+    "The two /challenge operations are documented separately and are not counted among the 23 business permission gaps.",
+    "Do not change UI acceptance 0/128, backend/staging 0/154 or the 20 A06.03 not_verified scenarios; wallet.unknown/duplicate remain blocked by the user-confirmed missing backend contract."
+  ],
+  "ledgerReconciliation": {
+    "operationPageLinksAdded": 25,
+    "operationRecordsAudited": 25,
+    "pageAcceptanceStatusesChanged": 0,
+    "operationBackendOrContractStatusesChanged": 0
+  }
+}

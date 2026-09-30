@@ -14,7 +14,6 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "e2e:build": "node scripts/build-e2e.mjs",
-    "test:margin": "vitest run -c tests/margin-trading/vitest.config.ts",
     "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json",
     "lint": "eslint .",
     "lint:check": "node scripts/check-lint-budget.mjs",

@@ -2,6 +2,8 @@
 // MOCK DATA — Referral Program
 // ============================================================
 
+import { nextDevMockRandom } from './scenario-runtime';
+
 export interface ReferralTier {
   name: string; // Vietnamese display name
   nameEn: string; // English name for reference
@@ -974,7 +976,8 @@ export function getFriendChartData(friendId: string) {
     commission:
       commissions.length > 0
         ? Math.round(
-            (commissions.reduce((s, c) => s + c.amount, 0) / months.length) * (0.5 + Math.random()),
+            (commissions.reduce((s, c) => s + c.amount, 0) / months.length) *
+              (0.5 + nextDevMockRandom()),
           )
         : 0,
   }));

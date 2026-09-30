@@ -18,7 +18,7 @@ import {
   CloseButton,
   type IconButtonVariant,
   type IconButtonSize,
-} from '../components/ui/IconButton';
+} from '@/shared/ui/IconButton';
 import { Search, Heart, Trash2 } from 'lucide-react';
 
 describe('IconButton', () => {

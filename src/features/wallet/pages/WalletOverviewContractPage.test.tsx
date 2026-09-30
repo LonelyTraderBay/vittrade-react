@@ -3,8 +3,10 @@ import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import type { AuthAdapter } from '@/shared/session/AuthContext';
 import { useLocation } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
+import { testAuthAdapter } from '@/test/auth-test-adapter';
 import { WalletOverviewContractPage } from './WalletOverviewContractPage';
 
 const server = setupServer();
@@ -71,6 +73,32 @@ function installHandlers() {
 }
 
 describe('Wallet overview contract page', () => {
+  it('does not request balances or activity without wallet read permission', async () => {
+    let requests = 0;
+    const noWalletReadAdapter: AuthAdapter = {
+      ...testAuthAdapter,
+      initialSession: {
+        ...testAuthAdapter.initialSession!,
+        user: { ...testAuthAdapter.initialSession!.user, permissions: [] },
+      },
+    };
+    server.use(
+      http.get('*/wallet/assets', () => {
+        requests += 1;
+        return HttpResponse.json(assets);
+      }),
+      http.get('*/wallet/transactions', () => {
+        requests += 1;
+        return HttpResponse.json(transactions);
+      }),
+    );
+
+    renderWithProviders(<WalletOverviewContractPage />, { authAdapter: noWalletReadAdapter });
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Wallet read permission');
+    expect(requests).toBe(0);
+  });
+
   it('renders typed balances, assets and recent activity', async () => {
     installHandlers();
 
@@ -80,6 +108,92 @@ describe('Wallet overview contract page', () => {
     expect(screen.getAllByText('BTC')).toHaveLength(2);
     expect(screen.getAllByText('Deposit')).toHaveLength(2);
     expect(screen.getByText('$16,000.25')).toBeInTheDocument();
+  });
+
+  it('keeps the balance while showing empty activity after a successful empty read', async () => {
+    server.use(
+      http.get('*/wallet/assets', () => HttpResponse.json(assets)),
+      http.get('*/wallet/transactions', () => HttpResponse.json({ items: [], total: 0 })),
+    );
+
+    renderWithProviders(<WalletOverviewContractPage />);
+
+    expect(await screen.findByText('Total balance')).toBeInTheDocument();
+    expect(screen.getByText('$16,000.25')).toBeInTheDocument();
+    expect(screen.getByText('No wallet activity yet.')).toBeInTheDocument();
+    expect(screen.queryByText('Unable to load wallet')).not.toBeInTheDocument();
+  });
+
+  it('shows only wallet actions allowed by the active session', async () => {
+    installHandlers();
+    const readOnlyWalletAdapter: AuthAdapter = {
+      ...testAuthAdapter,
+      initialSession: {
+        ...testAuthAdapter.initialSession!,
+        user: {
+          ...testAuthAdapter.initialSession!.user,
+          permissions: ['wallet:read'],
+        },
+      },
+    };
+
+    renderWithProviders(<WalletOverviewContractPage />, { authAdapter: readOnlyWalletAdapter });
+
+    expect(await screen.findByText('Total balance')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Deposit' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Transaction history' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Withdraw' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Transfer' })).not.toBeInTheDocument();
+  });
+
+  it.each([
+    {
+      permission: 'wallet:withdraw',
+      permissions: ['wallet:read', 'wallet:withdraw'],
+      visibleAction: 'Withdraw',
+      hiddenAction: 'Transfer',
+    },
+    {
+      permission: 'wallet:transfer',
+      permissions: ['wallet:read', 'wallet:transfer'],
+      visibleAction: 'Transfer',
+      hiddenAction: 'Withdraw',
+    },
+    {
+      permission: 'wallet:write',
+      permissions: ['wallet:read', 'wallet:write'],
+      visibleAction: 'Withdraw',
+      hiddenAction: undefined,
+    },
+    {
+      permission: 'transfer:write',
+      permissions: ['wallet:read', 'transfer:write'],
+      visibleAction: 'Transfer',
+      hiddenAction: 'Withdraw',
+    },
+  ])('honors $permission when showing wallet actions', async (scenario) => {
+    installHandlers();
+    const authAdapter: AuthAdapter = {
+      ...testAuthAdapter,
+      initialSession: {
+        ...testAuthAdapter.initialSession!,
+        user: {
+          ...testAuthAdapter.initialSession!.user,
+          permissions: scenario.permissions,
+        },
+      },
+    };
+
+    renderWithProviders(<WalletOverviewContractPage />, { authAdapter });
+
+    expect(await screen.findByText('Total balance')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Deposit' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: scenario.visibleAction })).toBeInTheDocument();
+    if (scenario.hiddenAction) {
+      expect(screen.queryByRole('button', { name: scenario.hiddenAction })).not.toBeInTheDocument();
+    } else {
+      expect(screen.getByRole('button', { name: 'Transfer' })).toBeInTheDocument();
+    }
   });
 
   it('filters small balances and masks sensitive amounts', async () => {

@@ -6,6 +6,8 @@
  *  volumes, probabilities, and metadata.
  */
 
+import { nextDevMockRandom } from './scenario-runtime';
+
 export type PredictionOutcome = {
   label: string;
   chance: number; // 0-100
@@ -354,7 +356,7 @@ export function generateProbabilityHistory(event: PredictionEvent): ProbabilityP
       date: d.toISOString().slice(5, 10),
       yes,
       no: 100 - yes,
-      volume: Math.round(event.volume24h * (0.3 + Math.random() * 1.4)),
+      volume: Math.round(event.volume24h * (0.3 + nextDevMockRandom() * 1.4)),
     });
   }
   return points;
@@ -375,13 +377,13 @@ export function generateOrderBook(chance: number): {
   let bidTotal = 0;
   let askTotal = 0;
   for (let i = 0; i < 8; i++) {
-    const bidPrice = Math.max(0.01, chance / 100 - (i + 1) * 0.01 - Math.random() * 0.005);
-    const bidShares = Math.round(500 + Math.random() * 4000);
+    const bidPrice = Math.max(0.01, chance / 100 - (i + 1) * 0.01 - nextDevMockRandom() * 0.005);
+    const bidShares = Math.round(500 + nextDevMockRandom() * 4000);
     bidTotal += bidShares;
     bids.push({ price: Math.round(bidPrice * 100) / 100, shares: bidShares, total: bidTotal });
 
-    const askPrice = Math.min(0.99, chance / 100 + (i + 1) * 0.01 + Math.random() * 0.005);
-    const askShares = Math.round(500 + Math.random() * 4000);
+    const askPrice = Math.min(0.99, chance / 100 + (i + 1) * 0.01 + nextDevMockRandom() * 0.005);
+    const askShares = Math.round(500 + nextDevMockRandom() * 4000);
     askTotal += askShares;
     asks.push({ price: Math.round(askPrice * 100) / 100, shares: askShares, total: askTotal });
   }

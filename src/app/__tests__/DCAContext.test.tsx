@@ -10,8 +10,8 @@
 import { describe, it, expect } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
-import { DCAProvider } from '../contexts/DCAContext';
-import { useDCA } from '../hooks/useDCA';
+import { DCAProvider } from '@/features/dca';
+import { useDCA } from '@/features/dca';
 import type { CreateDCAPlanRequest, UpdateDCAPlanRequest, DCAPlan } from '@/features/dca';
 import { testDcaApi } from '@/test/dca-test-adapter';
 

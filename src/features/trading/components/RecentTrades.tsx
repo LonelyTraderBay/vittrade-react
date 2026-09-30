@@ -29,22 +29,20 @@ export const RecentTrades = memo(function RecentTrades({
 
   if (tradesQuery.isPending) {
     return (
-      <p style={{ color: c.text3, fontSize: 12, padding: '16px 12px' }}>
-        Äang táº£i giao dá»‹châ€¦
-      </p>
+      <p style={{ color: c.text3, fontSize: 12, padding: '16px 12px' }}>Đang tải giao dịch…</p>
     );
   }
 
   if (tradesQuery.isError || !tradesQuery.data) {
     return (
       <div className="flex flex-col items-center gap-2 p-4">
-        <p style={{ color: '#EF4444', fontSize: 12 }}>KhÃ´ng táº£i Ä‘Æ°á»£c giao dá»‹ch</p>
+        <p style={{ color: '#EF4444', fontSize: 12 }}>Không tải được giao dịch</p>
         <button
           onClick={() => void tradesQuery.refetch()}
           className="rounded-lg px-3 py-1.5"
           style={{ background: c.surface2, color: c.text2, fontSize: 12 }}
         >
-          Thá»­ láº¡i
+          Thử lại
         </button>
       </div>
     );

@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "observedAt": "2026-09-29T15:18:56Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "environment": "Windows 11 Pro; Node.js v24.19.0; Vitest 4.1.11; V8 coverage provider; local test adapters and mocks; no backend/staging connection.",
+  "execution": [
+    {
+      "command": "node node_modules/vitest/vitest.mjs run --coverage --coverage.reportOnFailure --coverage.reportsDirectory C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-c03-05-coverage-20260929-1513 --reporter=dot",
+      "exitCode": 1,
+      "coverageRawReport": {
+        "path": "C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-c03-05-coverage-20260929-1513\\coverage-final.json",
+        "sha256": "66c5e1f612472259f2445974438f5c9748fcbde6b76176fb31349287c7f036a4",
+        "bytes": 3717566
+      }
+    },
+    {
+      "command": "node node_modules/vitest/vitest.mjs run --reporter=json --outputFile C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-c03-05-tests-20260929-1516.json --silent",
+      "exitCode": 1,
+      "machineReadableReport": {
+        "path": "C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-c03-05-tests-20260929-1516.json",
+        "sha256": "773076e46939650550d83997351cc246dd907825249dbac36a466b62a1b7fa77",
+        "bytes": 784600
+      }
+    }
+  ],
+  "testResults": {
+    "testFiles": 282,
+    "passedFiles": 281,
+    "failedFiles": 1,
+    "totalTests": 2386,
+    "passedTests": 2385,
+    "failedTests": 1,
+    "pendingTests": 0,
+    "todoTests": 0,
+    "skippedTests": 0,
+    "rawSuiteCounters": {
+      "total": 892,
+      "passed": 890,
+      "failed": 2
+    },
+    "failure": {
+      "file": "src/features/auth/pages/WebLoginPage.test.tsx",
+      "test": "WebLoginPage reports backend failure and keeps the user on the login route",
+      "line": 237,
+      "expected": "Đăng nhập thất bại. Vui lòng kiểm tra thông tin và thử lại.",
+      "observedInComponent": "Không thể đăng nhập lúc này. Vui lòng thử lại.",
+      "componentFile": "src/features/auth/pages/WebLoginPage.tsx",
+      "componentSha256": "d938bac40bb63145ffbb3919140b1b3d267b96e86872a93f29a4ebac24980e41",
+      "testSha256": "6ecd04ba0212e46d3cc20ababda64a8cbdb26522035e0c865e8daee66b65aaf5"
+    },
+    "repeatObservation": "The same one-test failure reproduced in two full-suite runs: first with coverage enabled, then with the JSON reporter. This establishes a repeatable mismatch in these runs only; it is not a repository-wide flakiness assessment."
+  },
+  "coverage": {
+    "reportFileCount": 435,
+    "inputFileCount": 720,
+    "testGraphRootCount": 282,
+    "summary": {
+      "statements": {
+        "covered": 10868,
+        "total": 12060,
+        "percent": 90.11,
+        "threshold": 90,
+        "thresholdPassed": true
+      },
+      "branches": {
+        "covered": 8420,
+        "total": 9924,
+        "percent": 84.84,
+        "threshold": 80,
+        "thresholdPassed": true
+      },
+      "functions": {
+        "covered": 3406,
+        "total": 3909,
+        "percent": 87.13,
+        "threshold": 85,
+        "thresholdPassed": true
+      },
+      "lines": {
+        "covered": 10213,
+        "total": 11114,
+        "percent": 91.89,
+        "threshold": 90,
+        "thresholdPassed": true
+      }
+    },
+    "configurationSha256": "d997039fb3a5520b71c5479c435f11adf360d6259542f1d6de97a991db31db2f",
+    "packageJsonSha256": "1066f2ff1ad1757dc1619861732b0af534e1f5f0b713d4a1b3c21299a7b04a18",
+    "configurationChanged": false
+  },
+  "sourceInputFingerprint": {
+    "sha256": "c84200b95e4c8e2988efe3aca3304e2768161df32ddb0ea1d336e575c3fdf13a",
+    "matchesC0301": true,
+    "note": "Recomputed over all 435 coverage files, 282 test-graph roots, vitest.config.ts, package.json and package-lock.json; the 720-input fingerprint matches C03.01 exactly."
+  },
+  "result": "measurement_complete_with_existing_test_failure",
+  "conclusion": "Coverage thresholds pass without changes to configured thresholds or exclusions. The full suite is not green: 1 of 2386 tests fails on an existing WebLoginPage error-copy mismatch; the same mismatch reproduced in the second full-suite run. No product-intent source was identified, so neither the component copy nor the expected text was changed. This evidence completes the requested suite/coverage measurement but does not certify release readiness.",
+  "limitations": [
+    "The UI error-copy mismatch remains an open product decision and a failing test gate; do not treat this step result as an all-green suite.",
+    "Two consecutive runs are insufficient to establish broad test stability or absence of flakes.",
+    "V8 coverage and MSW/fake transports measure frontend code paths only; they do not establish real backend authorization, persistence, replay, staging, production SLO, or user acceptance.",
+    "The raw output paths are machine-local temporary artifacts; hashes and summarized results are recorded here."
+  ]
+}

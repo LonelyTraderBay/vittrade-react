@@ -13,6 +13,7 @@ import type {
   WalletAsset,
   WalletWithdrawalChallenge,
   WalletWithdrawalNetwork,
+  WalletWithdrawalReceipt,
 } from '../model/wallet-types';
 
 type WithdrawalErrors = Record<string, string>;
@@ -67,6 +68,7 @@ interface WithdrawalSuccessStateProps {
   colors: ThemeColors;
   fee: number;
   received: number;
+  receipt: WalletWithdrawalReceipt;
   selectedNetwork: WalletWithdrawalNetwork;
 }
 
@@ -77,8 +79,28 @@ export function WithdrawalSuccessState({
   colors,
   fee,
   received,
+  receipt,
   selectedNetwork,
 }: WithdrawalSuccessStateProps) {
+  const statusLabel =
+    receipt.status === 'pending'
+      ? 'Đang xử lý'
+      : receipt.status === 'completed'
+        ? 'Hoàn tất'
+        : 'Thất bại';
+  const statusColor =
+    receipt.status === 'completed'
+      ? colors.success
+      : receipt.status === 'failed'
+        ? colors.error
+        : colors.warning;
+  const statusBackground =
+    receipt.status === 'completed'
+      ? colors.buyAlpha15
+      : receipt.status === 'failed'
+        ? colors.sellAlpha15
+        : colors.warnAlpha15;
+
   return (
     <PageLayout>
       <Header title="Rút tiền" subtitle="Rút tiền · Wallet" back />
@@ -86,26 +108,50 @@ export function WithdrawalSuccessState({
         <div className="flex flex-col items-center gap-6">
           <div
             className="flex h-24 w-24 items-center justify-center rounded-full"
-            style={{ background: colors.buyAlpha15, border: `2px solid ${colors.buyAlpha20}` }}
+            style={{
+              background: statusBackground,
+              border: `2px solid ${statusColor}`,
+            }}
           >
-            <CheckCircle size={48} color={colors.success} />
+            {receipt.status === 'pending' ? (
+              <Clock size={48} color={statusColor} />
+            ) : receipt.status === 'failed' ? (
+              <AlertTriangle size={48} color={statusColor} />
+            ) : (
+              <CheckCircle size={48} color={statusColor} />
+            )}
           </div>
           <div className="text-center">
-            <h2 style={{ color: colors.text1, fontSize: 22, fontWeight: 700 }}>Yêu cầu đã gửi</h2>
+            <h2 style={{ color: colors.text1, fontSize: 22, fontWeight: 700 }}>
+              {receipt.status === 'pending'
+                ? 'Yêu cầu đang xử lý'
+                : receipt.status === 'completed'
+                  ? 'Yêu cầu hoàn tất'
+                  : 'Yêu cầu thất bại'}
+            </h2>
             <p style={{ color: colors.text2, fontSize: 14, lineHeight: 1.6, marginTop: 8 }}>
-              Yêu cầu rút{' '}
+              {receipt.status === 'pending'
+                ? 'Yêu cầu rút đã được tiếp nhận và đang xử lý: '
+                : receipt.status === 'completed'
+                  ? 'Yêu cầu rút đã hoàn tất: '
+                  : 'Yêu cầu rút có trạng thái thất bại: '}
               <strong style={{ color: colors.text1 }}>
                 {amount} {asset}
               </strong>{' '}
-              đang được xử lý.
             </p>
           </div>
           <TrCard className="flex w-full flex-col gap-3 p-4">
+            <BottomSheetRow label="Mã yêu cầu" value={receipt.id} />
+            <BottomSheetRow label="Mã giao dịch" value={receipt.transactionId} />
             <BottomSheetRow label="Mạng" value={selectedNetwork.name} />
             <BottomSheetRow label="Địa chỉ" value={`${address.slice(0, 8)}…${address.slice(-6)}`} />
             <BottomSheetRow label="Phí" value={`${fee} ${asset}`} />
-            <BottomSheetRow label="Nhận được" value={`${received.toFixed(6)} ${asset}`} highlight />
-            <BottomSheetRow label="Trạng thái" value="Đang xử lý" />
+            <BottomSheetRow
+              label="Dự kiến nhận"
+              value={`${received.toFixed(6)} ${asset}`}
+              highlight
+            />
+            <BottomSheetRow label="Trạng thái" value={statusLabel} />
           </TrCard>
         </div>
       </PageContent>

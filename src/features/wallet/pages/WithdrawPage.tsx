@@ -26,20 +26,22 @@ import {
 import type {
   WalletWithdrawalChallengeRequest,
   WalletWithdrawalNetwork,
+  WalletWithdrawalReceipt,
 } from '../model/wallet-types';
 
 const EMPTY_NETWORKS: WalletWithdrawalNetwork[] = [];
-type Step = 'form' | 'verify' | 'success';
+type Step = 'form' | 'verify' | 'result';
 
 export function WithdrawPage() {
   const { asset = 'USDT' } = useParams();
   const colors = useThemeColors();
   const { hasPermission } = useAuth();
+  const canReadWallet = hasPermission('wallet:read');
   const canWithdraw = hasPermission('wallet:write') || hasPermission('wallet:withdraw');
   const toast = useActionToast();
   const { hapticSelection, hapticWarning, hapticMedium } = useHaptic();
-  const networksQuery = useWalletWithdrawalNetworksQuery(asset);
-  const assetsQuery = useWalletAssetsQuery();
+  const networksQuery = useWalletWithdrawalNetworksQuery(asset, canReadWallet);
+  const assetsQuery = useWalletAssetsQuery(canReadWallet);
   const challengeMutation = useWalletWithdrawalChallengeMutation();
   const verificationMutation = useWalletWithdrawalVerificationMutation();
   const withdrawalMutation = useWalletWithdrawalMutation();
@@ -47,6 +49,7 @@ export function WithdrawPage() {
   const assetData = assetsQuery.data?.items.find((item) => item.symbol === asset);
 
   const [step, setStep] = useState<Step>('form');
+  const [withdrawalReceipt, setWithdrawalReceipt] = useState<WalletWithdrawalReceipt>();
   const [networkId, setNetworkId] = useState('');
   const [address, setAddress] = useState('');
   const [memo, setMemo] = useState('');
@@ -70,6 +73,19 @@ export function WithdrawPage() {
   const received = Math.max(0, amountValue - fee);
   const busy =
     challengeMutation.isPending || verificationMutation.isPending || withdrawalMutation.isPending;
+
+  if (!canReadWallet) {
+    return (
+      <PageLayout>
+        <Header title={`Rút ${asset}`} subtitle="Rút tiền · Wallet" back />
+        <PageContent>
+          <p role="alert" style={{ color: colors.error }}>
+            Wallet read permission is required to view withdrawal balances and network policies.
+          </p>
+        </PageContent>
+      </PageLayout>
+    );
+  }
 
   if (networksQuery.isLoading || assetsQuery.isLoading) {
     return <WithdrawalLoadingState asset={asset} colors={colors} />;
@@ -153,19 +169,26 @@ export function WithdrawPage() {
       if (withdrawalAttempt.current?.signature !== signature) {
         withdrawalAttempt.current = { signature, key: crypto.randomUUID() };
       }
-      await withdrawalMutation.mutateAsync({
+      const receipt = await withdrawalMutation.mutateAsync({
         request: { ...challengeRequest, verificationToken: verification.verificationToken },
         idempotencyKey: withdrawalAttempt.current.key,
       });
       withdrawalAttempt.current = null;
-      setStep('success');
-      toast.success(TOAST.WALLET.WITHDRAW_SUBMITTED, { haptic: 'success' });
+      setWithdrawalReceipt(receipt);
+      setStep('result');
+      if (receipt.status === 'failed') {
+        toast.error(
+          'Yêu cầu rút tiền có trạng thái thất bại. Hãy kiểm tra mã giao dịch trước khi thử lại.',
+        );
+      } else {
+        toast.success(TOAST.WALLET.WITHDRAW_SUBMITTED, { haptic: 'success' });
+      }
     } catch {
       toast.error('Mã xác minh không hợp lệ hoặc đã hết hạn. Vui lòng thử lại.');
     }
   };
 
-  if (step === 'success') {
+  if (step === 'result' && withdrawalReceipt) {
     return (
       <WithdrawalSuccessState
         asset={asset}
@@ -174,6 +197,7 @@ export function WithdrawPage() {
         colors={colors}
         fee={fee}
         received={received}
+        receipt={withdrawalReceipt}
         selectedNetwork={selectedNetwork}
       />
     );

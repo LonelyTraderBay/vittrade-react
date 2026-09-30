@@ -1,0 +1,169 @@
+{
+  "observedAt": "2026-09-27T12:48:25.564Z",
+  "mode": "Vite development + actual MSW service worker, Chromium headless, no backend",
+  "scenarios": [
+    {
+      "id": "direct-login",
+      "passed": true,
+      "url": "http://127.0.0.1:5173/w/home",
+      "evidence": "Dev-only fixture instructions were visible before login; home loaded after MSW session login."
+    },
+    {
+      "id": "logout-and-reload",
+      "passed": true,
+      "logoutStatus": 204,
+      "urlAfterReload": "http://127.0.0.1:5173/w/auth/login"
+    },
+    {
+      "id": "mfa-challenge",
+      "passed": true,
+      "url": "http://127.0.0.1:5173/w/auth/otp",
+      "otpInputs": 6
+    },
+    {
+      "id": "mfa-verification",
+      "passed": true,
+      "url": "http://127.0.0.1:5173/w/home",
+      "code": "[redacted demo code]"
+    },
+    {
+      "id": "invalid-password",
+      "passed": true,
+      "url": "http://127.0.0.1:5173/w/auth/login",
+      "errorTextFound": true
+    },
+    {
+      "id": "locked-account",
+      "passed": true,
+      "url": "http://127.0.0.1:5173/w/auth/account-locked"
+    },
+    {
+      "id": "demo-button",
+      "passed": true,
+      "url": "http://127.0.0.1:5173/w/home"
+    }
+  ],
+  "authResponses": [
+    {
+      "scenario": "direct-login-and-logout",
+      "url": "/api/auth/session",
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    {
+      "scenario": "direct-login-and-logout",
+      "url": "/api/auth/login",
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    {
+      "scenario": "direct-login-and-logout",
+      "url": "/api/auth/logout",
+      "status": 204,
+      "fromServiceWorker": true
+    },
+    {
+      "scenario": "direct-login-and-logout",
+      "url": "/api/auth/session",
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    {
+      "scenario": "mfa",
+      "url": "/api/auth/session",
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    {
+      "scenario": "mfa",
+      "url": "/api/auth/login",
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    {
+      "scenario": "mfa",
+      "url": "/api/auth/login/mfa/verify",
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    {
+      "scenario": "invalid-password",
+      "url": "/api/auth/session",
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    {
+      "scenario": "invalid-password",
+      "url": "/api/auth/login",
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    {
+      "scenario": "locked-account",
+      "url": "/api/auth/session",
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    {
+      "scenario": "locked-account",
+      "url": "/api/auth/login",
+      "status": 423,
+      "fromServiceWorker": true
+    },
+    {
+      "scenario": "demo-button",
+      "url": "/api/auth/session",
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    {
+      "scenario": "demo-button",
+      "url": "/api/auth/login",
+      "status": 200,
+      "fromServiceWorker": true
+    }
+  ],
+  "consoleResourceErrors": [
+    {
+      "scenario": "direct-login-and-logout",
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    },
+    {
+      "scenario": "direct-login-and-logout",
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    },
+    {
+      "scenario": "mfa",
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    },
+    {
+      "scenario": "invalid-password",
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    },
+    {
+      "scenario": "invalid-password",
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    },
+    {
+      "scenario": "locked-account",
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    },
+    {
+      "scenario": "locked-account",
+      "message": "Failed to load resource: the server responded with a status of 423 (Locked)"
+    },
+    {
+      "scenario": "demo-button",
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    }
+  ],
+  "pageErrors": [],
+  "screenshots": [
+    "dev-auth-login-hints.png",
+    "dev-auth-home.png",
+    "dev-auth-logout.png",
+    "dev-auth-mfa.png",
+    "dev-auth-invalid.png"
+  ],
+  "passed": true
+}

@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "taskId": "A07",
+  "stepId": "A07.04",
+  "observedAt": "2026-09-27T20:07:00Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "statusPurpose": "Roadmap progress snapshot and A07.04 evidence; not a production certification.",
+  "progress": {
+    "tasksDone": 5,
+    "tasksTotal": 38,
+    "tasksInProgress": 1,
+    "stepsDone": 29,
+    "stepsTotal": 205,
+    "stepsPercent": 14.1,
+    "taskA07StepsDone": 4,
+    "taskA07StepsTotal": 5,
+    "taskA07Percent": 80,
+    "architectureTasksDone": 5,
+    "architectureTasksTotal": 8,
+    "architectureStepsDone": 29,
+    "architectureStepsTotal": 40,
+    "architectureStepsPercent": 72.5,
+    "nextStep": "A07.05",
+    "blockedTasks": 0,
+    "blockedSteps": 0,
+    "milestones": {
+      "M1": "todo",
+      "M2": "todo",
+      "M3": "todo",
+      "M4": "todo"
+    }
+  },
+  "readinessEvidence": {
+    "menuTargets": {
+      "total": 44,
+      "unresolved": 0
+    },
+    "navigationActionSites": {
+      "sourceFiles": 110,
+      "total": 257,
+      "unclassified": 0,
+      "unresolvedLiteralTargets": 3
+    },
+    "representativeBrowserChecks": {
+      "passed": 6,
+      "failed": 0,
+      "mockData": true
+    },
+    "targetedTests": {
+      "filesPassed": 4,
+      "testsPassed": 32,
+      "testsFailed": 0
+    },
+    "productionSourcePages": {
+      "total": 128,
+      "uiCheckpointDone": 0,
+      "userAccepted": 0
+    },
+    "routeDeclarations": {
+      "total": 428,
+      "sourceUnclassified": 0,
+      "runtimeUrlResolved": 428
+    },
+    "backendOperations": {
+      "total": 154,
+      "stagingVerified": 0
+    }
+  },
+  "openFindings": [
+    {
+      "id": "OTP-ACCOUNT-LOCKED-SHELL-ROUTES",
+      "ownerTaskId": "U01",
+      "pageId": "PAGE-d3e238577d76",
+      "relatedRouteId": "ROUTE-094a1e1d228e",
+      "missingCandidates": [
+        "/auth/account-locked",
+        "/t/auth/account-locked",
+        "/r/auth/account-locked"
+      ],
+      "disposition": "Open; implement/resolve through U01 and verify in A07.05 route contract. The related web route only resolves /w/auth/account-locked."
+    }
+  ],
+  "evidenceArtifacts": [
+    "docs/architecture/production-readiness/evidence/A07/navigation-targets-2026-09-28.json",
+    "docs/architecture/production-readiness/evidence/A07/navigation-action-sites-2026-09-28.json",
+    "docs/architecture/production-readiness/evidence/A07/navigation-browser-checks-2026-09-28.json"
+  ],
+  "limits": [
+    "The 14.1% figure is completed roadmap steps, not a production-readiness score.",
+    "Local mock browser verification does not prove real API/backend, staging, production deployment or full responsive acceptance."
+  ]
+}

@@ -1,15 +1,18 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { tradingApi } from '../api/trading-api';
 import type {
   CopyProvidersQuery,
   ModifyOrderRequest,
   OrderListQuery,
   PlaceOrderRequest,
+  TradingPositionsQuery,
 } from './trading-types';
 
 export const tradingQueryKeys = {
   all: ['trading'] as const,
   openOrders: (query: OrderListQuery = {}) => ['trading', 'open-orders', query] as const,
+  openPositions: (query: Omit<TradingPositionsQuery, 'cursor'> = {}) =>
+    ['trading', 'open-positions', query] as const,
   orderHistory: (query: OrderListQuery = {}) => ['trading', 'order-history', query] as const,
   copyProviders: (query: CopyProvidersQuery = {}) => ['trading', 'copy-providers', query] as const,
   copyProvider: (id: string) => ['trading', 'copy-provider', id] as const,
@@ -33,10 +36,11 @@ export function useCopyProviderProfileQuery(id: string | undefined) {
   });
 }
 
-export function useCopyRelationshipsQuery() {
+export function useCopyRelationshipsQuery(enabled = true) {
   return useQuery({
     queryKey: tradingQueryKeys.copyRelationships,
     queryFn: ({ signal }) => tradingApi.listCopyRelationships(signal),
+    enabled,
     staleTime: 10_000,
     refetchInterval: 15_000,
   });
@@ -76,19 +80,39 @@ export function useStopCopyRelationshipMutation() {
   });
 }
 
-export function useOpenOrdersQuery(query: Omit<OrderListQuery, 'status'> = {}) {
+export function useOpenOrdersQuery(query: Omit<OrderListQuery, 'status'> = {}, enabled = true) {
   return useQuery({
     queryKey: tradingQueryKeys.openOrders(query),
     queryFn: ({ signal }) => tradingApi.listOpenOrders(query, signal),
+    enabled,
     staleTime: 5_000,
     refetchInterval: 10_000,
   });
 }
 
-export function useOrderHistoryQuery(query: OrderListQuery = {}) {
+export function useOpenPositionsQuery(
+  query: Omit<TradingPositionsQuery, 'cursor'> = {},
+  enabled = true,
+) {
+  return useInfiniteQuery({
+    queryKey: tradingQueryKeys.openPositions(query),
+    initialPageParam: undefined as string | undefined,
+    queryFn: ({ pageParam, signal }) =>
+      tradingApi.listOpenPositions({ ...query, cursor: pageParam }, signal),
+    getNextPageParam: (lastPage, _pages, _lastPageParam, allPageParams) =>
+      lastPage.nextCursor && !allPageParams.includes(lastPage.nextCursor)
+        ? lastPage.nextCursor
+        : undefined,
+    enabled,
+    staleTime: 5_000,
+  });
+}
+
+export function useOrderHistoryQuery(query: OrderListQuery = {}, enabled = true) {
   return useQuery({
     queryKey: tradingQueryKeys.orderHistory(query),
     queryFn: ({ signal }) => tradingApi.listOrderHistory(query, signal),
+    enabled,
     staleTime: 30_000,
   });
 }

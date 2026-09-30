@@ -1,0 +1,1001 @@
+{
+  "schemaVersion": 1,
+  "taskId": "A07",
+  "stepId": "A07.04",
+  "inputs": {
+    "routeUrlEvidence": {
+      "path": "docs/architecture/production-readiness/evidence/A07/route-url-resolution-2026-09-28.json",
+      "sha256": "5e7c524a973be47e0af1a60f14d2269159cb32304a641e2834ba31932c4732f5"
+    },
+    "runtimeRouteTree": {
+      "path": "docs/architecture/production-readiness/evidence/A07/runtime-route-tree-2026-09-28.json",
+      "sha256": "87b66fa829854d69b99ffdde6ebfb6c91e9d0879d8e09b4c229cca79a6f10441"
+    },
+    "navigationSources": {
+      "src/app/components/layout/ResponsiveBottomNav.tsx": "c676751355c80c74ec030c5d3078fe8d27f17750472ba4de6582157012ec005c",
+      "src/app/components/layout/LeftRail.tsx": "c2b38463cc29af1e76fba12a6102deed1ceb5cedb60f72d2758b706bfc61baf0",
+      "src/app/components/layout/TabletSidebar.tsx": "472a86cb3db7200c109c7173dec29216d4fb9114a901048ceda186e19e339b78",
+      "src/app/components/layout/TabletTopBar.tsx": "72aebbd77f52df3bfa9ddf0a553fcf207d380046df54f9a343ac5334b80a0600",
+      "src/app/components/layout/WebSidebar.tsx": "cdc58ed0d92877bab86e7c4e0b6caf2c013e1644fa7327811d6f89e864ff72c1"
+    }
+  },
+  "counts": {
+    "sourceGroups": [
+      {
+        "group": "responsive-bottom-nav",
+        "links": 5
+      },
+      {
+        "group": "responsive-left-rail",
+        "links": 8
+      },
+      {
+        "group": "tablet-sidebar",
+        "links": 12
+      },
+      {
+        "group": "tablet-top-bar",
+        "links": 3
+      },
+      {
+        "group": "web-sidebar",
+        "links": 22
+      }
+    ],
+    "sourceLinkEntries": 50,
+    "uniqueTargets": 44,
+    "declaredTargets": 42,
+    "runtimeIndexTargets": 2,
+    "unresolvedTargets": 0
+  },
+  "coreTabs": {
+    "expected": [
+      {
+        "path": "/r/home",
+        "label": "Trang chủ"
+      },
+      {
+        "path": "/r/markets",
+        "label": "Thị trường"
+      },
+      {
+        "path": "/r/trade/btcusdt",
+        "label": "Giao dịch"
+      },
+      {
+        "path": "/r/wallet",
+        "label": "Ví"
+      },
+      {
+        "path": "/r/profile",
+        "label": "Tôi"
+      }
+    ],
+    "actual": [
+      {
+        "path": "/r/home",
+        "label": "Trang chủ"
+      },
+      {
+        "path": "/r/markets",
+        "label": "Thị trường"
+      },
+      {
+        "path": "/r/trade/btcusdt",
+        "label": "Giao dịch"
+      },
+      {
+        "path": "/r/wallet",
+        "label": "Ví"
+      },
+      {
+        "path": "/r/profile",
+        "label": "Tôi"
+      }
+    ],
+    "matchesGuideline": true
+  },
+  "targets": [
+    {
+      "url": "/r/home",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-6b14be701225"
+      ],
+      "runtimeNodeIds": [
+        "0-6-2"
+      ],
+      "sources": [
+        {
+          "group": "responsive-bottom-nav",
+          "kind": "core-tab",
+          "label": "Trang chủ",
+          "source": "src/app/components/layout/ResponsiveBottomNav.tsx",
+          "line": 7
+        },
+        {
+          "group": "responsive-left-rail",
+          "kind": "menu-link",
+          "label": "Trang chủ",
+          "source": "src/app/components/layout/LeftRail.tsx",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "url": "/r/markets",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-626b52f4ed7c"
+      ],
+      "runtimeNodeIds": [
+        "0-6-3",
+        "0-6-3-0"
+      ],
+      "sources": [
+        {
+          "group": "responsive-bottom-nav",
+          "kind": "core-tab",
+          "label": "Thị trường",
+          "source": "src/app/components/layout/ResponsiveBottomNav.tsx",
+          "line": 8
+        },
+        {
+          "group": "responsive-left-rail",
+          "kind": "menu-link",
+          "label": "Thị trường",
+          "source": "src/app/components/layout/LeftRail.tsx",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "url": "/r/notifications",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-7cc1259bcf1e"
+      ],
+      "runtimeNodeIds": [
+        "0-6-26-220"
+      ],
+      "sources": [
+        {
+          "group": "responsive-left-rail",
+          "kind": "menu-link",
+          "label": "Thông báo",
+          "source": "src/app/components/layout/LeftRail.tsx",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "url": "/r/profile",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-c307aac4b5f2"
+      ],
+      "runtimeNodeIds": [
+        "0-6-26-93"
+      ],
+      "sources": [
+        {
+          "group": "responsive-bottom-nav",
+          "kind": "core-tab",
+          "label": "Tôi",
+          "source": "src/app/components/layout/ResponsiveBottomNav.tsx",
+          "line": 11
+        },
+        {
+          "group": "responsive-left-rail",
+          "kind": "menu-link",
+          "label": "Tôi",
+          "source": "src/app/components/layout/LeftRail.tsx",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "url": "/r/profile/settings",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-062c7d0635bc"
+      ],
+      "runtimeNodeIds": [
+        "0-6-26-95"
+      ],
+      "sources": [
+        {
+          "group": "responsive-left-rail",
+          "kind": "menu-link",
+          "label": "Cài đặt",
+          "source": "src/app/components/layout/LeftRail.tsx",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "url": "/r/support",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-c45fa2bf8a35"
+      ],
+      "runtimeNodeIds": [
+        "0-6-26-223"
+      ],
+      "sources": [
+        {
+          "group": "responsive-left-rail",
+          "kind": "menu-link",
+          "label": "Hỗ trợ",
+          "source": "src/app/components/layout/LeftRail.tsx",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "url": "/r/trade/btcusdt",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-a567867a4caf"
+      ],
+      "runtimeNodeIds": [
+        "0-6-26-1"
+      ],
+      "sources": [
+        {
+          "group": "responsive-bottom-nav",
+          "kind": "core-tab",
+          "label": "Giao dịch",
+          "source": "src/app/components/layout/ResponsiveBottomNav.tsx",
+          "line": 9
+        },
+        {
+          "group": "responsive-left-rail",
+          "kind": "menu-link",
+          "label": "Giao dịch",
+          "source": "src/app/components/layout/LeftRail.tsx",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "url": "/r/wallet",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-9b27a61ad22a"
+      ],
+      "runtimeNodeIds": [
+        "0-6-26-71"
+      ],
+      "sources": [
+        {
+          "group": "responsive-bottom-nav",
+          "kind": "core-tab",
+          "label": "Ví",
+          "source": "src/app/components/layout/ResponsiveBottomNav.tsx",
+          "line": 10
+        },
+        {
+          "group": "responsive-left-rail",
+          "kind": "menu-link",
+          "label": "Ví",
+          "source": "src/app/components/layout/LeftRail.tsx",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "url": "/t/arena",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-f1d949a1db1b"
+      ],
+      "runtimeNodeIds": [
+        "0-4-25-118"
+      ],
+      "sources": [
+        {
+          "group": "tablet-sidebar",
+          "kind": "menu-link",
+          "label": "Arena",
+          "source": "src/app/components/layout/TabletSidebar.tsx",
+          "line": 78
+        }
+      ]
+    },
+    {
+      "url": "/t/earn/savings",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-d9f92b51253a"
+      ],
+      "runtimeNodeIds": [
+        "0-4-25-255"
+      ],
+      "sources": [
+        {
+          "group": "tablet-sidebar",
+          "kind": "menu-link",
+          "label": "Tiết kiệm",
+          "source": "src/app/components/layout/TabletSidebar.tsx",
+          "line": 71
+        }
+      ]
+    },
+    {
+      "url": "/t/home",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-6b14be701225"
+      ],
+      "runtimeNodeIds": [
+        "0-4-2"
+      ],
+      "sources": [
+        {
+          "group": "tablet-sidebar",
+          "kind": "menu-link",
+          "label": "Trang chủ",
+          "source": "src/app/components/layout/TabletSidebar.tsx",
+          "line": 61
+        }
+      ]
+    },
+    {
+      "url": "/t/launchpad",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-104d3393afd5"
+      ],
+      "runtimeNodeIds": [
+        "0-4-25-280"
+      ],
+      "sources": [
+        {
+          "group": "tablet-sidebar",
+          "kind": "menu-link",
+          "label": "Launchpad",
+          "source": "src/app/components/layout/TabletSidebar.tsx",
+          "line": 79
+        }
+      ]
+    },
+    {
+      "url": "/t/markets",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-626b52f4ed7c"
+      ],
+      "runtimeNodeIds": [
+        "0-4-3",
+        "0-4-3-0"
+      ],
+      "sources": [
+        {
+          "group": "tablet-sidebar",
+          "kind": "menu-link",
+          "label": "Thị trường",
+          "source": "src/app/components/layout/TabletSidebar.tsx",
+          "line": 62
+        }
+      ]
+    },
+    {
+      "url": "/t/markets/predictions",
+      "resolution": "runtime-index-route",
+      "routeIds": [],
+      "runtimeNodeIds": [
+        "0-4-3-1",
+        "0-4-3-1-0"
+      ],
+      "sources": [
+        {
+          "group": "tablet-sidebar",
+          "kind": "menu-link",
+          "label": "Dự đoán",
+          "source": "src/app/components/layout/TabletSidebar.tsx",
+          "line": 77
+        }
+      ]
+    },
+    {
+      "url": "/t/notifications",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-7cc1259bcf1e"
+      ],
+      "runtimeNodeIds": [
+        "0-4-25-220"
+      ],
+      "sources": [
+        {
+          "group": "tablet-sidebar",
+          "kind": "menu-link",
+          "label": "Thông báo",
+          "source": "src/app/components/layout/TabletSidebar.tsx",
+          "line": 85
+        },
+        {
+          "group": "tablet-top-bar",
+          "kind": "shortcut",
+          "label": "/t/notifications",
+          "source": "src/app/components/layout/TabletTopBar.tsx",
+          "line": 121
+        }
+      ]
+    },
+    {
+      "url": "/t/p2p",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-6e27f1f95b79"
+      ],
+      "runtimeNodeIds": [
+        "0-4-25-211"
+      ],
+      "sources": [
+        {
+          "group": "tablet-sidebar",
+          "kind": "menu-link",
+          "label": "P2P",
+          "source": "src/app/components/layout/TabletSidebar.tsx",
+          "line": 70
+        }
+      ]
+    },
+    {
+      "url": "/t/profile",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-c307aac4b5f2"
+      ],
+      "runtimeNodeIds": [
+        "0-4-25-93"
+      ],
+      "sources": [
+        {
+          "group": "tablet-top-bar",
+          "kind": "shortcut",
+          "label": "/t/profile",
+          "source": "src/app/components/layout/TabletTopBar.tsx",
+          "line": 151
+        }
+      ]
+    },
+    {
+      "url": "/t/profile/settings",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-062c7d0635bc"
+      ],
+      "runtimeNodeIds": [
+        "0-4-25-95"
+      ],
+      "sources": [
+        {
+          "group": "tablet-sidebar",
+          "kind": "menu-link",
+          "label": "Cài đặt",
+          "source": "src/app/components/layout/TabletSidebar.tsx",
+          "line": 87
+        }
+      ]
+    },
+    {
+      "url": "/t/search",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-6fd82879c95d"
+      ],
+      "runtimeNodeIds": [
+        "0-4-25-212"
+      ],
+      "sources": [
+        {
+          "group": "tablet-top-bar",
+          "kind": "shortcut",
+          "label": "/t/search",
+          "source": "src/app/components/layout/TabletTopBar.tsx",
+          "line": 107
+        }
+      ]
+    },
+    {
+      "url": "/t/support",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-c45fa2bf8a35"
+      ],
+      "runtimeNodeIds": [
+        "0-4-25-223"
+      ],
+      "sources": [
+        {
+          "group": "tablet-sidebar",
+          "kind": "menu-link",
+          "label": "Hỗ trợ",
+          "source": "src/app/components/layout/TabletSidebar.tsx",
+          "line": 86
+        }
+      ]
+    },
+    {
+      "url": "/t/trade/btcusdt",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-a567867a4caf"
+      ],
+      "runtimeNodeIds": [
+        "0-4-25-1"
+      ],
+      "sources": [
+        {
+          "group": "tablet-sidebar",
+          "kind": "menu-link",
+          "label": "Giao dịch",
+          "source": "src/app/components/layout/TabletSidebar.tsx",
+          "line": 63
+        }
+      ]
+    },
+    {
+      "url": "/t/wallet",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-9b27a61ad22a"
+      ],
+      "runtimeNodeIds": [
+        "0-4-25-71"
+      ],
+      "sources": [
+        {
+          "group": "tablet-sidebar",
+          "kind": "menu-link",
+          "label": "Ví",
+          "source": "src/app/components/layout/TabletSidebar.tsx",
+          "line": 69
+        }
+      ]
+    },
+    {
+      "url": "/w/arena",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-076da8bdac7d",
+        "ROUTE-f1d949a1db1b"
+      ],
+      "runtimeNodeIds": [
+        "0-5-25-137",
+        "0-5-25-349"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "Open Arena",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 101
+        }
+      ]
+    },
+    {
+      "url": "/w/earn/savings",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-3eda02587fb7",
+        "ROUTE-d9f92b51253a"
+      ],
+      "runtimeNodeIds": [
+        "0-5-25-274",
+        "0-5-25-309"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "Earn & Savings",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 93
+        }
+      ]
+    },
+    {
+      "url": "/w/home",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-6b14be701225"
+      ],
+      "runtimeNodeIds": [
+        "0-5-2"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "Trang chủ",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 65
+        }
+      ]
+    },
+    {
+      "url": "/w/launchpad",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-104d3393afd5"
+      ],
+      "runtimeNodeIds": [
+        "0-5-25-299"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "Launchpad",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 94
+        }
+      ]
+    },
+    {
+      "url": "/w/markets",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-626b52f4ed7c"
+      ],
+      "runtimeNodeIds": [
+        "0-5-3",
+        "0-5-3-0"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "Thị trường",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 67
+        }
+      ]
+    },
+    {
+      "url": "/w/markets/heatmap",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-e0009a24e70c"
+      ],
+      "runtimeNodeIds": [
+        "0-5-15",
+        "0-5-25-306"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "Heatmap",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 74
+        }
+      ]
+    },
+    {
+      "url": "/w/markets/movers",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-9e75a4938378"
+      ],
+      "runtimeNodeIds": [
+        "0-5-25-304",
+        "0-5-5"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "Biến động",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 72
+        }
+      ]
+    },
+    {
+      "url": "/w/markets/overview",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-8c4f95308fee"
+      ],
+      "runtimeNodeIds": [
+        "0-5-25-303",
+        "0-5-4"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "Tổng quan",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 71
+        }
+      ]
+    },
+    {
+      "url": "/w/markets/predictions",
+      "resolution": "runtime-index-route",
+      "routeIds": [],
+      "runtimeNodeIds": [
+        "0-5-3-1",
+        "0-5-3-1-0"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "Prediction Markets",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 100
+        }
+      ]
+    },
+    {
+      "url": "/w/markets/watchlist",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-5db173f95628"
+      ],
+      "runtimeNodeIds": [
+        "0-5-14",
+        "0-5-25-305"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "Theo dõi",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 73
+        }
+      ]
+    },
+    {
+      "url": "/w/notifications",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-275c28ab474c",
+        "ROUTE-7cc1259bcf1e"
+      ],
+      "runtimeNodeIds": [
+        "0-5-25-239",
+        "0-5-25-317"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "Thông báo",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 108
+        }
+      ]
+    },
+    {
+      "url": "/w/p2p",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-6e27f1f95b79"
+      ],
+      "runtimeNodeIds": [
+        "0-5-25-230"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "P2P Trading",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 92
+        }
+      ]
+    },
+    {
+      "url": "/w/profile",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-c307aac4b5f2"
+      ],
+      "runtimeNodeIds": [
+        "0-5-25-112"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "shortcut",
+          "label": "/w/profile",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 331
+        }
+      ]
+    },
+    {
+      "url": "/w/profile/security",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-8fa2993c465b"
+      ],
+      "runtimeNodeIds": [
+        "0-5-25-119"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "Bảo mật",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 110
+        }
+      ]
+    },
+    {
+      "url": "/w/profile/settings",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-062c7d0635bc"
+      ],
+      "runtimeNodeIds": [
+        "0-5-25-114"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "Cài đặt",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 111
+        }
+      ]
+    },
+    {
+      "url": "/w/referral",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-bf5bdb8c04c4"
+      ],
+      "runtimeNodeIds": [
+        "0-5-25-238"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "Giới thiệu",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 102
+        }
+      ]
+    },
+    {
+      "url": "/w/support",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-c45fa2bf8a35",
+        "ROUTE-d7a9b1c24261"
+      ],
+      "runtimeNodeIds": [
+        "0-5-25-242",
+        "0-5-25-318"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "Hỗ trợ",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 109
+        }
+      ]
+    },
+    {
+      "url": "/w/trade/bots",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-2c0f919417bf",
+        "ROUTE-b1761e19c89d"
+      ],
+      "runtimeNodeIds": [
+        "0-5-25-0",
+        "0-5-25-20",
+        "0-5-25-26"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "Trading Bots",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 83
+        }
+      ]
+    },
+    {
+      "url": "/w/trade/btcusdt",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-a567867a4caf"
+      ],
+      "runtimeNodeIds": [
+        "0-5-25-20"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "Spot Trading",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 82
+        }
+      ]
+    },
+    {
+      "url": "/w/trade/copy",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-607b259f33b9"
+      ],
+      "runtimeNodeIds": [
+        "0-5-25-20",
+        "0-5-25-338"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "Copy Trading",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 84
+        }
+      ]
+    },
+    {
+      "url": "/w/trade/orders",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-12d48f368c4c"
+      ],
+      "runtimeNodeIds": [
+        "0-5-25-20",
+        "0-5-25-344"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "Lệnh & Lịch sử",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 85
+        }
+      ]
+    },
+    {
+      "url": "/w/wallet",
+      "resolution": "route-declaration",
+      "routeIds": [
+        "ROUTE-9b27a61ad22a"
+      ],
+      "runtimeNodeIds": [
+        "0-5-25-90"
+      ],
+      "sources": [
+        {
+          "group": "web-sidebar",
+          "kind": "menu-link",
+          "label": "Ví",
+          "source": "src/app/components/layout/WebSidebar.tsx",
+          "line": 91
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "A static/runtime route match proves a registered URL target, not that every page is complete or accepted.",
+    "Browser observations for representative navigation, back, direct load, refresh, not-found and auth redirects are recorded separately in the A07.04 browser-check artifact.",
+    "Two prediction destinations are React Router index nodes and therefore do not have separate declaration IDs in the 428-route baseline."
+  ]
+}

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { Smartphone, Tablet, Monitor } from 'lucide-react';
 
@@ -46,27 +46,59 @@ function getRoutePath(pathname: string): string {
   return pathname.replace(/^\/(w|t|r)\//, '/').replace(/^\/(w|t|r)$/, '/home');
 }
 
+function keepsRouteShell(pathname: string): boolean {
+  return (
+    /^\/(?:w\/|t\/|r\/)?auth(?:\/|$)/.test(pathname) ||
+    pathname === '/onboarding' ||
+    pathname.startsWith('/onboarding/') ||
+    pathname === '/r' ||
+    pathname.startsWith('/r/')
+  );
+}
+
+function hasUnsubmittedFormChanges(): boolean {
+  return Array.from(document.querySelectorAll('input, textarea, select')).some((control) => {
+    if (control instanceof HTMLInputElement) {
+      if (['button', 'hidden', 'reset', 'submit'].includes(control.type)) return false;
+      return ['checkbox', 'radio'].includes(control.type)
+        ? control.checked !== control.defaultChecked
+        : control.value !== control.defaultValue;
+    }
+    if (control instanceof HTMLTextAreaElement) return control.value !== control.defaultValue;
+    if (control instanceof HTMLSelectElement) {
+      return Array.from(control.options).some(
+        (option) => option.selected !== option.defaultSelected,
+      );
+    }
+    return false;
+  });
+}
+
 export function PlatformSwitcher() {
   const navigate = useNavigate();
   const location = useLocation();
-  const lastAutoPrefix = useRef<string | null>(null);
-  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Detect current platform from route
   const currentPrefix = getCurrentPrefix(location.pathname);
   const currentPlatform: Platform =
     currentPrefix === '/w' ? 'web' : currentPrefix === '/t' ? 'tablet' : 'phone';
 
-  useEffect(() => {
-    // Initialize last known prefix
-    lastAutoPrefix.current = getCurrentPrefix(location.pathname);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useLayoutEffect(() => {
+    if (keepsRouteShell(location.pathname)) return;
+    const targetPrefix = PLATFORM_CONFIG[detectPlatform(window.innerWidth)].prefix;
+    const curPrefix = getCurrentPrefix(location.pathname);
+    if (targetPrefix !== curPrefix) {
+      navigate(targetPrefix + getRoutePath(location.pathname), { replace: true });
+    }
+  }, [location.pathname, navigate]);
 
   useEffect(() => {
+    let debounceTimer: ReturnType<typeof setTimeout> | null = null;
     function handleResize() {
-      // Debounce to avoid rapid navigations during resize
-      if (debounceTimer.current) clearTimeout(debounceTimer.current);
-      debounceTimer.current = setTimeout(() => {
+      if (keepsRouteShell(location.pathname)) return;
+      if (debounceTimer) clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        if (hasUnsubmittedFormChanges()) return;
         const targetPlatform = detectPlatform(window.innerWidth);
         const targetPrefix = PLATFORM_CONFIG[targetPlatform].prefix;
         const curPrefix = getCurrentPrefix(location.pathname);
@@ -74,20 +106,15 @@ export function PlatformSwitcher() {
         // Only navigate if the target prefix differs from current
         if (targetPrefix !== curPrefix) {
           const routePath = getRoutePath(location.pathname);
-          const newPath = targetPrefix + routePath;
-          lastAutoPrefix.current = targetPrefix;
-          navigate(newPath, { replace: true });
+          navigate(targetPrefix + routePath, { replace: true });
         }
       }, 250);
     }
 
-    // Run once on mount to correct any mismatch
-    handleResize();
-
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
-      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+      if (debounceTimer) clearTimeout(debounceTimer);
     };
   }, [location.pathname, navigate]);
 

@@ -1,0 +1,632 @@
+{
+  "checkedAt": "2026-09-29T21:08:36.141Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "branch": "codex/vittrade-architecture-completion",
+  "origin": "http://127.0.0.1:4173",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "profile.unauthorized",
+    "status": "passed",
+    "persona": "developer (preview only)",
+    "operationIds": [
+      "getProfile",
+      "updateProfile",
+      "listTrustedDevices",
+      "revokeDevice",
+      "setDeviceTrust",
+      "listProfileActivity",
+      "listSubAccounts"
+    ],
+    "observedOperationIds": [
+      "getProfile",
+      "listProfileActivity",
+      "listSubAccounts",
+      "listTrustedDevices"
+    ],
+    "expectedDomainOperationCount": 7,
+    "coverage": "representative_browser_observed_four_of_seven_operations"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedNetworkResponsesFromServiceWorker": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "profileReadResponsesFromServiceWorker": true,
+    "runnerInterceptedAuthRefreshResponsesAreNotNetworkResponses": true,
+    "authRefreshContractFixtures": [
+      {
+        "method": "POST",
+        "path": "/api/auth/refresh",
+        "status": 200,
+        "body": null,
+        "source": "runner-local contract fixture; request not sent to service worker or backend"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/refresh",
+        "status": 200,
+        "body": null,
+        "source": "runner-local contract fixture; request not sent to service worker or backend"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/refresh",
+        "status": 200,
+        "body": null,
+        "source": "runner-local contract fixture; request not sent to service worker or backend"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/refresh",
+        "status": 200,
+        "body": null,
+        "source": "runner-local contract fixture; request not sent to service worker or backend"
+      }
+    ],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false,
+    "externalApiOrigins": []
+  },
+  "authorizationLimitations": {
+    "persona": "developer",
+    "mockSourcePermissions": ["profile:read", "profile:write", "profile:security:write"],
+    "mswEnforcesProfileReadPermission": false,
+    "backendAuthorizationVerified": false
+  },
+  "measurements": {
+    "totalFlowMs": 3409,
+    "apiRequestCount": 31,
+    "apiResponseCount": 25,
+    "apiRequestFailureCount": 10,
+    "pendingApiRequestCount": 0,
+    "profileUnauthorizedRequestCount": 4,
+    "profileUnauthorizedResponseCount": 4,
+    "profile401ResponseCount": 4,
+    "authRefreshContractFixtureCount": 4,
+    "unauthorizedRedirectCount": 4,
+    "profileWriteCount": 0,
+    "profileRequestFailureCount": 0,
+    "pageErrorCount": 0,
+    "successFixturePreconditions": 4
+  },
+  "assertions": {
+    "successfulProfileFixturesLoadedFirst": [
+      {
+        "route": "/w/profile",
+        "operationId": "getProfile",
+        "visible": true
+      },
+      {
+        "route": "/w/profile/devices",
+        "operationId": "listTrustedDevices",
+        "visible": true
+      },
+      {
+        "route": "/w/profile/activity",
+        "operationId": "listProfileActivity",
+        "visible": true
+      },
+      {
+        "route": "/w/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "visible": true
+      }
+    ],
+    "unauthorizedReads": [
+      {
+        "route": "/w/profile",
+        "operationId": "getProfile",
+        "readRequestCount": 1,
+        "readResponseCount": 1,
+        "readStatus": 401,
+        "readFromServiceWorker": true,
+        "refreshContractFixtureCount": 1,
+        "refreshStatus": 200,
+        "refreshBody": null,
+        "redirectedToLogin": true,
+        "staleSuccessContentVisible": false,
+        "screenshot": "preview-profile-unauthorized-profile-2026-09-29-contract-scoped.png"
+      },
+      {
+        "route": "/w/profile/devices",
+        "operationId": "listTrustedDevices",
+        "readRequestCount": 1,
+        "readResponseCount": 1,
+        "readStatus": 401,
+        "readFromServiceWorker": true,
+        "refreshContractFixtureCount": 1,
+        "refreshStatus": 200,
+        "refreshBody": null,
+        "redirectedToLogin": true,
+        "staleSuccessContentVisible": false,
+        "screenshot": "preview-profile-unauthorized-devices-2026-09-29-contract-scoped.png"
+      },
+      {
+        "route": "/w/profile/activity",
+        "operationId": "listProfileActivity",
+        "readRequestCount": 1,
+        "readResponseCount": 1,
+        "readStatus": 401,
+        "readFromServiceWorker": true,
+        "refreshContractFixtureCount": 1,
+        "refreshStatus": 200,
+        "refreshBody": null,
+        "redirectedToLogin": true,
+        "staleSuccessContentVisible": false,
+        "screenshot": "preview-profile-unauthorized-activity-2026-09-29-contract-scoped.png"
+      },
+      {
+        "route": "/w/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "readRequestCount": 1,
+        "readResponseCount": 1,
+        "readStatus": 401,
+        "readFromServiceWorker": true,
+        "refreshContractFixtureCount": 1,
+        "refreshStatus": 200,
+        "refreshBody": null,
+        "redirectedToLogin": true,
+        "staleSuccessContentVisible": false,
+        "screenshot": "preview-profile-unauthorized-subaccounts-2026-09-29-contract-scoped.png"
+      }
+    ],
+    "apiResponses": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "operationId": null,
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null,
+        "status": 204,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null,
+        "status": 204,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null,
+        "status": 204,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null,
+        "status": 204,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "status": 401,
+        "fromServiceWorker": true
+      }
+    ],
+    "unauthorizedProfileRequests": [
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts"
+      }
+    ],
+    "unauthorizedProfileResponses": [
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "status": 401,
+        "fromServiceWorker": true
+      }
+    ],
+    "apiRequests": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts"
+      }
+    ],
+    "apiRequestFailures": [
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "error": "net::ERR_ABORTED"
+      }
+    ],
+    "profileWriteRequests": [],
+    "profileRequestFailures": [],
+    "pageErrors": []
+  },
+  "screenshots": {
+    "profile": "preview-profile-unauthorized-profile-2026-09-29-contract-scoped.png",
+    "devices": "preview-profile-unauthorized-devices-2026-09-29-contract-scoped.png",
+    "activity": "preview-profile-unauthorized-activity-2026-09-29-contract-scoped.png",
+    "subAccounts": "preview-profile-unauthorized-subaccounts-2026-09-29-contract-scoped.png"
+  },
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b",
+    "contracts/openapi/profile.yaml": "6830c4976f5b94b4f78e08b824eabd1c18b41bf96f23613412db065575f1d5d8",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "8382400738090945e6c3ec53286f288f0ed2d41c90dbd407eec2b48d36d347ae",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "6deef3b43c51e05c9cd058d8743b23b64a86579f474ce0486830359ac50ac200",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/auth/api/auth-api.ts": "050846c48de49be56f6bdf6a73669b5d3a6230c559e33851cd07840609fca078",
+    "src/features/profile/api/profile-api.ts": "acba23f32e4c8b2ad972e02c2184e6fbb616ce1ab4b1defeca60d2a825a9b707",
+    "src/features/profile/model/profile-queries.ts": "8849991f90d7d02df9a150cb2d139d0aa1fd7cb1c3b475382f0fc5582a8339b2",
+    "src/features/profile/pages/ActivityLogContractPage.tsx": "48be877678ceb63bb2ad01fa94eaf711bd291539508b3c60500632d0c24efb36",
+    "src/features/profile/pages/DeviceManagementContractPage.tsx": "fb32ff88b2c1d65420537814a3d8244cfde0f1a353a2c76356ae2329717dd286",
+    "src/features/profile/pages/EditProfileContractPage.tsx": "b3f1694edc7aa561c42bf016d543e870dba174767dc664edcc31474a89dc79be",
+    "src/features/profile/pages/ProfileContractPage.tsx": "0932157ef6be68cffad4f6e2481c90f010003ffcc3dbe179d562e7eab9d472bd",
+    "src/features/profile/pages/SubAccountContractPage.tsx": "4842a28e0bc17738d0895352d4dcb168f4a981ea2926feb747120ea9de94d0a0",
+    "src/features/profile/routes.ts": "231052711e6dd138f27c96272e63d401e06854ed33d425d8712f485c3b601418",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",
+    "src/shared/session/useAuth.ts": "65d58cfe61d4618a1849da066ecd4d6ae7c94c036af7361a91a1383a6b383e0b",
+    "src/main.tsx": "845215ef1b767caaa0f6ff7eeaebe49f471bdfba3aac223b8969671770783bd6",
+    "docs/architecture/production-readiness/evidence/A06/run-profile-unauthorized-browser-check.mjs": "b5bed6a92eaab9584bb0d3c09950e2e0315987b43a96b336358d2c3f1a511d44"
+  },
+  "limitations": [
+    "Profile OpenAPI declares HTTP 401 for each of the four observed GET operations; the three Profile mutations were not sent, so coverage is representative 4/7.",
+    "Auth OpenAPI declares refreshSession as 200 with AuthSession or null and does not declare HTTP 401. The runner intercepts each refresh fetch before service-worker/backend dispatch and returns the declared 200/null fixture.",
+    "Local MSW returns the declared Profile GET 401 responses, but does not enforce profile:read; browser redirection does not certify server-side authorization.",
+    "This Chromium preview check does not verify backend session handling, persistence, staging or user acceptance."
+  ]
+}

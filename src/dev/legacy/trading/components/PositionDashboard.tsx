@@ -11,7 +11,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { TrendingUp, TrendingDown, DollarSign, Percent, Target, AlertTriangle } from 'lucide-react';
+import { TrendingUp, TrendingDown, DollarSign, AlertTriangle } from 'lucide-react';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { FONT_SCALE, FONT_WEIGHT } from '@/shared/theme/legacyTypography';

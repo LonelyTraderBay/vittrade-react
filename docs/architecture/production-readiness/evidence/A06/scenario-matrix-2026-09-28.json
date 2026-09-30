@@ -1,0 +1,2814 @@
+{
+  "schemaVersion": 1,
+  "generatedFrom": {
+    "tracking": "docs/architecture/production-readiness/TRACKING.json",
+    "operationMap": "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json",
+    "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+    "generatedAt": "2026-09-30T00:58:12.079Z",
+    "operationMapSha256": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
+    "runtimeEvidenceSha256": "f01438ba42bac1dd507e41ef29bd5756642cad278473459b47fef57fd469f7ca"
+  },
+  "scope": "Scenario expectations for the 15 tracked product domains. Runtime status is included only when the aggregate report or the scenario-specific sidecar has a matching source HEAD and current source hashes; it is not user acceptance or backend certification.",
+  "summary": {
+    "domains": 15,
+    "trackedOperations": 154,
+    "exactHandlerMappings": 154,
+    "operationsWithDirectSharedHandlerTestReferences": 21,
+    "scenariosDefined": 106,
+    "scenarioRowsWithFreshBrowserEvidence": 27,
+    "scenarioRowsFullyCoveredByFreshBrowserEvidence": 16,
+    "uniqueOperationsWithFreshBrowserEvidence": 32,
+    "runtimeEvidenceFresh": false,
+    "freshScenarioEvidenceSidecars": 27,
+    "registeredScenarioEvidenceSidecars": 35,
+    "financialDomainsWithPendingUnknownDuplicateCases": [
+      "earn",
+      "p2p",
+      "predictions",
+      "trading",
+      "wallet"
+    ]
+  },
+  "stateDefinitions": {
+    "success": "Successful response with populated data or receipt.",
+    "empty": "Successful response with zero applicable records.",
+    "loading": "Request remains in flight and the UI communicates that state.",
+    "error": "Recoverable transport/server failure with a visible retry path.",
+    "unauthorized": "HTTP 401 for secured operations.",
+    "forbidden": "HTTP 403 for secured operations.",
+    "pending": "A contract-supported pending status or an in-flight mutation; keep these semantics distinct.",
+    "unknown": "Transport response loss after a mutation; outcome remains unconfirmed until a read reconciliation.",
+    "duplicate": "Repeated logical intent; no duplicate resource or balance effect, according to the operation contract."
+  },
+  "limitations": [
+    "Scenario definitions are not evidence that current mocks, pages or tests implement the expected state.",
+    "Direct shared-handler test references identify mapped test call sites, not response-branch coverage.",
+    "Unknown outcome is a client-observed transport ambiguity, not a value added to server status enums.",
+    "Backend owners must confirm idempotency and reconciliation semantics before any operation is certified.",
+    "Browser evidence is ignored if its source HEAD or any recorded source file hash is stale.",
+    "Empty scenarios name only contract-applicable collection GET operations; reads outside each mapped empty state remain outside that scenario.",
+    "No user acceptance, staging or production evidence is claimed."
+  ],
+  "domains": [
+    {
+      "domain": "admin",
+      "surface": "Admin dashboards, moderation and privileged controls",
+      "operationCount": 5,
+      "securedOperationCount": 5,
+      "operationIds": [
+        "getAdminOverview",
+        "getAdminFunnel",
+        "listAdminAbTests",
+        "getAdminAbTest",
+        "updateAdminFeatureFlag"
+      ],
+      "directSharedHandlerTestOperationIds": [],
+      "scenarioCount": 6,
+      "scenarios": [
+        {
+          "id": "admin.success",
+          "state": "success",
+          "applicability": "required",
+          "operationIds": [
+            "getAdminOverview",
+            "getAdminFunnel",
+            "listAdminAbTests",
+            "getAdminAbTest",
+            "updateAdminFeatureFlag"
+          ],
+          "expectedUi": "Admin dashboards, moderation and privileged controls: A successful contract response renders the domain data and only actions allowed for the active persona.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "admin.empty",
+          "state": "empty",
+          "applicability": "required",
+          "operationIds": ["getAdminFunnel", "listAdminAbTests"],
+          "expectedUi": "Show an explicit no-results/no-activity state with the relevant filter or safe next action; preserve the distinction between no data and access denied.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "admin.loading",
+          "state": "loading",
+          "applicability": "required",
+          "operationIds": ["getAdminOverview", "getAdminFunnel", "listAdminAbTests"],
+          "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "admin.error",
+          "state": "error",
+          "applicability": "required",
+          "operationIds": [
+            "getAdminOverview",
+            "getAdminFunnel",
+            "listAdminAbTests",
+            "getAdminAbTest",
+            "updateAdminFeatureFlag"
+          ],
+          "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "admin.unauthorized",
+          "state": "unauthorized",
+          "applicability": "required",
+          "operationIds": [
+            "getAdminOverview",
+            "getAdminFunnel",
+            "listAdminAbTests",
+            "getAdminAbTest",
+            "updateAdminFeatureFlag"
+          ],
+          "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "admin.forbidden",
+          "state": "forbidden",
+          "applicability": "required",
+          "operationIds": [
+            "getAdminOverview",
+            "getAdminFunnel",
+            "listAdminAbTests",
+            "getAdminAbTest",
+            "updateAdminFeatureFlag"
+          ],
+          "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
+          "executionStatus": "not_verified"
+        }
+      ]
+    },
+    {
+      "domain": "arena",
+      "surface": "Arena discovery, challenge detail and join flow",
+      "operationCount": 4,
+      "securedOperationCount": 4,
+      "operationIds": [
+        "getArenaDiscovery",
+        "getArenaMode",
+        "getArenaChallenge",
+        "joinArenaChallenge"
+      ],
+      "directSharedHandlerTestOperationIds": ["joinArenaChallenge"],
+      "scenarioCount": 6,
+      "scenarios": [
+        {
+          "id": "arena.success",
+          "state": "success",
+          "applicability": "required",
+          "operationIds": [
+            "getArenaDiscovery",
+            "getArenaMode",
+            "getArenaChallenge",
+            "joinArenaChallenge"
+          ],
+          "expectedUi": "Arena discovery, challenge detail and join flow: A successful contract response renders the domain data and only actions allowed for the active persona.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "arena.empty",
+          "state": "empty",
+          "applicability": "required",
+          "operationIds": ["getArenaDiscovery"],
+          "expectedUi": "Show no available challenges without implying join failure; joining still requires an authenticated eligible persona.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "arena.loading",
+          "state": "loading",
+          "applicability": "required",
+          "operationIds": [
+            "getArenaDiscovery",
+            "getArenaMode",
+            "getArenaChallenge",
+            "joinArenaChallenge"
+          ],
+          "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "arena.error",
+          "state": "error",
+          "applicability": "required",
+          "operationIds": [
+            "getArenaDiscovery",
+            "getArenaMode",
+            "getArenaChallenge",
+            "joinArenaChallenge"
+          ],
+          "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "arena.unauthorized",
+          "state": "unauthorized",
+          "applicability": "required",
+          "operationIds": [
+            "getArenaDiscovery",
+            "getArenaMode",
+            "getArenaChallenge",
+            "joinArenaChallenge"
+          ],
+          "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "arena.forbidden",
+          "state": "forbidden",
+          "applicability": "required",
+          "operationIds": [
+            "getArenaDiscovery",
+            "getArenaMode",
+            "getArenaChallenge",
+            "joinArenaChallenge"
+          ],
+          "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
+          "executionStatus": "not_verified"
+        }
+      ]
+    },
+    {
+      "domain": "auth",
+      "surface": "Registration, login, MFA, session and recovery",
+      "operationCount": 14,
+      "securedOperationCount": 8,
+      "operationIds": [
+        "register",
+        "login",
+        "verifyLoginMfaChallenge",
+        "getSession",
+        "refreshSession",
+        "logout",
+        "verifyMfa",
+        "confirmMfaSetup",
+        "beginMfaSetup",
+        "requestPasswordResetCode",
+        "verifyCurrentPassword",
+        "changePassword",
+        "verifyPasswordResetCode",
+        "confirmPasswordReset"
+      ],
+      "directSharedHandlerTestOperationIds": [
+        "login",
+        "verifyLoginMfaChallenge",
+        "getSession",
+        "refreshSession",
+        "logout"
+      ],
+      "scenarioCount": 6,
+      "scenarios": [
+        {
+          "id": "auth.success",
+          "state": "success",
+          "applicability": "required",
+          "operationIds": [
+            "register",
+            "login",
+            "verifyLoginMfaChallenge",
+            "getSession",
+            "refreshSession",
+            "logout",
+            "verifyMfa",
+            "confirmMfaSetup",
+            "beginMfaSetup",
+            "requestPasswordResetCode",
+            "verifyCurrentPassword",
+            "changePassword",
+            "verifyPasswordResetCode",
+            "confirmPasswordReset"
+          ],
+          "expectedUi": "Registration, login, MFA, session and recovery: A successful contract response renders the domain data and only actions allowed for the active persona.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "auth.empty",
+          "state": "empty",
+          "applicability": "required",
+          "operationIds": [
+            "register",
+            "login",
+            "verifyLoginMfaChallenge",
+            "getSession",
+            "refreshSession",
+            "logout",
+            "verifyMfa",
+            "confirmMfaSetup",
+            "beginMfaSetup",
+            "requestPasswordResetCode",
+            "verifyCurrentPassword",
+            "changePassword",
+            "verifyPasswordResetCode",
+            "confirmPasswordReset"
+          ],
+          "expectedUi": "Use a form-ready state; do not show an empty data table for an authentication flow.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "auth.loading",
+          "state": "loading",
+          "applicability": "required",
+          "operationIds": [
+            "register",
+            "login",
+            "verifyLoginMfaChallenge",
+            "getSession",
+            "refreshSession",
+            "logout",
+            "verifyMfa",
+            "confirmMfaSetup",
+            "beginMfaSetup",
+            "requestPasswordResetCode",
+            "verifyCurrentPassword",
+            "changePassword",
+            "verifyPasswordResetCode",
+            "confirmPasswordReset"
+          ],
+          "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "auth.error",
+          "state": "error",
+          "applicability": "required",
+          "operationIds": [
+            "register",
+            "login",
+            "verifyLoginMfaChallenge",
+            "getSession",
+            "refreshSession",
+            "logout",
+            "verifyMfa",
+            "confirmMfaSetup",
+            "beginMfaSetup",
+            "requestPasswordResetCode",
+            "verifyCurrentPassword",
+            "changePassword",
+            "verifyPasswordResetCode",
+            "confirmPasswordReset"
+          ],
+          "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "auth.unauthorized",
+          "state": "unauthorized",
+          "applicability": "required",
+          "operationIds": [
+            "getSession",
+            "refreshSession",
+            "logout",
+            "verifyMfa",
+            "confirmMfaSetup",
+            "beginMfaSetup",
+            "verifyCurrentPassword",
+            "changePassword"
+          ],
+          "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "auth.forbidden",
+          "state": "forbidden",
+          "applicability": "required",
+          "operationIds": [
+            "getSession",
+            "refreshSession",
+            "logout",
+            "verifyMfa",
+            "confirmMfaSetup",
+            "beginMfaSetup",
+            "verifyCurrentPassword",
+            "changePassword"
+          ],
+          "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
+          "executionStatus": "not_verified"
+        }
+      ]
+    },
+    {
+      "domain": "dca",
+      "surface": "DCA overview and plan lifecycle",
+      "operationCount": 5,
+      "securedOperationCount": 5,
+      "operationIds": [
+        "getDCAAdvancedOverview",
+        "getDCASnapshot",
+        "createDCAPlan",
+        "updateDCAPlan",
+        "deleteDCAPlan"
+      ],
+      "directSharedHandlerTestOperationIds": [],
+      "scenarioCount": 6,
+      "scenarios": [
+        {
+          "id": "dca.success",
+          "state": "success",
+          "applicability": "required",
+          "operationIds": [
+            "getDCAAdvancedOverview",
+            "getDCASnapshot",
+            "createDCAPlan",
+            "updateDCAPlan",
+            "deleteDCAPlan"
+          ],
+          "expectedUi": "DCA overview and plan lifecycle: A successful contract response renders the domain data and only actions allowed for the active persona.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "dca.empty",
+          "state": "empty",
+          "applicability": "required",
+          "operationIds": [
+            "getDCAAdvancedOverview",
+            "getDCASnapshot",
+            "createDCAPlan",
+            "updateDCAPlan",
+            "deleteDCAPlan"
+          ],
+          "expectedUi": "Show an empty-plan onboarding action; never imply a recurring purchase has executed when only a plan exists.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "dca.loading",
+          "state": "loading",
+          "applicability": "required",
+          "operationIds": [
+            "getDCAAdvancedOverview",
+            "getDCASnapshot",
+            "createDCAPlan",
+            "updateDCAPlan",
+            "deleteDCAPlan"
+          ],
+          "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "dca.error",
+          "state": "error",
+          "applicability": "required",
+          "operationIds": [
+            "getDCAAdvancedOverview",
+            "getDCASnapshot",
+            "createDCAPlan",
+            "updateDCAPlan",
+            "deleteDCAPlan"
+          ],
+          "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "dca.unauthorized",
+          "state": "unauthorized",
+          "applicability": "required",
+          "operationIds": [
+            "getDCAAdvancedOverview",
+            "getDCASnapshot",
+            "createDCAPlan",
+            "updateDCAPlan",
+            "deleteDCAPlan"
+          ],
+          "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "dca.forbidden",
+          "state": "forbidden",
+          "applicability": "required",
+          "operationIds": [
+            "getDCAAdvancedOverview",
+            "getDCASnapshot",
+            "createDCAPlan",
+            "updateDCAPlan",
+            "deleteDCAPlan"
+          ],
+          "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
+          "executionStatus": "not_verified"
+        }
+      ]
+    },
+    {
+      "domain": "discovery",
+      "surface": "Search and product discovery",
+      "operationCount": 2,
+      "securedOperationCount": 2,
+      "operationIds": ["searchDiscovery", "getDiscoveryTopic"],
+      "directSharedHandlerTestOperationIds": [],
+      "scenarioCount": 6,
+      "scenarios": [
+        {
+          "id": "discovery.success",
+          "state": "success",
+          "applicability": "required",
+          "operationIds": ["searchDiscovery", "getDiscoveryTopic"],
+          "expectedUi": "Search and product discovery: A successful contract response renders the domain data and only actions allowed for the active persona.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "discovery.empty",
+          "state": "empty",
+          "applicability": "required",
+          "operationIds": ["searchDiscovery"],
+          "expectedUi": "Show no-results guidance and allow query/filter adjustment; keep it distinct from request failure.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "discovery.loading",
+          "state": "loading",
+          "applicability": "required",
+          "operationIds": ["searchDiscovery", "getDiscoveryTopic"],
+          "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "discovery.error",
+          "state": "error",
+          "applicability": "required",
+          "operationIds": ["searchDiscovery", "getDiscoveryTopic"],
+          "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "discovery.unauthorized",
+          "state": "unauthorized",
+          "applicability": "required",
+          "operationIds": ["searchDiscovery", "getDiscoveryTopic"],
+          "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "discovery.forbidden",
+          "state": "forbidden",
+          "applicability": "required",
+          "operationIds": ["searchDiscovery", "getDiscoveryTopic"],
+          "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
+          "executionStatus": "not_verified"
+        }
+      ]
+    },
+    {
+      "domain": "earn",
+      "surface": "Earn positions, subscriptions, redemptions and transactions",
+      "operationCount": 4,
+      "securedOperationCount": 4,
+      "operationIds": [
+        "getEarnSnapshot",
+        "listEarnTransactions",
+        "createEarnSubscription",
+        "redeemEarnPosition"
+      ],
+      "directSharedHandlerTestOperationIds": ["createEarnSubscription", "redeemEarnPosition"],
+      "scenarioCount": 9,
+      "scenarios": [
+        {
+          "id": "earn.success",
+          "state": "success",
+          "applicability": "required",
+          "operationIds": [
+            "getEarnSnapshot",
+            "listEarnTransactions",
+            "createEarnSubscription",
+            "redeemEarnPosition"
+          ],
+          "expectedUi": "Earn positions, subscriptions, redemptions and transactions: A successful contract response renders the domain data and only actions allowed for the active persona.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "earn.empty",
+          "state": "empty",
+          "applicability": "required",
+          "operationIds": ["getEarnSnapshot", "listEarnTransactions"],
+          "expectedUi": "Show no-position guidance; do not imply funds are subscribed or redeemed without a receipt/status.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "earn.loading",
+          "state": "loading",
+          "applicability": "required",
+          "operationIds": [
+            "getEarnSnapshot",
+            "listEarnTransactions",
+            "createEarnSubscription",
+            "redeemEarnPosition"
+          ],
+          "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "earn.error",
+          "state": "error",
+          "applicability": "required",
+          "operationIds": [
+            "getEarnSnapshot",
+            "listEarnTransactions",
+            "createEarnSubscription",
+            "redeemEarnPosition"
+          ],
+          "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "earn.unauthorized",
+          "state": "unauthorized",
+          "applicability": "required",
+          "operationIds": [
+            "getEarnSnapshot",
+            "listEarnTransactions",
+            "createEarnSubscription",
+            "redeemEarnPosition"
+          ],
+          "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "earn.forbidden",
+          "state": "forbidden",
+          "applicability": "required",
+          "operationIds": [
+            "getEarnSnapshot",
+            "listEarnTransactions",
+            "createEarnSubscription",
+            "redeemEarnPosition"
+          ],
+          "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "earn.pending",
+          "state": "pending",
+          "applicability": "required",
+          "operationIds": ["createEarnSubscription", "redeemEarnPosition", "listEarnTransactions"],
+          "contractStatusSemantics": "Derive from the linked OpenAPI operation; transport-level unknown is not a server status enum.",
+          "idempotencyContract": [
+            {
+              "operationId": "createEarnSubscription",
+              "required": true
+            },
+            {
+              "operationId": "redeemEarnPosition",
+              "required": true
+            }
+          ],
+          "expectedUi": "Render only the pending/request-in-flight status defined by the contract; disable duplicate finalization while unresolved and show a stable receipt/reference when available.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "earn.unknown",
+          "state": "unknown",
+          "applicability": "required",
+          "operationIds": ["createEarnSubscription", "redeemEarnPosition", "listEarnTransactions"],
+          "contractStatusSemantics": "Derive from the linked OpenAPI operation; transport-level unknown is not a server status enum.",
+          "idempotencyContract": [
+            {
+              "operationId": "createEarnSubscription",
+              "required": true
+            },
+            {
+              "operationId": "redeemEarnPosition",
+              "required": true
+            }
+          ],
+          "expectedUi": "When a mutation response is lost, show outcome unconfirmed, neither success nor failure; reconcile using the listed read operation before offering a retry, and preserve the original idempotency key.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "earn.duplicate",
+          "state": "duplicate",
+          "applicability": "required",
+          "operationIds": ["createEarnSubscription", "redeemEarnPosition", "listEarnTransactions"],
+          "contractStatusSemantics": "Derive from the linked OpenAPI operation; transport-level unknown is not a server status enum.",
+          "idempotencyContract": [
+            {
+              "operationId": "createEarnSubscription",
+              "required": true
+            },
+            {
+              "operationId": "redeemEarnPosition",
+              "required": true
+            }
+          ],
+          "expectedUi": "Replay the same intent with the same idempotency key; assert one visible resource and one balance effect, using the contract-defined replay result or conflict response.",
+          "executionStatus": "not_verified"
+        }
+      ]
+    },
+    {
+      "domain": "launchpad",
+      "surface": "Launchpad project list and project detail",
+      "operationCount": 2,
+      "securedOperationCount": 2,
+      "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
+      "directSharedHandlerTestOperationIds": [],
+      "scenarioCount": 6,
+      "scenarios": [
+        {
+          "id": "launchpad.success",
+          "state": "success",
+          "applicability": "required",
+          "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
+          "expectedUi": "Launchpad project list and project detail: A successful contract response renders the domain data and only actions allowed for the active persona.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "launchpad.empty",
+          "state": "empty",
+          "applicability": "required",
+          "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
+          "expectedUi": "Show no eligible projects and the eligibility reason if known; do not invent purchase capabilities absent from the API contract.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "launchpad.loading",
+          "state": "loading",
+          "applicability": "required",
+          "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
+          "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "launchpad.error",
+          "state": "error",
+          "applicability": "required",
+          "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
+          "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "launchpad.unauthorized",
+          "state": "unauthorized",
+          "applicability": "required",
+          "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
+          "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "launchpad.forbidden",
+          "state": "forbidden",
+          "applicability": "required",
+          "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
+          "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
+          "executionStatus": "not_verified"
+        }
+      ]
+    },
+    {
+      "domain": "market",
+      "surface": "Market overview, instruments, charts, watchlist and alerts",
+      "operationCount": 22,
+      "securedOperationCount": 8,
+      "operationIds": [
+        "getMarketOverview",
+        "getMarketMovers",
+        "getMarketNews",
+        "getMarketCalendar",
+        "getMarketCorrelations",
+        "getMarketTokenUnlocks",
+        "getMarketDerivatives",
+        "getMarketSentiment",
+        "getMarketSignals",
+        "listMarketPriceAlerts",
+        "createMarketPriceAlert",
+        "updateMarketPriceAlert",
+        "deleteMarketPriceAlert",
+        "listMarketPairs",
+        "getMarketPair",
+        "getMarketWatchlist",
+        "addMarketWatchlistItem",
+        "getMarketOrderBook",
+        "getMarketRecentTrades",
+        "getMarketCandles",
+        "updateMarketWatchlistItem",
+        "deleteMarketWatchlistItem"
+      ],
+      "directSharedHandlerTestOperationIds": [],
+      "scenarioCount": 6,
+      "scenarios": [
+        {
+          "id": "market.success",
+          "state": "success",
+          "applicability": "required",
+          "operationIds": [
+            "getMarketOverview",
+            "getMarketMovers",
+            "getMarketNews",
+            "getMarketCalendar",
+            "getMarketCorrelations",
+            "getMarketTokenUnlocks",
+            "getMarketDerivatives",
+            "getMarketSentiment",
+            "getMarketSignals",
+            "listMarketPriceAlerts",
+            "createMarketPriceAlert",
+            "updateMarketPriceAlert",
+            "deleteMarketPriceAlert",
+            "listMarketPairs",
+            "getMarketPair",
+            "getMarketWatchlist",
+            "addMarketWatchlistItem",
+            "getMarketOrderBook",
+            "getMarketRecentTrades",
+            "getMarketCandles",
+            "updateMarketWatchlistItem",
+            "deleteMarketWatchlistItem"
+          ],
+          "expectedUi": "Market overview, instruments, charts, watchlist and alerts: A successful contract response renders the domain data and only actions allowed for the active persona.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "market.empty",
+          "state": "empty",
+          "applicability": "required",
+          "operationIds": ["listMarketPairs"],
+          "expectedUi": "Show a scoped no-data state; retain public market reads where allowed and keep private watchlist/alert access separate.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "market.loading",
+          "state": "loading",
+          "applicability": "required",
+          "operationIds": [
+            "getMarketOverview",
+            "getMarketMovers",
+            "getMarketNews",
+            "getMarketCalendar",
+            "getMarketCorrelations",
+            "getMarketTokenUnlocks",
+            "getMarketDerivatives",
+            "getMarketSentiment",
+            "getMarketSignals",
+            "listMarketPriceAlerts",
+            "createMarketPriceAlert",
+            "updateMarketPriceAlert",
+            "deleteMarketPriceAlert",
+            "listMarketPairs",
+            "getMarketPair",
+            "getMarketWatchlist",
+            "addMarketWatchlistItem",
+            "getMarketOrderBook",
+            "getMarketRecentTrades",
+            "getMarketCandles",
+            "updateMarketWatchlistItem",
+            "deleteMarketWatchlistItem"
+          ],
+          "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "market.error",
+          "state": "error",
+          "applicability": "required",
+          "operationIds": [
+            "getMarketOverview",
+            "getMarketMovers",
+            "getMarketNews",
+            "getMarketCalendar",
+            "getMarketCorrelations",
+            "getMarketTokenUnlocks",
+            "getMarketDerivatives",
+            "getMarketSentiment",
+            "getMarketSignals",
+            "listMarketPriceAlerts",
+            "createMarketPriceAlert",
+            "updateMarketPriceAlert",
+            "deleteMarketPriceAlert",
+            "listMarketPairs",
+            "getMarketPair",
+            "getMarketWatchlist",
+            "addMarketWatchlistItem",
+            "getMarketOrderBook",
+            "getMarketRecentTrades",
+            "getMarketCandles",
+            "updateMarketWatchlistItem",
+            "deleteMarketWatchlistItem"
+          ],
+          "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "market.unauthorized",
+          "state": "unauthorized",
+          "applicability": "required",
+          "operationIds": [
+            "listMarketPriceAlerts",
+            "createMarketPriceAlert",
+            "updateMarketPriceAlert",
+            "deleteMarketPriceAlert",
+            "getMarketWatchlist",
+            "addMarketWatchlistItem",
+            "updateMarketWatchlistItem",
+            "deleteMarketWatchlistItem"
+          ],
+          "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "market.forbidden",
+          "state": "forbidden",
+          "applicability": "required",
+          "operationIds": [
+            "listMarketPriceAlerts",
+            "createMarketPriceAlert",
+            "updateMarketPriceAlert",
+            "deleteMarketPriceAlert",
+            "getMarketWatchlist",
+            "addMarketWatchlistItem",
+            "updateMarketWatchlistItem",
+            "deleteMarketWatchlistItem"
+          ],
+          "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
+          "executionStatus": "not_verified"
+        }
+      ]
+    },
+    {
+      "domain": "p2p",
+      "surface": "P2P ads, escrow orders, payment methods, chat, dispute and security",
+      "operationCount": 42,
+      "securedOperationCount": 42,
+      "operationIds": [
+        "getP2PFrontendViewStatus",
+        "getP2POverview",
+        "getP2PDashboard",
+        "getP2PAchievements",
+        "getP2PAdAnalytics",
+        "getP2PMerchantProfile",
+        "reportP2PMerchant",
+        "listP2PPaymentMethods",
+        "createP2PPaymentMethod",
+        "updateP2PPaymentMethod",
+        "deleteP2PPaymentMethod",
+        "listP2PDisputes",
+        "getP2PDispute",
+        "sendP2PDisputeMessage",
+        "escalateP2PDispute",
+        "listP2PBlacklist",
+        "createP2PBlacklistEntry",
+        "removeP2PBlacklistEntry",
+        "listP2PReviews",
+        "getP2P2FASettings",
+        "updateP2P2FAMethod",
+        "setP2P2FAPrimaryMethod",
+        "updateP2P2FAThreshold",
+        "beginP2PAuthenticatorSetup",
+        "confirmP2PAuthenticatorSetup",
+        "listP2PAds",
+        "createP2PAd",
+        "getP2PAd",
+        "updateP2PAdStatus",
+        "deleteP2PAd",
+        "listP2POrders",
+        "createP2POrder",
+        "getP2POrder",
+        "markP2POrderPaid",
+        "releaseP2POrderEscrow",
+        "createP2PReleaseChallenge",
+        "verifyP2PReleaseChallenge",
+        "cancelP2POrder",
+        "rateP2POrder",
+        "submitP2PPaymentProof",
+        "getP2POrderChat",
+        "sendP2PChatMessage"
+      ],
+      "directSharedHandlerTestOperationIds": [
+        "createP2POrder",
+        "markP2POrderPaid",
+        "releaseP2POrderEscrow",
+        "createP2PReleaseChallenge",
+        "verifyP2PReleaseChallenge"
+      ],
+      "scenarioCount": 9,
+      "scenarios": [
+        {
+          "id": "p2p.success",
+          "state": "success",
+          "applicability": "required",
+          "operationIds": [
+            "getP2PFrontendViewStatus",
+            "getP2POverview",
+            "getP2PDashboard",
+            "getP2PAchievements",
+            "getP2PAdAnalytics",
+            "getP2PMerchantProfile",
+            "reportP2PMerchant",
+            "listP2PPaymentMethods",
+            "createP2PPaymentMethod",
+            "updateP2PPaymentMethod",
+            "deleteP2PPaymentMethod",
+            "listP2PDisputes",
+            "getP2PDispute",
+            "sendP2PDisputeMessage",
+            "escalateP2PDispute",
+            "listP2PBlacklist",
+            "createP2PBlacklistEntry",
+            "removeP2PBlacklistEntry",
+            "listP2PReviews",
+            "getP2P2FASettings",
+            "updateP2P2FAMethod",
+            "setP2P2FAPrimaryMethod",
+            "updateP2P2FAThreshold",
+            "beginP2PAuthenticatorSetup",
+            "confirmP2PAuthenticatorSetup",
+            "listP2PAds",
+            "createP2PAd",
+            "getP2PAd",
+            "updateP2PAdStatus",
+            "deleteP2PAd",
+            "listP2POrders",
+            "createP2POrder",
+            "getP2POrder",
+            "markP2POrderPaid",
+            "releaseP2POrderEscrow",
+            "createP2PReleaseChallenge",
+            "verifyP2PReleaseChallenge",
+            "cancelP2POrder",
+            "rateP2POrder",
+            "submitP2PPaymentProof",
+            "getP2POrderChat",
+            "sendP2PChatMessage"
+          ],
+          "expectedUi": "P2P ads, escrow orders, payment methods, chat, dispute and security: A successful contract response renders the domain data and only actions allowed for the active persona.",
+          "executionStatus": "representative_browser_observed",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/p2p-success-browser-check-2026-09-29-fresh-after-handler-fix.json",
+          "runtimeRoute": "/w/p2p/escrow/p2p002",
+          "runtimeObservedOperationIds": ["getP2POrder", "getP2PAd", "createP2POrder"],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 12
+        },
+        {
+          "id": "p2p.empty",
+          "state": "empty",
+          "applicability": "required",
+          "operationIds": [
+            "getP2PFrontendViewStatus",
+            "getP2POverview",
+            "getP2PDashboard",
+            "getP2PAchievements",
+            "getP2PAdAnalytics",
+            "getP2PMerchantProfile",
+            "reportP2PMerchant",
+            "listP2PPaymentMethods",
+            "createP2PPaymentMethod",
+            "updateP2PPaymentMethod",
+            "deleteP2PPaymentMethod",
+            "listP2PDisputes",
+            "getP2PDispute",
+            "sendP2PDisputeMessage",
+            "escalateP2PDispute",
+            "listP2PBlacklist",
+            "createP2PBlacklistEntry",
+            "removeP2PBlacklistEntry",
+            "listP2PReviews",
+            "getP2P2FASettings",
+            "updateP2P2FAMethod",
+            "setP2P2FAPrimaryMethod",
+            "updateP2P2FAThreshold",
+            "beginP2PAuthenticatorSetup",
+            "confirmP2PAuthenticatorSetup",
+            "listP2PAds",
+            "createP2PAd",
+            "getP2PAd",
+            "updateP2PAdStatus",
+            "deleteP2PAd",
+            "listP2POrders",
+            "createP2POrder",
+            "getP2POrder",
+            "markP2POrderPaid",
+            "releaseP2POrderEscrow",
+            "createP2PReleaseChallenge",
+            "verifyP2PReleaseChallenge",
+            "cancelP2POrder",
+            "rateP2POrder",
+            "submitP2PPaymentProof",
+            "getP2POrderChat",
+            "sendP2PChatMessage"
+          ],
+          "expectedUi": "Show an empty marketplace/order state; preserve escrow status and do not infer payment or release from a UI action alone.",
+          "executionStatus": "representative_browser_observed",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/p2p-empty-browser-check-2026-09-29-fresh-after-handler-fix.json",
+          "runtimeRoute": "/w/p2p/order-room",
+          "runtimeObservedOperationIds": ["listP2POrders"],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 11
+        },
+        {
+          "id": "p2p.loading",
+          "state": "loading",
+          "applicability": "required",
+          "operationIds": [
+            "getP2PFrontendViewStatus",
+            "getP2POverview",
+            "getP2PDashboard",
+            "getP2PAchievements",
+            "getP2PAdAnalytics",
+            "getP2PMerchantProfile",
+            "reportP2PMerchant",
+            "listP2PPaymentMethods",
+            "createP2PPaymentMethod",
+            "updateP2PPaymentMethod",
+            "deleteP2PPaymentMethod",
+            "listP2PDisputes",
+            "getP2PDispute",
+            "sendP2PDisputeMessage",
+            "escalateP2PDispute",
+            "listP2PBlacklist",
+            "createP2PBlacklistEntry",
+            "removeP2PBlacklistEntry",
+            "listP2PReviews",
+            "getP2P2FASettings",
+            "updateP2P2FAMethod",
+            "setP2P2FAPrimaryMethod",
+            "updateP2P2FAThreshold",
+            "beginP2PAuthenticatorSetup",
+            "confirmP2PAuthenticatorSetup",
+            "listP2PAds",
+            "createP2PAd",
+            "getP2PAd",
+            "updateP2PAdStatus",
+            "deleteP2PAd",
+            "listP2POrders",
+            "createP2POrder",
+            "getP2POrder",
+            "markP2POrderPaid",
+            "releaseP2POrderEscrow",
+            "createP2PReleaseChallenge",
+            "verifyP2PReleaseChallenge",
+            "cancelP2POrder",
+            "rateP2POrder",
+            "submitP2PPaymentProof",
+            "getP2POrderChat",
+            "sendP2PChatMessage"
+          ],
+          "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
+          "executionStatus": "representative_browser_observed",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/p2p-loading-browser-check-2026-09-29-fresh-after-handler-fix.json",
+          "runtimeRoute": "/w/p2p/order-room",
+          "runtimeObservedOperationIds": ["listP2POrders"],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 11
+        },
+        {
+          "id": "p2p.error",
+          "state": "error",
+          "applicability": "required",
+          "operationIds": [
+            "getP2PFrontendViewStatus",
+            "getP2POverview",
+            "getP2PDashboard",
+            "getP2PAchievements",
+            "getP2PAdAnalytics",
+            "getP2PMerchantProfile",
+            "reportP2PMerchant",
+            "listP2PPaymentMethods",
+            "createP2PPaymentMethod",
+            "updateP2PPaymentMethod",
+            "deleteP2PPaymentMethod",
+            "listP2PDisputes",
+            "getP2PDispute",
+            "sendP2PDisputeMessage",
+            "escalateP2PDispute",
+            "listP2PBlacklist",
+            "createP2PBlacklistEntry",
+            "removeP2PBlacklistEntry",
+            "listP2PReviews",
+            "getP2P2FASettings",
+            "updateP2P2FAMethod",
+            "setP2P2FAPrimaryMethod",
+            "updateP2P2FAThreshold",
+            "beginP2PAuthenticatorSetup",
+            "confirmP2PAuthenticatorSetup",
+            "listP2PAds",
+            "createP2PAd",
+            "getP2PAd",
+            "updateP2PAdStatus",
+            "deleteP2PAd",
+            "listP2POrders",
+            "createP2POrder",
+            "getP2POrder",
+            "markP2POrderPaid",
+            "releaseP2POrderEscrow",
+            "createP2PReleaseChallenge",
+            "verifyP2PReleaseChallenge",
+            "cancelP2POrder",
+            "rateP2POrder",
+            "submitP2PPaymentProof",
+            "getP2POrderChat",
+            "sendP2PChatMessage"
+          ],
+          "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
+          "executionStatus": "representative_browser_observed",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/p2p-error-browser-check-2026-09-29-fresh-after-c052.json",
+          "runtimeRoute": "/w/p2p/order-room",
+          "runtimeObservedOperationIds": ["listP2POrders"],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 11
+        },
+        {
+          "id": "p2p.unauthorized",
+          "state": "unauthorized",
+          "applicability": "required",
+          "operationIds": [
+            "getP2PFrontendViewStatus",
+            "getP2POverview",
+            "getP2PDashboard",
+            "getP2PAchievements",
+            "getP2PAdAnalytics",
+            "getP2PMerchantProfile",
+            "reportP2PMerchant",
+            "listP2PPaymentMethods",
+            "createP2PPaymentMethod",
+            "updateP2PPaymentMethod",
+            "deleteP2PPaymentMethod",
+            "listP2PDisputes",
+            "getP2PDispute",
+            "sendP2PDisputeMessage",
+            "escalateP2PDispute",
+            "listP2PBlacklist",
+            "createP2PBlacklistEntry",
+            "removeP2PBlacklistEntry",
+            "listP2PReviews",
+            "getP2P2FASettings",
+            "updateP2P2FAMethod",
+            "setP2P2FAPrimaryMethod",
+            "updateP2P2FAThreshold",
+            "beginP2PAuthenticatorSetup",
+            "confirmP2PAuthenticatorSetup",
+            "listP2PAds",
+            "createP2PAd",
+            "getP2PAd",
+            "updateP2PAdStatus",
+            "deleteP2PAd",
+            "listP2POrders",
+            "createP2POrder",
+            "getP2POrder",
+            "markP2POrderPaid",
+            "releaseP2POrderEscrow",
+            "createP2PReleaseChallenge",
+            "verifyP2PReleaseChallenge",
+            "cancelP2POrder",
+            "rateP2POrder",
+            "submitP2PPaymentProof",
+            "getP2POrderChat",
+            "sendP2PChatMessage"
+          ],
+          "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
+          "executionStatus": "representative_browser_observed",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/p2p-unauthorized-browser-check-2026-09-29-fresh-after-handler-fix.json",
+          "runtimeRoute": null,
+          "runtimeObservedOperationIds": ["listP2POrders"],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 13
+        },
+        {
+          "id": "p2p.forbidden",
+          "state": "forbidden",
+          "applicability": "required",
+          "operationIds": [
+            "getP2PFrontendViewStatus",
+            "getP2POverview",
+            "getP2PDashboard",
+            "getP2PAchievements",
+            "getP2PAdAnalytics",
+            "getP2PMerchantProfile",
+            "reportP2PMerchant",
+            "listP2PPaymentMethods",
+            "createP2PPaymentMethod",
+            "updateP2PPaymentMethod",
+            "deleteP2PPaymentMethod",
+            "listP2PDisputes",
+            "getP2PDispute",
+            "sendP2PDisputeMessage",
+            "escalateP2PDispute",
+            "listP2PBlacklist",
+            "createP2PBlacklistEntry",
+            "removeP2PBlacklistEntry",
+            "listP2PReviews",
+            "getP2P2FASettings",
+            "updateP2P2FAMethod",
+            "setP2P2FAPrimaryMethod",
+            "updateP2P2FAThreshold",
+            "beginP2PAuthenticatorSetup",
+            "confirmP2PAuthenticatorSetup",
+            "listP2PAds",
+            "createP2PAd",
+            "getP2PAd",
+            "updateP2PAdStatus",
+            "deleteP2PAd",
+            "listP2POrders",
+            "createP2POrder",
+            "getP2POrder",
+            "markP2POrderPaid",
+            "releaseP2POrderEscrow",
+            "createP2PReleaseChallenge",
+            "verifyP2PReleaseChallenge",
+            "cancelP2POrder",
+            "rateP2POrder",
+            "submitP2PPaymentProof",
+            "getP2POrderChat",
+            "sendP2PChatMessage"
+          ],
+          "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
+          "executionStatus": "representative_browser_observed",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/p2p-forbidden-browser-check-2026-09-29-fresh-after-handler-fix.json",
+          "runtimeRoute": "/w/p2p/escrow/p2p002",
+          "runtimeObservedOperationIds": ["getP2POrder", "createP2PReleaseChallenge"],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 11
+        },
+        {
+          "id": "p2p.pending",
+          "state": "pending",
+          "applicability": "required",
+          "operationIds": [
+            "createP2POrder",
+            "markP2POrderPaid",
+            "releaseP2POrderEscrow",
+            "getP2POrder"
+          ],
+          "contractStatusSemantics": "Derive from the linked OpenAPI operation; transport-level unknown is not a server status enum.",
+          "idempotencyContract": [
+            {
+              "operationId": "createP2POrder",
+              "required": true
+            },
+            {
+              "operationId": "markP2POrderPaid",
+              "required": true
+            },
+            {
+              "operationId": "releaseP2POrderEscrow",
+              "required": true
+            }
+          ],
+          "expectedUi": "Render only the pending/request-in-flight status defined by the contract; disable duplicate finalization while unresolved and show a stable receipt/reference when available.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "p2p.unknown",
+          "state": "unknown",
+          "applicability": "required",
+          "operationIds": [
+            "createP2POrder",
+            "markP2POrderPaid",
+            "releaseP2POrderEscrow",
+            "getP2POrder"
+          ],
+          "contractStatusSemantics": "Derive from the linked OpenAPI operation; transport-level unknown is not a server status enum.",
+          "idempotencyContract": [
+            {
+              "operationId": "createP2POrder",
+              "required": true
+            },
+            {
+              "operationId": "markP2POrderPaid",
+              "required": true
+            },
+            {
+              "operationId": "releaseP2POrderEscrow",
+              "required": true
+            }
+          ],
+          "expectedUi": "When a mutation response is lost, show outcome unconfirmed, neither success nor failure; reconcile using the listed read operation before offering a retry, and preserve the original idempotency key.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "p2p.duplicate",
+          "state": "duplicate",
+          "applicability": "required",
+          "operationIds": [
+            "createP2POrder",
+            "markP2POrderPaid",
+            "releaseP2POrderEscrow",
+            "getP2POrder"
+          ],
+          "contractStatusSemantics": "Derive from the linked OpenAPI operation; transport-level unknown is not a server status enum.",
+          "idempotencyContract": [
+            {
+              "operationId": "createP2POrder",
+              "required": true
+            },
+            {
+              "operationId": "markP2POrderPaid",
+              "required": true
+            },
+            {
+              "operationId": "releaseP2POrderEscrow",
+              "required": true
+            }
+          ],
+          "expectedUi": "For createP2POrder, markP2POrderPaid, and releaseP2POrderEscrow HTTP 409 responses, show explicit conflict guidance, keep each route, and do not resubmit automatically; refresh the affected order after mark-paid and release conflicts. This does not prove same-key replay, reconciliation, or backend behavior.",
+          "executionStatus": "not_verified"
+        }
+      ]
+    },
+    {
+      "domain": "predictions",
+      "surface": "Prediction events, orders, receipts, positions and rewards",
+      "operationCount": 8,
+      "securedOperationCount": 8,
+      "operationIds": [
+        "listPredictionEvents",
+        "getPredictionEvent",
+        "listPredictionPositions",
+        "listPredictionRewards",
+        "listPredictionLeaderboard",
+        "listPredictionActivity",
+        "placePredictionOrder",
+        "getPredictionOrderReceipt"
+      ],
+      "directSharedHandlerTestOperationIds": ["placePredictionOrder", "getPredictionOrderReceipt"],
+      "scenarioCount": 9,
+      "scenarios": [
+        {
+          "id": "predictions.success",
+          "state": "success",
+          "applicability": "required",
+          "operationIds": [
+            "listPredictionEvents",
+            "getPredictionEvent",
+            "listPredictionPositions",
+            "listPredictionRewards",
+            "listPredictionLeaderboard",
+            "listPredictionActivity",
+            "placePredictionOrder",
+            "getPredictionOrderReceipt"
+          ],
+          "expectedUi": "Prediction events, orders, receipts, positions and rewards: A successful contract response renders the domain data and only actions allowed for the active persona.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "predictions.empty",
+          "state": "empty",
+          "applicability": "required",
+          "operationIds": [
+            "listPredictionEvents",
+            "listPredictionPositions",
+            "listPredictionRewards",
+            "listPredictionLeaderboard",
+            "listPredictionActivity"
+          ],
+          "expectedUi": "Show empty states for event, position, reward, leaderboard and activity collections; event detail, order placement and receipt status remain outside this empty-read scenario.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "predictions.loading",
+          "state": "loading",
+          "applicability": "required",
+          "operationIds": [
+            "listPredictionEvents",
+            "getPredictionEvent",
+            "listPredictionPositions",
+            "listPredictionRewards",
+            "listPredictionLeaderboard",
+            "listPredictionActivity",
+            "getPredictionOrderReceipt"
+          ],
+          "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "predictions.error",
+          "state": "error",
+          "applicability": "required",
+          "operationIds": [
+            "listPredictionEvents",
+            "getPredictionEvent",
+            "listPredictionPositions",
+            "listPredictionRewards",
+            "listPredictionLeaderboard",
+            "listPredictionActivity",
+            "placePredictionOrder",
+            "getPredictionOrderReceipt"
+          ],
+          "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "predictions.unauthorized",
+          "state": "unauthorized",
+          "applicability": "required",
+          "operationIds": [
+            "listPredictionEvents",
+            "getPredictionEvent",
+            "listPredictionPositions",
+            "listPredictionRewards",
+            "listPredictionLeaderboard",
+            "listPredictionActivity",
+            "placePredictionOrder",
+            "getPredictionOrderReceipt"
+          ],
+          "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "predictions.forbidden",
+          "state": "forbidden",
+          "applicability": "required",
+          "operationIds": [
+            "listPredictionEvents",
+            "getPredictionEvent",
+            "listPredictionPositions",
+            "listPredictionRewards",
+            "listPredictionLeaderboard",
+            "listPredictionActivity",
+            "placePredictionOrder",
+            "getPredictionOrderReceipt"
+          ],
+          "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "predictions.pending",
+          "state": "pending",
+          "applicability": "required",
+          "operationIds": ["placePredictionOrder", "getPredictionOrderReceipt"],
+          "contractStatusSemantics": "Derive from the linked OpenAPI operation; transport-level unknown is not a server status enum.",
+          "idempotencyContract": [
+            {
+              "operationId": "placePredictionOrder",
+              "required": true
+            }
+          ],
+          "expectedUi": "Render only the pending/request-in-flight status defined by the contract; disable duplicate finalization while unresolved and show a stable receipt/reference when available.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "predictions.unknown",
+          "state": "unknown",
+          "applicability": "required",
+          "operationIds": ["placePredictionOrder", "getPredictionOrderReceipt"],
+          "contractStatusSemantics": "Derive from the linked OpenAPI operation; transport-level unknown is not a server status enum.",
+          "idempotencyContract": [
+            {
+              "operationId": "placePredictionOrder",
+              "required": true
+            }
+          ],
+          "expectedUi": "When a mutation response is lost, show outcome unconfirmed, neither success nor failure; reconcile using the listed read operation before offering a retry, and preserve the original idempotency key.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "predictions.duplicate",
+          "state": "duplicate",
+          "applicability": "required",
+          "operationIds": ["placePredictionOrder", "getPredictionOrderReceipt"],
+          "contractStatusSemantics": "Derive from the linked OpenAPI operation; transport-level unknown is not a server status enum.",
+          "idempotencyContract": [
+            {
+              "operationId": "placePredictionOrder",
+              "required": true
+            }
+          ],
+          "expectedUi": "Replay the same intent with the same idempotency key; assert one visible resource and one balance effect, using the contract-defined replay result or conflict response.",
+          "executionStatus": "not_verified"
+        }
+      ]
+    },
+    {
+      "domain": "profile",
+      "surface": "Profile, KYC, settings, credentials and account controls",
+      "operationCount": 7,
+      "securedOperationCount": 7,
+      "operationIds": [
+        "getProfile",
+        "updateProfile",
+        "listTrustedDevices",
+        "revokeDevice",
+        "setDeviceTrust",
+        "listProfileActivity",
+        "listSubAccounts"
+      ],
+      "directSharedHandlerTestOperationIds": [],
+      "scenarioCount": 6,
+      "scenarios": [
+        {
+          "id": "profile.success",
+          "state": "success",
+          "applicability": "required",
+          "operationIds": [
+            "getProfile",
+            "updateProfile",
+            "listTrustedDevices",
+            "revokeDevice",
+            "setDeviceTrust",
+            "listProfileActivity",
+            "listSubAccounts"
+          ],
+          "expectedUi": "Profile, KYC, settings, credentials and account controls: A successful contract response renders the domain data and only actions allowed for the active persona.",
+          "executionStatus": "browser_verified",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/profile-success-browser-check-2026-09-29.json",
+          "runtimeRoute": null,
+          "runtimeObservedOperationIds": [
+            "getProfile",
+            "updateProfile",
+            "listTrustedDevices",
+            "revokeDevice",
+            "setDeviceTrust",
+            "listProfileActivity",
+            "listSubAccounts"
+          ],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 22
+        },
+        {
+          "id": "profile.empty",
+          "state": "empty",
+          "applicability": "required",
+          "operationIds": ["listTrustedDevices", "listProfileActivity", "listSubAccounts"],
+          "expectedUi": "Show explicit empty states for Profile collections without replacing the required Profile object; do not collapse missing permission or failed load into an empty result.",
+          "executionStatus": "browser_verified",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/profile-empty-browser-check-2026-09-29.json",
+          "runtimeRoute": "/w/profile/devices, /w/profile/activity, /w/profile/sub-accounts",
+          "runtimeObservedOperationIds": [
+            "listTrustedDevices",
+            "listProfileActivity",
+            "listSubAccounts"
+          ],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 21
+        },
+        {
+          "id": "profile.loading",
+          "state": "loading",
+          "applicability": "required",
+          "operationIds": [
+            "getProfile",
+            "listTrustedDevices",
+            "listProfileActivity",
+            "listSubAccounts"
+          ],
+          "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
+          "executionStatus": "browser_verified",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/profile-loading-browser-check-2026-09-29.json",
+          "runtimeRoute": "/w/profile/edit, /w/profile/devices, /w/profile/activity, /w/profile/sub-accounts",
+          "runtimeObservedOperationIds": [
+            "getProfile",
+            "listTrustedDevices",
+            "listProfileActivity",
+            "listSubAccounts"
+          ],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 22
+        },
+        {
+          "id": "profile.error",
+          "state": "error",
+          "applicability": "required",
+          "operationIds": [
+            "getProfile",
+            "updateProfile",
+            "listTrustedDevices",
+            "revokeDevice",
+            "setDeviceTrust",
+            "listProfileActivity",
+            "listSubAccounts"
+          ],
+          "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
+          "executionStatus": "representative_browser_observed",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/profile-error-browser-check-2026-09-29.json",
+          "runtimeRoute": "/w/profile, /w/profile/devices, /w/profile/activity, /w/profile/sub-accounts",
+          "runtimeObservedOperationIds": [
+            "getProfile",
+            "listTrustedDevices",
+            "listProfileActivity",
+            "listSubAccounts"
+          ],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 25
+        },
+        {
+          "id": "profile.unauthorized",
+          "state": "unauthorized",
+          "applicability": "required",
+          "operationIds": [
+            "getProfile",
+            "updateProfile",
+            "listTrustedDevices",
+            "revokeDevice",
+            "setDeviceTrust",
+            "listProfileActivity",
+            "listSubAccounts"
+          ],
+          "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
+          "executionStatus": "representative_browser_observed",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/profile-unauthorized-browser-check-2026-09-29-contract-scoped.json",
+          "runtimeRoute": null,
+          "runtimeObservedOperationIds": [
+            "getProfile",
+            "listProfileActivity",
+            "listSubAccounts",
+            "listTrustedDevices"
+          ],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 23
+        },
+        {
+          "id": "profile.forbidden",
+          "state": "forbidden",
+          "applicability": "required",
+          "operationIds": [
+            "getProfile",
+            "updateProfile",
+            "listTrustedDevices",
+            "revokeDevice",
+            "setDeviceTrust",
+            "listProfileActivity",
+            "listSubAccounts"
+          ],
+          "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
+          "executionStatus": "not_verified"
+        }
+      ]
+    },
+    {
+      "domain": "referral",
+      "surface": "Referral overview and rewards",
+      "operationCount": 1,
+      "securedOperationCount": 1,
+      "operationIds": ["getReferralOverview"],
+      "directSharedHandlerTestOperationIds": [],
+      "scenarioCount": 6,
+      "scenarios": [
+        {
+          "id": "referral.success",
+          "state": "success",
+          "applicability": "required",
+          "operationIds": ["getReferralOverview"],
+          "expectedUi": "Referral overview and rewards: A successful contract response renders the domain data and only actions allowed for the active persona.",
+          "executionStatus": "browser_verified",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/referral-success-browser-check-2026-09-29.json",
+          "runtimeRoute": null,
+          "runtimeObservedOperationIds": ["getReferralOverview"],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 20
+        },
+        {
+          "id": "referral.empty",
+          "state": "empty",
+          "applicability": "required",
+          "operationIds": ["getReferralOverview"],
+          "expectedUi": "Show zero referrals/rewards as an empty success state, not as a load error.",
+          "executionStatus": "browser_verified",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/referral-empty-browser-check-2026-09-29.json",
+          "runtimeRoute": null,
+          "runtimeObservedOperationIds": ["getReferralOverview"],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 20
+        },
+        {
+          "id": "referral.loading",
+          "state": "loading",
+          "applicability": "required",
+          "operationIds": ["getReferralOverview"],
+          "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
+          "executionStatus": "browser_verified",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/referral-loading-browser-check-2026-09-29.json",
+          "runtimeRoute": null,
+          "runtimeObservedOperationIds": ["getReferralOverview"],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 20
+        },
+        {
+          "id": "referral.error",
+          "state": "error",
+          "applicability": "required",
+          "operationIds": ["getReferralOverview"],
+          "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
+          "executionStatus": "browser_verified",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/referral-error-browser-check-2026-09-29.json",
+          "runtimeRoute": null,
+          "runtimeObservedOperationIds": ["getReferralOverview"],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 23
+        },
+        {
+          "id": "referral.unauthorized",
+          "state": "unauthorized",
+          "applicability": "required",
+          "operationIds": ["getReferralOverview"],
+          "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
+          "executionStatus": "browser_verified",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/referral-unauthorized-browser-check-2026-09-29-contract-scoped.json",
+          "runtimeRoute": null,
+          "runtimeObservedOperationIds": ["getReferralOverview"],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 25
+        },
+        {
+          "id": "referral.forbidden",
+          "state": "forbidden",
+          "applicability": "required",
+          "operationIds": ["getReferralOverview"],
+          "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
+          "executionStatus": "not_verified"
+        }
+      ]
+    },
+    {
+      "domain": "support",
+      "surface": "Support tickets, FAQ and help",
+      "operationCount": 6,
+      "securedOperationCount": 6,
+      "operationIds": [
+        "listNews",
+        "listNotifications",
+        "markNotificationRead",
+        "getHelpCenter",
+        "listSupportTickets",
+        "createSupportTicket"
+      ],
+      "directSharedHandlerTestOperationIds": [],
+      "scenarioCount": 7,
+      "scenarios": [
+        {
+          "id": "support.success",
+          "state": "success",
+          "applicability": "required",
+          "operationIds": [
+            "listNews",
+            "listNotifications",
+            "markNotificationRead",
+            "getHelpCenter",
+            "listSupportTickets",
+            "createSupportTicket"
+          ],
+          "expectedUi": "Support tickets, FAQ and help: A successful contract response renders the domain data and only actions allowed for the active persona.",
+          "executionStatus": "browser_verified",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/support-success-browser-check-2026-09-29.json",
+          "runtimeRoute": null,
+          "runtimeObservedOperationIds": [
+            "createSupportTicket",
+            "getHelpCenter",
+            "listNews",
+            "listNotifications",
+            "listSupportTickets",
+            "markNotificationRead"
+          ],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 25
+        },
+        {
+          "id": "support.empty",
+          "state": "empty",
+          "applicability": "required",
+          "operationIds": [
+            "listNews",
+            "listNotifications",
+            "markNotificationRead",
+            "getHelpCenter",
+            "listSupportTickets",
+            "createSupportTicket"
+          ],
+          "expectedUi": "Show no-ticket guidance and a create-ticket action; keep FAQ content and ticket failures distinct.",
+          "executionStatus": "browser_verified",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/support-empty-browser-check-2026-09-29.json",
+          "runtimeRoute": null,
+          "runtimeObservedOperationIds": [
+            "createSupportTicket",
+            "getHelpCenter",
+            "listNews",
+            "listNotifications",
+            "listSupportTickets",
+            "markNotificationRead"
+          ],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 25
+        },
+        {
+          "id": "support.loading",
+          "state": "loading",
+          "applicability": "required",
+          "operationIds": ["listNews", "listNotifications", "getHelpCenter", "listSupportTickets"],
+          "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
+          "executionStatus": "browser_verified",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/support-loading-browser-check-2026-09-29.json",
+          "runtimeRoute": null,
+          "runtimeObservedOperationIds": [
+            "getHelpCenter",
+            "listNews",
+            "listNotifications",
+            "listSupportTickets"
+          ],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 25
+        },
+        {
+          "id": "support.error",
+          "state": "error",
+          "applicability": "required",
+          "operationIds": ["listNews", "listNotifications", "getHelpCenter", "listSupportTickets"],
+          "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
+          "executionStatus": "browser_verified",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/support-error-browser-check-2026-09-29.json",
+          "runtimeRoute": null,
+          "runtimeObservedOperationIds": [
+            "getHelpCenter",
+            "listNews",
+            "listNotifications",
+            "listSupportTickets"
+          ],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 26
+        },
+        {
+          "id": "support.unauthorized",
+          "state": "unauthorized",
+          "applicability": "required",
+          "operationIds": [
+            "listNews",
+            "listNotifications",
+            "markNotificationRead",
+            "getHelpCenter",
+            "listSupportTickets",
+            "createSupportTicket"
+          ],
+          "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "support.forbidden",
+          "state": "forbidden",
+          "applicability": "required",
+          "operationIds": [
+            "listNews",
+            "listNotifications",
+            "markNotificationRead",
+            "getHelpCenter",
+            "listSupportTickets",
+            "createSupportTicket"
+          ],
+          "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "support.pending",
+          "state": "pending",
+          "applicability": "required",
+          "pendingKind": "client_request_in_flight",
+          "operationIds": ["createSupportTicket"],
+          "contractStatusSemantics": "OpenAPI declares HTTP 201 after ticket creation; it does not declare a durable server-side pending status.",
+          "expectedUi": "While createSupportTicket is in flight, show the submitting state and prevent edits or duplicate submission; after HTTP 201, render the created ticket. This verifies client request-in-flight behavior only.",
+          "executionStatus": "browser_verified",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/support-pending-browser-check-2026-09-30.json",
+          "runtimeRoute": "/w/support",
+          "runtimeObservedOperationIds": ["createSupportTicket"],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 22
+        }
+      ]
+    },
+    {
+      "domain": "trading",
+      "surface": "Order entry, open orders, positions, order history and copy trading",
+      "operationCount": 13,
+      "securedOperationCount": 13,
+      "operationIds": [
+        "getCopyFrontendViewStatus",
+        "listCopyProviders",
+        "getCopyProviderProfile",
+        "listCopyRelationships",
+        "createCopyRelationship",
+        "stopCopyRelationship",
+        "getTradingAnalytics",
+        "listOpenOrders",
+        "placeOrder",
+        "listOpenPositions",
+        "listOrderHistory",
+        "modifyOrder",
+        "cancelOrder"
+      ],
+      "directSharedHandlerTestOperationIds": [
+        "listOpenOrders",
+        "placeOrder",
+        "listOpenPositions",
+        "listOrderHistory",
+        "modifyOrder",
+        "cancelOrder"
+      ],
+      "scenarioCount": 9,
+      "scenarios": [
+        {
+          "id": "trading.success",
+          "state": "success",
+          "applicability": "required",
+          "operationIds": [
+            "getCopyFrontendViewStatus",
+            "listCopyProviders",
+            "getCopyProviderProfile",
+            "listCopyRelationships",
+            "createCopyRelationship",
+            "stopCopyRelationship",
+            "getTradingAnalytics",
+            "listOpenOrders",
+            "placeOrder",
+            "listOpenPositions",
+            "listOrderHistory",
+            "modifyOrder",
+            "cancelOrder"
+          ],
+          "expectedUi": "Order entry, open orders, positions, order history and copy trading: A successful contract response renders the domain data and only actions allowed for the active persona.",
+          "executionStatus": "representative_browser_observed",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-success-browser-check-2026-09-30.json",
+          "runtimeRoute": "/w/trade/btcusdt",
+          "runtimeObservedOperationIds": [
+            "getCopyFrontendViewStatus",
+            "listCopyProviders",
+            "getCopyProviderProfile",
+            "listCopyRelationships",
+            "createCopyRelationship",
+            "stopCopyRelationship",
+            "getTradingAnalytics",
+            "listOpenOrders",
+            "placeOrder",
+            "listOrderHistory",
+            "modifyOrder",
+            "cancelOrder"
+          ],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 41
+        },
+        {
+          "id": "trading.empty",
+          "state": "empty",
+          "applicability": "required",
+          "operationIds": ["listOpenOrders", "listOpenPositions", "listOrderHistory"],
+          "expectedUi": "Show no open orders/positions as a valid empty state; never treat it as proof that an order was cancelled or never submitted.",
+          "executionStatus": "browser_verified",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-empty-browser-check-2026-09-30.json",
+          "runtimeRoute": "/w/trade/positions",
+          "runtimeObservedOperationIds": [
+            "listOpenOrders",
+            "listOrderHistory",
+            "listOpenPositions"
+          ],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 19
+        },
+        {
+          "id": "trading.loading",
+          "state": "loading",
+          "applicability": "required",
+          "operationIds": ["listOpenOrders", "listOpenPositions", "listOrderHistory"],
+          "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
+          "executionStatus": "browser_verified",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-loading-browser-check-2026-09-30.json",
+          "runtimeRoute": "/w/trade/positions",
+          "runtimeObservedOperationIds": [
+            "listOpenOrders",
+            "listOrderHistory",
+            "listOpenPositions"
+          ],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 19
+        },
+        {
+          "id": "trading.error",
+          "state": "error",
+          "applicability": "required",
+          "operationIds": ["listOpenPositions"],
+          "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
+          "executionStatus": "browser_verified",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-error-browser-check-2026-09-30.json",
+          "runtimeRoute": "/w/trade/positions",
+          "runtimeObservedOperationIds": ["listOpenPositions"],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 16
+        },
+        {
+          "id": "trading.unauthorized",
+          "state": "unauthorized",
+          "applicability": "required",
+          "operationIds": [
+            "getCopyFrontendViewStatus",
+            "listCopyProviders",
+            "getCopyProviderProfile",
+            "listCopyRelationships",
+            "createCopyRelationship",
+            "stopCopyRelationship",
+            "getTradingAnalytics",
+            "listOpenOrders",
+            "placeOrder",
+            "listOpenPositions",
+            "listOrderHistory",
+            "modifyOrder",
+            "cancelOrder"
+          ],
+          "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
+          "executionStatus": "representative_browser_observed",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-unauthorized-browser-check-2026-09-30.json",
+          "runtimeRoute": "/w/trade/positions",
+          "runtimeObservedOperationIds": ["listOpenPositions"],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 14
+        },
+        {
+          "id": "trading.forbidden",
+          "state": "forbidden",
+          "applicability": "required",
+          "operationIds": [
+            "listCopyRelationships",
+            "createCopyRelationship",
+            "stopCopyRelationship",
+            "getTradingAnalytics",
+            "listOpenOrders",
+            "placeOrder",
+            "listOpenPositions",
+            "listOrderHistory",
+            "modifyOrder",
+            "cancelOrder"
+          ],
+          "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
+          "executionStatus": "representative_browser_observed",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-forbidden-browser-check-2026-09-30.json",
+          "runtimeRoute": "/w/trade/positions",
+          "runtimeObservedOperationIds": ["listOpenPositions"],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 14
+        },
+        {
+          "id": "trading.pending",
+          "state": "pending",
+          "applicability": "required",
+          "operationIds": [
+            "placeOrder",
+            "modifyOrder",
+            "cancelOrder",
+            "listOpenOrders",
+            "listOrderHistory"
+          ],
+          "contractStatusSemantics": "Derive from the linked OpenAPI operation; transport-level unknown is not a server status enum.",
+          "idempotencyContract": [
+            {
+              "operationId": "placeOrder",
+              "required": true
+            },
+            {
+              "operationId": "modifyOrder",
+              "required": true
+            },
+            {
+              "operationId": "cancelOrder",
+              "required": true
+            }
+          ],
+          "expectedUi": "Render only the pending/request-in-flight status defined by the contract; disable duplicate finalization while unresolved and show a stable receipt/reference when available.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "trading.unknown",
+          "state": "unknown",
+          "applicability": "required",
+          "operationIds": [
+            "placeOrder",
+            "modifyOrder",
+            "cancelOrder",
+            "listOpenOrders",
+            "listOrderHistory"
+          ],
+          "contractStatusSemantics": "Derive from the linked OpenAPI operation; transport-level unknown is not a server status enum.",
+          "idempotencyContract": [
+            {
+              "operationId": "placeOrder",
+              "required": true
+            },
+            {
+              "operationId": "modifyOrder",
+              "required": true
+            },
+            {
+              "operationId": "cancelOrder",
+              "required": true
+            }
+          ],
+          "expectedUi": "When a mutation response is lost, show outcome unconfirmed, neither success nor failure; reconcile using the listed read operation before offering a retry, and preserve the original idempotency key.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "trading.duplicate",
+          "state": "duplicate",
+          "applicability": "required",
+          "operationIds": [
+            "placeOrder",
+            "modifyOrder",
+            "cancelOrder",
+            "listOpenOrders",
+            "listOrderHistory"
+          ],
+          "contractStatusSemantics": "Derive from the linked OpenAPI operation; transport-level unknown is not a server status enum.",
+          "idempotencyContract": [
+            {
+              "operationId": "placeOrder",
+              "required": true
+            },
+            {
+              "operationId": "modifyOrder",
+              "required": true
+            },
+            {
+              "operationId": "cancelOrder",
+              "required": true
+            }
+          ],
+          "expectedUi": "Replay the same intent with the same idempotency key; assert one visible resource and one balance effect, using the contract-defined replay result or conflict response.",
+          "executionStatus": "not_verified"
+        }
+      ]
+    },
+    {
+      "domain": "wallet",
+      "surface": "Balances, transactions, transfers, deposit and withdrawal",
+      "operationCount": 19,
+      "securedOperationCount": 19,
+      "operationIds": [
+        "getWalletAssets",
+        "getWalletAccounts",
+        "getWalletAddressBook",
+        "createWalletAddressBookEntry",
+        "updateWalletAddressBookSettings",
+        "updateWalletAddressBookEntry",
+        "deleteWalletAddressBookEntry",
+        "getPortfolioAnalytics",
+        "quoteWalletDustConversion",
+        "createWalletDustConversion",
+        "getWalletTransactions",
+        "getWalletTransaction",
+        "getWalletDepositNetworks",
+        "getWalletWithdrawalNetworks",
+        "getWalletNetworkStatus",
+        "createWalletTransfer",
+        "createWalletWithdrawalChallenge",
+        "verifyWalletWithdrawalChallenge",
+        "createWalletWithdrawal"
+      ],
+      "directSharedHandlerTestOperationIds": [],
+      "scenarioCount": 9,
+      "scenarios": [
+        {
+          "id": "wallet.success",
+          "state": "success",
+          "applicability": "required",
+          "operationIds": [
+            "getWalletAssets",
+            "getWalletAccounts",
+            "getWalletAddressBook",
+            "createWalletAddressBookEntry",
+            "updateWalletAddressBookSettings",
+            "updateWalletAddressBookEntry",
+            "deleteWalletAddressBookEntry",
+            "getPortfolioAnalytics",
+            "quoteWalletDustConversion",
+            "createWalletDustConversion",
+            "getWalletTransactions",
+            "getWalletTransaction",
+            "getWalletDepositNetworks",
+            "getWalletWithdrawalNetworks",
+            "getWalletNetworkStatus",
+            "createWalletTransfer",
+            "createWalletWithdrawalChallenge",
+            "verifyWalletWithdrawalChallenge",
+            "createWalletWithdrawal"
+          ],
+          "expectedUi": "Balances, transactions, transfers, deposit and withdrawal: A successful contract response renders the domain data and only actions allowed for the active persona.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "wallet.empty",
+          "state": "empty",
+          "applicability": "required",
+          "operationIds": ["getWalletAssets", "getWalletTransactions"],
+          "expectedUi": "Show an empty transaction/address state only after a successful read; preserve available balance and never report a transfer/withdrawal as complete without status evidence.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "wallet.loading",
+          "state": "loading",
+          "applicability": "required",
+          "operationIds": [
+            "getWalletAssets",
+            "getWalletAccounts",
+            "getWalletAddressBook",
+            "createWalletAddressBookEntry",
+            "updateWalletAddressBookSettings",
+            "updateWalletAddressBookEntry",
+            "deleteWalletAddressBookEntry",
+            "getPortfolioAnalytics",
+            "quoteWalletDustConversion",
+            "createWalletDustConversion",
+            "getWalletTransactions",
+            "getWalletTransaction",
+            "getWalletDepositNetworks",
+            "getWalletWithdrawalNetworks",
+            "getWalletNetworkStatus",
+            "createWalletTransfer",
+            "createWalletWithdrawalChallenge",
+            "verifyWalletWithdrawalChallenge",
+            "createWalletWithdrawal"
+          ],
+          "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "wallet.error",
+          "state": "error",
+          "applicability": "required",
+          "operationIds": [
+            "getWalletAssets",
+            "getWalletAccounts",
+            "getWalletAddressBook",
+            "createWalletAddressBookEntry",
+            "updateWalletAddressBookSettings",
+            "updateWalletAddressBookEntry",
+            "deleteWalletAddressBookEntry",
+            "getPortfolioAnalytics",
+            "quoteWalletDustConversion",
+            "createWalletDustConversion",
+            "getWalletTransactions",
+            "getWalletTransaction",
+            "getWalletDepositNetworks",
+            "getWalletWithdrawalNetworks",
+            "getWalletNetworkStatus",
+            "createWalletTransfer",
+            "createWalletWithdrawalChallenge",
+            "verifyWalletWithdrawalChallenge",
+            "createWalletWithdrawal"
+          ],
+          "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "wallet.unauthorized",
+          "state": "unauthorized",
+          "applicability": "required",
+          "operationIds": [
+            "getWalletAssets",
+            "getWalletAccounts",
+            "getWalletAddressBook",
+            "createWalletAddressBookEntry",
+            "updateWalletAddressBookSettings",
+            "updateWalletAddressBookEntry",
+            "deleteWalletAddressBookEntry",
+            "getPortfolioAnalytics",
+            "quoteWalletDustConversion",
+            "createWalletDustConversion",
+            "getWalletTransactions",
+            "getWalletTransaction",
+            "getWalletDepositNetworks",
+            "getWalletWithdrawalNetworks",
+            "getWalletNetworkStatus",
+            "createWalletTransfer",
+            "createWalletWithdrawalChallenge",
+            "verifyWalletWithdrawalChallenge",
+            "createWalletWithdrawal"
+          ],
+          "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "wallet.forbidden",
+          "state": "forbidden",
+          "applicability": "required",
+          "operationIds": [
+            "getWalletAssets",
+            "getWalletAccounts",
+            "getWalletAddressBook",
+            "createWalletAddressBookEntry",
+            "updateWalletAddressBookSettings",
+            "updateWalletAddressBookEntry",
+            "deleteWalletAddressBookEntry",
+            "getPortfolioAnalytics",
+            "quoteWalletDustConversion",
+            "createWalletDustConversion",
+            "getWalletTransactions",
+            "getWalletTransaction",
+            "getWalletDepositNetworks",
+            "getWalletWithdrawalNetworks",
+            "getWalletNetworkStatus",
+            "createWalletTransfer",
+            "createWalletWithdrawalChallenge",
+            "verifyWalletWithdrawalChallenge",
+            "createWalletWithdrawal"
+          ],
+          "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "wallet.pending",
+          "state": "pending",
+          "applicability": "required",
+          "operationIds": [
+            "createWalletTransfer",
+            "createWalletWithdrawal",
+            "getWalletTransaction"
+          ],
+          "contractStatusSemantics": "Derive from the linked OpenAPI operation; transport-level unknown is not a server status enum.",
+          "idempotencyContract": [
+            {
+              "operationId": "createWalletTransfer",
+              "required": true
+            },
+            {
+              "operationId": "createWalletWithdrawal",
+              "required": true
+            }
+          ],
+          "expectedUi": "Render only the pending/request-in-flight status defined by the contract; disable duplicate finalization while unresolved and show a stable receipt/reference when available.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "wallet.unknown",
+          "state": "unknown",
+          "applicability": "required",
+          "operationIds": [
+            "createWalletTransfer",
+            "createWalletWithdrawal",
+            "getWalletTransaction"
+          ],
+          "contractStatusSemantics": "Derive from the linked OpenAPI operation; transport-level unknown is not a server status enum.",
+          "idempotencyContract": [
+            {
+              "operationId": "createWalletTransfer",
+              "required": true
+            },
+            {
+              "operationId": "createWalletWithdrawal",
+              "required": true
+            }
+          ],
+          "expectedUi": "When a mutation response is lost, show outcome unconfirmed, neither success nor failure; reconcile using the listed read operation before offering a retry, and preserve the original idempotency key.",
+          "executionStatus": "not_verified"
+        },
+        {
+          "id": "wallet.duplicate",
+          "state": "duplicate",
+          "applicability": "required",
+          "operationIds": [
+            "createWalletTransfer",
+            "createWalletWithdrawal",
+            "getWalletTransaction"
+          ],
+          "contractStatusSemantics": "Derive from the linked OpenAPI operation; transport-level unknown is not a server status enum.",
+          "idempotencyContract": [
+            {
+              "operationId": "createWalletTransfer",
+              "required": true
+            },
+            {
+              "operationId": "createWalletWithdrawal",
+              "required": true
+            }
+          ],
+          "expectedUi": "Replay the same intent with the same idempotency key; assert one visible resource and one balance effect, using the contract-defined replay result or conflict response.",
+          "executionStatus": "not_verified"
+        }
+      ]
+    }
+  ],
+  "reconciliation": {
+    "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/preview-scenario-browser-check-market-empty-2026-09-28.json",
+    "runtimeEvidenceFresh": false,
+    "scenarioEvidenceArtifacts": [
+      {
+        "id": "p2p.duplicate",
+        "path": "docs/architecture/production-readiness/evidence/A06/p2p-duplicate-browser-check-2026-09-29-fresh-after-handler-fix.json",
+        "fresh": false,
+        "sourceHashCount": 13,
+        "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "p2p.empty",
+        "path": "docs/architecture/production-readiness/evidence/A06/p2p-empty-browser-check-2026-09-29-fresh-after-handler-fix.json",
+        "fresh": true,
+        "sourceHashCount": 11,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "p2p.error",
+        "path": "docs/architecture/production-readiness/evidence/A06/p2p-error-browser-check-2026-09-29-fresh-after-c052.json",
+        "fresh": true,
+        "sourceHashCount": 11,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "p2p.forbidden",
+        "path": "docs/architecture/production-readiness/evidence/A06/p2p-forbidden-browser-check-2026-09-29-fresh-after-handler-fix.json",
+        "fresh": true,
+        "sourceHashCount": 11,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "p2p.loading",
+        "path": "docs/architecture/production-readiness/evidence/A06/p2p-loading-browser-check-2026-09-29-fresh-after-handler-fix.json",
+        "fresh": true,
+        "sourceHashCount": 11,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "p2p.pending",
+        "path": "docs/architecture/production-readiness/evidence/A06/p2p-pending-browser-check-2026-09-29-fresh-after-handler-fix.json",
+        "fresh": false,
+        "sourceHashCount": 13,
+        "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "p2p.success",
+        "path": "docs/architecture/production-readiness/evidence/A06/p2p-success-browser-check-2026-09-29-fresh-after-handler-fix.json",
+        "fresh": true,
+        "sourceHashCount": 12,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "p2p.unauthorized",
+        "path": "docs/architecture/production-readiness/evidence/A06/p2p-unauthorized-browser-check-2026-09-29-fresh-after-handler-fix.json",
+        "fresh": true,
+        "sourceHashCount": 13,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "predictions.empty",
+        "path": "docs/architecture/production-readiness/evidence/A06/predictions-empty-browser-check-2026-09-29.json",
+        "fresh": false,
+        "sourceHashCount": 17,
+        "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "predictions.error",
+        "path": "docs/architecture/production-readiness/evidence/A06/predictions-error-browser-check-fresh-2026-09-29.json",
+        "fresh": false,
+        "sourceHashCount": 20,
+        "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "predictions.loading",
+        "path": "docs/architecture/production-readiness/evidence/A06/predictions-loading-browser-check-2026-09-29.json",
+        "fresh": false,
+        "sourceHashCount": 17,
+        "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "predictions.pending",
+        "path": "docs/architecture/production-readiness/evidence/A06/predictions-pending-browser-check-2026-09-29.json",
+        "fresh": false,
+        "sourceHashCount": 16,
+        "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "predictions.success",
+        "path": "docs/architecture/production-readiness/evidence/A06/predictions-success-browser-check-2026-09-29.json",
+        "fresh": false,
+        "sourceHashCount": 17,
+        "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "predictions.unauthorized",
+        "path": "docs/architecture/production-readiness/evidence/A06/predictions-unauthorized-browser-check-2026-09-29-contract-scoped.json",
+        "fresh": false,
+        "sourceHashCount": 17,
+        "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "profile.empty",
+        "path": "docs/architecture/production-readiness/evidence/A06/profile-empty-browser-check-2026-09-29.json",
+        "fresh": true,
+        "sourceHashCount": 21,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "profile.error",
+        "path": "docs/architecture/production-readiness/evidence/A06/profile-error-browser-check-2026-09-29.json",
+        "fresh": true,
+        "sourceHashCount": 25,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "profile.loading",
+        "path": "docs/architecture/production-readiness/evidence/A06/profile-loading-browser-check-2026-09-29.json",
+        "fresh": true,
+        "sourceHashCount": 22,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "profile.success",
+        "path": "docs/architecture/production-readiness/evidence/A06/profile-success-browser-check-2026-09-29.json",
+        "fresh": true,
+        "sourceHashCount": 22,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "profile.unauthorized",
+        "path": "docs/architecture/production-readiness/evidence/A06/profile-unauthorized-browser-check-2026-09-29-contract-scoped.json",
+        "fresh": true,
+        "sourceHashCount": 23,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "referral.empty",
+        "path": "docs/architecture/production-readiness/evidence/A06/referral-empty-browser-check-2026-09-29.json",
+        "fresh": true,
+        "sourceHashCount": 20,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "referral.error",
+        "path": "docs/architecture/production-readiness/evidence/A06/referral-error-browser-check-2026-09-29.json",
+        "fresh": true,
+        "sourceHashCount": 23,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "referral.loading",
+        "path": "docs/architecture/production-readiness/evidence/A06/referral-loading-browser-check-2026-09-29.json",
+        "fresh": true,
+        "sourceHashCount": 20,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "referral.success",
+        "path": "docs/architecture/production-readiness/evidence/A06/referral-success-browser-check-2026-09-29.json",
+        "fresh": true,
+        "sourceHashCount": 20,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "referral.unauthorized",
+        "path": "docs/architecture/production-readiness/evidence/A06/referral-unauthorized-browser-check-2026-09-29-contract-scoped.json",
+        "fresh": true,
+        "sourceHashCount": 25,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "support.empty",
+        "path": "docs/architecture/production-readiness/evidence/A06/support-empty-browser-check-2026-09-29.json",
+        "fresh": true,
+        "sourceHashCount": 25,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "support.error",
+        "path": "docs/architecture/production-readiness/evidence/A06/support-error-browser-check-2026-09-29.json",
+        "fresh": true,
+        "sourceHashCount": 26,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "support.loading",
+        "path": "docs/architecture/production-readiness/evidence/A06/support-loading-browser-check-2026-09-29.json",
+        "fresh": true,
+        "sourceHashCount": 25,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "support.success",
+        "path": "docs/architecture/production-readiness/evidence/A06/support-success-browser-check-2026-09-29.json",
+        "fresh": true,
+        "sourceHashCount": 25,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "support.pending",
+        "path": "docs/architecture/production-readiness/evidence/A06/support-pending-browser-check-2026-09-30.json",
+        "fresh": true,
+        "sourceHashCount": 22,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "trading.success",
+        "path": "docs/architecture/production-readiness/evidence/A06/trading-success-browser-check-2026-09-30.json",
+        "fresh": true,
+        "sourceHashCount": 41,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "trading.empty",
+        "path": "docs/architecture/production-readiness/evidence/A06/trading-empty-browser-check-2026-09-30.json",
+        "fresh": true,
+        "sourceHashCount": 19,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "trading.loading",
+        "path": "docs/architecture/production-readiness/evidence/A06/trading-loading-browser-check-2026-09-30.json",
+        "fresh": true,
+        "sourceHashCount": 19,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "trading.error",
+        "path": "docs/architecture/production-readiness/evidence/A06/trading-error-browser-check-2026-09-30.json",
+        "fresh": true,
+        "sourceHashCount": 16,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "trading.unauthorized",
+        "path": "docs/architecture/production-readiness/evidence/A06/trading-unauthorized-browser-check-2026-09-30.json",
+        "fresh": true,
+        "sourceHashCount": 14,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "trading.forbidden",
+        "path": "docs/architecture/production-readiness/evidence/A06/trading-forbidden-browser-check-2026-09-30.json",
+        "fresh": true,
+        "sourceHashCount": 14,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      }
+    ],
+    "errors": []
+  }
+}

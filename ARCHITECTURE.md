@@ -6,22 +6,82 @@ VitTrade được tổ chức theo feature/domain boundaries. `app` chỉ chịu
 bootstrap ứng dụng, provider composition và route composition. Business logic phải
 thuộc về feature tương ứng; infrastructure dùng chung phải nằm trong `shared`.
 
+## Cách áp dụng khi phát triển
+
+Đọc [Universal AI rules v3.1](AI_RULES.md), [project context](docs/PROJECT_CONTEXT.md),
+[AGENTS.md](AGENTS.md) và [workflow phát triển](docs/ai/WORKFLOW.md) trước khi
+thay đổi. Project context ghi nhận sự thật và giới hạn đã khảo sát; tài liệu này
+quản lý ranh giới kiến trúc; workflow quản lý cách chọn quy trình, skill, kiểm
+chứng và bàn giao. Thứ tự chuẩn hóa và bằng chứng tiến độ nằm tại
+[PLAN.md](docs/architecture/production-readiness/PLAN.md) và
+[TRACKING.json](docs/architecture/production-readiness/TRACKING.json).
+Các số baseline bên dưới là bằng chứng lịch sử, cần kiểm tra lại khi dùng để kết
+luận trạng thái hiện tại. Preview UI bằng mock theo kế hoạch không thay đổi điều
+kiện chứng nhận route production bằng backend/staging thật.
+
 ## Trạng thái baseline
 
-- Inventory hiện tại bao phủ 416 source page files, 428 route entries, 233
-  components, 0 legacy data modules, 33 service/API files và 23 mock sources.
+- Inventory được sinh và kiểm tra ngày 2026-09-30 bao phủ 129 source page
+  files, 427 route entries, 149 components, 0 legacy data modules, 32
+  service/API files và 28 mock sources.
 - Route composition preserves the public shell URLs `/`, `/t`, `/w`, `/r`; unused
   route-less app-page aliases have been removed. Owners and status live in the
   generated inventory.
-- Inventory hiện nhận diện 120 page có dấu hiệu mock/simulation (`MOCK_*`, fixture,
-  `Math.random()` hoặc simulation); danh sách routed pages là đầu vào bắt buộc cho
-  từng vertical-slice migration, không được coi là production-ready mặc định.
-- Legacy Launchpad simulators now live under `src/dev/legacy`; their production
-  routes resolve to `IntegrationPendingPage` and the production artifact gate
-  rejects the fixture module marker.
+- Inventory hiện ghi nhận 0 page import fixture dataset trực tiếp; 2 trang auth
+  tham chiếu `isAuthFixtureMode`, 0 page truy cập runtime trực tiếp. Các adapter
+  mô phỏng nằm trong `src/dev/mocks`.
+- Unbacked Launchpad simulators were retired; their public routes resolve to
+  `IntegrationPendingPage`, and the production artifact gate rejects any future
+  fixture module marker.
 - Các route shell hiện tại phải giữ tương thích: `/`, `/t`, `/w`, `/r`.
-- Các page demo, mock và legacy đang được migrate theo vertical slice; không được
-  dùng làm nguồn dữ liệu production.
+- Các feature phụ thuộc backend vẫn phải đi qua `IntegrationPendingPage` trong
+  production; MSW chỉ phục vụ development và kiểm thử.
+
+## Roadmap completion audit
+
+The current checkout does not yet complete the full architecture roadmap.
+This repository covers frontend development. It contains API contracts and
+isolated development adapters, but this checkout does not provide evidence of a
+backend implementation or deployment. Real staging verification belongs to the
+integration phase, and the production certification manifest remains empty.
+
+| Requirement | Current evidence | Remaining work |
+| --- | --- | --- |
+| Safe working tree | The current checkout contains staged, unstaged and untracked changes; inspect `git status` before editing or delivery. | Preserve pre-existing work and verify a clean, revision-bound source state before production certification. |
+| Truthful inventory | The generated inventory has 0 production, 125 integration-pending, 2 development-only demo and 2 route-less `not-implemented` source files across 427 routes (checked 2026-09-30). | Keep backend-dependent routes pending; review route-less source classification separately from URL coverage; certify routes only after real backend and staging evidence exist. |
+| Dependency boundaries | Dependency-cruiser passed with 0 violations across 858 modules and 4,619 dependencies on 2026-09-29. All 15 feature domains expose `index.ts`; feature-to-feature deep imports are rejected by the configured rule. | Keep these rules enabled for subsequent migrations. |
+| Domain migration | The 24 user-facing prototypes now resolve to feature-owned frontend pages and typed API adapters/contracts with development MSW responses. P2P, Copy Trading and advanced DCA responses expose integration status only and do not simulate account, compliance or trade outcomes. | Implement and verify domain operations only after their backend contracts and invariants are defined. |
+| Legacy cleanup | The routed prototypes and their unsafe canned actions were retired; the two non-user-facing visual sandboxes remain development-only. There are no deprecated aliases or legacy page data modules; the current inventory has 2 route-less `not-implemented` source-file records, which do not create URL registrations. | Keep the production route and mock-isolation gates enabled; do not treat route-less source-file classification as UI acceptance. |
+| Last recorded full verification | The last recorded full Vitest run passed 2,188 tests across 271 files; 90.00% statements, 91.79% lines, 86.91% functions and 84.62% branches. Chromium contract E2E passed 51/51 against mocked API endpoints in a staging-mode build. The record also reports both TypeScript projects, zero-warning lint, formatting, dependency boundaries, inventory, page-size, 15 OpenAPI contracts/154 operations, production-route guards, mock-import isolation, security/environment/license checks, production build, production-mock inspection and bundle budget passed. | This full suite was not rerun in A08.01. GitHub Ubuntu CI and real backend/staging integration remain unverified; MSW does not certify backend or staging behavior. |
+
+The production build succeeded with two non-fatal Rollup annotation warnings in
+Zod v4 under `node_modules`; the bundle budget and production-mock gates passed.
+
+The lint gate has a zero-warning ceiling and reports zero current warnings.
+The coverage gate enforces its final thresholds at the explicit full-source
+denominator. Local Windows checks and frontend contract mocks do not certify real
+backend integration.
+
+### User-facing prototype migration and backend boundary
+
+All 24 user-facing prototypes now have feature-owned development routes, typed
+client responses, OpenAPI status contracts and MSW fixtures. The status
+contracts are scaffolding for the frontend-only workspace; they do not replace
+the operational API contracts needed to read accounts, apply KYC policy, move
+funds, schedule purchases, manage providers or calculate performance.
+
+| Domain | Routes migrated | Frontend behavior now | Backend work still required |
+| --- | ---: | --- | --- |
+| Auth registration | 2 | Feature-owned form and challenge flow with typed `auth.yaml` contract and MSW. | Real identity, delivery, anti-abuse and session integration. |
+| Advanced DCA | 10 | Feature-owned read-only screens; MSW reports `backend-required`; no rebalance, schedule or purchase action is enabled. | Portfolio/price inputs, schedule and draft persistence, calculation contracts and business invariants. |
+| P2P | 7 | Feature-owned read-only status screens; fixtures contain no fake balances, KYC results, limits or security state. | Account-specific KYC, insurance, limits, security and wallet contracts. |
+| Copy Trading | 4 | Feature-owned read-only status screens; no fake provider application, governance result or performance figure. | Provider, governance, safety and attribution operations. |
+| Arena discovery | 1 | Feature-owned discovery query and development MSW fixture; points-only UI. | Real challenge listing and source data. |
+| Internal visual sandboxes | 2 | DCA overview and responsive shell previews remain in development routes. | None; they are not user-facing domain flows. |
+
+All backend-dependent production URLs remain behind `IntegrationPendingPage`.
+The two internal sandboxes remain development-only. Live integration and
+production certification are separate work and cannot be inferred from MSW.
 
 ## Dependency direction
 
@@ -41,9 +101,11 @@ Quy tắc:
 4. Mock/fixture chỉ nằm trong `src/test` hoặc `src/dev`.
 5. Các thư mục gốc legacy `src/components`, `src/types` và `src/utils` hiện
    không còn source file; code mới thuộc `app`, `features`, `shared` hoặc `dev`.
-6. `features` and `shared` must not import `src/dev`; app imports from `src/dev`
-   must sit behind `isDevelopmentBuild` route/provider branches and be absent
-   from the production artifact.
+6. `features` and `shared` must not import `src/dev`; app UI under
+   `src/app/components` and `src/app/pages` must not import development code.
+   App route/provider composition may import `src/dev` only behind
+   `isDevelopmentBuild` branches, and those modules must be absent from the
+   production artifact.
 7. No layer may import from the retired root directories `src/components`,
    `src/types` or `src/utils`; dependency-cruiser blocks these paths from returning.
 
@@ -58,6 +120,14 @@ typed app storage hook now use the adapter instead of accessing Web Storage dire
 Feature modules must not depend on the application composition layer. Dependency
 cruiser resolves TypeScript aliases from `tsconfig.json` and enforces this as a
 hard error rule in CI.
+
+The reusable UI catalog lives in `shared/ui`, which currently contains 52
+source/test files. This change moves 11 same-name modules from the old app UI
+path and adds 5 focused tests. It also removes 69 export-only forwarding modules
+with unchanged export names from app UI, contexts, hooks, theme, configuration
+and domain adapters; consumers now import the canonical shared or feature
+module. The unused app UI barrel was removed. The UI ownership changes preserve
+the app shell composition.
 
 ## Target structure
 
@@ -79,16 +149,16 @@ an explicit migration status and dependency observations. Run
 `npm run architecture:inventory:check` in CI to prevent stale ownership data or
 untracked architectural growth.
 
-Current generated inventory: 416 source pages, 428 routes, 233 components,
-0 legacy data modules, 33 services and 23 mock sources. It records 106
-`integration-pending`, 233 routed development-only `demo`, no `deprecated`
-aliases and 77 route-less `not-implemented` source pages. Route-less app-page
+Current generated inventory (checked 2026-09-30): 129 source page files, 427
+routes, 149 components, 0 legacy data modules, 32 services and 28 mock sources.
+It records 125 `integration-pending`, 2 development-only `demo`, no `deprecated`
+aliases and 2 route-less `not-implemented` source-file records. Route-less app-page
 re-export shims with no source consumers have been removed; routed composition
 adapters remain only where the shell supplies app-owned behavior. The route
 extractor resolves
 nested relative paths, index routes and component slots injected through route
-factories. 120 pages still reference mock/simulation sources. No page has direct
-runtime access to `fetch`, `WebSocket` or browser storage. Production
+factories. No page directly imports fixture data or accesses runtime APIs such
+as `fetch`, `WebSocket` or browser storage. Production
 certification remains empty until backend staging evidence is available.
 Production certifications are bound to the verified source revision: page,
 route, contract, adapter and test inputs must match the staged commit, with no
@@ -120,8 +190,8 @@ path-scoped worktree or index edits.
   account status and device trust are composed by `features/auth/routes.ts` for
   both app and web shells; shell routers supply page adapters and layouts.
 - Auth API types and the session adapter now live under
-  `features/auth/api/auth-api.ts`. The app API path remains a compatibility
-  export so existing infrastructure tests do not create a second contract.
+  `features/auth/api/auth-api.ts`. The unused app API compatibility export has
+  been removed; consumers use the feature-owned contract.
   Session and MFA setup responses are parsed at that API boundary before their
   data can update shared session state.
 - `POST /auth/login` now returns a discriminated authenticated-session or
@@ -182,8 +252,52 @@ path-scoped worktree or index edits.
 - The 2FA flow keeps challenge setup, verification and navigation in its feature
   controller; QR, OTP and backup-code steps are separate presentational
   components. Every feature module is now below the 600-line limit.
+
+### 2FA setup contract
+
+| State | Transition | Required behavior |
+| --- | --- | --- |
+| Loading challenge | Enter setup or retry after a setup error | Keep the challenge absent and disable progression to code verification. |
+| Setup unavailable | `beginMfaSetup` rejects | Show an actionable error; retry requests a fresh challenge. |
+| QR ready | `beginMfaSetup` returns a challenge | Display its QR/secret and allow progression. |
+| Verifying | User submits six digits | Stay on this step with an error if confirmation rejects; do not reveal backup codes. |
+| Backup codes | `confirmMfaSetup` returns the session | The auth provider applies the returned session; reveal challenge backup codes and require user acknowledgement before continuing. |
+| Complete | User acknowledges saved codes | Navigate to the auth success route. |
+
+This verifies frontend behavior against the adapter contract; API availability,
+challenge expiration, one-time code semantics and recovery remain backend-owned.
+The phone/tablet `TwoFASetupPage` follows the same challenge gate and retry
+behavior, keeps rejected codes on the verify step, and requires backup-code
+acknowledgement before navigating to the shell-prefixed home route. It filters
+non-digit OTP input and reports clipboard failure without claiming that the
+secret was copied.
+
 - Backend certification still requires HttpOnly refresh-cookie behavior,
   account-lock/MFA responses, rate limiting, cross-tab logout and staging E2E.
+
+### Account lockout contract
+
+The OpenAPI `AccountLocked` response currently communicates policy refusal with
+HTTP 423; it provides no unlock time or unlock-email operation. Web login and
+web MFA route that response to the locked-account page. The page stays locked,
+does not infer expiry from browser time and does not claim an email was sent;
+retrying login asks the authentication service to evaluate the current state.
+Password reset remains a separate contract-backed route.
+
+### Phone-shell idle-timeout contract
+
+| State | Transition | Required behavior |
+| --- | --- | --- |
+| Anonymous | `isAuthenticated` is false | No inactivity timer or session action is active. |
+| Active | Authenticated session starts, qualifying activity occurs, or the user extends the warning | Run one idle deadline and clear any earlier timer cycle. |
+| Warning | `timeout - warningBefore` elapses | Show the remaining-time warning; ordinary activity does not silently extend this deadline. |
+| Timed out | The configured idle deadline elapses | Clear timers and call `signOut` (which clears local auth before its network request); protected routes redirect to login, and the warning-modal action sends a public phone route to `/auth/login`. |
+
+The warning transition must preserve the original timeout deadline; changing the
+warning UI must not tear down and restart the timer. Tests cover warning, exact
+deadline, activity during warning, explicit extension and the disabled state.
+This is a client inactivity/logout flow, not proof of server-side session expiry:
+the backend must still enforce token and refresh-cookie expiration and logout.
 
 ## Vertical-slice status: DCA
 
@@ -225,13 +339,14 @@ path-scoped worktree or index edits.
 - The contract-backed Savings DCA page confirms cancellation before stopping a
   recurring plan, reports create/update/cancel failures and preserves each
   action's idempotency key when retrying the same operation.
-- The 10 advanced DCA route implementations and their four simulation services
-  now live under `src/dev/legacy/dca`. Development routes lazy-load those
-  implementations directly; unused app-page shims have been removed.
-  Staging/production keeps all 10 URLs and renders the explicit
-  `IntegrationPendingPage` boundary.
-- The production-route check validates both DCA route lists, and staging E2E
-  visits each URL to verify that no demo implementation is exposed.
+- The 10 advanced DCA URLs now use a feature-owned read-only page, query and
+  typed `GET /dca/advanced/overview` status contract. Development MSW returns
+  only `backend-required`; no optimizer result, trade, rebalance or schedule is
+  simulated. Production keeps the 10 URLs behind `IntegrationPendingPage` until
+  operational API contracts and business invariants are available.
+- The production-route check validates both DCA route lists. Local Chromium E2E
+  visits each URL to verify that no demo implementation is exposed; it uses
+  local contract stubs and is not backend staging evidence.
 - The legacy DCA context now lives in `features/dca`; the old app paths are
   compatibility re-exports for isolated tests and are not composed by
   `RootLayout`. Tests inject the adapter through the provider prop, with no test
@@ -270,19 +385,16 @@ path-scoped worktree or index edits.
 - Secondary Earn/Staking screens without an active feature route and verified
   backend contract remain development-only or pending; they are not counted as
   production-ready because their old route catalog once declared them.
-- Fourteen unrouted Savings prototype screens and their simulated loading hook
-  now live under `src/dev/legacy/earn`; their imports use `shared` APIs and the
-  dependency gate confirms they do not pull application modules into `dev`.
-- The unreferenced legacy web referral prototype is under `src/dev/legacy/web`;
-  `/referral` remains feature-owned and no router imports the prototype.
-- Nine additional unrouted staking prototypes and six unreferenced web account,
-  security and compliance prototypes now live under `src/dev/legacy`; their
-  former app paths had no route or source/test consumer.
-- The old `WebEarnSavingsPage` and `WebEarnStakingPage` module files are also
-  archived under `src/dev/legacy/web`; the similarly named app route adapters
-  load `features/earn` directly.
-- The unrouted P2P ad-detail prototype and its confirmation modal now live in
-  `src/dev/legacy/p2p`; the layout-lint fixture points at the development copy.
+- Seventy-seven route-less legacy pages were deleted after confirming they had
+  no active product route. Seventy-three had no source/test/E2E consumers; the
+  other four were replaced by contract-backed Arena, P2P and Trading pages with
+  feature tests. The development loading hook remains because routed legacy
+  demos still use it.
+- `/referral` and the web Earn routes remain feature-owned; the old standalone
+  referral and web Savings/Staking page modules have been removed.
+- The contract-backed `features/p2p/pages/P2PAdDetailContractPage` replaces the
+  unrouted legacy ad-detail page and confirmation modal; its feature test covers
+  the API-backed order flow.
 - Savings comparison and Savings DCA now also use the typed Earn/DCA snapshot
   and mutation boundaries. Earn comparison is owned by `features/earn/routes.ts`.
 
@@ -332,6 +444,12 @@ path-scoped worktree or index edits.
   invalidation.
 - Address-book mutations are guarded by `wallet:address-book` or aggregate
   `wallet:write`; read-only sessions retain safe inspection/copy access only.
+- Address Book UI coverage now exercises read/write permissions, local filters,
+  confirmed whitelist/favorite/delete mutations, address creation prerequisites,
+  normalized create payloads, rejected submissions and clipboard outcomes via
+  the mocked wallet contract. The add form exposes its input and toggle state to
+  assistive technology; it still relies on backend validation for address and
+  network correctness.
 - The legacy `/w/address-book` URL now renders the same feature page and server
   contract; its previous page-local sample destinations have been removed.
 - The contract is defined in `contracts/openapi/wallet.yaml`. Development MSW
@@ -353,8 +471,26 @@ path-scoped worktree or index edits.
   deposit, withdrawal, transfer, asset, history and analytics actions.
 - The page removes hard-coded daily change and BTC conversion values from the
   production route; development data remains behind the MSW adapter only.
+- Wallet assets, accounts, transactions, assigned deposit addresses, withdrawal
+  policies, address book, portfolio analytics and dust quotes require
+  `wallet:read`. The query hooks take an explicit `enabled` decision, pages show
+  a permission state, and `wallet.yaml` declares `403` responses. This is a
+  frontend boundary; the backend must enforce the same scopes.
 - Backend certification still requires user-scoped balance authorization,
   valuation freshness, transaction ownership, pagination and audit semantics.
+
+## Vertical-slice status: Wallet asset detail
+
+- `/wallet/asset/:assetId` reads the matching wallet asset, public market pair
+  and asset-scoped transaction history through feature query boundaries. Missing
+  assets, absent market pairs and retryable API errors have explicit UI states.
+- The DCA action and impression callbacks remain optional shell integrations;
+  the detail page passes the selected symbol through the injected seam.
+- UI tests cover permission-gated reads, balances, chart period state, transaction
+  and deposit navigation, DCA callbacks, missing data and retry behavior through
+  the mocked contracts.
+- Backend certification still requires user-scoped asset ownership, fresh
+  valuation and transaction filtering to be enforced server-side.
 
 ## Vertical-slice status: Wallet deposit
 
@@ -369,6 +505,47 @@ path-scoped worktree or index edits.
   by feature integration tests.
 - Backend certification still requires address rotation policy, network
   liveness, deposit attribution, memo handling, abuse controls and staging E2E.
+
+## Vertical-slice status: Wallet pending deposits
+
+- `/wallet/pending-deposits` is owned by `features/wallet` and reads only server
+  transactions filtered by `type=deposit` and `status=pending`.
+- The page follows the API cursor for additional results and links each row to
+  the contract-backed transaction detail route; the former hard-coded demo was
+  removed. Feature tests assert the server filters and cursor request.
+- Real staging must still verify deposit ownership, confirmation state and the
+  API's pagination behavior before this page is production-certified.
+
+## Vertical-slice status: Wallet withdrawal network limits
+
+- `/wallet/limits` is owned by `features/wallet`; asset options come from the
+  wallet assets query and per-network minimum, maximum, fee and memo rules come
+  from `GET /wallet/withdrawal/networks`.
+- The previous page showed fabricated KYC tiers and remaining daily/monthly
+  balances. Those values are not in the API contract and have been removed.
+- Feature tests and the browser contract test verify the selected asset and
+  displayed network policy. Staging still must verify user-specific policy and
+  backend enforcement before certification.
+
+## Vertical-slice status: Wallet network status
+
+- `/wallet/network-status` is now owned by `features/wallet` and uses the
+  contract-first `GET /wallet/network-status` response for health state,
+  deposit/withdraw availability, update time and an optional message.
+- The old screen generated block heights, pending transaction counts and
+  congestion values randomly. Those claims were removed; unknown status values,
+  empty responses and API failures have separate UI states, and a failed refresh
+  hides the previously cached status.
+- Query refresh is manual or every 30 seconds while the page is active. The local
+  MSW handler returns an explicit `503` because this frontend-only workspace has
+  no network-status source configured; tests provide scoped responses to verify
+  the rendered contract state. No mock metrics are presented as live data.
+- The feature route now composes the typed page in every authenticated shell and
+  requires `wallet:read`; the OpenAPI operation declares the same permission.
+- When the provider is unavailable, the API returns `503` and the page hides all
+  cached availability so it cannot imply that deposits or withdrawals are open.
+  The inventory classifies the page as `integration-pending` until a real source,
+  backend authorization and staging verification are available.
 
 ## Vertical-slice status: Wallet internal transfer
 
@@ -419,14 +596,19 @@ path-scoped worktree or index edits.
 - `/wallet/history` now composes
   `features/wallet/pages/WalletTransactionHistoryContractPage` across all
   shells instead of the legacy shell-specific pages.
-- Type/status filters, search, deterministic sorting, local pagination, summary
-  metrics and loading/error/empty states consume the typed wallet transaction
-  query; the page does not call `fetch` or import mock fixtures.
+- Asset, exact transaction type and status filters are sent to the wallet API.
+  Opaque cursors drive previous/next page navigation; the contract defines a
+  stable `createdAt` then `id` descending order. The page does not sort or
+  paginate a truncated client-side result set.
+- Per-page client aggregates were removed because the response does not provide
+  full-history totals. Loading, error and empty states consume the typed wallet
+  transaction query; the page does not call `fetch` or import mock fixtures.
 - Presentation helpers are isolated under
   `features/wallet/components/WalletTransactionHistoryComponents.tsx`; the page
-  container is 225 lines and remains below the sub-400-line target.
-- Backend certification still requires cursor pagination, export authorization,
-  transaction ownership, immutable ledger semantics and audit retention.
+  container remains below the sub-400-line target.
+- Staging must verify cursor stability, filter scoping, transaction ownership,
+  immutable ledger semantics and audit retention. Export remains unavailable
+  until its authorization and response contract exist.
 
 ## Vertical-slice status: Wallet asset and conversion details
 
@@ -482,16 +664,18 @@ coverage, architecture validation, dependency audit, dependency license policy a
 production build. A direct Vite build without typecheck is not considered a passing
 release build.
 
-Current measured production-code coverage is 88.14% lines, 85.49% statements,
-80.61% functions and 81.68% branches (2,005 tests across 212 files). The
-coverage denominator includes `app`, `features` and `shared`; `src/dev` is
-explicitly excluded because those development-only pages are not shipped. The
-ratcheted thresholds are currently 86% lines, 84% statements, 79% functions and
-80% branches. Final certification requires at least 90% lines, 90% statements,
-85% functions and 80% branches. Coverage remains a release blocker until those
-targets and critical-flow E2E evidence are met. Tests for development pages still
-run in the full suite, and those pages stay outside production only when the
-route-boundary and artifact-isolation gates pass.
+Vitest explicitly declares `src/app`, `src/features` and `src/shared` as
+coverage inputs; test files, route-composition adapters and development-only
+source are excluded and have separate route/artifact checks. The latest report
+measured 91.79% lines, 90.00% statements, 86.91% functions and 84.62% branches
+(2,188 tests across 271 files). The enforced thresholds are 90% lines, 90%
+statements, 85% functions and 80% branches. The largest remaining source-group
+gap is `shared/theme` (57.47% lines, 52.17% functions); `shared/ui` now measures
+92.15% lines and 85.32% functions. Route-table lazy-import callbacks are checked
+through route, inventory, production-boundary, build and browser gates. The 51
+browser cases use mocked API contracts and do not prove live backend integration.
+Tests for development pages still run in the full suite, and those pages stay
+outside production only when the route-boundary and artifact-isolation gates pass.
 ### Market pair detail route boundary
 
 The phone, tablet, web, and legacy responsive pair-detail URLs compose the same
@@ -535,6 +719,65 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
   by the API adapter; the page no longer computes a production list from
   `marketOverviewData`.
 
+## Vertical-slice status: Market news
+
+- `/markets/news` now belongs to `features/market` and reads the typed
+  `/market/news` contract with category and sentiment filters.
+- The frontend validates article URLs as HTTPS and validates response fields
+  before rendering. Loading, error/retry and empty results have separate UI
+  states; related pair links use contract-provided pair IDs.
+- No backend news source exists yet. The development adapter returns 503
+  instead of presenting fixtures as current news, so backend integration and
+  production certification remain pending.
+
+## Vertical-slice status: Market calendar
+
+- `/markets/calendar` now belongs to `features/market`; event type and impact
+  filters use the `/market/calendar` API contract.
+- The adapter validates event timestamps, HTTPS source links and ascending
+  event order. The page shows only contract fields and has explicit loading,
+  retry and empty states; it does not derive event counts from a fixed date.
+- No backend event source exists yet. The development adapter returns 503,
+  so integration and production certification remain pending.
+
+## Vertical-slice status: Market correlations
+
+- `/markets/correlations` now belongs to `features/market` and reads signed
+  coefficients, method, provider and observation counts from the
+  `/market/correlations` contract for 7d, 30d or 90d windows.
+- The adapter rejects coefficients outside [-1, 1], self-pairs, duplicate
+  unordered pairs and responses for the wrong window. The page displays only
+  source-reported values and states that correlation is historical, not a
+  forecast or trading recommendation.
+- The former diversification score and recommendation were removed because
+  they were computed from static fixtures, not a user's portfolio. No backend
+  correlation source exists; development returns 503 and certification stays
+  pending.
+
+## Vertical-slice status: Market token unlocks
+
+- `/markets/unlocks` now belongs to `features/market` and reads the
+  `/market/unlocks` contract with 7d, 30d or 90d windows and optional category
+  filtering.
+- The adapter validates unique event IDs, ascending timestamps, source URLs,
+  supply percentages and the requested response window. The page displays only
+  source-reported quantities and status; fixture-based USD valuations and impact
+  recommendations were removed.
+- No token unlock source exists yet. Development returns 503, so integration
+  and production certification remain pending.
+
+## Vertical-slice status: Market derivatives
+
+- `/markets/derivatives` now belongs to `features/market` and reads a typed,
+  read-only `/market/derivatives` snapshot for aggregate open interest, volume,
+  funding, perpetual pairs and liquidations.
+- Runtime validation rejects duplicate pair IDs, non-finite or negative amounts,
+  out-of-range long share and unordered or duplicate liquidation buckets. The
+  page shows provider and update time, handles zero-value bars, and states that
+  the metrics are descriptive rather than trading advice.
+- No derivatives data source exists yet. Development returns 503, so integration
+  and production certification remain pending.
+
 ## Vertical-slice status: Market shells and alerts
 
 - `/`, `/t/`, `/w/` and `/r/` home shells now use the shared market-pairs
@@ -542,6 +785,10 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
   production route.
 - Heatmap and sector routes derive their views from typed market pairs and
   overview responses, with no direct `mockData` import.
+- Sector pair data loads only after selecting a sector; detail API failures
+  remain visible with a retry action instead of appearing as an empty list.
+- Market screener tests exercise API-backed query/category filters, each sort
+  order, empty/error/retry behavior and web-prefixed pair navigation.
 - `MarketPair` now contains public market data only. Home, list and pair-detail
   favorite state comes from the authenticated user-owned watchlist; failed or
   pending watchlist reads do not fall back to a public `isFavorite` flag.
@@ -613,12 +860,18 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
 
 ## Production route safety boundary
 
-- Các route futures, margin, convert, positions và analytics/demo nâng cao vẫn
+- Các route futures, margin, convert và analytics/demo nâng cao vẫn
   giữ public URL để tránh breaking change, nhưng chỉ load implementation cũ trong
   development/test.
-- Staging/production dùng `IntegrationPendingPage` cho đến khi API contract,
-  permission, audit event và E2E backend staging hoàn tất; vì vậy mock/simulation
-  không thể chạy qua production route path.
+- Routes without feature-owned contracts stay on `IntegrationPendingPage` in
+  staging/production. Contract-backed screens can render their fail-closed UI,
+  but remain integration-pending until a real backend source is verified. Demo
+  and mock implementations stay out of production routes and artifacts.
+- `/trade/positions` now belongs to `features/trading` and uses the account-scoped
+  `GET /trading/positions` contract, `trade:read` permission, server-side product
+  filters, cursor pagination and runtime validation. It displays source-provided
+  values without cross-asset totals. The development adapter returns 503 until a
+  backend source exists, so inventory correctly keeps this route integration-pending.
 - Bot compliance không ghi nhận terms, suitability hoặc risk acknowledgement vào
   `localStorage` trong staging/production; các route tương ứng cũng đi qua boundary
   này cho đến khi có server-owned compliance contract.
@@ -627,21 +880,27 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
   được giữ nguyên để migration theo vertical slice không gây breaking change.
 - Các màn hình web security có session/device/alert/passkey/2FA fixture cũng dùng
   boundary này; trạng thái security thật phải do backend sở hữu và audit được.
-- Cross-module portfolio/analytics/alerts/tax samples, onboarding demo and
-  responsive showcase routes remain behind this boundary.
-- Cross-module samples, onboarding, shell-template and enterprise-state showcases now live
-  under `src/dev/legacy`; development routes target those implementations directly.
+- Cross-module portfolio/analytics/alerts/tax samples, onboarding demo,
+  responsive showcase, rewards hub and design-system showcase URLs remain behind
+  this boundary and resolve to `IntegrationPendingPage`.
+- The responsive shell-template compatibility route remains under `src/dev/legacy`;
+  retired cross-module, onboarding, rewards and showcase implementations are no
+  longer reachable from the route graph.
 - Các màn hình copy-trading về provider, governance, khiếu nại, audit,
   regulatory reporting và best execution không còn hiển thị dữ liệu mẫu như
   trạng thái compliance thật ở staging/production.
-- Bot backtesting, analytics, performance, history, tax và API guide vẫn giữ URL
-  nhưng chỉ load bản mô phỏng trong development cho đến khi có contract và dữ liệu
-  backend tương ứng.
+- Bot backtesting, analytics, performance, history, tax, compliance and API guide
+  URLs now resolve directly to `IntegrationPendingPage`; no client-only bot
+  simulation is loaded until a server-owned contract and data source exist.
 
 ## E2E và accessibility gate
 
 - Playwright smoke chạy trên staging-mode preview build cho root redirect và login
   boundary.
+- Playwright waits for the Vite preview process's own ready output after the
+  staging build. It starts its own server on port 4173 with `--strictPort`;
+  an occupied port fails setup before any browser test runs. An unrelated HTTP
+  response during the build cannot satisfy the readiness condition.
 - Contract-E2E intercepts the staging-build network boundary with
   OpenAPI-compatible responses and verifies auth login/logout, wallet deposit,
   wallet transfer, the authenticated trade route, order placement/cancellation,
@@ -674,6 +933,16 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
   import trực tiếp feature page; app-level compatibility shim đã được gỡ.
 - Open orders, order history and cancellation use the trading OpenAPI adapter;
   mutating cancellation requests require an idempotency key.
+- The order list applies Buy/Sell filters through the API and follows opaque
+  cursors on both tabs. Open/history requests use stable `createdAt` then `id`
+  descending order; the UI does not treat the current page size as a total.
+- Both order-list endpoints require `trade:read`; `OrdersHistoryPage` and
+  `TradeTerminal` suppress their API queries and account-order panels when the
+  session lacks that permission. Trading write permission remains separate for
+  place, modify and cancel actions.
+- Account copy relationships and trading analytics use the same `trade:read`
+  boundary; copy activation, stop and order mutations require `trade:write` in
+  the API contract and their UI handlers.
 - Trading order snapshots are runtime-validated for positive amount/execution
   price, non-negative fee/fill, RFC3339 timestamps, fill not exceeding amount,
   and consistent `filled`/`partial` status. Contract tests reject malformed
@@ -699,6 +968,12 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
   and the available quote/base balance before opening confirmation. Confirmation
   rechecks the current state before sending. OCO forms and their submit handler
   apply the same trading-write permission boundary.
+- Enabled TP/SL prices are validated against side and entry price before
+  confirmation and again before submission; bracket mode requires both valid
+  prices. The frontend request type and OpenAPI contract carry `bracketMode`,
+  which also participates in the placement idempotency signature. Component and
+  mocked-contract tests cover buy/sell direction, incomplete brackets and the
+  submitted bracket payload; backend enforcement remains unverified.
 - Persisted trade preferences are normalized against allowed order types,
   timeframes, precision values, booleans and positive thresholds on initial load
   and cross-tab updates; malformed local storage cannot inject invalid settings
@@ -720,7 +995,7 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
   modify, cancel, idempotent replay and open/history reads share one dev store.
   Backend certification
   still requires real order lifecycle events, authorization, audit events and
-  staging E2E coverage.
+  staging E2E coverage, including cursor ordering and side-filter scoping.
 - Account identity changes and sign-out clear the shared React Query cache so
   cached wallet and other user-owned data cannot be reused by a later session.
 - `trade/order-receipt` now loads the feature-owned `OrderReceiptPage` in every
@@ -728,6 +1003,10 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
   status, timestamp and fee returned by the order API, and fails to a recovery
   state when no valid receipt payload is present; the old synthetic receipt
   fallback was removed.
+- Feature route factories now own the protected Trading history, receipt,
+  settings, trader-profile, leaderboard and copy-trading v2 aliases. The web
+  `trade/orders` alias also resolves through the Trading feature router; app
+  routers no longer declare these feature page routes directly.
 - The fee-tier display no longer uses hard-coded VIP/discount numbers. Until a
   fee-quote contract exists, entry and confirmation views state that the server
   determines the fee; the receipt displays the fee returned by the order API.
@@ -790,22 +1069,19 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
   development MSW keeps state only for local/test execution. The production
   route has no fixture import, but backend staging still must enforce balance,
   suitability, permission, cooling-off, position-close and audit policies.
-- `/trade/bots` and `/w/trade/bots` still use client-only simulated bot
-  builders, now isolated at `src/dev/legacy/trading/TradingBotsDemoPage.tsx` and
-  `src/dev/legacy/trading/WebTradingBotsDemoPage.tsx`. Development routes load
-  the demos only in development; staging and
-  production show the integration-pending boundary until a bot contract,
-  authorization model and integration evidence are implemented.
-- All 66 development-only Trading route targets now lazy-load implementations
-  directly from `src/dev/legacy/trading`; unused route-less app-page exports
-  have been removed. The route inventory
-  follows the dev-only implementations and carries their mock-reference
-  evidence onto the app route records.
+- `/trade/bots` and `/w/trade/bots` now resolve directly to
+  `IntegrationPendingPage`; the client-only simulated bot builders were retired.
+  Bot contract, authorization and integration evidence remain prerequisites for
+  restoring an implementation.
+- Remaining development-only Trading route targets lazy-load implementations
+  directly from `src/dev/legacy/trading`; unused route-less app-page exports have
+  been removed. The inventory keeps those targets and their mock evidence
+  separate from the production graph.
 - The route-less legacy `PreCopyAssessmentPage` and `ProviderComparisonPage`
-  remain reachable only from their isolated legacy tests. The live assessment
-  and comparison routes resolve to `PreCopyAssessmentContractPage` and
-  `ProviderComparisonContractPage` in `features/trading`; retain the old demos
-  until their remaining test coverage is deliberately retired or migrated.
+  and their demo-only tests have been removed. The live routes resolve to
+  `PreCopyAssessmentContractPage` and `ProviderComparisonContractPage` in
+  `features/trading`; feature tests cover assessment acknowledgements and
+  comparison data selected from the trading API.
 
 ## Vertical-slice status: Trading analytics
 
@@ -891,16 +1167,12 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
 - The risk calculator's user-entered, pure calculation page is now owned by
   `features/predictions/pages` and uses shared UI primitives; its route and
   calculator/scenario/guide behavior are covered by a feature-page test.
-- The static advanced-chart page, its order-flow panel and fabricated chart
-  series live under `src/dev/legacy/predictions`; the production URL remains
-  available but resolves to `IntegrationPendingPage`. Inventory classifies it
-  as a demo, the fixture-import gate verifies development-only consumers and a
-  production browser test verifies the boundary.
-- Prediction risk calculations live under `features/predictions/lib`; static
-  chart series and its analysis panel are development-only legacy code. P2P
-  guide and fraud-education content likewise live under `features/p2p/model`; the
-  four large legacy screens are all below 600 lines but remain demo/compatibility
-  pages pending typed backend contracts and integration evidence.
+- The unbacked advanced-chart, order-flow and fabricated prediction analysis
+  pages were retired. Their public URLs remain available through
+  `IntegrationPendingPage`; the pure risk calculator remains feature-owned.
+  P2P guide and fraud-education content likewise live under
+  `features/p2p/model`; remaining large legacy screens stay development-only
+  until typed backend contracts and integration evidence exist.
 
 ## Engineering gates
 
@@ -908,27 +1180,27 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
   over 600 lines. The current scan has no page or feature module over the limit.
 - Route contract tests protect the public discovery/prediction paths and the
   protected trade, wallet, profile and P2P route families.
-- Coverage gates ratchet from 86% lines, 84% statements, 79% functions and
-  80% branches, with a final certification target of 90% lines, 90% statements,
-  85% functions and 80% branches. The current
-  production-code measurement is 88.14% lines, 85.49% statements, 80.61%
-  functions and 81.68% branches (2,005 tests across 212 files); ratcheted
-  thresholds are currently met, while the final target remains 90/90/85/80
-  so Phase 1 remains open. `src/dev` is explicitly excluded from that denominator because it is not
-  shipped, while its tests still run in the full suite. Route and artifact gates must prove that any
-  moved implementation is genuinely development-only.
+- Coverage gates enforce 90% lines, 90% statements, 85% functions and
+  80% branches. Vitest explicitly declares
+  `src/app`, `src/features` and `src/shared`, with tests, route-composition
+  adapters and development-only source excluded. The current report measured
+  91.79% lines, 90.00% statements, 86.91% functions and 84.62% branches
+  (2,188 tests across 271 files), so all local coverage thresholds pass. Real
+  backend integration remains future work because no backend exists yet.
+  `src/dev` tests still run in the full suite; route and artifact gates prove
+  development implementations stay out of shipped artifacts.
 - Lazy route loading retries transient module failures; after the automatic
   retries are exhausted, the user retry action creates a fresh lazy module
   instance so React does not reuse its cached rejected promise.
-- The mock-import gate now has a zero-consumer budget. Legacy Launchpad,
-  Trading and Predictions fixture modules were moved to `src/dev/mocks`, with
-  their development-only consumers updated to the dedicated fixture boundary.
-- Lint warning ceiling is ratcheted to the current 522 warnings, with zero
-  errors. The certification target remains zero. `src/app`, `src/features` and
-  `src/shared` currently have zero warnings; `src/dev` accounts for most
-  remaining warnings (mostly unused legacy prototype variables/imports). Every
-  new slice must reduce or stay below the ceiling; certification target remains
-  zero.
+- The mock-import gate now has a zero-consumer budget. Trading and Predictions
+  fixture modules live under `src/dev/mocks`, with development-only consumers
+  updated to the dedicated fixture boundary; retired Launchpad pages have no
+  remaining fixture module.
+- The lint warning baseline is ratcheted to zero: the current full lint reports
+  zero errors and warnings. Test helpers disable the Fast Refresh rule, the
+  generated MSW worker is excluded, and three unreferenced dev-only trading
+  prototypes are excluded from that HMR-specific rule. Keep all active app,
+  feature, shared and development code warning-free.
 - `security:check` scans runtime source and blocks credential-like values from
   being written to `localStorage`, `sessionStorage` or browser cookies. Access
   tokens remain memory-only in the shared API client; refresh is delegated to
@@ -945,6 +1217,9 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
 - Search results are explicitly segmented into prediction markets, Arena
   Points, creators and spot pairs. Discovery pages do not import fixture data
   or call `fetch` directly.
+- Page tests exercise debounced loading without a nested `main` landmark, all
+  search result groups, empty/error/retry states, invalid topic fallback and
+  shell-prefixed navigation through MSW contract handlers.
 - The contract is `contracts/openapi/discovery.yaml`; query hooks validate all
   responses with Zod and development MSW owns the fixture adapter. Backend
   certification still requires search authorization, ranking/relevance rules,
@@ -978,7 +1253,8 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
 
 - `/referral` now reads a typed authenticated overview from
   `features/referral`; `features/referral/routes.ts` owns the route while
-  unbacked referral previews remain isolated under `src/dev/legacy/referral`.
+  unbacked history, rules and friend-detail URLs remain explicit
+  `IntegrationPendingPage` boundaries.
 - Referral code, tier, campaign, stats and friend summaries are server-owned
   read models. Copying the invitation link is a presentation action and does
   not create client-side commission state.
@@ -989,8 +1265,9 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
 ## Vertical-slice status: Launchpad core
 
 - `/launchpad` and `/launchpad/:id` now compose `features/launchpad` typed list
-  and detail queries. Unused route-less app-page re-exports were removed; demo
-  implementations remain isolated under `src/dev/legacy/launchpad`.
+  and detail queries. Unused route-less app-page re-exports and unbacked demo
+  implementations were removed; unsupported Launchpad URLs remain explicit
+  `IntegrationPendingPage` boundaries.
 - The feature validates project status, tokenomics, vesting, team, audit and
   access metadata at the API boundary; it does not simulate subscription or
   allocation mutations in the absence of a backend transaction contract.
@@ -1191,16 +1468,34 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
 
 ## Inventory status evidence
 
-- Current generated inventory contains 416 source pages, 428 routes, 233 components,
-  0 legacy data modules, 33 service/API files and 23 mock sources.
-- Page status is classified as 106 `integration-pending`, 233 routed
-  development-only `demo`, no `deprecated` aliases and 77 route-less
-  `not-implemented` source pages. The inventory resolves nested route paths, index routes and injected
+- Current generated inventory (checked 2026-09-30) contains 129 source page
+  files, 427 routes, 149 components, 0 legacy data modules, 32 service/API files
+  and 28 mock sources.
+- Sorting uses runtime-neutral code-unit ordering. This refresh and inventory
+  check passed with local Node 24.19.0; prior recorded checks also passed with
+  Node 22.23.3. Node 22 was not rerun during this documentation sweep.
+- Page status is classified as 125 `integration-pending`, 2 development-only
+  `demo`, no `deprecated` aliases and 2 route-less `not-implemented` source-file
+  records. This source-file classification does not imply standalone screens.
+  The inventory resolves nested route paths, index routes and injected
   component targets from route factories. The `not-implemented` status means a
-  source page file has no route evidence; it is not a production certification.
-  Those 77 route-less files are development legacy sources: 58 Earn, 8 web,
-  5 Launchpad, 2 P2P, 2 trading, 1 arena and 1 tools page. They remain tracked
-  for legacy cleanup, while routed development pages remain classified as `demo`.
+  source file has no route evidence; it is not a production certification.
+  Page status describes implementation readiness; route exposure is recorded
+  separately, so a feature page can be `integration-pending` while its URL is
+  deliberately restricted to development builds.
+  Thirty-eight unbacked trading and copy-trading legacy implementations were
+  retired; the final route-less SafetyEducation duplicate and its legacy-only
+  tests were removed after confirming the active feature-owned copy-education page.
+  A further 23 unbacked P2P insurance, dispute, wallet-support and compliance
+  implementations were retired; the remaining P2P status views use a feature-owned
+  adapter and development MSW fixtures, while production URLs remain pending.
+  The remaining 23 unbacked Arena page implementations and their orphaned legacy
+  support directory were retired; Arena contract pages remain feature-owned and
+  all other Arena URLs resolve through the pending boundary.
+  A repository-wide import check also removed 18 unused app API, constant,
+  hook and utility modules; shared or feature-owned implementations remain at
+  their existing boundaries.
+  Routed development pages remain classified as `demo`.
 - No page is currently certified as `production`: the full per-page evidence
   set required by `contracts/README.md` is not recorded and verified here.
 - Production status is opt-in through
@@ -1216,10 +1511,11 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
 - 237 route-less pure re-export pages under `src/app/pages` were removed after
   confirming there were no source importers and redirecting test coverage to
   canonical feature/development modules. The demo-specific page suites were
-  moved under `src/dev/legacy`. Thirty-four unrouted staking prototypes are archived under
-  `src/dev/legacy/earn/unrouted-staking` with `shared` UI imports. The generator
-  classifies the remaining pure feature alias as `deprecated`; route-less
-  source pages are now counted separately as `not-implemented`.
+  moved under `src/dev/legacy`. Thirty-four unrouted staking prototypes that
+  had been archived under `src/dev/legacy/earn/unrouted-staking` were later
+  removed after route and consumer checks. The generator classifies the
+  remaining pure feature alias as `deprecated`; route-less source pages are
+  now counted separately as `not-implemented`.
 - A further 21 unreferenced `src/app/pages` exports that only forwarded to
   `src/dev/legacy` were removed. Inventory now resolves directly routed dev
   modules as page targets even when their filename does not end in `Page` or
@@ -1229,8 +1525,12 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
   the integration-pending boundary because its displayed current tier is local
   mock state. Feature tests cover interactions and the production browser test
   verifies the KYC boundary.
-- The inventory records 120 pages with mock/simulation references. No page has
+- The inventory records 12 pages with mock/simulation references. No page has
   direct runtime access to `fetch`, `WebSocket` or browser storage.
+- A final import-graph and route-reference review removed 13 unreferenced
+  `src/dev/legacy` modules, including unused Arena/trading components, a duplicate
+  Earn loading hook and an unreferenced web education bundle. The generated
+  component count now reflects this cleanup.
 - The production certification manifest still has zero certified pages; E2E
   contract interception does not substitute for verification against a real
   backend staging environment.
@@ -1246,37 +1546,39 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
   page in staging/production. The security overview uses the typed profile
   query page, which shows an error state without backend data instead of
   fabricated settings.
+- The unbacked web security demo pages for anti-phishing, passkey, device trust,
+  login activity, alerts, session management and web 2FA were retired. Their
+  public URLs remain explicit integration-pending routes until contract-backed
+  implementations exist.
 - The latest production artifact was checked for legacy Arena/Launchpad data,
   copy-trading demo code and the DCA optimizer demo; none of those modules are
   present in `dist/assets`.
-- The 5,872-line Launchpad mock/simulation module lives in
-  `src/dev/legacy/launchpad-legacy-fixtures.ts`. Its 22 fixture-backed legacy
-  page implementations and their shared component now live in
-  `src/dev/legacy/launchpad`; routed demos stay behind development-only guards.
-  The inventory follows those implementations; development routes target the demo files directly so
-  mock-reference evidence remains attached to route records.
-- The unused app-level P2P mock service and hook were removed from `app`; the
-  API-shaped stub remains in `src/test/fixtures` for its legacy contract tests.
-- Current boundary checks retain 191 explicit route guards and verify that all
-  109 routed mock-reference pages and 233 routed demo pages stay development-only.
+- The unbacked Launchpad, prediction advanced, referral history/rewards/rules and
+  referral friend-detail implementations were retired. Their public URLs remain
+  available through `IntegrationPendingPage`; no deleted legacy module is loaded
+  by the route graph.
+- The unused app-level P2P mock service, hook and legacy test fixture were
+  removed. Feature tests own their API responses, and development fixtures live
+  under `src/dev/mocks`.
+- Current boundary checks retain 17 explicit route guards and verify that all
+  0 routed mock-reference pages and 2 routed demo pages stay development-only.
   Public route URLs remain available through the guarded route composition;
   unused route-less app-page aliases have been removed.
   The fixture-import gate now has zero routed page consumers; all fixture data
   is isolated under `src/dev/mocks`.
-- Legacy market analytics implementations (`MarketCalendar`,
-  `DerivativesOverview`, `SocialSentiment`, `PortfolioTracker`, `MarketNews`,
-  `TokenUnlocks`, `SocialSignals`, `MarketCorrelations`) now live under
-  `src/dev/legacy/market`; their development routes target those files directly.
-  Referral
-  history/rules/detail pages remain development-only until contract-backed data
-  boundaries are implemented. Static `marketP*Data` and `referralData` modules
-  are excluded from production route loading.
-- The 78 development-only route imports that formerly traversed
-  `src/app/pages` wrappers now resolve directly to their `src/dev/legacy` implementation
-  (profile 5, prediction 6, Arena 23, cross-module 4, referral 4, Launchpad 21,
-  rewards 1, markets 8, responsive 1, and trade-provider tools 5). The public
-  route URLs and production guards are unchanged. Production route targets are
-  not redirected to demo code.
+- Legacy market analytics implementations (`DerivativesOverview`,
+  `SocialSentiment`, `TokenUnlocks` and `SocialSignals`) have been removed after
+  migration to feature-owned contracts. The portfolio tracker URL now reuses
+  authenticated wallet analytics. Contract-backed social market sources return
+  503 in development until providers are configured.
+  Referral history/rules/detail pages remain integration-pending until
+  contract-backed data boundaries are implemented. Static `marketP*Data` and
+  `referralData` modules are excluded from production route loading.
+- Remaining development-only route imports that formerly traversed
+  `src/app/pages` wrappers resolve directly to their `src/dev/legacy` implementation.
+  The retired Launchpad, prediction advanced and referral legacy routes now point
+  directly to `IntegrationPendingPage`; public URLs and production guards remain
+  explicit.
 - The remaining 35 development-only import call sites in `src/app/routes.ts`
   also resolve directly to their `src/dev/legacy` implementations. Across both
   route entry files, no development-only target imports through an
@@ -1295,6 +1597,57 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
 - Chart vendors are split into Recharts, chart-math and Lightweight Charts
   chunks. The build no longer emits a chunk-over-500-kB warning; `bundle:check`
   enforces both a 500-kB raw and 250-KiB gzip limit per JavaScript chunk.
+- Market comparison contract tests now cover API-backed pair selection/removal,
+  the four-pair limit, web-prefix navigation, empty data and request retry.
+- Market heatmap contract tests cover category filtering, empty/error states,
+  retry and pair navigation under the active route prefix.
+- P2P Express contract tests cover buy/sell offer selection, amount limits,
+  payment filtering, confirmation URL parameters and retry after an API error.
+- Web auth-success tests cover registration, 2FA, password reset, unknown
+  purposes, countdown redirects and pausing the redirect.
+- DCA annotation tests cover geometric hit-testing, nearest-point snapping and
+  pen, text, arrow, selection, eraser and snap-indicator drawing.
+- DCA history chart tests cover bounded zooming, period labels, capture failure
+  recovery and file-sharing fallback behavior.
+- Browser interaction hook tests cover connection recovery, scroll thresholds,
+  and pull-to-refresh gesture boundaries and failure recovery.
+- Web command bar tests cover keyboard search, breadcrumb navigation and common
+  dashboard, notification and profile destinations.
+- Coachmark tests cover global disablement, delayed priority sequencing,
+  contextual actions and dismiss-all behavior.
+- Shared information-row tests cover optional content, copy feedback, press
+  actions, separators and fee breakdown presentation.
+- Network status banner tests cover offline, reconnecting, recovered and timer
+  cancellation after another connection loss.
+- Shared header tests cover page and standard variants, action priority,
+  notification callbacks, breadcrumb rendering and the double-back guard.
+- P2P marketplace tests cover quick-buy navigation and recovery after three API
+  retry attempts fail and the user requests a refresh.
+- Three-shell navigation tests cover web sections, tablet sidebar expansion,
+  legacy-route active state, keyboard tab wrapping and the trade shortcut.
+- Watchlist tests cover read-only permission enforcement, search filtering,
+  pair-trade navigation and delete retry idempotency.
+- MFA setup tests cover server challenge failures and retries, verification
+  rejection, backup-code acknowledgement, OTP paste filtering and reset on back.
+- Session-expiry page tests verify email masking, login `returnTo` state, and the
+  security recovery paths for explicit logout reasons.
+- Mobile back-gesture tests cover edge start, horizontal threshold, vertical and
+  short gestures, and the disabled root-tab state.
+- Shell-composition tests cover web authentication chrome, standard versus
+  full-bleed layout, tablet platform context, and tablet-prefixed search routing.
+- Order-book component tests cover localized loading/error/retry states, ask and
+  bid precision, the eight-level display limit and last-price direction. They
+  exposed and fixed mojibake in the Vietnamese loading and retry messages.
+- Earn redemption coverage rejects amounts above the position, then proves a
+  failed redemption retry preserves both the request and idempotency key.
+- DCA wallet deep-link coverage verifies that a normalized preselected coin is
+  consumed once, shown in the create sheet, and preserved in the create request.
+  It caught and fixed the sheet retaining its default coin when route state arrived
+  after the sheet mounted.
+- Platform tests cover exact `/w` and `/t` prefix segments, phone routes whose
+  names start with those letters, viewport breakpoints and responsive shell selection.
+- The unused shared chart-data generator was removed after its only caller, the
+  retired development ChartTestPage, disappeared from the current source graph.
 - P2P marketplace filtering and sorting now live in a pure feature-library
   function, with focused tests for side, status, asset, search, payment, trader,
   amount and sort rules. Dust conversion contract coverage also exercises the
@@ -1302,15 +1655,31 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
 - DCA plan create/update/delete, P2P escrow release and copy relationship
   activation/stop retry coverage verifies
   that an unchanged transaction reuses its idempotency key after a transient failure.
-- The latest verified local gates include typecheck, lint warning budget,
-  formatting, 2,005 unit/integration tests across 212 files, margin
-  suite (95 passed, 4 skipped), security, environment, OpenAPI, architecture,
-  inventory, page size, production route/mock boundaries, dependency
-  audit/license policy, production build and raw/gzip bundle budgets. The latest
-  full browser run passed all 39 checks, including MFA login, escrow release,
-  open-order modification and wallet withdrawal. Two earlier full runs briefly
-  failed to observe the withdrawal success state; the wallet suite and two later
-  subsequent full browser runs passed. Contract interception still does not certify live backend staging.
+- The latest full local verification used Node 22.23.3 on Windows. All
+  2,188 unit/integration tests passed across 271 files. Coverage passed the
+  enforced gate at 91.79% lines, 90.00% statements, 86.91% functions and
+  84.62% branches. Typecheck, full lint (zero warnings), format, architecture,
+  inventory, security/environment/OpenAPI policy, page-size, production
+  route/mock isolation, dependency license and audit checks passed. The
+  production build and bundle budget passed; Rollup emitted only its existing
+  third-party Zod annotation warnings. Chromium contract E2E passed 51/51
+  against mocked API endpoints in a staging-mode build using the Playwright-managed
+  preview; Playwright exited with code 0 after invoking it with a minimal Windows
+  `PATH` containing System32, Node.js and the local binaries. An isolated Windows `npm ci` from the current manifest and
+  lockfile passed with a warning that four install scripts were not allow-listed.
+  The GitHub Ubuntu runner remains unverified. This repository is
+  currently frontend-only and has no backend, so real staging integration is
+  future work. The `/trade/positions`, trading read-boundary and wallet
+  read-boundary changes are included in the unit/build verification.
+  The duplicate legacy margin suite has been removed; its old counts are no
+  longer part of the current workflow.
+- The browser readiness regression check confirms that an unrelated server on
+  port 4173 causes setup to fail before tests start. All 51 browser cases pass
+  against the staging-mode preview. The Playwright-managed server exits cleanly
+  when the Windows command environment includes System32, Node.js and local
+  binaries in `PATH`. The GitHub Ubuntu job has not been run; the isolated clean
+  install warned about four blocked install scripts. Live backend integration is
+  future work because this repository is frontend-only today.
 
 ## Observability boundary
 

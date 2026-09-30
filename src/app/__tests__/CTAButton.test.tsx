@@ -10,7 +10,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { CTAButton } from '../components/ui/CTAButton';
+import { CTAButton } from '@/shared/ui/CTAButton';
 
 describe('CTAButton', () => {
   describe('Basic Rendering', () => {

@@ -116,6 +116,7 @@ export function AddressAddPage() {
                 key={item}
                 disabled={!canManageAddressBook}
                 onClick={() => setNetwork(item)}
+                aria-pressed={network === item}
                 className="px-2 py-2.5 rounded-xl text-xs font-semibold"
                 style={{
                   background: network === item ? colors.chipActiveBg : colors.surface2,
@@ -138,6 +139,7 @@ export function AddressAddPage() {
                 key={item}
                 disabled={!canManageAddressBook}
                 onClick={() => setAsset(item)}
+                aria-pressed={asset === item}
                 className="px-4 py-2 rounded-xl text-xs font-semibold"
                 style={{
                   background: asset === item ? colors.chipActiveBg : colors.chipBg,
@@ -166,6 +168,7 @@ export function AddressAddPage() {
               value={address}
               disabled={!canManageAddressBook}
               onChange={(event) => setAddress(event.target.value)}
+              aria-label="Địa chỉ ví"
               placeholder="Nhập hoặc dán địa chỉ…"
               className="flex-1"
               style={{
@@ -180,6 +183,7 @@ export function AddressAddPage() {
             <button
               disabled={!canManageAddressBook}
               onClick={handlePaste}
+              aria-label="Dán địa chỉ từ clipboard"
               className="p-1.5 rounded-lg"
               style={{ background: colors.hoverBg }}
             >
@@ -211,6 +215,7 @@ export function AddressAddPage() {
           <button
             disabled={!canManageAddressBook}
             onClick={() => setWhitelisted((value) => !value)}
+            aria-pressed={whitelisted}
             className="flex items-center gap-3 w-full"
           >
             <div
@@ -253,6 +258,7 @@ export function AddressAddPage() {
         <button
           disabled={!canManageAddressBook}
           onClick={() => setConfirmed((value) => !value)}
+          aria-pressed={confirmed}
           className="flex items-start gap-3"
         >
           <span

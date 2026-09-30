@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { AlertTriangle, CheckCircle, Clock, Lock, ShieldCheck, Unlock } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router';
+import { ApiError } from '@/shared/api/api-error';
 import { ErrorState } from '@/shared/ui/ErrorState';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
@@ -32,6 +33,7 @@ export function P2PEscrowDetailPage() {
   const [code, setCode] = useState('');
   const [verificationToken, setVerificationToken] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
+  const markPaidAttemptRef = useRef<{ orderId: string; key: string } | null>(null);
   const releaseAttemptRef = useRef<{ signature: string; key: string } | null>(null);
   const order = orderQuery.data;
 
@@ -40,8 +42,12 @@ export function P2PEscrowDetailPage() {
     try {
       const challenge = await challengeMutation.mutateAsync();
       setChallengeId(challenge.id);
-    } catch {
-      setActionError('Không thể tạo thử thách xác thực release.');
+    } catch (error) {
+      setActionError(
+        error instanceof ApiError && error.status === 403
+          ? 'Không có quyền tạo thử thách xác thực release escrow.'
+          : 'Không thể tạo thử thách xác thực release.',
+      );
     }
   };
 
@@ -53,6 +59,32 @@ export function P2PEscrowDetailPage() {
       setVerificationToken(result.verificationToken);
     } catch {
       setActionError('Mã xác thực không hợp lệ hoặc đã hết hạn.');
+    }
+  };
+
+  const markPaid = async () => {
+    if (!orderId) return;
+    setActionError(null);
+    if (markPaidAttemptRef.current?.orderId !== orderId) {
+      markPaidAttemptRef.current = {
+        orderId,
+        key: `p2p-mark-paid-${orderId}-${crypto.randomUUID()}`,
+      };
+    }
+    try {
+      await markPaidMutation.mutateAsync({
+        idempotencyKey: markPaidAttemptRef.current.key,
+      });
+      markPaidAttemptRef.current = null;
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 409) {
+        setActionError(
+          'Đơn hàng không thể chuyển sang trạng thái đã thanh toán (HTTP 409). Hãy kiểm tra trạng thái mới nhất trước khi thử lại.',
+        );
+        await orderQuery.refetch();
+        return;
+      }
+      setActionError('Không thể đánh dấu đã thanh toán.');
     }
   };
 
@@ -75,7 +107,14 @@ export function P2PEscrowDetailPage() {
       setVerificationToken(null);
       setChallengeId(null);
       await orderQuery.refetch();
-    } catch {
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 409) {
+        setActionError(
+          'Đơn hàng không thể chuyển sang trạng thái đã release (HTTP 409). Hãy kiểm tra trạng thái mới nhất trước khi thử lại.',
+        );
+        await orderQuery.refetch();
+        return;
+      }
       setActionError('Không thể release escrow. Vui lòng thử lại.');
     }
   };
@@ -196,12 +235,7 @@ export function P2PEscrowDetailPage() {
             type="button"
             aria-label="Mark order paid"
             disabled={markPaidMutation.isPending}
-            onClick={() =>
-              void markPaidMutation
-                .mutateAsync()
-                .then(() => orderQuery.refetch())
-                .catch(() => setActionError('Không thể đánh dấu đã thanh toán.'))
-            }
+            onClick={() => void markPaid()}
             className="w-full rounded-xl py-3 font-bold"
             style={{
               background: '#3B82F6',
@@ -264,7 +298,7 @@ export function P2PEscrowDetailPage() {
             </button>
           </TrCard>
         )}
-        {verificationToken && (
+        {verificationToken && canRelease && (
           <button
             type="button"
             aria-label="Confirm escrow release"

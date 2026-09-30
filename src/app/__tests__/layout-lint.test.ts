@@ -44,24 +44,8 @@ const PAGE_ROOTS = [
  */
 const GUARDED_FILES = [
   'src/features/market/pages/MarketHomePage.tsx',
-  'src/dev/legacy/arena/ArenaHomePage.tsx',
   'src/features/arena/pages/ArenaContractPages.tsx',
-  'src/dev/legacy/arena/MyArenaPage.tsx',
-  'src/dev/legacy/arena/ArenaCreatorPage.tsx',
-  'src/dev/legacy/arena/ArenaLeaderboardPage.tsx',
-  'src/dev/legacy/arena/ArenaPredictionBridgeFoundationPage.tsx',
-  'src/dev/legacy/arena/ArenaProductionReadyPage.tsx',
-  'src/dev/legacy/arena/MyArenaReportsPage.tsx',
   // Sprint 7-8 Arena migrations (10 files)
-  'src/dev/legacy/arena/ArenaStudioPage.tsx',
-  'src/dev/legacy/arena/ArenaUniversalPresetLibraryPage.tsx',
-  'src/dev/legacy/arena/ConnectedEcosystemProductionPage.tsx',
-  'src/dev/legacy/arena/ArenaPointsLedgerPage.tsx',
-  'src/dev/legacy/arena/ArenaResolutionCenterPage.tsx',
-  'src/dev/legacy/arena/ArenaBlockedUsersPage.tsx',
-  'src/dev/legacy/arena/ArenaReportCasePage.tsx',
-  'src/dev/legacy/arena/ArenaJoinPage.tsx',
-  'src/dev/legacy/arena/ArenaPointsEntryDetailPage.tsx',
   'src/features/earn/pages/EarnPage.tsx',
   'src/app/pages/p2p/P2PHomePage.tsx',
   'src/features/p2p/pages/P2PMyAdsContractPage.tsx',
@@ -70,9 +54,8 @@ const GUARDED_FILES = [
   'src/features/p2p/pages/P2PEscrowDetailPage.tsx',
   'src/features/p2p/pages/P2PCreateAdContractPage.tsx',
   'src/features/p2p/pages/P2PPaymentMethodsPage.tsx',
-  // Sprint 9 P2P Insurance migrations
-  'src/dev/legacy/p2p/P2PInsuranceFundPage.tsx',
-  'src/dev/legacy/p2p/P2PContributionHistoryPage.tsx',
+  // P2P integration-status pages are feature-owned and read-only.
+  'src/features/p2p/pages/P2PFrontendStatusPages.tsx',
   'src/features/profile/pages/ProfileContractPage.tsx',
   'src/dev/legacy/profile/SettingsPage.tsx',
   'src/features/profile/pages/SecurityContractPage.tsx',
@@ -91,7 +74,8 @@ const GUARDED_FILES = [
   'src/app/pages/wallet/AssetDetailPage.tsx',
   'src/features/wallet/pages/WalletTransferContractPage.tsx',
   'src/features/market/pages/MarketListPage.tsx',
-  'src/dev/legacy/trading/ConvertPage.tsx',
+  'src/features/trading/pages/OrderReceiptPage.tsx',
+  'src/features/auth/pages/RegisterPage.tsx',
 ];
 
 /**

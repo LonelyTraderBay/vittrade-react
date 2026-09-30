@@ -29,197 +29,47 @@ const protectedPages = [
   'AnalyticsDashboard',
   'ABTestDashboard',
   'FunnelDashboard',
-  'ConvertPage',
-  'FuturesPage',
-  'LeveragePage',
-  'RiskManagementDemoPage',
-  'ExecutionQualityDemoPage',
-  'AdvancedToolsDemoPage',
-  'MarginTradingPage',
-  'AdvancedTradingDemoPage',
-  'MarketDataAnalyticsPage',
-  'MarginTradingHubPage',
-  'LiveMarketDataAnalyticsPage',
-  'AdvancedAnalyticsPage',
-  'PositionDashboardPage',
-  'WalletMultiManagerPage',
-  'WalletTokenApprovalPage',
-  'BuyCryptoPage',
-  'WalletGasOptimizerPage',
-  'WalletHealthScorePage',
-  'PendingDepositsPage',
-  'NetworkStatusPage',
-  'P2POrderBookPage',
-  'P2PWalletTransferPage',
-  'P2PMerchantApplyPage',
-  'P2PDisputePage',
-  'P2PDisputeEvidencePage',
-  'P2PDisputeResolutionPage',
-  'P2PInsurancePolicyPage',
-  'P2PInsuranceScorePage',
-  'P2PInsuranceCertificatePage',
-  'P2PSettingsPage',
-  'P2PNotificationsSettingsPage',
-  'P2PE2EInfoPage',
-  'P2PSelfieVerificationPage',
-  'P2PVideoVerificationPage',
-  'P2PSuspiciousActivityPage',
-  'P2PFundLockHistoryPage',
   'P2PTransactionLimitsPage',
-  'P2PLimitTrackerPage',
-  'P2PAMLScreeningPage',
-  'P2PSourceOfFundsPage',
-  'P2PLargeTransactionJustificationPage',
-  'P2PPaymentMethodVerificationPage',
-  'P2PPaymentMethodOwnershipPage',
-  'P2PPaymentMethodCoolingPeriodPage',
-  'P2PPaymentMethodHistoryPage',
-  'P2PRiskAssessmentPage',
-  'P2PComplianceOverviewPage',
-  'PredictionPortfolioAnalyzerPage',
-  'PredictionTournamentsPage',
-  'LaunchpadStakingPage',
-  'LaunchpadReceiptPage',
-  'LaunchpadSwapAggregatorPage',
   'P2PInsuranceFundPage',
-  'P2PClaimDetailPage',
   'P2PContributionHistoryPage',
   'P2PKYCStatusPage',
-  'P2PIdentityVerificationPage',
-  'P2PAddressProofPage',
   'P2PSecurityCenterPage',
-  'P2PDeviceManagementPage',
-  'P2PAntiPhishingCodePage',
-  'P2PLoginHistoryPage',
   'P2PWalletPage',
-  'P2PEscrowBalancePage',
-  'P2PTaxReportingPage',
-  'CopyPerformancePage',
-  'CopyNotificationsPage',
   'PerformanceAttributionPage',
-  'CopyAuditLogPage',
   'ProviderApplicationPage',
-  'CopySettingsPage',
-  'SafetyEducationPage',
   'ProviderGovernancePage',
-  'DisputeResolutionPage',
   'CopySafetyCenterPage',
-  'RegulatoryDisclosuresPage',
-  'RegulatoryReportsDashboardPage',
-  'ARMIntegrationStatusPage',
-  'BestExecutionReportsPage',
-  'ExecutionVenueAnalysisPage',
-  'ClientCategorizationPage',
-  'ProductGovernancePage',
-  'TargetMarketDefinitionPage',
-  'ClientMoneyProtectionPage',
-  'CASSReconciliationPage',
-  'InvestorCompensationPage',
-  'ExAnteCostsPage',
-  'RIYCalculatorPage',
-  'ExPostCostsReportPage',
-  'KIDGeneratorPage',
-  'PerformanceScenariosPage',
-  'RiskIndicatorExplainerPage',
-  'ComplaintsHandlingPage',
-  'ComplaintSubmissionPage',
-  'ComplaintTrackingPage',
-  'OmbudsmanReferralPage',
-  'AuditTrailPage',
-  'RegulatoryInspectionReadyPage',
-  'TradeHistoryExportPage',
-  'BotRiskDashboardPage',
-  'BotHistoryPage',
-  'BotPerformanceAnalyticsPage',
-  'BotBacktestingPage',
-  'BotStrategyComparePage',
-  'BotOptimizationPage',
-  'BotPortfolioDashboardPage',
-  'BotDrawdownAnalyzerPage',
-  'BotEquityCurvePage',
-  'BotGuidePage',
-  'BotFAQPage',
-  'BotTaxReportingPage',
-  'BotAPIDocumentationPage',
-  'TradingBotsPage',
-  'UnifiedPortfolioDashboard',
-  'CrossModuleAnalytics',
-  'SmartAlertCenter',
-  'TaxReportCenter',
-  'EnterpriseStatesPage',
-  'PortfolioRiskAnalysisPage',
-  'TransactionReportingPage',
-  'SlippageMonitoringPage',
-  'WithdrawLimitsPage',
-  'ApiManagementPage',
-  'ApiKeyCreatePage',
-  'KYCPage',
-  'SettingsPage',
-  'VIPPage',
-  'ReferralRewardsPage',
-  'RewardsHubPage',
-  'BotEmergencyStopPage',
-  'BotSecuritySettingsPage',
-  'PredictionMarketMakerPage',
-  'PredictionEventCalendarPage',
-  'PredictionSocialPage',
-  'PredictionDataIntegrationPage',
-  'LaunchpadPortfolioPage',
-  'LaunchpadPerformancePage',
-  'LaunchpadIDOBridgePage',
-  'LaunchpadClaimReceiptPage',
-  'LaunchpadBridgeOrderPage',
-  'LaunchpadBatchClaimPage',
-  'LaunchpadNotifSoundPage',
-  'LaunchpadWebhooksPage',
-  'LaunchpadBridgeComparePage',
-  'LaunchpadEventLogPage',
-  'LaunchpadABIDiffPage',
-  'LaunchpadAddressBookPage',
-  'LaunchpadGasTrackerPage',
-  'LaunchpadRebalancePage',
-  'LaunchpadMultisigPage',
-  'LaunchpadLimitOrdersPage',
-  'LaunchpadDCABuilderPage',
-  'LaunchpadRiskAnalyticsPage',
 ];
 
 const protectedShellPages = [
-  'WebTradingBotsPage',
-  'OnboardingFlow',
   'ShellTemplatePage',
-  'WebBotFAQPage',
-  'WebBotGuidePage',
-  'WebBotBacktestingPage',
-  'WebBotHistoryPage',
-  'WebBotPerformanceAnalyticsPage',
-  'WebBotRiskDashboardPage',
-  'WebBotPortfolioDashboardPage',
-  'WebBotStrategyComparePage',
-  'WebBotOptimizationPage',
-  'WebBotDrawdownAnalyzerPage',
-  'WebBotEquityCurvePage',
-  'WebBotTaxReportingPage',
-  'WebBotAPIDocumentationPage',
   'WebRegisterPage',
-  'WebBotRiskDisclosurePage',
-  'WebBotTermsOfServicePage',
-  'WebBotSuitabilityAssessmentPage',
-  'WebBotEmergencyStopPage',
-  'WebBotSecuritySettingsPage',
-  'WebDeviceTrustPage',
-  'WebAntiPhishingSetupPage',
-  'WebPasskeySetupPage',
-  'WebLoginActivityPage',
-  'WebSessionManagementPage',
-  'WebSecurityAlertDetailPage',
-  'WebSecurityAlertListPage',
-  'WebTwoFAManagementPage',
-  'WebDeviceTrustDetailPage',
   'WebArenaHomePage',
-  'WebSecurityAuditPage',
-  'WebSecurityNotificationsPage',
 ];
+
+const developmentOnlyBindings = ['RouteChecker', 'PerformanceMonitor'];
+
+// Public auth pages stay production routes, while their preview-only fixture
+// controls are guarded by this non-production mode flag.
+const fixtureGatedAuthPages = new Set([
+  'src/features/auth/pages/LoginPage.tsx',
+  'src/features/auth/pages/WebLoginPage.tsx',
+]);
+const authFixtureModeDeclaration =
+  /const\s+isAuthFixtureMode\s*=\s*!isProductionBuild\s*&&\s*\(\s*env\.isTest\s*\|\|\s*\(\s*env\.isDev\s*&&\s*env\.dataSource\s*===\s*['"]mock['"]\s*\)\s*\)\s*;/;
+
+async function hasVerifiedAuthFixtureGate(page) {
+  if (!fixtureGatedAuthPages.has(page.path)) return false;
+  if (
+    page.dependencies.mockReferences.length !== 1 ||
+    page.dependencies.mockReferences[0] !== 'isAuthFixtureMode'
+  ) {
+    return false;
+  }
+
+  const pageSource = await readFile(join(repositoryRoot, page.path), 'utf8');
+  return authFixtureModeDeclaration.test(pageSource);
+}
 
 // Một số web-shell route dùng tên component khác tên file legacy.
 const protectedInventoryAliases = new Set(['P2POrderPage']);
@@ -268,6 +118,15 @@ const violations = protectedPages.filter((pageName) => {
   );
   return !declaration.test(protectedRouteBindings);
 });
+
+for (const component of developmentOnlyBindings) {
+  const declaration = new RegExp(
+    `const ${component}\\s*=\\s*isDevelopmentBuild\\s*\\?[\\s\\S]*?:\\s*IntegrationPendingPage;`,
+  );
+  if (!declaration.test(source)) {
+    violations.push(`${component} must be guarded by isDevelopmentBuild`);
+  }
+}
 
 for (const [sourcePath, routeSource] of [
   ['src/app/routeConfig.ts', source],
@@ -352,19 +211,24 @@ const routedMockPagesWithoutBoundary = inventory.pages
   })
   .map((page) => page.path);
 
-const routedMockPagesWithoutDevelopmentBoundary = inventory.pages
-  .filter((page) => page.routePaths.length > 0 && page.dependencies.mockReferences.length > 0)
-  .filter((page) => {
-    const fileName = page.path
-      .split('/')
-      .pop()
-      ?.replace(/\.[^.]+$/, '');
-    const routes = inventory.routes.filter(
-      (route) => route.component === fileName || route.target?.split('/').pop() === fileName,
-    );
-    return routes.length === 0 || routes.some((route) => !route.developmentOnly);
-  })
-  .map((page) => `routed mock page is not development-only: ${page.path}`);
+const routedMockPagesWithoutDevelopmentBoundary = [];
+for (const page of inventory.pages) {
+  if (page.routePaths.length === 0 || page.dependencies.mockReferences.length === 0) continue;
+
+  const fileName = page.path
+    .split('/')
+    .pop()
+    ?.replace(/\.[^.]+$/, '');
+  const routes = inventory.routes.filter(
+    (route) => route.component === fileName || route.target?.split('/').pop() === fileName,
+  );
+  if (routes.length > 0 && routes.every((route) => route.developmentOnly)) continue;
+  if (await hasVerifiedAuthFixtureGate(page)) continue;
+
+  routedMockPagesWithoutDevelopmentBoundary.push(
+    `routed mock page is not development-only: ${page.path}`,
+  );
+}
 violations.push(...routedMockPagesWithoutDevelopmentBoundary);
 
 const routedDemoPagesWithoutDevelopmentBoundary = inventory.pages
@@ -393,10 +257,13 @@ if (!source.includes("from './pages/system/IntegrationPendingPage'")) {
 if (!routesSource.includes("from './pages/system/IntegrationPendingPage'")) {
   violations.push('routes.ts IntegrationPendingPage import');
 }
-if (!source.includes("from './config/env'") || !source.includes('isDevelopmentBuild')) {
+if (!source.includes("from '@/shared/config/env'") || !source.includes('isDevelopmentBuild')) {
   violations.push('routeConfig.ts environment boundary import');
 }
-if (!routesSource.includes("from './config/env'") || !routesSource.includes('isDevelopmentBuild')) {
+if (
+  !routesSource.includes("from '@/shared/config/env'") ||
+  !routesSource.includes('isDevelopmentBuild')
+) {
   violations.push('routes.ts environment boundary import');
 }
 if (

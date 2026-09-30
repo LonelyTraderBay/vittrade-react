@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { apiClient } from '@/shared/api/app-client';
 import type {
+  ArenaDiscoveryResponse,
   ArenaChallengeDetail,
   ArenaModeDetail,
   JoinArenaChallengeResponse,
@@ -113,14 +114,52 @@ const joinedSchema = z.object({
   challenge: challengeSchema,
   auditEventId: z.string(),
 }) satisfies z.ZodType<JoinArenaChallengeResponse>;
+const discoveryModeSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  description: z.string(),
+  cloneCount: z.number().int().nonnegative(),
+  activeChallenges: z.number().int().nonnegative(),
+  fairPlay: z.boolean(),
+  icon: z.string(),
+  color: z.string().regex(/^#[\da-f]{6}$/i),
+  complexity: z.enum(['easy', 'medium', 'advanced']),
+  creator: creatorSchema,
+  completionRate: z.number().min(0).max(100),
+  tags: z.array(z.string()),
+});
+const discoveryChallengeSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  description: z.string(),
+  modeId: z.string(),
+  modeName: z.string(),
+  creator: creatorSchema,
+  entryPoints: z.number().nonnegative(),
+  prizePool: z.number().nonnegative(),
+  slotsTotal: z.number().int().positive(),
+  slotsFilled: z.number().int().nonnegative(),
+  format: z.string(),
+  startsAt: z.string().datetime({ offset: true }),
+});
+const discoverySchema = z.object({
+  modes: z.array(discoveryModeSchema),
+  challenges: z.array(discoveryChallengeSchema),
+}) satisfies z.ZodType<ArenaDiscoveryResponse>;
 
 export interface ArenaApi {
+  getDiscovery(signal?: AbortSignal): Promise<ArenaDiscoveryResponse>;
   getMode(id: string, signal?: AbortSignal): Promise<ArenaModeDetail>;
   getChallenge(id: string, signal?: AbortSignal): Promise<ArenaChallengeDetail>;
   joinChallenge(id: string, idempotencyKey: string): Promise<JoinArenaChallengeResponse>;
 }
 
 export const arenaApi: ArenaApi = {
+  async getDiscovery(signal) {
+    return discoverySchema.parse(
+      await apiClient.request<unknown>({ method: 'GET', path: '/arena/discovery', signal }),
+    );
+  },
   async getMode(id, signal) {
     return modeSchema.parse(
       await apiClient.request<unknown>({

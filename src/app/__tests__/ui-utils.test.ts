@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { cn } from '../components/ui/utils';
+import { cn } from '@/shared/ui/utils';
 
 describe('ui class utilities', () => {
   it('merges Tailwind class conflicts deterministically', () => {

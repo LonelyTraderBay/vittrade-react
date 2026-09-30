@@ -1,10 +1,9 @@
 import React from 'react';
 import { AuthSessionProvider as SharedAuthSessionProvider } from '@/shared/session/AuthContext';
 import type { AuthAdapter } from '@/shared/session/auth-context-types';
-import { apiClient } from '@/shared/api/app-client';
-import { createAuthApi } from '@/features/auth/api/auth-api';
+import { authApi } from '@/features/auth/api/auth-api-instance';
 
-const productionAuthAdapter: AuthAdapter = createAuthApi(apiClient);
+const productionAuthAdapter: AuthAdapter = authApi;
 
 interface AppAuthSessionProviderProps {
   children: React.ReactNode;

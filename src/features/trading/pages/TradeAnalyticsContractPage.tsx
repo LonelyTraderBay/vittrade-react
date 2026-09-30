@@ -6,6 +6,7 @@ import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { useAuth } from '@/shared/session/useAuth';
 import { useTradingAnalyticsQuery } from '../model/analytics-queries';
 import type {
   TradingAnalyticsPeriod,
@@ -19,9 +20,24 @@ type AnalyticsTab = (typeof TABS)[number];
 
 export function TradeAnalyticsContractPage() {
   const colors = useThemeColors();
+  const { hasPermission } = useAuth();
+  const canReadTrading = hasPermission('trade:read');
   const [period, setPeriod] = useState<TradingAnalyticsPeriod>('1M');
   const [tab, setTab] = useState<AnalyticsTab>('overview');
-  const query = useTradingAnalyticsQuery({ period });
+  const query = useTradingAnalyticsQuery({ period }, canReadTrading);
+
+  if (!canReadTrading) {
+    return (
+      <PageLayout>
+        <Header title="Trade Analytics" subtitle="Trading analytics contract" back />
+        <PageContent>
+          <p role="alert" style={{ color: colors.text2 }}>
+            Tài khoản của bạn không có quyền xem dữ liệu giao dịch.
+          </p>
+        </PageContent>
+      </PageLayout>
+    );
+  }
 
   if (query.isPending) {
     return (

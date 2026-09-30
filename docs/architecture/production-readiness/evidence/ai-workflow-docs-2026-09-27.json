@@ -1,0 +1,96 @@
+{
+  "checkedAt": "2026-09-27T16:56:19.484Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "localLinks": { "count": 589, "missing": [] },
+  "format": [
+    { "path": "AGENTS.md", "scope": "whole document", "passed": true },
+    { "path": "README.md", "scope": "changed section", "passed": true },
+    { "path": "ARCHITECTURE.md", "scope": "changed section", "passed": true },
+    {
+      "path": "docs/architecture/production-readiness/PLAN.md",
+      "scope": "changed section",
+      "passed": true
+    },
+    { "path": "docs/ai/WORKFLOW.md", "scope": "whole document", "passed": true }
+  ],
+  "unrelatedChanges": [],
+  "notes": [
+    "README.md, ARCHITECTURE.md and PLAN.md already failed whole-document Prettier before this task; unrelated formatting preserved. Changed sections checked explicitly with Prettier API, bypassing Markdown ignore.",
+    "No application tests run: documentation-only change."
+  ],
+  "evidenceId": "EV-20260927-076",
+  "sessionId": "SESSION-20260927-016",
+  "dirtyFileHashes": {
+    "AGENTS.md": "96adbe762423e5d81d179ad8426ccc644557ab1184072609c59312440f045874",
+    "README.md": "035257e3367b16f6f873b5e56d9fe2986d289c78f0c9180bd9d9de70106434fe",
+    "ARCHITECTURE.md": "b2b3a7ff49f9debd00121e4758f0b77b69348178b413507af5fd2c2df079112b",
+    "docs/architecture/production-readiness/PLAN.md": "5a0ec19b6b34b30fbdcd46764064e71c493b8e43a07bfc47b404bd1e8622dc14",
+    "docs/ai/WORKFLOW.md": "7328481a2b74ff816e37109a2c661459bc0b673f9542b3756f689bdc322205f8"
+  },
+  "scope": "AI workflow documentation; no application certification",
+  "finalCheckedAt": "2026-09-27T16:58:24.988Z",
+  "trackingCheck": {
+    "purpose": "Ledger consistency only; not proof of UI acceptance or production readiness",
+    "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+    "baselineSourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+    "scope": {
+      "tasks": 38,
+      "steps": 205,
+      "pages": 128,
+      "routeDeclarations": 428,
+      "operations": 154,
+      "filesOutsidePlan": 894
+    },
+    "progress": {
+      "tasksDone": 4,
+      "tasksBlocked": 0,
+      "tasksNotApplicable": 0,
+      "stepsDone": 24,
+      "uiPagesDone": 0,
+      "userAcceptedPages": 0,
+      "unresolvedRoutes": 428,
+      "backendOperationsDone": 0
+    },
+    "changedFromBaseline": [
+      ".env.example",
+      ".env.production.example",
+      ".env.staging.example",
+      "AGENTS.md",
+      "ARCHITECTURE.md",
+      "README.md",
+      "docs/architecture/auth-login-mfa-spec.md",
+      "scripts/check-production-mocks.mjs",
+      "src/app/App.tsx",
+      "src/app/components/layout/RootLayout.test.tsx",
+      "src/app/components/layout/RootLayout.tsx",
+      "src/app/contexts/AuthSessionProvider.test.tsx",
+      "src/app/routes.ts",
+      "src/dev/mocks/browser.ts",
+      "src/dev/mocks/handlers.ts",
+      "src/features/auth/pages/LoginPage.tsx",
+      "src/features/auth/pages/WebLoginPage.tsx",
+      "src/features/market/model/market-queries.test.tsx",
+      "src/features/wallet/api/wallet-api.test.ts",
+      "src/main.tsx",
+      "src/shared/api/http-client.test.ts",
+      "src/shared/api/http-client.ts",
+      "src/shared/config/env.test.ts",
+      "src/shared/config/env.ts",
+      "src/shared/session/AuthContext.tsx",
+      "src/vite-env.d.ts"
+    ],
+    "errorCount": 0,
+    "errors": []
+  },
+  "progressAndCheckpointUnchanged": true,
+  "changedOutsideScope": [],
+  "unexpectedNewFiles": [],
+  "trackedDocumentationDiffCheck": "pass",
+  "trackingFormat": {
+    "strategy": "Preserve existing record layout; format updated JSON text without compact reserialization",
+    "baselinePrettier": true,
+    "currentPrettier": true,
+    "jsonParse": "pass"
+  },
+  "validationMethod": "Local Markdown links excluding fenced code; Prettier API on whole AGENTS/WORKFLOW and changed sections of README/ARCHITECTURE/PLAN; before/after SHA-256 over git-listed tracked and untracked files; tracking checker and readiness status comparisons."
+}

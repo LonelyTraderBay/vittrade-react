@@ -1,0 +1,257 @@
+{
+  "checkedAt": "2026-09-29T17:47:04.246Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "branch": "codex/vittrade-architecture-completion",
+  "origin": "http://127.0.0.1:5190",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "p2p.pending",
+    "status": "passed",
+    "persona": "developer (preview only)",
+    "route": "/w/p2p/escrow/p2p002",
+    "additionalRoutes": ["/w/p2p/order/dev-p2p-order-0001"],
+    "operationIds": ["createP2POrder", "getP2POrder", "markP2POrderPaid", "releaseP2POrderEscrow"],
+    "observedOperationIds": [
+      "createP2POrder",
+      "getP2POrder",
+      "markP2POrderPaid",
+      "releaseP2POrderEscrow"
+    ],
+    "supportingOperationIds": [
+      "getP2PAd",
+      "createP2PReleaseChallenge",
+      "verifyP2PReleaseChallenge"
+    ],
+    "expectedDomainOperationCount": 42,
+    "coverage": "representative_browser_observed"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allP2PResponsesFromServiceWorker": true,
+    "p2pStateChangesAreLocalPreviewOnly": true,
+    "externalApiOrigins": [],
+    "realBackendMutationSent": false
+  },
+  "measurements": {
+    "totalFlowMs": 8474,
+    "p2pResponseCount": 11,
+    "p2pMutationCount": 5,
+    "createPendingVisibleMs": 59,
+    "createResponseTimeMs": 2030,
+    "markPaidPendingVisibleMs": 42,
+    "markPaidResponseTimeMs": 2019,
+    "releasePendingVisibleMs": 36,
+    "releaseResponseTimeMs": 2029,
+    "totalApiRequestCount": 14,
+    "pageErrorCount": 0
+  },
+  "assertions": {
+    "ad": {
+      "status": 200,
+      "fromServiceWorker": true,
+      "id": "ad001"
+    },
+    "create": {
+      "status": 201,
+      "receiptStatus": "created",
+      "fromServiceWorker": true,
+      "idempotencyKeyPresent": true,
+      "orderId": "dev-p2p-order-0001",
+      "requestCount": 1,
+      "disabledWhilePending": true,
+      "pendingText": "Đang tạo…",
+      "pendingVisibleAfterMs": 59,
+      "requestResponseMs": 2030
+    },
+    "createdOrder": {
+      "status": 200,
+      "fromServiceWorker": true,
+      "id": "dev-p2p-order-0001",
+      "orderStatus": "pending_payment",
+      "route": "/w/p2p/order/dev-p2p-order-0001"
+    },
+    "markPaid": {
+      "status": 200,
+      "fromServiceWorker": true,
+      "orderStatus": "paid",
+      "idempotencyKeyPresent": true,
+      "requestCount": 1,
+      "disabledWhilePending": true,
+      "pendingText": "Đang cập nhật…",
+      "pendingVisibleAfterMs": 42,
+      "requestResponseMs": 2019
+    },
+    "challenge": {
+      "status": 201,
+      "challengeId": "dev-p2p-release-challenge-0001",
+      "supportingOnly": true
+    },
+    "verification": {
+      "status": 200,
+      "verificationTokenIssued": true,
+      "supportingOnly": true
+    },
+    "release": {
+      "status": 200,
+      "fromServiceWorker": true,
+      "orderStatus": "released",
+      "idempotencyKeyPresent": true,
+      "requestCount": 1,
+      "disabledWhilePending": true,
+      "pendingText": "Đang release…",
+      "pendingVisibleAfterMs": 36,
+      "requestResponseMs": 2029,
+      "finalDetailGetStatus": 200
+    },
+    "observedOperationIds": [
+      "getP2PAd",
+      "createP2POrder",
+      "getP2POrder",
+      "markP2POrderPaid",
+      "createP2PReleaseChallenge",
+      "verifyP2PReleaseChallenge",
+      "releaseP2POrderEscrow"
+    ],
+    "p2pResponses": [
+      {
+        "method": "GET",
+        "path": "/api/p2p/ads/ad001",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 4
+      },
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders",
+        "status": 201,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2030
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders/dev-p2p-order-0001",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 4
+      },
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders/dev-p2p-order-0001/mark-paid",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2019
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders/dev-p2p-order-0001",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 6
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders/p2p002",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 4
+      },
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders/p2p002/release/challenge",
+        "status": 201,
+        "fromServiceWorker": true,
+        "responseTimeMs": 15
+      },
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders/p2p002/release/challenge/dev-p2p-release-challenge-0001/verify",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 15
+      },
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders/p2p002/release",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2029
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders/p2p002",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 5
+      },
+      {
+        "method": "GET",
+        "path": "/api/p2p/orders/p2p002",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 4
+      }
+    ],
+    "p2pMutations": [
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders",
+        "idempotencyKey": "p2p-ad-order-1802684d-b905-4e8a-b2ea-c921718a80cb"
+      },
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders/dev-p2p-order-0001/mark-paid",
+        "idempotencyKey": "p2p-mark-paid-dev-p2p-order-0001-c679f45e-1e06-4479-ac0c-be3e130bab56"
+      },
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders/p2p002/release/challenge",
+        "idempotencyKey": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders/p2p002/release/challenge/dev-p2p-release-challenge-0001/verify",
+        "idempotencyKey": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/p2p/orders/p2p002/release",
+        "idempotencyKey": "p2p-escrow-release-p2p002-aaf10840-59ab-4528-a370-35eb6ccdf566"
+      }
+    ],
+    "requestFailures": [],
+    "pageErrors": []
+  },
+  "screenshots": {
+    "create-inflight": "preview-p2p-pending-create-inflight-2026-09-29-fresh-after-handler-fix.png",
+    "created-order": "preview-p2p-pending-created-order-2026-09-29-fresh-after-handler-fix.png",
+    "mark-paid-inflight": "preview-p2p-pending-mark-paid-inflight-2026-09-29-fresh-after-handler-fix.png",
+    "release-inflight": "preview-p2p-pending-release-inflight-2026-09-29-fresh-after-handler-fix.png",
+    "released": "preview-p2p-pending-released-2026-09-29-fresh-after-handler-fix.png"
+  },
+  "sourceHashes": {
+    "contracts/openapi/p2p.yaml": "17d7e0c1b198d6adadc9d5a0519c029084257c82132e8e4391891c5e92c2c576",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "93fd4a5f1a7637be2b10775edd8dfbd6e2562f1db3c90112dc3a5959519ca398",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "6deef3b43c51e05c9cd058d8743b23b64a86579f474ce0486830359ac50ac200",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/p2p/api/p2p-api.ts": "164f6424133e159b1b8dd5a6e23a0bdcd3c5a14c294d1a808cba09d552230b83",
+    "src/features/p2p/model/p2p-order-creation-queries.ts": "b609efdfc5dca0e37f67a1a644829fed8ecf09fdf4ddf646ba763bc05c188f6c",
+    "src/features/p2p/model/p2p-order-action-queries.ts": "1ce6436aec2ec390e2c060b86743468375b2c478aab0e42f1a8c1963140a625e",
+    "src/features/p2p/pages/P2PAdDetailContractPage.tsx": "ed40c1cd81af7d8fdb506128cd549eb6593273880224c76938fe079b92036f65",
+    "src/features/p2p/pages/P2PEscrowDetailPage.tsx": "90f39e38073ff3f7f1a9e650bb1f5f5d43a29f6131b3910ee742e7074b07c4a8",
+    "src/features/p2p/routes.ts": "70de2d9cae22dfb45031be5cbe5fe858a863aa2bb82b266bea39ce4137e1dbee"
+  },
+  "limitations": [
+    "All responses and state changes came from the local service worker/MSW; no real backend call or persistence was tested.",
+    "The two-second pending window is injected by the local preview handler and is not backend latency.",
+    "Pending means client request-in-flight only. OpenAPI declares the eventual create receipt (201 created), mark-paid (200 paid) and release (200 released); it does not define a pending server result for these transitions.",
+    "The escrow release flow uses supporting challenge/verify operations outside the p2p.pending matrix operation set; matrix observed operations remain the four linked operations.",
+    "Only four of 42 linked P2P operations were observed; UI acceptance, backend authorization, replay semantics and staging remain unverified."
+  ]
+}

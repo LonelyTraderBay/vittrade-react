@@ -96,7 +96,10 @@ export function AuthSessionProvider({ children, adapter }: AuthProviderProps) {
     if (typeof BroadcastChannel === 'undefined') return;
     const channel = new BroadcastChannel(AUTH_CHANNEL_NAME);
     const handleMessage = (event: MessageEvent<{ type?: string }>) => {
-      if (event.data?.type === 'logout') applySession(null);
+      if (event.data?.type === 'logout') {
+        ++operationRef.current;
+        applySession(null);
+      }
     };
     channel.addEventListener('message', handleMessage);
     return () => {
@@ -251,6 +254,7 @@ export function AuthSessionProvider({ children, adapter }: AuthProviderProps) {
         const request = { email, password };
         if (adapter.loginSync) {
           const session = adapter.loginSync(request);
+          ++operationRef.current;
           applySession(session);
           return Promise.resolve(session);
         }

@@ -18,8 +18,7 @@ import {
   AlertTriangle,
   BarChart3,
   Target,
-  Percent,
-  DollarSign,
+  type LucideIcon,
 } from 'lucide-react';
 
 /* ═══════════════════════════════════════════════════════════════
@@ -151,7 +150,7 @@ function MetricCard({
   status,
   description,
 }: {
-  icon: any;
+  icon: LucideIcon;
   label: string;
   value: number;
   unit?: string;

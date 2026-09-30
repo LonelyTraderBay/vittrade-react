@@ -10,7 +10,7 @@ interface Props {
   setSavedCodes: React.Dispatch<React.SetStateAction<boolean>>;
   copiedCodes: boolean;
   handleCopyBackupCodes: () => void;
-  handleComplete: () => Promise<void>;
+  handleComplete: () => void;
 }
 
 export function Web2FASetupBackupStep(props: Props) {

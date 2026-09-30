@@ -6,10 +6,11 @@ export const tradingAnalyticsQueryKeys = {
   analytics: (query: TradingAnalyticsQuery) => ['trading', 'analytics', query] as const,
 };
 
-export function useTradingAnalyticsQuery(query: TradingAnalyticsQuery = {}) {
+export function useTradingAnalyticsQuery(query: TradingAnalyticsQuery = {}, enabled = true) {
   return useQuery({
     queryKey: tradingAnalyticsQueryKeys.analytics(query),
     queryFn: ({ signal }) => tradingAnalyticsApi.getAnalytics(query, signal),
+    enabled,
     staleTime: 30_000,
   });
 }

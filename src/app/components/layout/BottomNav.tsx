@@ -1,10 +1,10 @@
 import React, { useContext, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { Home, BarChart2, ArrowLeftRight, Wallet, User } from 'lucide-react';
-import { useHaptic } from '../../hooks/useHaptic';
+import { useHaptic } from '@/shared/hooks/useHaptic';
 import { DEVICE } from './device-layout';
-import { useThemeColors } from '../../hooks/useThemeColors';
-import { useRoutePrefix } from '../../hooks/useRoutePrefix';
+import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { UIContext } from '../../contexts/ui-context';
 import { CountBadge } from './Header';
 

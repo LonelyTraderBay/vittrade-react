@@ -26,13 +26,11 @@ vi.mock('lightweight-charts', () => ({
   })),
 }));
 
-// The order lifecycle boundary is under test here. Presentation-heavy chart,
-// order-book and advanced-form implementations have their own contracts/tests
-// and must not expand this integration test's coverage denominator.
+// The order lifecycle boundary is under test here. Chart, order-book and OCO
+// form rendering stay mocked so these checks focus on order submission.
 vi.mock('./MiniChart', () => ({ MiniChart: () => null }));
 vi.mock('./OrderBook', () => ({ OrderBook: () => null }));
 vi.mock('./RecentTrades', () => ({ RecentTrades: () => null }));
-vi.mock('./TPSLForm', () => ({ TPSLForm: () => null }));
 vi.mock('./QuickPairSwitcher', () => ({
   QuickPairSwitcher: ({ open, onSelect }: { open: boolean; onSelect: (pairId: string) => void }) =>
     open ? (
@@ -154,7 +152,21 @@ const openOrder = {
   fee: 0,
 };
 
-function renderTrade(authAdapter: AuthAdapter = testAuthAdapter, initialEntry = '/trade/btc-usdt') {
+const tradeReadTestAdapter: AuthAdapter = {
+  ...testAuthAdapter,
+  initialSession: {
+    ...testAuthAdapter.initialSession!,
+    user: {
+      ...testAuthAdapter.initialSession!.user,
+      permissions: [...testAuthAdapter.initialSession!.user.permissions, 'trade:read'],
+    },
+  },
+};
+
+function renderTrade(
+  authAdapter: AuthAdapter = tradeReadTestAdapter,
+  initialEntry = '/trade/btc-usdt',
+) {
   return renderWithProviders(
     <Routes>
       <Route path="/trade/:pairId" element={<TradeTerminal />} />
@@ -236,6 +248,59 @@ describe('TradeTerminal contract-backed order lifecycle', () => {
       expect(idempotencyKey).not.toBe('');
     });
     expect(await screen.findByTestId('order-receipt-fee')).toHaveTextContent('12.34');
+  });
+
+  it('blocks invalid TP/SL and submits a complete bracket pair', async () => {
+    const user = userEvent.setup();
+    let requestBody: unknown;
+
+    server.use(
+      http.post('*/trading/orders', async ({ request }) => {
+        requestBody = await request.json();
+        return HttpResponse.json({ ...openOrder, id: 'bracket-order-1' });
+      }),
+    );
+
+    renderTrade();
+    await screen.findByText('BTC/USDT');
+
+    const placeButton = screen.getByRole('button', { name: /Đặt lệnh mua BTC\/USDT/i });
+    fireEvent.change(screen.getByTestId('trade-amount'), { target: { value: '0.1' } });
+    await user.click(screen.getByRole('button', { name: /TP\/SL/ }));
+
+    fireEvent.change(screen.getByLabelText('Take Profit (USDT)'), {
+      target: { value: '64000' },
+    });
+    expect(placeButton).toBeDisabled();
+
+    fireEvent.change(screen.getByLabelText('Take Profit (USDT)'), {
+      target: { value: '70000' },
+    });
+    expect(placeButton).toBeEnabled();
+
+    await user.click(screen.getByRole('button', { name: 'Bracket OFF' }));
+    expect(placeButton).toBeDisabled();
+    fireEvent.change(screen.getByLabelText('Stop Loss (USDT)'), {
+      target: { value: '60000' },
+    });
+    expect(placeButton).toBeEnabled();
+
+    await user.click(placeButton);
+    expect(screen.getByText('Xác nhận lệnh')).toBeInTheDocument();
+    await user.click(screen.getByTestId('trade-confirm-submit'));
+
+    await waitFor(() => {
+      expect(requestBody).toMatchObject({
+        symbol: 'BTC/USDT',
+        side: 'buy',
+        type: 'limit',
+        amount: 0.1,
+        price: 65_000,
+        tpPrice: 70_000,
+        slPrice: 60_000,
+        bracketMode: true,
+      });
+    });
   });
 
   it('submits OCO legs through the order contract and navigates to its receipt', async () => {
@@ -363,6 +428,16 @@ describe('TradeTerminal contract-backed order lifecycle', () => {
       expect(requestBody).toMatchObject({ side: 'sell', amount: 1, symbol: 'BTC/USDT' });
     });
     expect(await screen.findByTestId('order-receipt-id')).toHaveTextContent('sell-order-1');
+  });
+
+  it('converts the selected quote-balance percentage into base-asset amount for buys', async () => {
+    const user = userEvent.setup();
+    renderTrade();
+    await screen.findByText('BTC/USDT');
+
+    await user.click(screen.getByRole('button', { name: '25%' }));
+
+    expect(screen.getByTestId('trade-amount')).toHaveValue(0.384615);
   });
 
   it('blocks a buy order whose total exceeds the available quote balance', async () => {
@@ -561,7 +636,7 @@ describe('TradeTerminal contract-backed order lifecycle', () => {
         ...testAuthAdapter.initialSession!,
         user: {
           ...testAuthAdapter.initialSession!.user,
-          permissions: ['market:read'],
+          permissions: ['market:read', 'trade:read'],
         },
       },
     };
@@ -578,6 +653,42 @@ describe('TradeTerminal contract-backed order lifecycle', () => {
     await userEvent.setup().click(screen.getByRole('tab', { name: /Đang mở/ }));
     expect(await screen.findByRole('button', { name: 'Sửa' })).toBeDisabled();
     expect(screen.getByTestId('cancel-order-open-order-1')).toBeDisabled();
+  });
+
+  it('does not request or render account orders without trade read permission', async () => {
+    let orderRequests = 0;
+    const marketOnlyAdapter: AuthAdapter = {
+      ...testAuthAdapter,
+      initialSession: {
+        ...testAuthAdapter.initialSession!,
+        user: {
+          ...testAuthAdapter.initialSession!.user,
+          permissions: ['market:read'],
+        },
+      },
+    };
+    const accountOrder = { ...openOrder, symbol: 'PRIVATE/USDT' };
+    server.use(
+      http.get('*/trading/orders', () => {
+        orderRequests += 1;
+        return HttpResponse.json({ items: [accountOrder] });
+      }),
+      http.get('*/trading/orders/history', () => {
+        orderRequests += 1;
+        return HttpResponse.json({ items: [accountOrder] });
+      }),
+    );
+
+    renderTrade(marketOnlyAdapter);
+    await screen.findByText('BTC/USDT');
+    const user = userEvent.setup();
+
+    await user.click(screen.getByRole('tab', { name: /Đang mở/ }));
+    expect(screen.getByRole('alert')).toHaveTextContent('không có quyền xem lệnh');
+    await user.click(screen.getByRole('tab', { name: 'Lịch sử' }));
+    expect(screen.getByRole('alert')).toHaveTextContent('không có quyền xem lệnh');
+    expect(screen.queryByText('PRIVATE/USDT')).not.toBeInTheDocument();
+    expect(orderRequests).toBe(0);
   });
 
   it('rejects OCO submission in the terminal handler for a read-only session', async () => {

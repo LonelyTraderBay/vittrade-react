@@ -1,0 +1,91 @@
+{
+  "generatedAt": "2026-09-27T17:18:40Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "workingTree": "dirty; pre-existing application/documentation changes preserved",
+  "scope": {
+    "tasks": 38,
+    "steps": 205,
+    "pages": 128,
+    "routeDeclarations": 428,
+    "uniqueRoutePaths": 380,
+    "developmentOnlyRouteDeclarations": 37,
+    "operations": 154,
+    "filesOutsidePlanArtifacts": 894
+  },
+  "progress": {
+    "tasksDone": 5,
+    "tasksDonePercent": 13.2,
+    "stepsDone": 25,
+    "stepsDonePercent": 12.2,
+    "stepsTodo": 180,
+    "stepsInProgress": 0,
+    "tasksBlocked": 0,
+    "groupA": {
+      "tasksDone": 5,
+      "tasksTotal": 8,
+      "stepsDone": 25,
+      "stepsTotal": 40,
+      "stepsDonePercent": 62.5
+    },
+    "completedTasks": ["A01", "A02", "A03", "A04", "A05"],
+    "completedSteps": [
+      "A01.01",
+      "A01.02",
+      "A01.03",
+      "A01.04",
+      "A01.05",
+      "A02.01",
+      "A02.02",
+      "A02.03",
+      "A02.04",
+      "A02.05",
+      "A03.01",
+      "A03.02",
+      "A03.03",
+      "A03.04",
+      "A03.05",
+      "A04.01",
+      "A04.02",
+      "A04.03",
+      "A04.04",
+      "A04.05",
+      "A05.01",
+      "A05.02",
+      "A05.03",
+      "A05.04",
+      "A05.05"
+    ],
+    "uiPagesDone": 0,
+    "userAcceptedPages": 0,
+    "unresolvedRoutes": 428,
+    "backendOperationsCertified": 0,
+    "milestones": { "M1": "todo", "M2": "todo", "M3": "todo", "M4": "todo" }
+  },
+  "nextCheckpoint": {
+    "taskId": "A07",
+    "stepId": "A07.01",
+    "action": "Classify all route declarations from source and record evidence before resolving concrete URLs in A07.02."
+  },
+  "verification": {
+    "ledger": {
+      "command": "node docs/architecture/production-readiness/check-tracking.mjs",
+      "exitCode": 0,
+      "errorCount": 0
+    },
+    "format": {
+      "command": "node ./node_modules/prettier/bin/prettier.cjs --check PLAN.md TRACKING.json UI-RUNBOOK.md evidence/A05/same-origin-worker-retirement-2026-09-28.json",
+      "exitCode": 0
+    },
+    "diff": {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "notes": "Git reported configured LF-to-CRLF normalization notices for existing modified files; no whitespace errors."
+    }
+  },
+  "openEvidenceAndLimits": [
+    "C04.02: the isolated production output still contains the 9,666-byte mockServiceWorker.js asset; static-asset exclusion is not complete.",
+    "No real backend/staging environment or approved credentials were used; 0/154 backend operations are certified.",
+    "0/128 UI page records are complete or user-accepted; all 428 route declarations remain unresolved until A07."
+  ],
+  "interpretation": "These percentages measure recorded plan work only. They are not a percentage of Production-Ready or Enterprise-Grade certification."
+}

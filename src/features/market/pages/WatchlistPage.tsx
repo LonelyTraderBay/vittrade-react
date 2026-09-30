@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from 'react';
 import { Search, Star, Trash2, TrendingDown, TrendingUp } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { ErrorState } from '@/shared/ui/ErrorState';
+import { isApiError } from '@/shared/api/api-error';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { SparklineChart } from '@/shared/ui/charts/SparklineChart';
@@ -92,15 +93,30 @@ export function WatchlistPage() {
   }
 
   if (pairsQuery.isError || watchlistQuery.isError) {
+    const hasForbiddenError = [pairsQuery.error, watchlistQuery.error].some(
+      (error) => isApiError(error) && error.status === 403,
+    );
+
     return (
       <PageLayout>
         <Header title="Danh sách theo dõi" subtitle="Markets" back />
-        <ErrorState
-          onAction={() => {
-            void pairsQuery.refetch();
-            void watchlistQuery.refetch();
-          }}
-        />
+        {hasForbiddenError ? (
+          <div role="alert" className="px-5 py-12 text-center">
+            <p style={{ color: colors.text1, fontSize: 16, fontWeight: 600 }}>
+              Không có quyền xem danh sách theo dõi
+            </p>
+            <p style={{ color: colors.text2, fontSize: 13, marginTop: 8 }}>
+              Tài khoản hiện tại không được phép truy cập dữ liệu watchlist.
+            </p>
+          </div>
+        ) : (
+          <ErrorState
+            onAction={() => {
+              void pairsQuery.refetch();
+              void watchlistQuery.refetch();
+            }}
+          />
+        )}
       </PageLayout>
     );
   }

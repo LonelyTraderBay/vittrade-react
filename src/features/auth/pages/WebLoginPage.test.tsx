@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { useLocation } from 'react-router';
 import { fireEvent } from '@testing-library/react';
+import { ApiError } from '@/shared/api/api-error';
 import { renderWithProviders, screen, userEvent, waitFor } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
 import { WebLoginPage } from './WebLoginPage';
@@ -187,10 +188,32 @@ describe('WebLoginPage', () => {
     await waitFor(() =>
       expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/account-locked'),
     );
-    expect(
-      JSON.parse(screen.getByTestId('current-route-state').textContent ?? 'null'),
-    ).toMatchObject({ email: 'wrong@test.com', attempts: 5 });
+    expect(screen.getByTestId('current-route-state')).toHaveTextContent('null');
     expect(login).not.toHaveBeenCalled();
+  });
+
+  it('routes the backend account-locked response to the locked page without an invented expiry', async () => {
+    const user = userEvent.setup();
+    const login = vi.fn().mockRejectedValue(new ApiError('account locked', { status: 423 }));
+    renderWithProviders(
+      <>
+        <WebLoginPage />
+        <CurrentRoute />
+      </>,
+      {
+        routerProps: { initialEntries: ['/w/auth/login'] },
+        authAdapter: { ...testAuthAdapter, initialSession: null, login },
+      },
+    );
+
+    await user.type(screen.getByTestId('auth-email'), 'user@example.com');
+    await user.type(screen.getByTestId('auth-password'), 'password');
+    await user.click(screen.getByTestId('auth-submit'));
+
+    await waitFor(() =>
+      expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/account-locked'),
+    );
+    expect(screen.getByTestId('current-route-state')).toHaveTextContent('null');
   });
 
   it('reports backend failure and keeps the user on the login route', async () => {
@@ -211,7 +234,7 @@ describe('WebLoginPage', () => {
     await user.click(screen.getByTestId('auth-submit'));
 
     expect(
-      await screen.findByText('Đăng nhập thất bại. Vui lòng kiểm tra thông tin và thử lại.'),
+      await screen.findByText('Không thể đăng nhập lúc này. Vui lòng thử lại.'),
     ).toBeInTheDocument();
     expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/login');
   });

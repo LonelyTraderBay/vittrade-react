@@ -26,6 +26,12 @@ module.exports = {
       to: { path: '^src/app/' },
     },
     {
+      name: 'application-ui-must-not-import-development-code',
+      severity: 'error',
+      from: { path: '^src/app/(components|pages)/' },
+      to: { path: '^src/dev/' },
+    },
+    {
       name: 'shared-must-not-import-upward',
       severity: 'error',
       from: { path: '^src/shared' },

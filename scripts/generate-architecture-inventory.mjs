@@ -63,6 +63,10 @@ function toRepoPath(path) {
   return relative(repositoryRoot, path).split(sep).join('/');
 }
 
+function compareCodeUnits(left, right) {
+  return left < right ? -1 : left > right ? 1 : 0;
+}
+
 function toDomain(repoPath) {
   const featureMatch = repoPath.match(/^src\/features\/([^/]+)/);
   if (featureMatch) return featureMatch[1];
@@ -99,14 +103,7 @@ function isCompatibilityPageShim(contents) {
   );
 }
 
-function getStatus(
-  repoPath,
-  contents,
-  routeRecords,
-  certification,
-  developmentOnlyPagePaths,
-  productionPagePaths,
-) {
+function getStatus(repoPath, contents, routeRecords, certification) {
   const pageRoutes = getRouteRecordsForPage(repoPath, routeRecords, contents);
   if (
     pageRoutes.length === 0 &&
@@ -125,13 +122,10 @@ function getStatus(
   ) {
     return 'demo';
   }
-  if (
-    pageRoutes.length > 0 &&
-    (pageRoutes.every((route) => route.developmentOnly) ||
-      (developmentOnlyPagePaths.has(repoPath) && !productionPagePaths.has(repoPath)))
-  ) {
-    return 'demo';
-  }
+  // Route exposure and page readiness are different facts: feature pages kept
+  // behind a production boundary remain integration-pending, while prototypes
+  // are identified by their source ownership or explicit demo/test names above.
+  if (pageRoutes.every((route) => route.developmentOnly)) return 'integration-pending';
   if (certification?.[validatedProductionEvidence]) return 'production';
   return 'integration-pending';
 }
@@ -536,6 +530,18 @@ function extractRouteRecords(repoPath, contents) {
       const pathProperty = getProperty(node, 'path');
       const indexProperty = getProperty(node, 'index');
       const componentProperty = getProperty(node, 'Component');
+      const elementProperty = getProperty(node, 'element');
+      const elementExpression = elementProperty?.initializer;
+      const isReactCreateElement =
+        elementExpression &&
+        ts.isCallExpression(elementExpression) &&
+        ts.isPropertyAccessExpression(elementExpression.expression) &&
+        ts.isIdentifier(elementExpression.expression.expression) &&
+        elementExpression.expression.expression.text === 'React' &&
+        elementExpression.expression.name.text === 'createElement';
+      const componentExpression =
+        componentProperty?.initializer ??
+        (isReactCreateElement ? elementExpression.arguments[0] : undefined);
       const declaredPath =
         pathProperty && ts.isStringLiteral(pathProperty.initializer)
           ? pathProperty.initializer.text
@@ -547,12 +553,11 @@ function extractRouteRecords(repoPath, contents) {
             ? inheritedPath
             : undefined;
 
-      if (routePath && componentProperty) {
-        const { component, componentSlot, targetPath, targetDevelopmentOnly } = getComponentTarget(
-          componentProperty.initializer,
-        );
+      if (routePath && componentExpression) {
+        const { component, componentSlot, targetPath, targetDevelopmentOnly } =
+          getComponentTarget(componentExpression);
 
-        if (component) {
+        if (component && component !== 'Navigate') {
           routes.push({
             path: routePath,
             component,
@@ -1200,19 +1205,6 @@ async function buildInventory() {
       }
     }
   }
-  const developmentOnlyPagePaths = new Set();
-  const productionPagePaths = new Set();
-  for (const route of routeRecords) {
-    const pagePath = pagePathForRouteTarget(
-      route.target,
-      route.source,
-      pagePaths,
-      developmentShimByTarget,
-    );
-    if (!pagePath) continue;
-    if (route.developmentOnly) developmentOnlyPagePaths.add(pagePath);
-    else productionPagePaths.add(pagePath);
-  }
   const pageContentCache = new Map();
   for (const route of routeRecords) {
     const adapterPath = pagePathForRouteTarget(
@@ -1280,14 +1272,7 @@ async function buildInventory() {
       path,
       domain: toDomain(path),
       owner: getOwner(path),
-      status: getStatus(
-        path,
-        contents,
-        routeRecords,
-        certification,
-        developmentOnlyPagePaths,
-        productionPagePaths,
-      ),
+      status: getStatus(path, contents, routeRecords, certification),
       lines: contents.split(/\r?\n/).length,
       routePaths: routePathsForPage(path, routeRecords, contents),
       dependencies,
@@ -1349,7 +1334,8 @@ async function buildInventory() {
       ]),
     ).values(),
   ].sort(
-    (left, right) => left.path.localeCompare(right.path) || left.source.localeCompare(right.source),
+    (left, right) =>
+      compareCodeUnits(left.path, right.path) || compareCodeUnits(left.source, right.source),
   );
   const pageStatusCounts = countBy(pages, 'status');
 
@@ -1381,12 +1367,12 @@ async function buildInventory() {
         Object.values(page.dependencies.directRuntimeAccess).some(Boolean),
       ).length,
     },
-    pages: pages.sort((left, right) => left.path.localeCompare(right.path)),
+    pages: pages.sort((left, right) => compareCodeUnits(left.path, right.path)),
     routes,
-    components: components.sort((left, right) => left.path.localeCompare(right.path)),
-    dataModules: dataModules.sort((left, right) => left.path.localeCompare(right.path)),
-    services: services.sort((left, right) => left.path.localeCompare(right.path)),
-    mocks: mocks.sort((left, right) => left.path.localeCompare(right.path)),
+    components: components.sort((left, right) => compareCodeUnits(left.path, right.path)),
+    dataModules: dataModules.sort((left, right) => compareCodeUnits(left.path, right.path)),
+    services: services.sort((left, right) => compareCodeUnits(left.path, right.path)),
+    mocks: mocks.sort((left, right) => compareCodeUnits(left.path, right.path)),
   };
 }
 

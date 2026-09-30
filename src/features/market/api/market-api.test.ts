@@ -313,6 +313,387 @@ describe('market API contract', () => {
     ).resolves.toEqual({ items: [mover], updatedAt: '2026-09-21T10:00:00.000Z' });
   });
 
+  it('loads filtered market news and rejects non-HTTPS article links', async () => {
+    const item = {
+      id: 'news-1',
+      title: 'Market update',
+      summary: 'Summary from the configured source.',
+      category: 'market',
+      sentiment: 'neutral',
+      source: 'Market Source',
+      articleUrl: 'https://news.example.com/article',
+      publishedAt: '2026-09-26T08:00:00.000Z',
+      relatedPairs: [{ pairId: 'btc-usdt', symbol: 'BTC/USDT' }],
+      isBreaking: false,
+    } as const;
+    const updatedAt = '2026-09-26T08:01:00.000Z';
+    server.use(
+      http.get('http://localhost:3000/api/market/news', ({ request }) => {
+        const url = new URL(request.url);
+        expect(url.searchParams.get('category')).toBe('market');
+        expect(url.searchParams.get('sentiment')).toBe('neutral');
+        expect(url.searchParams.get('limit')).toBe('20');
+        return HttpResponse.json({ items: [item], updatedAt });
+      }),
+    );
+
+    await expect(
+      marketApi.getNews({ category: 'market', sentiment: 'neutral', limit: 20 }),
+    ).resolves.toEqual({ items: [item], updatedAt });
+
+    server.use(
+      http.get('http://localhost:3000/api/market/news', () =>
+        HttpResponse.json({
+          items: [{ ...item, articleUrl: 'http://news.example.com/article' }],
+          updatedAt,
+        }),
+      ),
+    );
+    await expect(marketApi.getNews()).rejects.toThrow();
+  });
+
+  it('loads ordered market calendar events and rejects out-of-order results', async () => {
+    const event = {
+      id: 'event-1',
+      title: 'Token unlock schedule',
+      type: 'unlock',
+      eventAt: '2026-10-01T08:00:00.000Z',
+      symbol: 'ABC',
+      impact: 'high',
+      description: 'An upcoming token unlock event.',
+      sourceUrl: 'https://events.example.com/unlock',
+      confirmed: true,
+    } as const;
+    const updatedAt = '2026-09-26T08:01:00.000Z';
+    server.use(
+      http.get('http://localhost:3000/api/market/calendar', ({ request }) => {
+        const url = new URL(request.url);
+        expect(url.searchParams.get('type')).toBe('unlock');
+        expect(url.searchParams.get('impact')).toBe('high');
+        return HttpResponse.json({ items: [event], updatedAt });
+      }),
+    );
+
+    await expect(marketApi.getCalendar({ type: 'unlock', impact: 'high' })).resolves.toEqual({
+      items: [event],
+      updatedAt,
+    });
+
+    server.use(
+      http.get('http://localhost:3000/api/market/calendar', () =>
+        HttpResponse.json({
+          items: [event, { ...event, id: 'event-2', eventAt: '2026-09-30T08:00:00.000Z' }],
+          updatedAt,
+        }),
+      ),
+    );
+    await expect(marketApi.getCalendar()).rejects.toThrow();
+  });
+
+  it('loads correlations for the requested window and validates pair invariants', async () => {
+    const response = {
+      window: '7d',
+      method: 'pearson',
+      provider: 'Market Source',
+      items: [
+        { assetA: 'BTC', assetB: 'ETH', coefficient: 0.82, observations: 168 },
+        { assetA: 'BTC', assetB: 'SOL', coefficient: -0.24, observations: 168 },
+      ],
+      updatedAt: '2026-09-26T08:00:00.000Z',
+    } as const;
+    server.use(
+      http.get('http://localhost:3000/api/market/correlations', ({ request }) => {
+        expect(new URL(request.url).searchParams.get('window')).toBe('7d');
+        return HttpResponse.json(response);
+      }),
+    );
+
+    await expect(marketApi.getCorrelations({ window: '7d' })).resolves.toEqual(response);
+
+    server.use(
+      http.get('http://localhost:3000/api/market/correlations', () =>
+        HttpResponse.json({
+          ...response,
+          items: [
+            ...response.items,
+            { assetA: 'ETH', assetB: 'BTC', coefficient: 0.81, observations: 168 },
+          ],
+        }),
+      ),
+    );
+    await expect(marketApi.getCorrelations({ window: '7d' })).rejects.toThrow();
+
+    server.use(
+      http.get('http://localhost:3000/api/market/correlations', () =>
+        HttpResponse.json({ ...response, window: '30d' }),
+      ),
+    );
+    await expect(marketApi.getCorrelations({ window: '7d' })).rejects.toThrow(/window/);
+  });
+
+  it('loads token unlocks for the requested window and validates source data', async () => {
+    const response = {
+      window: '30d',
+      provider: 'Unlock Source',
+      items: [
+        {
+          id: 'unlock-1',
+          symbol: 'ARB',
+          name: 'Arbitrum',
+          eventAt: '2026-10-01T08:00:00.000Z',
+          amount: 92_650_000,
+          circulatingSupplyPercent: 2.8,
+          category: 'investor',
+          scheduleType: 'cliff',
+          status: 'confirmed',
+          sourceUrl: 'https://unlock.example.com/arb',
+        },
+      ],
+      updatedAt: '2026-09-26T08:00:00.000Z',
+    } as const;
+    server.use(
+      http.get('http://localhost:3000/api/market/unlocks', ({ request }) => {
+        const url = new URL(request.url);
+        expect(url.searchParams.get('window')).toBe('30d');
+        expect(url.searchParams.get('category')).toBe('investor');
+        return HttpResponse.json(response);
+      }),
+    );
+
+    await expect(
+      marketApi.getTokenUnlocks({ window: '30d', category: 'investor' }),
+    ).resolves.toEqual(response);
+
+    server.use(
+      http.get('http://localhost:3000/api/market/unlocks', () =>
+        HttpResponse.json({
+          ...response,
+          items: [
+            ...response.items,
+            { ...response.items[0], id: 'unlock-2', eventAt: '2026-09-30T08:00:00.000Z' },
+          ],
+        }),
+      ),
+    );
+    await expect(marketApi.getTokenUnlocks({ window: '30d' })).rejects.toThrow();
+
+    server.use(
+      http.get('http://localhost:3000/api/market/unlocks', () =>
+        HttpResponse.json({ ...response, window: '90d' }),
+      ),
+    );
+    await expect(marketApi.getTokenUnlocks({ window: '30d' })).rejects.toThrow(/window/);
+  });
+
+  it('loads derivatives snapshots and validates IDs and ordered liquidation buckets', async () => {
+    const response = {
+      provider: 'Derivatives Source',
+      updatedAt: '2026-09-26T08:00:00.000Z',
+      stats: {
+        totalOpenInterest: 10_000,
+        openInterestChange24h: 2.3,
+        totalVolume24h: 20_000,
+        volumeChange24h: 1.5,
+        totalLiquidations24h: 200,
+        longLiquidations24h: 120,
+        shortLiquidations24h: 80,
+        averageFundingRate8h: 0.000012,
+        btcLongShortRatio: 1.18,
+      },
+      pairs: [
+        {
+          id: 'btc-perp',
+          symbol: 'BTC/USDT',
+          name: 'Bitcoin',
+          price: 65_000,
+          change24h: 1.2,
+          fundingRate: 0.0001,
+          openInterest: 4_000,
+          openInterestChange24h: 0.5,
+          volume24h: 8_000,
+          longSharePercent: 60,
+          liquidations24h: { long: 90, short: 10 },
+        },
+      ],
+      liquidationHistory: [
+        { bucketAt: '2026-09-26T04:00:00.000Z', long: 40, short: 20 },
+        { bucketAt: '2026-09-26T08:00:00.000Z', long: 80, short: 60 },
+      ],
+    } as const;
+    server.use(
+      http.get('http://localhost:3000/api/market/derivatives', () => HttpResponse.json(response)),
+    );
+
+    await expect(marketApi.getDerivatives()).resolves.toEqual(response);
+
+    server.use(
+      http.get('http://localhost:3000/api/market/derivatives', () =>
+        HttpResponse.json({
+          ...response,
+          pairs: [response.pairs[0], { ...response.pairs[0], symbol: 'BTC-PERP' }],
+        }),
+      ),
+    );
+    await expect(marketApi.getDerivatives()).rejects.toThrow();
+
+    server.use(
+      http.get('http://localhost:3000/api/market/derivatives', () =>
+        HttpResponse.json({
+          ...response,
+          liquidationHistory: [...response.liquidationHistory].reverse(),
+        }),
+      ),
+    );
+    await expect(marketApi.getDerivatives()).rejects.toThrow();
+  });
+
+  it('loads sentiment for the requested window and validates source distributions', async () => {
+    const response = {
+      window: '7d',
+      provider: 'Sentiment Source',
+      updatedAt: '2026-09-26T08:00:00.000Z',
+      overall: {
+        score: 32,
+        sentiment: 'bullish',
+        totalMentions24h: 1200,
+        mentionsChange24h: 12.5,
+        trendingTokenCount: 4,
+        socialDominance: { btcPercent: 40, ethPercent: 20, otherPercent: 40 },
+      },
+      timeline: [
+        { at: '2026-09-25T08:00:00.000Z', score: 25, mentions: 1000 },
+        { at: '2026-09-26T08:00:00.000Z', score: 32, mentions: 1200 },
+      ],
+      tokens: [
+        {
+          id: 'btc',
+          symbol: 'BTC',
+          name: 'Bitcoin',
+          score: 48,
+          sentiment: 'bullish',
+          mentions24h: 700,
+          mentionsChange24h: 8.2,
+          sentimentSharePercent: { bullish: 60, neutral: 25, bearish: 15 },
+          trendingRank: 1,
+          topTopics: ['ETF flows'],
+        },
+      ],
+      trendingTopics: [{ topic: 'ETF flows', mentions24h: 340, change24h: 21.2 }],
+    } as const;
+    server.use(
+      http.get('http://localhost:3000/api/market/sentiment', ({ request }) => {
+        expect(new URL(request.url).searchParams.get('window')).toBe('7d');
+        return HttpResponse.json(response);
+      }),
+    );
+
+    await expect(marketApi.getSentiment({ window: '7d' })).resolves.toEqual(response);
+
+    server.use(
+      http.get('http://localhost:3000/api/market/sentiment', () =>
+        HttpResponse.json({
+          ...response,
+          tokens: [
+            {
+              ...response.tokens[0],
+              sentimentSharePercent: { bullish: 60, neutral: 25, bearish: 20 },
+            },
+          ],
+        }),
+      ),
+    );
+    await expect(marketApi.getSentiment({ window: '7d' })).rejects.toThrow();
+
+    server.use(
+      http.get('http://localhost:3000/api/market/sentiment', () =>
+        HttpResponse.json({
+          ...response,
+          window: '24h',
+          timeline: [...response.timeline].reverse(),
+        }),
+      ),
+    );
+    await expect(marketApi.getSentiment({ window: '7d' })).rejects.toThrow();
+
+    server.use(
+      http.get('http://localhost:3000/api/market/sentiment', () =>
+        HttpResponse.json({ ...response, window: '24h' }),
+      ),
+    );
+    await expect(marketApi.getSentiment({ window: '7d' })).rejects.toThrow(/window/);
+  });
+
+  it('loads source-attributed signals and validates ordering, links and expiry', async () => {
+    const response = {
+      provider: 'Signals Aggregator',
+      updatedAt: '2026-09-26T08:00:00.000Z',
+      items: [
+        {
+          id: 'signal-1',
+          providerName: 'Provider A',
+          symbol: 'BTC/USDT',
+          direction: 'long',
+          category: 'swing',
+          status: 'active',
+          publishedAt: '2026-09-26T07:00:00.000Z',
+          expiresAt: '2026-10-01T07:00:00.000Z',
+          rationale: 'Source-published market context.',
+          sourceUrl: 'https://signals.example.com/1',
+        },
+        {
+          id: 'signal-2',
+          providerName: 'Provider B',
+          symbol: 'ETH/USDT',
+          direction: 'short',
+          category: 'scalp',
+          status: 'closed',
+          publishedAt: '2026-09-25T07:00:00.000Z',
+          rationale: 'Another source-published note.',
+          sourceUrl: 'https://signals.example.com/2',
+        },
+      ],
+    } as const;
+    server.use(
+      http.get('http://localhost:3000/api/market/signals', () => HttpResponse.json(response)),
+    );
+
+    await expect(marketApi.getSignals()).resolves.toEqual(response);
+
+    server.use(
+      http.get('http://localhost:3000/api/market/signals', () =>
+        HttpResponse.json({ ...response, items: [response.items[0], response.items[0]] }),
+      ),
+    );
+    await expect(marketApi.getSignals()).rejects.toThrow();
+
+    server.use(
+      http.get('http://localhost:3000/api/market/signals', () =>
+        HttpResponse.json({ ...response, items: [...response.items].reverse() }),
+      ),
+    );
+    await expect(marketApi.getSignals()).rejects.toThrow();
+
+    server.use(
+      http.get('http://localhost:3000/api/market/signals', () =>
+        HttpResponse.json({
+          ...response,
+          items: [{ ...response.items[0], sourceUrl: 'http://signals.example.com/1' }],
+        }),
+      ),
+    );
+    await expect(marketApi.getSignals()).rejects.toThrow();
+
+    server.use(
+      http.get('http://localhost:3000/api/market/signals', () =>
+        HttpResponse.json({
+          ...response,
+          items: [{ ...response.items[0], expiresAt: '2026-09-26T06:00:00.000Z' }],
+        }),
+      ),
+    );
+    await expect(marketApi.getSignals()).rejects.toThrow();
+  });
+
   it('uses idempotent mutations for price alerts', async () => {
     const alert = {
       id: 'alert-1',

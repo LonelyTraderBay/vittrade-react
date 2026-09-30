@@ -8,24 +8,49 @@ import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
+import { useAuth } from '@/shared/session/useAuth';
 import { useWalletAssetsQuery, useWalletTransactionsQuery } from '../model/wallet-queries';
 import type { WalletAsset, WalletTransaction } from '../model/wallet-types';
 
 const ACTIONS = [
-  { label: 'Deposit', path: '/wallet/deposit/USDT', icon: Download, color: '#10B981' },
-  { label: 'Withdraw', path: '/wallet/withdraw/USDT', icon: Upload, color: '#EF4444' },
-  { label: 'Transfer', path: '/wallet/transfer', icon: ArrowDownUp, color: '#8B5CF6' },
+  {
+    label: 'Deposit',
+    path: '/wallet/deposit/USDT',
+    icon: Download,
+    color: '#10B981',
+    anyPermission: null,
+  },
+  {
+    label: 'Withdraw',
+    path: '/wallet/withdraw/USDT',
+    icon: Upload,
+    color: '#EF4444',
+    anyPermission: ['wallet:write', 'wallet:withdraw'],
+  },
+  {
+    label: 'Transfer',
+    path: '/wallet/transfer',
+    icon: ArrowDownUp,
+    color: '#8B5CF6',
+    anyPermission: ['wallet:write', 'wallet:transfer', 'transfer:write'],
+  },
 ] as const;
 
 export function WalletOverviewContractPage() {
   const colors = useThemeColors();
   const navigate = useNavigate();
   const shellPrefix = useRoutePrefix();
+  const { hasPermission } = useAuth();
+  const canReadWallet = hasPermission('wallet:read');
+  const visibleActions = ACTIONS.filter(
+    ({ anyPermission }) =>
+      !anyPermission || anyPermission.some((permission) => hasPermission(permission)),
+  );
   const [search, setSearch] = useState('');
   const [hideSmall, setHideSmall] = useState(false);
   const [balanceHidden, setBalanceHidden] = useState(false);
-  const assetsQuery = useWalletAssetsQuery();
-  const transactionsQuery = useWalletTransactionsQuery({ limit: 10 });
+  const assetsQuery = useWalletAssetsQuery(canReadWallet);
+  const transactionsQuery = useWalletTransactionsQuery({ limit: 10 }, canReadWallet);
 
   const filteredAssets = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -35,6 +60,19 @@ export function WalletOverviewContractPage() {
       return asset.symbol.toLowerCase().includes(query) || asset.name.toLowerCase().includes(query);
     });
   }, [assetsQuery.data?.items, hideSmall, search]);
+
+  if (!canReadWallet) {
+    return (
+      <PageLayout>
+        <Header title="Wallet" subtitle="Wallet contract" back />
+        <PageContent>
+          <p role="alert" style={{ color: colors.error }}>
+            Wallet read permission is required to view balances and activity.
+          </p>
+        </PageContent>
+      </PageLayout>
+    );
+  }
 
   if (assetsQuery.isPending || transactionsQuery.isPending) {
     return (
@@ -103,7 +141,7 @@ export function WalletOverviewContractPage() {
         />
 
         <div className="flex flex-wrap gap-2">
-          {ACTIONS.map(({ label, path, icon: Icon, color }) => (
+          {visibleActions.map(({ label, path, icon: Icon, color }) => (
             <button
               key={label}
               type="button"

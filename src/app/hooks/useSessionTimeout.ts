@@ -72,6 +72,7 @@ export function useSessionTimeout({
   const [isWarning, setIsWarning] = useState(false);
   const [isTimedOut, setIsTimedOut] = useState(false);
   const [remainingSeconds, setRemainingSeconds] = useState(0);
+  const isWarningRef = useRef(isWarning);
 
   const lastActivityRef = useRef(Date.now());
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
@@ -82,6 +83,7 @@ export function useSessionTimeout({
 
   onTimeoutRef.current = onTimeout;
   onWarningRef.current = onWarning;
+  isWarningRef.current = isWarning;
 
   const clearAllTimers = useCallback(() => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -146,7 +148,7 @@ export function useSessionTimeout({
     const handleActivity = () => {
       const now = Date.now();
       // Throttle: only reset if at least 5s since last reset
-      if (now - lastActivityRef.current > 5000 && !isWarning) {
+      if (now - lastActivityRef.current > 5000 && !isWarningRef.current) {
         startTimers();
       }
     };
@@ -164,7 +166,7 @@ export function useSessionTimeout({
       });
       clearAllTimers();
     };
-  }, [enabled, isTimedOut, isWarning, startTimers, clearAllTimers]);
+  }, [enabled, isTimedOut, startTimers, clearAllTimers]);
 
   return {
     isWarning,

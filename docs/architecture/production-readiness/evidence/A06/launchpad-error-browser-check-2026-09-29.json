@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-29T05:35:22.960Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "origin": "http://127.0.0.1:4173",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b",
+    "contracts/openapi/launchpad.yaml": "f91848569eda4fc8adbb96ec01c4015d3e8bea488ebfb54c9cbf807afbb7732e",
+    "docs/architecture/production-readiness/evidence/A06/run-launchpad-error-browser-check.mjs": "61811914763f9429c74a19fe728a680ec9e45a6bd19f9dd6a47acb22efd59662",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/dev/PreviewControls.tsx": "4d68e898a2b468cf25c36d0528df0b546fb037e5c4dc6bfcda944be3ecd18759",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "52d20d96c8f1c508e7803cad807003d53f9d1c801276874b4597b92a4b876bbb",
+    "src/dev/mocks/launchpad-fixtures.ts": "7c34266aecc5ab2cb73f4f25bc7f37f6901bcb5fd4c461faf1087f9985e78221",
+    "src/dev/mocks/personas.ts": "4f159d020319b86f5f991c49e7c9063a73afddedea9a4e16d8a7d2fb679a105f",
+    "src/dev/mocks/preview-scenario-handler.test.ts": "78c5ca50f5215fcba9d4a60d125caadde6f44878183abe1b7743abb5e5db91dd",
+    "src/dev/mocks/preview-scenario-handler.ts": "3b204fd9847b1f419891dc7f806bf01a683696652dc377137513978bd837fe9f",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/launchpad/api/launchpad-api.ts": "6cd5169460507947e3baeeb164bb14d27d9c9bf12e6899ab73f631389a40b627",
+    "src/features/launchpad/model/launchpad-queries.ts": "6f90972e9bcf18645b97e9dd5b78a4c17b7377340f163bea451ff417f859b6f9",
+    "src/features/launchpad/pages/LaunchpadContractPages.tsx": "1c0b563300f776353a5b3a0dce37c1b011f3f3aae81c5ae2c4c1f8ea9bf5643c",
+    "src/shared/api/client.ts": "882197549d075a8be1f495c7d2271dcbf1530ff1606190531da59b75020977bb",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2"
+  },
+  "scenario": {
+    "id": "launchpad.error",
+    "domain": "launchpad",
+    "state": "error",
+    "status": "passed",
+    "observedAt": "2026-09-29T05:35:22.960Z",
+    "persona": "developer (local MSW fixture)",
+    "role": "user",
+    "routes": ["/w/launchpad"],
+    "finalRoute": "/w/launchpad",
+    "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
+    "observedOperationIds": ["listLaunchpadProjects"],
+    "operationRequestCounts": {
+      "listLaunchpadProjects": 12,
+      "getLaunchpadProject": 0
+    },
+    "initialListTransportFailures": 6,
+    "retryListTransportFailures": 6,
+    "listTransportFailures": 12,
+    "listHttpResponses": 0,
+    "errorVisibleAfterInitialFailure": true,
+    "retryVisibleAfterInitialFailure": true,
+    "errorVisibleAfterRetry": true,
+    "retryVisibleAfterRetry": true,
+    "falseEmptyStateAbsent": true,
+    "falseSuccessContentAbsent": true,
+    "requests": [
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "observedAtMs": 1790660114718
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "observedAtMs": 1790660114980
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "observedAtMs": 1790660115490
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "observedAtMs": 1790660116507
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "observedAtMs": 1790660116769
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "observedAtMs": 1790660117278
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "observedAtMs": 1790660118969
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "observedAtMs": 1790660119235
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "observedAtMs": 1790660119744
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "observedAtMs": 1790660120747
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "observedAtMs": 1790660121009
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "observedAtMs": 1790660121517
+      }
+    ],
+    "responses": [],
+    "requestFailures": [
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "failure": "net::ERR_FAILED",
+        "observedAtMs": 1790660114719
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "failure": "net::ERR_FAILED",
+        "observedAtMs": 1790660114981
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "failure": "net::ERR_FAILED",
+        "observedAtMs": 1790660115491
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "failure": "net::ERR_FAILED",
+        "observedAtMs": 1790660116508
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "failure": "net::ERR_FAILED",
+        "observedAtMs": 1790660116769
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "failure": "net::ERR_FAILED",
+        "observedAtMs": 1790660117280
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "failure": "net::ERR_FAILED",
+        "observedAtMs": 1790660118983
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "failure": "net::ERR_FAILED",
+        "observedAtMs": 1790660119236
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "failure": "net::ERR_FAILED",
+        "observedAtMs": 1790660119746
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "failure": "net::ERR_FAILED",
+        "observedAtMs": 1790660120748
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "failure": "net::ERR_FAILED",
+        "observedAtMs": 1790660121010
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "failure": "net::ERR_FAILED",
+        "observedAtMs": 1790660121522
+      }
+    ],
+    "writeRequestCount": 0,
+    "externalApiOrigins": [],
+    "elapsedMs": 9031,
+    "screenshots": [
+      "preview-launchpad-error-recoverable-2026-09-29.png",
+      "preview-launchpad-error-retry-2026-09-29.png"
+    ],
+    "sourceHashesReviewed": 180,
+    "staleSourceHashesBeforeRun": [
+      "docs/architecture/production-readiness/evidence/A06/run-launchpad-error-browser-check.mjs"
+    ],
+    "sourceHashReview": {
+      "reviewedPaths": [
+        "docs/architecture/production-readiness/evidence/A06/run-launchpad-error-browser-check.mjs"
+      ],
+      "priorHashes": {
+        "docs/architecture/production-readiness/evidence/A06/run-launchpad-error-browser-check.mjs": "55bb30334f2dc832adf99193a291f0ce666ca316b25254956ae666128c4cdbe9"
+      },
+      "scope": "Only the browser runner changed after the first passing run to wait through observed client retry intervals before recording counts. Application source hashes were already refreshed by that run; behavior stays scoped to the statusless GET project-list failure.",
+      "sourceHashBaselineRefreshedAfterBrowserRun": true
+    },
+    "failures": [],
+    "note": "Local Chromium/MSW observed a statusless transport failure for listLaunchpadProjects, a visible ErrorState and Retry action, and repeated failed list requests after Retry. No false empty or project-success state, writes or external API origins occurred. Launchpad OpenAPI declares no 5xx; this proves local UI resilience only, not backend availability or user acceptance."
+  }
+}

@@ -94,6 +94,36 @@ describe('P2P ad detail contract page', () => {
     expect(await screen.findByTestId('created-order-route')).toHaveTextContent('order-created');
   });
 
+  it('shows conflict guidance after one 409 response without submitting again', async () => {
+    let createRequestCount = 0;
+    server.use(
+      http.get('*/p2p/ads/ad-1', () => HttpResponse.json(ad)),
+      http.post('*/p2p/orders', ({ request }) => {
+        createRequestCount += 1;
+        expect(request.headers.get('Idempotency-Key')).toMatch(/^p2p-ad-order-/);
+        return HttpResponse.json(
+          { code: 'P2P_ORDER_CONFLICT', message: 'Duplicate or conflicting order request.' },
+          { status: 409 },
+        );
+      }),
+    );
+
+    const user = userEvent.setup();
+    renderAdDetail();
+
+    expect(await screen.findByText('Merchant One')).toBeInTheDocument();
+    await user.type(screen.getByRole('spinbutton', { name: 'Fiat amount' }), '100000');
+    await user.click(screen.getByRole('button', { name: 'Xem xác nhận đơn P2P' }));
+    await user.click(screen.getByRole('button', { name: 'Confirm P2P order' }));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Yêu cầu tạo đơn P2P bị trùng hoặc xung đột (HTTP 409). Hãy kiểm tra danh sách đơn trước khi gửi yêu cầu mới.',
+    );
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('created-order-route')).not.toBeInTheDocument();
+    expect(createRequestCount).toBe(1);
+  });
+
   it('keeps order creation disabled for read-only users', async () => {
     server.use(http.get('*/p2p/ads/ad-1', () => HttpResponse.json(ad)));
 

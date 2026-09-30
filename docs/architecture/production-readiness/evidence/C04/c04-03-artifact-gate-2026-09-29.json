@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C04",
+  "stepId": "C04.03",
+  "observedAt": "2026-09-29T15:43:55Z",
+  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "environment": "Windows 11 Pro x64; Node.js v24.19.0; local scripts and isolated C04.02 Vite output; no backend/staging.",
+  "change": {
+    "checker": {
+      "file": "scripts/check-production-mocks.mjs",
+      "beforeSha256": "0ccd398f51b7ef9c9351311f876f6308b9aae457639395ff2e73fee025a92454",
+      "afterSha256": "6838106b2cce95444d7b80a960e6cac924ff293801bbbc5a6006a01e78776861",
+      "behavior": "Inventory every emitted output path; reject mockServiceWorker.js regardless of content; parse every emitted manifest.json, reject malformed JSON and worker references; preserve prior JavaScript forbidden-marker checks."
+    },
+    "test": {
+      "file": "scripts/check-production-mocks.test.mjs",
+      "beforeSha256": null,
+      "afterSha256": "2abf38495bcb08b30c661e1e5f0006501eb22d9a7877f3c758019fd2726c51f1",
+      "cases": [
+        "clean artifact with valid Vite manifest passes",
+        "copied worker path fails even with marker-free worker contents",
+        "manifest worker reference fails even when worker is not emitted",
+        "development fixture marker in JavaScript fails",
+        "malformed manifest fails closed"
+      ]
+    }
+  },
+  "validation": {
+    "command": "node --test scripts/check-production-mocks.test.mjs",
+    "exitCode": 0,
+    "tests": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0
+    },
+    "nodeSyntax": "node --check passed for checker and test files",
+    "isolatedC0402Artifact": {
+      "source": "C:/Users/Joker-PC/AppData/Local/Temp/vittrade-c04-02-production-20260929-1527",
+      "exitCode": 0,
+      "output": "Production mock gate passed: 224 output files inventoried, 221 JavaScript files and 1 manifests inspected."
+    },
+    "preservedRepositoryDist": {
+      "exitCode": 1,
+      "expected": true,
+      "soleViolation": "mockServiceWorker.js: forbidden development worker file path",
+      "interpretation": "The older user dist remains unchanged and correctly fails the strengthened gate until rebuilt."
+    },
+    "sourceBoundary": {
+      "mockImportCheck": "pass; 0 legacy fixture page consumers; current literal static/dynamic import and alias checks pass",
+      "routeBoundaryCheck": "pass; 17 explicit guards, 2 mock routes and 2 demo routes are development-only",
+      "limits": "These source scans do not prove computed dynamic-import expressions or all runtime fallback behavior."
+    },
+    "formattingAndDiff": {
+      "prettier": "pass; --check on checker, test and evidence JSON",
+      "eslint": "pass; checker and test scripts",
+      "nodeSyntax": "pass; node --check on checker and test scripts",
+      "gitDiffCheck": "pass; exit code 0, with existing LF-to-CRLF notices on the dirty working tree"
+    }
+  },
+  "result": "pass",
+  "limits": [
+    "A clean isolated C04.02 production build passes; repository dist is an older output with the worker and is intentionally preserved.",
+    "Artifact checks cover emitted file paths, valid manifest JSON, literal worker references and configured JavaScript markers; this is not a general malware or arbitrary computed-import scanner.",
+    "No browser UI acceptance, backend contract, staging or production deployment was tested."
+  ]
+}

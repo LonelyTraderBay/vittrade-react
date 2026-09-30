@@ -91,7 +91,7 @@ const QUICK_ACTIONS_REGISTER: QuickAction[] = [
     icon: Shield,
     label: 'Xác minh danh tính (KYC)',
     desc: 'Hoàn tất KYC để mở khóa toàn bộ tính năng',
-    route: '/w/settings/kyc',
+    route: '/w/profile/kyc',
     color: '#3B82F6',
   },
   {
@@ -122,7 +122,7 @@ const QUICK_ACTIONS_2FA: QuickAction[] = [
     icon: Shield,
     label: 'Trung tâm bảo mật',
     desc: 'Kiểm tra cài đặt bảo mật khác',
-    route: '/w/settings/security',
+    route: '/w/profile/security',
     color: '#10B981',
   },
   {
