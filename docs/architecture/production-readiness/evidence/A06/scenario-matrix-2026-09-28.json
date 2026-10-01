@@ -4,7 +4,7 @@
     "tracking": "docs/architecture/production-readiness/TRACKING.json",
     "operationMap": "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json",
     "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
-    "generatedAt": "2026-09-30T00:58:12.079Z",
+    "generatedAt": "2026-10-01T07:27:58.408Z",
     "operationMapSha256": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
     "runtimeEvidenceSha256": "f01438ba42bac1dd507e41ef29bd5756642cad278473459b47fef57fd469f7ca"
   },
@@ -15,12 +15,16 @@
     "exactHandlerMappings": 154,
     "operationsWithDirectSharedHandlerTestReferences": 21,
     "scenariosDefined": 106,
-    "scenarioRowsWithFreshBrowserEvidence": 27,
-    "scenarioRowsFullyCoveredByFreshBrowserEvidence": 16,
+    "scenarioRowsWithFreshBrowserEvidence": 25,
+    "scenarioRowsFullyCoveredByFreshBrowserEvidence": 15,
     "uniqueOperationsWithFreshBrowserEvidence": 32,
     "runtimeEvidenceFresh": false,
-    "freshScenarioEvidenceSidecars": 27,
+    "runtimeEvidenceRevision": "historical_baseline",
+    "freshScenarioEvidenceSidecars": 25,
     "registeredScenarioEvidenceSidecars": 35,
+    "historicalBaselineScenarioEvidenceSidecars": 35,
+    "historicalBaselineSidecarsWithCurrentSourceHashes": 25,
+    "sourceHashStaleScenarioEvidenceSidecars": 10,
     "financialDomainsWithPendingUnknownDuplicateCases": [
       "earn",
       "p2p",
@@ -45,7 +49,7 @@
     "Direct shared-handler test references identify mapped test call sites, not response-branch coverage.",
     "Unknown outcome is a client-observed transport ambiguity, not a value added to server status enums.",
     "Backend owners must confirm idempotency and reconciliation semantics before any operation is certified.",
-    "Browser evidence is ignored if its source HEAD or any recorded source file hash is stale.",
+    "Browser evidence is current when it has a recorded revision and every registered source-file hash still matches; unrelated commits alone do not make it stale.",
     "Empty scenarios name only contract-applicable collection GET operations; reads outside each mapped empty state remain outside that scenario.",
     "No user acceptance, staging or production evidence is claimed."
   ],
@@ -1967,13 +1971,7 @@
           "operationIds": ["createSupportTicket"],
           "contractStatusSemantics": "OpenAPI declares HTTP 201 after ticket creation; it does not declare a durable server-side pending status.",
           "expectedUi": "While createSupportTicket is in flight, show the submitting state and prevent edits or duplicate submission; after HTTP 201, render the created ticket. This verifies client request-in-flight behavior only.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/support-pending-browser-check-2026-09-30.json",
-          "runtimeRoute": "/w/support",
-          "runtimeObservedOperationIds": ["createSupportTicket"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 22
+          "executionStatus": "not_verified"
         }
       ]
     },
@@ -2143,13 +2141,7 @@
             "cancelOrder"
           ],
           "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-forbidden-browser-check-2026-09-30.json",
-          "runtimeRoute": "/w/trade/positions",
-          "runtimeObservedOperationIds": ["listOpenPositions"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 14
+          "executionStatus": "not_verified"
         },
         {
           "id": "trading.pending",
@@ -2492,12 +2484,17 @@
   "reconciliation": {
     "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/preview-scenario-browser-check-market-empty-2026-09-28.json",
     "runtimeEvidenceFresh": false,
+    "runtimeEvidenceRevision": "historical_baseline",
     "scenarioEvidenceArtifacts": [
       {
         "id": "p2p.duplicate",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-duplicate-browser-check-2026-09-29-fresh-after-handler-fix.json",
-        "fresh": false,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 13,
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
         "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
         "localPreview": true,
         "localMockEvidence": true
@@ -2505,8 +2502,12 @@
       {
         "id": "p2p.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-empty-browser-check-2026-09-29-fresh-after-handler-fix.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 11,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2514,8 +2515,12 @@
       {
         "id": "p2p.error",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-error-browser-check-2026-09-29-fresh-after-c052.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 11,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2523,8 +2528,12 @@
       {
         "id": "p2p.forbidden",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-forbidden-browser-check-2026-09-29-fresh-after-handler-fix.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 11,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2532,8 +2541,12 @@
       {
         "id": "p2p.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-loading-browser-check-2026-09-29-fresh-after-handler-fix.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 11,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2541,8 +2554,12 @@
       {
         "id": "p2p.pending",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-pending-browser-check-2026-09-29-fresh-after-handler-fix.json",
-        "fresh": false,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 13,
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
         "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
         "localPreview": true,
         "localMockEvidence": true
@@ -2550,8 +2567,12 @@
       {
         "id": "p2p.success",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-success-browser-check-2026-09-29-fresh-after-handler-fix.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 12,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2559,8 +2580,12 @@
       {
         "id": "p2p.unauthorized",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-unauthorized-browser-check-2026-09-29-fresh-after-handler-fix.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 13,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2568,8 +2593,12 @@
       {
         "id": "predictions.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/predictions-empty-browser-check-2026-09-29.json",
-        "fresh": false,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 17,
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
         "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
         "localPreview": true,
         "localMockEvidence": true
@@ -2577,8 +2606,12 @@
       {
         "id": "predictions.error",
         "path": "docs/architecture/production-readiness/evidence/A06/predictions-error-browser-check-fresh-2026-09-29.json",
-        "fresh": false,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 20,
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
         "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
         "localPreview": true,
         "localMockEvidence": true
@@ -2586,8 +2619,12 @@
       {
         "id": "predictions.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/predictions-loading-browser-check-2026-09-29.json",
-        "fresh": false,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 17,
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
         "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
         "localPreview": true,
         "localMockEvidence": true
@@ -2595,8 +2632,12 @@
       {
         "id": "predictions.pending",
         "path": "docs/architecture/production-readiness/evidence/A06/predictions-pending-browser-check-2026-09-29.json",
-        "fresh": false,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 16,
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
         "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
         "localPreview": true,
         "localMockEvidence": true
@@ -2604,8 +2645,12 @@
       {
         "id": "predictions.success",
         "path": "docs/architecture/production-readiness/evidence/A06/predictions-success-browser-check-2026-09-29.json",
-        "fresh": false,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 17,
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
         "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
         "localPreview": true,
         "localMockEvidence": true
@@ -2613,8 +2658,12 @@
       {
         "id": "predictions.unauthorized",
         "path": "docs/architecture/production-readiness/evidence/A06/predictions-unauthorized-browser-check-2026-09-29-contract-scoped.json",
-        "fresh": false,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 17,
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
         "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
         "localPreview": true,
         "localMockEvidence": true
@@ -2622,8 +2671,12 @@
       {
         "id": "profile.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/profile-empty-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 21,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2631,8 +2684,12 @@
       {
         "id": "profile.error",
         "path": "docs/architecture/production-readiness/evidence/A06/profile-error-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 25,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2640,8 +2697,12 @@
       {
         "id": "profile.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/profile-loading-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 22,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2649,8 +2710,12 @@
       {
         "id": "profile.success",
         "path": "docs/architecture/production-readiness/evidence/A06/profile-success-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 22,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2658,8 +2723,12 @@
       {
         "id": "profile.unauthorized",
         "path": "docs/architecture/production-readiness/evidence/A06/profile-unauthorized-browser-check-2026-09-29-contract-scoped.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 23,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2667,8 +2736,12 @@
       {
         "id": "referral.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/referral-empty-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 20,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2676,8 +2749,12 @@
       {
         "id": "referral.error",
         "path": "docs/architecture/production-readiness/evidence/A06/referral-error-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 23,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2685,8 +2762,12 @@
       {
         "id": "referral.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/referral-loading-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 20,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2694,8 +2775,12 @@
       {
         "id": "referral.success",
         "path": "docs/architecture/production-readiness/evidence/A06/referral-success-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 20,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2703,8 +2788,12 @@
       {
         "id": "referral.unauthorized",
         "path": "docs/architecture/production-readiness/evidence/A06/referral-unauthorized-browser-check-2026-09-29-contract-scoped.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 25,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2712,8 +2801,12 @@
       {
         "id": "support.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/support-empty-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 25,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2721,8 +2814,12 @@
       {
         "id": "support.error",
         "path": "docs/architecture/production-readiness/evidence/A06/support-error-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 26,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2730,8 +2827,12 @@
       {
         "id": "support.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/support-loading-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 25,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2739,8 +2840,12 @@
       {
         "id": "support.success",
         "path": "docs/architecture/production-readiness/evidence/A06/support-success-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 25,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2748,17 +2853,27 @@
       {
         "id": "support.pending",
         "path": "docs/architecture/production-readiness/evidence/A06/support-pending-browser-check-2026-09-30.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 22,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "trading.success",
         "path": "docs/architecture/production-readiness/evidence/A06/trading-success-browser-check-2026-09-30.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 41,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2766,8 +2881,12 @@
       {
         "id": "trading.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/trading-empty-browser-check-2026-09-30.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 19,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2775,8 +2894,12 @@
       {
         "id": "trading.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/trading-loading-browser-check-2026-09-30.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 19,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2784,8 +2907,12 @@
       {
         "id": "trading.error",
         "path": "docs/architecture/production-readiness/evidence/A06/trading-error-browser-check-2026-09-30.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 16,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2793,8 +2920,12 @@
       {
         "id": "trading.unauthorized",
         "path": "docs/architecture/production-readiness/evidence/A06/trading-unauthorized-browser-check-2026-09-30.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 14,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": true,
+        "fresh": true,
         "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
@@ -2802,9 +2933,15 @@
       {
         "id": "trading.forbidden",
         "path": "docs/architecture/production-readiness/evidence/A06/trading-forbidden-browser-check-2026-09-30.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 14,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       }

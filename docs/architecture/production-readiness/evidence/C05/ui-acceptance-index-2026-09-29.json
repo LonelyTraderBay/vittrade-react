@@ -10,7 +10,7 @@
       },
       "scenarioMatrix": {
         "path": "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
-        "sha256": "f1ea7eb653df2bcdc94c86dffdde7eed9f8d0d9d09f7fba9635ff12896164482"
+        "sha256": "1f5a39e5a820fdb663b60ce7782f0b888dcd77cdbfe796627f7fcee98b608539"
       },
       "routeResolution": {
         "path": "docs/architecture/production-readiness/evidence/A07/route-url-resolution-2026-09-28.json",
@@ -22,7 +22,7 @@
       },
       "runbook": {
         "path": "docs/architecture/production-readiness/UI-RUNBOOK.md",
-        "sha256": "771b2277fabb7df57b9fd450725ff7b3874b26a4dbc225348dd8b8d2d7960dbb"
+        "sha256": "a30e68924c9850f71647f636f92e52c0dbabeabd968a150b6f5119e1d85cb1ad"
       },
       "mockPersonas": {
         "path": "src/dev/mocks/personas.ts",
@@ -78,9 +78,9 @@
   },
   "evidenceFreshness": {
     "currentScenarioMatrixRuntimeEvidenceFresh": false,
-    "scenarioRowsWithFreshBrowserEvidence": 27,
+    "scenarioRowsWithFreshBrowserEvidence": 25,
     "scenarioRowsDefined": 106,
-    "freshScenarioEvidenceSidecars": 27,
+    "freshScenarioEvidenceSidecars": 25,
     "historicalRouteResolutionSourceFiles": 21,
     "routeResolutionSourceHashMismatches": [
       "src/app/routeConfig.ts",
@@ -283,7 +283,7 @@
   "openGaps": [
     "No per-route persona selection is recorded in the route/page ledger.",
     "A07 has historical parameter fixture candidates for dynamic routes; current fixture source hashes are captured, but fixture contents, persona authorization and scenario-specific seed behavior are not verified by URL generation.",
-    "The A06 aggregate report is source-stale (false); the current matrix accepts 27/106 source-matched scenario rows from 27 per-scenario sidecars. Other rows remain unverified until their evidence is refreshed.",
+    "The A06 aggregate report is source-stale (false); the current matrix accepts 25/106 source-matched scenario rows from 25 per-scenario sidecars. Other rows remain unverified until their evidence is refreshed.",
     "4 source files differ from the historical A07 URL-resolution evidence; 213 active route declarations use those files, so refresh runtime route evidence before treating old runtime registrations as current browser truth.",
     "Route navigation checks do not equal component-level visual/interaction review or user acceptance.",
     "C05.02 browser smoke covers two routes only; it does not close runtime verification for the other route declarations."

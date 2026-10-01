@@ -41,7 +41,7 @@ The machine-readable index contains **427 active route declarations**, **1458 sh
 
 Each route row includes its stable ROUTE ID, source declaration, component/page target, page IDs and checklist state, task/domain ownership, development-only classification, every resolved preview URL grouped by shell, historical route-template/runtime context, direct and operation-intersection scenario references, mapped operation IDs/names, mock reset procedure, and user/backend status. The navigation action/expected component is available for every route; page-specific interaction steps, persona selection, and current fixture behavior remain explicit review items where source evidence does not establish them. C05.03 carries those page-specific reviews.
 
-The current A06 matrix defines **106 scenarios** across 15 domains, but it reports **27 fresh browser rows** after source-hash validation. All **427/427** current concrete URL sets match the historical A07 preview URL sets, while **213/427** active declarations come from four source files whose hashes have since changed. A07 is therefore useful as a historical URL/fixture reference, not current runtime-route proof.
+The current A06 matrix defines **106 scenarios** across 15 domains, but it reports **25 fresh browser rows** after source-hash validation. All **427/427** current concrete URL sets match the historical A07 preview URL sets, while **213/427** active declarations come from four source files whose hashes have since changed. A07 is therefore useful as a historical URL/fixture reference, not current runtime-route proof.
 
 ## Run and inspect
 
@@ -57,7 +57,7 @@ C05.02 clean-context smoke, Chromium Chromium 153.0.8010.12, http://127.0.0.1:51
 - Route-level persona mappings assigned: **0/427**.
 - Route declarations with direct scenario references: **10/427**; references are not fresh browser verification.
 - Operation-intersection scenario candidates: **276** across 31 additional route declarations; candidates need route-owner review.
-- Fresh A06 scenario browser rows: **27/106**.
+- Fresh A06 scenario browser rows: **25/106**.
 - Historical A07 current-preview URL parity: **427/427**; declarations in changed A07 source files: **213/427** across 4 files (src/app/routeConfig.ts, src/app/routes.ts, src/features/market/routes.ts, src/features/p2p/routes.ts).
 - User-accepted pages: **0/128** applicable baseline pages; the route ledger separately has 330 page records. Backend operations verified: **0/154**.
 

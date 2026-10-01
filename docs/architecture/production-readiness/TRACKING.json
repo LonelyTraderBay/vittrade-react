@@ -878,7 +878,9 @@
         "docs/architecture/production-readiness/evidence/A06/run-trading-success-browser-check.mjs",
         "src/features/trading/pages/OrdersHistoryPage.tsx",
         "src/shared/session/useAuth.ts",
-        "docs/architecture/production-readiness/evidence/A06/run-trading-empty-browser-check.mjs"
+        "docs/architecture/production-readiness/evidence/A06/run-trading-empty-browser-check.mjs",
+        "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.mjs",
+        "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.test.mjs"
       ],
       "proposedPaths": [
         "src/dev/mocks/scenarios.ts",
@@ -9261,15 +9263,20 @@
         "scripts/generate-architecture-inventory.test.mjs",
         "docs/architecture/production-readiness/check-tracking.mjs",
         "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
-        "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs"
+        "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs",
+        "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.mjs",
+        "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.test.mjs",
+        "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
+        "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json",
+        "docs/architecture/production-readiness/UI-ACCEPTANCE.md"
       ],
       "proposedPaths": [],
       "steps": [
         {
           "id": "B07.01",
           "status": "in_progress",
-          "evidenceIds": ["EV-20261001-042"],
-          "notes": "Exact pushed SHA bdeca9fad14a9ea2e823bb591d9d0cc70f1e459b passed hosted Node22/Ubuntu CI: 26/26 steps, EOL 1493 paths (1151 LF, 342 preserved non-text, 0 unterminated, 0 protected CRLF), 283 test files/2393 tests, coverage 90.13/84.86/87.15/91.91%, Playwright 51/51 and production gates. Keep open until locally validated generator hash/revision-provenance edits overlapping A06/C05 are reconciled and the resulting exact SHA is rerun.",
+          "evidenceIds": ["EV-20261001-042", "EV-20261001-043"],
+          "notes": "EV-20261001-042 verified the prior exact pushed SHA. Reconciled A06/C05 hash and revision-provenance behavior is now implemented and locally validated on Windows/Node 24 (EV-20261001-043: 20/20 focused tests, both generators, inventory, formatting, syntax and diff checks pass). Keep in_progress until the code-bearing commit is pushed and Node22/Ubuntu CI passes on that exact SHA; ten genuine stale sidecars, runtimeEvidenceFresh=false, UI acceptance 0/128 and backend/staging 0/154 remain.",
           "execution": {
             "checkpoints": [
               {
@@ -9288,18 +9295,27 @@
                 "paths": [
                   "scripts/generate-architecture-inventory.mjs",
                   "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
-                  "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs"
+                  "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.mjs",
+                  "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.test.mjs",
+                  "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
+                  "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs",
+                  "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json"
                 ],
-                "notes": "Main-tree candidate checks passed locally, but overlapping source/output changes are excluded from this isolated CI commit. Reconcile and verify here before marking done."
+                "notes": "Local Windows checks now pass: focused Vitest 20/20; both generators --check; architecture inventory --check; Prettier on 9 files; node --check on 4 modules; and git diff --check. Generated outputs are current. Recheck on the resulting exact Node22/Ubuntu commit before completion."
               },
               {
                 "id": "B07.01/revision-provenance",
                 "status": "in_progress",
                 "paths": [
                   "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
-                  "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs"
+                  "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.mjs",
+                  "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.test.mjs",
+                  "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
+                  "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs",
+                  "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json",
+                  "docs/architecture/production-readiness/UI-ACCEPTANCE.md"
                 ],
-                "notes": "Candidate changes remain in the separate dirty main checkout. Reconcile and rerun exact-branch evidence."
+                "notes": "Recorded revision remains the evidence baseline; freshness depends on normalized source-content hashes, so unrelated commits do not stale outputs. LF/CRLF-only differences match; actual content changes remain stale. Local tests/checks pass; exact-SHA Node22/Ubuntu verification is pending."
               },
               {
                 "id": "B07.01/node22-clean-ci",
@@ -9317,6 +9333,20 @@
                 "status": "done",
                 "paths": ["scripts/serve-e2e.mjs"],
                 "notes": "Exact Actions run passed 51/51; Windows Node22 dirty-snapshot run also passed 51/51."
+              },
+              {
+                "id": "B07.01/node22-generator-exact-ci",
+                "status": "in_progress",
+                "paths": [
+                  "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.mjs",
+                  "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.test.mjs",
+                  "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
+                  "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs",
+                  "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
+                  "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json",
+                  "docs/architecture/production-readiness/UI-ACCEPTANCE.md"
+                ],
+                "notes": "Awaiting the authorized B07 branch commit/push and hosted Node22/Ubuntu production gates on the resulting exact SHA."
               }
             ]
           }
@@ -9349,19 +9379,28 @@
       "pageIds": [],
       "routeIds": [],
       "operationIds": [],
-      "evidenceIds": ["EV-20261001-042"],
+      "evidenceIds": ["EV-20261001-042", "EV-20261001-043"],
       "changeIds": [
         "CHANGE-20261001-0340",
         "CHANGE-20261001-0341",
         "CHANGE-20261001-0342",
         "CHANGE-20261001-0343",
-        "CHANGE-20261001-0344"
+        "CHANGE-20261001-0344",
+        "CHANGE-20261001-0345",
+        "CHANGE-20261001-0346",
+        "CHANGE-20261001-0347",
+        "CHANGE-20261001-0348",
+        "CHANGE-20261001-0349",
+        "CHANGE-20261001-0350",
+        "CHANGE-20261001-0351",
+        "CHANGE-20261001-0352",
+        "CHANGE-20261001-0353"
       ],
       "blockers": [],
       "startedAt": null,
       "completedAt": null,
       "elapsedMinutes": null,
-      "notes": "B07.01 exact hosted Node22/Ubuntu CI passed on the dedicated pushed SHA; Windows compatibility evidence remains separately labeled. B07.01 stays in_progress for generator hash/revision-provenance reconciliation. B07.02-B07.05 remain todo; remote required-check/review enforcement and staging/production behavior are not established.",
+      "notes": "B07.01 exact hosted Node22/Ubuntu CI passed on the prior dedicated branch SHA; the A06/C05 generator hash/revision-provenance reconciliation now passes local Windows checks (EV-20261001-043) and is pending exact-SHA hosted CI. Ten source-hash-stale sidecars remain genuine; runtime evidence freshness is false; UI acceptance is 0/128 and backend/staging verification is 0/154. B07.02-B07.05 remain todo; remote required-check/review enforcement and staging/production behavior are not established.",
       "execution": {
         "requiredChecks": [
           "Exact pushed SHA on Node22/Ubuntu with EOL output and production workflow gates",
@@ -58427,9 +58466,9 @@
       "path": "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
       "baselineSha256": null,
       "lifecycle": "active",
-      "taskIds": ["A06"],
+      "taskIds": ["A06", "B07"],
       "disposition": "changed",
-      "reason": "Format the Trading forbidden contract-scope correction with repository Prettier before the repeatable browser run.",
+      "reason": "Format the Trading forbidden contract-scope correction with repository Prettier before the repeatable browser run. | B07.01: Make A06 scenario-matrix generation reproducible across commits and line-ending normalization; stale status follows source hashes.",
       "evidenceIds": [
         "EV-20260928-028",
         "EV-20260928-029",
@@ -58462,7 +58501,8 @@
         "EV-20260929-543",
         "EV-20260930-009",
         "EV-20260930-017",
-        "EV-20260930-021"
+        "EV-20260930-021",
+        "EV-20261001-043"
       ],
       "changeIds": [
         "CHANGE-20260928-1015",
@@ -58486,7 +58526,8 @@
         "CHANGE-20260929-3318",
         "CHANGE-20260930-0034",
         "CHANGE-20260930-0053",
-        "CHANGE-20260930-0064"
+        "CHANGE-20260930-0064",
+        "CHANGE-20261001-0347"
       ]
     },
     {
@@ -67269,9 +67310,9 @@
       "path": "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
       "baselineSha256": null,
       "lifecycle": "active",
-      "taskIds": ["A06"],
+      "taskIds": ["A06", "B07"],
       "disposition": "changed",
-      "reason": "Regenerate matrix from final sidecar hashes and the 10-operation 403 contract scope.",
+      "reason": "Regenerate matrix from final sidecar hashes and the 10-operation 403 contract scope. | B07.01: Regenerate the A06 matrix from the revised generator and current recorded evidence.",
       "evidenceIds": [
         "EV-20260928-028",
         "EV-20260928-029",
@@ -67438,7 +67479,8 @@
         "EV-20260930-018",
         "EV-20260930-020",
         "EV-20260930-021",
-        "EV-20260930-022"
+        "EV-20260930-022",
+        "EV-20261001-043"
       ],
       "changeIds": [
         "CHANGE-20260928-1016",
@@ -67548,7 +67590,8 @@
         "CHANGE-20260930-0022",
         "CHANGE-20260930-0050",
         "CHANGE-20260930-0061",
-        "CHANGE-20260930-0072"
+        "CHANGE-20260930-0072",
+        "CHANGE-20261001-0349"
       ]
     },
     {
@@ -67965,11 +68008,17 @@
       "path": "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs",
       "baselineSha256": null,
       "lifecycle": "active",
-      "taskIds": ["C05"],
+      "taskIds": ["C05", "A06", "B07"],
       "disposition": "added",
-      "reason": "Deterministic C05.01 route index generator with current ledgers and explicit evidence gaps.",
-      "evidenceIds": ["EV-20260929-479", "EV-20260929-480", "EV-20260929-481", "EV-20260929-482"],
-      "changeIds": ["CHANGE-20260929-3013", "CHANGE-20260929-3022"]
+      "reason": "Deterministic C05.01 route index generator with current ledgers and explicit evidence gaps. | B07.01: Make C05 acceptance-index hashes and recorded revision stable across commits and line-ending normalization.",
+      "evidenceIds": [
+        "EV-20260929-479",
+        "EV-20260929-480",
+        "EV-20260929-481",
+        "EV-20260929-482",
+        "EV-20261001-043"
+      ],
+      "changeIds": ["CHANGE-20260929-3013", "CHANGE-20260929-3022", "CHANGE-20261001-0348"]
     },
     {
       "path": "docs/architecture/production-readiness/evidence/C05/run-c05-02-dev-preview-check.mjs",
@@ -67985,9 +68034,9 @@
       "path": "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json",
       "baselineSha256": null,
       "lifecycle": "active",
-      "taskIds": ["C05", "A06"],
+      "taskIds": ["C05", "A06", "B07"],
       "disposition": "changed",
-      "reason": "Refresh UI-index scenario evidence counts after final sidecar regeneration. | Regenerate the UI-acceptance index after its page-inventory source hash changed; scenario counts and route parity remain as generated.",
+      "reason": "Refresh UI-index scenario evidence counts after final sidecar regeneration. | Regenerate the UI-acceptance index after its page-inventory source hash changed; scenario counts and route parity remain as generated. | B07.01: Regenerate the C05 route acceptance index from the revised generator.",
       "evidenceIds": [
         "EV-20260929-479",
         "EV-20260929-480",
@@ -68034,7 +68083,8 @@
         "EV-20260930-020",
         "EV-20260930-021",
         "EV-20260930-022",
-        "EV-20260930-026"
+        "EV-20260930-026",
+        "EV-20261001-043"
       ],
       "changeIds": [
         "CHANGE-20260929-3014",
@@ -68068,7 +68118,8 @@
         "CHANGE-20260930-0051",
         "CHANGE-20260930-0062",
         "CHANGE-20260930-0073",
-        "CHANGE-20260930-0085"
+        "CHANGE-20260930-0085",
+        "CHANGE-20261001-0350"
       ]
     },
     {
@@ -68524,7 +68575,8 @@
         "EV-20260930-024",
         "EV-20260930-025",
         "EV-20260930-026",
-        "EV-20261001-042"
+        "EV-20261001-042",
+        "EV-20261001-043"
       ],
       "changeIds": [
         "CHANGE-20260927-052",
@@ -68687,16 +68739,17 @@
         "CHANGE-20260930-0074",
         "CHANGE-20260930-0079",
         "CHANGE-20260930-0084",
-        "CHANGE-20261001-0344"
+        "CHANGE-20261001-0344",
+        "CHANGE-20261001-0352"
       ]
     },
     {
       "path": "docs/architecture/production-readiness/UI-ACCEPTANCE.md",
       "baselineSha256": null,
       "lifecycle": "active",
-      "taskIds": ["C05", "A06"],
+      "taskIds": ["C05", "A06", "B07"],
       "disposition": "changed",
-      "reason": "Reviewer-facing shell/domain URL checklist and measured current gaps. | Regenerate the route checklist with Predictions empty browser evidence; user acceptance remains pending. | Refresh the reviewer checklist using current route evidence; user acceptance remains pending. | Refresh the reviewer checklist from the route index; do not promote local evidence to user acceptance.; Refresh generated UI inventory while leaving user acceptance pending.; Refresh generated route index while keeping user acceptance pending. | Refresh reviewer-facing scenario counts while keeping user acceptance pending. | Refresh reviewer-facing scenario counts while leaving user acceptance pending.",
+      "reason": "Reviewer-facing shell/domain URL checklist and measured current gaps. | Regenerate the route checklist with Predictions empty browser evidence; user acceptance remains pending. | Refresh the reviewer checklist using current route evidence; user acceptance remains pending. | Refresh the reviewer checklist from the route index; do not promote local evidence to user acceptance.; Refresh generated UI inventory while leaving user acceptance pending.; Refresh generated route index while keeping user acceptance pending. | Refresh reviewer-facing scenario counts while keeping user acceptance pending. | Refresh reviewer-facing scenario counts while leaving user acceptance pending. | B07.01: Refresh the generated UI acceptance document from the current scenario index.",
       "evidenceIds": [
         "EV-20260929-479",
         "EV-20260929-480",
@@ -68726,7 +68779,8 @@
         "EV-20260929-534",
         "EV-20260929-535",
         "EV-20260929-536",
-        "EV-20260929-537"
+        "EV-20260929-537",
+        "EV-20261001-043"
       ],
       "changeIds": [
         "CHANGE-20260929-3015",
@@ -68748,7 +68802,8 @@
         "CHANGE-20260929-3253",
         "CHANGE-20260929-3258",
         "CHANGE-20260929-3280",
-        "CHANGE-20260929-3297"
+        "CHANGE-20260929-3297",
+        "CHANGE-20261001-0351"
       ]
     },
     {
@@ -81116,6 +81171,36 @@
       "reason": "Add a portable gate for Git-managed text line endings and documented exceptions.",
       "evidenceIds": ["EV-20261001-042"],
       "changeIds": ["CHANGE-20261001-0342"]
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": ["A06", "B07"],
+      "disposition": "changed",
+      "reason": "Add a shared A06 source-hash provenance helper that treats LF and CRLF text as equivalent and keeps revision identity separate from freshness.",
+      "evidenceIds": ["EV-20261001-043"],
+      "changeIds": ["CHANGE-20261001-0345"]
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.test.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": ["A06", "B07"],
+      "disposition": "changed",
+      "reason": "Add focused regression tests for EOL-normalized hashes, content changes, and recorded-revision classification.",
+      "evidenceIds": ["EV-20261001-043"],
+      "changeIds": ["CHANGE-20261001-0346"]
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/generator-hash-revision-eol-2026-10-01.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": ["B07"],
+      "disposition": "changed",
+      "reason": "Capture reproducible B07.01 local commands, measurements, content hashes and validation limits.",
+      "evidenceIds": ["EV-20261001-043"],
+      "changeIds": ["CHANGE-20261001-0353"]
     }
   ],
   "changes": [
@@ -126645,6 +126730,123 @@
       "afterHash": "b644fa219bcfb10f67a9d449fff715b04133c18d40e21e2808bae1049176462f",
       "evidenceIds": ["EV-20261001-042"],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0345",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "path": "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Add a shared A06 source-hash provenance helper that treats LF and CRLF text as equivalent and keeps revision identity separate from freshness.",
+      "beforeHash": null,
+      "afterHash": "042abb40b197f6ce8e3fd1da2a5c97263b47313b949e317a5c45139fd578c10c",
+      "evidenceIds": ["EV-20261001-043"],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0346",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "path": "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.test.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Add focused regression tests for EOL-normalized hashes, content changes, and recorded-revision classification.",
+      "beforeHash": null,
+      "afterHash": "2e8366b56fe5d050457d8d4ca6cbc9117b01cf485cfdeaad2b375939193cd8d0",
+      "evidenceIds": ["EV-20261001-043"],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0347",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "path": "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Make A06 scenario-matrix generation reproducible across commits and line-ending normalization; stale status follows source hashes.",
+      "beforeHash": "f1d6e5398ac01c23c23b102c180eac4599f29af3a88a417fbe84cb9b01391c50",
+      "afterHash": "370807dbc27a280effc140e7d7328fedafa588b1c3d211cb0ba1b61bccff0ea8",
+      "evidenceIds": ["EV-20261001-043"],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0348",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "path": "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Make C05 acceptance-index hashes and recorded revision stable across commits and line-ending normalization.",
+      "beforeHash": "1f5c402d2620f2fb8e6bd502091f3dfce65a3ed7ed05ff5a7e8468cc1f5e3f93",
+      "afterHash": "290a715e152940e6fb73480a4e64a0a74393d4e63beff02109c6d6f95ae5e3aa",
+      "evidenceIds": ["EV-20261001-043"],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0349",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "path": "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Regenerate the A06 matrix from the revised generator and current recorded evidence.",
+      "beforeHash": "f1ea7eb653df2bcdc94c86dffdde7eed9f8d0d9d09f7fba9635ff12896164482",
+      "afterHash": "1f5a39e5a820fdb663b60ce7782f0b888dcd77cdbfe796627f7fcee98b608539",
+      "evidenceIds": ["EV-20261001-043"],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0350",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "path": "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Regenerate the C05 route acceptance index from the revised generator.",
+      "beforeHash": "837a1c22b7a50896dae450156f26f341c80be3e2424069ac349173131a1405e2",
+      "afterHash": "d6cb4a95c56d0392c6529652dd630c24d18b4fa4918eaab46378b4144c1b57ec",
+      "evidenceIds": ["EV-20261001-043"],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0351",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "path": "docs/architecture/production-readiness/UI-ACCEPTANCE.md",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Refresh the generated UI acceptance document from the current scenario index.",
+      "beforeHash": "06cd3d111a97950a7dd035199fcabadec9c41a08424f19a28159b5e6dfe68504",
+      "afterHash": "c378deafcd17587de0e1428176fd022e22ff0b22a4ddc864dcd036d53fe6bb12",
+      "evidenceIds": ["EV-20261001-043"],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0352",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "path": "docs/architecture/production-readiness/PLAN.md",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Record B07.01 implementation, measured local validation and the exact-SHA hosted CI still pending.",
+      "beforeHash": "0239f2eedacc6d465ee28eca620ed4cf2fa93e529801c87a8a1ea5b1d8caed73",
+      "afterHash": "f113096fa1046ec4941d7ddd9bdd0893cec2171526d0e7566a8b0ca574358527",
+      "evidenceIds": ["EV-20261001-043"],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0353",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "path": "docs/architecture/production-readiness/evidence/B07/generator-hash-revision-eol-2026-10-01.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Capture reproducible B07.01 local commands, measurements, content hashes and validation limits.",
+      "beforeHash": null,
+      "afterHash": "439bfb0c68e8d8cf90b66221cf982678d37fbf25ea04e29550e5d3ee32518262",
+      "evidenceIds": ["EV-20261001-043"],
+      "commit": null
     }
   ],
   "evidence": [
@@ -143870,6 +144072,104 @@
       "result": "pass",
       "artifact": "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-ci-eol-gate-2026-10-01.json",
       "notes": "Does not verify GitHub required-check enforcement/review policy, backend/staging, or production acceptance. Main-worktree generator hash/revision-provenance edits overlapping A06/C05 are not in this branch and must be reconciled and rerun on the resulting exact SHA before B07.01 closes."
+    },
+    {
+      "id": "EV-20261001-043",
+      "schemaVersion": 1,
+      "recordedAt": "2026-10-01T07:50:38.000Z",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "kind": "validation",
+      "commandOrSteps": "On the B07 working tree, run the focused Vitest files; A06 and C05 generators with --check; architecture inventory with --check; Prettier --check on the 9 scoped source, output and plan files; node --check on 4 JavaScript modules; and git diff --check. Finally, run check-tracking against the updated ledger.",
+      "observedAt": "2026-10-01T07:50:38.000Z",
+      "sourceHead": "c01eafe3c5abea7c5fba973fb16f31ce4e6389b6",
+      "run": null,
+      "environment": {
+        "os": "Windows",
+        "shell": "PowerShell",
+        "node": "v24.19.0",
+        "npm": "11.17.0",
+        "worktree": "vittrade-react-b07-01",
+        "branch": "codex/b07-01-ubuntu-validation",
+        "workingTree": "Dirty; scoped implementation and generated outputs were checked before commit."
+      },
+      "measurements": {
+        "vitest": {
+          "result": "pass",
+          "filesPassed": 2,
+          "testsPassed": 20,
+          "provenanceTestsPassed": 5
+        },
+        "a06ScenarioMatrixCheck": {
+          "result": "pass",
+          "domains": 15,
+          "operations": 154,
+          "expectations": 106
+        },
+        "c05UiAcceptanceIndexCheck": {
+          "result": "pass",
+          "activeRouteDeclarations": 427,
+          "urlRegistrations": 1458,
+          "uniquePreviewUrls": 1389,
+          "historicalRouteParity": "427/427",
+          "freshScenarioRows": "25/106",
+          "userAcceptedPages": "0/128"
+        },
+        "scenarioEvidenceFreshness": {
+          "rowsWithFreshBrowserEvidence": "25/106",
+          "rowsFullyCoveredByFreshEvidence": "15/106",
+          "uniqueOperationsWithFreshEvidence": "32/154",
+          "registeredSidecars": 35,
+          "sidecarsWithCurrentSourceHashes": 25,
+          "sidecarsStaleFromSourceContentChanges": 10,
+          "runtimeEvidenceFresh": false,
+          "backendOrStagingOperationsVerified": "0/154"
+        },
+        "architectureInventory": {
+          "result": "pass",
+          "pages": 129,
+          "routes": 427,
+          "components": 149,
+          "dataModules": 0,
+          "services": 32,
+          "mocks": 28
+        },
+        "prettier": {
+          "result": "pass",
+          "filesChecked": 9
+        },
+        "nodeSyntax": {
+          "result": "pass",
+          "filesChecked": 4
+        },
+        "gitDiffCheck": "pass",
+        "dirtyFileHashes": {
+          "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs": "370807dbc27a280effc140e7d7328fedafa588b1c3d211cb0ba1b61bccff0ea8",
+          "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.mjs": "042abb40b197f6ce8e3fd1da2a5c97263b47313b949e317a5c45139fd578c10c",
+          "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.test.mjs": "2e8366b56fe5d050457d8d4ca6cbc9117b01cf485cfdeaad2b375939193cd8d0",
+          "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "1f5a39e5a820fdb663b60ce7782f0b888dcd77cdbfe796627f7fcee98b608539",
+          "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs": "290a715e152940e6fb73480a4e64a0a74393d4e63beff02109c6d6f95ae5e3aa",
+          "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json": "d6cb4a95c56d0392c6529652dd630c24d18b4fa4918eaab46378b4144c1b57ec",
+          "docs/architecture/production-readiness/UI-ACCEPTANCE.md": "c378deafcd17587de0e1428176fd022e22ff0b22a4ddc864dcd036d53fe6bb12"
+        },
+        "trackingIntegrity": {
+          "result": "pass",
+          "errorCount": 0,
+          "tasks": 38,
+          "steps": 205,
+          "filesOutsidePlan": 910
+        }
+      },
+      "warnings": [
+        "This local Windows Node 24 run is not the required Node 22 hosted Ubuntu validation for the resulting exact commit SHA; B07.01 remains in_progress until that CI passes.",
+        "Ten of 35 scenario evidence sidecars remain stale because their source-content hashes differ; no freshness is inferred from the local check.",
+        "Aggregate runtime evidence is not fresh; user acceptance is 0/128 and backend/staging verification is 0/154."
+      ],
+      "expected": "Prove deterministic A06/C05 generated outputs and source-hash checks locally, while recording exact remaining stale evidence and pending hosted validation.",
+      "actual": "All 20 tests across two files, A06/C05 generator checks, architecture inventory, formatting, syntax and whitespace checks passed. Recorded outputs remain bound to the recorded baseline SHA while source freshness is determined by content hashes that accept LF/CRLF line-ending normalization. Ten sidecars remain stale due real source-content differences. The updated production-readiness tracker also passes check-tracking with errorCount=0.",
+      "result": "pass",
+      "artifact": "docs/architecture/production-readiness/evidence/B07/generator-hash-revision-eol-2026-10-01.json",
+      "notes": "Local validation only. Exact-SHA Node 22/Ubuntu Actions run is pending commit and push; do not mark B07.01 done on this evidence alone."
     }
   ],
   "decisions": [

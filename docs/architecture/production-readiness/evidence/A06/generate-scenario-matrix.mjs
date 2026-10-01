@@ -3,6 +3,13 @@ import fs from 'node:fs';
 import path from 'node:path';
 import prettier from 'prettier';
 import { fileURLToPath } from 'node:url';
+import {
+  classifySourceHead,
+  compareRecordedSourceHashes,
+  hashTrackedBytes,
+  hasCurrentSourceProvenance,
+  matchesRecordedSourceHash,
+} from './scenario-evidence-provenance.mjs';
 
 const DIRECTORY = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(DIRECTORY, '../../../../../');
@@ -22,11 +29,7 @@ if (!['--write', '--check'].includes(mode) || args.length > 1) {
 
 const readJson = (relativePath) =>
   JSON.parse(fs.readFileSync(path.join(ROOT, relativePath), 'utf8'));
-const sha256 = (relativePath) =>
-  crypto
-    .createHash('sha256')
-    .update(fs.readFileSync(path.join(ROOT, relativePath)))
-    .digest('hex');
+const sha256 = (relativePath) => hashTrackedBytes(fs.readFileSync(path.join(ROOT, relativePath)));
 
 const domainExpectations = {
   admin: {
@@ -218,19 +221,25 @@ const mappedOperations = new Map(operationMap.operations.map((item) => [item.ope
 const trackedOperations = new Map(tracking.operations.map((item) => [item.operationId, item]));
 const trackedDomains = [...new Set(tracking.operations.map((item) => item.domain))].sort();
 const configuredDomains = Object.keys(domainExpectations).sort();
+const inspectSourceHashes = (sourceHashes) =>
+  compareRecordedSourceHashes(sourceHashes, (relativePath) => {
+    const absolutePath = path.join(ROOT, relativePath);
+    return fs.existsSync(absolutePath) ? fs.readFileSync(absolutePath) : null;
+  });
 const observedOperationIds = (scenario) =>
   scenario.observedOperationIds ??
   scenario.operationIds ??
   (scenario.operationId ? [scenario.operationId] : []);
 const errors = [];
-const runtimeEvidenceFresh = Boolean(
-  runtimeEvidence &&
-  runtimeEvidence.sourceHead === tracking.baseline.sourceHead &&
-  Object.entries(runtimeEvidence.sourceHashes ?? {}).length > 0 &&
-  Object.entries(runtimeEvidence.sourceHashes).every(
-    ([relativePath, expectedHash]) =>
-      fs.existsSync(path.join(ROOT, relativePath)) && sha256(relativePath) === expectedHash,
-  ),
+const runtimeSourceHashCheck = inspectSourceHashes(runtimeEvidence?.sourceHashes ?? {});
+const runtimeEvidenceFresh = hasCurrentSourceProvenance({
+  sourceHead: runtimeEvidence?.sourceHead,
+  sourceHashCount: runtimeSourceHashCheck.sourceHashCount,
+  sourceHashMismatches: runtimeSourceHashCheck.sourceHashMismatches,
+});
+const runtimeEvidenceRevision = classifySourceHead(
+  runtimeEvidence?.sourceHead,
+  tracking.baseline.sourceHead,
 );
 const knownScenarioIds = new Set(
   configuredDomains.flatMap((domain) => [
@@ -282,21 +291,19 @@ for (const artifact of scenarioEvidenceArtifacts) {
     errors.push(`${artifact.id}: sidecar evidence file is missing: ${artifact.path}`);
     continue;
   }
-  const artifactHash = sha256(artifact.path);
-  if (artifact.sha256 && artifact.sha256 !== artifactHash) {
+  if (
+    artifact.sha256 &&
+    !matchesRecordedSourceHash(artifact.sha256, fs.readFileSync(resolvedPath))
+  ) {
     errors.push(`${artifact.id}: sidecar evidence file hash does not match its manifest entry.`);
     continue;
   }
   const sidecar = readJson(artifact.path);
   const scenario = sidecar.scenario;
   const sourceHashes = sidecar.sourceHashes ?? {};
-  const sourceHashMismatches = Object.entries(sourceHashes)
-    .filter(
-      ([relativeSource, expectedHash]) =>
-        !fs.existsSync(path.join(ROOT, relativeSource)) || sha256(relativeSource) !== expectedHash,
-    )
-    .map(([relativeSource]) => relativeSource)
-    .sort();
+  const sourceHashCheck = inspectSourceHashes(sourceHashes);
+  const sourceHashMismatches = sourceHashCheck.sourceHashMismatches;
+  const sourceHeadRevision = classifySourceHead(sidecar.sourceHead, tracking.baseline.sourceHead);
   const localPreview = (() => {
     try {
       return ['localhost', '127.0.0.1', '[::1]'].includes(new URL(sidecar.origin).hostname);
@@ -316,15 +323,26 @@ for (const artifact of scenarioEvidenceArtifacts) {
   const fresh =
     artifact.id === scenario?.id &&
     scenario?.status === 'passed' &&
-    sidecar.sourceHead === tracking.baseline.sourceHead &&
-    Object.keys(sourceHashes).length > 0 &&
-    sourceHashMismatches.length === 0 &&
+    hasCurrentSourceProvenance({
+      sourceHead: sidecar.sourceHead,
+      sourceHashCount: sourceHashCheck.sourceHashCount,
+      sourceHashMismatches,
+    });
+  const historicalBaselineEvidence =
+    artifact.id === scenario?.id &&
+    scenario?.status === 'passed' &&
+    sourceHeadRevision === 'historical_baseline' &&
     localMockEvidence;
   const result = {
     id: artifact.id,
     path: artifact.path,
+    sourceHead: sidecar.sourceHead ?? null,
+    sourceHeadRevision,
+    sourceHashCount: sourceHashCheck.sourceHashCount,
+    sourceHashesMatchCurrent:
+      sourceHashMismatches.length === 0 && sourceHashCheck.sourceHashCount > 0,
+    historicalBaselineEvidence,
     fresh,
-    sourceHashCount: Object.keys(sourceHashes).length,
     sourceHashMismatches,
     localPreview,
     localMockEvidence,
@@ -587,9 +605,19 @@ const report = {
     scenarioRowsFullyCoveredByFreshBrowserEvidence: fullyVerifiedScenarioRows.length,
     uniqueOperationsWithFreshBrowserEvidence: runtimeVerifiedOperationIds.size,
     runtimeEvidenceFresh,
+    runtimeEvidenceRevision,
     freshScenarioEvidenceSidecars: scenarioEvidenceArtifactResults.filter((item) => item.fresh)
       .length,
     registeredScenarioEvidenceSidecars: scenarioEvidenceArtifactResults.length,
+    historicalBaselineScenarioEvidenceSidecars: scenarioEvidenceArtifactResults.filter(
+      (item) => item.historicalBaselineEvidence,
+    ).length,
+    historicalBaselineSidecarsWithCurrentSourceHashes: scenarioEvidenceArtifactResults.filter(
+      (item) => item.historicalBaselineEvidence && item.sourceHashesMatchCurrent,
+    ).length,
+    sourceHashStaleScenarioEvidenceSidecars: scenarioEvidenceArtifactResults.filter(
+      (item) => item.sourceHashMismatches.length > 0,
+    ).length,
     financialDomainsWithPendingUnknownDuplicateCases: Object.keys(financialFlows).sort(),
   },
   stateDefinitions: {
@@ -611,7 +639,7 @@ const report = {
     'Direct shared-handler test references identify mapped test call sites, not response-branch coverage.',
     'Unknown outcome is a client-observed transport ambiguity, not a value added to server status enums.',
     'Backend owners must confirm idempotency and reconciliation semantics before any operation is certified.',
-    'Browser evidence is ignored if its source HEAD or any recorded source file hash is stale.',
+    'Browser evidence is current when it has a recorded revision and every registered source-file hash still matches; unrelated commits alone do not make it stale.',
     'Empty scenarios name only contract-applicable collection GET operations; reads outside each mapped empty state remain outside that scenario.',
     'No user acceptance, staging or production evidence is claimed.',
   ],
@@ -619,6 +647,7 @@ const report = {
   reconciliation: {
     runtimeEvidence: runtimeEvidence ? RUNTIME_EVIDENCE_PATH : null,
     runtimeEvidenceFresh,
+    runtimeEvidenceRevision,
     scenarioEvidenceArtifacts: scenarioEvidenceArtifactResults,
     errors,
   },

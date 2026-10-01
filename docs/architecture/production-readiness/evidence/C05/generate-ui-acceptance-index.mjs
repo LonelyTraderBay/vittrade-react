@@ -32,10 +32,10 @@ if (!['--write', '--check'].includes(mode) || process.argv.length > 3) {
 
 const readJson = (relativePath) =>
   JSON.parse(fs.readFileSync(path.join(root, relativePath), 'utf8'));
-const hashFile = (relativePath) =>
-  createHash('sha256')
-    .update(fs.readFileSync(path.join(root, relativePath)))
-    .digest('hex');
+const hashFile = (relativePath) => {
+  const content = fs.readFileSync(path.join(root, relativePath), 'utf8').replace(/\r\n/g, '\n');
+  return createHash('sha256').update(content).digest('hex');
+};
 const tracking = readJson(inputs.tracking);
 const scenarioMatrix = readJson(inputs.scenarioMatrix);
 const routeResolution = readJson(inputs.routeResolution);
