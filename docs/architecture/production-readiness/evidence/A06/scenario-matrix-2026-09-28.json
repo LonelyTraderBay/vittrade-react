@@ -4,9 +4,9 @@
     "tracking": "docs/architecture/production-readiness/TRACKING.json",
     "operationMap": "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json",
     "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
-    "generatedAt": "2026-10-01T07:27:58.408Z",
+    "generatedAt": "2026-10-01T16:06:15.488Z",
     "operationMapSha256": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
-    "runtimeEvidenceSha256": "f01438ba42bac1dd507e41ef29bd5756642cad278473459b47fef57fd469f7ca"
+    "runtimeEvidenceSha256": "dafadf70e6303bf2bfd83d7c15d53d1a3f3305315e1938e3b44edbaf260787cc"
   },
   "scope": "Scenario expectations for the 15 tracked product domains. Runtime status is included only when the aggregate report or the scenario-specific sidecar has a matching source HEAD and current source hashes; it is not user acceptance or backend certification.",
   "summary": {
@@ -15,16 +15,16 @@
     "exactHandlerMappings": 154,
     "operationsWithDirectSharedHandlerTestReferences": 21,
     "scenariosDefined": 106,
-    "scenarioRowsWithFreshBrowserEvidence": 25,
-    "scenarioRowsFullyCoveredByFreshBrowserEvidence": 15,
-    "uniqueOperationsWithFreshBrowserEvidence": 32,
+    "scenarioRowsWithFreshBrowserEvidence": 23,
+    "scenarioRowsFullyCoveredByFreshBrowserEvidence": 14,
+    "uniqueOperationsWithFreshBrowserEvidence": 25,
     "runtimeEvidenceFresh": false,
     "runtimeEvidenceRevision": "historical_baseline",
-    "freshScenarioEvidenceSidecars": 25,
-    "registeredScenarioEvidenceSidecars": 35,
+    "freshScenarioEvidenceSidecars": 23,
+    "registeredScenarioEvidenceSidecars": 36,
     "historicalBaselineScenarioEvidenceSidecars": 35,
-    "historicalBaselineSidecarsWithCurrentSourceHashes": 25,
-    "sourceHashStaleScenarioEvidenceSidecars": 10,
+    "historicalBaselineSidecarsWithCurrentSourceHashes": 22,
+    "sourceHashStaleScenarioEvidenceSidecars": 13,
     "financialDomainsWithPendingUnknownDuplicateCases": [
       "earn",
       "p2p",
@@ -2025,26 +2025,7 @@
             "cancelOrder"
           ],
           "expectedUi": "Order entry, open orders, positions, order history and copy trading: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-success-browser-check-2026-09-30.json",
-          "runtimeRoute": "/w/trade/btcusdt",
-          "runtimeObservedOperationIds": [
-            "getCopyFrontendViewStatus",
-            "listCopyProviders",
-            "getCopyProviderProfile",
-            "listCopyRelationships",
-            "createCopyRelationship",
-            "stopCopyRelationship",
-            "getTradingAnalytics",
-            "listOpenOrders",
-            "placeOrder",
-            "listOrderHistory",
-            "modifyOrder",
-            "cancelOrder"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 41
+          "executionStatus": "not_verified"
         },
         {
           "id": "trading.empty",
@@ -2052,17 +2033,7 @@
           "applicability": "required",
           "operationIds": ["listOpenOrders", "listOpenPositions", "listOrderHistory"],
           "expectedUi": "Show no open orders/positions as a valid empty state; never treat it as proof that an order was cancelled or never submitted.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-empty-browser-check-2026-09-30.json",
-          "runtimeRoute": "/w/trade/positions",
-          "runtimeObservedOperationIds": [
-            "listOpenOrders",
-            "listOrderHistory",
-            "listOpenPositions"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 19
+          "executionStatus": "not_verified"
         },
         {
           "id": "trading.loading",
@@ -2070,17 +2041,7 @@
           "applicability": "required",
           "operationIds": ["listOpenOrders", "listOpenPositions", "listOrderHistory"],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-loading-browser-check-2026-09-30.json",
-          "runtimeRoute": "/w/trade/positions",
-          "runtimeObservedOperationIds": [
-            "listOpenOrders",
-            "listOrderHistory",
-            "listOpenPositions"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 19
+          "executionStatus": "not_verified"
         },
         {
           "id": "trading.error",
@@ -2170,7 +2131,19 @@
             }
           ],
           "expectedUi": "Render only the pending/request-in-flight status defined by the contract; disable duplicate finalization while unresolved and show a stable receipt/reference when available.",
-          "executionStatus": "not_verified"
+          "executionStatus": "browser_verified",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-pending-browser-check-2026-10-01.json",
+          "runtimeRoute": "/w/trade/btcusdt",
+          "runtimeObservedOperationIds": [
+            "listOpenOrders",
+            "listOrderHistory",
+            "placeOrder",
+            "modifyOrder",
+            "cancelOrder"
+          ],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 19
         },
         {
           "id": "trading.unknown",
@@ -2871,10 +2844,15 @@
         "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
         "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 41,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": true,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/features/trading/components/OpenOrdersPanel.tsx",
+          "src/features/trading/components/OrderConfirmationSheet.tsx",
+          "src/features/trading/components/OrderModifySheet.tsx",
+          "src/features/trading/components/TradeTerminal.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -2884,10 +2862,10 @@
         "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
         "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 19,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": true,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": ["src/features/trading/components/OpenOrdersPanel.tsx"],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -2897,10 +2875,10 @@
         "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
         "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 19,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": true,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": ["src/features/trading/components/OpenOrdersPanel.tsx"],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -2942,6 +2920,19 @@
         "sourceHashMismatches": [
           "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs"
         ],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "trading.pending",
+        "path": "docs/architecture/production-readiness/evidence/A06/trading-pending-browser-check-2026-10-01.json",
+        "sourceHead": "6416744dc547c96138838ce9c6c782cac6750f20",
+        "sourceHeadRevision": "recorded_revision",
+        "sourceHashCount": 19,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": false,
+        "fresh": true,
+        "sourceHashMismatches": [],
         "localPreview": true,
         "localMockEvidence": true
       }

@@ -25,6 +25,7 @@ function renderPanel({
   orders = [order],
   canWrite = true,
   cancelPending = false,
+  pendingCancelOrderId,
   onModifyOrder = vi.fn(),
   onCancelOrder = vi.fn(),
   onExportHistory = vi.fn(),
@@ -32,6 +33,7 @@ function renderPanel({
   orders?: TradingOrder[];
   canWrite?: boolean;
   cancelPending?: boolean;
+  pendingCancelOrderId?: string;
   onModifyOrder?: (orderId: string) => void;
   onCancelOrder?: (orderId: string) => void;
   onExportHistory?: () => void;
@@ -41,6 +43,7 @@ function renderPanel({
       orders={orders}
       canWrite={canWrite}
       cancelPending={cancelPending}
+      pendingCancelOrderId={pendingCancelOrderId}
       onModifyOrder={onModifyOrder}
       onCancelOrder={onCancelOrder}
       onExportHistory={onExportHistory}
@@ -81,9 +84,12 @@ describe('OpenOrdersPanel', () => {
   });
 
   it('disables cancellation while the cancellation mutation is pending', () => {
-    renderPanel({ cancelPending: true });
+    renderPanel({ cancelPending: true, pendingCancelOrderId: order.id });
 
     expect(screen.getByRole('button', { name: 'Sửa' })).toBeEnabled();
-    expect(screen.getByTestId(`cancel-order-${order.id}`)).toBeDisabled();
+    const cancel = screen.getByTestId(`cancel-order-${order.id}`);
+    expect(cancel).toBeDisabled();
+    expect(cancel).toHaveTextContent('Đang hủy...');
+    expect(cancel).toHaveAttribute('aria-busy', 'true');
   });
 });

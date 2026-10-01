@@ -9,6 +9,7 @@ interface OpenOrdersPanelProps {
   orders: TradingOrder[];
   canWrite: boolean;
   cancelPending: boolean;
+  pendingCancelOrderId?: string;
   onModifyOrder: (orderId: string) => void;
   onCancelOrder: (orderId: string) => void;
   onExportHistory: () => void;
@@ -18,6 +19,7 @@ export function OpenOrdersPanel({
   orders,
   canWrite,
   cancelPending,
+  pendingCancelOrderId,
   onModifyOrder,
   onCancelOrder,
   onExportHistory,
@@ -97,6 +99,7 @@ export function OpenOrdersPanel({
                     type="button"
                     onClick={() => onCancelOrder(order.id)}
                     disabled={!canWrite || cancelPending}
+                    aria-busy={cancelPending && pendingCancelOrderId === order.id}
                     data-testid={`cancel-order-${order.id}`}
                     className="px-3 py-1 rounded-lg text-xs font-semibold"
                     style={{
@@ -105,7 +108,7 @@ export function OpenOrdersPanel({
                       border: '1px solid rgba(239,68,68,0.2)',
                     }}
                   >
-                    Hủy
+                    {cancelPending && pendingCancelOrderId === order.id ? 'Đang hủy...' : 'Hủy'}
                   </button>
                 </div>
               </div>

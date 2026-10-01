@@ -16728,6 +16728,11 @@
       "id": "trading.forbidden",
       "path": "docs/architecture/production-readiness/evidence/A06/trading-forbidden-browser-check-2026-09-30.json",
       "sha256": "40b1b816cdc1f5b26d1c7ee07f40df943073febe1901863889fff55c7a9e27be"
+    },
+    {
+      "id": "trading.pending",
+      "path": "docs/architecture/production-readiness/evidence/A06/trading-pending-browser-check-2026-10-01.json",
+      "sha256": "29ae0e0b7871ad9fa23d7cec909973d67891977fffd9916cf5479f37e7550347"
     }
   ],
   "p2pSuccessBrowserEvidence": {

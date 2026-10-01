@@ -74,13 +74,18 @@ describe('OrderModifySheet', () => {
     expect(onSave).not.toHaveBeenCalled();
   });
 
-  it.each([
-    ['read-only session', { canWrite: false }],
-    ['pending mutation', { isPending: true }],
-  ])('disables editing submission for a %s', (_caseName, props) => {
-    renderSheet(props);
+  it('disables editing submission for a read-only session', () => {
+    renderSheet({ canWrite: false });
 
     expect(screen.getByRole('button', { name: 'Lưu thay đổi' })).toBeDisabled();
+  });
+
+  it('communicates an unresolved save while preventing another submission', () => {
+    renderSheet({ isPending: true });
+
+    const submit = screen.getByRole('button', { name: 'Đang lưu...' });
+    expect(submit).toBeDisabled();
+    expect(submit).toHaveAttribute('aria-busy', 'true');
   });
 
   it('closes the sheet when the user cancels', () => {

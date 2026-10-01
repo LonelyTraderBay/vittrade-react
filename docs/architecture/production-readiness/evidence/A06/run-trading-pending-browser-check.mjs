@@ -145,6 +145,7 @@ page.on('request', (request) => {
     method: request.method(),
     path: url.pathname,
     operationId: classifyOperation(request.method(), url.pathname),
+    routeAtRequest: new URL(page.url()).pathname,
     startedAt: Date.now(),
     idempotencyKeyPresent: Boolean(idempotencyKey),
     idempotencyKeyLength: idempotencyKey?.length ?? 0,
@@ -188,6 +189,8 @@ page.on('requestfailed', (request) => {
     operationId: classifyOperation(request.method(), url.pathname),
     failure: request.failure()?.errorText ?? 'unknown',
     hadResponse: requestsWithResponse.has(request),
+    routeAtRequest: requestRecords.get(request)?.routeAtRequest ?? null,
+    routeAtFailure: new URL(page.url()).pathname,
   });
 });
 const waitFor = async (predicate, description, timeoutMs = 15_000) => {
@@ -240,6 +243,7 @@ try {
       button.textContent?.includes('Đang đặt lệnh')
     );
   });
+  assert.equal(await page.getByTestId('trade-confirm-submit').getAttribute('aria-busy'), 'true');
   await waitFor(() => requestsFor('placeOrder').length === 1, 'placeOrder request');
   const placeRequest = requestsFor('placeOrder')[0];
   const placePendingCapturedAt = Date.now();
@@ -265,7 +269,7 @@ try {
   assert.ok(orderId, 'Place response must include the stable order reference.');
   assert.equal(placeResponse.body?.status, 'open');
   await page.waitForURL((url) => url.pathname.endsWith('/trade/order-receipt'));
-  const receiptId = page.getByTestId('order-receipt-id');
+  const receiptId = page.getByText(orderId, { exact: true });
   await receiptId.waitFor({ state: 'visible' });
   const receiptVisible = (await receiptId.textContent())?.includes(orderId) ?? false;
   assert.equal(receiptVisible, true);
@@ -275,7 +279,7 @@ try {
     window.dispatchEvent(new PopStateEvent('popstate'));
   }, '/w/trade/btcusdt');
   await page.waitForURL((url) => url.pathname === '/w/trade/btcusdt');
-  await page.getByRole('button', { name: /^Đang mở/ }).click();
+  await page.getByRole('tab', { name: /^Đang mở/ }).click();
   const cancelOrderButton = page.getByTestId(`cancel-order-${orderId}`);
   await cancelOrderButton.waitFor({ state: 'visible' });
   await waitFor(
@@ -296,6 +300,8 @@ try {
     const button = document.querySelector('[data-testid="trade-modify-submit"]');
     return button instanceof HTMLButtonElement && button.disabled;
   });
+  assert.match((await page.getByTestId('trade-modify-submit').textContent()) ?? '', /Đang lưu/);
+  assert.equal(await page.getByTestId('trade-modify-submit').getAttribute('aria-busy'), 'true');
   assert.equal(modifyRequest.idempotencyKeyPresent, true);
   assert.equal(
     responsesFor('modifyOrder').length,
@@ -326,6 +332,8 @@ try {
   await waitFor(() => requestsFor('cancelOrder').length === 1, 'cancelOrder request');
   const cancelRequest = requestsFor('cancelOrder')[0];
   await waitFor(() => currentCancelButton.isDisabled(), 'disabled cancel action');
+  assert.match((await currentCancelButton.textContent()) ?? '', /Đang hủy/);
+  assert.equal(await currentCancelButton.getAttribute('aria-busy'), 'true');
   assert.equal(cancelRequest.idempotencyKeyPresent, true);
   assert.equal(
     responsesFor('cancelOrder').length,
@@ -356,7 +364,7 @@ try {
     'cancelled order removal from open list',
   );
 
-  await page.getByRole('button', { name: 'Lịch sử', exact: true }).click();
+  await page.getByRole('tab', { name: 'Lịch sử', exact: true }).click();
   await waitFor(() => responsesFor('listOrderHistory').length >= 1, 'order-history response');
   await waitFor(
     () =>
@@ -399,7 +407,18 @@ try {
   assert.deepEqual(externalApiOrigins, new Set());
   assert.deepEqual(pageErrors, []);
   await Promise.all(responseTasks);
-  const unmatchedFailures = apiFailures.filter((failure) => !failure.hadResponse);
+  const expectedNavigationAborts = apiFailures.filter(
+    (failure) =>
+      !failure.hadResponse &&
+      failure.failure === 'net::ERR_ABORTED' &&
+      failure.operationId === null &&
+      failure.path === '/api/market/pairs' &&
+      failure.routeAtRequest !== null &&
+      failure.routeAtRequest !== failure.routeAtFailure,
+  );
+  const unmatchedFailures = apiFailures.filter(
+    (failure) => !failure.hadResponse && !expectedNavigationAborts.includes(failure),
+  );
   assert.equal(unmatchedFailures.length, 0, JSON.stringify(unmatchedFailures));
   const unexpectedTradingRequests = apiRequests.filter(
     (request) => request.unexpectedTradingRequest,
@@ -481,12 +500,14 @@ try {
         ]),
       ),
       tradingWriteCount: writeRequests.length,
+      expectedNavigationAbortCount: expectedNavigationAborts.length,
       unmatchedApiFailureCount: unmatchedFailures.length,
       pageErrors,
       externalApiOriginCount: externalApiOrigins.size,
     },
     apiRequests,
     apiResponses,
+    expectedNavigationAborts,
     sourceHashes,
     limitations:
       'All writes ran through local MSW in an isolated preview; this does not establish persistence, real backend idempotency, exchange execution, server-side pending states or user acceptance.',

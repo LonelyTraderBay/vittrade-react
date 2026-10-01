@@ -507,6 +507,7 @@ export function TradeTerminal() {
             orders={openOrders}
             canWrite={canWriteTrading}
             cancelPending={cancelOrderMutation.isPending}
+            pendingCancelOrderId={cancelOrderMutation.variables?.orderId}
             onModifyOrder={handleModifyOrder}
             onCancelOrder={(orderId) => void handleCancelOrder(orderId)}
             onExportHistory={() => navigate(`${routePrefix}/trade/export`)}
