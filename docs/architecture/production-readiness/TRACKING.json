@@ -42,14 +42,14 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-10-01T11:31:31.000Z",
+    "updatedAt": "2026-10-01T12:08:53.000Z",
     "lastCompletedTask": "B07.02",
     "activeTask": "B07",
-    "activeStep": "B07.04",
+    "activeStep": "B07.05",
     "nextTask": "B07",
-    "nextStep": "B07.04",
-    "nextAction": "Commit and push the Node24-compatible action and Ubuntu 24.04 workflow update for exact-SHA hosted validation. Then record B07.04 results and complete B07.05 final-HEAD plus negative-path evidence; keep absent protections and invalid CODEOWNERS as explicit governance blockers.",
-    "changedFiles": [".github/workflows/ci.yml","docs/architecture/production-readiness/TRACKING.json","docs/architecture/production-readiness/evidence/B07/b07-04-governance-lifecycle-2026-10-01.json"],
+    "nextStep": "B07.05",
+    "nextAction": "Push the temporary marker-gated B07.05 probe, verify the expected late failure still uploads diagnostic evidence and independently validate the downloaded artifact, then remove the probe and run exact-SHA CI on the final workflow. Keep repository governance gaps open.",
+    "changedFiles": [".github/workflows/ci.yml","docs/architecture/production-readiness/TRACKING.json"],
     "pendingChecks": [
       "C03 follow-up: obtain product-intent evidence for the login backend-failure message; the full-suite gate remains exit 1.",
       "A06.03: retain the user-confirmed Wallet unknown/duplicate contract blocker and continue independent scenarios.",
@@ -9361,9 +9361,9 @@
         },
         {
           "id": "B07.05",
-          "status": "todo",
+          "status": "in_progress",
           "evidenceIds": [],
-          "notes": ""
+          "notes": "B07.05 controlled late-failure probe is in progress. Run 36857038378 first passed 35/35 steps on exact SHA 09f3f570113bca9467102efdac4d266a6633e0b9. The temporary commit-message-gated probe now targets the failure-conditioned upload step; next verify the uploaded artifact independently, remove the probe and validate final HEAD."
         }
       ],
       "pageIds": [],
@@ -9416,13 +9416,14 @@
         "CHANGE-20261001-0373",
         "CHANGE-20261001-0374",
         "CHANGE-20261001-0375",
-        "CHANGE-20261001-0376", "CHANGE-20261001-0377", "CHANGE-20261001-0378"
+        "CHANGE-20261001-0376", "CHANGE-20261001-0377", "CHANGE-20261001-0378",
+        "CHANGE-20261001-0383"
       ],
       "blockers": [],
       "startedAt": null,
       "completedAt": null,
       "elapsedMinutes": null,
-      "notes": "B07.01, B07.02 and B07.03 are done on exact hosted SHAs. B07.04 confirmed no remote branch protection/rulesets, 28 invalid CODEOWNERS team owners, and no DCO enforcement; Node 24-compatible actions and a stable Ubuntu 24.04 pin are being validated. B07.05 remains for final HEAD and negative-path evidence.",
+      "notes": "B07.01, B07.02 and B07.03 are done on exact hosted SHAs. B07.04 confirms no remote branch protections/rulesets or required checks, 28 invalid CODEOWNERS owners, and no DCO enforcement; checkout@v7/setup-node@v7 with Ubuntu 24.04 passed exact-SHA hosted CI in run 36857038378. B07.05 is exercising failure-conditioned evidence upload, then will remove the probe and verify final HEAD.",
       "execution": {
         "requiredChecks": [
           "Exact pushed SHA on Node22/Ubuntu with EOL output and production workflow gates",
@@ -57972,9 +57973,9 @@
       "lifecycle": "active",
       "taskIds": ["B07", "B09"],
       "disposition": "changed",
-      "reason": "Trigger CI on codex branches and enforce the Git EOL gate before dependency installation. | B07.02: Record exact run metadata, declare npm cache by package-lock.json, produce the exact-SHA bundle manifest and upload CI evidence on success/failure without uploading dist/. | Download the uploaded exact-SHA CI evidence artifact on the authenticated runner and verify its metadata, contents and deployability boundary. | Run tracking consistency in hosted CI with a retained JSON report, then gate exact OpenAPI/MSW route parity. | B07.04: Use Node24-compatible action majors and pin Ubuntu 24.04 pending an explicit Ubuntu 26.04 validation.",
+      "reason": "Trigger CI on codex branches and enforce the Git EOL gate before dependency installation. | B07.02: Record exact-SHA artifact creation, download and verification without uploading dist/. | B07.03: Run tracking consistency in hosted CI and gate exact OpenAPI/MSW route parity. | B07.04: Use Node24-compatible action majors and pin Ubuntu 24.04 pending explicit Ubuntu 26.04 validation. | B07.05: Temporarily inject a marker-gated late failure to verify failure-conditioned CI evidence upload, then remove it.",
       "evidenceIds": ["EV-20261001-042", "EV-20261001-045", "EV-20261001-046", "EV-20261001-048", "EV-20261001-050"],
-      "changeIds": ["CHANGE-20261001-0341", "CHANGE-20261001-0356", "CHANGE-20261001-0362", "CHANGE-20261001-0372", "CHANGE-20261001-0377"]
+      "changeIds": ["CHANGE-20261001-0341", "CHANGE-20261001-0356", "CHANGE-20261001-0362", "CHANGE-20261001-0372", "CHANGE-20261001-0377", "CHANGE-20261001-0383"]
     },
     {
       "path": ".gitignore",
@@ -127376,6 +127377,19 @@
       "evidenceIds": [
         "EV-20261001-050"
       ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0383",
+      "taskId": "B07",
+      "stepId": "B07.05",
+      "path": ".github/workflows/ci.yml",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Temporarily add a commit-message-gated intentional failure after all substantive gates so the failure-conditioned CI evidence upload can be exercised; remove it after the probe.",
+      "beforeHash": "f80fac06a61b2b9e088e918f15466f9f73795036731b024a36feac45ffb30337",
+      "afterHash": "ba922ed0c14c6e1cdb871df241d4e971b3796c0fc508ed5ad22b60a96001c1ae",
+      "evidenceIds": [],
       "commit": null
     }
   ],
