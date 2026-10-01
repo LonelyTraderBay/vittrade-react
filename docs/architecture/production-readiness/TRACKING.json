@@ -42,13 +42,13 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-10-01T21:07:11.106Z",
+    "updatedAt": "2026-10-01T21:23:22.354Z",
     "lastCompletedTask": "C05.02",
     "activeTask": "B07",
     "activeStep": "B07.03",
     "nextTask": "B07",
     "nextStep": "B07.03",
-    "nextAction": "Complete B07.03 on the dedicated branch: make check-tracking and OpenAPI/mock method-path parity required CI gates, save the Playwright project list and run all configured projects before production Build, then verify an exact-SHA Ubuntu Actions run. C01.01 is not complete; current CI matrix is Chromium Desktop Chrome only.",
+    "nextAction": "Push the B07.03 parity portability fix and verify that check-tracking and the normalized OpenAPI/mock map both pass on the exact Ubuntu SHA; then confirm the configured Chromium project list, E2E-before-Build ordering and complete artifact verification. Record run #29 as the observed failure path. C01.01 remains unapproved beyond Chromium Desktop Chrome.",
     "changedFiles": [
       "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
       "docs/architecture/production-readiness/evidence/A06/run-profile-loading-browser-check.mjs",
@@ -131,7 +131,9 @@
       "scripts/check-ci-evidence-artifact.test.mjs",
       "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json",
       "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-ci-current-sha-2026-10-01.json",
-      "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-ci-artifact-verification-2026-10-01.json"
+      "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-ci-artifact-verification-2026-10-01.json",
+      "docs/architecture/production-readiness/evidence/A06/generate-operation-mock-map.mjs",
+      "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-ci-parity-portability-failure-2026-10-01.json"
     ],
     "pendingChecks": [
       "C03 follow-up: obtain product-intent evidence for the login backend-failure message; the full-suite gate remains exit 1.",
@@ -9283,8 +9285,8 @@
         {
           "id": "B07.03",
           "status": "in_progress",
-          "evidenceIds": [],
-          "notes": "Add CI tracking consistency and exact OpenAPI/mock method-path parity checks; save the actual configured Playwright project list and run every configured project before Build. C01.01 is still todo and only Chromium Desktop Chrome is configured, so do not claim other engines/devices."
+          "evidenceIds": ["EV-20261002-001"],
+          "notes": "Run #29 passed EOL (0 violations) and tracking (913 files, errorCount=0), then exposed a cross-platform raw-byte hash mismatch in the generated OpenAPI/mock map. The text-source hash now canonicalizes CRLF/CR to LF; Windows normalized SHA matched each Git blob, and the regenerated map passes locally at 154/154. Await the exact-SHA Ubuntu rerun."
         },
         {
           "id": "B07.04",
@@ -9302,7 +9304,7 @@
       "pageIds": [],
       "routeIds": [],
       "operationIds": [],
-      "evidenceIds": ["EV-20261001-044", "EV-20261001-045"],
+      "evidenceIds": ["EV-20261001-044", "EV-20261001-045", "EV-20261002-001"],
       "changeIds": [
         "CHANGE-20261002-0001",
         "CHANGE-20261002-0002",
@@ -9315,13 +9317,14 @@
         "CHANGE-20261002-0009",
         "CHANGE-20261002-0010",
         "CHANGE-20261002-0011",
-        "CHANGE-20261002-0012"
+        "CHANGE-20261002-0012",
+        "CHANGE-20261002-0013"
       ],
       "blockers": [],
       "startedAt": "2026-10-01T19:48:11.000Z",
       "completedAt": null,
       "elapsedMinutes": null,
-      "notes": "B07.01 and B07.02 have exact-SHA Ubuntu CI/artifact evidence. B07.03 is active on codex/b07-01-current-checkpoint; remote push/commit is authorized. C01.01 browser support matrix remains undecided."
+      "notes": "B07.01 and B07.02 have exact-SHA Ubuntu CI/artifact evidence. B07.03 run #29 is retained as a useful portability failure; source-hash normalization is implemented and awaits an exact-SHA Ubuntu rerun. Work is on codex/b07-01-current-checkpoint; push authorization is in effect. C01.01 browser support matrix remains undecided."
     },
     {
       "id": "B08",
@@ -58369,11 +58372,11 @@
       "path": "docs/architecture/production-readiness/evidence/A06/generate-operation-mock-map.mjs",
       "baselineSha256": null,
       "lifecycle": "active",
-      "taskIds": ["A06"],
+      "taskIds": ["A06", "B07"],
       "disposition": "changed",
-      "reason": "Make the A06.01 OpenAPI-operation to MSW-handler and direct-test inventory reproducible.",
+      "reason": "Make the A06.01 OpenAPI-operation to MSW-handler and direct-test inventory reproducible.; Canonicalize line endings before hashing for cross-platform parity checks.",
       "evidenceIds": ["EV-20260928-019"],
-      "changeIds": ["CHANGE-20260928-997"]
+      "changeIds": ["CHANGE-20260928-997", "CHANGE-20261002-0013"]
     },
     {
       "path": "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
@@ -126707,9 +126710,22 @@
       "path": "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json",
       "action": "modify",
       "oldPath": null,
-      "reason": "Refresh the generated OpenAPI operation to MSW handler inventory before enforcing its freshness in CI.",
+      "reason": "Regenerate the operation/mock inventory with platform-stable normalized source hashes before enforcing freshness in CI.",
       "beforeHash": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
-      "afterHash": "e3b4a2706d43813d3109e9925402683a7f208f5b2eafaa7c3819bef26ce98b8d",
+      "afterHash": "568a86085d6770bcd508ced28c4e52155da87ed76b1140707c3b26aea9aaf5c0",
+      "evidenceIds": [],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261002-0013",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/A06/generate-operation-mock-map.mjs",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Normalize text line endings before hashing source files so the checked method/path inventory is byte-stable across Windows and Ubuntu.",
+      "beforeHash": "7ca3e90f9df52a2cdd0197b33b0d993fba0fb2493fa197d909313775420f1a53",
+      "afterHash": "7f43183cb822722f4eaf68cd84e4498cbc07a52daad85c9ffd159bfda925f52b",
       "evidenceIds": [],
       "commit": null
     }
@@ -143871,6 +143887,21 @@
       "result": "pass",
       "artifact": "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-ci-artifact-verification-2026-10-01.json",
       "notes": "The first verifier implementation rejected the absence of test-results on a clean E2E run; runs #26 and #27 exposed that incorrect assumption. Commit 104896e made trace archives optional when no retry/failure occurs and added a regression case. Run #28 then passed the complete workflow and artifact verification. The artifact does not prove backend/staging behavior, user acceptance or remote required-status enforcement."
+    },
+    {
+      "id": "EV-20261002-001",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "kind": "exact-sha-node22-ubuntu-ci-parity-portability-failure",
+      "commandOrSteps": "Inspect GitHub Actions run #29, steps and complete job logs for commit fcd0e3fb5f3425e792630db8e45afd7872a225b1; compare the local 154-operation method/path mapping with the Ubuntu --check mismatch.",
+      "environment": "GitHub Actions ubuntu-24.04; Node 22.23.3/npm 10.9.9; workflow run 36927713021 attempt 1, job 110589037066.",
+      "observedAt": "2026-10-01T21:18:11.623Z",
+      "sourceHead": "fcd0e3fb5f3425e792630db8e45afd7872a225b1",
+      "expected": "Tracking and exact method/path parity gates pass on the same committed source on Ubuntu after Windows-generated evidence is committed.",
+      "actual": "EOL gate passed (1495 paths, zero violations) and check-tracking passed (913 source files, errorCount 0). Parity --check failed because handler/persona hashes included platform-specific CRLF/LF bytes. The run stopped before tests/build. A 1642-byte failure artifact containing the tracking report was uploaded.",
+      "result": "fail",
+      "artifact": "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-ci-parity-portability-failure-2026-10-01.json",
+      "notes": "Fixed by normalizing CRLF and lone CR to LF before hashing these source text files. Do not count this run as a full CI pass."
     }
   ],
   "decisions": [

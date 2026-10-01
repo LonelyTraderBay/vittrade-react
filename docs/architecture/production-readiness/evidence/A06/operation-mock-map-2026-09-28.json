@@ -4,8 +4,8 @@
     "tracking": "docs/architecture/production-readiness/TRACKING.json",
     "handlers": "src/dev/mocks/handlers.ts",
     "personaRegistry": "src/dev/mocks/personas.ts",
-    "handlerSourceSha256": "6a513c15d33be44caa44c666136889a6277a7b17ad95a7282ab2c967305cb2aa",
-    "personaSourceSha256": "c7f95468ff1fcb4055688702a293ad0275c59ba604e054e9be5049aa926be269"
+    "handlerSourceSha256": "8382400738090945e6c3ec53286f288f0ed2d41c90dbd407eec2b48d36d347ae",
+    "personaSourceSha256": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7"
   },
   "scope": "Static inventory of literal MSW handler registrations against tracked OpenAPI operation IDs.",
   "summary": {
