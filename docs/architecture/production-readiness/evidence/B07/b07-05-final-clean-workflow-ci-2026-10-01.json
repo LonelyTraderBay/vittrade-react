@@ -1,0 +1,94 @@
+{
+  "id": "EV-20261001-053",
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-01T12:57:29.000Z",
+  "taskId": "B07",
+  "stepId": "B07.05",
+  "kind": "validation",
+  "commandOrSteps": "Inspect exact-SHA GitHub Actions run 36863654040, Production gates job steps and summary, final workflow source SHA, tracking/parity/build gates, uploaded artifact metadata, and runner-side artifact verifier output.",
+  "observedAt": "2026-10-01T12:57:29.000Z",
+  "sourceHead": "e4a16e2e9d5a8391518000a8c7258e4238974b88",
+  "run": {
+    "provider": "GitHub Actions",
+    "id": 36863654040,
+    "attempt": 1,
+    "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36863654040",
+    "event": "push",
+    "branch": "codex/b07-01-ubuntu-validation",
+    "commit": "e4a16e2e9d5a8391518000a8c7258e4238974b88",
+    "job": "Production gates",
+    "jobId": 110373712026,
+    "result": "success",
+    "startedAt": "2026-10-01T12:43:15Z",
+    "completedAt": "2026-10-01T12:53:04Z",
+    "durationSeconds": 589,
+    "jobStartedAt": "2026-10-01T12:43:18Z",
+    "jobCompletedAt": "2026-10-01T12:53:03Z",
+    "jobDurationSeconds": 585,
+    "completedSteps": 35,
+    "totalSteps": 35,
+    "failedSteps": 0,
+    "skippedSteps": 0
+  },
+  "environment": {
+    "runner": "GitHub-hosted ubuntu-24.04",
+    "nodeVersionSource": ".nvmrc",
+    "nodeVersion": "22.23.2",
+    "actions": "checkout@v7, setup-node@v7; evidence upload@v7 and download@v8",
+    "workflowProbe": "The temporary controlled failure step is absent from the exact tested SHA."
+  },
+  "measurements": {
+    "trackingConsistency": {
+      "result": "pass",
+      "errorCount": 0
+    },
+    "contractMockParity": {
+      "result": "pass",
+      "contractFiles": 15,
+      "matchingMethodPathPairs": 154,
+      "missing": 0,
+      "extra": 0
+    },
+    "unitIntegration": {
+      "result": "pass",
+      "filesPassed": 287,
+      "testsPassed": 2411
+    },
+    "coverage": {
+      "result": "pass"
+    },
+    "chromiumE2E": {
+      "result": "pass",
+      "testsPassed": 51,
+      "durationSeconds": 66
+    },
+    "productionBuildAndBudgets": {
+      "build": "pass",
+      "mockExclusion": "pass",
+      "bundleBudget": "pass"
+    },
+    "artifact": {
+      "uploadStep": "success",
+      "downloadStep": "success",
+      "runnerVerifierStep": "success",
+      "id": 11162014481,
+      "name": "vittrade-ci-evidence-e4a16e2e9d5a8391518000a8c7258e4238974b88",
+      "sizeBytes": 2950231,
+      "digest": "sha256:a259bf53ccecccc81c883b6aacdc82a11eccde4b8be7cd17d33a4557e2aa9731",
+      "createdAt": "2026-10-01T12:52:59Z",
+      "expiresAt": "2026-12-30T12:43:15Z",
+      "files": 554,
+      "javascriptChunks": 221,
+      "coveragePresent": true,
+      "playwrightHtmlReportPresent": true,
+      "distPresent": false,
+      "deployableArtifact": false,
+      "verificationOutput": "CI evidence artifact verified for e4a16e2e9d5a8391518000a8c7258e4238974b88: 554 files, 221 bundle chunks, coverage and Playwright report present, no dist/."
+    }
+  },
+  "expected": "Run the post-probe production workflow on the exact pushed SHA, pass every configured gate, upload/download/verify its CI-only artifact on the Ubuntu runner, and preserve the no-dist deployability boundary.",
+  "actual": "Run 36863654040 succeeded on exact SHA e4a16e2e9d5a8391518000a8c7258e4238974b88 with 35/35 steps, 2,411 tests across 287 files, coverage, 51/51 Chromium E2E, tracking errorCount 0, 154/154 OpenAPI/MSW method-path parity, production build, mock exclusion and bundle budget. The workflow uploaded the artifact, downloaded it on the same runner and passed the exact-SHA verifier: 554 files, 221 JS chunks, coverage and Playwright report, and no dist/.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/B07/b07-05-final-clean-workflow-ci-2026-10-01.json",
+  "notes": "This completes B07.05. Remote governance findings remain blockers as recorded in EV-20261001-050/051; no branch rule, CODEOWNERS mapping, DCO setting, or action policy was changed. The artifact is CI evidence and is not deployable."
+}
