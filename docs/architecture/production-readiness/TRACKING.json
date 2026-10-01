@@ -42,18 +42,14 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-10-01T11:07:30.000Z",
+    "updatedAt": "2026-10-01T11:31:31.000Z",
     "lastCompletedTask": "B07.02",
     "activeTask": "B07",
     "activeStep": "B07.04",
     "nextTask": "B07",
     "nextStep": "B07.04",
-    "nextAction": "Inspect repository settings/rulesets and exact required checks, review/CODEOWNERS/DCO enforcement; verify action versions and ubuntu-latest migration against current official sources. Record remote results and access limits in B07.04 evidence without changing protections. Then B07.05 records final target-HEAD CI and a controlled failure-path result.",
-    "changedFiles": [
-      "docs/architecture/production-readiness/PLAN.md",
-      "docs/architecture/production-readiness/TRACKING.json",
-      "docs/architecture/production-readiness/evidence/B07/b07-03-exact-sha-2026-10-01.json"
-    ],
+    "nextAction": "Commit and push the Node24-compatible action and Ubuntu 24.04 workflow update for exact-SHA hosted validation. Then record B07.04 results and complete B07.05 final-HEAD plus negative-path evidence; keep absent protections and invalid CODEOWNERS as explicit governance blockers.",
+    "changedFiles": [".github/workflows/ci.yml","docs/architecture/production-readiness/TRACKING.json","docs/architecture/production-readiness/evidence/B07/b07-04-governance-lifecycle-2026-10-01.json"],
     "pendingChecks": [
       "C03 follow-up: obtain product-intent evidence for the login backend-failure message; the full-suite gate remains exit 1.",
       "A06.03: retain the user-confirmed Wallet unknown/duplicate contract blocker and continue independent scenarios.",
@@ -9201,7 +9197,7 @@
         "scripts/check-ci-evidence-artifact.test.mjs",
         "scripts/check-openapi-mock-parity.mjs",
         "scripts/check-openapi-mock-parity.test.mjs",
-        "docs/architecture/production-readiness/evidence/B07/b07-03-exact-sha-2026-10-01.json"
+        "docs/architecture/production-readiness/evidence/B07/b07-03-exact-sha-2026-10-01.json", "docs/architecture/production-readiness/evidence/B07/b07-04-governance-lifecycle-2026-10-01.json"
       ],
       "proposedPaths": [],
       "steps": [
@@ -9360,8 +9356,8 @@
         {
           "id": "B07.04",
           "status": "in_progress",
-          "evidenceIds": [],
-          "notes": "Started after B07.03 exact-SHA CI passed. Verify remote required-check/ruleset, review/CODEOWNERS/DCO enforcement and action/runner lifecycle from authoritative repository sources. Run #36850681097 reported checkout/setup-node Node 20 deprecation (forced Node 24) and ubuntu-latest migration to Ubuntu 26 beginning 2026-10-19; verify current policy and impact, do not infer enforcement from workflow YAML."
+          "evidenceIds": ["EV-20261001-050"],
+          "notes": "Remote governance and lifecycle findings are recorded in EV-20261001-050: main has no classic protections or rulesets, all 28 @vittrade/* CODEOWNERS lines are Unknown owner, and no DCO gate is configured. Workflow now uses checkout@v7/setup-node@v7 and ubuntu-24.04; exact-SHA hosted validation is pending."
         },
         {
           "id": "B07.05",
@@ -9381,7 +9377,7 @@
         "EV-20261001-046",
         "EV-20261001-047",
         "EV-20261001-048",
-        "EV-20261001-049"
+        "EV-20261001-049", "EV-20261001-050"
       ],
       "changeIds": [
         "CHANGE-20261001-0340",
@@ -9420,13 +9416,13 @@
         "CHANGE-20261001-0373",
         "CHANGE-20261001-0374",
         "CHANGE-20261001-0375",
-        "CHANGE-20261001-0376"
+        "CHANGE-20261001-0376", "CHANGE-20261001-0377", "CHANGE-20261001-0378"
       ],
       "blockers": [],
       "startedAt": null,
       "completedAt": null,
       "elapsedMinutes": null,
-      "notes": "B07.01, B07.02 and B07.03 are done on exact hosted SHAs; B07.03 run 36850681097 passed on 2bdaa3072c1555da4c2819790090255541d6670f with 2,411 tests, 51/51 Chromium E2E, tracking errorCount=0, 154/154 OpenAPI/MSW parity and runner-side artifact verification. B07.04 is active for remote enforcement and action/runner lifecycle; B07.05 remains for final HEAD and failure-path evidence. C01 browser scope, backend/staging and user acceptance remain unverified.",
+      "notes": "B07.01, B07.02 and B07.03 are done on exact hosted SHAs. B07.04 confirmed no remote branch protection/rulesets, 28 invalid CODEOWNERS team owners, and no DCO enforcement; Node 24-compatible actions and a stable Ubuntu 24.04 pin are being validated. B07.05 remains for final HEAD and negative-path evidence.",
       "execution": {
         "requiredChecks": [
           "Exact pushed SHA on Node22/Ubuntu with EOL output and production workflow gates",
@@ -57976,9 +57972,9 @@
       "lifecycle": "active",
       "taskIds": ["B07", "B09"],
       "disposition": "changed",
-      "reason": "Trigger CI on codex branches and enforce the Git EOL gate before dependency installation. | B07.02: Record exact run metadata, declare npm cache by package-lock.json, produce the exact-SHA bundle manifest and upload CI evidence on success/failure without uploading dist/. | Download the uploaded exact-SHA CI evidence artifact on the authenticated runner and verify its metadata, contents and deployability boundary. | Run tracking consistency in hosted CI with a retained JSON report, then gate exact OpenAPI/MSW route parity.",
-      "evidenceIds": ["EV-20261001-042", "EV-20261001-045", "EV-20261001-046", "EV-20261001-048"],
-      "changeIds": ["CHANGE-20261001-0341", "CHANGE-20261001-0356", "CHANGE-20261001-0362", "CHANGE-20261001-0372"]
+      "reason": "Trigger CI on codex branches and enforce the Git EOL gate before dependency installation. | B07.02: Record exact run metadata, declare npm cache by package-lock.json, produce the exact-SHA bundle manifest and upload CI evidence on success/failure without uploading dist/. | Download the uploaded exact-SHA CI evidence artifact on the authenticated runner and verify its metadata, contents and deployability boundary. | Run tracking consistency in hosted CI with a retained JSON report, then gate exact OpenAPI/MSW route parity. | B07.04: Use Node24-compatible action majors and pin Ubuntu 24.04 pending an explicit Ubuntu 26.04 validation.",
+      "evidenceIds": ["EV-20261001-042", "EV-20261001-045", "EV-20261001-046", "EV-20261001-048", "EV-20261001-050"],
+      "changeIds": ["CHANGE-20261001-0341", "CHANGE-20261001-0356", "CHANGE-20261001-0362", "CHANGE-20261001-0372", "CHANGE-20261001-0377"]
     },
     {
       "path": ".gitignore",
@@ -81373,6 +81369,22 @@
       ],
       "changeIds": [
         "CHANGE-20261001-0375"
+      ]
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/b07-04-governance-lifecycle-2026-10-01.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Record authenticated repository governance settings, CODEOWNERS API findings and official action/runner lifecycle for B07.04.",
+      "evidenceIds": [
+        "EV-20261001-050"
+      ],
+      "changeIds": [
+        "CHANGE-20261001-0378"
       ]
     }
   ],
@@ -127335,6 +127347,36 @@
         "EV-20261001-049"
       ],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0377",
+      "taskId": "B07",
+      "stepId": "B07.04",
+      "path": ".github/workflows/ci.yml",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Move checkout and setup-node to Node 24-compatible current major releases and pin Ubuntu 24.04 until Ubuntu 26.04 is explicitly validated.",
+      "beforeHash": "04b3048a02ba3b877f85bb3170d820f7b2b51a1ce81366ee62f98d013108f37a",
+      "afterHash": "f80fac06a61b2b9e088e918f15466f9f73795036731b024a36feac45ffb30337",
+      "evidenceIds": [
+        "EV-20261001-050"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0378",
+      "taskId": "B07",
+      "stepId": "B07.04",
+      "path": "docs/architecture/production-readiness/evidence/B07/b07-04-governance-lifecycle-2026-10-01.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Record actual remote branch/ruleset state, CODEOWNERS errors and verified Node/Ubuntu lifecycle sources.",
+      "beforeHash": null,
+      "afterHash": "d0f300b36f32f87228635fac3f838611717a794be083b6e46069c146d1f40f6b",
+      "evidenceIds": [
+        "EV-20261001-050"
+      ],
+      "commit": null
     }
   ],
   "evidence": [
@@ -145222,6 +145264,91 @@
       "result": "pass",
       "artifact": "docs/architecture/production-readiness/evidence/B07/b07-03-exact-sha-2026-10-01.json",
       "notes": "This closes B07.03 on its exact pushed source SHA. The run is Chromium-only and does not verify broader C01 browser support, backend/staging behavior, branch rules, required reviews, or product user acceptance."
+    },
+    {
+      "id": "EV-20261001-050",
+      "schemaVersion": 1,
+      "recordedAt": "2026-10-01T11:31:31.000Z",
+      "taskId": "B07",
+      "stepId": "B07.04",
+      "kind": "validation",
+      "commandOrSteps": "Inspect the authenticated GitHub repository branch-protection and ruleset pages; query repository owner/default branch and CODEOWNERS errors through the public GitHub REST API; search workflow and scripts for DCO enforcement; compare action and runner lifecycle with current official GitHub sources.",
+      "observedAt": "2026-10-01T11:31:31.000Z",
+      "sourceHead": "1f0c682bfb22c72b796cf9e7716271e6483c2dec",
+      "environment": {
+        "repository": "LonelyTraderBay/vittrade-react",
+        "repositoryVisibility": "public",
+        "ownerType": "User",
+        "defaultBranch": "main",
+        "settingsAccess": "Authenticated GitHub browser session",
+        "codeownersApi": "Public GitHub REST API, ref codex/b07-01-ubuntu-validation"
+      },
+      "measurements": {
+        "classicBranchProtection": {
+          "configured": false,
+          "observedText": "Classic branch protections have not been configured",
+          "url": "https://github.com/LonelyTraderBay/vittrade-react/settings/branches"
+        },
+        "repositoryRulesets": {
+          "count": 0,
+          "observedText": "You haven't created any rulesets",
+          "url": "https://github.com/LonelyTraderBay/vittrade-react/settings/rules"
+        },
+        "requiredChecksAndReviews": {
+          "enforced": false,
+          "reason": "No repository branch-protection rule or ruleset exists; repository owner is a user account, so there is no organization-parent ruleset to inherit. CI runs are informational and are not a merge gate."
+        },
+        "codeowners": {
+          "filePresent": true,
+          "ownerAccount": "vittrade",
+          "ownerAccountType": "User",
+          "invalidOwnerCount": 28,
+          "errorKindCounts": {
+            "Unknown owner": 28
+          },
+          "affectedLines": {
+            "first": 5,
+            "last": 32
+          },
+          "uniqueTeamHandles": 15,
+          "apiUrl": "https://api.github.com/repos/LonelyTraderBay/vittrade-react/codeowners/errors?ref=codex%2Fb07-01-ubuntu-validation"
+        },
+        "dco": {
+          "workflowEnforcementFound": false,
+          "verifiedSignedOffCommitsOnB07Branch": true,
+          "remoteRequiredDcoCheck": false,
+          "note": "The B07 commits are manually signed off, but no required branch rule or DCO gate exists."
+        },
+        "actionAndRunnerLifecycle": {
+          "currentCheckoutMajorBeforeChange": 4,
+          "currentSetupNodeMajorBeforeChange": 4,
+          "node20RemovalDate": "2026-09-23",
+          "node24ActionRuntime": "Current GitHub-hosted Actions runtime",
+          "ubuntuLatestCurrentMigration": {
+            "from": "Ubuntu 24.04",
+            "to": "Ubuntu 26.04",
+            "rolloutStart": "2026-10-19",
+            "rolloutCompleteBy": "2026-11-19"
+          },
+          "decision": "Upgrade checkout and setup-node to current Node 24-compatible major releases. Pin CI to ubuntu-24.04, which has the existing project validation baseline, until Ubuntu 26.04 is tested explicitly."
+        }
+      },
+      "sourceUrls": [
+        "https://github.com/LonelyTraderBay/vittrade-react/settings/branches",
+        "https://github.com/LonelyTraderBay/vittrade-react/settings/rules",
+        "https://api.github.com/users/vittrade",
+        "https://api.github.com/repos/LonelyTraderBay/vittrade-react/codeowners/errors?ref=codex%2Fb07-01-ubuntu-validation",
+        "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners",
+        "https://github.blog/changelog/2026-09-23-node-20-is-no-longer-available-in-github-actions/",
+        "https://github.blog/changelog/2026-09-17-ubuntu-26-generally-available-and-latest-migration/",
+        "https://github.com/actions/checkout/blob/main/CHANGELOG.md",
+        "https://github.com/actions/setup-node/releases"
+      ],
+      "expected": "Determine whether remote branch controls enforce CI, review, CODEOWNERS and DCO, and verify the actual Node and Ubuntu lifecycle before changing workflow action/runtime selections.",
+      "actual": "The authenticated repository settings show no classic branch protection and no repository rulesets. The public repository API confirms the owner is a user account and reports 28 Unknown owner errors across every CODEOWNERS line that references @vittrade/* teams. The checked B07 commits contain sign-off trailers, but no DCO enforcement is configured in repository workflow or remote required checks. Official GitHub notices say Node 20 was removed from Actions on 2026-09-23 and ubuntu-latest migration to Ubuntu 26.04 rolls out from 2026-10-19 through 2026-11-19. The workflow therefore needs Node 24-compatible action majors and an explicit Ubuntu 24.04 pin pending a separate Ubuntu 26.04 test.",
+      "result": "pass",
+      "artifact": "docs/architecture/production-readiness/evidence/B07/b07-04-governance-lifecycle-2026-10-01.json",
+      "notes": "Verification records existing remote state; it does not enable protections or infer that a passing Actions run blocks a merge. CODEOWNERS ownership needs the user to supply valid GitHub user/team identities before it can be repaired."
     }
   ],
   "decisions": [
