@@ -9357,8 +9357,8 @@
         {
           "id": "B07.02",
           "status": "in_progress",
-          "evidenceIds": ["EV-20261001-045"],
-          "notes": "EV-20261001-045 records local B07.02 validation: focused Vitest 19/19 including four manifest tests, ESLint, Prettier, syntax and workflow contract checks. The workflow now records exact SHA/run metadata, uploads coverage/Playwright/test-result evidence and an explicitly non-deployable bundle manifest under an artifact named by SHA; it excludes dist/. Exact-SHA hosted run and artifact inspection remain pending. The updated ledger passes check-tracking with errorCount=0.",
+          "evidenceIds": ["EV-20261001-045", "EV-20261001-046"],
+          "notes": "The initial exact-SHA run 36838559109 on ce5ec93d0a60210321911f950712d0984b0270cd succeeded 31/31 and published artifact 11151041364 (2,949,346 bytes). Its archive was not read locally because the REST download requires authentication and gh is signed out. Added an authenticated runner-side download and content checker; await a new exact-SHA hosted run before closing this step.",
           "execution": {
             "checkpoints": [
               {
@@ -9368,9 +9368,11 @@
                   ".github/workflows/ci.yml",
                   ".gitignore",
                   "scripts/check-bundle-budget.mjs",
-                  "scripts/check-bundle-budget.test.mjs"
+                  "scripts/check-bundle-budget.test.mjs",
+                  "scripts/check-ci-evidence-artifact.mjs",
+                  "scripts/check-ci-evidence-artifact.test.mjs"
                 ],
-                "notes": "Local assertions pass for lockfile cache path, exact SHA metadata/artifact name, report/trace paths, success/failure upload and no dist upload. Await exact-SHA hosted run and inspect the produced artifact/manifest."
+                "notes": "Local checker tests pass. Run #36838559109 proved upload and artifact metadata but archive content inspection is pending; this checkpoint now downloads the uploaded artifact on the same authenticated Ubuntu job and validates exact SHA/run, manifest, coverage, Playwright report and no dist/. Wait for this verifier to pass on the pushed source SHA."
               }
             ]
           }
@@ -9397,7 +9399,13 @@
       "pageIds": [],
       "routeIds": [],
       "operationIds": [],
-      "evidenceIds": ["EV-20261001-042", "EV-20261001-043", "EV-20261001-044", "EV-20261001-045"],
+      "evidenceIds": [
+        "EV-20261001-042",
+        "EV-20261001-043",
+        "EV-20261001-044",
+        "EV-20261001-045",
+        "EV-20261001-046"
+      ],
       "changeIds": [
         "CHANGE-20261001-0340",
         "CHANGE-20261001-0341",
@@ -9420,20 +9428,25 @@
         "CHANGE-20261001-0358",
         "CHANGE-20261001-0359",
         "CHANGE-20261001-0360",
-        "CHANGE-20261001-0361"
+        "CHANGE-20261001-0361",
+        "CHANGE-20261001-0362",
+        "CHANGE-20261001-0363",
+        "CHANGE-20261001-0364",
+        "CHANGE-20261001-0365",
+        "CHANGE-20261001-0366"
       ],
       "blockers": [],
       "startedAt": null,
       "completedAt": null,
       "elapsedMinutes": null,
-      "notes": "B07.01 is done on exact code SHA a3b2f8b0937ee83cd67a1c061c2bf211852f5070. B07.02 is in_progress: exact-SHA run metadata, lockfile cache, validation-only bundle manifest and failure-path CI evidence upload are implemented and locally checked (EV-20261001-045). Await hosted CI on the pushed B07.02 SHA and inspect its actual artifact. B07.03-B07.05 remain todo; branch governance, retention policy, backend/staging and user acceptance remain unverified.",
+      "notes": "B07.01 is done on exact code SHA a3b2f8b0937ee83cd67a1c061c2bf211852f5070. B07.02 is in_progress: run metadata, lockfile cache, validation-only bundle manifest and CI evidence upload are implemented. Exact-SHA run 36838559109 succeeded 31/31 and published artifact 11151041364 (2,949,346 bytes), but its archive has not yet been inspected. A runner-side artifact download/check is now implemented and must pass on the next exact pushed SHA. B07.03-B07.05 remain todo; branch governance, retention policy, backend/staging and user acceptance remain unverified.",
       "execution": {
         "requiredChecks": [
           "Exact pushed SHA on Node22/Ubuntu with EOL output and production workflow gates",
           "Reconcile generator hash/revision-provenance changes with A06/C05 and rerun resulting exact SHA",
           "Verify required checks, review, CODEOWNERS, DCO and branch policy in B07.04",
           "Run check-tracking and git diff --check",
-          "Verify exact-SHA CI artifact contains run metadata, coverage, Playwright report/trace outputs and bundle manifest while excluding dist/."
+          "Verify exact-SHA CI artifact is actually downloaded and checked for run metadata, coverage, Playwright report, bundle manifest, no dist/; capture expiry metadata and keep remote retention policy unverified until inspected."
         ]
       }
     },
@@ -57976,9 +57989,9 @@
       "lifecycle": "active",
       "taskIds": ["B07", "B09"],
       "disposition": "changed",
-      "reason": "Trigger CI on codex branches and enforce the Git EOL gate before dependency installation. | B07.02: Record exact run metadata, declare npm cache by package-lock.json, produce the exact-SHA bundle manifest and upload CI evidence on success/failure without uploading dist/.",
-      "evidenceIds": ["EV-20261001-042", "EV-20261001-045"],
-      "changeIds": ["CHANGE-20261001-0341", "CHANGE-20261001-0356"]
+      "reason": "Trigger CI on codex branches and enforce the Git EOL gate before dependency installation. | B07.02: Record exact run metadata, declare npm cache by package-lock.json, produce the exact-SHA bundle manifest and upload CI evidence on success/failure without uploading dist/. | Download the uploaded exact-SHA CI evidence artifact on the authenticated runner and verify its metadata, contents and deployability boundary.",
+      "evidenceIds": ["EV-20261001-042", "EV-20261001-045", "EV-20261001-046"],
+      "changeIds": ["CHANGE-20261001-0341", "CHANGE-20261001-0356", "CHANGE-20261001-0362"]
     },
     {
       "path": ".gitignore",
@@ -68222,7 +68235,7 @@
       "lifecycle": "active",
       "taskIds": ["A01", "B10", "A05", "A07", "A06", "A08", "C02", "C03", "C04", "C05", "B07"],
       "disposition": "changed",
-      "reason": "Record final forbidden browser measurements, refreshed Support pending values and next scenario. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. | Repair three existing runbook heading anchors discovered by docs-only link validation. | Label the retained application-progress text as a historical snapshot, point current state to TRACKING, and describe the implemented A05 environment boundary accurately. | Record exact-SHA hosted Ubuntu CI measurements, limitations and remaining B07.01 work. | B07.01: record the exact-SHA hosted Ubuntu result and close this checkpoint. | B07.02: Record B07.02 artifact scope, public-repository data boundary, local validation and exact-SHA CI still pending.",
+      "reason": "Record final forbidden browser measurements, refreshed Support pending values and next scenario. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. | Repair three existing runbook heading anchors discovered by docs-only link validation. | Label the retained application-progress text as a historical snapshot, point current state to TRACKING, and describe the implemented A05 environment boundary accurately. | Record exact-SHA hosted Ubuntu CI measurements, limitations and remaining B07.01 work. | B07.01: record the exact-SHA hosted Ubuntu result and close this checkpoint. | B07.02: Record B07.02 artifact scope, public-repository data boundary, local validation and exact-SHA CI still pending. | Record run #12 measurements, artifact metadata and the authenticated runner-side content verification gate required before closing B07.02.",
       "evidenceIds": [
         "EV-20260927-076",
         "EV-20260928-001",
@@ -68605,7 +68618,8 @@
         "EV-20261001-042",
         "EV-20261001-043",
         "EV-20261001-044",
-        "EV-20261001-045"
+        "EV-20261001-045",
+        "EV-20261001-046"
       ],
       "changeIds": [
         "CHANGE-20260927-052",
@@ -68771,7 +68785,8 @@
         "CHANGE-20261001-0344",
         "CHANGE-20261001-0352",
         "CHANGE-20261001-0354",
-        "CHANGE-20261001-0360"
+        "CHANGE-20261001-0360",
+        "CHANGE-20261001-0366"
       ]
     },
     {
@@ -81262,6 +81277,36 @@
       "reason": "Capture local B07.02 test, lint, formatting, syntax and workflow-contract validation with dirty-file hashes.",
       "evidenceIds": ["EV-20261001-045"],
       "changeIds": ["CHANGE-20261001-0361"]
+    },
+    {
+      "path": "scripts/check-ci-evidence-artifact.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": ["B07"],
+      "disposition": "changed",
+      "reason": "Verify downloaded artifact metadata, bundle measurements, coverage and Playwright report against the current exact GitHub Actions run; reject dist/.",
+      "evidenceIds": ["EV-20261001-046"],
+      "changeIds": ["CHANGE-20261001-0363"]
+    },
+    {
+      "path": "scripts/check-ci-evidence-artifact.test.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": ["B07"],
+      "disposition": "changed",
+      "reason": "Test acceptance of valid exact-run evidence and rejection of mismatched SHA, missing report and dist/ leakage.",
+      "evidenceIds": ["EV-20261001-046"],
+      "changeIds": ["CHANGE-20261001-0364"]
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/ci-artifact-verification-2026-10-01.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": ["B07"],
+      "disposition": "changed",
+      "reason": "Record local verification, exact-SHA run #12 and artifact metadata while clearly noting content inspection is pending.",
+      "evidenceIds": ["EV-20261001-046"],
+      "changeIds": ["CHANGE-20261001-0365"]
     }
   ],
   "changes": [
@@ -127012,6 +127057,71 @@
       "afterHash": "a4d40cc8f8133ae90a2e32b87247c396d9e40dbc99a61c4aa394744cd7cffcbc",
       "evidenceIds": ["EV-20261001-045"],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0362",
+      "taskId": "B07",
+      "stepId": "B07.02",
+      "path": ".github/workflows/ci.yml",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Download the uploaded exact-SHA CI evidence artifact on the authenticated runner and verify its metadata, contents and deployability boundary.",
+      "beforeHash": "d39edff2fe88529a8a9a57553ce79d9fd17b6480df9de1fa689365c281c9492c",
+      "afterHash": "9883f14f4d16aac97c5bd3568365b9e39cf204244807fb71340f9f56749bfeff",
+      "evidenceIds": ["EV-20261001-046"],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0363",
+      "taskId": "B07",
+      "stepId": "B07.02",
+      "path": "scripts/check-ci-evidence-artifact.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Verify downloaded artifact metadata, bundle measurements, coverage and Playwright report against the current exact GitHub Actions run; reject dist/.",
+      "beforeHash": null,
+      "afterHash": "fd4d3d8b9f7d67d0317959db42229f1b19ed49b873c5ab41b267b22033667aeb",
+      "evidenceIds": ["EV-20261001-046"],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0364",
+      "taskId": "B07",
+      "stepId": "B07.02",
+      "path": "scripts/check-ci-evidence-artifact.test.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Test acceptance of valid exact-run evidence and rejection of mismatched SHA, missing report and dist/ leakage.",
+      "beforeHash": null,
+      "afterHash": "6b407a14d9a1ee71ea8e778699bc2a8b3e963870655791f1ad42c1559e6f887c",
+      "evidenceIds": ["EV-20261001-046"],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0365",
+      "taskId": "B07",
+      "stepId": "B07.02",
+      "path": "docs/architecture/production-readiness/evidence/B07/ci-artifact-verification-2026-10-01.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Record local verification, exact-SHA run #12 and artifact metadata while clearly noting content inspection is pending.",
+      "beforeHash": null,
+      "afterHash": "481dcc6ffa255cb81e52b24e615d4c880f304c0df697843fcfb1d7a944d0b1d8",
+      "evidenceIds": ["EV-20261001-046"],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0366",
+      "taskId": "B07",
+      "stepId": "B07.02",
+      "path": "docs/architecture/production-readiness/PLAN.md",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Record run #12 measurements, artifact metadata and the authenticated runner-side content verification gate required before closing B07.02.",
+      "beforeHash": "2a499a16e87a2fb6396ed31e6fe351feb8ff5d7f034916a06206fb272d255586",
+      "afterHash": "ffe6833251ad2714b8d24fe509a4e2895424a3d529520688b9ac1a0bc4f925f0",
+      "evidenceIds": ["EV-20261001-046"],
+      "commit": null
     }
   ],
   "evidence": [
@@ -144498,6 +144608,116 @@
       "result": "pass",
       "artifact": "docs/architecture/production-readiness/evidence/B07/ci-artifacts-manifest-2026-10-01.json",
       "notes": "Local validation only. B07.02 remains in_progress until hosted CI on the exact pushed SHA succeeds and the uploaded artifact is inspected."
+    },
+    {
+      "id": "EV-20261001-046",
+      "schemaVersion": 1,
+      "recordedAt": "2026-10-01T09:28:36.000Z",
+      "taskId": "B07",
+      "stepId": "B07.02",
+      "kind": "validation",
+      "commandOrSteps": "Run the focused CI artifact checker and bundle manifest tests; run ESLint, Prettier, JavaScript syntax and diff checks; inspect exact-SHA GitHub Actions run and artifact metadata; then run check-tracking after recording the scoped files.",
+      "observedAt": "2026-10-01T09:28:36.000Z",
+      "sourceHead": "ce5ec93d0a60210321911f950712d0984b0270cd",
+      "run": {
+        "provider": "GitHub Actions",
+        "id": 36838559109,
+        "attempt": 1,
+        "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36838559109",
+        "event": "push",
+        "branch": "codex/b07-01-ubuntu-validation",
+        "commit": "ce5ec93d0a60210321911f950712d0984b0270cd",
+        "job": "Production gates",
+        "jobId": 110291816645,
+        "result": "success",
+        "startedAt": "2026-10-01T08:47:42Z",
+        "completedAt": "2026-10-01T09:02:11Z",
+        "durationSeconds": 869,
+        "completedSteps": 31,
+        "totalSteps": 31,
+        "failedSteps": 0
+      },
+      "environment": {
+        "os": "Windows",
+        "shell": "PowerShell",
+        "node": "v24.19.0",
+        "npm": "11.17.0",
+        "worktree": "vittrade-react-b07-01",
+        "branch": "codex/b07-01-ubuntu-validation",
+        "workingTree": "Dirty; exact-SHA workflow and artifact verification changes are local and uncommitted."
+      },
+      "measurements": {
+        "vitest": {
+          "result": "pass",
+          "filesPassed": 2,
+          "testsPassed": 8,
+          "artifactCheckerTestsPassed": 4,
+          "bundleManifestTestsPassed": 4
+        },
+        "eslint": {
+          "result": "pass",
+          "filesChecked": 4
+        },
+        "prettier": {
+          "result": "pass",
+          "filesChecked": 7,
+          "planMarkdownRange": {
+            "result": "pass",
+            "filesChecked": 1
+          }
+        },
+        "nodeSyntax": {
+          "result": "pass",
+          "filesChecked": 4
+        },
+        "workflowArtifact": {
+          "metadataListing": "pass",
+          "artifactId": 11151041364,
+          "name": "vittrade-ci-evidence-ce5ec93d0a60210321911f950712d0984b0270cd",
+          "sizeBytes": 2949346,
+          "createdAt": "2026-10-01T09:02:08Z",
+          "expiresAt": "2026-12-30T08:47:42Z",
+          "expired": false,
+          "archiveContentsReadLocally": false,
+          "archiveDownloadReason": "GitHub REST archive download returned HTTP 401 without a signed-in gh session. The workflow now downloads and inspects its own uploaded artifact on the authenticated Ubuntu runner."
+        },
+        "gitDiffCheck": "pass",
+        "trackingIntegrity": {
+          "result": "pass",
+          "errorCount": 0,
+          "tasks": 38,
+          "steps": 205,
+          "filesOutsidePlan": 913
+        },
+        "workflowYaml": {
+          "result": "pass",
+          "parseErrors": 0,
+          "assertions": {
+            "uploadId": "upload-ci-evidence",
+            "downloadAction": "actions/download-artifact@v8",
+            "exactShaArtifactName": true,
+            "downloadAfterSuccessfulJob": true,
+            "verifyAfterDownload": true,
+            "distUploaded": false
+          }
+        },
+        "scopedFileHashes": {
+          ".github/workflows/ci.yml": "9883f14f4d16aac97c5bd3568365b9e39cf204244807fb71340f9f56749bfeff",
+          "scripts/check-ci-evidence-artifact.mjs": "fd4d3d8b9f7d67d0317959db42229f1b19ed49b873c5ab41b267b22033667aeb",
+          "scripts/check-ci-evidence-artifact.test.mjs": "6b407a14d9a1ee71ea8e778699bc2a8b3e963870655791f1ad42c1559e6f887c",
+          "docs/architecture/production-readiness/PLAN.md": "ffe6833251ad2714b8d24fe509a4e2895424a3d529520688b9ac1a0bc4f925f0"
+        }
+      },
+      "warnings": [
+        "The successful run above predates artifact-content verification; its uploaded archive has not yet been read.",
+        "The local Windows shell cannot resolve Node from child CMD shims, so focused Vitest, ESLint and Prettier checks were run through their installed JavaScript entrypoints using the explicit Node executable.",
+        "Artifact expiry is the value returned by the GitHub run artifact API; retention policy configuration was not inspected."
+      ],
+      "expected": "Add an authenticated runner-side download and validation gate that confirms the saved evidence is for the exact run and contains required reports without dist/.",
+      "actual": "All 8 focused tests passed across the artifact checker and bundle manifest suites. ESLint passed for four scripts/tests; Prettier passed for seven scoped files and the edited PLAN paragraph range; four JavaScript syntax checks passed; workflow YAML/artifact ordering assertions passed; staged diff checks passed. The tracker is being finalized against these exact files. The prior exact-SHA run #36838559109 succeeded 31/31 and published artifact 11151041364 (2,949,346 bytes). The archive download requires authenticated access and returned HTTP 401 locally; the new runner-side verifier still awaits an exact-SHA Ubuntu run.",
+      "result": "pass",
+      "artifact": "docs/architecture/production-readiness/evidence/B07/ci-artifact-verification-2026-10-01.json",
+      "notes": "B07.02 remains in_progress pending the next exact-SHA hosted run and a successful Verify uploaded CI evidence step. The artifact checker requires matching full commit/run metadata, a passing non-deployable chunk manifest, coverage and Playwright report, and rejects dist/."
     }
   ],
   "decisions": [
@@ -155756,6 +155976,40 @@
       ],
       "nextAction": "Documentation reconciliation complete. On a later product-development request, read TRACKING.json and continue the preserved A06.03 trading.pending checkpoint; this documentation pass does not authorize application changes.",
       "notes": "User-requested documentation synchronization with the Universal 3.1 project context. Refreshed only documentation and generated documentation outputs; did not change task/step/milestone/page/route/operation status or the application checkpoint. No staging commands were run."
+    },
+    {
+      "id": "SESSION-20261001-001",
+      "startedAt": "2026-10-01T09:02:11.000Z",
+      "endedAt": "2026-10-01T09:28:36.000Z",
+      "sourceHeadBefore": "ce5ec93d0a60210321911f950712d0984b0270cd",
+      "sourceHeadAfter": "ce5ec93d0a60210321911f950712d0984b0270cd",
+      "taskIds": ["B07"],
+      "stepIds": ["B07.02"],
+      "changeIds": [
+        "CHANGE-20261001-0362",
+        "CHANGE-20261001-0363",
+        "CHANGE-20261001-0364",
+        "CHANGE-20261001-0365",
+        "CHANGE-20261001-0366"
+      ],
+      "evidenceIds": ["EV-20261001-046"],
+      "elapsedMinutes": null,
+      "filesTouched": [
+        ".github/workflows/ci.yml",
+        "scripts/check-ci-evidence-artifact.mjs",
+        "scripts/check-ci-evidence-artifact.test.mjs",
+        "docs/architecture/production-readiness/PLAN.md",
+        "docs/architecture/production-readiness/evidence/B07/ci-artifact-verification-2026-10-01.json",
+        "docs/architecture/production-readiness/TRACKING.json"
+      ],
+      "remainingWork": [
+        "Stage only the scoped B07.02 files, verify the ledger and diff, then create a DCO-signed branch commit and push.",
+        "Inspect the next exact-SHA Ubuntu run and require its downloaded-artifact verifier to pass before closing B07.02.",
+        "Continue B07.03 in dependency order after B07.02 closes."
+      ],
+      "blockers": [],
+      "nextAction": "Commit and push the locally verified B07.02 artifact checker on codex/b07-01-ubuntu-validation, then wait for the exact-SHA Ubuntu run to execute Verify uploaded CI evidence.",
+      "notes": "The first B07.02 hosted run proved all CI gates and artifact upload; artifact listing is readable anonymously but archive download needs authenticated access. A self-verifying download step now runs in the authenticated Ubuntu job; do not close B07.02 until that step passes on the next exact SHA."
     }
   ],
   "templates": {

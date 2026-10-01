@@ -124,6 +124,7 @@ jobs:
         run: node scripts/check-bundle-budget.mjs --manifest ci-evidence/bundle-manifest.json
 
       - name: Upload CI evidence
+        id: upload-ci-evidence
         if: success() || failure()
         uses: actions/upload-artifact@v7
         with:
@@ -134,3 +135,14 @@ jobs:
             playwright-report/
             test-results/
           if-no-files-found: warn
+
+      - name: Download uploaded CI evidence for verification
+        if: success() && steps.upload-ci-evidence.outcome == 'success'
+        uses: actions/download-artifact@v8
+        with:
+          name: vittrade-ci-evidence-${{ github.sha }}
+          path: ${{ runner.temp }}/vittrade-ci-evidence-${{ github.sha }}
+
+      - name: Verify uploaded CI evidence
+        if: success() && steps.upload-ci-evidence.outcome == 'success'
+        run: node scripts/check-ci-evidence-artifact.mjs "$RUNNER_TEMP/vittrade-ci-evidence-$GITHUB_SHA"
