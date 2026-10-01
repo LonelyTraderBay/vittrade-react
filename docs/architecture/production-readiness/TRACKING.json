@@ -42,21 +42,17 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-10-01T10:36:21.010Z",
+    "updatedAt": "2026-10-01T11:07:30.000Z",
     "lastCompletedTask": "B07.02",
     "activeTask": "B07",
-    "activeStep": "B07.03",
+    "activeStep": "B07.04",
     "nextTask": "B07",
-    "nextStep": "B07.03",
-    "nextAction": "Verify the reconciled local ledger and diff, then commit and push the B07.03 gate implementation to codex/b07-01-ubuntu-validation for exact-SHA Ubuntu verification.",
+    "nextStep": "B07.04",
+    "nextAction": "Inspect repository settings/rulesets and exact required checks, review/CODEOWNERS/DCO enforcement; verify action versions and ubuntu-latest migration against current official sources. Record remote results and access limits in B07.04 evidence without changing protections. Then B07.05 records final target-HEAD CI and a controlled failure-path result.",
     "changedFiles": [
-      ".github/workflows/ci.yml",
-      "package.json",
-      "scripts/check-openapi-mock-parity.mjs",
-      "scripts/check-openapi-mock-parity.test.mjs",
       "docs/architecture/production-readiness/PLAN.md",
-      "docs/architecture/production-readiness/evidence/B07/b07-03-local-gates-2026-10-01.json",
-      "docs/architecture/production-readiness/TRACKING.json"
+      "docs/architecture/production-readiness/TRACKING.json",
+      "docs/architecture/production-readiness/evidence/B07/b07-03-exact-sha-2026-10-01.json"
     ],
     "pendingChecks": [
       "C03 follow-up: obtain product-intent evidence for the login backend-failure message; the full-suite gate remains exit 1.",
@@ -9204,7 +9200,8 @@
         "scripts/check-ci-evidence-artifact.mjs",
         "scripts/check-ci-evidence-artifact.test.mjs",
         "scripts/check-openapi-mock-parity.mjs",
-        "scripts/check-openapi-mock-parity.test.mjs"
+        "scripts/check-openapi-mock-parity.test.mjs",
+        "docs/architecture/production-readiness/evidence/B07/b07-03-exact-sha-2026-10-01.json"
       ],
       "proposedPaths": [],
       "steps": [
@@ -9313,23 +9310,24 @@
         },
         {
           "id": "B07.03",
-          "status": "in_progress",
-          "evidenceIds": ["EV-20261001-048"],
-          "notes": "Local implementation and focused validation recorded in EV-20261001-048. Hosted exact-SHA CI remains pending; the current Chromium-only project is explicitly measured, with broader target selection owned by C01.",
+          "status": "done",
+          "evidenceIds": ["EV-20261001-048", "EV-20261001-049"],
+          "notes": "Completed on exact pushed SHA 2bdaa3072c1555da4c2819790090255541d6670f. Hosted run 36850681097 passed 35/35 steps; tracking and parity gates passed, full suite/coverage and 51/51 Chromium E2E passed, E2E preceded Build, and uploaded evidence was downloaded and verified. See EV-20261001-048/049. Browser scope is Chromium only while C01 target selection remains open.",
           "execution": {
             "checkpoints": [
               {
                 "id": "B07.03/tracking-scope-gate",
-                "status": "in_progress",
+                "status": "done",
                 "paths": [
                   "docs/architecture/production-readiness/check-tracking.mjs",
                   ".github/workflows/ci.yml"
                 ],
-                "notes": "CI runs the ledger checker after npm ci and writes its full JSON report to ci-evidence/tracking-report.json. Reconciled local check-tracking passes with errorCount=0."
+                "notes": "Done: hosted run 36850681097 reports 0 tracking errors (38 tasks, 205 steps, 915 source files); JSON report is included in the verified CI artifact.",
+                "evidenceIds": ["EV-20261001-049"]
               },
               {
                 "id": "B07.03/contract-mock-parity",
-                "status": "in_progress",
+                "status": "done",
                 "paths": [
                   "contracts/openapi",
                   "src/dev/mocks/handlers.ts",
@@ -9339,29 +9337,31 @@
                   "scripts/check-openapi-mock-parity.test.mjs",
                   "package.json"
                 ],
-                "notes": "The AST-based method/path gate and five focused regression cases pass locally at 154/154; exact hosted-SHA execution remains pending."
+                "notes": "Done: hosted checker passed 154/154 OpenAPI/MSW method-path pairs across 15 contracts; local negative/normalization suite passed 5/5.",
+                "evidenceIds": ["EV-20261001-049"]
               },
               {
                 "id": "B07.03/browser-matrix",
-                "status": "in_progress",
+                "status": "done",
                 "paths": ["playwright.config.ts", "docs/architecture/production-readiness/PLAN.md"],
-                "notes": "CI and Playwright config were parsed and confirmed to contain one desktop Chromium project. C01 is still todo, so this records current CI scope only and makes no cross-browser support claim."
+                "notes": "Done: exact run confirms one desktop Chromium project and 51/51 E2E; C01 is still todo, so broader supported-browser selection stays there.",
+                "evidenceIds": ["EV-20261001-049"]
               },
               {
                 "id": "B07.03/build-after-e2e",
                 "status": "done",
                 "paths": [".github/workflows/ci.yml", "playwright.config.ts"],
-                "evidenceIds": ["EV-20261001-047"],
-                "notes": "Exact-SHA run 36843241655 shows E2E smoke/accessibility succeeded before Build; production mock exclusion and bundle gate followed the build."
+                "evidenceIds": ["EV-20261001-047", "EV-20261001-049"],
+                "notes": "Done: exact run completed E2E before Build, then mock exclusion and bundle budget; artifact upload/download/verification passed."
               }
             ]
           }
         },
         {
           "id": "B07.04",
-          "status": "todo",
+          "status": "in_progress",
           "evidenceIds": [],
-          "notes": ""
+          "notes": "Started after B07.03 exact-SHA CI passed. Verify remote required-check/ruleset, review/CODEOWNERS/DCO enforcement and action/runner lifecycle from authoritative repository sources. Run #36850681097 reported checkout/setup-node Node 20 deprecation (forced Node 24) and ubuntu-latest migration to Ubuntu 26 beginning 2026-10-19; verify current policy and impact, do not infer enforcement from workflow YAML."
         },
         {
           "id": "B07.05",
@@ -9380,7 +9380,8 @@
         "EV-20261001-045",
         "EV-20261001-046",
         "EV-20261001-047",
-        "EV-20261001-048"
+        "EV-20261001-048",
+        "EV-20261001-049"
       ],
       "changeIds": [
         "CHANGE-20261001-0340",
@@ -9417,13 +9418,15 @@
         "CHANGE-20261001-0371",
         "CHANGE-20261001-0372",
         "CHANGE-20261001-0373",
-        "CHANGE-20261001-0374"
+        "CHANGE-20261001-0374",
+        "CHANGE-20261001-0375",
+        "CHANGE-20261001-0376"
       ],
       "blockers": [],
       "startedAt": null,
       "completedAt": null,
       "elapsedMinutes": null,
-      "notes": "B07.01 and B07.02 are done on exact pushed SHAs. B07.02 is verified by run 36843241655 on aae5b517719f1c1a9ea080af4ae22b159c14dcbb: Node 22.23.3, 2,406/2,406 unit/integration tests, 51/51 Chromium E2E, artifact 11153145995 with 553 files/221 chunks and no dist/. B07.03 is in_progress: hosted tracking and contract/mock parity gates remain to implement; current CI E2E scope is Chromium and C01.01 browser decision is open. B07.04 remote enforcement and B07.05 final run/failure-path evidence remain todo. Action Node20 deprecation and ubuntu-latest migration warning are recorded for B07.04. Backend/staging and user acceptance remain unverified.",
+      "notes": "B07.01, B07.02 and B07.03 are done on exact hosted SHAs; B07.03 run 36850681097 passed on 2bdaa3072c1555da4c2819790090255541d6670f with 2,411 tests, 51/51 Chromium E2E, tracking errorCount=0, 154/154 OpenAPI/MSW parity and runner-side artifact verification. B07.04 is active for remote enforcement and action/runner lifecycle; B07.05 remains for final HEAD and failure-path evidence. C01 browser scope, backend/staging and user acceptance remain unverified.",
       "execution": {
         "requiredChecks": [
           "Exact pushed SHA on Node22/Ubuntu with EOL output and production workflow gates",
@@ -68219,7 +68222,7 @@
       "lifecycle": "active",
       "taskIds": ["A01", "B10", "A05", "A07", "A06", "A08", "C02", "C03", "C04", "C05", "B07"],
       "disposition": "changed",
-      "reason": "Record final forbidden browser measurements, refreshed Support pending values and next scenario. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. | Repair three existing runbook heading anchors discovered by docs-only link validation. | Label the retained application-progress text as a historical snapshot, point current state to TRACKING, and describe the implemented A05 environment boundary accurately. | Record exact-SHA hosted Ubuntu CI measurements, limitations and remaining B07.01 work. | B07.01: record the exact-SHA hosted Ubuntu result and close this checkpoint. | B07.02: Record B07.02 artifact scope, public-repository data boundary, local validation and exact-SHA CI still pending. | Record run #12 measurements, artifact metadata and the authenticated runner-side content verification gate required before closing B07.02. | B07.02: Close the exact-SHA artifact-verification checkpoint and record CI lifecycle warnings. | Record measured B07.03 route parity, CI gate scope, Chromium-only matrix and local verification evidence.",
+      "reason": "Record final forbidden browser measurements, refreshed Support pending values and next scenario. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. | Repair three existing runbook heading anchors discovered by docs-only link validation. | Label the retained application-progress text as a historical snapshot, point current state to TRACKING, and describe the implemented A05 environment boundary accurately. | Record exact-SHA hosted Ubuntu CI measurements, limitations and remaining B07.01 work. | B07.01: record the exact-SHA hosted Ubuntu result and close this checkpoint. | B07.02: Record B07.02 artifact scope, public-repository data boundary, local validation and exact-SHA CI still pending. | Record run #12 measurements, artifact metadata and the authenticated runner-side content verification gate required before closing B07.02. | B07.02: Close the exact-SHA artifact-verification checkpoint and record CI lifecycle warnings. | Record measured B07.03 route parity, CI gate scope, Chromium-only matrix and local verification evidence. | Close B07.03 with exact-SHA hosted CI and recorded route parity/artifact verification.",
       "evidenceIds": [
         "EV-20260927-076",
         "EV-20260928-001",
@@ -68605,7 +68608,8 @@
         "EV-20261001-045",
         "EV-20261001-046",
         "EV-20261001-047",
-        "EV-20261001-048"
+        "EV-20261001-048",
+        "EV-20261001-049"
       ],
       "changeIds": [
         "CHANGE-20260927-052",
@@ -68774,7 +68778,8 @@
         "CHANGE-20261001-0360",
         "CHANGE-20261001-0366",
         "CHANGE-20261001-0368",
-        "CHANGE-20261001-0373"
+        "CHANGE-20261001-0373",
+        "CHANGE-20261001-0376"
       ]
     },
     {
@@ -81352,6 +81357,22 @@
       ],
       "changeIds": [
         "CHANGE-20261001-0374"
+      ]
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/b07-03-exact-sha-2026-10-01.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Record the exact pushed SHA, hosted gate outcomes, artifact digest and Chromium-only verification limits for B07.03.",
+      "evidenceIds": [
+        "EV-20261001-049"
+      ],
+      "changeIds": [
+        "CHANGE-20261001-0375"
       ]
     }
   ],
@@ -127208,7 +127229,7 @@
       "evidenceIds": [
         "EV-20261001-048"
       ],
-      "commit": null
+      "commit": "2bdaa3072c1555da4c2819790090255541d6670f"
     },
     {
       "id": "CHANGE-20261001-0370",
@@ -127223,7 +127244,7 @@
       "evidenceIds": [
         "EV-20261001-048"
       ],
-      "commit": null
+      "commit": "2bdaa3072c1555da4c2819790090255541d6670f"
     },
     {
       "id": "CHANGE-20261001-0371",
@@ -127238,7 +127259,7 @@
       "evidenceIds": [
         "EV-20261001-048"
       ],
-      "commit": null
+      "commit": "2bdaa3072c1555da4c2819790090255541d6670f"
     },
     {
       "id": "CHANGE-20261001-0372",
@@ -127253,7 +127274,7 @@
       "evidenceIds": [
         "EV-20261001-048"
       ],
-      "commit": null
+      "commit": "2bdaa3072c1555da4c2819790090255541d6670f"
     },
     {
       "id": "CHANGE-20261001-0373",
@@ -127268,7 +127289,7 @@
       "evidenceIds": [
         "EV-20261001-048"
       ],
-      "commit": null
+      "commit": "2bdaa3072c1555da4c2819790090255541d6670f"
     },
     {
       "id": "CHANGE-20261001-0374",
@@ -127282,6 +127303,36 @@
       "afterHash": "e09d9c7f0ab449bdd43f43acd8b2ea104e1ab6115d7a80edd6102aad509022ff",
       "evidenceIds": [
         "EV-20261001-048"
+      ],
+      "commit": "2bdaa3072c1555da4c2819790090255541d6670f"
+    },
+    {
+      "id": "CHANGE-20261001-0375",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/B07/b07-03-exact-sha-2026-10-01.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Record the exact pushed SHA, hosted gate outcomes, artifact digest and Chromium-only verification limits for B07.03.",
+      "beforeHash": null,
+      "afterHash": "dc315a79fa85dbb5a411c85628b6adab75fd986cc77287ddc3770c7cea61acfa",
+      "evidenceIds": [
+        "EV-20261001-049"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0376",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/PLAN.md",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Close B07.03 with exact-SHA hosted CI and record route parity, test/E2E results, artifact verification, browser scope and warnings.",
+      "beforeHash": "8ad93b80c7a3e212a10152b84e9bd8bcd486d50aee1e9ab577ae6e62517ec01b",
+      "afterHash": "fecd9a1c8f5814245cb884bd473765c9335d8c17926769b60829b32f35348b2b",
+      "evidenceIds": [
+        "EV-20261001-049"
       ],
       "commit": null
     }
@@ -145065,6 +145116,112 @@
       "result": "pass",
       "artifact": "docs/architecture/production-readiness/evidence/B07/b07-03-local-gates-2026-10-01.json",
       "notes": "Local Windows evidence only. Hosted exact-SHA result will be recorded separately before marking B07.03 done."
+    },
+    {
+      "id": "EV-20261001-049",
+      "schemaVersion": 1,
+      "recordedAt": "2026-10-01T11:03:56.000Z",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "kind": "validation",
+      "commandOrSteps": "Inspect GitHub Actions run #36850681097 on the exact pushed B07.03 SHA; verify tracking/parity outputs, all Production gates steps, unit/integration and Chromium E2E summaries, build ordering, and uploaded-artifact download verification.",
+      "observedAt": "2026-10-01T11:03:56.000Z",
+      "sourceHead": "2bdaa3072c1555da4c2819790090255541d6670f",
+      "run": {
+        "provider": "GitHub Actions",
+        "id": 36850681097,
+        "attempt": 1,
+        "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36850681097",
+        "event": "push",
+        "branch": "codex/b07-01-ubuntu-validation",
+        "commit": "2bdaa3072c1555da4c2819790090255541d6670f",
+        "job": "Production gates",
+        "jobId": 110331317920,
+        "result": "success",
+        "startedAt": "2026-10-01T10:41:18Z",
+        "durationSeconds": 927,
+        "completedSteps": 35,
+        "totalSteps": 35,
+        "failedSteps": 0
+      },
+      "environment": {
+        "os": "GitHub-hosted ubuntu-latest",
+        "nodeVersionSource": ".nvmrc",
+        "configuredNodeMajor": 22,
+        "checkout": "Fresh hosted checkout of exact pushed SHA 2bdaa3072c1555da4c2819790090255541d6670f"
+      },
+      "measurements": {
+        "trackingConsistency": {
+          "result": "pass",
+          "errorCount": 0,
+          "tasks": 38,
+          "steps": 205,
+          "filesOutsidePlan": 915
+        },
+        "contractMockParity": {
+          "result": "pass",
+          "contractFiles": 15,
+          "openApiRoutes": 154,
+          "mswRoutes": 154,
+          "matchingMethodPathPairs": 154,
+          "missingHandlers": 0,
+          "extraHandlers": 0,
+          "output": "OpenAPI/MSW method-path parity passed: 154/154 routes match across 15 contracts."
+        },
+        "unitAndIntegration": {
+          "result": "pass",
+          "testFilesPassed": 287,
+          "testsPassed": 2411,
+          "durationSeconds": 299
+        },
+        "coverage": {
+          "result": "pass"
+        },
+        "e2e": {
+          "result": "pass",
+          "project": "chromium",
+          "testsPassed": 51,
+          "durationSeconds": 98
+        },
+        "ordering": {
+          "result": "pass",
+          "e2eBeforeBuild": true,
+          "parityBeforeBuild": true,
+          "productionMockExclusionAfterBuild": true,
+          "bundleBudgetAfterMockExclusion": true,
+          "artifactUploadAfterValidation": true,
+          "artifactDownloadedForVerification": true
+        },
+        "productionBuild": {
+          "result": "pass",
+          "durationSeconds": 38
+        },
+        "artifact": {
+          "result": "pass",
+          "id": 11156177428,
+          "name": "vittrade-ci-evidence-2bdaa3072c1555da4c2819790090255541d6670f",
+          "sizeDisplay": "2.81 MB",
+          "digest": "sha256:1cbebbc517526ef798269f2a68f45f06f8a35c62e174df2f8afe46e3ff2e172d",
+          "verifiedOnRunner": true,
+          "files": 554,
+          "javascriptChunks": 221,
+          "coveragePresent": true,
+          "playwrightHtmlReportPresent": true,
+          "distPresent": false,
+          "deployableArtifact": false,
+          "verificationOutput": "CI evidence artifact verified for 2bdaa3072c1555da4c2819790090255541d6670f: 554 files, 221 bundle chunks, coverage and Playwright report present, no dist/."
+        }
+      },
+      "warnings": [
+        "GitHub reported actions/checkout@v4 and actions/setup-node@v4 are being forced to Node 24 because their current metadata targets deprecated Node 20.",
+        "GitHub reported ubuntu-latest is scheduled to migrate to Ubuntu 26 beginning 2026-10-19.",
+        "CI and Playwright currently run only desktop Chromium; C01 browser target decision remains open."
+      ],
+      "expected": "Complete B07.03 validation on the exact pushed SHA, including the new hosted ledger and contract/mock gates, full configured CI, E2E-before-build order, and runner-side artifact verification.",
+      "actual": "Run #36850681097 succeeded on exact SHA 2bdaa3072c1555da4c2819790090255541d6670f. All 35 Production gates steps passed. Hosted tracking reported 0 errors, OpenAPI/MSW parity matched 154/154 routes across 15 contracts, unit/integration reported 2,411 tests across 287 files, and Chromium E2E reported 51/51. Build, production mock exclusion and bundle checks passed; the uploaded artifact was downloaded and verified on the same runner with 554 files, 221 JavaScript chunks, coverage and Playwright report, and no dist/.",
+      "result": "pass",
+      "artifact": "docs/architecture/production-readiness/evidence/B07/b07-03-exact-sha-2026-10-01.json",
+      "notes": "This closes B07.03 on its exact pushed source SHA. The run is Chromium-only and does not verify broader C01 browser support, backend/staging behavior, branch rules, required reviews, or product user acceptance."
     }
   ],
   "decisions": [
@@ -156382,6 +156539,52 @@
       "blockers": [],
       "nextAction": "Begin B07.03 implementation using the measured 154/154 OpenAPI-to-MSW route set and the existing check-tracking CLI.",
       "notes": "Closed B07.02 after exact-SHA Ubuntu runner downloaded and checked its uploaded artifact: 553 files, 221 JS chunks, coverage and Playwright report present, no dist/. No backend/staging or user acceptance claim is implied."
+    },
+    {
+      "id": "SESSION-20261001-003",
+      "startedAt": "2026-10-01T10:17:00.000Z",
+      "endedAt": "2026-10-01T11:07:30.000Z",
+      "sourceHeadBefore": "6dc96e18b015667af3fa75e5d2c0263c9104f4d2",
+      "sourceHeadAfter": "2bdaa3072c1555da4c2819790090255541d6670f",
+      "taskIds": [
+        "B07"
+      ],
+      "stepIds": [
+        "B07.03"
+      ],
+      "changeIds": [
+        "CHANGE-20261001-0369",
+        "CHANGE-20261001-0370",
+        "CHANGE-20261001-0371",
+        "CHANGE-20261001-0372",
+        "CHANGE-20261001-0373",
+        "CHANGE-20261001-0374",
+        "CHANGE-20261001-0375",
+        "CHANGE-20261001-0376"
+      ],
+      "evidenceIds": [
+        "EV-20261001-048",
+        "EV-20261001-049"
+      ],
+      "elapsedMinutes": 50,
+      "filesTouched": [
+        ".github/workflows/ci.yml",
+        "package.json",
+        "scripts/check-openapi-mock-parity.mjs",
+        "scripts/check-openapi-mock-parity.test.mjs",
+        "docs/architecture/production-readiness/PLAN.md",
+        "docs/architecture/production-readiness/TRACKING.json",
+        "docs/architecture/production-readiness/evidence/B07/b07-03-local-gates-2026-10-01.json",
+        "docs/architecture/production-readiness/evidence/B07/b07-03-exact-sha-2026-10-01.json"
+      ],
+      "remainingWork": [
+        "B07.04: verify remote enforcement, review/CODEOWNERS/DCO and action/runner lifecycle from authoritative settings.",
+        "B07.05: record final target-HEAD run and an appropriate failure-path check.",
+        "C01 browser target decision, backend/staging and product user acceptance remain unverified."
+      ],
+      "blockers": [],
+      "nextAction": "Begin B07.04 remote enforcement and action/runner lifecycle verification; retain the Node 20 deprecation and Ubuntu 26 migration notices for measured assessment.",
+      "notes": "Completed B07.03 with exact-SHA run 36850681097 on 2bdaa3072c1555da4c2819790090255541d6670f. Hosted tracking, 154/154 contract/mock parity, full suite/coverage, Chromium E2E-before-build and runner-side artifact verification passed."
     }
   ],
   "templates": {
@@ -156463,5 +156666,5 @@
       "decisionIds": []
     }
   },
-  "notes": "B07.01 and B07.02 are done on exact hosted SHAs. B07.03 local gates are implemented and recorded in EV-20261001-048; exact-SHA Ubuntu verification remains pending. CI browser scope is confirmed Chromium-only while C01 remains todo. B07.04 remote enforcement and B07.05 final-run/failure-path evidence remain todo. Backend/staging and user acceptance remain unverified."
+  "notes": "B07.01, B07.02 and B07.03 are done on exact hosted SHAs. B07.03 run 36850681097 passed on 2bdaa3072c1555da4c2819790090255541d6670f: tracking errorCount=0, route parity 154/154, 2,411 tests across 287 files, 51/51 Chromium E2E, and exact artifact verification. B07.04 is active for remote enforcement/action lifecycle; B07.05 remains for final HEAD and failure-path evidence. C01 browser target, backend/staging and user acceptance remain open."
 }
