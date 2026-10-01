@@ -51,6 +51,23 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Production readiness tracking consistency
+        shell: bash
+        run: |
+          set +e
+          node docs/architecture/production-readiness/check-tracking.mjs > ci-evidence/tracking-report.json
+          checker_status=$?
+          node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+
+          const report = JSON.parse(readFileSync('ci-evidence/tracking-report.json', 'utf8'));
+          console.log(`Tracking consistency: ${report.errorCount} errors; ${report.scope.tasks} tasks, ${report.scope.steps} steps, ${report.scope.filesOutsidePlan} source files inventoried.`);
+          for (const error of report.errors) console.log(`- ${error}`);
+          NODE
+          summary_status=$?
+          if [ "$checker_status" -ne 0 ]; then exit "$checker_status"; fi
+          exit "$summary_status"
+
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
 
@@ -89,6 +106,9 @@ jobs:
 
       - name: OpenAPI contract policy
         run: npm run contracts:check
+
+      - name: OpenAPI and MSW method-path parity
+        run: npm run contracts:mock-parity:check
 
       - name: Architecture check
         run: npm run architecture:check

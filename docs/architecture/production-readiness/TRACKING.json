@@ -42,100 +42,21 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-10-01T09:55:13.000Z",
+    "updatedAt": "2026-10-01T10:36:21.010Z",
     "lastCompletedTask": "B07.02",
     "activeTask": "B07",
     "activeStep": "B07.03",
     "nextTask": "B07",
     "nextStep": "B07.03",
-    "nextAction": "B07.03 is active: add the production-readiness ledger check and exact OpenAPI/MSW method/path parity gate with regression tests. Preserve the measured Chromium-only CI scope until C01.01 records supported browsers; exact-SHA E2E-before-build order is already verified. Then verify remote CI enforcement/action lifecycle in B07.04 and record run/failure-path evidence in B07.05.",
+    "nextAction": "Verify the reconciled local ledger and diff, then commit and push the B07.03 gate implementation to codex/b07-01-ubuntu-validation for exact-SHA Ubuntu verification.",
     "changedFiles": [
-      "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
-      "docs/architecture/production-readiness/evidence/A06/run-profile-loading-browser-check.mjs",
-      "docs/architecture/production-readiness/evidence/A06/profile-loading-browser-check-2026-09-29.json",
-      "docs/architecture/production-readiness/evidence/A06/run-support-error-browser-check.mjs",
-      "docs/architecture/production-readiness/evidence/A06/support-error-browser-check-2026-09-29.json",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-error-news-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-error-notifications-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-error-help-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-error-tickets-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-profile-loading-edit-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-profile-loading-devices-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-profile-loading-activity-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-profile-loading-subaccounts-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-scenario-browser-check-market-empty-2026-09-28.json",
-      "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
-      "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json",
-      "docs/architecture/production-readiness/PLAN.md",
-      "docs/architecture/production-readiness/TRACKING.json",
-      "src/features/support/pages/SupportContractPage.tsx",
-      "src/features/support/pages/SupportContractPages.test.tsx",
-      "docs/architecture/production-readiness/evidence/A06/run-support-pending-browser-check.mjs",
-      "docs/architecture/production-readiness/evidence/A06/support-pending-browser-check-2026-09-29.json",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-pending-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-pending-completed-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/support-success-browser-check-2026-09-29.json",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-success-news-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-success-notifications-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-success-help-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-success-tickets-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/support-empty-browser-check-2026-09-29.json",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-empty-news-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-empty-notifications-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-empty-help-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-empty-tickets-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-empty-created-ticket-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/support-loading-browser-check-2026-09-29.json",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-loading-news-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-loading-notifications-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-loading-help-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-loading-tickets-2026-09-29.png",
-      "docs/architecture/production-readiness/evidence/A06/run-trading-success-browser-check.mjs",
-      "docs/architecture/production-readiness/evidence/A06/trading-success-browser-check-2026-09-30.json",
-      "docs/architecture/production-readiness/evidence/A06/preview-trading-success-status-2026-09-30.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-trading-success-copy-2026-09-30.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-trading-success-order-receipt-2026-09-30.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-trading-success-positions-unavailable-2026-09-30.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-trading-success-analytics-2026-09-30.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-trading-success-order-history-2026-09-30.png",
-      "docs/architecture/production-readiness/evidence/A06/run-trading-empty-browser-check.mjs",
-      "docs/architecture/production-readiness/evidence/A06/trading-empty-browser-check-2026-09-30.json",
-      "docs/architecture/production-readiness/evidence/A06/preview-trading-empty-open-orders-2026-09-30.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-trading-empty-history-2026-09-30.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-trading-empty-positions-2026-09-30.png",
-      "docs/architecture/production-readiness/evidence/A06/run-trading-loading-browser-check.mjs",
-      "docs/architecture/production-readiness/evidence/A06/trading-loading-browser-check-2026-09-30.json",
-      "docs/architecture/production-readiness/evidence/A06/preview-trading-loading-openOrders-2026-09-30.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-trading-loading-orderHistory-2026-09-30.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-trading-loading-positions-2026-09-30.png",
-      "docs/architecture/production-readiness/evidence/A06/support-pending-browser-check-2026-09-30.json",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-pending-2026-09-30.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-support-pending-completed-2026-09-30.png",
-      "docs/architecture/production-readiness/evidence/A06/run-trading-error-browser-check.mjs",
-      "docs/architecture/production-readiness/evidence/A06/trading-error-browser-check-2026-09-30.json",
-      "docs/architecture/production-readiness/evidence/A06/preview-trading-error-positions-2026-09-30.png",
-      "docs/architecture/production-readiness/evidence/A06/preview-trading-error-positions-retry-2026-09-30.png",
-      "docs/architecture/production-readiness/evidence/A06/run-trading-unauthorized-browser-check.mjs",
-      "docs/architecture/production-readiness/evidence/A06/trading-unauthorized-browser-check-2026-09-30.json",
-      "docs/architecture/production-readiness/evidence/A06/preview-trading-unauthorized-login-2026-09-30.png",
-      "docs/architecture/production-readiness/evidence/A06/run-trading-forbidden-browser-check.mjs",
-      "docs/architecture/production-readiness/evidence/A06/trading-forbidden-browser-check-2026-09-30.json",
-      "docs/architecture/production-readiness/evidence/A06/preview-trading-forbidden-positions-2026-09-30.png",
-      ".gitattributes",
       ".github/workflows/ci.yml",
-      "scripts/check-git-eol.mjs",
-      "scripts/serve-e2e.mjs",
-      "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-ci-eol-gate-2026-10-01.json",
+      "package.json",
+      "scripts/check-openapi-mock-parity.mjs",
+      "scripts/check-openapi-mock-parity.test.mjs",
       "docs/architecture/production-readiness/PLAN.md",
-      "docs/architecture/production-readiness/TRACKING.json",
-      ".gitignore",
-      "scripts/check-bundle-budget.mjs",
-      "scripts/check-bundle-budget.test.mjs",
-      "scripts/check-ci-evidence-artifact.mjs",
-      "scripts/check-ci-evidence-artifact.test.mjs",
-      "docs/architecture/production-readiness/evidence/B07/ci-artifacts-manifest-2026-10-01.json",
-      "docs/architecture/production-readiness/evidence/B07/ci-artifact-verification-2026-10-01.json",
-      "docs/architecture/production-readiness/evidence/B07/ci-artifact-exact-sha-2026-10-01.json"
+      "docs/architecture/production-readiness/evidence/B07/b07-03-local-gates-2026-10-01.json",
+      "docs/architecture/production-readiness/TRACKING.json"
     ],
     "pendingChecks": [
       "C03 follow-up: obtain product-intent evidence for the login backend-failure message; the full-suite gate remains exit 1.",
@@ -9281,7 +9202,9 @@
         "scripts/check-bundle-budget.mjs",
         "scripts/check-bundle-budget.test.mjs",
         "scripts/check-ci-evidence-artifact.mjs",
-        "scripts/check-ci-evidence-artifact.test.mjs"
+        "scripts/check-ci-evidence-artifact.test.mjs",
+        "scripts/check-openapi-mock-parity.mjs",
+        "scripts/check-openapi-mock-parity.test.mjs"
       ],
       "proposedPaths": [],
       "steps": [
@@ -9391,8 +9314,8 @@
         {
           "id": "B07.03",
           "status": "in_progress",
-          "evidenceIds": [],
-          "notes": "Started after B07.02 closed. Baseline measurement found exact method/path parity for 154/154 OpenAPI operations and MSW handlers; no CI parity gate exists yet. The current Playwright project is desktop Chromium only; C01.01 has not selected a broader target matrix. Run 36843241655 confirms E2E completes before the production build. Add tracking consistency and contract/mock parity gates; preserve the measured browser scope until the C01 decision is recorded.",
+          "evidenceIds": ["EV-20261001-048"],
+          "notes": "Local implementation and focused validation recorded in EV-20261001-048. Hosted exact-SHA CI remains pending; the current Chromium-only project is explicitly measured, with broader target selection owned by C01.",
           "execution": {
             "checkpoints": [
               {
@@ -9402,7 +9325,7 @@
                   "docs/architecture/production-readiness/check-tracking.mjs",
                   ".github/workflows/ci.yml"
                 ],
-                "notes": "The ledger checker passes locally but is not yet a hosted CI gate; add it without dumping the full inventory into job logs."
+                "notes": "CI runs the ledger checker after npm ci and writes its full JSON report to ci-evidence/tracking-report.json. Reconciled local check-tracking passes with errorCount=0."
               },
               {
                 "id": "B07.03/contract-mock-parity",
@@ -9411,15 +9334,18 @@
                   "contracts/openapi",
                   "src/dev/mocks/handlers.ts",
                   "scripts/check-openapi-contracts.mjs",
-                  ".github/workflows/ci.yml"
+                  ".github/workflows/ci.yml",
+                  "scripts/check-openapi-mock-parity.mjs",
+                  "scripts/check-openapi-mock-parity.test.mjs",
+                  "package.json"
                 ],
-                "notes": "Measured baseline is 154 contract operations and 154 literal MSW handlers with exact method/path equality; implement a regression gate and focused tests."
+                "notes": "The AST-based method/path gate and five focused regression cases pass locally at 154/154; exact hosted-SHA execution remains pending."
               },
               {
                 "id": "B07.03/browser-matrix",
                 "status": "in_progress",
                 "paths": ["playwright.config.ts", "docs/architecture/production-readiness/PLAN.md"],
-                "notes": "CI currently runs the desktop Chromium project only. C01.01 has no final supported-browser decision yet; keep this limit explicit and do not present the 51/51 result as cross-browser coverage."
+                "notes": "CI and Playwright config were parsed and confirmed to contain one desktop Chromium project. C01 is still todo, so this records current CI scope only and makes no cross-browser support claim."
               },
               {
                 "id": "B07.03/build-after-e2e",
@@ -9453,7 +9379,8 @@
         "EV-20261001-044",
         "EV-20261001-045",
         "EV-20261001-046",
-        "EV-20261001-047"
+        "EV-20261001-047",
+        "EV-20261001-048"
       ],
       "changeIds": [
         "CHANGE-20261001-0340",
@@ -9484,7 +9411,13 @@
         "CHANGE-20261001-0365",
         "CHANGE-20261001-0366",
         "CHANGE-20261001-0367",
-        "CHANGE-20261001-0368"
+        "CHANGE-20261001-0368",
+        "CHANGE-20261001-0369",
+        "CHANGE-20261001-0370",
+        "CHANGE-20261001-0371",
+        "CHANGE-20261001-0372",
+        "CHANGE-20261001-0373",
+        "CHANGE-20261001-0374"
       ],
       "blockers": [],
       "startedAt": null,
@@ -58040,9 +57973,9 @@
       "lifecycle": "active",
       "taskIds": ["B07", "B09"],
       "disposition": "changed",
-      "reason": "Trigger CI on codex branches and enforce the Git EOL gate before dependency installation. | B07.02: Record exact run metadata, declare npm cache by package-lock.json, produce the exact-SHA bundle manifest and upload CI evidence on success/failure without uploading dist/. | Download the uploaded exact-SHA CI evidence artifact on the authenticated runner and verify its metadata, contents and deployability boundary.",
-      "evidenceIds": ["EV-20261001-042", "EV-20261001-045", "EV-20261001-046"],
-      "changeIds": ["CHANGE-20261001-0341", "CHANGE-20261001-0356", "CHANGE-20261001-0362"]
+      "reason": "Trigger CI on codex branches and enforce the Git EOL gate before dependency installation. | B07.02: Record exact run metadata, declare npm cache by package-lock.json, produce the exact-SHA bundle manifest and upload CI evidence on success/failure without uploading dist/. | Download the uploaded exact-SHA CI evidence artifact on the authenticated runner and verify its metadata, contents and deployability boundary. | Run tracking consistency in hosted CI with a retained JSON report, then gate exact OpenAPI/MSW route parity.",
+      "evidenceIds": ["EV-20261001-042", "EV-20261001-045", "EV-20261001-046", "EV-20261001-048"],
+      "changeIds": ["CHANGE-20261001-0341", "CHANGE-20261001-0356", "CHANGE-20261001-0362", "CHANGE-20261001-0372"]
     },
     {
       "path": ".gitignore",
@@ -68286,7 +68219,7 @@
       "lifecycle": "active",
       "taskIds": ["A01", "B10", "A05", "A07", "A06", "A08", "C02", "C03", "C04", "C05", "B07"],
       "disposition": "changed",
-      "reason": "Record final forbidden browser measurements, refreshed Support pending values and next scenario. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. | Repair three existing runbook heading anchors discovered by docs-only link validation. | Label the retained application-progress text as a historical snapshot, point current state to TRACKING, and describe the implemented A05 environment boundary accurately. | Record exact-SHA hosted Ubuntu CI measurements, limitations and remaining B07.01 work. | B07.01: record the exact-SHA hosted Ubuntu result and close this checkpoint. | B07.02: Record B07.02 artifact scope, public-repository data boundary, local validation and exact-SHA CI still pending. | Record run #12 measurements, artifact metadata and the authenticated runner-side content verification gate required before closing B07.02. | B07.02: Close the exact-SHA artifact-verification checkpoint and record CI lifecycle warnings.",
+      "reason": "Record final forbidden browser measurements, refreshed Support pending values and next scenario. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. | Repair three existing runbook heading anchors discovered by docs-only link validation. | Label the retained application-progress text as a historical snapshot, point current state to TRACKING, and describe the implemented A05 environment boundary accurately. | Record exact-SHA hosted Ubuntu CI measurements, limitations and remaining B07.01 work. | B07.01: record the exact-SHA hosted Ubuntu result and close this checkpoint. | B07.02: Record B07.02 artifact scope, public-repository data boundary, local validation and exact-SHA CI still pending. | Record run #12 measurements, artifact metadata and the authenticated runner-side content verification gate required before closing B07.02. | B07.02: Close the exact-SHA artifact-verification checkpoint and record CI lifecycle warnings. | Record measured B07.03 route parity, CI gate scope, Chromium-only matrix and local verification evidence.",
       "evidenceIds": [
         "EV-20260927-076",
         "EV-20260928-001",
@@ -68671,7 +68604,8 @@
         "EV-20261001-044",
         "EV-20261001-045",
         "EV-20261001-046",
-        "EV-20261001-047"
+        "EV-20261001-047",
+        "EV-20261001-048"
       ],
       "changeIds": [
         "CHANGE-20260927-052",
@@ -68839,7 +68773,8 @@
         "CHANGE-20261001-0354",
         "CHANGE-20261001-0360",
         "CHANGE-20261001-0366",
-        "CHANGE-20261001-0368"
+        "CHANGE-20261001-0368",
+        "CHANGE-20261001-0373"
       ]
     },
     {
@@ -69307,10 +69242,10 @@
       "baselineSha256": "1066f2ff1ad1757dc1619861732b0af534e1f5f0b713d4a1b3c21299a7b04a18",
       "lifecycle": "active",
       "taskIds": ["B07"],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": []
+      "disposition": "changed",
+      "reason": "Expose the OpenAPI/MSW method-path parity gate as a repository npm script.",
+      "evidenceIds": ["EV-20261001-048"],
+      "changeIds": ["CHANGE-20261001-0371"]
     },
     {
       "path": "playwright.config.ts",
@@ -81370,6 +81305,54 @@
       "reason": "Capture exact-SHA Node22/Ubuntu test counts, artifact digest, archive contents and production validation limits.",
       "evidenceIds": ["EV-20261001-047"],
       "changeIds": ["CHANGE-20261001-0367"]
+    },
+    {
+      "path": "scripts/check-openapi-mock-parity.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Compare OpenAPI and MSW HTTP routes by method/path using TypeScript AST; reject duplicate and non-literal handler routes.",
+      "evidenceIds": [
+        "EV-20261001-048"
+      ],
+      "changeIds": [
+        "CHANGE-20261001-0369"
+      ]
+    },
+    {
+      "path": "scripts/check-openapi-mock-parity.test.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Cover route normalization, missing/extra mappings, duplicate declarations, dynamic route arguments and computed methods.",
+      "evidenceIds": [
+        "EV-20261001-048"
+      ],
+      "changeIds": [
+        "CHANGE-20261001-0370"
+      ]
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/b07-03-local-gates-2026-10-01.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Record B07.03 local gate measurements, focused test outcomes and explicit browser/hosted limits.",
+      "evidenceIds": [
+        "EV-20261001-048"
+      ],
+      "changeIds": [
+        "CHANGE-20261001-0374"
+      ]
     }
   ],
   "changes": [
@@ -127211,6 +127194,96 @@
       "afterHash": "c1e1edb676fdd028bbf48a85826481e1dfb386dee6beacc53a6e8cf0b2956e8c",
       "evidenceIds": ["EV-20261001-047"],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0369",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "scripts/check-openapi-mock-parity.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Compare OpenAPI and MSW HTTP routes by method/path using TypeScript AST; reject duplicate and non-literal handler routes.",
+      "beforeHash": null,
+      "afterHash": "a0e7726ae242ba6b520f396348c79f454ef024dce18452d88c563e4215f827c7",
+      "evidenceIds": [
+        "EV-20261001-048"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0370",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "scripts/check-openapi-mock-parity.test.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Cover route normalization, missing/extra mappings, duplicate declarations, dynamic route arguments and computed methods.",
+      "beforeHash": null,
+      "afterHash": "a38c5e615bad3d8c7c39683f279cc980bbfde631a19ca4cc48a309107ffc3137",
+      "evidenceIds": [
+        "EV-20261001-048"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0371",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "package.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Expose the OpenAPI/MSW method-path parity gate as a repository npm script.",
+      "beforeHash": "1066f2ff1ad1757dc1619861732b0af534e1f5f0b713d4a1b3c21299a7b04a18",
+      "afterHash": "7f4cd0826a090c4de134d405b8ec1a4f4ea9c3dbc4b0aa67d6fd3e364b4a209a",
+      "evidenceIds": [
+        "EV-20261001-048"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0372",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": ".github/workflows/ci.yml",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Run tracking consistency in hosted CI with a retained JSON report, then gate exact OpenAPI/MSW route parity.",
+      "beforeHash": "9883f14f4d16aac97c5bd3568365b9e39cf204244807fb71340f9f56749bfeff",
+      "afterHash": "04b3048a02ba3b877f85bb3170d820f7b2b51a1ce81366ee62f98d013108f37a",
+      "evidenceIds": [
+        "EV-20261001-048"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0373",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/PLAN.md",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Record measured B07.03 route parity, CI gate scope, Chromium-only matrix and local verification evidence.",
+      "beforeHash": "c1e1edb676fdd028bbf48a85826481e1dfb386dee6beacc53a6e8cf0b2956e8c",
+      "afterHash": "8ad93b80c7a3e212a10152b84e9bd8bcd486d50aee1e9ab577ae6e62517ec01b",
+      "evidenceIds": [
+        "EV-20261001-048"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0374",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/B07/b07-03-local-gates-2026-10-01.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Record B07.03 local gate measurements, focused test outcomes and explicit browser/hosted limits.",
+      "beforeHash": null,
+      "afterHash": "e09d9c7f0ab449bdd43f43acd8b2ea104e1ab6115d7a80edd6102aad509022ff",
+      "evidenceIds": [
+        "EV-20261001-048"
+      ],
+      "commit": null
     }
   ],
   "evidence": [
@@ -144900,6 +144973,98 @@
       "result": "pass",
       "artifact": "docs/architecture/production-readiness/evidence/B07/ci-artifact-exact-sha-2026-10-01.json",
       "notes": "This closes B07.02. It does not establish branch protection, required review, backend/staging, full C01 browser acceptance, or product user acceptance."
+    },
+    {
+      "id": "EV-20261001-048",
+      "schemaVersion": 1,
+      "recordedAt": "2026-10-01T10:37:53.000Z",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "kind": "validation",
+      "commandOrSteps": "Run OpenAPI policy and route parity; execute focused Vitest, ESLint, Prettier and Node syntax checks; parse CI YAML and assert gate/build ordering; reconcile the ledger and run check-tracking; inspect the diff.",
+      "observedAt": "2026-10-01T10:37:53.000Z",
+      "sourceHead": "6dc96e18b015667af3fa75e5d2c0263c9104f4d2",
+      "environment": {
+        "os": "Windows_NT 10.0.26200",
+        "shell": "PowerShell",
+        "node": "v24.19.0",
+        "worktree": "vittrade-react-b07-01",
+        "branch": "codex/b07-01-ubuntu-validation",
+        "workingTree": "B07.03 implementation and ledger changes are local; unrelated .editorconfig and public/mockServiceWorker.js edits are preserved and excluded."
+      },
+      "measurements": {
+        "contractMockParity": {
+          "result": "pass",
+          "contractFiles": 15,
+          "openApiOperations": 154,
+          "mswLiteralHandlers": 154,
+          "matchingMethodPathPairs": 154,
+          "missingHandlers": 0,
+          "extraHandlers": 0,
+          "normalization": "OpenAPI {parameter} and MSW :parameter; strip the MSW leading */ origin wildcard.",
+          "scope": "Method/path parity only; request/response schemas and handler runtime behavior are outside this gate."
+        },
+        "focusedTests": {
+          "result": "pass",
+          "filesPassed": 1,
+          "testsPassed": 5
+        },
+        "openApiContractPolicy": {
+          "result": "pass",
+          "contractFiles": 15,
+          "operations": 154
+        },
+        "eslint": {
+          "result": "pass",
+          "filesChecked": 2
+        },
+        "prettier": {
+          "result": "pass",
+          "filesChecked": 4
+        },
+        "nodeSyntax": {
+          "result": "pass",
+          "filesChecked": 2
+        },
+        "workflowYaml": {
+          "result": "pass",
+          "parseErrors": 0,
+          "trackingAfterDependencyInstall": true,
+          "trackingReportArtifactPath": "ci-evidence/tracking-report.json",
+          "openApiBeforeMockParity": true,
+          "e2eBeforeBuild": true,
+          "buildBeforeProductionMockExclusion": true,
+          "bundleGateBeforeArtifactUpload": true
+        },
+        "trackingIntegrity": {
+          "result": "pass",
+          "errorCount": 0,
+          "tasks": 38,
+          "steps": 205,
+          "pages": 129,
+          "routeDeclarations": 427,
+          "operations": 154,
+          "filesOutsidePlan": 915
+        },
+        "browserMatrix": {
+          "result": "scope_recorded",
+          "projects": [
+            "chromium"
+          ],
+          "c01TaskStatus": "todo",
+          "crossBrowserClaim": false
+        }
+      },
+      "warnings": [
+        "Hosted exact-SHA Ubuntu verification for the new gates is pending the authorized commit and push.",
+        "C01 browser target decision remains open; current CI runs only desktop Chromium.",
+        "Local git diff --check reports a CRLF normalization notice for the preserved incidental .editorconfig edit; exit status is 0."
+      ],
+      "expected": "Add CI gates that reject tracking-scope drift and OpenAPI/MSW method-path drift while preserving the measured Chromium-only browser scope and E2E-before-build order.",
+      "actual": "The parity checker and five focused regressions pass on 15 contracts, 154 OpenAPI operations and 154 MSW handlers. Contract policy, workflow YAML/order, focused ESLint/Prettier/syntax and the reconciled ledger checker pass. Hosted exact-SHA verification remains pending.",
+      "result": "pass",
+      "artifact": "docs/architecture/production-readiness/evidence/B07/b07-03-local-gates-2026-10-01.json",
+      "notes": "Local Windows evidence only. Hosted exact-SHA result will be recorded separately before marking B07.03 done."
     }
   ],
   "decisions": [
@@ -156298,5 +156463,5 @@
       "decisionIds": []
     }
   },
-  "notes": "A01-A05 and A07 are complete; A06.01-A06.02 are complete and A06.03 remains in progress. Fresh A06 matrix: 65/105 scenario rows (32 full, 33 representative, 40 absent), 59/154 unique operations, 154/154 exact handler mappings. arena.success is browser-verified with all four local service-worker operations observed once; UI acceptance is 0/128 and backend/staging is 0/154. Next: arena.empty, then proceed in matrix order. Preserve the user-confirmed wallet.unknown/duplicate contract blocker; do not infer backend permission, persistence or replay from MSW.\n\nArena empty EV-20260928-267: Chromium recorded one contract-shaped GET/200, both empty states and Mode selected in 343 ms with zero writes/unexpected Arena requests. EV-268: 60/60 focused tests and local checks passed. EV-269 matrix: 66/105 fresh (33 full, 33 representative, 39 absent), 59 unique operations, 154/154 mappings, runtimeEvidenceFresh=true. Next row arena.loading. UI acceptance 0/128; backend/staging 0/154; A06.04 gated; wallet unknown/duplicate remains blocked. Previous nextAction: Continue A06.03 at arena.empty, the next required scenario after browser-verified arena.success. Inspect its response contract and UI behavior; verify local MSW responses, exact request counts, empty state and no unexpected writes. Refresh/check the scenario matrix, record evidence and file hashes, then continue matrix priority order. Keep wallet.unknown/duplicate blocked until approved backend lookup/correlation/replay semantics exist. UI acceptance stays 0/128; backend/staging stays 0/154; do not start A06.04.\n\nFinal Arena empty ledger EV-20260928-270 passed with errorCount=0; matrix --check, scoped documentation formatting and git diff --check passed. A06.03 remains in progress at arena.loading; user-confirmed wallet unknown/duplicate contract gap remains blocked. UI acceptance 0/128; backend/staging 0/154.\n\nAuth success EV-20260929-281: local Chromium direct login returned POST /auth/login 200 and navigated to /w/home in 348 ms after click; total 586 ms. GET session bootstrap returned contract-supported 401. Four API responses all from service worker, no external API origin or unrelated write. Screenshot reveals static WebSidebar identity mismatch (VitTrader Pro vs authenticated VitTrade Developer). Matrix EV-283: 69/105 rows fresh, 33 full, 36 representative, 36 absent; 60/154 unique operations, 154/154 mappings. Keep auth.success representative (1/14), continue auth.empty; wallet unknown/duplicate blocker remains.\n\nEarn success EV-20260929-324: local Chromium observed all four mapped Earn success operations; subscription and redemption returned 201 with Idempotency-Key, the new position appeared then disappeared after refetch, and history returned fixture rows. totalDepositedUsd remained 4208 throughout the 100 USDT cycle; no valuation contract/source or receipt-history correlation exists. EV-325 matrix: 79/105 fresh (35 fully covered, 44 representative, 26 not verified), 66/154 unique operations, 154/154 mappings; earn.success 4/4 browser_verified. Next earn.loading. UI acceptance 0/128; backend/staging 0/154; preserve wallet unknown/duplicate blocker.\n\nEV-20260929-326: final consistency pass recorded; tracker and matrix checks passed, with scoped Prettier, ESLint, Node syntax and diff whitespace checks passing. A06.03 remains at earn.loading; local Earn totalDepositedUsd mock mismatch is recorded, wallet unknown/duplicate contract blocker remains, UI acceptance 0/128 and backend/staging 0/154.\n\nEarn error EV-20260929-330: Chromium local/MSW verified ErrorState and Retry on /w/earn/savings/portfolio and /w/earn/savings/history. Each mapped GET had 6 initial + 6 post-Retry net::ERR_FAILED attempts, zero HTTP response, zero Earn writes and zero external API origins; total 12342 ms. OpenAPI has no Earn 5xx, so only two of four operations were tested and earn.error remains representative. EV-331 matrix: 81/105 rows (36 full, 45 representative, 24 unverified); 66/154 operations; 154/154 mappings; source hashes fresh. Next earn.unauthorized. Wallet unknown/duplicate remains blocked per user confirmation; UI acceptance 0/128; backend/staging 0/154; A06.04 gated.\n\nP2P success EV-368: local Chromium 1440x900; 4 P2P responses (200, 200, 201, 200) from MSW, one order-creation POST with Idempotency-Key, zero release/mark-paid writes, zero external API origin, 0 page errors; 3426 ms total. EV-369 corrected missing direct P2P page/operation/route links without marking pages complete. EV-370 records contract precision gap: request amount has no rounding rule while the detail view renders 19.723865877712033 USDT. EV-371 focused P2P tests 84/84; EV-372 matrix 84/105 fresh, 88/154 unique operations, 154/154 mappings. Next is p2p.empty; wallet unknown/duplicate remains blocked per user confirmation.\nFinal p2p.success validation EV-373 at 2026-09-29T09:11:19.863Z: tracker checker errorCount=0, scenario matrix --check current, scoped Prettier and runner syntax pass, git diff --check exits 0. Final step close-out EV-373 recorded at 2026-09-29T09:12:09.736Z.\n\nP2P duplicate close-out EV-20260929-403: check-tracking errorCount=0; A06 matrix 84/105 fresh (39 full, 45 representative, 21 not verified), 88/154 operations, 154/154 mappings; Prettier and runner syntax passed; focused P2P tests 12/12; git diff --check exit 0 with CRLF notices only. Next predictions.unknown contract review. Wallet unknown/duplicate remains not_verified by user confirmation. UI acceptance 0/128; backend/staging 0/154.\n\nPredictions unknown contract audit EV-20260929-404: POST key required, 201 returns receipt id, GET requires known orderId, no key lookup/correlation/client order ID or same-key replay semantics; 409 body does not provide receipt/correlation. Keep predictions.unknown not_verified and do not simulate an invented unknown outcome. EV-405 matrix current at 84/105 fresh (39 full, 45 representative, 21 not verified), 88/154 operations, 154/154 mappings. Next predictions.duplicate UI/contract review. Wallet unknown/duplicate remains user-confirmed blocker; UI acceptance 0/128; backend/staging 0/154.\n\nFinal Predictions unknown audit validation EV-20260929-406: tracker errorCount=0; matrix current at 84/105 fresh, 88/154 operations and 154/154 mappings; Prettier and git diff --check passed. predictions.unknown remains not_verified. Next predictions.duplicate UI/contract review. UI acceptance 0/128; backend/staging 0/154.\n\nPredictions duplicate EV-20260929-407–409: a pre-fix browser probe exposed pageerror Request failed on a declared 409; the page now catches the mutation rejection and the focused regression/browser checks pass. Local Chromium measured 15 ms for one 409 POST, 1486 ms total flow, 0 request failures/page errors/external API origins; response body 0 bytes, Idempotency-Key present, route preserved and no automatic resubmission in 500 ms. Matrix 85/105 fresh (39 full, 46 representative, 20 not verified), 88/154 unique operations, 154/154 mappings; row is representative. predictions.unknown and p2p.unknown remain not_verified; wallet unknown/duplicate remains user-confirmed blocked. UI acceptance 0/128, backend/staging 0/154. Next profile.forbidden contract audit.\n\nDCA forbidden contract audit EV-20260929-415: 0/5 linked operations declare HTTP 403; keep not_verified. Next earn.forbidden. UI acceptance 0/128; backend/staging 0/154.\n\nSESSION-20260929-101 closed the DCA contract audit. EV-20260929-415 records 0/5 declared 403; EV-20260929-416 records ledger closeout checks. Next earn.forbidden. UI acceptance 0/128; backend/staging 0/154.\n\nEarn forbidden EV-20260929-417: 0/4 linked operations declare HTTP 403; retain not_verified. EV-418 closes the ledger slice; next earn.unknown. UI acceptance 0/128; backend/staging 0/154.\n\nEarn unknown audit EV-20260929-419: request idempotency keys are required, but correlation/receipt lookup/same-key replay are undefined; keep not_verified. EV-420 closes this slice. Next earn.duplicate; UI acceptance 0/128, backend/staging 0/154.\n\nEarn duplicate audit EV-20260929-421: no linked operation declares explicit duplicate/conflict semantics; retain not_verified. EV-422 closes this ledger slice. Next launchpad.unauthorized; UI acceptance 0/128, backend/staging 0/154.\n\nLaunchpad auth revalidation EV-20260929-423: current contract hash matches EV-350; 0/2 operations declare 401 or 403. Both rows remain not_verified. EV-424 closes this slice; next market.unauthorized.\n\nMarket auth revalidation EV-20260929-425 confirms unchanged hash and 0/22 declared 401/403 responses. Both rows remain not_verified. EV-426 closes this slice; next p2p.unknown.\n\nP2P unknown contract revalidation EV-20260929-427 matches EV-397; no receipt-by-key lookup or documented same-key replay. Keep not_verified. EV-428 closes slice; next predictions.unknown.\n\nPredictions unknown revalidation EV-20260929-429 matches EV-404; key-based receipt lookup, correlation and same-key replay remain undefined. Keep not_verified. EV-430 closes slice; next profile.forbidden.\n\nProfile forbidden EV-20260929-431: 0/7 linked operations declare 403; keep not_verified. EV-432 closes slice; next support.unauthorized.\n\nSupport auth revalidation EV-20260929-433 matches EV-244; 0/6 linked operations declare 401 or 403. Both rows remain not_verified. EV-434 closes slice; next trading.unknown.\n\nTrading unknown/duplicate revalidation EV-20260929-435 matches EV-238; retain not_verified due absent correlation/replay and ambiguous 409. Final matrix rows are user-confirmed wallet.unknown/duplicate blocker; keep not_verified and do not close A06.03. EV-436 closes local checks; UI acceptance 0/128 and backend/staging 0/154.\n\nA06.03 closeout EV-437/438: 20 required rows remain not_verified (18 contract audit-backed, 2 Wallet user-confirmed); do not mark the step done. A08 depends only on complete A01 and is independently eligible, so A08.01 is now started. UI acceptance 0/128, backend/staging 0/154.\nPredictions success EV-20260929-489: Chromium local on port 5190 observed all eight linked operation IDs once, with 200 reads, one 201/filled order carrying Idempotency-Key, and a 200 receipt. MSW supplied every observed response; measured flow 1,084 ms, 12 events, 7 positions, 10 rewards, 10 leaderboard rows, 30 activities; no outside API origin, Predictions request failures, or page errors. The independent auth logout during preview sign-in had a matching MSW 204 response and a browser cancellation event. Fixed preview badge overlap remains a C05.03 UI follow-up. Matrix/index are regenerated to 9/105 fresh scenarios (3 full, 6 representative), 15/154 unique operations; aggregate remains stale. User-accepted UI stays 0/128 and backend/staging 0/154; A06.03 remains in progress.\n\nProfile unauthorized EV-20260929-516: Chromium observed four declared Profile GET 401 responses, four runner-local Auth refresh 200/null fixtures, and four login redirects with stale Profile content cleared. Sidecar: 3,409 ms total measured flow, 31 API requests, 25 network responses, 10 unrelated aborted events, zero Profile writes/failures, page errors, external origins or backend calls; 23/23 source hashes match. Matrix/index now record this representative 4/7 operation scenario. Refresh fixture and MSW authorization limitations remain explicit; next is profile.forbidden contract audit.\n\nProfile forbidden contract audit EV-20260929-518: parsed the current Profile OpenAPI (SHA-256 6830c4976f5b94b4f78e08b824eabd1c18b41bf96f23613412db065575f1d5d8); 7 operations, 0/7 declare HTTP 403. No synthetic forbidden response or browser claim was added; profile.forbidden remains not_verified. Next matrix row is referral.success.\n\nReferral success EV-20260929-519: Chromium local observed one getReferralOverview GET/200 from MSW (2 ms response, 107 ms scenario, 575 ms total), 8 friends, rendered referral UI, no writes/errors/external origins/backend calls; 20/20 source hashes match. Matrix now 12/105 fresh (4 full, 8 representative), 13/154 operations, 154/154 handler mappings; runtimeEvidenceFresh remains false and UI acceptance/backend remain 0. Next referral.empty.\n\nEV-20260929-520 final consistency after Referral success: tracker errorCount=0; matrix and UI index current at 12/105 fresh; 20/20 Referral source hashes and aggregate SHA match; Node syntax and diff checks pass; staged diff empty. Vitest, ESLint and Prettier are unavailable in this workspace; build/full suite not run. Screenshot banner overlap is tracked in C05.03. Next referral.empty.\n\nReferral empty EV-20260929-521: one getReferralOverview GET/200 from MSW (4 ms response, 103 ms scenario, 622 ms total); all statistics zero, explicit no-referrals message, campaign/link preserved, friend count 0. No writes/errors/external origins/backend calls; 20/20 source hashes match. Matrix now 13/105 fresh (5 full, 8 representative), 13/154 unique operations, 154/154 handler mappings; runtime evidence remains local and user acceptance pending. Next referral.loading.\n\nEV-20260929-522 final consistency after Referral empty: tracker errorCount=0; matrix and UI index current at 13/105 fresh; 20/20 source hashes and aggregate SHA match; Node syntax and whitespace checks pass; staged diff empty. Vitest, ESLint and Prettier are unavailable; build/full suite not run. Next referral.loading.\n\nReferral loading EV-20260929-523: Chromium observed one GET getReferralOverview/200 from MSW after 2,017 ms; visible loading persisted for 2,011 ms before response, no empty flash, then 8 friends rendered. Total 2,572 ms, no write/failure/page error/external/backend requests, 20/20 hashes match. Matrix now 14/105 fresh (6 full, 8 representative), 13/154 unique operations, 154/154 mappings; runtime evidence remains local. Next referral.error.\n\nEV-20260929-524 final consistency after Referral loading: tracker errorCount=0; matrix/index current at 14/105 fresh; 20/20 source hashes and aggregate SHA match; runner/generator syntax, git diff --check pass, staged diff empty. Vitest/ESLint/Prettier unavailable; build/full suite not run. Two loading screenshots reviewed. Next referral.error.\n\nTrading loading EV-20260930-006: Chromium observed all three mapped loading states before response. Open orders/history returned 200 after 1,964/2,022 ms and then showed empty local Developer fixtures; positions generated six 503 GET responses and unavailable UI after about 15,031 ms. 16/16 API responses were service-worker controlled, writes/failures/page errors/external origins 0, total flow 19,780 ms, 19/19 source hashes. EV-007 focused page tests 5/5. Matrix/index now 24/106 fresh (15 full, 9 representative), 32/154 unique operations, 154/154 mappings, 24/32 sidecars; runtimeEvidenceFresh=false. Next trading.error. Wallet unknown/duplicate remains user-confirmed blocked; C05.03 widget overlap remains; UI acceptance 0/128 and backend/staging 0/154.\nEV-20260930-008 final consistency after trading.loading: tracker errorCount=0; matrix/index current at 24/106 fresh; 32/154 unique operations; 154/154 mappings; 24/32 sidecars fresh; scoped formatting, runner syntax, whitespace and staged checks passed. Focused Trading tests 5/5. UI acceptance 0/128; backend/staging 0/154; full suite, ESLint, production build and external backend/staging not run.\n\nEV-20260930-009 contract audit: only listOpenPositions (1/13 Trading operations) declares 503; the matrix generator now scopes trading.error accordingly. EV-010 refreshed support.pending (POST/201, pending 99 ms, response 2,032 ms, no duplicate, 22/22 hashes). EV-011 Trading error browser: 6 initial + 6 after one Retry, all 503/positions_source_unavailable; visible error, no empty, route retained, writes 0; Retry 2,717 ms, flow 6,201 ms, 16/16 hashes. EV-012 OpenPositions tests 3/3. Matrix 25/106 fresh (16 full, 9 representative), 32/154 operations, 154/154 mappings, 25/33 sidecars, eight stale P2P/Predictions. Next trading.unauthorized; Wallet unknown/duplicate stays blocked; UI acceptance 0/128, backend/staging 0/154.\nEV-20260930-013 final consistency after trading.error: tracker errorCount=0; matrix 25/106 fresh (16 full, 9 representative), 32/154 operations, 154/154 mappings, 25/33 sidecars; UI index 427/427 URL parity and 25/106 fresh scenarios. Scoped formatting/syntax, diff and staged checks passed; focused test 3/3. UI acceptance 0/128; backend/staging 0/154. Full suite, ESLint, build, backend/staging and user acceptance were not run."
+  "notes": "B07.01 and B07.02 are done on exact hosted SHAs. B07.03 local gates are implemented and recorded in EV-20261001-048; exact-SHA Ubuntu verification remains pending. CI browser scope is confirmed Chromium-only while C01 remains todo. B07.04 remote enforcement and B07.05 final-run/failure-path evidence remain todo. Backend/staging and user acceptance remain unverified."
 }

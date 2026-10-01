@@ -1,0 +1,90 @@
+{
+  "id": "EV-20261001-048",
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-01T10:37:53.000Z",
+  "taskId": "B07",
+  "stepId": "B07.03",
+  "kind": "validation",
+  "commandOrSteps": "Run OpenAPI policy and route parity; execute focused Vitest, ESLint, Prettier and Node syntax checks; parse CI YAML and assert gate/build ordering; reconcile the ledger and run check-tracking; inspect the diff.",
+  "observedAt": "2026-10-01T10:37:53.000Z",
+  "sourceHead": "6dc96e18b015667af3fa75e5d2c0263c9104f4d2",
+  "environment": {
+    "os": "Windows_NT 10.0.26200",
+    "shell": "PowerShell",
+    "node": "v24.19.0",
+    "worktree": "vittrade-react-b07-01",
+    "branch": "codex/b07-01-ubuntu-validation",
+    "workingTree": "B07.03 implementation and ledger changes are local; unrelated .editorconfig and public/mockServiceWorker.js edits are preserved and excluded."
+  },
+  "measurements": {
+    "contractMockParity": {
+      "result": "pass",
+      "contractFiles": 15,
+      "openApiOperations": 154,
+      "mswLiteralHandlers": 154,
+      "matchingMethodPathPairs": 154,
+      "missingHandlers": 0,
+      "extraHandlers": 0,
+      "normalization": "OpenAPI {parameter} and MSW :parameter; strip the MSW leading */ origin wildcard.",
+      "scope": "Method/path parity only; request/response schemas and handler runtime behavior are outside this gate."
+    },
+    "focusedTests": {
+      "result": "pass",
+      "filesPassed": 1,
+      "testsPassed": 5
+    },
+    "openApiContractPolicy": {
+      "result": "pass",
+      "contractFiles": 15,
+      "operations": 154
+    },
+    "eslint": {
+      "result": "pass",
+      "filesChecked": 2
+    },
+    "prettier": {
+      "result": "pass",
+      "filesChecked": 4
+    },
+    "nodeSyntax": {
+      "result": "pass",
+      "filesChecked": 2
+    },
+    "workflowYaml": {
+      "result": "pass",
+      "parseErrors": 0,
+      "trackingAfterDependencyInstall": true,
+      "trackingReportArtifactPath": "ci-evidence/tracking-report.json",
+      "openApiBeforeMockParity": true,
+      "e2eBeforeBuild": true,
+      "buildBeforeProductionMockExclusion": true,
+      "bundleGateBeforeArtifactUpload": true
+    },
+    "trackingIntegrity": {
+      "result": "pass",
+      "errorCount": 0,
+      "tasks": 38,
+      "steps": 205,
+      "pages": 129,
+      "routeDeclarations": 427,
+      "operations": 154,
+      "filesOutsidePlan": 915
+    },
+    "browserMatrix": {
+      "result": "scope_recorded",
+      "projects": ["chromium"],
+      "c01TaskStatus": "todo",
+      "crossBrowserClaim": false
+    }
+  },
+  "warnings": [
+    "Hosted exact-SHA Ubuntu verification for the new gates is pending the authorized commit and push.",
+    "C01 browser target decision remains open; current CI runs only desktop Chromium.",
+    "Local git diff --check reports a CRLF normalization notice for the preserved incidental .editorconfig edit; exit status is 0."
+  ],
+  "expected": "Add CI gates that reject tracking-scope drift and OpenAPI/MSW method-path drift while preserving the measured Chromium-only browser scope and E2E-before-build order.",
+  "actual": "The parity checker and five focused regressions pass on 15 contracts, 154 OpenAPI operations and 154 MSW handlers. Contract policy, workflow YAML/order, focused ESLint/Prettier/syntax and the reconciled ledger checker pass. Hosted exact-SHA verification remains pending.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/B07/b07-03-local-gates-2026-10-01.json",
+  "notes": "Local Windows evidence only. Hosted exact-SHA result will be recorded separately before marking B07.03 done."
+}
