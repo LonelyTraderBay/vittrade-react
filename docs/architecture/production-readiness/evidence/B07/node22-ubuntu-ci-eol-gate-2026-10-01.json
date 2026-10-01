@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-01T06:34:02.000Z",
+  "taskId": "B07",
+  "stepId": "B07.01",
+  "kind": "validation",
+  "sourceHead": "bdeca9fad14a9ea2e823bb591d9d0cc70f1e459b",
+  "run": {
+    "provider": "GitHub Actions",
+    "id": 36824384999,
+    "attempt": 1,
+    "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36824384999",
+    "event": "push",
+    "branch": "codex/b07-01-ubuntu-validation",
+    "commit": "bdeca9fad14a9ea2e823bb591d9d0cc70f1e459b",
+    "job": "Production gates",
+    "result": "success",
+    "startedAt": "2026-10-01T06:21:57Z",
+    "completedAt": "2026-10-01T06:34:02Z",
+    "durationSeconds": 725,
+    "completedSteps": 26,
+    "totalSteps": 26
+  },
+  "environment": {
+    "runnerImage": "ubuntu-24.04",
+    "os": "Ubuntu 24.04.5 LTS",
+    "node": "v22.23.2",
+    "npm": "10.9.8",
+    "git": "2.55.0",
+    "checkout": "Fresh hosted checkout of exact pushed commit"
+  },
+  "measurements": {
+    "eol": {
+      "result": "pass",
+      "paths": 1493,
+      "lf": 1151,
+      "withoutLineTerminators": 0,
+      "preservedNonText": 342,
+      "protectedWindowsCrlf": 0,
+      "output": "Git EOL check: 1493 paths; 1151 LF, 0 without line terminators, 342 preserved non-text, 0 protected Windows CRLF."
+    },
+    "npmCi": {
+      "result": "pass",
+      "packagesAdded": 552,
+      "packagesAudited": 553,
+      "lowSeverityAdvisories": 1,
+      "advisory": "GHSA-p98j-92pf-mc4p (DOMPurify)"
+    },
+    "typecheckProjects": 2,
+    "lint": "pass; zero warnings",
+    "format": "pass",
+    "unitIntegration": {
+      "result": "pass",
+      "testFilesPassed": 283,
+      "testsPassed": 2393,
+      "testFilesFailed": 0,
+      "testsFailed": 0
+    },
+    "coveragePercent": {
+      "statements": 90.13,
+      "branches": 84.86,
+      "functions": 87.15,
+      "lines": 91.91
+    },
+    "playwright": {
+      "result": "pass",
+      "testsPassed": 51,
+      "testsFailed": 0
+    },
+    "auditHigh": "pass",
+    "productionBuild": "pass",
+    "productionOutput": {
+      "result": "pass",
+      "files": 223,
+      "javascriptFiles": 221,
+      "manifests": 0
+    },
+    "bundleBudget": {
+      "result": "pass",
+      "chunks": 221,
+      "withinRaw500KBAndGzip250KiB": 221
+    }
+  },
+  "warnings": [
+    "npm ci reported one low-severity DOMPurify advisory; audit:high passed.",
+    "actions/checkout@v4 and actions/setup-node@v4 reported Node20 action runtimes while the hosted runner forced Node24; both steps completed."
+  ],
+  "expected": "Run all production gates on the exact pushed Node 22 revision on hosted Ubuntu and capture explicit EOL output.",
+  "actual": "Run 36824384999 succeeded: all 26 workflow steps in 725 seconds. EOL, typecheck, lint/warning budget, format, 2393 unit/integration tests, coverage, 51 Playwright tests, audit:high, production build/output and all 221 JavaScript chunk budgets passed.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-ci-eol-gate-2026-10-01.json",
+  "notes": "Does not verify GitHub required-check enforcement/review policy, backend/staging, or production acceptance. Main-worktree generator hash/revision-provenance edits overlapping A06/C05 are not in this branch and must be reconciled and rerun on the resulting exact SHA before B07.01 closes.",
+  "id": "EV-20261001-042",
+  "commandOrSteps": "GitHub Actions run 36824384999 on the exact pushed SHA; fresh Ubuntu checkout; npm ci; EOL, typecheck, lint, format, unit/integration, coverage, Playwright, audit:high, production build/output and bundle gates.",
+  "observedAt": "2026-10-01T06:34:02.000Z"
+}

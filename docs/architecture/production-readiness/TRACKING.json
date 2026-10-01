@@ -42,13 +42,13 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-09-30T01:01:27.195Z",
+    "updatedAt": "2026-10-01T07:09:38.000Z",
     "lastCompletedTask": "C05.02",
-    "activeTask": "A06",
-    "activeStep": "A06.03",
-    "nextTask": "A06",
-    "nextStep": "A06.03",
-    "nextAction": "A06.03: next matrix row is trading.pending. Keep trading.unauthorized representative with the undeclared refreshSession 401 gap; trading.forbidden representative at listOpenPositions 1/10 declared 403 operations; retain eight stale P2P/Predictions sidecars, Wallet unknown/duplicate contract blocker, C05.03 overlap, UI acceptance 0/128 and backend/staging 0/154.",
+    "activeTask": "B07",
+    "activeStep": "B07.01",
+    "nextTask": "B07",
+    "nextStep": "B07.01",
+    "nextAction": "B07.01 remains in_progress: exact pushed SHA bdeca9fad14a9ea2e823bb591d9d0cc70f1e459b passed hosted Node22/Ubuntu run 36824384999 with 26/26 steps and explicit EOL output. Reconcile generator hash/revision-provenance changes overlapping A06/C05 and rerun their resulting exact SHA before closing B07.01; then continue B07.02. Verify remote required-check/review/DCO/branch policy in B07.04. Backend/staging and user acceptance remain open.",
     "changedFiles": [
       "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
       "docs/architecture/production-readiness/evidence/A06/run-profile-loading-browser-check.mjs",
@@ -120,7 +120,14 @@
       "docs/architecture/production-readiness/evidence/A06/preview-trading-unauthorized-login-2026-09-30.png",
       "docs/architecture/production-readiness/evidence/A06/run-trading-forbidden-browser-check.mjs",
       "docs/architecture/production-readiness/evidence/A06/trading-forbidden-browser-check-2026-09-30.json",
-      "docs/architecture/production-readiness/evidence/A06/preview-trading-forbidden-positions-2026-09-30.png"
+      "docs/architecture/production-readiness/evidence/A06/preview-trading-forbidden-positions-2026-09-30.png",
+      ".gitattributes",
+      ".github/workflows/ci.yml",
+      "scripts/check-git-eol.mjs",
+      "scripts/serve-e2e.mjs",
+      "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-ci-eol-gate-2026-10-01.json",
+      "docs/architecture/production-readiness/PLAN.md",
+      "docs/architecture/production-readiness/TRACKING.json"
     ],
     "pendingChecks": [
       "C03 follow-up: obtain product-intent evidence for the login backend-failure message; the full-suite gate remains exit 1.",
@@ -179,7 +186,8 @@
       "C03.04: run representative reversible mutations for critical guards/invalidation/idempotency after C03.03.",
       "C03.05: rerun full suite and coverage, record skips/flakes/gaps without relaxing thresholds.",
       "A06.03 remains open for user-confirmed missing Wallet unknown/duplicate contract and missing Arena 401/403 declarations; UI acceptance 0/128 and backend/staging 0/154.",
-      "Continue A06.03 in matrix order at trading.unauthorized; refresh eight stale P2P/Predictions sidecars before closeout."
+      "Continue A06.03 in matrix order at trading.unauthorized; refresh eight stale P2P/Predictions sidecars before closeout.",
+      "B07.01 remains in_progress after exact Node22/Ubuntu CI success: reconcile generator hash/revision-provenance edits and A06/C05 artifacts excluded from the isolated branch, rerun resulting exact SHA, then continue B07.02-B07.05. Remote required-check/review/CODEOWNERS/DCO/branch-policy settings remain unverified; local CI success does not establish staging or production acceptance."
     ]
   },
   "tasks": [
@@ -9234,7 +9242,7 @@
     {
       "id": "B07",
       "title": "CI đúng toolchain, bằng chứng và chính sách Git",
-      "status": "todo",
+      "status": "in_progress",
       "ownerRole": "Frontend platform + Backend/Ops + QA",
       "assignee": null,
       "dependsOn": ["A08", "C04"],
@@ -9245,15 +9253,73 @@
         ".nvmrc",
         "package-lock.json",
         "package.json",
-        "playwright.config.ts"
+        "playwright.config.ts",
+        ".gitattributes",
+        "scripts/check-git-eol.mjs",
+        "scripts/serve-e2e.mjs",
+        "scripts/generate-architecture-inventory.mjs",
+        "scripts/generate-architecture-inventory.test.mjs",
+        "docs/architecture/production-readiness/check-tracking.mjs",
+        "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
+        "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs"
       ],
       "proposedPaths": [],
       "steps": [
         {
           "id": "B07.01",
-          "status": "todo",
-          "evidenceIds": [],
-          "notes": ""
+          "status": "in_progress",
+          "evidenceIds": ["EV-20261001-042"],
+          "notes": "Exact pushed SHA bdeca9fad14a9ea2e823bb591d9d0cc70f1e459b passed hosted Node22/Ubuntu CI: 26/26 steps, EOL 1493 paths (1151 LF, 342 preserved non-text, 0 unterminated, 0 protected CRLF), 283 test files/2393 tests, coverage 90.13/84.86/87.15/91.91%, Playwright 51/51 and production gates. Keep open until locally validated generator hash/revision-provenance edits overlapping A06/C05 are reconciled and the resulting exact SHA is rerun.",
+          "execution": {
+            "checkpoints": [
+              {
+                "id": "B07.01/eol-policy",
+                "status": "done",
+                "paths": [
+                  ".gitattributes",
+                  "scripts/check-git-eol.mjs",
+                  ".github/workflows/ci.yml"
+                ],
+                "notes": "Windows local negative-path and hosted Ubuntu EOL gates passed; local script SHA matches committed source."
+              },
+              {
+                "id": "B07.01/hash-reproducibility",
+                "status": "in_progress",
+                "paths": [
+                  "scripts/generate-architecture-inventory.mjs",
+                  "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
+                  "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs"
+                ],
+                "notes": "Main-tree candidate checks passed locally, but overlapping source/output changes are excluded from this isolated CI commit. Reconcile and verify here before marking done."
+              },
+              {
+                "id": "B07.01/revision-provenance",
+                "status": "in_progress",
+                "paths": [
+                  "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
+                  "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs"
+                ],
+                "notes": "Candidate changes remain in the separate dirty main checkout. Reconcile and rerun exact-branch evidence."
+              },
+              {
+                "id": "B07.01/node22-clean-ci",
+                "status": "done",
+                "paths": [
+                  ".nvmrc",
+                  "package.json",
+                  "package-lock.json",
+                  ".github/workflows/ci.yml"
+                ],
+                "notes": "EV-20261001-042: run 36824384999 on exact SHA bdeca9fad14a9ea2e823bb591d9d0cc70f1e459b; Node22.23.2, Ubuntu 24.04.5; 26/26 steps passed."
+              },
+              {
+                "id": "B07.01/e2e-preview-environment",
+                "status": "done",
+                "paths": ["scripts/serve-e2e.mjs"],
+                "notes": "Exact Actions run passed 51/51; Windows Node22 dirty-snapshot run also passed 51/51."
+              }
+            ]
+          }
         },
         {
           "id": "B07.02",
@@ -9283,13 +9349,27 @@
       "pageIds": [],
       "routeIds": [],
       "operationIds": [],
-      "evidenceIds": [],
-      "changeIds": [],
+      "evidenceIds": ["EV-20261001-042"],
+      "changeIds": [
+        "CHANGE-20261001-0340",
+        "CHANGE-20261001-0341",
+        "CHANGE-20261001-0342",
+        "CHANGE-20261001-0343",
+        "CHANGE-20261001-0344"
+      ],
       "blockers": [],
       "startedAt": null,
       "completedAt": null,
       "elapsedMinutes": null,
-      "notes": ""
+      "notes": "B07.01 exact hosted Node22/Ubuntu CI passed on the dedicated pushed SHA; Windows compatibility evidence remains separately labeled. B07.01 stays in_progress for generator hash/revision-provenance reconciliation. B07.02-B07.05 remain todo; remote required-check/review enforcement and staging/production behavior are not established.",
+      "execution": {
+        "requiredChecks": [
+          "Exact pushed SHA on Node22/Ubuntu with EOL output and production workflow gates",
+          "Reconcile generator hash/revision-provenance changes with A06/C05 and rerun resulting exact SHA",
+          "Verify required checks, review, CODEOWNERS, DCO and branch policy in B07.04",
+          "Run check-tracking and git diff --check"
+        ]
+      }
     },
     {
       "id": "B08",
@@ -57829,10 +57909,10 @@
       "baselineSha256": "0b85b83713110d15780afd8db8a273014095baa087180d4114ed23f4b76c7930",
       "lifecycle": "active",
       "taskIds": ["B07", "B09"],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": []
+      "disposition": "changed",
+      "reason": "Trigger CI on codex branches and enforce the Git EOL gate before dependency installation.",
+      "evidenceIds": ["EV-20261001-042"],
+      "changeIds": ["CHANGE-20261001-0341"]
     },
     {
       "path": ".gitignore",
@@ -68062,9 +68142,9 @@
       "path": "docs/architecture/production-readiness/PLAN.md",
       "baselineSha256": null,
       "lifecycle": "active",
-      "taskIds": ["A01", "B10", "A05", "A07", "A06", "A08", "C02", "C03", "C04", "C05"],
+      "taskIds": ["A01", "B10", "A05", "A07", "A06", "A08", "C02", "C03", "C04", "C05", "B07"],
       "disposition": "changed",
-      "reason": "Record final forbidden browser measurements, refreshed Support pending values and next scenario. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. | Repair three existing runbook heading anchors discovered by docs-only link validation. | Label the retained application-progress text as a historical snapshot, point current state to TRACKING, and describe the implemented A05 environment boundary accurately.",
+      "reason": "Record final forbidden browser measurements, refreshed Support pending values and next scenario. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. | Repair three existing runbook heading anchors discovered by docs-only link validation. | Label the retained application-progress text as a historical snapshot, point current state to TRACKING, and describe the implemented A05 environment boundary accurately. | Record exact-SHA hosted Ubuntu CI measurements, limitations and remaining B07.01 work.",
       "evidenceIds": [
         "EV-20260927-076",
         "EV-20260928-001",
@@ -68443,7 +68523,8 @@
         "EV-20260930-022",
         "EV-20260930-024",
         "EV-20260930-025",
-        "EV-20260930-026"
+        "EV-20260930-026",
+        "EV-20261001-042"
       ],
       "changeIds": [
         "CHANGE-20260927-052",
@@ -68605,7 +68686,8 @@
         "CHANGE-20260930-0063",
         "CHANGE-20260930-0074",
         "CHANGE-20260930-0079",
-        "CHANGE-20260930-0084"
+        "CHANGE-20260930-0084",
+        "CHANGE-20261001-0344"
       ]
     },
     {
@@ -69290,11 +69372,11 @@
       "path": "scripts/serve-e2e.mjs",
       "baselineSha256": "f2e7ad26f6ba8c8952324396bd12deea9f0bc46cf7909370038555a5da9cf371",
       "lifecycle": "active",
-      "taskIds": ["A08"],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": []
+      "taskIds": ["A08", "B07"],
+      "disposition": "changed",
+      "reason": "Pass test-only API-mode settings to the E2E preview child so production validation and Playwright can run.",
+      "evidenceIds": ["EV-20261001-042"],
+      "changeIds": ["CHANGE-20261001-0343"]
     },
     {
       "path": "src/app/__tests__/App.test.tsx",
@@ -81014,6 +81096,26 @@
       "reason": "Universal 3.1 docs-only bootstrap: record survey/check evidence; preserve application checkpoint and prior edits.",
       "evidenceIds": ["EV-20260930-024", "EV-20260930-025"],
       "changeIds": ["CHANGE-20260930-0080"]
+    },
+    {
+      "path": ".gitattributes",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": ["B07"],
+      "disposition": "changed",
+      "reason": "Define repository text EOL as LF while preserving binary assets, protected Universal instruction files, and archived command output.",
+      "evidenceIds": ["EV-20261001-042"],
+      "changeIds": ["CHANGE-20261001-0340"]
+    },
+    {
+      "path": "scripts/check-git-eol.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": ["B07"],
+      "disposition": "changed",
+      "reason": "Add a portable gate for Git-managed text line endings and documented exceptions.",
+      "evidenceIds": ["EV-20261001-042"],
+      "changeIds": ["CHANGE-20261001-0342"]
     }
   ],
   "changes": [
@@ -126478,6 +126580,71 @@
       "afterHash": "837a1c22b7a50896dae450156f26f341c80be3e2424069ac349173131a1405e2",
       "evidenceIds": ["EV-20260930-026"],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0340",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "path": ".gitattributes",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Define repository text EOL as LF while preserving binary assets, protected Universal instruction files, and archived command output.",
+      "beforeHash": null,
+      "afterHash": "9719708cafb76d38d0deb71c4ea048906a7ac1634ce362623ec3854d53ce081e",
+      "evidenceIds": ["EV-20261001-042"],
+      "commit": "bdeca9fad14a9ea2e823bb591d9d0cc70f1e459b"
+    },
+    {
+      "id": "CHANGE-20261001-0341",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "path": ".github/workflows/ci.yml",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Trigger CI on codex branches and enforce the Git EOL gate before dependency installation.",
+      "beforeHash": "0b85b83713110d15780afd8db8a273014095baa087180d4114ed23f4b76c7930",
+      "afterHash": "a1e38a06fffce7a305a504ba9639ab0f82b697b9d46eee1d2b087642d140f5da",
+      "evidenceIds": ["EV-20261001-042"],
+      "commit": "bdeca9fad14a9ea2e823bb591d9d0cc70f1e459b"
+    },
+    {
+      "id": "CHANGE-20261001-0342",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "path": "scripts/check-git-eol.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Add a portable gate for Git-managed text line endings and documented exceptions.",
+      "beforeHash": null,
+      "afterHash": "f268a2c317c09d9630a51295a62ecca776bce41ec0e3d9d74e0cd808b97884ca",
+      "evidenceIds": ["EV-20261001-042"],
+      "commit": "bdeca9fad14a9ea2e823bb591d9d0cc70f1e459b"
+    },
+    {
+      "id": "CHANGE-20261001-0343",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "path": "scripts/serve-e2e.mjs",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Pass test-only API-mode settings to the E2E preview child so production validation and Playwright can run.",
+      "beforeHash": "f2e7ad26f6ba8c8952324396bd12deea9f0bc46cf7909370038555a5da9cf371",
+      "afterHash": "520c0344b04ba89bff73ffcfb9b19ae08051d6d156308c45290fbcfb9d8b4ab1",
+      "evidenceIds": ["EV-20261001-042"],
+      "commit": "bdeca9fad14a9ea2e823bb591d9d0cc70f1e459b"
+    },
+    {
+      "id": "CHANGE-20261001-0344",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "path": "docs/architecture/production-readiness/PLAN.md",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Record exact-SHA hosted Ubuntu CI measurements, limitations and remaining B07.01 work.",
+      "beforeHash": "264ff24865b74d4ccb61609d953fc8e846b7ec439201d18c2a526cbeb4192f51",
+      "afterHash": "b644fa219bcfb10f67a9d449fff715b04133c18d40e21e2808bae1049176462f",
+      "evidenceIds": ["EV-20261001-042"],
+      "commit": null
     }
   ],
   "evidence": [
@@ -143607,6 +143774,102 @@
       "result": "pass",
       "artifact": "docs/architecture/page-inventory.json",
       "notes": "Updated documentation owners and generated artifacts; retained dated evidence as historical. No application tests/build, Node 22 run, CI, backend/staging verification, user acceptance, or application checkpoint/status change. Working-tree and staged user changes were preserved."
+    },
+    {
+      "id": "EV-20261001-042",
+      "schemaVersion": 1,
+      "recordedAt": "2026-10-01T06:34:02.000Z",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "kind": "validation",
+      "commandOrSteps": "GitHub Actions run 36824384999 on the exact pushed SHA; fresh Ubuntu checkout; npm ci; EOL, typecheck, lint, format, unit/integration, coverage, Playwright, audit:high, production build/output and bundle gates.",
+      "observedAt": "2026-10-01T06:34:02.000Z",
+      "sourceHead": "bdeca9fad14a9ea2e823bb591d9d0cc70f1e459b",
+      "run": {
+        "provider": "GitHub Actions",
+        "id": 36824384999,
+        "attempt": 1,
+        "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36824384999",
+        "event": "push",
+        "branch": "codex/b07-01-ubuntu-validation",
+        "commit": "bdeca9fad14a9ea2e823bb591d9d0cc70f1e459b",
+        "job": "Production gates",
+        "result": "success",
+        "startedAt": "2026-10-01T06:21:57Z",
+        "completedAt": "2026-10-01T06:34:02Z",
+        "durationSeconds": 725,
+        "completedSteps": 26,
+        "totalSteps": 26
+      },
+      "environment": {
+        "runnerImage": "ubuntu-24.04",
+        "os": "Ubuntu 24.04.5 LTS",
+        "node": "v22.23.2",
+        "npm": "10.9.8",
+        "git": "2.55.0",
+        "checkout": "Fresh hosted checkout of exact pushed commit"
+      },
+      "measurements": {
+        "eol": {
+          "result": "pass",
+          "paths": 1493,
+          "lf": 1151,
+          "withoutLineTerminators": 0,
+          "preservedNonText": 342,
+          "protectedWindowsCrlf": 0,
+          "output": "Git EOL check: 1493 paths; 1151 LF, 0 without line terminators, 342 preserved non-text, 0 protected Windows CRLF."
+        },
+        "npmCi": {
+          "result": "pass",
+          "packagesAdded": 552,
+          "packagesAudited": 553,
+          "lowSeverityAdvisories": 1,
+          "advisory": "GHSA-p98j-92pf-mc4p (DOMPurify)"
+        },
+        "typecheckProjects": 2,
+        "lint": "pass; zero warnings",
+        "format": "pass",
+        "unitIntegration": {
+          "result": "pass",
+          "testFilesPassed": 283,
+          "testsPassed": 2393,
+          "testFilesFailed": 0,
+          "testsFailed": 0
+        },
+        "coveragePercent": {
+          "statements": 90.13,
+          "branches": 84.86,
+          "functions": 87.15,
+          "lines": 91.91
+        },
+        "playwright": {
+          "result": "pass",
+          "testsPassed": 51,
+          "testsFailed": 0
+        },
+        "auditHigh": "pass",
+        "productionBuild": "pass",
+        "productionOutput": {
+          "result": "pass",
+          "files": 223,
+          "javascriptFiles": 221,
+          "manifests": 0
+        },
+        "bundleBudget": {
+          "result": "pass",
+          "chunks": 221,
+          "withinRaw500KBAndGzip250KiB": 221
+        }
+      },
+      "warnings": [
+        "npm ci reported one low-severity DOMPurify advisory; audit:high passed.",
+        "actions/checkout@v4 and actions/setup-node@v4 reported Node20 action runtimes while the hosted runner forced Node24; both steps completed."
+      ],
+      "expected": "Run all production gates on the exact pushed Node 22 revision on hosted Ubuntu and capture explicit EOL output.",
+      "actual": "Run 36824384999 succeeded: all 26 workflow steps in 725 seconds. EOL, typecheck, lint/warning budget, format, 2393 unit/integration tests, coverage, 51 Playwright tests, audit:high, production build/output and all 221 JavaScript chunk budgets passed.",
+      "result": "pass",
+      "artifact": "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-ci-eol-gate-2026-10-01.json",
+      "notes": "Does not verify GitHub required-check enforcement/review policy, backend/staging, or production acceptance. Main-worktree generator hash/revision-provenance edits overlapping A06/C05 are not in this branch and must be reconciled and rerun on the resulting exact SHA before B07.01 closes."
     }
   ],
   "decisions": [
