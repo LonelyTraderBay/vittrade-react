@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -6,6 +7,10 @@ import prettier from 'prettier';
 
 const directory = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(directory, '../../../../../');
+const currentHead = execFileSync('git', ['rev-parse', 'HEAD'], {
+  cwd: root,
+  encoding: 'utf8',
+}).trim();
 const planDirectory = path.join(root, 'docs/architecture/production-readiness');
 const inputs = {
   tracking: 'docs/architecture/production-readiness/TRACKING.json',
@@ -326,7 +331,7 @@ const index = {
   schemaVersion: 1,
   generatedFrom: {
     generatedAt,
-    sourceHead: tracking.baseline.sourceHead,
+    sourceHead: currentHead,
     inputs: Object.fromEntries(
       Object.entries(inputs).map(([key, relativePath]) => [
         key,

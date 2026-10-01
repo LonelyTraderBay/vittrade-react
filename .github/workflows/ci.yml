@@ -70,6 +70,19 @@ jobs:
       - name: Architecture inventory
         run: npm run architecture:inventory:check
 
+      - name: Scenario evidence provenance tests
+        run: node node_modules/vitest/vitest.mjs run docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.test.mjs
+
+      - name: Deterministic scenario matrix
+        run: |
+          node docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs --write
+          node docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs --check
+
+      - name: Deterministic UI acceptance index
+        run: |
+          node docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs --write
+          node docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs --check
+
       - name: Page size gate
         run: npm run page-size:check
 
