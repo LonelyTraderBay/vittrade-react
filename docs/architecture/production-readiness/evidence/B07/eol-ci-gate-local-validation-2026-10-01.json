@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-01T03:12:26.000Z",
+  "taskId": "B07",
+  "stepId": "B07.01",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "environment": {
+    "os": "Windows x64",
+    "node": "v24.19.0",
+    "branch": "main",
+    "originMain": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+    "gitCoreAutocrlf": "true",
+    "githubCliAuthenticated": false
+  },
+  "scope": {
+    "stepFileRecords": 567,
+    "trackedPaths": 506,
+    "untrackedPaths": 61,
+    "verifiedPathsByGit": 567
+  },
+  "implementation": {
+    "script": "scripts/check-git-eol.mjs",
+    "workflow": ".github/workflows/ci.yml",
+    "workflowStep": "Verify Git text line endings",
+    "runsBefore": "npm ci",
+    "scope": "all tracked and nonignored untracked paths; preserves attr/-text assets and protected instruction files",
+    "scriptSha256": "f268a2c317c09d9630a51295a62ecca776bce41ec0e3d9d74e0cd808b97884ca",
+    "pathHandling": "Pass core.quotePath=false to the child git command only; verify each reported path exists. No global or repository Git configuration is changed."
+  },
+  "windowsRun": {
+    "command": "node scripts/check-git-eol.mjs",
+    "result": "pass",
+    "paths": 2491,
+    "lf": 1433,
+    "noTerminator": 0,
+    "preservedNonText": 1055,
+    "protectedWindowsCrlf": 3,
+    "violations": 0,
+    "expectedOutput": "Git EOL check: 2491 paths; 1433 LF, 0 without line terminators, 1055 preserved non-text, 3 protected Windows CRLF."
+  },
+  "negativeProbe": {
+    "method": "Create one temporary untracked CRLF text source file, run the same gate, verify exit code 1 and one violation, then delete only that file.",
+    "result": "pass",
+    "violationsRejected": 1
+  },
+  "expected": "The portable gate accepts the repository LF policy and explicit preserved-file exceptions on Windows, rejects unprotected CRLF/mixed text, and runs in CI before installing dependencies so Ubuntu checkout output is visible and enforced.",
+  "actual": "The portable EOL gate passed on Windows across all 2,491 current repository paths: 1,433 LF, 1,055 preserved non-text paths, 3 protected Windows CRLF files, and zero violations. The B07.01 catalog selection matched all 567 records (506 tracked, 61 untracked): 524 w/lf, 3 protected w/crlf, 40 w/-text binary and 0 mixed. Git path quoting is disabled for this child process only and every returned path is checked for existence. A temporary untracked CRLF source probe was rejected with exit code 1 and one violation, then removed. The CI workflow now runs the checker after Node setup and before npm ci. The workflow edit is still uncommitted, so the prior GitHub Actions run does not validate this gate or the current working tree; explicit Ubuntu output remains unobserved.",
+  "result": "pass",
+  "artifact": "scripts/check-git-eol.mjs; .github/workflows/ci.yml; docs/architecture/production-readiness/evidence/B07/eol-ci-gate-local-validation-2026-10-01.json",
+  "notes": "Windows EOL behavior, Unicode path handling, path existence checks and the CRLF rejection path are verified locally without changing core.autocrlf. The current Ubuntu run and current-dirty-revision CI remain unverified; the next exact-SHA GitHub Actions run will emit the EOL summary and enforce this checker.",
+  "scopedEol": {
+    "command": "git ls-files --eol --cached --others --exclude-standard filtered by TRACKING.files[].executionScope.stepIds includes B07.01",
+    "matchedPaths": 567,
+    "tracked": 506,
+    "untracked": 61,
+    "workingTreeLf": 524,
+    "workingTreeCrlf": 3,
+    "workingTreeMixed": 0,
+    "binaryNoText": 40,
+    "protectedCrlfPaths": [
+      "AGENTS.md",
+      "AI_RULES.md",
+      "PROJECT_BOOTSTRAP_PROMPT.txt"
+    ]
+  }
+}
