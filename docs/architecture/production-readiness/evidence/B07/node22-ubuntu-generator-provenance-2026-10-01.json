@@ -1,0 +1,77 @@
+{
+  "id": "EV-20261001-044",
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-01T08:15:12.000Z",
+  "taskId": "B07",
+  "stepId": "B07.01",
+  "kind": "validation",
+  "commandOrSteps": "Push the B07.01 implementation to codex/b07-01-ubuntu-validation; verify origin points at the pushed SHA; inspect the GitHub Actions run and every Production gates job step for the same head SHA.",
+  "observedAt": "2026-10-01T08:11:06.000Z",
+  "sourceHead": "a3b2f8b0937ee83cd67a1c061c2bf211852f5070",
+  "run": {
+    "provider": "GitHub Actions",
+    "id": 36833206956,
+    "attempt": 1,
+    "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36833206956",
+    "event": "push",
+    "branch": "codex/b07-01-ubuntu-validation",
+    "commit": "a3b2f8b0937ee83cd67a1c061c2bf211852f5070",
+    "job": "Production gates",
+    "jobId": 110274350684,
+    "result": "success",
+    "startedAt": "2026-10-01T07:55:46Z",
+    "completedAt": "2026-10-01T08:11:06Z",
+    "durationSeconds": 920,
+    "completedSteps": 29,
+    "totalSteps": 29,
+    "failedSteps": 0
+  },
+  "environment": {
+    "runnerImage": "ubuntu-latest",
+    "nodeVersionSource": ".nvmrc",
+    "configuredNodeMajor": 22,
+    "checkout": "Fresh hosted checkout of the exact pushed commit"
+  },
+  "measurements": {
+    "exactHeadVerified": true,
+    "job": {
+      "result": "success",
+      "startedAt": "2026-10-01T07:55:49Z",
+      "completedAt": "2026-10-01T08:11:05Z",
+      "durationSeconds": 916
+    },
+    "stepResults": {
+      "eol": "pass",
+      "typecheck": "pass",
+      "lint": "pass",
+      "lintWarningBudget": "pass",
+      "format": "pass",
+      "unitIntegration": "pass",
+      "coverage": "pass",
+      "e2eAccessibility": "pass",
+      "dependencyAudit": "pass",
+      "licensePolicy": "pass",
+      "securityBoundaryPolicy": "pass",
+      "environmentBoundaryPolicy": "pass",
+      "openApiContractPolicy": "pass",
+      "architectureCheck": "pass",
+      "architectureInventory": "pass",
+      "pageSize": "pass",
+      "productionMockImportBudget": "pass",
+      "productionRouteBoundaries": "pass",
+      "productionBuild": "pass",
+      "productionMockExclusion": "pass",
+      "bundleBudget": "pass"
+    }
+  },
+  "warnings": [
+    "GitHub required-check/review and branch-protection settings were not inspected by this run.",
+    "Backend/staging behavior and user acceptance remain unverified; this is not a production acceptance result.",
+    "The A06 matrix still reports 10/35 evidence sidecars stale from source-content differences and aggregate runtimeEvidenceFresh=false."
+  ],
+  "expected": "Run the reconciled generator hash/revision-provenance implementation through the required Node 22 hosted Ubuntu workflow on its exact pushed code SHA.",
+  "actual": "The pushed code SHA a3b2f8b0937ee83cd67a1c061c2bf211852f5070 completed GitHub Actions run 36833206956 successfully. The Production gates job and all 29 workflow steps completed with success, including EOL, Node setup, typecheck, lint and warning budget, formatting, unit/integration, coverage, E2E/accessibility, policy and architecture gates, build, mock exclusion and bundle budget. The workflow config selects Node 22 from .nvmrc. The previously recorded local A06/C05 --check and focused provenance tests passed on this same code commit.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-generator-provenance-2026-10-01.json",
+  "notes": "This closes B07.01 only. B07.02-B07.05 and remote branch governance, backend/staging and user-acceptance evidence remain open."
+}

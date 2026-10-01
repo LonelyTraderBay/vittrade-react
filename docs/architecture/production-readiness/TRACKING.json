@@ -9274,9 +9274,9 @@
       "steps": [
         {
           "id": "B07.01",
-          "status": "in_progress",
-          "evidenceIds": ["EV-20261001-042", "EV-20261001-043"],
-          "notes": "EV-20261001-042 verified the prior exact pushed SHA. Reconciled A06/C05 hash and revision-provenance behavior is now implemented and locally validated on Windows/Node 24 (EV-20261001-043: 20/20 focused tests, both generators, inventory, formatting, syntax and diff checks pass). Keep in_progress until the code-bearing commit is pushed and Node22/Ubuntu CI passes on that exact SHA; ten genuine stale sidecars, runtimeEvidenceFresh=false, UI acceptance 0/128 and backend/staging 0/154 remain.",
+          "status": "done",
+          "evidenceIds": ["EV-20261001-042", "EV-20261001-043", "EV-20261001-044"],
+          "notes": "B07.01 completed on exact pushed code SHA a3b2f8b0937ee83cd67a1c061c2bf211852f5070. EV-20261001-043 records local verification (20/20 focused tests, generator/inventory/format/syntax/diff checks); EV-20261001-044 records hosted GitHub Actions run 36833206956 success, 29/29 Production gates steps in 920 seconds. Hash reproducibility, revision provenance and exact-SHA Node22/Ubuntu checkpoints passed. This does not verify required-check enforcement, backend/staging, or user acceptance.",
           "execution": {
             "checkpoints": [
               {
@@ -9291,7 +9291,7 @@
               },
               {
                 "id": "B07.01/hash-reproducibility",
-                "status": "in_progress",
+                "status": "done",
                 "paths": [
                   "scripts/generate-architecture-inventory.mjs",
                   "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
@@ -9305,7 +9305,7 @@
               },
               {
                 "id": "B07.01/revision-provenance",
-                "status": "in_progress",
+                "status": "done",
                 "paths": [
                   "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
                   "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.mjs",
@@ -9336,7 +9336,7 @@
               },
               {
                 "id": "B07.01/node22-generator-exact-ci",
-                "status": "in_progress",
+                "status": "done",
                 "paths": [
                   "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.mjs",
                   "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.test.mjs",
@@ -9346,7 +9346,7 @@
                   "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json",
                   "docs/architecture/production-readiness/UI-ACCEPTANCE.md"
                 ],
-                "notes": "Awaiting the authorized B07 branch commit/push and hosted Node22/Ubuntu production gates on the resulting exact SHA."
+                "notes": "EV-20261001-044: GitHub Actions run 36833206956 on exact pushed SHA a3b2f8b0937ee83cd67a1c061c2bf211852f5070 succeeded; Production gates 29/29, 920 seconds."
               }
             ]
           }
@@ -9379,7 +9379,7 @@
       "pageIds": [],
       "routeIds": [],
       "operationIds": [],
-      "evidenceIds": ["EV-20261001-042", "EV-20261001-043"],
+      "evidenceIds": ["EV-20261001-042", "EV-20261001-043", "EV-20261001-044"],
       "changeIds": [
         "CHANGE-20261001-0340",
         "CHANGE-20261001-0341",
@@ -9394,13 +9394,15 @@
         "CHANGE-20261001-0350",
         "CHANGE-20261001-0351",
         "CHANGE-20261001-0352",
-        "CHANGE-20261001-0353"
+        "CHANGE-20261001-0353",
+        "CHANGE-20261001-0354",
+        "CHANGE-20261001-0355"
       ],
       "blockers": [],
       "startedAt": null,
       "completedAt": null,
       "elapsedMinutes": null,
-      "notes": "B07.01 exact hosted Node22/Ubuntu CI passed on the prior dedicated branch SHA; the A06/C05 generator hash/revision-provenance reconciliation now passes local Windows checks (EV-20261001-043) and is pending exact-SHA hosted CI. Ten source-hash-stale sidecars remain genuine; runtime evidence freshness is false; UI acceptance is 0/128 and backend/staging verification is 0/154. B07.02-B07.05 remain todo; remote required-check/review enforcement and staging/production behavior are not established.",
+      "notes": "B07.01 is done: the reconciled A06/C05 generators and provenance tests passed locally and the exact pushed code SHA passed hosted Node22/Ubuntu CI (EV-20261001-044). B07.02 is next; B07.03-B07.05 remain todo. Remote required-check/review enforcement, staging/backend behavior and user acceptance remain unverified.",
       "execution": {
         "requiredChecks": [
           "Exact pushed SHA on Node22/Ubuntu with EOL output and production workflow gates",
@@ -68195,7 +68197,7 @@
       "lifecycle": "active",
       "taskIds": ["A01", "B10", "A05", "A07", "A06", "A08", "C02", "C03", "C04", "C05", "B07"],
       "disposition": "changed",
-      "reason": "Record final forbidden browser measurements, refreshed Support pending values and next scenario. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. | Repair three existing runbook heading anchors discovered by docs-only link validation. | Label the retained application-progress text as a historical snapshot, point current state to TRACKING, and describe the implemented A05 environment boundary accurately. | Record exact-SHA hosted Ubuntu CI measurements, limitations and remaining B07.01 work.",
+      "reason": "Record final forbidden browser measurements, refreshed Support pending values and next scenario. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. | Repair three existing runbook heading anchors discovered by docs-only link validation. | Label the retained application-progress text as a historical snapshot, point current state to TRACKING, and describe the implemented A05 environment boundary accurately. | Record exact-SHA hosted Ubuntu CI measurements, limitations and remaining B07.01 work. | B07.01: record the exact-SHA hosted Ubuntu result and close this checkpoint.",
       "evidenceIds": [
         "EV-20260927-076",
         "EV-20260928-001",
@@ -68576,7 +68578,8 @@
         "EV-20260930-025",
         "EV-20260930-026",
         "EV-20261001-042",
-        "EV-20261001-043"
+        "EV-20261001-043",
+        "EV-20261001-044"
       ],
       "changeIds": [
         "CHANGE-20260927-052",
@@ -68740,7 +68743,8 @@
         "CHANGE-20260930-0079",
         "CHANGE-20260930-0084",
         "CHANGE-20261001-0344",
-        "CHANGE-20261001-0352"
+        "CHANGE-20261001-0352",
+        "CHANGE-20261001-0354"
       ]
     },
     {
@@ -81201,6 +81205,16 @@
       "reason": "Capture reproducible B07.01 local commands, measurements, content hashes and validation limits.",
       "evidenceIds": ["EV-20261001-043"],
       "changeIds": ["CHANGE-20261001-0353"]
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-generator-provenance-2026-10-01.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": ["B07"],
+      "disposition": "changed",
+      "reason": "Record exact-pushed-SHA Node22/Ubuntu validation of generator hash and revision provenance.",
+      "evidenceIds": ["EV-20261001-044"],
+      "changeIds": ["CHANGE-20261001-0355"]
     }
   ],
   "changes": [
@@ -126847,6 +126861,32 @@
       "afterHash": "439bfb0c68e8d8cf90b66221cf982678d37fbf25ea04e29550e5d3ee32518262",
       "evidenceIds": ["EV-20261001-043"],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0354",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "path": "docs/architecture/production-readiness/PLAN.md",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Record exact-SHA hosted Ubuntu CI evidence and completion of B07.01.",
+      "beforeHash": "f113096fa1046ec4941d7ddd9bdd0893cec2171526d0e7566a8b0ca574358527",
+      "afterHash": "8f4986267afb433ce60338f152358ac392d1f9edcf466bebdc24628dd9a31e7b",
+      "evidenceIds": ["EV-20261001-044"],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0355",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "path": "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-generator-provenance-2026-10-01.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Capture hosted Actions run metadata and all gate results for the exact B07.01 commit.",
+      "beforeHash": null,
+      "afterHash": "97bc9c15a3b3dc371608cbec29a452875793728f9607ed6146c3d2a9ce38e784",
+      "evidenceIds": ["EV-20261001-044"],
+      "commit": null
     }
   ],
   "evidence": [
@@ -144170,6 +144210,83 @@
       "result": "pass",
       "artifact": "docs/architecture/production-readiness/evidence/B07/generator-hash-revision-eol-2026-10-01.json",
       "notes": "Local validation only. Exact-SHA Node 22/Ubuntu Actions run is pending commit and push; do not mark B07.01 done on this evidence alone."
+    },
+    {
+      "id": "EV-20261001-044",
+      "schemaVersion": 1,
+      "recordedAt": "2026-10-01T08:15:12.000Z",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "kind": "validation",
+      "commandOrSteps": "Push the B07.01 implementation to codex/b07-01-ubuntu-validation; verify origin points at the pushed SHA; inspect the GitHub Actions run and every Production gates job step for the same head SHA.",
+      "observedAt": "2026-10-01T08:11:06.000Z",
+      "sourceHead": "a3b2f8b0937ee83cd67a1c061c2bf211852f5070",
+      "run": {
+        "provider": "GitHub Actions",
+        "id": 36833206956,
+        "attempt": 1,
+        "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36833206956",
+        "event": "push",
+        "branch": "codex/b07-01-ubuntu-validation",
+        "commit": "a3b2f8b0937ee83cd67a1c061c2bf211852f5070",
+        "job": "Production gates",
+        "jobId": 110274350684,
+        "result": "success",
+        "startedAt": "2026-10-01T07:55:46Z",
+        "completedAt": "2026-10-01T08:11:06Z",
+        "durationSeconds": 920,
+        "completedSteps": 29,
+        "totalSteps": 29,
+        "failedSteps": 0
+      },
+      "environment": {
+        "runnerImage": "ubuntu-latest",
+        "nodeVersionSource": ".nvmrc",
+        "configuredNodeMajor": 22,
+        "checkout": "Fresh hosted checkout of the exact pushed commit"
+      },
+      "measurements": {
+        "exactHeadVerified": true,
+        "job": {
+          "result": "success",
+          "startedAt": "2026-10-01T07:55:49Z",
+          "completedAt": "2026-10-01T08:11:05Z",
+          "durationSeconds": 916
+        },
+        "stepResults": {
+          "eol": "pass",
+          "typecheck": "pass",
+          "lint": "pass",
+          "lintWarningBudget": "pass",
+          "format": "pass",
+          "unitIntegration": "pass",
+          "coverage": "pass",
+          "e2eAccessibility": "pass",
+          "dependencyAudit": "pass",
+          "licensePolicy": "pass",
+          "securityBoundaryPolicy": "pass",
+          "environmentBoundaryPolicy": "pass",
+          "openApiContractPolicy": "pass",
+          "architectureCheck": "pass",
+          "architectureInventory": "pass",
+          "pageSize": "pass",
+          "productionMockImportBudget": "pass",
+          "productionRouteBoundaries": "pass",
+          "productionBuild": "pass",
+          "productionMockExclusion": "pass",
+          "bundleBudget": "pass"
+        }
+      },
+      "warnings": [
+        "GitHub required-check/review and branch-protection settings were not inspected by this run.",
+        "Backend/staging behavior and user acceptance remain unverified; this is not a production acceptance result.",
+        "The A06 matrix still reports 10/35 evidence sidecars stale from source-content differences and aggregate runtimeEvidenceFresh=false."
+      ],
+      "expected": "Run the reconciled generator hash/revision-provenance implementation through the required Node 22 hosted Ubuntu workflow on its exact pushed code SHA.",
+      "actual": "The pushed code SHA a3b2f8b0937ee83cd67a1c061c2bf211852f5070 completed GitHub Actions run 36833206956 successfully. The Production gates job and all 29 workflow steps completed with success, including EOL, Node setup, typecheck, lint and warning budget, formatting, unit/integration, coverage, E2E/accessibility, policy and architecture gates, build, mock exclusion and bundle budget. The workflow config selects Node 22 from .nvmrc. The previously recorded local A06/C05 --check and focused provenance tests passed on this same code commit.",
+      "result": "pass",
+      "artifact": "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-generator-provenance-2026-10-01.json",
+      "notes": "This closes B07.01 only. B07.02-B07.05 and remote branch governance, backend/staging and user-acceptance evidence remain open."
     }
   ],
   "decisions": [
