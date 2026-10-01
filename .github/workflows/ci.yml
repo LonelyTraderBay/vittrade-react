@@ -143,12 +143,6 @@ jobs:
       - name: Bundle budget
         run: node scripts/check-bundle-budget.mjs --manifest ci-evidence/bundle-manifest.json
 
-      - name: Controlled CI failure-path probe (temporary)
-        if: contains(github.event.head_commit.message, '[B07-CI-FAILURE-PROBE]')
-        run: |
-          echo "Intentional B07 probe: verify evidence upload after a final gate failure."
-          exit 1
-
       - name: Upload CI evidence
         id: upload-ci-evidence
         if: success() || failure()

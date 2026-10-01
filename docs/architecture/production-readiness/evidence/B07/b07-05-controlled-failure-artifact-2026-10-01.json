@@ -1,0 +1,70 @@
+{
+  "id": "EV-20261001-052",
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-01T12:34:50.000Z",
+  "taskId": "B07",
+  "stepId": "B07.05",
+  "kind": "validation",
+  "commandOrSteps": "Push the temporary commit-message-gated failure probe on a dedicated B07 branch; inspect the exact-SHA Actions run and artifact metadata; download the artifact using the authenticated GitHub browser; extract it to a temporary directory and run scripts/check-ci-evidence-artifact.mjs with the probe run's exact GitHub metadata.",
+  "observedAt": "2026-10-01T12:34:50.000Z",
+  "sourceHead": "3aca27dc294e27c422c79b34bf90ac4082eee152",
+  "run": {
+    "provider": "GitHub Actions",
+    "id": 36860584257,
+    "attempt": 1,
+    "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36860584257",
+    "event": "push",
+    "branch": "codex/b07-01-ubuntu-validation",
+    "commit": "3aca27dc294e27c422c79b34bf90ac4082eee152",
+    "job": "Production gates",
+    "jobId": 110363514502,
+    "jobResult": "failure_expected",
+    "startedAt": "2026-10-01T12:15:43Z",
+    "completedAt": "2026-10-01T12:31:41Z",
+    "durationSeconds": 958
+  },
+  "environment": {
+    "runner": "GitHub-hosted ubuntu-24.04",
+    "workflowNodeMajor": 22,
+    "workingTree": "The marker-gated probe was committed only on the dedicated B07 branch and is being removed after this run."
+  },
+  "measurements": {
+    "failurePath": {
+      "probeStep": "Controlled CI failure-path probe (temporary)",
+      "probeStepNumber": 30,
+      "probeOutcome": "intentional exit code 1",
+      "failedSteps": 1,
+      "substantiveGatesBeforeProbe": "All passed: typecheck, lint and warning budget, format, 2,411 tests/287 files, coverage, 51 Chromium E2E, dependency/security/environment/OpenAPI/architecture/page-size/route gates, production build, mock exclusion and bundle budget.",
+      "uploadStep": "Upload CI evidence",
+      "uploadStepNumber": 31,
+      "uploadOutcome": "success",
+      "downloadAndVerifyStepsInWorkflow": "skipped because they are conditioned on overall success"
+    },
+    "artifact": {
+      "id": 11162595489,
+      "name": "vittrade-ci-evidence-3aca27dc294e27c422c79b34bf90ac4082eee152",
+      "sizeBytes": 2950570,
+      "digest": "sha256:9b698b46d227510f0d1ed3ab7111327bf98aacea9b2b52edbc129d233aca92a7",
+      "createdAt": "2026-10-01T12:31:38Z",
+      "expiresAt": "2026-12-30T12:15:43Z",
+      "runMetadataShaMatched": true,
+      "bundleManifestShaAndRunMatched": true,
+      "files": 554,
+      "javascriptChunks": 221,
+      "coveragePresent": true,
+      "playwrightHtmlReportPresent": true,
+      "distPresent": false,
+      "deployableArtifact": false,
+      "independentVerification": {
+        "command": "node scripts/check-ci-evidence-artifact.mjs <downloaded-artifact-directory>",
+        "exitCode": 0,
+        "result": "CI evidence artifact verified for 3aca27dc294e27c422c79b34bf90ac4082eee152: 554 files, 221 bundle chunks, coverage and Playwright report present, no dist/."
+      }
+    }
+  },
+  "expected": "After a controlled late gate failure, retain the exact-SHA CI evidence artifact; independently verify its run metadata, bundle manifest, coverage and Playwright report, and absence of dist/.",
+  "actual": "The exact-SHA run failed only at the marker-gated controlled probe after all substantive gates passed. The failure-conditioned Upload CI evidence step succeeded and produced artifact 11162595489. The normal in-job download/verifier correctly skipped on overall failure; an authenticated browser download followed by the repository artifact verifier passed locally on the extracted archive with exact source SHA, repository, run ID and attempt. The artifact has 554 files, 221 JS chunks, coverage and Playwright HTML report, and no dist/.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/B07/b07-05-controlled-failure-artifact-2026-10-01.json",
+  "notes": "This validates failure-conditioned artifact retention and independent verification. It does not claim the normal success-only in-job verifier runs after a failed job. The temporary workflow probe has been removed; final clean-workflow exact-SHA CI is pending."
+}
