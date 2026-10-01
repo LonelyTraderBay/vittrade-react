@@ -18,6 +18,32 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Record CI revision
+        run: |
+          mkdir -p ci-evidence
+          node --input-type=module <<'NODE'
+          import { writeFileSync } from 'node:fs';
+
+          const sourceCommit = process.env.GITHUB_SHA ?? '';
+          if (!/^[a-f0-9]{40}$/i.test(sourceCommit)) {
+            throw new Error('GITHUB_SHA must be a full 40-character commit SHA.');
+          }
+
+          const metadata = {
+            sourceCommit,
+            repository: process.env.GITHUB_REPOSITORY,
+            workflow: process.env.GITHUB_WORKFLOW,
+            runId: process.env.GITHUB_RUN_ID,
+            runAttempt: process.env.GITHUB_RUN_ATTEMPT,
+            event: process.env.GITHUB_EVENT_NAME,
+            ref: process.env.GITHUB_REF,
+            recordedAt: new Date().toISOString(),
+          };
+
+          writeFileSync('ci-evidence/run-metadata.json', `${JSON.stringify(metadata, null, 2)}\n`);
+          NODE
 
       - name: Verify Git text line endings
         run: node scripts/check-git-eol.mjs
@@ -95,4 +121,16 @@ jobs:
         run: npm run production-mocks:check
 
       - name: Bundle budget
-        run: npm run bundle:check
+        run: node scripts/check-bundle-budget.mjs --manifest ci-evidence/bundle-manifest.json
+
+      - name: Upload CI evidence
+        if: success() || failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: vittrade-ci-evidence-${{ github.sha }}
+          path: |
+            ci-evidence/
+            coverage/
+            playwright-report/
+            test-results/
+          if-no-files-found: warn

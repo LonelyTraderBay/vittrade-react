@@ -9268,7 +9268,10 @@
         "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.test.mjs",
         "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
         "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json",
-        "docs/architecture/production-readiness/UI-ACCEPTANCE.md"
+        "docs/architecture/production-readiness/UI-ACCEPTANCE.md",
+        ".gitignore",
+        "scripts/check-bundle-budget.mjs",
+        "scripts/check-bundle-budget.test.mjs"
       ],
       "proposedPaths": [],
       "steps": [
@@ -9353,9 +9356,24 @@
         },
         {
           "id": "B07.02",
-          "status": "todo",
-          "evidenceIds": [],
-          "notes": ""
+          "status": "in_progress",
+          "evidenceIds": ["EV-20261001-045"],
+          "notes": "EV-20261001-045 records local B07.02 validation: focused Vitest 19/19 including four manifest tests, ESLint, Prettier, syntax and workflow contract checks. The workflow now records exact SHA/run metadata, uploads coverage/Playwright/test-result evidence and an explicitly non-deployable bundle manifest under an artifact named by SHA; it excludes dist/. Exact-SHA hosted run and artifact inspection remain pending. The updated ledger passes check-tracking with errorCount=0.",
+          "execution": {
+            "checkpoints": [
+              {
+                "id": "B07.02/ci-evidence-artifact",
+                "status": "in_progress",
+                "paths": [
+                  ".github/workflows/ci.yml",
+                  ".gitignore",
+                  "scripts/check-bundle-budget.mjs",
+                  "scripts/check-bundle-budget.test.mjs"
+                ],
+                "notes": "Local assertions pass for lockfile cache path, exact SHA metadata/artifact name, report/trace paths, success/failure upload and no dist upload. Await exact-SHA hosted run and inspect the produced artifact/manifest."
+              }
+            ]
+          }
         },
         {
           "id": "B07.03",
@@ -9379,7 +9397,7 @@
       "pageIds": [],
       "routeIds": [],
       "operationIds": [],
-      "evidenceIds": ["EV-20261001-042", "EV-20261001-043", "EV-20261001-044"],
+      "evidenceIds": ["EV-20261001-042", "EV-20261001-043", "EV-20261001-044", "EV-20261001-045"],
       "changeIds": [
         "CHANGE-20261001-0340",
         "CHANGE-20261001-0341",
@@ -9396,19 +9414,26 @@
         "CHANGE-20261001-0352",
         "CHANGE-20261001-0353",
         "CHANGE-20261001-0354",
-        "CHANGE-20261001-0355"
+        "CHANGE-20261001-0355",
+        "CHANGE-20261001-0356",
+        "CHANGE-20261001-0357",
+        "CHANGE-20261001-0358",
+        "CHANGE-20261001-0359",
+        "CHANGE-20261001-0360",
+        "CHANGE-20261001-0361"
       ],
       "blockers": [],
       "startedAt": null,
       "completedAt": null,
       "elapsedMinutes": null,
-      "notes": "B07.01 is done: the reconciled A06/C05 generators and provenance tests passed locally and the exact pushed code SHA passed hosted Node22/Ubuntu CI (EV-20261001-044). B07.02 is next; B07.03-B07.05 remain todo. Remote required-check/review enforcement, staging/backend behavior and user acceptance remain unverified.",
+      "notes": "B07.01 is done on exact code SHA a3b2f8b0937ee83cd67a1c061c2bf211852f5070. B07.02 is in_progress: exact-SHA run metadata, lockfile cache, validation-only bundle manifest and failure-path CI evidence upload are implemented and locally checked (EV-20261001-045). Await hosted CI on the pushed B07.02 SHA and inspect its actual artifact. B07.03-B07.05 remain todo; branch governance, retention policy, backend/staging and user acceptance remain unverified.",
       "execution": {
         "requiredChecks": [
           "Exact pushed SHA on Node22/Ubuntu with EOL output and production workflow gates",
           "Reconcile generator hash/revision-provenance changes with A06/C05 and rerun resulting exact SHA",
           "Verify required checks, review, CODEOWNERS, DCO and branch policy in B07.04",
-          "Run check-tracking and git diff --check"
+          "Run check-tracking and git diff --check",
+          "Verify exact-SHA CI artifact contains run metadata, coverage, Playwright report/trace outputs and bundle manifest while excluding dist/."
         ]
       }
     },
@@ -57951,19 +57976,19 @@
       "lifecycle": "active",
       "taskIds": ["B07", "B09"],
       "disposition": "changed",
-      "reason": "Trigger CI on codex branches and enforce the Git EOL gate before dependency installation.",
-      "evidenceIds": ["EV-20261001-042"],
-      "changeIds": ["CHANGE-20261001-0341"]
+      "reason": "Trigger CI on codex branches and enforce the Git EOL gate before dependency installation. | B07.02: Record exact run metadata, declare npm cache by package-lock.json, produce the exact-SHA bundle manifest and upload CI evidence on success/failure without uploading dist/.",
+      "evidenceIds": ["EV-20261001-042", "EV-20261001-045"],
+      "changeIds": ["CHANGE-20261001-0341", "CHANGE-20261001-0356"]
     },
     {
       "path": ".gitignore",
       "baselineSha256": "bea1d3d0f6295ecd264f987b29fd4dd949a7784e16f48f5ed0c77b4c6c9b5696",
       "lifecycle": "active",
-      "taskIds": ["A01"],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": []
+      "taskIds": ["A01", "B07"],
+      "disposition": "changed",
+      "reason": " | B07.02: Ignore the generated local ci-evidence output directory so CI reports and manifests are not committed as build output.",
+      "evidenceIds": ["EV-20261001-045"],
+      "changeIds": ["CHANGE-20261001-0357"]
     },
     {
       "path": ".nvmrc",
@@ -68197,7 +68222,7 @@
       "lifecycle": "active",
       "taskIds": ["A01", "B10", "A05", "A07", "A06", "A08", "C02", "C03", "C04", "C05", "B07"],
       "disposition": "changed",
-      "reason": "Record final forbidden browser measurements, refreshed Support pending values and next scenario. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. | Repair three existing runbook heading anchors discovered by docs-only link validation. | Label the retained application-progress text as a historical snapshot, point current state to TRACKING, and describe the implemented A05 environment boundary accurately. | Record exact-SHA hosted Ubuntu CI measurements, limitations and remaining B07.01 work. | B07.01: record the exact-SHA hosted Ubuntu result and close this checkpoint.",
+      "reason": "Record final forbidden browser measurements, refreshed Support pending values and next scenario. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. | Repair three existing runbook heading anchors discovered by docs-only link validation. | Label the retained application-progress text as a historical snapshot, point current state to TRACKING, and describe the implemented A05 environment boundary accurately. | Record exact-SHA hosted Ubuntu CI measurements, limitations and remaining B07.01 work. | B07.01: record the exact-SHA hosted Ubuntu result and close this checkpoint. | B07.02: Record B07.02 artifact scope, public-repository data boundary, local validation and exact-SHA CI still pending.",
       "evidenceIds": [
         "EV-20260927-076",
         "EV-20260928-001",
@@ -68579,7 +68604,8 @@
         "EV-20260930-026",
         "EV-20261001-042",
         "EV-20261001-043",
-        "EV-20261001-044"
+        "EV-20261001-044",
+        "EV-20261001-045"
       ],
       "changeIds": [
         "CHANGE-20260927-052",
@@ -68744,7 +68770,8 @@
         "CHANGE-20260930-0084",
         "CHANGE-20261001-0344",
         "CHANGE-20261001-0352",
-        "CHANGE-20261001-0354"
+        "CHANGE-20261001-0354",
+        "CHANGE-20261001-0360"
       ]
     },
     {
@@ -69281,11 +69308,11 @@
       "path": "scripts/check-bundle-budget.mjs",
       "baselineSha256": "92fc82996a7148e3f7a125287c92d905b5b194a2e30442e4fe247335fbbdc08f",
       "lifecycle": "active",
-      "taskIds": ["C02", "B08"],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": []
+      "taskIds": ["C02", "B08", "B07"],
+      "disposition": "changed",
+      "reason": " | B07.02: Emit a CI-only exact-SHA bundle manifest with per-chunk checksums, raw/gzip sizes and budget result when explicitly requested.",
+      "evidenceIds": ["EV-20261001-045"],
+      "changeIds": ["CHANGE-20261001-0358"]
     },
     {
       "path": "scripts/check-dependency-licenses.mjs",
@@ -81215,6 +81242,26 @@
       "reason": "Record exact-pushed-SHA Node22/Ubuntu validation of generator hash and revision provenance.",
       "evidenceIds": ["EV-20261001-044"],
       "changeIds": ["CHANGE-20261001-0355"]
+    },
+    {
+      "path": "scripts/check-bundle-budget.test.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": ["B07"],
+      "disposition": "changed",
+      "reason": "Verify exact-SHA manifest contents, over-budget failure evidence and malformed-SHA rejection.",
+      "evidenceIds": ["EV-20261001-045"],
+      "changeIds": ["CHANGE-20261001-0359"]
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/ci-artifacts-manifest-2026-10-01.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": ["B07"],
+      "disposition": "changed",
+      "reason": "Capture local B07.02 test, lint, formatting, syntax and workflow-contract validation with dirty-file hashes.",
+      "evidenceIds": ["EV-20261001-045"],
+      "changeIds": ["CHANGE-20261001-0361"]
     }
   ],
   "changes": [
@@ -126887,6 +126934,84 @@
       "afterHash": "97bc9c15a3b3dc371608cbec29a452875793728f9607ed6146c3d2a9ce38e784",
       "evidenceIds": ["EV-20261001-044"],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0356",
+      "taskId": "B07",
+      "stepId": "B07.02",
+      "path": ".github/workflows/ci.yml",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Record exact run metadata, declare npm cache by package-lock.json, produce the exact-SHA bundle manifest and upload CI evidence on success/failure without uploading dist/.",
+      "beforeHash": "a1e38a06fffce7a305a504ba9639ab0f82b697b9d46eee1d2b087642d140f5da",
+      "afterHash": "d39edff2fe88529a8a9a57553ce79d9fd17b6480df9de1fa689365c281c9492c",
+      "evidenceIds": ["EV-20261001-045"],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0357",
+      "taskId": "B07",
+      "stepId": "B07.02",
+      "path": ".gitignore",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Ignore the generated local ci-evidence output directory so CI reports and manifests are not committed as build output.",
+      "beforeHash": "7026e53028e9eda361f12f7689ceba9b8811fed76481cce0d7ebcd1bdce81f26",
+      "afterHash": "130f7411b12ced91b9b7ad4eec7cce6b2bc3b16ee550febcf580859a3d8bb18c",
+      "evidenceIds": ["EV-20261001-045"],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0358",
+      "taskId": "B07",
+      "stepId": "B07.02",
+      "path": "scripts/check-bundle-budget.mjs",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Emit a CI-only exact-SHA bundle manifest with per-chunk checksums, raw/gzip sizes and budget result when explicitly requested.",
+      "beforeHash": "92fc82996a7148e3f7a125287c92d905b5b194a2e30442e4fe247335fbbdc08f",
+      "afterHash": "c09568314a582b7f795bf84b5c651066724fab1527f67a7d65a758b9b029e5cc",
+      "evidenceIds": ["EV-20261001-045"],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0359",
+      "taskId": "B07",
+      "stepId": "B07.02",
+      "path": "scripts/check-bundle-budget.test.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Verify exact-SHA manifest contents, over-budget failure evidence and malformed-SHA rejection.",
+      "beforeHash": null,
+      "afterHash": "b1cd5742a0a4b5dd89bce95cd1cf706ef4654db3c3f84ed01bd0eaf1f07b9ddb",
+      "evidenceIds": ["EV-20261001-045"],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0360",
+      "taskId": "B07",
+      "stepId": "B07.02",
+      "path": "docs/architecture/production-readiness/PLAN.md",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Record B07.02 artifact scope, public-repository data boundary, local validation and exact-SHA CI still pending.",
+      "beforeHash": "8f4986267afb433ce60338f152358ac392d1f9edcf466bebdc24628dd9a31e7b",
+      "afterHash": "2a499a16e87a2fb6396ed31e6fe351feb8ff5d7f034916a06206fb272d255586",
+      "evidenceIds": ["EV-20261001-045"],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0361",
+      "taskId": "B07",
+      "stepId": "B07.02",
+      "path": "docs/architecture/production-readiness/evidence/B07/ci-artifacts-manifest-2026-10-01.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Capture local B07.02 test, lint, formatting, syntax and workflow-contract validation with dirty-file hashes.",
+      "beforeHash": null,
+      "afterHash": "a4d40cc8f8133ae90a2e32b87247c396d9e40dbc99a61c4aa394744cd7cffcbc",
+      "evidenceIds": ["EV-20261001-045"],
+      "commit": null
     }
   ],
   "evidence": [
@@ -144287,6 +144412,92 @@
       "result": "pass",
       "artifact": "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-generator-provenance-2026-10-01.json",
       "notes": "This closes B07.01 only. B07.02-B07.05 and remote branch governance, backend/staging and user-acceptance evidence remain open."
+    },
+    {
+      "id": "EV-20261001-045",
+      "schemaVersion": 1,
+      "recordedAt": "2026-10-01T08:45:33.000Z",
+      "taskId": "B07",
+      "stepId": "B07.02",
+      "kind": "validation",
+      "commandOrSteps": "Run Vitest for check-bundle-budget.test.mjs and generate-architecture-inventory.test.mjs; run ESLint, Prettier, node --check on the bundle budget script/test, and parse/assert the CI workflow YAML artifact, cache, path and gate ordering contract. Run check-tracking after updating the B07.02 ledger.",
+      "observedAt": "2026-10-01T08:45:33.000Z",
+      "sourceHead": "6e19e4b1fb47094fa81feaee46754ed77fc65a47",
+      "run": null,
+      "environment": {
+        "os": "Windows",
+        "shell": "PowerShell",
+        "node": "v24.19.0",
+        "npm": "11.17.0",
+        "worktree": "vittrade-react-b07-01",
+        "branch": "codex/b07-01-ubuntu-validation",
+        "workingTree": "Dirty; B07.02 workflow and bundle-manifest changes are local and uncommitted."
+      },
+      "measurements": {
+        "vitest": {
+          "result": "pass",
+          "filesPassed": 2,
+          "testsPassed": 19,
+          "bundleManifestTestsPassed": 4
+        },
+        "eslint": {
+          "result": "pass",
+          "filesChecked": 2
+        },
+        "prettier": {
+          "result": "pass",
+          "filesChecked": 3
+        },
+        "nodeSyntax": {
+          "result": "pass",
+          "filesChecked": 2
+        },
+        "workflowYaml": {
+          "result": "pass",
+          "parseErrors": 0,
+          "assertions": {
+            "cacheDependencyPath": "package-lock.json",
+            "artifactName": "vittrade-ci-evidence-${{ github.sha }}",
+            "uploadsOnSuccessOrFailure": true,
+            "ifNoFilesFound": "warn",
+            "distUploaded": false,
+            "e2eBeforeBuild": true,
+            "productionMockExclusionBeforeBundleManifest": true
+          }
+        },
+        "bundleManifest": {
+          "result": "unit-tested",
+          "recordsExactCommit": true,
+          "recordsWorkflowRunUrl": true,
+          "recordsChunkSha256AndRawGzipBytes": true,
+          "marksDeployableArtifactFalse": true,
+          "failedBudgetProducesFailManifest": true
+        },
+        "dirtyFileHashes": {
+          ".github/workflows/ci.yml": "d39edff2fe88529a8a9a57553ce79d9fd17b6480df9de1fa689365c281c9492c",
+          ".gitignore": "130f7411b12ced91b9b7ad4eec7cce6b2bc3b16ee550febcf580859a3d8bb18c",
+          "scripts/check-bundle-budget.mjs": "c09568314a582b7f795bf84b5c651066724fab1527f67a7d65a758b9b029e5cc",
+          "scripts/check-bundle-budget.test.mjs": "b1cd5742a0a4b5dd89bce95cd1cf706ef4654db3c3f84ed01bd0eaf1f07b9ddb",
+          "docs/architecture/production-readiness/PLAN.md": "2a499a16e87a2fb6396ed31e6fe351feb8ff5d7f034916a06206fb272d255586"
+        },
+        "trackingIntegrity": {
+          "result": "pass",
+          "errorCount": 0,
+          "tasks": 38,
+          "steps": 205,
+          "filesOutsidePlan": 911
+        }
+      },
+      "warnings": [
+        "No hosted Actions run on the B07.02 source SHA has run yet; artifact creation and the manifest from an actual production build remain unverified.",
+        "Repository visibility is public. The saved Playwright traces/reports are limited to synthetic test fixtures; artifact retention still follows remote repository settings, which are not verified.",
+        "The workflow uploads CI evidence only; it does not upload dist/ or deploy a build."
+      ],
+      "expected": "Persist exact-SHA metadata, coverage, Playwright report/trace outputs, and a non-deployable per-chunk bundle manifest as one CI artifact; cache npm by package-lock.json and preserve failure diagnostics.",
+      "actual": "The 19/19 focused tests, 2-file ESLint, 3-file Prettier and syntax checks passed. YAML parsed with zero errors and assertions confirmed the exact SHA artifact name, lockfile cache path, success/failure upload condition, warning on missing files, E2E/build/mock/bundle order, and exclusion of dist. CI upload itself remains pending. The updated production-readiness ledger passes check-tracking with errorCount=0.",
+      "result": "pass",
+      "artifact": "docs/architecture/production-readiness/evidence/B07/ci-artifacts-manifest-2026-10-01.json",
+      "notes": "Local validation only. B07.02 remains in_progress until hosted CI on the exact pushed SHA succeeds and the uploaded artifact is inspected."
     }
   ],
   "decisions": [
