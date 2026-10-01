@@ -64587,9 +64587,11 @@
       "path": "docs/architecture/production-readiness/evidence/A06/preview-scenario-browser-check-market-empty-2026-09-28.json",
       "baselineSha256": null,
       "lifecycle": "active",
-      "taskIds": ["A06"],
+      "taskIds": [
+        "A06"
+      ],
       "disposition": "changed",
-      "reason": "Register the fresh Trading pending sidecar and its verified SHA-256 digest.",
+      "reason": "Register the fresh wallet.success sidecar and its verified SHA-256 digest.",
       "evidenceIds": [
         "EV-20260928-035",
         "EV-20260928-040",
@@ -64767,7 +64769,9 @@
         "EV-20260930-020",
         "EV-20260930-021",
         "EV-20260930-022",
-        "EV-20261001-056"
+        "EV-20261001-056",
+        "EV-20261001-060",
+        "EV-20261001-061"
       ],
       "changeIds": [
         "CHANGE-20260928-1029",
@@ -64873,7 +64877,8 @@
         "CHANGE-20260930-0049",
         "CHANGE-20260930-0060",
         "CHANGE-20260930-0071",
-        "CHANGE-20261001-0402"
+        "CHANGE-20261001-0402",
+        "CHANGE-20261001-0409"
       ]
     },
     {
@@ -67388,9 +67393,12 @@
       "path": "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
       "baselineSha256": null,
       "lifecycle": "active",
-      "taskIds": ["A06","B07"],
+      "taskIds": [
+        "A06",
+        "B07"
+      ],
       "disposition": "changed",
-      "reason": "Regenerate scenario coverage from the new hash-verified sidecar.",
+      "reason": "Regenerate scenario coverage from the new hash-verified wallet.success sidecar.",
       "evidenceIds": [
         "EV-20260928-028",
         "EV-20260928-029",
@@ -67559,7 +67567,8 @@
         "EV-20260930-021",
         "EV-20260930-022",
         "EV-20261001-043",
-        "EV-20261001-056"
+        "EV-20261001-056",
+        "EV-20261001-061"
       ],
       "changeIds": [
         "CHANGE-20260928-1016",
@@ -67671,7 +67680,8 @@
         "CHANGE-20260930-0061",
         "CHANGE-20260930-0072",
         "CHANGE-20261001-0349",
-        "CHANGE-20261001-0403"
+        "CHANGE-20261001-0403",
+        "CHANGE-20261001-0410"
       ]
     },
     {
@@ -68273,9 +68283,21 @@
       "path": "docs/architecture/production-readiness/PLAN.md",
       "baselineSha256": null,
       "lifecycle": "active",
-      "taskIds": ["A01","B10","A05","A07","A06","A08","C02","C03","C04","C05","B07"],
+      "taskIds": [
+        "A01",
+        "B10",
+        "A05",
+        "A07",
+        "A06",
+        "A08",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "B07"
+      ],
       "disposition": "changed",
-      "reason": "Record exact-SHA hosted Ubuntu CI and the Trading response-loss contract audit with updated A06.03 checkpoint.",
+      "reason": "Record the wallet.success browser result, current matrix metrics and exact-SHA Ubuntu CI.",
       "evidenceIds": [
         "EV-20260927-076",
         "EV-20260928-001",
@@ -68668,7 +68690,10 @@
         "EV-20261001-053",
         "EV-20261001-057",
         "EV-20261001-058",
-        "EV-20261001-059"
+        "EV-20261001-059",
+        "EV-20261001-060",
+        "EV-20261001-061",
+        "EV-20261001-062"
       ],
       "changeIds": [
         "CHANGE-20260927-052",
@@ -68842,7 +68867,8 @@
         "CHANGE-20261001-0387",
         "CHANGE-20261001-0389",
         "CHANGE-20261001-0404",
-        "CHANGE-20261001-0405"
+        "CHANGE-20261001-0405",
+        "CHANGE-20261001-0411"
       ]
     },
     {
@@ -81611,7 +81637,56 @@
       "changeIds": [
         "CHANGE-20261001-0401"
       ]
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/run-wallet-success-browser-check.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "A06"
+      ],
+      "disposition": "changed",
+      "reason": "Add a loopback-only source-bound browser runner for the Wallet overview success scenario.",
+      "evidenceIds": [
+        "EV-20261001-060"
+      ],
+      "changeIds": [
+        "CHANGE-20261001-0406"
+      ]
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-success-browser-check-2026-10-02.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "A06"
+      ],
+      "disposition": "changed",
+      "reason": "Store measured browser requests, responses, visible actions, service-worker boundary and source hashes for wallet.success.",
+      "evidenceIds": [
+        "EV-20261001-060"
+      ],
+      "changeIds": [
+        "CHANGE-20261001-0407"
+      ]
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-wallet-success-2026-10-02.png",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "A06"
+      ],
+      "disposition": "changed",
+      "reason": "Capture the verified Wallet overview at the measured viewport after collapsing preview controls.",
+      "evidenceIds": [
+        "EV-20261001-060"
+      ],
+      "changeIds": [
+        "CHANGE-20261001-0408"
+      ]
     }
+
   ],
   "changes": [
     {
@@ -127947,7 +128022,101 @@
         "EV-20261001-059"
       ],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0406",
+      "taskId": "A06",
+      "stepId": "A06.03",
+      "path": "docs/architecture/production-readiness/evidence/A06/run-wallet-success-browser-check.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Add a bounded source-bound Playwright runner for Wallet overview success and verify the local service-worker boundary.",
+      "beforeHash": null,
+      "afterHash": "949e242cd9a451b56b85f628a63b82d48a0569a65a0005d9bf1aecf566d08070",
+      "evidenceIds": [
+        "EV-20261001-060"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0407",
+      "taskId": "A06",
+      "stepId": "A06.03",
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-success-browser-check-2026-10-02.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Store measured route, request, fixture, permission, response, UI and source-hash evidence for wallet.success.",
+      "beforeHash": null,
+      "afterHash": "329419b2a3081dea5a165b43c0ab2335ef51a482c5c89bf2efb178d4ee88fccb",
+      "evidenceIds": [
+        "EV-20261001-060"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0408",
+      "taskId": "A06",
+      "stepId": "A06.03",
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-wallet-success-2026-10-02.png",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Capture the verified Wallet overview at the recorded viewport after collapsing preview controls.",
+      "beforeHash": null,
+      "afterHash": "fff8d177ae32e8c8a5bad9e9cc322399b674bb14be81816d633a2692c929609f",
+      "evidenceIds": [
+        "EV-20261001-060"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0409",
+      "taskId": "A06",
+      "stepId": "A06.03",
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-scenario-browser-check-market-empty-2026-09-28.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Register the wallet.success sidecar and its SHA-256 digest for matrix reconciliation.",
+      "beforeHash": "dafadf70e6303bf2bfd83d7c15d53d1a3f3305315e1938e3b44edbaf260787cc",
+      "afterHash": "85a02850c95f6d48cab2ca8f5bef2a93c6c45337541ac769948f548902727690",
+      "evidenceIds": [
+        "EV-20261001-060",
+        "EV-20261001-061"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0410",
+      "taskId": "A06",
+      "stepId": "A06.03",
+      "path": "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Regenerate the scenario matrix from the registered source-bound Wallet sidecar.",
+      "beforeHash": "e260343fba1b51268d3001827769b511f66313fcc125e19d05933299dd57fb22",
+      "afterHash": "eb2564377c4205b6d6a201dd0b7fb273a40fe78954844bff9d023e6eb8319abd",
+      "evidenceIds": [
+        "EV-20261001-061"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261001-0411",
+      "taskId": "A06",
+      "stepId": "A06.03",
+      "path": "docs/architecture/production-readiness/PLAN.md",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Record Wallet success browser evidence, coverage limits, matrix freshness, and exact-SHA Ubuntu CI.",
+      "beforeHash": "9533a311b218787c9af5707916eb000eeeac43d61947164cebdf7d4aefe890f3",
+      "afterHash": "21e5fe96a67471bac6cbfbed55959321a77ae212bbbc8ef8614c5a4101aef161",
+      "evidenceIds": [
+        "EV-20261001-060",
+        "EV-20261001-061",
+        "EV-20261001-062"
+      ],
+      "commit": null
     }
+
   ],
   "evidence": [
     {
@@ -146375,7 +146544,150 @@
         "listOrderHistory"
       ],
       "notes": "Audit completion is not scenario acceptance: trading.unknown and trading.duplicate remain not_verified. No source behavior changed. Backend contract must define correlation, replay and response-loss outcomes before a safe end-to-end implementation can be accepted."
+    },
+    {
+      "id": "EV-20261001-060",
+      "schemaVersion": 1,
+      "recordedAt": "2026-10-01T17:52:03.000Z",
+      "taskId": "A06",
+      "stepId": "A06.03",
+      "kind": "validation",
+      "commandOrSteps": "Run the wallet.success Playwright runner against a loopback Vite preview with VITE_DATA_SOURCE=mock; authenticate with the Developer preview persona, select wallet.success, navigate to /w/wallet through SPA history, and record API, UI, permission, service-worker and source-hash observations.",
+      "observedAt": "2026-10-01T17:42:38.281Z",
+      "sourceHead": "53ed9e9a65ef18460fa49ef2a509f335af8c833b",
+      "environment": {
+        "repository": "LonelyTraderBay/vittrade-react",
+        "branch": "codex/b07-01-ubuntu-validation",
+        "host": "Windows x64",
+        "node": "24.19.0 (.nvmrc=22)",
+        "browser": "Chromium via Playwright",
+        "viewport": "1440x900",
+        "preview": "http://127.0.0.1:4173",
+        "dataSource": "local MSW"
+      },
+      "measurements": {
+        "scenario": "wallet.success",
+        "expectedLinkedOperations": 19,
+        "observedOperations": [
+          "getWalletAssets",
+          "getWalletTransactions"
+        ],
+        "observedOperationCount": 2,
+        "coverage": "representative_browser_observed_2_of_19",
+        "walletRequests": 2,
+        "walletResponses": 2,
+        "walletResponseStatuses": [
+          200,
+          200
+        ],
+        "allFlowServiceWorkerResponses": 7,
+        "sourceHashes": "23/23",
+        "totalUsd": 16754.32,
+        "assetCount": 2,
+        "transactionCount": 6,
+        "elapsedMs": 304,
+        "visibleActions": [
+          "Deposit",
+          "Transaction history"
+        ],
+        "hiddenActions": [
+          "Withdraw",
+          "Transfer"
+        ],
+        "personaPermissions": [
+          "wallet:read"
+        ],
+        "writes": 0,
+        "externalApiOrigins": 0,
+        "pageErrors": 0
+      },
+      "warnings": [
+        "Responses came from local service-worker/MSW fixtures; no backend or staging request was sent.",
+        "The Developer preview persona has wallet:read only; wallet-management and money writes were not exercised.",
+        "The 304 ms flow measurement is local browser/MSW time, not backend latency or an SLO."
+      ],
+      "expected": "Verify the Wallet overview success UI and contract-backed GET reads without exercising money mutations or overstating 19-operation coverage.",
+      "actual": "Chromium reached /w/wallet with the wallet.success fixture. GET /api/wallet/assets and GET /api/wallet/transactions each returned 200 via service worker; payload contained 2 assets, $16,754.32 totalUsd and 6 transactions. Deposit and Transaction history were visible; Withdraw and Transfer were hidden for wallet:read. Seven API responses across the flow were from the service worker, writes=0, external API origins=0, page errors=0, and all 23 source hashes matched.",
+      "result": "pass",
+      "artifact": "docs/architecture/production-readiness/evidence/A06/wallet-success-browser-check-2026-10-02.json",
+      "relatedOperationIds": [
+        "getWalletAssets",
+        "getWalletTransactions"
+      ],
+      "notes": "Representative UI/MSW evidence covers 2 of 19 linked Wallet operations. Address book, analytics, dust conversion, network, transfer and withdrawal cases were not exercised."
+    },
+    {
+      "id": "EV-20261001-061",
+      "schemaVersion": 1,
+      "recordedAt": "2026-10-01T17:52:03.000Z",
+      "taskId": "A06",
+      "stepId": "A06.03",
+      "kind": "validation",
+      "commandOrSteps": "Run the tracking checker, A06 scenario matrix --check, Prettier check on changed text evidence and plan files, Node syntax check on the runner, and git diff --check on changed tracked files.",
+      "observedAt": "2026-10-01T17:52:03.000Z",
+      "sourceHead": "53ed9e9a65ef18460fa49ef2a509f335af8c833b",
+      "environment": {
+        "repository": "LonelyTraderBay/vittrade-react",
+        "branch": "codex/b07-01-ubuntu-validation",
+        "host": "Windows x64",
+        "node": "24.19.0"
+      },
+      "measurements": {
+        "checkTracking": "pass; errorCount=0",
+        "scenarioMatrix": "pass; 15 domains, 154 operations, 106 expectations",
+        "freshScenarioRows": "24/106",
+        "fullyCoveredRows": 14,
+        "representativeRows": 10,
+        "uniqueFreshOperations": 27,
+        "exactHandlerMappings": "154/154",
+        "freshSidecars": "24/37",
+        "staleSidecars": 13,
+        "runtimeEvidenceFresh": false,
+        "prettier": "pass",
+        "runnerSyntax": "pass",
+        "gitDiffCheck": "pass"
+      },
+      "expected": "Confirm ledger consistency, registered sidecar provenance, matrix generation and formatting/syntax for the touched documentation/evidence scope.",
+      "actual": "Tracking checker exited 0 with errorCount=0; matrix --check reported current; Prettier, node --check and scoped git diff --check passed. Matrix reports 24/106 fresh rows (14 full, 10 representative), 27 unique operations, 24/37 fresh sidecars, 13 stale and 154/154 handler mappings. Runtime aggregate evidence remains historical.",
+      "result": "pass",
+      "artifact": "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
+      "notes": "No product suite, build, backend/staging check or user acceptance was run in this documentation/evidence checkpoint."
+    },
+    {
+      "id": "EV-20261001-062",
+      "schemaVersion": 1,
+      "recordedAt": "2026-10-01T17:52:03.000Z",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "kind": "hosted_ci",
+      "commandOrSteps": "Inspect public GitHub Actions run, production-gate job step conclusions and artifact metadata for run 36899247293 on the authorized dedicated branch.",
+      "observedAt": "2026-10-01T17:46:46.000Z",
+      "sourceHead": "53ed9e9a65ef18460fa49ef2a509f335af8c833b",
+      "environment": {
+        "repository": "LonelyTraderBay/vittrade-react",
+        "branch": "codex/b07-01-ubuntu-validation",
+        "runner": "ubuntu-24.04",
+        "event": "push",
+        "workflowRunId": 36899247293
+      },
+      "measurements": {
+        "runUrl": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36899247293",
+        "conclusion": "success",
+        "steps": 35,
+        "passedSteps": 35,
+        "failedSteps": 0,
+        "skippedSteps": 0,
+        "artifact": "vittrade-ci-evidence-53ed9e9a65ef18460fa49ef2a509f335af8c833b",
+        "artifactBytes": 2950727,
+        "artifactSha256": "f3a02a7d7144948f29246c417289e65788d9fffa10f4e56806f99d5387011641"
+      },
+      "expected": "Obtain hosted Linux CI evidence on the exact pushed SHA after verifying runner access and branch commit/push authorization.",
+      "actual": "GitHub Actions run 36899247293 completed successfully on exact SHA 53ed9e9a65ef18460fa49ef2a509f335af8c833b using ubuntu-24.04. Production gates completed 35/35, with 0 failure and 0 skipped. The run published the recorded evidence artifact and digest.",
+      "result": "pass",
+      "artifact": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36899247293",
+      "notes": "Hosted CI is revision-specific evidence; it does not establish backend/staging, user acceptance, or a Production-Ready certification."
     }
+
   ],
   "decisions": [
     {
@@ -157838,7 +158150,56 @@
       ],
       "nextAction": "A06.03: start wallet.success audit in matrix order; inspect all 19 linked operations, OpenAPI contracts, route/persona, fixtures and UI outcomes before selecting a bounded browser check. Keep UI acceptance 0/128, backend/staging 0/154 and A06.04 gated.",
       "notes": "Exact-SHA Ubuntu CI passed for 671af69; the response-loss audit does not change code or certify backend/staging. Existing unrelated .editorconfig and public/mockServiceWorker.js changes were preserved."
+    },
+    {
+      "id": "SESSION-20261001-006",
+      "startedAt": "2026-10-01T17:23:00.000Z",
+      "endedAt": "2026-10-01T17:52:03.000Z",
+      "sourceHeadBefore": "53ed9e9a65ef18460fa49ef2a509f335af8c833b",
+      "sourceHeadAfter": "53ed9e9a65ef18460fa49ef2a509f335af8c833b",
+      "taskIds": [
+        "A06",
+        "B07"
+      ],
+      "stepIds": [
+        "A06.03",
+        "B07.01"
+      ],
+      "changeIds": [
+        "CHANGE-20261001-0406",
+        "CHANGE-20261001-0407",
+        "CHANGE-20261001-0408",
+        "CHANGE-20261001-0409",
+        "CHANGE-20261001-0410",
+        "CHANGE-20261001-0411"
+      ],
+      "evidenceIds": [
+        "EV-20261001-060",
+        "EV-20261001-061",
+        "EV-20261001-062"
+      ],
+      "elapsedMinutes": 29,
+      "filesTouched": [
+        "docs/architecture/production-readiness/evidence/A06/run-wallet-success-browser-check.mjs",
+        "docs/architecture/production-readiness/evidence/A06/wallet-success-browser-check-2026-10-02.json",
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-success-2026-10-02.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-scenario-browser-check-market-empty-2026-09-28.json",
+        "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
+        "docs/architecture/production-readiness/PLAN.md",
+        "docs/architecture/production-readiness/TRACKING.json"
+      ],
+      "remainingWork": [
+        "Continue A06.03 at wallet.empty by checking its route, response contract and source hashes before any bounded local browser refresh.",
+        "Continue remaining Wallet scenarios; keep wallet.unknown and wallet.duplicate unverified until backend correlation and replay semantics are defined.",
+        "Refresh 13 stale A06 scenario sidecars after shared sources stabilize.",
+        "Keep UI acceptance at 0/128, backend/staging at 0/154 and A06.04 gated."
+      ],
+      "blockers": [
+        "Wallet mutation response-loss and duplicate scenarios require backend-defined correlation, same-key replay outcomes and read consistency before safe verification."
+      ],
+      "nextAction": "A06.03: continue at wallet.empty in matrix order; audit its two applicable GET reads, empty fixture and UI behavior, then refresh its source-bound browser evidence. Do not infer production behavior from MSW evidence."
     }
+
   ],
   "templates": {
     "evidence": {

@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-01T17:42:38.281Z",
+  "sourceHead": "53ed9e9a65ef18460fa49ef2a509f335af8c833b",
+  "sourceHashes": {
+    "contracts/openapi/wallet.yaml": "d348caf79a989f531a96dbff2b3aee5dec0d0dfa45608507a9308272a83b6e6a",
+    "src/app/routes.ts": "89ca317a1393a980aa5e74f4abbc4fddd4d30b66b14da70f311a17baf7eb8602",
+    "src/dev/PreviewControls.tsx": "13a66de51da49768ce64053098ccc608e770beca2b8214e1958b4e9ab5953da8",
+    "src/dev/mocks/browser.ts": "146172b54c428afaffc3d51096b4f4f07e7d4558308aae33a7d99071aca6be40",
+    "src/dev/mocks/handlers.ts": "6a513c15d33be44caa44c666136889a6277a7b17ad95a7282ab2c967305cb2aa",
+    "src/dev/mocks/personas.ts": "c7f95468ff1fcb4055688702a293ad0275c59ba604e054e9be5049aa926be269",
+    "src/dev/mocks/preview-scenario-handler.ts": "7ab2db763a56ececd4133744ca5b6431ec0399f69ce125cf5d8e477b522bfb0b",
+    "src/dev/mocks/scenario-runtime.ts": "8e484bc1710aee6728a97a77892f38832730bd741cfe9c40fc62037594fd60b9",
+    "src/features/wallet/api/wallet-api.ts": "a476f01f1ff9cf695679bf2b3d795f439ae793ebecd74257d221eed7c52a35dc",
+    "src/features/wallet/model/wallet-queries.ts": "9fb67d4cddf4e532892423c23bd99989749c8354acba5eebbb32a2e3d9381592",
+    "src/features/wallet/model/wallet-types.ts": "c5aafc5279510a282f9653770f8b3651d9b771333e2608c9accf8c48ab67a700",
+    "src/features/wallet/pages/WalletOverviewContractPage.tsx": "73a516f3ec5f02ab000781c509700826fefca3a699b34d943ac2a05c89196dc3",
+    "src/features/wallet/pages/WalletOverviewContractPage.test.tsx": "e58724698692a2d0f67b33ee00148dd317584a48f01952c0e3bbd2dc1b575556",
+    "src/features/wallet/routes.ts": "d6ff4b4974ad18cde54c6c08cbb27066f5b127b3a3b053ac8eda73bdac5575df",
+    "src/shared/api/app-client.ts": "cb7604d67e057d9e2cdabc3ed31485ae9fdb25944dd82a5ca7a314cfd0580c3a",
+    "src/shared/api/http-client.ts": "d0e935a15ea7fd94c911c7d01913c974a3047e45fa849db89a28a95d928673ed",
+    "src/shared/navigation/useRoutePrefix.ts": "89d03ae3a1264ba7ab03d04d789dc51972096ebaa67d949d0c7f9f17d612c2f1",
+    "src/shared/session/AuthContext.tsx": "d41b9b91e964ec52852669fae628db0c35829c93355cbc3e6780111cb539d526",
+    "src/shared/session/useAuth.ts": "905c5d5d555ed2fef203fac51e252d47fcb4a7604360156483ca960ad7fd0e05",
+    "src/shared/ui/layout/Header.tsx": "c38c7d4a1023181aa8c5febee7e1484f63d6f06b0a8b4bafd53f0a495a4643af",
+    "src/shared/ui/layout/PageContent.tsx": "48b92f615f9b40abd1d8d63612050a7e962fe5b702c784a8cb949a109d29a544",
+    "src/shared/ui/layout/PageLayout.tsx": "58ed60539527a3e8bdc28b5928dfd030e527d04cd3c19367ed285b896a083204",
+    "docs/architecture/production-readiness/evidence/A06/run-wallet-success-browser-check.mjs": "949e242cd9a451b56b85f628a63b82d48a0569a65a0005d9bf1aecf566d08070"
+  },
+  "origin": "http://127.0.0.1:4173",
+  "route": "/w/wallet",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "persona": {
+    "id": "developer",
+    "permissions": ["wallet:read"]
+  },
+  "scenario": {
+    "id": "wallet.success",
+    "status": "passed",
+    "operationIds": ["getWalletAssets", "getWalletTransactions"],
+    "expectedOperationCount": 19,
+    "observedOperationCount": 2,
+    "observedOperationIds": ["getWalletAssets", "getWalletTransactions"],
+    "elapsedMs": 304
+  },
+  "requests": [
+    {
+      "operationId": "getWalletAssets",
+      "method": "GET",
+      "path": "/api/wallet/assets",
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    {
+      "operationId": "getWalletTransactions",
+      "method": "GET",
+      "path": "/api/wallet/transactions",
+      "status": 200,
+      "fromServiceWorker": true
+    }
+  ],
+  "responseData": {
+    "totalUsd": 16754.32,
+    "assetCount": 2,
+    "transactionCount": 6
+  },
+  "ui": {
+    "totalBalanceVisible": true,
+    "recentActivityVisible": true,
+    "depositVisible": true,
+    "transactionHistoryVisible": true,
+    "withdrawVisible": false,
+    "transferVisible": false,
+    "errorVisible": false
+  },
+  "pageErrors": [],
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "writesSent": 0
+  },
+  "screenshots": ["preview-wallet-success-2026-10-02.png"],
+  "notes": "Representative local MSW read evidence only: Developer can read Wallet but has no write permissions. Two of 19 linked operations were observed; address book, analytics, dust conversion, networks, transfer and withdrawal flows were not exercised."
+}

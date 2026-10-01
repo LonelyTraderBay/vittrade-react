@@ -16733,6 +16733,11 @@
       "id": "trading.pending",
       "path": "docs/architecture/production-readiness/evidence/A06/trading-pending-browser-check-2026-10-01.json",
       "sha256": "29ae0e0b7871ad9fa23d7cec909973d67891977fffd9916cf5479f37e7550347"
+    },
+    {
+      "id": "wallet.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-success-browser-check-2026-10-02.json",
+      "sha256": "329419b2a3081dea5a165b43c0ab2335ef51a482c5c89bf2efb178d4ee88fccb"
     }
   ],
   "p2pSuccessBrowserEvidence": {

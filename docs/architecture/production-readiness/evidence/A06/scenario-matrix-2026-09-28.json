@@ -4,9 +4,9 @@
     "tracking": "docs/architecture/production-readiness/TRACKING.json",
     "operationMap": "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json",
     "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
-    "generatedAt": "2026-10-01T16:06:15.488Z",
+    "generatedAt": "2026-10-01T17:44:31.030Z",
     "operationMapSha256": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
-    "runtimeEvidenceSha256": "dafadf70e6303bf2bfd83d7c15d53d1a3f3305315e1938e3b44edbaf260787cc"
+    "runtimeEvidenceSha256": "85a02850c95f6d48cab2ca8f5bef2a93c6c45337541ac769948f548902727690"
   },
   "scope": "Scenario expectations for the 15 tracked product domains. Runtime status is included only when the aggregate report or the scenario-specific sidecar has a matching source HEAD and current source hashes; it is not user acceptance or backend certification.",
   "summary": {
@@ -15,13 +15,13 @@
     "exactHandlerMappings": 154,
     "operationsWithDirectSharedHandlerTestReferences": 21,
     "scenariosDefined": 106,
-    "scenarioRowsWithFreshBrowserEvidence": 23,
+    "scenarioRowsWithFreshBrowserEvidence": 24,
     "scenarioRowsFullyCoveredByFreshBrowserEvidence": 14,
-    "uniqueOperationsWithFreshBrowserEvidence": 25,
+    "uniqueOperationsWithFreshBrowserEvidence": 27,
     "runtimeEvidenceFresh": false,
     "runtimeEvidenceRevision": "historical_baseline",
-    "freshScenarioEvidenceSidecars": 23,
-    "registeredScenarioEvidenceSidecars": 36,
+    "freshScenarioEvidenceSidecars": 24,
+    "registeredScenarioEvidenceSidecars": 37,
     "historicalBaselineScenarioEvidenceSidecars": 35,
     "historicalBaselineSidecarsWithCurrentSourceHashes": 22,
     "sourceHashStaleScenarioEvidenceSidecars": 13,
@@ -2260,7 +2260,13 @@
             "createWalletWithdrawal"
           ],
           "expectedUi": "Balances, transactions, transfers, deposit and withdrawal: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "not_verified"
+          "executionStatus": "representative_browser_observed",
+          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/wallet-success-browser-check-2026-10-02.json",
+          "runtimeRoute": null,
+          "runtimeObservedOperationIds": ["getWalletAssets", "getWalletTransactions"],
+          "runtimeEvidenceKind": "scenario-sidecar",
+          "runtimeEvidenceFresh": true,
+          "runtimeEvidenceSourceHashCount": 23
         },
         {
           "id": "wallet.empty",
@@ -2929,6 +2935,19 @@
         "sourceHead": "6416744dc547c96138838ce9c6c782cac6750f20",
         "sourceHeadRevision": "recorded_revision",
         "sourceHashCount": 19,
+        "sourceHashesMatchCurrent": true,
+        "historicalBaselineEvidence": false,
+        "fresh": true,
+        "sourceHashMismatches": [],
+        "localPreview": true,
+        "localMockEvidence": true
+      },
+      {
+        "id": "wallet.success",
+        "path": "docs/architecture/production-readiness/evidence/A06/wallet-success-browser-check-2026-10-02.json",
+        "sourceHead": "53ed9e9a65ef18460fa49ef2a509f335af8c833b",
+        "sourceHeadRevision": "recorded_revision",
+        "sourceHashCount": 23,
         "sourceHashesMatchCurrent": true,
         "historicalBaselineEvidence": false,
         "fresh": true,
