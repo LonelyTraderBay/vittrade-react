@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "taskId": "B07",
+  "stepId": "B07.04",
+  "observedAt": "2026-10-01T21:55:00Z",
+  "repository": "LonelyTraderBay/vittrade-react",
+  "sourceCommit": "f6d87af4fb2e01c263fd01fab69059152c67ecc5",
+  "sources": {
+    "repository": "https://api.github.com/repos/LonelyTraderBay/vittrade-react",
+    "defaultBranch": "https://api.github.com/repos/LonelyTraderBay/vittrade-react/branches/main",
+    "rulesets": "https://api.github.com/repos/LonelyTraderBay/vittrade-react/rulesets?includes_parents=true",
+    "mainProtectionDetail": "https://api.github.com/repos/LonelyTraderBay/vittrade-react/branches/main/protection",
+    "currentCommit": "https://api.github.com/repos/LonelyTraderBay/vittrade-react/commits/f6d87af4fb2e01c263fd01fab69059152c67ecc5",
+    "currentCommitChecks": "https://api.github.com/repos/LonelyTraderBay/vittrade-react/commits/f6d87af4fb2e01c263fd01fab69059152c67ecc5/check-runs",
+    "currentCommitStatuses": "https://api.github.com/repos/LonelyTraderBay/vittrade-react/commits/f6d87af4fb2e01c263fd01fab69059152c67ecc5/status",
+    "branchPullRequests": "https://api.github.com/repos/LonelyTraderBay/vittrade-react/pulls?state=all&head=LonelyTraderBay%3Acodex%2Fb07-01-current-checkpoint"
+  },
+  "observations": {
+    "repository": {
+      "visibility": "public",
+      "defaultBranch": "main",
+      "ownerType": "User",
+      "webCommitSignoffRequired": false,
+      "activeConnectionPermissions": {
+        "admin": true,
+        "push": true
+      }
+    },
+    "defaultBranch": {
+      "name": "main",
+      "protected": false,
+      "head": "c5fc38b0755da3fe2c9831fe3040160a308a9a03"
+    },
+    "rulesets": {
+      "includesParents": true,
+      "count": 0,
+      "response": []
+    },
+    "branchProtectionDetail": {
+      "httpStatus": 403,
+      "message": "Resource not accessible by integration",
+      "interpretation": "Detailed protection payload was unavailable. The branch object independently reports protected=false."
+    },
+    "codeowners": {
+      "path": ".github/CODEOWNERS",
+      "sha256": "df70999d551443b5d8c1edf60e6e99d092ac84815f80972dbff3df4dfe42052f",
+      "declarations": "A catch-all @vittrade/frontend-platform rule plus feature/path-specific @vittrade team handles are present.",
+      "enforcement": "No protection or ruleset policy requires code-owner review. Team membership/eligibility was not independently verified."
+    },
+    "testedCommit": {
+      "sha": "f6d87af4fb2e01c263fd01fab69059152c67ecc5",
+      "signatureVerified": false,
+      "signatureReason": "unsigned",
+      "message": "fix(ci): normalize contract map source hashes"
+    },
+    "checks": {
+      "checkRuns": [
+        {
+          "name": "Production gates",
+          "headSha": "f6d87af4fb2e01c263fd01fab69059152c67ecc5",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ],
+      "legacyStatuses": {
+        "state": "pending",
+        "totalCount": 0
+      },
+      "pullRequestsForTaskBranch": 0
+    }
+  },
+  "findings": [
+    "The default branch is not protected, and the repository rulesets endpoint (including parents) returned no rulesets. GitHub does not currently enforce required CI checks, PR approvals, or CODEOWNERS review through those controls.",
+    "Repository web commit sign-off is disabled. The exact B07.03 CI commit is unsigned, so commit-signature enforcement is also not demonstrated.",
+    "The Production gates check run succeeded on the exact B07.03 SHA, but a successful check run alone does not make it a required merge gate.",
+    "CODEOWNERS entries exist as text, but no active review policy enforces them and team membership was not verified."
+  ],
+  "limitations": [
+    "The dedicated branch protection endpoint returned 403 to the active integration. The public branch object still exposed protected=false for main.",
+    "No pull request exists for the B07 branch, so no reviewer or code-owner approval event could be observed.",
+    "This audit records the current remote configuration; it does not change repository settings or establish production readiness."
+  ]
+}

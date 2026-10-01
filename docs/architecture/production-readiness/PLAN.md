@@ -1112,6 +1112,8 @@ Lặp lại gates trên môi trường chuẩn tại revision phát hành; giữ
 
 **Điều kiện hoàn tất:** CI đúng SHA/toolchain xanh có artifact; trạng thái governance remote được xác minh hoặc còn blocker rõ.
 
+**Kết quả B07.04 (2026-10-01 UTC):** GitHub API xác nhận `main` có `protected=false`; rulesets gồm cả parent trả `[]`; `web_commit_signoff_required=false`. SHA B07.03 `f6d87af4fb2e01c263fd01fab69059152c67ecc5` có check `Production gates` thành công nhưng không có legacy status và không có cấu hình buộc check đó phải pass. Commit được GitHub xác nhận là unsigned. `.github/CODEOWNERS` có các rule/team handle nhưng không có chính sách review để enforce; nhánh B07 chưa có PR. Endpoint chi tiết branch protection trả 403 cho integration, trong khi API branch công khai vẫn cho biết `protected=false`. Đây là thiếu sót governance đã xác minh, không phải bằng chứng dự án đã có merge gate. Chi tiết và nguồn API tại [báo cáo B07.04](evidence/B07/github-governance-audit-2026-10-01.json).
+
 ### B08 — SLO, hiệu năng production và RUM
 
 Đo trải nghiệm với backend thật; chốt ngưỡng với sản phẩm/vận hành trước kết luận.
