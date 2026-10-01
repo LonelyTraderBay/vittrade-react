@@ -42,13 +42,13 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-09-30T01:01:27.195Z",
+    "updatedAt": "2026-10-01T21:07:11.106Z",
     "lastCompletedTask": "C05.02",
-    "activeTask": "A06",
-    "activeStep": "A06.03",
-    "nextTask": "A06",
-    "nextStep": "A06.03",
-    "nextAction": "A06.03: next matrix row is trading.pending. Keep trading.unauthorized representative with the undeclared refreshSession 401 gap; trading.forbidden representative at listOpenPositions 1/10 declared 403 operations; retain eight stale P2P/Predictions sidecars, Wallet unknown/duplicate contract blocker, C05.03 overlap, UI acceptance 0/128 and backend/staging 0/154.",
+    "activeTask": "B07",
+    "activeStep": "B07.03",
+    "nextTask": "B07",
+    "nextStep": "B07.03",
+    "nextAction": "Complete B07.03 on the dedicated branch: make check-tracking and OpenAPI/mock method-path parity required CI gates, save the Playwright project list and run all configured projects before production Build, then verify an exact-SHA Ubuntu Actions run. C01.01 is not complete; current CI matrix is Chromium Desktop Chrome only.",
     "changedFiles": [
       "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
       "docs/architecture/production-readiness/evidence/A06/run-profile-loading-browser-check.mjs",
@@ -120,7 +120,18 @@
       "docs/architecture/production-readiness/evidence/A06/preview-trading-unauthorized-login-2026-09-30.png",
       "docs/architecture/production-readiness/evidence/A06/run-trading-forbidden-browser-check.mjs",
       "docs/architecture/production-readiness/evidence/A06/trading-forbidden-browser-check-2026-09-30.json",
-      "docs/architecture/production-readiness/evidence/A06/preview-trading-forbidden-positions-2026-09-30.png"
+      "docs/architecture/production-readiness/evidence/A06/preview-trading-forbidden-positions-2026-09-30.png",
+      ".gitattributes",
+      ".github/workflows/ci.yml",
+      "package.json",
+      "scripts/check-git-eol.mjs",
+      "scripts/check-bundle-budget.mjs",
+      "scripts/check-bundle-budget.test.mjs",
+      "scripts/check-ci-evidence-artifact.mjs",
+      "scripts/check-ci-evidence-artifact.test.mjs",
+      "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json",
+      "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-ci-current-sha-2026-10-01.json",
+      "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-ci-artifact-verification-2026-10-01.json"
     ],
     "pendingChecks": [
       "C03 follow-up: obtain product-intent evidence for the login backend-failure message; the full-suite gate remains exit 1.",
@@ -9234,7 +9245,7 @@
     {
       "id": "B07",
       "title": "CI đúng toolchain, bằng chứng và chính sách Git",
-      "status": "todo",
+      "status": "in_progress",
       "ownerRole": "Frontend platform + Backend/Ops + QA",
       "assignee": null,
       "dependsOn": ["A08", "C04"],
@@ -9245,27 +9256,35 @@
         ".nvmrc",
         "package-lock.json",
         "package.json",
-        "playwright.config.ts"
+        "playwright.config.ts",
+        ".gitattributes",
+        "scripts/check-git-eol.mjs",
+        "scripts/check-bundle-budget.mjs",
+        "scripts/check-bundle-budget.test.mjs",
+        "scripts/check-ci-evidence-artifact.mjs",
+        "scripts/check-ci-evidence-artifact.test.mjs",
+        "scripts/serve-e2e.mjs",
+        "docs/architecture/production-readiness/evidence/A06/generate-operation-mock-map.mjs"
       ],
       "proposedPaths": [],
       "steps": [
         {
           "id": "B07.01",
-          "status": "todo",
-          "evidenceIds": [],
-          "notes": ""
+          "status": "done",
+          "evidenceIds": ["EV-20261001-044"],
+          "notes": "Exact SHA 9e71670 passed on GitHub Actions ubuntu-24.04 with Node 22.23.3/npm 10.9.9; 32/32 workflow steps, 2396/2396 tests, 51/51 Playwright, EOL violations 0. Fresh Windows checkout preserved all three Universal files as CRLF."
         },
         {
           "id": "B07.02",
-          "status": "todo",
-          "evidenceIds": [],
-          "notes": ""
+          "status": "done",
+          "evidenceIds": ["EV-20261001-045"],
+          "notes": "Exact SHA 104896e passed GitHub Actions; 2405/2405 tests, Playwright 51/51, uploaded/downloaded artifact digest verified (553 files, 221 bundle chunks, no dist/)."
         },
         {
           "id": "B07.03",
-          "status": "todo",
+          "status": "in_progress",
           "evidenceIds": [],
-          "notes": ""
+          "notes": "Add CI tracking consistency and exact OpenAPI/mock method-path parity checks; save the actual configured Playwright project list and run every configured project before Build. C01.01 is still todo and only Chromium Desktop Chrome is configured, so do not claim other engines/devices."
         },
         {
           "id": "B07.04",
@@ -9283,13 +9302,26 @@
       "pageIds": [],
       "routeIds": [],
       "operationIds": [],
-      "evidenceIds": [],
-      "changeIds": [],
+      "evidenceIds": ["EV-20261001-044", "EV-20261001-045"],
+      "changeIds": [
+        "CHANGE-20261002-0001",
+        "CHANGE-20261002-0002",
+        "CHANGE-20261002-0003",
+        "CHANGE-20261002-0004",
+        "CHANGE-20261002-0005",
+        "CHANGE-20261002-0006",
+        "CHANGE-20261002-0007",
+        "CHANGE-20261002-0008",
+        "CHANGE-20261002-0009",
+        "CHANGE-20261002-0010",
+        "CHANGE-20261002-0011",
+        "CHANGE-20261002-0012"
+      ],
       "blockers": [],
-      "startedAt": null,
+      "startedAt": "2026-10-01T19:48:11.000Z",
       "completedAt": null,
       "elapsedMinutes": null,
-      "notes": ""
+      "notes": "B07.01 and B07.02 have exact-SHA Ubuntu CI/artifact evidence. B07.03 is active on codex/b07-01-current-checkpoint; remote push/commit is authorized. C01.01 browser support matrix remains undecided."
     },
     {
       "id": "B08",
@@ -57829,10 +57861,10 @@
       "baselineSha256": "0b85b83713110d15780afd8db8a273014095baa087180d4114ed23f4b76c7930",
       "lifecycle": "active",
       "taskIds": ["B07", "B09"],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": []
+      "disposition": "changed",
+      "reason": "Run the repository gates on the pinned Node 22 Ubuntu toolchain and enforce Git line endings.; Upload coverage, Playwright and CI-only bundle evidence, then download and verify the same artifact.; Gate CI on tracking consistency and contract/mock method-path parity; persist the configured Playwright project list before E2E.",
+      "evidenceIds": ["EV-20261001-044", "EV-20261001-045"],
+      "changeIds": ["CHANGE-20261002-0003", "CHANGE-20261002-0009", "CHANGE-20261002-0010"]
     },
     {
       "path": ".gitignore",
@@ -58483,9 +58515,9 @@
       "path": "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json",
       "baselineSha256": null,
       "lifecycle": "active",
-      "taskIds": ["A06"],
+      "taskIds": ["A06", "B07"],
       "disposition": "changed",
-      "reason": "Record measured handler, fixture/persona, state-signal and direct-test mapping for all tracked API operations.; A06.02: Refresh operation source locations after deterministic runtime changes.; Refresh operation/test-reference counts after the A06.03 Market scenario tests.",
+      "reason": "Record measured handler, fixture/persona, state-signal and direct-test mapping for all tracked API operations.; A06.02: Refresh operation source locations after deterministic runtime changes.; Refresh operation/test-reference counts after the A06.03 Market scenario tests.; Refresh the generated OpenAPI operation to MSW handler inventory before enforcing its freshness in CI.",
       "evidenceIds": [
         "EV-20260928-019",
         "EV-20260928-025",
@@ -58498,7 +58530,8 @@
         "CHANGE-20260928-998",
         "CHANGE-20260928-1002",
         "CHANGE-20260928-1044",
-        "CHANGE-20260928-1587"
+        "CHANGE-20260928-1587",
+        "CHANGE-20261002-0012"
       ]
     },
     {
@@ -69071,10 +69104,10 @@
       "baselineSha256": "1066f2ff1ad1757dc1619861732b0af534e1f5f0b713d4a1b3c21299a7b04a18",
       "lifecycle": "active",
       "taskIds": ["B07"],
-      "disposition": "not_assessed",
-      "reason": "",
+      "disposition": "changed",
+      "reason": "Expose the repository’s existing OpenAPI/mock exact method-path map as a reusable CI command.",
       "evidenceIds": [],
-      "changeIds": []
+      "changeIds": ["CHANGE-20261002-0011"]
     },
     {
       "path": "playwright.config.ts",
@@ -69140,11 +69173,11 @@
       "path": "scripts/check-bundle-budget.mjs",
       "baselineSha256": "92fc82996a7148e3f7a125287c92d905b5b194a2e30442e4fe247335fbbdc08f",
       "lifecycle": "active",
-      "taskIds": ["C02", "B08"],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": []
+      "taskIds": ["C02", "B08", "B07"],
+      "disposition": "changed",
+      "reason": "Emit a CI-only bundle inventory manifest with source-run provenance and measured chunk budgets.",
+      "evidenceIds": ["EV-20261001-045"],
+      "changeIds": ["CHANGE-20261002-0005"]
     },
     {
       "path": "scripts/check-dependency-licenses.mjs",
@@ -69290,11 +69323,11 @@
       "path": "scripts/serve-e2e.mjs",
       "baselineSha256": "f2e7ad26f6ba8c8952324396bd12deea9f0bc46cf7909370038555a5da9cf371",
       "lifecycle": "active",
-      "taskIds": ["A08"],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": []
+      "taskIds": ["A08", "B07"],
+      "disposition": "changed",
+      "reason": "Bind the E2E preview server to the configured loopback address and wait for its own startup signal.",
+      "evidenceIds": ["EV-20261001-044"],
+      "changeIds": ["CHANGE-20261002-0004"]
     },
     {
       "path": "src/app/__tests__/App.test.tsx",
@@ -81014,6 +81047,56 @@
       "reason": "Universal 3.1 docs-only bootstrap: record survey/check evidence; preserve application checkpoint and prior edits.",
       "evidenceIds": ["EV-20260930-024", "EV-20260930-025"],
       "changeIds": ["CHANGE-20260930-0080"]
+    },
+    {
+      "path": ".gitattributes",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": ["B07"],
+      "disposition": "added",
+      "reason": "Line-ending policy with protected Universal rule files; B07.01.; Set repository line-ending policy and preserve the three protected Universal rule files.",
+      "evidenceIds": ["EV-20261001-044"],
+      "changeIds": ["CHANGE-20261002-0001"]
+    },
+    {
+      "path": "scripts/check-git-eol.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": ["B07"],
+      "disposition": "added",
+      "reason": "Deterministic Git text line-ending gate used by B07.01.; Add a deterministic EOL policy check with explicit LF, non-text and protected-CRLF counts.",
+      "evidenceIds": ["EV-20261001-044"],
+      "changeIds": ["CHANGE-20261002-0002"]
+    },
+    {
+      "path": "scripts/check-bundle-budget.test.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": ["B07"],
+      "disposition": "added",
+      "reason": "Focused tests for the CI-only bundle inventory/manifest.; Add positive and negative regression coverage for bundle manifest generation and budget failures.",
+      "evidenceIds": ["EV-20261001-045"],
+      "changeIds": ["CHANGE-20261002-0006"]
+    },
+    {
+      "path": "scripts/check-ci-evidence-artifact.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": ["B07"],
+      "disposition": "added",
+      "reason": "Verifier for the uploaded CI evidence artifact and exact run provenance.; Verify the downloaded CI artifact contents, exact run provenance, manifest and production-output exclusion.",
+      "evidenceIds": ["EV-20261001-045"],
+      "changeIds": ["CHANGE-20261002-0007"]
+    },
+    {
+      "path": "scripts/check-ci-evidence-artifact.test.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": ["B07"],
+      "disposition": "added",
+      "reason": "Focused positive and negative tests for CI evidence artifact verification.; Cover valid and invalid uploaded CI evidence artifacts, including clean runs with no retained traces.",
+      "evidenceIds": ["EV-20261001-045"],
+      "changeIds": ["CHANGE-20261002-0008"]
     }
   ],
   "changes": [
@@ -126478,6 +126561,157 @@
       "afterHash": "837a1c22b7a50896dae450156f26f341c80be3e2424069ac349173131a1405e2",
       "evidenceIds": ["EV-20260930-026"],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261002-0001",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "path": ".gitattributes",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Set repository line-ending policy and preserve the three protected Universal rule files.",
+      "afterHash": "9719708cafb76d38d0deb71c4ea048906a7ac1634ce362623ec3854d53ce081e",
+      "evidenceIds": ["EV-20261001-044"],
+      "commit": "9e71670bd83f1f70a1cd80ab6397178f12c8ba89"
+    },
+    {
+      "id": "CHANGE-20261002-0002",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "path": "scripts/check-git-eol.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Add a deterministic EOL policy check with explicit LF, non-text and protected-CRLF counts.",
+      "afterHash": "f268a2c317c09d9630a51295a62ecca776bce41ec0e3d9d74e0cd808b97884ca",
+      "evidenceIds": ["EV-20261001-044"],
+      "commit": "9e71670bd83f1f70a1cd80ab6397178f12c8ba89"
+    },
+    {
+      "id": "CHANGE-20261002-0003",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "path": ".github/workflows/ci.yml",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Run the repository gates on the pinned Node 22 Ubuntu toolchain and enforce Git line endings.",
+      "beforeHash": "0b85b83713110d15780afd8db8a273014095baa087180d4114ed23f4b76c7930",
+      "afterHash": "1a78f591492db45fc5cdf22ee83c3333f552915811dab4bd828221aaf2c11baa",
+      "evidenceIds": ["EV-20261001-044"],
+      "commit": "9e71670bd83f1f70a1cd80ab6397178f12c8ba89"
+    },
+    {
+      "id": "CHANGE-20261002-0004",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "path": "scripts/serve-e2e.mjs",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Bind the E2E preview server to the configured loopback address and wait for its own startup signal.",
+      "beforeHash": "f2e7ad26f6ba8c8952324396bd12deea9f0bc46cf7909370038555a5da9cf371",
+      "afterHash": "520c0344b04ba89bff73ffcfb9b19ae08051d6d156308c45290fbcfb9d8b4ab1",
+      "evidenceIds": ["EV-20261001-044"],
+      "commit": "9e71670bd83f1f70a1cd80ab6397178f12c8ba89"
+    },
+    {
+      "id": "CHANGE-20261002-0005",
+      "taskId": "B07",
+      "stepId": "B07.02",
+      "path": "scripts/check-bundle-budget.mjs",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Emit a CI-only bundle inventory manifest with source-run provenance and measured chunk budgets.",
+      "beforeHash": "92fc82996a7148e3f7a125287c92d905b5b194a2e30442e4fe247335fbbdc08f",
+      "afterHash": "c09568314a582b7f795bf84b5c651066724fab1527f67a7d65a758b9b029e5cc",
+      "evidenceIds": ["EV-20261001-045"],
+      "commit": "104896ea633f6f6deaa2dd36874f7720d91648a7"
+    },
+    {
+      "id": "CHANGE-20261002-0006",
+      "taskId": "B07",
+      "stepId": "B07.02",
+      "path": "scripts/check-bundle-budget.test.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Add positive and negative regression coverage for bundle manifest generation and budget failures.",
+      "afterHash": "b1cd5742a0a4b5dd89bce95cd1cf706ef4654db3c3f84ed01bd0eaf1f07b9ddb",
+      "evidenceIds": ["EV-20261001-045"],
+      "commit": "104896ea633f6f6deaa2dd36874f7720d91648a7"
+    },
+    {
+      "id": "CHANGE-20261002-0007",
+      "taskId": "B07",
+      "stepId": "B07.02",
+      "path": "scripts/check-ci-evidence-artifact.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Verify the downloaded CI artifact contents, exact run provenance, manifest and production-output exclusion.",
+      "afterHash": "854b5ac48974b2d79426ee84d70490cbab89171a1c9ab3a6ba290f29e3a51f41",
+      "evidenceIds": ["EV-20261001-045"],
+      "commit": "104896ea633f6f6deaa2dd36874f7720d91648a7"
+    },
+    {
+      "id": "CHANGE-20261002-0008",
+      "taskId": "B07",
+      "stepId": "B07.02",
+      "path": "scripts/check-ci-evidence-artifact.test.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Cover valid and invalid uploaded CI evidence artifacts, including clean runs with no retained traces.",
+      "afterHash": "73410d7141ee676f04dac402f7597bc04c8df843769701fe8bb9565f0807fa75",
+      "evidenceIds": ["EV-20261001-045"],
+      "commit": "104896ea633f6f6deaa2dd36874f7720d91648a7"
+    },
+    {
+      "id": "CHANGE-20261002-0009",
+      "taskId": "B07",
+      "stepId": "B07.02",
+      "path": ".github/workflows/ci.yml",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Upload coverage, Playwright and CI-only bundle evidence, then download and verify the same artifact.",
+      "beforeHash": "1a78f591492db45fc5cdf22ee83c3333f552915811dab4bd828221aaf2c11baa",
+      "afterHash": "73f76f962f245995ba4d8a01a051460b7d5c4f05bdcf738adb99de893cb765e6",
+      "evidenceIds": ["EV-20261001-045"],
+      "commit": "104896ea633f6f6deaa2dd36874f7720d91648a7"
+    },
+    {
+      "id": "CHANGE-20261002-0010",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": ".github/workflows/ci.yml",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Gate CI on tracking consistency and contract/mock method-path parity; persist the configured Playwright project list before E2E.",
+      "beforeHash": "73f76f962f245995ba4d8a01a051460b7d5c4f05bdcf738adb99de893cb765e6",
+      "afterHash": "033f7e73bb8d2a1ed22062f58ee8714d755bbfa330dd4b0d8441bfa431032abf",
+      "evidenceIds": [],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261002-0011",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "package.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Expose the repository’s existing OpenAPI/mock exact method-path map as a reusable CI command.",
+      "beforeHash": "1066f2ff1ad1757dc1619861732b0af534e1f5f0b713d4a1b3c21299a7b04a18",
+      "afterHash": "f19946ab21eb354ab7fc3196071eae7c95cb8d12fa67f53d715da28daa04064c",
+      "evidenceIds": [],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261002-0012",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Refresh the generated OpenAPI operation to MSW handler inventory before enforcing its freshness in CI.",
+      "beforeHash": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
+      "afterHash": "e3b4a2706d43813d3109e9925402683a7f208f5b2eafaa7c3819bef26ce98b8d",
+      "evidenceIds": [],
+      "commit": null
     }
   ],
   "evidence": [
@@ -143607,6 +143841,36 @@
       "result": "pass",
       "artifact": "docs/architecture/page-inventory.json",
       "notes": "Updated documentation owners and generated artifacts; retained dated evidence as historical. No application tests/build, Node 22 run, CI, backend/staging verification, user acceptance, or application checkpoint/status change. Working-tree and staged user changes were preserved."
+    },
+    {
+      "id": "EV-20261001-044",
+      "taskId": "B07",
+      "stepId": "B07.01",
+      "kind": "exact-sha-node22-ubuntu-ci-and-eol",
+      "commandOrSteps": "Inspect GitHub Actions run #25 and job logs for commit 9e71670bd83f1f70a1cd80ab6397178f12c8ba89; inspect clean npm ci, EOL, typecheck, lint/format, Vitest, coverage, Playwright, provenance/generator and repository policy/build gates; compare a fresh Windows checkout at the same commit.",
+      "environment": "GitHub Actions ubuntu-24.04; Node 22.23.3; npm 10.9.9; GitHub Actions run 36913585854, attempt 1; Windows x64 fresh checkout of the same source commit for EOL comparison.",
+      "observedAt": "2026-10-01T19:48:11.000Z",
+      "sourceHead": "9e71670bd83f1f70a1cd80ab6397178f12c8ba89",
+      "expected": "The exact committed Node22/Ubuntu workflow passes from a clean install, reports explicit Ubuntu EOL counts and preserves the protected Universal files on Windows.",
+      "actual": "Run #25 succeeded at the exact source SHA: 32/32 workflow steps; npm ci added 552 packages and audited 553; EOL 1490 paths (1148 LF, 342 preserved non-text, 0 missing terminators, 0 protected Windows CRLF, 0 violations); 2396/2396 tests in 284 files; coverage statements 90.13%, branches 84.86%, functions 87.15%, lines 91.91%; Playwright 51/51; provenance tests 3/3; scenario matrix 15 domains/154 operations/106 expectations and UI acceptance index checks passed. A fresh Windows checkout at the same SHA measured 1145 LF, 342 non-text and the 3 protected Universal files as CRLF.",
+      "result": "pass",
+      "artifact": "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-ci-current-sha-2026-10-01.json",
+      "notes": "B07.01 is complete. This run did not preserve or re-download coverage/report/trace/bundle artifacts; exact-run artifact lifecycle is B07.02. UI index fresh scenario rows remain 0/106; backend/staging and user acceptance remain unverified; one low-severity DOMPurify advisory remains."
+    },
+    {
+      "id": "EV-20261001-045",
+      "taskId": "B07",
+      "stepId": "B07.02",
+      "kind": "exact-sha-node22-ubuntu-ci-artifact-verification",
+      "commandOrSteps": "Inspect GitHub Actions run #28/job 110572010316 on commit 104896ea633f6f6deaa2dd36874f7720d91648a7; verify clean install and all repository gates; inspect upload/download artifact digest and checker output for exact run/SHA, coverage, Playwright report/traces, bundle manifest and dist exclusion.",
+      "environment": "GitHub Actions ubuntu-24.04; Node 22.23.3; npm 10.9.9; GitHub Actions run 36922587154, attempt 1; artifact API metadata independently read and archive downloaded through the GitHub connection.",
+      "observedAt": "2026-10-01T20:53:20.000Z",
+      "sourceHead": "104896ea633f6f6deaa2dd36874f7720d91648a7",
+      "expected": "The exact committed CI workflow uploads coverage, Playwright report and any retained retry/failure traces with a CI-only bundle manifest, downloads the same artifact and verifies its run/SHA and that it contains no dist/. A clean E2E run may validly have zero traces.",
+      "actual": "Run #28 succeeded with 34 workflow steps and zero failed: EOL 1494 paths (1152 LF, 342 non-text, 0 missing terminators, 0 protected CRLF, 0 violations); Vitest 2405/2405 in 286 files; coverage 90.14/84.87/87.18/91.92%; Playwright 51/51; artifact tooling tests 9/9; bundle budget 221/221. Artifact 11192484949 is 2949003 bytes with digest sha256:a616d5b055f825af0b3825985759f885b3a17e8eb4ac95b35ac188f4a956b324. The same job downloaded it and verified 553 files, including 550 coverage files and the Playwright report, exact run/SHA, 221 bundle chunks and no dist/. Zero retry/failure trace archives were expected on the passing run.",
+      "result": "pass",
+      "artifact": "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-ci-artifact-verification-2026-10-01.json",
+      "notes": "The first verifier implementation rejected the absence of test-results on a clean E2E run; runs #26 and #27 exposed that incorrect assumption. Commit 104896e made trace archives optional when no retry/failure occurs and added a regression case. Run #28 then passed the complete workflow and artifact verification. The artifact does not prove backend/staging behavior, user acceptance or remote required-status enforcement."
     }
   ],
   "decisions": [

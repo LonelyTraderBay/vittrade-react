@@ -1106,7 +1106,7 @@ Lặp lại gates trên môi trường chuẩn tại revision phát hành; giữ
 
 - **B07.01** — Chạy npm ci và gates trên Node 22/Ubuntu theo .nvmrc; xác nhận native Windows smoke riêng, không đổi toolchain chỉ để giống máy đang làm.
 - **B07.02** — Cập nhật CI lưu coverage/report/trace/bundle manifest và exact commit; cache theo lockfile, không dùng artifact staging-mock làm production.
-- **B07.03** — Thêm kiểm tra tracking/scope thích hợp và contract/mock parity; matrix browser theo C01; kiểm tra production build sau E2E.
+- **B07.03** — CI chạy `check-tracking` và OpenAPI/mock method-path parity; lưu danh sách Playwright projects, chạy toàn bộ project đã cấu hình theo C01 trước production build. C01.01 chưa chốt browser matrix, nên log từng project thực tế và không tính browser/device chưa cấu hình là đã kiểm chứng.
 - **B07.04** — Xác minh required checks, review, CODEOWNERS, DCO/chính sách commit và quyền branch qua nguồn thật; không suy ra enforcement từ file YAML.
 - **B07.05** — Lưu run URL/result cho HEAD mục tiêu và failure path; nếu không có credential GitHub, ghi chưa xác minh phần remote thay vì nói CI pass.
 
