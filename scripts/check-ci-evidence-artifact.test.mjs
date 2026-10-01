@@ -121,13 +121,13 @@ describe('uploaded CI evidence artifact checker', () => {
     expect(result.stderr).toContain('must not contain dist/');
   });
 
-  it('rejects an artifact without Playwright test results for retained traces', async () => {
+  it('accepts a passing artifact when Playwright produced no retry or failure traces', async () => {
     await createArtifact({ includeTestResults: false });
 
     const result = runCheck();
 
-    expect(result.status).toBe(1);
-    expect(result.stderr).toContain('missing Playwright test-results');
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain('0 retained traces');
   });
 
   it('rejects a deployable artifact claim or a failed bundle budget', async () => {

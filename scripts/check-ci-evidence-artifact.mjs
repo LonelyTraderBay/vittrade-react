@@ -107,11 +107,6 @@ if (!files.some((file) => file.startsWith('coverage/'))) {
 if (!files.includes('playwright-report/index.html')) {
   errors.push('uploaded artifact is missing the Playwright HTML report');
 }
-if (!files.some((file) => file.startsWith('test-results/'))) {
-  errors.push(
-    'uploaded artifact is missing Playwright test-results, including retained retry/failure traces',
-  );
-}
 if (files.some((file) => file === 'dist' || file.startsWith('dist/') || file.includes('/dist/'))) {
   errors.push('uploaded artifact must not contain dist/');
 }
