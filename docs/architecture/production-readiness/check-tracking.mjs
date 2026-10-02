@@ -6,8 +6,12 @@ import { createHash } from 'node:crypto';
 import { parse } from 'yaml';
 
 // Read-only consistency check for the implementation ledger, not certification.
-const directory = path.dirname(fileURLToPath(import.meta.url));
-const root = path.resolve(directory, '../../..');
+const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
+const rootArgumentIndex = process.argv.indexOf('--root');
+const rootArgument = rootArgumentIndex >= 0 ? process.argv[rootArgumentIndex + 1] : null;
+if (rootArgumentIndex >= 0 && !rootArgument) throw new Error('--root requires a repository path.');
+const root = rootArgument ? path.resolve(rootArgument) : path.resolve(scriptDirectory, '../../..');
+const directory = path.join(root, 'docs/architecture/production-readiness');
 const readJson = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));
 const tracking = readJson(path.join(directory, 'TRACKING.json'));
 const inventory = readJson(path.join(root, 'docs/architecture/page-inventory.json'));
@@ -55,6 +59,162 @@ const steps = indexed(
   tracking.tasks.flatMap((task) => task.steps.map((step) => ({ ...step, taskId: task.id }))),
   'steps',
 );
+const filesByStep = new Map([...steps.keys()].map((stepId) => [stepId, []]));
+const cataloguedFilesByHead = new Map();
+
+assert(tracking.executionPlan?.version === 1, 'Missing or unsupported executionPlan.version');
+assert(
+  tracking.executionPlan?.canonicalStepFileMapping?.startsWith('files[].executionScope.stepIds'),
+  'Execution plan must designate files[].executionScope.stepIds as the canonical mapping',
+);
+
+for (const file of files.values()) {
+  const scope = file.executionScope;
+  assert(scope && typeof scope === 'object', `${file.path}: missing executionScope`);
+  if (!scope) continue;
+  assert(tasks.has(scope.ownerTaskId), `${file.path}: executionScope owner task is unknown`);
+  assert(
+    Array.isArray(file.taskIds) && file.taskIds.includes(scope.ownerTaskId),
+    `${file.path}: executionScope owner is missing from taskIds`,
+  );
+  assert(
+    typeof scope.role === 'string' && scope.role.length > 0,
+    `${file.path}: missing executionScope.role`,
+  );
+  assert(
+    typeof scope.action === 'string' && scope.action.length > 0,
+    `${file.path}: missing executionScope.action`,
+  );
+  assert(
+    Array.isArray(scope.stepIds) && scope.stepIds.length > 0,
+    `${file.path}: missing executionScope.stepIds`,
+  );
+  assert(
+    new Set(scope.stepIds ?? []).size === (scope.stepIds ?? []).length,
+    `${file.path}: duplicate executionScope.stepIds`,
+  );
+  for (const stepId of scope.stepIds ?? []) {
+    assert(steps.has(stepId), `${file.path}: executionScope references unknown step ${stepId}`);
+    if (filesByStep.has(stepId)) filesByStep.get(stepId).push(file.path);
+  }
+  if (
+    file.lifecycle !== 'retired' &&
+    file.lifecycle !== 'planned' &&
+    !file.path.startsWith(planPrefix)
+  ) {
+    assert(
+      Boolean(file.cataloguedSourceHead && file.cataloguedSha256),
+      `${file.path}: missing catalogued source head/hash`,
+    );
+  }
+  if (file.cataloguedSourceHead || file.cataloguedSha256) {
+    assert(
+      /^[a-f0-9]{40}$/.test(file.cataloguedSourceHead ?? ''),
+      `${file.path}: invalid cataloguedSourceHead`,
+    );
+    assert(
+      /^[a-f0-9]{64}$/.test(file.cataloguedSha256 ?? ''),
+      `${file.path}: invalid cataloguedSha256`,
+    );
+    if (/^[a-f0-9]{40}$/.test(file.cataloguedSourceHead ?? '')) {
+      const records = cataloguedFilesByHead.get(file.cataloguedSourceHead) ?? [];
+      records.push(file);
+      cataloguedFilesByHead.set(file.cataloguedSourceHead, records);
+    }
+  }
+}
+for (const [sourceHead, records] of cataloguedFilesByHead) {
+  let snapshotBlobs;
+  try {
+    const tree = execFileSync('git', ['ls-tree', '-r', '-z', sourceHead], {
+      cwd: root,
+      encoding: 'utf8',
+    });
+    snapshotBlobs = new Map();
+    for (const entry of tree.split('\0').filter(Boolean)) {
+      const [metadata, filePath] = entry.split('\t');
+      const [, type, object] = metadata.split(' ');
+      if (type === 'blob') snapshotBlobs.set(filePath, object);
+    }
+  } catch {
+    for (const file of records)
+      assert(false, `${file.path}: cataloguedSourceHead is not available in Git`);
+    continue;
+  }
+
+  const blobIds = new Set();
+  for (const file of records) {
+    const blobId = snapshotBlobs.get(file.path);
+    assert(blobId, `${file.path}: cataloguedSourceHead does not contain this path`);
+    if (blobId) blobIds.add(blobId);
+  }
+
+  if (blobIds.size > 0) {
+    try {
+      const output = execFileSync('git', ['cat-file', '--batch'], {
+        cwd: root,
+        input: `${[...blobIds].join('\n')}\n`,
+        maxBuffer: 256 * 1024 * 1024,
+      });
+      const sourceHashes = new Map();
+      let offset = 0;
+      for (const expectedId of blobIds) {
+        const headerEnd = output.indexOf(0x0a, offset);
+        const [, type, sizeText] = output.subarray(offset, headerEnd).toString('utf8').split(' ');
+        const size = Number(sizeText);
+        offset = headerEnd + 1;
+        const sourceHash = createHash('sha256')
+          .update(output.subarray(offset, offset + size))
+          .digest('hex');
+        assert(type === 'blob', `cataloguedSourceHead object ${expectedId} is not a blob`);
+        sourceHashes.set(expectedId, sourceHash);
+        offset += size + 1;
+      }
+      for (const file of records) {
+        const blobId = snapshotBlobs.get(file.path);
+        if (blobId)
+          assert(
+            sourceHashes.get(blobId) === file.cataloguedSha256,
+            `${file.path}: cataloguedSha256 does not match cataloguedSourceHead`,
+          );
+      }
+    } catch {
+      for (const file of records)
+        assert(false, `${file.path}: could not read source from cataloguedSourceHead`);
+    }
+  }
+
+  try {
+    const changedPaths = new Set(
+      execFileSync('git', ['diff', '--name-only', '--no-renames', '-z', sourceHead], {
+        cwd: root,
+        encoding: 'utf8',
+      })
+        .split('\0')
+        .filter(Boolean),
+    );
+    for (const file of records)
+      if (fs.existsSync(path.join(root, file.path)))
+        assert(
+          !changedPaths.has(file.path),
+          `${file.path}: current source differs from cataloguedSourceHead`,
+        );
+  } catch {
+    for (const file of records)
+      assert(false, `${file.path}: could not compare source with cataloguedSourceHead`);
+  }
+}
+for (const [stepId, mappedFiles] of filesByStep)
+  assert(mappedFiles.length > 0, `${stepId}: no file is mapped to this step`);
+for (const protectedPath of tracking.executionPlan?.protectedPaths ?? []) {
+  const file = files.get(protectedPath);
+  assert(file, `Protected instruction is missing from file catalog: ${protectedPath}`);
+  assert(file?.lifecycle !== 'retired', `Protected instruction is retired: ${protectedPath}`);
+  assert(
+    file?.executionScope?.role === 'protected_instruction',
+    `Protected instruction has the wrong scope role: ${protectedPath}`,
+  );
+}
 
 function refs(ids, index, label) {
   assert(Array.isArray(ids), `${label}: references must be an array`);
