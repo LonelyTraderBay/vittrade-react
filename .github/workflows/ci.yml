@@ -26,6 +26,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Tracking checker regression tests
+        run: node node_modules/vitest/vitest.mjs run scripts/check-tracking.test.mjs
+
       - name: Production readiness tracking consistency
         run: |
           node docs/architecture/production-readiness/check-tracking.mjs > "$RUNNER_TEMP/tracking-report.json"
