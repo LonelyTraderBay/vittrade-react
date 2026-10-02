@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "taskId": "B07",
+  "stepId": "B07.03",
+  "sourceCommit": "b592cee0d411091ff11e98babf644f7bc6a6bcbb",
+  "repository": "LonelyTraderBay/vittrade-react",
+  "branch": "codex/b07-01-current-checkpoint",
+  "workflow": {
+    "name": "CI",
+    "event": "push",
+    "runId": 36945664061,
+    "runAttempt": 1,
+    "runUrl": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36945664061",
+    "jobId": 110647099842,
+    "jobName": "Production gates",
+    "conclusion": "failure",
+    "startedAt": "2026-10-02T00:22:34Z"
+  },
+  "environment": {
+    "runner": "GitHub Actions ubuntu-24.04",
+    "node": "22.23.3",
+    "npm": "10.9.9"
+  },
+  "checks": {
+    "gitEol": "pass",
+    "trackingCheckerRegression": {
+      "result": "pass",
+      "tests": 10
+    },
+    "trackingConsistency": {
+      "result": "fail",
+      "error": "fatal: not a tree object",
+      "errorCount": 914,
+      "omittedErrorsAfterFirst40": 874
+    },
+    "subsequentGates": "skipped"
+  },
+  "expected": "The checker can read cataloguedSourceHead and compare the full current file snapshot on Ubuntu.",
+  "actual": "actions/checkout used its default fetch-depth of 1. The exact current ledger references source snapshot 016585c, which was not present in the shallow checkout; git ls-tree could not resolve it. The checker failure was environmental and did not indicate stale per-file content.",
+  "result": "fail",
+  "notes": "GitHub job logs were read through the authenticated repository credential. The CI workflow now requests fetch-depth 5 so the code snapshot and recent ledger-only commits remain available. This failed run is retained as a failure path and is not counted as a pass."
+}
