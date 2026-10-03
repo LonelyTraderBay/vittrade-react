@@ -3,8 +3,8 @@
   "generatedFrom": {
     "tracking": "docs/architecture/production-readiness/TRACKING.json",
     "operationMap": "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json",
-    "sourceHead": "1517ae875b555199a5726eb3567aa3dbd0aa8f9a",
-    "generatedAt": "2026-10-03T22:03:25.686Z",
+    "sourceHead": "24b0571e87ffbc4d8119f7f22ebfc77bd83215cc",
+    "generatedAt": "2026-10-03T23:29:20.898Z",
     "operationMapSha256": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
     "runtimeEvidenceSha256": "59d54ef87e5f1326dc35274849f32b7d20afc68029e22a839d7daa65233d3ba6"
   },
@@ -19,7 +19,7 @@
     "scenarioRowsFullyCoveredByFreshBrowserEvidence": 0,
     "uniqueOperationsWithFreshBrowserEvidence": 0,
     "runtimeEvidenceFresh": false,
-    "currentHead": "1517ae875b555199a5726eb3567aa3dbd0aa8f9a",
+    "currentHead": "24b0571e87ffbc4d8119f7f22ebfc77bd83215cc",
     "runtimeEvidenceRevision": "historical_baseline",
     "freshScenarioEvidenceSidecars": 0,
     "registeredScenarioEvidenceSidecars": 35,
@@ -2264,7 +2264,7 @@
     "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/preview-scenario-browser-check-market-empty-2026-09-28.json",
     "runtimeEvidenceFresh": false,
     "runtimeEvidenceRevision": "historical_baseline",
-    "currentHead": "1517ae875b555199a5726eb3567aa3dbd0aa8f9a",
+    "currentHead": "24b0571e87ffbc4d8119f7f22ebfc77bd83215cc",
     "scenarioEvidenceArtifacts": [
       {
         "id": "p2p.duplicate",
