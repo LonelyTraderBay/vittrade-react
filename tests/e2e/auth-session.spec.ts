@@ -40,7 +40,7 @@ test.describe('auth session smoke on staging build', () => {
     await page.route('**/auth/session', (route) =>
       route.fulfill({ json: authenticated ? session : null }),
     );
-    await page.route('https://e2e.invalid/auth/login', async (route) => {
+    await page.route('https://e2e.test/auth/login', async (route) => {
       loginBody = route.request().postDataJSON() as Record<string, unknown>;
       authenticated = true;
       return route.fulfill({ json: { status: 'authenticated', session } });
@@ -51,7 +51,7 @@ test.describe('auth session smoke on staging build', () => {
       return route.fulfill({ status: 204 });
     });
     await page.route('**/market/pairs**', (route) => route.fulfill({ json: { items: [] } }));
-    await page.route('https://e2e.invalid/profile', (route) => route.fulfill({ json: profile }));
+    await page.route('https://e2e.test/profile', (route) => route.fulfill({ json: profile }));
 
     await page.goto('/auth/login');
     await page.getByTestId('auth-email').fill('auth@example.com');
@@ -125,10 +125,10 @@ test.describe('auth session smoke on staging build', () => {
     await page.route('**/auth/session', (route) =>
       route.fulfill({ json: authenticated ? session : null }),
     );
-    await page.route('https://e2e.invalid/auth/login', (route) =>
+    await page.route('https://e2e.test/auth/login', (route) =>
       route.fulfill({ json: { status: 'mfa_required', challenge } }),
     );
-    await page.route('https://e2e.invalid/auth/login/mfa/verify', async (route) => {
+    await page.route('https://e2e.test/auth/login/mfa/verify', async (route) => {
       verifyBody = route.request().postDataJSON() as Record<string, unknown>;
       authenticated = true;
       return route.fulfill({ json: session });
@@ -170,10 +170,10 @@ test.describe('auth session smoke on staging build', () => {
     await page.route('**/auth/session', (route) =>
       route.fulfill({ json: authenticated ? session : null }),
     );
-    await page.route('https://e2e.invalid/auth/login', (route) =>
+    await page.route('https://e2e.test/auth/login', (route) =>
       route.fulfill({ json: { status: 'mfa_required', challenge } }),
     );
-    await page.route('https://e2e.invalid/auth/login/mfa/verify', async (route) => {
+    await page.route('https://e2e.test/auth/login/mfa/verify', async (route) => {
       verifyBody = route.request().postDataJSON() as Record<string, unknown>;
       authenticated = true;
       return route.fulfill({ json: session });
@@ -204,7 +204,7 @@ test.describe('auth session smoke on staging build', () => {
   }) => {
     let verifyCalled = false;
     await page.route('**/auth/session', (route) => route.fulfill({ json: null }));
-    await page.route('https://e2e.invalid/auth/login', (route) =>
+    await page.route('https://e2e.test/auth/login', (route) =>
       route.fulfill({
         json: {
           status: 'mfa_required',
@@ -217,7 +217,7 @@ test.describe('auth session smoke on staging build', () => {
         },
       }),
     );
-    await page.route('https://e2e.invalid/auth/login/mfa/verify', (route) => {
+    await page.route('https://e2e.test/auth/login/mfa/verify', (route) => {
       verifyCalled = true;
       return route.fulfill({ json: session });
     });
