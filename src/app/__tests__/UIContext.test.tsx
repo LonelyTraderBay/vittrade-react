@@ -30,12 +30,12 @@ describe('UIContext', () => {
       expect(result.current.isOffline).toBe(false);
     });
 
-    it('should start with 3 notifications', () => {
+    it('should start with no notifications', () => {
       const { result } = renderHook(() => useUI(), {
         wrapper: UIProvider,
       });
 
-      expect(result.current.notifications).toBe(3);
+      expect(result.current.notifications).toBe(0);
     });
 
     it('should start with 2 pending rewards', () => {

@@ -7,6 +7,7 @@ import { UIProvider } from './UIContext';
 import { TradingContext } from './trading-context';
 import { queryClient } from '@/shared/api/query-client';
 import { useAuth } from '@/shared/session/useAuth';
+import { useUI } from '@/app/hooks/useUI';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -51,13 +52,17 @@ export function AppProvider({
 
 function SessionQueryCacheBoundary({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
+  const { setNotifications } = useUI();
   const previousUserId = useRef(user?.id ?? null);
 
   useLayoutEffect(() => {
     const currentUserId = user?.id ?? null;
-    if (previousUserId.current !== currentUserId) queryClient.clear();
+    if (previousUserId.current !== currentUserId) {
+      queryClient.clear();
+      setNotifications(0);
+    }
     previousUserId.current = currentUserId;
-  }, [user?.id]);
+  }, [user?.id, setNotifications]);
 
   return children;
 }

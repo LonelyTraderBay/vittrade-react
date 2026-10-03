@@ -16,11 +16,12 @@ export function useNewsQuery() {
     staleTime: 60_000,
   });
 }
-export function useNotificationsQuery() {
+export function useNotificationsQuery(options: { enabled?: boolean } = {}) {
   return useQuery({
     queryKey: supportQueryKeys.notifications,
     queryFn: ({ signal }) => supportApi.listNotifications(signal),
     staleTime: 10_000,
+    enabled: options.enabled,
   });
 }
 export function useMarkNotificationReadMutation() {

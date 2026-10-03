@@ -72,12 +72,16 @@ export function EarnPage({ domain }: EarnPageProps) {
     const actionId = `${selectedProduct.id}:${amount}`;
     const key = subscriptionKeys.current.get(actionId) ?? crypto.randomUUID();
     subscriptionKeys.current.set(actionId, key);
-    await subscribeMutation.mutateAsync({
+    const receipt = await subscribeMutation.mutateAsync({
       request: { productId: selectedProduct.id, amount },
       idempotencyKey: `earn-subscribe-${key}`,
     });
     subscriptionKeys.current.delete(actionId);
     setSelectedProduct(undefined);
+    if (receipt.status === 'pending') {
+      navigate(`${prefix}/earn/${domain}/receipt`, { state: { receipt } });
+      return;
+    }
     setSuccessMessage('Đăng ký sản phẩm thành công.');
     hapticSuccess();
   };
@@ -86,12 +90,16 @@ export function EarnPage({ domain }: EarnPageProps) {
     const actionId = `${selectedPosition.id}:${amount}`;
     const key = redemptionKeys.current.get(actionId) ?? crypto.randomUUID();
     redemptionKeys.current.set(actionId, key);
-    await redeemMutation.mutateAsync({
+    const receipt = await redeemMutation.mutateAsync({
       request: { positionId: selectedPosition.id, amount },
       idempotencyKey: `earn-redeem-${key}`,
     });
     redemptionKeys.current.delete(actionId);
     setSelectedPosition(undefined);
+    if (receipt.status === 'pending') {
+      navigate(`${prefix}/earn/${domain}/receipt`, { state: { receipt } });
+      return;
+    }
     setSuccessMessage('Yêu cầu rút vốn đã được ghi nhận.');
     hapticSuccess();
   };

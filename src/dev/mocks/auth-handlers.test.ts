@@ -171,14 +171,14 @@ describe('development authentication handlers', () => {
     await expect(
       authApi.login({ email: 'developer@vittrade.local', password: 'wrong-preview-password' }),
     ).rejects.toMatchObject({ status: 401, code: 'INVALID_CREDENTIALS' });
-    await expect(authApi.getSession()).rejects.toMatchObject({ status: 401 });
+    await expect(authApi.getSession()).resolves.toBeNull();
   });
 
   it('returns an account-locked status for the locked demo persona', async () => {
     await expect(
       authApi.login({ email: 'locked@vittrade.local', password: demoPassword }),
     ).rejects.toMatchObject({ status: 423 });
-    await expect(authApi.getSession()).rejects.toMatchObject({ status: 401 });
+    await expect(authApi.getSession()).resolves.toBeNull();
   });
 
   it('keeps MFA login unauthenticated until a valid, unexpired challenge is verified once', async () => {
@@ -189,7 +189,7 @@ describe('development authentication handlers', () => {
     });
     if (result.status !== 'mfa_required') throw new Error('Expected an MFA challenge');
 
-    await expect(authApi.getSession()).rejects.toMatchObject({ status: 401 });
+    await expect(authApi.getSession()).resolves.toBeNull();
     await expect(
       authApi.verifyLoginMfa({ challengeId: result.challenge.id, code: '000000' }),
     ).rejects.toMatchObject({ status: 400, code: 'INVALID_VERIFICATION_CODE' });
@@ -234,6 +234,6 @@ describe('development authentication handlers', () => {
     await expect(
       authApi.verifyLoginMfa({ challengeId: result.challenge.id, code: '123456' }),
     ).rejects.toMatchObject({ status: 410, code: 'LOGIN_CHALLENGE_EXPIRED' });
-    await expect(authApi.getSession()).rejects.toMatchObject({ status: 401 });
+    await expect(authApi.getSession()).resolves.toBeNull();
   });
 });

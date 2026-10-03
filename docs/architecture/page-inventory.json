@@ -11,7 +11,7 @@
   ],
   "summary": {
     "pageCount": 129,
-    "routeCount": 427,
+    "routeCount": 428,
     "componentCount": 149,
     "dataModuleCount": 0,
     "serviceCount": 32,
@@ -985,9 +985,10 @@
       "status": "integration-pending",
       "lines": 363,
       "routePaths": [
-        "earn/:domain/receipt",
         "earn/savings/product/:productId",
-        "earn/savings/redeem/:positionId"
+        "earn/savings/receipt",
+        "earn/savings/redeem/:positionId",
+        "earn/staking/receipt"
       ],
       "dependencies": {
         "localImports": [
@@ -2859,13 +2860,14 @@
       "domain": "support",
       "owner": "features/support",
       "status": "integration-pending",
-      "lines": 118,
+      "lines": 129,
       "routePaths": [
         "notifications"
       ],
       "dependencies": {
         "localImports": [
           "../model/support-queries",
+          "@/app/hooks/useUI",
           "@/shared/hooks/useActionToast",
           "@/shared/hooks/useThemeColors",
           "@/shared/session/useAuth",
@@ -4392,14 +4394,6 @@
       "pageTarget": "src/features/earn/pages/EarnPage.tsx"
     },
     {
-      "path": "earn/:domain/receipt",
-      "component": "EarnReceiptPage",
-      "target": "./pages/EarnTransactionPages",
-      "developmentOnly": false,
-      "source": "src/features/earn/routes.ts",
-      "pageTarget": "src/features/earn/pages/EarnTransactionPages.tsx"
-    },
-    {
       "path": "earn/history",
       "component": "StakingHistoryPage",
       "target": "./pages/EarnHistoryPage",
@@ -4464,6 +4458,14 @@
       "pageTarget": "src/features/earn/pages/EarnTransactionPages.tsx"
     },
     {
+      "path": "earn/savings/receipt",
+      "component": "EarnReceiptPage",
+      "target": "./pages/EarnTransactionPages",
+      "developmentOnly": false,
+      "source": "src/features/earn/routes.ts",
+      "pageTarget": "src/features/earn/pages/EarnTransactionPages.tsx"
+    },
+    {
       "path": "earn/savings/redeem/:positionId",
       "component": "EarnRedeemPage",
       "target": "./pages/EarnTransactionPages",
@@ -4486,6 +4488,14 @@
       "developmentOnly": false,
       "source": "src/features/earn/routes.ts",
       "pageTarget": "src/features/earn/pages/EarnPage.tsx"
+    },
+    {
+      "path": "earn/staking/receipt",
+      "component": "EarnReceiptPage",
+      "target": "./pages/EarnTransactionPages",
+      "developmentOnly": false,
+      "source": "src/features/earn/routes.ts",
+      "pageTarget": "src/features/earn/pages/EarnTransactionPages.tsx"
     },
     {
       "path": "enterprise-states",

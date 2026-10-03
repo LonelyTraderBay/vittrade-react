@@ -20,6 +20,7 @@ import { TEST_AUTH_USER } from '@/test/fixtures/auth-user';
 import { testAuthAdapter, testAuthSession } from '../../test/auth-test-adapter';
 import { queryClient } from '@/shared/api/query-client';
 import { useAuth } from '@/shared/session/useAuth';
+import { useUI } from '../hooks/useUI';
 
 const TestAppProvider = ({ children }: { children: ReactNode }) => (
   <QueryClientProvider client={queryClient}>
@@ -71,21 +72,25 @@ describe('AppContext', () => {
           <AppProvider authAdapter={adapter}>{children}</AppProvider>
         </QueryClientProvider>
       );
-      const { result } = renderHook(() => useAuth(), { wrapper });
+      const { result } = renderHook(() => ({ auth: useAuth(), ui: useUI() }), { wrapper });
       queryClient.setQueryData(['wallet', 'assets'], { items: [{ id: 'private-asset' }] });
       queryClient.setQueryData(['market', 'watchlist', TEST_AUTH_USER.id], { items: [] });
+      act(() => result.current.ui.setNotifications(6));
 
       await act(async () =>
-        result.current.signIn({ email: 'second@example.com', password: 'test' }),
+        result.current.auth.signIn({ email: 'second@example.com', password: 'test' }),
       );
 
       expect(queryClient.getQueryData(['wallet', 'assets'])).toBeUndefined();
       expect(queryClient.getQueryData(['market', 'watchlist', TEST_AUTH_USER.id])).toBeUndefined();
-      expect(result.current.user?.id).toBe('usr002');
+      expect(result.current.auth.user?.id).toBe('usr002');
+      expect(result.current.ui.notifications).toBe(0);
 
       queryClient.setQueryData(['wallet', 'assets'], { items: [{ id: 'second-user-asset' }] });
-      await act(async () => result.current.logout());
+      act(() => result.current.ui.setNotifications(2));
+      await act(async () => result.current.auth.logout());
       expect(queryClient.getQueryData(['wallet', 'assets'])).toBeUndefined();
+      expect(result.current.ui.notifications).toBe(0);
     });
 
     it('should provide all theme properties', () => {

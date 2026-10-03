@@ -5,7 +5,7 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<UIState>({
     isBalanceHidden: false,
     isOffline: false,
-    notifications: 3,
+    notifications: 0,
     pendingRewards: 2,
   });
 
