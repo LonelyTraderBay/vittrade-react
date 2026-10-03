@@ -217,9 +217,13 @@ describe('Wallet transfer contract page', () => {
 
   it('shows a readable busy label while the transfer response is pending', async () => {
     installReadHandlers();
+    let releaseTransfer!: () => void;
+    const transferGate = new Promise<void>((resolve) => {
+      releaseTransfer = resolve;
+    });
     server.use(
       http.post('*/wallet/transfers', async () => {
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        await transferGate;
         return HttpResponse.json({
           id: 'transfer-inflight-1',
           fromWallet: 'spot',
@@ -236,9 +240,14 @@ describe('Wallet transfer contract page', () => {
     await userEvent.type(await screen.findByLabelText('Transfer amount'), '12.5');
     await userEvent.click(screen.getByRole('button', { name: 'Confirm transfer' }));
 
-    const submit = await screen.findByRole('button', { name: 'Submitting transfer…' });
-    expect(submit).toBeDisabled();
-    expect(submit).toHaveAttribute('aria-busy', 'true');
+    try {
+      const submit = await screen.findByRole('button', { name: 'Submitting transfer…' });
+      expect(submit).toBeDisabled();
+      expect(submit).toHaveAttribute('aria-busy', 'true');
+    } finally {
+      releaseTransfer();
+    }
+
     expect(await screen.findByRole('status')).toHaveTextContent('Transfer pending');
   });
 
