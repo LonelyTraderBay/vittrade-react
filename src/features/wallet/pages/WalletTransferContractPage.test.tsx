@@ -215,6 +215,33 @@ describe('Wallet transfer contract page', () => {
     expect(requests).toBe(1);
   });
 
+  it('shows a readable busy label while the transfer response is pending', async () => {
+    installReadHandlers();
+    server.use(
+      http.post('*/wallet/transfers', async () => {
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        return HttpResponse.json({
+          id: 'transfer-inflight-1',
+          fromWallet: 'spot',
+          toWallet: 'funding',
+          asset: 'USDT',
+          amount: 12.5,
+          status: 'pending',
+          createdAt: '2026-09-22T08:00:00.000Z',
+        });
+      }),
+    );
+
+    renderWithProviders(<WalletTransferContractPage />);
+    await userEvent.type(await screen.findByLabelText('Transfer amount'), '12.5');
+    await userEvent.click(screen.getByRole('button', { name: 'Confirm transfer' }));
+
+    const submit = await screen.findByRole('button', { name: 'Submitting transfer…' });
+    expect(submit).toBeDisabled();
+    expect(submit).toHaveAttribute('aria-busy', 'true');
+    expect(await screen.findByRole('status')).toHaveTextContent('Transfer pending');
+  });
+
   it('surfaces API failure without pretending the transfer succeeded', async () => {
     installReadHandlers();
     server.use(

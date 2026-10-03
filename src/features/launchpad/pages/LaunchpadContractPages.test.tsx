@@ -100,21 +100,60 @@ describe('Launchpad contract pages', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders the shared error state when the contract is unavailable', async () => {
+  it('bounds transport retries and allows one explicit retry without stacking query retries', async () => {
+    let requestCount = 0;
     server.use(
-      http.get('*/launchpad/projects', () =>
-        HttpResponse.json(
-          { code: 'LAUNCHPAD_UNAVAILABLE', message: 'Unavailable' },
-          { status: 503 },
-        ),
-      ),
+      http.get('*/launchpad/projects', () => {
+        requestCount += 1;
+        return HttpResponse.error();
+      }),
     );
 
     renderWithProviders(<LaunchpadContractPage />);
 
-    await waitFor(() => {
-      expect(screen.getByRole('button')).toBeInTheDocument();
-    });
+    expect(await screen.findByText('Có lỗi xảy ra')).toBeInTheDocument();
+    await waitFor(() => expect(requestCount).toBe(3));
+    expect(screen.getByRole('button', { name: 'Thử lại' })).toBeInTheDocument();
     expect(screen.queryByText('NexaAI Protocol')).not.toBeInTheDocument();
+    expect(screen.queryByText('Không có dự án phù hợp.')).not.toBeInTheDocument();
+
+    await screen.getByRole('button', { name: 'Thử lại' }).click();
+    await waitFor(() => expect(requestCount).toBe(6));
+    expect(screen.getByText('Có lỗi xảy ra')).toBeInTheDocument();
+    expect(screen.queryByText('NexaAI Protocol')).not.toBeInTheDocument();
+    expect(screen.queryByText('Không có dự án phù hợp.')).not.toBeInTheDocument();
+  });
+
+  it('bounds detail transport retries and keeps the retry action on failure', async () => {
+    let requestCount = 0;
+    server.use(
+      http.get('*/launchpad/projects/proj1', () => {
+        requestCount += 1;
+        return HttpResponse.error();
+      }),
+    );
+
+    renderWithProviders(
+      <Routes>
+        <Route path="/launchpad/:id" element={<LaunchpadProjectContractPage />} />
+      </Routes>,
+      {
+        routerProps: { initialEntries: ['/launchpad/proj1'] },
+      },
+    );
+
+    expect(await screen.findByText('Có lỗi xảy ra')).toBeInTheDocument();
+    await waitFor(() => expect(requestCount).toBe(3));
+    expect(screen.getByRole('button', { name: 'Thử lại' })).toBeInTheDocument();
+    expect(
+      screen.queryByText('Long description from the Launchpad contract.'),
+    ).not.toBeInTheDocument();
+
+    await screen.getByRole('button', { name: 'Thử lại' }).click();
+    await waitFor(() => expect(requestCount).toBe(6));
+    expect(screen.getByText('Có lỗi xảy ra')).toBeInTheDocument();
+    expect(
+      screen.queryByText('Long description from the Launchpad contract.'),
+    ).not.toBeInTheDocument();
   });
 });

@@ -19,8 +19,17 @@ assert.equal(previewUrl.pathname, '/', 'PREVIEW_BASE_URL must be an origin witho
 const origin = previewUrl.origin;
 const checkedAt = new Date().toISOString();
 const date = checkedAt.slice(0, 10);
-const reportPath = path.join(directory, `trading-unauthorized-browser-check-${date}.json`);
-const screenshotPath = path.join(directory, `preview-trading-unauthorized-login-${date}.png`);
+const evidenceRunSuffix = process.env.EVIDENCE_RUN_SUFFIX?.trim() ?? '';
+assert.match(evidenceRunSuffix, /^[a-z0-9-]{0,40}$/i, 'Evidence run suffix must be filename-safe.');
+const artifactSuffix = evidenceRunSuffix ? `-${evidenceRunSuffix}` : '';
+const reportPath = path.join(
+  directory,
+  `trading-unauthorized-browser-check-${date}${artifactSuffix}.json`,
+);
+const screenshotPath = path.join(
+  directory,
+  `preview-trading-unauthorized-login-${date}${artifactSuffix}.png`,
+);
 const sourceFiles = [
   'contracts/openapi/auth.yaml',
   'contracts/openapi/trading.yaml',
@@ -101,6 +110,7 @@ page.on('response', (response) => {
       path: url.pathname,
       operationId: record?.operationId ?? null,
       status: response.status(),
+      ...(record?.operationId === 'refreshSession' ? { body: await response.json() } : {}),
       fromServiceWorker: await response.fromServiceWorker(),
       elapsedMs: Date.now() - (record?.startedAt ?? Date.now()),
     });
@@ -158,7 +168,8 @@ try {
   assert.equal(positionsResponses[0].status, 401);
   assert.equal(positionsResponses[0].fromServiceWorker, true);
   assert.equal(refreshResponses.length, 1);
-  assert.equal(refreshResponses[0].status, 401);
+  assert.equal(refreshResponses[0].status, 200);
+  assert.equal(refreshResponses[0].body, null);
   assert.equal(refreshResponses[0].fromServiceWorker, true);
   assert.equal(
     await page.getByText('Nguồn dữ liệu vị thế chưa được kết nối', { exact: true }).count(),
@@ -205,7 +216,7 @@ try {
       declaredTrading401OperationCount: trading401Count,
       positionsStatus: positionsResponses[0].status,
       refreshSessionStatus: refreshResponses[0].status,
-      refreshSession401Declared: refresh401Declared,
+      refreshSessionBodyIsNull: refreshResponses[0].body === null,
       redirectedToLogin: page.url() === `${origin}/auth/login`,
       protectedPositionsStateVisible: false,
       screenshot: path.basename(screenshotPath),
@@ -236,7 +247,7 @@ try {
     apiResponses,
     sourceHashes,
     limitations:
-      'The Trading positions 401 is declared by OpenAPI. The preview unauthorized scenario also makes Auth refresh return 401, but the current Auth OpenAPI contract declares only 200/null for refreshSession. The redirect is therefore representative local UI evidence with a contract gap at refresh; it is not full Trading operation coverage, backend authorization or staging evidence.',
+      'The Trading positions 401 is declared by OpenAPI. Auth refresh returns the contract-defined 200/null response. The redirect is representative local UI evidence; it is not full Trading operation coverage, backend authorization or staging evidence.',
   };
   await fs.writeFile(reportPath, `${JSON.stringify(report, null, 2)}\n`);
   process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);

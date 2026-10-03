@@ -35,6 +35,13 @@ describe('development authentication handlers', () => {
         ]),
       },
     });
+    await expect(authApi.refresh()).resolves.toMatchObject({
+      user: { email: 'developer@vittrade.local' },
+    });
+  });
+
+  it('returns the contract-supported empty session when no session can be refreshed', async () => {
+    await expect(authApi.refresh()).resolves.toBeNull();
   });
 
   it('keeps the development demo button credentials valid', async () => {

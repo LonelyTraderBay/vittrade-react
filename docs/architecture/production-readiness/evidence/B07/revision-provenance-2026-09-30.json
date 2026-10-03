@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-30T08:16:00.000Z",
+  "taskId": "B07",
+  "stepId": "B07.01",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "baselineSourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "environment": {
+    "os": "Windows x64",
+    "node": "v24.19.0",
+    "gitCoreAutocrlf": "true"
+  },
+  "policy": {
+    "path": ".gitattributes",
+    "binaryText": "text=auto eol=lf",
+    "protectedInstructions": [
+      "AGENTS.md",
+      "AI_RULES.md",
+      "PROJECT_BOOTSTRAP_PROMPT.txt"
+    ],
+    "archivedCommandLogs": "-text !eol"
+  },
+  "provenanceBehavior": {
+    "currentHeadAcceptedWithMatchingInputHashes": true,
+    "nonEolSourceMutationRejected": true,
+    "historicalBaselineIsNeverCurrent": true,
+    "tests": {
+      "command": "node node_modules/vitest/vitest.mjs run docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.test.mjs",
+      "testFiles": 1,
+      "passed": 3,
+      "failed": 0
+    }
+  },
+  "scenarioMatrix": {
+    "command": "node docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs --write && --check",
+    "generatedFromSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+    "summary": {
+      "domains": 15,
+      "trackedOperations": 154,
+      "exactHandlerMappings": 154,
+      "operationsWithDirectSharedHandlerTestReferences": 21,
+      "scenariosDefined": 106,
+      "scenarioRowsWithFreshBrowserEvidence": 0,
+      "scenarioRowsFullyCoveredByFreshBrowserEvidence": 0,
+      "uniqueOperationsWithFreshBrowserEvidence": 0,
+      "runtimeEvidenceFresh": false,
+      "currentHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+      "runtimeEvidenceRevision": "historical_baseline",
+      "freshScenarioEvidenceSidecars": 0,
+      "registeredScenarioEvidenceSidecars": 35,
+      "historicalBaselineScenarioEvidenceSidecars": 35,
+      "historicalBaselineSidecarsWithCurrentSourceHashes": 25,
+      "sourceHashStaleScenarioEvidenceSidecars": 10,
+      "financialDomainsWithPendingUnknownDuplicateCases": [
+        "earn",
+        "p2p",
+        "predictions",
+        "trading",
+        "wallet"
+      ]
+    },
+    "staleSourceHashSidecars": [
+      {
+        "scenarioId": "p2p.duplicate",
+        "evidencePath": "docs/architecture/production-readiness/evidence/A06/p2p-duplicate-browser-check-2026-09-29-fresh-after-handler-fix.json",
+        "sourceHashMismatches": [
+          "src/dev/mocks/handlers.ts"
+        ]
+      },
+      {
+        "scenarioId": "p2p.pending",
+        "evidencePath": "docs/architecture/production-readiness/evidence/A06/p2p-pending-browser-check-2026-09-29-fresh-after-handler-fix.json",
+        "sourceHashMismatches": [
+          "src/dev/mocks/handlers.ts"
+        ]
+      },
+      {
+        "scenarioId": "predictions.empty",
+        "evidencePath": "docs/architecture/production-readiness/evidence/A06/predictions-empty-browser-check-2026-09-29.json",
+        "sourceHashMismatches": [
+          "src/dev/mocks/handlers.ts"
+        ]
+      },
+      {
+        "scenarioId": "predictions.error",
+        "evidencePath": "docs/architecture/production-readiness/evidence/A06/predictions-error-browser-check-fresh-2026-09-29.json",
+        "sourceHashMismatches": [
+          "src/dev/mocks/handlers.ts"
+        ]
+      },
+      {
+        "scenarioId": "predictions.loading",
+        "evidencePath": "docs/architecture/production-readiness/evidence/A06/predictions-loading-browser-check-2026-09-29.json",
+        "sourceHashMismatches": [
+          "src/dev/mocks/handlers.ts"
+        ]
+      },
+      {
+        "scenarioId": "predictions.pending",
+        "evidencePath": "docs/architecture/production-readiness/evidence/A06/predictions-pending-browser-check-2026-09-29.json",
+        "sourceHashMismatches": [
+          "src/dev/mocks/handlers.ts"
+        ]
+      },
+      {
+        "scenarioId": "predictions.success",
+        "evidencePath": "docs/architecture/production-readiness/evidence/A06/predictions-success-browser-check-2026-09-29.json",
+        "sourceHashMismatches": [
+          "src/dev/mocks/handlers.ts"
+        ]
+      },
+      {
+        "scenarioId": "predictions.unauthorized",
+        "evidencePath": "docs/architecture/production-readiness/evidence/A06/predictions-unauthorized-browser-check-2026-09-29-contract-scoped.json",
+        "sourceHashMismatches": [
+          "src/dev/mocks/handlers.ts"
+        ]
+      },
+      {
+        "scenarioId": "support.pending",
+        "evidencePath": "docs/architecture/production-readiness/evidence/A06/support-pending-browser-check-2026-09-30.json",
+        "sourceHashMismatches": [
+          "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs"
+        ]
+      },
+      {
+        "scenarioId": "trading.forbidden",
+        "evidencePath": "docs/architecture/production-readiness/evidence/A06/trading-forbidden-browser-check-2026-09-30.json",
+        "sourceHashMismatches": [
+          "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs"
+        ]
+      }
+    ]
+  },
+  "uiAcceptanceIndex": {
+    "command": "node docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs --write && --check",
+    "generatedFromSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+    "measurements": {
+      "activeRouteDeclarations": 427,
+      "urlRegistrations": 1458,
+      "uniquePreviewUrls": 1389,
+      "historicalUrlParity": {
+        "matched": 427,
+        "total": 427
+      },
+      "currentScenarioRows": {
+        "matched": 0,
+        "total": 106
+      },
+      "userAcceptedPages": {
+        "accepted": 0,
+        "total": 128
+      },
+      "backendOrStagingOperations": {
+        "verified": 0,
+        "total": 154
+      }
+    }
+  },
+  "localChecks": [
+    {
+      "command": "prettier --check docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.mjs docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.test.mjs docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs",
+      "result": "pass"
+    },
+    {
+      "command": "node --check on all four changed JavaScript modules",
+      "result": "pass"
+    },
+    {
+      "command": "A06 scenario matrix --check",
+      "result": "pass"
+    },
+    {
+      "command": "C05 UI index --check",
+      "result": "pass"
+    },
+    {
+      "command": "npm script wrapper attempt: npm run format:check using process-local PATH",
+      "result": "environment-failure",
+      "detail": "cmd.exe did not resolve prettier; the exact Prettier CLI and configured source globs passed directly using Node 24."
+    }
+  ],
+  "changedArtifactHashes": {
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "e8af4bbf8c4f6c0a324644eca1db3037ec4d90220064f71d2b8c47f8adf09344",
+    "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json": "7c2633d158e921e1efd01d19afc16200ad514f2e96c51b84032563187d2202ae",
+    "docs/architecture/production-readiness/UI-ACCEPTANCE.md": "b05da6cef0427cc05075a583dbbfd9c79ee7ebcdef64f258e3e789b17b5ec959",
+    "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs": "d4d32249afc14a3466043caf3e0a063a25c0aa7893e32fdeb5f0e1ec5d7e5df3",
+    "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.mjs": "bac4c57be724e988b803492a9274ec4ed2b8fcb574c323cdbfa34b40608d151f",
+    "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.test.mjs": "42fafefd6455ec455675992ca02d7308237cb058e375f174d9e472db261557ba",
+    "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs": "cec811c2b7b8f1a2ef52373e371d35f8eb3700fa8e56dd15e7cc1c7d4d312fe8"
+  },
+  "limitations": [
+    "Zero of the 35 registered scenario sidecars currently match the executing HEAD; all 35 were run with the historical baseline SHA.",
+    "Twenty-five historical baseline sidecars have source hashes matching current source bytes; ten have mismatches (eight on src/dev/mocks/handlers.ts and two on the changed scenario-matrix generator).",
+    "The 10 stale scenarios require actual browser reruns; this generator change does not refresh their sidecars or promote them.",
+    "UI acceptance remains 0/128 and backend/staging remains 0/154.",
+    "Node22/Ubuntu clean CI for this exact revision is not run and no CI run URL is attached."
+  ]
+}

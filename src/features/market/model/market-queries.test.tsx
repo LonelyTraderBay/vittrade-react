@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-query';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { queryClient as appQueryClient } from '@/shared/api/query-client';
 import { marketApi } from '../api/market-api';
 import {
   marketQueryKeys,
@@ -197,6 +198,34 @@ describe('market query hooks', () => {
     rendered.unmount();
     await waitFor(() => expect(requestSignal.current?.aborted).toBe(true));
     expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not multiply the HTTP client retry budget, including a manual retry', async () => {
+    vi.restoreAllMocks();
+    const fetchMock = vi
+      .spyOn(globalThis, 'fetch')
+      .mockRejectedValue(new TypeError('Failed to fetch'));
+    const client = new QueryClient({
+      defaultOptions: {
+        queries: {
+          retry: appQueryClient.getDefaultOptions().queries?.retry,
+          retryDelay: 0,
+          refetchOnWindowFocus: false,
+        },
+      },
+    });
+    queryClients.push(client);
+    const { result } = renderHook(() => useMarketOverviewQuery(), {
+      wrapper: createWrapper(client),
+    });
+
+    await waitFor(() => expect(result.current.isError).toBe(true));
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+
+    await act(async () => {
+      await result.current.refetch();
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(6);
   });
 
   it('loads the watchlist under a user-scoped key and honors the disabled option', async () => {

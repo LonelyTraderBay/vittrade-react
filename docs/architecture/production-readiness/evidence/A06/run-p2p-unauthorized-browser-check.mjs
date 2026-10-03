@@ -81,6 +81,7 @@ const authRefreshResponses = [];
 const p2pRequestFailures = [];
 const p2pMutations = [];
 const apiRequests = [];
+const responseTasks = [];
 
 page.on('request', (request) => {
   const url = new URL(request.url());
@@ -96,15 +97,21 @@ page.on('request', (request) => {
   }
 });
 page.on('response', (response) => {
-  const url = new URL(response.url());
-  const item = {
-    method: response.request().method(),
-    path: url.pathname,
-    status: response.status(),
-    fromServiceWorker: response.fromServiceWorker(),
-  };
-  if (url.pathname === '/api/p2p/orders') p2pResponses.push(item);
-  if (url.pathname === '/api/auth/refresh') authRefreshResponses.push(item);
+  const task = (async () => {
+    const url = new URL(response.url());
+    const item = {
+      method: response.request().method(),
+      path: url.pathname,
+      status: response.status(),
+      fromServiceWorker: response.fromServiceWorker(),
+    };
+    if (url.pathname === '/api/p2p/orders') p2pResponses.push(item);
+    if (url.pathname === '/api/auth/refresh') {
+      item.body = await response.json();
+      authRefreshResponses.push(item);
+    }
+  })();
+  responseTasks.push(task);
 });
 page.on('requestfailed', (request) => {
   const url = new URL(request.url());
@@ -169,6 +176,7 @@ try {
     (await page.getByText('#VT-P2P-20240223-001', { exact: true }).count()) > 0;
   const orderListErrorVisible =
     (await page.getByText('Unable to load P2P orders', { exact: true }).count()) > 0;
+  await Promise.all(responseTasks);
   await page.screenshot({ path: screenshotPath, fullPage: true });
 
   assert.equal(loginPath, '/auth/login');
@@ -178,7 +186,8 @@ try {
   assert.equal(p2pResponses[0].fromServiceWorker, true);
   assert.equal(authRefreshResponses.length, 1);
   assert.equal(authRefreshResponses[0].method, 'POST');
-  assert.equal(authRefreshResponses[0].status, 401);
+  assert.equal(authRefreshResponses[0].status, 200);
+  assert.equal(authRefreshResponses[0].body, null);
   assert.equal(authRefreshResponses[0].fromServiceWorker, true);
   assert.equal(staleOrderVisible, false);
   assert.equal(orderListErrorVisible, false);
@@ -231,7 +240,7 @@ try {
     screenshot: path.basename(screenshotPath),
     sourceHashes,
     limitations: [
-      'GET /p2p/orders declares 401 in the P2P OpenAPI contract. The local service worker also returns 401 for POST /auth/refresh, which the Auth OpenAPI does not declare; treat the refresh result as synthetic preview behavior.',
+      'GET /p2p/orders declares 401 in the P2P OpenAPI contract. The local service worker returns the contract-defined 200/null response for POST /auth/refresh; this is preview behavior and does not verify backend session revocation.',
       'Local Chromium/MSW evidence does not verify backend authorization, session revocation, persistence, staging or user acceptance.',
       'Only listP2POrders was observed, one of 42 linked P2P operations; coverage remains representative.',
       'The /w/p2p/my-orders route alias is not included in this fresh run.',

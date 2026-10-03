@@ -1118,9 +1118,7 @@ export const handlers = [
     return HttpResponse.json({ status: 'authenticated', session: createSession(loginUser) });
   }),
   http.post('*/auth/refresh', () =>
-    authenticated
-      ? HttpResponse.json(createSession(currentUser))
-      : HttpResponse.json({ code: 'SESSION_EXPIRED', message: 'Session expired' }, { status: 401 }),
+    authenticated ? HttpResponse.json(createSession(currentUser)) : HttpResponse.json(null),
   ),
   http.post('*/auth/logout', () => {
     authenticated = false;

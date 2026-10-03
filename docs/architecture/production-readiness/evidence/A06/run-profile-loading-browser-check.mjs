@@ -15,6 +15,7 @@ assert.equal(origin.pathname, '/', 'PREVIEW_BASE_URL must be an origin without a
 const originUrl = origin.origin;
 const checkedAt = new Date().toISOString();
 const date = checkedAt.slice(0, 10);
+const runId = `${date}-${Date.now()}`;
 const readOperationIds = [
   'getProfile',
   'listTrustedDevices',
@@ -22,12 +23,12 @@ const readOperationIds = [
   'listSubAccounts',
 ];
 const screenshots = {
-  edit: path.join(directory, 'preview-profile-loading-edit-' + date + '.png'),
-  devices: path.join(directory, 'preview-profile-loading-devices-' + date + '.png'),
-  activity: path.join(directory, 'preview-profile-loading-activity-' + date + '.png'),
-  subAccounts: path.join(directory, 'preview-profile-loading-subaccounts-' + date + '.png'),
+  edit: path.join(directory, 'preview-profile-loading-edit-' + runId + '.png'),
+  devices: path.join(directory, 'preview-profile-loading-devices-' + runId + '.png'),
+  activity: path.join(directory, 'preview-profile-loading-activity-' + runId + '.png'),
+  subAccounts: path.join(directory, 'preview-profile-loading-subaccounts-' + runId + '.png'),
 };
-const reportPath = path.join(directory, 'profile-loading-browser-check-' + date + '.json');
+const reportPath = path.join(directory, 'profile-loading-browser-check-' + runId + '.json');
 const sourceFiles = [
   'contracts/openapi/profile.yaml',
   'src/app/routes.ts',

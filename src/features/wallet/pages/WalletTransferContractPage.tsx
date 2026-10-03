@@ -328,7 +328,11 @@ export function WalletTransferContractPage() {
           loading={submitting}
           disabled={submitting || !canWriteWallet || samePendingTransfer}
         >
-          Confirm transfer
+          {submitting ? (
+            <span style={{ color: colors.text1 }}>Submitting transfer…</span>
+          ) : (
+            'Confirm transfer'
+          )}
         </CTAButton>
 
         <p className="text-center text-xs" style={{ color: colors.text3 }}>

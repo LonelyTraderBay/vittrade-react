@@ -18,8 +18,19 @@ assert.equal(previewUrl.pathname, '/', 'PREVIEW_BASE_URL must be an origin witho
 const origin = previewUrl.origin;
 const checkedAt = new Date().toISOString();
 const date = checkedAt.slice(0, 10);
-const reportPath = path.join(directory, `trading-forbidden-browser-check-${date}.json`);
-const screenshotPath = path.join(directory, `preview-trading-forbidden-positions-${date}.png`);
+const evidenceRunSuffix = process.env.EVIDENCE_RUN_SUFFIX ?? '';
+if (!/^[a-z0-9-]*$/i.test(evidenceRunSuffix)) {
+  throw new Error('Evidence run suffix must be alphanumeric or hyphenated.');
+}
+const artifactSuffix = evidenceRunSuffix ? `-${evidenceRunSuffix}` : '';
+const reportPath = path.join(
+  directory,
+  `trading-forbidden-browser-check-${date}${artifactSuffix}.json`,
+);
+const screenshotPath = path.join(
+  directory,
+  `preview-trading-forbidden-positions-${date}${artifactSuffix}.png`,
+);
 const sourceFiles = [
   'contracts/openapi/trading.yaml',
   'src/app/routeConfig.ts',

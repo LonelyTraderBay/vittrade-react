@@ -9,6 +9,7 @@ import { TrCard } from '@/shared/ui/TrCard';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { useAuth } from '@/shared/session/useAuth';
+import { isApiError } from '@/shared/api/api-error';
 import { useWalletAssetsQuery, useWalletTransactionsQuery } from '../model/wallet-queries';
 import type { WalletAsset, WalletTransaction } from '../model/wallet-types';
 
@@ -91,17 +92,28 @@ export function WalletOverviewContractPage() {
     !assetsQuery.data ||
     !transactionsQuery.data
   ) {
+    const permissionDenied = [assetsQuery.error, transactionsQuery.error].some(
+      (error) => isApiError(error) && error.status === 403,
+    );
     return (
       <PageLayout>
         <Header title="Wallet" subtitle="Wallet contract" back />
         <PageContent>
           <ErrorState
-            title="Unable to load wallet"
-            message="Check your connection or session and try again."
-            onAction={() => {
-              void assetsQuery.refetch();
-              void transactionsQuery.refetch();
-            }}
+            title={permissionDenied ? 'Không có quyền truy cập' : 'Unable to load wallet'}
+            message={
+              permissionDenied
+                ? 'Tài khoản của bạn không có quyền xem số dư và hoạt động của ví.'
+                : 'Check your connection or session and try again.'
+            }
+            onAction={
+              permissionDenied
+                ? undefined
+                : () => {
+                    void assetsQuery.refetch();
+                    void transactionsQuery.refetch();
+                  }
+            }
           />
         </PageContent>
       </PageLayout>

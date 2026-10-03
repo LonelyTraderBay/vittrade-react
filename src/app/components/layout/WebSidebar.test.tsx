@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { fireEvent, screen } from '@testing-library/react';
 import { useLocation } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
@@ -11,6 +11,47 @@ function LocationProbe() {
 }
 
 describe('WebSidebar', () => {
+  it('reveals and marks the active module route in the scrollable sidebar', () => {
+    const scrollIntoView = vi.fn();
+    const originalDescriptor = Object.getOwnPropertyDescriptor(
+      HTMLElement.prototype,
+      'scrollIntoView',
+    );
+    Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+      configurable: true,
+      value: scrollIntoView,
+    });
+
+    try {
+      renderWithProviders(<WebSidebar />, {
+        routerProps: { initialEntries: ['/w/arena'] },
+      });
+
+      const arenaButton = screen.getByRole('button', { name: 'Open Arena' });
+      expect(arenaButton).toHaveAttribute('aria-current', 'page');
+      expect(scrollIntoView).toHaveBeenCalledOnce();
+      expect(scrollIntoView).toHaveBeenCalledWith({ block: 'nearest', inline: 'nearest' });
+    } finally {
+      if (originalDescriptor) {
+        Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', originalDescriptor);
+      } else {
+        Reflect.deleteProperty(HTMLElement.prototype, 'scrollIntoView');
+      }
+    }
+  });
+
+  it('selects DCA instead of Home on the DCA route', () => {
+    renderWithProviders(<WebSidebar />, {
+      routerProps: { initialEntries: ['/w/dca'] },
+    });
+
+    expect(screen.getByRole('button', { name: 'DCA' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('button', { name: 'Trang chủ' })).not.toHaveAttribute(
+      'aria-current',
+      'page',
+    );
+  });
+
   it('keeps the active market section expanded and follows web routes', () => {
     renderWithProviders(
       <>

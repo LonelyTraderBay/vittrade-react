@@ -290,6 +290,8 @@ export function EarnReceiptPage() {
   const prefix = useRoutePrefix();
   const navigate = useNavigate();
   const location = useLocation();
+  const { domain: routeDomain } = useParams();
+  const domain = routeDomain === 'staking' ? 'staking' : 'savings';
   const receipt = (location.state as { receipt?: EarnReceipt } | null)?.receipt;
   if (!receipt)
     return (
@@ -300,7 +302,7 @@ export function EarnReceiptPage() {
           title="Không có biên nhận"
           subtitle="Hãy thực hiện giao dịch từ trang Earn."
           ctaLabel="Về Earn"
-          onCta={() => navigate(`${prefix}/earn/savings`)}
+          onCta={() => navigate(`${prefix}/earn/${domain}`)}
         />
       </PageLayout>
     );
@@ -351,7 +353,9 @@ export function EarnReceiptPage() {
             <span className="max-w-[55%] truncate font-mono text-xs">{receipt.id}</span>
           </div>
         </TrCard>
-        <CTAButton onClick={() => navigate(`${prefix}/earn/savings`)}>Về Tiết kiệm</CTAButton>
+        <CTAButton onClick={() => navigate(`${prefix}/earn/${domain}`)}>
+          {domain === 'staking' ? 'Về Staking' : 'Về Tiết kiệm'}
+        </CTAButton>
       </PageContent>
     </PageLayout>
   );

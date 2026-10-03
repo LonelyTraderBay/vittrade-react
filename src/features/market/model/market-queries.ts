@@ -43,6 +43,7 @@ export function useMarketPairsQuery(
     queryFn: ({ signal }) => marketApi.listPairs(query, signal),
     enabled: options.enabled ?? true,
     staleTime: 10_000,
+    retry: false,
     refetchInterval: 15_000,
   });
 }
@@ -53,6 +54,7 @@ export function useMarketPairQuery(pairId: string) {
     queryFn: ({ signal }) => marketApi.getPair(pairId, signal),
     enabled: Boolean(pairId),
     staleTime: 5_000,
+    retry: false,
   });
 }
 
@@ -62,6 +64,7 @@ export function useMarketWatchlistQuery(options: { enabled?: boolean; userId?: s
     queryFn: ({ signal }) => marketApi.getWatchlist(signal),
     enabled: Boolean(options.userId) && (options.enabled ?? true),
     staleTime: 30_000,
+    retry: false,
   });
 }
 
@@ -119,6 +122,7 @@ export function useMarketOrderBookQuery(pairId: string) {
     queryFn: ({ signal }) => marketApi.getOrderBook(pairId, signal),
     enabled: Boolean(pairId),
     staleTime: 1_000,
+    retry: false,
     refetchInterval: 5_000,
   });
 }
@@ -129,6 +133,7 @@ export function useMarketRecentTradesQuery(pairId: string) {
     queryFn: ({ signal }) => marketApi.getRecentTrades(pairId, signal),
     enabled: Boolean(pairId),
     staleTime: 1_000,
+    retry: false,
     refetchInterval: 5_000,
   });
 }
@@ -142,6 +147,7 @@ export function useMarketCandlesQuery(
     queryFn: ({ signal }) => marketApi.getCandles(pairId, query, signal),
     enabled: Boolean(pairId),
     staleTime: 10_000,
+    retry: false,
     refetchInterval: 30_000,
   });
 }
@@ -151,6 +157,7 @@ export function useMarketOverviewQuery() {
     queryKey: marketQueryKeys.overview,
     queryFn: ({ signal }) => marketApi.getOverview(signal),
     staleTime: 30_000,
+    retry: false,
     refetchInterval: 60_000,
   });
 }
@@ -160,6 +167,7 @@ export function useMarketMoversQuery(query: MarketMoversQuery) {
     queryKey: marketQueryKeys.movers(query),
     queryFn: ({ signal }) => marketApi.getMovers(query, signal),
     staleTime: 10_000,
+    retry: false,
     refetchInterval: 15_000,
   });
 }
@@ -169,6 +177,7 @@ export function useMarketNewsQuery(query: MarketNewsQuery = {}) {
     queryKey: marketQueryKeys.news(query),
     queryFn: ({ signal }) => marketApi.getNews(query, signal),
     staleTime: 60_000,
+    retry: false,
     refetchInterval: 60_000,
   });
 }
@@ -178,6 +187,7 @@ export function useMarketCalendarQuery(query: MarketCalendarQuery = {}) {
     queryKey: marketQueryKeys.calendar(query),
     queryFn: ({ signal }) => marketApi.getCalendar(query, signal),
     staleTime: 60_000,
+    retry: false,
     refetchInterval: 60_000,
   });
 }
@@ -187,6 +197,7 @@ export function useMarketCorrelationsQuery(query: MarketCorrelationsQuery) {
     queryKey: marketQueryKeys.correlations(query),
     queryFn: ({ signal }) => marketApi.getCorrelations(query, signal),
     staleTime: 60_000,
+    retry: false,
     refetchInterval: 60_000,
   });
 }
@@ -196,6 +207,7 @@ export function useMarketTokenUnlocksQuery(query: MarketUnlocksQuery) {
     queryKey: marketQueryKeys.unlocks(query),
     queryFn: ({ signal }) => marketApi.getTokenUnlocks(query, signal),
     staleTime: 60_000,
+    retry: false,
     refetchInterval: 60_000,
   });
 }
@@ -205,6 +217,7 @@ export function useMarketDerivativesQuery() {
     queryKey: marketQueryKeys.derivatives,
     queryFn: ({ signal }) => marketApi.getDerivatives(signal),
     staleTime: 30_000,
+    retry: false,
     refetchInterval: 30_000,
   });
 }
@@ -214,6 +227,7 @@ export function useMarketSentimentQuery(query: MarketSentimentQuery) {
     queryKey: marketQueryKeys.sentiment(query),
     queryFn: ({ signal }) => marketApi.getSentiment(query, signal),
     staleTime: 60_000,
+    retry: false,
     refetchInterval: 60_000,
   });
 }
@@ -223,6 +237,7 @@ export function useMarketSignalsQuery() {
     queryKey: marketQueryKeys.signals,
     queryFn: ({ signal }) => marketApi.getSignals(signal),
     staleTime: 30_000,
+    retry: false,
     refetchInterval: 60_000,
   });
 }
@@ -232,6 +247,7 @@ export function useMarketPriceAlertsQuery(query: MarketPriceAlertsQuery = {}) {
     queryKey: marketQueryKeys.priceAlerts(query),
     queryFn: ({ signal }) => marketApi.listPriceAlerts(query, signal),
     staleTime: 10_000,
+    retry: false,
   });
 }
 

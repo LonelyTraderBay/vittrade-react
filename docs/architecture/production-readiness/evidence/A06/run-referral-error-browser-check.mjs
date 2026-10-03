@@ -15,9 +15,15 @@ assert.equal(origin.pathname, '/', 'PREVIEW_BASE_URL must be an origin without a
 const originUrl = origin.origin;
 const checkedAt = new Date().toISOString();
 const date = checkedAt.slice(0, 10);
-const errorScreenshotPath = path.join(directory, `preview-referral-error-${date}.png`);
-const retryScreenshotPath = path.join(directory, `preview-referral-error-after-retry-${date}.png`);
-const reportPath = path.join(directory, `referral-error-browser-check-${date}.json`);
+const runId = Date.now();
+const expectedAttemptsPerCycle = Number(process.env.REFERRAL_ERROR_EXPECTED_ATTEMPTS ?? 3);
+assert.ok(Number.isInteger(expectedAttemptsPerCycle) && expectedAttemptsPerCycle > 0);
+const errorScreenshotPath = path.join(directory, `preview-referral-error-${date}-${runId}.png`);
+const retryScreenshotPath = path.join(
+  directory,
+  `preview-referral-error-after-retry-${date}-${runId}.png`,
+);
+const reportPath = path.join(directory, `referral-error-browser-check-${date}-${runId}.json`);
 const sourceFiles = [
   'contracts/openapi/referral.yaml',
   'src/app/routes.ts',
@@ -74,25 +80,6 @@ const requestStartedAt = new WeakMap();
 const referralPath = '/api/referral/overview';
 const isReferralOperation = (method, pathname) =>
   pathname.endsWith(referralPath) && ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'].includes(method);
-const waitForReferralRequestBurstToSettle = async (minimumCount, quietMs = 500) => {
-  const startedAt = Date.now();
-  let previousCount = apiRequests.filter((request) =>
-    isReferralOperation(request.method, request.path),
-  ).length;
-  let lastChangeAt = Date.now();
-  while (Date.now() - startedAt < 10_000) {
-    await new Promise((resolve) => setTimeout(resolve, 50));
-    const currentCount = apiRequests.filter((request) =>
-      isReferralOperation(request.method, request.path),
-    ).length;
-    if (currentCount !== previousCount) {
-      previousCount = currentCount;
-      lastChangeAt = Date.now();
-    }
-    if (currentCount > minimumCount && Date.now() - lastChangeAt >= quietMs) return currentCount;
-  }
-  throw new Error('Referral retry did not produce a settled request burst.');
-};
 
 page.on('request', (request) => {
   const url = new URL(request.url());
@@ -123,6 +110,35 @@ page.on('requestfailed', (request) => {
 });
 const pageErrors = [];
 page.on('pageerror', (error) => pageErrors.push(error.message));
+
+await page.addInitScript(() => {
+  const originalFetch = window.fetch.bind(window);
+  Object.defineProperty(window, '__referralTransportAttempts', {
+    configurable: true,
+    value: [],
+  });
+  window.fetch = async (input, init) => {
+    const requestUrl =
+      typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+    const request = input instanceof Request ? input : null;
+    const method = (init?.method ?? request?.method ?? 'GET').toUpperCase();
+    const url = new URL(requestUrl, window.location.href);
+    if (
+      url.origin === window.location.origin &&
+      url.pathname === '/api/referral/overview' &&
+      method === 'GET'
+    ) {
+      window.__referralTransportAttempts.push({
+        method,
+        path: url.pathname,
+        errorText: 'Failed to fetch',
+        source: 'runner-scoped pre-network fetch rejection',
+      });
+      throw new TypeError('Failed to fetch');
+    }
+    return originalFetch(input, init);
+  };
+});
 
 const navigate = async (pathname) => {
   await page.evaluate((target) => {
@@ -166,6 +182,9 @@ try {
   apiFailures.length = 0;
   externalApiOrigins.clear();
   pageErrors.length = 0;
+  await page.evaluate(() => {
+    window.__referralTransportAttempts.length = 0;
+  });
 
   const scenarioStartedAt = Date.now();
   await navigate('/w/referral');
@@ -173,28 +192,23 @@ try {
   const retryButton = page.getByRole('button', { name: 'Thử lại' });
   await retryButton.waitFor({ state: 'visible' });
   assert.equal(new URL(page.url()).pathname, '/w/referral');
-  const initialErrorResponses = apiResponses.filter((item) =>
-    isReferralOperation(item.method, item.path),
-  );
-  assert.ok(initialErrorResponses.length >= 2);
-  assert.equal(
-    initialErrorResponses.every((item) => item.status === 503),
-    true,
-  );
-  assert.equal(
-    initialErrorResponses.every((item) => item.fromServiceWorker),
-    true,
-  );
+  const initialTransportAttempts = await page.evaluate(() => [
+    ...window.__referralTransportAttempts,
+  ]);
+  assert.equal(initialTransportAttempts.length, expectedAttemptsPerCycle);
   assert.equal(
     (await page.getByText('Invite friends and earn commission', { exact: true }).count()) === 0,
     true,
   );
   await page.screenshot({ path: errorScreenshotPath, fullPage: true });
 
-  const countBeforeManualRetry = initialErrorResponses.length;
+  const countBeforeManualRetry = initialTransportAttempts.length;
   const manualRetryStartedAt = Date.now();
   await retryButton.click();
-  await waitForReferralRequestBurstToSettle(countBeforeManualRetry);
+  await page.waitForFunction(
+    (targetCount) => window.__referralTransportAttempts.length >= targetCount,
+    countBeforeManualRetry + expectedAttemptsPerCycle,
+  );
   await page.getByText('Có lỗi xảy ra', { exact: true }).waitFor({ state: 'visible' });
   await retryButton.waitFor({ state: 'visible' });
   assert.equal(new URL(page.url()).pathname, '/w/referral');
@@ -204,6 +218,8 @@ try {
   );
   await page.screenshot({ path: retryScreenshotPath, fullPage: true });
 
+  const transportAttempts = await page.evaluate(() => [...window.__referralTransportAttempts]);
+  const retryTransportAttempts = transportAttempts.slice(initialTransportAttempts.length);
   const targetRequests = apiRequests.filter((request) =>
     isReferralOperation(request.method, request.path),
   );
@@ -211,21 +227,17 @@ try {
     isReferralOperation(item.method, item.path),
   );
   const targetFailures = apiFailures.filter((item) => isReferralOperation(item.method, item.path));
-  const manualRetryResponses = targetResponses.slice(initialErrorResponses.length);
-  assert.equal(manualRetryResponses.length, targetRequests.length - initialErrorResponses.length);
-  assert.ok(manualRetryResponses.length > 0, 'The visible Retry action must issue another GET.');
+  assert.equal(transportAttempts.length, expectedAttemptsPerCycle * 2);
+  assert.equal(retryTransportAttempts.length, expectedAttemptsPerCycle);
   assert.equal(
-    targetRequests.every((request) => request.method === 'GET'),
-    true,
+    targetRequests.length,
+    0,
+    'Synthetic transport failure must happen before network dispatch.',
   );
-  assert.equal(targetResponses.length, targetRequests.length);
+  assert.equal(targetResponses.length, 0, 'A transport failure must not create an HTTP response.');
   assert.equal(targetFailures.length, 0);
   assert.equal(
-    targetResponses.every((item) => item.status === 503),
-    true,
-  );
-  assert.equal(
-    targetResponses.every((item) => item.fromServiceWorker),
+    transportAttempts.every((item) => item.method === 'GET'),
     true,
   );
   assert.equal(new URL(page.url()).pathname, '/w/referral');
@@ -236,19 +248,20 @@ try {
   const retryPolicyObservation = {
     sourcePolicy: {
       httpClientMaxRetriesForIdempotentGet: 2,
-      reactQueryRetriesAfterFailure: 1,
-      retryableStatus: 503,
+      appQueryDefaultRetriesAfterFailure: 1,
+      expectedFetchAttemptsPerQueryExecution: expectedAttemptsPerCycle,
     },
-    configuredMaximumRequestsPerFailedQueryCycle: (2 + 1) * (1 + 1),
-    observedRequestsPerCycle: {
-      initialFailure: initialErrorResponses.length,
-      afterOneManualRetry: manualRetryResponses.length,
+    observedFetchAttemptsPerExecution: {
+      initialFailure: initialTransportAttempts.length,
+      afterOneManualRetry: retryTransportAttempts.length,
     },
-    observedCountsMatchConfiguredMaximum:
-      initialErrorResponses.length === (2 + 1) * (1 + 1) &&
-      manualRetryResponses.length === (2 + 1) * (1 + 1),
+    observedCountsMatchExpected:
+      initialTransportAttempts.length === expectedAttemptsPerCycle &&
+      retryTransportAttempts.length === expectedAttemptsPerCycle,
     interpretation:
-      'The observed six GETs per failure cycle match the combined HTTP-client and React Query retry policies; review the combined retry budget before backend integration.',
+      expectedAttemptsPerCycle === 6
+        ? 'Diagnostic baseline: each query execution performs three HTTP-client fetch attempts and React Query retries once, producing six attempts per failed execution.'
+        : 'After assigning the query retry budget to the HTTP client, each execution performs three fetch attempts; a user-triggered Retry begins one new three-attempt execution.',
   };
 
   const sidecar = {
@@ -269,7 +282,7 @@ try {
     },
     fixtureBoundary: {
       serviceWorkerControlled,
-      allObservedResponsesFromServiceWorker: apiResponses.every((item) => item.fromServiceWorker),
+      referralFailureInjection: 'window.fetch rejects before network dispatch',
       realBackendRequestSent: false,
       realBackendMutationSent: false,
       externalApiOrigins: [...externalApiOrigins].sort(),
@@ -286,25 +299,27 @@ try {
       apiRequestCount: apiRequests.length,
       apiResponseCount: apiResponses.length,
       apiRequestFailureCount: apiFailures.length,
-      initialErrorResponseCount: initialErrorResponses.length,
-      manualRetryRequestCount: targetRequests.length - initialErrorResponses.length,
-      responseStatuses: targetResponses.map((item) => item.status),
-      referralOverviewRequestCount: targetRequests.length,
+      initialTransportFailureCount: initialTransportAttempts.length,
+      manualRetryTransportFailureCount: retryTransportAttempts.length,
+      referralOverviewFetchAttemptCount: transportAttempts.length,
+      referralOverviewRequestCount: transportAttempts.length,
       referralOverviewResponseCount: targetResponses.length,
-      referralOverviewFinalStatus: targetResponses.at(-1).status,
-      referralOverviewResponseElapsedMs: targetResponses[0].elapsedMs,
-      referralWriteCount: targetRequests.filter((request) => request.method !== 'GET').length,
+      referralOverviewResponseStatuses: targetResponses.map((item) => item.status),
+      referralWriteCount: transportAttempts.filter((request) => request.method !== 'GET').length,
+      externalApiOriginCount: externalApiOrigins.size,
       pageErrorCount: pageErrors.length,
       friendCount: 0,
       manualRetryDurationMs: Date.now() - manualRetryStartedAt,
-      externalApiOriginCount: externalApiOrigins.size,
     },
     assertions: {
       route: '/w/referral',
+      referralTransportFailuresBeforeNetwork: true,
+      referralHttpResponseCount: 0,
+      initialAttemptsMatchExpected: initialTransportAttempts.length === expectedAttemptsPerCycle,
+      manualRetryAttemptsMatchExpected: retryTransportAttempts.length === expectedAttemptsPerCycle,
       visibleErrorState: true,
       visibleRetryAction: true,
       routePreservedAfterError: true,
-      allResponsesFromServiceWorker: targetResponses.every((item) => item.fromServiceWorker),
       successDataAbsentAfterRetry: true,
       errorStateRemainsVisibleAfterManualRetry: true,
       noReferralWrites: true,
@@ -316,8 +331,8 @@ try {
     },
     sourceHashes,
     limitations: [
-      'The 503 error responses are synthetic local MSW preview responses; Referral OpenAPI declares only 200 and 401, so 503 is not a backend contract claim.',
-      'The six GETs in each failure cycle match the configured layers captured by source hashes: up to two HTTP-client retries for an idempotent GET, then one React Query retry. This totals up to six backend-facing requests per failed query cycle; review this combined budget before backend integration.',
+      'Referral OpenAPI declares 200 and 401 but no 5xx; this runner injects TypeError before network dispatch and records fetch attempts without inventing an HTTP response.',
+      'The attempt count is local configuration evidence, not a real backend outage or a production load recommendation.',
       'The manual Retry keeps the preview in error state; successful recovery is covered separately by referral.success and was not tested in this error scenario.',
       'MSW does not enforce referral read authorization; this does not verify server permissions, persistence, user acceptance, or real invite-link behavior.',
       'Only the read operation getReferralOverview ran; the displayed invite URL was not opened or copied.',

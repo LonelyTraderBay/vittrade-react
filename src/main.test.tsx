@@ -1,3 +1,4 @@
+import type { ReactElement, ReactNode } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const bootstrapState = vi.hoisted(() => ({
@@ -5,12 +6,14 @@ const bootstrapState = vi.hoisted(() => ({
   isDevelopmentBuild: true,
   order: [] as string[],
   workerOptions: undefined as unknown,
+  renderedElement: undefined as unknown,
   retireWorker: vi.fn(async () => false),
   startWorker: vi.fn(async (options: unknown) => {
     bootstrapState.order.push('worker.start');
     bootstrapState.workerOptions = options;
   }),
-  render: vi.fn(() => {
+  render: vi.fn((element: unknown) => {
+    bootstrapState.renderedElement = element;
     bootstrapState.order.push('render');
   }),
   assertRuntimeEnv: vi.fn(() => {
@@ -53,11 +56,15 @@ describe('application bootstrap', () => {
     bootstrapState.isDevelopmentBuild = true;
     bootstrapState.order.length = 0;
     bootstrapState.workerOptions = undefined;
+    bootstrapState.renderedElement = undefined;
     bootstrapState.retireWorker.mockReset();
     bootstrapState.retireWorker.mockResolvedValue(false);
     bootstrapState.startWorker.mockClear();
     bootstrapState.render.mockClear();
-    bootstrapState.assertRuntimeEnv.mockClear();
+    bootstrapState.assertRuntimeEnv.mockReset();
+    bootstrapState.assertRuntimeEnv.mockImplementation(() => {
+      bootstrapState.order.push('validate');
+    });
     document.body.innerHTML = '<div id="root"></div>';
   });
   afterEach(() => {
@@ -106,5 +113,29 @@ describe('application bootstrap', () => {
     expect(bootstrapState.order).toEqual(['validate', 'worker.cleanup']);
     expect(bootstrapState.render).not.toHaveBeenCalled();
     expect(bootstrapState.startWorker).not.toHaveBeenCalled();
+  });
+
+  it('renders a controlled accessible message without exposing a thrown configuration error', async () => {
+    const logStartupFailure = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    bootstrapState.assertRuntimeEnv.mockImplementation(() => {
+      throw new Error('private-runtime-value');
+    });
+
+    await import('./main');
+    await vi.waitFor(() => expect(bootstrapState.render).toHaveBeenCalledOnce());
+
+    const failure = bootstrapState.renderedElement as ReactElement<{
+      role?: string;
+      children?: ReactNode;
+    }>;
+    const children = failure.props.children as ReactElement<{ children?: ReactNode }>[];
+    expect(failure.type).toBe('main');
+    expect(failure.props.role).toBe('alert');
+    expect(children[0]?.props.children).toBe('VitTrade could not start');
+    expect(children[1]?.props.children).toContain('Contact your deployment administrator');
+    expect(children[1]?.props.children).not.toContain('private-runtime-value');
+    expect(logStartupFailure).toHaveBeenCalledWith(
+      'VitTrade startup checks failed; verify deployment configuration.',
+    );
   });
 });

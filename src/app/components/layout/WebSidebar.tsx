@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import {
   Home,
@@ -22,6 +23,7 @@ import {
 import type { LucideIcon } from 'lucide-react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useAuth } from '@/shared/session/useAuth';
+import { useUI } from '../../hooks/useUI';
 import { WEB_SIDEBAR_WIDTH, WEB_COMMAND_BAR_HEIGHT } from './webConstants';
 
 /**
@@ -92,6 +94,7 @@ const NAV_SECTIONS: NavSection[] = [
       { path: `${PREFIX}/wallet`, icon: Wallet, label: 'Ví' },
       { path: `${PREFIX}/p2p`, icon: Globe, label: 'P2P Trading' },
       { path: `${PREFIX}/earn/savings`, icon: PieChart, label: 'Earn & Savings' },
+      { path: `${PREFIX}/dca`, icon: TrendingUp, label: 'DCA' },
       { path: `${PREFIX}/launchpad`, icon: Layers, label: 'Launchpad' },
     ],
   },
@@ -106,7 +109,7 @@ const NAV_SECTIONS: NavSection[] = [
 ];
 
 const BOTTOM_ITEMS: NavItem[] = [
-  { path: `${PREFIX}/notifications`, icon: Bell, label: 'Thông báo', badge: 3 },
+  { path: `${PREFIX}/notifications`, icon: Bell, label: 'Thông báo' },
   { path: `${PREFIX}/support`, icon: HelpCircle, label: 'Hỗ trợ' },
   { path: `${PREFIX}/profile/security`, icon: Shield, label: 'Bảo mật' },
   { path: `${PREFIX}/profile/settings`, icon: Settings, label: 'Cài đặt' },
@@ -115,8 +118,15 @@ const BOTTOM_ITEMS: NavItem[] = [
 export function WebSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const activeNavItemRef = useRef<HTMLButtonElement>(null);
   const c = useThemeColors();
   const { isAuthenticated, isLoading, user } = useAuth();
+  const { notifications } = useUI();
+  const bottomItems = BOTTOM_ITEMS.map((item) =>
+    item.path === `${PREFIX}/notifications`
+      ? { ...item, badge: notifications > 0 ? notifications : undefined }
+      : item,
+  );
   const account = !isLoading && isAuthenticated ? user : null;
   const accountName = account
     ? account.fullName.trim() || account.username || account.email || 'Tài khoản'
@@ -137,6 +147,10 @@ export function WebSidebar() {
   };
 
   const isExactActive = (path: string) => location.pathname === path;
+
+  useEffect(() => {
+    activeNavItemRef.current?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
+  }, [location.pathname]);
 
   return (
     <div
@@ -198,8 +212,10 @@ export function WebSidebar() {
                 return (
                   <div key={item.path}>
                     <button
+                      ref={active ? activeNavItemRef : undefined}
                       onClick={() => navigate(item.path)}
                       className="web-sidebar-item w-full flex items-center gap-3 rounded-lg px-3 transition-colors"
+                      aria-current={isExactActive(item.path) ? 'page' : undefined}
                       style={{
                         height: 40,
                         background: active ? 'rgba(59,130,246,0.08)' : 'transparent',
@@ -286,14 +302,16 @@ export function WebSidebar() {
         className="shrink-0 flex flex-col px-2.5 py-2.5 gap-0.5"
         style={{ borderTop: `1px solid ${c.divider}` }}
       >
-        {BOTTOM_ITEMS.map((item) => {
+        {bottomItems.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.path);
           return (
             <button
               key={item.path}
+              ref={active ? activeNavItemRef : undefined}
               onClick={() => navigate(item.path)}
               className="web-sidebar-item w-full flex items-center gap-3 rounded-lg px-3 transition-colors"
+              aria-current={isExactActive(item.path) ? 'page' : undefined}
               style={{
                 height: 38,
                 background: active ? 'rgba(59,130,246,0.06)' : 'transparent',

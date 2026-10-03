@@ -42,6 +42,33 @@ describe('PlatformSwitcher', () => {
     expect(screen.getByText('Web')).toBeInTheDocument();
   });
 
+  it('moves the informational badge above the mock preview controls when they are present', () => {
+    setViewportWidth(1440);
+    render(
+      <MemoryRouter initialEntries={['/w/auth/login']}>
+        <PlatformSwitcher previewControlsVisible />
+        <Routes>
+          <Route path="*" element={<RouteProbe />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByText('Web').parentElement).toHaveStyle({
+      bottom: '112px',
+      zIndex: '1200',
+    });
+  });
+
+  it('keeps the production shell badge position when development preview controls are absent', () => {
+    setViewportWidth(1440);
+    renderAt('/w/markets');
+
+    expect(screen.getByText('Web').parentElement).toHaveStyle({
+      bottom: '24px',
+      zIndex: '9999',
+    });
+  });
+
   it.each(['/auth/login', '/onboarding/start'])(
     'keeps standalone route %s outside viewport switching',
     (path) => {

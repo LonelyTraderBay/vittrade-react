@@ -1,6 +1,8 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@/shared/api/query-client';
 import { renderWithProviders, screen, userEvent } from '@/test/test-utils';
 import { ArenaDiscoveryPage } from './ArenaDiscoveryPage';
 
@@ -56,8 +58,18 @@ const response = {
   ],
 };
 
-function renderPage() {
-  return renderWithProviders(<ArenaDiscoveryPage />, {
+function renderPage({ useAppQueryDefaults = false }: { useAppQueryDefaults?: boolean } = {}) {
+  const page = useAppQueryDefaults ? (
+    <QueryClientProvider
+      client={new QueryClient({ defaultOptions: queryClient.getDefaultOptions() })}
+    >
+      <ArenaDiscoveryPage />
+    </QueryClientProvider>
+  ) : (
+    <ArenaDiscoveryPage />
+  );
+
+  return renderWithProviders(page, {
     routerProps: { initialEntries: ['/w/arena'] },
   });
 }
@@ -103,7 +115,7 @@ describe('ArenaDiscoveryPage', () => {
       }),
     );
 
-    renderPage();
+    renderPage({ useAppQueryDefaults: true });
 
     expect(await screen.findByText('Có lỗi xảy ra')).toBeInTheDocument();
     expect(requestCount).toBe(3);

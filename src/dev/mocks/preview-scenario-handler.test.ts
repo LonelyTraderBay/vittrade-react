@@ -163,6 +163,21 @@ describe('development preview scenario MSW handler', () => {
     expect(await testsResponse.json()).toEqual({ tests: [] });
   });
 
+  it('uses statusless transport failures for Admin reads without declared 5xx responses', async () => {
+    setDevPreviewScenario({ domain: 'admin', state: 'error' });
+
+    const readPaths = [
+      '/admin/overview',
+      '/admin/analytics/funnel',
+      '/admin/analytics/ab-tests',
+      '/admin/analytics/ab-tests/test-1',
+    ];
+
+    for (const path of readPaths) {
+      await expect(request(path), path).rejects.toThrow('Failed to fetch');
+    }
+  });
+
   it('returns empty Arena discovery without intercepting mode detail', async () => {
     setDevPreviewScenario({ domain: 'arena', state: 'empty' });
 
@@ -352,30 +367,41 @@ describe('development preview scenario MSW handler', () => {
   it('limits Auth unauthorized responses to operations that declare 401', async () => {
     setDevPreviewScenario({ domain: 'auth', state: 'unauthorized' });
 
-    const [sessionResponse, currentPasswordResponse, changePasswordResponse, logoutResponse] =
-      await Promise.all([
-        request('/auth/session'),
-        fetch('http://localhost/api/auth/password/verify-current', {
-          method: 'POST',
-          headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password: 'Preview-123!' }),
-        }),
-        fetch('http://localhost/api/auth/password/change', {
-          method: 'POST',
-          headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-          body: JSON.stringify({ currentPassword: 'Preview-123!', newPassword: 'Next-123!' }),
-        }),
-        fetch('http://localhost/api/auth/logout', {
-          method: 'POST',
-          headers: { Accept: 'application/json' },
-        }),
-      ]);
+    const [
+      sessionResponse,
+      currentPasswordResponse,
+      changePasswordResponse,
+      logoutResponse,
+      refreshResponse,
+    ] = await Promise.all([
+      request('/auth/session'),
+      fetch('http://localhost/api/auth/password/verify-current', {
+        method: 'POST',
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: 'Preview-123!' }),
+      }),
+      fetch('http://localhost/api/auth/password/change', {
+        method: 'POST',
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ currentPassword: 'Preview-123!', newPassword: 'Next-123!' }),
+      }),
+      fetch('http://localhost/api/auth/logout', {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+      }),
+      fetch('http://localhost/api/auth/refresh', {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+      }),
+    ]);
 
     expect(sessionResponse.status).toBe(401);
     expect(await sessionResponse.json()).toMatchObject({ code: 'PREVIEW_UNAUTHORIZED' });
     expect(currentPasswordResponse.status).toBe(401);
     expect(changePasswordResponse.status).toBe(401);
     expect(logoutResponse.status).toBe(204);
+    expect(refreshResponse.status).toBe(200);
+    expect(await refreshResponse.json()).toBeNull();
   });
 
   it('does not synthesize an Auth forbidden response without a declared 403', async () => {
@@ -1206,7 +1232,7 @@ describe('development preview scenario MSW handler', () => {
   });
 
   it.each(['market', 'discovery', 'profile'] as const)(
-    'expires the mock refresh session when %s unauthorized is selected',
+    'returns the contract-supported empty session after %s unauthorized is selected',
     async (domain) => {
       setDevPreviewScenario({ domain, state: 'unauthorized' });
 
@@ -1215,8 +1241,8 @@ describe('development preview scenario MSW handler', () => {
         headers: { Accept: 'application/json' },
       });
 
-      expect(response.status).toBe(401);
-      expect(await response.json()).toMatchObject({ code: 'SESSION_EXPIRED' });
+      expect(response.status).toBe(200);
+      expect(await response.json()).toBeNull();
     },
   );
 

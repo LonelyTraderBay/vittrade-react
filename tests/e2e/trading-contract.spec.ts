@@ -189,7 +189,7 @@ test.describe('trading contract smoke on staging build', () => {
     await page.route('**/trading/orders**', (route) =>
       route.fulfill({ json: { items: [openOrder] } }),
     );
-    await page.route('https://e2e.invalid/trading/orders/e2e-open-order/cancel', async (route) => {
+    await page.route('https://e2e.test/trading/orders/e2e-open-order/cancel', async (route) => {
       cancelledOrderId = 'e2e-open-order';
       idempotencyKey = route.request().headers()['idempotency-key'];
       return route.fulfill({ json: { ...openOrder, status: 'cancelled' } });
@@ -423,11 +423,11 @@ test.describe('trading contract smoke on staging build', () => {
     };
 
     await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
-    await page.route('https://e2e.invalid/trading/copy/relationships', (route) =>
+    await page.route('https://e2e.test/trading/copy/relationships', (route) =>
       route.fulfill({ json: { items: [relationship] } }),
     );
     await page.route(
-      'https://e2e.invalid/trading/copy/relationships/e2e-copy-relationship/stop',
+      'https://e2e.test/trading/copy/relationships/e2e-copy-relationship/stop',
       async (route) => {
         stopBody = route.request().postDataJSON() as Record<string, unknown>;
         idempotencyKey = route.request().headers()['idempotency-key'];
@@ -492,13 +492,13 @@ test.describe('trading contract smoke on staging build', () => {
     });
 
     await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
-    await page.route('https://e2e.invalid/trading/copy/providers**', (route) => {
+    await page.route('https://e2e.test/trading/copy/providers**', (route) => {
       const pathname = new URL(route.request().url()).pathname;
       return route.fulfill({
         json: pathname.endsWith('/providers') ? { items: [provider] } : providerProfile,
       });
     });
-    await page.route('https://e2e.invalid/trading/copy/relationships', async (route) => {
+    await page.route('https://e2e.test/trading/copy/relationships', async (route) => {
       if (route.request().method() === 'GET') {
         return route.fulfill({ json: { items: relationship ? [relationship] : [] } });
       }

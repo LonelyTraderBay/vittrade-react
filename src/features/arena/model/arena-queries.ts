@@ -12,6 +12,7 @@ export function useArenaDiscoveryQuery() {
   return useQuery({
     queryKey: arenaQueryKeys.discovery(),
     queryFn: ({ signal }) => arenaApi.getDiscovery(signal),
+    retry: false,
     staleTime: 30_000,
   });
 }
@@ -21,6 +22,7 @@ export function useArenaModeQuery(id: string) {
     queryKey: arenaQueryKeys.mode(id),
     queryFn: ({ signal }) => arenaApi.getMode(id, signal),
     enabled: Boolean(id),
+    retry: false,
     staleTime: 30_000,
   });
 }
@@ -30,6 +32,7 @@ export function useArenaChallengeQuery(id: string) {
     queryKey: arenaQueryKeys.challenge(id),
     queryFn: ({ signal }) => arenaApi.getChallenge(id, signal),
     enabled: Boolean(id),
+    retry: false,
     staleTime: 10_000,
   });
 }

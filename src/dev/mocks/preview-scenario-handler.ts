@@ -92,12 +92,7 @@ export const previewScenarioHandler = http.all('*', async ({ request }) => {
     scenario.domain !== 'auth' &&
     pathname.endsWith('/auth/refresh')
   ) {
-    if (scenario.domain === 'earn') return HttpResponse.json(null);
-
-    return HttpResponse.json(
-      { code: 'SESSION_EXPIRED', message: 'Kịch bản xem trước: phiên đăng nhập đã hết hạn.' },
-      { status: 401 },
-    );
+    return HttpResponse.json(null);
   }
 
   if (!matchesScenarioDomain(pathname, scenario.domain)) return undefined;
@@ -137,6 +132,16 @@ export const previewScenarioHandler = http.all('*', async ({ request }) => {
 
     if (isMarketReadWithoutServerError(pathname)) return HttpResponse.error();
     return undefined;
+  }
+
+  if (scenario.domain === 'admin' && scenario.state === 'error') {
+    if (request.method !== 'GET') return undefined;
+    const isAdminReadWithoutServerError =
+      pathname.endsWith('/admin/overview') ||
+      pathname.endsWith('/admin/analytics/funnel') ||
+      pathname.endsWith('/admin/analytics/ab-tests') ||
+      /\/admin\/analytics\/ab-tests\/[^/]+$/.test(pathname);
+    return isAdminReadWithoutServerError ? HttpResponse.error() : undefined;
   }
 
   if (

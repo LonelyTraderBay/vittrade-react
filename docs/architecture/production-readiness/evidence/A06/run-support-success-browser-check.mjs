@@ -16,18 +16,23 @@ assert.equal(origin.pathname, '/', 'PREVIEW_BASE_URL must be an origin without a
 const originUrl = origin.origin;
 const checkedAt = new Date().toISOString();
 const date = checkedAt.slice(0, 10);
+const runId = Date.now();
 const screenshotPaths = {
-  news: path.join(directory, `preview-support-success-news-${date}.png`),
-  notifications: path.join(directory, `preview-support-success-notifications-${date}.png`),
-  help: path.join(directory, `preview-support-success-help-${date}.png`),
-  tickets: path.join(directory, `preview-support-success-tickets-${date}.png`),
+  news: path.join(directory, `preview-support-success-news-${date}-${runId}.png`),
+  notifications: path.join(directory, `preview-support-success-notifications-${date}-${runId}.png`),
+  help: path.join(directory, `preview-support-success-help-${date}-${runId}.png`),
+  tickets: path.join(directory, `preview-support-success-tickets-${date}-${runId}.png`),
 };
-const reportPath = path.join(directory, `support-success-browser-check-${date}.json`);
+const reportPath = path.join(directory, `support-success-browser-check-${date}-${runId}.json`);
 const sourceFiles = [
   'contracts/openapi/support.yaml',
   'src/app/routeConfig.ts',
   'src/app/routes.ts',
+  'src/app/contexts/UIContext.tsx',
+  'src/app/contexts/ui-context.ts',
   'src/app/components/layout/WebSidebar.tsx',
+  'src/app/components/layout/WebCommandBar.tsx',
+  'src/app/components/layout/TabletSidebar.tsx',
   'src/dev/PreviewControls.tsx',
   'src/dev/mocks/browser.ts',
   'src/dev/mocks/handlers.ts',
@@ -51,7 +56,10 @@ const sourceFiles = [
   'docs/architecture/production-readiness/evidence/A06/run-support-success-browser-check.mjs',
 ];
 const sha256 = async (file) =>
-  crypto.createHash('sha256').update(await fs.readFile(path.join(root, file))).digest('hex');
+  crypto
+    .createHash('sha256')
+    .update(await fs.readFile(path.join(root, file)))
+    .digest('hex');
 const sourceHashes = Object.fromEntries(
   await Promise.all(sourceFiles.map(async (file) => [file, await sha256(file)])),
 );
@@ -173,11 +181,21 @@ try {
   const serviceWorkerControlled = await page.evaluate(() =>
     Boolean(navigator.serviceWorker?.controller),
   );
-  assert.equal(serviceWorkerControlled, true, 'The local preview service worker must control the page.');
+  assert.equal(
+    serviceWorkerControlled,
+    true,
+    'The local preview service worker must control the page.',
+  );
 
   await page.locator('#preview-persona').selectOption('support');
+  const initialNotificationsResponsePromise = waitForApiResponse('GET', '/api/notifications', 200);
   await page.getByRole('button', { name: 'Áp dụng tài khoản' }).click();
-  await page.locator('[data-testid="dev-preview-controls"]').getByText('support@vittrade.local').waitFor();
+  await page
+    .locator('[data-testid="dev-preview-controls"]')
+    .getByText('support@vittrade.local')
+    .waitFor();
+  const initialNotificationsResponse = await initialNotificationsResponsePromise;
+  assert.equal(initialNotificationsResponse.fromServiceWorker(), true);
   const personaApplied = true;
   const collapsePreview = page.getByRole('button', { name: 'Thu gọn' });
   if (await collapsePreview.count()) await collapsePreview.click();
@@ -191,20 +209,40 @@ try {
   assert.ok(newsItemCount > 0, 'News success data must render.');
   await page.screenshot({ path: screenshotPaths.news, fullPage: true });
 
-  const notificationsResponsePromise = waitForApiResponse('GET', '/api/notifications', 200);
   await navigate('/w/notifications');
-  const notificationsResponse = await notificationsResponsePromise;
+  const notificationsResponse = initialNotificationsResponse;
   assert.equal(notificationsResponse.fromServiceWorker(), true);
   await page.getByRole('main').getByText('Thông báo', { exact: true }).waitFor();
   const unreadSummary = page.getByText(/^\d+ chưa đọc$/).first();
   const unreadCountBefore = Number((await unreadSummary.innerText()).match(/^\d+/)?.[0]);
   assert.ok(Number.isFinite(unreadCountBefore) && unreadCountBefore > 0);
+  const readSidebarNotificationBadgeCount = async () => {
+    const text = await page
+      .locator('button.web-sidebar-item')
+      .filter({ hasText: 'Thông báo' })
+      .first()
+      .innerText();
+    return Number(text.match(/\b\d+\b/)?.[0]);
+  };
+  const sidebarNotificationBadgeCountBefore = await readSidebarNotificationBadgeCount();
+  assert.equal(
+    sidebarNotificationBadgeCountBefore,
+    unreadCountBefore,
+    'The Web sidebar badge must match the Notifications page before mark-read.',
+  );
   const markReadButton = page.getByRole('button', { name: 'Đã đọc' }).first();
   await markReadButton.waitFor({ state: 'visible' });
-  assert.equal(await markReadButton.isEnabled(), true, 'Support persona must expose mark-read action.');
+  assert.equal(
+    await markReadButton.isEnabled(),
+    true,
+    'Support persona must expose mark-read action.',
+  );
   const markReadResponsePromise = page.waitForResponse((response) => {
     const url = new URL(response.url());
-    return response.request().method() === 'POST' && /^\/api\/notifications\/[^/]+\/read$/.test(url.pathname);
+    return (
+      response.request().method() === 'POST' &&
+      /^\/api\/notifications\/[^/]+\/read$/.test(url.pathname)
+    );
   });
   const notificationRefreshPromise = waitForApiResponse('GET', '/api/notifications', 200);
   await markReadButton.click();
@@ -213,14 +251,14 @@ try {
   assert.equal(markReadResponse.status(), 204);
   assert.equal(markReadResponse.fromServiceWorker(), true);
   assert.equal(notificationRefreshResponse.fromServiceWorker(), true);
-  await page.getByText(`${unreadCountBefore - 1} chưa đọc`, { exact: true }).waitFor();
-  const notificationsNavText = await page
-    .locator('button.web-sidebar-item')
-    .filter({ hasText: 'Thông báo' })
-    .first()
-    .innerText();
-  const sidebarNotificationBadgeCount = Number(notificationsNavText.match(/\b\d+\b/)?.[0]);
-  assert.ok(Number.isFinite(sidebarNotificationBadgeCount));
+  const unreadCountAfter = unreadCountBefore - 1;
+  await page.getByText(`${unreadCountAfter} chưa đọc`, { exact: true }).waitFor();
+  const sidebarNotificationBadgeCount = await readSidebarNotificationBadgeCount();
+  assert.equal(
+    sidebarNotificationBadgeCount,
+    unreadCountAfter,
+    'The Web sidebar badge must update to match the unread count after the 204 response.',
+  );
   await page.screenshot({ path: screenshotPaths.notifications, fullPage: true });
 
   const helpResponsePromise = waitForApiResponse('GET', '/api/support/help', 200);
@@ -241,7 +279,11 @@ try {
   const description = 'Local MSW browser verification; no backend request.';
   const subjectField = page.getByRole('textbox', { name: 'Tiêu đề ticket' });
   const descriptionField = page.getByRole('textbox', { name: 'Nội dung ticket' });
-  assert.equal(await subjectField.isEnabled(), true, 'Support persona must expose ticket creation.');
+  assert.equal(
+    await subjectField.isEnabled(),
+    true,
+    'Support persona must expose ticket creation.',
+  );
   const initialTicketCount = await page.locator('h2').count();
   await subjectField.fill(subject);
   await descriptionField.fill(description);
@@ -267,7 +309,9 @@ try {
     'listSupportTickets',
     'createSupportTicket',
   ];
-  const observedOperationIds = [...new Set(apiResponses.map((response) => response.operationId).filter(Boolean))];
+  const observedOperationIds = [
+    ...new Set(apiResponses.map((response) => response.operationId).filter(Boolean)),
+  ];
   const supportResponses = apiResponses.filter((response) => response.operationId);
   const supportRequests = apiRequests.filter((request) => request.operationId);
   const supportFailures = apiFailures.filter((failure) => failure.operationId);
@@ -281,12 +325,22 @@ try {
   ];
 
   if (supportFailures.length > 0) {
-    console.log('Support request failure events (including post-response aborts):', JSON.stringify(supportFailures, null, 2));
+    console.log(
+      'Support request failure events (including post-response aborts):',
+      JSON.stringify(supportFailures, null, 2),
+    );
   }
   assert.deepEqual(observedOperationIds.sort(), [...operationIds].sort());
-  assert.equal(supportResponses.length, 8, 'Expected 8 Support API responses including two refetches.');
+  assert.equal(
+    supportResponses.length,
+    8,
+    'Expected 8 Support API responses including two refetches.',
+  );
   assert.equal(supportRequests.length, supportResponses.length);
-  assert.equal(supportResponses.every((response) => response.fromServiceWorker), true);
+  assert.equal(
+    supportResponses.every((response) => response.fromServiceWorker),
+    true,
+  );
   assert.equal(supportTransportFailures.length, 0);
   assert.equal(externalApiOrigins.size, 0);
   assert.equal(pageErrors.length, 0);
@@ -315,7 +369,9 @@ try {
     },
     fixtureBoundary: {
       serviceWorkerControlled,
-      allObservedResponsesFromServiceWorker: apiResponses.every((response) => response.fromServiceWorker),
+      allObservedResponsesFromServiceWorker: apiResponses.every(
+        (response) => response.fromServiceWorker,
+      ),
       observedNetworkApiResponseCount: apiResponses.length,
       localMockMutationCount: 2,
       realBackendRequestSent: false,
@@ -329,7 +385,12 @@ try {
     },
     authorizationLimitations: {
       persona: 'support',
-      mockSourcePermissions: ['support:read', 'support:write', 'notifications:read', 'notifications:write'],
+      mockSourcePermissions: [
+        'support:read',
+        'support:write',
+        'notifications:read',
+        'notifications:write',
+      ],
       uiActionsEnabledForPersona: true,
       mswEnforcesSupportPermissions: false,
       backendAuthorizationVerified: false,
@@ -340,14 +401,19 @@ try {
       apiRequestCount: apiRequests.length,
       apiResponseCount: apiResponses.length,
       supportOperationRequestCounts: Object.fromEntries(
-        operationIds.map((id) => [id, supportRequests.filter((request) => request.operationId === id).length]),
+        operationIds.map((id) => [
+          id,
+          supportRequests.filter((request) => request.operationId === id).length,
+        ]),
       ),
       supportOperationResponseCounts: Object.fromEntries(
         operationIds.map((id) => [id, operationResponses(id).length]),
       ),
       notificationMarkReadStatus: markReadRecord.status,
       unreadCountBefore,
-      unreadCountAfter: unreadCountBefore - 1,
+      unreadCountAfter,
+      sidebarNotificationBadgeCountBefore,
+      sidebarNotificationBadgeCountAfter: sidebarNotificationBadgeCount,
       supportTicketCreateStatus: createTicketRecord.status,
       initialTicketHeadingCount: initialTicketCount,
       createdTicketId: createdTicket.id,
@@ -368,17 +434,30 @@ try {
       personaApplied,
       news: { route: '/w/news', status: newsResponse.status(), visibleArticleCount: newsItemCount },
       notifications: {
-        route: '/w/notifications', initialStatus: notificationsResponse.status(),
-        markReadStatus: markReadRecord.status, refreshStatus: notificationRefreshResponse.status(),
-        unreadCountBefore, unreadCountAfter: unreadCountBefore - 1,
+        route: '/w/notifications',
+        initialStatus: notificationsResponse.status(),
+        markReadStatus: markReadRecord.status,
+        refreshStatus: notificationRefreshResponse.status(),
+        unreadCountBefore,
+        unreadCountAfter,
+        sidebarBadgeCountBefore: sidebarNotificationBadgeCountBefore,
         sidebarBadgeCount: sidebarNotificationBadgeCount,
-        sidebarBadgeMatchesUnreadCount: sidebarNotificationBadgeCount === unreadCountBefore - 1,
+        sidebarBadgeMatchesUnreadCount:
+          sidebarNotificationBadgeCountBefore === unreadCountBefore &&
+          sidebarNotificationBadgeCount === unreadCountAfter,
       },
-      help: { route: '/w/support/help', status: helpResponse.status(), visibleArticleCount: helpArticleCount },
+      help: {
+        route: '/w/support/help',
+        status: helpResponse.status(),
+        visibleArticleCount: helpArticleCount,
+      },
       tickets: {
-        route: '/w/support', initialStatus: ticketsResponse.status(),
-        createStatus: createTicketRecord.status, refetchStatus: ticketRefreshResponse.status(),
-        createdTicketId: createdTicket.id, createdTicketVisible: true,
+        route: '/w/support',
+        initialStatus: ticketsResponse.status(),
+        createStatus: createTicketRecord.status,
+        refetchStatus: ticketRefreshResponse.status(),
+        createdTicketId: createdTicket.id,
+        createdTicketVisible: true,
       },
       apiResponses: supportResponses,
     },

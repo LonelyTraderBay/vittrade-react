@@ -9,6 +9,7 @@
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
+import { QueryClientProvider } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
 import { AppProvider } from '../contexts/AppContext';
 import { useApp } from '../hooks/useApp';
@@ -21,7 +22,9 @@ import { queryClient } from '@/shared/api/query-client';
 import { useAuth } from '@/shared/session/useAuth';
 
 const TestAppProvider = ({ children }: { children: ReactNode }) => (
-  <AppProvider authAdapter={testAuthAdapter}>{children}</AppProvider>
+  <QueryClientProvider client={queryClient}>
+    <AppProvider authAdapter={testAuthAdapter}>{children}</AppProvider>
+  </QueryClientProvider>
 );
 
 describe('AppContext', () => {
@@ -32,6 +35,7 @@ describe('AppContext', () => {
 
   afterEach(() => {
     document.documentElement.classList.remove('dark', 'light');
+    queryClient.clear();
   });
 
   describe('Initial State', () => {
@@ -63,7 +67,9 @@ describe('AppContext', () => {
         refresh: testAuthAdapter.refresh,
       };
       const wrapper = ({ children }: { children: ReactNode }) => (
-        <AppProvider authAdapter={adapter}>{children}</AppProvider>
+        <QueryClientProvider client={queryClient}>
+          <AppProvider authAdapter={adapter}>{children}</AppProvider>
+        </QueryClientProvider>
       );
       const { result } = renderHook(() => useAuth(), { wrapper });
       queryClient.setQueryData(['wallet', 'assets'], { items: [{ id: 'private-asset' }] });
@@ -98,7 +104,7 @@ describe('AppContext', () => {
 
       expect(result.current.isBalanceHidden).toBe(false);
       expect(result.current.isOffline).toBe(false);
-      expect(result.current.notifications).toBe(3);
+      expect(result.current.notifications).toBe(0);
       expect(typeof result.current.toggleBalanceHidden).toBe('function');
       expect(typeof result.current.setIsOffline).toBe('function');
     });
@@ -237,12 +243,12 @@ describe('AppContext', () => {
       expect(result.current.isOffline).toBe(true);
     });
 
-    it('should update notifications count', () => {
+    it('does not supply a local notification count without read permission', () => {
       const { result } = renderHook(() => useApp(), {
         wrapper: TestAppProvider,
       });
 
-      expect(result.current.notifications).toBe(3);
+      expect(result.current.notifications).toBe(0);
     });
   });
 
@@ -392,11 +398,13 @@ describe('AppContext', () => {
       expect(() => {
         renderHook(() => useApp(), {
           wrapper: ({ children }) => (
-            <ThemeProvider>
-              <AuthProvider adapter={testAuthAdapter}>
-                <UIProvider>{children}</UIProvider>
-              </AuthProvider>
-            </ThemeProvider>
+            <QueryClientProvider client={queryClient}>
+              <ThemeProvider>
+                <AuthProvider adapter={testAuthAdapter}>
+                  <UIProvider>{children}</UIProvider>
+                </AuthProvider>
+              </ThemeProvider>
+            </QueryClientProvider>
           ),
         });
       }).toThrow('useApp must be used inside AppProvider');

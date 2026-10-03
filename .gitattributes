@@ -1,0 +1,10 @@
+# Keep repository text and generated-input hashes stable across Windows and Linux.
+* text=auto eol=lf
+
+# Preserve the caller's instruction-file bytes in the working tree.
+AGENTS.md text=auto !eol
+AI_RULES.md text=auto !eol
+PROJECT_BOOTSTRAP_PROMPT.txt text=auto !eol
+
+# Archived command output is retained byte-for-byte with its recorded SHA-256.
+docs/architecture/production-readiness/evidence/PLAN-20260930/*.txt -text !eol

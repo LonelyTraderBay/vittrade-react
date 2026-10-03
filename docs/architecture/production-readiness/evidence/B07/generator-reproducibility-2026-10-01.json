@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-01T01:31:03.000Z",
+  "taskId": "B07",
+  "stepId": "B07.01",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "environment": {
+    "os": "Windows x64",
+    "node": "v24.19.0",
+    "primaryBranch": "main",
+    "secondaryCheckout": "detached worktree at the same HEAD; current nonignored workspace files mirrored before checks"
+  },
+  "checkoutComparison": {
+    "sourcePathCount": 2484,
+    "copiedPathCount": 2484,
+    "sha256ComparedPathCount": 2484,
+    "sha256Mismatches": 0,
+    "ignoredInputs": "Git-ignored files and node_modules were excluded; the secondary checkout used a junction to the existing node_modules directory for generator dependencies."
+  },
+  "checks": [
+    {
+      "command": "node scripts/generate-architecture-inventory.mjs --check",
+      "result": "pass",
+      "actual": "129 pages, 427 routes, 149 components, 0 data modules, 32 services, 28 mocks."
+    },
+    {
+      "command": "node docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs --check",
+      "result": "pass",
+      "actual": "15 domains, 154 operations, 106 expectations."
+    },
+    {
+      "command": "node docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs --check",
+      "result": "pass",
+      "actual": "427 active declarations, 1462 URL registrations, 1393 unique preview URLs; historical URL parity 426/427; 81/106 fresh scenario rows."
+    },
+    {
+      "command": "node node_modules/vitest/vitest.mjs run scripts/generate-architecture-inventory.test.mjs docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.test.mjs",
+      "result": "pass",
+      "actual": "2 files, 18 tests passed; provenance tests include rejecting a non-EOL source byte change against its recorded hash."
+    }
+  ],
+  "generatedOutputs": [
+    {
+      "path": "docs/architecture/page-inventory.json",
+      "sha256": "4f25117ff0d216b4eb10d17fbfeab33d859effd80c9553679b6f4bfb33f7958b"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
+      "sha256": "1bb593e2e1a8ca8d404a813641c90a81dbdbad173117d7532c3cb51cdf052f0f"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json",
+      "sha256": "bba8902105c98bf807356c1cbab77988345009c7e252ecc726eaf4bf1679b710"
+    }
+  ],
+  "limitations": "This proves same-input reproducibility on Windows Node 24.19.0 only. Node22/Ubuntu clean npm ci and exact-SHA CI remain outstanding; user acceptance and backend/staging evidence are separate gates."
+}

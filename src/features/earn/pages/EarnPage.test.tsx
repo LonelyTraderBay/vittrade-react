@@ -3,11 +3,13 @@ import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Route, Routes } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
 import type { EarnSnapshot } from '../model/earn-types';
 import { EarnPage } from './EarnPage';
+import { EarnReceiptPage } from './EarnTransactionPages';
 
 const server = setupServer();
 
@@ -62,8 +64,17 @@ const redemptionSnapshot: EarnSnapshot = {
   summary: { ...snapshot.summary, totalDepositedUsd: 500, activePositions: 1 },
 };
 
-function renderEarn(authAdapter: AuthAdapter = testAuthAdapter) {
-  return renderWithProviders(<EarnPage domain="savings" />, { authAdapter });
+function renderEarn(
+  authAdapter: AuthAdapter = testAuthAdapter,
+  domain: 'savings' | 'staking' = 'savings',
+) {
+  return renderWithProviders(
+    <Routes>
+      <Route path="/earn/:domain" element={<EarnPage domain={domain} />} />
+      <Route path="/earn/:domain/receipt" element={<EarnReceiptPage />} />
+    </Routes>,
+    { authAdapter, routerProps: { initialEntries: [`/earn/${domain}`] } },
+  );
 }
 
 describe('Earn page contract boundary', () => {
@@ -95,6 +106,113 @@ describe('Earn page contract boundary', () => {
     await user.click(screen.getByRole('checkbox'));
     await user.click(screen.getByRole('button', { name: /Xác nhận đăng ký/i }));
     expect(await screen.findByText('Đăng ký sản phẩm thành công.')).toBeInTheDocument();
+  });
+
+  it('shows a pending subscription receipt instead of reporting completion', async () => {
+    server.use(
+      http.get('*/earn/snapshot', () => HttpResponse.json(snapshot)),
+      http.post('*/earn/subscriptions', async ({ request }) => {
+        expect(request.headers.get('Idempotency-Key')).toBeTruthy();
+        expect(await request.json()).toEqual({ productId: 'product-1', amount: 100 });
+        return HttpResponse.json(
+          {
+            id: 'receipt-pending-subscription',
+            operation: 'subscribe',
+            productId: 'product-1',
+            asset: 'USDT',
+            amount: 100,
+            status: 'pending',
+            createdAt: '2026-09-30T10:00:00.000Z',
+          },
+          { status: 201 },
+        );
+      }),
+    );
+
+    const user = userEvent.setup();
+    renderEarn();
+    await user.click(await screen.findByRole('button', { name: /Stable Savings/i }));
+    await user.type(screen.getByRole('textbox', { name: 'Số lượng' }), '100');
+    await user.click(screen.getByRole('checkbox'));
+    await user.click(screen.getByRole('button', { name: /Xác nhận đăng ký/i }));
+
+    expect(await screen.findByRole('heading', { name: 'Yêu cầu đang xử lý' })).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('Đang xử lý');
+    expect(screen.getByText('receipt-pending-subscription')).toBeInTheDocument();
+    expect(screen.queryByText('Đăng ký sản phẩm thành công.')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Về Tiết kiệm' })).toBeInTheDocument();
+  });
+
+  it('shows a pending redemption receipt instead of reporting completion', async () => {
+    server.use(
+      http.get('*/earn/snapshot', () => HttpResponse.json(redemptionSnapshot)),
+      http.post('*/earn/redemptions', async ({ request }) => {
+        expect(request.headers.get('Idempotency-Key')).toBeTruthy();
+        expect(await request.json()).toEqual({ positionId: 'position-1', amount: 50 });
+        return HttpResponse.json(
+          {
+            id: 'receipt-pending-redemption',
+            operation: 'redeem',
+            productId: 'product-1',
+            positionId: 'position-1',
+            asset: 'USDT',
+            amount: 50,
+            status: 'pending',
+            createdAt: '2026-09-30T10:00:00.000Z',
+          },
+          { status: 201 },
+        );
+      }),
+    );
+
+    const user = userEvent.setup();
+    renderEarn();
+    await user.click(await screen.findByRole('tab', { name: 'Của tôi (1)' }));
+    await user.click(await screen.findByRole('button', { name: 'Rút vốn' }));
+    await user.type(screen.getByRole('textbox', { name: 'Số lượng' }), '50');
+    await user.click(screen.getByRole('button', { name: 'Xác nhận rút vốn' }));
+
+    expect(await screen.findByRole('heading', { name: 'Yêu cầu đang xử lý' })).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('Đang xử lý');
+    expect(screen.getByText('receipt-pending-redemption')).toBeInTheDocument();
+    expect(screen.queryByText('Yêu cầu rút vốn đã được ghi nhận.')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Về Tiết kiệm' })).toBeInTheDocument();
+  });
+
+  it('returns to Staking after showing a pending staking receipt', async () => {
+    server.use(
+      http.get('*/earn/snapshot', () =>
+        HttpResponse.json({
+          ...snapshot,
+          products: snapshot.products.map((product) => ({ ...product, domain: 'staking' })),
+        }),
+      ),
+      http.post('*/earn/subscriptions', () =>
+        HttpResponse.json(
+          {
+            id: 'receipt-pending-staking',
+            operation: 'subscribe',
+            productId: 'product-1',
+            asset: 'USDT',
+            amount: 100,
+            status: 'pending',
+            createdAt: '2026-09-30T10:00:00.000Z',
+          },
+          { status: 201 },
+        ),
+      ),
+    );
+
+    const user = userEvent.setup();
+    renderEarn(testAuthAdapter, 'staking');
+    await user.click(await screen.findByRole('button', { name: /Stable Savings/i }));
+    await user.type(screen.getByRole('textbox', { name: 'Số lượng' }), '100');
+    await user.click(screen.getByRole('checkbox'));
+    await user.click(screen.getByRole('button', { name: /Xác nhận đăng ký/i }));
+
+    expect(await screen.findByRole('heading', { name: 'Yêu cầu đang xử lý' })).toBeInTheDocument();
+    expect(screen.getByText('receipt-pending-staking')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Về Staking' })).toBeInTheDocument();
   });
 
   it('reuses the subscription idempotency key when retrying an unchanged amount', async () => {

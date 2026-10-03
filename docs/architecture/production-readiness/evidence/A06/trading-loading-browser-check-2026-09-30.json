@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-09-30T00:25:33.498Z",
-  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
-  "branch": "codex/vittrade-architecture-completion",
+  "checkedAt": "2026-09-30T18:44:00.224Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
   "origin": "http://127.0.0.1:4173",
   "browser": "Chromium via Playwright",
   "viewport": {
@@ -14,8 +14,16 @@
     "status": "passed",
     "persona": "developer",
     "route": "/w/trade/positions",
-    "operationIds": ["listOpenOrders", "listOrderHistory", "listOpenPositions"],
-    "observedOperationIds": ["listOpenOrders", "listOrderHistory", "listOpenPositions"],
+    "operationIds": [
+      "listOpenOrders",
+      "listOrderHistory",
+      "listOpenPositions"
+    ],
+    "observedOperationIds": [
+      "listOpenOrders",
+      "listOrderHistory",
+      "listOpenPositions"
+    ],
     "expectedDomainOperationCount": 3,
     "coverage": "full_scenario_operations_browser_observed",
     "visibleLoadingStates": {
@@ -42,8 +50,8 @@
         "loadingText": "Đang tải dữ liệu lệnh…",
         "loadingVisibleBeforeResponse": true,
         "resolvedText": "Không có lệnh đang mở",
-        "firstResponseWaitMs": 1964,
-        "finalStateWaitMs": 1966,
+        "firstResponseWaitMs": 1980,
+        "finalStateWaitMs": 1982,
         "status": 200,
         "fromServiceWorker": true
       },
@@ -53,8 +61,8 @@
         "loadingText": "Đang tải dữ liệu lệnh…",
         "loadingVisibleBeforeResponse": true,
         "resolvedText": "Chưa có lịch sử giao dịch",
-        "firstResponseWaitMs": 2022,
-        "finalStateWaitMs": 2025,
+        "firstResponseWaitMs": 2019,
+        "finalStateWaitMs": 2021,
         "status": 200,
         "fromServiceWorker": true
       },
@@ -64,8 +72,8 @@
         "loadingText": "Đang tải vị thế…",
         "loadingVisibleBeforeResponse": true,
         "resolvedText": "Nguồn dữ liệu vị thế chưa được kết nối",
-        "firstResponseWaitMs": 1992,
-        "finalStateWaitMs": 15031,
+        "firstResponseWaitMs": 1993,
+        "finalStateWaitMs": 14997,
         "status": 503,
         "fromServiceWorker": true
       }
@@ -86,7 +94,7 @@
     "unexpectedTradingRequestCount": 0
   },
   "measurements": {
-    "totalFlowMs": 19780,
+    "totalFlowMs": 19661,
     "apiRequestCount": 16,
     "apiResponseCount": 16,
     "operationResponses": [
@@ -96,7 +104,7 @@
         "operationId": "listOpenOrders",
         "status": 200,
         "fromServiceWorker": true,
-        "elapsedMs": 2008
+        "elapsedMs": 2012
       },
       {
         "method": "GET",
@@ -104,7 +112,15 @@
         "operationId": "listOrderHistory",
         "status": 200,
         "fromServiceWorker": true,
-        "elapsedMs": 2025
+        "elapsedMs": 2021
+      },
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "operationId": "listOpenPositions",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2010
       },
       {
         "method": "GET",
@@ -120,7 +136,7 @@
         "operationId": "listOpenPositions",
         "status": 503,
         "fromServiceWorker": true,
-        "elapsedMs": 2020
+        "elapsedMs": 2005
       },
       {
         "method": "GET",
@@ -128,7 +144,7 @@
         "operationId": "listOpenPositions",
         "status": 503,
         "fromServiceWorker": true,
-        "elapsedMs": 2011
+        "elapsedMs": 2016
       },
       {
         "method": "GET",
@@ -136,7 +152,7 @@
         "operationId": "listOpenPositions",
         "status": 503,
         "fromServiceWorker": true,
-        "elapsedMs": 2009
+        "elapsedMs": 2016
       },
       {
         "method": "GET",
@@ -144,15 +160,7 @@
         "operationId": "listOpenPositions",
         "status": 503,
         "fromServiceWorker": true,
-        "elapsedMs": 2012
-      },
-      {
-        "method": "GET",
-        "path": "/api/trading/positions",
-        "operationId": "listOpenPositions",
-        "status": 503,
-        "fromServiceWorker": true,
-        "elapsedMs": 2012
+        "elapsedMs": 2006
       }
     ],
     "apiFailures": [
@@ -180,97 +188,97 @@
       "method": "GET",
       "path": "/api/auth/session",
       "operationId": null,
-      "startedAt": 1790727933852
+      "startedAt": 1790793840540
     },
     {
       "method": "GET",
       "path": "/api/market/pairs",
       "operationId": null,
-      "startedAt": 1790727933892
+      "startedAt": 1790793840582
     },
     {
       "method": "POST",
       "path": "/api/auth/logout",
       "operationId": null,
-      "startedAt": 1790727934092
+      "startedAt": 1790793840775
     },
     {
       "method": "GET",
       "path": "/api/market/pairs",
       "operationId": null,
-      "startedAt": 1790727934092
+      "startedAt": 1790793840775
     },
     {
       "method": "POST",
       "path": "/api/auth/login",
       "operationId": null,
-      "startedAt": 1790727934107
+      "startedAt": 1790793840785
     },
     {
       "method": "GET",
       "path": "/api/market/pairs",
       "operationId": null,
-      "startedAt": 1790727934109
+      "startedAt": 1790793840787
     },
     {
       "method": "GET",
       "path": "/api/market/pairs",
       "operationId": null,
-      "startedAt": 1790727934123
+      "startedAt": 1790793840801
     },
     {
       "method": "GET",
       "path": "/api/market/watchlist",
       "operationId": null,
-      "startedAt": 1790727934123
+      "startedAt": 1790793840801
     },
     {
       "method": "GET",
       "path": "/api/trading/orders",
       "operationId": "listOpenOrders",
-      "startedAt": 1790727934301
+      "startedAt": 1790793840927
     },
     {
       "method": "GET",
       "path": "/api/trading/orders/history",
       "operationId": "listOrderHistory",
-      "startedAt": 1790727936338
+      "startedAt": 1790793842963
     },
     {
       "method": "GET",
       "path": "/api/trading/positions",
       "operationId": "listOpenPositions",
-      "startedAt": 1790727938379
+      "startedAt": 1790793844996
     },
     {
       "method": "GET",
       "path": "/api/trading/positions",
       "operationId": "listOpenPositions",
-      "startedAt": 1790727940657
+      "startedAt": 1790793847265
     },
     {
       "method": "GET",
       "path": "/api/trading/positions",
       "operationId": "listOpenPositions",
-      "startedAt": 1790727943183
+      "startedAt": 1790793849790
     },
     {
       "method": "GET",
       "path": "/api/trading/positions",
       "operationId": "listOpenPositions",
-      "startedAt": 1790727946208
+      "startedAt": 1790793852809
     },
     {
       "method": "GET",
       "path": "/api/trading/positions",
       "operationId": "listOpenPositions",
-      "startedAt": 1790727948476
+      "startedAt": 1790793855084
     },
     {
       "method": "GET",
       "path": "/api/trading/positions",
       "operationId": "listOpenPositions",
-      "startedAt": 1790727950995
+      "startedAt": 1790793857606
     }
   ],
   "apiResponses": [
@@ -280,7 +288,7 @@
       "operationId": null,
       "status": 401,
       "fromServiceWorker": true,
-      "elapsedMs": 15
+      "elapsedMs": 16
     },
     {
       "method": "GET",
@@ -296,7 +304,7 @@
       "operationId": null,
       "status": 204,
       "fromServiceWorker": true,
-      "elapsedMs": 14
+      "elapsedMs": 10
     },
     {
       "method": "GET",
@@ -304,7 +312,7 @@
       "operationId": null,
       "status": 200,
       "fromServiceWorker": true,
-      "elapsedMs": 15
+      "elapsedMs": 10
     },
     {
       "method": "GET",
@@ -312,7 +320,7 @@
       "operationId": null,
       "status": 200,
       "fromServiceWorker": true,
-      "elapsedMs": 2
+      "elapsedMs": 3
     },
     {
       "method": "POST",
@@ -344,7 +352,7 @@
       "operationId": "listOpenOrders",
       "status": 200,
       "fromServiceWorker": true,
-      "elapsedMs": 2008
+      "elapsedMs": 2012
     },
     {
       "method": "GET",
@@ -352,7 +360,15 @@
       "operationId": "listOrderHistory",
       "status": 200,
       "fromServiceWorker": true,
-      "elapsedMs": 2025
+      "elapsedMs": 2021
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "status": 503,
+      "fromServiceWorker": true,
+      "elapsedMs": 2010
     },
     {
       "method": "GET",
@@ -368,7 +384,7 @@
       "operationId": "listOpenPositions",
       "status": 503,
       "fromServiceWorker": true,
-      "elapsedMs": 2020
+      "elapsedMs": 2005
     },
     {
       "method": "GET",
@@ -376,7 +392,7 @@
       "operationId": "listOpenPositions",
       "status": 503,
       "fromServiceWorker": true,
-      "elapsedMs": 2011
+      "elapsedMs": 2016
     },
     {
       "method": "GET",
@@ -384,7 +400,7 @@
       "operationId": "listOpenPositions",
       "status": 503,
       "fromServiceWorker": true,
-      "elapsedMs": 2009
+      "elapsedMs": 2016
     },
     {
       "method": "GET",
@@ -392,15 +408,7 @@
       "operationId": "listOpenPositions",
       "status": 503,
       "fromServiceWorker": true,
-      "elapsedMs": 2012
-    },
-    {
-      "method": "GET",
-      "path": "/api/trading/positions",
-      "operationId": "listOpenPositions",
-      "status": 503,
-      "fromServiceWorker": true,
-      "elapsedMs": 2012
+      "elapsedMs": 2006
     }
   ],
   "sourceHashes": {
@@ -411,7 +419,7 @@
     "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
     "src/dev/mocks/handlers.ts": "8382400738090945e6c3ec53286f288f0ed2d41c90dbd407eec2b48d36d347ae",
     "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
-    "src/dev/mocks/preview-scenario-handler.ts": "6deef3b43c51e05c9cd058d8743b23b64a86579f474ce0486830359ac50ac200",
+    "src/dev/mocks/preview-scenario-handler.ts": "692c244236634f056b12b49addc49eb6b2781d110943e48ba1c4396393955a73",
     "src/dev/mocks/trading-fixtures.ts": "b082e4bc4094a4d7b36f41897ce9b27ea4c487fd3bf714622baf2f91fe2153cf",
     "src/features/trading/routes.ts": "cb268f664e4c0fadd39ab1cd1430dd968b1700dc49dab56fb1f4782b524d0385",
     "src/features/trading/api/trading-api.ts": "bfd385aba4911e0640567e88dd5b5c9352eea553cda7518cfb28f9009a1c32fa",

@@ -16,11 +16,21 @@ assert.equal(origin.pathname, '/', 'PREVIEW_BASE_URL must be an origin without a
 const originUrl = origin.origin;
 const checkedAt = new Date().toISOString();
 const date = checkedAt.slice(0, 10);
+const evidenceRunSuffix = process.env.EVIDENCE_RUN_SUFFIX ?? '';
+assert.match(
+  evidenceRunSuffix,
+  /^[a-z0-9-]*$/i,
+  'Evidence run suffix must be alphanumeric or hyphenated.',
+);
+const artifactSuffix = evidenceRunSuffix ? `-${evidenceRunSuffix}` : '';
 const screenshotPaths = {
-  pending: path.join(directory, `preview-support-pending-${date}.png`),
-  completed: path.join(directory, `preview-support-pending-completed-${date}.png`),
+  pending: path.join(directory, `preview-support-pending-${date}${artifactSuffix}.png`),
+  completed: path.join(directory, `preview-support-pending-completed-${date}${artifactSuffix}.png`),
 };
-const reportPath = path.join(directory, `support-pending-browser-check-${date}.json`);
+const reportPath = path.join(
+  directory,
+  `support-pending-browser-check-${date}${artifactSuffix}.json`,
+);
 const sourceFiles = [
   'contracts/openapi/support.yaml',
   'src/app/routeConfig.ts',

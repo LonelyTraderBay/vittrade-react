@@ -368,6 +368,11 @@ the backend must still enforce token and refresh-cookie expiration and logout.
 - Savings product detail, redemption and receipt URLs are implemented in the
   feature boundary and use the same typed mutations; no local fixture is used
   as a transaction source.
+- The Savings and Staking summary-page mutations keep the returned Earn receipt:
+  a `pending` 201 navigates to `/earn/{domain}/receipt`, shows the stable receipt
+  ID and an in-progress status, and returns to the same domain. A pending 201 is
+  not rendered as completed; current browser proof uses local MSW only and does
+  not establish backend persistence or settlement.
 - Subscription/redemption contract pages preserve one UUID idempotency key for
   retries of unchanged request data, expose API failures accessibly, and route
   successful operations to the server-backed receipt; contract tests cover

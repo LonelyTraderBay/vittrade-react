@@ -15,12 +15,13 @@ assert.equal(origin.pathname, '/', 'PREVIEW_BASE_URL must be an origin without a
 const originUrl = origin.origin;
 const checkedAt = new Date().toISOString();
 const date = checkedAt.slice(0, 10);
+const runId = `${date}-${Date.now()}`;
 const screenshots = {
-  devices: path.join(directory, `preview-profile-empty-devices-${date}.png`),
-  activity: path.join(directory, `preview-profile-empty-activity-${date}.png`),
-  subAccounts: path.join(directory, `preview-profile-empty-subaccounts-${date}.png`),
+  devices: path.join(directory, `preview-profile-empty-devices-${runId}.png`),
+  activity: path.join(directory, `preview-profile-empty-activity-${runId}.png`),
+  subAccounts: path.join(directory, `preview-profile-empty-subaccounts-${runId}.png`),
 };
-const reportPath = path.join(directory, `profile-empty-browser-check-${date}.json`);
+const reportPath = path.join(directory, `profile-empty-browser-check-${runId}.json`);
 const sourceFiles = [
   'contracts/openapi/profile.yaml',
   'src/app/routes.ts',

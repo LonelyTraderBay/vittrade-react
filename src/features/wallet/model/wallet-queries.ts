@@ -32,6 +32,7 @@ export function useWalletAssetsQuery(enabled: boolean) {
     queryKey: walletQueryKeys.assets,
     queryFn: ({ signal }) => walletApi.getAssets(signal),
     enabled,
+    retry: false,
     staleTime: 5_000,
     refetchInterval: 15_000,
   });
@@ -51,6 +52,7 @@ export function useWalletTransactionsQuery(filters: WalletTransactionFilters, en
     queryKey: walletQueryKeys.transactions(filters),
     queryFn: ({ signal }) => walletApi.getTransactions(filters, signal),
     enabled,
+    retry: false,
     staleTime: 5_000,
   });
 }
