@@ -2,15 +2,15 @@
   "schemaVersion": 1,
   "generatedFrom": {
     "generatedAt": "2026-09-29T16:38:37.957Z",
-    "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+    "sourceHead": "1517ae875b555199a5726eb3567aa3dbd0aa8f9a",
     "inputs": {
       "tracking": {
         "path": "docs/architecture/production-readiness/TRACKING.json",
-        "sha256": "326b0f86ba43601580d9ab46427203e77f22c3d94771c8e08191bc60ccb2b82b"
+        "sha256": "42a05a3f6f0be3252a9135662084dce2447f00447933d6a00e8b6fcd5d878a86"
       },
       "scenarioMatrix": {
         "path": "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
-        "sha256": "1e0e7933f76f83d8793d097b7dc137a47a6f70e0f547ef9ce49753d0c4d54cfb"
+        "sha256": "65d2f3e4bef6b00dbcb7e9bcd5c14a3b8209f8780b6a86c52c71db5942fff776"
       },
       "routeResolution": {
         "path": "docs/architecture/production-readiness/evidence/A07/route-url-resolution-2026-09-28.json",
@@ -18,11 +18,11 @@
       },
       "pageInventory": {
         "path": "docs/architecture/page-inventory.json",
-        "sha256": "4f25117ff0d216b4eb10d17fbfeab33d859effd80c9553679b6f4bfb33f7958b"
+        "sha256": "f8c06b505714a924b4e3596da9628ffc33e7f9d8a3b8808b518578d76605e0d9"
       },
       "runbook": {
         "path": "docs/architecture/production-readiness/UI-RUNBOOK.md",
-        "sha256": "08bbee7b839581054739b160756707624585a6e3051ae8cb010ad6d4706a8857"
+        "sha256": "a30e68924c9850f71647f636f92e52c0dbabeabd968a150b6f5119e1d85cb1ad"
       },
       "mockPersonas": {
         "path": "src/dev/mocks/personas.ts",
@@ -34,7 +34,7 @@
       },
       "mockAuthTests": {
         "path": "src/dev/mocks/auth-handlers.test.ts",
-        "sha256": "10f0a82eb7fb4d08d2f74a8219077e7be21522984be558437427d6f383973881"
+        "sha256": "1ffb26efa6e112b330e77d33e6f12b53aaa43d2d79c3197aadb5bedc8670c901"
       },
       "c0502PreviewReport": {
         "path": "docs/architecture/production-readiness/evidence/C05/c05-02-dev-preview-browser-check-2026-09-30.json",
@@ -43,12 +43,27 @@
     }
   },
   "scope": {
-    "activeRouteDeclarations": 427,
+    "activeRouteDeclarations": 428,
     "retiredRouteDeclarationsExcluded": [
       {
         "routeId": "ROUTE-076da8bdac7d",
         "path": "arena",
         "reason": "Source registration is now represented by the canonical routeConfig/createProtectedRoutes route; this is a ledger identity reconciliation, not URL removal."
+      },
+      {
+        "routeId": "ROUTE-7b94fd12a76b",
+        "path": "earn/:domain/receipt",
+        "reason": "Superseded inventory identity; URL remains registered by replacement route rows."
+      },
+      {
+        "routeId": "ROUTE-275c28ab474c",
+        "path": "notifications",
+        "reason": "Superseded inventory identity; URL remains registered by replacement route rows."
+      },
+      {
+        "routeId": "ROUTE-7cc1259bcf1e",
+        "path": "notifications",
+        "reason": "Superseded inventory identity; URL remains registered by replacement route rows."
       }
     ],
     "urlRegistrations": 1462,
@@ -59,38 +74,39 @@
       "web": 411,
       "responsive": 350
     },
-    "routeDeclarationsWithPageRecords": 417,
+    "routeDeclarationsWithPageRecords": 418,
     "routeDeclarationsWithoutPageRecords": 10,
     "routeDeclarationsWithDirectScenarioLinks": 11,
     "scenarioLinks": 26,
     "scenarioCandidates": 338,
     "routeDeclarationsWithAnyScenarioReference": 55,
     "personaMappingsAssigned": 16,
-    "trackedPageRecords": 330,
+    "trackedPageRecords": 331,
     "userAcceptedPages": 0,
     "userAcceptanceScopePages": 128,
     "backendOperationsVerified": 0,
     "backendOperationsTotal": 154,
-    "activeRoutesWithHistoricalPreviewUrlParity": 426,
-    "activeRoutesComparedToHistoricalResolver": 427,
-    "activeRouteDeclarationsWithStaleResolverSource": 223,
-    "activeRouteDeclarationsWithMatchingResolverSource": 204
+    "activeRoutesWithHistoricalPreviewUrlParity": 425,
+    "activeRoutesComparedToHistoricalResolver": 428,
+    "activeRouteDeclarationsWithStaleResolverSource": 229,
+    "activeRouteDeclarationsWithMatchingResolverSource": 199
   },
   "evidenceFreshness": {
     "currentScenarioMatrixRuntimeEvidenceFresh": false,
-    "scenarioRowsWithFreshBrowserEvidence": 81,
+    "scenarioRowsWithFreshBrowserEvidence": 0,
     "scenarioRowsDefined": 106,
-    "freshScenarioEvidenceSidecars": 81,
+    "freshScenarioEvidenceSidecars": 0,
     "historicalRouteResolutionSourceFiles": 21,
     "routeResolutionSourceHashMismatches": [
       "src/app/routeConfig.ts",
       "src/app/routes.ts",
       "src/features/earn/routes.ts",
       "src/features/market/routes.ts",
-      "src/features/p2p/routes.ts"
+      "src/features/p2p/routes.ts",
+      "src/features/support/routes.ts"
     ],
-    "historicalRouteResolutionPreviewUrlParity": 426,
-    "historicalRouteResolutionRoutesCompared": 427,
+    "historicalRouteResolutionPreviewUrlParity": 425,
+    "historicalRouteResolutionRoutesCompared": 428,
     "dynamicFixtureSourcesPresent": 10,
     "dynamicFixtureSourcesReferenced": 10,
     "dynamicFixtureSourceSha256": {
@@ -203,9 +219,9 @@
       "routesWithScenarioLinks": 0
     },
     "earn": {
-      "routeDeclarations": 12,
+      "routeDeclarations": 13,
       "urlRegistrations": 46,
-      "routesWithPages": 12,
+      "routesWithPages": 13,
       "routesWithScenarioLinks": 1
     },
     "launchpad": {
@@ -227,9 +243,9 @@
       "routesWithScenarioLinks": 23
     },
     "platform": {
-      "routeDeclarations": 1,
-      "urlRegistrations": 4,
-      "routesWithPages": 1,
+      "routeDeclarations": 3,
+      "urlRegistrations": 9,
+      "routesWithPages": 3,
       "routesWithScenarioLinks": 0
     },
     "predictions": {
@@ -282,10 +298,10 @@
     }
   },
   "openGaps": [
-    "16/427 active routes have source-linked persona selections; 411 remain unmapped. Persona fixtures do not prove backend authorization or user acceptance.",
+    "16/428 active routes have source-linked persona selections; 412 remain unmapped. Persona fixtures do not prove backend authorization or user acceptance.",
     "A07 has historical parameter fixture candidates for dynamic routes; current fixture source hashes are captured, but fixture contents, persona authorization and scenario-specific seed behavior are not verified by URL generation.",
-    "The A06 aggregate report is source-stale (false); the current matrix accepts 81/106 source-matched scenario rows from 81 per-scenario sidecars. Other rows remain unverified until their evidence is refreshed.",
-    "5 source files differ from the historical A07 URL-resolution evidence; 223 active route declarations use those files, so refresh runtime route evidence before treating old runtime registrations as current browser truth.",
+    "The A06 aggregate report is source-stale (false); the current matrix accepts 0/106 source-matched scenario rows from 0 per-scenario sidecars. Other rows remain unverified until their evidence is refreshed.",
+    "6 source files differ from the historical A07 URL-resolution evidence; 229 active route declarations use those files, so refresh runtime route evidence before treating old runtime registrations as current browser truth.",
     "Route navigation checks do not equal component-level visual/interaction review or user acceptance.",
     "C05.02 browser smoke covers two routes only; it does not close runtime verification for the other route declarations."
   ],
@@ -319,7 +335,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/"],
@@ -428,7 +444,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": ["/auth/2fa-setup", "/t/auth/2fa-setup", "/r/auth/2fa-setup"],
@@ -592,7 +608,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/auth/2fa-setup"],
@@ -756,7 +772,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/auth/account-locked"],
@@ -942,19 +958,13 @@
         {
           "id": "predictions.empty",
           "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260928-129", "EV-20260929-490"],
           "notes": "Fresh local MSW empty state observed for listPredictionActivity; not backend or user acceptance.",
           "expectedUi": "Show empty states for event, position, reward, leaderboard and activity collections; event detail, order placement and receipt status remain outside this empty-read scenario.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-empty-browser-check-2026-10-01.json",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity"
-          ]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "predictions.error",
@@ -979,21 +989,13 @@
         {
           "id": "predictions.loading",
           "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260929-492"],
           "notes": "Fresh local MSW evidence: loading UI remained visible before response, then fixture content appeared; not backend latency or acceptance.",
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-loading-browser-check-2026-10-01.json",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "getPredictionEvent",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity",
-            "getPredictionOrderReceipt"
-          ]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "predictions.pending",
@@ -1008,22 +1010,13 @@
         {
           "id": "predictions.success",
           "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260928-125", "EV-20260929-489"],
           "notes": "Partial local MSW success evidence for the route; not full route acceptance, user acceptance or backend evidence. EV-20260929-489 rechecks this route in local MSW Chromium; route-level user acceptance and backend verification remain open.",
           "expectedUi": "Prediction events, orders, receipts, positions and rewards: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-success-browser-check-2026-10-01.json",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "getPredictionEvent",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity",
-            "placePredictionOrder",
-            "getPredictionOrderReceipt"
-          ]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "predictions.unauthorized",
@@ -1118,7 +1111,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/address-book"],
@@ -1952,7 +1945,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": ["/arena", "/t/arena", "/w/arena", "/r/arena"],
@@ -2065,7 +2058,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -2193,7 +2186,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -2453,7 +2446,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -2590,7 +2583,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -2718,7 +2711,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -2846,7 +2839,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -3106,7 +3099,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -3234,7 +3227,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -3357,7 +3350,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -3631,7 +3624,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": ["/arena/my", "/t/arena/my", "/w/arena/my", "/r/arena/my"],
@@ -3744,7 +3737,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -3872,7 +3865,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -3995,7 +3988,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -4123,7 +4116,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -4260,7 +4253,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -4388,7 +4381,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -4511,7 +4504,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -4634,7 +4627,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -4762,7 +4755,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -4890,7 +4883,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -5018,7 +5011,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -5155,7 +5148,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -5255,7 +5248,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": ["/auth", "/t/auth", "/r/auth"],
@@ -5585,7 +5578,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -5713,7 +5706,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": ["/dca", "/t/dca", "/w/dca", "/r/dca"],
@@ -5826,7 +5819,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -5954,7 +5947,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -6082,7 +6075,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -6210,7 +6203,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -6338,7 +6331,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -6466,7 +6459,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -6594,7 +6587,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -6722,7 +6715,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -6850,7 +6843,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -6978,7 +6971,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -7106,7 +7099,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -7243,7 +7236,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -7380,7 +7373,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -7508,7 +7501,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -7636,7 +7629,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -7773,7 +7766,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -7910,7 +7903,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -8038,7 +8031,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -8166,7 +8159,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -8294,7 +8287,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -8386,7 +8379,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/demo/copy-card"],
@@ -8487,7 +8480,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/dev/dca-overview"],
@@ -8564,7 +8557,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/dev/design-system"],
@@ -8653,7 +8646,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -8757,7 +8750,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -8849,7 +8842,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/dev/showcase"],
@@ -8950,7 +8943,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/auth/device-trust"],
@@ -9065,7 +9058,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "e9366bf0acd5d7e63069de10b5b3af71e26a63a9654f2961e44b1d3f41aa8c56",
-          "current": "4316eece354d89cbcb54a44808a8a86811fd29f5394a9317d27e9cbc6e2eddab",
+          "current": "29a78f5218d59be69038c2361da850258a8e3d2587ccb9d939dc43ffce10ecc7",
           "matches": false
         },
         "historicalUrlTemplates": ["/earn", "/t/earn", "/w/earn", "/r/earn"],
@@ -9178,7 +9171,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "e9366bf0acd5d7e63069de10b5b3af71e26a63a9654f2961e44b1d3f41aa8c56",
-          "current": "4316eece354d89cbcb54a44808a8a86811fd29f5394a9317d27e9cbc6e2eddab",
+          "current": "29a78f5218d59be69038c2361da850258a8e3d2587ccb9d939dc43ffce10ecc7",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -9289,7 +9282,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/earn/savings"],
@@ -9402,7 +9395,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "e9366bf0acd5d7e63069de10b5b3af71e26a63a9654f2961e44b1d3f41aa8c56",
-          "current": "4316eece354d89cbcb54a44808a8a86811fd29f5394a9317d27e9cbc6e2eddab",
+          "current": "29a78f5218d59be69038c2361da850258a8e3d2587ccb9d939dc43ffce10ecc7",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -9525,7 +9518,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "e9366bf0acd5d7e63069de10b5b3af71e26a63a9654f2961e44b1d3f41aa8c56",
-          "current": "4316eece354d89cbcb54a44808a8a86811fd29f5394a9317d27e9cbc6e2eddab",
+          "current": "29a78f5218d59be69038c2361da850258a8e3d2587ccb9d939dc43ffce10ecc7",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -9781,7 +9774,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "e9366bf0acd5d7e63069de10b5b3af71e26a63a9654f2961e44b1d3f41aa8c56",
-          "current": "4316eece354d89cbcb54a44808a8a86811fd29f5394a9317d27e9cbc6e2eddab",
+          "current": "29a78f5218d59be69038c2361da850258a8e3d2587ccb9d939dc43ffce10ecc7",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -9909,7 +9902,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "e9366bf0acd5d7e63069de10b5b3af71e26a63a9654f2961e44b1d3f41aa8c56",
-          "current": "4316eece354d89cbcb54a44808a8a86811fd29f5394a9317d27e9cbc6e2eddab",
+          "current": "29a78f5218d59be69038c2361da850258a8e3d2587ccb9d939dc43ffce10ecc7",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -10037,7 +10030,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "e9366bf0acd5d7e63069de10b5b3af71e26a63a9654f2961e44b1d3f41aa8c56",
-          "current": "4316eece354d89cbcb54a44808a8a86811fd29f5394a9317d27e9cbc6e2eddab",
+          "current": "29a78f5218d59be69038c2361da850258a8e3d2587ccb9d939dc43ffce10ecc7",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -10110,160 +10103,6 @@
       "blockers": []
     },
     {
-      "routeId": "ROUTE-7b94fd12a76b",
-      "lifecycle": "active",
-      "source": "src/features/earn/routes.ts",
-      "declarationPath": "earn/:domain/receipt",
-      "component": "EarnReceiptPage",
-      "pageTarget": "src/features/earn/pages/EarnTransactionPages.tsx",
-      "routeFactory": null,
-      "classification": "page",
-      "developmentOnly": false,
-      "taskId": "U07",
-      "domains": ["earn"],
-      "operationIds": [],
-      "operationNames": [],
-      "uiStatus": "in_progress",
-      "uiEvidenceIds": ["EV-20260930-089"],
-      "uiNotes": "EV-20260930-089 verifies Savings pending receipts locally with Chromium/MSW; a focused component test covers Staking routing. Not user acceptance or backend settlement.",
-      "pageIds": ["PAGE-9742ca24da97"],
-      "pages": [
-        {
-          "pageId": "PAGE-9742ca24da97",
-          "sourcePath": "src/features/earn/pages/EarnTransactionPages.tsx",
-          "owner": "features/earn",
-          "taskId": "U07",
-          "uiStatus": "todo",
-          "uiEvidenceIds": [],
-          "uiNotes": "",
-          "uiReview": "pending",
-          "userAcceptance": "pending",
-          "checklist": {
-            "P01": "todo",
-            "P02": "todo",
-            "P03": "todo",
-            "P04": "todo",
-            "P05": "todo",
-            "P06": "todo",
-            "P07": "todo",
-            "P08": "todo"
-          },
-          "operationIds": [],
-          "blockers": []
-        }
-      ],
-      "resolvedUrls": [
-        {
-          "url": "/earn/savings/receipt",
-          "shell": "phone"
-        },
-        {
-          "url": "/earn/staking/receipt",
-          "shell": "phone"
-        },
-        {
-          "url": "/r/earn/savings/receipt",
-          "shell": "responsive"
-        },
-        {
-          "url": "/r/earn/staking/receipt",
-          "shell": "responsive"
-        },
-        {
-          "url": "/t/earn/savings/receipt",
-          "shell": "tablet"
-        },
-        {
-          "url": "/t/earn/staking/receipt",
-          "shell": "tablet"
-        },
-        {
-          "url": "/w/earn/savings/receipt",
-          "shell": "web"
-        },
-        {
-          "url": "/w/earn/staking/receipt",
-          "shell": "web"
-        }
-      ],
-      "historicalRouteResolution": {
-        "status": "stale-source-hash",
-        "sourceHash": {
-          "expected": "e9366bf0acd5d7e63069de10b5b3af71e26a63a9654f2961e44b1d3f41aa8c56",
-          "current": "4316eece354d89cbcb54a44808a8a86811fd29f5394a9317d27e9cbc6e2eddab",
-          "matches": false
-        },
-        "historicalUrlTemplates": [],
-        "historicalPreviewUrls": [],
-        "currentPreviewUrlParity": false,
-        "historicalRuntimeRegistrations": 0,
-        "evidencePath": "docs/architecture/production-readiness/evidence/A07/route-url-resolution-2026-09-28.json"
-      },
-      "dynamicParameters": ["domain"],
-      "personaMapping": {
-        "status": "not-mapped-per-route",
-        "personaIds": [],
-        "fixtureIds": [],
-        "sources": [
-          "src/dev/mocks/personas.ts",
-          "src/dev/mocks/handlers.ts",
-          "src/dev/mocks/auth-handlers.test.ts"
-        ],
-        "notes": "No route-specific persona selection is recorded in TRACKING.json."
-      },
-      "fixtureMapping": {
-        "status": "historical-fixture-candidates-need-current-fixture-and-scenario-review",
-        "dynamicParameters": ["domain"],
-        "sampleUrls": [
-          "/earn/savings/receipt",
-          "/earn/staking/receipt",
-          "/r/earn/savings/receipt",
-          "/r/earn/staking/receipt",
-          "/t/earn/savings/receipt",
-          "/t/earn/staking/receipt",
-          "/w/earn/savings/receipt",
-          "/w/earn/staking/receipt"
-        ],
-        "historicalResolverValues": [],
-        "source": "Current TRACKING.json supplies concrete preview URLs. A07 supplies historical parameter values and fixture-source candidates; current source hashes are captured here, but fixture contents and scenario-specific seed behavior still require route-level verification."
-      },
-      "scenarios": [
-        {
-          "id": "earn.pending",
-          "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
-          "evidenceIds": ["EV-20260930-089"],
-          "notes": "Local MSW confirms stable pending subscription/redemption receipts; user acceptance and durable backend state remain open.",
-          "expectedUi": "Render only the pending/request-in-flight status defined by the contract; disable duplicate finalization while unresolved and show a stable receipt/reference when available.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/earn-pending-current-head-browser-check-202610020915553.json",
-          "runtimeObservedOperationIds": [
-            "createEarnSubscription",
-            "listEarnTransactions",
-            "redeemEarnPosition"
-          ]
-        }
-      ],
-      "reset": {
-        "status": "shared-mock-reset-documented",
-        "procedure": "UI-RUNBOOK.md section 4, “Đặt lại preview”",
-        "scope": "Logs out through the auth adapter, clears React Query cache and reloads in-memory fixtures; it does not clear browser-wide storage."
-      },
-      "routeCheck": {
-        "status": "navigation-only-unverified",
-        "action": "Open a resolved URL in its listed shell and verify the route target. Add page-specific interactions from the owning page/test before user acceptance.",
-        "expected": {
-          "component": "EarnReceiptPage",
-          "pageTarget": "src/features/earn/pages/EarnTransactionPages.tsx",
-          "classification": "page",
-          "note": "This verifies route identity only; it is not a page UX assertion or user acceptance."
-        }
-      },
-      "routeNotes": "A07.02 mapped from runtime route tree; URL templates, shell registration IDs and fixture status are recorded in evidence/A07/route-url-resolution-2026-09-28.json. Runtime match is not browser UI acceptance. | Receipt route accepts both `savings` and `staking` domain paths; openapi-backed pending receipts preserve their domain return route.",
-      "dispositionReason": "",
-      "blockers": []
-    },
-    {
       "routeId": "ROUTE-5c0c1352beba",
       "lifecycle": "active",
       "source": "src/features/earn/routes.ts",
@@ -10328,7 +10167,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "e9366bf0acd5d7e63069de10b5b3af71e26a63a9654f2961e44b1d3f41aa8c56",
-          "current": "4316eece354d89cbcb54a44808a8a86811fd29f5394a9317d27e9cbc6e2eddab",
+          "current": "29a78f5218d59be69038c2361da850258a8e3d2587ccb9d939dc43ffce10ecc7",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -10453,7 +10292,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/earn/staking"],
@@ -10566,7 +10405,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "e9366bf0acd5d7e63069de10b5b3af71e26a63a9654f2961e44b1d3f41aa8c56",
-          "current": "4316eece354d89cbcb54a44808a8a86811fd29f5394a9317d27e9cbc6e2eddab",
+          "current": "29a78f5218d59be69038c2361da850258a8e3d2587ccb9d939dc43ffce10ecc7",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -10689,7 +10528,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -10911,52 +10750,35 @@
         {
           "id": "predictions.loading",
           "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260929-492"],
           "notes": "Fresh local MSW evidence: loading UI remained visible before response, then fixture content appeared; not backend latency or acceptance.",
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-loading-browser-check-2026-10-01.json",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "getPredictionEvent",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity",
-            "getPredictionOrderReceipt"
-          ]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "predictions.pending",
           "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260928-120"],
           "notes": "Partial local MSW UI evidence for the request-in-flight plus receipt flow; not full route acceptance or backend evidence.",
           "expectedUi": "Render only the pending/request-in-flight status defined by the contract; disable duplicate finalization while unresolved and show a stable receipt/reference when available.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-pending-browser-check-2026-10-01.json",
-          "runtimeObservedOperationIds": ["placePredictionOrder", "getPredictionOrderReceipt"]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "predictions.success",
           "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260928-125", "EV-20260929-489"],
           "notes": "Partial local MSW success evidence for the route; not full route acceptance, user acceptance or backend evidence. EV-20260929-489 rechecks this route in local MSW Chromium; route-level user acceptance and backend verification remain open.",
           "expectedUi": "Prediction events, orders, receipts, positions and rewards: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-success-browser-check-2026-10-01.json",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "getPredictionEvent",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity",
-            "placePredictionOrder",
-            "getPredictionOrderReceipt"
-          ]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "predictions.unauthorized",
@@ -11063,7 +10885,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -11239,7 +11061,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/auth/forgot-password"],
@@ -11411,7 +11233,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": ["/home", "/t/home", "/w/home", "/r/home"],
@@ -11774,7 +11596,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -11911,7 +11733,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -12039,7 +11861,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -12167,7 +11989,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -12295,7 +12117,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -12432,7 +12254,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -12706,7 +12528,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -12834,7 +12656,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -12962,7 +12784,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -13090,7 +12912,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -13227,7 +13049,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -13355,7 +13177,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -13483,7 +13305,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -13611,7 +13433,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -13739,7 +13561,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -13867,7 +13689,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -13995,7 +13817,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -14132,7 +13954,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -14260,7 +14082,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -14388,7 +14210,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -14516,7 +14338,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -14715,19 +14537,13 @@
         {
           "id": "predictions.empty",
           "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260928-129", "EV-20260929-490"],
           "notes": "Fresh local MSW empty state observed for listPredictionLeaderboard; not backend or user acceptance.",
           "expectedUi": "Show empty states for event, position, reward, leaderboard and activity collections; event detail, order placement and receipt status remain outside this empty-read scenario.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-empty-browser-check-2026-10-01.json",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity"
-          ]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "predictions.error",
@@ -14752,21 +14568,13 @@
         {
           "id": "predictions.loading",
           "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260929-492"],
           "notes": "Fresh local MSW evidence: loading UI remained visible before response, then fixture content appeared; not backend latency or acceptance.",
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-loading-browser-check-2026-10-01.json",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "getPredictionEvent",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity",
-            "getPredictionOrderReceipt"
-          ]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "predictions.pending",
@@ -14781,22 +14589,13 @@
         {
           "id": "predictions.success",
           "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260928-125", "EV-20260929-489"],
           "notes": "Partial local MSW success evidence for the route; not full route acceptance, user acceptance or backend evidence. EV-20260929-489 rechecks this route in local MSW Chromium; route-level user acceptance and backend verification remain open.",
           "expectedUi": "Prediction events, orders, receipts, positions and rewards: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-success-browser-check-2026-10-01.json",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "getPredictionEvent",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity",
-            "placePredictionOrder",
-            "getPredictionOrderReceipt"
-          ]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "predictions.unauthorized",
@@ -14899,7 +14698,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": ["/auth/login", "/t/auth/login", "/r/auth/login"],
@@ -15043,7 +14842,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/auth/login"],
@@ -15199,7 +14998,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": ["/markets", "/t/markets", "/w/markets", "/r/markets"],
@@ -16915,7 +16714,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -17052,7 +16851,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -17180,7 +16979,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -17308,7 +17107,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -17436,7 +17235,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -17564,7 +17363,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -17692,7 +17491,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -17820,7 +17619,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -18793,7 +18592,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/news"],
@@ -18909,11 +18708,11 @@
         }
       ],
       "historicalRouteResolution": {
-        "status": "historical-source-hash-matches-runtime-snapshot-is-not-current",
+        "status": "stale-source-hash",
         "sourceHash": {
           "expected": "5ef90d4c0ddb261fef6979415270763af549de9cf2c8eb9e41b4f2200932f481",
-          "current": "5ef90d4c0ddb261fef6979415270763af549de9cf2c8eb9e41b4f2200932f481",
-          "matches": true
+          "current": "b86d2b3c720fc19033c7f8ae70438646faccd5dfb0c9a5e8cde6269d0930cb9b",
+          "matches": false
         },
         "historicalUrlTemplates": ["/news", "/t/news", "/w/news", "/r/news"],
         "historicalPreviewUrls": ["/news", "/r/news", "/t/news", "/w/news"],
@@ -18952,247 +18751,6 @@
         "expected": {
           "component": "NewsPage",
           "pageTarget": "src/features/support/pages/NewsContractPage.tsx",
-          "classification": "page",
-          "note": "This verifies route identity only; it is not a page UX assertion or user acceptance."
-        }
-      },
-      "routeNotes": "A07.02 mapped from runtime route tree; URL templates, shell registration IDs and fixture status are recorded in evidence/A07/route-url-resolution-2026-09-28.json. Runtime match is not browser UI acceptance.",
-      "dispositionReason": "",
-      "blockers": []
-    },
-    {
-      "routeId": "ROUTE-275c28ab474c",
-      "lifecycle": "active",
-      "source": "src/app/routes.ts",
-      "declarationPath": "notifications",
-      "component": "WebNotificationsPage",
-      "pageTarget": "src/features/support/pages/NotificationsContractPage.tsx",
-      "routeFactory": null,
-      "classification": "page",
-      "developmentOnly": false,
-      "taskId": "U09",
-      "domains": ["support"],
-      "operationIds": [],
-      "operationNames": [],
-      "uiStatus": "todo",
-      "uiEvidenceIds": [],
-      "uiNotes": "",
-      "pageIds": ["PAGE-b358e1cb5c6c"],
-      "pages": [
-        {
-          "pageId": "PAGE-b358e1cb5c6c",
-          "sourcePath": "src/features/support/pages/NotificationsContractPage.tsx",
-          "owner": "features/support",
-          "taskId": "U09",
-          "uiStatus": "todo",
-          "uiEvidenceIds": [
-            "EV-20260929-531",
-            "EV-20260929-533",
-            "EV-20260929-535",
-            "EV-20260929-538",
-            "EV-20260929-540"
-          ],
-          "uiNotes": "A06.03 support.success observed mark-read 204 and unread 7 to 6; visual UI shows sidebar badge 3, so C05.03 review remains open. A06.03 support.empty observed unread 7 to 6 after local 204; fixed sidebar badge remained 3, so C05.03 review stays open. A06.03 support.loading observed the notification loading state before the local 200 response; user acceptance remains pending. A06.03 support.error shows a local recoverable error/Retry state with no stale notification content; user acceptance remains pending.",
-          "uiReview": "pending",
-          "userAcceptance": "pending",
-          "checklist": {
-            "P01": "todo",
-            "P02": "todo",
-            "P03": "todo",
-            "P04": "todo",
-            "P05": "todo",
-            "P06": "todo",
-            "P07": "todo",
-            "P08": "todo"
-          },
-          "operationIds": [],
-          "blockers": []
-        }
-      ],
-      "resolvedUrls": [
-        {
-          "url": "/w/notifications",
-          "shell": "web"
-        }
-      ],
-      "historicalRouteResolution": {
-        "status": "stale-source-hash",
-        "sourceHash": {
-          "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
-          "matches": false
-        },
-        "historicalUrlTemplates": ["/w/notifications"],
-        "historicalPreviewUrls": ["/w/notifications"],
-        "currentPreviewUrlParity": true,
-        "historicalRuntimeRegistrations": 1,
-        "evidencePath": "docs/architecture/production-readiness/evidence/A07/route-url-resolution-2026-09-28.json"
-      },
-      "dynamicParameters": [],
-      "personaMapping": {
-        "status": "not-mapped-per-route",
-        "personaIds": [],
-        "fixtureIds": [],
-        "sources": [
-          "src/dev/mocks/personas.ts",
-          "src/dev/mocks/handlers.ts",
-          "src/dev/mocks/auth-handlers.test.ts"
-        ],
-        "notes": "No route-specific persona selection is recorded in TRACKING.json."
-      },
-      "fixtureMapping": {
-        "status": "no-dynamic-route-parameter-scenario-fixture-not-mapped",
-        "dynamicParameters": [],
-        "sampleUrls": ["/w/notifications"],
-        "historicalResolverValues": [],
-        "source": "Current TRACKING.json supplies concrete preview URLs. A07 supplies historical parameter values and fixture-source candidates; current source hashes are captured here, but fixture contents and scenario-specific seed behavior still require route-level verification."
-      },
-      "scenarios": [],
-      "reset": {
-        "status": "shared-mock-reset-documented",
-        "procedure": "UI-RUNBOOK.md section 4, “Đặt lại preview”",
-        "scope": "Logs out through the auth adapter, clears React Query cache and reloads in-memory fixtures; it does not clear browser-wide storage."
-      },
-      "routeCheck": {
-        "status": "navigation-only-unverified",
-        "action": "Open a resolved URL in its listed shell and verify the route target. Add page-specific interactions from the owning page/test before user acceptance.",
-        "expected": {
-          "component": "WebNotificationsPage",
-          "pageTarget": "src/features/support/pages/NotificationsContractPage.tsx",
-          "classification": "page",
-          "note": "This verifies route identity only; it is not a page UX assertion or user acceptance."
-        }
-      },
-      "routeNotes": "A07.02 mapped from runtime route tree; URL templates, shell registration IDs and fixture status are recorded in evidence/A07/route-url-resolution-2026-09-28.json. Runtime match is not browser UI acceptance.",
-      "dispositionReason": "",
-      "blockers": []
-    },
-    {
-      "routeId": "ROUTE-7cc1259bcf1e",
-      "lifecycle": "active",
-      "source": "src/features/support/routes.ts",
-      "declarationPath": "notifications",
-      "component": "NotificationsPage",
-      "pageTarget": "src/features/support/pages/NotificationsContractPage.tsx",
-      "routeFactory": null,
-      "classification": "page",
-      "developmentOnly": false,
-      "taskId": "U09",
-      "domains": ["support"],
-      "operationIds": [],
-      "operationNames": [],
-      "uiStatus": "todo",
-      "uiEvidenceIds": [],
-      "uiNotes": "",
-      "pageIds": ["PAGE-b358e1cb5c6c"],
-      "pages": [
-        {
-          "pageId": "PAGE-b358e1cb5c6c",
-          "sourcePath": "src/features/support/pages/NotificationsContractPage.tsx",
-          "owner": "features/support",
-          "taskId": "U09",
-          "uiStatus": "todo",
-          "uiEvidenceIds": [
-            "EV-20260929-531",
-            "EV-20260929-533",
-            "EV-20260929-535",
-            "EV-20260929-538",
-            "EV-20260929-540"
-          ],
-          "uiNotes": "A06.03 support.success observed mark-read 204 and unread 7 to 6; visual UI shows sidebar badge 3, so C05.03 review remains open. A06.03 support.empty observed unread 7 to 6 after local 204; fixed sidebar badge remained 3, so C05.03 review stays open. A06.03 support.loading observed the notification loading state before the local 200 response; user acceptance remains pending. A06.03 support.error shows a local recoverable error/Retry state with no stale notification content; user acceptance remains pending.",
-          "uiReview": "pending",
-          "userAcceptance": "pending",
-          "checklist": {
-            "P01": "todo",
-            "P02": "todo",
-            "P03": "todo",
-            "P04": "todo",
-            "P05": "todo",
-            "P06": "todo",
-            "P07": "todo",
-            "P08": "todo"
-          },
-          "operationIds": [],
-          "blockers": []
-        }
-      ],
-      "resolvedUrls": [
-        {
-          "url": "/notifications",
-          "shell": "phone"
-        },
-        {
-          "url": "/r/notifications",
-          "shell": "responsive"
-        },
-        {
-          "url": "/t/notifications",
-          "shell": "tablet"
-        },
-        {
-          "url": "/w/notifications",
-          "shell": "web"
-        }
-      ],
-      "historicalRouteResolution": {
-        "status": "historical-source-hash-matches-runtime-snapshot-is-not-current",
-        "sourceHash": {
-          "expected": "5ef90d4c0ddb261fef6979415270763af549de9cf2c8eb9e41b4f2200932f481",
-          "current": "5ef90d4c0ddb261fef6979415270763af549de9cf2c8eb9e41b4f2200932f481",
-          "matches": true
-        },
-        "historicalUrlTemplates": [
-          "/notifications",
-          "/t/notifications",
-          "/w/notifications",
-          "/r/notifications"
-        ],
-        "historicalPreviewUrls": [
-          "/notifications",
-          "/r/notifications",
-          "/t/notifications",
-          "/w/notifications"
-        ],
-        "currentPreviewUrlParity": true,
-        "historicalRuntimeRegistrations": 4,
-        "evidencePath": "docs/architecture/production-readiness/evidence/A07/route-url-resolution-2026-09-28.json"
-      },
-      "dynamicParameters": [],
-      "personaMapping": {
-        "status": "not-mapped-per-route",
-        "personaIds": [],
-        "fixtureIds": [],
-        "sources": [
-          "src/dev/mocks/personas.ts",
-          "src/dev/mocks/handlers.ts",
-          "src/dev/mocks/auth-handlers.test.ts"
-        ],
-        "notes": "No route-specific persona selection is recorded in TRACKING.json."
-      },
-      "fixtureMapping": {
-        "status": "no-dynamic-route-parameter-scenario-fixture-not-mapped",
-        "dynamicParameters": [],
-        "sampleUrls": [
-          "/notifications",
-          "/r/notifications",
-          "/t/notifications",
-          "/w/notifications"
-        ],
-        "historicalResolverValues": [],
-        "source": "Current TRACKING.json supplies concrete preview URLs. A07 supplies historical parameter values and fixture-source candidates; current source hashes are captured here, but fixture contents and scenario-specific seed behavior still require route-level verification."
-      },
-      "scenarios": [],
-      "reset": {
-        "status": "shared-mock-reset-documented",
-        "procedure": "UI-RUNBOOK.md section 4, “Đặt lại preview”",
-        "scope": "Logs out through the auth adapter, clears React Query cache and reloads in-memory fixtures; it does not clear browser-wide storage."
-      },
-      "routeCheck": {
-        "status": "navigation-only-unverified",
-        "action": "Open a resolved URL in its listed shell and verify the route target. Add page-specific interactions from the owning page/test before user acceptance.",
-        "expected": {
-          "component": "NotificationsPage",
-          "pageTarget": "src/features/support/pages/NotificationsContractPage.tsx",
           "classification": "page",
           "note": "This verifies route identity only; it is not a page UX assertion or user acceptance."
         }
@@ -19254,7 +18812,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/onboarding"],
@@ -19359,7 +18917,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": ["/auth/otp", "/t/auth/otp", "/r/auth/otp"],
@@ -19523,7 +19081,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/auth/otp"],
@@ -31828,19 +31386,13 @@
         {
           "id": "predictions.empty",
           "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260928-129", "EV-20260929-490"],
           "notes": "Fresh local MSW empty state observed for listPredictionPositions; not backend or user acceptance.",
           "expectedUi": "Show empty states for event, position, reward, leaderboard and activity collections; event detail, order placement and receipt status remain outside this empty-read scenario.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-empty-browser-check-2026-10-01.json",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity"
-          ]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "predictions.error",
@@ -31865,21 +31417,13 @@
         {
           "id": "predictions.loading",
           "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260929-492"],
           "notes": "Fresh local MSW evidence: loading UI remained visible before response, then fixture content appeared; not backend latency or acceptance.",
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-loading-browser-check-2026-10-01.json",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "getPredictionEvent",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity",
-            "getPredictionOrderReceipt"
-          ]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "predictions.pending",
@@ -31894,22 +31438,13 @@
         {
           "id": "predictions.success",
           "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260928-125", "EV-20260929-489"],
           "notes": "Partial local MSW success evidence for the route; not full route acceptance, user acceptance or backend evidence. EV-20260929-489 rechecks this route in local MSW Chromium; route-level user acceptance and backend verification remain open.",
           "expectedUi": "Prediction events, orders, receipts, positions and rewards: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-success-browser-check-2026-10-01.json",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "getPredictionEvent",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity",
-            "placePredictionOrder",
-            "getPredictionOrderReceipt"
-          ]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "predictions.unauthorized",
@@ -32113,7 +31648,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/predictions"],
@@ -32155,19 +31690,13 @@
         {
           "id": "predictions.empty",
           "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260929-490"],
           "notes": "Fresh local MSW empty state observed for listPredictionEvents; not backend or user acceptance.",
           "expectedUi": "Show empty states for event, position, reward, leaderboard and activity collections; event detail, order placement and receipt status remain outside this empty-read scenario.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-empty-browser-check-2026-10-01.json",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity"
-          ]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "predictions.error",
@@ -32192,21 +31721,13 @@
         {
           "id": "predictions.loading",
           "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260929-492"],
           "notes": "Fresh local MSW evidence: loading UI remained visible before response, then fixture content appeared; not backend latency or acceptance.",
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-loading-browser-check-2026-10-01.json",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "getPredictionEvent",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity",
-            "getPredictionOrderReceipt"
-          ]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "predictions.pending",
@@ -32329,7 +31850,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/predictions/event/:eventId"],
@@ -32638,7 +32159,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/profile/activity"],
@@ -33135,7 +32656,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -33256,7 +32777,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/profile/devices"],
@@ -33490,7 +33011,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/profile/edit"],
@@ -33857,7 +33378,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -34182,7 +33703,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/profile/security/alert-detail"],
@@ -34283,7 +33804,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/profile/security/alert-list"],
@@ -34384,7 +33905,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/profile/security/alerts/:alertId"],
@@ -34494,7 +34015,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/profile/security/anti-phishing"],
@@ -34595,7 +34116,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/profile/security/change-password"],
@@ -34759,7 +34280,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/profile/security/device-trust"],
@@ -34860,7 +34381,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/profile/security/devices/:deviceId"],
@@ -34970,7 +34491,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/profile/security/login-activity"],
@@ -35071,7 +34592,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/profile/security/notifications"],
@@ -35172,7 +34693,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/profile/security/passkey"],
@@ -35273,7 +34794,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/profile/security/security-audit"],
@@ -35374,7 +34895,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/profile/security/session-management"],
@@ -35475,7 +34996,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/profile/security/two-factor-auth"],
@@ -35810,7 +35331,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/profile/sub-accounts"],
@@ -36143,7 +35664,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/r"],
@@ -36244,7 +35765,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/r/shell"],
@@ -36345,7 +35866,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/r/shell"],
@@ -36552,52 +36073,35 @@
         {
           "id": "predictions.loading",
           "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260929-492"],
           "notes": "Fresh local MSW evidence: loading UI remained visible before response, then fixture content appeared; not backend latency or acceptance.",
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-loading-browser-check-2026-10-01.json",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "getPredictionEvent",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity",
-            "getPredictionOrderReceipt"
-          ]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "predictions.pending",
           "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260928-120"],
           "notes": "Partial local MSW UI evidence for the request-in-flight plus receipt flow; not full route acceptance or backend evidence.",
           "expectedUi": "Render only the pending/request-in-flight status defined by the contract; disable duplicate finalization while unresolved and show a stable receipt/reference when available.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-pending-browser-check-2026-10-01.json",
-          "runtimeObservedOperationIds": ["placePredictionOrder", "getPredictionOrderReceipt"]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "predictions.success",
           "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260928-125", "EV-20260929-489"],
           "notes": "Partial local MSW success evidence for the route; not full route acceptance, user acceptance or backend evidence. EV-20260929-489 rechecks this route in local MSW Chromium; route-level user acceptance and backend verification remain open.",
           "expectedUi": "Prediction events, orders, receipts, positions and rewards: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-success-browser-check-2026-10-01.json",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "getPredictionEvent",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity",
-            "placePredictionOrder",
-            "getPredictionOrderReceipt"
-          ]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "predictions.unauthorized",
@@ -36817,7 +36321,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -36954,7 +36458,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -37082,7 +36586,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -37210,7 +36714,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -37334,7 +36838,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": ["/auth/register", "/t/auth/register", "/r/auth/register"],
@@ -37478,7 +36982,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/auth/register"],
@@ -37634,7 +37138,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -37806,7 +37310,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/auth/reset-password"],
@@ -37978,7 +37482,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": ["/rewards", "/t/rewards", "/w/rewards", "/r/rewards"],
@@ -38162,19 +37666,13 @@
         {
           "id": "predictions.empty",
           "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260928-129", "EV-20260929-490"],
           "notes": "Fresh local MSW empty state observed for listPredictionRewards; not backend or user acceptance.",
           "expectedUi": "Show empty states for event, position, reward, leaderboard and activity collections; event detail, order placement and receipt status remain outside this empty-read scenario.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-empty-browser-check-2026-10-01.json",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity"
-          ]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "predictions.error",
@@ -38199,21 +37697,13 @@
         {
           "id": "predictions.loading",
           "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260929-492"],
           "notes": "Fresh local MSW evidence: loading UI remained visible before response, then fixture content appeared; not backend latency or acceptance.",
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-loading-browser-check-2026-10-01.json",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "getPredictionEvent",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity",
-            "getPredictionOrderReceipt"
-          ]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "predictions.pending",
@@ -38228,22 +37718,13 @@
         {
           "id": "predictions.success",
           "binding": "route-ledger-link",
-          "routeStatus": "browser_verified",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260928-125", "EV-20260929-489"],
           "notes": "Partial local MSW success evidence for the route; not full route acceptance, user acceptance or backend evidence. EV-20260929-489 rechecks this route in local MSW Chromium; route-level user acceptance and backend verification remain open.",
           "expectedUi": "Prediction events, orders, receipts, positions and rewards: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-success-browser-check-2026-10-01.json",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "getPredictionEvent",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity",
-            "placePredictionOrder",
-            "getPredictionOrderReceipt"
-          ]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "predictions.unauthorized",
@@ -38769,7 +38250,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/auth/session-expired"],
@@ -38884,7 +38365,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -38995,7 +38476,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/auth/success"],
@@ -39098,7 +38579,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/support"],
@@ -39214,11 +38695,11 @@
         }
       ],
       "historicalRouteResolution": {
-        "status": "historical-source-hash-matches-runtime-snapshot-is-not-current",
+        "status": "stale-source-hash",
         "sourceHash": {
           "expected": "5ef90d4c0ddb261fef6979415270763af549de9cf2c8eb9e41b4f2200932f481",
-          "current": "5ef90d4c0ddb261fef6979415270763af549de9cf2c8eb9e41b4f2200932f481",
-          "matches": true
+          "current": "b86d2b3c720fc19033c7f8ae70438646faccd5dfb0c9a5e8cde6269d0930cb9b",
+          "matches": false
         },
         "historicalUrlTemplates": ["/support", "/t/support", "/w/support", "/r/support"],
         "historicalPreviewUrls": ["/r/support", "/support", "/t/support", "/w/support"],
@@ -39333,11 +38814,11 @@
         }
       ],
       "historicalRouteResolution": {
-        "status": "historical-source-hash-matches-runtime-snapshot-is-not-current",
+        "status": "stale-source-hash",
         "sourceHash": {
           "expected": "5ef90d4c0ddb261fef6979415270763af549de9cf2c8eb9e41b4f2200932f481",
-          "current": "5ef90d4c0ddb261fef6979415270763af549de9cf2c8eb9e41b4f2200932f481",
-          "matches": true
+          "current": "b86d2b3c720fc19033c7f8ae70438646faccd5dfb0c9a5e8cde6269d0930cb9b",
+          "matches": false
         },
         "historicalUrlTemplates": [
           "/support/announcements",
@@ -39467,11 +38948,11 @@
         }
       ],
       "historicalRouteResolution": {
-        "status": "historical-source-hash-matches-runtime-snapshot-is-not-current",
+        "status": "stale-source-hash",
         "sourceHash": {
           "expected": "5ef90d4c0ddb261fef6979415270763af549de9cf2c8eb9e41b4f2200932f481",
-          "current": "5ef90d4c0ddb261fef6979415270763af549de9cf2c8eb9e41b4f2200932f481",
-          "matches": true
+          "current": "b86d2b3c720fc19033c7f8ae70438646faccd5dfb0c9a5e8cde6269d0930cb9b",
+          "matches": false
         },
         "historicalUrlTemplates": [
           "/support/help",
@@ -39557,7 +39038,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/t"],
@@ -39670,7 +39151,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -40916,7 +40397,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/trade/bots"],
@@ -41135,7 +40616,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/trade/bots/api-documentation"],
@@ -41364,7 +40845,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/trade/bots/backtesting"],
@@ -41593,7 +41074,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/trade/bots/drawdown-analyzer"],
@@ -41822,7 +41303,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/trade/bots/emergency-stop"],
@@ -42051,7 +41532,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/trade/bots/equity-curve"],
@@ -42280,7 +41761,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/trade/bots/faq"],
@@ -42509,7 +41990,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/trade/bots/guide"],
@@ -42738,7 +42219,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/trade/bots/history"],
@@ -42967,7 +42448,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/trade/bots/optimization"],
@@ -43196,7 +42677,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/trade/bots/performance-analytics"],
@@ -43425,7 +42906,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/trade/bots/portfolio-dashboard"],
@@ -43654,7 +43135,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/trade/bots/risk-dashboard"],
@@ -43883,7 +43364,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/trade/bots/risk-disclosure"],
@@ -44112,7 +43593,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/trade/bots/security-settings"],
@@ -44341,7 +43822,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/trade/bots/strategy-compare"],
@@ -44570,7 +44051,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/trade/bots/suitability-assessment"],
@@ -44799,7 +44280,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/trade/bots/tax-reporting"],
@@ -45028,7 +44509,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w/trade/bots/terms-of-service"],
@@ -54203,7 +53684,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "400bd97421aa17bfdd6ec8cadebfbee2575277707bf464916dc1a8491d1c3fcd",
-          "current": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+          "current": "b07e8c334697075121585172c1a32ae458477e49ac53feee61e43dc09f037ab9",
           "matches": false
         },
         "historicalUrlTemplates": [
@@ -54295,7 +53776,7 @@
         "status": "stale-source-hash",
         "sourceHash": {
           "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
-          "current": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
           "matches": false
         },
         "historicalUrlTemplates": ["/w"],
@@ -54460,13 +53941,13 @@
         {
           "id": "wallet.forbidden",
           "binding": "route-ledger-link",
-          "routeStatus": "representative_browser_observed",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260928-096"],
           "notes": "",
           "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/wallet-forbidden-current-head-browser-check-202610011408374.json",
-          "runtimeObservedOperationIds": ["getWalletAssets", "getWalletTransactions"]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         },
         {
           "id": "wallet.loading",
@@ -54491,13 +53972,13 @@
         {
           "id": "wallet.unauthorized",
           "binding": "route-ledger-link",
-          "routeStatus": "representative_browser_observed",
+          "routeStatus": "not_verified",
           "evidenceIds": ["EV-20260928-095"],
           "notes": "",
           "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/wallet-unauthorized-current-head-browser-check-202610021900239.json",
-          "runtimeObservedOperationIds": ["getWalletAssets", "getWalletTransactions"]
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
         }
       ],
       "reset": {
@@ -57114,6 +56595,549 @@
       "routeNotes": "A07.02 mapped from runtime route tree; URL templates, shell registration IDs and fixture status are recorded in evidence/A07/route-url-resolution-2026-09-28.json. Runtime match is not browser UI acceptance.",
       "dispositionReason": "",
       "blockers": []
+    },
+    {
+      "routeId": "ROUTE-b51421735ef5",
+      "lifecycle": "active",
+      "source": "src/features/earn/routes.ts",
+      "declarationPath": "earn/savings/receipt",
+      "component": "EarnReceiptPage",
+      "pageTarget": "src/features/earn/pages/EarnTransactionPages.tsx",
+      "routeFactory": null,
+      "classification": "page",
+      "developmentOnly": false,
+      "taskId": "U07",
+      "domains": ["earn"],
+      "operationIds": [],
+      "operationNames": [],
+      "uiStatus": "in_progress",
+      "uiEvidenceIds": ["EV-20260930-089"],
+      "uiNotes": "EV-20260930-089 verifies Savings pending receipts locally with Chromium/MSW; a focused component test covers Staking routing. Not user acceptance or backend settlement.",
+      "pageIds": ["PAGE-9742ca24da97"],
+      "pages": [
+        {
+          "pageId": "PAGE-9742ca24da97",
+          "sourcePath": "src/features/earn/pages/EarnTransactionPages.tsx",
+          "owner": "features/earn",
+          "taskId": "U07",
+          "uiStatus": "todo",
+          "uiEvidenceIds": [],
+          "uiNotes": "",
+          "uiReview": "pending",
+          "userAcceptance": "pending",
+          "checklist": {
+            "P01": "todo",
+            "P02": "todo",
+            "P03": "todo",
+            "P04": "todo",
+            "P05": "todo",
+            "P06": "todo",
+            "P07": "todo",
+            "P08": "todo"
+          },
+          "operationIds": [],
+          "blockers": []
+        }
+      ],
+      "resolvedUrls": [
+        {
+          "url": "/earn/savings/receipt",
+          "shell": "phone"
+        },
+        {
+          "url": "/r/earn/savings/receipt",
+          "shell": "responsive"
+        },
+        {
+          "url": "/t/earn/savings/receipt",
+          "shell": "tablet"
+        },
+        {
+          "url": "/w/earn/savings/receipt",
+          "shell": "web"
+        }
+      ],
+      "historicalRouteResolution": {
+        "status": "stale-source-hash",
+        "sourceHash": {
+          "expected": "e9366bf0acd5d7e63069de10b5b3af71e26a63a9654f2961e44b1d3f41aa8c56",
+          "current": "29a78f5218d59be69038c2361da850258a8e3d2587ccb9d939dc43ffce10ecc7",
+          "matches": false
+        },
+        "historicalUrlTemplates": [
+          "/earn/savings/receipt",
+          "/t/earn/savings/receipt",
+          "/w/earn/savings/receipt",
+          "/r/earn/savings/receipt"
+        ],
+        "historicalPreviewUrls": [
+          "/earn/savings/receipt",
+          "/r/earn/savings/receipt",
+          "/t/earn/savings/receipt",
+          "/w/earn/savings/receipt"
+        ],
+        "currentPreviewUrlParity": true,
+        "historicalRuntimeRegistrations": 4,
+        "evidencePath": "docs/architecture/production-readiness/evidence/A07/route-url-resolution-2026-09-28.json"
+      },
+      "dynamicParameters": [],
+      "personaMapping": {
+        "status": "not-mapped-per-route",
+        "personaIds": [],
+        "fixtureIds": [],
+        "sources": [
+          "src/dev/mocks/personas.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/auth-handlers.test.ts"
+        ],
+        "notes": "No route-specific persona selection is recorded in TRACKING.json."
+      },
+      "fixtureMapping": {
+        "status": "no-dynamic-route-parameter-scenario-fixture-not-mapped",
+        "dynamicParameters": [],
+        "sampleUrls": [
+          "/earn/savings/receipt",
+          "/r/earn/savings/receipt",
+          "/t/earn/savings/receipt",
+          "/w/earn/savings/receipt"
+        ],
+        "historicalResolverValues": [],
+        "source": "Current TRACKING.json supplies concrete preview URLs. A07 supplies historical parameter values and fixture-source candidates; current source hashes are captured here, but fixture contents and scenario-specific seed behavior still require route-level verification."
+      },
+      "scenarios": [
+        {
+          "id": "earn.pending",
+          "binding": "route-ledger-link",
+          "routeStatus": "not_verified",
+          "evidenceIds": ["EV-20260930-089"],
+          "notes": "Local MSW confirms stable pending subscription/redemption receipts; user acceptance and durable backend state remain open.",
+          "expectedUi": "Render only the pending/request-in-flight status defined by the contract; disable duplicate finalization while unresolved and show a stable receipt/reference when available.",
+          "runtimeEvidenceFresh": false,
+          "runtimeEvidence": null,
+          "runtimeObservedOperationIds": []
+        }
+      ],
+      "reset": {
+        "status": "shared-mock-reset-documented",
+        "procedure": "UI-RUNBOOK.md section 4, “Đặt lại preview”",
+        "scope": "Logs out through the auth adapter, clears React Query cache and reloads in-memory fixtures; it does not clear browser-wide storage."
+      },
+      "routeCheck": {
+        "status": "navigation-only-unverified",
+        "action": "Open a resolved URL in its listed shell and verify the route target. Add page-specific interactions from the owning page/test before user acceptance.",
+        "expected": {
+          "component": "EarnReceiptPage",
+          "pageTarget": "src/features/earn/pages/EarnTransactionPages.tsx",
+          "classification": "page",
+          "note": "This verifies route identity only; it is not a page UX assertion or user acceptance."
+        }
+      },
+      "routeNotes": "A07.02 mapped from runtime route tree; URL templates, shell registration IDs and fixture status are recorded in evidence/A07/route-url-resolution-2026-09-28.json. Runtime match is not browser UI acceptance. | Receipt route accepts both `savings` and `staking` domain paths; openapi-backed pending receipts preserve their domain return route.",
+      "dispositionReason": "",
+      "blockers": []
+    },
+    {
+      "routeId": "ROUTE-f7252a0c02fb",
+      "lifecycle": "active",
+      "source": "src/features/earn/routes.ts",
+      "declarationPath": "earn/staking/receipt",
+      "component": "EarnReceiptPage",
+      "pageTarget": "src/features/earn/pages/EarnTransactionPages.tsx",
+      "routeFactory": null,
+      "classification": "page",
+      "developmentOnly": false,
+      "taskId": "U07",
+      "domains": ["earn"],
+      "operationIds": [],
+      "operationNames": [],
+      "uiStatus": "in_progress",
+      "uiEvidenceIds": ["EV-20260930-089"],
+      "uiNotes": "EV-20260930-089 verifies the Savings pending receipt in local Chromium/MSW and includes a focused Staking route test; backend and user acceptance remain open.",
+      "pageIds": ["PAGE-9742ca24da97"],
+      "pages": [
+        {
+          "pageId": "PAGE-9742ca24da97",
+          "sourcePath": "src/features/earn/pages/EarnTransactionPages.tsx",
+          "owner": "features/earn",
+          "taskId": "U07",
+          "uiStatus": "todo",
+          "uiEvidenceIds": [],
+          "uiNotes": "",
+          "uiReview": "pending",
+          "userAcceptance": "pending",
+          "checklist": {
+            "P01": "todo",
+            "P02": "todo",
+            "P03": "todo",
+            "P04": "todo",
+            "P05": "todo",
+            "P06": "todo",
+            "P07": "todo",
+            "P08": "todo"
+          },
+          "operationIds": [],
+          "blockers": []
+        }
+      ],
+      "resolvedUrls": [
+        {
+          "url": "/earn/staking/receipt",
+          "shell": "phone"
+        },
+        {
+          "url": "/r/earn/staking/receipt",
+          "shell": "responsive"
+        },
+        {
+          "url": "/t/earn/staking/receipt",
+          "shell": "tablet"
+        },
+        {
+          "url": "/w/earn/staking/receipt",
+          "shell": "web"
+        }
+      ],
+      "historicalRouteResolution": {
+        "status": "stale-source-hash",
+        "sourceHash": {
+          "expected": "e9366bf0acd5d7e63069de10b5b3af71e26a63a9654f2961e44b1d3f41aa8c56",
+          "current": "29a78f5218d59be69038c2361da850258a8e3d2587ccb9d939dc43ffce10ecc7",
+          "matches": false
+        },
+        "historicalUrlTemplates": [],
+        "historicalPreviewUrls": [],
+        "currentPreviewUrlParity": false,
+        "historicalRuntimeRegistrations": 0,
+        "evidencePath": "docs/architecture/production-readiness/evidence/A07/route-url-resolution-2026-09-28.json"
+      },
+      "dynamicParameters": [],
+      "personaMapping": {
+        "status": "not-mapped-per-route",
+        "personaIds": [],
+        "fixtureIds": [],
+        "sources": [
+          "src/dev/mocks/personas.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/auth-handlers.test.ts"
+        ],
+        "notes": "No route-specific persona selection is recorded in TRACKING.json."
+      },
+      "fixtureMapping": {
+        "status": "no-dynamic-route-parameter-scenario-fixture-not-mapped",
+        "dynamicParameters": [],
+        "sampleUrls": [
+          "/earn/staking/receipt",
+          "/r/earn/staking/receipt",
+          "/t/earn/staking/receipt",
+          "/w/earn/staking/receipt"
+        ],
+        "historicalResolverValues": [],
+        "source": "Current TRACKING.json supplies concrete preview URLs. A07 supplies historical parameter values and fixture-source candidates; current source hashes are captured here, but fixture contents and scenario-specific seed behavior still require route-level verification."
+      },
+      "scenarios": [],
+      "reset": {
+        "status": "shared-mock-reset-documented",
+        "procedure": "UI-RUNBOOK.md section 4, “Đặt lại preview”",
+        "scope": "Logs out through the auth adapter, clears React Query cache and reloads in-memory fixtures; it does not clear browser-wide storage."
+      },
+      "routeCheck": {
+        "status": "navigation-only-unverified",
+        "action": "Open a resolved URL in its listed shell and verify the route target. Add page-specific interactions from the owning page/test before user acceptance.",
+        "expected": {
+          "component": "EarnReceiptPage",
+          "pageTarget": "src/features/earn/pages/EarnTransactionPages.tsx",
+          "classification": "page",
+          "note": "This verifies route identity only; it is not a page UX assertion or user acceptance."
+        }
+      },
+      "routeNotes": "A07.02 mapped from runtime route tree; URL templates, shell registration IDs and fixture status are recorded in evidence/A07/route-url-resolution-2026-09-28.json. Runtime match is not browser UI acceptance. | Receipt route accepts both `savings` and `staking` domain paths; openapi-backed pending receipts preserve their domain return route. Staking receipt is an explicit inventory route; existing component verification is retained without claiming backend or user acceptance.",
+      "dispositionReason": "",
+      "blockers": []
+    },
+    {
+      "routeId": "ROUTE-59be122b244e",
+      "lifecycle": "active",
+      "source": "src/app/routes.ts",
+      "declarationPath": "notifications",
+      "component": "WebNotificationsPage",
+      "pageTarget": "src/app/pages/platform/NotificationsPageAdapter.tsx",
+      "routeFactory": null,
+      "classification": "page",
+      "developmentOnly": false,
+      "taskId": "U09",
+      "domains": ["platform", "support"],
+      "operationIds": [],
+      "operationNames": [],
+      "uiStatus": "todo",
+      "uiEvidenceIds": [],
+      "uiNotes": "",
+      "pageIds": ["PAGE-b358e1cb5c6c", "PAGE-6675f65ec1a2"],
+      "pages": [
+        {
+          "pageId": "PAGE-b358e1cb5c6c",
+          "sourcePath": "src/features/support/pages/NotificationsContractPage.tsx",
+          "owner": "features/support",
+          "taskId": "U09",
+          "uiStatus": "todo",
+          "uiEvidenceIds": [
+            "EV-20260929-531",
+            "EV-20260929-533",
+            "EV-20260929-535",
+            "EV-20260929-538",
+            "EV-20260929-540"
+          ],
+          "uiNotes": "A06.03 support.success observed mark-read 204 and unread 7 to 6; visual UI shows sidebar badge 3, so C05.03 review remains open. A06.03 support.empty observed unread 7 to 6 after local 204; fixed sidebar badge remained 3, so C05.03 review stays open. A06.03 support.loading observed the notification loading state before the local 200 response; user acceptance remains pending. A06.03 support.error shows a local recoverable error/Retry state with no stale notification content; user acceptance remains pending.",
+          "uiReview": "pending",
+          "userAcceptance": "pending",
+          "checklist": {
+            "P01": "todo",
+            "P02": "todo",
+            "P03": "todo",
+            "P04": "todo",
+            "P05": "todo",
+            "P06": "todo",
+            "P07": "todo",
+            "P08": "todo"
+          },
+          "operationIds": [],
+          "blockers": []
+        },
+        {
+          "pageId": "PAGE-6675f65ec1a2",
+          "sourcePath": "src/app/pages/platform/NotificationsPageAdapter.tsx",
+          "owner": "app/platform",
+          "taskId": "B07",
+          "uiStatus": "todo",
+          "uiEvidenceIds": [],
+          "uiNotes": "Technical route adapter; the Notifications feature content remains separately represented by PAGE-b358e1cb5c6c. No user acceptance is inferred.",
+          "uiReview": "pending",
+          "userAcceptance": "pending",
+          "checklist": {
+            "P01": "todo",
+            "P02": "todo",
+            "P03": "todo",
+            "P04": "todo",
+            "P05": "todo",
+            "P06": "todo",
+            "P07": "todo",
+            "P08": "todo"
+          },
+          "operationIds": [],
+          "blockers": [
+            "Technical wrapper is not separately user-accepted; the routed Notifications experience remains pending under C05.03."
+          ]
+        }
+      ],
+      "resolvedUrls": [
+        {
+          "url": "/w/notifications",
+          "shell": "web"
+        }
+      ],
+      "historicalRouteResolution": {
+        "status": "stale-source-hash",
+        "sourceHash": {
+          "expected": "97e8eaa91866a6fa3189e127c7326ab7ec1f6b411bb193c2d294f616a005a3df",
+          "current": "e6a485c6e2f5d90bab6ddb3105aa4f6e0270cc133bbae4eb8eeaf75e40ccf8c5",
+          "matches": false
+        },
+        "historicalUrlTemplates": [],
+        "historicalPreviewUrls": [],
+        "currentPreviewUrlParity": false,
+        "historicalRuntimeRegistrations": 0,
+        "evidencePath": "docs/architecture/production-readiness/evidence/A07/route-url-resolution-2026-09-28.json"
+      },
+      "dynamicParameters": [],
+      "personaMapping": {
+        "status": "not-mapped-per-route",
+        "personaIds": [],
+        "fixtureIds": [],
+        "sources": [
+          "src/dev/mocks/personas.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/auth-handlers.test.ts"
+        ],
+        "notes": "No route-specific persona selection is recorded in TRACKING.json."
+      },
+      "fixtureMapping": {
+        "status": "no-dynamic-route-parameter-scenario-fixture-not-mapped",
+        "dynamicParameters": [],
+        "sampleUrls": ["/w/notifications"],
+        "historicalResolverValues": [],
+        "source": "Current TRACKING.json supplies concrete preview URLs. A07 supplies historical parameter values and fixture-source candidates; current source hashes are captured here, but fixture contents and scenario-specific seed behavior still require route-level verification."
+      },
+      "scenarios": [],
+      "reset": {
+        "status": "shared-mock-reset-documented",
+        "procedure": "UI-RUNBOOK.md section 4, “Đặt lại preview”",
+        "scope": "Logs out through the auth adapter, clears React Query cache and reloads in-memory fixtures; it does not clear browser-wide storage."
+      },
+      "routeCheck": {
+        "status": "navigation-only-unverified",
+        "action": "Open a resolved URL in its listed shell and verify the route target. Add page-specific interactions from the owning page/test before user acceptance.",
+        "expected": {
+          "component": "WebNotificationsPage",
+          "pageTarget": "src/app/pages/platform/NotificationsPageAdapter.tsx",
+          "classification": "page",
+          "note": "This verifies route identity only; it is not a page UX assertion or user acceptance."
+        }
+      },
+      "routeNotes": "A07.02 mapped from runtime route tree; URL templates, shell registration IDs and fixture status are recorded in evidence/A07/route-url-resolution-2026-09-28.json. Runtime match is not browser UI acceptance. Source inventory now routes through the App-owned NotificationsPageAdapter; Support content composition remains represented by PAGE-b358e1cb5c6c.",
+      "dispositionReason": "",
+      "blockers": [
+        "Technical wrapper is not separately user-accepted; the routed Notifications experience remains pending under C05.03."
+      ]
+    },
+    {
+      "routeId": "ROUTE-108bd764e9e9",
+      "lifecycle": "active",
+      "source": "src/features/support/routes.ts",
+      "declarationPath": "notifications",
+      "component": "NotificationsPage",
+      "pageTarget": "src/app/pages/platform/NotificationsPageAdapter.tsx",
+      "routeFactory": "createSupportProtectedRoutes",
+      "classification": "page",
+      "developmentOnly": false,
+      "taskId": "U09",
+      "domains": ["platform", "support"],
+      "operationIds": [],
+      "operationNames": [],
+      "uiStatus": "todo",
+      "uiEvidenceIds": [],
+      "uiNotes": "",
+      "pageIds": ["PAGE-b358e1cb5c6c", "PAGE-6675f65ec1a2"],
+      "pages": [
+        {
+          "pageId": "PAGE-b358e1cb5c6c",
+          "sourcePath": "src/features/support/pages/NotificationsContractPage.tsx",
+          "owner": "features/support",
+          "taskId": "U09",
+          "uiStatus": "todo",
+          "uiEvidenceIds": [
+            "EV-20260929-531",
+            "EV-20260929-533",
+            "EV-20260929-535",
+            "EV-20260929-538",
+            "EV-20260929-540"
+          ],
+          "uiNotes": "A06.03 support.success observed mark-read 204 and unread 7 to 6; visual UI shows sidebar badge 3, so C05.03 review remains open. A06.03 support.empty observed unread 7 to 6 after local 204; fixed sidebar badge remained 3, so C05.03 review stays open. A06.03 support.loading observed the notification loading state before the local 200 response; user acceptance remains pending. A06.03 support.error shows a local recoverable error/Retry state with no stale notification content; user acceptance remains pending.",
+          "uiReview": "pending",
+          "userAcceptance": "pending",
+          "checklist": {
+            "P01": "todo",
+            "P02": "todo",
+            "P03": "todo",
+            "P04": "todo",
+            "P05": "todo",
+            "P06": "todo",
+            "P07": "todo",
+            "P08": "todo"
+          },
+          "operationIds": [],
+          "blockers": []
+        },
+        {
+          "pageId": "PAGE-6675f65ec1a2",
+          "sourcePath": "src/app/pages/platform/NotificationsPageAdapter.tsx",
+          "owner": "app/platform",
+          "taskId": "B07",
+          "uiStatus": "todo",
+          "uiEvidenceIds": [],
+          "uiNotes": "Technical route adapter; the Notifications feature content remains separately represented by PAGE-b358e1cb5c6c. No user acceptance is inferred.",
+          "uiReview": "pending",
+          "userAcceptance": "pending",
+          "checklist": {
+            "P01": "todo",
+            "P02": "todo",
+            "P03": "todo",
+            "P04": "todo",
+            "P05": "todo",
+            "P06": "todo",
+            "P07": "todo",
+            "P08": "todo"
+          },
+          "operationIds": [],
+          "blockers": [
+            "Technical wrapper is not separately user-accepted; the routed Notifications experience remains pending under C05.03."
+          ]
+        }
+      ],
+      "resolvedUrls": [
+        {
+          "url": "/notifications",
+          "shell": "phone"
+        },
+        {
+          "url": "/r/notifications",
+          "shell": "responsive"
+        },
+        {
+          "url": "/t/notifications",
+          "shell": "tablet"
+        },
+        {
+          "url": "/w/notifications",
+          "shell": "web"
+        }
+      ],
+      "historicalRouteResolution": {
+        "status": "stale-source-hash",
+        "sourceHash": {
+          "expected": "5ef90d4c0ddb261fef6979415270763af549de9cf2c8eb9e41b4f2200932f481",
+          "current": "b86d2b3c720fc19033c7f8ae70438646faccd5dfb0c9a5e8cde6269d0930cb9b",
+          "matches": false
+        },
+        "historicalUrlTemplates": [],
+        "historicalPreviewUrls": [],
+        "currentPreviewUrlParity": false,
+        "historicalRuntimeRegistrations": 0,
+        "evidencePath": "docs/architecture/production-readiness/evidence/A07/route-url-resolution-2026-09-28.json"
+      },
+      "dynamicParameters": [],
+      "personaMapping": {
+        "status": "not-mapped-per-route",
+        "personaIds": [],
+        "fixtureIds": [],
+        "sources": [
+          "src/dev/mocks/personas.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/auth-handlers.test.ts"
+        ],
+        "notes": "No route-specific persona selection is recorded in TRACKING.json."
+      },
+      "fixtureMapping": {
+        "status": "no-dynamic-route-parameter-scenario-fixture-not-mapped",
+        "dynamicParameters": [],
+        "sampleUrls": [
+          "/notifications",
+          "/r/notifications",
+          "/t/notifications",
+          "/w/notifications"
+        ],
+        "historicalResolverValues": [],
+        "source": "Current TRACKING.json supplies concrete preview URLs. A07 supplies historical parameter values and fixture-source candidates; current source hashes are captured here, but fixture contents and scenario-specific seed behavior still require route-level verification."
+      },
+      "scenarios": [],
+      "reset": {
+        "status": "shared-mock-reset-documented",
+        "procedure": "UI-RUNBOOK.md section 4, “Đặt lại preview”",
+        "scope": "Logs out through the auth adapter, clears React Query cache and reloads in-memory fixtures; it does not clear browser-wide storage."
+      },
+      "routeCheck": {
+        "status": "navigation-only-unverified",
+        "action": "Open a resolved URL in its listed shell and verify the route target. Add page-specific interactions from the owning page/test before user acceptance.",
+        "expected": {
+          "component": "NotificationsPage",
+          "pageTarget": "src/app/pages/platform/NotificationsPageAdapter.tsx",
+          "classification": "page",
+          "note": "This verifies route identity only; it is not a page UX assertion or user acceptance."
+        }
+      },
+      "routeNotes": "A07.02 mapped from runtime route tree; URL templates, shell registration IDs and fixture status are recorded in evidence/A07/route-url-resolution-2026-09-28.json. Runtime match is not browser UI acceptance. Source inventory now routes through the App-owned NotificationsPageAdapter; Support content composition remains represented by PAGE-b358e1cb5c6c.",
+      "dispositionReason": "",
+      "blockers": [
+        "Technical wrapper is not separately user-accepted; the routed Notifications experience remains pending under C05.03."
+      ]
     }
   ]
 }

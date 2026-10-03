@@ -267,9 +267,18 @@
       "id": "earn.empty",
       "status": "passed",
       "route": "/w/earn/savings/portfolio",
-      "routes": ["/w/earn/savings/portfolio", "/w/earn/savings/history"],
-      "operationIds": ["getEarnSnapshot", "listEarnTransactions"],
-      "operations": ["GET /earn/snapshot", "GET /earn/transactions?domain=savings"],
+      "routes": [
+        "/w/earn/savings/portfolio",
+        "/w/earn/savings/history"
+      ],
+      "operationIds": [
+        "getEarnSnapshot",
+        "listEarnTransactions"
+      ],
+      "operations": [
+        "GET /earn/snapshot",
+        "GET /earn/transactions?domain=savings"
+      ],
       "snapshotStatus": 200,
       "transactionsStatus": 200,
       "visiblePortfolioEmptyState": true,
@@ -284,8 +293,16 @@
         "/w/earn/savings/receipt",
         "/w/earn/savings/history"
       ],
-      "operationIds": ["createEarnSubscription", "redeemEarnPosition", "listEarnTransactions"],
-      "statuses": ["pending", "pending", "pending"],
+      "operationIds": [
+        "createEarnSubscription",
+        "redeemEarnPosition",
+        "listEarnTransactions"
+      ],
+      "statuses": [
+        "pending",
+        "pending",
+        "pending"
+      ],
       "subscriptionStatus": 201,
       "redemptionStatus": 201,
       "historyStatus": 200,
@@ -300,7 +317,9 @@
       "domain": "discovery",
       "state": "empty",
       "route": "/w/search",
-      "operationIds": ["searchDiscovery"],
+      "operationIds": [
+        "searchDiscovery"
+      ],
       "operation": "GET /discovery/search?query=zz",
       "responseStatus": 200,
       "responseFromServiceWorker": true,
@@ -319,8 +338,14 @@
       "status": "passed",
       "domain": "discovery",
       "state": "success",
-      "routes": ["/w/search", "/w/topic/crypto"],
-      "operationIds": ["searchDiscovery", "getDiscoveryTopic"],
+      "routes": [
+        "/w/search",
+        "/w/topic/crypto"
+      ],
+      "operationIds": [
+        "searchDiscovery",
+        "getDiscoveryTopic"
+      ],
       "searchStatus": 200,
       "searchResponseFromServiceWorker": true,
       "searchResultCount": 2,
@@ -336,8 +361,14 @@
       "status": "passed",
       "domain": "discovery",
       "state": "loading",
-      "routes": ["/w/search", "/w/topic/macro"],
-      "operationIds": ["searchDiscovery", "getDiscoveryTopic"],
+      "routes": [
+        "/w/search",
+        "/w/topic/macro"
+      ],
+      "operationIds": [
+        "searchDiscovery",
+        "getDiscoveryTopic"
+      ],
       "searchStatus": 200,
       "searchResponseFromServiceWorker": true,
       "searchPayloadQuery": "solana",
@@ -352,8 +383,14 @@
       "status": "passed",
       "domain": "discovery",
       "state": "error",
-      "routes": ["/w/topic/macro", "/w/search"],
-      "operationIds": ["searchDiscovery", "getDiscoveryTopic"],
+      "routes": [
+        "/w/topic/macro",
+        "/w/search"
+      ],
+      "operationIds": [
+        "searchDiscovery",
+        "getDiscoveryTopic"
+      ],
       "topicStatus": 503,
       "topicResponseFromServiceWorker": true,
       "visibleTopicRetryAction": true,
@@ -367,8 +404,14 @@
       "status": "passed",
       "domain": "discovery",
       "state": "forbidden",
-      "routes": ["/w/search", "/w/topic/ai"],
-      "operationIds": ["searchDiscovery", "getDiscoveryTopic"],
+      "routes": [
+        "/w/search",
+        "/w/topic/ai"
+      ],
+      "operationIds": [
+        "searchDiscovery",
+        "getDiscoveryTopic"
+      ],
       "searchStatus": 403,
       "searchResponseFromServiceWorker": true,
       "visibleSearchPermissionDeniedState": true,
@@ -381,8 +424,14 @@
       "status": "passed",
       "domain": "discovery",
       "state": "unauthorized",
-      "routes": ["/w/topic/community", "/w/search"],
-      "operationIds": ["getDiscoveryTopic", "searchDiscovery"],
+      "routes": [
+        "/w/topic/community",
+        "/w/search"
+      ],
+      "operationIds": [
+        "getDiscoveryTopic",
+        "searchDiscovery"
+      ],
       "topicStatus": 401,
       "topicResponseFromServiceWorker": true,
       "topicRefreshStatus": 401,
@@ -463,7 +512,10 @@
       "route": "/w/referral",
       "operationId": "getReferralOverview",
       "contractOperationCount": 1,
-      "contractDeclaredStatuses": [200, 401],
+      "contractDeclaredStatuses": [
+        200,
+        401
+      ],
       "forbiddenStatusDeclaredOperationCount": 0,
       "notVerifiedReason": "Referral OpenAPI does not declare HTTP 403 for getReferralOverview; no 403 response or permission-denied UI is claimed by this aggregate evidence."
     },
@@ -490,7 +542,11 @@
       "id": "p2p.success",
       "status": "passed",
       "route": "/w/p2p/escrow/p2p002",
-      "operationIds": ["getP2POrder", "getP2PAd", "createP2POrder"],
+      "operationIds": [
+        "getP2POrder",
+        "getP2PAd",
+        "createP2POrder"
+      ],
       "responseStatus": 200,
       "responseFromServiceWorker": true,
       "orderStatus": "paid",
@@ -547,7 +603,11 @@
       "releaseVerificationStatus": 200,
       "visibleReleaseConflictGuidance": true,
       "releaseRouteAfterConflict": "/w/p2p/escrow/p2p002",
-      "routes": ["/w/p2p/ad/ad001", "/w/p2p/escrow/p2p001", "/w/p2p/escrow/p2p002"],
+      "routes": [
+        "/w/p2p/ad/ad001",
+        "/w/p2p/escrow/p2p001",
+        "/w/p2p/escrow/p2p002"
+      ],
       "observedOperationIds": [
         "createP2POrder",
         "getP2POrder",
@@ -584,14 +644,20 @@
       "id": "p2p.forbidden",
       "status": "passed",
       "route": "/w/p2p/escrow/p2p002",
-      "operationIds": ["getP2POrder", "createP2PReleaseChallenge"],
+      "operationIds": [
+        "getP2POrder",
+        "createP2PReleaseChallenge"
+      ],
       "responseStatus": 403,
       "responseFromServiceWorker": true,
       "permissionDeniedMessage": "Không có quyền tạo thử thách xác thực release escrow.",
       "verificationRequestCount": 0,
       "releaseRequestCount": 0,
       "routeAfterDeniedChallenge": "/w/p2p/escrow/p2p002",
-      "observedOperationIds": ["getP2POrder", "createP2PReleaseChallenge"],
+      "observedOperationIds": [
+        "getP2POrder",
+        "createP2PReleaseChallenge"
+      ],
       "observedAt": "2026-09-29T09:42:30.655Z",
       "evidenceArtifact": "docs/architecture/production-readiness/evidence/A06/p2p-forbidden-browser-check-2026-09-29.json",
       "realBackendRequestSent": false,
@@ -601,7 +667,10 @@
       "id": "p2p.pending",
       "status": "passed",
       "route": "/w/p2p/escrow/p2p002",
-      "routes": ["/w/p2p/order/dev-p2p-order-0001", "/w/p2p/escrow/p2p002"],
+      "routes": [
+        "/w/p2p/order/dev-p2p-order-0001",
+        "/w/p2p/escrow/p2p002"
+      ],
       "operationIds": [
         "createP2POrder",
         "getP2POrder",
@@ -658,7 +727,9 @@
       "id": "p2p.unauthorized",
       "status": "passed",
       "route": "/w/p2p/escrow/p2p002",
-      "operationIds": ["getP2POrder"],
+      "operationIds": [
+        "getP2POrder"
+      ],
       "responseStatus": 401,
       "responseFromServiceWorker": true,
       "refreshStatus": 401,
@@ -670,8 +741,14 @@
       "id": "wallet.unauthorized",
       "status": "passed",
       "route": "/w/wallet",
-      "routes": ["/w/wallet", "/auth/login"],
-      "operationIds": ["getWalletAssets", "getWalletTransactions"],
+      "routes": [
+        "/w/wallet",
+        "/auth/login"
+      ],
+      "operationIds": [
+        "getWalletAssets",
+        "getWalletTransactions"
+      ],
       "assetsStatus": 401,
       "assetsFromServiceWorker": true,
       "assetsError": {
@@ -697,7 +774,10 @@
       "id": "wallet.forbidden",
       "status": "passed",
       "route": "/w/wallet",
-      "operationIds": ["getWalletAssets", "getWalletTransactions"],
+      "operationIds": [
+        "getWalletAssets",
+        "getWalletTransactions"
+      ],
       "assetsStatus": 403,
       "assetsFromServiceWorker": true,
       "assetsError": {
@@ -719,7 +799,10 @@
       "id": "wallet.loading",
       "status": "passed",
       "route": "/w/wallet",
-      "operationIds": ["getWalletAssets", "getWalletTransactions"],
+      "operationIds": [
+        "getWalletAssets",
+        "getWalletTransactions"
+      ],
       "responses": [
         {
           "path": "/api/wallet/assets",
@@ -754,7 +837,10 @@
       "id": "wallet.error",
       "status": "passed",
       "route": "/w/wallet",
-      "operationIds": ["getWalletAssets", "getWalletTransactions"],
+      "operationIds": [
+        "getWalletAssets",
+        "getWalletTransactions"
+      ],
       "errorResponsesBeforeRetry": [
         {
           "path": "/api/wallet/assets",
@@ -909,7 +995,10 @@
       "state": "success",
       "status": "passed",
       "route": "/w/wallet",
-      "operationIds": ["getWalletAssets", "getWalletTransactions"],
+      "operationIds": [
+        "getWalletAssets",
+        "getWalletTransactions"
+      ],
       "responses": [
         {
           "operationId": "getWalletAssets",
@@ -949,7 +1038,10 @@
       "state": "empty",
       "status": "passed",
       "route": "/w/wallet",
-      "operationIds": ["getWalletAssets", "getWalletTransactions"],
+      "operationIds": [
+        "getWalletAssets",
+        "getWalletTransactions"
+      ],
       "responses": [
         {
           "operationId": "getWalletAssets",
@@ -990,7 +1082,11 @@
       "state": "pending",
       "status": "passed",
       "route": "/w/wallet/transaction/preview-wallet-transaction-0001",
-      "operationIds": ["createWalletTransfer", "createWalletWithdrawal", "getWalletTransaction"],
+      "operationIds": [
+        "createWalletTransfer",
+        "createWalletWithdrawal",
+        "getWalletTransaction"
+      ],
       "responses": [
         {
           "operationId": "createWalletTransfer",
@@ -1136,7 +1232,11 @@
         "/w/trade/orders-history (tab Lịch sử)",
         "/w/trade/positions"
       ],
-      "operationIds": ["listOpenOrders", "listOpenPositions", "listOrderHistory"],
+      "operationIds": [
+        "listOpenOrders",
+        "listOpenPositions",
+        "listOrderHistory"
+      ],
       "requestCounts": {
         "listOpenOrders": 1,
         "listOpenPositions": 1,
@@ -1230,7 +1330,11 @@
         "/w/trade/orders-history (tab Lịch sử)",
         "/w/trade/positions"
       ],
-      "operationIds": ["listOpenOrders", "listOpenPositions", "listOrderHistory"],
+      "operationIds": [
+        "listOpenOrders",
+        "listOpenPositions",
+        "listOrderHistory"
+      ],
       "requestCounts": {
         "listOpenOrders": 1,
         "listOpenPositions": 6,
@@ -1706,7 +1810,9 @@
       "status": "passed",
       "persona": "developer",
       "route": "/w/trade/positions",
-      "operationIds": ["listOpenPositions"],
+      "operationIds": [
+        "listOpenPositions"
+      ],
       "visibleError": true,
       "visibleRetryAction": true,
       "falseEmptyStateVisible": false,
@@ -1878,7 +1984,9 @@
       "status": "passed",
       "persona": "developer",
       "route": "/auth/login",
-      "operationIds": ["listOpenPositions"],
+      "operationIds": [
+        "listOpenPositions"
+      ],
       "readRequestCount": 1,
       "readResponses": [
         {
@@ -1915,7 +2023,9 @@
       "status": "passed",
       "persona": "developer",
       "route": "/w/trade/positions",
-      "operationIds": ["listOpenPositions"],
+      "operationIds": [
+        "listOpenPositions"
+      ],
       "declared403OperationCount": 10,
       "readRequestCount": 1,
       "readResponses": [
@@ -1944,8 +2054,14 @@
       "status": "passed",
       "persona": "admin",
       "role": "admin",
-      "permissions": ["admin:read"],
-      "routes": ["/w/admin", "/w/admin/funnels", "/w/admin/abtests"],
+      "permissions": [
+        "admin:read"
+      ],
+      "routes": [
+        "/w/admin",
+        "/w/admin/funnels",
+        "/w/admin/abtests"
+      ],
       "operationIds": [
         "getAdminOverview",
         "getAdminFunnel",
@@ -1953,7 +2069,11 @@
         "getAdminAbTest",
         "updateAdminFeatureFlag"
       ],
-      "observedOperationIds": ["getAdminOverview", "getAdminFunnel", "listAdminAbTests"],
+      "observedOperationIds": [
+        "getAdminOverview",
+        "getAdminFunnel",
+        "listAdminAbTests"
+      ],
       "operationRequestCounts": {
         "getAdminOverview": 1,
         "getAdminFunnel": 1,
@@ -2002,10 +2122,21 @@
       "status": "passed",
       "persona": "admin",
       "role": "admin",
-      "permissions": ["admin:read"],
-      "routes": ["/w/admin/funnels", "/w/admin/abtests"],
-      "operationIds": ["getAdminFunnel", "listAdminAbTests"],
-      "observedOperationIds": ["getAdminFunnel", "listAdminAbTests"],
+      "permissions": [
+        "admin:read"
+      ],
+      "routes": [
+        "/w/admin/funnels",
+        "/w/admin/abtests"
+      ],
+      "operationIds": [
+        "getAdminFunnel",
+        "listAdminAbTests"
+      ],
+      "observedOperationIds": [
+        "getAdminFunnel",
+        "listAdminAbTests"
+      ],
       "operationRequestCounts": {
         "getAdminFunnel": 1,
         "listAdminAbTests": 1
@@ -2045,10 +2176,24 @@
       "status": "passed",
       "persona": "admin",
       "role": "admin",
-      "permissions": ["admin:read"],
-      "routes": ["/w/admin", "/w/admin/funnels", "/w/admin/abtests"],
-      "operationIds": ["getAdminOverview", "getAdminFunnel", "listAdminAbTests"],
-      "observedOperationIds": ["getAdminOverview", "getAdminFunnel", "listAdminAbTests"],
+      "permissions": [
+        "admin:read"
+      ],
+      "routes": [
+        "/w/admin",
+        "/w/admin/funnels",
+        "/w/admin/abtests"
+      ],
+      "operationIds": [
+        "getAdminOverview",
+        "getAdminFunnel",
+        "listAdminAbTests"
+      ],
+      "observedOperationIds": [
+        "getAdminOverview",
+        "getAdminFunnel",
+        "listAdminAbTests"
+      ],
       "operationRequestCounts": {
         "getAdminOverview": 1,
         "getAdminFunnel": 1,
@@ -2120,8 +2265,14 @@
       "status": "passed",
       "persona": "admin",
       "role": "admin",
-      "permissions": ["admin:read"],
-      "routes": ["/w/admin", "/w/admin/funnels", "/w/admin/abtests"],
+      "permissions": [
+        "admin:read"
+      ],
+      "routes": [
+        "/w/admin",
+        "/w/admin/funnels",
+        "/w/admin/abtests"
+      ],
       "operationIds": [
         "getAdminOverview",
         "getAdminFunnel",
@@ -2129,7 +2280,11 @@
         "getAdminAbTest",
         "updateAdminFeatureFlag"
       ],
-      "observedOperationIds": ["getAdminOverview", "getAdminFunnel", "listAdminAbTests"],
+      "observedOperationIds": [
+        "getAdminOverview",
+        "getAdminFunnel",
+        "listAdminAbTests"
+      ],
       "operationRequestCounts": {
         "getAdminOverview": 6,
         "getAdminFunnel": 6,
@@ -2285,7 +2440,9 @@
       "status": "passed",
       "persona": "admin",
       "role": "admin",
-      "permissions": ["admin:read"],
+      "permissions": [
+        "admin:read"
+      ],
       "operationIds": [
         "getAdminOverview",
         "getAdminFunnel",
@@ -2293,7 +2450,9 @@
         "getAdminAbTest",
         "updateAdminFeatureFlag"
       ],
-      "observedOperationIds": ["getAdminOverview"],
+      "observedOperationIds": [
+        "getAdminOverview"
+      ],
       "declared401OperationCount": 5,
       "readRequests": [
         {
@@ -2328,7 +2487,9 @@
       "writeRequestCount": 0,
       "finalRoute": "/auth/login",
       "elapsedMs": 528,
-      "screenshots": ["preview-admin-unauthorized-login-2026-09-29.png"],
+      "screenshots": [
+        "preview-admin-unauthorized-login-2026-09-29.png"
+      ],
       "detailOperationNotReachableFromCurrentRoutes": "getAdminAbTest",
       "mutationNotSent": "updateAdminFeatureFlag; the preview persona has admin:read only and no current UI route exposes the write form.",
       "note": "Representative Admin unauthorized evidence exercises getAdminOverview only (1/5 linked operations); OpenAPI declares 401 for all five, including the currently unreachable detail and write operations. Local MSW returns 401 for the read, refresh returns 401, and the protected route redirects to login without visible overview content. No mutation is sent; backend authorization/session behavior, staging and user acceptance are not certified."
@@ -2340,8 +2501,14 @@
       "status": "passed",
       "persona": "admin",
       "role": "admin",
-      "permissions": ["admin:read"],
-      "routes": ["/w/admin", "/w/admin/funnels", "/w/admin/abtests"],
+      "permissions": [
+        "admin:read"
+      ],
+      "routes": [
+        "/w/admin",
+        "/w/admin/funnels",
+        "/w/admin/abtests"
+      ],
       "operationIds": [
         "getAdminOverview",
         "getAdminFunnel",
@@ -2349,7 +2516,11 @@
         "getAdminAbTest",
         "updateAdminFeatureFlag"
       ],
-      "observedOperationIds": ["getAdminOverview", "getAdminFunnel", "listAdminAbTests"],
+      "observedOperationIds": [
+        "getAdminOverview",
+        "getAdminFunnel",
+        "listAdminAbTests"
+      ],
       "declared403OperationCount": 5,
       "operationRequestCounts": {
         "getAdminOverview": 1,
@@ -2430,8 +2601,14 @@
       "status": "passed",
       "persona": "arena",
       "role": "user",
-      "permissions": ["arena:join"],
-      "routes": ["/w/arena", "/w/arena/mode/mode001", "/w/arena/challenge/ch001"],
+      "permissions": [
+        "arena:join"
+      ],
+      "routes": [
+        "/w/arena",
+        "/w/arena/mode/mode001",
+        "/w/arena/challenge/ch001"
+      ],
       "operationIds": [
         "getArenaDiscovery",
         "getArenaMode",
@@ -2529,10 +2706,18 @@
       "status": "passed",
       "persona": "arena",
       "role": "user",
-      "permissions": ["arena:join"],
-      "routes": ["/w/arena"],
-      "operationIds": ["getArenaDiscovery"],
-      "observedOperationIds": ["getArenaDiscovery"],
+      "permissions": [
+        "arena:join"
+      ],
+      "routes": [
+        "/w/arena"
+      ],
+      "operationIds": [
+        "getArenaDiscovery"
+      ],
+      "observedOperationIds": [
+        "getArenaDiscovery"
+      ],
       "operationRequestCounts": {
         "getArenaDiscovery": 1
       },
@@ -2575,10 +2760,18 @@
       "status": "passed",
       "persona": "arena",
       "role": "user",
-      "permissions": ["arena:join"],
-      "routes": ["/w/arena"],
-      "operationIds": ["getArenaDiscovery"],
-      "observedOperationIds": ["getArenaDiscovery"],
+      "permissions": [
+        "arena:join"
+      ],
+      "routes": [
+        "/w/arena"
+      ],
+      "operationIds": [
+        "getArenaDiscovery"
+      ],
+      "observedOperationIds": [
+        "getArenaDiscovery"
+      ],
       "operationRequestCounts": {
         "getArenaDiscovery": 1
       },
@@ -2605,7 +2798,9 @@
       "writeRequestCount": 0,
       "finalRoute": "/w/arena",
       "elapsedMs": 2025,
-      "screenshots": ["preview-arena-loading-discovery-2026-09-29.png"],
+      "screenshots": [
+        "preview-arena-loading-discovery-2026-09-29.png"
+      ],
       "note": "Chromium observed the Arena discovery loading state while its single GET remained in flight, then received the existing fixture response through local MSW. The preview delay is a local transport simulation, not backend latency or a server-pending state. The screenshot also shows the sidebar still highlighting Trang chủ on /w/arena; track that navigation active-state issue in UI acceptance."
     },
     {
@@ -2615,15 +2810,21 @@
       "status": "passed",
       "persona": "arena",
       "role": "user",
-      "permissions": ["arena:join"],
-      "routes": ["/w/arena"],
+      "permissions": [
+        "arena:join"
+      ],
+      "routes": [
+        "/w/arena"
+      ],
       "operationIds": [
         "getArenaDiscovery",
         "getArenaMode",
         "getArenaChallenge",
         "joinArenaChallenge"
       ],
-      "observedOperationIds": ["getArenaDiscovery"],
+      "observedOperationIds": [
+        "getArenaDiscovery"
+      ],
       "operationRequestCounts": {
         "getArenaDiscovery": 12
       },
@@ -2775,7 +2976,9 @@
       "writeRequestCount": 0,
       "finalRoute": "/w/arena",
       "elapsedMs": 5507,
-      "screenshots": ["preview-arena-error-discovery-2026-09-29.png"],
+      "screenshots": [
+        "preview-arena-error-discovery-2026-09-29.png"
+      ],
       "note": "Chromium observed ErrorState/Retry for the one in-scope discovery read and kept the failure distinct from empty success. Arena OpenAPI declares no 5xx response, so local MSW returned a transport error with no HTTP response. The error scenario covers only getArenaDiscovery (1/4 linked operations); no join mutation ran. The screenshot also retains the known sidebar active-state mismatch at /w/arena."
     },
     {
@@ -2784,7 +2987,10 @@
       "state": "pending",
       "status": "passed",
       "route": "/w/markets/predictions/receipt/prediction-order-7",
-      "operationIds": ["placePredictionOrder", "getPredictionOrderReceipt"],
+      "operationIds": [
+        "placePredictionOrder",
+        "getPredictionOrderReceipt"
+      ],
       "eventResponseStatus": 200,
       "eventResponseFromServiceWorker": true,
       "eventId": "pred-1",
@@ -3052,14 +3258,18 @@
       "state": "error",
       "status": "passed",
       "route": "/w/markets/predictions",
-      "operationIds": ["listPredictionEvents"],
+      "operationIds": [
+        "listPredictionEvents"
+      ],
       "requestCounts": {
         "listPredictionEvents": 12
       },
       "initialFailureCount": 6,
       "manualRetryFailureCount": 6,
       "totalFailureCount": 12,
-      "failureReasons": ["net::ERR_FAILED"],
+      "failureReasons": [
+        "net::ERR_FAILED"
+      ],
       "httpResponseCount": 0,
       "unexpectedPredictionRequestCount": 0,
       "initialElapsedMs": 2862,
@@ -3077,7 +3287,9 @@
       "state": "unauthorized",
       "status": "passed",
       "route": "/w/markets/predictions",
-      "operationIds": ["listPredictionEvents"],
+      "operationIds": [
+        "listPredictionEvents"
+      ],
       "requestCounts": {
         "listPredictionEvents": 1,
         "refreshSession": 1
@@ -3101,7 +3313,9 @@
       "status": "passed",
       "route": "/w/markets/predictions/event/pred-1",
       "persona": "demo",
-      "operationIds": ["getPredictionEvent"],
+      "operationIds": [
+        "getPredictionEvent"
+      ],
       "requestCounts": {
         "getPredictionEvent": 1,
         "placePredictionOrder": 0
@@ -3195,7 +3409,11 @@
       "status": "passed",
       "persona": "developer",
       "route": "/w/profile/sub-accounts",
-      "operationIds": ["listTrustedDevices", "listProfileActivity", "listSubAccounts"],
+      "operationIds": [
+        "listTrustedDevices",
+        "listProfileActivity",
+        "listSubAccounts"
+      ],
       "requestCounts": {
         "listTrustedDevices": 1,
         "listProfileActivity": 1,
@@ -3655,7 +3873,20 @@
           "route": "/w/profile",
           "initialRequestCount": 6,
           "retryRequestCount": 6,
-          "responseStatuses": [503, 503, 503, 503, 503, 503, 503, 503, 503, 503, 503, 503],
+          "responseStatuses": [
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503
+          ],
           "responsesFromServiceWorker": true,
           "meanResponseTimeMs": 3,
           "errorVisible": true,
@@ -3669,7 +3900,20 @@
           "route": "/w/profile/devices",
           "initialRequestCount": 6,
           "retryRequestCount": 6,
-          "responseStatuses": [503, 503, 503, 503, 503, 503, 503, 503, 503, 503, 503, 503],
+          "responseStatuses": [
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503
+          ],
           "responsesFromServiceWorker": true,
           "meanResponseTimeMs": 3,
           "errorVisible": true,
@@ -3683,7 +3927,20 @@
           "route": "/w/profile/activity",
           "initialRequestCount": 6,
           "retryRequestCount": 6,
-          "responseStatuses": [503, 503, 503, 503, 503, 503, 503, 503, 503, 503, 503, 503],
+          "responseStatuses": [
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503
+          ],
           "responsesFromServiceWorker": true,
           "meanResponseTimeMs": 3,
           "errorVisible": true,
@@ -3697,7 +3954,20 @@
           "route": "/w/profile/sub-accounts",
           "initialRequestCount": 6,
           "retryRequestCount": 6,
-          "responseStatuses": [503, 503, 503, 503, 503, 503, 503, 503, 503, 503, 503, 503],
+          "responseStatuses": [
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503,
+            503
+          ],
           "responsesFromServiceWorker": true,
           "meanResponseTimeMs": 3,
           "errorVisible": true,
@@ -3820,11 +4090,15 @@
           "route": "/w/profile",
           "readRequestCount": 1,
           "readResponseCount": 1,
-          "readStatuses": [401],
+          "readStatuses": [
+            401
+          ],
           "readResponsesFromServiceWorker": true,
           "refreshRequestCount": 1,
           "refreshResponseCount": 1,
-          "refreshStatuses": [200],
+          "refreshStatuses": [
+            200
+          ],
           "refreshResponsesFromServiceWorker": false,
           "refreshBody": null,
           "responseElapsedMs": null,
@@ -3836,11 +4110,15 @@
           "route": "/w/profile/devices",
           "readRequestCount": 1,
           "readResponseCount": 1,
-          "readStatuses": [401],
+          "readStatuses": [
+            401
+          ],
           "readResponsesFromServiceWorker": true,
           "refreshRequestCount": 1,
           "refreshResponseCount": 1,
-          "refreshStatuses": [200],
+          "refreshStatuses": [
+            200
+          ],
           "refreshResponsesFromServiceWorker": false,
           "refreshBody": null,
           "responseElapsedMs": null,
@@ -3852,11 +4130,15 @@
           "route": "/w/profile/activity",
           "readRequestCount": 1,
           "readResponseCount": 1,
-          "readStatuses": [401],
+          "readStatuses": [
+            401
+          ],
           "readResponsesFromServiceWorker": true,
           "refreshRequestCount": 1,
           "refreshResponseCount": 1,
-          "refreshStatuses": [200],
+          "refreshStatuses": [
+            200
+          ],
           "refreshResponsesFromServiceWorker": false,
           "refreshBody": null,
           "responseElapsedMs": null,
@@ -3868,11 +4150,15 @@
           "route": "/w/profile/sub-accounts",
           "readRequestCount": 1,
           "readResponseCount": 1,
-          "readStatuses": [401],
+          "readStatuses": [
+            401
+          ],
           "readResponsesFromServiceWorker": true,
           "refreshRequestCount": 1,
           "refreshResponseCount": 1,
-          "refreshStatuses": [200],
+          "refreshStatuses": [
+            200
+          ],
           "refreshResponsesFromServiceWorker": false,
           "refreshBody": null,
           "responseElapsedMs": null,
@@ -3903,7 +4189,12 @@
       "status": "passed",
       "persona": "support (development preview)",
       "route": "/w/support",
-      "routes": ["/w/news", "/w/notifications", "/w/support/help", "/w/support"],
+      "routes": [
+        "/w/news",
+        "/w/notifications",
+        "/w/support/help",
+        "/w/support"
+      ],
       "operationIds": [
         "listNews",
         "listNotifications",
@@ -4072,7 +4363,12 @@
       "status": "passed",
       "persona": "support",
       "route": "/w/support",
-      "routes": ["/w/news", "/w/notifications", "/w/support/help", "/w/support"],
+      "routes": [
+        "/w/news",
+        "/w/notifications",
+        "/w/support/help",
+        "/w/support"
+      ],
       "operationIds": [
         "listNews",
         "listNotifications",
@@ -4223,8 +4519,18 @@
       "status": "passed",
       "persona": "support",
       "route": "/w/support",
-      "routes": ["/w/news", "/w/notifications", "/w/support/help", "/w/support"],
-      "operationIds": ["listNews", "listNotifications", "getHelpCenter", "listSupportTickets"],
+      "routes": [
+        "/w/news",
+        "/w/notifications",
+        "/w/support/help",
+        "/w/support"
+      ],
+      "operationIds": [
+        "listNews",
+        "listNotifications",
+        "getHelpCenter",
+        "listSupportTickets"
+      ],
       "requestCounts": {
         "listNews": 1,
         "listNotifications": 1,
@@ -4327,8 +4633,18 @@
       "status": "passed",
       "persona": "support",
       "route": "/w/support",
-      "routes": ["/w/news", "/w/notifications", "/w/support/help", "/w/support"],
-      "operationIds": ["listNews", "listNotifications", "getHelpCenter", "listSupportTickets"],
+      "routes": [
+        "/w/news",
+        "/w/notifications",
+        "/w/support/help",
+        "/w/support"
+      ],
+      "operationIds": [
+        "listNews",
+        "listNotifications",
+        "getHelpCenter",
+        "listSupportTickets"
+      ],
       "requestCounts": {
         "listNews": 12,
         "listNotifications": 12,
@@ -4749,7 +5065,9 @@
       "id": "p2p.loading",
       "status": "passed",
       "route": "/w/p2p/order-room",
-      "operationIds": ["listP2POrders"],
+      "operationIds": [
+        "listP2POrders"
+      ],
       "requestMethod": "GET",
       "responseStatus": 200,
       "responseFromServiceWorker": true,
@@ -4769,7 +5087,9 @@
       "id": "p2p.empty",
       "status": "passed",
       "route": "/w/p2p/order-room",
-      "operationIds": ["listP2POrders"],
+      "operationIds": [
+        "listP2POrders"
+      ],
       "requestMethod": "GET",
       "responseStatus": 200,
       "responseFromServiceWorker": true,
@@ -4804,14 +5124,23 @@
       "id": "p2p.error",
       "status": "passed",
       "route": "/w/p2p/order-room",
-      "operationIds": ["listP2POrders"],
+      "operationIds": [
+        "listP2POrders"
+      ],
       "responseStatus": 503,
       "responseFromServiceWorker": true,
       "visibleErrorState": true,
       "visibleRetryAction": true,
       "retryStatus": 503,
       "retryFromServiceWorker": true,
-      "retryAttemptStatuses": [503, 503, 503, 503, 503, 503],
+      "retryAttemptStatuses": [
+        503,
+        503,
+        503,
+        503,
+        503,
+        503
+      ],
       "retryRoute": "/w/p2p/order-room"
     },
     {
@@ -4849,7 +5178,9 @@
         "verifyPasswordResetCode",
         "confirmPasswordReset"
       ],
-      "observedOperationIds": ["login"],
+      "observedOperationIds": [
+        "login"
+      ],
       "operationRequestCounts": {
         "getSession": 1,
         "login": 1,
@@ -4931,7 +5262,9 @@
       "externalApiOrigins": [],
       "unrelatedApiWriteCount": 0,
       "elapsedMs": 907,
-      "screenshots": ["preview-auth-success-login-2026-09-29.png"],
+      "screenshots": [
+        "preview-auth-success-login-2026-09-29.png"
+      ],
       "note": "Direct browser login through the real WebLoginPage using only the local MSW developer persona. The initial GET /auth/session 401 is the contract-supported unauthenticated bootstrap and is not counted as a successful operation. Only POST /auth/login returned the successful 200 and is counted as observed for auth.success; the other 13 linked Auth operations remain unverified. Both web shell identity surfaces display VitTrade Developer from the resolved Auth session, with no former hard-coded VitTrader Pro identity. This does not prove backend authentication, cookie persistence, MFA, staging, or production behavior."
     },
     {
@@ -4962,7 +5295,9 @@
         "verifyPasswordResetCode",
         "confirmPasswordReset"
       ],
-      "observedOperationIds": ["getSession"],
+      "observedOperationIds": [
+        "getSession"
+      ],
       "operationRequestCounts": {
         "getSession": 3
       },
@@ -5025,7 +5360,9 @@
       "externalApiOrigins": [],
       "writeRequestCount": 0,
       "elapsedMs": 746,
-      "screenshots": ["preview-auth-empty-session-2026-09-29.png"],
+      "screenshots": [
+        "preview-auth-empty-session-2026-09-29.png"
+      ],
       "note": "The Auth preview empty scenario uses the contract-permitted GET /auth/session 200 with JSON null. The login form remains usable and the protected /w/trade/positions route redirects to an Auth login route. /w/home is public in routeConfig and is intentionally not used as the protected-route assertion. The initial 401 is only the pre-scenario unauthenticated bootstrap; only getSession is counted as observed for auth.empty (1/14 linked Auth operations). All requests are local MSW and read-only. This does not prove backend session/cookie behavior, staging, or production."
     },
     {
@@ -5055,7 +5392,9 @@
         "verifyPasswordResetCode",
         "confirmPasswordReset"
       ],
-      "observedOperationIds": ["getSession"],
+      "observedOperationIds": [
+        "getSession"
+      ],
       "operationRequestCounts": {
         "getSession": 1
       },
@@ -5131,7 +5470,9 @@
         "verifyPasswordResetCode",
         "confirmPasswordReset"
       ],
-      "observedOperationIds": ["login"],
+      "observedOperationIds": [
+        "login"
+      ],
       "operationRequestCounts": {
         "login": 2,
         "getSession": 0
@@ -5213,7 +5554,9 @@
         "verifyPasswordResetCode",
         "confirmPasswordReset"
       ],
-      "observedOperationIds": ["getSession"],
+      "observedOperationIds": [
+        "getSession"
+      ],
       "operationRequestCounts": {
         "getSession": 1
       },
@@ -5247,7 +5590,9 @@
       "externalApiOrigins": [],
       "unexpectedWriteCount": 0,
       "elapsedMs": 642,
-      "screenshots": ["preview-auth-unauthorized-session-2026-09-29.png"],
+      "screenshots": [
+        "preview-auth-unauthorized-session-2026-09-29.png"
+      ],
       "failures": [],
       "note": "Only GET /auth/session is exercised for this browser assertion because it explicitly declares 401 in Auth OpenAPI. The other Auth operations in the matrix are not inferred from this result; operations without a declared 401/403 remain unverified. This is local UI/MSW evidence only."
     },
@@ -5259,7 +5604,10 @@
       "observedAt": "2026-09-29T02:46:30.039Z",
       "persona": "dca (local MSW fixture)",
       "role": "user",
-      "permissions": ["dca:read", "dca:write"],
+      "permissions": [
+        "dca:read",
+        "dca:write"
+      ],
       "route": "/w/dca",
       "finalRoute": "/w/dca/rebalance/config",
       "operationIds": [
@@ -5543,7 +5891,9 @@
       },
       "backendRequiredNoticeVisible": true,
       "externalApiOrigins": [],
-      "externalAssetOrigins": ["https://ui-avatars.com"],
+      "externalAssetOrigins": [
+        "https://ui-avatars.com"
+      ],
       "elapsedMs": 5828,
       "screenshots": [
         "preview-dca-success-plans-2026-09-29.png",
@@ -5562,7 +5912,10 @@
       "observedAt": "2026-09-29T02:46:31.666Z",
       "persona": "dca (local MSW fixture)",
       "role": "user",
-      "permissions": ["dca:read", "dca:write"],
+      "permissions": [
+        "dca:read",
+        "dca:write"
+      ],
       "route": "/w/dca",
       "finalRoute": "/w/dca",
       "operationIds": [
@@ -5572,7 +5925,9 @@
         "updateDCAPlan",
         "deleteDCAPlan"
       ],
-      "observedOperationIds": ["getDCASnapshot"],
+      "observedOperationIds": [
+        "getDCASnapshot"
+      ],
       "operationRequestCounts": {
         "getDCAAdvancedOverview": 0,
         "getDCASnapshot": 1,
@@ -5687,7 +6042,9 @@
       "externalApiOrigins": [],
       "externalAssetOrigins": [],
       "elapsedMs": 1023,
-      "screenshots": ["preview-dca-empty-2026-09-29.png"],
+      "screenshots": [
+        "preview-dca-empty-2026-09-29.png"
+      ],
       "failures": [],
       "knownUiFindings": [
         "At /w/dca, the shell heading still reads Dashboard and the sidebar highlights Trang chủ; resolve the active-navigation mapping before UI acceptance."
@@ -5702,7 +6059,10 @@
       "observedAt": "2026-09-29T02:46:34.992Z",
       "persona": "dca (local MSW fixture)",
       "role": "user",
-      "permissions": ["dca:read", "dca:write"],
+      "permissions": [
+        "dca:read",
+        "dca:write"
+      ],
       "route": "/w/dca",
       "finalRoute": "/w/dca",
       "operationIds": [
@@ -5712,7 +6072,9 @@
         "updateDCAPlan",
         "deleteDCAPlan"
       ],
-      "observedOperationIds": ["getDCASnapshot"],
+      "observedOperationIds": [
+        "getDCASnapshot"
+      ],
       "operationRequestCounts": {
         "getDCAAdvancedOverview": 0,
         "getDCASnapshot": 1,
@@ -5807,7 +6169,9 @@
       "externalApiOrigins": [],
       "externalAssetOrigins": [],
       "elapsedMs": 2772,
-      "screenshots": ["preview-dca-loading-2026-09-29.png"],
+      "screenshots": [
+        "preview-dca-loading-2026-09-29.png"
+      ],
       "failures": [],
       "note": "Chromium verified loading skeleton before the contract-shaped local MSW snapshot GET 200. Only getDCASnapshot was observed (1/5 DCA operations); this is local UI evidence, not backend latency or availability evidence."
     },
@@ -5819,7 +6183,10 @@
       "observedAt": "2026-09-29T02:47:26.628Z",
       "persona": "dca (local MSW fixture)",
       "role": "user",
-      "permissions": ["dca:read", "dca:write"],
+      "permissions": [
+        "dca:read",
+        "dca:write"
+      ],
       "route": "/w/dca",
       "finalRoute": "/auth/login",
       "operationIds": [
@@ -5829,7 +6196,9 @@
         "updateDCAPlan",
         "deleteDCAPlan"
       ],
-      "observedOperationIds": ["getDCASnapshot"],
+      "observedOperationIds": [
+        "getDCASnapshot"
+      ],
       "operationRequestCounts": {
         "getDCAAdvancedOverview": 0,
         "getDCASnapshot": 1,
@@ -5937,7 +6306,9 @@
       "externalApiOrigins": [],
       "externalAssetOrigins": [],
       "elapsedMs": 704,
-      "screenshots": ["preview-dca-unauthorized-2026-09-29.png"],
+      "screenshots": [
+        "preview-dca-unauthorized-2026-09-29.png"
+      ],
       "failures": [],
       "knownContractLimitations": [
         "Only GET /dca/snapshot is used here; PATCH and DELETE do not declare 401.",
@@ -5954,7 +6325,10 @@
       "observedAt": "2026-09-29T02:50:06.651Z",
       "persona": "dca (local MSW fixture)",
       "role": "user",
-      "permissions": ["dca:read", "dca:write"],
+      "permissions": [
+        "dca:read",
+        "dca:write"
+      ],
       "route": "/w/dca",
       "finalRoute": "/w/dca",
       "operationIds": [
@@ -5964,7 +6338,9 @@
         "updateDCAPlan",
         "deleteDCAPlan"
       ],
-      "observedOperationIds": ["getDCASnapshot"],
+      "observedOperationIds": [
+        "getDCASnapshot"
+      ],
       "operationRequestCounts": {
         "getDCAAdvancedOverview": 0,
         "getDCASnapshot": 7,
@@ -6124,7 +6500,9 @@
       "externalApiOrigins": [],
       "externalAssetOrigins": [],
       "elapsedMs": 3662,
-      "screenshots": ["preview-dca-error-2026-09-29.png"],
+      "screenshots": [
+        "preview-dca-error-2026-09-29.png"
+      ],
       "failures": [],
       "knownUiFindings": [
         "At /w/dca, the shell heading still reads Dashboard and the sidebar highlights Trang chủ; resolve the active-navigation mapping before UI acceptance."
@@ -6139,7 +6517,9 @@
       "observedAt": "2026-09-29T03:19:32.320Z",
       "persona": "developer (local MSW fixture)",
       "role": "user",
-      "permissions": ["earn:write"],
+      "permissions": [
+        "earn:write"
+      ],
       "route": "/w/earn/savings",
       "finalRoute": "/w/earn/savings/history",
       "operationIds": [
@@ -6391,7 +6771,9 @@
       "observedAt": "2026-09-29T03:36:14.631Z",
       "persona": "developer (local MSW fixture)",
       "role": "user",
-      "permissions": ["earn:write"],
+      "permissions": [
+        "earn:write"
+      ],
       "route": "/w/earn/savings/portfolio",
       "finalRoute": "/w/earn/savings/history",
       "operationIds": [
@@ -6663,9 +7045,14 @@
       "observedAt": "2026-09-29T04:13:07.844Z",
       "persona": "developer (local MSW fixture)",
       "role": "user",
-      "permissions": ["earn:write"],
+      "permissions": [
+        "earn:write"
+      ],
       "route": "/w/earn/savings/portfolio",
-      "routes": ["/w/earn/savings/portfolio", "/w/earn/savings/history"],
+      "routes": [
+        "/w/earn/savings/portfolio",
+        "/w/earn/savings/history"
+      ],
       "finalRoute": "/w/earn/savings/history",
       "operationIds": [
         "getEarnSnapshot",
@@ -6673,7 +7060,10 @@
         "createEarnSubscription",
         "redeemEarnPosition"
       ],
-      "observedOperationIds": ["getEarnSnapshot", "listEarnTransactions"],
+      "observedOperationIds": [
+        "getEarnSnapshot",
+        "listEarnTransactions"
+      ],
       "operationRequestCounts": {
         "getEarnSnapshot": 12,
         "listEarnTransactions": 12,
@@ -7041,7 +7431,9 @@
           "errorStateVisible": true,
           "retryVisibleAndExercised": true,
           "emptyStateSuppressed": true,
-          "observedFailureKinds": ["net::ERR_FAILED"]
+          "observedFailureKinds": [
+            "net::ERR_FAILED"
+          ]
         },
         "listEarnTransactions": {
           "route": "/w/earn/savings/history",
@@ -7053,7 +7445,9 @@
           "errorStateVisible": true,
           "retryVisibleAndExercised": true,
           "emptyStateSuppressed": true,
-          "observedFailureKinds": ["net::ERR_FAILED"]
+          "observedFailureKinds": [
+            "net::ERR_FAILED"
+          ]
         }
       },
       "initialSessionResponse": {
@@ -7096,9 +7490,14 @@
       "observedAt": "2026-09-29T04:35:00.618Z",
       "persona": "developer (local MSW fixture)",
       "role": "user",
-      "permissions": ["earn:write"],
+      "permissions": [
+        "earn:write"
+      ],
       "route": "/w/earn/savings/portfolio",
-      "routes": ["/w/earn/savings/portfolio", "/w/earn/savings/history"],
+      "routes": [
+        "/w/earn/savings/portfolio",
+        "/w/earn/savings/history"
+      ],
       "finalRoute": "/auth/login",
       "operationIds": [
         "getEarnSnapshot",
@@ -7106,7 +7505,10 @@
         "createEarnSubscription",
         "redeemEarnPosition"
       ],
-      "observedOperationIds": ["getEarnSnapshot", "listEarnTransactions"],
+      "observedOperationIds": [
+        "getEarnSnapshot",
+        "listEarnTransactions"
+      ],
       "operationRequestCounts": {
         "getEarnSnapshot": 1,
         "listEarnTransactions": 1,
@@ -7354,9 +7756,18 @@
       "observedAt": "2026-09-29T05:01:30.495Z",
       "persona": "developer (local MSW fixture)",
       "role": "user",
-      "routes": ["/w/launchpad", "/w/launchpad/proj1"],
-      "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
-      "observedOperationIds": ["getLaunchpadProject", "listLaunchpadProjects"],
+      "routes": [
+        "/w/launchpad",
+        "/w/launchpad/proj1"
+      ],
+      "operationIds": [
+        "listLaunchpadProjects",
+        "getLaunchpadProject"
+      ],
+      "observedOperationIds": [
+        "getLaunchpadProject",
+        "listLaunchpadProjects"
+      ],
       "operationRequestCounts": {
         "listLaunchpadProjects": 1,
         "getLaunchpadProject": 1
@@ -7486,9 +7897,16 @@
       "observedAt": "2026-09-29T05:16:06.956Z",
       "persona": "developer (local MSW fixture)",
       "role": "user",
-      "routes": ["/w/launchpad"],
-      "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
-      "observedOperationIds": ["listLaunchpadProjects"],
+      "routes": [
+        "/w/launchpad"
+      ],
+      "operationIds": [
+        "listLaunchpadProjects",
+        "getLaunchpadProject"
+      ],
+      "observedOperationIds": [
+        "listLaunchpadProjects"
+      ],
       "operationRequestCounts": {
         "listLaunchpadProjects": 1,
         "getLaunchpadProject": 0
@@ -7573,7 +7991,9 @@
       "scenarioSelected": true,
       "externalApiOrigins": [],
       "elapsedMs": 948,
-      "screenshots": ["preview-launchpad-empty-2026-09-29.png"],
+      "screenshots": [
+        "preview-launchpad-empty-2026-09-29.png"
+      ],
       "sourceHashesReviewed": 178,
       "staleSourceHashesBeforeRun": [
         "docs/architecture/production-readiness/evidence/A06/run-launchpad-empty-browser-check.mjs"
@@ -7599,9 +8019,16 @@
       "observedAt": "2026-09-29T05:23:30.943Z",
       "persona": "developer (local MSW fixture)",
       "role": "user",
-      "routes": ["/w/launchpad"],
-      "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
-      "observedOperationIds": ["listLaunchpadProjects"],
+      "routes": [
+        "/w/launchpad"
+      ],
+      "operationIds": [
+        "listLaunchpadProjects",
+        "getLaunchpadProject"
+      ],
+      "observedOperationIds": [
+        "listLaunchpadProjects"
+      ],
       "operationRequestCounts": {
         "listLaunchpadProjects": 1,
         "getLaunchpadProject": 0
@@ -7687,7 +8114,9 @@
       "scenarioSelected": true,
       "externalApiOrigins": [],
       "elapsedMs": 2578,
-      "screenshots": ["preview-launchpad-loading-2026-09-29.png"],
+      "screenshots": [
+        "preview-launchpad-loading-2026-09-29.png"
+      ],
       "sourceHashesReviewed": 178,
       "staleSourceHashesBeforeRun": [],
       "failures": [],
@@ -7707,10 +8136,17 @@
       "observedAt": "2026-09-29T05:35:22.960Z",
       "persona": "developer (local MSW fixture)",
       "role": "user",
-      "routes": ["/w/launchpad"],
+      "routes": [
+        "/w/launchpad"
+      ],
       "finalRoute": "/w/launchpad",
-      "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
-      "observedOperationIds": ["listLaunchpadProjects"],
+      "operationIds": [
+        "listLaunchpadProjects",
+        "getLaunchpadProject"
+      ],
+      "observedOperationIds": [
+        "listLaunchpadProjects"
+      ],
       "operationRequestCounts": {
         "listLaunchpadProjects": 12,
         "getLaunchpadProject": 0
@@ -7918,14 +8354,24 @@
       "observedAt": "2026-09-29T06:24:16.103Z",
       "persona": "market QA (scoped permissions; isolated local MSW fixture)",
       "role": "user",
-      "permissions": ["market:read", "market:watchlist:write", "market:alerts:write"],
+      "permissions": [
+        "market:read",
+        "market:watchlist:write",
+        "market:alerts:write"
+      ],
       "routes": [
         {
           "path": "/w/home",
           "heading": "Thị trường",
           "navigationMethod": "post-login route",
-          "expectedOperationIds": ["listMarketPairs", "getMarketWatchlist"],
-          "responseOperationIds": ["listMarketPairs", "getMarketWatchlist"],
+          "expectedOperationIds": [
+            "listMarketPairs",
+            "getMarketWatchlist"
+          ],
+          "responseOperationIds": [
+            "listMarketPairs",
+            "getMarketWatchlist"
+          ],
           "screenshot": "preview-market-success-home-2026-09-29.png",
           "genericErrorVisible": false,
           "bodyTextLength": 844
@@ -7934,8 +8380,12 @@
           "path": "/w/markets/overview",
           "heading": "Tổng quan thị trường",
           "navigationMethod": "SPA history route entry; no full document reload",
-          "expectedOperationIds": ["getMarketOverview"],
-          "responseOperationIds": ["getMarketOverview"],
+          "expectedOperationIds": [
+            "getMarketOverview"
+          ],
+          "responseOperationIds": [
+            "getMarketOverview"
+          ],
           "screenshot": "preview-market-success-markets-overview-2026-09-29.png",
           "genericErrorVisible": false,
           "bodyTextLength": 1304
@@ -7944,8 +8394,12 @@
           "path": "/w/markets/movers",
           "heading": "Biến động thị trường",
           "navigationMethod": "SPA history route entry; no full document reload",
-          "expectedOperationIds": ["getMarketMovers"],
-          "responseOperationIds": ["getMarketMovers"],
+          "expectedOperationIds": [
+            "getMarketMovers"
+          ],
+          "responseOperationIds": [
+            "getMarketMovers"
+          ],
           "screenshot": "preview-market-success-markets-movers-2026-09-29.png",
           "genericErrorVisible": false,
           "bodyTextLength": 966
@@ -7954,8 +8408,12 @@
           "path": "/w/markets/news",
           "heading": "Tin thị trường",
           "navigationMethod": "SPA history route entry; no full document reload",
-          "expectedOperationIds": ["getMarketNews"],
-          "responseOperationIds": ["getMarketNews"],
+          "expectedOperationIds": [
+            "getMarketNews"
+          ],
+          "responseOperationIds": [
+            "getMarketNews"
+          ],
           "screenshot": "preview-market-success-markets-news-2026-09-29.png",
           "genericErrorVisible": false,
           "bodyTextLength": 957
@@ -7964,8 +8422,12 @@
           "path": "/w/markets/calendar",
           "heading": "Lịch sự kiện",
           "navigationMethod": "SPA history route entry; no full document reload",
-          "expectedOperationIds": ["getMarketCalendar"],
-          "responseOperationIds": ["getMarketCalendar"],
+          "expectedOperationIds": [
+            "getMarketCalendar"
+          ],
+          "responseOperationIds": [
+            "getMarketCalendar"
+          ],
           "screenshot": "preview-market-success-markets-calendar-2026-09-29.png",
           "genericErrorVisible": false,
           "bodyTextLength": 901
@@ -7974,8 +8436,12 @@
           "path": "/w/markets/correlations",
           "heading": "Tương quan thị trường",
           "navigationMethod": "SPA history route entry; no full document reload",
-          "expectedOperationIds": ["getMarketCorrelations"],
-          "responseOperationIds": ["getMarketCorrelations"],
+          "expectedOperationIds": [
+            "getMarketCorrelations"
+          ],
+          "responseOperationIds": [
+            "getMarketCorrelations"
+          ],
           "screenshot": "preview-market-success-markets-correlations-2026-09-29.png",
           "genericErrorVisible": false,
           "bodyTextLength": 817
@@ -7984,8 +8450,12 @@
           "path": "/w/markets/unlocks",
           "heading": "Lịch mở khóa token",
           "navigationMethod": "SPA history route entry; no full document reload",
-          "expectedOperationIds": ["getMarketTokenUnlocks"],
-          "responseOperationIds": ["getMarketTokenUnlocks"],
+          "expectedOperationIds": [
+            "getMarketTokenUnlocks"
+          ],
+          "responseOperationIds": [
+            "getMarketTokenUnlocks"
+          ],
           "screenshot": "preview-market-success-markets-unlocks-2026-09-29.png",
           "genericErrorVisible": false,
           "bodyTextLength": 970
@@ -7994,8 +8464,12 @@
           "path": "/w/markets/derivatives",
           "heading": "Phái sinh",
           "navigationMethod": "SPA history route entry; no full document reload",
-          "expectedOperationIds": ["getMarketDerivatives"],
-          "responseOperationIds": ["getMarketDerivatives"],
+          "expectedOperationIds": [
+            "getMarketDerivatives"
+          ],
+          "responseOperationIds": [
+            "getMarketDerivatives"
+          ],
           "screenshot": "preview-market-success-markets-derivatives-2026-09-29.png",
           "genericErrorVisible": false,
           "bodyTextLength": 784
@@ -8004,8 +8478,12 @@
           "path": "/w/markets/social-sentiment",
           "heading": "Tâm lý thị trường",
           "navigationMethod": "SPA history route entry; no full document reload",
-          "expectedOperationIds": ["getMarketSentiment"],
-          "responseOperationIds": ["getMarketSentiment"],
+          "expectedOperationIds": [
+            "getMarketSentiment"
+          ],
+          "responseOperationIds": [
+            "getMarketSentiment"
+          ],
           "screenshot": "preview-market-success-markets-social-sentiment-2026-09-29.png",
           "genericErrorVisible": false,
           "bodyTextLength": 893
@@ -8014,8 +8492,12 @@
           "path": "/w/markets/signals",
           "heading": "Tín hiệu cộng đồng",
           "navigationMethod": "SPA history route entry; no full document reload",
-          "expectedOperationIds": ["getMarketSignals"],
-          "responseOperationIds": ["getMarketSignals"],
+          "expectedOperationIds": [
+            "getMarketSignals"
+          ],
+          "responseOperationIds": [
+            "getMarketSignals"
+          ],
           "screenshot": "preview-market-success-markets-signals-2026-09-29.png",
           "genericErrorVisible": false,
           "bodyTextLength": 1048
@@ -8024,8 +8506,13 @@
           "path": "/w/markets/alerts",
           "heading": "Cảnh báo giá",
           "navigationMethod": "SPA history route entry; no full document reload",
-          "expectedOperationIds": ["listMarketPriceAlerts", "listMarketPairs"],
-          "responseOperationIds": ["listMarketPriceAlerts"],
+          "expectedOperationIds": [
+            "listMarketPriceAlerts",
+            "listMarketPairs"
+          ],
+          "responseOperationIds": [
+            "listMarketPriceAlerts"
+          ],
           "screenshot": "preview-market-success-markets-alerts-2026-09-29.png",
           "genericErrorVisible": false,
           "bodyTextLength": 928
@@ -8034,7 +8521,9 @@
           "path": "/w/markets/screener",
           "heading": "Market screener",
           "navigationMethod": "SPA history route entry; no full document reload",
-          "expectedOperationIds": ["listMarketPairs"],
+          "expectedOperationIds": [
+            "listMarketPairs"
+          ],
           "responseOperationIds": [],
           "screenshot": "preview-market-success-markets-screener-2026-09-29.png",
           "genericErrorVisible": false,
@@ -8044,7 +8533,10 @@
           "path": "/w/markets/watchlist",
           "heading": "Danh sách theo dõi",
           "navigationMethod": "SPA history route entry; no full document reload",
-          "expectedOperationIds": ["listMarketPairs", "getMarketWatchlist"],
+          "expectedOperationIds": [
+            "listMarketPairs",
+            "getMarketWatchlist"
+          ],
           "responseOperationIds": [],
           "screenshot": "preview-market-success-markets-watchlist-2026-09-29.png",
           "genericErrorVisible": false,
@@ -8060,7 +8552,11 @@
             "getMarketRecentTrades",
             "getMarketWatchlist"
           ],
-          "responseOperationIds": ["getMarketPair", "getMarketOrderBook", "getMarketRecentTrades"],
+          "responseOperationIds": [
+            "getMarketPair",
+            "getMarketOrderBook",
+            "getMarketRecentTrades"
+          ],
           "screenshot": "preview-market-success-pair-btcusdt-2026-09-29.png",
           "genericErrorVisible": false,
           "bodyTextLength": 724
@@ -8069,7 +8565,11 @@
           "path": "/w/markets/depth",
           "heading": "BTC Depth",
           "navigationMethod": "SPA history route entry; no full document reload",
-          "expectedOperationIds": ["listMarketPairs", "getMarketPair", "getMarketOrderBook"],
+          "expectedOperationIds": [
+            "listMarketPairs",
+            "getMarketPair",
+            "getMarketOrderBook"
+          ],
           "responseOperationIds": [],
           "screenshot": "preview-market-success-markets-depth-2026-09-29.png",
           "genericErrorVisible": false,
@@ -8079,8 +8579,14 @@
           "path": "/w/trade/advanced-chart/btcusdt",
           "heading": "Advanced charts",
           "navigationMethod": "SPA history route entry; no full document reload",
-          "expectedOperationIds": ["listMarketPairs", "getMarketPair", "getMarketCandles"],
-          "responseOperationIds": ["getMarketCandles"],
+          "expectedOperationIds": [
+            "listMarketPairs",
+            "getMarketPair",
+            "getMarketCandles"
+          ],
+          "responseOperationIds": [
+            "getMarketCandles"
+          ],
           "screenshot": "preview-market-success-trade-advanced-chart-btcusdt-2026-09-29.png",
           "genericErrorVisible": false,
           "bodyTextLength": 899
@@ -8089,7 +8595,9 @@
           "path": "/w/pair/btcusdt/info",
           "heading": "BTC info",
           "navigationMethod": "SPA history route entry; no full document reload",
-          "expectedOperationIds": ["getMarketPair"],
+          "expectedOperationIds": [
+            "getMarketPair"
+          ],
           "responseOperationIds": [],
           "screenshot": "preview-market-success-pair-btcusdt-info-2026-09-29.png",
           "genericErrorVisible": false,
@@ -8099,7 +8607,10 @@
           "path": "/w/markets/sectors",
           "heading": "Ngành thị trường",
           "navigationMethod": "SPA history route entry; no full document reload",
-          "expectedOperationIds": ["getMarketOverview", "listMarketPairs"],
+          "expectedOperationIds": [
+            "getMarketOverview",
+            "listMarketPairs"
+          ],
           "responseOperationIds": [],
           "screenshot": "preview-market-success-markets-sectors-2026-09-29.png",
           "genericErrorVisible": false,
@@ -8109,7 +8620,9 @@
           "path": "/w/markets/heatmap",
           "heading": "Market heatmap",
           "navigationMethod": "SPA history route entry; no full document reload",
-          "expectedOperationIds": ["listMarketPairs"],
+          "expectedOperationIds": [
+            "listMarketPairs"
+          ],
           "responseOperationIds": [],
           "screenshot": "preview-market-success-markets-heatmap-2026-09-29.png",
           "genericErrorVisible": false,
@@ -8119,7 +8632,9 @@
           "path": "/w/markets/compare",
           "heading": "So sánh tài sản",
           "navigationMethod": "SPA history route entry; no full document reload",
-          "expectedOperationIds": ["listMarketPairs"],
+          "expectedOperationIds": [
+            "listMarketPairs"
+          ],
           "responseOperationIds": [],
           "screenshot": "preview-market-success-markets-compare-2026-09-29.png",
           "genericErrorVisible": false,
@@ -9908,8 +10423,12 @@
       "loadingRouteResults": [
         {
           "path": "/w/markets/movers",
-          "operationIds": ["getMarketMovers"],
-          "loadingTexts": ["Đang tải danh sách biến động…"],
+          "operationIds": [
+            "getMarketMovers"
+          ],
+          "loadingTexts": [
+            "Đang tải danh sách biến động…"
+          ],
           "responseStatuses": [
             {
               "operationId": "getMarketMovers",
@@ -9921,8 +10440,12 @@
         },
         {
           "path": "/w/markets/news",
-          "operationIds": ["getMarketNews"],
-          "loadingTexts": ["Đang tải tin thị trường…"],
+          "operationIds": [
+            "getMarketNews"
+          ],
+          "loadingTexts": [
+            "Đang tải tin thị trường…"
+          ],
           "responseStatuses": [
             {
               "operationId": "getMarketNews",
@@ -9934,8 +10457,12 @@
         },
         {
           "path": "/w/markets/calendar",
-          "operationIds": ["getMarketCalendar"],
-          "loadingTexts": ["Đang tải lịch sự kiện…"],
+          "operationIds": [
+            "getMarketCalendar"
+          ],
+          "loadingTexts": [
+            "Đang tải lịch sự kiện…"
+          ],
           "responseStatuses": [
             {
               "operationId": "getMarketCalendar",
@@ -9947,8 +10474,12 @@
         },
         {
           "path": "/w/markets/correlations",
-          "operationIds": ["getMarketCorrelations"],
-          "loadingTexts": ["Đang tải dữ liệu tương quan…"],
+          "operationIds": [
+            "getMarketCorrelations"
+          ],
+          "loadingTexts": [
+            "Đang tải dữ liệu tương quan…"
+          ],
           "responseStatuses": [
             {
               "operationId": "getMarketCorrelations",
@@ -9960,8 +10491,12 @@
         },
         {
           "path": "/w/markets/unlocks",
-          "operationIds": ["getMarketTokenUnlocks"],
-          "loadingTexts": ["Đang tải lịch mở khóa…"],
+          "operationIds": [
+            "getMarketTokenUnlocks"
+          ],
+          "loadingTexts": [
+            "Đang tải lịch mở khóa…"
+          ],
           "responseStatuses": [
             {
               "operationId": "getMarketTokenUnlocks",
@@ -9973,8 +10508,12 @@
         },
         {
           "path": "/w/markets/derivatives",
-          "operationIds": ["getMarketDerivatives"],
-          "loadingTexts": ["Đang tải dữ liệu phái sinh…"],
+          "operationIds": [
+            "getMarketDerivatives"
+          ],
+          "loadingTexts": [
+            "Đang tải dữ liệu phái sinh…"
+          ],
           "responseStatuses": [
             {
               "operationId": "getMarketDerivatives",
@@ -9986,8 +10525,12 @@
         },
         {
           "path": "/w/markets/social-sentiment",
-          "operationIds": ["getMarketSentiment"],
-          "loadingTexts": ["Đang tải dữ liệu tâm lý…"],
+          "operationIds": [
+            "getMarketSentiment"
+          ],
+          "loadingTexts": [
+            "Đang tải dữ liệu tâm lý…"
+          ],
           "responseStatuses": [
             {
               "operationId": "getMarketSentiment",
@@ -9999,8 +10542,12 @@
         },
         {
           "path": "/w/markets/signals",
-          "operationIds": ["getMarketSignals"],
-          "loadingTexts": ["Đang tải tín hiệu…"],
+          "operationIds": [
+            "getMarketSignals"
+          ],
+          "loadingTexts": [
+            "Đang tải tín hiệu…"
+          ],
           "responseStatuses": [
             {
               "operationId": "getMarketSignals",
@@ -10012,8 +10559,12 @@
         },
         {
           "path": "/w/markets/alerts",
-          "operationIds": ["listMarketPriceAlerts"],
-          "loadingTexts": ["Đang tải cảnh báo giá…"],
+          "operationIds": [
+            "listMarketPriceAlerts"
+          ],
+          "loadingTexts": [
+            "Đang tải cảnh báo giá…"
+          ],
           "responseStatuses": [
             {
               "operationId": "listMarketPriceAlerts",
@@ -10025,8 +10576,14 @@
         },
         {
           "path": "/w/pair/btcusdt",
-          "operationIds": ["getMarketPair", "getMarketOrderBook", "getMarketRecentTrades"],
-          "loadingTexts": ["Đang tải dữ liệu thị trường…"],
+          "operationIds": [
+            "getMarketPair",
+            "getMarketOrderBook",
+            "getMarketRecentTrades"
+          ],
+          "loadingTexts": [
+            "Đang tải dữ liệu thị trường…"
+          ],
           "responseStatuses": [
             {
               "operationId": "getMarketPair",
@@ -10048,8 +10605,12 @@
         },
         {
           "path": "/w/trade/advanced-chart/btcusdt",
-          "operationIds": ["getMarketCandles"],
-          "loadingTexts": ["Đang tải nến 1d…"],
+          "operationIds": [
+            "getMarketCandles"
+          ],
+          "loadingTexts": [
+            "Đang tải nến 1d…"
+          ],
           "responseStatuses": [
             {
               "operationId": "getMarketCandles",
@@ -12110,44 +12671,60 @@
           "path": "/w/home",
           "errorVisible": true,
           "retryVisible": true,
-          "operationIds": ["getMarketWatchlist", "listMarketPairs"],
+          "operationIds": [
+            "getMarketWatchlist",
+            "listMarketPairs"
+          ],
           "errorAttempts": {
             "getMarketWatchlist": 6,
             "listMarketPairs": 6
           },
           "responseStatuses": [],
-          "failedOperationIds": ["getMarketWatchlist", "listMarketPairs"],
+          "failedOperationIds": [
+            "getMarketWatchlist",
+            "listMarketPairs"
+          ],
           "screenshot": "preview-market-error-home-2026-09-29.png"
         },
         {
           "path": "/w/markets/overview",
           "errorVisible": true,
           "retryVisible": true,
-          "operationIds": ["getMarketOverview"],
+          "operationIds": [
+            "getMarketOverview"
+          ],
           "errorAttempts": {
             "getMarketOverview": 6
           },
           "responseStatuses": [],
-          "failedOperationIds": ["getMarketOverview"],
+          "failedOperationIds": [
+            "getMarketOverview"
+          ],
           "screenshot": "preview-market-error-overview-2026-09-29.png"
         },
         {
           "path": "/w/markets/movers",
           "errorVisible": true,
           "retryVisible": true,
-          "operationIds": ["getMarketMovers"],
+          "operationIds": [
+            "getMarketMovers"
+          ],
           "errorAttempts": {
             "getMarketMovers": 6
           },
           "responseStatuses": [],
-          "failedOperationIds": ["getMarketMovers"],
+          "failedOperationIds": [
+            "getMarketMovers"
+          ],
           "screenshot": "preview-market-error-markets-movers-2026-09-29.png"
         },
         {
           "path": "/w/markets/news",
           "errorVisible": true,
           "retryVisible": true,
-          "operationIds": ["getMarketNews"],
+          "operationIds": [
+            "getMarketNews"
+          ],
           "errorAttempts": {
             "getMarketNews": 6
           },
@@ -12190,7 +12767,9 @@
           "path": "/w/markets/calendar",
           "errorVisible": true,
           "retryVisible": true,
-          "operationIds": ["getMarketCalendar"],
+          "operationIds": [
+            "getMarketCalendar"
+          ],
           "errorAttempts": {
             "getMarketCalendar": 6
           },
@@ -12233,7 +12812,9 @@
           "path": "/w/markets/correlations",
           "errorVisible": true,
           "retryVisible": true,
-          "operationIds": ["getMarketCorrelations"],
+          "operationIds": [
+            "getMarketCorrelations"
+          ],
           "errorAttempts": {
             "getMarketCorrelations": 6
           },
@@ -12276,7 +12857,9 @@
           "path": "/w/markets/unlocks",
           "errorVisible": true,
           "retryVisible": true,
-          "operationIds": ["getMarketTokenUnlocks"],
+          "operationIds": [
+            "getMarketTokenUnlocks"
+          ],
           "errorAttempts": {
             "getMarketTokenUnlocks": 6
           },
@@ -12319,7 +12902,9 @@
           "path": "/w/markets/derivatives",
           "errorVisible": true,
           "retryVisible": true,
-          "operationIds": ["getMarketDerivatives"],
+          "operationIds": [
+            "getMarketDerivatives"
+          ],
           "errorAttempts": {
             "getMarketDerivatives": 6
           },
@@ -12362,7 +12947,9 @@
           "path": "/w/markets/social-sentiment",
           "errorVisible": true,
           "retryVisible": true,
-          "operationIds": ["getMarketSentiment"],
+          "operationIds": [
+            "getMarketSentiment"
+          ],
           "errorAttempts": {
             "getMarketSentiment": 6
           },
@@ -12405,7 +12992,9 @@
           "path": "/w/markets/signals",
           "errorVisible": true,
           "retryVisible": true,
-          "operationIds": ["getMarketSignals"],
+          "operationIds": [
+            "getMarketSignals"
+          ],
           "errorAttempts": {
             "getMarketSignals": 6
           },
@@ -12448,38 +13037,54 @@
           "path": "/w/markets/alerts",
           "errorVisible": true,
           "retryVisible": true,
-          "operationIds": ["listMarketPairs", "listMarketPriceAlerts"],
+          "operationIds": [
+            "listMarketPairs",
+            "listMarketPriceAlerts"
+          ],
           "errorAttempts": {
             "listMarketPairs": 6,
             "listMarketPriceAlerts": 6
           },
           "responseStatuses": [],
-          "failedOperationIds": ["listMarketPairs", "listMarketPriceAlerts"],
+          "failedOperationIds": [
+            "listMarketPairs",
+            "listMarketPriceAlerts"
+          ],
           "screenshot": null
         },
         {
           "path": "/w/markets/screener",
           "errorVisible": true,
           "retryVisible": true,
-          "operationIds": ["listMarketPairs"],
+          "operationIds": [
+            "listMarketPairs"
+          ],
           "errorAttempts": {
             "listMarketPairs": 6
           },
           "responseStatuses": [],
-          "failedOperationIds": ["listMarketPairs"],
+          "failedOperationIds": [
+            "listMarketPairs"
+          ],
           "screenshot": null
         },
         {
           "path": "/w/markets/watchlist",
           "errorVisible": true,
           "retryVisible": true,
-          "operationIds": ["getMarketWatchlist", "listMarketPairs"],
+          "operationIds": [
+            "getMarketWatchlist",
+            "listMarketPairs"
+          ],
           "errorAttempts": {
             "getMarketWatchlist": 6,
             "listMarketPairs": 6
           },
           "responseStatuses": [],
-          "failedOperationIds": ["getMarketWatchlist", "listMarketPairs"],
+          "failedOperationIds": [
+            "getMarketWatchlist",
+            "listMarketPairs"
+          ],
           "screenshot": null
         },
         {
@@ -12511,73 +13116,99 @@
           "path": "/w/markets/depth",
           "errorVisible": true,
           "retryVisible": true,
-          "operationIds": ["listMarketPairs"],
+          "operationIds": [
+            "listMarketPairs"
+          ],
           "errorAttempts": {
             "listMarketPairs": 6
           },
           "responseStatuses": [],
-          "failedOperationIds": ["listMarketPairs"],
+          "failedOperationIds": [
+            "listMarketPairs"
+          ],
           "screenshot": "preview-market-error-markets-depth-2026-09-29.png"
         },
         {
           "path": "/w/markets/compare",
           "errorVisible": true,
           "retryVisible": true,
-          "operationIds": ["listMarketPairs"],
+          "operationIds": [
+            "listMarketPairs"
+          ],
           "errorAttempts": {
             "listMarketPairs": 6
           },
           "responseStatuses": [],
-          "failedOperationIds": ["listMarketPairs"],
+          "failedOperationIds": [
+            "listMarketPairs"
+          ],
           "screenshot": null
         },
         {
           "path": "/w/markets/heatmap",
           "errorVisible": true,
           "retryVisible": true,
-          "operationIds": ["listMarketPairs"],
+          "operationIds": [
+            "listMarketPairs"
+          ],
           "errorAttempts": {
             "listMarketPairs": 6
           },
           "responseStatuses": [],
-          "failedOperationIds": ["listMarketPairs"],
+          "failedOperationIds": [
+            "listMarketPairs"
+          ],
           "screenshot": null
         },
         {
           "path": "/w/markets/sectors",
           "errorVisible": true,
           "retryVisible": true,
-          "operationIds": ["getMarketOverview"],
+          "operationIds": [
+            "getMarketOverview"
+          ],
           "errorAttempts": {
             "getMarketOverview": 6
           },
           "responseStatuses": [],
-          "failedOperationIds": ["getMarketOverview"],
+          "failedOperationIds": [
+            "getMarketOverview"
+          ],
           "screenshot": null
         },
         {
           "path": "/w/trade/advanced-chart/btcusdt",
           "errorVisible": true,
           "retryVisible": true,
-          "operationIds": ["getMarketPair", "listMarketPairs"],
+          "operationIds": [
+            "getMarketPair",
+            "listMarketPairs"
+          ],
           "errorAttempts": {
             "getMarketPair": 6,
             "listMarketPairs": 6
           },
           "responseStatuses": [],
-          "failedOperationIds": ["getMarketPair", "listMarketPairs"],
+          "failedOperationIds": [
+            "getMarketPair",
+            "listMarketPairs"
+          ],
           "screenshot": "preview-market-error-trade-advanced-chart-btcusdt-2026-09-29.png"
         },
         {
           "path": "/w/pair/btcusdt/info",
           "errorVisible": true,
           "retryVisible": true,
-          "operationIds": ["getMarketPair"],
+          "operationIds": [
+            "getMarketPair"
+          ],
           "errorAttempts": {
             "getMarketPair": 6
           },
           "responseStatuses": [],
-          "failedOperationIds": ["getMarketPair"],
+          "failedOperationIds": [
+            "getMarketPair"
+          ],
           "screenshot": null
         }
       ],
@@ -12620,8 +13251,13 @@
       "observedAt": "2026-09-29T10:26:28.273Z",
       "persona": "developer (preview only)",
       "route": "/w/markets/predictions/event/pred-1",
-      "operationIds": ["placePredictionOrder", "getPredictionOrderReceipt"],
-      "observedOperationIds": ["placePredictionOrder"],
+      "operationIds": [
+        "placePredictionOrder",
+        "getPredictionOrderReceipt"
+      ],
+      "observedOperationIds": [
+        "placePredictionOrder"
+      ],
       "operationRequestCounts": {
         "placePredictionOrder": 1,
         "getPredictionOrderReceipt": 0
@@ -12667,7 +13303,9 @@
       "pageErrors": [],
       "externalApiOrigins": [],
       "elapsedMs": 1486,
-      "screenshots": ["preview-predictions-duplicate-conflict-2026-09-29.png"],
+      "screenshots": [
+        "preview-predictions-duplicate-conflict-2026-09-29.png"
+      ],
       "sourceHashesReviewed": [
         "src/dev/PreviewControls.tsx",
         "src/dev/PreviewControls.test.tsx",
@@ -13108,7 +13746,20 @@
         "retryRequestCount": 6,
         "retryResponseCount": 6,
         "retryElapsedMs": 2627,
-        "responseStatuses": [503, 503, 503, 503, 503, 503, 503, 503, 503, 503, 503, 503],
+        "responseStatuses": [
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503
+        ],
         "responsesFromServiceWorker": true,
         "errorVisible": true,
         "retryVisible": true,
@@ -13124,7 +13775,20 @@
         "retryRequestCount": 6,
         "retryResponseCount": 6,
         "retryElapsedMs": 2634,
-        "responseStatuses": [503, 503, 503, 503, 503, 503, 503, 503, 503, 503, 503, 503],
+        "responseStatuses": [
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503
+        ],
         "responsesFromServiceWorker": true,
         "errorVisible": true,
         "retryVisible": true,
@@ -13140,7 +13804,20 @@
         "retryRequestCount": 6,
         "retryResponseCount": 6,
         "retryElapsedMs": 2624,
-        "responseStatuses": [503, 503, 503, 503, 503, 503, 503, 503, 503, 503, 503, 503],
+        "responseStatuses": [
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503
+        ],
         "responsesFromServiceWorker": true,
         "errorVisible": true,
         "retryVisible": true,
@@ -13156,7 +13833,20 @@
         "retryRequestCount": 6,
         "retryResponseCount": 6,
         "retryElapsedMs": 2628,
-        "responseStatuses": [503, 503, 503, 503, 503, 503, 503, 503, 503, 503, 503, 503],
+        "responseStatuses": [
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503,
+          503
+        ],
         "responsesFromServiceWorker": true,
         "errorVisible": true,
         "retryVisible": true,
@@ -13426,11 +14116,15 @@
         "route": "/w/profile",
         "readRequestCount": 1,
         "readResponseCount": 1,
-        "readStatuses": [401],
+        "readStatuses": [
+          401
+        ],
         "readResponsesFromServiceWorker": true,
         "refreshRequestCount": 1,
         "refreshResponseCount": 1,
-        "refreshStatuses": [401],
+        "refreshStatuses": [
+          401
+        ],
         "refreshResponsesFromServiceWorker": true,
         "responseElapsedMs": 554,
         "redirectedToLogin": true,
@@ -13441,11 +14135,15 @@
         "route": "/w/profile/devices",
         "readRequestCount": 1,
         "readResponseCount": 1,
-        "readStatuses": [401],
+        "readStatuses": [
+          401
+        ],
         "readResponsesFromServiceWorker": true,
         "refreshRequestCount": 1,
         "refreshResponseCount": 1,
-        "refreshStatuses": [401],
+        "refreshStatuses": [
+          401
+        ],
         "refreshResponsesFromServiceWorker": true,
         "responseElapsedMs": 541,
         "redirectedToLogin": true,
@@ -13456,11 +14154,15 @@
         "route": "/w/profile/activity",
         "readRequestCount": 1,
         "readResponseCount": 1,
-        "readStatuses": [401],
+        "readStatuses": [
+          401
+        ],
         "readResponsesFromServiceWorker": true,
         "refreshRequestCount": 1,
         "refreshResponseCount": 1,
-        "refreshStatuses": [401],
+        "refreshStatuses": [
+          401
+        ],
         "refreshResponsesFromServiceWorker": true,
         "responseElapsedMs": 538,
         "redirectedToLogin": true,
@@ -13471,11 +14173,15 @@
         "route": "/w/profile/sub-accounts",
         "readRequestCount": 1,
         "readResponseCount": 1,
-        "readStatuses": [401],
+        "readStatuses": [
+          401
+        ],
         "readResponsesFromServiceWorker": true,
         "refreshRequestCount": 1,
         "refreshResponseCount": 1,
-        "refreshStatuses": [401],
+        "refreshStatuses": [
+          401
+        ],
         "refreshResponsesFromServiceWorker": true,
         "responseElapsedMs": 524,
         "redirectedToLogin": true,
@@ -14270,7 +14976,11 @@
     "elapsedMs": 22039
   },
   "tradingEmptyResponses": {
-    "operationIds": ["listOpenOrders", "listOpenPositions", "listOrderHistory"],
+    "operationIds": [
+      "listOpenOrders",
+      "listOpenPositions",
+      "listOrderHistory"
+    ],
     "requestCounts": {
       "listOpenOrders": 1,
       "listOpenPositions": 1,
@@ -14341,7 +15051,11 @@
     "elapsedMs": 326
   },
   "tradingLoadingResponses": {
-    "operationIds": ["listOpenOrders", "listOpenPositions", "listOrderHistory"],
+    "operationIds": [
+      "listOpenOrders",
+      "listOpenPositions",
+      "listOrderHistory"
+    ],
     "requestCounts": {
       "listOpenOrders": 1,
       "listOpenPositions": 6,
@@ -14828,7 +15542,9 @@
       "status": "passed",
       "persona": "developer",
       "route": "/w/trade/positions",
-      "operationIds": ["listOpenPositions"],
+      "operationIds": [
+        "listOpenPositions"
+      ],
       "visibleError": true,
       "visibleRetryAction": true,
       "falseEmptyStateVisible": false,
@@ -15003,7 +15719,9 @@
       "status": "passed",
       "persona": "developer",
       "route": "/auth/login",
-      "operationIds": ["listOpenPositions"],
+      "operationIds": [
+        "listOpenPositions"
+      ],
       "readRequestCount": 1,
       "readResponses": [
         {
@@ -15043,7 +15761,9 @@
       "status": "passed",
       "persona": "developer",
       "route": "/w/trade/positions",
-      "operationIds": ["listOpenPositions"],
+      "operationIds": [
+        "listOpenPositions"
+      ],
       "declared403OperationCount": 10,
       "readRequestCount": 1,
       "readResponses": [
@@ -15075,8 +15795,14 @@
       "status": "passed",
       "persona": "admin",
       "role": "admin",
-      "permissions": ["admin:read"],
-      "routes": ["/w/admin", "/w/admin/funnels", "/w/admin/abtests"],
+      "permissions": [
+        "admin:read"
+      ],
+      "routes": [
+        "/w/admin",
+        "/w/admin/funnels",
+        "/w/admin/abtests"
+      ],
       "operationIds": [
         "getAdminOverview",
         "getAdminFunnel",
@@ -15084,7 +15810,11 @@
         "getAdminAbTest",
         "updateAdminFeatureFlag"
       ],
-      "observedOperationIds": ["getAdminOverview", "getAdminFunnel", "listAdminAbTests"],
+      "observedOperationIds": [
+        "getAdminOverview",
+        "getAdminFunnel",
+        "listAdminAbTests"
+      ],
       "operationRequestCounts": {
         "getAdminOverview": 1,
         "getAdminFunnel": 1,
@@ -15136,10 +15866,21 @@
       "status": "passed",
       "persona": "admin",
       "role": "admin",
-      "permissions": ["admin:read"],
-      "routes": ["/w/admin/funnels", "/w/admin/abtests"],
-      "operationIds": ["getAdminFunnel", "listAdminAbTests"],
-      "observedOperationIds": ["getAdminFunnel", "listAdminAbTests"],
+      "permissions": [
+        "admin:read"
+      ],
+      "routes": [
+        "/w/admin/funnels",
+        "/w/admin/abtests"
+      ],
+      "operationIds": [
+        "getAdminFunnel",
+        "listAdminAbTests"
+      ],
+      "observedOperationIds": [
+        "getAdminFunnel",
+        "listAdminAbTests"
+      ],
       "operationRequestCounts": {
         "getAdminFunnel": 1,
         "listAdminAbTests": 1
@@ -15182,10 +15923,24 @@
       "status": "passed",
       "persona": "admin",
       "role": "admin",
-      "permissions": ["admin:read"],
-      "routes": ["/w/admin", "/w/admin/funnels", "/w/admin/abtests"],
-      "operationIds": ["getAdminOverview", "getAdminFunnel", "listAdminAbTests"],
-      "observedOperationIds": ["getAdminOverview", "getAdminFunnel", "listAdminAbTests"],
+      "permissions": [
+        "admin:read"
+      ],
+      "routes": [
+        "/w/admin",
+        "/w/admin/funnels",
+        "/w/admin/abtests"
+      ],
+      "operationIds": [
+        "getAdminOverview",
+        "getAdminFunnel",
+        "listAdminAbTests"
+      ],
+      "observedOperationIds": [
+        "getAdminOverview",
+        "getAdminFunnel",
+        "listAdminAbTests"
+      ],
       "operationRequestCounts": {
         "getAdminOverview": 1,
         "getAdminFunnel": 1,
@@ -15260,8 +16015,14 @@
       "status": "passed",
       "persona": "admin",
       "role": "admin",
-      "permissions": ["admin:read"],
-      "routes": ["/w/admin", "/w/admin/funnels", "/w/admin/abtests"],
+      "permissions": [
+        "admin:read"
+      ],
+      "routes": [
+        "/w/admin",
+        "/w/admin/funnels",
+        "/w/admin/abtests"
+      ],
       "operationIds": [
         "getAdminOverview",
         "getAdminFunnel",
@@ -15269,7 +16030,11 @@
         "getAdminAbTest",
         "updateAdminFeatureFlag"
       ],
-      "observedOperationIds": ["getAdminOverview", "getAdminFunnel", "listAdminAbTests"],
+      "observedOperationIds": [
+        "getAdminOverview",
+        "getAdminFunnel",
+        "listAdminAbTests"
+      ],
       "operationRequestCounts": {
         "getAdminOverview": 6,
         "getAdminFunnel": 6,
@@ -15428,7 +16193,9 @@
       "status": "passed",
       "persona": "admin",
       "role": "admin",
-      "permissions": ["admin:read"],
+      "permissions": [
+        "admin:read"
+      ],
       "operationIds": [
         "getAdminOverview",
         "getAdminFunnel",
@@ -15436,7 +16203,9 @@
         "getAdminAbTest",
         "updateAdminFeatureFlag"
       ],
-      "observedOperationIds": ["getAdminOverview"],
+      "observedOperationIds": [
+        "getAdminOverview"
+      ],
       "declared401OperationCount": 5,
       "readRequests": [
         {
@@ -15471,7 +16240,9 @@
       "writeRequestCount": 0,
       "finalRoute": "/auth/login",
       "elapsedMs": 528,
-      "screenshots": ["preview-admin-unauthorized-login-2026-09-29.png"],
+      "screenshots": [
+        "preview-admin-unauthorized-login-2026-09-29.png"
+      ],
       "detailOperationNotReachableFromCurrentRoutes": "getAdminAbTest",
       "mutationNotSent": "updateAdminFeatureFlag; the preview persona has admin:read only and no current UI route exposes the write form.",
       "note": "Representative Admin unauthorized evidence exercises getAdminOverview only (1/5 linked operations); OpenAPI declares 401 for all five, including the currently unreachable detail and write operations. Local MSW returns 401 for the read, refresh returns 401, and the protected route redirects to login without visible overview content. No mutation is sent; backend authorization/session behavior, staging and user acceptance are not certified."
@@ -15486,8 +16257,14 @@
       "status": "passed",
       "persona": "admin",
       "role": "admin",
-      "permissions": ["admin:read"],
-      "routes": ["/w/admin", "/w/admin/funnels", "/w/admin/abtests"],
+      "permissions": [
+        "admin:read"
+      ],
+      "routes": [
+        "/w/admin",
+        "/w/admin/funnels",
+        "/w/admin/abtests"
+      ],
       "operationIds": [
         "getAdminOverview",
         "getAdminFunnel",
@@ -15495,7 +16272,11 @@
         "getAdminAbTest",
         "updateAdminFeatureFlag"
       ],
-      "observedOperationIds": ["getAdminOverview", "getAdminFunnel", "listAdminAbTests"],
+      "observedOperationIds": [
+        "getAdminOverview",
+        "getAdminFunnel",
+        "listAdminAbTests"
+      ],
       "declared403OperationCount": 5,
       "operationRequestCounts": {
         "getAdminOverview": 1,
@@ -15579,8 +16360,14 @@
       "status": "passed",
       "persona": "arena",
       "role": "user",
-      "permissions": ["arena:join"],
-      "routes": ["/w/arena", "/w/arena/mode/mode001", "/w/arena/challenge/ch001"],
+      "permissions": [
+        "arena:join"
+      ],
+      "routes": [
+        "/w/arena",
+        "/w/arena/mode/mode001",
+        "/w/arena/challenge/ch001"
+      ],
       "operationIds": [
         "getArenaDiscovery",
         "getArenaMode",
@@ -15681,10 +16468,18 @@
       "status": "passed",
       "persona": "arena",
       "role": "user",
-      "permissions": ["arena:join"],
-      "routes": ["/w/arena"],
-      "operationIds": ["getArenaDiscovery"],
-      "observedOperationIds": ["getArenaDiscovery"],
+      "permissions": [
+        "arena:join"
+      ],
+      "routes": [
+        "/w/arena"
+      ],
+      "operationIds": [
+        "getArenaDiscovery"
+      ],
+      "observedOperationIds": [
+        "getArenaDiscovery"
+      ],
       "operationRequestCounts": {
         "getArenaDiscovery": 1
       },
@@ -15730,10 +16525,18 @@
       "status": "passed",
       "persona": "arena",
       "role": "user",
-      "permissions": ["arena:join"],
-      "routes": ["/w/arena"],
-      "operationIds": ["getArenaDiscovery"],
-      "observedOperationIds": ["getArenaDiscovery"],
+      "permissions": [
+        "arena:join"
+      ],
+      "routes": [
+        "/w/arena"
+      ],
+      "operationIds": [
+        "getArenaDiscovery"
+      ],
+      "observedOperationIds": [
+        "getArenaDiscovery"
+      ],
       "operationRequestCounts": {
         "getArenaDiscovery": 1
       },
@@ -15760,7 +16563,9 @@
       "writeRequestCount": 0,
       "finalRoute": "/w/arena",
       "elapsedMs": 2025,
-      "screenshots": ["preview-arena-loading-discovery-2026-09-29.png"],
+      "screenshots": [
+        "preview-arena-loading-discovery-2026-09-29.png"
+      ],
       "note": "Chromium observed the Arena discovery loading state while its single GET remained in flight, then received the existing fixture response through local MSW. The preview delay is a local transport simulation, not backend latency or a server-pending state. The screenshot also shows the sidebar still highlighting Trang chủ on /w/arena; track that navigation active-state issue in UI acceptance."
     },
     "externalApiOrigins": []
@@ -15773,15 +16578,21 @@
       "status": "passed",
       "persona": "arena",
       "role": "user",
-      "permissions": ["arena:join"],
-      "routes": ["/w/arena"],
+      "permissions": [
+        "arena:join"
+      ],
+      "routes": [
+        "/w/arena"
+      ],
       "operationIds": [
         "getArenaDiscovery",
         "getArenaMode",
         "getArenaChallenge",
         "joinArenaChallenge"
       ],
-      "observedOperationIds": ["getArenaDiscovery"],
+      "observedOperationIds": [
+        "getArenaDiscovery"
+      ],
       "operationRequestCounts": {
         "getArenaDiscovery": 12
       },
@@ -15933,13 +16744,18 @@
       "writeRequestCount": 0,
       "finalRoute": "/w/arena",
       "elapsedMs": 5507,
-      "screenshots": ["preview-arena-error-discovery-2026-09-29.png"],
+      "screenshots": [
+        "preview-arena-error-discovery-2026-09-29.png"
+      ],
       "note": "Chromium observed ErrorState/Retry for the one in-scope discovery read and kept the failure distinct from empty success. Arena OpenAPI declares no 5xx response, so local MSW returned a transport error with no HTTP response. The error scenario covers only getArenaDiscovery (1/4 linked operations); no join mutation ran. The screenshot also retains the known sidebar active-state mismatch at /w/arena."
     },
     "externalApiOrigins": []
   },
   "externalApiOrigins": [],
-  "externalAssetOrigins": ["https://fonts.googleapis.com", "https://fonts.gstatic.com"],
+  "externalAssetOrigins": [
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com"
+  ],
   "screenshots": [
     "preview-market-error-empty-2026-09-28.png",
     "preview-market-empty-2026-09-28.png",
@@ -16387,7 +17203,9 @@
     "screenshot": "docs/architecture/production-readiness/evidence/A06/preview-p2p-loading-orders-2026-09-29-fresh-after-handler-fix.png",
     "loadingScreenshot": "docs/architecture/production-readiness/evidence/A06/preview-p2p-loading-pending-orders-2026-09-29-fresh-after-handler-fix.png",
     "route": "/w/p2p/order-room",
-    "operationIds": ["listP2POrders"],
+    "operationIds": [
+      "listP2POrders"
+    ],
     "totalFlowMs": 2550,
     "loadingUiMs": 98,
     "responseMs": 2057,
@@ -16405,7 +17223,9 @@
       "docs/architecture/production-readiness/evidence/A06/preview-p2p-error-after-retry-2026-09-29-fresh-after-c052.png"
     ],
     "route": "/w/p2p/order-room",
-    "operationIds": ["listP2POrders"],
+    "operationIds": [
+      "listP2POrders"
+    ],
     "totalFlowMs": 6040,
     "initialErrorVisibleMs": 2874,
     "initialRequestFailures": 6,
@@ -16439,7 +17259,9 @@
     "screenshot": "docs/architecture/production-readiness/evidence/A06/preview-p2p-unauthorized-login-2026-09-29-fresh-after-handler-fix.png",
     "protectedRoute": "/w/p2p/order-room",
     "resultRoute": "/auth/login",
-    "operationIds": ["listP2POrders"],
+    "operationIds": [
+      "listP2POrders"
+    ],
     "loginRedirectMs": 60,
     "realBackendRequestSent": false,
     "coverage": "representative_browser_observed",
@@ -16452,7 +17274,10 @@
     "evidenceArtifact": "docs/architecture/production-readiness/evidence/A06/p2p-forbidden-browser-check-2026-09-29-fresh-after-handler-fix.json",
     "screenshot": "docs/architecture/production-readiness/evidence/A06/preview-p2p-forbidden-escrow-2026-09-29-fresh-after-handler-fix.png",
     "route": "/w/p2p/escrow/p2p002",
-    "operationIds": ["getP2POrder", "createP2PReleaseChallenge"],
+    "operationIds": [
+      "getP2POrder",
+      "createP2PReleaseChallenge"
+    ],
     "challengeStatus": 403,
     "verifyRequestCount": 0,
     "releaseRequestCount": 0,
@@ -16466,13 +17291,21 @@
     "status": "passed",
     "observedAt": "2026-09-29T17:47:04.246Z",
     "evidenceArtifact": "docs/architecture/production-readiness/evidence/A06/p2p-pending-browser-check-2026-09-29-fresh-after-handler-fix.json",
-    "operationIds": ["createP2POrder", "getP2POrder", "markP2POrderPaid", "releaseP2POrderEscrow"],
+    "operationIds": [
+      "createP2POrder",
+      "getP2POrder",
+      "markP2POrderPaid",
+      "releaseP2POrderEscrow"
+    ],
     "supportingOperationIds": [
       "getP2PAd",
       "createP2PReleaseChallenge",
       "verifyP2PReleaseChallenge"
     ],
-    "routes": ["/w/p2p/escrow/p2p002", "/w/p2p/order/dev-p2p-order-0001"],
+    "routes": [
+      "/w/p2p/escrow/p2p002",
+      "/w/p2p/order/dev-p2p-order-0001"
+    ],
     "totalFlowMs": 8474,
     "p2pResponseCount": 11,
     "p2pMutationCount": 5,
@@ -16501,13 +17334,22 @@
     "status": "passed",
     "observedAt": "2026-09-29T17:47:34.923Z",
     "evidenceArtifact": "docs/architecture/production-readiness/evidence/A06/p2p-duplicate-browser-check-2026-09-29-fresh-after-handler-fix.json",
-    "operationIds": ["createP2POrder", "getP2POrder", "markP2POrderPaid", "releaseP2POrderEscrow"],
+    "operationIds": [
+      "createP2POrder",
+      "getP2POrder",
+      "markP2POrderPaid",
+      "releaseP2POrderEscrow"
+    ],
     "supportingOperationIds": [
       "getP2PAd",
       "createP2PReleaseChallenge",
       "verifyP2PReleaseChallenge"
     ],
-    "routes": ["/w/p2p/escrow/p2p002", "/w/p2p/ad/ad001", "/w/p2p/escrow/p2p001"],
+    "routes": [
+      "/w/p2p/escrow/p2p002",
+      "/w/p2p/ad/ad001",
+      "/w/p2p/escrow/p2p001"
+    ],
     "totalFlowMs": 2690,
     "p2pResponseCount": 10,
     "p2pMutationCount": 5,
@@ -16531,8 +17373,13 @@
     "status": "passed",
     "observedAt": "2026-09-29T10:26:28.273Z",
     "evidenceArtifact": "docs/architecture/production-readiness/evidence/A06/predictions-duplicate-browser-check-2026-09-29.json",
-    "operationIds": ["placePredictionOrder", "getPredictionOrderReceipt"],
-    "observedOperationIds": ["placePredictionOrder"],
+    "operationIds": [
+      "placePredictionOrder",
+      "getPredictionOrderReceipt"
+    ],
+    "observedOperationIds": [
+      "placePredictionOrder"
+    ],
     "route": "/w/markets/predictions/event/pred-1",
     "totalFlowMs": 1486,
     "predictionRequestCount": 2,
@@ -16702,27 +17549,27 @@
     {
       "id": "trading.success",
       "path": "docs/architecture/production-readiness/evidence/A06/trading-success-browser-check-2026-09-30.json",
-      "sha256": "917aa0a9f10657fff32567fa8e101f8949af4f1585d07564493ac4c240a4f969"
+      "sha256": "a2b8c56663c7c32d358933949008cd2faff45ad5d998ecaa363970fda598ab77"
     },
     {
       "id": "trading.empty",
       "path": "docs/architecture/production-readiness/evidence/A06/trading-empty-browser-check-2026-09-30.json",
-      "sha256": "4e3f5a8d1187334a03273a49bcdddd066dd8211bfa8dfe999f33740496eed5ad"
+      "sha256": "d9c9ac685a1635c8cb28be55581c8943fbba179c8d4d349db81503dd9d8d8cd0"
     },
     {
       "id": "trading.loading",
       "path": "docs/architecture/production-readiness/evidence/A06/trading-loading-browser-check-2026-09-30.json",
-      "sha256": "e511b9ca0c4535619339841099c2cc31438deb690944328255587afd668b74d5"
+      "sha256": "42a9f5461c96e8fa2324a710c9a9d0a86217b0d77e78c73dee8bafedc1919b9e"
     },
     {
       "id": "trading.error",
       "path": "docs/architecture/production-readiness/evidence/A06/trading-error-browser-check-2026-09-30.json",
-      "sha256": "782798d8dfb5d85a7f526807e327ee4574a50d33c87e8294a4936692f17bffe7"
+      "sha256": "d3d53dcf2cc0f2d17204af90c50ad5fe5e125be56db1fdcb46c6637a0da23b36"
     },
     {
       "id": "trading.unauthorized",
       "path": "docs/architecture/production-readiness/evidence/A06/trading-unauthorized-browser-check-2026-09-30.json",
-      "sha256": "f3a8d93cd02ee8cf50fa029f06034c8442c692721cbff0278f07d2cb98a50627"
+      "sha256": "4af556ce7cc5ae6d9438e1d7032f22d8a25f33f7f9f7720c61693c2f713fd296"
     },
     {
       "id": "trading.forbidden",
@@ -16757,7 +17604,9 @@
     "evidenceArtifact": "docs/architecture/production-readiness/evidence/A06/p2p-empty-browser-check-2026-09-29-fresh-after-handler-fix.json",
     "screenshot": "docs/architecture/production-readiness/evidence/A06/preview-p2p-empty-orders-2026-09-29-fresh-after-handler-fix.png",
     "route": "/w/p2p/order-room",
-    "operationIds": ["listP2POrders"],
+    "operationIds": [
+      "listP2POrders"
+    ],
     "totalFlowMs": 535,
     "p2pResponseCount": 1,
     "realBackendRequestSent": false,
@@ -16856,7 +17705,10 @@
       "docs/architecture/production-readiness/evidence/A06/preview-predictions-unauthorized-portfolio-2026-09-29-contract-scoped.png"
     ],
     "route": "/w/markets/predictions and /w/markets/predictions/portfolio",
-    "operationIds": ["listPredictionEvents", "listPredictionPositions"],
+    "operationIds": [
+      "listPredictionEvents",
+      "listPredictionPositions"
+    ],
     "totalFlowMs": 683,
     "networkApiResponseCount": 9,
     "predictionRequestCount": 2,
@@ -16883,8 +17735,13 @@
       "docs/architecture/production-readiness/evidence/A06/preview-predictions-pending-receipt-2026-09-29.png"
     ],
     "route": "/w/markets/predictions/event/pred-1",
-    "operationIds": ["placePredictionOrder", "getPredictionOrderReceipt"],
-    "supportingOperationIds": ["getPredictionEvent"],
+    "operationIds": [
+      "placePredictionOrder",
+      "getPredictionOrderReceipt"
+    ],
+    "supportingOperationIds": [
+      "getPredictionEvent"
+    ],
     "totalFlowMs": 2642,
     "pendingUiDelayMs": 59,
     "orderResponseTimeMs": 2061,
@@ -16963,8 +17820,14 @@
       "docs/architecture/production-readiness/evidence/A06/preview-profile-empty-subaccounts-2026-09-29.png"
     ],
     "route": "/w/profile/devices, /w/profile/activity, /w/profile/sub-accounts",
-    "operationIds": ["listTrustedDevices", "listProfileActivity", "listSubAccounts"],
-    "supportingOperationIds": ["getProfile"],
+    "operationIds": [
+      "listTrustedDevices",
+      "listProfileActivity",
+      "listSubAccounts"
+    ],
+    "supportingOperationIds": [
+      "getProfile"
+    ],
     "totalFlowMs": 3407,
     "apiRequestCount": 9,
     "apiResponseCount": 9,
@@ -16998,7 +17861,12 @@
       "docs/architecture/production-readiness/evidence/A06/preview-profile-loading-subaccounts-2026-09-29.png"
     ],
     "route": "/w/profile/edit, /w/profile/devices, /w/profile/activity, /w/profile/sub-accounts",
-    "operationIds": ["getProfile", "listTrustedDevices", "listProfileActivity", "listSubAccounts"],
+    "operationIds": [
+      "getProfile",
+      "listTrustedDevices",
+      "listProfileActivity",
+      "listSubAccounts"
+    ],
     "totalFlowMs": 8639,
     "apiRequestCount": 9,
     "apiResponseCount": 9,
@@ -17055,7 +17923,12 @@
       "docs/architecture/production-readiness/evidence/A06/preview-profile-error-subaccounts-2026-09-29.png"
     ],
     "route": "/w/profile, /w/profile/devices, /w/profile/activity, /w/profile/sub-accounts",
-    "operationIds": ["getProfile", "listTrustedDevices", "listProfileActivity", "listSubAccounts"],
+    "operationIds": [
+      "getProfile",
+      "listTrustedDevices",
+      "listProfileActivity",
+      "listSubAccounts"
+    ],
     "totalFlowMs": 25071,
     "apiRequestCount": 53,
     "apiResponseCount": 53,
@@ -17086,7 +17959,12 @@
       "docs/architecture/production-readiness/evidence/A06/preview-profile-unauthorized-subaccounts-2026-09-29-contract-scoped.png"
     ],
     "route": "/w/profile, /w/profile/devices, /w/profile/activity, /w/profile/sub-accounts",
-    "operationIds": ["getProfile", "listProfileActivity", "listSubAccounts", "listTrustedDevices"],
+    "operationIds": [
+      "getProfile",
+      "listProfileActivity",
+      "listSubAccounts",
+      "listTrustedDevices"
+    ],
     "expectedDomainOperationCount": 7,
     "totalFlowMs": 3268,
     "apiRequestCount": 31,

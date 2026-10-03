@@ -3,10 +3,10 @@
   "generatedFrom": {
     "tracking": "docs/architecture/production-readiness/TRACKING.json",
     "operationMap": "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json",
-    "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
-    "generatedAt": "2026-09-30T00:58:12.079Z",
+    "sourceHead": "1517ae875b555199a5726eb3567aa3dbd0aa8f9a",
+    "generatedAt": "2026-10-03T22:03:25.686Z",
     "operationMapSha256": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
-    "runtimeEvidenceSha256": "f01438ba42bac1dd507e41ef29bd5756642cad278473459b47fef57fd469f7ca"
+    "runtimeEvidenceSha256": "59d54ef87e5f1326dc35274849f32b7d20afc68029e22a839d7daa65233d3ba6"
   },
   "scope": "Scenario expectations for the 15 tracked product domains. Runtime status is included only when the aggregate report or the scenario-specific sidecar has a matching source HEAD and current source hashes; it is not user acceptance or backend certification.",
   "summary": {
@@ -15,12 +15,17 @@
     "exactHandlerMappings": 154,
     "operationsWithDirectSharedHandlerTestReferences": 21,
     "scenariosDefined": 106,
-    "scenarioRowsWithFreshBrowserEvidence": 27,
-    "scenarioRowsFullyCoveredByFreshBrowserEvidence": 16,
-    "uniqueOperationsWithFreshBrowserEvidence": 32,
+    "scenarioRowsWithFreshBrowserEvidence": 0,
+    "scenarioRowsFullyCoveredByFreshBrowserEvidence": 0,
+    "uniqueOperationsWithFreshBrowserEvidence": 0,
     "runtimeEvidenceFresh": false,
-    "freshScenarioEvidenceSidecars": 27,
+    "currentHead": "1517ae875b555199a5726eb3567aa3dbd0aa8f9a",
+    "runtimeEvidenceRevision": "historical_baseline",
+    "freshScenarioEvidenceSidecars": 0,
     "registeredScenarioEvidenceSidecars": 35,
+    "historicalBaselineScenarioEvidenceSidecars": 30,
+    "historicalBaselineSidecarsWithCurrentSourceHashes": 0,
+    "sourceHashStaleScenarioEvidenceSidecars": 35,
     "financialDomainsWithPendingUnknownDuplicateCases": [
       "earn",
       "p2p",
@@ -45,7 +50,7 @@
     "Direct shared-handler test references identify mapped test call sites, not response-branch coverage.",
     "Unknown outcome is a client-observed transport ambiguity, not a value added to server status enums.",
     "Backend owners must confirm idempotency and reconciliation semantics before any operation is certified.",
-    "Browser evidence is ignored if its source HEAD or any recorded source file hash is stale.",
+    "Current browser evidence requires source HEAD to equal the executing Git HEAD and every recorded source file hash to match. Baseline-SHA evidence remains historical, even when its source hashes still match.",
     "Empty scenarios name only contract-applicable collection GET operations; reads outside each mapped empty state remain outside that scenario.",
     "No user acceptance, staging or production evidence is claimed."
   ],
@@ -1027,13 +1032,7 @@
             "sendP2PChatMessage"
           ],
           "expectedUi": "P2P ads, escrow orders, payment methods, chat, dispute and security: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/p2p-success-browser-check-2026-09-29-fresh-after-handler-fix.json",
-          "runtimeRoute": "/w/p2p/escrow/p2p002",
-          "runtimeObservedOperationIds": ["getP2POrder", "getP2PAd", "createP2POrder"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 12
+          "executionStatus": "not_verified"
         },
         {
           "id": "p2p.empty",
@@ -1084,13 +1083,7 @@
             "sendP2PChatMessage"
           ],
           "expectedUi": "Show an empty marketplace/order state; preserve escrow status and do not infer payment or release from a UI action alone.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/p2p-empty-browser-check-2026-09-29-fresh-after-handler-fix.json",
-          "runtimeRoute": "/w/p2p/order-room",
-          "runtimeObservedOperationIds": ["listP2POrders"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 11
+          "executionStatus": "not_verified"
         },
         {
           "id": "p2p.loading",
@@ -1141,13 +1134,7 @@
             "sendP2PChatMessage"
           ],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/p2p-loading-browser-check-2026-09-29-fresh-after-handler-fix.json",
-          "runtimeRoute": "/w/p2p/order-room",
-          "runtimeObservedOperationIds": ["listP2POrders"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 11
+          "executionStatus": "not_verified"
         },
         {
           "id": "p2p.error",
@@ -1198,13 +1185,7 @@
             "sendP2PChatMessage"
           ],
           "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/p2p-error-browser-check-2026-09-29-fresh-after-c052.json",
-          "runtimeRoute": "/w/p2p/order-room",
-          "runtimeObservedOperationIds": ["listP2POrders"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 11
+          "executionStatus": "not_verified"
         },
         {
           "id": "p2p.unauthorized",
@@ -1255,13 +1236,7 @@
             "sendP2PChatMessage"
           ],
           "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/p2p-unauthorized-browser-check-2026-09-29-fresh-after-handler-fix.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["listP2POrders"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 13
+          "executionStatus": "not_verified"
         },
         {
           "id": "p2p.forbidden",
@@ -1312,13 +1287,7 @@
             "sendP2PChatMessage"
           ],
           "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/p2p-forbidden-browser-check-2026-09-29-fresh-after-handler-fix.json",
-          "runtimeRoute": "/w/p2p/escrow/p2p002",
-          "runtimeObservedOperationIds": ["getP2POrder", "createP2PReleaseChallenge"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 11
+          "executionStatus": "not_verified"
         },
         {
           "id": "p2p.pending",
@@ -1600,21 +1569,7 @@
             "listSubAccounts"
           ],
           "expectedUi": "Profile, KYC, settings, credentials and account controls: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/profile-success-browser-check-2026-09-29.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": [
-            "getProfile",
-            "updateProfile",
-            "listTrustedDevices",
-            "revokeDevice",
-            "setDeviceTrust",
-            "listProfileActivity",
-            "listSubAccounts"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 22
+          "executionStatus": "not_verified"
         },
         {
           "id": "profile.empty",
@@ -1622,17 +1577,7 @@
           "applicability": "required",
           "operationIds": ["listTrustedDevices", "listProfileActivity", "listSubAccounts"],
           "expectedUi": "Show explicit empty states for Profile collections without replacing the required Profile object; do not collapse missing permission or failed load into an empty result.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/profile-empty-browser-check-2026-09-29.json",
-          "runtimeRoute": "/w/profile/devices, /w/profile/activity, /w/profile/sub-accounts",
-          "runtimeObservedOperationIds": [
-            "listTrustedDevices",
-            "listProfileActivity",
-            "listSubAccounts"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 21
+          "executionStatus": "not_verified"
         },
         {
           "id": "profile.loading",
@@ -1645,18 +1590,7 @@
             "listSubAccounts"
           ],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/profile-loading-browser-check-2026-09-29.json",
-          "runtimeRoute": "/w/profile/edit, /w/profile/devices, /w/profile/activity, /w/profile/sub-accounts",
-          "runtimeObservedOperationIds": [
-            "getProfile",
-            "listTrustedDevices",
-            "listProfileActivity",
-            "listSubAccounts"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 22
+          "executionStatus": "not_verified"
         },
         {
           "id": "profile.error",
@@ -1672,18 +1606,7 @@
             "listSubAccounts"
           ],
           "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/profile-error-browser-check-2026-09-29.json",
-          "runtimeRoute": "/w/profile, /w/profile/devices, /w/profile/activity, /w/profile/sub-accounts",
-          "runtimeObservedOperationIds": [
-            "getProfile",
-            "listTrustedDevices",
-            "listProfileActivity",
-            "listSubAccounts"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 25
+          "executionStatus": "not_verified"
         },
         {
           "id": "profile.unauthorized",
@@ -1699,18 +1622,7 @@
             "listSubAccounts"
           ],
           "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/profile-unauthorized-browser-check-2026-09-29-contract-scoped.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": [
-            "getProfile",
-            "listProfileActivity",
-            "listSubAccounts",
-            "listTrustedDevices"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 23
+          "executionStatus": "not_verified"
         },
         {
           "id": "profile.forbidden",
@@ -1745,13 +1657,7 @@
           "applicability": "required",
           "operationIds": ["getReferralOverview"],
           "expectedUi": "Referral overview and rewards: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/referral-success-browser-check-2026-09-29.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getReferralOverview"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 20
+          "executionStatus": "not_verified"
         },
         {
           "id": "referral.empty",
@@ -1759,13 +1665,7 @@
           "applicability": "required",
           "operationIds": ["getReferralOverview"],
           "expectedUi": "Show zero referrals/rewards as an empty success state, not as a load error.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/referral-empty-browser-check-2026-09-29.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getReferralOverview"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 20
+          "executionStatus": "not_verified"
         },
         {
           "id": "referral.loading",
@@ -1773,13 +1673,7 @@
           "applicability": "required",
           "operationIds": ["getReferralOverview"],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/referral-loading-browser-check-2026-09-29.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getReferralOverview"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 20
+          "executionStatus": "not_verified"
         },
         {
           "id": "referral.error",
@@ -1787,13 +1681,7 @@
           "applicability": "required",
           "operationIds": ["getReferralOverview"],
           "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/referral-error-browser-check-2026-09-29.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getReferralOverview"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 23
+          "executionStatus": "not_verified"
         },
         {
           "id": "referral.unauthorized",
@@ -1801,13 +1689,7 @@
           "applicability": "required",
           "operationIds": ["getReferralOverview"],
           "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/referral-unauthorized-browser-check-2026-09-29-contract-scoped.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getReferralOverview"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 25
+          "executionStatus": "not_verified"
         },
         {
           "id": "referral.forbidden",
@@ -1848,20 +1730,7 @@
             "createSupportTicket"
           ],
           "expectedUi": "Support tickets, FAQ and help: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/support-success-browser-check-2026-09-29.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": [
-            "createSupportTicket",
-            "getHelpCenter",
-            "listNews",
-            "listNotifications",
-            "listSupportTickets",
-            "markNotificationRead"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 25
+          "executionStatus": "not_verified"
         },
         {
           "id": "support.empty",
@@ -1876,20 +1745,7 @@
             "createSupportTicket"
           ],
           "expectedUi": "Show no-ticket guidance and a create-ticket action; keep FAQ content and ticket failures distinct.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/support-empty-browser-check-2026-09-29.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": [
-            "createSupportTicket",
-            "getHelpCenter",
-            "listNews",
-            "listNotifications",
-            "listSupportTickets",
-            "markNotificationRead"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 25
+          "executionStatus": "not_verified"
         },
         {
           "id": "support.loading",
@@ -1897,18 +1753,7 @@
           "applicability": "required",
           "operationIds": ["listNews", "listNotifications", "getHelpCenter", "listSupportTickets"],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/support-loading-browser-check-2026-09-29.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": [
-            "getHelpCenter",
-            "listNews",
-            "listNotifications",
-            "listSupportTickets"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 25
+          "executionStatus": "not_verified"
         },
         {
           "id": "support.error",
@@ -1916,18 +1761,7 @@
           "applicability": "required",
           "operationIds": ["listNews", "listNotifications", "getHelpCenter", "listSupportTickets"],
           "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/support-error-browser-check-2026-09-29.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": [
-            "getHelpCenter",
-            "listNews",
-            "listNotifications",
-            "listSupportTickets"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 26
+          "executionStatus": "not_verified"
         },
         {
           "id": "support.unauthorized",
@@ -1967,13 +1801,7 @@
           "operationIds": ["createSupportTicket"],
           "contractStatusSemantics": "OpenAPI declares HTTP 201 after ticket creation; it does not declare a durable server-side pending status.",
           "expectedUi": "While createSupportTicket is in flight, show the submitting state and prevent edits or duplicate submission; after HTTP 201, render the created ticket. This verifies client request-in-flight behavior only.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/support-pending-browser-check-2026-09-30.json",
-          "runtimeRoute": "/w/support",
-          "runtimeObservedOperationIds": ["createSupportTicket"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 22
+          "executionStatus": "not_verified"
         }
       ]
     },
@@ -2027,26 +1855,7 @@
             "cancelOrder"
           ],
           "expectedUi": "Order entry, open orders, positions, order history and copy trading: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-success-browser-check-2026-09-30.json",
-          "runtimeRoute": "/w/trade/btcusdt",
-          "runtimeObservedOperationIds": [
-            "getCopyFrontendViewStatus",
-            "listCopyProviders",
-            "getCopyProviderProfile",
-            "listCopyRelationships",
-            "createCopyRelationship",
-            "stopCopyRelationship",
-            "getTradingAnalytics",
-            "listOpenOrders",
-            "placeOrder",
-            "listOrderHistory",
-            "modifyOrder",
-            "cancelOrder"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 41
+          "executionStatus": "not_verified"
         },
         {
           "id": "trading.empty",
@@ -2054,17 +1863,7 @@
           "applicability": "required",
           "operationIds": ["listOpenOrders", "listOpenPositions", "listOrderHistory"],
           "expectedUi": "Show no open orders/positions as a valid empty state; never treat it as proof that an order was cancelled or never submitted.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-empty-browser-check-2026-09-30.json",
-          "runtimeRoute": "/w/trade/positions",
-          "runtimeObservedOperationIds": [
-            "listOpenOrders",
-            "listOrderHistory",
-            "listOpenPositions"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 19
+          "executionStatus": "not_verified"
         },
         {
           "id": "trading.loading",
@@ -2072,17 +1871,7 @@
           "applicability": "required",
           "operationIds": ["listOpenOrders", "listOpenPositions", "listOrderHistory"],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-loading-browser-check-2026-09-30.json",
-          "runtimeRoute": "/w/trade/positions",
-          "runtimeObservedOperationIds": [
-            "listOpenOrders",
-            "listOrderHistory",
-            "listOpenPositions"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 19
+          "executionStatus": "not_verified"
         },
         {
           "id": "trading.error",
@@ -2090,13 +1879,7 @@
           "applicability": "required",
           "operationIds": ["listOpenPositions"],
           "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-error-browser-check-2026-09-30.json",
-          "runtimeRoute": "/w/trade/positions",
-          "runtimeObservedOperationIds": ["listOpenPositions"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 16
+          "executionStatus": "not_verified"
         },
         {
           "id": "trading.unauthorized",
@@ -2118,13 +1901,7 @@
             "cancelOrder"
           ],
           "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-unauthorized-browser-check-2026-09-30.json",
-          "runtimeRoute": "/w/trade/positions",
-          "runtimeObservedOperationIds": ["listOpenPositions"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 14
+          "executionStatus": "not_verified"
         },
         {
           "id": "trading.forbidden",
@@ -2143,13 +1920,7 @@
             "cancelOrder"
           ],
           "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-forbidden-browser-check-2026-09-30.json",
-          "runtimeRoute": "/w/trade/positions",
-          "runtimeObservedOperationIds": ["listOpenPositions"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 14
+          "executionStatus": "not_verified"
         },
         {
           "id": "trading.pending",
@@ -2492,319 +2263,655 @@
   "reconciliation": {
     "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/preview-scenario-browser-check-market-empty-2026-09-28.json",
     "runtimeEvidenceFresh": false,
+    "runtimeEvidenceRevision": "historical_baseline",
+    "currentHead": "1517ae875b555199a5726eb3567aa3dbd0aa8f9a",
     "scenarioEvidenceArtifacts": [
       {
         "id": "p2p.duplicate",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-duplicate-browser-check-2026-09-29-fresh-after-handler-fix.json",
-        "fresh": false,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 13,
-        "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "p2p.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-empty-browser-check-2026-09-29-fresh-after-handler-fix.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 11,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": ["src/dev/mocks/preview-scenario-handler.ts"],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "p2p.error",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-error-browser-check-2026-09-29-fresh-after-c052.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 11,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": ["src/dev/mocks/preview-scenario-handler.ts"],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "p2p.forbidden",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-forbidden-browser-check-2026-09-29-fresh-after-handler-fix.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 11,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": ["src/dev/mocks/preview-scenario-handler.ts"],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "p2p.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-loading-browser-check-2026-09-29-fresh-after-handler-fix.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 11,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": ["src/dev/mocks/preview-scenario-handler.ts"],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "p2p.pending",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-pending-browser-check-2026-09-29-fresh-after-handler-fix.json",
-        "fresh": false,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 13,
-        "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "p2p.success",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-success-browser-check-2026-09-29-fresh-after-handler-fix.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 12,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": ["src/dev/mocks/preview-scenario-handler.ts"],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "p2p.unauthorized",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-unauthorized-browser-check-2026-09-29-fresh-after-handler-fix.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 13,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "contracts/openapi/auth.yaml",
+          "docs/architecture/production-readiness/evidence/A06/run-p2p-unauthorized-browser-check.mjs",
+          "src/dev/mocks/preview-scenario-handler.ts"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "predictions.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/predictions-empty-browser-check-2026-09-29.json",
-        "fresh": false,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 17,
-        "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts",
+          "src/main.tsx",
+          "src/shared/config/env.ts"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "predictions.error",
         "path": "docs/architecture/production-readiness/evidence/A06/predictions-error-browser-check-fresh-2026-09-29.json",
-        "fresh": false,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 20,
-        "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.test.ts",
+          "src/dev/mocks/preview-scenario-handler.ts",
+          "src/main.tsx",
+          "src/shared/config/env.ts"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "predictions.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/predictions-loading-browser-check-2026-09-29.json",
-        "fresh": false,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 17,
-        "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts",
+          "src/main.tsx",
+          "src/shared/config/env.ts"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "predictions.pending",
         "path": "docs/architecture/production-readiness/evidence/A06/predictions-pending-browser-check-2026-09-29.json",
-        "fresh": false,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 16,
-        "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts",
+          "src/main.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "predictions.success",
         "path": "docs/architecture/production-readiness/evidence/A06/predictions-success-browser-check-2026-09-29.json",
-        "fresh": false,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 17,
-        "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts",
+          "src/main.tsx",
+          "src/shared/config/env.ts"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "predictions.unauthorized",
         "path": "docs/architecture/production-readiness/evidence/A06/predictions-unauthorized-browser-check-2026-09-29-contract-scoped.json",
-        "fresh": false,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 17,
-        "sourceHashMismatches": ["src/dev/mocks/handlers.ts"],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "contracts/openapi/auth.yaml",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts",
+          "src/features/auth/api/auth-api.ts"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "profile.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/profile-empty-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 21,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "docs/architecture/production-readiness/evidence/A06/run-profile-empty-browser-check.mjs",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts",
+          "src/main.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "profile.error",
         "path": "docs/architecture/production-readiness/evidence/A06/profile-error-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 25,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "docs/architecture/production-readiness/evidence/A06/run-profile-error-browser-check.mjs",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts",
+          "src/main.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "profile.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/profile-loading-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 22,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "docs/architecture/production-readiness/evidence/A06/run-profile-loading-browser-check.mjs",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts",
+          "src/main.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "profile.success",
         "path": "docs/architecture/production-readiness/evidence/A06/profile-success-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 22,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "docs/architecture/production-readiness/evidence/A06/run-profile-success-browser-check.mjs",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts",
+          "src/main.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "profile.unauthorized",
         "path": "docs/architecture/production-readiness/evidence/A06/profile-unauthorized-browser-check-2026-09-29-contract-scoped.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 23,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "contracts/openapi/auth.yaml",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts",
+          "src/features/auth/api/auth-api.ts",
+          "src/main.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "referral.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/referral-empty-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 20,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "docs/architecture/production-readiness/evidence/A06/run-referral-empty-browser-check.mjs",
+          "src/app/routeConfig.ts",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts",
+          "src/main.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "referral.error",
         "path": "docs/architecture/production-readiness/evidence/A06/referral-error-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 23,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "docs/architecture/production-readiness/evidence/A06/run-referral-error-browser-check.mjs",
+          "src/app/routeConfig.ts",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts",
+          "src/main.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "referral.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/referral-loading-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 20,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "docs/architecture/production-readiness/evidence/A06/run-referral-loading-browser-check.mjs",
+          "src/app/routeConfig.ts",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts",
+          "src/main.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "referral.success",
         "path": "docs/architecture/production-readiness/evidence/A06/referral-success-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 20,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "docs/architecture/production-readiness/evidence/A06/run-referral-success-browser-check.mjs",
+          "src/app/routeConfig.ts",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts",
+          "src/main.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "referral.unauthorized",
         "path": "docs/architecture/production-readiness/evidence/A06/referral-unauthorized-browser-check-2026-09-29-contract-scoped.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 25,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "contracts/openapi/auth.yaml",
+          "src/app/routeConfig.ts",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts",
+          "src/features/auth/api/auth-api.ts",
+          "src/main.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "support.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/support-empty-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 25,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "docs/architecture/production-readiness/evidence/A06/run-support-empty-browser-check.mjs",
+          "src/app/components/layout/WebSidebar.tsx",
+          "src/app/routeConfig.ts",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/features/support/model/support-queries.ts",
+          "src/features/support/pages/NotificationsContractPage.tsx",
+          "src/main.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "support.error",
         "path": "docs/architecture/production-readiness/evidence/A06/support-error-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 26,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "docs/architecture/production-readiness/evidence/A06/run-support-error-browser-check.mjs",
+          "src/app/components/layout/WebSidebar.tsx",
+          "src/app/routeConfig.ts",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts",
+          "src/features/support/model/support-queries.ts",
+          "src/features/support/pages/NotificationsContractPage.tsx",
+          "src/main.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "support.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/support-loading-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 25,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "docs/architecture/production-readiness/evidence/A06/run-support-loading-browser-check.mjs",
+          "src/app/components/layout/WebSidebar.tsx",
+          "src/app/routeConfig.ts",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts",
+          "src/features/support/model/support-queries.ts",
+          "src/features/support/pages/NotificationsContractPage.tsx",
+          "src/main.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "support.success",
         "path": "docs/architecture/production-readiness/evidence/A06/support-success-browser-check-2026-09-29.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 25,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "docs/architecture/production-readiness/evidence/A06/run-support-success-browser-check.mjs",
+          "src/app/components/layout/WebSidebar.tsx",
+          "src/app/routeConfig.ts",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/features/support/model/support-queries.ts",
+          "src/features/support/pages/NotificationsContractPage.tsx",
+          "src/main.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "support.pending",
         "path": "docs/architecture/production-readiness/evidence/A06/support-pending-browser-check-2026-09-30.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 22,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
+          "docs/architecture/production-readiness/evidence/A06/run-support-pending-browser-check.mjs",
+          "src/app/components/layout/WebSidebar.tsx",
+          "src/app/routeConfig.ts",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts",
+          "src/features/support/model/support-queries.ts",
+          "src/main.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "trading.success",
         "path": "docs/architecture/production-readiness/evidence/A06/trading-success-browser-check-2026-09-30.json",
-        "fresh": true,
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 41,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": false,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routeConfig.ts",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "trading.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/trading-empty-browser-check-2026-09-30.json",
-        "fresh": true,
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 19,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": false,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routeConfig.ts",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "trading.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/trading-loading-browser-check-2026-09-30.json",
-        "fresh": true,
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 19,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": false,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routeConfig.ts",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "trading.error",
         "path": "docs/architecture/production-readiness/evidence/A06/trading-error-browser-check-2026-09-30.json",
-        "fresh": true,
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 16,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": false,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routeConfig.ts",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "trading.unauthorized",
         "path": "docs/architecture/production-readiness/evidence/A06/trading-unauthorized-browser-check-2026-09-30.json",
-        "fresh": true,
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 14,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": false,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "contracts/openapi/auth.yaml",
+          "docs/architecture/production-readiness/evidence/A06/run-trading-unauthorized-browser-check.mjs",
+          "src/app/routeConfig.ts",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
       {
         "id": "trading.forbidden",
         "path": "docs/architecture/production-readiness/evidence/A06/trading-forbidden-browser-check-2026-09-30.json",
-        "fresh": true,
+        "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+        "sourceHeadRevision": "historical_baseline",
         "sourceHashCount": 14,
-        "sourceHashMismatches": [],
+        "sourceHashesMatchCurrent": false,
+        "historicalBaselineEvidence": true,
+        "fresh": false,
+        "sourceHashMismatches": [
+          "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
+          "docs/architecture/production-readiness/evidence/A06/run-trading-forbidden-browser-check.mjs",
+          "src/app/routeConfig.ts",
+          "src/app/routes.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/preview-scenario-handler.ts"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       }
