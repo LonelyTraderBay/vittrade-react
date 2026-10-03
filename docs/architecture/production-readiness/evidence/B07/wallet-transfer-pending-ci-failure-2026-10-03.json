@@ -1,0 +1,15 @@
+{
+  "id": "EV-20261003-028",
+  "taskId": "B07",
+  "stepId": "B07.01",
+  "kind": "exact-sha-node22-ubuntu-coverage-gate-regression",
+  "commandOrSteps": "Inspect GitHub Actions run #39 and the Production gates job logs for exact SHA 72de46ced82cf481c1dc0224ac20a06e72979f1a; compare the unit/integration and coverage conclusions and identify skipped downstream gates.",
+  "environment": "GitHub Actions Ubuntu 24.04.5; Node 22.23.3/npm 10.9.9; push run 37088436714, attempt 1; Production gates job 111103408483.",
+  "observedAt": "2026-10-03T14:05:42Z",
+  "sourceHead": "72de46ced82cf481c1dc0224ac20a06e72979f1a",
+  "expected": "The wallet transfer contract test observes its button disabled with aria-busy=true while the server response is pending, and the exact-SHA coverage gate completes.",
+  "actual": "The workflow passed setup, EOL, npm ci, typecheck, lint, lint warning budget, format, and standard unit/integration tests. Coverage Gate failed because src/features/wallet/pages/WalletTransferContractPage.test.tsx expected aria-busy=true but received false in the pending-response test; the coverage run reported one failed test among 2,427. E2E and subsequent policy/build steps were skipped.",
+  "result": "fail",
+  "artifact": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/37088436714",
+  "notes": "The test used a fixed 100 ms MSW response delay, which did not explicitly synchronize the assertion with request completion. CI logs establish the observed failed assertion, but do not record the precise scheduling interval. The component implementation was not changed. Do not count this run as a pass."
+}

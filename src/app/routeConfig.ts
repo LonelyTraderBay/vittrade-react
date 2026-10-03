@@ -319,6 +319,11 @@ const ReferralHomePage = lazy(() =>
     default: m.ReferralContractPage,
   })),
 );
+const NotificationsPage = lazy(() =>
+  import('./pages/platform/NotificationsPageAdapter').then((m) => ({
+    default: m.NotificationsPageAdapter,
+  })),
+);
 const RewardsHubPage = IntegrationPendingPage;
 const EnterpriseStatesPage = IntegrationPendingPage;
 
@@ -506,7 +511,7 @@ export function createProtectedRoutes(o: ShellOverrides): RouteObject[] {
     // ═══════════════════════════════════════════════════════════
     //  MISC — Notifications, Support, Launchpad, Rewards
     // ═══════════════════════���═══════════════════════════════════
-    ...createSupportProtectedRoutes(),
+    ...createSupportProtectedRoutes({ notificationsPage: NotificationsPage }),
     { path: 'launchpad/portfolio', Component: IntegrationPendingPage },
     { path: 'launchpad/performance', Component: IntegrationPendingPage },
     { path: 'launchpad/staking', Component: IntegrationPendingPage },

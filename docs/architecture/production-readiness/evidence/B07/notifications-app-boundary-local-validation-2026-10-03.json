@@ -1,0 +1,15 @@
+{
+  "id": "EV-20261003-031",
+  "taskId": "B07",
+  "stepId": "B07.01",
+  "kind": "notifications-app-boundary-local-validation",
+  "commandOrSteps": "Run SupportContractPages, SupportWriteBoundary, and ShellComposition tests; run both TypeScript projects, full Vitest coverage, full ESLint, lint budget, Prettier, dependency-cruiser, regenerate/check architecture inventory, page-size and production route/import/mock gates, OpenAPI/security/environment/license/EOL policies, production build/bundle checks, and git diff --check.",
+  "environment": "Windows x64; Node 24.19.0; branch codex/b07-01-ubuntu-20261003; source HEAD 99d60f754ab933e469247d3c849d5a39ede95870 plus uncommitted app/feature boundary changes.",
+  "observedAt": "2026-10-03T15:29:38Z",
+  "sourceHead": "99d60f754ab933e469247d3c849d5a39ede95870",
+  "expected": "The Support feature no longer imports app-owned UI state, while notification unread counts remain synchronized between the feature query and Web/Tablet shell badges.",
+  "actual": "Support and shell composition tests passed 16/16. On the final file layout, the full suite passed 2,427/2,427 tests in 284/284 files; coverage exited 0 at 90.17% statements, 84.98% branches, 87.21% functions, and 91.90% lines. Both TypeScript projects, full ESLint, lint budget (0 errors/0 warnings), Prettier, architecture validation (0 dependency violations; 860 modules/4,655 dependencies), and generated inventory check (130 pages/428 routes/149 components/32 services/28 mocks) passed. The generated inventory links both the feature page and app/platform adapter to the notifications route. Page-size, production import/route/mock, OpenAPI, security, environment, license and EOL checks passed; production build completed in 4.11 seconds and all 222 JavaScript bundles were within budget. git diff --check passed.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/B07/notifications-app-boundary-local-validation-2026-10-03.json",
+  "notes": "Local Windows evidence only. The changed source was still uncommitted, so this does not establish exact-SHA Ubuntu behavior. GitHub Actions run #40 remains a failure; a new committed SHA must pass the full workflow before the B07.01 follow-up can be closed. npm audit --audit-level=high passed locally but reported one low-severity DOMPurify advisory; run #40 also reported two non-fatal E2E DNS resource errors."
+}

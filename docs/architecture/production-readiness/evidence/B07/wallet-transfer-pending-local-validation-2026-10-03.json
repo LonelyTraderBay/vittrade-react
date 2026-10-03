@@ -1,0 +1,21 @@
+{
+  "id": "EV-20261003-029",
+  "taskId": "B07",
+  "stepId": "B07.01",
+  "kind": "wallet-transfer-pending-test-determinism-local-validation",
+  "commandOrSteps": "Run the focused WalletTransferContractPage Vitest file; run the full Vitest coverage gate; run both TypeScript projects, repository ESLint, lint warning budget, Prettier format check, and git diff --check.",
+  "environment": "Windows x64; Node 24.19.0; B07 worktree branch codex/b07-01-ubuntu-20261003; parent source HEAD 72de46ced82cf481c1dc0224ac20a06e72979f1a with the test file edited in the working tree.",
+  "observedAt": "2026-10-03T14:05:42Z",
+  "sourceHead": "72de46ced82cf481c1dc0224ac20a06e72979f1a",
+  "workingTreeSourceHashes": [
+    {
+      "path": "src/features/wallet/pages/WalletTransferContractPage.test.tsx",
+      "sha256": "4660cd755ad1b6ab779d2eea0b90c5ddaa2361099d8227b95d5e06e6d22ef7ce"
+    }
+  ],
+  "expected": "The busy-state assertion stays synchronized with the pending request, and all scoped local validation gates pass.",
+  "actual": "The focused transfer page suite passed 11/11. The full Vitest coverage command exited 0 with statements 90.18%, branches 84.99%, functions 87.21%, and lines 91.92%. Both TypeScript projects, full ESLint, zero-warning lint budget, Prettier check, and git diff --check passed.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/B07/wallet-transfer-pending-local-validation-2026-10-03.json",
+  "notes": "Local Windows evidence only. It does not establish Ubuntu compatibility; exact-SHA GitHub Actions run #40 for commit 99d60f754ab933e469247d3c849d5a39ede95870 was still running when this record was prepared."
+}

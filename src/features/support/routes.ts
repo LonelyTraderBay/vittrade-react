@@ -1,7 +1,8 @@
 import type { RouteObject } from 'react-router';
+import type { ComponentType } from 'react';
 import { lazyRoute } from '@/shared/ui/lazy-route';
 
-const NotificationsPage = lazyRoute(() =>
+const FeatureNotificationsPage = lazyRoute(() =>
   import('./pages/NotificationsContractPage').then((module) => ({
     default: module.NotificationsContractPage,
   })),
@@ -33,9 +34,11 @@ export function createSupportPublicRoutes(): RouteObject[] {
 }
 
 /** Boundary route support yêu cầu xác thực. */
-export function createSupportProtectedRoutes(): RouteObject[] {
+export function createSupportProtectedRoutes(
+  options: { notificationsPage?: ComponentType } = {},
+): RouteObject[] {
   return [
-    { path: 'notifications', Component: NotificationsPage },
+    { path: 'notifications', Component: options.notificationsPage ?? FeatureNotificationsPage },
     { path: 'support/help', Component: HelpCenterPage },
     { path: 'support/announcements', Component: AnnouncementsPage },
     { path: 'support', Component: SupportPage },

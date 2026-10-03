@@ -10,7 +10,7 @@
     "src/app/services"
   ],
   "summary": {
-    "pageCount": 129,
+    "pageCount": 130,
     "routeCount": 428,
     "componentCount": 149,
     "dataModuleCount": 0,
@@ -18,7 +18,7 @@
     "mockCount": 28,
     "pageStatus": {
       "production": 0,
-      "integration-pending": 125,
+      "integration-pending": 126,
       "demo": 2,
       "deprecated": 0,
       "not-implemented": 2
@@ -26,7 +26,7 @@
     "pageOwner": {
       "features/dca": 5,
       "features/p2p": 28,
-      "app/platform": 2,
+      "app/platform": 3,
       "features/wallet": 16,
       "features/admin": 4,
       "features/arena": 2,
@@ -82,6 +82,30 @@
         "localImports": [
           "../../hooks/useSheetAnalytics",
           "@/features/p2p/pages/P2PMarketplacePage"
+        ],
+        "mockReferences": [],
+        "directRuntimeAccess": {
+          "fetch": false,
+          "websocket": false,
+          "storage": false
+        }
+      }
+    },
+    {
+      "path": "src/app/pages/platform/NotificationsPageAdapter.tsx",
+      "domain": "platform",
+      "owner": "app/platform",
+      "status": "integration-pending",
+      "lines": 25,
+      "routePaths": [
+        "notifications"
+      ],
+      "dependencies": {
+        "localImports": [
+          "@/app/hooks/useUI",
+          "@/features/support",
+          "@/features/support/pages/NotificationsContractPage",
+          "@/shared/session/useAuth"
         ],
         "mockReferences": [],
         "directRuntimeAccess": {
@@ -2860,14 +2884,13 @@
       "domain": "support",
       "owner": "features/support",
       "status": "integration-pending",
-      "lines": 129,
+      "lines": 118,
       "routePaths": [
         "notifications"
       ],
       "dependencies": {
         "localImports": [
           "../model/support-queries",
-          "@/app/hooks/useUI",
           "@/shared/hooks/useActionToast",
           "@/shared/hooks/useThemeColors",
           "@/shared/session/useAuth",
@@ -4938,18 +4961,26 @@
     {
       "path": "notifications",
       "component": "WebNotificationsPage",
-      "target": "@/features/support/pages/NotificationsContractPage",
+      "target": "./pages/platform/NotificationsPageAdapter",
       "developmentOnly": false,
       "source": "src/app/routes.ts",
-      "pageTarget": "src/features/support/pages/NotificationsContractPage.tsx"
+      "pageTarget": "src/app/pages/platform/NotificationsPageAdapter.tsx",
+      "compositionTargets": [
+        "src/features/support/pages/NotificationsContractPage.tsx"
+      ]
     },
     {
       "path": "notifications",
       "component": "NotificationsPage",
-      "target": "./pages/NotificationsContractPage",
+      "target": "@/app/pages/platform/NotificationsPageAdapter",
       "developmentOnly": false,
       "source": "src/features/support/routes.ts",
-      "pageTarget": "src/features/support/pages/NotificationsContractPage.tsx"
+      "componentSlot": "notificationsPage",
+      "routeFactory": "createSupportProtectedRoutes",
+      "pageTarget": "src/app/pages/platform/NotificationsPageAdapter.tsx",
+      "compositionTargets": [
+        "src/features/support/pages/NotificationsContractPage.tsx"
+      ]
     },
     {
       "path": "onboarding",

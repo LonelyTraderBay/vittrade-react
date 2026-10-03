@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { ErrorState } from '@/shared/ui/ErrorState';
 import { Header } from '@/shared/ui/layout/Header';
@@ -6,7 +6,6 @@ import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useAuth } from '@/shared/session/useAuth';
-import { useUI } from '@/app/hooks/useUI';
 import { useActionToast } from '@/shared/hooks/useActionToast';
 import { useMarkNotificationReadMutation, useNotificationsQuery } from '../model/support-queries';
 
@@ -16,19 +15,9 @@ export function NotificationsContractPage() {
   const { hasPermission } = useAuth();
   const canRead = hasPermission('notifications:read');
   const canMarkRead = hasPermission('notifications:write');
-  const { setNotifications } = useUI();
   const query = useNotificationsQuery({ enabled: canRead });
   const markRead = useMarkNotificationReadMutation();
   const idempotencyKeys = useRef(new Map<string, string>());
-  useEffect(() => {
-    if (!canRead) {
-      setNotifications(0);
-      return;
-    }
-    if (query.data) {
-      setNotifications(query.data.items.filter((item) => !item.isRead).length);
-    }
-  }, [canRead, query.data, setNotifications]);
   if (!canRead)
     return (
       <PageLayout>

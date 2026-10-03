@@ -1,0 +1,15 @@
+{
+  "id": "EV-20261003-030",
+  "taskId": "B07",
+  "stepId": "B07.01",
+  "kind": "exact-sha-node22-ubuntu-architecture-gate-failure",
+  "commandOrSteps": "Inspect all Production gates job conclusions and the authenticated GitHub Actions logs for exact SHA 99d60f754ab933e469247d3c849d5a39ede95870, including unit/integration, coverage, Playwright, security/policy, and Architecture check output.",
+  "environment": "GitHub Actions Ubuntu 24.04.5; Node 22.23.3/npm 10.9.9; push run 37127518566 (#40), attempt 1; Production gates job 111215756142.",
+  "observedAt": "2026-10-03T14:27:16Z",
+  "sourceHead": "99d60f754ab933e469247d3c849d5a39ede95870",
+  "expected": "The committed pending-state test is deterministic and the exact-SHA production gates complete, including the feature/app dependency boundary check.",
+  "actual": "PASS through unit/integration (284/284 files), coverage (90.18% statements, 84.99% branches, 87.21% functions, 91.92% lines), E2E (51/51), dependency high-severity audit, license, security, environment, and OpenAPI checks. Architecture check failed with one feature-must-not-import-app violation: src/features/support/pages/NotificationsContractPage.tsx → src/app/hooks/useUI.ts (859 modules, 4,649 dependencies). The remaining architecture inventory, page-size, production import/route, build, mock-exclusion, and bundle gates were skipped.",
+  "result": "fail",
+  "artifact": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/37127518566",
+  "notes": "The test-harness fix passed the previously failing coverage gate on Ubuntu. The run also reported one low-severity DOMPurify advisory and two non-fatal external-resource DNS errors during E2E. The app-boundary violation was observed directly in depcruise output; the local correction moves shell badge synchronization into app-owned route composition. This run remains a failure and is not counted as B07.01 pass."
+}

@@ -142,8 +142,8 @@ const WebEarnSavingsPage = lazy(() =>
   import('@/features/earn/pages/EarnPage').then((m) => ({ default: m.SavingsPage })),
 );
 const WebNotificationsPage = lazy(() =>
-  import('@/features/support/pages/NotificationsContractPage').then((m) => ({
-    default: m.NotificationsContractPage,
+  import('./pages/platform/NotificationsPageAdapter').then((m) => ({
+    default: m.NotificationsPageAdapter,
   })),
 );
 const WebSupportPage = lazy(() =>

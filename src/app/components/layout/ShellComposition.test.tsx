@@ -15,7 +15,7 @@ import { WebCommandBar } from './WebCommandBar';
 import { WebSidebar } from './WebSidebar';
 import { TabletShell } from './TabletShell';
 import { WebShell } from './WebShell';
-import { NotificationsContractPage } from '@/features/support/pages/NotificationsContractPage';
+import { NotificationsPageAdapter } from '@/app/pages/platform/NotificationsPageAdapter';
 
 const notificationServer = setupServer();
 
@@ -137,7 +137,7 @@ describe('notification count composition', () => {
         <TabletSidebar />
         <TabletTopBar />
         <AppHeader title="Shell notification count" right="bell" />
-        <NotificationsContractPage />
+        <NotificationsPageAdapter />
       </>,
       { authAdapter: supportWriteAdapter() },
     );
