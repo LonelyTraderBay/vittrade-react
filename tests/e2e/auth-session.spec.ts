@@ -459,3 +459,149 @@ test.describe('auth session smoke on staging build', () => {
     await expect(page.getByTestId('auth-sign-out')).toHaveCount(0);
   });
 });
+
+interface RegistrationE2EProbe {
+  requestBody?: Record<string, unknown>;
+  idempotencyKey?: string;
+  verifyMfaCalls: number;
+}
+
+async function submitRegistration(
+  page: Page,
+  options: {
+    channel: 'email' | 'phone';
+    contact: string;
+    responseStatus: number;
+    responseBody?: Record<string, unknown>;
+  },
+): Promise<RegistrationE2EProbe> {
+  const probe: RegistrationE2EProbe = { verifyMfaCalls: 0 };
+  await page.route('**/auth/session', (route) => route.fulfill({ json: null }));
+  await page.route('https://e2e.test/auth/register', async (route) => {
+    probe.requestBody = route.request().postDataJSON() as Record<string, unknown>;
+    probe.idempotencyKey = route.request().headers()['idempotency-key'];
+    return options.responseBody
+      ? route.fulfill({ status: options.responseStatus, json: options.responseBody })
+      : route.fulfill({ status: options.responseStatus });
+  });
+  await page.route('https://e2e.test/auth/mfa/verify', async (route) => {
+    probe.verifyMfaCalls += 1;
+    return route.fulfill({ status: 401 });
+  });
+
+  await page.goto('/w/auth/register');
+  if (options.channel === 'phone') {
+    await page.getByRole('button', { name: 'Điện thoại', exact: true }).click();
+  }
+  await page.getByLabel('Họ và tên', { exact: true }).fill('Nguyen An');
+  await page
+    .getByLabel(options.channel === 'email' ? 'Email' : 'Số điện thoại', { exact: true })
+    .fill(options.contact);
+  await page.getByLabel('Mật khẩu', { exact: true }).fill('StrongPassword123!');
+  await page.getByLabel('Xác nhận mật khẩu', { exact: true }).fill('StrongPassword123!');
+  await page.getByRole('checkbox').check();
+  await page.getByRole('button', { name: 'Tiếp tục', exact: true }).click();
+  return probe;
+}
+
+test.describe('registration challenge in development API mode', () => {
+  test.beforeEach(() => {
+    test.skip(
+      process.env.VITTRADE_E2E_DEV_AUTH !== 'true',
+      'Registration is intentionally pending in the staging and production route trees.',
+    );
+  });
+
+  test('email registration creates a challenge without starting an authenticated session', async ({
+    page,
+  }) => {
+    const maskedDestination = 'a***@example.com';
+    const probe = await submitRegistration(page, {
+      channel: 'email',
+      contact: 'an@example.com',
+      responseStatus: 202,
+      responseBody: {
+        challengeId: 'email-registration-challenge-e2e',
+        channel: 'email',
+        maskedDestination,
+        expiresAt: '2099-01-01T00:05:00.000Z',
+      },
+    });
+
+    expect(probe.requestBody).toEqual({
+      fullName: 'Nguyen An',
+      channel: 'email',
+      contact: 'an@example.com',
+      password: 'StrongPassword123!',
+      acceptedTerms: true,
+    });
+    expect(probe.idempotencyKey).toMatch(/^[0-9a-f-]{36}$/i);
+    await expect(page).toHaveURL(/\/w\/auth\/otp$/);
+    await expect(page.getByText(maskedDestination, { exact: true })).toBeVisible();
+    await expect(page.locator('input[maxlength="1"]')).toHaveCount(6);
+    await expect(page.getByTestId('auth-sign-out')).toHaveCount(0);
+    expect(probe.verifyMfaCalls).toBe(0);
+  });
+
+  test('phone registration creates a challenge using the server-masked destination', async ({
+    page,
+  }) => {
+    const maskedDestination = '+84 •••• 0123';
+    const probe = await submitRegistration(page, {
+      channel: 'phone',
+      contact: '+84900000123',
+      responseStatus: 202,
+      responseBody: {
+        challengeId: 'phone-registration-challenge-e2e',
+        channel: 'phone',
+        maskedDestination,
+        expiresAt: '2099-01-01T00:05:00.000Z',
+      },
+    });
+
+    expect(probe.requestBody).toEqual({
+      fullName: 'Nguyen An',
+      channel: 'phone',
+      contact: '+84900000123',
+      password: 'StrongPassword123!',
+      acceptedTerms: true,
+    });
+    expect(probe.idempotencyKey).toMatch(/^[0-9a-f-]{36}$/i);
+    await expect(page).toHaveURL(/\/w\/auth\/otp$/);
+    await expect(page.getByText(maskedDestination, { exact: true })).toBeVisible();
+    await expect(page.getByTestId('auth-sign-out')).toHaveCount(0);
+    expect(probe.verifyMfaCalls).toBe(0);
+  });
+
+  test('contract-declared registration rejection stays on the registration form', async ({
+    page,
+  }) => {
+    const probe = await submitRegistration(page, {
+      channel: 'email',
+      contact: 'an@example.com',
+      responseStatus: 400,
+    });
+
+    expect(probe.requestBody?.channel).toBe('email');
+    await expect(page).toHaveURL(/\/w\/auth\/register$/);
+    await expect(
+      page.getByText('Chưa thể bắt đầu xác minh. Kiểm tra kết nối rồi thử lại.'),
+    ).toBeVisible();
+    expect(probe.verifyMfaCalls).toBe(0);
+  });
+
+  test('registration rate limit gives wait guidance without verifying an OTP', async ({ page }) => {
+    const probe = await submitRegistration(page, {
+      channel: 'email',
+      contact: 'an@example.com',
+      responseStatus: 429,
+    });
+
+    expect(probe.requestBody?.channel).toBe('email');
+    await expect(page).toHaveURL(/\/w\/auth\/register$/);
+    await expect(
+      page.getByText('Bạn đã gửi quá nhiều yêu cầu. Hãy chờ một lúc rồi thử lại.'),
+    ).toBeVisible();
+    expect(probe.verifyMfaCalls).toBe(0);
+  });
+});
