@@ -48,7 +48,7 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-10-09T11:34:38.909Z",
+    "updatedAt": "2026-10-09T11:42:52.308Z",
     "lastCompletedTask": "B07",
     "activeTask": "U01",
     "activeStep": "U01.03",
@@ -188,7 +188,8 @@
       "docs/architecture/production-readiness/evidence/U01/u01-03-session-401-anonymous-adapter-browser-2026-10-03.json",
       "docs/architecture/production-readiness/evidence/U01/u01-03-login-mfa-423-locked-browser-e2e-2026-10-03.json",
       "scripts/serve-e2e.mjs",
-      "docs/architecture/production-readiness/evidence/U01/u01-03-auth-e2e-revalidation-2026-10-09.json"
+      "docs/architecture/production-readiness/evidence/U01/u01-03-auth-e2e-revalidation-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/U01/u01-03-tracking-source-rebaseline-2026-10-09.json"
     ],
     "pendingChecks": [
       "C03.05 follow-up: prioritize reachable zero/low coverage behavior; latest full suite passes 2393/2393 on Windows Node24; no threshold reduction.",
@@ -11092,9 +11093,10 @@
             "EV-20261003-011",
             "EV-20261003-012",
             "EV-20261003-013",
-            "EV-20261009-001"
+            "EV-20261009-001",
+            "EV-20261009-002"
           ],
-          "notes": "EV-20261003-001 covers registration challenge envelopes and login MFA 429 handling; EV-20261003-002 records local Chromium/MSW persona states and the prior 8/8 Auth E2E run. EV-20261003-006 reruns the full focused API-mode Auth E2E suite at 9/9 and verifies the contract-shaped login MFA 410 response returns to /w/auth/login without authenticating. These browser requests use local Vite and Playwright fixtures only. Registration-purpose verifyMfa remains blocked pending API/security owner decision; U01.03 stays in_progress. Final checks: browser 9/9, both TypeScript projects, focused ESLint/Prettier, lint-budget, OpenAPI 15/154, architecture and inventory, EOL and diff checks pass. check-tracking remains exit 1 with 40 source-ledger errors (32 missing hashes, 5 missing catalogued paths, 3 source mismatches); inventory is 916/916. EV-20261003-007 adds browser evidence for full password reset in request/verify/confirm order; combined Auth browser suite passes 10/10 with local API fixtures only. Real email delivery and backend/token semantics remain unverified; registration verifyMfa remains owner-blocked. The final password-reset regression resides in the existing tests/e2e/auth-session.spec.ts file and is included in the 10/10 run. EV-20261003-007 final gates: browser 10/10, both TypeScript projects, ESLint/Prettier, lint-budget, OpenAPI 15/154, architecture and inventory, EOL and diff checks pass. check-tracking remains exit 1 with 40 source-ledger errors (32 missing hashes, 5 missing catalogued paths, 3 mismatches); source inventory is 916/916. EV-20261003-008 removes password-reset test statuses 503 and 410 that OpenAPI does not declare: lost connection is a transport error, and reset confirmation rejection uses HTTP 400. Focused reset tests pass 6/6. EV-20261003-008 focused test passes 6/6. TypeScript, focused ESLint/Prettier, lint-budget, OpenAPI 15/154, architecture/inventory, EOL and diff gates pass. check-tracking remains exit 1 with 40 source-ledger errors; inventory is 916/916. EV-20261003-009 covers email and phone registration challenge issuance through the Web OTP page: 2/2 new browser cases and 12/12 combined Auth session suite pass; both TypeScript projects and focused ESLint pass. No registration OTP verification was submitted; guest verifyMfa remains owner-blocked. EV-20261003-010 covers contract-declared registration status-only HTTP 400 and 429 browser responses: combined Auth suite 14/14, registration cases 4/4, both TypeScript projects and focused ESLint pass. The form stays in guest registration; no OTP verification request is sent. EV-20261003-011 covers the contract-declared status-only login HTTP 401 response: combined Auth browser suite 15/15, new scenario 1/1, both TypeScript projects and focused ESLint pass. The visitor remains on login without OTP or an authenticated session. EV-20261003-012 corrects GET /auth/session handling: only contract-declared ApiError 401 maps to null; transport failure still rejects. Auth API plus AuthSessionProvider tests pass 36/36, browser suite 16/16, both TypeScript projects, focused ESLint/Prettier and local architecture/contract gates pass. EV-20261003-013 adds the contract-declared MFA 423 response path: status-only fixture forwards the challenge ID/code, displays the account-locked route and creates no session. Auth browser suite 17/17, focused OTP/account-lock tests 17/17, both TypeScript projects, ESLint and Prettier pass. Tests ran on local Vite Dev/API with route fixtures; staging route safety intentionally blocks registration UI. Registration verification semantics remain API/security-owner blocked. API/security owner session-cookie credential choice was relayed by the user on 2026-10-09; this does not define cookie issuance/attributes or OTP/idempotency behavior. EV-20261009-001 confirms 17/17 local Dev/API Auth E2E and 59/63 production-smoke checks pass, with four registration cases skipped only in staging/production. Local fixtures only; U01.03 remains in_progress.",
+          "notes": "EV-20261003-001 covers registration challenge envelopes and login MFA 429 handling; EV-20261003-002 records local Chromium/MSW persona states and the prior 8/8 Auth E2E run. EV-20261003-006 reruns the full focused API-mode Auth E2E suite at 9/9 and verifies the contract-shaped login MFA 410 response returns to /w/auth/login without authenticating. These browser requests use local Vite and Playwright fixtures only. Registration-purpose verifyMfa remains blocked pending API/security owner decision; U01.03 stays in_progress. Final checks: browser 9/9, both TypeScript projects, focused ESLint/Prettier, lint-budget, OpenAPI 15/154, architecture and inventory, EOL and diff checks pass. check-tracking remains exit 1 with 40 source-ledger errors (32 missing hashes, 5 missing catalogued paths, 3 source mismatches); inventory is 916/916. EV-20261003-007 adds browser evidence for full password reset in request/verify/confirm order; combined Auth browser suite passes 10/10 with local API fixtures only. Real email delivery and backend/token semantics remain unverified; registration verifyMfa remains owner-blocked. The final password-reset regression resides in the existing tests/e2e/auth-session.spec.ts file and is included in the 10/10 run. EV-20261003-007 final gates: browser 10/10, both TypeScript projects, ESLint/Prettier, lint-budget, OpenAPI 15/154, architecture and inventory, EOL and diff checks pass. check-tracking remains exit 1 with 40 source-ledger errors (32 missing hashes, 5 missing catalogued paths, 3 mismatches); source inventory is 916/916. EV-20261003-008 removes password-reset test statuses 503 and 410 that OpenAPI does not declare: lost connection is a transport error, and reset confirmation rejection uses HTTP 400. Focused reset tests pass 6/6. EV-20261003-008 focused test passes 6/6. TypeScript, focused ESLint/Prettier, lint-budget, OpenAPI 15/154, architecture/inventory, EOL and diff gates pass. check-tracking remains exit 1 with 40 source-ledger errors; inventory is 916/916. EV-20261003-009 covers email and phone registration challenge issuance through the Web OTP page: 2/2 new browser cases and 12/12 combined Auth session suite pass; both TypeScript projects and focused ESLint pass. No registration OTP verification was submitted; guest verifyMfa remains owner-blocked. EV-20261003-010 covers contract-declared registration status-only HTTP 400 and 429 browser responses: combined Auth suite 14/14, registration cases 4/4, both TypeScript projects and focused ESLint pass. The form stays in guest registration; no OTP verification request is sent. EV-20261003-011 covers the contract-declared status-only login HTTP 401 response: combined Auth browser suite 15/15, new scenario 1/1, both TypeScript projects and focused ESLint pass. The visitor remains on login without OTP or an authenticated session. EV-20261003-012 corrects GET /auth/session handling: only contract-declared ApiError 401 maps to null; transport failure still rejects. Auth API plus AuthSessionProvider tests pass 36/36, browser suite 16/16, both TypeScript projects, focused ESLint/Prettier and local architecture/contract gates pass. EV-20261003-013 adds the contract-declared MFA 423 response path: status-only fixture forwards the challenge ID/code, displays the account-locked route and creates no session. Auth browser suite 17/17, focused OTP/account-lock tests 17/17, both TypeScript projects, ESLint and Prettier pass. Tests ran on local Vite Dev/API with route fixtures; staging route safety intentionally blocks registration UI. Registration verification semantics remain API/security-owner blocked. API/security owner session-cookie credential choice was relayed by the user on 2026-10-09; this does not define cookie issuance/attributes or OTP/idempotency behavior. EV-20261009-001 confirms 17/17 local Dev/API Auth E2E and 59/63 production-smoke checks pass, with four registration cases skipped only in staging/production. Local fixtures only; U01.03 remains in_progress. EV-20261009-002 records the current source-ledger rebaseline against exact P2 commit 6f3492be5f9bb41affa33de98b23d5218bfcabc2; check-tracking returns 0 errors across 916/916 files. This does not close U01.03 or verify hosted CI, backend/staging, cookie issuance, OTP or idempotency semantics.",
           "execution": {
             "instructionsRef": "PLAN.md#u01",
             "fileSelection": "files[].executionScope.stepIds includes U01.03",
@@ -11199,7 +11201,8 @@
         "EV-20261003-011",
         "EV-20261003-012",
         "EV-20261003-013",
-        "EV-20261009-001"
+        "EV-20261009-001",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261002-0344",
@@ -11255,7 +11258,7 @@
       "startedAt": "2026-10-02T14:06:27.946Z",
       "completedAt": null,
       "elapsedMinutes": null,
-      "notes": "U01.01 inventory and U01.02 contract/adapter mapping are complete as frontend evidence. U01.03 is in progress; verifyMfa guest-vs-sessionCookie semantics and remaining API owner questions are recorded, not approved. UI acceptance and backend/staging evidence remain pending. U01.03 also records shared Auth development-preview browser evidence and current-source A06 sidecar refreshes. EV-20261003-002 adds local browser evidence only; it does not resolve API owner decisions, backend/staging behavior, cookie persistence, or user acceptance. EV-20261003-006 adds a 9/9 API-mode Auth browser run, including a simulated server 410 on login MFA verification; registration verifyMfa security semantics remain unresolved. Final local gates for EV-20261003-006 pass except check-tracking, which exits 1 with 40 source-ledger errors; application inventory is 916/916. EV-20261003-007 verifies the complete password-reset UI flow against contract-shaped browser fixtures; no backend, email delivery, token lifetime, or user acceptance evidence. Final checks for EV-20261003-007 pass except check-tracking, which exits 1 with 40 source-ledger errors; source inventory remains 916/916. EV-20261003-008 aligns Auth password-reset test failures with declared OpenAPI outcomes; no runtime source change. EV-20261003-008 local Auth fixture checks pass except check-tracking, which remains exit 1 with 40 source-ledger errors. EV-20261003-009 verifies contract-shaped email and phone registration challenge issuance in local Playwright fixtures only; OTP verification and API/security owner decision remain open. EV-20261003-010 verifies registration request rejection and rate-limit UI through local Playwright fixtures; no backend/staging request and no guest OTP verification. EV-20261003-011 confirms login HTTP 401 handling in a local Playwright fixture; it does not establish backend, staging, or user acceptance. EV-20261003-012 aligns the Auth session adapter with the contract 401 guest outcome without swallowing transport failures; backend cookie behavior remains unverified. EV-20261003-013 adds a contract-shaped HTTP 423 login MFA browser case; the 17/17 Auth suite and 17/17 OTP/account-lock unit tests pass in local Dev/API mode. The staging route guard is expected for registration paths; no backend or staging call was made. Registration-purpose verifyMfa remains owner-blocked. Owner decision relayed 2026-10-09: registration verifyMfa uses the session cookie; this resolves the credential choice only. EV-20261009-001 revalidates the local Dev/API Auth browser suite 17/17 and production smoke 59 passed / 4 Dev/API-only registration cases skipped. No backend/staging requests or registration verifyMfa calls were made; U01.03 stays in_progress pending remaining cookie, OTP and idempotency semantics.",
+      "notes": "U01.01 inventory and U01.02 contract/adapter mapping are complete as frontend evidence. U01.03 is in progress; verifyMfa guest-vs-sessionCookie semantics and remaining API owner questions are recorded, not approved. UI acceptance and backend/staging evidence remain pending. U01.03 also records shared Auth development-preview browser evidence and current-source A06 sidecar refreshes. EV-20261003-002 adds local browser evidence only; it does not resolve API owner decisions, backend/staging behavior, cookie persistence, or user acceptance. EV-20261003-006 adds a 9/9 API-mode Auth browser run, including a simulated server 410 on login MFA verification; registration verifyMfa security semantics remain unresolved. Final local gates for EV-20261003-006 pass except check-tracking, which exits 1 with 40 source-ledger errors; application inventory is 916/916. EV-20261003-007 verifies the complete password-reset UI flow against contract-shaped browser fixtures; no backend, email delivery, token lifetime, or user acceptance evidence. Final checks for EV-20261003-007 pass except check-tracking, which exits 1 with 40 source-ledger errors; source inventory remains 916/916. EV-20261003-008 aligns Auth password-reset test failures with declared OpenAPI outcomes; no runtime source change. EV-20261003-008 local Auth fixture checks pass except check-tracking, which remains exit 1 with 40 source-ledger errors. EV-20261003-009 verifies contract-shaped email and phone registration challenge issuance in local Playwright fixtures only; OTP verification and API/security owner decision remain open. EV-20261003-010 verifies registration request rejection and rate-limit UI through local Playwright fixtures; no backend/staging request and no guest OTP verification. EV-20261003-011 confirms login HTTP 401 handling in a local Playwright fixture; it does not establish backend, staging, or user acceptance. EV-20261003-012 aligns the Auth session adapter with the contract 401 guest outcome without swallowing transport failures; backend cookie behavior remains unverified. EV-20261003-013 adds a contract-shaped HTTP 423 login MFA browser case; the 17/17 Auth suite and 17/17 OTP/account-lock unit tests pass in local Dev/API mode. The staging route guard is expected for registration paths; no backend or staging call was made. Registration-purpose verifyMfa remains owner-blocked. Owner decision relayed 2026-10-09: registration verifyMfa uses the session cookie; this resolves the credential choice only. EV-20261009-001 revalidates the local Dev/API Auth browser suite 17/17 and production smoke 59 passed / 4 Dev/API-only registration cases skipped. No backend/staging requests or registration verifyMfa calls were made; U01.03 stays in_progress pending remaining cookie, OTP and idempotency semantics. EV-20261009-002 records exact-commit source snapshot reconciliation: 77 ledger references refreshed against 6f3492be5f9bb41affa33de98b23d5218bfcabc2; tracker checker now passes at errorCount=0 and 916/916 source inventory. This is local ledger consistency only; hosted Ubuntu/GitHub Actions, backend/staging and UI acceptance remain unverified.",
       "execution": {
         "requiredChecks": [
           "npm.cmd run typecheck",
@@ -68700,7 +68703,8 @@
         "EV-20260927-050",
         "EV-20260927-056",
         "EV-20261001-035",
-        "EV-20261001-034"
+        "EV-20261001-034",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260927-020",
@@ -68722,7 +68726,9 @@
           "B02.05"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "2689735630f72a4699a23b3db0e7120009c90838890fb30bfa849e3ab564e289"
     },
     {
       "path": ".env.staging.example",
@@ -68742,7 +68748,8 @@
         "EV-20260927-050",
         "EV-20260927-056",
         "EV-20261001-035",
-        "EV-20261001-034"
+        "EV-20261001-034",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260927-021",
@@ -68764,7 +68771,9 @@
           "B02.05"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "687ea1efc951863adace7b8bb8481ca59a14651d6f999ece393cf4c89abf0bbf"
     },
     {
       "path": ".gitattributes",
@@ -68839,7 +68848,8 @@
       "evidenceIds": [
         "EV-20261001-035",
         "EV-20261001-037",
-        "EV-20261002-007"
+        "EV-20261002-007",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0299",
@@ -68864,7 +68874,9 @@
           "B02.02"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "355f2e3e341f36e8315061a0609eb1a65532b51886106a0b62261616a70d93f4"
     },
     {
       "path": ".gitignore",
@@ -69483,7 +69495,8 @@
         "EV-20260929-440",
         "EV-20260930-026",
         "EV-20260930-089",
-        "EV-20261002-034"
+        "EV-20261002-034",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260927-051",
@@ -69705,8 +69718,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-09-30T13:33:10.494Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "6106d47a6e84438402d653e4645a7dbc9dabfaae964bcec508ccdbd2ff80b401"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "dae3c1dc0ac08a87455842062bee43d4a13a12def48059fd9bb8aff986a958ef"
     },
     {
       "path": "ATTRIBUTIONS.md",
@@ -69981,7 +69994,8 @@
         "EV-20260927-076",
         "EV-20260930-024",
         "EV-20260930-025",
-        "EV-20261001-035"
+        "EV-20261001-035",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260927-050",
@@ -70019,7 +70033,9 @@
           "C05.05"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "b579eb65aaf4b9698e2039b85b4d909c39001b07fe97f742888d24358c6b5f5a"
     },
     {
       "path": "config/lint-warning-baseline.json",
@@ -70375,7 +70391,8 @@
         "EV-20260929-414",
         "EV-20260930-043",
         "EV-20261002-034",
-        "EV-20261003-001"
+        "EV-20261003-001",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261002-0345"
@@ -70404,8 +70421,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "f781275476009057ff9aeab57110c150742b278c7b92d6e913d2eb4fdd278b0c"
     },
     {
       "path": "contracts/openapi/dca.yaml",
@@ -71118,7 +71135,8 @@
         "EV-20260928-098",
         "EV-20260928-099",
         "EV-20260930-026",
-        "EV-20260930-028"
+        "EV-20260930-028",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260928-974",
@@ -71139,7 +71157,9 @@
           "B10.05"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "af5efb0076803026c62f01d310de1f795e6fc7da66a80a26859d8653dac2b4d4"
     },
     {
       "path": "docs/ai/WORKFLOW.md",
@@ -71157,7 +71177,8 @@
         "EV-20260930-024",
         "EV-20260930-025",
         "EV-20260930-028",
-        "EV-20261002-034"
+        "EV-20261002-034",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260927-053",
@@ -71376,7 +71397,9 @@
           "U15.06"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "58a1d10d203f18190843320e1a7c184022b30d99b0330f5ed6916fc3b7180566"
     },
     {
       "path": "docs/architecture/auth-login-mfa-spec.md",
@@ -71443,7 +71466,8 @@
         "EV-20260930-089",
         "EV-20260930-090",
         "EV-20261001-019",
-        "EV-20261001-032"
+        "EV-20261001-032",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260928-990",
@@ -71484,8 +71508,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-10-01T01:27:01.000Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "184c1f296548fe9cf303c852179924de4dbd640db038e9b0424f903c88705c07"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "4f25117ff0d216b4eb10d17fbfeab33d859effd80c9553679b6f4bfb33f7958b"
     },
     {
       "path": "docs/architecture/production-page-certifications.json",
@@ -71591,7 +71615,7 @@
         "U01"
       ],
       "disposition": "changed",
-      "reason": "Record U01.01 completion, measured Auth scope and the U01.02 next checkpoint. U01.02 reviewed against the Auth operation contract; no additional source change was needed. | EV-20261003-003: Record U01.03 browser observations and the measured A06 sidecar refresh, coverage and limitations. Record measured C05.03 UI overlap follow-up and its limits. | EV-20261003-006: record the login MFA 410 browser measurement and its local fixture boundary. Final U01.03 validation counts and remaining tracking-ledger errors are recorded. | EV-20261003-007: document the full contract-backed password-reset browser flow and local-only evidence boundary. Final U01.03 local check counts and the remaining source-ledger errors are recorded. | EV-20261003-008: document Auth reset fixture alignment with OpenAPI and its focused 6/6 result. Final U01.03 fixture-correction checks and source-ledger status are recorded. | EV-20261003-009: record the two email/phone registration challenge issuance browser cases, 12/12 combined E2E result, and owner-blocked OTP verification boundary. | EV-20261003-010: document registration request HTTP 400/429 browser outcomes and the 14/14 combined Auth E2E result. | EV-20261003-011: record the login HTTP 401 browser regression and 15/15 combined Auth E2E result. | EV-20261003-012: record contract session 401 normalization, transport preservation, and 36/36 focused plus 16/16 browser results. | EV-20261009-001: record the owner-approved credential choice, current local E2E results and remaining source-ledger errors.",
+      "reason": "Record U01.01 completion, measured Auth scope and the U01.02 next checkpoint. U01.02 reviewed against the Auth operation contract; no additional source change was needed. | EV-20261003-003: Record U01.03 browser observations and the measured A06 sidecar refresh, coverage and limitations. Record measured C05.03 UI overlap follow-up and its limits. | EV-20261003-006: record the login MFA 410 browser measurement and its local fixture boundary. Final U01.03 validation counts and remaining tracking-ledger errors are recorded. | EV-20261003-007: document the full contract-backed password-reset browser flow and local-only evidence boundary. Final U01.03 local check counts and the remaining source-ledger errors are recorded. | EV-20261003-008: document Auth reset fixture alignment with OpenAPI and its focused 6/6 result. Final U01.03 fixture-correction checks and source-ledger status are recorded. | EV-20261003-009: record the two email/phone registration challenge issuance browser cases, 12/12 combined E2E result, and owner-blocked OTP verification boundary. | EV-20261003-010: document registration request HTTP 400/429 browser outcomes and the 14/14 combined Auth E2E result. | EV-20261003-011: record the login HTTP 401 browser regression and 15/15 combined Auth E2E result. | EV-20261003-012: record contract session 401 normalization, transport preservation, and 36/36 focused plus 16/16 browser results. | EV-20261009-001: record the owner-approved credential choice, current local E2E results and remaining source-ledger errors. | EV-20261009-002: record exact-commit source ledger reconciliation and its local-only boundary.",
       "evidenceIds": [
         "EV-20260927-076",
         "EV-20260928-001",
@@ -72124,7 +72148,8 @@
         "EV-20261003-010",
         "EV-20261003-011",
         "EV-20261003-012",
-        "EV-20261009-001"
+        "EV-20261009-001",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260927-052",
@@ -72411,7 +72436,8 @@
         "CHANGE-20261003-0146",
         "CHANGE-20261003-0150",
         "CHANGE-20261003-0156",
-        "CHANGE-20261009-0004"
+        "CHANGE-20261009-0004",
+        "CHANGE-20261009-0005"
       ],
       "executionScope": {
         "ownerTaskId": "B10",
@@ -127284,7 +127310,9 @@
       ],
       "disposition": "not_assessed",
       "reason": "",
-      "evidenceIds": [],
+      "evidenceIds": [
+        "EV-20261009-002"
+      ],
       "changeIds": [],
       "executionScope": {
         "ownerTaskId": "B07",
@@ -127303,8 +127331,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "12552db607aaade6465f452f1d8d5e559999528831e19761a178e377f05679de"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "b65f9320f812e6aed9ace7c9577652a2c48471459869b0b91f6f36a661b1f8a7"
     },
     {
       "path": "package.json",
@@ -127344,7 +127372,9 @@
       ],
       "disposition": "not_assessed",
       "reason": "",
-      "evidenceIds": [],
+      "evidenceIds": [
+        "EV-20261009-002"
+      ],
       "changeIds": [],
       "executionScope": {
         "ownerTaskId": "C03",
@@ -127373,8 +127403,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "cefb22a0d1923bfe96bd8d129706eaa49341978affb39a1f6327c14cf9d41c45"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "6fb771ddbfde2e2c2805dcbb70282dbcdd68210e4c938f30c3e1d7cbc234406d"
     },
     {
       "path": "postcss.config.mjs",
@@ -127440,7 +127470,8 @@
       "disposition": "changed",
       "reason": " | B02.02: use reserved .test origins for non-deployed E2E artifact builds.",
       "evidenceIds": [
-        "EV-20261001-035"
+        "EV-20261001-035",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0301"
@@ -127462,7 +127493,9 @@
           "B02.02"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "ca1b78a72dbfad741220397711a1cdebbbcdbe7aa8be8afd574db942d56a5f05"
     },
     {
       "path": "scripts/build.mjs",
@@ -127903,7 +127936,8 @@
       "disposition": "added",
       "reason": "Focused positive and negative regression tests for production-readiness tracking consistency.",
       "evidenceIds": [
-        "EV-20261002-006"
+        "EV-20261002-006",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261002-0016",
@@ -127918,8 +127952,8 @@
         ],
         "action": "add"
       },
-      "cataloguedSourceHead": "082919233ca96fd2d56e889ac2ff91ba6f07a6a5",
-      "cataloguedSha256": "d76491378946838fce148e538bf3b72d256e18c5db960f22d809329cd52709db"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "72f3e0354de8c2076a0bbb17498b1a40abbf5abe70b5a1a34a632b3ac48787b8"
     },
     {
       "path": "scripts/generate-architecture-inventory.mjs",
@@ -128070,7 +128104,8 @@
       "evidenceIds": [
         "EV-20261001-041",
         "EV-20261002-023",
-        "EV-20261009-001"
+        "EV-20261009-001",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0335",
@@ -128090,8 +128125,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "ee0bf684e2b3f2f9ece6ac3a6594de36f6f92dbe",
-      "cataloguedSha256": "520c0344b04ba89bff73ffcfb9b19ae08051d6d156308c45290fbcfb9d8b4ab1"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "eb1513fbe3d38ba9ab95a02e9b7ff47cf5113644fcc2da9798bab5585859f76e"
     },
     {
       "path": "src/app/App.tsx",
@@ -128188,7 +128223,8 @@
       "disposition": "not_assessed",
       "reason": "",
       "evidenceIds": [
-        "EV-20261001-029"
+        "EV-20261001-029",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0198"
@@ -128206,7 +128242,9 @@
           "C05.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "b0cfb8fc40635de2fbe6d8b5b5491f7463e74a919c5541348615b2971f171afe"
     },
     {
       "path": "src/app/__tests__/BottomSheetV2.test.tsx",
@@ -128462,7 +128500,8 @@
       "disposition": "not_assessed",
       "reason": "",
       "evidenceIds": [
-        "EV-20261001-029"
+        "EV-20261001-029",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0197"
@@ -128479,7 +128518,9 @@
           "C05.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "85c3ec3d284aa737109e472742817e962de9f64ff06a192cb2c6acdb531193cf"
     },
     {
       "path": "src/app/__tests__/layout-lint-deep.test.ts",
@@ -129177,7 +129218,8 @@
       "disposition": "changed",
       "reason": "C05.03: verify preview badge placement and unchanged regular placement.",
       "evidenceIds": [
-        "EV-20261003-004"
+        "EV-20261003-004",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261003-0120"
@@ -129198,8 +129240,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "81860bcd93ac508a15dbb93e7ca27c01b13c909e08ced30b94cf16f18a1f6f55"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "9f98ee27dc53db0a829efcbf482084844c3cfeee494a8538ae7668d9688e202a"
     },
     {
       "path": "src/app/components/layout/PlatformSwitcher.tsx",
@@ -129213,7 +129255,8 @@
       "disposition": "changed",
       "reason": "C05.03: place the floating badge above the mock preview warning only while preview controls are present.",
       "evidenceIds": [
-        "EV-20261003-004"
+        "EV-20261003-004",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261003-0119"
@@ -129234,8 +129277,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "2aa0a99973370bbb178693ee634d83c98713c9f5a2ef3d76725098f1839843f6"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "a4a75657a72fe50a1ae77b18df33fc43cb0a5b7f8d63864c6a2342f43203f940"
     },
     {
       "path": "src/app/components/layout/ProtectedRoute.test.tsx",
@@ -129424,7 +129467,8 @@
         "EV-20260927-059",
         "EV-20260927-060",
         "EV-20260927-062",
-        "EV-20261003-004"
+        "EV-20261003-004",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260927-042",
@@ -129449,8 +129493,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "5177e2d5500c2fc3b12263a05816679c0ce58469c43e2f4cea24ce4d4abcb3c3"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "bad6a264bf30d44a618068be9f83665ee9a2b3b530b7782b50737b62d0851463"
     },
     {
       "path": "src/app/components/layout/RootLayout.tsx",
@@ -129469,7 +129513,8 @@
         "EV-20260927-059",
         "EV-20260927-060",
         "EV-20260927-062",
-        "EV-20261003-004"
+        "EV-20261003-004",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260927-041",
@@ -129496,8 +129541,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "0fd8546733e5ab762e42c5532da82eec4ecc4a5512c20200db58c87d5bcbef8e"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "b9401c94a00637f39448d9f1738b69f58960e409263a1471396a43fed4811ec3"
     },
     {
       "path": "src/app/components/layout/ShellComposition.test.tsx",
@@ -129511,7 +129556,8 @@
       "disposition": "not_assessed",
       "reason": "",
       "evidenceIds": [
-        "EV-20261001-029"
+        "EV-20261001-029",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0200"
@@ -129529,7 +129575,9 @@
           "C05.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "417cdcfa8dd6b8317e33def29fa916e9f0fac76171fdc05d99f52309bd0fd20f"
     },
     {
       "path": "src/app/components/layout/StatusBar.tsx",
@@ -129633,7 +129681,8 @@
       "reason": "",
       "evidenceIds": [
         "EV-20261001-028",
-        "EV-20261001-029"
+        "EV-20261001-029",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0192"
@@ -129651,7 +129700,9 @@
           "C05.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "cd324b526a17f11819dd2359ef1f22f30876599e4b5ebfe9e9420e942e61acd3"
     },
     {
       "path": "src/app/components/layout/TabletTopBar.tsx",
@@ -129700,7 +129751,8 @@
         "EV-20260929-292",
         "EV-20260929-293",
         "EV-20261001-029",
-        "EV-20261002-032"
+        "EV-20261002-032",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260929-2182",
@@ -129720,7 +129772,9 @@
           "C05.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "5cd628fa7f74b8f6a19e2b80b2b5793ec63a5e3e40c5c8573382803b3f783549"
     },
     {
       "path": "src/app/components/layout/WebCommandBar.tsx",
@@ -129737,7 +129791,8 @@
       "evidenceIds": [
         "EV-20260929-292",
         "EV-20260929-293",
-        "EV-20261002-032"
+        "EV-20261002-032",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260929-2181",
@@ -129757,8 +129812,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "2a0abe86df7d053470cfec285ad03613c954f00408a02848ca8076ef1698954c"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "896e5f182a7b214f628e9765e000722acea8547861922e927aea1ab308b88589"
     },
     {
       "path": "src/app/components/layout/WebShell.tsx",
@@ -129810,7 +129865,8 @@
         "EV-20260929-292",
         "EV-20260929-293",
         "EV-20261002-031",
-        "EV-20261002-032"
+        "EV-20261002-032",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260929-2180",
@@ -129831,8 +129887,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "5d2df85d0d0b1d4c09aa62b2028829096d90dc3721197e3b588300f088327483"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "68678fec0e67780353c495419a72816de7588f0aaa2082b097e3511d577754e9"
     },
     {
       "path": "src/app/components/layout/WebSidebar.tsx",
@@ -129852,7 +129908,8 @@
         "EV-20261001-028",
         "EV-20261001-029",
         "EV-20261002-031",
-        "EV-20261002-032"
+        "EV-20261002-032",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260929-2179",
@@ -129873,7 +129930,9 @@
           "C05.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "d29acc5364470787bb217a588a49460e740af339c5ded94715abef309322764f"
     },
     {
       "path": "src/app/components/layout/device-layout.ts",
@@ -130470,7 +130529,8 @@
       "reason": "",
       "evidenceIds": [
         "EV-20261001-028",
-        "EV-20261001-029"
+        "EV-20261001-029",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0190"
@@ -130487,7 +130547,9 @@
           "C05.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "d81d9d20e52288c00215dbfca0a3ae7e52cf520c15b190ad44383a019cacfd7a"
     },
     {
       "path": "src/app/contexts/trading-context.ts",
@@ -130526,7 +130588,8 @@
       "reason": "",
       "evidenceIds": [
         "EV-20261001-028",
-        "EV-20261001-029"
+        "EV-20261001-029",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0189"
@@ -130543,7 +130606,9 @@
           "C05.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "a30837cd94ee89ede134e99ef63277bcee847ccd2853b35460f76f741cbf7831"
     },
     {
       "path": "src/app/hooks/browser-interaction-hooks.test.tsx",
@@ -133861,7 +133926,8 @@
         "EV-20260929-353",
         "EV-20260929-507",
         "EV-20261001-043",
-        "EV-20261003-001"
+        "EV-20261003-001",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260927-001",
@@ -133898,8 +133964,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-10-01T14:40:29.605Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "57e1e4a7816fb9a51d78a3ea5c08457bd9ab682423cc373063e472d57b94269e"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "1ffb26efa6e112b330e77d33e6f12b53aaa43d2d79c3197aadb5bedc8670c901"
     },
     {
       "path": "src/dev/mocks/browser-policy.ts",
@@ -134134,7 +134200,8 @@
         "EV-20260929-507",
         "EV-20260929-508",
         "EV-20261001-043",
-        "EV-20261003-001"
+        "EV-20261003-001",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260927-002",
@@ -134178,8 +134245,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-10-01T14:40:29.605Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "8382400738090945e6c3ec53286f288f0ed2d41c90dbd407eec2b48d36d347ae"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "b7068df1558e8efb458f5889c87bde27759acc3139a171ac885593386a78e34f"
     },
     {
       "path": "src/dev/mocks/launchpad-fixtures.ts",
@@ -134614,7 +134681,8 @@
         "EV-20260929-484",
         "EV-20260930-153",
         "EV-20261001-043",
-        "EV-20261002-030"
+        "EV-20261002-030",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260928-1019",
@@ -134673,8 +134741,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-10-01T14:40:29.605Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "c3c3306db8c0e4f1510b86fcf32930ed2309df7ed4ff40419cb25c9ce76fac24"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "c2a394a9f6963429e7f85fcef998647bc6a30f561667cbef24b224e7b25d7966"
     },
     {
       "path": "src/dev/mocks/preview-scenario-handler.ts",
@@ -134765,7 +134833,8 @@
         "EV-20260929-483",
         "EV-20260929-484",
         "EV-20260930-153",
-        "EV-20261001-043"
+        "EV-20261001-043",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260928-1018",
@@ -134820,8 +134889,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-10-01T14:40:29.605Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "6deef3b43c51e05c9cd058d8743b23b64a86579f474ce0486830359ac50ac200"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "52e22422548bcfe99731089c6b6297728c828047beaadec53bddec5a89148441"
     },
     {
       "path": "src/dev/mocks/referral-fixtures.ts",
@@ -135253,13 +135322,14 @@
       "reason": "Add a regression test for Admin read-query transport retry ownership and explicit refetch.",
       "evidenceIds": [
         "EV-20260930-150",
-        "EV-20260930-153"
+        "EV-20260930-153",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260930-1027"
       ],
       "cataloguedAt": "2026-09-30T18:30:14Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
       "cataloguedSha256": "4fc0d7ff8a1bf793c0fb8ada5e0c2396a5bfdf8d965807fd952754c74f3e6d44",
       "executionScope": {
         "ownerTaskId": "A06",
@@ -135282,7 +135352,8 @@
       "reason": "Give the HTTP client sole ownership of the retry budget for the four Admin read hooks.",
       "evidenceIds": [
         "EV-20260929-412",
-        "EV-20260930-153"
+        "EV-20260930-153",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260930-1018"
@@ -135301,8 +135372,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-09-30T18:30:14Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "7a572e593777d82d4732e42a253315513e35813c4c5a60c315ab181baf2efa8c"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "86e1b4fee2bfb673ab96731d5db555b4d4820003e77b16647bd44dcbdd942bee"
     },
     {
       "path": "src/features/admin/model/admin-types.ts",
@@ -135383,7 +135454,8 @@
         "EV-20260928-259",
         "EV-20260928-260",
         "EV-20260929-412",
-        "EV-20260930-153"
+        "EV-20260930-153",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260928-1256",
@@ -135406,8 +135478,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-09-30T18:30:14Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "3172ade2ba39f46c2f5299de1d1ead23202339d314eb15df45e846b35425bc75"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "ae5c74e4bb969cf34994f347e5682180557f3e2a97f5fde44691c418c33bd506"
     },
     {
       "path": "src/features/admin/pages/AdminFunnelContractPage.tsx",
@@ -135643,7 +135715,8 @@
       "disposition": "changed",
       "reason": "Give Arena read queries a single retry owner by disabling the extra TanStack Query retry layer.",
       "evidenceIds": [
-        "EV-20261002-031"
+        "EV-20261002-031",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261002-0200"
@@ -135661,8 +135734,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "5532e0d33dcd61a8249cdb7e5a8c8d50a1706ff125875860ea8753e51baf6caa"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "fa315df1a85d6071db4dd8490e96ad2c31314b32f242996b76a0612c8b76a34d"
     },
     {
       "path": "src/features/arena/model/arena-types.ts",
@@ -135782,7 +135855,8 @@
         "EV-20260928-272",
         "EV-20260928-274",
         "EV-20260928-276",
-        "EV-20261002-031"
+        "EV-20261002-031",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260928-1705",
@@ -135804,8 +135878,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "bb40ab575bcf49b51b17d05ff12e2b7d2140796869a8ed106eb0abf500fe77ca"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "ab7468c2e8946cb4e8b2115335461d1ab3cf321d3f2593af90d7d92e1f9f8967"
     },
     {
       "path": "src/features/arena/pages/ArenaDiscoveryPage.tsx",
@@ -136501,7 +136575,8 @@
       "evidenceIds": [
         "EV-20261002-034",
         "EV-20261003-001",
-        "EV-20261003-012"
+        "EV-20261003-012",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261003-0001",
@@ -136530,8 +136605,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "fe89e39a51b52b0de60e565e601453308a8d7b6ea7e2f616f97491abad9d933e"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "2b35feb2bf87020374ec4fc760c7b98331f1642d2dc3902c3f56eb8b35f73afb"
     },
     {
       "path": "src/features/auth/api/auth-api.ts",
@@ -136547,7 +136622,8 @@
       "evidenceIds": [
         "EV-20261002-034",
         "EV-20261003-001",
-        "EV-20261003-012"
+        "EV-20261003-012",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261003-0152"
@@ -136575,8 +136651,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "050846c48de49be56f6bdf6a73669b5d3a6230c559e33851cd07840609fca078"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "e3733bea27f15fb63c15d04541c3dbbcf3dd619f30e650907ba8923893855b1a"
     },
     {
       "path": "src/features/auth/api/auth-openapi-contract.test.ts",
@@ -136589,7 +136665,8 @@
       "disposition": "changed",
       "reason": "U01.02 reviewed against the Auth operation contract; no additional source change was needed.",
       "evidenceIds": [
-        "EV-20261002-034"
+        "EV-20261002-034",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261002-0346"
@@ -136612,8 +136689,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "3bc108d70a0c88c25238fec67755f2fc973c55f5ec13793561d8b2fee73bcc1b"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "dfaf3c7e121122c88f29a7adf3540a0041a34c817257078c4893ccb7146f1ab3"
     },
     {
       "path": "src/features/auth/api/password-reset-api.ts",
@@ -137279,7 +137356,8 @@
       "reason": "U01.02 reviewed against the Auth operation contract; no additional source change was needed. | U01.03: replace undeclared 503/410 fixtures with a transport error and contract-declared 400 response.",
       "evidenceIds": [
         "EV-20261002-034",
-        "EV-20261003-008"
+        "EV-20261003-008",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261003-0136"
@@ -137301,8 +137379,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "aae95c6290dc691c72a4062b9cdd7ee61293ac4cdf61d0af8f49657328e49c36"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "3fe12699a6505e471bab877d266ff3773f29d15be532bc54c5dc97515ef70da4"
     },
     {
       "path": "src/features/auth/pages/PasswordResetPages.tsx",
@@ -139886,7 +139964,8 @@
       "reason": "Cover pending subscription/redemption receipts and the Staking receipt return route. | Add pending receipt and Staking return-route behavior tests.",
       "evidenceIds": [
         "EV-20260930-088",
-        "EV-20260930-089"
+        "EV-20260930-089",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260930-0487"
@@ -139906,8 +139985,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-09-30T13:33:10.494Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "0b4772522710533df6e382a8d991ad56f99334c5bf1efe3b09b5f4c7610158b3"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "3e0beea85caae37bfd3a872d0a7effc228716c67db41b7fd20fa45054ede89f5"
     },
     {
       "path": "src/features/earn/pages/EarnPage.tsx",
@@ -139921,7 +140000,8 @@
       "reason": "Preserve the returned receipt and route pending results to the domain receipt without showing completed success. | Handle pending receipts from main Earn subscription/redemption actions.",
       "evidenceIds": [
         "EV-20260930-088",
-        "EV-20260930-089"
+        "EV-20260930-089",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260930-0486"
@@ -139939,8 +140019,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-09-30T13:33:10.494Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "66fa32a766942e318f53bfde5b50ddc5c91ddb7a92392f5be418e9af60c10b65"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "92bd879acbb9611fb1ca3607cb9139c6b3032f1aeb1b4a1c1815ec84cf23fb94"
     },
     {
       "path": "src/features/earn/pages/EarnTransactionPages.test.tsx",
@@ -139989,7 +140069,8 @@
         "EV-20260928-062",
         "EV-20260928-063",
         "EV-20260930-088",
-        "EV-20260930-089"
+        "EV-20260930-089",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260928-146",
@@ -140009,8 +140090,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-09-30T13:33:10.494Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "e35cd460e5cf54e8b1085f83419fad8744265296d7aa1b527d7386188f71ec14"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "28383c3f8300e0db3f417c1d334aefc66fd789556eae6245125c95691827cbe5"
     },
     {
       "path": "src/features/earn/pages/SavingsContractPages.test.tsx",
@@ -140128,7 +140209,8 @@
       "reason": "Register one receipt route for both typed Earn domains while preserving the Savings URL. | Route the receipt page for both Earn domains.",
       "evidenceIds": [
         "EV-20260930-088",
-        "EV-20260930-089"
+        "EV-20260930-089",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260930-0489"
@@ -140151,8 +140233,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-09-30T13:33:10.494Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "e9366bf0acd5d7e63069de10b5b3af71e26a63a9654f2961e44b1d3f41aa8c56"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "4316eece354d89cbcb54a44808a8a86811fd29f5394a9317d27e9cbc6e2eddab"
     },
     {
       "path": "src/features/launchpad/api/launchpad-api.test.ts",
@@ -140251,7 +140333,8 @@
         "EV-20260930-098",
         "EV-20260930-100",
         "EV-20260930-101",
-        "EV-20261002-028"
+        "EV-20261002-028",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260930-0567",
@@ -140269,8 +140352,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-09-30T14:15:21.000Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "6f90972e9bcf18645b97e9dd5b78a4c17b7377340f163bea451ff417f859b6f9"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "9ffab47f27e86e4cfd169457b676642ed6c249226c6eb54a730e3e3ff3e7050d"
     },
     {
       "path": "src/features/launchpad/model/launchpad-types.ts",
@@ -140563,7 +140646,8 @@
         "EV-20260930-098",
         "EV-20260930-100",
         "EV-20260930-101",
-        "EV-20261002-028"
+        "EV-20261002-028",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260929-2750",
@@ -140584,8 +140668,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-09-30T14:15:21.000Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "b499ce1d2bae9d77eb6576315483f8be9edbbdaa08936cf57c0178725f669fe5"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "54d3e9f0ead01c88ff9a02e25f4436afde3949a7be7d55c38089263ce241b95a"
     },
     {
       "path": "src/features/launchpad/pages/LaunchpadContractPages.tsx",
@@ -141362,7 +141446,8 @@
         "EV-20260927-045",
         "EV-20260930-112",
         "EV-20260930-113",
-        "EV-20260930-115"
+        "EV-20260930-115",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260927-018",
@@ -141387,8 +141472,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-09-30T15:30:40.000Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "8264edd6a23a47da17cf81f970d7aa5b42334de798045a86e0fdb03ebc175065"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "2782e8b7fb4c81790f7922c1c5b2310d40fe8e9e639bf4a36717463e865412ea"
     },
     {
       "path": "src/features/market/model/market-queries.ts",
@@ -141406,7 +141491,8 @@
         "EV-20260928-032",
         "EV-20260930-112",
         "EV-20260930-113",
-        "EV-20260930-115"
+        "EV-20260930-115",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260930-0799"
@@ -141434,8 +141520,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-09-30T15:30:40.000Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "bfb11787528086c9bdd12691ae19a451ff193c3d89c7d2c10d50242739052e85"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "0a493d15511d513b9ddb09cbf4457205dc86d12e93825e9043d310d68287c9f0"
     },
     {
       "path": "src/features/market/model/market-stream-types.ts",
@@ -146885,13 +146971,14 @@
       "disposition": "added",
       "reason": "Regression test proves Profile React Query does not multiply the shared HTTP client's three-attempt retry budget.",
       "evidenceIds": [
-        "EV-20260930-125"
+        "EV-20260930-125",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260930-0839"
       ],
       "cataloguedAt": "2026-09-30T16:34:36.526Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
       "cataloguedSha256": "046a82bffb1e7c24a2f476ad2d9adf70ffa72dde2a903ad50e11318a368846ca",
       "executionScope": {
         "ownerTaskId": "A06",
@@ -146914,7 +147001,8 @@
       "evidenceIds": [
         "EV-20260930-122",
         "EV-20260930-123",
-        "EV-20260930-125"
+        "EV-20260930-125",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260930-0869"
@@ -146932,8 +147020,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-09-30T16:34:36.526Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "8849991f90d7d02df9a150cb2d139d0aa1fd7cb1c3b475382f0fc5582a8339b2"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "384f749fcf37d7ac68405dd78288a1ef738251206d7e3bccc5aaa98f8e986a57"
     },
     {
       "path": "src/features/profile/model/profile-types.ts",
@@ -147921,13 +148009,14 @@
       "disposition": "added",
       "reason": "Add a regression test proving three initial transport attempts and three attempts after one explicit refetch.",
       "evidenceIds": [
-        "EV-20260930-136"
+        "EV-20260930-136",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260930-0909"
       ],
       "cataloguedAt": "2026-09-30T17:19:41.862Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
       "cataloguedSha256": "b12b96e54585095a9e236b4d9ce3090d2e5f3e194c505961954df679d9451908",
       "executionScope": {
         "ownerTaskId": "A06",
@@ -147950,7 +148039,8 @@
       "reason": "Disable React Query retry for Referral overview so the shared HTTP client owns the three-attempt GET retry budget.",
       "evidenceIds": [
         "EV-20260930-134",
-        "EV-20260930-136"
+        "EV-20260930-136",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260930-0908"
@@ -147968,8 +148058,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-09-30T17:19:41.862Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "26ef8463c5f4c6729af87fa96b919beee076f35c7883b0e341130367c7afe829"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "17aac1c266012732521debaea0d86b68fe7a54320245a5aa6913e5fdece18346"
     },
     {
       "path": "src/features/referral/model/referral-types.ts",
@@ -148060,7 +148150,8 @@
         "EV-20260928-065",
         "EV-20260928-066",
         "EV-20260930-134",
-        "EV-20260930-136"
+        "EV-20260930-136",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260928-162",
@@ -148081,8 +148172,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-09-30T17:19:41.862Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "5d0a119f7dcdafb63528edfc8edbe30d17ea0802cc2b9d160951d9be2a3ae751"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "4b8ab532a1ab2accd1353e96a7efd5f899bfeda507cc2d943f55bea02c15071e"
     },
     {
       "path": "src/features/referral/pages/ReferralContractPage.tsx",
@@ -148358,15 +148449,16 @@
       "reason": "Prove that each Support read-query owner delegates retry attempts to the shared HTTP client.",
       "evidenceIds": [
         "EV-20260930-144",
-        "EV-20261001-029"
+        "EV-20261001-029",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260930-0978",
         "CHANGE-20261001-0194"
       ],
       "cataloguedAt": "2026-09-30T18:01:50Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "b2d8c7c1dc10f963e4ca18f3a11f265440482b68b4bf667dddd7730a4af358e4",
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "7735677a0bd7b403863421dabb0e5e9a6101277574f469c4cfb685b38abc049a",
       "executionScope": {
         "ownerTaskId": "A06",
         "role": "behavior_test",
@@ -148391,7 +148483,8 @@
         "EV-20260930-144",
         "EV-20260930-145",
         "EV-20261001-028",
-        "EV-20261001-029"
+        "EV-20261001-029",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260930-0975",
@@ -148415,8 +148508,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-09-30T18:01:50Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "13c828363c47df778880ad1ba79fb724eb0b320bfa22a5a3f9e182625f14afcb"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "47e0a0c29f2ce527e6d23db3f8cdff902de2a4fd2eedc183cee52bdab91748c4"
     },
     {
       "path": "src/features/support/model/support-types.ts",
@@ -148521,7 +148614,8 @@
       "reason": "",
       "evidenceIds": [
         "EV-20261001-028",
-        "EV-20261001-029"
+        "EV-20261001-029",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0193"
@@ -148542,7 +148636,9 @@
           "C05.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "e813a604872f020142e561b171bc8b2576f233e5af19ee73fdb76d098bcf597e"
     },
     {
       "path": "src/features/support/pages/SupportContractPage.tsx",
@@ -148597,7 +148693,8 @@
         "EV-20260929-542",
         "EV-20260929-544",
         "EV-20260930-144",
-        "EV-20261001-029"
+        "EV-20261001-029",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260928-632",
@@ -148625,8 +148722,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-09-30T18:01:50Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "77ae6f984e911c2d0d2ea8eab9dcfe07b3eb69a6e67dbed4d22aac217e04c8e6"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "4030ce2d42a6d783d909ac8c2e1da5d555751140de1024f63b8db4133ed9e189"
     },
     {
       "path": "src/features/support/pages/SupportWriteBoundary.test.tsx",
@@ -148639,7 +148736,8 @@
       "disposition": "not_assessed",
       "reason": "",
       "evidenceIds": [
-        "EV-20261001-029"
+        "EV-20261001-029",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0196"
@@ -148656,7 +148754,9 @@
           "C05.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "aefd6fc48fcfa2a9246b0f041fa449f3487df43a2f1de52b430f95bc20df3380"
     },
     {
       "path": "src/features/support/routes.test.ts",
@@ -153499,7 +153599,8 @@
       "reason": "Refine the retry regression helper to retain each Wallet hook return type; the app TypeScript check and 25/25 focused tests pass.",
       "evidenceIds": [
         "EV-20261001-008",
-        "EV-20261001-009"
+        "EV-20261001-009",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0072",
@@ -153519,8 +153620,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-09-30T21:30:26.848Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "912e6c763760b6cf3e7c0b10765588c8143ab3ae75651a8ab0e1e3ff017927f7"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "e6cb6fca2c942f16586df25b3f7b6e5d67ac7d8968a333978d0ff879af5dbfc0"
     },
     {
       "path": "src/features/wallet/model/wallet-queries.ts",
@@ -153533,7 +153634,8 @@
       "disposition": "changed",
       "reason": "Disable the extra React Query retry on Wallet asset and transaction reads so the shared HTTP client owns the three-attempt transport budget.",
       "evidenceIds": [
-        "EV-20261001-008"
+        "EV-20261001-008",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0071"
@@ -153551,8 +153653,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": "2026-09-30T21:23:12.732Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "b12d9b8821d5ad64dc75de3bf0c937f34d0e87574cb31b36c9106d7cbbe39183"
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "28d7b8b808a1162f25ab3e6da9ee2684652ccd5da92d6612b308f85449efbd80"
     },
     {
       "path": "src/features/wallet/model/wallet-types.ts",
@@ -154219,7 +154321,8 @@
         "EV-20260928-105",
         "EV-20260928-107",
         "EV-20260928-108",
-        "EV-20261001-003"
+        "EV-20261001-003",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260928-437",
@@ -154239,7 +154342,9 @@
           "A06.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "ddfdc5711f0d312028d1de2a4ac874e987f0bfd3b16675a6ceab835ffdbe9386"
     },
     {
       "path": "src/features/wallet/pages/WalletOverviewContractPage.tsx",
@@ -154254,7 +154359,8 @@
       "evidenceIds": [
         "EV-20260928-104",
         "EV-20260928-105",
-        "EV-20261001-003"
+        "EV-20261001-003",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260928-436",
@@ -154272,7 +154378,9 @@
           "A06.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "b1ad77e142185a3b02930712d928fe6082627a5f8c61a46f6c280640306404bc"
     },
     {
       "path": "src/features/wallet/pages/WalletTransactionHistoryContractPage.test.tsx",
@@ -154285,7 +154393,8 @@
       "disposition": "changed",
       "reason": "Add a 403 regression asserting permission copy, hidden transaction/empty states, and no Retry.",
       "evidenceIds": [
-        "EV-20261001-003"
+        "EV-20261001-003",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0025"
@@ -154303,7 +154412,9 @@
           "A06.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "513b996592ad2eb2d813e51e5e1be78b8acd7df5c3ba78a5d01dd3e288b1ae89"
     },
     {
       "path": "src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx",
@@ -154316,7 +154427,8 @@
       "disposition": "changed",
       "reason": "Render a permission-specific Wallet history state for API 403 and suppress Retry while keeping other failures unchanged.",
       "evidenceIds": [
-        "EV-20261001-003"
+        "EV-20261001-003",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0024"
@@ -154333,7 +154445,9 @@
           "A06.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "14bcbd43d1fd1e7d5194f12657cac1ba5cec0421dc3672f5638ca8e3170b4996"
     },
     {
       "path": "src/features/wallet/pages/WalletTransferContractPage.test.tsx",
@@ -154346,7 +154460,8 @@
       "disposition": "changed",
       "reason": "Cover the pending transfer busy label, disabled state and aria-busy behavior.",
       "evidenceIds": [
-        "EV-20261001-010"
+        "EV-20261001-010",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0136"
@@ -154364,7 +154479,9 @@
           "A06.03"
         ],
         "action": "verify_pending_busy_state_and_duplicate_submit_guard"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "8761879b6764869df1166c36c40df739d4ab77a80ca2baca4fa48ebbfefce5dd"
     },
     {
       "path": "src/features/wallet/pages/WalletTransferContractPage.tsx",
@@ -154377,7 +154494,8 @@
       "disposition": "changed",
       "reason": "Show readable in-flight feedback and disable repeated transfer submission while the contract response is pending.",
       "evidenceIds": [
-        "EV-20261001-010"
+        "EV-20261001-010",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0135"
@@ -154394,7 +154512,9 @@
           "A06.03"
         ],
         "action": "show_pending_busy_feedback_and_block_duplicate_submit"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "3e63b855391a78f591ce364d19fc9bd9c9bbe8809082675285f3e240000e27e8"
     },
     {
       "path": "src/features/wallet/pages/WebWithdrawalWhitelistPage.tsx",
@@ -154614,7 +154734,8 @@
         "EV-20260927-059",
         "EV-20260927-061",
         "EV-20260927-062",
-        "EV-20261001-035"
+        "EV-20261001-035",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260927-031",
@@ -154634,7 +154755,9 @@
           "B02.02"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "7ede2c77ff5beae08319c78aeb5e0c81838b2b8ed443c3aff5d90b57fc057dd9"
     },
     {
       "path": "src/main.tsx",
@@ -154659,7 +154782,8 @@
         "EV-20260927-059",
         "EV-20260927-061",
         "EV-20260927-062",
-        "EV-20261001-035"
+        "EV-20261001-035",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260927-027",
@@ -154693,7 +154817,9 @@
           "C05.05"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "c150098914a25b7e0630d66f480ffbfe4160e96a8bdb54262b5ad4b5b33719e6"
     },
     {
       "path": "src/shared/api/api-error.ts",
@@ -154975,7 +155101,8 @@
         "EV-20260927-049",
         "EV-20260927-050",
         "EV-20260927-056",
-        "EV-20261001-035"
+        "EV-20261001-035",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260927-024",
@@ -154998,7 +155125,9 @@
           "B07.01"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "c5e70b246f8894257795ee3f4c70c060025905c2ad4aa7efa813f91e91779667"
     },
     {
       "path": "src/shared/config/env.ts",
@@ -155020,7 +155149,8 @@
         "EV-20260927-056",
         "EV-20260927-070",
         "EV-20260927-071",
-        "EV-20261001-035"
+        "EV-20261001-035",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260927-023",
@@ -155049,7 +155179,9 @@
           "B07.01"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "f4065bb9a092b5a60c11ace7070ea7eb635e783cfa3543c786d30597537ad48c"
     },
     {
       "path": "src/shared/config/feature-flags.ts",
@@ -155088,13 +155220,14 @@
       "disposition": "added",
       "reason": "B02.02: shared release build/runtime environment validation helper.",
       "evidenceIds": [
-        "EV-20261001-035"
+        "EV-20261001-035",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0306"
       ],
       "cataloguedAt": "2026-10-01T02:22:18.000Z",
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
       "cataloguedSha256": "9a336b8a4ad537acb2d13508470516a4005b2647b18725c735b9cb1ebec34b34",
       "executionScope": {
         "ownerTaskId": "B02",
@@ -158285,7 +158418,8 @@
         "EV-20261003-010",
         "EV-20261003-011",
         "EV-20261003-012",
-        "EV-20261009-001"
+        "EV-20261009-001",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0307",
@@ -158331,7 +158465,9 @@
           "U01.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "b3b140c3b6687ca81a6046f2faf0fee990072e559df46aaeb120f42359fd6e90"
     },
     {
       "path": "tests/e2e/dca-earn-contract.spec.ts",
@@ -158345,7 +158481,8 @@
       "disposition": "changed",
       "reason": " | B02.02: use the reserved e2e.test host in local DCA/Earn E2E fixtures.",
       "evidenceIds": [
-        "EV-20261001-035"
+        "EV-20261001-035",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0308"
@@ -158367,7 +158504,9 @@
           "B02.02"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "ec7808c64070151ab6759c627988643afe5b5462db257587380aa4feedf72bec"
     },
     {
       "path": "tests/e2e/p2p-contract.spec.ts",
@@ -158381,7 +158520,8 @@
       "disposition": "changed",
       "reason": " | B02.02: use the reserved e2e.test host in local P2P E2E fixtures.",
       "evidenceIds": [
-        "EV-20261001-035"
+        "EV-20261001-035",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0309"
@@ -158403,7 +158543,9 @@
           "B02.02"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "5aeaafb574c90275d043df054fb0b6285846686296ffebe315393a399309c1e7"
     },
     {
       "path": "tests/e2e/production-shell.spec.ts",
@@ -158468,7 +158610,8 @@
       "disposition": "changed",
       "reason": " | B02.02: use the reserved e2e.test host in local Trading E2E fixtures.",
       "evidenceIds": [
-        "EV-20261001-035"
+        "EV-20261001-035",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0310"
@@ -158491,7 +158634,9 @@
           "B02.02"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "4b1c161def48d78e68f35c2f52f54e0db9f5835ff9a492115f5c20ea4af1377e"
     },
     {
       "path": "tests/e2e/wallet-contract.spec.ts",
@@ -158593,7 +158738,8 @@
       "evidenceIds": [
         "EV-20260929-471",
         "EV-20260929-472",
-        "EV-20261001-035"
+        "EV-20261001-035",
+        "EV-20261009-002"
       ],
       "changeIds": [
         "CHANGE-20260929-3000",
@@ -158625,7 +158771,9 @@
           "C04.05"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "cataloguedSha256": "d9424ebe43442d459e7f6c5a22892a0e401d16bb93173fd245db6133500eb132"
     },
     {
       "path": "vitest.config.ts",
@@ -161582,6 +161730,31 @@
         "action": "preserve_evidence"
       },
       "cataloguedAt": "2026-10-09T11:34:38.909Z"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/U01/u01-03-tracking-source-rebaseline-2026-10-09.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "U01"
+      ],
+      "disposition": "added",
+      "reason": "Exact-commit report for source snapshot ledger reconciliation; local consistency result only.",
+      "evidenceIds": [
+        "EV-20261009-002"
+      ],
+      "changeIds": [
+        "CHANGE-20261009-0006"
+      ],
+      "executionScope": {
+        "ownerTaskId": "U01",
+        "role": "runtime_evidence",
+        "stepIds": [
+          "U01.03"
+        ],
+        "action": "preserve_evidence"
+      },
+      "cataloguedAt": "2026-10-09T11:42:52.308Z"
     }
   ],
   "changes": [
@@ -246485,6 +246658,34 @@
         "EV-20261009-001"
       ],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261009-0005",
+      "taskId": "U01",
+      "stepId": "U01.03",
+      "path": "docs/architecture/production-readiness/PLAN.md",
+      "action": "modify",
+      "reason": "Record the exact source snapshot refresh, zero-error local ledger check and the hosted-CI limitation.",
+      "beforeHash": "8b6a0d65aca9e104d8269fc166bbd07fbba7b0bccd667db9c02c806b0d348dab",
+      "afterHash": "48250dca8444a547d6c292371213d9674fb14d145d1de311e3f0694372cb47d0",
+      "evidenceIds": [
+        "EV-20261009-002"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261009-0006",
+      "taskId": "U01",
+      "stepId": "U01.03",
+      "path": "docs/architecture/production-readiness/evidence/U01/u01-03-tracking-source-rebaseline-2026-10-09.json",
+      "action": "add",
+      "reason": "Add source snapshot reconciliation evidence with exact commit and local-only validation boundary.",
+      "beforeHash": null,
+      "afterHash": "88fc273bfe9730aba42bf0cb3b3509e42bacb07d70edcb3926ac61189c648264",
+      "evidenceIds": [
+        "EV-20261009-002"
+      ],
+      "commit": null
     }
   ],
   "evidence": [
@@ -270808,6 +271009,52 @@
         "userAcceptance": "not performed"
       },
       "notes": "Local browser evidence against Playwright fixtures. It verifies frontend request shaping, challenge rendering and route-profile separation only. It does not verify backend registration, session-cookie issuance or attributes, OTP lifecycle, idempotency retention/replay/deduplication, staging, production or user acceptance. The owner decision to use a session cookie resolves only the credential choice; no OTP verification was submitted."
+    },
+    {
+      "id": "EV-20261009-002",
+      "taskId": "U01",
+      "stepId": "U01.03",
+      "kind": "production-readiness-ledger-source-rebaseline",
+      "commandOrSteps": "Commit application and documentation sources first; set cataloguedSourceHead to that exact commit for the 77 previously inconsistent source records, derive cataloguedSha256 from each committed blob, restore the missing historical beforeHash from the immediately preceding same-path change record, then run node docs/architecture/production-readiness/check-tracking.mjs.",
+      "environment": "Windows 11 PowerShell; Node v24.19.0; Git 2.x; local repository only. WSL Ubuntu was present but had no Linux node executable; GitHub CLI reported no authenticated GitHub host.",
+      "observedAt": "2026-10-09T11:42:52.308Z",
+      "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+      "sourceBranch": "codex/vittrade-readiness-p0-p2-20261009",
+      "sourceHashes": {
+        ".github/workflows/ci.yml": "355f2e3e341f36e8315061a0609eb1a65532b51886106a0b62261616a70d93f4",
+        "contracts/openapi/auth.yaml": "f781275476009057ff9aeab57110c150742b278c7b92d6e913d2eb4fdd278b0c",
+        "playwright.config.ts": "6fb771ddbfde2e2c2805dcbb70282dbcdd68210e4c938f30c3e1d7cbc234406d",
+        "scripts/check-tracking.test.mjs": "72f3e0354de8c2076a0bbb17498b1a40abbf5abe70b5a1a34a632b3ac48787b8",
+        "scripts/serve-e2e.mjs": "eb1513fbe3d38ba9ab95a02e9b7ff47cf5113644fcc2da9798bab5585859f76e",
+        "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+        "src/features/auth/api/auth-api.ts": "e3733bea27f15fb63c15d04541c3dbbcf3dd619f30e650907ba8923893855b1a",
+        "tests/e2e/auth-session.spec.ts": "b3b140c3b6687ca81a6046f2faf0fee990072e559df46aaeb120f42359fd6e90"
+      },
+      "dirtyFileHashes": {},
+      "expected": "The tracker snapshot must reference committed source bytes and the consistency checker must return errorCount=0 without altering application behavior or lowering a gate.",
+      "actual": "Refreshed 77 source snapshot records to exact committed blobs at the P2 source SHA, restored CHANGE-20261002-0352.beforeHash from CHANGE-20261002-0347.afterHash, and reran the checker: errorCount=0; exact source inventory 916/916. No application source changed in this ledger-only step.",
+      "result": "pass",
+      "artifact": "docs/architecture/production-readiness/evidence/U01/u01-03-tracking-source-rebaseline-2026-10-09.json",
+      "externalEvidence": {
+        "sourceSnapshotCommit": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "recordsRefreshed": 77,
+        "priorSourceLedgerErrors": 77,
+        "missingFingerprintRecords": 32,
+        "snapshotPathsPreviouslyAbsent": 5,
+        "sourceMismatches": 40,
+        "historicalBeforeHashRestored": 1,
+        "checkerErrorCount": 0,
+        "sourceInventory": 916,
+        "sourceInventoryExpected": 916,
+        "ubuntuWslAvailable": true,
+        "ubuntuLinuxNodeAvailable": false,
+        "githubCliAuthenticated": false,
+        "hostedGithubActionsRun": false,
+        "backendRequests": 0,
+        "stagingRequests": 0,
+        "userAcceptance": "not performed"
+      },
+      "notes": "This proves ledger consistency against the local committed source tree only. It is not an Ubuntu Node 22 CI result, a GitHub Actions run, backend/staging verification, UI acceptance or production certification."
     }
   ],
   "decisions": [
@@ -287962,5 +288209,5 @@
       "completion": "Meet owning step criteria; update actual dispositions/hashes/results and evidence/page/route/operation/session/checkpoint; missing required evidence cannot be marked done."
     }
   },
-  "remainingWork": "U01.01 is complete at EV-20261002-033: 13/13 source-backed Auth pages and 2 planned pages mapped; 18 route declarations, 30 unique URLs and 14 OpenAPI operations recorded. Next U01.02 maps adapter/query/model contracts and resolves backend-owner questions. The DeviceTrust and Onboarding page contracts remain draft/unapproved; current-head URL openability, all UI acceptance and backend/staging are not verified. A06.03 remains in_progress with 81/106 scenario rows evidenced, 88/154 operations, 25 unsupported authorization/unknown/duplicate rows not_verified, user acceptance 0/128 and backend/staging 0/154. The current tracking checker baseline remains 65 errors (32 missing fingerprints, 5 missing snapshot paths, 28 source mismatches) over exact application inventory 916/916. Production build awaits verified VITE_API_BASE_URL and VITE_WS_URL."
+  "remainingWork": "U01.01 is complete at EV-20261002-033: 13/13 source-backed Auth pages and 2 planned pages mapped; 18 route declarations, 30 unique URLs and 14 OpenAPI operations recorded. Next U01.02 maps adapter/query/model contracts and resolves backend-owner questions. The DeviceTrust and Onboarding page contracts remain draft/unapproved; current-head URL openability, all UI acceptance and backend/staging are not verified. A06.03 remains in_progress with 81/106 scenario rows evidenced, 88/154 operations, 25 unsupported authorization/unknown/duplicate rows not_verified, user acceptance 0/128 and backend/staging 0/154. The current tracking checker baseline remains 65 errors (32 missing fingerprints, 5 missing snapshot paths, 28 source mismatches) over exact application inventory 916/916. Production build awaits verified VITE_API_BASE_URL and VITE_WS_URL.\n\nLatest local source-ledger validation on 2026-10-09: source snapshot references were refreshed to exact commit 6f3492be5f9bb41affa33de98b23d5218bfcabc2; check-tracking returned errorCount=0 on 916/916 source files. This is ledger consistency only. Authenticated hosted GitHub Actions, Linux Node 22, backend/staging, user acceptance and unresolved API/security semantics remain pending."
 }
