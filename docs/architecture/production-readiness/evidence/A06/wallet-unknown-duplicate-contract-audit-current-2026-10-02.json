@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261002-021",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "read-only-openapi-idempotency-lookup-audit",
+  "observedAt": "2026-10-02T03:01:27Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "environment": "Windows 11, Python 3 with PyYAML 6.0.3; current primary worktree. Read-only Wallet OpenAPI, matrix and operation-map parsing; no wallet API request or financial side effect.",
+  "commandOrSteps": "Resolve wallet.unknown/duplicate operationIds; inspect Idempotency-Key, 409 responses, receipt IDs, transaction lookup and list filters against the approved contract.",
+  "expected": "Do not infer transfer/withdrawal outcome from response loss or replay financial writes without approved deterministic lookup and same-key semantics; keep rows not_verified if those are unspecified.",
+  "actual": "The two matrix rows share 3 unique operations; the map resolves 3/3 exact method/path matches. Both writes require Idempotency-Key and both declare 409, but descriptions conflate duplicate request with conflicting transfer or insufficient funds; no stable replay result is specified. Transfer/withdrawal request schemas have no client correlation key; the 201 receipt exposes IDs only in its response. getWalletTransaction requires a known transactionId. Related listWalletTransactions filters by type/status/asset/cursor/limit, with no idempotency/correlation lookup or contract guarantee of unique matching. Both rows remain not_verified, consistent with the prior user-confirmed absence of an approved backend lookup/correlation/replay contract. No transfer, withdrawal, retry or replay was sent. No unresolved matrix row follows wallet.duplicate; proceed to A06.03 blocker reconciliation without marking the step done.",
+  "result": "pass",
+  "artifact": "docs\\architecture\\production-readiness\\evidence\\A06\\wallet-unknown-duplicate-contract-audit-current-2026-10-02.json",
+  "rows": [
+    {
+      "id": "wallet.unknown",
+      "state": "unknown",
+      "executionStatus": "not_verified",
+      "operationIds": ["createWalletTransfer", "createWalletWithdrawal", "getWalletTransaction"]
+    },
+    {
+      "id": "wallet.duplicate",
+      "state": "duplicate",
+      "executionStatus": "not_verified",
+      "operationIds": ["createWalletTransfer", "createWalletWithdrawal", "getWalletTransaction"]
+    }
+  ],
+  "operations": [
+    {
+      "operationId": "getWalletTransaction",
+      "method": "GET",
+      "path": "/wallet/transactions/{transactionId}",
+      "parameters": [
+        {
+          "name": "transactionId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responseCodes": ["200", "404", "403"],
+      "responseDescriptions": {
+        "200": "Wallet transaction detail.",
+        "404": "Transaction was not found.",
+        "403": ""
+      }
+    },
+    {
+      "operationId": "createWalletTransfer",
+      "method": "POST",
+      "path": "/wallet/transfers",
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/IdempotencyKey"
+        }
+      ],
+      "responseCodes": ["201", "409", "403"],
+      "responseDescriptions": {
+        "201": "Internal wallet transfer accepted.",
+        "409": "Duplicate idempotency key or conflicting transfer.",
+        "403": ""
+      }
+    },
+    {
+      "operationId": "createWalletWithdrawal",
+      "method": "POST",
+      "path": "/wallet/withdrawals",
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/IdempotencyKey"
+        }
+      ],
+      "responseCodes": ["201", "409", "403"],
+      "responseDescriptions": {
+        "201": "Withdrawal request accepted for processing.",
+        "409": "Duplicate request or insufficient funds.",
+        "403": ""
+      }
+    }
+  ],
+  "idempotencyKeyParameter": {
+    "name": "Idempotency-Key",
+    "in": "header",
+    "required": true,
+    "schema": {
+      "type": "string",
+      "minLength": 16
+    }
+  },
+  "relatedListRead": {
+    "operationId": "listWalletTransactions",
+    "method": "GET",
+    "path": "/wallet/transactions",
+    "queryParameters": [],
+    "hasIdempotencyOrCorrelationFilter": false
+  },
+  "requestFields": {
+    "WalletTransferRequest": ["fromWallet", "toWallet", "asset", "amount"],
+    "WalletWithdrawalRequest": [
+      "asset",
+      "networkId",
+      "address",
+      "memo",
+      "amount",
+      "verificationToken"
+    ]
+  },
+  "receiptFields": {
+    "WalletTransferReceipt": ["id", "status", "createdAt"],
+    "WalletWithdrawalReceipt": ["id", "transactionId", "asset", "amount", "status", "createdAt"]
+  },
+  "counts": {
+    "linkedUniqueOperations": 3,
+    "exactOperationMapMatches": 3,
+    "financialMutationsRequiringIdempotencyKey": 2,
+    "mutationsDeclaring409": 2,
+    "lookupByIdempotencyOrCorrelationKey": 0,
+    "stableSameKeyReplayResponses": 0
+  },
+  "scenarioMatrixSummary": {
+    "scenariosDefined": 106,
+    "scenarioRowsWithFreshBrowserEvidence": 81,
+    "scenarioRowsFullyCoveredByFreshBrowserEvidence": 38,
+    "uniqueOperationsWithFreshBrowserEvidence": 88,
+    "runtimeEvidenceFresh": false,
+    "freshScenarioEvidenceSidecars": 81,
+    "registeredScenarioEvidenceSidecars": 81,
+    "sourceHashStaleScenarioEvidenceSidecars": 0
+  },
+  "nextAction": "All currently not_verified matrix rows have been reached in order. Reconcile the 25 documented contract blockers and current-worktree ledger gate; keep A06.03 in_progress until approved contracts support required behavior and verification.",
+  "sourceHashes": {
+    "docs\\architecture\\production-readiness\\evidence\\A06\\scenario-matrix-2026-09-28.json": "0bbf7c7a887415389265aa3fa2f2c07fc670a070ac4f692b55fae87ff19922f4",
+    "contracts\\openapi\\wallet.yaml": "a7b2e6fbdf62f2e6a789de25e712767d79014355870e86a87c8e809938f9e7b7",
+    "docs\\architecture\\production-readiness\\evidence\\A06\\operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320"
+  },
+  "limitations": [
+    "Static contract audit only; backend authorization, transaction durability, idempotency behavior, browser UX and user acceptance are not verified.",
+    "Prior user confirmation states the approved backend lookup/correlation/same-key replay contract is unavailable.",
+    "No financial side effect or retry was sent."
+  ]
+}

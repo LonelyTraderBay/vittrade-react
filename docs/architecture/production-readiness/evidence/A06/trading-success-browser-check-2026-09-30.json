@@ -1,6 +1,6 @@
 {
-  "checkedAt": "2026-09-30T00:03:13.667Z",
-  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
+  "checkedAt": "2026-09-30T18:44:38.428Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
   "origin": "http://127.0.0.1:4173",
   "scenario": {
     "id": "trading.success",
@@ -344,7 +344,7 @@
   "unmatchedApiRequestFailureCount": 0,
   "pageErrors": [],
   "externalApiOrigins": [],
-  "elapsedMs": 11040,
+  "elapsedMs": 7853,
   "fixtureBoundary": {
     "serviceWorkerControlled": true,
     "allObservedResponsesFromServiceWorker": true,
@@ -363,7 +363,7 @@
     "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
     "src/dev/mocks/handlers.ts": "8382400738090945e6c3ec53286f288f0ed2d41c90dbd407eec2b48d36d347ae",
     "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
-    "src/dev/mocks/preview-scenario-handler.ts": "6deef3b43c51e05c9cd058d8743b23b64a86579f474ce0486830359ac50ac200",
+    "src/dev/mocks/preview-scenario-handler.ts": "692c244236634f056b12b49addc49eb6b2781d110943e48ba1c4396393955a73",
     "src/dev/mocks/trading-fixtures.ts": "b082e4bc4094a4d7b36f41897ce9b27ea4c487fd3bf714622baf2f91fe2153cf",
     "src/dev/mocks/trading-analytics-fixtures.ts": "1105f815adebfc8c3d18a0a4f3eeed89dea37264e75d9a644a888f0de20f934b",
     "src/dev/mocks/trading-screen-fixtures.ts": "2b9ac8dd7bc8acc3106d8510ac62fde205cd81574bd4690a713a6a6efbecb9a7",

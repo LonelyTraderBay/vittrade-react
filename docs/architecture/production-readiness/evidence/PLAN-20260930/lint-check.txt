@@ -1,0 +1,5 @@
+
+> vittrade-react@0.0.1 lint:check
+> node scripts/check-lint-budget.mjs
+
+Lint gate passed: 0 errors, 0 warnings (budget 0).

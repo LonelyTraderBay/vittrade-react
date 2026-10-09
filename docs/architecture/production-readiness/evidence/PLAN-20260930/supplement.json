@@ -1,0 +1,202 @@
+{
+  "measuredAt": "2026-09-30T06:56:27.916Z",
+  "format": {
+    "warnings": 382,
+    "onlyLineEndingDifferences": 382,
+    "otherDifferences": []
+  },
+  "graph": {
+    "modules": 858,
+    "dependencies": 4619,
+    "rules": 22,
+    "errors": 0,
+    "warnings": 0,
+    "circularEdges": 0,
+    "unresolvedEdges": 1,
+    "nonTestInterLayerEdges": {
+      "app->shared": 71,
+      "app->dev": 3,
+      "app->features": 73,
+      "features->shared": 1098,
+      "dev->features": 10,
+      "dev->shared": 161,
+      "main.tsx->app": 1,
+      "main.tsx->dev": 2,
+      "main.tsx->styles": 1,
+      "main.tsx->shared": 1
+    },
+    "featureCrossImports": [
+      {
+        "from": "src/features/wallet/pages/AssetDetailPage.tsx",
+        "to": "src/features/market/index.ts",
+        "typeOnly": false
+      },
+      {
+        "from": "src/features/trading/components/MiniChart.tsx",
+        "to": "src/features/market/index.ts",
+        "typeOnly": false
+      },
+      {
+        "from": "src/features/trading/components/TimeframeSelector.tsx",
+        "to": "src/features/market/index.ts",
+        "typeOnly": true
+      },
+      {
+        "from": "src/features/trading/components/TradeTerminal.tsx",
+        "to": "src/features/market/index.ts",
+        "typeOnly": false
+      },
+      {
+        "from": "src/features/trading/components/TradeTerminal.tsx",
+        "to": "src/features/wallet/index.ts",
+        "typeOnly": false
+      },
+      {
+        "from": "src/features/trading/components/QuickPairSwitcher.tsx",
+        "to": "src/features/market/index.ts",
+        "typeOnly": false
+      },
+      {
+        "from": "src/features/trading/components/TradingMarketPanel.tsx",
+        "to": "src/features/market/index.ts",
+        "typeOnly": true
+      },
+      {
+        "from": "src/features/trading/components/OrderBook.tsx",
+        "to": "src/features/market/index.ts",
+        "typeOnly": false
+      },
+      {
+        "from": "src/features/trading/components/RecentTrades.tsx",
+        "to": "src/features/market/index.ts",
+        "typeOnly": false
+      },
+      {
+        "from": "src/features/trading/components/TradingOrderEntryPanel.tsx",
+        "to": "src/features/market/index.ts",
+        "typeOnly": true
+      }
+    ]
+  },
+  "bundle": {
+    "jsChunks": 221,
+    "total": {
+      "rawBytes": 2613214,
+      "gzipBytes": 823237
+    },
+    "largestRaw": [
+      {
+        "file": "index-ByNVXAcL.js",
+        "rawBytes": 358127,
+        "gzipBytes": 99959
+      },
+      {
+        "file": "vendor-recharts-BY9R9OMA.js",
+        "rawBytes": 341233,
+        "gzipBytes": 87943
+      },
+      {
+        "file": "DCAPage-CcWWuE9W.js",
+        "rawBytes": 284657,
+        "gzipBytes": 71366
+      },
+      {
+        "file": "vendor-react-B69K2TUs.js",
+        "rawBytes": 238226,
+        "gzipBytes": 77907
+      },
+      {
+        "file": "vendor-lightweight-charts-BmDnLhos.js",
+        "rawBytes": 173943,
+        "gzipBytes": 55974
+      },
+      {
+        "file": "vendor-motion-BYwOL-0D.js",
+        "rawBytes": 128966,
+        "gzipBytes": 42282
+      },
+      {
+        "file": "TradePage-GG812BCZ.js",
+        "rawBytes": 67118,
+        "gzipBytes": 16740
+      },
+      {
+        "file": "vendor-chart-math-BCKNL-0i.js",
+        "rawBytes": 63192,
+        "gzipBytes": 20789
+      }
+    ],
+    "largestGzip": [
+      {
+        "file": "index-ByNVXAcL.js",
+        "rawBytes": 358127,
+        "gzipBytes": 99959
+      },
+      {
+        "file": "vendor-recharts-BY9R9OMA.js",
+        "rawBytes": 341233,
+        "gzipBytes": 87943
+      },
+      {
+        "file": "vendor-react-B69K2TUs.js",
+        "rawBytes": 238226,
+        "gzipBytes": 77907
+      },
+      {
+        "file": "DCAPage-CcWWuE9W.js",
+        "rawBytes": 284657,
+        "gzipBytes": 71366
+      },
+      {
+        "file": "vendor-lightweight-charts-BmDnLhos.js",
+        "rawBytes": 173943,
+        "gzipBytes": 55974
+      },
+      {
+        "file": "vendor-motion-BYwOL-0D.js",
+        "rawBytes": 128966,
+        "gzipBytes": 42282
+      },
+      {
+        "file": "vendor-chart-math-BCKNL-0i.js",
+        "rawBytes": 63192,
+        "gzipBytes": 20789
+      },
+      {
+        "file": "TradePage-GG812BCZ.js",
+        "rawBytes": 67118,
+        "gzipBytes": 16740
+      }
+    ],
+    "entry": "index-ByNVXAcL.js",
+    "staticInitialClosure": [
+      {
+        "file": "index-ByNVXAcL.js",
+        "rawBytes": 358127,
+        "gzipBytes": 99959
+      },
+      {
+        "file": "vendor-motion-BYwOL-0D.js",
+        "rawBytes": 128966,
+        "gzipBytes": 42282
+      },
+      {
+        "file": "vendor-react-B69K2TUs.js",
+        "rawBytes": 238226,
+        "gzipBytes": 77907
+      }
+    ],
+    "staticInitialTotal": {
+      "rawBytes": 725319,
+      "gzipBytes": 220148
+    },
+    "notes": "Gzip sizes are computed per file at level 9, not observed HTTP transfer. Static entry closure excludes route-selected dynamic imports and CSS."
+  },
+  "e2e": {
+    "browserProjects": 1,
+    "configuredBrowser": "Chromium",
+    "testDefinitions": 51,
+    "files": 6,
+    "axeCalls": 1
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": "EV-20261003-012",
+  "taskId": "U01",
+  "stepId": "U01.03",
+  "kind": "session-401-anonymous-adapter-browser-regression",
+  "commandOrSteps": "Run node node_modules/vitest/vitest.mjs run src/features/auth/api/auth-api.test.ts src/app/contexts/AuthSessionProvider.test.tsx. For browser verification, set VITE_DATA_SOURCE=api, VITE_API_BASE_URL=https://e2e.test, and VITE_WS_URL=wss://e2e.test; start local Vite at http://127.0.0.1:4189; run node node_modules/@playwright/test/cli.js test --config=playwright.u01-03-local-temp.config.mjs. The temporary one-worker Desktop Chrome config selected tests/e2e/auth-session.spec.ts and returned status-only HTTP 401 for GET /auth/session. Run both TypeScript no-emit projects, focused ESLint/Prettier, OpenAPI, dependency-cruiser, architecture inventory, lint budget, EOL, tracking, and git diff checks. The temporary config was removed and Vite was stopped after the run.",
+  "environment": "Windows 11; Node v24.19.0; Vitest v4.1.11; @playwright/test 1.63.0; Vite 6.4.3; Chromium 153.0.8010.12; local Vite API mode and MSW node test server; backend and staging disconnected.",
+  "observedAt": "2026-10-02T22:27:45Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "sourceBranch": "main",
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "f781275476009057ff9aeab57110c150742b278c7b92d6e913d2eb4fdd278b0c",
+    "src/features/auth/api/auth-api.ts": "e3733bea27f15fb63c15d04541c3dbbcf3dd619f30e650907ba8923893855b1a",
+    "src/features/auth/api/auth-api.test.ts": "2b35feb2bf87020374ec4fc760c7b98331f1642d2dc3902c3f56eb8b35f73afb",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",
+    "src/app/contexts/AuthSessionProvider.test.tsx": "3fa6f81dd63f56020842500b8feee35ad2522f0d30ad1551faebb0e0f78841e1",
+    "tests/e2e/auth-session.spec.ts": "234e7bfcb2f082639a30ce6871e29386f42fa9e96acb60579e8ae58f18a92d33"
+  },
+  "dirtyFileHashes": {
+    "src/features/auth/api/auth-api.ts": "e3733bea27f15fb63c15d04541c3dbbcf3dd619f30e650907ba8923893855b1a",
+    "src/features/auth/api/auth-api.test.ts": "2b35feb2bf87020374ec4fc760c7b98331f1642d2dc3902c3f56eb8b35f73afb",
+    "tests/e2e/auth-session.spec.ts": "234e7bfcb2f082639a30ce6871e29386f42fa9e96acb60579e8ae58f18a92d33"
+  },
+  "expected": "GET /auth/session may return 200 with a session or null, or the contract-declared 401 when no valid session exists. The adapter must resolve 401 as null so AuthSessionProvider enters unauthenticated state without reporting a session-loading error. Transport failure must remain an error.",
+  "actual": "Before the change, createAuthApi.getSession propagated the contract-declared 401, causing AuthSessionProvider to enter error state and capture it as a session-load exception. It now catches only ApiError status 401 and resolves null; other errors are rethrown. The adapter tests verified 401 resolves null and HttpResponse.error() still rejects. Focused Auth API plus AuthSessionProvider suites passed 36/36. The combined auth-session Playwright suite passed 16/16; the new browser case returned a status-only 401 for GET /auth/session and confirmed the guest login page renders without an auth error or sign-out control. Both TypeScript no-emit projects and focused ESLint/Prettier passed. OpenAPI passed (15 contracts/154 operations); dependency-cruiser passed (863 modules/4,680 dependencies, 0 violations); architecture inventory passed (129 pages/427 routes/149 components/32 services/28 mocks); lint budget passed (0 errors/0 warnings); EOL passed (3,224 paths/0 missing line terminators); git diff --check passed. check-tracking exited 1 with 75 source-ledger errors: 32 missing catalogued hashes, 5 paths absent from cataloguedSourceHead, 37 current source mismatches, and 1 historical change missing beforeHash; exact application inventory is 916/916. One current source mismatch is the updated auth-api.ts compared with the historical cataloguedSourceHead.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/U01/u01-03-session-401-anonymous-adapter-browser-2026-10-03.json",
+  "externalEvidence": {
+    "adapterTests": 36,
+    "adapterTestsPassed": 36,
+    "browserSuiteTests": 16,
+    "browserSuitePassed": 16,
+    "session401TreatedAsAnonymous": true,
+    "transportFailurePreserved": true,
+    "backendRequests": 0,
+    "stagingRequests": 0,
+    "userAcceptance": "not performed",
+    "browserRoutesOpened": ["/w/auth/login"]
+  },
+  "notes": "This confirms frontend normalization of the contract-declared 401 using local MSW and Playwright fixtures. It does not establish cookie persistence, backend or staging behavior, production readiness, or user acceptance. Only status 401 is normalized; transport errors continue to surface as errors. The source-ledger checker remains red for historical snapshot drift and the current auth-api.ts hash. The separate registration verifyMfa security-owner decision remains unresolved."
+}

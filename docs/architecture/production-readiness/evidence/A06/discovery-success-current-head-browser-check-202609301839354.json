@@ -1,0 +1,250 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-30T18:39:35.484Z",
+  "observedAt": "2026-09-30T18:39:36.401Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "origin": "http://127.0.0.1:4173",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false
+  },
+  "sourceHashes": {
+    "contracts/openapi/discovery.yaml": "c0c22fb43a71468388dc484f85b0b27c583be200fcb0c8e945de8cdaaaef4179",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
+    "docs/architecture/production-readiness/evidence/A06/run-discovery-success-current-head-browser-check.mjs": "0fe33704833ab5934a27057e8ed69b241a7b75292caeb32e952c3577df7b7c33",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "8382400738090945e6c3ec53286f288f0ed2d41c90dbd407eec2b48d36d347ae",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "692c244236634f056b12b49addc49eb6b2781d110943e48ba1c4396393955a73",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/discovery/api/discovery-api.ts": "c12ce44ced0b679e8cddd5a782e37dfe0c20a208b1485291eee1cc17990d2bcc",
+    "src/features/discovery/model/discovery-queries.ts": "47bd32ba2f5b9f9d6035249200b6ebcb3ea90d7a6295a3ddf82bc2d741e7a14c",
+    "src/features/discovery/pages/DiscoveryContractPages.tsx": "6fc12a4ca2bcafbce74f34ae827f0a7c5c427214c597aa0af20d2a3e487b9a79",
+    "src/features/discovery/routes.ts": "37e293427f94fcdfb4b7ddf42cc4b938c5b7ad06542bb409e3b775a5dcfff2e4"
+  },
+  "scenario": {
+    "id": "discovery.success",
+    "domain": "discovery",
+    "state": "success",
+    "status": "passed",
+    "observedAt": "2026-09-30T18:39:36.401Z",
+    "persona": "developer (local MSW fixture)",
+    "role": "developer",
+    "permissions": [
+      "market:read",
+      "trading:write",
+      "wallet:read",
+      "trade:read",
+      "earn:write",
+      "p2p:write",
+      "predictions:trade",
+      "profile:read",
+      "profile:write",
+      "profile:security:write"
+    ],
+    "route": "/w/search",
+    "finalRoute": "/w/search",
+    "operationIds": ["searchDiscovery", "getDiscoveryTopic"],
+    "observedOperationIds": ["searchDiscovery"],
+    "operationRequestCounts": {
+      "searchDiscovery": 1,
+      "getDiscoveryTopic": 0
+    },
+    "requests": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "searchDiscovery",
+        "method": "GET",
+        "path": "/api/discovery/search",
+        "resourceType": "fetch",
+        "query": "bitcoin"
+      }
+    ],
+    "responses": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 18
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "operationId": "searchDiscovery",
+        "method": "GET",
+        "path": "/api/discovery/search",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      }
+    ],
+    "initialSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "loginResponse": {
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    "discoveryResponse": {
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    "scenarioSelected": true,
+    "resultCounts": {
+      "query": "bitcoin",
+      "predictions": 2,
+      "arenaModes": 0,
+      "arenaRooms": 0,
+      "creators": 0,
+      "tradingPairs": 0
+    },
+    "externalApiOrigins": [],
+    "externalAssetOrigins": ["https://fonts.googleapis.com", "https://fonts.gstatic.com"],
+    "externalResourceOrigins": [],
+    "externalRequests": [
+      {
+        "origin": "https://fonts.googleapis.com",
+        "path": "/css2",
+        "method": "GET",
+        "resourceType": "stylesheet"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm81Rb0.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm87Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm86Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      }
+    ],
+    "pageErrors": [],
+    "elapsedMs": 808,
+    "screenshots": ["preview-discovery-success-current-head-202609301839354.png"],
+    "failures": [],
+    "knownUiFindings": [
+      "At /w/search, the shell heading still reads Dashboard and the sidebar highlights Trang chủ.",
+      "The floating Web widget overlaps the simulated-data warning banner."
+    ],
+    "note": "Local Chromium/Vite/MSW search success; only searchDiscovery was exercised (1/2 Discovery operations). This verifies the UI with a local fixture, not backend search quality, availability, staging, production or user acceptance."
+  }
+}

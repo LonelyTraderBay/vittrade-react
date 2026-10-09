@@ -1,0 +1,5 @@
+
+> vittrade-react@0.0.1 security:check
+> node scripts/check-security-boundaries.mjs
+
+Security boundary check passed: 543 source files enforce memory-only credential storage.

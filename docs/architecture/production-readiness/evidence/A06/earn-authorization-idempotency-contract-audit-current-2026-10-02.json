@@ -1,0 +1,365 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261002-012",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "read-only-openapi-authorization-idempotency-audit",
+  "observedAt": "2026-10-02T02:15:00Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "environment": "Windows 11, Node 24.19.0; current primary worktree. Read-only YAML/OpenAPI and scenario-matrix parsing; no browser, write request or replay.",
+  "commandOrSteps": "Resolve all operationIds for earn.forbidden, earn.unknown and earn.duplicate against contracts/openapi/earn.yaml; count 403/409/idempotency declarations and inspect whether the read operation defines a correlation/lookup key.",
+  "expected": "Do not infer unknown or duplicate outcomes from Idempotency-Key alone; keep rows not_verified unless the contract defines the observable replay/correlation result. Do not send financial write requests or retries to probe the result.",
+  "actual": "Four unique operations resolve. earn.forbidden: 0/4 declare 403. The two POST writes require Idempotency-Key (2/2), declare 0/2 HTTP 409, and have no declared same-key replay response. listEarnTransactions exposes domain/cursor/limit but no request correlation or idempotency lookup key. earn.unknown and earn.duplicate each map these three operations and remain not_verified. No write or retry was sent.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/A06/earn-authorization-idempotency-contract-audit-current-2026-10-02.json",
+  "sourceHashes": {
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "0bbf7c7a887415389265aa3fa2f2c07fc670a070ac4f692b55fae87ff19922f4",
+    "contracts/openapi/earn.yaml": "f658455d5dcc1927fcee5a814c01b59e22dc5cae30640cb092e710e4ad7fa608"
+  },
+  "rows": [
+    {
+      "id": "earn.forbidden",
+      "state": "forbidden",
+      "executionStatus": "not_verified",
+      "operationIds": [
+        "getEarnSnapshot",
+        "listEarnTransactions",
+        "createEarnSubscription",
+        "redeemEarnPosition"
+      ],
+      "operations": [
+        {
+          "operationId": "getEarnSnapshot",
+          "method": "GET",
+          "path": "/earn/snapshot",
+          "responseCodes": ["200", "401"],
+          "parameters": []
+        },
+        {
+          "operationId": "listEarnTransactions",
+          "method": "GET",
+          "path": "/earn/transactions",
+          "responseCodes": ["200", "401"],
+          "parameters": [
+            {
+              "name": "domain",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "enum": ["savings", "staking"]
+              }
+            },
+            {
+              "name": "cursor",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100,
+                "default": 25
+              }
+            }
+          ]
+        },
+        {
+          "operationId": "createEarnSubscription",
+          "method": "POST",
+          "path": "/earn/subscriptions",
+          "responseCodes": ["201", "400", "401"],
+          "parameters": [
+            {
+              "name": "Idempotency-Key",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "minLength": 8
+              }
+            }
+          ],
+          "requestBody": {
+            "$ref": "#/components/schemas/CreateEarnPositionRequest"
+          }
+        },
+        {
+          "operationId": "redeemEarnPosition",
+          "method": "POST",
+          "path": "/earn/redemptions",
+          "responseCodes": ["201", "400", "401"],
+          "parameters": [
+            {
+              "name": "Idempotency-Key",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "minLength": 8
+              }
+            }
+          ],
+          "requestBody": {
+            "$ref": "#/components/schemas/RedeemEarnPositionRequest"
+          }
+        }
+      ]
+    },
+    {
+      "id": "earn.unknown",
+      "state": "unknown",
+      "executionStatus": "not_verified",
+      "operationIds": ["createEarnSubscription", "redeemEarnPosition", "listEarnTransactions"],
+      "operations": [
+        {
+          "operationId": "listEarnTransactions",
+          "method": "GET",
+          "path": "/earn/transactions",
+          "responseCodes": ["200", "401"],
+          "parameters": [
+            {
+              "name": "domain",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "enum": ["savings", "staking"]
+              }
+            },
+            {
+              "name": "cursor",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100,
+                "default": 25
+              }
+            }
+          ]
+        },
+        {
+          "operationId": "createEarnSubscription",
+          "method": "POST",
+          "path": "/earn/subscriptions",
+          "responseCodes": ["201", "400", "401"],
+          "parameters": [
+            {
+              "name": "Idempotency-Key",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "minLength": 8
+              }
+            }
+          ],
+          "requestBody": {
+            "$ref": "#/components/schemas/CreateEarnPositionRequest"
+          }
+        },
+        {
+          "operationId": "redeemEarnPosition",
+          "method": "POST",
+          "path": "/earn/redemptions",
+          "responseCodes": ["201", "400", "401"],
+          "parameters": [
+            {
+              "name": "Idempotency-Key",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "minLength": 8
+              }
+            }
+          ],
+          "requestBody": {
+            "$ref": "#/components/schemas/RedeemEarnPositionRequest"
+          }
+        }
+      ]
+    },
+    {
+      "id": "earn.duplicate",
+      "state": "duplicate",
+      "executionStatus": "not_verified",
+      "operationIds": ["createEarnSubscription", "redeemEarnPosition", "listEarnTransactions"],
+      "operations": [
+        {
+          "operationId": "listEarnTransactions",
+          "method": "GET",
+          "path": "/earn/transactions",
+          "responseCodes": ["200", "401"],
+          "parameters": [
+            {
+              "name": "domain",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "enum": ["savings", "staking"]
+              }
+            },
+            {
+              "name": "cursor",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100,
+                "default": 25
+              }
+            }
+          ]
+        },
+        {
+          "operationId": "createEarnSubscription",
+          "method": "POST",
+          "path": "/earn/subscriptions",
+          "responseCodes": ["201", "400", "401"],
+          "parameters": [
+            {
+              "name": "Idempotency-Key",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "minLength": 8
+              }
+            }
+          ],
+          "requestBody": {
+            "$ref": "#/components/schemas/CreateEarnPositionRequest"
+          }
+        },
+        {
+          "operationId": "redeemEarnPosition",
+          "method": "POST",
+          "path": "/earn/redemptions",
+          "responseCodes": ["201", "400", "401"],
+          "parameters": [
+            {
+              "name": "Idempotency-Key",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "minLength": 8
+              }
+            }
+          ],
+          "requestBody": {
+            "$ref": "#/components/schemas/RedeemEarnPositionRequest"
+          }
+        }
+      ]
+    }
+  ],
+  "uniqueOperations": [
+    {
+      "operationId": "getEarnSnapshot",
+      "method": "GET",
+      "path": "/earn/snapshot",
+      "responseCodes": ["200", "401"],
+      "parameters": []
+    },
+    {
+      "operationId": "listEarnTransactions",
+      "method": "GET",
+      "path": "/earn/transactions",
+      "responseCodes": ["200", "401"],
+      "parameters": [
+        {
+          "name": "domain",
+          "in": "query",
+          "required": true
+        },
+        {
+          "name": "cursor",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "createEarnSubscription",
+      "method": "POST",
+      "path": "/earn/subscriptions",
+      "responseCodes": ["201", "400", "401"],
+      "parameters": [
+        {
+          "name": "Idempotency-Key",
+          "in": "header",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "redeemEarnPosition",
+      "method": "POST",
+      "path": "/earn/redemptions",
+      "responseCodes": ["201", "400", "401"],
+      "parameters": [
+        {
+          "name": "Idempotency-Key",
+          "in": "header",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "uniqueOperations": 4,
+    "operationsDeclaring403": 0,
+    "writeOperations": 2,
+    "writesRequiringIdempotencyKey": 2,
+    "writesDeclaring409": 0,
+    "listOperationsWithCorrelationLookup": 0
+  },
+  "scenarioMatrixSummary": {
+    "currentHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+    "scenariosDefined": 106,
+    "freshScenarioRows": 81,
+    "registeredSidecars": 81,
+    "staleSidecars": 0
+  },
+  "nextAction": "Continue A06.03 in matrix order at launchpad.unauthorized and launchpad.forbidden: inspect contracts/openapi/launchpad.yaml for declared 401/403 responses; run no browser authorization case unless a mapped operation declares the requested status.",
+  "limitations": [
+    "This is a static contract audit; it does not validate backend idempotency, durable outcomes, response loss, retries, staging or user acceptance.",
+    "No subscription/redemption request or replay was sent.",
+    "Source HEAD is recorded separately from current working-tree hashes; the report is local read-only evidence."
+  ]
+}

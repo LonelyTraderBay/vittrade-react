@@ -1,0 +1,566 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-02T11:53:03.873Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "origin": "http://127.0.0.1:4173",
+  "browser": "Chromium via Playwright",
+  "viewport": { "width": 1440, "height": 900 },
+  "scenario": {
+    "id": "support.error",
+    "status": "passed",
+    "persona": "support (development preview)",
+    "operationIds": [
+      "listNews",
+      "listNotifications",
+      "getHelpCenter",
+      "listSupportTickets"
+    ],
+    "observedOperationIds": [
+      "getHelpCenter",
+      "listNews",
+      "listNotifications",
+      "listSupportTickets"
+    ],
+    "expectedDomainOperationCount": 4,
+    "coverage": "full_scenario_operations_browser_observed_transport_failure"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "personaAndScenarioApplied": true,
+    "failureInjection": "window.fetch rejects targeted GETs before network dispatch",
+    "allObservedFailuresInjectedBeforeNetwork": true,
+    "observedScenarioResponseCount": 2,
+    "injectedTransportFailureCount": 26,
+    "localMockMutationCount": 0,
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false,
+    "externalApiOrigins": [],
+    "unexpectedScenarioRequestCount": 0,
+    "pageErrorCount": 0,
+    "scenarioTransportFailureCount": 0
+  },
+  "measurements": {
+    "totalFlowMs": 7021,
+    "completedAt": "2026-10-02T11:53:11.066Z",
+    "scenarioRequestCount": 2,
+    "scenarioResponseCount": 2,
+    "scenarioFetchAttemptCount": 26,
+    "scenarioOperationRequestCounts": {
+      "listNews": 0,
+      "listNotifications": 2,
+      "getHelpCenter": 0,
+      "listSupportTickets": 0
+    },
+    "scenarioOperationResponseCounts": {
+      "listNews": 0,
+      "listNotifications": 2,
+      "getHelpCenter": 0,
+      "listSupportTickets": 0
+    },
+    "scenarioOperationRequestsAfterFailureInjection": {
+      "listNews": 0,
+      "listNotifications": 0,
+      "getHelpCenter": 0,
+      "listSupportTickets": 0
+    },
+    "scenarioOperationResponsesAfterFailureInjection": {
+      "listNews": 0,
+      "listNotifications": 0,
+      "getHelpCenter": 0,
+      "listSupportTickets": 0
+    },
+    "scenarioOperationFetchAttemptCounts": {
+      "listNews": 6,
+      "listNotifications": 8,
+      "getHelpCenter": 6,
+      "listSupportTickets": 6
+    },
+    "preRouteShellFetchAttempts": {
+      "listNews": 0,
+      "listNotifications": 2,
+      "getHelpCenter": 0,
+      "listSupportTickets": 0
+    },
+    "readOperations": [
+      {
+        "operationId": "listNews",
+        "route": "/w/news",
+        "initialFetchAttempts": 3,
+        "manualRetryFetchAttempts": 3,
+        "totalFetchAttempts": 6,
+        "preRouteShellFetchAttempts": 0,
+        "httpRequestCountAfterFailureInjection": 0,
+        "httpResponseCountAfterFailureInjection": 0,
+        "preInjectionHttpRequestCount": 0,
+        "preInjectionHttpResponseCount": 0,
+        "failureInjectedBeforeNetwork": true,
+        "errorStateVisibleAfterRetry": true,
+        "retryRoutePreserved": true,
+        "successContentHidden": true,
+        "manualRetryFlowMs": 809,
+        "screenshot": "preview-support-error-news-2026-10-02-1790941983873.png"
+      },
+      {
+        "operationId": "listNotifications",
+        "route": "/w/notifications",
+        "initialFetchAttempts": 3,
+        "manualRetryFetchAttempts": 3,
+        "totalFetchAttempts": 6,
+        "preRouteShellFetchAttempts": 2,
+        "httpRequestCountAfterFailureInjection": 0,
+        "httpResponseCountAfterFailureInjection": 0,
+        "preInjectionHttpRequestCount": 2,
+        "preInjectionHttpResponseCount": 2,
+        "failureInjectedBeforeNetwork": true,
+        "errorStateVisibleAfterRetry": true,
+        "retryRoutePreserved": true,
+        "successContentHidden": true,
+        "manualRetryFlowMs": 805,
+        "screenshot": "preview-support-error-notifications-2026-10-02-1790941983873.png"
+      },
+      {
+        "operationId": "getHelpCenter",
+        "route": "/w/support/help",
+        "initialFetchAttempts": 3,
+        "manualRetryFetchAttempts": 3,
+        "totalFetchAttempts": 6,
+        "preRouteShellFetchAttempts": 0,
+        "httpRequestCountAfterFailureInjection": 0,
+        "httpResponseCountAfterFailureInjection": 0,
+        "preInjectionHttpRequestCount": 0,
+        "preInjectionHttpResponseCount": 0,
+        "failureInjectedBeforeNetwork": true,
+        "errorStateVisibleAfterRetry": true,
+        "retryRoutePreserved": true,
+        "successContentHidden": true,
+        "manualRetryFlowMs": 804,
+        "screenshot": "preview-support-error-help-2026-10-02-1790941983873.png"
+      },
+      {
+        "operationId": "listSupportTickets",
+        "route": "/w/support",
+        "initialFetchAttempts": 3,
+        "manualRetryFetchAttempts": 3,
+        "totalFetchAttempts": 6,
+        "preRouteShellFetchAttempts": 0,
+        "httpRequestCountAfterFailureInjection": 0,
+        "httpResponseCountAfterFailureInjection": 0,
+        "preInjectionHttpRequestCount": 0,
+        "preInjectionHttpResponseCount": 0,
+        "failureInjectedBeforeNetwork": true,
+        "errorStateVisibleAfterRetry": true,
+        "retryRoutePreserved": true,
+        "successContentHidden": true,
+        "manualRetryFlowMs": 822,
+        "screenshot": "preview-support-error-tickets-2026-10-02-1790941983873.png"
+      }
+    ],
+    "excludedMutationOperationIds": [
+      "markNotificationRead",
+      "createSupportTicket"
+    ],
+    "excludedMutationRequestCount": 0,
+    "externalApiOriginCount": 0,
+    "scenarioTransportFailureCount": 26,
+    "pageErrorCount": 0
+  },
+  "assertions": {
+    "errorStateAndRetryVisibleAfterEachReadFailure": true,
+    "staleSuccessContentHiddenAfterEachFailure": true,
+    "failureInjectedBeforeNetwork": true,
+    "httpRequestCountForScenarioOperations": 2,
+    "httpResponseCountForScenarioOperations": 2,
+    "noHttpDispatchAfterFailureInjection": true,
+    "finalRoute": "/w/support",
+    "responses": [
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "status": 200,
+        "fromServiceWorker": true,
+        "requestStartedAt": 1790941984375,
+        "elapsedMs": 22
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "status": 503,
+        "fromServiceWorker": true,
+        "requestStartedAt": 1790941984450,
+        "elapsedMs": 10
+      }
+    ],
+    "injectedTransportAttempts": [
+      {
+        "method": "GET",
+        "path": "/api/content/news",
+        "operationId": "listNews",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/content/news",
+        "operationId": "listNews",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/content/news",
+        "operationId": "listNews",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/content/news",
+        "operationId": "listNews",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/content/news",
+        "operationId": "listNews",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/content/news",
+        "operationId": "listNews",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/help",
+        "operationId": "getHelpCenter",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/help",
+        "operationId": "getHelpCenter",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/help",
+        "operationId": "getHelpCenter",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/help",
+        "operationId": "getHelpCenter",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/help",
+        "operationId": "getHelpCenter",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/help",
+        "operationId": "getHelpCenter",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/tickets",
+        "operationId": "listSupportTickets",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/tickets",
+        "operationId": "listSupportTickets",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/tickets",
+        "operationId": "listSupportTickets",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/tickets",
+        "operationId": "listSupportTickets",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/tickets",
+        "operationId": "listSupportTickets",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/tickets",
+        "operationId": "listSupportTickets",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      }
+    ]
+  },
+  "apiRequests": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "operationId": null,
+      "startedAt": 1790941984209
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "startedAt": 1790941984358
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": null,
+      "startedAt": 1790941984362
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "startedAt": 1790941984375
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1790941984424
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "operationId": null,
+      "startedAt": 1790941984424
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "startedAt": 1790941984450
+    }
+  ],
+  "apiResponses": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "operationId": null,
+      "status": 401,
+      "fromServiceWorker": true,
+      "requestStartedAt": 1790941984209,
+      "elapsedMs": 18
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "status": 204,
+      "fromServiceWorker": true,
+      "requestStartedAt": 1790941984358,
+      "elapsedMs": 3
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "requestStartedAt": 1790941984362,
+      "elapsedMs": 3
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "status": 200,
+      "fromServiceWorker": true,
+      "requestStartedAt": 1790941984375,
+      "elapsedMs": 22
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "requestStartedAt": 1790941984424,
+      "elapsedMs": 5
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "requestStartedAt": 1790941984424,
+      "elapsedMs": 5
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "status": 503,
+      "fromServiceWorker": true,
+      "requestStartedAt": 1790941984450,
+      "elapsedMs": 10
+    }
+  ],
+  "apiFailures": [
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "failure": "net::ERR_ABORTED",
+      "hadResponse": true
+    }
+  ],
+  "screenshots": {
+    "news": "preview-support-error-news-2026-10-02-1790941983873.png",
+    "notifications": "preview-support-error-notifications-2026-10-02-1790941983873.png",
+    "help": "preview-support-error-help-2026-10-02-1790941983873.png",
+    "tickets": "preview-support-error-tickets-2026-10-02-1790941983873.png"
+  },
+  "sourceHashes": {
+    "contracts/openapi/support.yaml": "765533b6f9f9892ac7ec2fa70031b54c53daf07ff5c77775fca155e23ef58d5a",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/app/components/layout/WebSidebar.tsx": "d29acc5364470787bb217a588a49460e740af339c5ded94715abef309322764f",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "b7068df1558e8efb458f5889c87bde27759acc3139a171ac885593386a78e34f",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "52e22422548bcfe99731089c6b6297728c828047beaadec53bddec5a89148441",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/dev/mocks/trading-fixtures.ts": "b082e4bc4094a4d7b36f41897ce9b27ea4c487fd3bf714622baf2f91fe2153cf",
+    "src/features/support/api/support-api.ts": "60b08b775dfb638f873e71dae62158ea5bbf0526fceea48a6758fee049ec1726",
+    "src/features/support/model/support-queries.ts": "47e0a0c29f2ce527e6d23db3f8cdff902de2a4fd2eedc183cee52bdab91748c4",
+    "src/features/support/model/support-types.ts": "adfc8a68c8b4e5b757ae52c1ae6ef24d176ee66922d84b6d385ad99c18c8cc84",
+    "src/features/support/pages/HelpCenterContractPage.tsx": "9610248e71e3109b35923192be658284f7c8866b09ceeb3c662b17c7e60243c7",
+    "src/features/support/pages/NewsContractPage.tsx": "86d27ed0c445a6bb03b2daae12e04909a046c9abeefed52a14308c270ef1dd98",
+    "src/features/support/pages/NotificationsContractPage.tsx": "e813a604872f020142e561b171bc8b2576f233e5af19ee73fdb76d098bcf597e",
+    "src/features/support/pages/SupportContractPage.tsx": "2199a7e3758fca690ad8b013e2ba8c51c70c068a973d611989132b562ffe778b",
+    "src/shared/ui/ErrorState.tsx": "7e501dd15a90aea2bf93e33150e47d455bbe3a24a0da1f986cca180125d4acd2",
+    "src/shared/api/app-client.ts": "038ad4426147147f31f44fab94770860991ef90aaa8ed394ec2a4940c83c7b81",
+    "src/shared/api/client.ts": "882197549d075a8be1f495c7d2271dcbf1530ff1606190531da59b75020977bb",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/useAuth.ts": "65d58cfe61d4618a1849da066ecd4d6ae7c94c036af7361a91a1383a6b383e0b",
+    "src/main.tsx": "c150098914a25b7e0630d66f480ffbfe4160e96a8bdb54262b5ad4b5b33719e6",
+    "docs/architecture/production-readiness/evidence/A06/run-support-error-browser-check.mjs": "db1bc983560856cf03687ff6dd0e6ad86d0d968c82598b16e7b5eeca72b89244"
+  },
+  "retryPolicyObservation": {
+    "expectedFetchAttemptsPerQueryExecution": 3,
+    "preRouteShellFetchAttempts": {
+      "listNews": 0,
+      "listNotifications": 2,
+      "getHelpCenter": 0,
+      "listSupportTickets": 0
+    },
+    "initialFailureAttemptsByOperation": {
+      "listNews": 3,
+      "listNotifications": 3,
+      "getHelpCenter": 3,
+      "listSupportTickets": 3
+    },
+    "manualRetryAttemptsByOperation": {
+      "listNews": 3,
+      "listNotifications": 3,
+      "getHelpCenter": 3,
+      "listSupportTickets": 3
+    },
+    "totalAttemptsByOperation": {
+      "listNews": 6,
+      "listNotifications": 8,
+      "getHelpCenter": 6,
+      "listSupportTickets": 6
+    }
+  },
+  "limitations": [
+    "Support OpenAPI declares no 5xx response; the runner injects a TypeError before network dispatch and does not create an HTTP status or response.",
+    "The observed retry fan-out is local HTTP-client and React Query behavior; it is not a production retry recommendation or backend measurement.",
+    "This scenario covers four collection GETs; notification-read and ticket-create mutations are not sent because a failed write can have an unknown outcome.",
+    "MSW does not establish backend authorization, persistence, staging behavior or user acceptance."
+  ]
+}

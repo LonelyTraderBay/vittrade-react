@@ -1,0 +1,184 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-30T09:39:54.480Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "origin": "http://127.0.0.1:4173",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "arena.success",
+    "domain": "arena",
+    "state": "success",
+    "status": "passed",
+    "persona": "arena",
+    "role": "user",
+    "permissions": ["arena:join"],
+    "routes": ["/w/arena", "/w/arena/mode/mode001", "/w/arena/challenge/ch001"],
+    "operationIds": [
+      "getArenaDiscovery",
+      "getArenaMode",
+      "getArenaChallenge",
+      "joinArenaChallenge"
+    ],
+    "observedOperationIds": [
+      "getArenaDiscovery",
+      "getArenaMode",
+      "getArenaChallenge",
+      "joinArenaChallenge"
+    ],
+    "operationRequestCounts": {
+      "getArenaDiscovery": 1,
+      "getArenaMode": 1,
+      "getArenaChallenge": 1,
+      "joinArenaChallenge": 1
+    },
+    "requests": [
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": "getArenaMode",
+        "method": "GET",
+        "path": "/api/arena/modes/mode001",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": "getArenaChallenge",
+        "method": "GET",
+        "path": "/api/arena/challenges/ch001",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": "joinArenaChallenge",
+        "method": "POST",
+        "path": "/api/arena/challenges/ch001/join",
+        "idempotencyKeyPresent": true
+      }
+    ],
+    "responses": [
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "operationId": "getArenaMode",
+        "method": "GET",
+        "path": "/api/arena/modes/mode001",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "operationId": "getArenaChallenge",
+        "method": "GET",
+        "path": "/api/arena/challenges/ch001",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "operationId": "joinArenaChallenge",
+        "method": "POST",
+        "path": "/api/arena/challenges/ch001/join",
+        "status": 201,
+        "fromServiceWorker": true
+      }
+    ],
+    "declaredSuccessResponses": {
+      "getArenaDiscovery": "200",
+      "getArenaMode": "200",
+      "getArenaChallenge": "200",
+      "joinArenaChallenge": "201"
+    },
+    "discoveryChallengeCount": 1,
+    "modeId": "mode001",
+    "challengeId": "ch001",
+    "joinStatus": 201,
+    "idempotencyKeyPresent": true,
+    "idempotencyKeyLength": 53,
+    "initialSlotsFilled": 38,
+    "slotsFilledAfterJoin": 39,
+    "joinedParticipantVisible": true,
+    "arenaPointsDisclosureVisible": true,
+    "routeAvailability": "The local Vite development route maps /w/arena to ArenaDiscoveryPage; src/app/routes.ts selects IntegrationPendingPage when isDevelopmentBuild is false.",
+    "unexpectedArenaRequestCount": 0,
+    "financialApiRequestCount": 0,
+    "writeRequestCount": 1,
+    "finalRoute": "/w/arena/challenge/ch001",
+    "elapsedMs": 988,
+    "screenshots": {
+      "discovery": "preview-arena-success-discovery-202609300939544.png",
+      "mode": "preview-arena-success-mode-202609300939544.png",
+      "challenge": "preview-arena-success-challenge-202609300939544.png"
+    },
+    "note": "Chromium exercised all four Arena OpenAPI operations using the local MSW service worker. The dedicated preview persona has arena:join; the join POST returned a local contract-shaped 201 with Idempotency-Key and the UI showed the updated participant/slot count. The route is wired only in Vite development; production uses IntegrationPendingPage. The service worker does not establish backend permission, persistence or replay behavior. Arena Points are fixture values; no wallet/trading API was called."
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false
+  },
+  "measurements": {
+    "totalFlowMs": 988,
+    "arenaRequestCount": 4,
+    "arenaResponseCount": 4,
+    "operationResponseCounts": {
+      "getArenaDiscovery": 1,
+      "getArenaMode": 1,
+      "getArenaChallenge": 1,
+      "joinArenaChallenge": 1
+    },
+    "writeRequestCount": 1,
+    "unexpectedArenaRequestCount": 0,
+    "financialApiRequestCount": 0,
+    "pageErrors": [],
+    "externalApiOriginCount": 0
+  },
+  "contract": {
+    "operationPaths": {
+      "getArenaDiscovery": "/api/arena/discovery",
+      "getArenaMode": "^\\/api\\/arena\\/modes\\/[^/]+$",
+      "getArenaChallenge": "^\\/api\\/arena\\/challenges\\/[^/]+$",
+      "joinArenaChallenge": "^\\/api\\/arena\\/challenges\\/[^/]+\\/join$"
+    },
+    "successResponses": {
+      "getArenaDiscovery": "200",
+      "getArenaMode": "200",
+      "getArenaChallenge": "200",
+      "joinArenaChallenge": "201"
+    },
+    "joinRequiresIdempotencyKey": true
+  },
+  "sourceHashes": {
+    "docs/architecture/production-readiness/evidence/A06/run-arena-success-browser-check.mjs": "dbfbb3e12eed4d78664be7e10712640a8e67d3e4a94b8dd8d1a5ef79e3c76ea8",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/arena-fixtures.ts": "6747416cfabb43e0a0c2fa1dc7a06a62dca2fd3bb2e308f5d1bb6203356ff5c1",
+    "src/dev/mocks/arena-handlers.test.ts": "a88d0b99196b076d0fdf3cabb798fd5a675aa2ac0289bd03eae7d70707feffa2",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "8382400738090945e6c3ec53286f288f0ed2d41c90dbd407eec2b48d36d347ae",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "6deef3b43c51e05c9cd058d8743b23b64a86579f474ce0486830359ac50ac200",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "contracts/openapi/arena.yaml": "30f0f57dfd35eec65c9afca06bd9f79f2d0f42a4a678c18e09dc669d32641157",
+    "src/features/arena/api/arena-api.ts": "c9fce3b8cc271937f5c2aecf4becba0e3520fce0c599cb7e7255a553f40a74d2",
+    "src/features/arena/api/arena-api.test.ts": "edd42d16a09bebad6e5b62aec1ae77435d23c54e08d0da6bfd6dd3ab2c1c790c",
+    "src/features/arena/model/arena-queries.ts": "5532e0d33dcd61a8249cdb7e5a8c8d50a1706ff125875860ea8753e51baf6caa",
+    "src/features/arena/pages/ArenaDiscoveryPage.tsx": "07430fdbd638e510e117c0256d9a0e8aec37614855731b7273d3b939a87dae66",
+    "src/features/arena/pages/ArenaDiscoveryPage.test.tsx": "bb40ab575bcf49b51b17d05ff12e2b7d2140796869a8ed106eb0abf500fe77ca",
+    "src/features/arena/pages/ArenaContractPages.tsx": "fa6e3c6e774551817b55226af01fffdc9e100622323ac315971b12611f89c6e9",
+    "src/features/arena/pages/ArenaJoinContractPage.test.tsx": "87110a2549f754a1a8c773aaabb8fceb1de3967ceadf26a4771b3d6ddf0786a9"
+  },
+  "limitations": "This run used the local Vite development server and MSW fixtures; routes.ts selects IntegrationPendingPage when isDevelopmentBuild is false, so it does not verify the production Arena route. It also does not establish backend authorization, persistence, idempotency replay semantics, staging behavior or user acceptance."
+}

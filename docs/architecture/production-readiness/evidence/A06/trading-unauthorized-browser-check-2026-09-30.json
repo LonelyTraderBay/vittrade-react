@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-09-30T00:41:46.972Z",
-  "sourceHead": "41869d7d6080d1508353120bd15d482dd3d4bb91",
-  "branch": "codex/vittrade-architecture-completion",
+  "checkedAt": "2026-09-30T18:44:38.684Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
   "origin": "http://127.0.0.1:4173",
   "browser": "Chromium via Playwright",
   "viewport": {
@@ -14,8 +14,12 @@
     "status": "passed",
     "persona": "developer",
     "route": "/w/trade/positions",
-    "operationIds": ["listOpenPositions"],
-    "observedOperationIds": ["listOpenPositions"],
+    "operationIds": [
+      "listOpenPositions"
+    ],
+    "observedOperationIds": [
+      "listOpenPositions"
+    ],
     "expectedDomainOperationCount": 13,
     "coverage": "representative_contract_operation_browser_observed",
     "declaredTrading401OperationCount": 13,
@@ -34,7 +38,7 @@
     "realBackendMutationSent": false
   },
   "measurements": {
-    "totalFlowMs": 632,
+    "totalFlowMs": 641,
     "apiRequestCount": 10,
     "apiResponseCount": 10,
     "operationResponses": {
@@ -45,7 +49,7 @@
           "operationId": "listOpenPositions",
           "status": 401,
           "fromServiceWorker": true,
-          "elapsedMs": 3
+          "elapsedMs": 4
         }
       ],
       "refreshSession": [
@@ -84,61 +88,61 @@
       "method": "GET",
       "path": "/api/auth/session",
       "operationId": null,
-      "startedAt": 1790728907356
+      "startedAt": 1790793879001
     },
     {
       "method": "GET",
       "path": "/api/market/pairs",
       "operationId": null,
-      "startedAt": 1790728907397
+      "startedAt": 1790793879042
     },
     {
       "method": "POST",
       "path": "/api/auth/logout",
       "operationId": null,
-      "startedAt": 1790728907570
+      "startedAt": 1790793879223
     },
     {
       "method": "GET",
       "path": "/api/market/pairs",
       "operationId": null,
-      "startedAt": 1790728907570
+      "startedAt": 1790793879223
     },
     {
       "method": "POST",
       "path": "/api/auth/login",
       "operationId": null,
-      "startedAt": 1790728907585
+      "startedAt": 1790793879233
     },
     {
       "method": "GET",
       "path": "/api/market/pairs",
       "operationId": null,
-      "startedAt": 1790728907587
+      "startedAt": 1790793879235
     },
     {
       "method": "GET",
       "path": "/api/market/pairs",
       "operationId": null,
-      "startedAt": 1790728907600
+      "startedAt": 1790793879249
     },
     {
       "method": "GET",
       "path": "/api/market/watchlist",
       "operationId": null,
-      "startedAt": 1790728907601
+      "startedAt": 1790793879249
     },
     {
       "method": "GET",
       "path": "/api/trading/positions",
       "operationId": "listOpenPositions",
-      "startedAt": 1790728907718
+      "startedAt": 1790793879364
     },
     {
       "method": "POST",
       "path": "/api/auth/refresh",
       "operationId": "refreshSession",
-      "startedAt": 1790728907722
+      "startedAt": 1790793879368
     }
   ],
   "apiResponses": [
@@ -164,7 +168,7 @@
       "operationId": null,
       "status": 204,
       "fromServiceWorker": true,
-      "elapsedMs": 15
+      "elapsedMs": 10
     },
     {
       "method": "GET",
@@ -172,7 +176,7 @@
       "operationId": null,
       "status": 200,
       "fromServiceWorker": true,
-      "elapsedMs": 16
+      "elapsedMs": 10
     },
     {
       "method": "GET",
@@ -204,7 +208,7 @@
       "operationId": null,
       "status": 200,
       "fromServiceWorker": true,
-      "elapsedMs": 9
+      "elapsedMs": 10
     },
     {
       "method": "GET",
@@ -212,7 +216,7 @@
       "operationId": "listOpenPositions",
       "status": 401,
       "fromServiceWorker": true,
-      "elapsedMs": 3
+      "elapsedMs": 4
     },
     {
       "method": "POST",
@@ -233,7 +237,7 @@
     "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
     "src/dev/mocks/handlers.ts": "8382400738090945e6c3ec53286f288f0ed2d41c90dbd407eec2b48d36d347ae",
     "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
-    "src/dev/mocks/preview-scenario-handler.ts": "6deef3b43c51e05c9cd058d8743b23b64a86579f474ce0486830359ac50ac200",
+    "src/dev/mocks/preview-scenario-handler.ts": "692c244236634f056b12b49addc49eb6b2781d110943e48ba1c4396393955a73",
     "src/features/trading/pages/OpenPositionsPage.tsx": "709874871e1a37f5ec0d8096188357a72349a08fb6495536c1c9ddf85097c2b1",
     "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
     "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",

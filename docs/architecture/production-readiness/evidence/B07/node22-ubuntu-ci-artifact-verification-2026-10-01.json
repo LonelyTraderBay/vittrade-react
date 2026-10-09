@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "purpose": "B07.02 exact-run CI evidence artifact persistence and verification. The artifact is CI evidence only and is not deployable.",
+  "repository": "LonelyTraderBay/vittrade-react",
+  "sourceCommit": "104896ea633f6f6deaa2dd36874f7720d91648a7",
+  "workflowRun": {
+    "name": "CI",
+    "runNumber": 28,
+    "runId": "36922587154",
+    "runAttempt": "1",
+    "jobId": "110572010316",
+    "jobName": "Production gates",
+    "conclusion": "success",
+    "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36922587154"
+  },
+  "environment": {
+    "runner": "ubuntu-24.04",
+    "node": "22.23.3",
+    "npm": "10.9.9",
+    "dependencyInstall": "npm ci"
+  },
+  "eol": {
+    "pathsScanned": 1494,
+    "lf": 1152,
+    "withoutLineTerminator": 0,
+    "preservedNonText": 342,
+    "protectedWindowsCrlf": 0,
+    "violations": 0
+  },
+  "checks": {
+    "workflowSteps": 34,
+    "failedSteps": 0,
+    "vitest": {
+      "files": 286,
+      "passed": 2405
+    },
+    "coveragePercent": {
+      "statements": 90.14,
+      "branches": 84.87,
+      "functions": 87.18,
+      "lines": 91.92
+    },
+    "playwright": {
+      "passed": 51,
+      "failed": 0
+    },
+    "artifactToolingTests": {
+      "files": 2,
+      "passed": 9,
+      "failed": 0
+    },
+    "bundleBudget": {
+      "chunks": 221,
+      "failedChunks": 0,
+      "result": "pass"
+    },
+    "uploadedArtifactVerification": {
+      "result": "pass",
+      "files": 553,
+      "coverageFiles": 550,
+      "retainedTraces": 0,
+      "playwrightReportPresent": true,
+      "distPresent": false
+    }
+  },
+  "artifact": {
+    "id": 11192484949,
+    "name": "vittrade-ci-evidence-104896ea633f6f6deaa2dd36874f7720d91648a7-1",
+    "sizeBytes": 2949003,
+    "digest": "sha256:a616d5b055f825af0b3825985759f885b3a17e8eb4ac95b35ac188f4a956b324",
+    "expiresAt": "2026-12-30T20:34:40Z"
+  },
+  "result": "pass",
+  "notes": [
+    "The same workflow job uploaded and downloaded the artifact, verified the SHA-256 digest, and the checker accepted the exact commit/run metadata, bundle manifest, coverage and Playwright report while rejecting dist/.",
+    "This successful Playwright run produced no retry/failure traces. The workflow uploads test-results when Playwright creates it; the verifier reports the observed trace count and permits zero for a clean run.",
+    "Earlier runs #26 and #27 on commit 933b55e failed only because the first verifier version incorrectly required test-results to exist on a fully passing Playwright run. Commit 104896e corrected that condition, added the clean-run case, and run #28 passed.",
+    "The artifact validates this exact CI run and commit. It does not prove backend/staging behavior, user acceptance or remote required-status enforcement."
+  ]
+}

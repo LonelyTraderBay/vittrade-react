@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-30T12:56:07.688Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "sources": {
+    "contracts/openapi/earn.yaml": "f658455d5dcc1927fcee5a814c01b59e22dc5cae30640cb092e710e4ad7fa608",
+    "contracts/openapi/auth.yaml": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b"
+  },
+  "earnOperations": [
+    {
+      "operationId": "getEarnSnapshot",
+      "method": "GET",
+      "path": "/api/earn/snapshot",
+      "responses": [200, 401]
+    },
+    {
+      "operationId": "listEarnTransactions",
+      "method": "GET",
+      "path": "/api/earn/transactions",
+      "responses": [200, 401]
+    },
+    {
+      "operationId": "createEarnSubscription",
+      "method": "POST",
+      "path": "/api/earn/subscriptions",
+      "responses": [201, 400, 401]
+    },
+    {
+      "operationId": "redeemEarnPosition",
+      "method": "POST",
+      "path": "/api/earn/redemptions",
+      "responses": [201, 400, 401]
+    }
+  ],
+  "authRefresh": {
+    "operationId": "refreshSession",
+    "responses": [200],
+    "successBodyAllowsNull": true
+  },
+  "summary": {
+    "earnOperationCount": 4,
+    "earnOperationsDeclaring401": 4,
+    "earnOperationsDeclaring403": 0,
+    "earnOperationsDeclaring5xx": 0,
+    "refresh401Declared": false,
+    "decision": "401 browser case is supported for all four Earn operations; no Earn forbidden 403 or 5xx can be asserted from this contract. Auth refresh 200/null is supported; do not inject refresh 401."
+  }
+}

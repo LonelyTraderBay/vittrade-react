@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261001-014",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "contract-authorization-status-audit",
+  "checkedAt": "2026-09-30T22:43:36.418Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "contractFile": "contracts/openapi/discovery.yaml",
+  "globalSecurity": [
+    {
+      "sessionCookie": []
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "discovery.unauthorized",
+      "operationIds": [
+        "searchDiscovery",
+        "getDiscoveryTopic"
+      ],
+      "executionStatus": "not_verified"
+    },
+    {
+      "id": "discovery.forbidden",
+      "operationIds": [
+        "searchDiscovery",
+        "getDiscoveryTopic"
+      ],
+      "executionStatus": "not_verified"
+    }
+  ],
+  "operations": [
+    {
+      "operationId": "searchDiscovery",
+      "method": "GET",
+      "path": "/discovery/search",
+      "responseStatuses": [
+        "200",
+        "400"
+      ]
+    },
+    {
+      "operationId": "getDiscoveryTopic",
+      "method": "GET",
+      "path": "/discovery/topics/{topicId}",
+      "responseStatuses": [
+        "200",
+        "404"
+      ]
+    }
+  ],
+  "counts": {
+    "operations": 2,
+    "operationsDeclaring401": 0,
+    "operationsDeclaring403": 0
+  },
+  "browserScenarioExecuted": false,
+  "conclusion": "The two operations linked by both Discovery authorization rows declare only 200/400 or 200/404. The contract has global sessionCookie security, but neither operation declares 401 or 403. Keep both rows not_verified and do not synthesize authorization responses.",
+  "nextAction": "A06.03 next matrix row: audit earn.forbidden against contracts/openapi/earn.yaml; run browser only if a mapped operation declares 403.",
+  "sourceHashes": {
+    "contracts/openapi/discovery.yaml": "c0c22fb43a71468388dc484f85b0b27c583be200fcb0c8e945de8cdaaaef4179",
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "70630b4a0b7d2d16d39fc9da839fbb1b96578c9f5c60ec92ce598e14add99c24",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261001-019",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "architecture-inventory-regeneration",
+  "checkedAt": "2026-09-30T22:59:25.000Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "command": "node scripts/generate-architecture-inventory.mjs; node scripts/generate-architecture-inventory.mjs --check",
+  "observedMismatch": {
+    "inventoryRoute": "earn/savings/receipt",
+    "sourceRoute": "earn/:domain/receipt",
+    "pageLineCountsBefore": [263, 359],
+    "pageLineCountsAfter": [271, 363]
+  },
+  "result": {
+    "status": "pass",
+    "pages": 129,
+    "routes": 427,
+    "components": 149,
+    "dataModules": 0,
+    "services": 32,
+    "mocks": 28
+  },
+  "sourceHashes": {
+    "docs/architecture/page-inventory.json": "9af3d7421011bdc310369898cde7e5c8490b798230f2682090d3a83ca97c35ac",
+    "scripts/generate-architecture-inventory.mjs": "676f082a7d7bb3a34a108c3e2942cf9ffd17983e60f45addf598ce2ce6070d17",
+    "src/features/earn/routes.ts": "4316eece354d89cbcb54a44808a8a86811fd29f5394a9317d27e9cbc6e2eddab",
+    "src/features/earn/pages/EarnTransactionPages.tsx": "28383c3f8300e0db3f417c1d334aefc66fd789556eae6245125c95691827cbe5"
+  },
+  "sourceCodeChanged": false,
+  "conclusion": "Regenerated the generated architecture inventory from current source; follow-up --check passes. No application source was modified."
+}

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-01T03:25:42.000Z",
+  "observedAt": "2026-10-01T03:20:13.000Z",
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "purpose": "Current local Vitest and TypeScript revalidation; not a clean CI or production certification",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "environment": {
+    "os": "Windows x64",
+    "node": "v24.19.0",
+    "vitest": "4.1.11",
+    "branch": "main"
+  },
+  "workingTree": {
+    "gitPathCount": 2491,
+    "status": {
+      "records": 1653,
+      "staged": 0,
+      "unstaged": 687,
+      "untracked": 966
+    },
+    "manifestSha256": "0ccfa903100966a4d91395fcfa17ea734e8668ec15943cf1417007dd3162cf8f",
+    "manifestMethod": "SHA-256 over sorted git ls-files -z --cached --others --exclude-standard paths, each path NUL followed by SHA-256(file bytes) NUL; captured before writing this report and its ledger entries.",
+    "keyInputSha256": {
+      "package.json": "1066f2ff1ad1757dc1619861732b0af534e1f5f0b713d4a1b3c21299a7b04a18",
+      "package-lock.json": "12552db607aaade6465f452f1d8d5e559999528831e19761a178e377f05679de",
+      "vitest.config.ts": "d997039fb3a5520b71c5479c435f11adf360d6259542f1d6de97a991db31db2f",
+      "src/features/auth/pages/WebLoginPage.tsx": "d938bac40bb63145ffbb3919140b1b3d267b96e86872a93f29a4ebac24980e41",
+      "src/features/auth/pages/WebLoginPage.test.tsx": "f809a4440aa8d5ef5f25757f5eafaecd9f4c0e047e6ab1aef4f9fc8e526a85e3"
+    }
+  },
+  "commands": [
+    "node node_modules/vitest/vitest.mjs run --reporter=dot",
+    "node node_modules/typescript/bin/tsc --noEmit -p tsconfig.json",
+    "node node_modules/typescript/bin/tsc --noEmit -p tsconfig.node.json"
+  ],
+  "results": {
+    "vitest": {
+      "result": "pass",
+      "testFilesPassed": 288,
+      "testFilesFailed": 0,
+      "testsPassed": 2385,
+      "testsFailed": 0,
+      "duration": "31.03 s"
+    },
+    "typescriptAppProject": {
+      "result": "pass",
+      "exitCode": 0
+    },
+    "typescriptNodeProject": {
+      "result": "pass",
+      "exitCode": 0
+    }
+  },
+  "expected": "The full current working-tree Vitest suite has no failing tests and both TypeScript projects typecheck.",
+  "actual": "Vitest completed with 288/288 test files and 2,385/2,385 tests passing. The app and Node TypeScript projects both exited 0. The prior WebLoginPage full-suite mismatch is not reproducible in this current tree; earlier red reports are preserved as historical evidence. The run used the dirty Windows working tree fingerprinted above.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/C03/full-vitest-current-working-tree-2026-10-01.json",
+  "notes": "Local verification only. No npm ci, Node 22/Ubuntu run, GitHub Actions dispatch, backend/staging test, or user acceptance was performed. Current test files were not edited during this verification."
+}

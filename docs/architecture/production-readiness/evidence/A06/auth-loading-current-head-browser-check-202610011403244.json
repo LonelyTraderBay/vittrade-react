@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-01T14:03:24.430Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "origin": "http://127.0.0.1:4173",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "auth.loading",
+    "domain": "auth",
+    "state": "loading",
+    "status": "passed",
+    "persona": "guest (no authenticated session)",
+    "role": "unauthenticated",
+    "permissions": [],
+    "operationIds": [
+      "register",
+      "login",
+      "verifyLoginMfaChallenge",
+      "getSession",
+      "refreshSession",
+      "logout",
+      "verifyMfa",
+      "confirmMfaSetup",
+      "beginMfaSetup",
+      "requestPasswordResetCode",
+      "verifyCurrentPassword",
+      "changePassword",
+      "verifyPasswordResetCode",
+      "confirmPasswordReset"
+    ],
+    "observedOperationIds": ["getSession"],
+    "operationRequestCounts": {
+      "getSession": 1
+    },
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session"
+      }
+    ],
+    "responses": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true
+      }
+    ],
+    "initialSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "delayedSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true,
+      "delayMs": 2026
+    },
+    "loadingVisibleBeforeResponse": true,
+    "responsePendingAtScreenshot": true,
+    "loginFormVisibleWhileLoading": false,
+    "protectedContentVisibleWhileLoading": false,
+    "staticIdentityVisibleWhileLoading": false,
+    "loginFormVisibleAfterResponse": true,
+    "loginErrorVisible": false,
+    "protectedRoute": "/w/trade/positions",
+    "finalRoute": "/auth/login",
+    "redirectedToLogin": true,
+    "writeRequestCount": 0,
+    "financialApiRequestCount": 0,
+    "elapsedMs": 2680,
+    "externalApiOrigins": [],
+    "pageErrors": [],
+    "screenshots": [
+      "preview-auth-loading-current-head-202610011403244.png",
+      "preview-auth-loading-login-current-head-202610011403244.png"
+    ],
+    "note": "The local auth.loading fixture delays getSession before the contract-supported 401 response. The protected-route pending view was visible before response; no login form, protected content or static identity appeared during pending. Backend/session cookie behavior, production and user acceptance are unverified."
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false
+  },
+  "measurements": {
+    "totalFlowMs": 2684,
+    "apiRequestCount": 2,
+    "apiResponseCount": 2,
+    "sessionRequestCount": 1,
+    "sessionResponseCount": 1,
+    "responseDelayMs": 2026,
+    "writeRequestCount": 0,
+    "financialApiRequestCount": 0,
+    "externalApiOriginCount": 0,
+    "pageErrors": []
+  },
+  "contract": {
+    "operationId": "getSession",
+    "declaredResponses": ["200", "401"],
+    "observedStatus": 401
+  },
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b",
+    "docs/architecture/production-readiness/evidence/A06/run-auth-loading-current-head-browser-check.mjs": "95c5a83e24c2824cb9f70e85c191157dca02609eab87b1a8cc617b062a7adf94",
+    "src/app/components/layout/ProtectedRoute.tsx": "c5cb74de4707d257a40f4782ea7c7c177ce3b8bd2de4f4cccb5e4450c9f4c5d4",
+    "src/app/contexts/AuthContext.tsx": "ed4902f682cbb4c11081acb1e87cfd2195fa0d06570ef1473ef962181b0d54b3",
+    "src/app/components/layout/WebCommandBar.tsx": "2a0abe86df7d053470cfec285ad03613c954f00408a02848ca8076ef1698954c",
+    "src/app/components/layout/WebSidebar.tsx": "5dd6ed3888d40d240bd20cca0b852b18179bb2a97df1c847064ddaf82ad58481",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "b7068df1558e8efb458f5889c87bde27759acc3139a171ac885593386a78e34f",
+    "src/dev/mocks/preview-scenario-handler.ts": "52e22422548bcfe99731089c6b6297728c828047beaadec53bddec5a89148441",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/auth/api/auth-api.ts": "050846c48de49be56f6bdf6a73669b5d3a6230c559e33851cd07840609fca078",
+    "src/features/auth/pages/WebLoginPage.tsx": "d938bac40bb63145ffbb3919140b1b3d267b96e86872a93f29a4ebac24980e41",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2"
+  },
+  "limitations": "This run used local Vite development and MSW. It does not establish backend session persistence, cookie behavior, staging, production or user acceptance."
+}

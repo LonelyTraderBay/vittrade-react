@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261001-016",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "contract-authorization-status-audit",
+  "checkedAt": "2026-09-30T22:47:24.846Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "contractFile": "contracts/openapi/launchpad.yaml",
+  "scenarios": [
+    {
+      "id": "launchpad.unauthorized",
+      "operationIds": [
+        "listLaunchpadProjects",
+        "getLaunchpadProject"
+      ],
+      "executionStatus": "not_verified"
+    },
+    {
+      "id": "launchpad.forbidden",
+      "operationIds": [
+        "listLaunchpadProjects",
+        "getLaunchpadProject"
+      ],
+      "executionStatus": "not_verified"
+    }
+  ],
+  "operations": [
+    {
+      "operationId": "listLaunchpadProjects",
+      "method": "GET",
+      "path": "/launchpad/projects",
+      "responseStatuses": [
+        "200"
+      ]
+    },
+    {
+      "operationId": "getLaunchpadProject",
+      "method": "GET",
+      "path": "/launchpad/projects/{projectId}",
+      "responseStatuses": [
+        "200",
+        "404"
+      ]
+    }
+  ],
+  "counts": {
+    "operations": 2,
+    "operationsDeclaring401": 0,
+    "operationsDeclaring403": 0
+  },
+  "browserScenarioExecuted": false,
+  "conclusion": "Both Launchpad operations linked by unauthorized/forbidden declare no 401 or 403. Keep both rows not_verified and do not fabricate authorization responses.",
+  "nextAction": "A06.03 next matrix rows: audit market.unauthorized and market.forbidden against contracts/openapi/market.yaml; run only contract-supported statuses.",
+  "sourceHashes": {
+    "contracts/openapi/launchpad.yaml": "f91848569eda4fc8adbb96ec01c4015d3e8bea488ebfb54c9cbf807afbb7732e",
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "70630b4a0b7d2d16d39fc9da839fbb1b96578c9f5c60ec92ce598e14add99c24",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320"
+  }
+}

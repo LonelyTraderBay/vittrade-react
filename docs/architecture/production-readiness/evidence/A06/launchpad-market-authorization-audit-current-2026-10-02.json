@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261002-013",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "read-only-openapi-authorization-contract-audit",
+  "observedAt": "2026-10-02T02:20:00Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "environment": "Windows 11, Node 24.19.0; current primary worktree. Read-only YAML/OpenAPI and scenario-matrix parsing; no browser or API side effect.",
+  "commandOrSteps": "Resolve Launchpad and Market unauthorized/forbidden scenario operationIds against current OpenAPI documents; count operation-level HTTP 401/403 declarations and reconcile matrix states.",
+  "expected": "Keep authorization rows not_verified when their current mapped contracts do not declare the requested response; do not synthesize 401/403 in browser or MSW.",
+  "actual": "Launchpad: 2/2 operations mapped; launchpad.unauthorized declares 401 on 0/2; launchpad.forbidden declares 403 on 0/2. Market: scenario rows each map 8 operations; market.unauthorized declares 401 on 0/8 and market.forbidden declares 403 on 0/8; the full 22-operation Market contract declares 401/403 on 0/22. All four rows remain not_verified. No browser scenario ran.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/A06/launchpad-market-authorization-audit-current-2026-10-02.json",
+  "sourceHashes": {
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "0bbf7c7a887415389265aa3fa2f2c07fc670a070ac4f692b55fae87ff19922f4",
+    "contracts/openapi/launchpad.yaml": "f91848569eda4fc8adbb96ec01c4015d3e8bea488ebfb54c9cbf807afbb7732e",
+    "contracts/openapi/market.yaml": "cca6ccf13d96a7a813c54734e5331a7620803f5a670355f6f3b72e4703a3e888"
+  },
+  "rows": [
+    {
+      "id": "launchpad.unauthorized",
+      "state": "unauthorized",
+      "executionStatus": "not_verified",
+      "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
+      "operations": [
+        {
+          "operationId": "listLaunchpadProjects",
+          "method": "GET",
+          "path": "/launchpad/projects",
+          "responseCodes": ["200"]
+        },
+        {
+          "operationId": "getLaunchpadProject",
+          "method": "GET",
+          "path": "/launchpad/projects/{projectId}",
+          "responseCodes": ["200", "404"]
+        }
+      ],
+      "declared401": 0,
+      "declared403": 0
+    },
+    {
+      "id": "launchpad.forbidden",
+      "state": "forbidden",
+      "executionStatus": "not_verified",
+      "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
+      "operations": [
+        {
+          "operationId": "listLaunchpadProjects",
+          "method": "GET",
+          "path": "/launchpad/projects",
+          "responseCodes": ["200"]
+        },
+        {
+          "operationId": "getLaunchpadProject",
+          "method": "GET",
+          "path": "/launchpad/projects/{projectId}",
+          "responseCodes": ["200", "404"]
+        }
+      ],
+      "declared401": 0,
+      "declared403": 0
+    },
+    {
+      "id": "market.unauthorized",
+      "state": "unauthorized",
+      "executionStatus": "not_verified",
+      "operationIds": [
+        "listMarketPriceAlerts",
+        "createMarketPriceAlert",
+        "updateMarketPriceAlert",
+        "deleteMarketPriceAlert",
+        "getMarketWatchlist",
+        "addMarketWatchlistItem",
+        "updateMarketWatchlistItem",
+        "deleteMarketWatchlistItem"
+      ],
+      "operations": [
+        {
+          "operationId": "listMarketPriceAlerts",
+          "method": "GET",
+          "path": "/market/price-alerts",
+          "responseCodes": ["200"]
+        },
+        {
+          "operationId": "createMarketPriceAlert",
+          "method": "POST",
+          "path": "/market/price-alerts",
+          "responseCodes": ["201"]
+        },
+        {
+          "operationId": "updateMarketPriceAlert",
+          "method": "PATCH",
+          "path": "/market/price-alerts/{alertId}",
+          "responseCodes": ["200"]
+        },
+        {
+          "operationId": "deleteMarketPriceAlert",
+          "method": "DELETE",
+          "path": "/market/price-alerts/{alertId}",
+          "responseCodes": ["204"]
+        },
+        {
+          "operationId": "getMarketWatchlist",
+          "method": "GET",
+          "path": "/market/watchlist",
+          "responseCodes": ["200"]
+        },
+        {
+          "operationId": "addMarketWatchlistItem",
+          "method": "POST",
+          "path": "/market/watchlist",
+          "responseCodes": ["201"]
+        },
+        {
+          "operationId": "updateMarketWatchlistItem",
+          "method": "PATCH",
+          "path": "/market/watchlist/{watchlistId}",
+          "responseCodes": ["200"]
+        },
+        {
+          "operationId": "deleteMarketWatchlistItem",
+          "method": "DELETE",
+          "path": "/market/watchlist/{watchlistId}",
+          "responseCodes": ["204"]
+        }
+      ],
+      "declared401": 0,
+      "declared403": 0
+    },
+    {
+      "id": "market.forbidden",
+      "state": "forbidden",
+      "executionStatus": "not_verified",
+      "operationIds": [
+        "listMarketPriceAlerts",
+        "createMarketPriceAlert",
+        "updateMarketPriceAlert",
+        "deleteMarketPriceAlert",
+        "getMarketWatchlist",
+        "addMarketWatchlistItem",
+        "updateMarketWatchlistItem",
+        "deleteMarketWatchlistItem"
+      ],
+      "operations": [
+        {
+          "operationId": "listMarketPriceAlerts",
+          "method": "GET",
+          "path": "/market/price-alerts",
+          "responseCodes": ["200"]
+        },
+        {
+          "operationId": "createMarketPriceAlert",
+          "method": "POST",
+          "path": "/market/price-alerts",
+          "responseCodes": ["201"]
+        },
+        {
+          "operationId": "updateMarketPriceAlert",
+          "method": "PATCH",
+          "path": "/market/price-alerts/{alertId}",
+          "responseCodes": ["200"]
+        },
+        {
+          "operationId": "deleteMarketPriceAlert",
+          "method": "DELETE",
+          "path": "/market/price-alerts/{alertId}",
+          "responseCodes": ["204"]
+        },
+        {
+          "operationId": "getMarketWatchlist",
+          "method": "GET",
+          "path": "/market/watchlist",
+          "responseCodes": ["200"]
+        },
+        {
+          "operationId": "addMarketWatchlistItem",
+          "method": "POST",
+          "path": "/market/watchlist",
+          "responseCodes": ["201"]
+        },
+        {
+          "operationId": "updateMarketWatchlistItem",
+          "method": "PATCH",
+          "path": "/market/watchlist/{watchlistId}",
+          "responseCodes": ["200"]
+        },
+        {
+          "operationId": "deleteMarketWatchlistItem",
+          "method": "DELETE",
+          "path": "/market/watchlist/{watchlistId}",
+          "responseCodes": ["204"]
+        }
+      ],
+      "declared401": 0,
+      "declared403": 0
+    }
+  ],
+  "domainCounts": {
+    "launchpad": {
+      "contractOperations": 2,
+      "declaring401": 0,
+      "declaring403": 0
+    },
+    "market": {
+      "contractOperations": 22,
+      "declaring401": 0,
+      "declaring403": 0,
+      "operationsDeclaring401Or403": 0
+    }
+  },
+  "scenarioMatrixSummary": {
+    "currentHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+    "scenariosDefined": 106,
+    "freshScenarioRows": 81,
+    "registeredSidecars": 81,
+    "staleSidecars": 0
+  },
+  "globalSecurity": {
+    "launchpad": [],
+    "market": []
+  },
+  "nextAction": "Continue A06.03 in matrix order at p2p.unknown: inspect the approved P2P unknown-outcome/lookup/replay contract before any side effect; do not send or replay a P2P request while correlation semantics are not defined.",
+  "limitations": [
+    "Static contract audit only; no backend authorization, browser behavior, staging, or user acceptance was verified.",
+    "Source HEAD is recorded separately from current working-tree hashes; this report is local read-only evidence."
+  ]
+}

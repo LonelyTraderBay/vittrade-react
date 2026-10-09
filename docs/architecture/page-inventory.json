@@ -949,7 +949,7 @@
       "domain": "earn",
       "owner": "features/earn",
       "status": "integration-pending",
-      "lines": 263,
+      "lines": 271,
       "routePaths": [
         "earn",
         "earn/savings",
@@ -983,10 +983,10 @@
       "domain": "earn",
       "owner": "features/earn",
       "status": "integration-pending",
-      "lines": 359,
+      "lines": 363,
       "routePaths": [
+        "earn/:domain/receipt",
         "earn/savings/product/:productId",
-        "earn/savings/receipt",
         "earn/savings/redeem/:positionId"
       ],
       "dependencies": {
@@ -2859,7 +2859,7 @@
       "domain": "support",
       "owner": "features/support",
       "status": "integration-pending",
-      "lines": 106,
+      "lines": 118,
       "routePaths": [
         "notifications"
       ],
@@ -3729,7 +3729,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 418,
+      "lines": 430,
       "routePaths": [
         "wallet"
       ],
@@ -3737,6 +3737,7 @@
         "localImports": [
           "../model/wallet-queries",
           "../model/wallet-types",
+          "@/shared/api/api-error",
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
@@ -3759,7 +3760,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 228,
+      "lines": 238,
       "routePaths": [
         "wallet/history"
       ],
@@ -3769,6 +3770,7 @@
           "../model/wallet-history",
           "../model/wallet-queries",
           "../model/wallet-types",
+          "@/shared/api/api-error",
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
@@ -3791,7 +3793,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 398,
+      "lines": 402,
       "routePaths": [
         "wallet/transfer"
       ],
@@ -4390,6 +4392,14 @@
       "pageTarget": "src/features/earn/pages/EarnPage.tsx"
     },
     {
+      "path": "earn/:domain/receipt",
+      "component": "EarnReceiptPage",
+      "target": "./pages/EarnTransactionPages",
+      "developmentOnly": false,
+      "source": "src/features/earn/routes.ts",
+      "pageTarget": "src/features/earn/pages/EarnTransactionPages.tsx"
+    },
+    {
       "path": "earn/history",
       "component": "StakingHistoryPage",
       "target": "./pages/EarnHistoryPage",
@@ -4448,14 +4458,6 @@
     {
       "path": "earn/savings/product/:productId",
       "component": "EarnProductDetailPage",
-      "target": "./pages/EarnTransactionPages",
-      "developmentOnly": false,
-      "source": "src/features/earn/routes.ts",
-      "pageTarget": "src/features/earn/pages/EarnTransactionPages.tsx"
-    },
-    {
-      "path": "earn/savings/receipt",
-      "component": "EarnReceiptPage",
       "target": "./pages/EarnTransactionPages",
       "developmentOnly": false,
       "source": "src/features/earn/routes.ts",

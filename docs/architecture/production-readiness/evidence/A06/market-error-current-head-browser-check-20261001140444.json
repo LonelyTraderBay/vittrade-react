@@ -1,0 +1,2044 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-01T14:05:08.600Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "origin": "http://127.0.0.1:4173",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sourceHashes": {
+    "contracts/openapi/market.yaml": "cca6ccf13d96a7a813c54734e5331a7620803f5a670355f6f3b72e4703a3e888",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
+    "docs/architecture/production-readiness/evidence/A06/run-market-error-current-head-browser-check.mjs": "d6b2be64ed0a4f142608e5c8c0648759bb4f5fd0fd99d9be29be3d0670512fde",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/dev/PreviewControls.test.tsx": "57c3dd1c161de8ed8bb1af9ef79fe7746dd3f9ea138493784488d3661b8fb023",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "b7068df1558e8efb458f5889c87bde27759acc3139a171ac885593386a78e34f",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.test.ts": "24459d271644c3b3785eeabcc6ab5c48dce879ab393cd8bb0ae0421a572d33ab",
+    "src/dev/mocks/preview-scenario-handler.ts": "52e22422548bcfe99731089c6b6297728c828047beaadec53bddec5a89148441",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/market/api/market-api.test.ts": "84779b171cf73fd525f4be9e70f7d8d1828fc2bf9f0f7db8bd7c363365b2e8e7",
+    "src/features/market/api/market-api.ts": "3ab429a7948f319f4a3e1e0dc7973ab9e7f1c3ea78d7a217fb3a3093f68ea7fa",
+    "src/features/market/api/market-research-schemas.ts": "7c81973c289d1d84e3e36bd72140fa6271e9048cbd51fe86000ee92e270a1b29",
+    "src/features/market/api/market-stream.test.ts": "d74520fc3b8155551629942f4284140c890162d29a5cc1ed9ec4dbbebbff88a3",
+    "src/features/market/api/market-stream.ts": "2f180b41cdf104f587c5379a461eddfc999e63002be21b85cfef693a1d0173ec",
+    "src/features/market/components/DiscoverMoreSection.test.tsx": "37e97f86826e2f39dd355614dc15fdcf97e8e6d94838231a37dce1839193ca28",
+    "src/features/market/components/DiscoverMoreSection.tsx": "0e265b047bcdb2e1a71d360ca92fb830aaf44720258091a16765668cfe17511c",
+    "src/features/market/components/MarketItem.test.tsx": "ddad251cacc91956c14e0f71c18fd89578b7c58fd4d3cab26a772c6a00b6871f",
+    "src/features/market/components/MarketItem.tsx": "1c1dfc0168d62a5da76f315c4cb54a7a54b6428d9ea390ac5dc838219af429ed",
+    "src/features/market/components/MarketListSections.tsx": "2eee9f7f8332874ddaf938d6aad1ef0b42bbe12870c7894c4e84d069fd6f5253",
+    "src/features/market/components/MarketOverviewSections.test.tsx": "39dba0ef32cf799bbeee9a213c10826518f376be53d3829ff8f934d4098ae8cc",
+    "src/features/market/components/MarketOverviewSections.tsx": "32ec470b2359f7482eb559f33335e5f7e8d70325a02cd42f7ff0ed9d304d9de6",
+    "src/features/market/index.ts": "55dcb78a910bddb973c12468d87a56f7f22dc8b963e4abef1f7cce3fc7774c97",
+    "src/features/market/lib/mutation-attempts.test.ts": "0af6ed7732ed6b6e81c77eea5adc2acd086bc4683f8d3b8f685432bda8cf2505",
+    "src/features/market/lib/mutation-attempts.ts": "b63723e88244482736aaa64af4f8f7c354293bc401fca61066d1503fbaa5d7cc",
+    "src/features/market/model/market-queries.test.tsx": "2782e8b7fb4c81790f7922c1c5b2310d40fe8e9e639bf4a36717463e865412ea",
+    "src/features/market/model/market-queries.ts": "0a493d15511d513b9ddb09cbf4457205dc86d12e93825e9043d310d68287c9f0",
+    "src/features/market/model/market-stream-types.ts": "e689a9fef9c3096a1be063c8798ae2224bf54ff92b3f4da10fbbfa227f2c3d49",
+    "src/features/market/model/market-types.ts": "edc3c4db22056bfcc439e74280fa9bd5fa6f7e65b88e1fc5381097acd4ea166b",
+    "src/features/market/pages/AdvancedChartsPage.test.tsx": "054143780da94fc048923586ae93d794728c47c24233a83147c17d18a0cc2fa2",
+    "src/features/market/pages/AdvancedChartsPage.tsx": "9f0915831407a38a78b0971e7f91940f7ae840a338e7c1efdbd8765e2b06563a",
+    "src/features/market/pages/MarketComparisonPage.test.tsx": "313040bc4874ce6249448f8c79698c185ddbf4486f7f49c41cfb58784ed0407b",
+    "src/features/market/pages/MarketComparisonPage.tsx": "fbec2337a0623720b61a15917ccf58dabf2ade0edf40478004720b777c49512f",
+    "src/features/market/pages/MarketCorrelationPairsPage.test.tsx": "4a215884ebad35d93bcfd87a80ae5d53c763d1186961dc8d4a5d6daddd96e6ab",
+    "src/features/market/pages/MarketCorrelationPairsPage.tsx": "44854b822785c563f6eb9919afe74f6f4cda6398cb9403f18dcc0e7d74a38949",
+    "src/features/market/pages/MarketDepthPage.test.tsx": "bc04399b944d8ca163e2bb8e7af14b3b1a2ee39dfe5239526d17fd8f50574b63",
+    "src/features/market/pages/MarketDepthPage.tsx": "4bfcd9541e7c7615f9606c1c1448bbeb145606b667bb9e2a937e38add91043f3",
+    "src/features/market/pages/MarketDerivativesPage.test.tsx": "02a12234a17e1b978c4c85017deba35178eb1cd26e34956320a5dff3f4cbbdff",
+    "src/features/market/pages/MarketDerivativesPage.tsx": "bed4580507d77fcab3ca62e41b88493f78a74286cf6377e48b9b959501faca6a",
+    "src/features/market/pages/MarketEventCalendarPage.test.tsx": "583486ea27269a9526af57e9ea7891928e718be848641bc5470f8e7f30e41e86",
+    "src/features/market/pages/MarketEventCalendarPage.tsx": "34d1b2a2ee341c8405a8be5ddf36f9cfe5dda4bb785dfa1ac402f47778970c13",
+    "src/features/market/pages/MarketHeatmapPage.test.tsx": "a4d21649e2a3bab0373844899d7be0d947122012e85ca44a588d9621de1251d5",
+    "src/features/market/pages/MarketHeatmapPage.tsx": "7b0a8a89fa8966e33cf440e1edf1f85f185957fe2c745489eed8940db4c946c1",
+    "src/features/market/pages/MarketHomePage.test.tsx": "6a8dce42b20ac273554dad27895c4bd0611c8aa0ae522a17167e1e309aadd2f6",
+    "src/features/market/pages/MarketHomePage.tsx": "473837995f85438514d174d9dbeba1411ba95dbb7fa5424788c7625fde6e34df",
+    "src/features/market/pages/MarketListPage.test.tsx": "4e4b657c121a9785ba37916e58120ff12bebee94e191e9c550a4aeac42858c23",
+    "src/features/market/pages/MarketListPage.tsx": "80d654b7b0a83828bc5bf11c8ab96ceaa92d347502168a4f6e64716adf3efcf6",
+    "src/features/market/pages/MarketMoversPage.test.tsx": "96b6424946931867c5b7024b31c668b7eabecaa3d0cc082aac30805f2f763656",
+    "src/features/market/pages/MarketMoversPage.tsx": "8c9026df94a3933e199ef758d86f3732c2a5099392b828aa0789f94690302e4e",
+    "src/features/market/pages/MarketNewsFeedPage.test.tsx": "de7e7a8861a3c386cd31590cedd6e13b2f0d5277c3520eaa8c6cfebadee8a69e",
+    "src/features/market/pages/MarketNewsFeedPage.tsx": "aedc9280943382a7d6cfb1bf7ccf81b5ab7276f897846ceb98c5cb2dc3d17ad6",
+    "src/features/market/pages/MarketOverviewPage.test.tsx": "ef4785a9bd8cb8de16820e5609ee9b73f7a28bf0b94c99e5960a0115b4a70529",
+    "src/features/market/pages/MarketOverviewPage.tsx": "6bd365548714f1ae9d20ff21c87099294675e33820f7cc8e9dbd1faabad9c879",
+    "src/features/market/pages/MarketPriceAlertsPage.tsx": "1fc40c3fa98721d75b7f30132d95ef7a8327d510c23ae15ef9933034a1d59225",
+    "src/features/market/pages/MarketScreenerPage.test.tsx": "c8f1187b06f44bb49d2682e89716dd840e6974ec72f274c6115ddcb79522028f",
+    "src/features/market/pages/MarketScreenerPage.tsx": "49f0999ccb8d19285c9210ea6278bd60e16d330833728fe536b769adb2f9957f",
+    "src/features/market/pages/MarketSectorsPage.test.tsx": "6ff8b53f7e6481d7bc7fd464823a0553933515bba207bd41d7f69974f6df8199",
+    "src/features/market/pages/MarketSectorsPage.tsx": "09f837e567cd9f87efd6fe85bf339bb1f5bf20209ca7b26e06314758b014c513",
+    "src/features/market/pages/MarketSentimentPage.test.tsx": "b6cba05d9bb3f1362857549102ed1f8136354af5cac4ad78644ab44d6dab52af",
+    "src/features/market/pages/MarketSentimentPage.tsx": "298d0c0dd595432f2c0cb12802a255ea6169d992ed75febf71664db9ddf1c081",
+    "src/features/market/pages/MarketSignalsPage.test.tsx": "9671dc0f22949f2989968668278680132b09e8d580f35bf7e5e294cb9d0d9777",
+    "src/features/market/pages/MarketSignalsPage.tsx": "34a929883dbc899bc41388b6f0f1d5bec89f77a6f3afa1851c680076b34f510e",
+    "src/features/market/pages/MarketWriteBoundary.test.tsx": "b45e4284b68efdb8851bcd8a2ae7c49a147b85fa15880b4082ee25f72fbbd14e",
+    "src/features/market/pages/PairDetailPage.test.tsx": "e515a33bdd7e810b1c67ed0fc08fa04ee6f7eb43037583347fbb95d7a2ec3302",
+    "src/features/market/pages/PairDetailPage.tsx": "3a9e69f652aaf5d2d94fb1a1dfca3bd2d0a57721aef5ce549dc336805abd151c",
+    "src/features/market/pages/TokenInfoPage.test.tsx": "89aa89dc2f4de6343e1a84922c1fe1adc4153edab5122c17dd604da0946da56f",
+    "src/features/market/pages/TokenInfoPage.tsx": "8807d10e05670ff981be7dae1c14d395e3aabe54c06000659f6e790484b5e144",
+    "src/features/market/pages/TokenUnlockSchedulePage.test.tsx": "c1b77179fc86889f3e6363b80195880bb42072faee80dfb74d7f12f6c9e2d02f",
+    "src/features/market/pages/TokenUnlockSchedulePage.tsx": "3b837c6443bb2239ca9979a5ea2b704e7a275991f68ff8a9679c6e7b03539a99",
+    "src/features/market/pages/WatchlistPage.test.tsx": "c952048030b07c28075855b73f2eb000343f64812889cfc96a21bdc347a213f4",
+    "src/features/market/pages/WatchlistPage.tsx": "26989ec1487c7f16faa14d6e4c165546b3355a33a021d66c49f74013248c2d11",
+    "src/features/market/routes.test.ts": "b7037e67cf1311d947c61f0f6035be51d62b93157fbb8d6e57defaa2c3ea2d47",
+    "src/features/market/routes.ts": "e740cab1f8617ce57b2e537a8a113ae0f301f6001f510ef080fa7fe0028c5ce3",
+    "src/shared/api/client.ts": "882197549d075a8be1f495c7d2271dcbf1530ff1606190531da59b75020977bb",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false
+  },
+  "classification": "current-head-evidence",
+  "scenario": {
+    "id": "market.error",
+    "domain": "market",
+    "state": "error",
+    "status": "passed",
+    "evidenceClass": "acceptance-candidate",
+    "observedAt": "2026-10-01T14:05:08.600Z",
+    "persona": "market (local MSW fixture; market:read, alert/watchlist writes only)",
+    "role": "user",
+    "routes": [
+      "/w/home",
+      "/w/markets/overview",
+      "/w/markets/movers",
+      "/w/markets/news",
+      "/w/markets/calendar",
+      "/w/markets/correlations",
+      "/w/markets/unlocks",
+      "/w/markets/derivatives",
+      "/w/markets/social-sentiment",
+      "/w/markets/signals",
+      "/w/markets/alerts",
+      "/w/markets/screener",
+      "/w/markets/watchlist",
+      "/w/pair/btcusdt",
+      "/w/markets/depth",
+      "/w/markets/compare",
+      "/w/markets/heatmap",
+      "/w/markets/sectors",
+      "/w/trade/advanced-chart/btcusdt",
+      "/w/pair/btcusdt/info"
+    ],
+    "route": "/w/markets/overview",
+    "operationIds": [
+      "addMarketWatchlistItem",
+      "createMarketPriceAlert",
+      "deleteMarketPriceAlert",
+      "deleteMarketWatchlistItem",
+      "getMarketCalendar",
+      "getMarketCandles",
+      "getMarketCorrelations",
+      "getMarketDerivatives",
+      "getMarketMovers",
+      "getMarketNews",
+      "getMarketOrderBook",
+      "getMarketOverview",
+      "getMarketPair",
+      "getMarketRecentTrades",
+      "getMarketSentiment",
+      "getMarketSignals",
+      "getMarketTokenUnlocks",
+      "getMarketWatchlist",
+      "listMarketPairs",
+      "listMarketPriceAlerts",
+      "updateMarketPriceAlert",
+      "updateMarketWatchlistItem"
+    ],
+    "observedOperationIds": [
+      "getMarketCalendar",
+      "getMarketCorrelations",
+      "getMarketDerivatives",
+      "getMarketMovers",
+      "getMarketNews",
+      "getMarketOrderBook",
+      "getMarketOverview",
+      "getMarketPair",
+      "getMarketRecentTrades",
+      "getMarketSentiment",
+      "getMarketSignals",
+      "getMarketTokenUnlocks",
+      "getMarketWatchlist",
+      "listMarketPairs",
+      "listMarketPriceAlerts"
+    ],
+    "operationRequestCounts": {
+      "addMarketWatchlistItem": 0,
+      "createMarketPriceAlert": 0,
+      "deleteMarketPriceAlert": 0,
+      "deleteMarketWatchlistItem": 0,
+      "getMarketCalendar": 3,
+      "getMarketCandles": 0,
+      "getMarketCorrelations": 3,
+      "getMarketDerivatives": 3,
+      "getMarketMovers": 3,
+      "getMarketNews": 3,
+      "getMarketOrderBook": 3,
+      "getMarketOverview": 12,
+      "getMarketPair": 9,
+      "getMarketRecentTrades": 3,
+      "getMarketSentiment": 3,
+      "getMarketSignals": 3,
+      "getMarketTokenUnlocks": 3,
+      "getMarketWatchlist": 9,
+      "listMarketPairs": 24,
+      "listMarketPriceAlerts": 3,
+      "updateMarketPriceAlert": 0,
+      "updateMarketWatchlistItem": 0
+    },
+    "requests": [
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 1,
+        "routeAtRequest": "/w/home"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "sequence": 2,
+        "routeAtRequest": "/w/home"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 3,
+        "routeAtRequest": "/w/home"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "sequence": 4,
+        "routeAtRequest": "/w/home"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 5,
+        "routeAtRequest": "/w/home"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "sequence": 6,
+        "routeAtRequest": "/w/home"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "path": "/api/market/overview",
+        "sequence": 7,
+        "routeAtRequest": "/w/markets/overview"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "path": "/api/market/overview",
+        "sequence": 8,
+        "routeAtRequest": "/w/markets/overview"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "path": "/api/market/overview",
+        "sequence": 9,
+        "routeAtRequest": "/w/markets/overview"
+      },
+      {
+        "operationId": "getMarketMovers",
+        "method": "GET",
+        "path": "/api/market/movers",
+        "sequence": 10,
+        "routeAtRequest": "/w/markets/movers"
+      },
+      {
+        "operationId": "getMarketMovers",
+        "method": "GET",
+        "path": "/api/market/movers",
+        "sequence": 11,
+        "routeAtRequest": "/w/markets/movers"
+      },
+      {
+        "operationId": "getMarketMovers",
+        "method": "GET",
+        "path": "/api/market/movers",
+        "sequence": 12,
+        "routeAtRequest": "/w/markets/movers"
+      },
+      {
+        "operationId": "getMarketNews",
+        "method": "GET",
+        "path": "/api/market/news",
+        "sequence": 13,
+        "routeAtRequest": "/w/markets/news"
+      },
+      {
+        "operationId": "getMarketNews",
+        "method": "GET",
+        "path": "/api/market/news",
+        "sequence": 14,
+        "routeAtRequest": "/w/markets/news"
+      },
+      {
+        "operationId": "getMarketNews",
+        "method": "GET",
+        "path": "/api/market/news",
+        "sequence": 15,
+        "routeAtRequest": "/w/markets/news"
+      },
+      {
+        "operationId": "getMarketCalendar",
+        "method": "GET",
+        "path": "/api/market/calendar",
+        "sequence": 16,
+        "routeAtRequest": "/w/markets/calendar"
+      },
+      {
+        "operationId": "getMarketCalendar",
+        "method": "GET",
+        "path": "/api/market/calendar",
+        "sequence": 17,
+        "routeAtRequest": "/w/markets/calendar"
+      },
+      {
+        "operationId": "getMarketCalendar",
+        "method": "GET",
+        "path": "/api/market/calendar",
+        "sequence": 18,
+        "routeAtRequest": "/w/markets/calendar"
+      },
+      {
+        "operationId": "getMarketCorrelations",
+        "method": "GET",
+        "path": "/api/market/correlations",
+        "sequence": 19,
+        "routeAtRequest": "/w/markets/correlations"
+      },
+      {
+        "operationId": "getMarketCorrelations",
+        "method": "GET",
+        "path": "/api/market/correlations",
+        "sequence": 20,
+        "routeAtRequest": "/w/markets/correlations"
+      },
+      {
+        "operationId": "getMarketCorrelations",
+        "method": "GET",
+        "path": "/api/market/correlations",
+        "sequence": 21,
+        "routeAtRequest": "/w/markets/correlations"
+      },
+      {
+        "operationId": "getMarketTokenUnlocks",
+        "method": "GET",
+        "path": "/api/market/unlocks",
+        "sequence": 22,
+        "routeAtRequest": "/w/markets/unlocks"
+      },
+      {
+        "operationId": "getMarketTokenUnlocks",
+        "method": "GET",
+        "path": "/api/market/unlocks",
+        "sequence": 23,
+        "routeAtRequest": "/w/markets/unlocks"
+      },
+      {
+        "operationId": "getMarketTokenUnlocks",
+        "method": "GET",
+        "path": "/api/market/unlocks",
+        "sequence": 24,
+        "routeAtRequest": "/w/markets/unlocks"
+      },
+      {
+        "operationId": "getMarketDerivatives",
+        "method": "GET",
+        "path": "/api/market/derivatives",
+        "sequence": 25,
+        "routeAtRequest": "/w/markets/derivatives"
+      },
+      {
+        "operationId": "getMarketDerivatives",
+        "method": "GET",
+        "path": "/api/market/derivatives",
+        "sequence": 26,
+        "routeAtRequest": "/w/markets/derivatives"
+      },
+      {
+        "operationId": "getMarketDerivatives",
+        "method": "GET",
+        "path": "/api/market/derivatives",
+        "sequence": 27,
+        "routeAtRequest": "/w/markets/derivatives"
+      },
+      {
+        "operationId": "getMarketSentiment",
+        "method": "GET",
+        "path": "/api/market/sentiment",
+        "sequence": 28,
+        "routeAtRequest": "/w/markets/social-sentiment"
+      },
+      {
+        "operationId": "getMarketSentiment",
+        "method": "GET",
+        "path": "/api/market/sentiment",
+        "sequence": 29,
+        "routeAtRequest": "/w/markets/social-sentiment"
+      },
+      {
+        "operationId": "getMarketSentiment",
+        "method": "GET",
+        "path": "/api/market/sentiment",
+        "sequence": 30,
+        "routeAtRequest": "/w/markets/social-sentiment"
+      },
+      {
+        "operationId": "getMarketSignals",
+        "method": "GET",
+        "path": "/api/market/signals",
+        "sequence": 31,
+        "routeAtRequest": "/w/markets/signals"
+      },
+      {
+        "operationId": "getMarketSignals",
+        "method": "GET",
+        "path": "/api/market/signals",
+        "sequence": 32,
+        "routeAtRequest": "/w/markets/signals"
+      },
+      {
+        "operationId": "getMarketSignals",
+        "method": "GET",
+        "path": "/api/market/signals",
+        "sequence": 33,
+        "routeAtRequest": "/w/markets/signals"
+      },
+      {
+        "operationId": "listMarketPriceAlerts",
+        "method": "GET",
+        "path": "/api/market/price-alerts",
+        "sequence": 34,
+        "routeAtRequest": "/w/markets/alerts"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 35,
+        "routeAtRequest": "/w/markets/alerts"
+      },
+      {
+        "operationId": "listMarketPriceAlerts",
+        "method": "GET",
+        "path": "/api/market/price-alerts",
+        "sequence": 36,
+        "routeAtRequest": "/w/markets/alerts"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 37,
+        "routeAtRequest": "/w/markets/alerts"
+      },
+      {
+        "operationId": "listMarketPriceAlerts",
+        "method": "GET",
+        "path": "/api/market/price-alerts",
+        "sequence": 38,
+        "routeAtRequest": "/w/markets/alerts"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 39,
+        "routeAtRequest": "/w/markets/alerts"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 40,
+        "routeAtRequest": "/w/markets/screener"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 41,
+        "routeAtRequest": "/w/markets/screener"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 42,
+        "routeAtRequest": "/w/markets/screener"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 43,
+        "routeAtRequest": "/w/markets/watchlist"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "sequence": 44,
+        "routeAtRequest": "/w/markets/watchlist"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 45,
+        "routeAtRequest": "/w/markets/watchlist"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "sequence": 46,
+        "routeAtRequest": "/w/markets/watchlist"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 47,
+        "routeAtRequest": "/w/markets/watchlist"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "sequence": 48,
+        "routeAtRequest": "/w/markets/watchlist"
+      },
+      {
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt",
+        "sequence": 49,
+        "routeAtRequest": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketOrderBook",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt/orderbook",
+        "sequence": 50,
+        "routeAtRequest": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketRecentTrades",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt/trades",
+        "sequence": 51,
+        "routeAtRequest": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "sequence": 52,
+        "routeAtRequest": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt",
+        "sequence": 53,
+        "routeAtRequest": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketOrderBook",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt/orderbook",
+        "sequence": 54,
+        "routeAtRequest": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketRecentTrades",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt/trades",
+        "sequence": 55,
+        "routeAtRequest": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "sequence": 56,
+        "routeAtRequest": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt",
+        "sequence": 57,
+        "routeAtRequest": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketOrderBook",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt/orderbook",
+        "sequence": 58,
+        "routeAtRequest": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketRecentTrades",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt/trades",
+        "sequence": 59,
+        "routeAtRequest": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "sequence": 60,
+        "routeAtRequest": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 61,
+        "routeAtRequest": "/w/markets/depth"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 62,
+        "routeAtRequest": "/w/markets/depth"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 63,
+        "routeAtRequest": "/w/markets/depth"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 64,
+        "routeAtRequest": "/w/markets/compare"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 65,
+        "routeAtRequest": "/w/markets/compare"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 66,
+        "routeAtRequest": "/w/markets/compare"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 67,
+        "routeAtRequest": "/w/markets/heatmap"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 68,
+        "routeAtRequest": "/w/markets/heatmap"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 69,
+        "routeAtRequest": "/w/markets/heatmap"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "path": "/api/market/overview",
+        "sequence": 70,
+        "routeAtRequest": "/w/markets/sectors"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "path": "/api/market/overview",
+        "sequence": 71,
+        "routeAtRequest": "/w/markets/sectors"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "path": "/api/market/overview",
+        "sequence": 72,
+        "routeAtRequest": "/w/markets/sectors"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 73,
+        "routeAtRequest": "/w/trade/advanced-chart/btcusdt"
+      },
+      {
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt",
+        "sequence": 74,
+        "routeAtRequest": "/w/trade/advanced-chart/btcusdt"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 75,
+        "routeAtRequest": "/w/trade/advanced-chart/btcusdt"
+      },
+      {
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt",
+        "sequence": 76,
+        "routeAtRequest": "/w/trade/advanced-chart/btcusdt"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "sequence": 77,
+        "routeAtRequest": "/w/trade/advanced-chart/btcusdt"
+      },
+      {
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt",
+        "sequence": 78,
+        "routeAtRequest": "/w/trade/advanced-chart/btcusdt"
+      },
+      {
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt",
+        "sequence": 79,
+        "routeAtRequest": "/w/pair/btcusdt/info"
+      },
+      {
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt",
+        "sequence": 80,
+        "routeAtRequest": "/w/pair/btcusdt/info"
+      },
+      {
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "path": "/api/market/pairs/btcusdt",
+        "sequence": 81,
+        "routeAtRequest": "/w/pair/btcusdt/info"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "path": "/api/market/overview",
+        "sequence": 82,
+        "routeAtRequest": "/w/markets/overview"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "path": "/api/market/overview",
+        "sequence": 83,
+        "routeAtRequest": "/w/markets/overview"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "path": "/api/market/overview",
+        "sequence": 84,
+        "routeAtRequest": "/w/markets/overview"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "path": "/api/market/overview",
+        "sequence": 85,
+        "routeAtRequest": "/w/markets/overview"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "path": "/api/market/overview",
+        "sequence": 86,
+        "routeAtRequest": "/w/markets/overview"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "path": "/api/market/overview",
+        "sequence": 87,
+        "routeAtRequest": "/w/markets/overview"
+      }
+    ],
+    "responses": [
+      {
+        "operationId": "getMarketNews",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 4,
+        "sequence": 13,
+        "routeAtRequest": "/w/markets/news"
+      },
+      {
+        "operationId": "getMarketNews",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 1,
+        "sequence": 14,
+        "routeAtRequest": "/w/markets/news"
+      },
+      {
+        "operationId": "getMarketNews",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 1,
+        "sequence": 15,
+        "routeAtRequest": "/w/markets/news"
+      },
+      {
+        "operationId": "getMarketCalendar",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2,
+        "sequence": 16,
+        "routeAtRequest": "/w/markets/calendar"
+      },
+      {
+        "operationId": "getMarketCalendar",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 0,
+        "sequence": 17,
+        "routeAtRequest": "/w/markets/calendar"
+      },
+      {
+        "operationId": "getMarketCalendar",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 1,
+        "sequence": 18,
+        "routeAtRequest": "/w/markets/calendar"
+      },
+      {
+        "operationId": "getMarketCorrelations",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 3,
+        "sequence": 19,
+        "routeAtRequest": "/w/markets/correlations"
+      },
+      {
+        "operationId": "getMarketCorrelations",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 1,
+        "sequence": 20,
+        "routeAtRequest": "/w/markets/correlations"
+      },
+      {
+        "operationId": "getMarketCorrelations",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 1,
+        "sequence": 21,
+        "routeAtRequest": "/w/markets/correlations"
+      },
+      {
+        "operationId": "getMarketTokenUnlocks",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 3,
+        "sequence": 22,
+        "routeAtRequest": "/w/markets/unlocks"
+      },
+      {
+        "operationId": "getMarketTokenUnlocks",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 1,
+        "sequence": 23,
+        "routeAtRequest": "/w/markets/unlocks"
+      },
+      {
+        "operationId": "getMarketTokenUnlocks",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 1,
+        "sequence": 24,
+        "routeAtRequest": "/w/markets/unlocks"
+      },
+      {
+        "operationId": "getMarketDerivatives",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2,
+        "sequence": 25,
+        "routeAtRequest": "/w/markets/derivatives"
+      },
+      {
+        "operationId": "getMarketDerivatives",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 1,
+        "sequence": 26,
+        "routeAtRequest": "/w/markets/derivatives"
+      },
+      {
+        "operationId": "getMarketDerivatives",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 0,
+        "sequence": 27,
+        "routeAtRequest": "/w/markets/derivatives"
+      },
+      {
+        "operationId": "getMarketSentiment",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2,
+        "sequence": 28,
+        "routeAtRequest": "/w/markets/social-sentiment"
+      },
+      {
+        "operationId": "getMarketSentiment",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 1,
+        "sequence": 29,
+        "routeAtRequest": "/w/markets/social-sentiment"
+      },
+      {
+        "operationId": "getMarketSentiment",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 1,
+        "sequence": 30,
+        "routeAtRequest": "/w/markets/social-sentiment"
+      },
+      {
+        "operationId": "getMarketSignals",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 2,
+        "sequence": 31,
+        "routeAtRequest": "/w/markets/signals"
+      },
+      {
+        "operationId": "getMarketSignals",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 1,
+        "sequence": 32,
+        "routeAtRequest": "/w/markets/signals"
+      },
+      {
+        "operationId": "getMarketSignals",
+        "method": "GET",
+        "status": 503,
+        "fromServiceWorker": true,
+        "elapsedMs": 1,
+        "sequence": 33,
+        "routeAtRequest": "/w/markets/signals"
+      }
+    ],
+    "requestFailures": [
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 1,
+        "routeAtRequest": "/w/home",
+        "routeAtFailure": "/w/home"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 2,
+        "routeAtRequest": "/w/home",
+        "routeAtFailure": "/w/home"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 3,
+        "routeAtRequest": "/w/home",
+        "routeAtFailure": "/w/home"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 4,
+        "routeAtRequest": "/w/home",
+        "routeAtFailure": "/w/home"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 5,
+        "routeAtRequest": "/w/home",
+        "routeAtFailure": "/w/home"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 6,
+        "routeAtRequest": "/w/home",
+        "routeAtFailure": "/w/home"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 7,
+        "routeAtRequest": "/w/markets/overview",
+        "routeAtFailure": "/w/markets/overview"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 8,
+        "routeAtRequest": "/w/markets/overview",
+        "routeAtFailure": "/w/markets/overview"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 9,
+        "routeAtRequest": "/w/markets/overview",
+        "routeAtFailure": "/w/markets/overview"
+      },
+      {
+        "operationId": "getMarketMovers",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 10,
+        "routeAtRequest": "/w/markets/movers",
+        "routeAtFailure": "/w/markets/movers"
+      },
+      {
+        "operationId": "getMarketMovers",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 11,
+        "routeAtRequest": "/w/markets/movers",
+        "routeAtFailure": "/w/markets/movers"
+      },
+      {
+        "operationId": "getMarketMovers",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 12,
+        "routeAtRequest": "/w/markets/movers",
+        "routeAtFailure": "/w/markets/movers"
+      },
+      {
+        "operationId": "listMarketPriceAlerts",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 34,
+        "routeAtRequest": "/w/markets/alerts",
+        "routeAtFailure": "/w/markets/alerts"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 35,
+        "routeAtRequest": "/w/markets/alerts",
+        "routeAtFailure": "/w/markets/alerts"
+      },
+      {
+        "operationId": "listMarketPriceAlerts",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 36,
+        "routeAtRequest": "/w/markets/alerts",
+        "routeAtFailure": "/w/markets/alerts"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 37,
+        "routeAtRequest": "/w/markets/alerts",
+        "routeAtFailure": "/w/markets/alerts"
+      },
+      {
+        "operationId": "listMarketPriceAlerts",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 38,
+        "routeAtRequest": "/w/markets/alerts",
+        "routeAtFailure": "/w/markets/alerts"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 39,
+        "routeAtRequest": "/w/markets/alerts",
+        "routeAtFailure": "/w/markets/alerts"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 40,
+        "routeAtRequest": "/w/markets/screener",
+        "routeAtFailure": "/w/markets/screener"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 41,
+        "routeAtRequest": "/w/markets/screener",
+        "routeAtFailure": "/w/markets/screener"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 42,
+        "routeAtRequest": "/w/markets/screener",
+        "routeAtFailure": "/w/markets/screener"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 43,
+        "routeAtRequest": "/w/markets/watchlist",
+        "routeAtFailure": "/w/markets/watchlist"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 44,
+        "routeAtRequest": "/w/markets/watchlist",
+        "routeAtFailure": "/w/markets/watchlist"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 45,
+        "routeAtRequest": "/w/markets/watchlist",
+        "routeAtFailure": "/w/markets/watchlist"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 46,
+        "routeAtRequest": "/w/markets/watchlist",
+        "routeAtFailure": "/w/markets/watchlist"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 47,
+        "routeAtRequest": "/w/markets/watchlist",
+        "routeAtFailure": "/w/markets/watchlist"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 48,
+        "routeAtRequest": "/w/markets/watchlist",
+        "routeAtFailure": "/w/markets/watchlist"
+      },
+      {
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 49,
+        "routeAtRequest": "/w/pair/btcusdt",
+        "routeAtFailure": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketOrderBook",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 50,
+        "routeAtRequest": "/w/pair/btcusdt",
+        "routeAtFailure": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketRecentTrades",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 51,
+        "routeAtRequest": "/w/pair/btcusdt",
+        "routeAtFailure": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 52,
+        "routeAtRequest": "/w/pair/btcusdt",
+        "routeAtFailure": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 53,
+        "routeAtRequest": "/w/pair/btcusdt",
+        "routeAtFailure": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketOrderBook",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 54,
+        "routeAtRequest": "/w/pair/btcusdt",
+        "routeAtFailure": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketRecentTrades",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 55,
+        "routeAtRequest": "/w/pair/btcusdt",
+        "routeAtFailure": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 56,
+        "routeAtRequest": "/w/pair/btcusdt",
+        "routeAtFailure": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 57,
+        "routeAtRequest": "/w/pair/btcusdt",
+        "routeAtFailure": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketOrderBook",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 58,
+        "routeAtRequest": "/w/pair/btcusdt",
+        "routeAtFailure": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketRecentTrades",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 59,
+        "routeAtRequest": "/w/pair/btcusdt",
+        "routeAtFailure": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 60,
+        "routeAtRequest": "/w/pair/btcusdt",
+        "routeAtFailure": "/w/pair/btcusdt"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 61,
+        "routeAtRequest": "/w/markets/depth",
+        "routeAtFailure": "/w/markets/depth"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 62,
+        "routeAtRequest": "/w/markets/depth",
+        "routeAtFailure": "/w/markets/depth"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 63,
+        "routeAtRequest": "/w/markets/depth",
+        "routeAtFailure": "/w/markets/depth"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 64,
+        "routeAtRequest": "/w/markets/compare",
+        "routeAtFailure": "/w/markets/compare"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 65,
+        "routeAtRequest": "/w/markets/compare",
+        "routeAtFailure": "/w/markets/compare"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 66,
+        "routeAtRequest": "/w/markets/compare",
+        "routeAtFailure": "/w/markets/compare"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 67,
+        "routeAtRequest": "/w/markets/heatmap",
+        "routeAtFailure": "/w/markets/heatmap"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 68,
+        "routeAtRequest": "/w/markets/heatmap",
+        "routeAtFailure": "/w/markets/heatmap"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 69,
+        "routeAtRequest": "/w/markets/heatmap",
+        "routeAtFailure": "/w/markets/heatmap"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 70,
+        "routeAtRequest": "/w/markets/sectors",
+        "routeAtFailure": "/w/markets/sectors"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 71,
+        "routeAtRequest": "/w/markets/sectors",
+        "routeAtFailure": "/w/markets/sectors"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 72,
+        "routeAtRequest": "/w/markets/sectors",
+        "routeAtFailure": "/w/markets/sectors"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 73,
+        "routeAtRequest": "/w/trade/advanced-chart/btcusdt",
+        "routeAtFailure": "/w/trade/advanced-chart/btcusdt"
+      },
+      {
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 74,
+        "routeAtRequest": "/w/trade/advanced-chart/btcusdt",
+        "routeAtFailure": "/w/trade/advanced-chart/btcusdt"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 75,
+        "routeAtRequest": "/w/trade/advanced-chart/btcusdt",
+        "routeAtFailure": "/w/trade/advanced-chart/btcusdt"
+      },
+      {
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 76,
+        "routeAtRequest": "/w/trade/advanced-chart/btcusdt",
+        "routeAtFailure": "/w/trade/advanced-chart/btcusdt"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 77,
+        "routeAtRequest": "/w/trade/advanced-chart/btcusdt",
+        "routeAtFailure": "/w/trade/advanced-chart/btcusdt"
+      },
+      {
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 78,
+        "routeAtRequest": "/w/trade/advanced-chart/btcusdt",
+        "routeAtFailure": "/w/trade/advanced-chart/btcusdt"
+      },
+      {
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 79,
+        "routeAtRequest": "/w/pair/btcusdt/info",
+        "routeAtFailure": "/w/pair/btcusdt/info"
+      },
+      {
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 80,
+        "routeAtRequest": "/w/pair/btcusdt/info",
+        "routeAtFailure": "/w/pair/btcusdt/info"
+      },
+      {
+        "operationId": "getMarketPair",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 81,
+        "routeAtRequest": "/w/pair/btcusdt/info",
+        "routeAtFailure": "/w/pair/btcusdt/info"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 82,
+        "routeAtRequest": "/w/markets/overview",
+        "routeAtFailure": "/w/markets/overview"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 83,
+        "routeAtRequest": "/w/markets/overview",
+        "routeAtFailure": "/w/markets/overview"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 84,
+        "routeAtRequest": "/w/markets/overview",
+        "routeAtFailure": "/w/markets/overview"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 85,
+        "routeAtRequest": "/w/markets/overview",
+        "routeAtFailure": "/w/markets/overview"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 86,
+        "routeAtRequest": "/w/markets/overview",
+        "routeAtFailure": "/w/markets/overview"
+      },
+      {
+        "operationId": "getMarketOverview",
+        "method": "GET",
+        "errorText": "net::ERR_FAILED",
+        "sequence": 87,
+        "routeAtRequest": "/w/markets/overview",
+        "routeAtFailure": "/w/markets/overview"
+      }
+    ],
+    "observedReadOperationIds": [
+      "getMarketCalendar",
+      "getMarketCorrelations",
+      "getMarketDerivatives",
+      "getMarketMovers",
+      "getMarketNews",
+      "getMarketOrderBook",
+      "getMarketOverview",
+      "getMarketPair",
+      "getMarketRecentTrades",
+      "getMarketSentiment",
+      "getMarketSignals",
+      "getMarketTokenUnlocks",
+      "getMarketWatchlist",
+      "listMarketPairs",
+      "listMarketPriceAlerts"
+    ],
+    "observedWriteOperationIds": [],
+    "provider503OperationIds": [
+      "getMarketCalendar",
+      "getMarketCorrelations",
+      "getMarketDerivatives",
+      "getMarketNews",
+      "getMarketSentiment",
+      "getMarketSignals",
+      "getMarketTokenUnlocks"
+    ],
+    "readWithout5xxOperationIds": [
+      "getMarketOverview",
+      "getMarketMovers",
+      "listMarketPriceAlerts",
+      "listMarketPairs",
+      "getMarketPair",
+      "getMarketWatchlist",
+      "getMarketOrderBook",
+      "getMarketRecentTrades",
+      "getMarketCandles"
+    ],
+    "routeResults": [
+      {
+        "path": "/w/home",
+        "errorVisible": true,
+        "retryVisible": true,
+        "operationIds": ["getMarketWatchlist", "listMarketPairs"],
+        "errorAttempts": {
+          "getMarketWatchlist": 3,
+          "listMarketPairs": 3
+        },
+        "responseStatuses": [],
+        "failedOperationIds": ["getMarketWatchlist", "listMarketPairs"],
+        "screenshot": "preview-market-error-home-20261001140444.png"
+      },
+      {
+        "path": "/w/markets/overview",
+        "errorVisible": true,
+        "retryVisible": true,
+        "operationIds": ["getMarketOverview"],
+        "errorAttempts": {
+          "getMarketOverview": 3
+        },
+        "responseStatuses": [],
+        "failedOperationIds": ["getMarketOverview"],
+        "screenshot": "preview-market-error-overview-20261001140444.png"
+      },
+      {
+        "path": "/w/markets/movers",
+        "errorVisible": true,
+        "retryVisible": true,
+        "operationIds": ["getMarketMovers"],
+        "errorAttempts": {
+          "getMarketMovers": 3
+        },
+        "responseStatuses": [],
+        "failedOperationIds": ["getMarketMovers"],
+        "screenshot": "preview-market-error-markets-movers-20261001140444.png"
+      },
+      {
+        "path": "/w/markets/news",
+        "errorVisible": true,
+        "retryVisible": true,
+        "operationIds": ["getMarketNews"],
+        "errorAttempts": {
+          "getMarketNews": 3
+        },
+        "responseStatuses": [
+          {
+            "operationId": "getMarketNews",
+            "status": 503,
+            "fromServiceWorker": true
+          },
+          {
+            "operationId": "getMarketNews",
+            "status": 503,
+            "fromServiceWorker": true
+          },
+          {
+            "operationId": "getMarketNews",
+            "status": 503,
+            "fromServiceWorker": true
+          }
+        ],
+        "failedOperationIds": [],
+        "screenshot": "preview-market-error-markets-news-20261001140444.png"
+      },
+      {
+        "path": "/w/markets/calendar",
+        "errorVisible": true,
+        "retryVisible": true,
+        "operationIds": ["getMarketCalendar"],
+        "errorAttempts": {
+          "getMarketCalendar": 3
+        },
+        "responseStatuses": [
+          {
+            "operationId": "getMarketCalendar",
+            "status": 503,
+            "fromServiceWorker": true
+          },
+          {
+            "operationId": "getMarketCalendar",
+            "status": 503,
+            "fromServiceWorker": true
+          },
+          {
+            "operationId": "getMarketCalendar",
+            "status": 503,
+            "fromServiceWorker": true
+          }
+        ],
+        "failedOperationIds": [],
+        "screenshot": null
+      },
+      {
+        "path": "/w/markets/correlations",
+        "errorVisible": true,
+        "retryVisible": true,
+        "operationIds": ["getMarketCorrelations"],
+        "errorAttempts": {
+          "getMarketCorrelations": 3
+        },
+        "responseStatuses": [
+          {
+            "operationId": "getMarketCorrelations",
+            "status": 503,
+            "fromServiceWorker": true
+          },
+          {
+            "operationId": "getMarketCorrelations",
+            "status": 503,
+            "fromServiceWorker": true
+          },
+          {
+            "operationId": "getMarketCorrelations",
+            "status": 503,
+            "fromServiceWorker": true
+          }
+        ],
+        "failedOperationIds": [],
+        "screenshot": null
+      },
+      {
+        "path": "/w/markets/unlocks",
+        "errorVisible": true,
+        "retryVisible": true,
+        "operationIds": ["getMarketTokenUnlocks"],
+        "errorAttempts": {
+          "getMarketTokenUnlocks": 3
+        },
+        "responseStatuses": [
+          {
+            "operationId": "getMarketTokenUnlocks",
+            "status": 503,
+            "fromServiceWorker": true
+          },
+          {
+            "operationId": "getMarketTokenUnlocks",
+            "status": 503,
+            "fromServiceWorker": true
+          },
+          {
+            "operationId": "getMarketTokenUnlocks",
+            "status": 503,
+            "fromServiceWorker": true
+          }
+        ],
+        "failedOperationIds": [],
+        "screenshot": null
+      },
+      {
+        "path": "/w/markets/derivatives",
+        "errorVisible": true,
+        "retryVisible": true,
+        "operationIds": ["getMarketDerivatives"],
+        "errorAttempts": {
+          "getMarketDerivatives": 3
+        },
+        "responseStatuses": [
+          {
+            "operationId": "getMarketDerivatives",
+            "status": 503,
+            "fromServiceWorker": true
+          },
+          {
+            "operationId": "getMarketDerivatives",
+            "status": 503,
+            "fromServiceWorker": true
+          },
+          {
+            "operationId": "getMarketDerivatives",
+            "status": 503,
+            "fromServiceWorker": true
+          }
+        ],
+        "failedOperationIds": [],
+        "screenshot": null
+      },
+      {
+        "path": "/w/markets/social-sentiment",
+        "errorVisible": true,
+        "retryVisible": true,
+        "operationIds": ["getMarketSentiment"],
+        "errorAttempts": {
+          "getMarketSentiment": 3
+        },
+        "responseStatuses": [
+          {
+            "operationId": "getMarketSentiment",
+            "status": 503,
+            "fromServiceWorker": true
+          },
+          {
+            "operationId": "getMarketSentiment",
+            "status": 503,
+            "fromServiceWorker": true
+          },
+          {
+            "operationId": "getMarketSentiment",
+            "status": 503,
+            "fromServiceWorker": true
+          }
+        ],
+        "failedOperationIds": [],
+        "screenshot": null
+      },
+      {
+        "path": "/w/markets/signals",
+        "errorVisible": true,
+        "retryVisible": true,
+        "operationIds": ["getMarketSignals"],
+        "errorAttempts": {
+          "getMarketSignals": 3
+        },
+        "responseStatuses": [
+          {
+            "operationId": "getMarketSignals",
+            "status": 503,
+            "fromServiceWorker": true
+          },
+          {
+            "operationId": "getMarketSignals",
+            "status": 503,
+            "fromServiceWorker": true
+          },
+          {
+            "operationId": "getMarketSignals",
+            "status": 503,
+            "fromServiceWorker": true
+          }
+        ],
+        "failedOperationIds": [],
+        "screenshot": null
+      },
+      {
+        "path": "/w/markets/alerts",
+        "errorVisible": true,
+        "retryVisible": true,
+        "operationIds": ["listMarketPairs", "listMarketPriceAlerts"],
+        "errorAttempts": {
+          "listMarketPairs": 3,
+          "listMarketPriceAlerts": 3
+        },
+        "responseStatuses": [],
+        "failedOperationIds": ["listMarketPairs", "listMarketPriceAlerts"],
+        "screenshot": null
+      },
+      {
+        "path": "/w/markets/screener",
+        "errorVisible": true,
+        "retryVisible": true,
+        "operationIds": ["listMarketPairs"],
+        "errorAttempts": {
+          "listMarketPairs": 3
+        },
+        "responseStatuses": [],
+        "failedOperationIds": ["listMarketPairs"],
+        "screenshot": null
+      },
+      {
+        "path": "/w/markets/watchlist",
+        "errorVisible": true,
+        "retryVisible": true,
+        "operationIds": ["getMarketWatchlist", "listMarketPairs"],
+        "errorAttempts": {
+          "getMarketWatchlist": 3,
+          "listMarketPairs": 3
+        },
+        "responseStatuses": [],
+        "failedOperationIds": ["getMarketWatchlist", "listMarketPairs"],
+        "screenshot": null
+      },
+      {
+        "path": "/w/pair/btcusdt",
+        "errorVisible": true,
+        "retryVisible": true,
+        "operationIds": [
+          "getMarketOrderBook",
+          "getMarketPair",
+          "getMarketRecentTrades",
+          "getMarketWatchlist"
+        ],
+        "errorAttempts": {
+          "getMarketPair": 3,
+          "getMarketOrderBook": 3,
+          "getMarketRecentTrades": 3,
+          "getMarketWatchlist": 3
+        },
+        "responseStatuses": [],
+        "failedOperationIds": [
+          "getMarketOrderBook",
+          "getMarketPair",
+          "getMarketRecentTrades",
+          "getMarketWatchlist"
+        ],
+        "screenshot": "preview-market-error-pair-btcusdt-20261001140444.png"
+      },
+      {
+        "path": "/w/markets/depth",
+        "errorVisible": true,
+        "retryVisible": true,
+        "operationIds": ["listMarketPairs"],
+        "errorAttempts": {
+          "listMarketPairs": 3
+        },
+        "responseStatuses": [],
+        "failedOperationIds": ["listMarketPairs"],
+        "screenshot": "preview-market-error-markets-depth-20261001140444.png"
+      },
+      {
+        "path": "/w/markets/compare",
+        "errorVisible": true,
+        "retryVisible": true,
+        "operationIds": ["listMarketPairs"],
+        "errorAttempts": {
+          "listMarketPairs": 3
+        },
+        "responseStatuses": [],
+        "failedOperationIds": ["listMarketPairs"],
+        "screenshot": null
+      },
+      {
+        "path": "/w/markets/heatmap",
+        "errorVisible": true,
+        "retryVisible": true,
+        "operationIds": ["listMarketPairs"],
+        "errorAttempts": {
+          "listMarketPairs": 3
+        },
+        "responseStatuses": [],
+        "failedOperationIds": ["listMarketPairs"],
+        "screenshot": null
+      },
+      {
+        "path": "/w/markets/sectors",
+        "errorVisible": true,
+        "retryVisible": true,
+        "operationIds": ["getMarketOverview"],
+        "errorAttempts": {
+          "getMarketOverview": 3
+        },
+        "responseStatuses": [],
+        "failedOperationIds": ["getMarketOverview"],
+        "screenshot": null
+      },
+      {
+        "path": "/w/trade/advanced-chart/btcusdt",
+        "errorVisible": true,
+        "retryVisible": true,
+        "operationIds": ["getMarketPair", "listMarketPairs"],
+        "errorAttempts": {
+          "getMarketPair": 3,
+          "listMarketPairs": 3
+        },
+        "responseStatuses": [],
+        "failedOperationIds": ["getMarketPair", "listMarketPairs"],
+        "screenshot": "preview-market-error-trade-advanced-chart-btcusdt-20261001140444.png"
+      },
+      {
+        "path": "/w/pair/btcusdt/info",
+        "errorVisible": true,
+        "retryVisible": true,
+        "operationIds": ["getMarketPair"],
+        "errorAttempts": {
+          "getMarketPair": 3
+        },
+        "responseStatuses": [],
+        "failedOperationIds": ["getMarketPair"],
+        "screenshot": null
+      }
+    ],
+    "retryVerified": true,
+    "observedWriteCount": 0,
+    "pageErrors": [],
+    "externalApiOrigins": [],
+    "elapsedMs": 24130,
+    "screenshots": [
+      "preview-market-error-home-20261001140444.png",
+      "preview-market-error-overview-20261001140444.png",
+      "preview-market-error-markets-movers-20261001140444.png",
+      "preview-market-error-markets-news-20261001140444.png",
+      "preview-market-error-pair-btcusdt-20261001140444.png",
+      "preview-market-error-markets-depth-20261001140444.png",
+      "preview-market-error-trade-advanced-chart-btcusdt-20261001140444.png"
+    ],
+    "sourceHashesReviewed": 79,
+    "expectedAttemptsPerOperation": 3,
+    "diagnosticOnly": false,
+    "sourceHashesMatchBeforeAndAfter": true,
+    "failures": [],
+    "sourceHashReview": {
+      "reviewedPaths": [
+        "contracts/openapi/market.yaml",
+        "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json",
+        "docs/architecture/production-readiness/evidence/A06/run-market-error-current-head-browser-check.mjs",
+        "src/app/routeConfig.ts",
+        "src/dev/PreviewControls.test.tsx",
+        "src/dev/PreviewControls.tsx",
+        "src/dev/mocks/browser.ts",
+        "src/dev/mocks/handlers.ts",
+        "src/dev/mocks/personas.ts",
+        "src/dev/mocks/preview-scenario-handler.test.ts",
+        "src/dev/mocks/preview-scenario-handler.ts",
+        "src/dev/mocks/scenario-runtime.ts",
+        "src/features/market/api/market-api.test.ts",
+        "src/features/market/api/market-api.ts",
+        "src/features/market/api/market-research-schemas.ts",
+        "src/features/market/api/market-stream.test.ts",
+        "src/features/market/api/market-stream.ts",
+        "src/features/market/components/DiscoverMoreSection.test.tsx",
+        "src/features/market/components/DiscoverMoreSection.tsx",
+        "src/features/market/components/MarketItem.test.tsx",
+        "src/features/market/components/MarketItem.tsx",
+        "src/features/market/components/MarketListSections.tsx",
+        "src/features/market/components/MarketOverviewSections.test.tsx",
+        "src/features/market/components/MarketOverviewSections.tsx",
+        "src/features/market/index.ts",
+        "src/features/market/lib/mutation-attempts.test.ts",
+        "src/features/market/lib/mutation-attempts.ts",
+        "src/features/market/model/market-queries.test.tsx",
+        "src/features/market/model/market-queries.ts",
+        "src/features/market/model/market-stream-types.ts",
+        "src/features/market/model/market-types.ts",
+        "src/features/market/pages/AdvancedChartsPage.test.tsx",
+        "src/features/market/pages/AdvancedChartsPage.tsx",
+        "src/features/market/pages/MarketComparisonPage.test.tsx",
+        "src/features/market/pages/MarketComparisonPage.tsx",
+        "src/features/market/pages/MarketCorrelationPairsPage.test.tsx",
+        "src/features/market/pages/MarketCorrelationPairsPage.tsx",
+        "src/features/market/pages/MarketDepthPage.test.tsx",
+        "src/features/market/pages/MarketDepthPage.tsx",
+        "src/features/market/pages/MarketDerivativesPage.test.tsx",
+        "src/features/market/pages/MarketDerivativesPage.tsx",
+        "src/features/market/pages/MarketEventCalendarPage.test.tsx",
+        "src/features/market/pages/MarketEventCalendarPage.tsx",
+        "src/features/market/pages/MarketHeatmapPage.test.tsx",
+        "src/features/market/pages/MarketHeatmapPage.tsx",
+        "src/features/market/pages/MarketHomePage.test.tsx",
+        "src/features/market/pages/MarketHomePage.tsx",
+        "src/features/market/pages/MarketListPage.test.tsx",
+        "src/features/market/pages/MarketListPage.tsx",
+        "src/features/market/pages/MarketMoversPage.test.tsx",
+        "src/features/market/pages/MarketMoversPage.tsx",
+        "src/features/market/pages/MarketNewsFeedPage.test.tsx",
+        "src/features/market/pages/MarketNewsFeedPage.tsx",
+        "src/features/market/pages/MarketOverviewPage.test.tsx",
+        "src/features/market/pages/MarketOverviewPage.tsx",
+        "src/features/market/pages/MarketPriceAlertsPage.tsx",
+        "src/features/market/pages/MarketScreenerPage.test.tsx",
+        "src/features/market/pages/MarketScreenerPage.tsx",
+        "src/features/market/pages/MarketSectorsPage.test.tsx",
+        "src/features/market/pages/MarketSectorsPage.tsx",
+        "src/features/market/pages/MarketSentimentPage.test.tsx",
+        "src/features/market/pages/MarketSentimentPage.tsx",
+        "src/features/market/pages/MarketSignalsPage.test.tsx",
+        "src/features/market/pages/MarketSignalsPage.tsx",
+        "src/features/market/pages/MarketWriteBoundary.test.tsx",
+        "src/features/market/pages/PairDetailPage.test.tsx",
+        "src/features/market/pages/PairDetailPage.tsx",
+        "src/features/market/pages/TokenInfoPage.test.tsx",
+        "src/features/market/pages/TokenInfoPage.tsx",
+        "src/features/market/pages/TokenUnlockSchedulePage.test.tsx",
+        "src/features/market/pages/TokenUnlockSchedulePage.tsx",
+        "src/features/market/pages/WatchlistPage.test.tsx",
+        "src/features/market/pages/WatchlistPage.tsx",
+        "src/features/market/routes.test.ts",
+        "src/features/market/routes.ts",
+        "src/shared/api/client.ts",
+        "src/shared/api/http-client.ts",
+        "src/shared/api/query-client.ts",
+        "src/shared/session/AuthContext.tsx"
+      ],
+      "priorHashes": {},
+      "scope": "Current-head source hashes cover Market API/model/pages/tests, OpenAPI, shared HTTP/Query clients, preview scenario handlers and this runner. The browser run records local error/retry behavior without promoting aggregate historical source hashes or scenario snapshots.",
+      "aggregateHistoricalSourceHashesPromoted": false
+    },
+    "note": "Local Chromium/MSW only. Seven provider reads declare 503; other contract reads fail at the transport boundary. Observed attempt budget: 3 per operation. No Market write was triggered. This does not verify real backend/provider health, staging, production or user acceptance."
+  }
+}

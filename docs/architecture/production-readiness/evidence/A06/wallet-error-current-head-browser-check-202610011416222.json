@@ -1,0 +1,393 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-01T14:16:22.240Z",
+  "observedAt": "2026-10-01T14:16:26.712Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "origin": "http://127.0.0.1:4173",
+  "viewport": { "width": 1440, "height": 900 },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "walletWriteRequestCount": 0,
+    "transportFailureNoHttpResponse": true
+  },
+  "sourceHashes": {
+    "contracts/openapi/wallet.yaml": "a7b2e6fbdf62f2e6a789de25e712767d79014355870e86a87c8e809938f9e7b7",
+    "docs/architecture/production-readiness/evidence/A06/run-wallet-error-current-head-browser-check.mjs": "a41f0bba99e4ffe52bc99bf5c07980c2651c69b1fb3a1ce9e7cb14466fae2f77",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/app/routes/walletProfileProtectedRoutes.ts": "279cb168d99cef06c18fd8348f4961c3378f6672d33a90bd23ace71dd2dc05ab",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "b7068df1558e8efb458f5889c87bde27759acc3139a171ac885593386a78e34f",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "52e22422548bcfe99731089c6b6297728c828047beaadec53bddec5a89148441",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/dev/mocks/trading-fixtures.ts": "b082e4bc4094a4d7b36f41897ce9b27ea4c487fd3bf714622baf2f91fe2153cf",
+    "src/features/wallet/api/wallet-api.ts": "6f1918992ebdf61e559492ec2d16ba794edb04ef83cde3f248dcdacf6ba91d8a",
+    "src/features/wallet/model/wallet-queries.test.tsx": "e6cb6fca2c942f16586df25b3f7b6e5d67ac7d8968a333978d0ff879af5dbfc0",
+    "src/features/wallet/model/wallet-queries.ts": "28d7b8b808a1162f25ab3e6da9ee2684652ccd5da92d6612b308f85449efbd80",
+    "src/features/wallet/model/wallet-types.ts": "c31f657e91c0976ae6250a1a918f89003e6a5f0147e92f915775fdf3716c39f0",
+    "src/features/wallet/pages/WalletOverviewContractPage.tsx": "b1ad77e142185a3b02930712d928fe6082627a5f8c61a46f6c280640306404bc",
+    "src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx": "14bcbd43d1fd1e7d5194f12657cac1ba5cec0421dc3672f5638ca8e3170b4996",
+    "src/shared/api/api-error.ts": "cd28d4480488b8b71582e085f110a637f80afde64e408b1a24717b67834e2644",
+    "src/shared/api/http-client.test.ts": "aa2b7f8725a65508cb42f48dc62c28492b2129f79b60e845c80fac5da5c3f312",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",
+    "src/shared/ui/ErrorState.tsx": "7e501dd15a90aea2bf93e33150e47d455bbe3a24a0da1f986cca180125d4acd2"
+  },
+  "scenario": {
+    "id": "wallet.error",
+    "domain": "wallet",
+    "state": "error",
+    "status": "passed",
+    "observedAt": "2026-10-01T14:16:26.712Z",
+    "persona": "developer (local MSW fixture with runner-scoped transport failure)",
+    "role": "developer",
+    "route": "/w/wallet",
+    "finalRoute": "/w/wallet/history",
+    "operationIds": ["getWalletAssets", "getWalletTransactions"],
+    "observedOperationIds": ["getWalletAssets", "getWalletTransactions"],
+    "requests": [
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/auth/session",
+        "resourceType": "fetch",
+        "query": {}
+      },
+      {
+        "operationId": null,
+        "method": "POST",
+        "path": "/api/auth/login",
+        "resourceType": "fetch",
+        "query": {}
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "resourceType": "fetch",
+        "query": { "limit": "50" }
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "resourceType": "fetch",
+        "query": {}
+      }
+    ],
+    "responses": [
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 17
+      },
+      {
+        "operationId": null,
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 10
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      }
+    ],
+    "requestFailures": [],
+    "injectedTransportAttempts": [
+      {
+        "method": "GET",
+        "path": "/api/wallet/assets",
+        "operationId": "getWalletAssets",
+        "query": {},
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/wallet/transactions",
+        "operationId": "getWalletTransactions",
+        "query": { "limit": "10" },
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/wallet/assets",
+        "operationId": "getWalletAssets",
+        "query": {},
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/wallet/transactions",
+        "operationId": "getWalletTransactions",
+        "query": { "limit": "10" },
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/wallet/assets",
+        "operationId": "getWalletAssets",
+        "query": {},
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/wallet/transactions",
+        "operationId": "getWalletTransactions",
+        "query": { "limit": "10" },
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/wallet/assets",
+        "operationId": "getWalletAssets",
+        "query": {},
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/wallet/transactions",
+        "operationId": "getWalletTransactions",
+        "query": { "limit": "10" },
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/wallet/assets",
+        "operationId": "getWalletAssets",
+        "query": {},
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/wallet/transactions",
+        "operationId": "getWalletTransactions",
+        "query": { "limit": "10" },
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/wallet/assets",
+        "operationId": "getWalletAssets",
+        "query": {},
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/wallet/transactions",
+        "operationId": "getWalletTransactions",
+        "query": { "limit": "10" },
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/wallet/transactions",
+        "operationId": "getWalletTransactions",
+        "query": { "limit": "50" },
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/wallet/transactions",
+        "operationId": "getWalletTransactions",
+        "query": { "limit": "50" },
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/wallet/transactions",
+        "operationId": "getWalletTransactions",
+        "query": { "limit": "50" },
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/wallet/transactions",
+        "operationId": "getWalletTransactions",
+        "query": { "limit": "50" },
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/wallet/transactions",
+        "operationId": "getWalletTransactions",
+        "query": { "limit": "50" },
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/wallet/transactions",
+        "operationId": "getWalletTransactions",
+        "query": { "limit": "50" },
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      }
+    ],
+    "initialSessionResponse": { "status": 401, "fromServiceWorker": true },
+    "loginResponse": { "status": 200, "fromServiceWorker": true },
+    "selectedScenario": "wallet.error",
+    "walletEvidence": {
+      "requestCount": 0,
+      "responseCount": 0,
+      "writeRequestCount": 0,
+      "requestFailureCount": 0,
+      "injectedTransportFailureCount": 18,
+      "noHttpResponse": true,
+      "expectedAttemptsPerQuery": 3,
+      "overviewErrorVisible": true,
+      "overviewRetryPreservedError": true,
+      "overviewStaleContentHidden": true,
+      "overviewInitialAttempts": {
+        "getWalletAssets": 3,
+        "getWalletTransactions": 3
+      },
+      "overviewRetryAdditionalAttempts": {
+        "getWalletAssets": 3,
+        "getWalletTransactions": 3
+      },
+      "historyErrorVisible": true,
+      "historyRetryPreservedError": true,
+      "historyStaleContentHidden": true,
+      "historyInitialAttempts": 3,
+      "historyRetryAdditionalAttempts": 3,
+      "overviewElapsedMs": 3577,
+      "historyElapsedMs": 1695,
+      "pendingRequestCount": 0
+    },
+    "externalApiOrigins": [],
+    "externalAssetOrigins": [
+      "https://fonts.googleapis.com",
+      "https://fonts.gstatic.com"
+    ],
+    "externalResourceOrigins": [],
+    "externalRequests": [
+      {
+        "origin": "https://fonts.googleapis.com",
+        "path": "/css2",
+        "method": "GET",
+        "resourceType": "stylesheet"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm81Rb0.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm87Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm86Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      }
+    ],
+    "pageErrors": [],
+    "elapsedMs": 4315,
+    "screenshots": [
+      "preview-wallet-error-overview-202610011416222.png",
+      "preview-wallet-error-overview-retry-202610011416222.png",
+      "preview-wallet-error-history-202610011416222.png",
+      "preview-wallet-error-history-retry-202610011416222.png"
+    ],
+    "failures": [],
+    "note": "Local Chromium/Vite/MSW Wallet error scenario. The two Wallet GET contracts do not declare a 5xx response, so the runner injects TypeError before network dispatch; no HTTP status/response is fabricated. Initial queries and explicit Retry remain visibly recoverable, stale fixture data and false empty states stay hidden, and no Wallet mutation is sent. This does not establish backend/staging behavior, authorization, production availability or user acceptance."
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261002-019",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "read-only-openapi-authorization-contract-audit",
+  "observedAt": "2026-10-02T02:55:08Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "environment": "Windows 11, Python 3 with PyYAML 6.0.3; current primary worktree. Read-only OpenAPI, matrix and operation-map parsing; no browser or API side effect.",
+  "commandOrSteps": "Resolve Support unauthorized/forbidden scenario operationIds against current OpenAPI and operation map; count operation-level HTTP 401/403 declarations.",
+  "expected": "Use authorization responses only when declared by the mapped operation; keep unsupported rows not_verified and do not synthesize HTTP status responses.",
+  "actual": "The two Support rows share 6 unique operations; the operation map resolves 6/6 exact method/path matches. support.unauthorized has 0/6 operations declaring 401; support.forbidden has 0/6 declaring 403. The operations declare only their current 200/204/404/201/400 responses; the current rows remain not_verified. No browser case ran and no response was synthesized. Next unresolved matrix row: trading.unknown.",
+  "result": "pass",
+  "artifact": "docs\\architecture\\production-readiness\\evidence\\A06\\support-authorization-contract-audit-current-2026-10-02.json",
+  "rows": [
+    {
+      "id": "support.unauthorized",
+      "state": "unauthorized",
+      "executionStatus": "not_verified",
+      "operationIds": [
+        "listNews",
+        "listNotifications",
+        "markNotificationRead",
+        "getHelpCenter",
+        "listSupportTickets",
+        "createSupportTicket"
+      ]
+    },
+    {
+      "id": "support.forbidden",
+      "state": "forbidden",
+      "executionStatus": "not_verified",
+      "operationIds": [
+        "listNews",
+        "listNotifications",
+        "markNotificationRead",
+        "getHelpCenter",
+        "listSupportTickets",
+        "createSupportTicket"
+      ]
+    }
+  ],
+  "operations": [
+    {
+      "operationId": "listNews",
+      "method": "GET",
+      "path": "/content/news",
+      "responseCodes": ["200"]
+    },
+    {
+      "operationId": "listNotifications",
+      "method": "GET",
+      "path": "/notifications",
+      "responseCodes": ["200"]
+    },
+    {
+      "operationId": "markNotificationRead",
+      "method": "POST",
+      "path": "/notifications/{notificationId}/read",
+      "responseCodes": ["204", "404"]
+    },
+    {
+      "operationId": "getHelpCenter",
+      "method": "GET",
+      "path": "/support/help",
+      "responseCodes": ["200"]
+    },
+    {
+      "operationId": "listSupportTickets",
+      "method": "GET",
+      "path": "/support/tickets",
+      "responseCodes": ["200"]
+    },
+    {
+      "operationId": "createSupportTicket",
+      "method": "POST",
+      "path": "/support/tickets",
+      "responseCodes": ["201", "400"]
+    }
+  ],
+  "counts": {
+    "uniqueMappedOperations": 6,
+    "exactOperationMapMatches": 6,
+    "unauthorizedOperationsDeclaring401": 0,
+    "forbiddenOperationsDeclaring403": 0
+  },
+  "scenarioMatrixSummary": {
+    "scenariosDefined": 106,
+    "scenarioRowsWithFreshBrowserEvidence": 81,
+    "scenarioRowsFullyCoveredByFreshBrowserEvidence": 38,
+    "uniqueOperationsWithFreshBrowserEvidence": 88,
+    "runtimeEvidenceFresh": false,
+    "freshScenarioEvidenceSidecars": 81,
+    "registeredScenarioEvidenceSidecars": 81,
+    "sourceHashStaleScenarioEvidenceSidecars": 0
+  },
+  "nextAction": "Continue A06.03 in current unresolved matrix order at trading.unknown.",
+  "sourceHashes": {
+    "docs\\architecture\\production-readiness\\evidence\\A06\\scenario-matrix-2026-09-28.json": "0bbf7c7a887415389265aa3fa2f2c07fc670a070ac4f692b55fae87ff19922f4",
+    "contracts\\openapi\\support.yaml": "765533b6f9f9892ac7ec2fa70031b54c53daf07ff5c77775fca155e23ef58d5a",
+    "docs\\architecture\\production-readiness\\evidence\\A06\\operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320"
+  },
+  "limitations": [
+    "Static contract audit only; backend authorization and browser behavior remain unverified.",
+    "The current primary-worktree check-tracking gate remains failed under EV-20261002-014."
+  ]
+}

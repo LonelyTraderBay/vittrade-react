@@ -1,0 +1,39 @@
+{
+  "id": "EV-20261003-009",
+  "taskId": "U01",
+  "stepId": "U01.03",
+  "kind": "registration-challenge-issuance-browser-e2e",
+  "commandOrSteps": "Set VITE_DATA_SOURCE=api, VITE_API_BASE_URL=https://e2e.test, and VITE_WS_URL=wss://e2e.test; start local Vite at http://127.0.0.1:4189; run node node_modules/@playwright/test/cli.js test --config=playwright.u01-03-local-temp.config.mjs. The temporary one-worker Desktop Chrome config selected tests/e2e/auth-session.spec.ts; Playwright page.route fixtures handled Auth API requests. The temporary config was removed and Vite was stopped after the run. Also run both TypeScript no-emit projects, focused ESLint, and Prettier formatting.",
+  "environment": "Windows 11; Node v24.19.0; @playwright/test 1.63.0; Vite 6.4.3; Chromium 153.0.8010.12; local Vite API mode at http://127.0.0.1:4189; e2e.test Auth API calls use Playwright route fixtures; backend and staging disconnected.",
+  "observedAt": "2026-10-02T21:42:14Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "sourceBranch": "main",
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "f781275476009057ff9aeab57110c150742b278c7b92d6e913d2eb4fdd278b0c",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/features/auth/components/RegistrationForm.tsx": "32b35d0238611e3d3579f92b4fcd4f4836ba4de6b070c78a461675deda47a6c2",
+    "src/features/auth/pages/WebOTPPage.tsx": "5d2990eafb91494c38f6e207f925c32b9d0c43cd5f5d192f86545558b7923ebf",
+    "src/features/auth/api/auth-api.ts": "050846c48de49be56f6bdf6a73669b5d3a6230c559e33851cd07840609fca078",
+    "tests/e2e/auth-session.spec.ts": "f1f0a6d5762f181b4584525e248b38fef874b28658158b580d31e4174c9e0cc2"
+  },
+  "dirtyFileHashes": {
+    "tests/e2e/auth-session.spec.ts": "f1f0a6d5762f181b4584525e248b38fef874b28658158b580d31e4174c9e0cc2"
+  },
+  "expected": "Email and phone registration submit the contract-shaped request with an idempotency key, receive a 202 registration challenge, and display only the server-provided masked destination on the OTP page. Registration must not create an authenticated session or call verifyMfa before the API/security owner resolves guest verification semantics.",
+  "actual": "The combined auth-session browser suite passed 12/12; the two new registration challenge cases passed 2/2. Email and phone each submitted POST /auth/register with {fullName, channel, contact, password, acceptedTerms:true} and a UUID-shaped Idempotency-Key. The local route fixture returned HTTP 202 with challengeId, channel, maskedDestination, and expiresAt; the browser reached /w/auth/otp, showed the server-provided masked destination and six OTP inputs, and did not show auth-sign-out. The Playwright guard observed 0 POST /auth/mfa/verify calls. Both TypeScript no-emit projects, focused ESLint and Prettier passed. OpenAPI gate passed (15 contracts/154 operations); dependency-cruiser passed (863 modules/4,679 dependencies, 0 violations); architecture inventory passed (129 pages/427 routes/149 components/32 services/28 mocks); lint budget passed (0 errors/0 warnings); EOL check passed (3,222 paths, 0 missing line terminators); and git diff --check passed. check-tracking exited 1 with 74 source-ledger errors: 32 missing catalogued hashes, 5 paths absent from cataloguedSourceHead, 36 current source mismatches, and 1 historical change missing beforeHash; exact application path inventory remains 916/916. All e2e.test Auth requests were intercepted by Playwright; no backend call was made.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/U01/u01-03-registration-challenge-issuance-browser-e2e-2026-10-03.json",
+  "externalEvidence": {
+    "registrationScenarios": 2,
+    "registrationScenariosPassed": 2,
+    "browserSuiteTests": 12,
+    "browserSuitePassed": 12,
+    "backendRequests": 0,
+    "stagingRequests": 0,
+    "verifyMfaCalls": 0,
+    "userAcceptance": "not performed",
+    "backendOwnerAssignmentsFound": 0,
+    "browserRoutesOpened": ["/w/auth/register", "/w/auth/otp"]
+  },
+  "notes": "This is local frontend evidence against contract-shaped Playwright fixtures. It establishes challenge issuance and masked rendering only. It does not validate OTP verification, API owner security semantics, email/SMS delivery, backend or staging behavior, production readiness, or user acceptance. Guest verifyMfa remains blocked on an explicit API/security owner decision about sessionCookie versus pre-auth credentials."
+}

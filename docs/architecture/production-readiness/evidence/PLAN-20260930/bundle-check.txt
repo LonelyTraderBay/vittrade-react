@@ -1,0 +1,5 @@
+
+> vittrade-react@0.0.1 bundle:check
+> node scripts/check-bundle-budget.mjs
+
+Bundle budget passed: 221 JS chunks <= 500 kB raw and 250 KiB gzip.

@@ -1,0 +1,236 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261001-020",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "contract-authorization-and-idempotency-audit",
+  "checkedAt": "2026-09-30T23:03:46.000Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "contractFile": "contracts/openapi/predictions.yaml",
+  "globalSecurity": [
+    {
+      "sessionCookie": []
+    }
+  ],
+  "scenarioRows": [
+    {
+      "id": "predictions.forbidden",
+      "state": "forbidden",
+      "applicability": "required",
+      "operationIds": [
+        "listPredictionEvents",
+        "getPredictionEvent",
+        "listPredictionPositions",
+        "listPredictionRewards",
+        "listPredictionLeaderboard",
+        "listPredictionActivity",
+        "placePredictionOrder",
+        "getPredictionOrderReceipt"
+      ],
+      "executionStatus": "not_verified"
+    },
+    {
+      "id": "predictions.unknown",
+      "state": "unknown",
+      "applicability": "required",
+      "operationIds": ["placePredictionOrder", "getPredictionOrderReceipt"],
+      "executionStatus": "not_verified"
+    },
+    {
+      "id": "predictions.duplicate",
+      "state": "duplicate",
+      "applicability": "required",
+      "operationIds": ["placePredictionOrder", "getPredictionOrderReceipt"],
+      "executionStatus": "not_verified"
+    }
+  ],
+  "operations": [
+    {
+      "operationId": "listPredictionEvents",
+      "trackingId": "API-2b1175fffafc",
+      "method": "GET",
+      "path": "/predictions/events",
+      "statuses": ["200", "401"],
+      "responseDescriptions": {
+        "200": "Prediction events.",
+        "401": ""
+      },
+      "requiresIdempotencyKey": false,
+      "parameters": [],
+      "permissions": []
+    },
+    {
+      "operationId": "getPredictionEvent",
+      "trackingId": "API-431555b575d8",
+      "method": "GET",
+      "path": "/predictions/events/{eventId}",
+      "statuses": ["200", "404"],
+      "responseDescriptions": {
+        "200": "Prediction event detail.",
+        "404": ""
+      },
+      "requiresIdempotencyKey": false,
+      "parameters": [
+        {
+          "name": "eventId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "permissions": []
+    },
+    {
+      "operationId": "listPredictionPositions",
+      "trackingId": "API-70cceef6b65e",
+      "method": "GET",
+      "path": "/predictions/positions",
+      "statuses": ["200", "401"],
+      "responseDescriptions": {
+        "200": "Authenticated user's positions.",
+        "401": ""
+      },
+      "requiresIdempotencyKey": false,
+      "parameters": [],
+      "permissions": []
+    },
+    {
+      "operationId": "listPredictionRewards",
+      "trackingId": "API-e4fbfaea06b3",
+      "method": "GET",
+      "path": "/predictions/rewards",
+      "statuses": ["200"],
+      "responseDescriptions": {
+        "200": "Liquidity and market-maker reward opportunities."
+      },
+      "requiresIdempotencyKey": false,
+      "parameters": [],
+      "permissions": []
+    },
+    {
+      "operationId": "listPredictionLeaderboard",
+      "trackingId": "API-b8a3d1ec7f71",
+      "method": "GET",
+      "path": "/predictions/leaderboard",
+      "statuses": ["200"],
+      "responseDescriptions": {
+        "200": "Ranked prediction traders."
+      },
+      "requiresIdempotencyKey": false,
+      "parameters": [],
+      "permissions": []
+    },
+    {
+      "operationId": "listPredictionActivity",
+      "trackingId": "API-d1347f65b33a",
+      "method": "GET",
+      "path": "/predictions/activity",
+      "statuses": ["200"],
+      "responseDescriptions": {
+        "200": "Public prediction trading activity."
+      },
+      "requiresIdempotencyKey": false,
+      "parameters": [],
+      "permissions": []
+    },
+    {
+      "operationId": "placePredictionOrder",
+      "trackingId": "API-0d3da8cace68",
+      "method": "POST",
+      "path": "/predictions/orders",
+      "statuses": ["201", "400", "409"],
+      "responseDescriptions": {
+        "201": "Prediction order receipt.",
+        "400": "",
+        "409": "Duplicate idempotency key or market state conflict."
+      },
+      "requiresIdempotencyKey": true,
+      "parameters": [
+        {
+          "name": "Idempotency-Key",
+          "in": "header",
+          "required": true
+        }
+      ],
+      "permissions": ["predictions:trade"]
+    },
+    {
+      "operationId": "getPredictionOrderReceipt",
+      "trackingId": "API-667a33fac4b2",
+      "method": "GET",
+      "path": "/predictions/orders/{orderId}",
+      "statuses": ["200", "404"],
+      "responseDescriptions": {
+        "200": "Prediction order receipt.",
+        "404": ""
+      },
+      "requiresIdempotencyKey": false,
+      "parameters": [
+        {
+          "name": "orderId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "permissions": []
+    }
+  ],
+  "receiptSchema": {
+    "required": [
+      "id",
+      "eventId",
+      "eventTitle",
+      "outcome",
+      "side",
+      "orderType",
+      "shares",
+      "filledShares",
+      "price",
+      "avgPrice",
+      "total",
+      "fee",
+      "status",
+      "createdAt",
+      "updatedAt",
+      "timeline"
+    ],
+    "properties": [
+      "id",
+      "eventId",
+      "eventTitle",
+      "outcome",
+      "side",
+      "orderType",
+      "shares",
+      "filledShares",
+      "price",
+      "avgPrice",
+      "total",
+      "fee",
+      "status",
+      "createdAt",
+      "updatedAt",
+      "timeline"
+    ]
+  },
+  "counts": {
+    "forbiddenLinkedOperations": 8,
+    "forbiddenOperationsDeclaring401": 2,
+    "forbiddenOperationsDeclaring403": 0,
+    "unknownDuplicateLinkedOperations": 2,
+    "writeOperations": 1,
+    "writesRequiringIdempotencyKey": 1,
+    "readLookupsByIdempotencyOrCorrelationKey": 0,
+    "receiptIdempotencyOrCorrelationFields": 0,
+    "stableSameKeyReplayContracts": 0,
+    "unknownDuplicateRows": 2
+  },
+  "browserScenarioExecuted": false,
+  "conclusion": "The eight operations linked to predictions.forbidden declare 0/8 HTTP 403; two declare 401, which does not establish permission denial. placePredictionOrder requires Idempotency-Key and declares 201, 400 and ambiguous 409 “Duplicate idempotency key or market state conflict.” getPredictionOrderReceipt reads only by required orderId. The receipt has no idempotency/correlation/client-order field and the contract has no lookup by request key or stable same-key replay outcome. Keep predictions.forbidden, predictions.unknown and predictions.duplicate not_verified; do not fabricate 403 or perform unknown/replay mutations.",
+  "nextAction": "A06.03 next unverified row after Predictions is profile.forbidden; EV-20261001-021 found 0/7 Profile operations declare 403, so keep not_verified and continue to referral.forbidden.",
+  "sourceHashes": {
+    "contracts/openapi/predictions.yaml": "146a0442f6879fc50dc53c9f74d104837092d06edcfcf3e68537454b3e8c556b",
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "70630b4a0b7d2d16d39fc9da839fbb1b96578c9f5c60ec92ce598e14add99c24",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320"
+  }
+}

@@ -1,0 +1,659 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "EV-20261002-030",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "current-source-browser-sidecar-refresh",
+  "observedAt": "2026-10-02T09:38:55.181Z",
+  "revision": {
+    "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+    "primaryWorktreeDirty": true,
+    "changedRegressionTest": "src/dev/mocks/preview-scenario-handler.test.ts",
+    "changedRegressionTestSha256": "c2a394a9f6963429e7f85fcef998647bc6a30f561667cbef24b224e7b25d7966",
+    "sharedHandlerSha256": "52e22422548bcfe99731089c6b6297728c828047beaadec53bddec5a89148441",
+    "runbookSha256": "f2da324cafd293baaa6eda5e18079c7dc6246bc30e37dc2794a8c9ca47c14c4b"
+  },
+  "environment": {
+    "operatingSystem": "Windows 11 local workspace",
+    "browser": "Playwright Chromium",
+    "previewOrigin": "http://127.0.0.1:4173",
+    "previewDataSource": "mock",
+    "backendOrStagingUsed": false
+  },
+  "result": {
+    "refreshedScenarioCount": 10,
+    "passedScenarioCount": 10,
+    "screenshotCount": 64,
+    "missingScreenshots": 0,
+    "scenarioReports": [
+      {
+        "id": "earn.error",
+        "status": "passed",
+        "observedAt": "2026-10-02T09:15:32.236Z",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 21,
+        "report": {
+          "path": "docs/architecture/production-readiness/evidence/A06/earn-error-current-head-browser-check-202610020915171.json",
+          "sha256": "6fd566dd1c4bd49bedb227a6be9c843160bf7eeab7f6698d494972fd112c4384"
+        },
+        "observedOperationIds": ["getEarnSnapshot", "listEarnTransactions"],
+        "screenshotCount": 4,
+        "screenshots": [
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-earn-error-snapshot-current-head-202610020915171.png",
+            "sha256": "7557acab71d2f9eb9fde6c115c8a285736eaddc513d3b69a9e6dec447b3969bd"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-earn-error-snapshot-retry-current-head-202610020915171.png",
+            "sha256": "37188187a04bacb22d6b1e08236266d1cbb32d1b0b5d50efea93be31dbe07264"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-earn-error-history-current-head-202610020915171.png",
+            "sha256": "031660a5969f4f1305464ce12dc3d87db5b73ae056a907eaf7a651daf4e6a50b"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-earn-error-history-retry-current-head-202610020915171.png",
+            "sha256": "6ecdc8f73f6cf5b62cf862570061c0f0b185641cd5b8f4c5a409ec6e638828d9"
+          }
+        ],
+        "externalApiOrigins": [],
+        "sourceHashesMatchCurrent": true,
+        "localPreview": true,
+        "matrixLocalMockEvidenceFlag": false,
+        "externalApiOriginsRecordedAt": "scenario.externalApiOrigins",
+        "runner": "docs/architecture/production-readiness/evidence/A06/run-earn-error-current-head-browser-check.mjs"
+      },
+      {
+        "id": "earn.pending",
+        "status": "passed",
+        "observedAt": "2026-10-02T09:15:57.335Z",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 23,
+        "report": {
+          "path": "docs/architecture/production-readiness/evidence/A06/earn-pending-current-head-browser-check-202610020915553.json",
+          "sha256": "b96501aed106ef809da3ce0fdca461a2028dae8367eb93ec94cf5ac85c21dd2c"
+        },
+        "observedOperationIds": [
+          "createEarnSubscription",
+          "listEarnTransactions",
+          "redeemEarnPosition"
+        ],
+        "screenshotCount": 4,
+        "screenshots": [
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-earn-pending-products-current-head-202610020915553.png",
+            "sha256": "02ed4b015c722f243871a8165fc173e1bfefa03f5c632173273670540946aa12"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-earn-pending-subscription-current-head-202610020915553.png",
+            "sha256": "8944a2ae27057702de41a95703c2d92ba88df9c743b1079aea63d16bbcabd14e"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-earn-pending-redemption-current-head-202610020915553.png",
+            "sha256": "e0b3b8d1962d9ccb049142b8acdd4ebb48b417ce91698f08b2a78cab73e58971"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-earn-pending-history-current-head-202610020915553.png",
+            "sha256": "230ae36b83b3924f7c5217d8dd836d3041bcd3cf4adf146f04e02371cca0ac8b"
+          }
+        ],
+        "externalApiOrigins": [],
+        "sourceHashesMatchCurrent": true,
+        "localPreview": true,
+        "matrixLocalMockEvidenceFlag": false,
+        "externalApiOriginsRecordedAt": "scenario.externalApiOrigins",
+        "runner": "docs/architecture/production-readiness/evidence/A06/run-earn-pending-current-head-browser-check.mjs"
+      },
+      {
+        "id": "earn.unauthorized",
+        "status": "passed",
+        "observedAt": "2026-10-02T09:16:07.501Z",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 22,
+        "report": {
+          "path": "docs/architecture/production-readiness/evidence/A06/earn-unauthorized-current-head-browser-check-202610020916065.json",
+          "sha256": "ffa15de4a4fe8dc8737fbdb0ebe045bee1258a65f984b63c73cf7556a15211e3"
+        },
+        "observedOperationIds": ["getEarnSnapshot", "listEarnTransactions"],
+        "screenshotCount": 2,
+        "screenshots": [
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-earn-unauthorized-snapshot-current-head-202610020916065.png",
+            "sha256": "a763f58cc94b3b0bc4b7482ffccd5088e636fb9fafc964662eb1ca3be3f54d1d"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-earn-unauthorized-history-current-head-202610020916065.png",
+            "sha256": "a763f58cc94b3b0bc4b7482ffccd5088e636fb9fafc964662eb1ca3be3f54d1d"
+          }
+        ],
+        "externalApiOrigins": [],
+        "sourceHashesMatchCurrent": true,
+        "localPreview": true,
+        "matrixLocalMockEvidenceFlag": false,
+        "externalApiOriginsRecordedAt": "scenario.externalApiOrigins",
+        "runner": "docs/architecture/production-readiness/evidence/A06/run-earn-unauthorized-current-head-browser-check.mjs"
+      },
+      {
+        "id": "launchpad.error",
+        "status": "passed",
+        "observedAt": "2026-10-02T09:16:18.314Z",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 19,
+        "report": {
+          "path": "docs/architecture/production-readiness/evidence/A06/launchpad-error-current-head-browser-check-202610020916125.json",
+          "sha256": "6b56867570613b7ce9768e1ee0348fda6af6d2c08156764b1bdb3d0067687bd1"
+        },
+        "observedOperationIds": ["listLaunchpadProjects"],
+        "screenshotCount": 2,
+        "screenshots": [
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-launchpad-error-recoverable-current-head-202610020916125.png",
+            "sha256": "1de18159a59caa9110cda24081abd553d81a02156a4b86acb48532d6d724004d"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-launchpad-error-retry-current-head-202610020916125.png",
+            "sha256": "d293199aa9accc64a5bd10b2806d7a60993bbff38f43419919cd338e55b02959"
+          }
+        ],
+        "externalApiOrigins": [],
+        "sourceHashesMatchCurrent": true,
+        "localPreview": true,
+        "matrixLocalMockEvidenceFlag": true,
+        "externalApiOriginsRecordedAt": "scenario.externalApiOrigins",
+        "runner": "docs/architecture/production-readiness/evidence/A06/run-launchpad-error-current-head-browser-check.mjs"
+      },
+      {
+        "id": "market.empty",
+        "status": "passed",
+        "observedAt": "2026-10-02T09:16:24.450Z",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 17,
+        "report": {
+          "path": "docs/architecture/production-readiness/evidence/A06/market-empty-current-head-browser-check-20261002091623.json",
+          "sha256": "268bc8288fc3eb2f883dc5e9870012de1bb2b3a32af3d15f9b0f45dcd1dfa4e0"
+        },
+        "observedOperationIds": ["listMarketPairs"],
+        "screenshotCount": 1,
+        "screenshots": [
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-empty-current-head-20261002091623.png",
+            "sha256": "07d692c0342304ffffd03a4a4104f2b6a9c4d8494af0c29135b96ec54c768d50"
+          }
+        ],
+        "externalApiOrigins": [],
+        "sourceHashesMatchCurrent": true,
+        "localPreview": true,
+        "matrixLocalMockEvidenceFlag": true,
+        "externalApiOriginsRecordedAt": "scenario.externalApiOrigins",
+        "runner": "docs/architecture/production-readiness/evidence/A06/run-market-empty-current-head-browser-check.mjs"
+      },
+      {
+        "id": "market.error",
+        "status": "passed",
+        "observedAt": "2026-10-02T09:16:54.774Z",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 79,
+        "report": {
+          "path": "docs/architecture/production-readiness/evidence/A06/market-error-current-head-browser-check-20261002091630.json",
+          "sha256": "a21ee2e3520e532e8853c2e9037674da1b2413168887b6c5a878a4b032d9b724"
+        },
+        "observedOperationIds": [
+          "getMarketCalendar",
+          "getMarketCorrelations",
+          "getMarketDerivatives",
+          "getMarketMovers",
+          "getMarketNews",
+          "getMarketOrderBook",
+          "getMarketOverview",
+          "getMarketPair",
+          "getMarketRecentTrades",
+          "getMarketSentiment",
+          "getMarketSignals",
+          "getMarketTokenUnlocks",
+          "getMarketWatchlist",
+          "listMarketPairs",
+          "listMarketPriceAlerts"
+        ],
+        "screenshotCount": 7,
+        "screenshots": [
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-error-home-20261002091630.png",
+            "sha256": "cc76973e9d080fef9680be4ffa67303215257a07af9cc667ccca47d1f62c1f19"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-error-overview-20261002091630.png",
+            "sha256": "ff63c4b45e4f3767063c966cd5385244743aecc07011208c80b0381c3949935d"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-error-markets-movers-20261002091630.png",
+            "sha256": "68f06c315915367090a6ac1f0fde455e732e95d1741a4ebda7d4bb1964702f33"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-error-markets-news-20261002091630.png",
+            "sha256": "b4f74f14d41d2813193d522103598a0b3b09cf2b173ac338a69b05927451dae1"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-error-pair-btcusdt-20261002091630.png",
+            "sha256": "985c0a9465a5c8745672c3b33007cc6043bd74e88cf47acbad192802d90f5bb0"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-error-markets-depth-20261002091630.png",
+            "sha256": "83be1afdc5be78b830cb1f329451e5a47d60cd70a324e2090b546facb09b66d9"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-error-trade-advanced-chart-btcusdt-20261002091630.png",
+            "sha256": "56a69003ab123963529c998123c22c720b6d333cbbc9d2ef59f6b06f18062608"
+          }
+        ],
+        "externalApiOrigins": [],
+        "sourceHashesMatchCurrent": true,
+        "localPreview": true,
+        "matrixLocalMockEvidenceFlag": true,
+        "externalApiOriginsRecordedAt": "scenario.externalApiOrigins",
+        "runner": "docs/architecture/production-readiness/evidence/A06/run-market-error-current-head-browser-check.mjs"
+      },
+      {
+        "id": "market.loading",
+        "status": "passed",
+        "observedAt": "2026-10-02T09:17:56.698Z",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 21,
+        "report": {
+          "path": "docs/architecture/production-readiness/evidence/A06/market-loading-current-head-browser-check-20261002091659.json",
+          "sha256": "6d143e7b15d3f72d5a2c32ded4faa8dac0f6295d72ba8de30be5004c55a86eb0"
+        },
+        "observedOperationIds": [
+          "addMarketWatchlistItem",
+          "createMarketPriceAlert",
+          "deleteMarketPriceAlert",
+          "deleteMarketWatchlistItem",
+          "getMarketCalendar",
+          "getMarketCandles",
+          "getMarketCorrelations",
+          "getMarketDerivatives",
+          "getMarketMovers",
+          "getMarketNews",
+          "getMarketOrderBook",
+          "getMarketOverview",
+          "getMarketPair",
+          "getMarketRecentTrades",
+          "getMarketSentiment",
+          "getMarketSignals",
+          "getMarketTokenUnlocks",
+          "getMarketWatchlist",
+          "listMarketPairs",
+          "listMarketPriceAlerts",
+          "updateMarketPriceAlert",
+          "updateMarketWatchlistItem"
+        ],
+        "screenshotCount": 20,
+        "screenshots": [
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-movers-20261002091659.png",
+            "sha256": "42417e8d14fa5723e58b9ec0d7272824f4d974e5fc42f46b1a8340d94b6c9f8b"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-news-20261002091659.png",
+            "sha256": "62d02ede5f417d78eb1c74e9e2fe71729e0d33626abdfe40ccb709274ff891a6"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-calendar-20261002091659.png",
+            "sha256": "d42347f34ed45136ee6c3ed1ac1d49525abe0b3e6ed7339fdaca409039114a4c"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-correlations-20261002091659.png",
+            "sha256": "be4ceefc850b576caea509e7adc753f26ff235c849528c871ea042dff6110d31"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-unlocks-20261002091659.png",
+            "sha256": "69947f79fcb432cbeed1c8f238276f834e86a2f50f43e9afe9e6dc400216ddba"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-derivatives-20261002091659.png",
+            "sha256": "5d46b816441fd95d6abcd109c42a601f35c44bb34c57d89257bb258fd58f997e"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-social-sentiment-20261002091659.png",
+            "sha256": "5ba32058eda3910d58a008acc8bf274888aabb0b1375957d17d8b9fdce729043"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-signals-20261002091659.png",
+            "sha256": "372c3996a1430139f1f6cd9f634bc30306b0c59a7c37eff83e7eed70f630c789"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-alerts-20261002091659.png",
+            "sha256": "778f867ab0ca5828d76e75ccaec774b5871e08154047f450df730bb9b5d00b04"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-pair-btcusdt-20261002091659.png",
+            "sha256": "513c151514f6bf2795f3d5eb31876a5017b11e87c9cd44f5dafe4d260603f6dd"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-trade-advanced-chart-btcusdt-20261002091659.png",
+            "sha256": "9735d453cefc47511c4c1035d80f5e023de137b1c81dc651704148e23dcb9e29"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-20261002091659.png",
+            "sha256": "0d1b954d1beb8f39da88ebf3d66b7f54e4015daf35b23816d5c297a9a8a2fa95"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-complete-current-head-20261002091659.png",
+            "sha256": "9b7be81f1783ef69453e90d8c4b539feb35ee4f6a500f89c80ec16e63a7cc158"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-home-current-head-20261002091659.png",
+            "sha256": "f08879fd39c3ec848e3fae7356168458926664e2dd0e5d02478b65cb693d2118"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-createMarketPriceAlert-20261002091659.png",
+            "sha256": "d5598fbd2538c37253d927b212df74046d028b7ad22481c255bfa84d0ff5532b"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-updateMarketPriceAlert-20261002091659.png",
+            "sha256": "c28c353696af555e805414fc0d9afbea28fcbbed6e8c317871251eef82dc8af1"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-deleteMarketPriceAlert-20261002091659.png",
+            "sha256": "d60df705fe55543d33ecd91268bce8fa1573f65b2bf01f51852f9317acb7d5a0"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-deleteMarketWatchlistItem-20261002091659.png",
+            "sha256": "5ce9b30f0e2d5c18f4cebfde83a4f203a5b2518c4fb9647a56a116b94a19d4b2"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-addMarketWatchlistItem-20261002091659.png",
+            "sha256": "d70177b45bd2d786c6db761d9789c401a2982780533f371183f0cb6f5d199c5a"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-updateMarketWatchlistItem-20261002091659.png",
+            "sha256": "53d735cfd472abbef954d6f5518037234ae96d9b93502694f5dcf8be74788db7"
+          }
+        ],
+        "externalApiOrigins": [],
+        "sourceHashesMatchCurrent": true,
+        "localPreview": true,
+        "matrixLocalMockEvidenceFlag": true,
+        "externalApiOriginsRecordedAt": "scenario.externalApiOrigins",
+        "runner": "docs/architecture/production-readiness/evidence/A06/run-market-loading-current-head-browser-check.mjs"
+      },
+      {
+        "id": "market.success",
+        "status": "passed",
+        "observedAt": "2026-10-02T09:18:11.149Z",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 43,
+        "report": {
+          "path": "docs/architecture/production-readiness/evidence/A06/market-success-current-head-browser-check-20261002091801.json",
+          "sha256": "a024254fad722fc33cfdc920403202602cb2718588ad2d8a65d539e0caf4e0bd"
+        },
+        "observedOperationIds": [
+          "addMarketWatchlistItem",
+          "createMarketPriceAlert",
+          "deleteMarketPriceAlert",
+          "deleteMarketWatchlistItem",
+          "getMarketCalendar",
+          "getMarketCandles",
+          "getMarketCorrelations",
+          "getMarketDerivatives",
+          "getMarketMovers",
+          "getMarketNews",
+          "getMarketOrderBook",
+          "getMarketOverview",
+          "getMarketPair",
+          "getMarketRecentTrades",
+          "getMarketSentiment",
+          "getMarketSignals",
+          "getMarketTokenUnlocks",
+          "getMarketWatchlist",
+          "listMarketPairs",
+          "listMarketPriceAlerts",
+          "updateMarketPriceAlert",
+          "updateMarketWatchlistItem"
+        ],
+        "screenshotCount": 21,
+        "screenshots": [
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-home-20261002091801.png",
+            "sha256": "1f4a755a902b2aba7530be20ee18557a6c0a0a7be66a8589a1a0f281b4a535ae"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-overview-20261002091801.png",
+            "sha256": "8ca42601dcf3bdd8230c5642b8ce45b1ce49184ea5da0532fa0dcdbd3d491d5c"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-movers-20261002091801.png",
+            "sha256": "70c984ccd0d72b741696c4a761501efc5572470172367952a11e71dfcd1b4bcc"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-news-20261002091801.png",
+            "sha256": "6a88153bcd674f01f8586d519296591387f5a3f3bc57d1b6d70a85bd850eda2f"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-calendar-20261002091801.png",
+            "sha256": "1e0aefec44b0a8f6729a1155f637843ff8640c6ed5152b016c679e7cb0453e0b"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-correlations-20261002091801.png",
+            "sha256": "6bc3a7dcae929fa02b4a22cc1319442abedee1a5b4364d56b069d4060a73f198"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-unlocks-20261002091801.png",
+            "sha256": "582ef4a174ef7f37d5d3ff184854c91f7982cf47ab45c16438b2bbb07fc9ce83"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-derivatives-20261002091801.png",
+            "sha256": "3218baa8a665f3a086034bcfe9e791b3255fa9e455c49ec7988d0538880d5bdb"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-social-sentiment-20261002091801.png",
+            "sha256": "187443371e3229a7fd274c323df3e383c79562cc7f5432476b5c70bd9c91640b"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-signals-20261002091801.png",
+            "sha256": "9a07894bb65a67384924fab86f8ec0f32c1a3906e05bdb8d3f167d6fb193421b"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-alerts-20261002091801.png",
+            "sha256": "0fec816271e5e9493c9e729835950269a51cfe7d77e0df5f32e378ec6ec04a34"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-screener-20261002091801.png",
+            "sha256": "30c9d172bc95f7ed35b3993d125141ea4e1a536c5781cb20cc7590e0f088de11"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-watchlist-20261002091801.png",
+            "sha256": "e09ede258a0e7f87bd567d1c72866c9dc8744631b0645257bb056e940927d1e5"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-pair-btcusdt-20261002091801.png",
+            "sha256": "2e4486a078e72dec439d86eb766e522373f8e4f448ee92fe19a75c5f78357419"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-depth-20261002091801.png",
+            "sha256": "0b71ceff3e467fd428cdb1399d4ebc9d86ebecca7982be978028388c5b05c862"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-trade-advanced-chart-btcusdt-20261002091801.png",
+            "sha256": "c3bee9c2a5610620de85ff74ab7233b6c023f1ca8824fe48285e20712cea9813"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-pair-btcusdt-info-20261002091801.png",
+            "sha256": "1dfefcdd9cb5d6ef2e5febe511b32818335a630bba4b286ea335df9f5e790d2b"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-sectors-20261002091801.png",
+            "sha256": "46e3bc893d334f1f9658ed08b59279d9f60c6892d696457d8dea97f03bfaac23"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-heatmap-20261002091801.png",
+            "sha256": "2d266536a2ecf44cf3096b9d359ad8a3c393ba50ff53fcaf85d3a4d746a14f8e"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-compare-20261002091801.png",
+            "sha256": "ef9807e863c9d6935a004eb29ab11dea94eb373a7ecd5efba3713bda95c75e94"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-market-writes-complete-20261002091801.png",
+            "sha256": "0c551bba86ed2d42632306118f52f0aa320d855ab304d9456fad7e37ed19b577"
+          }
+        ],
+        "externalApiOrigins": [],
+        "sourceHashesMatchCurrent": true,
+        "localPreview": true,
+        "matrixLocalMockEvidenceFlag": true,
+        "externalApiOriginsRecordedAt": "scenario.externalApiOrigins",
+        "runner": "docs/architecture/production-readiness/evidence/A06/run-market-success-current-head-browser-check.mjs"
+      },
+      {
+        "id": "predictions.error",
+        "status": "passed",
+        "observedAt": "2026-10-02T09:18:17.873Z",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 20,
+        "report": {
+          "path": "docs/architecture/production-readiness/evidence/A06/predictions-error-browser-check-fresh-2026-10-02.json",
+          "sha256": "71bb11a409a91d195e64c0deee4e96d2baf3bb6dbd239e9058f9696aa8e21fa2"
+        },
+        "observedOperationIds": ["listPredictionEvents"],
+        "screenshotCount": 1,
+        "screenshots": [
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-predictions-error-events-fresh-2026-10-02.png",
+            "sha256": "d642030cf1da3093d056a1cce62be1f34da7176da068e4e3ceb5f16ce2717fdb"
+          }
+        ],
+        "externalApiOrigins": [],
+        "sourceHashesMatchCurrent": true,
+        "localPreview": true,
+        "matrixLocalMockEvidenceFlag": true,
+        "externalApiOriginsRecordedAt": "fixtureBoundary.externalApiOrigins",
+        "runner": "docs/architecture/production-readiness/evidence/A06/run-predictions-error-browser-check.mjs"
+      },
+      {
+        "id": "wallet.pending",
+        "status": "passed",
+        "observedAt": "2026-10-02T09:18:32.714Z",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 21,
+        "report": {
+          "path": "docs/architecture/production-readiness/evidence/A06/wallet-pending-current-head-browser-check-202610020918296.json",
+          "sha256": "fe55adb7650ca2aaf330415605c8b71af42b0430324214aa96c74e585679ea64"
+        },
+        "observedOperationIds": ["createWalletTransfer"],
+        "screenshotCount": 2,
+        "screenshots": [
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-wallet-pending-transfer-inflight-202610020918296.png",
+            "sha256": "8c56c1f9e48a0f9cbfc2267854c248eac5c9b5a06cbb9d6f7a01d57f5c3aa564"
+          },
+          {
+            "path": "docs/architecture/production-readiness/evidence/A06/preview-wallet-pending-transfer-receipt-202610020918296.png",
+            "sha256": "3af06928839b6db8762de7dd491c9dc4fb9da8160fccb1821368c0ae5253f91a"
+          }
+        ],
+        "externalApiOrigins": [],
+        "sourceHashesMatchCurrent": true,
+        "localPreview": true,
+        "matrixLocalMockEvidenceFlag": true,
+        "externalApiOriginsRecordedAt": "scenario.externalApiOrigins",
+        "runner": "docs/architecture/production-readiness/evidence/A06/run-wallet-pending-current-head-browser-check.mjs"
+      }
+    ],
+    "scenarioMatrix": {
+      "domains": 15,
+      "trackedOperations": 154,
+      "exactHandlerMappings": 154,
+      "operationsWithDirectSharedHandlerTestReferences": 21,
+      "scenariosDefined": 106,
+      "scenarioRowsWithFreshBrowserEvidence": 81,
+      "scenarioRowsFullyCoveredByFreshBrowserEvidence": 38,
+      "uniqueOperationsWithFreshBrowserEvidence": 88,
+      "runtimeEvidenceFresh": false,
+      "currentHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+      "runtimeEvidenceRevision": "historical_baseline",
+      "freshScenarioEvidenceSidecars": 81,
+      "registeredScenarioEvidenceSidecars": 81,
+      "historicalBaselineScenarioEvidenceSidecars": 0,
+      "historicalBaselineSidecarsWithCurrentSourceHashes": 0,
+      "sourceHashStaleScenarioEvidenceSidecars": 0,
+      "financialDomainsWithPendingUnknownDuplicateCases": [
+        "earn",
+        "p2p",
+        "predictions",
+        "trading",
+        "wallet"
+      ]
+    },
+    "uiAcceptanceIndex": {
+      "activeRouteDeclarations": 427,
+      "urlRegistrations": 1462,
+      "uniquePreviewUrls": 1393,
+      "historicalUrlParity": "426/427",
+      "freshScenarioRows": "81/106",
+      "userAcceptance": "0/128",
+      "backendStagingVerification": "0/154",
+      "generatedIndexPath": "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json",
+      "generatedGuidePath": "docs/architecture/production-readiness/UI-ACCEPTANCE.md",
+      "runbookPath": "docs/architecture/production-readiness/UI-RUNBOOK.md"
+    },
+    "trackingLedgerCheck": {
+      "command": "node docs/architecture/production-readiness/check-tracking.mjs",
+      "exitCode": 1,
+      "errorCount": 61,
+      "sampledErrorPaths": 40,
+      "sourceInventoryPaths": 916,
+      "scope": {
+        "tasks": 38,
+        "steps": 205,
+        "pages": 129,
+        "routeDeclarations": 427,
+        "operations": 154
+      },
+      "meaning": "The independent source fingerprint/snapshot reconciliation remains unresolved; browser sidecar and UI-index checks pass, and this ledger check is not represented as a product pass."
+    }
+  },
+  "verification": [
+    {
+      "command": "node node_modules/vitest/vitest.mjs run src/dev/mocks/preview-scenario-handler.test.ts",
+      "result": "pass",
+      "testsPassed": 59,
+      "testFilesPassed": 1,
+      "durationSeconds": 25.31
+    },
+    {
+      "command": "Run all 10 scenario-specific Playwright scripts listed in scenarioReports sequentially against the loopback mock preview.",
+      "result": "pass",
+      "scenariosPassed": 10,
+      "screenshotsCaptured": 64
+    },
+    {
+      "command": "node docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs --check",
+      "result": "pass"
+    },
+    {
+      "command": "node docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs --check",
+      "result": "pass"
+    },
+    {
+      "command": "node scripts/generate-architecture-inventory.mjs --check",
+      "result": "pass"
+    },
+    {
+      "command": "node node_modules/eslint/bin/eslint.js src/dev/mocks/preview-scenario-handler.test.ts",
+      "result": "pass"
+    },
+    {
+      "command": "node node_modules/prettier/bin/prettier.cjs --check src/dev/mocks/preview-scenario-handler.test.ts docs/architecture/production-readiness/UI-RUNBOOK.md",
+      "result": "pass"
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass"
+    }
+  ],
+  "limitations": [
+    "All browser results are local Chromium/MSW preview evidence at the recorded source HEAD; they do not prove backend, staging, production behavior or user acceptance.",
+    "The aggregate browser runtime report remains historical; freshness comes from current-source scenario sidecars.",
+    "The 25 contract-dependent not_verified scenario rows remain unverified and require API/business-owner-approved semantics before behavior is fabricated."
+  ]
+}

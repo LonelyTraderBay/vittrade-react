@@ -1,0 +1,255 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261001-017",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "contract-authorization-status-audit",
+  "checkedAt": "2026-09-30T22:49:03.360Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "contractFile": "contracts/openapi/market.yaml",
+  "scenarios": [
+    {
+      "id": "market.unauthorized",
+      "operationIds": [
+        "listMarketPriceAlerts",
+        "createMarketPriceAlert",
+        "updateMarketPriceAlert",
+        "deleteMarketPriceAlert",
+        "getMarketWatchlist",
+        "addMarketWatchlistItem",
+        "updateMarketWatchlistItem",
+        "deleteMarketWatchlistItem"
+      ],
+      "executionStatus": "not_verified"
+    },
+    {
+      "id": "market.forbidden",
+      "operationIds": [
+        "listMarketPriceAlerts",
+        "createMarketPriceAlert",
+        "updateMarketPriceAlert",
+        "deleteMarketPriceAlert",
+        "getMarketWatchlist",
+        "addMarketWatchlistItem",
+        "updateMarketWatchlistItem",
+        "deleteMarketWatchlistItem"
+      ],
+      "executionStatus": "not_verified"
+    }
+  ],
+  "matrixLinkedUniqueOperationIds": [
+    "listMarketPriceAlerts",
+    "createMarketPriceAlert",
+    "updateMarketPriceAlert",
+    "deleteMarketPriceAlert",
+    "getMarketWatchlist",
+    "addMarketWatchlistItem",
+    "updateMarketWatchlistItem",
+    "deleteMarketWatchlistItem"
+  ],
+  "contractOperationCount": 22,
+  "operations": [
+    {
+      "operationId": "getMarketOverview",
+      "method": "GET",
+      "path": "/market/overview",
+      "responseStatuses": [
+        "200"
+      ]
+    },
+    {
+      "operationId": "getMarketMovers",
+      "method": "GET",
+      "path": "/market/movers",
+      "responseStatuses": [
+        "200"
+      ]
+    },
+    {
+      "operationId": "getMarketNews",
+      "method": "GET",
+      "path": "/market/news",
+      "responseStatuses": [
+        "200",
+        "503"
+      ]
+    },
+    {
+      "operationId": "getMarketCalendar",
+      "method": "GET",
+      "path": "/market/calendar",
+      "responseStatuses": [
+        "200",
+        "503"
+      ]
+    },
+    {
+      "operationId": "getMarketCorrelations",
+      "method": "GET",
+      "path": "/market/correlations",
+      "responseStatuses": [
+        "200",
+        "503"
+      ]
+    },
+    {
+      "operationId": "getMarketTokenUnlocks",
+      "method": "GET",
+      "path": "/market/unlocks",
+      "responseStatuses": [
+        "200",
+        "503"
+      ]
+    },
+    {
+      "operationId": "getMarketDerivatives",
+      "method": "GET",
+      "path": "/market/derivatives",
+      "responseStatuses": [
+        "200",
+        "503"
+      ]
+    },
+    {
+      "operationId": "getMarketSentiment",
+      "method": "GET",
+      "path": "/market/sentiment",
+      "responseStatuses": [
+        "200",
+        "503"
+      ]
+    },
+    {
+      "operationId": "getMarketSignals",
+      "method": "GET",
+      "path": "/market/signals",
+      "responseStatuses": [
+        "200",
+        "503"
+      ]
+    },
+    {
+      "operationId": "listMarketPriceAlerts",
+      "method": "GET",
+      "path": "/market/price-alerts",
+      "responseStatuses": [
+        "200"
+      ]
+    },
+    {
+      "operationId": "createMarketPriceAlert",
+      "method": "POST",
+      "path": "/market/price-alerts",
+      "responseStatuses": [
+        "201"
+      ]
+    },
+    {
+      "operationId": "updateMarketPriceAlert",
+      "method": "PATCH",
+      "path": "/market/price-alerts/{alertId}",
+      "responseStatuses": [
+        "200"
+      ]
+    },
+    {
+      "operationId": "deleteMarketPriceAlert",
+      "method": "DELETE",
+      "path": "/market/price-alerts/{alertId}",
+      "responseStatuses": [
+        "204"
+      ]
+    },
+    {
+      "operationId": "listMarketPairs",
+      "method": "GET",
+      "path": "/market/pairs",
+      "responseStatuses": [
+        "200"
+      ]
+    },
+    {
+      "operationId": "getMarketPair",
+      "method": "GET",
+      "path": "/market/pairs/{pairId}",
+      "responseStatuses": [
+        "200",
+        "404"
+      ]
+    },
+    {
+      "operationId": "getMarketWatchlist",
+      "method": "GET",
+      "path": "/market/watchlist",
+      "responseStatuses": [
+        "200"
+      ]
+    },
+    {
+      "operationId": "addMarketWatchlistItem",
+      "method": "POST",
+      "path": "/market/watchlist",
+      "responseStatuses": [
+        "201"
+      ]
+    },
+    {
+      "operationId": "getMarketOrderBook",
+      "method": "GET",
+      "path": "/market/pairs/{pairId}/orderbook",
+      "responseStatuses": [
+        "200"
+      ]
+    },
+    {
+      "operationId": "getMarketRecentTrades",
+      "method": "GET",
+      "path": "/market/pairs/{pairId}/trades",
+      "responseStatuses": [
+        "200"
+      ]
+    },
+    {
+      "operationId": "getMarketCandles",
+      "method": "GET",
+      "path": "/market/pairs/{pairId}/candles",
+      "responseStatuses": [
+        "200",
+        "404"
+      ]
+    },
+    {
+      "operationId": "updateMarketWatchlistItem",
+      "method": "PATCH",
+      "path": "/market/watchlist/{watchlistId}",
+      "responseStatuses": [
+        "200"
+      ]
+    },
+    {
+      "operationId": "deleteMarketWatchlistItem",
+      "method": "DELETE",
+      "path": "/market/watchlist/{watchlistId}",
+      "responseStatuses": [
+        "204"
+      ]
+    }
+  ],
+  "counts": {
+    "contractOperations": 22,
+    "contractOperationsDeclaring401": 0,
+    "contractOperationsDeclaring403": 0,
+    "matrixLinkedUniqueOperations": 8,
+    "linkedOperationsDeclaring401": 0,
+    "linkedOperationsDeclaring403": 0
+  },
+  "browserScenarioExecuted": false,
+  "conclusion": "The Market OpenAPI contract contains 22 operations; none declares 401 or 403. Each matrix row links eight operation IDs, also with zero declared 401/403. Keep both rows not_verified and do not fabricate authorization responses.",
+  "nextAction": "A06.03 next matrix row: audit p2p.unknown in contracts/openapi/p2p.yaml for conflict, lookup/correlation and same-key replay semantics; do not run a side-effect case if the contract is unresolved.",
+  "sourceHashes": {
+    "contracts/openapi/market.yaml": "cca6ccf13d96a7a813c54734e5331a7620803f5a670355f6f3b72e4703a3e888",
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "70630b4a0b7d2d16d39fc9da839fbb1b96578c9f5c60ec92ce598e14add99c24",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261002-011",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "read-only-openapi-scenario-row-audit",
+  "observedAt": "2026-10-02T02:10:00Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "environment": "Windows 11, Node 24.19.0; current primary worktree. Read-only YAML/OpenAPI and scenario-matrix parsing; no browser or API side effect.",
+  "commandOrSteps": "Resolve all operationIds linked to discovery.unauthorized and discovery.forbidden against contracts/openapi/discovery.yaml; count operation-level HTTP 401/403 declarations and confirm matrix dispositions.",
+  "expected": "Only declared response codes may be used to exercise authorization rows; preserve not_verified when no mapped operation declares the requested status.",
+  "actual": "Both rows resolve the same 2 operations: GET /discovery/search (searchDiscovery) responses 200/400; GET /discovery/topics/{topicId} (getDiscoveryTopic) responses 200/404. discovery.unauthorized: 0/2 declare 401; discovery.forbidden: 0/2 declare 403. Both rows remain not_verified; no browser scenario ran and no status was synthesized.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/A06/discovery-authorization-contract-audit-current-2026-10-02.json",
+  "sourceHashes": {
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "0bbf7c7a887415389265aa3fa2f2c07fc670a070ac4f692b55fae87ff19922f4",
+    "contracts/openapi/discovery.yaml": "c0c22fb43a71468388dc484f85b0b27c583be200fcb0c8e945de8cdaaaef4179"
+  },
+  "scenarioMatrixSummary": {
+    "currentHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+    "scenariosDefined": 106,
+    "freshScenarioRows": 81,
+    "registeredSidecars": 81,
+    "staleSidecars": 0
+  },
+  "globalSecurity": [
+    {
+      "sessionCookie": []
+    }
+  ],
+  "rows": [
+    {
+      "id": "discovery.unauthorized",
+      "state": "unauthorized",
+      "executionStatus": "not_verified",
+      "operationIds": ["searchDiscovery", "getDiscoveryTopic"],
+      "operations": [
+        {
+          "operationId": "searchDiscovery",
+          "method": "GET",
+          "path": "/discovery/search",
+          "responseCodes": ["200", "400"]
+        },
+        {
+          "operationId": "getDiscoveryTopic",
+          "method": "GET",
+          "path": "/discovery/topics/{topicId}",
+          "responseCodes": ["200", "404"]
+        }
+      ],
+      "declared401": 0,
+      "declared403": 0
+    },
+    {
+      "id": "discovery.forbidden",
+      "state": "forbidden",
+      "executionStatus": "not_verified",
+      "operationIds": ["searchDiscovery", "getDiscoveryTopic"],
+      "operations": [
+        {
+          "operationId": "searchDiscovery",
+          "method": "GET",
+          "path": "/discovery/search",
+          "responseCodes": ["200", "400"]
+        },
+        {
+          "operationId": "getDiscoveryTopic",
+          "method": "GET",
+          "path": "/discovery/topics/{topicId}",
+          "responseCodes": ["200", "404"]
+        }
+      ],
+      "declared401": 0,
+      "declared403": 0
+    }
+  ],
+  "nextAction": "Continue A06.03 in matrix order at earn.forbidden: resolve its current row operationIds against contracts/openapi/earn.yaml and run no browser case unless a mapped operation declares HTTP 403.",
+  "limitations": [
+    "This is a contract/matrix audit, not browser behavior, live backend authorization, staging verification, or user acceptance.",
+    "Source HEAD is recorded separately from current working-tree hashes; the report is local read-only evidence."
+  ]
+}

@@ -1,0 +1,5 @@
+
+> vittrade-react@0.0.1 production-mock-imports:check
+> node scripts/check-production-mock-imports.mjs
+
+Production mock import boundary passed: 0 legacy fixture page consumers; fixture data is isolated under src/dev/mocks.

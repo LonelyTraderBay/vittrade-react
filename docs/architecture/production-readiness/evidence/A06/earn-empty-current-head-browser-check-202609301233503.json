@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-30T12:33:51.278Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "origin": "http://127.0.0.1:4173",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sourceHashes": {
+    "contracts/openapi/earn.yaml": "f658455d5dcc1927fcee5a814c01b59e22dc5cae30640cb092e710e4ad7fa608",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
+    "docs/architecture/production-readiness/evidence/A06/run-earn-empty-current-head-browser-check.mjs": "41d2abfcad18f30722430eb9dbea2a53c8449fd817676613d86b012fcb781179",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/earn-fixtures.ts": "d17fff1aef1404678d8e99fe23c2a19b0243d7a0ac6bd4650cdfb901cdb43941",
+    "src/dev/mocks/handlers.ts": "8382400738090945e6c3ec53286f288f0ed2d41c90dbd407eec2b48d36d347ae",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "6deef3b43c51e05c9cd058d8743b23b64a86579f474ce0486830359ac50ac200",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/earn/api/earn-api.ts": "06715b9d001e7a5b13a7ff819251cded67bca32a32a7912b1b89e6acc8c3e545",
+    "src/features/earn/model/earn-queries.ts": "c3215c441db5e4254fed1a6e91c733b96ed01528dcf61bdc5db4c1390528d10a",
+    "src/features/earn/pages/EarnHistoryPage.tsx": "10853dcd2f40a4c60fc6bbbf698c497d59d3b0d31406a46d6ff7ecca55d426e1",
+    "src/features/earn/pages/EarnPage.tsx": "66fa32a766942e318f53bfde5b50ddc5c91ddb7a92392f5be418e9af60c10b65",
+    "src/features/earn/routes.ts": "e9366bf0acd5d7e63069de10b5b3af71e26a63a9654f2961e44b1d3f41aa8c56"
+  },
+  "scenario": {
+    "id": "earn.empty",
+    "domain": "earn",
+    "state": "empty",
+    "status": "failed",
+    "observedAt": "2026-09-30T12:33:51.278Z",
+    "persona": "developer (local MSW fixture)",
+    "role": "user",
+    "route": "/w/earn/savings/portfolio",
+    "finalRoute": "/w/earn/savings/history",
+    "operationIds": ["getEarnSnapshot", "listEarnTransactions"],
+    "observedOperationIds": [],
+    "operationRequestCounts": {
+      "getEarnSnapshot": 0,
+      "listEarnTransactions": 0
+    },
+    "requests": [
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/auth/session",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": null,
+        "method": "POST",
+        "path": "/api/auth/login",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      }
+    ],
+    "responses": [
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 12
+      },
+      {
+        "operationId": null,
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 12
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 5
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 5
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 1
+      }
+    ],
+    "initialSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "loginResponse": {
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    "scenarioSelected": true,
+    "snapshot": {
+      "positions": 0,
+      "totalDepositedUsd": 0
+    },
+    "transactions": {
+      "items": 0,
+      "domain": "savings"
+    },
+    "emptyStates": {
+      "portfolio": true,
+      "history": true
+    },
+    "externalApiOrigins": [],
+    "pageErrors": [],
+    "elapsedMs": 836,
+    "screenshots": [
+      "preview-earn-empty-portfolio-current-head-202609301233503.png",
+      "preview-earn-empty-history-current-head-202609301233503.png"
+    ],
+    "failures": [
+      "Invalid evidence attempt: the runner operation matcher produced null operation IDs for both Earn requests. This report is superseded by the corrected 2/2-operation run and is excluded from the scenario matrix."
+    ],
+    "note": "The UI showed both empty states and both HTTP requests completed through local MSW, but the initial runner failed to map operation IDs because OpenAPI paths omit the /api prefix. This attempt is retained as diagnostic only; do not count it as Earn empty evidence. Corrected run: earn-empty-current-head-browser-check-202609301235340.json."
+  }
+}

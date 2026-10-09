@@ -1,0 +1,5 @@
+
+> vittrade-react@0.0.1 licenses:check
+> node scripts/check-dependency-licenses.mjs
+
+Dependency license gate passed: 552 packages reviewed.

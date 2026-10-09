@@ -1,0 +1,110 @@
+[
+  {
+    "command": "npm.cmd run typecheck",
+    "startedAt": "2026-09-30T06:49:50.781Z",
+    "endedAt": "2026-09-30T06:50:13.182Z",
+    "exitCode": 0,
+    "error": null,
+    "log": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\typecheck.log",
+    "node": "v24.19.0"
+  },
+  {
+    "command": "npm.cmd run lint:check",
+    "startedAt": "2026-09-30T06:50:13.183Z",
+    "endedAt": "2026-09-30T06:50:21.930Z",
+    "exitCode": 0,
+    "error": null,
+    "log": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\lint-check.log",
+    "node": "v24.19.0"
+  },
+  {
+    "command": "npm.cmd run format:check",
+    "startedAt": "2026-09-30T06:50:21.931Z",
+    "endedAt": "2026-09-30T06:50:27.536Z",
+    "exitCode": 1,
+    "error": null,
+    "log": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\format-check.log",
+    "node": "v24.19.0"
+  },
+  {
+    "command": "npm.cmd run architecture:check",
+    "startedAt": "2026-09-30T06:50:27.537Z",
+    "endedAt": "2026-09-30T06:50:29.001Z",
+    "exitCode": 0,
+    "error": null,
+    "log": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\architecture-check.log",
+    "node": "v24.19.0"
+  },
+  {
+    "command": "npm.cmd run architecture:inventory:check",
+    "startedAt": "2026-09-30T06:50:29.002Z",
+    "endedAt": "2026-09-30T06:50:29.622Z",
+    "exitCode": 1,
+    "error": null,
+    "log": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\architecture-inventory-check.log",
+    "node": "v24.19.0"
+  },
+  {
+    "command": "npm.cmd run page-size:check",
+    "startedAt": "2026-09-30T06:50:29.622Z",
+    "endedAt": "2026-09-30T06:50:29.815Z",
+    "exitCode": 0,
+    "error": null,
+    "log": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\page-size-check.log",
+    "node": "v24.19.0"
+  },
+  {
+    "command": "npm.cmd run contracts:check",
+    "startedAt": "2026-09-30T06:50:29.815Z",
+    "endedAt": "2026-09-30T06:50:30.105Z",
+    "exitCode": 0,
+    "error": null,
+    "log": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\contracts-check.log",
+    "node": "v24.19.0"
+  },
+  {
+    "command": "npm.cmd run security:check",
+    "startedAt": "2026-09-30T06:50:30.105Z",
+    "endedAt": "2026-09-30T06:50:30.330Z",
+    "exitCode": 0,
+    "error": null,
+    "log": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\security-check.log",
+    "node": "v24.19.0"
+  },
+  {
+    "command": "npm.cmd run env:check",
+    "startedAt": "2026-09-30T06:50:30.331Z",
+    "endedAt": "2026-09-30T06:50:30.576Z",
+    "exitCode": 0,
+    "error": null,
+    "log": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\env-check.log",
+    "node": "v24.19.0"
+  },
+  {
+    "command": "npm.cmd run production-mock-imports:check",
+    "startedAt": "2026-09-30T06:50:30.576Z",
+    "endedAt": "2026-09-30T06:50:30.746Z",
+    "exitCode": 0,
+    "error": null,
+    "log": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\production-mock-imports-check.log",
+    "node": "v24.19.0"
+  },
+  {
+    "command": "npm.cmd run production-routes:check",
+    "startedAt": "2026-09-30T06:50:30.747Z",
+    "endedAt": "2026-09-30T06:50:30.904Z",
+    "exitCode": 0,
+    "error": null,
+    "log": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\production-routes-check.log",
+    "node": "v24.19.0"
+  },
+  {
+    "command": "npm.cmd run licenses:check",
+    "startedAt": "2026-09-30T06:50:30.905Z",
+    "endedAt": "2026-09-30T06:50:31.115Z",
+    "exitCode": 0,
+    "error": null,
+    "log": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\licenses-check.log",
+    "node": "v24.19.0"
+  }
+]

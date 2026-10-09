@@ -1,0 +1,552 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "EV-20261002-031",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "observedAt": "2026-10-02T10:57:20.486Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "dirtyWorktree": true,
+  "environment": "Local Vite development server at http://127.0.0.1:4173 with MSW service-worker fixtures; Chromium via Playwright.",
+  "changeSummary": [
+    "WebSidebar scrolls the active route into its visible navigation viewport when pathname changes and marks exact-route items with aria-current=page.",
+    "Arena discovery, mode, and challenge read queries set retry:false so the shared HTTP client owns the measured three-attempt transport retry budget.",
+    "Arena discovery transport-error regression uses the application QueryClient defaults and asserts three requests before Retry and one further request on recovery."
+  ],
+  "browserSidecars": {
+    "reportCount": 12,
+    "reports": [
+      {
+        "scenarioId": "arena.loading",
+        "path": "docs/architecture/production-readiness/evidence/A06/arena-loading-browser-check-202610021050261.json",
+        "sha256": "c2f25ce202cbaa58d62f740fcd1e3169808f42aaf498afbb53aaa65c0f6151db",
+        "checkedAt": "2026-10-02T10:50:26.131Z",
+        "status": "passed",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 15,
+        "operationRequestCounts": {
+          "getArenaDiscovery": 1
+        },
+        "screenshotPaths": [
+          "docs/architecture/production-readiness/evidence/A06/preview-arena-loading-discovery-202610021050261.png"
+        ]
+      },
+      {
+        "scenarioId": "arena.error",
+        "path": "docs/architecture/production-readiness/evidence/A06/arena-error-browser-check-202610021050331.json",
+        "sha256": "c361b0aaac1bee3be72f5d8eb21f9e37ed881a35f6fec3463eb854e8827308a2",
+        "checkedAt": "2026-10-02T10:50:33.166Z",
+        "status": "passed",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 17,
+        "operationRequestCounts": {
+          "getArenaDiscovery": 6
+        },
+        "screenshotPaths": [
+          "docs/architecture/production-readiness/evidence/A06/preview-arena-error-discovery-202610021050331.png"
+        ]
+      },
+      {
+        "scenarioId": "arena.empty",
+        "path": "docs/architecture/production-readiness/evidence/A06/arena-empty-browser-check-202610021056337.json",
+        "sha256": "6b5ffd24791dee4f83bfc9fbb19fe4f3c6d1376743b9a16734d7083a88899d2a",
+        "checkedAt": "2026-10-02T10:56:33.733Z",
+        "status": "passed",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 14,
+        "operationRequestCounts": {
+          "getArenaDiscovery": 1
+        },
+        "screenshotPaths": [
+          "docs/architecture/production-readiness/evidence/A06/preview-arena-empty-challenges-202610021056337.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-arena-empty-modes-202610021056337.png"
+        ]
+      },
+      {
+        "scenarioId": "arena.success",
+        "path": "docs/architecture/production-readiness/evidence/A06/arena-success-browser-check-202610021056350.json",
+        "sha256": "3dff3dbf12018c060f92a3918c8c6d0438cb6b2edb1976ce43530c2c2db7b346",
+        "checkedAt": "2026-10-02T10:56:35.022Z",
+        "status": "passed",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 19,
+        "operationRequestCounts": {
+          "getArenaDiscovery": 1,
+          "getArenaMode": 1,
+          "getArenaChallenge": 1,
+          "joinArenaChallenge": 1
+        },
+        "screenshotPaths": [
+          "docs/architecture/production-readiness/evidence/A06/preview-arena-success-discovery-202610021056350.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-arena-success-mode-202610021056350.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-arena-success-challenge-202610021056350.png"
+        ]
+      },
+      {
+        "scenarioId": "auth.loading",
+        "path": "docs/architecture/production-readiness/evidence/A06/auth-loading-current-head-browser-check-202610021056367.json",
+        "sha256": "5bfa07c3f48b31c8daeec71512c0083579679660caf13cbca1f037d57c2502f9",
+        "checkedAt": "2026-10-02T10:56:36.768Z",
+        "status": "passed",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 17,
+        "operationRequestCounts": {
+          "getSession": 1
+        },
+        "screenshotPaths": [
+          "docs/architecture/production-readiness/evidence/A06/preview-auth-loading-current-head-202610021056367.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-auth-loading-login-current-head-202610021056367.png"
+        ]
+      },
+      {
+        "scenarioId": "auth.success",
+        "path": "docs/architecture/production-readiness/evidence/A06/auth-success-current-head-browser-check-202610021056399.json",
+        "sha256": "44c36b19333822745d3004eceff291c876ddbaed7965870631c9b63756eae1e8",
+        "checkedAt": "2026-10-02T10:56:39.971Z",
+        "status": "passed",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 15,
+        "operationRequestCounts": {
+          "getSession": 1,
+          "login": 1
+        },
+        "screenshotPaths": [
+          "docs/architecture/production-readiness/evidence/A06/preview-auth-success-current-head-202610021056399.png"
+        ]
+      },
+      {
+        "scenarioId": "support.empty",
+        "path": "docs/architecture/production-readiness/evidence/A06/support-empty-browser-check-2026-10-02-1790938601184.json",
+        "sha256": "497f8415824f8769f918b36f5d5aaebdbc212aa2c8b12f0e6e6030efefb64ccb",
+        "checkedAt": "2026-10-02T10:56:41.184Z",
+        "status": "passed",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 25,
+        "operationRequestCounts": null,
+        "screenshotPaths": [
+          "docs/architecture/production-readiness/evidence/A06/preview-support-empty-news-2026-10-02-1790938601184.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-support-empty-notifications-2026-10-02-1790938601184.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-support-empty-help-2026-10-02-1790938601184.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-support-empty-tickets-2026-10-02-1790938601184.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-support-empty-created-ticket-2026-10-02-1790938601184.png"
+        ]
+      },
+      {
+        "scenarioId": "support.error",
+        "path": "docs/architecture/production-readiness/evidence/A06/support-error-browser-check-2026-10-02-1790938603237.json",
+        "sha256": "b32105093c2e91078ebaa01f999358cf1de8a8f2e6798e8bca460585a71cad60",
+        "checkedAt": "2026-10-02T10:56:43.237Z",
+        "status": "passed",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 26,
+        "operationRequestCounts": null,
+        "screenshotPaths": [
+          "docs/architecture/production-readiness/evidence/A06/preview-support-error-news-2026-10-02-1790938603237.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-support-error-notifications-2026-10-02-1790938603237.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-support-error-help-2026-10-02-1790938603237.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-support-error-tickets-2026-10-02-1790938603237.png"
+        ]
+      },
+      {
+        "scenarioId": "support.loading",
+        "path": "docs/architecture/production-readiness/evidence/A06/support-loading-browser-check-2026-10-02-1790938610863.json",
+        "sha256": "0497597ac50e189c2ec41ac4320605f585bc981a522f93f6529c42399d1c385d",
+        "checkedAt": "2026-10-02T10:56:50.863Z",
+        "status": "passed",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 25,
+        "operationRequestCounts": null,
+        "screenshotPaths": [
+          "docs/architecture/production-readiness/evidence/A06/preview-support-loading-news-2026-10-02-1790938610863.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-support-loading-notifications-2026-10-02-1790938610863.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-support-loading-help-2026-10-02-1790938610863.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-support-loading-tickets-2026-10-02-1790938610863.png"
+        ]
+      },
+      {
+        "scenarioId": "support.pending",
+        "path": "docs/architecture/production-readiness/evidence/A06/support-pending-browser-check-2026-10-02.json",
+        "sha256": "8c74955456aff69b137824429811fdfe116844c925b8fb5f9c69bf9a38f3e52c",
+        "checkedAt": "2026-10-02T10:56:59.879Z",
+        "status": "passed",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 22,
+        "operationRequestCounts": null,
+        "screenshotPaths": [
+          "docs/architecture/production-readiness/evidence/A06/preview-support-pending-2026-10-02.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-support-pending-completed-2026-10-02.png"
+        ]
+      },
+      {
+        "scenarioId": "support.success",
+        "path": "docs/architecture/production-readiness/evidence/A06/support-success-browser-check-2026-10-02-1790938627449.json",
+        "sha256": "225fd2b4ded8c55f5218aca2468abee028cb4205811853d73043ae8dde9e108d",
+        "checkedAt": "2026-10-02T10:57:07.449Z",
+        "status": "passed",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 29,
+        "operationRequestCounts": null,
+        "screenshotPaths": [
+          "docs/architecture/production-readiness/evidence/A06/preview-support-success-news-2026-10-02-1790938627449.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-support-success-notifications-2026-10-02-1790938627449.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-support-success-help-2026-10-02-1790938627449.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-support-success-tickets-2026-10-02-1790938627449.png"
+        ]
+      },
+      {
+        "scenarioId": "market.success",
+        "path": "docs/architecture/production-readiness/evidence/A06/market-success-current-head-browser-check-20261002105709.json",
+        "sha256": "03e1ffa2dd44430198b5e678d1dafdc9a66ea5b1bfeed0478c117114e0a0f4bc",
+        "checkedAt": "2026-10-02T10:57:20.486Z",
+        "status": "passed",
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sourceHashCount": 43,
+        "operationRequestCounts": {
+          "getMarketOverview": 1,
+          "getMarketMovers": 1,
+          "getMarketNews": 1,
+          "getMarketCalendar": 1,
+          "getMarketCorrelations": 1,
+          "getMarketTokenUnlocks": 1,
+          "getMarketDerivatives": 1,
+          "getMarketSentiment": 1,
+          "getMarketSignals": 1,
+          "listMarketPriceAlerts": 4,
+          "createMarketPriceAlert": 1,
+          "updateMarketPriceAlert": 1,
+          "deleteMarketPriceAlert": 1,
+          "listMarketPairs": 7,
+          "getMarketPair": 2,
+          "getMarketWatchlist": 4,
+          "addMarketWatchlistItem": 1,
+          "getMarketOrderBook": 2,
+          "getMarketRecentTrades": 2,
+          "getMarketCandles": 1,
+          "updateMarketWatchlistItem": 1,
+          "deleteMarketWatchlistItem": 1
+        },
+        "screenshotPaths": [
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-home-20261002105709.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-overview-20261002105709.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-movers-20261002105709.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-news-20261002105709.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-calendar-20261002105709.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-correlations-20261002105709.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-unlocks-20261002105709.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-derivatives-20261002105709.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-social-sentiment-20261002105709.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-signals-20261002105709.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-alerts-20261002105709.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-screener-20261002105709.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-watchlist-20261002105709.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-pair-btcusdt-20261002105709.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-depth-20261002105709.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-trade-advanced-chart-btcusdt-20261002105709.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-pair-btcusdt-info-20261002105709.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-sectors-20261002105709.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-heatmap-20261002105709.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-compare-20261002105709.png",
+          "docs/architecture/production-readiness/evidence/A06/preview-market-success-market-writes-complete-20261002105709.png"
+        ]
+      }
+    ],
+    "screenshotCount": 50,
+    "screenshots": [
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-arena-empty-challenges-202610021056337.png",
+        "sha256": "d8404e2051a37e8eb0606aba5c9506aa4f73ec753cdb12e3dd39a188e475166f"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-arena-empty-modes-202610021056337.png",
+        "sha256": "3000e13ea8259fbedb3c98796d7855ad2f6a2c6c97693c8ac1579676a1817be7"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-arena-error-discovery-202610021050331.png",
+        "sha256": "2885da9ab880f90cd9163e3da7530cf722e283f5e6b6fdf7d5f75dac3ae5d658"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-arena-loading-discovery-202610021050261.png",
+        "sha256": "1c8ad90ac7140f5f7867827c4f6c688eaab332321c8f949efe598d2fc4dabbc9"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-arena-success-challenge-202610021056350.png",
+        "sha256": "993362f1d17c22b8e3d773f7a7a2c6d57a80fac92ff7387dc024eb3be47390d8"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-arena-success-discovery-202610021056350.png",
+        "sha256": "51ccd1fdfb76c9f67aeede4f27f38892cca5295d7be6020dcc9b7034f1ce6a14"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-arena-success-mode-202610021056350.png",
+        "sha256": "b89a2c0a96da21cdd65111dcfe9021719d8bbe602f2eeb785f44a710fccd3e60"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-auth-loading-current-head-202610021056367.png",
+        "sha256": "1e95ae20d3fd0fe969516a1de3de31f7430ef96a4fa485500e936cf62c3904ed"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-auth-loading-login-current-head-202610021056367.png",
+        "sha256": "e035fd7159c0a3af8be2e79f9efe166a1c0b026356377b726fe297ab5831b848"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-auth-success-current-head-202610021056399.png",
+        "sha256": "1eddf10176b5feec8c8e7011232a7322b76b5f8e128ddd4a33885a407670f4da"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-home-20261002105709.png",
+        "sha256": "39e394f67bab16034e4e1abde807db9d7b5731cd9ee819de4ab62cd483c611aa"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-market-writes-complete-20261002105709.png",
+        "sha256": "726469eca9c10f99a2ab78878fefd182d6c3ff6a7b508783d415acb9bb2c900a"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-alerts-20261002105709.png",
+        "sha256": "75e63dcaab8585d0af7de90d51fd97510e559f6b3f145b8f686516e348b30afe"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-calendar-20261002105709.png",
+        "sha256": "86b5494930fdca6e0b989b0a4f3899f4e13b19de04f9dec56a597462255fdd4b"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-compare-20261002105709.png",
+        "sha256": "25119b61f4ab3106c1f0579fc2cd71c9a91e78c713573db6d8a81afba4ff2677"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-correlations-20261002105709.png",
+        "sha256": "9d54dadaaea13c84b0517eba65e2c3d663e2fe71030bb1ebc5caa6374868eea8"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-depth-20261002105709.png",
+        "sha256": "753c82d1be90420c56e724c2824a85085f849dcb634b93a27a5373a9dbcdb1df"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-derivatives-20261002105709.png",
+        "sha256": "64577785c515db47586528893c52270dbdfa5c979133d87e249e2238f94270f6"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-heatmap-20261002105709.png",
+        "sha256": "a5ba6f9e13f322a0935d6303284ae0112cb8581ddd6f077cb77b7cb60b0845cb"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-movers-20261002105709.png",
+        "sha256": "cef47b8faee537ce7168a50a0c30dc167d31d641ce0ff0ff619579f538529c99"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-news-20261002105709.png",
+        "sha256": "c25f113e140be802af218987000afb410dfa031d76b625cd6a251014a56e5ebd"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-overview-20261002105709.png",
+        "sha256": "55b8c033693f7a6d4f80878eeff1658f572156695665ea3949704b3d7dd995b4"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-screener-20261002105709.png",
+        "sha256": "c258bcdbc34eb99fa65605983ca01bd99e60c92f55466bfce957639897875b1a"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-sectors-20261002105709.png",
+        "sha256": "c8156613b382d8281b6c0261916e52ec14d98cfbeb580b412b6b3902961d61cb"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-signals-20261002105709.png",
+        "sha256": "0df1668c2c0cd18029b4c78c9080213ed669dfab9e6393f579d492cbe12ad6b1"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-social-sentiment-20261002105709.png",
+        "sha256": "d9ac692a6eb459ac286ae2653a4e5fa95f0b8a80f2a786571324e89e90787088"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-unlocks-20261002105709.png",
+        "sha256": "7cd463fa50a40f55b58ebacd11eb9340ce7cf51e484cd123b021cde5bed72578"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-watchlist-20261002105709.png",
+        "sha256": "827ddcdef1e35e0681a663852a0bbb0645cc0ce05753d8c70de78b311c5ba101"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-pair-btcusdt-20261002105709.png",
+        "sha256": "89342ec9d509101bfb037017c11e953eb6dd5cc16efc8c7a0426af59ee800965"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-pair-btcusdt-info-20261002105709.png",
+        "sha256": "aca5f0e1f6b5e835c1f8d35e65918c41d6af7d5e7e58d2172c4a57a931cc47b8"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-trade-advanced-chart-btcusdt-20261002105709.png",
+        "sha256": "68f7a35950e2980dcef504fb6b78c2a4aa14b452f2770f4fc9a3db7e66c8b803"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-support-empty-created-ticket-2026-10-02-1790938601184.png",
+        "sha256": "e06b45bad4fc287143c5ac781393affd4849dd794a3f12d2e1d35f0304088ed9"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-support-empty-help-2026-10-02-1790938601184.png",
+        "sha256": "990949b0ef3b6701ab89e56c0a6286c5d1c0f5704d8f695dcddd2e8e22d2bdcb"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-support-empty-news-2026-10-02-1790938601184.png",
+        "sha256": "b6ac10028581d316d938e5754034ab49156f4c31518202391207cfc31bd178c0"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-support-empty-notifications-2026-10-02-1790938601184.png",
+        "sha256": "433946cb61583c5409eb18c6cd98d07719050d266175b4fdd2dc89b72c4c22b3"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-support-empty-tickets-2026-10-02-1790938601184.png",
+        "sha256": "ca2a3148ef86d78b4831cabeab9d85a6eb04387b6a2a5cbd7e7856c24e0dc10e"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-support-error-help-2026-10-02-1790938603237.png",
+        "sha256": "bdbf7b731f1c3e92ab540de270ddad2c0d47c700186ac7328ea3ac4bf6f1788f"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-support-error-news-2026-10-02-1790938603237.png",
+        "sha256": "2b65d2d8c50d52f1fa50c9d4f537f33e191a3a8fa55e2642f5f1b7a7b972558b"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-support-error-notifications-2026-10-02-1790938603237.png",
+        "sha256": "3f622cee028f0e820fde45c80e7ad52343576f3bf9196ff03bd0fae5e09ee0bf"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-support-error-tickets-2026-10-02-1790938603237.png",
+        "sha256": "bdbf7b731f1c3e92ab540de270ddad2c0d47c700186ac7328ea3ac4bf6f1788f"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-support-loading-help-2026-10-02-1790938610863.png",
+        "sha256": "7bd1eed88e2a88eaf20fc5b549bec2e588318a456433372405785a8788d0ccae"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-support-loading-news-2026-10-02-1790938610863.png",
+        "sha256": "12adf38802adf73ad80639c2db26f43b5ae6c7eeaa36494e4326c341af144eb6"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-support-loading-notifications-2026-10-02-1790938610863.png",
+        "sha256": "ffd681bfdeb96eea0cc21cf67ba0b83964caed4aac8671fdc64ea42d9918391a"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-support-loading-tickets-2026-10-02-1790938610863.png",
+        "sha256": "ca1332cdbf360af4dd33bfa9cd3565ceaf1b9afc98e7b902a8f57a3340ea9837"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-support-pending-2026-10-02.png",
+        "sha256": "aa383b07370a77c7816ccafe8224b13e3374e2ae103c759a7ec9f7be53bfc7de"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-support-pending-completed-2026-10-02.png",
+        "sha256": "cb971fa5f619dfafaf9803d17303fe019bf67112490588fc269c0dbe19e94ae1"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-support-success-help-2026-10-02-1790938627449.png",
+        "sha256": "3542c8b2965c4db8968633e3fc4b4f8f9aac5d52025876a592b56c9b5be5bd3d"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-support-success-news-2026-10-02-1790938627449.png",
+        "sha256": "7905b7d09a1821955901ce8b0354e57291792c3bb0e95dbb476d6bed262c3348"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-support-success-notifications-2026-10-02-1790938627449.png",
+        "sha256": "7bda3dc1920d8b3beec59c01494a86f3f7db6f9b241e5f631a1eb8b8abfaeda1"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/preview-support-success-tickets-2026-10-02-1790938627449.png",
+        "sha256": "4c0548adc079eb9742331b64f92007e53fd72c5218cbef3e9c441b4949ab7e1c"
+      }
+    ]
+  },
+  "arenaMeasurements": {
+    "loading": {
+      "scenarioId": "arena.loading",
+      "observedGetCount": 1,
+      "httpStatus": 200,
+      "visibleActiveSidebarItem": "Open Arena",
+      "visibleInScrollViewport": true
+    },
+    "error": {
+      "scenarioId": "arena.error",
+      "initialTransportFailures": 3,
+      "retryTransportFailures": 3,
+      "totalGetRequests": 6,
+      "httpResponses": 0,
+      "visibleActiveSidebarItem": "Open Arena",
+      "visibleAfterRetryInScrollViewport": true,
+      "writeRequests": 0,
+      "externalApiOrigins": 0
+    },
+    "productionRoute": "src/app/routes.ts selects IntegrationPendingPage outside the Vite development build."
+  },
+  "focusedValidation": {
+    "command": "node node_modules/vitest/vitest.mjs run src/features/arena/pages/ArenaDiscoveryPage.test.tsx src/app/components/layout/WebSidebar.test.tsx --reporter=dot",
+    "result": "passed",
+    "testFiles": 2,
+    "tests": 8
+  },
+  "matrix": {
+    "currentHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+    "rowsWithFreshBrowserEvidence": 81,
+    "scenarioRows": 106,
+    "fullRows": 38,
+    "representativeRows": 43,
+    "uniqueOperationsObserved": 88,
+    "operationCount": 154,
+    "freshSidecars": 81,
+    "registeredSidecars": 81,
+    "staleSidecars": 0,
+    "runtimeEvidenceFresh": false
+  },
+  "limitations": [
+    "All browser requests were handled by local MSW; these measurements do not establish backend, staging, production latency, authorization, persistence, or user acceptance.",
+    "UI acceptance remains 0/128 and backend/staging verification remains 0/154.",
+    "Scenario aggregate runtime provenance remains historical; the 81 sidecars are independently current-source evidence.",
+    "The Preview warning and floating Web widget still overlap in screenshots and remain a C05.03 acceptance issue."
+  ],
+  "validation": {
+    "focusedVitest": {
+      "result": "pass",
+      "testFiles": 2,
+      "tests": 8
+    },
+    "scopedEslint": {
+      "result": "pass",
+      "paths": 6
+    },
+    "prettier": {
+      "result": "pass",
+      "paths": 6
+    },
+    "scenarioMatrixCheck": {
+      "result": "pass",
+      "domains": 15,
+      "operations": 154,
+      "expectations": 106
+    },
+    "uiAcceptanceIndexCheck": {
+      "result": "pass",
+      "activeRouteDeclarations": 427,
+      "urlRegistrations": 1462,
+      "uniquePreviewUrls": 1393,
+      "historicalUrlParity": "426/427",
+      "freshScenarioRows": "81/106"
+    },
+    "architectureInventoryCheck": {
+      "result": "pass",
+      "pages": 129,
+      "routes": 427,
+      "components": 149,
+      "services": 32,
+      "mocks": 28
+    },
+    "checkTracking": {
+      "exitCode": 1,
+      "errorCount": 64,
+      "missingFingerprints": 32,
+      "snapshotPathsMissing": 5,
+      "sourceMismatches": 27,
+      "applicationInventoryPaths": "916/916"
+    },
+    "gitDiffCheck": {
+      "result": "pass",
+      "advisory": "Git reports PLAN.md CRLF-to-LF normalization on the next write."
+    }
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261003-001",
+  "taskId": "U01",
+  "stepId": "U01.03",
+  "kind": "login-mfa-rate-limit-and-registration-challenge-adapter-cases",
+  "observedAt": "2026-10-02T17:16:11Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "sourceBranch": "main",
+  "environment": "Windows PowerShell; Node v24.19.0; local frontend contract and test environment only; no backend or staging calls.",
+  "expected": "Exercise the contract-defined login MFA HTTP 429 response without inventing an error-body contract, and verify email/phone registration challenge request envelopes through the adapter.",
+  "actual": "Added a test-local MSW 429 response case for POST /auth/login/mfa/verify and asserted the adapter exposes status 429 with no body assumption. The Auth adapter tests cover email and phone registration challenge issuance/envelopes. Existing shared dev Auth tests cover authenticated and guest sessions, MFA-required login, invalid code, expiry, logout invalidation and locked 423. The registration tests use local adapter stubs; they do not prove the shared browser preview or registration verification flow.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/U01/u01-03-login-mfa-rate-limit-2026-10-03.json",
+  "plannedInputPaths": [
+    "AGENTS.md",
+    "AI_RULES.md",
+    "ARCHITECTURE.md",
+    "PROJECT_BOOTSTRAP_PROMPT.txt",
+    "contracts/README.md",
+    "contracts/openapi/auth.yaml",
+    "docs/PROJECT_CONTEXT.md",
+    "docs/ai/WORKFLOW.md",
+    "docs/architecture/production-readiness/PLAN.md",
+    "docs/architecture/production-readiness/TRACKING.json",
+    "guidelines/Guidelines.md",
+    "src/dev/mocks/auth-handlers.test.ts",
+    "src/dev/mocks/handlers.ts",
+    "src/dev/mocks/personas.ts",
+    "src/features/auth/api/auth-api-instance.ts",
+    "src/features/auth/api/auth-api.test.ts",
+    "src/features/auth/api/auth-api.ts",
+    "src/features/auth/api/auth-openapi-contract.test.ts",
+    "src/features/auth/api/password-reset-api.ts",
+    "src/features/auth/components/RegistrationForm.test.tsx",
+    "src/features/auth/components/Web2FASetupFlow.test.tsx",
+    "src/features/auth/pages/LoginPage.api-mode.test.tsx",
+    "src/features/auth/pages/LoginPage.test.tsx",
+    "src/features/auth/pages/OTPPage.test.tsx",
+    "src/features/auth/pages/PasswordChangePage.test.tsx",
+    "src/features/auth/pages/PasswordResetPages.test.tsx",
+    "src/features/auth/pages/TwoFASetupPage.test.tsx",
+    "src/features/auth/pages/WebAccountLockedPage.test.tsx",
+    "src/features/auth/pages/WebAuthSuccessPage.test.tsx",
+    "src/features/auth/pages/WebLoginPage.api-mode.test.tsx",
+    "src/features/auth/pages/WebLoginPage.test.tsx",
+    "src/features/auth/pages/WebOTPPage.test.tsx",
+    "src/features/auth/pages/WebSessionExpiredPage.test.tsx",
+    "src/features/auth/routes.test.ts"
+  ],
+  "reviewedInputPaths": [
+    "contracts/openapi/auth.yaml",
+    "src/dev/mocks/personas.ts",
+    "src/dev/mocks/handlers.ts",
+    "src/dev/mocks/auth-handlers.test.ts",
+    "src/features/auth/api/auth-api.ts",
+    "src/features/auth/api/auth-api.test.ts",
+    "docs/architecture/production-readiness/PLAN.md",
+    "docs/architecture/production-readiness/TRACKING.json"
+  ],
+  "generatedOutputPaths": [
+    "docs/architecture/production-readiness/evidence/U01/u01-03-login-mfa-rate-limit-2026-10-03.json",
+    "docs/architecture/production-readiness/PLAN.md",
+    "docs/architecture/production-readiness/TRACKING.json"
+  ],
+  "supplementalReviewedFiles": [],
+  "resultingStepScopePaths": 35,
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "f781275476009057ff9aeab57110c150742b278c7b92d6e913d2eb4fdd278b0c",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/handlers.ts": "b7068df1558e8efb458f5889c87bde27759acc3139a171ac885593386a78e34f",
+    "src/dev/mocks/auth-handlers.test.ts": "10f0a82eb7fb4d08d2f74a8219077e7be21522984be558437427d6f383973881",
+    "src/features/auth/api/auth-api.ts": "050846c48de49be56f6bdf6a73669b5d3a6230c559e33851cd07840609fca078",
+    "src/features/auth/api/auth-api.test.ts": "c67abbce4e634c2e30973381adad8befedee328382c18bdd1207f774ba7580e1"
+  },
+  "dirtyFileHashes": {
+    "src/features/auth/api/auth-api.test.ts": "c67abbce4e634c2e30973381adad8befedee328382c18bdd1207f774ba7580e1",
+    "docs/architecture/production-readiness/PLAN.md": "adf4c43d62662af3300e3c62ff26b2bda7f73bc3bc714e11854339656d1942e7",
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "0d39b49bf5d728d2e2448d45c6422bef719cfaecf2ce067239569f1e7e03d01e",
+    "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json": "86952f5c09783a5c4e1bf6d42226606aca901377332957084000001adcf3b9ba"
+  },
+  "operationMap": [
+    {
+      "operationId": "register",
+      "method": "POST",
+      "path": "/auth/register",
+      "adapter": "createAuthApi.register",
+      "tests": ["src/features/auth/api/auth-api.test.ts"],
+      "coverage": "email and phone 202 challenge envelopes"
+    },
+    {
+      "operationId": "verifyLoginMfaChallenge",
+      "method": "POST",
+      "path": "/auth/login/mfa/verify",
+      "adapter": "createAuthApi.verifyLoginMfa",
+      "tests": ["src/features/auth/api/auth-api.test.ts"],
+      "coverage": "HTTP 429 status only; response body is unspecified in OpenAPI"
+    }
+  ],
+  "codePatternAudit": [],
+  "findings": [
+    {
+      "severity": "P1",
+      "kind": "security_contract_conflict",
+      "operationId": "verifyMfa",
+      "sourceEvidence": "POST /auth/mfa/verify accepts purpose=register while effective OpenAPI security inherits sessionCookie.",
+      "disposition": "Do not add guest registration verification fixture or infer cookie/pre-auth semantics before API/security owner decision."
+    },
+    {
+      "severity": "P2",
+      "kind": "rate_limit_error_body_unspecified",
+      "operationId": "verifyLoginMfaChallenge",
+      "sourceEvidence": "The 429 response references RateLimited with a description but no response content schema.",
+      "disposition": "The new adapter test asserts only HTTP status 429; await API owner if a stable error body/code is required."
+    }
+  ],
+  "validation": [
+    {
+      "command": "node node_modules/vitest/vitest.mjs run src/features/auth/api/auth-api.test.ts src/features/auth/api/auth-openapi-contract.test.ts src/dev/mocks/auth-handlers.test.ts",
+      "result": "pass",
+      "actual": "3 test files, 31 tests passed on local Windows Node v24.19.0."
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc --noEmit -p tsconfig.json",
+      "result": "pass",
+      "actual": "Application TypeScript project completed without diagnostics."
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc --noEmit -p tsconfig.node.json",
+      "result": "pass",
+      "actual": "Node TypeScript project completed without diagnostics."
+    },
+    {
+      "command": "node node_modules/eslint/bin/eslint.js src/features/auth/api/auth-api.test.ts",
+      "result": "pass",
+      "actual": "Focused ESLint check completed without diagnostics."
+    },
+    {
+      "command": "node scripts/check-openapi-contracts.mjs",
+      "result": "pass",
+      "actual": "15 contracts and 154 operations validated."
+    },
+    {
+      "command": "node scripts/check-production-mock-imports.mjs",
+      "result": "pass",
+      "actual": "0 legacy fixture page consumers; fixture data remains isolated under src/dev/mocks."
+    },
+    {
+      "command": "node scripts/check-production-mocks.mjs",
+      "result": "pass",
+      "actual": "220 output files inventoried, 218 JavaScript files and 0 manifests inspected."
+    },
+    {
+      "command": "node docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs --check",
+      "result": "pass",
+      "actual": "15 domains, 154 operations and 106 expectations; 61/106 rows have current-source browser evidence, 20/81 registered sidecars remain hash-stale."
+    },
+    {
+      "command": "node docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs --check",
+      "result": "pass",
+      "actual": "427 declarations, 1,462 URL registrations, 1,393 unique URLs, historical parity 426/427 and 61/106 fresh scenario rows."
+    },
+    {
+      "command": "node node_modules/prettier/bin/prettier.cjs --check src/features/auth/api/auth-api.test.ts docs/architecture/production-readiness/PLAN.md docs/architecture/production-readiness/TRACKING.json and git diff --check",
+      "result": "pass",
+      "actual": "Formatting and whitespace checks passed for this scope."
+    },
+    {
+      "command": "node docs/architecture/production-readiness/check-tracking.mjs",
+      "result": "known_global_failure",
+      "actual": "Exit 1 with 69 ledger source-snapshot errors (32 missing fingerprints, 5 paths absent from catalogued snapshots, 32 current-source mismatches); exact application inventory remains 916/916. The checker prints the first 40 errors and reports 29 more."
+    }
+  ],
+  "externalEvidence": {
+    "backendRequests": 0,
+    "stagingRequests": 0,
+    "browserRoutesOpened": 0,
+    "userAcceptance": "not performed",
+    "backendOwnerAssignmentsFound": 0
+  },
+  "notes": "Incremental U01.03 evidence only. The test-local 429 stub is not a browser-preview persona and does not measure backend throttling or define an attempt threshold. U01.03 stays in_progress; guest registration verification remains held on the security contract conflict."
+}

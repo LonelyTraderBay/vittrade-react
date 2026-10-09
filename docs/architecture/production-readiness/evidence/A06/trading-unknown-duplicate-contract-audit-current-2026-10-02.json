@@ -1,0 +1,308 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261002-020",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "read-only-openapi-idempotency-lookup-audit",
+  "observedAt": "2026-10-02T02:57:41Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "environment": "Windows 11, Python 3 with PyYAML 6.0.3; current primary worktree. Read-only OpenAPI, matrix and operation-map parsing; no order writes or retries.",
+  "commandOrSteps": "Resolve trading.unknown and trading.duplicate operationIds; inspect required idempotency headers, duplicate/conflict responses and read/correlation lookup contract.",
+  "expected": "Do not infer order acceptance from a lost response or replay mutation without approved same-key semantics and deterministic lookup; keep rows not_verified if these are unspecified.",
+  "actual": "The two matrix rows map five unique Trading operations and the current operation map resolves 5/5 exact method/path matches. All 3/3 mutations (placeOrder, modifyOrder, cancelOrder) require Idempotency-Key. placeOrder alone declares HTTP 409, described as 'Duplicate idempotency key or insufficient balance'; this does not separate replay from business rejection or define a stable same-key result. placeOrder accepts optional clientOrderId and TradingOrder exposes it as optional, but neither uniqueness/preservation nor a clientOrderId filter on listOpenOrders/listOrderHistory is defined. The two list reads filter symbol/side/status/cursor/limit; no GET-by-orderId operation exists in the matrix-linked contract. Keep trading.unknown and trading.duplicate not_verified. No order was placed, modified, canceled or replayed. Next unresolved matrix row: wallet.unknown.",
+  "result": "pass",
+  "artifact": "docs\\architecture\\production-readiness\\evidence\\A06\\trading-unknown-duplicate-contract-audit-current-2026-10-02.json",
+  "rows": [
+    {
+      "id": "trading.unknown",
+      "state": "unknown",
+      "executionStatus": "not_verified",
+      "operationIds": [
+        "placeOrder",
+        "modifyOrder",
+        "cancelOrder",
+        "listOpenOrders",
+        "listOrderHistory"
+      ]
+    },
+    {
+      "id": "trading.duplicate",
+      "state": "duplicate",
+      "executionStatus": "not_verified",
+      "operationIds": [
+        "placeOrder",
+        "modifyOrder",
+        "cancelOrder",
+        "listOpenOrders",
+        "listOrderHistory"
+      ]
+    }
+  ],
+  "operations": [
+    {
+      "operationId": "listOpenOrders",
+      "method": "GET",
+      "path": "/trading/orders",
+      "parameters": [
+        {
+          "name": "symbol",
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "side",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "enum": ["buy", "sell"]
+          }
+        },
+        {
+          "name": "cursor",
+          "in": "query",
+          "description": "Opaque cursor returned by the previous page.",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "schema": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 50
+          }
+        },
+        {
+          "name": "status",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "enum": ["open"]
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Open orders page."
+        },
+        "401": {
+          "description": ""
+        },
+        "403": {
+          "description": ""
+        }
+      }
+    },
+    {
+      "operationId": "placeOrder",
+      "method": "POST",
+      "path": "/trading/orders",
+      "parameters": [
+        {
+          "name": "Idempotency-Key",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 8
+          }
+        }
+      ],
+      "responses": {
+        "201": {
+          "description": "Order accepted."
+        },
+        "400": {
+          "description": ""
+        },
+        "401": {
+          "description": ""
+        },
+        "403": {
+          "description": ""
+        },
+        "409": {
+          "description": "Duplicate idempotency key or insufficient balance."
+        }
+      }
+    },
+    {
+      "operationId": "listOrderHistory",
+      "method": "GET",
+      "path": "/trading/orders/history",
+      "parameters": [
+        {
+          "name": "symbol",
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "side",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "enum": ["buy", "sell"]
+          }
+        },
+        {
+          "name": "status",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "enum": ["filled", "partial", "cancelled", "rejected"]
+          }
+        },
+        {
+          "name": "cursor",
+          "in": "query",
+          "description": "Opaque cursor returned by the previous page.",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "schema": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 50
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Historical orders page."
+        },
+        "401": {
+          "description": ""
+        },
+        "403": {
+          "description": ""
+        }
+      }
+    },
+    {
+      "operationId": "modifyOrder",
+      "method": "PATCH",
+      "path": "/trading/orders/{orderId}",
+      "parameters": [
+        {
+          "name": "orderId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "Idempotency-Key",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 8
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Updated order."
+        },
+        "401": {
+          "description": ""
+        },
+        "403": {
+          "description": ""
+        },
+        "404": {
+          "description": "Order not found."
+        }
+      }
+    },
+    {
+      "operationId": "cancelOrder",
+      "method": "POST",
+      "path": "/trading/orders/{orderId}/cancel",
+      "parameters": [
+        {
+          "name": "orderId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "Idempotency-Key",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 8
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Cancelled order."
+        },
+        "401": {
+          "description": ""
+        },
+        "403": {
+          "description": ""
+        },
+        "404": {
+          "description": "Order not found."
+        }
+      }
+    }
+  ],
+  "requestAndResponseCorrelation": {
+    "placeOrderRequestClientOrderIdRequired": "clientOrderId is optional",
+    "TradingOrderClientOrderIdRequired": "clientOrderId is optional",
+    "listOpenOrdersFilters": ["symbol", "side", "cursor", "limit", "status"],
+    "listOrderHistoryFilters": ["symbol", "side", "status", "cursor", "limit"],
+    "getOrderByIdOperation": false,
+    "clientOrderIdListFilter": false
+  },
+  "counts": {
+    "linkedUniqueOperations": 5,
+    "exactOperationMapMatches": 5,
+    "mutationsRequiringIdempotencyKey": 3,
+    "writesWith409": 1,
+    "stableSameKeyReplayContracts": 0,
+    "deterministicClientOrderIdLookup": 0
+  },
+  "scenarioMatrixSummary": {
+    "scenariosDefined": 106,
+    "scenarioRowsWithFreshBrowserEvidence": 81,
+    "scenarioRowsFullyCoveredByFreshBrowserEvidence": 38,
+    "uniqueOperationsWithFreshBrowserEvidence": 88,
+    "runtimeEvidenceFresh": false,
+    "freshScenarioEvidenceSidecars": 81,
+    "registeredScenarioEvidenceSidecars": 81,
+    "sourceHashStaleScenarioEvidenceSidecars": 0
+  },
+  "nextAction": "Continue A06.03 in unresolved matrix order at wallet.unknown.",
+  "sourceHashes": {
+    "docs\\architecture\\production-readiness\\evidence\\A06\\scenario-matrix-2026-09-28.json": "0bbf7c7a887415389265aa3fa2f2c07fc670a070ac4f692b55fae87ff19922f4",
+    "contracts\\openapi\\trading.yaml": "ea87584c03ab69a0d552d80590e36e15ab7b38851cc1583d9c892bbb91f19437",
+    "docs\\architecture\\production-readiness\\evidence\\A06\\operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320"
+  },
+  "limitations": [
+    "Static contract audit only; it does not verify broker behavior, durable idempotency, balance/position effects, browser behavior or user acceptance.",
+    "The optional clientOrderId and paginated order lists do not define a unique reconciliation invariant.",
+    "No Trading write, retry or replay was sent."
+  ]
+}

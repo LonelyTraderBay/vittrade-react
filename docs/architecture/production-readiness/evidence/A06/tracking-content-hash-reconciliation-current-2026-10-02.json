@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261002-024",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "git-normalized-current-source-snapshot-reconciliation",
+  "observedAt": "2026-10-02T06:03:10Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "environment": "Windows PowerShell; Node v24.19.0; Vitest v4.1.11; Git core.autocrlf=true; local primary worktree.",
+  "commandOrSteps": [
+    "Run the focused regression suite with C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run scripts/check-tracking.test.mjs.",
+    "Run node --check docs/architecture/production-readiness/check-tracking.mjs and git diff --check for the changed checker, regression test, and ledger.",
+    "Run node docs/architecture/production-readiness/check-tracking.mjs and save its JSON output to docs/architecture/production-readiness/evidence/A06/check-tracking-after-content-hash-reconciliation-current-2026-10-02.json.",
+    "Compare .gitattributes and scripts/check-git-eol.mjs bytes with commit ee0bf684e2b3f2f9ece6ac3a6594de36f6f92dbe on origin/codex/b07-01-current-checkpoint; verify each recorded blob SHA-256.",
+    "Check that Git clean-filter normalization makes CRLF working copies of AGENTS.md, AI_RULES.md, and PROJECT_BOOTSTRAP_PROMPT.txt resolve to their catalogued Git blobs; do not edit those instruction files."
+  ],
+  "expected": "Validate cataloguedSha256 against raw Git snapshot blob bytes, compare current files to those blobs using Git's path-specific clean filters, accept byte-equivalent files absent from the current index, and reject changed source content.",
+  "actual": "The regression failed before the checker change for an index-absent but snapshot-identical file, then passed after comparison switched to batched Git blob IDs. The focused suite passes 12/12, including modified-source rejection, an index-absent exact match, and a CRLF working-copy conversion. Two exact B07 source bindings were corrected to the existing remote commit. The full checker still exits 1 with 61 errors: 32 missing source fingerprints, 5 catalogued snapshots without their paths, and 24 current source contents that differ after Git clean-filter normalization. Current non-PLAN inventory maps 916/916 paths; 855/916 source snapshot comparisons pass. The checker run took 0.81 seconds. The 25 matrix rows remain behaviorally not_verified; user acceptance is 0/128 and backend/staging is 0/154.",
+  "result": "fail",
+  "artifact": "docs/architecture/production-readiness/evidence/A06/check-tracking-after-content-hash-reconciliation-current-2026-10-02.json",
+  "sourceHashes": {
+    "docs/architecture/production-readiness/check-tracking.mjs": "c40acc9eae1bd096de4df4d9b027ac5d91821383342fa0be862c761d30100a03",
+    "scripts/check-tracking.test.mjs": "72f3e0354de8c2076a0bbb17498b1a40abbf5abe70b5a1a34a632b3ac48787b8",
+    ".gitattributes": "9719708cafb76d38d0deb71c4ea048906a7ac1634ce362623ec3854d53ce081e",
+    "scripts/check-git-eol.mjs": "f268a2c317c09d9630a51295a62ecca776bce41ec0e3d9d74e0cd808b97884ca",
+    "docs/architecture/page-inventory.json": "4f25117ff0d216b4eb10d17fbfeab33d859effd80c9553679b6f4bfb33f7958b",
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "0bbf7c7a887415389265aa3fa2f2c07fc670a070ac4f692b55fae87ff19922f4",
+    "docs/architecture/production-readiness/evidence/A06/check-tracking-after-content-hash-reconciliation-current-2026-10-02.json": "3136220038365715655ecd31cd1fb75b6bf7771f71d3a294f8956384a0de8160"
+  },
+  "gates": {
+    "scenarioRows": 106,
+    "scenarioRowsWithFreshBrowserEvidence": 81,
+    "notVerifiedRows": 25,
+    "userAcceptedPages": "0/128",
+    "backendAndStagingOperationsVerified": "0/154",
+    "stepStatus": "in_progress"
+  },
+  "limitations": [
+    "The Vitest npm wrapper could not resolve its executable in the current child-shell PATH; the same installed Vitest package ran successfully through the explicit Node executable.",
+    "The five snapshot-missing files and 32 missing fingerprints still need verified committed source snapshots. The 24 changed sources need reconciliation against an authorized committed revision.",
+    "Prettier reports the existing TRACKING.json format as nonconforming beginning at statusVocabulary (line 17); the current HEAD snapshot has the same baseline formatting. The other changed files pass the scoped Prettier check, so the 10 MiB ledger was not globally reformatted.",
+    "No browser, backend, staging, or financial operation was performed. No file was staged, committed, or pushed."
+  ]
+}

@@ -1,0 +1,245 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-01T04:35:00.000Z",
+  "taskId": "B07",
+  "stepId": "B07.01",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "environment": {
+    "os": "Windows x64",
+    "node": "v22.23.3 portable",
+    "npm": "10.9.9 bundled with Node 22.23.3",
+    "branch": "main",
+    "originMain": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+    "checkout": "isolated detached snapshot overlaid with the current nonignored working-tree files; dependency install was clean, but the Git working tree was not clean",
+    "copiedNonignoredPaths": 2588,
+    "sha256MismatchesAtCopy": 0,
+    "gitStatusRecordsMatchedAtCopy": 1789,
+    "e2eRunnerSourceMatchedAfterApplyingFix": true,
+    "path": "Portable Node and Git were kept at the front of a minimal PATH to avoid Windows child-process environment truncation."
+  },
+  "dependencyInstall": {
+    "command": "npm ci --cache <temporary-cache>",
+    "exitCode": 0,
+    "result": "pass",
+    "packagesAdded": 552,
+    "packagesAudited": 553,
+    "auditFinding": {
+      "severity": "low",
+      "package": "dompurify",
+      "advisory": "GHSA-p98j-92pf-mc4p",
+      "remediated": false
+    }
+  },
+  "eol": {
+    "command": "node scripts/check-git-eol.mjs",
+    "exitCode": 0,
+    "result": "pass",
+    "pathsScanned": 2588,
+    "lfText": 1457,
+    "preservedNonText": 1128,
+    "protectedWindowsCrlf": 3,
+    "unterminatedText": 0
+  },
+  "checks": [
+    {
+      "name": "typecheck",
+      "command": "npm run typecheck",
+      "exitCode": 0,
+      "result": "pass",
+      "detail": "Both TypeScript projects passed."
+    },
+    {
+      "name": "lint",
+      "command": "npm run lint",
+      "exitCode": 0,
+      "result": "pass"
+    },
+    {
+      "name": "lint-warning-budget",
+      "command": "npm run lint:check",
+      "exitCode": 0,
+      "result": "pass",
+      "detail": "0 errors and 0 warnings; warning budget is 0."
+    },
+    {
+      "name": "format",
+      "command": "npm run format:check",
+      "exitCode": 0,
+      "result": "pass"
+    },
+    {
+      "name": "unit-integration",
+      "command": "npm run test:run",
+      "exitCode": 0,
+      "result": "pass",
+      "testFilesPassed": 288,
+      "testsPassed": 2385,
+      "testFilesFailed": 0,
+      "testsFailed": 0
+    },
+    {
+      "name": "coverage",
+      "command": "npm run test:coverage -- --reporter=dot",
+      "exitCode": 0,
+      "result": "pass",
+      "testFilesPassed": 288,
+      "testsPassed": 2385,
+      "thresholds": {
+        "statementsPercent": 90.22,
+        "branchesPercent": 84.98,
+        "functionsPercent": 87.35,
+        "linesPercent": 91.96
+      }
+    },
+    {
+      "name": "playwright-e2e",
+      "command": "npm run test:e2e",
+      "exitCode": 0,
+      "result": "pass",
+      "testsPassed": 51,
+      "testsFailed": 0,
+      "durationSeconds": 58.9,
+      "execution": "Chromium tests used the already-installed browser; the Ubuntu-only install --with-deps step was not run on Windows."
+    },
+    {
+      "name": "dependency-audit",
+      "command": "npm run audit:high",
+      "exitCode": 0,
+      "result": "pass",
+      "detail": "High-or-higher threshold passed; npm reported one low-severity DOMPurify advisory."
+    },
+    {
+      "name": "licenses",
+      "command": "npm run licenses:check",
+      "exitCode": 0,
+      "result": "pass",
+      "packagesReviewed": 552
+    },
+    {
+      "name": "security-boundaries",
+      "command": "npm run security:check",
+      "exitCode": 0,
+      "result": "pass",
+      "sourceFilesInspected": 544
+    },
+    {
+      "name": "environment-boundaries",
+      "command": "npm run env:check",
+      "exitCode": 0,
+      "result": "pass",
+      "sourceFilesInspected": 827
+    },
+    {
+      "name": "openapi-contracts",
+      "command": "npm run contracts:check",
+      "exitCode": 0,
+      "result": "pass",
+      "contracts": 15,
+      "operations": 154
+    },
+    {
+      "name": "architecture",
+      "command": "npm run architecture:check",
+      "exitCode": 0,
+      "result": "pass",
+      "modules": 863,
+      "dependencies": 4676,
+      "violations": 0
+    },
+    {
+      "name": "architecture-inventory",
+      "command": "npm run architecture:inventory:check",
+      "exitCode": 0,
+      "result": "pass",
+      "pages": 129,
+      "routes": 427,
+      "components": 149,
+      "dataModules": 0,
+      "services": 32,
+      "mocks": 28
+    },
+    {
+      "name": "page-size",
+      "command": "npm run page-size:check",
+      "exitCode": 0,
+      "result": "pass",
+      "maxPageOrFeatureModuleLines": 600
+    },
+    {
+      "name": "production-mock-import-boundary",
+      "command": "npm run production-mock-imports:check",
+      "exitCode": 0,
+      "result": "pass",
+      "legacyFixturePageConsumers": 0
+    },
+    {
+      "name": "production-route-boundaries",
+      "command": "npm run production-routes:check",
+      "exitCode": 0,
+      "result": "pass",
+      "explicitRouteGuards": 17,
+      "developmentOnlyMockPages": 2,
+      "developmentOnlyDemoPages": 2
+    },
+    {
+      "name": "production-build",
+      "command": "npm run build",
+      "exitCode": 0,
+      "result": "pass",
+      "modulesTransformed": 3431,
+      "productionEnv": {
+        "VITE_DATA_SOURCE": "api",
+        "VITE_API_BASE_URL": "https://api.ci.example.test",
+        "VITE_WS_URL": "wss://ws.ci.example.test",
+        "VITE_APP_NAME": "VitTrade CI",
+        "VITE_RELEASE_VERSION": "ci-validation",
+        "VITE_ENABLE_ANALYTICS": "false",
+        "VITE_ENABLE_DEVTOOLS": "false"
+      }
+    },
+    {
+      "name": "production-mock-output",
+      "command": "npm run production-mocks:check",
+      "exitCode": 0,
+      "result": "pass",
+      "outputFilesInventoried": 220,
+      "javascriptFiles": 218,
+      "manifests": 0
+    },
+    {
+      "name": "bundle-budget",
+      "command": "npm run bundle:check",
+      "exitCode": 0,
+      "result": "pass",
+      "javascriptChunks": 218,
+      "perChunkLimitRawKb": 500,
+      "perChunkLimitGzipKiB": 250
+    }
+  ],
+  "change": {
+    "path": "scripts/serve-e2e.mjs",
+    "diagnosis": "The staging-mode Vite preview ran with production validation, while build-e2e.mjs supplied test API variables only to the build process. The preview process defaulted to the mock data source and correctly refused to start.",
+    "fix": "Pass VITE_DATA_SOURCE=api, VITE_API_BASE_URL=https://e2e.test, and VITE_WS_URL=wss://e2e.test to the preview child process only.",
+    "sourceValidation": {
+      "nodeCheckExitCode": 0,
+      "eslintExitCode": 0,
+      "prettierExitCode": 0,
+      "playwrightTestsPassed": 51,
+      "playwrightTestsFailed": 0,
+      "sourceSha256": "520c0344b04ba89bff73ffcfb9b19ae08051d6d156308c45290fbcfb9d8b4ab1"
+    }
+  },
+  "warnings": [
+    "npm audit reported one low-severity DOMPurify advisory; the high-severity threshold gate passed and no automatic dependency update was applied.",
+    "The E2E browser emitted ERR_NAME_NOT_RESOLVED for external resources, while all 51 assertions passed.",
+    "The production build emitted two Rollup annotation warnings from Zod dependency files and exited successfully."
+  ],
+  "result": "pass",
+  "actual": "Clean npm dependency installation and every repository npm CI gate passed on portable Node 22.23.3 in an isolated Windows working-tree snapshot. The full E2E suite also passed against the corrected preview harness in the source working tree. This is strong local Windows compatibility evidence, not a clean Git checkout run, exact committed-revision workflow run, Ubuntu EOL measurement, backend/staging verification, or GitHub required-status evidence.",
+  "remaining": [
+    "Run the EOL-enabled workflow on an exact committed SHA with Node 22 on Ubuntu and capture explicit EOL output.",
+    "Verify GitHub required-status enforcement using authenticated access (B07.04).",
+    "Keep B02.01 blocked until real API/WSS endpoints, operational owner, and hosting choice are recorded.",
+    "User acceptance remains 0/128; backend/staging verification remains 0/154."
+  ]
+}

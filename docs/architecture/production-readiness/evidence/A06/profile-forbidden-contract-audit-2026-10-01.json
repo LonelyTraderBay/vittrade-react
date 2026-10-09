@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261001-021",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "contract-authorization-status-audit",
+  "checkedAt": "2026-09-30T23:04:28.000Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "contractFile": "contracts/openapi/profile.yaml",
+  "globalSecurity": [
+    {
+      "sessionCookie": []
+    }
+  ],
+  "scenario": {
+    "id": "profile.forbidden",
+    "operationIds": [
+      "getProfile",
+      "updateProfile",
+      "listTrustedDevices",
+      "revokeDevice",
+      "setDeviceTrust",
+      "listProfileActivity",
+      "listSubAccounts"
+    ],
+    "executionStatus": "not_verified"
+  },
+  "operations": [
+    {
+      "operationId": "getProfile",
+      "trackingId": "API-fd74eb11253e",
+      "method": "GET",
+      "path": "/profile",
+      "statuses": ["200", "401"],
+      "responseDescriptions": {
+        "200": "Authenticated profile.",
+        "401": ""
+      }
+    },
+    {
+      "operationId": "updateProfile",
+      "trackingId": "API-9171668acf50",
+      "method": "PATCH",
+      "path": "/profile",
+      "statuses": ["200", "400", "401"],
+      "responseDescriptions": {
+        "200": "Updated profile.",
+        "400": "",
+        "401": ""
+      }
+    },
+    {
+      "operationId": "listTrustedDevices",
+      "trackingId": "API-e9dc1e4bdf35",
+      "method": "GET",
+      "path": "/profile/devices",
+      "statuses": ["200", "401"],
+      "responseDescriptions": {
+        "200": "Authenticated devices.",
+        "401": ""
+      }
+    },
+    {
+      "operationId": "revokeDevice",
+      "trackingId": "API-af0650aa61b2",
+      "method": "POST",
+      "path": "/profile/devices/{deviceId}/revoke",
+      "statuses": ["204", "401", "404"],
+      "responseDescriptions": {
+        "204": "Device revoked.",
+        "401": "",
+        "404": "Device not found."
+      }
+    },
+    {
+      "operationId": "setDeviceTrust",
+      "trackingId": "API-cc327e367b7d",
+      "method": "PATCH",
+      "path": "/profile/devices/{deviceId}/trust",
+      "statuses": ["200", "401", "404"],
+      "responseDescriptions": {
+        "200": "Updated device trust state.",
+        "401": "",
+        "404": "Device not found."
+      }
+    },
+    {
+      "operationId": "listProfileActivity",
+      "trackingId": "API-7384def75943",
+      "method": "GET",
+      "path": "/profile/activity",
+      "statuses": ["200", "401"],
+      "responseDescriptions": {
+        "200": "Immutable account activity audit events.",
+        "401": ""
+      }
+    },
+    {
+      "operationId": "listSubAccounts",
+      "trackingId": "API-f2ba76becf4f",
+      "method": "GET",
+      "path": "/profile/sub-accounts",
+      "statuses": ["200", "401"],
+      "responseDescriptions": {
+        "200": "Authenticated user's sub-accounts.",
+        "401": ""
+      }
+    }
+  ],
+  "counts": {
+    "linkedOperations": 7,
+    "operationsDeclaring401": 7,
+    "operationsDeclaring403": 0
+  },
+  "browserScenarioExecuted": false,
+  "conclusion": "7 Profile operations are linked to profile.forbidden; 7/7 declare 401 and 0/7 declare 403. Global session-cookie security does not define the absent 403 response. Keep profile.forbidden not_verified; do not invent a status or run browser case.",
+  "nextAction": "A06.03 next matrix row: audit referral.forbidden against contracts/openapi/referral.yaml before running any permission-denied browser status.",
+  "sourceHashes": {
+    "contracts/openapi/profile.yaml": "6830c4976f5b94b4f78e08b824eabd1c18b41bf96f23613412db065575f1d5d8",
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "70630b4a0b7d2d16d39fc9da839fbb1b96578c9f5c60ec92ce598e14add99c24",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320"
+  }
+}

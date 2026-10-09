@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-30T13:59:59.411Z",
+  "sourcePath": "contracts/openapi/launchpad.yaml",
+  "sourceSha256": "f91848569eda4fc8adbb96ec01c4015d3e8bea488ebfb54c9cbf807afbb7732e",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "operations": [
+    {
+      "operationId": "listLaunchpadProjects",
+      "method": "GET",
+      "responses": ["200"]
+    },
+    {
+      "operationId": "getLaunchpadProject",
+      "method": "GET",
+      "responses": ["200", "404"]
+    }
+  ],
+  "summary": {
+    "operationCount": 2,
+    "declares200": 2,
+    "declares401": 0,
+    "declares403": 0,
+    "declares5xx": 0,
+    "authScenarios": {
+      "unauthorizedSupported": false,
+      "forbiddenSupported": false
+    },
+    "action": "Keep launchpad.unauthorized and launchpad.forbidden not_verified; do not synthesize undeclared HTTP responses."
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-01T02:12:37.000Z",
+  "taskId": "B02",
+  "stepId": "B02.01",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "environment": {
+    "os": "Windows x64",
+    "node": "v24.19.0",
+    "branch": "main"
+  },
+  "scope": {
+    "envFiles": "Root-level filenames only; no environment-file values or secrets were read.",
+    "processVariables": "Presence-only check for VITE_DATA_SOURCE, VITE_API_BASE_URL and VITE_WS_URL.",
+    "hostingConfiguration": "Tracked and workspace filename search for common provider/reverse-proxy/container deployment files.",
+    "backendEvidence": "Read contracts/README.md deployment and certification statements."
+  },
+  "observations": {
+    "envFileNames": [
+      ".env.example",
+      ".env.production.example",
+      ".env.staging.example"
+    ],
+    "processVariablePresence": {
+      "VITE_DATA_SOURCE": false,
+      "VITE_API_BASE_URL": false,
+      "VITE_WS_URL": false
+    },
+    "releaseExamples": "Production/staging API and WSS hosts are deliberate .invalid sample values, not real environment values.",
+    "hosting": "No provider-specific hosting, reverse-proxy, or container deployment config was found; the only matching tracked deployment-related file is .github/workflows/ci.yml.",
+    "backend": "contracts/README.md states backend staging deployment is not verified, real-backend HTTPS staging E2E is unavailable in this repository run, and the production page certification manifest is empty."
+  },
+  "expected": "Record actual staging/production origins, API/WSS endpoints, operational owner and hosting choice from the selected real environment without inventing values.",
+  "actual": "No real environment endpoints, owner, or hosting-provider decision are available in the inspected workspace or process environment. The only endpoint values are sample placeholders.",
+  "result": "fail",
+  "artifact": "docs/architecture/production-readiness/evidence/B02/b02-01-environment-input-audit-2026-10-01.json",
+  "notes": "B02.01 is blocked on environment/operations inputs. This audit does not assert that a provider or live environment does not exist outside the inspected workspace; it records that none is evidenced here. Do not substitute a fabricated host, account, owner, or deployment target."
+}

@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "EV-20261002-029",
+  "kind": "ui-acceptance-index-refresh-and-ledger-check",
+  "observedAt": "2026-10-02T08:16:56.5170281Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "environment": "Windows PowerShell; Node v24.19.0; primary worktree has pre-existing dirty changes.",
+  "expected": "Regenerate the C05 UI acceptance index from the current registered state, then confirm the matrix, index and architecture inventory generators are current; report the independent ledger gate result.",
+  "actual": {
+    "index": {
+      "activeRouteDeclarations": 427,
+      "urlRegistrations": 1462,
+      "uniqueResolvedUrlSamples": 1393,
+      "historicalUrlParity": "426/427",
+      "freshScenarioRows": "81/106",
+      "userAcceptedPages": "0/128",
+      "backendOperationsVerified": "0/154"
+    },
+    "tracking": {
+      "errorCount": 61,
+      "sampleErrorsReturned": 40,
+      "scope": {
+        "tasks": 38,
+        "steps": 205,
+        "pages": 129,
+        "routeDeclarations": 427,
+        "operations": 154,
+        "filesOutsidePlan": 916
+      }
+    },
+    "matrix": "15 domains, 154 operations, 106 expectations",
+    "inventory": "129 pages, 427 routes, 149 components, 0 data modules, 32 services, 28 mocks"
+  },
+  "commands": [
+    {
+      "command": "node docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs --write",
+      "exitCode": 0,
+      "actual": "Wrote 427 declarations, 1462 URL registrations, 1393 unique preview URLs; historical parity 426/427; 81/106 fresh scenario rows."
+    },
+    {
+      "command": "node docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs --check",
+      "exitCode": 0,
+      "actual": "UI acceptance index is current: 427 active declarations, 1462 URL registrations, 1393 unique preview URLs; 426/427 historical URL parity; 81/106 fresh scenario rows."
+    },
+    {
+      "command": "node docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs --check",
+      "exitCode": 0,
+      "actual": "A06 scenario matrix is current: 15 domains, 154 operations, 106 expectations."
+    },
+    {
+      "command": "node scripts/generate-architecture-inventory.mjs --check",
+      "exitCode": 0,
+      "actual": "Architecture inventory passed: 129 pages, 427 routes, 149 components, 0 data modules, 32 services and 28 mocks."
+    },
+    {
+      "command": "node docs/architecture/production-readiness/check-tracking.mjs",
+      "exitCode": 1,
+      "actual": "errorCount=61; errors returned=40; scope={\"tasks\":38,\"steps\":205,\"pages\":129,\"routeDeclarations\":427,\"operations\":154,\"filesOutsidePlan\":916}"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "actual": "No whitespace errors reported."
+    }
+  ],
+  "sourceHashes": {
+    "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs": "cec811c2b7b8f1a2ef52373e371d35f8eb3700fa8e56dd15e7cc1c7d4d312fe8",
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "0bbf7c7a887415389265aa3fa2f2c07fc670a070ac4f692b55fae87ff19922f4",
+    "docs/architecture/production-readiness/evidence/A07/route-url-resolution-2026-09-28.json": "5e7c524a973be47e0af1a60f14d2269159cb32304a641e2834ba31932c4732f5",
+    "docs/architecture/page-inventory.json": "4f25117ff0d216b4eb10d17fbfeab33d859effd80c9553679b6f4bfb33f7958b",
+    "docs/architecture/production-readiness/UI-RUNBOOK.md": "c019f2b245d4cb8aab81664cd3fee705afa050ee68ff96f45b3e4f172df09d45",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/handlers.ts": "b7068df1558e8efb458f5889c87bde27759acc3139a171ac885593386a78e34f",
+    "docs/architecture/production-readiness/evidence/C05/c05-02-dev-preview-browser-check-2026-09-30.json": "1d3cf79878e9f981a90f79a5a77b8f5bf4ad48582d9b7aa9ee888e1cdaa22abd"
+  },
+  "outputHashes": {
+    "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json": "3cd8845b44ca1de664f1a418a74794072101934849dbb866130c941abc969da3",
+    "docs/architecture/production-readiness/UI-ACCEPTANCE.md": "5aed0dc9567c66e5c09006e47b24255a58c39b1162b7f4b608de170b3c83d189"
+  },
+  "trackingProjectionSha256": "6dd08b117861628f0fd13869b1cc0e5a50532c3402046b40f1968bb42e14d86c",
+  "notes": "Generator/index, scenario matrix, architecture inventory and git diff checks pass. The tracking checker remains exit 1 with 61 errors; it returns 40 path examples. This index refresh is documentation/local evidence only and does not change backend/staging or user-acceptance totals."
+}

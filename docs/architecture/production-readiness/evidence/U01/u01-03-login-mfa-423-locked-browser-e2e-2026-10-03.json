@@ -1,0 +1,37 @@
+{
+  "id": "EV-20261003-013",
+  "taskId": "U01",
+  "stepId": "U01.03",
+  "kind": "login-mfa-423-account-locked-browser-regression",
+  "commandOrSteps": "Set VITE_DATA_SOURCE=api, VITE_API_BASE_URL=https://e2e.test and VITE_WS_URL=wss://e2e.test; start local Vite development server at http://127.0.0.1:4189. Run node node_modules/playwright/cli.js test --config=playwright.u01-local.config.ts --project=chromium tests/e2e/auth-session.spec.ts. The temporary one-worker Desktop Chrome config used that base URL and was removed after the run. All 17 Auth browser tests passed. Then run node node_modules/vitest/vitest.mjs run src/features/auth/pages/WebOTPPage.test.tsx src/features/auth/pages/WebAccountLockedPage.test.tsx; both TypeScript no-emit projects; focused ESLint and Prettier.",
+  "environment": "Windows PowerShell; Node v24.19.0; Vite 6.4.3; Playwright 1.63.0; Chromium; local Vite development server in API mode; https://e2e.test handled only by Playwright route fixtures; backend and staging disconnected.",
+  "observedAt": "2026-10-02T23:29:44Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "sourceBranch": "main",
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "f781275476009057ff9aeab57110c150742b278c7b92d6e913d2eb4fdd278b0c",
+    "src/features/auth/pages/WebOTPPage.tsx": "5d2990eafb91494c38f6e207f925c32b9d0c43cd5f5d192f86545558b7923ebf",
+    "src/features/auth/pages/WebAccountLockedPage.tsx": "8f89fd070be0afffe84795192e376de598f1c84d4b6f51ba2edc4c1ada6dbbb2",
+    "tests/e2e/auth-session.spec.ts": "6d61204bc395f8624f629fc9a67ea1d0fbfef807e7d636753f5d4d970b5dc7f6"
+  },
+  "dirtyFileHashes": {
+    "tests/e2e/auth-session.spec.ts": "6d61204bc395f8624f629fc9a67ea1d0fbfef807e7d636753f5d4d970b5dc7f6"
+  },
+  "expected": "POST /auth/login/mfa/verify declares HTTP 423 through AccountLocked. A status-only 423 response for a login MFA challenge must route to /w/auth/account-locked and must not create an authenticated session.",
+  "actual": "Added a Playwright regression that submits the challenge ID and six-digit code, returns status-only HTTP 423 from the contract-declared MFA endpoint, and verifies the locked-account page is shown with no sign-out control. The full Auth browser suite passed 17/17 on the local Vite development server in API mode. WebOTPPage and WebAccountLockedPage focused unit suites passed 17/17; both TypeScript projects, ESLint and Prettier passed. The default staging preview intentionally blocks /w/auth/register behind its production safety boundary, so the Auth fixture suite was run in Dev/API mode instead. No backend or staging requests were made.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/U01/u01-03-login-mfa-423-locked-browser-e2e-2026-10-03.json",
+  "externalEvidence": {
+    "authBrowserTests": 17,
+    "authBrowserTestsPassed": 17,
+    "loginMfaLockedResponseStatus": 423,
+    "challengeIdAndCodeForwarded": true,
+    "accountLockedRouteVisible": true,
+    "authenticatedSessionCreated": false,
+    "backendRequests": 0,
+    "stagingRequests": 0,
+    "userAcceptance": "not performed",
+    "browserRoutesOpened": ["/w/auth/login", "/w/auth/otp", "/w/auth/account-locked"]
+  },
+  "notes": "This verifies frontend handling of a status-only response whose OpenAPI response has no content schema. It does not verify the server's lockout policy, backend/session-cookie behavior, staging, production or user acceptance. The separate registration verifyMfa purpose=register sessionCookie decision remains with the API/security owner."
+}

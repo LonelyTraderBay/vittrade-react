@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261001-012",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "contract-authorization-status-audit",
+  "checkedAt": "2026-09-30T22:40:00.063Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "contractFile": "contracts/openapi/auth.yaml",
+  "globalSecurity": [
+    {
+      "sessionCookie": []
+    }
+  ],
+  "scenario": {
+    "id": "auth.forbidden",
+    "operationIds": [
+      "getSession",
+      "refreshSession",
+      "logout",
+      "verifyMfa",
+      "confirmMfaSetup",
+      "beginMfaSetup",
+      "verifyCurrentPassword",
+      "changePassword"
+    ],
+    "executionStatus": "not_verified"
+  },
+  "operations": [
+    {
+      "operationId": "getSession",
+      "method": "GET",
+      "path": "/auth/session",
+      "responseStatuses": [
+        "200",
+        "401"
+      ]
+    },
+    {
+      "operationId": "refreshSession",
+      "method": "POST",
+      "path": "/auth/refresh",
+      "responseStatuses": [
+        "200"
+      ]
+    },
+    {
+      "operationId": "logout",
+      "method": "POST",
+      "path": "/auth/logout",
+      "responseStatuses": [
+        "204"
+      ]
+    },
+    {
+      "operationId": "verifyMfa",
+      "method": "POST",
+      "path": "/auth/mfa/verify",
+      "responseStatuses": [
+        "200",
+        "400"
+      ]
+    },
+    {
+      "operationId": "confirmMfaSetup",
+      "method": "POST",
+      "path": "/auth/mfa/setup/confirm",
+      "responseStatuses": [
+        "200"
+      ]
+    },
+    {
+      "operationId": "beginMfaSetup",
+      "method": "POST",
+      "path": "/auth/mfa/setup",
+      "responseStatuses": [
+        "200"
+      ]
+    },
+    {
+      "operationId": "verifyCurrentPassword",
+      "method": "POST",
+      "path": "/auth/password/verify-current",
+      "responseStatuses": [
+        "204",
+        "400",
+        "401"
+      ]
+    },
+    {
+      "operationId": "changePassword",
+      "method": "POST",
+      "path": "/auth/password/change",
+      "responseStatuses": [
+        "204",
+        "400",
+        "401"
+      ]
+    }
+  ],
+  "counts": {
+    "linkedOperations": 8,
+    "operationsDeclaring403": 0
+  },
+  "browserScenarioExecuted": false,
+  "conclusion": "None of the eight operations linked by auth.forbidden declares HTTP 403. Keep the required matrix row not_verified and do not inject an undeclared status into the browser scenario.",
+  "nextAction": "A06.03 next matrix row: audit dca.forbidden against contracts/openapi/dca.yaml; run a browser case only if a mapped operation declares 403.",
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b",
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "70630b4a0b7d2d16d39fc9da839fbb1b96578c9f5c60ec92ce598e14add99c24",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320"
+  }
+}

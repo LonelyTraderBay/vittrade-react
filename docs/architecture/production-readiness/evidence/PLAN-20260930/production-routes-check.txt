@@ -1,0 +1,5 @@
+
+> vittrade-react@0.0.1 production-routes:check
+> node scripts/check-production-route-boundaries.mjs
+
+Production route boundary check passed: 17 explicit route guards, 2 routed mock pages and 2 routed demo pages are development-only.

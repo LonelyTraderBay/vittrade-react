@@ -265,7 +265,7 @@ try {
   assert.ok(orderId, 'Place response must include the stable order reference.');
   assert.equal(placeResponse.body?.status, 'open');
   await page.waitForURL((url) => url.pathname.endsWith('/trade/order-receipt'));
-  const receiptId = page.getByTestId('order-receipt-id');
+  const receiptId = page.getByText(orderId, { exact: true });
   await receiptId.waitFor({ state: 'visible' });
   const receiptVisible = (await receiptId.textContent())?.includes(orderId) ?? false;
   assert.equal(receiptVisible, true);
@@ -275,7 +275,7 @@ try {
     window.dispatchEvent(new PopStateEvent('popstate'));
   }, '/w/trade/btcusdt');
   await page.waitForURL((url) => url.pathname === '/w/trade/btcusdt');
-  await page.getByRole('button', { name: /^Đang mở/ }).click();
+  await page.getByRole('tab', { name: /^Đang mở/ }).click();
   const cancelOrderButton = page.getByTestId(`cancel-order-${orderId}`);
   await cancelOrderButton.waitFor({ state: 'visible' });
   await waitFor(
@@ -356,7 +356,7 @@ try {
     'cancelled order removal from open list',
   );
 
-  await page.getByRole('button', { name: 'Lịch sử', exact: true }).click();
+  await page.getByRole('tab', { name: 'Lịch sử', exact: true }).click();
   await waitFor(() => responsesFor('listOrderHistory').length >= 1, 'order-history response');
   await waitFor(
     () =>

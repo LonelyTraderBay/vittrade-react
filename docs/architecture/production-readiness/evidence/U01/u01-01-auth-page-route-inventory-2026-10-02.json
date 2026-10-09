@@ -1,0 +1,1491 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "EV-20261002-033",
+  "taskId": "U01",
+  "stepId": "U01.01",
+  "kind": "auth-page-route-contract-and-persona-inventory",
+  "observedAt": "2026-10-02T14:06:27.946Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "environment": "Windows PowerShell; Node 24.19.0; source/ledger/OpenAPI inspection; dirty worktree; no Auth browser run or backend request in this step.",
+  "result": "pass",
+  "purpose": "Map every U01 page/route/export, route URL and shell context, current local persona/fixture boundary, page-owned operation and source-visible state before implementation. Preserve unresolved semantics as explicit drafts.",
+  "counts": {
+    "scopedInputPaths": 36,
+    "sourceBackedPages": 13,
+    "plannedPages": 2,
+    "routeDeclarations": 18,
+    "resolvedUrlRegistrations": 30,
+    "uniqueResolvedUrls": 30,
+    "authOpenApiOperations": 14,
+    "routesWithPersonaIds": 16,
+    "browserRoutesOpened": 0,
+    "apiRequestsSent": 0,
+    "userAcceptedPages": 0,
+    "backendOperationsVerified": 0
+  },
+  "preInventorySha256": {
+    "docs/architecture/production-readiness/TRACKING.json": "41014221bc7b016a04b20afbe759b418a8277c24b6e6f165fee83e87f5141f3a",
+    "docs/architecture/production-readiness/PLAN.md": "30b4edf6dce635e5234907e986094b98fe680abbae8272503651649fb0315e8a",
+    "docs/architecture/production-readiness/UI-ACCEPTANCE.md": "5aed0dc9567c66e5c09006e47b24255a58c39b1162b7f4b608de170b3c83d189",
+    "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json": "55e51b64a93ffaa6c88ab76b7e2b35ed6f99c4f491f8c6fb4e3afb450956486b"
+  },
+  "sourceHashes": {
+    "AGENTS.md": "6e24a9d65efbd4342de601fe1846bf84f85cecbb92cd2d9fcabb673dcf0f62fd",
+    "AI_RULES.md": "fa8b3cbcbddbd011b7c144be89f8de709a837a5058b7d202722887c20861311b",
+    "ARCHITECTURE.md": "dae3c1dc0ac08a87455842062bee43d4a13a12def48059fd9bb8aff986a958ef",
+    "PROJECT_BOOTSTRAP_PROMPT.txt": "0fdb02aa1ae5c427c48300ac0bb4a331397c6ef3d9d02acec4ba3472e2bb8a03",
+    "contracts/README.md": "59fa3b8e03d9f4c6c4a34e069e0fc2c254f8a9b87908900fbb839462a882498d",
+    "contracts/openapi/auth.yaml": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b",
+    "docs/PROJECT_CONTEXT.md": "6393762c45859788839a62815ed06b8204437d695d65c878719f67dc9f6f2f6e",
+    "docs/ai/WORKFLOW.md": "58a1d10d203f18190843320e1a7c184022b30d99b0330f5ed6916fc3b7180566",
+    "docs/architecture/production-readiness/PLAN.md": "30b4edf6dce635e5234907e986094b98fe680abbae8272503651649fb0315e8a",
+    "docs/architecture/production-readiness/TRACKING.json": "41014221bc7b016a04b20afbe759b418a8277c24b6e6f165fee83e87f5141f3a",
+    "guidelines/Guidelines.md": "869d863189ff4eba1959a41b3135218888d2b4c91308d8b11d9fb9eb9247c9e2",
+    "src/features/auth/components/RegistrationForm.tsx": "32b35d0238611e3d3579f92b4fcd4f4836ba4de6b070c78a461675deda47a6c2",
+    "src/features/auth/components/Web2FASetupBackupStep.tsx": "8f89699380dc3bf8eb914962c39c78912b77b467b40551a1f05689813c178f8c",
+    "src/features/auth/components/Web2FASetupFlow.tsx": "10f526b993eb4f5a1a345aad8c2233cfe5c023d54c3c6782f8cf8d5d26160016",
+    "src/features/auth/components/Web2FASetupQrStep.tsx": "e939fe7361c40d7af132fb8e59f512a69c998da02b2ee75bb931598aa57b6d55",
+    "src/features/auth/components/Web2FASetupStepIndicator.tsx": "aec11f5eb4cd91fede2f3e01eb1d2b7d631496226d8a86a6a9ff1a375d44c8c0",
+    "src/features/auth/components/Web2FASetupVerifyStep.tsx": "b6e977df476ed4e20a0868eab946e258501438392007ec0af1150fe93e58be26",
+    "src/features/auth/index.ts": "68752f52a693437c70400253eeb8c4ac0c74a4c79be0e40aba0d6662c1f03124",
+    "src/features/auth/lib/login-mfa-route-state.ts": "4fa8b7fcf267d30c8a409b2989d3ee8b12daf265065316eb1cde9fda9d087b16",
+    "src/features/auth/lib/registration-route-state.ts": "efd9b19751918e2e75075c72faa23436f7ea7f9054550f2b0ca0554086510086",
+    "src/features/auth/pages/LoginPage.tsx": "1b566e51b42153890f7000e55a1c0622b69cf2afc615b12453dbf570b1fbdbdd",
+    "src/features/auth/pages/OTPPage.tsx": "eff445ff3884f6aada08e689dc5468538d6587b799682a5401dc6951311f0012",
+    "src/features/auth/pages/PasswordChangePage.tsx": "0d9f1f682035b6d535cdbc5d2e1830e399e5758c29800f3b36c1f7cfdf29814c",
+    "src/features/auth/pages/PasswordResetPages.tsx": "1e3c9d521547ba3e45002191c5b2b1a5d07a8da4ac4a96141dfac6f292393a8d",
+    "src/features/auth/pages/RegisterPage.tsx": "2a0264faa40a260c8f8c0b102c8bf4e6b77379310be1e457d7eedf26bc9d6907",
+    "src/features/auth/pages/TwoFASetupPage.tsx": "8cc26e21c80fe6cb0c70f1ed2c77680537cd36892d93dc6db373353b1a92a7f7",
+    "src/features/auth/pages/Web2FASetupPage.tsx": "d8d6e68182c6d2290a250acb00969e24fc12b9a2b6f5e1e2025d6faf01609397",
+    "src/features/auth/pages/WebAccountLockedPage.tsx": "8f89fd070be0afffe84795192e376de598f1c84d4b6f51ba2edc4c1ada6dbbb2",
+    "src/features/auth/pages/WebAuthSuccessPage.tsx": "cabc2170e4e1883668d51e6dc9918bdd7111283f5fa590ffae56fb1eeea2e8cb",
+    "src/features/auth/pages/WebLoginPage.tsx": "d938bac40bb63145ffbb3919140b1b3d267b96e86872a93f29a4ebac24980e41",
+    "src/features/auth/pages/WebOTPPage.tsx": "5d2990eafb91494c38f6e207f925c32b9d0c43cd5f5d192f86545558b7923ebf",
+    "src/features/auth/pages/WebRegisterPage.tsx": "8cc2f6aa4cd1e71d36c807f3ab30bc8c13e98e7beee81b9074a151cae5da5a66",
+    "src/features/auth/pages/WebSessionExpiredPage.tsx": "933ff35945380aadfecc24afc749bfc56d0d25239f5b96ea0b5035ee7adc013d",
+    "src/features/auth/routes.ts": "6bc8b6448a95756b04515a6d11a831ce4a500d950b2a9e1168e1f19f5e50222f",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/handlers.ts": "b7068df1558e8efb458f5889c87bde27759acc3139a171ac885593386a78e34f",
+    "src/dev/mocks/auth-handlers.test.ts": "10f0a82eb7fb4d08d2f74a8219077e7be21522984be558437427d6f383973881",
+    "docs/architecture/production-readiness/UI-RUNBOOK.md": "08bbee7b839581054739b160756707624585a6e3051ae8cb010ad6d4706a8857",
+    "docs/architecture/production-readiness/evidence/A07/route-url-resolution-2026-09-28.json": "5e7c524a973be47e0af1a60f14d2269159cb32304a641e2834ba31932c4732f5"
+  },
+  "missingInputs": [
+    "src/features/auth/pages/DeviceTrustPage.tsx",
+    "src/features/auth/pages/OnboardingFlowPage.tsx"
+  ],
+  "scopeFilePaths": [
+    "AGENTS.md",
+    "AI_RULES.md",
+    "ARCHITECTURE.md",
+    "PROJECT_BOOTSTRAP_PROMPT.txt",
+    "contracts/README.md",
+    "contracts/openapi/auth.yaml",
+    "docs/PROJECT_CONTEXT.md",
+    "docs/ai/WORKFLOW.md",
+    "docs/architecture/production-readiness/PLAN.md",
+    "docs/architecture/production-readiness/TRACKING.json",
+    "guidelines/Guidelines.md",
+    "src/features/auth/components/RegistrationForm.tsx",
+    "src/features/auth/components/Web2FASetupBackupStep.tsx",
+    "src/features/auth/components/Web2FASetupFlow.tsx",
+    "src/features/auth/components/Web2FASetupQrStep.tsx",
+    "src/features/auth/components/Web2FASetupStepIndicator.tsx",
+    "src/features/auth/components/Web2FASetupVerifyStep.tsx",
+    "src/features/auth/index.ts",
+    "src/features/auth/lib/login-mfa-route-state.ts",
+    "src/features/auth/lib/registration-route-state.ts",
+    "src/features/auth/pages/DeviceTrustPage.tsx",
+    "src/features/auth/pages/LoginPage.tsx",
+    "src/features/auth/pages/OTPPage.tsx",
+    "src/features/auth/pages/OnboardingFlowPage.tsx",
+    "src/features/auth/pages/PasswordChangePage.tsx",
+    "src/features/auth/pages/PasswordResetPages.tsx",
+    "src/features/auth/pages/RegisterPage.tsx",
+    "src/features/auth/pages/TwoFASetupPage.tsx",
+    "src/features/auth/pages/Web2FASetupPage.tsx",
+    "src/features/auth/pages/WebAccountLockedPage.tsx",
+    "src/features/auth/pages/WebAuthSuccessPage.tsx",
+    "src/features/auth/pages/WebLoginPage.tsx",
+    "src/features/auth/pages/WebOTPPage.tsx",
+    "src/features/auth/pages/WebRegisterPage.tsx",
+    "src/features/auth/pages/WebSessionExpiredPage.tsx",
+    "src/features/auth/routes.ts"
+  ],
+  "inspectedAdditionalPaths": [
+    "src/app/routeConfig.ts",
+    "src/app/routes.ts",
+    "src/dev/PreviewControls.tsx",
+    "src/dev/mocks/personas.ts",
+    "src/dev/mocks/handlers.ts",
+    "src/dev/mocks/auth-handlers.test.ts",
+    "docs/architecture/production-readiness/UI-RUNBOOK.md",
+    "docs/architecture/production-readiness/evidence/A07/route-url-resolution-2026-09-28.json"
+  ],
+  "pageRecords": [
+    {
+      "pageId": "PAGE-fc203ab0f172",
+      "file": "src/features/auth/pages/LoginPage.tsx",
+      "lifecycle": "active",
+      "sourcePresent": true,
+      "owner": "features/auth",
+      "routeIds": ["ROUTE-100cc1dbac0e"],
+      "urls": [
+        {
+          "url": "/auth/login",
+          "shell": "AuthLayout",
+          "routeId": "ROUTE-100cc1dbac0e"
+        },
+        {
+          "url": "/t/auth/login",
+          "shell": "TabletShell + AuthLayout",
+          "routeId": "ROUTE-100cc1dbac0e"
+        },
+        {
+          "url": "/r/auth/login",
+          "shell": "ResponsiveAppLayout + AuthLayout",
+          "routeId": "ROUTE-100cc1dbac0e"
+        }
+      ],
+      "componentAliases": [
+        {
+          "routeId": "ROUTE-100cc1dbac0e",
+          "component": "LoginPage",
+          "target": "@/features/auth/pages/LoginPage",
+          "pageTarget": "src/features/auth/pages/LoginPage.tsx",
+          "developmentOnly": false,
+          "classification": "page"
+        }
+      ],
+      "personaIds": ["guest", "mfa", "locked"],
+      "fixtureIds": [],
+      "operationIds": ["login"],
+      "state": "Guest form -> login -> either authenticated session or MFA challenge -> OTP route state.",
+      "behavior": "Validates required credentials and delegates login; an MFA-required response navigates to OTP with login challenge state. Session is not established by the page before challenge verification.",
+      "invariant": "Keep login MFA purpose/challenge state distinct; never treat the pre-verification challenge as an authenticated session.",
+      "P01": "in_progress",
+      "P02": "done"
+    },
+    {
+      "pageId": "PAGE-17ba25394a51",
+      "file": "src/features/auth/pages/OTPPage.tsx",
+      "lifecycle": "active",
+      "sourcePresent": true,
+      "owner": "features/auth",
+      "routeIds": ["ROUTE-accb255cdbbe"],
+      "urls": [
+        {
+          "url": "/auth/otp",
+          "shell": "AuthLayout",
+          "routeId": "ROUTE-accb255cdbbe"
+        },
+        {
+          "url": "/t/auth/otp",
+          "shell": "TabletShell + AuthLayout",
+          "routeId": "ROUTE-accb255cdbbe"
+        },
+        {
+          "url": "/r/auth/otp",
+          "shell": "ResponsiveAppLayout + AuthLayout",
+          "routeId": "ROUTE-accb255cdbbe"
+        }
+      ],
+      "componentAliases": [
+        {
+          "routeId": "ROUTE-accb255cdbbe",
+          "component": "OTPPage",
+          "target": "@/features/auth/pages/OTPPage",
+          "pageTarget": "src/features/auth/pages/OTPPage.tsx",
+          "developmentOnly": false,
+          "classification": "page"
+        }
+      ],
+      "personaIds": ["guest", "mfa"],
+      "fixtureIds": [],
+      "operationIds": ["verifyLoginMfaChallenge", "verifyMfa"],
+      "state": "Route state selects registration OTP or login MFA; challenge may expire or be rejected.",
+      "behavior": "Requires a six-digit code and dispatches to verifyMfa for registration or verifyLoginMfaChallenge for login. Handles 400, 410, 423 and 429 responses in source.",
+      "invariant": "Do not mix purpose or accept an expired challenge; missing/invalid route state cannot submit a challenge.",
+      "P01": "in_progress",
+      "P02": "done"
+    },
+    {
+      "pageId": "PAGE-80bf208ae951",
+      "file": "src/features/auth/pages/PasswordChangePage.tsx",
+      "lifecycle": "active",
+      "sourcePresent": true,
+      "owner": "features/auth",
+      "routeIds": ["ROUTE-f976b2619f33"],
+      "urls": [
+        {
+          "url": "/w/profile/security/change-password",
+          "shell": "WebShell",
+          "routeId": "ROUTE-f976b2619f33"
+        }
+      ],
+      "componentAliases": [
+        {
+          "routeId": "ROUTE-f976b2619f33",
+          "component": "PasswordChangePage",
+          "target": "@/features/auth/pages/PasswordChangePage",
+          "pageTarget": "src/features/auth/pages/PasswordChangePage.tsx",
+          "developmentOnly": false,
+          "classification": "page"
+        }
+      ],
+      "personaIds": ["developer"],
+      "fixtureIds": [],
+      "operationIds": ["verifyCurrentPassword", "changePassword"],
+      "state": "Verify current password -> enter new password and TOTP -> success only after API completion.",
+      "behavior": "Verifies the current password, requires a 12-character minimum with a letter and digit, matching confirmation and a six-digit TOTP; calls changePassword.",
+      "invariant": "Do not show success until the API confirms the change; retain the current-password/MFA gate.",
+      "P01": "in_progress",
+      "P02": "done"
+    },
+    {
+      "pageId": "PAGE-c38da743de4d",
+      "file": "src/features/auth/pages/PasswordResetPages.tsx",
+      "lifecycle": "active",
+      "sourcePresent": true,
+      "owner": "features/auth",
+      "routeIds": [
+        "ROUTE-4a0dfa8a2088",
+        "ROUTE-764ca832a1d4",
+        "ROUTE-13bb9a025244",
+        "ROUTE-90d53d0b54e7"
+      ],
+      "urls": [
+        {
+          "url": "/auth/forgot-password",
+          "shell": "AuthLayout",
+          "routeId": "ROUTE-4a0dfa8a2088"
+        },
+        {
+          "url": "/t/auth/forgot-password",
+          "shell": "TabletShell + AuthLayout",
+          "routeId": "ROUTE-4a0dfa8a2088"
+        },
+        {
+          "url": "/r/auth/forgot-password",
+          "shell": "ResponsiveAppLayout + AuthLayout",
+          "routeId": "ROUTE-4a0dfa8a2088"
+        },
+        {
+          "url": "/w/auth/forgot-password",
+          "shell": "WebShell",
+          "routeId": "ROUTE-764ca832a1d4"
+        },
+        {
+          "url": "/auth/reset-password",
+          "shell": "AuthLayout",
+          "routeId": "ROUTE-13bb9a025244"
+        },
+        {
+          "url": "/t/auth/reset-password",
+          "shell": "TabletShell + AuthLayout",
+          "routeId": "ROUTE-13bb9a025244"
+        },
+        {
+          "url": "/r/auth/reset-password",
+          "shell": "ResponsiveAppLayout + AuthLayout",
+          "routeId": "ROUTE-13bb9a025244"
+        },
+        {
+          "url": "/w/auth/reset-password",
+          "shell": "WebShell",
+          "routeId": "ROUTE-90d53d0b54e7"
+        }
+      ],
+      "componentAliases": [
+        {
+          "routeId": "ROUTE-4a0dfa8a2088",
+          "component": "ForgotPasswordPage",
+          "target": "@/features/auth/pages/PasswordResetPages",
+          "pageTarget": "src/features/auth/pages/PasswordResetPages.tsx",
+          "developmentOnly": false,
+          "classification": "page"
+        },
+        {
+          "routeId": "ROUTE-764ca832a1d4",
+          "component": "WebForgotPasswordPage",
+          "target": "@/features/auth/pages/PasswordResetPages",
+          "pageTarget": "src/features/auth/pages/PasswordResetPages.tsx",
+          "developmentOnly": false,
+          "classification": "page"
+        },
+        {
+          "routeId": "ROUTE-13bb9a025244",
+          "component": "ResetPasswordPage",
+          "target": "@/features/auth/pages/PasswordResetPages",
+          "pageTarget": "src/features/auth/pages/PasswordResetPages.tsx",
+          "developmentOnly": false,
+          "classification": "page"
+        },
+        {
+          "routeId": "ROUTE-90d53d0b54e7",
+          "component": "WebResetPasswordPage",
+          "target": "@/features/auth/pages/PasswordResetPages",
+          "pageTarget": "src/features/auth/pages/PasswordResetPages.tsx",
+          "developmentOnly": false,
+          "classification": "page"
+        }
+      ],
+      "personaIds": ["guest"],
+      "fixtureIds": [],
+      "operationIds": [
+        "requestPasswordResetCode",
+        "verifyPasswordResetCode",
+        "confirmPasswordReset"
+      ],
+      "state": "Request code -> verify code -> reset password using email and resetToken -> success; shared export handles phone/tablet/responsive and web aliases.",
+      "behavior": "Requests a reset code, verifies the six-digit code, then reads email/resetToken from the reset URL and confirms the new password. Three operations are page-owned.",
+      "invariant": "Do not enable final reset without a valid verified reset token; keep request/verify/confirm stages in order.",
+      "P01": "in_progress",
+      "P02": "done"
+    },
+    {
+      "pageId": "PAGE-16e0615d6416",
+      "file": "src/features/auth/pages/RegisterPage.tsx",
+      "lifecycle": "active",
+      "sourcePresent": true,
+      "owner": "features/auth",
+      "routeIds": ["ROUTE-818c037b98a5"],
+      "urls": [
+        {
+          "url": "/auth/register",
+          "shell": "AuthLayout",
+          "routeId": "ROUTE-818c037b98a5"
+        },
+        {
+          "url": "/t/auth/register",
+          "shell": "TabletShell + AuthLayout",
+          "routeId": "ROUTE-818c037b98a5"
+        },
+        {
+          "url": "/r/auth/register",
+          "shell": "ResponsiveAppLayout + AuthLayout",
+          "routeId": "ROUTE-818c037b98a5"
+        }
+      ],
+      "componentAliases": [
+        {
+          "routeId": "ROUTE-818c037b98a5",
+          "component": "RegisterPage",
+          "target": "@/features/auth/pages/RegisterPage",
+          "pageTarget": "src/features/auth/pages/RegisterPage.tsx",
+          "developmentOnly": true,
+          "classification": "development-only"
+        }
+      ],
+      "personaIds": ["guest"],
+      "fixtureIds": [],
+      "operationIds": ["register"],
+      "state": "Guest registration -> accepted challenge -> registration-purpose OTP; registration alone does not create a session.",
+      "behavior": "RegistrationForm validates contact/channel and submits register with Idempotency-Key; the local handler returns a 202 challenge. Phone/email capability remains bounded by OpenAPI channel values.",
+      "invariant": "Do not create a session until the registration challenge is verified; preserve registration purpose and idempotency behavior.",
+      "P01": "in_progress",
+      "P02": "done"
+    },
+    {
+      "pageId": "PAGE-98707039d228",
+      "file": "src/features/auth/pages/TwoFASetupPage.tsx",
+      "lifecycle": "active",
+      "sourcePresent": true,
+      "owner": "features/auth",
+      "routeIds": ["ROUTE-b28612957bf6"],
+      "urls": [
+        {
+          "url": "/auth/2fa-setup",
+          "shell": "AuthLayout",
+          "routeId": "ROUTE-b28612957bf6"
+        },
+        {
+          "url": "/t/auth/2fa-setup",
+          "shell": "TabletShell + AuthLayout",
+          "routeId": "ROUTE-b28612957bf6"
+        },
+        {
+          "url": "/r/auth/2fa-setup",
+          "shell": "ResponsiveAppLayout + AuthLayout",
+          "routeId": "ROUTE-b28612957bf6"
+        }
+      ],
+      "componentAliases": [
+        {
+          "routeId": "ROUTE-b28612957bf6",
+          "component": "TwoFASetupPage",
+          "target": "@/features/auth/pages/TwoFASetupPage",
+          "pageTarget": "src/features/auth/pages/TwoFASetupPage.tsx",
+          "developmentOnly": false,
+          "classification": "page"
+        }
+      ],
+      "personaIds": ["developer"],
+      "fixtureIds": [],
+      "operationIds": ["beginMfaSetup", "confirmMfaSetup"],
+      "state": "Begin setup -> display setup data/QR -> confirm six-digit code -> show backup codes.",
+      "behavior": "Uses beginMfaSetup and confirmMfaSetup. OpenAPI applies sessionCookie to both operations.",
+      "invariant": "Setup confirmation must precede backup-code success state; the session requirement must be resolved at the route/guard boundary.",
+      "P01": "in_progress",
+      "P02": "done"
+    },
+    {
+      "pageId": "PAGE-b86bf4c12ac2",
+      "file": "src/features/auth/pages/Web2FASetupPage.tsx",
+      "lifecycle": "active",
+      "sourcePresent": true,
+      "owner": "features/auth",
+      "routeIds": ["ROUTE-e836f6cbe6eb"],
+      "urls": [
+        {
+          "url": "/w/auth/2fa-setup",
+          "shell": "WebShell",
+          "routeId": "ROUTE-e836f6cbe6eb"
+        }
+      ],
+      "componentAliases": [
+        {
+          "routeId": "ROUTE-e836f6cbe6eb",
+          "component": "Web2FASetupPage",
+          "target": "@/features/auth/pages/Web2FASetupPage",
+          "pageTarget": "src/features/auth/pages/Web2FASetupPage.tsx",
+          "developmentOnly": false,
+          "classification": "page"
+        }
+      ],
+      "personaIds": ["developer"],
+      "fixtureIds": [],
+      "operationIds": ["beginMfaSetup", "confirmMfaSetup"],
+      "state": "Web wrapper re-exports Web2FASetupFlow: begin setup -> QR -> verify code -> backup codes.",
+      "behavior": "Web2FASetupFlow composes QR, verify, indicator and backup components and calls beginMfaSetup/confirmMfaSetup; both operations require sessionCookie in OpenAPI.",
+      "invariant": "No success/backup-code state before confirmation; clarify authenticated route ownership because /w/auth/2fa-setup is in the public auth branch.",
+      "P01": "in_progress",
+      "P02": "done"
+    },
+    {
+      "pageId": "PAGE-d3e238577d76",
+      "file": "src/features/auth/pages/WebAccountLockedPage.tsx",
+      "lifecycle": "active",
+      "sourcePresent": true,
+      "owner": "features/auth",
+      "routeIds": ["ROUTE-094a1e1d228e"],
+      "urls": [
+        {
+          "url": "/w/auth/account-locked",
+          "shell": "WebShell",
+          "routeId": "ROUTE-094a1e1d228e"
+        }
+      ],
+      "componentAliases": [
+        {
+          "routeId": "ROUTE-094a1e1d228e",
+          "component": "WebAccountLockedPage",
+          "target": "@/features/auth/pages/WebAccountLockedPage",
+          "pageTarget": "src/features/auth/pages/WebAccountLockedPage.tsx",
+          "developmentOnly": false,
+          "classification": "page"
+        }
+      ],
+      "personaIds": ["locked"],
+      "fixtureIds": [],
+      "operationIds": [],
+      "state": "Static locked-account information after API 423 or local locked fixture.",
+      "behavior": "Displays the account-locked recovery state; it owns no API operation.",
+      "invariant": "Do not present a successful login/session from a 423 result.",
+      "P01": "in_progress",
+      "P02": "done"
+    },
+    {
+      "pageId": "PAGE-64fbd7296cdc",
+      "file": "src/features/auth/pages/WebAuthSuccessPage.tsx",
+      "lifecycle": "active",
+      "sourcePresent": true,
+      "owner": "features/auth",
+      "routeIds": ["ROUTE-2b57d7e87016"],
+      "urls": [
+        {
+          "url": "/w/auth/success",
+          "shell": "WebShell",
+          "routeId": "ROUTE-2b57d7e87016"
+        }
+      ],
+      "componentAliases": [
+        {
+          "routeId": "ROUTE-2b57d7e87016",
+          "component": "WebAuthSuccessPage",
+          "target": "@/features/auth/pages/WebAuthSuccessPage",
+          "pageTarget": "src/features/auth/pages/WebAuthSuccessPage.tsx",
+          "developmentOnly": false,
+          "classification": "page"
+        }
+      ],
+      "personaIds": [],
+      "fixtureIds": [],
+      "operationIds": [],
+      "state": "Reads location.state purpose/from and shows purpose-specific confirmation plus an automatic redirect.",
+      "behavior": "Static route-state page; no API call. Supported purpose configuration includes registration and 2FA setup, with a generic fallback.",
+      "invariant": "The route state controls presentation/navigation only; it is not proof of backend success by itself.",
+      "P01": "in_progress",
+      "P02": "done"
+    },
+    {
+      "pageId": "PAGE-0dd6553ac858",
+      "file": "src/features/auth/pages/WebLoginPage.tsx",
+      "lifecycle": "active",
+      "sourcePresent": true,
+      "owner": "features/auth",
+      "routeIds": ["ROUTE-1f4f526bb861"],
+      "urls": [
+        {
+          "url": "/w/auth/login",
+          "shell": "WebShell",
+          "routeId": "ROUTE-1f4f526bb861"
+        }
+      ],
+      "componentAliases": [
+        {
+          "routeId": "ROUTE-1f4f526bb861",
+          "component": "WebLoginPage",
+          "target": "@/features/auth/pages/WebLoginPage",
+          "pageTarget": "src/features/auth/pages/WebLoginPage.tsx",
+          "developmentOnly": false,
+          "classification": "page"
+        }
+      ],
+      "personaIds": ["guest", "mfa", "locked"],
+      "fixtureIds": [],
+      "operationIds": ["login"],
+      "state": "Guest login; local fixture mode also has invalid-attempt and device-trust trigger paths.",
+      "behavior": "Calls login for normal requests. In auth fixture mode only, wrong@test.com increments local attempts and device@test.com navigates to the current IntegrationPendingPage with email/returnTo state. API mode hides these fixture controls.",
+      "invariant": "Keep pseudo-email branches confined to fixture mode; a successful MFA-required result must continue through OTP.",
+      "P01": "in_progress",
+      "P02": "done"
+    },
+    {
+      "pageId": "PAGE-ecdaf22df407",
+      "file": "src/features/auth/pages/WebOTPPage.tsx",
+      "lifecycle": "active",
+      "sourcePresent": true,
+      "owner": "features/auth",
+      "routeIds": ["ROUTE-2e3b51e0645b"],
+      "urls": [
+        {
+          "url": "/w/auth/otp",
+          "shell": "WebShell",
+          "routeId": "ROUTE-2e3b51e0645b"
+        }
+      ],
+      "componentAliases": [
+        {
+          "routeId": "ROUTE-2e3b51e0645b",
+          "component": "WebOTPPage",
+          "target": "@/features/auth/pages/WebOTPPage",
+          "pageTarget": "src/features/auth/pages/WebOTPPage.tsx",
+          "developmentOnly": false,
+          "classification": "page"
+        }
+      ],
+      "personaIds": ["guest", "mfa"],
+      "fixtureIds": [],
+      "operationIds": ["verifyLoginMfaChallenge", "verifyMfa"],
+      "state": "Web route-state OTP for registration or login MFA; errors include invalid, expired, locked and rate-limited.",
+      "behavior": "Requires a six-digit code and dispatches by purpose to verifyMfa or verifyLoginMfaChallenge; handles the documented current page branches.",
+      "invariant": "Keep challenge purpose/state isolated and do not claim session success until the matching verification succeeds.",
+      "P01": "in_progress",
+      "P02": "done"
+    },
+    {
+      "pageId": "PAGE-43ad73895a1a",
+      "file": "src/features/auth/pages/WebRegisterPage.tsx",
+      "lifecycle": "active",
+      "sourcePresent": true,
+      "owner": "features/auth",
+      "routeIds": ["ROUTE-d553aec3dd63"],
+      "urls": [
+        {
+          "url": "/w/auth/register",
+          "shell": "WebShell",
+          "routeId": "ROUTE-d553aec3dd63"
+        }
+      ],
+      "componentAliases": [
+        {
+          "routeId": "ROUTE-d553aec3dd63",
+          "component": "WebRegisterPage",
+          "target": "@/features/auth/pages/WebRegisterPage",
+          "pageTarget": "src/features/auth/pages/WebRegisterPage.tsx",
+          "developmentOnly": true,
+          "classification": "development-only"
+        }
+      ],
+      "personaIds": ["guest"],
+      "fixtureIds": [],
+      "operationIds": ["register"],
+      "state": "Guest registration -> 202 challenge -> registration-purpose OTP.",
+      "behavior": "Web registration wrapper uses the shared registration form and register operation; route is marked developmentOnly in current route inventory.",
+      "invariant": "No authenticated session is created before the registration challenge is verified.",
+      "P01": "in_progress",
+      "P02": "done"
+    },
+    {
+      "pageId": "PAGE-bb20e1f20b2b",
+      "file": "src/features/auth/pages/WebSessionExpiredPage.tsx",
+      "lifecycle": "active",
+      "sourcePresent": true,
+      "owner": "features/auth",
+      "routeIds": ["ROUTE-e705fc2b6db3"],
+      "urls": [
+        {
+          "url": "/w/auth/session-expired",
+          "shell": "WebShell",
+          "routeId": "ROUTE-e705fc2b6db3"
+        }
+      ],
+      "componentAliases": [
+        {
+          "routeId": "ROUTE-e705fc2b6db3",
+          "component": "WebSessionExpiredPage",
+          "target": "@/features/auth/pages/WebSessionExpiredPage",
+          "pageTarget": "src/features/auth/pages/WebSessionExpiredPage.tsx",
+          "developmentOnly": false,
+          "classification": "page"
+        }
+      ],
+      "personaIds": ["guest"],
+      "fixtureIds": [],
+      "operationIds": [],
+      "state": "Static signed-out recovery state after session expiry/refresh resolution.",
+      "behavior": "Explains the expired session and offers recovery navigation; no API operation is page-owned.",
+      "invariant": "A page-level redirect does not establish session status; AuthSessionProvider/session contract remains the source of truth.",
+      "P01": "in_progress",
+      "P02": "done"
+    },
+    {
+      "pageId": "PAGE-a4c302696fb3",
+      "file": "src/features/auth/pages/DeviceTrustPage.tsx",
+      "lifecycle": "planned",
+      "sourcePresent": false,
+      "owner": "features/auth",
+      "routeIds": ["ROUTE-ef6ce9f11fa4"],
+      "urls": [
+        {
+          "url": "/w/auth/device-trust",
+          "shell": "WebShell",
+          "routeId": "ROUTE-ef6ce9f11fa4"
+        }
+      ],
+      "componentAliases": [
+        {
+          "routeId": "ROUTE-ef6ce9f11fa4",
+          "component": "IntegrationPendingPage",
+          "target": null,
+          "pageTarget": "src/features/auth/pages/DeviceTrustPage.tsx",
+          "developmentOnly": false,
+          "classification": "integration-pending-placeholder"
+        }
+      ],
+      "personaIds": ["guest"],
+      "fixtureIds": [],
+      "operationIds": [],
+      "state": "Planned page; current route is IntegrationPendingPage and is reached only by a local WebLoginPage fixture input.",
+      "behavior": "No page source or device-trust OpenAPI operation exists in this checkout. Existing local trigger passes email and returnTo in route state.",
+      "invariant": "Do not implement a trusted-device decision until API owner approves identity binding, proof, expiry/revocation, response states and redirect policy.",
+      "P01": "in_progress",
+      "P02": "in_progress"
+    },
+    {
+      "pageId": "PAGE-0b5ac9400a73",
+      "file": "src/features/auth/pages/OnboardingFlowPage.tsx",
+      "lifecycle": "planned",
+      "sourcePresent": false,
+      "owner": "features/auth",
+      "routeIds": ["ROUTE-3729636080ad"],
+      "urls": [
+        {
+          "url": "/onboarding",
+          "shell": "RootLayout",
+          "routeId": "ROUTE-3729636080ad"
+        }
+      ],
+      "componentAliases": [
+        {
+          "routeId": "ROUTE-3729636080ad",
+          "component": "OnboardingFlow",
+          "target": null,
+          "pageTarget": "src/features/auth/pages/OnboardingFlowPage.tsx",
+          "developmentOnly": false,
+          "classification": "component-alias"
+        }
+      ],
+      "personaIds": [],
+      "fixtureIds": [],
+      "operationIds": [],
+      "state": "Planned page; /onboarding currently aliases IntegrationPendingPage under RootLayout.",
+      "behavior": "No active page source or linked Auth operation is recorded. Legacy onboarding files are outside the active route and are not assumed to define this contract.",
+      "invariant": "Do not infer required/optional steps, persistence or completion semantics from the route alias.",
+      "P01": "in_progress",
+      "P02": "in_progress"
+    }
+  ],
+  "routeRecords": [
+    {
+      "id": "ROUTE-b28612957bf6",
+      "source": "src/app/routeConfig.ts",
+      "path": "2fa-setup",
+      "component": "TwoFASetupPage",
+      "target": "@/features/auth/pages/TwoFASetupPage",
+      "pageTarget": "src/features/auth/pages/TwoFASetupPage.tsx",
+      "lifecycle": "active",
+      "developmentOnly": false,
+      "classification": "page",
+      "resolvedUrls": ["/auth/2fa-setup", "/t/auth/2fa-setup", "/r/auth/2fa-setup"],
+      "pageIds": ["PAGE-98707039d228"],
+      "personaMapping": {
+        "status": "mapped",
+        "personaIds": ["developer"],
+        "notes": "Authenticated setup context for the sessionCookie-protected operations; current route is declared inside AuthLayout, not ProtectedRoute. Local persona only.",
+        "fixtureIds": [],
+        "sources": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/personas.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/auth-handlers.test.ts",
+          "src/app/routeConfig.ts"
+        ]
+      }
+    },
+    {
+      "id": "ROUTE-e836f6cbe6eb",
+      "source": "src/app/routes.ts",
+      "path": "2fa-setup",
+      "component": "Web2FASetupPage",
+      "target": "@/features/auth/pages/Web2FASetupPage",
+      "pageTarget": "src/features/auth/pages/Web2FASetupPage.tsx",
+      "lifecycle": "active",
+      "developmentOnly": false,
+      "classification": "page",
+      "resolvedUrls": ["/w/auth/2fa-setup"],
+      "pageIds": ["PAGE-b86bf4c12ac2"],
+      "personaMapping": {
+        "status": "mapped",
+        "personaIds": ["developer"],
+        "notes": "Authenticated setup context for the sessionCookie-protected operations; current /w/auth route is in the public auth branch. Local persona only.",
+        "fixtureIds": [],
+        "sources": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/personas.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/auth-handlers.test.ts",
+          "src/app/routes.ts"
+        ]
+      }
+    },
+    {
+      "id": "ROUTE-094a1e1d228e",
+      "source": "src/app/routes.ts",
+      "path": "account-locked",
+      "component": "WebAccountLockedPage",
+      "target": "@/features/auth/pages/WebAccountLockedPage",
+      "pageTarget": "src/features/auth/pages/WebAccountLockedPage.tsx",
+      "lifecycle": "active",
+      "developmentOnly": false,
+      "classification": "page",
+      "resolvedUrls": ["/w/auth/account-locked"],
+      "pageIds": ["PAGE-d3e238577d76"],
+      "personaMapping": {
+        "status": "mapped",
+        "personaIds": ["locked"],
+        "notes": "The local locked persona produces login 423; this page itself is a static result screen.",
+        "fixtureIds": [],
+        "sources": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/personas.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/auth-handlers.test.ts",
+          "src/app/routes.ts"
+        ]
+      }
+    },
+    {
+      "id": "ROUTE-ef6ce9f11fa4",
+      "source": "src/app/routes.ts",
+      "path": "device-trust",
+      "component": "IntegrationPendingPage",
+      "target": null,
+      "pageTarget": "src/features/auth/pages/DeviceTrustPage.tsx",
+      "lifecycle": "active",
+      "developmentOnly": false,
+      "classification": "integration-pending-placeholder",
+      "resolvedUrls": ["/w/auth/device-trust"],
+      "pageIds": ["PAGE-a4c302696fb3"],
+      "personaMapping": {
+        "status": "fixture-only-placeholder",
+        "personaIds": ["guest"],
+        "notes": "Only source-backed entry is WebLoginPage fixture-mode device@test.com -> this placeholder; email is a local test input, not a named persona or approved device-trust contract.",
+        "fixtureIds": [],
+        "sources": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/personas.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/auth-handlers.test.ts",
+          "src/app/routes.ts"
+        ]
+      }
+    },
+    {
+      "id": "ROUTE-4a0dfa8a2088",
+      "source": "src/app/routeConfig.ts",
+      "path": "forgot-password",
+      "component": "ForgotPasswordPage",
+      "target": "@/features/auth/pages/PasswordResetPages",
+      "pageTarget": "src/features/auth/pages/PasswordResetPages.tsx",
+      "lifecycle": "active",
+      "developmentOnly": false,
+      "classification": "page",
+      "resolvedUrls": [
+        "/auth/forgot-password",
+        "/t/auth/forgot-password",
+        "/r/auth/forgot-password"
+      ],
+      "pageIds": ["PAGE-c38da743de4d"],
+      "personaMapping": {
+        "status": "mapped",
+        "personaIds": ["guest"],
+        "notes": "Guest reset-code request path. No stable named fixture ID is declared by the current handler.",
+        "fixtureIds": [],
+        "sources": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/personas.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/auth-handlers.test.ts",
+          "src/app/routeConfig.ts"
+        ]
+      }
+    },
+    {
+      "id": "ROUTE-764ca832a1d4",
+      "source": "src/app/routes.ts",
+      "path": "forgot-password",
+      "component": "WebForgotPasswordPage",
+      "target": "@/features/auth/pages/PasswordResetPages",
+      "pageTarget": "src/features/auth/pages/PasswordResetPages.tsx",
+      "lifecycle": "active",
+      "developmentOnly": false,
+      "classification": "page",
+      "resolvedUrls": ["/w/auth/forgot-password"],
+      "pageIds": ["PAGE-c38da743de4d"],
+      "personaMapping": {
+        "status": "mapped",
+        "personaIds": ["guest"],
+        "notes": "Guest web reset-code request path. No stable named fixture ID is declared by the current handler.",
+        "fixtureIds": [],
+        "sources": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/personas.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/auth-handlers.test.ts",
+          "src/app/routes.ts"
+        ]
+      }
+    },
+    {
+      "id": "ROUTE-100cc1dbac0e",
+      "source": "src/app/routeConfig.ts",
+      "path": "login",
+      "component": "LoginPage",
+      "target": "@/features/auth/pages/LoginPage",
+      "pageTarget": "src/features/auth/pages/LoginPage.tsx",
+      "lifecycle": "active",
+      "developmentOnly": false,
+      "classification": "page",
+      "resolvedUrls": ["/auth/login", "/t/auth/login", "/r/auth/login"],
+      "pageIds": ["PAGE-fc203ab0f172"],
+      "personaMapping": {
+        "status": "mapped",
+        "personaIds": ["guest", "mfa", "locked"],
+        "notes": "Guest form plus source-defined local MFA-required and locked login personas; route declaration covers phone/tablet/responsive aliases.",
+        "fixtureIds": [],
+        "sources": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/personas.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/auth-handlers.test.ts",
+          "src/app/routeConfig.ts"
+        ]
+      }
+    },
+    {
+      "id": "ROUTE-1f4f526bb861",
+      "source": "src/app/routes.ts",
+      "path": "login",
+      "component": "WebLoginPage",
+      "target": "@/features/auth/pages/WebLoginPage",
+      "pageTarget": "src/features/auth/pages/WebLoginPage.tsx",
+      "lifecycle": "active",
+      "developmentOnly": false,
+      "classification": "page",
+      "resolvedUrls": ["/w/auth/login"],
+      "pageIds": ["PAGE-0dd6553ac858"],
+      "personaMapping": {
+        "status": "mapped",
+        "personaIds": ["guest", "mfa", "locked"],
+        "notes": "Web guest login form; mfa/locked credentials are shown in fixture mode. Pseudo-inputs wrong@test.com and device@test.com are not DEV_PREVIEW_PERSONAS.",
+        "fixtureIds": [],
+        "sources": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/personas.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/auth-handlers.test.ts",
+          "src/app/routes.ts"
+        ]
+      }
+    },
+    {
+      "id": "ROUTE-3729636080ad",
+      "source": "src/app/routes.ts",
+      "path": "onboarding",
+      "component": "OnboardingFlow",
+      "target": null,
+      "pageTarget": "src/features/auth/pages/OnboardingFlowPage.tsx",
+      "lifecycle": "active",
+      "developmentOnly": false,
+      "classification": "component-alias",
+      "resolvedUrls": ["/onboarding"],
+      "pageIds": ["PAGE-0b5ac9400a73"],
+      "personaMapping": {
+        "status": "not-mapped",
+        "personaIds": [],
+        "notes": "Current route is a standalone IntegrationPendingPage alias; the planned Auth page has no approved entry or persona contract.",
+        "fixtureIds": [],
+        "sources": ["src/app/routes.ts"]
+      }
+    },
+    {
+      "id": "ROUTE-accb255cdbbe",
+      "source": "src/app/routeConfig.ts",
+      "path": "otp",
+      "component": "OTPPage",
+      "target": "@/features/auth/pages/OTPPage",
+      "pageTarget": "src/features/auth/pages/OTPPage.tsx",
+      "lifecycle": "active",
+      "developmentOnly": false,
+      "classification": "page",
+      "resolvedUrls": ["/auth/otp", "/t/auth/otp", "/r/auth/otp"],
+      "pageIds": ["PAGE-17ba25394a51"],
+      "personaMapping": {
+        "status": "mapped",
+        "personaIds": ["guest", "mfa"],
+        "notes": "Guest registration challenge and local login-MFA persona share the OTP component through distinct purpose-bound route state.",
+        "fixtureIds": [],
+        "sources": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/personas.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/auth-handlers.test.ts",
+          "src/app/routeConfig.ts"
+        ]
+      }
+    },
+    {
+      "id": "ROUTE-2e3b51e0645b",
+      "source": "src/app/routes.ts",
+      "path": "otp",
+      "component": "WebOTPPage",
+      "target": "@/features/auth/pages/WebOTPPage",
+      "pageTarget": "src/features/auth/pages/WebOTPPage.tsx",
+      "lifecycle": "active",
+      "developmentOnly": false,
+      "classification": "page",
+      "resolvedUrls": ["/w/auth/otp"],
+      "pageIds": ["PAGE-ecdaf22df407"],
+      "personaMapping": {
+        "status": "mapped",
+        "personaIds": ["guest", "mfa"],
+        "notes": "Web OTP route supports registration/login purpose state; local MFA persona only exercises login challenge.",
+        "fixtureIds": [],
+        "sources": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/personas.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/auth-handlers.test.ts",
+          "src/app/routes.ts"
+        ]
+      }
+    },
+    {
+      "id": "ROUTE-f976b2619f33",
+      "source": "src/app/routes.ts",
+      "path": "profile/security/change-password",
+      "component": "PasswordChangePage",
+      "target": "@/features/auth/pages/PasswordChangePage",
+      "pageTarget": "src/features/auth/pages/PasswordChangePage.tsx",
+      "lifecycle": "active",
+      "developmentOnly": false,
+      "classification": "page",
+      "resolvedUrls": ["/w/profile/security/change-password"],
+      "pageIds": ["PAGE-80bf208ae951"],
+      "personaMapping": {
+        "status": "mapped",
+        "personaIds": ["developer"],
+        "notes": "Authenticated local preview context; endpoint contract requires sessionCookie.",
+        "fixtureIds": [],
+        "sources": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/personas.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/auth-handlers.test.ts",
+          "src/app/routes.ts"
+        ]
+      }
+    },
+    {
+      "id": "ROUTE-818c037b98a5",
+      "source": "src/app/routeConfig.ts",
+      "path": "register",
+      "component": "RegisterPage",
+      "target": "@/features/auth/pages/RegisterPage",
+      "pageTarget": "src/features/auth/pages/RegisterPage.tsx",
+      "lifecycle": "active",
+      "developmentOnly": true,
+      "classification": "development-only",
+      "resolvedUrls": ["/auth/register", "/t/auth/register", "/r/auth/register"],
+      "pageIds": ["PAGE-16e0615d6416"],
+      "personaMapping": {
+        "status": "mapped",
+        "personaIds": ["guest"],
+        "notes": "Guest registration route; current declaration is developmentOnly.",
+        "fixtureIds": [],
+        "sources": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/personas.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/auth-handlers.test.ts",
+          "src/app/routeConfig.ts"
+        ]
+      }
+    },
+    {
+      "id": "ROUTE-d553aec3dd63",
+      "source": "src/app/routes.ts",
+      "path": "register",
+      "component": "WebRegisterPage",
+      "target": "@/features/auth/pages/WebRegisterPage",
+      "pageTarget": "src/features/auth/pages/WebRegisterPage.tsx",
+      "lifecycle": "active",
+      "developmentOnly": true,
+      "classification": "development-only",
+      "resolvedUrls": ["/w/auth/register"],
+      "pageIds": ["PAGE-43ad73895a1a"],
+      "personaMapping": {
+        "status": "mapped",
+        "personaIds": ["guest"],
+        "notes": "Guest web registration route; current declaration is developmentOnly.",
+        "fixtureIds": [],
+        "sources": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/personas.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/auth-handlers.test.ts",
+          "src/app/routes.ts"
+        ]
+      }
+    },
+    {
+      "id": "ROUTE-13bb9a025244",
+      "source": "src/app/routeConfig.ts",
+      "path": "reset-password",
+      "component": "ResetPasswordPage",
+      "target": "@/features/auth/pages/PasswordResetPages",
+      "pageTarget": "src/features/auth/pages/PasswordResetPages.tsx",
+      "lifecycle": "active",
+      "developmentOnly": false,
+      "classification": "page",
+      "resolvedUrls": ["/auth/reset-password", "/t/auth/reset-password", "/r/auth/reset-password"],
+      "pageIds": ["PAGE-c38da743de4d"],
+      "personaMapping": {
+        "status": "mapped",
+        "personaIds": ["guest"],
+        "notes": "Guest reset flow with verified email/resetToken state; routeConfig alias shares PasswordResetPages.tsx.",
+        "fixtureIds": [],
+        "sources": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/personas.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/auth-handlers.test.ts",
+          "src/app/routeConfig.ts"
+        ]
+      }
+    },
+    {
+      "id": "ROUTE-90d53d0b54e7",
+      "source": "src/app/routes.ts",
+      "path": "reset-password",
+      "component": "WebResetPasswordPage",
+      "target": "@/features/auth/pages/PasswordResetPages",
+      "pageTarget": "src/features/auth/pages/PasswordResetPages.tsx",
+      "lifecycle": "active",
+      "developmentOnly": false,
+      "classification": "page",
+      "resolvedUrls": ["/w/auth/reset-password"],
+      "pageIds": ["PAGE-c38da743de4d"],
+      "personaMapping": {
+        "status": "mapped",
+        "personaIds": ["guest"],
+        "notes": "Guest web reset flow with verified email/resetToken state; route alias shares PasswordResetPages.tsx.",
+        "fixtureIds": [],
+        "sources": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/personas.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/auth-handlers.test.ts",
+          "src/app/routes.ts"
+        ]
+      }
+    },
+    {
+      "id": "ROUTE-e705fc2b6db3",
+      "source": "src/app/routes.ts",
+      "path": "session-expired",
+      "component": "WebSessionExpiredPage",
+      "target": "@/features/auth/pages/WebSessionExpiredPage",
+      "pageTarget": "src/features/auth/pages/WebSessionExpiredPage.tsx",
+      "lifecycle": "active",
+      "developmentOnly": false,
+      "classification": "page",
+      "resolvedUrls": ["/w/auth/session-expired"],
+      "pageIds": ["PAGE-bb20e1f20b2b"],
+      "personaMapping": {
+        "status": "mapped",
+        "personaIds": ["guest"],
+        "notes": "Signed-out recovery context after session expiry; backend refresh/session result remains shared-provider owned.",
+        "fixtureIds": [],
+        "sources": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/personas.ts",
+          "src/dev/mocks/handlers.ts",
+          "src/dev/mocks/auth-handlers.test.ts",
+          "src/app/routes.ts"
+        ]
+      }
+    },
+    {
+      "id": "ROUTE-2b57d7e87016",
+      "source": "src/app/routes.ts",
+      "path": "success",
+      "component": "WebAuthSuccessPage",
+      "target": "@/features/auth/pages/WebAuthSuccessPage",
+      "pageTarget": "src/features/auth/pages/WebAuthSuccessPage.tsx",
+      "lifecycle": "active",
+      "developmentOnly": false,
+      "classification": "page",
+      "resolvedUrls": ["/w/auth/success"],
+      "pageIds": ["PAGE-64fbd7296cdc"],
+      "personaMapping": {
+        "status": "flow-state-only",
+        "personaIds": [],
+        "notes": "The screen reads purpose/from from location.state; no route-level persona is needed or proved.",
+        "fixtureIds": [],
+        "sources": ["src/app/routes.ts"]
+      }
+    }
+  ],
+  "openApiOperations": [
+    {
+      "id": "API-74a6bdea6ff1",
+      "operationId": "register",
+      "method": "POST",
+      "path": "/auth/register",
+      "responseStatuses": ["202", "400", "429"],
+      "security": [],
+      "pageIds": ["PAGE-16e0615d6416", "PAGE-43ad73895a1a"],
+      "pageRouteIds": ["ROUTE-818c037b98a5", "ROUTE-d553aec3dd63"],
+      "ledgerContractStatus": "todo",
+      "ledgerBackendStatus": "todo"
+    },
+    {
+      "id": "API-531e9b3b1aae",
+      "operationId": "login",
+      "method": "POST",
+      "path": "/auth/login",
+      "responseStatuses": ["200", "401", "423"],
+      "security": [],
+      "pageIds": ["PAGE-fc203ab0f172", "PAGE-0dd6553ac858"],
+      "pageRouteIds": ["ROUTE-100cc1dbac0e", "ROUTE-1f4f526bb861"],
+      "ledgerContractStatus": "todo",
+      "ledgerBackendStatus": "todo"
+    },
+    {
+      "id": "API-00d38ae921b4",
+      "operationId": "verifyLoginMfaChallenge",
+      "method": "POST",
+      "path": "/auth/login/mfa/verify",
+      "responseStatuses": ["200", "400", "410", "423", "429"],
+      "security": [],
+      "pageIds": ["PAGE-17ba25394a51", "PAGE-ecdaf22df407"],
+      "pageRouteIds": ["ROUTE-accb255cdbbe", "ROUTE-2e3b51e0645b"],
+      "ledgerContractStatus": "todo",
+      "ledgerBackendStatus": "todo"
+    },
+    {
+      "id": "API-5531c93df31d",
+      "operationId": "getSession",
+      "method": "GET",
+      "path": "/auth/session",
+      "responseStatuses": ["200", "401"],
+      "security": [
+        {
+          "sessionCookie": []
+        }
+      ],
+      "pageIds": [],
+      "pageRouteIds": [],
+      "ledgerContractStatus": "todo",
+      "ledgerBackendStatus": "todo"
+    },
+    {
+      "id": "API-0c12a766a3cb",
+      "operationId": "refreshSession",
+      "method": "POST",
+      "path": "/auth/refresh",
+      "responseStatuses": ["200"],
+      "security": [
+        {
+          "sessionCookie": []
+        }
+      ],
+      "pageIds": [],
+      "pageRouteIds": [],
+      "ledgerContractStatus": "todo",
+      "ledgerBackendStatus": "todo"
+    },
+    {
+      "id": "API-1614a357371c",
+      "operationId": "logout",
+      "method": "POST",
+      "path": "/auth/logout",
+      "responseStatuses": ["204"],
+      "security": [
+        {
+          "sessionCookie": []
+        }
+      ],
+      "pageIds": [],
+      "pageRouteIds": [],
+      "ledgerContractStatus": "todo",
+      "ledgerBackendStatus": "todo"
+    },
+    {
+      "id": "API-b57ebac823b3",
+      "operationId": "verifyMfa",
+      "method": "POST",
+      "path": "/auth/mfa/verify",
+      "responseStatuses": ["200", "400"],
+      "security": [
+        {
+          "sessionCookie": []
+        }
+      ],
+      "pageIds": ["PAGE-17ba25394a51", "PAGE-ecdaf22df407"],
+      "pageRouteIds": ["ROUTE-accb255cdbbe", "ROUTE-2e3b51e0645b"],
+      "ledgerContractStatus": "todo",
+      "ledgerBackendStatus": "todo"
+    },
+    {
+      "id": "API-48b270dd967c",
+      "operationId": "confirmMfaSetup",
+      "method": "POST",
+      "path": "/auth/mfa/setup/confirm",
+      "responseStatuses": ["200"],
+      "security": [
+        {
+          "sessionCookie": []
+        }
+      ],
+      "pageIds": ["PAGE-98707039d228", "PAGE-b86bf4c12ac2"],
+      "pageRouteIds": ["ROUTE-b28612957bf6", "ROUTE-e836f6cbe6eb"],
+      "ledgerContractStatus": "todo",
+      "ledgerBackendStatus": "todo"
+    },
+    {
+      "id": "API-e2e6d304db17",
+      "operationId": "beginMfaSetup",
+      "method": "POST",
+      "path": "/auth/mfa/setup",
+      "responseStatuses": ["200"],
+      "security": [
+        {
+          "sessionCookie": []
+        }
+      ],
+      "pageIds": ["PAGE-98707039d228", "PAGE-b86bf4c12ac2"],
+      "pageRouteIds": ["ROUTE-b28612957bf6", "ROUTE-e836f6cbe6eb"],
+      "ledgerContractStatus": "todo",
+      "ledgerBackendStatus": "todo"
+    },
+    {
+      "id": "API-d4c99f3b99a4",
+      "operationId": "requestPasswordResetCode",
+      "method": "POST",
+      "path": "/auth/password-reset/request",
+      "responseStatuses": ["204", "400"],
+      "security": [],
+      "pageIds": ["PAGE-c38da743de4d"],
+      "pageRouteIds": [
+        "ROUTE-4a0dfa8a2088",
+        "ROUTE-764ca832a1d4",
+        "ROUTE-13bb9a025244",
+        "ROUTE-90d53d0b54e7"
+      ],
+      "ledgerContractStatus": "todo",
+      "ledgerBackendStatus": "todo"
+    },
+    {
+      "id": "API-5d7334d2a805",
+      "operationId": "verifyCurrentPassword",
+      "method": "POST",
+      "path": "/auth/password/verify-current",
+      "responseStatuses": ["204", "400", "401"],
+      "security": [
+        {
+          "sessionCookie": []
+        }
+      ],
+      "pageIds": ["PAGE-80bf208ae951"],
+      "pageRouteIds": ["ROUTE-f976b2619f33"],
+      "ledgerContractStatus": "todo",
+      "ledgerBackendStatus": "todo"
+    },
+    {
+      "id": "API-8868204d75af",
+      "operationId": "changePassword",
+      "method": "POST",
+      "path": "/auth/password/change",
+      "responseStatuses": ["204", "400", "401"],
+      "security": [
+        {
+          "sessionCookie": []
+        }
+      ],
+      "pageIds": ["PAGE-80bf208ae951"],
+      "pageRouteIds": ["ROUTE-f976b2619f33"],
+      "ledgerContractStatus": "todo",
+      "ledgerBackendStatus": "todo"
+    },
+    {
+      "id": "API-11749cdc3992",
+      "operationId": "verifyPasswordResetCode",
+      "method": "POST",
+      "path": "/auth/password-reset/verify",
+      "responseStatuses": ["200", "400"],
+      "security": [],
+      "pageIds": ["PAGE-c38da743de4d"],
+      "pageRouteIds": [
+        "ROUTE-4a0dfa8a2088",
+        "ROUTE-764ca832a1d4",
+        "ROUTE-13bb9a025244",
+        "ROUTE-90d53d0b54e7"
+      ],
+      "ledgerContractStatus": "todo",
+      "ledgerBackendStatus": "todo"
+    },
+    {
+      "id": "API-a841efa0a527",
+      "operationId": "confirmPasswordReset",
+      "method": "POST",
+      "path": "/auth/password-reset/confirm",
+      "responseStatuses": ["204", "400"],
+      "security": [],
+      "pageIds": ["PAGE-c38da743de4d"],
+      "pageRouteIds": [
+        "ROUTE-4a0dfa8a2088",
+        "ROUTE-764ca832a1d4",
+        "ROUTE-13bb9a025244",
+        "ROUTE-90d53d0b54e7"
+      ],
+      "ledgerContractStatus": "todo",
+      "ledgerBackendStatus": "todo"
+    }
+  ],
+  "sharedSessionOperations": {
+    "operationIds": ["getSession", "refreshSession", "logout"],
+    "owner": "AuthSessionProvider/shared session lifecycle",
+    "pageIds": [],
+    "note": "Not assigned to every Auth page as page-owned calls; operation/action ownership is a U01.02 follow-up."
+  },
+  "draftContracts": [
+    {
+      "pagePath": "src/features/auth/pages/DeviceTrustPage.tsx",
+      "status": "draft-unapproved",
+      "currentRoute": "/w/auth/device-trust",
+      "currentComponent": "IntegrationPendingPage",
+      "observedEntry": "WebLoginPage fixture-mode input device@test.com navigates with { email, returnTo: /w/home }; no API request is sent by this branch.",
+      "unansweredOwnerQuestions": [
+        "Does trusted-device review exist as a real product flow or should the route be removed?",
+        "Which server operation/challenge, factors, statuses and expiry apply?",
+        "What device identity/proof and trust lifetime/revocation semantics apply?",
+        "Which returnTo destinations are allowed and how are failed/unknown outcomes handled?"
+      ],
+      "implementationGate": "Do not create a real trust decision, persistence or approval behavior before owner-approved API/state semantics."
+    },
+    {
+      "pagePath": "src/features/auth/pages/OnboardingFlowPage.tsx",
+      "status": "draft-unapproved",
+      "currentRoute": "/onboarding",
+      "currentComponent": "IntegrationPendingPage alias",
+      "observedEntry": "Standalone route under RootLayout; no operation/page-owned contract in U01. The planned target file does not exist.",
+      "unansweredOwnerQuestions": [
+        "Is onboarding required after registration or optional?",
+        "What are the states, required inputs, skip/resume rules and completion invariant?",
+        "Which API operation persists progress/completion, if any?",
+        "How does completion route back into the authenticated shell?"
+      ],
+      "implementationGate": "Do not adopt the unreferenced legacy onboarding files or invent persisted workflow semantics without product/API owner decision."
+    }
+  ],
+  "measuredLimitations": [
+    "Route URLs and shell labels are mapped from current tracked declarations; this inventory did not open all 30 URL registrations in a current-head browser session.",
+    "The historical A07 route-resolution report is an input reference, not current browser proof; source hash drift is tracked separately by C05.",
+    "Auth fixture behavior is local preview/MSW only. This inventory sent zero API requests and verifies no backend, staging, cookie, CSRF or real authentication behavior.",
+    "No stable named fixtureIds are declared for these Auth routes in current persona/handler source; route.personaMapping.fixtureIds remains empty rather than inventing IDs. Persona IDs are source-defined context only.",
+    "Technical UI review and human user acceptance remain pending; this step does not mark UI or backend readiness."
+  ],
+  "validation": {
+    "commands": [
+      {
+        "command": "node docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs --check",
+        "exitCode": 0,
+        "actual": "427 active route declarations; 1462 URL registrations; 1393 unique preview URLs; 16/427 persona mappings; 81/106 fresh A06 scenario rows."
+      },
+      {
+        "command": "node docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs --check",
+        "exitCode": 0,
+        "actual": "15 domains; 154 operations; 106 expectations; generated matrix current."
+      },
+      {
+        "command": "node scripts/generate-architecture-inventory.mjs --check",
+        "exitCode": 0,
+        "actual": "129 pages; 427 routes; 149 components; 0 data modules; 32 services; 28 mocks."
+      },
+      {
+        "command": "node node_modules/prettier/bin/prettier.cjs --check docs/architecture/production-readiness/PLAN.md docs/architecture/production-readiness/TRACKING.json docs/architecture/production-readiness/UI-ACCEPTANCE.md docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json docs/architecture/production-readiness/evidence/U01/u01-01-auth-page-route-inventory-2026-10-02.json",
+        "exitCode": 0,
+        "actual": "All five changed documentation/index files use Prettier style."
+      },
+      {
+        "command": "node docs/architecture/production-readiness/check-tracking.mjs",
+        "exitCode": 1,
+        "actual": "65 global errors: 32 missing source fingerprints, 5 source snapshot paths absent, 28 source content mismatches; application inventory remains exact at 916/916. A bounded filter found 0 U01-specific errors. This is a repository-wide known gate, not a pass."
+      },
+      {
+        "command": "git diff --check",
+        "exitCode": 0,
+        "actual": "No whitespace errors; Git reports the existing PLAN.md CRLF-to-LF normalization warning."
+      }
+    ],
+    "codeTests": "Not run: U01.01 changed only roadmap/ledger/generated acceptance-index/evidence documentation; no application source changed."
+  }
+}

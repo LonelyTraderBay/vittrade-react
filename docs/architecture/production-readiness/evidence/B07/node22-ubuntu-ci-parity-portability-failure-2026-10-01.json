@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "taskId": "B07",
+  "stepId": "B07.03",
+  "sourceCommit": "fcd0e3fb5f3425e792630db8e45afd7872a225b1",
+  "repository": "LonelyTraderBay/vittrade-react",
+  "workflow": {
+    "name": "CI",
+    "runId": 36927713021,
+    "runAttempt": 1,
+    "runUrl": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36927713021",
+    "jobId": 110589037066,
+    "jobName": "Production gates",
+    "conclusion": "failure",
+    "failedStep": "OpenAPI and mock method-path parity",
+    "observedAt": "2026-10-01T21:18:11.623Z"
+  },
+  "environment": {
+    "runner": "GitHub Actions ubuntu-24.04",
+    "node": "22.23.3",
+    "npm": "10.9.9"
+  },
+  "checks": {
+    "gitEol": {
+      "result": "pass",
+      "paths": 1495,
+      "lf": 1153,
+      "preservedNonText": 342,
+      "protectedWindowsCrLf": 0,
+      "violations": 0
+    },
+    "tracking": {
+      "result": "pass",
+      "sourceHead": "fcd0e3fb5f3425e792630db8e45afd7872a225b1",
+      "trackedFilesOutsidePlan": 913,
+      "errorCount": 0
+    },
+    "methodPathParity": {
+      "result": "fail",
+      "expected": "The generated OpenAPI-to-MSW method/path inventory must be byte-current on Windows and Ubuntu for the same commit.",
+      "actual": "The report was generated on the Windows worktree using raw source-file bytes. Existing files used CRLF there but LF on Ubuntu, so the source SHA-256 values differed despite equivalent text content. The method/path registrations themselves reconciled locally at 154/154 with no missing, extra or duplicate mappings.",
+      "rootCause": "The generator hashed text files without canonicalizing line endings before SHA-256."
+    }
+  },
+  "skipped": [
+    "Revision metadata, browser installation, typecheck, lint, tests, coverage, Playwright, remaining policy checks, production build and artifact download verification did not run because the parity step failed."
+  ],
+  "uploadedFailureArtifact": {
+    "id": 11194353308,
+    "name": "vittrade-ci-evidence-fcd0e3fb5f3425e792630db8e45afd7872a225b1-1",
+    "sizeBytes": 1642,
+    "digest": "sha256:d8ab5c56499a0a09aa48caac72a3e773996150babd22f54f727f4d8aa8ad7d93",
+    "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36927713021/artifacts/11194353308"
+  },
+  "limitation": "This failed CI run is recorded as a portability failure and provides no full-suite, build, backend, staging or release evidence."
+}

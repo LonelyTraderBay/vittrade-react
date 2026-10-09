@@ -1,0 +1,5 @@
+
+> vittrade-react@0.0.1 env:check
+> node scripts/check-env-boundary.mjs
+
+Environment boundary check passed: 822 source files inspected.

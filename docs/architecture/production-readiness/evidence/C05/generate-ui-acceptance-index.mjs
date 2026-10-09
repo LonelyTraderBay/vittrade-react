@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -6,6 +7,10 @@ import prettier from 'prettier';
 
 const directory = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(directory, '../../../../../');
+const currentHead = execFileSync('git', ['rev-parse', 'HEAD'], {
+  cwd: root,
+  encoding: 'utf8',
+}).trim();
 const planDirectory = path.join(root, 'docs/architecture/production-readiness');
 const inputs = {
   tracking: 'docs/architecture/production-readiness/TRACKING.json',
@@ -174,6 +179,13 @@ const routeRows = activeRoutes.map((route) => {
   const dynamicParameters = [...String(route.path).matchAll(/:([A-Za-z0-9_]+)/g)].map(
     (match) => match[1],
   );
+  const personaMapping = route.personaMapping ?? {
+    status: 'not-mapped-per-route',
+    personaIds: [],
+    fixtureIds: [],
+    sources: [inputs.mockPersonas, inputs.mockAuthHandler, inputs.mockAuthTests],
+    notes: 'No route-specific persona selection is recorded in TRACKING.json.',
+  };
   const historicalPreviewUrls = [...new Set(historicalRoute?.previewUrls ?? [])].sort();
   const historicalSourceHash = routeResolution.inputs.sourceFileHashes?.[route.source];
   const currentSourceHash = historicalSourceHash ? hashFile(route.source) : null;
@@ -232,12 +244,7 @@ const routeRows = activeRoutes.map((route) => {
       evidencePath: inputs.routeResolution,
     },
     dynamicParameters,
-    personaMapping: {
-      status: 'not-mapped-per-route',
-      source:
-        'The repo has a global mock persona registry and UI runbook, but no route-to-persona mapping in TRACKING.json.',
-      sources: [inputs.mockPersonas, inputs.mockAuthHandler, inputs.mockAuthTests],
-    },
+    personaMapping,
     fixtureMapping: {
       status: dynamicParameters.length
         ? 'historical-fixture-candidates-need-current-fixture-and-scenario-review'
@@ -285,6 +292,10 @@ const uniqueUrls = new Set(registrations.map((item) => item.url));
 const routesWithHistoricalPreviewParity = routeRows.filter(
   (route) => route.historicalRouteResolution.currentPreviewUrlParity,
 ).length;
+const personaMappingsAssigned = routeRows.filter(
+  (route) => route.personaMapping.personaIds.length > 0,
+).length;
+const routeDeclarationsWithoutPersonaMapping = routeRows.length - personaMappingsAssigned;
 const shellCounts = Object.fromEntries(
   ['phone', 'tablet', 'web', 'responsive'].map((shell) => [
     shell,
@@ -326,7 +337,7 @@ const index = {
   schemaVersion: 1,
   generatedFrom: {
     generatedAt,
-    sourceHead: tracking.baseline.sourceHead,
+    sourceHead: currentHead,
     inputs: Object.fromEntries(
       Object.entries(inputs).map(([key, relativePath]) => [
         key,
@@ -369,7 +380,7 @@ const index = {
     routeDeclarationsWithAnyScenarioReference: routeRows.filter(
       (route) => route.scenarios.length > 0,
     ).length,
-    personaMappingsAssigned: 0,
+    personaMappingsAssigned,
     trackedPageRecords: tracking.pages.length,
     userAcceptedPages: acceptedPageRecords,
     userAcceptanceScopePages: acceptanceScopePages,
@@ -428,7 +439,7 @@ const index = {
   },
   domains: Object.fromEntries([...byDomain.entries()].sort(([a], [b]) => a.localeCompare(b))),
   openGaps: [
-    'No per-route persona selection is recorded in the route/page ledger.',
+    `${personaMappingsAssigned}/${routeRows.length} active routes have source-linked persona selections; ${routeDeclarationsWithoutPersonaMapping} remain unmapped. Persona fixtures do not prove backend authorization or user acceptance.`,
     'A07 has historical parameter fixture candidates for dynamic routes; current fixture source hashes are captured, but fixture contents, persona authorization and scenario-specific seed behavior are not verified by URL generation.',
     `The A06 aggregate report is source-stale (${scenarioMatrix.summary.runtimeEvidenceFresh}); the current matrix accepts ${scenarioMatrix.summary.scenarioRowsWithFreshBrowserEvidence}/${scenarioMatrix.summary.scenariosDefined} source-matched scenario rows from ${scenarioMatrix.summary.freshScenarioEvidenceSidecars ?? 0} per-scenario sidecars. Other rows remain unverified until their evidence is refreshed.`,
     `${sourceHashMismatches.length} source files differ from the historical A07 URL-resolution evidence; ${staleSourceRouteCount} active route declarations use those files, so refresh runtime route evidence before treating old runtime registrations as current browser truth.`,
@@ -455,7 +466,7 @@ function markdown() {
     `## URL registrations by shell\n\n| Shell | URL registrations |\n| --- | ---: |\n${shellRows}\n\n` +
     `## Route declarations by domain\n\n| Domain | Declarations | URL registrations | With page records | With scenario references |\n| --- | ---: | ---: | ---: | ---: |\n${domainRows}\n\n` +
     `## What the index records\n\n` +
-    `Each route row includes its stable ROUTE ID, source declaration, component/page target, page IDs and checklist state, task/domain ownership, development-only classification, every resolved preview URL grouped by shell, historical route-template/runtime context, direct and operation-intersection scenario references, mapped operation IDs/names, mock reset procedure, and user/backend status. The navigation action/expected component is available for every route; page-specific interaction steps, persona selection, and current fixture behavior remain explicit review items where source evidence does not establish them. C05.03 carries those page-specific reviews.\n\n` +
+    `Each route row includes its stable ROUTE ID, source declaration, component/page target, page IDs and checklist state, task/domain ownership, development-only classification, every resolved preview URL grouped by shell, historical route-template/runtime context, direct and operation-intersection scenario references, mapped operation IDs/names, route-level persona/fixture mapping, mock reset procedure, and user/backend status. A persona mapping documents a local test entry point; it does not prove authorization or acceptance. C05.03 still carries page-specific visual and interaction review.\n\n` +
     `The current A06 matrix defines **${scenarioMatrix.summary.scenariosDefined} scenarios** across ${scenarioMatrix.summary.domains} domains, but it reports **${scenarioMatrix.summary.scenarioRowsWithFreshBrowserEvidence} fresh browser rows** after source-hash validation. All **${routesWithHistoricalPreviewParity}/${routeRows.length}** current concrete URL sets match the historical A07 preview URL sets, while **${staleSourceRouteCount}/${routeRows.length}** active declarations come from four source files whose hashes have since changed. A07 is therefore useful as a historical URL/fixture reference, not current runtime-route proof.\n\n` +
     `## Run and inspect\n\n` +
     `1. Start a clean local mock preview using [UI-RUNBOOK.md](UI-RUNBOOK.md), mục 1.\n` +
@@ -464,7 +475,7 @@ function markdown() {
     `4. Record screenshots, expected-versus-actual behavior, route ID, scenario ID and reviewer response in TRACKING.json. Keep user acceptance pending until the user supplies that review.\n\n` +
     `C05.02 clean-context smoke, Chromium ${previewReport.environment.browser}, ${previewReport.environment.url}: [Market screenshot](evidence/C05/${previewReport.screenshots[0]}), [login screenshot](evidence/C05/${previewReport.screenshots[1]}), [raw report](evidence/C05/c05-02-dev-preview-browser-check-2026-09-30.json), [reproduction runner](evidence/C05/run-c05-02-dev-preview-check.mjs). It rendered ${previewReport.routes.length}/2 route documents at HTTP 200, showed the mock banner on both, and observed ${previewReport.apiResponses.length} API responses, all from the registered mock Service Worker. Failed API requests: ${previewReport.failedRequests.filter((request) => new URL(request.url).pathname.startsWith('/api/')).length}; uncaught page errors: ${previewReport.pageErrors.length}; unexpected console errors: ${previewReport.unexpectedConsoleErrors.length}. Two guest-session 401 responses account for two expected Chromium console messages; no API request crossed origins.\n\n` +
     `## Measured gaps\n\n` +
-    `- Route-level persona mappings assigned: **0/${routeRows.length}**.\n` +
+    `- Route-level persona mappings assigned: **${personaMappingsAssigned}/${routeRows.length}**; remaining: **${routeDeclarationsWithoutPersonaMapping}**.\n` +
     `- Route declarations with direct scenario references: **${index.scope.routeDeclarationsWithDirectScenarioLinks}/${routeRows.length}**; references are not fresh browser verification.\n` +
     `- Operation-intersection scenario candidates: **${index.scope.scenarioCandidates}** across ${index.scope.routeDeclarationsWithAnyScenarioReference - index.scope.routeDeclarationsWithDirectScenarioLinks} additional route declarations; candidates need route-owner review.\n` +
     `- Fresh A06 scenario browser rows: **${scenarioMatrix.summary.scenarioRowsWithFreshBrowserEvidence}/${scenarioMatrix.summary.scenariosDefined}**.\n` +

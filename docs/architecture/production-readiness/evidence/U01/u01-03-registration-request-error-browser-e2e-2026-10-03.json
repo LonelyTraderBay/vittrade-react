@@ -1,0 +1,36 @@
+{
+  "id": "EV-20261003-010",
+  "taskId": "U01",
+  "stepId": "U01.03",
+  "kind": "registration-request-error-browser-e2e",
+  "commandOrSteps": "Set VITE_DATA_SOURCE=api, VITE_API_BASE_URL=https://e2e.test, and VITE_WS_URL=wss://e2e.test; start local Vite at http://127.0.0.1:4189; run node node_modules/@playwright/test/cli.js test --config=playwright.u01-03-local-temp.config.mjs. The temporary one-worker Desktop Chrome config selected tests/e2e/auth-session.spec.ts; Playwright page.route fixtures returned the status-only contract responses 400 and 429. The temporary config was removed and Vite was stopped after the run. Also run both TypeScript no-emit projects and focused ESLint.",
+  "environment": "Windows 11; Node v24.19.0; @playwright/test 1.63.0; Vite 6.4.3; Chromium 153.0.8010.12; local Vite API mode at http://127.0.0.1:4189; e2e.test Auth API calls use Playwright route fixtures; backend and staging disconnected.",
+  "observedAt": "2026-10-02T22:01:35Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "sourceBranch": "main",
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "f781275476009057ff9aeab57110c150742b278c7b92d6e913d2eb4fdd278b0c",
+    "src/features/auth/components/RegistrationForm.tsx": "32b35d0238611e3d3579f92b4fcd4f4836ba4de6b070c78a461675deda47a6c2",
+    "tests/e2e/auth-session.spec.ts": "d6a51eed64f22705e83993532ddfc1035887af5b4414ae7f34b016e62710f6b4"
+  },
+  "dirtyFileHashes": {
+    "tests/e2e/auth-session.spec.ts": "d6a51eed64f22705e83993532ddfc1035887af5b4414ae7f34b016e62710f6b4"
+  },
+  "expected": "Contract-declared POST /auth/register failures 400 and 429 remain on the registration form, show the existing request or retry message, do not navigate to OTP or claim account creation, and do not invoke verifyMfa or create an authenticated session.",
+  "actual": "The combined auth-session browser suite passed 14/14; all four registration challenge and error cases passed 4/4. For status-only HTTP 400, the form stayed on /w/auth/register and displayed the existing generic request error. For status-only HTTP 429, it stayed on the form and displayed the existing retry guidance. Neither response navigated to /w/auth/otp, displayed auth-sign-out, or called POST /auth/mfa/verify. Both TypeScript no-emit projects, focused ESLint and Prettier passed. OpenAPI gate passed (15 contracts/154 operations); dependency-cruiser passed (863 modules/4,679 dependencies, 0 violations); architecture inventory passed (129 pages/427 routes/149 components/32 services/28 mocks); lint budget passed (0 errors/0 warnings); EOL check passed (3,223 paths/0 missing line terminators); and git diff --check passed. check-tracking exited 1 with 74 source-ledger errors: 32 missing catalogued hashes, 5 paths absent from cataloguedSourceHead, 36 current source mismatches, and 1 historical change missing beforeHash; inventory remains 916/916. All e2e.test Auth requests were handled by Playwright route fixtures; no backend call was made.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/U01/u01-03-registration-request-error-browser-e2e-2026-10-03.json",
+  "externalEvidence": {
+    "registrationScenarios": 4,
+    "registrationScenariosPassed": 4,
+    "browserSuiteTests": 14,
+    "browserSuitePassed": 14,
+    "backendRequests": 0,
+    "stagingRequests": 0,
+    "verifyMfaCalls": 0,
+    "userAcceptance": "not performed",
+    "backendOwnerAssignmentsFound": 0,
+    "browserRoutesOpened": ["/w/auth/register", "/w/auth/otp"]
+  },
+  "notes": "This is local frontend evidence against status-only Playwright route fixtures for contract-declared 400 and 429 responses. The OpenAPI responses do not define error bodies, so none were invented. It does not establish backend, staging, production, email/SMS delivery, registration OTP verification, or user acceptance. Guest verifyMfa remains blocked on an API/security owner decision about sessionCookie versus pre-auth credentials."
+}

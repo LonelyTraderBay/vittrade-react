@@ -27,6 +27,7 @@ Khi khả dụng, dùng karpathy-guidelines cho thay đổi code có giả đị
 
 1. Đọc task/step đang hoạt động, session gần nhất, evidence, blocker và nextAction trong TRACKING.json. Đọc phần PLAN, contract, source và test liên quan. Tra các ID page/route/operation/file cần thiết trong SCOPE.md khi bước có đụng đến inventory; đối chiếu source hiện tại, không dùng danh mục làm trạng thái. Chạy checker hiện có:
    node docs/architecture/production-readiness/check-tracking.mjs
+   Đọc thêm PLAN mục 13 và lọc files[].executionScope.stepIds theo step đang chọn; SCOPE có danh sách từng path/role/action. Rà đủ owner/consumer và toàn bộ Git tracked/non-ignored files sau add/rename/retire; không buộc mọi target phải đổi code hoặc tạo mọi planned file. Giữ Universal nguyên bytes và bằng chứng lịch sử. Làm prerequisite LF/hash local theo checkpoint trước runtime evidence mới; không đổi Git cá nhân hay sửa hash lịch sử để giả freshness.
 2. Xác minh HEAD, nhánh, git status --short, staged diff và unstaged diff. Ghi nhận phạm vi đã bẩn trước phiên; bảo toàn mọi thay đổi có sẵn. Không reset, clean, ghi đè hoặc nhận nhầm thay đổi cũ là của phiên này.
 3. Đối chiếu trạng thái/evidence với source và hash hiện tại. Nếu bằng chứng đã lỗi thời, ghi rõ và kiểm chứng lại trước khi dựa vào nó. Không khởi tạo sổ mới, không xóa lịch sử.
 

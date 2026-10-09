@@ -1,0 +1,261 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261002-016",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "read-only-openapi-authorization-idempotency-audit",
+  "observedAt": "2026-10-02T02:46:55Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "environment": "Windows 11, Python 3 with PyYAML 6.0.3; current primary worktree. Read-only YAML/OpenAPI, scenario-matrix and operation-map parsing; no browser or financial API side effect.",
+  "commandOrSteps": "Resolve Predictions forbidden/unknown/duplicate operationIds against current OpenAPI and operation map; count 403/409/idempotency declarations and inspect receipt lookup/correlation semantics.",
+  "expected": "Use only declared authorization statuses and keep unknown/duplicate rows not_verified unless the contract provides deterministic receipt lookup and same-key replay semantics; do not send financial writes/replays to probe outcomes.",
+  "actual": "The current matrix links 8 unique operations across three rows and the operation map resolves 8/8 exact method/path mappings. predictions.forbidden maps 8 operations and 0/8 declare 403. placePredictionOrder requires Idempotency-Key and declares 201, 400 and 409; 409 combines duplicate-key and market-state conflict and no stable replay response is described. Its 201 receipt schema fields are ['id', 'eventId', 'eventTitle', 'outcome', 'side', 'orderType', 'shares', 'filledShares', 'price', 'avgPrice', 'total', 'fee', 'status', 'createdAt', 'updatedAt', 'timeline']; the only order read endpoint is GET /predictions/orders/{orderId}, which requires a known orderId. No operation provides order lookup by idempotency/correlation key. Keep predictions.forbidden, predictions.unknown and predictions.duplicate not_verified. No browser, API request, order placement or replay was performed. Next unresolved matrix row: profile.forbidden.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/A06/predictions-authorization-idempotency-contract-audit-current-2026-10-02.json",
+  "scenarioRows": [
+    {
+      "id": "predictions.forbidden",
+      "state": "forbidden",
+      "executionStatus": "not_verified",
+      "operationIds": [
+        "listPredictionEvents",
+        "getPredictionEvent",
+        "listPredictionPositions",
+        "listPredictionRewards",
+        "listPredictionLeaderboard",
+        "listPredictionActivity",
+        "placePredictionOrder",
+        "getPredictionOrderReceipt"
+      ]
+    },
+    {
+      "id": "predictions.unknown",
+      "state": "unknown",
+      "executionStatus": "not_verified",
+      "operationIds": ["placePredictionOrder", "getPredictionOrderReceipt"]
+    },
+    {
+      "id": "predictions.duplicate",
+      "state": "duplicate",
+      "executionStatus": "not_verified",
+      "operationIds": ["placePredictionOrder", "getPredictionOrderReceipt"]
+    }
+  ],
+  "operations": [
+    {
+      "operationId": "listPredictionEvents",
+      "method": "GET",
+      "path": "/predictions/events",
+      "responseCodes": ["200", "401"],
+      "responseDescriptions": {
+        "200": "Prediction events.",
+        "401": ""
+      },
+      "parameters": [
+        {
+          "name": "category",
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "search",
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "status",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "enum": ["active", "resolved"]
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "getPredictionEvent",
+      "method": "GET",
+      "path": "/predictions/events/{eventId}",
+      "responseCodes": ["200", "404"],
+      "responseDescriptions": {
+        "200": "Prediction event detail.",
+        "404": ""
+      },
+      "parameters": [
+        {
+          "name": "eventId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "listPredictionPositions",
+      "method": "GET",
+      "path": "/predictions/positions",
+      "responseCodes": ["200", "401"],
+      "responseDescriptions": {
+        "200": "Authenticated user's positions.",
+        "401": ""
+      },
+      "parameters": []
+    },
+    {
+      "operationId": "listPredictionRewards",
+      "method": "GET",
+      "path": "/predictions/rewards",
+      "responseCodes": ["200"],
+      "responseDescriptions": {
+        "200": "Liquidity and market-maker reward opportunities."
+      },
+      "parameters": []
+    },
+    {
+      "operationId": "listPredictionLeaderboard",
+      "method": "GET",
+      "path": "/predictions/leaderboard",
+      "responseCodes": ["200"],
+      "responseDescriptions": {
+        "200": "Ranked prediction traders."
+      },
+      "parameters": [
+        {
+          "name": "period",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "default": "today"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "listPredictionActivity",
+      "method": "GET",
+      "path": "/predictions/activity",
+      "responseCodes": ["200"],
+      "responseDescriptions": {
+        "200": "Public prediction trading activity."
+      },
+      "parameters": []
+    },
+    {
+      "operationId": "placePredictionOrder",
+      "method": "POST",
+      "path": "/predictions/orders",
+      "responseCodes": ["201", "400", "409"],
+      "responseDescriptions": {
+        "201": "Prediction order receipt.",
+        "400": "",
+        "409": "Duplicate idempotency key or market state conflict."
+      },
+      "parameters": [
+        {
+          "name": "Idempotency-Key",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 8
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "getPredictionOrderReceipt",
+      "method": "GET",
+      "path": "/predictions/orders/{orderId}",
+      "responseCodes": ["200", "404"],
+      "responseDescriptions": {
+        "200": "Prediction order receipt.",
+        "404": ""
+      },
+      "parameters": [
+        {
+          "name": "orderId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  ],
+  "placeOrderIdempotencyParameter": {
+    "name": "Idempotency-Key",
+    "in": "header",
+    "required": true,
+    "schema": {
+      "type": "string",
+      "minLength": 8
+    }
+  },
+  "placeOrderResponse409": {
+    "description": "Duplicate idempotency key or market state conflict."
+  },
+  "createRequestFields": [],
+  "receiptFields": [
+    "id",
+    "eventId",
+    "eventTitle",
+    "outcome",
+    "side",
+    "orderType",
+    "shares",
+    "filledShares",
+    "price",
+    "avgPrice",
+    "total",
+    "fee",
+    "status",
+    "createdAt",
+    "updatedAt",
+    "timeline"
+  ],
+  "orderReadEndpoints": [
+    {
+      "operationId": "getPredictionOrderReceipt",
+      "method": "GET",
+      "path": "/predictions/orders/{orderId}"
+    }
+  ],
+  "counts": {
+    "forbiddenMappedOperations": 8,
+    "forbiddenDeclaring403": 0,
+    "linkedUniqueOperations": 8,
+    "operationMapExactMatches": 8,
+    "financialMutationsRequiringIdempotencyKey": 1,
+    "orderLookupByIdempotencyOrCorrelationKey": 0,
+    "stableSameKeyReplayResponses": 0
+  },
+  "scenarioMatrixSummary": {
+    "scenariosDefined": 106,
+    "scenarioRowsWithFreshBrowserEvidence": 81,
+    "scenarioRowsFullyCoveredByFreshBrowserEvidence": 38,
+    "uniqueOperationsWithFreshBrowserEvidence": 88,
+    "runtimeEvidenceFresh": false,
+    "freshScenarioEvidenceSidecars": 81,
+    "registeredScenarioEvidenceSidecars": 81,
+    "sourceHashStaleScenarioEvidenceSidecars": 0
+  },
+  "nextAction": "Continue A06.03 in current unresolved scenario-matrix order at profile.forbidden.",
+  "sourceHashes": {
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "0bbf7c7a887415389265aa3fa2f2c07fc670a070ac4f692b55fae87ff19922f4",
+    "contracts/openapi/predictions.yaml": "146a0442f6879fc50dc53c9f74d104837092d06edcfcf3e68537454b3e8c556b",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320"
+  },
+  "limitations": [
+    "Static contract/map audit only; it does not verify backend authorization, durable idempotency, balance effects, browser behavior or user acceptance.",
+    "The declared 409 combines duplicate idempotency key and market-state conflict; safe same-key replay behavior is unspecified.",
+    "No Predictions mutation, retry or replay was sent."
+  ]
+}

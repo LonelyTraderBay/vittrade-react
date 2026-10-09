@@ -1,0 +1,36 @@
+{
+  "id": "EV-20261003-011",
+  "taskId": "U01",
+  "stepId": "U01.03",
+  "kind": "login-unauthorized-browser-e2e",
+  "commandOrSteps": "Set VITE_DATA_SOURCE=api, VITE_API_BASE_URL=https://e2e.test, and VITE_WS_URL=wss://e2e.test; start local Vite at http://127.0.0.1:4189; run node node_modules/@playwright/test/cli.js test --config=playwright.u01-03-local-temp.config.mjs. The temporary one-worker Desktop Chrome config selected tests/e2e/auth-session.spec.ts; Playwright route fixture returned status-only HTTP 401 for POST /auth/login. The temporary config was removed and Vite was stopped after the run. Also run both TypeScript no-emit projects and focused ESLint.",
+  "environment": "Windows 11; Node v24.19.0; @playwright/test 1.63.0; Vite 6.4.3; Chromium 153.0.8010.12; local Vite API mode at http://127.0.0.1:4189; e2e.test Auth API calls use Playwright route fixtures; backend and staging disconnected.",
+  "observedAt": "2026-10-02T22:10:59Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "sourceBranch": "main",
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "f781275476009057ff9aeab57110c150742b278c7b92d6e913d2eb4fdd278b0c",
+    "src/features/auth/pages/WebLoginPage.tsx": "d938bac40bb63145ffbb3919140b1b3d267b96e86872a93f29a4ebac24980e41",
+    "tests/e2e/auth-session.spec.ts": "420e408f29e12032fd5c726bc48757082ead803b9df787bf896cbfde473ba026"
+  },
+  "dirtyFileHashes": {
+    "tests/e2e/auth-session.spec.ts": "420e408f29e12032fd5c726bc48757082ead803b9df787bf896cbfde473ba026"
+  },
+  "expected": "A contract-declared POST /auth/login HTTP 401 response leaves the visitor on the login form with the existing generic error. No authenticated session, MFA challenge, or sign-out control is shown.",
+  "actual": "The combined auth-session browser suite passed 15/15, including this new 401 scenario. The browser sent the expected email/password body; a status-only HTTP 401 fixture left the route at /w/auth/login and displayed the existing generic error. No OTP input or auth-sign-out was rendered. Both TypeScript no-emit projects and focused ESLint passed. All e2e.test Auth calls were intercepted by Playwright; no backend call was made.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/U01/u01-03-login-unauthorized-browser-e2e-2026-10-03.json",
+  "externalEvidence": {
+    "newBrowserScenarios": 1,
+    "newBrowserScenariosPassed": 1,
+    "browserSuiteTests": 15,
+    "browserSuitePassed": 15,
+    "backendRequests": 0,
+    "stagingRequests": 0,
+    "authenticatedSessionCreated": false,
+    "userAcceptance": "not performed",
+    "backendOwnerAssignmentsFound": 0,
+    "browserRoutesOpened": ["/w/auth/login"]
+  },
+  "notes": "This is local frontend evidence against a status-only Playwright fixture for the contract-declared login 401 response. The OpenAPI response does not define an error body, so none was added. It does not prove backend, staging, production, or user acceptance. Registration OTP verification remains blocked on the API/security owner decision for guest verifyMfa semantics."
+}

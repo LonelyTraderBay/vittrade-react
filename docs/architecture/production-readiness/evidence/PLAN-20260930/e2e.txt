@@ -1,0 +1,76 @@
+[WebServer] (node:11364) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] node_modules/zod/v4/core/regexes.js (74:0): A comment
+[WebServer] 
+[WebServer] "/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+[WebServer]  * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+[WebServer]  * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+[WebServer] 
+[WebServer] in "node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] node_modules/zod/v4/core/util.js (400:0): A comment
+[WebServer] 
+[WebServer] "// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+[WebServer] 
+[WebServer] in "node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] (node:24628) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 51 tests using 1 worker
+
+(node:43092) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 [chromium] › tests\e2e\auth-session.spec.ts:35:3 › auth session smoke on staging build › logs in through the auth contract and can sign out (3.5s)
+  ok  2 [chromium] › tests\e2e\auth-session.spec.ts:77:3 › auth session smoke on staging build › changes the password through current-password and MFA contract endpoints (570ms)
+  ok  3 [chromium] › tests\e2e\auth-session.spec.ts:114:3 › auth session smoke on staging build › phone login requires the backend challenge before an authenticated session exists (569ms)
+  ok  4 [chromium] › tests\e2e\auth-session.spec.ts:158:3 › auth session smoke on staging build › web login requires the backend challenge before an authenticated session exists (2.4s)
+  ok  5 [chromium] › tests\e2e\auth-session.spec.ts:202:3 › auth session smoke on staging build › expired login challenge returns to login without verifying or authenticating (489ms)
+  ok  6 [chromium] › tests\e2e\dca-earn-contract.spec.ts:49:3 › DCA and Earn contract smoke on staging build › creates, pauses and cancels a DCA plan through the contract boundary (654ms)
+  ok  7 [chromium] › tests\e2e\dca-earn-contract.spec.ts:113:3 › DCA and Earn contract smoke on staging build › subscribes and redeems through the Earn contract boundary (735ms)
+  ok  8 [chromium] › tests\e2e\dca-earn-contract.spec.ts:198:3 › DCA and Earn contract smoke on staging build › loads and paginates domain-scoped transactions through the Earn history contract (666ms)
+  ok  9 [chromium] › tests\e2e\p2p-contract.spec.ts:57:3 › P2P escrow contract smoke on staging build › serves the web order-room compatibility URL from the contract-backed orders page (615ms)
+  ok 10 [chromium] › tests\e2e\p2p-contract.spec.ts:72:3 › P2P escrow contract smoke on staging build › requires release verification and sends an idempotent release mutation (610ms)
+  ok 11 [chromium] › tests\e2e\p2p-contract.spec.ts:142:3 › P2P escrow contract smoke on staging build › supports dispute escalation and messaging through the contract boundary (612ms)
+  ok 12 [chromium] › tests\e2e\production-shell.spec.ts:20:3 › production shell smoke › redirects the public root to the market home shell (524ms)
+  ok 13 [chromium] › tests\e2e\production-shell.spec.ts:26:3 › production shell smoke › switches the active shell on resize when the page has no unsaved form edits (731ms)
+  ok 14 [chromium] › tests\e2e\production-shell.spec.ts:38:3 › production shell smoke › renders the unauthenticated login boundary (508ms)
+  ok 15 [chromium] › tests\e2e\production-shell.spec.ts:44:3 › production shell smoke › shows no current wallet network status when its provider is unavailable (3.2s)
+  ok 16 [chromium] › tests\e2e\production-shell.spec.ts:63:3 › production shell smoke › does not expose unavailable social-login actions on the production web login (876ms)
+  ok 17 [chromium] › tests\e2e\production-shell.spec.ts:73:3 › production shell smoke › does not register or load development diagnostic pages in production (829ms)
+  ok 18 [chromium] › tests\e2e\production-shell.spec.ts:93:3 › production shell smoke › keeps the static prediction chart demo behind the production integration boundary (698ms)
+  ok 19 [chromium] › tests\e2e\production-shell.spec.ts:105:3 › production shell smoke › loads P2P education feature routes and keeps unbacked KYC status in the production boundary (767ms)
+  ok 20 [chromium] › tests\e2e\production-shell.spec.ts:124:3 › production shell smoke › serves the canonical and legacy Launchpad detail URLs from the API-backed feature (621ms)
+  ok 21 [chromium] › tests\e2e\production-shell.spec.ts:186:3 › production shell smoke › loads market pair details and updates the watchlist through its permissioned contract (539ms)
+  ok 22 [chromium] › tests\e2e\production-shell.spec.ts:250:3 › production shell smoke › loads derivatives market data through the read-only contract route (504ms)
+  ok 23 [chromium] › tests\e2e\production-shell.spec.ts:295:3 › production shell smoke › loads social sentiment through the source-backed market contract (528ms)
+  ok 24 [chromium] › tests\e2e\production-shell.spec.ts:338:3 › production shell smoke › loads social trading signals through the source-backed market contract (529ms)
+  ok 25 [chromium] › tests\e2e\production-shell.spec.ts:374:3 › production shell smoke › serves the market portfolio alias from authenticated wallet analytics (554ms)
+  ok 26 [chromium] › tests\e2e\production-shell.spec.ts:400:3 › production shell smoke › renders account positions from the authenticated trading contract (530ms)
+  ok 27 [chromium] › tests\e2e\production-shell.spec.ts:432:3 › production shell smoke › keeps simulated registration out of phone and web production routes (530ms)
+  ok 28 [chromium] › tests\e2e\production-shell.spec.ts:441:3 › production shell smoke › keeps the web arena demo behind the production boundary (559ms)
+  ok 29 [chromium] › tests\e2e\production-shell.spec.ts:450:3 › production shell smoke › keeps demo security and identity routes behind the production boundary (961ms)
+  ok 30 [chromium] › tests\e2e\production-shell.spec.ts:470:3 › production shell smoke › security overview fails closed without backend profile data (3.7s)
+  ok 31 [chromium] › tests\e2e\production-shell.spec.ts:479:3 › production shell smoke › web referral overview fails closed without contract data (3.2s)
+  ok 32 [chromium] › tests\e2e\production-shell.spec.ts:486:3 › production shell smoke › keeps wallet flows without backend contracts behind the production boundary (869ms)
+  ok 33 [chromium] › tests\e2e\production-shell.spec.ts:505:3 › production shell smoke › keeps simulated trading compliance and analytics behind the production boundary (1.0s)
+  ok 34 [chromium] › tests\e2e\production-shell.spec.ts:525:3 › production shell smoke › keeps advanced DCA routes available as explicit production-pending pages (1.4s)
+  ok 35 [chromium] › tests\e2e\production-shell.spec.ts:549:3 › production shell smoke › keeps hard-coded portfolio, alert, tax, onboarding and showcase pages out of production (1.2s)
+  ok 36 [chromium] › tests\e2e\production-shell.spec.ts:571:3 › production shell smoke › web password reset requires a server-issued reset token (484ms)
+  ok 37 [chromium] › tests\e2e\production-shell.spec.ts:580:3 › production shell smoke › web MFA blocks a missing login challenge (658ms)
+  ok 38 [chromium] › tests\e2e\production-shell.spec.ts:588:3 › production shell smoke › public login shell has no serious or critical accessibility violations (766ms)
+  ok 39 [chromium] › tests\e2e\trading-contract.spec.ts:81:3 › trading contract smoke on staging build › places an order through the production route and preserves the receipt transition (619ms)
+  ok 40 [chromium] › tests\e2e\trading-contract.spec.ts:164:3 › trading contract smoke on staging build › cancels an open order with an idempotency key (575ms)
+  ok 41 [chromium] › tests\e2e\trading-contract.spec.ts:215:3 › trading contract smoke on staging build › filters and paginates open and historical orders through server cursors (710ms)
+[browser error] Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+[browser error] Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+  ok 42 [chromium] › tests\e2e\trading-contract.spec.ts:318:3 › trading contract smoke on staging build › modifies an open order with positive values and an idempotency key (693ms)
+  ok 43 [chromium] › tests\e2e\trading-contract.spec.ts:385:3 › trading contract smoke on staging build › stops a copy relationship through the contract boundary (510ms)
+  ok 44 [chromium] › tests\e2e\trading-contract.spec.ts:452:3 › trading contract smoke on staging build › completes the copy provider assessment and activation flow (1.2s)
+  ok 45 [chromium] › tests\e2e\wallet-contract.spec.ts:94:3 › wallet contract smoke on staging build › submits an internal transfer with an idempotency key (534ms)
+  ok 46 [chromium] › tests\e2e\wallet-contract.spec.ts:145:3 › wallet contract smoke on staging build › renders server-owned deposit instructions and QR data (520ms)
+  ok 47 [chromium] › tests\e2e\wallet-contract.spec.ts:159:3 › wallet contract smoke on staging build › loads pending deposits with server filters and cursor pagination (527ms)
+  ok 48 [chromium] › tests\e2e\wallet-contract.spec.ts:210:3 › wallet contract smoke on staging build › loads wallet history with server filters and cursor pagination (741ms)
+  ok 49 [chromium] › tests\e2e\wallet-contract.spec.ts:330:3 › wallet contract smoke on staging build › renders withdrawal limits returned for the selected asset (532ms)
+  ok 50 [chromium] › tests\e2e\wallet-contract.spec.ts:345:3 › wallet contract smoke on staging build › submits a network-limited withdrawal after MFA verification (1.0s)
+  ok 51 [chromium] › tests\e2e\wallet-contract.spec.ts:442:3 › wallet contract smoke on staging build › web address book renders contract data instead of local sample destinations (514ms)
+
+  51 passed (1.1m)

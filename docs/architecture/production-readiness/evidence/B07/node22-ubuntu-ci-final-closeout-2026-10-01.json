@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "taskId": "B07",
+  "stepId": "B07.05",
+  "sourceCommit": "2a9dfe425cc85a482c75d0d1660d41e90900da1f",
+  "repository": "LonelyTraderBay/vittrade-react",
+  "branch": "codex/b07-01-current-checkpoint",
+  "workflow": {
+    "name": "CI",
+    "event": "push",
+    "runId": 36932805252,
+    "runAttempt": 1,
+    "runUrl": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36932805252",
+    "jobId": 110605983353,
+    "jobName": "Production gates",
+    "conclusion": "success",
+    "startedAt": "2026-10-01T22:04:36Z",
+    "completedAt": "2026-10-01T22:19:14Z",
+    "durationSeconds": 878
+  },
+  "environment": {
+    "runner": "GitHub Actions ubuntu-24.04",
+    "os": "Ubuntu 24.04.5 LTS",
+    "node": "22.23.3",
+    "npm": "10.9.9",
+    "install": "clean npm ci; 552 packages added"
+  },
+  "checks": {
+    "gitEol": {
+      "result": "pass",
+      "paths": 1498,
+      "lf": 1156,
+      "missingTerminators": 0,
+      "preservedNonText": 342,
+      "protectedWindowsCrLf": 0,
+      "violations": 0
+    },
+    "tracking": {
+      "result": "pass",
+      "sourceCommit": "2a9dfe425cc85a482c75d0d1660d41e90900da1f",
+      "trackingReportIncludedInArtifact": true
+    },
+    "operationMockParity": {
+      "result": "pass",
+      "exactMethodPathMatches": 154,
+      "totalOperations": 154,
+      "missing": 0,
+      "extra": 0,
+      "duplicates": 0,
+      "operationsWithDirectTestReferences": 29
+    },
+    "unitIntegration": {
+      "result": "pass",
+      "testFiles": 286,
+      "passed": 2405,
+      "failed": 0
+    },
+    "artifactToolingTests": {
+      "result": "pass",
+      "testFiles": 2,
+      "passed": 9,
+      "failed": 0
+    },
+    "coverage": {
+      "result": "pass",
+      "testFiles": 286,
+      "passed": 2405,
+      "statementsPercent": 90.14,
+      "branchesPercent": 84.87,
+      "functionsPercent": 87.18,
+      "linesPercent": 91.92
+    },
+    "playwright": {
+      "result": "pass",
+      "projects": [
+        {
+          "name": "chromium",
+          "device": "Desktop Chrome"
+        }
+      ],
+      "testsPassed": 51,
+      "testsFailed": 0
+    },
+    "build": {
+      "result": "pass",
+      "completedAfterPlaywright": true,
+      "durationSeconds": 8.23,
+      "productionMockExclusion": {
+        "result": "pass",
+        "outputFiles": 223,
+        "javascriptFiles": 221,
+        "manifestsContainingMocks": 0
+      },
+      "bundleBudget": {
+        "result": "pass",
+        "javascriptChunks": 221,
+        "maxRawBytes": 500000,
+        "maxGzipBytes": 256000
+      }
+    }
+  },
+  "artifact": {
+    "id": 11197087746,
+    "name": "vittrade-ci-evidence-2a9dfe425cc85a482c75d0d1660d41e90900da1f-1",
+    "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36932805252/artifacts/11197087746",
+    "sizeBytes": 2952263,
+    "digest": "sha256:7788223f9e46b7cda0657075cef756a24dfef8609eb9feb2053d92f516c751e6",
+    "uploadedAndDownloadedInSameRun": true,
+    "uploadedDownloadDigestMatched": true,
+    "verification": {
+      "result": "pass",
+      "files": 555,
+      "bundleChunks": 221,
+      "coverageFiles": 550,
+      "retainedTraces": 0,
+      "playwrightReportPresent": true,
+      "distDirectoryPresent": false
+    }
+  },
+  "failurePath": {
+    "runId": 36927713021,
+    "runUrl": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36927713021",
+    "sourceCommit": "fcd0e3fb5f3425e792630db8e45afd7872a225b1",
+    "failedStep": "OpenAPI and mock method-path parity",
+    "rootCause": "The generator hashed raw Windows CRLF and Ubuntu LF bytes, creating a false source hash mismatch for equivalent text.",
+    "fix": "Normalize CRLF and lone CR to LF before hashing text source files.",
+    "recoveryEvidence": ["EV-20261002-002", "This B07.05 exact-SHA rerun"]
+  },
+  "observedWarnings": [
+    "npm ci reported one low-severity vulnerability; the configured dependency audit step completed successfully. The finding was not triaged by this B07 run.",
+    "The Playwright log contained two non-fatal net::ERR_NAME_NOT_RESOLVED browser resource messages; the 51 configured Chromium tests passed. The resource was not identified in this run summary."
+  ],
+  "limitations": [
+    "C01.01 remains unapproved for a broader browser/device matrix; this validates only Chromium Desktop Chrome.",
+    "The run does not validate a live backend, staging deployment, user acceptance, or production traffic.",
+    "B07.04 separately verified that main is unprotected and no repository/parent rulesets are configured; required CI/review/CODEOWNERS enforcement remains a production governance gap."
+  ]
+}

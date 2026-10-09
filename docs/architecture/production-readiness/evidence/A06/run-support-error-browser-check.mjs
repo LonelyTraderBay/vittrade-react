@@ -16,14 +16,23 @@ assert.equal(origin.pathname, '/', 'PREVIEW_BASE_URL must be an origin without a
 const originUrl = origin.origin;
 const checkedAt = new Date().toISOString();
 const date = checkedAt.slice(0, 10);
+const runId = process.env.EVIDENCE_RUN_SUFFIX ?? `${Date.now()}`;
+assert.match(runId, /^[a-z0-9-]+$/i, 'Evidence run suffix must be alphanumeric or hyphenated.');
+const artifactSuffix = `-${runId}`;
 const operationIds = ['listNews', 'listNotifications', 'getHelpCenter', 'listSupportTickets'];
 const screenshotPaths = {
-  news: path.join(directory, `preview-support-error-news-${date}.png`),
-  notifications: path.join(directory, `preview-support-error-notifications-${date}.png`),
-  help: path.join(directory, `preview-support-error-help-${date}.png`),
-  tickets: path.join(directory, `preview-support-error-tickets-${date}.png`),
+  news: path.join(directory, `preview-support-error-news-${date}${artifactSuffix}.png`),
+  notifications: path.join(
+    directory,
+    `preview-support-error-notifications-${date}${artifactSuffix}.png`,
+  ),
+  help: path.join(directory, `preview-support-error-help-${date}${artifactSuffix}.png`),
+  tickets: path.join(directory, `preview-support-error-tickets-${date}${artifactSuffix}.png`),
 };
-const reportPath = path.join(directory, `support-error-browser-check-${date}.json`);
+const reportPath = path.join(
+  directory,
+  `support-error-browser-check-${date}${artifactSuffix}.json`,
+);
 const sourceFiles = [
   'contracts/openapi/support.yaml',
   'src/app/routeConfig.ts',
@@ -91,6 +100,50 @@ const context = await browser.newContext({
 });
 const page = await context.newPage();
 page.setDefaultTimeout(15_000);
+const expectedAttemptsPerCycle = Number(process.env.SUPPORT_ERROR_EXPECTED_ATTEMPTS ?? 3);
+assert.ok(Number.isInteger(expectedAttemptsPerCycle) && expectedAttemptsPerCycle > 0);
+await page.addInitScript(() => {
+  const originalFetch = window.fetch.bind(window);
+  Object.defineProperty(window, '__supportTransportAttempts', {
+    configurable: true,
+    value: [],
+  });
+  Object.defineProperty(window, '__supportTransportFailureEnabled', {
+    configurable: true,
+    writable: true,
+    value: false,
+  });
+  window.fetch = async (input, init) => {
+    const requestUrl =
+      typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+    const request = input instanceof Request ? input : null;
+    const method = (init?.method ?? request?.method ?? 'GET').toUpperCase();
+    const url = new URL(requestUrl, window.location.href);
+    const operationByPath = {
+      '/api/content/news': 'listNews',
+      '/api/notifications': 'listNotifications',
+      '/api/support/help': 'getHelpCenter',
+      '/api/support/tickets': 'listSupportTickets',
+    };
+    const operationId = operationByPath[url.pathname];
+    if (
+      window.__supportTransportFailureEnabled &&
+      url.origin === window.location.origin &&
+      method === 'GET' &&
+      operationId
+    ) {
+      window.__supportTransportAttempts.push({
+        method,
+        path: url.pathname,
+        operationId,
+        errorText: 'Failed to fetch',
+        source: 'runner-scoped pre-network fetch rejection',
+      });
+      throw new TypeError('Failed to fetch');
+    }
+    return originalFetch(input, init);
+  };
+});
 
 const startedAt = Date.now();
 const apiRequests = [];
@@ -130,6 +183,7 @@ page.on('response', (response) => {
       operationId: record?.operationId ?? null,
       status: response.status(),
       fromServiceWorker: await response.fromServiceWorker(),
+      requestStartedAt: record?.startedAt,
       elapsedMs: Date.now() - (record?.startedAt ?? Date.now()),
     });
   })();
@@ -154,17 +208,6 @@ const navigate = async (pathname) => {
   }, pathname);
   await page.waitForURL((url) => url.pathname === pathname);
 };
-
-const waitFor = async (predicate, description) => {
-  const deadline = Date.now() + 30_000;
-  while (!predicate()) {
-    if (Date.now() >= deadline) throw new Error(`Timed out waiting for ${description}`);
-    await new Promise((resolve) => setTimeout(resolve, 25));
-  }
-};
-
-const responseCount = (operationId) =>
-  apiResponses.filter((response) => response.operationId === operationId).length;
 
 try {
   await page.goto(`${originUrl}/w/auth/login`, {
@@ -200,27 +243,40 @@ try {
   const personaAndScenarioApplied = true;
   const collapsePreview = page.getByRole('button', { name: 'Thu gọn' });
   if (await collapsePreview.count()) await collapsePreview.click();
+  const failureInjectionEnabledAt = Date.now();
+  await page.evaluate(() => {
+    window.__supportTransportFailureEnabled = true;
+  });
 
   const reads = [];
+  const injectedTransportAttempts = () =>
+    page.evaluate(() => [...window.__supportTransportAttempts]);
   const runErrorRead = async ({ operationId, route, successContent, screenshotPath }) => {
-    const responseStartCount = responseCount(operationId);
-    const requestStartCount = apiRequests.filter(
-      (request) => request.operationId === operationId,
-    ).length;
+    const attemptCount = () =>
+      page.evaluate(
+        (targetOperationId) =>
+          window.__supportTransportAttempts.filter(
+            (attempt) => attempt.operationId === targetOperationId,
+          ).length,
+        operationId,
+      );
+    const attemptStartCount = await attemptCount();
+    const waitForAttemptCount = (count) =>
+      page.waitForFunction(
+        ({ targetOperationId, targetCount }) =>
+          window.__supportTransportAttempts.filter(
+            (attempt) => attempt.operationId === targetOperationId,
+          ).length >= targetCount,
+        { targetOperationId: operationId, targetCount: count },
+      );
     await navigate(route);
+    const initialTarget = attemptStartCount + expectedAttemptsPerCycle;
+    await waitForAttemptCount(initialTarget);
     await page.getByText('Có lỗi xảy ra', { exact: true }).waitFor({ state: 'visible' });
     const retryButton = page.getByRole('button', { name: 'Thử lại' });
     await retryButton.waitFor({ state: 'visible' });
-    const initialResponseTarget = responseStartCount + 6;
-    await waitFor(
-      () => responseCount(operationId) >= initialResponseTarget,
-      `${operationId} initial HTTP responses`,
-    );
-    const initialResponses = apiResponses.filter(
-      (response) => response.operationId === operationId,
-    );
-    assert.ok(initialResponses.slice(-6).every((response) => response.status === 503));
-    assert.ok(initialResponses.slice(-6).every((response) => response.fromServiceWorker));
+    const initialAttemptCount = (await attemptCount()) - attemptStartCount;
+    assert.equal(initialAttemptCount, expectedAttemptsPerCycle);
     assert.equal(
       await successContent.count(),
       0,
@@ -230,35 +286,42 @@ try {
 
     const retryStartedAt = Date.now();
     await retryButton.click();
-    const finalResponseTarget = initialResponseTarget + 6;
-    await waitFor(
-      () => responseCount(operationId) >= finalResponseTarget,
-      `${operationId} manual retry HTTP responses`,
-    );
+    const finalTarget = initialTarget + expectedAttemptsPerCycle;
+    await waitForAttemptCount(finalTarget);
     await page.getByText('Có lỗi xảy ra', { exact: true }).waitFor({ state: 'visible' });
     await page.getByRole('button', { name: 'Thử lại' }).waitFor({ state: 'visible' });
     assert.equal(new URL(page.url()).pathname, route, 'Retry must preserve the route.');
     assert.equal(await successContent.count(), 0, 'Retry must not reveal success content.');
 
+    const attempts = await page.evaluate(() => [...window.__supportTransportAttempts]);
+    const operationAttempts = attempts.filter((attempt) => attempt.operationId === operationId);
     const operationRequests = apiRequests.filter((request) => request.operationId === operationId);
     const operationResponses = apiResponses.filter(
       (response) => response.operationId === operationId,
     );
-    assert.equal(operationResponses.length - responseStartCount, 12);
-    assert.equal(operationRequests.length - requestStartCount, 12);
-    assert.ok(operationResponses.slice(-12).every((response) => response.status === 503));
-    assert.ok(operationResponses.slice(-12).every((response) => response.fromServiceWorker));
+    const operationRequestsAfterInjection = operationRequests.filter(
+      (request) => request.startedAt >= failureInjectionEnabledAt,
+    );
+    const operationResponsesAfterInjection = operationResponses.filter(
+      (response) => response.requestStartedAt >= failureInjectionEnabledAt,
+    );
+    assert.equal(operationAttempts.length - attemptStartCount, expectedAttemptsPerCycle * 2);
+    assert.equal(operationRequestsAfterInjection.length, 0);
+    assert.equal(operationResponsesAfterInjection.length, 0);
     return {
       operationId,
       route,
-      initialResponseCount: initialResponseTarget - responseStartCount,
-      initialStatusCounts: { 503: 6 },
-      manualRetryResponseCount: operationResponses.length - initialResponseTarget,
-      manualRetryStatusCounts: { 503: 6 },
-      totalResponseCount: operationResponses.length - responseStartCount,
-      localServiceWorkerResponses: operationResponses
-        .slice(-12)
-        .every((response) => response.fromServiceWorker),
+      initialFetchAttempts: initialAttemptCount,
+      manualRetryFetchAttempts: operationAttempts.length - attemptStartCount - initialAttemptCount,
+      totalFetchAttempts: operationAttempts.length - attemptStartCount,
+      preRouteShellFetchAttempts: attemptStartCount,
+      httpRequestCountAfterFailureInjection: operationRequestsAfterInjection.length,
+      httpResponseCountAfterFailureInjection: operationResponsesAfterInjection.length,
+      preInjectionHttpRequestCount:
+        operationRequests.length - operationRequestsAfterInjection.length,
+      preInjectionHttpResponseCount:
+        operationResponses.length - operationResponsesAfterInjection.length,
+      failureInjectedBeforeNetwork: true,
       errorStateVisibleAfterRetry: true,
       retryRoutePreserved: true,
       successContentHidden: true,
@@ -307,6 +370,10 @@ try {
   );
 
   await Promise.all(responseTasks);
+  const transportAttempts = await injectedTransportAttempts();
+  const scenarioAttempts = transportAttempts.filter((attempt) =>
+    operationIds.includes(attempt.operationId),
+  );
   const scenarioResponses = apiResponses.filter((response) =>
     operationIds.includes(response.operationId),
   );
@@ -320,39 +387,93 @@ try {
     operationIds.includes(failure.operationId),
   );
   const transportFailures = scopedFailures.filter((failure) => !failure.hadResponse);
-  const observedOperationIds = [
-    ...new Set(scenarioResponses.map((response) => response.operationId)),
-  ];
+  const observedOperationIds = [...new Set(scenarioAttempts.map((attempt) => attempt.operationId))];
+  const scenarioFetchAttemptCounts = Object.fromEntries(
+    operationIds.map((id) => [
+      id,
+      scenarioAttempts.filter((attempt) => attempt.operationId === id).length,
+    ]),
+  );
+  const excludedMutationOperationIds = ['markNotificationRead', 'createSupportTicket'];
+  const excludedMutationRequestCount = scenarioMutations.length;
   const requestCounts = Object.fromEntries(
     operationIds.map((id) => [
       id,
       scenarioRequests.filter((request) => request.operationId === id).length,
     ]),
   );
-  const excludedMutationOperationIds = ['markNotificationRead', 'createSupportTicket'];
-  const excludedMutationRequestCount = scenarioMutations.length;
   const responseCounts = Object.fromEntries(
     operationIds.map((id) => [
       id,
       scenarioResponses.filter((response) => response.operationId === id).length,
     ]),
   );
+  const postInjectionRequestCounts = Object.fromEntries(
+    operationIds.map((id) => [
+      id,
+      scenarioRequests.filter(
+        (request) => request.operationId === id && request.startedAt >= failureInjectionEnabledAt,
+      ).length,
+    ]),
+  );
+  const postInjectionResponseCounts = Object.fromEntries(
+    operationIds.map((id) => [
+      id,
+      scenarioResponses.filter(
+        (response) =>
+          response.operationId === id && response.requestStartedAt >= failureInjectionEnabledAt,
+      ).length,
+    ]),
+  );
+  const preRouteShellFetchAttempts = Object.fromEntries(
+    reads.map((read) => [read.operationId, read.preRouteShellFetchAttempts]),
+  );
   assert.deepEqual(observedOperationIds.sort(), [...operationIds].sort());
-  assert.deepEqual(requestCounts, {
-    listNews: 12,
-    listNotifications: 12,
-    getHelpCenter: 12,
-    listSupportTickets: 12,
-  });
-  assert.deepEqual(responseCounts, {
-    listNews: 12,
-    listNotifications: 12,
-    getHelpCenter: 12,
-    listSupportTickets: 12,
-  });
-  assert.equal(scenarioResponses.length, 48);
+  assert.deepEqual(
+    Object.fromEntries(
+      reads.map((read) => [
+        read.operationId,
+        [read.initialFetchAttempts, read.manualRetryFetchAttempts],
+      ]),
+    ),
+    Object.fromEntries(
+      operationIds.map((id) => [id, [expectedAttemptsPerCycle, expectedAttemptsPerCycle]]),
+    ),
+  );
+  assert.deepEqual(
+    Object.fromEntries(
+      operationIds
+        .filter((id) => id !== 'listNotifications')
+        .map((id) => [id, preRouteShellFetchAttempts[id]]),
+    ),
+    Object.fromEntries(
+      operationIds.filter((id) => id !== 'listNotifications').map((id) => [id, 0]),
+    ),
+  );
+  assert.ok(preRouteShellFetchAttempts.listNotifications <= expectedAttemptsPerCycle);
+  assert.deepEqual(
+    scenarioFetchAttemptCounts,
+    Object.fromEntries(
+      operationIds.map((id) => [id, expectedAttemptsPerCycle * 2 + preRouteShellFetchAttempts[id]]),
+    ),
+  );
+  assert.deepEqual(
+    postInjectionRequestCounts,
+    Object.fromEntries(operationIds.map((id) => [id, 0])),
+  );
+  assert.deepEqual(
+    postInjectionResponseCounts,
+    Object.fromEntries(operationIds.map((id) => [id, 0])),
+  );
   assert.equal(
-    scenarioResponses.every((response) => response.status === 503 && response.fromServiceWorker),
+    scenarioAttempts.length,
+    operationIds.length * expectedAttemptsPerCycle * 2 +
+      Object.values(preRouteShellFetchAttempts).reduce((total, count) => total + count, 0),
+  );
+  assert.equal(
+    scenarioAttempts.every(
+      (attempt) => attempt.source === 'runner-scoped pre-network fetch rejection',
+    ),
     true,
   );
   assert.equal(scopedFailures.length, 0);
@@ -362,7 +483,11 @@ try {
   );
   assert.equal(excludedMutationRequestCount, 0);
   assert.equal(unexpectedRequests.length, 0);
-  assert.equal(transportFailures.length, 0);
+  assert.equal(
+    transportFailures.length,
+    0,
+    'Injected failures must not dispatch network requests.',
+  );
   assert.equal(externalApiOrigins.size, 0);
   assert.equal(pageErrors.length, 0);
   assert.equal(new URL(page.url()).pathname, '/w/support');
@@ -382,20 +507,17 @@ try {
       operationIds,
       observedOperationIds,
       expectedDomainOperationCount: operationIds.length,
-      coverage: 'full_scenario_operations_browser_observed',
+      coverage: 'full_scenario_operations_browser_observed_transport_failure',
     },
     fixtureBoundary: {
       serviceWorkerControlled,
       personaAndScenarioApplied,
-      allObservedResponsesFromServiceWorker: scenarioResponses.every(
-        (response) => response.fromServiceWorker,
+      failureInjection: 'window.fetch rejects targeted GETs before network dispatch',
+      allObservedFailuresInjectedBeforeNetwork: scenarioAttempts.every(
+        (attempt) => attempt.source === 'runner-scoped pre-network fetch rejection',
       ),
-      allScenarioResponsesAreLocalSynthetic503:
-        scenarioResponses.length === 48 &&
-        scenarioResponses.every(
-          (response) => response.status === 503 && response.fromServiceWorker,
-        ),
       observedScenarioResponseCount: scenarioResponses.length,
+      injectedTransportFailureCount: scenarioAttempts.length,
       localMockMutationCount: 0,
       realBackendRequestSent: false,
       realBackendMutationSent: false,
@@ -409,13 +531,18 @@ try {
       completedAt: new Date().toISOString(),
       scenarioRequestCount: scenarioRequests.length,
       scenarioResponseCount: scenarioResponses.length,
+      scenarioFetchAttemptCount: scenarioAttempts.length,
       scenarioOperationRequestCounts: requestCounts,
       scenarioOperationResponseCounts: responseCounts,
+      scenarioOperationRequestsAfterFailureInjection: postInjectionRequestCounts,
+      scenarioOperationResponsesAfterFailureInjection: postInjectionResponseCounts,
+      scenarioOperationFetchAttemptCounts: scenarioFetchAttemptCounts,
+      preRouteShellFetchAttempts,
       readOperations: reads,
       excludedMutationOperationIds,
       excludedMutationRequestCount,
       externalApiOriginCount: externalApiOrigins.size,
-      scenarioTransportFailureCount: transportFailures.length,
+      scenarioTransportFailureCount: scenarioAttempts.length,
       pageErrorCount: pageErrors.length,
     },
     assertions: {
@@ -423,8 +550,17 @@ try {
         (read) => read.errorStateVisibleAfterRetry,
       ),
       staleSuccessContentHiddenAfterEachFailure: reads.every((read) => read.successContentHidden),
+      failureInjectedBeforeNetwork: scenarioAttempts.every(
+        (attempt) => attempt.source === 'runner-scoped pre-network fetch rejection',
+      ),
+      httpRequestCountForScenarioOperations: scenarioRequests.length,
+      httpResponseCountForScenarioOperations: scenarioResponses.length,
+      noHttpDispatchAfterFailureInjection: Object.values(postInjectionRequestCounts).every(
+        (count) => count === 0,
+      ),
       finalRoute: new URL(page.url()).pathname,
       responses: scenarioResponses,
+      injectedTransportAttempts: scenarioAttempts,
     },
     apiRequests,
     apiResponses,
@@ -433,8 +569,19 @@ try {
       Object.entries(screenshotPaths).map(([name, file]) => [name, path.basename(file)]),
     ),
     sourceHashes,
+    retryPolicyObservation: {
+      expectedFetchAttemptsPerQueryExecution: expectedAttemptsPerCycle,
+      preRouteShellFetchAttempts,
+      initialFailureAttemptsByOperation: Object.fromEntries(
+        reads.map((read) => [read.operationId, read.initialFetchAttempts]),
+      ),
+      manualRetryAttemptsByOperation: Object.fromEntries(
+        reads.map((read) => [read.operationId, read.manualRetryFetchAttempts]),
+      ),
+      totalAttemptsByOperation: scenarioFetchAttemptCounts,
+    },
     limitations: [
-      'Support OpenAPI does not declare a 5xx response; HTTP 503 is a synthetic local preview fixture and not a contract-supported backend status.',
+      'Support OpenAPI declares no 5xx response; the runner injects a TypeError before network dispatch and does not create an HTTP status or response.',
       'The observed retry fan-out is local HTTP-client and React Query behavior; it is not a production retry recommendation or backend measurement.',
       'This scenario covers four collection GETs; notification-read and ticket-create mutations are not sent because a failed write can have an unknown outcome.',
       'MSW does not establish backend authorization, persistence, staging behavior or user acceptance.',

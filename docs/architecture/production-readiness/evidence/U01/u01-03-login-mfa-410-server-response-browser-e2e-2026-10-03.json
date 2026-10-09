@@ -1,0 +1,26 @@
+{
+  "id": "EV-20261003-006",
+  "taskId": "U01",
+  "stepId": "U01.03",
+  "kind": "login-mfa-server-expired-challenge-browser-e2e",
+  "commandOrSteps": "Set VITE_DATA_SOURCE=api, VITE_API_BASE_URL=https://e2e.test, and VITE_WS_URL=wss://e2e.test; start node node_modules/vite/bin/vite.js --host 127.0.0.1 --port 4189 --strictPort; run node node_modules/@playwright/test/cli.js test --config=playwright.u01-03-local-temp.config.mjs. The temporary one-worker Desktop Chrome config used baseURL http://127.0.0.1:4189, testDir ./tests/e2e, and testMatch auth-session.spec.ts; Playwright page.route fixtures handled e2e.test API endpoints. The temporary config was removed after the run. Also run both TypeScript no-emit projects, focused ESLint and Prettier, lint-budget, OpenAPI contract, dependency-cruiser architecture, architecture inventory, EOL, tracking, and git diff checks.",
+  "environment": "Windows 11; Node v24.19.0; @playwright/test 1.63.0; Vite 6.4.3; Chromium 153.0.8010.12; local Vite API mode at http://127.0.0.1:4189; e2e.test API calls use Playwright route fixtures; no backend or staging connection.",
+  "observedAt": "2026-10-02T20:57:18Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "sourceBranch": "main",
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "f781275476009057ff9aeab57110c150742b278c7b92d6e913d2eb4fdd278b0c",
+    "src/features/auth/pages/OTPPage.tsx": "eff445ff3884f6aada08e689dc5468538d6587b799682a5401dc6951311f0012",
+    "src/features/auth/api/auth-api.ts": "050846c48de49be56f6bdf6a73669b5d3a6230c559e33851cd07840609fca078",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "tests/e2e/auth-session.spec.ts": "21df90b77dd86503642ddaba35e1738d6d1142e704b7c390e500b49ffcc89479"
+  },
+  "dirtyFileHashes": {
+    "tests/e2e/auth-session.spec.ts": "21df90b77dd86503642ddaba35e1738d6d1142e704b7c390e500b49ffcc89479"
+  },
+  "expected": "When POST /auth/login/mfa/verify returns the OpenAPI-declared HTTP 410 for an expired or otherwise invalid login challenge, the Web OTP flow returns to /w/auth/login and does not establish an authenticated session.",
+  "actual": "After formatting, the focused auth-session Chromium suite passed 9/9. The server-410 case submitted POST /auth/login/mfa/verify with exactly {challengeId: server-expired-login-challenge-e2e, code: 111111}; the Playwright fixture returned HTTP 410. The page returned to /w/auth/login and auth-sign-out remained absent. Both TypeScript projects, focused ESLint and Prettier, lint-budget (0 errors/0 warnings), OpenAPI (15 contracts/154 operations), dependency-cruiser (863 modules/4679 dependencies, 0 violations), architecture inventory (129 pages/427 routes/149 components/32 services/28 mocks), EOL (3219 paths), and git diff --check passed. check-tracking exited 1 with 40 source-ledger errors: 32 missing catalogued source hashes, 5 paths absent from the catalogued head, and 3 source mismatches; the application inventory still contains 916/916 paths.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/U01/u01-03-login-mfa-410-server-response-browser-e2e-2026-10-03.json",
+  "notes": "This verifies frontend handling of the contract-shaped 410 fixture only. It does not prove backend behavior, session-cookie persistence, staging, production, or user acceptance. The tracking checker still reports a source fingerprint gap for tests/e2e/auth-session.spec.ts among its 32 missing-hash errors. Registration-purpose verifyMfa remains blocked pending the API/security owner decision."
+}

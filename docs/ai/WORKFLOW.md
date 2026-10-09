@@ -69,6 +69,8 @@ không tạo sổ hoặc framework riêng. Các kiểm tra và tiêu chí M1–M
 - Chốt task/step ID, hành vi hiện tại/cần đạt, file dự kiến, invariant, kiểm tra và điều kiện done. Không buộc mọi file được PLAN liệt kê đều phải sửa.
 - Chọn bước đang dang dở hợp lệ rồi theo ưu tiên/phụ thuộc ở PLAN mục 8. Phụ thuộc khi đóng và yêu cầu thứ tự cụ thể trong checkpoint đều phải được tôn trọng.
 
+- Với roadmap, đọc PLAN mục 13 và lấy file của step qua `TRACKING.files[].executionScope.stepIds`; đối chiếu toàn bộ Git tracked/non-ignored file, owner và consumer trực tiếp. SCOPE là danh mục tra cứu, không phải status. File planned chỉ tạo khi contract/hành vi đã chốt; file Universal và evidence lịch sử phải giữ nguyên. B07.01 local LF/hash preflight theo checkpoint là điều kiện trước khi ghi runtime evidence mới; không đổi Git cá nhân để làm gate xanh.
+
 ### Trong khi triển khai
 
 - Sửa tại nơi sở hữu hành vi, cập nhật các consumer/contract/test trực tiếp bị ảnh hưởng. Giữ phong cách và cơ chế hiện có nếu vẫn đáp ứng yêu cầu.

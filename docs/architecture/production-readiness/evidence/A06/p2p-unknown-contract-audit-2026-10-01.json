@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261001-018",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "contract-unknown-outcome-idempotency-audit",
+  "checkedAt": "2026-09-30T22:50:54.785Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "contractFile": "contracts/openapi/p2p.yaml",
+  "globalSecurity": [
+    {
+      "sessionCookie": []
+    }
+  ],
+  "scenario": {
+    "id": "p2p.unknown",
+    "operationIds": ["createP2POrder", "markP2POrderPaid", "releaseP2POrderEscrow", "getP2POrder"],
+    "executionStatus": "not_verified"
+  },
+  "operations": [
+    {
+      "operationId": "createP2POrder",
+      "method": "POST",
+      "path": "/p2p/orders",
+      "responseStatuses": ["201", "409"],
+      "responseDescriptions": {
+        "201": "Escrow order created.",
+        "409": "Duplicate or conflicting order request."
+      },
+      "requiresIdempotencyKey": true,
+      "explicitParameters": []
+    },
+    {
+      "operationId": "markP2POrderPaid",
+      "method": "POST",
+      "path": "/p2p/orders/{orderId}/mark-paid",
+      "responseStatuses": ["200", "404", "409"],
+      "responseDescriptions": {
+        "200": "Payment marked by the buyer.",
+        "404": "",
+        "409": "Order cannot transition to paid."
+      },
+      "requiresIdempotencyKey": true,
+      "explicitParameters": [
+        {
+          "name": "orderId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "releaseP2POrderEscrow",
+      "method": "POST",
+      "path": "/p2p/orders/{orderId}/release",
+      "responseStatuses": ["200", "404", "409"],
+      "responseDescriptions": {
+        "200": "Escrow released after authorization.",
+        "404": "",
+        "409": "Order cannot transition to released."
+      },
+      "requiresIdempotencyKey": true,
+      "explicitParameters": [
+        {
+          "name": "orderId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "getP2POrder",
+      "method": "GET",
+      "path": "/p2p/orders/{orderId}",
+      "responseStatuses": ["200", "401", "404"],
+      "responseDescriptions": {
+        "200": "Escrow order detail and payment instructions.",
+        "401": "",
+        "404": ""
+      },
+      "requiresIdempotencyKey": false,
+      "explicitParameters": [
+        {
+          "name": "orderId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  ],
+  "idempotencyKeyParameter": {
+    "name": "Idempotency-Key",
+    "in": "header",
+    "required": true,
+    "schema": {
+      "type": "string",
+      "minLength": 16
+    }
+  },
+  "counts": {
+    "linkedOperations": 4,
+    "writesRequiringIdempotencyKey": 3,
+    "writeOperations": 3,
+    "readLookupsByIdempotencyKey": 0,
+    "stableSameKeyReplayContracts": 0
+  },
+  "browserScenarioExecuted": false,
+  "conclusion": "All three P2P mutations in p2p.unknown require Idempotency-Key. createP2POrder declares 409 “Duplicate or conflicting order request”; this does not distinguish a duplicate replay from a business conflict or define a stable replay response. mark-paid/release 409 responses describe state conflicts. getP2POrder can read by orderId only; the contract has no lookup by idempotency key or client correlation ID. If an order-create response is lost, the contract does not establish how to find the created order or whether a same-key replay returns the original receipt. Keep p2p.unknown not_verified and do not retry or simulate side-effecting writes.",
+  "nextAction": "A06.03 next matrix row: audit predictions.forbidden and predictions.unknown/duplicate contracts; do not run unknown/duplicate mutations without approved lookup/correlation/replay semantics.",
+  "sourceHashes": {
+    "contracts/openapi/p2p.yaml": "17d7e0c1b198d6adadc9d5a0519c029084257c82132e8e4391891c5e92c2c576",
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "70630b4a0b7d2d16d39fc9da839fbb1b96578c9f5c60ec92ce598e14add99c24",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320"
+  }
+}

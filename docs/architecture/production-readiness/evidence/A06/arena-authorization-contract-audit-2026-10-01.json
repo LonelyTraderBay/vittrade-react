@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261001-011",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "contract-authorization-status-audit",
+  "checkedAt": "2026-09-30T22:37:44.040Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "contractFile": "contracts/openapi/arena.yaml",
+  "globalSecurity": [
+    {
+      "sessionCookie": []
+    }
+  ],
+  "securitySchemes": [
+    "sessionCookie"
+  ],
+  "operations": [
+    {
+      "operationId": "getArenaDiscovery",
+      "method": "GET",
+      "path": "/arena/discovery",
+      "responseStatuses": [
+        "200"
+      ]
+    },
+    {
+      "operationId": "getArenaMode",
+      "method": "GET",
+      "path": "/arena/modes/{modeId}",
+      "responseStatuses": [
+        "200",
+        "404"
+      ]
+    },
+    {
+      "operationId": "getArenaChallenge",
+      "method": "GET",
+      "path": "/arena/challenges/{challengeId}",
+      "responseStatuses": [
+        "200",
+        "404"
+      ]
+    },
+    {
+      "operationId": "joinArenaChallenge",
+      "method": "POST",
+      "path": "/arena/challenges/{challengeId}/join",
+      "responseStatuses": [
+        "201",
+        "409"
+      ]
+    }
+  ],
+  "counts": {
+    "operations": 4,
+    "operationsDeclaring401": 0,
+    "operationsDeclaring403": 0
+  },
+  "routeAndOperationMapping": {
+    "browserScenarioRoute": "/w/arena",
+    "discoveryPage": "src/features/arena/pages/ArenaDiscoveryPage.tsx",
+    "routeRegistry": "src/app/routeConfig.ts",
+    "detailRoutes": "src/features/arena/routes.ts",
+    "apiAdapter": "src/features/arena/api/arena-api.ts",
+    "operationMapFile": "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json",
+    "operationMapEntries": [
+      {
+        "operationId": "getArenaDiscovery"
+      },
+      {
+        "operationId": "getArenaMode"
+      },
+      {
+        "operationId": "getArenaChallenge"
+      },
+      {
+        "operationId": "joinArenaChallenge"
+      }
+    ]
+  },
+  "matrixRows": [
+    {
+      "id": "arena.unauthorized",
+      "state": "unauthorized",
+      "operationIds": [
+        "getArenaDiscovery",
+        "getArenaMode",
+        "getArenaChallenge",
+        "joinArenaChallenge"
+      ],
+      "executionStatus": "not_verified"
+    },
+    {
+      "id": "arena.forbidden",
+      "state": "forbidden",
+      "operationIds": [
+        "getArenaDiscovery",
+        "getArenaMode",
+        "getArenaChallenge",
+        "joinArenaChallenge"
+      ],
+      "executionStatus": "not_verified"
+    }
+  ],
+  "browserScenarioExecuted": false,
+  "conclusion": "The OpenAPI document has global sessionCookie security, but none of the four mapped Arena operations declares HTTP 401 or 403. Under the contract-only scenario rule, do not synthesize either status in MSW/browser; keep arena.unauthorized and arena.forbidden not_verified until the API contract declares the response behavior.",
+  "nextAction": "A06.03 next matrix row: audit auth.forbidden against contracts/openapi/auth.yaml; run no 403 browser case unless the mapped contract declares it.",
+  "sourceHashes": {
+    "contracts/openapi/arena.yaml": "30f0f57dfd35eec65c9afca06bd9f79f2d0f42a4a678c18e09dc669d32641157",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/features/arena/routes.ts": "9bfe763e6af37ce5030ef97a552384a78e9a5e9b224d7b16b862da4e25305436",
+    "src/features/arena/api/arena-api.ts": "c9fce3b8cc271937f5c2aecf4becba0e3520fce0c599cb7e7255a553f40a74d2",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "70630b4a0b7d2d16d39fc9da839fbb1b96578c9f5c60ec92ce598e14add99c24",
+    "docs/architecture/production-readiness/evidence/A06/run-preview-scenario-browser-check.mjs": "0c7c8109bf873f80146b918fce2a8eabadde36d113332f9f0cd2dadc61194f82"
+  }
+}
