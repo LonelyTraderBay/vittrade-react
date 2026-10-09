@@ -223,6 +223,25 @@ describe('Wallet overview contract page', () => {
     expect(screen.queryByText('Total balance')).not.toBeInTheDocument();
   });
 
+  it('shows a non-retryable permission state and hides balances when wallet access is denied', async () => {
+    server.use(
+      http.get('*/wallet/assets', () => HttpResponse.json(assets)),
+      http.get('*/wallet/transactions', () =>
+        HttpResponse.json({ code: 'FORBIDDEN', message: 'Permission denied' }, { status: 403 }),
+      ),
+    );
+
+    renderWithProviders(<WalletOverviewContractPage />);
+
+    expect(await screen.findByText('Không có quyền truy cập')).toBeInTheDocument();
+    expect(
+      screen.getByText('Tài khoản của bạn không có quyền xem số dư và hoạt động của ví.'),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Thử lại' })).not.toBeInTheDocument();
+    expect(screen.queryByText('Total balance')).not.toBeInTheDocument();
+    expect(screen.queryByText('No wallet activity yet.')).not.toBeInTheDocument();
+  });
+
   it('preserves the active shell prefix when navigating wallet actions', async () => {
     installHandlers();
 

@@ -51,7 +51,7 @@ export function createEarnRoutes(): RouteObject[] {
     { path: 'earn/savings', Component: SavingsPage },
     { path: 'earn/savings/product/:productId', Component: EarnProductDetailPage },
     { path: 'earn/savings/redeem/:positionId', Component: EarnRedeemPage },
-    { path: 'earn/savings/receipt', Component: EarnReceiptPage },
+    { path: 'earn/:domain/receipt', Component: EarnReceiptPage },
     { path: 'earn/savings/comparison', Component: SavingsComparisonPage },
     { path: 'earn/savings/portfolio', Component: SavingsPortfolioPage },
     { path: 'earn/savings/history', Component: SavingsHistoryPage },

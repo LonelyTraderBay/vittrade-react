@@ -141,4 +141,24 @@ describe('Wallet transaction history contract page', () => {
     expect(await screen.findByRole('button')).toBeInTheDocument();
     expect(screen.queryByText('+100', { exact: true })).not.toBeInTheDocument();
   });
+
+  it('shows a non-retryable permission state and hides transaction history when access is denied', async () => {
+    server.use(
+      http.get('*/wallet/transactions', () =>
+        HttpResponse.json({ code: 'FORBIDDEN', message: 'Permission denied' }, { status: 403 }),
+      ),
+    );
+
+    renderWithProviders(<WalletTransactionHistoryContractPage />);
+
+    expect(await screen.findByText('Không có quyền truy cập')).toBeInTheDocument();
+    expect(
+      screen.getByText('Tài khoản của bạn không có quyền xem lịch sử giao dịch ví.'),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Thử lại' })).not.toBeInTheDocument();
+    expect(screen.queryByText('+100', { exact: true })).not.toBeInTheDocument();
+    expect(
+      screen.queryByText('No transactions match the selected filters.'),
+    ).not.toBeInTheDocument();
+  });
 });

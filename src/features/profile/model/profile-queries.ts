@@ -14,6 +14,7 @@ export function useProfileQuery() {
   return useQuery({
     queryKey: profileQueryKeys.overview,
     queryFn: ({ signal }) => profileApi.getProfile(signal),
+    retry: false,
     staleTime: 30_000,
   });
 }
@@ -36,6 +37,7 @@ export function useDevicesQuery() {
   return useQuery({
     queryKey: profileQueryKeys.devices,
     queryFn: ({ signal }) => profileApi.listDevices(signal),
+    retry: false,
     staleTime: 15_000,
   });
 }
@@ -69,6 +71,7 @@ export function useActivityQuery() {
   return useQuery({
     queryKey: profileQueryKeys.activity,
     queryFn: ({ signal }) => profileApi.listActivity(signal),
+    retry: false,
     staleTime: 30_000,
   });
 }
@@ -77,6 +80,7 @@ export function useSubAccountsQuery() {
   return useQuery({
     queryKey: profileQueryKeys.subAccounts,
     queryFn: ({ signal }) => profileApi.listSubAccounts(signal),
+    retry: false,
     staleTime: 30_000,
   });
 }

@@ -7,6 +7,8 @@ import {
 } from '@tanstack/react-query';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { ApiError } from '@/shared/api/api-error';
+import { queryClient as appQueryClient } from '@/shared/api/query-client';
 import { walletApi } from '../api/wallet-api';
 import * as queries from './wallet-queries';
 
@@ -20,6 +22,12 @@ function createQueryClient() {
       mutations: { retry: false },
     },
   });
+  queryClients.push(client);
+  return client;
+}
+
+function createAppRetryQueryClient() {
+  const client = new QueryClient({ defaultOptions: appQueryClient.getDefaultOptions() });
   queryClients.push(client);
   return client;
 }
@@ -49,6 +57,21 @@ async function runMutation(hook: () => unknown, variables?: unknown) {
     await rendered.result.current.mutateAsync(variables);
   });
   return { ...rendered, client, invalidateQueries, setQueryData };
+}
+
+async function expectSingleReadAttempt<T>(hook: () => UseQueryResult<T, Error>, apiName: string) {
+  const requestError = new ApiError('Network request failed', {
+    status: 0,
+    code: 'NETWORK_ERROR',
+  });
+  const request = vi.spyOn(apiMethods, apiName).mockRejectedValue(requestError);
+  const client = createAppRetryQueryClient();
+  const { result, unmount } = renderHook(hook, { wrapper: createWrapper(client) });
+
+  await waitFor(() => expect(result.current.isError).toBe(true));
+
+  expect(request).toHaveBeenCalledTimes(1);
+  unmount();
 }
 
 const queryCases = [
@@ -194,6 +217,17 @@ describe('Wallet query hooks', () => {
     expect(result.current.isSuccess).toBe(true);
     expect(apiMethods[api]).toHaveBeenCalled();
     unmount();
+  });
+
+  it('does not add a query-level retry for asset reads after transport retries are exhausted', async () => {
+    await expectSingleReadAttempt(() => queries.useWalletAssetsQuery(true), 'getAssets');
+  });
+
+  it('does not add a query-level retry for transaction reads after transport retries are exhausted', async () => {
+    await expectSingleReadAttempt(
+      () => queries.useWalletTransactionsQuery({ limit: 10 }, true),
+      'getTransactions',
+    );
   });
 
   it('waits for IDs and selected assets before running scoped queries', () => {

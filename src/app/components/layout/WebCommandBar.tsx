@@ -32,6 +32,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   markets: 'Thị trường',
   trade: 'Giao dịch',
   wallet: 'Ví',
+  dca: 'DCA',
   profile: 'Tài khoản',
   p2p: 'P2P',
   arena: 'Arena',

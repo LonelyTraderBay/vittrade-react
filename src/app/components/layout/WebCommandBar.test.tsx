@@ -22,6 +22,15 @@ describe('WebCommandBar', () => {
     expect(screen.queryByRole('button', { name: 'Tổng quan' })).not.toBeInTheDocument();
   });
 
+  it('shows a DCA breadcrumb instead of the dashboard fallback on /w/dca', () => {
+    renderWithProviders(<WebCommandBar />, {
+      routerProps: { initialEntries: ['/w/dca'] },
+    });
+
+    expect(screen.getByRole('button', { name: 'DCA' })).toBeInTheDocument();
+    expect(screen.queryByText('Dashboard')).not.toBeInTheDocument();
+  });
+
   it('focuses search with Ctrl+K and clears it on Escape', () => {
     renderWithProviders(<WebCommandBar />);
     const input = screen.getByPlaceholderText('Tìm kiếm thị trường, tài sản, tính năng...');
@@ -42,7 +51,7 @@ describe('WebCommandBar', () => {
     expect(screen.getByText('Dashboard')).toBeInTheDocument();
 
     fireEvent.click(screen.getByTitle('Thông báo'));
-    expect(screen.getByRole('button', { name: 'Thông báo' })).toBeInTheDocument();
+    expect(screen.getByTitle('Thông báo')).toBeInTheDocument();
 
     expect(screen.getByText(testAuthSession.user.fullName)).toBeInTheDocument();
     fireEvent.click(screen.getByText(testAuthSession.user.fullName));

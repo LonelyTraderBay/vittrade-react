@@ -1,11 +1,12 @@
 import React, { useState, useCallback, useMemo } from 'react';
+import { useUnreadNotificationsCount } from '@/features/support/model/support-queries';
 import { UIContext, type UIContextValue, type UIState } from './ui-context';
 
 export function UIProvider({ children }: { children: React.ReactNode }) {
+  const notifications = useUnreadNotificationsCount();
   const [state, setState] = useState<UIState>({
     isBalanceHidden: false,
     isOffline: false,
-    notifications: 3,
     pendingRewards: 2,
   });
 
@@ -17,10 +18,6 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
     setState((s) => ({ ...s, isOffline }));
   }, []);
 
-  const setNotifications = useCallback((notifications: number) => {
-    setState((s) => ({ ...s, notifications }));
-  }, []);
-
   const setPendingRewards = useCallback((pendingRewards: number) => {
     setState((s) => ({ ...s, pendingRewards }));
   }, []);
@@ -29,12 +26,12 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
   const value = useMemo<UIContextValue>(
     () => ({
       ...state,
+      notifications,
       toggleBalanceHidden,
       setIsOffline,
-      setNotifications,
       setPendingRewards,
     }),
-    [state, toggleBalanceHidden, setIsOffline, setNotifications, setPendingRewards],
+    [state, notifications, toggleBalanceHidden, setIsOffline, setPendingRewards],
   );
 
   return <UIContext.Provider value={value}>{children}</UIContext.Provider>;

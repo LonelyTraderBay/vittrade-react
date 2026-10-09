@@ -23,7 +23,9 @@ vi.mock('@/shared/ui/ThemedToaster', () => ({
 }));
 
 vi.mock('./PlatformSwitcher', () => ({
-  PlatformSwitcher: () => <div data-testid="platform-switcher" />,
+  PlatformSwitcher: ({ previewControlsVisible }: { previewControlsVisible: boolean }) => (
+    <div data-testid="platform-switcher" data-preview-controls-visible={previewControlsVisible} />
+  ),
 }));
 
 function renderAt(path: string) {
@@ -52,6 +54,19 @@ describe('RootLayout platform shells', () => {
     );
 
     expect(screen.getByTestId('preview-control-stub')).toHaveTextContent('Mock controls');
+    expect(screen.getByTestId('platform-switcher')).toHaveAttribute(
+      'data-preview-controls-visible',
+      'true',
+    );
+  });
+
+  it('keeps the regular platform badge placement when no development controls are supplied', () => {
+    renderAt('/w/home');
+
+    expect(screen.getByTestId('platform-switcher')).toHaveAttribute(
+      'data-preview-controls-visible',
+      'false',
+    );
   });
 
   it.each(['/home', '/markets'])('wraps phone route %s in MobileFrame', (path) => {

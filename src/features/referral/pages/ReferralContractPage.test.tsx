@@ -103,9 +103,7 @@ describe('ReferralContractPage', () => {
     let shouldFail = true;
     server.use(
       http.get('*/referral/overview', () => {
-        return shouldFail
-          ? HttpResponse.json({ message: 'Unavailable' }, { status: 503 })
-          : HttpResponse.json(overview());
+        return shouldFail ? HttpResponse.error() : HttpResponse.json(overview());
       }),
     );
     const user = userEvent.setup();

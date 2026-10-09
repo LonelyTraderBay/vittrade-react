@@ -74,7 +74,11 @@ function hasUnsubmittedFormChanges(): boolean {
   });
 }
 
-export function PlatformSwitcher() {
+export function PlatformSwitcher({
+  previewControlsVisible = false,
+}: {
+  previewControlsVisible?: boolean;
+} = {}) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -130,9 +134,10 @@ export function PlatformSwitcher() {
     <div
       className="fixed z-[9999] flex items-center gap-1.5 rounded-full px-2.5 pointer-events-none select-none"
       style={{
-        bottom: currentPlatform === 'phone' ? 100 : 24,
+        bottom: currentPlatform === 'phone' ? 100 : previewControlsVisible ? 112 : 24,
         right: 16,
         height: 32,
+        zIndex: previewControlsVisible ? 1200 : 9999,
         background: `${config.color}18`,
         border: `1px solid ${config.color}30`,
         backdropFilter: 'blur(12px)',
