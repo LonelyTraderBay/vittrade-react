@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { assertReleaseEnvironment } from './runtime-env-validation';
 
 export type AppMode = 'development' | 'test' | 'staging' | 'production';
 export type AppDataSource = 'mock' | 'api';
@@ -31,7 +32,30 @@ const rawEnvSchema = z.object({
   VITE_ENABLE_DEVTOOLS: z.string().optional(),
 });
 
-const raw = rawEnvSchema.parse(import.meta.env);
+const parsedRaw = rawEnvSchema.safeParse(import.meta.env);
+const invalidVariableNames = parsedRaw.success
+  ? []
+  : [
+      ...new Set(
+        parsedRaw.error.issues.flatMap((issue) =>
+          issue.path.filter((part): part is string => typeof part === 'string'),
+        ),
+      ),
+    ].sort();
+const raw = parsedRaw.success
+  ? parsedRaw.data
+  : {
+      MODE: import.meta.env.MODE,
+      DEV: import.meta.env.DEV,
+      PROD: import.meta.env.PROD,
+      VITE_DATA_SOURCE: undefined,
+      VITE_API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
+      VITE_WS_URL: import.meta.env.VITE_WS_URL,
+      VITE_APP_NAME: import.meta.env.VITE_APP_NAME,
+      VITE_RELEASE_VERSION: import.meta.env.VITE_RELEASE_VERSION,
+      VITE_ENABLE_ANALYTICS: import.meta.env.VITE_ENABLE_ANALYTICS,
+      VITE_ENABLE_DEVTOOLS: import.meta.env.VITE_ENABLE_DEVTOOLS,
+    };
 
 // Vite can statically eliminate development-only imports only when the build
 // flag remains a compile-time value. Keep this access inside the env boundary.
@@ -67,27 +91,17 @@ export const env: AppEnv = {
   enableDevtools: parseFlag(raw.VITE_ENABLE_DEVTOOLS, !isProd),
 };
 
-function isAbsoluteUrl(value: string, protocols: string[]): boolean {
-  try {
-    return protocols.includes(new URL(value).protocol);
-  } catch {
-    return false;
-  }
-}
-
 /** Fail fast at application startup instead of silently calling a placeholder backend. */
 export function assertRuntimeEnv(): void {
-  if ((env.isStaging || env.isProd) && env.dataSource === 'mock') {
-    throw new Error('Mock data source is not allowed in staging or production');
+  if (invalidVariableNames.length > 0) {
+    throw new Error(`Runtime environment is invalid: ${invalidVariableNames.join(', ')}`);
   }
 
-  if (!env.isProd) return;
-
-  const missing: string[] = [];
-  if (!isAbsoluteUrl(env.apiBaseUrl, ['https:'])) missing.push('VITE_API_BASE_URL');
-  if (!isAbsoluteUrl(env.wsUrl, ['wss:'])) missing.push('VITE_WS_URL');
-
-  if (missing.length > 0) {
-    throw new Error(`Production environment is incomplete: ${missing.join(', ')}`);
-  }
+  assertReleaseEnvironment({
+    mode: env.mode,
+    isProduction: env.isProd,
+    dataSource: env.dataSource,
+    apiBaseUrl: env.apiBaseUrl,
+    wsUrl: env.wsUrl,
+  });
 }

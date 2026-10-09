@@ -109,4 +109,23 @@ describe('auth OpenAPI login MFA contract', () => {
     expect(operation.responses['423']).toEqual({ $ref: '#/components/responses/AccountLocked' });
     expect(operation.responses).toHaveProperty('429');
   });
+
+  it('uses a valid six-digit pattern for all Auth MFA and password-reset codes', () => {
+    const codePatterns = [
+      authContract.components.schemas.LoginMfaVerificationRequest.properties.code.pattern,
+      authContract.components.schemas.RegistrationMfaVerificationRequest.properties.code.pattern,
+      authContract.components.schemas.ContactMfaVerificationRequest.properties.code.pattern,
+      authContract.components.schemas.MfaSetupConfirmationRequest.properties.code.pattern,
+      authContract.paths['/auth/password/change'].post.requestBody.content['application/json']
+        .schema.properties.mfaCode.pattern,
+      authContract.paths['/auth/password-reset/verify'].post.requestBody.content['application/json']
+        .schema.properties.code.pattern,
+    ];
+
+    for (const pattern of codePatterns) {
+      expect(pattern).toBe('^\\d{6}$');
+      expect(new RegExp(pattern).test('123456')).toBe(true);
+      expect(new RegExp(pattern).test('12345a')).toBe(false);
+    }
+  });
 });

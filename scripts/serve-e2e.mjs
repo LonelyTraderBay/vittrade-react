@@ -5,6 +5,16 @@ import path from 'node:path';
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const buildScript = path.join(projectRoot, 'scripts', 'build-e2e.mjs');
 const viteCli = path.join(projectRoot, 'node_modules', 'vite', 'bin', 'vite.js');
+const previewPort = Number(process.env.E2E_PREVIEW_PORT ?? '4173');
+if (!Number.isInteger(previewPort) || previewPort < 1 || previewPort > 65535) {
+  throw new Error('E2E_PREVIEW_PORT must be an integer between 1 and 65535.');
+}
+const previewEnvironment = {
+  ...process.env,
+  VITE_DATA_SOURCE: 'api',
+  VITE_API_BASE_URL: 'https://e2e.test',
+  VITE_WS_URL: 'wss://e2e.test',
+};
 
 const build = spawn(process.execPath, [buildScript], {
   cwd: projectRoot,
@@ -24,8 +34,8 @@ build.on('exit', (code) => {
 
   const preview = spawn(
     process.execPath,
-    [viteCli, 'preview', '--host', '127.0.0.1', '--port', '4173', '--strictPort'],
-    { cwd: projectRoot, stdio: 'inherit' },
+    [viteCli, 'preview', '--host', '127.0.0.1', '--port', String(previewPort), '--strictPort'],
+    { cwd: projectRoot, stdio: 'inherit', env: previewEnvironment },
   );
 
   preview.on('error', (error) => {

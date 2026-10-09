@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { isApiError } from '@/shared/api/api-error';
 import type { HttpClient } from '@/shared/api/http-client';
 import type {
   AuthSession,
@@ -147,14 +148,20 @@ export function createAuthApi(client: HttpClient): AuthApi {
           body: request,
         }),
       ),
-    getSession: async () =>
-      parseNullableSession(
-        await client.request<unknown>({
-          method: 'GET',
-          path: '/auth/session',
-          skipUnauthorizedHandler: true,
-        }),
-      ),
+    getSession: async () => {
+      try {
+        return parseNullableSession(
+          await client.request<unknown>({
+            method: 'GET',
+            path: '/auth/session',
+            skipUnauthorizedHandler: true,
+          }),
+        );
+      } catch (error) {
+        if (isApiError(error) && error.status === 401) return null;
+        throw error;
+      }
+    },
     logout: () =>
       client.request<void>({ method: 'POST', path: '/auth/logout', skipUnauthorizedHandler: true }),
     refresh: async () =>

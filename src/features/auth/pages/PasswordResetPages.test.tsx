@@ -56,11 +56,7 @@ describe('password reset contract flow', () => {
   });
 
   it('reports a request-code failure without advancing the flow', async () => {
-    server.use(
-      http.post('*/auth/password-reset/request', () =>
-        HttpResponse.json({ message: 'Reset service unavailable' }, { status: 503 }),
-      ),
-    );
+    server.use(http.post('*/auth/password-reset/request', () => HttpResponse.error()));
     const user = userEvent.setup();
     renderWithProviders(<ForgotPasswordContractPage />);
 
@@ -101,7 +97,7 @@ describe('password reset contract flow', () => {
       http.post('*/auth/password-reset/request', () => new HttpResponse(null, { status: 204 })),
       http.post('*/auth/password-reset/verify', () => HttpResponse.json({ resetToken: 'token-1' })),
       http.post('*/auth/password-reset/confirm', () =>
-        HttpResponse.json({ message: 'Reset token expired' }, { status: 410 }),
+        HttpResponse.json({ message: 'Invalid request' }, { status: 400 }),
       ),
     );
     const user = userEvent.setup();

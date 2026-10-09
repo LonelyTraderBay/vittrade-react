@@ -6,8 +6,8 @@ const result = spawnSync(process.execPath, [buildScript, '--mode', 'staging'], {
   env: {
     ...process.env,
     // Chỉ thỏa validation của staging runtime; E2E không coi API failure là success.
-    VITE_API_BASE_URL: 'https://e2e.invalid',
-    VITE_WS_URL: 'wss://e2e.invalid',
+    VITE_API_BASE_URL: 'https://e2e.test',
+    VITE_WS_URL: 'wss://e2e.test',
     VITE_APP_NAME: 'VitTrade E2E',
     VITE_RELEASE_VERSION: 'e2e',
     VITE_ENABLE_ANALYTICS: 'false',

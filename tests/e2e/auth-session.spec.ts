@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 const session = {
   user: {
@@ -31,6 +31,38 @@ const profile = {
   totalBalance: 1_000,
 };
 
+async function openWebLoginMfaChallenge(page: Page, challengeId: string): Promise<void> {
+  await page.route('**/auth/session', (route) => route.fulfill({ json: null }));
+  await page.route('https://e2e.test/auth/login', (route) =>
+    route.fulfill({
+      json: {
+        status: 'mfa_required',
+        challenge: {
+          id: challengeId,
+          method: 'email',
+          maskedDestination: 'a***@example.com',
+          expiresAt: '2099-01-01T00:05:00.000Z',
+        },
+      },
+    }),
+  );
+
+  await page.goto('/w/auth/login');
+  await page.getByTestId('auth-email').fill('auth@example.com');
+  await page.getByTestId('auth-password').fill('correct-password');
+  await page.getByTestId('auth-submit').click();
+  await expect(page).toHaveURL(/\/w\/auth\/otp$/);
+  await expect(page.getByTestId('auth-sign-out')).toHaveCount(0);
+}
+
+async function submitWebOtp(page: Page, code: string): Promise<void> {
+  const otpInputs = page.locator('input[maxlength="1"]');
+  await expect(otpInputs).toHaveCount(6);
+  for (let index = 0; index < code.length; index += 1) {
+    await otpInputs.nth(index).fill(code[index]);
+  }
+}
+
 test.describe('auth session smoke on staging build', () => {
   test('logs in through the auth contract and can sign out', async ({ page }) => {
     let loginBody: Record<string, unknown> | undefined;
@@ -40,7 +72,7 @@ test.describe('auth session smoke on staging build', () => {
     await page.route('**/auth/session', (route) =>
       route.fulfill({ json: authenticated ? session : null }),
     );
-    await page.route('https://e2e.invalid/auth/login', async (route) => {
+    await page.route('https://e2e.test/auth/login', async (route) => {
       loginBody = route.request().postDataJSON() as Record<string, unknown>;
       authenticated = true;
       return route.fulfill({ json: { status: 'authenticated', session } });
@@ -51,7 +83,7 @@ test.describe('auth session smoke on staging build', () => {
       return route.fulfill({ status: 204 });
     });
     await page.route('**/market/pairs**', (route) => route.fulfill({ json: { items: [] } }));
-    await page.route('https://e2e.invalid/profile', (route) => route.fulfill({ json: profile }));
+    await page.route('https://e2e.test/profile', (route) => route.fulfill({ json: profile }));
 
     await page.goto('/auth/login');
     await page.getByTestId('auth-email').fill('auth@example.com');
@@ -72,6 +104,24 @@ test.describe('auth session smoke on staging build', () => {
 
     await expect.poll(() => logoutCalled).toBe(true);
     await expect(page).toHaveURL(/\/auth\/login$/);
+  });
+
+  test('session HTTP 401 initializes the browser as a guest without an auth error', async ({
+    page,
+  }) => {
+    let sessionCalls = 0;
+    await page.route('https://e2e.test/auth/session', async (route) => {
+      sessionCalls += 1;
+      return route.fulfill({ status: 401 });
+    });
+
+    await page.goto('/w/auth/login');
+
+    await expect.poll(() => sessionCalls).toBeGreaterThan(0);
+    await expect(page.getByRole('heading', { name: 'Đăng nhập', exact: true })).toBeVisible();
+    await expect(page.getByText('Không thể đăng nhập lúc này. Vui lòng thử lại.')).toHaveCount(0);
+    await expect(page.getByTestId('auth-sign-out')).toHaveCount(0);
+    await expect(page).toHaveURL(/\/w\/auth\/login$/);
   });
 
   test('changes the password through current-password and MFA contract endpoints', async ({
@@ -125,10 +175,10 @@ test.describe('auth session smoke on staging build', () => {
     await page.route('**/auth/session', (route) =>
       route.fulfill({ json: authenticated ? session : null }),
     );
-    await page.route('https://e2e.invalid/auth/login', (route) =>
+    await page.route('https://e2e.test/auth/login', (route) =>
       route.fulfill({ json: { status: 'mfa_required', challenge } }),
     );
-    await page.route('https://e2e.invalid/auth/login/mfa/verify', async (route) => {
+    await page.route('https://e2e.test/auth/login/mfa/verify', async (route) => {
       verifyBody = route.request().postDataJSON() as Record<string, unknown>;
       authenticated = true;
       return route.fulfill({ json: session });
@@ -170,10 +220,10 @@ test.describe('auth session smoke on staging build', () => {
     await page.route('**/auth/session', (route) =>
       route.fulfill({ json: authenticated ? session : null }),
     );
-    await page.route('https://e2e.invalid/auth/login', (route) =>
+    await page.route('https://e2e.test/auth/login', (route) =>
       route.fulfill({ json: { status: 'mfa_required', challenge } }),
     );
-    await page.route('https://e2e.invalid/auth/login/mfa/verify', async (route) => {
+    await page.route('https://e2e.test/auth/login/mfa/verify', async (route) => {
       verifyBody = route.request().postDataJSON() as Record<string, unknown>;
       authenticated = true;
       return route.fulfill({ json: session });
@@ -204,7 +254,7 @@ test.describe('auth session smoke on staging build', () => {
   }) => {
     let verifyCalled = false;
     await page.route('**/auth/session', (route) => route.fulfill({ json: null }));
-    await page.route('https://e2e.invalid/auth/login', (route) =>
+    await page.route('https://e2e.test/auth/login', (route) =>
       route.fulfill({
         json: {
           status: 'mfa_required',
@@ -217,7 +267,7 @@ test.describe('auth session smoke on staging build', () => {
         },
       }),
     );
-    await page.route('https://e2e.invalid/auth/login/mfa/verify', (route) => {
+    await page.route('https://e2e.test/auth/login/mfa/verify', (route) => {
       verifyCalled = true;
       return route.fulfill({ json: session });
     });
@@ -230,5 +280,182 @@ test.describe('auth session smoke on staging build', () => {
     await expect(page).toHaveURL(/\/auth\/login$/);
     await expect(page.getByTestId('auth-sign-out')).toHaveCount(0);
     expect(verifyCalled).toBe(false);
+  });
+
+  test('server-expired login MFA challenge returns to login without authenticating', async ({
+    page,
+  }) => {
+    let verifyBody: Record<string, unknown> | undefined;
+    await page.route('https://e2e.test/auth/login/mfa/verify', async (route) => {
+      verifyBody = route.request().postDataJSON() as Record<string, unknown>;
+      return route.fulfill({ status: 410 });
+    });
+
+    await openWebLoginMfaChallenge(page, 'server-expired-login-challenge-e2e');
+    await submitWebOtp(page, '111111');
+
+    await expect
+      .poll(() => verifyBody)
+      .toEqual({
+        challengeId: 'server-expired-login-challenge-e2e',
+        code: '111111',
+      });
+    await expect(page).toHaveURL(/\/w\/auth\/login$/);
+    await expect(page.getByTestId('auth-sign-out')).toHaveCount(0);
+  });
+
+  test('invalid login MFA code stays on OTP and does not authenticate', async ({ page }) => {
+    let verifyBody: Record<string, unknown> | undefined;
+    await page.route('https://e2e.test/auth/login/mfa/verify', async (route) => {
+      verifyBody = route.request().postDataJSON() as Record<string, unknown>;
+      return route.fulfill({ status: 400 });
+    });
+
+    await openWebLoginMfaChallenge(page, 'invalid-login-challenge-e2e');
+    await submitWebOtp(page, '111111');
+
+    await expect
+      .poll(() => verifyBody)
+      .toEqual({
+        challengeId: 'invalid-login-challenge-e2e',
+        code: '111111',
+      });
+    await expect(page.getByText('Mã xác thực không đúng. Vui lòng kiểm tra lại.')).toBeVisible();
+    await expect(page).toHaveURL(/\/w\/auth\/otp$/);
+    await expect(page.getByTestId('auth-sign-out')).toHaveCount(0);
+  });
+
+  test('status-only login MFA rate limit shows retry guidance without claiming an invalid code', async ({
+    page,
+  }) => {
+    let verifyBody: Record<string, unknown> | undefined;
+    await page.route('https://e2e.test/auth/login/mfa/verify', async (route) => {
+      verifyBody = route.request().postDataJSON() as Record<string, unknown>;
+      return route.fulfill({ status: 429 });
+    });
+
+    await openWebLoginMfaChallenge(page, 'rate-limited-login-challenge-e2e');
+    await submitWebOtp(page, '123456');
+
+    await expect
+      .poll(() => verifyBody)
+      .toEqual({
+        challengeId: 'rate-limited-login-challenge-e2e',
+        code: '123456',
+      });
+    await expect(page.getByText(/Quá nhiều lần xác thực/)).toBeVisible();
+    await expect(page.getByText(/Mã xác thực không đúng/)).toHaveCount(0);
+    await expect(page).toHaveURL(/\/w\/auth\/otp$/);
+    await expect(page.getByTestId('auth-sign-out')).toHaveCount(0);
+  });
+
+  test('locked login MFA response routes to the account-locked page without authenticating', async ({
+    page,
+  }) => {
+    let verifyBody: Record<string, unknown> | undefined;
+    await page.route('https://e2e.test/auth/login/mfa/verify', async (route) => {
+      verifyBody = route.request().postDataJSON() as Record<string, unknown>;
+      return route.fulfill({ status: 423 });
+    });
+
+    await openWebLoginMfaChallenge(page, 'locked-login-challenge-e2e');
+    await submitWebOtp(page, '123456');
+
+    await expect
+      .poll(() => verifyBody)
+      .toEqual({
+        challengeId: 'locked-login-challenge-e2e',
+        code: '123456',
+      });
+    await expect(page).toHaveURL(/\/w\/auth\/account-locked$/);
+    await expect(page.getByRole('heading', { name: 'Tài khoản tạm khóa' })).toBeVisible();
+    await expect(page.getByTestId('auth-sign-out')).toHaveCount(0);
+  });
+
+  test('unauthorized login response stays on the form without creating a session', async ({
+    page,
+  }) => {
+    let loginBody: Record<string, unknown> | undefined;
+
+    await page.route('**/auth/session', (route) => route.fulfill({ json: null }));
+    await page.route('https://e2e.test/auth/login', async (route) => {
+      loginBody = route.request().postDataJSON() as Record<string, unknown>;
+      return route.fulfill({ status: 401 });
+    });
+
+    await page.goto('/w/auth/login');
+    await page.getByTestId('auth-email').fill('wrong-password@example.com');
+    await page.getByTestId('auth-password').fill('incorrect-password');
+    await page.getByTestId('auth-submit').click();
+
+    await expect
+      .poll(() => loginBody)
+      .toEqual({
+        email: 'wrong-password@example.com',
+        password: 'incorrect-password',
+      });
+    await expect(page.getByText('Không thể đăng nhập lúc này. Vui lòng thử lại.')).toBeVisible();
+    await expect(page).toHaveURL(/\/w\/auth\/login$/);
+    await expect(page.getByTestId('auth-sign-out')).toHaveCount(0);
+    await expect(page.locator('input[maxlength="1"]')).toHaveCount(0);
+  });
+
+  test('locked login response routes to the account-locked page without authenticating', async ({
+    page,
+  }) => {
+    await page.route('**/auth/session', (route) => route.fulfill({ json: null }));
+    await page.route('https://e2e.test/auth/login', (route) => route.fulfill({ status: 423 }));
+
+    await page.goto('/w/auth/login');
+    await page.getByTestId('auth-email').fill('locked@example.com');
+    await page.getByTestId('auth-password').fill('correct-password');
+    await page.getByTestId('auth-submit').click();
+
+    await expect(page).toHaveURL(/\/w\/auth\/account-locked$/);
+    await expect(page.getByRole('heading', { name: 'Tài khoản tạm khóa' })).toBeVisible();
+    await expect(page.getByTestId('auth-sign-out')).toHaveCount(0);
+  });
+
+  test('password reset requests a code, verifies it, and uses the server token', async ({
+    page,
+  }) => {
+    const email = 'reset-user@example.com';
+    const code = '123456';
+    const resetToken = 'server-issued-reset-token-e2e';
+    const newPassword = 'strong-password-123';
+    let requestBody: Record<string, unknown> | undefined;
+    let verifyBody: Record<string, unknown> | undefined;
+    let confirmBody: Record<string, unknown> | undefined;
+
+    await page.route('**/auth/session', (route) => route.fulfill({ json: null }));
+    await page.route('https://e2e.test/auth/password-reset/request', async (route) => {
+      requestBody = route.request().postDataJSON() as Record<string, unknown>;
+      return route.fulfill({ status: 204 });
+    });
+    await page.route('https://e2e.test/auth/password-reset/verify', async (route) => {
+      verifyBody = route.request().postDataJSON() as Record<string, unknown>;
+      return route.fulfill({ json: { resetToken } });
+    });
+    await page.route('https://e2e.test/auth/password-reset/confirm', async (route) => {
+      confirmBody = route.request().postDataJSON() as Record<string, unknown>;
+      return route.fulfill({ status: 204 });
+    });
+
+    await page.goto('/w/auth/forgot-password');
+    await page.getByLabel('Email đăng ký').fill(email);
+    await page.getByRole('button', { name: 'Gửi mã xác minh' }).click();
+    await expect.poll(() => requestBody).toEqual({ email });
+    await expect(page.getByRole('heading', { name: 'Nhập mã OTP' })).toBeVisible();
+
+    await page.getByLabel('Mã OTP').fill(code);
+    await page.getByRole('button', { name: 'Xác nhận' }).click();
+    await expect.poll(() => verifyBody).toEqual({ email, code });
+
+    await page.getByLabel('Mật khẩu mới').fill(newPassword);
+    await page.getByLabel('Nhập lại mật khẩu').fill(newPassword);
+    await page.getByRole('button', { name: 'Đặt lại mật khẩu' }).click();
+    await expect.poll(() => confirmBody).toEqual({ email, resetToken, newPassword });
+    await expect(page.getByText('Thành công!')).toBeVisible();
+    await expect(page.getByTestId('auth-sign-out')).toHaveCount(0);
   });
 });

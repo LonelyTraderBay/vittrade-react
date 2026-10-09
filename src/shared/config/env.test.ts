@@ -60,9 +60,13 @@ describe('runtime environment boundary', () => {
   });
 
   it('rejects unsupported data-source values', async () => {
+    vi.stubEnv('DEV', true);
     vi.stubEnv('VITE_DATA_SOURCE', 'fixture');
 
-    await expect(import('./env')).rejects.toThrow();
+    const { env, assertRuntimeEnv } = await import('./env');
+
+    expect(env.dataSource).toBe('mock');
+    expect(assertRuntimeEnv).toThrow('Runtime environment is invalid: VITE_DATA_SOURCE');
   });
 
   it('fails closed when production endpoints use insecure protocols', async () => {
@@ -78,6 +82,53 @@ describe('runtime environment boundary', () => {
     expect(assertRuntimeEnv).toThrow(
       'Production environment is incomplete: VITE_API_BASE_URL, VITE_WS_URL',
     );
+  });
+
+  it.each([
+    { mode: 'staging', isProd: false, label: 'Staging' },
+    { mode: 'production', isProd: true, label: 'Production' },
+  ])('rejects reserved .invalid endpoints in $mode', async ({ mode, isProd, label }) => {
+    vi.stubEnv('MODE', mode);
+    vi.stubEnv('DEV', false);
+    vi.stubEnv('PROD', isProd);
+    vi.stubEnv('VITE_DATA_SOURCE', 'api');
+    vi.stubEnv('VITE_API_BASE_URL', `https://${mode}.api.example.invalid`);
+    vi.stubEnv('VITE_WS_URL', `wss://${mode}.ws.example.invalid/socket`);
+
+    const { env, assertRuntimeEnv } = await import('./env');
+
+    expect(env.dataSource).toBe('api');
+    expect(assertRuntimeEnv).toThrow(
+      `${label} environment is incomplete: VITE_API_BASE_URL, VITE_WS_URL`,
+    );
+  });
+
+  it('validates staging endpoints and accepts HTTPS/WSS values outside the placeholder domain', async () => {
+    vi.stubEnv('MODE', 'staging');
+    vi.stubEnv('DEV', false);
+    vi.stubEnv('PROD', false);
+    vi.stubEnv('VITE_DATA_SOURCE', 'api');
+    vi.stubEnv('VITE_API_BASE_URL', 'https://staging.example.test');
+    vi.stubEnv('VITE_WS_URL', 'wss://staging.example.test/stream');
+
+    const { env, assertRuntimeEnv } = await import('./env');
+
+    expect(env.isStaging).toBe(true);
+    expect(assertRuntimeEnv).not.toThrow();
+  });
+
+  it('applies the release guard during a production build even with a custom Vite mode', async () => {
+    const { assertReleaseEnvironment } = await import('./runtime-env-validation');
+
+    expect(() =>
+      assertReleaseEnvironment({
+        mode: 'preview',
+        isProduction: true,
+        dataSource: 'api',
+        apiBaseUrl: 'https://api.example.invalid',
+        wsUrl: 'wss://ws.example.invalid',
+      }),
+    ).toThrow('Production environment is incomplete: VITE_API_BASE_URL, VITE_WS_URL');
   });
 
   it('accepts secure production HTTP and WebSocket endpoints', async () => {
