@@ -35,4 +35,18 @@ describe('IntegrationPendingPage', () => {
     await user.click(screen.getByRole('button', { name: 'Về trang chính' }));
     expect(screen.getByTestId('current-path')).toHaveTextContent('/w');
   });
+
+  it('falls back to the unprefixed root when no platform prefix is active', async () => {
+    const user = userEvent.setup();
+    renderWithProviders(
+      <>
+        <IntegrationPendingPage />
+        <CurrentPath />
+      </>,
+      { routerProps: { initialEntries: ['/trade/convert'] } },
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Về trang chính' }));
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/');
+  });
 });

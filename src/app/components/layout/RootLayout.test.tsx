@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { lazy, type ComponentType } from 'react';
 import type { ReactNode } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
@@ -41,6 +42,23 @@ function renderAt(path: string) {
 }
 
 describe('RootLayout platform shells', () => {
+  it('shows a lightweight loading status while a route chunk is pending', () => {
+    const LazyRoute = lazy(() => new Promise<{ default: ComponentType }>(() => undefined));
+
+    render(
+      <MemoryRouter initialEntries={['/w/home']}>
+        <Routes>
+          <Route element={<RootLayout />}>
+            <Route path="*" element={<LazyRoute />} />
+          </Route>
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByRole('status', { name: 'Đang tải trang' })).toBeInTheDocument();
+    expect(screen.getByText('Đang tải…')).toBeInTheDocument();
+  });
+
   it('renders the development control supplied by route composition', () => {
     const PreviewControl = () => <div data-testid="preview-control-stub">Mock controls</div>;
     render(

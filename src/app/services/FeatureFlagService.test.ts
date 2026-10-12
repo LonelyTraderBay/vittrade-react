@@ -1,6 +1,11 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { browserStorage } from '@/shared/lib/browser-storage';
+import type { FeatureFlag } from '@/shared/types/feature-flags';
 import { FeatureFlagService } from './FeatureFlagService';
+
+function makeFlag(key: string, overrides: Partial<FeatureFlag> = {}): FeatureFlag {
+  return { key, name: key, description: '', enabled: true, ...overrides };
+}
 
 describe('FeatureFlagService storage', () => {
   const services: FeatureFlagService[] = [];
@@ -33,13 +38,17 @@ describe('FeatureFlagService storage', () => {
     const listener = vi.fn();
     const unsubscribe = service.subscribe(listener);
 
+    expect(service.getVersion()).toBe(0);
     service.override('qa_flag', false);
+    expect(service.getVersion()).toBe(1);
     service.clearOverrides();
+    expect(service.getVersion()).toBe(2);
 
     expect(listener).toHaveBeenCalledTimes(2);
     unsubscribe();
     service.override('qa_flag', true);
     expect(listener).toHaveBeenCalledTimes(2);
+    expect(service.getVersion()).toBe(3);
   });
 
   it('loads cached flags and user variant assignments through browser storage', () => {
@@ -59,13 +68,20 @@ describe('FeatureFlagService storage', () => {
       }
       return null;
     });
-    const service = new FeatureFlagService({ cache: true, cacheTTL: 60_000, refreshInterval: 0 });
+    const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    const service = new FeatureFlagService({
+      cache: true,
+      cacheTTL: 60_000,
+      debug: true,
+      refreshInterval: 0,
+    });
     services.push(service);
 
     expect(service.getAllFlags().cached_flag).toMatchObject({ enabled: true, name: 'Cached flag' });
     expect(service.getVariant('dca_shortcut_variant', { userId: 'user-1' })).toBe('compact');
     expect(getItem).toHaveBeenCalledWith('feature_flags_cache');
     expect(getItem).toHaveBeenCalledWith('feature_flag_assignments');
+    expect(log).toHaveBeenCalledWith('[FeatureFlags] Loaded from cache');
   });
 
   it('checks default flag states, uses fallbacks and applies overrides first', () => {
@@ -81,6 +97,45 @@ describe('FeatureFlagService storage', () => {
     service.override('dca_enabled', false);
     expect(service.isEnabled('dca_enabled')).toBe(false);
     expect(service.getValue('dca_enabled', true)).toBe(false);
+  });
+
+  it('returns typed variant values including false and zero and falls back only when absent', () => {
+    const flags = {
+      zero_value: makeFlag('zero_value', {
+        variants: [{ key: 'zero', name: 'Zero', weight: 100, value: 0 }],
+      }),
+      false_value: makeFlag('false_value', {
+        variants: [{ key: 'false', name: 'False', weight: 100, value: false }],
+      }),
+      missing_value: makeFlag('missing_value', {
+        variants: [{ key: 'present', name: 'Present', weight: 100, value: 'present' }],
+      }),
+      zero_weights: makeFlag('zero_weights', {
+        variants: [
+          { key: 'first', name: 'First', weight: 0, value: 'first' },
+          { key: 'last', name: 'Last', weight: 0, value: 'last' },
+        ],
+      }),
+    };
+    vi.spyOn(browserStorage.local, 'getItem').mockImplementation((key) => {
+      if (key === 'feature_flags_cache') {
+        return JSON.stringify({ timestamp: Date.now(), flags });
+      }
+      if (key === 'feature_flag_assignments') {
+        return JSON.stringify({ 'missing_value:anonymous': 'unknown-variant' });
+      }
+      return null;
+    });
+    const service = new FeatureFlagService({ cacheTTL: 60_000, refreshInterval: 0 });
+    services.push(service);
+
+    expect(service.getValue('zero_value', 7)).toBe(0);
+    expect(service.getValue('false_value', true)).toBe(false);
+    expect(service.getValue('missing_value', 'fallback')).toBe('fallback');
+    expect(service.getVariant('zero_weights')).toBe('last');
+    expect(service.getValue('dca_enabled', false)).toBe(true);
+    expect(service.getVariant('dca_enabled')).toBe('control');
+    expect(service.getVariant('missing_flag')).toBe('control');
   });
 
   it('enforces cached user segments and rollout percentage', () => {
@@ -120,7 +175,8 @@ describe('FeatureFlagService storage', () => {
   it('assigns and persists a stable variant for the same user', () => {
     vi.spyOn(browserStorage.local, 'getItem').mockReturnValue(null);
     const setItem = vi.spyOn(browserStorage.local, 'setItem').mockReturnValue(true);
-    const service = new FeatureFlagService({ refreshInterval: 0 });
+    const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    const service = new FeatureFlagService({ debug: true, refreshInterval: 0 });
     services.push(service);
 
     const first = service.getVariant('dca_shortcut_variant', { userId: 'user-42' });
@@ -132,6 +188,42 @@ describe('FeatureFlagService storage', () => {
       'feature_flag_assignments',
       JSON.stringify({ 'dca_shortcut_variant:user-42': first }),
     );
+    expect(log).toHaveBeenCalledWith(
+      `[FeatureFlags] Assigned variant "${first}" for flag "dca_shortcut_variant"`,
+    );
+  });
+
+  it('assigns both configured variants across deterministic user buckets', () => {
+    vi.spyOn(browserStorage.local, 'getItem').mockReturnValue(null);
+    const service = new FeatureFlagService({ cache: false, refreshInterval: 0 });
+    services.push(service);
+
+    const variants = new Set(
+      Array.from({ length: 200 }, (_, index) =>
+        service.getVariant('dca_shortcut_variant', { userId: `user-${index}` }),
+      ),
+    );
+
+    expect(variants).toEqual(new Set(['full', 'compact']));
+  });
+
+  it('keeps rollout enabled and disabled outcomes for user-specific buckets', () => {
+    const rolloutFlag = makeFlag('half_rollout', { rolloutPercentage: 50 });
+    vi.spyOn(browserStorage.local, 'getItem').mockImplementation((key) =>
+      key === 'feature_flags_cache'
+        ? JSON.stringify({ timestamp: Date.now(), flags: { half_rollout: rolloutFlag } })
+        : null,
+    );
+    const service = new FeatureFlagService({ cacheTTL: 60_000, refreshInterval: 0 });
+    services.push(service);
+
+    const outcomes = Array.from({ length: 100 }, (_, index) =>
+      service.isEnabled('half_rollout', { userId: `rollout-user-${index}` }),
+    );
+
+    expect(outcomes).toContain(true);
+    expect(outcomes).toContain(false);
+    expect(service.isEnabled('half_rollout', {})).toBe(service.isEnabled('half_rollout'));
   });
 
   it('ignores an expired cache and removes it from browser storage', () => {
@@ -179,6 +271,28 @@ describe('FeatureFlagService storage', () => {
     unsubscribe();
   });
 
+  it('supports uncached debug refresh and logs its successful update', async () => {
+    vi.spyOn(browserStorage.local, 'getItem').mockReturnValue(null);
+    const setItem = vi.spyOn(browserStorage.local, 'setItem').mockReturnValue(true);
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+      json: async () => ({}),
+    } as Response);
+    const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    const service = new FeatureFlagService({
+      cache: false,
+      debug: true,
+      remoteConfigUrl: '/flags',
+      refreshInterval: 0,
+    });
+    services.push(service);
+
+    await service.refresh();
+
+    expect(fetchMock).toHaveBeenCalledWith('/flags');
+    expect(setItem).not.toHaveBeenCalledWith('feature_flags_cache', expect.any(String));
+    expect(log).toHaveBeenCalledWith('[FeatureFlags] Refreshed from remote');
+  });
+
   it('logs remote refresh failures without discarding existing flags', async () => {
     vi.spyOn(browserStorage.local, 'getItem').mockReturnValue(null);
     vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('network unavailable'));
@@ -203,6 +317,8 @@ describe('FeatureFlagService storage', () => {
     services.push(service);
 
     service.enableDebugMode(true);
+    service.enableDebugMode(false);
+    service.enableDebugMode(true);
     expect(service.isEnabled('unknown_flag')).toBe(false);
     service.override('debug_flag', true);
     service.clearOverrides();
@@ -215,6 +331,7 @@ describe('FeatureFlagService storage', () => {
     expect(debugInfo.flags).toHaveProperty('dca_enabled');
     expect(warn).toHaveBeenCalledWith('[FeatureFlags] Flag not found: unknown_flag');
     expect(log).toHaveBeenCalledWith('[FeatureFlags] Debug mode enabled');
+    expect(log).toHaveBeenCalledWith('[FeatureFlags] Debug mode disabled');
     expect(log).toHaveBeenCalledWith('[FeatureFlags] Cleared all overrides');
   });
 
@@ -254,6 +371,69 @@ describe('FeatureFlagService storage', () => {
     expect(error).toHaveBeenCalledWith(
       '[FeatureFlags] Failed to load assignments:',
       expect.any(SyntaxError),
+    );
+  });
+
+  it('logs and preserves in-memory override changes when session storage writes fail', () => {
+    vi.spyOn(browserStorage.local, 'getItem').mockReturnValue(null);
+    vi.spyOn(browserStorage.session, 'setItem').mockImplementation(() => {
+      throw new Error('session storage unavailable');
+    });
+    vi.spyOn(browserStorage.session, 'removeItem').mockImplementation(() => {
+      throw new Error('session storage unavailable');
+    });
+    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const service = new FeatureFlagService({ cache: false, refreshInterval: 0 });
+    services.push(service);
+
+    service.override('temporary', true);
+    expect(service.isEnabled('temporary')).toBe(true);
+    service.clearOverrides();
+    expect(service.isEnabled('temporary')).toBe(false);
+
+    expect(error).toHaveBeenCalledWith(
+      '[FeatureFlags] Failed to save overrides:',
+      expect.any(Error),
+    );
+    expect(error).toHaveBeenCalledWith(
+      '[FeatureFlags] Failed to clear overrides:',
+      expect.any(Error),
+    );
+  });
+
+  it('logs cache-load, assignment-write, and remote-cache-write failures without losing defaults', async () => {
+    vi.spyOn(browserStorage.local, 'getItem').mockImplementation((key) => {
+      if (key === 'feature_flags_cache') return '{invalid';
+      if (key === 'feature_flag_assignments') return null;
+      return null;
+    });
+    vi.spyOn(browserStorage.local, 'setItem').mockImplementation(() => {
+      throw new Error('local storage unavailable');
+    });
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+      json: async () => ({ remote_flag: makeFlag('remote_flag') }),
+    } as Response);
+    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const service = new FeatureFlagService({
+      cache: true,
+      cacheTTL: 60_000,
+      remoteConfigUrl: '/flags',
+      refreshInterval: 0,
+    });
+    services.push(service);
+
+    await service.refresh();
+    service.getVariant('dca_shortcut_variant', { userId: 'storage-failure-user' });
+
+    expect(service.getAllFlags()).toHaveProperty('dca_enabled');
+    expect(error).toHaveBeenCalledWith(
+      '[FeatureFlags] Failed to load cache:',
+      expect.any(SyntaxError),
+    );
+    expect(error).toHaveBeenCalledWith('[FeatureFlags] Failed to save cache:', expect.any(Error));
+    expect(error).toHaveBeenCalledWith(
+      '[FeatureFlags] Failed to save assignments:',
+      expect.any(Error),
     );
   });
 });

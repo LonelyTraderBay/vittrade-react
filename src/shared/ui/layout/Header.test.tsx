@@ -1,8 +1,13 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, screen } from '@testing-library/react';
 import { Search } from 'lucide-react';
+import { useLocation } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
-import { Header } from './Header';
+import { CountBadge, Header } from './Header';
+
+function CurrentPath() {
+  return <output data-testid="current-path">{useLocation().pathname}</output>;
+}
 
 afterEach(() => {
   vi.useRealTimers();
@@ -84,5 +89,115 @@ describe('Header', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Tìm kiếm' }));
     expect(onSearch).toHaveBeenCalledOnce();
+  });
+
+  it('omits count badges for zero and negative counts', () => {
+    const { container } = renderWithProviders(
+      <>
+        <CountBadge count={0} />
+        <CountBadge count={-1} />
+      </>,
+    );
+
+    expect(container).toBeEmptyDOMElement();
+  });
+
+  it('uses a supplied page leading element and transparent bar without a breadcrumb', () => {
+    const { container } = renderWithProviders(
+      <Header variant="page" title="Ví" transparent left={<span>Ví spot</span>} />,
+    );
+    const bar = container.querySelector('.contents > div');
+
+    expect(screen.getByText('Ví spot')).toBeInTheDocument();
+    expect((bar as HTMLElement).style.background).toBe('transparent');
+    expect((bar as HTMLElement).style.borderBottomStyle).toBe('none');
+  });
+
+  it('keeps the transparent page border when its breadcrumb is shown', () => {
+    const { container } = renderWithProviders(
+      <Header variant="page" title="Thị trường" transparent breadcrumb />,
+      { routerProps: { initialEntries: ['/w/markets/overview'] } },
+    );
+    const bar = container.querySelector('.contents > div');
+
+    expect(screen.getByRole('navigation', { name: 'breadcrumb' })).toBeInTheDocument();
+    expect(bar).not.toHaveStyle({ borderBottom: 'none' });
+  });
+
+  it('keeps the standard placeholder and renders its more action and breadcrumb', () => {
+    const { container } = renderWithProviders(
+      <Header
+        variant="standard"
+        title="Tài khoản"
+        subtitle="Thông tin của bạn"
+        badge={0}
+        right="more"
+        transparent
+        breadcrumb
+      />,
+      { routerProps: { initialEntries: ['/w/account/profile'] } },
+    );
+    const bar = container.querySelector('.contents > div');
+
+    expect(screen.getByRole('button', { name: 'Thêm' })).toBeInTheDocument();
+    expect(screen.getByText('Thông tin của bạn')).toBeInTheDocument();
+    expect(screen.getByRole('navigation', { name: 'breadcrumb' })).toBeInTheDocument();
+    expect(screen.queryByText('0')).not.toBeInTheDocument();
+    expect(bar).toHaveStyle({ background: 'transparent' });
+  });
+
+  it('keeps a 36-pixel right placeholder for a standard header with no action', () => {
+    const { container } = renderWithProviders(<Header variant="standard" right="none" />);
+    const placeholder = Array.from(container.querySelectorAll('div')).find(
+      (element) => (element as HTMLElement).style.width === '36px',
+    );
+
+    expect(placeholder).toBeInTheDocument();
+  });
+
+  it('uses the default accessible label for an action without a label', () => {
+    const onAction = vi.fn();
+    renderWithProviders(<Header action={{ icon: Search, onClick: onAction }} />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Action' }));
+    expect(onAction).toHaveBeenCalledOnce();
+  });
+
+  it('renders a React element supplied as the standard right-side content', () => {
+    renderWithProviders(
+      <Header
+        variant="standard"
+        right={<span data-testid="custom-header-action">Tuỳ chọn</span>}
+      />,
+    );
+
+    expect(screen.getByTestId('custom-header-action')).toHaveTextContent('Tuỳ chọn');
+  });
+
+  it('navigates to the current shell notification route when no callback is supplied', () => {
+    renderWithProviders(
+      <>
+        <Header variant="standard" right="bell" notifications={4} />
+        <CurrentPath />
+      </>,
+      { routerProps: { initialEntries: ['/w/markets/overview'] } },
+    );
+
+    expect(screen.getByText('4')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Thông báo (4)' }));
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/w/notifications');
+  });
+
+  it('uses router history for the standard back button when no callback is supplied', () => {
+    renderWithProviders(
+      <>
+        <Header variant="standard" back />
+        <CurrentPath />
+      </>,
+      { routerProps: { initialEntries: ['/w/markets', '/w/markets/overview'], initialIndex: 1 } },
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Quay lại' }));
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/w/markets');
   });
 });

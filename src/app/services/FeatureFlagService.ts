@@ -142,7 +142,7 @@ class FeatureFlagService implements IFeatureFlagService {
     if (flag.variants && flag.variants.length > 0) {
       const variant = this.getVariant(flagKey, userContext);
       const variantObj = flag.variants.find((v) => v.key === variant);
-      return (variantObj?.value as T) || defaultValue;
+      return (variantObj?.value as T) ?? defaultValue;
     }
 
     // Otherwise return enabled status
@@ -165,7 +165,7 @@ class FeatureFlagService implements IFeatureFlagService {
     }
 
     // Assign variant based on user hash
-    const variant = this.assignVariant(flag, userContext);
+    const variant = this.assignVariant(flag.variants, userContext);
 
     // Save assignment for consistency
     this.variantAssignments[assignmentKey] = variant;
@@ -267,13 +267,12 @@ class FeatureFlagService implements IFeatureFlagService {
   /**
    * Assign variant based on weighted distribution
    */
-  private assignVariant(flag: FeatureFlag, userContext?: UserContext): string {
-    if (!flag.variants || flag.variants.length === 0) {
-      return flag.defaultVariant || 'control';
-    }
-
+  private assignVariant(
+    variants: NonNullable<FeatureFlag['variants']>,
+    userContext?: UserContext,
+  ): string {
     // Calculate total weight
-    const totalWeight = flag.variants.reduce((sum, v) => sum + v.weight, 0);
+    const totalWeight = variants.reduce((sum, v) => sum + v.weight, 0);
 
     // Get deterministic random value based on user
     const hash = this.hashUserId(userContext?.userId || 'anonymous');
@@ -282,7 +281,7 @@ class FeatureFlagService implements IFeatureFlagService {
 
     // Find variant in range
     let cumulative = 0;
-    for (const variant of flag.variants) {
+    for (const variant of variants) {
       cumulative += variant.weight;
       if (target < cumulative) {
         return variant.key;
@@ -290,7 +289,7 @@ class FeatureFlagService implements IFeatureFlagService {
     }
 
     // Fallback to last variant
-    return flag.variants[flag.variants.length - 1].key;
+    return variants[variants.length - 1].key;
   }
 
   /**
