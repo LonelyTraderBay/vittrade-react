@@ -14,6 +14,7 @@
     "test:e2e": "node scripts/run-with-artifacts.mjs playwright test",
     "test:e2e:ui": "node scripts/run-with-artifacts.mjs playwright test --ui",
     "artifacts:plan": "node scripts/plan-artifact-cleanup.mjs",
+    "artifacts:cleanup": "node scripts/cleanup-artifacts.mjs",
     "e2e:build": "node scripts/build-e2e.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json",
     "lint": "eslint .",

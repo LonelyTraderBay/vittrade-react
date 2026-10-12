@@ -1,8 +1,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { isProductionBuildInput, sourceSnapshot } from './run-with-artifacts.mjs';
+import { acquireArtifactConsumer, assertRegularTree } from './artifact-lifecycle.mjs';
 
 export function findBuildArtifact(root) {
   const runs = path.resolve(root, '.artifacts/runs');
@@ -15,6 +16,8 @@ export function findBuildArtifact(root) {
           const manifestPath = path.join(directory, 'run.json');
           if (!fs.existsSync(manifestPath)) return [];
           const manifest = JSON.parse(fs.readFileSync(manifestPath));
+          if (!fs.existsSync(path.join(directory, 'dist'))) return [];
+          assertRegularTree(root, path.join(directory, 'dist'));
           return manifest.command === 'build' &&
             isProductionBuildInput(manifest.args, manifest.buildEnvironment?.nodeEnv) &&
             manifest.status === 'passed' &&
@@ -36,7 +39,8 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const kind = process.argv[2];
   if (!['mocks', 'bundle', 'preview'].includes(kind))
     throw new Error('Expected mocks, bundle or preview');
-  const directory = findBuildArtifact(process.cwd());
+  const consumer = acquireArtifactConsumer(process.cwd(), () => findBuildArtifact(process.cwd()));
+  const directory = consumer.directory;
   console.log(`Checking current build: ${path.relative(process.cwd(), directory)}`);
   const args =
     kind === 'preview'
@@ -48,10 +52,31 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
           ...process.argv.slice(3),
         ]
       : [`scripts/check-${kind === 'mocks' ? 'production-mocks' : 'bundle-budget'}.mjs`];
-  const result = spawnSync(process.execPath, args, {
+  const result = spawn(process.execPath, args, {
     stdio: 'inherit',
     env: { ...process.env, VITTRADE_RUN_DIR: directory },
   });
-  if (result.error) throw result.error;
-  process.exitCode = result.status ?? 1;
+  result.once('error', (error) => {
+    console.error(error.message);
+    process.exitCode = 1;
+  });
+  if (result.pid) {
+    try {
+      consumer.started(result.pid);
+    } catch (error) {
+      console.error(error.message);
+      result.kill();
+      process.exitCode = 1;
+    }
+  }
+  result.once('close', (code) => {
+    try {
+      consumer.release();
+    } catch (error) {
+      console.error('Artifact consumer release failed:', error.message);
+      process.exitCode = 1;
+    }
+    if (!process.exitCode) process.exitCode = code ?? 1;
+  });
+  for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => result.kill(signal));
 }

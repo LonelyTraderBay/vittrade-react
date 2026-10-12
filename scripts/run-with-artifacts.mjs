@@ -1,8 +1,16 @@
 import { spawn, execFileSync } from 'node:child_process';
 import { createHash, randomUUID } from 'node:crypto';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  cleanupPolicy,
+  ensureArtifactDirectory,
+  isProductionBuildInput,
+  withArtifactLock,
+  writeArtifactJson,
+} from './artifact-lifecycle.mjs';
+import { assertStorageBudget, cleanupArtifacts } from './cleanup-artifacts.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const commands = {
@@ -11,15 +19,7 @@ const commands = {
   build: 'scripts/build.mjs',
 };
 
-export function isProductionBuildInput(args, nodeEnv) {
-  return (
-    Array.isArray(args) &&
-    (args.length === 0 ||
-      (args.length === 1 && args[0] === '--mode=production') ||
-      (args.length === 2 && args[0] === '--mode' && args[1] === 'production')) &&
-    (nodeEnv === null || nodeEnv === 'production')
-  );
-}
+export { isProductionBuildInput } from './artifact-lifecycle.mjs';
 
 export function sourceSnapshot(projectRoot) {
   const files = execFileSync(
@@ -55,10 +55,12 @@ export function runWithArtifacts(command, args, projectRoot = root) {
   const nodeEnv = process.env.NODE_ENV ?? null;
   if (command === 'build' && !isProductionBuildInput(args, nodeEnv))
     throw new Error('Owned builds require production mode and repository output/configuration.');
-  // Each invocation owns a fresh directory. Existing reports and evidence are never cleaned here.
+  // Recover disposable output from normally finished runs; unknown/legacy runs remain protected.
+  const previousCleanup = cleanupArtifacts(projectRoot);
+  if (previousCleanup.errors.length)
+    throw new Error('Artifact cleanup failed; inspect .artifacts/cleanup-report.json.');
   const id = `${new Date().toISOString().replaceAll(/[:.]/g, '-')}-${command}-${randomUUID()}`;
   const directory = path.join(projectRoot, '.artifacts', 'runs', id);
-  mkdirSync(directory, { recursive: true });
   const manifestPath = path.join(directory, 'run.json');
   const manifest = {
     schemaVersion: 1,
@@ -68,33 +70,61 @@ export function runWithArtifacts(command, args, projectRoot = root) {
     ownerPid: process.pid,
     startedAt: new Date().toISOString(),
     status: 'running',
-    retention: 'manual-review-only',
+    retention: cleanupPolicy,
+    childPid: null,
+    childClosed: false,
     ...(command === 'build' ? { buildEnvironment: { nodeEnv } } : {}),
     snapshot: sourceSnapshot(projectRoot),
   };
-  writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n', { flag: 'wx' });
-  console.log(`Artifacts: ${path.relative(projectRoot, directory)}`);
-  const child = spawn(process.execPath, [path.join(projectRoot, commands[command]), ...args], {
-    cwd: projectRoot,
-    stdio: 'inherit',
-    env: { ...process.env, VITTRADE_RUN_DIR: directory },
+  const child = withArtifactLock(projectRoot, () => {
+    assertStorageBudget(projectRoot);
+    ensureArtifactDirectory(projectRoot, `.artifacts/runs/${id}`);
+    writeArtifactJson(projectRoot, manifestPath, manifest);
+    console.log(`Artifacts: ${path.relative(projectRoot, directory)}`);
+    const processChild = spawn(
+      process.execPath,
+      [path.join(projectRoot, commands[command]), ...args],
+      {
+        cwd: projectRoot,
+        stdio: 'inherit',
+        env: { ...process.env, VITTRADE_RUN_DIR: directory },
+      },
+    );
+    manifest.childPid = processChild.pid ?? null;
+    writeArtifactJson(projectRoot, manifestPath, manifest);
+    return processChild;
   });
-  const finish = (code, signal, error) => {
+  let spawnError;
+  const finish = (code, signal) => {
+    const error = spawnError;
     manifest.status = error || signal || code !== 0 ? 'failed' : 'passed';
     manifest.finishedAt = new Date().toISOString();
     manifest.exitCode = code;
     manifest.signal = signal;
+    manifest.childClosed = true;
     if (error) manifest.error = error.message;
     manifest.snapshotAfter = sourceSnapshot(projectRoot);
     manifest.sourceUnchanged =
       JSON.stringify(manifest.snapshot) === JSON.stringify(manifest.snapshotAfter);
-    writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n');
-    process.exitCode = manifest.sourceUnchanged ? (code ?? 1) : 1;
+    withArtifactLock(projectRoot, () => writeArtifactJson(projectRoot, manifestPath, manifest));
+    process.exitCode = manifest.sourceUnchanged && !error && !signal ? (code ?? 1) : 1;
     if (!manifest.sourceUnchanged)
       console.error('Source changed during this run; evidence is not a final snapshot.');
+    try {
+      const cleanup = cleanupArtifacts(projectRoot, { completedRun: directory });
+      console.log(
+        `Cleanup: ${cleanup.deletedFiles} files, ${cleanup.deletedLogicalBytes} logical bytes; ${cleanup.errors.length} errors.`,
+      );
+      if (cleanup.errors.length) process.exitCode = 1;
+    } catch (cleanupError) {
+      console.error('Artifact cleanup failed:', cleanupError.message);
+      process.exitCode = 1;
+    }
   };
-  child.once('error', (error) => finish(null, null, error));
-  child.once('exit', (code, signal) => finish(code, signal));
+  child.once('error', (error) => {
+    spawnError = error;
+  });
+  child.once('close', finish);
   for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => child.kill(signal));
   return child;
 }

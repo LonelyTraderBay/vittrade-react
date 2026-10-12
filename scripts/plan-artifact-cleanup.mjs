@@ -2,24 +2,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { assertRegularTree, processAlive } from './artifact-lifecycle.mjs';
 
 const hash = (data) => createHash('sha256').update(data).digest('hex');
 const removable = new Set(['cache', 'dist']);
 
-function assertRegularTree(root, target) {
-  const relative = path.relative(root, target);
-  if (!relative || relative.startsWith('..') || path.isAbsolute(relative))
-    throw new Error('Outside owned run directory');
-  let current = root;
-  for (const part of ['', ...relative.split(path.sep)]) {
-    current = path.join(current, part);
-    const stat = fs.lstatSync(current);
-    if (stat.isSymbolicLink() || fs.realpathSync(current) !== path.resolve(current))
-      throw new Error('Reparse/link path refused');
-  }
-}
-
-function finishedRun(root, directory) {
+function finishedRun(root, directory, completedRun) {
   assertRegularTree(root, directory);
   const relative = path.relative(root, directory).split(path.sep);
   if (relative.length !== 3 || relative[0] !== '.artifacts' || relative[1] !== 'runs')
@@ -33,30 +21,59 @@ function finishedRun(root, directory) {
     !['passed', 'failed'].includes(manifest.status)
   )
     throw new Error('Unfinished or unowned run refused');
-  try {
-    process.kill(manifest.ownerPid, 0);
+  if (
+    processAlive(manifest.ownerPid) &&
+    !(
+      directory === completedRun &&
+      manifest.ownerPid === process.pid &&
+      manifest.childClosed === true
+    )
+  )
     throw new Error('Run owner is still alive');
-  } catch (error) {
-    if (error.code !== 'ESRCH') throw error;
-  }
+  if (manifest.childPid && processAlive(manifest.childPid))
+    throw new Error('Run child is still alive');
   return manifest;
+}
+
+export function fileFingerprint(target) {
+  const fd = fs.openSync(target, 'r');
+  try {
+    const before = fs.fstatSync(fd, { bigint: true });
+    const digest = createHash('sha256');
+    const buffer = Buffer.alloc(64 * 1024);
+    let bytes;
+    while ((bytes = fs.readSync(fd, buffer, 0, buffer.length, null)))
+      digest.update(buffer.subarray(0, bytes));
+    const after = fs.fstatSync(fd, { bigint: true });
+    if (before.size !== after.size || before.mtimeNs !== after.mtimeNs)
+      throw new Error('File changed during inventory');
+    return {
+      bytes: Number(after.size),
+      fileId: `${after.dev}:${after.ino}`,
+      sha256: digest.digest('hex'),
+    };
+  } finally {
+    fs.closeSync(fd);
+  }
 }
 
 function inventory(root, directory) {
   const files = [];
+  const directories = [];
   const visit = (target) => {
     assertRegularTree(root, target);
     const stat = fs.lstatSync(target);
-    if (stat.isDirectory())
-      for (const name of fs.readdirSync(target).sort()) visit(path.join(target, name));
-    else if (stat.isFile()) {
-      // NTFS file IDs can exceed Number.MAX_SAFE_INTEGER; keep their exact integer value.
+    if (stat.isDirectory()) {
       const identity = fs.lstatSync(target, { bigint: true });
+      directories.push({
+        path: path.relative(root, target).split(path.sep).join('/'),
+        fileId: `${identity.dev}:${identity.ino}`,
+      });
+      for (const name of fs.readdirSync(target).sort()) visit(path.join(target, name));
+    } else if (stat.isFile()) {
       files.push({
         path: path.relative(root, target).split(path.sep).join('/'),
-        bytes: stat.size,
-        fileId: `${identity.dev}:${identity.ino}`,
-        sha256: hash(fs.readFileSync(target)),
+        ...fileFingerprint(target),
       });
     } else throw new Error('Special file refused');
   };
@@ -64,14 +81,14 @@ function inventory(root, directory) {
     // Coverage JSON, failure screenshots/videos/traces, reports and run manifests remain evidence.
     if (removable.has(name)) visit(path.join(directory, name));
   }
-  return files;
+  return { files, directories };
 }
 
-export function planCleanup(root, directory) {
+export function planCleanup(root, directory, { completedRun } = {}) {
   root = fs.realpathSync(root);
   directory = path.resolve(directory);
-  const manifest = finishedRun(root, directory);
-  const files = inventory(root, directory);
+  const manifest = finishedRun(root, directory, completedRun);
+  const { files, directories } = inventory(root, directory);
   return {
     schemaVersion: 1,
     mode: 'dry-run',
@@ -80,6 +97,7 @@ export function planCleanup(root, directory) {
     manifestSha256: hash(fs.readFileSync(path.join(directory, 'run.json'))),
     runStatus: manifest.status,
     files,
+    directories,
     bytes: files.reduce((total, file) => total + file.bytes, 0),
   };
 }

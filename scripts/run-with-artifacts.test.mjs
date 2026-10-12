@@ -71,7 +71,7 @@ it('refuses old or unfinished builds, and invalidates a successful artifact afte
   fs.writeFileSync(readinessOwner, 'export const checkerVersion = 1;');
   expect(() => findBuildArtifact(root)).toThrow(/No successful/);
   const run = path.join(root, '.artifacts/runs/build');
-  fs.mkdirSync(run, { recursive: true });
+  fs.mkdirSync(path.join(run, 'dist'), { recursive: true });
   const snapshot = sourceSnapshot(root);
   const manifest = {
     command: 'build',
@@ -141,4 +141,42 @@ it('marks evidence invalid and fails the wrapper when source changes while the c
     fs.readFileSync(path.join(root, '.artifacts/runs', name, 'run.json')),
   );
   expect(manifest.sourceUnchanged).toBe(false);
+});
+
+it('automatically cleans disposable output on child close while preserving the manifest and failure evidence', () => {
+  const root = fixture();
+  fs.mkdirSync(path.join(root, 'node_modules/vitest'), { recursive: true });
+  fs.writeFileSync(
+    path.join(root, 'node_modules/vitest/vitest.mjs'),
+    `
+    import fs from 'node:fs';
+    for (const part of ['cache','dist','coverage','test-results']) {
+      fs.mkdirSync(process.env.VITTRADE_RUN_DIR+'/'+part);
+      fs.writeFileSync(process.env.VITTRADE_RUN_DIR+'/'+part+'/sentinel',part);
+    }
+  `,
+  );
+  const moduleUrl = pathToFileURL(path.resolve('scripts/run-with-artifacts.mjs')).href;
+  const result = spawnSync(
+    process.execPath,
+    [
+      '--input-type=module',
+      '-e',
+      `import {runWithArtifacts} from ${JSON.stringify(moduleUrl)};runWithArtifacts('vitest',[],${JSON.stringify(root)});`,
+    ],
+    { encoding: 'utf8' },
+  );
+  expect(result.status, result.stderr).toBe(0);
+  const run = path.join(
+    root,
+    '.artifacts/runs',
+    fs.readdirSync(path.join(root, '.artifacts/runs'))[0],
+  );
+  expect(fs.existsSync(path.join(run, 'cache'))).toBe(false);
+  expect(fs.existsSync(path.join(run, 'dist'))).toBe(false);
+  expect(fs.readFileSync(path.join(run, 'coverage/sentinel'), 'utf8')).toBe('coverage');
+  expect(fs.readFileSync(path.join(run, 'test-results/sentinel'), 'utf8')).toBe('test-results');
+  const manifest = JSON.parse(fs.readFileSync(path.join(run, 'run.json')));
+  expect(manifest.childClosed).toBe(true);
+  expect(manifest.retention).toBe('ephemeral-cache-output-v1');
 });
