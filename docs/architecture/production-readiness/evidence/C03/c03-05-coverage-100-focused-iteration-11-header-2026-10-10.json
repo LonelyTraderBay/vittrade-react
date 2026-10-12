@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "evidenceId": "EV-20261010-011",
+  "kind": "current-working-tree-focused-source-coverage",
+  "measuredAt": "2026-10-10T01:39:45.000Z",
+  "sourceRevision": "fa5462701bc61bdd6d7fd4cab20c7d02e7fa7d81",
+  "sourceBranch": "codex/vittrade-readiness-p0-p2-20261009",
+  "worktree": {
+    "dirtyStatusEntries": 135,
+    "sourceFileCount": 1,
+    "testFiles": ["src/shared/ui/layout/Header.test.tsx"],
+    "statusCapturedAfterFocusedRunBeforeEvidenceWrite": true
+  },
+  "execution": {
+    "command": "node node_modules/vitest/vitest.mjs run src/shared/ui/layout/Header.test.tsx --coverage --coverage.include=src/shared/ui/layout/Header.tsx --coverage.reporter=json --coverage.reportsDirectory=<fresh-temp-dir> --reporter=dot --pool=threads --maxWorkers=1 --no-file-parallelism",
+    "platform": "Windows local",
+    "exitCode": 0,
+    "testFiles": 1,
+    "testFilesPassed": 1,
+    "tests": 15,
+    "testsPassed": 15,
+    "testsFailed": 0,
+    "testsSkipped": 0,
+    "duration": "1.09s",
+    "coverageReportPath": "../../../AppData/Local/Temp/vittrade-c03-header-focused-20261010/coverage-final.json",
+    "coverageReportBytes": 19541,
+    "coverageReportSha256": "14df9c5c9680fcb2c66fd95cbfe25403904509eb86a8d0dfd778a291a0818e31",
+    "focusedSourcePath": "src/shared/ui/layout/Header.tsx",
+    "postRunChecks": {
+      "eslint": "pass",
+      "prettier": "pass",
+      "gitDiffCheck": "pass",
+      "fullSuiteRemeasureAfterThisTestChange": "pending"
+    }
+  },
+  "measurement": {
+    "metrics": {
+      "statements": {
+        "covered": 36,
+        "total": 36,
+        "missing": 0,
+        "pct": 100
+      },
+      "branches": {
+        "covered": 90,
+        "total": 90,
+        "missing": 0,
+        "pct": 100
+      },
+      "functions": {
+        "covered": 7,
+        "total": 7,
+        "missing": 0,
+        "pct": 100
+      },
+      "lines": {
+        "covered": 33,
+        "total": 33,
+        "missing": 0,
+        "pct": 100
+      }
+    },
+    "sourceSha256": "9823a50cad32f613025a4cdba16f4c20e59d90c96d22226c210ea0c09f890d87",
+    "priorFullSuiteEvidenceId": "EV-20261010-010"
+  },
+  "limitations": [
+    "This is focused owner-test evidence for Header.tsx only; aggregate full-suite metrics remain the EV-010 measurement and must be refreshed after the next batch.",
+    "Local Windows test evidence does not establish exact-SHA Ubuntu/GitHub, backend, staging, production or user acceptance."
+  ],
+  "nextSlice": {
+    "priority": "P2",
+    "area": "Shared StickyHeader, StickyColumnHeader and StickyDateHeader behavior",
+    "candidateFiles": ["src/shared/ui/StickyHeader.tsx", "src/shared/ui/StickyHeader.test.tsx"],
+    "ownerTests": ["src/shared/ui/StickyHeader.test.tsx"],
+    "reason": "EV-010 identifies two uncovered statements, six branch arms and one function in StickyHeader.tsx; no owner test exists. The missing date-header renderer and alignment/default props can be checked with deterministic DOM assertions and no external API assumptions.",
+    "acceptance": "Cover default and custom sticky offsets/background, empty/date content, column flex defaults and overrides, first/middle/last alignment and date-header rendering. Keep component behavior unchanged. Require 100% statements/branches/functions/lines for the source under focused coverage before continuing."
+  }
+}

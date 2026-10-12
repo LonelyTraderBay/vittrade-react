@@ -1,0 +1,251 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "evidenceId": "EV-20261010-003",
+  "kind": "current-working-tree-risk-slice-coverage",
+  "measuredAt": "2026-10-09T18:09:32.027Z",
+  "sourceRevision": "fa5462701bc61bdd6d7fd4cab20c7d02e7fa7d81",
+  "sourceBranch": "codex/vittrade-readiness-p0-p2-20261009",
+  "worktree": {
+    "dirtyStatusEntries": 77,
+    "statusCapturedAfterFocusedAndFullSuiteBeforeEvidenceWrite": true,
+    "dirtyPaths": [
+      "docs/architecture/production-readiness/PLAN.md",
+      "docs/architecture/production-readiness/TRACKING.json",
+      "src/app/contexts/AuthSessionProvider.test.tsx",
+      "src/app/services/FeatureFlagService.test.ts",
+      "src/app/services/FeatureFlagService.ts",
+      "src/features/arena/pages/ArenaContractPages.tsx",
+      "src/features/arena/pages/ArenaJoinContractPage.test.tsx",
+      "src/features/auth/components/RegistrationForm.test.tsx",
+      "src/features/auth/components/RegistrationForm.tsx",
+      "src/features/auth/pages/OTPPage.test.tsx",
+      "src/features/auth/pages/OTPPage.tsx",
+      "src/features/auth/pages/WebOTPPage.test.tsx",
+      "src/features/auth/pages/WebOTPPage.tsx",
+      "src/features/dca/components/ChartAnnotationOverlay.test.tsx",
+      "src/features/dca/components/DCAHistoryChart.test.tsx",
+      "src/features/dca/components/DCAHistoryChart.tsx",
+      "src/features/dca/components/DCAPlanCard.tsx",
+      "src/features/dca/pages/DCAMainPage.test.tsx",
+      "src/features/dca/pages/DCAMainPage.tsx",
+      "src/features/earn/pages/EarnPage.test.tsx",
+      "src/features/earn/pages/EarnPage.tsx",
+      "src/features/market/pages/MarketListPage.test.tsx",
+      "src/features/p2p/components/P2PCreateAdSections.tsx",
+      "src/features/p2p/lib/filter-marketplace-ads.test.ts",
+      "src/features/p2p/pages/P2P2FASettingsPage.test.tsx",
+      "src/features/p2p/pages/P2PMyAdsContractPage.test.tsx",
+      "src/features/predictions/pages/PredictionContractPages.test.tsx",
+      "src/features/predictions/pages/PredictionContractPages.tsx",
+      "src/features/trading/components/QuickPairSwitcher.test.tsx",
+      "src/features/trading/components/QuickPairSwitcher.tsx",
+      "src/features/trading/components/TradeTerminal.test.tsx",
+      "src/features/wallet/components/WithdrawSections.tsx",
+      "src/features/wallet/pages/AddressBookPage.test.tsx",
+      "src/features/wallet/pages/AddressBookPage.tsx",
+      "src/features/wallet/pages/DustConverterPage.test.tsx",
+      "src/features/wallet/pages/DustConverterPage.tsx",
+      "src/features/wallet/pages/WalletOverviewContractPage.test.tsx",
+      "src/features/wallet/pages/WalletTransferContractPage.test.tsx",
+      "src/features/wallet/pages/WalletTransferContractPage.tsx",
+      "src/features/wallet/pages/WithdrawPage.test.tsx",
+      "src/features/wallet/pages/WithdrawPage.tsx",
+      "src/features/wallet/pages/WithdrawalLimitsPage.test.tsx",
+      "src/shared/api/http-client.test.ts",
+      "src/shared/api/http-client.ts",
+      "src/shared/ui/BottomSheetV2.tsx",
+      "src/shared/ui/InfoRow.test.tsx",
+      "src/shared/ui/InfoRow.tsx",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-baseline-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-2-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-3-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-4-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-iteration-2-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-iteration-3-auth-http-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-iteration-4-wallet-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-progress-2026-10-09.json",
+      "scripts/.c03-coverage-iteration5.tmp.cjs",
+      "src/app/components/ui-contracts.test.tsx",
+      "src/app/contexts/AuthContext.default-adapter.test.tsx",
+      "src/app/pages/page-composition.test.tsx",
+      "src/features/dca/components/DCACreatePlanSheet.test.tsx",
+      "src/features/dca/components/DCAPlanCard.test.tsx",
+      "src/features/p2p/components/P2PCreateAdSections.test.tsx",
+      "src/features/p2p/components/P2PMarketplaceSections.test.tsx",
+      "src/features/p2p/lib/select-best-ad.test.ts",
+      "src/features/public-entrypoints.test.ts",
+      "src/features/support/pages/NewsContractPage.test.tsx",
+      "src/features/wallet/components/WithdrawSections.test.tsx",
+      "src/features/wallet/model/validate-wallet-transfer.test.ts",
+      "src/features/wallet/model/validate-wallet-transfer.ts",
+      "src/features/wallet/pages/WebWithdrawalWhitelistPage.test.tsx",
+      "src/shared/lib/formatNumber.test.ts",
+      "src/shared/theme/theme-token-contract.test.tsx",
+      "src/shared/ui/BottomSheetV2.test.tsx",
+      "src/shared/ui/SkeletonBlock.test.tsx",
+      "src/shared/ui/charts/ChartGradientDefs.test.tsx",
+      "src/shared/ui/toggle-variants.test.ts",
+      "src/shared/ui/ui-primitives.test.tsx"
+    ],
+    "sourceFileCount": 437,
+    "testRootCount": 308,
+    "inputFileCount": 748,
+    "inputFingerprintSha256": "835b098a38bdce137a6014f08ae2e24d7c2c6562225623dc100c466b04a8a47a"
+  },
+  "execution": {
+    "focusedCommand": "node node_modules/vitest/vitest.mjs run src/features/wallet/pages/DustConverterPage.test.tsx src/features/wallet/pages/WalletOverviewContractPage.test.tsx src/features/wallet/pages/WithdrawalLimitsPage.test.tsx --coverage --coverage.reporter=json --coverage.reportsDirectory=<fresh-temp-dir>",
+    "platform": "Windows local",
+    "nodeVersion": "v24.19.0",
+    "vitestVersion": "4.1.11",
+    "provider": "v8",
+    "testsPassed": 35,
+    "testFiles": 3,
+    "testsFailed": 0,
+    "testsSkipped": 0,
+    "focusedVitestExitCode": 1,
+    "focusedExitReason": "All 35 owner tests pass; the focused coverage command exits 1 because configured aggregate repository thresholds are evaluated against a partial-repository run. Focused counters are used only for these three source entries.",
+    "coverageReportPath": "C:/Users/Joker-PC/AppData/Local/Temp/vittrade-c03-05-wallet-final-focused-20261010/coverage-final.json",
+    "coverageReportBytes": 3707078,
+    "coverageReportSha256": "e164ed9c97b2d34656a91e074b688ad02453edd47ec13cf63fc2f71662685896",
+    "directOwnerTestsExitCode": 0,
+    "typescriptProjectsPassed": [
+      "tsconfig.json",
+      "tsconfig.node.json"
+    ],
+    "eslint": "pass",
+    "prettier": "pass",
+    "gitDiffCheck": "pass",
+    "aggregateFullSuiteEvidenceId": "EV-20261010-004"
+  },
+  "files": [
+    {
+      "source": "src/features/wallet/pages/DustConverterPage.tsx",
+      "test": "src/features/wallet/pages/DustConverterPage.test.tsx",
+      "metrics": {
+        "statements": {
+          "covered": 84,
+          "total": 84,
+          "missing": 0,
+          "pct": 100
+        },
+        "branches": {
+          "covered": 72,
+          "total": 72,
+          "missing": 0,
+          "pct": 100
+        },
+        "functions": {
+          "covered": 21,
+          "total": 21,
+          "missing": 0,
+          "pct": 100
+        },
+        "lines": {
+          "covered": 79,
+          "total": 79,
+          "missing": 0,
+          "pct": 100
+        }
+      },
+      "remainingCounters": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 0,
+        "lines": 0
+      }
+    },
+    {
+      "source": "src/features/wallet/pages/WalletOverviewContractPage.tsx",
+      "test": "src/features/wallet/pages/WalletOverviewContractPage.test.tsx",
+      "metrics": {
+        "statements": {
+          "covered": 61,
+          "total": 61,
+          "missing": 0,
+          "pct": 100
+        },
+        "branches": {
+          "covered": 56,
+          "total": 56,
+          "missing": 0,
+          "pct": 100
+        },
+        "functions": {
+          "covered": 29,
+          "total": 29,
+          "missing": 0,
+          "pct": 100
+        },
+        "lines": {
+          "covered": 57,
+          "total": 57,
+          "missing": 0,
+          "pct": 100
+        }
+      },
+      "remainingCounters": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 0,
+        "lines": 0
+      }
+    },
+    {
+      "source": "src/features/wallet/pages/WithdrawalLimitsPage.tsx",
+      "test": "src/features/wallet/pages/WithdrawalLimitsPage.test.tsx",
+      "metrics": {
+        "statements": {
+          "covered": 14,
+          "total": 14,
+          "missing": 0,
+          "pct": 100
+        },
+        "branches": {
+          "covered": 24,
+          "total": 24,
+          "missing": 0,
+          "pct": 100
+        },
+        "functions": {
+          "covered": 7,
+          "total": 7,
+          "missing": 0,
+          "pct": 100
+        },
+        "lines": {
+          "covered": 14,
+          "total": 14,
+          "missing": 0,
+          "pct": 100
+        }
+      },
+      "remainingCounters": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 0,
+        "lines": 0
+      }
+    }
+  ],
+  "changes": [
+    {
+      "path": "src/features/wallet/pages/DustConverterPage.tsx",
+      "kind": "Remove duplicate early-return guard whose permission, quote and pending conditions are already enforced by disabled CTA states; keep server authorization authoritative."
+    },
+    {
+      "path": "src/features/wallet/pages/DustConverterPage.test.tsx",
+      "kind": "Exercise pending state through a real click on the disabled CTA instead of synthetic DOM mutation."
+    },
+    {
+      "path": "src/features/wallet/pages/WalletOverviewContractPage.test.tsx",
+      "kind": "Cover normalized asset search, empty result, shell navigation, wallet read retries and pending withdrawal row."
+    },
+    {
+      "path": "src/features/wallet/pages/WithdrawalLimitsPage.test.tsx",
+      "kind": "Cover permission, loading/empty data, asset/network retries and memo-label cases from the wallet contract."
+    }
+  ],
+  "notes": "All three target pages have zero remaining V8 executable counters. Focused results do not replace aggregate full-suite evidence."
+}

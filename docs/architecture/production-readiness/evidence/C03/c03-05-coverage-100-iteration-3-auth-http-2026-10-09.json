@@ -1,0 +1,370 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "evidenceId": "EV-20261009-007",
+  "kind": "current-working-tree-risk-slice-coverage",
+  "measuredAt": "2026-10-09T16:58:22Z",
+  "sourceRevision": "fa5462701bc61bdd6d7fd4cab20c7d02e7fa7d81",
+  "sourceBranch": "codex/vittrade-readiness-p0-p2-20261009",
+  "workingTreeFingerprintSha256": "aab22c10660cd5834c958ccb81978e56efa03a975a62cc4a44e155eeafdf7ce7",
+  "execution": {
+    "environment": "Windows local PowerShell; Node.js v24.19.0; Vitest 4.1.11; V8; one thread worker.",
+    "commands": [
+      "node node_modules/vitest/vitest.mjs run --coverage --coverage.include=src/features/auth/components/RegistrationForm.tsx --coverage.reporter=json --coverage.reportsDirectory=<fresh-temp-dir> --pool=threads --maxWorkers=1 --no-file-parallelism src/features/auth/components/RegistrationForm.test.tsx",
+      "node node_modules/vitest/vitest.mjs run --coverage --coverage.include=src/features/auth/pages/OTPPage.tsx --coverage.reporter=json --coverage.reportsDirectory=<fresh-temp-dir> --pool=threads --maxWorkers=1 --no-file-parallelism src/features/auth/pages/OTPPage.test.tsx",
+      "node node_modules/vitest/vitest.mjs run --coverage --coverage.include=src/shared/session/AuthContext.tsx --coverage.reporter=json --coverage.reportsDirectory=<fresh-temp-dir> --pool=threads --maxWorkers=1 --no-file-parallelism src/app/contexts/AuthSessionProvider.test.tsx",
+      "node node_modules/vitest/vitest.mjs run --coverage --coverage.include=src/shared/api/http-client.ts --coverage.reporter=json --coverage.reportsDirectory=<fresh-temp-dir> --pool=threads --maxWorkers=1 --no-file-parallelism src/shared/api/http-client.test.ts"
+    ],
+    "testFilesPassed": 4,
+    "testsPassed": 100,
+    "testsFailed": 0,
+    "testsSkipped": 0,
+    "perFileCoverageReports": [
+      {
+        "source": "src/features/auth/components/RegistrationForm.tsx",
+        "test": "src/features/auth/components/RegistrationForm.test.tsx",
+        "testsPassed": 9,
+        "metrics": {
+          "statements": {
+            "covered": 67,
+            "total": 67,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 58,
+            "total": 58,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 20,
+            "total": 20,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 58,
+            "total": 58,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "reportBytes": 20361,
+        "reportSha256": "ba364e2457a7b632f1eef74069c26e05918f4cdf0762713bcfc29d2b7c07ca1e"
+      },
+      {
+        "source": "src/features/auth/pages/OTPPage.tsx",
+        "test": "src/features/auth/pages/OTPPage.test.tsx",
+        "testsPassed": 26,
+        "metrics": {
+          "statements": {
+            "covered": 115,
+            "total": 115,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 93,
+            "total": 93,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 19,
+            "total": 19,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 108,
+            "total": 108,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "reportBytes": 30199,
+        "reportSha256": "3292219d4e3d71c82b7420a62a0f7d6dff86d00460a1396153c2685a4f1c6ac0"
+      },
+      {
+        "source": "src/shared/session/AuthContext.tsx",
+        "test": "src/app/contexts/AuthSessionProvider.test.tsx",
+        "testsPassed": 32,
+        "metrics": {
+          "statements": {
+            "covered": 160,
+            "total": 160,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 76,
+            "total": 76,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 32,
+            "total": 32,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 139,
+            "total": 139,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "reportBytes": 35198,
+        "reportSha256": "3b370af8eb2f46cc01bfa07180b86f98c7dff5283b9f47569e8b109ac67e6920"
+      },
+      {
+        "source": "src/shared/api/http-client.ts",
+        "test": "src/shared/api/http-client.test.ts",
+        "testsPassed": 33,
+        "metrics": {
+          "statements": {
+            "covered": 95,
+            "total": 95,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 92,
+            "total": 92,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 15,
+            "total": 15,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 80,
+            "total": 80,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "reportBytes": 27038,
+        "reportSha256": "bc39fdb240645e2b2f526a3af391e671b7142278f3e928a87f5f84aa1eacc265"
+      }
+    ],
+    "regressionCommand": "Four owner suites run individually, sequentially, with each source isolated in the V8 coverage denominator.",
+    "typecheckCommands": [
+      "node_modules/.bin/tsc --noEmit -p tsconfig.json",
+      "node_modules/.bin/tsc --noEmit -p tsconfig.node.json"
+    ],
+    "staticChecks": [
+      "ESLint on seven changed TypeScript paths",
+      "Prettier check on seven changed TypeScript paths",
+      "git diff --check"
+    ]
+  },
+  "changedTypeScriptFileSha256": {
+    "src/features/auth/components/RegistrationForm.tsx": "0406dca88fbc19ec6798aacbfc0f62479802900ef91e3910397ccc056c021e06",
+    "src/features/auth/components/RegistrationForm.test.tsx": "6a96feff9521d4f1a0b35021f4c255a1e47bec8714076a25ed20bf5cf3e59bb4",
+    "src/features/auth/pages/OTPPage.tsx": "54a3d6d1a0992766dda24fa7023189eb4e9a86ab6aa8578206570705ebc19e54",
+    "src/features/auth/pages/OTPPage.test.tsx": "24b77fe58fb4d0b9f73147d336cf58b7d4047005273ced60122dd81b9ff23f07",
+    "src/app/contexts/AuthSessionProvider.test.tsx": "f28288c0914ee99fb6762dca0508d5cd0a1225dd8089c12e93786a14302e65c2",
+    "src/shared/api/http-client.ts": "12a04035eac23a2999f8c7a76aafa32966585402c06d98f451ef33eb8601cf42",
+    "src/shared/api/http-client.test.ts": "d2e9f91ba02af785955c90ebd484f9f67e9fe345ff53c029cadcf63e66dd737b"
+  },
+  "targetedMeasurement": {
+    "scope": "Four contract-sensitive auth/session/HTTP files individually; this focused result does not replace the full-application aggregate.",
+    "perFile": [
+      {
+        "source": "src/features/auth/components/RegistrationForm.tsx",
+        "test": "src/features/auth/components/RegistrationForm.test.tsx",
+        "testsPassed": 9,
+        "metrics": {
+          "statements": {
+            "covered": 67,
+            "total": 67,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 58,
+            "total": 58,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 20,
+            "total": 20,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 58,
+            "total": 58,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "remainingCounters": {
+          "statements": 0,
+          "branches": 0,
+          "functions": 0,
+          "lines": 0
+        }
+      },
+      {
+        "source": "src/features/auth/pages/OTPPage.tsx",
+        "test": "src/features/auth/pages/OTPPage.test.tsx",
+        "testsPassed": 26,
+        "metrics": {
+          "statements": {
+            "covered": 115,
+            "total": 115,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 93,
+            "total": 93,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 19,
+            "total": 19,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 108,
+            "total": 108,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "remainingCounters": {
+          "statements": 0,
+          "branches": 0,
+          "functions": 0,
+          "lines": 0
+        }
+      },
+      {
+        "source": "src/shared/session/AuthContext.tsx",
+        "test": "src/app/contexts/AuthSessionProvider.test.tsx",
+        "testsPassed": 32,
+        "metrics": {
+          "statements": {
+            "covered": 160,
+            "total": 160,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 76,
+            "total": 76,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 32,
+            "total": 32,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 139,
+            "total": 139,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "remainingCounters": {
+          "statements": 0,
+          "branches": 0,
+          "functions": 0,
+          "lines": 0
+        }
+      },
+      {
+        "source": "src/shared/api/http-client.ts",
+        "test": "src/shared/api/http-client.test.ts",
+        "testsPassed": 33,
+        "metrics": {
+          "statements": {
+            "covered": 95,
+            "total": 95,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 92,
+            "total": 92,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 15,
+            "total": 15,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 80,
+            "total": 80,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "remainingCounters": {
+          "statements": 0,
+          "branches": 0,
+          "functions": 0,
+          "lines": 0
+        }
+      }
+    ]
+  },
+  "regressionValidation": {
+    "testFilesPassed": 4,
+    "testsPassed": 100,
+    "testsFailed": 0,
+    "testsSkipped": 0,
+    "typescriptProjectsPassed": [
+      "tsconfig.json",
+      "tsconfig.node.json"
+    ],
+    "eslint": "pass",
+    "prettier": "pass",
+    "gitDiffCheck": "pass"
+  },
+  "designChanges": [
+    "Block synchronous duplicate registration submits with a ref while keeping visible pending state; add regression for malformed input, optional phone/referral and password visibility.",
+    "Use stable registration idempotency key for retries and test that the request reuses it; no backend retention or replay semantics are inferred.",
+    "Render invalid registration OTP challenge state as a route redirect; cover OTP paste, focus, retry and challenge expiry edges.",
+    "Exercise AuthContext MFA failures, stale completions after remote logout, token expiry validation, refresh after API 401 and unrelated broadcast messages.",
+    "Remove unreachable HTTP error branches only where signal-abort handling and helper rejection contract establish the invariant; cover cancellation, timeout, response parse and retry cases."
+  ],
+  "limitations": [
+    "Focused local Windows Node 24 evidence only; the full suite is the aggregate source of truth and this is not exact-SHA Node 22 Ubuntu/GitHub CI.",
+    "No backend, staging, production or user-acceptance requests were made.",
+    "Registration cookie flags, CORS/CSRF/origin, OTP lifecycle and idempotency retention/replay/deduplication remain owner-unresolved; no API behavior was invented."
+  ],
+  "nextSlice": {
+    "priority": "P0",
+    "area": "wallet withdrawal and transfer",
+    "filesToInspectBeforeEditing": [
+      "src/features/wallet/pages/WithdrawPage.tsx",
+      "src/features/wallet/components/WithdrawSections.tsx",
+      "src/features/wallet/pages/WalletTransferContractPage.tsx",
+      "src/features/wallet/pages/WithdrawPage.test.tsx",
+      "src/features/wallet/pages/WalletTransferContractPage.test.tsx",
+      "contracts/openapi/wallet.yaml",
+      "docs/architecture/production-readiness/PLAN.md",
+      "docs/architecture/production-readiness/TRACKING.json"
+    ],
+    "acceptance": "Inspect wallet OpenAPI and existing tests first; test only contract-defined reachable states, preserve denominator and thresholds, then rerun complete suite."
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "evidenceId": "EV-20261011-062",
+  "kind": "current-working-tree-focused-source-coverage",
+  "measuredAt": "2026-10-11T17:39:17.000Z",
+  "sourceRevision": "fa5462701bc61bdd6d7fd4cab20c7d02e7fa7d81",
+  "sourceBranch": "codex/vittrade-readiness-p0-p2-20261009",
+  "worktree": {
+    "dirtyStatusEntries": 270,
+    "sourceFileCount": 1,
+    "testFiles": [
+      "src/app/components/layout/ResponsiveShell.test.tsx"
+    ],
+    "statusCapturedAfterFocusedRunBeforeEvidenceWrite": true
+  },
+  "execution": {
+    "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/app/components/layout/ResponsiveShell.test.tsx --coverage --coverage.include=src/app/components/layout/ResponsiveShell.tsx --coverage.reporter=json-summary --coverage.reportsDirectory=C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-c03-responsiveshell-focused-20261011-01 --reporter=dot --pool=threads --maxWorkers=1 --no-file-parallelism",
+    "platform": "Windows local; Node.js v24.19.0; Vitest 4.1.11; V8",
+    "exitCode": 0,
+    "testFiles": 1,
+    "testFilesPassed": 1,
+    "tests": 8,
+    "testsPassed": 8,
+    "testsFailed": 0,
+    "testsSkipped": 0,
+    "duration": "1.12s",
+    "coverageReportPath": "C:/Users/Joker-PC/AppData/Local/Temp/vittrade-c03-responsiveshell-focused-20261011-01/coverage-summary.json"
+  },
+  "measurement": {
+    "metrics": {
+      "statements": {
+        "covered": 12,
+        "total": 12,
+        "missing": 0,
+        "pct": 100
+      },
+      "branches": {
+        "covered": 19,
+        "total": 19,
+        "missing": 0,
+        "pct": 100
+      },
+      "functions": {
+        "covered": 2,
+        "total": 2,
+        "missing": 0,
+        "pct": 100
+      },
+      "lines": {
+        "covered": 12,
+        "total": 12,
+        "missing": 0,
+        "pct": 100
+      }
+    },
+    "sourceSha256": "6c0eebe897bc406023f9e5c8d253c88a94b77f6c84ba07a452688b428a7ee731",
+    "testFileSha256": {
+      "src/app/components/layout/ResponsiveShell.test.tsx": "9408e264228abf20567ea963a73060d77bbdbaf87728449c1634314dd74927db"
+    },
+    "priorFullSuiteEvidenceId": "EV-20261010-053"
+  },
+  "limitations": [
+    "Focused local owner-test evidence for ResponsiveShell.tsx only; EV-20261010-053 aggregate remains unchanged.",
+    "The tests exercise client layout selection and offline banners; they do not establish runtime on real devices, backend availability, staging or production."
+  ],
+  "nextSlice": {
+    "priority": "P1",
+    "area": "TabletShell layout and sidebar behavior",
+    "candidateFiles": [
+      "src/app/components/layout/TabletShell.tsx",
+      "src/app/components/layout/TabletShell.test.tsx"
+    ],
+    "ownerTests": [
+      "src/app/components/layout/TabletShell.test.tsx"
+    ],
+    "reason": "The EV-20261010-053 baseline lists TabletShell with 2 uncovered statements, 1 branch arm, 1 function and 2 lines; inspect its owner tests and layout invariants before adding coverage."
+  }
+}

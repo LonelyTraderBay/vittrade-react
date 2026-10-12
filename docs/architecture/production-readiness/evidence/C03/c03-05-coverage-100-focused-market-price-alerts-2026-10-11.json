@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "evidenceId": "EV-20261011-054",
+  "kind": "current-working-tree-focused-source-coverage",
+  "measuredAt": "2026-10-11T17:03:33.000Z",
+  "sourceRevision": "fa5462701bc61bdd6d7fd4cab20c7d02e7fa7d81",
+  "sourceBranch": "codex/vittrade-readiness-p0-p2-20261009",
+  "worktree": {
+    "dirtyStatusEntries": 255,
+    "sourceFileCount": 1,
+    "testFiles": [
+      "src/features/market/pages/MarketWriteBoundary.test.tsx",
+      "src/features/market/pages/MarketPriceAlertsPage.test.tsx"
+    ],
+    "statusCapturedAfterFocusedRunBeforeEvidenceWrite": true
+  },
+  "execution": {
+    "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/features/market/pages/MarketPriceAlertsPage.test.tsx src/features/market/pages/MarketWriteBoundary.test.tsx --coverage --coverage.include=src/features/market/pages/MarketPriceAlertsPage.tsx --coverage.reporter=json-summary --coverage.reportsDirectory=<fresh-temp-dir> --reporter=dot --pool=threads --maxWorkers=1 --no-file-parallelism",
+    "platform": "Windows local; Node.js v24.19.0; Vitest 4.1.11; V8",
+    "exitCode": 0,
+    "testFiles": 2,
+    "testFilesPassed": 2,
+    "tests": 13,
+    "testsPassed": 13,
+    "testsFailed": 0,
+    "testsSkipped": 0,
+    "duration": "4.13s",
+    "coverageReportPath": "C:/Users/Joker-PC/AppData/Local/Temp/vittrade-c03-market-alerts-focused-20261011-05/coverage-summary.json"
+  },
+  "measurement": {
+    "metrics": {
+      "statements": {
+        "covered": 100,
+        "total": 100,
+        "missing": 0,
+        "pct": 100
+      },
+      "branches": {
+        "covered": 96,
+        "total": 96,
+        "missing": 0,
+        "pct": 100
+      },
+      "functions": {
+        "covered": 26,
+        "total": 26,
+        "missing": 0,
+        "pct": 100
+      },
+      "lines": {
+        "covered": 89,
+        "total": 89,
+        "missing": 0,
+        "pct": 100
+      }
+    },
+    "sourceSha256": "1fc40c3fa98721d75b7f30132d95ef7a8327d510c23ae15ef9933034a1d59225",
+    "testFileSha256": {
+      "src/features/market/pages/MarketWriteBoundary.test.tsx": "5ea169ea05f6643821e1c9054b8defbeea51d2c40ebb7531be83ff1e3ca369df",
+      "src/features/market/pages/MarketPriceAlertsPage.test.tsx": "deaa87542bd3ddfeeac5fde21eddb2abffb81a6569debe29a288449c78ec6465"
+    },
+    "priorFullSuiteEvidenceId": "EV-20261010-053"
+  },
+  "limitations": [
+    "Focused local owner-test evidence for MarketPriceAlertsPage.tsx only; the full-suite aggregate remains the unchanged EV-20261010-053 baseline.",
+    "Local Windows results do not establish exact-SHA Ubuntu/GitHub, backend, staging, production or user acceptance."
+  ],
+  "nextSlice": {
+    "priority": "P1",
+    "area": "Trading MiniChart responsive, trend and resize branches",
+    "candidateFiles": [
+      "src/features/trading/components/MiniChart.tsx",
+      "src/features/trading/components/MiniChart.test.tsx"
+    ],
+    "ownerTests": [
+      "src/features/trading/components/MiniChart.test.tsx"
+    ],
+    "reason": "EV-20261010-053 identifies 4 uncovered statements, 9 branch arms, 1 function and 4 lines in MiniChart.tsx. Test the current responsive-height, falling-candle, default-navigation and guarded-resize behavior without changing the component contract."
+  }
+}

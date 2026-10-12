@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "evidenceId": "EV-20261011-058",
+  "kind": "current-working-tree-focused-source-coverage",
+  "measuredAt": "2026-10-11T17:29:58.000Z",
+  "sourceRevision": "fa5462701bc61bdd6d7fd4cab20c7d02e7fa7d81",
+  "sourceBranch": "codex/vittrade-readiness-p0-p2-20261009",
+  "worktree": {
+    "dirtyStatusEntries": 261,
+    "sourceFileCount": 1,
+    "testFiles": [
+      "src/app/components/layout/BottomNav.test.tsx"
+    ],
+    "statusCapturedAfterFocusedRunBeforeEvidenceWrite": true
+  },
+  "execution": {
+    "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/app/components/layout/BottomNav.test.tsx --coverage --coverage.include=src/app/components/layout/BottomNav.tsx --coverage.reporter=json-summary --coverage.reportsDirectory=C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-c03-bottomnav-focused-20261011-05 --reporter=dot --pool=threads --maxWorkers=1 --no-file-parallelism",
+    "platform": "Windows local; Node.js v24.19.0; Vitest 4.1.11; V8",
+    "exitCode": 0,
+    "testFiles": 1,
+    "testFilesPassed": 1,
+    "tests": 3,
+    "testsPassed": 3,
+    "testsFailed": 0,
+    "testsSkipped": 0,
+    "duration": "1.19s",
+    "coverageReportPath": "C:/Users/Joker-PC/AppData/Local/Temp/vittrade-c03-bottomnav-focused-20261011-05/coverage-summary.json"
+  },
+  "measurement": {
+    "metrics": {
+      "statements": {
+        "covered": 34,
+        "total": 34,
+        "missing": 0,
+        "pct": 100
+      },
+      "branches": {
+        "covered": 29,
+        "total": 29,
+        "missing": 0,
+        "pct": 100
+      },
+      "functions": {
+        "covered": 9,
+        "total": 9,
+        "missing": 0,
+        "pct": 100
+      },
+      "lines": {
+        "covered": 33,
+        "total": 33,
+        "missing": 0,
+        "pct": 100
+      }
+    },
+    "sourceSha256": "83a37df469c85e8267f02fc8c333669d3f03c176586403c6e7b4a967517b1474",
+    "testFileSha256": {
+      "src/app/components/layout/BottomNav.test.tsx": "f4c37fc09f943bbaae26885704fbce0a5cf693bf66a36d37f5fc60f910b0a1fa"
+    },
+    "priorFullSuiteEvidenceId": "EV-20261010-053"
+  },
+  "limitations": [
+    "Focused local owner-test evidence for BottomNav.tsx only; the EV-20261010-053 full-suite aggregate remains unchanged.",
+    "Local Windows results do not establish exact-SHA Ubuntu/GitHub, backend, staging, production or user acceptance."
+  ],
+  "nextSlice": {
+    "priority": "P1",
+    "area": "LeftRail component navigation states",
+    "candidateFiles": [
+      "src/app/components/layout/LeftRail.tsx",
+      "src/app/components/layout/LeftRail.test.tsx"
+    ],
+    "ownerTests": [
+      "src/app/components/layout/LeftRail.test.tsx"
+    ],
+    "reason": "The EV-20261010-053 baseline lists LeftRail with 3 uncovered statements, 6 branch arms, 3 functions and 3 lines; create focused tests for its actual route selection, central tab and bottom actions."
+  }
+}

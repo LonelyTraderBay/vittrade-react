@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "evidenceId": "EV-20261011-059",
+  "kind": "current-working-tree-focused-source-coverage",
+  "measuredAt": "2026-10-11T17:32:21.000Z",
+  "sourceRevision": "fa5462701bc61bdd6d7fd4cab20c7d02e7fa7d81",
+  "sourceBranch": "codex/vittrade-readiness-p0-p2-20261009",
+  "worktree": {
+    "dirtyStatusEntries": 264,
+    "sourceFileCount": 1,
+    "testFiles": [
+      "src/app/components/layout/LeftRail.test.tsx"
+    ],
+    "statusCapturedAfterFocusedRunBeforeEvidenceWrite": true
+  },
+  "execution": {
+    "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/app/components/layout/LeftRail.test.tsx --coverage --coverage.include=src/app/components/layout/LeftRail.tsx --coverage.reporter=json-summary --coverage.reportsDirectory=C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-c03-leftrail-focused-20261011-01 --reporter=dot --pool=threads --maxWorkers=1 --no-file-parallelism",
+    "platform": "Windows local; Node.js v24.19.0; Vitest 4.1.11; V8",
+    "exitCode": 0,
+    "testFiles": 1,
+    "testFilesPassed": 1,
+    "tests": 1,
+    "testsPassed": 1,
+    "testsFailed": 0,
+    "testsSkipped": 0,
+    "duration": "1.20s",
+    "coverageReportPath": "C:/Users/Joker-PC/AppData/Local/Temp/vittrade-c03-leftrail-focused-20261011-01/coverage-summary.json"
+  },
+  "measurement": {
+    "metrics": {
+      "statements": {
+        "covered": 20,
+        "total": 20,
+        "missing": 0,
+        "pct": 100
+      },
+      "branches": {
+        "covered": 14,
+        "total": 14,
+        "missing": 0,
+        "pct": 100
+      },
+      "functions": {
+        "covered": 7,
+        "total": 7,
+        "missing": 0,
+        "pct": 100
+      },
+      "lines": {
+        "covered": 20,
+        "total": 20,
+        "missing": 0,
+        "pct": 100
+      }
+    },
+    "sourceSha256": "c2b38463cc29af1e76fba12a6102deed1ceb5cedb60f72d2758b706bfc61baf0",
+    "testFileSha256": {
+      "src/app/components/layout/LeftRail.test.tsx": "357fc43a0ab055474f7ee08f8b647bbcf62d87856c288e51951ab4299ba25a5c"
+    },
+    "priorFullSuiteEvidenceId": "EV-20261010-053"
+  },
+  "limitations": [
+    "Focused local owner-test evidence for LeftRail.tsx only; EV-20261010-053 aggregate remains unchanged.",
+    "Local route assertions establish client navigation behavior only, not backend authorization or production readiness."
+  ],
+  "nextSlice": {
+    "priority": "P1",
+    "area": "ProtectedRoute loading and route authorization UI branches",
+    "candidateFiles": [
+      "src/app/components/layout/ProtectedRoute.tsx",
+      "src/app/components/layout/ProtectedRoute.test.tsx"
+    ],
+    "ownerTests": [
+      "src/app/components/layout/ProtectedRoute.test.tsx"
+    ],
+    "reason": "The EV-20261010-053 baseline lists ProtectedRoute with 2 uncovered statements, 2 branch arms, 1 function and 1 line. Cover its current loading, responsive-login redirect and role-gate behavior only as frontend routing; do not infer server authorization."
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "evidenceId": "EV-20261011-061",
+  "kind": "current-working-tree-focused-source-coverage",
+  "measuredAt": "2026-10-11T17:36:07.000Z",
+  "sourceRevision": "fa5462701bc61bdd6d7fd4cab20c7d02e7fa7d81",
+  "sourceBranch": "codex/vittrade-readiness-p0-p2-20261009",
+  "worktree": {
+    "dirtyStatusEntries": 268,
+    "sourceFileCount": 1,
+    "testFiles": [
+      "src/app/components/layout/ResponsiveBottomNav.test.tsx"
+    ],
+    "statusCapturedAfterFocusedRunBeforeEvidenceWrite": true
+  },
+  "execution": {
+    "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/app/components/layout/ResponsiveBottomNav.test.tsx --coverage --coverage.include=src/app/components/layout/ResponsiveBottomNav.tsx --coverage.reporter=json-summary --coverage.reportsDirectory=C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-c03-responsive-bottomnav-focused-20261011-01 --reporter=dot --pool=threads --maxWorkers=1 --no-file-parallelism",
+    "platform": "Windows local; Node.js v24.19.0; Vitest 4.1.11; V8",
+    "exitCode": 0,
+    "testFiles": 1,
+    "testFilesPassed": 1,
+    "tests": 1,
+    "testsPassed": 1,
+    "testsFailed": 0,
+    "testsSkipped": 0,
+    "duration": "1.32s",
+    "coverageReportPath": "C:/Users/Joker-PC/AppData/Local/Temp/vittrade-c03-responsive-bottomnav-focused-20261011-01/coverage-summary.json"
+  },
+  "measurement": {
+    "metrics": {
+      "statements": {
+        "covered": 16,
+        "total": 16,
+        "missing": 0,
+        "pct": 100
+      },
+      "branches": {
+        "covered": 18,
+        "total": 18,
+        "missing": 0,
+        "pct": 100
+      },
+      "functions": {
+        "covered": 5,
+        "total": 5,
+        "missing": 0,
+        "pct": 100
+      },
+      "lines": {
+        "covered": 16,
+        "total": 16,
+        "missing": 0,
+        "pct": 100
+      }
+    },
+    "sourceSha256": "c676751355c80c74ec030c5d3078fe8d27f17750472ba4de6582157012ec005c",
+    "testFileSha256": {
+      "src/app/components/layout/ResponsiveBottomNav.test.tsx": "efa836935f96e2ab674e284cc296f922347911fc0b8d6b3a090bdabb6121d43d"
+    },
+    "priorFullSuiteEvidenceId": "EV-20261010-053"
+  },
+  "limitations": [
+    "Focused local owner-test evidence for ResponsiveBottomNav.tsx only; EV-20261010-053 aggregate remains unchanged.",
+    "Local route assertions establish responsive client navigation only, not backend, staging or production behavior."
+  ],
+  "nextSlice": {
+    "priority": "P1",
+    "area": "ResponsiveShell layout branches",
+    "candidateFiles": [
+      "src/app/components/layout/ResponsiveShell.tsx",
+      "src/app/components/layout/ResponsiveShell.test.tsx"
+    ],
+    "ownerTests": [
+      "src/app/components/layout/ResponsiveShell.test.tsx"
+    ],
+    "reason": "The EV-20261010-053 baseline lists ResponsiveShell with 3 uncovered statements, 6 branch arms, 1 function and 3 lines; inspect current layout contracts and owner tests before adding coverage."
+  }
+}

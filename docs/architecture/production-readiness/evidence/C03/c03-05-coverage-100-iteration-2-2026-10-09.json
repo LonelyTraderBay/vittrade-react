@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "evidenceId": "EV-20261009-005",
+  "kind": "current-working-tree-risk-slice-coverage",
+  "observedAt": "2026-10-09T16:06:20.322Z",
+  "sourceRevision": "fa5462701bc61bdd6d7fd4cab20c7d02e7fa7d81",
+  "sourceBranch": "codex/vittrade-readiness-p0-p2-20261009",
+  "workingTreeFingerprintSha256": "bc32cfcd223cc549ee9a7fe55c9dba2cd66994571e23efacbc7f5bd78de4ce1e",
+  "execution": {
+    "environment": "Windows local PowerShell; Node.js v24.19.0; Vitest 4.1.11; V8; one thread worker.",
+    "coverageCommand": "node node_modules/vitest/vitest.mjs run --coverage --coverage.include=src/features/auth/pages/WebOTPPage.tsx --coverage.reporter=json --coverage.reportsDirectory=<fresh-temp-dir> --pool=threads --maxWorkers=1 --no-file-parallelism src/features/auth/pages/WebOTPPage.test.tsx",
+    "coverageReportPath": "C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-webotp-coverage-json-ae9fa9e76f924637bcffe027e47455ae\\coverage-final.json",
+    "coverageReportSha256": "c14a03180520c51ee984e8d62cb471a3445237b134551ef5d15eccd5ab3d2afe",
+    "regressionCommand": "node node_modules/vitest/vitest.mjs run --pool=threads --maxWorkers=1 --no-file-parallelism src/features/auth/pages/WebOTPPage.test.tsx src/app/pages/page-composition.test.tsx src/features/p2p/components/P2PCreateAdSections.test.tsx src/features/wallet/pages/AddressBookPage.test.tsx src/features/wallet/pages/WithdrawPage.test.tsx",
+    "typecheckCommands": [
+      "node_modules/.bin/tsc --noEmit -p tsconfig.json",
+      "node_modules/.bin/tsc --noEmit -p tsconfig.node.json"
+    ],
+    "staticChecks": [
+      "node node_modules/eslint/bin/eslint.js <7 changed TypeScript paths>",
+      "node node_modules/prettier/bin/prettier.cjs --check <7 changed TypeScript paths>",
+      "git diff --check"
+    ]
+  },
+  "changedTypeScriptFileSha256": {
+    "src/features/auth/pages/WebOTPPage.tsx": "43404cce3d6bf1e803cb8aca6e1fa3a0b1d47d82df7b1bbac6105399b2ba2c0a",
+    "src/features/auth/pages/WebOTPPage.test.tsx": "2591e215fb90243d2d4fb49206c83a18619ce427c28c981c7aa85c7a11c2c6e8",
+    "src/app/pages/page-composition.test.tsx": "3b00cfeff34af2e099ac7d17d43d63d474820f3e654e14d0ae8ccf3b40569235",
+    "src/features/p2p/components/P2PCreateAdSections.tsx": "0b734385f6bbc6c3163dbe3039715c64b16bf3a834946ac52f2481f2f3697b7f",
+    "src/features/p2p/components/P2PCreateAdSections.test.tsx": "af36ba5dc4fbf4ee8ff784bf054e8ee1c628cc30409ca3f523f2a7a2d3a3dbb9",
+    "src/features/wallet/pages/AddressBookPage.tsx": "831cac8489341506443ab2f1aee60243238ab19410b638e9c0cf1121355576b5",
+    "src/features/wallet/pages/WithdrawPage.test.tsx": "984007db9d8ba2251258b8d3456140303146bf5306b31576038a59712d291f93"
+  },
+  "targetedMeasurement": {
+    "scope": "WebOTPPage.tsx only; this targeted result does not replace or update the full-application aggregate.",
+    "testFilesPassed": 1,
+    "testsPassed": 29,
+    "testsFailed": 0,
+    "testsSkipped": 0,
+    "metrics": {
+      "statements": { "covered": 145, "total": 145, "pct": 100.0 },
+      "branches": { "covered": 128, "total": 128, "pct": 100.0 },
+      "functions": { "covered": 26, "total": 26, "pct": 100.0 },
+      "lines": { "covered": 134, "total": 134, "pct": 100.0 }
+    },
+    "remainingCounters": {
+      "statements": 0,
+      "branches": 0,
+      "functions": 0,
+      "lines": 0
+    }
+  },
+  "regressionValidation": {
+    "testFilesPassed": 5,
+    "testsPassed": 62,
+    "testsFailed": 0,
+    "testsSkipped": 0,
+    "typescriptProjectsPassed": ["tsconfig.json", "tsconfig.node.json"],
+    "eslint": "pass for the seven listed TypeScript paths",
+    "prettier": "pass for the seven listed TypeScript paths",
+    "gitDiffCheck": "pass"
+  },
+  "designChanges": [
+    "Model the rendered Web OTP flow as a discriminated login/registration challenge; invalid route state redirects before rendering a dead fallback form.",
+    "Guard concurrent OTP verification synchronously so a duplicate paste cannot issue a second request while the first is pending.",
+    "Remove expiry and verification fallback branches made unreachable by the parsed challenge invariant; test clock rollback, expiration, success navigation, error recovery, paste length and duplicate submission behavior.",
+    "Narrow P2P create-ad section color inputs to the seven CSS strings those components use; keep the app's full theme object assignable.",
+    "Move the address-book whitelist handler below pending/error returns so query data is narrowed before dereference, and make the withdrawal test use the input's accessible label."
+  ],
+  "fullSuiteStatus": {
+    "lastFullSuiteEvidenceId": "EV-20261009-004",
+    "lastMeasuredMetrics": {
+      "statementsPct": 94.36,
+      "branchesPct": 89.73,
+      "functionsPct": 92.39,
+      "linesPct": 95.88
+    },
+    "currentWorkingTreeFullSuiteRerun": "pending after this source change; do not present EV-004 aggregate as the current source revision's exact coverage."
+  },
+  "limitations": [
+    "Local Windows Node 24 focused evidence only; this is not exact-SHA Node 22 Ubuntu/GitHub CI.",
+    "No backend, staging, production or user-acceptance requests were made.",
+    "Registration cookie flags, CORS/CSRF/origin, OTP lifecycle and idempotency semantics remain owner-unresolved; no API behavior was invented."
+  ],
+  "nextSlice": {
+    "priority": "P0",
+    "area": "wallet withdrawal and shared API/session boundary",
+    "filesToInspectBeforeEditing": [
+      "src/features/wallet/pages/WithdrawPage.tsx",
+      "src/features/wallet/components/WithdrawSections.tsx",
+      "src/shared/api/http-client.ts",
+      "src/shared/api/http-client.test.ts",
+      "contracts/openapi/wallet.yaml",
+      "docs/architecture/production-readiness/PLAN.md",
+      "docs/architecture/production-readiness/TRACKING.json"
+    ],
+    "acceptance": "Inspect the wallet/API contract and current tests first; retain current coverage denominator; add behavior-based coverage only for reachable contract states; rerun the full suite before reporting a new global metric."
+  }
+}

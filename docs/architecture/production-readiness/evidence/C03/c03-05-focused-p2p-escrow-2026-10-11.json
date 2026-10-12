@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "evidenceId": "EV-20261011-057",
+  "kind": "current-working-tree-focused-source-coverage",
+  "measuredAt": "2026-10-11T17:25:32.000Z",
+  "sourceRevision": "fa5462701bc61bdd6d7fd4cab20c7d02e7fa7d81",
+  "sourceBranch": "codex/vittrade-readiness-p0-p2-20261009",
+  "worktree": {
+    "dirtyStatusEntries": 261,
+    "sourceFileCount": 1,
+    "testFiles": [
+      "src/features/p2p/pages/P2PEscrowDetailPage.test.tsx"
+    ],
+    "statusCapturedAfterFocusedRunBeforeEvidenceWrite": true
+  },
+  "execution": {
+    "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/features/p2p/pages/P2PEscrowDetailPage.test.tsx --coverage --coverage.include=src/features/p2p/pages/P2PEscrowDetailPage.tsx --coverage.reporter=json-summary --coverage.reportsDirectory=C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-c03-p2p-escrow-focused-20261011-03 --reporter=dot --pool=threads --maxWorkers=1 --no-file-parallelism",
+    "platform": "Windows local; Node.js v24.19.0; Vitest 4.1.11; V8",
+    "exitCode": 0,
+    "testFiles": 1,
+    "testFilesPassed": 1,
+    "tests": 12,
+    "testsPassed": 12,
+    "testsFailed": 0,
+    "testsSkipped": 0,
+    "duration": "5.39s",
+    "coverageReportPath": "C:/Users/Joker-PC/AppData/Local/Temp/vittrade-c03-p2p-escrow-focused-20261011-03/coverage-summary.json"
+  },
+  "measurement": {
+    "metrics": {
+      "statements": {
+        "covered": 78,
+        "total": 81,
+        "missing": 3,
+        "pct": 96.29
+      },
+      "branches": {
+        "covered": 80,
+        "total": 85,
+        "missing": 5,
+        "pct": 94.11
+      },
+      "functions": {
+        "covered": 14,
+        "total": 14,
+        "missing": 0,
+        "pct": 100
+      },
+      "lines": {
+        "covered": 78,
+        "total": 78,
+        "missing": 0,
+        "pct": 100
+      }
+    },
+    "sourceSha256": "90f39e38073ff3f7f1a9e650bb1f5f5d43a29f6131b3910ee742e7074b07c4a8",
+    "testFileSha256": {
+      "src/features/p2p/pages/P2PEscrowDetailPage.test.tsx": "eabede83673c7a80577dfbc6815659bdf0c35ebfa85017407a46a0d954375204"
+    },
+    "priorFullSuiteEvidenceId": "EV-20261010-053"
+  },
+  "limitations": [
+    "Partial focused local owner-test evidence; no runtime component code changed.",
+    "Remaining uncovered guards at source lines 55, 66 and 92 are not reachable through the valid UI state: verify is disabled/hidden until code/challenge, mark-paid depends on the required route orderId, and release is hidden until a verification token exists.",
+    "Remaining branch arms include the draft_frontend p2p:mark-paid permission alternative and a status fallback outside the OpenAPI status enum; neither was synthesized.",
+    "Local MSW does not establish backend authorization, replay semantics, staging, production or user acceptance."
+  ],
+  "nextSlice": {
+    "priority": "P1",
+    "area": "BottomNav layout/keyboard/pending-reward branches",
+    "candidateFiles": [
+      "src/app/components/layout/BottomNav.tsx",
+      "src/app/components/layout/BottomNav.test.tsx"
+    ],
+    "ownerTests": [
+      "src/app/components/layout/BottomNav.test.tsx"
+    ],
+    "reason": "The EV-20261010-053 baseline lists BottomNav with 3 uncovered statements, 2 branch arms, 2 functions and 3 lines; cover its existing context, keyboard and click behavior without changing runtime code."
+  }
+}

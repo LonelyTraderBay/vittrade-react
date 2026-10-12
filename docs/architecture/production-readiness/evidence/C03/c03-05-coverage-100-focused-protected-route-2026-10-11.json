@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "evidenceId": "EV-20261011-060",
+  "kind": "current-working-tree-focused-source-coverage",
+  "measuredAt": "2026-10-11T17:34:47.000Z",
+  "sourceRevision": "fa5462701bc61bdd6d7fd4cab20c7d02e7fa7d81",
+  "sourceBranch": "codex/vittrade-readiness-p0-p2-20261009",
+  "worktree": {
+    "dirtyStatusEntries": 266,
+    "sourceFileCount": 1,
+    "testFiles": [
+      "src/app/components/layout/ProtectedRoute.test.tsx"
+    ],
+    "statusCapturedAfterFocusedRunBeforeEvidenceWrite": true
+  },
+  "execution": {
+    "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/app/components/layout/ProtectedRoute.test.tsx --coverage --coverage.include=src/app/components/layout/ProtectedRoute.tsx --coverage.reporter=json-summary --coverage.reportsDirectory=C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-c03-protectedroute-focused-20261011-02 --reporter=dot --pool=threads --maxWorkers=1 --no-file-parallelism",
+    "platform": "Windows local; Node.js v24.19.0; Vitest 4.1.11; V8",
+    "exitCode": 0,
+    "testFiles": 1,
+    "testFilesPassed": 1,
+    "tests": 7,
+    "testsPassed": 7,
+    "testsFailed": 0,
+    "testsSkipped": 0,
+    "duration": "868ms",
+    "coverageReportPath": "C:/Users/Joker-PC/AppData/Local/Temp/vittrade-c03-protectedroute-focused-20261011-02/coverage-summary.json"
+  },
+  "measurement": {
+    "metrics": {
+      "statements": {
+        "covered": 18,
+        "total": 18,
+        "missing": 0,
+        "pct": 100
+      },
+      "branches": {
+        "covered": 16,
+        "total": 16,
+        "missing": 0,
+        "pct": 100
+      },
+      "functions": {
+        "covered": 3,
+        "total": 3,
+        "missing": 0,
+        "pct": 100
+      },
+      "lines": {
+        "covered": 17,
+        "total": 17,
+        "missing": 0,
+        "pct": 100
+      }
+    },
+    "sourceSha256": "c5cb74de4707d257a40f4782ea7c7c177ce3b8bd2de4f4cccb5e4450c9f4c5d4",
+    "testFileSha256": {
+      "src/app/components/layout/ProtectedRoute.test.tsx": "49bf799977a076c4d7502f8bec0b94a7e8142f3e172246f622a0b41f041da3c4"
+    },
+    "priorFullSuiteEvidenceId": "EV-20261010-053"
+  },
+  "limitations": [
+    "Focused frontend route-gate tests only; these results do not establish server-side authorization, backend enforcement, staging or production readiness.",
+    "The EV-20261010-053 full-suite aggregate remains unchanged."
+  ],
+  "nextSlice": {
+    "priority": "P1",
+    "area": "ResponsiveBottomNav route and interaction branches",
+    "candidateFiles": [
+      "src/app/components/layout/ResponsiveBottomNav.tsx",
+      "src/app/components/layout/ResponsiveBottomNav.test.tsx"
+    ],
+    "ownerTests": [
+      "src/app/components/layout/ResponsiveBottomNav.test.tsx"
+    ],
+    "reason": "The EV-20261010-053 baseline lists 2 uncovered statements, 8 branch arms, 2 functions and 2 lines; inspect the current component and owner tests before extending them."
+  }
+}

@@ -1,0 +1,218 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "evidenceId": "EV-20261010-005",
+  "kind": "current-working-tree-risk-slice-coverage",
+  "measuredAt": "2026-10-09T18:26:17.054Z",
+  "sourceRevision": "fa5462701bc61bdd6d7fd4cab20c7d02e7fa7d81",
+  "sourceBranch": "codex/vittrade-readiness-p0-p2-20261009",
+  "worktree": {
+    "dirtyStatusEntries": 81,
+    "statusCapturedAfterFullRunBeforeEvidenceWrite": true,
+    "dirtyPaths": [
+      "docs/architecture/production-readiness/PLAN.md",
+      "docs/architecture/production-readiness/TRACKING.json",
+      "src/app/contexts/AuthSessionProvider.test.tsx",
+      "src/app/services/FeatureFlagService.test.ts",
+      "src/app/services/FeatureFlagService.ts",
+      "src/features/arena/pages/ArenaContractPages.tsx",
+      "src/features/arena/pages/ArenaJoinContractPage.test.tsx",
+      "src/features/auth/components/RegistrationForm.test.tsx",
+      "src/features/auth/components/RegistrationForm.tsx",
+      "src/features/auth/pages/OTPPage.test.tsx",
+      "src/features/auth/pages/OTPPage.tsx",
+      "src/features/auth/pages/WebOTPPage.test.tsx",
+      "src/features/auth/pages/WebOTPPage.tsx",
+      "src/features/dca/components/ChartAnnotationOverlay.test.tsx",
+      "src/features/dca/components/DCAHistoryChart.test.tsx",
+      "src/features/dca/components/DCAHistoryChart.tsx",
+      "src/features/dca/components/DCAPlanCard.tsx",
+      "src/features/dca/pages/DCAMainPage.test.tsx",
+      "src/features/dca/pages/DCAMainPage.tsx",
+      "src/features/earn/pages/EarnPage.test.tsx",
+      "src/features/earn/pages/EarnPage.tsx",
+      "src/features/market/pages/MarketListPage.test.tsx",
+      "src/features/p2p/components/P2PCreateAdSections.tsx",
+      "src/features/p2p/lib/filter-marketplace-ads.test.ts",
+      "src/features/p2p/pages/P2P2FASettingsPage.test.tsx",
+      "src/features/p2p/pages/P2PMyAdsContractPage.test.tsx",
+      "src/features/predictions/pages/PredictionContractPages.test.tsx",
+      "src/features/predictions/pages/PredictionContractPages.tsx",
+      "src/features/trading/components/QuickPairSwitcher.test.tsx",
+      "src/features/trading/components/QuickPairSwitcher.tsx",
+      "src/features/trading/components/TradeTerminal.test.tsx",
+      "src/features/wallet/components/WithdrawSections.tsx",
+      "src/features/wallet/pages/AddressAddPage.test.tsx",
+      "src/features/wallet/pages/AddressAddPage.tsx",
+      "src/features/wallet/pages/AddressBookPage.test.tsx",
+      "src/features/wallet/pages/AddressBookPage.tsx",
+      "src/features/wallet/pages/DustConverterPage.test.tsx",
+      "src/features/wallet/pages/DustConverterPage.tsx",
+      "src/features/wallet/pages/NetworkStatusPage.test.tsx",
+      "src/features/wallet/pages/WalletOverviewContractPage.test.tsx",
+      "src/features/wallet/pages/WalletTransferContractPage.test.tsx",
+      "src/features/wallet/pages/WalletTransferContractPage.tsx",
+      "src/features/wallet/pages/WithdrawPage.test.tsx",
+      "src/features/wallet/pages/WithdrawPage.tsx",
+      "src/features/wallet/pages/WithdrawalLimitsPage.test.tsx",
+      "src/shared/api/http-client.test.ts",
+      "src/shared/api/http-client.ts",
+      "src/shared/ui/BottomSheetV2.tsx",
+      "src/shared/ui/InfoRow.test.tsx",
+      "src/shared/ui/InfoRow.tsx",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-baseline-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-2-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-3-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-4-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-5-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-iteration-2-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-iteration-3-auth-http-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-iteration-4-wallet-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-iteration-5-wallet-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-progress-2026-10-09.json",
+      "src/app/components/ui-contracts.test.tsx",
+      "src/app/contexts/AuthContext.default-adapter.test.tsx",
+      "src/app/pages/page-composition.test.tsx",
+      "src/features/dca/components/DCACreatePlanSheet.test.tsx",
+      "src/features/dca/components/DCAPlanCard.test.tsx",
+      "src/features/p2p/components/P2PCreateAdSections.test.tsx",
+      "src/features/p2p/components/P2PMarketplaceSections.test.tsx",
+      "src/features/p2p/lib/select-best-ad.test.ts",
+      "src/features/public-entrypoints.test.ts",
+      "src/features/support/pages/NewsContractPage.test.tsx",
+      "src/features/wallet/components/WithdrawSections.test.tsx",
+      "src/features/wallet/model/validate-wallet-transfer.test.ts",
+      "src/features/wallet/model/validate-wallet-transfer.ts",
+      "src/features/wallet/pages/WebWithdrawalWhitelistPage.test.tsx",
+      "src/shared/lib/formatNumber.test.ts",
+      "src/shared/theme/theme-token-contract.test.tsx",
+      "src/shared/ui/BottomSheetV2.test.tsx",
+      "src/shared/ui/SkeletonBlock.test.tsx",
+      "src/shared/ui/charts/ChartGradientDefs.test.tsx",
+      "src/shared/ui/toggle-variants.test.ts",
+      "src/shared/ui/ui-primitives.test.tsx"
+    ],
+    "sourceFileCount": 437,
+    "testRootCount": 308,
+    "inputFileCount": 748,
+    "inputFingerprintSha256": "560f5fa17532e1c989b42712750f7c19b6b10e9ff5494f104215d6e06e121a6e"
+  },
+  "execution": {
+    "focusedCommand": "node node_modules/vitest/vitest.mjs run src/features/wallet/pages/NetworkStatusPage.test.tsx src/features/wallet/pages/AddressAddPage.test.tsx --coverage --coverage.reporter=json --coverage.reportsDirectory=<fresh-temp-dir> --pool=threads --maxWorkers=1 --no-file-parallelism",
+    "platform": "Windows local",
+    "nodeVersion": "v24.19.0",
+    "vitestVersion": "4.1.11",
+    "provider": "v8",
+    "testFiles": 2,
+    "testsPassed": 12,
+    "testsFailed": 0,
+    "testsSkipped": 0,
+    "focusedVitestExitCode": 1,
+    "focusedExitReason": "All 12 owner tests pass; the focused coverage process exits 1 because repository aggregate thresholds are evaluated against a partial run. This report is used only for the two target source files.",
+    "coverageReportPath": "C:/Users/Joker-PC/AppData/Local/Temp/vittrade-c03-05-wallet-next-focused-20261010/coverage-final.json",
+    "coverageReportBytes": 3705346,
+    "coverageReportSha256": "097d15559c2fdf3788ca067272cc7c67c589bbb1efeb90507aa02f0f710afaa2",
+    "directOwnerTestsExitCode": 0,
+    "typescriptProjectsPassed": [
+      "tsconfig.json",
+      "tsconfig.node.json"
+    ],
+    "eslint": "pass",
+    "prettier": "pass",
+    "aggregateFullSuiteEvidenceId": "EV-20261010-006"
+  },
+  "files": [
+    {
+      "source": "src/features/wallet/pages/NetworkStatusPage.tsx",
+      "test": "src/features/wallet/pages/NetworkStatusPage.test.tsx",
+      "metrics": {
+        "statements": {
+          "covered": 20,
+          "total": 20,
+          "missing": 0,
+          "pct": 100
+        },
+        "branches": {
+          "covered": 28,
+          "total": 28,
+          "missing": 0,
+          "pct": 100
+        },
+        "functions": {
+          "covered": 7,
+          "total": 7,
+          "missing": 0,
+          "pct": 100
+        },
+        "lines": {
+          "covered": 17,
+          "total": 17,
+          "missing": 0,
+          "pct": 100
+        }
+      },
+      "remainingCounters": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 0,
+        "lines": 0
+      }
+    },
+    {
+      "source": "src/features/wallet/pages/AddressAddPage.tsx",
+      "test": "src/features/wallet/pages/AddressAddPage.test.tsx",
+      "metrics": {
+        "statements": {
+          "covered": 42,
+          "total": 42,
+          "missing": 0,
+          "pct": 100
+        },
+        "branches": {
+          "covered": 42,
+          "total": 42,
+          "missing": 0,
+          "pct": 100
+        },
+        "functions": {
+          "covered": 17,
+          "total": 17,
+          "missing": 0,
+          "pct": 100
+        },
+        "lines": {
+          "covered": 39,
+          "total": 39,
+          "missing": 0,
+          "pct": 100
+        }
+      },
+      "remainingCounters": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 0,
+        "lines": 0
+      }
+    }
+  ],
+  "changes": [
+    {
+      "path": "src/features/wallet/pages/NetworkStatusPage.tsx",
+      "kind": "Cover all network health status color, the all-operational summary, and explicit retry recovery from API 503."
+    },
+    {
+      "path": "src/features/wallet/pages/NetworkStatusPage.test.tsx",
+      "kind": "Add contract-shaped cases for degraded network, all-operational response and user-triggered recovery after a failed refresh."
+    },
+    {
+      "path": "src/features/wallet/pages/AddressAddPage.tsx",
+      "kind": "Remove private handler guards that duplicated the exact disabled conditions of their only CTA callers; keep permission and pending gates on controls."
+    },
+    {
+      "path": "src/features/wallet/pages/AddressAddPage.test.tsx",
+      "kind": "Cover empty clipboard preservation and real pending 201 request state through deterministic deferred response synchronization."
+    }
+  ],
+  "notes": "Both target pages have zero remaining V8 counters. The address-book endpoint remains permission/idempotency governed by the existing OpenAPI contract."
+}
