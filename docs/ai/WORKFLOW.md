@@ -148,13 +148,56 @@ Manifest ghi NODE_ENV; gate artifact từ chối build thiếu provenance mode/c
 Fingerprint run bao gồm cả script thực thi trong readiness. Metadata ledger/report
 được kiểm riêng ở G5; sửa metadata sau run không được đổi bằng chứng runtime.
 
-Retention tự động **chưa được duyệt và không bật**. `npm.cmd run artifacts:plan
--- --run <run-directory>` chỉ xuất danh sách cache/build có thể xem xét; `--validate
-<plan.json>` từ chối run còn chạy, owner còn sống, junction/reparse, nội dung hoặc
-file ID đã thay đổi. Công cụ không xóa file. Phải duyệt đường dẫn/bytes/lý do/
-khôi phục trước khi xóa vĩnh viễn. Giữ coverage JSON, report lỗi, screenshots,
-goldens, contract và mọi evidence/fingerprint được tracker tham chiếu. CLI trực
-tiếp ngoài npm không có owner manifest; không dùng CLI đó cho vòng coverage mới.
+Người dùng đã cho phép cơ chế dọn cache/output hết sử dụng ngày 2026-10-12.
+Policy `ephemeral-cache-output-v1` chỉ áp dụng cho run mới có owner PID, child PID
+và xác nhận child đã đóng bình thường. Runner tự cleanup khi child đóng và quét
+run đã kết thúc trước lượt chạy mới. Manifest kết thúc được ghi atomically;
+cleanup không sửa manifest hoặc bytes của bằng chứng.
+
+| Điều kiện | Kết quả của cleanup |
+| --- | --- |
+| Run hoàn tất, owner/child đã dừng, metadata đầy đủ | Chỉ xem xét `cache/` và `dist/` trong đúng run. |
+| Production build thành công mới nhất | Giữ `dist/` cho preview/gates đến khi có build thay thế thành công. |
+| Run lỗi hoặc source thay đổi trong lúc chạy | Chỉ dọn cache; giữ `dist/` để chẩn đoán. |
+| Run/consumer còn sống, signal/error, metadata thiếu/hỏng, run legacy | Giữ output; không suy đã hết sử dụng từ tuổi file hoặc PID owner đơn lẻ. |
+| Run được source/tài liệu/evidence hiện tại tham chiếu hoặc có file Git quản lý | Giữ toàn bộ output của run. |
+| Coverage, report, screenshot/video/trace, golden, contract, `run.json` | Luôn giữ; nằm ngoài danh sách được tự xóa. |
+| Root `dist/coverage`, dependency, Temp, Git, worktree | Nằm ngoài phạm vi cleanup tự động. |
+
+Cleanup và việc tạo run/mở consumer dùng chung khóa độc quyền ngắn trong
+`.artifacts/lifecycle.lock`. Preview và artifact gates giữ consumer lease có
+owner/child PID tới khi process đóng. Khóa còn tồn tại thì từ chối thao tác,
+không tự phá khóa khi chưa xác minh owner. CLI trực tiếp ngoài npm không tham gia
+ownership/lease này; không dùng CLI đó để đọc/ghi owned output trong lúc cleanup.
+
+Trước mỗi lượt xóa, kiểm tra containment, Git ownership, tham chiếu, consumer,
+junction/symlink/hard link, hash và file/directory ID. Chỉ unlink các file đã kiểm
+và rmdir thư mục đã kiểm, đã rỗng; không xóa đệ quy một cây có thể bị thay thế.
+Nếu file đổi hoặc xóa lỗi, giữ phần còn lại, trả lỗi và ghi cả số bytes đã xóa
+trước lỗi. Cleanup không xóa manifest/report để giảm số đo và có thể chạy lại.
+
+**Kết thúc mỗi công việc:** dừng các tiến trình thuộc công việc đã mở, chạy lệnh
+dưới đây, đọc report và đưa số file/bytes/lý do giữ lại vào bàn giao. Không dừng
+tiến trình của người khác. Khi bị giới hạn chỉ đọc, dùng dry-run và báo chưa xóa.
+
+```powershell
+npm.cmd run artifacts:cleanup -- --dry-run
+npm.cmd run artifacts:cleanup
+```
+
+Lệnh apply ghi `.artifacts/cleanup-report.json` với số file/bytes logic đã xóa,
+run được giữ và lỗi; đây là report vận hành, không thay TRACKING hoặc evidence
+nghiệm thu. Không nhận đường dẫn xóa tùy ý. `artifacts:plan -- --run <directory>`
+và `--validate <plan.json>` vẫn chỉ xem/đối chiếu, không cấp quyền xóa run legacy.
+Run cũ thiếu child ownership được giữ; muốn xử lý cần kiểm kê riêng theo đường
+dẫn, tiến trình, bằng chứng và quyền hiện hành, không tự đổi manifest lịch sử.
+
+Runner cảnh báo khi `.artifacts` vượt 1 GiB hoặc volume còn dưới 20 GiB; từ chối
+tạo run mới khi còn dưới 5 GiB. Các ngưỡng này là guard cho output cục bộ, không
+cho phép xóa bằng chứng được bảo vệ. Không xóa `node_modules` hoặc browser/cache
+dùng chung sau mỗi task; việc bảo trì chúng và thu hồi worktree cần phạm vi riêng.
+Backup mới cần owner và thời điểm hết sử dụng; có thể lưu gzip đã kiểm hash/giải
+nén khi cần giữ, không chuyển đổi/xóa backup hay evidence lịch sử trong cleanup.
 
 Kết thúc phiên bằng checkpoint có task/step, file thực sự sửa, bằng chứng, kiểm tra chưa chạy, lỗi/blocker và nextAction cụ thể. Dùng templates/session hiện có; không tạo sổ trạng thái riêng trong workflow, README hoặc lịch sử chat. Báo tiến độ với tử số/mẫu số và tách M1–M4, UI kỹ thuật, user acceptance và backend verified theo PLAN. Thiếu đầu vào bên ngoài thì giữ phần đó chưa hoàn tất.
 

@@ -68,6 +68,13 @@ Các quy định này áp dụng cho mọi AI agent viết hoặc sửa mã tron
 - Quy trình repo phải thực hiện được cả khi không có plugin. Khi thiếu skill/công cụ, ghi rõ giới hạn và dùng phương án tương đương nếu chứng minh được cùng tiêu chí; kiểm tra bắt buộc chưa chạy vẫn là chưa đạt. Không tự cài plugin, đổi quyền, model hoặc cấu hình cá nhân để thực hiện workflow.
 - Giữ một nguồn cho mỗi loại thông tin: kiến trúc ở `ARCHITECTURE.md`, quy trình ở `docs/ai/WORKFLOW.md`, công việc ở `PLAN.md`, tiến độ ở `TRACKING.json`. Dùng liên kết thay vì sao chép quy định hoặc tạo sổ tiến độ song song. Cập nhật hướng dẫn và ví dụ khi thay đổi làm chúng hết hiệu lực.
 
+## 9. Dọn output sau mỗi công việc
+
+- Sau mỗi công việc, dừng các tiến trình test/build/preview do chính công việc đó mở rồi chạy `npm.cmd run artifacts:cleanup` trước khi bàn giao. Trên shell khác dùng `npm run artifacts:cleanup`. Runner npm test/build tự dọn khi kết thúc và kiểm tra run cũ khi khởi động; lệnh cuối phiên vẫn bắt buộc vì preview hoặc evidence có thể giữ output trong lúc kiểm chứng.
+- Chỉ cơ chế theo [workflow output và retention](docs/ai/WORKFLOW.md#output-kiểm-thử-và-build) được phép tự xóa cache/output đã hết sử dụng. Không dùng kích thước, tuổi file hoặc trạng thái Git ignored làm căn cứ duy nhất để xóa. Không dùng `git clean` toàn repo hoặc xóa đệ quy thư mục chưa xác minh.
+- Giữ nguyên source, test/fixture/golden, contract, secret/config, Git, manifest, coverage, report lỗi và bằng chứng. Không tự dọn worktree, dependency dùng chung, Temp hoặc output cũ thiếu ownership; đặc biệt giữ worktree có thay đổi hoặc commit chưa được bảo toàn.
+- Báo số file/bytes thực sự đã dọn, output giữ lại và lý do; cleanup lỗi thì ghi rõ chưa hoàn tất, không báo đã dọn thành công. Nếu người dùng giới hạn chỉ đọc, chạy `artifacts:cleanup -- --dry-run` và báo chưa xóa. Run bị ngắt/không rõ tiến trình phải được giữ để xử lý, không tự phá khóa hoặc tắt tiến trình của công việc khác.
+
 ## Nguyên tắc chốt
 
 Ưu tiên hệ thống nhỏ, rõ và dễ kiểm tra nhất mà vẫn đáp ứng đầy đủ yêu cầu. Mọi trạng thái, kết nối, tự động hóa và lớp trừu tượng mới đều cần lý do; nếu không chứng minh được là cần, hãy thử bỏ nó.

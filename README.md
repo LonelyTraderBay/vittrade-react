@@ -27,13 +27,18 @@ tiêu chí nghiệm thu của repo áp dụng cho mọi người thực hiện.
 | `npm run test` | Vitest in watch mode |
 | `npm run test:run` | Vitest single run |
 | `npm run test:coverage` | Coverage report |
+| `npm run artifacts:cleanup` | Clean unused owned cache/output; required before task handoff |
+| `npm run artifacts:cleanup -- --dry-run` | Preview automatic cleanup eligibility |
 
 Build/test outputs live in `.artifacts/runs/<run-id>` with an owner manifest and
 source hashes. `preview`, `production-mocks:check` and `bundle:check` use the most
 recent successful production build matching the current source snapshot.
 Existing `dist/coverage` and historical evidence are preserved. See the
 [output and retention workflow](docs/ai/WORKFLOW.md#output-kiểm-thử-và-build)
-before removing reports; automatic retention is disabled pending approval.
+for the approved cleanup policy. Test/build runners automatically clean disposable
+output; finish every task with `npm run artifacts:cleanup`. Evidence, the latest
+successful production build, active consumers, legacy output and worktrees remain
+protected. Cleanup never sweeps shared dependencies or Temp.
 
 ## Environment
 
