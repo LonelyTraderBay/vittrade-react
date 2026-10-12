@@ -25,12 +25,16 @@ import {
 } from '../model/wallet-queries';
 import type {
   WalletWithdrawalChallengeRequest,
+  WalletWithdrawalChallenge,
   WalletWithdrawalNetwork,
   WalletWithdrawalReceipt,
 } from '../model/wallet-types';
 
 const EMPTY_NETWORKS: WalletWithdrawalNetwork[] = [];
-type Step = 'form' | 'verify' | 'result';
+type WithdrawalWorkflow =
+  | { step: 'form' }
+  | { step: 'verify'; challenge: WalletWithdrawalChallenge }
+  | { step: 'result'; receipt: WalletWithdrawalReceipt };
 
 export function WithdrawPage() {
   const { asset = 'USDT' } = useParams();
@@ -48,8 +52,7 @@ export function WithdrawPage() {
   const networks = networksQuery.data ?? EMPTY_NETWORKS;
   const assetData = assetsQuery.data?.items.find((item) => item.symbol === asset);
 
-  const [step, setStep] = useState<Step>('form');
-  const [withdrawalReceipt, setWithdrawalReceipt] = useState<WalletWithdrawalReceipt>();
+  const [workflow, setWorkflow] = useState<WithdrawalWorkflow>({ step: 'form' });
   const [networkId, setNetworkId] = useState('');
   const [address, setAddress] = useState('');
   const [memo, setMemo] = useState('');
@@ -131,35 +134,17 @@ export function WithdrawPage() {
   };
 
   const requestChallenge = async () => {
-    if (!canWithdraw) {
-      toast.error('Wallet withdrawal permission is required to request a withdrawal.');
-      return;
-    }
     setConfirmOpen(false);
     try {
-      await challengeMutation.mutateAsync({ request: challengeRequest });
+      const challenge = await challengeMutation.mutateAsync({ request: challengeRequest });
       setCode('');
-      setStep('verify');
+      setWorkflow({ step: 'verify', challenge });
     } catch {
       toast.error('Không thể tạo phiên xác minh. Vui lòng thử lại.');
     }
   };
 
-  const verifyAndSubmit = async () => {
-    if (!canWithdraw) {
-      toast.error('Wallet withdrawal permission is required to submit a withdrawal.');
-      return;
-    }
-    const challenge = challengeMutation.data;
-    if (!challenge) {
-      toast.error('Phiên xác minh không tồn tại. Vui lòng tạo lại yêu cầu.');
-      setStep('form');
-      return;
-    }
-    if (!/^\d{6}$/.test(code)) {
-      setErrors((current) => ({ ...current, code: 'Nhập mã xác minh gồm 6 chữ số.' }));
-      return;
-    }
+  const verifyAndSubmit = async (challenge: WalletWithdrawalChallenge) => {
     try {
       const verification = await verificationMutation.mutateAsync({
         challengeId: challenge.id,
@@ -174,8 +159,7 @@ export function WithdrawPage() {
         idempotencyKey: withdrawalAttempt.current.key,
       });
       withdrawalAttempt.current = null;
-      setWithdrawalReceipt(receipt);
-      setStep('result');
+      setWorkflow({ step: 'result', receipt });
       if (receipt.status === 'failed') {
         toast.error(
           'Yêu cầu rút tiền có trạng thái thất bại. Hãy kiểm tra mã giao dịch trước khi thử lại.',
@@ -188,7 +172,7 @@ export function WithdrawPage() {
     }
   };
 
-  if (step === 'result' && withdrawalReceipt) {
+  if (workflow.step === 'result') {
     return (
       <WithdrawalSuccessState
         asset={asset}
@@ -197,16 +181,16 @@ export function WithdrawPage() {
         colors={colors}
         fee={fee}
         received={received}
-        receipt={withdrawalReceipt}
+        receipt={workflow.receipt}
         selectedNetwork={selectedNetwork}
       />
     );
   }
 
-  if (step === 'verify') {
+  if (workflow.step === 'verify') {
     return (
       <WithdrawalVerifyState
-        challenge={challengeMutation.data}
+        challenge={workflow.challenge}
         code={code}
         colors={colors}
         errors={errors}
@@ -216,8 +200,8 @@ export function WithdrawPage() {
           setCode(nextCode);
           setErrors((current) => ({ ...current, code: '' }));
         }}
-        onSubmit={() => void verifyAndSubmit()}
-        onBack={() => setStep('form')}
+        onSubmit={() => void verifyAndSubmit(workflow.challenge)}
+        onBack={() => setWorkflow({ step: 'form' })}
       />
     );
   }

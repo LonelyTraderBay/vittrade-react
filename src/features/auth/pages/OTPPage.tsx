@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router';
+import { Navigate, useNavigate, useLocation } from 'react-router';
 import { Header } from '@/shared/ui/layout/Header';
 import { ShieldCheck } from 'lucide-react';
 import { useAuth } from '@/shared/session/useAuth';
@@ -36,9 +36,6 @@ export function OTPPage() {
   useEffect(() => {
     inputRefs.current[0]?.focus();
   }, []);
-  useEffect(() => {
-    if (!isRouteValid) navigate(`${prefix}/auth/login`, { replace: true });
-  }, [isRouteValid, navigate, prefix]);
   useEffect(() => {
     if (!challengeExpiry) return;
     let timeout: ReturnType<typeof setTimeout>;
@@ -90,15 +87,15 @@ export function OTPPage() {
       if (loginChallenge) {
         await verifyLoginMfa({ challengeId: loginChallenge.id, code });
         navigate(`${prefix}/home`, { replace: true });
-      } else if (registrationChallenge) {
+      } else {
+        // The route guard above guarantees that a non-login challenge is registration.
+        const challenge = registrationChallenge!;
         await verifyMfa({
-          challengeId: registrationChallenge.challengeId,
+          challengeId: challenge.challengeId,
           code,
           purpose: 'register',
         });
         navigate(`${prefix}/auth/2fa-setup`, { replace: true });
-      } else {
-        navigate(`${prefix}/auth/login`, { replace: true });
       }
     } catch (verifyError) {
       if (registrationChallenge && isApiError(verifyError)) {
@@ -152,18 +149,7 @@ export function OTPPage() {
   const filled = otp.filter((d) => d !== '').length;
 
   if (!isRouteValid) {
-    return (
-      <PageLayout>
-        <PageContent gap={16}>
-          <p role="alert" style={{ color: c.text1, textAlign: 'center' }}>
-            Phiên xác thực không hợp lệ hoặc đã hết hạn. Vui lòng đăng nhập lại.
-          </p>
-          <CTAButton onClick={() => navigate(`${prefix}/auth/login`, { replace: true })}>
-            Quay lại đăng nhập
-          </CTAButton>
-        </PageContent>
-      </PageLayout>
-    );
+    return <Navigate to={`${prefix}/auth/login`} replace />;
   }
 
   return (

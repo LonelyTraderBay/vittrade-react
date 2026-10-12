@@ -86,7 +86,6 @@ export function AddressBookPage() {
   };
 
   const handleFavorite = (entry: WalletAddressBookItem) => {
-    if (!canManageAddressBook) return;
     void updateMutation
       .mutateAsync({
         id: entry.id,
@@ -97,24 +96,14 @@ export function AddressBookPage() {
       .catch(() => toast.error('Không thể cập nhật địa chỉ.'));
   };
 
-  const handleDelete = () => {
-    if (!canManageAddressBook || !deleteTarget) return;
+  const handleDelete = (entry: WalletAddressBookItem) => {
     void deleteMutation
-      .mutateAsync({ id: deleteTarget.id, idempotencyKey: idempotencyKey() })
+      .mutateAsync({ id: entry.id, idempotencyKey: idempotencyKey() })
       .then(() => {
         toast.warning(TOAST.WALLET.ADDRESS_DELETED);
         setDeleteTarget(null);
       })
       .catch(() => toast.error('Không thể xóa địa chỉ.'));
-  };
-
-  const handleWhitelistToggle = () => {
-    if (!canManageAddressBook) return;
-    const enabled = !(addressBookQuery.data?.whitelistEnabled ?? false);
-    void settingsMutation
-      .mutateAsync({ whitelistEnabled: enabled, idempotencyKey: idempotencyKey() })
-      .then(() => toast.info(enabled ? 'Whitelist đã bật.' : 'Whitelist đã tắt.'))
-      .catch(() => toast.error('Không thể cập nhật chế độ whitelist.'));
   };
 
   if (!canReadWallet) {
@@ -149,6 +138,14 @@ export function AddressBookPage() {
       </PageLayout>
     );
   }
+
+  const handleWhitelistToggle = () => {
+    const enabled = !addressBookQuery.data.whitelistEnabled;
+    void settingsMutation
+      .mutateAsync({ whitelistEnabled: enabled, idempotencyKey: idempotencyKey() })
+      .then(() => toast.info(enabled ? 'Whitelist đã bật.' : 'Whitelist đã tắt.'))
+      .catch(() => toast.error('Không thể cập nhật chế độ whitelist.'));
+  };
 
   const whitelistEnabled = addressBookQuery.data.whitelistEnabled;
 
@@ -242,24 +239,22 @@ export function AddressBookPage() {
 
   return (
     <PageLayout>
-      <ConfirmationDialog
-        open={Boolean(deleteTarget)}
-        onClose={() => setDeleteTarget(null)}
-        onConfirm={handleDelete}
-        variant="danger"
-        icon={<Trash2 size={24} color="#EF4444" />}
-        title="Xóa địa chỉ"
-        description={
-          deleteTarget ? (
+      {deleteTarget && (
+        <ConfirmationDialog
+          open
+          onClose={() => setDeleteTarget(null)}
+          onConfirm={() => handleDelete(deleteTarget)}
+          variant="danger"
+          icon={<Trash2 size={24} color="#EF4444" />}
+          title="Xóa địa chỉ"
+          description={
             <>
               Bạn có chắc muốn xóa địa chỉ <strong>{deleteTarget.label}</strong>?
             </>
-          ) : (
-            ''
-          )
-        }
-        confirmText="Xóa"
-      />
+          }
+          confirmText="Xóa"
+        />
+      )}
       <Header
         title="Sổ địa chỉ"
         subtitle="Quản lý · Wallet"

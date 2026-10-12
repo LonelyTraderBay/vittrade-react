@@ -1,10 +1,45 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import type { ComponentProps } from 'react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import type { AuthAdapter } from '@/shared/session/auth-context-types';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
 import { Route, Routes, useLocation } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
+import { Web2FASetupBackupStep } from './Web2FASetupBackupStep';
 import { Web2FASetupFlow } from './Web2FASetupFlow';
+
+type BackupStepProps = ComponentProps<typeof Web2FASetupBackupStep>;
+type SetupChallenge = Awaited<ReturnType<NonNullable<AuthAdapter['beginMfaSetup']>>>;
+
+function deferred<T>() {
+  let resolve!: (value: T) => void;
+  let reject!: (reason?: unknown) => void;
+  const promise = new Promise<T>((resolvePromise, rejectPromise) => {
+    resolve = resolvePromise;
+    reject = rejectPromise;
+  });
+
+  return { promise, resolve, reject };
+}
+
+function LoadingBackupStepWithoutSetup({
+  handleCopyBackupCodes,
+}: Pick<BackupStepProps, 'handleCopyBackupCodes'>) {
+  const colors = useThemeColors();
+  const props: BackupStepProps = {
+    c: colors,
+    setup: null,
+    isLoading: true,
+    savedCodes: true,
+    setSavedCodes: () => undefined,
+    copiedCodes: false,
+    handleCopyBackupCodes,
+    handleComplete: () => undefined,
+  };
+
+  return <Web2FASetupBackupStep {...props} />;
+}
 
 function SuccessState() {
   const location = useLocation();
@@ -26,6 +61,19 @@ function renderSetup(authAdapter: AuthAdapter) {
 }
 
 describe('Web2FASetupFlow', () => {
+  it('renders the empty-code fallback and loading state of the backup step', () => {
+    const handleCopyBackupCodes = vi.fn();
+    render(<LoadingBackupStepWithoutSetup handleCopyBackupCodes={handleCopyBackupCodes} />);
+
+    expect(screen.getByText('Lưu mã dự phòng')).toBeVisible();
+    expect(screen.queryByText('TEST-001')).not.toBeInTheDocument();
+    const completeButton = screen.getAllByRole('button').at(-1);
+    expect(completeButton).toBeDisabled();
+    expect(completeButton?.querySelector('[style*="animation"]')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Sao chép tất cả mã' }));
+    expect(handleCopyBackupCodes).not.toHaveBeenCalled();
+  });
+
   it('verifies the server setup challenge before requiring backup-code acknowledgement', async () => {
     const beginMfaSetup = vi.fn(testAuthAdapter.beginMfaSetup);
     const confirmMfaSetup = vi.fn(testAuthAdapter.confirmMfaSetup);
@@ -99,6 +147,86 @@ describe('Web2FASetupFlow', () => {
     expect(nextButton).toBeEnabled();
   });
 
+  it('does not copy a missing challenge and ignores a successful response after unmount', async () => {
+    const pendingChallenge = deferred<SetupChallenge>();
+    const beginMfaSetup = vi.fn(() => pendingChallenge.promise);
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    const originalClipboard = Object.getOwnPropertyDescriptor(navigator, 'clipboard');
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+
+    try {
+      const view = renderSetup({ ...testAuthAdapter, beginMfaSetup });
+      expect(beginMfaSetup).toHaveBeenCalledOnce();
+      fireEvent.click(screen.getByRole('button', { name: 'Sao chép' }));
+      expect(writeText).not.toHaveBeenCalled();
+      expect(screen.queryByRole('button', { name: 'Đã sao chép' })).not.toBeInTheDocument();
+
+      view.unmount();
+      await act(async () => {
+        pendingChallenge.resolve({
+          secret: 'TEST-SECRET',
+          qrCodeUrl: 'data:image/svg+xml,<svg/>',
+          backupCodes: ['TEST-001', 'TEST-002'],
+        });
+        await pendingChallenge.promise;
+        await Promise.resolve();
+      });
+      expect(writeText).not.toHaveBeenCalled();
+    } finally {
+      if (originalClipboard) {
+        Object.defineProperty(navigator, 'clipboard', originalClipboard);
+      } else {
+        Reflect.deleteProperty(navigator, 'clipboard');
+      }
+    }
+  });
+
+  it('ignores a rejected setup response after unmount', async () => {
+    const pendingChallenge = deferred<SetupChallenge>();
+    const beginMfaSetup = vi.fn(() => pendingChallenge.promise);
+    const view = renderSetup({ ...testAuthAdapter, beginMfaSetup });
+
+    expect(beginMfaSetup).toHaveBeenCalledOnce();
+    view.unmount();
+    await act(async () => {
+      pendingChallenge.reject(new Error('setup unavailable'));
+      await pendingChallenge.promise.catch(() => undefined);
+      await Promise.resolve();
+    });
+  });
+
+  it('rejects an incomplete OTP in the handler even if the disabled button is activated', async () => {
+    const confirmMfaSetup = vi.fn(testAuthAdapter.confirmMfaSetup);
+    renderSetup({ ...testAuthAdapter, confirmMfaSetup });
+
+    await screen.findByText('TEST-SECRET');
+    fireEvent.click(screen.getByRole('button', { name: 'Tiếp theo — Xác minh mã' }));
+    const inputs = [...document.querySelectorAll<HTMLInputElement>('input[inputmode="numeric"]')];
+    fireEvent.change(inputs[0], { target: { value: '7' } });
+    expect(inputs.map((input) => input.value)).toEqual(['7', '', '', '', '', '']);
+
+    const verifyButton = screen.getByRole('button', { name: 'Xác minh' });
+    expect(verifyButton).toBeDisabled();
+    // React suppresses clicks on disabled controls, so invoke the rendered callback
+    // directly to verify its defense-in-depth guard independently of the UI affordance.
+    const propsKey = Object.getOwnPropertyNames(verifyButton).find((key) =>
+      key.startsWith('__reactProps$'),
+    );
+    if (!propsKey) throw new Error('React button props are unavailable in this test environment');
+    const props = (
+      verifyButton as unknown as Record<string, { onClick?: () => void | Promise<void> }>
+    )[propsKey];
+    await act(async () => {
+      await props.onClick?.();
+    });
+
+    expect(screen.getByText(/Vui lòng nhập đủ 6 chữ số/)).toBeVisible();
+    expect(confirmMfaSetup).not.toHaveBeenCalled();
+  });
+
   it('accepts a six-digit paste and clears that code when returning to the QR step', async () => {
     renderSetup(testAuthAdapter);
 
@@ -107,6 +235,12 @@ describe('Web2FASetupFlow', () => {
     const otpInputs = [
       ...document.querySelectorAll<HTMLInputElement>('input[inputmode="numeric"]'),
     ];
+
+    fireEvent.paste(otpInputs[0], {
+      clipboardData: { getData: () => '12345' },
+    });
+    expect(otpInputs.map((input) => input.value)).toEqual(['', '', '', '', '', '']);
+    expect(screen.getByRole('button', { name: 'Xác minh' })).toBeDisabled();
 
     fireEvent.paste(otpInputs[0], {
       clipboardData: { getData: () => '12a34-56' },
@@ -153,7 +287,10 @@ describe('Web2FASetupFlow', () => {
     try {
       renderSetup(testAuthAdapter);
       await screen.findByText('TEST-SECRET');
-      fireEvent.click(screen.getByRole('button', { name: 'Sao chép' }));
+      await act(async () => {
+        fireEvent.click(screen.getByRole('button', { name: 'Sao chép' }));
+        await Promise.resolve();
+      });
       expect(writeText).toHaveBeenLastCalledWith('TEST-SECRET');
       expect(screen.getByRole('button', { name: 'Đã sao chép' })).toBeInTheDocument();
 
@@ -163,9 +300,109 @@ describe('Web2FASetupFlow', () => {
       fireEvent.click(screen.getByRole('button', { name: 'Xác minh' }));
       await screen.findByText('Lưu mã dự phòng');
 
-      fireEvent.click(screen.getByRole('button', { name: 'Sao chép tất cả mã' }));
+      await act(async () => {
+        fireEvent.click(screen.getByRole('button', { name: 'Sao chép tất cả mã' }));
+        await Promise.resolve();
+      });
       expect(writeText).toHaveBeenLastCalledWith('TEST-001\nTEST-002');
       expect(screen.getByRole('button', { name: 'Đã sao chép tất cả mã' })).toBeInTheDocument();
+    } finally {
+      if (originalClipboard) {
+        Object.defineProperty(navigator, 'clipboard', originalClipboard);
+      } else {
+        Reflect.deleteProperty(navigator, 'clipboard');
+      }
+    }
+  });
+
+  it('shows and clears clipboard success feedback for both secret and backup codes', async () => {
+    const originalClipboard = Object.getOwnPropertyDescriptor(navigator, 'clipboard');
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+
+    try {
+      renderSetup(testAuthAdapter);
+      await screen.findByText('TEST-SECRET');
+      vi.useFakeTimers();
+
+      await act(async () => {
+        fireEvent.click(screen.getByRole('button', { name: 'Sao chép' }));
+        await Promise.resolve();
+      });
+      expect(writeText).toHaveBeenLastCalledWith('TEST-SECRET');
+      expect(screen.getByRole('button', { name: 'Đã sao chép' })).toBeInTheDocument();
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(2000);
+      });
+      expect(screen.getByRole('button', { name: 'Sao chép' })).toBeInTheDocument();
+
+      fireEvent.click(screen.getByRole('button', { name: 'Tiếp theo — Xác minh mã' }));
+      const inputs = [...document.querySelectorAll<HTMLInputElement>('input[inputmode="numeric"]')];
+      fireEvent.paste(inputs[0], { clipboardData: { getData: () => '123456' } });
+      await act(async () => {
+        fireEvent.click(screen.getByRole('button', { name: 'Xác minh' }));
+        await Promise.resolve();
+      });
+      expect(screen.getByText('Lưu mã dự phòng')).toBeInTheDocument();
+
+      await act(async () => {
+        fireEvent.click(screen.getByRole('button', { name: 'Sao chép tất cả mã' }));
+        await Promise.resolve();
+      });
+      expect(writeText).toHaveBeenLastCalledWith('TEST-001\nTEST-002');
+      expect(screen.getByRole('button', { name: 'Đã sao chép tất cả mã' })).toBeInTheDocument();
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(2000);
+      });
+      expect(screen.getByRole('button', { name: 'Sao chép tất cả mã' })).toBeInTheDocument();
+    } finally {
+      vi.useRealTimers();
+      if (originalClipboard) {
+        Object.defineProperty(navigator, 'clipboard', originalClipboard);
+      } else {
+        Reflect.deleteProperty(navigator, 'clipboard');
+      }
+    }
+  });
+
+  it('does not claim either clipboard operation succeeded when writing rejects', async () => {
+    const originalClipboard = Object.getOwnPropertyDescriptor(navigator, 'clipboard');
+    const writeText = vi.fn().mockRejectedValue(new Error('clipboard denied'));
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+
+    try {
+      renderSetup(testAuthAdapter);
+      await screen.findByText('TEST-SECRET');
+      await act(async () => {
+        fireEvent.click(screen.getByRole('button', { name: 'Sao chép' }));
+        await Promise.resolve();
+      });
+      expect(screen.getByRole('button', { name: 'Sao chép' })).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: 'Đã sao chép' })).not.toBeInTheDocument();
+
+      fireEvent.click(screen.getByRole('button', { name: 'Tiếp theo — Xác minh mã' }));
+      const inputs = [...document.querySelectorAll<HTMLInputElement>('input[inputmode="numeric"]')];
+      fireEvent.paste(inputs[0], { clipboardData: { getData: () => '123456' } });
+      await act(async () => {
+        fireEvent.click(screen.getByRole('button', { name: 'Xác minh' }));
+        await Promise.resolve();
+      });
+      await act(async () => {
+        fireEvent.click(screen.getByRole('button', { name: 'Sao chép tất cả mã' }));
+        await Promise.resolve();
+      });
+      expect(screen.getByRole('button', { name: 'Sao chép tất cả mã' })).toBeInTheDocument();
+      expect(
+        screen.queryByRole('button', { name: 'Đã sao chép tất cả mã' }),
+      ).not.toBeInTheDocument();
+      expect(writeText).toHaveBeenNthCalledWith(1, 'TEST-SECRET');
+      expect(writeText).toHaveBeenNthCalledWith(2, 'TEST-001\nTEST-002');
     } finally {
       if (originalClipboard) {
         Object.defineProperty(navigator, 'clipboard', originalClipboard);

@@ -160,7 +160,7 @@ export function WithdrawalSuccessState({
 }
 
 interface WithdrawalVerifyStateProps {
-  challenge?: WalletWithdrawalChallenge;
+  challenge: WalletWithdrawalChallenge;
   code: string;
   colors: ThemeColors;
   errors: WithdrawalErrors;
@@ -199,7 +199,7 @@ export function WithdrawalVerifyState({
           <div className="text-center">
             <h2 style={{ color: colors.text1, fontSize: 20, fontWeight: 700 }}>Xác minh bảo mật</h2>
             <p style={{ color: colors.text2, fontSize: 13, lineHeight: 1.5, marginTop: 8 }}>
-              Nhập mã {challenge?.method === 'sms' ? 'SMS' : 'TOTP'}
+              Nhập mã {challenge.method === 'sms' ? 'SMS' : 'TOTP'}
               {challenge?.maskedDestination ? ` (${challenge.maskedDestination})` : ''} để xác nhận
               rút tiền.
             </p>

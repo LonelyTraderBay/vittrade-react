@@ -26,6 +26,9 @@ describe('unauthenticated auth context fallback', () => {
     await expect(
       unauthenticatedValue.verifyMfa({ contact: 'user@example.com', code: '123456' }),
     ).rejects.toThrow('AuthProvider is missing');
+    await expect(
+      unauthenticatedValue.verifyLoginMfa({ challengeId: 'challenge-1', code: '123456' }),
+    ).rejects.toThrow('AuthProvider is missing');
     await expect(unauthenticatedValue.beginMfaSetup()).rejects.toThrow('AuthProvider is missing');
     await expect(unauthenticatedValue.confirmMfaSetup({ code: '123456' })).rejects.toThrow(
       'AuthProvider is missing',

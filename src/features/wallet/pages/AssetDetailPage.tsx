@@ -26,6 +26,7 @@ import {
 } from '@/features/wallet/model/wallet-queries';
 import { normalizeCoinSymbol } from '@/shared/types/route-state';
 import { useAuth } from '@/shared/session/useAuth';
+import { formatAssetPriceTooltip } from './asset-detail-formatters';
 
 export interface WalletAssetDetailIntegrations {
   showDCAButton?: boolean;
@@ -328,7 +329,7 @@ export function WalletAssetDetailPage({
                     fontSize: 12,
                   }}
                   itemStyle={{ color: c.text1 }}
-                  formatter={(v: number) => [fmtUsd(v), 'Giá']}
+                  formatter={formatAssetPriceTooltip}
                 />
                 <Area
                   key="ad-area"

@@ -61,8 +61,16 @@ const transactions = {
       status: 'completed',
       createdAt: '2026-09-21T10:00:00.000Z',
     },
+    {
+      id: 'tx-2',
+      type: 'withdraw',
+      asset: 'BTC',
+      amount: 0.02,
+      status: 'pending',
+      createdAt: '2026-09-20T10:00:00.000Z',
+    },
   ],
-  total: 1,
+  total: 2,
 };
 
 function installHandlers() {
@@ -107,6 +115,8 @@ describe('Wallet overview contract page', () => {
     expect(await screen.findByText('Total balance')).toBeInTheDocument();
     expect(screen.getAllByText('BTC')).toHaveLength(2);
     expect(screen.getAllByText('Deposit')).toHaveLength(2);
+    expect(screen.getByText('Withdrawal')).toBeInTheDocument();
+    expect(screen.getByText('pending')).toBeInTheDocument();
     expect(screen.getByText('$16,000.25')).toBeInTheDocument();
   });
 
@@ -256,6 +266,72 @@ describe('Wallet overview contract page', () => {
     expect(await screen.findByText('Total balance')).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Deposit' }));
     expect(screen.getByTestId('location')).toHaveTextContent('/t/wallet/deposit/USDT');
+    await userEvent.click(screen.getByRole('button', { name: 'Analytics' }));
+    expect(screen.getByTestId('location')).toHaveTextContent('/t/wallet/portfolio-analytics');
+  });
+
+  it('searches assets by normalized name and navigates to wallet destinations in the web shell', async () => {
+    installHandlers();
+    const user = userEvent.setup();
+
+    renderWithProviders(
+      <>
+        <WalletOverviewContractPage />
+        <LocationProbe />
+      </>,
+      { routerProps: { initialEntries: ['/w/wallet'] } },
+    );
+
+    expect(await screen.findByText('Total balance')).toBeInTheDocument();
+    const search = screen.getByRole('textbox', { name: 'Search assets' });
+    await user.type(search, '  bitcoin ');
+    expect(screen.getByText('Bitcoin')).toBeInTheDocument();
+    expect(screen.queryByText('Dust Asset')).not.toBeInTheDocument();
+
+    await user.clear(search);
+    await user.type(search, 'no-such-asset');
+    expect(screen.getByText('No assets match this filter.')).toBeInTheDocument();
+    await user.clear(search);
+
+    await user.click(screen.getByRole('button', { name: /BTCBTCBitcoin/ }));
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/wallet/asset/btc');
+    await user.click(screen.getByRole('button', { name: 'Analytics' }));
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/portfolio/analytics');
+    await user.click(screen.getByRole('button', { name: 'Transaction history' }));
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/wallet/history');
+    await user.click(screen.getByRole('button', { name: 'View all' }));
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/wallet/history');
+  });
+
+  it('retries both wallet reads after a transient failure', async () => {
+    let assetsAvailable = false;
+    let assetRequests = 0;
+    let transactionRequests = 0;
+    server.use(
+      http.get('*/wallet/assets', () => {
+        assetRequests += 1;
+        return assetsAvailable
+          ? HttpResponse.json(assets)
+          : HttpResponse.json({ code: 'WALLET_UNAVAILABLE' }, { status: 503 });
+      }),
+      http.get('*/wallet/transactions', () => {
+        transactionRequests += 1;
+        return HttpResponse.json(transactions);
+      }),
+    );
+    const user = userEvent.setup();
+
+    renderWithProviders(<WalletOverviewContractPage />);
+
+    expect(await screen.findByText('Unable to load wallet')).toBeInTheDocument();
+    const previousAssetRequests = assetRequests;
+    const previousTransactionRequests = transactionRequests;
+    assetsAvailable = true;
+    await user.click(screen.getByRole('button', { name: 'Thử lại' }));
+
+    expect(await screen.findByText('Total balance')).toBeInTheDocument();
+    expect(assetRequests).toBeGreaterThan(previousAssetRequests);
+    expect(transactionRequests).toBeGreaterThan(previousTransactionRequests);
   });
 });
 

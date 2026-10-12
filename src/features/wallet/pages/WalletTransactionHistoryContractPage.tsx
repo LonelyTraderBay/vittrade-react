@@ -198,14 +198,8 @@ export function WalletTransactionHistoryContractPage() {
                   !query.data.nextCursor || query.data.nextCursor === cursor || query.isFetching
                 }
                 onClick={() => {
-                  const nextCursor = query.data.nextCursor;
-                  if (nextCursor) {
-                    setCursors((current) =>
-                      current[current.length - 1] === nextCursor
-                        ? current
-                        : [...current, nextCursor],
-                    );
-                  }
+                  // The disabled state guarantees a distinct server cursor before this runs.
+                  setCursors((current) => [...current, query.data.nextCursor!]);
                 }}
                 style={{
                   color:

@@ -183,4 +183,68 @@ describe('AddressAddPage', () => {
       expect(toast.error).toHaveBeenCalledWith('Không thể đọc clipboard.', { duration: 2000 }),
     );
   });
+
+  it('keeps the current address when the clipboard is empty', async () => {
+    const user = userEvent.setup();
+    const readText = vi.fn().mockResolvedValue('');
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { readText },
+    });
+    renderAddressAddPage();
+
+    const addressInput = screen.getByLabelText('Địa chỉ ví');
+    await user.type(addressInput, '12345678901234567890');
+    await user.click(screen.getByRole('button', { name: 'Dán địa chỉ từ clipboard' }));
+
+    expect(readText).toHaveBeenCalledOnce();
+    expect(addressInput).toHaveValue('12345678901234567890');
+  });
+
+  it('shows the pending save state until the wallet API returns the created address', async () => {
+    const user = userEvent.setup();
+    let markRequestStarted: (() => void) | undefined;
+    let releaseResponse: (() => void) | undefined;
+    const requestStarted = new Promise<void>((resolve) => {
+      markRequestStarted = resolve;
+    });
+    const responseReleased = new Promise<void>((resolve) => {
+      releaseResponse = resolve;
+    });
+
+    server.use(
+      http.post('*/wallet/address-book', async ({ request }) => {
+        const submitted = (await request.json()) as WalletAddressBookCreateRequest;
+        markRequestStarted?.();
+        await responseReleased;
+        return HttpResponse.json(
+          {
+            id: 'address-pending',
+            ...submitted,
+            isFavorite: false,
+            createdAt: '2026-09-27T00:00:00.000Z',
+          },
+          { status: 201 },
+        );
+      }),
+    );
+    renderAddressAddPage();
+
+    await user.type(screen.getByLabelText(/Tên địa chỉ/), 'Ví chờ');
+    await user.type(screen.getByLabelText('Địa chỉ ví'), '12345678901234567890');
+    await user.click(screen.getByRole('button', { name: /Tôi xác nhận địa chỉ ví/ }));
+    await user.click(screen.getByRole('button', { name: 'Lưu địa chỉ' }));
+    await requestStarted;
+
+    try {
+      expect(screen.getByRole('button', { name: 'Đang lưu…' })).toBeDisabled();
+      expect(screen.getByLabelText('Current path')).toHaveTextContent('/w/wallet/address-book/add');
+    } finally {
+      releaseResponse?.();
+    }
+
+    await waitFor(() =>
+      expect(screen.getByLabelText('Current path')).toHaveTextContent('/w/wallet/address-book'),
+    );
+  });
 });

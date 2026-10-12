@@ -1,35 +1,53 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { useNavigate, useLocation } from 'react-router';
+import { Navigate, useNavigate, useLocation } from 'react-router';
 import { ArrowLeft, AlertCircle, ShieldCheck, Smartphone, Mail } from 'lucide-react';
 import { isApiError } from '@/shared/api/api-error';
 import { useAuth } from '@/shared/session/useAuth';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
-import { WEB_FONT, WEB_BUTTON } from '@/shared/theme/webTokens';
+import { WEB_FONT } from '@/shared/theme/webTokens';
 import { WebAuthBrandPanel, WebAuthFormShell } from '@/shared/ui/auth/WebAuthBrandPanel';
 import { parseLoginMfaChallengeState } from '../lib/login-mfa-route-state';
 import { parseRegistrationChallengeState } from '../lib/registration-route-state';
+import type { LoginMfaChallenge } from '@/shared/session/session-types';
+import type { RegistrationChallengeState } from '../model/registration-types';
 
 /** Web OTP flow for server-issued login MFA and registration challenges. */
 
 type Purpose = 'register' | '2fa';
+type WebOTPChallenge =
+  | { kind: 'registration'; state: RegistrationChallengeState }
+  | { kind: 'login'; state: LoginMfaChallenge };
 
 export function WebOTPPage() {
-  const navigate = useNavigate();
   const location = useLocation();
+  const registrationChallenge = parseRegistrationChallengeState(location.state);
+  const loginChallenge = registrationChallenge ? null : parseLoginMfaChallengeState(location.state);
+
+  if (registrationChallenge) {
+    return (
+      <WebOTPChallengePage challenge={{ kind: 'registration', state: registrationChallenge }} />
+    );
+  }
+  if (loginChallenge) {
+    return <WebOTPChallengePage challenge={{ kind: 'login', state: loginChallenge }} />;
+  }
+  return <Navigate to="/w/auth/login" replace />;
+}
+
+function WebOTPChallengePage({ challenge }: { challenge: WebOTPChallenge }) {
+  const navigate = useNavigate();
   const { verifyMfa, verifyLoginMfa } = useAuth();
   const c = useThemeColors();
 
-  const registrationChallenge = parseRegistrationChallengeState(location.state);
-  const registrationFlow = Boolean(registrationChallenge);
-  const loginChallenge = parseLoginMfaChallengeState(location.state);
-  const challengeExpiry = registrationChallenge?.expiresAt ?? loginChallenge?.expiresAt;
-  const challengeIsValid = registrationFlow || Boolean(loginChallenge);
+  const registrationChallenge = challenge.kind === 'registration' ? challenge.state : null;
+  const loginChallenge = challenge.kind === 'login' ? challenge.state : null;
+  const registrationFlow = challenge.kind === 'registration';
+  const challengeExpiry = challenge.state.expiresAt;
   const purpose: Purpose = registrationFlow ? 'register' : '2fa';
-  const contact = registrationFlow
-    ? (registrationChallenge?.maskedDestination ?? '')
-    : (loginChallenge?.maskedDestination ?? '');
+  const contact =
+    registrationChallenge?.maskedDestination ?? loginChallenge?.maskedDestination ?? '';
   const contactType = registrationFlow
-    ? (registrationChallenge?.channel ?? 'email')
+    ? registrationChallenge!.channel
     : loginChallenge?.method === 'sms'
       ? 'phone'
       : loginChallenge?.method === 'totp'
@@ -41,6 +59,7 @@ export function WebOTPPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const verifyInFlight = useRef(false);
 
   /* ─── Auto-focus first input ─── */
   useEffect(() => {
@@ -50,10 +69,6 @@ export function WebOTPPage() {
     return () => clearTimeout(t);
   }, []);
   useEffect(() => {
-    if (!challengeIsValid) navigate('/w/auth/login', { replace: true });
-  }, [challengeIsValid, navigate]);
-  useEffect(() => {
-    if (!challengeExpiry) return;
     let timeout: ReturnType<typeof setTimeout>;
     const checkExpiry = () => {
       const remaining = Date.parse(challengeExpiry) - Date.now();
@@ -73,25 +88,23 @@ export function WebOTPPage() {
   /* ─── Verify OTP ─── */
   const handleVerify = useCallback(
     async (code: string) => {
-      if (!challengeIsValid || isLoading) return;
-      if (challengeExpiry && Date.now() >= Date.parse(challengeExpiry)) {
+      if (verifyInFlight.current || isLoading) return;
+      if (Date.now() >= Date.parse(challengeExpiry)) {
         navigate(registrationFlow ? '/w/auth/register' : '/w/auth/login', { replace: true });
         return;
       }
+      verifyInFlight.current = true;
       setIsLoading(true);
       setError('');
       try {
-        if (loginChallenge) {
-          await verifyLoginMfa({ challengeId: loginChallenge.id, code });
-        } else if (registrationChallenge) {
+        if (challenge.kind === 'login') {
+          await verifyLoginMfa({ challengeId: challenge.state.id, code });
+        } else {
           await verifyMfa({
-            challengeId: registrationChallenge.challengeId,
+            challengeId: challenge.state.challengeId,
             code,
             purpose: 'register',
           });
-        } else {
-          navigate('/w/auth/login', { replace: true });
-          return;
         }
         setSuccess(true);
         setIsLoading(false);
@@ -104,9 +117,10 @@ export function WebOTPPage() {
           }
         }, 1800);
       } catch (verifyError) {
-        if (registrationChallenge && isApiError(verifyError)) {
+        if (challenge.kind === 'registration' && isApiError(verifyError)) {
           if (verifyError.status === 410) {
             navigate('/w/auth/register', { replace: true });
+            verifyInFlight.current = false;
             setIsLoading(false);
             return;
           }
@@ -119,14 +133,16 @@ export function WebOTPPage() {
           } else {
             setError('Không thể xác minh lúc này. Vui lòng thử lại.');
           }
-        } else if (loginChallenge && isApiError(verifyError)) {
+        } else if (challenge.kind === 'login' && isApiError(verifyError)) {
           if (verifyError.status === 410) {
             navigate('/w/auth/login', { replace: true });
+            verifyInFlight.current = false;
             setIsLoading(false);
             return;
           }
           if (verifyError.status === 423) {
             navigate('/w/auth/account-locked', { replace: true });
+            verifyInFlight.current = false;
             setIsLoading(false);
             return;
           }
@@ -144,18 +160,17 @@ export function WebOTPPage() {
           setOtp(['', '', '', '', '', '']);
           setTimeout(() => inputRefs.current[0]?.focus(), 100);
         }
+        verifyInFlight.current = false;
         setIsLoading(false);
       }
     },
     [
-      challengeIsValid,
       isLoading,
       purpose,
       navigate,
+      challenge,
       verifyMfa,
       verifyLoginMfa,
-      loginChallenge,
-      registrationChallenge,
       registrationFlow,
       challengeExpiry,
     ],
@@ -250,43 +265,7 @@ export function WebOTPPage() {
           Quay lại
         </button>
 
-        {!challengeIsValid ? (
-          <div className="flex flex-col items-center text-center" style={{ paddingTop: 32 }}>
-            <AlertCircle size={40} color="#EF4444" />
-            <h1
-              style={{
-                color: c.text1,
-                fontSize: WEB_FONT['2xl'],
-                fontWeight: 700,
-                marginTop: 16,
-                marginBottom: 8,
-              }}
-            >
-              Phiên xác thực không hợp lệ
-            </h1>
-            <p role="alert" style={{ color: c.text2, fontSize: WEB_FONT.md, lineHeight: 1.5 }}>
-              Vui lòng đăng nhập lại để tạo thử thách xác thực mới.
-            </p>
-            <button
-              onClick={() => navigate('/w/auth/login', { replace: true })}
-              className="flex items-center justify-center gap-2"
-              style={{
-                height: WEB_BUTTON.lg,
-                borderRadius: 10,
-                width: '100%',
-                marginTop: 24,
-                background: 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
-                color: '#fff',
-                fontSize: WEB_FONT.md,
-                fontWeight: 600,
-                cursor: 'pointer',
-                border: 'none',
-              }}
-            >
-              Quay lại đăng nhập
-            </button>
-          </div>
-        ) : !success ? (
+        {!success ? (
           <div>
             {/* Header */}
             <div className="flex flex-col items-center" style={{ marginBottom: 32 }}>

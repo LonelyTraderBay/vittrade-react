@@ -15,6 +15,7 @@ import {
   useWalletAssetsQuery,
   useWalletTransferMutation,
 } from '../model/wallet-queries';
+import { validateWalletTransfer } from '../model/validate-wallet-transfer';
 import type { WalletAccountId, WalletTransferReceipt } from '../model/wallet-types';
 
 const EMPTY_VALUE = '—';
@@ -41,21 +42,8 @@ export function WalletTransferContractPage() {
     () => assets.find((asset) => asset.symbol === assetSymbol) ?? assets[0],
     [assetSymbol, assets],
   );
-  const amountValue = Number(amount);
-  const available = selectedAsset?.available ?? 0;
-  const unitUsd =
-    selectedAsset && selectedAsset.balance > 0 ? selectedAsset.usdValue / selectedAsset.balance : 0;
-  const usdValue = amountValue > 0 ? amountValue * unitUsd : 0;
-  const fromAccount = accounts.find((account) => account.id === fromWallet);
-  const toAccount = accounts.find((account) => account.id === toWallet);
   const loading = accountsQuery.isPending || assetsQuery.isPending;
   const submitting = transferMutation.isPending;
-  const samePendingTransfer =
-    receipt?.status === 'pending' &&
-    receipt.fromWallet === fromWallet &&
-    receipt.toWallet === toWallet &&
-    receipt.asset === selectedAsset?.symbol &&
-    receipt.amount === amountValue;
   const canWriteWallet =
     hasPermission('wallet:write') ||
     hasPermission('wallet:transfer') ||
@@ -91,7 +79,7 @@ export function WalletTransferContractPage() {
     );
   }
 
-  if (accountsQuery.isError || assetsQuery.isError || accounts.length < 2 || assets.length === 0) {
+  if (accountsQuery.isError || assetsQuery.isError || accounts.length < 2 || !selectedAsset) {
     return (
       <PageLayout>
         <Header title="Internal transfer" subtitle="Wallet contract" back />
@@ -109,21 +97,29 @@ export function WalletTransferContractPage() {
     );
   }
 
-  const submitTransfer = async () => {
-    if (!canWriteWallet) {
-      setValidationError('Your account does not have permission to transfer funds.');
-      return;
-    }
+  const amountValue = Number(amount);
+  const available = selectedAsset.available;
+  const unitUsd = selectedAsset.balance > 0 ? selectedAsset.usdValue / selectedAsset.balance : 0;
+  const usdValue = amountValue > 0 ? amountValue * unitUsd : 0;
+  const fromAccount = accounts.find((account) => account.id === fromWallet);
+  const toAccount = accounts.find((account) => account.id === toWallet);
+  const samePendingTransfer =
+    receipt?.status === 'pending' &&
+    receipt.fromWallet === fromWallet &&
+    receipt.toWallet === toWallet &&
+    receipt.asset === selectedAsset.symbol &&
+    receipt.amount === amountValue;
 
-    const nextError = validateTransfer({
+  const submitTransfer = async () => {
+    const nextError = validateWalletTransfer({
       fromWallet,
       toWallet,
       amount: amountValue,
       available,
-      assetSymbol: selectedAsset?.symbol,
+      assetSymbol: selectedAsset.symbol,
     });
     setValidationError(nextError);
-    if (nextError || !selectedAsset) return;
+    if (nextError) return;
 
     const request = {
       fromWallet,
@@ -131,18 +127,6 @@ export function WalletTransferContractPage() {
       asset: selectedAsset.symbol,
       amount: amountValue,
     };
-    if (
-      receipt?.status === 'pending' &&
-      receipt.fromWallet === request.fromWallet &&
-      receipt.toWallet === request.toWallet &&
-      receipt.asset === request.asset &&
-      receipt.amount === request.amount
-    ) {
-      setValidationError(
-        `This transfer is still pending. Check reference ${receipt.id} before submitting it again.`,
-      );
-      return;
-    }
     const signature = JSON.stringify(request);
     if (transferAttempt.current?.signature !== signature) {
       transferAttempt.current = {
@@ -241,7 +225,7 @@ export function WalletTransferContractPage() {
           </label>
           <select
             id="transfer-asset"
-            value={selectedAsset?.symbol ?? ''}
+            value={selectedAsset.symbol}
             onChange={(event) => setAssetSymbol(event.target.value)}
             className="mb-4 w-full rounded-xl px-3 py-3 text-sm outline-none"
             style={{ background: colors.surface2, color: colors.text1 }}
@@ -285,11 +269,11 @@ export function WalletTransferContractPage() {
               style={{ color: colors.text1 }}
             />
             <span className="font-semibold" style={{ color: colors.text2 }}>
-              {selectedAsset?.symbol ?? EMPTY_VALUE}
+              {selectedAsset.symbol}
             </span>
           </div>
           <p className="mt-2 text-xs" style={{ color: colors.text3 }}>
-            Available: {fmtAmount(available)} {selectedAsset?.symbol} · ≈ {fmtUsd(usdValue)}
+            Available: {fmtAmount(available)} {selectedAsset.symbol} · ≈ {fmtUsd(usdValue)}
           </p>
         </TrCard>
 
@@ -378,24 +362,4 @@ function WalletSelect({
       </select>
     </label>
   );
-}
-
-function validateTransfer({
-  fromWallet,
-  toWallet,
-  amount,
-  available,
-  assetSymbol,
-}: {
-  fromWallet: WalletAccountId;
-  toWallet: WalletAccountId;
-  amount: number;
-  available: number;
-  assetSymbol?: string;
-}) {
-  if (fromWallet === toWallet) return 'Choose two different wallets.';
-  if (!assetSymbol) return 'Choose an asset to transfer.';
-  if (!Number.isFinite(amount) || amount <= 0) return 'Enter an amount greater than zero.';
-  if (amount > available) return 'The transfer amount exceeds the available balance.';
-  return '';
 }

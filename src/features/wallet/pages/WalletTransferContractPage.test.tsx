@@ -149,6 +149,131 @@ describe('Wallet transfer contract page', () => {
     });
   });
 
+  it('selects an asset and destination wallet in the web shell', async () => {
+    installReadHandlers();
+    const transferRequests: unknown[] = [];
+    server.use(
+      http.get('*/wallet/assets', () =>
+        HttpResponse.json({
+          ...assets,
+          items: [
+            ...assets.items,
+            {
+              id: 'btc',
+              symbol: 'BTC',
+              name: 'Bitcoin',
+              balance: 5,
+              available: 4,
+              frozen: 1,
+              inOrder: 0,
+              usdValue: 300,
+              change24h: 1,
+              logoColor: '#F7931A',
+            },
+          ],
+        }),
+      ),
+      http.post('*/wallet/transfers', async ({ request }) => {
+        transferRequests.push(await request.json());
+        return HttpResponse.json({
+          id: 'transfer-btc-1',
+          fromWallet: 'spot',
+          toWallet: 'futures',
+          asset: 'BTC',
+          amount: 2.5,
+          status: 'completed',
+          createdAt: '2026-10-09T08:00:00.000Z',
+        });
+      }),
+    );
+
+    renderWithProviders(<WalletTransferContractPage />, {
+      routerProps: { initialEntries: ['/w/wallet/transfer'] },
+    });
+    await screen.findByLabelText('Transfer amount');
+    await userEvent.selectOptions(screen.getByLabelText('Asset'), 'BTC');
+    await userEvent.selectOptions(screen.getByLabelText('To wallet'), 'futures');
+    await userEvent.type(screen.getByLabelText('Transfer amount'), '2.5');
+    await userEvent.click(screen.getByRole('button', { name: 'Confirm transfer' }));
+
+    expect(await screen.findByRole('status')).toHaveTextContent('Transfer completed');
+    expect(transferRequests).toEqual([
+      { fromWallet: 'spot', toWallet: 'futures', asset: 'BTC', amount: 2.5 },
+    ]);
+    expect(screen.getByText(/Futures wallet .* shell/)).toBeInTheDocument();
+  });
+
+  it('rejects a blank asset symbol returned by the wallet asset contract', async () => {
+    installReadHandlers();
+    let transferRequests = 0;
+    server.use(
+      http.get('*/wallet/assets', () =>
+        HttpResponse.json({
+          ...assets,
+          items: [{ ...assets.items[0], id: 'blank-symbol', symbol: '' }],
+        }),
+      ),
+      http.post('*/wallet/transfers', () => {
+        transferRequests += 1;
+        return HttpResponse.json({ id: 'unexpected' }, { status: 201 });
+      }),
+    );
+
+    renderWithProviders(<WalletTransferContractPage />);
+    await userEvent.type(await screen.findByLabelText('Transfer amount'), '1');
+    await userEvent.click(screen.getByRole('button', { name: 'Confirm transfer' }));
+
+    expect(screen.getByRole('alert')).toHaveTextContent('Choose an asset to transfer.');
+    expect(transferRequests).toBe(0);
+  });
+
+  it('avoids a non-finite USD estimate when an asset has no balance', async () => {
+    installReadHandlers();
+    server.use(
+      http.get('*/wallet/assets', () =>
+        HttpResponse.json({
+          ...assets,
+          items: [{ ...assets.items[0], balance: 0, available: 0, usdValue: 0 }],
+        }),
+      ),
+    );
+
+    renderWithProviders(<WalletTransferContractPage />);
+
+    expect(await screen.findByText(/Available:/)).toHaveTextContent(
+      'Available: 0.00 USDT · ≈ $0.00',
+    );
+  });
+
+  it.each([
+    {
+      missing: 'funding',
+      items: [
+        { id: 'spot', name: 'Spot wallet', balanceUsd: 1_000 },
+        { id: 'futures', name: 'Futures wallet', balanceUsd: 250 },
+      ],
+      footer: 'Spot wallet → —',
+    },
+    {
+      missing: 'spot',
+      items: [
+        { id: 'funding', name: 'Funding wallet', balanceUsd: 500 },
+        { id: 'futures', name: 'Futures wallet', balanceUsd: 250 },
+      ],
+      footer: '— → Funding wallet',
+    },
+  ] as const)(
+    'shows a fallback label when the contract omits the $missing account',
+    async (scenario) => {
+      installReadHandlers();
+      server.use(http.get('*/wallet/accounts', () => HttpResponse.json({ items: scenario.items })));
+
+      renderWithProviders(<WalletTransferContractPage />);
+
+      expect(await screen.findByText(scenario.footer)).toBeInTheDocument();
+    },
+  );
+
   it('submits an idempotent transfer and renders the completed receipt', async () => {
     installReadHandlers();
     let receivedBody: unknown;
@@ -209,6 +334,7 @@ describe('Wallet transfer contract page', () => {
 
     expect(await screen.findByRole('status')).toHaveTextContent('Transfer pending');
     expect(screen.getByRole('status')).toHaveTextContent('Reference transfer-pending-1');
+    expect(screen.getByText(/This exact transfer is still pending/)).toBeInTheDocument();
     const submit = screen.getByRole('button', { name: 'Confirm transfer' });
     expect(submit).toBeDisabled();
     await userEvent.click(submit);
@@ -313,6 +439,37 @@ describe('Wallet transfer contract page', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent(
       'Wallet transfer permission is required',
     );
-    expect(screen.getByTestId('wallet-transfer-submit')).toBeDisabled();
+    const submit = screen.getByTestId('wallet-transfer-submit');
+    expect(submit).toBeDisabled();
+  });
+
+  it('does not read accounts or assets without wallet read permission', async () => {
+    let accountReads = 0;
+    let assetReads = 0;
+    server.use(
+      http.get('*/wallet/accounts', () => {
+        accountReads += 1;
+        return HttpResponse.json(accounts);
+      }),
+      http.get('*/wallet/assets', () => {
+        assetReads += 1;
+        return HttpResponse.json(assets);
+      }),
+    );
+    const noWalletReadAdapter: AuthAdapter = {
+      ...testAuthAdapter,
+      initialSession: {
+        ...testAuthAdapter.initialSession!,
+        user: { ...testAuthAdapter.initialSession!.user, permissions: [] },
+      },
+    };
+
+    renderWithProviders(<WalletTransferContractPage />, { authAdapter: noWalletReadAdapter });
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Wallet read permission is required to view transfer balances.',
+    );
+    expect(accountReads).toBe(0);
+    expect(assetReads).toBe(0);
   });
 });

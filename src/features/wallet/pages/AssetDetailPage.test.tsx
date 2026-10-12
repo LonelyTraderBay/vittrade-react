@@ -8,6 +8,7 @@ import type { AuthAdapter } from '@/shared/session/AuthContext';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
 import { WalletAssetDetailPage } from './AssetDetailPage';
+import { formatAssetPriceTooltip } from './asset-detail-formatters';
 
 const server = setupServer();
 
@@ -114,7 +115,7 @@ function renderAssetDetail({
     <>
       <Routes>
         <Route
-          path="/w/wallet/asset/:assetId"
+          path="/w/wallet/asset/:assetId?"
           element={
             <WalletAssetDetailPage
               showDCAButton={showDCAButton}
@@ -151,6 +152,10 @@ function installHandlers({
 }
 
 describe('WalletAssetDetailPage', () => {
+  it('formats chart tooltip values as USD with the chart label', () => {
+    expect(formatAssetPriceTooltip(64_000)).toEqual(['$64,000.00', 'Giá']);
+  });
+
   it('does not request wallet balances or transactions without read permission', async () => {
     let walletRequests = 0;
     server.use(
@@ -239,6 +244,112 @@ describe('WalletAssetDetailPage', () => {
     expect(await screen.findByText('Bitcoin')).toBeVisible();
     expect(screen.queryByText('Biểu đồ giá')).not.toBeInTheDocument();
     expect(screen.getByText('—')).toBeVisible();
+  });
+
+  it('resolves an uppercase symbol, shows negative movement and the empty-history state', async () => {
+    installHandlers({
+      assetResponse: {
+        ...assets,
+        items: [{ ...assets.items[0], change24h: -2 }],
+      },
+      transactionResponse: { items: [], total: 0 },
+    });
+
+    renderAssetDetail({ assetId: 'BTC' });
+
+    expect(await screen.findByText('Bitcoin')).toBeVisible();
+    expect(screen.getByText('-2.00%')).toBeVisible();
+    expect(screen.getByText('Chưa có giao dịch nào')).toBeVisible();
+  });
+
+  it('renders every contract transaction type, direction and status', async () => {
+    installHandlers({
+      transactionResponse: {
+        items: [
+          {
+            id: 'deposit',
+            type: 'deposit',
+            asset: 'BTC',
+            amount: 0.1,
+            status: 'completed',
+            createdAt: '2026-09-25T10:30:00.000Z',
+          },
+          {
+            id: 'withdraw',
+            type: 'withdraw',
+            asset: 'BTC',
+            amount: 0.2,
+            status: 'pending',
+            createdAt: '2026-09-25T10:31:00.000Z',
+          },
+          {
+            id: 'trade-buy',
+            type: 'trade_buy',
+            asset: 'BTC',
+            amount: 0.3,
+            status: 'failed',
+            createdAt: '2026-09-25T10:32:00.000Z',
+          },
+          {
+            id: 'trade-sell',
+            type: 'trade_sell',
+            asset: 'BTC',
+            amount: 0.4,
+            status: 'completed',
+            createdAt: '2026-09-25T10:33:00.000Z',
+          },
+          {
+            id: 'p2p-buy',
+            type: 'p2p_buy',
+            asset: 'BTC',
+            amount: 0.5,
+            status: 'failed',
+            createdAt: '2026-09-25T10:34:00.000Z',
+          },
+          {
+            id: 'p2p-sell',
+            type: 'p2p_sell',
+            asset: 'BTC',
+            amount: 0.6,
+            status: 'pending',
+            createdAt: '2026-09-25T10:35:00.000Z',
+          },
+        ],
+        total: 6,
+      },
+    });
+
+    renderAssetDetail();
+
+    expect(await screen.findByText('Bitcoin')).toBeVisible();
+    for (const label of ['Nạp', 'Rút', 'Mua', 'Bán', 'P2P Mua', 'P2P Bán']) {
+      expect(screen.getAllByText(label).length).toBeGreaterThan(0);
+    }
+    for (const status of ['Hoàn thành', 'Đang xử lý', 'Thất bại']) {
+      expect(screen.getAllByText(status).length).toBeGreaterThan(0);
+    }
+    for (const amount of [
+      '+0.100000 BTC',
+      '-0.200000 BTC',
+      '+0.300000 BTC',
+      '-0.400000 BTC',
+      '+0.500000 BTC',
+      '-0.600000 BTC',
+    ]) {
+      expect(screen.getByText(amount)).toBeVisible();
+    }
+  });
+
+  it('handles an asset route without a symbol', async () => {
+    installHandlers({
+      assetResponse: { ...assets, items: [] },
+      pairItems: [],
+      transactionResponse: { items: [], total: 0 },
+    });
+
+    renderAssetDetail({ assetId: '' });
+
+    expect(await screen.findByText('Không tìm thấy tài sản')).toBeVisible();
   });
 
   it('offers retry after a contract error and loads fresh wallet data', async () => {

@@ -50,19 +50,26 @@ export function Web2FASetupFlow() {
   }, [beginMfaSetup, setupAttempt]);
 
   /* ─── Copy secret key ─── */
-  const handleCopyKey = () => {
+  const handleCopyKey = async () => {
     if (!setup) return;
-    navigator.clipboard.writeText(setup.secret).catch(() => {});
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(setup.secret);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Keep the manual-copy action available without claiming the secret was copied.
+    }
   };
 
   /* ─── Copy all backup codes ─── */
-  const handleCopyBackupCodes = () => {
-    if (!setup) return;
-    navigator.clipboard.writeText(setup.backupCodes.join('\n')).catch(() => {});
-    setCopiedCodes(true);
-    setTimeout(() => setCopiedCodes(false), 2000);
+  const handleCopyBackupCodes = async (backupCodes: string[]) => {
+    try {
+      await navigator.clipboard.writeText(backupCodes.join('\n'));
+      setCopiedCodes(true);
+      setTimeout(() => setCopiedCodes(false), 2000);
+    } catch {
+      // Keep the backup codes visible without claiming they were copied.
+    }
   };
 
   /* ─── OTP input handlers ─── */

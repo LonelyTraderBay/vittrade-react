@@ -1,8 +1,8 @@
-import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { Route, Routes, useLocation } from 'react-router';
-import { renderWithProviders, screen, userEvent } from '@/test/test-utils';
+import { fireEvent, renderWithProviders, screen, userEvent, waitFor } from '@/test/test-utils';
 import { RegistrationForm } from './RegistrationForm';
 
 const server = setupServer();
@@ -55,6 +55,32 @@ describe('RegistrationForm', () => {
     expect(screen.getByText('Vui lòng đồng ý điều khoản dịch vụ')).toBeInTheDocument();
   });
 
+  it('validates malformed email and a mismatched password confirmation', async () => {
+    const user = userEvent.setup();
+    renderForm();
+    await user.type(screen.getByLabelText('Họ và tên'), 'Nguyen Van A');
+    await user.type(screen.getByLabelText('Email'), 'not-an-email');
+    await user.type(screen.getByLabelText('Mật khẩu'), 'StrongPass1!');
+    await user.type(screen.getByLabelText('Xác nhận mật khẩu'), 'DifferentPass1!');
+
+    await user.click(screen.getByRole('button', { name: 'Tiếp tục' }));
+
+    expect(screen.getByText('Email không hợp lệ')).toBeInTheDocument();
+    expect(screen.getByText('Mật khẩu xác nhận không khớp')).toBeInTheDocument();
+    expect(screen.getByText('Vui lòng đồng ý điều khoản dịch vụ')).toBeInTheDocument();
+  });
+
+  it('validates phone contact when the phone channel is selected', async () => {
+    const user = userEvent.setup();
+    renderForm();
+
+    await user.click(screen.getByRole('button', { name: 'Điện thoại' }));
+    await user.click(screen.getByRole('button', { name: 'Tiếp tục' }));
+
+    expect(screen.getByText('Vui lòng nhập số điện thoại')).toBeInTheDocument();
+    expect(screen.queryByText('Vui lòng nhập email')).not.toBeInTheDocument();
+  });
+
   it('sends a typed registration request and keeps raw contact and password out of route state', async () => {
     let submittedBody: unknown;
     let idempotencyKey: string | null = null;
@@ -94,6 +120,60 @@ describe('RegistrationForm', () => {
     expect(routeState).not.toContain('StrongPass1!');
   });
 
+  it('submits a phone registration with an optional referral code', async () => {
+    let submittedBody: unknown;
+    server.use(
+      http.post('http://localhost:3000/api/auth/register', async ({ request }) => {
+        submittedBody = await request.json();
+        return HttpResponse.json(
+          {
+            challengeId: 'phone-registration-challenge-001',
+            channel: 'phone',
+            maskedDestination: '+856 ** *** 123',
+            expiresAt: '2099-01-01T00:05:00.000Z',
+          },
+          { status: 202 },
+        );
+      }),
+    );
+    renderForm();
+    const user = userEvent.setup();
+    await user.type(screen.getByLabelText('Họ và tên'), 'Nguyen Van A');
+    await user.click(screen.getByRole('button', { name: 'Điện thoại' }));
+    await user.type(screen.getByLabelText('Số điện thoại'), '+8562012345678');
+    await user.type(screen.getByLabelText('Mật khẩu'), 'StrongPass1!');
+    await user.type(screen.getByLabelText('Xác nhận mật khẩu'), 'StrongPass1!');
+    await user.type(screen.getByLabelText('Mã giới thiệu (tuỳ chọn)'), 'ref-001');
+    await user.click(screen.getByRole('checkbox'));
+    await user.click(screen.getByRole('button', { name: 'Tiếp tục' }));
+
+    expect(await screen.findByTestId('current-path')).toHaveTextContent('/w/auth/otp');
+    expect(submittedBody).toEqual({
+      fullName: 'Nguyen Van A',
+      channel: 'phone',
+      contact: '+8562012345678',
+      password: 'StrongPass1!',
+      referralCode: 'REF-001',
+      acceptedTerms: true,
+    });
+    expect(screen.getByTestId('challenge-state')).toHaveTextContent(
+      'phone-registration-challenge-001',
+    );
+  });
+
+  it('shows and hides the entered password', async () => {
+    const user = userEvent.setup();
+    renderForm();
+    const password = screen.getByLabelText('Mật khẩu');
+
+    await user.type(password, 'StrongPass1!');
+    expect(password).toHaveAttribute('type', 'password');
+    await user.click(screen.getByRole('button', { name: 'Hiện mật khẩu' }));
+    expect(password).toHaveAttribute('type', 'text');
+    await user.click(screen.getByRole('button', { name: 'Ẩn mật khẩu' }));
+    expect(password).toHaveAttribute('type', 'password');
+  });
+
   it('shows rate-limit feedback without claiming that an account was created', async () => {
     server.use(
       http.post('http://localhost:3000/api/auth/register', () =>
@@ -109,5 +189,82 @@ describe('RegistrationForm', () => {
       await screen.findByText('Bạn đã gửi quá nhiều yêu cầu. Hãy chờ một lúc rồi thử lại.'),
     ).toBeInTheDocument();
     expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/register');
+  });
+
+  it('reuses the request key when the same registration is safely retried', async () => {
+    const keys: string[] = [];
+    const handler = vi.fn(async ({ request }: { request: Request }) => {
+      keys.push(request.headers.get('Idempotency-Key') ?? '');
+      if (keys.length === 1) {
+        return HttpResponse.json({ code: 'UNAVAILABLE' }, { status: 503 });
+      }
+      return HttpResponse.json(
+        {
+          challengeId: 'retry-registration-challenge-001',
+          channel: 'email',
+          maskedDestination: 'n***@example.com',
+          expiresAt: '2099-01-01T00:05:00.000Z',
+        },
+        { status: 202 },
+      );
+    });
+    server.use(http.post('http://localhost:3000/api/auth/register', handler));
+    renderForm();
+    const user = await fillValidEmailForm();
+    const submit = screen.getByRole('button', { name: 'Tiếp tục' });
+
+    await user.click(submit);
+    expect(
+      await screen.findByText('Chưa thể bắt đầu xác minh. Kiểm tra kết nối rồi thử lại.'),
+    ).toBeInTheDocument();
+    await user.click(submit);
+
+    await waitFor(() =>
+      expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/otp'),
+    );
+    expect(handler).toHaveBeenCalledTimes(2);
+    expect(keys[0]).toMatch(/^[\da-f-]{36}$/i);
+    expect(keys[1]).toBe(keys[0]);
+  });
+
+  it('does not issue duplicate requests for synchronous repeated submits', async () => {
+    let resolveRequest!: (response: Response) => void;
+    let requestCount = 0;
+    const requestReceived = new Promise<void>((resolve) => {
+      server.use(
+        http.post('http://localhost:3000/api/auth/register', () => {
+          requestCount += 1;
+          resolve();
+          return new Promise<Response>((complete) => {
+            resolveRequest = complete;
+          });
+        }),
+      );
+    });
+    renderForm();
+    await fillValidEmailForm();
+    const form = screen.getByRole('button', { name: 'Tiếp tục' }).closest('form');
+    expect(form).not.toBeNull();
+
+    fireEvent.submit(form!);
+    await requestReceived;
+    fireEvent.submit(form!);
+    expect(requestCount).toBe(1);
+    expect(resolveRequest).toBeTypeOf('function');
+
+    resolveRequest(
+      HttpResponse.json(
+        {
+          challengeId: 'single-registration-challenge-001',
+          channel: 'email',
+          maskedDestination: 'n***@example.com',
+          expiresAt: '2099-01-01T00:05:00.000Z',
+        },
+        { status: 202 },
+      ) as unknown as Response,
+    );
+    await waitFor(() =>
+      expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/otp'),
+    );
   });
 });

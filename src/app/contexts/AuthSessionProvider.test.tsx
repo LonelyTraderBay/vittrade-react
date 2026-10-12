@@ -5,7 +5,7 @@ import type { AuthSession, AuthUser, LoginResult } from '@/shared/session/sessio
 import { AuthSessionProvider } from './AuthContext';
 import { useAuth } from '@/shared/session/useAuth';
 import type { AuthAdapter } from './AuthContext';
-import { getAccessToken, setAccessToken } from '@/shared/api/client';
+import { createAppApiClient, getAccessToken, setAccessToken } from '@/shared/api/client';
 
 const user: AuthUser = {
   id: 'user-1',
@@ -110,6 +110,7 @@ function renderWithRemoteLogout(adapter: AuthAdapter) {
 
   return {
     result: provider.result,
+    sendFromOtherTab: (data: unknown) => act(() => remoteTab.postMessage(data)),
     logoutFromOtherTab: () => act(() => remoteTab.postMessage({ type: 'logout' })),
     dispose: () => {
       remoteTab.close();
@@ -339,6 +340,73 @@ describe('AuthSessionProvider', () => {
     expect(getAccessToken()).toBeNull();
   });
 
+  it('supports the legacy login method through an asynchronous authenticated adapter', async () => {
+    const login = vi.fn(async () => ({ status: 'authenticated' as const, session }));
+    const adapter = createAdapter({ initialSession: null, login });
+    const { result } = renderHook(() => useAuth(), {
+      wrapper: ({ children }) => (
+        <AuthSessionProvider adapter={adapter}>{children}</AuthSessionProvider>
+      ),
+    });
+    await waitFor(() => expect(result.current.status).toBe('unauthenticated'));
+
+    let loggedInSession: AuthSession | undefined;
+    await act(async () => {
+      loggedInSession = await result.current.login(userEmail, 'secret');
+    });
+
+    expect(loggedInSession).toEqual(session);
+    expect(login).toHaveBeenCalledWith({ email: userEmail, password: 'secret' });
+    expect(result.current.status).toBe('authenticated');
+  });
+
+  it('rejects legacy login when the asynchronous adapter requires MFA', async () => {
+    const challengeResult: LoginResult = {
+      status: 'mfa_required',
+      challenge: {
+        id: 'login-challenge-legacy',
+        method: 'totp',
+        expiresAt: '2099-01-01T00:05:00.000Z',
+      },
+    };
+    const adapter = createAdapter({ initialSession: null, login: async () => challengeResult });
+    const { result } = renderHook(() => useAuth(), {
+      wrapper: ({ children }) => (
+        <AuthSessionProvider adapter={adapter}>{children}</AuthSessionProvider>
+      ),
+    });
+    await waitFor(() => expect(result.current.status).toBe('unauthenticated'));
+
+    await act(async () => {
+      await expect(result.current.login(userEmail, 'secret')).rejects.toThrow(
+        'Multi-factor authentication is required to complete login',
+      );
+    });
+    expect(result.current.isAuthenticated).toBe(false);
+    expect(result.current.session).toBeNull();
+  });
+
+  it('reports optional MFA operations as unconfigured when the adapter omits them', async () => {
+    const adapter = createAdapter({ initialSession: null });
+    const { result } = renderHook(() => useAuth(), {
+      wrapper: ({ children }) => (
+        <AuthSessionProvider adapter={adapter}>{children}</AuthSessionProvider>
+      ),
+    });
+    await waitFor(() => expect(result.current.status).toBe('unauthenticated'));
+
+    await expect(
+      result.current.verifyLoginMfa({ challengeId: 'challenge-1', code: '123456' }),
+    ).rejects.toThrow('Login MFA verification is not configured');
+    await expect(result.current.verifyMfa({ contact: userEmail, code: '123456' })).rejects.toThrow(
+      'MFA verification is not configured',
+    );
+    await expect(result.current.beginMfaSetup()).rejects.toThrow('MFA setup is not configured');
+    await expect(result.current.confirmMfaSetup({ code: '123456' })).rejects.toThrow(
+      'MFA setup is not configured',
+    );
+  });
+
   it('surfaces login failures and clears the session', async () => {
     const error = new Error('invalid credentials');
     const adapter = createAdapter({
@@ -363,6 +431,61 @@ describe('AuthSessionProvider', () => {
     expect(rejected).toEqual(error);
     expect(result.current.isAuthenticated).toBe(false);
     await waitFor(() => expect(result.current.error).toEqual(error));
+  });
+
+  it('normalizes MFA verification failures and leaves failed setup operations unapplied', async () => {
+    const verificationError = new Error('invalid registration code');
+    const verifyMfa = vi.fn().mockRejectedValue(verificationError);
+    const { result, unmount } = renderHook(() => useAuth(), {
+      wrapper: ({ children }) => (
+        <AuthSessionProvider adapter={createAdapter({ initialSession: session, verifyMfa })}>
+          {children}
+        </AuthSessionProvider>
+      ),
+    });
+
+    try {
+      await act(async () => {
+        await expect(
+          result.current.verifyMfa({
+            challengeId: 'registration-1',
+            code: '123456',
+            purpose: 'register',
+          }),
+        ).rejects.toEqual(verificationError);
+      });
+      expect(result.current.status).toBe('error');
+      expect(result.current.isAuthenticated).toBe(false);
+      expect(result.current.error).toEqual(verificationError);
+    } finally {
+      unmount();
+    }
+
+    const setupError = new Error('setup service unavailable');
+    const beginMfaSetup = vi.fn().mockRejectedValue('unavailable');
+    const confirmMfaSetup = vi.fn().mockRejectedValue(setupError);
+    const setupProvider = renderHook(() => useAuth(), {
+      wrapper: ({ children }) => (
+        <AuthSessionProvider
+          adapter={createAdapter({ initialSession: session, beginMfaSetup, confirmMfaSetup })}
+        >
+          {children}
+        </AuthSessionProvider>
+      ),
+    });
+
+    try {
+      await expect(setupProvider.result.current.beginMfaSetup()).rejects.toThrow(
+        'Authentication request failed',
+      );
+      await expect(
+        setupProvider.result.current.confirmMfaSetup({ code: '123456' }),
+      ).rejects.toEqual(setupError);
+      expect(setupProvider.result.current.isAuthenticated).toBe(true);
+      expect(setupProvider.result.current.session).toEqual(session);
+    } finally {
+      setupProvider.unmount();
+    }
   });
 
   it('refreshes the session and signs out immediately before the network completes', async () => {
@@ -434,6 +557,94 @@ describe('AuthSessionProvider', () => {
 
       expect(provider.result.current.isAuthenticated).toBe(false);
       expect(provider.result.current.session).toBeNull();
+      expect(getAccessToken()).toBeNull();
+    } finally {
+      provider.dispose();
+    }
+  });
+
+  it('does not apply a late bootstrap failure after a remote logout', async () => {
+    const bootstrap = deferred<AuthSession | null>();
+    const provider = renderWithRemoteLogout(
+      createAdapter({ initialSession: undefined, getSession: () => bootstrap.promise }),
+    );
+
+    try {
+      provider.logoutFromOtherTab();
+      const error = new Error('late bootstrap failure');
+      await act(async () => {
+        bootstrap.reject(error);
+        await Promise.resolve();
+      });
+
+      expect(provider.result.current.status).toBe('unauthenticated');
+      expect(provider.result.current.error).toBeNull();
+      expect(provider.result.current.session).toBeNull();
+      expect(getAccessToken()).toBeNull();
+    } finally {
+      provider.dispose();
+    }
+  });
+
+  it('does not apply late login or MFA failures after a remote logout', async () => {
+    const loginResult = deferred<LoginResult>();
+    const loginVerification = deferred<AuthSession>();
+    const registrationVerification = deferred<AuthSession>();
+    const provider = renderWithRemoteLogout(
+      createAdapter({
+        initialSession: null,
+        login: () => loginResult.promise,
+        verifyLoginMfa: () => loginVerification.promise,
+        verifyMfa: () => registrationVerification.promise,
+      }),
+    );
+
+    try {
+      let pendingLogin!: Promise<LoginResult>;
+      act(() => {
+        pendingLogin = provider.result.current.signIn({ email: userEmail, password: 'secret' });
+      });
+      provider.logoutFromOtherTab();
+      const loginError = new Error('late login failure');
+      await act(async () => {
+        loginResult.reject(loginError);
+        await expect(pendingLogin).rejects.toEqual(loginError);
+      });
+      expect(provider.result.current.status).toBe('unauthenticated');
+      expect(provider.result.current.error).toBeNull();
+
+      let pendingLoginVerification!: Promise<AuthSession>;
+      act(() => {
+        pendingLoginVerification = provider.result.current.verifyLoginMfa({
+          challengeId: 'login-challenge-1',
+          code: '123456',
+        });
+      });
+      provider.logoutFromOtherTab();
+      const loginVerificationError = new Error('late login MFA failure');
+      await act(async () => {
+        loginVerification.reject(loginVerificationError);
+        await expect(pendingLoginVerification).rejects.toEqual(loginVerificationError);
+      });
+      expect(provider.result.current.status).toBe('unauthenticated');
+      expect(provider.result.current.error).toBeNull();
+
+      let pendingRegistrationVerification!: Promise<AuthSession>;
+      act(() => {
+        pendingRegistrationVerification = provider.result.current.verifyMfa({
+          challengeId: 'registration-challenge-1',
+          code: '123456',
+          purpose: 'register',
+        });
+      });
+      provider.logoutFromOtherTab();
+      const registrationError = new Error('late registration MFA failure');
+      await act(async () => {
+        registrationVerification.reject(registrationError);
+        await expect(pendingRegistrationVerification).rejects.toEqual(registrationError);
+      });
+      expect(provider.result.current.status).toBe('unauthenticated');
+      expect(provider.result.current.error).toBeNull();
       expect(getAccessToken()).toBeNull();
     } finally {
       provider.dispose();
@@ -723,6 +934,88 @@ describe('AuthSessionProvider', () => {
     }
   });
 
+  it('does not schedule refresh for invalid or timer-overflowing expiry values', () => {
+    vi.useFakeTimers();
+    try {
+      const refresh = vi.fn().mockResolvedValue(session);
+      const invalidExpiry = renderHook(() => useAuth(), {
+        wrapper: ({ children }) => (
+          <AuthSessionProvider
+            adapter={createAdapter({
+              initialSession: { ...session, accessTokenExpiresAt: 'not-a-date' },
+              refresh,
+            })}
+          >
+            {children}
+          </AuthSessionProvider>
+        ),
+      });
+      expect(vi.getTimerCount()).toBe(0);
+      invalidExpiry.unmount();
+
+      const beyondTimerRange = renderHook(() => useAuth(), {
+        wrapper: ({ children }) => (
+          <AuthSessionProvider
+            adapter={createAdapter({
+              initialSession: {
+                ...session,
+                accessTokenExpiresAt: new Date(Date.now() + 2_147_483_647 + 60_001).toISOString(),
+              },
+              refresh,
+            })}
+          >
+            {children}
+          </AuthSessionProvider>
+        ),
+      });
+      expect(vi.getTimerCount()).toBe(0);
+      expect(refresh).not.toHaveBeenCalled();
+      beyondTimerRange.unmount();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('refreshes through the installed unauthorized handler after an API 401', async () => {
+    const refresh = vi.fn().mockResolvedValue(null);
+    const { unmount } = renderHook(() => useAuth(), {
+      wrapper: ({ children }) => (
+        <AuthSessionProvider adapter={createAdapter({ initialSession: session, refresh })}>
+          {children}
+        </AuthSessionProvider>
+      ),
+    });
+    const fetch = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(JSON.stringify({ message: 'Unauthorized' }), {
+        status: 401,
+        headers: { 'content-type': 'application/json' },
+      }),
+    );
+
+    try {
+      const client = createAppApiClient('https://api.example.test');
+      await expect(client.request({ method: 'GET', path: '/private' })).rejects.toMatchObject({
+        status: 401,
+      });
+      await waitFor(() => expect(refresh).toHaveBeenCalledOnce());
+    } finally {
+      fetch.mockRestore();
+      unmount();
+    }
+  });
+
+  it('ignores non-logout cross-tab messages', () => {
+    const provider = renderWithRemoteLogout(createAdapter({ initialSession: session }));
+
+    try {
+      provider.sendFromOtherTab({ type: 'session-hint' });
+      expect(provider.result.current.isAuthenticated).toBe(true);
+      expect(provider.result.current.session).toEqual(session);
+    } finally {
+      provider.dispose();
+    }
+  });
+
   it('propagates logout to another tab through BroadcastChannel', async () => {
     FakeBroadcastChannel.reset();
     vi.stubGlobal('BroadcastChannel', FakeBroadcastChannel);
@@ -746,6 +1039,30 @@ describe('AuthSessionProvider', () => {
       secondTab.unmount();
       expect(FakeBroadcastChannel.openChannelCount).toBe(0);
       expect(FakeBroadcastChannel.activeListenerCount).toBe(0);
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it('still clears local auth when BroadcastChannel is unavailable', async () => {
+    vi.stubGlobal('BroadcastChannel', undefined);
+    const logout = vi.fn().mockResolvedValue(undefined);
+    const { result, unmount } = renderHook(() => useAuth(), {
+      wrapper: ({ children }) => (
+        <AuthSessionProvider adapter={createAdapter({ initialSession: session, logout })}>
+          {children}
+        </AuthSessionProvider>
+      ),
+    });
+
+    try {
+      await act(async () => {
+        await result.current.signOut();
+      });
+
+      expect(result.current.isAuthenticated).toBe(false);
+      expect(logout).toHaveBeenCalledOnce();
+    } finally {
+      unmount();
       vi.unstubAllGlobals();
     }
   });

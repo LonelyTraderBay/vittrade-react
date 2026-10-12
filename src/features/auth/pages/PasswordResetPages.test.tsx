@@ -1,6 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { useLocation } from 'react-router';
 import { renderWithProviders, screen, userEvent, waitFor } from '@/test/test-utils';
 import { ForgotPasswordContractPage, ResetPasswordContractPage } from './PasswordResetPages';
 
@@ -8,6 +9,11 @@ const server = setupServer();
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
+
+function LocationProbe() {
+  const location = useLocation();
+  return <output data-testid="current-path">{location.pathname}</output>;
+}
 
 describe('password reset contract flow', () => {
   it('completes request, verification and reset through API adapters', async () => {
@@ -35,9 +41,13 @@ describe('password reset contract flow', () => {
     );
 
     const user = userEvent.setup();
-    renderWithProviders(<ForgotPasswordContractPage />, {
-      routerProps: { initialEntries: ['/auth/forgot-password'] },
-    });
+    renderWithProviders(
+      <>
+        <ForgotPasswordContractPage />
+        <LocationProbe />
+      </>,
+      { routerProps: { initialEntries: ['/auth/forgot-password'] } },
+    );
 
     await user.type(screen.getByLabelText('Email đăng ký'), 'user@example.com');
     await user.click(screen.getByRole('button', { name: 'Gửi mã xác minh' }));
@@ -45,18 +55,34 @@ describe('password reset contract flow', () => {
 
     await user.type(screen.getByLabelText('Mã OTP'), '123456');
     await user.click(screen.getByRole('button', { name: 'Xác nhận' }));
-    expect(await screen.findByRole('heading', { name: 'Mật khẩu mới' })).toBeInTheDocument();
+    const forgotPassword = await screen.findByLabelText('Mật khẩu mới');
+    expect(screen.getByRole('heading', { name: 'Mật khẩu mới' })).toBeInTheDocument();
+    const forgotPasswordToggle = screen.getByRole('button', { name: 'Hiện hoặc ẩn mật khẩu' });
+    await user.click(forgotPasswordToggle);
+    expect(forgotPassword).toHaveAttribute('type', 'text');
+    await user.click(forgotPasswordToggle);
+    expect(forgotPassword).toHaveAttribute('type', 'password');
 
-    await user.type(screen.getByLabelText('Mật khẩu mới'), 'strong-password-123');
+    await user.type(forgotPassword, 'strong-password-123');
     await user.type(screen.getByLabelText('Nhập lại mật khẩu'), 'strong-password-123');
     await user.click(screen.getByRole('button', { name: 'Đặt lại mật khẩu' }));
 
     await waitFor(() => expect(calls).toEqual({ request: 1, verify: 1, confirm: 1 }));
     expect(await screen.findByText('Thành công!')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Đến trang đăng nhập' }));
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/auth/login');
   });
 
-  it('reports a request-code failure without advancing the flow', async () => {
-    server.use(http.post('*/auth/password-reset/request', () => HttpResponse.error()));
+  it('clears a request-code error after a successful retry', async () => {
+    let requests = 0;
+    server.use(
+      http.post('*/auth/password-reset/request', () => {
+        requests += 1;
+        return requests === 1
+          ? HttpResponse.json({ message: 'Invalid request' }, { status: 400 })
+          : new HttpResponse(null, { status: 204 });
+      }),
+    );
     const user = userEvent.setup();
     renderWithProviders(<ForgotPasswordContractPage />);
 
@@ -67,6 +93,11 @@ describe('password reset contract flow', () => {
       'Không thể gửi mã xác minh. Vui lòng thử lại.',
     );
     expect(screen.getByRole('button', { name: 'Gửi mã xác minh' })).toBeEnabled();
+
+    await user.click(screen.getByRole('button', { name: 'Gửi mã xác minh' }));
+    expect(await screen.findByRole('heading', { name: 'Nhập mã OTP' })).toBeInTheDocument();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(requests).toBe(2);
   });
 
   it('filters OTP input to six digits and reports a rejected code', async () => {
@@ -138,15 +169,27 @@ describe('password reset contract flow', () => {
       }),
     );
     const user = userEvent.setup();
-    renderWithProviders(<ResetPasswordContractPage />, {
-      routerProps: {
-        initialEntries: ['/auth/reset-password?email=user%40example.com&resetToken=server-token'],
+    renderWithProviders(
+      <>
+        <ResetPasswordContractPage />
+        <LocationProbe />
+      </>,
+      {
+        routerProps: {
+          initialEntries: ['/auth/reset-password?email=user%40example.com&resetToken=server-token'],
+        },
       },
-    });
+    );
 
     const password = await screen.findByLabelText('Mật khẩu mới');
     const confirm = screen.getByLabelText('Nhập lại mật khẩu');
     const submit = screen.getByRole('button', { name: 'Đặt lại mật khẩu' });
+    const togglePassword = screen.getByRole('button', { name: 'Hiện hoặc ẩn mật khẩu' });
+    expect(password).toHaveAttribute('type', 'password');
+    await user.click(togglePassword);
+    expect(password).toHaveAttribute('type', 'text');
+    await user.click(togglePassword);
+    expect(password).toHaveAttribute('type', 'password');
     await user.type(password, 'short1');
     await user.type(confirm, 'short1');
     expect(submit).toBeDisabled();
@@ -162,10 +205,36 @@ describe('password reset contract flow', () => {
     await user.click(submit);
 
     expect(await screen.findByText('Thành công!')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Đến trang đăng nhập' }));
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/auth/login');
     expect(body).toEqual({
       email: 'user@example.com',
       resetToken: 'server-token',
       newPassword: 'strong-password-123',
     });
+  });
+
+  it('retains a strong password and reports a rejected direct-reset request', async () => {
+    server.use(
+      http.post('*/auth/password-reset/confirm', () =>
+        HttpResponse.json({ message: 'Invalid request' }, { status: 400 }),
+      ),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<ResetPasswordContractPage />, {
+      routerProps: {
+        initialEntries: ['/auth/reset-password?email=user%40example.com&resetToken=server-token'],
+      },
+    });
+
+    const password = await screen.findByLabelText('Mật khẩu mới');
+    await user.type(password, 'strong-password-123');
+    await user.type(screen.getByLabelText('Nhập lại mật khẩu'), 'strong-password-123');
+    await user.click(screen.getByRole('button', { name: 'Đặt lại mật khẩu' }));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Không thể đặt lại mật khẩu. Vui lòng yêu cầu mã mới.',
+    );
+    expect(password).toHaveValue('strong-password-123');
   });
 });

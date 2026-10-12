@@ -113,7 +113,8 @@ export function useSessionTimeout({
         const remaining = Math.max(0, Math.ceil(warningDuration - elapsed));
         setRemainingSeconds(remaining);
         if (remaining <= 0) {
-          if (countdownRef.current) clearInterval(countdownRef.current);
+          // The callback runs after setInterval returns and stores its handle.
+          clearInterval(countdownRef.current);
         }
       }, 1000);
     }, warningDelay);
