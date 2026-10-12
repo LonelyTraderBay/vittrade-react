@@ -1,0 +1,359 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261013-001",
+  "observedAt": "2026-10-12T17:14:24.553Z",
+  "sourceHead": "b42ef50ab5084b11266bb041180e44c194797c39",
+  "sourceBefore": "863b39d19e2914e3834411a3c8e1a2cc0d57ff6b",
+  "scope": "Authorized priority-ordered Vietnamese commits/push of automatic cleanup and AI workflow.",
+  "commits": [
+    "b42ef50ab5084b11266bb041180e44c194797c39 P1: bắt buộc AI dọn output trước khi bàn giao",
+    "bbc473956d0427a142bfd2b3da0ddff7bcc3da02 P0: dọn cache và output theo vòng đời tiến trình"
+  ],
+  "verifiedSourceFiles": [
+    {
+      "path": "AGENTS.md",
+      "commit": "b42ef50ab5084b11266bb041180e44c194797c39",
+      "blobOid": "4c129656bb5f0cdc87f9c7cb7b20ed6267413d86",
+      "committedSha256": "24979bcc2c22326edec8b002a626fde1303cecefe82c7e51ba600c1d32a9c95d",
+      "workingSha256": "5c5b29267e4f37d4837a19de29d4a404cd05b258233497a7127287876a82eef9",
+      "cleanFilterMatches": true
+    },
+    {
+      "path": "README.md",
+      "commit": "b42ef50ab5084b11266bb041180e44c194797c39",
+      "blobOid": "a123ebada2ceb056fd21ed8fe9fe5fce6d74b4b7",
+      "committedSha256": "47b4404a603dac260e6fb8b7d0e43dc677b9649ad797c64f991ee8b98d216965",
+      "workingSha256": "47b4404a603dac260e6fb8b7d0e43dc677b9649ad797c64f991ee8b98d216965",
+      "cleanFilterMatches": true
+    },
+    {
+      "path": "docs/ai/WORKFLOW.md",
+      "commit": "b42ef50ab5084b11266bb041180e44c194797c39",
+      "blobOid": "859327262375732bf055953570c105ef413c7df4",
+      "committedSha256": "ad2ac126cfaf98f447ae4858264e1dcf37cd2b3dd4562c7f74273643562f3fd1",
+      "workingSha256": "ad2ac126cfaf98f447ae4858264e1dcf37cd2b3dd4562c7f74273643562f3fd1",
+      "cleanFilterMatches": true
+    },
+    {
+      "path": "package.json",
+      "commit": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02",
+      "blobOid": "934b35e4da9694f1e516682ce76510e4095ec0e5",
+      "committedSha256": "9da3d2eed0ec7fddedd33311e5f959384926b4254956dba038b6fcce7b419c1a",
+      "workingSha256": "9da3d2eed0ec7fddedd33311e5f959384926b4254956dba038b6fcce7b419c1a",
+      "cleanFilterMatches": true
+    },
+    {
+      "path": "scripts/check-build-artifact.mjs",
+      "commit": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02",
+      "blobOid": "9b9b7603dec42be22cbc119b25ecae84a82b1671",
+      "committedSha256": "17117769123c963d5d848e8f9788b0d3d53d0efeb03be22fc35c4c47d34336fd",
+      "workingSha256": "17117769123c963d5d848e8f9788b0d3d53d0efeb03be22fc35c4c47d34336fd",
+      "cleanFilterMatches": true
+    },
+    {
+      "path": "scripts/plan-artifact-cleanup.mjs",
+      "commit": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02",
+      "blobOid": "caedac8dc320f453c62d597ad3428719d36fadd7",
+      "committedSha256": "b9d608040c3618330582be2a48ba30aff1721dbd3396ecd535775b340e393c7d",
+      "workingSha256": "b9d608040c3618330582be2a48ba30aff1721dbd3396ecd535775b340e393c7d",
+      "cleanFilterMatches": true
+    },
+    {
+      "path": "scripts/run-with-artifacts.mjs",
+      "commit": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02",
+      "blobOid": "3cdf09f4ae7a1b116ae5c67d8af2cc5976835907",
+      "committedSha256": "a1ce74d97d31ac4c3843a3795833a269dbe87b8a878637257d7a203166032398",
+      "workingSha256": "a1ce74d97d31ac4c3843a3795833a269dbe87b8a878637257d7a203166032398",
+      "cleanFilterMatches": true
+    },
+    {
+      "path": "scripts/run-with-artifacts.test.mjs",
+      "commit": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02",
+      "blobOid": "70c10c7d097383ecb2589233e7ca97650f7b9dc8",
+      "committedSha256": "ac89f4370f58acedcbeab104a14747021a602478a9a7b22c4b699e60fb6b35a6",
+      "workingSha256": "ac89f4370f58acedcbeab104a14747021a602478a9a7b22c4b699e60fb6b35a6",
+      "cleanFilterMatches": true
+    },
+    {
+      "path": "scripts/artifact-lifecycle.mjs",
+      "commit": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02",
+      "blobOid": "1013af4a74ec666cce05021040fb867b061bff89",
+      "committedSha256": "5171bf3a8e15312c6987bb388fb6c2346c8b06f015f786eb981f53f18ce3fd7b",
+      "workingSha256": "5171bf3a8e15312c6987bb388fb6c2346c8b06f015f786eb981f53f18ce3fd7b",
+      "cleanFilterMatches": true
+    },
+    {
+      "path": "scripts/cleanup-artifacts.mjs",
+      "commit": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02",
+      "blobOid": "7978f8912ddd60353b927b8f21e7306c2fe0dd5c",
+      "committedSha256": "733d18725bf6815b42d9f6c8a38f9b712b11d9d35d638cec6ae15f426ac5bd1a",
+      "workingSha256": "733d18725bf6815b42d9f6c8a38f9b712b11d9d35d638cec6ae15f426ac5bd1a",
+      "cleanFilterMatches": true
+    },
+    {
+      "path": "scripts/cleanup-artifacts.test.mjs",
+      "commit": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02",
+      "blobOid": "928216c3abc9a8290225cb1b01291e22611d5242",
+      "committedSha256": "8febdcf80908ffa4320930009bbad1e431cfb3da2f753059beb60ab4f7812ddc",
+      "workingSha256": "8febdcf80908ffa4320930009bbad1e431cfb3da2f753059beb60ab4f7812ddc",
+      "cleanFilterMatches": true
+    }
+  ],
+  "previousRuntimeEvidence": "EV-20261012-008",
+  "previousRuntimeBytesUnchanged": true,
+  "checks": {
+    "style": [
+      {
+        "exitCode": 0,
+        "log": ".artifacts/git-delivery-2026-10-13/typecheck.log",
+        "name": "typecheck"
+      },
+      {
+        "exitCode": 0,
+        "log": ".artifacts/git-delivery-2026-10-13/lint.log",
+        "name": "lint"
+      },
+      {
+        "exitCode": 0,
+        "log": ".artifacts/git-delivery-2026-10-13/lint-check.log",
+        "name": "lint:check"
+      },
+      {
+        "exitCode": 0,
+        "log": ".artifacts/git-delivery-2026-10-13/format-check.log",
+        "name": "format:check"
+      }
+    ],
+    "policy": [
+      {
+        "exitCode": 0,
+        "name": "architecture:check",
+        "log": ".artifacts/git-delivery-2026-10-13/architecture-check.log"
+      },
+      {
+        "exitCode": 0,
+        "name": "architecture:inventory:check",
+        "log": ".artifacts/git-delivery-2026-10-13/architecture-inventory-check.log"
+      },
+      {
+        "exitCode": 0,
+        "name": "page-size:check",
+        "log": ".artifacts/git-delivery-2026-10-13/page-size-check.log"
+      },
+      {
+        "exitCode": 0,
+        "name": "contracts:check",
+        "log": ".artifacts/git-delivery-2026-10-13/contracts-check.log"
+      },
+      {
+        "exitCode": 0,
+        "name": "security:check",
+        "log": ".artifacts/git-delivery-2026-10-13/security-check.log"
+      },
+      {
+        "exitCode": 0,
+        "name": "env:check",
+        "log": ".artifacts/git-delivery-2026-10-13/env-check.log"
+      },
+      {
+        "exitCode": 0,
+        "name": "production-mock-imports:check",
+        "log": ".artifacts/git-delivery-2026-10-13/production-mock-imports-check.log"
+      },
+      {
+        "exitCode": 0,
+        "name": "production-routes:check",
+        "log": ".artifacts/git-delivery-2026-10-13/production-routes-check.log"
+      },
+      {
+        "exitCode": 0,
+        "name": "audit:high",
+        "log": ".artifacts/git-delivery-2026-10-13/audit-high.log"
+      },
+      {
+        "exitCode": 0,
+        "name": "licenses:check",
+        "log": ".artifacts/git-delivery-2026-10-13/licenses-check.log"
+      }
+    ],
+    "gitEol": {
+      "exitCode": 0,
+      "log": ".artifacts/git-delivery-2026-10-13/git-eol.log"
+    },
+    "coverage": {
+      "exitCode": 0,
+      "filesPassed": 335,
+      "filesTotal": 335,
+      "testsPassed": 3027,
+      "testsTotal": 3027,
+      "failed": 0,
+      "skipped": 0,
+      "durationSeconds": 57.4,
+      "statements": {
+        "covered": 11803,
+        "total": 11992,
+        "percent": 98.42
+      },
+      "branches": {
+        "covered": 9412,
+        "total": 9721,
+        "percent": 96.82
+      },
+      "functions": {
+        "covered": 3855,
+        "total": 3929,
+        "percent": 98.11
+      },
+      "lines": {
+        "covered": 10986,
+        "total": 11101,
+        "percent": 98.96
+      },
+      "thresholds": "unchanged",
+      "log": ".artifacts/git-delivery-2026-10-13/coverage.log"
+    },
+    "e2e": {
+      "exitCode": 0,
+      "passed": 59,
+      "skipped": 4,
+      "total": 63,
+      "failed": 0,
+      "skipReason": "Existing registration development-only scenarios in default CI/staging profile; no new skip added.",
+      "log": ".artifacts/git-delivery-2026-10-13/e2e.log",
+      "scope": "Local Chromium with intercepted/fixture APIs; not real backend/staging acceptance."
+    },
+    "tracking": {
+      "exitCode": 0,
+      "errorCount": 0,
+      "checkerChanged": false,
+      "log": ".artifacts/git-delivery-2026-10-13/tracking-catalogued.log"
+    },
+    "productionBuild": {
+      "exitCode": 0,
+      "sourceHead": "b42ef50ab5084b11266bb041180e44c194797c39",
+      "env": "Existing CI reserved .test origins; no deployment",
+      "log": ".artifacts/git-delivery-2026-10-13/build.log"
+    },
+    "productionMocks": {
+      "exitCode": 0,
+      "outputFiles": 220,
+      "javaScriptFiles": 218,
+      "manifests": 0,
+      "log": ".artifacts/git-delivery-2026-10-13/production-mocks.log"
+    },
+    "bundle": {
+      "exitCode": 0,
+      "chunks": 218,
+      "rawBudgetKB": 500,
+      "gzipBudgetKiB": 250,
+      "log": ".artifacts/git-delivery-2026-10-13/bundle.log"
+    },
+    "fullUnitReuse": {
+      "evidenceId": "EV-20261012-008",
+      "filesPassed": 335,
+      "testsPassed": 3027,
+      "reason": "Tested bytes unchanged, pinned to actual source commits; full coverage reruns the same suite at the committed source revision."
+    }
+  },
+  "preservation": {
+    "checkpointSha256": "1990ed87d31d84136c482189014028153f11b9d32e7c8cce49e52533505b38f8",
+    "worktrees": [
+      {
+        "path": "C:/Users/Joker-PC/.codex/worktrees/u01-registration-session-cookie/vittrade-react",
+        "statusSha256": "f912a75054c33ae29192700a9e547aef0a8ad7d8332ab5e3cc9e68ac9f29c4d7"
+      },
+      {
+        "path": "C:/Users/Joker-PC/Documents/Projects/vittrade-react-b07-01",
+        "statusSha256": "6f6d83a075557162335fb4d50eb89846f547a4c5c77aeac4ae007f3d5e7084e8"
+      },
+      {
+        "path": "C:/Users/Joker-PC/Documents/Projects/vittrade-react-b07-01-current",
+        "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "C:/Users/Joker-PC/Documents/Projects/vittrade-react-b07-01-current-fresh",
+        "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "C:/Users/Joker-PC/Documents/Projects/vittrade-react-b07-01-provenance-fresh",
+        "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "C:/Users/Joker-PC/Documents/Projects/vittrade-react-b07-01-ubuntu-20261003",
+        "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "legacyManifests": 40,
+    "oldEvidence": "unchanged",
+    "checker": "unchanged"
+  },
+  "delivery": {
+    "push": "pending-at-observation",
+    "hostedCI": "pending-at-observation",
+    "commitNotes": "Vietnamese P0/P1/P2",
+    "signOff": true,
+    "branch": "main",
+    "remote": "origin",
+    "branchMetadata": {
+      "protected": false,
+      "rules": [],
+      "observedAt": "2026-10-12T17:14:24.553Z"
+    },
+    "finalMetadataCommit": "pending-after-G5",
+    "note": "Source runtime tested at P1; final metadata/SHA artifact checks and remote CI are verified after P2 commit."
+  },
+  "runtimeRuns": {
+    "coverage": {
+      "manifest": ".artifacts/runs/2026-10-12T17-09-03-073Z-vitest-32813ec1-d4ee-4189-a2c4-bb8e992fca4c/run.json",
+      "manifestSha256": "652583791ad1520562b41efdf1bc55e184d3d0ae32df61d9679deb0d1d2e7300",
+      "sourceHead": "b42ef50ab5084b11266bb041180e44c194797c39",
+      "snapshotSha256": "3014ce1e303dca5cd8567b829b5112b211c79271ac96cfd6b4a1351b8a8996cd",
+      "startedAt": "2026-10-12T17:09:03.073Z",
+      "finishedAt": "2026-10-12T17:10:05.829Z",
+      "exitCode": 0
+    },
+    "e2e": {
+      "manifest": ".artifacts/runs/2026-10-12T17-10-09-985Z-playwright-bbd9d1eb-0dfc-4698-ac88-a836fb09f444/run.json",
+      "manifestSha256": "54929b08b3b59b399d7e1503dd78687b30e53a5a1123322f3a4c44a5c937c1c2",
+      "sourceHead": "b42ef50ab5084b11266bb041180e44c194797c39",
+      "snapshotSha256": "3014ce1e303dca5cd8567b829b5112b211c79271ac96cfd6b4a1351b8a8996cd",
+      "startedAt": "2026-10-12T17:10:09.985Z",
+      "finishedAt": "2026-10-12T17:11:30.151Z",
+      "exitCode": 0
+    },
+    "build": {
+      "manifest": ".artifacts/runs/2026-10-12T17-12-03-860Z-build-735680fa-f116-48a9-819a-2a84267d6ccd/run.json",
+      "manifestSha256": "0b30ea7aad7b797cdb9d8766c7e10ec7bb90c6fbe5777b5de8dd350e777f5a3e",
+      "sourceHead": "b42ef50ab5084b11266bb041180e44c194797c39",
+      "snapshotSha256": "3014ce1e303dca5cd8567b829b5112b211c79271ac96cfd6b4a1351b8a8996cd",
+      "startedAt": "2026-10-12T17:12:03.860Z",
+      "finishedAt": "2026-10-12T17:12:29.769Z",
+      "exitCode": 0
+    }
+  },
+  "cleanup": {
+    "coverage": {
+      "files": 1,
+      "logicalBytes": 32706
+    },
+    "e2e": {
+      "files": 220,
+      "logicalBytes": 2686805
+    },
+    "build": {
+      "files": 0,
+      "logicalBytes": 0
+    },
+    "errors": 0,
+    "scope": "Only owned disposable cache/output. Source/evidence/worktrees retained."
+  },
+  "ledgerPayloadProof": {
+    "kind": "actual-written-intermediate-before-self-audit",
+    "archivePath": "docs/architecture/production-readiness/evidence/C03/auto-cleanup-source-delivery-ledger-payload-2026-10-13.json.gz",
+    "archiveSha256": "c75cb9a0a0c6f70715bba68644bc6fe0df86cf672e9871fd461c3122152d4bdc",
+    "archivePayloadSha256": "d2a40eae22cd950402e12ddedbc3e0a79823da91b5151c59219f07700065da86",
+    "archiveBytes": 1473382,
+    "payloadBytes": 12778542,
+    "roundTrip": "byte-for-byte-pass"
+  }
+}

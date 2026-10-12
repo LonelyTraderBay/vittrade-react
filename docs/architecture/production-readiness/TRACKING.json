@@ -69212,19 +69212,23 @@
       "baselineSha256": "a043b34765668515d339c49c8df6ce15d006917bfdec397ac59d8e2cf679fc31",
       "lifecycle": "active",
       "taskIds": [
-        "A01"
+        "A01",
+        "C03"
       ],
       "disposition": "changed",
-      "reason": "User-requested AI/new-contributor workflow and skill selection documentation; supplemental A01.05 handoff maintenance, no application step completion or baseline rewrite. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. U01.02 reviewed against the Auth operation contract; no additional source change was needed.",
+      "reason": "User-requested AI/new-contributor workflow and skill selection documentation; supplemental A01.05 handoff maintenance, no application step completion or baseline rewrite. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. U01.02 reviewed against the Auth operation contract; no additional source change was needed. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | EV-20261013-001: verified actual local commit/Git blob and unchanged tested bytes; GitHub delivery pending.",
       "evidenceIds": [
         "EV-20260927-076",
         "EV-20260930-024",
         "EV-20260930-025",
-        "EV-20261002-034"
+        "EV-20261002-034",
+        "EV-20261012-008",
+        "EV-20261013-001"
       ],
       "changeIds": [
         "CHANGE-20260927-049",
-        "CHANGE-20260930-0075"
+        "CHANGE-20260930-0075",
+        "CHANGE-20261012-0064"
       ],
       "executionScope": {
         "ownerTaskId": "A01",
@@ -69438,8 +69442,8 @@
         ],
         "action": "read_preserve"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "f8298726071cc5cfc6509fddc37379c1c8dca9e830519458587701066bf1a697"
+      "cataloguedSourceHead": "b42ef50ab5084b11266bb041180e44c194797c39",
+      "cataloguedSha256": "24979bcc2c22326edec8b002a626fde1303cecefe82c7e51ba600c1d32a9c95d"
     },
     {
       "path": "AI_RULES.md",
@@ -70873,7 +70877,7 @@
         "C03"
       ],
       "disposition": "changed",
-      "reason": "Align the reusable roadmap prompt with current M1-M4 criteria and the single-source workflow; preserve the A07.04 application checkpoint. | A08.05 reviewed unchanged under EV-20260929-447; existing mock/backend/staging and user-acceptance limits remain accurate. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. U01.02 reviewed against the Auth operation contract; no additional source change was needed.",
+      "reason": "Align the reusable roadmap prompt with current M1-M4 criteria and the single-source workflow; preserve the A07.04 application checkpoint. | A08.05 reviewed unchanged under EV-20260929-447; existing mock/backend/staging and user-acceptance limits remain accurate. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. U01.02 reviewed against the Auth operation contract; no additional source change was needed. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | EV-20261013-001: verified actual local commit/Git blob and unchanged tested bytes; GitHub delivery pending.",
       "evidenceIds": [
         "EV-20260927-076",
         "EV-20260928-009",
@@ -70883,7 +70887,9 @@
         "EV-20261002-034",
         "EV-20261009-002",
         "EV-20261012-001",
-        "EV-20261012-004"
+        "EV-20261012-004",
+        "EV-20261012-008",
+        "EV-20261013-001"
       ],
       "changeIds": [
         "CHANGE-20260927-053",
@@ -70891,7 +70897,8 @@
         "CHANGE-20260930-0077",
         "CHANGE-20260930-0088",
         "CHANGE-20261012-0004",
-        "CHANGE-20261012-0034"
+        "CHANGE-20261012-0034",
+        "CHANGE-20261012-0066"
       ],
       "executionScope": {
         "ownerTaskId": "B10",
@@ -71105,8 +71112,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
-      "cataloguedSha256": "0cc16001dd81ddfb7e9990e43e3ad33f04c0170ec87c36f62ba1b9770ccbbf57"
+      "cataloguedSourceHead": "b42ef50ab5084b11266bb041180e44c194797c39",
+      "cataloguedSha256": "ad2ac126cfaf98f447ae4858264e1dcf37cd2b3dd4562c7f74273643562f3fd1"
     },
     {
       "path": "docs/architecture/auth-login-mfa-spec.md",
@@ -127515,7 +127522,7 @@
         "U01"
       ],
       "disposition": "changed",
-      "reason": "Record U01.01 completion, measured Auth scope and the U01.02 next checkpoint. U01.02 reviewed against the Auth operation contract; no additional source change was needed. | EV-20261003-003: Record U01.03 browser observations and the measured A06 sidecar refresh, coverage and limitations. Record measured C05.03 UI overlap follow-up and its limits. | EV-20261003-006: record the login MFA 410 browser measurement and its local fixture boundary. Final U01.03 validation counts and remaining tracking-ledger errors are recorded. | EV-20261003-007: document the full contract-backed password-reset browser flow and local-only evidence boundary. Final U01.03 local check counts and the remaining source-ledger errors are recorded. | EV-20261003-008: document Auth reset fixture alignment with OpenAPI and its focused 6/6 result. Final U01.03 fixture-correction checks and source-ledger status are recorded. | EV-20261003-009: record the two email/phone registration challenge issuance browser cases, 12/12 combined E2E result, and owner-blocked OTP verification boundary. | EV-20261003-010: document registration request HTTP 400/429 browser outcomes and the 14/14 combined Auth E2E result. | EV-20261003-011: record the login HTTP 401 browser regression and 15/15 combined Auth E2E result. | EV-20261003-012: record contract session 401 normalization, transport preservation, and 36/36 focused plus 16/16 browser results. | EV-20261009-001: record the owner-approved credential choice, current local E2E results and remaining source-ledger errors. | EV-20261009-002: record exact-commit source ledger reconciliation and its local-only boundary. | EV-20261010-014: record DCA annotation full coverage and next P2P order-action target. | EV-015 records P2P order-action full-suite coverage and the P2P ad-detail next target. | EV-016 records Arena full-suite results and next P2P Merchant slice. | EV-017 records P2P Merchant full-suite results and next payment-method slice. | EV-018 records P2P payment creation full-suite results and next list page slice. | EV-019 records P2P payment-method list full-suite results and next Watchlist page gap. | EV-020 records P2P payment creation full-suite results and next list page slice. | EV-021 records MarketSectorsPage full-suite coverage and the next P2P marketplace slice. | EV-022 records P2P marketplace behavior coverage and next AppLayout slice. | EV-023 records full-suite progress and next measured gap. | EV-024 records full-suite progress and next measured gap. | EV-025 records full-suite progress and next measured gap. | EV-026 records full-suite progress and next measured gap. | EV-027 records full-suite progress and next measured gap. | EV-028 records full-suite progress and next measured gap. | EV-029 records full-suite progress and next measured gap. | EV-030 records full-suite progress and next measured gap. | EV-031 records full-suite progress and next measured gap.",
+      "reason": "Record U01.01 completion, measured Auth scope and the U01.02 next checkpoint. U01.02 reviewed against the Auth operation contract; no additional source change was needed. | EV-20261003-003: Record U01.03 browser observations and the measured A06 sidecar refresh, coverage and limitations. Record measured C05.03 UI overlap follow-up and its limits. | EV-20261003-006: record the login MFA 410 browser measurement and its local fixture boundary. Final U01.03 validation counts and remaining tracking-ledger errors are recorded. | EV-20261003-007: document the full contract-backed password-reset browser flow and local-only evidence boundary. Final U01.03 local check counts and the remaining source-ledger errors are recorded. | EV-20261003-008: document Auth reset fixture alignment with OpenAPI and its focused 6/6 result. Final U01.03 fixture-correction checks and source-ledger status are recorded. | EV-20261003-009: record the two email/phone registration challenge issuance browser cases, 12/12 combined E2E result, and owner-blocked OTP verification boundary. | EV-20261003-010: document registration request HTTP 400/429 browser outcomes and the 14/14 combined Auth E2E result. | EV-20261003-011: record the login HTTP 401 browser regression and 15/15 combined Auth E2E result. | EV-20261003-012: record contract session 401 normalization, transport preservation, and 36/36 focused plus 16/16 browser results. | EV-20261009-001: record the owner-approved credential choice, current local E2E results and remaining source-ledger errors. | EV-20261009-002: record exact-commit source ledger reconciliation and its local-only boundary. | EV-20261010-014: record DCA annotation full coverage and next P2P order-action target. | EV-015 records P2P order-action full-suite coverage and the P2P ad-detail next target. | EV-016 records Arena full-suite results and next P2P Merchant slice. | EV-017 records P2P Merchant full-suite results and next payment-method slice. | EV-018 records P2P payment creation full-suite results and next list page slice. | EV-019 records P2P payment-method list full-suite results and next Watchlist page gap. | EV-020 records P2P payment creation full-suite results and next list page slice. | EV-021 records MarketSectorsPage full-suite coverage and the next P2P marketplace slice. | EV-022 records P2P marketplace behavior coverage and next AppLayout slice. | EV-023 records full-suite progress and next measured gap. | EV-024 records full-suite progress and next measured gap. | EV-025 records full-suite progress and next measured gap. | EV-026 records full-suite progress and next measured gap. | EV-027 records full-suite progress and next measured gap. | EV-028 records full-suite progress and next measured gap. | EV-029 records full-suite progress and next measured gap. | EV-030 records full-suite progress and next measured gap. | EV-031 records full-suite progress and next measured gap. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery.",
       "evidenceIds": [
         "EV-20260927-076",
         "EV-20260928-001",
@@ -128077,7 +128084,9 @@
         "EV-20261012-004",
         "EV-20261012-005",
         "EV-20261012-006",
-        "EV-20261012-007"
+        "EV-20261012-007",
+        "EV-20261012-008",
+        "EV-20261013-001"
       ],
       "changeIds": [
         "CHANGE-20260927-052",
@@ -128394,7 +128403,9 @@
         "CHANGE-20261012-0053",
         "CHANGE-20261012-0056",
         "CHANGE-20261012-0059",
-        "CHANGE-20261012-0062"
+        "CHANGE-20261012-0062",
+        "CHANGE-20261012-0075",
+        "CHANGE-20261013-0003"
       ],
       "executionScope": {
         "ownerTaskId": "B10",
@@ -128823,7 +128834,7 @@
         "U01"
       ],
       "disposition": "changed",
-      "reason": "Register EV-013 full suite, MarketSentiment owner slice and DCA next target. EV-20261010-014 registers the DCA overlay full-suite slice and P2P next target. | EV-015 registers the full-suite counters, owner slice, evidence artifact and checkpoint. | EV-016 registers measured counters, scope and checkpoint. | EV-017 registers measured counters, scope and checkpoint. | EV-018 registers measured counters, scope and checkpoint. | EV-019 registers measured counters, scope and checkpoint. | EV-020 registers measured counters, scope and checkpoint. | EV-021 registers measured counters, scope and checkpoint. | EV-022 registers measured counters, scope and checkpoint. | EV-023 registers measured counters, owner scope, and checkpoint. | EV-024 registers measured counters, owner scope, and checkpoint. | EV-025 registers measured counters, owner scope, and checkpoint. | EV-026 maps the owner test to C03.05 and registers measured counters. | EV-027 maps the owner test to C03.05 and registers measured counters. | EV-028 maps the P2P create-ad owner test to C03.05 and registers measured counters. | EV-029 maps the Coachmark owner test to C03.05 and registers measured counters. | EV-030 maps the P2P achievements source and owner test to C03.05 and registers measured counters. | EV-031 maps the Trade Analytics owner test to C03.05 and registers measured counters. | EV-20261011-064 registers the current local full-suite report, exact dirty-status/mismatch inventory, and C03 checkpoint. | EV-20261011-065 records the P2P coverage iteration, full-suite counters, source change and next TabletTopBar checkpoint. | EV-20261011-066 records TabletTopBar owner coverage, full-suite counters, worktree-only test provenance and next SwipeBack checkpoint. | EV-20261011-067 records SwipeBack gesture coverage, source/test hashes, full-suite counters and PasswordChange next slice. | EV-20261011-068 records PasswordChangePage coverage, owner-test hash delta, full-suite counters and OrdersHistory next slice.",
+      "reason": "Register EV-013 full suite, MarketSentiment owner slice and DCA next target. EV-20261010-014 registers the DCA overlay full-suite slice and P2P next target. | EV-015 registers the full-suite counters, owner slice, evidence artifact and checkpoint. | EV-016 registers measured counters, scope and checkpoint. | EV-017 registers measured counters, scope and checkpoint. | EV-018 registers measured counters, scope and checkpoint. | EV-019 registers measured counters, scope and checkpoint. | EV-020 registers measured counters, scope and checkpoint. | EV-021 registers measured counters, scope and checkpoint. | EV-022 registers measured counters, scope and checkpoint. | EV-023 registers measured counters, owner scope, and checkpoint. | EV-024 registers measured counters, owner scope, and checkpoint. | EV-025 registers measured counters, owner scope, and checkpoint. | EV-026 maps the owner test to C03.05 and registers measured counters. | EV-027 maps the owner test to C03.05 and registers measured counters. | EV-028 maps the P2P create-ad owner test to C03.05 and registers measured counters. | EV-029 maps the Coachmark owner test to C03.05 and registers measured counters. | EV-030 maps the P2P achievements source and owner test to C03.05 and registers measured counters. | EV-031 maps the Trade Analytics owner test to C03.05 and registers measured counters. | EV-20261011-064 registers the current local full-suite report, exact dirty-status/mismatch inventory, and C03 checkpoint. | EV-20261011-065 records the P2P coverage iteration, full-suite counters, source change and next TabletTopBar checkpoint. | EV-20261011-066 records TabletTopBar owner coverage, full-suite counters, worktree-only test provenance and next SwipeBack checkpoint. | EV-20261011-067 records SwipeBack gesture coverage, source/test hashes, full-suite counters and PasswordChange next slice. | EV-20261011-068 records PasswordChangePage coverage, owner-test hash delta, full-suite counters and OrdersHistory next slice. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery.",
       "evidenceIds": [
         "EV-20261001-034",
         "EV-20261001-035",
@@ -128898,7 +128909,9 @@
         "EV-20261012-004",
         "EV-20261012-005",
         "EV-20261012-006",
-        "EV-20261012-007"
+        "EV-20261012-007",
+        "EV-20261012-008",
+        "EV-20261013-001"
       ],
       "changeIds": [
         "CHANGE-20261001-0316",
@@ -128980,7 +128993,9 @@
         "CHANGE-20261012-0054",
         "CHANGE-20261012-0057",
         "CHANGE-20261012-0060",
-        "CHANGE-20261012-0063"
+        "CHANGE-20261012-0063",
+        "CHANGE-20261012-0078",
+        "CHANGE-20261013-0004"
       ],
       "cataloguedAt": "2026-10-01T04:02:26.000Z",
       "executionScope": {
@@ -130471,14 +130486,17 @@
         "C03"
       ],
       "disposition": "changed",
-      "reason": "",
+      "reason": " | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | EV-20261013-001: verified actual local commit/Git blob and unchanged tested bytes; GitHub delivery pending.",
       "evidenceIds": [
         "EV-20261012-001",
-        "EV-20261012-004"
+        "EV-20261012-004",
+        "EV-20261012-008",
+        "EV-20261013-001"
       ],
       "changeIds": [
         "CHANGE-20261012-0006",
-        "CHANGE-20261012-0036"
+        "CHANGE-20261012-0036",
+        "CHANGE-20261012-0067"
       ],
       "executionScope": {
         "ownerTaskId": "B07",
@@ -130492,8 +130510,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
-      "cataloguedSha256": "21fa3b6d188f39f5ac2aca2c3a371cb6d4ced49fc816cdfeca7b6f843a33d194"
+      "cataloguedSourceHead": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02",
+      "cataloguedSha256": "9da3d2eed0ec7fddedd33311e5f959384926b4254956dba038b6fcce7b419c1a"
     },
     {
       "path": "playwright.config.ts",
@@ -130841,7 +130859,7 @@
         "C03"
       ],
       "disposition": "changed",
-      "reason": "User-requested AI/new-contributor workflow and skill selection documentation; supplemental A01.05 handoff maintenance, no application step completion or baseline rewrite. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. | B02.02: clarify that .invalid examples are rejected and CI .test values are build-only.",
+      "reason": "User-requested AI/new-contributor workflow and skill selection documentation; supplemental A01.05 handoff maintenance, no application step completion or baseline rewrite. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. | B02.02: clarify that .invalid examples are rejected and CI .test values are build-only. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | EV-20261013-001: verified actual local commit/Git blob and unchanged tested bytes; GitHub delivery pending.",
       "evidenceIds": [
         "EV-20260927-076",
         "EV-20260930-024",
@@ -130849,14 +130867,17 @@
         "EV-20261001-035",
         "EV-20261009-002",
         "EV-20261012-001",
-        "EV-20261012-004"
+        "EV-20261012-004",
+        "EV-20261012-008",
+        "EV-20261013-001"
       ],
       "changeIds": [
         "CHANGE-20260927-050",
         "CHANGE-20260930-0076",
         "CHANGE-20261001-0300",
         "CHANGE-20261012-0003",
-        "CHANGE-20261012-0033"
+        "CHANGE-20261012-0033",
+        "CHANGE-20261012-0065"
       ],
       "executionScope": {
         "ownerTaskId": "B10",
@@ -130890,8 +130911,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
-      "cataloguedSha256": "705423abb76e41b1eced97856f452413d6a8c76d7f43425942083f9847419b9c"
+      "cataloguedSourceHead": "b42ef50ab5084b11266bb041180e44c194797c39",
+      "cataloguedSha256": "47b4404a603dac260e6fb8b7d0e43dc677b9649ad797c64f991ee8b98d216965"
     },
     {
       "path": "scripts/build-e2e.mjs",
@@ -164759,15 +164780,18 @@
       "taskIds": [
         "C03"
       ],
-      "disposition": "added",
-      "reason": "Source candidate chưa commit; cataloguedSourceHead còn thiếu và gate phải fail trước khi có provenance Git thật.",
+      "disposition": "changed",
+      "reason": "Source candidate chưa commit; cataloguedSourceHead còn thiếu và gate phải fail trước khi có provenance Git thật. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | EV-20261013-001: verified actual local commit/Git blob and unchanged tested bytes; GitHub delivery pending.",
       "evidenceIds": [
         "EV-20261012-001",
-        "EV-20261012-004"
+        "EV-20261012-004",
+        "EV-20261012-008",
+        "EV-20261013-001"
       ],
       "changeIds": [
         "CHANGE-20261012-0008",
-        "CHANGE-20261012-0038"
+        "CHANGE-20261012-0038",
+        "CHANGE-20261012-0068"
       ],
       "executionScope": {
         "ownerTaskId": "C03",
@@ -164777,8 +164801,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
-      "cataloguedSha256": "7b2c52fad703bc9b5d1f64960defdc389932ef1152f8e7c47013ce38ce36dd57"
+      "cataloguedSourceHead": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02",
+      "cataloguedSha256": "17117769123c963d5d848e8f9788b0d3d53d0efeb03be22fc35c4c47d34336fd"
     },
     {
       "path": "scripts/plan-artifact-cleanup.mjs",
@@ -164787,15 +164811,18 @@
       "taskIds": [
         "C03"
       ],
-      "disposition": "added",
-      "reason": "Source candidate chưa commit; cataloguedSourceHead còn thiếu và gate phải fail trước khi có provenance Git thật.",
+      "disposition": "changed",
+      "reason": "Source candidate chưa commit; cataloguedSourceHead còn thiếu và gate phải fail trước khi có provenance Git thật. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | EV-20261013-001: verified actual local commit/Git blob and unchanged tested bytes; GitHub delivery pending.",
       "evidenceIds": [
         "EV-20261012-001",
-        "EV-20261012-004"
+        "EV-20261012-004",
+        "EV-20261012-008",
+        "EV-20261013-001"
       ],
       "changeIds": [
         "CHANGE-20261012-0012",
-        "CHANGE-20261012-0042"
+        "CHANGE-20261012-0042",
+        "CHANGE-20261012-0069"
       ],
       "executionScope": {
         "ownerTaskId": "C03",
@@ -164805,8 +164832,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
-      "cataloguedSha256": "8d839f2915de2d6314d2d1023f5601ec02f51cd92a40aaf4a1966e75d2d61842"
+      "cataloguedSourceHead": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02",
+      "cataloguedSha256": "b9d608040c3618330582be2a48ba30aff1721dbd3396ecd535775b340e393c7d"
     },
     {
       "path": "scripts/plan-artifact-cleanup.test.mjs",
@@ -164843,15 +164870,18 @@
       "taskIds": [
         "C03"
       ],
-      "disposition": "added",
-      "reason": "Source candidate chưa commit; cataloguedSourceHead còn thiếu và gate phải fail trước khi có provenance Git thật.",
+      "disposition": "changed",
+      "reason": "Source candidate chưa commit; cataloguedSourceHead còn thiếu và gate phải fail trước khi có provenance Git thật. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | EV-20261013-001: verified actual local commit/Git blob and unchanged tested bytes; GitHub delivery pending.",
       "evidenceIds": [
         "EV-20261012-001",
-        "EV-20261012-004"
+        "EV-20261012-004",
+        "EV-20261012-008",
+        "EV-20261013-001"
       ],
       "changeIds": [
         "CHANGE-20261012-0014",
-        "CHANGE-20261012-0044"
+        "CHANGE-20261012-0044",
+        "CHANGE-20261012-0070"
       ],
       "executionScope": {
         "ownerTaskId": "C03",
@@ -164861,8 +164891,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
-      "cataloguedSha256": "60ca5cd88fa93b47dcee03f4609a73ab6d5a6f21ba06d936cbf4097716fbb876"
+      "cataloguedSourceHead": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02",
+      "cataloguedSha256": "a1ce74d97d31ac4c3843a3795833a269dbe87b8a878637257d7a203166032398"
     },
     {
       "path": "scripts/run-with-artifacts.test.mjs",
@@ -164871,15 +164901,18 @@
       "taskIds": [
         "C03"
       ],
-      "disposition": "added",
-      "reason": "Source candidate chưa commit; cataloguedSourceHead còn thiếu và gate phải fail trước khi có provenance Git thật.",
+      "disposition": "changed",
+      "reason": "Source candidate chưa commit; cataloguedSourceHead còn thiếu và gate phải fail trước khi có provenance Git thật. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | EV-20261013-001: verified actual local commit/Git blob and unchanged tested bytes; GitHub delivery pending.",
       "evidenceIds": [
         "EV-20261012-001",
-        "EV-20261012-004"
+        "EV-20261012-004",
+        "EV-20261012-008",
+        "EV-20261013-001"
       ],
       "changeIds": [
         "CHANGE-20261012-0015",
-        "CHANGE-20261012-0045"
+        "CHANGE-20261012-0045",
+        "CHANGE-20261012-0071"
       ],
       "executionScope": {
         "ownerTaskId": "C03",
@@ -164889,8 +164922,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
-      "cataloguedSha256": "56e714a69a2ef7067a5f51612589415fa636fdb789d6db791bd321adee1c0cbe"
+      "cataloguedSourceHead": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02",
+      "cataloguedSha256": "ac89f4370f58acedcbeab104a14747021a602478a9a7b22c4b699e60fb6b35a6"
     },
     {
       "path": "docs/architecture/production-readiness/evidence/C03/repo-artifacts-verification-2026-10-12.json",
@@ -165723,6 +165756,183 @@
       ],
       "changeIds": [
         "CHANGE-20261012-0061"
+      ],
+      "executionScope": {
+        "ownerTaskId": "C03",
+        "role": "documentation_or_ledger",
+        "stepIds": [
+          "C03.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      }
+    },
+    {
+      "path": "scripts/artifact-lifecycle.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "C03"
+      ],
+      "disposition": "added",
+      "reason": "New locally verified automatic-cleanup source/evidence; keep source catalogue uncommitted until real Git provenance exists. | EV-20261013-001: verified actual local commit/Git blob and unchanged tested bytes; GitHub delivery pending.",
+      "evidenceIds": [
+        "EV-20261012-008",
+        "EV-20261013-001"
+      ],
+      "changeIds": [
+        "CHANGE-20261012-0072"
+      ],
+      "executionScope": {
+        "ownerTaskId": "C03",
+        "role": "test_runner_or_artifact_guard",
+        "stepIds": [
+          "C03.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHead": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02",
+      "cataloguedSha256": "5171bf3a8e15312c6987bb388fb6c2346c8b06f015f786eb981f53f18ce3fd7b"
+    },
+    {
+      "path": "scripts/cleanup-artifacts.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "C03"
+      ],
+      "disposition": "added",
+      "reason": "New locally verified automatic-cleanup source/evidence; keep source catalogue uncommitted until real Git provenance exists. | EV-20261013-001: verified actual local commit/Git blob and unchanged tested bytes; GitHub delivery pending.",
+      "evidenceIds": [
+        "EV-20261012-008",
+        "EV-20261013-001"
+      ],
+      "changeIds": [
+        "CHANGE-20261012-0073"
+      ],
+      "executionScope": {
+        "ownerTaskId": "C03",
+        "role": "test_runner_or_artifact_guard",
+        "stepIds": [
+          "C03.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHead": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02",
+      "cataloguedSha256": "733d18725bf6815b42d9f6c8a38f9b712b11d9d35d638cec6ae15f426ac5bd1a"
+    },
+    {
+      "path": "scripts/cleanup-artifacts.test.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "C03"
+      ],
+      "disposition": "added",
+      "reason": "New locally verified automatic-cleanup source/evidence; keep source catalogue uncommitted until real Git provenance exists. | EV-20261013-001: verified actual local commit/Git blob and unchanged tested bytes; GitHub delivery pending.",
+      "evidenceIds": [
+        "EV-20261012-008",
+        "EV-20261013-001"
+      ],
+      "changeIds": [
+        "CHANGE-20261012-0074"
+      ],
+      "executionScope": {
+        "ownerTaskId": "C03",
+        "role": "test_runner_or_artifact_guard",
+        "stepIds": [
+          "C03.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHead": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02",
+      "cataloguedSha256": "8febdcf80908ffa4320930009bbad1e431cfb3da2f753059beb60ab4f7812ddc"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/C03/repo-automatic-cleanup-verification-2026-10-12.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "C03"
+      ],
+      "disposition": "added",
+      "reason": "New locally verified automatic-cleanup source/evidence; keep source catalogue uncommitted until real Git provenance exists.",
+      "evidenceIds": [
+        "EV-20261012-008"
+      ],
+      "changeIds": [
+        "CHANGE-20261012-0076"
+      ],
+      "executionScope": {
+        "ownerTaskId": "C03",
+        "role": "documentation_or_ledger",
+        "stepIds": [
+          "C03.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      }
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/C03/auto-cleanup-ledger-payload-2026-10-12.json.gz",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "C03"
+      ],
+      "disposition": "added",
+      "reason": "New locally verified automatic-cleanup source/evidence; keep source catalogue uncommitted until real Git provenance exists.",
+      "evidenceIds": [
+        "EV-20261012-008"
+      ],
+      "changeIds": [
+        "CHANGE-20261012-0077"
+      ],
+      "executionScope": {
+        "ownerTaskId": "C03",
+        "role": "documentation_or_ledger",
+        "stepIds": [
+          "C03.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      }
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/C03/repo-auto-cleanup-source-delivery-2026-10-13.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "C03"
+      ],
+      "disposition": "added",
+      "reason": "Record exact local source commit provenance and scoped Git delivery checks; preserve older evidence.",
+      "evidenceIds": [
+        "EV-20261013-001"
+      ],
+      "changeIds": [
+        "CHANGE-20261013-0001"
+      ],
+      "executionScope": {
+        "ownerTaskId": "C03",
+        "role": "documentation_or_ledger",
+        "stepIds": [
+          "C03.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      }
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/C03/auto-cleanup-source-delivery-ledger-payload-2026-10-13.json.gz",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "C03"
+      ],
+      "disposition": "added",
+      "reason": "Compressed proof of actual written source-delivery ledger payload; preserve historical evidence and avoid a raw full-size backup.",
+      "evidenceIds": [
+        "EV-20261013-001"
+      ],
+      "changeIds": [
+        "CHANGE-20261013-0002"
       ],
       "executionScope": {
         "ownerTaskId": "C03",
@@ -256272,6 +256482,305 @@
         "archiveSha256": "29b6e2f83ab5033048cb64a2a11e67442b11d9b1b09fd3fa8673106f338319c6",
         "archivePayloadSha256": "cc7c5f6ca089cf7f936674738122521d0ef477803af8c081e7c8940ed46424fa"
       }
+    },
+    {
+      "id": "CHANGE-20261012-0064",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "AGENTS.md",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Implement user-authorized automatic disposal of unused owned cache/output; require task-end cleanup while preserving source/evidence/worktrees.",
+      "beforeHash": "6e24a9d65efbd4342de601fe1846bf84f85cecbb92cd2d9fcabb673dcf0f62fd",
+      "afterHash": "5c5b29267e4f37d4837a19de29d4a404cd05b258233497a7127287876a82eef9",
+      "evidenceIds": [
+        "EV-20261012-008"
+      ],
+      "commit": "b42ef50ab5084b11266bb041180e44c194797c39"
+    },
+    {
+      "id": "CHANGE-20261012-0065",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "README.md",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Implement user-authorized automatic disposal of unused owned cache/output; require task-end cleanup while preserving source/evidence/worktrees.",
+      "beforeHash": "705423abb76e41b1eced97856f452413d6a8c76d7f43425942083f9847419b9c",
+      "afterHash": "47b4404a603dac260e6fb8b7d0e43dc677b9649ad797c64f991ee8b98d216965",
+      "evidenceIds": [
+        "EV-20261012-008"
+      ],
+      "commit": "b42ef50ab5084b11266bb041180e44c194797c39"
+    },
+    {
+      "id": "CHANGE-20261012-0066",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "docs/ai/WORKFLOW.md",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Implement user-authorized automatic disposal of unused owned cache/output; require task-end cleanup while preserving source/evidence/worktrees.",
+      "beforeHash": "0cc16001dd81ddfb7e9990e43e3ad33f04c0170ec87c36f62ba1b9770ccbbf57",
+      "afterHash": "ad2ac126cfaf98f447ae4858264e1dcf37cd2b3dd4562c7f74273643562f3fd1",
+      "evidenceIds": [
+        "EV-20261012-008"
+      ],
+      "commit": "b42ef50ab5084b11266bb041180e44c194797c39"
+    },
+    {
+      "id": "CHANGE-20261012-0067",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "package.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Implement user-authorized automatic disposal of unused owned cache/output; require task-end cleanup while preserving source/evidence/worktrees.",
+      "beforeHash": "21fa3b6d188f39f5ac2aca2c3a371cb6d4ced49fc816cdfeca7b6f843a33d194",
+      "afterHash": "9da3d2eed0ec7fddedd33311e5f959384926b4254956dba038b6fcce7b419c1a",
+      "evidenceIds": [
+        "EV-20261012-008"
+      ],
+      "commit": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02"
+    },
+    {
+      "id": "CHANGE-20261012-0068",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "scripts/check-build-artifact.mjs",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Implement user-authorized automatic disposal of unused owned cache/output; require task-end cleanup while preserving source/evidence/worktrees.",
+      "beforeHash": "7b2c52fad703bc9b5d1f64960defdc389932ef1152f8e7c47013ce38ce36dd57",
+      "afterHash": "17117769123c963d5d848e8f9788b0d3d53d0efeb03be22fc35c4c47d34336fd",
+      "evidenceIds": [
+        "EV-20261012-008"
+      ],
+      "commit": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02"
+    },
+    {
+      "id": "CHANGE-20261012-0069",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "scripts/plan-artifact-cleanup.mjs",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Implement user-authorized automatic disposal of unused owned cache/output; require task-end cleanup while preserving source/evidence/worktrees.",
+      "beforeHash": "8d839f2915de2d6314d2d1023f5601ec02f51cd92a40aaf4a1966e75d2d61842",
+      "afterHash": "b9d608040c3618330582be2a48ba30aff1721dbd3396ecd535775b340e393c7d",
+      "evidenceIds": [
+        "EV-20261012-008"
+      ],
+      "commit": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02"
+    },
+    {
+      "id": "CHANGE-20261012-0070",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "scripts/run-with-artifacts.mjs",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Implement user-authorized automatic disposal of unused owned cache/output; require task-end cleanup while preserving source/evidence/worktrees.",
+      "beforeHash": "60ca5cd88fa93b47dcee03f4609a73ab6d5a6f21ba06d936cbf4097716fbb876",
+      "afterHash": "a1ce74d97d31ac4c3843a3795833a269dbe87b8a878637257d7a203166032398",
+      "evidenceIds": [
+        "EV-20261012-008"
+      ],
+      "commit": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02"
+    },
+    {
+      "id": "CHANGE-20261012-0071",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "scripts/run-with-artifacts.test.mjs",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Implement user-authorized automatic disposal of unused owned cache/output; require task-end cleanup while preserving source/evidence/worktrees.",
+      "beforeHash": "56e714a69a2ef7067a5f51612589415fa636fdb789d6db791bd321adee1c0cbe",
+      "afterHash": "ac89f4370f58acedcbeab104a14747021a602478a9a7b22c4b699e60fb6b35a6",
+      "evidenceIds": [
+        "EV-20261012-008"
+      ],
+      "commit": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02"
+    },
+    {
+      "id": "CHANGE-20261012-0072",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "scripts/artifact-lifecycle.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Implement user-authorized automatic disposal of unused owned cache/output; require task-end cleanup while preserving source/evidence/worktrees.",
+      "beforeHash": null,
+      "afterHash": "5171bf3a8e15312c6987bb388fb6c2346c8b06f015f786eb981f53f18ce3fd7b",
+      "evidenceIds": [
+        "EV-20261012-008"
+      ],
+      "commit": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02"
+    },
+    {
+      "id": "CHANGE-20261012-0073",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "scripts/cleanup-artifacts.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Implement user-authorized automatic disposal of unused owned cache/output; require task-end cleanup while preserving source/evidence/worktrees.",
+      "beforeHash": null,
+      "afterHash": "733d18725bf6815b42d9f6c8a38f9b712b11d9d35d638cec6ae15f426ac5bd1a",
+      "evidenceIds": [
+        "EV-20261012-008"
+      ],
+      "commit": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02"
+    },
+    {
+      "id": "CHANGE-20261012-0074",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "scripts/cleanup-artifacts.test.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Implement user-authorized automatic disposal of unused owned cache/output; require task-end cleanup while preserving source/evidence/worktrees.",
+      "beforeHash": null,
+      "afterHash": "8febdcf80908ffa4320930009bbad1e431cfb3da2f753059beb60ab4f7812ddc",
+      "evidenceIds": [
+        "EV-20261012-008"
+      ],
+      "commit": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02"
+    },
+    {
+      "id": "CHANGE-20261012-0075",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "docs/architecture/production-readiness/PLAN.md",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Implement user-authorized automatic disposal of unused owned cache/output; require task-end cleanup while preserving source/evidence/worktrees.",
+      "beforeHash": "2f48fc6edd77a115b07af0744b40fe9f89c0439a6e0731891346b098bcc329bb",
+      "afterHash": "69f3e49e459056fd615ab184559efe3f8631b8dd3efa72d9062b62f435adb653",
+      "evidenceIds": [
+        "EV-20261012-008"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261012-0076",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "docs/architecture/production-readiness/evidence/C03/repo-automatic-cleanup-verification-2026-10-12.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Record automatic cleanup verification and fail-closed G5 source provenance; preserve checkpoint and historical evidence.",
+      "beforeHash": null,
+      "afterHash": "a8f04f244b1601cbc4de9f2d108dd799d040c13e09570370286319ebedf9b3ad",
+      "evidenceIds": [
+        "EV-20261012-008"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261012-0077",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "docs/architecture/production-readiness/evidence/C03/auto-cleanup-ledger-payload-2026-10-12.json.gz",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Record automatic cleanup verification and fail-closed G5 source provenance; preserve checkpoint and historical evidence.",
+      "beforeHash": null,
+      "afterHash": "ee7ab9369de9baff1899d1e4f8f2f7e76f1452b3f74241b25664feaa31614992",
+      "evidenceIds": [
+        "EV-20261012-008"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261012-0078",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Record automatic cleanup verification and fail-closed G5 source provenance; preserve checkpoint and historical evidence.",
+      "beforeHash": "0c864e09dc58a3b1b4c96a70af5a0fdfabdd31e27fbe118fffcf8faa273b4691",
+      "afterHash": "65bd003c79bde1f31e4e9bc79210ac07cd42bcef177afa6c5f27c4d8d1f795a5",
+      "evidenceIds": [
+        "EV-20261012-008"
+      ],
+      "commit": null,
+      "afterHashRecovery": {
+        "kind": "actual-written-intermediate-before-self-audit",
+        "evidenceId": "EV-20261012-008",
+        "archivePath": "docs/architecture/production-readiness/evidence/C03/auto-cleanup-ledger-payload-2026-10-12.json.gz",
+        "archiveSha256": "ee7ab9369de9baff1899d1e4f8f2f7e76f1452b3f74241b25664feaa31614992",
+        "archivePayloadSha256": "65bd003c79bde1f31e4e9bc79210ac07cd42bcef177afa6c5f27c4d8d1f795a5"
+      }
+    },
+    {
+      "id": "CHANGE-20261013-0001",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "docs/architecture/production-readiness/evidence/C03/repo-auto-cleanup-source-delivery-2026-10-13.json",
+      "action": "add",
+      "beforeHash": null,
+      "afterHash": "4fed66974cc6724e25aa52e5d1931cd28d846278e50d734a55a3d9c4fc24ea44",
+      "oldPath": null,
+      "reason": "Record actual committed source provenance and release checks without changing the application checkpoint or historical evidence.",
+      "evidenceIds": [
+        "EV-20261013-001"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261013-0002",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "docs/architecture/production-readiness/evidence/C03/auto-cleanup-source-delivery-ledger-payload-2026-10-13.json.gz",
+      "action": "add",
+      "beforeHash": null,
+      "afterHash": "c75cb9a0a0c6f70715bba68644bc6fe0df86cf672e9871fd461c3122152d4bdc",
+      "oldPath": null,
+      "reason": "Record actual committed source provenance and release checks without changing the application checkpoint or historical evidence.",
+      "evidenceIds": [
+        "EV-20261013-001"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261013-0003",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "docs/architecture/production-readiness/PLAN.md",
+      "action": "modify",
+      "beforeHash": "69f3e49e459056fd615ab184559efe3f8631b8dd3efa72d9062b62f435adb653",
+      "afterHash": "379b85c45be4c295766ffb48cdcf539c5eb87b358cbea900fffe409f481cf80d",
+      "oldPath": null,
+      "reason": "Record actual committed source provenance and release checks without changing the application checkpoint or historical evidence.",
+      "evidenceIds": [
+        "EV-20261013-001"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261013-0004",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "action": "modify",
+      "beforeHash": "37633e53f38439b463c307eab23f754288f31c09335efb2bb282aa615b90b7c2",
+      "afterHash": "d2a40eae22cd950402e12ddedbc3e0a79823da91b5151c59219f07700065da86",
+      "afterHashRecovery": {
+        "kind": "actual-written-intermediate-before-self-audit",
+        "evidenceId": "EV-20261013-001",
+        "archivePath": "docs/architecture/production-readiness/evidence/C03/auto-cleanup-source-delivery-ledger-payload-2026-10-13.json.gz",
+        "archiveSha256": "c75cb9a0a0c6f70715bba68644bc6fe0df86cf672e9871fd461c3122152d4bdc",
+        "archivePayloadSha256": "d2a40eae22cd950402e12ddedbc3e0a79823da91b5151c59219f07700065da86"
+      },
+      "oldPath": null,
+      "reason": "Record actual committed source provenance and release checks without changing the application checkpoint or historical evidence.",
+      "evidenceIds": [
+        "EV-20261013-001"
+      ],
+      "commit": null
     }
   ],
   "evidence": [
@@ -288730,6 +289239,49 @@
       "result": "pass",
       "artifact": "docs/architecture/production-readiness/evidence/C03/repo-cleanup-enterprise-gates-verification-2026-10-12.json",
       "notes": "Local source/ledger gates only. Metadata recorded after the runtime run does not change executable source/lock/config; final metadata and committed-SHA validation are required before push. Backend/UAT/release are not certified."
+    },
+    {
+      "id": "EV-20261012-008",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "kind": "automatic-output-retention-local-verification",
+      "commandOrSteps": "Focused cleanup/runner/planner tests; full unit; JS/repo lint and explicit format; production build, mocks/budget via consumer CLI; dry-run/apply and idempotence; compare worktree and protected bytes; unchanged G5 after registration.",
+      "environment": "Local Windows Node22/npm11, existing dependencies and lockfile, temporary bounded process PATH.",
+      "observedAt": "2026-10-12T17:00:35.138Z",
+      "sourceHead": "863b39d19e2914e3834411a3c8e1a2cc0d57ff6b",
+      "dirtyFileHashes": {
+        "AGENTS.md": "5c5b29267e4f37d4837a19de29d4a404cd05b258233497a7127287876a82eef9",
+        "README.md": "47b4404a603dac260e6fb8b7d0e43dc677b9649ad797c64f991ee8b98d216965",
+        "docs/ai/WORKFLOW.md": "ad2ac126cfaf98f447ae4858264e1dcf37cd2b3dd4562c7f74273643562f3fd1",
+        "package.json": "9da3d2eed0ec7fddedd33311e5f959384926b4254956dba038b6fcce7b419c1a",
+        "scripts/check-build-artifact.mjs": "17117769123c963d5d848e8f9788b0d3d53d0efeb03be22fc35c4c47d34336fd",
+        "scripts/plan-artifact-cleanup.mjs": "b9d608040c3618330582be2a48ba30aff1721dbd3396ecd535775b340e393c7d",
+        "scripts/run-with-artifacts.mjs": "a1ce74d97d31ac4c3843a3795833a269dbe87b8a878637257d7a203166032398",
+        "scripts/run-with-artifacts.test.mjs": "ac89f4370f58acedcbeab104a14747021a602478a9a7b22c4b699e60fb6b35a6",
+        "scripts/artifact-lifecycle.mjs": "5171bf3a8e15312c6987bb388fb6c2346c8b06f015f786eb981f53f18ce3fd7b",
+        "scripts/cleanup-artifacts.mjs": "733d18725bf6815b42d9f6c8a38f9b712b11d9d35d638cec6ae15f426ac5bd1a",
+        "scripts/cleanup-artifacts.test.mjs": "8febdcf80908ffa4320930009bbad1e431cfb3da2f753059beb60ab4f7812ddc"
+      },
+      "expected": "Only unused owned cache/output may be removed; preserve application source, manifests, coverage/failure evidence, active consumers and every worktree.",
+      "actual": "335/335 files and 3027/3027 tests pass; focused 22/22, lint/format/build/mocks/budget pass. Final unit/build remove 221 files/2719667 logical bytes, zero errors; final apply idempotent. G5 exit1 has exactly 11 uncommitted-source provenance errors (3 missing catalogue, 8 current bytes differ from prior committed catalogue); no other errors. No Git delivery.",
+      "result": "pass",
+      "artifact": "docs/architecture/production-readiness/evidence/C03/repo-automatic-cleanup-verification-2026-10-12.json",
+      "notes": "Runtime checks are local and scoped. No coverage/E2E/CI run for this patch; existing application checkpoint/readiness remains unchanged. Uncommitted source provenance cannot be claimed as catalogued. G5 is blocked for uncommitted-source provenance; runtime evidence result does not claim G5/committed-SHA readiness."
+    },
+    {
+      "id": "EV-20261013-001",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "kind": "source-commit-provenance-verification",
+      "commandOrSteps": "Verify 11 paths via real git log/rev-parse/cat-file and current clean-filter blob IDs; compare earlier tested working hashes; run unchanged G5 after registration, release gates and final snapshot checks.",
+      "environment": "Local Windows Node22/npm11, existing dependencies, native Git commits with Vietnamese notes and sign-off.",
+      "observedAt": "2026-10-12T17:14:24.553Z",
+      "sourceHead": "b42ef50ab5084b11266bb041180e44c194797c39",
+      "expected": "Only tested source bytes are catalogued from real local commits; preserve historical evidence and app checkpoint; gate GitHub delivery on verified checks.",
+      "actual": "11/11 source/guide files match real P0/P1 Git blobs and tested bytes; G5 exit0 has zero errors. Full coverage 335 files/3027 tests passes thresholds; E2E 59 pass/4 existing development skips. Style/policy/audit/licenses/build/mocks/bundle pass. P2 metadata and authorized remote/hosted CI verification remain pending at observation.",
+      "result": "pass",
+      "artifact": "docs/architecture/production-readiness/evidence/C03/repo-auto-cleanup-source-delivery-2026-10-13.json",
+      "notes": "This records local commit provenance, not hosted CI or backend/UAT readiness. Final metadata commit changes no executable source; final-SHA build/G5/remote checks are verified separately. Main is currently unprotected with no branch rules; no existing required-check rule is bypassed."
     }
   ],
   "decisions": [
@@ -288795,6 +289347,34 @@
       "decision": "Registration verifyMfa uses the session cookie; do not use a separate pre-auth credential.",
       "reason": "The user relayed the API/security owner approval. This chooses the credential type only and does not specify how the backend issues or scopes the cookie.",
       "evidenceIds": []
+    },
+    {
+      "id": "DECISION-20261012-001",
+      "taskId": "C03",
+      "scopeIds": [
+        "C03.05"
+      ],
+      "decidedBy": "User",
+      "decidedAt": "2026-10-12T17:00:35.138Z",
+      "decision": "Enable automatic cleanup after each AI task and owned runner completion; delete only unused cache/output and preserve source/evidence/dirty worktrees.",
+      "reason": "Explicit user implementation request dated 2026-10-12 following storage audit; legacy output and evidence remain protected.",
+      "evidenceIds": [
+        "EV-20261012-008"
+      ]
+    },
+    {
+      "id": "DECISION-20261013-001",
+      "taskId": "C03",
+      "scopeIds": [
+        "C03.05"
+      ],
+      "decidedBy": "User",
+      "decidedAt": "2026-10-12T17:10:11.345Z",
+      "decision": "Commit and push the reviewed automatic cleanup changes to GitHub in priority order with Vietnamese notes.",
+      "reason": "Direct user instruction after implementation; preserve unrelated worktrees/source/evidence and do not bypass checks.",
+      "evidenceIds": [
+        "EV-20261013-001"
+      ]
     }
   ],
   "sessions": [
@@ -307719,6 +308299,75 @@
       "blockers": [],
       "nextAction": "Finish Git delivery; preserve U01/B07 and pending readiness.",
       "notes": "Local runtime source fingerprint verified unchanged before and after every run. Historical BLOCKED evidence remains as original observations; later recovery and passing evidence supersede its outstanding ledger blocker."
+    },
+    {
+      "id": "SESSION-20261012-008",
+      "startedAt": "2026-10-12T16:52:19.078Z",
+      "endedAt": "2026-10-12T17:01:17.566Z",
+      "sourceHeadBefore": "863b39d19e2914e3834411a3c8e1a2cc0d57ff6b",
+      "sourceHeadAfter": "863b39d19e2914e3834411a3c8e1a2cc0d57ff6b",
+      "taskIds": [
+        "C03"
+      ],
+      "stepIds": [
+        "C03.05"
+      ],
+      "changeIds": [
+        "CHANGE-20261012-0064",
+        "CHANGE-20261012-0065",
+        "CHANGE-20261012-0066",
+        "CHANGE-20261012-0067",
+        "CHANGE-20261012-0068",
+        "CHANGE-20261012-0069",
+        "CHANGE-20261012-0070",
+        "CHANGE-20261012-0071",
+        "CHANGE-20261012-0072",
+        "CHANGE-20261012-0073",
+        "CHANGE-20261012-0074",
+        "CHANGE-20261012-0075",
+        "CHANGE-20261012-0076",
+        "CHANGE-20261012-0077",
+        "CHANGE-20261012-0078"
+      ],
+      "evidenceIds": [
+        "EV-20261012-008"
+      ],
+      "elapsedMinutes": null,
+      "remainingWork": [
+        "Source catalogue requires reviewed commit provenance before G5/Git delivery."
+      ],
+      "blockers": [
+        "G5 exit1: 11 uncommitted-source provenance errors; keep Git delivery pending."
+      ],
+      "nextAction": "Review source delivery in a separately authorized Git task; keep application checkpoint C03.05 and its coverage nextAction unchanged."
+    },
+    {
+      "id": "SESSION-20261013-001",
+      "startedAt": "2026-10-12T17:07:05.122Z",
+      "endedAt": "2026-10-12T17:14:24.553Z",
+      "sourceHeadBefore": "863b39d19e2914e3834411a3c8e1a2cc0d57ff6b",
+      "sourceHeadAfter": "b42ef50ab5084b11266bb041180e44c194797c39",
+      "taskIds": [
+        "C03"
+      ],
+      "stepIds": [
+        "C03.05"
+      ],
+      "changeIds": [
+        "CHANGE-20261013-0001",
+        "CHANGE-20261013-0002",
+        "CHANGE-20261013-0003",
+        "CHANGE-20261013-0004"
+      ],
+      "evidenceIds": [
+        "EV-20261013-001"
+      ],
+      "elapsedMinutes": null,
+      "remainingWork": [
+        "P2 metadata commit and final-SHA artifact/G5 checks; authorized push and exact-SHA hosted CI verification."
+      ],
+      "blockers": [],
+      "nextAction": "Finish verified P2 and GitHub delivery; keep the application C03.05 checkpoint/coverage nextAction unchanged."
     }
   ],
   "templates": {

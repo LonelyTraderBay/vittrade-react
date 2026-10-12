@@ -1,0 +1,205 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261012-008",
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "scope": "User-authorized automatic cleanup of unused owned cache/output; preserve sources, evidence and worktrees.",
+  "observedAt": "2026-10-12T17:01:17.566Z",
+  "sourceHead": "863b39d19e2914e3834411a3c8e1a2cc0d57ff6b",
+  "dirtyFileHashes": {
+    "AGENTS.md": "5c5b29267e4f37d4837a19de29d4a404cd05b258233497a7127287876a82eef9",
+    "README.md": "47b4404a603dac260e6fb8b7d0e43dc677b9649ad797c64f991ee8b98d216965",
+    "docs/ai/WORKFLOW.md": "ad2ac126cfaf98f447ae4858264e1dcf37cd2b3dd4562c7f74273643562f3fd1",
+    "package.json": "9da3d2eed0ec7fddedd33311e5f959384926b4254956dba038b6fcce7b419c1a",
+    "scripts/check-build-artifact.mjs": "17117769123c963d5d848e8f9788b0d3d53d0efeb03be22fc35c4c47d34336fd",
+    "scripts/plan-artifact-cleanup.mjs": "b9d608040c3618330582be2a48ba30aff1721dbd3396ecd535775b340e393c7d",
+    "scripts/run-with-artifacts.mjs": "a1ce74d97d31ac4c3843a3795833a269dbe87b8a878637257d7a203166032398",
+    "scripts/run-with-artifacts.test.mjs": "ac89f4370f58acedcbeab104a14747021a602478a9a7b22c4b699e60fb6b35a6",
+    "scripts/artifact-lifecycle.mjs": "5171bf3a8e15312c6987bb388fb6c2346c8b06f015f786eb981f53f18ce3fd7b",
+    "scripts/cleanup-artifacts.mjs": "733d18725bf6815b42d9f6c8a38f9b712b11d9d35d638cec6ae15f426ac5bd1a",
+    "scripts/cleanup-artifacts.test.mjs": "8febdcf80908ffa4320930009bbad1e431cfb3da2f753059beb60ab4f7812ddc"
+  },
+  "sourceSnapshotSha256": "2ba1e85e6cf7f2506b91086e8d675bb25bd1faa645c21b11eee32392c90687c4",
+  "environment": {
+    "platform": "Windows",
+    "node": "22.23.3",
+    "npm": "11.17.0",
+    "dependencies": "Existing node_modules and unchanged package-lock.json; no installation",
+    "pathNote": "The inherited PATH exceeds cmd.exe limits; three npm launches failed before script execution. Validation uses a temporary bounded process PATH; no personal setting changed."
+  },
+  "checks": {
+    "focused": {
+      "filesPassed": 3,
+      "testsPassed": 22,
+      "failed": 0
+    },
+    "unit": {
+      "filesPassed": 335,
+      "filesTotal": 335,
+      "testsPassed": 3027,
+      "testsTotal": 3027,
+      "failed": 0,
+      "skipped": 0,
+      "durationSeconds": 48.4,
+      "exitCode": 0,
+      "log": ".artifacts/auto-cleanup-verification/unit.log"
+    },
+    "lint": {
+      "repo": "eslint .",
+      "relevantJavaScriptFiles": 7,
+      "errors": 0,
+      "warnings": 0,
+      "result": "pass"
+    },
+    "format": {
+      "explicitScriptFiles": 7,
+      "packageJson": true,
+      "result": "pass"
+    },
+    "build": {
+      "exitCode": 0,
+      "log": ".artifacts/auto-cleanup-verification/build.log"
+    },
+    "productionMocks": {
+      "exitCode": 0,
+      "outputFiles": 220,
+      "javaScriptFiles": 218,
+      "manifests": 0,
+      "log": ".artifacts/auto-cleanup-verification/production-mocks.log"
+    },
+    "bundle": {
+      "exitCode": 0,
+      "chunks": 218,
+      "rawBudgetKB": 500,
+      "gzipBudgetKiB": 250,
+      "log": ".artifacts/auto-cleanup-verification/bundle.log"
+    },
+    "tracking": {
+      "exitCode": 1,
+      "errorCount": 11,
+      "errors": [
+        "scripts/artifact-lifecycle.mjs: missing catalogued source head/hash",
+        "scripts/cleanup-artifacts.mjs: missing catalogued source head/hash",
+        "scripts/cleanup-artifacts.test.mjs: missing catalogued source head/hash",
+        "AGENTS.md: current source differs from cataloguedSourceHead",
+        "docs/ai/WORKFLOW.md: current source differs from cataloguedSourceHead",
+        "package.json: current source differs from cataloguedSourceHead",
+        "README.md: current source differs from cataloguedSourceHead",
+        "scripts/check-build-artifact.mjs: current source differs from cataloguedSourceHead",
+        "scripts/plan-artifact-cleanup.mjs: current source differs from cataloguedSourceHead",
+        "scripts/run-with-artifacts.mjs: current source differs from cataloguedSourceHead",
+        "scripts/run-with-artifacts.test.mjs: current source differs from cataloguedSourceHead"
+      ],
+      "checkerChanged": false,
+      "status": "blocked-on-uncommitted-source-provenance",
+      "log": ".artifacts/auto-cleanup-verification/tracking.log",
+      "logSha256": "c7cb979d2dc830a7004a26e6ea4e62c1aef254d8c34e4a3f5b1d85eec3e5c78f"
+    }
+  },
+  "manifestProof": [
+    {
+      "path": ".artifacts/runs/2026-10-12T16-52-19-078Z-vitest-f1282b86-0c83-4cb0-a03d-657fc29696bd/run.json",
+      "sha256": "890cbba622c634c358acf6447157df869d52fe67d70c26690fab3c582cb097a5",
+      "startedAt": "2026-10-12T16:52:19.078Z",
+      "finishedAt": "2026-10-12T16:53:11.937Z",
+      "exitCode": 0,
+      "snapshotSha256": "2ba1e85e6cf7f2506b91086e8d675bb25bd1faa645c21b11eee32392c90687c4"
+    },
+    {
+      "path": ".artifacts/runs/2026-10-12T16-53-33-607Z-build-50fb7357-4483-4e56-bacc-9963b5fab074/run.json",
+      "sha256": "bc4a0367987a09219b164a502a189df9760a0f5d8597c0fadbc669b6e86a8f1c",
+      "startedAt": "2026-10-12T16:53:33.607Z",
+      "finishedAt": "2026-10-12T16:53:57.537Z",
+      "exitCode": 0,
+      "snapshotSha256": "2ba1e85e6cf7f2506b91086e8d675bb25bd1faa645c21b11eee32392c90687c4"
+    }
+  ],
+  "cleanup": {
+    "policy": "ephemeral-cache-output-v1",
+    "lastUnit": {
+      "deletedFiles": 1,
+      "deletedLogicalBytes": 32737,
+      "errors": 0
+    },
+    "lastBuild": {
+      "deletedFiles": 220,
+      "deletedLogicalBytes": 2686930,
+      "errors": 0
+    },
+    "lastVerificationTotal": {
+      "deletedFiles": 221,
+      "deletedLogicalBytes": 2719667
+    },
+    "finalApply": {
+      "deletedFiles": 0,
+      "deletedLogicalBytes": 0,
+      "errors": 0
+    },
+    "report": ".artifacts/auto-cleanup-verification/final-cleanup-report.json"
+  },
+  "preservation": {
+    "legacyRunManifests": 40,
+    "auxiliaryWorktrees": [
+      {
+        "path": "C:/Users/Joker-PC/.codex/worktrees/u01-registration-session-cookie/vittrade-react",
+        "statusSha256": "f912a75054c33ae29192700a9e547aef0a8ad7d8332ab5e3cc9e68ac9f29c4d7"
+      },
+      {
+        "path": "C:/Users/Joker-PC/Documents/Projects/vittrade-react-b07-01",
+        "statusSha256": "6f6d83a075557162335fb4d50eb89846f547a4c5c77aeac4ae007f3d5e7084e8"
+      },
+      {
+        "path": "C:/Users/Joker-PC/Documents/Projects/vittrade-react-b07-01-current",
+        "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "C:/Users/Joker-PC/Documents/Projects/vittrade-react-b07-01-current-fresh",
+        "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "C:/Users/Joker-PC/Documents/Projects/vittrade-react-b07-01-provenance-fresh",
+        "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "C:/Users/Joker-PC/Documents/Projects/vittrade-react-b07-01-ubuntu-20261003",
+        "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "checkpointSha256": "1990ed87d31d84136c482189014028153f11b9d32e7c8cce49e52533505b38f8",
+    "applicationSource": "Unchanged",
+    "priorEvidence": "Unchanged",
+    "universalFiles": "Unchanged",
+    "lockfile": "Unchanged"
+  },
+  "safetyCases": [
+    "dry-run has no writes",
+    "latest successful production build preserved",
+    "failed and changed-source dist preserved",
+    "live owner and orphan child preserved",
+    "preview/gate consumer lease and lifecycle lock",
+    "legacy/incomplete/interrupted manifest preserved",
+    "tracked output and current evidence references preserved",
+    "junction and hard link refused",
+    "partial deletion reports actual bytes and preserves remaining files",
+    "idempotent final apply"
+  ],
+  "notRun": [
+    "coverage",
+    "E2E",
+    "hosted CI"
+  ],
+  "delivery": {
+    "committed": false,
+    "pushed": false
+  },
+  "beforeHashBasis": "HEAD blob reconstructed through Git checkout filters; new paths have null beforeHash.",
+  "ledgerPayloadProof": {
+    "kind": "actual-written-intermediate-before-self-audit",
+    "archivePath": "docs/architecture/production-readiness/evidence/C03/auto-cleanup-ledger-payload-2026-10-12.json.gz",
+    "archiveSha256": "ee7ab9369de9baff1899d1e4f8f2f7e76f1452b3f74241b25664feaa31614992",
+    "archivePayloadSha256": "65bd003c79bde1f31e4e9bc79210ac07cd42bcef177afa6c5f27c4d8d1f795a5",
+    "archiveBytes": 1471695,
+    "payloadBytes": 12769296,
+    "roundTrip": "byte-for-byte-pass"
+  }
+}
