@@ -1,0 +1,303 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "EV-20261012-003",
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "kind": "historical-hash-recovery",
+  "observedAt": "2026-10-12T05:22:14.346Z",
+  "sourceHead": "fd554bcee8743f94187a12c6700eb1d713c7afc7",
+  "provenHashes": [
+    {
+      "id": "CHANGE-20261009-0012",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "1136577817a7f67016f96ebd11905436ed41440476bf25b2ee221be45be412eb",
+      "afterHash": "cfc56d8c2718f39dfefd129d5c156b3997880871d9f6f541d9da40c0d0443c92",
+      "evidenceIds": [
+        "EV-20261009-004"
+      ],
+      "provenance": {
+        "kind": "checkpoint-read",
+        "originalObservedAt": "2026-10-09T16:07:16.835Z",
+        "originalExitCode": 0,
+        "originalLogLine": 346685,
+        "executionRecordSha256": "26c0b01f269b613c1c071c6695ffce8331ea63f26499f2a3fd23fc9fac18f449",
+        "commandSha256": "7b12421b45ef9f1a19eefcf97c884c5e970c95d11d4c8debc74932a8017e861d",
+        "stdoutSha256": "5c54c2575426901f60f6161d476789e443ec02c7cdf78c1fa172211157928222",
+        "emittedHashField": "sha256",
+        "scope": "Hash emitted from actual TRACKING bytes in the original repository checkout; private raw session records retained locally, not published."
+      }
+    },
+    {
+      "id": "CHANGE-20261009-0015",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "cfc56d8c2718f39dfefd129d5c156b3997880871d9f6f541d9da40c0d0443c92",
+      "afterHash": "426120ba5b1c892e525146c5d6a6f09f37eefefacb6be2a6ea348c19aa46f43f",
+      "evidenceIds": [
+        "EV-20261009-005"
+      ],
+      "provenance": {
+        "kind": "writer-output",
+        "originalObservedAt": "2026-10-09T16:09:23.371Z",
+        "originalExitCode": 0,
+        "originalLogLine": 346728,
+        "executionRecordSha256": "eff8a306d7f4d34962f893dbb848982540d19839215886ad32124b39b58714b8",
+        "commandSha256": "37119caa751e3aaa89df25f2572d5f7a918885aea3bc5ceb72bf6c57efb4acf4",
+        "stdoutSha256": "85879b3445bcd48d1875db2726970c037e07c52b12b379e6e4113f1759428540",
+        "emittedHashField": "trackerShaAfter",
+        "scope": "Hash emitted from actual TRACKING bytes in the original repository checkout; private raw session records retained locally, not published."
+      }
+    },
+    {
+      "id": "CHANGE-20261009-0018",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "426120ba5b1c892e525146c5d6a6f09f37eefefacb6be2a6ea348c19aa46f43f",
+      "afterHash": "ad9216ac1b11cf0c0d2d21e7eac953fb2995136f6ae43d86d8da7aae722b3639",
+      "evidenceIds": [
+        "EV-20261009-006"
+      ],
+      "provenance": {
+        "kind": "writer-output",
+        "originalObservedAt": "2026-10-09T16:23:55.731Z",
+        "originalExitCode": 0,
+        "originalLogLine": 347006,
+        "executionRecordSha256": "ec1069aaa737991a8d1997c87e46e595236b1dd6b5fede15eaca8497ad544590",
+        "commandSha256": "9ecbf01be5d3c43e181e25710e03ae9078f252500b038637b7d839ffe33930a0",
+        "stdoutSha256": "d306a82c78a2ba3bc82ab36e9244c08d25ffbe71879fcf131ed9db9d7010bb94",
+        "emittedHashField": "trackingShaAfter",
+        "scope": "Hash emitted from actual TRACKING bytes in the original repository checkout; private raw session records retained locally, not published."
+      }
+    },
+    {
+      "id": "CHANGE-20261009-0022",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "671a0d079940fe86c8c7c891d18adf82fe857d63a2329d87f02143b5f918a865",
+      "afterHash": "d44ddf8e91aa226b72720cdf79c15529ab8be25375ccd98243638525b8916ea5",
+      "evidenceIds": [
+        "EV-20261009-007",
+        "EV-20261009-008"
+      ],
+      "provenance": {
+        "kind": "checkpoint-read",
+        "originalObservedAt": "2026-10-09T17:33:52.876Z",
+        "originalExitCode": 0,
+        "originalLogLine": 349413,
+        "executionRecordSha256": "b0c9ee9bae3233c8376182fc414f2600b9c950d7ab6dab4b6bd721169d7ce83d",
+        "commandSha256": "d8373f137434f51e4391d5367a5984f11374508728b7e5ad9e2b8d4e5e17ae7a",
+        "stdoutSha256": "16d3f524b842ca24bdbdbb191c4a2ae29705169b3fadf006df0b736914a1e7f6",
+        "emittedHashField": "hashes.tracking",
+        "scope": "Hash emitted from actual TRACKING bytes in the original repository checkout; private raw session records retained locally, not published."
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0091",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "67f1e511f804915e5e7e0693d3f7292d9eee84f654cb96ede7660e903cc1aa32",
+      "afterHash": "c9534898136e11fe5a4d3d9c7bd646ef7b9490215799773215c4dbc89c9fe2b3",
+      "evidenceIds": [
+        "EV-20261010-016"
+      ],
+      "provenance": {
+        "kind": "checkpoint-amendment-output",
+        "originalObservedAt": "2026-10-10T03:42:01.930Z",
+        "originalExitCode": 0,
+        "originalLogLine": 361580,
+        "executionRecordSha256": "55bb66ba971023ce1943d41df0e73d120c1d557564973472340768507242f50f",
+        "commandSha256": "67610670b7b96e989a65d8207166f19007adf83942e91c90764eb94f894ed548",
+        "stdoutSha256": "4c47b048ac5589b50d2ad9eb0308bc2afccf405cfe5cc6cb28b2d03ea96e28da",
+        "emittedHashField": "trackerHash",
+        "scope": "Hash emitted from actual TRACKING bytes in the original repository checkout; private raw session records retained locally, not published."
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0164",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "775f5bbbcde8834e1ab04b9d92a41231e287502e39ce41a271a98259613196f8",
+      "afterHash": "0dd7d4dab4504d65df2a37bb5e3a7daf0f14a8d1075dae49cb768a69400af707",
+      "evidenceIds": [
+        "EV-20261010-032"
+      ],
+      "provenance": {
+        "kind": "writer-output",
+        "originalObservedAt": "2026-10-10T08:59:37.364Z",
+        "originalExitCode": 0,
+        "originalLogLine": 370695,
+        "executionRecordSha256": "b81f12c21fe28c88566404c3d1195fd6694549c1cbc3e6a0d765fe0574cfd236",
+        "commandSha256": "03ee9146245ba5da02f2a0557bbe6405d45cfcefd29b4ae90bcd6dc57f6b330f",
+        "stdoutSha256": "56ec95aa13c94e9267d7d38eaa40b2ce1c41ed3c2740bde7950d2d1dee59bfa0",
+        "emittedHashField": "trackerHash",
+        "scope": "Hash emitted from actual TRACKING bytes in the original repository checkout; private raw session records retained locally, not published."
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0168",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "073b35842c24017726838019d5e264786c95dc055e39d22cc2deb544d90760e5",
+      "afterHash": "0eb1e4361e7685a4925b16ca53a301c00ab7109ae090a63b793bcb90f1bdb1bc",
+      "evidenceIds": [
+        "EV-20261010-033"
+      ],
+      "provenance": {
+        "kind": "writer-output",
+        "originalObservedAt": "2026-10-10T09:17:51.006Z",
+        "originalExitCode": 0,
+        "originalLogLine": 371088,
+        "executionRecordSha256": "1a2e208228704f538c59c01cf54382e32cbed79ca1e3a60163084ff895e210fa",
+        "commandSha256": "d38818d79248630ab9e5d08d01552d49434d4e4b7b9bf5f4983d1dcbb3b23ec4",
+        "stdoutSha256": "38d126f4e15822c5d62f83cafb07f1936edd905867054678c7914680a2e599e7",
+        "emittedHashField": "trackerHash",
+        "scope": "Hash emitted from actual TRACKING bytes in the original repository checkout; private raw session records retained locally, not published."
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0172",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "c0ea29b4a8982509c674f0a01d35a1a25f3da7ace1ca103d685a2a09b189da57",
+      "afterHash": "a96de7d46977960f14cd4c747acda385727c74b22aa5fd2a16eb65df84367559",
+      "evidenceIds": [
+        "EV-20261010-034"
+      ],
+      "provenance": {
+        "kind": "writer-output",
+        "originalObservedAt": "2026-10-10T09:33:16.237Z",
+        "originalExitCode": 0,
+        "originalLogLine": 371508,
+        "executionRecordSha256": "559c113587b5bb8f22df8d014ac255e19f53f2e444ae1ca8611518bffa132aaa",
+        "commandSha256": "7bf666338a531d047d948baf1dfa64856529796c122027c844965e4d5e24e1fe",
+        "stdoutSha256": "4d4a6889b7a7f783db3a2031bad599247bd0d284e8420985206a4d4495028580",
+        "emittedHashField": "trackerHash",
+        "scope": "Hash emitted from actual TRACKING bytes in the original repository checkout; private raw session records retained locally, not published."
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0177",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "67848ac36a65f8c3006ecd1b4c5a7ef56f91156db7bb9eff2f5cac75db98043c",
+      "afterHash": "430915c75921476871fa699767050f1579fe8955d39a172b548433f01e849f42",
+      "evidenceIds": [
+        "EV-20261010-035"
+      ],
+      "provenance": {
+        "kind": "writer-output",
+        "originalObservedAt": "2026-10-10T09:46:34.615Z",
+        "originalExitCode": 0,
+        "originalLogLine": 371878,
+        "executionRecordSha256": "fd86c69c37a41f0231482c057805d93cffd69e1ac483c26a351dda4d66147cb9",
+        "commandSha256": "e4d5cf4a6b8c91a726ac8ca3f3e55d84cec1b87be20da4c79089b8b9182acfdc",
+        "stdoutSha256": "1eb959aa801741bbdfb0ce770aaa13d4dc094ac9be776a438d882639bdfb07ee",
+        "emittedHashField": "trackerHash",
+        "scope": "Hash emitted from actual TRACKING bytes in the original repository checkout; private raw session records retained locally, not published."
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0182",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "593322a23829a617c8d52fe8fabf535fea028eede941cb74ee2f7183c19350bc",
+      "afterHash": "2c84f7b53a72fcbeeb022e92f5759d15c3d027a2f8682a81a685ea86c4707a2f",
+      "evidenceIds": [
+        "EV-20261010-036"
+      ],
+      "provenance": {
+        "kind": "writer-output",
+        "originalObservedAt": "2026-10-10T10:04:45.670Z",
+        "originalExitCode": 0,
+        "originalLogLine": 372519,
+        "executionRecordSha256": "aadbe9b2e5c6d4b564a7222356650365effbfadf30a7b9b17626137815901849",
+        "commandSha256": "3e670d23053edd5e88ab2090ae89325a19a6131044df35fdbbded59cd141621c",
+        "stdoutSha256": "63de84020e9b77b3210866f4805120a6308fbcc8115c02354e4a853f98850be4",
+        "emittedHashField": "trackerHash",
+        "scope": "Hash emitted from actual TRACKING bytes in the original repository checkout; private raw session records retained locally, not published."
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0192",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "99b8af496e438dfb4fd56c5840c4ca2725f2db5bc1becbe26c67c13c40a70737",
+      "afterHash": "87b48c77f9e52b2c5cb838f85262db269a0d45a9d56dab30d6a0657bec3dbb78",
+      "evidenceIds": [
+        "EV-20261010-037"
+      ],
+      "provenance": {
+        "kind": "writer-output",
+        "originalObservedAt": "2026-10-10T10:45:52.539Z",
+        "originalExitCode": 0,
+        "originalLogLine": 373471,
+        "executionRecordSha256": "6723174370565fd24cfb0d18da32df537bddc89eac369b3985c59194155ce53b",
+        "commandSha256": "dea207c4eac1c0579c07b4f7f206ca7e284e655ebaa740fa71dd8e6cf96244d4",
+        "stdoutSha256": "b3865eab15a2fa0b887a96fa5bfd81886863697f8d4d4195990d524d78791dd4",
+        "emittedHashField": "trackerSha",
+        "scope": "Hash emitted from actual TRACKING bytes in the original repository checkout; private raw session records retained locally, not published."
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0197",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "15f54e3d2ec37410d294da08086791b47aba7735936813c68324034ae1ac76e7",
+      "afterHash": "cb9fd63ebcb15406b195b4878ed9323907fd90c98d079ac25a94c3b135052a67",
+      "evidenceIds": [
+        "EV-20261010-038"
+      ],
+      "provenance": {
+        "kind": "writer-output",
+        "originalObservedAt": "2026-10-10T11:06:56.550Z",
+        "originalExitCode": 0,
+        "originalLogLine": 373842,
+        "executionRecordSha256": "a96cd765d255aec817264145994ffa5ba06d20f73e5785029498b3cabbf78521",
+        "commandSha256": "f372359f35142e4c16b953d5a2e8bcb7a8c730b6ffd8a5e764279960621cf009",
+        "stdoutSha256": "137ff6159953a56968b9c4e2927a8fa9ad7f0e17af45e0b4509cbcdda1caa0c6",
+        "emittedHashField": "trackerSha",
+        "scope": "Hash emitted from actual TRACKING bytes in the original repository checkout; private raw session records retained locally, not published."
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0028",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "6cf3aefd88565f4ee8f5157937f37589c68d41abca2968c614ddab0ea1034f1e",
+      "afterHash": "5201f22c207b0253234b54e1d18539228badfddbbcdb8dd5cc300c530cfd48a8",
+      "evidenceIds": [
+        "EV-20261010-005",
+        "EV-20261010-006"
+      ],
+      "provenance": {
+        "kind": "actual-git-blob-checkpoint",
+        "gitObjectId": "cfc321a4e0595d57c49829cd5731a12a8cb4b124",
+        "bytes": 12248893,
+        "lastTrackerChange": "CHANGE-20261010-0028",
+        "fullRecordContextMatches": true,
+        "compressedRecoverySha256": "05a66a4c8705e61ac4fec4e7a115d8771f5dfc705a7f20105e5e17704db8006a",
+        "scope": "Exact original Git blob, whose final TRACKING change is this ID, archived locally. No reconstructed JSON or current hash substitution."
+      }
+    }
+  ],
+  "unresolvedHistoricalAfterHash": [
+    "CHANGE-20261010-0012",
+    "CHANGE-20261010-0020",
+    "CHANGE-20261010-0034",
+    "CHANGE-20261010-0047",
+    "CHANGE-20261010-0057",
+    "CHANGE-20261010-0062",
+    "CHANGE-20261010-0066",
+    "CHANGE-20261010-0070",
+    "CHANGE-20261010-0075",
+    "CHANGE-20261010-0086",
+    "CHANGE-20261010-0096",
+    "CHANGE-20261010-0101",
+    "CHANGE-20261010-0106",
+    "CHANGE-20261010-0111",
+    "CHANGE-20261010-0115",
+    "CHANGE-20261010-0121",
+    "CHANGE-20261010-0125",
+    "CHANGE-20261010-0130",
+    "CHANGE-20261010-0134",
+    "CHANGE-20261010-0138",
+    "CHANGE-20261010-0142",
+    "CHANGE-20261010-0146",
+    "CHANGE-20261010-0150",
+    "CHANGE-20261010-0155",
+    "CHANGE-20261010-0159"
+  ],
+  "checkerChanged": false,
+  "baselineChanged": false,
+  "readinessClaimsChanged": false,
+  "result": "pass",
+  "scope": "Only the 13 listed missing after hashes are restored from actual original I/O or Git bytes. This is not a full G5 pass. Historical payloads are not re-created; unavailable hashes remain null. Current source provenance is resolved only through actual authorized commits."
+}

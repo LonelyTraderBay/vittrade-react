@@ -1,0 +1,328 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "EV-20261012-004",
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "kind": "actual-committed-source-catalogue",
+  "observedAt": "2026-10-12T05:27:22.580Z",
+  "sourceHead": "309a2003749c2b1874e75af501fa6c3ea1e37c18",
+  "sourceSnapshotSha256": "d7b549f2e6a75a8dd4e4d82dfb4af10fa322518085ef4c36c73e2c697ba430f7",
+  "commits": [
+    {
+      "sha": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+      "title": "chore(repo): cô lập output và bảo vệ cơ chế dọn theo run",
+      "files": [
+        ".gitignore",
+        ".prettierignore",
+        "README.md",
+        "docs/ai/WORKFLOW.md",
+        "eslint.config.js",
+        "package.json",
+        "playwright.config.ts",
+        "scripts/check-build-artifact.mjs",
+        "scripts/check-bundle-budget.mjs",
+        "scripts/check-production-mocks.mjs",
+        "scripts/check-production-mocks.test.mjs",
+        "scripts/plan-artifact-cleanup.mjs",
+        "scripts/plan-artifact-cleanup.test.mjs",
+        "scripts/run-with-artifacts.mjs",
+        "scripts/run-with-artifacts.test.mjs",
+        "scripts/serve-e2e.mjs",
+        "vite.config.ts",
+        "vitest.config.ts"
+      ]
+    },
+    {
+      "sha": "309a2003749c2b1874e75af501fa6c3ea1e37c18",
+      "title": "fix(inventory): phân loại formatter đúng vai trò hỗ trợ",
+      "files": [
+        "scripts/generate-architecture-inventory.mjs",
+        "scripts/generate-architecture-inventory.test.mjs",
+        "docs/architecture/page-inventory.json"
+      ]
+    }
+  ],
+  "sourceEntries": [
+    {
+      "path": ".gitignore",
+      "sourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+      "gitBlobId": "ef019f45c4614a49d34de97014dc688106487eee",
+      "cataloguedSha256": "f3a31f9c67805212d4adc961768014ac927c7ee024aee49b099065d6efc864ff",
+      "currentRawSha256": "f3a31f9c67805212d4adc961768014ac927c7ee024aee49b099065d6efc864ff",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "7026e53028e9eda361f12f7689ceba9b8811fed76481cce0d7ebcd1bdce81f26"
+      },
+      "priorSourceSha256": "7026e53028e9eda361f12f7689ceba9b8811fed76481cce0d7ebcd1bdce81f26",
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    },
+    {
+      "path": ".prettierignore",
+      "sourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+      "gitBlobId": "b2aa38a71532a48c64e4d2429099ceae8043ef1c",
+      "cataloguedSha256": "8976b6c9ab105d3806e7fb4678c85e0efdeb7eaecef4db0463a51e673031f704",
+      "currentRawSha256": "8976b6c9ab105d3806e7fb4678c85e0efdeb7eaecef4db0463a51e673031f704",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "1ceca112c0f417acd97053724deda5102cdcad4be56a2f77bc8e3058e85d8c57"
+      },
+      "priorSourceSha256": "1ceca112c0f417acd97053724deda5102cdcad4be56a2f77bc8e3058e85d8c57",
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    },
+    {
+      "path": "README.md",
+      "sourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+      "gitBlobId": "a0f983980dd629d47c23825a1e84cbd105e54b20",
+      "cataloguedSha256": "705423abb76e41b1eced97856f452413d6a8c76d7f43425942083f9847419b9c",
+      "currentRawSha256": "705423abb76e41b1eced97856f452413d6a8c76d7f43425942083f9847419b9c",
+      "priorCatalogue": {
+        "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "sha256": "b579eb65aaf4b9698e2039b85b4d909c39001b07fe97f742888d24358c6b5f5a"
+      },
+      "priorSourceSha256": "b579eb65aaf4b9698e2039b85b4d909c39001b07fe97f742888d24358c6b5f5a",
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    },
+    {
+      "path": "docs/ai/WORKFLOW.md",
+      "sourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+      "gitBlobId": "1832036634ce21c2b471253a41ed166b5837d8fb",
+      "cataloguedSha256": "0cc16001dd81ddfb7e9990e43e3ad33f04c0170ec87c36f62ba1b9770ccbbf57",
+      "currentRawSha256": "0cc16001dd81ddfb7e9990e43e3ad33f04c0170ec87c36f62ba1b9770ccbbf57",
+      "priorCatalogue": {
+        "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "sha256": "58a1d10d203f18190843320e1a7c184022b30d99b0330f5ed6916fc3b7180566"
+      },
+      "priorSourceSha256": "58a1d10d203f18190843320e1a7c184022b30d99b0330f5ed6916fc3b7180566",
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    },
+    {
+      "path": "eslint.config.js",
+      "sourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+      "gitBlobId": "d4e5502b66d5f94b3e22169191972105119d1289",
+      "cataloguedSha256": "4357c8d60b797a2633f633fd645a1ceb23abf4c600ad7919dc8e6e24571d6be4",
+      "currentRawSha256": "4357c8d60b797a2633f633fd645a1ceb23abf4c600ad7919dc8e6e24571d6be4",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "64d762e68541d5eaec50155dda7c00dc0fdd22f6d01f098ebd922abe55f3798f"
+      },
+      "priorSourceSha256": "64d762e68541d5eaec50155dda7c00dc0fdd22f6d01f098ebd922abe55f3798f",
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    },
+    {
+      "path": "package.json",
+      "sourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+      "gitBlobId": "b851caeba2f53be5dffbb9ecb32322dfa3d60c27",
+      "cataloguedSha256": "21fa3b6d188f39f5ac2aca2c3a371cb6d4ced49fc816cdfeca7b6f843a33d194",
+      "currentRawSha256": "21fa3b6d188f39f5ac2aca2c3a371cb6d4ced49fc816cdfeca7b6f843a33d194",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "1066f2ff1ad1757dc1619861732b0af534e1f5f0b713d4a1b3c21299a7b04a18"
+      },
+      "priorSourceSha256": "1066f2ff1ad1757dc1619861732b0af534e1f5f0b713d4a1b3c21299a7b04a18",
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    },
+    {
+      "path": "playwright.config.ts",
+      "sourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+      "gitBlobId": "feccac0200151abbaabd73fea6b2661c1efbf3ee",
+      "cataloguedSha256": "66e8eebc4b9b517848c26270fe4e2d91f08a258137ce8d23ad03eae0e2cadd22",
+      "currentRawSha256": "66e8eebc4b9b517848c26270fe4e2d91f08a258137ce8d23ad03eae0e2cadd22",
+      "priorCatalogue": {
+        "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "sha256": "6fb771ddbfde2e2c2805dcbb70282dbcdd68210e4c938f30c3e1d7cbc234406d"
+      },
+      "priorSourceSha256": "6fb771ddbfde2e2c2805dcbb70282dbcdd68210e4c938f30c3e1d7cbc234406d",
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    },
+    {
+      "path": "scripts/check-build-artifact.mjs",
+      "sourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+      "gitBlobId": "d1914dc556154904647deacb093400009b241041",
+      "cataloguedSha256": "7b2c52fad703bc9b5d1f64960defdc389932ef1152f8e7c47013ce38ce36dd57",
+      "currentRawSha256": "7b2c52fad703bc9b5d1f64960defdc389932ef1152f8e7c47013ce38ce36dd57",
+      "priorCatalogue": {
+        "sourceHead": null,
+        "sha256": null
+      },
+      "priorSourceSha256": null,
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    },
+    {
+      "path": "scripts/check-bundle-budget.mjs",
+      "sourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+      "gitBlobId": "a185a262f7db1eb18418a1cab39c4a7cf34e4110",
+      "cataloguedSha256": "91ce032fd5a2277bab724c6a85fb119dac35f6e8d93b1b334da99cb3663b3a79",
+      "currentRawSha256": "91ce032fd5a2277bab724c6a85fb119dac35f6e8d93b1b334da99cb3663b3a79",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "92fc82996a7148e3f7a125287c92d905b5b194a2e30442e4fe247335fbbdc08f"
+      },
+      "priorSourceSha256": "92fc82996a7148e3f7a125287c92d905b5b194a2e30442e4fe247335fbbdc08f",
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    },
+    {
+      "path": "scripts/check-production-mocks.mjs",
+      "sourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+      "gitBlobId": "0dcdea0f6ef19ca3d5b9b2ee2ec62d3f50dd7113",
+      "cataloguedSha256": "d7600b777d262f54abd9938fe14caafa71e68d5bc91f0e2efcdbb84f3110bb17",
+      "currentRawSha256": "d7600b777d262f54abd9938fe14caafa71e68d5bc91f0e2efcdbb84f3110bb17",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "6838106b2cce95444d7b80a960e6cac924ff293801bbbc5a6006a01e78776861"
+      },
+      "priorSourceSha256": "6838106b2cce95444d7b80a960e6cac924ff293801bbbc5a6006a01e78776861",
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    },
+    {
+      "path": "scripts/check-production-mocks.test.mjs",
+      "sourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+      "gitBlobId": "696c783a3f1af1fb5e6c5c27aac3cf09d2f3b2ca",
+      "cataloguedSha256": "a1ef594617cb038f9311ca14d55c79359e8fe44ad18c010a7e105cec12036911",
+      "currentRawSha256": "a1ef594617cb038f9311ca14d55c79359e8fe44ad18c010a7e105cec12036911",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "04759d571b36b670b354e63fd90c3973374d5111b66947b36df3765251ed64a6"
+      },
+      "priorSourceSha256": "04759d571b36b670b354e63fd90c3973374d5111b66947b36df3765251ed64a6",
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    },
+    {
+      "path": "scripts/plan-artifact-cleanup.mjs",
+      "sourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+      "gitBlobId": "cfb6bf13547204168229dd1e69803a55cda6da26",
+      "cataloguedSha256": "8d839f2915de2d6314d2d1023f5601ec02f51cd92a40aaf4a1966e75d2d61842",
+      "currentRawSha256": "8d839f2915de2d6314d2d1023f5601ec02f51cd92a40aaf4a1966e75d2d61842",
+      "priorCatalogue": {
+        "sourceHead": null,
+        "sha256": null
+      },
+      "priorSourceSha256": null,
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    },
+    {
+      "path": "scripts/plan-artifact-cleanup.test.mjs",
+      "sourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+      "gitBlobId": "809a2e431a2e4daab0d13aa40a7357efcf58a157",
+      "cataloguedSha256": "ab2005565e5476bc73671508ccc0847ee8c06a964be6fc005eeaa60b2635ae29",
+      "currentRawSha256": "ab2005565e5476bc73671508ccc0847ee8c06a964be6fc005eeaa60b2635ae29",
+      "priorCatalogue": {
+        "sourceHead": null,
+        "sha256": null
+      },
+      "priorSourceSha256": null,
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    },
+    {
+      "path": "scripts/run-with-artifacts.mjs",
+      "sourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+      "gitBlobId": "2669d5f0c2ff7e0b1331ab8c71f26e423de58770",
+      "cataloguedSha256": "60ca5cd88fa93b47dcee03f4609a73ab6d5a6f21ba06d936cbf4097716fbb876",
+      "currentRawSha256": "60ca5cd88fa93b47dcee03f4609a73ab6d5a6f21ba06d936cbf4097716fbb876",
+      "priorCatalogue": {
+        "sourceHead": null,
+        "sha256": null
+      },
+      "priorSourceSha256": null,
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    },
+    {
+      "path": "scripts/run-with-artifacts.test.mjs",
+      "sourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+      "gitBlobId": "72b45925a1829f205750b8b04d79eb6766bc5ff9",
+      "cataloguedSha256": "56e714a69a2ef7067a5f51612589415fa636fdb789d6db791bd321adee1c0cbe",
+      "currentRawSha256": "56e714a69a2ef7067a5f51612589415fa636fdb789d6db791bd321adee1c0cbe",
+      "priorCatalogue": {
+        "sourceHead": null,
+        "sha256": null
+      },
+      "priorSourceSha256": null,
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    },
+    {
+      "path": "scripts/serve-e2e.mjs",
+      "sourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+      "gitBlobId": "c2b7b2abe09110c34c52b4ccd84b9a6d346dcbdd",
+      "cataloguedSha256": "8ff78c9e3e9666c8ec0dd1e849ba21306b7bdd98b9695645e2ab17efe2644c1f",
+      "currentRawSha256": "8ff78c9e3e9666c8ec0dd1e849ba21306b7bdd98b9695645e2ab17efe2644c1f",
+      "priorCatalogue": {
+        "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "sha256": "eb1513fbe3d38ba9ab95a02e9b7ff47cf5113644fcc2da9798bab5585859f76e"
+      },
+      "priorSourceSha256": "eb1513fbe3d38ba9ab95a02e9b7ff47cf5113644fcc2da9798bab5585859f76e",
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    },
+    {
+      "path": "vite.config.ts",
+      "sourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+      "gitBlobId": "238e8a17d8e5e98333f8d58bebdeddd735263ebf",
+      "cataloguedSha256": "8dbfd2b17024c402f3d83d202941aecad09011984883ee927664bd2a97f694ba",
+      "currentRawSha256": "8dbfd2b17024c402f3d83d202941aecad09011984883ee927664bd2a97f694ba",
+      "priorCatalogue": {
+        "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "sha256": "d9424ebe43442d459e7f6c5a22892a0e401d16bb93173fd245db6133500eb132"
+      },
+      "priorSourceSha256": "d9424ebe43442d459e7f6c5a22892a0e401d16bb93173fd245db6133500eb132",
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    },
+    {
+      "path": "vitest.config.ts",
+      "sourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+      "gitBlobId": "86c6fb74c3877d175f29096813cc52cae7f342d6",
+      "cataloguedSha256": "9b5174d77743bbd5d49add6eebef70c865593abed258612b940f9b2a4e52668c",
+      "currentRawSha256": "9b5174d77743bbd5d49add6eebef70c865593abed258612b940f9b2a4e52668c",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "d997039fb3a5520b71c5479c435f11adf360d6259542f1d6de97a991db31db2f"
+      },
+      "priorSourceSha256": "d997039fb3a5520b71c5479c435f11adf360d6259542f1d6de97a991db31db2f",
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    },
+    {
+      "path": "scripts/generate-architecture-inventory.mjs",
+      "sourceHead": "309a2003749c2b1874e75af501fa6c3ea1e37c18",
+      "gitBlobId": "64fd04cccd120ff537e2825f5ac60bf56c1b7c6f",
+      "cataloguedSha256": "2c489a68dad6cfd46d8b4a80983841ea84dec59282bde04acfda38a6f489492e",
+      "currentRawSha256": "2c489a68dad6cfd46d8b4a80983841ea84dec59282bde04acfda38a6f489492e",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "676f082a7d7bb3a34a108c3e2942cf9ffd17983e60f45addf598ce2ce6070d17"
+      },
+      "priorSourceSha256": "676f082a7d7bb3a34a108c3e2942cf9ffd17983e60f45addf598ce2ce6070d17",
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    },
+    {
+      "path": "scripts/generate-architecture-inventory.test.mjs",
+      "sourceHead": "309a2003749c2b1874e75af501fa6c3ea1e37c18",
+      "gitBlobId": "a9f7e45a219f71206fc3b3412ab442db6ca577be",
+      "cataloguedSha256": "e9c2e00a579dbc71acfbf6317661cbecb12c0d4df04332d8175b7f64974860dd",
+      "currentRawSha256": "e9c2e00a579dbc71acfbf6317661cbecb12c0d4df04332d8175b7f64974860dd",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "c3552ae37d17b12fa96406cfa1660820c9a8959a0d1215c2acc1c6f13bbbf310"
+      },
+      "priorSourceSha256": "c3552ae37d17b12fa96406cfa1660820c9a8959a0d1215c2acc1c6f13bbbf310",
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    },
+    {
+      "path": "docs/architecture/page-inventory.json",
+      "sourceHead": "309a2003749c2b1874e75af501fa6c3ea1e37c18",
+      "gitBlobId": "64d886ea0f9a4722b8f102f70e25bccf91b05e10",
+      "cataloguedSha256": "16d9ca9826b652f8b74596a909bfaf2fa1d8e367b9c4184e10e6f4c93a2ed349",
+      "currentRawSha256": "16d9ca9826b652f8b74596a909bfaf2fa1d8e367b9c4184e10e6f4c93a2ed349",
+      "priorCatalogue": {
+        "sourceHead": "fd554bcee8743f94187a12c6700eb1d713c7afc7",
+        "sha256": "12d2f875d91f164a97329272465e5829536c3c6202e5465ace3e1fd000588154"
+      },
+      "priorSourceSha256": "12d2f875d91f164a97329272465e5829536c3c6202e5465ace3e1fd000588154",
+      "proof": "Actual last file commit contains the source; current Git clean-filter blob equals that object, and raw working bytes equal the final runtime source snapshot. Baseline fields are preserved."
+    }
+  ],
+  "lockfileSha256": "b65f9320f812e6aed9ace7c9577652a2c48471459869b0b91f6f36a661b1f8a7",
+  "baselineLockfileSha256": "b65f9320f812e6aed9ace7c9577652a2c48471459869b0b91f6f36a661b1f8a7",
+  "checkerChanged": false,
+  "baselineChanged": false,
+  "readinessClaimsChanged": false,
+  "pushed": false,
+  "result": "pass",
+  "scope": "21 reviewed files have real local Git provenance. Full gates on this source revision are pending; G5 remains blocked by 25 historical after hashes. No U01/B07 integration or product publication."
+}

@@ -1,0 +1,972 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "EV-20261012-002",
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "kind": "selective-current-source-catalogue-proof",
+  "observedAt": "2026-10-12T04:54:51.893Z",
+  "sourceHead": "fd554bcee8743f94187a12c6700eb1d713c7afc7",
+  "sourceSnapshotSha256": "4dad9deef8caccfa100cc1a7eea1d5df15dd666ec02efab0450aaeb3041f414a",
+  "fullSuiteEvidenceId": "EV-20261012-001",
+  "sourceBytesChanged": false,
+  "baselineChanged": false,
+  "historicalChangeHashesChanged": false,
+  "sourceEntries": [
+    {
+      "path": "src/app/components/layout/AppLayout.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "075d5555c2a2de915321ddc82a8aef6e9cf948b55ec6271df10131024ca74131"
+      },
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "e7e77ab78f14573d2f87018d2f60934f26a7a7e48e28ac4f74d05dbf075e9b4a",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/app/components/layout/AppLayout.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "2497da87252dc2562d9de5ad85235b4255cf1ead5f4474bccdde5e55beab8cc0"
+      },
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "114adfec68a489366057d38e8b20863f5a0a5c7b5af1e41294b09eb59d716e8b",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/app/components/layout/BottomNav.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "ef099955a1ce40486d15a8e8cc9ba7da91b98806355a810ca4fe6ed438a25dce"
+      },
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "cba6e1cb2fa56022c7f6b55ade3b5d0df50594978b9930c8f076407d06bc2d72",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/app/components/layout/ProtectedRoute.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "1b412898418c72295705d1eb026ecf7f3c34f8fddfd17a474038200f401c26f4"
+      },
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "57ec51375208aef764186c05431e036b27a8153fd7348c723d4359a48af2d022",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/app/components/layout/ResponsiveShell.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "b2ab5d83711a1b491479a240bd8c51ee3a2f1390eaaf5d9061473697fc45bb2e"
+      },
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "3081e719f0ca8d80aef7c5458ab74e70478c548718e13c0c8d980bf1a5e86f0d",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/app/components/layout/TabletSidebar.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "31d9af033104df317ae3eb716383d9ffc19dd16721f601bb65c21fa6ce0cb68c"
+      },
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "d95be8d73298039f76cf96196fa41fc0d2c65c1c6695c5dd92530dffe2048aed",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/app/components/onboarding/Coachmark.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "de847c58f941cb78859b512c12bb00520c0dede1e79880e2f64af19fdfd7c5b9"
+      },
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "c450c2f4647dd72d374337620ed100f0bd39488392271a0acbdd015c8824fdc7",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/app/contexts/AuthSessionProvider.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "3fa6f81dd63f56020842500b8feee35ad2522f0d30ad1551faebb0e0f78841e1"
+      },
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "f28288c0914ee99fb6762dca0508d5cd0a1225dd8089c12e93786a14302e65c2",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/app/hooks/usePlatform.test.ts",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "5544f68a4a87ef845eead4491a2683c234853d603d24255cc6ed098ac55a6c58"
+      },
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "2a53e9e28fe6f7da827b3d53e5335bfafdb866c9a70a8fb41e15ccc3e4f9fa6e",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/app/hooks/usePlatform.ts",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "fae4d6c68737a29a6908e3bb8f6933252c9b34b7237a53fdf47733c6de5c3ae3"
+      },
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "733cd1e6945907b806351ace80d6132d864c6d116e03af6cdd5f12a2a71cb242",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/app/services/FeatureFlagService.test.ts",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "ab8de20bd9609965deb14ba79c7ccba1fdbf2d654afc01d147b33d76b67c774f"
+      },
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "acc844573e8f7df16695527ccd9d8fcdfe31dd407498f08aeabc8f130f5d3e7b",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/app/services/FeatureFlagService.ts",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "a1c2fdacf38ecbf17a0a117261339352ef5619afec6bab5022d43d9bafa50514"
+      },
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "d3ef4880c26f033907761ac07f4fea60005afddfae182969293b835241b7d2e1",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/auth/components/RegistrationForm.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "21bb73fd2c5bc3ed9962394aff80acc558d0fedb4e25e5de4947637a70f5abb5"
+      },
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "6a96feff9521d4f1a0b35021f4c255a1e47bec8714076a25ed20bf5cf3e59bb4",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/auth/components/RegistrationForm.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "32b35d0238611e3d3579f92b4fcd4f4836ba4de6b070c78a461675deda47a6c2"
+      },
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "0406dca88fbc19ec6798aacbfc0f62479802900ef91e3910397ccc056c021e06",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/auth/pages/OTPPage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "5de771d1cbaea59d67860b4335a5372c0356041acf45d09feb9ef67a7c26a042"
+      },
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "24b77fe58fb4d0b9f73147d336cf58b7d4047005273ced60122dd81b9ff23f07",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/auth/pages/OTPPage.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "eff445ff3884f6aada08e689dc5468538d6587b799682a5401dc6951311f0012"
+      },
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "54a3d6d1a0992766dda24fa7023189eb4e9a86ab6aa8578206570705ebc19e54",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/auth/pages/PasswordResetPages.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "1e3c9d521547ba3e45002191c5b2b1a5d07a8da4ac4a96141dfac6f292393a8d"
+      },
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "d0b60373fbc1f5f1aa58d47e3f253889ed7a1f9de3d1dd67128b0d63780eed8c",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/auth/pages/WebOTPPage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "d2f1e8fd303a6976d507687b65b6533fa78b3838e76583dfb531f73b596e8eba"
+      },
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "2591e215fb90243d2d4fb49206c83a18619ce427c28c981c7aa85c7a11c2c6e8",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/auth/pages/WebOTPPage.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "5d2990eafb91494c38f6e207f925c32b9d0c43cd5f5d192f86545558b7923ebf"
+      },
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "43404cce3d6bf1e803cb8aca6e1fa3a0b1d47d82df7b1bbac6105399b2ba2c0a",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/dca/components/DCAHistoryChart.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "1044a7229601f8a10949bda2263679698932d3c97f2a7cf1b79bdddc40463b8e"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "bd83bc3f12d73a65a45076ad00ea7974cdab1bf4e6343f1ccb4090f62ed9f8b0",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/dca/components/DCAHistoryChart.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "16ed1732f97504ff71181b282dda9dd90fcc6ea28eda1fb5af080db198035392"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "95023e089a34fe69cd1ced0cb7dedac6f16254d2ceb8e92f36e76e56a933956e",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/dca/components/DCAPlanCard.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "7f98cc03d62d2aed1b7d7d1c812d6f036224cbe2a5da930f8a6814af45db7955"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "2581e0d751782ba2852d7680a540dbdbdae7dbdcaf48a2e8878e638898547a6b",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/dca/model/dca-analytics-service.test.ts",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "bef31ac6ce9ad86ed2c4fc3a194d693c37f5c18d3ae517c83a55a4c6e19e87ff"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "545d9ca36833e2eb2b2e65202176f25a2c83380b46bdac6fb8ffb4d6590312e5",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/dca/model/dca-analytics-service.ts",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "4706d1e1d490b225c66f4ee02a0adbd3f429d5f646d892e5886e46799b4b6bac"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "3c2cbb0c1b6d53aca0fb6b2d1a3e95c2bb24d035bdad2b885d6565fb216b3707",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/dca/model/dca-funnel-service.test.ts",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "a5e85e84cf966503452f93a71f3f4babae7a055a946a5f80cd4a6ca05fc32362"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "1242cdef04df9d5fdfab7faad549ca2aedda1d68f4d7775ccb0784bb19917eb0",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/dca/model/dca-funnel-service.ts",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "c2022f27eeec568d6848880b3858f6cc1168d5966a60168e82625b2491c13d08"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "ccc9ba2c69a08c59c6655e3818478994d52c36315f28a8acea3b202924b92a89",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/dca/pages/DCAMainPage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "047291c0d1e38953da6cd0e75003a6187edbb08a845491d4931460c914256c89"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "a11ac0d6e124a8b85b85bcb9c33b2c6981c66e884dc50af1b4acec58b691ec01",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/dca/pages/DCAMainPage.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "8373f9f7ac00f923247058de7360630f440debc54ceed6ea3d648ff96448227c"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "3c845ba27b78bb07ac54bfd566cbd0bc636c0fb1d4ce870f292c0defed9bdd4c",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/dca/pages/SavingsDCAContractPage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "a81ba3a4eb8617ec0fdba75edfcf8aea9774279191d5c187f7bade55666b719e"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "944bc5b9bfb68ae47009ad9887e25f0eda9f8e54481ff2c26954c4dc34597ebc",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/dca/pages/SavingsDCAContractPage.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "ea3f8d62d05fef51b8881757d57e6a02acda76e39546ce0b8672b3af1e160580"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "8b0d685d3081180b3cdb41689e412e4f674ca2753cc5d9087aeecba2cb12d2f5",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/earn/pages/SavingsPortfolioPage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "d914fb200138980f2847c2d182a4a8620ca828cb73c763770d7f667bbb24f3e4"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "e5dfeadccf1399a960c542f358a9d1506319c2d6288de0360d6bf6207675ea60",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/market/pages/AdvancedChartsPage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "054143780da94fc048923586ae93d794728c47c24233a83147c17d18a0cc2fa2"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "4212dc3b82e82de285a20840aba3b652873facd1486a72c2cc380af841b35242",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/market/pages/MarketHomePage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "6a8dce42b20ac273554dad27895c4bd0611c8aa0ae522a17167e1e309aadd2f6"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "0778a31da7ec2a819df17319287e7f9e7c8cc0784f2b96523e0da50137800a3f",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/market/pages/MarketListPage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "4e4b657c121a9785ba37916e58120ff12bebee94e191e9c550a4aeac42858c23"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "43745c3e20efcbdb41dd6d4d67333b7a656c0a377b3ea22d902aa2ccbaa65ade",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/market/pages/MarketWriteBoundary.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "b45e4284b68efdb8851bcd8a2ae7c49a147b85fa15880b4082ee25f72fbbd14e"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "5ea169ea05f6643821e1c9054b8defbeea51d2c40ebb7531be83ff1e3ca369df",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/p2p/components/P2PCreateAdSections.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "a6ac500151453a655063bb3a67fed9f4fcf9c46c886851d502e8b6091c427048"
+      },
+      "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+      "sha256": "0b734385f6bbc6c3163dbe3039715c64b16bf3a834946ac52f2481f2f3697b7f",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/p2p/pages/P2P2FASettingsPage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "66710abb4fb5e6cab7587f6e0621977f7b807fee010a19fd3f89c7a20746dd6e"
+      },
+      "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+      "sha256": "1d983b9bc230b449686c0f33ab4fc1af015dfb0486cb8392062299b5590213b1",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/p2p/pages/P2PAdDetailContractPage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "fd9cecee5a1aae69275750f712a91e8f757a9cbadf9084e52432035013114951"
+      },
+      "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+      "sha256": "715b8547fd527ce04b5ad3a554eac4234c71806941a9ff5190318b90beb64000",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/p2p/pages/P2PAdDetailContractPage.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "ed40c1cd81af7d8fdb506128cd549eb6593273880224c76938fe079b92036f65"
+      },
+      "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+      "sha256": "1c8c41c416cbdb66f2ab24bb4f2bf0e0db8fe9e7babff699b0e210caaebe7a4b",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/p2p/pages/P2PEscrowDetailPage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "0a8f66097457a5f9292ad34b3e0b128061f6866cbd4b8b8f0720f556a70d18e2"
+      },
+      "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+      "sha256": "c8b9676c13eacee0306ad526f18c4c3087ac02c8a81a0002bb0412922a635fd5",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/p2p/pages/P2PMyAdsContractPage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "726d661b92efa2424dd38a2d1e9a8139b7a0f7811b62bbea63d67b194282e951"
+      },
+      "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+      "sha256": "504c519aa970f08d705ccdad15df258f031b59aea5fec618df158a710231e6e1",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/p2p/pages/P2PMyAdsContractPage.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "cd328aa07511f9c40adc3c1ac8f863cddefea83f8380276cc91b33eca673c96a"
+      },
+      "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+      "sha256": "85361f18632ce8afc54c395a5f5ca018f79694cac185f4dace072204894a82a8",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/predictions/pages/PredictionContractPages.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "87d01226f29cc53af922ec96748b6adfc8479a716bcc16e3031207e8c462dbb6"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "6f3bd578e9b173ed188f0611aa5fba741a1acd409d1d1dd14d8974b6792d5036",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/predictions/pages/PredictionContractPages.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "74fa8076f0f69751850ab77ba7032a199fcc611c68dca7d11ef5bbe55522bdfe"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "19da64273880dde5d29101cf644a946d1f3cda89cf8d25752432a0d5a0de53a8",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/trading/components/MiniChart.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "413bfe6b11c1c5d351e5d9ca57afd050d8369a0dc1e4492342de105d0269864e"
+      },
+      "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+      "sha256": "d67325fbc41326f2552a0baa4f87098e721868cf8ebfbf70cce1ee23631eef53",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/trading/components/QuickPairSwitcher.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "060cd2a0194bbe5f3173e05326e16c757374fdfa6628f4aca1ea0cc2bc4e0194"
+      },
+      "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+      "sha256": "cd5247d0b12d26993d8175bdf75cc7ddd8ef13389b49eef5230f2b0a872106ae",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/trading/components/QuickPairSwitcher.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "6c9ce3b739f0b0524807b907ab2fd383bc40added57f9bce2d7e286c129b4208"
+      },
+      "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+      "sha256": "9d741d7adef5ec03caf86d116bb2f2fb84b8140e3a12b9c132c20aa86dac1d37",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/trading/components/TradeTerminal.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "95c95654bdeddb27ab5858a489a6f121370a1a7dedb8e3c7bdd6ca64eca93318"
+      },
+      "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+      "sha256": "f2fe499ff3db9e2fd7489e061d5fe79777f05211fe37d87d9275c59c15ccc508",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/trading/model/useTradeSettings.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "eabf70b00a5624dd2818c57b8178bc1e0fa92e0b7d7e77f7725cca7666a642ec"
+      },
+      "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+      "sha256": "bc1f8b7e27a357a9b048e64bf47ec67663ac7a6a18a3d7246e5c7e64d7a67236",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/trading/pages/TradeSettingsPage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "29a99e6904a620713358d84626a26b5240d73d58f93bfe9792bec3e6d07d9ecc"
+      },
+      "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+      "sha256": "7c98989d6773271283eb03288b8694906c74d92c1182defcac7a251866b210b9",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/wallet/pages/AddressBookPage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "3a8ce5c0ebdc9f175bfc3abaa6346a6d96aea1d67c9e80395ae9a46da96a62e7"
+      },
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "2ca0e590b15f5eb9bc85a37fbe16c662ded770c5372a3376d6ab74a82ca810fd",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/wallet/pages/AddressBookPage.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "0642f6c36fef8461e14940933e2bfe767a6ea19cc7558cc6f9ac094a7dc44b03"
+      },
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "831cac8489341506443ab2f1aee60243238ab19410b638e9c0cf1121355576b5",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/wallet/pages/PendingDepositsPage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "d30d6ab5d7c56d42f48c397706c96fe96d848d2e9c0548ed5260609d719eb04b"
+      },
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "4c5d262694fe7ce675f1f592db9685d089f9a18e83ac2fefca6db9ecbf5d8afb",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/wallet/pages/PortfolioAnalyticsContractPage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "6f8ed364151da816f25265815cb95c7f8667e32e6419fa455e38f8a042caa4d1"
+      },
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "4dc01ed82b8d14690c0fa741623b6daaa4ffeb5d1de8552e8a3cd76b99c8467f",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/wallet/pages/TransactionDetailPage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "06f6357fc2ff965eb0f50adba40d1279200a432ae93adf3e02e36d1339c28b05"
+      },
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "4f41dac96c77986972135ae710ee4b7b12b66e710f39c702f39f75ba6e039526",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/wallet/pages/WalletDepositContractPage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "bbf5bcabf80d5b1f16e3c6aabc3cb1998cee69b112475d804269df3a6bfb1fde"
+      },
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "290f93fb713872b3d427a1158984ca6aa2ee2a495cade323a195aff0edd9ab9f",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/wallet/pages/WithdrawPage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "03d105f023409124b336fe4e3e95f2b94042d18e2642717ece9f022e172fbce3"
+      },
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "1c22a8bcb2a9d1d8b7a131b2d70c19bacc3c8683413c778c078036efc58dc251",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/shared/api/http-client.test.ts",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "aa2b7f8725a65508cb42f48dc62c28492b2129f79b60e845c80fac5da5c3f312"
+      },
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "d2e9f91ba02af785955c90ebd484f9f67e9fe345ff53c029cadcf63e66dd737b",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/shared/api/http-client.ts",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a"
+      },
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "12a04035eac23a2999f8c7a76aafa32966585402c06d98f451ef33eb8601cf42",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/shared/ui/BottomSheetV2.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "66cc0b65a5a462ac49c4df6ea63867d99cbc15e08390e75317eb4448254855be"
+      },
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "6c84be1fd0b9ed87a10a501c3939fbbe67baf4de4059075046aef3d3d933cf82",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/shared/ui/InfoRow.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "562dc9c1379d65e6e3282e756bed2187e46dcd1e8cee48e429812b4937cd911c"
+      },
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "e22e8d65325ef8c89065cc7a0d07a96d96fa9080b188399b9fcd476b09cb4180",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/shared/ui/InfoRow.tsx",
+      "priorCatalogue": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "dc637667274d22121413709f9dd306a8e7b82cb31dcf4480f847bb9b13d223dc"
+      },
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "7e42f5fb1b8e10b8d9384f67c7d97c3fd83fc724d91361c08d2b9b481b52170d",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "docs/architecture/page-inventory.json",
+      "priorCatalogue": {
+        "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "sha256": "4f25117ff0d216b4eb10d17fbfeab33d859effd80c9553679b6f4bfb33f7958b"
+      },
+      "sourceHead": "fd554bcee8743f94187a12c6700eb1d713c7afc7",
+      "sha256": "12d2f875d91f164a97329272465e5829536c3c6202e5465ace3e1fd000588154",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/app/components/layout/PlatformSwitcher.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "sha256": "9f98ee27dc53db0a829efcbf482084844c3cfeee494a8538ae7668d9688e202a"
+      },
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "e5350ea94eb4683e935443131f98cbe57bca41abbfe789b752d7c771fbc23e80",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/app/components/layout/PlatformSwitcher.tsx",
+      "priorCatalogue": {
+        "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "sha256": "a4a75657a72fe50a1ae77b18df33fc43cb0a5b7f8d63864c6a2342f43203f940"
+      },
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "9d86a5b591b175d348c76e19d894905f27caf74d53ff8c3b1929c0e4f3c66bb8",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/auth/pages/PasswordResetPages.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "sha256": "3fe12699a6505e471bab877d266ff3773f29d15be532bc54c5dc97515ef70da4"
+      },
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "8121960f38acf2f3e4e2c2566583c2f3c0f73dc433873be9ce0181dafde9a3b7",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/earn/pages/EarnPage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "sha256": "3e0beea85caae37bfd3a872d0a7effc228716c67db41b7fd20fa45054ede89f5"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "82b245743ea2d0384d2c5d7f86049fd1939a4d6475264355bb33d2adc4e19e7d",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/earn/pages/EarnPage.tsx",
+      "priorCatalogue": {
+        "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "sha256": "92bd879acbb9611fb1ca3607cb9139c6b3032f1aeb1b4a1c1815ec84cf23fb94"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "c694b03be7e96b9e5997174f38ee47b81351b4a011fe2c9783331db65249401b",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/earn/pages/EarnTransactionPages.tsx",
+      "priorCatalogue": {
+        "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "sha256": "28383c3f8300e0db3f417c1d334aefc66fd789556eae6245125c95691827cbe5"
+      },
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "1009cd7d4546760f15cc23b45b5c19a4a5d4566a7a0c1842f7f713fc909aadb5",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/wallet/pages/WalletTransactionHistoryContractPage.test.tsx",
+      "priorCatalogue": {
+        "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "sha256": "513b996592ad2eb2d813e51e5e1be78b8acd7df5c3ba78a5d01dd3e288b1ae89"
+      },
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "58e6bb1a7635f54719466e05485990f48abc151dcdee678ea5b7d4d1b8305f2e",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx",
+      "priorCatalogue": {
+        "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "sha256": "14bcbd43d1fd1e7d5194f12657cac1ba5cec0421dc3672f5638ca8e3170b4996"
+      },
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "c547490ad5d88cb9d6997e04a9904147b5c78c4d101b218202a6ffd650344b5b",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/app/components/layout/LeftRail.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "357fc43a0ab055474f7ee08f8b647bbcf62d87856c288e51951ab4299ba25a5c",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/app/components/layout/ResponsiveBottomNav.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "efa836935f96e2ab674e284cc296f922347911fc0b8d6b3a090bdabb6121d43d",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/app/components/layout/TabletShell.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "35b90fa6d79c052d036610d2e15d69cd8d5a64a768e3d714d7d4f56311c00233",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/app/components/ui-contracts.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "2687a51ef290d2b2e6f7886e164dccc2855d15309f76aa91b87a0438b2ab555b",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/app/contexts/AuthContext.default-adapter.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "6d887edb4a095db895a30f7543042f9b55146afa3c15da89627ad24f6a5469d3",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/app/pages/page-composition.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "3b00cfeff34af2e099ac7d17d43d63d474820f3e654e14d0ae8ccf3b40569235",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/dca/components/DCACreatePlanSheet.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "efdf383faf772a50e1c51ec508aee2c7aec7f428749431ce6a55574c767e23e0",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/dca/components/DCAPlanCard.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "be686918ac58bad10e1cfd62a2fde6dabc37ca3ef3d55af07de23d7b07f94b2b",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/dca/pages/DCAMainPage.additional.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "6c8072d9101e6da441bde81c6a8918c385270a63a6c436a051fa6e5a2a8b1548",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/market/pages/MarketPriceAlertsPage.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "deaa87542bd3ddfeeac5fde21eddb2abffb81a6569debe29a288449c78ec6465",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/p2p/components/P2PCreateAdSections.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+      "sha256": "af36ba5dc4fbf4ee8ff784bf054e8ee1c628cc30409ca3f523f2a7a2d3a3dbb9",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/p2p/components/P2PHomeActionSheets.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+      "sha256": "cb2e6fdb55cb2521127f721dbe4ed2aebf6bc4fcc892d56337bc2341c3831578",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/p2p/components/P2PMarketplaceSections.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+      "sha256": "fc88422fd4d6a43f7b9f34e051ec85345cfb88f3014569e0070d39c066099284",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/p2p/lib/select-best-ad.test.ts",
+      "priorCatalogue": null,
+      "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+      "sha256": "d64d1b0ddc892b5fdbd4978634344446c6e35d3315d78019b06d7cc369c53537",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/p2p/model/p2p-my-ads-actions.ts",
+      "priorCatalogue": null,
+      "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+      "sha256": "ea968ebbe95162b46ca0fa1585a582c42c58b8d6488dcf180e1eb23e452361a1",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/predictions/pages/PredictionContractInteractions.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "f80bbc9ea773eac6e4264bf79df281c27e9bcc0499e487ba63f91a27c0243251",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/public-entrypoints.test.ts",
+      "priorCatalogue": null,
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "b08070ad982b4b09d4336ae4d025e522a133623e07348b6c12721bfb25edad45",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/support/pages/NewsContractPage.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+      "sha256": "6cd1f214ea66f55bb3000791bffc68075c768c45232536774f0043f1b7c55f08",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/wallet/pages/WebWithdrawalWhitelistPage.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "fca2e19a8adab3b0445f39513713d29e88a843b495177097875d08fb2e0ea6d4",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/features/wallet/pages/WithdrawPage.additional.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+      "sha256": "4b40730747d310aadde68d3ebeb2b603967f46e2723c8a7d44a29e0675668db8",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/shared/lib/formatNumber.test.ts",
+      "priorCatalogue": null,
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "fa01f3cfb5b844d0faf00443242f04737e342cf82b1fc6bd5d9f141ee40ec3bc",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/shared/theme/theme-token-contract.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "552baedd053698513bcda43e9f6b9dfd8061c8912a9c8f9161873430f86e37c7",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/shared/ui/BottomSheetV2.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "b563bd779b6a16c2d63e29b968316842c3fb18919d0f0e8f053668d507779bc4",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/shared/ui/SkeletonBlock.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "bfadb7c0da6ad90202a672ce0de671392968a52a5cc5ba814563ab0c7f22b5a4",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/shared/ui/charts/ChartGradientDefs.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "4820ec1126c3a76d9b146d07aad58c86ca180bd5314393707dd131e41e05f9ca",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/shared/ui/toggle-variants.test.ts",
+      "priorCatalogue": null,
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "eac2013f0cf07fd9a3a265bb5518af410de406623e69d10acbed65bfaec1dcf8",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    },
+    {
+      "path": "src/shared/ui/ui-primitives.test.tsx",
+      "priorCatalogue": null,
+      "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+      "sha256": "247739922e6d50ee92448506746c8a68fbcfbaac543b5f4ef5cf4962af6ada55",
+      "proof": "Exact Git blob at the last file commit and identical per-file SHA-256 in the stable final full-suite snapshot; source bytes are unchanged during cleanup."
+    }
+  ],
+  "blocked": [
+    {
+      "path": ".gitignore",
+      "reason": "Current cleanup candidate or missing path; do not substitute an older source hash."
+    },
+    {
+      "path": ".prettierignore",
+      "reason": "Current cleanup candidate or missing path; do not substitute an older source hash."
+    },
+    {
+      "path": "eslint.config.js",
+      "reason": "Current cleanup candidate or missing path; do not substitute an older source hash."
+    },
+    {
+      "path": "package.json",
+      "reason": "Current cleanup candidate or missing path; do not substitute an older source hash."
+    },
+    {
+      "path": "scripts/check-bundle-budget.mjs",
+      "reason": "Current cleanup candidate or missing path; do not substitute an older source hash."
+    },
+    {
+      "path": "scripts/check-production-mocks.mjs",
+      "reason": "Current cleanup candidate or missing path; do not substitute an older source hash."
+    },
+    {
+      "path": "scripts/check-production-mocks.test.mjs",
+      "reason": "Current cleanup candidate or missing path; do not substitute an older source hash."
+    },
+    {
+      "path": "vitest.config.ts",
+      "reason": "Current cleanup candidate or missing path; do not substitute an older source hash."
+    },
+    {
+      "path": "docs/ai/WORKFLOW.md",
+      "reason": "Current cleanup candidate or missing path; do not substitute an older source hash."
+    },
+    {
+      "path": "playwright.config.ts",
+      "reason": "Current cleanup candidate or missing path; do not substitute an older source hash."
+    },
+    {
+      "path": "README.md",
+      "reason": "Current cleanup candidate or missing path; do not substitute an older source hash."
+    },
+    {
+      "path": "scripts/serve-e2e.mjs",
+      "reason": "Current cleanup candidate or missing path; do not substitute an older source hash."
+    },
+    {
+      "path": "vite.config.ts",
+      "reason": "Current cleanup candidate or missing path; do not substitute an older source hash."
+    }
+  ],
+  "knownUnresolvedHistoricalAfterHash": 38,
+  "result": "pass",
+  "scope": "This verifies catalogue facts for the listed committed files only. Full enterprise G5 remains blocked; no completion, backend/UAT or Git delivery claim."
+}

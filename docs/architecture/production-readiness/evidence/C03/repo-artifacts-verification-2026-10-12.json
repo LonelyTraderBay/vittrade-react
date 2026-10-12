@@ -1,0 +1,2536 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "evidenceId": "EV-20261012-001",
+  "kind": "repo-artifact-cleanup-and-enterprise-local-verification",
+  "observedAt": "2026-10-12T04:49:35.927Z",
+  "sourceRevision": "fd554bcee8743f94187a12c6700eb1d713c7afc7",
+  "sourceBranch": "codex/vittrade-readiness-p0-p2-20261009",
+  "environment": {
+    "os": "Windows local",
+    "node": "22.23.3",
+    "npm": "11.17.0",
+    "ciFlag": true,
+    "dependencyInstall": false,
+    "lockfileChanged": false
+  },
+  "sourceSnapshotSha256": "4dad9deef8caccfa100cc1a7eea1d5df15dd666ec02efab0450aaeb3041f414a",
+  "sourceFileCount": 967,
+  "candidateSourceFiles": [
+    {
+      "path": ".gitignore",
+      "sha256": "f3a31f9c67805212d4adc961768014ac927c7ee024aee49b099065d6efc864ff"
+    },
+    {
+      "path": ".prettierignore",
+      "sha256": "8976b6c9ab105d3806e7fb4678c85e0efdeb7eaecef4db0463a51e673031f704"
+    },
+    {
+      "path": "README.md",
+      "sha256": "705423abb76e41b1eced97856f452413d6a8c76d7f43425942083f9847419b9c"
+    },
+    {
+      "path": "docs/ai/WORKFLOW.md",
+      "sha256": "ba1fa8f3d78c9048b6db728b7668ffa58a5602bad29ac9d6a49098485a3c1367"
+    },
+    {
+      "path": "eslint.config.js",
+      "sha256": "4357c8d60b797a2633f633fd645a1ceb23abf4c600ad7919dc8e6e24571d6be4"
+    },
+    {
+      "path": "package.json",
+      "sha256": "21fa3b6d188f39f5ac2aca2c3a371cb6d4ced49fc816cdfeca7b6f843a33d194"
+    },
+    {
+      "path": "playwright.config.ts",
+      "sha256": "66e8eebc4b9b517848c26270fe4e2d91f08a258137ce8d23ad03eae0e2cadd22"
+    },
+    {
+      "path": "scripts/check-build-artifact.mjs",
+      "sha256": "8dc6cfd941299f4501ac7babfbc325e75aef7976e3a9e5f81249e3cef5c28271"
+    },
+    {
+      "path": "scripts/check-bundle-budget.mjs",
+      "sha256": "91ce032fd5a2277bab724c6a85fb119dac35f6e8d93b1b334da99cb3663b3a79"
+    },
+    {
+      "path": "scripts/check-production-mocks.mjs",
+      "sha256": "d7600b777d262f54abd9938fe14caafa71e68d5bc91f0e2efcdbb84f3110bb17"
+    },
+    {
+      "path": "scripts/check-production-mocks.test.mjs",
+      "sha256": "a1ef594617cb038f9311ca14d55c79359e8fe44ad18c010a7e105cec12036911"
+    },
+    {
+      "path": "scripts/plan-artifact-cleanup.mjs",
+      "sha256": "8d839f2915de2d6314d2d1023f5601ec02f51cd92a40aaf4a1966e75d2d61842"
+    },
+    {
+      "path": "scripts/plan-artifact-cleanup.test.mjs",
+      "sha256": "ab2005565e5476bc73671508ccc0847ee8c06a964be6fc005eeaa60b2635ae29"
+    },
+    {
+      "path": "scripts/run-with-artifacts.mjs",
+      "sha256": "6d8fd3756379a8aacc1ea0585ba1669281b4a7739a5a0510f3526688fa9ec575"
+    },
+    {
+      "path": "scripts/run-with-artifacts.test.mjs",
+      "sha256": "a4338191015372791a9b5ab11a1a903e4d7a65500756d94489de3e88b3453187"
+    },
+    {
+      "path": "scripts/serve-e2e.mjs",
+      "sha256": "8ff78c9e3e9666c8ec0dd1e849ba21306b7bdd98b9695645e2ab17efe2644c1f"
+    },
+    {
+      "path": "vite.config.ts",
+      "sha256": "8dbfd2b17024c402f3d83d202941aecad09011984883ee927664bd2a97f694ba"
+    },
+    {
+      "path": "vitest.config.ts",
+      "sha256": "9b5174d77743bbd5d49add6eebef70c865593abed258612b940f9b2a4e52668c"
+    }
+  ],
+  "ownedRuns": {
+    "G2-focused": {
+      "path": ".artifacts/runs/2026-10-12T04-33-19-047Z-vitest-67d4fb2d-7517-48f3-bbd4-8e1fbc649264",
+      "manifestSha256": "527413c089367bbdeef231d012a7581d0f6b263e964f072f954e64c1f56cce1b",
+      "startedAt": "2026-10-12T04:33:19.048Z",
+      "finishedAt": "2026-10-12T04:33:22.301Z"
+    },
+    "G2-unit": {
+      "path": ".artifacts/runs/2026-10-12T04-33-29-758Z-vitest-64b1d458-7a6c-494a-99cd-059881496039",
+      "manifestSha256": "91fc50d5a81938d0a29e2552d08ce415b636b838f6b2729f127a8a6cfdac8a82",
+      "startedAt": "2026-10-12T04:33:29.759Z",
+      "finishedAt": "2026-10-12T04:39:53.237Z"
+    },
+    "G2-coverage": {
+      "path": ".artifacts/runs/2026-10-12T04-39-53-675Z-vitest-4acde96a-609a-4b71-b0c6-a020a7665bf3",
+      "manifestSha256": "6fe18c5b3891ba27beac1c5f7c2e94cfa857adda99c6c1a8498156fedce4c502",
+      "startedAt": "2026-10-12T04:39:53.676Z",
+      "finishedAt": "2026-10-12T04:47:03.173Z"
+    },
+    "G2-e2e": {
+      "path": ".artifacts/runs/2026-10-12T04-47-03-521Z-playwright-08d3283a-e56d-48df-b966-22b5719d5419",
+      "manifestSha256": "73f5db51c2fe3f5c7e7db69848999f5320c02a228dca282cd81180c83f141ade",
+      "startedAt": "2026-10-12T04:47:03.522Z",
+      "finishedAt": "2026-10-12T04:48:20.838Z"
+    },
+    "G2-dev-e2e": {
+      "path": ".artifacts/runs/2026-10-12T04-41-26-567Z-playwright-1103c4a1-93e3-43ce-995c-6886ff85b9b7",
+      "manifestSha256": "de920eb91bb001c7ff7f4f39aee5aaf091c8c281aa7f8809e8c2a265f4856341",
+      "startedAt": "2026-10-12T04:41:26.568Z",
+      "finishedAt": "2026-10-12T04:41:39.787Z"
+    },
+    "G4-build": {
+      "path": ".artifacts/runs/2026-10-12T04-48-21-195Z-build-30bad79a-4f6c-4748-afba-8e65d0eab00a",
+      "manifestSha256": "af02fdee2511d3712df1c3d40b63bf944248ba149f92d692c467e730072cfa9e",
+      "startedAt": "2026-10-12T04:48:21.198Z",
+      "finishedAt": "2026-10-12T04:48:38.417Z"
+    }
+  },
+  "gates": [
+    {
+      "id": "G2-focused",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:33:19.012Z",
+      "endedAt": "2026-10-12T04:33:22.427Z",
+      "logSha256": "94091d7fb61c84d5395ad1843c7a5f7ede685bf2e35a2f2dff7e453ec780042c"
+    },
+    {
+      "id": "G1-eol",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:33:29.585Z",
+      "endedAt": "2026-10-12T04:33:31.422Z",
+      "logSha256": "658dc5d736c78685116283659cc1dc46b92c4dd8b8fa0e51dfb77212fd34b814"
+    },
+    {
+      "id": "G1-typecheck",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:33:31.423Z",
+      "endedAt": "2026-10-12T04:33:44.691Z",
+      "logSha256": "c2ba85d098824a1853a97ab5d1b5e0cacb954c25406c3e65fcbcd440625caf37"
+    },
+    {
+      "id": "G1-lint",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:33:44.692Z",
+      "endedAt": "2026-10-12T04:33:53.063Z",
+      "logSha256": "4d28248e8a49a0d4eb28f4655e1d1bdad42ab233d28376c92981ed3c5efbb780"
+    },
+    {
+      "id": "G1-lint-budget",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:33:53.064Z",
+      "endedAt": "2026-10-12T04:34:01.805Z",
+      "logSha256": "7eb840f57a4cdc51c286a01084e94f30f7ae7aee5e89c52412d98af3c667fb7f"
+    },
+    {
+      "id": "G1-format",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:34:01.806Z",
+      "endedAt": "2026-10-12T04:34:08.855Z",
+      "logSha256": "2a823c5310436404318b6ad9a8e2582d127327046b2cb9452b6f6b8124502227"
+    },
+    {
+      "id": "G1-architecture",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:34:08.856Z",
+      "endedAt": "2026-10-12T04:34:10.679Z",
+      "logSha256": "e92620ee9dd3a4235516e7309b36f6e2aa8fc11ba4fbd5b2d020525096ed382f"
+    },
+    {
+      "id": "G1-inventory",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:34:10.680Z",
+      "endedAt": "2026-10-12T04:34:11.449Z",
+      "logSha256": "6ad4d89baddfa900820da70697c63e7e06ca41c65f348d7fdbc330f5b3f9c00d"
+    },
+    {
+      "id": "G1-page-size",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:34:11.450Z",
+      "endedAt": "2026-10-12T04:34:11.657Z",
+      "logSha256": "48ffa626d8838a7decea788ade1524a3acec9a87ac3cf75f2abfd9bd74bf208b"
+    },
+    {
+      "id": "G3-audit",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:34:11.658Z",
+      "endedAt": "2026-10-12T04:34:12.792Z",
+      "logSha256": "f69734b3facf1505b5953e1a2a7bd0c51e6e4b40de0f1ac81c0fc765dbfc379c"
+    },
+    {
+      "id": "G3-licenses",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:34:12.792Z",
+      "endedAt": "2026-10-12T04:34:13.137Z",
+      "logSha256": "632272cca852c604ed9b88f6a14fc389241601df555acb0fdf19578fa1df76c7"
+    },
+    {
+      "id": "G3-security",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:34:13.138Z",
+      "endedAt": "2026-10-12T04:34:13.391Z",
+      "logSha256": "8be564c655ee3e8a1f500ba39e87f8dccfc0791af73e7c1fb838f82b7dd9b2ad"
+    },
+    {
+      "id": "G3-env",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:34:13.391Z",
+      "endedAt": "2026-10-12T04:34:13.697Z",
+      "logSha256": "a4f3652457aaefab78cd593f14aaca1a218e617f503a501b3ac46eace3bcacb0"
+    },
+    {
+      "id": "G3-contracts",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:34:13.698Z",
+      "endedAt": "2026-10-12T04:34:14.061Z",
+      "logSha256": "c5cb179bfa5e57d545ed8b5f756f7ee3601b186e0ecfbbcbe80ca38d3dbd514d"
+    },
+    {
+      "id": "G4-imports",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:34:14.062Z",
+      "endedAt": "2026-10-12T04:34:14.366Z",
+      "logSha256": "4b3e9900a3363a36044586a30c4a027a1e275d814820f637e8b9d2f3f93530a3"
+    },
+    {
+      "id": "G4-routes",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:34:14.367Z",
+      "endedAt": "2026-10-12T04:34:14.552Z",
+      "logSha256": "a23d816773b3f191bb1a7fa2a60b46332d41d8616c79fbbae2e19eaeadafa126"
+    },
+    {
+      "id": "G2-unit",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:33:29.587Z",
+      "endedAt": "2026-10-12T04:39:53.421Z",
+      "logSha256": "2672e3813e01421518f95b5307ab9a9bb293801ecdb2513d4fc049b2092fb846"
+    },
+    {
+      "id": "G2-coverage",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:39:53.422Z",
+      "endedAt": "2026-10-12T04:47:03.354Z",
+      "logSha256": "c33763b0d46bd7c8c34f924fb4392ff1b3af9cfbab1005e59f7e63167b644b62"
+    },
+    {
+      "id": "G2-e2e",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:47:03.356Z",
+      "endedAt": "2026-10-12T04:48:21.022Z",
+      "logSha256": "ed83f2a88d3b1fd4284773cd67faa9cb855428dbfb1bcf530f9d9f8eede4a6ed"
+    },
+    {
+      "id": "G4-build",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:48:21.023Z",
+      "endedAt": "2026-10-12T04:48:38.547Z",
+      "logSha256": "4c488c147dc74da0fa3002aaa266a294b7ebdff6aa2b996235869152a9733845"
+    },
+    {
+      "id": "G4-artifact",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:48:38.548Z",
+      "endedAt": "2026-10-12T04:48:38.945Z",
+      "logSha256": "a9c9e9c8daafb724b683129c60c163c89489e70f428740e9db35013392c5b3d3"
+    },
+    {
+      "id": "G4-bundle",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:48:38.946Z",
+      "endedAt": "2026-10-12T04:48:39.480Z",
+      "logSha256": "c23c96fe11d43c7a54dcd39d3358da5ec47197a5564a5a0df29273b95353a826"
+    },
+    {
+      "id": "G2-dev-e2e",
+      "exit": 0,
+      "startedAt": "2026-10-12T04:41:26.369Z",
+      "endedAt": "2026-10-12T04:41:40.123Z",
+      "logSha256": "f127d90fb1863759188b3aa73bdeaa321621e14528ecf5d32207dcc9cc42fb70"
+    }
+  ],
+  "unit": {
+    "filesPassed": 334,
+    "testsPassed": 3014,
+    "failed": 0,
+    "skipped": 0
+  },
+  "coverage": {
+    "report": ".artifacts/runs/2026-10-12T04-39-53-675Z-vitest-4acde96a-609a-4b71-b0c6-a020a7665bf3/coverage/coverage-final.json",
+    "reportSha256": "e60f68484335a7ba168f2b154f01ee243cf903549ace48d02c7858480c4593d5",
+    "reportEntries": 439,
+    "measurableFiles": 407,
+    "fullyCoveredFiles": 327,
+    "filesWithGaps": 80,
+    "noCounterFiles": 32,
+    "metrics": {
+      "statements": {
+        "covered": 11803,
+        "total": 11992,
+        "missing": 189,
+        "pct": 98.42
+      },
+      "branches": {
+        "covered": 9412,
+        "total": 9721,
+        "missing": 309,
+        "pct": 96.82
+      },
+      "functions": {
+        "covered": 3855,
+        "total": 3929,
+        "missing": 74,
+        "pct": 98.11
+      },
+      "lines": {
+        "covered": 10986,
+        "total": 11101,
+        "missing": 115,
+        "pct": 98.96
+      }
+    },
+    "thresholds": {
+      "statements": 90,
+      "branches": 80,
+      "functions": 85,
+      "lines": 90
+    },
+    "sourceIncludeAndExcludeUnchanged": true,
+    "nextMeasuredGap": {
+      "path": "src/features/market/pages/MarketOverviewPage.tsx",
+      "gaps": {
+        "statements": 6,
+        "branches": 0,
+        "functions": 6,
+        "lines": 5
+      },
+      "missing": 17
+    },
+    "savingsPortfolio": {
+      "path": "src/features/earn/pages/SavingsPortfolioPage.tsx",
+      "gaps": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 0,
+        "lines": 0
+      },
+      "missing": 0
+    }
+  },
+  "e2e": {
+    "stagingLocal": {
+      "passed": 59,
+      "skipped": 4,
+      "reason": "Existing development registration tests remain pending in the staging/production route trees."
+    },
+    "developmentApiFixture": {
+      "passed": 4,
+      "skipped": 0,
+      "realBackend": false
+    }
+  },
+  "cleanup": {
+    "authorization": "User approved exactly the 61 paths in the local proposal.",
+    "deletedFiles": 61,
+    "deletedLogicalBytes": 23373133,
+    "measuredVolumeDeltaBytes": 22970368,
+    "deletedPaths": [
+      {
+        "path": "playwright-report/index.html",
+        "bytes": 565083,
+        "sha256": "28311b3e34743a39261bb261d041a43344045adca47911e7d33eba577a94cb18"
+      },
+      {
+        "path": "node_modules/.vite/deps/@radix-ui_react-slot.js",
+        "bytes": 4439,
+        "sha256": "7e46e92579af813c59c670c33ba8234b5f656a259608ef3a23b33463195f9d33"
+      },
+      {
+        "path": "node_modules/.vite/deps/@radix-ui_react-slot.js.map",
+        "bytes": 10116,
+        "sha256": "5cf7012c6273f26af395ec6bb92697ee7cc27ae217fbe14331782ee12652990f"
+      },
+      {
+        "path": "node_modules/.vite/deps/@tanstack_react-query.js",
+        "bytes": 163314,
+        "sha256": "d9a6deba84dd67199a30fe51000488cede22da2af5abe91fae03a5d0d4026e29"
+      },
+      {
+        "path": "node_modules/.vite/deps/@tanstack_react-query.js.map",
+        "bytes": 492477,
+        "sha256": "99fac3d1b7769124a01c413cb0eeaf7582f1fe42e40ac27c3cd570863a88218a"
+      },
+      {
+        "path": "node_modules/.vite/deps/chunk-3EQ4YGYS.js",
+        "bytes": 358746,
+        "sha256": "05ad5cef0bbee285c75aa6c8e2cadf4c4c992b15376aa51aedbd411a51ece0fe"
+      },
+      {
+        "path": "node_modules/.vite/deps/chunk-3EQ4YGYS.js.map",
+        "bytes": 782530,
+        "sha256": "d8a4a99642dd2c02dab1c8642f710f2954512eb5ddcddc17dda837134477009a"
+      },
+      {
+        "path": "node_modules/.vite/deps/chunk-H343HIDT.js",
+        "bytes": 931872,
+        "sha256": "f5cd5d28fbaab05b47ba387a1742fa073df1ef15fb8c20a356bd86b20068e301"
+      },
+      {
+        "path": "node_modules/.vite/deps/chunk-H343HIDT.js.map",
+        "bytes": 1492838,
+        "sha256": "ab2cbfc74b298ff6c11871dca742526f97bf16a76c8a3a105d990050f915408f"
+      },
+      {
+        "path": "node_modules/.vite/deps/chunk-QRIEPQWS.js",
+        "bytes": 37300,
+        "sha256": "65ee9281e308bb051ee0f8710a63cc5caeddf38eb792da2ffd5fbda9e047740b"
+      },
+      {
+        "path": "node_modules/.vite/deps/chunk-QRIEPQWS.js.map",
+        "bytes": 61911,
+        "sha256": "a4f9e1af56cfc0cf64e8f3cad84c8069c6c0a22b87efd95866d679afa0a708b6"
+      },
+      {
+        "path": "node_modules/.vite/deps/chunk-SNAQBZPT.js",
+        "bytes": 3220,
+        "sha256": "3b85af721a97143b3b622c1abc8d1b828f4b09b34be9ad3e96e50308430c2374"
+      },
+      {
+        "path": "node_modules/.vite/deps/chunk-SNAQBZPT.js.map",
+        "bytes": 93,
+        "sha256": "ed562b0bba7ee7214e56ac7f728054b3496bec4597c94a4eb7b4179e6f5cb1c9"
+      },
+      {
+        "path": "node_modules/.vite/deps/chunk-SOBQYPKD.js",
+        "bytes": 484980,
+        "sha256": "6cac6f709fd58b511de502358e947cab7feb5dd858a9fbdcb4a4df69b919dd61"
+      },
+      {
+        "path": "node_modules/.vite/deps/chunk-SOBQYPKD.js.map",
+        "bytes": 1036393,
+        "sha256": "6be12013133778b46363e32297d9e8c847ab3ec0fc02924d34da42f4dbfc0877"
+      },
+      {
+        "path": "node_modules/.vite/deps/chunk-U7P2NEEE.js",
+        "bytes": 626,
+        "sha256": "43389e3772ba47861f225b161fca8dfde50b6caa258aaf5a0a0c5d2160ca7fb6"
+      },
+      {
+        "path": "node_modules/.vite/deps/chunk-U7P2NEEE.js.map",
+        "bytes": 1046,
+        "sha256": "cec8e0eac9dbcfaecffd5c795334cf9c6368d6901e2932d3f27130a240515870"
+      },
+      {
+        "path": "node_modules/.vite/deps/chunk-VJA5E53X.js",
+        "bytes": 77784,
+        "sha256": "15cc3629bf8722ef1ca1821617a05e37c90eddf1e4609807c4e14b163bb82ba8"
+      },
+      {
+        "path": "node_modules/.vite/deps/chunk-VJA5E53X.js.map",
+        "bytes": 125603,
+        "sha256": "f5d0c19a14f5d1dff300a368f32020726a9ad0260d1ffba7429f98b1dff8799b"
+      },
+      {
+        "path": "node_modules/.vite/deps/clsx.js",
+        "bytes": 138,
+        "sha256": "56814a7d92c88b50bc4371ca5cb5666a7312f563d1a4f008c59a325df1d8173a"
+      },
+      {
+        "path": "node_modules/.vite/deps/clsx.js.map",
+        "bytes": 93,
+        "sha256": "ed562b0bba7ee7214e56ac7f728054b3496bec4597c94a4eb7b4179e6f5cb1c9"
+      },
+      {
+        "path": "node_modules/.vite/deps/graphql-6TFCCC3U.js",
+        "bytes": 8904,
+        "sha256": "37acff7e8b88359822e9ca5f07a93ec64420ef691f54b2e2b1baf49e6143f74b"
+      },
+      {
+        "path": "node_modules/.vite/deps/graphql-6TFCCC3U.js.map",
+        "bytes": 93,
+        "sha256": "ed562b0bba7ee7214e56ac7f728054b3496bec4597c94a4eb7b4179e6f5cb1c9"
+      },
+      {
+        "path": "node_modules/.vite/deps/html2canvas.js",
+        "bytes": 350607,
+        "sha256": "39f3880eac47f5b3ed57f14ebe1d84538888d2423addc4e16c509baec8f4c7f0"
+      },
+      {
+        "path": "node_modules/.vite/deps/html2canvas.js.map",
+        "bytes": 652239,
+        "sha256": "760153a85dc8a1262d9c37cf5231e58b424af158472a30f498303c64d77a599e"
+      },
+      {
+        "path": "node_modules/.vite/deps/lightweight-charts.js",
+        "bytes": 642794,
+        "sha256": "4c95e039c61e2ad75053f39e05de9363dd39f60c9862e6d0a074b9037262634f"
+      },
+      {
+        "path": "node_modules/.vite/deps/lightweight-charts.js.map",
+        "bytes": 1151864,
+        "sha256": "20e54ebe66a9972bb0b0bb08df526c9695ffe72f6758b30510ef164a04841e87"
+      },
+      {
+        "path": "node_modules/.vite/deps/lucide-react.js",
+        "bytes": 944572,
+        "sha256": "76df228e19029cb82b4825897917301afba7f04a0c9bd92d7134e383c75cdc11"
+      },
+      {
+        "path": "node_modules/.vite/deps/lucide-react.js.map",
+        "bytes": 2984197,
+        "sha256": "789fcd1cae19361b3e648780316064cf09e4e6a2d7f368b7583ad155d8bf4776"
+      },
+      {
+        "path": "node_modules/.vite/deps/motion_react.js",
+        "bytes": 463566,
+        "sha256": "cad275e747a5cafc77a5a58353fbdf767b19808b8866b840f62840ac4f933917"
+      },
+      {
+        "path": "node_modules/.vite/deps/motion_react.js.map",
+        "bytes": 1143967,
+        "sha256": "7011a64cf859e8b41cbace471dd622b0ea8e36aae6500219311fb5a38f969540"
+      },
+      {
+        "path": "node_modules/.vite/deps/msw.js",
+        "bytes": 73249,
+        "sha256": "620c86e7d9872ded1f9d34a9eef8e35f9ae284c0cb83c7d84dade5a748d99d73"
+      },
+      {
+        "path": "node_modules/.vite/deps/msw.js.map",
+        "bytes": 157799,
+        "sha256": "4f6a01f9ff56f79f834a7102f764ec647b97aec92ab53b7e84df0c6fbd64d94d"
+      },
+      {
+        "path": "node_modules/.vite/deps/msw_browser.js",
+        "bytes": 175121,
+        "sha256": "0124af60885367aaba2623ac962bf2c47fd8ab6009da50017d1aecb4f7b64e2a"
+      },
+      {
+        "path": "node_modules/.vite/deps/msw_browser.js.map",
+        "bytes": 406162,
+        "sha256": "9ea3b7c60372dbe809b04f5fece6a06b50120523e238bbb0581c9a2f8db9110c"
+      },
+      {
+        "path": "node_modules/.vite/deps/package.json",
+        "bytes": 23,
+        "sha256": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a"
+      },
+      {
+        "path": "node_modules/.vite/deps/qrcode__react.js",
+        "bytes": 44245,
+        "sha256": "a67bdd8b5ae0f1dc9389e9b997325463046f684650be4e7f42f8e8419a76d326"
+      },
+      {
+        "path": "node_modules/.vite/deps/qrcode__react.js.map",
+        "bytes": 72291,
+        "sha256": "c1caf4d8b85f252275b106e627a0a722f56cf409f108772ae3377c6a6c578d99"
+      },
+      {
+        "path": "node_modules/.vite/deps/react-dom.js",
+        "bytes": 155,
+        "sha256": "7a74c607c667be595320847a3cbea28bb028ceec2eb94d349ef5a82107a536ff"
+      },
+      {
+        "path": "node_modules/.vite/deps/react-dom.js.map",
+        "bytes": 93,
+        "sha256": "ed562b0bba7ee7214e56ac7f728054b3496bec4597c94a4eb7b4179e6f5cb1c9"
+      },
+      {
+        "path": "node_modules/.vite/deps/react-dom_client.js",
+        "bytes": 1016,
+        "sha256": "760b307f57f912ce92dec7ec8c1aa4b6f82b611618ad27ce46ce4eba87d48693"
+      },
+      {
+        "path": "node_modules/.vite/deps/react-dom_client.js.map",
+        "bytes": 1213,
+        "sha256": "87a72a755115c22ca831a58d5ce011a816f41322c730a421c53ac1814db598b5"
+      },
+      {
+        "path": "node_modules/.vite/deps/react-router.js",
+        "bytes": 468746,
+        "sha256": "ef11a1357cea46bc79528a1e21d6aed4ed4349e13fc9acd74dbb00d5f6989c4a"
+      },
+      {
+        "path": "node_modules/.vite/deps/react-router.js.map",
+        "bytes": 789194,
+        "sha256": "d9c6a34af85622c4bdef815f6e55157fe5fd096feeb31fbb78c381a32e5789cd"
+      },
+      {
+        "path": "node_modules/.vite/deps/react.js",
+        "bytes": 117,
+        "sha256": "941b96a8fcdba044377563f12e218b64965d89ba7492ce1f0f9276138dfe3bff"
+      },
+      {
+        "path": "node_modules/.vite/deps/react.js.map",
+        "bytes": 93,
+        "sha256": "ed562b0bba7ee7214e56ac7f728054b3496bec4597c94a4eb7b4179e6f5cb1c9"
+      },
+      {
+        "path": "node_modules/.vite/deps/react_jsx-dev-runtime.js",
+        "bytes": 36967,
+        "sha256": "217ba1a23e9ba3fe977c709d8f9826d004b4b25dc24455e4418ae800e7b59d47"
+      },
+      {
+        "path": "node_modules/.vite/deps/react_jsx-dev-runtime.js.map",
+        "bytes": 61084,
+        "sha256": "e87f9b85831c866a248f9bfb4a88f296c67c074b2b395b98e25aaf03cceb6f8b"
+      },
+      {
+        "path": "node_modules/.vite/deps/react_jsx-runtime.js",
+        "bytes": 159,
+        "sha256": "1932b8a684d371dc60ba8ce1a0ec344e2bbc275efd83a313c27e6439397a1d80"
+      },
+      {
+        "path": "node_modules/.vite/deps/react_jsx-runtime.js.map",
+        "bytes": 93,
+        "sha256": "ed562b0bba7ee7214e56ac7f728054b3496bec4597c94a4eb7b4179e6f5cb1c9"
+      },
+      {
+        "path": "node_modules/.vite/deps/recharts.js",
+        "bytes": 1260044,
+        "sha256": "a493edab0824555c53ae073ddf32c2de182e2e37c231cfde9779b77725e86dc9"
+      },
+      {
+        "path": "node_modules/.vite/deps/recharts.js.map",
+        "bytes": 2392954,
+        "sha256": "a0221fed20aaed775fbf6b33916f78e27078724cbb822d5da8e4c5ab4f2b31b7"
+      },
+      {
+        "path": "node_modules/.vite/deps/sonner.js",
+        "bytes": 57867,
+        "sha256": "e8ea2e4bb0f5e8cbb090718f281d246730e83e3ee2cbf5144ab09ebad5b670bd"
+      },
+      {
+        "path": "node_modules/.vite/deps/sonner.js.map",
+        "bytes": 94677,
+        "sha256": "f3aae03d37908d74c391ab93b415e81f5c1b05533d933937a1fb508d9749061a"
+      },
+      {
+        "path": "node_modules/.vite/deps/tailwind-merge.js",
+        "bytes": 91373,
+        "sha256": "93044bbeb3ac889da128b1231b79d667188d87056bcafd3b3b9a9556138a84a8"
+      },
+      {
+        "path": "node_modules/.vite/deps/tailwind-merge.js.map",
+        "bytes": 161555,
+        "sha256": "18f6ec3737cb94dc2d8443b026292366e2c9610fb10a3d644f20e482722a0539"
+      },
+      {
+        "path": "node_modules/.vite/deps/zod.js",
+        "bytes": 687310,
+        "sha256": "d720d331ec316f03860cd2675428282bce7bfc1f65f10eac5378669827000945"
+      },
+      {
+        "path": "node_modules/.vite/deps/zod.js.map",
+        "bytes": 1329576,
+        "sha256": "c4eb65f7831d8a9ed1a9330ffab87c138bfc14779cd8a1d0d556d2bf9f79a115"
+      },
+      {
+        "path": "node_modules/.vite/deps/_metadata.json",
+        "bytes": 4068,
+        "sha256": "d3f53b15649ec28fc5ea420bda7f7bdc9c7fe81ef5fd8786bf8ed7d506e04a43"
+      },
+      {
+        "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json",
+        "bytes": 32484,
+        "sha256": "0c04932ef3d7382491f641c798ebf7ad9981d4f86b3a954915d6a173d5728384"
+      },
+      {
+        "path": "node_modules/.vite-temp/vitest.config.ts.timestamp-1791576931038-3faa0950421938.mjs",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "htmlReportBackedUp": true,
+    "autoRetentionEnabled": false,
+    "newOutputDryRunOnly": {
+      "files": 220,
+      "bytes": 2686894,
+      "deleted": 0
+    }
+  },
+  "ledgerReconciliation": {
+    "sourceEntries": 120,
+    "reconciled": [
+      {
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-5-2026-10-10.json",
+        "sourceHead": "fd554bcee8743f94187a12c6700eb1d713c7afc7",
+        "sha256": "c2e42d2d715209daf2cc27d74b080c2c45e259c16f5803a5fb6773ce0ebe7f8c",
+        "changeIds": [
+          "CHANGE-20261010-0018"
+        ],
+        "evidenceIds": [
+          "EV-20261010-004"
+        ]
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-6-2026-10-10.json",
+        "sourceHead": "fd554bcee8743f94187a12c6700eb1d713c7afc7",
+        "sha256": "8d6b85cb0f712adad16644a640f65229168458d5ca41b40bbd91c59983635be7",
+        "changeIds": [
+          "CHANGE-20261010-0026"
+        ],
+        "evidenceIds": [
+          "EV-20261010-006"
+        ]
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-iteration-5-wallet-2026-10-10.json",
+        "sourceHead": "fd554bcee8743f94187a12c6700eb1d713c7afc7",
+        "sha256": "f1208812a0f22c28fe6e278cab1501d90c0ccfd1f831ad388ff9ac16b6c45474",
+        "changeIds": [
+          "CHANGE-20261010-0017"
+        ],
+        "evidenceIds": [
+          "EV-20261010-003"
+        ]
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-iteration-6-wallet-network-address-2026-10-10.json",
+        "sourceHead": "fd554bcee8743f94187a12c6700eb1d713c7afc7",
+        "sha256": "d079c7b1d3b3ad467a679e08d856f960fed337e0d60ba6c48832171bd63b9950",
+        "changeIds": [
+          "CHANGE-20261010-0025"
+        ],
+        "evidenceIds": [
+          "EV-20261010-005"
+        ]
+      },
+      {
+        "path": "src/app/components/layout/RootLayout.test.tsx",
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "77a3d6ecce4a458fe9b723da79cccc1573a55659bcb83f2f091cf9dc28ccf24e",
+        "changeIds": [
+          "CHANGE-20260927-042",
+          "CHANGE-20261003-0122",
+          "CHANGE-20261010-0183"
+        ],
+        "evidenceIds": [
+          "EV-20260927-058",
+          "EV-20260927-059",
+          "EV-20260927-060",
+          "EV-20260927-062",
+          "EV-20261003-004",
+          "EV-20261009-002",
+          "EV-20261010-037"
+        ]
+      },
+      {
+        "path": "src/app/components/layout/TabletTopBar.test.tsx",
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "f4c28ed8b20ebadb88121dad8d11d522be347692b8d6e1208af2e2b41da0b391",
+        "changeIds": [
+          "CHANGE-20261011-0279"
+        ],
+        "evidenceIds": [
+          "EV-20261011-066"
+        ]
+      },
+      {
+        "path": "src/app/components/layout/WebCommandBar.test.tsx",
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "2f222edf4938626b900e84ad44a19961cd90ecce9839b5eb5776343627901de3",
+        "changeIds": [
+          "CHANGE-20260929-2182",
+          "CHANGE-20261001-0199",
+          "CHANGE-20261002-0277",
+          "CHANGE-20261010-0236"
+        ],
+        "evidenceIds": [
+          "EV-20260929-292",
+          "EV-20260929-293",
+          "EV-20261001-029",
+          "EV-20261002-032",
+          "EV-20261009-002",
+          "EV-20261010-046"
+        ]
+      },
+      {
+        "path": "src/app/components/layout/WebCommandBar.tsx",
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "e24914007c0e38fcf59d9503aa16c992d6dcc94bbbf1efbba2614e7ae0e03bed",
+        "changeIds": [
+          "CHANGE-20260929-2181",
+          "CHANGE-20261002-0276",
+          "CHANGE-20261010-0235"
+        ],
+        "evidenceIds": [
+          "EV-20260929-292",
+          "EV-20260929-293",
+          "EV-20261002-032",
+          "EV-20261009-002",
+          "EV-20261010-046"
+        ]
+      },
+      {
+        "path": "src/app/components/mobile/PageTransition.no-ref.test.tsx",
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "2a16743378a14085ae13a1d0b2f74fb38d01062c64d759891af05f401ed5c00f",
+        "changeIds": [
+          "CHANGE-20261010-0040"
+        ],
+        "evidenceIds": [
+          "EV-20261010-008"
+        ]
+      },
+      {
+        "path": "src/app/components/mobile/SwipeBack.test.tsx",
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "66c3a4e1e507d75f84adefcbbd00589cba0f7c148dc8f0bc520950ab803a3dc3",
+        "changeIds": [
+          "CHANGE-20261011-0282"
+        ],
+        "evidenceIds": [
+          "EV-20261011-067"
+        ]
+      },
+      {
+        "path": "src/app/components/mobile/SwipeBack.tsx",
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "b0cbd58ffdd9a2166237b5c5e53a124ea12db51637b61a2484ef1d2d14b9d579",
+        "changeIds": [
+          "CHANGE-20261011-0281"
+        ],
+        "evidenceIds": [
+          "EV-20261011-067"
+        ]
+      },
+      {
+        "path": "src/app/components/onboarding/Coachmark.test.tsx",
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "e0f4027f47616c5b45e5ad5a51915e7df7bfadfc073c9ba2a87a81651ad1a8bd",
+        "changeIds": [
+          "CHANGE-20261010-0147"
+        ],
+        "evidenceIds": [
+          "EV-20261010-029"
+        ]
+      },
+      {
+        "path": "src/app/hooks/useSessionTimeout.test.ts",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "098fbd3863ba13e9bcc05ae3183d21cdff809e9c27a11bca40443b242bc65d62",
+        "changeIds": [
+          "CHANGE-20261010-0254"
+        ],
+        "evidenceIds": [
+          "EV-20261010-049"
+        ]
+      },
+      {
+        "path": "src/app/hooks/useSessionTimeout.ts",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "5d519d424528fcb9fba57386c899727d9dc8acd8653bde5cd251f475c542bfdc",
+        "changeIds": [
+          "CHANGE-20261010-0253"
+        ],
+        "evidenceIds": [
+          "EV-20261010-049"
+        ]
+      },
+      {
+        "path": "src/app/pages/system/IntegrationPendingPage.test.tsx",
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "90da55b203a8edd6366f57fa2846aabc27b105a84472e12b0c9bc3f0fed60f1c",
+        "changeIds": [
+          "CHANGE-20261010-0165"
+        ],
+        "evidenceIds": [
+          "EV-20261010-033"
+        ]
+      },
+      {
+        "path": "src/app/services/CoachmarkService.test.ts",
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "085915d018f746d94d85eb7406019f8ae675cf4aee2f52543bdcfd2efd21a4ac",
+        "changeIds": [
+          "CHANGE-20261010-0178"
+        ],
+        "evidenceIds": [
+          "EV-20261010-036"
+        ]
+      },
+      {
+        "path": "src/features/arena/pages/ArenaContractPages.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "45e7e93bb4fec6042b65e2d168ad3953d3bb4d6dd25256c4f2372cbf55e48f02",
+        "changeIds": [
+          "CHANGE-20261010-0087"
+        ],
+        "evidenceIds": [
+          "EV-20261010-016"
+        ]
+      },
+      {
+        "path": "src/features/arena/pages/ArenaJoinContractPage.test.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "9c56dd43b2cc531f647e03040a8a80aa62b01b6d2a9cb04b2b8474aa6256d3b9",
+        "changeIds": [
+          "CHANGE-20261010-0088"
+        ],
+        "evidenceIds": [
+          "EV-20261010-016"
+        ]
+      },
+      {
+        "path": "src/features/auth/components/Web2FASetupBackupStep.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "9e61322d6160d1807a7c7b7ab65ad989c8b66309c80907c018a2fb1a50061bff",
+        "changeIds": [
+          "CHANGE-20261010-0268"
+        ],
+        "evidenceIds": [
+          "EV-20261010-052"
+        ]
+      },
+      {
+        "path": "src/features/auth/components/Web2FASetupFlow.test.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "869be7a25bf901c1d39b7cf5693827963a48afe0f17b2aa1c4fcfeb4be3797e0",
+        "changeIds": [
+          "CHANGE-20261010-0184",
+          "CHANGE-20261010-0267"
+        ],
+        "evidenceIds": [
+          "EV-20261002-034",
+          "EV-20261010-037",
+          "EV-20261010-052"
+        ]
+      },
+      {
+        "path": "src/features/auth/components/Web2FASetupFlow.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "56d10973a16ad3645f4aae4fef7c3a01d39e3f7e6d500c2456f1b448baa7dd73",
+        "changeIds": [
+          "CHANGE-20261010-0266"
+        ],
+        "evidenceIds": [
+          "EV-20261010-052"
+        ]
+      },
+      {
+        "path": "src/features/auth/pages/LoginPage.test.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "17f7acfd8c122958d7f7e62547e2f1e7b191376d436555daa5b347e2f787f03f",
+        "changeIds": [
+          "CHANGE-20261010-0194"
+        ],
+        "evidenceIds": [
+          "EV-20261002-034",
+          "EV-20261010-038"
+        ]
+      },
+      {
+        "path": "src/features/auth/pages/LoginPage.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "b496b210f518e821ff5e49e6020cea4ead8abb2c100927d3ab7c25954e9e17af",
+        "changeIds": [
+          "CHANGE-20260927-044",
+          "CHANGE-20261010-0193"
+        ],
+        "evidenceIds": [
+          "EV-20260927-069",
+          "EV-20260927-070",
+          "EV-20260927-073",
+          "EV-20261010-038"
+        ]
+      },
+      {
+        "path": "src/features/auth/pages/PasswordChangePage.test.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "4bea0527b18d74e87a42704d47fb7fc4a7960ab564858ff13d934c0b317c2ac9",
+        "changeIds": [
+          "CHANGE-20261011-0284"
+        ],
+        "evidenceIds": [
+          "EV-20261002-034",
+          "EV-20261011-068"
+        ]
+      },
+      {
+        "path": "src/features/auth/pages/TwoFASetupPage.test.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "6a989d81064fdc25a9afb5b5d97683a74f1d03b03adc7503af9f28b80754830e",
+        "changeIds": [
+          "CHANGE-20261010-0161"
+        ],
+        "evidenceIds": [
+          "EV-20261002-034",
+          "EV-20261010-032"
+        ]
+      },
+      {
+        "path": "src/features/auth/pages/TwoFASetupPage.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "09c7c51998840b109dae3c05582028c39398928e14e1ce6c1b8ead5cbcf6a257",
+        "changeIds": [
+          "CHANGE-20261010-0160"
+        ],
+        "evidenceIds": [
+          "EV-20261010-032"
+        ]
+      },
+      {
+        "path": "src/features/dca/api/dca-api.test.ts",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "7c62b6b902e67d035b7ee27b013631bb9de85ad3507f949d2cf3b74e538b6cad",
+        "changeIds": [
+          "CHANGE-20261010-0037"
+        ],
+        "evidenceIds": [
+          "EV-20261010-008"
+        ]
+      },
+      {
+        "path": "src/features/dca/components/chart-annotation-canvas.ts",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "f77b79e4232f6402ae4c788356d47cf4db68a82d77c6d2b29d804b5f6c6a8f61",
+        "changeIds": [
+          "CHANGE-20261010-0078"
+        ],
+        "evidenceIds": [
+          "EV-20261010-014"
+        ]
+      },
+      {
+        "path": "src/features/dca/components/ChartAnnotationOverlay.test.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "9d08db7c95c5e799b483573a3e0c011415d8a88fe964e10b35bc1f3b8189273a",
+        "changeIds": [
+          "CHANGE-20261010-0077"
+        ],
+        "evidenceIds": [
+          "EV-20261010-014"
+        ]
+      },
+      {
+        "path": "src/features/dca/components/ChartAnnotationOverlay.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "828516babb8b43fc096ae507e2807885254811e5732d75cc4612e4d32e713ba9",
+        "changeIds": [
+          "CHANGE-20261010-0076"
+        ],
+        "evidenceIds": [
+          "EV-20261010-014"
+        ]
+      },
+      {
+        "path": "src/features/dca/components/ChartAnnotationTextInput.test.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "5fc98dddd6f0abad09be57c2da1f23c518ec9d84e356324882e9d2e3614d865d",
+        "changeIds": [
+          "CHANGE-20261010-0038"
+        ],
+        "evidenceIds": [
+          "EV-20261010-008"
+        ]
+      },
+      {
+        "path": "src/features/dca/components/ChartAnnotationToolbar.test.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "780a8821ab323dcecf061722c69e9b5b56b1b0a4733a1c1263f63ec43a711519",
+        "changeIds": [
+          "CHANGE-20261010-0052"
+        ],
+        "evidenceIds": [
+          "EV-20261010-009"
+        ]
+      },
+      {
+        "path": "src/features/dca/components/DCAOverviewCard.test.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "67ed920d9990dfa4577507935b16cb2bad430630e7857acaba6cc9eba8d8eaad",
+        "changeIds": [
+          "CHANGE-20261010-0131",
+          "CHANGE-20261010-0198"
+        ],
+        "evidenceIds": [
+          "EV-20261010-025",
+          "EV-20261010-039"
+        ]
+      },
+      {
+        "path": "src/features/dca/model/useDCAAnalytics.test.ts",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "0c7ed0717bbaf5e7315542ce92131292feabd3aeb97bb4ab9e791397d648a24f",
+        "changeIds": [
+          "CHANGE-20261010-0179",
+          "CHANGE-20261010-0189"
+        ],
+        "evidenceIds": [
+          "EV-20261010-036",
+          "EV-20261010-037"
+        ]
+      },
+      {
+        "path": "src/features/discovery/pages/DiscoveryContractPages.test.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "49ad98f7157689546a1b5842e0823f716d7373693e7030e3c999f4e822c70771",
+        "changeIds": [
+          "CHANGE-20260928-131",
+          "CHANGE-20261010-0185"
+        ],
+        "evidenceIds": [
+          "EV-20260928-058",
+          "EV-20260928-059",
+          "EV-20261010-037"
+        ]
+      },
+      {
+        "path": "src/features/earn/pages/EarnTransactionPages.test.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "886e3db6a6627992727d0c3f0f73a6db41157ff7c96546849c8cacfcfa90ec53",
+        "changeIds": [
+          "CHANGE-20260928-147",
+          "CHANGE-20261010-0135"
+        ],
+        "evidenceIds": [
+          "EV-20260928-062",
+          "EV-20260928-063",
+          "EV-20261010-026"
+        ]
+      },
+      {
+        "path": "src/features/launchpad/api/launchpad-api.ts",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "574566b73db413d55cc82cdcb84ec17e80a7f22db220a8338b28d29e312ce489",
+        "changeIds": [
+          "CHANGE-20261010-0243"
+        ],
+        "evidenceIds": [
+          "EV-20261010-047"
+        ]
+      },
+      {
+        "path": "src/features/launchpad/model/launchpad-types.ts",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "4c4ff3989ea92029b220cd743695cb0579a94ae56551772ae320f878d56a2b83",
+        "changeIds": [
+          "CHANGE-20261010-0244"
+        ],
+        "evidenceIds": [
+          "EV-20261010-047"
+        ]
+      },
+      {
+        "path": "src/features/launchpad/pages/LaunchpadContractPages.test.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "4e3a525bcef0ccab378b96f5dfd5868b9021463e464b056a7e0ea6be049df965",
+        "changeIds": [
+          "CHANGE-20260929-2750",
+          "CHANGE-20260930-0568",
+          "CHANGE-20260930-0587",
+          "CHANGE-20261010-0245"
+        ],
+        "evidenceIds": [
+          "EV-20260929-342",
+          "EV-20260929-343",
+          "EV-20260930-097",
+          "EV-20260930-098",
+          "EV-20260930-100",
+          "EV-20260930-101",
+          "EV-20261002-028",
+          "EV-20261009-002",
+          "EV-20261010-047"
+        ]
+      },
+      {
+        "path": "src/features/market/api/market-api.test.ts",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "02a3c2b844d4ae332cf5447c943f300ddb999961932d95d80d8a6bee802a92fd",
+        "changeIds": [
+          "CHANGE-20261010-0202"
+        ],
+        "evidenceIds": [
+          "EV-20261010-040"
+        ]
+      },
+      {
+        "path": "src/features/market/components/MarketItem.test.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "623410cc6dee290c88d122912d6437795b3e6bccad9ccf989615c83645daedb6",
+        "changeIds": [
+          "CHANGE-20261010-0039"
+        ],
+        "evidenceIds": [
+          "EV-20261010-008"
+        ]
+      },
+      {
+        "path": "src/features/market/pages/MarketComparisonPage.test.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "0d14b137e036d5c568e790dfceb961fc3c0ce810d99a6cb937c089e03ead0204",
+        "changeIds": [
+          "CHANGE-20261010-0169"
+        ],
+        "evidenceIds": [
+          "EV-20261010-034"
+        ]
+      },
+      {
+        "path": "src/features/market/pages/MarketDepthPage.test.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "5d889abb964dba922e26215688305b3154dc297f3648412440dc4f122b4a1c4a",
+        "changeIds": [
+          "CHANGE-20260929-2840",
+          "CHANGE-20261010-0272"
+        ],
+        "evidenceIds": [
+          "EV-20260929-362",
+          "EV-20260929-363",
+          "EV-20260929-366",
+          "EV-20261010-053"
+        ]
+      },
+      {
+        "path": "src/features/market/pages/MarketDerivativesPage.test.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "a78adf57a18c324ec1947c76e3ca24d367f3ee872ee50b961c5d2d2fa55eb21a",
+        "changeIds": [
+          "CHANGE-20261010-0122"
+        ],
+        "evidenceIds": [
+          "EV-20261010-023"
+        ]
+      },
+      {
+        "path": "src/features/market/pages/MarketSectorsPage.test.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "37bb6b4d17120be1be610a9cdeddfad3f1660df829adab47199ed94f3a0ddf4d",
+        "changeIds": [
+          "CHANGE-20261010-0112"
+        ],
+        "evidenceIds": [
+          "EV-20261010-021"
+        ]
+      },
+      {
+        "path": "src/features/market/pages/MarketSentimentPage.test.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "5572dbbc8f9179c65a90dc29a31d96b6832a31488edee6b32cb470103dfbfa88",
+        "changeIds": [
+          "CHANGE-20261010-0072"
+        ],
+        "evidenceIds": [
+          "EV-20261010-013"
+        ]
+      },
+      {
+        "path": "src/features/market/pages/MarketSentimentPage.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "8eb94f0f44abd9e14aa614b52b8a11a4eb4f7c9f12d7f3ed1074b3eccabd9179",
+        "changeIds": [
+          "CHANGE-20261010-0071"
+        ],
+        "evidenceIds": [
+          "EV-20261010-013"
+        ]
+      },
+      {
+        "path": "src/features/market/pages/WatchlistPage.test.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "219edb524fb7e4d5dfeab3e0a950d483d4addce8ac19b04839e14c042e0db7fb",
+        "changeIds": [
+          "CHANGE-20260928-1037",
+          "CHANGE-20261010-0108"
+        ],
+        "evidenceIds": [
+          "EV-20260928-041",
+          "EV-20261010-020"
+        ]
+      },
+      {
+        "path": "src/features/market/pages/WatchlistPage.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "32af21bfba2de889c15b354f3cc5deca423244f6beb012559559d126375eb9d4",
+        "changeIds": [
+          "CHANGE-20260928-1036",
+          "CHANGE-20261010-0107"
+        ],
+        "evidenceIds": [
+          "EV-20260928-040",
+          "EV-20260928-041",
+          "EV-20261010-020"
+        ]
+      },
+      {
+        "path": "src/features/p2p/components/P2PHomeActionSheets.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "e5f62712c1c9db72f36b7a2910b17529beee511cc7f3ecede2f862219117b9dd",
+        "changeIds": [
+          "CHANGE-20261010-0118"
+        ],
+        "evidenceIds": [
+          "EV-20261010-022"
+        ]
+      },
+      {
+        "path": "src/features/p2p/components/P2PHomeCards.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "13c4af41f5a5cc1fe443d393f6a0b43521d44f533ed4217bbe8b37424551240c",
+        "changeIds": [
+          "CHANGE-20261010-0237"
+        ],
+        "evidenceIds": [
+          "EV-20261010-046"
+        ]
+      },
+      {
+        "path": "src/features/p2p/lib/filter-marketplace-ads.test.ts",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "1563da8a9a1565bb8694115fc392202cc64ddde992da9dd72e4002125e632e69",
+        "changeIds": [
+          "CHANGE-20261010-0036"
+        ],
+        "evidenceIds": [
+          "EV-20261010-008"
+        ]
+      },
+      {
+        "path": "src/features/p2p/model/p2p-ad-queries.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "63a9bc6328f7ac27874ccd5b5c087e03b1f713a8ce99bd88521246a7fcd62787",
+        "changeIds": [
+          "CHANGE-20261010-0050"
+        ],
+        "evidenceIds": [
+          "EV-20261010-009"
+        ]
+      },
+      {
+        "path": "src/features/p2p/model/p2p-chat-queries.ts",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "8ca59751167ee231dc879bf863da093f0a2cd3ac1621423345f871ffa0c64257",
+        "changeIds": [
+          "CHANGE-20261010-0229"
+        ],
+        "evidenceIds": [
+          "EV-20261010-045"
+        ]
+      },
+      {
+        "path": "src/features/p2p/model/p2p-dispute-detail-queries.ts",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "0ac65ba8a9c6c27ebe26759145d92abccb3b1fe780befdcc3016137fe249dd66",
+        "changeIds": [
+          "CHANGE-20261010-0230"
+        ],
+        "evidenceIds": [
+          "EV-20261010-045"
+        ]
+      },
+      {
+        "path": "src/features/p2p/model/p2p-order-action-queries.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "d6eaf167fbd2e83ba45614700489162d0eb0738fac832f97de2890f2b1328902",
+        "changeIds": [
+          "CHANGE-20261010-0059"
+        ],
+        "evidenceIds": [
+          "EV-20261010-010"
+        ]
+      },
+      {
+        "path": "src/features/p2p/model/p2p-order-action-queries.ts",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "76e6896bfe649c7b179bcbc0538d325305c9f54d80528978bb3bf06a88eefc35",
+        "changeIds": [
+          "CHANGE-20260928-385",
+          "CHANGE-20261010-0058"
+        ],
+        "evidenceIds": [
+          "EV-20260928-088",
+          "EV-20260928-089",
+          "EV-20261010-010"
+        ]
+      },
+      {
+        "path": "src/features/p2p/model/p2p-queries.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "f0a2228b41bb14c9e5e905926ce97f7290c51785f2fecb274be3085fa9ed84a2",
+        "changeIds": [
+          "CHANGE-20260928-387",
+          "CHANGE-20261010-0231"
+        ],
+        "evidenceIds": [
+          "EV-20260928-088",
+          "EV-20260928-089",
+          "EV-20261010-045"
+        ]
+      },
+      {
+        "path": "src/features/p2p/model/p2p-trust-queries.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "cd58dbba9cab35828c65e3742de390cc58a8bab0603349aff3b0e00d6795ea65",
+        "changeIds": [
+          "CHANGE-20261010-0051"
+        ],
+        "evidenceIds": [
+          "EV-20261010-009"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2PAchievementsPage.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "35d1b4ef984141a94dff0d0db3260acc4a519352e3b7c87ea31adc663168c393",
+        "changeIds": [
+          "CHANGE-20261010-0152"
+        ],
+        "evidenceIds": [
+          "EV-20261010-030"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2PAchievementsPage.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "3897e48c6bdf9154f5bd1f0927bfdbc2d29a896e3d98e0c4b391f4528184b8dd",
+        "changeIds": [
+          "CHANGE-20261010-0151"
+        ],
+        "evidenceIds": [
+          "EV-20261010-030"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2PCreateAdContractPage.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "22ad6fded2396819813a988ab5f4e9bdac655e54d9a775bda353b3bd716e5a60",
+        "changeIds": [
+          "CHANGE-20261010-0143"
+        ],
+        "evidenceIds": [
+          "EV-20261010-028"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2PDisputesPage.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "a7c7e0972ae54f21f069fe14b79ec35abcbfdfdae043e33ca59761be584ad8a8",
+        "changeIds": [
+          "CHANGE-20261010-0174"
+        ],
+        "evidenceIds": [
+          "EV-20261010-035"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2PDisputesPage.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "d405a84b535b9b8546ceecfe810999bb4f8f3c1413f50ed668637c97632468e5",
+        "changeIds": [
+          "CHANGE-20261010-0173"
+        ],
+        "evidenceIds": [
+          "EV-20261010-035"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2PExpressConfirmPage.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "c9e9626ea57ef452566819dbac4e71eae624b99f3bbc2bd249c8b52fc64fd48f",
+        "changeIds": [
+          "CHANGE-20261010-0242"
+        ],
+        "evidenceIds": [
+          "EV-20261010-047"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2PExpressConfirmPage.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "f0402fd5564303ce12c1d58895969d77f43d5bb978150e5cd980d1d84caf7763",
+        "changeIds": [
+          "CHANGE-20261010-0241"
+        ],
+        "evidenceIds": [
+          "EV-20261010-047"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2PExpressPage.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "c1ad1734bd9051508749f58643f643aff2a8cf327c938753b62f887055bc6819",
+        "changeIds": [
+          "CHANGE-20261010-0207"
+        ],
+        "evidenceIds": [
+          "EV-20261010-041"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2PExpressPage.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "818ed99adfc62fa9b42271ddc3b9b1d3db1deb79895c7d22e46e3de8d927de78",
+        "changeIds": [
+          "CHANGE-20261010-0206"
+        ],
+        "evidenceIds": [
+          "EV-20261010-041"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2PInformationalPages.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "9a926576e3ef662131ae526fd799f07d2b82a12dd3adc898bf4c7d5bb820a009",
+        "changeIds": [
+          "CHANGE-20261010-0262"
+        ],
+        "evidenceIds": [
+          "EV-20261010-051"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2PMarketplacePage.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "40d2e1e87a663813af3ba6d7b3372f710f19efc2d7c9f1944d578991f92cc34b",
+        "changeIds": [
+          "CHANGE-20261010-0117"
+        ],
+        "evidenceIds": [
+          "EV-20261010-022"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2PMarketplacePage.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "7a94e180974c274182b6d9ad256a810c1089c541217de3b4259ffec185c03fbe",
+        "changeIds": [
+          "CHANGE-20261010-0116"
+        ],
+        "evidenceIds": [
+          "EV-20261010-022"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2PMerchantProfilePage.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "9e8a8067ec651caf65e142ef72bc380bca6f7abcdd84f82a9b347acac1c15263",
+        "changeIds": [
+          "CHANGE-20261010-0093"
+        ],
+        "evidenceIds": [
+          "EV-20261010-017"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2PMerchantProfilePage.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "3d27b92a1355d313ad28b7fc6eb61a249e22b79628c954945988cfbe7168770b",
+        "changeIds": [
+          "CHANGE-20261010-0092"
+        ],
+        "evidenceIds": [
+          "EV-20261010-017"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2POrderActionPages.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "18baaa452fa8f13781c7b9abd185a8f7aaabdbf012c4f36dda5e0f2c58103966",
+        "changeIds": [
+          "CHANGE-20261010-0083"
+        ],
+        "evidenceIds": [
+          "EV-20261010-015"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2POrderActionPages.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "c84dc45396714b417c0a9fb43a8f6e1d38476157d616c67b6a14a9f2345ad10c",
+        "changeIds": [
+          "CHANGE-20261010-0082"
+        ],
+        "evidenceIds": [
+          "EV-20261010-015"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2POrdersContractPage.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "c23a51826d49be3e07a7d75b7f1652457b8f6f06de0c356ddc36e38923b782a0",
+        "changeIds": [
+          "CHANGE-20260928-249",
+          "CHANGE-20261010-0186"
+        ],
+        "evidenceIds": [
+          "EV-20260928-078",
+          "EV-20260928-079",
+          "EV-20261010-037"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2PPaymentMethodAddPage.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "8562ceeebc01347300497cf7f754407a6ad35b85b1685c1cfd57abe5cc5c7ceb",
+        "changeIds": [
+          "CHANGE-20261010-0098"
+        ],
+        "evidenceIds": [
+          "EV-20261010-018"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2PPaymentMethodAddPage.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "fa5b57d727a8e6e7bec3aef77c8683f1538ba1cac5dafb7a6614f3fcef0f0c7b",
+        "changeIds": [
+          "CHANGE-20261010-0097"
+        ],
+        "evidenceIds": [
+          "EV-20261010-018"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2PPaymentMethodsPage.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "1a07a52e23adb1d64ee0fa9c281688441e48911458b57ec67622576798a33706",
+        "changeIds": [
+          "CHANGE-20261010-0103"
+        ],
+        "evidenceIds": [
+          "EV-20261010-019"
+        ]
+      },
+      {
+        "path": "src/features/p2p/pages/P2PPaymentMethodsPage.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "64204d5b8970bd79f04792b80f877ebfe428722906efe84cef9c0afc949142bb",
+        "changeIds": [
+          "CHANGE-20261010-0102"
+        ],
+        "evidenceIds": [
+          "EV-20261010-019"
+        ]
+      },
+      {
+        "path": "src/features/predictions/pages/PredictionRiskCalculatorPage.test.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "682d9068b44eaef5a2a311ef95dfbe8a930585a4d2f4562297e922b2594e593e",
+        "changeIds": [
+          "CHANGE-20261010-0139"
+        ],
+        "evidenceIds": [
+          "EV-20261010-027"
+        ]
+      },
+      {
+        "path": "src/features/referral/pages/ReferralContractPage.test.tsx",
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "7402579bc4d774e7aa213246cae24246877425541b528f1f5733201cbdadd713",
+        "changeIds": [
+          "CHANGE-20260928-162",
+          "CHANGE-20260930-0910",
+          "CHANGE-20261010-0188"
+        ],
+        "evidenceIds": [
+          "EV-20260928-065",
+          "EV-20260928-066",
+          "EV-20260930-134",
+          "EV-20260930-136",
+          "EV-20261009-002",
+          "EV-20261010-037"
+        ]
+      },
+      {
+        "path": "src/features/trading/components/ChartSkeleton.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "5442fc060d25f3e029c4fc53187f5f939f67e6b4f35c43fb4b8b68a89e472626",
+        "changeIds": [
+          "CHANGE-20261010-0041"
+        ],
+        "evidenceIds": [
+          "EV-20261010-008"
+        ]
+      },
+      {
+        "path": "src/features/trading/components/trading-order-config.test.ts",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "cd177ecbcc53b5c304346a1dc89ff01b3da35323b0133d45821dcabde6840383",
+        "changeIds": [
+          "CHANGE-20261010-0049"
+        ],
+        "evidenceIds": [
+          "EV-20261010-009"
+        ]
+      },
+      {
+        "path": "src/features/trading/components/TradingMarketPanel.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "47754c9e573f4bc9f25d4045ed5717e9c38d839fc61662d9fb7f4028ff2151e4",
+        "changeIds": [
+          "CHANGE-20261010-0187"
+        ],
+        "evidenceIds": [
+          "EV-20261010-037"
+        ]
+      },
+      {
+        "path": "src/features/trading/model/trading-queries.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "a8d9e3ff1ff09c791033eb07b02ddd43dd64be356eab83526359aef94ee9e39b",
+        "changeIds": [
+          "CHANGE-20261010-0048"
+        ],
+        "evidenceIds": [
+          "EV-20261010-009"
+        ]
+      },
+      {
+        "path": "src/features/trading/pages/__tests__/CopyTradingPage.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "cfe0551148d7bf54ffa3fe6f0ce1f7285af21fcb3bb77a3b7f2a10cd6150c579",
+        "changeIds": [
+          "CHANGE-20261010-0213"
+        ],
+        "evidenceIds": [
+          "EV-20261010-042"
+        ]
+      },
+      {
+        "path": "src/features/trading/pages/CopyEducationPage.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "77b6dd07db8bcc235f43d18bcb83a995c296c8937bb7ed892e64609d38d13ef8",
+        "changeIds": [
+          "CHANGE-20261010-0212"
+        ],
+        "evidenceIds": [
+          "EV-20261010-042"
+        ]
+      },
+      {
+        "path": "src/features/trading/pages/OpenPositionsPage.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "c2021dae6ee8b7fb95842b844e364ca581fd9e2ac110600995a937377f1bb7dc",
+        "changeIds": [
+          "CHANGE-20260928-1054",
+          "CHANGE-20261010-0035"
+        ],
+        "evidenceIds": [
+          "EV-20260928-234",
+          "EV-20261010-008"
+        ]
+      },
+      {
+        "path": "src/features/trading/pages/OrderReceiptPage.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "a611eb74d38556dc414e48ba931c3e6d98f3221764d9653d6006b906a6fb370f",
+        "changeIds": [
+          "CHANGE-20261010-0249"
+        ],
+        "evidenceIds": [
+          "EV-20261010-048"
+        ]
+      },
+      {
+        "path": "src/features/trading/pages/ProviderLeaderboardPage.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "c5685652e672bc3d4d24276e51fae8d64533a2f9c7f0ca454ddd5b634e7846d5",
+        "changeIds": [
+          "CHANGE-20261010-0214"
+        ],
+        "evidenceIds": [
+          "EV-20261010-042"
+        ]
+      },
+      {
+        "path": "src/features/trading/pages/TradeAnalyticsContractPage.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "c8ed3124b3ca60f8971b4e01744b1f4db599701e156213f038c1f7e23735391e",
+        "changeIds": [
+          "CHANGE-20261010-0156"
+        ],
+        "evidenceIds": [
+          "EV-20261010-031"
+        ]
+      },
+      {
+        "path": "src/features/trading/pages/TradingCopyPages.test.tsx",
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "d6daa0eddb2818824260144f8424e6f375d8113ad3216007d92cc2aab2851da6",
+        "changeIds": [
+          "CHANGE-20261010-0215",
+          "CHANGE-20261010-0223"
+        ],
+        "evidenceIds": [
+          "EV-20261010-042",
+          "EV-20261010-044"
+        ]
+      },
+      {
+        "path": "src/features/wallet/components/WithdrawSections.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "db019d239991436fb920c9290642297fe72ecf7773b38859af9855fe5909afe4",
+        "changeIds": [
+          "CHANGE-20261010-0003"
+        ],
+        "evidenceIds": [
+          "EV-20261010-001",
+          "EV-20261010-002"
+        ]
+      },
+      {
+        "path": "src/features/wallet/pages/AddressAddPage.test.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "c3a7ad1f6a27ef1e4d0db7e315533722eba07b9472f42d8c27a4fcbd434390f1",
+        "changeIds": [
+          "CHANGE-20261010-0024"
+        ],
+        "evidenceIds": [
+          "EV-20261010-005",
+          "EV-20261010-006"
+        ]
+      },
+      {
+        "path": "src/features/wallet/pages/AddressAddPage.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "5328da9b05e9fb0916d381f962c2169db02b38618e8a503f907d8a3559ba0313",
+        "changeIds": [
+          "CHANGE-20261010-0023"
+        ],
+        "evidenceIds": [
+          "EV-20261010-005",
+          "EV-20261010-006"
+        ]
+      },
+      {
+        "path": "src/features/wallet/pages/asset-detail-formatters.ts",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "7d42163f950279f0e9e9ef26f6284d37b747c9efbf019219be44c3a643f64dd7",
+        "changeIds": [
+          "CHANGE-20261010-0031"
+        ],
+        "evidenceIds": [
+          "EV-20261010-007"
+        ]
+      },
+      {
+        "path": "src/features/wallet/pages/AssetDetailPage.test.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "e5151d8f2d8ec8a80d739687264af75ed1e6b0a15679f691a4c003919356c729",
+        "changeIds": [
+          "CHANGE-20261010-0030"
+        ],
+        "evidenceIds": [
+          "EV-20261010-007"
+        ]
+      },
+      {
+        "path": "src/features/wallet/pages/AssetDetailPage.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "589d572b02f4c42e69d010f7cd2572c9611ad507face1da394c913236296236a",
+        "changeIds": [
+          "CHANGE-20261010-0029"
+        ],
+        "evidenceIds": [
+          "EV-20261010-007"
+        ]
+      },
+      {
+        "path": "src/features/wallet/pages/DustConverterPage.test.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "7c6b53cf7ebfb7329d5a6d513401d91e43b93a92db602b836c3bf0eefc05c6fb",
+        "changeIds": [
+          "CHANGE-20261010-0014"
+        ],
+        "evidenceIds": [
+          "EV-20261010-003",
+          "EV-20261010-004"
+        ]
+      },
+      {
+        "path": "src/features/wallet/pages/DustConverterPage.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "e28fd95119e5b22f6ec6e712b2ec7979ffe56dc38de7acba656a392978acffb8",
+        "changeIds": [
+          "CHANGE-20261010-0013"
+        ],
+        "evidenceIds": [
+          "EV-20261010-003",
+          "EV-20261010-004"
+        ]
+      },
+      {
+        "path": "src/features/wallet/pages/NetworkStatusPage.test.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "c708458254ba7f597d85102e25b04f96e19ebf2d4786a0dcb456af835539284c",
+        "changeIds": [
+          "CHANGE-20261010-0022"
+        ],
+        "evidenceIds": [
+          "EV-20261010-005",
+          "EV-20261010-006"
+        ]
+      },
+      {
+        "path": "src/features/wallet/pages/WalletOverviewContractPage.test.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "97554b696130f8ef2b3b97247b41251d9f346502c2197ded259c6d19c8254b69",
+        "changeIds": [
+          "CHANGE-20260928-437",
+          "CHANGE-20260928-449",
+          "CHANGE-20261001-0023",
+          "CHANGE-20261010-0015"
+        ],
+        "evidenceIds": [
+          "EV-20260928-104",
+          "EV-20260928-105",
+          "EV-20260928-107",
+          "EV-20260928-108",
+          "EV-20261001-003",
+          "EV-20261009-002",
+          "EV-20261010-003",
+          "EV-20261010-004"
+        ]
+      },
+      {
+        "path": "src/features/wallet/pages/WalletTransferContractPage.test.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "70c8363e3f9020a0a3d48e47903c1ccc40f7bde7dbdc67c312765198c0d19443",
+        "changeIds": [
+          "CHANGE-20261001-0136",
+          "CHANGE-20261010-0006"
+        ],
+        "evidenceIds": [
+          "EV-20261001-010",
+          "EV-20261009-002",
+          "EV-20261010-001",
+          "EV-20261010-002"
+        ]
+      },
+      {
+        "path": "src/features/wallet/pages/WalletTransferContractPage.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "35389bad79720819aac1ad979b77eacb896491a82a80cd08c3e0d44935098959",
+        "changeIds": [
+          "CHANGE-20261001-0135",
+          "CHANGE-20261010-0005"
+        ],
+        "evidenceIds": [
+          "EV-20261001-010",
+          "EV-20261009-002",
+          "EV-20261010-001",
+          "EV-20261010-002"
+        ]
+      },
+      {
+        "path": "src/features/wallet/pages/WithdrawalLimitsPage.test.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "e1b61b7f09a1e04077a33415bbb51e738a44eabedd47b11362fd2d5e72eebe63",
+        "changeIds": [
+          "CHANGE-20261010-0016"
+        ],
+        "evidenceIds": [
+          "EV-20261010-003",
+          "EV-20261010-004"
+        ]
+      },
+      {
+        "path": "src/features/wallet/pages/WithdrawPage.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "1d5e4882e7de45d9ef5f7ffb35e1598e4bdd7bfb0ae52ae3dba690658ca5c0c0",
+        "changeIds": [
+          "CHANGE-20261010-0001"
+        ],
+        "evidenceIds": [
+          "EV-20261010-001",
+          "EV-20261010-002"
+        ]
+      },
+      {
+        "path": "src/shared/api/app-client.ssr.test.ts",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "340a2aa85702b29ad4dda59b6ed08f0fab2ab6191b746fa9551f10834c859298",
+        "changeIds": [
+          "CHANGE-20261010-0042"
+        ],
+        "evidenceIds": [
+          "EV-20261010-008"
+        ]
+      },
+      {
+        "path": "src/shared/session/auth-context.test.ts",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "70649f0fd180900b903cf6ab5b9f92cfcc72b29e8ecf58c0dfc113116682579a",
+        "changeIds": [
+          "CHANGE-20261010-0224"
+        ],
+        "evidenceIds": [
+          "EV-20261010-044"
+        ]
+      },
+      {
+        "path": "src/shared/ui/button.test.tsx",
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "34355886262c2d87663c2f92f11aa0ef8eea298b1e39b0ceacfaaedb009b760d",
+        "changeIds": [
+          "CHANGE-20261010-0044"
+        ],
+        "evidenceIds": [
+          "EV-20261010-008"
+        ]
+      },
+      {
+        "path": "src/shared/ui/carousel.test.tsx",
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "4c12f5e15f54eea98ab215510f45d65f0407f630420f1ba9bba86141b65a970d",
+        "changeIds": [
+          "CHANGE-20261010-0127"
+        ],
+        "evidenceIds": [
+          "EV-20261010-024"
+        ]
+      },
+      {
+        "path": "src/shared/ui/carousel.tsx",
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "21d9a59ece3d04e92617038b0eab3ef002f921e2e0bb108f5bb5d3f7afd37898",
+        "changeIds": [
+          "CHANGE-20261010-0126"
+        ],
+        "evidenceIds": [
+          "EV-20261010-024"
+        ]
+      },
+      {
+        "path": "src/shared/ui/ConfirmationDialog.test.tsx",
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "2d3e78231fb157971bd49fa0f552a1d4c78c40d0cc55f95e64cbfac48d7ca51a",
+        "changeIds": [
+          "CHANGE-20261010-0053"
+        ],
+        "evidenceIds": [
+          "EV-20261010-009"
+        ]
+      },
+      {
+        "path": "src/shared/ui/CTAButton.test.tsx",
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "317c8d13e73c6c2252021eacdc2bc9d7bacf77ad40392cccf01cbeb2a5c2f3f0",
+        "changeIds": [
+          "CHANGE-20261010-0043"
+        ],
+        "evidenceIds": [
+          "EV-20261010-008"
+        ]
+      },
+      {
+        "path": "src/shared/ui/layout/Header.test.tsx",
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "564c670230b8db6fd390a63b892b9b4ca043909f14035015377196b598dfb5c9",
+        "changeIds": [
+          "CHANGE-20261010-0063"
+        ],
+        "evidenceIds": [
+          "EV-20261010-011"
+        ]
+      },
+      {
+        "path": "src/shared/ui/layout/PageLayout.test.tsx",
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "3d012c340c5538a572aa8c8afa68d19c68a127e40500a1b122f93aeb8e157f29",
+        "changeIds": [
+          "CHANGE-20261010-0054"
+        ],
+        "evidenceIds": [
+          "EV-20261010-009"
+        ]
+      },
+      {
+        "path": "src/shared/ui/StickyHeader.test.tsx",
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "ae7360ae44328f589c6dfee68ee7b1001534b79157ceb8767ccaa2200db59b35",
+        "changeIds": [
+          "CHANGE-20261010-0067"
+        ],
+        "evidenceIds": [
+          "EV-20261010-012"
+        ]
+      },
+      {
+        "path": "src/features/wallet/components/WithdrawSections.test.tsx",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "987a8a6a3af9a83455daf59f254962548d4e68f9cf1a0fdeec4a92618ae3b4fd",
+        "changeIds": [
+          "CHANGE-20261010-0004"
+        ],
+        "evidenceIds": [
+          "EV-20261010-001",
+          "EV-20261010-002"
+        ]
+      },
+      {
+        "path": "src/features/wallet/model/validate-wallet-transfer.test.ts",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "79d60ba333499e40630fbdbb3476219db1e68b56ecd884919cc9a51bff119609",
+        "changeIds": [
+          "CHANGE-20261010-0008"
+        ],
+        "evidenceIds": [
+          "EV-20261010-001",
+          "EV-20261010-002"
+        ]
+      },
+      {
+        "path": "src/features/wallet/model/validate-wallet-transfer.ts",
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "7979a013ac64f549beeddee5129d007a7b0f28ae774527ba03d7151e41fd3375",
+        "changeIds": [
+          "CHANGE-20261010-0007"
+        ],
+        "evidenceIds": [
+          "EV-20261010-001",
+          "EV-20261010-002"
+        ]
+      }
+    ],
+    "existingArtifactsRegistered": [
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-progress-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-iteration-2-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-2-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-iteration-3-auth-http-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-3-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-iteration-4-wallet-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-4-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-8-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-9-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-10-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-focused-iteration-11-header-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-11-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-12-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-13-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-14-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-15-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-16-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-17-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-18-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-19-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-20-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-21-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-22-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-23-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-24-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-25-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-26-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-27-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-28-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-29-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-30-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-31-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-32-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-33-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-34-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-35-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-36-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-37-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-38-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-39-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-40-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-41-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-42-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-43-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-44-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-45-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-46-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-47-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-48-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-49-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-50-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-51-2026-10-10.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-52-2026-10-10.json"
+    ],
+    "actionsNormalized": [
+      "CHANGE-20261010-0238",
+      "CHANGE-20261010-0246",
+      "CHANGE-20261010-0250",
+      "CHANGE-20261010-0255",
+      "CHANGE-20261010-0259",
+      "CHANGE-20261010-0263",
+      "CHANGE-20261010-0269",
+      "CHANGE-20261010-0273"
+    ],
+    "historicalHashesPreserved": true,
+    "checkerChanged": false,
+    "diagnosticBeforeCandidateRegistration": {
+      "errorCount": 156,
+      "errors": [
+        ".gitignore: current source differs from cataloguedSourceHead",
+        ".prettierignore: current source differs from cataloguedSourceHead",
+        "eslint.config.js: current source differs from cataloguedSourceHead",
+        "package.json: current source differs from cataloguedSourceHead",
+        "scripts/check-bundle-budget.mjs: current source differs from cataloguedSourceHead",
+        "scripts/check-production-mocks.mjs: current source differs from cataloguedSourceHead",
+        "scripts/check-production-mocks.test.mjs: current source differs from cataloguedSourceHead",
+        "src/app/components/layout/AppLayout.test.tsx: current source differs from cataloguedSourceHead",
+        "src/app/components/layout/AppLayout.tsx: current source differs from cataloguedSourceHead",
+        "src/app/components/layout/BottomNav.test.tsx: current source differs from cataloguedSourceHead",
+        "src/app/components/layout/ProtectedRoute.test.tsx: current source differs from cataloguedSourceHead",
+        "src/app/components/layout/ResponsiveShell.test.tsx: current source differs from cataloguedSourceHead",
+        "src/app/components/layout/TabletSidebar.test.tsx: current source differs from cataloguedSourceHead",
+        "src/app/components/onboarding/Coachmark.tsx: current source differs from cataloguedSourceHead",
+        "src/app/contexts/AuthSessionProvider.test.tsx: current source differs from cataloguedSourceHead",
+        "src/app/hooks/usePlatform.test.ts: current source differs from cataloguedSourceHead",
+        "src/app/hooks/usePlatform.ts: current source differs from cataloguedSourceHead",
+        "src/app/services/FeatureFlagService.test.ts: current source differs from cataloguedSourceHead",
+        "src/app/services/FeatureFlagService.ts: current source differs from cataloguedSourceHead",
+        "src/features/auth/components/RegistrationForm.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/auth/components/RegistrationForm.tsx: current source differs from cataloguedSourceHead",
+        "src/features/auth/pages/OTPPage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/auth/pages/OTPPage.tsx: current source differs from cataloguedSourceHead",
+        "src/features/auth/pages/PasswordResetPages.tsx: current source differs from cataloguedSourceHead",
+        "src/features/auth/pages/WebOTPPage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/auth/pages/WebOTPPage.tsx: current source differs from cataloguedSourceHead",
+        "src/features/dca/components/DCAHistoryChart.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/dca/components/DCAHistoryChart.tsx: current source differs from cataloguedSourceHead",
+        "src/features/dca/components/DCAPlanCard.tsx: current source differs from cataloguedSourceHead",
+        "src/features/dca/model/dca-analytics-service.test.ts: current source differs from cataloguedSourceHead",
+        "src/features/dca/model/dca-analytics-service.ts: current source differs from cataloguedSourceHead",
+        "src/features/dca/model/dca-funnel-service.test.ts: current source differs from cataloguedSourceHead",
+        "src/features/dca/model/dca-funnel-service.ts: current source differs from cataloguedSourceHead",
+        "src/features/dca/pages/DCAMainPage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/dca/pages/DCAMainPage.tsx: current source differs from cataloguedSourceHead",
+        "src/features/dca/pages/SavingsDCAContractPage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/dca/pages/SavingsDCAContractPage.tsx: current source differs from cataloguedSourceHead",
+        "src/features/earn/pages/SavingsPortfolioPage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/market/pages/AdvancedChartsPage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/market/pages/MarketHomePage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/market/pages/MarketListPage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/market/pages/MarketWriteBoundary.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/p2p/components/P2PCreateAdSections.tsx: current source differs from cataloguedSourceHead",
+        "src/features/p2p/pages/P2P2FASettingsPage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/p2p/pages/P2PAdDetailContractPage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/p2p/pages/P2PAdDetailContractPage.tsx: current source differs from cataloguedSourceHead",
+        "src/features/p2p/pages/P2PEscrowDetailPage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/p2p/pages/P2PMyAdsContractPage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/p2p/pages/P2PMyAdsContractPage.tsx: current source differs from cataloguedSourceHead",
+        "src/features/predictions/pages/PredictionContractPages.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/predictions/pages/PredictionContractPages.tsx: current source differs from cataloguedSourceHead",
+        "src/features/trading/components/MiniChart.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/trading/components/QuickPairSwitcher.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/trading/components/QuickPairSwitcher.tsx: current source differs from cataloguedSourceHead",
+        "src/features/trading/components/TradeTerminal.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/trading/model/useTradeSettings.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/trading/pages/TradeSettingsPage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/wallet/pages/AddressBookPage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/wallet/pages/AddressBookPage.tsx: current source differs from cataloguedSourceHead",
+        "src/features/wallet/pages/PendingDepositsPage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/wallet/pages/PortfolioAnalyticsContractPage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/wallet/pages/TransactionDetailPage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/wallet/pages/WalletDepositContractPage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/wallet/pages/WithdrawPage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/shared/api/http-client.test.ts: current source differs from cataloguedSourceHead",
+        "src/shared/api/http-client.ts: current source differs from cataloguedSourceHead",
+        "src/shared/ui/BottomSheetV2.tsx: current source differs from cataloguedSourceHead",
+        "src/shared/ui/InfoRow.test.tsx: current source differs from cataloguedSourceHead",
+        "src/shared/ui/InfoRow.tsx: current source differs from cataloguedSourceHead",
+        "vitest.config.ts: current source differs from cataloguedSourceHead",
+        "docs/ai/WORKFLOW.md: current source differs from cataloguedSourceHead",
+        "docs/architecture/page-inventory.json: current source differs from cataloguedSourceHead",
+        "playwright.config.ts: current source differs from cataloguedSourceHead",
+        "README.md: current source differs from cataloguedSourceHead",
+        "scripts/serve-e2e.mjs: current source differs from cataloguedSourceHead",
+        "src/app/components/layout/PlatformSwitcher.test.tsx: current source differs from cataloguedSourceHead",
+        "src/app/components/layout/PlatformSwitcher.tsx: current source differs from cataloguedSourceHead",
+        "src/features/auth/pages/PasswordResetPages.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/earn/pages/EarnPage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/earn/pages/EarnPage.tsx: current source differs from cataloguedSourceHead",
+        "src/features/earn/pages/EarnTransactionPages.tsx: current source differs from cataloguedSourceHead",
+        "src/features/wallet/pages/WalletTransactionHistoryContractPage.test.tsx: current source differs from cataloguedSourceHead",
+        "src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx: current source differs from cataloguedSourceHead",
+        "vite.config.ts: current source differs from cataloguedSourceHead",
+        "Pages: missing ledger entry src/features/wallet/pages/asset-detail-formatters.ts",
+        "Files: missing ledger entry scripts/check-build-artifact.mjs",
+        "Files: missing ledger entry scripts/plan-artifact-cleanup.mjs",
+        "Files: missing ledger entry scripts/plan-artifact-cleanup.test.mjs",
+        "Files: missing ledger entry scripts/run-with-artifacts.mjs",
+        "Files: missing ledger entry scripts/run-with-artifacts.test.mjs",
+        "Files: missing ledger entry src/app/components/layout/LeftRail.test.tsx",
+        "Files: missing ledger entry src/app/components/layout/ResponsiveBottomNav.test.tsx",
+        "Files: missing ledger entry src/app/components/layout/TabletShell.test.tsx",
+        "Files: missing ledger entry src/app/components/ui-contracts.test.tsx",
+        "Files: missing ledger entry src/app/contexts/AuthContext.default-adapter.test.tsx",
+        "Files: missing ledger entry src/app/pages/page-composition.test.tsx",
+        "Files: missing ledger entry src/features/dca/components/DCACreatePlanSheet.test.tsx",
+        "Files: missing ledger entry src/features/dca/components/DCAPlanCard.test.tsx",
+        "Files: missing ledger entry src/features/dca/pages/DCAMainPage.additional.test.tsx",
+        "Files: missing ledger entry src/features/market/pages/MarketPriceAlertsPage.test.tsx",
+        "Files: missing ledger entry src/features/p2p/components/P2PCreateAdSections.test.tsx",
+        "Files: missing ledger entry src/features/p2p/components/P2PHomeActionSheets.test.tsx",
+        "Files: missing ledger entry src/features/p2p/components/P2PMarketplaceSections.test.tsx",
+        "Files: missing ledger entry src/features/p2p/lib/select-best-ad.test.ts",
+        "Files: missing ledger entry src/features/p2p/model/p2p-my-ads-actions.ts",
+        "Files: missing ledger entry src/features/predictions/pages/PredictionContractInteractions.test.tsx",
+        "Files: missing ledger entry src/features/public-entrypoints.test.ts",
+        "Files: missing ledger entry src/features/support/pages/NewsContractPage.test.tsx",
+        "Files: missing ledger entry src/features/wallet/pages/WebWithdrawalWhitelistPage.test.tsx",
+        "Files: missing ledger entry src/features/wallet/pages/WithdrawPage.additional.test.tsx",
+        "Files: missing ledger entry src/shared/lib/formatNumber.test.ts",
+        "Files: missing ledger entry src/shared/theme/theme-token-contract.test.tsx",
+        "Files: missing ledger entry src/shared/ui/BottomSheetV2.test.tsx",
+        "Files: missing ledger entry src/shared/ui/SkeletonBlock.test.tsx",
+        "Files: missing ledger entry src/shared/ui/charts/ChartGradientDefs.test.tsx",
+        "Files: missing ledger entry src/shared/ui/toggle-variants.test.ts",
+        "Files: missing ledger entry src/shared/ui/ui-primitives.test.tsx",
+        "CHANGE-20261009-0012: missing afterHash",
+        "CHANGE-20261009-0015: missing afterHash",
+        "CHANGE-20261009-0018: missing afterHash",
+        "CHANGE-20261009-0022: missing afterHash",
+        "CHANGE-20261010-0012: missing afterHash",
+        "CHANGE-20261010-0020: missing afterHash",
+        "CHANGE-20261010-0028: missing afterHash",
+        "CHANGE-20261010-0033: changed file missing from ledger",
+        "CHANGE-20261010-0034: missing afterHash",
+        "CHANGE-20261010-0047: missing afterHash",
+        "CHANGE-20261010-0057: missing afterHash",
+        "CHANGE-20261010-0062: missing afterHash",
+        "CHANGE-20261010-0066: missing afterHash",
+        "CHANGE-20261010-0070: missing afterHash",
+        "CHANGE-20261010-0075: missing afterHash",
+        "CHANGE-20261010-0086: missing afterHash",
+        "CHANGE-20261010-0091: missing afterHash",
+        "CHANGE-20261010-0096: missing afterHash",
+        "CHANGE-20261010-0101: missing afterHash",
+        "CHANGE-20261010-0106: missing afterHash",
+        "CHANGE-20261010-0111: missing afterHash",
+        "CHANGE-20261010-0115: missing afterHash",
+        "CHANGE-20261010-0121: missing afterHash",
+        "CHANGE-20261010-0125: missing afterHash",
+        "CHANGE-20261010-0130: missing afterHash",
+        "CHANGE-20261010-0134: missing afterHash",
+        "CHANGE-20261010-0138: missing afterHash",
+        "CHANGE-20261010-0142: missing afterHash",
+        "CHANGE-20261010-0146: missing afterHash",
+        "CHANGE-20261010-0150: missing afterHash",
+        "CHANGE-20261010-0155: missing afterHash",
+        "CHANGE-20261010-0159: missing afterHash",
+        "CHANGE-20261010-0164: missing afterHash",
+        "CHANGE-20261010-0168: missing afterHash",
+        "CHANGE-20261010-0172: missing afterHash",
+        "CHANGE-20261010-0177: missing afterHash",
+        "CHANGE-20261010-0182: missing afterHash",
+        "CHANGE-20261010-0192: missing afterHash",
+        "CHANGE-20261010-0197: missing afterHash"
+      ]
+    },
+    "historicalAfterHashMissing": [
+      {
+        "id": "CHANGE-20261009-0012",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261009-0015",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261009-0018",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261009-0022",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0012",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0020",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0028",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0034",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0047",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0057",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0062",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0066",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0070",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0075",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0086",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0091",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0096",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0101",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0106",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0111",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0115",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0121",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0125",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0130",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0134",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0138",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0142",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0146",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0150",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0155",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0159",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0164",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0168",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0172",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0177",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0182",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0192",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "id": "CHANGE-20261010-0197",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      }
+    ],
+    "archiveSearch": {
+      "snapshots": 56,
+      "matchingHistoricalRecords": 0,
+      "scope": "All local worktree/temp snapshots, Git refs/reflogs and dangling blobs; colliding independent change IDs rejected."
+    }
+  },
+  "readiness": {
+    "taskC03": "in_progress",
+    "stepC0305": "in_progress",
+    "target100Reached": false,
+    "backendOperationsDone": 0,
+    "totalBackendOperations": 154,
+    "userAcceptedPages": 0,
+    "totalBaselineUiPages": 128,
+    "productionPageCertificationGranted": false,
+    "u01AndB07Merged": false
+  },
+  "result": "blocked",
+  "limitations": [
+    "G5 requires real historical snapshots and exact source provenance; missing hashes are not replaced by present hashes.",
+    "Local mock/fixture tests do not prove backend, staging with real services, UAT or production readiness.",
+    "Retention remains manual and disabled; current raw coverage and reports remain preserved.",
+    "No commit/push/deploy or new-SHA GitHub CI was performed."
+  ]
+}

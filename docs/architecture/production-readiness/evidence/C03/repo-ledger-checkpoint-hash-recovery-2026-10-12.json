@@ -1,0 +1,2985 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "EV-20261012-006",
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "kind": "original-ledger-checkpoint-hash-recovery",
+  "observedAt": "2026-10-12T07:20:57.048Z",
+  "sourceHead": "309a2003749c2b1874e75af501fa6c3ea1e37c18",
+  "provenHashes": [
+    {
+      "id": "CHANGE-20261010-0012",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "d44ddf8e91aa226b72720cdf79c15529ab8be25375ccd98243638525b8916ea5",
+      "afterHash": "c0197b2bb794f4f63602a64b669b277a18dffd58ad0b1b717223203bbe54455d",
+      "evidenceIds": [
+        "EV-20261010-001",
+        "EV-20261010-002"
+      ],
+      "provenance": {
+        "kind": "anchored-bounded-reconstruction",
+        "basis": "Only original documented owner mutations and preserved original rows/artifact bytes are used. Reconstructed pre-iteration4 bytes match the independent original checkpoint read; the round trip matches every byte of the preserved post-iteration6 Git blob. Lost overwrite fields come from verified original artifacts and explicit original writer/amendment assignments, not guessed values.",
+        "independentStartPayloadSha256": "d44ddf8e91aa226b72720cdf79c15529ab8be25375ccd98243638525b8916ea5",
+        "independentEndGitBlob": "cfc321a4e0595d57c49829cd5731a12a8cb4b124",
+        "independentEndPayloadSha256": "5201f22c207b0253234b54e1d18539228badfddbbcdb8dd5cc300c530cfd48a8",
+        "roundTripByteMatch": true,
+        "checkpointPayloadSha256": "c0197b2bb794f4f63602a64b669b277a18dffd58ad0b1b717223203bbe54455d",
+        "checkpointBytes": 12220971,
+        "compressedRecoverySha256": "b8f646dc9690dd8c44407a2f1996ed6dc1a43bc138c697801558f86f65ad95ac",
+        "reconstructionScriptSha256": "816b24c63a9ba68d42318c7934308d0a443f58cda30dd77e181bd40ed27c18d1",
+        "originalArtifactBytesVerified": [
+          {
+            "changeId": "CHANGE-20261010-0010",
+            "recorded": "3176e2e63866de8dce471ea11b9d2305cbf54485f5431d5c173d878eb119f371",
+            "actual": "3176e2e63866de8dce471ea11b9d2305cbf54485f5431d5c173d878eb119f371",
+            "match": true
+          },
+          {
+            "changeId": "CHANGE-20261010-0009",
+            "recorded": "90b274d35096c97827fbc94735d43b198c6ef7572d23bf7a9aa34ae452f9b823",
+            "actual": "90b274d35096c97827fbc94735d43b198c6ef7572d23bf7a9aa34ae452f9b823",
+            "match": true
+          },
+          {
+            "changeId": "CHANGE-20261010-0018",
+            "recorded": "c2e42d2d715209daf2cc27d74b080c2c45e259c16f5803a5fb6773ce0ebe7f8c",
+            "actual": "c2e42d2d715209daf2cc27d74b080c2c45e259c16f5803a5fb6773ce0ebe7f8c",
+            "match": true
+          },
+          {
+            "changeId": "CHANGE-20261010-0017",
+            "recorded": "f1208812a0f22c28fe6e278cab1501d90c0ccfd1f831ad388ff9ac16b6c45474",
+            "actual": "f1208812a0f22c28fe6e278cab1501d90c0ccfd1f831ad388ff9ac16b6c45474",
+            "match": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0020",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "6cf3aefd88565f4ee8f5157937f37589c68d41abca2968c614ddab0ea1034f1e",
+      "afterHash": "2c166ed5bf1488ab7ceff2a642aa0a5cbd53be447462df9fce0b1a9339b66713",
+      "evidenceIds": [
+        "EV-20261010-003",
+        "EV-20261010-004"
+      ],
+      "provenance": {
+        "kind": "anchored-bounded-reconstruction",
+        "basis": "Only original documented owner mutations and preserved original rows/artifact bytes are used. Reconstructed pre-iteration4 bytes match the independent original checkpoint read; the round trip matches every byte of the preserved post-iteration6 Git blob. Lost overwrite fields come from verified original artifacts and explicit original writer/amendment assignments, not guessed values.",
+        "independentStartPayloadSha256": "d44ddf8e91aa226b72720cdf79c15529ab8be25375ccd98243638525b8916ea5",
+        "independentEndGitBlob": "cfc321a4e0595d57c49829cd5731a12a8cb4b124",
+        "independentEndPayloadSha256": "5201f22c207b0253234b54e1d18539228badfddbbcdb8dd5cc300c530cfd48a8",
+        "roundTripByteMatch": true,
+        "checkpointPayloadSha256": "2c166ed5bf1488ab7ceff2a642aa0a5cbd53be447462df9fce0b1a9339b66713",
+        "checkpointBytes": 12235729,
+        "compressedRecoverySha256": "d4526d9be732cfba0b718cc9374db01f9cf1e03bc7176d468e37ef0a0814c744",
+        "reconstructionScriptSha256": "816b24c63a9ba68d42318c7934308d0a443f58cda30dd77e181bd40ed27c18d1",
+        "originalArtifactBytesVerified": [
+          {
+            "changeId": "CHANGE-20261010-0010",
+            "recorded": "3176e2e63866de8dce471ea11b9d2305cbf54485f5431d5c173d878eb119f371",
+            "actual": "3176e2e63866de8dce471ea11b9d2305cbf54485f5431d5c173d878eb119f371",
+            "match": true
+          },
+          {
+            "changeId": "CHANGE-20261010-0009",
+            "recorded": "90b274d35096c97827fbc94735d43b198c6ef7572d23bf7a9aa34ae452f9b823",
+            "actual": "90b274d35096c97827fbc94735d43b198c6ef7572d23bf7a9aa34ae452f9b823",
+            "match": true
+          },
+          {
+            "changeId": "CHANGE-20261010-0018",
+            "recorded": "c2e42d2d715209daf2cc27d74b080c2c45e259c16f5803a5fb6773ce0ebe7f8c",
+            "actual": "c2e42d2d715209daf2cc27d74b080c2c45e259c16f5803a5fb6773ce0ebe7f8c",
+            "match": true
+          },
+          {
+            "changeId": "CHANGE-20261010-0017",
+            "recorded": "f1208812a0f22c28fe6e278cab1501d90c0ccfd1f831ad388ff9ac16b6c45474",
+            "actual": "f1208812a0f22c28fe6e278cab1501d90c0ccfd1f831ad388ff9ac16b6c45474",
+            "match": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0034",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "5201f22c207b0253234b54e1d18539228badfddbbcdb8dd5cc300c530cfd48a8",
+      "afterHash": "f38ad67ff9323b5989231d4cd6ef05269ce528a6b5e2dc218a7d8406bff82401",
+      "evidenceIds": [
+        "EV-20261010-007"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0047",
+        "successorEvidenceIds": [
+          "EV-20261010-008"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0047].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 357101,
+        "producerSourceSha256": "b67960f505693d34f100df6b7a3604d0b6a7039887f071c794a5db70f8e28ea2",
+        "readDefinition": "const trackingBeforeRaw = fs.readFileSync(trackingPath, \"utf8\");",
+        "checksumAssignment": "{ id: trackingChangeId, taskId: \"C03\", stepId: \"C03.05\", path: trackingPath, action: \"modify\", oldPath: null, reason: \"Register EV-20261010-008, tests, focused metrics, latest measurement and next action.\", beforeHash: trackingBeforeHash, afterHash: null, evidenceIds: [evidenceId], commit: null }",
+        "successfulDriverOrdinal": 357172,
+        "driverItemId": "exec-2d17e485-4803-4e34-b7dc-58c4ff2b2978",
+        "originalObservedAt": "2026-10-10T01:00:25.816Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "1bb63af9de848ed23532ec9589610f7e0f6e07e4f5e89bcd61f20500b9173059",
+        "stdoutSha256": "b634180fea741adf126517acbef329fe522ba47bb11ef2d48e9180d388d7c1e4",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 357101,
+            "commandSha256": "b67960f505693d34f100df6b7a3604d0b6a7039887f071c794a5db70f8e28ea2",
+            "recordSha256": "463887a59b2a0130d9f792b70b478059bc3689158a2e9e5d7e080c2cddad27f4"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0047",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "f38ad67ff9323b5989231d4cd6ef05269ce528a6b5e2dc218a7d8406bff82401",
+      "afterHash": "9f81c3d192dd9c2f940b0e16a0b71027072ff6df7fdb84cb6608b735c8482f85",
+      "evidenceIds": [
+        "EV-20261010-008"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0057",
+        "successorEvidenceIds": [
+          "EV-20261010-009"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0057].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 357101,
+        "producerSourceSha256": "b67960f505693d34f100df6b7a3604d0b6a7039887f071c794a5db70f8e28ea2",
+        "readDefinition": "const trackingBeforeRaw = fs.readFileSync(trackingPath, \"utf8\");",
+        "checksumAssignment": "{ id: trackingChangeId, taskId: \"C03\", stepId: \"C03.05\", path: trackingPath, action: \"modify\", oldPath: null, reason: \"Register EV-20261010-008, tests, focused metrics, latest measurement and next action.\", beforeHash: trackingBeforeHash, afterHash: null, evidenceIds: [evidenceId], commit: null }",
+        "successfulDriverOrdinal": 357774,
+        "driverItemId": "exec-9507fcb5-55bd-4c96-ad9e-d40799310c16",
+        "originalObservedAt": "2026-10-10T01:19:06.636Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "d2e6489c5eb776ae980dc708d8221296a929770da6c8236b8e3380c8723c1ed7",
+        "stdoutSha256": "9a8a665d7b39857547f0b519d705042ff92b0de8280ff5b9c4979474e5260941",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 357101,
+            "commandSha256": "b67960f505693d34f100df6b7a3604d0b6a7039887f071c794a5db70f8e28ea2",
+            "recordSha256": "463887a59b2a0130d9f792b70b478059bc3689158a2e9e5d7e080c2cddad27f4"
+          },
+          {
+            "ordinal": 357751,
+            "commandSha256": "ebcb00b1388da7e8286abd165e159fb93bc298a04f705c45dd76b165d79a1d0c",
+            "recordSha256": "cc69cf39a9e9efc24c3a928184c8f44a541cc68a718f0e8d6122fc799d013c20"
+          },
+          {
+            "ordinal": 357767,
+            "commandSha256": "274200409c20a3ff4130dae531a720a312f4cdbba8a9f8fc301458716c1b4417",
+            "recordSha256": "cf65d5fb92633a45ccd2078fd2ac836e5e9d2b16cf63304d4fe4f2221483762b"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0057",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "9f81c3d192dd9c2f940b0e16a0b71027072ff6df7fdb84cb6608b735c8482f85",
+      "afterHash": "38f4ccdf3a33b779d80daa3db7af5670060314fe62f84d9168793469e5956706",
+      "evidenceIds": [
+        "EV-20261010-009"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0062",
+        "successorEvidenceIds": [
+          "EV-20261010-010"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0062].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 357101,
+        "producerSourceSha256": "b67960f505693d34f100df6b7a3604d0b6a7039887f071c794a5db70f8e28ea2",
+        "readDefinition": "const trackingBeforeRaw = fs.readFileSync(trackingPath, \"utf8\");",
+        "checksumAssignment": "{ id: trackingChangeId, taskId: \"C03\", stepId: \"C03.05\", path: trackingPath, action: \"modify\", oldPath: null, reason: \"Register EV-20261010-008, tests, focused metrics, latest measurement and next action.\", beforeHash: trackingBeforeHash, afterHash: null, evidenceIds: [evidenceId], commit: null }",
+        "successfulDriverOrdinal": 358304,
+        "driverItemId": "exec-a21c118f-be50-41c9-9a24-0b31be729c85",
+        "originalObservedAt": "2026-10-10T01:36:31.611Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "45cece8677285a84c887832b6c1cc405e87ecd16596a97b5df788f90b5634d22",
+        "stdoutSha256": "8ec4af8ff8c4385a39d846100d032baff469b2d44eca5c56bb6a392b33111ec4",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 357101,
+            "commandSha256": "b67960f505693d34f100df6b7a3604d0b6a7039887f071c794a5db70f8e28ea2",
+            "recordSha256": "463887a59b2a0130d9f792b70b478059bc3689158a2e9e5d7e080c2cddad27f4"
+          },
+          {
+            "ordinal": 357751,
+            "commandSha256": "ebcb00b1388da7e8286abd165e159fb93bc298a04f705c45dd76b165d79a1d0c",
+            "recordSha256": "cc69cf39a9e9efc24c3a928184c8f44a541cc68a718f0e8d6122fc799d013c20"
+          },
+          {
+            "ordinal": 357767,
+            "commandSha256": "274200409c20a3ff4130dae531a720a312f4cdbba8a9f8fc301458716c1b4417",
+            "recordSha256": "cf65d5fb92633a45ccd2078fd2ac836e5e9d2b16cf63304d4fe4f2221483762b"
+          },
+          {
+            "ordinal": 358248,
+            "commandSha256": "8b8067c00584445553484049fad272fb0a9de2d2b3da3aac76be06b54e8d20b0",
+            "recordSha256": "724ed2c91dbd059b1de7276079cfb01e4c0c94e0fb5b091c190a34f12e7fdf6d"
+          },
+          {
+            "ordinal": 358255,
+            "commandSha256": "a0ac6daef6f1c8148bb1083962d1b60a5e2d3ad0c818a9f64d5e382d740d2b3d",
+            "recordSha256": "d4f57f25fc5119b78b3a1c249b46fc3bfdf508f00d9dde0068fd050226023403"
+          },
+          {
+            "ordinal": 358304,
+            "commandSha256": "01a91fc2e9d1d19e41ede518c86132843ce681b76c83c415ccde78ce3b3170ea",
+            "recordSha256": "45cece8677285a84c887832b6c1cc405e87ecd16596a97b5df788f90b5634d22"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0062",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "38f4ccdf3a33b779d80daa3db7af5670060314fe62f84d9168793469e5956706",
+      "afterHash": "ee99e57a1ba72d4e8a4c8a2306dbc9d0b3cc1fd9e1acdcfea38cdd583bc66ba3",
+      "evidenceIds": [
+        "EV-20261010-010"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0066",
+        "successorEvidenceIds": [
+          "EV-20261010-011"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0066].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 358517,
+        "producerSourceSha256": "293281ef1a175092a7458ff3ed08bad34af2857fa6cccdaac1dce5ef8c9f81ed",
+        "readDefinition": "const trackingBeforeRaw = fs.readFileSync(trackingPath, \"utf8\");",
+        "checksumAssignment": "{ id: ids[3], taskId: \"C03\", stepId: \"C03.05\", path: trackingPath, action: \"modify\", oldPath: null, reason: \"Register EV-011 focused Header coverage, owner test and next target.\", beforeHash: sha(trackingBeforeRaw), afterHash: null, evidenceIds: [evidenceId], commit: null }",
+        "successfulDriverOrdinal": 358533,
+        "driverItemId": "exec-596318fa-406d-43ab-9e1c-c1a3847c0f4e",
+        "originalObservedAt": "2026-10-10T01:40:31.311Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "1d5d04b6146674f41e90c6348c5403dcf535e9abb66b49551e52b9cdc932ed6c",
+        "stdoutSha256": "a962830a2e28699f173356ee74b77136de9e4e054be650db202b362ca04302c4",
+        "sourceLineageRecords": []
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0066",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "ee99e57a1ba72d4e8a4c8a2306dbc9d0b3cc1fd9e1acdcfea38cdd583bc66ba3",
+      "afterHash": "331ff219ce909a0c496b1a34d74c9a5c101fc3e48093e30d819fdd8e1e105607",
+      "evidenceIds": [
+        "EV-20261010-011"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0070",
+        "successorEvidenceIds": [
+          "EV-20261010-012"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0070].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 358809,
+        "producerSourceSha256": "833c7710db430db42f2a16dd0cecddada37ce93d928f70facf3e18182c5e6c38",
+        "readDefinition": "const trackingBeforeRaw = fs.readFileSync(trackingPath, \"utf8\");",
+        "checksumAssignment": "{ id: ids[3], taskId: \"C03\", stepId: \"C03.05\", path: trackingPath, action: \"modify\", oldPath: null, reason: \"Register EV-012 full suite and the StickyHeader owner-test slice.\", beforeHash: sha(trackingBeforeRaw), afterHash: null, evidenceIds: [evidenceId], commit: null }",
+        "successfulDriverOrdinal": 358809,
+        "driverItemId": "exec-a22e6267-693d-4e4b-b753-eb50dc0787f9",
+        "originalObservedAt": "2026-10-10T01:53:59.664Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "2c391dfaaf2278b99c01703e476e33f8867b86b9ebebcef0fa932e34996a12aa",
+        "stdoutSha256": "5db8e65b8bc33042b3c005ca88ef9ff1d960df9cae7062865c9f3e1d9a050676",
+        "sourceLineageRecords": []
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0070",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "331ff219ce909a0c496b1a34d74c9a5c101fc3e48093e30d819fdd8e1e105607",
+      "afterHash": "5d8b8024ac3cd40c3418b0fc6e1bf81e042d0036c8601618bbf8b86d9a41adbc",
+      "evidenceIds": [
+        "EV-20261010-012"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0075",
+        "successorEvidenceIds": [
+          "EV-20261010-013"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0075].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 359296,
+        "producerSourceSha256": "f970ee9c5c8ac48872718071004874a2d44729c7eba8ea630e988c066b68eb2d",
+        "readDefinition": "const reportBytes=fs.readFileSync(reportPath),raw=JSON.parse(reportBytes.toString(\"utf8\")),map=createCoverageMap(raw),prev=JSON.parse(fs.readFileSync(prevPath)),base=JSON.parse(fs.readFileSync(basePath)),trackBefore=fs.readFileSync(trackPath,\"utf8\"),tracking=JSON.parse(trackBefore),planBefore=fs.readFileSync(planPath,\"utf8\");",
+        "checksumAssignment": "changes.push({id:ids[4],taskId:\"C03\",stepId:\"C03.05\",path:trackPath,action:\"modify\",oldPath:null,reason:\"Register EV-013 full suite, focused slice, plan and coverage inventory.\",beforeHash:sha(trackBefore),afterHash:null,evidenceIds:[eid],commit:null});",
+        "successfulDriverOrdinal": 359303,
+        "driverItemId": "exec-5ee14ec2-79e3-40ba-86f1-de613b6e57b9",
+        "originalObservedAt": "2026-10-10T02:21:00.052Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "24f3cb5a96dc86fbb08218ef518b8849900e7792d0fe64b865d22cf337d2b986",
+        "stdoutSha256": "4f49e52ed1ccb6cfddd97a03835a7142ea9abf9c11e807508bd31122ff9c6172",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 359296,
+            "commandSha256": "f970ee9c5c8ac48872718071004874a2d44729c7eba8ea630e988c066b68eb2d",
+            "recordSha256": "e585436285b570e5cb75cae978c708b014f5b67fb93e830a5a2ae33e972fc9f6"
+          },
+          {
+            "ordinal": 359303,
+            "commandSha256": "e5e8dbf1815c37944b81997c2928cf3f8d794d70241c799de77b8065f0e5d34f",
+            "recordSha256": "24f3cb5a96dc86fbb08218ef518b8849900e7792d0fe64b865d22cf337d2b986"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0075",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "5d8b8024ac3cd40c3418b0fc6e1bf81e042d0036c8601618bbf8b86d9a41adbc",
+      "afterHash": "e5b6d638fc5a1cf735c97d8aa0777545f4e500626f307e1a8106c11536eefdbe",
+      "evidenceIds": [
+        "EV-20261010-013"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0081",
+        "successorEvidenceIds": [
+          "EV-20261010-014"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0081].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 359296,
+        "producerSourceSha256": "f970ee9c5c8ac48872718071004874a2d44729c7eba8ea630e988c066b68eb2d",
+        "readDefinition": "const reportBytes=fs.readFileSync(reportPath),raw=JSON.parse(reportBytes.toString(\"utf8\")),map=createCoverageMap(raw),prev=JSON.parse(fs.readFileSync(prevPath)),base=JSON.parse(fs.readFileSync(basePath)),trackBefore=fs.readFileSync(trackPath,\"utf8\"),tracking=JSON.parse(trackBefore),planBefore=fs.readFileSync(planPath,\"utf8\");",
+        "checksumAssignment": "changes.push({id:ids[4],taskId:\"C03\",stepId:\"C03.05\",path:trackPath,action:\"modify\",oldPath:null,reason:\"Register EV-013 full suite, focused slice, plan and coverage inventory.\",beforeHash:sha(trackBefore),afterHash:null,evidenceIds:[eid],commit:null});",
+        "successfulDriverOrdinal": 359937,
+        "driverItemId": "exec-4fb8170b-e457-45fc-ba08-086f48ccfc16",
+        "originalObservedAt": "2026-10-10T02:47:12.401Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "ca6b933209707dea2c65044ad2108cf9a5af86fa3d81c9d4540bce4e71ea7b21",
+        "stdoutSha256": "64af200cf4df08865fa959137b91b59e32ceecb5b160ee8203c08c1809c8b4cd",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 359296,
+            "commandSha256": "f970ee9c5c8ac48872718071004874a2d44729c7eba8ea630e988c066b68eb2d",
+            "recordSha256": "e585436285b570e5cb75cae978c708b014f5b67fb93e830a5a2ae33e972fc9f6"
+          },
+          {
+            "ordinal": 359303,
+            "commandSha256": "e5e8dbf1815c37944b81997c2928cf3f8d794d70241c799de77b8065f0e5d34f",
+            "recordSha256": "24f3cb5a96dc86fbb08218ef518b8849900e7792d0fe64b865d22cf337d2b986"
+          },
+          {
+            "ordinal": 359898,
+            "commandSha256": "6eac7b0cfb7ccada893ccce1571a97ec502987888a2802ee65d80a0511a0b24a",
+            "recordSha256": "159369b3ef15474ad5153dc5ff8e1b81a4d1cc48ac1cffe4013fbe5e001ee1ef"
+          },
+          {
+            "ordinal": 359930,
+            "commandSha256": "a802fcadb3b66be5fb6c08c27c01e556fd3f625adf43c32224f5a9817b3899a2",
+            "recordSha256": "a10438ef8e75d704dba5d1b6c068fd63d796e9d6759f364fbbbd2cd4675cb3d8"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0086",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "605dc16f5b4ed1686d8528fe9ea26e1ad0e90b680cc9cb7e14e19d504cbcfa23",
+      "afterHash": "67f1e511f804915e5e7e0693d3f7292d9eee84f654cb96ede7660e903cc1aa32",
+      "evidenceIds": [
+        "EV-20261010-015"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0091",
+        "successorEvidenceIds": [
+          "EV-20261010-016"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0091].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 361517,
+        "producerSourceSha256": "fdec2201a7c610bf9a7b07628c1e2bbdc163b7d8e0bf619a3bb178f2bc64ab0c",
+        "readDefinition": "const trackingBefore = fs.readFileSync(trackingPath);",
+        "checksumAssignment": "{ id: ids[4], path: 'docs/architecture/production-readiness/TRACKING.json', action: 'modify', beforeHash: sha(trackingBefore), afterHash: null, reason: 'Register EV-016 Arena changes, full-suite evidence, plan update and session checkpoint.' },",
+        "successfulDriverOrdinal": 361517,
+        "driverItemId": "exec-e9bae8ae-b110-426d-bfb1-9271a39a73bb",
+        "originalObservedAt": "2026-10-10T03:41:19.554Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "12adc27234488fa563a31857ae659e3f2568507644bafb4485ddb2f3a56df6ef",
+        "stdoutSha256": "597d8eb4d28bd97b7884f50902c174381152d649a001df997c34c58d29e65126",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 361517,
+            "commandSha256": "fdec2201a7c610bf9a7b07628c1e2bbdc163b7d8e0bf619a3bb178f2bc64ab0c",
+            "recordSha256": "12adc27234488fa563a31857ae659e3f2568507644bafb4485ddb2f3a56df6ef"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0096",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "828d544d04caf95283ff3b393eba08997e1d5696e1d4001cc2801d37710ef5a9",
+      "afterHash": "e81a52d5a6824b26cfef3c24028df668409e0b8833dbf1db0c3675140831a8ba",
+      "evidenceIds": [
+        "EV-20261010-017"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0101",
+        "successorEvidenceIds": [
+          "EV-20261010-018"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0101].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 361517,
+        "producerSourceSha256": "fdec2201a7c610bf9a7b07628c1e2bbdc163b7d8e0bf619a3bb178f2bc64ab0c",
+        "readDefinition": "const trackingBefore = fs.readFileSync(trackingPath);",
+        "checksumAssignment": "{ id: ids[4], path: 'docs/architecture/production-readiness/TRACKING.json', action: 'modify', beforeHash: sha(trackingBefore), afterHash: null, reason: 'Register EV-016 Arena changes, full-suite evidence, plan update and session checkpoint.' },",
+        "successfulDriverOrdinal": 362912,
+        "driverItemId": "exec-10ae8c35-00ce-40a7-8afa-0c64f7b8fb41",
+        "originalObservedAt": "2026-10-10T04:20:52.434Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "dcdfe251a31c6f39086a523d15c5537644bbc453737cc0a7db573e2c927a6453",
+        "stdoutSha256": "20baae61eff11444065e9f6060a37cb0ed5093cfd1a5161b52e4c2b74ed865b0",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 361517,
+            "commandSha256": "fdec2201a7c610bf9a7b07628c1e2bbdc163b7d8e0bf619a3bb178f2bc64ab0c",
+            "recordSha256": "12adc27234488fa563a31857ae659e3f2568507644bafb4485ddb2f3a56df6ef"
+          },
+          {
+            "ordinal": 361579,
+            "commandSha256": "3d7cac075fe1d226c6e667763be21aad48811efa832926eca2ec0e07dff8c448",
+            "recordSha256": "6d50684314d2133c3dd6f418ff8800858788135c0b1f2e77e0e82ef8d41cd8eb"
+          },
+          {
+            "ordinal": 362116,
+            "commandSha256": "1d93d85865bb0117f52098884acda6e4eec6d4659361cf7a77e6974c8f8b0423",
+            "recordSha256": "7dfc8ea8134ca69e8026af640eb21bc4c61e9aff1e30e4f04ec3460d1bd02bf2"
+          },
+          {
+            "ordinal": 362130,
+            "commandSha256": "2ce6315f6771b7d8733d0875bd8cc59002880013477e1384bd44abfd446118a6",
+            "recordSha256": "d68282f32579fc691f19de1210ba2ec3addb74946259d66e52d41d92525b8ffa"
+          },
+          {
+            "ordinal": 362137,
+            "commandSha256": "174f5c0883968a3d62821f2ae345705bc6db0f20c724a5430e598d430a54e3bc",
+            "recordSha256": "4fa637451decd23e0970185acb7b9d791ff18e37113a9a9d842673b44cb3c204"
+          },
+          {
+            "ordinal": 362859,
+            "commandSha256": "d5080c34e5dbd5093eb475de96565aa75f2ab0920d307c81b659b63973500d09",
+            "recordSha256": "ed2b660150989bccf7641c61a5c5387c1bbf3217687f76b5793f6f09d8053be9"
+          },
+          {
+            "ordinal": 362887,
+            "commandSha256": "eaf977cdd07aafd2768a404f38d656b96e2b5075282bd3021f713854ca5d524b",
+            "recordSha256": "90c3d82a18e5b56f34e4a912db124f21f52ac179cf4f3261be7ad312ae0ff95d"
+          },
+          {
+            "ordinal": 362894,
+            "commandSha256": "227f98ca7d11f36c755306a08deb63d40bd1fa6e192edd136aba3ccd42449a1c",
+            "recordSha256": "56a3a0350eef7a5109ecaa7e704db8f99fc25ce4f3588f80c0c857f9ef436dc7"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0101",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "e81a52d5a6824b26cfef3c24028df668409e0b8833dbf1db0c3675140831a8ba",
+      "afterHash": "9b413df40cdc9d9a78e3447b11abbad4c3f7942ce5e6c6b1221250446baf2fb2",
+      "evidenceIds": [
+        "EV-20261010-018"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0106",
+        "successorEvidenceIds": [
+          "EV-20261010-019"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0106].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 361517,
+        "producerSourceSha256": "fdec2201a7c610bf9a7b07628c1e2bbdc163b7d8e0bf619a3bb178f2bc64ab0c",
+        "readDefinition": "const trackingBefore = fs.readFileSync(trackingPath);",
+        "checksumAssignment": "{ id: ids[4], path: 'docs/architecture/production-readiness/TRACKING.json', action: 'modify', beforeHash: sha(trackingBefore), afterHash: null, reason: 'Register EV-016 Arena changes, full-suite evidence, plan update and session checkpoint.' },",
+        "successfulDriverOrdinal": 363505,
+        "driverItemId": "exec-9e297f31-81fd-4a7d-88c0-e4842fcdf60b",
+        "originalObservedAt": "2026-10-10T04:37:37.069Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "2a3379be49102880ced1a92c2b2ea01826980104498dfc6a612a09abc191e5f5",
+        "stdoutSha256": "c04e71df85bdb7579bbf22015db914e782599213a029cf5739e4c7d22dcafdbb",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 361517,
+            "commandSha256": "fdec2201a7c610bf9a7b07628c1e2bbdc163b7d8e0bf619a3bb178f2bc64ab0c",
+            "recordSha256": "12adc27234488fa563a31857ae659e3f2568507644bafb4485ddb2f3a56df6ef"
+          },
+          {
+            "ordinal": 361579,
+            "commandSha256": "3d7cac075fe1d226c6e667763be21aad48811efa832926eca2ec0e07dff8c448",
+            "recordSha256": "6d50684314d2133c3dd6f418ff8800858788135c0b1f2e77e0e82ef8d41cd8eb"
+          },
+          {
+            "ordinal": 362116,
+            "commandSha256": "1d93d85865bb0117f52098884acda6e4eec6d4659361cf7a77e6974c8f8b0423",
+            "recordSha256": "7dfc8ea8134ca69e8026af640eb21bc4c61e9aff1e30e4f04ec3460d1bd02bf2"
+          },
+          {
+            "ordinal": 362130,
+            "commandSha256": "2ce6315f6771b7d8733d0875bd8cc59002880013477e1384bd44abfd446118a6",
+            "recordSha256": "d68282f32579fc691f19de1210ba2ec3addb74946259d66e52d41d92525b8ffa"
+          },
+          {
+            "ordinal": 362137,
+            "commandSha256": "174f5c0883968a3d62821f2ae345705bc6db0f20c724a5430e598d430a54e3bc",
+            "recordSha256": "4fa637451decd23e0970185acb7b9d791ff18e37113a9a9d842673b44cb3c204"
+          },
+          {
+            "ordinal": 362859,
+            "commandSha256": "d5080c34e5dbd5093eb475de96565aa75f2ab0920d307c81b659b63973500d09",
+            "recordSha256": "ed2b660150989bccf7641c61a5c5387c1bbf3217687f76b5793f6f09d8053be9"
+          },
+          {
+            "ordinal": 362887,
+            "commandSha256": "eaf977cdd07aafd2768a404f38d656b96e2b5075282bd3021f713854ca5d524b",
+            "recordSha256": "90c3d82a18e5b56f34e4a912db124f21f52ac179cf4f3261be7ad312ae0ff95d"
+          },
+          {
+            "ordinal": 362894,
+            "commandSha256": "227f98ca7d11f36c755306a08deb63d40bd1fa6e192edd136aba3ccd42449a1c",
+            "recordSha256": "56a3a0350eef7a5109ecaa7e704db8f99fc25ce4f3588f80c0c857f9ef436dc7"
+          },
+          {
+            "ordinal": 363371,
+            "commandSha256": "66e5a7972f34d52af7fbcaf0b4d4ce37958f6f5b0749ef2df5e0d46d4519f25e",
+            "recordSha256": "3a59483a92ec82a6c986022ac534dbb6a25e2e41481628660622da24fa128be1"
+          },
+          {
+            "ordinal": 363382,
+            "commandSha256": "7103fbdf6c77d82a4bafd12e228d5b3ae5685e9ad3d117c4c281eeacc40a3a10",
+            "recordSha256": "da72da7960b9c6913a1f789742cefc97ba673a429b4ed7da68764434f763d505"
+          },
+          {
+            "ordinal": 363389,
+            "commandSha256": "69051377a2d8d4ad415f92907b380d3eb0054c3b9cb2fd30c9097db68a94de8d",
+            "recordSha256": "9bfb8dd8d9d8367f4639a61e262ab014ce5aa9eb21fddecc1fd584511de7709d"
+          },
+          {
+            "ordinal": 363396,
+            "commandSha256": "24bd32eb7175ba5d19d51b5d5f454efe0026d2aefc338b376b8951f65fcb87ed",
+            "recordSha256": "7590fda726a5e2a403b12e232ceeab31f60644a12e9bd68b717491c27cbfdc73"
+          },
+          {
+            "ordinal": 363414,
+            "commandSha256": "932040454680359c7a76f07f8b10b12e2c3e55a08b2e10d0218a5c32f07d2623",
+            "recordSha256": "e501b36fe8965a975269bc2e0c668ccdfe3bcff37d8c9db7069b3e98c1bd078f"
+          },
+          {
+            "ordinal": 363428,
+            "commandSha256": "bb8c63a8817878e81a3513ac64ce7ee175067bd881022a86858b13bd70e086cd",
+            "recordSha256": "ab4ccffc941bf1a22438f2cf1752101e54d275475ecb52d182c9ac39e13d3b00"
+          },
+          {
+            "ordinal": 363451,
+            "commandSha256": "af8b4ae64959c37b0ee33eb6e7bbac4bbc3abfb73e04cdd4252463eb3325302f",
+            "recordSha256": "1135a384a56d4cf7d8303a920ae34c2da1b8e684f0f50e460c975e43c2890077"
+          },
+          {
+            "ordinal": 363467,
+            "commandSha256": "aba2acc4f3c4aa030121201f6c5ca1bcb9263559591ab140ebdebdf1b6424f65",
+            "recordSha256": "95a3a9fa47cbefb09dd9c35592e90cce70699a2a7cbcb287ad95c6ffbfa3e21a"
+          },
+          {
+            "ordinal": 363476,
+            "commandSha256": "84f93c084e4cfc16092afc757e61db84cabcfc7a5e3f6340c35aa5761de4e2db",
+            "recordSha256": "4ba5ee5f4e81b36012b43622b10c1cbd1ad83f99bca8d4a833a5e4ae22029d44"
+          },
+          {
+            "ordinal": 363498,
+            "commandSha256": "de510165a57f6d4d37d1b430248f88b1fa211a5f25320cf6df104a2a662479d2",
+            "recordSha256": "2b6cd61e6b6997ee5e689c4d3809e0fede86ace3fad4f3695757ffb8dc73f4a6"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0106",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "9b413df40cdc9d9a78e3447b11abbad4c3f7942ce5e6c6b1221250446baf2fb2",
+      "afterHash": "c3d48e240528d2865e46f8eb90224d0c05039f30d118c6c7dd89fc852400c636",
+      "evidenceIds": [
+        "EV-20261010-019"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0111",
+        "successorEvidenceIds": [
+          "EV-20261010-020"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0111].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 361517,
+        "producerSourceSha256": "fdec2201a7c610bf9a7b07628c1e2bbdc163b7d8e0bf619a3bb178f2bc64ab0c",
+        "readDefinition": "const trackingBefore = fs.readFileSync(trackingPath);",
+        "checksumAssignment": "{ id: ids[4], path: 'docs/architecture/production-readiness/TRACKING.json', action: 'modify', beforeHash: sha(trackingBefore), afterHash: null, reason: 'Register EV-016 Arena changes, full-suite evidence, plan update and session checkpoint.' },",
+        "successfulDriverOrdinal": 364056,
+        "driverItemId": "exec-c0abcfcb-4959-4b67-a5a5-d2b74ea32d2e",
+        "originalObservedAt": "2026-10-10T04:55:14.454Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "a18cccb8d012b153a790453fc33bdd8a36c41e175abffa0cd442103d7c92a2e2",
+        "stdoutSha256": "8c6c82b5f080b68e732759b08e1e0e7a522fce9a65b0790aeddda0f90d471a99",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 361517,
+            "commandSha256": "fdec2201a7c610bf9a7b07628c1e2bbdc163b7d8e0bf619a3bb178f2bc64ab0c",
+            "recordSha256": "12adc27234488fa563a31857ae659e3f2568507644bafb4485ddb2f3a56df6ef"
+          },
+          {
+            "ordinal": 361579,
+            "commandSha256": "3d7cac075fe1d226c6e667763be21aad48811efa832926eca2ec0e07dff8c448",
+            "recordSha256": "6d50684314d2133c3dd6f418ff8800858788135c0b1f2e77e0e82ef8d41cd8eb"
+          },
+          {
+            "ordinal": 362116,
+            "commandSha256": "1d93d85865bb0117f52098884acda6e4eec6d4659361cf7a77e6974c8f8b0423",
+            "recordSha256": "7dfc8ea8134ca69e8026af640eb21bc4c61e9aff1e30e4f04ec3460d1bd02bf2"
+          },
+          {
+            "ordinal": 362130,
+            "commandSha256": "2ce6315f6771b7d8733d0875bd8cc59002880013477e1384bd44abfd446118a6",
+            "recordSha256": "d68282f32579fc691f19de1210ba2ec3addb74946259d66e52d41d92525b8ffa"
+          },
+          {
+            "ordinal": 362137,
+            "commandSha256": "174f5c0883968a3d62821f2ae345705bc6db0f20c724a5430e598d430a54e3bc",
+            "recordSha256": "4fa637451decd23e0970185acb7b9d791ff18e37113a9a9d842673b44cb3c204"
+          },
+          {
+            "ordinal": 362859,
+            "commandSha256": "d5080c34e5dbd5093eb475de96565aa75f2ab0920d307c81b659b63973500d09",
+            "recordSha256": "ed2b660150989bccf7641c61a5c5387c1bbf3217687f76b5793f6f09d8053be9"
+          },
+          {
+            "ordinal": 362887,
+            "commandSha256": "eaf977cdd07aafd2768a404f38d656b96e2b5075282bd3021f713854ca5d524b",
+            "recordSha256": "90c3d82a18e5b56f34e4a912db124f21f52ac179cf4f3261be7ad312ae0ff95d"
+          },
+          {
+            "ordinal": 362894,
+            "commandSha256": "227f98ca7d11f36c755306a08deb63d40bd1fa6e192edd136aba3ccd42449a1c",
+            "recordSha256": "56a3a0350eef7a5109ecaa7e704db8f99fc25ce4f3588f80c0c857f9ef436dc7"
+          },
+          {
+            "ordinal": 363371,
+            "commandSha256": "66e5a7972f34d52af7fbcaf0b4d4ce37958f6f5b0749ef2df5e0d46d4519f25e",
+            "recordSha256": "3a59483a92ec82a6c986022ac534dbb6a25e2e41481628660622da24fa128be1"
+          },
+          {
+            "ordinal": 363382,
+            "commandSha256": "7103fbdf6c77d82a4bafd12e228d5b3ae5685e9ad3d117c4c281eeacc40a3a10",
+            "recordSha256": "da72da7960b9c6913a1f789742cefc97ba673a429b4ed7da68764434f763d505"
+          },
+          {
+            "ordinal": 363389,
+            "commandSha256": "69051377a2d8d4ad415f92907b380d3eb0054c3b9cb2fd30c9097db68a94de8d",
+            "recordSha256": "9bfb8dd8d9d8367f4639a61e262ab014ce5aa9eb21fddecc1fd584511de7709d"
+          },
+          {
+            "ordinal": 363396,
+            "commandSha256": "24bd32eb7175ba5d19d51b5d5f454efe0026d2aefc338b376b8951f65fcb87ed",
+            "recordSha256": "7590fda726a5e2a403b12e232ceeab31f60644a12e9bd68b717491c27cbfdc73"
+          },
+          {
+            "ordinal": 363414,
+            "commandSha256": "932040454680359c7a76f07f8b10b12e2c3e55a08b2e10d0218a5c32f07d2623",
+            "recordSha256": "e501b36fe8965a975269bc2e0c668ccdfe3bcff37d8c9db7069b3e98c1bd078f"
+          },
+          {
+            "ordinal": 363428,
+            "commandSha256": "bb8c63a8817878e81a3513ac64ce7ee175067bd881022a86858b13bd70e086cd",
+            "recordSha256": "ab4ccffc941bf1a22438f2cf1752101e54d275475ecb52d182c9ac39e13d3b00"
+          },
+          {
+            "ordinal": 363451,
+            "commandSha256": "af8b4ae64959c37b0ee33eb6e7bbac4bbc3abfb73e04cdd4252463eb3325302f",
+            "recordSha256": "1135a384a56d4cf7d8303a920ae34c2da1b8e684f0f50e460c975e43c2890077"
+          },
+          {
+            "ordinal": 363467,
+            "commandSha256": "aba2acc4f3c4aa030121201f6c5ca1bcb9263559591ab140ebdebdf1b6424f65",
+            "recordSha256": "95a3a9fa47cbefb09dd9c35592e90cce70699a2a7cbcb287ad95c6ffbfa3e21a"
+          },
+          {
+            "ordinal": 363476,
+            "commandSha256": "84f93c084e4cfc16092afc757e61db84cabcfc7a5e3f6340c35aa5761de4e2db",
+            "recordSha256": "4ba5ee5f4e81b36012b43622b10c1cbd1ad83f99bca8d4a833a5e4ae22029d44"
+          },
+          {
+            "ordinal": 363498,
+            "commandSha256": "de510165a57f6d4d37d1b430248f88b1fa211a5f25320cf6df104a2a662479d2",
+            "recordSha256": "2b6cd61e6b6997ee5e689c4d3809e0fede86ace3fad4f3695757ffb8dc73f4a6"
+          },
+          {
+            "ordinal": 363573,
+            "commandSha256": "095c70159bfb55c615d5cefaa50213dfb583af73a297429b4db8db6ca8fd0b0e",
+            "recordSha256": "d6d714ed2130c4b7b462751f8fa1a9483505bf5b94638f7acde5e3fa4ebf3435"
+          },
+          {
+            "ordinal": 363985,
+            "commandSha256": "08a9a25da925860822a8a5562d517a5335e59b37d953e00b304cb5dcf9229df5",
+            "recordSha256": "d6b309d4e9489bf8985ba2f683ecdf7ada74983d1676ea05ca70cb26999ca15a"
+          },
+          {
+            "ordinal": 364001,
+            "commandSha256": "1eb46398e166029cf04feeb800a59f70516bcd3039cd051838665fef15536155",
+            "recordSha256": "71f2a164c19e330df2db44d1993af4e266b8c3fd6e460a42782dff486ec7ca09"
+          },
+          {
+            "ordinal": 364010,
+            "commandSha256": "a5e6b6522a3e78d821eb81f7d930bfdd7693cb795af2c7927917868b2ce7fcf8",
+            "recordSha256": "5a71bc656f09d887102412108f0dfbec9f984f3dd449f8001e936dbf20fa3beb"
+          },
+          {
+            "ordinal": 364017,
+            "commandSha256": "9f4959010ee1753e5f71d2ec46b67448f7e38d6a2eb34ee4c7f918d713890fe1",
+            "recordSha256": "30cdaf2e197f70a6f2a52f29f27de8dbb8d52e2e1d1f674045e646f64462a359"
+          },
+          {
+            "ordinal": 364040,
+            "commandSha256": "d9186a1af17d0b06cfdad8368a07ba13f62b8bf468ce3030f8bec70f8a64211e",
+            "recordSha256": "286c1b24a5f7dccac01e6392cd2810cb3f5561a7fe63e95486085f6532589179"
+          },
+          {
+            "ordinal": 364048,
+            "commandSha256": "9c8e86d556b559356919d564a4bba8dfb31e5e79af2d923569cf3ce1ec133170",
+            "recordSha256": "08fab9b80c85c75b389b55c6574d723011b3c99ecb4856126c661e6fd8686179"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0111",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "c3d48e240528d2865e46f8eb90224d0c05039f30d118c6c7dd89fc852400c636",
+      "afterHash": "18a0b8480d00e9cf7bbff891a1cd8a0b1d12720b20b7e802d00f4b9f6a29d264",
+      "evidenceIds": [
+        "EV-20261010-020"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0115",
+        "successorEvidenceIds": [
+          "EV-20261010-021"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0115].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 361517,
+        "producerSourceSha256": "fdec2201a7c610bf9a7b07628c1e2bbdc163b7d8e0bf619a3bb178f2bc64ab0c",
+        "readDefinition": "const trackingBefore = fs.readFileSync(trackingPath);",
+        "checksumAssignment": "{ id: ids[4], path: 'docs/architecture/production-readiness/TRACKING.json', action: 'modify', beforeHash: sha(trackingBefore), afterHash: null, reason: 'Register EV-016 Arena changes, full-suite evidence, plan update and session checkpoint.' },",
+        "successfulDriverOrdinal": 364563,
+        "driverItemId": "exec-1275526d-e8e7-490a-a7c7-82d574b19ae4",
+        "originalObservedAt": "2026-10-10T05:11:27.840Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "1dd4003450e7f666a1e592f766fb0f0d4096486d465a9fb34333f70a5586656f",
+        "stdoutSha256": "633c1fffd2a287361f07ae15a60af8c71242ca6b03f846d8cb0e08b5aceed747",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 361517,
+            "commandSha256": "fdec2201a7c610bf9a7b07628c1e2bbdc163b7d8e0bf619a3bb178f2bc64ab0c",
+            "recordSha256": "12adc27234488fa563a31857ae659e3f2568507644bafb4485ddb2f3a56df6ef"
+          },
+          {
+            "ordinal": 361579,
+            "commandSha256": "3d7cac075fe1d226c6e667763be21aad48811efa832926eca2ec0e07dff8c448",
+            "recordSha256": "6d50684314d2133c3dd6f418ff8800858788135c0b1f2e77e0e82ef8d41cd8eb"
+          },
+          {
+            "ordinal": 362116,
+            "commandSha256": "1d93d85865bb0117f52098884acda6e4eec6d4659361cf7a77e6974c8f8b0423",
+            "recordSha256": "7dfc8ea8134ca69e8026af640eb21bc4c61e9aff1e30e4f04ec3460d1bd02bf2"
+          },
+          {
+            "ordinal": 362130,
+            "commandSha256": "2ce6315f6771b7d8733d0875bd8cc59002880013477e1384bd44abfd446118a6",
+            "recordSha256": "d68282f32579fc691f19de1210ba2ec3addb74946259d66e52d41d92525b8ffa"
+          },
+          {
+            "ordinal": 362137,
+            "commandSha256": "174f5c0883968a3d62821f2ae345705bc6db0f20c724a5430e598d430a54e3bc",
+            "recordSha256": "4fa637451decd23e0970185acb7b9d791ff18e37113a9a9d842673b44cb3c204"
+          },
+          {
+            "ordinal": 362859,
+            "commandSha256": "d5080c34e5dbd5093eb475de96565aa75f2ab0920d307c81b659b63973500d09",
+            "recordSha256": "ed2b660150989bccf7641c61a5c5387c1bbf3217687f76b5793f6f09d8053be9"
+          },
+          {
+            "ordinal": 362887,
+            "commandSha256": "eaf977cdd07aafd2768a404f38d656b96e2b5075282bd3021f713854ca5d524b",
+            "recordSha256": "90c3d82a18e5b56f34e4a912db124f21f52ac179cf4f3261be7ad312ae0ff95d"
+          },
+          {
+            "ordinal": 362894,
+            "commandSha256": "227f98ca7d11f36c755306a08deb63d40bd1fa6e192edd136aba3ccd42449a1c",
+            "recordSha256": "56a3a0350eef7a5109ecaa7e704db8f99fc25ce4f3588f80c0c857f9ef436dc7"
+          },
+          {
+            "ordinal": 363371,
+            "commandSha256": "66e5a7972f34d52af7fbcaf0b4d4ce37958f6f5b0749ef2df5e0d46d4519f25e",
+            "recordSha256": "3a59483a92ec82a6c986022ac534dbb6a25e2e41481628660622da24fa128be1"
+          },
+          {
+            "ordinal": 363382,
+            "commandSha256": "7103fbdf6c77d82a4bafd12e228d5b3ae5685e9ad3d117c4c281eeacc40a3a10",
+            "recordSha256": "da72da7960b9c6913a1f789742cefc97ba673a429b4ed7da68764434f763d505"
+          },
+          {
+            "ordinal": 363389,
+            "commandSha256": "69051377a2d8d4ad415f92907b380d3eb0054c3b9cb2fd30c9097db68a94de8d",
+            "recordSha256": "9bfb8dd8d9d8367f4639a61e262ab014ce5aa9eb21fddecc1fd584511de7709d"
+          },
+          {
+            "ordinal": 363396,
+            "commandSha256": "24bd32eb7175ba5d19d51b5d5f454efe0026d2aefc338b376b8951f65fcb87ed",
+            "recordSha256": "7590fda726a5e2a403b12e232ceeab31f60644a12e9bd68b717491c27cbfdc73"
+          },
+          {
+            "ordinal": 363414,
+            "commandSha256": "932040454680359c7a76f07f8b10b12e2c3e55a08b2e10d0218a5c32f07d2623",
+            "recordSha256": "e501b36fe8965a975269bc2e0c668ccdfe3bcff37d8c9db7069b3e98c1bd078f"
+          },
+          {
+            "ordinal": 363428,
+            "commandSha256": "bb8c63a8817878e81a3513ac64ce7ee175067bd881022a86858b13bd70e086cd",
+            "recordSha256": "ab4ccffc941bf1a22438f2cf1752101e54d275475ecb52d182c9ac39e13d3b00"
+          },
+          {
+            "ordinal": 363451,
+            "commandSha256": "af8b4ae64959c37b0ee33eb6e7bbac4bbc3abfb73e04cdd4252463eb3325302f",
+            "recordSha256": "1135a384a56d4cf7d8303a920ae34c2da1b8e684f0f50e460c975e43c2890077"
+          },
+          {
+            "ordinal": 363467,
+            "commandSha256": "aba2acc4f3c4aa030121201f6c5ca1bcb9263559591ab140ebdebdf1b6424f65",
+            "recordSha256": "95a3a9fa47cbefb09dd9c35592e90cce70699a2a7cbcb287ad95c6ffbfa3e21a"
+          },
+          {
+            "ordinal": 363476,
+            "commandSha256": "84f93c084e4cfc16092afc757e61db84cabcfc7a5e3f6340c35aa5761de4e2db",
+            "recordSha256": "4ba5ee5f4e81b36012b43622b10c1cbd1ad83f99bca8d4a833a5e4ae22029d44"
+          },
+          {
+            "ordinal": 363498,
+            "commandSha256": "de510165a57f6d4d37d1b430248f88b1fa211a5f25320cf6df104a2a662479d2",
+            "recordSha256": "2b6cd61e6b6997ee5e689c4d3809e0fede86ace3fad4f3695757ffb8dc73f4a6"
+          },
+          {
+            "ordinal": 363573,
+            "commandSha256": "095c70159bfb55c615d5cefaa50213dfb583af73a297429b4db8db6ca8fd0b0e",
+            "recordSha256": "d6d714ed2130c4b7b462751f8fa1a9483505bf5b94638f7acde5e3fa4ebf3435"
+          },
+          {
+            "ordinal": 363985,
+            "commandSha256": "08a9a25da925860822a8a5562d517a5335e59b37d953e00b304cb5dcf9229df5",
+            "recordSha256": "d6b309d4e9489bf8985ba2f683ecdf7ada74983d1676ea05ca70cb26999ca15a"
+          },
+          {
+            "ordinal": 364001,
+            "commandSha256": "1eb46398e166029cf04feeb800a59f70516bcd3039cd051838665fef15536155",
+            "recordSha256": "71f2a164c19e330df2db44d1993af4e266b8c3fd6e460a42782dff486ec7ca09"
+          },
+          {
+            "ordinal": 364010,
+            "commandSha256": "a5e6b6522a3e78d821eb81f7d930bfdd7693cb795af2c7927917868b2ce7fcf8",
+            "recordSha256": "5a71bc656f09d887102412108f0dfbec9f984f3dd449f8001e936dbf20fa3beb"
+          },
+          {
+            "ordinal": 364017,
+            "commandSha256": "9f4959010ee1753e5f71d2ec46b67448f7e38d6a2eb34ee4c7f918d713890fe1",
+            "recordSha256": "30cdaf2e197f70a6f2a52f29f27de8dbb8d52e2e1d1f674045e646f64462a359"
+          },
+          {
+            "ordinal": 364040,
+            "commandSha256": "d9186a1af17d0b06cfdad8368a07ba13f62b8bf468ce3030f8bec70f8a64211e",
+            "recordSha256": "286c1b24a5f7dccac01e6392cd2810cb3f5561a7fe63e95486085f6532589179"
+          },
+          {
+            "ordinal": 364048,
+            "commandSha256": "9c8e86d556b559356919d564a4bba8dfb31e5e79af2d923569cf3ce1ec133170",
+            "recordSha256": "08fab9b80c85c75b389b55c6574d723011b3c99ecb4856126c661e6fd8686179"
+          },
+          {
+            "ordinal": 364078,
+            "commandSha256": "1cf359748a28949b1e4c82cac53f65c1d04bba671a68ed962d9470a873c6e23f",
+            "recordSha256": "f3ed8717fd00790f4d49d742dd30def2256a6fbba5ec08f554338e183f8b3c38"
+          },
+          {
+            "ordinal": 364448,
+            "commandSha256": "3ef7946d6b6566292eea26029c44d8e2e77fdd4e4d2934f7aefd9e9629670b90",
+            "recordSha256": "c60304f8069f19b328d6cb96b352658f9bce9f0f9b2b2d0f78baa99e31a387fc"
+          },
+          {
+            "ordinal": 364514,
+            "commandSha256": "fcc903f22e6ad3e5d031d0a72319ea022e7e1c740c21b74c7aca5f3c76abe13a",
+            "recordSha256": "0ff24de6e7c2580260453eb0c4df81d99540aadb6c0b6c597ac5a3940d006904"
+          },
+          {
+            "ordinal": 364521,
+            "commandSha256": "c2ff10c61edd69af796933d7f382d59fd060f89fb29a3dbab17d8ecb6f263d7c",
+            "recordSha256": "c896624ca30ac16fe7cefb404dfef367ab2cad8adaa7bfbcbacfc7d24e16bc26"
+          },
+          {
+            "ordinal": 364542,
+            "commandSha256": "1ecd23774516f1025c1fa10d3086b39e34087947d1a0854187e439fe616dd8b5",
+            "recordSha256": "cc9d48574846c14ea378a8f16c6b319abfb4d1e2f44b9b4f3196e6160f551fa8"
+          },
+          {
+            "ordinal": 364549,
+            "commandSha256": "8673ba56197b2831db3f9440e3dd8ee40fcc5f454849a3826d75b43cbc197fac",
+            "recordSha256": "257280d704dc7f20036fc8ccb0dce6c46bb14b14b2bd679d7a9ee80a250561ca"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0115",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "18a0b8480d00e9cf7bbff891a1cd8a0b1d12720b20b7e802d00f4b9f6a29d264",
+      "afterHash": "b250fa8021cdd947d3e6aa121d97199baa9977ac89acbd3337b7c485dc68fdad",
+      "evidenceIds": [
+        "EV-20261010-021"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0121",
+        "successorEvidenceIds": [
+          "EV-20261010-022"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0121].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 361517,
+        "producerSourceSha256": "fdec2201a7c610bf9a7b07628c1e2bbdc163b7d8e0bf619a3bb178f2bc64ab0c",
+        "readDefinition": "const trackingBefore = fs.readFileSync(trackingPath);",
+        "checksumAssignment": "{ id: ids[4], path: 'docs/architecture/production-readiness/TRACKING.json', action: 'modify', beforeHash: sha(trackingBefore), afterHash: null, reason: 'Register EV-016 Arena changes, full-suite evidence, plan update and session checkpoint.' },",
+        "successfulDriverOrdinal": 365220,
+        "driverItemId": "exec-1154b9e7-7b83-4f70-87f0-88776400dbc7",
+        "originalObservedAt": "2026-10-10T05:34:07.864Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "849658a793c622048db86d39ea809bf0383a0589d17398bd573d2624596769ff",
+        "stdoutSha256": "2e8624a62c819338e6799230bf8dddc53af937d07eee93c068e03996c758bb47",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 361517,
+            "commandSha256": "fdec2201a7c610bf9a7b07628c1e2bbdc163b7d8e0bf619a3bb178f2bc64ab0c",
+            "recordSha256": "12adc27234488fa563a31857ae659e3f2568507644bafb4485ddb2f3a56df6ef"
+          },
+          {
+            "ordinal": 361579,
+            "commandSha256": "3d7cac075fe1d226c6e667763be21aad48811efa832926eca2ec0e07dff8c448",
+            "recordSha256": "6d50684314d2133c3dd6f418ff8800858788135c0b1f2e77e0e82ef8d41cd8eb"
+          },
+          {
+            "ordinal": 362116,
+            "commandSha256": "1d93d85865bb0117f52098884acda6e4eec6d4659361cf7a77e6974c8f8b0423",
+            "recordSha256": "7dfc8ea8134ca69e8026af640eb21bc4c61e9aff1e30e4f04ec3460d1bd02bf2"
+          },
+          {
+            "ordinal": 362130,
+            "commandSha256": "2ce6315f6771b7d8733d0875bd8cc59002880013477e1384bd44abfd446118a6",
+            "recordSha256": "d68282f32579fc691f19de1210ba2ec3addb74946259d66e52d41d92525b8ffa"
+          },
+          {
+            "ordinal": 362137,
+            "commandSha256": "174f5c0883968a3d62821f2ae345705bc6db0f20c724a5430e598d430a54e3bc",
+            "recordSha256": "4fa637451decd23e0970185acb7b9d791ff18e37113a9a9d842673b44cb3c204"
+          },
+          {
+            "ordinal": 362859,
+            "commandSha256": "d5080c34e5dbd5093eb475de96565aa75f2ab0920d307c81b659b63973500d09",
+            "recordSha256": "ed2b660150989bccf7641c61a5c5387c1bbf3217687f76b5793f6f09d8053be9"
+          },
+          {
+            "ordinal": 362887,
+            "commandSha256": "eaf977cdd07aafd2768a404f38d656b96e2b5075282bd3021f713854ca5d524b",
+            "recordSha256": "90c3d82a18e5b56f34e4a912db124f21f52ac179cf4f3261be7ad312ae0ff95d"
+          },
+          {
+            "ordinal": 362894,
+            "commandSha256": "227f98ca7d11f36c755306a08deb63d40bd1fa6e192edd136aba3ccd42449a1c",
+            "recordSha256": "56a3a0350eef7a5109ecaa7e704db8f99fc25ce4f3588f80c0c857f9ef436dc7"
+          },
+          {
+            "ordinal": 363371,
+            "commandSha256": "66e5a7972f34d52af7fbcaf0b4d4ce37958f6f5b0749ef2df5e0d46d4519f25e",
+            "recordSha256": "3a59483a92ec82a6c986022ac534dbb6a25e2e41481628660622da24fa128be1"
+          },
+          {
+            "ordinal": 363382,
+            "commandSha256": "7103fbdf6c77d82a4bafd12e228d5b3ae5685e9ad3d117c4c281eeacc40a3a10",
+            "recordSha256": "da72da7960b9c6913a1f789742cefc97ba673a429b4ed7da68764434f763d505"
+          },
+          {
+            "ordinal": 363389,
+            "commandSha256": "69051377a2d8d4ad415f92907b380d3eb0054c3b9cb2fd30c9097db68a94de8d",
+            "recordSha256": "9bfb8dd8d9d8367f4639a61e262ab014ce5aa9eb21fddecc1fd584511de7709d"
+          },
+          {
+            "ordinal": 363396,
+            "commandSha256": "24bd32eb7175ba5d19d51b5d5f454efe0026d2aefc338b376b8951f65fcb87ed",
+            "recordSha256": "7590fda726a5e2a403b12e232ceeab31f60644a12e9bd68b717491c27cbfdc73"
+          },
+          {
+            "ordinal": 363414,
+            "commandSha256": "932040454680359c7a76f07f8b10b12e2c3e55a08b2e10d0218a5c32f07d2623",
+            "recordSha256": "e501b36fe8965a975269bc2e0c668ccdfe3bcff37d8c9db7069b3e98c1bd078f"
+          },
+          {
+            "ordinal": 363428,
+            "commandSha256": "bb8c63a8817878e81a3513ac64ce7ee175067bd881022a86858b13bd70e086cd",
+            "recordSha256": "ab4ccffc941bf1a22438f2cf1752101e54d275475ecb52d182c9ac39e13d3b00"
+          },
+          {
+            "ordinal": 363451,
+            "commandSha256": "af8b4ae64959c37b0ee33eb6e7bbac4bbc3abfb73e04cdd4252463eb3325302f",
+            "recordSha256": "1135a384a56d4cf7d8303a920ae34c2da1b8e684f0f50e460c975e43c2890077"
+          },
+          {
+            "ordinal": 363467,
+            "commandSha256": "aba2acc4f3c4aa030121201f6c5ca1bcb9263559591ab140ebdebdf1b6424f65",
+            "recordSha256": "95a3a9fa47cbefb09dd9c35592e90cce70699a2a7cbcb287ad95c6ffbfa3e21a"
+          },
+          {
+            "ordinal": 363476,
+            "commandSha256": "84f93c084e4cfc16092afc757e61db84cabcfc7a5e3f6340c35aa5761de4e2db",
+            "recordSha256": "4ba5ee5f4e81b36012b43622b10c1cbd1ad83f99bca8d4a833a5e4ae22029d44"
+          },
+          {
+            "ordinal": 363498,
+            "commandSha256": "de510165a57f6d4d37d1b430248f88b1fa211a5f25320cf6df104a2a662479d2",
+            "recordSha256": "2b6cd61e6b6997ee5e689c4d3809e0fede86ace3fad4f3695757ffb8dc73f4a6"
+          },
+          {
+            "ordinal": 363573,
+            "commandSha256": "095c70159bfb55c615d5cefaa50213dfb583af73a297429b4db8db6ca8fd0b0e",
+            "recordSha256": "d6d714ed2130c4b7b462751f8fa1a9483505bf5b94638f7acde5e3fa4ebf3435"
+          },
+          {
+            "ordinal": 363985,
+            "commandSha256": "08a9a25da925860822a8a5562d517a5335e59b37d953e00b304cb5dcf9229df5",
+            "recordSha256": "d6b309d4e9489bf8985ba2f683ecdf7ada74983d1676ea05ca70cb26999ca15a"
+          },
+          {
+            "ordinal": 364001,
+            "commandSha256": "1eb46398e166029cf04feeb800a59f70516bcd3039cd051838665fef15536155",
+            "recordSha256": "71f2a164c19e330df2db44d1993af4e266b8c3fd6e460a42782dff486ec7ca09"
+          },
+          {
+            "ordinal": 364010,
+            "commandSha256": "a5e6b6522a3e78d821eb81f7d930bfdd7693cb795af2c7927917868b2ce7fcf8",
+            "recordSha256": "5a71bc656f09d887102412108f0dfbec9f984f3dd449f8001e936dbf20fa3beb"
+          },
+          {
+            "ordinal": 364017,
+            "commandSha256": "9f4959010ee1753e5f71d2ec46b67448f7e38d6a2eb34ee4c7f918d713890fe1",
+            "recordSha256": "30cdaf2e197f70a6f2a52f29f27de8dbb8d52e2e1d1f674045e646f64462a359"
+          },
+          {
+            "ordinal": 364040,
+            "commandSha256": "d9186a1af17d0b06cfdad8368a07ba13f62b8bf468ce3030f8bec70f8a64211e",
+            "recordSha256": "286c1b24a5f7dccac01e6392cd2810cb3f5561a7fe63e95486085f6532589179"
+          },
+          {
+            "ordinal": 364048,
+            "commandSha256": "9c8e86d556b559356919d564a4bba8dfb31e5e79af2d923569cf3ce1ec133170",
+            "recordSha256": "08fab9b80c85c75b389b55c6574d723011b3c99ecb4856126c661e6fd8686179"
+          },
+          {
+            "ordinal": 364078,
+            "commandSha256": "1cf359748a28949b1e4c82cac53f65c1d04bba671a68ed962d9470a873c6e23f",
+            "recordSha256": "f3ed8717fd00790f4d49d742dd30def2256a6fbba5ec08f554338e183f8b3c38"
+          },
+          {
+            "ordinal": 364448,
+            "commandSha256": "3ef7946d6b6566292eea26029c44d8e2e77fdd4e4d2934f7aefd9e9629670b90",
+            "recordSha256": "c60304f8069f19b328d6cb96b352658f9bce9f0f9b2b2d0f78baa99e31a387fc"
+          },
+          {
+            "ordinal": 364514,
+            "commandSha256": "fcc903f22e6ad3e5d031d0a72319ea022e7e1c740c21b74c7aca5f3c76abe13a",
+            "recordSha256": "0ff24de6e7c2580260453eb0c4df81d99540aadb6c0b6c597ac5a3940d006904"
+          },
+          {
+            "ordinal": 364521,
+            "commandSha256": "c2ff10c61edd69af796933d7f382d59fd060f89fb29a3dbab17d8ecb6f263d7c",
+            "recordSha256": "c896624ca30ac16fe7cefb404dfef367ab2cad8adaa7bfbcbacfc7d24e16bc26"
+          },
+          {
+            "ordinal": 364542,
+            "commandSha256": "1ecd23774516f1025c1fa10d3086b39e34087947d1a0854187e439fe616dd8b5",
+            "recordSha256": "cc9d48574846c14ea378a8f16c6b319abfb4d1e2f44b9b4f3196e6160f551fa8"
+          },
+          {
+            "ordinal": 364549,
+            "commandSha256": "8673ba56197b2831db3f9440e3dd8ee40fcc5f454849a3826d75b43cbc197fac",
+            "recordSha256": "257280d704dc7f20036fc8ccb0dce6c46bb14b14b2bd679d7a9ee80a250561ca"
+          },
+          {
+            "ordinal": 364594,
+            "commandSha256": "bb67a45db0847091378e0184613f18e3bc833a100cc1479631149e37e0443906",
+            "recordSha256": "c31d6a067a19869e881ab3d59f93c58d59d0badf4290b40aace9e651170c4b99"
+          },
+          {
+            "ordinal": 364621,
+            "commandSha256": "5c210a538bf5e1c37737d7c65be3c6e4de3f0218427ea4d3265a0b61ff50eb35",
+            "recordSha256": "1d6db7e52da9d771a3707b1e680b44092e7d4c2c68670f7358cc2cda702dc356"
+          },
+          {
+            "ordinal": 364664,
+            "commandSha256": "2239a4560104a7dd104098cbdfba1582aecbc94739a3e3013cc8a2fc0cc6e431",
+            "recordSha256": "e2ecfada066bcbdf99dd05bb35a7532ca1165571aaa8877e9bf22b5c6198f937"
+          },
+          {
+            "ordinal": 365190,
+            "commandSha256": "db892804acd70626b65c6bfc096e8446e11ee53598e50d36cabcf822bf10dcc4",
+            "recordSha256": "8e09303ba2f871ccc15ea8dc175ee579442798b236405750dcccea698e033f2a"
+          },
+          {
+            "ordinal": 365197,
+            "commandSha256": "992973fd2bfc9b10d53b5a342a779f1fcf1eb1da233d90181c63943900b2d698",
+            "recordSha256": "46e2f8ca97b3d2af6fca956e7ea6154c918e89221e5cacad1e92f3ea854e0cfe"
+          },
+          {
+            "ordinal": 365213,
+            "commandSha256": "cf9a27034227d0219b60b5f67724fdcbc16392f2c8af142b92b5a293e5ece4b7",
+            "recordSha256": "5a811bd01db07a41d7bee2849aafc258af8ded0b3f511ae16fb3834abf25fb97"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0121",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "b250fa8021cdd947d3e6aa121d97199baa9977ac89acbd3337b7c485dc68fdad",
+      "afterHash": "151350ecc986823f86705304b9ad7eddb914476ac7faa95a36b4e1563a036b4d",
+      "evidenceIds": [
+        "EV-20261010-022"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0125",
+        "successorEvidenceIds": [
+          "EV-20261010-023"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0125].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 365876,
+        "producerSourceSha256": "209be2c822087857a2e5f33387dbbea0fe3d9d32144fbfe611b6450c0724b839",
+        "readDefinition": "const trackingBefore = fs.readFileSync(trackingPath);",
+        "checksumAssignment": "{ id: ids[3], path: 'docs/architecture/production-readiness/TRACKING.json', action: 'modify', beforeHash: sha(trackingBefore), afterHash: null, reason: 'Register EV-023 MarketDerivatives owner test, full-suite evidence, plan update, and session checkpoint.' },",
+        "successfulDriverOrdinal": 365937,
+        "driverItemId": "exec-011a75b4-bbb2-45a6-8ee5-936eba297179",
+        "originalObservedAt": "2026-10-10T06:11:58.105Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "0303ce0de29f9b863ecedd2dcc17be9dff84ddc0bb21e2d59588ced3b696de29",
+        "stdoutSha256": "25e15307a78b35828f0f4625f96ef89cb4f3e90ca2e4a3b20b41a60e5efd8ba0",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 365876,
+            "commandSha256": "209be2c822087857a2e5f33387dbbea0fe3d9d32144fbfe611b6450c0724b839",
+            "recordSha256": "5754e93efeff307d1921ef4bf974de7c3b9db95949468dabadd92f4482af034c"
+          },
+          {
+            "ordinal": 365887,
+            "commandSha256": "cce5980485298b1e72073d5b129dc09c543e1ea8c27e6cae4b69d7935ba91695",
+            "recordSha256": "bc55e0774fcf76f16216c3af8f415f1eccc7a39457f6eaf66d63ad7fa2045ff2"
+          },
+          {
+            "ordinal": 365930,
+            "commandSha256": "d97fed81f641e5a0a4ddb5bf98f2811d3df19bfd4c12d4528bef40d0db92263e",
+            "recordSha256": "6e6fc765aab8fc7d9651a8420e24e69ac3b25bebcdbadce311c50d9e66079c77"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0125",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "151350ecc986823f86705304b9ad7eddb914476ac7faa95a36b4e1563a036b4d",
+      "afterHash": "9f5d8d21b30ef290cde27458628c1ffafeafea87b0b915533250656f9c3e75eb",
+      "evidenceIds": [
+        "EV-20261010-023"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0130",
+        "successorEvidenceIds": [
+          "EV-20261010-024"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0130].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 365876,
+        "producerSourceSha256": "209be2c822087857a2e5f33387dbbea0fe3d9d32144fbfe611b6450c0724b839",
+        "readDefinition": "const trackingBefore = fs.readFileSync(trackingPath);",
+        "checksumAssignment": "{ id: ids[3], path: 'docs/architecture/production-readiness/TRACKING.json', action: 'modify', beforeHash: sha(trackingBefore), afterHash: null, reason: 'Register EV-023 MarketDerivatives owner test, full-suite evidence, plan update, and session checkpoint.' },",
+        "successfulDriverOrdinal": 366334,
+        "driverItemId": "exec-343a5ecf-505d-4020-9c21-8e7c25aad3fb",
+        "originalObservedAt": "2026-10-10T06:30:24.205Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "ee5902493a7f07a59efb0c281d92e08ac3dce64c0e57efb815983bc5d567b770",
+        "stdoutSha256": "4cd2f1bd8ae360096ebbd5f0efd1c01dec313536f3f3c3733326b45a0d95b62f",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 365876,
+            "commandSha256": "209be2c822087857a2e5f33387dbbea0fe3d9d32144fbfe611b6450c0724b839",
+            "recordSha256": "5754e93efeff307d1921ef4bf974de7c3b9db95949468dabadd92f4482af034c"
+          },
+          {
+            "ordinal": 365887,
+            "commandSha256": "cce5980485298b1e72073d5b129dc09c543e1ea8c27e6cae4b69d7935ba91695",
+            "recordSha256": "bc55e0774fcf76f16216c3af8f415f1eccc7a39457f6eaf66d63ad7fa2045ff2"
+          },
+          {
+            "ordinal": 365930,
+            "commandSha256": "d97fed81f641e5a0a4ddb5bf98f2811d3df19bfd4c12d4528bef40d0db92263e",
+            "recordSha256": "6e6fc765aab8fc7d9651a8420e24e69ac3b25bebcdbadce311c50d9e66079c77"
+          },
+          {
+            "ordinal": 365964,
+            "commandSha256": "12c3342de25eb8e07f8950968a95fb6b2254fd4dc8e28b3cfb48d736512daacc",
+            "recordSha256": "252a700e1daa7d8a17779fc07cea71d99c97182950f98485d839676079c599b5"
+          },
+          {
+            "ordinal": 365984,
+            "commandSha256": "42d4d7f300f2939ea0c53e2146f9d3f149b5b9259060c0b996aee814e6956406",
+            "recordSha256": "1dc6d6cbeba125a104962590f074ca6fb3cf6d0203f98eb920f6b8233573e0cd"
+          },
+          {
+            "ordinal": 366005,
+            "commandSha256": "fd49732b62dfc910411ecf6962e0f148fcef3caf89340f36b7aa5b5d99eafedf",
+            "recordSha256": "3a5962b7c35236dfd6bfdd8b648802e1cf287e99efad38225a5bde3125e6e743"
+          },
+          {
+            "ordinal": 366142,
+            "commandSha256": "576beba94fe78a0299e5b1322e7d77a0d28d2e61ccb4dbc7944a584d83cfc9de",
+            "recordSha256": "c13980fa9a4e254cad1afd2ac780e5b90c796c29732f49172a868e2a4a13e1e9"
+          },
+          {
+            "ordinal": 366149,
+            "commandSha256": "9168cf591d3a5eb4831194b2207c7bfd809b8f7cb64e42ed64a4b52823e243c0",
+            "recordSha256": "e490b63818f6b541970df58cc02a0ac61e242f75305b43857be3d181912fefa6"
+          },
+          {
+            "ordinal": 366163,
+            "commandSha256": "6657e60453aff0ecce0db4ec76209b3a909d2a09cd209776162c7e1e9a539626",
+            "recordSha256": "6a200a3355dfb9856575c3df4411fe8de966a7502bb70f8cca17d7b75aca9d8a"
+          },
+          {
+            "ordinal": 366179,
+            "commandSha256": "7cdc02f4436e78c23cd8120adfa78f3a449ad13ba0d62f2d263b10460d5be403",
+            "recordSha256": "bb0eb696404e706c767c07cd346cda5f51abbe4f747e4634c728c6cdb6c0767b"
+          },
+          {
+            "ordinal": 366185,
+            "commandSha256": "f4a18be9c4f3d8ab34cd133704ae7171a10dd4210e2b2ca8d9710b48089c6387",
+            "recordSha256": "ab1f17c91bed3e76d28deb342f58ee7f5d504baaaf2985f347bca0fd122647df"
+          },
+          {
+            "ordinal": 366195,
+            "commandSha256": "f73e07200c154c98e6d7d5f26bac0fb7b62fca143a0363605ae9389e74e31529",
+            "recordSha256": "c24478c42f9adb0b188fcc585bf2e890413eec6a5cbcaa5a0aa3d9f95f29c635"
+          },
+          {
+            "ordinal": 366202,
+            "commandSha256": "5e16445d1fb0b803694b3a03f454d1a2030f5b43a95b0ba87b1e12b38451decc",
+            "recordSha256": "8ef27881c1f8a9342d896ae9b9af75116bfdd88386b62ed6fb6dbc67538041df"
+          },
+          {
+            "ordinal": 366216,
+            "commandSha256": "e43712858f7adafa922fe20c320e2a1d7abd81747dbc4abdc502fb4f85116943",
+            "recordSha256": "b606a4ef2f6701d7b35f629920d20ec12888746bc4f23f166145cb3308fe754c"
+          },
+          {
+            "ordinal": 366264,
+            "commandSha256": "55f2969a3b059edd48fe7e9fa0e867101ddfeaa4db082a5350f0b63648e40e7f",
+            "recordSha256": "6f1aaac103776edbb262c85f28d3af050071bc4793c0e60968d7b507597331ef"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0130",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "9f5d8d21b30ef290cde27458628c1ffafeafea87b0b915533250656f9c3e75eb",
+      "afterHash": "1247fabb96a8945c04ce47f02d37eaf4189ab4a4425970cebda6ba51298a748c",
+      "evidenceIds": [
+        "EV-20261010-024"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0134",
+        "successorEvidenceIds": [
+          "EV-20261010-025"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0134].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 365876,
+        "producerSourceSha256": "209be2c822087857a2e5f33387dbbea0fe3d9d32144fbfe611b6450c0724b839",
+        "readDefinition": "const trackingBefore = fs.readFileSync(trackingPath);",
+        "checksumAssignment": "{ id: ids[3], path: 'docs/architecture/production-readiness/TRACKING.json', action: 'modify', beforeHash: sha(trackingBefore), afterHash: null, reason: 'Register EV-023 MarketDerivatives owner test, full-suite evidence, plan update, and session checkpoint.' },",
+        "successfulDriverOrdinal": 366871,
+        "driverItemId": "exec-df903db1-0380-410f-b299-00627ffc5ed7",
+        "originalObservedAt": "2026-10-10T06:51:39.134Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "af295b47ca62ce49315237ebffe1c1c8b0c8bb3d1bb986af2a4fce979ed072f4",
+        "stdoutSha256": "1e39b9e0fd32db628a82ce06e91f29461893ed23ec15beb945ac8847ec5886c8",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 365876,
+            "commandSha256": "209be2c822087857a2e5f33387dbbea0fe3d9d32144fbfe611b6450c0724b839",
+            "recordSha256": "5754e93efeff307d1921ef4bf974de7c3b9db95949468dabadd92f4482af034c"
+          },
+          {
+            "ordinal": 365887,
+            "commandSha256": "cce5980485298b1e72073d5b129dc09c543e1ea8c27e6cae4b69d7935ba91695",
+            "recordSha256": "bc55e0774fcf76f16216c3af8f415f1eccc7a39457f6eaf66d63ad7fa2045ff2"
+          },
+          {
+            "ordinal": 365930,
+            "commandSha256": "d97fed81f641e5a0a4ddb5bf98f2811d3df19bfd4c12d4528bef40d0db92263e",
+            "recordSha256": "6e6fc765aab8fc7d9651a8420e24e69ac3b25bebcdbadce311c50d9e66079c77"
+          },
+          {
+            "ordinal": 365964,
+            "commandSha256": "12c3342de25eb8e07f8950968a95fb6b2254fd4dc8e28b3cfb48d736512daacc",
+            "recordSha256": "252a700e1daa7d8a17779fc07cea71d99c97182950f98485d839676079c599b5"
+          },
+          {
+            "ordinal": 365984,
+            "commandSha256": "42d4d7f300f2939ea0c53e2146f9d3f149b5b9259060c0b996aee814e6956406",
+            "recordSha256": "1dc6d6cbeba125a104962590f074ca6fb3cf6d0203f98eb920f6b8233573e0cd"
+          },
+          {
+            "ordinal": 366005,
+            "commandSha256": "fd49732b62dfc910411ecf6962e0f148fcef3caf89340f36b7aa5b5d99eafedf",
+            "recordSha256": "3a5962b7c35236dfd6bfdd8b648802e1cf287e99efad38225a5bde3125e6e743"
+          },
+          {
+            "ordinal": 366142,
+            "commandSha256": "576beba94fe78a0299e5b1322e7d77a0d28d2e61ccb4dbc7944a584d83cfc9de",
+            "recordSha256": "c13980fa9a4e254cad1afd2ac780e5b90c796c29732f49172a868e2a4a13e1e9"
+          },
+          {
+            "ordinal": 366149,
+            "commandSha256": "9168cf591d3a5eb4831194b2207c7bfd809b8f7cb64e42ed64a4b52823e243c0",
+            "recordSha256": "e490b63818f6b541970df58cc02a0ac61e242f75305b43857be3d181912fefa6"
+          },
+          {
+            "ordinal": 366163,
+            "commandSha256": "6657e60453aff0ecce0db4ec76209b3a909d2a09cd209776162c7e1e9a539626",
+            "recordSha256": "6a200a3355dfb9856575c3df4411fe8de966a7502bb70f8cca17d7b75aca9d8a"
+          },
+          {
+            "ordinal": 366179,
+            "commandSha256": "7cdc02f4436e78c23cd8120adfa78f3a449ad13ba0d62f2d263b10460d5be403",
+            "recordSha256": "bb0eb696404e706c767c07cd346cda5f51abbe4f747e4634c728c6cdb6c0767b"
+          },
+          {
+            "ordinal": 366185,
+            "commandSha256": "f4a18be9c4f3d8ab34cd133704ae7171a10dd4210e2b2ca8d9710b48089c6387",
+            "recordSha256": "ab1f17c91bed3e76d28deb342f58ee7f5d504baaaf2985f347bca0fd122647df"
+          },
+          {
+            "ordinal": 366195,
+            "commandSha256": "f73e07200c154c98e6d7d5f26bac0fb7b62fca143a0363605ae9389e74e31529",
+            "recordSha256": "c24478c42f9adb0b188fcc585bf2e890413eec6a5cbcaa5a0aa3d9f95f29c635"
+          },
+          {
+            "ordinal": 366202,
+            "commandSha256": "5e16445d1fb0b803694b3a03f454d1a2030f5b43a95b0ba87b1e12b38451decc",
+            "recordSha256": "8ef27881c1f8a9342d896ae9b9af75116bfdd88386b62ed6fb6dbc67538041df"
+          },
+          {
+            "ordinal": 366216,
+            "commandSha256": "e43712858f7adafa922fe20c320e2a1d7abd81747dbc4abdc502fb4f85116943",
+            "recordSha256": "b606a4ef2f6701d7b35f629920d20ec12888746bc4f23f166145cb3308fe754c"
+          },
+          {
+            "ordinal": 366264,
+            "commandSha256": "55f2969a3b059edd48fe7e9fa0e867101ddfeaa4db082a5350f0b63648e40e7f",
+            "recordSha256": "6f1aaac103776edbb262c85f28d3af050071bc4793c0e60968d7b507597331ef"
+          },
+          {
+            "ordinal": 366382,
+            "commandSha256": "b863de21e9bccac121b50512e55c929db19874b071dd8b1129ed31355cdd5dd1",
+            "recordSha256": "0d6328040d5b124f23646cb1c1f285f6c0f55d90e594e87398d928c24acedafc"
+          },
+          {
+            "ordinal": 366396,
+            "commandSha256": "33a63a5055997b3fd8bdc30c3b845b39b81dec16dbd7b58d718f446767b9c538",
+            "recordSha256": "3ffe76fbada64349eb44ee91442d48d414dddbb11cfd8be598dd3fedc51aec34"
+          },
+          {
+            "ordinal": 366435,
+            "commandSha256": "b30590cc70684516395d81388f562cf3338ac792f7d3bbe73db8b38a130e092d",
+            "recordSha256": "ca02cb9af8d909a5d69aa203292150bb769d839d58391de5773c395dce640f4c"
+          },
+          {
+            "ordinal": 366446,
+            "commandSha256": "14774cda6e69f5017f4b12b57cbdc12dfb3b83e5d7c5507e1256d657a3e56ca7",
+            "recordSha256": "7b26c58e294bb377c075eb9c44e92e4281115557647712b4feb02b8080b25c97"
+          },
+          {
+            "ordinal": 366846,
+            "commandSha256": "a1883ac2c59235cc5d50718a2235940cde747fe0a209fe22b8e76aa24eda30e0",
+            "recordSha256": "e37944b7127a0eb065cf88b396a79d72e17ea2683e9e6405066dad89c841617c"
+          },
+          {
+            "ordinal": 366864,
+            "commandSha256": "829d441a1d7b2cd0e767853595ac5bce66f1a2e5285130d41aa27033c2dd1e34",
+            "recordSha256": "ddd6c3b7d2f238a1b5a5dbb89c5f6c27a4ad809a30b1c6023f42b5192ed7e176"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0134",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "1247fabb96a8945c04ce47f02d37eaf4189ab4a4425970cebda6ba51298a748c",
+      "afterHash": "833a37f47b545e78398c3bd13e5f6012ee72ce1a3c0842ce360ef0eb4231a2c1",
+      "evidenceIds": [
+        "EV-20261010-025"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0138",
+        "successorEvidenceIds": [
+          "EV-20261010-026"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0138].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 365876,
+        "producerSourceSha256": "209be2c822087857a2e5f33387dbbea0fe3d9d32144fbfe611b6450c0724b839",
+        "readDefinition": "const trackingBefore = fs.readFileSync(trackingPath);",
+        "checksumAssignment": "{ id: ids[3], path: 'docs/architecture/production-readiness/TRACKING.json', action: 'modify', beforeHash: sha(trackingBefore), afterHash: null, reason: 'Register EV-023 MarketDerivatives owner test, full-suite evidence, plan update, and session checkpoint.' },",
+        "successfulDriverOrdinal": 367355,
+        "driverItemId": "exec-d8255aab-d99b-4263-81e2-9867c34c490f",
+        "originalObservedAt": "2026-10-10T07:08:22.454Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "c72e46003623184031d07719d00af88ab73439871de35997b4a7e1510b2aaa94",
+        "stdoutSha256": "42066b2e20c30a67c4e4ba2ad32f19f9b43c52ec3945dbf1c9383fcf800918cc",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 365876,
+            "commandSha256": "209be2c822087857a2e5f33387dbbea0fe3d9d32144fbfe611b6450c0724b839",
+            "recordSha256": "5754e93efeff307d1921ef4bf974de7c3b9db95949468dabadd92f4482af034c"
+          },
+          {
+            "ordinal": 365887,
+            "commandSha256": "cce5980485298b1e72073d5b129dc09c543e1ea8c27e6cae4b69d7935ba91695",
+            "recordSha256": "bc55e0774fcf76f16216c3af8f415f1eccc7a39457f6eaf66d63ad7fa2045ff2"
+          },
+          {
+            "ordinal": 365930,
+            "commandSha256": "d97fed81f641e5a0a4ddb5bf98f2811d3df19bfd4c12d4528bef40d0db92263e",
+            "recordSha256": "6e6fc765aab8fc7d9651a8420e24e69ac3b25bebcdbadce311c50d9e66079c77"
+          },
+          {
+            "ordinal": 365964,
+            "commandSha256": "12c3342de25eb8e07f8950968a95fb6b2254fd4dc8e28b3cfb48d736512daacc",
+            "recordSha256": "252a700e1daa7d8a17779fc07cea71d99c97182950f98485d839676079c599b5"
+          },
+          {
+            "ordinal": 365984,
+            "commandSha256": "42d4d7f300f2939ea0c53e2146f9d3f149b5b9259060c0b996aee814e6956406",
+            "recordSha256": "1dc6d6cbeba125a104962590f074ca6fb3cf6d0203f98eb920f6b8233573e0cd"
+          },
+          {
+            "ordinal": 366005,
+            "commandSha256": "fd49732b62dfc910411ecf6962e0f148fcef3caf89340f36b7aa5b5d99eafedf",
+            "recordSha256": "3a5962b7c35236dfd6bfdd8b648802e1cf287e99efad38225a5bde3125e6e743"
+          },
+          {
+            "ordinal": 366142,
+            "commandSha256": "576beba94fe78a0299e5b1322e7d77a0d28d2e61ccb4dbc7944a584d83cfc9de",
+            "recordSha256": "c13980fa9a4e254cad1afd2ac780e5b90c796c29732f49172a868e2a4a13e1e9"
+          },
+          {
+            "ordinal": 366149,
+            "commandSha256": "9168cf591d3a5eb4831194b2207c7bfd809b8f7cb64e42ed64a4b52823e243c0",
+            "recordSha256": "e490b63818f6b541970df58cc02a0ac61e242f75305b43857be3d181912fefa6"
+          },
+          {
+            "ordinal": 366163,
+            "commandSha256": "6657e60453aff0ecce0db4ec76209b3a909d2a09cd209776162c7e1e9a539626",
+            "recordSha256": "6a200a3355dfb9856575c3df4411fe8de966a7502bb70f8cca17d7b75aca9d8a"
+          },
+          {
+            "ordinal": 366179,
+            "commandSha256": "7cdc02f4436e78c23cd8120adfa78f3a449ad13ba0d62f2d263b10460d5be403",
+            "recordSha256": "bb0eb696404e706c767c07cd346cda5f51abbe4f747e4634c728c6cdb6c0767b"
+          },
+          {
+            "ordinal": 366185,
+            "commandSha256": "f4a18be9c4f3d8ab34cd133704ae7171a10dd4210e2b2ca8d9710b48089c6387",
+            "recordSha256": "ab1f17c91bed3e76d28deb342f58ee7f5d504baaaf2985f347bca0fd122647df"
+          },
+          {
+            "ordinal": 366195,
+            "commandSha256": "f73e07200c154c98e6d7d5f26bac0fb7b62fca143a0363605ae9389e74e31529",
+            "recordSha256": "c24478c42f9adb0b188fcc585bf2e890413eec6a5cbcaa5a0aa3d9f95f29c635"
+          },
+          {
+            "ordinal": 366202,
+            "commandSha256": "5e16445d1fb0b803694b3a03f454d1a2030f5b43a95b0ba87b1e12b38451decc",
+            "recordSha256": "8ef27881c1f8a9342d896ae9b9af75116bfdd88386b62ed6fb6dbc67538041df"
+          },
+          {
+            "ordinal": 366216,
+            "commandSha256": "e43712858f7adafa922fe20c320e2a1d7abd81747dbc4abdc502fb4f85116943",
+            "recordSha256": "b606a4ef2f6701d7b35f629920d20ec12888746bc4f23f166145cb3308fe754c"
+          },
+          {
+            "ordinal": 366264,
+            "commandSha256": "55f2969a3b059edd48fe7e9fa0e867101ddfeaa4db082a5350f0b63648e40e7f",
+            "recordSha256": "6f1aaac103776edbb262c85f28d3af050071bc4793c0e60968d7b507597331ef"
+          },
+          {
+            "ordinal": 366382,
+            "commandSha256": "b863de21e9bccac121b50512e55c929db19874b071dd8b1129ed31355cdd5dd1",
+            "recordSha256": "0d6328040d5b124f23646cb1c1f285f6c0f55d90e594e87398d928c24acedafc"
+          },
+          {
+            "ordinal": 366396,
+            "commandSha256": "33a63a5055997b3fd8bdc30c3b845b39b81dec16dbd7b58d718f446767b9c538",
+            "recordSha256": "3ffe76fbada64349eb44ee91442d48d414dddbb11cfd8be598dd3fedc51aec34"
+          },
+          {
+            "ordinal": 366435,
+            "commandSha256": "b30590cc70684516395d81388f562cf3338ac792f7d3bbe73db8b38a130e092d",
+            "recordSha256": "ca02cb9af8d909a5d69aa203292150bb769d839d58391de5773c395dce640f4c"
+          },
+          {
+            "ordinal": 366446,
+            "commandSha256": "14774cda6e69f5017f4b12b57cbdc12dfb3b83e5d7c5507e1256d657a3e56ca7",
+            "recordSha256": "7b26c58e294bb377c075eb9c44e92e4281115557647712b4feb02b8080b25c97"
+          },
+          {
+            "ordinal": 366846,
+            "commandSha256": "a1883ac2c59235cc5d50718a2235940cde747fe0a209fe22b8e76aa24eda30e0",
+            "recordSha256": "e37944b7127a0eb065cf88b396a79d72e17ea2683e9e6405066dad89c841617c"
+          },
+          {
+            "ordinal": 366864,
+            "commandSha256": "829d441a1d7b2cd0e767853595ac5bce66f1a2e5285130d41aa27033c2dd1e34",
+            "recordSha256": "ddd6c3b7d2f238a1b5a5dbb89c5f6c27a4ad809a30b1c6023f42b5192ed7e176"
+          },
+          {
+            "ordinal": 366885,
+            "commandSha256": "9ea2b0753337532789fe0fed8cd9357c526dd4bcab5da7dde27310eb6d22cbb5",
+            "recordSha256": "88ed00e2f2771f81d4388aca8f724ce86961a604536a5334e0296106733eea16"
+          },
+          {
+            "ordinal": 366898,
+            "commandSha256": "d4489e32747ab866bf409cf4f3ad72bf55ed0953d44f949bd5d0111101edf9eb",
+            "recordSha256": "7e0522c7e6d386e60607d40fa37a06b6212ba6217b49c60d942b673cb93c42a7"
+          },
+          {
+            "ordinal": 367201,
+            "commandSha256": "fbec7d2be23bb71f12ca16de72be12c4e2545b06f0c6af31b141bf7055f96801",
+            "recordSha256": "ba369124120d27e670441bc22daf5dbb987fd3b60ce60e76a617257539568537"
+          },
+          {
+            "ordinal": 367212,
+            "commandSha256": "10ebd53e67d539b7c94efa4d609c18d6ae7ca9fa4ceb18364c17e0d1200a5309",
+            "recordSha256": "65d0e2050e99bff2d655d33ca2dfe2223145c6f050d6e7f88eebd7a454fd4a81"
+          },
+          {
+            "ordinal": 367227,
+            "commandSha256": "2975dc0663ce3c239cf720c0d3b5fb7225b717df635c9bedefc1124eac04c68c",
+            "recordSha256": "0a2f0ec5b7d4c68dc0b131f92d3d53841c1174e7b77dbe50aaf2f818529060a2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0138",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "833a37f47b545e78398c3bd13e5f6012ee72ce1a3c0842ce360ef0eb4231a2c1",
+      "afterHash": "c8137ea457fda0c44ae0cf12c78ed11e1b98fc818b4900d9c77ce7dc613b4d52",
+      "evidenceIds": [
+        "EV-20261010-026"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0142",
+        "successorEvidenceIds": [
+          "EV-20261010-027"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0142].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 365876,
+        "producerSourceSha256": "209be2c822087857a2e5f33387dbbea0fe3d9d32144fbfe611b6450c0724b839",
+        "readDefinition": "const trackingBefore = fs.readFileSync(trackingPath);",
+        "checksumAssignment": "{ id: ids[3], path: 'docs/architecture/production-readiness/TRACKING.json', action: 'modify', beforeHash: sha(trackingBefore), afterHash: null, reason: 'Register EV-023 MarketDerivatives owner test, full-suite evidence, plan update, and session checkpoint.' },",
+        "successfulDriverOrdinal": 367830,
+        "driverItemId": "exec-2187d432-7cc5-4f7e-889d-7af396d2e76d",
+        "originalObservedAt": "2026-10-10T07:24:03.955Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "2757aee5edcac12a61378fbc2bcc85d31361fc833378b1ac0244814805ebe78c",
+        "stdoutSha256": "576b8891ad21afad7103a1b419be1b60698474b91cb53d945737a5687fd2e4ce",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 365876,
+            "commandSha256": "209be2c822087857a2e5f33387dbbea0fe3d9d32144fbfe611b6450c0724b839",
+            "recordSha256": "5754e93efeff307d1921ef4bf974de7c3b9db95949468dabadd92f4482af034c"
+          },
+          {
+            "ordinal": 365887,
+            "commandSha256": "cce5980485298b1e72073d5b129dc09c543e1ea8c27e6cae4b69d7935ba91695",
+            "recordSha256": "bc55e0774fcf76f16216c3af8f415f1eccc7a39457f6eaf66d63ad7fa2045ff2"
+          },
+          {
+            "ordinal": 365930,
+            "commandSha256": "d97fed81f641e5a0a4ddb5bf98f2811d3df19bfd4c12d4528bef40d0db92263e",
+            "recordSha256": "6e6fc765aab8fc7d9651a8420e24e69ac3b25bebcdbadce311c50d9e66079c77"
+          },
+          {
+            "ordinal": 365964,
+            "commandSha256": "12c3342de25eb8e07f8950968a95fb6b2254fd4dc8e28b3cfb48d736512daacc",
+            "recordSha256": "252a700e1daa7d8a17779fc07cea71d99c97182950f98485d839676079c599b5"
+          },
+          {
+            "ordinal": 365984,
+            "commandSha256": "42d4d7f300f2939ea0c53e2146f9d3f149b5b9259060c0b996aee814e6956406",
+            "recordSha256": "1dc6d6cbeba125a104962590f074ca6fb3cf6d0203f98eb920f6b8233573e0cd"
+          },
+          {
+            "ordinal": 366005,
+            "commandSha256": "fd49732b62dfc910411ecf6962e0f148fcef3caf89340f36b7aa5b5d99eafedf",
+            "recordSha256": "3a5962b7c35236dfd6bfdd8b648802e1cf287e99efad38225a5bde3125e6e743"
+          },
+          {
+            "ordinal": 366142,
+            "commandSha256": "576beba94fe78a0299e5b1322e7d77a0d28d2e61ccb4dbc7944a584d83cfc9de",
+            "recordSha256": "c13980fa9a4e254cad1afd2ac780e5b90c796c29732f49172a868e2a4a13e1e9"
+          },
+          {
+            "ordinal": 366149,
+            "commandSha256": "9168cf591d3a5eb4831194b2207c7bfd809b8f7cb64e42ed64a4b52823e243c0",
+            "recordSha256": "e490b63818f6b541970df58cc02a0ac61e242f75305b43857be3d181912fefa6"
+          },
+          {
+            "ordinal": 366163,
+            "commandSha256": "6657e60453aff0ecce0db4ec76209b3a909d2a09cd209776162c7e1e9a539626",
+            "recordSha256": "6a200a3355dfb9856575c3df4411fe8de966a7502bb70f8cca17d7b75aca9d8a"
+          },
+          {
+            "ordinal": 366179,
+            "commandSha256": "7cdc02f4436e78c23cd8120adfa78f3a449ad13ba0d62f2d263b10460d5be403",
+            "recordSha256": "bb0eb696404e706c767c07cd346cda5f51abbe4f747e4634c728c6cdb6c0767b"
+          },
+          {
+            "ordinal": 366185,
+            "commandSha256": "f4a18be9c4f3d8ab34cd133704ae7171a10dd4210e2b2ca8d9710b48089c6387",
+            "recordSha256": "ab1f17c91bed3e76d28deb342f58ee7f5d504baaaf2985f347bca0fd122647df"
+          },
+          {
+            "ordinal": 366195,
+            "commandSha256": "f73e07200c154c98e6d7d5f26bac0fb7b62fca143a0363605ae9389e74e31529",
+            "recordSha256": "c24478c42f9adb0b188fcc585bf2e890413eec6a5cbcaa5a0aa3d9f95f29c635"
+          },
+          {
+            "ordinal": 366202,
+            "commandSha256": "5e16445d1fb0b803694b3a03f454d1a2030f5b43a95b0ba87b1e12b38451decc",
+            "recordSha256": "8ef27881c1f8a9342d896ae9b9af75116bfdd88386b62ed6fb6dbc67538041df"
+          },
+          {
+            "ordinal": 366216,
+            "commandSha256": "e43712858f7adafa922fe20c320e2a1d7abd81747dbc4abdc502fb4f85116943",
+            "recordSha256": "b606a4ef2f6701d7b35f629920d20ec12888746bc4f23f166145cb3308fe754c"
+          },
+          {
+            "ordinal": 366264,
+            "commandSha256": "55f2969a3b059edd48fe7e9fa0e867101ddfeaa4db082a5350f0b63648e40e7f",
+            "recordSha256": "6f1aaac103776edbb262c85f28d3af050071bc4793c0e60968d7b507597331ef"
+          },
+          {
+            "ordinal": 366382,
+            "commandSha256": "b863de21e9bccac121b50512e55c929db19874b071dd8b1129ed31355cdd5dd1",
+            "recordSha256": "0d6328040d5b124f23646cb1c1f285f6c0f55d90e594e87398d928c24acedafc"
+          },
+          {
+            "ordinal": 366396,
+            "commandSha256": "33a63a5055997b3fd8bdc30c3b845b39b81dec16dbd7b58d718f446767b9c538",
+            "recordSha256": "3ffe76fbada64349eb44ee91442d48d414dddbb11cfd8be598dd3fedc51aec34"
+          },
+          {
+            "ordinal": 366435,
+            "commandSha256": "b30590cc70684516395d81388f562cf3338ac792f7d3bbe73db8b38a130e092d",
+            "recordSha256": "ca02cb9af8d909a5d69aa203292150bb769d839d58391de5773c395dce640f4c"
+          },
+          {
+            "ordinal": 366446,
+            "commandSha256": "14774cda6e69f5017f4b12b57cbdc12dfb3b83e5d7c5507e1256d657a3e56ca7",
+            "recordSha256": "7b26c58e294bb377c075eb9c44e92e4281115557647712b4feb02b8080b25c97"
+          },
+          {
+            "ordinal": 366846,
+            "commandSha256": "a1883ac2c59235cc5d50718a2235940cde747fe0a209fe22b8e76aa24eda30e0",
+            "recordSha256": "e37944b7127a0eb065cf88b396a79d72e17ea2683e9e6405066dad89c841617c"
+          },
+          {
+            "ordinal": 366864,
+            "commandSha256": "829d441a1d7b2cd0e767853595ac5bce66f1a2e5285130d41aa27033c2dd1e34",
+            "recordSha256": "ddd6c3b7d2f238a1b5a5dbb89c5f6c27a4ad809a30b1c6023f42b5192ed7e176"
+          },
+          {
+            "ordinal": 366885,
+            "commandSha256": "9ea2b0753337532789fe0fed8cd9357c526dd4bcab5da7dde27310eb6d22cbb5",
+            "recordSha256": "88ed00e2f2771f81d4388aca8f724ce86961a604536a5334e0296106733eea16"
+          },
+          {
+            "ordinal": 366898,
+            "commandSha256": "d4489e32747ab866bf409cf4f3ad72bf55ed0953d44f949bd5d0111101edf9eb",
+            "recordSha256": "7e0522c7e6d386e60607d40fa37a06b6212ba6217b49c60d942b673cb93c42a7"
+          },
+          {
+            "ordinal": 367201,
+            "commandSha256": "fbec7d2be23bb71f12ca16de72be12c4e2545b06f0c6af31b141bf7055f96801",
+            "recordSha256": "ba369124120d27e670441bc22daf5dbb987fd3b60ce60e76a617257539568537"
+          },
+          {
+            "ordinal": 367212,
+            "commandSha256": "10ebd53e67d539b7c94efa4d609c18d6ae7ca9fa4ceb18364c17e0d1200a5309",
+            "recordSha256": "65d0e2050e99bff2d655d33ca2dfe2223145c6f050d6e7f88eebd7a454fd4a81"
+          },
+          {
+            "ordinal": 367227,
+            "commandSha256": "2975dc0663ce3c239cf720c0d3b5fb7225b717df635c9bedefc1124eac04c68c",
+            "recordSha256": "0a2f0ec5b7d4c68dc0b131f92d3d53841c1174e7b77dbe50aaf2f818529060a2"
+          },
+          {
+            "ordinal": 367369,
+            "commandSha256": "bac5a34d34d411b44523f4d465d313af06ce0bba8a0d7b14134af56b8a463b03",
+            "recordSha256": "eb0a27b1cd49caa2b24f3222cb7f1db61a501aa0fbff0bd73c0233e9770fa9f2"
+          },
+          {
+            "ordinal": 367376,
+            "commandSha256": "62ea9e994c188f14940f31de5d85d83f6c7e052df3f1e78ff4164faeaff60b5d",
+            "recordSha256": "3524b280f376a1d217280bfbaa3feaafac27ed8386b75a34cc308094ceda14bb"
+          },
+          {
+            "ordinal": 367383,
+            "commandSha256": "c37926398a90dd70d937d06429bf025b676c006c2f228493408170440548ce3d",
+            "recordSha256": "88ab41806c6cb301e8fe4f797bd27b8090ab190e6cf09da4db5443a186746801"
+          },
+          {
+            "ordinal": 367662,
+            "commandSha256": "41af3c040bdd8f86837c96ad1e92941a76939cc0f40f26f798a865928396831a",
+            "recordSha256": "9416022a1dcd696741c10aaee17160ad86a51a293d657f4f2d6752c4937286ad"
+          },
+          {
+            "ordinal": 367679,
+            "commandSha256": "eac0d4e9631f5781b30c80dcab1779df5da65b894e918c02a6b797969f851fc7",
+            "recordSha256": "594c6a9eef07fb086bb301a0217c0f0e3cb231b20212751da7ee038a62bbd3db"
+          },
+          {
+            "ordinal": 367830,
+            "commandSha256": "0350eb77ae24b78be851a384ef775d052747b8741558a96dcec2dfa768b461e2",
+            "recordSha256": "2757aee5edcac12a61378fbc2bcc85d31361fc833378b1ac0244814805ebe78c"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0142",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "c8137ea457fda0c44ae0cf12c78ed11e1b98fc818b4900d9c77ce7dc613b4d52",
+      "afterHash": "57a75b87b52eb929f212104e6759ba5c44a1ed75613d8762c1993d8ca0a11419",
+      "evidenceIds": [
+        "EV-20261010-027"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0146",
+        "successorEvidenceIds": [
+          "EV-20261010-028"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0146].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 365876,
+        "producerSourceSha256": "209be2c822087857a2e5f33387dbbea0fe3d9d32144fbfe611b6450c0724b839",
+        "readDefinition": "const trackingBefore = fs.readFileSync(trackingPath);",
+        "checksumAssignment": "{ id: ids[3], path: 'docs/architecture/production-readiness/TRACKING.json', action: 'modify', beforeHash: sha(trackingBefore), afterHash: null, reason: 'Register EV-023 MarketDerivatives owner test, full-suite evidence, plan update, and session checkpoint.' },",
+        "successfulDriverOrdinal": 368296,
+        "driverItemId": "exec-955b7da3-9d6f-41b6-86d9-ccd1f9e95161",
+        "originalObservedAt": "2026-10-10T07:40:57.207Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "67cd232fd1e4ccfb8eac43f9433489def104c82cabfe0922d931d78ac0e7da62",
+        "stdoutSha256": "cc332d581f6a527a7cc82f00e60d9f02de9319c2f4c4a50add730504785d51e0",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 365876,
+            "commandSha256": "209be2c822087857a2e5f33387dbbea0fe3d9d32144fbfe611b6450c0724b839",
+            "recordSha256": "5754e93efeff307d1921ef4bf974de7c3b9db95949468dabadd92f4482af034c"
+          },
+          {
+            "ordinal": 365887,
+            "commandSha256": "cce5980485298b1e72073d5b129dc09c543e1ea8c27e6cae4b69d7935ba91695",
+            "recordSha256": "bc55e0774fcf76f16216c3af8f415f1eccc7a39457f6eaf66d63ad7fa2045ff2"
+          },
+          {
+            "ordinal": 365930,
+            "commandSha256": "d97fed81f641e5a0a4ddb5bf98f2811d3df19bfd4c12d4528bef40d0db92263e",
+            "recordSha256": "6e6fc765aab8fc7d9651a8420e24e69ac3b25bebcdbadce311c50d9e66079c77"
+          },
+          {
+            "ordinal": 365964,
+            "commandSha256": "12c3342de25eb8e07f8950968a95fb6b2254fd4dc8e28b3cfb48d736512daacc",
+            "recordSha256": "252a700e1daa7d8a17779fc07cea71d99c97182950f98485d839676079c599b5"
+          },
+          {
+            "ordinal": 365984,
+            "commandSha256": "42d4d7f300f2939ea0c53e2146f9d3f149b5b9259060c0b996aee814e6956406",
+            "recordSha256": "1dc6d6cbeba125a104962590f074ca6fb3cf6d0203f98eb920f6b8233573e0cd"
+          },
+          {
+            "ordinal": 366005,
+            "commandSha256": "fd49732b62dfc910411ecf6962e0f148fcef3caf89340f36b7aa5b5d99eafedf",
+            "recordSha256": "3a5962b7c35236dfd6bfdd8b648802e1cf287e99efad38225a5bde3125e6e743"
+          },
+          {
+            "ordinal": 366142,
+            "commandSha256": "576beba94fe78a0299e5b1322e7d77a0d28d2e61ccb4dbc7944a584d83cfc9de",
+            "recordSha256": "c13980fa9a4e254cad1afd2ac780e5b90c796c29732f49172a868e2a4a13e1e9"
+          },
+          {
+            "ordinal": 366149,
+            "commandSha256": "9168cf591d3a5eb4831194b2207c7bfd809b8f7cb64e42ed64a4b52823e243c0",
+            "recordSha256": "e490b63818f6b541970df58cc02a0ac61e242f75305b43857be3d181912fefa6"
+          },
+          {
+            "ordinal": 366163,
+            "commandSha256": "6657e60453aff0ecce0db4ec76209b3a909d2a09cd209776162c7e1e9a539626",
+            "recordSha256": "6a200a3355dfb9856575c3df4411fe8de966a7502bb70f8cca17d7b75aca9d8a"
+          },
+          {
+            "ordinal": 366179,
+            "commandSha256": "7cdc02f4436e78c23cd8120adfa78f3a449ad13ba0d62f2d263b10460d5be403",
+            "recordSha256": "bb0eb696404e706c767c07cd346cda5f51abbe4f747e4634c728c6cdb6c0767b"
+          },
+          {
+            "ordinal": 366185,
+            "commandSha256": "f4a18be9c4f3d8ab34cd133704ae7171a10dd4210e2b2ca8d9710b48089c6387",
+            "recordSha256": "ab1f17c91bed3e76d28deb342f58ee7f5d504baaaf2985f347bca0fd122647df"
+          },
+          {
+            "ordinal": 366195,
+            "commandSha256": "f73e07200c154c98e6d7d5f26bac0fb7b62fca143a0363605ae9389e74e31529",
+            "recordSha256": "c24478c42f9adb0b188fcc585bf2e890413eec6a5cbcaa5a0aa3d9f95f29c635"
+          },
+          {
+            "ordinal": 366202,
+            "commandSha256": "5e16445d1fb0b803694b3a03f454d1a2030f5b43a95b0ba87b1e12b38451decc",
+            "recordSha256": "8ef27881c1f8a9342d896ae9b9af75116bfdd88386b62ed6fb6dbc67538041df"
+          },
+          {
+            "ordinal": 366216,
+            "commandSha256": "e43712858f7adafa922fe20c320e2a1d7abd81747dbc4abdc502fb4f85116943",
+            "recordSha256": "b606a4ef2f6701d7b35f629920d20ec12888746bc4f23f166145cb3308fe754c"
+          },
+          {
+            "ordinal": 366264,
+            "commandSha256": "55f2969a3b059edd48fe7e9fa0e867101ddfeaa4db082a5350f0b63648e40e7f",
+            "recordSha256": "6f1aaac103776edbb262c85f28d3af050071bc4793c0e60968d7b507597331ef"
+          },
+          {
+            "ordinal": 366382,
+            "commandSha256": "b863de21e9bccac121b50512e55c929db19874b071dd8b1129ed31355cdd5dd1",
+            "recordSha256": "0d6328040d5b124f23646cb1c1f285f6c0f55d90e594e87398d928c24acedafc"
+          },
+          {
+            "ordinal": 366396,
+            "commandSha256": "33a63a5055997b3fd8bdc30c3b845b39b81dec16dbd7b58d718f446767b9c538",
+            "recordSha256": "3ffe76fbada64349eb44ee91442d48d414dddbb11cfd8be598dd3fedc51aec34"
+          },
+          {
+            "ordinal": 366435,
+            "commandSha256": "b30590cc70684516395d81388f562cf3338ac792f7d3bbe73db8b38a130e092d",
+            "recordSha256": "ca02cb9af8d909a5d69aa203292150bb769d839d58391de5773c395dce640f4c"
+          },
+          {
+            "ordinal": 366446,
+            "commandSha256": "14774cda6e69f5017f4b12b57cbdc12dfb3b83e5d7c5507e1256d657a3e56ca7",
+            "recordSha256": "7b26c58e294bb377c075eb9c44e92e4281115557647712b4feb02b8080b25c97"
+          },
+          {
+            "ordinal": 366846,
+            "commandSha256": "a1883ac2c59235cc5d50718a2235940cde747fe0a209fe22b8e76aa24eda30e0",
+            "recordSha256": "e37944b7127a0eb065cf88b396a79d72e17ea2683e9e6405066dad89c841617c"
+          },
+          {
+            "ordinal": 366864,
+            "commandSha256": "829d441a1d7b2cd0e767853595ac5bce66f1a2e5285130d41aa27033c2dd1e34",
+            "recordSha256": "ddd6c3b7d2f238a1b5a5dbb89c5f6c27a4ad809a30b1c6023f42b5192ed7e176"
+          },
+          {
+            "ordinal": 366885,
+            "commandSha256": "9ea2b0753337532789fe0fed8cd9357c526dd4bcab5da7dde27310eb6d22cbb5",
+            "recordSha256": "88ed00e2f2771f81d4388aca8f724ce86961a604536a5334e0296106733eea16"
+          },
+          {
+            "ordinal": 366898,
+            "commandSha256": "d4489e32747ab866bf409cf4f3ad72bf55ed0953d44f949bd5d0111101edf9eb",
+            "recordSha256": "7e0522c7e6d386e60607d40fa37a06b6212ba6217b49c60d942b673cb93c42a7"
+          },
+          {
+            "ordinal": 367201,
+            "commandSha256": "fbec7d2be23bb71f12ca16de72be12c4e2545b06f0c6af31b141bf7055f96801",
+            "recordSha256": "ba369124120d27e670441bc22daf5dbb987fd3b60ce60e76a617257539568537"
+          },
+          {
+            "ordinal": 367212,
+            "commandSha256": "10ebd53e67d539b7c94efa4d609c18d6ae7ca9fa4ceb18364c17e0d1200a5309",
+            "recordSha256": "65d0e2050e99bff2d655d33ca2dfe2223145c6f050d6e7f88eebd7a454fd4a81"
+          },
+          {
+            "ordinal": 367227,
+            "commandSha256": "2975dc0663ce3c239cf720c0d3b5fb7225b717df635c9bedefc1124eac04c68c",
+            "recordSha256": "0a2f0ec5b7d4c68dc0b131f92d3d53841c1174e7b77dbe50aaf2f818529060a2"
+          },
+          {
+            "ordinal": 367369,
+            "commandSha256": "bac5a34d34d411b44523f4d465d313af06ce0bba8a0d7b14134af56b8a463b03",
+            "recordSha256": "eb0a27b1cd49caa2b24f3222cb7f1db61a501aa0fbff0bd73c0233e9770fa9f2"
+          },
+          {
+            "ordinal": 367376,
+            "commandSha256": "62ea9e994c188f14940f31de5d85d83f6c7e052df3f1e78ff4164faeaff60b5d",
+            "recordSha256": "3524b280f376a1d217280bfbaa3feaafac27ed8386b75a34cc308094ceda14bb"
+          },
+          {
+            "ordinal": 367383,
+            "commandSha256": "c37926398a90dd70d937d06429bf025b676c006c2f228493408170440548ce3d",
+            "recordSha256": "88ab41806c6cb301e8fe4f797bd27b8090ab190e6cf09da4db5443a186746801"
+          },
+          {
+            "ordinal": 367662,
+            "commandSha256": "41af3c040bdd8f86837c96ad1e92941a76939cc0f40f26f798a865928396831a",
+            "recordSha256": "9416022a1dcd696741c10aaee17160ad86a51a293d657f4f2d6752c4937286ad"
+          },
+          {
+            "ordinal": 367679,
+            "commandSha256": "eac0d4e9631f5781b30c80dcab1779df5da65b894e918c02a6b797969f851fc7",
+            "recordSha256": "594c6a9eef07fb086bb301a0217c0f0e3cb231b20212751da7ee038a62bbd3db"
+          },
+          {
+            "ordinal": 367830,
+            "commandSha256": "0350eb77ae24b78be851a384ef775d052747b8741558a96dcec2dfa768b461e2",
+            "recordSha256": "2757aee5edcac12a61378fbc2bcc85d31361fc833378b1ac0244814805ebe78c"
+          },
+          {
+            "ordinal": 367886,
+            "commandSha256": "0c98327cb733236ad4e47343ea2fe237c492bf2ebd4dfb1c900cdd6321e6232e",
+            "recordSha256": "933d5276157202fb6302f5c3f6db858fa802551609fc5a8f15059b589ffafa4e"
+          },
+          {
+            "ordinal": 368121,
+            "commandSha256": "bf75ea889acd72a14e63a135bac6ffe86b52c3e7082b25c53c01a45339441c39",
+            "recordSha256": "edfd7ae4538918cc373c7d6c603caa4d55ed64ab3d68c9540a3f6188b6ee5397"
+          },
+          {
+            "ordinal": 368128,
+            "commandSha256": "e8206a21b8c5a8e2c167033e1947d265c7e8838e26af1a330f0c97bda3a5c99f",
+            "recordSha256": "67607e969b417cbcffd837bfad8be55cbbb34f4612b8cb0331090978fdb56dc0"
+          },
+          {
+            "ordinal": 368141,
+            "commandSha256": "7fbeb2c62d8f2f8f8ae41a3fbba49543bb0b2cd1ccd6ddc70c44550e4165f9c4",
+            "recordSha256": "3029a5c9f09eed55ed0a3cf17a1614262e0146c675b8fede70593fd7a7cf17a2"
+          },
+          {
+            "ordinal": 368150,
+            "commandSha256": "ac6f60a3a9b6a1105e9c007badce01baca0a6ffa543ac4823ea937346c2224da",
+            "recordSha256": "bbb9441ec6cca182b5fc5b96847a91e03526399ce38943a4bf7f80fc158a7fd9"
+          },
+          {
+            "ordinal": 368157,
+            "commandSha256": "d5dfb1185c2f87ad51b5434e046656b5f824c4be860486199bf6d3c27a14fd49",
+            "recordSha256": "0c90eb1b196490a2913130f1a724748e9b92263e54821f425e2bbbe230a44acd"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0146",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "57a75b87b52eb929f212104e6759ba5c44a1ed75613d8762c1993d8ca0a11419",
+      "afterHash": "4f653083306c28aea0aba67d383c9831ed482069364ecb324f235d641f7ecc08",
+      "evidenceIds": [
+        "EV-20261010-028"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0150",
+        "successorEvidenceIds": [
+          "EV-20261010-029"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0150].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 365876,
+        "producerSourceSha256": "209be2c822087857a2e5f33387dbbea0fe3d9d32144fbfe611b6450c0724b839",
+        "readDefinition": "const trackingBefore = fs.readFileSync(trackingPath);",
+        "checksumAssignment": "{ id: ids[3], path: 'docs/architecture/production-readiness/TRACKING.json', action: 'modify', beforeHash: sha(trackingBefore), afterHash: null, reason: 'Register EV-023 MarketDerivatives owner test, full-suite evidence, plan update, and session checkpoint.' },",
+        "successfulDriverOrdinal": 368718,
+        "driverItemId": "exec-ef1f40c7-3885-4751-85d9-2689e65a85da",
+        "originalObservedAt": "2026-10-10T07:57:12.187Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "374dce5bdbb7cbe6a735cd7b9193705304ab8eea73a0bc899bca280631c7f84c",
+        "stdoutSha256": "fe4495fa76900762f54e1556775ac5a60870c13cd9a31914e6f456b4d95c48b0",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 365876,
+            "commandSha256": "209be2c822087857a2e5f33387dbbea0fe3d9d32144fbfe611b6450c0724b839",
+            "recordSha256": "5754e93efeff307d1921ef4bf974de7c3b9db95949468dabadd92f4482af034c"
+          },
+          {
+            "ordinal": 365887,
+            "commandSha256": "cce5980485298b1e72073d5b129dc09c543e1ea8c27e6cae4b69d7935ba91695",
+            "recordSha256": "bc55e0774fcf76f16216c3af8f415f1eccc7a39457f6eaf66d63ad7fa2045ff2"
+          },
+          {
+            "ordinal": 365930,
+            "commandSha256": "d97fed81f641e5a0a4ddb5bf98f2811d3df19bfd4c12d4528bef40d0db92263e",
+            "recordSha256": "6e6fc765aab8fc7d9651a8420e24e69ac3b25bebcdbadce311c50d9e66079c77"
+          },
+          {
+            "ordinal": 365964,
+            "commandSha256": "12c3342de25eb8e07f8950968a95fb6b2254fd4dc8e28b3cfb48d736512daacc",
+            "recordSha256": "252a700e1daa7d8a17779fc07cea71d99c97182950f98485d839676079c599b5"
+          },
+          {
+            "ordinal": 365984,
+            "commandSha256": "42d4d7f300f2939ea0c53e2146f9d3f149b5b9259060c0b996aee814e6956406",
+            "recordSha256": "1dc6d6cbeba125a104962590f074ca6fb3cf6d0203f98eb920f6b8233573e0cd"
+          },
+          {
+            "ordinal": 366005,
+            "commandSha256": "fd49732b62dfc910411ecf6962e0f148fcef3caf89340f36b7aa5b5d99eafedf",
+            "recordSha256": "3a5962b7c35236dfd6bfdd8b648802e1cf287e99efad38225a5bde3125e6e743"
+          },
+          {
+            "ordinal": 366142,
+            "commandSha256": "576beba94fe78a0299e5b1322e7d77a0d28d2e61ccb4dbc7944a584d83cfc9de",
+            "recordSha256": "c13980fa9a4e254cad1afd2ac780e5b90c796c29732f49172a868e2a4a13e1e9"
+          },
+          {
+            "ordinal": 366149,
+            "commandSha256": "9168cf591d3a5eb4831194b2207c7bfd809b8f7cb64e42ed64a4b52823e243c0",
+            "recordSha256": "e490b63818f6b541970df58cc02a0ac61e242f75305b43857be3d181912fefa6"
+          },
+          {
+            "ordinal": 366163,
+            "commandSha256": "6657e60453aff0ecce0db4ec76209b3a909d2a09cd209776162c7e1e9a539626",
+            "recordSha256": "6a200a3355dfb9856575c3df4411fe8de966a7502bb70f8cca17d7b75aca9d8a"
+          },
+          {
+            "ordinal": 366179,
+            "commandSha256": "7cdc02f4436e78c23cd8120adfa78f3a449ad13ba0d62f2d263b10460d5be403",
+            "recordSha256": "bb0eb696404e706c767c07cd346cda5f51abbe4f747e4634c728c6cdb6c0767b"
+          },
+          {
+            "ordinal": 366185,
+            "commandSha256": "f4a18be9c4f3d8ab34cd133704ae7171a10dd4210e2b2ca8d9710b48089c6387",
+            "recordSha256": "ab1f17c91bed3e76d28deb342f58ee7f5d504baaaf2985f347bca0fd122647df"
+          },
+          {
+            "ordinal": 366195,
+            "commandSha256": "f73e07200c154c98e6d7d5f26bac0fb7b62fca143a0363605ae9389e74e31529",
+            "recordSha256": "c24478c42f9adb0b188fcc585bf2e890413eec6a5cbcaa5a0aa3d9f95f29c635"
+          },
+          {
+            "ordinal": 366202,
+            "commandSha256": "5e16445d1fb0b803694b3a03f454d1a2030f5b43a95b0ba87b1e12b38451decc",
+            "recordSha256": "8ef27881c1f8a9342d896ae9b9af75116bfdd88386b62ed6fb6dbc67538041df"
+          },
+          {
+            "ordinal": 366216,
+            "commandSha256": "e43712858f7adafa922fe20c320e2a1d7abd81747dbc4abdc502fb4f85116943",
+            "recordSha256": "b606a4ef2f6701d7b35f629920d20ec12888746bc4f23f166145cb3308fe754c"
+          },
+          {
+            "ordinal": 366264,
+            "commandSha256": "55f2969a3b059edd48fe7e9fa0e867101ddfeaa4db082a5350f0b63648e40e7f",
+            "recordSha256": "6f1aaac103776edbb262c85f28d3af050071bc4793c0e60968d7b507597331ef"
+          },
+          {
+            "ordinal": 366382,
+            "commandSha256": "b863de21e9bccac121b50512e55c929db19874b071dd8b1129ed31355cdd5dd1",
+            "recordSha256": "0d6328040d5b124f23646cb1c1f285f6c0f55d90e594e87398d928c24acedafc"
+          },
+          {
+            "ordinal": 366396,
+            "commandSha256": "33a63a5055997b3fd8bdc30c3b845b39b81dec16dbd7b58d718f446767b9c538",
+            "recordSha256": "3ffe76fbada64349eb44ee91442d48d414dddbb11cfd8be598dd3fedc51aec34"
+          },
+          {
+            "ordinal": 366435,
+            "commandSha256": "b30590cc70684516395d81388f562cf3338ac792f7d3bbe73db8b38a130e092d",
+            "recordSha256": "ca02cb9af8d909a5d69aa203292150bb769d839d58391de5773c395dce640f4c"
+          },
+          {
+            "ordinal": 366446,
+            "commandSha256": "14774cda6e69f5017f4b12b57cbdc12dfb3b83e5d7c5507e1256d657a3e56ca7",
+            "recordSha256": "7b26c58e294bb377c075eb9c44e92e4281115557647712b4feb02b8080b25c97"
+          },
+          {
+            "ordinal": 366846,
+            "commandSha256": "a1883ac2c59235cc5d50718a2235940cde747fe0a209fe22b8e76aa24eda30e0",
+            "recordSha256": "e37944b7127a0eb065cf88b396a79d72e17ea2683e9e6405066dad89c841617c"
+          },
+          {
+            "ordinal": 366864,
+            "commandSha256": "829d441a1d7b2cd0e767853595ac5bce66f1a2e5285130d41aa27033c2dd1e34",
+            "recordSha256": "ddd6c3b7d2f238a1b5a5dbb89c5f6c27a4ad809a30b1c6023f42b5192ed7e176"
+          },
+          {
+            "ordinal": 366885,
+            "commandSha256": "9ea2b0753337532789fe0fed8cd9357c526dd4bcab5da7dde27310eb6d22cbb5",
+            "recordSha256": "88ed00e2f2771f81d4388aca8f724ce86961a604536a5334e0296106733eea16"
+          },
+          {
+            "ordinal": 366898,
+            "commandSha256": "d4489e32747ab866bf409cf4f3ad72bf55ed0953d44f949bd5d0111101edf9eb",
+            "recordSha256": "7e0522c7e6d386e60607d40fa37a06b6212ba6217b49c60d942b673cb93c42a7"
+          },
+          {
+            "ordinal": 367201,
+            "commandSha256": "fbec7d2be23bb71f12ca16de72be12c4e2545b06f0c6af31b141bf7055f96801",
+            "recordSha256": "ba369124120d27e670441bc22daf5dbb987fd3b60ce60e76a617257539568537"
+          },
+          {
+            "ordinal": 367212,
+            "commandSha256": "10ebd53e67d539b7c94efa4d609c18d6ae7ca9fa4ceb18364c17e0d1200a5309",
+            "recordSha256": "65d0e2050e99bff2d655d33ca2dfe2223145c6f050d6e7f88eebd7a454fd4a81"
+          },
+          {
+            "ordinal": 367227,
+            "commandSha256": "2975dc0663ce3c239cf720c0d3b5fb7225b717df635c9bedefc1124eac04c68c",
+            "recordSha256": "0a2f0ec5b7d4c68dc0b131f92d3d53841c1174e7b77dbe50aaf2f818529060a2"
+          },
+          {
+            "ordinal": 367369,
+            "commandSha256": "bac5a34d34d411b44523f4d465d313af06ce0bba8a0d7b14134af56b8a463b03",
+            "recordSha256": "eb0a27b1cd49caa2b24f3222cb7f1db61a501aa0fbff0bd73c0233e9770fa9f2"
+          },
+          {
+            "ordinal": 367376,
+            "commandSha256": "62ea9e994c188f14940f31de5d85d83f6c7e052df3f1e78ff4164faeaff60b5d",
+            "recordSha256": "3524b280f376a1d217280bfbaa3feaafac27ed8386b75a34cc308094ceda14bb"
+          },
+          {
+            "ordinal": 367383,
+            "commandSha256": "c37926398a90dd70d937d06429bf025b676c006c2f228493408170440548ce3d",
+            "recordSha256": "88ab41806c6cb301e8fe4f797bd27b8090ab190e6cf09da4db5443a186746801"
+          },
+          {
+            "ordinal": 367662,
+            "commandSha256": "41af3c040bdd8f86837c96ad1e92941a76939cc0f40f26f798a865928396831a",
+            "recordSha256": "9416022a1dcd696741c10aaee17160ad86a51a293d657f4f2d6752c4937286ad"
+          },
+          {
+            "ordinal": 367679,
+            "commandSha256": "eac0d4e9631f5781b30c80dcab1779df5da65b894e918c02a6b797969f851fc7",
+            "recordSha256": "594c6a9eef07fb086bb301a0217c0f0e3cb231b20212751da7ee038a62bbd3db"
+          },
+          {
+            "ordinal": 367830,
+            "commandSha256": "0350eb77ae24b78be851a384ef775d052747b8741558a96dcec2dfa768b461e2",
+            "recordSha256": "2757aee5edcac12a61378fbc2bcc85d31361fc833378b1ac0244814805ebe78c"
+          },
+          {
+            "ordinal": 367886,
+            "commandSha256": "0c98327cb733236ad4e47343ea2fe237c492bf2ebd4dfb1c900cdd6321e6232e",
+            "recordSha256": "933d5276157202fb6302f5c3f6db858fa802551609fc5a8f15059b589ffafa4e"
+          },
+          {
+            "ordinal": 368121,
+            "commandSha256": "bf75ea889acd72a14e63a135bac6ffe86b52c3e7082b25c53c01a45339441c39",
+            "recordSha256": "edfd7ae4538918cc373c7d6c603caa4d55ed64ab3d68c9540a3f6188b6ee5397"
+          },
+          {
+            "ordinal": 368128,
+            "commandSha256": "e8206a21b8c5a8e2c167033e1947d265c7e8838e26af1a330f0c97bda3a5c99f",
+            "recordSha256": "67607e969b417cbcffd837bfad8be55cbbb34f4612b8cb0331090978fdb56dc0"
+          },
+          {
+            "ordinal": 368141,
+            "commandSha256": "7fbeb2c62d8f2f8f8ae41a3fbba49543bb0b2cd1ccd6ddc70c44550e4165f9c4",
+            "recordSha256": "3029a5c9f09eed55ed0a3cf17a1614262e0146c675b8fede70593fd7a7cf17a2"
+          },
+          {
+            "ordinal": 368150,
+            "commandSha256": "ac6f60a3a9b6a1105e9c007badce01baca0a6ffa543ac4823ea937346c2224da",
+            "recordSha256": "bbb9441ec6cca182b5fc5b96847a91e03526399ce38943a4bf7f80fc158a7fd9"
+          },
+          {
+            "ordinal": 368157,
+            "commandSha256": "d5dfb1185c2f87ad51b5434e046656b5f824c4be860486199bf6d3c27a14fd49",
+            "recordSha256": "0c90eb1b196490a2913130f1a724748e9b92263e54821f425e2bbbe230a44acd"
+          },
+          {
+            "ordinal": 368316,
+            "commandSha256": "a8cdca54c49e3ad6cc11e65c9ef922d3237027eccfc37b5210dce55f13c264f6",
+            "recordSha256": "48f7a40c0d6af358c411cdb775aafd8c5c5f428ab4216ef5af917647018ff428"
+          },
+          {
+            "ordinal": 368323,
+            "commandSha256": "5aa22312aff2d23a5c2381281a37ed54ad1cc64794cb0c19a37602abeaa6edaa",
+            "recordSha256": "4e5f954929a4c6000d2704dd98d04e21d5d68da9db78bf1e8673a33f4910d809"
+          },
+          {
+            "ordinal": 368525,
+            "commandSha256": "5f072f3ebe0ac88ad5dfc466f18719448d8892a64f2c2d722861aaafd57f9e69",
+            "recordSha256": "54c7e241c7ddaa58a27dba7794ba898bc45503ba15255bb39aa0a0e97fb38d8f"
+          },
+          {
+            "ordinal": 368532,
+            "commandSha256": "72dea87058c84373fa9e033fa89122859ec014349ab7deaa0549a1d3ce0c7bf8",
+            "recordSha256": "60e71cb20e0cef0deebed8475f278ce25c83c69545ffa9f4445dd7ae667d55e4"
+          },
+          {
+            "ordinal": 368539,
+            "commandSha256": "5b23da32e95276e11c66817d9b70ff54f99d7725e8b6c6bda79f778bbbbf585c",
+            "recordSha256": "7c0eee6ed111a81e0825c443042f381759397bd7eb442c3d1334754a3043c6e1"
+          },
+          {
+            "ordinal": 368559,
+            "commandSha256": "e660e6c8d48b96dca39d0002136a9ad85395b81ba1e2095345afa78aef4a6c20",
+            "recordSha256": "8e0304632132221459ec990c203dd09c96bdbc5743b8e20743727b826c26182e"
+          },
+          {
+            "ordinal": 368566,
+            "commandSha256": "33b7c88fe3859669ec49767c27f8531df6b560af1b1b75d68a67dd85d3e94712",
+            "recordSha256": "291789c8b85256e2f7ffc370683d828c243682b0189325502167ac96a9847582"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0150",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "4f653083306c28aea0aba67d383c9831ed482069364ecb324f235d641f7ecc08",
+      "afterHash": "2b296791dd47da889eeee11442f6b386766e4f8f39c7cadef3dce0be0d0f5c74",
+      "evidenceIds": [
+        "EV-20261010-029"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0155",
+        "successorEvidenceIds": [
+          "EV-20261010-030"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0155].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 365876,
+        "producerSourceSha256": "209be2c822087857a2e5f33387dbbea0fe3d9d32144fbfe611b6450c0724b839",
+        "readDefinition": "const trackingBefore = fs.readFileSync(trackingPath);",
+        "checksumAssignment": "{ id: ids[3], path: 'docs/architecture/production-readiness/TRACKING.json', action: 'modify', beforeHash: sha(trackingBefore), afterHash: null, reason: 'Register EV-023 MarketDerivatives owner test, full-suite evidence, plan update, and session checkpoint.' },",
+        "successfulDriverOrdinal": 369328,
+        "driverItemId": "exec-4bf14cf5-c38f-40e0-a9b5-fdfa089cdc4d",
+        "originalObservedAt": "2026-10-10T08:14:27.280Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "613212aa3f98e0a1be77f3121ab170937b41606989b9f1de1345d6f3d37df0f5",
+        "stdoutSha256": "36835317fa2d5c358448e643a03a0ef66b39d44f00c2cc5a75470b4b78adddf1",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 365876,
+            "commandSha256": "209be2c822087857a2e5f33387dbbea0fe3d9d32144fbfe611b6450c0724b839",
+            "recordSha256": "5754e93efeff307d1921ef4bf974de7c3b9db95949468dabadd92f4482af034c"
+          },
+          {
+            "ordinal": 365887,
+            "commandSha256": "cce5980485298b1e72073d5b129dc09c543e1ea8c27e6cae4b69d7935ba91695",
+            "recordSha256": "bc55e0774fcf76f16216c3af8f415f1eccc7a39457f6eaf66d63ad7fa2045ff2"
+          },
+          {
+            "ordinal": 365930,
+            "commandSha256": "d97fed81f641e5a0a4ddb5bf98f2811d3df19bfd4c12d4528bef40d0db92263e",
+            "recordSha256": "6e6fc765aab8fc7d9651a8420e24e69ac3b25bebcdbadce311c50d9e66079c77"
+          },
+          {
+            "ordinal": 365964,
+            "commandSha256": "12c3342de25eb8e07f8950968a95fb6b2254fd4dc8e28b3cfb48d736512daacc",
+            "recordSha256": "252a700e1daa7d8a17779fc07cea71d99c97182950f98485d839676079c599b5"
+          },
+          {
+            "ordinal": 365984,
+            "commandSha256": "42d4d7f300f2939ea0c53e2146f9d3f149b5b9259060c0b996aee814e6956406",
+            "recordSha256": "1dc6d6cbeba125a104962590f074ca6fb3cf6d0203f98eb920f6b8233573e0cd"
+          },
+          {
+            "ordinal": 366005,
+            "commandSha256": "fd49732b62dfc910411ecf6962e0f148fcef3caf89340f36b7aa5b5d99eafedf",
+            "recordSha256": "3a5962b7c35236dfd6bfdd8b648802e1cf287e99efad38225a5bde3125e6e743"
+          },
+          {
+            "ordinal": 366142,
+            "commandSha256": "576beba94fe78a0299e5b1322e7d77a0d28d2e61ccb4dbc7944a584d83cfc9de",
+            "recordSha256": "c13980fa9a4e254cad1afd2ac780e5b90c796c29732f49172a868e2a4a13e1e9"
+          },
+          {
+            "ordinal": 366149,
+            "commandSha256": "9168cf591d3a5eb4831194b2207c7bfd809b8f7cb64e42ed64a4b52823e243c0",
+            "recordSha256": "e490b63818f6b541970df58cc02a0ac61e242f75305b43857be3d181912fefa6"
+          },
+          {
+            "ordinal": 366163,
+            "commandSha256": "6657e60453aff0ecce0db4ec76209b3a909d2a09cd209776162c7e1e9a539626",
+            "recordSha256": "6a200a3355dfb9856575c3df4411fe8de966a7502bb70f8cca17d7b75aca9d8a"
+          },
+          {
+            "ordinal": 366179,
+            "commandSha256": "7cdc02f4436e78c23cd8120adfa78f3a449ad13ba0d62f2d263b10460d5be403",
+            "recordSha256": "bb0eb696404e706c767c07cd346cda5f51abbe4f747e4634c728c6cdb6c0767b"
+          },
+          {
+            "ordinal": 366185,
+            "commandSha256": "f4a18be9c4f3d8ab34cd133704ae7171a10dd4210e2b2ca8d9710b48089c6387",
+            "recordSha256": "ab1f17c91bed3e76d28deb342f58ee7f5d504baaaf2985f347bca0fd122647df"
+          },
+          {
+            "ordinal": 366195,
+            "commandSha256": "f73e07200c154c98e6d7d5f26bac0fb7b62fca143a0363605ae9389e74e31529",
+            "recordSha256": "c24478c42f9adb0b188fcc585bf2e890413eec6a5cbcaa5a0aa3d9f95f29c635"
+          },
+          {
+            "ordinal": 366202,
+            "commandSha256": "5e16445d1fb0b803694b3a03f454d1a2030f5b43a95b0ba87b1e12b38451decc",
+            "recordSha256": "8ef27881c1f8a9342d896ae9b9af75116bfdd88386b62ed6fb6dbc67538041df"
+          },
+          {
+            "ordinal": 366216,
+            "commandSha256": "e43712858f7adafa922fe20c320e2a1d7abd81747dbc4abdc502fb4f85116943",
+            "recordSha256": "b606a4ef2f6701d7b35f629920d20ec12888746bc4f23f166145cb3308fe754c"
+          },
+          {
+            "ordinal": 366264,
+            "commandSha256": "55f2969a3b059edd48fe7e9fa0e867101ddfeaa4db082a5350f0b63648e40e7f",
+            "recordSha256": "6f1aaac103776edbb262c85f28d3af050071bc4793c0e60968d7b507597331ef"
+          },
+          {
+            "ordinal": 366382,
+            "commandSha256": "b863de21e9bccac121b50512e55c929db19874b071dd8b1129ed31355cdd5dd1",
+            "recordSha256": "0d6328040d5b124f23646cb1c1f285f6c0f55d90e594e87398d928c24acedafc"
+          },
+          {
+            "ordinal": 366396,
+            "commandSha256": "33a63a5055997b3fd8bdc30c3b845b39b81dec16dbd7b58d718f446767b9c538",
+            "recordSha256": "3ffe76fbada64349eb44ee91442d48d414dddbb11cfd8be598dd3fedc51aec34"
+          },
+          {
+            "ordinal": 366435,
+            "commandSha256": "b30590cc70684516395d81388f562cf3338ac792f7d3bbe73db8b38a130e092d",
+            "recordSha256": "ca02cb9af8d909a5d69aa203292150bb769d839d58391de5773c395dce640f4c"
+          },
+          {
+            "ordinal": 366446,
+            "commandSha256": "14774cda6e69f5017f4b12b57cbdc12dfb3b83e5d7c5507e1256d657a3e56ca7",
+            "recordSha256": "7b26c58e294bb377c075eb9c44e92e4281115557647712b4feb02b8080b25c97"
+          },
+          {
+            "ordinal": 366846,
+            "commandSha256": "a1883ac2c59235cc5d50718a2235940cde747fe0a209fe22b8e76aa24eda30e0",
+            "recordSha256": "e37944b7127a0eb065cf88b396a79d72e17ea2683e9e6405066dad89c841617c"
+          },
+          {
+            "ordinal": 366864,
+            "commandSha256": "829d441a1d7b2cd0e767853595ac5bce66f1a2e5285130d41aa27033c2dd1e34",
+            "recordSha256": "ddd6c3b7d2f238a1b5a5dbb89c5f6c27a4ad809a30b1c6023f42b5192ed7e176"
+          },
+          {
+            "ordinal": 366885,
+            "commandSha256": "9ea2b0753337532789fe0fed8cd9357c526dd4bcab5da7dde27310eb6d22cbb5",
+            "recordSha256": "88ed00e2f2771f81d4388aca8f724ce86961a604536a5334e0296106733eea16"
+          },
+          {
+            "ordinal": 366898,
+            "commandSha256": "d4489e32747ab866bf409cf4f3ad72bf55ed0953d44f949bd5d0111101edf9eb",
+            "recordSha256": "7e0522c7e6d386e60607d40fa37a06b6212ba6217b49c60d942b673cb93c42a7"
+          },
+          {
+            "ordinal": 367201,
+            "commandSha256": "fbec7d2be23bb71f12ca16de72be12c4e2545b06f0c6af31b141bf7055f96801",
+            "recordSha256": "ba369124120d27e670441bc22daf5dbb987fd3b60ce60e76a617257539568537"
+          },
+          {
+            "ordinal": 367212,
+            "commandSha256": "10ebd53e67d539b7c94efa4d609c18d6ae7ca9fa4ceb18364c17e0d1200a5309",
+            "recordSha256": "65d0e2050e99bff2d655d33ca2dfe2223145c6f050d6e7f88eebd7a454fd4a81"
+          },
+          {
+            "ordinal": 367227,
+            "commandSha256": "2975dc0663ce3c239cf720c0d3b5fb7225b717df635c9bedefc1124eac04c68c",
+            "recordSha256": "0a2f0ec5b7d4c68dc0b131f92d3d53841c1174e7b77dbe50aaf2f818529060a2"
+          },
+          {
+            "ordinal": 367369,
+            "commandSha256": "bac5a34d34d411b44523f4d465d313af06ce0bba8a0d7b14134af56b8a463b03",
+            "recordSha256": "eb0a27b1cd49caa2b24f3222cb7f1db61a501aa0fbff0bd73c0233e9770fa9f2"
+          },
+          {
+            "ordinal": 367376,
+            "commandSha256": "62ea9e994c188f14940f31de5d85d83f6c7e052df3f1e78ff4164faeaff60b5d",
+            "recordSha256": "3524b280f376a1d217280bfbaa3feaafac27ed8386b75a34cc308094ceda14bb"
+          },
+          {
+            "ordinal": 367383,
+            "commandSha256": "c37926398a90dd70d937d06429bf025b676c006c2f228493408170440548ce3d",
+            "recordSha256": "88ab41806c6cb301e8fe4f797bd27b8090ab190e6cf09da4db5443a186746801"
+          },
+          {
+            "ordinal": 367662,
+            "commandSha256": "41af3c040bdd8f86837c96ad1e92941a76939cc0f40f26f798a865928396831a",
+            "recordSha256": "9416022a1dcd696741c10aaee17160ad86a51a293d657f4f2d6752c4937286ad"
+          },
+          {
+            "ordinal": 367679,
+            "commandSha256": "eac0d4e9631f5781b30c80dcab1779df5da65b894e918c02a6b797969f851fc7",
+            "recordSha256": "594c6a9eef07fb086bb301a0217c0f0e3cb231b20212751da7ee038a62bbd3db"
+          },
+          {
+            "ordinal": 367830,
+            "commandSha256": "0350eb77ae24b78be851a384ef775d052747b8741558a96dcec2dfa768b461e2",
+            "recordSha256": "2757aee5edcac12a61378fbc2bcc85d31361fc833378b1ac0244814805ebe78c"
+          },
+          {
+            "ordinal": 367886,
+            "commandSha256": "0c98327cb733236ad4e47343ea2fe237c492bf2ebd4dfb1c900cdd6321e6232e",
+            "recordSha256": "933d5276157202fb6302f5c3f6db858fa802551609fc5a8f15059b589ffafa4e"
+          },
+          {
+            "ordinal": 368121,
+            "commandSha256": "bf75ea889acd72a14e63a135bac6ffe86b52c3e7082b25c53c01a45339441c39",
+            "recordSha256": "edfd7ae4538918cc373c7d6c603caa4d55ed64ab3d68c9540a3f6188b6ee5397"
+          },
+          {
+            "ordinal": 368128,
+            "commandSha256": "e8206a21b8c5a8e2c167033e1947d265c7e8838e26af1a330f0c97bda3a5c99f",
+            "recordSha256": "67607e969b417cbcffd837bfad8be55cbbb34f4612b8cb0331090978fdb56dc0"
+          },
+          {
+            "ordinal": 368141,
+            "commandSha256": "7fbeb2c62d8f2f8f8ae41a3fbba49543bb0b2cd1ccd6ddc70c44550e4165f9c4",
+            "recordSha256": "3029a5c9f09eed55ed0a3cf17a1614262e0146c675b8fede70593fd7a7cf17a2"
+          },
+          {
+            "ordinal": 368150,
+            "commandSha256": "ac6f60a3a9b6a1105e9c007badce01baca0a6ffa543ac4823ea937346c2224da",
+            "recordSha256": "bbb9441ec6cca182b5fc5b96847a91e03526399ce38943a4bf7f80fc158a7fd9"
+          },
+          {
+            "ordinal": 368157,
+            "commandSha256": "d5dfb1185c2f87ad51b5434e046656b5f824c4be860486199bf6d3c27a14fd49",
+            "recordSha256": "0c90eb1b196490a2913130f1a724748e9b92263e54821f425e2bbbe230a44acd"
+          },
+          {
+            "ordinal": 368316,
+            "commandSha256": "a8cdca54c49e3ad6cc11e65c9ef922d3237027eccfc37b5210dce55f13c264f6",
+            "recordSha256": "48f7a40c0d6af358c411cdb775aafd8c5c5f428ab4216ef5af917647018ff428"
+          },
+          {
+            "ordinal": 368323,
+            "commandSha256": "5aa22312aff2d23a5c2381281a37ed54ad1cc64794cb0c19a37602abeaa6edaa",
+            "recordSha256": "4e5f954929a4c6000d2704dd98d04e21d5d68da9db78bf1e8673a33f4910d809"
+          },
+          {
+            "ordinal": 368525,
+            "commandSha256": "5f072f3ebe0ac88ad5dfc466f18719448d8892a64f2c2d722861aaafd57f9e69",
+            "recordSha256": "54c7e241c7ddaa58a27dba7794ba898bc45503ba15255bb39aa0a0e97fb38d8f"
+          },
+          {
+            "ordinal": 368532,
+            "commandSha256": "72dea87058c84373fa9e033fa89122859ec014349ab7deaa0549a1d3ce0c7bf8",
+            "recordSha256": "60e71cb20e0cef0deebed8475f278ce25c83c69545ffa9f4445dd7ae667d55e4"
+          },
+          {
+            "ordinal": 368539,
+            "commandSha256": "5b23da32e95276e11c66817d9b70ff54f99d7725e8b6c6bda79f778bbbbf585c",
+            "recordSha256": "7c0eee6ed111a81e0825c443042f381759397bd7eb442c3d1334754a3043c6e1"
+          },
+          {
+            "ordinal": 368559,
+            "commandSha256": "e660e6c8d48b96dca39d0002136a9ad85395b81ba1e2095345afa78aef4a6c20",
+            "recordSha256": "8e0304632132221459ec990c203dd09c96bdbc5743b8e20743727b826c26182e"
+          },
+          {
+            "ordinal": 368566,
+            "commandSha256": "33b7c88fe3859669ec49767c27f8531df6b560af1b1b75d68a67dd85d3e94712",
+            "recordSha256": "291789c8b85256e2f7ffc370683d828c243682b0189325502167ac96a9847582"
+          },
+          {
+            "ordinal": 368732,
+            "commandSha256": "2f02d0b115dce1014b15f76fca0169e50f7dc63bbcf13fcb98710aaefae33730",
+            "recordSha256": "eef0363cb8634f36594298d5e330ed0502d00b27dd9ab213b3cf9c342c0a6b1f"
+          },
+          {
+            "ordinal": 368739,
+            "commandSha256": "d627fa92d9751649698222e4bbe25b73ef1d509d0f4d3cb2b1b083ad85b5339d",
+            "recordSha256": "766d9b91605db7c1a4ac379475828372041f73ebeb8d898218c215bf95030ed3"
+          },
+          {
+            "ordinal": 369271,
+            "commandSha256": "8a2ff9aa06dc0653ebb72fc17f61128a6d84a7bee632318b0eb0b7718ab70313",
+            "recordSha256": "ce634a4ddc82073f2b34a6ad967763f2846d482c44a948424449f85d3602fa06"
+          },
+          {
+            "ordinal": 369291,
+            "commandSha256": "40361a657e6d1bb10465a4c23d691114514f926b19148670911fc16f9b9f88da",
+            "recordSha256": "0c30e123e27303d1ffb416766e24b027501bdaa9866336de55276cdf13718859"
+          },
+          {
+            "ordinal": 369314,
+            "commandSha256": "2e763f6b820d7993681bbc092b1f441758c5eb1192846f37866c9404ebb4ee0b",
+            "recordSha256": "c6da51a72a517b7c4d163dea6f8ab9d1a03245518de90668c4d63c8f616ab785"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0155",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "2b296791dd47da889eeee11442f6b386766e4f8f39c7cadef3dce0be0d0f5c74",
+      "afterHash": "c3affa2a84a89ff619cf649f1abe6ae4b24e776da4f3dd74edbf7aef2b32b85b",
+      "evidenceIds": [
+        "EV-20261010-030"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0159",
+        "successorEvidenceIds": [
+          "EV-20261010-031"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0159].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 365876,
+        "producerSourceSha256": "209be2c822087857a2e5f33387dbbea0fe3d9d32144fbfe611b6450c0724b839",
+        "readDefinition": "const trackingBefore = fs.readFileSync(trackingPath);",
+        "checksumAssignment": "{ id: ids[3], path: 'docs/architecture/production-readiness/TRACKING.json', action: 'modify', beforeHash: sha(trackingBefore), afterHash: null, reason: 'Register EV-023 MarketDerivatives owner test, full-suite evidence, plan update, and session checkpoint.' },",
+        "successfulDriverOrdinal": 369818,
+        "driverItemId": "exec-d149ad9e-5b78-4ded-a13d-74d56858af7b",
+        "originalObservedAt": "2026-10-10T08:31:17.826Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "963e31a1c379901a913786b8358e992e1a1a05fc0f255f6b61dd65d6bf73c096",
+        "stdoutSha256": "736d452a77ee4316a97f6b3ede15a6441452a627522aceddb53f2c6113e3df30",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 365876,
+            "commandSha256": "209be2c822087857a2e5f33387dbbea0fe3d9d32144fbfe611b6450c0724b839",
+            "recordSha256": "5754e93efeff307d1921ef4bf974de7c3b9db95949468dabadd92f4482af034c"
+          },
+          {
+            "ordinal": 365887,
+            "commandSha256": "cce5980485298b1e72073d5b129dc09c543e1ea8c27e6cae4b69d7935ba91695",
+            "recordSha256": "bc55e0774fcf76f16216c3af8f415f1eccc7a39457f6eaf66d63ad7fa2045ff2"
+          },
+          {
+            "ordinal": 365930,
+            "commandSha256": "d97fed81f641e5a0a4ddb5bf98f2811d3df19bfd4c12d4528bef40d0db92263e",
+            "recordSha256": "6e6fc765aab8fc7d9651a8420e24e69ac3b25bebcdbadce311c50d9e66079c77"
+          },
+          {
+            "ordinal": 365964,
+            "commandSha256": "12c3342de25eb8e07f8950968a95fb6b2254fd4dc8e28b3cfb48d736512daacc",
+            "recordSha256": "252a700e1daa7d8a17779fc07cea71d99c97182950f98485d839676079c599b5"
+          },
+          {
+            "ordinal": 365984,
+            "commandSha256": "42d4d7f300f2939ea0c53e2146f9d3f149b5b9259060c0b996aee814e6956406",
+            "recordSha256": "1dc6d6cbeba125a104962590f074ca6fb3cf6d0203f98eb920f6b8233573e0cd"
+          },
+          {
+            "ordinal": 366005,
+            "commandSha256": "fd49732b62dfc910411ecf6962e0f148fcef3caf89340f36b7aa5b5d99eafedf",
+            "recordSha256": "3a5962b7c35236dfd6bfdd8b648802e1cf287e99efad38225a5bde3125e6e743"
+          },
+          {
+            "ordinal": 366142,
+            "commandSha256": "576beba94fe78a0299e5b1322e7d77a0d28d2e61ccb4dbc7944a584d83cfc9de",
+            "recordSha256": "c13980fa9a4e254cad1afd2ac780e5b90c796c29732f49172a868e2a4a13e1e9"
+          },
+          {
+            "ordinal": 366149,
+            "commandSha256": "9168cf591d3a5eb4831194b2207c7bfd809b8f7cb64e42ed64a4b52823e243c0",
+            "recordSha256": "e490b63818f6b541970df58cc02a0ac61e242f75305b43857be3d181912fefa6"
+          },
+          {
+            "ordinal": 366163,
+            "commandSha256": "6657e60453aff0ecce0db4ec76209b3a909d2a09cd209776162c7e1e9a539626",
+            "recordSha256": "6a200a3355dfb9856575c3df4411fe8de966a7502bb70f8cca17d7b75aca9d8a"
+          },
+          {
+            "ordinal": 366179,
+            "commandSha256": "7cdc02f4436e78c23cd8120adfa78f3a449ad13ba0d62f2d263b10460d5be403",
+            "recordSha256": "bb0eb696404e706c767c07cd346cda5f51abbe4f747e4634c728c6cdb6c0767b"
+          },
+          {
+            "ordinal": 366185,
+            "commandSha256": "f4a18be9c4f3d8ab34cd133704ae7171a10dd4210e2b2ca8d9710b48089c6387",
+            "recordSha256": "ab1f17c91bed3e76d28deb342f58ee7f5d504baaaf2985f347bca0fd122647df"
+          },
+          {
+            "ordinal": 366195,
+            "commandSha256": "f73e07200c154c98e6d7d5f26bac0fb7b62fca143a0363605ae9389e74e31529",
+            "recordSha256": "c24478c42f9adb0b188fcc585bf2e890413eec6a5cbcaa5a0aa3d9f95f29c635"
+          },
+          {
+            "ordinal": 366202,
+            "commandSha256": "5e16445d1fb0b803694b3a03f454d1a2030f5b43a95b0ba87b1e12b38451decc",
+            "recordSha256": "8ef27881c1f8a9342d896ae9b9af75116bfdd88386b62ed6fb6dbc67538041df"
+          },
+          {
+            "ordinal": 366216,
+            "commandSha256": "e43712858f7adafa922fe20c320e2a1d7abd81747dbc4abdc502fb4f85116943",
+            "recordSha256": "b606a4ef2f6701d7b35f629920d20ec12888746bc4f23f166145cb3308fe754c"
+          },
+          {
+            "ordinal": 366264,
+            "commandSha256": "55f2969a3b059edd48fe7e9fa0e867101ddfeaa4db082a5350f0b63648e40e7f",
+            "recordSha256": "6f1aaac103776edbb262c85f28d3af050071bc4793c0e60968d7b507597331ef"
+          },
+          {
+            "ordinal": 366382,
+            "commandSha256": "b863de21e9bccac121b50512e55c929db19874b071dd8b1129ed31355cdd5dd1",
+            "recordSha256": "0d6328040d5b124f23646cb1c1f285f6c0f55d90e594e87398d928c24acedafc"
+          },
+          {
+            "ordinal": 366396,
+            "commandSha256": "33a63a5055997b3fd8bdc30c3b845b39b81dec16dbd7b58d718f446767b9c538",
+            "recordSha256": "3ffe76fbada64349eb44ee91442d48d414dddbb11cfd8be598dd3fedc51aec34"
+          },
+          {
+            "ordinal": 366435,
+            "commandSha256": "b30590cc70684516395d81388f562cf3338ac792f7d3bbe73db8b38a130e092d",
+            "recordSha256": "ca02cb9af8d909a5d69aa203292150bb769d839d58391de5773c395dce640f4c"
+          },
+          {
+            "ordinal": 366446,
+            "commandSha256": "14774cda6e69f5017f4b12b57cbdc12dfb3b83e5d7c5507e1256d657a3e56ca7",
+            "recordSha256": "7b26c58e294bb377c075eb9c44e92e4281115557647712b4feb02b8080b25c97"
+          },
+          {
+            "ordinal": 366846,
+            "commandSha256": "a1883ac2c59235cc5d50718a2235940cde747fe0a209fe22b8e76aa24eda30e0",
+            "recordSha256": "e37944b7127a0eb065cf88b396a79d72e17ea2683e9e6405066dad89c841617c"
+          },
+          {
+            "ordinal": 366864,
+            "commandSha256": "829d441a1d7b2cd0e767853595ac5bce66f1a2e5285130d41aa27033c2dd1e34",
+            "recordSha256": "ddd6c3b7d2f238a1b5a5dbb89c5f6c27a4ad809a30b1c6023f42b5192ed7e176"
+          },
+          {
+            "ordinal": 366885,
+            "commandSha256": "9ea2b0753337532789fe0fed8cd9357c526dd4bcab5da7dde27310eb6d22cbb5",
+            "recordSha256": "88ed00e2f2771f81d4388aca8f724ce86961a604536a5334e0296106733eea16"
+          },
+          {
+            "ordinal": 366898,
+            "commandSha256": "d4489e32747ab866bf409cf4f3ad72bf55ed0953d44f949bd5d0111101edf9eb",
+            "recordSha256": "7e0522c7e6d386e60607d40fa37a06b6212ba6217b49c60d942b673cb93c42a7"
+          },
+          {
+            "ordinal": 367201,
+            "commandSha256": "fbec7d2be23bb71f12ca16de72be12c4e2545b06f0c6af31b141bf7055f96801",
+            "recordSha256": "ba369124120d27e670441bc22daf5dbb987fd3b60ce60e76a617257539568537"
+          },
+          {
+            "ordinal": 367212,
+            "commandSha256": "10ebd53e67d539b7c94efa4d609c18d6ae7ca9fa4ceb18364c17e0d1200a5309",
+            "recordSha256": "65d0e2050e99bff2d655d33ca2dfe2223145c6f050d6e7f88eebd7a454fd4a81"
+          },
+          {
+            "ordinal": 367227,
+            "commandSha256": "2975dc0663ce3c239cf720c0d3b5fb7225b717df635c9bedefc1124eac04c68c",
+            "recordSha256": "0a2f0ec5b7d4c68dc0b131f92d3d53841c1174e7b77dbe50aaf2f818529060a2"
+          },
+          {
+            "ordinal": 367369,
+            "commandSha256": "bac5a34d34d411b44523f4d465d313af06ce0bba8a0d7b14134af56b8a463b03",
+            "recordSha256": "eb0a27b1cd49caa2b24f3222cb7f1db61a501aa0fbff0bd73c0233e9770fa9f2"
+          },
+          {
+            "ordinal": 367376,
+            "commandSha256": "62ea9e994c188f14940f31de5d85d83f6c7e052df3f1e78ff4164faeaff60b5d",
+            "recordSha256": "3524b280f376a1d217280bfbaa3feaafac27ed8386b75a34cc308094ceda14bb"
+          },
+          {
+            "ordinal": 367383,
+            "commandSha256": "c37926398a90dd70d937d06429bf025b676c006c2f228493408170440548ce3d",
+            "recordSha256": "88ab41806c6cb301e8fe4f797bd27b8090ab190e6cf09da4db5443a186746801"
+          },
+          {
+            "ordinal": 367662,
+            "commandSha256": "41af3c040bdd8f86837c96ad1e92941a76939cc0f40f26f798a865928396831a",
+            "recordSha256": "9416022a1dcd696741c10aaee17160ad86a51a293d657f4f2d6752c4937286ad"
+          },
+          {
+            "ordinal": 367679,
+            "commandSha256": "eac0d4e9631f5781b30c80dcab1779df5da65b894e918c02a6b797969f851fc7",
+            "recordSha256": "594c6a9eef07fb086bb301a0217c0f0e3cb231b20212751da7ee038a62bbd3db"
+          },
+          {
+            "ordinal": 367830,
+            "commandSha256": "0350eb77ae24b78be851a384ef775d052747b8741558a96dcec2dfa768b461e2",
+            "recordSha256": "2757aee5edcac12a61378fbc2bcc85d31361fc833378b1ac0244814805ebe78c"
+          },
+          {
+            "ordinal": 367886,
+            "commandSha256": "0c98327cb733236ad4e47343ea2fe237c492bf2ebd4dfb1c900cdd6321e6232e",
+            "recordSha256": "933d5276157202fb6302f5c3f6db858fa802551609fc5a8f15059b589ffafa4e"
+          },
+          {
+            "ordinal": 368121,
+            "commandSha256": "bf75ea889acd72a14e63a135bac6ffe86b52c3e7082b25c53c01a45339441c39",
+            "recordSha256": "edfd7ae4538918cc373c7d6c603caa4d55ed64ab3d68c9540a3f6188b6ee5397"
+          },
+          {
+            "ordinal": 368128,
+            "commandSha256": "e8206a21b8c5a8e2c167033e1947d265c7e8838e26af1a330f0c97bda3a5c99f",
+            "recordSha256": "67607e969b417cbcffd837bfad8be55cbbb34f4612b8cb0331090978fdb56dc0"
+          },
+          {
+            "ordinal": 368141,
+            "commandSha256": "7fbeb2c62d8f2f8f8ae41a3fbba49543bb0b2cd1ccd6ddc70c44550e4165f9c4",
+            "recordSha256": "3029a5c9f09eed55ed0a3cf17a1614262e0146c675b8fede70593fd7a7cf17a2"
+          },
+          {
+            "ordinal": 368150,
+            "commandSha256": "ac6f60a3a9b6a1105e9c007badce01baca0a6ffa543ac4823ea937346c2224da",
+            "recordSha256": "bbb9441ec6cca182b5fc5b96847a91e03526399ce38943a4bf7f80fc158a7fd9"
+          },
+          {
+            "ordinal": 368157,
+            "commandSha256": "d5dfb1185c2f87ad51b5434e046656b5f824c4be860486199bf6d3c27a14fd49",
+            "recordSha256": "0c90eb1b196490a2913130f1a724748e9b92263e54821f425e2bbbe230a44acd"
+          },
+          {
+            "ordinal": 368316,
+            "commandSha256": "a8cdca54c49e3ad6cc11e65c9ef922d3237027eccfc37b5210dce55f13c264f6",
+            "recordSha256": "48f7a40c0d6af358c411cdb775aafd8c5c5f428ab4216ef5af917647018ff428"
+          },
+          {
+            "ordinal": 368323,
+            "commandSha256": "5aa22312aff2d23a5c2381281a37ed54ad1cc64794cb0c19a37602abeaa6edaa",
+            "recordSha256": "4e5f954929a4c6000d2704dd98d04e21d5d68da9db78bf1e8673a33f4910d809"
+          },
+          {
+            "ordinal": 368525,
+            "commandSha256": "5f072f3ebe0ac88ad5dfc466f18719448d8892a64f2c2d722861aaafd57f9e69",
+            "recordSha256": "54c7e241c7ddaa58a27dba7794ba898bc45503ba15255bb39aa0a0e97fb38d8f"
+          },
+          {
+            "ordinal": 368532,
+            "commandSha256": "72dea87058c84373fa9e033fa89122859ec014349ab7deaa0549a1d3ce0c7bf8",
+            "recordSha256": "60e71cb20e0cef0deebed8475f278ce25c83c69545ffa9f4445dd7ae667d55e4"
+          },
+          {
+            "ordinal": 368539,
+            "commandSha256": "5b23da32e95276e11c66817d9b70ff54f99d7725e8b6c6bda79f778bbbbf585c",
+            "recordSha256": "7c0eee6ed111a81e0825c443042f381759397bd7eb442c3d1334754a3043c6e1"
+          },
+          {
+            "ordinal": 368559,
+            "commandSha256": "e660e6c8d48b96dca39d0002136a9ad85395b81ba1e2095345afa78aef4a6c20",
+            "recordSha256": "8e0304632132221459ec990c203dd09c96bdbc5743b8e20743727b826c26182e"
+          },
+          {
+            "ordinal": 368566,
+            "commandSha256": "33b7c88fe3859669ec49767c27f8531df6b560af1b1b75d68a67dd85d3e94712",
+            "recordSha256": "291789c8b85256e2f7ffc370683d828c243682b0189325502167ac96a9847582"
+          },
+          {
+            "ordinal": 368732,
+            "commandSha256": "2f02d0b115dce1014b15f76fca0169e50f7dc63bbcf13fcb98710aaefae33730",
+            "recordSha256": "eef0363cb8634f36594298d5e330ed0502d00b27dd9ab213b3cf9c342c0a6b1f"
+          },
+          {
+            "ordinal": 368739,
+            "commandSha256": "d627fa92d9751649698222e4bbe25b73ef1d509d0f4d3cb2b1b083ad85b5339d",
+            "recordSha256": "766d9b91605db7c1a4ac379475828372041f73ebeb8d898218c215bf95030ed3"
+          },
+          {
+            "ordinal": 369271,
+            "commandSha256": "8a2ff9aa06dc0653ebb72fc17f61128a6d84a7bee632318b0eb0b7718ab70313",
+            "recordSha256": "ce634a4ddc82073f2b34a6ad967763f2846d482c44a948424449f85d3602fa06"
+          },
+          {
+            "ordinal": 369291,
+            "commandSha256": "40361a657e6d1bb10465a4c23d691114514f926b19148670911fc16f9b9f88da",
+            "recordSha256": "0c30e123e27303d1ffb416766e24b027501bdaa9866336de55276cdf13718859"
+          },
+          {
+            "ordinal": 369314,
+            "commandSha256": "2e763f6b820d7993681bbc092b1f441758c5eb1192846f37866c9404ebb4ee0b",
+            "recordSha256": "c6da51a72a517b7c4d163dea6f8ab9d1a03245518de90668c4d63c8f616ab785"
+          },
+          {
+            "ordinal": 369356,
+            "commandSha256": "f7fcd62ab3f78d336ea7065dd9da2266433f6e547ff95017b48d0b5dc646c87f",
+            "recordSha256": "8fdee5f3cc971644ef008b65c05a96795bc0e09f6e25d4249f0dbf5be825c924"
+          },
+          {
+            "ordinal": 369802,
+            "commandSha256": "c8f952a09b8adcf1e51617f620666714ab25e2d081a93eadf6c8cfb16681ee6c",
+            "recordSha256": "4cbb295418dceeb7e7d28904a4d1c0608a871ad61440a1639dce5a9763636f1b"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHANGE-20261010-0159",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "beforeHash": "c3affa2a84a89ff619cf649f1abe6ae4b24e776da4f3dd74edbf7aef2b32b85b",
+      "afterHash": "775f5bbbcde8834e1ab04b9d92a41231e287502e39ce41a271a98259613196f8",
+      "evidenceIds": [
+        "EV-20261010-031"
+      ],
+      "provenance": {
+        "kind": "original-successor-input-checksum",
+        "basis": "The next owner writer read actual TRACKING bytes and stored SHA-256 in its beforeHash. This identifies the previous tracker checkpoint after its original amendments, before the next event; it is not a checksum of the present file or Git HEAD.",
+        "originalLedgerGitBlob": "0d7061b8f0849120c331326bcfb26183b9ed209d",
+        "originalLedgerPayloadSha256": "ef56aacd069a34dcffef8832633efe0f4a0314e07300e2637c1ec8764df4f22b",
+        "successorChangeId": "CHANGE-20261010-0164",
+        "successorEvidenceIds": [
+          "EV-20261010-032"
+        ],
+        "checksumField": "changes[CHANGE-20261010-0164].beforeHash",
+        "originalCheckpointFullRawCopyAvailable": false,
+        "producerBaseOrdinal": 370652,
+        "producerSourceSha256": "5cb457f8ffb6890a449983cd131865752097fbeef42b444a9ce7abf7a845eb80",
+        "readDefinition": "const trackingRawBefore = fs.readFileSync(path.join(root, trackingPath));",
+        "checksumAssignment": "{ path: trackingPath, beforeHash: hash(trackingRawBefore), afterHash: null, reason: 'Register EV-032, update C03.05 coverage continuation, attach owner change IDs, and record the next measured slice.' },",
+        "successfulDriverOrdinal": 370694,
+        "driverItemId": "exec-2589e81c-b596-48f2-a945-82df2e0c26fb",
+        "originalObservedAt": "2026-10-10T08:59:35.625Z",
+        "originalExitCode": 0,
+        "executionRecordSha256": "4a95c367efe4c28750d2398e19b312e412ef8d31073a9ee9c8d7a8c09d8fba19",
+        "stdoutSha256": "56ec95aa13c94e9267d7d38eaa40b2ce1c41ed3c2740bde7950d2d1dee59bfa0",
+        "sourceLineageRecords": [
+          {
+            "ordinal": 370652,
+            "commandSha256": "5cb457f8ffb6890a449983cd131865752097fbeef42b444a9ce7abf7a845eb80",
+            "recordSha256": "e63b45f777dd30f1f76912b59594b66187f44b49b62fa469da89799d0f203a13"
+          },
+          {
+            "ordinal": 370672,
+            "commandSha256": "9b2925b976a2da2a37522a8d697a1b7090561d16fb4639e0b4c19beb39f687a0",
+            "recordSha256": "170aac173974f9f302850bdd654102002cf88b0b68d6c6f9afc97947909f6bbe"
+          },
+          {
+            "ordinal": 370694,
+            "commandSha256": "e5b960fe2ecc07c73260fb61ad4964765d00d51ae1f3286e21f9577d9228e799",
+            "recordSha256": "4a95c367efe4c28750d2398e19b312e412ef8d31073a9ee9c8d7a8c09d8fba19"
+          }
+        ]
+      }
+    }
+  ],
+  "originalErrorsResolved": 25,
+  "recoveryKinds": {
+    "originalSuccessorInputChecksums": 23,
+    "anchoredBoundedReconstructions": 2
+  },
+  "negativeChecks": {
+    "gitHeadFallbackRejected": true,
+    "foreignChangeContextRejected": true,
+    "modifiedReconstructionAnchorRejected": true
+  },
+  "checkerChanged": false,
+  "thresholdsLowered": false,
+  "originalCommandsExecuted": false,
+  "historyRewritten": false,
+  "protectedWorktreesModified": false,
+  "scope": "Historical checkpoint hashes only. Runtime and backend/UAT readiness are not promoted. Private session source and compressed recovery snapshots remain local; the compact provenance is reviewable without publishing the session."
+}
