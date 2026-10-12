@@ -15,6 +15,9 @@ export default defineConfig(({ mode, command }) => {
   });
 
   return {
+    cacheDir: process.env.VITTRADE_RUN_DIR
+      ? path.join(process.env.VITTRADE_RUN_DIR, 'cache/vite')
+      : 'node_modules/.vite',
     plugins: [
       // The React and Tailwind plugins are both required for Make, even if
       // Tailwind is not being actively used – do not remove them
@@ -42,6 +45,10 @@ export default defineConfig(({ mode, command }) => {
     },
 
     build: {
+      outDir: process.env.VITTRADE_RUN_DIR
+        ? path.join(process.env.VITTRADE_RUN_DIR, 'dist')
+        : 'dist',
+      emptyOutDir: false,
       // `public/` contains the MSW worker for Vite development; keep it out of production output.
       copyPublicDir: false,
       rollupOptions: {

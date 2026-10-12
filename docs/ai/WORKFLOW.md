@@ -83,6 +83,13 @@ không tạo sổ hoặc framework riêng. Các kiểm tra và tiêu chí M1–M
 - Chạy kiểm tra phù hợp; xem lại diff so với yêu cầu và contract. Ghi kết quả thật, sửa lỗi do thay đổi gây ra rồi chạy lại phần bị ảnh hưởng.
 - Cập nhật `changes`, `evidence`, record page/route/operation/file, session và checkpoint theo templates hiện có trong TRACKING. Thêm/rename/retire phải giữ danh tính và lịch sử; không xóa mục để tăng tỷ lệ.
 - Bằng chứng phải có lệnh/thao tác, môi trường, thời điểm, revision/hash dirty theo quy ước, expected/actual, pass/fail và artifact có thật. Chỉ lưu dữ liệu cần thiết, không ghi secret.
+- Khi TRACKING tự ghi thay đổi của nó, lưu một payload thật sau cập nhật nghiệp vụ
+  và trước bản ghi audit của chính payload đó; tính SHA-256 từ bytes đã lưu, ghi rõ
+  basis/đường dẫn khôi phục và kiểm tra giải nén nếu lưu gzip. Hash cuối sau audit
+  được ghi riêng trong manifest phiên. Không tìm fixed point cho JSON tự chứa hash,
+  để `afterHash:null` rồi chuyển bước, hoặc điền hash hiện tại vào bản ghi lịch sử.
+  Bản thiếu provenance phải giữ BLOCKED. Source catalogue chỉ dùng blob Git thật
+  đã kiểm riêng theo file; không trỏ toàn bộ WIP tới HEAD để làm checker xanh.
 - Chạy checker sau cập nhật. Chỉ đánh dấu done khi đủ tiêu chí; checker pass chỉ chứng minh tính nhất quán của sổ.
 - Khi đã được giao toàn roadmap, chủ động tiếp tục bước hợp lệ kế tiếp. Nếu bị chặn, ghi đầu vào thiếu, owner và phần độc lập còn làm được; không chuyển bước phụ thuộc hoặc vượt checkpoint đã chốt.
 
@@ -123,6 +130,31 @@ Diff stat là bước định hướng; đọc diff thực tế trong phạm vi 
 Tìm đường dẫn/symbol trước rồi đọc đoạn liên quan; lọc task/page trong TRACKING thay vì nạp toàn bộ JSON mỗi bước. Dùng lại kết quả kiểm tra khi nguồn và điều kiện không đổi; chạy lại khi có thay đổi, failure hoặc nghi vấn cụ thể. Build/E2E dùng chung dist/port phải chạy tuần tự. Đủ tiêu chí thì chuyển bước, không tiếp tục “làm đẹp” ngoài phạm vi.
 
 ## 6. Bàn giao và đồng bộ hướng dẫn
+
+### Output kiểm thử và build
+
+Các npm script test/build chạy qua `scripts/run-with-artifacts.mjs`, dùng một
+thư mục `.artifacts/runs/<timestamp>-<runner>-<uuid>` mới cho mỗi lần chạy. Owner
+PID, lệnh, trạng thái kết thúc, HEAD và hash source trước/sau nằm ở `run.json`.
+Không sao chép repo để tăng coverage; dùng test filter của Vitest trên checkout
+hiện tại. Cache, coverage và output Playwright nằm trong run; screenshot/video
+chỉ giữ khi lỗi, trace giữ lần retry đầu theo cấu hình hiện hành. Báo cáo coverage
+không đổi denominator hoặc ngưỡng. Các gate artifact chọn production build đã
+pass có snapshot trùng source hiện tại; output `dist/` cũ không thay bằng chứng đó.
+
+Build có owner chỉ nhận mode production và config/output của repo; runner từ chối
+override `--outDir`, `--config` hoặc NODE_ENV khác production trước khi tạo run.
+Manifest ghi NODE_ENV; gate artifact từ chối build thiếu provenance mode/config.
+Fingerprint run bao gồm cả script thực thi trong readiness. Metadata ledger/report
+được kiểm riêng ở G5; sửa metadata sau run không được đổi bằng chứng runtime.
+
+Retention tự động **chưa được duyệt và không bật**. `npm.cmd run artifacts:plan
+-- --run <run-directory>` chỉ xuất danh sách cache/build có thể xem xét; `--validate
+<plan.json>` từ chối run còn chạy, owner còn sống, junction/reparse, nội dung hoặc
+file ID đã thay đổi. Công cụ không xóa file. Phải duyệt đường dẫn/bytes/lý do/
+khôi phục trước khi xóa vĩnh viễn. Giữ coverage JSON, report lỗi, screenshots,
+goldens, contract và mọi evidence/fingerprint được tracker tham chiếu. CLI trực
+tiếp ngoài npm không có owner manifest; không dùng CLI đó cho vòng coverage mới.
 
 Kết thúc phiên bằng checkpoint có task/step, file thực sự sửa, bằng chứng, kiểm tra chưa chạy, lỗi/blocker và nextAction cụ thể. Dùng templates/session hiện có; không tạo sổ trạng thái riêng trong workflow, README hoặc lịch sử chat. Báo tiến độ với tử số/mẫu số và tách M1–M4, UI kỹ thuật, user acceptance và backend verified theo PLAN. Thiếu đầu vào bên ngoài thì giữ phần đó chưa hoàn tất.
 

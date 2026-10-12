@@ -4,6 +4,9 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
+  cacheDir: process.env.VITTRADE_RUN_DIR
+    ? path.join(process.env.VITTRADE_RUN_DIR, 'cache/vitest')
+    : 'node_modules/.vite/vitest',
   test: {
     globals: true,
     environment: 'jsdom',
@@ -11,6 +14,7 @@ export default defineConfig({
     setupFiles: './src/test/setup.ts',
     css: true,
     exclude: [
+      '**/.artifacts/**',
       '**/node_modules/**',
       '**/dist/**',
       // Playwright quản lý E2E trên trình duyệt; Vitest không được import các spec này.
@@ -18,12 +22,14 @@ export default defineConfig({
     ],
     coverage: {
       provider: 'v8',
+      reportsDirectory: process.env.VITTRADE_RUN_DIR
+        ? path.join(process.env.VITTRADE_RUN_DIR, 'coverage')
+        : 'coverage',
+      // Direct CLI use must also preserve pre-existing evidence.
+      clean: false,
+      cleanOnRerun: false,
       reporter: ['text', 'json', 'html'],
-      include: [
-        'src/app/**/*.{ts,tsx}',
-        'src/features/**/*.{ts,tsx}',
-        'src/shared/**/*.{ts,tsx}',
-      ],
+      include: ['src/app/**/*.{ts,tsx}', 'src/features/**/*.{ts,tsx}', 'src/shared/**/*.{ts,tsx}'],
       thresholds: {
         // Enforce the frontend certification targets over the explicit source
         // denominator; route composition and dev-only code have separate gates.

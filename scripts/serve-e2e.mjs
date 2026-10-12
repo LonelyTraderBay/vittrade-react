@@ -24,7 +24,18 @@ const startPreview = () => {
   const viteArgs =
     previewMode === 'development'
       ? [viteCli, '--host', '127.0.0.1', '--port', String(previewPort), '--strictPort']
-      : [viteCli, 'preview', '--host', '127.0.0.1', '--port', String(previewPort), '--strictPort'];
+      : [
+          viteCli,
+          'preview',
+          '--host',
+          '127.0.0.1',
+          '--port',
+          String(previewPort),
+          '--strictPort',
+          ...(process.env.VITTRADE_RUN_DIR
+            ? ['--outDir', path.join(process.env.VITTRADE_RUN_DIR, 'dist')]
+            : []),
+        ];
   const preview = spawn(process.execPath, viteArgs, {
     cwd: projectRoot,
     stdio: 'inherit',

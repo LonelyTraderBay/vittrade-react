@@ -20,6 +20,7 @@ async function runGate(outputFiles) {
     const result = spawnSync(process.execPath, [checkerPath], {
       cwd: root,
       encoding: 'utf8',
+      env: { ...process.env, VITTRADE_RUN_DIR: root },
     });
     if (result.error) throw result.error;
     return { status: result.status, output: `${result.stdout}${result.stderr}` };

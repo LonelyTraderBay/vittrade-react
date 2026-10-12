@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import path from 'node:path';
 
 const nodeExecutable = `"${process.execPath}"`;
 const previewPort = Number(process.env.E2E_PREVIEW_PORT ?? '4173');
@@ -10,6 +11,9 @@ const previewUrl = `http://127.0.0.1:${previewPort}`;
  */
 export default defineConfig({
   testDir: './tests/e2e',
+  outputDir: process.env.VITTRADE_RUN_DIR
+    ? path.join(process.env.VITTRADE_RUN_DIR, 'test-results')
+    : 'test-results',
   timeout: 30_000,
   expect: { timeout: 5_000 },
   fullyParallel: true,
@@ -18,7 +22,20 @@ export default defineConfig({
   workers: 1,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
+  reporter: process.env.CI
+    ? [
+        ['github'],
+        [
+          'html',
+          {
+            open: 'never',
+            outputFolder: process.env.VITTRADE_RUN_DIR
+              ? path.join(process.env.VITTRADE_RUN_DIR, 'playwright-report')
+              : 'playwright-report',
+          },
+        ],
+      ]
+    : 'list',
   use: {
     baseURL: previewUrl,
     trace: 'on-first-retry',

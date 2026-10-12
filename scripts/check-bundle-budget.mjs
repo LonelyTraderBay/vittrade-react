@@ -2,7 +2,8 @@ import { readdir, readFile } from 'node:fs/promises';
 import { gzipSync } from 'node:zlib';
 import path from 'node:path';
 
-const distAssets = path.resolve('dist/assets');
+const distRoot = path.resolve(process.env.VITTRADE_RUN_DIR ?? '.', 'dist');
+const distAssets = path.join(distRoot, 'assets');
 const maxRawBytes = 500 * 1000;
 const maxGzipBytes = 250 * 1024;
 
@@ -26,7 +27,7 @@ try {
     const gzipBytes = gzipSync(contents, { level: 9 }).byteLength;
     if (rawBytes > maxRawBytes || gzipBytes > maxGzipBytes) {
       failures.push(
-        `${path.relative('dist', file)}: ${(rawBytes / 1000).toFixed(1)} kB raw / ${(gzipBytes / 1024).toFixed(1)} KiB gzip`,
+        `${path.relative(distRoot, file)}: ${(rawBytes / 1000).toFixed(1)} kB raw / ${(gzipBytes / 1024).toFixed(1)} KiB gzip`,
       );
     }
   }

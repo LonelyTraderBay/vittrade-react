@@ -1,7 +1,7 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { basename, join, relative, sep } from 'node:path';
 
-const distRoot = join(process.cwd(), 'dist');
+const distRoot = join(process.env.VITTRADE_RUN_DIR ?? process.cwd(), 'dist');
 const forbiddenMarkers = [
   // Các marker này bảo vệ production artifact khỏi legacy data/demo bị import
   // lại qua một route mới trong tương lai.

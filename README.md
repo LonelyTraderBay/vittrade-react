@@ -28,6 +28,13 @@ tiêu chí nghiệm thu của repo áp dụng cho mọi người thực hiện.
 | `npm run test:run` | Vitest single run |
 | `npm run test:coverage` | Coverage report |
 
+Build/test outputs live in `.artifacts/runs/<run-id>` with an owner manifest and
+source hashes. `preview`, `production-mocks:check` and `bundle:check` use the most
+recent successful production build matching the current source snapshot.
+Existing `dist/coverage` and historical evidence are preserved. See the
+[output and retention workflow](docs/ai/WORKFLOW.md#output-kiểm-thử-và-build)
+before removing reports; automatic retention is disabled pending approval.
+
 ## Environment
 
 Copy `.env.example` → `.env.local` and set values. Never read `import.meta.env` in feature code — import `env` from `src/shared/config/env.ts` (single source of truth). Staging and production builds require `VITE_DATA_SOURCE=api`, an HTTPS API base URL and a WSS URL. The `.invalid` endpoints in the release examples are deliberate placeholders and are rejected at build time and startup; replace them only with endpoints supplied by the selected environment. CI uses reserved `.test` origins for build validation only and does not deploy them.
