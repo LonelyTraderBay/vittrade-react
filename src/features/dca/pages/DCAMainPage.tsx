@@ -24,6 +24,7 @@ import {
 import type {
   CreateDCAPlanRequest,
   DCAFrequency,
+  DCAPlan,
   DCAPortfolioHistoryPoint,
 } from '../model/dca-types';
 import { normalizeCoinSymbol, readDcaPreselectedCoin } from '@/shared/types/route-state';
@@ -167,10 +168,6 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
   ]);
 
   const handleCreatePlan = async (request: CreateDCAPlanRequest) => {
-    if (!canManageDCA) {
-      toast.error('Bạn không có quyền quản lý kế hoạch DCA.');
-      return;
-    }
     const signature = JSON.stringify(request);
     if (createAttemptKey.current?.signature !== signature) {
       createAttemptKey.current = { signature, key: crypto.randomUUID() };
@@ -204,52 +201,44 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
     }
   };
 
-  const handleToggleStatus = async (planId: string) => {
-    if (!canManageDCA) {
-      toast.error('Bạn không có quyền quản lý kế hoạch DCA.');
-      return;
-    }
+  const handleToggleStatus = async (plan: DCAPlan) => {
     try {
-      const plan = plans.find((p) => p.id === planId);
-      if (!plan) throw new Error('DCA plan not found');
       const newStatus = plan.status === 'active' ? 'paused' : 'active';
-      const signature = JSON.stringify({ planId, status: newStatus });
+      const signature = JSON.stringify({ planId: plan.id, status: newStatus });
       const idempotencyKey = updateAttemptKeys.current.get(signature) ?? crypto.randomUUID();
       updateAttemptKeys.current.set(signature, idempotencyKey);
       await updatePlanMutation.mutateAsync({
-        planId,
+        planId: plan.id,
         request: { status: newStatus },
         idempotencyKey,
       });
 
       // Track status change
-      trackPlanStatusChange(planId, newStatus);
+      trackPlanStatusChange(plan.id, newStatus);
       updateAttemptKeys.current.delete(signature);
-      toast.success(plan?.status === 'active' ? 'Đã tạm dừng kế hoạch' : 'Đã kích hoạt kế hoạch');
+      toast.success(plan.status === 'active' ? 'Đã tạm dừng kế hoạch' : 'Đã kích hoạt kế hoạch');
     } catch {
       toast.error('Không thể cập nhật kế hoạch');
     }
   };
 
-  const handleDelete = async () => {
-    if (!deleteConfirmPlanId) return;
+  const handleDelete = async (planId: string) => {
     if (!canManageDCA) {
       toast.error('Bạn không có quyền quản lý kế hoạch DCA.');
       return;
     }
-    const idempotencyKey =
-      deleteAttemptKeys.current.get(deleteConfirmPlanId) ?? crypto.randomUUID();
-    deleteAttemptKeys.current.set(deleteConfirmPlanId, idempotencyKey);
+    const idempotencyKey = deleteAttemptKeys.current.get(planId) ?? crypto.randomUUID();
+    deleteAttemptKeys.current.set(planId, idempotencyKey);
     try {
       await deletePlanMutation.mutateAsync({
-        planId: deleteConfirmPlanId,
+        planId,
         idempotencyKey,
       });
 
       // Track plan deletion
-      trackPlanDeletion(deleteConfirmPlanId, 'user_initiated');
+      trackPlanDeletion(planId, 'user_initiated');
 
-      deleteAttemptKeys.current.delete(deleteConfirmPlanId);
+      deleteAttemptKeys.current.delete(planId);
       toast.success('Đã xóa kế hoạch');
       setDeleteConfirmPlanId(null);
     } catch {
@@ -380,7 +369,7 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
               ? () => {
                   const activePlan = plans.find((p) => p.status === 'active');
                   if (activePlan) {
-                    handleToggleStatus(activePlan.id);
+                    handleToggleStatus(activePlan);
                   } else {
                     toast.info('Không có kế hoạch nào đang chạy');
                   }
@@ -454,7 +443,7 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
                   <DCAPlanCard
                     key={plan.id}
                     plan={plan}
-                    onToggleStatus={canManageDCA ? handleToggleStatus : undefined}
+                    onToggleStatus={canManageDCA ? () => handleToggleStatus(plan) : undefined}
                     onDelete={canManageDCA ? (planId) => setDeleteConfirmPlanId(planId) : undefined}
                     isLoading={isLoading}
                   />
@@ -558,8 +547,9 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
             >
               Hủy
             </button>
+            {/* The sheet renders its actions only while a selected plan ID keeps it open. */}
             <button
-              onClick={handleDelete}
+              onClick={() => handleDelete(deleteConfirmPlanId!)}
               disabled={isLoading}
               className="flex-1 h-12 rounded-xl text-white text-[14px] hover:opacity-90 transition-opacity disabled:opacity-50"
               style={{ fontWeight: 500, background: c.error }}

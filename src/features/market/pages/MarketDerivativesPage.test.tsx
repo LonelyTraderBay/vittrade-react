@@ -97,6 +97,109 @@ describe('MarketDerivativesPage', () => {
     expect(screen.getByRole('button', { name: 'Volume' })).toHaveAttribute('aria-pressed', 'true');
   });
 
+  it('sorts multiple pairs by each selected metric and shows negative changes as losses', () => {
+    const pairs: MarketDerivativesResponse['pairs'] = [
+      {
+        ...response.pairs[0],
+        id: 'btc-perp',
+        symbol: 'BTC/USDT',
+        openInterest: 100,
+        volume24h: 30,
+        fundingRate: 0.0001,
+        change24h: 3,
+        liquidations24h: { long: 1, short: 1 },
+      },
+      {
+        ...response.pairs[0],
+        id: 'eth-perp',
+        symbol: 'ETH/USDT',
+        openInterest: 200,
+        volume24h: 10,
+        fundingRate: -0.0004,
+        change24h: -1,
+        liquidations24h: { long: 8, short: 2 },
+      },
+      {
+        ...response.pairs[0],
+        id: 'sol-perp',
+        symbol: 'SOL/USDT',
+        openInterest: 50,
+        volume24h: 20,
+        fundingRate: 0.0002,
+        change24h: -5,
+        liquidations24h: { long: 3, short: 2 },
+      },
+    ];
+    useMarketDerivativesQuery.mockReturnValue(queryState({ data: { ...response, pairs } }));
+    renderWithProviders(<MarketDerivativesPage />);
+    fireEvent.click(screen.getByRole('button', { name: 'Perpetual' }));
+
+    const visibleSymbols = () => screen.getAllByText(/\/USDT$/).map((node) => node.textContent);
+    expect(visibleSymbols()).toEqual(['ETH/USDT', 'BTC/USDT', 'SOL/USDT']);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Volume' }));
+    expect(visibleSymbols()).toEqual(['BTC/USDT', 'SOL/USDT', 'ETH/USDT']);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Funding' }));
+    expect(visibleSymbols()).toEqual(['ETH/USDT', 'SOL/USDT', 'BTC/USDT']);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Thay đổi' }));
+    expect(visibleSymbols()).toEqual(['SOL/USDT', 'BTC/USDT', 'ETH/USDT']);
+    expect(screen.getByText('-5.00%')).toHaveStyle({ color: '#EF4444' });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Thanh lý' }));
+    expect(visibleSymbols()).toEqual(['ETH/USDT', 'SOL/USDT', 'BTC/USDT']);
+  });
+
+  it('shows the empty state on every tab when pairs and history are absent', () => {
+    useMarketDerivativesQuery.mockReturnValue(
+      queryState({
+        data: {
+          ...response,
+          stats: {
+            ...response.stats,
+            totalLiquidations24h: 0,
+            longLiquidations24h: 0,
+            shortLiquidations24h: 0,
+          },
+          pairs: [],
+          liquidationHistory: [],
+        },
+      }),
+    );
+    renderWithProviders(<MarketDerivativesPage />);
+
+    expect(screen.getByText('Không có dữ liệu Open Interest.')).toBeInTheDocument();
+    expect(screen.getByText('Không có dữ liệu thanh lý theo thời gian.')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Perpetual' }));
+    expect(screen.getByText('Không có dữ liệu perpetual.')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Thanh lý' }));
+    expect(screen.getByText('Không có dữ liệu thanh lý theo cặp.')).toBeInTheDocument();
+    expect(screen.getByText('Long $0')).toBeInTheDocument();
+    expect(screen.getByText('Short $0')).toBeInTheDocument();
+  });
+
+  it('renders zero-width bars for a non-empty liquidation bucket with no activity', () => {
+    useMarketDerivativesQuery.mockReturnValue(
+      queryState({
+        data: {
+          ...response,
+          liquidationHistory: [{ bucketAt: '2026-09-26T08:00:00.000Z', long: 0, short: 0 }],
+        },
+      }),
+    );
+    const { container } = renderWithProviders(<MarketDerivativesPage />);
+
+    expect(
+      Array.from(
+        container.querySelectorAll('time + div > div'),
+        (bar) => (bar as HTMLElement).style.width,
+      ),
+    ).toEqual(['0%', '0%']);
+  });
+
   it('shows liquidation amounts and handles zero-value bars safely', () => {
     useMarketDerivativesQuery.mockReturnValue(queryState());
     const { rerender } = renderWithProviders(<MarketDerivativesPage />);

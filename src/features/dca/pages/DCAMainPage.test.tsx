@@ -12,7 +12,12 @@ import { DCAMainPage } from './DCAMainPage';
 
 const server = setupServer();
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
-afterEach(() => server.resetHandlers());
+let restoreSvgPathLength: (() => void) | undefined;
+afterEach(() => {
+  server.resetHandlers();
+  restoreSvgPathLength?.();
+  restoreSvgPathLength = undefined;
+});
 afterAll(() => server.close());
 
 const snapshot: DCASnapshot = {
@@ -56,7 +61,13 @@ const analytics = {
 
 function RouteStateProbe() {
   const location = useLocation();
-  return <output data-testid="route-state">{JSON.stringify(location.state ?? null)}</output>;
+  return (
+    <>
+      <output data-testid="route-state">{JSON.stringify(location.state ?? null)}</output>
+      <output data-testid="route-path">{location.pathname}</output>
+      <output data-testid="route-search">{location.search}</output>
+    </>
+  );
 }
 
 describe('DCA feature page', () => {
@@ -70,20 +81,26 @@ describe('DCA feature page', () => {
     );
 
     renderWithProviders(
-      <DCAMainPage
-        isEnabled={false}
-        isDevelopment={false}
-        analytics={analytics}
-        funnels={{
-          trackWalletPageView: vi.fn(),
-          trackWalletCreateSheetOpened: vi.fn(),
-          trackAssetCreateSheetOpened: vi.fn(),
-          trackPreselectedCoinUsed: vi.fn(),
-        }}
-      />,
+      <>
+        <DCAMainPage
+          isEnabled={false}
+          isDevelopment={false}
+          analytics={analytics}
+          funnels={{
+            trackWalletPageView: vi.fn(),
+            trackWalletCreateSheetOpened: vi.fn(),
+            trackAssetCreateSheetOpened: vi.fn(),
+            trackPreselectedCoinUsed: vi.fn(),
+          }}
+        />
+        <RouteStateProbe />
+      </>,
+      { routerProps: { initialEntries: ['/w/home', '/w/wallet/dca'], initialIndex: 1 } },
     );
 
     expect(screen.getByText('Tính năng DCA tạm thời không khả dụng')).toBeInTheDocument();
+    await userEvent.setup().click(screen.getByRole('button', { name: 'Quay lại' }));
+    expect(screen.getByTestId('route-path')).toHaveTextContent('/w/home');
     await new Promise((resolve) => setTimeout(resolve, 0));
     expect(requestCount).toBe(0);
   });
@@ -347,7 +364,8 @@ describe('DCA feature page', () => {
     );
 
     const pauseButtons = await screen.findAllByRole('button', { name: 'Tạm dừng' });
-    await user.click(pauseButtons[1]);
+    expect(pauseButtons).toHaveLength(2);
+    await user.click(pauseButtons[0]);
 
     await waitFor(() => expect(requestBody).toEqual({ status: 'paused' }));
     expect(idempotencyKey).toEqual(expect.any(String));

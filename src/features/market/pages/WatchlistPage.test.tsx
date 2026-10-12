@@ -133,15 +133,34 @@ describe('WatchlistPage', () => {
   });
 
   it('filters pairs and keeps a read-only session from mutating the watchlist', async () => {
-    installWatchlistHandlers();
+    const mutate = vi.fn();
+    server.use(
+      http.get('http://localhost:3000/api/market/pairs', () =>
+        HttpResponse.json({ items: [pair] }),
+      ),
+      http.get('http://localhost:3000/api/market/watchlist', () =>
+        HttpResponse.json({ items: [watchlistItem] }),
+      ),
+      http.patch('http://localhost:3000/api/market/watchlist/watchlist-btc-usdt', () => {
+        mutate();
+        return HttpResponse.json(watchlistItem);
+      }),
+      http.delete('http://localhost:3000/api/market/watchlist/watchlist-btc-usdt', () => {
+        mutate();
+        return new HttpResponse(null, { status: 204 });
+      }),
+    );
     const user = userEvent.setup();
     renderWithProviders(<WatchlistPage />, { authAdapter: readOnlyAuthAdapter });
 
     expect(await screen.findByRole('alert')).toHaveTextContent('read-only');
-    expect(
-      await screen.findByRole('button', { name: 'Xóa khỏi danh sách theo dõi' }),
-    ).toBeDisabled();
-    expect(screen.getByRole('button', { name: 'Thêm ghi chú' })).toBeDisabled();
+    const remove = await screen.findByRole('button', { name: 'Xóa khỏi danh sách theo dõi' });
+    const note = screen.getByRole('button', { name: 'Thêm ghi chú' });
+    expect(remove).toBeDisabled();
+    expect(note).toBeDisabled();
+    await user.click(remove);
+    await user.click(note);
+    expect(mutate).not.toHaveBeenCalled();
 
     const search = screen.getByPlaceholderText('Tìm cặp giao dịch…');
     await user.type(search, 'SOL');
@@ -164,6 +183,95 @@ describe('WatchlistPage', () => {
     expect(await screen.findByText('BTC/USDT')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Giao dịch' }));
     expect(screen.getByTestId('location')).toHaveTextContent('/w/trade/btc-usdt');
+  });
+
+  it('opens the markets route from both watchlist add actions when the list is empty', async () => {
+    server.use(
+      http.get('http://localhost:3000/api/market/pairs', () =>
+        HttpResponse.json({ items: [pair] }),
+      ),
+      http.get('http://localhost:3000/api/market/watchlist', () =>
+        HttpResponse.json({ items: [] }),
+      ),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(
+      <>
+        <WatchlistPage />
+        <LocationProbe />
+      </>,
+      { authAdapter, routerProps: { initialEntries: ['/w/markets/watchlist'] } },
+    );
+
+    expect(await screen.findByText('Chưa có cặp trong danh sách theo dõi')).toBeInTheDocument();
+    const addButtons = screen.getAllByRole('button', { name: 'Thêm cặp giao dịch' });
+    expect(addButtons).toHaveLength(2);
+    await user.click(addButtons[0]);
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/markets');
+    await user.click(addButtons[1]);
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/markets');
+  });
+
+  it('navigates to the pair detail route from both pair identity controls', async () => {
+    installWatchlistHandlers();
+    const user = userEvent.setup();
+    renderWithProviders(
+      <>
+        <WatchlistPage />
+        <LocationProbe />
+      </>,
+      { authAdapter, routerProps: { initialEntries: ['/w/markets/watchlist'] } },
+    );
+
+    expect(await screen.findByText('BTC/USDT')).toBeInTheDocument();
+    const assetLabels = screen.getAllByText('BTC', { exact: true });
+    expect(assetLabels).toHaveLength(2);
+    await user.click(assetLabels[0].closest('button')!);
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/pair/btc-usdt');
+    await user.click(screen.getByText('BTC/USDT').closest('button')!);
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/pair/btc-usdt');
+  });
+
+  it('shows the negative market move with its loss color', async () => {
+    server.use(
+      http.get('http://localhost:3000/api/market/pairs', () =>
+        HttpResponse.json({ items: [{ ...pair, change24h: -2.34 }] }),
+      ),
+      http.get('http://localhost:3000/api/market/watchlist', () =>
+        HttpResponse.json({ items: [watchlistItem] }),
+      ),
+    );
+
+    renderWithProviders(<WatchlistPage />, { authAdapter });
+
+    expect(await screen.findByText('-2.34%')).toHaveStyle({ color: 'rgb(239, 68, 68)' });
+  });
+
+  it('retries both market queries after a transient load error', async () => {
+    let pairRequests = 0;
+    let watchlistRequests = 0;
+    server.use(
+      http.get('http://localhost:3000/api/market/pairs', () => {
+        pairRequests += 1;
+        return pairRequests <= 3
+          ? HttpResponse.json({ code: 'TEMPORARY_FAILURE' }, { status: 503 })
+          : HttpResponse.json({ items: [pair] });
+      }),
+      http.get('http://localhost:3000/api/market/watchlist', () => {
+        watchlistRequests += 1;
+        return HttpResponse.json({ items: [watchlistItem] });
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<WatchlistPage />, { authAdapter });
+
+    await user.click(await screen.findByRole('button', { name: 'Thử lại' }));
+
+    expect(await screen.findByText('BTC/USDT')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(pairRequests).toBe(4);
+      expect(watchlistRequests).toBe(2);
+    });
   });
 
   it('trims and saves a note while reusing its idempotency key after a transient failure', async () => {

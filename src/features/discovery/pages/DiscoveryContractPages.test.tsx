@@ -72,7 +72,17 @@ const searchResponse = {
   arenaModes: [arenaMode],
   arenaRooms: [arenaRoom],
   creators: [creator],
-  tradingPairs: [tradingPair],
+  tradingPairs: [
+    tradingPair,
+    {
+      ...tradingPair,
+      id: 'eth-usdt',
+      symbol: 'ETHUSDT',
+      baseAsset: 'ETH',
+      price: 3_000,
+      change24h: 0,
+    },
+  ],
 };
 
 const topicResponse = {
@@ -124,11 +134,13 @@ describe('Discovery contract pages', () => {
     expect(screen.getByText('Prediction markets (1)')).toBeInTheDocument();
     expect(screen.getByText('Arena (2)')).toBeInTheDocument();
     expect(screen.getByText('Creators (1)')).toBeInTheDocument();
-    expect(screen.getByText('Spot pairs (1)')).toBeInTheDocument();
+    expect(screen.getByText('Spot pairs (2)')).toBeInTheDocument();
     expect(screen.getByText('Mirror challenge')).toBeInTheDocument();
     expect(screen.getByText('BTC weekly room')).toBeInTheDocument();
     expect(screen.getByText('Trust score 92/100')).toBeInTheDocument();
     expect(screen.getByText('BTCUSDT')).toBeInTheDocument();
+    expect(screen.getByText('-2.5%')).toBeInTheDocument();
+    expect(screen.getByText('+0%')).toBeInTheDocument();
     expect(requests).toBe(1);
 
     await user.click(screen.getByRole('button', { name: /BTC target\?/ }));

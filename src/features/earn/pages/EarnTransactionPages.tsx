@@ -66,7 +66,6 @@ export function EarnProductDetailPage() {
   }
 
   const submit = async () => {
-    if (!canSubscribe || !canSubmit) return;
     try {
       const receipt = await mutation.mutateAsync({
         request: { productId: product.id, amount: amountNumber },
@@ -187,7 +186,7 @@ export function EarnRedeemPage() {
   const position = snapshotQuery.data?.positions.find((item) => item.id === positionId);
   const amountNumber = Number(amount);
   const canSubmit =
-    canRedeem && Boolean(position) && amountNumber > 0 && amountNumber <= (position?.amount ?? 0);
+    canRedeem && position !== undefined && amountNumber > 0 && amountNumber <= position.amount;
 
   if (snapshotQuery.isPending) return <LoadingPage title="Rút vốn" />;
   if (snapshotQuery.isError || !position) {
@@ -200,7 +199,6 @@ export function EarnRedeemPage() {
   }
 
   const submit = async () => {
-    if (!canRedeem || !canSubmit) return;
     try {
       const receipt = await mutation.mutateAsync({
         request: { positionId: position.id, amount: amountNumber },

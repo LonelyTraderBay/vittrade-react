@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { fireEvent, renderWithProviders, screen, waitFor } from '@/test/test-utils';
+import { act, fireEvent, renderWithProviders, screen, waitFor } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
 import type { MarketPriceAlert } from '../model/market-types';
@@ -33,6 +33,14 @@ const pair = {
   category: 'Layer 1',
 };
 
+const secondPair = {
+  ...pair,
+  id: 'eth-usdt',
+  symbol: 'ETH/USDT',
+  baseAsset: 'ETH',
+  price: 3_500,
+};
+
 const alert = {
   id: 'alert-1',
   pairId: pair.id,
@@ -58,6 +66,13 @@ const pausedAlert = {
   id: 'alert-paused',
   symbol: 'SOL/USDT',
   isActive: false,
+};
+
+const orphanAlert = {
+  ...alert,
+  id: 'alert-orphan',
+  pairId: 'unknown-usdt',
+  symbol: 'UNKNOWN/USDT',
 };
 
 function serveMarketData(alerts: MarketPriceAlert[] = [alert]) {
@@ -90,6 +105,19 @@ function writeAdapter(): AuthAdapter {
   };
 }
 
+async function invokeDisabledButtonHandler(button: HTMLElement) {
+  if (button.tagName !== 'BUTTON') throw new Error('Expected a button element');
+
+  const propsKey = Object.keys(button).find((key) => key.startsWith('__reactProps$'));
+  if (!propsKey) throw new Error('React click handler was not attached to the button');
+
+  const props = (button as unknown as Record<string, { onClick?: () => void }>)[propsKey];
+  if (typeof props?.onClick !== 'function') throw new Error('Button has no React click handler');
+
+  // Native disabled buttons suppress clicks; invoke only the handler to verify its permission guard.
+  await act(async () => props.onClick?.());
+}
+
 describe('Market write permission boundary', () => {
   it('shows permission denial for a forbidden price-alert read instead of an empty state', async () => {
     server.use(
@@ -107,9 +135,22 @@ describe('Market write permission boundary', () => {
   });
 
   it('keeps price-alert mutations disabled for read-only market sessions', async () => {
+    const writes = { create: 0, update: 0, delete: 0 };
     server.use(
       http.get('*/market/price-alerts', () => HttpResponse.json({ items: [alert] })),
       http.get('*/market/pairs', () => HttpResponse.json({ items: [pair] })),
+      http.post('*/market/price-alerts', () => {
+        writes.create += 1;
+        return HttpResponse.json(alert);
+      }),
+      http.patch('*/market/price-alerts/*', () => {
+        writes.update += 1;
+        return HttpResponse.json(alert);
+      }),
+      http.delete('*/market/price-alerts/*', () => {
+        writes.delete += 1;
+        return new HttpResponse(null, { status: 204 });
+      }),
     );
 
     renderWithProviders(<MarketPriceAlertsPage />, { authAdapter: readOnlyAdapter() });
@@ -120,6 +161,13 @@ describe('Market write permission boundary', () => {
     expect(screen.getByRole('button', { name: /Tạo/i })).toBeDisabled();
     expect(screen.getByRole('button', { name: /Xóa cảnh báo/i })).toBeDisabled();
     expect(screen.getByRole('button', { name: /Tắt cảnh báo/i })).toBeDisabled();
+
+    // Native disabled buttons suppress clicks; invoke the rendered callbacks to verify their guards.
+    await invokeDisabledButtonHandler(screen.getByRole('button', { name: 'Tạo' }));
+    await invokeDisabledButtonHandler(screen.getByRole('button', { name: 'Tắt cảnh báo' }));
+    await invokeDisabledButtonHandler(screen.getByRole('button', { name: 'Xóa cảnh báo' }));
+
+    expect(writes).toEqual({ create: 0, update: 0, delete: 0 });
   });
 
   it('shows a loading state until both alert and pair data arrive', async () => {
@@ -135,6 +183,18 @@ describe('Market write permission boundary', () => {
 
     expect(await screen.findByText('Đang tải cảnh báo giá…')).toBeInTheDocument();
     expect(await screen.findAllByText('BTC/USDT')).not.toHaveLength(0);
+  });
+
+  it('shows the forbidden state when only the pair list is forbidden', async () => {
+    server.use(
+      http.get('*/market/price-alerts', () => HttpResponse.json({ items: [alert] })),
+      http.get('*/market/pairs', () => HttpResponse.json({ code: 'FORBIDDEN' }, { status: 403 })),
+    );
+
+    renderWithProviders(<MarketPriceAlertsPage />);
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Không có quyền xem cảnh báo giá');
+    expect(screen.queryByText('Chưa có cảnh báo phù hợp.')).not.toBeInTheDocument();
   });
 
   it('filters all, active, and triggered alerts without counting paused alerts as triggered', async () => {
@@ -215,6 +275,62 @@ describe('Market write permission boundary', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Tạo' }));
 
     expect(createCalls).toBe(0);
+  });
+
+  it('creates an alert for the selected pair from the empty state', async () => {
+    let createRequest: unknown;
+    server.use(
+      http.get('*/market/price-alerts', () => HttpResponse.json({ items: [] })),
+      http.get('*/market/pairs', () => HttpResponse.json({ items: [pair, secondPair] })),
+      http.post('*/market/price-alerts', async ({ request }) => {
+        createRequest = await request.json();
+        return HttpResponse.json({ ...alert, pairId: secondPair.id, symbol: secondPair.symbol });
+      }),
+    );
+    renderWithProviders(<MarketPriceAlertsPage />, { authAdapter: writeAdapter() });
+
+    expect(await screen.findByText('Chưa có cảnh báo phù hợp.')).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText('Chọn cặp giao dịch'), {
+      target: { value: secondPair.id },
+    });
+    fireEvent.change(screen.getByLabelText('Mức giá mục tiêu'), { target: { value: '3600' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Tạo' }));
+
+    await waitFor(() =>
+      expect(createRequest).toEqual({
+        pairId: secondPair.id,
+        condition: 'above',
+        targetPrice: 3600,
+      }),
+    );
+  });
+
+  it('activates a paused alert with its action-specific idempotency key', async () => {
+    let updateRequest: unknown;
+    let idempotencyKey = '';
+    server.use(
+      http.get('*/market/price-alerts', () => HttpResponse.json({ items: [pausedAlert] })),
+      http.get('*/market/pairs', () => HttpResponse.json({ items: [pair] })),
+      http.patch('*/market/price-alerts/alert-paused', async ({ request }) => {
+        updateRequest = await request.json();
+        idempotencyKey = request.headers.get('Idempotency-Key') ?? '';
+        return HttpResponse.json({ ...pausedAlert, isActive: true });
+      }),
+    );
+    renderWithProviders(<MarketPriceAlertsPage />, { authAdapter: writeAdapter() });
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Bật cảnh báo' }));
+
+    await waitFor(() => expect(updateRequest).toEqual({ isActive: true }));
+    expect(idempotencyKey).toMatch(/^price-alert-update-alert-paused-/);
+  });
+
+  it('renders an alert without matching pair metadata using its fallback accent', async () => {
+    serveMarketData([orphanAlert]);
+    renderWithProviders(<MarketPriceAlertsPage />);
+
+    expect(await screen.findByText('UNKNOWN/USDT')).toBeInTheDocument();
+    expect(screen.getByText('UNK')).toBeInTheDocument();
   });
 
   it('reuses update and delete idempotency keys when retrying failed mutations', async () => {

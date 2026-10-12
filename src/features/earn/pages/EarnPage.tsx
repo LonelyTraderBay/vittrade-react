@@ -181,9 +181,7 @@ export function EarnPage({ domain }: EarnPageProps) {
                 <ProductCard
                   key={product.id}
                   product={product}
-                  onSelect={() => {
-                    if (canSubscribe) setSelectedProduct(product);
-                  }}
+                  onSelect={() => setSelectedProduct(product)}
                   disabled={!canSubscribe}
                 />
               ))
@@ -199,9 +197,7 @@ export function EarnPage({ domain }: EarnPageProps) {
                 <PositionCard
                   key={position.id}
                   position={position}
-                  onRedeem={() => {
-                    if (canRedeem) setSelectedPosition(position);
-                  }}
+                  onRedeem={() => setSelectedPosition(position)}
                   canRedeem={canRedeem}
                 />
               ))}
@@ -231,9 +227,7 @@ export function EarnPage({ domain }: EarnPageProps) {
           product={selectedProduct}
           balance={snapshot?.balances[selectedProduct.asset] ?? 0}
           pending={subscribeMutation.isPending}
-          error={
-            subscribeMutation.error instanceof Error ? subscribeMutation.error.message : undefined
-          }
+          error={subscribeMutation.error?.message}
           onClose={() => {
             setSelectedProduct(undefined);
             subscribeMutation.reset();
@@ -248,7 +242,7 @@ export function EarnPage({ domain }: EarnPageProps) {
           position={selectedPosition}
           balance={selectedPosition.amount}
           pending={redeemMutation.isPending}
-          error={redeemMutation.error instanceof Error ? redeemMutation.error.message : undefined}
+          error={redeemMutation.error?.message}
           onClose={() => {
             setSelectedPosition(undefined);
             redeemMutation.reset();

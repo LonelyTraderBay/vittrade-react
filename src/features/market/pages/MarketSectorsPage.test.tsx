@@ -86,6 +86,22 @@ const pair = {
   category: 'Layer 1',
 };
 
+const secondPair = {
+  ...pair,
+  id: 'eth-usdt',
+  symbol: 'ETH/USDT',
+  baseAsset: 'ETH',
+  price: 2_500,
+  prevPrice: 2_520,
+  change24h: -1.5,
+  high24h: 2_600,
+  low24h: 2_450,
+  volume24h: 500_000_000,
+  marketCap: 300_000_000,
+  sparklineData: [2_520, 2_510, 2_500],
+  logoColor: '#627EEA',
+};
+
 function LocationProbe() {
   const location = useLocation();
   return <span data-testid="location">{location.pathname}</span>;
@@ -96,7 +112,7 @@ function installOverview() {
     http.get('*/market/overview', () => HttpResponse.json(overview)),
     http.get('*/market/pairs', ({ request }) => {
       expect(new URL(request.url).searchParams.get('category')).toBe('Layer 1');
-      return HttpResponse.json({ items: [pair] });
+      return HttpResponse.json({ items: [pair, secondPair] });
     }),
   );
 }
@@ -117,6 +133,7 @@ describe('Market sectors contract page', () => {
     await userEvent.click(screen.getByRole('button', { name: /Layer One/ }));
     expect(await screen.findByText('Layer One', { selector: 'span' })).toBeInTheDocument();
 
+    expect(await screen.findByText('-1.50%')).toHaveStyle({ color: 'rgb(239, 68, 68)' });
     await userEvent.click(await screen.findByRole('button', { name: /BTC\/USDT/ }));
     expect(screen.getByTestId('location')).toHaveTextContent('/w/pair/btc-usdt');
   });
@@ -144,5 +161,69 @@ describe('Market sectors contract page', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Thử lại' }));
     expect(await screen.findByRole('button', { name: /BTC\/USDT/ })).toBeInTheDocument();
     expect(pairRequests).toBe(2);
+  });
+
+  it('retries overview errors and returns to the sector list from the quick comparison detail', async () => {
+    let overviewRequests = 0;
+    let retryAllowed = false;
+    server.use(
+      http.get('*/market/overview', () => {
+        overviewRequests += 1;
+        return retryAllowed
+          ? HttpResponse.json(overview)
+          : HttpResponse.json({ code: 'OVERVIEW_UNAVAILABLE' }, { status: 500 });
+      }),
+      http.get('*/market/pairs', () => HttpResponse.json({ items: [pair, secondPair] })),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(
+      <>
+        <MarketSectorsPage />
+        <LocationProbe />
+      </>,
+      { routerProps: { initialEntries: ['/w/markets/sectors'] } },
+    );
+
+    expect(await screen.findByText('Có lỗi xảy ra')).toBeInTheDocument();
+    retryAllowed = true;
+    await user.click(screen.getByRole('button', { name: 'Thử lại' }));
+    const comparison = await screen.findByRole('button', { name: /Layer 1/ });
+    await user.click(comparison);
+    expect(await screen.findByText('Layer One', { selector: 'span' })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Quay lại ngành' }));
+
+    expect(await screen.findByRole('button', { name: /Layer One/ })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Quay lại ngành' })).not.toBeInTheDocument();
+    expect(overviewRequests).toBe(2);
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/markets/sectors');
+  });
+
+  it('sorts sectors by the selected timeframe, market cap and coin count', async () => {
+    const sortableOverview = {
+      ...overview,
+      sectors: [
+        { ...overview.sectors[0], totalMarketCap: 10_000_000_000, coinCount: 12 },
+        { ...overview.sectors[1], totalMarketCap: 20_000_000_000, coinCount: 9 },
+      ],
+    };
+    server.use(http.get('*/market/overview', () => HttpResponse.json(sortableOverview)));
+    const user = userEvent.setup();
+    renderWithProviders(<MarketSectorsPage />);
+
+    const sectorCoinOrder = () =>
+      screen.getAllByText(/coins ·/).map((item) => item.textContent?.match(/^\d+/)?.[0]);
+
+    await screen.findByRole('button', { name: /Layer One/ });
+    expect(sectorCoinOrder()).toEqual(['12', '9']);
+    await user.click(screen.getByRole('button', { name: '7d' }));
+    expect(sectorCoinOrder()).toEqual(['9', '12']);
+    await user.click(screen.getByRole('button', { name: '30d' }));
+    expect(sectorCoinOrder()).toEqual(['12', '9']);
+
+    const sort = screen.getByRole('combobox', { name: 'Sắp xếp ngành' });
+    await user.selectOptions(sort, 'marketCap');
+    expect(sectorCoinOrder()).toEqual(['9', '12']);
+    await user.selectOptions(sort, 'coins');
+    expect(sectorCoinOrder()).toEqual(['12', '9']);
   });
 });

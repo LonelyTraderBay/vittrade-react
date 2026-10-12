@@ -27,6 +27,7 @@ const sortOptions = [
 
 type SentimentTab = (typeof tabs)[number]['value'];
 type SentimentSort = (typeof sortOptions)[number]['value'];
+type RankedMarketSentimentToken = MarketSentimentToken & { trendingRank: number };
 
 const sentimentLabels: Record<MarketSentimentLabel, string> = {
   bullish: 'Tích cực',
@@ -363,8 +364,8 @@ function SentimentTimeline({
 
 function TrendingTokens({ tokens }: { tokens: MarketSentimentToken[] }) {
   const trending = [...tokens]
-    .filter((token) => token.trendingRank !== undefined)
-    .sort((a, b) => (a.trendingRank ?? 0) - (b.trendingRank ?? 0))
+    .filter((token): token is RankedMarketSentimentToken => token.trendingRank !== undefined)
+    .sort((a, b) => a.trendingRank - b.trendingRank)
     .slice(0, 4);
   if (trending.length === 0) return <EmptyState label="Không có token trending." />;
   return (
@@ -376,7 +377,7 @@ function TrendingTokens({ tokens }: { tokens: MarketSentimentToken[] }) {
   );
 }
 
-function SentimentTokenRow({ token }: { token: MarketSentimentToken }) {
+function SentimentTokenRow({ token }: { token: RankedMarketSentimentToken }) {
   const colors = useThemeColors();
   const color = sentimentColors[token.sentiment];
   return (
@@ -386,8 +387,7 @@ function SentimentTokenRow({ token }: { token: MarketSentimentToken }) {
     >
       <div>
         <p className="text-xs font-semibold" style={{ color: colors.text1 }}>
-          {token.symbol}
-          {token.trendingRank ? ` · #${token.trendingRank}` : ''}
+          {token.symbol} · #{token.trendingRank}
         </p>
         <p className="text-[10px]" style={{ color: colors.text3 }}>
           {compact(token.mentions24h)} lượt đề cập

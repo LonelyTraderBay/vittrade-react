@@ -84,7 +84,6 @@ export function DCAHistoryChart({
 
   // Measure chart area for annotation overlay
   useEffect(() => {
-    if (!chartAreaRef.current) return;
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
         setChartAreaSize({
@@ -93,7 +92,7 @@ export function DCAHistoryChart({
         });
       }
     });
-    observer.observe(chartAreaRef.current);
+    observer.observe(chartAreaRef.current!);
     return () => observer.disconnect();
   }, []);
 
@@ -159,7 +158,6 @@ export function DCAHistoryChart({
 
   /* ── Export to PNG (with watermark + annotations) ──────── */
   const handleExport = useCallback(async () => {
-    if (!exportContainerRef.current || isExporting) return;
     setIsExporting(true);
 
     // Temporarily exit annotation mode to get clean capture
@@ -170,7 +168,7 @@ export function DCAHistoryChart({
     await new Promise((r) => setTimeout(r, 50));
 
     try {
-      const baseCanvas = await html2canvas(exportContainerRef.current, {
+      const baseCanvas = await html2canvas(exportContainerRef.current!, {
         backgroundColor: null,
         scale: 2,
         useCORS: true,
@@ -178,22 +176,24 @@ export function DCAHistoryChart({
       });
 
       // Composite annotations if any
-      const annCanvas = annotationRef.current?.getCanvas();
-      const hasAnns = annotationRef.current?.hasAnnotations() ?? false;
-      if (hasAnns && annCanvas) {
-        const ctx = baseCanvas.getContext('2d');
-        if (ctx) {
-          ctx.drawImage(
-            annCanvas,
-            0,
-            0,
-            annCanvas.width,
-            annCanvas.height,
-            0,
-            0,
-            baseCanvas.width,
-            baseCanvas.height,
-          );
+      const annCanvas = annotationRef.current!.getCanvas();
+      const hasAnns = annotationRef.current!.hasAnnotations();
+      if (hasAnns) {
+        if (annCanvas) {
+          const ctx = baseCanvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(
+              annCanvas,
+              0,
+              0,
+              annCanvas.width,
+              annCanvas.height,
+              0,
+              0,
+              baseCanvas.width,
+              baseCanvas.height,
+            );
+          }
         }
       }
 
@@ -247,7 +247,7 @@ export function DCAHistoryChart({
       setIsExporting(false);
       if (wasAnnotating) setAnnotationMode(true);
     }
-  }, [isExporting, annotationMode, fallbackDownload]);
+  }, [annotationMode, fallbackDownload]);
 
   /* ── Touch handlers (pinch-to-zoom + drag-to-pan) ──────── */
   const handleTouchStart = useCallback(
@@ -262,8 +262,7 @@ export function DCAHistoryChart({
       }
       lastTapRef.current = now;
 
-      const rect = containerRef.current?.getBoundingClientRect();
-      if (!rect) return;
+      const rect = containerRef.current!.getBoundingClientRect();
 
       if (e.touches.length === 2) {
         touchRef.current = {
@@ -295,8 +294,7 @@ export function DCAHistoryChart({
   const handleTouchMove = useCallback(
     (e: React.TouchEvent) => {
       if (!interactive || annotationMode || !touchRef.current) return;
-      const rect = containerRef.current?.getBoundingClientRect();
-      if (!rect) return;
+      const rect = containerRef.current!.getBoundingClientRect();
 
       if (touchRef.current.isPinching && e.touches.length === 2) {
         const newDist = getTouchDistance(e.touches);

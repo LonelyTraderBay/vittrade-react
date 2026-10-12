@@ -17,6 +17,7 @@ import {
   useMarketWatchlistQuery,
   useMarketWatchlistUpdateMutation,
 } from '@/features/market';
+import type { MarketPair, MarketWatchlistItem } from '@/features/market';
 import { clearMutationAttempt, getMutationAttemptKey } from '../lib/mutation-attempts';
 
 export function WatchlistPage() {
@@ -42,9 +43,11 @@ export function WatchlistPage() {
     const normalizedSearch = search.trim().toLowerCase();
     return (watchlistQuery.data?.items ?? [])
       .map((entry) => ({ entry, pair: pairMap.get(entry.pairId) }))
-      .filter(({ pair }) => Boolean(pair))
+      .filter(
+        (item): item is { entry: MarketWatchlistItem; pair: MarketPair } => item.pair !== undefined,
+      )
       .filter(({ pair }) => {
-        if (!normalizedSearch || !pair) return true;
+        if (!normalizedSearch) return true;
         return (
           pair.symbol.toLowerCase().includes(normalizedSearch) ||
           pair.baseAsset.toLowerCase().includes(normalizedSearch)
@@ -53,7 +56,6 @@ export function WatchlistPage() {
   }, [pairsQuery.data?.items, search, watchlistQuery.data?.items]);
 
   const handleRemove = async (id: string) => {
-    if (!canManageWatchlist) return;
     const signature = JSON.stringify(['delete', id]);
     const key = getMutationAttemptKey(mutationAttempts.current, id, signature, 'watchlist-delete');
     setActionError(null);
@@ -66,7 +68,6 @@ export function WatchlistPage() {
   };
 
   const handleNote = async (id: string, currentNote?: string) => {
-    if (!canManageWatchlist) return;
     const note = window.prompt('Nhập ghi chú:', currentNote ?? '');
     if (note === null) return;
     const request = { note: note.trim() };
@@ -188,7 +189,6 @@ export function WatchlistPage() {
       ) : (
         <div className="px-5 py-3">
           {entries.map(({ entry, pair }) => {
-            if (!pair) return null;
             const positive = pair.change24h >= 0;
             return (
               <TrCard key={entry.id} className="mb-3 p-4">

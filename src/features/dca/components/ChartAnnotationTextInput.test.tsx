@@ -63,4 +63,26 @@ describe('ChartAnnotationTextInput', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Hủy' }));
     expect(screen.getByText('đã đóng')).toBeInTheDocument();
   });
+
+  it('keeps a cleared annotation cleared if a delayed input update is applied', () => {
+    const setTextInput = vi.fn();
+    render(
+      <ChartAnnotationTextInput
+        textInput={{ active: true, x: 100, y: 50, value: 'Mốc mua' }}
+        width={200}
+        height={100}
+        setTextInput={setTextInput}
+        confirmTextInput={vi.fn()}
+      />,
+    );
+
+    fireEvent.change(screen.getByPlaceholderText('Ghi chú...'), {
+      target: { value: 'Điểm DCA' },
+    });
+
+    const update = setTextInput.mock.calls[0]?.[0] as (
+      previous: ChartAnnotationTextInputState | null,
+    ) => ChartAnnotationTextInputState | null;
+    expect(update(null)).toBeNull();
+  });
 });

@@ -37,7 +37,6 @@ export function SavingsDCAContractPage() {
   const amountValue = Number(amount);
   const canCreate = canManageDCA && Number.isFinite(amountValue) && amountValue > 0;
   const createPlan = async () => {
-    if (!canCreate || create.isPending) return;
     try {
       await create.mutateAsync({
         request: {
@@ -55,7 +54,6 @@ export function SavingsDCAContractPage() {
     }
   };
   const updatePlanStatus = async (planId: string, status: 'active' | 'paused') => {
-    if (!canManageDCA || update.isPending) return;
     const actionId = `${planId}:${status}`;
     const key = updateKeys.current.get(actionId) ?? crypto.randomUUID();
     updateKeys.current.set(actionId, key);
@@ -76,8 +74,8 @@ export function SavingsDCAContractPage() {
     }
   };
   const cancelPlan = async () => {
-    if (!canManageDCA || !confirmCancelPlanId || remove.isPending) return;
-    const planId = confirmCancelPlanId;
+    // ConfirmationDialog only exposes its confirm action while a plan ID is selected.
+    const planId = confirmCancelPlanId!;
     const key = deleteKeys.current.get(planId) ?? crypto.randomUUID();
     deleteKeys.current.set(planId, key);
     try {

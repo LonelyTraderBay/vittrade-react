@@ -64,11 +64,16 @@ describe('DCA analytics hooks', () => {
       .mockImplementation(() => undefined);
     const trackEvent = vi.spyOn(dcaAnalytics, 'trackEvent').mockImplementation(() => undefined);
     renderHook(() => usePageViewTracking('dca-dashboard'));
-    const immediate = renderHook(() => useImpressionTracking('dca_plan_created'));
+    const immediate = renderHook(
+      ({ properties }: { properties: Record<string, unknown> | undefined }) =>
+        useImpressionTracking('dca_plan_created', properties),
+      { initialProps: { properties: undefined as Record<string, unknown> | undefined } },
+    );
 
     expect(trackPageView).toHaveBeenCalledWith('dca-dashboard');
     expect(trackEvent).toHaveBeenCalledWith('dca_plan_created', undefined);
-    immediate.rerender();
+    immediate.rerender({ properties: { source: 'rerender' } });
+    expect(trackEvent).not.toHaveBeenCalledWith('dca_plan_created', { source: 'rerender' });
 
     const delayed = renderHook(() =>
       useImpressionTracking('dca_wallet_shortcut_click', undefined, { delay: 25 }),

@@ -39,9 +39,9 @@ const detailSchema = summarySchema.extend({
   minBuy: z.number().nonnegative(),
   maxBuy: z.number().nonnegative(),
   contractAddress: z.string(),
-  website: z.string(),
-  twitter: z.string(),
-  telegram: z.string(),
+  website: z.string().optional(),
+  twitter: z.string().optional(),
+  telegram: z.string().optional(),
   tokenomics: z.array(
     z.object({ label: z.string(), percent: z.number().nonnegative(), color: z.string() }),
   ),

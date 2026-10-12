@@ -168,6 +168,17 @@ describe('MarketItem', () => {
       expect(mockNavigate).toHaveBeenCalledWith('/pair/BTCUSDT');
     });
 
+    it('should ignore keys that are not navigation keys', async () => {
+      const user = userEvent.setup();
+      renderWithProviders(<MarketItem pair={mockPair} />);
+
+      const row = screen.getByRole('button', { name: /BTCUSDT/ });
+      row.focus();
+      await user.keyboard('{ArrowDown}');
+
+      expect(mockNavigate).not.toHaveBeenCalled();
+    });
+
     it('should use correct pair id in navigation', async () => {
       const user = userEvent.setup();
       renderWithProviders(<MarketItem pair={mockPairNegative} />);

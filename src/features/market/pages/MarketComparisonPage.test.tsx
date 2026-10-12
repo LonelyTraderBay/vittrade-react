@@ -1,5 +1,5 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
-import { screen, within } from '@testing-library/react';
+import { act, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
@@ -119,6 +119,19 @@ async function addPair(symbol: string) {
   await userEvent.click(screen.getByRole('button', { name: 'Thêm tài sản' }));
 }
 
+async function invokeDisabledButtonHandler(button: HTMLElement) {
+  if (button.tagName !== 'BUTTON') throw new Error('Expected a button element');
+
+  const propsKey = Object.keys(button).find((key) => key.startsWith('__reactProps$'));
+  if (!propsKey) throw new Error('React click handler was not attached to the button');
+
+  const props = (button as unknown as Record<string, { onClick?: () => void }>)[propsKey];
+  if (typeof props?.onClick !== 'function') throw new Error('Button has no React click handler');
+
+  // Native disabled buttons suppress clicks; invoke only the handler to verify its defensive guard.
+  await act(async () => props.onClick?.());
+}
+
 describe('Market comparison contract page', () => {
   it('compares selected pairs, removes them, and preserves the web prefix on pair navigation', async () => {
     installPairs();
@@ -164,11 +177,21 @@ describe('Market comparison contract page', () => {
     const selector = screen.getByRole('combobox', { name: 'Chọn tài sản để thêm' });
     expect(within(selector).getAllByRole('option')).toHaveLength(2);
     expect(within(selector).getByRole('option', { name: 'XRP/USDT' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Thêm tài sản' })).toBeDisabled();
+    const addButton = screen.getByRole('button', { name: 'Thêm tài sản' });
+    expect(addButton).toBeDisabled();
+
+    await userEvent.selectOptions(
+      selector,
+      within(selector).getByRole('option', { name: 'XRP/USDT' }),
+    );
+    expect(addButton).toBeDisabled();
+    await invokeDisabledButtonHandler(addButton);
+    expect(screen.getByText('4/4')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'XRP/USDT' })).not.toBeInTheDocument();
 
     await userEvent.click(screen.getByRole('button', { name: 'BTC/USDT' }));
     expect(screen.getByText('3/4')).toBeInTheDocument();
-    await addPair('XRP/USDT');
+    await userEvent.click(addButton);
     expect(screen.getByText('4/4')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Thêm tài sản' })).toBeDisabled();
   });
