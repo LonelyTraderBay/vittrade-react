@@ -106,6 +106,7 @@ let currentUser: AuthUser = user;
 interface DevLoginChallengeState {
   user: AuthUser;
   expiresAt: string;
+  rateLimited?: boolean;
 }
 const devLoginChallenges = new Map<string, DevLoginChallengeState>();
 
@@ -114,13 +115,25 @@ interface DevRegistrationChallengeState {
   contact: string;
   fullName: string;
   expiresAt: string;
+  sessionCookieValue: string;
 }
 const devRegistrationChallenges = new Map<string, DevRegistrationChallengeState>();
-const devRegistrationChallengesByKey = new Map<
-  string,
-  { challengeId: string; channel: 'email' | 'phone'; maskedDestination: string; expiresAt: string }
->();
-const devRegistrationSessions = new Map<string, unknown>();
+type DevRegistrationChallengeEnvelope = {
+  challengeId: string;
+  channel: 'email' | 'phone';
+  maskedDestination: string;
+  expiresAt: string;
+};
+type DevRegistrationIdempotencyRecord = {
+  challenge: DevRegistrationChallengeEnvelope;
+  sessionCookieValue: string;
+};
+type DevRegistrationCompletedSession = {
+  session: ReturnType<typeof createSession>;
+  sessionCookieValue: string;
+};
+const devRegistrationChallengesByKey = new Map<string, DevRegistrationIdempotencyRecord>();
+const devRegistrationSessions = new Map<string, DevRegistrationCompletedSession>();
 
 export function resetDevAuthState(): void {
   authenticated = false;
@@ -129,7 +142,7 @@ export function resetDevAuthState(): void {
   devRegistrationChallenges.clear();
   devRegistrationChallengesByKey.clear();
   devRegistrationSessions.clear();
-  resetDevMockIds('dev-login-mfa', 'dev-registration');
+  resetDevMockIds('dev-login-mfa', 'dev-registration', 'dev-registration-session');
 }
 
 const devPriceAlerts = PRICE_ALERTS.map((alert) => ({ ...alert }));
@@ -515,6 +528,38 @@ function maskRegistrationContact(contact: string, channel: 'email' | 'phone'): s
     return `${local.slice(0, 1)}***@${domain}`;
   }
   return contact.replace(/\d(?=(?:\D*\d){2})/g, '•');
+}
+
+const devRegistrationCookieName = 'vittrade_session';
+
+function hasDevRegistrationSessionCookie(
+  cookies: Record<string, string>,
+  expectedValue: string,
+): boolean {
+  return cookies[devRegistrationCookieName] === expectedValue;
+}
+
+function createRegistrationChallengeResponse(record: DevRegistrationIdempotencyRecord) {
+  return HttpResponse.json(record.challenge, {
+    status: 202,
+    headers: {
+      'Set-Cookie': `${devRegistrationCookieName}=${record.sessionCookieValue}; Path=/; HttpOnly`,
+    },
+  });
+}
+
+function unauthorizedRegistrationSession() {
+  return HttpResponse.json(
+    { code: 'UNAUTHENTICATED', message: 'Registration session is missing or invalid' },
+    { status: 401 },
+  );
+}
+
+function unauthorizedActiveSession() {
+  return HttpResponse.json(
+    { code: 'UNAUTHENTICATED', message: 'No active session' },
+    { status: 401 },
+  );
 }
 
 const pairs = [
@@ -992,12 +1037,7 @@ export const handlers = [
       : HttpResponse.json({ code: 'COPY_VIEW_NOT_FOUND' }, { status: 400 });
   }),
   http.get('*/auth/session', () =>
-    authenticated
-      ? HttpResponse.json(createSession(currentUser))
-      : HttpResponse.json(
-          { code: 'UNAUTHENTICATED', message: 'No active session' },
-          { status: 401 },
-        ),
+    authenticated ? HttpResponse.json(createSession(currentUser)) : unauthorizedActiveSession(),
   ),
   http.post('*/auth/register', async ({ request }) => {
     const body = (await request.json()) as {
@@ -1012,7 +1052,7 @@ export const handlers = [
       return HttpResponse.json({ code: 'IDEMPOTENCY_KEY_REQUIRED' }, { status: 400 });
     }
     const previous = devRegistrationChallengesByKey.get(idempotencyKey);
-    if (previous) return HttpResponse.json(previous, { status: 202 });
+    if (previous) return createRegistrationChallengeResponse(previous);
     if (
       !body.fullName?.trim() ||
       !body.contact?.trim() ||
@@ -1028,21 +1068,26 @@ export const handlers = [
       return HttpResponse.json({ code: 'INVALID_REGISTRATION' }, { status: 400 });
     }
     const challengeId = nextDevMockId('dev-registration');
+    const sessionCookieValue = nextDevMockId('dev-registration-session');
     const expiresAt = new Date(devMockNowMs() + 5 * 60 * 1000).toISOString();
-    const challenge = {
-      challengeId,
-      channel: body.channel,
-      maskedDestination: maskRegistrationContact(body.contact.trim(), body.channel),
-      expiresAt,
+    const record = {
+      challenge: {
+        challengeId,
+        channel: body.channel,
+        maskedDestination: maskRegistrationContact(body.contact.trim(), body.channel),
+        expiresAt,
+      },
+      sessionCookieValue,
     };
     devRegistrationChallenges.set(challengeId, {
       channel: body.channel,
       contact: body.contact.trim(),
       fullName: body.fullName.trim(),
       expiresAt,
+      sessionCookieValue,
     });
-    devRegistrationChallengesByKey.set(idempotencyKey, challenge);
-    return HttpResponse.json(challenge, { status: 202 });
+    devRegistrationChallengesByKey.set(idempotencyKey, record);
+    return createRegistrationChallengeResponse(record);
   }),
   http.post('*/auth/login', async ({ request }) => {
     const body = (await request.json()) as { email?: string; password?: string };
@@ -1102,11 +1147,15 @@ export const handlers = [
           }
         : {}),
     };
-    if (persona.id === 'mfa') {
+    if (persona.id === 'mfa' || persona.id === 'mfa-rate-limited') {
       authenticated = false;
       const id = nextDevMockId('dev-login-mfa');
       const expiresAt = new Date(devMockNowMs() + 5 * 60 * 1000).toISOString();
-      devLoginChallenges.set(id, { user: loginUser, expiresAt });
+      devLoginChallenges.set(id, {
+        user: loginUser,
+        expiresAt,
+        ...(persona.id === 'mfa-rate-limited' ? { rateLimited: true } : {}),
+      });
       return HttpResponse.json({
         status: 'mfa_required',
         challenge: { id, method: 'email', maskedDestination: 'm***@vittrade.local', expiresAt },
@@ -1134,6 +1183,7 @@ export const handlers = [
       devLoginChallenges.delete(challengeId);
       return HttpResponse.json({ code: 'LOGIN_CHALLENGE_EXPIRED' }, { status: 410 });
     }
+    if (challenge.rateLimited) return new HttpResponse(null, { status: 429 });
     if (body.code !== '123456') {
       return HttpResponse.json({ code: 'INVALID_VERIFICATION_CODE' }, { status: 400 });
     }
@@ -1143,7 +1193,7 @@ export const handlers = [
     currentUser = challenge.user;
     return HttpResponse.json(createSession(challenge.user));
   }),
-  http.post('*/auth/mfa/verify', async ({ request }) => {
+  http.post('*/auth/mfa/verify', async ({ request, cookies }) => {
     const body = (await request.json()) as {
       challengeId?: string;
       code?: string;
@@ -1153,13 +1203,19 @@ export const handlers = [
       const challengeId = body.challengeId ?? '';
       const completed = devRegistrationSessions.get(challengeId);
       if (completed) {
-        currentUser = (completed as { user: AuthUser }).user;
-        return HttpResponse.json(completed);
+        if (!hasDevRegistrationSessionCookie(cookies, completed.sessionCookieValue)) {
+          return unauthorizedRegistrationSession();
+        }
+        currentUser = completed.session.user;
+        return HttpResponse.json(completed.session);
       }
       const challenge = devRegistrationChallenges.get(challengeId);
       if (!challenge || Date.parse(challenge.expiresAt) <= devMockNowMs()) {
         devRegistrationChallenges.delete(challengeId);
         return HttpResponse.json({ code: 'REGISTRATION_CHALLENGE_EXPIRED' }, { status: 410 });
+      }
+      if (!hasDevRegistrationSessionCookie(cookies, challenge.sessionCookieValue)) {
+        return unauthorizedRegistrationSession();
       }
       if (body.code !== '123456') {
         return HttpResponse.json({ code: 'INVALID_VERIFICATION_CODE' }, { status: 400 });
@@ -1179,22 +1235,28 @@ export const handlers = [
       authenticated = true;
       currentUser = session.user;
       devRegistrationChallenges.delete(challengeId);
-      devRegistrationSessions.set(challengeId, session);
+      devRegistrationSessions.set(challengeId, {
+        session,
+        sessionCookieValue: challenge.sessionCookieValue,
+      });
       return HttpResponse.json(session);
     }
     authenticated = true;
     return HttpResponse.json(createSession(currentUser));
   }),
-  http.post('*/auth/mfa/setup', () =>
-    HttpResponse.json({
+  http.post('*/auth/mfa/setup', () => {
+    if (!authenticated) return unauthorizedActiveSession();
+    return HttpResponse.json({
       secret: 'DEVONLYSECRET',
       qrCodeUrl:
         'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="160" height="160"%3E%3Crect width="160" height="160" fill="white"/%3E%3Cpath d="M10 10h40v40H10zM110 10h40v40h-40zM10 110h40v40H10zM70 70h20v20H70zM110 110h10v10h-10z" fill="black"/%3E%3C/svg%3E',
       backupCodes: ['DEV-0001', 'DEV-0002'],
       expiresAt: new Date(devMockNowMs() + 10 * 60 * 1000).toISOString(),
-    }),
+    });
+  }),
+  http.post('*/auth/mfa/setup/confirm', () =>
+    authenticated ? HttpResponse.json(createSession(currentUser)) : unauthorizedActiveSession(),
   ),
-  http.post('*/auth/mfa/setup/confirm', () => HttpResponse.json(createSession(currentUser))),
   http.post('*/auth/password-reset/request', () => new HttpResponse(null, { status: 204 })),
   http.post('*/auth/password-reset/verify', () =>
     HttpResponse.json({ resetToken: 'dev-reset-token' }),

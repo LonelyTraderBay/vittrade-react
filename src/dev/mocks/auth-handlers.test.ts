@@ -207,6 +207,21 @@ describe('development authentication handlers', () => {
     ).rejects.toMatchObject({ status: 410, code: 'LOGIN_CHALLENGE_EXPIRED' });
   });
 
+  it('returns the contract-supported status-only MFA rate limit without authenticating', async () => {
+    const result = await authApi.login({
+      email: 'mfa-rate-limited@vittrade.local',
+      password: demoPassword,
+    });
+    expect(result.status).toBe('mfa_required');
+    if (result.status !== 'mfa_required') throw new Error('Expected an MFA challenge');
+
+    await expect(authApi.getSession()).resolves.toBeNull();
+    await expect(
+      authApi.verifyLoginMfa({ challengeId: result.challenge.id, code: '123456' }),
+    ).rejects.toMatchObject({ status: 429 });
+    await expect(authApi.getSession()).resolves.toBeNull();
+  });
+
   it('expires MFA challenges and rejects missing or unknown challenge IDs', async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2026-09-27T00:00:00.000Z'));

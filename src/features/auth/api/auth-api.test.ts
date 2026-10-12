@@ -104,6 +104,8 @@ describe('auth API contract', () => {
   it('verifies registration using only the server challenge ID and code', async () => {
     server.use(
       http.post('http://localhost:3000/api/auth/mfa/verify', async ({ request }) => {
+        expect(request.credentials).toBe('include');
+        expect(request.headers.get('Authorization')).toBeNull();
         expect(await request.json()).toEqual({
           challengeId: 'registration-challenge-001',
           code: '123456',

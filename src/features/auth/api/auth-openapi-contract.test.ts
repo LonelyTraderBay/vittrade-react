@@ -17,6 +17,11 @@ describe('auth OpenAPI login MFA contract', () => {
     expect(operation.responses['202'].content['application/json'].schema).toEqual({
       $ref: '#/components/schemas/RegistrationChallenge',
     });
+    expect(operation.responses['202'].headers['Set-Cookie']).toMatchObject({
+      required: true,
+      schema: { type: 'string' },
+    });
+    expect(operation.responses['202'].description).toContain('unverified registration session');
     expect(authContract.components.schemas.RegistrationRequest).toMatchObject({
       required: ['fullName', 'channel', 'contact', 'password', 'acceptedTerms'],
       properties: {
@@ -39,6 +44,16 @@ describe('auth OpenAPI login MFA contract', () => {
         purpose: { const: 'register' },
       },
     });
+  });
+
+  it('requires the session cookie for registration OTP verification and declares missing-session denial', () => {
+    const operation = authContract.paths['/auth/mfa/verify'].post;
+
+    expect(operation.security).toEqual([{ sessionCookie: [] }]);
+    expect(operation.responses['401']).toEqual({
+      $ref: '#/components/responses/Unauthorized',
+    });
+    expect(operation.description).toContain('cookie issued with the pending challenge');
   });
 
   it('describes login as an authenticated session or backend-issued MFA challenge', () => {
@@ -88,6 +103,7 @@ describe('auth OpenAPI login MFA contract', () => {
     const operation = authContract.paths['/auth/login/mfa/verify'].post;
     const requestSchema = operation.requestBody.content['application/json'].schema;
 
+    expect(operation.security).toEqual([]);
     expect(requestSchema).toEqual({
       $ref: '#/components/schemas/LoginMfaVerificationRequest',
     });

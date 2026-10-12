@@ -54,6 +54,12 @@ export const DEV_PREVIEW_PERSONAS = [
     password: 'Preview-123!',
   },
   {
+    id: 'mfa-rate-limited',
+    label: 'MFA · xác minh bị giới hạn',
+    email: 'mfa-rate-limited@vittrade.local',
+    password: 'Preview-123!',
+  },
+  {
     id: 'locked',
     label: 'Tài khoản bị khóa · HTTP 423',
     email: 'locked@vittrade.local',
