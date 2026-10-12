@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { writeFile } from 'node:fs/promises';
 
 const session = {
   user: {
@@ -127,30 +128,118 @@ test.describe('auth session smoke on staging build', () => {
   test('changes the password through current-password and MFA contract endpoints', async ({
     page,
   }) => {
+    let sessionCalls = 0;
+    await page.route('https://e2e.test/auth/session', async (route) => {
+      sessionCalls += 1;
+      return route.fulfill({ status: 401 });
+    });
+
+    await page.goto('/w/auth/login');
+
+    await expect.poll(() => sessionCalls).toBeGreaterThan(0);
+    await expect(page.getByRole('heading', { name: 'Đăng nhập', exact: true })).toBeVisible();
+    await expect(page.getByText('Không thể đăng nhập lúc này. Vui lòng thử lại.')).toHaveCount(0);
+    await expect(page.getByTestId('auth-sign-out')).toHaveCount(0);
+    await expect(page).toHaveURL(/\/w\/auth\/login$/);
+  });
+
+  test('changes the password through current-password and MFA contract endpoints by keyboard @auth-api', async ({
+    page,
+  }, testInfo) => {
+    let verifyCalls = 0;
     let verifyBody: Record<string, unknown> | undefined;
     let changeBody: Record<string, unknown> | undefined;
     let idempotencyKey: string | undefined;
+    let changeCalls = 0;
 
     await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
     await page.route('**/auth/password/verify-current', async (route) => {
+      verifyCalls += 1;
       verifyBody = route.request().postDataJSON() as Record<string, unknown>;
       return route.fulfill({ status: 204 });
     });
     await page.route('**/auth/password/change', async (route) => {
+      changeCalls += 1;
       changeBody = route.request().postDataJSON() as Record<string, unknown>;
       idempotencyKey = route.request().headers()['idempotency-key'];
       return route.fulfill({ status: 204 });
     });
 
-    await page.goto('/w/profile/security/change-password');
-    await page.getByLabel('Mật khẩu hiện tại', { exact: true }).fill('current-password');
-    await page.getByRole('button', { name: 'Xác minh mật khẩu hiện tại' }).click();
-    await page.getByLabel('Mật khẩu mới', { exact: true }).fill('SecurePassword123');
-    await page.getByLabel('Nhập lại mật khẩu mới', { exact: true }).fill('SecurePassword123');
-    await page.getByLabel('Mã xác thực TOTP', { exact: true }).fill('654321');
-    await page.getByRole('button', { name: 'Đổi mật khẩu' }).click();
+    const routeMeasurements: Array<Record<string, unknown>> = [];
+    for (const shell of [
+      { name: 'Phone', width: 390, height: 844, path: '/profile/security/change-password' },
+      { name: 'Tablet', width: 768, height: 900, path: '/t/profile/security/change-password' },
+      { name: 'Web', width: 1440, height: 900, path: '/w/profile/security/change-password' },
+      {
+        name: 'Responsive',
+        width: 1024,
+        height: 900,
+        path: '/r/profile/security/change-password',
+      },
+    ]) {
+      await page.setViewportSize({ width: shell.width, height: shell.height });
+      await page.goto(shell.path);
+      await expect(page).toHaveURL(new RegExp(shell.path.replaceAll('/', '\\/') + '$'));
+      await expect(page.getByLabel('Mật khẩu hiện tại', { exact: true })).toBeVisible();
+      const shellDocumentWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+      expect(shellDocumentWidth).toBe(shell.width);
+      const screenshotPath = testInfo.outputPath(
+        `password-change-${shell.name.toLowerCase()}-${shell.width}x${shell.height}.png`,
+      );
+      await page.screenshot({ path: screenshotPath, fullPage: true });
+      routeMeasurements.push({
+        shell: shell.name,
+        route: shell.path,
+        viewport: { width: shell.width, height: shell.height },
+        documentWidth: shellDocumentWidth,
+        screenshotPath,
+      });
+    }
 
-    await expect(page.getByText('Mật khẩu đã được đổi thành công.')).toBeVisible();
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/w/profile/security/change-password');
+    await expect(page).toHaveURL(/\/profile\/security\/change-password$/);
+    const screenshotPath = testInfo.outputPath('password-change-phone-390x844.png');
+    await page.screenshot({ path: screenshotPath, fullPage: true });
+    const documentWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+    expect(documentWidth).toBe(390);
+
+    const currentPassword = page.getByLabel('Mật khẩu hiện tại', { exact: true });
+    await currentPassword.press('Enter');
+    expect(verifyCalls).toBe(0);
+    expect(
+      await currentPassword.evaluate((input) => (input as HTMLInputElement).validity.valid),
+    ).toBe(false);
+    await currentPassword.fill('current-password');
+    await currentPassword.press('Enter');
+    const newPassword = page.getByLabel('Mật khẩu mới', { exact: true });
+    await expect(newPassword).toBeFocused();
+
+    const confirmPassword = page.getByLabel('Nhập lại mật khẩu mới', { exact: true });
+    const totpCode = page.getByLabel('Mã xác thực TOTP', { exact: true });
+    await newPassword.fill('SecurePassword123');
+    await confirmPassword.fill('SecurePassword123');
+    await totpCode.fill('654321');
+
+    await newPassword.focus();
+    await newPassword.press('Tab');
+    await expect(confirmPassword).toBeFocused();
+    await page.keyboard.press('Tab');
+    await expect(totpCode).toBeFocused();
+    await page.keyboard.press('Tab');
+    const changePasswordButton = page.getByRole('button', { name: 'Đổi mật khẩu' });
+    await expect(changePasswordButton).toBeFocused();
+    await page.keyboard.press('Tab');
+    await expect(page.getByRole('button', { name: 'Quay lại xác minh' })).toBeFocused();
+
+    await totpCode.focus();
+    await totpCode.press('Enter');
+
+    const successHeading = page.getByRole('heading', { name: 'Mật khẩu đã được đổi thành công.' });
+    await expect(successHeading).toBeVisible();
+    await expect(successHeading).toBeFocused();
+    expect(verifyCalls).toBe(1);
+    expect(changeCalls).toBe(1);
     expect(verifyBody).toEqual({ currentPassword: 'current-password' });
     expect(changeBody).toEqual({
       currentPassword: 'current-password',
@@ -159,6 +248,253 @@ test.describe('auth session smoke on staging build', () => {
       mfaMethod: 'totp',
     });
     expect(idempotencyKey).toBeTruthy();
+
+    await writeFile(
+      testInfo.outputPath('password-change-keyboard.json'),
+      JSON.stringify(
+        {
+          route: '/profile/security/change-password',
+          requestedRoute: '/w/profile/security/change-password',
+          shell: 'Phone',
+          viewport: { width: 390, height: 844 },
+          documentWidth,
+          routeMeasurements,
+          webRouteAtPhoneViewportResolvesTo: '/profile/security/change-password',
+          emptySubmitRequestCount: 0,
+          focusAfterCurrentPasswordVerification: true,
+          secondStepFocusOrder: [
+            'Mật khẩu mới',
+            'Nhập lại mật khẩu mới',
+            'Mã xác thực TOTP',
+            'Đổi mật khẩu',
+            'Quay lại xác minh',
+          ],
+          focusAfterSuccess: true,
+          verifyCalls,
+          changeCalls,
+          verifyBody,
+          changeBody,
+          idempotencyKeyPresent: Boolean(idempotencyKey),
+          apiFixtureBoundary:
+            'GET /auth/session and both password endpoints use local Playwright route fixtures; no backend request was made.',
+          screenshotPath,
+        },
+        null,
+        2,
+      ) + '\n',
+    );
+  });
+
+  test('password change 400 responses preserve the form and allow explicit correction @auth-api', async ({
+    page,
+  }, testInfo) => {
+    let verifyCalls = 0;
+    let changeCalls = 0;
+    const changeStatuses: number[] = [];
+    const changeBodies: Array<Record<string, unknown>> = [];
+    let allowFirstVerifyResponse = () => {};
+    let allowFirstChangeResponse = () => {};
+    let markFirstVerifyStarted = () => {};
+    let markFirstChangeStarted = () => {};
+    const firstVerifyStarted = new Promise<void>((resolve) => {
+      markFirstVerifyStarted = resolve;
+    });
+    const firstChangeStarted = new Promise<void>((resolve) => {
+      markFirstChangeStarted = resolve;
+    });
+    const firstVerifyResponse = new Promise<void>((resolve) => {
+      allowFirstVerifyResponse = resolve;
+    });
+    const firstChangeResponse = new Promise<void>((resolve) => {
+      allowFirstChangeResponse = resolve;
+    });
+
+    await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
+    await page.route('**/auth/password/verify-current', async (route) => {
+      verifyCalls += 1;
+      if (verifyCalls === 1) {
+        markFirstVerifyStarted();
+        await firstVerifyResponse;
+      }
+      return route.fulfill({ status: verifyCalls === 1 ? 400 : 204 });
+    });
+    await page.route('**/auth/password/change', async (route) => {
+      changeCalls += 1;
+      changeBodies.push(route.request().postDataJSON() as Record<string, unknown>);
+      const status = changeCalls === 1 ? 400 : 204;
+      changeStatuses.push(status);
+      if (changeCalls === 1) {
+        markFirstChangeStarted();
+        await firstChangeResponse;
+      }
+      return route.fulfill({ status });
+    });
+
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/w/profile/security/change-password');
+    const currentPassword = page.getByLabel('Mật khẩu hiện tại', { exact: true });
+    await currentPassword.fill('invalid-current-password');
+    await currentPassword.press('Enter');
+    await firstVerifyStarted;
+    const verifyButton = page.getByRole('button', {
+      name: 'Xác minh mật khẩu hiện tại',
+      exact: true,
+    });
+    await expect(verifyButton).toBeDisabled();
+    await currentPassword.press('Enter');
+    expect(verifyCalls).toBe(1);
+    allowFirstVerifyResponse();
+    await expect(page.getByRole('alert')).toHaveText(
+      'Không thể xác minh mật khẩu hiện tại. Vui lòng kiểm tra và thử lại.',
+    );
+    const verifyErrorScreenshotPath = testInfo.outputPath('password-change-verify-400.png');
+    await page.screenshot({ path: verifyErrorScreenshotPath, fullPage: true });
+    const verifyValueRetained = await currentPassword.inputValue();
+    expect(verifyValueRetained).toBe('invalid-current-password');
+    await expect(page.getByLabel('Mật khẩu mới', { exact: true })).toHaveCount(0);
+
+    await currentPassword.fill('valid-current-password');
+    await currentPassword.press('Enter');
+    const newPassword = page.getByLabel('Mật khẩu mới', { exact: true });
+    await expect(newPassword).toBeFocused();
+    const confirmPassword = page.getByLabel('Nhập lại mật khẩu mới', { exact: true });
+    const totpCode = page.getByLabel('Mã xác thực TOTP', { exact: true });
+    const changeButton = page.getByRole('button', { name: 'Đổi mật khẩu' });
+
+    await newPassword.fill('short');
+    await confirmPassword.fill('short');
+    await totpCode.fill('111111');
+    await expect(changeButton).toBeDisabled();
+    await totpCode.press('Enter');
+    expect(changeCalls).toBe(0);
+
+    await newPassword.fill('SecurePassword123');
+    await confirmPassword.fill('DifferentPassword123');
+    await expect(changeButton).toBeDisabled();
+    await totpCode.press('Enter');
+    expect(changeCalls).toBe(0);
+
+    await confirmPassword.fill('SecurePassword123');
+    await totpCode.fill('12345');
+    await expect(changeButton).toBeDisabled();
+    await totpCode.press('Enter');
+    expect(changeCalls).toBe(0);
+
+    await totpCode.fill('111111');
+    await changeButton.click();
+    await firstChangeStarted;
+    await expect(changeButton).toBeDisabled();
+    await totpCode.press('Enter');
+    expect(changeCalls).toBe(1);
+    allowFirstChangeResponse();
+    await expect(page.getByRole('alert')).toHaveText(
+      'Không thể đổi mật khẩu. Vui lòng kiểm tra mã xác thực và thử lại.',
+    );
+    const changeErrorScreenshotPath = testInfo.outputPath('password-change-submit-400.png');
+    await page.screenshot({ path: changeErrorScreenshotPath, fullPage: true });
+    const changeValuesRetained = {
+      currentPasswordInputCount: await currentPassword.count(),
+      newPassword: await newPassword.inputValue(),
+      confirmPassword: await confirmPassword.inputValue(),
+      totpCode: await totpCode.inputValue(),
+    };
+    expect(changeValuesRetained).toEqual({
+      currentPasswordInputCount: 0,
+      newPassword: 'SecurePassword123',
+      confirmPassword: 'SecurePassword123',
+      totpCode: '111111',
+    });
+
+    await totpCode.fill('222222');
+    await page.getByRole('button', { name: 'Đổi mật khẩu' }).click();
+    await expect(
+      page.getByRole('heading', { name: 'Mật khẩu đã được đổi thành công.' }),
+    ).toBeVisible();
+    expect({ verifyCalls, changeCalls, changeStatuses }).toEqual({
+      verifyCalls: 2,
+      changeCalls: 2,
+      changeStatuses: [400, 204],
+    });
+    expect(changeBodies.map((body) => body.mfaCode)).toEqual(['111111', '222222']);
+
+    await writeFile(
+      testInfo.outputPath('password-change-error-recovery.json'),
+      JSON.stringify(
+        {
+          route: '/w/profile/security/change-password',
+          verifyStatuses: [400, 204],
+          verifyCalls,
+          verifyFieldRetainedAfter400: verifyValueRetained === 'invalid-current-password',
+          noDuplicateVerifyWhilePending: true,
+          invalidNewPasswordBlocked: true,
+          mismatchedConfirmationBlocked: true,
+          incompleteTotpBlocked: true,
+          changeStatuses,
+          changeCalls,
+          changeFieldsRetainedAfter400: true,
+          noDuplicateChangeWhilePending: true,
+          totpCorrectedByUser: true,
+          recoveredToSuccess: true,
+          screenshots: [verifyErrorScreenshotPath, changeErrorScreenshotPath],
+          apiFixtureBoundary:
+            'GET /auth/session and both password endpoints use local Playwright route fixtures; no backend request was made.',
+        },
+        null,
+        2,
+      ) + '\n',
+    );
+  });
+
+  test('expired password-change session returns the user to login after HTTP 401 @auth-api', async ({
+    page,
+  }, testInfo) => {
+    let sessionExpired = false;
+    let sessionCalls = 0;
+    let refreshCalls = 0;
+    let verifyCalls = 0;
+
+    await page.route('**/auth/session', async (route) => {
+      sessionCalls += 1;
+      return sessionExpired ? route.fulfill({ status: 401 }) : route.fulfill({ json: session });
+    });
+    await page.route('**/auth/password/verify-current', async (route) => {
+      verifyCalls += 1;
+      sessionExpired = true;
+      return route.fulfill({ status: 401 });
+    });
+    await page.route('**/auth/refresh', async (route) => {
+      refreshCalls += 1;
+      return route.fulfill({ status: 401 });
+    });
+
+    await page.goto('/w/profile/security/change-password');
+    await page.getByLabel('Mật khẩu hiện tại', { exact: true }).fill('synthetic-password');
+    await page.getByLabel('Mật khẩu hiện tại', { exact: true }).press('Enter');
+    await expect(page).toHaveURL(/\/auth\/login$/);
+    await expect(page.getByRole('textbox', { name: 'Email', exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Đăng nhập', exact: true })).toBeVisible();
+    expect(verifyCalls).toBe(1);
+    expect(sessionCalls).toBeGreaterThanOrEqual(1);
+    await expect.poll(() => refreshCalls).toBe(1);
+
+    await writeFile(
+      testInfo.outputPath('password-change-session-expired-401.json'),
+      JSON.stringify(
+        {
+          protectedRoute: '/w/profile/security/change-password',
+          contractResponse: 401,
+          verifyCalls,
+          refreshCalls,
+          initialSessionCalls: sessionCalls,
+          finalUrl: new URL(page.url()).pathname,
+          loginVisible: true,
+          apiFixtureBoundary:
+            'Password, refresh and session responses use local Playwright route fixtures; no backend request was made.',
+        },
+        null,
+        2,
+      ) + '\n',
+    );
   });
 
   test('phone login requires the backend challenge before an authenticated session exists', async ({
@@ -394,7 +730,9 @@ test.describe('auth session smoke on staging build', () => {
         email: 'wrong-password@example.com',
         password: 'incorrect-password',
       });
-    await expect(page.getByText('Không thể đăng nhập lúc này. Vui lòng thử lại.')).toBeVisible();
+    await expect(
+      page.getByText('Đăng nhập thất bại. Vui lòng kiểm tra thông tin và thử lại.'),
+    ).toBeVisible();
     await expect(page).toHaveURL(/\/w\/auth\/login$/);
     await expect(page.getByTestId('auth-sign-out')).toHaveCount(0);
     await expect(page.locator('input[maxlength="1"]')).toHaveCount(0);

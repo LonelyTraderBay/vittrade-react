@@ -11,6 +11,8 @@ const previewUrl = `http://127.0.0.1:${previewPort}`;
  */
 export default defineConfig({
   testDir: './tests/e2e',
+  testIgnore: ['**/auth-*-mock.spec.ts', '**/auth-registration-mfa-setup.spec.ts'],
+  grepInvert: /@auth-api/,
   outputDir: process.env.VITTRADE_RUN_DIR
     ? path.join(process.env.VITTRADE_RUN_DIR, 'test-results')
     : 'test-results',

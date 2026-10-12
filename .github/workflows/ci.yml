@@ -49,6 +49,12 @@ jobs:
       - name: E2E smoke and accessibility
         run: npm run test:e2e
 
+      - name: Auth registration API-mode browser contract
+        run: npm run test:e2e -- --config playwright.auth-api.config.ts
+
+      - name: Auth development mock browser contract
+        run: npm run test:e2e -- --config playwright.auth-mock.config.ts
+
       - name: Dependency audit
         run: npm run audit:high
 
