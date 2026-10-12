@@ -1,0 +1,258 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-01T14:03:10.196Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "origin": "http://127.0.0.1:4173",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "arena.error",
+    "domain": "arena",
+    "state": "error",
+    "status": "passed",
+    "persona": "arena",
+    "role": "user",
+    "permissions": ["arena:join"],
+    "routes": ["/w/arena"],
+    "operationIds": [
+      "getArenaDiscovery",
+      "getArenaMode",
+      "getArenaChallenge",
+      "joinArenaChallenge"
+    ],
+    "observedOperationIds": ["getArenaDiscovery"],
+    "operationRequestCounts": {
+      "getArenaDiscovery": 12
+    },
+    "requests": [
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery"
+      }
+    ],
+    "failures": [
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery",
+        "failure": "net::ERR_FAILED"
+      }
+    ],
+    "responses": [],
+    "visibleErrorState": true,
+    "visibleRetryAction": true,
+    "emptySuccessStateVisible": false,
+    "initialFailureCount": 6,
+    "retryFailureCount": 6,
+    "initialElapsedMs": 2841,
+    "retryElapsedMs": 2604,
+    "pageControlledByServiceWorker": true,
+    "unexpectedArenaRequestCount": 0,
+    "financialApiRequestCount": 0,
+    "writeRequestCount": 0,
+    "finalRoute": "/w/arena",
+    "elapsedMs": 5493,
+    "screenshots": {
+      "error": "preview-arena-error-discovery-202610011403101.png"
+    },
+    "routeAvailability": "The local Vite development route maps /w/arena to ArenaDiscoveryPage; src/app/routes.ts selects IntegrationPendingPage when isDevelopmentBuild is false.",
+    "note": "The Arena OpenAPI declares no 5xx response on any of its four operations. Chromium therefore used a service-worker-controlled transport failure (no HTTP response) for getArenaDiscovery; the UI showed ErrorState and a Retry button, stayed distinct from empty success, and remained in error after one user retry. It measured 6 failed GET attempts before ErrorState and 6 after one Retry click; the current HttpClient permits 2 GET retries and QueryClient permits 1 query retry, consistent with 3 transport attempts per query execution × 2 query executions. This is local client behavior, not server retry evidence. Production currently selects IntegrationPendingPage."
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": false,
+    "transportFailureNoHttpResponse": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false
+  },
+  "measurements": {
+    "totalFlowMs": 5493,
+    "arenaRequestCount": 12,
+    "arenaResponseCount": 0,
+    "initialFailureCount": 6,
+    "retryFailureCount": 6,
+    "requestFailureCount": 12,
+    "operationRequestCounts": {
+      "getArenaDiscovery": 12
+    },
+    "operationResponseCounts": {
+      "getArenaDiscovery": 0
+    },
+    "writeRequestCount": 0,
+    "unexpectedArenaRequestCount": 0,
+    "financialApiRequestCount": 0,
+    "pageErrors": [],
+    "externalApiOriginCount": 0
+  },
+  "contract": {
+    "auditedOperations": [
+      {
+        "operationId": "getArenaDiscovery",
+        "declaredResponses": ["200"],
+        "declared5xxResponses": []
+      },
+      {
+        "operationId": "getArenaMode",
+        "declaredResponses": ["200", "404"],
+        "declared5xxResponses": []
+      },
+      {
+        "operationId": "getArenaChallenge",
+        "declaredResponses": ["200", "404"],
+        "declared5xxResponses": []
+      },
+      {
+        "operationId": "joinArenaChallenge",
+        "declaredResponses": ["201", "409"],
+        "declared5xxResponses": []
+      }
+    ]
+  },
+  "sourceHashes": {
+    "docs/architecture/production-readiness/evidence/A06/run-arena-error-browser-check.mjs": "a95573f839801c4f6da09b90f562ad49a8e4ff060df04d0c4936763c0d27a627",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/app/components/layout/WebSidebar.tsx": "5dd6ed3888d40d240bd20cca0b852b18179bb2a97df1c847064ddaf82ad58481",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "b7068df1558e8efb458f5889c87bde27759acc3139a171ac885593386a78e34f",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "52e22422548bcfe99731089c6b6297728c828047beaadec53bddec5a89148441",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "contracts/openapi/arena.yaml": "30f0f57dfd35eec65c9afca06bd9f79f2d0f42a4a678c18e09dc669d32641157",
+    "src/features/arena/api/arena-api.ts": "c9fce3b8cc271937f5c2aecf4becba0e3520fce0c599cb7e7255a553f40a74d2",
+    "src/features/arena/model/arena-queries.ts": "5532e0d33dcd61a8249cdb7e5a8c8d50a1706ff125875860ea8753e51baf6caa",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/features/arena/pages/ArenaDiscoveryPage.tsx": "07430fdbd638e510e117c0256d9a0e8aec37614855731b7273d3b939a87dae66",
+    "src/features/arena/pages/ArenaDiscoveryPage.test.tsx": "bb40ab575bcf49b51b17d05ff12e2b7d2140796869a8ed106eb0abf500fe77ca"
+  },
+  "limitations": "This run used a service-worker-controlled transport failure and no HTTP response because the Arena OpenAPI declares no 5xx status. It does not establish server error behavior, backend authorization, persistence, staging behavior or user acceptance; routes.ts selects IntegrationPendingPage outside Vite development."
+}

@@ -1,5 +1,7 @@
-import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { fireEvent, screen } from '@testing-library/react';
+import { useLocation } from 'react-router';
+import { useAuth } from '@/shared/session/useAuth';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
@@ -9,6 +11,39 @@ import type { EarnSnapshot } from '../model/earn-types';
 import { SavingsPortfolioPage } from './SavingsPortfolioPage';
 
 const server = setupServer();
+const guardTestControl = vi.hoisted(() => ({ invokeRedeemWithoutPermission: false }));
+vi.mock('../components/EarnFeatureComponents', async (importOriginal) => {
+  const components = await importOriginal<typeof import('../components/EarnFeatureComponents')>();
+  return {
+    ...components,
+    PositionCard: (props: Parameters<typeof components.PositionCard>[0]) => {
+      if (guardTestControl.invokeRedeemWithoutPermission) {
+        return (
+          <>
+            <span>{props.position.product}</span>
+            <button type="button" onClick={props.onRedeem}>
+              Invoke redemption callback without permission
+            </button>
+          </>
+        );
+      }
+      return <components.PositionCard {...props} />;
+    },
+  };
+});
+function LocationProbe() {
+  const { pathname } = useLocation();
+  return <output data-testid="location">{pathname}</output>;
+}
+
+function SignOutControl() {
+  const { signOut } = useAuth();
+  return (
+    <button type="button" onClick={() => void signOut()}>
+      Expire test session
+    </button>
+  );
+}
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());
@@ -170,5 +205,162 @@ describe('Savings portfolio contract page', () => {
 
     fireEvent.click(await screen.findByRole('button', { name: 'Thử lại' }));
     expect(await screen.findByText('Stable Savings')).toBeInTheDocument();
+  });
+
+  it('navigates from the empty portfolio to savings products', async () => {
+    server.use(
+      http.get('*/earn/snapshot', () => HttpResponse.json({ ...snapshot, positions: [] })),
+    );
+
+    renderWithProviders(
+      <>
+        <SavingsPortfolioPage />
+        <LocationProbe />
+      </>,
+      { routerProps: { initialEntries: ['/w/earn/savings/portfolio'] } },
+    );
+
+    const browseButton = await screen.findByRole('button', { name: /Xem s\u1ea3n ph\u1ea9m/ });
+    fireEvent.click(browseButton);
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/earn/savings');
+  });
+
+  it('blocks redemption if the session loses permission while the action sheet is open', async () => {
+    let redemptionCalls = 0;
+    server.use(
+      http.get('*/earn/snapshot', () => HttpResponse.json(snapshot)),
+      http.post('*/earn/redemptions', () => {
+        redemptionCalls += 1;
+        return HttpResponse.json(
+          {
+            id: 'redemption-receipt',
+            operation: 'redeem',
+            productId: 'savings-product',
+            positionId: 'savings-position',
+            asset: 'USDT',
+            amount: 100,
+            status: 'completed',
+            createdAt: '2026-10-11T10:00:00.000Z',
+          },
+          { status: 201 },
+        );
+      }),
+    );
+
+    renderWithProviders(
+      <>
+        <SavingsPortfolioPage />
+        <SignOutControl />
+      </>,
+      { authAdapter: adapterWithPermissions(['earn:read', 'earn:redeem']) },
+    );
+
+    expect(await screen.findByText('Stable Savings')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /R\u00fat v\u1ed1n/ }));
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Expire test session' }));
+    expect(
+      await screen.findByText(
+        'Earn redemption permission is required to withdraw a flexible position.',
+      ),
+    ).toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText(/S\u1ed1 l\u01b0\u1ee3ng/), {
+      target: { value: '100' },
+    });
+    const submitButton = screen.getByRole('button', {
+      name: /X\u00e1c nh\u1eadn r\u00fat v\u1ed1n/,
+    });
+    expect(submitButton).toBeEnabled();
+    fireEvent.click(submitButton);
+
+    expect(redemptionCalls).toBe(0);
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
+
+  it('ignores a child redemption callback when the session lacks permission', async () => {
+    server.use(http.get('*/earn/snapshot', () => HttpResponse.json(snapshot)));
+    guardTestControl.invokeRedeemWithoutPermission = true;
+    try {
+      renderWithProviders(<SavingsPortfolioPage />, {
+        authAdapter: adapterWithPermissions(['earn:read']),
+      });
+
+      expect(await screen.findByText('Stable Savings')).toBeInTheDocument();
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Invoke redemption callback without permission' }),
+      );
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    } finally {
+      guardTestControl.invokeRedeemWithoutPermission = false;
+    }
+  });
+
+  it('resets a rejected redemption on close and allows a contract-valid retry', async () => {
+    let requestCount = 0;
+    server.use(
+      http.get('*/earn/snapshot', () => HttpResponse.json(snapshot)),
+      http.post('*/earn/redemptions', async ({ request }) => {
+        requestCount += 1;
+        expect(await request.json()).toEqual({ positionId: 'savings-position', amount: 100 });
+        expect(request.headers.get('Idempotency-Key')).toMatch(/^[0-9a-f-]{36}$/i);
+        if (requestCount === 1) {
+          return HttpResponse.json(
+            { code: 'INVALID_REQUEST', message: 'Redemption validation failed' },
+            { status: 400 },
+          );
+        }
+        return HttpResponse.json(
+          {
+            id: 'redemption-receipt',
+            operation: 'redeem',
+            productId: 'savings-product',
+            positionId: 'savings-position',
+            asset: 'USDT',
+            amount: 100,
+            status: 'completed',
+            createdAt: '2026-10-11T10:00:00.000Z',
+          },
+          { status: 201 },
+        );
+      }),
+    );
+
+    renderWithProviders(<SavingsPortfolioPage />, {
+      authAdapter: adapterWithPermissions(['earn:read', 'earn:redeem']),
+    });
+
+    expect(await screen.findByText('Stable Savings')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /R\u00fat v\u1ed1n/ }));
+    fireEvent.change(screen.getByLabelText(/S\u1ed1 l\u01b0\u1ee3ng/), {
+      target: { value: '100' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: /X\u00e1c nh\u1eadn r\u00fat v\u1ed1n/ }));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Redemption validation failed');
+    fireEvent.click(screen.getByRole('button', { name: /\u0110\u00f3ng/ }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /R\u00fat v\u1ed1n/ }));
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText(/S\u1ed1 l\u01b0\u1ee3ng/), {
+      target: { value: '100' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: /X\u00e1c nh\u1eadn r\u00fat v\u1ed1n/ }));
+
+    expect(
+      await screen.findByText(
+        /Y\u00eau c\u1ea7u r\u00fat v\u1ed1n \u0111\u00e3 \u0111\u01b0\u1ee3c ghi nh\u1eadn/,
+      ),
+    ).toBeInTheDocument();
+    expect(requestCount).toBe(2);
+
+    fireEvent.click(screen.getByRole('button', { name: /\u0110\u00f3ng th\u00f4ng b\u00e1o/ }));
+    expect(
+      screen.queryByText(
+        /Y\u00eau c\u1ea7u r\u00fat v\u1ed1n \u0111\u00e3 \u0111\u01b0\u1ee3c ghi nh\u1eadn/,
+      ),
+    ).not.toBeInTheDocument();
   });
 });

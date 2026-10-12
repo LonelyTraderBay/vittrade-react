@@ -190,27 +190,128 @@ describe('PredictionEventContractPage', () => {
 
 describe('prediction contract read pages', () => {
   it('keeps contract-backed read pages recoverable when their API request fails', async () => {
+    const canRecover = {
+      events: false,
+      positions: false,
+      rewards: false,
+      leaderboard: false,
+      activity: false,
+    };
     const unavailable = () =>
       HttpResponse.json({ message: 'temporarily unavailable' }, { status: 503 });
     server.use(
-      http.get('*/predictions/events', unavailable),
-      http.get('*/predictions/positions', unavailable),
-      http.get('*/predictions/rewards', unavailable),
-      http.get('*/predictions/leaderboard', unavailable),
-      http.get('*/predictions/activity', unavailable),
+      http.get('*/predictions/events', () =>
+        canRecover.events ? HttpResponse.json({ items: [] }) : unavailable(),
+      ),
+      http.get('*/predictions/positions', () =>
+        canRecover.positions ? HttpResponse.json({ items: [] }) : unavailable(),
+      ),
+      http.get('*/predictions/rewards', () =>
+        canRecover.rewards ? HttpResponse.json({ items: [] }) : unavailable(),
+      ),
+      http.get('*/predictions/leaderboard', () =>
+        canRecover.leaderboard ? HttpResponse.json({ items: [] }) : unavailable(),
+      ),
+      http.get('*/predictions/activity', () =>
+        canRecover.activity ? HttpResponse.json({ items: [] }) : unavailable(),
+      ),
     );
 
-    for (const page of [
-      <PredictionsContractPage key="markets" />,
-      <PredictionPortfolioContractPage key="portfolio" />,
-      <PredictionRewardsContractPage key="rewards" />,
-      <PredictionLeaderboardContractPage key="leaderboard" />,
-      <PredictionActivityContractPage key="activity" />,
-    ]) {
+    const retryCases = [
+      {
+        key: 'events',
+        page: <PredictionsContractPage key="markets" />,
+        emptyState: 'Không có prediction market phù hợp.',
+      },
+      {
+        key: 'positions',
+        page: <PredictionPortfolioContractPage key="portfolio" />,
+        emptyState: 'Chưa có vị thế.',
+      },
+      {
+        key: 'rewards',
+        page: <PredictionRewardsContractPage key="rewards" />,
+        emptyState: 'Chưa có phần thưởng.',
+      },
+      {
+        key: 'leaderboard',
+        page: <PredictionLeaderboardContractPage key="leaderboard" />,
+        emptyState: 'Chưa có dữ liệu bảng xếp hạng.',
+      },
+      {
+        key: 'activity',
+        page: <PredictionActivityContractPage key="activity" />,
+        emptyState: 'Chưa có hoạt động dự đoán.',
+      },
+    ] as const;
+    for (const { key, page, emptyState } of retryCases) {
       const { unmount } = renderWithProviders(page);
       expect(await screen.findByRole('button', { name: 'Thử lại' })).toBeVisible();
+      canRecover[key as keyof typeof canRecover] = true;
+      fireEvent.click(screen.getByRole('button', { name: 'Thử lại' }));
+      expect(await screen.findByText(emptyState)).toBeVisible();
       unmount();
     }
+  });
+
+  it('recovers event detail and receipt reads after their retry actions', async () => {
+    let allowEvent = false;
+    let allowReceipt = false;
+    const receipt = {
+      id: 'order-retry',
+      eventId: event.id,
+      eventTitle: event.title,
+      outcome: 'Yes',
+      side: 'buy',
+      orderType: 'market',
+      shares: 10,
+      filledShares: 10,
+      price: 0.62,
+      avgPrice: 0.62,
+      total: 6.2,
+      fee: 0,
+      status: 'filled',
+      createdAt: '2026-09-24T00:00:00.000Z',
+      updatedAt: '2026-09-24T00:01:00.000Z',
+      timeline: [],
+    };
+    server.use(
+      http.get('*/predictions/events/event-1', () =>
+        allowEvent ? HttpResponse.json(event) : HttpResponse.json({}, { status: 503 }),
+      ),
+      http.get('*/predictions/orders/order-retry', () =>
+        allowReceipt ? HttpResponse.json(receipt) : HttpResponse.json({}, { status: 503 }),
+      ),
+    );
+
+    const eventPage = renderWithProviders(
+      <Routes>
+        <Route
+          path="/markets/predictions/event/:eventId"
+          element={<PredictionEventContractPage />}
+        />
+      </Routes>,
+      { routerProps: { initialEntries: ['/markets/predictions/event/event-1'] } },
+    );
+    const retryEvent = await screen.findByRole('button', { name: 'Thử lại' });
+    allowEvent = true;
+    fireEvent.click(retryEvent);
+    expect(await screen.findByText(event.title)).toBeInTheDocument();
+    eventPage.unmount();
+
+    renderWithProviders(
+      <Routes>
+        <Route
+          path="/markets/predictions/receipt/:orderId"
+          element={<PredictionReceiptContractPage />}
+        />
+      </Routes>,
+      { routerProps: { initialEntries: ['/markets/predictions/receipt/order-retry'] } },
+    );
+    const retryReceipt = await screen.findByRole('button', { name: 'Thử lại' });
+    allowReceipt = true;
+    fireEvent.click(retryReceipt);
+    expect(await screen.findByText('filled')).toBeInTheDocument();
   });
 
   it('renders server-backed market results and filters breaking markets by trend and volume', async () => {
@@ -269,9 +370,46 @@ describe('prediction contract read pages', () => {
   });
 
   it('renders positions and the empty portfolio state', async () => {
-    server.use(http.get('*/predictions/positions', () => HttpResponse.json({ items: [] })));
+    server.use(
+      http.get('*/predictions/positions', () =>
+        HttpResponse.json({
+          items: [
+            {
+              id: 'position-up',
+              eventId: 'event-up',
+              outcome: 'Yes',
+              shares: 10,
+              avgPrice: 0.5,
+              currentPrice: 0.7,
+              investedAmount: 5,
+              currentValue: 7,
+              pnl: 2,
+              pnlPct: 40,
+              status: 'open',
+              purchasedAt: '2026-09-24T00:00:00.000Z',
+            },
+            {
+              id: 'position-down',
+              eventId: 'event-down',
+              outcome: 'No',
+              shares: 4,
+              avgPrice: 0.7,
+              currentPrice: 0.4,
+              investedAmount: 2.8,
+              currentValue: 1.6,
+              pnl: -1.2,
+              pnlPct: -42.86,
+              status: 'open',
+              purchasedAt: '2026-09-24T00:00:00.000Z',
+            },
+          ],
+        }),
+      ),
+    );
     renderWithProviders(<PredictionPortfolioContractPage />);
-    expect(await screen.findByText('Chưa có vị thế.')).toBeInTheDocument();
+    expect(await screen.findByText('event-up · Yes')).toBeInTheDocument();
+    expect(screen.getByText('+2.00 (40.00%)')).toBeInTheDocument();
+    expect(screen.getByText('-1.20 (-42.86%)')).toBeInTheDocument();
   });
 
   it('renders reward opportunities from the contract', async () => {
@@ -313,6 +451,16 @@ describe('prediction contract read pages', () => {
               trades: 8,
               winRate: 75,
             },
+            {
+              rank: 2,
+              user: 'Trader Two',
+              avatar: 'T2',
+              pnl: -20,
+              pnlPct: -2,
+              volume: 500,
+              trades: 4,
+              winRate: 25,
+            },
           ],
         }),
       ),
@@ -331,6 +479,18 @@ describe('prediction contract read pages', () => {
               shares: 100,
               timestamp: '2026-09-24T01:00:00.000Z',
             },
+            {
+              id: 'activity-2',
+              user: 'Trader Three',
+              avatar: 'B',
+              action: 'sold',
+              outcome: 'No',
+              eventId: 'event-2',
+              price: 0.38,
+              amount: 38,
+              shares: 100,
+              timestamp: '2026-09-24T02:00:00.000Z',
+            },
           ],
         }),
       ),
@@ -338,10 +498,12 @@ describe('prediction contract read pages', () => {
 
     const { unmount } = renderWithProviders(<PredictionLeaderboardContractPage />);
     expect(await screen.findByText(/Trader One/)).toBeInTheDocument();
+    expect(screen.getByText('-20')).toBeInTheDocument();
     unmount();
 
     renderWithProviders(<PredictionActivityContractPage />);
     expect(await screen.findByText(/Trader Two bought Yes/)).toBeInTheDocument();
+    expect(screen.getByText(/Trader Three sold No/)).toBeInTheDocument();
   });
 
   it('shows explicit empty states for each Prediction collection page', async () => {
@@ -392,7 +554,10 @@ describe('prediction contract read pages', () => {
           status: 'filled',
           createdAt: '2026-09-24T00:00:00.000Z',
           updatedAt: '2026-09-24T00:01:00.000Z',
-          timeline: [{ label: 'Đã khớp', date: '01:00', done: true }],
+          timeline: [
+            { label: 'Đã khớp', date: '01:00', done: true },
+            { label: 'Đang thanh toán', date: '01:01', done: false },
+          ],
         }),
       ),
     );
@@ -408,5 +573,6 @@ describe('prediction contract read pages', () => {
 
     expect(await screen.findByText('filled')).toBeInTheDocument();
     expect(screen.getByText(/Đã khớp/)).toBeInTheDocument();
+    expect(screen.getByText(/○ Đang thanh toán/)).toBeInTheDocument();
   });
 });

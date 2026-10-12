@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { useUI } from '../../hooks/useUI';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -82,7 +83,7 @@ const NAV_SECTIONS: NavSection[] = [
 ];
 
 const BOTTOM_ITEMS: NavItem[] = [
-  { path: `${PREFIX}/notifications`, icon: Bell, label: 'Thông báo', badge: 3 },
+  { path: `${PREFIX}/notifications`, icon: Bell, label: 'Thông báo' },
   { path: `${PREFIX}/support`, icon: HelpCircle, label: 'Hỗ trợ' },
   { path: `${PREFIX}/profile/settings`, icon: Settings, label: 'Cài đặt' },
 ];
@@ -91,7 +92,13 @@ export function TabletSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const c = useThemeColors();
+  const { notifications } = useUI();
   const [expanded, setExpanded] = useState(false);
+  const bottomItems = BOTTOM_ITEMS.map((item) =>
+    item.path === `${PREFIX}/notifications`
+      ? { ...item, badge: notifications > 0 ? notifications : undefined }
+      : item,
+  );
 
   const isActive = (path: string) => {
     const segments = path.replace(PREFIX, '').split('/').filter(Boolean);
@@ -255,7 +262,7 @@ export function TabletSidebar() {
         className="shrink-0 flex flex-col gap-0.5 px-3 py-3"
         style={{ borderTop: `1px solid ${c.divider}` }}
       >
-        {BOTTOM_ITEMS.map((item) => {
+        {bottomItems.map((item) => {
           const Icon = item.icon;
           return (
             <button

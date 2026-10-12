@@ -60,7 +60,7 @@ export interface BottomSheetV2Props {
   showHandle?: boolean;
   /** Show close (X) button in title row. Default: true */
   showCloseButton?: boolean;
-  /** Prevent closing via backdrop click, swipe, or Escape (e.g. during loading). Default: false */
+  /** Prevent closing via the close button, backdrop click, swipe, or Escape (e.g. during loading). Default: false */
   preventClose?: boolean;
   /** Accessibility label. Falls back to `title` if provided. */
   ariaLabel?: string;
@@ -237,15 +237,10 @@ export function BottomSheetV2({
   }, [open]);
 
   /* ─── onAfterOpen callback ─── */
-  const hasOpenedRef = useRef(false);
   useEffect(() => {
     if (open) {
-      hasOpenedRef.current = false;
       const timer = setTimeout(() => {
-        if (!hasOpenedRef.current) {
-          hasOpenedRef.current = true;
-          onAfterOpen?.();
-        }
+        onAfterOpen?.();
       }, 350);
       return () => clearTimeout(timer);
     }
@@ -281,7 +276,7 @@ export function BottomSheetV2({
     [onClose, preventClose],
   );
 
-  const handleBackdropClick = useCallback(() => {
+  const handleCloseRequest = useCallback(() => {
     if (!preventClose) onClose();
   }, [onClose, preventClose]);
 
@@ -304,7 +299,8 @@ export function BottomSheetV2({
         )}
         {showCloseButton && (
           <button
-            onClick={onClose}
+            onClick={handleCloseRequest}
+            disabled={preventClose}
             className="flex items-center justify-center shrink-0 rounded-full transition-colors"
             style={{ width: 44, height: 44, minWidth: 44, minHeight: 44, color: c.text3 }}
             aria-label="Đóng"
@@ -355,7 +351,7 @@ export function BottomSheetV2({
                   backdropFilter: 'blur(8px)',
                   WebkitBackdropFilter: 'blur(8px)',
                 }}
-                onClick={handleBackdropClick}
+                onClick={handleCloseRequest}
                 aria-hidden="true"
               />
 
@@ -416,7 +412,7 @@ export function BottomSheetV2({
                   backdropFilter: 'blur(8px)',
                   WebkitBackdropFilter: 'blur(8px)',
                 }}
-                onClick={handleBackdropClick}
+                onClick={handleCloseRequest}
                 aria-hidden="true"
               />
               <div

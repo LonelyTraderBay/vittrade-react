@@ -1,0 +1,5 @@
+
+> vittrade-react@0.0.1 production-mocks:check
+> node scripts/check-production-mocks.mjs
+
+Production mock gate passed: 223 output files inventoried, 221 JavaScript files and 0 manifests inspected.

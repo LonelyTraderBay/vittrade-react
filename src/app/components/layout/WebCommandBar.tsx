@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Search, Bell, Moon, Sun, ChevronRight } from 'lucide-react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { useTheme } from '@/shared/theme/useTheme';
 import { useAuth } from '@/shared/session/useAuth';
 import { useUI } from '../../hooks/useUI';
 import { WEB_COMMAND_BAR_HEIGHT } from './webConstants';
@@ -32,6 +33,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   markets: 'Thị trường',
   trade: 'Giao dịch',
   wallet: 'Ví',
+  dca: 'DCA',
   profile: 'Tài khoản',
   p2p: 'P2P',
   arena: 'Arena',
@@ -80,6 +82,7 @@ export function WebCommandBar() {
   const location = useLocation();
   const navigate = useNavigate();
   const c = useThemeColors();
+  const { theme, setTheme } = useTheme();
   const { isAuthenticated, isLoading, user } = useAuth();
   const { notifications } = useUI();
   const account = !isLoading && isAuthenticated ? user : null;
@@ -90,7 +93,7 @@ export function WebCommandBar() {
       : 'Chưa đăng nhập';
   const accountDetail = account?.vipLevel != null ? `VIP ${account.vipLevel}` : '';
   const crumbs = getBreadcrumbs(location.pathname);
-  const unreadCount = typeof notifications === 'number' ? notifications : 0;
+  const unreadCount = notifications;
   const [searchFocused, setSearchFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const searchRef = useRef<HTMLInputElement>(null);
@@ -120,11 +123,10 @@ export function WebCommandBar() {
     return () => clearInterval(interval);
   }, []);
 
-  const isDark = document.documentElement.classList.contains('dark');
+  const isDark = theme === 'dark';
   const toggleTheme = useCallback(() => {
-    document.documentElement.classList.toggle('dark');
-    document.documentElement.classList.toggle('light');
-  }, []);
+    setTheme(isDark ? 'light' : 'dark');
+  }, [isDark, setTheme]);
 
   return (
     <div

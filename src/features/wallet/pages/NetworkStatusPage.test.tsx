@@ -28,6 +28,14 @@ const networkStatuses = {
       updatedAt: '2026-09-25T10:00:00.000Z',
       message: 'Maintenance notice from the API.',
     },
+    {
+      id: 'network-3',
+      name: 'Network Three',
+      status: 'degraded',
+      depositEnabled: true,
+      withdrawalEnabled: false,
+      updatedAt: '2026-09-25T10:00:00.000Z',
+    },
   ],
 };
 
@@ -46,18 +54,20 @@ describe('Wallet network status page', () => {
     renderWithProviders(<NetworkStatusPage />);
 
     expect(await screen.findByText('Network One')).toBeInTheDocument();
-    expect(screen.getByText('1 hoạt động · 1 cần chú ý')).toBeInTheDocument();
+    expect(screen.getByText('1 hoạt động · 2 cần chú ý')).toBeInTheDocument();
     expect(screen.getByText('Maintenance notice from the API.')).toBeInTheDocument();
+    expect(screen.getByText('Chậm')).toBeInTheDocument();
     expect(screen.getByText('Nạp: tạm dừng')).toBeInTheDocument();
-    expect(screen.getByText('Rút: tạm dừng')).toBeInTheDocument();
+    expect(screen.getAllByText('Rút: tạm dừng')).toHaveLength(2);
   });
 
   it('hides cached status when a refresh fails instead of presenting stale availability', async () => {
     let requestCount = 0;
+    let shouldRecover = false;
     server.use(
       http.get('http://localhost:3000/api/wallet/network-status', () => {
         requestCount += 1;
-        return requestCount === 1
+        return requestCount === 1 || shouldRecover
           ? HttpResponse.json(networkStatuses)
           : HttpResponse.json(
               { code: 'WALLET_NETWORK_STATUS_UNAVAILABLE', message: 'Source unavailable.' },
@@ -75,6 +85,34 @@ describe('Wallet network status page', () => {
       await screen.findByText(/Wallet API chưa trả dữ liệu trạng thái mạng/),
     ).toBeInTheDocument();
     expect(screen.queryByText('Network One')).not.toBeInTheDocument();
+
+    shouldRecover = true;
+    await userEvent.click(screen.getByRole('button', { name: 'Thử lại' }));
+    expect(await screen.findByText('Network One')).toBeInTheDocument();
+  });
+
+  it('shows the all-operational summary when every network can deposit and withdraw', async () => {
+    server.use(
+      http.get('http://localhost:3000/api/wallet/network-status', () =>
+        HttpResponse.json({
+          items: [
+            {
+              id: 'network-operational',
+              name: 'Operational network',
+              status: 'operational',
+              depositEnabled: true,
+              withdrawalEnabled: true,
+              updatedAt: '2026-09-25T10:00:00.000Z',
+            },
+          ],
+        }),
+      ),
+    );
+
+    renderWithProviders(<NetworkStatusPage />);
+
+    expect(await screen.findByText('Operational network')).toBeInTheDocument();
+    expect(screen.getByText('1 hoạt động · 0 cần chú ý')).toBeInTheDocument();
   });
 
   it('shows an explicit unavailable state when the API has no network records', async () => {

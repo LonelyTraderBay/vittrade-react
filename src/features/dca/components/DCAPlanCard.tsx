@@ -26,7 +26,7 @@ import { useThemeColors } from '@/shared/hooks/useThemeColors';
  */
 export interface DCAPlanCardProps {
   plan: DCAPlan;
-  onToggleStatus?: (planId: string) => void;
+  onToggleStatus?: () => void;
   onEdit?: (planId: string) => void;
   onDelete?: (planId: string) => void;
   onViewDetail?: (planId: string) => void;
@@ -472,7 +472,7 @@ export function DCAPlanCard({
         >
           {/* Primary action: Toggle status */}
           <button
-            onClick={() => onToggleStatus?.(plan.id)}
+            onClick={() => onToggleStatus?.()}
             disabled={isLoading || plan.status === 'error' || !onToggleStatus}
             style={{
               flex: 1,

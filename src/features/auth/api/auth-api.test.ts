@@ -60,6 +60,47 @@ describe('auth API contract', () => {
     ).resolves.toMatchObject({ challengeId: 'registration-challenge-001' });
   });
 
+  it('starts email registration with the public request contract and validates its challenge envelope', async () => {
+    server.use(
+      http.post('http://localhost:3000/api/auth/register', async ({ request }) => {
+        expect(request.headers.get('Idempotency-Key')).toBe('email-registration-key-001');
+        expect(await request.json()).toEqual({
+          fullName: 'Email User',
+          channel: 'email',
+          contact: 'test@example.com',
+          password: 'StrongPass1!',
+          acceptedTerms: true,
+        });
+        return HttpResponse.json(
+          {
+            challengeId: 'email-registration-challenge-001',
+            channel: 'email',
+            maskedDestination: 't***@example.com',
+            expiresAt: '2026-10-03T18:00:00.000Z',
+          },
+          { status: 202 },
+        );
+      }),
+    );
+
+    await expect(
+      authApiForTest.register(
+        {
+          fullName: 'Email User',
+          channel: 'email',
+          contact: 'test@example.com',
+          password: 'StrongPass1!',
+          acceptedTerms: true,
+        },
+        'email-registration-key-001',
+      ),
+    ).resolves.toMatchObject({
+      challengeId: 'email-registration-challenge-001',
+      channel: 'email',
+      maskedDestination: 't***@example.com',
+    });
+  });
+
   it('verifies registration using only the server challenge ID and code', async () => {
     server.use(
       http.post('http://localhost:3000/api/auth/mfa/verify', async ({ request }) => {
@@ -138,6 +179,19 @@ describe('auth API contract', () => {
     ).resolves.toMatchObject({ user: { id: 'usr001' } });
   });
 
+  it('preserves the contract rate-limit response for login MFA verification', async () => {
+    server.use(
+      http.post(
+        'http://localhost:3000/api/auth/login/mfa/verify',
+        () => new HttpResponse(null, { status: 429 }),
+      ),
+    );
+
+    await expect(
+      authApiForTest.verifyLoginMfa({ challengeId: 'login-challenge-001', code: '123456' }),
+    ).rejects.toMatchObject({ status: 429 });
+  });
+
   it('rejects malformed login MFA challenges at the API boundary', async () => {
     server.use(
       http.post('http://localhost:3000/api/auth/login', () =>
@@ -214,6 +268,23 @@ describe('auth API contract', () => {
       user: { id: 'usr001' },
     });
     await expect(authApiForTest.getSession()).resolves.toBeNull();
+  });
+
+  it('treats the contract session 401 as an anonymous visitor', async () => {
+    server.use(
+      http.get(
+        'http://localhost:3000/api/auth/session',
+        () => new HttpResponse(null, { status: 401 }),
+      ),
+    );
+
+    await expect(authApiForTest.getSession()).resolves.toBeNull();
+  });
+
+  it('keeps session transport failures as errors instead of treating them as anonymous', async () => {
+    server.use(http.get('http://localhost:3000/api/auth/session', () => HttpResponse.error()));
+
+    await expect(authApiForTest.getSession()).rejects.toThrow();
   });
 
   it('rejects malformed session and MFA setup responses at the API boundary', async () => {

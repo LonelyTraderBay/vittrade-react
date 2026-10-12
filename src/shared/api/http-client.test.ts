@@ -33,6 +33,47 @@ describe('createHttpClient', () => {
     expect(new Headers(init?.headers).get('x-correlation-id')).toBeTruthy();
   });
 
+  it('omits nullish query values while retaining explicit false values', async () => {
+    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(response({ ok: true }));
+    const client = createHttpClient({ baseUrl: 'https://api.example.test', fetchImpl });
+
+    await client.request({
+      method: 'GET',
+      path: '/health',
+      query: { enabled: false, missing: undefined, empty: null },
+    });
+
+    expect(fetchImpl.mock.calls[0][0]).toBe('https://api.example.test/health?enabled=false');
+  });
+
+  it('uses the current global fetch when no custom transport is configured', async () => {
+    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(response({ ok: true }));
+    vi.stubGlobal('fetch', fetchImpl);
+    try {
+      const client = createHttpClient({ baseUrl: 'https://api.example.test' });
+
+      await expect(client.request({ method: 'GET', path: '/health' })).resolves.toEqual({
+        ok: true,
+      });
+      expect(fetchImpl).toHaveBeenCalledOnce();
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it.each([Number.NaN, Number.POSITIVE_INFINITY])(
+    'uses the default timeout for non-finite timeout input (%s)',
+    async (timeoutMs) => {
+      const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(response({ ok: true }));
+      const client = createHttpClient({ baseUrl: 'https://api.example.test', fetchImpl });
+
+      await expect(
+        client.request({ method: 'GET', path: '/health' }, { timeoutMs }),
+      ).resolves.toEqual({ ok: true });
+      expect(fetchImpl).toHaveBeenCalledOnce();
+    },
+  );
+
   it('does not retry a non-idempotent request by default', async () => {
     const fetchImpl = vi
       .fn<typeof fetch>()
@@ -69,6 +110,89 @@ describe('createHttpClient', () => {
       expect(fetchImpl).not.toHaveBeenCalled();
     },
   );
+
+  it('stops before fetch when cancellation occurs while serializing the request', async () => {
+    const controller = new AbortController();
+    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(response({ ok: true }));
+    const client = createHttpClient({ baseUrl: 'https://api.example.test', fetchImpl });
+    const body = {
+      toJSON: () => {
+        controller.abort('cancelled while preparing');
+        return { amount: '1' };
+      },
+    };
+
+    await expect(
+      client.request(
+        { method: 'POST', path: '/transfers', body, signal: controller.signal },
+        { retries: 0 },
+      ),
+    ).rejects.toMatchObject({ code: 'REQUEST_ABORTED' } satisfies Partial<ApiError>);
+    expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
+  it('stops before fetch when request preparation consumes the deadline', async () => {
+    vi.useFakeTimers();
+    try {
+      const startedAt = Date.now();
+      const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(response({ ok: true }));
+      const client = createHttpClient({ baseUrl: 'https://api.example.test', fetchImpl });
+      const body = {
+        toJSON: () => {
+          vi.setSystemTime(startedAt + 100);
+          return { amount: '1' };
+        },
+      };
+
+      await expect(
+        client.request({ method: 'POST', path: '/transfers', body }, { timeoutMs: 100 }),
+      ).rejects.toMatchObject({ code: 'REQUEST_TIMEOUT' } satisfies Partial<ApiError>);
+      expect(fetchImpl).not.toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('reports timeout when response parsing finishes after the request deadline', async () => {
+    vi.useFakeTimers();
+    try {
+      const startedAt = Date.now();
+      const parsedResponse = new Response('{}', {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+      vi.spyOn(parsedResponse, 'json').mockImplementation(async () => {
+        vi.setSystemTime(startedAt + 100);
+        return { ok: true };
+      });
+      const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(parsedResponse);
+      const client = createHttpClient({ baseUrl: 'https://api.example.test', fetchImpl });
+
+      await expect(
+        client.request({ method: 'GET', path: '/health' }, { timeoutMs: 100 }),
+      ).rejects.toMatchObject({ code: 'REQUEST_TIMEOUT' } satisfies Partial<ApiError>);
+      expect(fetchImpl).toHaveBeenCalledOnce();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('uses the abort reason fallback when an idempotent retry starts after cancellation', async () => {
+    const controller = new AbortController();
+    const fetchImpl = vi.fn<typeof fetch>(() => {
+      controller.abort(null);
+      return Promise.resolve(response({ message: 'busy' }, { status: 503 }));
+    });
+    const client = createHttpClient({ baseUrl: 'https://api.example.test', fetchImpl });
+
+    await expect(
+      client.request(
+        { method: 'GET', path: '/health', signal: controller.signal },
+        { retryDelayMs: 0 },
+      ),
+    ).rejects.toMatchObject({ code: 'REQUEST_ABORTED' } satisfies Partial<ApiError>);
+    expect(fetchImpl).toHaveBeenCalledOnce();
+  });
 
   it('retries transient idempotent failures and then succeeds', async () => {
     const fetchImpl = vi
@@ -198,6 +322,114 @@ describe('createHttpClient', () => {
       client.request<void>({ method: 'DELETE', path: '/addresses/address-1' }),
     ).resolves.toBeUndefined();
     expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
+  it('normalizes a trailing-slash base URL and preserves multipart bodies', async () => {
+    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(response({ uploaded: true }));
+    const client = createHttpClient({ baseUrl: 'https://api.example.test/v1/', fetchImpl });
+    const body = new FormData();
+    body.set('document', new Blob(['statement']), 'statement.txt');
+
+    await expect(
+      client.request({ method: 'POST', path: '/documents', body, headers: { 'X-Upload': 'yes' } }),
+    ).resolves.toEqual({ uploaded: true });
+
+    const [url, init] = fetchImpl.mock.calls[0];
+    const headers = new Headers(init?.headers);
+    expect(url).toBe('https://api.example.test/v1/documents');
+    expect(init?.body).toBe(body);
+    expect(headers.get('content-type')).toBeNull();
+    expect(headers.get('x-upload')).toBe('yes');
+  });
+
+  it('times out before starting a request when the deadline is already exhausted', async () => {
+    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(response({ ok: true }));
+    const client = createHttpClient({ baseUrl: 'https://api.example.test', fetchImpl });
+
+    await expect(
+      client.request({ method: 'GET', path: '/health' }, { timeoutMs: 0 }),
+    ).rejects.toMatchObject({ code: 'REQUEST_TIMEOUT' } satisfies Partial<ApiError>);
+    expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
+  it('uses the non-JSON response body as the error message fallback', async () => {
+    const upstreamResponse = new Response('upstream unavailable', { status: 502 });
+    upstreamResponse.headers.delete('content-type');
+    upstreamResponse.headers.set('x-request-id', 'upstream-123');
+    const fetchImpl = vi.fn<typeof fetch>().mockResolvedValue(upstreamResponse);
+    const client = createHttpClient({ baseUrl: 'https://api.example.test', fetchImpl });
+
+    await expect(client.request({ method: 'POST', path: '/orders' })).rejects.toMatchObject({
+      message: 'Request failed',
+      status: 502,
+      requestId: 'upstream-123',
+    } satisfies Partial<ApiError>);
+  });
+
+  it('does not call the unauthorized handler when the request opts out', async () => {
+    const fetchImpl = vi
+      .fn<typeof fetch>()
+      .mockResolvedValue(response({ message: 'Unauthorized' }, { status: 401 }));
+    const onUnauthorized = vi.fn();
+    const client = createHttpClient({
+      baseUrl: 'https://api.example.test',
+      fetchImpl,
+      onUnauthorized,
+    });
+
+    await expect(
+      client.request({ method: 'GET', path: '/profile', skipUnauthorizedHandler: true }),
+    ).rejects.toMatchObject({ status: 401 } satisfies Partial<ApiError>);
+    expect(onUnauthorized).not.toHaveBeenCalled();
+  });
+
+  it('reports timeout when an unauthorized handler completes after the request deadline', async () => {
+    vi.useFakeTimers();
+    try {
+      let onUnauthorizedStarted!: () => void;
+      let finishUnauthorized!: () => void;
+      const unauthorizedStarted = new Promise<void>((resolve) => {
+        onUnauthorizedStarted = resolve;
+      });
+      const unauthorizedResult = new Promise<void>((resolve) => {
+        finishUnauthorized = resolve;
+      });
+      const fetchImpl = vi
+        .fn<typeof fetch>()
+        .mockResolvedValue(response({ message: 'Unauthorized' }, { status: 401 }));
+      const client = createHttpClient({
+        baseUrl: 'https://api.example.test',
+        fetchImpl,
+        onUnauthorized: () => {
+          onUnauthorizedStarted();
+          return unauthorizedResult;
+        },
+      });
+      const request = client.request({ method: 'GET', path: '/profile' }, { timeoutMs: 100 });
+
+      await unauthorizedStarted;
+      await vi.advanceTimersByTimeAsync(100);
+      finishUnauthorized();
+
+      await expect(request).rejects.toMatchObject({
+        code: 'REQUEST_TIMEOUT',
+      } satisfies Partial<ApiError>);
+      expect(fetchImpl).toHaveBeenCalledOnce();
+      expect(vi.getTimerCount()).toBe(0);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('does not retry a rejected request when the transport rejects with a non-Error value', async () => {
+    const fetchImpl = vi.fn<typeof fetch>().mockRejectedValue('socket unavailable');
+    const client = createHttpClient({ baseUrl: 'https://api.example.test', fetchImpl });
+
+    await expect(client.request({ method: 'POST', path: '/orders' })).rejects.toMatchObject({
+      message: 'Network request failed',
+      code: 'NETWORK_ERROR',
+    } satisfies Partial<ApiError>);
+    expect(fetchImpl).toHaveBeenCalledOnce();
   });
 
   it('returns REQUEST_ABORTED when the caller cancels while the 401 handler is pending', async () => {

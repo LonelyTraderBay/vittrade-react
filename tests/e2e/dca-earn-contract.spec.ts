@@ -54,7 +54,7 @@ test.describe('DCA and Earn contract smoke on staging build', () => {
     let deleteCalled = false;
 
     await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
-    await page.route('https://e2e.invalid/dca/snapshot', (route) =>
+    await page.route('https://e2e.test/dca/snapshot', (route) =>
       route.fulfill({
         json: {
           overview: {
@@ -73,12 +73,12 @@ test.describe('DCA and Earn contract smoke on staging build', () => {
         },
       }),
     );
-    await page.route('https://e2e.invalid/dca/plans', async (route) => {
+    await page.route('https://e2e.test/dca/plans', async (route) => {
       createBody = route.request().postDataJSON() as Record<string, unknown>;
       currentPlan = { ...dcaPlan, amountPerPurchase: createBody.amountPerPurchase as number };
       return route.fulfill({ status: 201, json: currentPlan });
     });
-    await page.route('https://e2e.invalid/dca/plans/dca-plan-1', async (route) => {
+    await page.route('https://e2e.test/dca/plans/dca-plan-1', async (route) => {
       if (route.request().method() === 'PATCH') {
         updateBody = route.request().postDataJSON() as Record<string, unknown>;
         currentPlan = { ...currentPlan!, status: updateBody.status as 'paused' };
@@ -127,10 +127,10 @@ test.describe('DCA and Earn contract smoke on staging build', () => {
     });
 
     await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
-    await page.route('https://e2e.invalid/earn/snapshot', (route) =>
+    await page.route('https://e2e.test/earn/snapshot', (route) =>
       route.fulfill({ json: snapshot() }),
     );
-    await page.route('https://e2e.invalid/earn/subscriptions', async (route) => {
+    await page.route('https://e2e.test/earn/subscriptions', async (route) => {
       subscribeBody = route.request().postDataJSON() as Record<string, unknown>;
       currentPosition = {
         id: 'earn-position-1',
@@ -158,7 +158,7 @@ test.describe('DCA and Earn contract smoke on staging build', () => {
         },
       });
     });
-    await page.route('https://e2e.invalid/earn/redemptions', async (route) => {
+    await page.route('https://e2e.test/earn/redemptions', async (route) => {
       redeemBody = route.request().postDataJSON() as Record<string, unknown>;
       return route.fulfill({
         status: 201,
@@ -201,7 +201,7 @@ test.describe('DCA and Earn contract smoke on staging build', () => {
     const receivedCursors: Array<string | null> = [];
     const receivedDomains: Array<string | null> = [];
     await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
-    await page.route('https://e2e.invalid/earn/transactions**', async (route) => {
+    await page.route('https://e2e.test/earn/transactions**', async (route) => {
       const url = new URL(route.request().url());
       receivedCursors.push(url.searchParams.get('cursor'));
       const domain = url.searchParams.get('domain');

@@ -121,6 +121,61 @@ describe('P2P 2FA settings contract page', () => {
     );
   });
 
+  it('closes an authenticator setup sheet and can reopen it before confirmation', async () => {
+    let setupRequests = 0;
+    server.use(
+      http.get('*/p2p/security/2fa/settings', () => HttpResponse.json(settings)),
+      http.post('*/p2p/security/2fa/authenticator/setup', () => {
+        setupRequests += 1;
+        return HttpResponse.json({
+          secret: `secret-${setupRequests}`,
+          qrCodeUrl: `https://example.test/qr-${setupRequests}.png`,
+          expiresAt: '2026-09-22T11:30:00.000Z',
+        });
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<P2P2FASettingsPage />);
+    await screen.findByText('Authenticator App');
+    await user.click(screen.getByRole('button', { name: 'Bật hoặc tắt Authenticator App' }));
+    expect(await screen.findByAltText('QR setup Authenticator')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Đóng' }));
+    await waitFor(() =>
+      expect(screen.queryByAltText('QR setup Authenticator')).not.toBeInTheDocument(),
+    );
+    await user.click(screen.getByRole('button', { name: 'Bật hoặc tắt Authenticator App' }));
+
+    expect(await screen.findByAltText('QR setup Authenticator')).toBeInTheDocument();
+    expect(setupRequests).toBe(2);
+  });
+
+  it('enables a non-setup authentication method and confirms its success state', async () => {
+    let current = settings;
+    server.use(
+      http.get('*/p2p/security/2fa/settings', () => HttpResponse.json(current)),
+      http.patch('*/p2p/security/2fa/methods/2fa_email', async ({ request }) => {
+        expect(request.headers.get('Idempotency-Key')).toBeTruthy();
+        expect(await request.json()).toEqual({ enabled: true });
+        current = {
+          ...settings,
+          methods: settings.methods.map((method) =>
+            method.id === '2fa_email' ? { ...method, enabled: true } : method,
+          ),
+        };
+        return HttpResponse.json(current);
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<P2P2FASettingsPage />);
+    await screen.findByText('Authenticator App');
+
+    await user.click(screen.getByRole('button', { name: 'Bật hoặc tắt Email' }));
+
+    expect(await screen.findByText('2FA đã bật (2 phương thức)')).toBeInTheDocument();
+    expect(screen.getByText('Phương thức chính: SMS')).toBeInTheDocument();
+  });
+
   it('keeps Authenticator disabled when creating its setup challenge fails', async () => {
     const toastError = vi.spyOn(toast, 'error');
     server.use(
@@ -188,6 +243,16 @@ describe('P2P 2FA settings contract page', () => {
     expect(primaryBody).toHaveBeenCalledWith({ methodId: '2fa_email' });
 
     await user.click(screen.getByRole('button', { name: 'Sửa' }));
+    expect(
+      await screen.findByRole('spinbutton', { name: 'Giá trị threshold' }),
+    ).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Đóng' }));
+    await waitFor(() =>
+      expect(
+        screen.queryByRole('spinbutton', { name: 'Giá trị threshold' }),
+      ).not.toBeInTheDocument(),
+    );
+    await user.click(screen.getByRole('button', { name: 'Sửa' }));
     const thresholdInput = screen.getByRole('spinbutton', { name: 'Giá trị threshold' });
     fireEvent.change(thresholdInput, { target: { value: '2500' } });
     await user.click(screen.getByRole('button', { name: 'Lưu thay đổi' }));
@@ -242,6 +307,13 @@ describe('P2P 2FA settings contract page', () => {
       expect.objectContaining({ duration: 2000 }),
     );
 
+    fireEvent.change(thresholdInput, { target: { value: '2500' } });
+    await user.click(screen.getByRole('button', { name: 'Lưu thay đổi' }));
+    await waitFor(() =>
+      expect(toastError).toHaveBeenCalledWith('Không thể cập nhật threshold.', expect.anything()),
+    );
+    await user.click(screen.getByRole('button', { name: 'Đóng' }));
+
     await user.click(screen.getByRole('button', { name: 'Bật hoặc tắt SMS' }));
     await waitFor(() =>
       expect(toastError).toHaveBeenCalledWith(
@@ -267,5 +339,144 @@ describe('P2P 2FA settings contract page', () => {
       await screen.findByText('P2P security write permission is required to change 2FA settings.'),
     ).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Bật hoặc tắt SMS' })).toBeDisabled();
+    await userEvent.click(screen.getByRole('button', { name: 'Sửa' }));
+    expect(screen.queryByRole('spinbutton', { name: 'Giá trị threshold' })).not.toBeInTheDocument();
+  });
+
+  it('recovers from failed 2FA settings reads using the error-state retry action', async () => {
+    let reads = 0;
+    server.use(
+      http.get('*/p2p/security/2fa/settings', () => {
+        reads += 1;
+        return reads <= 3
+          ? HttpResponse.json({ message: 'Security service unavailable' }, { status: 503 })
+          : HttpResponse.json(settings);
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<P2P2FASettingsPage />);
+
+    expect(
+      await screen.findByText('Không thể tải cài đặt 2FA', {}, { timeout: 5_000 }),
+    ).toBeVisible();
+    await user.click(screen.getByRole('button', { name: 'Thử lại' }));
+
+    expect(await screen.findByText('2FA đã bật (1 phương thức)')).toBeInTheDocument();
+    expect(reads).toBe(4);
+  });
+
+  it('renders multiple thresholds without a primary authentication method', async () => {
+    const noPrimarySettings: P2P2FASettingsResponse = {
+      ...settings,
+      methods: settings.methods.map((method) => ({ ...method, isPrimary: false })),
+      thresholds: [
+        ...settings.thresholds,
+        {
+          id: 'create_order',
+          label: 'Create order',
+          description: 'Yêu cầu 2FA khi tạo lệnh',
+          value: 0,
+          unit: 'USDT',
+          enabled: false,
+        },
+      ],
+    };
+    server.use(http.get('*/p2p/security/2fa/settings', () => HttpResponse.json(noPrimarySettings)));
+    renderWithProviders(<P2P2FASettingsPage />);
+
+    expect(await screen.findByText('Phương thức chính: Chưa chọn')).toBeInTheDocument();
+    expect(screen.getByText('Release order')).toBeInTheDocument();
+    expect(screen.getByText('Create order')).toBeInTheDocument();
+    expect(screen.queryByText('≥ 0 USDT')).not.toBeInTheDocument();
+  });
+
+  it('keeps the current primary method and reports primary-method update failures', async () => {
+    const toastError = vi.spyOn(toast, 'error');
+    server.use(
+      http.get('*/p2p/security/2fa/settings', () =>
+        HttpResponse.json({
+          ...settings,
+          methods: settings.methods.map((method) =>
+            method.id === '2fa_email' ? { ...method, enabled: true } : method,
+          ),
+        }),
+      ),
+      http.post('*/p2p/security/2fa/primary', () =>
+        HttpResponse.json({ message: 'Primary method update failed' }, { status: 500 }),
+      ),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<P2P2FASettingsPage />);
+    await screen.findByText('Phương thức chính: SMS');
+
+    await user.click(screen.getByRole('button', { name: 'Set primary 2FA method: Email' }));
+
+    await waitFor(() =>
+      expect(toastError).toHaveBeenCalledWith(
+        'Không thể đặt phương thức chính.',
+        expect.anything(),
+      ),
+    );
+    expect(screen.getByText('Phương thức chính: SMS')).toBeInTheDocument();
+  });
+
+  it('reports threshold-policy update failures and leaves the saved policy unchanged', async () => {
+    const toastError = vi.spyOn(toast, 'error');
+    server.use(
+      http.get('*/p2p/security/2fa/settings', () => HttpResponse.json(settings)),
+      http.patch('*/p2p/security/2fa/thresholds/release', () =>
+        HttpResponse.json({ message: 'Threshold update failed' }, { status: 500 }),
+      ),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<P2P2FASettingsPage />);
+    await screen.findByText('≥ 1,000 USDT');
+
+    await user.click(screen.getByRole('button', { name: 'Bật hoặc tắt Release order' }));
+
+    await waitFor(() =>
+      expect(toastError).toHaveBeenCalledWith(
+        'Không thể cập nhật chính sách threshold.',
+        expect.anything(),
+      ),
+    );
+    expect(screen.getByText('≥ 1,000 USDT')).toBeInTheDocument();
+  });
+
+  it('keeps the authenticator setup available after an expired-code confirmation fails', async () => {
+    const toastError = vi.spyOn(toast, 'error');
+    let confirmRequests = 0;
+    server.use(
+      http.get('*/p2p/security/2fa/settings', () => HttpResponse.json(settings)),
+      http.post('*/p2p/security/2fa/authenticator/setup', () =>
+        HttpResponse.json({
+          secret: 'secret-expired',
+          qrCodeUrl: 'https://example.test/qr-expired.png',
+          expiresAt: '2026-09-22T11:30:00.000Z',
+        }),
+      ),
+      http.post('*/p2p/security/2fa/authenticator/confirm', () => {
+        confirmRequests += 1;
+        return HttpResponse.json({ message: 'Expired code' }, { status: 401 });
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<P2P2FASettingsPage />);
+    await screen.findByText('Authenticator App');
+    await user.click(screen.getByRole('button', { name: 'Bật hoặc tắt Authenticator App' }));
+    const codeInput = await screen.findByRole('textbox', { name: 'Mã Authenticator' });
+    fireEvent.change(codeInput, { target: { value: '123456' } });
+    expect(codeInput).toHaveValue('123456');
+    expect(screen.getByRole('button', { name: 'Xác nhận setup' })).toBeEnabled();
+    await user.click(screen.getByRole('button', { name: 'Xác nhận setup' }));
+    await waitFor(() => expect(confirmRequests).toBe(1));
+
+    await waitFor(() =>
+      expect(toastError).toHaveBeenCalledWith(
+        'Mã Authenticator không hợp lệ hoặc đã hết hạn.',
+        expect.anything(),
+      ),
+    );
+    expect(screen.getByRole('textbox', { name: 'Mã Authenticator' })).toHaveValue('123456');
   });
 });

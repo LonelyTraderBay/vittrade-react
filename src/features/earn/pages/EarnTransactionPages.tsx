@@ -66,7 +66,6 @@ export function EarnProductDetailPage() {
   }
 
   const submit = async () => {
-    if (!canSubscribe || !canSubmit) return;
     try {
       const receipt = await mutation.mutateAsync({
         request: { productId: product.id, amount: amountNumber },
@@ -187,7 +186,7 @@ export function EarnRedeemPage() {
   const position = snapshotQuery.data?.positions.find((item) => item.id === positionId);
   const amountNumber = Number(amount);
   const canSubmit =
-    canRedeem && Boolean(position) && amountNumber > 0 && amountNumber <= (position?.amount ?? 0);
+    canRedeem && position !== undefined && amountNumber > 0 && amountNumber <= position.amount;
 
   if (snapshotQuery.isPending) return <LoadingPage title="Rút vốn" />;
   if (snapshotQuery.isError || !position) {
@@ -200,7 +199,6 @@ export function EarnRedeemPage() {
   }
 
   const submit = async () => {
-    if (!canRedeem || !canSubmit) return;
     try {
       const receipt = await mutation.mutateAsync({
         request: { positionId: position.id, amount: amountNumber },
@@ -290,6 +288,8 @@ export function EarnReceiptPage() {
   const prefix = useRoutePrefix();
   const navigate = useNavigate();
   const location = useLocation();
+  const { domain: routeDomain } = useParams();
+  const domain = routeDomain === 'staking' ? 'staking' : 'savings';
   const receipt = (location.state as { receipt?: EarnReceipt } | null)?.receipt;
   if (!receipt)
     return (
@@ -300,7 +300,7 @@ export function EarnReceiptPage() {
           title="Không có biên nhận"
           subtitle="Hãy thực hiện giao dịch từ trang Earn."
           ctaLabel="Về Earn"
-          onCta={() => navigate(`${prefix}/earn/savings`)}
+          onCta={() => navigate(`${prefix}/earn/${domain}`)}
         />
       </PageLayout>
     );
@@ -351,7 +351,9 @@ export function EarnReceiptPage() {
             <span className="max-w-[55%] truncate font-mono text-xs">{receipt.id}</span>
           </div>
         </TrCard>
-        <CTAButton onClick={() => navigate(`${prefix}/earn/savings`)}>Về Tiết kiệm</CTAButton>
+        <CTAButton onClick={() => navigate(`${prefix}/earn/${domain}`)}>
+          {domain === 'staking' ? 'Về Staking' : 'Về Tiết kiệm'}
+        </CTAButton>
       </PageContent>
     </PageLayout>
   );

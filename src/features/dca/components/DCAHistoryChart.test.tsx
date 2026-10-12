@@ -8,7 +8,7 @@ import { DCAHistoryChart } from './DCAHistoryChart';
 
 vi.mock('html2canvas', () => ({ default: vi.fn() }));
 
-const annotationOverlayState = vi.hoisted(() => ({ hasAnnotations: false }));
+const annotationOverlayState = vi.hoisted(() => ({ hasAnnotations: false, canvasAvailable: true }));
 
 vi.mock('./ChartAnnotationOverlay', async () => {
   const React = await import('react');
@@ -16,12 +16,12 @@ vi.mock('./ChartAnnotationOverlay', async () => {
   const MockChartAnnotationOverlay = React.forwardRef<
     ChartAnnotationHandle,
     ChartAnnotationOverlayProps
-  >(({ width, height, snapPoints = [] }, ref) => {
+  >(({ active, onClose, width, height, snapPoints = [] }, ref) => {
     const canvasRef = React.useRef<HTMLCanvasElement>(null);
     React.useImperativeHandle(
       ref,
       () => ({
-        getCanvas: () => canvasRef.current,
+        getCanvas: () => (annotationOverlayState.canvasAvailable ? canvasRef.current : null),
         hasAnnotations: () => annotationOverlayState.hasAnnotations,
         clearAll: () => {
           annotationOverlayState.hasAnnotations = false;
@@ -30,12 +30,15 @@ vi.mock('./ChartAnnotationOverlay', async () => {
       [],
     );
     return (
-      <canvas
-        ref={canvasRef}
-        data-width={width}
-        data-height={height}
-        data-snap-point-count={snapPoints.length}
-      />
+      <>
+        {active && <button onClick={onClose}>Close chart annotations</button>}
+        <canvas
+          ref={canvasRef}
+          data-width={width}
+          data-height={height}
+          data-snap-point-count={snapPoints.length}
+        />
+      </>
     );
   });
 
@@ -63,7 +66,9 @@ const originalResizeObserver = Object.getOwnPropertyDescriptor(globalThis, 'Resi
 
 afterEach(() => {
   vi.restoreAllMocks();
+  vi.useRealTimers();
   annotationOverlayState.hasAnnotations = false;
+  annotationOverlayState.canvasAvailable = true;
   for (const [property, descriptor] of [
     ['share', originalShare],
     ['canShare', originalCanShare],
@@ -186,6 +191,62 @@ describe('DCAHistoryChart', () => {
     expect(container.textContent).toMatch(/\d+\.\d+B/);
   });
 
+  it('uses stable snap ranges when timestamps and values are flat', () => {
+    const resizeObservers: Array<{
+      target: Element;
+      callback: ResizeObserverCallback;
+      observer: ResizeObserver;
+    }> = [];
+    class TestResizeObserver {
+      constructor(private readonly callback: ResizeObserverCallback) {}
+
+      observe(target: Element) {
+        resizeObservers.push({ target, callback: this.callback, observer: this as ResizeObserver });
+      }
+
+      unobserve() {}
+
+      disconnect() {}
+    }
+    Object.defineProperty(globalThis, 'ResizeObserver', {
+      configurable: true,
+      value: TestResizeObserver,
+    });
+    const flatHistory = history.map((point) => ({
+      ...point,
+      date: history[0].date,
+      portfolioValue: 1_000_000,
+      totalInvested: 1_000_000,
+    }));
+    const { container } = renderWithProviders(<DCAHistoryChart data={flatHistory} interactive />);
+
+    act(() => {
+      for (const observation of resizeObservers) {
+        observation.callback(
+          [
+            {
+              target: observation.target,
+              contentRect: {
+                bottom: 300,
+                height: 300,
+                left: 0,
+                right: 400,
+                top: 0,
+                width: 400,
+                x: 0,
+                y: 0,
+                toJSON: () => ({}),
+              },
+            } as ResizeObserverEntry,
+          ],
+          observation.observer,
+        );
+      }
+    });
+
+    expect(container.querySelector('canvas')).toHaveAttribute('data-snap-point-count', '2');
+  });
+
   it('derives a standard period label and supports pinch zoom and double-tap reset', () => {
     const { container } = renderWithProviders(<DCAHistoryChart data={history} interactive />);
     const chartContainer = container.querySelector('.touch-none')!;
@@ -224,6 +285,20 @@ describe('DCAHistoryChart', () => {
     expect(screen.queryByRole('button', { name: 'Đặt lại zoom' })).not.toBeInTheDocument();
   });
 
+  it('ignores touch movement before a gesture and while annotations are active', () => {
+    const { container } = renderWithProviders(<DCAHistoryChart data={history} interactive />);
+    const chartContainer = container.querySelector('.touch-none')!;
+
+    fireEvent.touchMove(chartContainer, { touches: [{ clientX: 200, clientY: 50 }] });
+    fireEvent.click(screen.getByRole('button', { name: 'Bật ghi chú' }));
+    fireEvent.touchStart(chartContainer, { touches: [{ clientX: 200, clientY: 50 }] });
+    fireEvent.touchMove(chartContainer, { touches: [{ clientX: 250, clientY: 50 }] });
+    expect(screen.getByRole('button', { name: 'Tắt ghi chú' })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Close chart annotations' }));
+    expect(screen.getByRole('button', { name: 'Bật ghi chú' })).toBeInTheDocument();
+  });
+
   it('keeps the zoomed time window active while panning against both chart bounds', () => {
     const { container } = renderWithProviders(<DCAHistoryChart data={history} interactive />);
     const chartContainer = container.querySelector('.touch-none')!;
@@ -257,7 +332,56 @@ describe('DCAHistoryChart', () => {
     expect(screen.getByText(/\d+%$/)).toBeInTheDocument();
   });
 
+  it('clamps pinch gestures that move beyond either chart edge', () => {
+    const { container } = renderWithProviders(<DCAHistoryChart data={history} interactive />);
+    const chartContainer = container.querySelector('.touch-none')!;
+    vi.spyOn(chartContainer, 'getBoundingClientRect').mockReturnValue({
+      bottom: 300,
+      height: 300,
+      left: 0,
+      right: 400,
+      top: 0,
+      width: 400,
+      x: 0,
+      y: 0,
+      toJSON: () => ({}),
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Phóng to' }));
+    fireEvent.touchStart(chartContainer, {
+      touches: [
+        { clientX: 750, clientY: 50 },
+        { clientX: 850, clientY: 50 },
+      ],
+    });
+    fireEvent.touchMove(chartContainer, { touches: [{ clientX: 800, clientY: 50 }] });
+    fireEvent.touchMove(chartContainer, {
+      touches: [
+        { clientX: 760, clientY: 50 },
+        { clientX: 840, clientY: 50 },
+      ],
+    });
+    expect(screen.getByText('75%')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Đặt lại zoom' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Phóng to' }));
+    fireEvent.touchStart(chartContainer, {
+      touches: [
+        { clientX: -450, clientY: 50 },
+        { clientX: -350, clientY: 50 },
+      ],
+    });
+    fireEvent.touchMove(chartContainer, {
+      touches: [
+        { clientX: -440, clientY: 50 },
+        { clientX: -360, clientY: 50 },
+      ],
+    });
+    expect(screen.getByText('75%')).toBeInTheDocument();
+  });
+
   it('exports a chart image through the download fallback', async () => {
+    vi.useFakeTimers();
     const exportCanvas = document.createElement('canvas');
     vi.mocked(html2canvas).mockResolvedValue(exportCanvas);
     vi.spyOn(HTMLCanvasElement.prototype, 'toDataURL').mockReturnValue(
@@ -268,8 +392,14 @@ describe('DCAHistoryChart', () => {
     renderWithProviders(<DCAHistoryChart data={history} />);
     fireEvent.click(screen.getByRole('button', { name: 'Chia sẻ biểu đồ' }));
 
-    await waitFor(() => expect(clickLink).toHaveBeenCalledTimes(1));
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(50);
+    });
+    expect(clickLink).toHaveBeenCalledTimes(1);
     expect(html2canvas).toHaveBeenCalledTimes(1);
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(2_000);
+    });
   });
 
   it('restores annotation mode when image capture fails', async () => {
@@ -349,6 +479,86 @@ describe('DCAHistoryChart', () => {
     expect(canShare).toHaveBeenCalledWith(expect.objectContaining({ files: expect.any(Array) }));
   });
 
+  it('skips annotation composition when the overlay has no canvas', async () => {
+    const exportCanvas = document.createElement('canvas');
+    Object.defineProperty(exportCanvas, 'toBlob', {
+      configurable: true,
+      value: vi.fn((callback: BlobCallback) => callback(new Blob(['chart']))),
+    });
+    const context = exportCanvas.getContext('2d')!;
+    const drawImage = vi.spyOn(context, 'drawImage');
+    vi.spyOn(exportCanvas, 'getContext').mockReturnValue(context);
+    const canShare = vi.fn().mockReturnValue(false);
+    Object.defineProperty(navigator, 'canShare', { configurable: true, value: canShare });
+    Object.defineProperty(navigator, 'share', { configurable: true, value: vi.fn() });
+    vi.mocked(html2canvas).mockClear().mockResolvedValue(exportCanvas);
+    annotationOverlayState.hasAnnotations = true;
+    annotationOverlayState.canvasAvailable = false;
+
+    renderWithProviders(<DCAHistoryChart data={history} />);
+    drawImage.mockClear();
+    fireEvent.click(screen.getByRole('button', { name: 'Chia sẻ biểu đồ' }));
+
+    await waitFor(() => expect(canShare).toHaveBeenCalledOnce());
+    expect(drawImage).not.toHaveBeenCalled();
+  });
+
+  it('continues an export when the canvas context is unavailable', async () => {
+    vi.useFakeTimers();
+    const exportCanvas = document.createElement('canvas');
+    Object.defineProperty(exportCanvas, 'toBlob', {
+      configurable: true,
+      value: vi.fn((callback: BlobCallback) => callback(new Blob(['chart']))),
+    });
+    const getContext = vi.spyOn(exportCanvas, 'getContext').mockReturnValue(null);
+    const canShare = vi.fn().mockReturnValue(true);
+    const share = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'canShare', { configurable: true, value: canShare });
+    Object.defineProperty(navigator, 'share', { configurable: true, value: share });
+    vi.mocked(html2canvas).mockClear().mockResolvedValue(exportCanvas);
+    annotationOverlayState.hasAnnotations = true;
+
+    renderWithProviders(<DCAHistoryChart data={history} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Chia sẻ biểu đồ' }));
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(50);
+    });
+
+    expect(getContext).toHaveBeenCalledWith('2d');
+    expect(share).toHaveBeenCalledOnce();
+  });
+
+  it('keeps export disabled during capture and clears the success state after sharing', async () => {
+    vi.useFakeTimers();
+    const exportCanvas = document.createElement('canvas');
+    Object.defineProperty(exportCanvas, 'toBlob', {
+      configurable: true,
+      value: vi.fn((callback: BlobCallback) => callback(new Blob(['chart']))),
+    });
+    const canShare = vi.fn().mockReturnValue(true);
+    const share = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'canShare', { configurable: true, value: canShare });
+    Object.defineProperty(navigator, 'share', { configurable: true, value: share });
+    vi.mocked(html2canvas).mockClear().mockResolvedValue(exportCanvas);
+
+    renderWithProviders(<DCAHistoryChart data={history} />);
+    const exportButton = screen.getByRole('button', { name: 'Chia sẻ biểu đồ' });
+    fireEvent.click(exportButton);
+    expect(exportButton).toBeDisabled();
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(50);
+    });
+    expect(share).toHaveBeenCalledOnce();
+    expect(html2canvas).toHaveBeenCalledOnce();
+    expect(exportButton.querySelector('.lucide-check')).toBeInTheDocument();
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(2_000);
+    });
+    expect(exportButton.querySelector('.lucide-check')).not.toBeInTheDocument();
+  });
+
   it('falls back to download when image encoding returns no blob', async () => {
     const exportCanvas = document.createElement('canvas');
     Object.defineProperty(exportCanvas, 'toBlob', {
@@ -417,5 +627,36 @@ describe('DCAHistoryChart', () => {
     await waitFor(() => expect(share).toHaveBeenCalledTimes(1));
     await new Promise((resolve) => setTimeout(resolve, 0));
     expect(download).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    { label: 'an object without a name', error: {}, shouldDownload: true },
+    { label: 'a null rejection', error: null, shouldDownload: true },
+    { label: 'a plain AbortError object', error: { name: 'AbortError' }, shouldDownload: false },
+  ])('handles sharing rejection as $label', async ({ error, shouldDownload }) => {
+    vi.useFakeTimers();
+    const exportCanvas = document.createElement('canvas');
+    Object.defineProperty(exportCanvas, 'toBlob', {
+      configurable: true,
+      value: vi.fn((callback: BlobCallback) => callback(new Blob(['chart']))),
+    });
+    const canShare = vi.fn().mockReturnValue(true);
+    const share = vi.fn().mockRejectedValue(error);
+    Object.defineProperty(navigator, 'canShare', { configurable: true, value: canShare });
+    Object.defineProperty(navigator, 'share', { configurable: true, value: share });
+    vi.mocked(html2canvas).mockClear().mockResolvedValue(exportCanvas);
+    vi.spyOn(HTMLCanvasElement.prototype, 'toDataURL').mockReturnValue(
+      'data:image/png;base64,test',
+    );
+    const download = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
+
+    renderWithProviders(<DCAHistoryChart data={history} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Chia sẻ biểu đồ' }));
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(50);
+    });
+
+    expect(share).toHaveBeenCalledOnce();
+    expect(download).toHaveBeenCalledTimes(shouldDownload ? 1 : 0);
   });
 });

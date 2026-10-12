@@ -172,11 +172,12 @@ describe('WithdrawPage', () => {
 
   it('validates required network memo and minimum amount before requesting a challenge', async () => {
     installReadHandlers();
-    let challengeRequested = false;
+    let challengeBody: unknown;
     server.use(
       http.get('*/wallet/withdrawal/networks', () =>
         HttpResponse.json({
           networks: [
+            networks.networks[0],
             {
               id: 'tag-network',
               name: 'Tag Network',
@@ -184,14 +185,13 @@ describe('WithdrawPage', () => {
               minWithdraw: 5,
               maxWithdraw: 50,
               requiresMemo: true,
-              memoLabel: 'Destination tag',
             },
           ],
         }),
       ),
-      http.post('*/wallet/withdrawals/challenge', () => {
-        challengeRequested = true;
-        return HttpResponse.json({ id: 'challenge-1', method: 'totp' });
+      http.post('*/wallet/withdrawals/challenge', async ({ request }) => {
+        challengeBody = await request.json();
+        return HttpResponse.json({ id: 'challenge-memo-1', method: 'totp' });
       }),
     );
 
@@ -199,6 +199,7 @@ describe('WithdrawPage', () => {
       routerProps: { initialEntries: ['/wallet/withdraw/USDT'] },
     });
     await screen.findByRole('combobox');
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'tag-network' } });
     await userEvent.type(
       document.getElementById('withdraw-address') as HTMLInputElement,
       'wallet-address-long-enough-for-validation-123456',
@@ -206,9 +207,21 @@ describe('WithdrawPage', () => {
     await userEvent.type(document.getElementById('withdraw-amount') as HTMLInputElement, '4');
     await userEvent.click(getContinueButton());
 
-    expect(await screen.findByText('Destination tag là bắt buộc cho mạng này.')).toBeVisible();
+    expect(await screen.findByText('Memo là bắt buộc cho mạng này.')).toBeVisible();
     expect(screen.getByText('Tối thiểu 5 USDT.')).toBeVisible();
-    expect(challengeRequested).toBe(false);
+
+    await userEvent.type(document.getElementById('withdraw-memo') as HTMLInputElement, 'tag-123');
+    fireEvent.change(screen.getByLabelText('Số lượng rút'), { target: { value: '6' } });
+    await userEvent.click(getContinueButton());
+    await userEvent.click(getButtonContaining('2FA'));
+    await waitFor(() => expect(challengeBody).toBeDefined());
+    expect(challengeBody).toEqual({
+      asset: 'USDT',
+      networkId: 'tag-network',
+      address: 'wallet-address-long-enough-for-validation-123456',
+      memo: 'tag-123',
+      amount: 6,
+    });
   });
 
   it('sets the maximum withdrawable amount to the lower of available balance and network limit', async () => {

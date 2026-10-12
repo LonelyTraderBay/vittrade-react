@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { TrCard } from '@/shared/ui/TrCard';
-import { useThemeColors, type ThemeColors } from '@/shared/hooks/useThemeColors';
+import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import type { P2PAdCreateRequest, P2PAdType } from '../model/p2p-types';
 
 const paymentOptions = [
@@ -15,8 +15,13 @@ const paymentOptions = [
   'VNPay',
 ];
 
+type P2PAdColors = Record<
+  'primary' | 'sell' | 'surface' | 'surface2' | 'text1' | 'text2' | 'text3',
+  string
+>;
+
 interface P2PCreateAdFormProps {
-  colors: ThemeColors;
+  colors: P2PAdColors;
   adType: P2PAdType;
   asset: string;
   currency: string;
@@ -328,7 +333,7 @@ export function P2PCreateAdForm({
 
 interface P2PCreateAdConfirmationProps {
   request: P2PAdCreateRequest;
-  colors: ThemeColors;
+  colors: P2PAdColors;
   open: boolean;
   canWriteAds: boolean;
   pending: boolean;

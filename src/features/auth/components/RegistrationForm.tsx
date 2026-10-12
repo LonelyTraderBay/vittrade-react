@@ -80,6 +80,7 @@ export function RegistrationForm() {
   const [errors, setErrors] = useState<Partial<Record<RegistrationField, string>>>({});
   const [requestError, setRequestError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const submitInFlight = useRef(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const updateDraft = <K extends keyof RegistrationDraft>(
@@ -96,7 +97,7 @@ export function RegistrationForm() {
     event.preventDefault();
     const nextErrors = validateDraft(draft);
     setErrors(nextErrors);
-    if (Object.keys(nextErrors).length > 0 || isSubmitting) return;
+    if (Object.keys(nextErrors).length > 0 || submitInFlight.current) return;
 
     const request: RegistrationRequest = {
       fullName: draft.fullName.trim(),
@@ -107,6 +108,7 @@ export function RegistrationForm() {
       acceptedTerms: true,
     };
     idempotencyKey.current ??= crypto.randomUUID();
+    submitInFlight.current = true;
     setIsSubmitting(true);
     setRequestError('');
     try {
@@ -121,6 +123,7 @@ export function RegistrationForm() {
           : 'Chưa thể bắt đầu xác minh. Kiểm tra kết nối rồi thử lại.',
       );
     } finally {
+      submitInFlight.current = false;
       setIsSubmitting(false);
     }
   };

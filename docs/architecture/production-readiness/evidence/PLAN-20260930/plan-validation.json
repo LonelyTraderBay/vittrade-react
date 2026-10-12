@@ -1,0 +1,77 @@
+{
+  "observedAt": "2026-09-30T07:36:14.403Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "scope": {
+    "gitTrackedAtAudit": 1486,
+    "currentTrackedAndNonignored": 1521,
+    "cataloguedFiles": 1724,
+    "plannedPaths": 203,
+    "tasks": 38,
+    "steps": 205,
+    "pages": 129,
+    "activeRouteDeclarations": 427,
+    "operations": 154,
+    "missingCurrentFiles": [],
+    "unmappedSteps": [],
+    "scopeRows": 1724,
+    "planStepRows": 205
+  },
+  "history": {
+    "baselineUnchanged": true,
+    "productTaskStepMilestoneStatesUnchanged": true,
+    "pageRouteOperationRecordsUnchanged": true,
+    "previousChangesEvidenceSessionsDecisionsPreserved": true,
+    "protectedInstructionBytesUnchanged": true,
+    "applicationCodeChanges": 0
+  },
+  "checks": {
+    "existingTrackingChecker": {
+      "exitCode": 0,
+      "errorCount": 0,
+      "scope": {
+        "tasks": 38,
+        "steps": 205,
+        "pages": 129,
+        "routeDeclarations": 427,
+        "operations": 154,
+        "filesOutsidePlan": 908
+      },
+      "progress": {
+        "tasksDone": 10,
+        "tasksBlocked": 0,
+        "tasksNotApplicable": 0,
+        "stepsDone": 54,
+        "uiPagesDone": 0,
+        "userAcceptedPages": 0,
+        "unclassifiedRoutes": 0,
+        "routeDeclarationsWithResolvedUrls": 427,
+        "routeDeclarationsWithoutResolvedUrls": 0,
+        "backendOperationsDone": 0
+      }
+    },
+    "localLinks": {
+      "files": [
+        "docs/architecture/production-readiness/PLAN.md",
+        "docs/architecture/production-readiness/SCOPE.md",
+        "docs/ai/WORKFLOW.md",
+        "docs/ai/PRODUCTION-READINESS-PROMPT.md",
+        "docs/architecture/production-readiness/evidence/PLAN-20260930/AUDIT.md"
+      ],
+      "checked": 1915
+    },
+    "newMarkdownBlocks": "pass",
+    "trackingJson": "parse pass; unchanged historical JSON layout retained",
+    "gitDiffCheck": {
+      "exitCode": 0,
+      "stderr": "warning: in the working copy of 'docs/ai/PRODUCTION-READINESS-PROMPT.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/ai/WORKFLOW.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/architecture/production-readiness/PLAN.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/architecture/production-readiness/SCOPE.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/architecture/production-readiness/TRACKING.json', LF will be replaced by CRLF the next time Git touches it"
+    }
+  },
+  "errors": [],
+  "result": "pass",
+  "limitations": [
+    "Documentation-only verification; no application suite rerun after planning.",
+    "Four application audit gates remain failed until implementation.",
+    "Extended scope mapping was validated here; B07.03 must upgrade the canonical checker.",
+    "No Node22/Ubuntu CI, real backend/HTTPS staging, RUM/SLO or rollback verified."
+  ]
+}

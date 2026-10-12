@@ -278,7 +278,8 @@ export function TwoFASetupPage() {
               className="rounded-2xl p-4 flex flex-col gap-2"
               style={{ background: c.surface2, border: `1px solid ${c.borderSolid}` }}
             >
-              {(setup?.backupCodes ?? []).map((code, i) => (
+              {/* Step 3 follows only a Zod-validated setup challenge with required backup codes. */}
+              {setup!.backupCodes.map((code, i) => (
                 <div key={code} className="flex items-center justify-between">
                   <span style={{ color: c.text3, fontSize: 12, width: 20 }}>{i + 1}.</span>
                   <span
@@ -330,7 +331,7 @@ export function TwoFASetupPage() {
               loading={isLoading}
               variant="success"
             >
-              {isLoading ? 'Đang hoàn tất...' : '✓ Hoàn tất thiết lập 2FA'}
+              ✓ Hoàn tất thiết lập 2FA
             </CTAButton>
           </div>
         )}

@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261002-017",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "read-only-openapi-forbidden-contract-audit",
+  "observedAt": "2026-10-02T02:51:01Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "environment": "Windows 11, Python 3 with PyYAML 6.0.3; current primary worktree. Read-only OpenAPI, matrix and operation-map parsing; no browser or API side effect.",
+  "commandOrSteps": "Resolve the profile.forbidden row operationIds against contracts/openapi/profile.yaml and operation-mock-map; count operation-level HTTP 403 responses.",
+  "expected": "Only run a forbidden browser case when a mapped contract operation declares HTTP 403; preserve not_verified if none does.",
+  "actual": "Resolved 7/7 mapped Profile operations and 7/7 exact operation-map paths. The contract declares HTTP 401 on all seven operations but HTTP 403 on 0/7. The current profile.forbidden row remains not_verified; no browser case ran and no response was synthesized.",
+  "result": "pass",
+  "artifact": "docs\\architecture\\production-readiness\\evidence\\A06\\profile-forbidden-contract-audit-current-2026-10-02.json",
+  "scenario": {
+    "id": "profile.forbidden",
+    "state": "forbidden",
+    "executionStatus": "not_verified",
+    "operationIds": [
+      "getProfile",
+      "updateProfile",
+      "listTrustedDevices",
+      "revokeDevice",
+      "setDeviceTrust",
+      "listProfileActivity",
+      "listSubAccounts"
+    ]
+  },
+  "operations": [
+    {
+      "operationId": "getProfile",
+      "method": "GET",
+      "path": "/profile",
+      "responseCodes": ["200", "401"]
+    },
+    {
+      "operationId": "updateProfile",
+      "method": "PATCH",
+      "path": "/profile",
+      "responseCodes": ["200", "400", "401"]
+    },
+    {
+      "operationId": "listTrustedDevices",
+      "method": "GET",
+      "path": "/profile/devices",
+      "responseCodes": ["200", "401"]
+    },
+    {
+      "operationId": "revokeDevice",
+      "method": "POST",
+      "path": "/profile/devices/{deviceId}/revoke",
+      "responseCodes": ["204", "401", "404"]
+    },
+    {
+      "operationId": "setDeviceTrust",
+      "method": "PATCH",
+      "path": "/profile/devices/{deviceId}/trust",
+      "responseCodes": ["200", "401", "404"]
+    },
+    {
+      "operationId": "listProfileActivity",
+      "method": "GET",
+      "path": "/profile/activity",
+      "responseCodes": ["200", "401"]
+    },
+    {
+      "operationId": "listSubAccounts",
+      "method": "GET",
+      "path": "/profile/sub-accounts",
+      "responseCodes": ["200", "401"]
+    }
+  ],
+  "counts": {
+    "mappedOperations": 7,
+    "exactOperationMapMatches": 7,
+    "operationsDeclaring401": 7,
+    "operationsDeclaring403": 0
+  },
+  "scenarioMatrixSummary": {
+    "scenariosDefined": 106,
+    "scenarioRowsWithFreshBrowserEvidence": 81,
+    "scenarioRowsFullyCoveredByFreshBrowserEvidence": 38,
+    "uniqueOperationsWithFreshBrowserEvidence": 88,
+    "runtimeEvidenceFresh": false,
+    "freshScenarioEvidenceSidecars": 81,
+    "registeredScenarioEvidenceSidecars": 81,
+    "sourceHashStaleScenarioEvidenceSidecars": 0
+  },
+  "nextAction": "Continue A06.03 at referral.forbidden in current unresolved matrix order; inspect its current contract for HTTP 403.",
+  "sourceHashes": {
+    "docs\\architecture\\production-readiness\\evidence\\A06\\scenario-matrix-2026-09-28.json": "0bbf7c7a887415389265aa3fa2f2c07fc670a070ac4f692b55fae87ff19922f4",
+    "contracts\\openapi\\profile.yaml": "6830c4976f5b94b4f78e08b824eabd1c18b41bf96f23613412db065575f1d5d8",
+    "docs\\architecture\\production-readiness\\evidence\\A06\\operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320"
+  },
+  "limitations": [
+    "Static contract audit only; backend authorization and browser behavior are unverified.",
+    "The repository-wide check-tracking gate remains failed under EV-20261002-014."
+  ]
+}

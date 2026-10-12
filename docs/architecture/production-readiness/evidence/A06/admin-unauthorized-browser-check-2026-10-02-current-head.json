@@ -1,0 +1,630 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-02T18:59:52.591Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "origin": "http://127.0.0.1:4188",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "admin.unauthorized",
+    "domain": "admin",
+    "state": "unauthorized",
+    "status": "passed",
+    "persona": "admin (preview only)",
+    "role": "admin",
+    "permissions": ["admin:read"],
+    "routes": ["/w/admin", "/w/admin/funnels", "/w/admin/abtests"],
+    "operationIds": [
+      "getAdminOverview",
+      "getAdminFunnel",
+      "listAdminAbTests",
+      "getAdminAbTest",
+      "updateAdminFeatureFlag"
+    ],
+    "observedOperationIds": ["getAdminFunnel", "getAdminOverview", "listAdminAbTests"],
+    "declared401OperationCount": 5,
+    "expectedDomainOperationCount": 5,
+    "coverage": "representative_browser_observed_three_of_five_operations",
+    "operationRequestCounts": {
+      "getAdminOverview": 1,
+      "getAdminFunnel": 1,
+      "listAdminAbTests": 1
+    },
+    "unauthorizedReads": [
+      {
+        "route": "/w/admin",
+        "operationId": "getAdminOverview",
+        "requestCount": 1,
+        "responseCount": 1,
+        "responseStatus": 401,
+        "responseFromServiceWorker": true,
+        "refreshContractFixtureCount": 1,
+        "refreshStatus": 200,
+        "refreshBody": null,
+        "redirectedToLogin": true,
+        "staleSuccessContentVisible": false,
+        "screenshot": "preview-admin-unauthorized-overview-2026-10-02-current-head.png"
+      },
+      {
+        "route": "/w/admin/funnels",
+        "operationId": "getAdminFunnel",
+        "requestCount": 1,
+        "responseCount": 1,
+        "responseStatus": 401,
+        "responseFromServiceWorker": true,
+        "refreshContractFixtureCount": 1,
+        "refreshStatus": 200,
+        "refreshBody": null,
+        "redirectedToLogin": true,
+        "staleSuccessContentVisible": false,
+        "screenshot": "preview-admin-unauthorized-funnel-2026-10-02-current-head.png"
+      },
+      {
+        "route": "/w/admin/abtests",
+        "operationId": "listAdminAbTests",
+        "requestCount": 1,
+        "responseCount": 1,
+        "responseStatus": 401,
+        "responseFromServiceWorker": true,
+        "refreshContractFixtureCount": 1,
+        "refreshStatus": 200,
+        "refreshBody": null,
+        "redirectedToLogin": true,
+        "staleSuccessContentVisible": false,
+        "screenshot": "preview-admin-unauthorized-ab-tests-2026-10-02-current-head.png"
+      }
+    ],
+    "unauthorizedRequests": [
+      {
+        "method": "GET",
+        "path": "/api/admin/overview",
+        "operationId": "getAdminOverview"
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/analytics/funnel",
+        "operationId": "getAdminFunnel"
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/analytics/ab-tests",
+        "operationId": "listAdminAbTests"
+      }
+    ],
+    "unauthorizedResponses": [
+      {
+        "method": "GET",
+        "path": "/api/admin/overview",
+        "operationId": "getAdminOverview",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/analytics/funnel",
+        "operationId": "getAdminFunnel",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/analytics/ab-tests",
+        "operationId": "listAdminAbTests",
+        "status": 401,
+        "fromServiceWorker": true
+      }
+    ],
+    "successFixtures": [
+      {
+        "route": "/w/admin",
+        "operationId": "getAdminOverview",
+        "visible": true
+      },
+      {
+        "route": "/w/admin/funnels",
+        "operationId": "getAdminFunnel",
+        "visible": true
+      },
+      {
+        "route": "/w/admin/abtests",
+        "operationId": "listAdminAbTests",
+        "visible": true
+      }
+    ],
+    "refreshContractFixtures": [
+      {
+        "method": "POST",
+        "path": "/api/auth/refresh",
+        "status": 200,
+        "body": null,
+        "source": "runner-local contract fixture; request not sent to service worker or backend"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/refresh",
+        "status": 200,
+        "body": null,
+        "source": "runner-local contract fixture; request not sent to service worker or backend"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/refresh",
+        "status": 200,
+        "body": null,
+        "source": "runner-local contract fixture; request not sent to service worker or backend"
+      }
+    ],
+    "redirectedToLoginOnAllRoutes": true,
+    "staleSuccessContentVisibleOnAnyRoute": false,
+    "adminWriteRequestCount": 0,
+    "detailOperationNotReachableFromCurrentRoutes": "getAdminAbTest",
+    "mutationNotSent": "updateAdminFeatureFlag; current Admin UI has no form for this operation.",
+    "elapsedMs": 1322,
+    "screenshots": {
+      "overview": "preview-admin-unauthorized-overview-2026-10-02-current-head.png",
+      "funnel": "preview-admin-unauthorized-funnel-2026-10-02-current-head.png",
+      "abTests": "preview-admin-unauthorized-ab-tests-2026-10-02-current-head.png"
+    }
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedApiResponsesFromServiceWorker": true,
+    "admin401ResponsesFromServiceWorker": true,
+    "authRefreshFixtureResponsesAreNotNetworkRequests": true,
+    "authRefreshContractFixtures": [
+      {
+        "method": "POST",
+        "path": "/api/auth/refresh",
+        "status": 200,
+        "body": null,
+        "source": "runner-local contract fixture; request not sent to service worker or backend"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/refresh",
+        "status": 200,
+        "body": null,
+        "source": "runner-local contract fixture; request not sent to service worker or backend"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/refresh",
+        "status": 200,
+        "body": null,
+        "source": "runner-local contract fixture; request not sent to service worker or backend"
+      }
+    ],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false,
+    "externalApiOrigins": []
+  },
+  "authorizationLimitations": {
+    "persona": "admin",
+    "mockSourcePermissions": ["admin:read"],
+    "localMockAuthorizationEnforcementVerified": false,
+    "backendAuthorizationVerified": false
+  },
+  "measurements": {
+    "totalFlowMs": 1322,
+    "apiRequestCount": 23,
+    "apiResponseCount": 19,
+    "apiRequestFailureCount": 7,
+    "adminApiRequestFailureCount": 0,
+    "unrelatedNavigationAbortCallbacks": [
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "error": "net::ERR_ABORTED",
+        "responseAlreadyObserved": true,
+        "pagePathAtFailure": "/w/auth/login"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "error": "net::ERR_ABORTED",
+        "responseAlreadyObserved": true,
+        "pagePathAtFailure": "/auth/login"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "error": "net::ERR_ABORTED",
+        "responseAlreadyObserved": false,
+        "pagePathAtFailure": "/w/home"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "error": "net::ERR_ABORTED",
+        "responseAlreadyObserved": false,
+        "pagePathAtFailure": "/w/home"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "error": "net::ERR_ABORTED",
+        "responseAlreadyObserved": true,
+        "pagePathAtFailure": "/auth/login"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "error": "net::ERR_ABORTED",
+        "responseAlreadyObserved": false,
+        "pagePathAtFailure": "/w/home"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "error": "net::ERR_ABORTED",
+        "responseAlreadyObserved": false,
+        "pagePathAtFailure": "/w/home"
+      }
+    ],
+    "pendingApiRequestCount": 0,
+    "adminUnauthorizedRequestCount": 3,
+    "adminUnauthorizedResponseCount": 3,
+    "admin401ResponseCount": 3,
+    "authRefreshContractFixtureCount": 3,
+    "loginRedirectCount": 3,
+    "adminWriteCount": 0,
+    "pageErrorCount": 0,
+    "successFixturePreconditions": 3
+  },
+  "assertions": {
+    "apiRequests": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "operationId": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/overview",
+        "operationId": "getAdminOverview"
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/analytics/funnel",
+        "operationId": "getAdminFunnel"
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/analytics/ab-tests",
+        "operationId": "listAdminAbTests"
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/overview",
+        "operationId": "getAdminOverview"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/analytics/funnel",
+        "operationId": "getAdminFunnel"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/analytics/ab-tests",
+        "operationId": "listAdminAbTests"
+      }
+    ],
+    "apiResponses": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "operationId": null,
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null,
+        "status": 204,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/overview",
+        "operationId": "getAdminOverview",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/analytics/funnel",
+        "operationId": "getAdminFunnel",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/analytics/ab-tests",
+        "operationId": "listAdminAbTests",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/overview",
+        "operationId": "getAdminOverview",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null,
+        "status": 204,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/analytics/funnel",
+        "operationId": "getAdminFunnel",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null,
+        "status": 204,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/analytics/ab-tests",
+        "operationId": "listAdminAbTests",
+        "status": 401,
+        "fromServiceWorker": true
+      }
+    ],
+    "adminWriteRequests": [],
+    "apiRequestFailures": [
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "error": "net::ERR_ABORTED",
+        "responseAlreadyObserved": true,
+        "pagePathAtFailure": "/w/auth/login"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "error": "net::ERR_ABORTED",
+        "responseAlreadyObserved": true,
+        "pagePathAtFailure": "/auth/login"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "error": "net::ERR_ABORTED",
+        "responseAlreadyObserved": false,
+        "pagePathAtFailure": "/w/home"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "error": "net::ERR_ABORTED",
+        "responseAlreadyObserved": false,
+        "pagePathAtFailure": "/w/home"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "error": "net::ERR_ABORTED",
+        "responseAlreadyObserved": true,
+        "pagePathAtFailure": "/auth/login"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "error": "net::ERR_ABORTED",
+        "responseAlreadyObserved": false,
+        "pagePathAtFailure": "/w/home"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "error": "net::ERR_ABORTED",
+        "responseAlreadyObserved": false,
+        "pagePathAtFailure": "/w/home"
+      }
+    ],
+    "adminApiRequestFailures": [],
+    "pageErrors": []
+  },
+  "contract": {
+    "declared401OperationIds": [
+      "getAdminAbTest",
+      "getAdminFunnel",
+      "getAdminOverview",
+      "listAdminAbTests",
+      "updateAdminFeatureFlag"
+    ],
+    "authRefreshOperationId": "refreshSession",
+    "authRefreshDeclaredStatusCodes": ["200"],
+    "authRefreshFixture": "200/null declared by Auth OpenAPI; injected before service-worker/backend dispatch."
+  },
+  "sourceHashes": {
+    "contracts/openapi/admin.yaml": "0cc369702fda3ad34cb6819700c3690792ec192c444dfe021ffc7230c47beee6",
+    "contracts/openapi/auth.yaml": "f781275476009057ff9aeab57110c150742b278c7b92d6e913d2eb4fdd278b0c",
+    "docs/architecture/production-readiness/evidence/A06/run-admin-unauthorized-browser-check.mjs": "38d361168fa36e90ba7e6b2d15ceca37addde2d456a92844186bc58e868efbd5",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/app/components/layout/ProtectedRoute.tsx": "c5cb74de4707d257a40f4782ea7c7c177ce3b8bd2de4f4cccb5e4450c9f4c5d4",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "b7068df1558e8efb458f5889c87bde27759acc3139a171ac885593386a78e34f",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.ts": "52e22422548bcfe99731089c6b6297728c828047beaadec53bddec5a89148441",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/auth/api/auth-api.ts": "050846c48de49be56f6bdf6a73669b5d3a6230c559e33851cd07840609fca078",
+    "src/features/admin/api/admin-api.ts": "f678ef571025fcb4f2b8ed7703b86b94de4afa9f47f309f85959313784f68dd0",
+    "src/features/admin/model/admin-queries.ts": "86e1b4fee2bfb673ab96731d5db555b4d4820003e77b16647bd44dcbdd942bee",
+    "src/features/admin/routes.ts": "25e80e63ad7a74b3badfdd65e7f9018980fb4bce249c56ab700f2135598d423a",
+    "src/features/admin/pages/AdminOverviewContractPage.tsx": "e484004753ca52b4f23fa45f47f9fd9fa1e6fde128f28c51714ad8cb08445bf1",
+    "src/features/admin/pages/AdminFunnelContractPage.tsx": "2be38f9729a13d3ce13e960ebcfb7e44f258eca9ff56bbd9bf2571b5dfdae74f",
+    "src/features/admin/pages/AdminAbTestsContractPage.tsx": "428382dd3c8f0f6262451b6a606720fa25a9b8a9d4526e9db5411d2ac56613e2",
+    "src/features/admin/pages/AdminQueryErrorState.tsx": "8811b6d2aa20c697a5d1d580f0362a81d18d5b59df700c2bf9ffce3b7f569c98",
+    "src/shared/api/api-error.ts": "cd28d4480488b8b71582e085f110a637f80afde64e408b1a24717b67834e2644",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",
+    "src/main.tsx": "c150098914a25b7e0630d66f480ffbfe4160e96a8bdb54262b5ad4b5b33719e6"
+  },
+  "limitations": [
+    "Admin OpenAPI declares 401 for all five operations, but only the three current GET routes are reachable; detail GET and feature-flag PATCH are excluded.",
+    "Auth OpenAPI declares refreshSession as 200 with AuthSession or null and does not declare HTTP 401. The runner intercepts each refresh fetch and returns the declared 200/null fixture before service-worker/backend dispatch.",
+    "The local service worker supplies Admin GET 401 responses; local preview evidence does not establish server-side authorization or session handling.",
+    "This Chromium preview check does not verify backend persistence, staging, production behavior or user acceptance."
+  ]
+}

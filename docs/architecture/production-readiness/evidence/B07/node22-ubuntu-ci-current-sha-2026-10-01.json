@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Exact-SHA Node 22 Ubuntu CI and EOL evidence for B07.01. This record documents CI-only validation and does not describe a deployable artifact.",
+  "repository": "LonelyTraderBay/vittrade-react",
+  "sourceCommit": "9e71670bd83f1f70a1cd80ab6397178f12c8ba89",
+  "workflowRun": {
+    "name": "CI",
+    "runNumber": 25,
+    "runId": "36913585854",
+    "runAttempt": "1",
+    "jobId": "110541979308",
+    "jobName": "Production gates",
+    "conclusion": "success",
+    "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36913585854"
+  },
+  "environment": {
+    "runner": "ubuntu-24.04",
+    "node": "22.23.3",
+    "npm": "10.9.9",
+    "dependencyInstall": "npm ci",
+    "packagesAdded": 552,
+    "packagesAudited": 553
+  },
+  "eol": {
+    "pathsScanned": 1490,
+    "lf": 1148,
+    "withoutLineTerminator": 0,
+    "preservedNonText": 342,
+    "protectedWindowsCrlf": 0,
+    "violations": 0
+  },
+  "checks": {
+    "workflowSteps": 32,
+    "failedSteps": 0,
+    "vitest": {
+      "files": 284,
+      "passed": 2396
+    },
+    "coveragePercent": {
+      "statements": 90.13,
+      "branches": 84.86,
+      "functions": 87.15,
+      "lines": 91.91
+    },
+    "playwright": {
+      "passed": 51,
+      "failed": 0
+    },
+    "scenarioEvidenceProvenanceTests": {
+      "passed": 3,
+      "failed": 0
+    },
+    "scenarioMatrix": {
+      "domains": 15,
+      "operations": 154,
+      "expectations": 106,
+      "check": "pass"
+    },
+    "uiAcceptanceIndex": {
+      "activeDeclarations": 427,
+      "urlRegistrations": 1458,
+      "uniquePreviewUrls": 1389,
+      "historicalRouteParity": "427/427",
+      "freshScenarioRows": "0/106",
+      "check": "pass"
+    }
+  },
+  "result": "pass",
+  "limits": [
+    "This hosted run validates only sourceCommit above; it does not validate later commits or the dirty main working tree.",
+    "The workflow passed its checks, but B07.02 artifact upload, persistence and exact-run downloaded-artifact verification were not yet implemented in this run.",
+    "The UI index had zero fresh browser-evidence rows; backend/staging validation and user acceptance remain unverified.",
+    "A low-severity DOMPurify dependency advisory remains reported by the audit gate."
+  ]
+}

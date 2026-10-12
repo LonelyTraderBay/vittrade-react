@@ -48,7 +48,6 @@ export function AddressAddPage() {
     canManageAddressBook && label.trim().length > 0 && address.trim().length >= 20 && confirmed;
 
   const handlePaste = async () => {
-    if (!canManageAddressBook) return;
     try {
       const value = await navigator.clipboard.readText();
       if (value) setAddress(value);
@@ -58,7 +57,6 @@ export function AddressAddPage() {
   };
 
   const handleSave = () => {
-    if (!canManageAddressBook || !canSave) return;
     void createMutation
       .mutateAsync({
         request: {

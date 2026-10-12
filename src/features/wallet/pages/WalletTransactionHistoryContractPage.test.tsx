@@ -3,7 +3,10 @@ import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useLocation } from 'react-router';
+import type { AuthAdapter } from '@/shared/session/AuthContext';
 import { renderWithProviders } from '@/test/test-utils';
+import { testAuthAdapter } from '@/test/auth-test-adapter';
 import { WalletTransactionHistoryContractPage } from './WalletTransactionHistoryContractPage';
 
 const server = setupServer();
@@ -11,6 +14,19 @@ const server = setupServer();
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
+
+const noWalletReadAdapter: AuthAdapter = {
+  ...testAuthAdapter,
+  initialSession: {
+    ...testAuthAdapter.initialSession!,
+    user: { ...testAuthAdapter.initialSession!.user, permissions: [] },
+  },
+};
+
+function LocationProbe() {
+  const location = useLocation();
+  return <output data-testid="current-path">{location.pathname}</output>;
+}
 
 const transactions = [
   {
@@ -60,6 +76,23 @@ function filterTransactions(request: Request) {
 }
 
 describe('Wallet transaction history contract page', () => {
+  it('does not request transaction history without wallet read permission', async () => {
+    let requests = 0;
+    server.use(
+      http.get('*/wallet/transactions', () => {
+        requests += 1;
+        return HttpResponse.json({ items: transactions, total: transactions.length });
+      }),
+    );
+
+    renderWithProviders(<WalletTransactionHistoryContractPage />, {
+      authAdapter: noWalletReadAdapter,
+    });
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Wallet read permission');
+    expect(requests).toBe(0);
+  });
+
   it('renders transaction rows and the server result count', async () => {
     server.use(
       http.get('*/wallet/transactions', ({ request }) =>
@@ -71,6 +104,26 @@ describe('Wallet transaction history contract page', () => {
 
     expect(await screen.findByText('+100', { exact: true })).toBeInTheDocument();
     expect(screen.getByText('4 transactions')).toBeInTheDocument();
+  });
+
+  it('navigates back to the wallet overview from the history header', async () => {
+    server.use(
+      http.get('*/wallet/transactions', () =>
+        HttpResponse.json({ items: transactions, total: transactions.length }),
+      ),
+    );
+
+    renderWithProviders(
+      <>
+        <WalletTransactionHistoryContractPage />
+        <LocationProbe />
+      </>,
+      { routerProps: { initialEntries: ['/wallet/history'] } },
+    );
+
+    expect(await screen.findByText('+100', { exact: true })).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Wallet' }));
+    expect(screen.getByTestId('current-path')).toHaveTextContent(/\/wallet$/);
   });
 
   it('sends exact type, status and asset filters to the server', async () => {
@@ -129,16 +182,93 @@ describe('Wallet transaction history contract page', () => {
     expect(await screen.findByText('+100', { exact: true })).toBeInTheDocument();
   });
 
-  it('renders the shared error state when transaction history is unavailable', async () => {
+  it('disables Next when the server repeats the current cursor', async () => {
+    const requestedCursors: string[] = [];
+    server.use(
+      http.get('*/wallet/transactions', ({ request }) => {
+        const cursor = new URL(request.url).searchParams.get('cursor');
+        requestedCursors.push(cursor ?? 'first-page');
+        return cursor
+          ? HttpResponse.json({
+              items: [transactions[1]],
+              total: 2,
+              nextCursor: cursor,
+            })
+          : HttpResponse.json({
+              items: [transactions[0]],
+              total: 2,
+              nextCursor: 'page-2',
+            });
+      }),
+    );
+
+    renderWithProviders(<WalletTransactionHistoryContractPage />);
+    expect(await screen.findByText('+100', { exact: true })).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Next' }));
+    expect(await screen.findByText('-0.1', { exact: true })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled();
+    expect(screen.getByLabelText('Transaction history pagination')).toHaveTextContent('Page 2');
+    expect(requestedCursors).toEqual(['first-page', 'page-2']);
+  });
+
+  it('refetches after a missing-session response through the shared error state', async () => {
+    let requests = 0;
+    server.use(
+      http.get('*/wallet/transactions', () => {
+        requests += 1;
+        return requests === 1
+          ? HttpResponse.json(
+              { code: 'UNAUTHENTICATED', message: 'Session expired' },
+              { status: 401 },
+            )
+          : HttpResponse.json({ items: transactions, total: transactions.length });
+      }),
+    );
+
+    renderWithProviders(<WalletTransactionHistoryContractPage />);
+
+    expect(await screen.findByText('Có lỗi xảy ra')).toBeInTheDocument();
+    expect(screen.queryByText('+100', { exact: true })).not.toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole('button', { name: 'Thử lại' }));
+    expect(await screen.findByText('+100', { exact: true })).toBeInTheDocument();
+    expect(requests).toBe(2);
+  });
+
+  it('renders the empty result state when filters match no transactions', async () => {
+    server.use(
+      http.get('*/wallet/transactions', ({ request }) =>
+        HttpResponse.json(filterTransactions(request)),
+      ),
+    );
+
+    renderWithProviders(<WalletTransactionHistoryContractPage />);
+    expect(await screen.findByText('+100', { exact: true })).toBeInTheDocument();
+    await userEvent.type(screen.getByLabelText('Filter by asset'), 'sol');
+    await userEvent.click(screen.getByRole('button', { name: 'Apply' }));
+
+    expect(
+      await screen.findByText('No transactions match the selected filters.'),
+    ).toBeInTheDocument();
+  });
+
+  it('shows a non-retryable permission state and hides transaction history when access is denied', async () => {
     server.use(
       http.get('*/wallet/transactions', () =>
-        HttpResponse.json({ code: 'TRANSACTIONS_UNAVAILABLE' }, { status: 503 }),
+        HttpResponse.json({ code: 'FORBIDDEN', message: 'Permission denied' }, { status: 403 }),
       ),
     );
 
     renderWithProviders(<WalletTransactionHistoryContractPage />);
 
-    expect(await screen.findByRole('button')).toBeInTheDocument();
+    expect(await screen.findByText('Không có quyền truy cập')).toBeInTheDocument();
+    expect(
+      screen.getByText('Tài khoản của bạn không có quyền xem lịch sử giao dịch ví.'),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Thử lại' })).not.toBeInTheDocument();
     expect(screen.queryByText('+100', { exact: true })).not.toBeInTheDocument();
+    expect(
+      screen.queryByText('No transactions match the selected filters.'),
+    ).not.toBeInTheDocument();
   });
 });

@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "auditId": "earn-pending-contract-audit-current-20260930",
+  "auditedAt": "2026-09-30T13:14:31.281Z",
+  "method": "Static OpenAPI source inspection only; no API endpoint was called.",
+  "source": {
+    "path": "contracts/openapi/earn.yaml",
+    "sha256": "f658455d5dcc1927fcee5a814c01b59e22dc5cae30640cb092e710e4ad7fa608"
+  },
+  "operations": [
+    {
+      "operationId": "createEarnSubscription",
+      "method": "POST",
+      "path": "/earn/subscriptions",
+      "declaredResponses": ["201", "400", "401"],
+      "acceptedResponse": "201",
+      "receiptSchema": "EarnReceipt",
+      "idempotencyKey": {
+        "required": true,
+        "minimumLength": 8
+      }
+    },
+    {
+      "operationId": "redeemEarnPosition",
+      "method": "POST",
+      "path": "/earn/redemptions",
+      "declaredResponses": ["201", "400", "401"],
+      "acceptedResponse": "201",
+      "receiptSchema": "EarnReceipt",
+      "idempotencyKey": {
+        "required": true,
+        "minimumLength": 8
+      }
+    },
+    {
+      "operationId": "listEarnTransactions",
+      "method": "GET",
+      "path": "/earn/transactions",
+      "declaredResponses": ["200", "401"],
+      "statusFilter": ["pending", "completed", "failed"]
+    }
+  ],
+  "schemas": {
+    "EarnReceipt": {
+      "required": ["id", "operation", "productId", "asset", "amount", "status", "createdAt"],
+      "statusEnum": ["pending", "completed"]
+    },
+    "EarnTransaction": {
+      "statusEnum": ["pending", "completed", "failed"]
+    }
+  },
+  "interpretation": "The subscription and redemption 201 responses mean accepted and may carry a pending EarnReceipt. The client must preserve the receipt reference and show pending until a completed receipt is returned; 201 alone does not mean settlement or completed status.",
+  "limits": [
+    "Contract evidence only; no backend persistence, settlement, idempotency replay, or staging behavior verified."
+  ]
+}

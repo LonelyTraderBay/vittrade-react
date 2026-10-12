@@ -1,0 +1,12 @@
+
+> vittrade-react@0.0.1 architecture:inventory:check
+> node scripts/generate-architecture-inventory.mjs --check
+
+file:///C:/Users/Joker-PC/Documents/Projects/vittrade-react/scripts/generate-architecture-inventory.mjs:1439
+      throw new Error(
+            ^
+
+Error: Architecture inventory is stale: docs/architecture/page-inventory.json. Run npm run architecture:inventory.
+    at file:///C:/Users/Joker-PC/Documents/Projects/vittrade-react/scripts/generate-architecture-inventory.mjs:1439:13
+
+Node.js v24.19.0

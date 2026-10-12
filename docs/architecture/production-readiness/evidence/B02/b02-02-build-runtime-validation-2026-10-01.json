@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-01T02:12:37.000Z",
+  "taskId": "B02",
+  "stepId": "B02.02",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "environment": {
+    "os": "Windows x64",
+    "node": "v24.19.0",
+    "vite": "6.4.3",
+    "vitest": "4.1.11"
+  },
+  "checks": [
+    {
+      "command": "node node_modules/vitest/vitest.mjs run src/shared/config/env.test.ts src/main.test.tsx",
+      "result": "pass",
+      "actual": "2 files, 16/16 tests passed; covers safe environment defaults, invalid data-source values deferred to runtime assertion, release endpoint validation and controlled bootstrap failure."
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc --noEmit -p tsconfig.json && node node_modules/typescript/bin/tsc --noEmit -p tsconfig.node.json",
+      "result": "pass",
+      "actual": "Both application and Vite/Node TypeScript configurations passed."
+    },
+    {
+      "command": "npm.cmd --script-shell=powershell.exe run env:check",
+      "result": "pass",
+      "actual": "Environment boundary check passed; 827 source files inspected."
+    },
+    {
+      "command": "node scripts/generate-architecture-inventory.mjs --check; node scripts/check-production-mocks.mjs; node scripts/check-production-mock-imports.mjs; node scripts/check-production-route-boundaries.mjs",
+      "result": "pass",
+      "actual": "Architecture inventory: 129 pages, 427 routes, 149 components, 32 services, 28 mocks. Production output gate inspected 223 files/221 JS/0 manifests; import and route boundary checks passed."
+    },
+    {
+      "command": "node node_modules/eslint/bin/eslint.js <changed TypeScript, Vite and E2E files>; Prettier --check <changed supported files>; git diff --check",
+      "result": "pass",
+      "actual": "Targeted ESLint, Prettier and whitespace checks passed."
+    },
+    {
+      "command": "node node_modules/vite/bin/vite.js build --outDir <isolated-temp-output> with VITE_DATA_SOURCE=api and no API/WSS URLs; repeat with https://api.ci.example.test and wss://ws.ci.example.test",
+      "result": "pass",
+      "actual": "The missing-endpoint build exited before producing an artifact with Production environment is incomplete: VITE_API_BASE_URL, VITE_WS_URL. The isolated production build with reserved .test origins succeeded in 4.08 seconds."
+    },
+    {
+      "command": "node node_modules/vite/bin/vite.js build --mode staging --outDir <isolated-temp-output> using https://e2e.test and wss://e2e.test; run 17 affected Playwright Chromium cases against that artifact using an independently started Vite preview",
+      "result": "pass",
+      "actual": "Staging build succeeded in 3.95 seconds; the affected auth, DCA/Earn, P2P and Trading specs passed 17/17 in 13.2 seconds. API responses were intercepted locally; this was not a real backend/staging test. Two browser resource errors ERR_NAME_NOT_RESOLVED were logged during the Trading spec; all assertions passed."
+    }
+  ],
+  "expected": "Release builds and startup reject mock, malformed, insecure or .invalid configuration; failures show a controlled accessible startup message; CI/E2E build-only values do not target a deployable environment.",
+  "actual": "A shared release validator now runs in Vite build configuration and runtime assertion. Invalid Zod environment values are deferred to the startup assertion so the catch handler can render the safe alert. CI/E2E use reserved .test hosts, and the 17 affected browser cases pass on an isolated artifact.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/B02/b02-02-build-runtime-validation-2026-10-01.json; isolated artifacts under %TEMP%/vittrade-react-b02-validation-20261001-r2",
+  "notes": "All artifacts were built outside the repository dist/ directory. The passing browser tests use local intercepted fixtures and do not verify a real backend, deployment, TLS, host headers, caching, SPA rewrite, operational owner or user acceptance. Node22/Ubuntu exact-SHA CI remains a separate B07.01 gate. The standard Playwright webServer wrapper did not exit on Windows; the final 17/17 run used a separately started preview server so that the test summary was collected. The missing @asamuzakjp/css-color dependency was restored locally from the existing lockfile cache with --no-save; package.json and package-lock.json content were not changed."
+}

@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261003-004",
+  "taskId": "C05",
+  "stepId": "C05.03",
+  "kind": "c05-preview-controls-overlap-current-source-browser-check",
+  "observedAt": "2026-10-02T20:12:16.527Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "sourceBranch": "main",
+  "environment": {
+    "os": "Windows",
+    "runtime": "v24.19.0",
+    "browser": "Chromium 153.0.8010.12",
+    "viewport": {
+      "width": 1440,
+      "height": 900,
+      "deviceScaleFactor": 1
+    },
+    "url": "http://127.0.0.1:5193",
+    "dataSource": "mock",
+    "backendConnected": false,
+    "cleanBrowserContext": true
+  },
+  "expected": "On the Web login route at 1440x900, the platform badge stays clear of the mock-data warning and its preview button. Keyboard activation still opens the preview controls.",
+  "actual": "The badge/warning gap measured 19px; keyboard activation opened the preview panel. 1 API response(s) came from MSW, with 0 failed API requests and 0 page errors.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/C05/c05-03-preview-controls-browser-check-2026-10-03.json",
+  "commandOrSteps": "Start a local Vite development server with VITE_DATA_SOURCE=mock; run this script with C05_PREVIEW_URL pointing to that loopback server. Open /w/auth/login, measure the rendered badge/warning rectangles, save the screenshot, then open the preview controls with Enter.",
+  "previewBaseUrl": "http://127.0.0.1:5193",
+  "beforeScreenshot": "docs/architecture/production-readiness/evidence/U01/u01-03-auth-login-preview.png",
+  "afterScreenshot": "docs/architecture/production-readiness/evidence/C05/c05-03-preview-controls-after-2026-10-03.png",
+  "sourceHashes": {
+    "src/app/components/layout/PlatformSwitcher.tsx": "a4a75657a72fe50a1ae77b18df33fc43cb0a5b7f8d63864c6a2342f43203f940",
+    "src/app/components/layout/PlatformSwitcher.test.tsx": "9f98ee27dc53db0a829efcbf482084844c3cfeee494a8538ae7668d9688e202a",
+    "src/app/components/layout/RootLayout.tsx": "b9401c94a00637f39448d9f1738b69f58960e409263a1471396a43fed4811ec3",
+    "src/app/components/layout/RootLayout.test.tsx": "bad6a264bf30d44a618068be9f83665ee9a2b3b530b7782b50737b62d0851463",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "docs/architecture/production-readiness/evidence/C05/run-c05-03-preview-controls-overlap-check.mjs": "fbad6298feaaeb30c2f204b48275b716d65755867255c41e586d9e29b994b03b"
+  },
+  "dirtyFileHashes": {
+    "src/app/components/layout/PlatformSwitcher.tsx": "a4a75657a72fe50a1ae77b18df33fc43cb0a5b7f8d63864c6a2342f43203f940",
+    "src/app/components/layout/PlatformSwitcher.test.tsx": "9f98ee27dc53db0a829efcbf482084844c3cfeee494a8538ae7668d9688e202a",
+    "src/app/components/layout/RootLayout.tsx": "b9401c94a00637f39448d9f1738b69f58960e409263a1471396a43fed4811ec3",
+    "src/app/components/layout/RootLayout.test.tsx": "bad6a264bf30d44a618068be9f83665ee9a2b3b530b7782b50737b62d0851463",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401"
+  },
+  "observations": {
+    "warmupStatus": 200,
+    "route": "/w/auth/login",
+    "responseStatus": 200,
+    "warningText": "DỮ LIỆU MÔ PHỎNG · KHÔNG PHẢI GIAO DỊCH THẬTMở công cụ xem trước",
+    "warningBox": {
+      "x": 1064,
+      "y": 807.46875,
+      "width": 360,
+      "height": 76.53125,
+      "right": 1424,
+      "bottom": 884
+    },
+    "toggleBox": {
+      "x": 1261.265625,
+      "y": 831.3125,
+      "width": 149.734375,
+      "height": 28.84375,
+      "right": 1411,
+      "bottom": 860.15625
+    },
+    "badgeBox": {
+      "x": 1349.34375,
+      "y": 756,
+      "width": 74.65625,
+      "height": 32,
+      "right": 1424,
+      "bottom": 788
+    },
+    "verticalGapPixels": 19,
+    "previewZIndex": "1200",
+    "badgeZIndex": "1200",
+    "keyboardExpanded": true,
+    "badgePointIsCoveredByPreviewPanel": true,
+    "apiResponses": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true
+      }
+    ],
+    "failedApiRequests": [],
+    "pageErrors": [],
+    "externalApiOrigins": [],
+    "serviceWorkerController": "http://127.0.0.1:5193/mockServiceWorker.js"
+  },
+  "assertions": {
+    "routeRendered": true,
+    "mockWarningVisible": true,
+    "badgeDoesNotOverlapWarning": true,
+    "badgeDoesNotOverlapToggle": true,
+    "keyboardOpensControls": true,
+    "expandedControlsCoverDecorativeBadge": true,
+    "allObservedApiResponsesFromServiceWorker": true,
+    "noFailedApiRequests": true,
+    "noExternalApiOrigins": true,
+    "noPageErrors": true
+  },
+  "limitations": [
+    "This is a local Chromium/MSW layout check for one Web route and one desktop viewport; it is not user acceptance.",
+    "Mock Service Worker and local fixtures do not verify backend, staging, production, session persistence, or other device sizes."
+  ]
+}

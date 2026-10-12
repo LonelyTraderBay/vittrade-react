@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "taskId": "B07",
+  "stepId": "B07.03",
+  "sourceCommit": "92b1d15fc3dcbc161a91d1074c614d1a024894f3",
+  "repository": "LonelyTraderBay/vittrade-react",
+  "branch": "codex/b07-01-current-checkpoint",
+  "workflow": {
+    "name": "CI",
+    "event": "push",
+    "runId": 36946912555,
+    "runAttempt": 1,
+    "runUrl": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36946912555",
+    "jobId": 110651025554,
+    "jobName": "Production gates",
+    "conclusion": "success",
+    "startedAt": "2026-10-02T00:37:27Z",
+    "completedAt": "2026-10-02T00:52:51Z",
+    "durationSeconds": 924,
+    "completedSteps": 41,
+    "failedSteps": 0
+  },
+  "environment": {
+    "runner": "GitHub Actions ubuntu-24.04",
+    "os": "Ubuntu 24.04.5 LTS",
+    "node": "22.23.3",
+    "npm": "10.9.9",
+    "install": "clean npm ci"
+  },
+  "checks": {
+    "gitEol": {
+      "result": "pass",
+      "paths": 1502,
+      "lf": 1160,
+      "missingTerminators": 0,
+      "preservedNonText": 342,
+      "protectedWindowsCrLf": 0,
+      "violations": 0
+    },
+    "trackingCheckerRegression": {
+      "result": "pass",
+      "testsPassed": 10,
+      "testsFailed": 0
+    },
+    "tracking": {
+      "result": "pass",
+      "sourceCommit": "92b1d15fc3dcbc161a91d1074c614d1a024894f3",
+      "errorCount": 0,
+      "tasks": 38,
+      "steps": 205,
+      "pages": 129,
+      "routeDeclarations": 427,
+      "operations": 154,
+      "filesOutsidePlan": 914
+    },
+    "operationMockParity": {
+      "result": "pass",
+      "exactMethodPathMatches": 154,
+      "totalOperations": 154,
+      "missing": 0,
+      "extra": 0,
+      "duplicates": 0,
+      "operationsWithDirectTestReferences": 29
+    },
+    "unitIntegration": {
+      "result": "pass",
+      "testFiles": 287,
+      "passed": 2415,
+      "failed": 0
+    },
+    "artifactToolingTests": {
+      "result": "pass",
+      "testFiles": 2,
+      "passed": 9,
+      "failed": 0
+    },
+    "coverage": {
+      "result": "pass",
+      "testFiles": 287,
+      "statementsPercent": 90.14,
+      "branchesPercent": 84.87,
+      "functionsPercent": 87.18,
+      "linesPercent": 91.92
+    },
+    "playwright": {
+      "result": "pass",
+      "projects": [
+        {
+          "name": "chromium",
+          "device": "Desktop Chrome"
+        }
+      ],
+      "testsPassed": 51,
+      "testsFailed": 0
+    },
+    "build": {
+      "result": "pass",
+      "completedAfterPlaywright": true,
+      "durationSeconds": 8.92,
+      "productionMockExclusion": {
+        "result": "pass",
+        "outputFiles": 223,
+        "javascriptFiles": 221,
+        "manifestsContainingMocks": 0
+      },
+      "bundleBudget": {
+        "result": "pass",
+        "javascriptChunks": 221,
+        "chunksWithinBudget": 221,
+        "chunksOverBudget": 0,
+        "maxRawBytes": 500000,
+        "maxGzipBytes": 256000
+      }
+    }
+  },
+  "artifact": {
+    "id": 11202199616,
+    "name": "vittrade-ci-evidence-92b1d15fc3dcbc161a91d1074c614d1a024894f3-1",
+    "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36946912555/artifacts/11202199616",
+    "sizeBytes": 2952720,
+    "digest": "sha256:55583960b1f051a2b522cae3ab74656c5049a9be386b8ba528c08fca0490b92d",
+    "uploadedAndDownloadedInSameRun": true,
+    "uploadedDownloadDigestMatched": true,
+    "independentApiDownloadDigestMatched": true,
+    "verification": {
+      "result": "pass",
+      "files": 555,
+      "bundleChunks": 221,
+      "coverageFiles": 550,
+      "retainedTraces": 0,
+      "playwrightReportPresent": true,
+      "distDirectoryPresent": false
+    }
+  },
+  "failurePath": {
+    "runId": 36945664061,
+    "runUrl": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36945664061",
+    "sourceCommit": "b592cee0d411091ff11e98babf644f7bc6a6bcbb",
+    "failedStep": "Production readiness tracking consistency",
+    "rootCause": "Default checkout depth 1 omitted the catalogued source snapshot 016585c, so the checker could not resolve the Git tree used by its source hashes.",
+    "fix": "Set actions/checkout fetch-depth to 5 and rerun all gates on a new exact SHA."
+  },
+  "limitations": [
+    "This proves configured Ubuntu CI for the exact sourceCommit only; it does not prove a later closeout commit until its own workflow completes.",
+    "Only the configured Chromium Desktop Chrome project was exercised; the wider browser and device matrix is not approved or measured.",
+    "Live backend, staging deployment and user acceptance were not exercised by this CI run.",
+    "B07.04 found main unprotected with no repository or parent rulesets and web commit sign-off disabled; merge governance remains an open production blocker.",
+    "The previously observed low-severity npm vulnerability and two non-fatal E2E resource-resolution messages remain untriaged."
+  ]
+}

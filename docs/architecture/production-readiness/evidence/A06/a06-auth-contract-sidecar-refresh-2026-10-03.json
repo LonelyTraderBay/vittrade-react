@@ -1,0 +1,1112 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261003-003",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "auth-openapi-current-source-a06-sidecar-refresh",
+  "observedAt": "2026-10-02T19:10:27.756Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "sourceBranch": "main",
+  "environment": "Windows; Node v24.19.0; Chromium 153 via Playwright; local Vite development server with VITE_DATA_SOURCE=mock at http://127.0.0.1:4188; no backend or staging environment configured.",
+  "expected": "Refresh the 20 A06 scenario sidecars whose recorded Auth OpenAPI hash became stale; require every runner to pass, report HEAD and input hashes to match current files, then regenerate and check A06/C05 indexes.",
+  "actual": "All 20 targeted sidecar runners passed on source HEAD c5fc38b0755da3fe2c9831fe3040160a308a9a03; 92 new sidecar reports/screenshots were captured. A06 matrix reports 81/106 fresh rows, 38 fully covered rows, 88/154 observed operations, 81/81 fresh registered sidecars, and 0 hash-stale sidecars. 18/20 refreshed sidecars satisfy the matrix's strict local-MSW fixture-boundary classifier; admin.unauthorized uses a differently named response-boundary flag, and earn.unauthorized omits fixtureBoundary metadata. The aggregate runtime report remains historical_baseline with runtimeEvidenceFresh=false. C05 index regeneration/check reports 427 active declarations, 1462 URL registrations, 1393 unique URLs and 81/106 fresh scenario rows; user acceptance is still 0/128 and backend/staging is still 0/154.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/A06/a06-auth-contract-sidecar-refresh-2026-10-03.json",
+  "commandOrSteps": "Run each affected A06 browser runner sequentially against PREVIEW_BASE_URL=http://127.0.0.1:4188; replace only matching IDs in the scenarioEvidenceArtifacts registry; run generate-scenario-matrix.mjs --write and --check; run generate-ui-acceptance-index.mjs --write and --check; verify current HEAD and source hashes per sidecar.",
+  "previewBaseUrl": "http://127.0.0.1:4188",
+  "sourceHashes": {
+    "contracts/openapi/admin.yaml": "0cc369702fda3ad34cb6819700c3690792ec192c444dfe021ffc7230c47beee6",
+    "contracts/openapi/auth.yaml": "f781275476009057ff9aeab57110c150742b278c7b92d6e913d2eb4fdd278b0c",
+    "contracts/openapi/dca.yaml": "105ad6cbe91891cf20336ac20cd26485c22c3dbd26055d1a4dcc4d0a45bf5b5d",
+    "contracts/openapi/earn.yaml": "f658455d5dcc1927fcee5a814c01b59e22dc5cae30640cb092e710e4ad7fa608",
+    "contracts/openapi/launchpad.yaml": "f91848569eda4fc8adbb96ec01c4015d3e8bea488ebfb54c9cbf807afbb7732e",
+    "contracts/openapi/market.yaml": "cca6ccf13d96a7a813c54734e5331a7620803f5a670355f6f3b72e4703a3e888",
+    "contracts/openapi/p2p.yaml": "17d7e0c1b198d6adadc9d5a0519c029084257c82132e8e4391891c5e92c2c576",
+    "contracts/openapi/predictions.yaml": "146a0442f6879fc50dc53c9f74d104837092d06edcfcf3e68537454b3e8c556b",
+    "contracts/openapi/profile.yaml": "6830c4976f5b94b4f78e08b824eabd1c18b41bf96f23613412db065575f1d5d8",
+    "contracts/openapi/referral.yaml": "91e4eb405cc9b095a71416f64189bf6e16547babe05d04eaa137477175391715",
+    "contracts/openapi/trading.yaml": "ea87584c03ab69a0d552d80590e36e15ab7b38851cc1583d9c892bbb91f19437",
+    "contracts/openapi/wallet.yaml": "a7b2e6fbdf62f2e6a789de25e712767d79014355870e86a87c8e809938f9e7b7",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
+    "docs/architecture/production-readiness/evidence/A06/run-admin-unauthorized-browser-check.mjs": "38d361168fa36e90ba7e6b2d15ceca37addde2d456a92844186bc58e868efbd5",
+    "docs/architecture/production-readiness/evidence/A06/run-auth-empty-current-head-browser-check.mjs": "017195d501822c99a54177d4070dfaa2d642878a5b0e12b0dfab7197b13d7c68",
+    "docs/architecture/production-readiness/evidence/A06/run-auth-error-current-head-browser-check.mjs": "62908b6aab23eec4e427d61ba37408275edcfcf3d067709fcc2381feaa1bd281",
+    "docs/architecture/production-readiness/evidence/A06/run-auth-loading-current-head-browser-check.mjs": "95c5a83e24c2824cb9f70e85c191157dca02609eab87b1a8cc617b062a7adf94",
+    "docs/architecture/production-readiness/evidence/A06/run-auth-success-current-head-browser-check.mjs": "3dded6c928d82ea0ff0cd921d15ff81e3c77ad77154a052096fb3f42f5d581ca",
+    "docs/architecture/production-readiness/evidence/A06/run-auth-unauthorized-current-head-browser-check.mjs": "3f20063aa141b44f365b0d2ed339120fa3d31c659ce88abd2c35b20e40ed1a20",
+    "docs/architecture/production-readiness/evidence/A06/run-dca-unauthorized-current-head-browser-check.mjs": "c568c31e5629f77bcc25068b351d4f42be4b0d92d1a4184cc74942488f70be86",
+    "docs/architecture/production-readiness/evidence/A06/run-earn-unauthorized-current-head-browser-check.mjs": "69221af552b293af66e877a06786b7de034cd4d2c6f3d4806ab671de2949f520",
+    "docs/architecture/production-readiness/evidence/A06/run-launchpad-empty-current-head-browser-check.mjs": "09bc2d273eadfcfb7ddd68e09b19999c28951025f95c2a9a9c3e9eb22a13382c",
+    "docs/architecture/production-readiness/evidence/A06/run-launchpad-error-current-head-browser-check.mjs": "9d7e627424728b1b4c4a76be5e2ee4d88dfed56de08b3dfe7d949bde099ed9c2",
+    "docs/architecture/production-readiness/evidence/A06/run-launchpad-loading-current-head-browser-check.mjs": "7ef47c5d308aeb179ca6ede22df0fa0f64634cd83aaaa5cd74818e65cc75bdc1",
+    "docs/architecture/production-readiness/evidence/A06/run-launchpad-success-current-head-browser-check.mjs": "038296d38e1417c48e0b9c89c29db2287388daab18a711c42d608665f39a5de2",
+    "docs/architecture/production-readiness/evidence/A06/run-market-loading-current-head-browser-check.mjs": "0327dc0d59280c9bfb31efa38c12314e6a280d0eb23187f2b0abd302ad71cfb0",
+    "docs/architecture/production-readiness/evidence/A06/run-market-success-current-head-browser-check.mjs": "f35f32f85f52267e0de2919287de519592f39f9cb37e7c5f90f110b83aeba6b0",
+    "docs/architecture/production-readiness/evidence/A06/run-p2p-unauthorized-browser-check.mjs": "fd53bc4d37aa2c19c04182ee309cc099b853651fe136108e913792a3b73b4724",
+    "docs/architecture/production-readiness/evidence/A06/run-predictions-unauthorized-browser-check.mjs": "1aa66294bacddce2100a72c9155ac7d30a09a2d1539864eddac83276b13e6590",
+    "docs/architecture/production-readiness/evidence/A06/run-profile-unauthorized-browser-check.mjs": "b5bed6a92eaab9584bb0d3c09950e2e0315987b43a96b336358d2c3f1a511d44",
+    "docs/architecture/production-readiness/evidence/A06/run-referral-unauthorized-browser-check.mjs": "5306458c43cb3cb431f5917dbc7a2820938451f8f87f7b351572165abf47fe5e",
+    "docs/architecture/production-readiness/evidence/A06/run-trading-unauthorized-browser-check.mjs": "48af210096632f2a289d8caaf1f29a95c9ffe1eefbf844cbce29b061cc0f189f",
+    "docs/architecture/production-readiness/evidence/A06/run-wallet-unauthorized-current-head-browser-check.mjs": "b422f4e91587e266fb385bfb4b56fd71ae7a52a8ed6fe5053da920e2e25d9be8",
+    "src/app/App.tsx": "55882d23aff913e5ad89d511b52f9108780f1fcc32137758d688ba6c654d254a",
+    "src/app/components/layout/ProtectedRoute.tsx": "c5cb74de4707d257a40f4782ea7c7c177ce3b8bd2de4f4cccb5e4450c9f4c5d4",
+    "src/app/components/layout/WebCommandBar.tsx": "896e5f182a7b214f628e9765e000722acea8547861922e927aea1ab308b88589",
+    "src/app/components/layout/WebSidebar.tsx": "d29acc5364470787bb217a588a49460e740af339c5ded94715abef309322764f",
+    "src/app/contexts/AuthContext.tsx": "ed4902f682cbb4c11081acb1e87cfd2195fa0d06570ef1473ef962181b0d54b3",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/app/routes/walletProfileProtectedRoutes.ts": "279cb168d99cef06c18fd8348f4961c3378f6672d33a90bd23ace71dd2dc05ab",
+    "src/dev/mocks/auth-handlers.test.ts": "10f0a82eb7fb4d08d2f74a8219077e7be21522984be558437427d6f383973881",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/earn-fixtures.ts": "d17fff1aef1404678d8e99fe23c2a19b0243d7a0ac6bd4650cdfb901cdb43941",
+    "src/dev/mocks/handlers.ts": "b7068df1558e8efb458f5889c87bde27759acc3139a171ac885593386a78e34f",
+    "src/dev/mocks/launchpad-fixtures.ts": "7c34266aecc5ab2cb73f4f25bc7f37f6901bcb5fd4c461faf1087f9985e78221",
+    "src/dev/mocks/market-data-simulator.ts": "711e421335b34a7181502bbb0f5afd283ee455c63126f64c584cd512fc8fce08",
+    "src/dev/mocks/market-overview-fixtures.ts": "e160b186a350ec8c561fea02037afff59662b395d59809f77c5225dbc7b57814",
+    "src/dev/mocks/market-preview-fixtures.ts": "dadee8830469930227b85c8f77985de8df0657f42807a8ca814bc7014e907ae9",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/dev/mocks/preview-scenario-handler.test.ts": "c2a394a9f6963429e7f85fcef998647bc6a30f561667cbef24b224e7b25d7966",
+    "src/dev/mocks/preview-scenario-handler.ts": "52e22422548bcfe99731089c6b6297728c828047beaadec53bddec5a89148441",
+    "src/dev/mocks/referral-fixtures.ts": "7fd86c8ab15e080495783fc701036ff48368cf3beeb8cb55fbc46322561f47de",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/dev/PreviewControls.test.tsx": "57c3dd1c161de8ed8bb1af9ef79fe7746dd3f9ea138493784488d3661b8fb023",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/features/admin/api/admin-api.ts": "f678ef571025fcb4f2b8ed7703b86b94de4afa9f47f309f85959313784f68dd0",
+    "src/features/admin/model/admin-queries.ts": "86e1b4fee2bfb673ab96731d5db555b4d4820003e77b16647bd44dcbdd942bee",
+    "src/features/admin/pages/AdminAbTestsContractPage.tsx": "428382dd3c8f0f6262451b6a606720fa25a9b8a9d4526e9db5411d2ac56613e2",
+    "src/features/admin/pages/AdminFunnelContractPage.tsx": "2be38f9729a13d3ce13e960ebcfb7e44f258eca9ff56bbd9bf2571b5dfdae74f",
+    "src/features/admin/pages/AdminOverviewContractPage.tsx": "e484004753ca52b4f23fa45f47f9fd9fa1e6fde128f28c51714ad8cb08445bf1",
+    "src/features/admin/pages/AdminQueryErrorState.tsx": "8811b6d2aa20c697a5d1d580f0362a81d18d5b59df700c2bf9ffce3b7f569c98",
+    "src/features/admin/routes.ts": "25e80e63ad7a74b3badfdd65e7f9018980fb4bce249c56ab700f2135598d423a",
+    "src/features/auth/api/auth-api.ts": "050846c48de49be56f6bdf6a73669b5d3a6230c559e33851cd07840609fca078",
+    "src/features/auth/pages/WebLoginPage.tsx": "d938bac40bb63145ffbb3919140b1b3d267b96e86872a93f29a4ebac24980e41",
+    "src/features/auth/routes.ts": "6bc8b6448a95756b04515a6d11a831ce4a500d950b2a9e1168e1f19f5e50222f",
+    "src/features/dca/api/dca-api.ts": "dd9c9a077e7b8c4ff137d59680e5c69722dd391d69088b75e2ec2fa28256a997",
+    "src/features/dca/model/dca-queries.ts": "73a9680a7b246dea4141e06682e3eb8557799682445c9e53cc5e4cbdee7a1d65",
+    "src/features/dca/pages/DCAMainPage.tsx": "8373f9f7ac00f923247058de7360630f440debc54ceed6ea3d648ff96448227c",
+    "src/features/earn/api/earn-api.ts": "06715b9d001e7a5b13a7ff819251cded67bca32a32a7912b1b89e6acc8c3e545",
+    "src/features/earn/model/earn-queries.ts": "c3215c441db5e4254fed1a6e91c733b96ed01528dcf61bdc5db4c1390528d10a",
+    "src/features/earn/pages/EarnHistoryPage.tsx": "10853dcd2f40a4c60fc6bbbf698c497d59d3b0d31406a46d6ff7ecca55d426e1",
+    "src/features/earn/pages/EarnPage.tsx": "92bd879acbb9611fb1ca3607cb9139c6b3032f1aeb1b4a1c1815ec84cf23fb94",
+    "src/features/launchpad/api/launchpad-api.ts": "6cd5169460507947e3baeeb164bb14d27d9c9bf12e6899ab73f631389a40b627",
+    "src/features/launchpad/model/launchpad-queries.ts": "9ffab47f27e86e4cfd169457b676642ed6c249226c6eb54a730e3e3ff3e7050d",
+    "src/features/launchpad/model/launchpad-types.ts": "4b597a78910683a4df3b042fe4390f42f9cb7c10ada0e89a718f605984e00e5d",
+    "src/features/launchpad/pages/LaunchpadContractPages.test.tsx": "54d3e9f0ead01c88ff9a02e25f4436afde3949a7be7d55c38089263ce241b95a",
+    "src/features/launchpad/pages/LaunchpadContractPages.tsx": "1c0b563300f776353a5b3a0dce37c1b011f3f3aae81c5ae2c4c1f8ea9bf5643c",
+    "src/features/launchpad/routes.ts": "e65fc942bf96578870b179952a21cc1ee6527b689efef7f34d35799ff75fa548",
+    "src/features/market/api/market-api.ts": "3ab429a7948f319f4a3e1e0dc7973ab9e7f1c3ea78d7a217fb3a3093f68ea7fa",
+    "src/features/market/api/market-research-schemas.ts": "7c81973c289d1d84e3e36bd72140fa6271e9048cbd51fe86000ee92e270a1b29",
+    "src/features/market/model/market-queries.ts": "0a493d15511d513b9ddb09cbf4457205dc86d12e93825e9043d310d68287c9f0",
+    "src/features/market/model/market-types.ts": "edc3c4db22056bfcc439e74280fa9bd5fa6f7e65b88e1fc5381097acd4ea166b",
+    "src/features/market/pages/AdvancedChartsPage.tsx": "9f0915831407a38a78b0971e7f91940f7ae840a338e7c1efdbd8765e2b06563a",
+    "src/features/market/pages/MarketComparisonPage.tsx": "fbec2337a0623720b61a15917ccf58dabf2ade0edf40478004720b777c49512f",
+    "src/features/market/pages/MarketCorrelationPairsPage.tsx": "44854b822785c563f6eb9919afe74f6f4cda6398cb9403f18dcc0e7d74a38949",
+    "src/features/market/pages/MarketDepthPage.tsx": "4bfcd9541e7c7615f9606c1c1448bbeb145606b667bb9e2a937e38add91043f3",
+    "src/features/market/pages/MarketDerivativesPage.tsx": "bed4580507d77fcab3ca62e41b88493f78a74286cf6377e48b9b959501faca6a",
+    "src/features/market/pages/MarketEventCalendarPage.tsx": "34d1b2a2ee341c8405a8be5ddf36f9cfe5dda4bb785dfa1ac402f47778970c13",
+    "src/features/market/pages/MarketHeatmapPage.tsx": "7b0a8a89fa8966e33cf440e1edf1f85f185957fe2c745489eed8940db4c946c1",
+    "src/features/market/pages/MarketHomePage.tsx": "473837995f85438514d174d9dbeba1411ba95dbb7fa5424788c7625fde6e34df",
+    "src/features/market/pages/MarketMoversPage.tsx": "8c9026df94a3933e199ef758d86f3732c2a5099392b828aa0789f94690302e4e",
+    "src/features/market/pages/MarketNewsFeedPage.tsx": "aedc9280943382a7d6cfb1bf7ccf81b5ab7276f897846ceb98c5cb2dc3d17ad6",
+    "src/features/market/pages/MarketOverviewPage.test.tsx": "ef4785a9bd8cb8de16820e5609ee9b73f7a28bf0b94c99e5960a0115b4a70529",
+    "src/features/market/pages/MarketOverviewPage.tsx": "6bd365548714f1ae9d20ff21c87099294675e33820f7cc8e9dbd1faabad9c879",
+    "src/features/market/pages/MarketPriceAlertsPage.tsx": "1fc40c3fa98721d75b7f30132d95ef7a8327d510c23ae15ef9933034a1d59225",
+    "src/features/market/pages/MarketScreenerPage.tsx": "49f0999ccb8d19285c9210ea6278bd60e16d330833728fe536b769adb2f9957f",
+    "src/features/market/pages/MarketSectorsPage.tsx": "09f837e567cd9f87efd6fe85bf339bb1f5bf20209ca7b26e06314758b014c513",
+    "src/features/market/pages/MarketSentimentPage.tsx": "298d0c0dd595432f2c0cb12802a255ea6169d992ed75febf71664db9ddf1c081",
+    "src/features/market/pages/MarketSignalsPage.tsx": "34a929883dbc899bc41388b6f0f1d5bec89f77a6f3afa1851c680076b34f510e",
+    "src/features/market/pages/PairDetailPage.test.tsx": "e515a33bdd7e810b1c67ed0fc08fa04ee6f7eb43037583347fbb95d7a2ec3302",
+    "src/features/market/pages/PairDetailPage.tsx": "3a9e69f652aaf5d2d94fb1a1dfca3bd2d0a57721aef5ce549dc336805abd151c",
+    "src/features/market/pages/TokenInfoPage.tsx": "8807d10e05670ff981be7dae1c14d395e3aabe54c06000659f6e790484b5e144",
+    "src/features/market/pages/TokenUnlockSchedulePage.tsx": "3b837c6443bb2239ca9979a5ea2b704e7a275991f68ff8a9679c6e7b03539a99",
+    "src/features/market/pages/WatchlistPage.tsx": "26989ec1487c7f16faa14d6e4c165546b3355a33a021d66c49f74013248c2d11",
+    "src/features/p2p/api/p2p-api.ts": "164f6424133e159b1b8dd5a6e23a0bdcd3c5a14c294d1a808cba09d552230b83",
+    "src/features/p2p/model/p2p-order-queries.ts": "c8cc053c96a51f9fd3830631ba7f016714477f87b79a01039cb01424d0192394",
+    "src/features/p2p/pages/P2POrdersContractPage.tsx": "4a9e8002772f515dd1117d1ac5386a2ace5136290ca8303c5a67e88b05ef8a67",
+    "src/features/p2p/routes.ts": "70de2d9cae22dfb45031be5cbe5fe858a863aa2bb82b266bea39ce4137e1dbee",
+    "src/features/predictions/api/predictions-api.ts": "122853909253981bc9274bba29e022111d6b5ca58da81d9d9a28f0c59cbf7b87",
+    "src/features/predictions/model/prediction-queries.ts": "03dd010790608dd086de73d18e88b33c0295b61dd73e9c1ad35227e6076470ca",
+    "src/features/predictions/pages/PredictionContractPages.tsx": "74fa8076f0f69751850ab77ba7032a199fcc611c68dca7d11ef5bbe55522bdfe",
+    "src/features/predictions/routes.ts": "1356d898100c0bd6c6dc5b266d85fe62dc268dc09f353db574a782c4763ad4f3",
+    "src/features/profile/api/profile-api.ts": "acba23f32e4c8b2ad972e02c2184e6fbb616ce1ab4b1defeca60d2a825a9b707",
+    "src/features/profile/model/profile-queries.ts": "384f749fcf37d7ac68405dd78288a1ef738251206d7e3bccc5aaa98f8e986a57",
+    "src/features/profile/pages/ActivityLogContractPage.tsx": "48be877678ceb63bb2ad01fa94eaf711bd291539508b3c60500632d0c24efb36",
+    "src/features/profile/pages/DeviceManagementContractPage.tsx": "fb32ff88b2c1d65420537814a3d8244cfde0f1a353a2c76356ae2329717dd286",
+    "src/features/profile/pages/EditProfileContractPage.tsx": "b3f1694edc7aa561c42bf016d543e870dba174767dc664edcc31474a89dc79be",
+    "src/features/profile/pages/ProfileContractPage.tsx": "0932157ef6be68cffad4f6e2481c90f010003ffcc3dbe179d562e7eab9d472bd",
+    "src/features/profile/pages/SubAccountContractPage.tsx": "4842a28e0bc17738d0895352d4dcb168f4a981ea2926feb747120ea9de94d0a0",
+    "src/features/profile/routes.ts": "231052711e6dd138f27c96272e63d401e06854ed33d425d8712f485c3b601418",
+    "src/features/referral/api/referral-api.ts": "31eddcf78a6bd9e171ac323507eb5dd502c96f0cab6dad051061109134f94f1e",
+    "src/features/referral/model/referral-queries.ts": "17aac1c266012732521debaea0d86b68fe7a54320245a5aa6913e5fdece18346",
+    "src/features/referral/pages/ReferralContractPage.tsx": "60e778d394969a1f5bca94ef2652fe3069efa4b7907881830e2586435a133359",
+    "src/features/referral/routes.ts": "6ded2d274870f0f77fbc7ddb7600d720d03f36c61326f9a7f3154b3608d2a5d5",
+    "src/features/trading/pages/OpenPositionsPage.tsx": "709874871e1a37f5ec0d8096188357a72349a08fb6495536c1c9ddf85097c2b1",
+    "src/features/wallet/api/wallet-api.ts": "6f1918992ebdf61e559492ec2d16ba794edb04ef83cde3f248dcdacf6ba91d8a",
+    "src/features/wallet/model/wallet-queries.ts": "28d7b8b808a1162f25ab3e6da9ee2684652ccd5da92d6612b308f85449efbd80",
+    "src/features/wallet/model/wallet-types.ts": "c31f657e91c0976ae6250a1a918f89003e6a5f0147e92f915775fdf3716c39f0",
+    "src/features/wallet/pages/WalletOverviewContractPage.tsx": "b1ad77e142185a3b02930712d928fe6082627a5f8c61a46f6c280640306404bc",
+    "src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx": "14bcbd43d1fd1e7d5194f12657cac1ba5cec0421dc3672f5638ca8e3170b4996",
+    "src/main.tsx": "c150098914a25b7e0630d66f480ffbfe4160e96a8bdb54262b5ad4b5b33719e6",
+    "src/shared/api/api-error.ts": "cd28d4480488b8b71582e085f110a637f80afde64e408b1a24717b67834e2644",
+    "src/shared/api/client.ts": "882197549d075a8be1f495c7d2271dcbf1530ff1606190531da59b75020977bb",
+    "src/shared/api/http-client.ts": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",
+    "src/shared/session/useAuth.ts": "65d58cfe61d4618a1849da066ecd4d6ae7c94c036af7361a91a1383a6b383e0b",
+    "src/shared/ui/ErrorState.tsx": "7e501dd15a90aea2bf93e33150e47d455bbe3a24a0da1f986cca180125d4acd2"
+  },
+  "matrix": {
+    "domains": 15,
+    "trackedOperations": 154,
+    "exactHandlerMappings": 154,
+    "operationsWithDirectSharedHandlerTestReferences": 21,
+    "scenariosDefined": 106,
+    "scenarioRowsWithFreshBrowserEvidence": 81,
+    "scenarioRowsFullyCoveredByFreshBrowserEvidence": 38,
+    "uniqueOperationsWithFreshBrowserEvidence": 88,
+    "runtimeEvidenceFresh": false,
+    "currentHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+    "runtimeEvidenceRevision": "historical_baseline",
+    "freshScenarioEvidenceSidecars": 81,
+    "registeredScenarioEvidenceSidecars": 81,
+    "historicalBaselineScenarioEvidenceSidecars": 0,
+    "historicalBaselineSidecarsWithCurrentSourceHashes": 0,
+    "sourceHashStaleScenarioEvidenceSidecars": 0,
+    "financialDomainsWithPendingUnknownDuplicateCases": [
+      "earn",
+      "p2p",
+      "predictions",
+      "trading",
+      "wallet"
+    ],
+    "notVerifiedScenarioRows": 25,
+    "fullyFreshButBoundaryUnclassifiedRefreshedSidecars": [
+      "admin.unauthorized",
+      "earn.unauthorized"
+    ]
+  },
+  "uiIndex": {
+    "activeRouteDeclarations": 427,
+    "urlRegistrations": 1462,
+    "uniqueUrls": 1393,
+    "scenarioRowsFresh": 81,
+    "scenarioRowsDefined": 106,
+    "userAcceptedPages": 0,
+    "userAcceptanceScope": 128,
+    "backendVerifiedOperations": 0,
+    "backendOperationScope": 154
+  },
+  "sidecars": [
+    {
+      "id": "admin.unauthorized",
+      "status": "passed",
+      "path": "docs/architecture/production-readiness/evidence/A06/admin-unauthorized-browser-check-2026-10-02-current-head.json",
+      "sourceHashCount": 24,
+      "sourceHashesMatchCurrent": true,
+      "sourceHashMismatches": [],
+      "localPreview": true,
+      "strictLocalMockEvidence": false,
+      "origin": "http://127.0.0.1:4188",
+      "observedOperationIds": ["getAdminFunnel", "getAdminOverview", "listAdminAbTests"],
+      "apiResponseCount": 19,
+      "generatedArtifacts": [
+        "docs/architecture/production-readiness/evidence/A06/admin-unauthorized-browser-check-2026-10-02-current-head.json",
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-unauthorized-ab-tests-2026-10-02-current-head.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-unauthorized-funnel-2026-10-02-current-head.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-unauthorized-overview-2026-10-02-current-head.png"
+      ]
+    },
+    {
+      "id": "auth.error",
+      "status": "passed",
+      "path": "docs/architecture/production-readiness/evidence/A06/auth-error-current-head-browser-check-202610021859544.json",
+      "sourceHashCount": 12,
+      "sourceHashesMatchCurrent": true,
+      "sourceHashMismatches": [],
+      "localPreview": true,
+      "strictLocalMockEvidence": true,
+      "origin": "http://127.0.0.1:4188",
+      "observedOperationIds": ["login"],
+      "apiResponseCount": 1,
+      "generatedArtifacts": [
+        "docs/architecture/production-readiness/evidence/A06/auth-error-current-head-browser-check-202610021859544.json",
+        "docs/architecture/production-readiness/evidence/A06/preview-auth-error-current-head-202610021859544.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-auth-error-retry-current-head-202610021859544.png"
+      ]
+    },
+    {
+      "id": "auth.loading",
+      "status": "passed",
+      "path": "docs/architecture/production-readiness/evidence/A06/auth-loading-current-head-browser-check-202610021859557.json",
+      "sourceHashCount": 17,
+      "sourceHashesMatchCurrent": true,
+      "sourceHashMismatches": [],
+      "localPreview": true,
+      "strictLocalMockEvidence": true,
+      "origin": "http://127.0.0.1:4188",
+      "observedOperationIds": ["getSession"],
+      "apiResponseCount": 2,
+      "generatedArtifacts": [
+        "docs/architecture/production-readiness/evidence/A06/auth-loading-current-head-browser-check-202610021859557.json",
+        "docs/architecture/production-readiness/evidence/A06/preview-auth-loading-current-head-202610021859557.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-auth-loading-login-current-head-202610021859557.png"
+      ]
+    },
+    {
+      "id": "auth.success",
+      "status": "passed",
+      "path": "docs/architecture/production-readiness/evidence/A06/auth-success-current-head-browser-check-202610021859589.json",
+      "sourceHashCount": 15,
+      "sourceHashesMatchCurrent": true,
+      "sourceHashMismatches": [],
+      "localPreview": true,
+      "strictLocalMockEvidence": true,
+      "origin": "http://127.0.0.1:4188",
+      "observedOperationIds": ["login"],
+      "apiResponseCount": 4,
+      "generatedArtifacts": [
+        "docs/architecture/production-readiness/evidence/A06/auth-success-current-head-browser-check-202610021859589.json",
+        "docs/architecture/production-readiness/evidence/A06/preview-auth-success-current-head-202610021859589.png"
+      ]
+    },
+    {
+      "id": "auth.unauthorized",
+      "status": "passed",
+      "path": "docs/architecture/production-readiness/evidence/A06/auth-unauthorized-current-head-browser-check-202610021900000.json",
+      "sourceHashCount": 15,
+      "sourceHashesMatchCurrent": true,
+      "sourceHashMismatches": [],
+      "localPreview": true,
+      "strictLocalMockEvidence": true,
+      "origin": "http://127.0.0.1:4188",
+      "observedOperationIds": ["getSession"],
+      "apiResponseCount": 2,
+      "generatedArtifacts": [
+        "docs/architecture/production-readiness/evidence/A06/auth-unauthorized-current-head-browser-check-202610021900000.json",
+        "docs/architecture/production-readiness/evidence/A06/preview-auth-unauthorized-current-head-202610021900000.png"
+      ]
+    },
+    {
+      "id": "dca.unauthorized",
+      "status": "passed",
+      "path": "docs/architecture/production-readiness/evidence/A06/dca-unauthorized-current-head-browser-check-202610021900012.json",
+      "sourceHashCount": 19,
+      "sourceHashesMatchCurrent": true,
+      "sourceHashMismatches": [],
+      "localPreview": true,
+      "strictLocalMockEvidence": true,
+      "origin": "http://127.0.0.1:4188",
+      "observedOperationIds": ["getDCASnapshot"],
+      "apiResponseCount": 6,
+      "generatedArtifacts": [
+        "docs/architecture/production-readiness/evidence/A06/dca-unauthorized-current-head-browser-check-202610021900012.json",
+        "docs/architecture/production-readiness/evidence/A06/preview-dca-unauthorized-current-head-202610021900012.png"
+      ]
+    },
+    {
+      "id": "earn.unauthorized",
+      "status": "passed",
+      "path": "docs/architecture/production-readiness/evidence/A06/earn-unauthorized-current-head-browser-check-202610021900025.json",
+      "sourceHashCount": 22,
+      "sourceHashesMatchCurrent": true,
+      "sourceHashMismatches": [],
+      "localPreview": true,
+      "strictLocalMockEvidence": false,
+      "origin": "http://127.0.0.1:4188",
+      "observedOperationIds": ["getEarnSnapshot", "listEarnTransactions"],
+      "apiResponseCount": 11,
+      "generatedArtifacts": [
+        "docs/architecture/production-readiness/evidence/A06/earn-unauthorized-current-head-browser-check-202610021900025.json",
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-unauthorized-history-current-head-202610021900025.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-unauthorized-snapshot-current-head-202610021900025.png"
+      ]
+    },
+    {
+      "id": "launchpad.empty",
+      "status": "passed",
+      "path": "docs/architecture/production-readiness/evidence/A06/launchpad-empty-current-head-browser-check-202610021900039.json",
+      "sourceHashCount": 26,
+      "sourceHashesMatchCurrent": true,
+      "sourceHashMismatches": [],
+      "localPreview": true,
+      "strictLocalMockEvidence": true,
+      "origin": "http://127.0.0.1:4188",
+      "observedOperationIds": ["listLaunchpadProjects"],
+      "apiResponseCount": 5,
+      "generatedArtifacts": [
+        "docs/architecture/production-readiness/evidence/A06/launchpad-empty-current-head-browser-check-202610021900039.json",
+        "docs/architecture/production-readiness/evidence/A06/preview-launchpad-empty-current-head-202610021900039.png"
+      ]
+    },
+    {
+      "id": "launchpad.error",
+      "status": "passed",
+      "path": "docs/architecture/production-readiness/evidence/A06/launchpad-error-current-head-browser-check-202610021900051.json",
+      "sourceHashCount": 19,
+      "sourceHashesMatchCurrent": true,
+      "sourceHashMismatches": [],
+      "localPreview": true,
+      "strictLocalMockEvidence": true,
+      "origin": "http://127.0.0.1:4188",
+      "observedOperationIds": ["listLaunchpadProjects"],
+      "apiResponseCount": 0,
+      "generatedArtifacts": [
+        "docs/architecture/production-readiness/evidence/A06/launchpad-error-current-head-browser-check-202610021900051.json",
+        "docs/architecture/production-readiness/evidence/A06/preview-launchpad-error-recoverable-current-head-202610021900051.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-launchpad-error-retry-current-head-202610021900051.png"
+      ]
+    },
+    {
+      "id": "launchpad.loading",
+      "status": "passed",
+      "path": "docs/architecture/production-readiness/evidence/A06/launchpad-loading-current-head-browser-check-202610021900110.json",
+      "sourceHashCount": 26,
+      "sourceHashesMatchCurrent": true,
+      "sourceHashMismatches": [],
+      "localPreview": true,
+      "strictLocalMockEvidence": true,
+      "origin": "http://127.0.0.1:4188",
+      "observedOperationIds": ["listLaunchpadProjects"],
+      "apiResponseCount": 5,
+      "generatedArtifacts": [
+        "docs/architecture/production-readiness/evidence/A06/launchpad-loading-current-head-browser-check-202610021900110.json",
+        "docs/architecture/production-readiness/evidence/A06/preview-launchpad-loading-current-head-202610021900110.png"
+      ]
+    },
+    {
+      "id": "launchpad.success",
+      "status": "passed",
+      "path": "docs/architecture/production-readiness/evidence/A06/launchpad-success-current-head-browser-check-202610021900140.json",
+      "sourceHashCount": 25,
+      "sourceHashesMatchCurrent": true,
+      "sourceHashMismatches": [],
+      "localPreview": true,
+      "strictLocalMockEvidence": true,
+      "origin": "http://127.0.0.1:4188",
+      "observedOperationIds": ["getLaunchpadProject", "listLaunchpadProjects"],
+      "apiResponseCount": 6,
+      "generatedArtifacts": [
+        "docs/architecture/production-readiness/evidence/A06/launchpad-success-current-head-browser-check-202610021900140.json",
+        "docs/architecture/production-readiness/evidence/A06/preview-launchpad-success-project-detail-current-head-202610021900140.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-launchpad-success-project-list-current-head-202610021900140.png"
+      ]
+    },
+    {
+      "id": "p2p.unauthorized",
+      "status": "passed",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-unauthorized-browser-check-2026-10-02.json",
+      "sourceHashCount": 13,
+      "sourceHashesMatchCurrent": true,
+      "sourceHashMismatches": [],
+      "localPreview": true,
+      "strictLocalMockEvidence": true,
+      "origin": "http://127.0.0.1:4188",
+      "observedOperationIds": [],
+      "apiResponseCount": null,
+      "generatedArtifacts": [
+        "docs/architecture/production-readiness/evidence/A06/p2p-unauthorized-browser-check-2026-10-02.json",
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-unauthorized-login-2026-10-02.png"
+      ]
+    },
+    {
+      "id": "predictions.unauthorized",
+      "status": "passed",
+      "path": "docs/architecture/production-readiness/evidence/A06/predictions-unauthorized-browser-check-2026-10-02-contract-scoped.json",
+      "sourceHashCount": 17,
+      "sourceHashesMatchCurrent": true,
+      "sourceHashMismatches": [],
+      "localPreview": true,
+      "strictLocalMockEvidence": true,
+      "origin": "http://127.0.0.1:4188",
+      "observedOperationIds": ["listPredictionEvents", "listPredictionPositions"],
+      "apiResponseCount": null,
+      "generatedArtifacts": [
+        "docs/architecture/production-readiness/evidence/A06/predictions-unauthorized-browser-check-2026-10-02-contract-scoped.json",
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-unauthorized-events-2026-10-02-contract-scoped.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-unauthorized-portfolio-2026-10-02-contract-scoped.png"
+      ]
+    },
+    {
+      "id": "profile.unauthorized",
+      "status": "passed",
+      "path": "docs/architecture/production-readiness/evidence/A06/profile-unauthorized-browser-check-2026-10-02-contract-scoped.json",
+      "sourceHashCount": 23,
+      "sourceHashesMatchCurrent": true,
+      "sourceHashMismatches": [],
+      "localPreview": true,
+      "strictLocalMockEvidence": true,
+      "origin": "http://127.0.0.1:4188",
+      "observedOperationIds": [
+        "getProfile",
+        "listProfileActivity",
+        "listSubAccounts",
+        "listTrustedDevices"
+      ],
+      "apiResponseCount": 25,
+      "generatedArtifacts": [
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-unauthorized-activity-2026-10-02-contract-scoped.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-unauthorized-devices-2026-10-02-contract-scoped.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-unauthorized-profile-2026-10-02-contract-scoped.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-unauthorized-subaccounts-2026-10-02-contract-scoped.png",
+        "docs/architecture/production-readiness/evidence/A06/profile-unauthorized-browser-check-2026-10-02-contract-scoped.json"
+      ]
+    },
+    {
+      "id": "referral.unauthorized",
+      "status": "passed",
+      "path": "docs/architecture/production-readiness/evidence/A06/referral-unauthorized-browser-check-2026-10-02-contract-scoped.json",
+      "sourceHashCount": 25,
+      "sourceHashesMatchCurrent": true,
+      "sourceHashMismatches": [],
+      "localPreview": true,
+      "strictLocalMockEvidence": true,
+      "origin": "http://127.0.0.1:4188",
+      "observedOperationIds": ["getReferralOverview"],
+      "apiResponseCount": 1,
+      "generatedArtifacts": [
+        "docs/architecture/production-readiness/evidence/A06/preview-referral-unauthorized-login-2026-10-02-contract-scoped.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-referral-unauthorized-success-2026-10-02-contract-scoped.png",
+        "docs/architecture/production-readiness/evidence/A06/referral-unauthorized-browser-check-2026-10-02-contract-scoped.json"
+      ]
+    },
+    {
+      "id": "trading.unauthorized",
+      "status": "passed",
+      "path": "docs/architecture/production-readiness/evidence/A06/trading-unauthorized-browser-check-2026-10-02.json",
+      "sourceHashCount": 14,
+      "sourceHashesMatchCurrent": true,
+      "sourceHashMismatches": [],
+      "localPreview": true,
+      "strictLocalMockEvidence": true,
+      "origin": "http://127.0.0.1:4188",
+      "observedOperationIds": ["listOpenPositions"],
+      "apiResponseCount": 10,
+      "generatedArtifacts": [
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-unauthorized-login-2026-10-02.png",
+        "docs/architecture/production-readiness/evidence/A06/trading-unauthorized-browser-check-2026-10-02.json"
+      ]
+    },
+    {
+      "id": "wallet.unauthorized",
+      "status": "passed",
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-unauthorized-current-head-browser-check-202610021900239.json",
+      "sourceHashCount": 21,
+      "sourceHashesMatchCurrent": true,
+      "sourceHashMismatches": [],
+      "localPreview": true,
+      "strictLocalMockEvidence": true,
+      "origin": "http://127.0.0.1:4188",
+      "observedOperationIds": ["getWalletAssets", "getWalletTransactions"],
+      "apiResponseCount": null,
+      "generatedArtifacts": [
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-unauthorized-history-202610021900239.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-unauthorized-overview-202610021900239.png",
+        "docs/architecture/production-readiness/evidence/A06/wallet-unauthorized-current-head-browser-check-202610021900239.json"
+      ]
+    },
+    {
+      "id": "market.loading",
+      "status": "passed",
+      "path": "docs/architecture/production-readiness/evidence/A06/market-loading-current-head-browser-check-20261002190036.json",
+      "sourceHashCount": 21,
+      "sourceHashesMatchCurrent": true,
+      "sourceHashMismatches": [],
+      "localPreview": true,
+      "strictLocalMockEvidence": true,
+      "origin": "http://127.0.0.1:4188",
+      "observedOperationIds": [
+        "addMarketWatchlistItem",
+        "createMarketPriceAlert",
+        "deleteMarketPriceAlert",
+        "deleteMarketWatchlistItem",
+        "getMarketCalendar",
+        "getMarketCandles",
+        "getMarketCorrelations",
+        "getMarketDerivatives",
+        "getMarketMovers",
+        "getMarketNews",
+        "getMarketOrderBook",
+        "getMarketOverview",
+        "getMarketPair",
+        "getMarketRecentTrades",
+        "getMarketSentiment",
+        "getMarketSignals",
+        "getMarketTokenUnlocks",
+        "getMarketWatchlist",
+        "listMarketPairs",
+        "listMarketPriceAlerts",
+        "updateMarketPriceAlert",
+        "updateMarketWatchlistItem"
+      ],
+      "apiResponseCount": 38,
+      "generatedArtifacts": [
+        "docs/architecture/production-readiness/evidence/A06/market-loading-current-head-browser-check-20261002190036.json",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-complete-current-head-20261002190036.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-20261002190036.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-alerts-20261002190036.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-calendar-20261002190036.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-correlations-20261002190036.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-derivatives-20261002190036.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-movers-20261002190036.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-news-20261002190036.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-signals-20261002190036.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-social-sentiment-20261002190036.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-unlocks-20261002190036.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-pair-btcusdt-20261002190036.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-trade-advanced-chart-btcusdt-20261002190036.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-home-current-head-20261002190036.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-addMarketWatchlistItem-20261002190036.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-createMarketPriceAlert-20261002190036.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-deleteMarketPriceAlert-20261002190036.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-deleteMarketWatchlistItem-20261002190036.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-updateMarketPriceAlert-20261002190036.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-updateMarketWatchlistItem-20261002190036.png"
+      ]
+    },
+    {
+      "id": "market.success",
+      "status": "passed",
+      "path": "docs/architecture/production-readiness/evidence/A06/market-success-current-head-browser-check-20261002190135.json",
+      "sourceHashCount": 43,
+      "sourceHashesMatchCurrent": true,
+      "sourceHashMismatches": [],
+      "localPreview": true,
+      "strictLocalMockEvidence": true,
+      "origin": "http://127.0.0.1:4188",
+      "observedOperationIds": [
+        "addMarketWatchlistItem",
+        "createMarketPriceAlert",
+        "deleteMarketPriceAlert",
+        "deleteMarketWatchlistItem",
+        "getMarketCalendar",
+        "getMarketCandles",
+        "getMarketCorrelations",
+        "getMarketDerivatives",
+        "getMarketMovers",
+        "getMarketNews",
+        "getMarketOrderBook",
+        "getMarketOverview",
+        "getMarketPair",
+        "getMarketRecentTrades",
+        "getMarketSentiment",
+        "getMarketSignals",
+        "getMarketTokenUnlocks",
+        "getMarketWatchlist",
+        "listMarketPairs",
+        "listMarketPriceAlerts",
+        "updateMarketPriceAlert",
+        "updateMarketWatchlistItem"
+      ],
+      "apiResponseCount": 38,
+      "generatedArtifacts": [
+        "docs/architecture/production-readiness/evidence/A06/market-success-current-head-browser-check-20261002190135.json",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-home-20261002190135.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-market-writes-complete-20261002190135.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-alerts-20261002190135.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-calendar-20261002190135.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-compare-20261002190135.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-correlations-20261002190135.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-depth-20261002190135.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-derivatives-20261002190135.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-heatmap-20261002190135.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-movers-20261002190135.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-news-20261002190135.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-overview-20261002190135.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-screener-20261002190135.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-sectors-20261002190135.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-signals-20261002190135.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-social-sentiment-20261002190135.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-unlocks-20261002190135.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-watchlist-20261002190135.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-pair-btcusdt-20261002190135.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-pair-btcusdt-info-20261002190135.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-trade-advanced-chart-btcusdt-20261002190135.png"
+      ]
+    },
+    {
+      "id": "auth.empty",
+      "status": "passed",
+      "path": "docs/architecture/production-readiness/evidence/A06/auth-empty-current-head-browser-check-202610021857280.json",
+      "sourceHashCount": 17,
+      "sourceHashesMatchCurrent": true,
+      "sourceHashMismatches": [],
+      "localPreview": true,
+      "strictLocalMockEvidence": true,
+      "origin": "http://127.0.0.1:4188",
+      "observedOperationIds": ["getSession"],
+      "apiResponseCount": 3,
+      "generatedArtifacts": [
+        "docs/architecture/production-readiness/evidence/A06/auth-empty-current-head-browser-check-202610021857280.json",
+        "docs/architecture/production-readiness/evidence/A06/preview-auth-empty-current-head-202610021857280.png"
+      ]
+    }
+  ],
+  "generatedArtifacts": [
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/admin-unauthorized-browser-check-2026-10-02-current-head.json",
+      "kind": "scenario_report",
+      "sha256": "dc4cbefc0279a56659f0c6a47bf5e01a98ca6d4fde4123ae4c5d6e33c3b7d91e"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/auth-empty-current-head-browser-check-202610021857280.json",
+      "kind": "scenario_report",
+      "sha256": "73a1527c2c93726af8a426ee5a52b7ef4e3b503ae13e743d00c225b64212bb76"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/auth-error-current-head-browser-check-202610021859544.json",
+      "kind": "scenario_report",
+      "sha256": "768523f18be17eee5876bc0e19042c9d8027c500928fba3af61959accb44fb33"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/auth-loading-current-head-browser-check-202610021859557.json",
+      "kind": "scenario_report",
+      "sha256": "87a03f8b3ab8b5547dc5d75a27d76499f607195ddecb05cc594b4ef1abdd2807"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/auth-success-current-head-browser-check-202610021859589.json",
+      "kind": "scenario_report",
+      "sha256": "23ae39113fd52e336591f7c1d30d1ec9b091eb9f9efe2f3ea0e44978bceca04b"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/auth-unauthorized-current-head-browser-check-202610021900000.json",
+      "kind": "scenario_report",
+      "sha256": "24997ae93dca0335a5bccaee95260b55cc2dd3b5c61d7f01b27d697ccaac8e1f"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/dca-unauthorized-current-head-browser-check-202610021900012.json",
+      "kind": "scenario_report",
+      "sha256": "b8bce3301fcb2bc96a8fed4c5233e8334f8c1c02094396422e7c047f2bad4ae9"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/earn-unauthorized-current-head-browser-check-202610021900025.json",
+      "kind": "scenario_report",
+      "sha256": "6ccf1b4ad93612321dd5490e883a0c0a74d57f959e9a37481e0dd3fe301c8170"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/launchpad-empty-current-head-browser-check-202610021900039.json",
+      "kind": "scenario_report",
+      "sha256": "48575dd8376d87b9b003e201064bad02d24887543ce8be24718d7452564676fb"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/launchpad-error-current-head-browser-check-202610021900051.json",
+      "kind": "scenario_report",
+      "sha256": "f9bc92e9b55c0e85486d6c0c2d96f42124349d55f8d6e8bf8556b8a9041c1b0c"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/launchpad-loading-current-head-browser-check-202610021900110.json",
+      "kind": "scenario_report",
+      "sha256": "75980e1c1cbc7b31463e611b4a64195a5b0d7d7c8fb9617d03d34c2a99da4a6d"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/launchpad-success-current-head-browser-check-202610021900140.json",
+      "kind": "scenario_report",
+      "sha256": "ebeba1d4846c3cd0e9b649a2db4308a7cbd5b0e2b7056eb47b0cc4b744c68f20"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/market-loading-current-head-browser-check-20261002190036.json",
+      "kind": "scenario_report",
+      "sha256": "74da79c32bbc2353d7e2a737d6356840ef7dbb5260b73806eaffa946424fa215"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/market-success-current-head-browser-check-20261002190135.json",
+      "kind": "scenario_report",
+      "sha256": "9a2f5516798b860d3b6aa2241aa4f88c37bf90af7a327c6c25f7daccf9cea009"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-unauthorized-browser-check-2026-10-02.json",
+      "kind": "scenario_report",
+      "sha256": "3e929a08d64ab8733861f84832f6580b06f707b04b7718c605b01812057f9a99"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/predictions-unauthorized-browser-check-2026-10-02-contract-scoped.json",
+      "kind": "scenario_report",
+      "sha256": "c9839a6d7478ca0a3df255ae8236e19a98d42809c1a71ace75bb9be9760fce09"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-admin-unauthorized-ab-tests-2026-10-02-current-head.png",
+      "kind": "screenshot",
+      "sha256": "c2825f7e2401ca1c59f4f92a85b59713a1c498432d6cd88a32d111c9d814e692"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-admin-unauthorized-funnel-2026-10-02-current-head.png",
+      "kind": "screenshot",
+      "sha256": "c2825f7e2401ca1c59f4f92a85b59713a1c498432d6cd88a32d111c9d814e692"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-admin-unauthorized-overview-2026-10-02-current-head.png",
+      "kind": "screenshot",
+      "sha256": "c2825f7e2401ca1c59f4f92a85b59713a1c498432d6cd88a32d111c9d814e692"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-auth-empty-current-head-202610021857280.png",
+      "kind": "screenshot",
+      "sha256": "e5bf7909ec6be50529f3c22946ae6064c4dfe03698f385a9cd6c4ffb3014cf6d"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-auth-error-current-head-202610021859544.png",
+      "kind": "screenshot",
+      "sha256": "38433d6d4a008f8a95fb725584d933171090e4a2b180b28140babec97f852116"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-auth-error-retry-current-head-202610021859544.png",
+      "kind": "screenshot",
+      "sha256": "a309a077c65a6809fec44aec872ed5efed661134e49a605840ab20490f7fae04"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-auth-loading-current-head-202610021859557.png",
+      "kind": "screenshot",
+      "sha256": "4345786f85edb5490118223133a9bac83c18ebeb59e322fab549561339b7e9ff"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-auth-loading-login-current-head-202610021859557.png",
+      "kind": "screenshot",
+      "sha256": "c2825f7e2401ca1c59f4f92a85b59713a1c498432d6cd88a32d111c9d814e692"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-auth-success-current-head-202610021859589.png",
+      "kind": "screenshot",
+      "sha256": "a9eda15daf780235b6753ff131247a083e353556f74858222447c7849ba7d77c"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-auth-unauthorized-current-head-202610021900000.png",
+      "kind": "screenshot",
+      "sha256": "81878c81f46b4989ecb69dafe1db5e8f830a591abb5f10dcd9c2d69b994877d7"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-dca-unauthorized-current-head-202610021900012.png",
+      "kind": "screenshot",
+      "sha256": "1e93762003da5287c24d78208c4cac0483363bd91f813b2e0dd3730f188b8a23"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-earn-unauthorized-history-current-head-202610021900025.png",
+      "kind": "screenshot",
+      "sha256": "81878c81f46b4989ecb69dafe1db5e8f830a591abb5f10dcd9c2d69b994877d7"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-earn-unauthorized-snapshot-current-head-202610021900025.png",
+      "kind": "screenshot",
+      "sha256": "81878c81f46b4989ecb69dafe1db5e8f830a591abb5f10dcd9c2d69b994877d7"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-launchpad-empty-current-head-202610021900039.png",
+      "kind": "screenshot",
+      "sha256": "937e308a8e6f5947fcc77a23c664d2f3a1ab2853d061754ddc252951c68ea6a2"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-launchpad-error-recoverable-current-head-202610021900051.png",
+      "kind": "screenshot",
+      "sha256": "38980e55155d1193f6e0f445556737a8c7bc9465ebb53969780a810967c9def9"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-launchpad-error-retry-current-head-202610021900051.png",
+      "kind": "screenshot",
+      "sha256": "e423adbd0e42adc0c9b7ecb6a9b9005af27cf80cf022d3230cec3e937838d075"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-launchpad-loading-current-head-202610021900110.png",
+      "kind": "screenshot",
+      "sha256": "e46cff805547203dc836a3a6b7943c4d9347083cc9783ebf83821505660b3638"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-launchpad-success-project-detail-current-head-202610021900140.png",
+      "kind": "screenshot",
+      "sha256": "2d2ac6fd3a12fa964c264d1b92450a509fd8c7be14e514946fb178e1b2a4bc2b"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-launchpad-success-project-list-current-head-202610021900140.png",
+      "kind": "screenshot",
+      "sha256": "fec4bd7e1a54c5a4978dbb0c950baff645147b97f74b35b3cc263a7791e10b06"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-complete-current-head-20261002190036.png",
+      "kind": "screenshot",
+      "sha256": "fb8c60e778439f818638c014d52e5c867db8c3ba13a52b1c4d2c36e1c151ae3c"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-20261002190036.png",
+      "kind": "screenshot",
+      "sha256": "bef20e8677c105694314f3a1b824bcda417acad9828fcc6f748deb516f5b3d32"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-alerts-20261002190036.png",
+      "kind": "screenshot",
+      "sha256": "21b59b503dcdc8163b2e4fb540264a87e436e8bc15ae76bf682cb543b6033c8d"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-calendar-20261002190036.png",
+      "kind": "screenshot",
+      "sha256": "e5fa05a31626950b18a2e341204b1d7f5d750c2f9ba170ed55a36f892a098979"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-correlations-20261002190036.png",
+      "kind": "screenshot",
+      "sha256": "23199d540e184fbc6b2f0317edb42c0d5e69997e1a371372a849c7345cb98b5c"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-derivatives-20261002190036.png",
+      "kind": "screenshot",
+      "sha256": "136e2f87b5ecee666faba862f924b539ee7e5d87b4964af460a68d1216990824"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-movers-20261002190036.png",
+      "kind": "screenshot",
+      "sha256": "d48bb85fb6d0522c776e11e4db0e3d0d7fcfb9f578132ce115c15d6a58ad02c4"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-news-20261002190036.png",
+      "kind": "screenshot",
+      "sha256": "f949cb3dca9631bd57e8d64b456e8dfaabd1c479a285394198109bb3459ac3da"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-signals-20261002190036.png",
+      "kind": "screenshot",
+      "sha256": "694c59da02f8376f0898de16cd5212667cb79f5dd5955e2465a26210fdd3e821"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-social-sentiment-20261002190036.png",
+      "kind": "screenshot",
+      "sha256": "365db5f784e5d2bafd489cfa954deaaad58e26d35251aa9ee9c0ed737f63ff99"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-unlocks-20261002190036.png",
+      "kind": "screenshot",
+      "sha256": "5e047301b4a8c936a1c7cf7a83ef511b1f0edc2a8197f06652530713a4c78f0d"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-pair-btcusdt-20261002190036.png",
+      "kind": "screenshot",
+      "sha256": "2ae6231be40d33395cd050a0196bbc98b8fdc80b19cc48f105f13b6b651c177b"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-trade-advanced-chart-btcusdt-20261002190036.png",
+      "kind": "screenshot",
+      "sha256": "18eb97c3fb1588ea37c3fb6df696e715503485fc23db0bdb42717e868844926f"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-home-current-head-20261002190036.png",
+      "kind": "screenshot",
+      "sha256": "b6fd966dc24fe5a8c301e95de27f1c47488709c137e03874f0371188370d9260"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-addMarketWatchlistItem-20261002190036.png",
+      "kind": "screenshot",
+      "sha256": "b95c5a4141776660171022b55658f4c678fa8bbfd33feb7d0ab08a0a68a9804c"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-createMarketPriceAlert-20261002190036.png",
+      "kind": "screenshot",
+      "sha256": "d4cf3f666acbc956c0af08282924369f564028257584fa37ea935cd0bde5e4ae"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-deleteMarketPriceAlert-20261002190036.png",
+      "kind": "screenshot",
+      "sha256": "10f537ef265c7393c5cbb7111f53fe46e97af45e1a429fd9aad7093119579939"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-deleteMarketWatchlistItem-20261002190036.png",
+      "kind": "screenshot",
+      "sha256": "403f7cedf2ed34ab629e72a5900574c335baf54255f750e12b4d9f2c16581f61"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-updateMarketPriceAlert-20261002190036.png",
+      "kind": "screenshot",
+      "sha256": "776267aa51bb75a2e1ff1e3dbf9fec2439dfab83351a945193ee67c3bfa1d408"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-updateMarketWatchlistItem-20261002190036.png",
+      "kind": "screenshot",
+      "sha256": "d2b338db5ef1f1a8f3105f8faf4049b791a3ab86ed5685679b83dc1bfd394241"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-home-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "2523028af079d4141b52d5f36278e1d171d8bc730f0ac506d15db6282404bc01"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-market-writes-complete-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "605b6aca1946e3edc3a9e1bb50e739e7e06e0681196642d0586c45672d844e36"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-alerts-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "438dbfaa89c63f55ea8616deb57050587fbbdfbdb85ef0f705eb38afc79eee34"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-calendar-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "feca5b8eadda42937c44a3e513e39c303967df4a8e4a8bf0569911c5fb51c6aa"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-compare-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "3021dee717aeba8daef8dab9c5a801311cc04aa79ed8405ca5e26ca60325264b"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-correlations-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "d22fe01f9bbdbe6e69d95b947fcf7fc7d141e757ecef0adf1d8196a7217b5fb1"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-depth-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "e7214ea2711b8e89c7ea490818e453aef23fea15935a77fc03d1f7202f5b29c2"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-derivatives-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "9854b32c30600592c96157eb822ac0d884d35c643c5032d5f50ec3b5cbb356a2"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-heatmap-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "33554222afc1268d7351336bbe3ca3eed786dca16b986ef627bf06654df68982"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-movers-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "f92cc762cc9afe0aea3c8c9c708eacb1503e1da53881aeb79d7b9321d1ffad89"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-news-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "a639e9ac82741ab67558a69584052bb490d797ac56a11783834f448cbab271ba"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-overview-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "6f2ee4accb4c9d12606f7d7c64d3f0be1ce13cfb52c1559126841e4923c2733f"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-screener-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "f6b6a88bd5f18cd78efe1b9c99e5e9d52724575223cd84c7a5b9e8917b9c0f79"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-sectors-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "58fa0a02a14fed1a45527d36dd33d059fa0124623062958538473362efb8fd2a"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-signals-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "358d4aedc35a619f11585851a6fb719805e7d570167f50b8752e4c86cc1b63c7"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-social-sentiment-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "e402449e5006cb241c77abe13ef0e3352a521753dd2685f743e4681f4e278109"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-unlocks-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "6fb2a349a9a556a0bb43e08492a9b79a08acae4a078823ef2ab8af9b6e20b730"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-watchlist-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "f617188ddb0ae96d845e27c6ae0dc8d4ca8d79724f9d975e737eb9ba02f771dc"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-pair-btcusdt-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "d492009f00399141a27c2147d686c484ef1344a889a4a662ac7308ada1f7be59"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-pair-btcusdt-info-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "cad211b0d74c938b78bc708b9ecc83700fe8fb3582e848a9aee7399d0fa23b05"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-trade-advanced-chart-btcusdt-20261002190135.png",
+      "kind": "screenshot",
+      "sha256": "5f9e449c860b7024428f120a922808a076ab89241d0de13a885d5af702c7b875"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-p2p-unauthorized-login-2026-10-02.png",
+      "kind": "screenshot",
+      "sha256": "17aa05178626b0a7135b0e29a8a2635407e42443bcafe2cfd5b3beea1f98d62e"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-predictions-unauthorized-events-2026-10-02-contract-scoped.png",
+      "kind": "screenshot",
+      "sha256": "b2c128a3cb3b4984b383de925040ed9186b9d1ea02f1f310b2df83411a07e889"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-predictions-unauthorized-portfolio-2026-10-02-contract-scoped.png",
+      "kind": "screenshot",
+      "sha256": "0dc11ff31fd15fa541c815b2015519167916af79b2237336e947c500ce896a27"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-profile-unauthorized-activity-2026-10-02-contract-scoped.png",
+      "kind": "screenshot",
+      "sha256": "81878c81f46b4989ecb69dafe1db5e8f830a591abb5f10dcd9c2d69b994877d7"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-profile-unauthorized-devices-2026-10-02-contract-scoped.png",
+      "kind": "screenshot",
+      "sha256": "81878c81f46b4989ecb69dafe1db5e8f830a591abb5f10dcd9c2d69b994877d7"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-profile-unauthorized-profile-2026-10-02-contract-scoped.png",
+      "kind": "screenshot",
+      "sha256": "81878c81f46b4989ecb69dafe1db5e8f830a591abb5f10dcd9c2d69b994877d7"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-profile-unauthorized-subaccounts-2026-10-02-contract-scoped.png",
+      "kind": "screenshot",
+      "sha256": "81878c81f46b4989ecb69dafe1db5e8f830a591abb5f10dcd9c2d69b994877d7"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-referral-unauthorized-login-2026-10-02-contract-scoped.png",
+      "kind": "screenshot",
+      "sha256": "81878c81f46b4989ecb69dafe1db5e8f830a591abb5f10dcd9c2d69b994877d7"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-referral-unauthorized-success-2026-10-02-contract-scoped.png",
+      "kind": "screenshot",
+      "sha256": "0f2caa716d50e59d1cbf508bed5f8ab7bc2e09d8ce151e600f6f63317e6547fc"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-trading-unauthorized-login-2026-10-02.png",
+      "kind": "screenshot",
+      "sha256": "81878c81f46b4989ecb69dafe1db5e8f830a591abb5f10dcd9c2d69b994877d7"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-wallet-unauthorized-history-202610021900239.png",
+      "kind": "screenshot",
+      "sha256": "81878c81f46b4989ecb69dafe1db5e8f830a591abb5f10dcd9c2d69b994877d7"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-wallet-unauthorized-overview-202610021900239.png",
+      "kind": "screenshot",
+      "sha256": "81878c81f46b4989ecb69dafe1db5e8f830a591abb5f10dcd9c2d69b994877d7"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/profile-unauthorized-browser-check-2026-10-02-contract-scoped.json",
+      "kind": "scenario_report",
+      "sha256": "4a915f53b8ba3e35fe8433172c168a77ed2f978ad7ad390bf3cc0ca41ed54c41"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/referral-unauthorized-browser-check-2026-10-02-contract-scoped.json",
+      "kind": "scenario_report",
+      "sha256": "7dbec3c9713a33984ebcc3a1d5bf346f148a80cb12a6f07673315cc9a952658a"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/trading-unauthorized-browser-check-2026-10-02.json",
+      "kind": "scenario_report",
+      "sha256": "29f18b086a548127e971b527de18e34d7d4d24f0b5fa97448d0d8793bb24021c"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-unauthorized-current-head-browser-check-202610021900239.json",
+      "kind": "scenario_report",
+      "sha256": "cce80fecc5c92ba264bf81da512f09d9490d934cd67be179b8cf3096e4bc1cc4"
+    }
+  ],
+  "limitations": [
+    "Evidence is local Chromium/MSW or local loopback browser evidence and does not establish backend, staging or production behavior.",
+    "The two boundary-unclassified sidecars remain source-hash-fresh but must not be counted as strict local-MSW proof until their metadata is reconciled.",
+    "A06 still has 25 not_verified scenario rows; 81/106 fresh evidence rows do not complete the full scenario matrix.",
+    "The aggregate runtime report remains historical_baseline; user acceptance remains 0/128 and backend/staging remains 0/154."
+  ]
+}

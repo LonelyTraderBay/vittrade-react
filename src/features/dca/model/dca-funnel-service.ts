@@ -220,28 +220,26 @@ class ConversionFunnelTrackerService {
     if (!session) return;
 
     // Find next expected step
-    const nextStepIndex = session.steps.length;
+    const nextStepIndex = this.getLastCompletedStepIndex(funnel, session) + 1;
     if (nextStepIndex >= funnel.steps.length) return; // Already completed
 
     const nextStep = funnel.steps[nextStepIndex];
 
     // Check if event matches next step
+    let stepToComplete = nextStep;
     if (nextStep.eventName !== eventName) {
-      // Allow skipping non-required steps
-      if (!nextStep.required) {
-        const futureStep = funnel.steps
-          .slice(nextStepIndex + 1)
-          .find((s) => s.eventName === eventName);
-        if (futureStep) {
-          // Skip to future step
-          this.completeStep(session, futureStep, properties);
-        }
-      }
-      return;
+      if (nextStep.required) return;
+
+      // Allow skipping non-required steps while still completing the observed event.
+      const futureStep = funnel.steps
+        .slice(nextStepIndex + 1)
+        .find((step) => step.eventName === eventName);
+      if (!futureStep) return;
+      stepToComplete = futureStep;
     }
 
     // Complete step
-    this.completeStep(session, nextStep, properties);
+    this.completeStep(session, stepToComplete, properties);
 
     // Check if funnel is complete
     if (eventName === funnel.successEvent) {
@@ -296,11 +294,11 @@ class ConversionFunnelTrackerService {
     this.completedSessions.get(session.funnelId)!.push(session);
 
     // Remove from active
-    const active = this.activeSessions.get(session.funnelId) || [];
-    const index = active.findIndex((s) => s.sessionId === session.sessionId);
-    if (index >= 0) {
-      active.splice(index, 1);
-    }
+    const active = this.activeSessions.get(session.funnelId)!;
+    this.activeSessions.set(
+      session.funnelId,
+      active.filter((activeSession) => activeSession.sessionId !== session.sessionId),
+    );
 
     this.saveToStorage();
 
@@ -354,14 +352,19 @@ class ConversionFunnelTrackerService {
     sessions: FunnelSession[],
   ): StepAnalytics[] {
     return funnel.steps.map((step, index) => {
-      const reached = sessions.filter((s) => s.steps.length > index).length;
-      const completed = sessions.filter(
-        (s) => s.steps.length > index && s.steps[index].stepId === step.id,
+      const reached = sessions.filter(
+        (session) => this.getLastCompletedStepIndex(funnel, session) >= index,
+      ).length;
+      const completed = sessions.filter((session) =>
+        session.steps.some((completedStep) => completedStep.stepId === step.id),
       ).length;
 
       const timeToComplete = sessions
-        .filter((s) => s.steps[index]?.stepId === step.id)
-        .map((s) => s.steps[index].timeSincePrevious || 0)
+        .flatMap((session) =>
+          session.steps
+            .filter((completedStep) => completedStep.stepId === step.id)
+            .map((completedStep) => completedStep.timeSincePrevious || 0),
+        )
         .filter((t) => t > 0);
 
       const avgTimeToComplete =
@@ -369,7 +372,10 @@ class ConversionFunnelTrackerService {
           ? timeToComplete.reduce((sum, t) => sum + t, 0) / timeToComplete.length
           : 0;
 
-      const dropouts = sessions.filter((s) => !s.completed && s.steps.length === index).length;
+      const dropouts = sessions.filter(
+        (session) =>
+          !session.completed && this.getLastCompletedStepIndex(funnel, session) + 1 === index,
+      ).length;
 
       return {
         stepId: step.id,
@@ -395,7 +401,7 @@ class ConversionFunnelTrackerService {
     const dropoutByStep: Map<string, { count: number; times: number[] }> = new Map();
 
     for (const session of dropouts) {
-      const lastStepIndex = session.steps.length - 1;
+      const lastStepIndex = this.getLastCompletedStepIndex(funnel, session);
       const dropoutStep = lastStepIndex >= 0 ? funnel.steps[lastStepIndex].id : 'entry';
 
       if (!dropoutByStep.has(dropoutStep)) {
@@ -414,7 +420,7 @@ class ConversionFunnelTrackerService {
     return Array.from(dropoutByStep.entries()).map(([step, data]) => ({
       step,
       count: data.count,
-      rate: sessions.length > 0 ? data.count / sessions.length : 0,
+      rate: data.count / sessions.length,
       avgTimeBeforeDropout:
         data.times.length > 0 ? data.times.reduce((sum, t) => sum + t, 0) / data.times.length : 0,
     }));
@@ -460,11 +466,17 @@ class ConversionFunnelTrackerService {
     return sessions.find((s) => s.userId === userId && !s.completed);
   }
 
+  /** Resolve progression from recorded step IDs so skipped optional steps keep their position. */
+  private getLastCompletedStepIndex(funnel: FunnelDefinition, session: FunnelSession): number {
+    const lastStep = session.steps[session.steps.length - 1];
+    return lastStep ? funnel.steps.findIndex((step) => step.id === lastStep.stepId) : -1;
+  }
+
   /**
    * Find session by ID
    */
   private findSessionById(funnelId: string, sessionId: string): FunnelSession | undefined {
-    const active = this.activeSessions.get(funnelId) || [];
+    const active = this.activeSessions.get(funnelId)!;
     const completed = this.completedSessions.get(funnelId) || [];
     return [...active, ...completed].find((s) => s.sessionId === sessionId);
   }

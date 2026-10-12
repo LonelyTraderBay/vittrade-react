@@ -60,11 +60,17 @@ afterAll(() => server.close());
 describe('DCA API contract', () => {
   it('maps ISO date fields into domain dates', async () => {
     server.use(
-      http.get('http://localhost:3000/api/dca/snapshot', () => HttpResponse.json(snapshot)),
+      http.get('http://localhost:3000/api/dca/snapshot', () =>
+        HttpResponse.json({
+          ...snapshot,
+          plans: [{ ...plan, lastPurchaseAt: '2026-09-25T00:00:00.000Z' }],
+        }),
+      ),
     );
 
     const result = await dcaApi.getSnapshot();
     expect(result.plans[0].nextExecution).toBeInstanceOf(Date);
+    expect(result.plans[0].lastPurchaseAt).toBeInstanceOf(Date);
     expect(result.purchaseHistory[0].date).toBeInstanceOf(Date);
     expect(result.overview.currentValue).toBe(1100000);
   });

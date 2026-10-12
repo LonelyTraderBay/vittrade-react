@@ -85,8 +85,36 @@ describe('TradingMarketPanel', () => {
     );
     expect(screen.getByTestId('order-book')).toBeInTheDocument();
 
+    rerender(
+      <>
+        <TradingMarketPanel
+          pair={pair}
+          livePrice={65_000}
+          flash={null}
+          isPositive
+          dataTab="trades"
+          onDataTabChange={onDataTabChange}
+          onOpenPairSwitcher={vi.fn()}
+        />
+        <CurrentRoute />
+      </>,
+    );
+    expect(screen.getByTestId('recent-trades')).toBeInTheDocument();
+
     fireEvent.click(screen.getByRole('button', { name: 'Giao dịch' }));
     expect(onDataTabChange).toHaveBeenCalledWith('trades');
+  });
+
+  it('uses the down price color when the daily change is negative and there is no flash', () => {
+    renderPanel({ pair: { ...pair, change24h: -1.5 }, isPositive: false });
+
+    expect(screen.getByText('65,000.00')).toHaveStyle({ color: '#EF4444' });
+  });
+
+  it('prioritizes the upward live flash over a negative daily change', () => {
+    renderPanel({ pair: { ...pair, change24h: -1.5 }, flash: 'up', isPositive: false });
+
+    expect(screen.getByText('65,000.00')).toHaveStyle({ color: '#10B981' });
   });
 
   it.each([

@@ -63,9 +63,9 @@ export interface LaunchpadProjectDetail extends LaunchpadProjectSummary {
   minBuy: number;
   maxBuy: number;
   contractAddress: string;
-  website: string;
-  twitter: string;
-  telegram: string;
+  website?: string;
+  twitter?: string;
+  telegram?: string;
   tokenomics: LaunchpadTokenAllocation[];
   vesting: LaunchpadVestingStep[];
   team: LaunchpadTeamMember[];

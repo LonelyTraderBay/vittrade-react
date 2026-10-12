@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261001-024",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "contract-unknown-outcome-idempotency-audit",
+  "checkedAt": "2026-09-30T23:09:46.000Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "contractFile": "contracts/openapi/trading.yaml",
+  "globalSecurity": [
+    {
+      "sessionCookie": []
+    }
+  ],
+  "scenarioRows": [
+    {
+      "id": "trading.unknown",
+      "operationIds": [
+        "placeOrder",
+        "modifyOrder",
+        "cancelOrder",
+        "listOpenOrders",
+        "listOrderHistory"
+      ],
+      "executionStatus": "not_verified"
+    },
+    {
+      "id": "trading.duplicate",
+      "operationIds": [
+        "placeOrder",
+        "modifyOrder",
+        "cancelOrder",
+        "listOpenOrders",
+        "listOrderHistory"
+      ],
+      "executionStatus": "not_verified"
+    }
+  ],
+  "operations": [
+    {
+      "operationId": "listOpenOrders",
+      "trackingId": "API-22572e8a6535",
+      "method": "GET",
+      "path": "/trading/orders",
+      "statuses": ["200", "401", "403"],
+      "responseDescriptions": {
+        "200": "Open orders page.",
+        "401": "",
+        "403": ""
+      },
+      "parameters": [
+        {
+          "name": "symbol",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "side",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "cursor",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "status",
+          "in": "query",
+          "required": false
+        }
+      ],
+      "requiresIdempotencyKey": false
+    },
+    {
+      "operationId": "placeOrder",
+      "trackingId": "API-670243d74e4d",
+      "method": "POST",
+      "path": "/trading/orders",
+      "statuses": ["201", "400", "401", "403", "409"],
+      "responseDescriptions": {
+        "201": "Order accepted.",
+        "400": "",
+        "401": "",
+        "403": "",
+        "409": "Duplicate idempotency key or insufficient balance."
+      },
+      "parameters": [
+        {
+          "name": "Idempotency-Key",
+          "in": "header",
+          "required": true,
+          "minLength": 8
+        }
+      ],
+      "requiresIdempotencyKey": true
+    },
+    {
+      "operationId": "listOrderHistory",
+      "trackingId": "API-92e2ab2ab87d",
+      "method": "GET",
+      "path": "/trading/orders/history",
+      "statuses": ["200", "401", "403"],
+      "responseDescriptions": {
+        "200": "Historical orders page.",
+        "401": "",
+        "403": ""
+      },
+      "parameters": [
+        {
+          "name": "symbol",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "side",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "status",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "cursor",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "required": false
+        }
+      ],
+      "requiresIdempotencyKey": false
+    },
+    {
+      "operationId": "modifyOrder",
+      "trackingId": "API-acce3e42a305",
+      "method": "PATCH",
+      "path": "/trading/orders/{orderId}",
+      "statuses": ["200", "401", "403", "404"],
+      "responseDescriptions": {
+        "200": "Updated order.",
+        "401": "",
+        "403": "",
+        "404": "Order not found."
+      },
+      "parameters": [
+        {
+          "name": "orderId",
+          "in": "path",
+          "required": true
+        },
+        {
+          "name": "Idempotency-Key",
+          "in": "header",
+          "required": true,
+          "minLength": 8
+        }
+      ],
+      "requiresIdempotencyKey": true
+    },
+    {
+      "operationId": "cancelOrder",
+      "trackingId": "API-feb6ffa74a80",
+      "method": "POST",
+      "path": "/trading/orders/{orderId}/cancel",
+      "statuses": ["200", "401", "403", "404"],
+      "responseDescriptions": {
+        "200": "Cancelled order.",
+        "401": "",
+        "403": "",
+        "404": "Order not found."
+      },
+      "parameters": [
+        {
+          "name": "orderId",
+          "in": "path",
+          "required": true
+        },
+        {
+          "name": "Idempotency-Key",
+          "in": "header",
+          "required": true,
+          "minLength": 8
+        }
+      ],
+      "requiresIdempotencyKey": true
+    }
+  ],
+  "clientOrderId": {
+    "requestOptional": true,
+    "requestSchema": {
+      "type": "string"
+    },
+    "responseOptional": true,
+    "responseSchema": {
+      "type": "string"
+    },
+    "uniquenessOrEchoGuaranteeDeclared": false,
+    "readFiltersSupportingClientOrderId": 0
+  },
+  "counts": {
+    "linkedOperations": 5,
+    "unknownDuplicateRows": 2,
+    "writeOperations": 3,
+    "writesRequiringIdempotencyKey": 3,
+    "readOperations": 2,
+    "readOperationsFilterableByClientOrderId": 0,
+    "readOperationsFilterableByIdempotencyKey": 0,
+    "directGetByOrderIdOperations": 0,
+    "stableSameKeyReplayContracts": 0
+  },
+  "browserScenarioExecuted": false,
+  "conclusion": "Both trading.unknown and trading.duplicate link placeOrder, modifyOrder, cancelOrder, listOpenOrders and listOrderHistory. All three mutations require Idempotency-Key. The order lists have no key or clientOrderId filter; there is no direct GET by orderId. clientOrderId is optional on request and response with no uniqueness/echo guarantee. placeOrder 409 conflates duplicate key and insufficient balance; modify/cancel have no documented stable same-key replay result. Keep both scenarios not_verified; do not retry or simulate order mutations after unknown outcomes.",
+  "nextAction": "A06.03 remaining not_verified order cases are trading.unknown/duplicate and the user-confirmed wallet.unknown/duplicate contract blocker. Do not run side effects until approved correlation, lookup, and same-key replay semantics are available.",
+  "sourceHashes": {
+    "contracts/openapi/trading.yaml": "ea87584c03ab69a0d552d80590e36e15ab7b38851cc1583d9c892bbb91f19437",
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "70630b4a0b7d2d16d39fc9da839fbb1b96578c9f5c60ec92ce598e14add99c24",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320"
+  }
+}

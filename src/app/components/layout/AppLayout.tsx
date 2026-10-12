@@ -114,7 +114,7 @@ export function AppLayout() {
       <NetworkStatusBanner />
 
       {/* Session timeout warning bar */}
-      {sessionTimeout.isWarning && !sessionTimeout.isTimedOut && (
+      {sessionTimeout.isWarning && (
         <SessionWarningBar
           remainingSeconds={sessionTimeout.remainingSeconds}
           onExtend={sessionTimeout.extendSession}

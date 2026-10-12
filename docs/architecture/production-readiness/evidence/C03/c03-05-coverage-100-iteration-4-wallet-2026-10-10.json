@@ -1,0 +1,266 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "evidenceId": "EV-20261010-001",
+  "kind": "current-working-tree-risk-slice-coverage",
+  "measuredAt": "2026-10-09T17:33:11.640Z",
+  "sourceRevision": "fa5462701bc61bdd6d7fd4cab20c7d02e7fa7d81",
+  "sourceBranch": "codex/vittrade-readiness-p0-p2-20261009",
+  "worktree": {
+    "dirtyStatusEntries": 71,
+    "statusCapturedAfterTestRunBeforeEvidenceWrite": true,
+    "dirtyPaths": [
+      "ocs/architecture/production-readiness/PLAN.md",
+      "docs/architecture/production-readiness/TRACKING.json",
+      "src/app/contexts/AuthSessionProvider.test.tsx",
+      "src/app/services/FeatureFlagService.test.ts",
+      "src/app/services/FeatureFlagService.ts",
+      "src/features/arena/pages/ArenaContractPages.tsx",
+      "src/features/arena/pages/ArenaJoinContractPage.test.tsx",
+      "src/features/auth/components/RegistrationForm.test.tsx",
+      "src/features/auth/components/RegistrationForm.tsx",
+      "src/features/auth/pages/OTPPage.test.tsx",
+      "src/features/auth/pages/OTPPage.tsx",
+      "src/features/auth/pages/WebOTPPage.test.tsx",
+      "src/features/auth/pages/WebOTPPage.tsx",
+      "src/features/dca/components/ChartAnnotationOverlay.test.tsx",
+      "src/features/dca/components/DCAHistoryChart.test.tsx",
+      "src/features/dca/components/DCAHistoryChart.tsx",
+      "src/features/dca/components/DCAPlanCard.tsx",
+      "src/features/dca/pages/DCAMainPage.test.tsx",
+      "src/features/dca/pages/DCAMainPage.tsx",
+      "src/features/earn/pages/EarnPage.test.tsx",
+      "src/features/earn/pages/EarnPage.tsx",
+      "src/features/market/pages/MarketListPage.test.tsx",
+      "src/features/p2p/components/P2PCreateAdSections.tsx",
+      "src/features/p2p/lib/filter-marketplace-ads.test.ts",
+      "src/features/p2p/pages/P2P2FASettingsPage.test.tsx",
+      "src/features/p2p/pages/P2PMyAdsContractPage.test.tsx",
+      "src/features/predictions/pages/PredictionContractPages.test.tsx",
+      "src/features/predictions/pages/PredictionContractPages.tsx",
+      "src/features/trading/components/QuickPairSwitcher.test.tsx",
+      "src/features/trading/components/QuickPairSwitcher.tsx",
+      "src/features/trading/components/TradeTerminal.test.tsx",
+      "src/features/wallet/components/WithdrawSections.tsx",
+      "src/features/wallet/pages/AddressBookPage.test.tsx",
+      "src/features/wallet/pages/AddressBookPage.tsx",
+      "src/features/wallet/pages/DustConverterPage.test.tsx",
+      "src/features/wallet/pages/WalletTransferContractPage.test.tsx",
+      "src/features/wallet/pages/WalletTransferContractPage.tsx",
+      "src/features/wallet/pages/WithdrawPage.test.tsx",
+      "src/features/wallet/pages/WithdrawPage.tsx",
+      "src/shared/api/http-client.test.ts",
+      "src/shared/api/http-client.ts",
+      "src/shared/ui/BottomSheetV2.tsx",
+      "src/shared/ui/InfoRow.test.tsx",
+      "src/shared/ui/InfoRow.tsx",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-baseline-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-2-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-3-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-iteration-2-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-iteration-3-auth-http-2026-10-09.json",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-progress-2026-10-09.json",
+      "src/app/components/ui-contracts.test.tsx",
+      "src/app/contexts/AuthContext.default-adapter.test.tsx",
+      "src/app/pages/page-composition.test.tsx",
+      "src/features/dca/components/DCACreatePlanSheet.test.tsx",
+      "src/features/dca/components/DCAPlanCard.test.tsx",
+      "src/features/p2p/components/P2PCreateAdSections.test.tsx",
+      "src/features/p2p/components/P2PMarketplaceSections.test.tsx",
+      "src/features/p2p/lib/select-best-ad.test.ts",
+      "src/features/public-entrypoints.test.ts",
+      "src/features/support/pages/NewsContractPage.test.tsx",
+      "src/features/wallet/components/WithdrawSections.test.tsx",
+      "src/features/wallet/model/validate-wallet-transfer.test.ts",
+      "src/features/wallet/model/validate-wallet-transfer.ts",
+      "src/features/wallet/pages/WebWithdrawalWhitelistPage.test.tsx",
+      "src/shared/lib/formatNumber.test.ts",
+      "src/shared/theme/theme-token-contract.test.tsx",
+      "src/shared/ui/BottomSheetV2.test.tsx",
+      "src/shared/ui/SkeletonBlock.test.tsx",
+      "src/shared/ui/charts/ChartGradientDefs.test.tsx",
+      "src/shared/ui/toggle-variants.test.ts",
+      "src/shared/ui/ui-primitives.test.tsx"
+    ],
+    "sourceFileCount": 437,
+    "nodeVersion": "v24.19.0",
+    "vitestVersion": "4.1.11"
+  },
+  "execution": {
+    "focusedCommand": "node node_modules/vitest/vitest.mjs run <four wallet owner test files> --coverage --coverage.reporter=json --coverage.reportsDirectory=<fresh-temp-dir>",
+    "focusedCoverageReportPath": "C:/Users/Joker-PC/AppData/Local/Temp/vittrade-c03-05-iteration-4-wallet-20261010/coverage-final.json",
+    "focusedCoverageReportBytes": 3707985,
+    "focusedCoverageReportSha256": "2e2af48ef437e701463d78da3f4dad4da1e541d5d09f20567f01fccfb666a877",
+    "focusedTestFiles": 4,
+    "focusedTestsPassed": 41,
+    "focusedTestsFailed": 0,
+    "focusedTestsSkipped": 0,
+    "focusedVitestExitCode": 1,
+    "focusedExitReason": "All 41 owner tests pass; the process exits 1 because the configured full-repository coverage thresholds are still evaluated against the partial run. The focused JSON is used only for the four source entries; aggregate acceptance comes from EV-20261010-002.",
+    "typescriptProjectsPassed": [
+      "tsconfig.json",
+      "tsconfig.node.json"
+    ],
+    "eslint": "pass",
+    "prettier": "pass",
+    "gitDiffCheck": "pass",
+    "fullSuiteEvidenceId": "EV-20261010-002",
+    "exactShaUbuntuGithubCi": false,
+    "backendRequests": 0,
+    "stagingRequests": 0,
+    "userAcceptance": "not performed"
+  },
+  "files": [
+    {
+      "source": "src/features/wallet/pages/WithdrawPage.tsx",
+      "test": "src/features/wallet/pages/WithdrawPage.test.tsx",
+      "metrics": {
+        "statements": {
+          "covered": 103,
+          "total": 103,
+          "missing": 0,
+          "pct": 100
+        },
+        "branches": {
+          "covered": 63,
+          "total": 63,
+          "missing": 0,
+          "pct": 100
+        },
+        "functions": {
+          "covered": 21,
+          "total": 21,
+          "missing": 0,
+          "pct": 100
+        },
+        "lines": {
+          "covered": 98,
+          "total": 98,
+          "missing": 0,
+          "pct": 100
+        }
+      },
+      "remainingCounters": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 0,
+        "lines": 0
+      }
+    },
+    {
+      "source": "src/features/wallet/components/WithdrawSections.tsx",
+      "test": "src/features/wallet/components/WithdrawSections.test.tsx",
+      "metrics": {
+        "statements": {
+          "covered": 11,
+          "total": 11,
+          "missing": 0,
+          "pct": 100
+        },
+        "branches": {
+          "covered": 55,
+          "total": 55,
+          "missing": 0,
+          "pct": 100
+        },
+        "functions": {
+          "covered": 8,
+          "total": 8,
+          "missing": 0,
+          "pct": 100
+        },
+        "lines": {
+          "covered": 11,
+          "total": 11,
+          "missing": 0,
+          "pct": 100
+        }
+      },
+      "remainingCounters": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 0,
+        "lines": 0
+      }
+    },
+    {
+      "source": "src/features/wallet/pages/WalletTransferContractPage.tsx",
+      "test": "src/features/wallet/pages/WalletTransferContractPage.test.tsx",
+      "metrics": {
+        "statements": {
+          "covered": 72,
+          "total": 72,
+          "missing": 0,
+          "pct": 100
+        },
+        "branches": {
+          "covered": 63,
+          "total": 63,
+          "missing": 0,
+          "pct": 100
+        },
+        "functions": {
+          "covered": 18,
+          "total": 18,
+          "missing": 0,
+          "pct": 100
+        },
+        "lines": {
+          "covered": 67,
+          "total": 67,
+          "missing": 0,
+          "pct": 100
+        }
+      },
+      "remainingCounters": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 0,
+        "lines": 0
+      }
+    },
+    {
+      "source": "src/features/wallet/model/validate-wallet-transfer.ts",
+      "test": "src/features/wallet/model/validate-wallet-transfer.test.ts",
+      "metrics": {
+        "statements": {
+          "covered": 9,
+          "total": 9,
+          "missing": 0,
+          "pct": 100
+        },
+        "branches": {
+          "covered": 10,
+          "total": 10,
+          "missing": 0,
+          "pct": 100
+        },
+        "functions": {
+          "covered": 1,
+          "total": 1,
+          "missing": 0,
+          "pct": 100
+        },
+        "lines": {
+          "covered": 5,
+          "total": 5,
+          "missing": 0,
+          "pct": 100
+        }
+      },
+      "remainingCounters": {
+        "statements": 0,
+        "branches": 0,
+        "functions": 0,
+        "lines": 0
+      }
+    }
+  ],
+  "changes": [
+    "Withdrawal view and verification steps use a discriminated workflow state that requires the API-issued challenge before verify; no backend cookie/OTP policy was inferred.",
+    "Transfer input checks live in a pure validator with direct tests; zero-balance display, account labels, permissions and pending transfer presentation are exercised.",
+    "Removed handler branches made unreachable by the page disabled controls or rejected by typed/API contract invariants; kept user-visible guards and server contract behavior."
+  ],
+  "notes": "The focused wallet slice reaches 100% per-file counters, but it does not establish aggregate repository coverage. Full-suite exact counters and gaps are recorded in EV-20261010-002."
+}

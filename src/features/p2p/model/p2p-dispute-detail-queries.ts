@@ -18,6 +18,7 @@ export function useP2PDisputeQuery(disputeId: string | undefined) {
 
 export function useP2PDisputeMessageMutation(disputeId: string | undefined) {
   const queryClient = useQueryClient();
+  const queryKey = p2pDisputeDetailQueryKeys.detail(disputeId ?? '');
   return useMutation({
     mutationFn: ({
       request,
@@ -27,7 +28,7 @@ export function useP2PDisputeMessageMutation(disputeId: string | undefined) {
       idempotencyKey: string;
     }) => p2pApi.sendDisputeMessage(disputeId!, request, idempotencyKey),
     onSuccess: async (dispute) => {
-      queryClient.setQueryData(p2pDisputeDetailQueryKeys.detail(disputeId ?? ''), dispute);
+      queryClient.setQueryData(queryKey, dispute);
       await queryClient.invalidateQueries({ queryKey: p2pDisputeDetailQueryKeys.root });
     },
   });
@@ -35,6 +36,7 @@ export function useP2PDisputeMessageMutation(disputeId: string | undefined) {
 
 export function useP2PDisputeEscalationMutation(disputeId: string | undefined) {
   const queryClient = useQueryClient();
+  const queryKey = p2pDisputeDetailQueryKeys.detail(disputeId ?? '');
   return useMutation({
     mutationFn: ({
       request,
@@ -44,7 +46,7 @@ export function useP2PDisputeEscalationMutation(disputeId: string | undefined) {
       idempotencyKey: string;
     }) => p2pApi.escalateDispute(disputeId!, request, idempotencyKey),
     onSuccess: async (dispute) => {
-      queryClient.setQueryData(p2pDisputeDetailQueryKeys.detail(disputeId ?? ''), dispute);
+      queryClient.setQueryData(queryKey, dispute);
       await queryClient.invalidateQueries({ queryKey: p2pDisputeDetailQueryKeys.root });
     },
   });

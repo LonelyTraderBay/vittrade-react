@@ -48,6 +48,8 @@ export interface ChartAnnotationOverlayProps {
   snapPoints?: SnapPoint[];
 }
 
+type CanvasPointerEvent = React.TouchEvent<HTMLCanvasElement> | React.MouseEvent<HTMLCanvasElement>;
+
 /* ═══════════════════════════════════════════════════════════ */
 /* ─── Component ──────────────────────────────────────────── */
 /* ═══════════════════════════════════════════════════════════ */
@@ -103,26 +105,22 @@ export const ChartAnnotationOverlay = forwardRef<
   }));
 
   /* ── Canvas coord helper ────────────────────────────────── */
-  const getCanvasPos = useCallback(
-    (e: React.TouchEvent | React.MouseEvent): { x: number; y: number } => {
-      const canvas = canvasRef.current;
-      if (!canvas) return { x: 0, y: 0 };
-      const rect = canvas.getBoundingClientRect();
-      let clientX: number, clientY: number;
-      if ('touches' in e) {
-        clientX = e.touches[0]?.clientX ?? e.changedTouches[0]?.clientX ?? 0;
-        clientY = e.touches[0]?.clientY ?? e.changedTouches[0]?.clientY ?? 0;
-      } else {
-        clientX = e.clientX;
-        clientY = e.clientY;
-      }
-      return {
-        x: ((clientX - rect.left) / rect.width) * canvas.width,
-        y: ((clientY - rect.top) / rect.height) * canvas.height,
-      };
-    },
-    [],
-  );
+  const getCanvasPos = useCallback((e: CanvasPointerEvent): { x: number; y: number } => {
+    const canvas = e.currentTarget;
+    const rect = canvas.getBoundingClientRect();
+    let clientX: number, clientY: number;
+    if ('touches' in e) {
+      clientX = e.touches[0]?.clientX ?? e.changedTouches[0]?.clientX ?? 0;
+      clientY = e.touches[0]?.clientY ?? e.changedTouches[0]?.clientY ?? 0;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+    return {
+      x: ((clientX - rect.left) / rect.width) * canvas.width,
+      y: ((clientY - rect.top) / rect.height) * canvas.height,
+    };
+  }, []);
 
   const getCtx = useCallback(
     (): CanvasRenderingContext2D | null => canvasRef.current?.getContext('2d') ?? null,
@@ -204,8 +202,7 @@ export const ChartAnnotationOverlay = forwardRef<
   /* ═══════════════════════════════════════════════════════── */
 
   const handlePointerDown = useCallback(
-    (e: React.TouchEvent | React.MouseEvent) => {
-      if (!active) return;
+    (e: CanvasPointerEvent) => {
       const pos = getCanvasPos(e);
       const ctx = getCtx();
 
@@ -285,12 +282,11 @@ export const ChartAnnotationOverlay = forwardRef<
         setTextInput({ active: true, x: pos.x, y: pos.y, value: '' });
       }
     },
-    [active, tool, annotations, selectedIndex, canvasSnapPoints, getCanvasPos, getCtx],
+    [tool, annotations, selectedIndex, canvasSnapPoints, getCanvasPos, getCtx],
   );
 
   const handlePointerMove = useCallback(
-    (e: React.TouchEvent | React.MouseEvent) => {
-      if (!active) return;
+    (e: CanvasPointerEvent) => {
       const pos = getCanvasPos(e);
       const ctx = getCtx();
 
@@ -343,12 +339,13 @@ export const ChartAnnotationOverlay = forwardRef<
                 break;
               }
             }
-          } else if (drag.handle === 'arrow-start' && orig.type === 'arrow') {
-            const o = orig as ArrowLine;
-            next[selectedIndex] = { ...o, startX: o.startX + dx, startY: o.startY + dy };
-          } else if (drag.handle === 'arrow-end' && orig.type === 'arrow') {
-            const o = orig as ArrowLine;
-            next[selectedIndex] = { ...o, endX: o.endX + dx, endY: o.endY + dy };
+          } else {
+            const o = drag.originalAnnotation;
+            if (drag.handle === 'arrow-start') {
+              next[selectedIndex] = { ...o, startX: o.startX + dx, startY: o.startY + dy };
+            } else {
+              next[selectedIndex] = { ...o, endX: o.endX + dx, endY: o.endY + dy };
+            }
           }
           return next;
         });
@@ -359,8 +356,7 @@ export const ChartAnnotationOverlay = forwardRef<
       /* ── Pen preview ─────────────────────────────────────── */
       if (tool === 'pen' && drawingRef.current.isDrawing) {
         drawingRef.current.currentStroke.push(pos);
-        const canvas = canvasRef.current;
-        if (!canvas) return;
+        const canvas = e.currentTarget;
         const drawCtx = canvas.getContext('2d');
         if (!drawCtx) return;
         redrawCanvas(annotations, selectedIndex, eraserHoverIndex, activeSnap);
@@ -381,8 +377,7 @@ export const ChartAnnotationOverlay = forwardRef<
 
         setActiveSnap(snapShow);
 
-        const canvas = canvasRef.current;
-        if (!canvas) return;
+        const canvas = e.currentTarget;
         const drawCtx = canvas.getContext('2d');
         if (!drawCtx) return;
         redrawCanvas(annotations, selectedIndex, eraserHoverIndex, snapShow);
@@ -398,7 +393,6 @@ export const ChartAnnotationOverlay = forwardRef<
       }
     },
     [
-      active,
       tool,
       annotations,
       selectedIndex,
@@ -414,9 +408,7 @@ export const ChartAnnotationOverlay = forwardRef<
   );
 
   const handlePointerUp = useCallback(
-    (e: React.TouchEvent | React.MouseEvent) => {
-      if (!active) return;
-
+    (e: CanvasPointerEvent) => {
       /* ── Select: finish drag ─────────────────────────────── */
       if (tool === 'select' && dragRef.current) {
         dragRef.current = null;
@@ -459,7 +451,7 @@ export const ChartAnnotationOverlay = forwardRef<
         setActiveSnap(null);
       }
     },
-    [active, tool, color, penWidth, canvasSnapPoints, getCanvasPos],
+    [tool, color, penWidth, canvasSnapPoints, getCanvasPos],
   );
 
   /* ── Text input confirm ─────────────────────────────────── */
@@ -489,15 +481,15 @@ export const ChartAnnotationOverlay = forwardRef<
 
   /* ── Delete selected ────────────────────────────────────── */
   const handleDeleteSelected = useCallback(() => {
-    if (selectedIndex === null) return;
+    // This toolbar action is rendered only while selectedIndex points at an annotation.
     setAnnotations((prev) => prev.filter((_, i) => i !== selectedIndex));
     setSelectedIndex(null);
   }, [selectedIndex]);
 
   /* ── Duplicate selected ─────────────────────────────────── */
   const handleDuplicate = useCallback(() => {
-    if (selectedIndex === null || !annotations[selectedIndex]) return;
-    const src = annotations[selectedIndex];
+    // This toolbar action is rendered only while selectedIndex points at an annotation.
+    const src = annotations[selectedIndex!]!;
     let clone: Annotation;
 
     switch (src.type) {

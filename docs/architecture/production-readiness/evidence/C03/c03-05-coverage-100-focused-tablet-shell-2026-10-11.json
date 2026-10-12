@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "evidenceId": "EV-20261011-063",
+  "kind": "current-working-tree-focused-source-coverage",
+  "measuredAt": "2026-10-11T17:40:51.000Z",
+  "sourceRevision": "fa5462701bc61bdd6d7fd4cab20c7d02e7fa7d81",
+  "sourceBranch": "codex/vittrade-readiness-p0-p2-20261009",
+  "worktree": {
+    "dirtyStatusEntries": 272,
+    "sourceFileCount": 1,
+    "testFiles": [
+      "src/app/components/layout/TabletShell.test.tsx"
+    ],
+    "statusCapturedAfterFocusedRunBeforeEvidenceWrite": true
+  },
+  "execution": {
+    "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/app/components/layout/TabletShell.test.tsx --coverage --coverage.include=src/app/components/layout/TabletShell.tsx --coverage.reporter=json-summary --coverage.reportsDirectory=C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-c03-tabletshell-focused-20261011-01 --reporter=dot --pool=threads --maxWorkers=1 --no-file-parallelism",
+    "platform": "Windows local; Node.js v24.19.0; Vitest 4.1.11; V8",
+    "exitCode": 0,
+    "testFiles": 1,
+    "testFilesPassed": 1,
+    "tests": 3,
+    "testsPassed": 3,
+    "testsFailed": 0,
+    "testsSkipped": 0,
+    "duration": "939ms",
+    "coverageReportPath": "C:/Users/Joker-PC/AppData/Local/Temp/vittrade-c03-tabletshell-focused-20261011-01/coverage-summary.json"
+  },
+  "measurement": {
+    "metrics": {
+      "statements": {
+        "covered": 6,
+        "total": 6,
+        "missing": 0,
+        "pct": 100
+      },
+      "branches": {
+        "covered": 2,
+        "total": 2,
+        "missing": 0,
+        "pct": 100
+      },
+      "functions": {
+        "covered": 2,
+        "total": 2,
+        "missing": 0,
+        "pct": 100
+      },
+      "lines": {
+        "covered": 6,
+        "total": 6,
+        "missing": 0,
+        "pct": 100
+      }
+    },
+    "sourceSha256": "ca9d5a3125072c6478eb5467f97a1b4f0a936b00f0118b725a4c9420d5ffdca2",
+    "testFileSha256": {
+      "src/app/components/layout/TabletShell.test.tsx": "920b7c58591ea52212f3c91b599f1a200a5be46ee9b76c5c5ee26f34fe3d9695"
+    },
+    "priorFullSuiteEvidenceId": "EV-20261010-053"
+  },
+  "limitations": [
+    "Focused local owner-test evidence for TabletShell.tsx only; the EV-20261010-053 full-suite aggregate remains unchanged.",
+    "These tests cover component rendering/offline banner/Suspense only; no real tablet-device or backend behavior is inferred."
+  ],
+  "nextSlice": {
+    "priority": "P1",
+    "area": "TabletSidebar navigation branches",
+    "candidateFiles": [
+      "src/app/components/layout/TabletSidebar.tsx",
+      "src/app/components/layout/TabletSidebar.test.tsx"
+    ],
+    "ownerTests": [
+      "src/app/components/layout/TabletSidebar.test.tsx"
+    ],
+    "reason": "The EV-20261010-053 baseline lists TabletSidebar with 1 uncovered statement, 2 branch arms, 1 function and 1 line; inspect its current owner tests before making a focused addition."
+  }
+}

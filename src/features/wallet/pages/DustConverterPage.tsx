@@ -106,7 +106,6 @@ export function DustConverterPage() {
   const feePct = quote?.feePct ?? 0;
 
   const handleConvert = async () => {
-    if (!canConvertDust || !quote || conversionMutation.isPending) return;
     const signature = JSON.stringify(conversionRequest);
     if (conversionAttempt.current?.signature !== signature) {
       conversionAttempt.current = { signature, key: crypto.randomUUID() };

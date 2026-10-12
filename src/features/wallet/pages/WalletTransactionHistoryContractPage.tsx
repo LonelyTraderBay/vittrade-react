@@ -8,6 +8,7 @@ import { TrCard } from '@/shared/ui/TrCard';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { useAuth } from '@/shared/session/useAuth';
+import { isApiError } from '@/shared/api/api-error';
 import {
   FilterButton,
   TransactionHistoryRow,
@@ -63,6 +64,15 @@ export function WalletTransactionHistoryContractPage() {
 
   if (query.isPending) return <LoadingPage />;
   if (query.isError || !query.data) {
+    const permissionDenied = isApiError(query.error) && query.error.status === 403;
+    if (permissionDenied) {
+      return (
+        <ErrorState
+          title="Không có quyền truy cập"
+          message="Tài khoản của bạn không có quyền xem lịch sử giao dịch ví."
+        />
+      );
+    }
     return <ErrorState onAction={() => void query.refetch()} />;
   }
 
@@ -188,14 +198,8 @@ export function WalletTransactionHistoryContractPage() {
                   !query.data.nextCursor || query.data.nextCursor === cursor || query.isFetching
                 }
                 onClick={() => {
-                  const nextCursor = query.data.nextCursor;
-                  if (nextCursor) {
-                    setCursors((current) =>
-                      current[current.length - 1] === nextCursor
-                        ? current
-                        : [...current, nextCursor],
-                    );
-                  }
+                  // The disabled state guarantees a distinct server cursor before this runs.
+                  setCursors((current) => [...current, query.data.nextCursor!]);
                 }}
                 style={{
                   color:

@@ -194,7 +194,7 @@ export function createHttpClient(config: HttpClientConfig) {
         if (attempt >= retries) {
           throw new ApiError(error instanceof Error ? error.message : 'Network request failed', {
             status: 0,
-            code: controller.signal.aborted ? 'REQUEST_ABORTED' : 'NETWORK_ERROR',
+            code: 'NETWORK_ERROR',
             requestId: correlationId,
             cause: error,
           });
@@ -205,10 +205,9 @@ export function createHttpClient(config: HttpClientConfig) {
           if (requestConfig.signal?.aborted) {
             throw requestAbortedError(correlationId, retryDelayError);
           }
-          if (controller.signal.aborted) {
-            throw requestTimeoutError(correlationId, retryDelayError);
-          }
-          throw retryDelayError;
+          // The delay rejects only when its signal aborts; without a caller abort,
+          // the request deadline is the only remaining source of cancellation.
+          throw requestTimeoutError(correlationId, retryDelayError);
         }
       } finally {
         clearTimeout(timeout);

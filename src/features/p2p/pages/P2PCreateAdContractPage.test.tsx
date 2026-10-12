@@ -1,14 +1,19 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '@/test/test-utils';
+import { testAuthAdapter, testAuthSession } from '@/test/auth-test-adapter';
+import { p2pApi } from '../api/p2p-api';
 import { P2PCreateAdContractPage } from './P2PCreateAdContractPage';
 
 const server = setupServer();
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+  server.resetHandlers();
+  vi.restoreAllMocks();
+});
 afterAll(() => server.close());
 
 const createdAd = {
@@ -89,5 +94,97 @@ describe('P2P create ad contract page', () => {
     expect(
       await screen.findByText('Không thể đăng quảng cáo. Vui lòng thử lại.'),
     ).toBeInTheDocument();
+  });
+
+  it('keeps form submission behind the P2P write permission', async () => {
+    const noP2PPermissionSession = {
+      ...testAuthSession,
+      user: {
+        ...testAuthSession.user,
+        permissions: testAuthSession.user.permissions.filter(
+          (permission) => !permission.startsWith('p2p:'),
+        ),
+      },
+    };
+    const authAdapter = { ...testAuthAdapter, initialSession: noP2PPermissionSession };
+    const createAd = vi.spyOn(p2pApi, 'createAd');
+    const user = userEvent.setup();
+    renderWithProviders(<P2PCreateAdContractPage />, { authAdapter });
+
+    expect(
+      screen.getByText('P2P ad write permission is required to create an advertisement.'),
+    ).toHaveAttribute('role', 'alert');
+    await fillValidForm(user);
+
+    const submitButton = screen.getByRole('button', { name: 'Xem xác nhận đăng quảng cáo' });
+    expect(submitButton).toBeDisabled();
+    fireEvent.submit(submitButton.closest('form')!);
+
+    expect(createAd).not.toHaveBeenCalled();
+  });
+
+  it('validates floating margins and rejects non-finite input', async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<P2PCreateAdContractPage />);
+
+    await user.click(screen.getByRole('button', { name: 'Giá thả nổi' }));
+    await user.type(screen.getByRole('spinbutton', { name: 'Giá (VND/USDT)' }), '25000');
+
+    const marginInput = screen.getByRole('spinbutton', { name: 'Biên độ giá (%)' });
+    let runtimeValue = '1e309';
+    Object.defineProperty(marginInput, 'value', {
+      configurable: true,
+      get: () => runtimeValue,
+      set: (value: string) => {
+        runtimeValue = value;
+      },
+    });
+    fireEvent.change(marginInput);
+
+    expect(screen.getByRole('alert')).toHaveTextContent('Biên độ giá không hợp lệ.');
+  });
+
+  it('supports floating ads, caps payment methods, and closes confirmation', async () => {
+    let requestBody: unknown;
+    server.use(
+      http.post('*/p2p/ads', async ({ request }) => {
+        requestBody = await request.json();
+        return HttpResponse.json(createdAd, { status: 201 });
+      }),
+    );
+
+    const user = userEvent.setup();
+    renderWithProviders(<P2PCreateAdContractPage />);
+    await user.click(screen.getByRole('button', { name: 'Giá thả nổi' }));
+    await fillValidForm(user);
+    await user.type(screen.getByRole('spinbutton', { name: 'Biên độ giá (%)' }), '2.5');
+
+    await user.click(screen.getByRole('button', { name: 'Vietcombank' }));
+    expect(screen.getByRole('button', { name: 'Vietcombank' })).toHaveAttribute(
+      'aria-pressed',
+      'false',
+    );
+
+    for (const method of ['Vietcombank', 'Techcombank', 'VietinBank', 'BIDV', 'MB Bank']) {
+      await user.click(screen.getByRole('button', { name: method }));
+    }
+    await user.click(screen.getByRole('button', { name: 'ACB' }));
+    expect(screen.getByRole('button', { name: 'ACB' })).toHaveAttribute('aria-pressed', 'false');
+
+    await user.click(screen.getByRole('button', { name: 'Xem xác nhận đăng quảng cáo' }));
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Huỷ' }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Xem xác nhận đăng quảng cáo' }));
+    await user.click(screen.getByRole('button', { name: 'Xác nhận đăng' }));
+
+    await vi.waitFor(() => {
+      expect(requestBody).toMatchObject({
+        priceType: 'floating',
+        priceMargin: 2.5,
+        paymentMethods: ['Vietcombank', 'Techcombank', 'VietinBank', 'BIDV', 'MB Bank'],
+      });
+    });
   });
 });

@@ -2,6 +2,7 @@ import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Route, Routes } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
 import { LaunchpadContractPage, LaunchpadProjectContractPage } from './LaunchpadContractPages';
@@ -79,6 +80,44 @@ describe('Launchpad contract pages', () => {
     expect(await screen.findByText('Không có dự án phù hợp.')).toBeInTheDocument();
   });
 
+  it('filters by a selected status and opens the selected project', async () => {
+    const requestedStatuses: Array<string | null> = [];
+    server.use(
+      http.get('*/launchpad/projects', ({ request }) => {
+        const status = new URL(request.url).searchParams.get('status');
+        requestedStatuses.push(status);
+        return HttpResponse.json({
+          projects: [{ ...project, status: status === 'upcoming' ? 'upcoming' : 'active' }],
+          total: 1,
+          activeCount: 1,
+        });
+      }),
+      http.get('*/launchpad/projects/proj1', () =>
+        HttpResponse.json({ ...project, status: 'upcoming' }),
+      ),
+    );
+    const user = userEvent.setup();
+
+    renderWithProviders(
+      <Routes>
+        <Route path="/launchpad" element={<LaunchpadContractPage />} />
+        <Route path="/launchpad/:id" element={<LaunchpadProjectContractPage />} />
+      </Routes>,
+      { routerProps: { initialEntries: ['/launchpad'] } },
+    );
+
+    expect(await screen.findByText('NexaAI Protocol')).toBeInTheDocument();
+    expect(requestedStatuses).toContain(null);
+    await user.click(screen.getByRole('button', { name: 'Sắp tới' }));
+    await waitFor(() => expect(requestedStatuses).toContain('upcoming'));
+
+    await user.click(screen.getByRole('button', { name: /NexaAI Protocol/ }));
+    expect(await screen.findByText('upcoming')).toBeInTheDocument();
+    expect(
+      await screen.findByText('Long description from the Launchpad contract.'),
+    ).toBeInTheDocument();
+  });
+
   it('renders the detail contract boundary without simulating a transaction', async () => {
     server.use(http.get('*/launchpad/projects/proj1', () => HttpResponse.json(project)));
 
@@ -100,21 +139,93 @@ describe('Launchpad contract pages', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders the shared error state when the contract is unavailable', async () => {
+  it('renders valid alternate audit, access, vesting, status, and short-address values', async () => {
     server.use(
-      http.get('*/launchpad/projects', () =>
-        HttpResponse.json(
-          { code: 'LAUNCHPAD_UNAVAILABLE', message: 'Unavailable' },
-          { status: 503 },
-        ),
+      http.get('*/launchpad/projects/proj1', () =>
+        HttpResponse.json({
+          ...project,
+          status: 'ended',
+          kyc: false,
+          whitelist: true,
+          contractAddress: '0x12345678',
+          website: undefined,
+          vesting: [{ label: 'TGE', percent: 20, date: '2026-03-10', status: 'claimed' }],
+          audit: { ...project.audit, status: 'pending' },
+        }),
       ),
+    );
+
+    renderWithProviders(
+      <Routes>
+        <Route path="/launchpad/:id" element={<LaunchpadProjectContractPage />} />
+      </Routes>,
+      { routerProps: { initialEntries: ['/launchpad/proj1'] } },
+    );
+
+    expect(
+      await screen.findByText('Long description from the Launchpad contract.'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Not required')).toBeInTheDocument();
+    expect(screen.getByText('Required')).toBeInTheDocument();
+    expect(screen.getByText('pending')).toBeInTheDocument();
+    expect(screen.getByText('0x12345678')).toBeInTheDocument();
+    expect(screen.getByText(/20% · 2026-03-10/)).toBeInTheDocument();
+  });
+
+  it('bounds transport retries and allows one explicit retry without stacking query retries', async () => {
+    let requestCount = 0;
+    server.use(
+      http.get('*/launchpad/projects', () => {
+        requestCount += 1;
+        return HttpResponse.error();
+      }),
     );
 
     renderWithProviders(<LaunchpadContractPage />);
 
-    await waitFor(() => {
-      expect(screen.getByRole('button')).toBeInTheDocument();
-    });
+    expect(await screen.findByText('Có lỗi xảy ra')).toBeInTheDocument();
+    await waitFor(() => expect(requestCount).toBe(3));
+    expect(screen.getByRole('button', { name: 'Thử lại' })).toBeInTheDocument();
     expect(screen.queryByText('NexaAI Protocol')).not.toBeInTheDocument();
+    expect(screen.queryByText('Không có dự án phù hợp.')).not.toBeInTheDocument();
+
+    await screen.getByRole('button', { name: 'Thử lại' }).click();
+    await waitFor(() => expect(requestCount).toBe(6));
+    expect(screen.getByText('Có lỗi xảy ra')).toBeInTheDocument();
+    expect(screen.queryByText('NexaAI Protocol')).not.toBeInTheDocument();
+    expect(screen.queryByText('Không có dự án phù hợp.')).not.toBeInTheDocument();
+  });
+
+  it('bounds detail transport retries and keeps the retry action on failure', async () => {
+    let requestCount = 0;
+    server.use(
+      http.get('*/launchpad/projects/proj1', () => {
+        requestCount += 1;
+        return HttpResponse.error();
+      }),
+    );
+
+    renderWithProviders(
+      <Routes>
+        <Route path="/launchpad/:id" element={<LaunchpadProjectContractPage />} />
+      </Routes>,
+      {
+        routerProps: { initialEntries: ['/launchpad/proj1'] },
+      },
+    );
+
+    expect(await screen.findByText('Có lỗi xảy ra')).toBeInTheDocument();
+    await waitFor(() => expect(requestCount).toBe(3));
+    expect(screen.getByRole('button', { name: 'Thử lại' })).toBeInTheDocument();
+    expect(
+      screen.queryByText('Long description from the Launchpad contract.'),
+    ).not.toBeInTheDocument();
+
+    await screen.getByRole('button', { name: 'Thử lại' }).click();
+    await waitFor(() => expect(requestCount).toBe(6));
+    expect(screen.getByText('Có lỗi xảy ra')).toBeInTheDocument();
+    expect(
+      screen.queryByText('Long description from the Launchpad contract.'),
+    ).not.toBeInTheDocument();
   });
 });

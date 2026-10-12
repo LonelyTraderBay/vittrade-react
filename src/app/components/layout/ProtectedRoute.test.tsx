@@ -38,7 +38,11 @@ function createAdapter(initialSession: AuthSession | null): AuthAdapter {
 function LoginProbe() {
   const location = useLocation();
   const from = (location.state as { from?: string } | null)?.from ?? '';
-  return <div data-testid="login">login:{from}</div>;
+  return (
+    <div data-testid="login" data-path={location.pathname}>
+      login:{from}
+    </div>
+  );
 }
 
 function renderRoute(
@@ -60,6 +64,7 @@ function renderRoute(
             }
           >
             <Route path="/trade" element={<div>protected</div>} />
+            <Route path="/r/trade" element={<div>responsive protected</div>} />
           </Route>
           <Route path="/auth/login" element={<LoginProbe />} />
           <Route path="/r/auth/login" element={<LoginProbe />} />
@@ -101,6 +106,42 @@ describe('ProtectedRoute', () => {
     renderRoute(session, '/trade', [], ['trade:write']);
 
     expect(screen.getByRole('alert')).toHaveTextContent('Bạn không có quyền truy cập');
+    expect(screen.queryByText('protected')).not.toBeInTheDocument();
+  });
+  it('redirects responsive routes to the responsive login path and preserves the destination', () => {
+    renderRoute(null, '/r/trade?symbol=ETH%2FUSDT#depth');
+
+    expect(screen.getByTestId('login')).toHaveAttribute('data-path', '/r/auth/login');
+    expect(screen.getByTestId('login')).toHaveTextContent('login:/r/trade?symbol=ETH%2FUSDT#depth');
+  });
+
+  it('shows a loading state while the initial session lookup is unresolved', () => {
+    const loadingAdapter: AuthAdapter = {
+      ...createAdapter(null),
+      initialSession: undefined,
+      getSession: () => new Promise<AuthSession | null>(() => {}),
+    };
+
+    render(
+      <AuthSessionProvider adapter={loadingAdapter}>
+        <MemoryRouter initialEntries={['/trade']}>
+          <Routes>
+            <Route element={<ProtectedRoute />}>
+              <Route path="/trade" element={<div>protected</div>} />
+            </Route>
+          </Routes>
+        </MemoryRouter>
+      </AuthSessionProvider>,
+    );
+
+    expect(screen.getByRole('status')).toBeInTheDocument();
+    expect(screen.queryByText('protected')).not.toBeInTheDocument();
+  });
+
+  it('blocks a session missing a required role in the frontend route gate', () => {
+    renderRoute(session, '/trade', ['admin']);
+
+    expect(screen.getByRole('alert')).toBeInTheDocument();
     expect(screen.queryByText('protected')).not.toBeInTheDocument();
   });
 });

@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-30T18:40:22.133Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "origin": "http://127.0.0.1:4173",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sourceHashes": {
+    "contracts/openapi/market.yaml": "cca6ccf13d96a7a813c54734e5331a7620803f5a670355f6f3b72e4703a3e888",
+    "docs/architecture/production-readiness/evidence/A06/run-market-empty-current-head-browser-check.mjs": "6bff7ed4e8c628aff18b7c234866f31b78b21f27f3b49bbe6d7e82e79a844d49",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/app/routes.ts": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+    "src/dev/PreviewControls.tsx": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "8382400738090945e6c3ec53286f288f0ed2d41c90dbd407eec2b48d36d347ae",
+    "src/dev/mocks/preview-scenario-handler.test.ts": "afb9dbcd2541b4a52da3c0aff0b21cfa7e1216cd2323b5ebfd87cb584969e016",
+    "src/dev/mocks/preview-scenario-handler.ts": "692c244236634f056b12b49addc49eb6b2781d110943e48ba1c4396393955a73",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/market/api/market-api.ts": "3ab429a7948f319f4a3e1e0dc7973ab9e7f1c3ea78d7a217fb3a3093f68ea7fa",
+    "src/features/market/api/market-research-schemas.ts": "7c81973c289d1d84e3e36bd72140fa6271e9048cbd51fe86000ee92e270a1b29",
+    "src/features/market/model/market-queries.ts": "0a493d15511d513b9ddb09cbf4457205dc86d12e93825e9043d310d68287c9f0",
+    "src/features/market/model/market-types.ts": "edc3c4db22056bfcc439e74280fa9bd5fa6f7e65b88e1fc5381097acd4ea166b",
+    "src/features/market/pages/MarketScreenerPage.tsx": "49f0999ccb8d19285c9210ea6278bd60e16d330833728fe536b769adb2f9957f",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false
+  },
+  "scenario": {
+    "id": "market.empty",
+    "domain": "market",
+    "state": "empty",
+    "status": "passed",
+    "observedAt": "2026-09-30T18:40:22.133Z",
+    "persona": "developer (local MSW fixture)",
+    "role": "user",
+    "routes": ["/w/markets/screener"],
+    "operationIds": ["listMarketPairs"],
+    "observedOperationIds": ["listMarketPairs"],
+    "operationRequestCounts": {
+      "listMarketPairs": 1
+    },
+    "requests": [
+      {
+        "sequence": 4,
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "routeAtRequest": "/w/markets/screener"
+      }
+    ],
+    "responses": [
+      {
+        "sequence": 4,
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 15
+      }
+    ],
+    "requestFailures": [],
+    "responseBody": {
+      "items": []
+    },
+    "assetCountText": " 0 tài sản",
+    "emptyStateVisible": true,
+    "scenarioSelected": true,
+    "externalApiOrigins": [],
+    "pageErrors": [],
+    "elapsedMs": 603,
+    "screenshots": ["preview-market-empty-current-head-20260930184021.png"],
+    "sourceHashesReviewed": 17,
+    "note": "Current-head local Chromium observed one contract-valid listMarketPairs HTTP 200 response with {items: []}; the screener rendered 0 assets and its empty-state message. The response came from the local MSW service worker, with no external API origin, write, or backend request. This is local UI/fixture evidence, not backend, staging, or user-acceptance evidence.",
+    "failures": []
+  }
+}

@@ -3,11 +3,14 @@ import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Route, Routes } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
+import { useAuth } from '@/shared/session/useAuth';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
 import type { EarnSnapshot } from '../model/earn-types';
-import { EarnPage } from './EarnPage';
+import { EarnPage, SavingsPage, StakingPage } from './EarnPage';
+import { EarnReceiptPage } from './EarnTransactionPages';
 
 const server = setupServer();
 
@@ -62,11 +65,158 @@ const redemptionSnapshot: EarnSnapshot = {
   summary: { ...snapshot.summary, totalDepositedUsd: 500, activePositions: 1 },
 };
 
-function renderEarn(authAdapter: AuthAdapter = testAuthAdapter) {
-  return renderWithProviders(<EarnPage domain="savings" />, { authAdapter });
+const mixedSnapshot: EarnSnapshot = {
+  ...redemptionSnapshot,
+  products: [
+    ...snapshot.products,
+    {
+      ...snapshot.products[0],
+      id: 'product-defi',
+      domain: 'staking',
+      type: 'defi',
+      name: 'DeFi Yield',
+    },
+  ],
+  positions: [
+    {
+      ...redemptionSnapshot.positions[0],
+      id: 'position-defi',
+      productId: 'product-defi',
+      product: 'DeFi Yield',
+      type: 'flexible',
+    },
+  ],
+};
+
+function AuthSessionRefreshButton() {
+  const { refreshSession } = useAuth();
+  return (
+    <button onClick={() => void refreshSession()} type="button">
+      Refresh auth session
+    </button>
+  );
+}
+
+function createMutableEarnAuthAdapter() {
+  const initialSession = testAuthAdapter.initialSession!;
+  const permissions = [...initialSession.user.permissions];
+  const session = {
+    ...initialSession,
+    user: { ...initialSession.user, permissions },
+  };
+  return {
+    adapter: {
+      ...testAuthAdapter,
+      initialSession: session,
+      async refresh() {
+        return session;
+      },
+    } satisfies AuthAdapter,
+    setPermissions(next: string[]) {
+      permissions.splice(0, permissions.length, ...next);
+    },
+  };
+}
+
+function renderEarn(
+  authAdapter: AuthAdapter = testAuthAdapter,
+  domain: 'savings' | 'staking' = 'savings',
+) {
+  return renderWithProviders(
+    <>
+      <Routes>
+        <Route path="/earn/:domain" element={<EarnPage domain={domain} />} />
+        <Route path="/earn/:domain/receipt" element={<EarnReceiptPage />} />
+      </Routes>
+      <AuthSessionRefreshButton />
+    </>,
+    { authAdapter, routerProps: { initialEntries: [`/earn/${domain}`] } },
+  );
 }
 
 describe('Earn page contract boundary', () => {
+  it('filters each domain, browses back from an empty portfolio, and navigates between wrappers', async () => {
+    server.use(http.get('*/earn/snapshot', () => HttpResponse.json(mixedSnapshot)));
+
+    const user = userEvent.setup();
+    renderWithProviders(
+      <Routes>
+        <Route path="/earn/savings" element={<SavingsPage />} />
+        <Route path="/earn/staking" element={<StakingPage />} />
+      </Routes>,
+      { routerProps: { initialEntries: ['/earn/savings'] } },
+    );
+
+    await screen.findByRole('button', { name: /Stable Savings/i });
+    expect(screen.queryByRole('button', { name: /DeFi Yield/i })).not.toBeInTheDocument();
+    await user.click(screen.getByRole('tab', { name: 'Của tôi (0)' }));
+    expect(screen.getByText('Chưa có vị thế')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Xem sản phẩm' }));
+    expect(screen.getByRole('tab', { name: 'Sản phẩm' })).toHaveAttribute('aria-selected', 'true');
+
+    await user.click(screen.getByRole('button', { name: 'Cố định' }));
+    expect(screen.queryByRole('button', { name: /Stable Savings/i })).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Tất cả' }));
+    await user.click(screen.getByRole('button', { name: 'Khám phá Staking' }));
+
+    expect(await screen.findByRole('button', { name: /DeFi Yield/i })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'DeFi' }));
+    expect(screen.getByRole('button', { name: /DeFi Yield/i })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Khám phá Tiết kiệm' }));
+    expect(await screen.findByRole('button', { name: /Stable Savings/i })).toBeInTheDocument();
+  });
+
+  it('shows product skeletons while the first snapshot request is pending', async () => {
+    server.use(
+      http.get('*/earn/snapshot', async () => {
+        await new Promise((resolve) => setTimeout(resolve, 80));
+        return HttpResponse.json(snapshot);
+      }),
+    );
+
+    const view = renderEarn();
+    expect(view.container.querySelectorAll('.animate-pulse')).toHaveLength(3);
+    expect(await screen.findByText('Stable Savings')).toBeInTheDocument();
+  });
+
+  it('uses a zero available balance when the snapshot omits the selected asset', async () => {
+    server.use(
+      http.get('*/earn/snapshot', () =>
+        HttpResponse.json({
+          ...snapshot,
+          products: [{ ...snapshot.products[0], asset: 'BTC', name: 'Bitcoin Savings' }],
+          balances: {},
+        }),
+      ),
+    );
+
+    const user = userEvent.setup();
+    renderEarn();
+    await user.click(await screen.findByRole('button', { name: /Bitcoin Savings/i }));
+
+    expect(screen.getByText('0 BTC')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Xác nhận đăng ký/i })).toBeDisabled();
+  });
+
+  it('retries a failed snapshot request and renders the recovered products', async () => {
+    let attempts = 0;
+    server.use(
+      http.get('*/earn/snapshot', () => {
+        attempts += 1;
+        return attempts <= 3
+          ? HttpResponse.json({ message: 'Snapshot unavailable' }, { status: 503 })
+          : HttpResponse.json(snapshot);
+      }),
+    );
+
+    const user = userEvent.setup();
+    renderEarn();
+    await user.click(await screen.findByRole('button', { name: 'Thử lại' }));
+
+    expect(await screen.findByText('Stable Savings')).toBeInTheDocument();
+    expect(attempts).toBe(4);
+  });
+
   it('subscribes through the typed API with an idempotency key', async () => {
     server.use(
       http.get('*/earn/snapshot', () => HttpResponse.json(snapshot)),
@@ -95,6 +245,115 @@ describe('Earn page contract boundary', () => {
     await user.click(screen.getByRole('checkbox'));
     await user.click(screen.getByRole('button', { name: /Xác nhận đăng ký/i }));
     expect(await screen.findByText('Đăng ký sản phẩm thành công.')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Đóng thông báo' }));
+    expect(screen.queryByText('Đăng ký sản phẩm thành công.')).not.toBeInTheDocument();
+  });
+
+  it('shows a pending subscription receipt instead of reporting completion', async () => {
+    server.use(
+      http.get('*/earn/snapshot', () => HttpResponse.json(snapshot)),
+      http.post('*/earn/subscriptions', async ({ request }) => {
+        expect(request.headers.get('Idempotency-Key')).toBeTruthy();
+        expect(await request.json()).toEqual({ productId: 'product-1', amount: 100 });
+        return HttpResponse.json(
+          {
+            id: 'receipt-pending-subscription',
+            operation: 'subscribe',
+            productId: 'product-1',
+            asset: 'USDT',
+            amount: 100,
+            status: 'pending',
+            createdAt: '2026-09-30T10:00:00.000Z',
+          },
+          { status: 201 },
+        );
+      }),
+    );
+
+    const user = userEvent.setup();
+    renderEarn();
+    await user.click(await screen.findByRole('button', { name: /Stable Savings/i }));
+    await user.type(screen.getByRole('textbox', { name: 'Số lượng' }), '100');
+    await user.click(screen.getByRole('checkbox'));
+    await user.click(screen.getByRole('button', { name: /Xác nhận đăng ký/i }));
+
+    expect(await screen.findByRole('heading', { name: 'Yêu cầu đang xử lý' })).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('Đang xử lý');
+    expect(screen.getByText('receipt-pending-subscription')).toBeInTheDocument();
+    expect(screen.queryByText('Đăng ký sản phẩm thành công.')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Về Tiết kiệm' })).toBeInTheDocument();
+  });
+
+  it('shows a pending redemption receipt instead of reporting completion', async () => {
+    server.use(
+      http.get('*/earn/snapshot', () => HttpResponse.json(redemptionSnapshot)),
+      http.post('*/earn/redemptions', async ({ request }) => {
+        expect(request.headers.get('Idempotency-Key')).toBeTruthy();
+        expect(await request.json()).toEqual({ positionId: 'position-1', amount: 50 });
+        return HttpResponse.json(
+          {
+            id: 'receipt-pending-redemption',
+            operation: 'redeem',
+            productId: 'product-1',
+            positionId: 'position-1',
+            asset: 'USDT',
+            amount: 50,
+            status: 'pending',
+            createdAt: '2026-09-30T10:00:00.000Z',
+          },
+          { status: 201 },
+        );
+      }),
+    );
+
+    const user = userEvent.setup();
+    renderEarn();
+    await user.click(await screen.findByRole('tab', { name: 'Của tôi (1)' }));
+    await user.click(await screen.findByRole('button', { name: 'Rút vốn' }));
+    await user.type(screen.getByRole('textbox', { name: 'Số lượng' }), '50');
+    await user.click(screen.getByRole('button', { name: 'Xác nhận rút vốn' }));
+
+    expect(await screen.findByRole('heading', { name: 'Yêu cầu đang xử lý' })).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('Đang xử lý');
+    expect(screen.getByText('receipt-pending-redemption')).toBeInTheDocument();
+    expect(screen.queryByText('Yêu cầu rút vốn đã được ghi nhận.')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Về Tiết kiệm' })).toBeInTheDocument();
+  });
+
+  it('returns to Staking after showing a pending staking receipt', async () => {
+    server.use(
+      http.get('*/earn/snapshot', () =>
+        HttpResponse.json({
+          ...snapshot,
+          products: snapshot.products.map((product) => ({ ...product, domain: 'staking' })),
+        }),
+      ),
+      http.post('*/earn/subscriptions', () =>
+        HttpResponse.json(
+          {
+            id: 'receipt-pending-staking',
+            operation: 'subscribe',
+            productId: 'product-1',
+            asset: 'USDT',
+            amount: 100,
+            status: 'pending',
+            createdAt: '2026-09-30T10:00:00.000Z',
+          },
+          { status: 201 },
+        ),
+      ),
+    );
+
+    const user = userEvent.setup();
+    renderEarn(testAuthAdapter, 'staking');
+    await user.click(await screen.findByRole('button', { name: /Stable Savings/i }));
+    await user.type(screen.getByRole('textbox', { name: 'Số lượng' }), '100');
+    await user.click(screen.getByRole('checkbox'));
+    await user.click(screen.getByRole('button', { name: /Xác nhận đăng ký/i }));
+
+    expect(await screen.findByRole('heading', { name: 'Yêu cầu đang xử lý' })).toBeInTheDocument();
+    expect(screen.getByText('receipt-pending-staking')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Về Staking' })).toBeInTheDocument();
   });
 
   it('reuses the subscription idempotency key when retrying an unchanged amount', async () => {
@@ -209,5 +468,63 @@ describe('Earn page contract boundary', () => {
       ),
     ).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Stable Savings/i })).toBeDisabled();
+  });
+
+  it('closes subscription and redemption sheets and clears their mutation state', async () => {
+    server.use(http.get('*/earn/snapshot', () => HttpResponse.json(redemptionSnapshot)));
+
+    const user = userEvent.setup();
+    renderEarn();
+    await user.click(await screen.findByRole('button', { name: /Stable Savings/i }));
+    expect(screen.getByRole('dialog', { name: 'Đăng ký sản phẩm' })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Đóng' }));
+    expect(screen.queryByRole('dialog', { name: 'Đăng ký sản phẩm' })).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('tab', { name: 'Của tôi (1)' }));
+    await user.click(await screen.findByRole('button', { name: 'Rút vốn' }));
+    expect(screen.getByRole('dialog', { name: 'Rút vốn' })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Đóng' }));
+    expect(screen.queryByRole('dialog', { name: 'Rút vốn' })).not.toBeInTheDocument();
+  });
+
+  it('does not submit after subscription or redemption permission is revoked', async () => {
+    let subscriptionAttempts = 0;
+    let redemptionAttempts = 0;
+    server.use(
+      http.get('*/earn/snapshot', () => HttpResponse.json(redemptionSnapshot)),
+      http.post('*/earn/subscriptions', () => {
+        subscriptionAttempts += 1;
+        return HttpResponse.json({ message: 'Must remain uncalled' }, { status: 403 });
+      }),
+      http.post('*/earn/redemptions', () => {
+        redemptionAttempts += 1;
+        return HttpResponse.json({ message: 'Must remain uncalled' }, { status: 403 });
+      }),
+    );
+
+    const user = userEvent.setup();
+    const mutableAuth = createMutableEarnAuthAdapter();
+    renderEarn(mutableAuth.adapter);
+    await user.click(await screen.findByRole('button', { name: /Stable Savings/i }));
+    await user.type(screen.getByRole('textbox', { name: 'Số lượng' }), '100');
+    await user.click(screen.getByRole('checkbox'));
+    mutableAuth.setPermissions(['earn:read']);
+    await user.click(screen.getByRole('button', { name: 'Refresh auth session' }));
+    await user.click(screen.getByRole('button', { name: /Xác nhận đăng ký/i }));
+    expect(screen.getByRole('dialog', { name: 'Đăng ký sản phẩm' })).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Đóng' }));
+    mutableAuth.setPermissions(['earn:write']);
+    await user.click(screen.getByRole('button', { name: 'Refresh auth session' }));
+    await user.click(screen.getByRole('tab', { name: 'Của tôi (1)' }));
+    await user.click(await screen.findByRole('button', { name: 'Rút vốn' }));
+    await user.type(screen.getByRole('textbox', { name: 'Số lượng' }), '50');
+    mutableAuth.setPermissions(['earn:read']);
+    await user.click(screen.getByRole('button', { name: 'Refresh auth session' }));
+    await user.click(screen.getByRole('button', { name: 'Xác nhận rút vốn' }));
+
+    expect(screen.getByRole('dialog', { name: 'Rút vốn' })).toBeInTheDocument();
+    expect(subscriptionAttempts).toBe(0);
+    expect(redemptionAttempts).toBe(0);
   });
 });

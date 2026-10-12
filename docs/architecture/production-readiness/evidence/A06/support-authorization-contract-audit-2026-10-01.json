@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261001-023",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "contract-authorization-status-audit",
+  "checkedAt": "2026-09-30T23:07:04.000Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "contractFile": "contracts/openapi/support.yaml",
+  "globalSecurity": [
+    {
+      "sessionCookie": []
+    }
+  ],
+  "scenarioRows": [
+    {
+      "id": "support.unauthorized",
+      "state": "unauthorized",
+      "applicability": "required",
+      "operationIds": [
+        "listNews",
+        "listNotifications",
+        "markNotificationRead",
+        "getHelpCenter",
+        "listSupportTickets",
+        "createSupportTicket"
+      ],
+      "executionStatus": "not_verified"
+    },
+    {
+      "id": "support.forbidden",
+      "state": "forbidden",
+      "applicability": "required",
+      "operationIds": [
+        "listNews",
+        "listNotifications",
+        "markNotificationRead",
+        "getHelpCenter",
+        "listSupportTickets",
+        "createSupportTicket"
+      ],
+      "executionStatus": "not_verified"
+    }
+  ],
+  "operations": [
+    {
+      "operationId": "listNews",
+      "trackingId": "API-92eb6ef08142",
+      "method": "GET",
+      "path": "/content/news",
+      "statuses": ["200"],
+      "responseDescriptions": {
+        "200": "News and announcements visible to the user."
+      }
+    },
+    {
+      "operationId": "listNotifications",
+      "trackingId": "API-75c588c238a3",
+      "method": "GET",
+      "path": "/notifications",
+      "statuses": ["200"],
+      "responseDescriptions": {
+        "200": "User-owned notifications."
+      }
+    },
+    {
+      "operationId": "markNotificationRead",
+      "trackingId": "API-3d361d373d8b",
+      "method": "POST",
+      "path": "/notifications/{notificationId}/read",
+      "statuses": ["204", "404"],
+      "responseDescriptions": {
+        "204": "Notification marked as read.",
+        "404": "Notification not found."
+      }
+    },
+    {
+      "operationId": "getHelpCenter",
+      "trackingId": "API-3d981f60c4fe",
+      "method": "GET",
+      "path": "/support/help",
+      "statuses": ["200"],
+      "responseDescriptions": {
+        "200": "Help categories and searchable articles."
+      }
+    },
+    {
+      "operationId": "listSupportTickets",
+      "trackingId": "API-659c3971d5ef",
+      "method": "GET",
+      "path": "/support/tickets",
+      "statuses": ["200"],
+      "responseDescriptions": {
+        "200": "User-owned support tickets."
+      }
+    },
+    {
+      "operationId": "createSupportTicket",
+      "trackingId": "API-1fb817f18db8",
+      "method": "POST",
+      "path": "/support/tickets",
+      "statuses": ["201", "400"],
+      "responseDescriptions": {
+        "201": "Ticket created.",
+        "400": ""
+      }
+    }
+  ],
+  "counts": {
+    "linkedOperations": 6,
+    "operationsDeclaring401": 0,
+    "operationsDeclaring403": 0
+  },
+  "browserScenarioExecuted": false,
+  "conclusion": "6 unique support operations are linked to the selected matrix rows; 0/6 declare 401 and 0/6 declare 403. Keep unsupported authorization scenarios not_verified; do not simulate undeclared statuses.",
+  "nextAction": "A06.03 next not_verified matrix row: audit trading unknown/duplicate idempotency, lookup and same-key replay semantics before side-effecting writes.",
+  "sourceHashes": {
+    "contracts/openapi/support.yaml": "765533b6f9f9892ac7ec2fa70031b54c53daf07ff5c77775fca155e23ef58d5a",
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "70630b4a0b7d2d16d39fc9da839fbb1b96578c9f5c60ec92ce598e14add99c24",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320"
+  }
+}

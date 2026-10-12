@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261002-010",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "read-only-openapi-scenario-row-audit",
+  "observedAt": "2026-10-02T02:05:06Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "environment": "Windows 11, Node 24.19.0; current primary worktree. Read-only YAML/OpenAPI and scenario-matrix parsing; no browser or API side effect.",
+  "commandOrSteps": "Resolve every operationId linked to dca.forbidden against contracts/openapi/dca.yaml; count operation-level HTTP 403 declarations and verify current matrix disposition.",
+  "expected": "Only contract-declared HTTP 403 responses may be used for a forbidden browser scenario; preserve not_verified if no mapped operation declares the status.",
+  "actual": "Resolved 5/5 mapped DCA operations; 0/5 declare HTTP 403. GET /dca/advanced/overview (getDCAAdvancedOverview) responses 200/401; GET /dca/snapshot (getDCASnapshot) responses 200/401; POST /dca/plans (createDCAPlan) responses 201/401; PATCH /dca/plans/{planId} (updateDCAPlan) responses 200/404; DELETE /dca/plans/{planId} (deleteDCAPlan) responses 204/404. The current matrix row remains not_verified; no browser case ran and no response was synthesized.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/A06/dca-forbidden-contract-audit-current-2026-10-02.json",
+  "sourceHashes": {
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "0bbf7c7a887415389265aa3fa2f2c07fc670a070ac4f692b55fae87ff19922f4",
+    "contracts/openapi/dca.yaml": "105ad6cbe91891cf20336ac20cd26485c22c3dbd26055d1a4dcc4d0a45bf5b5d"
+  },
+  "scenario": {
+    "id": "dca.forbidden",
+    "state": "forbidden",
+    "executionStatus": "not_verified",
+    "operationIds": [
+      "getDCAAdvancedOverview",
+      "getDCASnapshot",
+      "createDCAPlan",
+      "updateDCAPlan",
+      "deleteDCAPlan"
+    ]
+  },
+  "counts": {
+    "mappedOperations": 5,
+    "operationsDeclaring403": 0,
+    "scenarioRowsWithFreshBrowserEvidence": 81,
+    "totalScenarioRows": 106,
+    "registeredSidecars": 81,
+    "staleSidecars": 0
+  },
+  "operations": [
+    {
+      "operationId": "getDCAAdvancedOverview",
+      "method": "GET",
+      "path": "/dca/advanced/overview",
+      "responseCodes": ["200", "401"]
+    },
+    {
+      "operationId": "getDCASnapshot",
+      "method": "GET",
+      "path": "/dca/snapshot",
+      "responseCodes": ["200", "401"]
+    },
+    {
+      "operationId": "createDCAPlan",
+      "method": "POST",
+      "path": "/dca/plans",
+      "responseCodes": ["201", "401"]
+    },
+    {
+      "operationId": "updateDCAPlan",
+      "method": "PATCH",
+      "path": "/dca/plans/{planId}",
+      "responseCodes": ["200", "404"]
+    },
+    {
+      "operationId": "deleteDCAPlan",
+      "method": "DELETE",
+      "path": "/dca/plans/{planId}",
+      "responseCodes": ["204", "404"]
+    }
+  ],
+  "globalSecurity": [
+    {
+      "sessionCookie": []
+    }
+  ],
+  "nextAction": "Continue A06.03 in matrix order at discovery.unauthorized: resolve its current row operationIds against contracts/openapi/discovery.yaml; run no browser case unless a mapped operation declares HTTP 401.",
+  "limitations": [
+    "This is a contract/matrix audit, not browser behavior, live backend authorization, staging verification, or user acceptance.",
+    "Source HEAD is recorded separately from current working-tree hashes; the report is local read-only evidence."
+  ]
+}

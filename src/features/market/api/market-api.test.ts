@@ -215,6 +215,22 @@ describe('market API contract', () => {
           time: 1_758_442_800,
           open: 64_900,
           high: 65_100,
+          low: 64_950,
+          close: 65_000,
+          volume: 12_345.67,
+        },
+      ],
+      updatedAt: '2026-09-21T10:00:00.000Z',
+    };
+
+    await expect(marketApi.getCandles('btc-usdt', { interval: '1h' })).rejects.toThrow();
+
+    response = {
+      items: [
+        {
+          time: 1_758_442_800,
+          open: 64_900,
+          high: 65_100,
           low: 64_800,
           close: 65_000,
           volume: 12_345.67,

@@ -64,7 +64,8 @@ export function SwipeBack({ children, disabled = false, threshold = 80 }: SwipeB
     }
 
     if (deltaX < 0) {
-      if (activated.current) setSwipeX(0);
+      // A negative delta is reachable only after horizontal movement activates.
+      setSwipeX(0);
       return;
     }
 

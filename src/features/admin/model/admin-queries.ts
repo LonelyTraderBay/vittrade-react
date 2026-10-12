@@ -14,6 +14,7 @@ export function useAdminOverviewQuery() {
   return useQuery({
     queryKey: adminQueryKeys.overview,
     queryFn: ({ signal }) => adminApi.getOverview(signal),
+    retry: false,
     staleTime: 30_000,
   });
 }
@@ -22,6 +23,7 @@ export function useAdminFunnelQuery(query: AdminFunnelQuery = {}) {
   return useQuery({
     queryKey: adminQueryKeys.funnel(query),
     queryFn: ({ signal }) => adminApi.getFunnel(query, signal),
+    retry: false,
     staleTime: 30_000,
   });
 }
@@ -30,6 +32,7 @@ export function useAdminAbTestsQuery() {
   return useQuery({
     queryKey: adminQueryKeys.abTests,
     queryFn: ({ signal }) => adminApi.listAbTests(signal),
+    retry: false,
     staleTime: 30_000,
   });
 }
@@ -39,6 +42,7 @@ export function useAdminAbTestQuery(testId: string) {
     queryKey: adminQueryKeys.abTest(testId),
     queryFn: ({ signal }) => adminApi.getAbTest(testId, signal),
     enabled: Boolean(testId),
+    retry: false,
     staleTime: 30_000,
   });
 }

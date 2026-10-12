@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261001-022",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "contract-authorization-status-audit",
+  "checkedAt": "2026-09-30T23:07:04.000Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "contractFile": "contracts/openapi/referral.yaml",
+  "globalSecurity": [
+    {
+      "sessionCookie": []
+    }
+  ],
+  "scenarioRows": [
+    {
+      "id": "referral.forbidden",
+      "state": "forbidden",
+      "applicability": "required",
+      "operationIds": ["getReferralOverview"],
+      "executionStatus": "not_verified"
+    }
+  ],
+  "operations": [
+    {
+      "operationId": "getReferralOverview",
+      "trackingId": "API-7fb339065b3e",
+      "method": "GET",
+      "path": "/referral/overview",
+      "statuses": ["200", "401"],
+      "responseDescriptions": {
+        "200": "Authenticated referral overview.",
+        "401": "Authentication required."
+      }
+    }
+  ],
+  "counts": {
+    "linkedOperations": 1,
+    "operationsDeclaring401": 1,
+    "operationsDeclaring403": 0
+  },
+  "browserScenarioExecuted": false,
+  "conclusion": "1 unique referral operations are linked to the selected matrix rows; 1/1 declare 401 and 0/1 declare 403. Keep unsupported authorization scenarios not_verified; do not simulate undeclared statuses.",
+  "nextAction": "A06.03 next not_verified matrix rows: audit Support unauthorized/forbidden statuses against contracts/openapi/support.yaml.",
+  "sourceHashes": {
+    "contracts/openapi/referral.yaml": "91e4eb405cc9b095a71416f64189bf6e16547babe05d04eaa137477175391715",
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "70630b4a0b7d2d16d39fc9da839fbb1b96578c9f5c60ec92ce598e14add99c24",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320"
+  }
+}

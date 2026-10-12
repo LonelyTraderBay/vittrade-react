@@ -105,6 +105,10 @@ describe('Market depth page', () => {
     expect(screen.getByText('Chưa đủ hai phía')).toBeVisible();
     expect(screen.getByText('Chưa có lệnh bán trong snapshot hiện tại.')).toBeVisible();
     expect(screen.getByText('Chưa có lệnh mua trong snapshot hiện tại.')).toBeVisible();
+
+    await userEvent.click(screen.getByRole('button', { name: 'Order book' }));
+    expect(screen.getByText('Chưa có lệnh bán trong snapshot hiện tại.')).toBeVisible();
+    expect(screen.getByText('Chưa có lệnh mua trong snapshot hiện tại.')).toBeVisible();
   });
 
   it('keeps whale alerts clearly marked as pending a backend contract', async () => {
@@ -135,5 +139,93 @@ describe('Market depth page', () => {
     shouldFail = false;
     await user.click(screen.getByRole('button', { name: 'Thử lại' }));
     expect(await screen.findByText('BTC/USDT')).toBeVisible();
+  });
+
+  it('shows loading while it discovers the pair for a route without a pair ID', async () => {
+    let releasePairs!: () => void;
+    const pairsReady = new Promise<void>((resolve) => {
+      releasePairs = resolve;
+    });
+    server.use(
+      http.get('*/market/pairs', async () => {
+        await pairsReady;
+        return HttpResponse.json({ items: [pair] });
+      }),
+      http.get('*/market/pairs/btc-usdt', () => HttpResponse.json(pair)),
+      http.get('*/market/pairs/btc-usdt/orderbook', () => HttpResponse.json(orderBook)),
+    );
+    renderMarketDepth('/markets/depth');
+
+    expect(screen.getByText('Đang tải dữ liệu độ sâu thị trường…')).toBeVisible();
+    releasePairs();
+    expect(await screen.findByText('BTC/USDT')).toBeVisible();
+  });
+
+  it('shows an empty-market retry state and selects the pair after the list recovers', async () => {
+    let hasPairs = false;
+    server.use(
+      http.get('*/market/pairs', () => HttpResponse.json({ items: hasPairs ? [pair] : [] })),
+      http.get('*/market/pairs/btc-usdt', () => HttpResponse.json(pair)),
+      http.get('*/market/pairs/btc-usdt/orderbook', () => HttpResponse.json(orderBook)),
+    );
+    const user = userEvent.setup();
+    renderMarketDepth('/markets/depth');
+
+    expect(await screen.findByText('Có lỗi xảy ra')).toBeVisible();
+    hasPairs = true;
+    await user.click(screen.getByRole('button', { name: 'Thử lại' }));
+    expect(await screen.findByText('BTC/USDT')).toBeVisible();
+  });
+
+  it('retries a failed pair detail query', async () => {
+    let shouldFail = true;
+    server.use(
+      http.get('*/market/pairs', () => HttpResponse.json({ items: [pair] })),
+      http.get('*/market/pairs/btc-usdt', () =>
+        shouldFail ? HttpResponse.error() : HttpResponse.json(pair),
+      ),
+      http.get('*/market/pairs/btc-usdt/orderbook', () => HttpResponse.json(orderBook)),
+    );
+    const user = userEvent.setup();
+    renderMarketDepth();
+
+    expect(await screen.findByText('Có lỗi xảy ra')).toBeVisible();
+    shouldFail = false;
+    await user.click(screen.getByRole('button', { name: 'Thử lại' }));
+    expect(await screen.findByText('BTC/USDT')).toBeVisible();
+  });
+
+  it('retries an unavailable order book after the selected pair loads', async () => {
+    let shouldFail = true;
+    server.use(
+      http.get('*/market/pairs', () => HttpResponse.json({ items: [pair] })),
+      http.get('*/market/pairs/btc-usdt', () => HttpResponse.json(pair)),
+      http.get('*/market/pairs/btc-usdt/orderbook', () =>
+        shouldFail ? HttpResponse.error() : HttpResponse.json(orderBook),
+      ),
+    );
+    const user = userEvent.setup();
+    renderMarketDepth();
+
+    expect(await screen.findByText('Có lỗi xảy ra')).toBeVisible();
+    shouldFail = false;
+    await user.click(screen.getByRole('button', { name: 'Thử lại' }));
+    expect(await screen.findByText('BTC/USDT')).toBeVisible();
+  });
+
+  it('uses the downward movement indicator and navigates to the pair trade route', async () => {
+    const fallingPair = { ...pair, change24h: -2.34 };
+    server.use(
+      http.get('*/market/pairs', () => HttpResponse.json({ items: [fallingPair] })),
+      http.get('*/market/pairs/btc-usdt', () => HttpResponse.json(fallingPair)),
+      http.get('*/market/pairs/btc-usdt/orderbook', () => HttpResponse.json(orderBook)),
+    );
+    const user = userEvent.setup();
+    renderMarketDepth();
+
+    expect(await screen.findByText('-2.34%')).toBeVisible();
+    expect(document.querySelector('svg.lucide-arrow-down-right')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Giao dịch' }));
+    expect(await screen.findByText('Trade destination')).toBeVisible();
   });
 });

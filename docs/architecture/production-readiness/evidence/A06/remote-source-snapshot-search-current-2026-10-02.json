@@ -1,0 +1,88 @@
+{
+  "purpose": "Bounded search for exact Git source snapshots for unresolved A06.03 checker paths; do not rebind mismatching or dirty contents.",
+  "observedAt": "2026-10-02T06:37:02.060Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "checkerErrorReport": "docs/architecture/production-readiness/evidence/A06/check-tracking-after-content-hash-reconciliation-current-2026-10-02.json",
+  "comparison": {
+    "method": "Hash current paths via git hash-object --stdin-paths and compare full blob IDs with raw new-object IDs from git log --raw --full-index --no-abbrev --no-renames over every current remote branch head, local ref, tag, and linked-worktree HEAD.",
+    "checkerErrors": 61,
+    "uniqueErrorPaths": 40,
+    "remoteBranchHeadsMatchedLocalTrackingRefs": true,
+    "remoteBranchHeadCount": 4,
+    "localReferenceAndWorktreeRootCount": 7,
+    "linkedWorktreeHeadCount": 7,
+    "reachableRelevantCommitCount": 23,
+    "distinctErrorPathsWithHistory": 35,
+    "exactCurrentBlobMatches": 0
+  },
+  "remoteBranchHeads": [
+    {
+      "sha": "cf9f33f938764df35c797d6d9a6ec4aeadec2bdc",
+      "ref": "refs/heads/codex/b07-01-current-checkpoint"
+    },
+    {
+      "sha": "49ef278fa5049e4c9cb54f36a71d19407df72d2a",
+      "ref": "refs/heads/codex/b07-01-ubuntu-validation"
+    },
+    {
+      "sha": "5dfeae204710f748b90fefbab1f29f6ef72a8bc5",
+      "ref": "refs/heads/codex/vittrade-architecture-completion"
+    },
+    {
+      "sha": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+      "ref": "refs/heads/main"
+    }
+  ],
+  "localReferenceRoots": [
+    {
+      "ref": "refs/heads/codex/b07-01-current-checkpoint",
+      "sha": "cf9f33f938764df35c797d6d9a6ec4aeadec2bdc"
+    },
+    {
+      "ref": "refs/heads/codex/b07-01-ubuntu-validation",
+      "sha": "49ef278fa5049e4c9cb54f36a71d19407df72d2a"
+    },
+    {
+      "ref": "refs/heads/codex/vittrade-architecture-completion",
+      "sha": "5dfeae204710f748b90fefbab1f29f6ef72a8bc5"
+    },
+    {
+      "ref": "refs/heads/main",
+      "sha": "c5fc38b0755da3fe2c9831fe3040160a308a9a03"
+    },
+    {
+      "ref": "refs/remotes/origin/codex/b07-01-current-checkpoint",
+      "sha": "cf9f33f938764df35c797d6d9a6ec4aeadec2bdc"
+    },
+    {
+      "ref": "refs/remotes/origin/codex/b07-01-ubuntu-validation",
+      "sha": "49ef278fa5049e4c9cb54f36a71d19407df72d2a"
+    },
+    {
+      "ref": "refs/remotes/origin/codex/vittrade-architecture-completion",
+      "sha": "5dfeae204710f748b90fefbab1f29f6ef72a8bc5"
+    },
+    {
+      "ref": "refs/remotes/origin/main",
+      "sha": "c5fc38b0755da3fe2c9831fe3040160a308a9a03"
+    }
+  ],
+  "linkedWorktreeHeads": [
+    "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+    "d06a65b6383570cceae238c7efbae2644a91237e",
+    "49ef278fa5049e4c9cb54f36a71d19407df72d2a",
+    "cf9f33f938764df35c797d6d9a6ec4aeadec2bdc",
+    "ee0bf684e2b3f2f9ece6ac3a6594de36f6f92dbe",
+    "9e71670bd83f1f70a1cd80ab6397178f12c8ba89"
+  ],
+  "matches": [],
+  "sourceHashes": {
+    "docs/architecture/production-readiness/check-tracking.mjs": "c40acc9eae1bd096de4df4d9b027ac5d91821383342fa0be862c761d30100a03",
+    "docs/architecture/production-readiness/evidence/A06/check-tracking-after-content-hash-reconciliation-current-2026-10-02.json": "3136220038365715655ecd31cd1fb75b6bf7771f71d3a294f8956384a0de8160"
+  },
+  "result": "No exact current blob was found across these reachable remote and local roots. The 61 checker errors remain; no source fingerprint was changed. Unreachable Git objects were not searched.",
+  "limitations": [
+    "The search covers reachable history only and is not a fix for missing committed snapshots or modified worktree content.",
+    "No commit, push, branch update, browser, backend, staging, or financial operation was performed."
+  ]
+}

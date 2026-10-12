@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { browserStorage } from '@/shared/lib/browser-storage';
-import { WALLET_TO_CREATION_FUNNEL } from './dca-funnels';
+import { ASSET_TO_CREATION_FUNNEL, WALLET_TO_CREATION_FUNNEL } from './dca-funnels';
 import { ConversionFunnelTrackerService } from './dca-funnel-service';
 import { dcaAnalytics } from './dca-analytics-service';
 
@@ -110,5 +110,136 @@ describe('ConversionFunnelTrackerService', () => {
 
     expect(service.getFunnelAnalytics(WALLET_TO_CREATION_FUNNEL.id).totalSessions).toBe(1);
     expect(browserStorage.local.getItem).toHaveBeenCalledWith('funnel_tracker');
+  });
+
+  it('keeps funnel progression and step analytics correct when an optional step is skipped', () => {
+    const service = createService();
+    let now = 0;
+    vi.spyOn(Date, 'now').mockImplementation(() => (now += 100));
+
+    const trackAssetJourney = (userId: string, includeOptionalStep: boolean) => {
+      service.trackEvent('page_view', userId);
+      service.trackEvent('dca_asset_detail_button_impression', userId);
+      service.trackEvent('dca_asset_detail_button_click', userId);
+      service.trackEvent('dca_create_sheet_opened', userId);
+      if (includeOptionalStep) {
+        service.trackEvent('dca_preselected_coin_used', userId);
+      } else {
+        // A repeat event is not a later funnel step and must not advance the optional step.
+        service.trackEvent('dca_asset_detail_button_click', userId);
+      }
+      service.trackEvent('dca_plan_created', userId);
+    };
+
+    trackAssetJourney('skipped-optional', false);
+    trackAssetJourney('completed-optional', true);
+
+    const analytics = service.getFunnelAnalytics(ASSET_TO_CREATION_FUNNEL.id);
+    const optionalStep = analytics.stepAnalytics.find(
+      (step) => step.stepId === 'preselected_coin_used',
+    );
+    const finalStep = analytics.stepAnalytics.find((step) => step.stepId === 'plan_created');
+
+    expect(analytics).toMatchObject({ totalSessions: 2, completedSessions: 2, completionRate: 1 });
+    expect(optionalStep).toMatchObject({ reached: 2, completed: 1, completionRate: 0.5 });
+    expect(optionalStep?.avgTimeToComplete).toBeGreaterThan(0);
+    expect(finalStep).toMatchObject({ reached: 2, completed: 2, completionRate: 1 });
+    expect(finalStep?.avgTimeToComplete).toBeGreaterThan(0);
+    expect(analytics.medianCompletionTime).toBe(analytics.avgCompletionTime);
+  });
+
+  it('does not skip a required funnel step when a later event arrives first', () => {
+    const service = createService();
+
+    service.trackEvent('page_view', 'required-order');
+    service.trackEvent('dca_asset_detail_button_click', 'required-order');
+
+    const analytics = service.getFunnelAnalytics(ASSET_TO_CREATION_FUNNEL.id);
+    expect(analytics.stepAnalytics[1]).toMatchObject({ reached: 0, completed: 0 });
+    expect(analytics.totalSessions).toBe(1);
+    expect(analytics.completedSessions).toBe(0);
+  });
+
+  it('reports entry dropouts and zero analytics for completed records without durations', () => {
+    const service = createService();
+    service.startSession(ASSET_TO_CREATION_FUNNEL.id, 'entry-dropout');
+    service.startSession(ASSET_TO_CREATION_FUNNEL.id, 'another-entry-dropout');
+
+    const activeAnalytics = service.getFunnelAnalytics(ASSET_TO_CREATION_FUNNEL.id);
+    expect(activeAnalytics.dropoutAnalysis).toEqual([
+      { step: 'entry', count: 2, rate: 1, avgTimeBeforeDropout: 0 },
+    ]);
+    expect(activeAnalytics.stepAnalytics[0]).toMatchObject({
+      reached: 0,
+      completed: 0,
+      completionRate: 0,
+      dropoutRate: 1,
+    });
+
+    const legacyCompletedSession = {
+      sessionId: 'legacy-completed',
+      funnelId: ASSET_TO_CREATION_FUNNEL.id,
+      userId: 'legacy-user',
+      steps: [],
+      completed: true,
+      startTime: 0,
+    };
+    vi.spyOn(browserStorage.local, 'getItem').mockReturnValue(
+      JSON.stringify({
+        active: [],
+        completed: [[ASSET_TO_CREATION_FUNNEL.id, [legacyCompletedSession]]],
+      }),
+    );
+    const restoredService = new ConversionFunnelTrackerService();
+    services.push(restoredService);
+
+    const restoredAnalytics = restoredService.getFunnelAnalytics(ASSET_TO_CREATION_FUNNEL.id);
+    expect(restoredAnalytics).toMatchObject({
+      totalSessions: 1,
+      completedSessions: 1,
+      avgCompletionTime: 0,
+      medianCompletionTime: 0,
+    });
+  });
+
+  it('does not append a step to a restored session already at the end of its funnel', () => {
+    const session = {
+      sessionId: 'completed-steps-awaiting-finalization',
+      funnelId: ASSET_TO_CREATION_FUNNEL.id,
+      userId: 'recovered-user',
+      steps: ASSET_TO_CREATION_FUNNEL.steps.map((step, index) => ({
+        stepId: step.id,
+        timestamp: index * 100,
+        timeSincePrevious: index === 0 ? undefined : 100,
+      })),
+      completed: false,
+      startTime: 0,
+    };
+    vi.spyOn(browserStorage.local, 'getItem').mockReturnValue(
+      JSON.stringify({ active: [[ASSET_TO_CREATION_FUNNEL.id, [session]]], completed: [] }),
+    );
+    const service = new ConversionFunnelTrackerService();
+    services.push(service);
+    const analyticsEvent = vi.spyOn(dcaAnalytics, 'trackEvent').mockImplementation(() => undefined);
+
+    service.trackEvent(ASSET_TO_CREATION_FUNNEL.successEvent, 'recovered-user');
+
+    expect(service.getFunnelAnalytics(ASSET_TO_CREATION_FUNNEL.id)).toMatchObject({
+      totalSessions: 1,
+      completedSessions: 0,
+    });
+    expect(analyticsEvent).not.toHaveBeenCalledWith('funnel_completed', expect.any(Object));
+  });
+
+  it('does not throw when the persistence adapter rejects a write', () => {
+    const service = createService();
+    const storageError = new Error('Storage quota exceeded');
+    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    vi.spyOn(browserStorage.local, 'setItem').mockImplementation(() => {
+      throw storageError;
+    });
+
+    expect(() => service.startSession(ASSET_TO_CREATION_FUNNEL.id, 'storage-error')).not.toThrow();
+    expect(error).toHaveBeenCalledWith('[FunnelTracker] Failed to save:', storageError);
   });
 });

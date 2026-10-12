@@ -39,6 +39,7 @@ class DCAAnalyticsService implements IAnalyticsService {
   private sessionId: string;
   private userId?: string;
   private flushTimer?: NodeJS.Timeout;
+  private beforeUnloadHandler?: () => void;
   private userConsent: boolean = false;
   private readonly transport?: AnalyticsTransport;
 
@@ -60,9 +61,8 @@ class DCAAnalyticsService implements IAnalyticsService {
 
     // Listen for page unload to flush
     if (typeof window !== 'undefined') {
-      window.addEventListener('beforeunload', () => {
-        this.flush();
-      });
+      this.beforeUnloadHandler = () => void this.flush();
+      window.addEventListener('beforeunload', this.beforeUnloadHandler);
     }
   }
 
@@ -395,7 +395,7 @@ class DCAAnalyticsService implements IAnalyticsService {
       }
 
       // Simulate API call
-      await this.sendToBackend(events);
+      await this.sendToBackend(events, this.transport);
 
       // Clear offline queue on success
       if (this.config.offlineQueue) {
@@ -417,11 +417,11 @@ class DCAAnalyticsService implements IAnalyticsService {
   /**
    * Send events to backend
    */
-  private async sendToBackend(_events: AnalyticsEvent[]): Promise<void> {
-    if (!this.transport) {
-      throw new Error('DCA analytics transport is not configured.');
-    }
-    await this.transport.send(_events);
+  private async sendToBackend(
+    events: AnalyticsEvent[],
+    transport: AnalyticsTransport,
+  ): Promise<void> {
+    await transport.send(events);
   }
 
   /* ─────────────────────────────────────────
@@ -574,6 +574,10 @@ class DCAAnalyticsService implements IAnalyticsService {
    */
   destroy(): void {
     this.stopAutoFlush();
+    if (this.beforeUnloadHandler && typeof window !== 'undefined') {
+      window.removeEventListener('beforeunload', this.beforeUnloadHandler);
+      this.beforeUnloadHandler = undefined;
+    }
     this.flush();
   }
 }

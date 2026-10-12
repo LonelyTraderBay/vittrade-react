@@ -33,26 +33,6 @@ export function P2PExpressConfirmPage() {
     [ad, fiatAmount],
   );
 
-  const confirm = async () => {
-    if (!canCreateOrder || !ad || !cryptoAmount || !paymentMethod) return;
-    try {
-      const receipt = await orderMutation.mutateAsync({
-        request: {
-          adId: ad.id,
-          asset,
-          currency: 'VND',
-          amount: cryptoAmount,
-          fiatAmount,
-          paymentMethod,
-        },
-        idempotencyKey: `p2p-express-order-${crypto.randomUUID()}`,
-      });
-      navigate(`${prefix}/p2p/order/${receipt.orderId}`, { replace: true });
-    } catch {
-      // React Query owns the failure state rendered below.
-    }
-  };
-
   if (!adId || !fiatAmount || adQuery.isError) {
     return (
       <PageLayout>
@@ -77,18 +57,26 @@ export function P2PExpressConfirmPage() {
     );
   }
 
-  if (!ad) {
-    return (
-      <PageLayout>
-        <Header title="Xác nhận Express" subtitle="Express · P2P" back />
-        <ErrorState
-          title="Không tìm thấy offer Express"
-          actionLabel="Quay lại Express"
-          onAction={() => navigate(`${prefix}/p2p/express`)}
-        />
-      </PageLayout>
-    );
-  }
+  // The query API parses successful responses with adSchema before exposing data.
+  const confirmedAd = ad!;
+  const confirm = async () => {
+    try {
+      const receipt = await orderMutation.mutateAsync({
+        request: {
+          adId: confirmedAd.id,
+          asset,
+          currency: 'VND',
+          amount: cryptoAmount,
+          fiatAmount,
+          paymentMethod,
+        },
+        idempotencyKey: `p2p-express-order-${crypto.randomUUID()}`,
+      });
+      navigate(`${prefix}/p2p/order/${receipt.orderId}`, { replace: true });
+    } catch {
+      // React Query owns the failure state rendered below.
+    }
+  };
 
   return (
     <PageLayout>
@@ -112,12 +100,12 @@ export function P2PExpressConfirmPage() {
           {[
             ['Tài sản', asset],
             ['Số lượng', `${cryptoAmount.toFixed(8)} ${asset}`],
-            ['Giá', `${ad.price.toLocaleString('vi-VN')} VND/${asset}`],
+            ['Giá', `${confirmedAd.price.toLocaleString('vi-VN')} VND/${asset}`],
             [
               tradeType === 'buy' ? 'Cần thanh toán' : 'Sẽ nhận được',
               `${fiatAmount.toLocaleString('vi-VN')} VND`,
             ],
-            ['Merchant', ad.merchant],
+            ['Merchant', confirmedAd.merchant],
             ['Phương thức thanh toán', paymentMethod],
           ].map(([label, value], index) => (
             <div
@@ -140,15 +128,19 @@ export function P2PExpressConfirmPage() {
               className="w-10 h-10 rounded-full flex items-center justify-center"
               style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
             >
-              <span style={{ color: '#fff', fontWeight: 700 }}>{ad.merchant.charAt(0)}</span>
+              <span style={{ color: '#fff', fontWeight: 700 }}>
+                {confirmedAd.merchant.charAt(0)}
+              </span>
             </div>
             <div className="flex-1">
-              <p style={{ color: colors.text1, fontSize: 13, fontWeight: 700 }}>{ad.merchant}</p>
+              <p style={{ color: colors.text1, fontSize: 13, fontWeight: 700 }}>
+                {confirmedAd.merchant}
+              </p>
               <p style={{ color: colors.text3, fontSize: 10 }}>
-                {ad.completionRate}% hoàn tất · {ad.completedOrders} orders
+                {confirmedAd.completionRate}% hoàn tất · {confirmedAd.completedOrders} orders
               </p>
             </div>
-            {ad.merchantVerified && <Shield size={15} color="#3B82F6" />}
+            {confirmedAd.merchantVerified && <Shield size={15} color="#3B82F6" />}
             <CheckCircle size={15} color="#10B981" />
           </div>
         </TrCard>
@@ -183,14 +175,17 @@ export function P2PExpressConfirmPage() {
           </button>
           <button
             type="button"
-            disabled={!canCreateOrder || orderMutation.isPending || !paymentMethod}
+            disabled={!canCreateOrder || orderMutation.isPending || !paymentMethod || !cryptoAmount}
             onClick={() => void confirm()}
             aria-label="Confirm P2P Express order"
             className="flex-1 rounded-xl py-3 font-bold"
             style={{
               background: tradeType === 'buy' ? '#10B981' : '#EF4444',
               color: '#fff',
-              opacity: !canCreateOrder || orderMutation.isPending || !paymentMethod ? 0.6 : 1,
+              opacity:
+                !canCreateOrder || orderMutation.isPending || !paymentMethod || !cryptoAmount
+                  ? 0.6
+                  : 1,
             }}
           >
             {orderMutation.isPending ? 'Đang tạo order…' : 'Xác nhận tạo order'}

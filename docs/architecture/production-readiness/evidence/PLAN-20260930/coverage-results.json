@@ -1,0 +1,11 @@
+[
+  {
+    "command": "npm.cmd run test:coverage -- --reporter=dot",
+    "startedAt": "2026-09-30T06:51:05.036Z",
+    "endedAt": "2026-09-30T06:51:39.468Z",
+    "exitCode": 0,
+    "error": null,
+    "log": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\test-coverage.log",
+    "node": "v24.19.0"
+  }
+]

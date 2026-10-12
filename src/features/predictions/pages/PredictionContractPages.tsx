@@ -157,7 +157,6 @@ export function PredictionEventContractPage() {
   const event = query.data;
   const outcome = selectedOutcome || event.outcomes[0]?.label || '';
   const submit = async () => {
-    if (!canTrade) return;
     const receipt = await order.mutateAsync({
       request: {
         eventId: event.id,
@@ -226,7 +225,7 @@ export function PredictionEventContractPage() {
             />
             <button
               type="button"
-              disabled={!canTrade || order.isPending || Number(shares) <= 0}
+              disabled={!canTrade || !outcome || order.isPending || Number(shares) <= 0}
               onClick={() => void submit().catch(() => undefined)}
               className="rounded-xl px-4 py-3 font-semibold"
               style={{

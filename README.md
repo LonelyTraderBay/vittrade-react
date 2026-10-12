@@ -30,7 +30,7 @@ tiêu chí nghiệm thu của repo áp dụng cho mọi người thực hiện.
 
 ## Environment
 
-Copy `.env.example` → `.env.local` and set values. Never read `import.meta.env` in feature code — import `env` from `src/shared/config/env.ts` (single source of truth).
+Copy `.env.example` → `.env.local` and set values. Never read `import.meta.env` in feature code — import `env` from `src/shared/config/env.ts` (single source of truth). Staging and production builds require `VITE_DATA_SOURCE=api`, an HTTPS API base URL and a WSS URL. The `.invalid` endpoints in the release examples are deliberate placeholders and are rejected at build time and startup; replace them only with endpoints supplied by the selected environment. CI uses reserved `.test` origins for build validation only and does not deploy them.
 
 ## Project structure
 

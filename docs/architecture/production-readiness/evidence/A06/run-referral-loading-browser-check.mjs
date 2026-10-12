@@ -15,9 +15,16 @@ assert.equal(origin.pathname, '/', 'PREVIEW_BASE_URL must be an origin without a
 const originUrl = origin.origin;
 const checkedAt = new Date().toISOString();
 const date = checkedAt.slice(0, 10);
-const loadingScreenshotPath = path.join(directory, `preview-referral-loading-pending-${date}.png`);
-const resultScreenshotPath = path.join(directory, `preview-referral-loading-resolved-${date}.png`);
-const reportPath = path.join(directory, `referral-loading-browser-check-${date}.json`);
+const runId = Date.now();
+const loadingScreenshotPath = path.join(
+  directory,
+  `preview-referral-loading-pending-${date}-${runId}.png`,
+);
+const resultScreenshotPath = path.join(
+  directory,
+  `preview-referral-loading-resolved-${date}-${runId}.png`,
+);
+const reportPath = path.join(directory, `referral-loading-browser-check-${date}-${runId}.json`);
 const sourceFiles = [
   'contracts/openapi/referral.yaml',
   'src/app/routes.ts',
@@ -135,7 +142,11 @@ try {
   const serviceWorkerControlled = await page.evaluate(() =>
     Boolean(navigator.serviceWorker?.controller),
   );
-  assert.equal(serviceWorkerControlled, true, 'The local preview service worker must control the page.');
+  assert.equal(
+    serviceWorkerControlled,
+    true,
+    'The local preview service worker must control the page.',
+  );
 
   apiRequests.length = 0;
   apiResponses.length = 0;
@@ -162,9 +173,11 @@ try {
   });
   const loadingObservedAt = Date.now();
   const noEmptyStateWhileLoading =
-    (await page.getByText('Chưa có người được giới thiệu. Hãy chia sẻ mã để bắt đầu.', {
-      exact: true,
-    }).count()) === 0;
+    (await page
+      .getByText('Chưa có người được giới thiệu. Hãy chia sẻ mã để bắt đầu.', {
+        exact: true,
+      })
+      .count()) === 0;
   assert.equal(noEmptyStateWhileLoading, true);
   await page.screenshot({ path: loadingScreenshotPath, fullPage: true });
   await page.waitForTimeout(250);
@@ -208,9 +221,7 @@ try {
   const targetResponses = apiResponses.filter((item) =>
     isReferralOperation(item.method, item.path),
   );
-  const targetFailures = apiFailures.filter((item) =>
-    isReferralOperation(item.method, item.path),
-  );
+  const targetFailures = apiFailures.filter((item) => isReferralOperation(item.method, item.path));
   assert.equal(targetRequests.length, 1, 'Referral success should issue one overview GET.');
   assert.equal(targetRequests[0].method, 'GET');
   assert.equal(targetResponses.length, 1);
@@ -294,15 +305,19 @@ try {
   };
   await fs.writeFile(reportPath, `${JSON.stringify(sidecar, null, 2)}\n`);
   process.stdout.write(
-    `${JSON.stringify({
-      report: path.relative(root, reportPath),
-      screenshots: [loadingScreenshotPath, resultScreenshotPath].map((file) =>
-        path.relative(root, file),
-      ),
-      checkedAt,
-      measurements: sidecar.measurements,
-      sourceHashCount: Object.keys(sourceHashes).length,
-    }, null, 2)}\n`,
+    `${JSON.stringify(
+      {
+        report: path.relative(root, reportPath),
+        screenshots: [loadingScreenshotPath, resultScreenshotPath].map((file) =>
+          path.relative(root, file),
+        ),
+        checkedAt,
+        measurements: sidecar.measurements,
+        sourceHashCount: Object.keys(sourceHashes).length,
+      },
+      null,
+      2,
+    )}\n`,
   );
 } finally {
   await browser.close();

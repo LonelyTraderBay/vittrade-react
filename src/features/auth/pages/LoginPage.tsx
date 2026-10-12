@@ -63,7 +63,6 @@ export function LoginPage() {
   };
 
   const handleDemoLogin = () => {
-    if (!isAuthFixtureMode) return;
     void submit({ email: 'demo@vittrade.vn', password: 'demo' });
   };
 

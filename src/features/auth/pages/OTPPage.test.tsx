@@ -18,17 +18,19 @@ const challengeState = {
   expiresAt: '2099-01-01T00:05:00.000Z',
 };
 
-function renderOTP(state: unknown, overrides: Partial<AuthAdapter> = {}) {
+function renderOTP(state: unknown, overrides: Partial<AuthAdapter> = {}, pathname = '/auth/otp') {
   return renderWithProviders(
     <>
       <Routes>
         <Route path="/auth/otp" element={<OTPPage />} />
+        <Route path="/w/auth/otp" element={<OTPPage />} />
         <Route path="/auth/register" element={<p>register route</p>} />
+        <Route path="/w/auth/account-locked" element={<p>account locked route</p>} />
       </Routes>
       <CurrentPath />
     </>,
     {
-      routerProps: { initialEntries: [{ pathname: '/auth/otp', state }] },
+      routerProps: { initialEntries: [{ pathname, state }] },
       authAdapter: { ...testAuthAdapter, initialSession: null, ...overrides },
     },
   );
@@ -114,6 +116,84 @@ describe('OTPPage login MFA challenge', () => {
     await waitFor(() => expect(screen.getByTestId('current-path')).toHaveTextContent('/home'));
   });
 
+  it('uses the explicit confirm action to retry a service failure with the entered code', async () => {
+    const user = userEvent.setup();
+    const verifyLoginMfa = vi.fn().mockRejectedValue(new ApiError('unavailable', { status: 503 }));
+    renderOTP(challengeState, { verifyLoginMfa });
+
+    const inputs = document.querySelectorAll<HTMLInputElement>('input[aria-label^="Ký tự OTP"]');
+    for (const input of inputs) await user.type(input, '1');
+    expect(
+      await screen.findByText('Không thể xác minh lúc này. Vui lòng thử lại.'),
+    ).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Xác nhận' }));
+
+    await waitFor(() => expect(verifyLoginMfa).toHaveBeenCalledTimes(2));
+  });
+
+  it('sends a non-API verification error through the generic recovery state', async () => {
+    const user = userEvent.setup();
+    const verifyLoginMfa = vi.fn().mockRejectedValue(new Error('adapter failed'));
+    renderOTP(challengeState, { verifyLoginMfa });
+
+    const inputs = document.querySelectorAll<HTMLInputElement>('input[aria-label^="Ký tự OTP"]');
+    for (const input of inputs) await user.type(input, '1');
+
+    expect(
+      await screen.findByText('Không thể xác minh lúc này. Vui lòng thử lại.'),
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText('Ký tự OTP 1')).toHaveValue('');
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/auth/otp');
+  });
+
+  it('rejects a challenge that expires immediately before verification', () => {
+    vi.useFakeTimers();
+    try {
+      const startedAt = Date.now();
+      const verifyLoginMfa = vi.fn();
+      renderOTP(
+        { ...challengeState, expiresAt: new Date(startedAt + 10_000).toISOString() },
+        { verifyLoginMfa },
+      );
+      const inputs = document.querySelectorAll<HTMLInputElement>('input[aria-label^="Ký tự OTP"]');
+      for (const input of Array.from(inputs).slice(0, 5)) {
+        fireEvent.change(input, { target: { value: '1' } });
+      }
+
+      vi.setSystemTime(startedAt + 10_000);
+      fireEvent.change(inputs[5], { target: { value: '1' } });
+
+      expect(screen.getByTestId('current-path')).toHaveTextContent('/auth/login');
+      expect(verifyLoginMfa).not.toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('rechecks a long-lived challenge after the maximum timer interval', async () => {
+    vi.useFakeTimers();
+    try {
+      const verifyLoginMfa = vi.fn();
+      renderOTP(
+        {
+          ...challengeState,
+          expiresAt: new Date(Date.now() + 2_147_483_647 + 5_000).toISOString(),
+        },
+        { verifyLoginMfa },
+      );
+
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(2_147_483_647);
+      });
+
+      expect(screen.getByTestId('current-path')).toHaveTextContent('/auth/otp');
+      expect(vi.getTimerCount()).toBe(1);
+      expect(verifyLoginMfa).not.toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it('normalizes a pasted code and verifies only its six digits', async () => {
     const verifyLoginMfa = vi.fn(async () => testAuthAdapter.initialSession!);
     renderOTP(challengeState, { verifyLoginMfa });
@@ -128,6 +208,34 @@ describe('OTPPage login MFA challenge', () => {
         code: '123456',
       }),
     );
+  });
+
+  it('ignores a paste that does not contain six digits', () => {
+    const verifyLoginMfa = vi.fn();
+    renderOTP(challengeState, { verifyLoginMfa });
+
+    fireEvent.paste(screen.getByLabelText('Ký tự OTP 1'), {
+      clipboardData: { getData: () => '12-a3' },
+    });
+
+    expect(verifyLoginMfa).not.toHaveBeenCalled();
+    expect(screen.getByLabelText('Ký tự OTP 1')).toHaveValue('');
+  });
+
+  it('filters input to the last digit and moves focus with Backspace', () => {
+    renderOTP(challengeState);
+    const first = screen.getByLabelText('Ký tự OTP 1');
+    const second = screen.getByLabelText('Ký tự OTP 2');
+
+    fireEvent.change(first, { target: { value: 'a12' } });
+    expect(first).toHaveValue('2');
+    expect(second).toHaveFocus();
+
+    fireEvent.keyDown(second, { key: 'Backspace' });
+    expect(first).toHaveFocus();
+
+    fireEvent.keyDown(first, { key: 'Backspace' });
+    expect(first).toHaveFocus();
   });
 
   it.each([
@@ -168,6 +276,113 @@ describe('OTPPage login MFA challenge', () => {
     );
     expect(verifyLoginMfa).toHaveBeenCalledTimes(1);
     expect(screen.queryByText(/Mã OTP không đúng/)).not.toBeInTheDocument();
+  });
+
+  it('returns an expired registration challenge to registration after verification', async () => {
+    const user = userEvent.setup();
+    const verifyMfa = vi.fn().mockRejectedValue(new ApiError('expired', { status: 410 }));
+    renderOTP(
+      {
+        purpose: 'register',
+        challengeId: 'registration-challenge-001',
+        channel: 'email',
+        maskedDestination: 'n***@example.com',
+        expiresAt: '2099-01-01T00:05:00.000Z',
+      },
+      { verifyMfa },
+    );
+
+    const inputs = document.querySelectorAll<HTMLInputElement>('input[aria-label^="Ký tự OTP"]');
+    for (const input of inputs) await user.type(input, '1');
+
+    await waitFor(() =>
+      expect(screen.getByTestId('current-path')).toHaveTextContent('/auth/register'),
+    );
+    expect(verifyMfa).toHaveBeenCalledOnce();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+  });
+
+  it('offers registration restart after a registration challenge is rate limited', async () => {
+    const user = userEvent.setup();
+    const verifyMfa = vi.fn().mockRejectedValue(new ApiError('limited', { status: 429 }));
+    renderOTP(
+      {
+        purpose: 'register',
+        challengeId: 'registration-challenge-001',
+        channel: 'email',
+        maskedDestination: 'n***@example.com',
+        expiresAt: '2099-01-01T00:05:00.000Z',
+      },
+      { verifyMfa },
+    );
+
+    const inputs = document.querySelectorAll<HTMLInputElement>('input[aria-label^="Ký tự OTP"]');
+    for (const input of inputs) await user.type(input, '1');
+
+    expect(await screen.findByText(/Quá nhiều lần xác thực/)).toBeInTheDocument();
+    await user.click(screen.getAllByRole('button', { name: 'Quay lại đăng ký' })[0]);
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/auth/register');
+  });
+
+  it.each([
+    ['registration', 400, 'Mã OTP không đúng. Vui lòng thử lại.'],
+    ['registration', 503, 'Không thể xác minh lúc này. Vui lòng thử lại.'],
+    ['login', 503, 'Không thể xác minh lúc này. Vui lòng thử lại.'],
+  ] as const)(
+    'shows the expected retry message for %s verification status %s',
+    async (flow, status, message) => {
+      const user = userEvent.setup();
+      const error = new ApiError('verification failed', { status });
+      const verify = vi.fn().mockRejectedValue(error);
+      const registrationState = {
+        purpose: 'register',
+        challengeId: 'registration-challenge-001',
+        channel: 'email',
+        maskedDestination: 'n***@example.com',
+        expiresAt: '2099-01-01T00:05:00.000Z',
+      };
+      renderOTP(flow === 'registration' ? registrationState : challengeState, {
+        ...(flow === 'registration' ? { verifyMfa: verify } : { verifyLoginMfa: verify }),
+      });
+
+      const inputs = document.querySelectorAll<HTMLInputElement>('input[aria-label^="Ký tự OTP"]');
+      for (const input of inputs) await user.type(input, '1');
+
+      expect(await screen.findByText(message)).toBeInTheDocument();
+      expect(screen.getByTestId('current-path')).toHaveTextContent('/auth/otp');
+    },
+  );
+
+  it('routes a web login challenge to the locked-account page on HTTP 423', async () => {
+    const user = userEvent.setup();
+    const verifyLoginMfa = vi.fn().mockRejectedValue(new ApiError('locked', { status: 423 }));
+    renderOTP(challengeState, { verifyLoginMfa }, '/w/auth/otp');
+
+    const inputs = document.querySelectorAll<HTMLInputElement>('input[aria-label^="Ký tự OTP"]');
+    for (const input of inputs) await user.type(input, '1');
+
+    await waitFor(() =>
+      expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/account-locked'),
+    );
+    expect(verifyLoginMfa).toHaveBeenCalledOnce();
+  });
+
+  it('ignores a repeated valid paste while an earlier verification is pending', async () => {
+    let resolveVerification!: (value: NonNullable<typeof testAuthAdapter.initialSession>) => void;
+    const pendingVerification = new Promise<NonNullable<typeof testAuthAdapter.initialSession>>(
+      (resolve) => {
+        resolveVerification = resolve;
+      },
+    );
+    const verifyLoginMfa = vi.fn(() => pendingVerification);
+    renderOTP(challengeState, { verifyLoginMfa });
+    const firstInput = screen.getByLabelText('Ký tự OTP 1');
+
+    fireEvent.paste(firstInput, { clipboardData: { getData: () => '123456' } });
+    fireEvent.paste(firstInput, { clipboardData: { getData: () => '654321' } });
+    expect(verifyLoginMfa).toHaveBeenCalledOnce();
+
+    await act(async () => resolveVerification(testAuthAdapter.initialSession!));
   });
 
   it('returns to login when the challenge expires while the OTP page is open', async () => {
@@ -215,5 +430,37 @@ describe('OTPPage login MFA challenge', () => {
     expect(await screen.findByText(/Quá nhiều lần xác thực/)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Quay lại đăng nhập' })).toBeInTheDocument();
     expect(screen.queryByText(/Mã OTP không đúng/)).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Quay lại đăng nhập' }));
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/auth/login');
+  });
+
+  it('returns an expired registration challenge to registration before sending verification', () => {
+    vi.useFakeTimers();
+    try {
+      const startedAt = Date.now();
+      const verifyMfa = vi.fn();
+      renderOTP(
+        {
+          purpose: 'register',
+          challengeId: 'registration-challenge-001',
+          channel: 'email',
+          maskedDestination: 'n***@example.com',
+          expiresAt: new Date(startedAt + 10_000).toISOString(),
+        },
+        { verifyMfa },
+      );
+      const inputs = document.querySelectorAll<HTMLInputElement>('input[aria-label^="Ký tự OTP"]');
+      for (const input of Array.from(inputs).slice(0, 5)) {
+        fireEvent.change(input, { target: { value: '1' } });
+      }
+
+      vi.setSystemTime(startedAt + 10_000);
+      fireEvent.change(inputs[5], { target: { value: '1' } });
+
+      expect(screen.getByTestId('current-path')).toHaveTextContent('/auth/register');
+      expect(verifyMfa).not.toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

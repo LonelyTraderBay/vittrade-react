@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { lazy, type ComponentType } from 'react';
 import type { ReactNode } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
@@ -23,7 +24,9 @@ vi.mock('@/shared/ui/ThemedToaster', () => ({
 }));
 
 vi.mock('./PlatformSwitcher', () => ({
-  PlatformSwitcher: () => <div data-testid="platform-switcher" />,
+  PlatformSwitcher: ({ previewControlsVisible }: { previewControlsVisible: boolean }) => (
+    <div data-testid="platform-switcher" data-preview-controls-visible={previewControlsVisible} />
+  ),
 }));
 
 function renderAt(path: string) {
@@ -39,6 +42,23 @@ function renderAt(path: string) {
 }
 
 describe('RootLayout platform shells', () => {
+  it('shows a lightweight loading status while a route chunk is pending', () => {
+    const LazyRoute = lazy(() => new Promise<{ default: ComponentType }>(() => undefined));
+
+    render(
+      <MemoryRouter initialEntries={['/w/home']}>
+        <Routes>
+          <Route element={<RootLayout />}>
+            <Route path="*" element={<LazyRoute />} />
+          </Route>
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByRole('status', { name: 'Đang tải trang' })).toBeInTheDocument();
+    expect(screen.getByText('Đang tải…')).toBeInTheDocument();
+  });
+
   it('renders the development control supplied by route composition', () => {
     const PreviewControl = () => <div data-testid="preview-control-stub">Mock controls</div>;
     render(
@@ -52,6 +72,19 @@ describe('RootLayout platform shells', () => {
     );
 
     expect(screen.getByTestId('preview-control-stub')).toHaveTextContent('Mock controls');
+    expect(screen.getByTestId('platform-switcher')).toHaveAttribute(
+      'data-preview-controls-visible',
+      'true',
+    );
+  });
+
+  it('keeps the regular platform badge placement when no development controls are supplied', () => {
+    renderAt('/w/home');
+
+    expect(screen.getByTestId('platform-switcher')).toHaveAttribute(
+      'data-preview-controls-visible',
+      'false',
+    );
   });
 
   it.each(['/home', '/markets'])('wraps phone route %s in MobileFrame', (path) => {

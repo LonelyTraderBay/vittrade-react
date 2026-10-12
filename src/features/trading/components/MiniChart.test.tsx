@@ -2,6 +2,7 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } 
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { fireEvent, screen } from '@testing-library/react';
+import { useLocation } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
 import { MiniChart } from './MiniChart';
 
@@ -28,6 +29,10 @@ const candleData = {
   ],
   updatedAt: '2026-09-24T00:00:00.000Z',
 };
+
+function LocationProbe() {
+  return <output data-testid="location">{useLocation().pathname}</output>;
+}
 
 const candleSetData = vi.fn();
 const volumeSetData = vi.fn();
@@ -120,5 +125,91 @@ describe('MiniChart', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'Thử lại' }));
     expect(await screen.findByText('24H')).toBeInTheDocument();
     expect(attempts).toBe(4);
+  });
+
+  it('uses responsive height and falling-price series before navigating to the advanced chart', async () => {
+    const widthDescriptor = Object.getOwnPropertyDescriptor(window, 'innerWidth');
+    const fallingCandles = {
+      items: [
+        { time: 1_758_672_000, open: 120, high: 125, low: 95, close: 100, volume: 1_200 },
+        { time: 1_758_675_600, open: 100, high: 110, low: 85, close: 90, volume: 1_600 },
+      ],
+      updatedAt: '2026-09-24T00:00:00.000Z',
+    };
+    server.use(
+      http.get('*/market/pairs/btc-usdt/candles', () => HttpResponse.json(fallingCandles)),
+    );
+
+    try {
+      Object.defineProperty(window, 'innerWidth', {
+        configurable: true,
+        enumerable: widthDescriptor?.enumerable ?? true,
+        writable: true,
+        value: 320,
+      });
+      const { container } = renderWithProviders(
+        <>
+          <MiniChart pairId="btc-usdt" />
+          <LocationProbe />
+        </>,
+        { routerProps: { initialEntries: ['/w/markets'] } },
+      );
+
+      expect((container.firstElementChild as HTMLElement).style.height).toBe('100px');
+      expect(await screen.findByText('Tap for details')).toBeInTheDocument();
+      expect(volumeSetData).toHaveBeenCalledWith(
+        fallingCandles.items.map(({ time, volume }) => ({
+          time,
+          value: volume,
+          color: 'rgba(239, 68, 68, 0.4)',
+        })),
+      );
+      expect(chart.addSeries).toHaveBeenNthCalledWith(
+        3,
+        lineSeries,
+        expect.objectContaining({ color: '#EF4444' }),
+      );
+      expect(priceSetData).toHaveBeenCalledWith([
+        { time: fallingCandles.items[0].time, value: 90 },
+        { time: fallingCandles.items[1].time, value: 90 },
+      ]);
+
+      fireEvent.click(container.querySelector('.rounded-xl.overflow-hidden')!);
+      expect(screen.getByTestId('location')).toHaveTextContent('/w/trade/advanced-chart/btc-usdt');
+    } finally {
+      if (widthDescriptor) Object.defineProperty(window, 'innerWidth', widthDescriptor);
+    }
+  });
+
+  it('applies resize changes only after candle data creates a chart instance', async () => {
+    let releaseResponse!: () => void;
+    let signalRequestStarted!: () => void;
+    const responseGate = new Promise<void>((resolve) => {
+      releaseResponse = resolve;
+    });
+    const requestStarted = new Promise<void>((resolve) => {
+      signalRequestStarted = resolve;
+    });
+    server.use(
+      http.get('*/market/pairs/btc-usdt/candles', async () => {
+        signalRequestStarted();
+        await responseGate;
+        return HttpResponse.json(candleData);
+      }),
+    );
+    const { container } = renderWithProviders(<MiniChart pairId="btc-usdt" height={120} />);
+
+    await requestStarted;
+    fireEvent(window, new Event('resize'));
+    expect(chart.applyOptions).not.toHaveBeenCalled();
+
+    releaseResponse();
+    expect(await screen.findByText('Tap for details')).toBeInTheDocument();
+    const chartContainer = container.querySelector<HTMLElement>('.rounded-xl.overflow-hidden')!;
+    Object.defineProperty(chartContainer, 'clientWidth', { configurable: true, value: 356 });
+    fireEvent(window, new Event('resize'));
+
+    expect(chart.applyOptions).toHaveBeenCalledTimes(1);
+    expect(chart.applyOptions).toHaveBeenCalledWith({ width: 356 });
   });
 });

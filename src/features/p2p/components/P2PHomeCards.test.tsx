@@ -107,6 +107,39 @@ describe('P2P home cards', () => {
     expect(onQuickAction).not.toHaveBeenCalled();
   });
 
+  it('ignores vertical scroll and movement after long press while rendering negative floating offers', () => {
+    vi.useFakeTimers();
+    const floatingAd = {
+      ...ad,
+      isOnline: false,
+      price: 24_000,
+      priceType: 'floating' as const,
+      referencePrice: 25_000,
+    };
+    const { touchSurface, onContextMenu, onQuickAction } = renderAdCard({
+      ad: floatingAd,
+      index: 1,
+    });
+
+    expect(screen.getByText('Thả nổi')).toBeInTheDocument();
+
+    fireEvent.touchStart(touchSurface, { touches: [{ clientX: 40, clientY: 40 }] });
+    fireEvent.touchMove(touchSurface, { touches: [{ clientX: 40, clientY: 40 }] });
+    fireEvent.touchMove(touchSurface, { touches: [{ clientX: 40, clientY: 60 }] });
+    fireEvent.touchMove(touchSurface, { touches: [{ clientX: 101, clientY: 60 }] });
+    fireEvent.touchEnd(touchSurface);
+
+    expect(onQuickAction).toHaveBeenCalledWith(floatingAd, 'buy');
+
+    fireEvent.touchStart(touchSurface, { touches: [{ clientX: 40, clientY: 40 }] });
+    act(() => vi.advanceTimersByTime(500));
+    fireEvent.touchMove(touchSurface, { touches: [{ clientX: 140, clientY: 40 }] });
+    fireEvent.touchEnd(touchSurface);
+
+    expect(onContextMenu).toHaveBeenCalledWith(floatingAd);
+    expect(onQuickAction).toHaveBeenCalledOnce();
+  });
+
   it('keeps the comparison bar hidden until it has offers', () => {
     const onClear = vi.fn();
     const onView = vi.fn();

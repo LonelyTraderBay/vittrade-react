@@ -1,0 +1,431 @@
+{
+  "schemaVersion": 1,
+  "measuredAt": "2026-09-30T07:03:05.847Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "initialTrackedChanges": 0,
+  "finalTrackedChanges": 0,
+  "node": "v24.19.0",
+  "targetNode": "22 (.nvmrc); not executed this audit",
+  "platform": "Windows x64",
+  "analysisMode": "Read-only application/source/roadmap; build, coverage and test outputs generated under ignored paths; report outside repository",
+  "gates": [
+    {
+      "command": "npm.cmd run typecheck",
+      "startedAt": "2026-09-30T06:49:50.781Z",
+      "endedAt": "2026-09-30T06:50:13.182Z",
+      "exitCode": 0,
+      "error": null,
+      "log": "typecheck.txt",
+      "node": "v24.19.0",
+      "actualInvocation": "Node executable -> installed npm-cli.js -> run script; process PATH includes System32, Git, Node and local binaries",
+      "originalLog": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\typecheck.log"
+    },
+    {
+      "command": "npm.cmd run lint:check",
+      "startedAt": "2026-09-30T06:50:13.183Z",
+      "endedAt": "2026-09-30T06:50:21.930Z",
+      "exitCode": 0,
+      "error": null,
+      "log": "lint-check.txt",
+      "node": "v24.19.0",
+      "actualInvocation": "Node executable -> installed npm-cli.js -> run script; process PATH includes System32, Git, Node and local binaries",
+      "originalLog": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\lint-check.log"
+    },
+    {
+      "command": "npm.cmd run format:check",
+      "startedAt": "2026-09-30T06:50:21.931Z",
+      "endedAt": "2026-09-30T06:50:27.536Z",
+      "exitCode": 1,
+      "error": null,
+      "log": "format-check.txt",
+      "node": "v24.19.0",
+      "actualInvocation": "Node executable -> installed npm-cli.js -> run script; process PATH includes System32, Git, Node and local binaries",
+      "originalLog": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\format-check.log"
+    },
+    {
+      "command": "npm.cmd run architecture:check",
+      "startedAt": "2026-09-30T06:50:27.537Z",
+      "endedAt": "2026-09-30T06:50:29.001Z",
+      "exitCode": 0,
+      "error": null,
+      "log": "architecture-check.txt",
+      "node": "v24.19.0",
+      "actualInvocation": "Node executable -> installed npm-cli.js -> run script; process PATH includes System32, Git, Node and local binaries",
+      "originalLog": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\architecture-check.log"
+    },
+    {
+      "command": "npm.cmd run architecture:inventory:check",
+      "startedAt": "2026-09-30T06:50:29.002Z",
+      "endedAt": "2026-09-30T06:50:29.622Z",
+      "exitCode": 1,
+      "error": null,
+      "log": "architecture-inventory-check.txt",
+      "node": "v24.19.0",
+      "actualInvocation": "Node executable -> installed npm-cli.js -> run script; process PATH includes System32, Git, Node and local binaries",
+      "originalLog": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\architecture-inventory-check.log"
+    },
+    {
+      "command": "npm.cmd run page-size:check",
+      "startedAt": "2026-09-30T06:50:29.622Z",
+      "endedAt": "2026-09-30T06:50:29.815Z",
+      "exitCode": 0,
+      "error": null,
+      "log": "page-size-check.txt",
+      "node": "v24.19.0",
+      "actualInvocation": "Node executable -> installed npm-cli.js -> run script; process PATH includes System32, Git, Node and local binaries",
+      "originalLog": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\page-size-check.log"
+    },
+    {
+      "command": "npm.cmd run contracts:check",
+      "startedAt": "2026-09-30T06:50:29.815Z",
+      "endedAt": "2026-09-30T06:50:30.105Z",
+      "exitCode": 0,
+      "error": null,
+      "log": "contracts-check.txt",
+      "node": "v24.19.0",
+      "actualInvocation": "Node executable -> installed npm-cli.js -> run script; process PATH includes System32, Git, Node and local binaries",
+      "originalLog": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\contracts-check.log"
+    },
+    {
+      "command": "npm.cmd run security:check",
+      "startedAt": "2026-09-30T06:50:30.105Z",
+      "endedAt": "2026-09-30T06:50:30.330Z",
+      "exitCode": 0,
+      "error": null,
+      "log": "security-check.txt",
+      "node": "v24.19.0",
+      "actualInvocation": "Node executable -> installed npm-cli.js -> run script; process PATH includes System32, Git, Node and local binaries",
+      "originalLog": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\security-check.log"
+    },
+    {
+      "command": "npm.cmd run env:check",
+      "startedAt": "2026-09-30T06:50:30.331Z",
+      "endedAt": "2026-09-30T06:50:30.576Z",
+      "exitCode": 0,
+      "error": null,
+      "log": "env-check.txt",
+      "node": "v24.19.0",
+      "actualInvocation": "Node executable -> installed npm-cli.js -> run script; process PATH includes System32, Git, Node and local binaries",
+      "originalLog": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\env-check.log"
+    },
+    {
+      "command": "npm.cmd run production-mock-imports:check",
+      "startedAt": "2026-09-30T06:50:30.576Z",
+      "endedAt": "2026-09-30T06:50:30.746Z",
+      "exitCode": 0,
+      "error": null,
+      "log": "production-mock-imports-check.txt",
+      "node": "v24.19.0",
+      "actualInvocation": "Node executable -> installed npm-cli.js -> run script; process PATH includes System32, Git, Node and local binaries",
+      "originalLog": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\production-mock-imports-check.log"
+    },
+    {
+      "command": "npm.cmd run production-routes:check",
+      "startedAt": "2026-09-30T06:50:30.747Z",
+      "endedAt": "2026-09-30T06:50:30.904Z",
+      "exitCode": 0,
+      "error": null,
+      "log": "production-routes-check.txt",
+      "node": "v24.19.0",
+      "actualInvocation": "Node executable -> installed npm-cli.js -> run script; process PATH includes System32, Git, Node and local binaries",
+      "originalLog": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\production-routes-check.log"
+    },
+    {
+      "command": "npm.cmd run licenses:check",
+      "startedAt": "2026-09-30T06:50:30.905Z",
+      "endedAt": "2026-09-30T06:50:31.115Z",
+      "exitCode": 0,
+      "error": null,
+      "log": "licenses-check.txt",
+      "node": "v24.19.0",
+      "actualInvocation": "Node executable -> installed npm-cli.js -> run script; process PATH includes System32, Git, Node and local binaries",
+      "originalLog": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\licenses-check.log"
+    },
+    {
+      "command": "npm.cmd run test:coverage -- --reporter=dot",
+      "startedAt": "2026-09-30T06:51:05.036Z",
+      "endedAt": "2026-09-30T06:51:39.468Z",
+      "exitCode": 0,
+      "error": null,
+      "log": "test-coverage.txt",
+      "node": "v24.19.0",
+      "actualInvocation": "Node executable -> installed npm-cli.js -> run script; process PATH includes System32, Git, Node and local binaries",
+      "originalLog": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\test-coverage.log"
+    },
+    {
+      "command": "npm.cmd run build",
+      "startedAt": "2026-09-30T06:54:02.886Z",
+      "endedAt": "2026-09-30T06:54:18.900Z",
+      "exitCode": 0,
+      "error": null,
+      "log": "build.txt",
+      "node": "v24.19.0",
+      "actualInvocation": "Node executable -> installed npm-cli.js -> run script; process PATH includes System32, Git, Node and local binaries",
+      "originalLog": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\build.log"
+    },
+    {
+      "command": "npm.cmd run production-mocks:check",
+      "startedAt": "2026-09-30T06:54:18.901Z",
+      "endedAt": "2026-09-30T06:54:19.111Z",
+      "exitCode": 0,
+      "error": null,
+      "log": "production-mocks-check.txt",
+      "node": "v24.19.0",
+      "actualInvocation": "Node executable -> installed npm-cli.js -> run script; process PATH includes System32, Git, Node and local binaries",
+      "originalLog": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\production-mocks-check.log"
+    },
+    {
+      "command": "npm.cmd run bundle:check",
+      "startedAt": "2026-09-30T06:54:19.112Z",
+      "endedAt": "2026-09-30T06:54:19.337Z",
+      "exitCode": 0,
+      "error": null,
+      "log": "bundle-check.txt",
+      "node": "v24.19.0",
+      "actualInvocation": "Node executable -> installed npm-cli.js -> run script; process PATH includes System32, Git, Node and local binaries",
+      "originalLog": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\09\\30\\01a0f110-3235-7423-9a69-ca1f52010c01\\production-audit\\bundle-check.log"
+    },
+    {
+      "command": "node node_modules/@playwright/test/cli.js test",
+      "exitCode": 0,
+      "log": "e2e.txt",
+      "scope": "51/51 Chromium tests, local staging-mode build and intercepted API",
+      "originalLog": "C:/Users/Joker-PC/.codex/visualizations/2026/09/30/01a0f110-3235-7423-9a69-ca1f52010c01/production-audit/e2e.log"
+    },
+    {
+      "command": "npm.cmd audit --json",
+      "exitCode": 0,
+      "log": "npm-audit.json",
+      "originalLog": "C:/Users/Joker-PC/.codex/visualizations/2026/09/30/01a0f110-3235-7423-9a69-ca1f52010c01/production-audit/npm-audit.json"
+    },
+    {
+      "command": "node docs/architecture/production-readiness/check-tracking.mjs",
+      "exitCode": 0,
+      "log": "tracking-check.json",
+      "originalLog": "C:/Users/Joker-PC/.codex/visualizations/2026/09/30/01a0f110-3235-7423-9a69-ca1f52010c01/production-audit/tracking-check.json"
+    },
+    {
+      "command": "node docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs --check",
+      "exitCode": 1,
+      "log": "matrix-check.txt",
+      "originalLog": "C:/Users/Joker-PC/.codex/visualizations/2026/09/30/01a0f110-3235-7423-9a69-ca1f52010c01/production-audit/matrix-check.log"
+    },
+    {
+      "command": "node docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs --check",
+      "exitCode": 1,
+      "log": "ui-index-check.txt",
+      "originalLog": "C:/Users/Joker-PC/.codex/visualizations/2026/09/30/01a0f110-3235-7423-9a69-ca1f52010c01/production-audit/ui-index-check.log"
+    }
+  ],
+  "gateCounts": {
+    "executed": 21,
+    "passed": 17,
+    "failed": 4
+  },
+  "evidence": {
+    "measurements": "measurements.json",
+    "supplement": "supplement.json",
+    "dependencyGraph": "dependencies.json"
+  },
+  "limitations": [
+    "Existing node_modules used; no clean npm ci",
+    "GitHub CLI not authenticated: no CI result verified",
+    "No real backend, HTTPS staging, live authorization/idempotency/realtime/rollback or production RUM verification",
+    "No new user acceptance or tracker updates",
+    "EOL-normalized comparisons are diagnostics and do not convert a failing gate into a pass"
+  ],
+  "archival": {
+    "archivedAt": "2026-09-30T07:23:08.670Z",
+    "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+    "provenance": "Audit executed before documentation changes, clean main; no application code modified during planning.",
+    "artifacts": [
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/measurements.json",
+        "originalName": "measurements.json",
+        "sha256": "4c78f8c92b5e6fb3bd0451aff969b061860c17ee156312e97e1e00b89a5fdfc6",
+        "treatment": "verbatim historical evidence; do not rerun these archived measurement scripts in-place"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/supplement.json",
+        "originalName": "supplement.json",
+        "sha256": "c21c5c7b40e81deeea8d039629a2d25ac65046a41c144cdb504e119f9c2ab2bb",
+        "treatment": "verbatim historical evidence; do not rerun these archived measurement scripts in-place"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/dependencies.json",
+        "originalName": "dependencies.json",
+        "sha256": "6f53ec528f6b4be7c2a813e114f9356fea00432fb0f479792c02b6dc51c66b50",
+        "treatment": "verbatim historical evidence; do not rerun these archived measurement scripts in-place"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/generated-inventory.json",
+        "originalName": "generated-inventory.json",
+        "sha256": "184c1f296548fe9cf303c852179924de4dbd640db038e9b0424f903c88705c07",
+        "treatment": "verbatim historical evidence; do not rerun these archived measurement scripts in-place"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/static-results.json",
+        "originalName": "static-results.json",
+        "sha256": "ab8cf7ee71521a241b7d02820849334406d434ccc83438e73431f43aaafc0dca",
+        "treatment": "verbatim historical evidence; do not rerun these archived measurement scripts in-place"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/coverage-results.json",
+        "originalName": "coverage-results.json",
+        "sha256": "f52a2c9ded3286e1a7905a8fc465cb05786834c213a36bb50d52f03400c5a87f",
+        "treatment": "verbatim historical evidence; do not rerun these archived measurement scripts in-place"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/artifact-results.json",
+        "originalName": "artifact-results.json",
+        "sha256": "0a1af6b8c265dde88903ddcae1c172cd07e84ed76d5b79d34e4e9b7df02060b7",
+        "treatment": "verbatim historical evidence; do not rerun these archived measurement scripts in-place"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/npm-audit.json",
+        "originalName": "npm-audit.json",
+        "sha256": "9fd8d07c3815202edf347b7c83414d73bdf6f6dd312827b93c2370fbb0b1279f",
+        "treatment": "verbatim historical evidence; do not rerun these archived measurement scripts in-place"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/tracking-check.json",
+        "originalName": "tracking-check.json",
+        "sha256": "f8f6ad18f733f5e05b6dc718877f9a190fcb01508552d432ef01ca2e9f9ccbc9",
+        "treatment": "verbatim historical evidence; do not rerun these archived measurement scripts in-place"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/run-gates.mjs",
+        "originalName": "run-gates.mjs",
+        "sha256": "330a82fce2473162098f0f89ff192f2cd6e0252e5579e66fe5607b6a7ceb89fa",
+        "treatment": "verbatim historical evidence; do not rerun these archived measurement scripts in-place"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/measure.mjs",
+        "originalName": "measure.mjs",
+        "sha256": "df675399c20d2e1a48ccc5e5e683a8cdfc35b6fd8a1bc473e4c07c7729b787f3",
+        "treatment": "verbatim historical evidence; do not rerun these archived measurement scripts in-place"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/supplement.mjs",
+        "originalName": "supplement.mjs",
+        "sha256": "967288cb769d2aa2f573665fe424c211228ab423e6be31f793bf88a0aa37df3f",
+        "treatment": "verbatim historical evidence; do not rerun these archived measurement scripts in-place"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/typecheck.txt",
+        "originalName": "typecheck.log",
+        "sha256": "c2ba85d098824a1853a97ab5d1b5e0cacb954c25406c3e65fcbcd440625caf37",
+        "treatment": "verbatim output; .log renamed .txt because Git ignores .log"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/lint-check.txt",
+        "originalName": "lint-check.log",
+        "sha256": "7eb840f57a4cdc51c286a01084e94f30f7ae7aee5e89c52412d98af3c667fb7f",
+        "treatment": "verbatim output; .log renamed .txt because Git ignores .log"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/format-check.txt",
+        "originalName": "format-check.log",
+        "sha256": "ace535c0d3dce466d5832c6f855e56a0cd15ce0cb6205eb352d59fc2bc42d3cc",
+        "treatment": "verbatim output; .log renamed .txt because Git ignores .log"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/architecture-check.txt",
+        "originalName": "architecture-check.log",
+        "sha256": "32093a9655db1de9bb5a7406389625a1cf793fbd31fcd8988e5b7748341a9837",
+        "treatment": "verbatim output; .log renamed .txt because Git ignores .log"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/architecture-inventory-check.txt",
+        "originalName": "architecture-inventory-check.log",
+        "sha256": "0af4b056cec2370e2245c2c648a69ec961606a263afb733f2a61d3b6495dccdb",
+        "treatment": "verbatim output; .log renamed .txt because Git ignores .log"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/page-size-check.txt",
+        "originalName": "page-size-check.log",
+        "sha256": "48ffa626d8838a7decea788ade1524a3acec9a87ac3cf75f2abfd9bd74bf208b",
+        "treatment": "verbatim output; .log renamed .txt because Git ignores .log"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/contracts-check.txt",
+        "originalName": "contracts-check.log",
+        "sha256": "c5cb179bfa5e57d545ed8b5f756f7ee3601b186e0ecfbbcbe80ca38d3dbd514d",
+        "treatment": "verbatim output; .log renamed .txt because Git ignores .log"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/security-check.txt",
+        "originalName": "security-check.log",
+        "sha256": "7b84a7b3548ea699ff34a5a7425983000a6bd788d3de24b51982e54fb7c7edb6",
+        "treatment": "verbatim output; .log renamed .txt because Git ignores .log"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/env-check.txt",
+        "originalName": "env-check.log",
+        "sha256": "9f7ea160d68e093ba15271bd6079d005c39d8ca3cd1115dc4c374b959f94df9c",
+        "treatment": "verbatim output; .log renamed .txt because Git ignores .log"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/production-mock-imports-check.txt",
+        "originalName": "production-mock-imports-check.log",
+        "sha256": "4b3e9900a3363a36044586a30c4a027a1e275d814820f637e8b9d2f3f93530a3",
+        "treatment": "verbatim output; .log renamed .txt because Git ignores .log"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/production-routes-check.txt",
+        "originalName": "production-routes-check.log",
+        "sha256": "a23d816773b3f191bb1a7fa2a60b46332d41d8616c79fbbae2e19eaeadafa126",
+        "treatment": "verbatim output; .log renamed .txt because Git ignores .log"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/licenses-check.txt",
+        "originalName": "licenses-check.log",
+        "sha256": "632272cca852c604ed9b88f6a14fc389241601df555acb0fdf19578fa1df76c7",
+        "treatment": "verbatim output; .log renamed .txt because Git ignores .log"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/test-coverage.txt",
+        "originalName": "test-coverage.log",
+        "sha256": "96253e14ab7722747eb889419a26995f90e1fc2096c3861010621ce0faf43a2f",
+        "treatment": "verbatim output; .log renamed .txt because Git ignores .log"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/build.txt",
+        "originalName": "build.log",
+        "sha256": "7eb41fa62f285aad4d5dcffd689c626f53e12c000e5029f0a48d75fca7847734",
+        "treatment": "verbatim output; .log renamed .txt because Git ignores .log"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/production-mocks-check.txt",
+        "originalName": "production-mocks-check.log",
+        "sha256": "859c1e7504bc40b58b42822061b8dca291d5f4f8f1becc7561092c0f8f570eb0",
+        "treatment": "verbatim output; .log renamed .txt because Git ignores .log"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/bundle-check.txt",
+        "originalName": "bundle-check.log",
+        "sha256": "d12051ab1d8575eac810b3b1cb1032ae4403e7ca87a7dcba873c7dcd3a3e9100",
+        "treatment": "verbatim output; .log renamed .txt because Git ignores .log"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/e2e.txt",
+        "originalName": "e2e.log",
+        "sha256": "d246d5845e776a1fc856c385869136eaf6616edddc93008028b694fa893abbaf",
+        "treatment": "verbatim output; .log renamed .txt because Git ignores .log"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/matrix-check.txt",
+        "originalName": "matrix-check.log",
+        "sha256": "95d8cb052772c6f6ec1366dd18984d003a3d5118e4bc60bdc2fb5e69b93544e6",
+        "treatment": "verbatim output; .log renamed .txt because Git ignores .log"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/PLAN-20260930/ui-index-check.txt",
+        "originalName": "ui-index-check.log",
+        "sha256": "dd38b671a402fd25c17935365b1dbefd178309dca727aa8afca65886841b458f",
+        "treatment": "verbatim output; .log renamed .txt because Git ignores .log"
+      }
+    ]
+  }
+}

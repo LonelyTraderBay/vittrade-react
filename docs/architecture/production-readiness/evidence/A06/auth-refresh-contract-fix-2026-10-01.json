@@ -1,0 +1,363 @@
+{
+  "schemaVersion": 1,
+  "evidenceIds": ["EV-20261001-042", "EV-20261001-043"],
+  "checkedAt": "2026-10-01T14:40:29.605Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "environment": {
+    "os": "Windows x64",
+    "node": "24.19.0",
+    "browser": "Chromium via Playwright, headless, 1440x900",
+    "preview": "Vite + MSW, loopback http://127.0.0.1:4173; no backend endpoint used"
+  },
+  "contract": {
+    "operationId": "refreshSession",
+    "method": "POST",
+    "path": "/auth/refresh",
+    "response": "200 with AuthSession or null",
+    "observedUnauthenticatedResponse": {
+      "status": 200,
+      "body": null
+    }
+  },
+  "changes": [
+    "Unauthenticated default and preview-scenario refresh handlers now return the OpenAPI-supported 200/null body; authenticated refresh remains unchanged.",
+    "Auth handler and preview-scenario tests assert both authenticated session refresh and unauthenticated null session behavior.",
+    "P2P and Trading unauthorized browser runners now assert and record the actual 200/null refresh response."
+  ],
+  "checks": {
+    "focusedVitest": {
+      "command": "node node_modules/vitest/vitest.mjs run src/dev/mocks/auth-handlers.test.ts src/dev/mocks/preview-scenario-handler.test.ts src/features/auth/api/auth-api.test.ts src/features/auth/api/auth-openapi-contract.test.ts --reporter=dot",
+      "filesPassed": 4,
+      "testsPassed": 87
+    },
+    "openApiContracts": {
+      "command": "node scripts/check-openapi-contracts.mjs",
+      "contracts": 15,
+      "operations": 154,
+      "result": "pass"
+    },
+    "scenarioMatrix": {
+      "command": "node docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs --check",
+      "result": "pass"
+    },
+    "uiAcceptanceIndex": {
+      "command": "node docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs --check",
+      "result": "pass"
+    },
+    "runnerSyntaxAndPrettier": {
+      "result": "pass"
+    },
+    "gitDiffCheck": {
+      "result": "pass"
+    },
+    "gitEol": {
+      "paths": 2882,
+      "lf": 1533,
+      "preservedNonText": 1346,
+      "protectedWindowsCrlf": 3,
+      "missingLineTerminators": 0,
+      "violations": 0
+    },
+    "checkTrackingBeforeThisEvidenceRegistration": {
+      "errorCount": 0
+    },
+    "checkTrackingAfterEvidenceRegistration": {
+      "errorCount": 0
+    },
+    "finalMatrixAndUiIndexChecks": "pass"
+  },
+  "scenarioMatrix": {
+    "totalScenarios": 106,
+    "currentSourceScenarios": 81,
+    "fullyCovered": 38,
+    "representativeOrPartial": 43,
+    "uniqueOperationsObserved": 88,
+    "registeredSidecars": 81,
+    "freshSidecars": 81,
+    "staleSourceHashSidecars": 0,
+    "runtimeEvidenceFresh": false,
+    "notVerified": 25
+  },
+  "refreshedScenarios": [
+    {
+      "id": "admin.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/admin-error-browser-check-2026-10-01-refresh-auth-contract.json",
+      "sha256": "831db53bf85900d147c9753deb203cc3f6047c39ead76fe2e43d311af28b0129",
+      "status": "passed",
+      "sourceHashCount": 19,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-error-overview-2026-10-01-refresh-auth-contract.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-error-funnel-2026-10-01-refresh-auth-contract.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-error-ab-tests-2026-10-01-refresh-auth-contract.png"
+      ],
+      "checkedAt": "2026-10-01T14:16:01.131Z",
+      "measurements": {
+        "totalFlowMs": 5679,
+        "adminRequestAttemptCount": 18,
+        "adminResponseCount": 0,
+        "failedRequestCount": 18,
+        "operationRequestAttemptCounts": {
+          "getAdminOverview": 6,
+          "getAdminFunnel": 6,
+          "listAdminAbTests": 6
+        },
+        "operationFailureCounts": {
+          "getAdminOverview": 6,
+          "getAdminFunnel": 6,
+          "listAdminAbTests": 6
+        },
+        "visibleErrorStates": 3,
+        "writes": 0,
+        "unexpectedAdminRequestCount": 0,
+        "pageErrors": [],
+        "externalApiOriginCount": 0
+      }
+    },
+    {
+      "id": "p2p.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-empty-browser-check-2026-10-01-refresh-auth-contract.json",
+      "sha256": "6ea024a33f21cb118ef9fc7bd5546ac34b00c5e1ebdd19b35185caa6342732ff",
+      "status": "passed",
+      "sourceHashCount": 11,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-empty-orders-2026-10-01-refresh-auth-contract.png"
+      ],
+      "checkedAt": "2026-10-01T14:16:07.177Z",
+      "measurements": {
+        "totalFlowMs": 649,
+        "orderListResponseToEmptyUiMs": 56,
+        "p2pResponseCount": 1,
+        "totalApiRequestCount": 4,
+        "pageErrorCount": 0
+      }
+    },
+    {
+      "id": "p2p.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-error-browser-check-2026-10-01-refresh-auth-contract.json",
+      "sha256": "d242ae9b76fd2fd373477bdc595622eb59d5d66fa1c2524edda3c2756e79d981",
+      "status": "passed",
+      "sourceHashCount": 11,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-error-before-retry-2026-10-01-refresh-auth-contract.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-error-after-retry-2026-10-01-refresh-auth-contract.png"
+      ],
+      "checkedAt": "2026-10-01T14:16:08.291Z",
+      "measurements": {
+        "totalFlowMs": 6170,
+        "initialErrorVisibleMs": 2840,
+        "initialP2pRequestFailureCount": 6,
+        "retryP2pRequestFailureCount": 6,
+        "retryCompletedMs": 5531,
+        "totalP2pRequestFailureCount": 12,
+        "totalApiRequestCount": 17,
+        "pageErrorCount": 0
+      }
+    },
+    {
+      "id": "p2p.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-loading-browser-check-2026-10-01-refresh-auth-contract.json",
+      "sha256": "37117b97151c4bcd9670f4d6c3330af678955e1e50f97d6e86987517f9a7ee89",
+      "status": "passed",
+      "sourceHashCount": 11,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-loading-orders-2026-10-01-refresh-auth-contract.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-loading-pending-orders-2026-10-01-refresh-auth-contract.png"
+      ],
+      "checkedAt": "2026-10-01T14:16:14.910Z",
+      "measurements": {
+        "totalFlowMs": 2704,
+        "loadingUiMs": 38,
+        "orderListResponseMs": 2044,
+        "responseToRenderedOrderMs": 8,
+        "p2pResponseCount": 1,
+        "totalApiRequestCount": 6,
+        "pageErrorCount": 0
+      }
+    },
+    {
+      "id": "p2p.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-success-browser-check-2026-10-01-refresh-auth-contract.json",
+      "sha256": "533ad2331a1a8db832309dd7dc60439d1f4d60d7c2a94d4d78a87ac89e30f03e",
+      "status": "passed",
+      "sourceHashCount": 12,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-success-escrow-paid-2026-10-01-refresh-auth-contract.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-success-order-created-2026-10-01-refresh-auth-contract.png"
+      ],
+      "checkedAt": "2026-10-01T14:16:18.058Z",
+      "measurements": {
+        "totalFlowMs": 1174,
+        "paidEscrowRouteMs": 56,
+        "adLoadAndCreateOrderFlowMs": 165,
+        "createOrderToCreatedDetailMs": 57,
+        "p2pApiResponseCount": 4,
+        "apiRequestCount": 7,
+        "pageErrorCount": 0
+      }
+    },
+    {
+      "id": "p2p.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-unauthorized-browser-check-2026-10-01-refresh-auth-contract.json",
+      "sha256": "3f16a71cd7e15630cc1869b9770ccc659ac21ca8b559992ea7df78d16b10464a",
+      "status": "passed",
+      "sourceHashCount": 13,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-unauthorized-login-2026-10-01-refresh-auth-contract.png"
+      ],
+      "checkedAt": "2026-10-01T14:16:19.706Z",
+      "measurements": {
+        "totalFlowMs": 957,
+        "loginRedirectMs": 30,
+        "p2pResponseCount": 1,
+        "authRefreshResponseCount": 1,
+        "totalApiRequestCount": 7,
+        "pageErrorCount": 0
+      }
+    },
+    {
+      "id": "trading.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/trading-unauthorized-browser-check-2026-10-01-refresh-auth-contract.json",
+      "sha256": "775029fd9cdbe8a417e2dfb73b9a7261219b48f77a44fa0657226c2e8a044bef",
+      "status": "passed",
+      "sourceHashCount": 14,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-unauthorized-login-2026-10-01-refresh-auth-contract.png"
+      ],
+      "checkedAt": "2026-10-01T14:16:21.100Z",
+      "measurements": {
+        "totalFlowMs": 693,
+        "apiRequestCount": 10,
+        "apiResponseCount": 10,
+        "operationResponses": {
+          "listOpenPositions": [
+            {
+              "method": "GET",
+              "path": "/api/trading/positions",
+              "operationId": "listOpenPositions",
+              "status": 401,
+              "fromServiceWorker": true,
+              "elapsedMs": 4
+            }
+          ],
+          "refreshSession": [
+            {
+              "method": "POST",
+              "path": "/api/auth/refresh",
+              "operationId": "refreshSession",
+              "status": 200,
+              "body": null,
+              "fromServiceWorker": true,
+              "elapsedMs": 5
+            }
+          ]
+        },
+        "apiFailures": [
+          {
+            "method": "POST",
+            "path": "/api/auth/logout",
+            "operationId": null,
+            "failure": "net::ERR_ABORTED",
+            "hadResponse": true
+          },
+          {
+            "method": "GET",
+            "path": "/api/market/pairs",
+            "operationId": null,
+            "failure": "net::ERR_ABORTED",
+            "hadResponse": true
+          }
+        ],
+        "unmatchedApiFailureCount": 0,
+        "pageErrors": [],
+        "externalApiOriginCount": 0
+      }
+    },
+    {
+      "id": "wallet.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-error-current-head-browser-check-202610011416222.json",
+      "sha256": "e27bda475d82b680b529fb2bb0da55646448c36761adb7c12f293a7459adf04c",
+      "status": "passed",
+      "sourceHashCount": 24,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-error-overview-202610011416222.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-error-overview-retry-202610011416222.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-error-history-202610011416222.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-error-history-retry-202610011416222.png"
+      ],
+      "checkedAt": "2026-10-01T14:16:22.240Z",
+      "measurements": null
+    }
+  ],
+  "screenshotArtifacts": [
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-admin-error-overview-2026-10-01-refresh-auth-contract.png",
+      "sha256": "a4ee9fe8ab58170242925a4c25e37ffeabf25bbd94f5338ec83b8963ecfc766f"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-admin-error-funnel-2026-10-01-refresh-auth-contract.png",
+      "sha256": "2ad1ddeb6b9704ea0da2336e020398619d803ff7bf1460fe5699f3db55343d55"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-admin-error-ab-tests-2026-10-01-refresh-auth-contract.png",
+      "sha256": "5bc84c8dd09801db4816dc6e0c7ebf5fc8a9799b19514b5808b4e2084b8f1136"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-p2p-empty-orders-2026-10-01-refresh-auth-contract.png",
+      "sha256": "5e85ccf7e77ee66b1c750c47048e38adeb389adebc1d42f8b5e8c4e2a3b5e619"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-p2p-error-before-retry-2026-10-01-refresh-auth-contract.png",
+      "sha256": "9d78b8e3220d96a9038184be6df91e5dc7c3f883dc99d63568ccea053ac49e4f"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-p2p-error-after-retry-2026-10-01-refresh-auth-contract.png",
+      "sha256": "1431933a540ddb53963c52c166c74b1c3a625952881ac4e8411cd8d759a1ffad"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-p2p-loading-orders-2026-10-01-refresh-auth-contract.png",
+      "sha256": "64375a5dd944c7e1d777ecda25640b690c1f117bec1b1f0ae69da875a5e2cffd"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-p2p-loading-pending-orders-2026-10-01-refresh-auth-contract.png",
+      "sha256": "fec95669c86080a913b44b9f1d06a5ba4866cb8342a9de1c2c3e56375ddb1199"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-p2p-success-escrow-paid-2026-10-01-refresh-auth-contract.png",
+      "sha256": "aad1ee1595a43510e550b50ca2b039588677a016f8e692bb0bc7b56bc48dcfb3"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-p2p-success-order-created-2026-10-01-refresh-auth-contract.png",
+      "sha256": "19ca4b3ab225c883d2da6aecd2e21ff2462c731f6f0dd207cbe2a4006de91fb9"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-p2p-unauthorized-login-2026-10-01-refresh-auth-contract.png",
+      "sha256": "f53ea0f84baf81d7b3a45e7dd1868379549e3312db1cd1d5707aa71a6d60cf47"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-trading-unauthorized-login-2026-10-01-refresh-auth-contract.png",
+      "sha256": "ac2e3579617582195e46061aaa91eb51cff218af599bec2bb282bb7efc84b184"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-wallet-error-overview-202610011416222.png",
+      "sha256": "3739cb73d6ec1598151de9f5284af96a3f6d6b02b214246ece99ffef1f9239a5"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-wallet-error-overview-retry-202610011416222.png",
+      "sha256": "0c36f9c96db92d334eff4fdff56325a0535c9cf189cbb6953f76ccd1344355ff"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-wallet-error-history-202610011416222.png",
+      "sha256": "6d8033c952761a1d6db2c2e63fb9b9bc3e3616346633d5ffb630a961dd396831"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-wallet-error-history-retry-202610011416222.png",
+      "sha256": "7b963363c8288e2fb341ef3720571ef4aa1acc004fd926387724142632d2b506"
+    }
+  ],
+  "limitations": [
+    "All eight browser runs use local MSW fixtures and provide frontend evidence only; they do not prove backend authorization, persistence, staging, production readiness or user acceptance.",
+    "The 25 scenario rows without contract-supported responses or approved unknown/duplicate replay semantics remain not_verified.",
+    "Aggregate runtime evidence remains historical_baseline (runtimeEvidenceFresh=false); user acceptance remains 0/128 and backend/staging remains 0/154."
+  ]
+}

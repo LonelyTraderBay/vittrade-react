@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "evidenceId": "EV-20261011-056",
+  "kind": "current-working-tree-focused-source-coverage",
+  "measuredAt": "2026-10-11T17:17:58.000Z",
+  "sourceRevision": "fa5462701bc61bdd6d7fd4cab20c7d02e7fa7d81",
+  "sourceBranch": "codex/vittrade-readiness-p0-p2-20261009",
+  "worktree": {
+    "dirtyStatusEntries": 258,
+    "sourceFileCount": 1,
+    "testFiles": [
+      "src/features/market/pages/MarketHomePage.test.tsx"
+    ],
+    "statusCapturedAfterFocusedRunBeforeEvidenceWrite": true
+  },
+  "execution": {
+    "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/features/market/pages/MarketHomePage.test.tsx --coverage --coverage.include=src/features/market/pages/MarketHomePage.tsx --coverage.reporter=json-summary --coverage.reportsDirectory=C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-c03-markethome-focused-20261011-09 --reporter=dot --pool=threads --maxWorkers=1 --no-file-parallelism",
+    "platform": "Windows local; Node.js v24.19.0; Vitest 4.1.11; V8",
+    "exitCode": 0,
+    "testFiles": 1,
+    "testFilesPassed": 1,
+    "tests": 9,
+    "testsPassed": 9,
+    "testsFailed": 0,
+    "testsSkipped": 0,
+    "duration": "5.64s",
+    "coverageReportPath": "C:/Users/Joker-PC/AppData/Local/Temp/vittrade-c03-markethome-focused-20261011-09/coverage-summary.json"
+  },
+  "measurement": {
+    "metrics": {
+      "statements": {
+        "covered": 54,
+        "total": 54,
+        "missing": 0,
+        "pct": 100
+      },
+      "branches": {
+        "covered": 35,
+        "total": 35,
+        "missing": 0,
+        "pct": 100
+      },
+      "functions": {
+        "covered": 29,
+        "total": 29,
+        "missing": 0,
+        "pct": 100
+      },
+      "lines": {
+        "covered": 47,
+        "total": 47,
+        "missing": 0,
+        "pct": 100
+      }
+    },
+    "sourceSha256": "473837995f85438514d174d9dbeba1411ba95dbb7fa5424788c7625fde6e34df",
+    "testFileSha256": {
+      "src/features/market/pages/MarketHomePage.test.tsx": "e498e6d2b95554672ba860dbf594ae0b1eeb15a37d2d6ad5bd89af3e9cee942f"
+    },
+    "priorFullSuiteEvidenceId": "EV-20261010-053"
+  },
+  "limitations": [
+    "Focused local owner-test evidence for MarketHomePage.tsx only; the EV-20261010-053 full-suite aggregate remains unchanged.",
+    "Local Windows/MSW results do not establish exact-SHA Ubuntu/GitHub, backend, staging, production or user acceptance."
+  ],
+  "nextSlice": {
+    "priority": "P1",
+    "area": "P2P escrow detail state and guard paths",
+    "candidateFiles": [
+      "src/features/p2p/pages/P2PEscrowDetailPage.tsx",
+      "src/features/p2p/pages/P2PEscrowDetailPage.test.tsx"
+    ],
+    "ownerTests": [
+      "src/features/p2p/pages/P2PEscrowDetailPage.test.tsx"
+    ],
+    "reason": "The EV-20261010-053 baseline reports remaining P2PEscrowDetailPage counters. Review the owner tests and declared API contract; cover only reachable states and keep draft permission, missing-identifier and unspecified-enum behavior unclaimed."
+  }
+}

@@ -99,31 +99,34 @@ export function Coachmark({ screen, onAction, onComplete }: CoachmarkProps) {
   }, [screen]);
 
   // Advance to next tip
-  const handleNext = useCallback(() => {
-    if (!currentTip) return;
+  const handleNext = useCallback(
+    (tip: CoachmarkDef) => {
+      // Mark current as seen
+      coachmarkService.markSeen(tip.id);
 
-    // Mark current as seen
-    coachmarkService.markSeen(currentTip.id);
-
-    // Get remaining
-    const remaining = coachmarkService.getForScreen(screen);
-    if (remaining.length > 0) {
-      setRemainingCount(remaining.length);
-      setCurrentTip(remaining[0]);
-    } else {
-      setVisible(false);
-      setCurrentTip(null);
-      setRemainingCount(0);
-      onComplete?.();
-    }
-  }, [currentTip, screen, onComplete]);
+      // Get remaining
+      const remaining = coachmarkService.getForScreen(screen);
+      if (remaining.length > 0) {
+        setRemainingCount(remaining.length);
+        setCurrentTip(remaining[0]);
+      } else {
+        setVisible(false);
+        setCurrentTip(null);
+        setRemainingCount(0);
+        onComplete?.();
+      }
+    },
+    [screen, onComplete],
+  );
 
   // Dismiss current tip
-  const handleDismiss = useCallback(() => {
-    if (!currentTip) return;
-    coachmarkService.dismiss(currentTip.id);
-    handleNext();
-  }, [currentTip, handleNext]);
+  const handleDismiss = useCallback(
+    (tip: CoachmarkDef) => {
+      coachmarkService.dismiss(tip.id);
+      handleNext(tip);
+    },
+    [handleNext],
+  );
 
   // Dismiss all for this screen
   const handleDismissAll = useCallback(() => {
@@ -135,15 +138,21 @@ export function Coachmark({ screen, onAction, onComplete }: CoachmarkProps) {
   }, [screen, onComplete]);
 
   // Handle action button
-  const handleAction = useCallback(() => {
-    if (!currentTip?.actionRoute) return;
-    coachmarkService.markSeen(currentTip.id);
-    onAction?.(currentTip.actionRoute);
-    handleNext();
-  }, [currentTip, onAction, handleNext]);
+  const handleAction = useCallback(
+    (tip: CoachmarkDef, route: string) => {
+      coachmarkService.markSeen(tip.id);
+      onAction?.(route);
+      handleNext(tip);
+    },
+    [onAction, handleNext],
+  );
 
   if (!currentTip || !visible) return null;
 
+  const action =
+    currentTip.actionLabel && currentTip.actionRoute
+      ? { label: currentTip.actionLabel, route: currentTip.actionRoute }
+      : null;
   const isBottom =
     currentTip.placement === 'bottom' ||
     currentTip.placement === 'left' ||
@@ -171,7 +180,7 @@ export function Coachmark({ screen, onAction, onComplete }: CoachmarkProps) {
             paddingBottom: isBottom ? 80 : φSpace[5],
             paddingTop: isBottom ? φSpace[5] : 80,
           }}
-          onClick={handleDismiss}
+          onClick={() => handleDismiss(currentTip)}
         >
           <motion.div
             key={currentTip.id}
@@ -230,7 +239,7 @@ export function Coachmark({ screen, onAction, onComplete }: CoachmarkProps) {
                 </p>
               </div>
               <button
-                onClick={handleDismiss}
+                onClick={() => handleDismiss(currentTip)}
                 className="flex items-center justify-center shrink-0"
                 style={{
                   width: 28,
@@ -299,9 +308,9 @@ export function Coachmark({ screen, onAction, onComplete }: CoachmarkProps) {
               )}
 
               {/* Action or Next button */}
-              {currentTip.actionLabel && currentTip.actionRoute ? (
+              {action ? (
                 <button
-                  onClick={handleAction}
+                  onClick={() => handleAction(currentTip, action.route)}
                   className="flex items-center gap-1"
                   style={{
                     padding: '6px 12px',
@@ -312,12 +321,12 @@ export function Coachmark({ screen, onAction, onComplete }: CoachmarkProps) {
                     fontWeight: 600,
                   }}
                 >
-                  {currentTip.actionLabel}
+                  {action.label}
                   <ChevronRight size={14} color="#8B5CF6" />
                 </button>
               ) : (
                 <button
-                  onClick={handleNext}
+                  onClick={() => handleNext(currentTip)}
                   className="flex items-center gap-1"
                   style={{
                     padding: '6px 12px',

@@ -4,7 +4,7 @@ import { setupServer } from 'msw/node';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Suspense } from 'react';
-import { Outlet, Route, Routes, useNavigate } from 'react-router';
+import { Outlet, Route, Routes, useLocation, useNavigate } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
@@ -46,6 +46,11 @@ function renderEscrow(authAdapter?: AuthAdapter) {
     </Routes>,
     { routerProps: { initialEntries: ['/p2p/escrow/order-1'] }, authAdapter },
   );
+}
+
+function CurrentRoute() {
+  const location = useLocation();
+  return <p data-testid="current-route">{location.pathname}</p>;
 }
 
 function EscrowRouteHarness() {
@@ -173,6 +178,12 @@ describe('P2P escrow detail contract page', () => {
     expect(markPaidRequests).toBe(1);
     expect(idempotencyKeys[0]).toMatch(/^p2p-mark-paid-order-1-/);
     expect(screen.getByRole('button', { name: 'Mark order paid' })).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Mark order paid' }));
+    await waitFor(() => expect(markPaidRequests).toBe(2));
+    await waitFor(() => expect(orderReads).toBeGreaterThanOrEqual(3));
+    expect(idempotencyKeys).toHaveLength(2);
+    expect(idempotencyKeys[1]).toBe(idempotencyKeys[0]);
   });
 
   it('reloads escrow after a 409 release conflict and hides the stale release action', async () => {
@@ -281,6 +292,20 @@ describe('P2P escrow detail contract page', () => {
     expect(screen.getByRole('button', { name: 'Start escrow release' })).toBeInTheDocument();
   });
 
+  it('shows the generic challenge error when the request fails before receiving an HTTP response', async () => {
+    server.use(
+      http.get('*/p2p/orders/order-1', () => HttpResponse.json({ ...baseOrder, status: 'paid' })),
+      http.post('*/p2p/orders/order-1/release/challenge', () => HttpResponse.error()),
+    );
+
+    renderEscrow();
+    expect(await screen.findByText('Order #P2P-001')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Start escrow release' }));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(/release/);
+    expect(screen.queryByRole('textbox', { name: 'Release verification code' })).toBeNull();
+  });
+
   it('shows the release authorization denial and never verifies or releases after challenge 403', async () => {
     let verificationAttempts = 0;
     let releaseAttempts = 0;
@@ -357,5 +382,79 @@ describe('P2P escrow detail contract page', () => {
     expect(await screen.findByText('Unable to load P2P escrow')).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Retry' }));
     expect(await screen.findByText('Unable to load P2P escrow')).toBeInTheDocument();
+  });
+  it('uses the declared order-detail navigation route', async () => {
+    server.use(http.get('*/p2p/orders/order-1', () => HttpResponse.json(baseOrder)));
+
+    renderWithProviders(
+      <>
+        <Routes>
+          <Route path="/p2p/escrow/:orderId" element={<P2PEscrowDetailPage />} />
+          <Route path="/p2p/order/:orderId" element={<p>Order detail route</p>} />
+        </Routes>
+        <CurrentRoute />
+      </>,
+      { routerProps: { initialEntries: ['/p2p/escrow/order-1'] } },
+    );
+
+    expect(await screen.findByText('Order #P2P-001')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Open order detail' }));
+    expect(screen.getByTestId('current-route')).toHaveTextContent('/p2p/order/order-1');
+    expect(screen.getByText('Order detail route')).toBeInTheDocument();
+  });
+
+  it('shows the generic mark-paid failure for the contract-declared 404', async () => {
+    let orderReads = 0;
+    server.use(
+      http.get('*/p2p/orders/order-1', () => {
+        orderReads += 1;
+        return HttpResponse.json(baseOrder);
+      }),
+      http.post('*/p2p/orders/order-1/mark-paid', () =>
+        HttpResponse.json({ code: 'P2P_ORDER_NOT_FOUND' }, { status: 404 }),
+      ),
+    );
+
+    renderEscrow();
+    expect(await screen.findByText('Order #P2P-001')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Mark order paid' }));
+
+    expect(await screen.findByRole('alert')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Mark order paid' })).toBeInTheDocument();
+    expect(orderReads).toBe(1);
+  });
+
+  it('keeps release locked when the declared invalid-or-expired verification response is 401', async () => {
+    let releaseRequests = 0;
+    server.use(
+      http.get('*/p2p/orders/order-1', () => HttpResponse.json({ ...baseOrder, status: 'paid' })),
+      http.post('*/p2p/orders/order-1/release/challenge', () =>
+        HttpResponse.json({
+          id: 'challenge-1',
+          method: 'totp',
+          expiresAt: '2026-09-21T10:10:00.000Z',
+        }),
+      ),
+      http.post('*/p2p/orders/order-1/release/challenge/challenge-1/verify', () =>
+        HttpResponse.json({ code: 'MFA_INVALID_OR_EXPIRED' }, { status: 401 }),
+      ),
+      http.post('*/p2p/orders/order-1/release', () => {
+        releaseRequests += 1;
+        return HttpResponse.json({ ...baseOrder, status: 'released' });
+      }),
+    );
+
+    const user = userEvent.setup();
+    renderEscrow();
+    expect(await screen.findByText('Order #P2P-001')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Start escrow release' }));
+    await user.type(screen.getByRole('textbox', { name: 'Release verification code' }), '123456');
+    await user.click(screen.getByRole('button', { name: 'Verify release code' }));
+
+    expect(await screen.findByRole('alert')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Confirm escrow release' }),
+    ).not.toBeInTheDocument();
+    expect(releaseRequests).toBe(0);
   });
 });

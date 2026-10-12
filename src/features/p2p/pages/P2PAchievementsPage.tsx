@@ -25,7 +25,6 @@ const categoryIcons: Record<P2PAchievementCategory, typeof Trophy> = {
 export function P2PAchievementsPage() {
   const colors = useThemeColors();
   const query = useP2PAchievementsQuery();
-  const achievements = query.data?.items ?? [];
 
   if (query.isPending) {
     return (
@@ -51,6 +50,9 @@ export function P2PAchievementsPage() {
     );
   }
 
+  const data = query.data;
+  const achievements = data.items;
+
   return (
     <PageLayout>
       <Header title="Thành tích P2P" subtitle="Thành tích · P2P" back />
@@ -66,18 +68,14 @@ export function P2PAchievementsPage() {
             <div>
               <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 11 }}>Thành tích đạt được</p>
               <p style={{ color: '#fff', fontSize: 28, fontWeight: 700 }}>
-                {query.data?.totalUnlocked ?? 0}/{achievements.length}
+                {data.totalUnlocked}/{achievements.length}
               </p>
             </div>
           </div>
           <div className="flex gap-2 mt-4">
-            <Stat label="Điểm uy tín" value={`+${query.data?.totalPoints ?? 0}`} color="#FBBF24" />
-            <Stat label="Huy hiệu" value={String(query.data?.badgeCount ?? 0)} color="#34D399" />
-            <Stat
-              label="Cấp hiện tại"
-              value={`Lv.${query.data?.currentLevel ?? 0}`}
-              color="#60A5FA"
-            />
+            <Stat label="Điểm uy tín" value={`+${data.totalPoints}`} color="#FBBF24" />
+            <Stat label="Huy hiệu" value={String(data.badgeCount)} color="#34D399" />
+            <Stat label="Cấp hiện tại" value={`Lv.${data.currentLevel}`} color="#60A5FA" />
           </div>
         </TrCard>
 

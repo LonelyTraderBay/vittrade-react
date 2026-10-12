@@ -1,7 +1,7 @@
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { act, fireEvent, screen, within } from '@testing-library/react';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '@/test/test-utils';
 import { ReferralContractPage } from './ReferralContractPage';
@@ -69,6 +69,45 @@ function overview() {
 }
 
 describe('ReferralContractPage', () => {
+  it('restores the copy affordance after the confirmation timer expires', async () => {
+    server.use(http.get('*/referral/overview', () => HttpResponse.json(overview())));
+    const originalClipboard = Object.getOwnPropertyDescriptor(navigator, 'clipboard');
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+
+    try {
+      renderWithProviders(<ReferralContractPage />);
+      const inviteLink = await screen.findByText('https://vittrade.app/ref/INVITE-42');
+      const container = inviteLink.parentElement;
+      expect(container).not.toBeNull();
+      const copyButton = within(container as HTMLElement).getByRole('button');
+      const initialIconClass = copyButton.querySelector('svg')?.getAttribute('class');
+      vi.useFakeTimers();
+
+      await act(async () => {
+        fireEvent.click(copyButton);
+        await Promise.resolve();
+      });
+
+      expect(writeText).toHaveBeenCalledWith('https://vittrade.app/ref/INVITE-42');
+      const copiedIconClass = copyButton.querySelector('svg')?.getAttribute('class');
+      expect(copiedIconClass).not.toBe(initialIconClass);
+
+      act(() => vi.advanceTimersByTime(1_500));
+      expect(copyButton.querySelector('svg')?.getAttribute('class')).toBe(initialIconClass);
+    } finally {
+      vi.useRealTimers();
+      if (originalClipboard) {
+        Object.defineProperty(navigator, 'clipboard', originalClipboard);
+      } else {
+        Reflect.deleteProperty(navigator, 'clipboard');
+      }
+    }
+  });
+
   it('shows loading, referral metrics, campaign and a copyable invite link', async () => {
     server.use(
       http.get('*/referral/overview', async () => {
@@ -103,9 +142,7 @@ describe('ReferralContractPage', () => {
     let shouldFail = true;
     server.use(
       http.get('*/referral/overview', () => {
-        return shouldFail
-          ? HttpResponse.json({ message: 'Unavailable' }, { status: 503 })
-          : HttpResponse.json(overview());
+        return shouldFail ? HttpResponse.error() : HttpResponse.json(overview());
       }),
     );
     const user = userEvent.setup();

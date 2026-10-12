@@ -43,7 +43,6 @@ export function ForgotPasswordContractPage() {
   };
 
   const handleSendCode = () => {
-    if (!email) return;
     void run(async () => {
       await passwordResetApi.requestCode(email);
       setStep('otp');
@@ -51,7 +50,6 @@ export function ForgotPasswordContractPage() {
   };
 
   const handleVerifyCode = () => {
-    if (otp.length !== 6) return;
     void run(async () => {
       const response = await passwordResetApi.verifyCode(email, otp);
       setResetToken(response.resetToken);
@@ -60,7 +58,6 @@ export function ForgotPasswordContractPage() {
   };
 
   const handleReset = () => {
-    if (!newPassword || newPassword !== confirmPassword || !resetToken) return;
     void run(async () => {
       await passwordResetApi.resetPassword(email, resetToken, newPassword);
       setStep('success');
@@ -181,13 +178,6 @@ export function ResetPasswordContractPage() {
   const valid = Boolean(email && resetToken);
 
   const submit = () => {
-    if (
-      !valid ||
-      !PASSWORD_RULES.every((rule) => rule.test(newPassword)) ||
-      newPassword !== confirmPassword
-    ) {
-      return;
-    }
     setIsLoading(true);
     setError('');
     void passwordResetApi

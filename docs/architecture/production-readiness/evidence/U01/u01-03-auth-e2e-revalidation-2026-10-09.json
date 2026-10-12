@@ -1,0 +1,40 @@
+{
+  "id": "EV-20261009-001",
+  "taskId": "U01",
+  "stepId": "U01.03",
+  "kind": "auth-e2e-dev-api-and-production-smoke-revalidation",
+  "commandOrSteps": "Dev/API: set E2E_PREVIEW_MODE=development, E2E_PREVIEW_PORT=4197, VITTRADE_E2E_DEV_AUTH=true and run node node_modules/@playwright/test/cli.js test tests/e2e/auth-session.spec.ts. Production smoke: set E2E_PREVIEW_MODE=production, E2E_PREVIEW_PORT=4198, clear VITTRADE_E2E_DEV_AUTH and run node node_modules/@playwright/test/cli.js test.",
+  "environment": "Windows 11 PowerShell; Node v24.19.0; Vite 6.4.3; Playwright 1.63.0; local Chromium; Dev/API requests to https://e2e.test intercepted by Playwright route fixtures; staging-mode preview build used for production smoke; backend and staging services disconnected.",
+  "observedAt": "2026-10-09T11:34:38.909Z",
+  "sourceHead": "52e3aa63206ea1ec140cefed8ffc6c91a06db10a",
+  "sourceBranch": "codex/vittrade-readiness-p0-p2-20261009",
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "f781275476009057ff9aeab57110c150742b278c7b92d6e913d2eb4fdd278b0c",
+    "playwright.config.ts": "6fb771ddbfde2e2c2805dcbb70282dbcdd68210e4c938f30c3e1d7cbc234406d",
+    "scripts/serve-e2e.mjs": "eb1513fbe3d38ba9ab95a02e9b7ff47cf5113644fcc2da9798bab5585859f76e",
+    "src/app/routeConfig.ts": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+    "src/features/auth/components/RegistrationForm.tsx": "32b35d0238611e3d3579f92b4fcd4f4836ba4de6b070c78a461675deda47a6c2",
+    "src/features/auth/pages/OTPPage.tsx": "eff445ff3884f6aada08e689dc5468538d6587b799682a5401dc6951311f0012",
+    "tests/e2e/auth-session.spec.ts": "b3b140c3b6687ca81a6046f2faf0fee990072e559df46aaeb120f42359fd6e90"
+  },
+  "dirtyFileHashes": {},
+  "expected": "Development/API auth browser coverage includes the four registration challenge and rejection cases. The staging/production smoke profile keeps registration behind IntegrationPendingPage and skips only those development-only cases.",
+  "actual": "The Dev/API auth-session suite passed 17/17, including email and phone challenge issuance, status-only registration 400 and 429, and zero verifyMfa calls before OTP submission. The full staging-preview E2E suite completed 59 passed and 4 skipped out of 63; the skipped cases are the four Dev/API-only registration tests. All E2E API requests were handled by Playwright fixtures; no backend or staging request was made.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/U01/u01-03-auth-e2e-revalidation-2026-10-09.json",
+  "externalEvidence": {
+    "devApiAuthBrowserTests": 17,
+    "devApiAuthBrowserTestsPassed": 17,
+    "registrationCases": 4,
+    "registrationCasesPassed": 4,
+    "registrationVerifyMfaCalls": 0,
+    "productionSmokeTests": 63,
+    "productionSmokePassed": 59,
+    "productionSmokeSkipped": 4,
+    "skippedCases": "Development/API-only registration scenarios; registration routes intentionally remain pending in the staging/production route tree.",
+    "backendRequests": 0,
+    "stagingRequests": 0,
+    "userAcceptance": "not performed"
+  },
+  "notes": "Local browser evidence against Playwright fixtures. It verifies frontend request shaping, challenge rendering and route-profile separation only. It does not verify backend registration, session-cookie issuance or attributes, OTP lifecycle, idempotency retention/replay/deduplication, staging, production or user acceptance. The owner decision to use a session cookie resolves only the credential choice; no OTP verification was submitted."
+}

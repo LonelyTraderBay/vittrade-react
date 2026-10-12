@@ -32,7 +32,7 @@ export function P2PAdDetailContractPage() {
   const cryptoAmount = ad ? numericFiatAmount / ad.price : 0;
   const validationMessage = useMemo(() => {
     if (!ad || !fiatAmount) return 'Nhập số tiền muốn giao dịch.';
-    if (!Number.isFinite(numericFiatAmount) || numericFiatAmount <= 0) {
+    if (numericFiatAmount <= 0) {
       return 'Số tiền phải lớn hơn 0.';
     }
     if (numericFiatAmount < ad.minLimit)
@@ -66,7 +66,6 @@ export function P2PAdDetailContractPage() {
 
   const canReview = validationMessage === null;
   const submitOrder = async () => {
-    if (!canCreateOrder || !canReview || orderMutation.isPending) return;
     try {
       const receipt = await orderMutation.mutateAsync({
         request: {
@@ -209,7 +208,7 @@ export function P2PAdDetailContractPage() {
                 type="button"
                 aria-label="Confirm P2P order"
                 onClick={() => void submitOrder()}
-                disabled={!canCreateOrder || orderMutation.isPending}
+                disabled={!canCreateOrder || !canReview || orderMutation.isPending}
                 className="flex-1 rounded-lg px-3 py-2 text-sm font-semibold"
                 style={{ background: colors.primary, color: '#fff' }}
               >

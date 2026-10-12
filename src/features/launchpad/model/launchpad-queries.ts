@@ -11,6 +11,9 @@ export function useLaunchpadProjectsQuery(query: LaunchpadProjectQuery = {}) {
     queryKey: launchpadQueryKeys.projects(query),
     queryFn: ({ signal }) => launchpadApi.getProjects(query, signal),
     staleTime: 30_000,
+    // The HTTP client already retries idempotent network failures twice.
+    // Avoid multiplying that request budget with the app-level query retry.
+    retry: false,
   });
 }
 
@@ -20,5 +23,7 @@ export function useLaunchpadProjectQuery(id: string) {
     queryFn: ({ signal }) => launchpadApi.getProject(id, signal),
     enabled: Boolean(id),
     staleTime: 30_000,
+    // Keep the same bounded transport retry policy as the project list query.
+    retry: false,
   });
 }

@@ -64,6 +64,53 @@ describe('InfoRow', () => {
     expect(screen.getByText('Wallet address')).toBeInTheDocument();
   });
 
+  it('resolves the stacked shorthand and applies label and value color overrides', () => {
+    const onPress = vi.fn();
+    renderWithProviders(
+      <>
+        <InfoRow
+          label="Memo"
+          value="A long note"
+          stacked
+          icon={Globe}
+          labelColor="purple"
+          valueColor="green"
+          helper="Shown below"
+          onPress={onPress}
+        />
+        <InfoRow label="Network" value="USDT" stacked icon={Globe} />
+      </>,
+    );
+
+    expect(screen.getByText('Memo')).toHaveStyle({ color: 'rgb(128, 0, 128)' });
+    expect(screen.getByText('A long note')).toHaveStyle({
+      color: 'rgb(0, 128, 0)',
+      fontWeight: '500',
+    });
+    expect(screen.getByText('Shown below')).toBeInTheDocument();
+    expect(screen.getByText('Network').parentElement?.querySelector('svg')).toBeInTheDocument();
+    const stackedAction = screen.getByRole('button', { name: /Memo.*A long note/ });
+    expect(stackedAction.querySelector('svg.lucide-chevron-right')).toBeInTheDocument();
+    fireEvent.click(stackedAction);
+    expect(onPress).toHaveBeenCalledOnce();
+  });
+
+  it('keeps numeric zero copyable and safely handles clipboard rejection', () => {
+    const writeText = vi.fn().mockRejectedValue(new Error('clipboard unavailable'));
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+
+    renderWithProviders(<InfoRow label="Retries" value={0} copyable />);
+    fireEvent.click(screen.getByRole('button', { name: 'Sao chép' }));
+
+    expect(writeText).toHaveBeenCalledWith('0');
+    expect(
+      screen.getByRole('button', { name: 'Sao chép' }).querySelector('svg.lucide-check'),
+    ).toBeInTheDocument();
+  });
+
   it('uses the explicit highlight variant and invokes the row action', () => {
     const onPress = vi.fn();
     renderWithProviders(
@@ -74,6 +121,16 @@ describe('InfoRow', () => {
     expect(row.style.background).not.toBe('');
     fireEvent.click(row);
     expect(onPress).toHaveBeenCalledTimes(1);
+  });
+
+  it('shows a navigation cue for a clickable horizontal row', () => {
+    const onPress = vi.fn();
+    renderWithProviders(<InfoRow label="Security" value="Enabled" onPress={onPress} />);
+
+    const row = screen.getByRole('button', { name: /Security.*Enabled/ });
+    expect(row.querySelector('svg.lucide-chevron-right')).toBeInTheDocument();
+    fireEvent.click(row);
+    expect(onPress).toHaveBeenCalledOnce();
   });
 });
 
@@ -96,12 +153,23 @@ describe('InfoRow groups', () => {
       <FeeBreakdown
         title="Fees"
         items={[
-          { label: 'Network', value: '2 USDT' },
+          { label: 'Network', value: '2 USDT', icon: Globe },
           { label: 'Total', value: '2 USDT', highlight: true },
         ]}
       />,
     );
     expect(screen.getByText('Fees')).toBeInTheDocument();
     expect(screen.getAllByText('2 USDT')).toHaveLength(2);
+  });
+
+  it('preserves non-element group children while removing the final row separator', () => {
+    renderWithProviders(
+      <InfoRowGroup>
+        <InfoRow label="First" value="A" />
+        Text note
+      </InfoRowGroup>,
+    );
+
+    expect(screen.getByText('Text note')).toBeInTheDocument();
   });
 });

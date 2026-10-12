@@ -19,7 +19,7 @@ vi.mock('sonner', () => ({
   }),
 }));
 
-const server = setupServer();
+const server = setupServer(http.get('*/notifications', () => HttpResponse.json({ items: [] })));
 
 const ticket = {
   id: 'ticket-1',
@@ -56,7 +56,7 @@ function supportWriteAdapter(): AuthAdapter {
       ...testAuthAdapter.initialSession!,
       user: {
         ...testAuthAdapter.initialSession!.user,
-        permissions: ['support:write', 'notifications:write'],
+        permissions: ['support:write', 'notifications:read', 'notifications:write'],
       },
     },
   };
@@ -174,11 +174,7 @@ describe('SupportContractPage', () => {
   });
 
   it('shows a ticket read failure instead of treating it as an empty list', async () => {
-    server.use(
-      http.get('*/support/tickets', () =>
-        HttpResponse.json({ message: 'Ticket service unavailable' }, { status: 503 }),
-      ),
-    );
+    server.use(http.get('*/support/tickets', () => HttpResponse.error()));
     renderWithProviders(<SupportContractPage />, { authAdapter: supportWriteAdapter() });
 
     expect(await screen.findByRole('button', { name: 'Thử lại' })).toBeVisible();

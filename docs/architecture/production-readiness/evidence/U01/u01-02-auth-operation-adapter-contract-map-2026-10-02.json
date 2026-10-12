@@ -1,0 +1,1266 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261002-034",
+  "taskId": "U01",
+  "stepId": "U01.02",
+  "kind": "auth-operation-contract-adapter-state-and-owner-question-map",
+  "observedAt": "2026-10-02T15:38:09.432Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "sourceBranch": "main",
+  "environment": "Windows PowerShell; Node v24.19.0; local source/contract/tests only; dirty worktree; no backend/staging called.",
+  "expected": "Map all 14 Auth operations to page/action, route, adapter, state owner, mock and relevant tests; keep unapproved decisions explicit; change only reproduced contract defects.",
+  "actual": "Mapped 14/14 Auth operations, linked 10 page records and 13 route records. There are 35 planned inputs, 21 supplemental read-only sources and 4 evidence/generated outputs (39 scoped paths). Four malformed patterns were corrected; 6/6 current patterns accept six digits and reject nondigits. Regenerated A06 now reports 61/106 current-source rows (34 full, 27 representative), 77/154 observed operations, and 20/81 source-hash-stale registered sidecars because their recorded auth.yaml hash predates this contract change. Local focused tests, contract, parser, formatting and whitespace checks passed; npm wrapper had a child-PATH issue and equivalent direct tools passed.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/U01/u01-02-auth-operation-adapter-contract-map-2026-10-02.json",
+  "plannedInputPaths": [
+    "AGENTS.md",
+    "AI_RULES.md",
+    "ARCHITECTURE.md",
+    "PROJECT_BOOTSTRAP_PROMPT.txt",
+    "contracts/README.md",
+    "contracts/openapi/auth.yaml",
+    "docs/PROJECT_CONTEXT.md",
+    "docs/ai/WORKFLOW.md",
+    "docs/architecture/production-readiness/PLAN.md",
+    "docs/architecture/production-readiness/TRACKING.json",
+    "guidelines/Guidelines.md",
+    "src/features/auth/api/auth-api-instance.ts",
+    "src/features/auth/api/auth-api.test.ts",
+    "src/features/auth/api/auth-api.ts",
+    "src/features/auth/api/auth-openapi-contract.test.ts",
+    "src/features/auth/api/password-reset-api.ts",
+    "src/features/auth/components/RegistrationForm.test.tsx",
+    "src/features/auth/components/Web2FASetupFlow.test.tsx",
+    "src/features/auth/index.ts",
+    "src/features/auth/lib/login-mfa-route-state.ts",
+    "src/features/auth/lib/registration-route-state.ts",
+    "src/features/auth/model/registration-types.ts",
+    "src/features/auth/pages/LoginPage.api-mode.test.tsx",
+    "src/features/auth/pages/LoginPage.test.tsx",
+    "src/features/auth/pages/OTPPage.test.tsx",
+    "src/features/auth/pages/PasswordChangePage.test.tsx",
+    "src/features/auth/pages/PasswordResetPages.test.tsx",
+    "src/features/auth/pages/TwoFASetupPage.test.tsx",
+    "src/features/auth/pages/WebAccountLockedPage.test.tsx",
+    "src/features/auth/pages/WebAuthSuccessPage.test.tsx",
+    "src/features/auth/pages/WebLoginPage.api-mode.test.tsx",
+    "src/features/auth/pages/WebLoginPage.test.tsx",
+    "src/features/auth/pages/WebOTPPage.test.tsx",
+    "src/features/auth/pages/WebSessionExpiredPage.test.tsx",
+    "src/features/auth/routes.test.ts"
+  ],
+  "generatedOutputPaths": [
+    "docs/architecture/production-readiness/evidence/U01/u01-02-auth-operation-adapter-contract-map-2026-10-02.json",
+    "docs/architecture/production-readiness/UI-ACCEPTANCE.md",
+    "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json",
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json"
+  ],
+  "supplementalReviewedFiles": [
+    {
+      "path": "src/shared/session/AuthContext.tsx",
+      "sha256": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    },
+    {
+      "path": "src/shared/session/auth-context.test.ts",
+      "sha256": "e19a31637e727cffce28de7b042623174fc16a0840200e735de14aa2ca867627",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    },
+    {
+      "path": "src/shared/api/http-client.ts",
+      "sha256": "82663785d4b0a86e2c78765ec0b812bbeb912362548da03727b53a7f9d689d5a",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    },
+    {
+      "path": "src/shared/api/http-client.test.ts",
+      "sha256": "aa2b7f8725a65508cb42f48dc62c28492b2129f79b60e845c80fac5da5c3f312",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    },
+    {
+      "path": "src/shared/api/client.ts",
+      "sha256": "882197549d075a8be1f495c7d2271dcbf1530ff1606190531da59b75020977bb",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    },
+    {
+      "path": "src/shared/api/app-client.ts",
+      "sha256": "038ad4426147147f31f44fab94770860991ef90aaa8ed394ec2a4940c83c7b81",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    },
+    {
+      "path": "src/app/routes.ts",
+      "sha256": "d020fa88886b691ed4c5f24eda84b163842b63db2885a98e9809dc535c209b65",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    },
+    {
+      "path": "src/app/routeConfig.ts",
+      "sha256": "659f0aafba95e11461fb42487cff28d0fdb9a5bddf0fb5052cdad8a8b49463ac",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    },
+    {
+      "path": "src/dev/mocks/handlers.ts",
+      "sha256": "b7068df1558e8efb458f5889c87bde27759acc3139a171ac885593386a78e34f",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    },
+    {
+      "path": "src/dev/PreviewControls.tsx",
+      "sha256": "32f697989233b3f713372f5632405eccd80345ba24337324da54e6b221f6b401",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    },
+    {
+      "path": "src/dev/mocks/personas.ts",
+      "sha256": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    },
+    {
+      "path": "src/dev/mocks/auth-handlers.test.ts",
+      "sha256": "10f0a82eb7fb4d08d2f74a8219077e7be21522984be558437427d6f383973881",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    },
+    {
+      "path": "src/features/auth/components/RegistrationForm.tsx",
+      "sha256": "32b35d0238611e3d3579f92b4fcd4f4836ba4de6b070c78a461675deda47a6c2",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    },
+    {
+      "path": "src/features/auth/pages/LoginPage.tsx",
+      "sha256": "1b566e51b42153890f7000e55a1c0622b69cf2afc615b12453dbf570b1fbdbdd",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    },
+    {
+      "path": "src/features/auth/pages/OTPPage.tsx",
+      "sha256": "eff445ff3884f6aada08e689dc5468538d6587b799682a5401dc6951311f0012",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    },
+    {
+      "path": "src/features/auth/pages/WebOTPPage.tsx",
+      "sha256": "5d2990eafb91494c38f6e207f925c32b9d0c43cd5f5d192f86545558b7923ebf",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    },
+    {
+      "path": "src/features/auth/pages/PasswordChangePage.tsx",
+      "sha256": "0d9f1f682035b6d535cdbc5d2e1830e399e5758c29800f3b36c1f7cfdf29814c",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    },
+    {
+      "path": "src/features/auth/pages/PasswordResetPages.tsx",
+      "sha256": "1e3c9d521547ba3e45002191c5b2b1a5d07a8da4ac4a96141dfac6f292393a8d",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    },
+    {
+      "path": "src/features/auth/pages/TwoFASetupPage.tsx",
+      "sha256": "8cc26e21c80fe6cb0c70f1ed2c77680537cd36892d93dc6db373353b1a92a7f7",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    },
+    {
+      "path": "src/features/auth/components/Web2FASetupFlow.tsx",
+      "sha256": "10f526b993eb4f5a1a345aad8c2233cfe5c023d54c3c6782f8cf8d5d26160016",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    },
+    {
+      "path": "src/features/auth/pages/WebLoginPage.tsx",
+      "sha256": "d938bac40bb63145ffbb3919140b1b3d267b96e86872a93f29a4ebac24980e41",
+      "reason": "Read-only context for direct Auth state/transport/route/mock/action ownership; not changed."
+    }
+  ],
+  "preInventorySha256": {
+    "docs/architecture/production-readiness/PLAN.md": "bf4b4e9765616cc0157290ab9e2cc4483b253f637a3349e51d9a8908b87676fd",
+    "docs/architecture/production-readiness/TRACKING.json": "23c7d848df4a0949845accdf2b639ff9b5c9e271b43f9c9ac8898ac535d0aa84"
+  },
+  "sourceHashes": {
+    "AGENTS.md": "6e24a9d65efbd4342de601fe1846bf84f85cecbb92cd2d9fcabb673dcf0f62fd",
+    "AI_RULES.md": "fa8b3cbcbddbd011b7c144be89f8de709a837a5058b7d202722887c20861311b",
+    "ARCHITECTURE.md": "dae3c1dc0ac08a87455842062bee43d4a13a12def48059fd9bb8aff986a958ef",
+    "PROJECT_BOOTSTRAP_PROMPT.txt": "0fdb02aa1ae5c427c48300ac0bb4a331397c6ef3d9d02acec4ba3472e2bb8a03",
+    "contracts/README.md": "59fa3b8e03d9f4c6c4a34e069e0fc2c254f8a9b87908900fbb839462a882498d",
+    "contracts/openapi/auth.yaml": "f781275476009057ff9aeab57110c150742b278c7b92d6e913d2eb4fdd278b0c",
+    "docs/PROJECT_CONTEXT.md": "6393762c45859788839a62815ed06b8204437d695d65c878719f67dc9f6f2f6e",
+    "docs/ai/WORKFLOW.md": "58a1d10d203f18190843320e1a7c184022b30d99b0330f5ed6916fc3b7180566",
+    "docs/architecture/production-readiness/PLAN.md": "bf4b4e9765616cc0157290ab9e2cc4483b253f637a3349e51d9a8908b87676fd",
+    "docs/architecture/production-readiness/TRACKING.json": "23c7d848df4a0949845accdf2b639ff9b5c9e271b43f9c9ac8898ac535d0aa84",
+    "guidelines/Guidelines.md": "869d863189ff4eba1959a41b3135218888d2b4c91308d8b11d9fb9eb9247c9e2",
+    "src/features/auth/api/auth-api-instance.ts": "20d3ed3bc0cf586062af7b127855cf470d7d802730216ea2327890fdc9f8067b",
+    "src/features/auth/api/auth-api.test.ts": "fe89e39a51b52b0de60e565e601453308a8d7b6ea7e2f616f97491abad9d933e",
+    "src/features/auth/api/auth-api.ts": "050846c48de49be56f6bdf6a73669b5d3a6230c559e33851cd07840609fca078",
+    "src/features/auth/api/auth-openapi-contract.test.ts": "dfaf3c7e121122c88f29a7adf3540a0041a34c817257078c4893ccb7146f1ab3",
+    "src/features/auth/api/password-reset-api.ts": "f9898d3b1594212e1b7d9ada91a98aed40475dba4e8d3fa3ce65d7a73168369e",
+    "src/features/auth/components/RegistrationForm.test.tsx": "21bb73fd2c5bc3ed9962394aff80acc558d0fedb4e25e5de4947637a70f5abb5",
+    "src/features/auth/components/Web2FASetupFlow.test.tsx": "af3178ed73a70cf8e258d03715ef9640fe5a75514f118cf5e72287af0d1e28a6",
+    "src/features/auth/index.ts": "68752f52a693437c70400253eeb8c4ac0c74a4c79be0e40aba0d6662c1f03124",
+    "src/features/auth/lib/login-mfa-route-state.ts": "4fa8b7fcf267d30c8a409b2989d3ee8b12daf265065316eb1cde9fda9d087b16",
+    "src/features/auth/lib/registration-route-state.ts": "efd9b19751918e2e75075c72faa23436f7ea7f9054550f2b0ca0554086510086",
+    "src/features/auth/model/registration-types.ts": "df3de74598e1814a21646e0b5651fd0160827eb44c22ecbc3a8874f2bab3cf54",
+    "src/features/auth/pages/LoginPage.api-mode.test.tsx": "ecd152f3adfeed48c9761f05830a0088819bd2a4a4f8e077e703b247fd818007",
+    "src/features/auth/pages/LoginPage.test.tsx": "3548f8b7d402de70c025921fa3833b09109a413992126051fc71ad4f7d35551a",
+    "src/features/auth/pages/OTPPage.test.tsx": "5de771d1cbaea59d67860b4335a5372c0356041acf45d09feb9ef67a7c26a042",
+    "src/features/auth/pages/PasswordChangePage.test.tsx": "fdd62f75246025f6e703b6121294da4260e1d32bc8b13ca5f5c404ca92b22489",
+    "src/features/auth/pages/PasswordResetPages.test.tsx": "aae95c6290dc691c72a4062b9cdd7ee61293ac4cdf61d0af8f49657328e49c36",
+    "src/features/auth/pages/TwoFASetupPage.test.tsx": "30276b96af2b7b59621e08e9bc676c095ca09924254beebfb69f3ff4718066ad",
+    "src/features/auth/pages/WebAccountLockedPage.test.tsx": "9f86944e68023d57974d1e144a93f6ad358f55e80d8a5909c875f71680ea2bae",
+    "src/features/auth/pages/WebAuthSuccessPage.test.tsx": "b1f1c86987b9fd717e42f11505a046b7afd34476c5cc8b4840865ce44583a5ab",
+    "src/features/auth/pages/WebLoginPage.api-mode.test.tsx": "9915627db5a246f26b69b9f0f4e3220dd25bc1c8020f5613d1eb186dc00292ac",
+    "src/features/auth/pages/WebLoginPage.test.tsx": "f809a4440aa8d5ef5f25757f5eafaecd9f4c0e047e6ab1aef4f9fc8e526a85e3",
+    "src/features/auth/pages/WebOTPPage.test.tsx": "d2f1e8fd303a6976d507687b65b6533fa78b3838e76583dfb531f73b596e8eba",
+    "src/features/auth/pages/WebSessionExpiredPage.test.tsx": "9ed56ac1f50182218280f13d40c4207d8bfce19b7fc5cb8dd04784a83a57f4ce",
+    "src/features/auth/routes.test.ts": "b899d2001f9e0f3eb43258e87c59b2d85255ced2a0bf9e415145c8c4c2e0b094"
+  },
+  "dirtyFileHashes": {
+    "contracts/openapi/auth.yaml": "f781275476009057ff9aeab57110c150742b278c7b92d6e913d2eb4fdd278b0c",
+    "src/features/auth/api/auth-openapi-contract.test.ts": "dfaf3c7e121122c88f29a7adf3540a0041a34c817257078c4893ccb7146f1ab3",
+    "docs/architecture/production-readiness/UI-ACCEPTANCE.md": "cf321d7101063a86332c35b1e5681ffadda6735fbffd38eb2e3d42fcd4dea214",
+    "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json": "c799fb0b876cce830e4613f1f74893384eef859f4564e6f6f1bc93b56e264e61",
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "32971d6f0e914eda9002e9ef4ad7fadd94ae8add1296af5242dc882947fb128f"
+  },
+  "operationMap": [
+    {
+      "operationId": "register",
+      "method": "POST",
+      "path": "/auth/register",
+      "requestSchemaRef": "#/components/schemas/RegistrationRequest",
+      "requestSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["fullName", "channel", "contact", "password", "acceptedTerms"],
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "channel": {
+            "type": "string",
+            "enum": ["email", "phone"]
+          },
+          "contact": {
+            "type": "string",
+            "minLength": 1
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "writeOnly": true
+          },
+          "referralCode": {
+            "type": "string"
+          },
+          "acceptedTerms": {
+            "const": true
+          }
+        }
+      },
+      "responses": [
+        {
+          "status": "202",
+          "description": "Verification challenge issued or accepted for delivery.",
+          "schemaRef": "#/components/schemas/RegistrationChallenge"
+        },
+        {
+          "status": "400",
+          "schemaRef": null
+        },
+        {
+          "status": "429",
+          "schemaRef": null
+        }
+      ],
+      "effectiveSecurity": [],
+      "idempotencyRequired": true,
+      "approval": "unreviewed",
+      "contractStatus": "todo",
+      "backendOwner": null,
+      "adapterFiles": ["src/features/auth/api/auth-api.ts"],
+      "queryFiles": [],
+      "pageIds": ["PAGE-16e0615d6416", "PAGE-43ad73895a1a"],
+      "pageFiles": [
+        "src/features/auth/pages/RegisterPage.tsx",
+        "src/features/auth/pages/WebRegisterPage.tsx"
+      ],
+      "routeIds": ["ROUTE-818c037b98a5", "ROUTE-d553aec3dd63"],
+      "routeUrls": ["/auth/register", "/t/auth/register", "/r/auth/register", "/w/auth/register"],
+      "testFiles": [
+        "src/features/auth/api/auth-api.test.ts",
+        "src/features/auth/components/RegistrationForm.test.tsx",
+        "src/features/auth/api/auth-openapi-contract.test.ts"
+      ],
+      "handlerFiles": ["src/dev/mocks/handlers.ts"],
+      "stateOwnerFiles": [],
+      "sharedTransportFiles": [],
+      "openQuestions": [
+        "API/backend owner chưa được xác định: xác nhận Idempotency-Key được giữ bao lâu, replay cùng key trả lại kết quả nào và phạm vi chống trùng là gì; adapter không tự retry POST và form chỉ giữ key khi payload không đổi.",
+        "Auth/product owner chưa được xác định: xác nhận chính sách mật khẩu thống nhất giữa đăng ký (OpenAPI minLength 8/UI min 8) và đổi/khôi phục (OpenAPI/UI min 12).",
+        "Auth/API owner chưa được xác định: xác nhận hạn dùng, số lần thử, rate limit và khả năng gửi lại mã đăng ký. Contract hiện trả expiresAt nhưng không khai báo endpoint gửi lại."
+      ]
+    },
+    {
+      "operationId": "login",
+      "method": "POST",
+      "path": "/auth/login",
+      "requestSchemaRef": "#/components/schemas/LoginRequest",
+      "requestSchema": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1,
+            "writeOnly": true
+          }
+        }
+      },
+      "responses": [
+        {
+          "status": "200",
+          "description": "Authenticated session or an MFA challenge response.",
+          "schemaRef": null
+        },
+        {
+          "status": "401",
+          "schemaRef": null
+        },
+        {
+          "status": "423",
+          "schemaRef": null
+        }
+      ],
+      "effectiveSecurity": [],
+      "idempotencyRequired": false,
+      "approval": "unreviewed",
+      "contractStatus": "todo",
+      "backendOwner": null,
+      "adapterFiles": ["src/features/auth/api/auth-api.ts"],
+      "queryFiles": [],
+      "pageIds": ["PAGE-fc203ab0f172", "PAGE-0dd6553ac858"],
+      "pageFiles": [
+        "src/features/auth/pages/LoginPage.tsx",
+        "src/features/auth/pages/WebLoginPage.tsx"
+      ],
+      "routeIds": ["ROUTE-100cc1dbac0e", "ROUTE-1f4f526bb861"],
+      "routeUrls": ["/auth/login", "/t/auth/login", "/r/auth/login", "/w/auth/login"],
+      "testFiles": [
+        "src/dev/mocks/auth-handlers.test.ts",
+        "src/features/auth/api/auth-api.test.ts",
+        "src/features/auth/pages/LoginPage.api-mode.test.tsx",
+        "src/features/auth/pages/WebLoginPage.api-mode.test.tsx"
+      ],
+      "handlerFiles": ["src/dev/mocks/handlers.ts"],
+      "stateOwnerFiles": [],
+      "sharedTransportFiles": [],
+      "openQuestions": [
+        "Auth/product owner chưa được xác định: xác nhận allowlist và nguồn của đích chuyển hướng sau đăng nhập; OpenAPI login không khai báo trường returnTo/redirect.",
+        "Auth/API owner chưa được xác định: xác nhận chính sách vòng đời và giới hạn thử của login MFA challenge do nhánh MFA-required phát hành."
+      ]
+    },
+    {
+      "operationId": "verifyLoginMfaChallenge",
+      "method": "POST",
+      "path": "/auth/login/mfa/verify",
+      "requestSchemaRef": "#/components/schemas/LoginMfaVerificationRequest",
+      "requestSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["challengeId", "code"],
+        "properties": {
+          "challengeId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "code": {
+            "type": "string",
+            "pattern": "^\\d{6}$"
+          }
+        }
+      },
+      "responses": [
+        {
+          "status": "200",
+          "description": "Login MFA challenge verified and authenticated session issued.",
+          "schemaRef": "#/components/schemas/AuthSession"
+        },
+        {
+          "status": "400",
+          "description": "Verification code is invalid.",
+          "schemaRef": null
+        },
+        {
+          "status": "410",
+          "schemaRef": null
+        },
+        {
+          "status": "423",
+          "schemaRef": null
+        },
+        {
+          "status": "429",
+          "schemaRef": null
+        }
+      ],
+      "effectiveSecurity": [],
+      "idempotencyRequired": false,
+      "approval": "unreviewed",
+      "contractStatus": "todo",
+      "backendOwner": null,
+      "adapterFiles": ["src/features/auth/api/auth-api.ts"],
+      "queryFiles": [],
+      "pageIds": ["PAGE-17ba25394a51", "PAGE-ecdaf22df407"],
+      "pageFiles": [
+        "src/features/auth/pages/OTPPage.tsx",
+        "src/features/auth/pages/WebOTPPage.tsx"
+      ],
+      "routeIds": ["ROUTE-accb255cdbbe", "ROUTE-2e3b51e0645b"],
+      "routeUrls": ["/auth/otp", "/t/auth/otp", "/r/auth/otp", "/w/auth/otp"],
+      "testFiles": [
+        "src/dev/mocks/auth-handlers.test.ts",
+        "src/features/auth/api/auth-api.test.ts",
+        "src/features/auth/pages/OTPPage.test.tsx",
+        "src/features/auth/pages/WebOTPPage.test.tsx"
+      ],
+      "handlerFiles": ["src/dev/mocks/handlers.ts"],
+      "stateOwnerFiles": [
+        "src/shared/session/AuthContext.tsx",
+        "src/shared/session/auth-context.test.ts"
+      ],
+      "sharedTransportFiles": [],
+      "openQuestions": [
+        "Auth/API owner chưa được xác định: xác nhận TTL, dùng một lần, giới hạn lần thử, resend và rate limit cho login MFA challenge; UI hiện phân nhánh 400/410/423/429 theo contract."
+      ]
+    },
+    {
+      "operationId": "getSession",
+      "method": "GET",
+      "path": "/auth/session",
+      "requestSchemaRef": null,
+      "requestSchema": null,
+      "responses": [
+        {
+          "status": "200",
+          "description": "Current session, or null when no session exists.",
+          "schemaRef": null
+        },
+        {
+          "status": "401",
+          "schemaRef": null
+        }
+      ],
+      "effectiveSecurity": [
+        {
+          "sessionCookie": []
+        }
+      ],
+      "idempotencyRequired": false,
+      "approval": "unreviewed",
+      "contractStatus": "todo",
+      "backendOwner": null,
+      "adapterFiles": ["src/features/auth/api/auth-api.ts"],
+      "queryFiles": [],
+      "pageIds": [],
+      "pageFiles": [],
+      "routeIds": [],
+      "routeUrls": [],
+      "testFiles": [
+        "src/dev/mocks/auth-handlers.test.ts",
+        "src/features/auth/api/auth-api.test.ts",
+        "src/shared/session/auth-context.test.ts"
+      ],
+      "handlerFiles": ["src/dev/mocks/handlers.ts"],
+      "stateOwnerFiles": [
+        "src/shared/session/AuthContext.tsx",
+        "src/shared/session/auth-context.test.ts"
+      ],
+      "sharedTransportFiles": [
+        "src/shared/api/http-client.ts",
+        "src/shared/api/client.ts",
+        "src/shared/api/app-client.ts"
+      ],
+      "openQuestions": [
+        "Session/backend owner chưa được xác định: OpenAPI chỉ định tên cookie vittrade_session; xác nhận HttpOnly/Secure/SameSite/Domain/Path và session lifetime tại server/deployment.",
+        "Security/platform owner chưa được xác định: xác nhận CORS origin/credentials và CSRF/origin-check cho request có cookie; cấu hình server không có trong checkout frontend."
+      ]
+    },
+    {
+      "operationId": "refreshSession",
+      "method": "POST",
+      "path": "/auth/refresh",
+      "requestSchemaRef": null,
+      "requestSchema": null,
+      "responses": [
+        {
+          "status": "200",
+          "description": "Refreshed in-memory access token metadata.",
+          "schemaRef": null
+        }
+      ],
+      "effectiveSecurity": [
+        {
+          "sessionCookie": []
+        }
+      ],
+      "idempotencyRequired": false,
+      "approval": "unreviewed",
+      "contractStatus": "todo",
+      "backendOwner": null,
+      "adapterFiles": ["src/features/auth/api/auth-api.ts"],
+      "queryFiles": [],
+      "pageIds": [],
+      "pageFiles": [],
+      "routeIds": [],
+      "routeUrls": [],
+      "testFiles": [
+        "src/features/auth/api/auth-api.test.ts",
+        "src/shared/session/auth-context.test.ts",
+        "src/shared/api/http-client.test.ts",
+        "src/dev/mocks/auth-handlers.test.ts"
+      ],
+      "handlerFiles": ["src/dev/mocks/handlers.ts"],
+      "stateOwnerFiles": [
+        "src/shared/session/AuthContext.tsx",
+        "src/shared/session/auth-context.test.ts"
+      ],
+      "sharedTransportFiles": [
+        "src/shared/api/http-client.ts",
+        "src/shared/api/client.ts",
+        "src/shared/api/app-client.ts"
+      ],
+      "openQuestions": [
+        "Session/backend owner chưa được xác định: xác nhận access/refresh TTL, rotation, concurrent refresh, replay detection, revocation và hành vi khi request đồng thời hoặc mất response.",
+        "Contract/mock owner chưa được xác định: OpenAPI chỉ khai báo 200 session|null nhưng local guest mock trả 401; cần owner chốt trước khi dùng nhánh guest 401 làm fixture contract.",
+        "Security/platform owner chưa được xác định: xác nhận cookie flags, credentialed CORS và CSRF/origin-check cho refresh POST."
+      ]
+    },
+    {
+      "operationId": "logout",
+      "method": "POST",
+      "path": "/auth/logout",
+      "requestSchemaRef": null,
+      "requestSchema": null,
+      "responses": [
+        {
+          "status": "204",
+          "description": "Session revoked.",
+          "schemaRef": null
+        }
+      ],
+      "effectiveSecurity": [
+        {
+          "sessionCookie": []
+        }
+      ],
+      "idempotencyRequired": false,
+      "approval": "unreviewed",
+      "contractStatus": "todo",
+      "backendOwner": null,
+      "adapterFiles": ["src/features/auth/api/auth-api.ts"],
+      "queryFiles": [],
+      "pageIds": [],
+      "pageFiles": [],
+      "routeIds": [],
+      "routeUrls": [],
+      "testFiles": [
+        "src/dev/mocks/auth-handlers.test.ts",
+        "src/features/auth/api/auth-api.test.ts",
+        "src/shared/session/auth-context.test.ts"
+      ],
+      "handlerFiles": ["src/dev/mocks/handlers.ts"],
+      "stateOwnerFiles": [
+        "src/shared/session/AuthContext.tsx",
+        "src/shared/session/auth-context.test.ts"
+      ],
+      "sharedTransportFiles": [
+        "src/shared/api/http-client.ts",
+        "src/shared/api/client.ts",
+        "src/shared/api/app-client.ts"
+      ],
+      "openQuestions": [
+        "Session/backend owner chưa được xác định: xác nhận 204 có thu hồi session/token phía server hay chỉ xác nhận yêu cầu; xác nhận phạm vi một thiết bị/toàn bộ phiên và tính idempotent.",
+        "Security/platform owner chưa được xác định: xác nhận cookie flags, credentialed CORS và CSRF/origin-check cho logout POST.",
+        "Session owner chưa được xác định: khi server logout không phản hồi, hiện client xóa state/cache và gửi broadcast trước rồi bắt lỗi; xác nhận yêu cầu thu hồi từ xa/đường phục hồi."
+      ]
+    },
+    {
+      "operationId": "verifyMfa",
+      "method": "POST",
+      "path": "/auth/mfa/verify",
+      "requestSchemaRef": "#/components/schemas/MfaVerificationRequest",
+      "requestSchema": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/RegistrationMfaVerificationRequest"
+          },
+          {
+            "$ref": "#/components/schemas/ContactMfaVerificationRequest"
+          }
+        ]
+      },
+      "responses": [
+        {
+          "status": "200",
+          "description": "MFA verified and session issued.",
+          "schemaRef": "#/components/schemas/AuthSession"
+        },
+        {
+          "status": "400",
+          "schemaRef": null
+        }
+      ],
+      "effectiveSecurity": [
+        {
+          "sessionCookie": []
+        }
+      ],
+      "idempotencyRequired": false,
+      "approval": "unreviewed",
+      "contractStatus": "todo",
+      "backendOwner": null,
+      "adapterFiles": ["src/features/auth/api/auth-api.ts"],
+      "queryFiles": [],
+      "pageIds": ["PAGE-17ba25394a51", "PAGE-ecdaf22df407"],
+      "pageFiles": [
+        "src/features/auth/pages/OTPPage.tsx",
+        "src/features/auth/pages/WebOTPPage.tsx"
+      ],
+      "routeIds": ["ROUTE-accb255cdbbe", "ROUTE-2e3b51e0645b"],
+      "routeUrls": ["/auth/otp", "/t/auth/otp", "/r/auth/otp", "/w/auth/otp"],
+      "testFiles": [
+        "src/features/auth/api/auth-api.test.ts",
+        "src/features/auth/pages/OTPPage.test.tsx",
+        "src/features/auth/pages/WebOTPPage.test.tsx",
+        "src/shared/session/auth-context.test.ts"
+      ],
+      "handlerFiles": ["src/dev/mocks/handlers.ts"],
+      "stateOwnerFiles": [
+        "src/shared/session/AuthContext.tsx",
+        "src/shared/session/auth-context.test.ts"
+      ],
+      "sharedTransportFiles": [
+        "src/shared/api/http-client.ts",
+        "src/shared/api/client.ts",
+        "src/shared/api/app-client.ts"
+      ],
+      "openQuestions": [
+        "Security/API owner chưa được xác định: cùng POST /auth/mfa/verify có schema purpose=register dành cho guest nhưng đang kế thừa security sessionCookie toàn cục. Chốt operation public hay cần pre-auth cookie/token/challenge credential; không tự đổi security hoặc mock.",
+        "Auth/API owner chưa được xác định: xác nhận purpose binding, TTL, one-time consumption, resend, số lần thử và rate limit cho mã registration/2FA.",
+        "Security/platform owner chưa được xác định: nếu operation cần cookie, xác nhận cookie flags, CORS và CSRF/origin-check."
+      ]
+    },
+    {
+      "operationId": "confirmMfaSetup",
+      "method": "POST",
+      "path": "/auth/mfa/setup/confirm",
+      "requestSchemaRef": "#/components/schemas/MfaSetupConfirmationRequest",
+      "requestSchema": {
+        "type": "object",
+        "required": ["code"],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^\\d{6}$"
+          }
+        }
+      },
+      "responses": [
+        {
+          "status": "200",
+          "description": "MFA setup confirmed.",
+          "schemaRef": "#/components/schemas/AuthSession"
+        }
+      ],
+      "effectiveSecurity": [
+        {
+          "sessionCookie": []
+        }
+      ],
+      "idempotencyRequired": false,
+      "approval": "unreviewed",
+      "contractStatus": "todo",
+      "backendOwner": null,
+      "adapterFiles": ["src/features/auth/api/auth-api.ts"],
+      "queryFiles": [],
+      "pageIds": ["PAGE-98707039d228", "PAGE-b86bf4c12ac2"],
+      "pageFiles": [
+        "src/features/auth/pages/TwoFASetupPage.tsx",
+        "src/features/auth/pages/Web2FASetupPage.tsx"
+      ],
+      "routeIds": ["ROUTE-b28612957bf6", "ROUTE-e836f6cbe6eb"],
+      "routeUrls": [
+        "/auth/2fa-setup",
+        "/t/auth/2fa-setup",
+        "/r/auth/2fa-setup",
+        "/w/auth/2fa-setup"
+      ],
+      "testFiles": [
+        "src/features/auth/api/auth-api.test.ts",
+        "src/features/auth/components/Web2FASetupFlow.test.tsx",
+        "src/features/auth/pages/TwoFASetupPage.test.tsx",
+        "src/shared/session/auth-context.test.ts"
+      ],
+      "handlerFiles": ["src/dev/mocks/handlers.ts"],
+      "stateOwnerFiles": [
+        "src/shared/session/AuthContext.tsx",
+        "src/shared/session/auth-context.test.ts"
+      ],
+      "sharedTransportFiles": [
+        "src/shared/api/http-client.ts",
+        "src/shared/api/client.ts",
+        "src/shared/api/app-client.ts"
+      ],
+      "openQuestions": [
+        "Session/backend owner chưa được xác định: xác nhận route setup chỉ khả dụng sau authenticated session; OpenAPI yêu cầu sessionCookie, route/UI vẫn được khai báo trong Auth flow.",
+        "Auth/API owner chưa được xác định: xác nhận challenge secret/backup-code lifetime, one-time semantics, invalidation và việc trả/hiển thị backup codes sau khi confirm.",
+        "Security/platform owner chưa được xác định: xác nhận cookie flags, CORS và CSRF/origin-check cho request có cookie."
+      ]
+    },
+    {
+      "operationId": "beginMfaSetup",
+      "method": "POST",
+      "path": "/auth/mfa/setup",
+      "requestSchemaRef": null,
+      "requestSchema": null,
+      "responses": [
+        {
+          "status": "200",
+          "description": "One-time setup challenge. The server must generate all values.",
+          "schemaRef": "#/components/schemas/MfaSetupChallenge"
+        }
+      ],
+      "effectiveSecurity": [
+        {
+          "sessionCookie": []
+        }
+      ],
+      "idempotencyRequired": false,
+      "approval": "unreviewed",
+      "contractStatus": "todo",
+      "backendOwner": null,
+      "adapterFiles": ["src/features/auth/api/auth-api.ts"],
+      "queryFiles": [],
+      "pageIds": ["PAGE-98707039d228", "PAGE-b86bf4c12ac2"],
+      "pageFiles": [
+        "src/features/auth/pages/TwoFASetupPage.tsx",
+        "src/features/auth/pages/Web2FASetupPage.tsx"
+      ],
+      "routeIds": ["ROUTE-b28612957bf6", "ROUTE-e836f6cbe6eb"],
+      "routeUrls": [
+        "/auth/2fa-setup",
+        "/t/auth/2fa-setup",
+        "/r/auth/2fa-setup",
+        "/w/auth/2fa-setup"
+      ],
+      "testFiles": [
+        "src/features/auth/api/auth-api.test.ts",
+        "src/features/auth/components/Web2FASetupFlow.test.tsx",
+        "src/features/auth/pages/TwoFASetupPage.test.tsx",
+        "src/shared/session/auth-context.test.ts"
+      ],
+      "handlerFiles": ["src/dev/mocks/handlers.ts"],
+      "stateOwnerFiles": [
+        "src/shared/session/AuthContext.tsx",
+        "src/shared/session/auth-context.test.ts"
+      ],
+      "sharedTransportFiles": [
+        "src/shared/api/http-client.ts",
+        "src/shared/api/client.ts",
+        "src/shared/api/app-client.ts"
+      ],
+      "openQuestions": [
+        "Session/backend owner chưa được xác định: xác nhận route setup chỉ khả dụng sau authenticated session; OpenAPI yêu cầu sessionCookie, route/UI vẫn được khai báo trong Auth flow.",
+        "Auth/API owner chưa được xác định: xác nhận TTL của setup challenge, backup-code generation/rotation và cách khôi phục khi người dùng bỏ dở.",
+        "Security/platform owner chưa được xác định: xác nhận cookie flags, CORS và CSRF/origin-check cho request có cookie."
+      ]
+    },
+    {
+      "operationId": "requestPasswordResetCode",
+      "method": "POST",
+      "path": "/auth/password-reset/request",
+      "requestSchemaRef": null,
+      "requestSchema": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
+        }
+      },
+      "responses": [
+        {
+          "status": "204",
+          "description": "Code requested.",
+          "schemaRef": null
+        },
+        {
+          "status": "400",
+          "schemaRef": null
+        }
+      ],
+      "effectiveSecurity": [],
+      "idempotencyRequired": false,
+      "approval": "unreviewed",
+      "contractStatus": "todo",
+      "backendOwner": null,
+      "adapterFiles": ["src/features/auth/api/password-reset-api.ts"],
+      "queryFiles": [],
+      "pageIds": ["PAGE-c38da743de4d"],
+      "pageFiles": ["src/features/auth/pages/PasswordResetPages.tsx"],
+      "routeIds": [
+        "ROUTE-4a0dfa8a2088",
+        "ROUTE-764ca832a1d4",
+        "ROUTE-13bb9a025244",
+        "ROUTE-90d53d0b54e7"
+      ],
+      "routeUrls": [
+        "/auth/forgot-password",
+        "/t/auth/forgot-password",
+        "/r/auth/forgot-password",
+        "/w/auth/forgot-password",
+        "/auth/reset-password",
+        "/t/auth/reset-password",
+        "/r/auth/reset-password",
+        "/w/auth/reset-password"
+      ],
+      "testFiles": ["src/features/auth/pages/PasswordResetPages.test.tsx"],
+      "handlerFiles": ["src/dev/mocks/handlers.ts"],
+      "stateOwnerFiles": [],
+      "sharedTransportFiles": [],
+      "openQuestions": [
+        "Auth/API owner chưa được xác định: xác nhận phản hồi không tiết lộ account existence, cooldown và rate limit; OpenAPI hiện khai báo 204/400, không có 429.",
+        "Auth/API owner chưa được xác định: xác nhận email-only hay bổ sung phone reset; contract hiện chỉ nhận email."
+      ]
+    },
+    {
+      "operationId": "verifyCurrentPassword",
+      "method": "POST",
+      "path": "/auth/password/verify-current",
+      "requestSchemaRef": null,
+      "requestSchema": {
+        "type": "object",
+        "required": ["currentPassword"],
+        "properties": {
+          "currentPassword": {
+            "type": "string",
+            "minLength": 1,
+            "writeOnly": true
+          }
+        }
+      },
+      "responses": [
+        {
+          "status": "204",
+          "description": "Current password verified.",
+          "schemaRef": null
+        },
+        {
+          "status": "400",
+          "schemaRef": null
+        },
+        {
+          "status": "401",
+          "schemaRef": null
+        }
+      ],
+      "effectiveSecurity": [
+        {
+          "sessionCookie": []
+        }
+      ],
+      "idempotencyRequired": false,
+      "approval": "unreviewed",
+      "contractStatus": "todo",
+      "backendOwner": null,
+      "adapterFiles": ["src/features/auth/api/password-reset-api.ts"],
+      "queryFiles": [],
+      "pageIds": ["PAGE-80bf208ae951"],
+      "pageFiles": ["src/features/auth/pages/PasswordChangePage.tsx"],
+      "routeIds": ["ROUTE-f976b2619f33"],
+      "routeUrls": ["/w/profile/security/change-password"],
+      "testFiles": ["src/features/auth/pages/PasswordChangePage.test.tsx"],
+      "handlerFiles": ["src/dev/mocks/handlers.ts"],
+      "stateOwnerFiles": [],
+      "sharedTransportFiles": [
+        "src/shared/api/http-client.ts",
+        "src/shared/api/client.ts",
+        "src/shared/api/app-client.ts"
+      ],
+      "openQuestions": [
+        "Auth/API owner chưa được xác định: xác nhận việc kiểm tra mật khẩu hiện tại có phát hành challenge/session state hay chỉ trả 204; ảnh hưởng đến thứ tự MFA và đổi mật khẩu.",
+        "Security/platform owner chưa được xác định: xác nhận cookie flags, credentialed CORS và CSRF/origin-check cho endpoint được bảo vệ bằng cookie."
+      ]
+    },
+    {
+      "operationId": "changePassword",
+      "method": "POST",
+      "path": "/auth/password/change",
+      "requestSchemaRef": null,
+      "requestSchema": {
+        "type": "object",
+        "required": ["currentPassword", "newPassword", "mfaCode", "mfaMethod"],
+        "properties": {
+          "currentPassword": {
+            "type": "string",
+            "minLength": 1,
+            "writeOnly": true
+          },
+          "newPassword": {
+            "type": "string",
+            "minLength": 12,
+            "writeOnly": true
+          },
+          "mfaCode": {
+            "type": "string",
+            "pattern": "^\\d{6}$",
+            "writeOnly": true
+          },
+          "mfaMethod": {
+            "type": "string",
+            "enum": ["totp", "sms"]
+          }
+        }
+      },
+      "responses": [
+        {
+          "status": "204",
+          "description": "Password changed.",
+          "schemaRef": null
+        },
+        {
+          "status": "400",
+          "schemaRef": null
+        },
+        {
+          "status": "401",
+          "schemaRef": null
+        }
+      ],
+      "effectiveSecurity": [
+        {
+          "sessionCookie": []
+        }
+      ],
+      "idempotencyRequired": true,
+      "approval": "unreviewed",
+      "contractStatus": "todo",
+      "backendOwner": null,
+      "adapterFiles": ["src/features/auth/api/password-reset-api.ts"],
+      "queryFiles": [],
+      "pageIds": ["PAGE-80bf208ae951"],
+      "pageFiles": ["src/features/auth/pages/PasswordChangePage.tsx"],
+      "routeIds": ["ROUTE-f976b2619f33"],
+      "routeUrls": ["/w/profile/security/change-password"],
+      "testFiles": [
+        "src/features/auth/pages/PasswordChangePage.test.tsx",
+        "src/features/auth/api/auth-openapi-contract.test.ts"
+      ],
+      "handlerFiles": ["src/dev/mocks/handlers.ts"],
+      "stateOwnerFiles": [],
+      "sharedTransportFiles": [
+        "src/shared/api/http-client.ts",
+        "src/shared/api/client.ts",
+        "src/shared/api/app-client.ts"
+      ],
+      "openQuestions": [
+        "Auth/API owner chưa được xác định: mỗi lần gọi adapter hiện tạo Idempotency-Key UUID mới; xác nhận retry sau kết quả chưa xác định phải giữ cùng key, retention và replay response.",
+        "Session/backend owner chưa được xác định: xác nhận đổi mật khẩu có thu hồi các session/refresh token khác và MFA challenge đã phát hành hay không.",
+        "Security/platform owner chưa được xác định: xác nhận cookie flags, CORS và CSRF/origin-check cho request có cookie.",
+        "Auth/product owner chưa được xác định: xác nhận chính sách mật khẩu thống nhất giữa đăng ký (minLength 8) và đổi/khôi phục (minLength 12)."
+      ]
+    },
+    {
+      "operationId": "verifyPasswordResetCode",
+      "method": "POST",
+      "path": "/auth/password-reset/verify",
+      "requestSchemaRef": null,
+      "requestSchema": {
+        "type": "object",
+        "required": ["email", "code"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "code": {
+            "type": "string",
+            "pattern": "^\\d{6}$"
+          }
+        }
+      },
+      "responses": [
+        {
+          "status": "200",
+          "description": "Short-lived password reset token.",
+          "schemaRef": null
+        },
+        {
+          "status": "400",
+          "schemaRef": null
+        }
+      ],
+      "effectiveSecurity": [],
+      "idempotencyRequired": false,
+      "approval": "unreviewed",
+      "contractStatus": "todo",
+      "backendOwner": null,
+      "adapterFiles": ["src/features/auth/api/password-reset-api.ts"],
+      "queryFiles": [],
+      "pageIds": ["PAGE-c38da743de4d"],
+      "pageFiles": ["src/features/auth/pages/PasswordResetPages.tsx"],
+      "routeIds": [
+        "ROUTE-4a0dfa8a2088",
+        "ROUTE-764ca832a1d4",
+        "ROUTE-13bb9a025244",
+        "ROUTE-90d53d0b54e7"
+      ],
+      "routeUrls": [
+        "/auth/forgot-password",
+        "/t/auth/forgot-password",
+        "/r/auth/forgot-password",
+        "/w/auth/forgot-password",
+        "/auth/reset-password",
+        "/t/auth/reset-password",
+        "/r/auth/reset-password",
+        "/w/auth/reset-password"
+      ],
+      "testFiles": [
+        "src/features/auth/pages/PasswordResetPages.test.tsx",
+        "src/features/auth/api/auth-openapi-contract.test.ts"
+      ],
+      "handlerFiles": ["src/dev/mocks/handlers.ts"],
+      "stateOwnerFiles": [],
+      "sharedTransportFiles": [],
+      "openQuestions": [
+        "Auth/API owner chưa được xác định: xác nhận reset code TTL, attempt/rate limits, one-time consumption và contract idempotency/replay.",
+        "Auth/security owner chưa được xác định: xác nhận resetToken TTL/single-use, invalidation behavior và cách tránh rò token qua URL/query/log/referrer; một reset route hiện nhận token qua query."
+      ]
+    },
+    {
+      "operationId": "confirmPasswordReset",
+      "method": "POST",
+      "path": "/auth/password-reset/confirm",
+      "requestSchemaRef": null,
+      "requestSchema": {
+        "type": "object",
+        "required": ["email", "resetToken", "newPassword"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "resetToken": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string",
+            "minLength": 12,
+            "writeOnly": true
+          }
+        }
+      },
+      "responses": [
+        {
+          "status": "204",
+          "description": "Password reset completed.",
+          "schemaRef": null
+        },
+        {
+          "status": "400",
+          "schemaRef": null
+        }
+      ],
+      "effectiveSecurity": [],
+      "idempotencyRequired": false,
+      "approval": "unreviewed",
+      "contractStatus": "todo",
+      "backendOwner": null,
+      "adapterFiles": ["src/features/auth/api/password-reset-api.ts"],
+      "queryFiles": [],
+      "pageIds": ["PAGE-c38da743de4d"],
+      "pageFiles": ["src/features/auth/pages/PasswordResetPages.tsx"],
+      "routeIds": [
+        "ROUTE-4a0dfa8a2088",
+        "ROUTE-764ca832a1d4",
+        "ROUTE-13bb9a025244",
+        "ROUTE-90d53d0b54e7"
+      ],
+      "routeUrls": [
+        "/auth/forgot-password",
+        "/t/auth/forgot-password",
+        "/r/auth/forgot-password",
+        "/w/auth/forgot-password",
+        "/auth/reset-password",
+        "/t/auth/reset-password",
+        "/r/auth/reset-password",
+        "/w/auth/reset-password"
+      ],
+      "testFiles": [
+        "src/features/auth/pages/PasswordResetPages.test.tsx",
+        "src/features/auth/api/auth-openapi-contract.test.ts"
+      ],
+      "handlerFiles": ["src/dev/mocks/handlers.ts"],
+      "stateOwnerFiles": [],
+      "sharedTransportFiles": [],
+      "openQuestions": [
+        "Auth/API owner chưa được xác định: xác nhận resetToken single-use/expiry, password policy và việc revoke các session hiện hành sau reset.",
+        "Auth/product owner chưa được xác định: xác nhận chính sách mật khẩu thống nhất giữa đăng ký (minLength 8) và đổi/khôi phục (minLength 12)."
+      ]
+    }
+  ],
+  "codePatternAudit": [
+    {
+      "name": "LoginMfaVerificationRequest.code",
+      "before": "^\\d{6}$",
+      "after": "^\\d{6}$",
+      "accepts123456Before": true,
+      "accepts123456After": true,
+      "rejects12345aAfter": true
+    },
+    {
+      "name": "RegistrationMfaVerificationRequest.code",
+      "before": "^\\d{6}$",
+      "after": "^\\d{6}$",
+      "accepts123456Before": true,
+      "accepts123456After": true,
+      "rejects12345aAfter": true
+    },
+    {
+      "name": "ContactMfaVerificationRequest.code",
+      "before": "^\\\\d{6}$",
+      "after": "^\\d{6}$",
+      "accepts123456Before": false,
+      "accepts123456After": true,
+      "rejects12345aAfter": true
+    },
+    {
+      "name": "MfaSetupConfirmationRequest.code",
+      "before": "^\\\\d{6}$",
+      "after": "^\\d{6}$",
+      "accepts123456Before": false,
+      "accepts123456After": true,
+      "rejects12345aAfter": true
+    },
+    {
+      "name": "changePassword.mfaCode",
+      "before": "^\\\\d{6}$",
+      "after": "^\\d{6}$",
+      "accepts123456Before": false,
+      "accepts123456After": true,
+      "rejects12345aAfter": true
+    },
+    {
+      "name": "verifyPasswordResetCode.code",
+      "before": "^\\\\d{6}$",
+      "after": "^\\d{6}$",
+      "accepts123456Before": false,
+      "accepts123456After": true,
+      "rejects12345aAfter": true
+    }
+  ],
+  "findings": [
+    {
+      "severity": "P1",
+      "kind": "security_contract_conflict",
+      "operationId": "verifyMfa",
+      "sourceEvidence": "POST /auth/mfa/verify accepts a purpose=register request while effective OpenAPI security inherits sessionCookie; AuthApi.verifyMfa sends registration OTP without a pre-auth credential in the body.",
+      "disposition": "Do not alter the security policy or guest fixture semantics until the API/security owner decides."
+    },
+    {
+      "severity": "P1",
+      "kind": "contract_schema_defect_corrected",
+      "sourceEvidence": "Four committed YAML code patterns had an extra backslash and failed to accept 123456 after parsing; corrected, then all six Auth code fields tested with a valid and invalid value.",
+      "disposition": "Corrected at OpenAPI source and protected by focused regression test."
+    },
+    {
+      "severity": "P2",
+      "kind": "password_policy_alignment",
+      "sourceEvidence": "Registration UI/OpenAPI minimum is 8; reset/change UI/OpenAPI minimum is 12.",
+      "disposition": "Owner decision remains open; no policy changed."
+    },
+    {
+      "severity": "P2",
+      "kind": "idempotency_retry_semantics",
+      "sourceEvidence": "Registration requires an idempotency key and disables automatic POST retry; changePassword creates a new UUID on each adapter call.",
+      "disposition": "Backend replay/retention and retry after an unknown result are unapproved."
+    },
+    {
+      "severity": "P2",
+      "kind": "session_and_challenge_contract_gaps",
+      "sourceEvidence": "Cookie attributes, credentialed CORS/CSRF, refresh rotation/revocation, OTP resend/expiry/rate policies and redirect allowlist lack backend/deployment evidence in this frontend checkout.",
+      "disposition": "Questions remain attached to operations; backendOwner remains null."
+    }
+  ],
+  "validation": [
+    {
+      "command": "node node_modules/vitest/vitest.mjs run src/features/auth/api/auth-openapi-contract.test.ts src/features/auth/api/auth-api.test.ts",
+      "result": "pass",
+      "actual": "2 test files, 15 tests passed on Windows Node 24.19.0."
+    },
+    {
+      "command": "node scripts/check-openapi-contracts.mjs",
+      "result": "pass",
+      "actual": "15 contracts and 154 operations validated."
+    },
+    {
+      "command": "Node YAML parse and six code-pattern behavior assertions",
+      "result": "pass",
+      "actual": "14 Auth operations parsed; all 6 current patterns accept 123456 and reject 12345a; committed pre-fix patterns accepted 123456 for 2/6 schemas."
+    },
+    {
+      "command": "node node_modules/prettier/bin/prettier.cjs --check contracts/openapi/auth.yaml src/features/auth/api/auth-openapi-contract.test.ts",
+      "result": "pass",
+      "actual": "All matched files use Prettier code style."
+    },
+    {
+      "command": "git diff --check -- contracts/openapi/auth.yaml src/features/auth/api/auth-openapi-contract.test.ts",
+      "result": "pass",
+      "actual": "No whitespace errors."
+    },
+    {
+      "command": "npm.cmd run test:run and npm.cmd run contracts:check",
+      "result": "environment_wrapper_issue",
+      "actual": "npm child PATH could not resolve vitest/node; the equivalent local runner and contract checker were invoked directly and passed."
+    },
+    {
+      "command": "node docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs --write",
+      "result": "pass",
+      "actual": "Regenerated current matrix: 15 domains, 154 operations, 106 expectations."
+    },
+    {
+      "command": "node docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs --check",
+      "result": "pass",
+      "actual": "Current matrix verified: 15 domains, 154 operations, 106 expectations."
+    },
+    {
+      "command": "node docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs --check",
+      "result": "pass",
+      "actual": "427 declarations, 1462 URL registrations, 1393 unique URLs; historical parity 426/427; 61/106 fresh scenario rows."
+    },
+    {
+      "command": "node scripts/generate-architecture-inventory.mjs --check",
+      "result": "pass",
+      "actual": "129 pages, 427 routes, 149 components, 0 data modules, 32 services, 28 mocks."
+    },
+    {
+      "command": "node node_modules/prettier/bin/prettier.cjs --check changed contract/test/plan/tracking/evidence/index files",
+      "result": "pass",
+      "actual": "All checked files use Prettier code style."
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass",
+      "actual": "No whitespace errors."
+    },
+    {
+      "command": "node docs/architecture/production-readiness/check-tracking.mjs",
+      "result": "known_global_failure",
+      "actual": "Exit 1 with 77 errors: 32 missing source fingerprints, 5 paths absent from catalogued snapshot, and 40 current source/snapshot mismatches; exact application inventory 916/916. Auth contract change is expected to differ from the catalogued committed source; broader ledger gate remains open."
+    }
+  ],
+  "externalEvidence": {
+    "backendRequests": 0,
+    "stagingRequests": 0,
+    "browserRoutesOpened": 0,
+    "userAcceptance": "not performed",
+    "backendOwnerAssignmentsFound": 0
+  },
+  "notes": "Operation mapping and local code validation do not mean API approval or backend verification. All Auth operation approval remains unreviewed and backendOwner is null. Local MSW/Vitest is not server evidence. Registration OTP verification remains blocked on verifyMfa effective-security conflict; U01.03 proceeds only with contract-confirmed fixtures. A06 impact: 20/81 registered sidecars now have a stale contracts/openapi/auth.yaml hash; keep their evidence non-current and refresh through the browser runners before claiming those scenario rows current.",
+  "resultingStepScopePaths": 39
+}

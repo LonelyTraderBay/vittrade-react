@@ -1,0 +1,6027 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "evidenceId": "EV-20261009-004",
+  "kind": "current-working-tree-full-suite-coverage-progress",
+  "measuredAt": "2026-10-09T15:46:22.753Z",
+  "sourceRevision": "fa5462701bc61bdd6d7fd4cab20c7d02e7fa7d81",
+  "sourceBranch": "codex/vittrade-readiness-p0-p2-20261009",
+  "worktree": {
+    "dirtyStatusEntries": 53,
+    "statusCapturedBeforeEvidenceWrite": true,
+    "dirtyPaths": [
+      "docs/architecture/production-readiness/PLAN.md",
+      "docs/architecture/production-readiness/TRACKING.json",
+      "src/app/contexts/AuthSessionProvider.test.tsx",
+      "src/app/services/FeatureFlagService.test.ts",
+      "src/app/services/FeatureFlagService.ts",
+      "src/features/arena/pages/ArenaContractPages.tsx",
+      "src/features/arena/pages/ArenaJoinContractPage.test.tsx",
+      "src/features/auth/pages/OTPPage.test.tsx",
+      "src/features/auth/pages/WebOTPPage.test.tsx",
+      "src/features/dca/components/ChartAnnotationOverlay.test.tsx",
+      "src/features/dca/components/DCAHistoryChart.test.tsx",
+      "src/features/dca/components/DCAHistoryChart.tsx",
+      "src/features/dca/components/DCAPlanCard.tsx",
+      "src/features/dca/pages/DCAMainPage.test.tsx",
+      "src/features/dca/pages/DCAMainPage.tsx",
+      "src/features/earn/pages/EarnPage.test.tsx",
+      "src/features/earn/pages/EarnPage.tsx",
+      "src/features/market/pages/MarketListPage.test.tsx",
+      "src/features/p2p/lib/filter-marketplace-ads.test.ts",
+      "src/features/p2p/pages/P2P2FASettingsPage.test.tsx",
+      "src/features/p2p/pages/P2PMyAdsContractPage.test.tsx",
+      "src/features/predictions/pages/PredictionContractPages.test.tsx",
+      "src/features/predictions/pages/PredictionContractPages.tsx",
+      "src/features/trading/components/QuickPairSwitcher.test.tsx",
+      "src/features/trading/components/QuickPairSwitcher.tsx",
+      "src/features/trading/components/TradeTerminal.test.tsx",
+      "src/features/wallet/pages/AddressBookPage.test.tsx",
+      "src/features/wallet/pages/AddressBookPage.tsx",
+      "src/features/wallet/pages/DustConverterPage.test.tsx",
+      "src/features/wallet/pages/WithdrawPage.test.tsx",
+      "src/shared/api/http-client.test.ts",
+      "src/shared/ui/BottomSheetV2.tsx",
+      "src/shared/ui/InfoRow.test.tsx",
+      "src/shared/ui/InfoRow.tsx",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-baseline-2026-10-09.json",
+      "src/app/components/ui-contracts.test.tsx",
+      "src/app/contexts/AuthContext.default-adapter.test.tsx",
+      "src/app/pages/page-composition.test.tsx",
+      "src/features/dca/components/DCACreatePlanSheet.test.tsx",
+      "src/features/dca/components/DCAPlanCard.test.tsx",
+      "src/features/p2p/components/P2PCreateAdSections.test.tsx",
+      "src/features/p2p/components/P2PMarketplaceSections.test.tsx",
+      "src/features/p2p/lib/select-best-ad.test.ts",
+      "src/features/public-entrypoints.test.ts",
+      "src/features/support/pages/NewsContractPage.test.tsx",
+      "src/features/wallet/pages/WebWithdrawalWhitelistPage.test.tsx",
+      "src/shared/lib/formatNumber.test.ts",
+      "src/shared/theme/theme-token-contract.test.tsx",
+      "src/shared/ui/BottomSheetV2.test.tsx",
+      "src/shared/ui/SkeletonBlock.test.tsx",
+      "src/shared/ui/charts/ChartGradientDefs.test.tsx",
+      "src/shared/ui/toggle-variants.test.ts",
+      "src/shared/ui/ui-primitives.test.tsx"
+    ],
+    "sourceFileCount": 436,
+    "testRootCount": 306,
+    "inputFileCount": 745,
+    "inputFingerprintSha256": "78e72a39e7604974dc182e0db97104b253c5ca61169cc19fef3371df89830517",
+    "nodeVersion": "v24.19.0",
+    "vitestVersion": "4.1.11"
+  },
+  "execution": {
+    "command": "node node_modules/vitest/vitest.mjs run --coverage --coverage.reporter=json --coverage.reportsDirectory=<fresh-temp-dir> --reporter=dot --pool=threads --maxWorkers=1 --no-file-parallelism",
+    "platform": "Windows local",
+    "exitCode": 0,
+    "testFiles": 307,
+    "testFilesPassed": 307,
+    "tests": 2608,
+    "testsPassed": 2608,
+    "testsFailed": 0,
+    "testsSkipped": 0,
+    "duration": "625.84s (transform 6.36s, setup 29.65s, import 57.54s, tests 389.89s, environment 106.30s)",
+    "stdoutSummary": "signments\n[FeatureFlags] Cleared all overrides\n\nstdout | src/app/hooks/useFeatureFlag.test.tsx > useFeatureFlag subscription > renders conditionally from a feature flag and resolves A/B variants\n[FeatureFlags] Override \"dca_enabled\" = false\n\nstdout | src/app/hooks/useFeatureFlag.test.tsx > useFeatureFlag subscription > renders conditionally from a feature flag and resolves A/B variants\n[FeatureFlags] Cleared all overrides\n\nstdout | src/app/hooks/useFeatureFlag.test.tsx > useFeatureFlag subscription > falls back to the default or null when an A/B variant is not configured\n[FeatureFlags] Cleared all overrides\n\n·········································································································································································································································································································································································································\n\n Test Files  307 passed (307)\n      Tests  2608 passed (2608)\n   Start at  22:26:41\n   Duration  625.84s (transform 6.36s, setup 29.65s, import 57.54s, tests 389.89s, environment 106.30s)\n\n",
+    "stderrLogPath": "C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-c03-05-coverage-2cf5ecf6a44c4a6784f7a12751b25ebc\\stderr.log"
+  },
+  "configuration": {
+    "provider": "v8",
+    "include": [
+      "src/app/**/*.{ts,tsx}",
+      "src/features/**/*.{ts,tsx}",
+      "src/shared/**/*.{ts,tsx}"
+    ],
+    "exclude": [
+      "**/*.test.{ts,tsx}",
+      "**/*.spec.{ts,tsx}",
+      "**/__tests__/**",
+      "**/routes.ts",
+      "src/test/",
+      "scripts/",
+      "src/dev/",
+      "src/app/components/dev/",
+      "**/*.d.ts",
+      "**/*.config.*",
+      "**/mockData",
+      "**/routeConfig.ts",
+      "src/app/routes/**",
+      "dist/"
+    ],
+    "thresholdsUnchanged": {
+      "statements": 90,
+      "branches": 80,
+      "functions": 85,
+      "lines": 90
+    },
+    "acceptedTargets": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    }
+  },
+  "measurement": {
+    "reportPath": "C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-c03-05-coverage-2cf5ecf6a44c4a6784f7a12751b25ebc\\report\\coverage-final.json",
+    "reportSha256": "3cb001d97333a8074607e716e19c1c0a4110f02de8aab440f9e6384eb9aebf6d",
+    "reportBytes": 3729430,
+    "reportEntries": 436,
+    "measurableFiles": 404,
+    "noCounterFiles": 32,
+    "fullyCoveredFiles": 235,
+    "filesWithGaps": [
+      {
+        "path": "src/app/components/layout/AppLayout.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 24,
+            "total": 33,
+            "missing": 9,
+            "pct": 72.72
+          },
+          "branches": {
+            "covered": 5,
+            "total": 9,
+            "missing": 4,
+            "pct": 55.55
+          },
+          "functions": {
+            "covered": 6,
+            "total": 11,
+            "missing": 5,
+            "pct": 54.54
+          },
+          "lines": {
+            "covered": 23,
+            "total": 29,
+            "missing": 6,
+            "pct": 79.31
+          }
+        }
+      },
+      {
+        "path": "src/app/components/layout/BottomNav.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 31,
+            "total": 34,
+            "missing": 3,
+            "pct": 91.17
+          },
+          "branches": {
+            "covered": 27,
+            "total": 29,
+            "missing": 2,
+            "pct": 93.1
+          },
+          "functions": {
+            "covered": 7,
+            "total": 9,
+            "missing": 2,
+            "pct": 77.77
+          },
+          "lines": {
+            "covered": 30,
+            "total": 33,
+            "missing": 3,
+            "pct": 90.9
+          }
+        }
+      },
+      {
+        "path": "src/app/components/layout/LeftRail.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 17,
+            "total": 20,
+            "missing": 3,
+            "pct": 85
+          },
+          "branches": {
+            "covered": 8,
+            "total": 14,
+            "missing": 6,
+            "pct": 57.14
+          },
+          "functions": {
+            "covered": 4,
+            "total": 7,
+            "missing": 3,
+            "pct": 57.14
+          },
+          "lines": {
+            "covered": 17,
+            "total": 20,
+            "missing": 3,
+            "pct": 85
+          }
+        }
+      },
+      {
+        "path": "src/app/components/layout/PlatformSwitcher.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 51,
+            "total": 62,
+            "missing": 11,
+            "pct": 82.25
+          },
+          "branches": {
+            "covered": 49,
+            "total": 61,
+            "missing": 12,
+            "pct": 80.32
+          },
+          "functions": {
+            "covered": 12,
+            "total": 13,
+            "missing": 1,
+            "pct": 92.3
+          },
+          "lines": {
+            "covered": 44,
+            "total": 50,
+            "missing": 6,
+            "pct": 88
+          }
+        }
+      },
+      {
+        "path": "src/app/components/layout/ProtectedRoute.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 16,
+            "total": 18,
+            "missing": 2,
+            "pct": 88.88
+          },
+          "branches": {
+            "covered": 14,
+            "total": 16,
+            "missing": 2,
+            "pct": 87.5
+          },
+          "functions": {
+            "covered": 2,
+            "total": 3,
+            "missing": 1,
+            "pct": 66.66
+          },
+          "lines": {
+            "covered": 16,
+            "total": 17,
+            "missing": 1,
+            "pct": 94.11
+          }
+        }
+      },
+      {
+        "path": "src/app/components/layout/ResponsiveBottomNav.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 14,
+            "total": 16,
+            "missing": 2,
+            "pct": 87.5
+          },
+          "branches": {
+            "covered": 10,
+            "total": 18,
+            "missing": 8,
+            "pct": 55.55
+          },
+          "functions": {
+            "covered": 3,
+            "total": 5,
+            "missing": 2,
+            "pct": 60
+          },
+          "lines": {
+            "covered": 14,
+            "total": 16,
+            "missing": 2,
+            "pct": 87.5
+          }
+        }
+      },
+      {
+        "path": "src/app/components/layout/ResponsiveShell.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 9,
+            "total": 12,
+            "missing": 3,
+            "pct": 75
+          },
+          "branches": {
+            "covered": 13,
+            "total": 19,
+            "missing": 6,
+            "pct": 68.42
+          },
+          "functions": {
+            "covered": 1,
+            "total": 2,
+            "missing": 1,
+            "pct": 50
+          },
+          "lines": {
+            "covered": 9,
+            "total": 12,
+            "missing": 3,
+            "pct": 75
+          }
+        }
+      },
+      {
+        "path": "src/app/components/layout/RootLayout.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 7,
+            "total": 8,
+            "missing": 1,
+            "pct": 87.5
+          },
+          "branches": {
+            "covered": 16,
+            "total": 16,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 1,
+            "total": 2,
+            "missing": 1,
+            "pct": 50
+          },
+          "lines": {
+            "covered": 7,
+            "total": 8,
+            "missing": 1,
+            "pct": 87.5
+          }
+        }
+      },
+      {
+        "path": "src/app/components/layout/TabletShell.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 4,
+            "total": 6,
+            "missing": 2,
+            "pct": 66.66
+          },
+          "branches": {
+            "covered": 1,
+            "total": 2,
+            "missing": 1,
+            "pct": 50
+          },
+          "functions": {
+            "covered": 1,
+            "total": 2,
+            "missing": 1,
+            "pct": 50
+          },
+          "lines": {
+            "covered": 4,
+            "total": 6,
+            "missing": 2,
+            "pct": 66.66
+          }
+        }
+      },
+      {
+        "path": "src/app/components/layout/TabletSidebar.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 25,
+            "total": 26,
+            "missing": 1,
+            "pct": 96.15
+          },
+          "branches": {
+            "covered": 55,
+            "total": 57,
+            "missing": 2,
+            "pct": 96.49
+          },
+          "functions": {
+            "covered": 8,
+            "total": 9,
+            "missing": 1,
+            "pct": 88.88
+          },
+          "lines": {
+            "covered": 25,
+            "total": 26,
+            "missing": 1,
+            "pct": 96.15
+          }
+        }
+      },
+      {
+        "path": "src/app/components/layout/TabletTopBar.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 19,
+            "total": 22,
+            "missing": 3,
+            "pct": 86.36
+          },
+          "branches": {
+            "covered": 12,
+            "total": 20,
+            "missing": 8,
+            "pct": 60
+          },
+          "functions": {
+            "covered": 4,
+            "total": 7,
+            "missing": 3,
+            "pct": 57.14
+          },
+          "lines": {
+            "covered": 19,
+            "total": 22,
+            "missing": 3,
+            "pct": 86.36
+          }
+        }
+      },
+      {
+        "path": "src/app/components/layout/WebCommandBar.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 51,
+            "total": 54,
+            "missing": 3,
+            "pct": 94.44
+          },
+          "branches": {
+            "covered": 50,
+            "total": 59,
+            "missing": 9,
+            "pct": 84.74
+          },
+          "functions": {
+            "covered": 14,
+            "total": 16,
+            "missing": 2,
+            "pct": 87.5
+          },
+          "lines": {
+            "covered": 48,
+            "total": 50,
+            "missing": 2,
+            "pct": 96
+          }
+        }
+      },
+      {
+        "path": "src/app/components/layout/webConstants.ts",
+        "metrics": {
+          "statements": {
+            "covered": 15,
+            "total": 17,
+            "missing": 2,
+            "pct": 88.23
+          },
+          "branches": {
+            "covered": 7,
+            "total": 10,
+            "missing": 3,
+            "pct": 70
+          },
+          "functions": {
+            "covered": 2,
+            "total": 2,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 14,
+            "total": 16,
+            "missing": 2,
+            "pct": 87.5
+          }
+        }
+      },
+      {
+        "path": "src/app/components/layout/WebShell.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 9,
+            "total": 11,
+            "missing": 2,
+            "pct": 81.81
+          },
+          "branches": {
+            "covered": 5,
+            "total": 6,
+            "missing": 1,
+            "pct": 83.33
+          },
+          "functions": {
+            "covered": 1,
+            "total": 2,
+            "missing": 1,
+            "pct": 50
+          },
+          "lines": {
+            "covered": 9,
+            "total": 11,
+            "missing": 2,
+            "pct": 81.81
+          }
+        }
+      },
+      {
+        "path": "src/app/components/layout/WebSidebar.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 35,
+            "total": 37,
+            "missing": 2,
+            "pct": 94.59
+          },
+          "branches": {
+            "covered": 66,
+            "total": 72,
+            "missing": 6,
+            "pct": 91.66
+          },
+          "functions": {
+            "covered": 11,
+            "total": 13,
+            "missing": 2,
+            "pct": 84.61
+          },
+          "lines": {
+            "covered": 32,
+            "total": 34,
+            "missing": 2,
+            "pct": 94.11
+          }
+        }
+      },
+      {
+        "path": "src/app/components/mobile/ErrorBoundary.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 14,
+            "total": 18,
+            "missing": 4,
+            "pct": 77.77
+          },
+          "branches": {
+            "covered": 15,
+            "total": 19,
+            "missing": 4,
+            "pct": 78.94
+          },
+          "functions": {
+            "covered": 5,
+            "total": 7,
+            "missing": 2,
+            "pct": 71.42
+          },
+          "lines": {
+            "covered": 14,
+            "total": 18,
+            "missing": 4,
+            "pct": 77.77
+          }
+        }
+      },
+      {
+        "path": "src/app/components/mobile/PageTransition.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 33,
+            "total": 33,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 13,
+            "total": 14,
+            "missing": 1,
+            "pct": 92.85
+          },
+          "functions": {
+            "covered": 7,
+            "total": 7,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 30,
+            "total": 30,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/app/components/mobile/SwipeBack.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 48,
+            "total": 54,
+            "missing": 6,
+            "pct": 88.88
+          },
+          "branches": {
+            "covered": 26,
+            "total": 32,
+            "missing": 6,
+            "pct": 81.25
+          },
+          "functions": {
+            "covered": 4,
+            "total": 4,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 44,
+            "total": 49,
+            "missing": 5,
+            "pct": 89.79
+          }
+        }
+      },
+      {
+        "path": "src/app/components/onboarding/Coachmark.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 47,
+            "total": 53,
+            "missing": 6,
+            "pct": 88.67
+          },
+          "branches": {
+            "covered": 31,
+            "total": 41,
+            "missing": 10,
+            "pct": 75.6
+          },
+          "functions": {
+            "covered": 8,
+            "total": 9,
+            "missing": 1,
+            "pct": 88.88
+          },
+          "lines": {
+            "covered": 45,
+            "total": 48,
+            "missing": 3,
+            "pct": 93.75
+          }
+        }
+      },
+      {
+        "path": "src/app/hooks/useLocalStorage.ts",
+        "metrics": {
+          "statements": {
+            "covered": 27,
+            "total": 31,
+            "missing": 4,
+            "pct": 87.09
+          },
+          "branches": {
+            "covered": 7,
+            "total": 12,
+            "missing": 5,
+            "pct": 58.33
+          },
+          "functions": {
+            "covered": 7,
+            "total": 7,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 26,
+            "total": 29,
+            "missing": 3,
+            "pct": 89.65
+          }
+        }
+      },
+      {
+        "path": "src/app/hooks/useOnlineStatus.ts",
+        "metrics": {
+          "statements": {
+            "covered": 32,
+            "total": 33,
+            "missing": 1,
+            "pct": 96.96
+          },
+          "branches": {
+            "covered": 4,
+            "total": 8,
+            "missing": 4,
+            "pct": 50
+          },
+          "functions": {
+            "covered": 8,
+            "total": 9,
+            "missing": 1,
+            "pct": 88.88
+          },
+          "lines": {
+            "covered": 31,
+            "total": 31,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/app/hooks/usePlatform.ts",
+        "metrics": {
+          "statements": {
+            "covered": 21,
+            "total": 32,
+            "missing": 11,
+            "pct": 65.62
+          },
+          "branches": {
+            "covered": 15,
+            "total": 21,
+            "missing": 6,
+            "pct": 71.42
+          },
+          "functions": {
+            "covered": 5,
+            "total": 7,
+            "missing": 2,
+            "pct": 71.42
+          },
+          "lines": {
+            "covered": 17,
+            "total": 25,
+            "missing": 8,
+            "pct": 68
+          }
+        }
+      },
+      {
+        "path": "src/app/hooks/usePullToRefresh.ts",
+        "metrics": {
+          "statements": {
+            "covered": 52,
+            "total": 55,
+            "missing": 3,
+            "pct": 94.54
+          },
+          "branches": {
+            "covered": 24,
+            "total": 29,
+            "missing": 5,
+            "pct": 82.75
+          },
+          "functions": {
+            "covered": 7,
+            "total": 8,
+            "missing": 1,
+            "pct": 87.5
+          },
+          "lines": {
+            "covered": 45,
+            "total": 47,
+            "missing": 2,
+            "pct": 95.74
+          }
+        }
+      },
+      {
+        "path": "src/app/hooks/useScrollPosition.ts",
+        "metrics": {
+          "statements": {
+            "covered": 28,
+            "total": 32,
+            "missing": 4,
+            "pct": 87.5
+          },
+          "branches": {
+            "covered": 4,
+            "total": 8,
+            "missing": 4,
+            "pct": 50
+          },
+          "functions": {
+            "covered": 6,
+            "total": 6,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 27,
+            "total": 29,
+            "missing": 2,
+            "pct": 93.1
+          }
+        }
+      },
+      {
+        "path": "src/app/hooks/useSessionTimeout.ts",
+        "metrics": {
+          "statements": {
+            "covered": 64,
+            "total": 72,
+            "missing": 8,
+            "pct": 88.88
+          },
+          "branches": {
+            "covered": 19,
+            "total": 26,
+            "missing": 7,
+            "pct": 73.07
+          },
+          "functions": {
+            "covered": 12,
+            "total": 13,
+            "missing": 1,
+            "pct": 92.3
+          },
+          "lines": {
+            "covered": 60,
+            "total": 66,
+            "missing": 6,
+            "pct": 90.9
+          }
+        }
+      },
+      {
+        "path": "src/app/pages/system/IntegrationPendingPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 6,
+            "total": 6,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 1,
+            "total": 2,
+            "missing": 1,
+            "pct": 50
+          },
+          "functions": {
+            "covered": 2,
+            "total": 2,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 6,
+            "total": 6,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/app/router/index.ts",
+        "metrics": {
+          "statements": {
+            "covered": 16,
+            "total": 17,
+            "missing": 1,
+            "pct": 94.11
+          },
+          "branches": {
+            "covered": 17,
+            "total": 22,
+            "missing": 5,
+            "pct": 77.27
+          },
+          "functions": {
+            "covered": 4,
+            "total": 4,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 13,
+            "total": 13,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/app/services/CoachmarkService.ts",
+        "metrics": {
+          "statements": {
+            "covered": 44,
+            "total": 45,
+            "missing": 1,
+            "pct": 97.77
+          },
+          "branches": {
+            "covered": 17,
+            "total": 17,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 18,
+            "total": 18,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 41,
+            "total": 42,
+            "missing": 1,
+            "pct": 97.61
+          }
+        }
+      },
+      {
+        "path": "src/features/admin/model/admin-queries.ts",
+        "metrics": {
+          "statements": {
+            "covered": 11,
+            "total": 16,
+            "missing": 5,
+            "pct": 68.75
+          },
+          "branches": {
+            "covered": 2,
+            "total": 2,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 10,
+            "total": 13,
+            "missing": 3,
+            "pct": 76.92
+          },
+          "lines": {
+            "covered": 11,
+            "total": 16,
+            "missing": 5,
+            "pct": 68.75
+          }
+        }
+      },
+      {
+        "path": "src/features/arena/pages/ArenaContractPages.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 57,
+            "total": 65,
+            "missing": 8,
+            "pct": 87.69
+          },
+          "branches": {
+            "covered": 77,
+            "total": 88,
+            "missing": 11,
+            "pct": 87.5
+          },
+          "functions": {
+            "covered": 16,
+            "total": 20,
+            "missing": 4,
+            "pct": 80
+          },
+          "lines": {
+            "covered": 53,
+            "total": 54,
+            "missing": 1,
+            "pct": 98.14
+          }
+        }
+      },
+      {
+        "path": "src/features/arena/pages/ArenaDiscoveryPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 28,
+            "total": 30,
+            "missing": 2,
+            "pct": 93.33
+          },
+          "branches": {
+            "covered": 27,
+            "total": 28,
+            "missing": 1,
+            "pct": 96.42
+          },
+          "functions": {
+            "covered": 13,
+            "total": 15,
+            "missing": 2,
+            "pct": 86.66
+          },
+          "lines": {
+            "covered": 28,
+            "total": 30,
+            "missing": 2,
+            "pct": 93.33
+          }
+        }
+      },
+      {
+        "path": "src/features/auth/components/RegistrationForm.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 57,
+            "total": 64,
+            "missing": 7,
+            "pct": 89.06
+          },
+          "branches": {
+            "covered": 45,
+            "total": 58,
+            "missing": 13,
+            "pct": 77.58
+          },
+          "functions": {
+            "covered": 16,
+            "total": 20,
+            "missing": 4,
+            "pct": 80
+          },
+          "lines": {
+            "covered": 50,
+            "total": 55,
+            "missing": 5,
+            "pct": 90.9
+          }
+        }
+      },
+      {
+        "path": "src/features/auth/components/Web2FASetupBackupStep.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 4,
+            "total": 4,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 32,
+            "total": 34,
+            "missing": 2,
+            "pct": 94.11
+          },
+          "functions": {
+            "covered": 3,
+            "total": 3,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 4,
+            "total": 4,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/auth/components/Web2FASetupFlow.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 70,
+            "total": 76,
+            "missing": 6,
+            "pct": 92.1
+          },
+          "branches": {
+            "covered": 33,
+            "total": 39,
+            "missing": 6,
+            "pct": 84.61
+          },
+          "functions": {
+            "covered": 15,
+            "total": 19,
+            "missing": 4,
+            "pct": 78.94
+          },
+          "lines": {
+            "covered": 63,
+            "total": 65,
+            "missing": 2,
+            "pct": 96.92
+          }
+        }
+      },
+      {
+        "path": "src/features/auth/pages/LoginPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 41,
+            "total": 42,
+            "missing": 1,
+            "pct": 97.61
+          },
+          "branches": {
+            "covered": 38,
+            "total": 40,
+            "missing": 2,
+            "pct": 95
+          },
+          "functions": {
+            "covered": 11,
+            "total": 11,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 40,
+            "total": 40,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/auth/pages/OTPPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 110,
+            "total": 120,
+            "missing": 10,
+            "pct": 91.66
+          },
+          "branches": {
+            "covered": 86,
+            "total": 97,
+            "missing": 11,
+            "pct": 88.65
+          },
+          "functions": {
+            "covered": 19,
+            "total": 21,
+            "missing": 2,
+            "pct": 90.47
+          },
+          "lines": {
+            "covered": 103,
+            "total": 112,
+            "missing": 9,
+            "pct": 91.96
+          }
+        }
+      },
+      {
+        "path": "src/features/auth/pages/PasswordChangePage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 47,
+            "total": 54,
+            "missing": 7,
+            "pct": 87.03
+          },
+          "branches": {
+            "covered": 21,
+            "total": 24,
+            "missing": 3,
+            "pct": 87.5
+          },
+          "functions": {
+            "covered": 14,
+            "total": 16,
+            "missing": 2,
+            "pct": 87.5
+          },
+          "lines": {
+            "covered": 46,
+            "total": 51,
+            "missing": 5,
+            "pct": 90.19
+          }
+        }
+      },
+      {
+        "path": "src/features/auth/pages/PasswordResetPages.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 75,
+            "total": 86,
+            "missing": 11,
+            "pct": 87.2
+          },
+          "branches": {
+            "covered": 53,
+            "total": 62,
+            "missing": 9,
+            "pct": 85.48
+          },
+          "functions": {
+            "covered": 24,
+            "total": 31,
+            "missing": 7,
+            "pct": 77.41
+          },
+          "lines": {
+            "covered": 74,
+            "total": 80,
+            "missing": 6,
+            "pct": 92.5
+          }
+        }
+      },
+      {
+        "path": "src/features/auth/pages/TwoFASetupPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 58,
+            "total": 63,
+            "missing": 5,
+            "pct": 92.06
+          },
+          "branches": {
+            "covered": 60,
+            "total": 69,
+            "missing": 9,
+            "pct": 86.95
+          },
+          "functions": {
+            "covered": 15,
+            "total": 16,
+            "missing": 1,
+            "pct": 93.75
+          },
+          "lines": {
+            "covered": 55,
+            "total": 55,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/auth/pages/WebLoginPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 79,
+            "total": 82,
+            "missing": 3,
+            "pct": 96.34
+          },
+          "branches": {
+            "covered": 70,
+            "total": 72,
+            "missing": 2,
+            "pct": 97.22
+          },
+          "functions": {
+            "covered": 13,
+            "total": 14,
+            "missing": 1,
+            "pct": 92.85
+          },
+          "lines": {
+            "covered": 79,
+            "total": 81,
+            "missing": 2,
+            "pct": 97.53
+          }
+        }
+      },
+      {
+        "path": "src/features/auth/pages/WebOTPPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 128,
+            "total": 142,
+            "missing": 14,
+            "pct": 90.14
+          },
+          "branches": {
+            "covered": 124,
+            "total": 137,
+            "missing": 13,
+            "pct": 90.51
+          },
+          "functions": {
+            "covered": 24,
+            "total": 27,
+            "missing": 3,
+            "pct": 88.88
+          },
+          "lines": {
+            "covered": 117,
+            "total": 129,
+            "missing": 12,
+            "pct": 90.69
+          }
+        }
+      },
+      {
+        "path": "src/features/auth/pages/WebSessionExpiredPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 20,
+            "total": 22,
+            "missing": 2,
+            "pct": 90.9
+          },
+          "branches": {
+            "covered": 22,
+            "total": 26,
+            "missing": 4,
+            "pct": 84.61
+          },
+          "functions": {
+            "covered": 5,
+            "total": 6,
+            "missing": 1,
+            "pct": 83.33
+          },
+          "lines": {
+            "covered": 20,
+            "total": 21,
+            "missing": 1,
+            "pct": 95.23
+          }
+        }
+      },
+      {
+        "path": "src/features/dca/api/dca-api.ts",
+        "metrics": {
+          "statements": {
+            "covered": 16,
+            "total": 16,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 1,
+            "total": 2,
+            "missing": 1,
+            "pct": 50
+          },
+          "functions": {
+            "covered": 8,
+            "total": 8,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 16,
+            "total": 16,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/dca/components/ChartAnnotationOverlay.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 254,
+            "total": 262,
+            "missing": 8,
+            "pct": 96.94
+          },
+          "branches": {
+            "covered": 144,
+            "total": 158,
+            "missing": 14,
+            "pct": 91.13
+          },
+          "functions": {
+            "covered": 35,
+            "total": 35,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 227,
+            "total": 227,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/dca/components/ChartAnnotationTextInput.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 10,
+            "total": 10,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 7,
+            "total": 8,
+            "missing": 1,
+            "pct": 87.5
+          },
+          "functions": {
+            "covered": 5,
+            "total": 5,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 6,
+            "total": 6,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/dca/components/ChartAnnotationToolbar.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 27,
+            "total": 27,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 44,
+            "total": 46,
+            "missing": 2,
+            "pct": 95.65
+          },
+          "functions": {
+            "covered": 17,
+            "total": 17,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 24,
+            "total": 24,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/dca/components/dca-history-chart-utils.ts",
+        "metrics": {
+          "statements": {
+            "covered": 38,
+            "total": 40,
+            "missing": 2,
+            "pct": 95
+          },
+          "branches": {
+            "covered": 4,
+            "total": 6,
+            "missing": 2,
+            "pct": 66.66
+          },
+          "functions": {
+            "covered": 3,
+            "total": 3,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 35,
+            "total": 35,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/dca/components/DCAExpandedChartSheet.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 5,
+            "total": 5,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 24,
+            "total": 30,
+            "missing": 6,
+            "pct": 80
+          },
+          "functions": {
+            "covered": 4,
+            "total": 4,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 5,
+            "total": 5,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/dca/components/DCAOverviewCard.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 39,
+            "total": 40,
+            "missing": 1,
+            "pct": 97.5
+          },
+          "branches": {
+            "covered": 51,
+            "total": 53,
+            "missing": 2,
+            "pct": 96.22
+          },
+          "functions": {
+            "covered": 14,
+            "total": 14,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 37,
+            "total": 37,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/dca/components/DCAOverviewCardVisuals.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 91,
+            "total": 98,
+            "missing": 7,
+            "pct": 92.85
+          },
+          "branches": {
+            "covered": 48,
+            "total": 60,
+            "missing": 12,
+            "pct": 80
+          },
+          "functions": {
+            "covered": 20,
+            "total": 20,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 85,
+            "total": 85,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/dca/model/dca-ab-test-analytics.ts",
+        "metrics": {
+          "statements": {
+            "covered": 117,
+            "total": 122,
+            "missing": 5,
+            "pct": 95.9
+          },
+          "branches": {
+            "covered": 50,
+            "total": 56,
+            "missing": 6,
+            "pct": 89.28
+          },
+          "functions": {
+            "covered": 28,
+            "total": 28,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 109,
+            "total": 110,
+            "missing": 1,
+            "pct": 99.09
+          }
+        }
+      },
+      {
+        "path": "src/features/dca/model/dca-analytics-service.ts",
+        "metrics": {
+          "statements": {
+            "covered": 115,
+            "total": 124,
+            "missing": 9,
+            "pct": 92.74
+          },
+          "branches": {
+            "covered": 60,
+            "total": 68,
+            "missing": 8,
+            "pct": 88.23
+          },
+          "functions": {
+            "covered": 39,
+            "total": 40,
+            "missing": 1,
+            "pct": 97.5
+          },
+          "lines": {
+            "covered": 108,
+            "total": 115,
+            "missing": 7,
+            "pct": 93.91
+          }
+        }
+      },
+      {
+        "path": "src/features/dca/model/dca-context-provider.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 43,
+            "total": 44,
+            "missing": 1,
+            "pct": 97.72
+          },
+          "branches": {
+            "covered": 11,
+            "total": 18,
+            "missing": 7,
+            "pct": 61.11
+          },
+          "functions": {
+            "covered": 9,
+            "total": 9,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 41,
+            "total": 41,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/dca/model/dca-funnel-service.ts",
+        "metrics": {
+          "statements": {
+            "covered": 127,
+            "total": 136,
+            "missing": 9,
+            "pct": 93.38
+          },
+          "branches": {
+            "covered": 64,
+            "total": 77,
+            "missing": 13,
+            "pct": 83.11
+          },
+          "functions": {
+            "covered": 38,
+            "total": 41,
+            "missing": 3,
+            "pct": 92.68
+          },
+          "lines": {
+            "covered": 112,
+            "total": 119,
+            "missing": 7,
+            "pct": 94.11
+          }
+        }
+      },
+      {
+        "path": "src/features/dca/model/useDCAAnalytics.ts",
+        "metrics": {
+          "statements": {
+            "covered": 50,
+            "total": 51,
+            "missing": 1,
+            "pct": 98.03
+          },
+          "branches": {
+            "covered": 3,
+            "total": 4,
+            "missing": 1,
+            "pct": 75
+          },
+          "functions": {
+            "covered": 24,
+            "total": 24,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 49,
+            "total": 49,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/dca/pages/SavingsDCAContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 63,
+            "total": 72,
+            "missing": 9,
+            "pct": 87.5
+          },
+          "branches": {
+            "covered": 46,
+            "total": 60,
+            "missing": 14,
+            "pct": 76.66
+          },
+          "functions": {
+            "covered": 14,
+            "total": 17,
+            "missing": 3,
+            "pct": 82.35
+          },
+          "lines": {
+            "covered": 61,
+            "total": 65,
+            "missing": 4,
+            "pct": 93.84
+          }
+        }
+      },
+      {
+        "path": "src/features/discovery/pages/DiscoveryContractPages.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 67,
+            "total": 67,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 38,
+            "total": 40,
+            "missing": 2,
+            "pct": 95
+          },
+          "functions": {
+            "covered": 31,
+            "total": 31,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 62,
+            "total": 62,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/earn/components/EarnFeatureComponents.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 27,
+            "total": 30,
+            "missing": 3,
+            "pct": 90
+          },
+          "branches": {
+            "covered": 41,
+            "total": 53,
+            "missing": 12,
+            "pct": 77.35
+          },
+          "functions": {
+            "covered": 10,
+            "total": 11,
+            "missing": 1,
+            "pct": 90.9
+          },
+          "lines": {
+            "covered": 27,
+            "total": 28,
+            "missing": 1,
+            "pct": 96.42
+          }
+        }
+      },
+      {
+        "path": "src/features/earn/pages/EarnHistoryPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 31,
+            "total": 32,
+            "missing": 1,
+            "pct": 96.87
+          },
+          "branches": {
+            "covered": 54,
+            "total": 57,
+            "missing": 3,
+            "pct": 94.73
+          },
+          "functions": {
+            "covered": 14,
+            "total": 14,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 30,
+            "total": 30,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/earn/pages/EarnTransactionPages.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 73,
+            "total": 83,
+            "missing": 10,
+            "pct": 87.95
+          },
+          "branches": {
+            "covered": 58,
+            "total": 69,
+            "missing": 11,
+            "pct": 84.05
+          },
+          "functions": {
+            "covered": 15,
+            "total": 21,
+            "missing": 6,
+            "pct": 71.42
+          },
+          "lines": {
+            "covered": 67,
+            "total": 75,
+            "missing": 8,
+            "pct": 89.33
+          }
+        }
+      },
+      {
+        "path": "src/features/earn/pages/SavingsPortfolioPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 31,
+            "total": 37,
+            "missing": 6,
+            "pct": 83.78
+          },
+          "branches": {
+            "covered": 25,
+            "total": 28,
+            "missing": 3,
+            "pct": 89.28
+          },
+          "functions": {
+            "covered": 10,
+            "total": 14,
+            "missing": 4,
+            "pct": 71.42
+          },
+          "lines": {
+            "covered": 29,
+            "total": 33,
+            "missing": 4,
+            "pct": 87.87
+          }
+        }
+      },
+      {
+        "path": "src/features/launchpad/pages/LaunchpadContractPages.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 38,
+            "total": 40,
+            "missing": 2,
+            "pct": 95
+          },
+          "branches": {
+            "covered": 34,
+            "total": 43,
+            "missing": 9,
+            "pct": 79.06
+          },
+          "functions": {
+            "covered": 14,
+            "total": 16,
+            "missing": 2,
+            "pct": 87.5
+          },
+          "lines": {
+            "covered": 32,
+            "total": 34,
+            "missing": 2,
+            "pct": 94.11
+          }
+        }
+      },
+      {
+        "path": "src/features/market/api/market-api.ts",
+        "metrics": {
+          "statements": {
+            "covered": 78,
+            "total": 79,
+            "missing": 1,
+            "pct": 98.73
+          },
+          "branches": {
+            "covered": 13,
+            "total": 14,
+            "missing": 1,
+            "pct": 92.85
+          },
+          "functions": {
+            "covered": 24,
+            "total": 24,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 77,
+            "total": 78,
+            "missing": 1,
+            "pct": 98.71
+          }
+        }
+      },
+      {
+        "path": "src/features/market/api/market-research-schemas.ts",
+        "metrics": {
+          "statements": {
+            "covered": 56,
+            "total": 58,
+            "missing": 2,
+            "pct": 96.55
+          },
+          "branches": {
+            "covered": 24,
+            "total": 26,
+            "missing": 2,
+            "pct": 92.3
+          },
+          "functions": {
+            "covered": 11,
+            "total": 11,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 52,
+            "total": 54,
+            "missing": 2,
+            "pct": 96.29
+          }
+        }
+      },
+      {
+        "path": "src/features/market/api/market-stream.ts",
+        "metrics": {
+          "statements": {
+            "covered": 31,
+            "total": 34,
+            "missing": 3,
+            "pct": 91.17
+          },
+          "branches": {
+            "covered": 9,
+            "total": 12,
+            "missing": 3,
+            "pct": 75
+          },
+          "functions": {
+            "covered": 7,
+            "total": 8,
+            "missing": 1,
+            "pct": 87.5
+          },
+          "lines": {
+            "covered": 29,
+            "total": 29,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/market/components/MarketItem.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 11,
+            "total": 11,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 20,
+            "total": 21,
+            "missing": 1,
+            "pct": 95.23
+          },
+          "functions": {
+            "covered": 4,
+            "total": 4,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 10,
+            "total": 10,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/market/pages/AdvancedChartsPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 27,
+            "total": 36,
+            "missing": 9,
+            "pct": 75
+          },
+          "branches": {
+            "covered": 35,
+            "total": 45,
+            "missing": 10,
+            "pct": 77.77
+          },
+          "functions": {
+            "covered": 8,
+            "total": 14,
+            "missing": 6,
+            "pct": 57.14
+          },
+          "lines": {
+            "covered": 26,
+            "total": 34,
+            "missing": 8,
+            "pct": 76.47
+          }
+        }
+      },
+      {
+        "path": "src/features/market/pages/MarketComparisonPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 45,
+            "total": 45,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 27,
+            "total": 28,
+            "missing": 1,
+            "pct": 96.42
+          },
+          "functions": {
+            "covered": 25,
+            "total": 25,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 40,
+            "total": 40,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/market/pages/MarketCorrelationPairsPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 17,
+            "total": 19,
+            "missing": 2,
+            "pct": 89.47
+          },
+          "branches": {
+            "covered": 33,
+            "total": 36,
+            "missing": 3,
+            "pct": 91.66
+          },
+          "functions": {
+            "covered": 8,
+            "total": 10,
+            "missing": 2,
+            "pct": 80
+          },
+          "lines": {
+            "covered": 17,
+            "total": 19,
+            "missing": 2,
+            "pct": 89.47
+          }
+        }
+      },
+      {
+        "path": "src/features/market/pages/MarketDepthPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 48,
+            "total": 53,
+            "missing": 5,
+            "pct": 90.56
+          },
+          "branches": {
+            "covered": 57,
+            "total": 62,
+            "missing": 5,
+            "pct": 91.93
+          },
+          "functions": {
+            "covered": 19,
+            "total": 22,
+            "missing": 3,
+            "pct": 86.36
+          },
+          "lines": {
+            "covered": 44,
+            "total": 49,
+            "missing": 5,
+            "pct": 89.79
+          }
+        }
+      },
+      {
+        "path": "src/features/market/pages/MarketDerivativesPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 44,
+            "total": 52,
+            "missing": 8,
+            "pct": 84.61
+          },
+          "branches": {
+            "covered": 44,
+            "total": 52,
+            "missing": 8,
+            "pct": 84.61
+          },
+          "functions": {
+            "covered": 22,
+            "total": 28,
+            "missing": 6,
+            "pct": 78.57
+          },
+          "lines": {
+            "covered": 43,
+            "total": 50,
+            "missing": 7,
+            "pct": 86
+          }
+        }
+      },
+      {
+        "path": "src/features/market/pages/MarketEventCalendarPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 19,
+            "total": 20,
+            "missing": 1,
+            "pct": 95
+          },
+          "branches": {
+            "covered": 33,
+            "total": 38,
+            "missing": 5,
+            "pct": 86.84
+          },
+          "functions": {
+            "covered": 9,
+            "total": 10,
+            "missing": 1,
+            "pct": 90
+          },
+          "lines": {
+            "covered": 17,
+            "total": 18,
+            "missing": 1,
+            "pct": 94.44
+          }
+        }
+      },
+      {
+        "path": "src/features/market/pages/MarketHomePage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 49,
+            "total": 54,
+            "missing": 5,
+            "pct": 90.74
+          },
+          "branches": {
+            "covered": 33,
+            "total": 35,
+            "missing": 2,
+            "pct": 94.28
+          },
+          "functions": {
+            "covered": 24,
+            "total": 29,
+            "missing": 5,
+            "pct": 82.75
+          },
+          "lines": {
+            "covered": 42,
+            "total": 47,
+            "missing": 5,
+            "pct": 89.36
+          }
+        }
+      },
+      {
+        "path": "src/features/market/pages/MarketListPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 82,
+            "total": 88,
+            "missing": 6,
+            "pct": 93.18
+          },
+          "branches": {
+            "covered": 46,
+            "total": 51,
+            "missing": 5,
+            "pct": 90.19
+          },
+          "functions": {
+            "covered": 19,
+            "total": 19,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 66,
+            "total": 70,
+            "missing": 4,
+            "pct": 94.28
+          }
+        }
+      },
+      {
+        "path": "src/features/market/pages/MarketMoversPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 26,
+            "total": 27,
+            "missing": 1,
+            "pct": 96.29
+          },
+          "branches": {
+            "covered": 33,
+            "total": 40,
+            "missing": 7,
+            "pct": 82.5
+          },
+          "functions": {
+            "covered": 11,
+            "total": 12,
+            "missing": 1,
+            "pct": 91.66
+          },
+          "lines": {
+            "covered": 26,
+            "total": 27,
+            "missing": 1,
+            "pct": 96.29
+          }
+        }
+      },
+      {
+        "path": "src/features/market/pages/MarketNewsFeedPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 23,
+            "total": 26,
+            "missing": 3,
+            "pct": 88.46
+          },
+          "branches": {
+            "covered": 34,
+            "total": 35,
+            "missing": 1,
+            "pct": 97.14
+          },
+          "functions": {
+            "covered": 9,
+            "total": 11,
+            "missing": 2,
+            "pct": 81.81
+          },
+          "lines": {
+            "covered": 23,
+            "total": 26,
+            "missing": 3,
+            "pct": 88.46
+          }
+        }
+      },
+      {
+        "path": "src/features/market/pages/MarketOverviewPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 27,
+            "total": 33,
+            "missing": 6,
+            "pct": 81.81
+          },
+          "branches": {
+            "covered": 14,
+            "total": 14,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 13,
+            "total": 19,
+            "missing": 6,
+            "pct": 68.42
+          },
+          "lines": {
+            "covered": 26,
+            "total": 31,
+            "missing": 5,
+            "pct": 83.87
+          }
+        }
+      },
+      {
+        "path": "src/features/market/pages/MarketPriceAlertsPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 94,
+            "total": 100,
+            "missing": 6,
+            "pct": 94
+          },
+          "branches": {
+            "covered": 89,
+            "total": 96,
+            "missing": 7,
+            "pct": 92.7
+          },
+          "functions": {
+            "covered": 25,
+            "total": 26,
+            "missing": 1,
+            "pct": 96.15
+          },
+          "lines": {
+            "covered": 85,
+            "total": 89,
+            "missing": 4,
+            "pct": 95.5
+          }
+        }
+      },
+      {
+        "path": "src/features/market/pages/MarketSectorsPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 42,
+            "total": 51,
+            "missing": 9,
+            "pct": 82.35
+          },
+          "branches": {
+            "covered": 37,
+            "total": 44,
+            "missing": 7,
+            "pct": 84.09
+          },
+          "functions": {
+            "covered": 18,
+            "total": 24,
+            "missing": 6,
+            "pct": 75
+          },
+          "lines": {
+            "covered": 41,
+            "total": 47,
+            "missing": 6,
+            "pct": 87.23
+          }
+        }
+      },
+      {
+        "path": "src/features/market/pages/MarketSentimentPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 67,
+            "total": 71,
+            "missing": 4,
+            "pct": 94.36
+          },
+          "branches": {
+            "covered": 63,
+            "total": 78,
+            "missing": 15,
+            "pct": 80.76
+          },
+          "functions": {
+            "covered": 34,
+            "total": 36,
+            "missing": 2,
+            "pct": 94.44
+          },
+          "lines": {
+            "covered": 64,
+            "total": 66,
+            "missing": 2,
+            "pct": 96.96
+          }
+        }
+      },
+      {
+        "path": "src/features/market/pages/PairDetailPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 71,
+            "total": 75,
+            "missing": 4,
+            "pct": 94.66
+          },
+          "branches": {
+            "covered": 60,
+            "total": 67,
+            "missing": 7,
+            "pct": 89.55
+          },
+          "functions": {
+            "covered": 18,
+            "total": 19,
+            "missing": 1,
+            "pct": 94.73
+          },
+          "lines": {
+            "covered": 67,
+            "total": 70,
+            "missing": 3,
+            "pct": 95.71
+          }
+        }
+      },
+      {
+        "path": "src/features/market/pages/TokenInfoPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 18,
+            "total": 18,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 17,
+            "total": 21,
+            "missing": 4,
+            "pct": 80.95
+          },
+          "functions": {
+            "covered": 5,
+            "total": 5,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 18,
+            "total": 18,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/market/pages/TokenUnlockSchedulePage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 17,
+            "total": 18,
+            "missing": 1,
+            "pct": 94.44
+          },
+          "branches": {
+            "covered": 26,
+            "total": 30,
+            "missing": 4,
+            "pct": 86.66
+          },
+          "functions": {
+            "covered": 9,
+            "total": 10,
+            "missing": 1,
+            "pct": 90
+          },
+          "lines": {
+            "covered": 17,
+            "total": 18,
+            "missing": 1,
+            "pct": 94.44
+          }
+        }
+      },
+      {
+        "path": "src/features/market/pages/WatchlistPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 58,
+            "total": 67,
+            "missing": 9,
+            "pct": 86.56
+          },
+          "branches": {
+            "covered": 50,
+            "total": 58,
+            "missing": 8,
+            "pct": 86.2
+          },
+          "functions": {
+            "covered": 14,
+            "total": 19,
+            "missing": 5,
+            "pct": 73.68
+          },
+          "lines": {
+            "covered": 55,
+            "total": 61,
+            "missing": 6,
+            "pct": 90.16
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/components/P2PHomeActionSheets.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 21,
+            "total": 34,
+            "missing": 13,
+            "pct": 61.76
+          },
+          "branches": {
+            "covered": 10,
+            "total": 16,
+            "missing": 6,
+            "pct": 62.5
+          },
+          "functions": {
+            "covered": 8,
+            "total": 13,
+            "missing": 5,
+            "pct": 61.53
+          },
+          "lines": {
+            "covered": 20,
+            "total": 33,
+            "missing": 13,
+            "pct": 60.6
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/components/P2PHomeCards.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 51,
+            "total": 53,
+            "missing": 2,
+            "pct": 96.22
+          },
+          "branches": {
+            "covered": 49,
+            "total": 62,
+            "missing": 13,
+            "pct": 79.03
+          },
+          "functions": {
+            "covered": 10,
+            "total": 10,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 50,
+            "total": 50,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/lib/filter-marketplace-ads.ts",
+        "metrics": {
+          "statements": {
+            "covered": 28,
+            "total": 28,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 23,
+            "total": 24,
+            "missing": 1,
+            "pct": 95.83
+          },
+          "functions": {
+            "covered": 10,
+            "total": 10,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 21,
+            "total": 21,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/model/p2p-ad-queries.ts",
+        "metrics": {
+          "statements": {
+            "covered": 10,
+            "total": 10,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 5,
+            "total": 6,
+            "missing": 1,
+            "pct": 83.33
+          },
+          "functions": {
+            "covered": 9,
+            "total": 9,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 10,
+            "total": 10,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/model/p2p-chat-queries.ts",
+        "metrics": {
+          "statements": {
+            "covered": 11,
+            "total": 11,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 3,
+            "total": 6,
+            "missing": 3,
+            "pct": 50
+          },
+          "functions": {
+            "covered": 9,
+            "total": 9,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 11,
+            "total": 11,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/model/p2p-dispute-detail-queries.ts",
+        "metrics": {
+          "statements": {
+            "covered": 14,
+            "total": 14,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 3,
+            "total": 6,
+            "missing": 3,
+            "pct": 50
+          },
+          "functions": {
+            "covered": 9,
+            "total": 9,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 14,
+            "total": 14,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/model/p2p-my-ads-queries.ts",
+        "metrics": {
+          "statements": {
+            "covered": 11,
+            "total": 12,
+            "missing": 1,
+            "pct": 91.66
+          },
+          "branches": {
+            "covered": 0,
+            "total": 0,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 7,
+            "total": 8,
+            "missing": 1,
+            "pct": 87.5
+          },
+          "lines": {
+            "covered": 11,
+            "total": 12,
+            "missing": 1,
+            "pct": 91.66
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/model/p2p-order-action-queries.ts",
+        "metrics": {
+          "statements": {
+            "covered": 34,
+            "total": 34,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 11,
+            "total": 22,
+            "missing": 11,
+            "pct": 50
+          },
+          "functions": {
+            "covered": 22,
+            "total": 22,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 33,
+            "total": 33,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/model/p2p-queries.ts",
+        "metrics": {
+          "statements": {
+            "covered": 142,
+            "total": 142,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 30,
+            "total": 38,
+            "missing": 8,
+            "pct": 78.94
+          },
+          "functions": {
+            "covered": 118,
+            "total": 118,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 142,
+            "total": 142,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/model/p2p-trust-queries.ts",
+        "metrics": {
+          "statements": {
+            "covered": 9,
+            "total": 9,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 2,
+            "total": 3,
+            "missing": 1,
+            "pct": 66.66
+          },
+          "functions": {
+            "covered": 8,
+            "total": 8,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 9,
+            "total": 9,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2P2FASettingsPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 83,
+            "total": 90,
+            "missing": 7,
+            "pct": 92.22
+          },
+          "branches": {
+            "covered": 33,
+            "total": 39,
+            "missing": 6,
+            "pct": 84.61
+          },
+          "functions": {
+            "covered": 15,
+            "total": 15,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 82,
+            "total": 84,
+            "missing": 2,
+            "pct": 97.61
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PAchievementsPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 17,
+            "total": 19,
+            "missing": 2,
+            "pct": 89.47
+          },
+          "branches": {
+            "covered": 16,
+            "total": 26,
+            "missing": 10,
+            "pct": 61.53
+          },
+          "functions": {
+            "covered": 5,
+            "total": 6,
+            "missing": 1,
+            "pct": 83.33
+          },
+          "lines": {
+            "covered": 15,
+            "total": 17,
+            "missing": 2,
+            "pct": 88.23
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PAdAnalyticsPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 18,
+            "total": 21,
+            "missing": 3,
+            "pct": 85.71
+          },
+          "branches": {
+            "covered": 10,
+            "total": 12,
+            "missing": 2,
+            "pct": 83.33
+          },
+          "functions": {
+            "covered": 5,
+            "total": 6,
+            "missing": 1,
+            "pct": 83.33
+          },
+          "lines": {
+            "covered": 18,
+            "total": 21,
+            "missing": 3,
+            "pct": 85.71
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PAdDetailContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 49,
+            "total": 58,
+            "missing": 9,
+            "pct": 84.48
+          },
+          "branches": {
+            "covered": 61,
+            "total": 73,
+            "missing": 12,
+            "pct": 83.56
+          },
+          "functions": {
+            "covered": 9,
+            "total": 12,
+            "missing": 3,
+            "pct": 75
+          },
+          "lines": {
+            "covered": 48,
+            "total": 54,
+            "missing": 6,
+            "pct": 88.88
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PBlacklistAddPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 23,
+            "total": 25,
+            "missing": 2,
+            "pct": 92
+          },
+          "branches": {
+            "covered": 26,
+            "total": 30,
+            "missing": 4,
+            "pct": 86.66
+          },
+          "functions": {
+            "covered": 7,
+            "total": 8,
+            "missing": 1,
+            "pct": 87.5
+          },
+          "lines": {
+            "covered": 23,
+            "total": 24,
+            "missing": 1,
+            "pct": 95.83
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PBlacklistPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 38,
+            "total": 41,
+            "missing": 3,
+            "pct": 92.68
+          },
+          "branches": {
+            "covered": 26,
+            "total": 30,
+            "missing": 4,
+            "pct": 86.66
+          },
+          "functions": {
+            "covered": 12,
+            "total": 14,
+            "missing": 2,
+            "pct": 85.71
+          },
+          "lines": {
+            "covered": 36,
+            "total": 38,
+            "missing": 2,
+            "pct": 94.73
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PChatPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 38,
+            "total": 43,
+            "missing": 5,
+            "pct": 88.37
+          },
+          "branches": {
+            "covered": 52,
+            "total": 56,
+            "missing": 4,
+            "pct": 92.85
+          },
+          "functions": {
+            "covered": 8,
+            "total": 10,
+            "missing": 2,
+            "pct": 80
+          },
+          "lines": {
+            "covered": 38,
+            "total": 42,
+            "missing": 4,
+            "pct": 90.47
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PCreateAdContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 59,
+            "total": 64,
+            "missing": 5,
+            "pct": 92.18
+          },
+          "branches": {
+            "covered": 54,
+            "total": 65,
+            "missing": 11,
+            "pct": 83.07
+          },
+          "functions": {
+            "covered": 8,
+            "total": 11,
+            "missing": 3,
+            "pct": 72.72
+          },
+          "lines": {
+            "covered": 55,
+            "total": 59,
+            "missing": 4,
+            "pct": 93.22
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PDashboardPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 15,
+            "total": 17,
+            "missing": 2,
+            "pct": 88.23
+          },
+          "branches": {
+            "covered": 6,
+            "total": 8,
+            "missing": 2,
+            "pct": 75
+          },
+          "functions": {
+            "covered": 7,
+            "total": 8,
+            "missing": 1,
+            "pct": 87.5
+          },
+          "lines": {
+            "covered": 14,
+            "total": 16,
+            "missing": 2,
+            "pct": 87.5
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PDisputeDetailPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 39,
+            "total": 42,
+            "missing": 3,
+            "pct": 92.85
+          },
+          "branches": {
+            "covered": 28,
+            "total": 36,
+            "missing": 8,
+            "pct": 77.77
+          },
+          "functions": {
+            "covered": 10,
+            "total": 10,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 39,
+            "total": 41,
+            "missing": 2,
+            "pct": 95.12
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PDisputesPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 28,
+            "total": 28,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 19,
+            "total": 20,
+            "missing": 1,
+            "pct": 95
+          },
+          "functions": {
+            "covered": 11,
+            "total": 11,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 26,
+            "total": 26,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PEscrowDetailPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 75,
+            "total": 81,
+            "missing": 6,
+            "pct": 92.59
+          },
+          "branches": {
+            "covered": 77,
+            "total": 85,
+            "missing": 8,
+            "pct": 90.58
+          },
+          "functions": {
+            "covered": 13,
+            "total": 14,
+            "missing": 1,
+            "pct": 92.85
+          },
+          "lines": {
+            "covered": 75,
+            "total": 78,
+            "missing": 3,
+            "pct": 96.15
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PExpressConfirmPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 29,
+            "total": 34,
+            "missing": 5,
+            "pct": 85.29
+          },
+          "branches": {
+            "covered": 48,
+            "total": 57,
+            "missing": 9,
+            "pct": 84.21
+          },
+          "functions": {
+            "covered": 5,
+            "total": 8,
+            "missing": 3,
+            "pct": 62.5
+          },
+          "lines": {
+            "covered": 29,
+            "total": 33,
+            "missing": 4,
+            "pct": 87.87
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PExpressPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 46,
+            "total": 47,
+            "missing": 1,
+            "pct": 97.87
+          },
+          "branches": {
+            "covered": 62,
+            "total": 64,
+            "missing": 2,
+            "pct": 96.87
+          },
+          "functions": {
+            "covered": 19,
+            "total": 19,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 46,
+            "total": 46,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PFraudPreventionPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 41,
+            "total": 47,
+            "missing": 6,
+            "pct": 87.23
+          },
+          "branches": {
+            "covered": 35,
+            "total": 42,
+            "missing": 7,
+            "pct": 83.33
+          },
+          "functions": {
+            "covered": 19,
+            "total": 22,
+            "missing": 3,
+            "pct": 86.36
+          },
+          "lines": {
+            "covered": 35,
+            "total": 41,
+            "missing": 6,
+            "pct": 85.36
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PGuidePage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 22,
+            "total": 29,
+            "missing": 7,
+            "pct": 75.86
+          },
+          "branches": {
+            "covered": 28,
+            "total": 30,
+            "missing": 2,
+            "pct": 93.33
+          },
+          "functions": {
+            "covered": 9,
+            "total": 14,
+            "missing": 5,
+            "pct": 64.28
+          },
+          "lines": {
+            "covered": 22,
+            "total": 29,
+            "missing": 7,
+            "pct": 75.86
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PMarketplacePage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 82,
+            "total": 91,
+            "missing": 9,
+            "pct": 90.1
+          },
+          "branches": {
+            "covered": 22,
+            "total": 29,
+            "missing": 7,
+            "pct": 75.86
+          },
+          "functions": {
+            "covered": 21,
+            "total": 24,
+            "missing": 3,
+            "pct": 87.5
+          },
+          "lines": {
+            "covered": 77,
+            "total": 83,
+            "missing": 6,
+            "pct": 92.77
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PMerchantProfilePage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 24,
+            "total": 30,
+            "missing": 6,
+            "pct": 80
+          },
+          "branches": {
+            "covered": 28,
+            "total": 40,
+            "missing": 12,
+            "pct": 70
+          },
+          "functions": {
+            "covered": 6,
+            "total": 11,
+            "missing": 5,
+            "pct": 54.54
+          },
+          "lines": {
+            "covered": 24,
+            "total": 29,
+            "missing": 5,
+            "pct": 82.75
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PMyAdsContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 51,
+            "total": 58,
+            "missing": 7,
+            "pct": 87.93
+          },
+          "branches": {
+            "covered": 60,
+            "total": 64,
+            "missing": 4,
+            "pct": 93.75
+          },
+          "functions": {
+            "covered": 18,
+            "total": 22,
+            "missing": 4,
+            "pct": 81.81
+          },
+          "lines": {
+            "covered": 47,
+            "total": 52,
+            "missing": 5,
+            "pct": 90.38
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2POrderActionPages.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 72,
+            "total": 79,
+            "missing": 7,
+            "pct": 91.13
+          },
+          "branches": {
+            "covered": 55,
+            "total": 69,
+            "missing": 14,
+            "pct": 79.71
+          },
+          "functions": {
+            "covered": 25,
+            "total": 28,
+            "missing": 3,
+            "pct": 89.28
+          },
+          "lines": {
+            "covered": 71,
+            "total": 74,
+            "missing": 3,
+            "pct": 95.94
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2POrdersContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 62,
+            "total": 62,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 52,
+            "total": 54,
+            "missing": 2,
+            "pct": 96.29
+          },
+          "functions": {
+            "covered": 26,
+            "total": 26,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 54,
+            "total": 54,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PPaymentMethodAddPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 32,
+            "total": 39,
+            "missing": 7,
+            "pct": 82.05
+          },
+          "branches": {
+            "covered": 39,
+            "total": 51,
+            "missing": 12,
+            "pct": 76.47
+          },
+          "functions": {
+            "covered": 8,
+            "total": 11,
+            "missing": 3,
+            "pct": 72.72
+          },
+          "lines": {
+            "covered": 32,
+            "total": 39,
+            "missing": 7,
+            "pct": 82.05
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PPaymentMethodsPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 49,
+            "total": 60,
+            "missing": 11,
+            "pct": 81.66
+          },
+          "branches": {
+            "covered": 44,
+            "total": 48,
+            "missing": 4,
+            "pct": 91.66
+          },
+          "functions": {
+            "covered": 16,
+            "total": 20,
+            "missing": 4,
+            "pct": 80
+          },
+          "lines": {
+            "covered": 46,
+            "total": 54,
+            "missing": 8,
+            "pct": 85.18
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PReportMerchantPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 25,
+            "total": 28,
+            "missing": 3,
+            "pct": 89.28
+          },
+          "branches": {
+            "covered": 28,
+            "total": 30,
+            "missing": 2,
+            "pct": 93.33
+          },
+          "functions": {
+            "covered": 6,
+            "total": 7,
+            "missing": 1,
+            "pct": 85.71
+          },
+          "lines": {
+            "covered": 25,
+            "total": 27,
+            "missing": 2,
+            "pct": 92.59
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PReviewsPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 16,
+            "total": 16,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 19,
+            "total": 26,
+            "missing": 7,
+            "pct": 73.07
+          },
+          "functions": {
+            "covered": 7,
+            "total": 7,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 16,
+            "total": 16,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PTradingLevelPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 25,
+            "total": 27,
+            "missing": 2,
+            "pct": 92.59
+          },
+          "branches": {
+            "covered": 25,
+            "total": 34,
+            "missing": 9,
+            "pct": 73.52
+          },
+          "functions": {
+            "covered": 6,
+            "total": 7,
+            "missing": 1,
+            "pct": 85.71
+          },
+          "lines": {
+            "covered": 25,
+            "total": 27,
+            "missing": 2,
+            "pct": 92.59
+          }
+        }
+      },
+      {
+        "path": "src/features/predictions/pages/PredictionContractPages.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 98,
+            "total": 108,
+            "missing": 10,
+            "pct": 90.74
+          },
+          "branches": {
+            "covered": 101,
+            "total": 105,
+            "missing": 4,
+            "pct": 96.19
+          },
+          "functions": {
+            "covered": 32,
+            "total": 39,
+            "missing": 7,
+            "pct": 82.05
+          },
+          "lines": {
+            "covered": 84,
+            "total": 84,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/predictions/pages/PredictionRiskCalculatorPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 20,
+            "total": 26,
+            "missing": 6,
+            "pct": 76.92
+          },
+          "branches": {
+            "covered": 33,
+            "total": 44,
+            "missing": 11,
+            "pct": 75
+          },
+          "functions": {
+            "covered": 4,
+            "total": 10,
+            "missing": 6,
+            "pct": 40
+          },
+          "lines": {
+            "covered": 20,
+            "total": 26,
+            "missing": 6,
+            "pct": 76.92
+          }
+        }
+      },
+      {
+        "path": "src/features/profile/pages/ActivityLogContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 12,
+            "total": 14,
+            "missing": 2,
+            "pct": 85.71
+          },
+          "branches": {
+            "covered": 19,
+            "total": 20,
+            "missing": 1,
+            "pct": 95
+          },
+          "functions": {
+            "covered": 5,
+            "total": 6,
+            "missing": 1,
+            "pct": 83.33
+          },
+          "lines": {
+            "covered": 12,
+            "total": 12,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/profile/pages/DeviceManagementContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 28,
+            "total": 30,
+            "missing": 2,
+            "pct": 93.33
+          },
+          "branches": {
+            "covered": 33,
+            "total": 38,
+            "missing": 5,
+            "pct": 86.84
+          },
+          "functions": {
+            "covered": 7,
+            "total": 7,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 26,
+            "total": 26,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/profile/pages/EditProfileContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 29,
+            "total": 32,
+            "missing": 3,
+            "pct": 90.62
+          },
+          "branches": {
+            "covered": 26,
+            "total": 31,
+            "missing": 5,
+            "pct": 83.87
+          },
+          "functions": {
+            "covered": 9,
+            "total": 10,
+            "missing": 1,
+            "pct": 90
+          },
+          "lines": {
+            "covered": 26,
+            "total": 26,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/profile/pages/ProfileContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 14,
+            "total": 19,
+            "missing": 5,
+            "pct": 73.68
+          },
+          "branches": {
+            "covered": 7,
+            "total": 8,
+            "missing": 1,
+            "pct": 87.5
+          },
+          "functions": {
+            "covered": 3,
+            "total": 7,
+            "missing": 4,
+            "pct": 42.85
+          },
+          "lines": {
+            "covered": 13,
+            "total": 16,
+            "missing": 3,
+            "pct": 81.25
+          }
+        }
+      },
+      {
+        "path": "src/features/profile/pages/SubAccountContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 10,
+            "total": 12,
+            "missing": 2,
+            "pct": 83.33
+          },
+          "branches": {
+            "covered": 9,
+            "total": 10,
+            "missing": 1,
+            "pct": 90
+          },
+          "functions": {
+            "covered": 3,
+            "total": 4,
+            "missing": 1,
+            "pct": 75
+          },
+          "lines": {
+            "covered": 9,
+            "total": 9,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/referral/pages/ReferralContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 21,
+            "total": 22,
+            "missing": 1,
+            "pct": 95.45
+          },
+          "branches": {
+            "covered": 15,
+            "total": 15,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 6,
+            "total": 7,
+            "missing": 1,
+            "pct": 85.71
+          },
+          "lines": {
+            "covered": 19,
+            "total": 19,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/support/pages/HelpCenterContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 14,
+            "total": 17,
+            "missing": 3,
+            "pct": 82.35
+          },
+          "branches": {
+            "covered": 14,
+            "total": 20,
+            "missing": 6,
+            "pct": 70
+          },
+          "functions": {
+            "covered": 6,
+            "total": 8,
+            "missing": 2,
+            "pct": 75
+          },
+          "lines": {
+            "covered": 14,
+            "total": 15,
+            "missing": 1,
+            "pct": 93.33
+          }
+        }
+      },
+      {
+        "path": "src/features/support/pages/NotificationsContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 23,
+            "total": 26,
+            "missing": 3,
+            "pct": 88.46
+          },
+          "branches": {
+            "covered": 27,
+            "total": 30,
+            "missing": 3,
+            "pct": 90
+          },
+          "functions": {
+            "covered": 6,
+            "total": 7,
+            "missing": 1,
+            "pct": 85.71
+          },
+          "lines": {
+            "covered": 23,
+            "total": 23,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/support/pages/SupportContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 26,
+            "total": 29,
+            "missing": 3,
+            "pct": 89.65
+          },
+          "branches": {
+            "covered": 29,
+            "total": 34,
+            "missing": 5,
+            "pct": 85.29
+          },
+          "functions": {
+            "covered": 9,
+            "total": 11,
+            "missing": 2,
+            "pct": 81.81
+          },
+          "lines": {
+            "covered": 22,
+            "total": 23,
+            "missing": 1,
+            "pct": 95.65
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/components/ChartSkeleton.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 13,
+            "total": 13,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 11,
+            "total": 12,
+            "missing": 1,
+            "pct": 91.66
+          },
+          "functions": {
+            "covered": 3,
+            "total": 3,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 13,
+            "total": 13,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/components/copy-education/CopyEducationFeesTab.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 15,
+            "total": 16,
+            "missing": 1,
+            "pct": 93.75
+          },
+          "branches": {
+            "covered": 0,
+            "total": 0,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 4,
+            "total": 5,
+            "missing": 1,
+            "pct": 80
+          },
+          "lines": {
+            "covered": 15,
+            "total": 16,
+            "missing": 1,
+            "pct": 93.75
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/components/copy-education/CopyEducationScenarioTab.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 20,
+            "total": 22,
+            "missing": 2,
+            "pct": 90.9
+          },
+          "branches": {
+            "covered": 30,
+            "total": 32,
+            "missing": 2,
+            "pct": 93.75
+          },
+          "functions": {
+            "covered": 5,
+            "total": 7,
+            "missing": 2,
+            "pct": 71.42
+          },
+          "lines": {
+            "covered": 19,
+            "total": 21,
+            "missing": 2,
+            "pct": 90.47
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/components/MiniChart.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 75,
+            "total": 79,
+            "missing": 4,
+            "pct": 94.93
+          },
+          "branches": {
+            "covered": 45,
+            "total": 54,
+            "missing": 9,
+            "pct": 83.33
+          },
+          "functions": {
+            "covered": 13,
+            "total": 14,
+            "missing": 1,
+            "pct": 92.85
+          },
+          "lines": {
+            "covered": 68,
+            "total": 72,
+            "missing": 4,
+            "pct": 94.44
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/components/OCOOrderForm.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 42,
+            "total": 46,
+            "missing": 4,
+            "pct": 91.3
+          },
+          "branches": {
+            "covered": 116,
+            "total": 120,
+            "missing": 4,
+            "pct": 96.66
+          },
+          "functions": {
+            "covered": 9,
+            "total": 10,
+            "missing": 1,
+            "pct": 90
+          },
+          "lines": {
+            "covered": 41,
+            "total": 45,
+            "missing": 4,
+            "pct": 91.11
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/components/OpenOrdersPanel.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 5,
+            "total": 5,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 19,
+            "total": 23,
+            "missing": 4,
+            "pct": 82.6
+          },
+          "functions": {
+            "covered": 4,
+            "total": 4,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 5,
+            "total": 5,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/components/OrderBook.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 22,
+            "total": 22,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 19,
+            "total": 22,
+            "missing": 3,
+            "pct": 86.36
+          },
+          "functions": {
+            "covered": 7,
+            "total": 7,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 20,
+            "total": 20,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/components/OrderModifySheet.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 23,
+            "total": 24,
+            "missing": 1,
+            "pct": 95.83
+          },
+          "branches": {
+            "covered": 35,
+            "total": 41,
+            "missing": 6,
+            "pct": 85.36
+          },
+          "functions": {
+            "covered": 6,
+            "total": 6,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 23,
+            "total": 23,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/components/TPSLForm.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 36,
+            "total": 36,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 127,
+            "total": 130,
+            "missing": 3,
+            "pct": 97.69
+          },
+          "functions": {
+            "covered": 9,
+            "total": 9,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 35,
+            "total": 35,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/components/TradeTerminal.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 184,
+            "total": 188,
+            "missing": 4,
+            "pct": 97.87
+          },
+          "branches": {
+            "covered": 123,
+            "total": 132,
+            "missing": 9,
+            "pct": 93.18
+          },
+          "functions": {
+            "covered": 30,
+            "total": 30,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 174,
+            "total": 178,
+            "missing": 4,
+            "pct": 97.75
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/components/trading-order-config.ts",
+        "metrics": {
+          "statements": {
+            "covered": 5,
+            "total": 5,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 1,
+            "total": 2,
+            "missing": 1,
+            "pct": 50
+          },
+          "functions": {
+            "covered": 2,
+            "total": 2,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 5,
+            "total": 5,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/components/TradingMarketPanel.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 15,
+            "total": 15,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 22,
+            "total": 24,
+            "missing": 2,
+            "pct": 91.66
+          },
+          "functions": {
+            "covered": 9,
+            "total": 9,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 15,
+            "total": 15,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/components/TradingOrderEntryPanel.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 25,
+            "total": 29,
+            "missing": 4,
+            "pct": 86.2
+          },
+          "branches": {
+            "covered": 77,
+            "total": 77,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 12,
+            "total": 15,
+            "missing": 3,
+            "pct": 80
+          },
+          "lines": {
+            "covered": 24,
+            "total": 28,
+            "missing": 4,
+            "pct": 85.71
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/lib/copy-route.ts",
+        "metrics": {
+          "statements": {
+            "covered": 4,
+            "total": 5,
+            "missing": 1,
+            "pct": 80
+          },
+          "branches": {
+            "covered": 2,
+            "total": 6,
+            "missing": 4,
+            "pct": 33.33
+          },
+          "functions": {
+            "covered": 4,
+            "total": 5,
+            "missing": 1,
+            "pct": 80
+          },
+          "lines": {
+            "covered": 4,
+            "total": 5,
+            "missing": 1,
+            "pct": 80
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/model/trading-queries.ts",
+        "metrics": {
+          "statements": {
+            "covered": 40,
+            "total": 40,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 17,
+            "total": 18,
+            "missing": 1,
+            "pct": 94.44
+          },
+          "functions": {
+            "covered": 34,
+            "total": 34,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 40,
+            "total": 40,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/model/useTradeSettings.ts",
+        "metrics": {
+          "statements": {
+            "covered": 43,
+            "total": 46,
+            "missing": 3,
+            "pct": 93.47
+          },
+          "branches": {
+            "covered": 24,
+            "total": 30,
+            "missing": 6,
+            "pct": 80
+          },
+          "functions": {
+            "covered": 10,
+            "total": 10,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 40,
+            "total": 43,
+            "missing": 3,
+            "pct": 93.02
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/pages/ActiveCopiesContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 36,
+            "total": 38,
+            "missing": 2,
+            "pct": 94.73
+          },
+          "branches": {
+            "covered": 35,
+            "total": 36,
+            "missing": 1,
+            "pct": 97.22
+          },
+          "functions": {
+            "covered": 9,
+            "total": 10,
+            "missing": 1,
+            "pct": 90
+          },
+          "lines": {
+            "covered": 34,
+            "total": 34,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/pages/CopyConfigurationContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 24,
+            "total": 28,
+            "missing": 4,
+            "pct": 85.71
+          },
+          "branches": {
+            "covered": 20,
+            "total": 20,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 6,
+            "total": 10,
+            "missing": 4,
+            "pct": 60
+          },
+          "lines": {
+            "covered": 23,
+            "total": 26,
+            "missing": 3,
+            "pct": 88.46
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/pages/CopyConfirmationContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 37,
+            "total": 39,
+            "missing": 2,
+            "pct": 94.87
+          },
+          "branches": {
+            "covered": 43,
+            "total": 45,
+            "missing": 2,
+            "pct": 95.55
+          },
+          "functions": {
+            "covered": 10,
+            "total": 11,
+            "missing": 1,
+            "pct": 90.9
+          },
+          "lines": {
+            "covered": 35,
+            "total": 35,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/pages/CopyProviderDetailContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 15,
+            "total": 16,
+            "missing": 1,
+            "pct": 93.75
+          },
+          "branches": {
+            "covered": 8,
+            "total": 8,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 3,
+            "total": 4,
+            "missing": 1,
+            "pct": 75
+          },
+          "lines": {
+            "covered": 15,
+            "total": 16,
+            "missing": 1,
+            "pct": 93.75
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/pages/CopyTradingPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 26,
+            "total": 27,
+            "missing": 1,
+            "pct": 96.29
+          },
+          "branches": {
+            "covered": 12,
+            "total": 12,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 10,
+            "total": 11,
+            "missing": 1,
+            "pct": 90.9
+          },
+          "lines": {
+            "covered": 24,
+            "total": 25,
+            "missing": 1,
+            "pct": 96
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/pages/OpenPositionsPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 17,
+            "total": 19,
+            "missing": 2,
+            "pct": 89.47
+          },
+          "branches": {
+            "covered": 37,
+            "total": 55,
+            "missing": 18,
+            "pct": 67.27
+          },
+          "functions": {
+            "covered": 7,
+            "total": 9,
+            "missing": 2,
+            "pct": 77.77
+          },
+          "lines": {
+            "covered": 16,
+            "total": 18,
+            "missing": 2,
+            "pct": 88.88
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/pages/OrderReceiptPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 20,
+            "total": 27,
+            "missing": 7,
+            "pct": 74.07
+          },
+          "branches": {
+            "covered": 19,
+            "total": 25,
+            "missing": 6,
+            "pct": 76
+          },
+          "functions": {
+            "covered": 4,
+            "total": 8,
+            "missing": 4,
+            "pct": 50
+          },
+          "lines": {
+            "covered": 20,
+            "total": 27,
+            "missing": 7,
+            "pct": 74.07
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/pages/OrdersHistoryPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 38,
+            "total": 41,
+            "missing": 3,
+            "pct": 92.68
+          },
+          "branches": {
+            "covered": 67,
+            "total": 75,
+            "missing": 8,
+            "pct": 89.33
+          },
+          "functions": {
+            "covered": 11,
+            "total": 14,
+            "missing": 3,
+            "pct": 78.57
+          },
+          "lines": {
+            "covered": 37,
+            "total": 40,
+            "missing": 3,
+            "pct": 92.5
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/pages/PreCopyAssessmentContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 21,
+            "total": 23,
+            "missing": 2,
+            "pct": 91.3
+          },
+          "branches": {
+            "covered": 12,
+            "total": 12,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 7,
+            "total": 9,
+            "missing": 2,
+            "pct": 77.77
+          },
+          "lines": {
+            "covered": 19,
+            "total": 20,
+            "missing": 1,
+            "pct": 95
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/pages/ProviderComparisonContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 21,
+            "total": 24,
+            "missing": 3,
+            "pct": 87.5
+          },
+          "branches": {
+            "covered": 8,
+            "total": 10,
+            "missing": 2,
+            "pct": 80
+          },
+          "functions": {
+            "covered": 10,
+            "total": 12,
+            "missing": 2,
+            "pct": 83.33
+          },
+          "lines": {
+            "covered": 21,
+            "total": 23,
+            "missing": 2,
+            "pct": 91.3
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/pages/ProviderLeaderboardPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 22,
+            "total": 23,
+            "missing": 1,
+            "pct": 95.65
+          },
+          "branches": {
+            "covered": 26,
+            "total": 26,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 9,
+            "total": 10,
+            "missing": 1,
+            "pct": 90
+          },
+          "lines": {
+            "covered": 21,
+            "total": 22,
+            "missing": 1,
+            "pct": 95.45
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/pages/TradeAnalyticsContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 33,
+            "total": 40,
+            "missing": 7,
+            "pct": 82.5
+          },
+          "branches": {
+            "covered": 29,
+            "total": 38,
+            "missing": 9,
+            "pct": 76.31
+          },
+          "functions": {
+            "covered": 12,
+            "total": 17,
+            "missing": 5,
+            "pct": 70.58
+          },
+          "lines": {
+            "covered": 32,
+            "total": 37,
+            "missing": 5,
+            "pct": 86.48
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/pages/TradeSettingsPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 30,
+            "total": 41,
+            "missing": 11,
+            "pct": 73.17
+          },
+          "branches": {
+            "covered": 36,
+            "total": 37,
+            "missing": 1,
+            "pct": 97.29
+          },
+          "functions": {
+            "covered": 9,
+            "total": 20,
+            "missing": 11,
+            "pct": 45
+          },
+          "lines": {
+            "covered": 30,
+            "total": 41,
+            "missing": 11,
+            "pct": 73.17
+          }
+        }
+      },
+      {
+        "path": "src/features/trading/pages/WebCopyPerformancePage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 17,
+            "total": 21,
+            "missing": 4,
+            "pct": 80.95
+          },
+          "branches": {
+            "covered": 11,
+            "total": 14,
+            "missing": 3,
+            "pct": 78.57
+          },
+          "functions": {
+            "covered": 4,
+            "total": 6,
+            "missing": 2,
+            "pct": 66.66
+          },
+          "lines": {
+            "covered": 16,
+            "total": 16,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/wallet/components/WithdrawSections.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 11,
+            "total": 11,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 46,
+            "total": 55,
+            "missing": 9,
+            "pct": 83.63
+          },
+          "functions": {
+            "covered": 8,
+            "total": 8,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 11,
+            "total": 11,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/wallet/pages/AddressAddPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 44,
+            "total": 46,
+            "missing": 2,
+            "pct": 95.65
+          },
+          "branches": {
+            "covered": 44,
+            "total": 48,
+            "missing": 4,
+            "pct": 91.66
+          },
+          "functions": {
+            "covered": 17,
+            "total": 17,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 41,
+            "total": 41,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/wallet/pages/AssetDetailPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 47,
+            "total": 48,
+            "missing": 1,
+            "pct": 97.91
+          },
+          "branches": {
+            "covered": 70,
+            "total": 83,
+            "missing": 13,
+            "pct": 84.33
+          },
+          "functions": {
+            "covered": 12,
+            "total": 13,
+            "missing": 1,
+            "pct": 92.3
+          },
+          "lines": {
+            "covered": 45,
+            "total": 46,
+            "missing": 1,
+            "pct": 97.82
+          }
+        }
+      },
+      {
+        "path": "src/features/wallet/pages/DustConverterPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 85,
+            "total": 86,
+            "missing": 1,
+            "pct": 98.83
+          },
+          "branches": {
+            "covered": 76,
+            "total": 77,
+            "missing": 1,
+            "pct": 98.7
+          },
+          "functions": {
+            "covered": 21,
+            "total": 21,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 80,
+            "total": 80,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/features/wallet/pages/NetworkStatusPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 18,
+            "total": 20,
+            "missing": 2,
+            "pct": 90
+          },
+          "branches": {
+            "covered": 26,
+            "total": 28,
+            "missing": 2,
+            "pct": 92.85
+          },
+          "functions": {
+            "covered": 6,
+            "total": 7,
+            "missing": 1,
+            "pct": 85.71
+          },
+          "lines": {
+            "covered": 15,
+            "total": 17,
+            "missing": 2,
+            "pct": 88.23
+          }
+        }
+      },
+      {
+        "path": "src/features/wallet/pages/PendingDepositsPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 11,
+            "total": 13,
+            "missing": 2,
+            "pct": 84.61
+          },
+          "branches": {
+            "covered": 13,
+            "total": 18,
+            "missing": 5,
+            "pct": 72.22
+          },
+          "functions": {
+            "covered": 4,
+            "total": 6,
+            "missing": 2,
+            "pct": 66.66
+          },
+          "lines": {
+            "covered": 10,
+            "total": 12,
+            "missing": 2,
+            "pct": 83.33
+          }
+        }
+      },
+      {
+        "path": "src/features/wallet/pages/PortfolioAnalyticsContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 37,
+            "total": 40,
+            "missing": 3,
+            "pct": 92.5
+          },
+          "branches": {
+            "covered": 31,
+            "total": 39,
+            "missing": 8,
+            "pct": 79.48
+          },
+          "functions": {
+            "covered": 16,
+            "total": 17,
+            "missing": 1,
+            "pct": 94.11
+          },
+          "lines": {
+            "covered": 35,
+            "total": 36,
+            "missing": 1,
+            "pct": 97.22
+          }
+        }
+      },
+      {
+        "path": "src/features/wallet/pages/TransactionDetailPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 47,
+            "total": 48,
+            "missing": 1,
+            "pct": 97.91
+          },
+          "branches": {
+            "covered": 53,
+            "total": 61,
+            "missing": 8,
+            "pct": 86.88
+          },
+          "functions": {
+            "covered": 8,
+            "total": 8,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 44,
+            "total": 45,
+            "missing": 1,
+            "pct": 97.77
+          }
+        }
+      },
+      {
+        "path": "src/features/wallet/pages/WalletDepositContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 42,
+            "total": 48,
+            "missing": 6,
+            "pct": 87.5
+          },
+          "branches": {
+            "covered": 30,
+            "total": 34,
+            "missing": 4,
+            "pct": 88.23
+          },
+          "functions": {
+            "covered": 13,
+            "total": 17,
+            "missing": 4,
+            "pct": 76.47
+          },
+          "lines": {
+            "covered": 38,
+            "total": 43,
+            "missing": 5,
+            "pct": 88.37
+          }
+        }
+      },
+      {
+        "path": "src/features/wallet/pages/WalletOverviewContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 53,
+            "total": 61,
+            "missing": 8,
+            "pct": 86.88
+          },
+          "branches": {
+            "covered": 48,
+            "total": 56,
+            "missing": 8,
+            "pct": 85.71
+          },
+          "functions": {
+            "covered": 23,
+            "total": 29,
+            "missing": 6,
+            "pct": 79.31
+          },
+          "lines": {
+            "covered": 49,
+            "total": 57,
+            "missing": 8,
+            "pct": 85.96
+          }
+        }
+      },
+      {
+        "path": "src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 44,
+            "total": 48,
+            "missing": 4,
+            "pct": 91.66
+          },
+          "branches": {
+            "covered": 35,
+            "total": 40,
+            "missing": 5,
+            "pct": 87.5
+          },
+          "functions": {
+            "covered": 17,
+            "total": 19,
+            "missing": 2,
+            "pct": 89.47
+          },
+          "lines": {
+            "covered": 39,
+            "total": 42,
+            "missing": 3,
+            "pct": 92.85
+          }
+        }
+      },
+      {
+        "path": "src/features/wallet/pages/WalletTransferContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 78,
+            "total": 87,
+            "missing": 9,
+            "pct": 89.65
+          },
+          "branches": {
+            "covered": 78,
+            "total": 92,
+            "missing": 14,
+            "pct": 84.78
+          },
+          "functions": {
+            "covered": 17,
+            "total": 19,
+            "missing": 2,
+            "pct": 89.47
+          },
+          "lines": {
+            "covered": 71,
+            "total": 78,
+            "missing": 7,
+            "pct": 91.02
+          }
+        }
+      },
+      {
+        "path": "src/features/wallet/pages/WithdrawalLimitsPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 12,
+            "total": 14,
+            "missing": 2,
+            "pct": 85.71
+          },
+          "branches": {
+            "covered": 16,
+            "total": 24,
+            "missing": 8,
+            "pct": 66.66
+          },
+          "functions": {
+            "covered": 5,
+            "total": 7,
+            "missing": 2,
+            "pct": 71.42
+          },
+          "lines": {
+            "covered": 12,
+            "total": 14,
+            "missing": 2,
+            "pct": 85.71
+          }
+        }
+      },
+      {
+        "path": "src/features/wallet/pages/WithdrawPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 110,
+            "total": 120,
+            "missing": 10,
+            "pct": 91.66
+          },
+          "branches": {
+            "covered": 69,
+            "total": 73,
+            "missing": 4,
+            "pct": 94.52
+          },
+          "functions": {
+            "covered": 21,
+            "total": 22,
+            "missing": 1,
+            "pct": 95.45
+          },
+          "lines": {
+            "covered": 105,
+            "total": 114,
+            "missing": 9,
+            "pct": 92.1
+          }
+        }
+      },
+      {
+        "path": "src/shared/api/app-client.ts",
+        "metrics": {
+          "statements": {
+            "covered": 2,
+            "total": 2,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 3,
+            "total": 4,
+            "missing": 1,
+            "pct": 75
+          },
+          "functions": {
+            "covered": 0,
+            "total": 0,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 2,
+            "total": 2,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/shared/api/http-client.ts",
+        "metrics": {
+          "statements": {
+            "covered": 92,
+            "total": 97,
+            "missing": 5,
+            "pct": 94.84
+          },
+          "branches": {
+            "covered": 88,
+            "total": 96,
+            "missing": 8,
+            "pct": 91.66
+          },
+          "functions": {
+            "covered": 15,
+            "total": 15,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 80,
+            "total": 82,
+            "missing": 2,
+            "pct": 97.56
+          }
+        }
+      },
+      {
+        "path": "src/shared/config/runtime-env-validation.ts",
+        "metrics": {
+          "statements": {
+            "covered": 20,
+            "total": 22,
+            "missing": 2,
+            "pct": 90.9
+          },
+          "branches": {
+            "covered": 21,
+            "total": 22,
+            "missing": 1,
+            "pct": 95.45
+          },
+          "functions": {
+            "covered": 2,
+            "total": 2,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 19,
+            "total": 21,
+            "missing": 2,
+            "pct": 90.47
+          }
+        }
+      },
+      {
+        "path": "src/shared/hooks/useInfiniteScroll.ts",
+        "metrics": {
+          "statements": {
+            "covered": 49,
+            "total": 52,
+            "missing": 3,
+            "pct": 94.23
+          },
+          "branches": {
+            "covered": 19,
+            "total": 23,
+            "missing": 4,
+            "pct": 82.6
+          },
+          "functions": {
+            "covered": 12,
+            "total": 12,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 45,
+            "total": 46,
+            "missing": 1,
+            "pct": 97.82
+          }
+        }
+      },
+      {
+        "path": "src/shared/hooks/useRefresh.ts",
+        "metrics": {
+          "statements": {
+            "covered": 35,
+            "total": 40,
+            "missing": 5,
+            "pct": 87.5
+          },
+          "branches": {
+            "covered": 7,
+            "total": 10,
+            "missing": 3,
+            "pct": 70
+          },
+          "functions": {
+            "covered": 8,
+            "total": 8,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 28,
+            "total": 32,
+            "missing": 4,
+            "pct": 87.5
+          }
+        }
+      },
+      {
+        "path": "src/shared/lib/browser-storage.ts",
+        "metrics": {
+          "statements": {
+            "covered": 25,
+            "total": 29,
+            "missing": 4,
+            "pct": 86.2
+          },
+          "branches": {
+            "covered": 9,
+            "total": 10,
+            "missing": 1,
+            "pct": 90
+          },
+          "functions": {
+            "covered": 10,
+            "total": 10,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 23,
+            "total": 26,
+            "missing": 3,
+            "pct": 88.46
+          }
+        }
+      },
+      {
+        "path": "src/shared/session/auth-context.ts",
+        "metrics": {
+          "statements": {
+            "covered": 10,
+            "total": 11,
+            "missing": 1,
+            "pct": 90.9
+          },
+          "branches": {
+            "covered": 0,
+            "total": 0,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 10,
+            "total": 11,
+            "missing": 1,
+            "pct": 90.9
+          },
+          "lines": {
+            "covered": 10,
+            "total": 11,
+            "missing": 1,
+            "pct": 90.9
+          }
+        }
+      },
+      {
+        "path": "src/shared/session/AuthContext.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 159,
+            "total": 160,
+            "missing": 1,
+            "pct": 99.37
+          },
+          "branches": {
+            "covered": 70,
+            "total": 76,
+            "missing": 6,
+            "pct": 92.1
+          },
+          "functions": {
+            "covered": 32,
+            "total": 32,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 139,
+            "total": 139,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/shared/telemetry/telemetry.ts",
+        "metrics": {
+          "statements": {
+            "covered": 13,
+            "total": 16,
+            "missing": 3,
+            "pct": 81.25
+          },
+          "branches": {
+            "covered": 0,
+            "total": 0,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 7,
+            "total": 10,
+            "missing": 3,
+            "pct": 70
+          },
+          "lines": {
+            "covered": 13,
+            "total": 15,
+            "missing": 2,
+            "pct": 86.66
+          }
+        }
+      },
+      {
+        "path": "src/shared/ui/button.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 4,
+            "total": 4,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 3,
+            "total": 5,
+            "missing": 2,
+            "pct": 60
+          },
+          "functions": {
+            "covered": 1,
+            "total": 1,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 4,
+            "total": 4,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/shared/ui/carousel.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 43,
+            "total": 47,
+            "missing": 4,
+            "pct": 91.48
+          },
+          "branches": {
+            "covered": 20,
+            "total": 33,
+            "missing": 13,
+            "pct": 60.6
+          },
+          "functions": {
+            "covered": 13,
+            "total": 13,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 43,
+            "total": 44,
+            "missing": 1,
+            "pct": 97.72
+          }
+        }
+      },
+      {
+        "path": "src/shared/ui/ConfirmationDialog.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 6,
+            "total": 6,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 6,
+            "total": 8,
+            "missing": 2,
+            "pct": 75
+          },
+          "functions": {
+            "covered": 2,
+            "total": 2,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 6,
+            "total": 6,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/shared/ui/CTAButton.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 3,
+            "total": 3,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 23,
+            "total": 25,
+            "missing": 2,
+            "pct": 92
+          },
+          "functions": {
+            "covered": 1,
+            "total": 1,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 3,
+            "total": 3,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/shared/ui/form.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 28,
+            "total": 29,
+            "missing": 1,
+            "pct": 96.55
+          },
+          "branches": {
+            "covered": 8,
+            "total": 10,
+            "missing": 2,
+            "pct": 80
+          },
+          "functions": {
+            "covered": 7,
+            "total": 7,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 28,
+            "total": 29,
+            "missing": 1,
+            "pct": 96.55
+          }
+        }
+      },
+      {
+        "path": "src/shared/ui/InputField.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 16,
+            "total": 17,
+            "missing": 1,
+            "pct": 94.11
+          },
+          "branches": {
+            "covered": 35,
+            "total": 41,
+            "missing": 6,
+            "pct": 85.36
+          },
+          "functions": {
+            "covered": 5,
+            "total": 6,
+            "missing": 1,
+            "pct": 83.33
+          },
+          "lines": {
+            "covered": 16,
+            "total": 17,
+            "missing": 1,
+            "pct": 94.11
+          }
+        }
+      },
+      {
+        "path": "src/shared/ui/layout/Header.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 35,
+            "total": 36,
+            "missing": 1,
+            "pct": 97.22
+          },
+          "branches": {
+            "covered": 70,
+            "total": 90,
+            "missing": 20,
+            "pct": 77.77
+          },
+          "functions": {
+            "covered": 7,
+            "total": 7,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 33,
+            "total": 33,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/shared/ui/layout/PageContent.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 12,
+            "total": 12,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 22,
+            "total": 26,
+            "missing": 4,
+            "pct": 84.61
+          },
+          "functions": {
+            "covered": 2,
+            "total": 2,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 12,
+            "total": 12,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/shared/ui/layout/PageLayout.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 5,
+            "total": 5,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 7,
+            "total": 9,
+            "missing": 2,
+            "pct": 77.77
+          },
+          "functions": {
+            "covered": 2,
+            "total": 2,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 5,
+            "total": 5,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/shared/ui/PullToRefresh.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 98,
+            "total": 102,
+            "missing": 4,
+            "pct": 96.07
+          },
+          "branches": {
+            "covered": 79,
+            "total": 87,
+            "missing": 8,
+            "pct": 90.8
+          },
+          "functions": {
+            "covered": 6,
+            "total": 6,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 92,
+            "total": 92,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/shared/ui/RefreshableSkeletonList.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 8,
+            "total": 9,
+            "missing": 1,
+            "pct": 88.88
+          },
+          "branches": {
+            "covered": 14,
+            "total": 16,
+            "missing": 2,
+            "pct": 87.5
+          },
+          "functions": {
+            "covered": 2,
+            "total": 2,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 8,
+            "total": 8,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/shared/ui/SectionHeader.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 7,
+            "total": 7,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 31,
+            "total": 37,
+            "missing": 6,
+            "pct": 83.78
+          },
+          "functions": {
+            "covered": 1,
+            "total": 1,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 7,
+            "total": 7,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/shared/ui/StatCard.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 28,
+            "total": 29,
+            "missing": 1,
+            "pct": 96.55
+          },
+          "branches": {
+            "covered": 56,
+            "total": 59,
+            "missing": 3,
+            "pct": 94.91
+          },
+          "functions": {
+            "covered": 7,
+            "total": 7,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 25,
+            "total": 26,
+            "missing": 1,
+            "pct": 96.15
+          }
+        }
+      },
+      {
+        "path": "src/shared/ui/StickyHeader.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 5,
+            "total": 7,
+            "missing": 2,
+            "pct": 71.42
+          },
+          "branches": {
+            "covered": 7,
+            "total": 13,
+            "missing": 6,
+            "pct": 53.84
+          },
+          "functions": {
+            "covered": 3,
+            "total": 4,
+            "missing": 1,
+            "pct": 75
+          },
+          "lines": {
+            "covered": 5,
+            "total": 7,
+            "missing": 2,
+            "pct": 71.42
+          }
+        }
+      },
+      {
+        "path": "src/shared/ui/TabBar.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 32,
+            "total": 34,
+            "missing": 2,
+            "pct": 94.11
+          },
+          "branches": {
+            "covered": 45,
+            "total": 49,
+            "missing": 4,
+            "pct": 91.83
+          },
+          "functions": {
+            "covered": 11,
+            "total": 13,
+            "missing": 2,
+            "pct": 84.61
+          },
+          "lines": {
+            "covered": 32,
+            "total": 34,
+            "missing": 2,
+            "pct": 94.11
+          }
+        }
+      },
+      {
+        "path": "src/shared/ui/TrCard.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 15,
+            "total": 15,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 33,
+            "total": 40,
+            "missing": 7,
+            "pct": 82.5
+          },
+          "functions": {
+            "covered": 3,
+            "total": 3,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 15,
+            "total": 15,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      },
+      {
+        "path": "src/shared/ui/TrInput.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 56,
+            "total": 58,
+            "missing": 2,
+            "pct": 96.55
+          },
+          "branches": {
+            "covered": 124,
+            "total": 133,
+            "missing": 9,
+            "pct": 93.23
+          },
+          "functions": {
+            "covered": 14,
+            "total": 14,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 54,
+            "total": 54,
+            "missing": 0,
+            "pct": 100
+          }
+        }
+      }
+    ],
+    "zeroStatementFiles": [],
+    "metrics": {
+      "statements": {
+        "covered": 11397,
+        "total": 12077,
+        "missing": 680,
+        "pct": 94.36
+      },
+      "branches": {
+        "covered": 8942,
+        "total": 9965,
+        "missing": 1023,
+        "pct": 89.73
+      },
+      "functions": {
+        "covered": 3620,
+        "total": 3918,
+        "missing": 298,
+        "pct": 92.39
+      },
+      "lines": {
+        "covered": 10685,
+        "total": 11143,
+        "missing": 458,
+        "pct": 95.88
+      }
+    },
+    "deltaFromBaseline": {
+      "statements": {
+        "covered": 471,
+        "total": -32,
+        "percentagePoints": 4.13
+      },
+      "branches": {
+        "covered": 435,
+        "total": -42,
+        "percentagePoints": 4.72
+      },
+      "functions": {
+        "covered": 199,
+        "total": 2,
+        "percentagePoints": 5.04
+      },
+      "lines": {
+        "covered": 419,
+        "total": -19,
+        "percentagePoints": 3.91
+      }
+    }
+  },
+  "limitations": [
+    "Local Windows Node 24 full-suite/V8 evidence only; exact-SHA Node 22 Ubuntu/GitHub validation requires committed source and was not run by this measurement.",
+    "No include/exclude/threshold changes were made.",
+    "Backend, staging, and user acceptance are outside this local test result."
+  ],
+  "nextSlice": {
+    "priority": "P0",
+    "owner": "src/features/auth/pages/WebOTPPage.tsx",
+    "missingStatements": 14,
+    "missingBranches": 13,
+    "missingFunctions": 3,
+    "reason": "Authentication challenge state, expiry, retry and error handling are current highest-risk coverage gap."
+  }
+}

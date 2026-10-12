@@ -9,6 +9,7 @@ export function useReferralOverviewQuery() {
   return useQuery({
     queryKey: referralQueryKeys.overview,
     queryFn: ({ signal }) => referralApi.getOverview(signal),
+    retry: false,
     staleTime: 30_000,
   });
 }

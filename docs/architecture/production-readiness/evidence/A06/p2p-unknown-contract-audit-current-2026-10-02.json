@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261002-015",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "read-only-openapi-unknown-outcome-idempotency-audit",
+  "observedAt": "2026-10-02T02:40:00Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "environment": "Windows 11, Python 3 with PyYAML 6.0.3; current primary worktree. Read-only YAML/OpenAPI, scenario-matrix and operation-map parsing; no browser, API request or financial side effect.",
+  "commandOrSteps": "Resolve the p2p.unknown operationIds against current P2P OpenAPI and operation-map entries; inspect idempotency, receipt, read lookup, request correlation and same-key replay declarations.",
+  "expected": "Keep p2p.unknown not_verified unless the approved contract provides a deterministic read/correlation and replay outcome; do not send/replay financial writes to probe an unknown result.",
+  "actual": "The current matrix links 4 unique operations and marks p2p.unknown not_verified. The operation map resolves 4/4 linked operations with exact method/path matches. All three POST mutations require the Idempotency-Key header. createP2POrder returns a receipt with orderId only on 201 and has a generic 409 description ('Duplicate or conflicting order request'), with no stable same-key replay response. The request schema has no clientRequestId/clientOrderId field. getP2POrder requires a known orderId. listP2POrders lists current-user history with status/cursor/limit filters but no idempotency/correlation filter; no contract rule guarantees a unique list row can be correlated with an interrupted identical create request. The mapped read cannot locate a new order by unknown receipt; no browser/API request or write/replay was sent. Keep the row not_verified. The next unresolved matrix row is predictions.forbidden.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/A06/p2p-unknown-contract-audit-current-2026-10-02.json",
+  "scenario": {
+    "id": "p2p.unknown",
+    "state": "unknown",
+    "applicability": "required",
+    "executionStatus": "not_verified",
+    "operationIds": ["createP2POrder", "markP2POrderPaid", "releaseP2POrderEscrow", "getP2POrder"],
+    "expectedUi": "When a mutation response is lost, show outcome unconfirmed, neither success nor failure; reconcile using the listed read operation before offering a retry, and preserve the original idempotency key."
+  },
+  "operations": [
+    {
+      "operationId": "createP2POrder",
+      "method": "POST",
+      "path": "/p2p/orders",
+      "responseCodes": ["201", "409"],
+      "responseDescriptions": {
+        "201": "Escrow order created.",
+        "409": "Duplicate or conflicting order request."
+      },
+      "parameterRefs": ["#/components/parameters/IdempotencyKey"],
+      "explicitParameters": []
+    },
+    {
+      "operationId": "markP2POrderPaid",
+      "method": "POST",
+      "path": "/p2p/orders/{orderId}/mark-paid",
+      "responseCodes": ["200", "404", "409"],
+      "responseDescriptions": {
+        "200": "Payment marked by the buyer.",
+        "404": "",
+        "409": "Order cannot transition to paid."
+      },
+      "parameterRefs": ["#/components/parameters/IdempotencyKey"],
+      "explicitParameters": [
+        {
+          "name": "orderId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "releaseP2POrderEscrow",
+      "method": "POST",
+      "path": "/p2p/orders/{orderId}/release",
+      "responseCodes": ["200", "404", "409"],
+      "responseDescriptions": {
+        "200": "Escrow released after authorization.",
+        "404": "",
+        "409": "Order cannot transition to released."
+      },
+      "parameterRefs": ["#/components/parameters/IdempotencyKey"],
+      "explicitParameters": [
+        {
+          "name": "orderId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    {
+      "operationId": "getP2POrder",
+      "method": "GET",
+      "path": "/p2p/orders/{orderId}",
+      "responseCodes": ["200", "404", "401"],
+      "responseDescriptions": {
+        "200": "Escrow order detail and payment instructions.",
+        "404": "",
+        "401": ""
+      },
+      "parameterRefs": [],
+      "explicitParameters": [
+        {
+          "name": "orderId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  ],
+  "idempotencyKeyParameter": {
+    "name": "Idempotency-Key",
+    "in": "header",
+    "required": true,
+    "schema": {
+      "type": "string",
+      "minLength": 16
+    }
+  },
+  "createRequestFields": ["adId", "asset", "currency", "amount", "fiatAmount", "paymentMethod"],
+  "createReceiptFields": ["orderId", "status", "expiresAt"],
+  "listP2POrders": {
+    "operationId": "listP2POrders",
+    "method": "GET",
+    "path": "/p2p/orders",
+    "queryParameters": ["status", "cursor", "limit"],
+    "hasIdempotencyOrCorrelationLookup": false
+  },
+  "counts": {
+    "linkedUniqueOperations": 4,
+    "operationMapExactMatches": 4,
+    "mutationsRequiringIdempotencyKey": 3,
+    "readsByKnownOrderId": 1,
+    "listLookupByIdempotencyOrCorrelationKey": 0,
+    "declaredStableSameKeyReplayResponses": 0
+  },
+  "scenarioMatrixSummary": {
+    "scenariosDefined": 106,
+    "scenarioRowsWithFreshBrowserEvidence": 81,
+    "scenarioRowsFullyCoveredByFreshBrowserEvidence": 38,
+    "uniqueOperationsWithFreshBrowserEvidence": 88,
+    "runtimeEvidenceFresh": false,
+    "freshScenarioEvidenceSidecars": 81,
+    "registeredScenarioEvidenceSidecars": 81,
+    "sourceHashStaleScenarioEvidenceSidecars": 0
+  },
+  "nextAction": "Continue A06.03 in current not_verified matrix order at predictions.forbidden; inspect its current approved contract before any side effect.",
+  "sourceHashes": {
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "0bbf7c7a887415389265aa3fa2f2c07fc670a070ac4f692b55fae87ff19922f4",
+    "contracts/openapi/p2p.yaml": "17d7e0c1b198d6adadc9d5a0519c029084257c82132e8e4391891c5e92c2c576",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320"
+  },
+  "limitations": [
+    "Static contract/map audit only; this does not verify backend idempotency, database durability, API authorization, browser behavior or user acceptance.",
+    "P2POrder history can be read by status/cursor/limit, but the contract does not promise a unique correlation between an interrupted create request and a history item.",
+    "No P2P write, retry or same-key replay was sent."
+  ]
+}

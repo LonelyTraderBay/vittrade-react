@@ -188,12 +188,12 @@ describe('admin read contract pages', () => {
     expect(await screen.findByText('Chưa có A/B test nào.')).toBeVisible();
   });
 
-  it('keeps the A/B tests retry action after a server error', async () => {
+  it('keeps the A/B tests retry action after a transport failure', async () => {
     let shouldFail = true;
     server.use(
       http.get('*/admin/analytics/ab-tests', () =>
         shouldFail
-          ? HttpResponse.json({ message: 'Unavailable' }, { status: 503 })
+          ? HttpResponse.error()
           : HttpResponse.json({
               tests: [
                 {

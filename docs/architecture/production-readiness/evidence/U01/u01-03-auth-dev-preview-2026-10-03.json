@@ -1,0 +1,228 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261003-002",
+  "taskId": "U01",
+  "stepId": "U01.03",
+  "kind": "shared-auth-development-msw-browser-preview",
+  "observedAt": "2026-10-02T18:53:15.290Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "sourceBranch": "main",
+  "environment": "Windows; Node v24.19.0; Chromium 153.0.8010.12; Vite development build with VITE_DATA_SOURCE=mock; loopback browser only.",
+  "expected": "Use the shared Auth development personas to observe guest, MFA-required, invalid-code, authenticated, and locked states in Chromium. Exercise the login MFA 429 response only through the separate contract-backed API-mode browser case; do not use a guest registration verification fixture while security semantics remain unresolved.",
+  "actual": "Chromium opened http://127.0.0.1:5174/. The shared mfa persona returned login 200 then verify 400 for the invalid code and 200 for 123456. A full-page reload then returned GET /api/auth/session 401, and the UI showed the resulting session state. A fresh browser context using the shared locked persona returned login 423. All 8 observed application API responses and all 7 Auth API responses came from MSW's service worker; 0 application API requests failed and 0 page errors occurred.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/U01/u01-03-auth-dev-preview-2026-10-03.json",
+  "plannedInputPaths": [
+    "AGENTS.md",
+    "AI_RULES.md",
+    "ARCHITECTURE.md",
+    "PROJECT_BOOTSTRAP_PROMPT.txt",
+    "contracts/README.md",
+    "contracts/openapi/auth.yaml",
+    "docs/PROJECT_CONTEXT.md",
+    "docs/ai/WORKFLOW.md",
+    "docs/architecture/production-readiness/PLAN.md",
+    "docs/architecture/production-readiness/TRACKING.json",
+    "guidelines/Guidelines.md",
+    "src/dev/mocks/auth-handlers.test.ts",
+    "src/dev/mocks/handlers.ts",
+    "src/dev/mocks/personas.ts",
+    "src/features/auth/api/auth-api-instance.ts",
+    "src/features/auth/api/auth-api.test.ts",
+    "src/features/auth/api/auth-api.ts",
+    "src/features/auth/api/auth-openapi-contract.test.ts",
+    "src/features/auth/api/password-reset-api.ts",
+    "src/features/auth/components/RegistrationForm.test.tsx",
+    "src/features/auth/components/Web2FASetupFlow.test.tsx",
+    "src/features/auth/pages/LoginPage.api-mode.test.tsx",
+    "src/features/auth/pages/LoginPage.test.tsx",
+    "src/features/auth/pages/OTPPage.test.tsx",
+    "src/features/auth/pages/PasswordChangePage.test.tsx",
+    "src/features/auth/pages/PasswordResetPages.test.tsx",
+    "src/features/auth/pages/TwoFASetupPage.test.tsx",
+    "src/features/auth/pages/WebAccountLockedPage.test.tsx",
+    "src/features/auth/pages/WebAuthSuccessPage.test.tsx",
+    "src/features/auth/pages/WebLoginPage.api-mode.test.tsx",
+    "src/features/auth/pages/WebLoginPage.test.tsx",
+    "src/features/auth/pages/WebOTPPage.test.tsx",
+    "src/features/auth/pages/WebSessionExpiredPage.test.tsx",
+    "src/features/auth/routes.test.ts",
+    "tests/e2e/auth-session.spec.ts",
+    "docs/architecture/production-readiness/evidence/U01/u01-03-login-mfa-rate-limit-2026-10-03.json",
+    "docs/architecture/production-readiness/evidence/U01/run-u01-03-auth-dev-preview.mjs"
+  ],
+  "reviewedInputPaths": [
+    "contracts/openapi/auth.yaml",
+    "src/dev/mocks/handlers.ts",
+    "src/dev/mocks/personas.ts",
+    "src/features/auth/api/auth-api.ts",
+    "src/features/auth/pages/WebLoginPage.tsx",
+    "src/features/auth/pages/WebOTPPage.tsx",
+    "src/shared/session/AuthContext.tsx",
+    "tests/e2e/auth-session.spec.ts",
+    "docs/architecture/production-readiness/evidence/U01/run-u01-03-auth-dev-preview.mjs"
+  ],
+  "generatedOutputPaths": [
+    "docs/architecture/production-readiness/evidence/U01/u01-03-auth-dev-preview-2026-10-03.json",
+    "docs/architecture/production-readiness/evidence/U01/u01-03-auth-login-preview.png",
+    "docs/architecture/production-readiness/evidence/U01/u01-03-auth-mfa-challenge-preview.png",
+    "docs/architecture/production-readiness/evidence/U01/u01-03-auth-mfa-invalid-preview.png",
+    "docs/architecture/production-readiness/evidence/U01/u01-03-auth-mfa-authenticated-preview.png",
+    "docs/architecture/production-readiness/evidence/U01/u01-03-auth-session-reload-preview.png",
+    "docs/architecture/production-readiness/evidence/U01/u01-03-auth-locked-preview.png"
+  ],
+  "resultingStepScopePaths": 44,
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "f781275476009057ff9aeab57110c150742b278c7b92d6e913d2eb4fdd278b0c",
+    "src/dev/mocks/handlers.ts": "b7068df1558e8efb458f5889c87bde27759acc3139a171ac885593386a78e34f",
+    "src/dev/mocks/personas.ts": "65be58e05f0a993351907659906f0bdf0b42168dbb87bbbcba45bbe7f9ee2af7",
+    "src/features/auth/api/auth-api.ts": "050846c48de49be56f6bdf6a73669b5d3a6230c559e33851cd07840609fca078",
+    "src/features/auth/pages/WebLoginPage.tsx": "d938bac40bb63145ffbb3919140b1b3d267b96e86872a93f29a4ebac24980e41",
+    "src/features/auth/pages/WebOTPPage.tsx": "5d2990eafb91494c38f6e207f925c32b9d0c43cd5f5d192f86545558b7923ebf",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",
+    "tests/e2e/auth-session.spec.ts": "6c3108b1163aaa511c8044144970b495327878f2858eef8db22233046b326543",
+    "docs/architecture/production-readiness/evidence/U01/run-u01-03-auth-dev-preview.mjs": "3b22a5f7e788a65d1d8170ecbc0b28378b00e265b76ae0e65fcd56ac5a6236d2"
+  },
+  "browser": {
+    "baseUrl": "http://127.0.0.1:5174/",
+    "version": "153.0.8010.12",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "scenarios": [
+      "guest login page rendered",
+      "mfa persona issued a login challenge without creating a session before verification",
+      "invalid code returned HTTP 400 and remained on OTP",
+      "valid code returned HTTP 200 and navigated to /w/home",
+      "full-page reload returned HTTP 401 from GET /auth/session",
+      "locked persona returned HTTP 423 and rendered the account-locked page"
+    ],
+    "apiResponses": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login/mfa/verify",
+        "status": 400,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login/mfa/verify",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 423,
+        "fromServiceWorker": true
+      }
+    ],
+    "authResponses": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login/mfa/verify",
+        "status": 400,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login/mfa/verify",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 423,
+        "fromServiceWorker": true
+      }
+    ],
+    "failedApiRequests": [],
+    "pageErrors": [],
+    "screenshots": [
+      "docs/architecture/production-readiness/evidence/U01/u01-03-auth-login-preview.png",
+      "docs/architecture/production-readiness/evidence/U01/u01-03-auth-mfa-challenge-preview.png",
+      "docs/architecture/production-readiness/evidence/U01/u01-03-auth-mfa-invalid-preview.png",
+      "docs/architecture/production-readiness/evidence/U01/u01-03-auth-mfa-authenticated-preview.png",
+      "docs/architecture/production-readiness/evidence/U01/u01-03-auth-session-reload-preview.png",
+      "docs/architecture/production-readiness/evidence/U01/u01-03-auth-locked-preview.png"
+    ]
+  },
+  "findings": [
+    {
+      "severity": "P1",
+      "kind": "security_contract_conflict",
+      "operationId": "verifyMfa",
+      "disposition": "Do not add guest purpose=register verification until the API/security owner resolves inherited sessionCookie semantics."
+    },
+    {
+      "severity": "P2",
+      "kind": "development_mock_session_reload_limit",
+      "sourceEvidence": "The shared MSW preview returned GET /api/auth/session 401 after a full document reload; the real cookie-backed session behavior remains unverified.",
+      "disposition": "Keep this as local mock evidence. Do not add browser storage to simulate the backend session cookie."
+    }
+  ],
+  "externalEvidence": {
+    "backendRequests": 0,
+    "stagingRequests": 0,
+    "browserRoutesOpened": ["/w/auth/login", "/w/auth/otp", "/w/home", "/w/auth/account-locked"],
+    "userAcceptance": "not performed",
+    "backendOwnerAssignmentsFound": 0
+  },
+  "notes": "MSW preview and API-mode Playwright tests validate frontend behavior only. The login MFA 429 case is a separate status-only HTTP response test. Registration verification remains held; no backend, staging, cookie persistence or user acceptance is certified."
+}

@@ -1,0 +1,7 @@
+
+> vittrade-react@0.0.1 architecture:check
+> depcruise src --config .dependency-cruiser.cjs --validate
+
+
+✔ no dependency violations found (858 modules, 4619 dependencies cruised)
+

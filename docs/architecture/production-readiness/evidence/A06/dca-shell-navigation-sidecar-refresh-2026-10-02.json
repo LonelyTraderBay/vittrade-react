@@ -1,0 +1,429 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "EV-20261002-032",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "observedAt": "2026-10-02T12:33:34.324Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "dirtyWorktree": true,
+  "environment": "Windows PowerShell, Node v24.19.0, Playwright Chromium at 1440x900, local Vite/MSW preview on 127.0.0.1:4173; no backend or staging service.",
+  "changeSummary": [
+    "Added a DCA entry to the Web asset sidebar and a DCA breadcrumb label for /w/dca.",
+    "Added WebSidebar and WebCommandBar regression tests for exact active selection and breadcrumb text.",
+    "Extended the DCA empty browser runner to assert the shell state and record its service-worker fixture boundary.",
+    "Re-ran the ten current-source sidecars whose source snapshots include WebSidebar or WebCommandBar after the shared shell edit."
+  ],
+  "browserSidecars": [
+    {
+      "scenarioId": "dca.empty",
+      "report": "docs/architecture/production-readiness/evidence/A06/dca-empty-current-head-browser-check-202610021150310.json",
+      "reportSha256": "e3f0d3a39e190f613b0ac92e32b6ff88b9b35cc4572043694e3e64f383837bbb",
+      "status": "passed",
+      "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+      "sourceHashCount": 17,
+      "sourceHashMismatches": 0,
+      "screenshotPaths": [
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-dca-empty-current-head-202610021150310.png",
+          "sha256": "0cd46e363d4c6c94af806775815ade910ef32c31570505635deeec64aca11b15"
+        }
+      ],
+      "externalApiOrigins": []
+    },
+    {
+      "scenarioId": "arena.error",
+      "report": "docs/architecture/production-readiness/evidence/A06/arena-error-browser-check-202610021152401.json",
+      "reportSha256": "a61af79e5e9ad67eac0ee190ad1ab194bb09bfffeb64e194715ba80799b17e69",
+      "status": "passed",
+      "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+      "sourceHashCount": 17,
+      "sourceHashMismatches": 0,
+      "screenshotPaths": [
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-arena-error-discovery-202610021152401.png",
+          "sha256": "009546fe9bba8b41f0ec41610086a24ef9a7e17bb41f6d4a3fd20469b6748bd2"
+        }
+      ],
+      "externalApiOrigins": []
+    },
+    {
+      "scenarioId": "arena.loading",
+      "report": "docs/architecture/production-readiness/evidence/A06/arena-loading-browser-check-202610021152437.json",
+      "reportSha256": "b599824b54b7d5c13f07703be7d2d41fb04ec3e8c0c036c721cf3ea814fb8af0",
+      "status": "passed",
+      "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+      "sourceHashCount": 15,
+      "sourceHashMismatches": 0,
+      "screenshotPaths": [
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-arena-loading-discovery-202610021152437.png",
+          "sha256": "a62edcc9e27ba7784c3c329e1512fa9fccc645d5078c5e1ab6222a748e1b5eec"
+        }
+      ],
+      "externalApiOrigins": []
+    },
+    {
+      "scenarioId": "auth.loading",
+      "report": "docs/architecture/production-readiness/evidence/A06/auth-loading-current-head-browser-check-202610021152472.json",
+      "reportSha256": "0da61842b2742a455294f29787c7b2fa24109a8ea30f0fe18c851739d1130d23",
+      "status": "passed",
+      "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+      "sourceHashCount": 17,
+      "sourceHashMismatches": 0,
+      "screenshotPaths": [
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-auth-loading-current-head-202610021152472.png",
+          "sha256": "9250283237af13269422d02d2ae09dbfd16f9a126c87a98a46b626d634b475a2"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-auth-loading-login-current-head-202610021152472.png",
+          "sha256": "927bb193ba885720b648d4617d239ecf101fd209d23031bd7fd781f9fec2201c"
+        }
+      ],
+      "externalApiOrigins": []
+    },
+    {
+      "scenarioId": "auth.success",
+      "report": "docs/architecture/production-readiness/evidence/A06/auth-success-current-head-browser-check-202610021152509.json",
+      "reportSha256": "01a02ff25d8966c8a79776968ad5d136c8c70c1f424b77af03f3f16b15df2a82",
+      "status": "passed",
+      "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+      "sourceHashCount": 15,
+      "sourceHashMismatches": 0,
+      "screenshotPaths": [
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-auth-success-current-head-202610021152509.png",
+          "sha256": "3b2500299dfcb51237854c0bc797cfdd96b99415e4dfe9290a0b0e8dfa42480b"
+        }
+      ],
+      "externalApiOrigins": []
+    },
+    {
+      "scenarioId": "support.empty",
+      "report": "docs/architecture/production-readiness/evidence/A06/support-empty-browser-check-2026-10-02-1790941981520.json",
+      "reportSha256": "97513e3e824efbc798aaab84f372b00f474aafa13d5892fe94346a8b8677797f",
+      "status": "passed",
+      "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+      "sourceHashCount": 25,
+      "sourceHashMismatches": 0,
+      "screenshotPaths": [
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-support-empty-news-2026-10-02-1790941981520.png",
+          "sha256": "fd05f88a3c0c5d8422aa9f6e74caa7b9b97b7757b1fbde63fa8bde383d71dc1b"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-support-empty-notifications-2026-10-02-1790941981520.png",
+          "sha256": "0425965ed41f745b393864bb93e51888b2d670be20e39b0f34ca403905ede32a"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-support-empty-help-2026-10-02-1790941981520.png",
+          "sha256": "ad68da3ac35bd99e05d9c9423a3fc837b785e39df32cadf4fee339b6fe569992"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-support-empty-tickets-2026-10-02-1790941981520.png",
+          "sha256": "2f793d22fdf3b44d06a5e51ffe2594a52b5d7ad42fedee0ae59817fd57373433"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-support-empty-created-ticket-2026-10-02-1790941981520.png",
+          "sha256": "1b980f9cd55e2c19f067f02c84b1ebe312bff69bda53e33500cd972eabbf7f4b"
+        }
+      ],
+      "externalApiOrigins": []
+    },
+    {
+      "scenarioId": "support.error",
+      "report": "docs/architecture/production-readiness/evidence/A06/support-error-browser-check-2026-10-02-1790941983873.json",
+      "reportSha256": "5da5f5a443454fa821827ea614e73438faf114e415625e7d5e20bc5890f9300d",
+      "status": "passed",
+      "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+      "sourceHashCount": 26,
+      "sourceHashMismatches": 0,
+      "screenshotPaths": [
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-support-error-news-2026-10-02-1790941983873.png",
+          "sha256": "1e753789bcb579746ba1d474af4a2563fb248fb273efbccfca19d98816e4f998"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-support-error-notifications-2026-10-02-1790941983873.png",
+          "sha256": "c66129abaef964c7de10dbb6058852fe419ea1c41e5fae00a1d37e4a6cac3adc"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-support-error-help-2026-10-02-1790941983873.png",
+          "sha256": "bce61c8bce734aea8e61d1884d5e991985815ed21e6446a34a2ffab0a2eb7aa3"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-support-error-tickets-2026-10-02-1790941983873.png",
+          "sha256": "bce61c8bce734aea8e61d1884d5e991985815ed21e6446a34a2ffab0a2eb7aa3"
+        }
+      ],
+      "externalApiOrigins": []
+    },
+    {
+      "scenarioId": "support.loading",
+      "report": "docs/architecture/production-readiness/evidence/A06/support-loading-browser-check-2026-10-02-1790941991721.json",
+      "reportSha256": "7d3c2c66cd6ec27bec6702a9af7944c8d7485420247373fa3572b1143f60e7b5",
+      "status": "passed",
+      "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+      "sourceHashCount": 25,
+      "sourceHashMismatches": 0,
+      "screenshotPaths": [
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-support-loading-news-2026-10-02-1790941991721.png",
+          "sha256": "06fbcb3de8cf15bad2676d1afadb4ba554999d7f9e4e54cef4adeecfb0c9bcc8"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-support-loading-notifications-2026-10-02-1790941991721.png",
+          "sha256": "a954cbdff928d9368231d144c889d6baa491de7ad3548695f8749db34f927765"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-support-loading-help-2026-10-02-1790941991721.png",
+          "sha256": "a11b34f6ffb98e17f95bc92d8dea6dd25310066e81f9403c6402f7fe189e1689"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-support-loading-tickets-2026-10-02-1790941991721.png",
+          "sha256": "a2f29f2ae5e6587d6f4e83e8a0766789e3ec7ef1bac3428df16423030240028c"
+        }
+      ],
+      "externalApiOrigins": []
+    },
+    {
+      "scenarioId": "support.pending",
+      "report": "docs/architecture/production-readiness/evidence/A06/support-pending-browser-check-2026-10-02.json",
+      "reportSha256": "71f5b8d549e6a5ef03385f4de62b92d243918dc2de48daccc8374c7b75fea920",
+      "status": "passed",
+      "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+      "sourceHashCount": 22,
+      "sourceHashMismatches": 0,
+      "screenshotPaths": [],
+      "externalApiOrigins": []
+    },
+    {
+      "scenarioId": "support.success",
+      "report": "docs/architecture/production-readiness/evidence/A06/support-success-browser-check-2026-10-02-1790942009100.json",
+      "reportSha256": "d4e859a120c0daaeb065ea88b2249c1de3271b84801a87d73f5867f0baea7808",
+      "status": "passed",
+      "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+      "sourceHashCount": 29,
+      "sourceHashMismatches": 0,
+      "screenshotPaths": [
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-support-success-news-2026-10-02-1790942009100.png",
+          "sha256": "e56d411534843b015a26870fda0f4f9ad977b1125a4862c9def87375257da3cf"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-support-success-notifications-2026-10-02-1790942009100.png",
+          "sha256": "20cb70a9912f5cee4676d34ad7ed97e08ddf19208207e5ab4b95485b3d17fff0"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-support-success-help-2026-10-02-1790942009100.png",
+          "sha256": "c9c3e4d8887f68f6eda288a1767a5f1d29d73a66221e4189d99bab545d8e1a1a"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-support-success-tickets-2026-10-02-1790942009100.png",
+          "sha256": "d8aa0cb197a6dc9a491fd46865314a1c52c29bb08bca7280fc4992eae45fb8cf"
+        }
+      ],
+      "externalApiOrigins": []
+    },
+    {
+      "scenarioId": "market.success",
+      "report": "docs/architecture/production-readiness/evidence/A06/market-success-current-head-browser-check-20261002115331.json",
+      "reportSha256": "a04250fae0d4e4cc76781f9c47b647e772390431642295cfd33085148773e977",
+      "status": "passed",
+      "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+      "sourceHashCount": 43,
+      "sourceHashMismatches": 0,
+      "screenshotPaths": [
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-home-20261002115331.png",
+          "sha256": "f8fabbda78b330898614af6ac6632decba9be99a80ccbd7a305023b76aaf8148"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-overview-20261002115331.png",
+          "sha256": "103fb94ebc9b862d243dbdb73e0505e304540ba40bd4983aee9db15458e4f989"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-movers-20261002115331.png",
+          "sha256": "a9a456e8eed4da0d363e3a8bda0af05f99834216d0a7d0dd3f42492f2f197454"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-news-20261002115331.png",
+          "sha256": "7fa58739142ecff001cdee1bbf102b249112e1396d1e63f43e89484bb185349a"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-calendar-20261002115331.png",
+          "sha256": "8549c324198f889e9627c3b44635a5676dde774e56ef98100b6802afb49c7a82"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-correlations-20261002115331.png",
+          "sha256": "fb6b9e5d151b494aa9f209583a7089df9acbef74f1352373827efb3c4bfbd7c2"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-unlocks-20261002115331.png",
+          "sha256": "b28181fd5a5f64c06890d9174032cdacc39244ba2e7401e10720711605fb37b1"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-derivatives-20261002115331.png",
+          "sha256": "9bd81fbeddc930af75766aced7a67a33d6c05375bc7d89c3ca46aa02227b3636"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-social-sentiment-20261002115331.png",
+          "sha256": "5aa9804224cbd778e6a80ca1ebb0b2a524d1569785ffb57165c97fa49484ec28"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-signals-20261002115331.png",
+          "sha256": "e8f4b8b601f1c5011cb9601557ea2ae60b3bd304d6fc166f9d057fc8bc74249f"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-alerts-20261002115331.png",
+          "sha256": "2fbfd02c75f3e200f26c72ec8ea5271f59df34642387456dc48d33e78002346f"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-screener-20261002115331.png",
+          "sha256": "a11adff1efb0c9d4f849ccc1e496f7b57d137a9924417cf9e7624120d0d9039c"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-watchlist-20261002115331.png",
+          "sha256": "1b561b60113e436062c70697dabf23c55a6e6a66c5747adfb92545c663a791ab"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-pair-btcusdt-20261002115331.png",
+          "sha256": "e2c68105c32de3dcc420edff82c3c036eaf09a09b92cffe9a583cae76d58c86a"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-depth-20261002115331.png",
+          "sha256": "d22e421dde174b7dacbc82b22100c937c34c5c60d7f9e54cbc53f3926e1e3a75"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-trade-advanced-chart-btcusdt-20261002115331.png",
+          "sha256": "56037c6bcaaf6a3d7f894eb4f4233128291777d13a2204c0fb3ee4b2a0f6b302"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-pair-btcusdt-info-20261002115331.png",
+          "sha256": "a448d289196d2c5d07394bc5d94d0dd51768e464f593b89658a990cd9913fef4"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-sectors-20261002115331.png",
+          "sha256": "eb6dee9bc70dd5a5ed64c7658698d86ad8e543742c49e40be52cab74f2eecd3f"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-heatmap-20261002115331.png",
+          "sha256": "a22a1011294a6910b8a91a21b97cd64b735923f6b990d4a4f245c58ca57413e8"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-compare-20261002115331.png",
+          "sha256": "aa28132bea07c9b1fe5c2645e18e89398583f5eb4bade2ce18fa6bc23881998d"
+        },
+        {
+          "path": "docs/architecture/production-readiness/evidence/A06/preview-market-success-market-writes-complete-20261002115331.png",
+          "sha256": "a212ce3a2cb6887fb86823a1c97120d7fa264b41ba2f4bb881016590a12a831d"
+        }
+      ],
+      "externalApiOrigins": []
+    }
+  ],
+  "dcaShellMeasurement": {
+    "route": "/w/dca",
+    "dcaBreadcrumbVisible": true,
+    "dcaSidebarSelected": true,
+    "homeSidebarSelected": false,
+    "dashboardFallbackVisible": false,
+    "observedDcaOperationIds": ["getDCASnapshot"],
+    "mutationRequestCount": 0,
+    "externalApiOrigins": [],
+    "screenshot": "docs/architecture/production-readiness/evidence/A06/preview-dca-empty-current-head-202610021150310.png"
+  },
+  "measuredScope": {
+    "refreshedBrowserReports": 11,
+    "currentSourceHashReferences": 251,
+    "missingOrStaleSourceHashes": 0,
+    "screenshotsReferencedAndPresent": 44,
+    "scenarioRowsWithFreshBrowserEvidence": 81,
+    "fullyCoveredScenarioRows": 38,
+    "uniqueOperationsWithFreshBrowserEvidence": 88,
+    "freshRegisteredSidecars": "81/81",
+    "staleRegisteredSidecars": 0,
+    "aggregateRuntimeFresh": false,
+    "userAcceptance": "0/128",
+    "backendStagingOperations": "0/154"
+  },
+  "verification": {
+    "focusedTests": {
+      "command": "node node_modules/vitest/vitest.mjs run src/app/components/layout/WebSidebar.test.tsx src/app/components/layout/WebCommandBar.test.tsx",
+      "status": "pass",
+      "files": 2,
+      "tests": 9
+    },
+    "fullVitest": {
+      "command": "node node_modules/vitest/vitest.mjs run",
+      "status": "pass",
+      "files": 289,
+      "tests": 2401
+    },
+    "typecheck": {
+      "appProject": "pass",
+      "nodeProject": "pass",
+      "nodeVersion": "24.19.0"
+    },
+    "scopedLint": "pass",
+    "scopedPrettier": "pass",
+    "dcaBrowserCheck": "pass",
+    "staleSidecarRefresh": "10/10 pass",
+    "productionRouteBoundary": {
+      "status": "pass",
+      "explicitRouteGuards": 17,
+      "developmentOnlyMockPages": 2,
+      "developmentOnlyDemoPages": 2
+    },
+    "scenarioMatrix": {
+      "status": "pass",
+      "domains": 15,
+      "operations": 154,
+      "expectations": 106
+    },
+    "uiAcceptanceIndex": {
+      "status": "pass",
+      "routeDeclarations": 427,
+      "urlRegistrations": 1462,
+      "uniquePreviewUrls": 1393,
+      "historicalUrlParity": "426/427"
+    },
+    "architectureInventory": {
+      "status": "pass",
+      "pages": 129,
+      "routes": 427,
+      "components": 149,
+      "services": 32,
+      "mocks": 28
+    },
+    "trackingChecker": {
+      "status": "unresolved",
+      "exitCode": 1,
+      "errorCount": 65,
+      "missingFingerprints": 32,
+      "snapshotPathsAbsent": 5,
+      "sourceMismatches": 28,
+      "applicationPathInventory": "916/916"
+    },
+    "productionBuild": {
+      "status": "not_verified",
+      "command": "node scripts/build.mjs",
+      "reason": "Vite config stops before compilation because VITE_API_BASE_URL and VITE_WS_URL are absent. The production example explicitly marks .invalid hosts as values that must be replaced with verified endpoints."
+    }
+  },
+  "catalogSnapshot": {
+    "fileRecords": 3023,
+    "activeRecords": 2821,
+    "plannedRecords": 202,
+    "evidenceRecords": 849,
+    "changeRecords": 5426
+  },
+  "limitations": [
+    "Every browser response in these sidecars came from local MSW/service-worker fixtures; no backend, staging, persistence, or production behavior was verified.",
+    "Twenty-five contract-dependent authorization and unknown/duplicate rows still require API/business-owner-approved semantics.",
+    "Formal user acceptance is still 0/128 and backend/staging verification is 0/154.",
+    "The Preview warning and floating Web widget overlap, and other route-specific acceptance findings remain open.",
+    "The production build remains unverified until the real API and WebSocket endpoint inputs are provided in the build environment."
+  ]
+}

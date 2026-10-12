@@ -23,6 +23,25 @@ function readOnlyAdapter(): AuthAdapter {
 }
 
 describe('Support write permission boundary', () => {
+  it('does not request or expose notifications without read permission', async () => {
+    let listCalls = 0;
+    server.use(
+      http.get('*/notifications', () => {
+        listCalls += 1;
+        return HttpResponse.json({ items: [] });
+      }),
+    );
+
+    renderWithProviders(<NotificationsContractPage />, { authAdapter: testAuthAdapter });
+
+    const accessAlert = await screen.findByText(
+      'Notification read permission is required to view notifications.',
+    );
+    expect(accessAlert).toHaveAttribute('role', 'alert');
+    expect(accessAlert).toBeVisible();
+    expect(listCalls).toBe(0);
+  });
+
   it('keeps notification acknowledgement disabled for read-only sessions', async () => {
     server.use(
       http.get('*/notifications', () =>

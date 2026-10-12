@@ -58,7 +58,7 @@ test.describe('P2P escrow contract smoke on staging build', () => {
     page,
   }) => {
     await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
-    await page.route('https://e2e.invalid/p2p/orders**', (route) =>
+    await page.route('https://e2e.test/p2p/orders**', (route) =>
       route.fulfill({ json: { items: [paidOrder], total: 1 } }),
     );
 
@@ -77,10 +77,10 @@ test.describe('P2P escrow contract smoke on staging build', () => {
     let releaseIdempotencyKey: string | undefined;
 
     await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
-    await page.route('https://e2e.invalid/p2p/orders/p2p-order-1', (route) =>
+    await page.route('https://e2e.test/p2p/orders/p2p-order-1', (route) =>
       route.fulfill({ json: { ...paidOrder, status: released ? 'released' : 'paid' } }),
     );
-    await page.route('https://e2e.invalid/p2p/orders/p2p-order-1/release/challenge', (route) =>
+    await page.route('https://e2e.test/p2p/orders/p2p-order-1/release/challenge', (route) =>
       route.fulfill({
         status: 201,
         json: {
@@ -91,7 +91,7 @@ test.describe('P2P escrow contract smoke on staging build', () => {
       }),
     );
     await page.route(
-      'https://e2e.invalid/p2p/orders/p2p-order-1/release/challenge/release-challenge-1/verify',
+      'https://e2e.test/p2p/orders/p2p-order-1/release/challenge/release-challenge-1/verify',
       async (route) => {
         expect(route.request().postDataJSON()).toEqual({ code: '123456' });
         return route.fulfill({
@@ -102,7 +102,7 @@ test.describe('P2P escrow contract smoke on staging build', () => {
         });
       },
     );
-    await page.route('https://e2e.invalid/p2p/orders/p2p-order-1/release', async (route) => {
+    await page.route('https://e2e.test/p2p/orders/p2p-order-1/release', async (route) => {
       releaseBody = route.request().postDataJSON() as Record<string, unknown>;
       releaseIdempotencyKey = route.request().headers()['idempotency-key'];
       released = true;
@@ -149,16 +149,16 @@ test.describe('P2P escrow contract smoke on staging build', () => {
     let messageIdempotencyKey: string | undefined;
 
     await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
-    await page.route('https://e2e.invalid/p2p/disputes/p2p-dispute-1', (route) =>
+    await page.route('https://e2e.test/p2p/disputes/p2p-dispute-1', (route) =>
       route.fulfill({ json: currentDispute }),
     );
-    await page.route('https://e2e.invalid/p2p/disputes/p2p-dispute-1/escalate', async (route) => {
+    await page.route('https://e2e.test/p2p/disputes/p2p-dispute-1/escalate', async (route) => {
       escalationBody = route.request().postDataJSON() as Record<string, unknown>;
       escalationIdempotencyKey = route.request().headers()['idempotency-key'];
       currentDispute = { ...currentDispute, escalationLevel: 3 };
       return route.fulfill({ json: currentDispute });
     });
-    await page.route('https://e2e.invalid/p2p/disputes/p2p-dispute-1/messages', async (route) => {
+    await page.route('https://e2e.test/p2p/disputes/p2p-dispute-1/messages', async (route) => {
       messageBody = route.request().postDataJSON() as Record<string, unknown>;
       messageIdempotencyKey = route.request().headers()['idempotency-key'];
       currentDispute = {

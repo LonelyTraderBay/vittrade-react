@@ -56,7 +56,7 @@ export function RootLayout({
           )}
         </React.Suspense>
         <ThemedToaster />
-        <PlatformSwitcher />
+        <PlatformSwitcher previewControlsVisible={Boolean(DevelopmentPreviewControls)} />
         {DevelopmentPreviewControls ? (
           <React.Suspense fallback={null}>
             <DevelopmentPreviewControls />

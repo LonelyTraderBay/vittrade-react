@@ -174,6 +174,224 @@ describe('MarketListPage', () => {
     }
   }, 30_000);
 
+  it('searches symbols and base-asset aliases, then resets search, category and sorting', async () => {
+    server.use(
+      http.get('http://localhost:3000/api/market/pairs', () =>
+        HttpResponse.json({
+          items: [...marketPairs, { ...pair, id: 'btc-alias-usdt', symbol: 'XBT/USDT' }],
+        }),
+      ),
+      http.get('http://localhost:3000/api/market/watchlist', () =>
+        HttpResponse.json({ items: [] }),
+      ),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<MarketListPage />, { authAdapter });
+    const searchInput = await screen.findByPlaceholderText('Tìm kiếm BTC, ETH...');
+
+    await user.type(searchInput, 'BTC');
+    expect(await screen.findByRole('button', { name: /XBT\/USDT —/ })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /BTC\/USDT —/ })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Xóa tìm kiếm' }));
+    await user.type(searchInput, 'SOL');
+    expect(await screen.findByRole('button', { name: /SOL\/USDT —/ })).toBeInTheDocument();
+
+    await user.clear(searchInput);
+    await user.click(screen.getByRole('button', { name: 'DeFi' }));
+    expect(await screen.findByRole('button', { name: /ETH\/USDT —/ })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /BTC\/USDT —/ })).toBeNull();
+    await user.click(screen.getByRole('button', { name: 'Mở bộ sắp xếp' }));
+    await user.click(screen.getByRole('button', { name: 'Giá thấp → cao' }));
+    await user.type(searchInput, 'missing');
+    await user.click(await screen.findByRole('button', { name: 'Xóa bộ lọc' }));
+
+    expect(await screen.findByRole('button', { name: /BTC\/USDT —/ })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /XBT\/USDT —/ })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /ETH\/USDT —/ })).toBeInTheDocument();
+    const rows = screen
+      .getAllByRole('button')
+      .filter((button) => /\/USDT —/.test(button.getAttribute('aria-label') ?? ''));
+    expect(rows.map((row) => row.getAttribute('aria-label')?.split(' — ')[0])).toEqual([
+      'BTC/USDT',
+      'ETH/USDT',
+      'SOL/USDT',
+      'XBT/USDT',
+    ]);
+  }, 30_000);
+
+  it('recovers from market-pair loading errors through the list retry action', async () => {
+    let pairReads = 0;
+    server.use(
+      http.get('http://localhost:3000/api/market/pairs', () => {
+        pairReads += 1;
+        if (pairReads <= 3) {
+          return HttpResponse.json({ message: 'Market unavailable' }, { status: 503 });
+        }
+        return HttpResponse.json({ items: [pair] });
+      }),
+      http.get('http://localhost:3000/api/market/watchlist', () =>
+        HttpResponse.json({ items: [] }),
+      ),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<MarketListPage />, { authAdapter });
+
+    await user.click(await screen.findByRole('button', { name: 'Thử lại' }, { timeout: 5_000 }));
+
+    expect(await screen.findByRole('button', { name: /BTC\/USDT —/ })).toBeInTheDocument();
+    expect(pairReads).toBe(4);
+  });
+
+  it('retries an unavailable watchlist without blocking market data', async () => {
+    let watchlistReads = 0;
+    server.use(
+      http.get('http://localhost:3000/api/market/pairs', () =>
+        HttpResponse.json({ items: [pair] }),
+      ),
+      http.get('http://localhost:3000/api/market/watchlist', () => {
+        watchlistReads += 1;
+        if (watchlistReads <= 3) {
+          return HttpResponse.json({ message: 'Watchlist unavailable' }, { status: 503 });
+        }
+        return HttpResponse.json({ items: [] });
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<MarketListPage />, { authAdapter });
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Không thể tải watchlist; thao tác yêu thích đang tạm khóa.',
+    );
+    expect(await screen.findByRole('button', { name: 'Thêm vào yêu thích' })).toBeDisabled();
+    await user.click(screen.getByRole('button', { name: 'Thử tải lại' }));
+
+    await waitFor(() => expect(screen.queryByRole('alert')).not.toBeInTheDocument());
+    expect(screen.getByRole('button', { name: /BTC\/USDT —/ })).toBeEnabled();
+    expect(watchlistReads).toBe(4);
+  });
+
+  it('runs the query refetch callback after a pull-to-refresh gesture', async () => {
+    let pairReads = 0;
+    server.use(
+      http.get('http://localhost:3000/api/market/pairs', () => {
+        pairReads += 1;
+        return HttpResponse.json({ items: [pair] });
+      }),
+      http.get('http://localhost:3000/api/market/watchlist', () =>
+        HttpResponse.json({ items: [] }),
+      ),
+    );
+    renderWithProviders(<MarketListPage />, { authAdapter });
+    const footer = await screen.findByText(/Hiển thị \d+\/\d+ cặp giao dịch/);
+    const surface = footer.closest('.relative.flex-1');
+    expect(surface).not.toBeNull();
+
+    fireEvent.touchStart(surface!, { touches: [{ clientY: 0 }] });
+    fireEvent.touchMove(surface!, { touches: [{ clientY: 200 }] });
+    fireEvent.touchEnd(surface!);
+
+    await waitFor(() => expect(pairReads).toBe(2), { timeout: 5_000 });
+  });
+
+  it('routes market shortcuts and sorts the strongest losers by percentage change', async () => {
+    const additionalLoser = {
+      ...pair,
+      id: 'xrp-usdt',
+      symbol: 'XRP/USDT',
+      baseAsset: 'XRP',
+      price: 0.52,
+      change24h: -4.5,
+      category: 'DeFi',
+    };
+    server.use(
+      http.get('http://localhost:3000/api/market/pairs', () =>
+        HttpResponse.json({ items: [...marketPairs, additionalLoser] }),
+      ),
+      http.get('http://localhost:3000/api/market/watchlist', () =>
+        HttpResponse.json({ items: [] }),
+      ),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(
+      <>
+        <MarketListPage />
+        <CurrentPath />
+      </>,
+      { authAdapter, routerProps: { initialEntries: ['/t/markets'] } },
+    );
+    await screen.findByRole('button', { name: /XRP\/USDT —/ }, { timeout: 5_000 });
+    const loserCard = screen.getByText('Giảm mạnh').parentElement?.parentElement;
+    expect(loserCard).not.toBeNull();
+    expect(loserCard!.textContent!.indexOf('XRP')).toBeLessThan(
+      loserCard!.textContent!.indexOf('ETH'),
+    );
+
+    const shortcuts = [
+      { label: 'Tổng quan thị trường', path: '/t/markets/overview' },
+      { label: 'Biến động', path: '/t/markets/movers' },
+      { label: 'Ngành', path: '/t/markets/sectors' },
+    ];
+    for (const shortcut of shortcuts) {
+      await user.click(screen.getByRole('button', { name: shortcut.label }));
+      expect(screen.getByTestId('current-path')).toHaveTextContent(shortcut.path);
+    }
+    await user.click(screen.getByRole('button', { name: 'Bộ lọc' }));
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/t/markets/screener');
+  });
+
+  it('loads the next market batch when its intersection sentinel becomes visible', async () => {
+    const originalIntersectionObserver = globalThis.IntersectionObserver;
+    class IntersectingObserver {
+      private disconnected = false;
+
+      constructor(private readonly callback: IntersectionObserverCallback) {}
+
+      observe(target: Element) {
+        queueMicrotask(() => {
+          if (!this.disconnected) {
+            this.callback(
+              [{ isIntersecting: true, target } as IntersectionObserverEntry],
+              this as unknown as IntersectionObserver,
+            );
+          }
+        });
+      }
+
+      disconnect() {
+        this.disconnected = true;
+      }
+
+      unobserve() {}
+
+      takeRecords(): IntersectionObserverEntry[] {
+        return [];
+      }
+    }
+    globalThis.IntersectionObserver =
+      IntersectingObserver as unknown as typeof IntersectionObserver;
+    try {
+      const items = Array.from({ length: 10 }, (_, index) => ({
+        ...pair,
+        id: `asset-${index + 1}-usdt`,
+        symbol: `ASSET${index + 1}/USDT`,
+        baseAsset: `ASSET${index + 1}`,
+        price: index + 1,
+      }));
+      server.use(
+        http.get('http://localhost:3000/api/market/pairs', () => HttpResponse.json({ items })),
+        http.get('http://localhost:3000/api/market/watchlist', () =>
+          HttpResponse.json({ items: [] }),
+        ),
+      );
+      renderWithProviders(<MarketListPage />, { authAdapter });
+
+      expect(await screen.findByText('Đang tải thêm...')).toBeInTheDocument();
+      expect(await screen.findByText('Hiển thị 10/10 cặp giao dịch')).toBeInTheDocument();
+    } finally {
+      globalThis.IntersectionObserver = originalIntersectionObserver;
+    }
+  });
+
   it('reuses the watchlist delete key after a transient failure', async () => {
     const idempotencyKeys: string[] = [];
     let attempts = 0;

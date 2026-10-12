@@ -111,6 +111,36 @@ describe('auth LoginPage', () => {
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
+  it('submits credentials on Enter and ignores other password-field keys', async () => {
+    const user = userEvent.setup();
+    const login = vi.fn(async () => ({
+      status: 'authenticated' as const,
+      session: testAuthSession,
+    }));
+    renderWithProviders(
+      <>
+        <LoginPage />
+        <CurrentPath />
+      </>,
+      {
+        routerProps: { initialEntries: ['/auth/login'] },
+        authAdapter: createAuthAdapter(login),
+      },
+    );
+
+    await user.type(screen.getByTestId('auth-email'), 'user@example.com');
+    await user.type(screen.getByTestId('auth-password'), 'valid-secret');
+    await user.keyboard('{Escape}');
+    expect(login).not.toHaveBeenCalled();
+
+    await user.keyboard('{Enter}');
+
+    await waitFor(() => {
+      expect(login).toHaveBeenCalledWith({ email: 'user@example.com', password: 'valid-secret' });
+      expect(screen.getByTestId('current-path')).toHaveTextContent('/home');
+    });
+  });
+
   it('routes a backend MFA challenge to phone OTP without copying credentials into route state', async () => {
     const user = userEvent.setup();
     const challenge = {

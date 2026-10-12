@@ -106,11 +106,98 @@ describe('MarketHomePage contract-backed compatibility route', () => {
       ),
     );
 
-    renderWithProviders(<MarketHomePage />, { authAdapter: authenticatedAdapter });
+    renderWithProviders(
+      <>
+        <MarketHomePage />
+        <CurrentPath />
+      </>,
+      { authAdapter: authenticatedAdapter, routerProps: { initialEntries: ['/w/markets'] } },
+    );
 
     const watchlistRegion = await screen.findByRole('region', { name: 'Đang theo dõi' });
     expect(within(watchlistRegion).getByRole('button', { name: /ETH\/USDT/ })).toBeInTheDocument();
     expect(within(watchlistRegion).queryByRole('button', { name: /BTC\/USDT/ })).toBeNull();
+
+    fireEvent.click(within(watchlistRegion).getByRole('button', { name: /ETH\/USDT/ }));
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/w/pair/eth-usdt');
+  });
+
+  it('does not request a watchlist for an anonymous visitor', async () => {
+    let watchlistRequests = 0;
+    server.use(
+      http.get('http://localhost:3000/api/market/pairs', () => HttpResponse.json({ items: pairs })),
+      http.get('http://localhost:3000/api/market/watchlist', () => {
+        watchlistRequests += 1;
+        return HttpResponse.json({ items: [{ id: 'watch-btc', pairId: 'btc-usdt' }] });
+      }),
+    );
+    const anonymousAdapter: AuthAdapter = { ...testAuthAdapter, initialSession: null };
+
+    renderWithProviders(<MarketHomePage />, { authAdapter: anonymousAdapter });
+
+    const watchlistRegion = await screen.findByRole('region', { name: 'Đang theo dõi' });
+    expect(within(watchlistRegion).queryByRole('button', { name: /BTC\/USDT/ })).toBeNull();
+    expect(watchlistRequests).toBe(0);
+  });
+
+  it('retries the authenticated watchlist when only that request fails', async () => {
+    let pairAttempts = 0;
+    let watchlistAttempts = 0;
+    let allowWatchlistSuccess = false;
+    server.use(
+      http.get('http://localhost:3000/api/market/pairs', () => {
+        pairAttempts += 1;
+        return HttpResponse.json({ items: pairs });
+      }),
+      http.get('http://localhost:3000/api/market/watchlist', () => {
+        watchlistAttempts += 1;
+        return allowWatchlistSuccess
+          ? HttpResponse.json({
+              items: [{ id: 'watch-eth', pairId: 'eth-usdt', addedAt: '2026-09-24T08:30:00Z' }],
+            })
+          : HttpResponse.json({ code: 'WATCHLIST_UNAVAILABLE' }, { status: 503 });
+      }),
+    );
+
+    renderWithProviders(<MarketHomePage />, { authAdapter: authenticatedAdapter });
+
+    const retryButton = await screen.findByRole('button', { name: 'Thử lại' });
+    allowWatchlistSuccess = true;
+    fireEvent.click(retryButton);
+    const watchlistRegion = await screen.findByRole('region', { name: 'Đang theo dõi' });
+
+    expect(within(watchlistRegion).getByRole('button', { name: /ETH\/USDT/ })).toBeInTheDocument();
+    expect(pairAttempts).toBeGreaterThan(1);
+    expect(watchlistAttempts).toBeGreaterThan(1);
+  });
+
+  it('retries market pairs for an anonymous visitor without requesting a watchlist', async () => {
+    let pairAttempts = 0;
+    let allowSuccess = false;
+    let watchlistRequests = 0;
+    server.use(
+      http.get('http://localhost:3000/api/market/pairs', () => {
+        pairAttempts += 1;
+        return allowSuccess
+          ? HttpResponse.json({ items: pairs })
+          : HttpResponse.json({ code: 'MARKET_UNAVAILABLE' }, { status: 503 });
+      }),
+      http.get('http://localhost:3000/api/market/watchlist', () => {
+        watchlistRequests += 1;
+        return HttpResponse.json({ items: [] });
+      }),
+    );
+    const anonymousAdapter: AuthAdapter = { ...testAuthAdapter, initialSession: null };
+
+    renderWithProviders(<MarketHomePage />, { authAdapter: anonymousAdapter });
+
+    const retryButton = await screen.findByRole('button', { name: 'Th\u1eed l\u1ea1i' });
+    allowSuccess = true;
+    fireEvent.click(retryButton);
+
+    expect((await screen.findAllByText(/BTC\/USDT/)).length).toBeGreaterThan(0);
+    expect(pairAttempts).toBeGreaterThan(1);
+    expect(watchlistRequests).toBe(0);
   });
 
   it('shows explicit empty states when the market contract returns no pairs', async () => {
@@ -155,6 +242,21 @@ describe('MarketHomePage contract-backed compatibility route', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Khám phá' }));
     expect(screen.getByTestId('current-path')).toHaveTextContent('/w/markets');
     expect(screen.getAllByRole('button').length).toBeGreaterThan(0);
+
+    const losersRegion = screen
+      .getAllByRole('region')
+      .find((region) => region.getAttribute('aria-label')?.startsWith('Gi'));
+    expect(losersRegion).toBeDefined();
+    fireEvent.click(within(losersRegion!).getAllByRole('button')[0]);
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/w/markets/movers');
+    fireEvent.click(within(losersRegion!).getByRole('button', { name: /ETH\/USDT/ }));
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/w/pair/eth-usdt');
+
+    const btcRows = screen.getAllByRole('button', { name: /BTC\/USDT/ });
+    fireEvent.click(btcRows[btcRows.length - 1]);
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/w/pair/btc-usdt');
+    fireEvent.click(screen.getByRole('button', { name: 'Market depth' }));
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/w/markets/depth');
   });
 
   it('recovers from an API error after the user retries', async () => {

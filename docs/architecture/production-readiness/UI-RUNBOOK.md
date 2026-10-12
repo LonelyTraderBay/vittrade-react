@@ -44,10 +44,10 @@ OTP 123456 chỉ là fixture cục bộ trong mock handler. Không dùng các th
 | BTC/USDT | 67,543.21 | +2.34% |
 | ETH/USDT | 3,521.45 | -1.23% |
 
-Để thử trạng thái API mock, mở **Trạng thái API mock**, chọn miền, chọn trạng thái rồi bấm **Áp dụng trạng thái API**. Công cụ lưu lựa chọn trong `localStorage` và làm mới query đang hoạt động thuộc miền đã chọn, giữ nguyên persona đăng nhập trong bộ nhớ. `success` dùng handler/fixture hiện tại; `loading` trì hoãn phản hồi 2 giây rồi cho request chạy qua handler thật; `error` tùy miền/hợp đồng: chỉ dùng status 5xx đã khai báo; nếu không thì lỗi transport. Mutation giữ handler thường để không giả định kết quả ghi. `unauthorized`/`forbidden` chỉ áp dụng operation được hỗ trợ. Riêng `market.error` trả 503 rỗng cho 7 provider GET khai báo status này, lỗi transport không status cho 9 GET còn lại, và để cả 6 mutation đi qua handler thường. Với miền Thị trường, 401/403 chỉ áp dụng watchlist và price alerts; 401 đồng thời trả session refresh thất bại để kiểm tra chuyển về đăng nhập. `empty` hiện khả dụng cho bốn miền có response rỗng đã đối chiếu contract. `pending` mô phỏng receipt theo contract cho Earn/Wallet và request đang bay cho P2P. Market: chọn `GET /market/pairs`, mở `/w/markets/screener`, xác nhận “Không có tài sản phù hợp.” và `0 tài sản`. Earn: chọn miền Earn, chọn `empty`, dùng **Kịch bản màn hình** mở `Earn · danh mục tiết kiệm` rồi xác nhận “Chưa có vị thế tiết kiệm”; sau đó chọn `Earn · lịch sử tiết kiệm` để xác nhận “Chưa có giao dịch tiết kiệm”. Hai GET Earn lần lượt trả snapshot có products/positions rỗng và summary bằng 0, cùng `{ "items": [] }`; override không áp dụng cho POST subscribe/redeem. Discovery: chọn miền **Khám phá**, chọn `empty`, bấm **Áp dụng trạng thái API**, rồi dùng **Kịch bản màn hình** mở `Khám phá · tìm kiếm`; nhập `zz` vào ô tìm kiếm. Xác nhận `GET /discovery/search?query=zz` trả HTTP 200 qua service worker với `query: "zz"` và các mảng `predictions`, `arenaModes`, `arenaRooms`, `creators`, `tradingPairs` rỗng; UI hiển thị “Không tìm thấy kết quả phù hợp.”. Kiểm tra success riêng: đổi trạng thái sang `success`, áp dụng, nhập `Bitcoin` ở `/w/search`; xác nhận `GET /discovery/search` HTTP 200 từ service worker, payload chuẩn hóa `query: "bitcoin"`, có 2 prediction và tên Bitcoin hiển thị. Trong cùng phiên SPA, mở `/w/topic/crypto`; xác nhận `GET /discovery/topics/crypto` HTTP 200, `topic.id: "crypto"`, 5 prediction và tiêu đề Crypto cùng mục Prediction markets hiện trên trang. Kiểm tra loading: chọn `loading`, nhập `Solana` trong Search và điều hướng trong SPA tới `/w/topic/macro`; cả hai trang phải hiện “Đang tải dữ liệu Discovery API…” trong thời gian MSW trì hoãn 2 giây rồi nhận HTTP 200. Kiểm tra error: chọn `error`; gọi Search với query mới và mở topic `macro`; hai API phải trả HTTP 503, trang Search hiện “Có lỗi xảy ra” và cả Search/Topic có nút “Thử lại”. Kiểm tra forbidden: chọn `forbidden`, gọi Search và topic `ai`; cả hai phải trả 403, hiện “Không có quyền truy cập Discovery” và không có retry action. Kiểm tra unauthorized riêng từng operation vì lần đầu sẽ xóa phiên: đăng nhập Developer, chọn `unauthorized`, gọi Search (query mới) hoặc topic `community`; xác nhận operation trả 401, `POST /auth/refresh` trả 401 và route chuyển tới `/auth/login`. Trạng thái này chỉ mô phỏng session hết hạn. Dùng API domain Khám phá cho cả hai request. Không suy rộng `empty` sang domain khác khi chưa đối chiếu schema. Nút **Tắt trạng thái API** xóa override và làm mới query thuộc miền đã chọn; **Đặt lại dữ liệu mock** xóa scenario, đăng xuất và tải lại trang.
-Referral: chọn miền Giới thiệu, chọn `success`, `empty`, `loading`, `error`, `forbidden` hoặc `unauthorized`, rồi mở trực tiếp `/w/referral` trong cùng SPA để kiểm tra `GET /api/referral/overview`. `success` hiển thị fixture; `empty` trả overview đúng schema với mọi thống kê bằng 0 và danh sách friends rỗng, đồng thời giữ campaign và thông báo “Chưa có người được giới thiệu”; `loading` trì hoãn 2 giây; `error` trả 503 và có nút thử lại; `forbidden` hiển thị thông báo quyền; `unauthorized` trả 401, refresh trả 401 và điều hướng về login. `referral.yaml` chỉ khai báo 401, vì vậy 403 là kiểm thử chung cho nhánh quyền UI, không phải response đã được contract Referral xác nhận. Ảnh trạng thái rỗng: [Referral empty](evidence/A06/preview-referral-empty-2026-09-28.png).\n\nEarn pending: đăng nhập persona Developer trong preview; persona mock development này có `earn:write` để kiểm tra form, quyền production không đổi. Chọn miền Earn và `pending`, bấm **Áp dụng trạng thái API** khi đang ở trang Earn history hoặc portfolio. Trong cùng phiên SPA, mở `/w/earn/savings/product/sav001`, đăng ký `100` USDT, xác nhận điều khoản và bấm **Xác nhận đăng ký**; kiểm tra POST `/api/earn/subscriptions` trả HTTP 201, có `Idempotency-Key`, receipt hiện “Yêu cầu đang xử lý” và “Đang xử lý”. Tiếp tục `/w/earn/savings/redeem/earn-position-1`, rút `50` USDT; kiểm tra POST `/api/earn/redemptions` cũng trả HTTP 201 và receipt giữ trạng thái pending. Quay về `/w/earn/savings/history` để kiểm tra fixture `earn-tx-savings-002` hiện “Đang xử lý”. Fixture này không được liên kết tới hai receipt mới. Contract hiện thiếu receipt lookup/correlation ID và quy tắc replay cùng idempotency key, vì vậy không dùng runbook này để kết luận unknown, duplicate hay reconciliation đã đạt. Hai screenshot Chromium: [subscription pending](evidence/A06/preview-earn-pending-subscribe-2026-09-28.png), [redemption pending](evidence/A06/preview-earn-pending-redeem-2026-09-28.png). Chỉ MSW local, không phải giao dịch hoặc backend thật.
+Để thử trạng thái API mock, mở **Trạng thái API mock**, chọn miền, chọn trạng thái rồi bấm **Áp dụng trạng thái API**. Công cụ lưu lựa chọn trong `localStorage` và làm mới query đang hoạt động thuộc miền đã chọn, giữ nguyên persona đăng nhập trong bộ nhớ. `success` dùng handler/fixture hiện tại; `loading` trì hoãn phản hồi 2 giây rồi cho request chạy qua handler thật; `error` tùy miền/hợp đồng: chỉ dùng status 5xx đã khai báo; nếu không thì lỗi transport. Mutation giữ handler thường để không giả định kết quả ghi. `unauthorized`/`forbidden` chỉ áp dụng operation được hỗ trợ. Riêng `market.error` trả 503 rỗng cho 7 provider GET khai báo status này, lỗi transport không status cho 9 GET còn lại, và để cả 6 mutation đi qua handler thường. Preview Controls cũ từng mô phỏng 401/403 cho watchlist và price alerts, đồng thời ép session refresh 401; tuy nhiên market.yaml hiện khai báo 0/22 operation có 401 và 0/22 có 403. Không dùng các trace preview đó làm bằng chứng theo contract; giữ market.unauthorized và market.forbidden ở not_verified cho tới khi hợp đồng được cập nhật. `empty` hiện khả dụng cho bốn miền có response rỗng đã đối chiếu contract. `pending` mô phỏng receipt theo contract cho Earn/Wallet và request đang bay cho P2P. Market: chọn `GET /market/pairs`, mở `/w/markets/screener`, xác nhận “Không có tài sản phù hợp.” và `0 tài sản`. Earn: chọn miền Earn, chọn `empty`, dùng **Kịch bản màn hình** mở `Earn · danh mục tiết kiệm` rồi xác nhận “Chưa có vị thế tiết kiệm”; sau đó chọn `Earn · lịch sử tiết kiệm` để xác nhận “Chưa có giao dịch tiết kiệm”. Hai GET Earn lần lượt trả snapshot có products/positions rỗng và summary bằng 0, cùng `{ "items": [] }`; override không áp dụng cho POST subscribe/redeem. Discovery: chọn miền **Khám phá**, chọn `empty`, bấm **Áp dụng trạng thái API**, rồi dùng **Kịch bản màn hình** mở `Khám phá · tìm kiếm`; nhập `zz` vào ô tìm kiếm. Xác nhận `GET /discovery/search?query=zz` trả HTTP 200 qua service worker với `query: "zz"` và các mảng `predictions`, `arenaModes`, `arenaRooms`, `creators`, `tradingPairs` rỗng; UI hiển thị “Không tìm thấy kết quả phù hợp.”. Kiểm tra success riêng: đổi trạng thái sang `success`, áp dụng, nhập `Bitcoin` ở `/w/search`; xác nhận `GET /discovery/search` HTTP 200 từ service worker, payload chuẩn hóa `query: "bitcoin"`, có 2 prediction và tên Bitcoin hiển thị. Trong cùng phiên SPA, mở `/w/topic/crypto`; xác nhận `GET /discovery/topics/crypto` HTTP 200, `topic.id: "crypto"`, 5 prediction và tiêu đề Crypto cùng mục Prediction markets hiện trên trang. Kiểm tra loading: chọn `loading`, nhập `Solana` trong Search và điều hướng trong SPA tới `/w/topic/macro`; cả hai trang phải hiện “Đang tải dữ liệu Discovery API…” trong thời gian MSW trì hoãn 2 giây rồi nhận HTTP 200. Kiểm tra error: chọn `error`; gọi Search với query mới và mở topic `macro`; hai API phải trả HTTP 503, trang Search hiện “Có lỗi xảy ra” và cả Search/Topic có nút “Thử lại”. Kiểm tra forbidden: chọn `forbidden`, gọi Search và topic `ai`; cả hai phải trả 403, hiện “Không có quyền truy cập Discovery” và không có retry action. Kiểm tra unauthorized riêng từng operation vì lần đầu sẽ xóa phiên: đăng nhập Developer, chọn `unauthorized`, gọi Search (query mới) hoặc topic `community`; xác nhận operation trả 401, `POST /auth/refresh` trả HTTP 200/null theo Auth OpenAPI; khi session không còn, route chuyển tới `/auth/login`. Trạng thái này chỉ mô phỏng session hết hạn. Dùng API domain Khám phá cho cả hai request. Không suy rộng `empty` sang domain khác khi chưa đối chiếu schema. Nút **Tắt trạng thái API** xóa override và làm mới query thuộc miền đã chọn; **Đặt lại dữ liệu mock** xóa scenario, đăng xuất và tải lại trang.
+Referral: chọn miền Giới thiệu, chọn `success`, `empty`, `loading`, `error`, `forbidden` hoặc `unauthorized`, rồi mở trực tiếp `/w/referral` trong cùng SPA để kiểm tra `GET /api/referral/overview`. `success` hiển thị fixture; `empty` trả overview đúng schema với mọi thống kê bằng 0 và danh sách friends rỗng, đồng thời giữ campaign và thông báo “Chưa có người được giới thiệu”; `loading` trì hoãn 2 giây; `error` trả 503 và có nút thử lại; `forbidden` hiển thị thông báo quyền; `unauthorized` trả 401, POST /api/auth/refresh trả HTTP 200/null theo Auth OpenAPI rồi điều hướng về login. `referral.yaml` chỉ khai báo 401, vì vậy 403 là kiểm thử chung cho nhánh quyền UI, không phải response đã được contract Referral xác nhận. Ảnh trạng thái rỗng: [Referral empty](evidence/A06/preview-referral-empty-2026-09-28.png).\n\nEarn pending: đăng nhập persona Developer trong preview; persona mock development này có `earn:write` để kiểm tra form, quyền production không đổi. Chọn miền Earn và `pending`, bấm **Áp dụng trạng thái API** khi đang ở trang Earn history hoặc portfolio. Trong cùng phiên SPA, mở `/w/earn/savings/product/sav001`, đăng ký `100` USDT, xác nhận điều khoản và bấm **Xác nhận đăng ký**; kiểm tra POST `/api/earn/subscriptions` trả HTTP 201, có `Idempotency-Key`, receipt hiện “Yêu cầu đang xử lý” và “Đang xử lý”. Tiếp tục `/w/earn/savings/redeem/earn-position-1`, rút `50` USDT; kiểm tra POST `/api/earn/redemptions` cũng trả HTTP 201 và receipt giữ trạng thái pending. Quay về `/w/earn/savings/history` để kiểm tra fixture `earn-tx-savings-002` hiện “Đang xử lý”. Fixture này không được liên kết tới hai receipt mới. Contract hiện thiếu receipt lookup/correlation ID và quy tắc replay cùng idempotency key, vì vậy không dùng runbook này để kết luận unknown, duplicate hay reconciliation đã đạt. Hai screenshot Chromium: [subscription pending](evidence/A06/preview-earn-pending-subscribe-2026-09-28.png), [redemption pending](evidence/A06/preview-earn-pending-redeem-2026-09-28.png). Chỉ MSW local, không phải giao dịch hoặc backend thật.
 
-Scenario matrix hiện có 8/105 row với evidence mới và hash nguồn khớp (2 row phủ hết operation liên kết trong scenario, 6 row đại diện), trên 7 operation duy nhất; 97/105 row còn lại chưa có evidence mới hợp lệ. Aggregate browser report đang stale nên không được tính thay các row này. Đây là tình trạng bằng chứng runtime, không phải phần trăm UI acceptance hoặc xác nhận backend. P2P detail trả order paid 500 USDT qua getP2POrder; release chạy MFA 201/200 rồi POST release 200 sau delay mock 2 giây, nút bị khóa trong khi request bay. P2P unauthorized trả GET /api/p2p/orders/p2p002 là 401, POST /api/auth/refresh là 401, chuyển sang /auth/login và không còn hiển thị order trước đó. Để tự kiểm tra: đăng nhập Developer trong mock, mở /w/p2p/escrow/p2p002, chọn miền P2P và trạng thái unauthorized, bấm Áp dụng trạng thái API; xác nhận hai mã HTTP, route login và nội dung order cũ không xuất hiện. Contract P2P khai báo 401 cho getP2POrder. P2P create-order success: đăng nhập Developer mock, chọn miền P2P và success; mở /w/p2p/ad/ad001, xác nhận GET /api/p2p/ads/ad001 trả 200; nhập 500000 VND, xác nhận quy đổi khoảng 19.723866 USDT, mở hộp xác nhận rồi bấm Confirm P2P order. Xác nhận đúng một POST /api/p2p/orders trả 201 từ service worker với request adId=ad001, asset=USDT, currency=VND, fiatAmount=500000, paymentMethod=Vietcombank, Idempotency-Key có prefix p2p-ad-order-, receipt status created; UI điều hướng /w/p2p/order/dev-p2p-order-0001, GET detail 200 và trang hiện order chờ thanh toán. Ảnh: [P2P ad order created](evidence/A06/preview-p2p-ad-order-created-2026-09-28.png), [P2P create pending](evidence/A06/preview-p2p-pending-create-2026-09-28.png), [P2P mark-paid pending](evidence/A06/preview-p2p-pending-mark-paid-2026-09-28.png). Đây chỉ chứng minh request/UI local; không xác nhận backend replay hoặc chống trùng. P2P mark-paid conflict: đăng nhập Developer mock, chọn miền P2P và trạng thái duplicate, bấm Áp dụng trạng thái API rồi mở `/w/p2p/escrow/p2p001` với fixture `pending_payment`; xác nhận GET order trả 200, bấm **Đã thanh toán** và kiểm tra POST `/api/p2p/orders/p2p001/mark-paid` trả HTTP 409 qua service worker, request có `Idempotency-Key` prefix `p2p-mark-paid-p2p001-`, UI hiện “Đơn hàng không thể chuyển sang trạng thái đã thanh toán (HTTP 409). Hãy kiểm tra trạng thái mới nhất trước khi thử lại.”, GET detail sau xung đột trả 200 với `pending_payment`, chỉ có một POST trong 500 ms và URL giữ nguyên. Đây là response fixture theo OpenAPI, không mô phỏng replay/dedup hoặc xác nhận backend. Ảnh: [P2P mark-paid conflict](evidence/A06/preview-p2p-mark-paid-conflict-2026-09-28.png). P2P release conflict: đăng nhập Developer mock, chọn miền P2P và trạng thái `duplicate`, áp dụng trạng thái rồi mở `/w/p2p/escrow/p2p002` với order `paid`; bấm **Release escrow**, nhập mã MFA `123456`, bấm **Xác thực** rồi **Xác nhận release escrow**. Xác nhận challenge HTTP 201, verify HTTP 200, POST `/api/p2p/orders/p2p002/release` HTTP 409 qua service worker, có `Idempotency-Key`, UI hiện “Đơn hàng không thể chuyển sang trạng thái đã release (HTTP 409). Hãy kiểm tra trạng thái mới nhất trước khi thử lại.”; GET order làm mới trả 200 với trạng thái `paid`, chỉ có một release POST trong 500 ms và route giữ `/w/p2p/escrow/p2p002`. Vì trạng thái mới nhất vẫn `paid`, nút release vẫn khả dụng cho thao tác thủ công; không có tự gửi lại. Ảnh: [P2P release conflict](evidence/A06/preview-p2p-release-conflict-2026-09-28.png). Local MSW không chứng minh replay hoặc kết quả backend thật.
+Scenario matrix tại HEAD c5fc38b0755da3fe2c9831fe3040160a308a9a03 hiện có **81/106** row current-source evidence (**38 full, 43 representative**), **88/154** operation IDs, **81/81** sidecar fresh và **0 stale**. Aggregate runtime vẫn historical (runtimeEvidenceFresh=false); đây không phải UI acceptance hay backend certification. P2P detail trả order paid 500 USDT qua getP2POrder; release chạy MFA 201/200 rồi POST release 200 sau delay mock 2 giây, nút bị khóa trong khi request bay. P2P unauthorized trả GET /api/p2p/orders/p2p002 là 401, POST /api/auth/refresh là 200/null theo Auth OpenAPI, chuyển sang /auth/login và không còn hiển thị order trước đó. Để tự kiểm tra: đăng nhập Developer trong mock, mở /w/p2p/escrow/p2p002, chọn miền P2P và trạng thái unauthorized, bấm Áp dụng trạng thái API; xác nhận hai mã HTTP, route login và nội dung order cũ không xuất hiện. Contract P2P khai báo 401 cho getP2POrder. P2P create-order success: đăng nhập Developer mock, chọn miền P2P và success; mở /w/p2p/ad/ad001, xác nhận GET /api/p2p/ads/ad001 trả 200; nhập 500000 VND, xác nhận quy đổi khoảng 19.723866 USDT, mở hộp xác nhận rồi bấm Confirm P2P order. Xác nhận đúng một POST /api/p2p/orders trả 201 từ service worker với request adId=ad001, asset=USDT, currency=VND, fiatAmount=500000, paymentMethod=Vietcombank, Idempotency-Key có prefix p2p-ad-order-, receipt status created; UI điều hướng /w/p2p/order/dev-p2p-order-0001, GET detail 200 và trang hiện order chờ thanh toán. Ảnh: [P2P ad order created](evidence/A06/preview-p2p-ad-order-created-2026-09-28.png), [P2P create pending](evidence/A06/preview-p2p-pending-create-2026-09-28.png), [P2P mark-paid pending](evidence/A06/preview-p2p-pending-mark-paid-2026-09-28.png). Đây chỉ chứng minh request/UI local; không xác nhận backend replay hoặc chống trùng. P2P mark-paid conflict: đăng nhập Developer mock, chọn miền P2P và trạng thái duplicate, bấm Áp dụng trạng thái API rồi mở `/w/p2p/escrow/p2p001` với fixture `pending_payment`; xác nhận GET order trả 200, bấm **Đã thanh toán** và kiểm tra POST `/api/p2p/orders/p2p001/mark-paid` trả HTTP 409 qua service worker, request có `Idempotency-Key` prefix `p2p-mark-paid-p2p001-`, UI hiện “Đơn hàng không thể chuyển sang trạng thái đã thanh toán (HTTP 409). Hãy kiểm tra trạng thái mới nhất trước khi thử lại.”, GET detail sau xung đột trả 200 với `pending_payment`, chỉ có một POST trong 500 ms và URL giữ nguyên. Đây là response fixture theo OpenAPI, không mô phỏng replay/dedup hoặc xác nhận backend. Ảnh: [P2P mark-paid conflict](evidence/A06/preview-p2p-mark-paid-conflict-2026-09-28.png). P2P release conflict: đăng nhập Developer mock, chọn miền P2P và trạng thái `duplicate`, áp dụng trạng thái rồi mở `/w/p2p/escrow/p2p002` với order `paid`; bấm **Release escrow**, nhập mã MFA `123456`, bấm **Xác thực** rồi **Xác nhận release escrow**. Xác nhận challenge HTTP 201, verify HTTP 200, POST `/api/p2p/orders/p2p002/release` HTTP 409 qua service worker, có `Idempotency-Key`, UI hiện “Đơn hàng không thể chuyển sang trạng thái đã release (HTTP 409). Hãy kiểm tra trạng thái mới nhất trước khi thử lại.”; GET order làm mới trả 200 với trạng thái `paid`, chỉ có một release POST trong 500 ms và route giữ `/w/p2p/escrow/p2p002`. Vì trạng thái mới nhất vẫn `paid`, nút release vẫn khả dụng cho thao tác thủ công; không có tự gửi lại. Ảnh: [P2P release conflict](evidence/A06/preview-p2p-release-conflict-2026-09-28.png). Local MSW không chứng minh replay hoặc kết quả backend thật.
 
 P2P pending (request in flight): đăng nhập Developer mock, chọn miền P2P và trạng thái `pending`, bấm **Áp dụng trạng thái API**, mở `/w/p2p/ad/ad001`, nhập `500000` VND, mở xác nhận và bấm **Confirm P2P order**. Trong 2 giây MSW trì hoãn, xác nhận “Đang tạo…” và nút bị khóa; response create trả 201/`created`, có `Idempotency-Key`, rồi UI điều hướng tới order mới và đọc detail qua getP2POrder. Bấm **Mark order paid**; trong lúc chờ xác nhận “Đang cập nhật…” và nút bị khóa; sau đó response trả 200 với status `paid`, có `Idempotency-Key`. Ảnh: [P2P create đang chờ](evidence/A06/preview-p2p-pending-create-2026-09-28.png), [P2P mark-paid đang chờ](evidence/A06/preview-p2p-pending-mark-paid-2026-09-28.png). Runner tiếp tục kiểm tra challenge/verify/release của fixture `p2p002` (201/200/200), nút release bị khóa khi request đang bay và trạng thái cuối là `released`. Đây là độ trễ request của local preview; sau hai giây request chạy qua handler dev và thay đổi fixture chỉ trong bộ nhớ. Không mô phỏng pending lưu bền, backend thật, replay hoặc reconciliation.
 
@@ -70,18 +70,21 @@ Profile empty (browser local MSW, kiểm tra lúc 2026-09-28T14:26:50Z, 198 ms):
 
 Trong màn hình ví, lệnh, nạp/rút, trading, P2P hoặc luồng giá trị khác, chỉ thử giao diện mock. Không gửi giao dịch thật khi nghiệm thu UI.
 
-### Wallet: kiểm tra success, empty, unauthorized, forbidden, loading và error/retry
+### Wallet: kiểm tra success, empty, unauthorized, forbidden, loading, error/retry và pending
 
-Các scenario dưới đây dùng route `/w/wallet`, persona Developer mock và điều hướng trong cùng SPA để giữ access token trong bộ nhớ. Đăng nhập lại sau nhánh `unauthorized` vì nhánh này kết thúc phiên.
+Các report hiện hành dùng Chromium/Vite và service worker MSW local. Nhóm success/empty/loading/error/forbidden/unauthorized đi qua `/w/wallet` và `/w/wallet/history`; pending là transfer độc lập tại `/w/wallet/transfer`. Các report source-bound ngày 30/09 thay thế số đo mock lịch sử ngày 28/09 ở các gạch đầu dòng cập nhật dưới đây.
 
-- **Unauthorized:** chọn miền `wallet`, trạng thái `unauthorized`, bấm **Áp dụng trạng thái API** rồi điều hướng SPA tới `/w/wallet`. Xác nhận `GET /api/wallet/assets` và `GET /api/wallet/transactions` đều trả `401` qua service worker; `POST /api/auth/refresh` trả `401`; app chuyển tới `/auth/login` và không còn số dư mock cũ.
-- **Forbidden:** đăng nhập lại Developer, chọn miền `wallet`, trạng thái `forbidden`, áp dụng rồi điều hướng SPA tới `/w/wallet`. Xác nhận cả hai GET trả `403` qua service worker, UI hiện `Unable to load wallet`, URL vẫn là `/w/wallet`, không có request refresh và số dư không hiển thị.
-- **Loading:** đăng nhập Developer mock, chọn miền `wallet`, trạng thái `loading`, bấm **Áp dụng trạng thái API** rồi điều hướng trong SPA tới `/w/wallet`. Xác nhận loading hiển thị và tiếp tục hiển thị khi cả hai GET `/api/wallet/assets` và `/api/wallet/transactions` chưa trả response (0 response sau khoảng 2.022 ms), số dư cũ chưa xuất hiện; sau độ trễ mock 2 giây, cả hai GET trả `200` qua service worker, loading biến mất, tổng số dư `16,754.32 USD` cùng 6 giao dịch hiển thị, không có trạng thái empty/error giả. Ảnh: [Wallet loading](evidence/A06/preview-wallet-loading-2026-09-28.png).
-- **Error/Retry:** đăng nhập Developer mock, chọn miền `wallet`, trạng thái `error`, bấm **Áp dụng trạng thái API** rồi điều hướng trong SPA tới `/w/wallet`. Chờ `Unable to load wallet` và nút **Retry**; trong lượt browser đã đo, hai GET `/api/wallet/assets` và `/api/wallet/transactions` trả 12 response `503` trước khi bấm Retry (6 lần thử cho mỗi GET). Bấm **Retry**: thêm đúng 12 response `503` (6 lần thử cho mỗi GET), tổng 24 request trong hai chu kỳ; ErrorState và Retry vẫn hiện, route giữ `/w/wallet`, không hiển thị số dư/tóm tắt cũ và không gọi refresh. Lượt đầu mất 2.856 ms. Đây là HTTP 503 tổng quát do local service worker mô phỏng; OpenAPI wallet không khai báo 503 cho hai read operation, nên không dùng kết quả này làm bằng chứng contract/backend. Ảnh: [Wallet error và Retry](evidence/A06/preview-wallet-error-2026-09-28.png).
-- **Success:** đăng nhập Developer mock, chọn miền `wallet`, trạng thái `success`, bấm **Áp dụng trạng thái API** rồi điều hướng SPA tới `/w/wallet`. Xác nhận `GET /api/wallet/assets` và `GET /api/wallet/transactions` đều trả `200` qua service worker; UI hiển thị tổng số dư `$16,754.32`, 6 giao dịch, nút Deposit và Transaction history. Persona Developer chỉ có `wallet:read`, nên Withdraw và Transfer không hiển thị; test quyền cũng xác nhận hai nút chỉ xuất hiện khi có quyền mà trang đích yêu cầu (`wallet:write`/`wallet:withdraw`, `wallet:write`/`wallet:transfer`/`transfer:write`). Browser đo 64 ms. Ảnh: [Wallet success](evidence/A06/preview-wallet-success-2026-09-28.png).
-- **Empty:** đăng nhập Developer mock, chọn miền `wallet`, trạng thái `empty`, bấm **Áp dụng trạng thái API** rồi ở `/w/wallet`. Xác nhận `GET /api/wallet/assets` trả `200` với 2 asset và summary total/available `$16,754.32`; `GET /api/wallet/transactions` trả `200` với `{ "items": [], "total": 0 }`. UI vẫn giữ số dư và hiện `No wallet activity yet.`, không hiện `No assets match this filter.` hoặc lỗi; browser đo 52 ms. Ảnh: [Wallet empty activity](evidence/A06/preview-wallet-empty-2026-09-28.png). Row này không kiểm tra address-book empty hoặc các thao tác Wallet khác.
+- **Unauthorized:** ba GET Wallet đọc asset/transactions trên overview và history trả `401`; trình duyệt chuyển về login, dữ liệu Wallet đã cache bị ẩn. Refresh dùng response `200/null` do runner cấp cục bộ; không gọi backend. Flow 12,288 ms, 21/21 source hashes. Xem [report current-source](evidence/A06/wallet-unauthorized-current-head-browser-check-202609302125287.json).
+- **Forbidden:** sau khi nạp Wallet data, ba GET qua hai route được chạy lại dưới `wallet.forbidden` và trả 403 local; UI không trình bày cache cũ như dữ liệu mới. Không gửi Wallet mutation. Flow 6,362 ms, 22/22 hashes. Xem [report current-source](evidence/A06/wallet-forbidden-current-head-browser-check-202609302125218.json).
+- **Loading:** ba GET (assets trên overview, transactions trên overview/history) giữ loading tới response local sau 2,017–2,018 ms; không xuất hiện empty hoặc cache giả trước đó. Sau resolve: 2 asset, tổng `$16,754.32`, 6 giao dịch; flow 4,721 ms, 22/22 hashes. Đây là độ trễ MSW, không phải backend. Xem [report current-source](evidence/A06/wallet-loading-current-head-browser-check-202609302125167.json).
+- **Error/Retry:** hai Wallet GET không khai báo 5xx, nên runner inject `TypeError` trước dispatch thay vì dựng HTTP status ngoài contract. Có 18 transport attempts (3/query ở lần đầu và sau Retry), 0 Wallet HTTP response; ErrorState/Retry hiển thị, cache cũ và empty giả bị ẩn. Flow 7,064 ms, 24/24 hashes. Xem [report current-source](evidence/A06/wallet-error-current-head-browser-check-202609302125069.json); report 503 ngày 28/09 không phải bằng chứng hiện hành.
+- **Pending transfer:** đăng nhập `wallet@vittrade.local` với `wallet:read` và `wallet:transfer`, chọn `wallet.pending`, rồi mở `/w/wallet/transfer`. Gửi 12.5 USDT từ Spot sang Funding. Browser quan sát đúng một `POST /api/wallet/transfers`, `Idempotency-Key` dài 52 ký tự, response `201` từ service worker có reference `preview-wallet-transfer-0001` và mock `status: pending`. CTA bị khóa, nhãn `Submitting transfer…` tương phản rõ, UI mutation chờ 2,063 ms; runner giữ response local đã resolve 2,010 ms, còn MSW response latency là 14 ms. Submit lặp không tạo POST thứ hai; receipt hiện mà không có `transactionId`, không gọi lookup hay withdrawal/challenge. Có 21/21 hashes, 0 external API origin, 0 backend request, 0 page/request error. Xem [runner](evidence/A06/run-wallet-pending-current-head-browser-check.mjs), [report](evidence/A06/wallet-pending-current-head-browser-check-202609302200326.json), [in-flight](evidence/A06/preview-wallet-pending-transfer-inflight-202609302200326.png), [receipt](evidence/A06/preview-wallet-pending-transfer-receipt-202609302200326.png). `201` và timings ở đây chỉ thuộc fixture local; không chứng minh backend latency hoặc giao dịch hoàn tất.
+- **Success:** ba GET qua overview/history trả 200; UI có 2 asset (tổng `$16,754.32`) và 6 giao dịch. Persona chỉ đọc không thấy hành động ghi. Flow 714 ms, 22/22 hashes. Xem [report current-source](evidence/A06/wallet-success-current-head-browser-check-202609302125144.json).
+- **Empty:** ba GET trả 200; assets/số dư còn nguyên trong khi recent activity và transaction history là collection rỗng. Không có Wallet mutation. Flow 707 ms, 17/17 hashes; address-book empty chưa được kiểm tra ở scenario này. Xem [report current-source](evidence/A06/wallet-empty-current-head-browser-check-202609302125155.json).
 
-Artifacts: [browser report](evidence/A06/preview-scenario-browser-check-market-empty-2026-09-28.json), [Wallet empty](evidence/A06/preview-wallet-empty-2026-09-28.png), [Wallet success](evidence/A06/preview-wallet-success-2026-09-28.png), [Wallet loading](evidence/A06/preview-wallet-loading-2026-09-28.png), [Wallet error](evidence/A06/preview-wallet-error-2026-09-28.png), [Wallet unauthorized](evidence/A06/preview-wallet-unauthorized-2026-09-28.png), [Wallet forbidden](evidence/A06/preview-wallet-forbidden-2026-09-28.png). Các scenario Wallet hiện chỉ quan sát `getWalletAssets` và `getWalletTransactions` trong 19 operation, nên là bằng chứng đại diện trên local MSW; chưa xác nhận mọi operation, backend authorization hoặc staging.
+Artifacts current-source: [success](evidence/A06/wallet-success-current-head-browser-check-202609302125144.json), [empty](evidence/A06/wallet-empty-current-head-browser-check-202609302125155.json), [loading](evidence/A06/wallet-loading-current-head-browser-check-202609302125167.json), [error](evidence/A06/wallet-error-current-head-browser-check-202609302125069.json), [forbidden](evidence/A06/wallet-forbidden-current-head-browser-check-202609302125218.json), [unauthorized](evidence/A06/wallet-unauthorized-current-head-browser-check-202609302125287.json) and [pending](evidence/A06/wallet-pending-current-head-browser-check-202609302200326.json).
+
+Read scenarios chỉ quan sát `getWalletAssets`/`getWalletTransactions`; pending chỉ quan sát `createWalletTransfer` trong ba operation của hàng pending. Vì vậy `wallet.pending` là `representative_browser_observed`: chưa chạy withdrawal/MFA hay `getWalletTransaction`, và không đóng `wallet.unknown/duplicate` khi contract chưa có lookup/correlation/same-key replay. Ma trận toàn miền hiện có 81/106 scenario fresh, 88/154 operation ID và 0 sidecar stale; backend/staging còn 0/154, user acceptance 0/128.
 
 ### Predictions error và Retry
 Chọn persona Developer, miền predictions, trạng thái error, áp dụng rồi mở /w/markets/predictions. Contract không khai báo 5xx; handler hiện chỉ làm lỗi transport cho GET /api/predictions/events?status=active, không trả HTTP status/payload giả. Xác nhận ErrorState Có lỗi xảy ra, thông báo kết nối và nút Thử lại; bấm Retry một lần, kiểm tra ErrorState còn hiển thị, URL giữ nguyên và không có event rỗng hoặc fixture thành công giả. Chromium đo 6 GET net::ERR_FAILED trước ErrorState và thêm 6 sau Retry (HTTP client thử 3 lần, React Query gọi lại một lần); tổng 12 request Predictions, 0 HTTP response, 0 mutation, 0 API origin ngoài, 0 page error. Tổng flow gồm login/setup preview là 6.049 giây, không phải latency backend. Login preview cũng ghi nhận một POST /api/auth/logout net::ERR_ABORTED, tách khỏi request Predictions. Ảnh: [Predictions error](evidence/A06/preview-predictions-error-events-fresh-2026-09-29.png); [sidecar](evidence/A06/predictions-error-browser-check-fresh-2026-09-29.json). Chỉ listPredictionEvents được xác minh (1/8 operation); event detail, positions, rewards, leaderboard, activity, receipt và POST mutation chưa được kiểm tra ở trạng thái lỗi.
@@ -284,6 +287,8 @@ Với từng page cần dữ liệu thật, nối PAGE-*/ROUTE-* tới OP-* tron
 P2P create-order conflict: chạy `node docs/architecture/production-readiness/evidence/A06/run-preview-scenario-browser-check.mjs` với preview ở `http://127.0.0.1:4175`; đăng nhập persona Developer, chọn miền P2P và trạng thái `duplicate`, áp dụng rồi mở `/w/p2p/ad/ad001`. Nhập `500000` VND và xác nhận đơn. Kiểm tra GET quảng cáo 200; đúng một POST `/api/p2p/orders` từ service worker trả 409 với `Idempotency-Key`; alert hướng dẫn kiểm tra danh sách đơn hiển thị, hộp xác nhận đóng, route vẫn là `/w/p2p/ad/ad001`, không điều hướng hay tự gửi lại trong 500 ms. Ảnh: [P2P order conflict](evidence/A06/preview-p2p-ad-order-conflict-2026-09-28.png). Đây là UI/MSW evidence; không gửi lại cùng key, không chứng minh backend replay/dedup, order reconciliation hoặc real backend/staging.
 
 
+**A06.03 next checkpoint:** hold `trading.unknown`, `trading.duplicate`, `wallet.unknown` and `wallet.duplicate` at `not_verified` until approved backend lookup/correlation and same-key replay semantics are available. Trading has 3/3 writes requiring Idempotency-Key but no key/clientOrderId list filter or stable replay outcome. Wallet contract availability was confirmed unavailable; do not execute these side effects. Continue only independent, non-blocked plan work.
+
 Wallet pending: dùng preview account **Wallet · quyền giao dịch mock** (chỉ cấp `wallet:transfer`/`wallet:withdraw` thêm trong MSW; persona Developer không đổi), chọn miền Wallet và trạng thái `pending`, rồi bấm **Áp dụng trạng thái API**. Mở `/w/wallet/transfer`, nhập `12.5` USDT và xác nhận transfer. Kiểm tra POST `/api/wallet/transfers` trả 201 với `status: pending`, có reference; số tiền còn trên form, nút gửi lại cùng nội dung bị khóa và chỉ có một POST. Tiếp tục trong cùng SPA ở `/w/wallet/withdraw/USDT`, nhập số tiền/address mock hợp lệ, bấm **Tiếp tục** → **Xác minh 2FA**, nhập mã mock `000000`, rồi **Xác nhận rút tiền**. Kiểm tra challenge 201, verify 200, POST `/api/wallet/withdrawals` 201/pending và UI hiện cả mã yêu cầu lẫn `transactionId`. Mở `/w/wallet/transaction/<transactionId>`; GET `/api/wallet/transactions/<transactionId>` trả 200/pending và trang chi tiết giữ trạng thái pending. Ảnh: [Wallet transfer pending](evidence/A06/preview-wallet-pending-transfer-2026-09-28.png), [Wallet withdrawal pending](evidence/A06/preview-wallet-pending-withdrawal-2026-09-28.png), [Wallet transaction pending](evidence/A06/preview-wallet-pending-transaction-2026-09-28.png). Browser đo 1,808 ms; mọi response đi qua service worker và không có external API origin. Đây là UI/MSW evidence, không phải backend thật. Wallet unknown/duplicate hiện chưa có scenario để nghiệm thu: contract chưa khai báo lookup theo Idempotency-Key hoặc kết quả replay cùng key. Không dùng response 503 chung hay scenario pending làm bằng chứng đối soát sau khi mất response. Backend owner xác nhận lookup/replay contract trước khi bổ sung thao tác nghiệm thu. Contract không xác định same-key replay hay correlation giữa transfer receipt `id` với transaction detail; guard same-intent của transfer chỉ ở component memory và mất khi reload. Không kết luận chống trùng bền vững hoặc reconciliation đã đạt; cần backend contract/lookup trước khi nối API.
 
 
@@ -313,7 +318,7 @@ Chromium 1440×900 chạy lúc `2026-09-29T20:03:02.418Z`; tổng flow **950 ms*
 
 Để bật đúng hành vi Preview UI, persona Developer mock hiện khai báo `profile:read`, `profile:write` và `profile:security:write`; auth-handler test đạt **13/13**. Scope chỉ thuộc persona local. MSW handlers hiện không enforce quyền đọc Profile, nên browser run không kiểm chứng authorization phía server. Ảnh đã xem: [edit](evidence/A06/preview-profile-success-edit-2026-09-29.png), [devices sau mutation](evidence/A06/preview-profile-success-devices-2026-09-29.png), [activity](evidence/A06/preview-profile-success-activity-2026-09-29.png), [sub-accounts](evidence/A06/preview-profile-success-sub-accounts-2026-09-29.png). Banner cảnh báo mock che một phần nút mở Preview Controls ở góc phải dưới; theo dõi tiếp trong C05.03.
 
-Request/response đầy đủ và 22 source hash nằm trong [sidecar](evidence/A06/profile-success-browser-check-2026-09-29.json); cách chạy ở [runner](evidence/A06/run-profile-success-browser-check.mjs). Scenario matrix hiện `profile.success` là `browser_verified` (**7/7** operation); tổng matrix sau hash revalidation có **7/105** row fresh (**1** full, **6** representative), do 8 sidecar cũ phụ thuộc hash `src/dev/mocks/handlers.ts` hiện đã stale. UI acceptance **0/128**, backend/staging **0/154**; A06.03 vẫn mở, hàng kế tiếp `profile.empty`. Không dùng local fixtures để gỡ blocker Wallet unknown/duplicate.
+Request/response đầy đủ và 22 source hash của lần đo ngày 2026-09-29 nằm trong [sidecar](evidence/A06/profile-success-browser-check-2026-09-29.json); cách chạy ở [runner](evidence/A06/run-profile-success-browser-check.mjs). Tại lần đo đó, `profile.success` bao phủ 7/7 operation. Số liệu 7/105 row fresh và 8 sidecar stale là snapshot lịch sử, không còn là trạng thái hiện tại. Matrix hiện tại ghi 81/106 scenario row fresh (38 full, 43 representative), 88/154 operation duy nhất, 81/81 registered sidecar hiện hành, 0 stale; aggregate runtime vẫn historical. UI acceptance **0/128**, backend/staging **0/154**. A06.03 đã audit Market 0/22 operation 401/403; hai hàng authorization giữ `not_verified`. Launchpad/Earn/Discovery/DCA/Arena/Auth đã audit contract. Tiếp theo xác định P2P unknown/replay theo contract trước mutation. không dùng local fixture để gỡ blocker Wallet unknown/duplicate.
 
 ### Profile empty — 2026-09-29, collection rỗng trên preview local
 
@@ -442,22 +447,14 @@ Test component riêng xác nhận khi GET ticket lỗi tổng quát 503 do test 
 Tổng scenario **8.154 giây**; bốn GET trả 200 qua service worker, hai mutation bằng 0, request API ngoài phạm vi bằng 0. Ảnh: [news](evidence/A06/preview-support-loading-news-2026-09-28.png), [notifications](evidence/A06/preview-support-loading-notifications-2026-09-28.png), [help](evidence/A06/preview-support-loading-help-2026-09-28.png), [ticket list](evidence/A06/preview-support-loading-tickets-2026-09-28.png). Kết quả đầy đủ ở [browser report](evidence/A06/preview-scenario-browser-check-market-empty-2026-09-28.json), coverage ở [scenario matrix](evidence/A06/scenario-matrix-2026-09-28.json).
 
 Ma trận giữ `support.loading` ở `representative_browser_observed` (4/6 operation): `markNotificationRead` và `createSupportTicket` không chạy trong trạng thái loading read-only. Delay hai giây là do local MSW, không dùng làm backend latency/SLO. Persona UI không làm MSW enforce authorization; kết quả này không chứng minh backend, staging hay user acceptance. Ảnh vẫn cho thấy badge shell cố định 3; sai khác đồng bộ Notifications còn mở. Scenario kế tiếp theo ma trận là `support.unauthorized`.
-### Support error — kiểm tra ErrorState và Retry trên bốn trang
+### Support error — statusless transport failure theo hợp đồng
 
-1. Dùng browser session mới để cache query trống. Đăng nhập persona **Support · quyền nội dung và ticket mock**, chọn miền API **Hỗ trợ**, trạng thái **Lỗi dịch vụ · HTTP 503**, áp dụng scenario `support.error`.
-2. Mở lần lượt `/w/news`, `/w/notifications`, `/w/support/help`, `/w/support`. Trên mỗi trang, xác nhận ErrorState và nút **Thử lại** xuất hiện, dữ liệu thành công cũ không bị trình bày như kết quả mới. Chờ lượt lỗi đầu hoàn tất, ghi request GET và status; chụp ảnh trước khi Retry.
-3. Bấm **Thử lại** đúng một lần trên mỗi route. Xác nhận trang vẫn ở cùng URL, Retry còn khả dụng, lần gọi thứ hai kết thúc cùng lỗi. Không đánh dấu thông báo đã đọc hoặc gửi ticket; hai mutation phải bằng 0.
+OpenAPI Support không khai báo HTTP 5xx cho bất kỳ operation nào, nên không chọn mock HTTP 503 làm bằng chứng. Với persona Support, chạy runner hiện hành; runner ném TypeError trước dispatch network cho bốn GET đọc, xác nhận request/response HTTP của scenario đều bằng 0. Không bấm mark-read hay gửi ticket khi các read đang lỗi.
 
-| Route | Operation | GET ban đầu | Sau 1 Retry | Browser/UI |
-| --- | --- | ---: | ---: | --- |
-| `/w/news` | `listNews` | 6 × 503 | thêm 6 × 503 | ErrorState/Retry; tin thành công không hiện |
-| `/w/notifications` | `listNotifications` | 6 × 503 | thêm 6 × 503 | ErrorState/Retry; notification success không hiện |
-| `/w/support/help` | `getHelpCenter` | 6 × 503 | thêm 6 × 503 | ErrorState/Retry; FAQ success không hiện |
-| `/w/support` | `listSupportTickets` | 6 × 503 | thêm 6 × 503 | ErrorState/Retry; ticket success không hiện |
+Đo chẩn đoán trước sửa ghi mỗi operation **6 fetch attempts ban đầu + 6** sau một lần bấm Retry (**12/route**, **48 tổng** qua bốn route), nhưng **0 HTTP request / 0 HTTP response** vì TypeError được inject trước network. Sau khi retry ownership được sửa, mỗi operation còn **3 + 3** (**6/route**, **24 tổng**). Cả hai lượt đều giữ ErrorState, nút Retry, route và ẩn success content; post-fix flow giảm từ **23.728 giây xuống 7.171 giây** trong runner local này. Số đo Retry mỗi route giảm từ 2.561–2.563 giây xuống 793–812 ms. Đây là thời gian Chromium và fetch failure giả lập, không phải backend latency/SLO.
 
-Chromium đo **12 GET mỗi route**, **48 response 503** tổng, tất cả từ service worker; thời gian từng route **5.513 / 5.530 / 5.515 / 5.532 giây**, tổng scenario **22.090 giây**. Không có mutation hay request API ngoài danh sách. Ảnh: [news](evidence/A06/preview-support-error-news-2026-09-28.png), [notifications](evidence/A06/preview-support-error-notifications-2026-09-28.png), [help](evidence/A06/preview-support-error-help-2026-09-28.png), [tickets](evidence/A06/preview-support-error-tickets-2026-09-28.png). Full trace: [browser report](evidence/A06/preview-scenario-browser-check-market-empty-2026-09-28.json); ma trận: [scenario matrix](evidence/A06/scenario-matrix-2026-09-28.json).
+Report current-head mới nhất: bấm Retry một lần trên từng route theo thứ tự `/w/news`, `/w/notifications`, `/w/support/help`, `/w/support`; mọi mutation phải bằng 0. `support-queries.ts` tắt retry ở React Query, còn HTTP client giữ ngân sách ba lần thử cho GET; runner mặc định nay phản ánh đúng **3 lượt đầu + 3 lượt Retry mỗi operation**. Report ghi **24** lỗi transport trước network, **0 HTTP request/response**, **0 mutation**, ErrorState/Retry và route đúng trên cả bốn route, **26/26 source hash**, flow local **6.952 giây** và mỗi Retry **793–794 ms**. Đây là phép đo local, không phải latency backend/SLO. [Report current](evidence/A06/support-error-browser-check-2026-09-30-current-head-20261001-support-error-default3.json) · [runner](evidence/A06/run-support-error-browser-check.mjs) · [diagnostic trước sửa](evidence/A06/support-error-browser-check-2026-09-30-pre-fix-current-head-20260930-1745.json). Ảnh current: [News](evidence/A06/preview-support-error-news-2026-09-30-current-head-20261001-support-error-default3.png), [Notifications](evidence/A06/preview-support-error-notifications-2026-09-30-current-head-20261001-support-error-default3.png), [Help](evidence/A06/preview-support-error-help-2026-09-30-current-head-20261001-support-error-default3.png), [Tickets](evidence/A06/preview-support-error-tickets-2026-09-30-current-head-20261001-support-error-default3.png). /w/news tô “Trang chủ” ở sidebar, và Web widget che một phần Preview warning; theo dõi C05.03. Unauthorized/forbidden vẫn contract-blocked do 0/6 operation khai báo 401/403.
 
-503 này là **synthetic local MSW status**; `contracts/openapi/support.yaml` không khai báo 503 cho các GET. Shared HTTP client chạy tối đa hai retry cho GET và React Query thêm một retry, tạo sáu request trong một lần tải lỗi; một lần Retry trên UI lại chạy sáu request. Ma trận vì thế giữ `support.error` ở `representative_browser_observed` (4/6 operation), không xem mutation chưa chạy là đã phủ và không dùng số đo này làm backend latency, authorization, retry policy, staging hoặc acceptance. Scenario kế tiếp là `support.unauthorized`.
 ### Support unauthorized/forbidden — contract chưa đủ để kiểm tra
 
 `contracts/openapi/support.yaml` có global `sessionCookie` security, nhưng parse toàn bộ 6 operation cho thấy không operation nào khai báo response **401** hoặc **403**. Hiện chưa có bằng chứng response body/code hoặc hành vi xử lý hợp đồng cho hai trạng thái này. Không bật persona/state mock `support.unauthorized`/`support.forbidden` để thay cho hợp đồng thật. Yêu cầu API owner bổ sung response status/schema và ý nghĩa authorization, rồi cập nhật matrix và chạy lại scenario. Giữ cả hai row ở `not_verified`; `trading.success` đã được quan sát kế tiếp nhưng chỉ phủ thành công 12/13 operation; scenario ma trận tiếp theo là `trading.empty`.
@@ -528,7 +525,7 @@ Chromium đo tổng scenario **18.762 s**; Trading request ngoài phạm vi **0*
 ### Trading unauthorized — phiên hết hạn
 
 1. Chạy preview local tại `http://127.0.0.1:5173`, đăng nhập persona **Developer**, chọn miền API `trading`, trạng thái `unauthorized`; xác nhận badge `trading.unauthorized` rồi mở `/w/trade/positions`.
-2. Xác nhận `GET /api/trading/positions` nhận HTTP 401 qua service worker, sau đó `POST /api/auth/refresh` nhận HTTP 401 và route chuyển tới `/auth/login`. Lần đo ghi nhận điều hướng sau **534 ms**; nội dung vị thế cũ không còn hiển thị.
+2. Xác nhận `GET /api/trading/positions` nhận HTTP 401 qua service worker, sau đó `POST /api/auth/refresh` nhận HTTP 200/null theo Auth OpenAPI và route chuyển tới `/auth/login`. Lần đo ghi nhận điều hướng sau **534 ms**; nội dung vị thế cũ không còn hiển thị.
 3. Xác nhận đúng 1 request đọc, đúng 1 refresh, 0 request Trading ngoài scenario, 0 mutation và 0 external API origin. Ảnh: [màn hình đăng nhập sau khi hết phiên](evidence/A06/preview-trading-unauthorized-login-2026-09-29.png); số liệu đầy đủ ở [browser report](evidence/A06/preview-scenario-browser-check-market-empty-2026-09-28.json).
 4. Tất cả 13 operation Trading khai báo 401 và `sessionCookie`, nhưng scenario chỉ chạy `listOpenPositions` (1/13), nên matrix ghi `representative_browser_observed`. Service worker/MSW xác minh hành vi preview local; không chứng minh backend authorization, staging hoặc user acceptance. Sau `trading.forbidden`, row chưa xác minh kế tiếp là `trading.unknown`; contract chưa có ngữ nghĩa đối soát/replay để kiểm chứng outcome.
 
@@ -546,15 +543,15 @@ Chromium đo tổng scenario **18.762 s**; Trading request ngoài phạm vi **0*
 1. Mở preview local, đăng nhập persona **Admin (chỉ đọc)** (`admin@vittrade.local` / `Preview-123!`), chọn miền API `admin` và trạng thái `success`. Mở `/w/admin`, `/w/admin/funnels` và `/w/admin/abtests`; snapshot, funnel step và A/B test fixture phải hiển thị.
 2. Chọn trạng thái `empty`, áp dụng, rồi chỉ mở `/w/admin/funnels` và `/w/admin/abtests`. Hai collection nhận lần lượt `{ steps: [] }` và `{ tests: [] }`; trang phải hiện “Chưa có dữ liệu funnel.” và “Chưa có A/B test nào.”. Không làm rỗng `/w/admin`: overview là snapshot tổng hợp, không phải collection rỗng.
 3. Để thử `loading`, chọn lại persona Admin sau khi áp dụng scenario để xóa React Query cache, rồi chọn miền `admin`, trạng thái `loading`. Trên ba route `/w/admin`, `/w/admin/funnels` và `/w/admin/abtests`, phải thấy nhãn đang tải trước khi fixture response 200 đến; sau đó dữ liệu thành công phải hiện.
-4. Để thử `error`, chọn `admin.error`, xóa cache bằng cách áp dụng lại persona Admin, rồi mở ba route đọc. Mỗi trang phải hiện `Có lỗi xảy ra` cùng nút `Thử lại`, không hiện fixture cũ hoặc trạng thái rỗng thành công. Nút retry được kiểm tra chuyển lại sang dữ liệu thành công trong `AdminContractPages.test.tsx`.
-5. Admin success quan sát ba GET 200, Admin empty hai GET 200, Admin loading ba GET 200 có trì hoãn MSW và Admin error ba route đọc nhận lỗi 503 tổng hợp. Đây là local service-worker evidence. Admin OpenAPI không khai báo 503; ghi scenario này như kiểm tra ErrorState UI, không phải response contract. `getAdminAbTest` chưa có UI route/detail link và `updateAdminFeatureFlag` chưa có form; persona không có `admin:write`, không gửi mutation.
+4. Để thử `error`, chọn `admin.error`, áp dụng lại persona Admin để xóa query cache, rồi mở lần lượt `/w/admin`, `/w/admin/funnels` và `/w/admin/abtests`. Lượt Chromium current-head dùng `HttpResponse.error()` từ MSW nên phát **0 HTTP response**; cả ba route hiện ErrorState và nút `Thử lại`, không lộ dữ liệu cũ hoặc empty success, đồng thời giữ nguyên URL. Mỗi GET có **3 lần thử ban đầu + 3 lần khi bấm Retry**. [Report](evidence/A06/admin-error-browser-check-2026-09-30-post-fix-codex-goal.json) ghi 18 transport failures, 0 response, 0 write, 0 page error và 0 API origin ngoài; [runner](evidence/A06/run-admin-error-browser-check.mjs) tạo lại phép đo. Nút Retry rồi thành công được xác nhận riêng trong `AdminContractPages.test.tsx`.
+5. Admin OpenAPI khai báo **0/5** operation có response 5xx. Không đổi `HttpResponse.error()` thành 503/500. Trong 5 operation liên kết, 3 GET trên ba route hiện tại được quan sát; `getAdminAbTest` không có route detail và `updateAdminFeatureFlag` là mutation chưa có form. Không gửi detail request hoặc mutation. Toàn bộ bằng chứng chạy tại Vite/MSW local, không xác nhận backend/staging, authorization server hay nghiệm thu người dùng.
 
-Ảnh và kết quả: [Admin overview](evidence/A06/preview-admin-success-overview-2026-09-29.png), [funnel thành công](evidence/A06/preview-admin-success-funnel-2026-09-29.png), [A/B thành công](evidence/A06/preview-admin-success-ab-tests-2026-09-29.png), [funnel rỗng](evidence/A06/preview-admin-empty-funnel-2026-09-29.png), [A/B rỗng](evidence/A06/preview-admin-empty-ab-tests-2026-09-29.png), [Admin loading overview](evidence/A06/preview-admin-loading-overview-2026-09-29.png), [funnel](evidence/A06/preview-admin-loading-funnel-2026-09-29.png), [A/B tests](evidence/A06/preview-admin-loading-ab-tests-2026-09-29.png), [overview error](evidence/A06/preview-admin-error-overview-2026-09-29.png), [funnel error](evidence/A06/preview-admin-error-funnel-2026-09-29.png), [A/B error](evidence/A06/preview-admin-error-ab-tests-2026-09-29.png). Xem [browser report](evidence/A06/preview-scenario-browser-check-market-empty-2026-09-28.json) để kiểm tra số liệu; bằng chứng này không xác nhận authorization/backend, staging hoặc nghiệm thu người dùng.
+Report current-head: [success](evidence/A06/admin-success-browser-check-202609301817146.json), [empty](evidence/A06/admin-empty-browser-check-202609301817159.json), [loading](evidence/A06/admin-loading-browser-check-202609301817170.json), [error trước sửa](evidence/A06/admin-error-browser-check-2026-09-30-pre-fix-codex-goal.json), [error sau sửa](evidence/A06/admin-error-browser-check-2026-09-30-post-fix-codex-goal.json), [forbidden](evidence/A06/admin-forbidden-browser-check-202609301817252.json). Ảnh error sau sửa: [overview](evidence/A06/preview-admin-error-overview-2026-09-30-post-fix-codex-goal.png), [funnel](evidence/A06/preview-admin-error-funnel-2026-09-30-post-fix-codex-goal.png), [A/B tests](evidence/A06/preview-admin-error-ab-tests-2026-09-30-post-fix-codex-goal.png). Ảnh success/empty/loading/forbidden đi kèm từng report; các lượt cũ được giữ làm lịch sử.
 
 ### Admin unauthorized — phiên hết hạn
 
 1. Chạy preview local tại `http://127.0.0.1:5173`, đăng nhập persona **Admin chỉ đọc** (`admin@vittrade.local` / `Preview-123!`), chọn miền API `admin`, trạng thái `unauthorized`; xác nhận badge `admin.unauthorized`.
-2. Mở `/w/admin`. Trang gọi `GET /api/admin/overview`, MSW trả 401 `PREVIEW_UNAUTHORIZED`; client gọi `POST /api/auth/refresh`, MSW trả 401 `SESSION_EXPIRED` và route phải chuyển tới `/auth/login`.
+2. Mở `/w/admin`. Trang gọi `GET /api/admin/overview`, MSW trả 401 `PREVIEW_UNAUTHORIZED`; client gọi `POST /api/auth/refresh`, runner chặn POST /api/auth/refresh, trả fixture HTTP 200/null theo Auth OpenAPI trước service worker/backend, rồi route chuyển tới `/auth/login`.
 3. Xác nhận nội dung overview không còn (`Active users`, `1.284` không hiển thị), đúng một GET Admin và một POST refresh; request Admin ngoài danh sách **0**, mutation **0**, external API origin **0**. Ảnh: [Admin chuyển về đăng nhập](evidence/A06/preview-admin-unauthorized-login-2026-09-29.png); số đo và response nằm trong [browser report](evidence/A06/preview-scenario-browser-check-market-empty-2026-09-28.json).
 4. Admin OpenAPI khai báo 401 cho **5/5 operation**, nhưng lượt này chỉ thực thi `getAdminOverview` (**1/5**, đại diện). `getAdminAbTest` chưa có route chi tiết; `updateAdminFeatureFlag` không có form và persona không có quyền ghi. Đây là kiểm tra session-expiry UI local bằng service worker; không chứng minh backend authorization/session, staging hoặc user acceptance. Ma trận giữ `admin.unauthorized` ở `representative_browser_observed`; scenario kế tiếp là `admin.forbidden`.
 
@@ -761,44 +758,53 @@ Không chạy hoặc tổng hợp HTTP 403: cả **5/5** DCA operation không kh
 3. Duyệt Market home `/w/home` và các route trong bảng bên dưới. Dùng điều hướng ứng dụng để giữ phiên mock trong memory; không hard reload giữa các trang sau login. Mỗi route cần hiện heading và nội dung thuộc trang, không hiển thị generic error.
 4. Ở `/w/markets/alerts`, tạo một price alert với target `12345.67`, bật/tắt đúng alert vừa tạo, rồi xóa nó. Kỳ vọng POST **201**, PATCH **200**, DELETE **204** và hàng alert biến mất khỏi danh sách.
 5. Ở `/w/markets/watchlist`, xóa item ETH/USDT; mở cặp `/w/pair/ethusdt` và thêm lại vào watchlist; quay về watchlist, thêm ghi chú **Market QA local fixture note** cho ETH/USDT. Kỳ vọng DELETE **204**, POST **201**, PATCH **200**; item ETH xuất hiện lại và ghi chú được render sau khi query refetch.
-6. Chụp lại request/response, UI state sau mutation và screenshot. Runner tái lập cả 20 route cùng 6 thao tác: `node docs/architecture/production-readiness/evidence/A06/run-market-success-browser-check.mjs`. Runner dùng Chromium headless và SPA history transition để tránh làm mất session; vì vậy bảng route cũng là danh sách kiểm tra thủ công, không thay thế browser runner.
+6. Chụp lại request/response, UI state sau mutation và screenshot. Runner tái lập cả 20 route cùng 6 thao tác: `node docs/architecture/production-readiness/evidence/A06/run-market-success-current-head-browser-check.mjs`. Runner dùng Chromium headless và SPA history transition để tránh làm mất session; vì vậy bảng route cũng là danh sách kiểm tra thủ công, không thay thế browser runner.
 
 #### Danh mục route và ảnh chụp
 
 | Route | Operation được kích hoạt khi mở trang | Screenshot |
 | --- | --- | --- |
-| `/w/home` | `listMarketPairs`, `getMarketWatchlist` | [home](evidence/A06/preview-market-success-home-2026-09-29.png) |
-| `/w/markets/overview` | `getMarketOverview` | [overview](evidence/A06/preview-market-success-markets-overview-2026-09-29.png) |
-| `/w/markets/movers` | `getMarketMovers` | [movers](evidence/A06/preview-market-success-markets-movers-2026-09-29.png) |
-| `/w/markets/news` | `getMarketNews` | [news](evidence/A06/preview-market-success-markets-news-2026-09-29.png) |
-| `/w/markets/calendar` | `getMarketCalendar` | [calendar](evidence/A06/preview-market-success-markets-calendar-2026-09-29.png) |
-| `/w/markets/correlations` | `getMarketCorrelations` | [correlations](evidence/A06/preview-market-success-markets-correlations-2026-09-29.png) |
-| `/w/markets/unlocks` | `getMarketTokenUnlocks` | [unlocks](evidence/A06/preview-market-success-markets-unlocks-2026-09-29.png) |
-| `/w/markets/derivatives` | `getMarketDerivatives` | [derivatives](evidence/A06/preview-market-success-markets-derivatives-2026-09-29.png) |
-| `/w/markets/social-sentiment` | `getMarketSentiment` | [sentiment](evidence/A06/preview-market-success-markets-social-sentiment-2026-09-29.png) |
-| `/w/markets/signals` | `getMarketSignals` | [signals](evidence/A06/preview-market-success-markets-signals-2026-09-29.png) |
-| `/w/markets/alerts` | `listMarketPriceAlerts`, `listMarketPairs`; then 3 alert writes | [alerts](evidence/A06/preview-market-success-markets-alerts-2026-09-29.png) |
-| `/w/markets/screener` | `listMarketPairs` | [screener](evidence/A06/preview-market-success-markets-screener-2026-09-29.png) |
-| `/w/markets/watchlist` | `listMarketPairs`, `getMarketWatchlist`; then 2 watchlist writes | [watchlist](evidence/A06/preview-market-success-markets-watchlist-2026-09-29.png) |
-| `/w/pair/btcusdt` | `getMarketPair`, `getMarketOrderBook`, `getMarketRecentTrades`, `getMarketWatchlist` | [BTC pair](evidence/A06/preview-market-success-pair-btcusdt-2026-09-29.png) |
-| `/w/markets/depth` | `listMarketPairs`, `getMarketPair`, `getMarketOrderBook` | [depth](evidence/A06/preview-market-success-markets-depth-2026-09-29.png) |
-| `/w/trade/advanced-chart/btcusdt` | `listMarketPairs`, `getMarketPair`, `getMarketCandles` | [advanced chart](evidence/A06/preview-market-success-trade-advanced-chart-btcusdt-2026-09-29.png) |
-| `/w/pair/btcusdt/info` | `getMarketPair` | [pair info](evidence/A06/preview-market-success-pair-btcusdt-info-2026-09-29.png) |
-| `/w/markets/sectors` | `getMarketOverview`, `listMarketPairs` | [sectors](evidence/A06/preview-market-success-markets-sectors-2026-09-29.png) |
-| `/w/markets/heatmap` | `listMarketPairs` | [heatmap](evidence/A06/preview-market-success-markets-heatmap-2026-09-29.png) |
-| `/w/markets/compare` | `listMarketPairs` | [compare](evidence/A06/preview-market-success-markets-compare-2026-09-29.png) |
+| `/w/home` | `listMarketPairs`, `getMarketWatchlist` | [home](evidence/A06/preview-market-success-home-20260930142254.png) |
+| `/w/markets/overview` | `getMarketOverview` | [overview](evidence/A06/preview-market-success-markets-overview-20260930142254.png) |
+| `/w/markets/movers` | `getMarketMovers` | [movers](evidence/A06/preview-market-success-markets-movers-20260930142254.png) |
+| `/w/markets/news` | `getMarketNews` | [news](evidence/A06/preview-market-success-markets-news-20260930142254.png) |
+| `/w/markets/calendar` | `getMarketCalendar` | [calendar](evidence/A06/preview-market-success-markets-calendar-20260930142254.png) |
+| `/w/markets/correlations` | `getMarketCorrelations` | [correlations](evidence/A06/preview-market-success-markets-correlations-20260930142254.png) |
+| `/w/markets/unlocks` | `getMarketTokenUnlocks` | [unlocks](evidence/A06/preview-market-success-markets-unlocks-20260930142254.png) |
+| `/w/markets/derivatives` | `getMarketDerivatives` | [derivatives](evidence/A06/preview-market-success-markets-derivatives-20260930142254.png) |
+| `/w/markets/social-sentiment` | `getMarketSentiment` | [sentiment](evidence/A06/preview-market-success-markets-social-sentiment-20260930142254.png) |
+| `/w/markets/signals` | `getMarketSignals` | [signals](evidence/A06/preview-market-success-markets-signals-20260930142254.png) |
+| `/w/markets/alerts` | `listMarketPriceAlerts`, `listMarketPairs`; then 3 alert writes | [alerts](evidence/A06/preview-market-success-markets-alerts-20260930142254.png) |
+| `/w/markets/screener` | `listMarketPairs` | [screener](evidence/A06/preview-market-success-markets-screener-20260930142254.png) |
+| `/w/markets/watchlist` | `listMarketPairs`, `getMarketWatchlist`; then 2 watchlist writes | [watchlist](evidence/A06/preview-market-success-markets-watchlist-20260930142254.png) |
+| `/w/pair/btcusdt` | `getMarketPair`, `getMarketOrderBook`, `getMarketRecentTrades`, `getMarketWatchlist` | [BTC pair](evidence/A06/preview-market-success-pair-btcusdt-20260930142254.png) |
+| `/w/markets/depth` | `listMarketPairs`, `getMarketPair`, `getMarketOrderBook` | [depth](evidence/A06/preview-market-success-markets-depth-20260930142254.png) |
+| `/w/trade/advanced-chart/btcusdt` | `listMarketPairs`, `getMarketPair`, `getMarketCandles` | [advanced chart](evidence/A06/preview-market-success-trade-advanced-chart-btcusdt-20260930142254.png) |
+| `/w/pair/btcusdt/info` | `getMarketPair` | [pair info](evidence/A06/preview-market-success-pair-btcusdt-info-20260930142254.png) |
+| `/w/markets/sectors` | `getMarketOverview`, `listMarketPairs` | [sectors](evidence/A06/preview-market-success-markets-sectors-20260930142254.png) |
+| `/w/markets/heatmap` | `listMarketPairs` | [heatmap](evidence/A06/preview-market-success-markets-heatmap-20260930142254.png) |
+| `/w/markets/compare` | `listMarketPairs` | [compare](evidence/A06/preview-market-success-markets-compare-20260930142254.png) |
 
-Ảnh sau đủ 6 mutation, trong đó ghi chú ETH/USDT đã được render sau refetch: [watchlist sau ghi chú](evidence/A06/preview-market-success-market-writes-complete-2026-09-29.png). Toàn bộ request/response, operation ID, response status, latency, source hashes và phân loại lifecycle callback được ghi trong [sidecar report](evidence/A06/market-success-browser-check-2026-09-29.json); trạng thái scenario tổng hợp nằm trong [master report](evidence/A06/preview-scenario-browser-check-market-empty-2026-09-28.json) và [scenario matrix](evidence/A06/scenario-matrix-2026-09-28.json).
+Ảnh sau đủ 6 mutation, trong đó ghi chú ETH/USDT đã được render sau refetch: [watchlist sau ghi chú](evidence/A06/preview-market-success-market-writes-complete-20260930142254.png). Toàn bộ request/response, operation ID, response status, latency, source hashes và phân loại lifecycle callback được ghi trong [sidecar report hiện hành](evidence/A06/market-success-current-head-browser-check-20260930142254.json); trạng thái scenario tổng hợp nằm trong [master report](evidence/A06/preview-scenario-browser-check-market-empty-2026-09-28.json) và [scenario matrix](evidence/A06/scenario-matrix-2026-09-28.json).
 
 #### Kết quả đo và giới hạn
 
-Chromium lúc `2026-09-29T06:24:16.103Z` kiểm tra **20 route** và **22 operation ID duy nhất**: 16 GET operation cùng 6 mutation; trace có **31 GET + 6 write request** vì một số route/query được refetch. Cả 37 response Market trả qua service worker mock; sáu status ghi nhận lần lượt là **201/200/204** cho price alert và **204/201/200** cho watchlist. Tổng thời gian flow preview là **8.676 ms**; latency response local min/median/p95/max là **1/4/20/22 ms**. Không dùng các số này như backend latency hoặc SLA.
+Chromium trên HEAD `c5fc38b0755da3fe2c9831fe3040160a308a9a03`, viewport 1440×900 và Vite/MSW loopback kiểm tra **20 route**, **22/22 operation ID**, gồm **31 GET + 6 mutation**; thêm một Auth login trong trace, tổng cộng **38 API request và 38 response**. Cả **37/37 Market response** đều do service worker trả; sáu write status lần lượt là **201/200/204** cho alert và **204/201/200** cho watchlist. Market response latency local min/median/p95/max là **1/3/18/18 ms**; flow **10.354 ms**. Bộ đo giữ **43/43 input source hash** khớp working tree.
 
-Trace giữ **2** callback Playwright `net::ERR_ABORTED`. Chúng có cùng request sequence với DELETE đã nhận **204** từ service worker; runner xác nhận hàng alert bị xóa và ETH bị loại khỏi danh sách trước khi thêm lại. Report ghi raw callback cùng `requestFailureClassifications`; không có callback API failure nào thiếu response tương ứng. Đây là chi tiết lifecycle trong browser/MSW, không được diễn giải thành “0 callback lỗi”. Có **0 page error** và **0 API origin ngoài**.
+Có **2** callback Playwright `net::ERR_ABORTED` cho DELETE; mỗi callback trùng sequence với response **204** từ service worker và trạng thái đã xác nhận trên UI. Không gộp callback đó thành response failure. Ghi nhận **0** API origin ngoài, **0** page error, **0** request/mutation tới backend và **21** screenshot của 20 route cùng trạng thái sau mutation. Các số latency/thời gian chỉ là local MSW/Chromium, không phải backend hoặc SLA. Xem [runner](evidence/A06/run-market-success-current-head-browser-check.mjs), [current-head sidecar](evidence/A06/market-success-current-head-browser-check-20260930142254.json), [overview](evidence/A06/preview-market-success-markets-overview-20260930142254.png) và [watchlist sau mutation](evidence/A06/preview-market-success-market-writes-complete-20260930142254.png).
 
-Bảy endpoint nguồn bên ngoài chưa cấu hình (`news`, `calendar`, `correlations`, `token unlocks`, `derivatives`, `sentiment`, `signals`) chỉ nhận fixture schema-shaped khi `market.success` được chọn. Handler mặc định khi scenario chưa chọn vẫn giữ phản hồi **503** đã được tài liệu hóa. Regression tests xác thực bảy payload với schema tương ứng và xác nhận reset scenario quay lại 503; chúng không giả lập provider thật.
+Bằng chứng `market.success` bao phủ đủ 22 operation tại local mock. Đây không xác minh backend authorization, persistence, đa-session consistency, staging, production hoặc user acceptance; UI acceptance hiện **0/128**, backend/staging **0/154**. Scenario row kế tiếp theo matrix sau khi hoàn tất Market empty là `market.loading`; Launchpad 401/403 vẫn `not_verified` do OpenAPI không khai báo các response đó.
 
-Focused Vitest: `auth-handlers.test.ts` **13/13**, `preview-scenario-handler.test.ts` **53/53**, hai Market page suites **14/14**. App/Node TypeScript, ESLint cho phạm vi source đã sửa, Prettier cho source/report/docs, `node --check` runner, matrix `--check` và `git diff --check` đều exit **0**. `git diff --check` phát cảnh báo quy ước LF→CRLF trên working tree Windows nhưng không có lỗi whitespace. Browser chỉ chứng minh hành vi UI + MSW cục bộ và thao tác trên fixture trong memory; không chứng minh quyền backend, ghi bền, tính nhất quán đa session, staging hay user acceptance. Matrix đánh dấu `market.success` phủ **22/22** operation và `browser_verified`; toàn A06.03 vẫn `in_progress`. Row kế tiếp theo thứ tự là `market.loading`; Wallet `unknown/duplicate` tiếp tục bị chặn cho tới khi có backend contract lookup/correlation/replay được duyệt.
+### Market empty — list pairs rỗng trên preview local
+
+1. Khởi chạy Vite mock preview theo mục 1, đăng nhập persona `developer@vittrade.local` / `Preview-123!`, rồi chuyển bằng SPA tới `/w/markets/screener`.
+2. Mở Công cụ xem trước, chọn **Miền API: Market** và **Trạng thái phản hồi: Dữ liệu rỗng**, rồi áp dụng. Scenario này chỉ dùng `GET /market/pairs`; OpenAPI khai báo **200** và mock trả `{ "items": [] }`.
+3. Xác nhận trang giữ heading Market screener, hiển thị `0 tài sản` và `Không có tài sản phù hợp.`, không hiện BTC/USDT hay ErrorState. Ghi lại request/response, nguồn service worker, lỗi trang và API origins.
+4. Chạy `node docs/architecture/production-readiness/evidence/A06/run-market-empty-current-head-browser-check.mjs` để tái lập trên đúng Git HEAD; runner lưu current-head sidecar và screenshot theo run ID. Ảnh hiện hành: [Market empty](evidence/A06/preview-market-empty-current-head-20260930143719.png); [sidecar](evidence/A06/market-empty-current-head-browser-check-20260930143719.json).
+
+#### Kết quả đo và giới hạn
+
+Trên HEAD `c5fc38b0755da3fe2c9831fe3040160a308a9a03`, Chromium 1440×900 với Vite/MSW loopback phát sinh đúng **1 GET** `listMarketPairs`, nhận **200** từ service worker với `{ "items": [] }`; response local mất **15 ms**, flow là **3.402 ms**, và **17/17** source hash khớp. Screener hiển thị đúng empty state; **0** request failure, **0** page error, **0** API origin ngoài và **0** write/backend request. Đây là phép đo UI/fixture local, không phải backend latency, staging hay user acceptance; UI acceptance vẫn **0/128**, backend/staging **0/154**. Hàng tiếp theo theo matrix là `market.loading`.
 
 ### Market loading — 2026-09-29
 
@@ -856,3 +862,401 @@ Với persona Developer, chọn miền API Giới thiệu và trạng thái empt
 Chọn persona Developer, miền API Giới thiệu, trạng thái loading, áp dụng rồi mở /w/referral. Chromium 1440×900 quan sát GET /api/referral/overview được giữ pending: text “Đang tải dữ liệu Referral API…” hiện liên tục 2,011 ms trước response; HTTP 200 MSW tới sau 2,017 ms. Không có empty state trong lúc chờ; campaign, số liệu và danh sách 8 bạn bè hiện sau khi response đến. Route flow 2,141 ms, toàn luồng 2,572 ms, 1 request/response, 0 failure/write/page error/external origin/backend call. Ảnh loading và resolved: [pending](evidence/A06/preview-referral-loading-pending-2026-09-29.png), [resolved](evidence/A06/preview-referral-loading-resolved-2026-09-29.png); sidecar: [referral-loading-browser-check-2026-09-29.json](evidence/A06/referral-loading-browser-check-2026-09-29.json). EV-20260929-523.
 
 Đây là thời gian do delay của preview fixture, không phải API/backend latency. Permission server chưa được kiểm tra và banner preview che một phần góc dưới bên phải; xử lý user acceptance trong C05.03.
+
+
+### Market loading — current-head measurement — 2026-09-30
+
+Dùng local Vite preview ở `http://127.0.0.1:4173`, persona `market@vittrade.local` / `Preview-123!`, rồi chọn **Market → Đang tải · trì hoãn phản hồi 2 giây** trong Preview Controls. Runner mở Overview và Home, đi qua 11 route-result Market, rồi chạy sáu thao tác mutation để ghi nhận trạng thái pending. Chạy từ repo root:
+
+```powershell
+node docs/architecture/production-readiness/evidence/A06/run-market-loading-current-head-browser-check.mjs
+```
+
+Runner ràng buộc source revision với `TRACKING.json.executionPlan.auditSourceHead`, chụp ảnh theo run ID, kiểm tra status thực tế với OpenAPI và chờ các request API nền kết thúc trước khi xác lập fixture boundary. Report đạt hiện hành: [current-head sidecar](evidence/A06/market-loading-current-head-browser-check-20260930145708.json); runner: [run-market-loading-current-head-browser-check.mjs](evidence/A06/run-market-loading-current-head-browser-check.mjs). Ảnh: [Overview đang tải](evidence/A06/preview-market-loading-current-head-20260930145708.png), [create alert đang chờ](evidence/A06/preview-market-loading-pending-current-head-createMarketPriceAlert-20260930145708.png), [tất cả thao tác ghi hoàn tất](evidence/A06/preview-market-loading-complete-current-head-20260930145708.png).
+
+Kết quả: 22/22 operation ID, 31 GET + 6 write request, 36/37 Market request có response; một GET `listMarketPairs` bị hủy do chuyển route và hai callback DELETE bị Playwright báo `net::ERR_ABORTED` sau khi service worker đã trả 204. Tất cả sáu write control disabled khi pending. Có 30 GET response và 6 mutation response, tất cả từ service worker; bảy provider GET trả 503 đúng theo OpenAPI. Trong 36 Market response, latency min/median/p95/max **2.003/2.013/2.028/2.032 ms**; `getMarketOverview` **2.018 ms**; toàn flow **57.046 ms**. 21/21 source hash khớp, page error 0, external API origin 0, request backend và mutation thật đều 0. Giá trị này thuộc local mock với delay cài đặt khoảng 2 giây, không đại diện network/provider/backend.
+
+Bốn report và 80 ảnh current-head được catalog đầy đủ; ba report đầu là artifact chẩn đoán, không tính là kết quả đạt. Ảnh pending alert vẫn cho thấy banner cảnh báo Preview và Web widget lấn nhau ở góc phải, vấn đề C05.03 chưa được nghiệm thu. UI acceptance vẫn 0/128; backend/staging 0/154. Đây không phải xác nhận production readiness.
+
+
+### Market error — retry budget trên current head, 2026-09-30
+
+Mở Vite/MSW preview tại 127.0.0.1:4173, sau đó chạy node docs/architecture/production-readiness/evidence/A06/run-market-error-current-head-browser-check.mjs. Runner khóa HEAD c5fc38b0755da3fe2c9831fe3040160a308a9a03, băm 79 input và kiểm tra service-worker boundary, chỉ phát 503 cho bảy provider GET được OpenAPI khai báo; các GET còn lại dùng transport failure, sáu write không được gửi. Kết quả mới nhất: ErrorState + Retry đúng trên **20/20 route**, **87 request / 21 response / 66 transport failure**, ba HTTP-client attempts cho mỗi query execution, **15/22 operation ID**, **0 write**, **79/79 hash**. Một lần bấm Retry rõ ràng được kiểm tra bằng test hook riêng: ba request ban đầu và ba request sau thao tác, tổng sáu.
+
+Đối chiếu với [baseline chẩn đoán](evidence/A06/market-error-current-head-browser-check-20260930151845.json): sáu dispatch/execution, **174 request / 42 response / 132 transport failure**; sau sửa giảm một nửa. Baseline không được đăng ký vào coverage matrix; [report sau sửa](evidence/A06/market-error-current-head-browser-check-20260930152154.json) mới được đăng ký. 15 operation quan sát gồm 15 read; sáu mutation không kích hoạt và getMarketCandles không được route gọi nên không tính là đã kiểm tra.
+
+Ảnh: [overview lỗi](evidence/A06/preview-market-error-overview-20260930152154.png), [home](evidence/A06/preview-market-error-home-20260930152154.png), [movers](evidence/A06/preview-market-error-markets-movers-20260930152154.png), [news](evidence/A06/preview-market-error-markets-news-20260930152154.png), [depth](evidence/A06/preview-market-error-markets-depth-20260930152154.png), [pair](evidence/A06/preview-market-error-pair-btcusdt-20260930152154.png), [advanced chart](evidence/A06/preview-market-error-trade-advanced-chart-btcusdt-20260930152154.png). Có bảy ảnh tương ứng được giữ cho baseline.
+
+OpenAPI hiện khai báo **0/22** Market operation có 401 hoặc **0/22** có 403; các Preview Controls authorization cũ chỉ là mô phỏng, không phải contract evidence. Hai row vẫn not_verified. Matrix: **47/106** fresh (**22 full, 25 representative**), **62/154** operation, **47/72** sidecar current, **0** source hash stale; aggregate runtime vẫn historical. UI acceptance **0/128**; backend/staging **0/154**. Đây là local Chromium/Vite/MSW evidence, không chứng minh provider/backend, staging, production hoặc user acceptance.
+
+
+### Profile success — current head, 2026-09-30
+
+Mở Vite/MSW preview tại 127.0.0.1:4173 và chạy node docs/architecture/production-readiness/evidence/A06/run-profile-success-browser-check.mjs. Runner ghi report theo ngày và khóa sourceHead; lượt mới nhất chạy ở HEAD c5fc38b0755da3fe2c9831fe3040160a308a9a03. Bốn route edit/devices/activity/sub-accounts gọi đủ **7/7 operation**, **15 request / 15 response** trong flow gồm bootstrap; mọi response là service-worker response. Ba mock write trả 200/200/204 với Idempotency-Key, sửa fixture trong memory. Flow **4.704 ms**, **22/22 source hash** khớp, **0** request failure không có response, page error, external API origin hoặc backend call.
+
+Một callback net::ERR_ABORTED xuất hiện sau khi POST revoke đã nhận 204; runner ghi riêng và không phân loại thành request thất bại. Ảnh edit cho thấy /w/profile/edit tô sidebar Trang chủ thay vì Tài khoản; theo dõi sửa/kiểm tra ở C05.03 trước UI acceptance. Mocks không enforce quyền Profile, do đó scenario không xác minh backend authorization. [Report](evidence/A06/profile-success-browser-check-2026-09-30.json); [edit](evidence/A06/preview-profile-success-edit-2026-09-30.png), [devices](evidence/A06/preview-profile-success-devices-2026-09-30.png), [activity](evidence/A06/preview-profile-success-activity-2026-09-30.png), [sub-accounts](evidence/A06/preview-profile-success-sub-accounts-2026-09-30.png). Matrix **48/106** fresh (**23 full, 25 representative**), **69/154** unique operations, **48/72** current sidecars, **0** stale source hashes; runtime aggregate historical. UI acceptance **0/128**, backend/staging **0/154**.
+
+
+### Profile empty — current head, 2026-09-30
+
+Mở Vite/MSW preview tại `http://127.0.0.1:4173` rồi chạy từ repo root:
+
+```powershell
+node docs/architecture/production-readiness/evidence/A06/run-profile-empty-browser-check.mjs
+```
+
+Runner đạt với 3/3 collection operation (`listTrustedDevices`, `listProfileActivity`, `listSubAccounts`) trả HTTP 200 và `{items: []}`. Tổng flow có 9 API request/9 response qua service worker (bao gồm auth/market bootstrap và `getProfile`); không có write, request failure, page error hay API origin ngoài. Thời gian flow local 1.656 ms; 21/21 source hash khớp. `getProfile` vẫn trả object bình thường (“Nguyễn Văn A”), vì empty áp dụng riêng cho ba collection.
+
+Report: [current-head evidence](evidence/A06/profile-empty-browser-check-2026-09-30.json); ảnh: [devices](evidence/A06/preview-profile-empty-devices-2026-09-30.png), [activity](evidence/A06/preview-profile-empty-activity-2026-09-30.png), [sub-accounts](evidence/A06/preview-profile-empty-subaccounts-2026-09-30.png). /w/profile/devices cũng tô sidebar Trang chủ thay vì Tài khoản; theo dõi cùng lỗi /w/profile/edit trong C05.03.
+
+Đây là local Chromium/Vite/MSW evidence. Không có backend request; MSW không enforce Profile scopes. Kết quả không đo backend latency/persistence và không xác nhận staging, production, authorization hay user acceptance.
+
+
+### Profile loading — current head, 2026-09-30
+
+Mở Vite/MSW preview ở `http://127.0.0.1:4173` rồi chạy:
+
+```powershell
+node docs/architecture/production-readiness/evidence/A06/run-profile-loading-browser-check.mjs
+```
+
+Runner đạt 4/4 GET operation trên `/w/profile/edit`, `/w/profile/devices`, `/w/profile/activity` và `/w/profile/sub-accounts`. Tổng flow ghi nhận 7 API request/7 response, mọi response qua service worker; không có write, lỗi request, page error, API origin ngoài hay backend call. Loading xuất hiện khi bốn request đang in-flight; ba collection không render empty state trước response. Response time từ service worker sau delay MSW khoảng 2 giây lần lượt là 2,015, 2,006, 2,017 và 2,008 ms; toàn flow 9.476 ms. Các số này chỉ đo browser với local fixture/delay.
+
+Sau response 200, `getProfile` có một object, các collection lần lượt có 4 thiết bị, 7 hoạt động và 5 tài khoản phụ; 22/22 source hashes khớp. [Report](evidence/A06/profile-loading-browser-check-2026-09-30.json); ảnh: [edit](evidence/A06/preview-profile-loading-edit-2026-09-30.png), [devices](evidence/A06/preview-profile-loading-devices-2026-09-30.png), [activity](evidence/A06/preview-profile-loading-activity-2026-09-30.png), [sub-accounts](evidence/A06/preview-profile-loading-subaccounts-2026-09-30.png).
+
+Trong cả bốn ảnh loading, sidebar không tô active item; banner Preview vẫn bị floating Web widget che một phần. Theo dõi hai vấn đề ở C05.03. MSW không enforce quyền Profile; run không xác minh backend authorization, persistence, staging, production hoặc user acceptance.
+
+### Profile error — ngân sách retry trên current head, 2026-09-30
+
+Mở Vite mock theo mục 1, rồi từ repo root chạy:
+
+\`\`\`powershell
+node docs/architecture/production-readiness/evidence/A06/run-profile-error-browser-check.mjs
+\`\`\`
+
+Runner kiểm tra bốn route Profile bằng Chromium. Nó inject lỗi transport `Failed to fetch` riêng cho bốn GET trước khi request ra network, vì `contracts/openapi/profile.yaml` không khai báo response 5xx. Kết quả hiện tại: **3 lần thử/GET** ở lượt đầu và **3 lần** sau khi bấm Retry; ErrorState và nút Retry còn hiển thị, route không đổi và success fixture không xuất hiện. Có 24 fetch attempts Profile, 0 HTTP response Profile, 5 response bootstrap từ service worker, 0 write và 26/26 source hash khớp. Đây là lỗi transport được runner tạo cục bộ, không phải một phản hồi HTTP từ MSW/backend.
+
+Trước khi sửa, [chẩn đoán 503](evidence/A06/profile-error-browser-check-2026-09-30.json) ghi sáu request cho mỗi operation trong một execution, do retry của HTTP client nhân với retry React Query; thêm một lần Retry tạo 12 request mỗi operation. Profile OpenAPI không khai báo 503, vì vậy artifact đó chỉ là chẩn đoán và không đại diện contract-valid HTTP response. Sau khi đặt `retry: false` tại bốn query hook, HTTP client sở hữu ba lần thử. Regression test tại [profile-queries.test.tsx](../../../src/features/profile/model/profile-queries.test.tsx) đạt cùng preview handler tests: **11 file / 85 test**.
+
+Report và ảnh current-head: [report](evidence/A06/profile-error-current-head-browser-check-2026-09-30.json), [profile](evidence/A06/preview-profile-error-current-head-profile-2026-09-30.png), [devices](evidence/A06/preview-profile-error-current-head-devices-2026-09-30.png), [activity](evidence/A06/preview-profile-error-current-head-activity-2026-09-30.png), [sub-accounts](evidence/A06/preview-profile-error-current-head-subaccounts-2026-09-30.png). Bốn route đại diện quan sát 4/7 Profile operations; không gửi mutation hoặc Profile network request. Thời gian 7.535 ms chỉ đo run local này.
+
+Kiểm tra contract ghi nhận cả 7/7 Profile operation khai báo 401; không operation nào khai báo 403. Do đó `profile.forbidden` giữ `not_verified`, không dựng response 403. MSW không enforce quyền Profile. Luồng này không xác nhận backend outage, authorization, persistence, staging, production hoặc user acceptance. Ảnh tiếp tục cho thấy sidebar Profile chưa active đúng và banner Preview bị Web widget che; theo dõi ở C05.03.
+
+### Referral success — current head, 2026-09-30
+
+Mở Vite mock theo mục 1, rồi chạy từ repo root:
+
+```powershell
+node docs/architecture/production-readiness/evidence/A06/run-referral-success-browser-check.mjs
+```
+
+Runner tạo report và ảnh có run ID, giữ lại các artifact trước. Lượt current-head gọi duy nhất GET getReferralOverview trên `/w/referral`; response 200/1 từ service worker, độ trễ **3 ms**, scenario flow **123 ms**, tổng **612 ms**. UI hiện referral code, tier, campaign, commission và 8 friends. Có **20/20 source hashes** khớp; 0 write, request failure, page error hoặc API origin ngoài.
+
+[Report](evidence/A06/referral-success-browser-check-2026-09-30-1790786305232.json) · [Screenshot](evidence/A06/preview-referral-success-2026-09-30-1790786305232.png). Screenshot local cho thấy sidebar vẫn chọn “Trang chủ” ở /w/referral và widget Web che cảnh báo Preview; theo dõi C05.03. Scenario chỉ chứng minh contract response render trong preview mock, không xác minh referral permission, backend, persistence, link/copy thật hoặc user acceptance.
+
+
+### Referral empty — current head, 2026-09-30
+
+Mở Vite/MSW preview theo mục 1, rồi chạy từ repo root:
+
+```powershell
+node docs/architecture/production-readiness/evidence/A06/run-referral-empty-browser-check.mjs
+```
+
+Runner tạo report và screenshot có run ID để giữ nguyên artifact cũ. Lượt hiện hành gọi `getReferralOverview` một lần; GET/200 được MSW trả về sau **2 ms**. Scenario flow là **237 ms**, toàn flow **704 ms**. UI hiện code `PREVIEW-EMPTY`, tier Đồng, campaign, invite link, commission `$0.00`, tất cả thống kê 0, friend count 0 và thông báo empty state đúng. Có **20/20 source hashes** khớp; 0 request failure, write, page error hoặc API origin ngoài.
+
+[Report](evidence/A06/referral-empty-browser-check-2026-09-30-1790786675336.json) · [Screenshot](evidence/A06/preview-referral-empty-2026-09-30-1790786675336.png). Ảnh cho thấy nhãn top bar “Giới thiệu” tại `/w/referral`; widget Web che một phần cảnh báo Preview, theo dõi ở C05.03. Đây là fixture local, không kiểm chứng permission/backend/persistence hay user acceptance.
+
+### Referral loading — current head, 2026-09-30
+
+Mở Vite/MSW preview theo mục 1, rồi chạy từ repo root:
+
+```powershell
+node docs/architecture/production-readiness/evidence/A06/run-referral-loading-browser-check.mjs
+```
+
+Runner ghi report và hai screenshot với run ID. `getReferralOverview` trả GET/200 từ service worker sau **2.019 ms**; trạng thái “Đang tải dữ liệu Referral API...” đã hiện **2.012 ms** trước response. Flow tổng **2.610 ms**, route scenario **2.137 ms**. Sau resolve có referral code, tier, campaign, commission `$128.90` và 8 bạn bè; **20/20 source hashes** khớp, 0 failure/write/page error/external API origin.
+
+[Report](evidence/A06/referral-loading-browser-check-2026-09-30-1790787086803.json) · [Loading](evidence/A06/preview-referral-loading-pending-2026-09-30-1790787086803.png) · [Resolved](evidence/A06/preview-referral-loading-resolved-2026-09-30-1790787086803.png). Screenshot cũng xác nhận Trang chủ active sai ở `/w/referral` và widget Web che một phần Preview warning; giữ C05.03 mở. Delay là fixture MSW local, không phải latency backend hoặc user acceptance.
+
+
+### Referral error — current head, 2026-09-30
+
+Mở Vite/MSW preview theo mục 1, rồi chạy từ repo root:
+
+```powershell
+node docs/architecture/production-readiness/evidence/A06/run-referral-error-browser-check.mjs
+```
+
+Referral OpenAPI chỉ khai báo 200/401. Runner ném `TypeError` cho GET overview trước khi fetch ra network, rồi xác nhận **3** lần thử ban đầu và **3** sau nút Retry; không giả lập 503, không có HTTP response/request Referral. Lượt final: **6 fetch attempts**, flow **2.540 ms**, scenario **1.703 ms**, manual Retry **835 ms**, **23/23 source hashes** hiện hành; ErrorState/Retry hiện, success data vắng, route giữ nguyên, 0 page error/write/external API.
+
+[Report](evidence/A06/referral-error-browser-check-2026-09-30-1790787880986.json) · [Error](evidence/A06/preview-referral-error-2026-09-30-1790787880986.png) · [Sau Retry](evidence/A06/preview-referral-error-after-retry-2026-09-30-1790787880986.png). Report cũ 503 ngày 29/09 không đại diện contract; report 17:01 dưới source mock tạm thời được giữ trong file scope nhưng matrix dùng report 17:04 current-hash. UI fixture hoàn toàn local, không xác nhận outage hay retry latency của backend.
+
+### Referral unauthorized — current head, 2026-09-30
+
+Chạy runner với suffix mới để bảo toàn report và ảnh cũ:
+
+```powershell
+$env:EVIDENCE_RUN_SUFFIX = 'current-head-20260930'
+node docs/architecture/production-readiness/evidence/A06/run-referral-unauthorized-browser-check.mjs
+```
+
+`getReferralOverview` trả **1 GET/401** từ service worker; trang ẩn success data và chuyển về login. Flow **824 ms**, response **1 ms**, **25/25 source hashes**, không có Referral write/page error/API origin ngoài. POST `/api/auth/refresh` dùng runner fixture **200/null**, bị intercept trước network; không phải backend/Auth service observation.
+
+[Report](evidence/A06/referral-unauthorized-browser-check-2026-09-30-current-head-20260930.json) · [Referral](evidence/A06/preview-referral-unauthorized-success-2026-09-30-current-head-20260930.png) · [Login](evidence/A06/preview-referral-unauthorized-login-2026-09-30-current-head-20260930.png). Contract có 401 nhưng không có 403; `referral.forbidden` tiếp tục `not_verified`.
+
+### Support success — current head, sau retry fix
+
+Chạy từ repo root trong local Vite/MSW preview bằng Chromium runner:
+
+```powershell
+node docs/architecture/production-readiness/evidence/A06/run-support-success-browser-check.mjs
+```
+
+Current-head report ghi đủ **6/6 operation**, **8 Support request/response** trong **16 API request/response** tổng. Mark-read 204, unread 7→6, ticket create 201 rồi xuất hiện sau refetch; hai mutation có Idempotency-Key. Flow **1.044 giây**, **25/25 hash**, không page error hoặc API origin ngoài. Một callback `ERR_ABORTED` của mark-read theo sau response 204. Badge sidebar vẫn hiển thị 3 trong khi trang còn 6 chưa đọc; widget Web che một phần Preview warning. Hai mutation chỉ ghi vào fixture MSW local, không xác minh persistence, quyền thật, staging hay user acceptance.
+
+[Report](evidence/A06/support-success-browser-check-2026-09-30-1790790585769.json) · [News](evidence/A06/preview-support-success-news-2026-09-30-1790790585769.png) · [Notifications](evidence/A06/preview-support-success-notifications-2026-09-30-1790790585769.png) · [Help](evidence/A06/preview-support-success-help-2026-09-30-1790790585769.png) · [Tickets](evidence/A06/preview-support-success-tickets-2026-09-30-1790790585769.png).
+
+### Support empty — current head, sau retry fix
+
+Chạy với suffix riêng để giữ nguyên các lượt trước:
+
+```powershell
+$env:EVIDENCE_RUN_SUFFIX = 'post-retry-fix-20260930-1809'
+node docs/architecture/production-readiness/evidence/A06/run-support-empty-browser-check.mjs
+```
+
+Đủ **6/6 operation ID**, **8/8 Support request/response**; GET ticket đầu trả 200 với `items: []`, empty guidance hiện, create POST trả 201 rồi list refetch thấy 1 ticket. Mark-read 204 làm unread 7→6 nhưng badge sidebar vẫn 3. Flow **1.138 giây**, **25/25 source hash**, 0 scenario transport failure/page error/API origin ngoài; một abort callback xuất hiện sau response mark-read 204. Hai writes chỉ thay đổi MSW fixture in-memory.
+
+[Report](evidence/A06/support-empty-browser-check-2026-09-30-post-retry-fix-20260930-1809.json) · [Tickets rỗng](evidence/A06/preview-support-empty-tickets-2026-09-30-post-retry-fix-20260930-1809.png) · [Ticket tạo](evidence/A06/preview-support-empty-created-ticket-2026-09-30-post-retry-fix-20260930-1809.png) · [News](evidence/A06/preview-support-empty-news-2026-09-30-post-retry-fix-20260930-1809.png) · [Notifications](evidence/A06/preview-support-empty-notifications-2026-09-30-post-retry-fix-20260930-1809.png) · [Help](evidence/A06/preview-support-empty-help-2026-09-30-post-retry-fix-20260930-1809.png).
+
+### Support loading — current source, sau retry fix
+
+Chạy trong local Vite preview bằng persona Support và scenario Hỗ trợ → Đang tải (delay fixture 2 giây):
+
+```powershell
+$env:EVIDENCE_RUN_SUFFIX = 'post-retry-fix-20260930-1810'
+node docs/architecture/production-readiness/evidence/A06/run-support-loading-browser-check.mjs
+```
+
+| Route | Operation | Loading visible | Request → response | HTTP |
+| --- | --- | ---: | ---: | ---: |
+| /w/news | listNews | 1.993 giây | 2.033 giây | 200 |
+| /w/notifications | listNotifications | 1.993 giây | 2.032 giây | 200 |
+| /w/support/help | getHelpCenter | 1.984 giây | 2.015 giây | 200 |
+| /w/support | listSupportTickets | 1.992 giây | 2.025 giây | 200 |
+
+Toàn flow **8.615 giây**, **4/4 GET/200** qua service worker, mutation **0**, **25/25 hash**. Hai giây do MSW delay, không phải backend timing. /w/news vẫn tô “Trang chủ”; Web widget che Preview warning; giữ C05.03 và UI acceptance pending.
+
+[Report](evidence/A06/support-loading-browser-check-2026-09-30-post-retry-fix-20260930-1810.json) · [News](evidence/A06/preview-support-loading-news-2026-09-30-post-retry-fix-20260930-1810.png) · [Notifications](evidence/A06/preview-support-loading-notifications-2026-09-30-post-retry-fix-20260930-1810.png) · [Help](evidence/A06/preview-support-loading-help-2026-09-30-post-retry-fix-20260930-1810.png) · [Tickets](evidence/A06/preview-support-loading-tickets-2026-09-30-post-retry-fix-20260930-1810.png).
+
+
+
+Snapshot Support loading trước retry fix (không còn là current source)
+
+Báo cáo lúc đó ghi loading trước khi fixture phản hồi khoảng 1.993–2.005 giây trên bốn GET. Giữ artifact để đối chiếu lịch sử; sau khi `support-queries.ts` đổi retry ownership, hash của snapshot này không đại diện source hiện hành. Dùng [báo cáo current source sau retry fix](evidence/A06/support-loading-browser-check-2026-09-30-post-retry-fix-20260930-1810.json) ở phần trên khi cần số liệu mới.
+
+[Report lịch sử](evidence/A06/support-loading-browser-check-2026-09-30-current-head-20260930-1734.json) · [News](evidence/A06/preview-support-loading-news-2026-09-30-current-head-20260930-1734.png) · [Notifications](evidence/A06/preview-support-loading-notifications-2026-09-30-current-head-20260930-1734.png) · [Help](evidence/A06/preview-support-loading-help-2026-09-30-current-head-20260930-1734.png) · [Tickets](evidence/A06/preview-support-loading-tickets-2026-09-30-current-head-20260930-1734.png).
+
+### Support pending — current head, sau retry fix
+
+Runner tạo ticket trong trạng thái `support.loading` của MSW để chỉ đo trạng thái request-in-flight phía client:
+
+```powershell
+$env:EVIDENCE_RUN_SUFFIX = 'post-retry-fix-20260930-1811'
+node docs/architecture/production-readiness/evidence/A06/run-support-pending-browser-check.mjs
+```
+
+Chromium ghi **1 POST / 1 HTTP 201**, Idempotency-Key có mặt, nút và form disabled sau **104 ms**, response sau **2.028 giây**, không gửi trùng; ticket hiện sau 201. Response và fixture đều local MSW; đây không phải server pending status, backend persistence hay replay verification. Report ghi hai lỗi API không liên quan khi khởi tạo.
+
+[Report](evidence/A06/support-pending-browser-check-2026-09-30-post-retry-fix-20260930-1811.json) · [Pending](evidence/A06/preview-support-pending-2026-09-30-post-retry-fix-20260930-1811.png) · [Completed](evidence/A06/preview-support-pending-completed-2026-09-30-post-retry-fix-20260930-1811.png).
+
+### Support error — current head, statusless transport failure
+
+OpenAPI Support không khai báo 5xx, nên không dùng synthetic HTTP 503. Runner inject TypeError cho bốn GET trước network dispatch; lần đo chẩn đoán trước sửa ghi 6 initial + 6 manual Retry mỗi operation. Sau sửa query ownership, chạy:
+
+```powershell
+$env:EVIDENCE_RUN_SUFFIX = 'current-head-fixed-20260930-1749'
+$env:SUPPORT_ERROR_EXPECTED_ATTEMPTS = '3'
+node docs/architecture/production-readiness/evidence/A06/run-support-error-browser-check.mjs
+```
+
+| Route | Operation | Trước sửa: initial + Retry | Sau sửa: initial + Retry | HTTP req/resp |
+| --- | --- | ---: | ---: | ---: |
+| /w/news | listNews | 6 + 6 | 3 + 3 | 0 / 0 |
+| /w/notifications | listNotifications | 6 + 6 | 3 + 3 | 0 / 0 |
+| /w/support/help | getHelpCenter | 6 + 6 | 3 + 3 | 0 / 0 |
+| /w/support | listSupportTickets | 6 + 6 | 3 + 3 | 0 / 0 |
+
+Across both UI error cycles the pre-fix probe measured **48** fetch attempts; the fixed run measured **24** (**−50%**). Initial and explicit Retry each now stay within the shared HTTP client’s **3-attempt** GET budget. ErrorState/Retry stayed visible, route remained unchanged, success content was hidden, mutations were 0, and source hashes matched **26/26**. Flow: **23.728 → 7.171 giây**, while route Retry cycles fell from 2.561–2.563 seconds to 793–812 ms. This is local browser/runner timing only; it does not measure backend latency or SLO. /w/news active navigation and the Web/Preview overlap remain C05.03 findings.
+
+[Post-fix report](evidence/A06/support-error-browser-check-2026-09-30-current-head-fixed-20260930-1749.json) · [pre-fix diagnostic](evidence/A06/support-error-browser-check-2026-09-30-pre-fix-current-head-20260930-1745.json) · [News](evidence/A06/preview-support-error-news-2026-09-30-current-head-fixed-20260930-1749.png) · [Notifications](evidence/A06/preview-support-error-notifications-2026-09-30-current-head-fixed-20260930-1749.png) · [Help](evidence/A06/preview-support-error-help-2026-09-30-current-head-fixed-20260930-1749.png) · [Tickets](evidence/A06/preview-support-error-tickets-2026-09-30-current-head-fixed-20260930-1749.png).
+
+### Admin unauthorized — current-head local verification
+
+Run the app on the loopback preview at `http://127.0.0.1:4173`, then execute:
+
+```powershell
+$env:EVIDENCE_RUN_SUFFIX = 'current-head-20261001-admin-unauthorized'
+node docs/architecture/production-readiness/evidence/A06/run-admin-unauthorized-browser-check.mjs
+```
+
+The runner parses `contracts/openapi/admin.yaml` and `contracts/openapi/auth.yaml` before opening Chromium. It checks the three reachable read routes: overview, funnel, and A/B test list. Each Admin GET returns its contract-declared **401** from local MSW; the runner intercepts each refresh fetch before service-worker/backend dispatch and returns the Auth contract-declared **200/null** fixture. Each route must redirect to `/auth/login`, hide its success fixture, and issue no Admin write. The detail GET and feature-flag PATCH are outside the current routes and are not called.
+
+On HEAD `c5fc38b0755da3fe2c9831fe3040160a308a9a03`, the run observed **3/3 GET 401**, **3/3** refresh fixtures **200/null**, **3/3** login redirects, **0** stale success content, Admin writes or Admin request failures, **24/24 source hashes**, and a **1.261 ms** local flow. The browser trace also retained **7** app-level `net::ERR_ABORTED` callbacks: three Auth logout callbacks arrived after their response, while four Market pairs/watchlist reads had no response when the runner left `/w/home`. These are outside the Admin route checks and are listed individually in the report. The result does not certify server-side authorization, real refresh handling, backend, staging, production, or user acceptance.
+
+[Report](evidence/A06/admin-unauthorized-browser-check-2026-09-30-current-head-20261001-admin-unauthorized.json) · [overview screenshot](evidence/A06/preview-admin-unauthorized-overview-2026-09-30-current-head-20261001-admin-unauthorized.png) · [funnel screenshot](evidence/A06/preview-admin-unauthorized-funnel-2026-09-30-current-head-20261001-admin-unauthorized.png) · [A/B tests screenshot](evidence/A06/preview-admin-unauthorized-ab-tests-2026-09-30-current-head-20261001-admin-unauthorized.png)
+
+### Wallet empty — current-head local verification
+
+Giữ Vite preview trên loopback `http://127.0.0.1:4173`, rồi chạy:
+
+```powershell
+node docs/architecture/production-readiness/evidence/A06/run-wallet-empty-current-head-browser-check.mjs
+```
+
+Runner đăng nhập bằng persona mock, chọn `wallet.empty`, mở Wallet từ sidebar, rồi kiểm tra `/w/wallet` và `/w/wallet/history`. OpenAPI và operation map xác nhận phạm vi chỉ gồm `getWalletAssets` và `getWalletTransactions`; overview assets phải còn dữ liệu, còn activity/history phải rỗng. Browser đo **3 GET / 3 response 200 từ service worker**, **2/2 operation IDs**, **0 Wallet write**, **0 pending Wallet request**, **0 page error**, **0 external API origin**, **17/17 source hashes**. Đoạn Wallet mất **205 ms**, toàn flow **842 ms**; thời gian response mock là 2/3/1 ms và không đại diện server latency.
+
+Fixture giữ **2 assets, $16,754.32**, trong khi hai empty state hiện đúng. Hình chụp cho thấy sidebar ở `/w/wallet` vẫn tô “Trang chủ”, sidebar ở `/w/wallet/history` tô “Ví”, và Web widget che một phần cảnh báo preview; giữ các lỗi đó dưới C05.03. Trang còn tải Google Fonts qua `fonts.googleapis.com`/`fonts.gstatic.com`; API ngoài bằng 0. Đây là local Chromium/Vite/MSW evidence, không chứng minh backend, staging, authorization thật, production hay user acceptance.
+
+[Report](evidence/A06/wallet-empty-current-head-browser-check-202609301927077.json) · [Wallet overview](evidence/A06/preview-wallet-empty-overview-202609301927077.png) · [Transaction history](evidence/A06/preview-wallet-empty-history-202609301927077.png)
+
+Sau khi thay đổi `WalletOverviewContractPage` và `WalletTransactionHistoryContractPage`, chạy lại cùng runner để làm mới provenance thay vì dùng hash cũ. EV-20261001-004 đo lại 3 GET/200 trên hai operation IDs, 2 assets / $16,754.32 và empty activity/history; 0 Wallet writes, 0 page errors, **17/17** source hashes, flow **202 ms**, tổng local **848 ms**. Ma trận hiện đăng ký sidecar current-source tại [report](evidence/A06/wallet-empty-current-head-browser-check-202609301957561.json), [overview](evidence/A06/preview-wallet-empty-overview-202609301957561.png) và [history](evidence/A06/preview-wallet-empty-history-202609301957561.png); report cũ phía trên được giữ lại như bằng chứng lịch sử của lần đo trước sửa.
+
+### Wallet forbidden — current-head local verification
+
+Giữ Vite preview tại loopback `http://127.0.0.1:4173`, rồi chạy:
+
+```powershell
+node docs/architecture/production-readiness/evidence/A06/run-wallet-forbidden-current-head-browser-check.mjs
+```
+
+Runner đăng nhập Developer mock, tải success fixture trên `/w/wallet` và `/w/wallet/history` để có dữ liệu cache, rời route trước khi đổi scenario, đợi vượt `staleTime`, chọn `wallet.forbidden`, rồi kiểm tra lại hai route. Nó parse Wallet OpenAPI để xác nhận `getWalletAssets` và `getWalletTransactions` đều có 403. Chỉ gửi GET; không gọi transfer, withdrawal, address book, challenge hoặc mutation ví.
+
+Trên HEAD `c5fc38b0755da3fe2c9831fe3040160a308a9a03`, runner quan sát 3 baseline GET/200 và 3 GET/403, tất cả từ service worker. Ở cả hai route, 403 phải cho thông báo “Không có quyền truy cập”, không Retry, không empty state và không hiển thị dấu hiệu success đã cache. Kết quả EV-20261001-003: 22/22 source hashes, 0 Wallet write, 0 pending Wallet request, 0 page error, 0 API origin ngoài; flow 5.761 ms có chờ staleTime 5.2 giây nên không phải độ trễ server. Local fixture không chứng minh server authorization, backend/staging, production hay user acceptance.
+
+[Runner](evidence/A06/run-wallet-forbidden-current-head-browser-check.mjs) · [Report](evidence/A06/wallet-forbidden-current-head-browser-check-202609301954439.json) · [overview](evidence/A06/preview-wallet-forbidden-overview-202609301954439.png) · [history](evidence/A06/preview-wallet-forbidden-history-202609301954439.png)
+
+### Wallet unauthorized — current-head local verification
+
+Giữ Vite preview tại loopback `http://127.0.0.1:4173`, rồi chạy:
+
+```powershell
+node docs/architecture/production-readiness/evidence/A06/run-wallet-unauthorized-current-head-browser-check.mjs
+```
+
+Runner dùng Chromium với hai context độc lập, đăng nhập Developer mock, seed success cache trên hai route, chọn `wallet.unauthorized`, đợi 5.2 giây vượt `staleTime`, rồi quan sát hai GET overview và một GET history. Trước khi chạy, runner xác nhận Wallet OpenAPI chỉ cho ba operation 401: hai GET đang có route và POST `verifyWalletWithdrawalChallenge`; POST không được gọi. Auth refresh được chặn trong trang và trả fixture `200/null` đúng Auth OpenAPI, không đi qua service worker hay backend.
+
+Kết quả trên HEAD `c5fc38b0755da3fe2c9831fe3040160a308a9a03`: **3/3 Wallet GET 401** từ service worker, **3 Auth refresh fixture 200/null**, hai route chuyển `/auth/login`, form đăng nhập hiện và không lộ `$16,754.32` hoặc asset `USDT` đã cache. Cache trước lỗi có 2 assets / $16,754.32 và 6 history transactions. Wallet write **0**, pending **0**, page error **0**, API origin ngoài **0**, **21/21 source hash**; flow route lần lượt **6.234 giây** và **6.175 giây** (chờ staleTime chiếm 5.2 giây mỗi lần), mỗi Wallet response 401 mất **3 ms** trong MSW. Không diễn giải số này thành backend latency hoặc server refresh behavior.
+
+[Runner](evidence/A06/run-wallet-unauthorized-current-head-browser-check.mjs) · [Report](evidence/A06/wallet-unauthorized-current-head-browser-check-202609302011359.json) · [overview](evidence/A06/preview-wallet-unauthorized-overview-202609302011359.png) · [history](evidence/A06/preview-wallet-unauthorized-history-202609302011359.png)
+
+### Wallet success — current-head local verification
+
+Giữ Vite preview tại loopback `http://127.0.0.1:4173`, rồi chạy:
+
+```powershell
+node docs/architecture/production-readiness/evidence/A06/run-wallet-success-current-head-browser-check.mjs
+```
+
+Runner chọn `wallet.success`, đăng nhập Developer mock, mở `/w/wallet` rồi `/w/wallet/history`; chỉ gọi `getWalletAssets` và `getWalletTransactions`. Fixture hiện có **2 assets** (`USDT`, `BTC`), tổng số dư **$16,754.32** và **6 giao dịch** (`tx001`–`tx006`). Browser xác nhận cả hai route render dữ liệu thành công; persona có `wallet:read` nhưng không có `wallet:write`, `wallet:withdraw`, `wallet:transfer` hoặc `transfer:write`: Deposit và lịch sử hiện, Withdraw/Transfer ẩn.
+
+EV-20261001-006 đo được **3 GET / 3 HTTP 200** qua service worker, gồm `getWalletAssets` 1/1 và `getWalletTransactions` 2/2 trên hai route; Wallet write **0**, pending request **0**, page error **0**, external API origin **0**, **22/22 source hash**. Wallet flow **215 ms**, toàn flow **867 ms**; không dùng các số local này như backend latency. Chromium có tải Google Fonts từ hai external asset origins. Đây là local MSW evidence và chỉ đại diện **2/19 Wallet operations**; không xác minh backend/staging/production hoặc user acceptance. Screenshot vẫn có Web widget che một phần cảnh báo Preview; giữ finding ở C05.03.
+
+[Runner](evidence/A06/run-wallet-success-current-head-browser-check.mjs) · [Report](evidence/A06/wallet-success-current-head-browser-check-202609302043314.json) · [overview](evidence/A06/preview-wallet-success-overview-202609302043314.png) · [history](evidence/A06/preview-wallet-success-history-202609302043314.png)
+
+### Wallet loading — current-head local verification
+
+Giữ Vite preview trên loopback `http://127.0.0.1:4173`, rồi chạy:
+
+```powershell
+node docs/architecture/production-readiness/evidence/A06/run-wallet-loading-current-head-browser-check.mjs
+```
+
+Runner chọn `wallet.loading`, đăng nhập Developer mock, rồi kiểm tra `/w/wallet` và `/w/wallet/history`. Fixture trì hoãn riêng ba GET (hai trên overview, một trên history) khoảng **2 giây** để quan sát UI trước phản hồi; sau khi resolve, overview hiện **2 assets / $16,754.32**, còn cả overview và history hiện **6 giao dịch**. Kết quả EV-20261001-007: **3/3 GET / 3 response HTTP 200** từ service worker, loading hiện trong lúc request pending, **0 Wallet write**, **0 request pending khi kết thúc**, **0 lỗi trang**, **0 external API origin**, **22/22 source hash**. Loading-to-response được đo **2.069 giây** ở overview và **2.167 giây** ở history; Wallet route flow **4.249 giây**, toàn browser flow **8.083 giây**.
+
+Đây là local Chromium/Vite/MSW evidence; thời gian chờ do fixture cấu hình, không phải backend latency. Nó chỉ quan sát hai route read và không xác nhận backend, staging, production, authorization thật hoặc user acceptance. Screenshot loading/resolved tiếp tục ghi nhận Web widget che một phần Preview warning; theo dõi riêng ở C05.03.
+
+[Runner](evidence/A06/run-wallet-loading-current-head-browser-check.mjs) · [Report](evidence/A06/wallet-loading-current-head-browser-check-202609302053111.json) · [overview pending](evidence/A06/preview-wallet-loading-overview-pending-202609302053111.png) · [overview resolved](evidence/A06/preview-wallet-loading-overview-resolved-202609302053111.png) · [history pending](evidence/A06/preview-wallet-loading-history-pending-202609302053111.png) · [history resolved](evidence/A06/preview-wallet-loading-history-resolved-202609302053111.png)
+
+### Wallet error — current-head local verification
+
+Hai Wallet GET không khai báo 5xx trong [Wallet OpenAPI](../../../contracts/openapi/wallet.yaml), vì vậy runner inject `TypeError('Failed to fetch')` trước khi request đi qua browser network; không dựng HTTP 503. Chạy:
+
+```powershell
+$env:WALLET_ERROR_EXPECTED_ATTEMPTS = '3'
+node docs/architecture/production-readiness/evidence/A06/run-wallet-error-current-head-browser-check.mjs
+Remove-Item Env:WALLET_ERROR_EXPECTED_ATTEMPTS
+```
+
+Baseline trước khi sửa query ownership tạo **36 transport attempts**: 6 lần cho mỗi query ở lần tải đầu và thêm 6 sau Retry; overview flow **11.144 giây**, history **5.500 giây**, tổng **14.233 giây**. HTTP client đã retry 3 lần và React Query nhân thêm một query retry. Sửa đúng hai hook đọc — `useWalletAssetsQuery` và `useWalletTransactionsQuery` đặt `retry: false` — để HTTP client giữ retry budget, còn nút Retry vẫn cho phép người dùng thử lại. Regression mới dùng app query-client defaults và xác nhận hai hook không lặp adapter sau lỗi transport; Wallet query suite đạt **25/25**.
+
+Kết quả sau sửa, được chạy lại sau khi hoàn tất kiểm tra kiểu của regression test, ghi tại EV-20261001-009: **18 injected attempts** tổng cộng, đúng **3/query** ở initial và explicit Retry, tức giảm **50%** so với 36 attempt baseline. Overview flow **3.575 giây** so với **11.144 giây** (−67.9%), history **1.716 giây** so với **5.500 giây** (−68.8%); toàn browser run **7.064 giây** so với **14.233 giây**. Đây là số đo Windows/Chromium/MSW cục bộ, gồm thời gian browser/fixture, không phải backend latency. ErrorState và Retry giữ nguyên, route không đổi, stale success và false empty đều ẩn. Wallet browser requests/responses **0/0** vì lỗi phát sinh trước network dispatch; writes **0**, pending **0**, page errors **0**, external API origins **0**, **24/24 source hashes** hiện hành. Wallet query hooks đạt **25/25**; app và Node TypeScript checks pass. Cả sáu sidecar Wallet success/empty/loading/error/forbidden/unauthorized đã được chạy lại sau thay đổi test harness; ma trận/index dùng report mới nhất. Đây là bằng chứng UI/client behavior, không đo backend latency hoặc chứng minh server failover.
+
+[Runner](evidence/A06/run-wallet-error-current-head-browser-check.mjs) · [Post-fix report](evidence/A06/wallet-error-current-head-browser-check-202609302125069.json) · [pre-fix diagnostic report](evidence/A06/wallet-error-current-head-browser-check-202609302105314.json) · [overview error](evidence/A06/preview-wallet-error-overview-202609302125069.png) · [overview after Retry](evidence/A06/preview-wallet-error-overview-retry-202609302125069.png) · [history error](evidence/A06/preview-wallet-error-history-202609302125069.png) · [history after Retry](evidence/A06/preview-wallet-error-history-retry-202609302125069.png)
+
+
+### Audit hợp đồng `p2p.unknown` — EV-20261001-018
+
+Theo [AGENTS.md](../../../AGENTS.md) §8, [AI_RULES.md](../../../AI_RULES.md) v3.1 (§9.1, §10, §11.1–11.2, §12–18, §19.5–19.6), [WORKFLOW.md](../../ai/WORKFLOW.md), [PROJECT_CONTEXT.md](../../PROJECT_CONTEXT.md), [ARCHITECTURE.md](../../../ARCHITECTURE.md), [Guidelines](../../../guidelines/Guidelines.md) và [contracts/README.md](../../../contracts/README.md), bước này chỉ đọc contract/matrix/map; không sửa OpenAPI, mock hay UI và không phát sinh side effect.
+
+`contracts/openapi/p2p.yaml` cùng scenario matrix và operation map liên kết 4 operation cho `p2p.unknown`: `createP2POrder`, `markP2POrderPaid`, `releaseP2POrderEscrow`, `getP2POrder`. Cả **3/3** mutation bắt buộc `Idempotency-Key`. Create trả 201 hoặc 409 “Duplicate or conflicting order request”; hợp đồng không nói 409 có nghĩa là duplicate replay hay business conflict và không định nghĩa response ổn định khi cùng key được gửi lại. Mark-paid/release mô tả 409 là state conflict. Chi tiết order chỉ đọc bằng `orderId`: lookup theo key/correlation **0**, stable replay contract **0**.
+
+Khi response tạo order bị mất, contract không cho biết order đã được tạo hay cách tìm lại. Vì vậy `p2p.unknown` vẫn `not_verified`; không retry/replay mutation, không giả lập browser result. Report: [audit P2P unknown](evidence/A06/p2p-unknown-contract-audit-2026-10-01.json). Matrix vẫn **81/106** fresh, **88/154** operation duy nhất, **81/81** sidecar current, **0 stale**; runtime aggregate historical. UI acceptance **0/128**, backend/staging **0/154**. Next: rà `predictions.forbidden`, `.unknown`, `.duplicate` theo OpenAPI và operation map trước khi chạy scenario.
+
+
+### Contract audits: Predictions và Profile — EV-20261001-020/021
+
+Theo [AGENTS.md](../../../AGENTS.md) §8, [AI_RULES.md](../../../AI_RULES.md) v3.1 (§9.1, §10, §11.1–11.2, §12–18, §19.5–19.6), [WORKFLOW.md](../../ai/WORKFLOW.md), [PROJECT_CONTEXT.md](../../PROJECT_CONTEXT.md), [ARCHITECTURE.md](../../../ARCHITECTURE.md), [Guidelines](../../../guidelines/Guidelines.md) và [contracts/README.md](../../../contracts/README.md), hai checkpoint chỉ đọc OpenAPI/matrix/operation map; không dựng status ngoài contract và không thực hiện mutation.
+
+Predictions forbidden liên kết **8** operation: **2/8** có 401, **0/8** có 403. Unknown/duplicate liên kết hai operation; `placePredictionOrder` cần Idempotency-Key, 409 gộp key trùng với xung đột thị trường; receipt GET tra theo `orderId` và schema không có trường correlation/idempotency. Không có lookup theo key hoặc stable same-key replay: ba Predictions rows vẫn `not_verified`. Profile forbidden liên kết **7** operation: **7/7** khai báo 401, **0/7** khai báo 403; giữ `not_verified`.
+
+Reports: [Predictions](evidence/A06/predictions-authorization-idempotency-contract-audit-2026-10-01.json), [Profile](evidence/A06/profile-forbidden-contract-audit-2026-10-01.json). Matrix không tăng; vẫn **81/106** fresh, **88/154** operation, **81/81** sidecar current, **0 stale**; UI acceptance **0/128**, backend/staging **0/154**. Next matrix blocker: `referral.forbidden`.
+
+
+### Contract audits: Referral và Support authorization — EV-20261001-022/023
+
+Theo [AGENTS.md](../../../AGENTS.md) §8, [AI_RULES.md](../../../AI_RULES.md) v3.1 (§9.1, §10, §11.1–11.2, §12–18, §19.5–19.6) và workflow/contract docs liên quan, bước này chỉ đọc OpenAPI, matrix và operation map. Không sửa code, không giả lập HTTP status thiếu trong contract.
+
+Referral: `getReferralOverview` có 401 nhưng không có 403 (**0/1**). Support: sáu operation được link; **0/6** có 401 và **0/6** có 403. Giữ `referral.forbidden`, `support.unauthorized`, `support.forbidden` ở `not_verified`. Reports: [Referral](evidence/A06/referral-forbidden-contract-audit-2026-10-01.json), [Support](evidence/A06/support-authorization-contract-audit-2026-10-01.json). Matrix **81/106**, **88/154** operation, **81/81** current sidecar, **0 stale**; UI acceptance **0/128**, backend/staging **0/154**. Bước kế tiếp: Trading unknown/duplicate contract review trước order mutation.
+
+
+### Trading unknown/duplicate contract audit — EV-20261001-024
+
+Theo [AGENTS.md](../../../AGENTS.md) §8, [AI_RULES.md](../../../AI_RULES.md) v3.1 (§9.1, §10, §11.1–11.2, §12–18, §19.5–19.6), [WORKFLOW.md](../../ai/WORKFLOW.md), [PROJECT_CONTEXT.md](../../PROJECT_CONTEXT.md), [ARCHITECTURE.md](../../../ARCHITECTURE.md), [Guidelines](../../../guidelines/Guidelines.md) và [contracts/README.md](../../../contracts/README.md), bước này chỉ rà OpenAPI/matrix/operation map. Không gửi order mutation và không retry khi response không xác định.
+
+Năm operation được link cho `trading.unknown`/`trading.duplicate`; **3/3 writes** có Idempotency-Key. Các GET list không lọc theo key hoặc clientOrderId (**0/2**); GET detail theo orderId **0**. `clientOrderId` tùy chọn ở cả PlaceOrderRequest và TradingOrder, không có quy tắc uniqueness/echo. Place-order 409 gộp duplicate key với insufficient balance; không có same-key replay result contract. Cả hai scenario giữ `not_verified`. [Report](evidence/A06/trading-unknown-duplicate-contract-audit-2026-10-01.json).
+
+Kế tiếp các hàng unknown/duplicate của Trading và Wallet cần backend contract đã duyệt về lookup/correlation/replay. Matrix **81/106** fresh, **88/154** operations, **81/81** sidecars, **0 stale**; UI acceptance **0/128**, backend/staging **0/154**.
+
+### C05.03 — đồng bộ unread Notifications — EV-20261001-026/028
+
+Chạy `node docs/architecture/production-readiness/evidence/A06/run-support-success-browser-check.mjs` với `VITE_DATA_SOURCE=mock`; nếu cổng 4173 bận, theo mục 1 dùng 4174 và đặt `$env:PREVIEW_BASE_URL = 'http://127.0.0.1:4174'`. Runner áp dụng persona Support, bắt GET `/api/notifications` lúc provider khởi chạy query sau khi cấp quyền (trước điều hướng), mở `/w/notifications`, mark một notification read và kiểm tra sidebar badge cả trước lẫn sau response 204.
+
+Lượt Chromium 2026-10-01T00:12:58Z, 1440×900: unread page và Web sidebar đều **7→6**; GET **200**, POST mark-read **204**, GET refetch **200**; toàn flow **3.945 ms**; **16/16** API responses từ service worker, **0** API origin bên ngoài, **0** API transport failure, **0** lỗi trang, **3** abort callback sau response (một callback cho POST mark-read sau 204). [Report](evidence/A06/support-success-browser-check-2026-10-01-1790813578346.json), [Notifications screenshot](evidence/A06/preview-support-success-notifications-2026-10-01-1790813578346.png); source hash của report: **29/29** file. Test integration trong `src/app/components/layout/ShellComposition.test.tsx` xác nhận 5 surface Web/Tablet cập nhật cùng cache; sau architecture gate, test được đặt ở app layer để không tạo dependency từ feature sang app. Đây là UI/MSW local evidence; mock không thực thi authorization, persistence hoặc idempotency replay phía server.
+
+Focused suite cuối đạt **9 file / 74 test**; app và Node TypeScript, ESLint chọn lọc, Prettier, OpenAPI 15 contract / 154 operation và architecture boundary gate đều pass (862 module, 4.673 dependency, 0 violation). `git diff --check` pass. Architecture inventory check vẫn fail do `docs/architecture/page-inventory.json` stale; C05.03 không đổi route/page. Matrix/UI index được làm mới sau lần chạy: **72/106** scenario fresh, **88/154** operation IDs, **72/81** sidecar fresh và **9** sidecar stale vì hash `WebSidebar` (5 row) cùng `support-queries`/Notifications page (4 Support row); `runtimeEvidenceFresh=false`. Giữ auth.success/auth.loading stale vì runner hiện kiểm tra hash với master baseline cũ; market.success runner hiện ghi đè report và ảnh cố định. Chưa chạy lại các runner này để bảo toàn lịch sử; xử lý chúng trước khi tiếp tục scenario A06 phụ thuộc. UI acceptance **0/128**, backend/staging **0/154**. Screenshot còn ghi nhận Web widget che một phần Preview warning; đây vẫn là hạng mục nghiệm thu riêng.
+
+## A06.03 — current-head browser refresh — 2026-10-01
+
+Chạy chín runner current-head với Chromium 1440×900 và local Vite/MSW tại 127.0.0.1:4174. Báo cáo đã đăng ký trong manifest: [support.empty](evidence/A06/support-empty-browser-check-2026-10-01-codex-20261001-support-empty-final1.json), [support.error](evidence/A06/support-error-browser-check-2026-10-01-codex-20261001-support-error-final3.json), [support.loading](evidence/A06/support-loading-browser-check-2026-10-01-codex-20261001-support-loading-final3.json), [support.pending](evidence/A06/support-pending-browser-check-2026-10-01-codex-20261001-support-pending-final1.json), [auth.success](evidence/A06/auth-success-current-head-browser-check-202610010047511.json), [auth.loading](evidence/A06/auth-loading-current-head-browser-check-202610010047558.json), [market.success](evidence/A06/market-success-current-head-browser-check-20261001004806.json), [arena.error](evidence/A06/arena-error-browser-check-202610010048230.json), [arena.loading](evidence/A06/arena-loading-browser-check-202610010048325.json). Mọi report ghi source HEAD hiện tại; ma trận xác nhận **9/9** hash set khớp.
+
+- Support empty: unread và badge **7→6**, mark-read **204**, tạo ticket **201**, ticket mới xuất hiện sau refetch; toàn flow **1.306 ms**. Chỉ MSW local; một request-abort callback đến sau response.
+- Support error: **26** injected transport attempts; **24** theo bốn lần route load/retry, thêm hai shell-prefetch attempts cho Notifications trước khi bật injection. Sau injection không có HTTP request/response; error state và retry giữ nguyên route.
+- Support loading: bốn collection GET trả **200**; loading xuất hiện **1.932–1.994 ms** trước response. Runner áp scenario trước persona rồi vào Notifications trước lúc shared query kết thúc.
+- Support pending: một ticket POST **201**, idempotency key hiện diện, submit/form disabled, duplicate **0**; response delay local **2.027 ms**, pending UI **63 ms**. Không khẳng định server lưu trạng thái pending.
+- Auth success/loading: login một lần **200** sau session **401** trong **711 ms**; loading session **2.028 ms**, protected content ẩn và route chuyển login.
+- Market success: **20 route**, **22 operation ID**, **38 request/38 response**, **6** write chỉ trong fixture MSW, **0** request lỗi hoặc API origin ngoài, flow **11.189 ms**.
+- Arena error/loading: error ghi **6 initial + 6 Retry**, không có HTTP response vì contract không khai báo 5xx; loading GET **200** sau **2.011 ms** fixture delay. Screenshot loading ghi sidebar active là Trang chủ tại /w/arena, rồi thành Open Arena sau resolve; đây là finding C05 acceptance.
+
+Tất cả con số là browser/UI và fixture local, không đo backend latency, production auth, persistence, staging hoặc user acceptance. Floating Web widget vẫn che banner Preview. Các gate hiện tại: user acceptance **0/128**, backend/staging **0/154**, Node22/Ubuntu exact-SHA CI pending.
+
+### Checkpoint A06.03 — Arena navigation, retry budget and current-source refresh — EV-20261002-031 — 2026-10-02
+
+[EV-20261002-031](evidence/A06/arena-a06-03-browser-refresh-2026-10-02.json) records 12/12 passing Chromium/MSW sidecar runs and 50/50 screenshots present. Ten previously registered scenarios were rerun after shared sidebar/Arena query source changes; the two Arena loading/error reports also verify the navigation fix. At /w/arena, Open Arena is the sole aria-current item and remains inside the visible sidebar scroll viewport during loading, error, and Retry.
+
+Arena error measured three failed discovery GET attempts before ErrorState and three after one explicit Retry (6 total, no HTTP response because the contract declares no 5xx). The three Arena read hooks now set retry:false, leaving the shared HTTP client as the single retry owner. The focused Arena/WebSidebar regression tests pass 8/8.
+
+Matrix remains 81/106 current-source scenario rows (38 full, 43 representative), 88/154 operation IDs, 81/81 fresh sidecars and 0 stale. Aggregate runtime provenance remains historical. Evidence is local Vite/MSW only; user acceptance is 0/128 and backend/staging is 0/154. The Preview warning and floating Web widget still overlap and remain open under C05.03.
+
+Ledger and verification: 63 new report/image artifacts are registered; TRACKING.files now has 2,968 rows (2,766 active + 202 planned). Scenario matrix --check, C05 UI index --check, architecture inventory --check, scoped ESLint/Prettier, focused tests and git diff --check passed. check-tracking exits 1 with 64 source snapshot errors (32 missing fingerprints, 5 missing snapshot paths, 27 source mismatches) while exact application path inventory remains 916/916. This remains a ledger/source revision blocker, separate from the local browser result.

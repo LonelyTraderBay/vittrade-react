@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
-import type { ReactNode } from 'react';
+import { lazy } from 'react';
+import type { ComponentType, ReactNode } from 'react';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { UIContext } from '../../contexts/ui-context';
@@ -9,6 +10,12 @@ const authState = vi.hoisted(() => ({
   isAuthenticated: false,
   signOut: vi.fn<() => Promise<void>>(),
 }));
+const pullToRefreshMock = vi.hoisted(() => ({
+  onRefresh: undefined as (() => Promise<void> | void) | undefined,
+}));
+const hapticMock = vi.hoisted(() => ({ hapticLight: vi.fn() }));
+
+const NeverLoadedPage = lazy(() => new Promise<{ default: ComponentType }>(() => {}));
 
 vi.mock('@/shared/session/useAuth', () => ({
   useAuth: () => authState,
@@ -19,7 +26,7 @@ vi.mock('@/shared/hooks/useThemeColors', () => ({
 }));
 
 vi.mock('@/shared/hooks/useHaptic', () => ({
-  useHaptic: () => ({ hapticLight: vi.fn() }),
+  useHaptic: () => ({ hapticLight: hapticMock.hapticLight }),
 }));
 
 vi.mock('./StatusBar', () => ({ StatusBar: () => null }));
@@ -35,7 +42,11 @@ vi.mock('../mobile/SwipeBack', () => ({
 vi.mock('../mobile/PageTransition', () => ({
   PageTransition: ({ children }: { children: ReactNode }) => <>{children}</>,
 }));
-vi.mock('@/shared/ui/OfflineBanner', () => ({ OfflineBanner: () => null }));
+vi.mock('@/shared/ui/OfflineBanner', () => ({
+  OfflineBanner: ({ isReconnecting }: { isReconnecting?: boolean }) => (
+    <div data-testid="offline-banner" data-reconnecting={Boolean(isReconnecting)} />
+  ),
+}));
 vi.mock('../states/NetworkStatusBanner', () => ({ NetworkStatusBanner: () => null }));
 vi.mock('../states/SessionTimeoutOverlay', () => ({
   SessionWarningBar: ({ onExtend }: { onExtend: () => void }) => (
@@ -46,12 +57,10 @@ vi.mock('../states/SessionTimeoutOverlay', () => ({
 }));
 
 vi.mock('../../hooks/usePullToRefresh', () => ({
-  usePullToRefresh: () => ({
-    pullDistance: 0,
-    isRefreshing: false,
-    progress: 0,
-    handlers: {},
-  }),
+  usePullToRefresh: ({ onRefresh }: { onRefresh: () => Promise<void> | void }) => {
+    pullToRefreshMock.onRefresh = onRefresh;
+    return { pullDistance: 0, isRefreshing: false, progress: 0, handlers: {} };
+  },
 }));
 
 vi.mock('../../hooks/useScrollPosition', () => ({
@@ -62,17 +71,35 @@ function CurrentPath() {
   return <output aria-label="Current path">{useLocation().pathname}</output>;
 }
 
-function renderAppLayout() {
-  return render(
+function appLayoutTree(offline = false, child: ReactNode = null) {
+  const contextValue = offline
+    ? {
+        isBalanceHidden: false,
+        isOffline: true,
+        pendingRewards: 0,
+        notifications: 0,
+        toggleBalanceHidden: vi.fn(),
+        setIsOffline: vi.fn(),
+        setPendingRewards: vi.fn(),
+      }
+    : null;
+
+  return (
     <MemoryRouter initialEntries={['/home']}>
-      <UIContext.Provider value={null}>
+      <UIContext.Provider value={contextValue}>
         <Routes>
-          <Route path="*" element={<AppLayout />} />
+          <Route element={<AppLayout />}>
+            <Route path="*" element={child} />
+          </Route>
         </Routes>
         <CurrentPath />
       </UIContext.Provider>
-    </MemoryRouter>,
+    </MemoryRouter>
   );
+}
+
+function renderAppLayout(offline = false, child: ReactNode = null) {
+  return render(appLayoutTree(offline, child));
 }
 
 beforeEach(() => {
@@ -87,9 +114,26 @@ afterEach(() => {
   Reflect.deleteProperty(HTMLElement.prototype, 'scrollTo');
   authState.isAuthenticated = false;
   authState.signOut.mockReset();
+  pullToRefreshMock.onRefresh = undefined;
+  hapticMock.hapticLight.mockReset();
 });
 
 describe('AppLayout session timeout', () => {
+  it('shows the one-minute warning and restarts the idle window when extended', () => {
+    vi.useFakeTimers();
+    authState.isAuthenticated = true;
+    renderAppLayout();
+
+    act(() => vi.advanceTimersByTime(4 * 60 * 1000));
+
+    expect(screen.getByRole('button', { name: 'Gia hạn' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Gia hạn' }));
+    expect(screen.queryByRole('button', { name: 'Gia hạn' })).not.toBeInTheDocument();
+
+    act(() => vi.advanceTimersByTime(60 * 1000));
+    expect(authState.signOut).not.toHaveBeenCalled();
+  });
+
   it('signs out and routes to login at the idle deadline', () => {
     vi.useFakeTimers();
     authState.isAuthenticated = true;
@@ -112,5 +156,40 @@ describe('AppLayout session timeout', () => {
 
     expect(authState.signOut).not.toHaveBeenCalled();
     expect(screen.queryByRole('button', { name: 'Xác thực lại' })).not.toBeInTheDocument();
+  });
+
+  it('runs the layout refresh action through its pull-to-refresh contract', async () => {
+    vi.useFakeTimers();
+    renderAppLayout();
+
+    const refresh = pullToRefreshMock.onRefresh;
+    expect(refresh).toBeDefined();
+
+    let refreshPromise: Promise<void> | void;
+    await act(async () => {
+      refreshPromise = refresh?.();
+      await vi.advanceTimersByTimeAsync(1200);
+      await refreshPromise;
+    });
+
+    expect(hapticMock.hapticLight).toHaveBeenCalledOnce();
+  });
+
+  it('shows reconnecting while offline and clears the reconnect timer on recovery', () => {
+    vi.useFakeTimers();
+    const app = renderAppLayout(true);
+
+    expect(screen.getByTestId('offline-banner')).toHaveAttribute('data-reconnecting', 'false');
+    act(() => vi.advanceTimersByTime(3000));
+    expect(screen.getByTestId('offline-banner')).toHaveAttribute('data-reconnecting', 'true');
+
+    app.rerender(appLayoutTree(false));
+    expect(screen.queryByTestId('offline-banner')).not.toBeInTheDocument();
+  });
+
+  it('renders the loading fallback while a nested route is still lazy', () => {
+    renderAppLayout(false, <NeverLoadedPage />);
+
+    expect(screen.getByText('Đang tải...')).toBeInTheDocument();
   });
 });

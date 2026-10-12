@@ -42,10 +42,10 @@ export function ContextMenuSheet({
   isOpen: boolean;
   onClose: () => void;
   tradeType: 'buy' | 'sell';
-  onShare: () => void;
-  onCompare: () => void;
-  onQuickAction: () => void;
-  onViewMerchant: () => void;
+  onShare: (ad: P2PAd) => void;
+  onCompare: (ad: P2PAd) => void;
+  onQuickAction: (ad: P2PAd) => void;
+  onViewMerchant: (ad: P2PAd) => void;
   prefix: string;
   onAfterOpen?: () => void;
 }) {
@@ -59,32 +59,31 @@ export function ContextMenuSheet({
       icon: Zap,
       label: tradeType === 'buy' ? `Mua nhanh ${ad.asset}` : `Bán nhanh ${ad.asset}`,
       color: tradeType === 'buy' ? c.buy : c.sell,
-      action: onQuickAction,
+      action: () => onQuickAction(ad),
     },
     {
       icon: Share2,
       label: 'Chia sẻ offer',
       color: c.primary,
-      action: onShare,
+      action: () => onShare(ad),
     },
     {
       icon: GitCompare,
       label: 'So sánh giá',
       color: '#8B5CF6',
-      action: onCompare,
+      action: () => onCompare(ad),
     },
     {
       icon: Eye,
       label: 'Xem hồ sơ merchant',
       color: c.text2,
-      action: onViewMerchant,
+      action: () => onViewMerchant(ad),
     },
     {
       icon: Flag,
       label: 'Báo cáo offer',
       color: c.sell,
       action: () => {
-        onClose();
         navigate(`${prefix}/p2p/report/${ad.merchantId}`);
       },
     },

@@ -1,0 +1,321 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261002-022",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "current-source-not-verified-contract-audit-reconciliation",
+  "observedAt": "2026-10-02T03:47:21Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "environment": "Windows PowerShell; Node v24.19.0; primary worktree. Static local ledger/matrix/report verification only.",
+  "commandOrSteps": [
+    "Read current scenario matrix and EV-20261002-009 through EV-20261002-013 plus EV-20261002-015 through EV-20261002-021.",
+    "Normalize Windows path separators in each audit sourceHashes key, then recompute SHA-256 for all referenced files.",
+    "Run node docs/architecture/production-readiness/check-tracking.mjs; expand its bounded 40-error display in a temporary, immediately removed checker copy to classify all errors.",
+    "Compare the current non-PLAN Git file inventory with active ledger path records."
+  ],
+  "expected": "Every current matrix not_verified row has exactly one current-source static contract audit; no unsupported behavior is inferred. Keep A06.03 in_progress until behavioral gates and ledger consistency pass.",
+  "actual": {
+    "matrix": {
+      "path": "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
+      "sha256": "0bbf7c7a887415389265aa3fa2f2c07fc670a070ac4f692b55fae87ff19922f4",
+      "scenarioRows": 106,
+      "notVerifiedRows": 25,
+      "coverageMappings": 25,
+      "coveredExactlyOnce": true,
+      "missingScenarioIds": [],
+      "duplicateScenarioIds": [],
+      "extraScenarioIds": [],
+      "coverage": [
+        { "scenarioId": "arena.forbidden", "auditId": "EV-20261002-009" },
+        { "scenarioId": "arena.unauthorized", "auditId": "EV-20261002-009" },
+        { "scenarioId": "auth.forbidden", "auditId": "EV-20261002-009" },
+        { "scenarioId": "dca.forbidden", "auditId": "EV-20261002-010" },
+        { "scenarioId": "discovery.forbidden", "auditId": "EV-20261002-011" },
+        {
+          "scenarioId": "discovery.unauthorized",
+          "auditId": "EV-20261002-011"
+        },
+        { "scenarioId": "earn.duplicate", "auditId": "EV-20261002-012" },
+        { "scenarioId": "earn.forbidden", "auditId": "EV-20261002-012" },
+        { "scenarioId": "earn.unknown", "auditId": "EV-20261002-012" },
+        { "scenarioId": "launchpad.forbidden", "auditId": "EV-20261002-013" },
+        {
+          "scenarioId": "launchpad.unauthorized",
+          "auditId": "EV-20261002-013"
+        },
+        { "scenarioId": "market.forbidden", "auditId": "EV-20261002-013" },
+        { "scenarioId": "market.unauthorized", "auditId": "EV-20261002-013" },
+        { "scenarioId": "p2p.unknown", "auditId": "EV-20261002-015" },
+        { "scenarioId": "predictions.duplicate", "auditId": "EV-20261002-016" },
+        { "scenarioId": "predictions.forbidden", "auditId": "EV-20261002-016" },
+        { "scenarioId": "predictions.unknown", "auditId": "EV-20261002-016" },
+        { "scenarioId": "profile.forbidden", "auditId": "EV-20261002-017" },
+        { "scenarioId": "referral.forbidden", "auditId": "EV-20261002-018" },
+        { "scenarioId": "support.forbidden", "auditId": "EV-20261002-019" },
+        { "scenarioId": "support.unauthorized", "auditId": "EV-20261002-019" },
+        { "scenarioId": "trading.duplicate", "auditId": "EV-20261002-020" },
+        { "scenarioId": "trading.unknown", "auditId": "EV-20261002-020" },
+        { "scenarioId": "wallet.duplicate", "auditId": "EV-20261002-021" },
+        { "scenarioId": "wallet.unknown", "auditId": "EV-20261002-021" }
+      ]
+    },
+    "audits": [
+      {
+        "id": "EV-20261002-009",
+        "artifact": "docs/architecture/production-readiness/evidence/A06/arena-auth-forbidden-contract-audit-current-2026-10-02.json",
+        "artifactSha256": "e2f9078f2aa85ebb0d025a6b7bc6f21979e9538a564e293e623f8599ee312c12",
+        "scenarioIds": ["arena.forbidden", "arena.unauthorized", "auth.forbidden"],
+        "sourceHashReferencesChecked": 3
+      },
+      {
+        "id": "EV-20261002-010",
+        "artifact": "docs/architecture/production-readiness/evidence/A06/dca-forbidden-contract-audit-current-2026-10-02.json",
+        "artifactSha256": "a40bcb4e26f685d7efcb9b454753ccc669828b5f5a9d1979bfdb352d74c3e214",
+        "scenarioIds": ["dca.forbidden"],
+        "sourceHashReferencesChecked": 2
+      },
+      {
+        "id": "EV-20261002-011",
+        "artifact": "docs/architecture/production-readiness/evidence/A06/discovery-authorization-contract-audit-current-2026-10-02.json",
+        "artifactSha256": "835c4eea8004c4d1e6296dae20bb999e439ae3c153c0dea4e6f20c62bb606074",
+        "scenarioIds": ["discovery.forbidden", "discovery.unauthorized"],
+        "sourceHashReferencesChecked": 2
+      },
+      {
+        "id": "EV-20261002-012",
+        "artifact": "docs/architecture/production-readiness/evidence/A06/earn-authorization-idempotency-contract-audit-current-2026-10-02.json",
+        "artifactSha256": "3698d65629a198e607b25faafa9e66fa9b660a912a90f6caa899b79e133f0c5c",
+        "scenarioIds": ["earn.duplicate", "earn.forbidden", "earn.unknown"],
+        "sourceHashReferencesChecked": 2
+      },
+      {
+        "id": "EV-20261002-013",
+        "artifact": "docs/architecture/production-readiness/evidence/A06/launchpad-market-authorization-audit-current-2026-10-02.json",
+        "artifactSha256": "47fed02c574d3fdbd4c0ee690c4e866f2b4157eaa978644d5dd15a4c6ef357dd",
+        "scenarioIds": [
+          "launchpad.forbidden",
+          "launchpad.unauthorized",
+          "market.forbidden",
+          "market.unauthorized"
+        ],
+        "sourceHashReferencesChecked": 3
+      },
+      {
+        "id": "EV-20261002-015",
+        "artifact": "docs/architecture/production-readiness/evidence/A06/p2p-unknown-contract-audit-current-2026-10-02.json",
+        "artifactSha256": "f569ebeb5ca43bb8faf5bd4309aaf430c985c8f1e2de4e779d290a3005e5dac2",
+        "scenarioIds": ["p2p.unknown"],
+        "sourceHashReferencesChecked": 3
+      },
+      {
+        "id": "EV-20261002-016",
+        "artifact": "docs/architecture/production-readiness/evidence/A06/predictions-authorization-idempotency-contract-audit-current-2026-10-02.json",
+        "artifactSha256": "80daf4ab22db35f0829fd177c5e395b2b2c88a75ee2ede2427c8b82f7ab76940",
+        "scenarioIds": ["predictions.duplicate", "predictions.forbidden", "predictions.unknown"],
+        "sourceHashReferencesChecked": 3
+      },
+      {
+        "id": "EV-20261002-017",
+        "artifact": "docs/architecture/production-readiness/evidence/A06/profile-forbidden-contract-audit-current-2026-10-02.json",
+        "artifactSha256": "84fd19ec7b12b275c05d32d2528a4014dc7cbb2b1f56e3801acc9f8ad4758ce4",
+        "scenarioIds": ["profile.forbidden"],
+        "sourceHashReferencesChecked": 3
+      },
+      {
+        "id": "EV-20261002-018",
+        "artifact": "docs/architecture/production-readiness/evidence/A06/referral-forbidden-contract-audit-current-2026-10-02.json",
+        "artifactSha256": "15edaece284669b8efa28e992d2a7e986e41fd84c120c39e2ed87736e337b6f3",
+        "scenarioIds": ["referral.forbidden"],
+        "sourceHashReferencesChecked": 3
+      },
+      {
+        "id": "EV-20261002-019",
+        "artifact": "docs/architecture/production-readiness/evidence/A06/support-authorization-contract-audit-current-2026-10-02.json",
+        "artifactSha256": "8eb8bbacf1d6ca0cff03584cbff42f29d48e2c09f77594e28a7f2f5383a966cd",
+        "scenarioIds": ["support.forbidden", "support.unauthorized"],
+        "sourceHashReferencesChecked": 3
+      },
+      {
+        "id": "EV-20261002-020",
+        "artifact": "docs/architecture/production-readiness/evidence/A06/trading-unknown-duplicate-contract-audit-current-2026-10-02.json",
+        "artifactSha256": "3db62bacae7769dfb3cc10a18acefb3deabd495cb99aacf66cedaed6df5fdb7c",
+        "scenarioIds": ["trading.duplicate", "trading.unknown"],
+        "sourceHashReferencesChecked": 3
+      },
+      {
+        "id": "EV-20261002-021",
+        "artifact": "docs/architecture/production-readiness/evidence/A06/wallet-unknown-duplicate-contract-audit-current-2026-10-02.json",
+        "artifactSha256": "a3191b66e08bc0d5795903814cda322b79eba98e7e17d375b3c6bb57f44c0982",
+        "scenarioIds": ["wallet.duplicate", "wallet.unknown"],
+        "sourceHashReferencesChecked": 3
+      }
+    ],
+    "auditSourceHashValidation": {
+      "pathSeparatorNormalization": "backslash-to-forward-slash before filesystem/hash lookup",
+      "referencesChecked": 33,
+      "currentReferences": 33,
+      "staleReferences": 0,
+      "missingSourcePaths": 0
+    },
+    "behavioralEvidence": {
+      "rowsStillNotVerified": [
+        "arena.unauthorized",
+        "arena.forbidden",
+        "auth.forbidden",
+        "dca.forbidden",
+        "discovery.unauthorized",
+        "discovery.forbidden",
+        "earn.forbidden",
+        "earn.unknown",
+        "earn.duplicate",
+        "launchpad.unauthorized",
+        "launchpad.forbidden",
+        "market.unauthorized",
+        "market.forbidden",
+        "p2p.unknown",
+        "predictions.forbidden",
+        "predictions.unknown",
+        "predictions.duplicate",
+        "profile.forbidden",
+        "referral.forbidden",
+        "support.unauthorized",
+        "support.forbidden",
+        "trading.unknown",
+        "trading.duplicate",
+        "wallet.unknown",
+        "wallet.duplicate"
+      ],
+      "count": 25,
+      "contractAuditCoverageIsNotBehavioralVerification": true,
+      "browserRunsForTheseRows": 0,
+      "backendOrStagingCalls": 0,
+      "financialWritesOrReplays": 0,
+      "fabricatedAuthorizationResponses": 0
+    },
+    "matrixSummary": {
+      "scenarioRowsWithFreshBrowserEvidence": 81,
+      "scenarioRowsFullyCoveredByFreshBrowserEvidence": 38,
+      "uniqueOperationsWithFreshBrowserEvidence": 88,
+      "freshSidecars": 81,
+      "registeredSidecars": 81,
+      "staleSidecars": 0,
+      "runtimeEvidenceFresh": false,
+      "runtimeEvidenceRevision": "historical_baseline"
+    },
+    "ledger": {
+      "command": "node docs/architecture/production-readiness/check-tracking.mjs",
+      "exitCode": 1,
+      "errorCount": 64,
+      "classifiedErrors": [
+        {
+          "category": "missing catalogued source head/hash",
+          "count": 33,
+          "paths": [
+            ".env.production.example",
+            ".env.staging.example",
+            ".github/workflows/ci.yml",
+            "docs/ai/PRODUCTION-READINESS-PROMPT.md",
+            "docs/ai/WORKFLOW.md",
+            "README.md",
+            "scripts/build-e2e.mjs",
+            "scripts/serve-e2e.mjs",
+            "src/app/__tests__/AppContext.test.tsx",
+            "src/app/__tests__/UIContext.test.tsx",
+            "src/app/components/layout/ShellComposition.test.tsx",
+            "src/app/components/layout/TabletSidebar.tsx",
+            "src/app/components/layout/WebCommandBar.test.tsx",
+            "src/app/components/layout/WebSidebar.tsx",
+            "src/app/contexts/ui-context.ts",
+            "src/app/contexts/UIContext.tsx",
+            "src/features/support/pages/NotificationsContractPage.tsx",
+            "src/features/support/pages/SupportWriteBoundary.test.tsx",
+            "src/features/wallet/pages/WalletOverviewContractPage.test.tsx",
+            "src/features/wallet/pages/WalletOverviewContractPage.tsx",
+            "src/features/wallet/pages/WalletTransactionHistoryContractPage.test.tsx",
+            "src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx",
+            "src/features/wallet/pages/WalletTransferContractPage.test.tsx",
+            "src/features/wallet/pages/WalletTransferContractPage.tsx",
+            "src/main.test.tsx",
+            "src/main.tsx",
+            "src/shared/config/env.test.ts",
+            "src/shared/config/env.ts",
+            "tests/e2e/auth-session.spec.ts",
+            "tests/e2e/dca-earn-contract.spec.ts",
+            "tests/e2e/p2p-contract.spec.ts",
+            "tests/e2e/trading-contract.spec.ts",
+            "vite.config.ts"
+          ]
+        },
+        {
+          "category": "cataloguedSourceHead does not contain this path",
+          "count": 7,
+          "paths": [
+            ".gitattributes",
+            "scripts/check-git-eol.mjs",
+            "src/features/admin/model/admin-queries.test.tsx",
+            "src/features/profile/model/profile-queries.test.tsx",
+            "src/features/referral/model/referral-queries.test.tsx",
+            "src/features/support/model/support-queries.test.tsx",
+            "src/shared/config/runtime-env-validation.ts"
+          ]
+        },
+        {
+          "category": "current source differs from cataloguedSourceHead",
+          "count": 24,
+          "paths": [
+            "ARCHITECTURE.md",
+            "docs/architecture/page-inventory.json",
+            "src/dev/mocks/auth-handlers.test.ts",
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/preview-scenario-handler.test.ts",
+            "src/dev/mocks/preview-scenario-handler.ts",
+            "src/features/admin/model/admin-queries.ts",
+            "src/features/admin/pages/AdminContractPages.test.tsx",
+            "src/features/earn/pages/EarnPage.test.tsx",
+            "src/features/earn/pages/EarnPage.tsx",
+            "src/features/earn/pages/EarnTransactionPages.tsx",
+            "src/features/earn/routes.ts",
+            "src/features/launchpad/model/launchpad-queries.ts",
+            "src/features/launchpad/pages/LaunchpadContractPages.test.tsx",
+            "src/features/market/model/market-queries.test.tsx",
+            "src/features/market/model/market-queries.ts",
+            "src/features/profile/model/profile-queries.ts",
+            "src/features/referral/model/referral-queries.ts",
+            "src/features/referral/pages/ReferralContractPage.test.tsx",
+            "src/features/support/model/support-queries.ts",
+            "src/features/support/pages/SupportContractPages.test.tsx",
+            "src/features/wallet/model/wallet-queries.test.tsx",
+            "src/features/wallet/model/wallet-queries.ts",
+            "scripts/check-tracking.test.mjs"
+          ]
+        }
+      ],
+      "nonPlanInventory": {
+        "currentGitFiles": 916,
+        "mappedToLedger": 916,
+        "missingLedgerRecords": 0,
+        "unexpectedActiveLedgerPaths": 0
+      },
+      "exactSourceSnapshotComparisonsPassing": 852
+    },
+    "externalGates": {
+      "uiUserAcceptedPages": "0/128",
+      "backendAndStagingOperationsVerified": "0/154",
+      "taskStatus": "in_progress",
+      "stepStatus": "in_progress"
+    }
+  },
+  "result": "fail",
+  "artifact": "docs/architecture/production-readiness/evidence/A06/not-verified-contract-reconciliation-current-2026-10-02.json",
+  "sourceHashes": {
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "0bbf7c7a887415389265aa3fa2f2c07fc670a070ac4f692b55fae87ff19922f4"
+  },
+  "nextAction": "A06.03 remains in_progress: 25/25 not_verified rows now have exactly one current-source contract audit but are not behaviorally verified. Resume behavior checks only when approved contract semantics support them and the 64 current check-tracking source-snapshot errors are reconciled against a committed source revision.",
+  "limitations": [
+    "Contract review proves only what the current OpenAPI files declare; it does not prove backend enforcement or browser behavior.",
+    "The checker error report reflects the dirty primary worktree at the recorded sourceHead. Do not bind modified or untracked source contents to HEAD fingerprints.",
+    "The current-source audit coverage reconciliation passed, but the overall A06.03 ledger gate failed with 64 check-tracking errors.",
+    "No product source was changed and no browser, backend, staging, or financial API request was made."
+  ]
+}

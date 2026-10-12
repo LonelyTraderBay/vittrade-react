@@ -43,7 +43,7 @@ function getCurrentPrefix(pathname: string): string {
 }
 
 function getRoutePath(pathname: string): string {
-  return pathname.replace(/^\/(w|t|r)\//, '/').replace(/^\/(w|t|r)$/, '/home');
+  return pathname.replace(/^\/(w|t)\//, '/').replace(/^\/(w|t)$/, '/home');
 }
 
 function keepsRouteShell(pathname: string): boolean {
@@ -57,24 +57,28 @@ function keepsRouteShell(pathname: string): boolean {
 }
 
 function hasUnsubmittedFormChanges(): boolean {
-  return Array.from(document.querySelectorAll('input, textarea, select')).some((control) => {
-    if (control instanceof HTMLInputElement) {
-      if (['button', 'hidden', 'reset', 'submit'].includes(control.type)) return false;
-      return ['checkbox', 'radio'].includes(control.type)
-        ? control.checked !== control.defaultChecked
-        : control.value !== control.defaultValue;
-    }
-    if (control instanceof HTMLTextAreaElement) return control.value !== control.defaultValue;
-    if (control instanceof HTMLSelectElement) {
+  type FormControl = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+  return Array.from(document.querySelectorAll<FormControl>('input, textarea, select')).some(
+    (control) => {
+      if (control instanceof HTMLInputElement) {
+        if (['button', 'hidden', 'reset', 'submit'].includes(control.type)) return false;
+        return ['checkbox', 'radio'].includes(control.type)
+          ? control.checked !== control.defaultChecked
+          : control.value !== control.defaultValue;
+      }
+      if (control instanceof HTMLTextAreaElement) return control.value !== control.defaultValue;
       return Array.from(control.options).some(
         (option) => option.selected !== option.defaultSelected,
       );
-    }
-    return false;
-  });
+    },
+  );
 }
 
-export function PlatformSwitcher() {
+export function PlatformSwitcher({
+  previewControlsVisible = false,
+}: {
+  previewControlsVisible?: boolean;
+} = {}) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -130,9 +134,10 @@ export function PlatformSwitcher() {
     <div
       className="fixed z-[9999] flex items-center gap-1.5 rounded-full px-2.5 pointer-events-none select-none"
       style={{
-        bottom: currentPlatform === 'phone' ? 100 : 24,
+        bottom: currentPlatform === 'phone' ? 100 : previewControlsVisible ? 112 : 24,
         right: 16,
         height: 32,
+        zIndex: previewControlsVisible ? 1200 : 9999,
         background: `${config.color}18`,
         border: `1px solid ${config.color}30`,
         backdropFilter: 'blur(12px)',

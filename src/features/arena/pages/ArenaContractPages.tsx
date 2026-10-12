@@ -153,7 +153,7 @@ export function ArenaChallengeContractPage() {
             <button
               type="button"
               disabled={join.isPending}
-              onClick={() => void join.mutateAsync()}
+              onClick={() => join.mutate()}
               className="mt-4 w-full rounded-xl py-3 font-semibold"
               style={{ background: '#F59E0B', color: '#111827', opacity: join.isPending ? 0.6 : 1 }}
             >
@@ -240,10 +240,10 @@ export function ArenaJoinContractPage() {
     challenge.slotsFilled < challenge.slotsTotal;
   const ready = canJoin && rulesConfirmed && pointsConfirmed;
 
-  const handleJoin = async () => {
-    if (!canJoin) return;
-    await join.mutateAsync();
-    navigate(`${prefix}/arena/challenge/${challenge.id}`, { replace: true });
+  const handleJoin = () => {
+    join.mutate(undefined, {
+      onSuccess: () => navigate(`${prefix}/arena/challenge/${challenge.id}`, { replace: true }),
+    });
   };
 
   return (
@@ -301,7 +301,7 @@ export function ArenaJoinContractPage() {
           <button
             type="button"
             disabled={!ready || join.isPending}
-            onClick={() => void handleJoin()}
+            onClick={handleJoin}
             className="mt-4 w-full rounded-xl py-3 font-semibold"
             style={{
               background: ready ? '#F59E0B' : colors.surface2,

@@ -9,7 +9,7 @@ interface Props {
   savedCodes: boolean;
   setSavedCodes: React.Dispatch<React.SetStateAction<boolean>>;
   copiedCodes: boolean;
-  handleCopyBackupCodes: () => void;
+  handleCopyBackupCodes: (backupCodes: string[]) => void;
   handleComplete: () => void;
 }
 
@@ -129,7 +129,10 @@ export function Web2FASetupBackupStep(props: Props) {
 
       {/* Copy codes button */}
       <button
-        onClick={handleCopyBackupCodes}
+        onClick={() => {
+          if (!setup) return;
+          handleCopyBackupCodes(setup.backupCodes);
+        }}
         className="flex items-center justify-center"
         style={{
           gap: 8,

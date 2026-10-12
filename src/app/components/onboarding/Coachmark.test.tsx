@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { ThemeProvider } from '@/shared/theme/ThemeContext';
-import { coachmarkService } from '../../services/CoachmarkService';
+import { coachmarkService, type CoachmarkDef } from '../../services/CoachmarkService';
 import { Coachmark } from './Coachmark';
 
 function renderCoachmark(props: React.ComponentProps<typeof Coachmark>) {
@@ -72,5 +72,46 @@ describe('Coachmark', () => {
 
     await waitFor(() => expect(screen.queryByText('Trang chủ của bạn')).not.toBeInTheDocument());
     expect(onComplete).toHaveBeenCalledTimes(1);
+  });
+
+  it('uses the fallback delay for a zero-delay tip and renders top placement', async () => {
+    const tip: CoachmarkDef = {
+      id: 'top-placement',
+      screen: 'markets',
+      title: 'Top placement tip',
+      description: 'This tip is aligned to the top of the viewport.',
+      priority: 'low',
+      placement: 'top',
+      order: 1,
+      delay: 0,
+    };
+    vi.spyOn(coachmarkService, 'getForScreen').mockReturnValue([tip]);
+    const { container } = renderCoachmark({ screen: 'markets' });
+
+    expect(screen.queryByText(tip.title)).not.toBeInTheDocument();
+    await screen.findByText(tip.title);
+
+    expect(container.firstElementChild).toHaveStyle({
+      alignItems: 'flex-start',
+      paddingTop: '80px',
+    });
+  });
+
+  it('dismisses one active tip from the backdrop and close control', async () => {
+    const onComplete = vi.fn();
+    const { container } = renderCoachmark({ screen: 'home', onComplete });
+    await screen.findByText('Trang chủ của bạn');
+
+    fireEvent.click(container.firstElementChild!);
+
+    await screen.findByText('Prediction Markets');
+    expect(screen.getByText('2 mẹo còn lại')).toBeInTheDocument();
+
+    await waitFor(() => expect(screen.queryByText('Trang chủ của bạn')).not.toBeInTheDocument());
+    fireEvent.click(screen.getAllByRole('button')[0]);
+
+    await screen.findByText('Open Arena');
+    expect(screen.getByText('Mẹo cuối cùng')).toBeInTheDocument();
+    expect(onComplete).not.toHaveBeenCalled();
   });
 });

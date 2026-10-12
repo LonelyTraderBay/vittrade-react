@@ -1,0 +1,7443 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "evidenceId": "EV-20261011-065",
+  "kind": "current-working-tree-full-suite-coverage-progress",
+  "measuredAt": "2026-10-11T18:51:01Z",
+  "recordedAt": "2026-10-11T18:54:26Z",
+  "sourceRevision": "fa5462701bc61bdd6d7fd4cab20c7d02e7fa7d81",
+  "sourceBranch": "codex/vittrade-readiness-p0-p2-20261009",
+  "worktree": {
+    "dirtyStatusEntries": 276,
+    "trackedChanged": 165,
+    "untracked": 111,
+    "statusCapturedAt": "2026-10-11T18:54:26Z",
+    "statusCapturedAfterTestRunBeforeEvidenceWrite": true,
+    "statusManifestSha256": "3b755579a88590334bd4db3578db5998763ce8ea8c42d2f21f8c625215774c73",
+    "fingerprintMeaning": "SHA-256 of git status --porcelain=v1 -z bytes only; no source contents were hashed for the dirty-path snapshot.",
+    "runningRepositoryVitestOrViteProcesses": 0,
+    "processAudit": "33 node.exe processes were observed system-wide; a redacted command-line check found no VitTrade repository Vitest/Vite process. None were stopped.",
+    "dirtyPaths": [
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-baseline-2026-10-09.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-focused-bottomnav-2026-10-11.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-focused-iteration-11-header-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-focused-leftrail-2026-10-11.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-focused-market-home-2026-10-11.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-focused-market-price-alerts-2026-10-11.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-focused-mini-chart-2026-10-11.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-focused-protected-route-2026-10-11.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-focused-responsive-bottom-nav-2026-10-11.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-focused-responsive-shell-2026-10-11.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-focused-tablet-shell-2026-10-11.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-10-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-11-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-12-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-13-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-14-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-15-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-16-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-17-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-18-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-19-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-2-2026-10-09.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-20-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-21-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-22-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-23-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-24-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-25-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-26-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-27-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-28-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-29-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-3-2026-10-09.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-30-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-31-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-32-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-33-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-34-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-35-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-36-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-37-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-38-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-39-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-4-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-40-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-41-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-42-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-43-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-44-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-45-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-46-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-47-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-48-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-49-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-5-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-50-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-51-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-52-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-53-2026-10-11.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-6-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-7-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-8-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-full-suite-iteration-9-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-iteration-2-2026-10-09.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-iteration-3-auth-http-2026-10-09.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-iteration-4-wallet-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-iteration-5-wallet-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-iteration-6-wallet-network-address-2026-10-10.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-coverage-100-progress-2026-10-09.json"
+      },
+      {
+        "status": "??",
+        "path": "docs/architecture/production-readiness/evidence/C03/c03-05-focused-p2p-escrow-2026-10-11.json"
+      },
+      {
+        "status": " M",
+        "path": "docs/architecture/production-readiness/PLAN.md"
+      },
+      {
+        "status": " M",
+        "path": "docs/architecture/production-readiness/TRACKING.json"
+      },
+      {
+        "status": " M",
+        "path": "src/app/components/layout/AppLayout.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/app/components/layout/AppLayout.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/app/components/layout/BottomNav.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/app/components/layout/LeftRail.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/app/components/layout/PlatformSwitcher.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/app/components/layout/PlatformSwitcher.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/app/components/layout/ProtectedRoute.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/app/components/layout/ResponsiveBottomNav.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/app/components/layout/ResponsiveShell.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/app/components/layout/RootLayout.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/app/components/layout/TabletShell.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/app/components/layout/TabletSidebar.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/app/components/layout/WebCommandBar.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/app/components/layout/WebCommandBar.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/app/components/mobile/PageTransition.no-ref.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/app/components/onboarding/Coachmark.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/app/components/onboarding/Coachmark.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/app/components/ui-contracts.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/app/contexts/AuthContext.default-adapter.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/app/contexts/AuthSessionProvider.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/app/hooks/usePlatform.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/app/hooks/usePlatform.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/app/hooks/useSessionTimeout.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/app/hooks/useSessionTimeout.ts"
+      },
+      {
+        "status": "??",
+        "path": "src/app/pages/page-composition.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/app/pages/system/IntegrationPendingPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/app/services/CoachmarkService.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/app/services/FeatureFlagService.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/app/services/FeatureFlagService.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/features/arena/pages/ArenaContractPages.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/arena/pages/ArenaJoinContractPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/auth/components/RegistrationForm.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/auth/components/RegistrationForm.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/auth/components/Web2FASetupBackupStep.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/auth/components/Web2FASetupFlow.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/auth/components/Web2FASetupFlow.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/auth/pages/LoginPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/auth/pages/LoginPage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/auth/pages/OTPPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/auth/pages/OTPPage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/auth/pages/PasswordResetPages.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/auth/pages/PasswordResetPages.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/auth/pages/TwoFASetupPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/auth/pages/TwoFASetupPage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/auth/pages/WebOTPPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/auth/pages/WebOTPPage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/dca/api/dca-api.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/features/dca/components/chart-annotation-canvas.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/features/dca/components/ChartAnnotationOverlay.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/dca/components/ChartAnnotationOverlay.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/dca/components/ChartAnnotationTextInput.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/features/dca/components/ChartAnnotationToolbar.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/features/dca/components/DCACreatePlanSheet.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/dca/components/DCAHistoryChart.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/dca/components/DCAHistoryChart.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/dca/components/DCAOverviewCard.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/features/dca/components/DCAPlanCard.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/dca/components/DCAPlanCard.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/dca/model/dca-analytics-service.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/features/dca/model/dca-analytics-service.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/features/dca/model/dca-funnel-service.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/features/dca/model/dca-funnel-service.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/features/dca/model/useDCAAnalytics.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/features/dca/pages/DCAMainPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/dca/pages/DCAMainPage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/dca/pages/SavingsDCAContractPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/dca/pages/SavingsDCAContractPage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/discovery/pages/DiscoveryContractPages.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/earn/pages/EarnPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/earn/pages/EarnPage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/earn/pages/EarnTransactionPages.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/earn/pages/EarnTransactionPages.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/launchpad/api/launchpad-api.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/features/launchpad/model/launchpad-types.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/features/launchpad/pages/LaunchpadContractPages.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/market/api/market-api.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/features/market/components/MarketItem.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/market/pages/AdvancedChartsPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/market/pages/MarketComparisonPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/market/pages/MarketDepthPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/market/pages/MarketDerivativesPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/market/pages/MarketHomePage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/market/pages/MarketListPage.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/features/market/pages/MarketPriceAlertsPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/market/pages/MarketSectorsPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/market/pages/MarketSentimentPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/market/pages/MarketSentimentPage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/market/pages/MarketWriteBoundary.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/market/pages/WatchlistPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/market/pages/WatchlistPage.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/features/p2p/components/P2PCreateAdSections.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/components/P2PCreateAdSections.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/features/p2p/components/P2PHomeActionSheets.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/components/P2PHomeActionSheets.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/components/P2PHomeCards.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/features/p2p/components/P2PMarketplaceSections.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/lib/filter-marketplace-ads.test.ts"
+      },
+      {
+        "status": "??",
+        "path": "src/features/p2p/lib/select-best-ad.test.ts"
+      },
+      {
+        "status": "??",
+        "path": "src/features/p2p/model/p2p-ad-queries.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/model/p2p-chat-queries.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/model/p2p-dispute-detail-queries.ts"
+      },
+      {
+        "status": "??",
+        "path": "src/features/p2p/model/p2p-order-action-queries.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/model/p2p-order-action-queries.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/model/p2p-queries.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/features/p2p/model/p2p-trust-queries.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2P2FASettingsPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PAchievementsPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PAchievementsPage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PAdDetailContractPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PAdDetailContractPage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PCreateAdContractPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PDisputesPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PDisputesPage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PEscrowDetailPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PExpressConfirmPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PExpressConfirmPage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PExpressPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PExpressPage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PInformationalPages.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PMarketplacePage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PMarketplacePage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PMerchantProfilePage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PMerchantProfilePage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PMyAdsContractPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PMyAdsContractPage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2POrderActionPages.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2POrderActionPages.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2POrdersContractPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PPaymentMethodAddPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PPaymentMethodAddPage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PPaymentMethodsPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/p2p/pages/P2PPaymentMethodsPage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/predictions/pages/PredictionContractPages.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/predictions/pages/PredictionContractPages.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/predictions/pages/PredictionRiskCalculatorPage.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/features/public-entrypoints.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/features/referral/pages/ReferralContractPage.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/features/support/pages/NewsContractPage.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/features/trading/components/ChartSkeleton.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/trading/components/MiniChart.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/trading/components/QuickPairSwitcher.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/trading/components/QuickPairSwitcher.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/trading/components/TradeTerminal.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/features/trading/components/trading-order-config.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/features/trading/components/TradingMarketPanel.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/features/trading/model/trading-queries.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/trading/model/useTradeSettings.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/trading/pages/__tests__/CopyTradingPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/trading/pages/CopyEducationPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/trading/pages/OpenPositionsPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/trading/pages/OrderReceiptPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/trading/pages/ProviderLeaderboardPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/trading/pages/TradeAnalyticsContractPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/trading/pages/TradeSettingsPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/trading/pages/TradingCopyPages.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/features/wallet/components/WithdrawSections.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/components/WithdrawSections.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/features/wallet/model/validate-wallet-transfer.test.ts"
+      },
+      {
+        "status": "??",
+        "path": "src/features/wallet/model/validate-wallet-transfer.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/AddressAddPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/AddressAddPage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/AddressBookPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/AddressBookPage.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/features/wallet/pages/asset-detail-formatters.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/AssetDetailPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/AssetDetailPage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/DustConverterPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/DustConverterPage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/NetworkStatusPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/PendingDepositsPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/PortfolioAnalyticsContractPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/TransactionDetailPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/WalletDepositContractPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/WalletOverviewContractPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/WalletTransactionHistoryContractPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/WalletTransferContractPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/WalletTransferContractPage.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/features/wallet/pages/WebWithdrawalWhitelistPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/WithdrawalLimitsPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/WithdrawPage.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/features/wallet/pages/WithdrawPage.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/shared/api/app-client.ssr.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/shared/api/http-client.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/shared/api/http-client.ts"
+      },
+      {
+        "status": "??",
+        "path": "src/shared/lib/formatNumber.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/shared/session/auth-context.test.ts"
+      },
+      {
+        "status": "??",
+        "path": "src/shared/theme/theme-token-contract.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/shared/ui/BottomSheetV2.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/shared/ui/BottomSheetV2.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/shared/ui/button.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/shared/ui/carousel.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/shared/ui/carousel.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/shared/ui/charts/ChartGradientDefs.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/shared/ui/ConfirmationDialog.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/shared/ui/CTAButton.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/shared/ui/InfoRow.test.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/shared/ui/InfoRow.tsx"
+      },
+      {
+        "status": " M",
+        "path": "src/shared/ui/layout/Header.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/shared/ui/layout/PageLayout.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/shared/ui/SkeletonBlock.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/shared/ui/StickyHeader.test.tsx"
+      },
+      {
+        "status": "??",
+        "path": "src/shared/ui/toggle-variants.test.ts"
+      },
+      {
+        "status": "??",
+        "path": "src/shared/ui/ui-primitives.test.tsx"
+      }
+    ]
+  },
+  "execution": {
+    "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run --coverage --coverage.reportsDirectory=C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-c03-full-suite-20261011-02 --pool=threads --maxWorkers=1 --no-file-parallelism --reporter=dot",
+    "platform": "Windows local; Node.js v24.19.0; Vitest 4.1.11; V8",
+    "exitCode": 0,
+    "testFiles": 328,
+    "testFilesPassed": 328,
+    "tests": 2989,
+    "testsPassed": 2989,
+    "testsFailed": 0,
+    "testsSkipped": 0,
+    "durationSeconds": 698.14,
+    "reportPath": "C:/Users/Joker-PC/AppData/Local/Temp/vittrade-c03-full-suite-20261011-02/coverage-final.json",
+    "coverageReportPath": "C:/Users/Joker-PC/AppData/Local/Temp/vittrade-c03-full-suite-20261011-02/coverage-final.json",
+    "coverageReportBytes": 3691708,
+    "coverageReportSha256": "212ed2a544802f8f0f80e630fd77cd0d08ccb943fa9e3c9f53bd5c97f66763a4",
+    "inputFileCount": 764,
+    "focusedOwnerRun": {
+      "command": "C:\\Program Files\\nodejs\\node.exe node_modules/vitest/vitest.mjs run src/features/p2p/pages/P2PMyAdsContractPage.test.tsx --coverage --coverage.include=src/features/p2p/pages/P2PMyAdsContractPage.tsx --coverage.reporter=json-summary --coverage.reportsDirectory=C:\\Users\\Joker-PC\\AppData\\Local\\Temp\\vittrade-p2p-my-ads-focused-20261011-06 --reporter=dot --pool=threads --maxWorkers=1 --no-file-parallelism",
+      "exitCode": 0,
+      "testFiles": 1,
+      "testFilesPassed": 1,
+      "tests": 9,
+      "testsPassed": 9,
+      "testsFailed": 0,
+      "testsSkipped": 0,
+      "sourcePath": "src/features/p2p/pages/P2PMyAdsContractPage.tsx",
+      "sourceSha256": "d3a8c854201fa42caede2d577d846baa93d29692a51d076679182ad4ecd4755b",
+      "testPath": "src/features/p2p/pages/P2PMyAdsContractPage.test.tsx",
+      "testSha256": "78e0b6a097406467291726a832ba0d400377fc40dd4c4fe5ded4db669cdc695b",
+      "metrics": {
+        "statements": {
+          "covered": 65,
+          "total": 65,
+          "missing": 0,
+          "pct": 100
+        },
+        "branches": {
+          "covered": 64,
+          "total": 64,
+          "missing": 0,
+          "pct": 100
+        },
+        "functions": {
+          "covered": 29,
+          "total": 29,
+          "missing": 0,
+          "pct": 100
+        },
+        "lines": {
+          "covered": 59,
+          "total": 59,
+          "missing": 0,
+          "pct": 100
+        }
+      }
+    }
+  },
+  "measurement": {
+    "reportEntries": 438,
+    "measurableFiles": 406,
+    "fullyCoveredFiles": 322,
+    "filesWithGaps": 84,
+    "noCounterFiles": 32,
+    "zeroStatementFiles": 0,
+    "metrics": {
+      "statements": {
+        "covered": 11783,
+        "total": 11994,
+        "missing": 211,
+        "pct": 98.24
+      },
+      "branches": {
+        "covered": 9394,
+        "total": 9723,
+        "missing": 329,
+        "pct": 96.61
+      },
+      "functions": {
+        "covered": 3846,
+        "total": 3929,
+        "missing": 83,
+        "pct": 97.88
+      },
+      "lines": {
+        "covered": 10972,
+        "total": 11104,
+        "missing": 132,
+        "pct": 98.81
+      }
+    },
+    "filesWithGapsDetail": [
+      {
+        "path": "src/app/components/layout/TabletTopBar.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 19,
+            "total": 22,
+            "missing": 3,
+            "pct": 86.36
+          },
+          "branches": {
+            "covered": 12,
+            "total": 20,
+            "missing": 8,
+            "pct": 60
+          },
+          "functions": {
+            "covered": 4,
+            "total": 7,
+            "missing": 3,
+            "pct": 57.14
+          },
+          "lines": {
+            "covered": 19,
+            "total": 22,
+            "missing": 3,
+            "pct": 86.36
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "18",
+              "line": 85
+            },
+            {
+              "id": "20",
+              "line": 121
+            },
+            {
+              "id": "21",
+              "line": 151
+            }
+          ],
+          "branches": [
+            {
+              "id": "1",
+              "arm": 1,
+              "line": 66
+            },
+            {
+              "id": "2",
+              "arm": 1,
+              "line": 83
+            },
+            {
+              "id": "3",
+              "arm": 0,
+              "line": 85
+            },
+            {
+              "id": "3",
+              "arm": 1,
+              "line": 85
+            },
+            {
+              "id": "4",
+              "arm": 1,
+              "line": 88
+            },
+            {
+              "id": "5",
+              "arm": 1,
+              "line": 90
+            },
+            {
+              "id": "6",
+              "arm": 0,
+              "line": 91
+            },
+            {
+              "id": "9",
+              "arm": 0,
+              "line": 144
+            }
+          ],
+          "functions": [
+            {
+              "id": "3",
+              "line": 85,
+              "name": "(anonymous_3)"
+            },
+            {
+              "id": "5",
+              "line": 121,
+              "name": "(anonymous_5)"
+            },
+            {
+              "id": "6",
+              "line": 151,
+              "name": "(anonymous_6)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/app/components/mobile/SwipeBack.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 48,
+            "total": 54,
+            "missing": 6,
+            "pct": 88.88
+          },
+          "branches": {
+            "covered": 26,
+            "total": 32,
+            "missing": 6,
+            "pct": 81.25
+          },
+          "functions": {
+            "covered": 4,
+            "total": 4,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 44,
+            "total": 49,
+            "missing": 5,
+            "pct": 89.79
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "32",
+              "line": 62
+            },
+            {
+              "id": "34",
+              "line": 67
+            },
+            {
+              "id": "35",
+              "line": 67
+            },
+            {
+              "id": "36",
+              "line": 68
+            },
+            {
+              "id": "45",
+              "line": 83
+            },
+            {
+              "id": "46",
+              "line": 84
+            }
+          ],
+          "branches": [
+            {
+              "id": "5",
+              "arm": 1,
+              "line": 53
+            },
+            {
+              "id": "6",
+              "arm": 1,
+              "line": 61
+            },
+            {
+              "id": "9",
+              "arm": 0,
+              "line": 66
+            },
+            {
+              "id": "10",
+              "arm": 0,
+              "line": 67
+            },
+            {
+              "id": "10",
+              "arm": 1,
+              "line": 67
+            },
+            {
+              "id": "12",
+              "arm": 0,
+              "line": 82
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/auth/pages/PasswordChangePage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 47,
+            "total": 54,
+            "missing": 7,
+            "pct": 87.03
+          },
+          "branches": {
+            "covered": 21,
+            "total": 24,
+            "missing": 3,
+            "pct": 87.5
+          },
+          "functions": {
+            "covered": 14,
+            "total": 16,
+            "missing": 2,
+            "pct": 87.5
+          },
+          "lines": {
+            "covered": 46,
+            "total": 51,
+            "missing": 5,
+            "pct": 90.19
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "19",
+              "line": 36
+            },
+            {
+              "id": "25",
+              "line": 43
+            },
+            {
+              "id": "29",
+              "line": 50
+            },
+            {
+              "id": "39",
+              "line": 66
+            },
+            {
+              "id": "51",
+              "line": 174
+            },
+            {
+              "id": "52",
+              "line": 175
+            },
+            {
+              "id": "53",
+              "line": 194
+            }
+          ],
+          "branches": [
+            {
+              "id": "1",
+              "arm": 0,
+              "line": 36
+            },
+            {
+              "id": "3",
+              "arm": 0,
+              "line": 50
+            },
+            {
+              "id": "4",
+              "arm": 1,
+              "line": 77
+            }
+          ],
+          "functions": [
+            {
+              "id": "14",
+              "line": 173,
+              "name": "(anonymous_14)"
+            },
+            {
+              "id": "15",
+              "line": 194,
+              "name": "(anonymous_15)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/earn/pages/SavingsPortfolioPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 31,
+            "total": 37,
+            "missing": 6,
+            "pct": 83.78
+          },
+          "branches": {
+            "covered": 25,
+            "total": 28,
+            "missing": 3,
+            "pct": 89.28
+          },
+          "functions": {
+            "covered": 10,
+            "total": 14,
+            "missing": 4,
+            "pct": 71.42
+          },
+          "lines": {
+            "covered": 29,
+            "total": 33,
+            "missing": 4,
+            "pct": 87.87
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "22",
+              "line": 67
+            },
+            {
+              "id": "28",
+              "line": 84
+            },
+            {
+              "id": "29",
+              "line": 98
+            },
+            {
+              "id": "33",
+              "line": 122
+            },
+            {
+              "id": "34",
+              "line": 123
+            },
+            {
+              "id": "36",
+              "line": 126
+            }
+          ],
+          "branches": [
+            {
+              "id": "6",
+              "arm": 0,
+              "line": 67
+            },
+            {
+              "id": "11",
+              "arm": 1,
+              "line": 107
+            },
+            {
+              "id": "13",
+              "arm": 0,
+              "line": 120
+            }
+          ],
+          "functions": [
+            {
+              "id": "7",
+              "line": 84,
+              "name": "(anonymous_7)"
+            },
+            {
+              "id": "8",
+              "line": 98,
+              "name": "(anonymous_8)"
+            },
+            {
+              "id": "11",
+              "line": 121,
+              "name": "(anonymous_11)"
+            },
+            {
+              "id": "13",
+              "line": 126,
+              "name": "(anonymous_13)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/market/pages/MarketOverviewPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 27,
+            "total": 33,
+            "missing": 6,
+            "pct": 81.81
+          },
+          "branches": {
+            "covered": 14,
+            "total": 14,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 13,
+            "total": 19,
+            "missing": 6,
+            "pct": 68.42
+          },
+          "lines": {
+            "covered": 26,
+            "total": 31,
+            "missing": 5,
+            "pct": 83.87
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "11",
+              "line": 60
+            },
+            {
+              "id": "15",
+              "line": 178
+            },
+            {
+              "id": "16",
+              "line": 194
+            },
+            {
+              "id": "18",
+              "line": 202
+            },
+            {
+              "id": "19",
+              "line": 203
+            },
+            {
+              "id": "22",
+              "line": 218
+            }
+          ],
+          "branches": [],
+          "functions": [
+            {
+              "id": "2",
+              "line": 60,
+              "name": "(anonymous_2)"
+            },
+            {
+              "id": "4",
+              "line": 178,
+              "name": "(anonymous_4)"
+            },
+            {
+              "id": "5",
+              "line": 194,
+              "name": "(anonymous_5)"
+            },
+            {
+              "id": "7",
+              "line": 202,
+              "name": "(anonymous_7)"
+            },
+            {
+              "id": "8",
+              "line": 203,
+              "name": "(anonymous_8)"
+            },
+            {
+              "id": "11",
+              "line": 218,
+              "name": "(anonymous_11)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/trading/components/TradeTerminal.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 184,
+            "total": 188,
+            "missing": 4,
+            "pct": 97.87
+          },
+          "branches": {
+            "covered": 123,
+            "total": 132,
+            "missing": 9,
+            "pct": 93.18
+          },
+          "functions": {
+            "covered": 30,
+            "total": 30,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 174,
+            "total": 178,
+            "missing": 4,
+            "pct": 97.75
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "151",
+              "line": 355
+            },
+            {
+              "id": "152",
+              "line": 356
+            },
+            {
+              "id": "165",
+              "line": 377
+            },
+            {
+              "id": "166",
+              "line": 378
+            }
+          ],
+          "branches": [
+            {
+              "id": "30",
+              "arm": 1,
+              "line": 199
+            },
+            {
+              "id": "45",
+              "arm": 1,
+              "line": 249
+            },
+            {
+              "id": "48",
+              "arm": 1,
+              "line": 315
+            },
+            {
+              "id": "49",
+              "arm": 1,
+              "line": 350
+            },
+            {
+              "id": "50",
+              "arm": 0,
+              "line": 354
+            },
+            {
+              "id": "52",
+              "arm": 1,
+              "line": 367
+            },
+            {
+              "id": "53",
+              "arm": 0,
+              "line": 376
+            },
+            {
+              "id": "55",
+              "arm": 1,
+              "line": 387
+            },
+            {
+              "id": "56",
+              "arm": 1,
+              "line": 433
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/trading/pages/OrdersHistoryPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 38,
+            "total": 41,
+            "missing": 3,
+            "pct": 92.68
+          },
+          "branches": {
+            "covered": 67,
+            "total": 75,
+            "missing": 8,
+            "pct": 89.33
+          },
+          "functions": {
+            "covered": 11,
+            "total": 14,
+            "missing": 3,
+            "pct": 78.57
+          },
+          "lines": {
+            "covered": 37,
+            "total": 40,
+            "missing": 3,
+            "pct": 92.5
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "4",
+              "line": 44
+            },
+            {
+              "id": "20",
+              "line": 69
+            },
+            {
+              "id": "29",
+              "line": 157
+            }
+          ],
+          "branches": [
+            {
+              "id": "16",
+              "arm": 0,
+              "line": 135
+            },
+            {
+              "id": "17",
+              "arm": 0,
+              "line": 137
+            },
+            {
+              "id": "18",
+              "arm": 0,
+              "line": 140
+            },
+            {
+              "id": "18",
+              "arm": 1,
+              "line": 140
+            },
+            {
+              "id": "24",
+              "arm": 1,
+              "line": 192
+            },
+            {
+              "id": "25",
+              "arm": 0,
+              "line": 194
+            },
+            {
+              "id": "28",
+              "arm": 1,
+              "line": 229
+            },
+            {
+              "id": "34",
+              "arm": 0,
+              "line": 310
+            }
+          ],
+          "functions": [
+            {
+              "id": "0",
+              "line": 43,
+              "name": "idempotencyKey"
+            },
+            {
+              "id": "2",
+              "line": 68,
+              "name": "(anonymous_2)"
+            },
+            {
+              "id": "8",
+              "line": 157,
+              "name": "(anonymous_8)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/market/pages/MarketListPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 82,
+            "total": 88,
+            "missing": 6,
+            "pct": 93.18
+          },
+          "branches": {
+            "covered": 46,
+            "total": 51,
+            "missing": 5,
+            "pct": 90.19
+          },
+          "functions": {
+            "covered": 19,
+            "total": 19,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 66,
+            "total": 70,
+            "missing": 4,
+            "pct": 94.28
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "24",
+              "line": 58
+            },
+            {
+              "id": "30",
+              "line": 67
+            },
+            {
+              "id": "31",
+              "line": 68
+            },
+            {
+              "id": "33",
+              "line": 70
+            },
+            {
+              "id": "35",
+              "line": 72
+            },
+            {
+              "id": "36",
+              "line": 73
+            }
+          ],
+          "branches": [
+            {
+              "id": "3",
+              "arm": 0,
+              "line": 58
+            },
+            {
+              "id": "5",
+              "arm": 0,
+              "line": 66
+            },
+            {
+              "id": "6",
+              "arm": 0,
+              "line": 70
+            },
+            {
+              "id": "7",
+              "arm": 0,
+              "line": 71
+            },
+            {
+              "id": "9",
+              "arm": 1,
+              "line": 108
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/market/pages/PairDetailPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 71,
+            "total": 75,
+            "missing": 4,
+            "pct": 94.66
+          },
+          "branches": {
+            "covered": 60,
+            "total": 67,
+            "missing": 7,
+            "pct": 89.55
+          },
+          "functions": {
+            "covered": 18,
+            "total": 19,
+            "missing": 1,
+            "pct": 94.73
+          },
+          "lines": {
+            "covered": 67,
+            "total": 70,
+            "missing": 3,
+            "pct": 95.71
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "33",
+              "line": 83
+            },
+            {
+              "id": "34",
+              "line": 84
+            },
+            {
+              "id": "36",
+              "line": 86
+            },
+            {
+              "id": "54",
+              "line": 169
+            }
+          ],
+          "branches": [
+            {
+              "id": "9",
+              "arm": 0,
+              "line": 82
+            },
+            {
+              "id": "10",
+              "arm": 0,
+              "line": 86
+            },
+            {
+              "id": "13",
+              "arm": 1,
+              "line": 124
+            },
+            {
+              "id": "18",
+              "arm": 2,
+              "line": 167
+            },
+            {
+              "id": "19",
+              "arm": 1,
+              "line": 192
+            },
+            {
+              "id": "30",
+              "arm": 1,
+              "line": 390
+            },
+            {
+              "id": "31",
+              "arm": 1,
+              "line": 398
+            }
+          ],
+          "functions": [
+            {
+              "id": "6",
+              "line": 169,
+              "name": "(anonymous_6)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2P2FASettingsPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 83,
+            "total": 90,
+            "missing": 7,
+            "pct": 92.22
+          },
+          "branches": {
+            "covered": 33,
+            "total": 39,
+            "missing": 6,
+            "pct": 84.61
+          },
+          "functions": {
+            "covered": 15,
+            "total": 15,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 82,
+            "total": 84,
+            "missing": 2,
+            "pct": 97.61
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "24",
+              "line": 69
+            },
+            {
+              "id": "40",
+              "line": 95
+            },
+            {
+              "id": "48",
+              "line": 109
+            },
+            {
+              "id": "60",
+              "line": 129
+            },
+            {
+              "id": "67",
+              "line": 143
+            },
+            {
+              "id": "69",
+              "line": 145
+            },
+            {
+              "id": "70",
+              "line": 146
+            }
+          ],
+          "branches": [
+            {
+              "id": "5",
+              "arm": 0,
+              "line": 69
+            },
+            {
+              "id": "9",
+              "arm": 0,
+              "line": 95
+            },
+            {
+              "id": "10",
+              "arm": 0,
+              "line": 109
+            },
+            {
+              "id": "14",
+              "arm": 0,
+              "line": 129
+            },
+            {
+              "id": "15",
+              "arm": 0,
+              "line": 143
+            },
+            {
+              "id": "16",
+              "arm": 0,
+              "line": 144
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PChatPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 38,
+            "total": 43,
+            "missing": 5,
+            "pct": 88.37
+          },
+          "branches": {
+            "covered": 52,
+            "total": 56,
+            "missing": 4,
+            "pct": 92.85
+          },
+          "functions": {
+            "covered": 8,
+            "total": 10,
+            "missing": 2,
+            "pct": 80
+          },
+          "lines": {
+            "covered": 38,
+            "total": 42,
+            "missing": 4,
+            "pct": 90.47
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "19",
+              "line": 39
+            },
+            {
+              "id": "32",
+              "line": 89
+            },
+            {
+              "id": "33",
+              "line": 110
+            },
+            {
+              "id": "40",
+              "line": 208
+            },
+            {
+              "id": "41",
+              "line": 209
+            }
+          ],
+          "branches": [
+            {
+              "id": "1",
+              "arm": 0,
+              "line": 39
+            },
+            {
+              "id": "7",
+              "arm": 1,
+              "line": 129
+            },
+            {
+              "id": "19",
+              "arm": 0,
+              "line": 207
+            },
+            {
+              "id": "20",
+              "arm": 1,
+              "line": 207
+            }
+          ],
+          "functions": [
+            {
+              "id": "4",
+              "line": 89,
+              "name": "(anonymous_4)"
+            },
+            {
+              "id": "5",
+              "line": 110,
+              "name": "(anonymous_5)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/app/components/mobile/ErrorBoundary.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 14,
+            "total": 18,
+            "missing": 4,
+            "pct": 77.77
+          },
+          "branches": {
+            "covered": 15,
+            "total": 19,
+            "missing": 4,
+            "pct": 78.94
+          },
+          "functions": {
+            "covered": 5,
+            "total": 7,
+            "missing": 2,
+            "pct": 71.42
+          },
+          "lines": {
+            "covered": 14,
+            "total": 18,
+            "missing": 4,
+            "pct": 77.77
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "0",
+              "line": 54
+            },
+            {
+              "id": "1",
+              "line": 58
+            },
+            {
+              "id": "8",
+              "line": 55
+            },
+            {
+              "id": "9",
+              "line": 59
+            }
+          ],
+          "branches": [
+            {
+              "id": "0",
+              "arm": 1,
+              "line": 43
+            },
+            {
+              "id": "1",
+              "arm": 1,
+              "line": 48
+            },
+            {
+              "id": "4",
+              "arm": 1,
+              "line": 82
+            },
+            {
+              "id": "5",
+              "arm": 1,
+              "line": 122
+            }
+          ],
+          "functions": [
+            {
+              "id": "3",
+              "line": 54,
+              "name": "(anonymous_3)"
+            },
+            {
+              "id": "4",
+              "line": 58,
+              "name": "(anonymous_4)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PTradingLevelPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 25,
+            "total": 27,
+            "missing": 2,
+            "pct": 92.59
+          },
+          "branches": {
+            "covered": 25,
+            "total": 34,
+            "missing": 9,
+            "pct": 73.52
+          },
+          "functions": {
+            "covered": 6,
+            "total": 7,
+            "missing": 1,
+            "pct": 85.71
+          },
+          "lines": {
+            "covered": 25,
+            "total": 27,
+            "missing": 2,
+            "pct": 92.59
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "16",
+              "line": 42
+            },
+            {
+              "id": "17",
+              "line": 48
+            }
+          ],
+          "branches": [
+            {
+              "id": "1",
+              "arm": 0,
+              "line": 41
+            },
+            {
+              "id": "3",
+              "arm": 1,
+              "line": 54
+            },
+            {
+              "id": "4",
+              "arm": 1,
+              "line": 56
+            },
+            {
+              "id": "6",
+              "arm": 1,
+              "line": 181
+            },
+            {
+              "id": "7",
+              "arm": 1,
+              "line": 189
+            },
+            {
+              "id": "8",
+              "arm": 0,
+              "line": 190
+            },
+            {
+              "id": "9",
+              "arm": 1,
+              "line": 196
+            },
+            {
+              "id": "11",
+              "arm": 1,
+              "line": 198
+            },
+            {
+              "id": "14",
+              "arm": 1,
+              "line": 210
+            }
+          ],
+          "functions": [
+            {
+              "id": "3",
+              "line": 48,
+              "name": "(anonymous_3)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/admin/model/admin-queries.ts",
+        "metrics": {
+          "statements": {
+            "covered": 11,
+            "total": 16,
+            "missing": 5,
+            "pct": 68.75
+          },
+          "branches": {
+            "covered": 2,
+            "total": 2,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 10,
+            "total": 13,
+            "missing": 3,
+            "pct": 76.92
+          },
+          "lines": {
+            "covered": 11,
+            "total": 16,
+            "missing": 5,
+            "pct": 68.75
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "11",
+              "line": 51
+            },
+            {
+              "id": "12",
+              "line": 52
+            },
+            {
+              "id": "13",
+              "line": 61
+            },
+            {
+              "id": "14",
+              "line": 63
+            },
+            {
+              "id": "15",
+              "line": 64
+            }
+          ],
+          "branches": [],
+          "functions": [
+            {
+              "id": "10",
+              "line": 50,
+              "name": "useAdminFeatureFlagUpdateMutation"
+            },
+            {
+              "id": "11",
+              "line": 61,
+              "name": "(anonymous_11)"
+            },
+            {
+              "id": "12",
+              "line": 62,
+              "name": "(anonymous_12)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PDisputeDetailPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 39,
+            "total": 42,
+            "missing": 3,
+            "pct": 92.85
+          },
+          "branches": {
+            "covered": 28,
+            "total": 36,
+            "missing": 8,
+            "pct": 77.77
+          },
+          "functions": {
+            "covered": 10,
+            "total": 10,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 39,
+            "total": 41,
+            "missing": 2,
+            "pct": 95.12
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "22",
+              "line": 82
+            },
+            {
+              "id": "28",
+              "line": 92
+            },
+            {
+              "id": "34",
+              "line": 105
+            }
+          ],
+          "branches": [
+            {
+              "id": "5",
+              "arm": 0,
+              "line": 82
+            },
+            {
+              "id": "7",
+              "arm": 0,
+              "line": 152
+            },
+            {
+              "id": "9",
+              "arm": 1,
+              "line": 176
+            },
+            {
+              "id": "10",
+              "arm": 1,
+              "line": 183
+            },
+            {
+              "id": "11",
+              "arm": 1,
+              "line": 222
+            },
+            {
+              "id": "12",
+              "arm": 1,
+              "line": 223
+            },
+            {
+              "id": "13",
+              "arm": 1,
+              "line": 228
+            },
+            {
+              "id": "14",
+              "arm": 1,
+              "line": 230
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/profile/pages/ProfileContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 14,
+            "total": 19,
+            "missing": 5,
+            "pct": 73.68
+          },
+          "branches": {
+            "covered": 7,
+            "total": 8,
+            "missing": 1,
+            "pct": 87.5
+          },
+          "functions": {
+            "covered": 3,
+            "total": 7,
+            "missing": 4,
+            "pct": 42.85
+          },
+          "lines": {
+            "covered": 13,
+            "total": 16,
+            "missing": 3,
+            "pct": 81.25
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "6",
+              "line": 19
+            },
+            {
+              "id": "9",
+              "line": 27
+            },
+            {
+              "id": "14",
+              "line": 75
+            },
+            {
+              "id": "15",
+              "line": 92
+            },
+            {
+              "id": "16",
+              "line": 92
+            }
+          ],
+          "branches": [
+            {
+              "id": "0",
+              "arm": 0,
+              "line": 18
+            }
+          ],
+          "functions": [
+            {
+              "id": "1",
+              "line": 27,
+              "name": "(anonymous_1)"
+            },
+            {
+              "id": "3",
+              "line": 75,
+              "name": "(anonymous_3)"
+            },
+            {
+              "id": "4",
+              "line": 91,
+              "name": "(anonymous_4)"
+            },
+            {
+              "id": "5",
+              "line": 92,
+              "name": "(anonymous_5)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/trading/components/OCOOrderForm.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 42,
+            "total": 46,
+            "missing": 4,
+            "pct": 91.3
+          },
+          "branches": {
+            "covered": 116,
+            "total": 120,
+            "missing": 4,
+            "pct": 96.66
+          },
+          "functions": {
+            "covered": 9,
+            "total": 10,
+            "missing": 1,
+            "pct": 90
+          },
+          "lines": {
+            "covered": 41,
+            "total": 45,
+            "missing": 4,
+            "pct": 91.11
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "27",
+              "line": 123
+            },
+            {
+              "id": "28",
+              "line": 124
+            },
+            {
+              "id": "37",
+              "line": 167
+            },
+            {
+              "id": "38",
+              "line": 168
+            }
+          ],
+          "branches": [
+            {
+              "id": "14",
+              "arm": 0,
+              "line": 122
+            },
+            {
+              "id": "17",
+              "arm": 1,
+              "line": 178
+            },
+            {
+              "id": "44",
+              "arm": 0,
+              "line": 450
+            },
+            {
+              "id": "46",
+              "arm": 0,
+              "line": 457
+            }
+          ],
+          "functions": [
+            {
+              "id": "3",
+              "line": 166,
+              "name": "(anonymous_3)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/app/components/layout/WebSidebar.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 35,
+            "total": 37,
+            "missing": 2,
+            "pct": 94.59
+          },
+          "branches": {
+            "covered": 66,
+            "total": 72,
+            "missing": 6,
+            "pct": 91.66
+          },
+          "functions": {
+            "covered": 11,
+            "total": 13,
+            "missing": 2,
+            "pct": 84.61
+          },
+          "lines": {
+            "covered": 32,
+            "total": 34,
+            "missing": 2,
+            "pct": 94.11
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "29",
+              "line": 216
+            },
+            {
+              "id": "36",
+              "line": 358
+            }
+          ],
+          "branches": [
+            {
+              "id": "5",
+              "arm": 1,
+              "line": 132
+            },
+            {
+              "id": "5",
+              "arm": 2,
+              "line": 132
+            },
+            {
+              "id": "5",
+              "arm": 3,
+              "line": 132
+            },
+            {
+              "id": "6",
+              "arm": 1,
+              "line": 135
+            },
+            {
+              "id": "18",
+              "arm": 1,
+              "line": 247
+            },
+            {
+              "id": "18",
+              "arm": 2,
+              "line": 248
+            }
+          ],
+          "functions": [
+            {
+              "id": "7",
+              "line": 216,
+              "name": "(anonymous_7)"
+            },
+            {
+              "id": "12",
+              "line": 358,
+              "name": "(anonymous_12)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/app/hooks/useLocalStorage.ts",
+        "metrics": {
+          "statements": {
+            "covered": 27,
+            "total": 31,
+            "missing": 4,
+            "pct": 87.09
+          },
+          "branches": {
+            "covered": 7,
+            "total": 12,
+            "missing": 5,
+            "pct": 58.33
+          },
+          "functions": {
+            "covered": 7,
+            "total": 7,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 26,
+            "total": 29,
+            "missing": 3,
+            "pct": 89.65
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "2",
+              "line": 17
+            },
+            {
+              "id": "13",
+              "line": 37
+            },
+            {
+              "id": "18",
+              "line": 49
+            },
+            {
+              "id": "21",
+              "line": 55
+            }
+          ],
+          "branches": [
+            {
+              "id": "0",
+              "arm": 0,
+              "line": 16
+            },
+            {
+              "id": "1",
+              "arm": 1,
+              "line": 21
+            },
+            {
+              "id": "2",
+              "arm": 1,
+              "line": 33
+            },
+            {
+              "id": "3",
+              "arm": 0,
+              "line": 55
+            },
+            {
+              "id": "4",
+              "arm": 1,
+              "line": 58
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/dca/model/dca-ab-test-analytics.ts",
+        "metrics": {
+          "statements": {
+            "covered": 117,
+            "total": 122,
+            "missing": 5,
+            "pct": 95.9
+          },
+          "branches": {
+            "covered": 50,
+            "total": 56,
+            "missing": 6,
+            "pct": 89.28
+          },
+          "functions": {
+            "covered": 28,
+            "total": 28,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 109,
+            "total": 110,
+            "missing": 1,
+            "pct": 99.09
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "45",
+              "line": 232
+            },
+            {
+              "id": "66",
+              "line": 272
+            },
+            {
+              "id": "71",
+              "line": 287
+            },
+            {
+              "id": "73",
+              "line": 288
+            },
+            {
+              "id": "75",
+              "line": 289
+            }
+          ],
+          "branches": [
+            {
+              "id": "12",
+              "arm": 0,
+              "line": 231
+            },
+            {
+              "id": "17",
+              "arm": 0,
+              "line": 272
+            },
+            {
+              "id": "19",
+              "arm": 0,
+              "line": 287
+            },
+            {
+              "id": "20",
+              "arm": 0,
+              "line": 288
+            },
+            {
+              "id": "21",
+              "arm": 0,
+              "line": 289
+            },
+            {
+              "id": "27",
+              "arm": 1,
+              "line": 330
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/support/pages/HelpCenterContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 14,
+            "total": 17,
+            "missing": 3,
+            "pct": 82.35
+          },
+          "branches": {
+            "covered": 14,
+            "total": 20,
+            "missing": 6,
+            "pct": 70
+          },
+          "functions": {
+            "covered": 6,
+            "total": 8,
+            "missing": 2,
+            "pct": 75
+          },
+          "lines": {
+            "covered": 14,
+            "total": 15,
+            "missing": 1,
+            "pct": 93.33
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "10",
+              "line": 34
+            },
+            {
+              "id": "11",
+              "line": 34
+            },
+            {
+              "id": "15",
+              "line": 51
+            }
+          ],
+          "branches": [
+            {
+              "id": "1",
+              "arm": 1,
+              "line": 19
+            },
+            {
+              "id": "3",
+              "arm": 0,
+              "line": 34
+            },
+            {
+              "id": "5",
+              "arm": 0,
+              "line": 51
+            },
+            {
+              "id": "5",
+              "arm": 1,
+              "line": 51
+            },
+            {
+              "id": "6",
+              "arm": 0,
+              "line": 54
+            },
+            {
+              "id": "7",
+              "arm": 0,
+              "line": 55
+            }
+          ],
+          "functions": [
+            {
+              "id": "3",
+              "line": 34,
+              "name": "(anonymous_3)"
+            },
+            {
+              "id": "6",
+              "line": 51,
+              "name": "(anonymous_6)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/shared/hooks/useRefresh.ts",
+        "metrics": {
+          "statements": {
+            "covered": 35,
+            "total": 40,
+            "missing": 5,
+            "pct": 87.5
+          },
+          "branches": {
+            "covered": 7,
+            "total": 10,
+            "missing": 3,
+            "pct": 70
+          },
+          "functions": {
+            "covered": 8,
+            "total": 8,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 28,
+            "total": 32,
+            "missing": 4,
+            "pct": 87.5
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "6",
+              "line": 43
+            },
+            {
+              "id": "7",
+              "line": 44
+            },
+            {
+              "id": "8",
+              "line": 44
+            },
+            {
+              "id": "9",
+              "line": 45
+            },
+            {
+              "id": "10",
+              "line": 46
+            }
+          ],
+          "branches": [
+            {
+              "id": "1",
+              "arm": 1,
+              "line": 42
+            },
+            {
+              "id": "2",
+              "arm": 0,
+              "line": 44
+            },
+            {
+              "id": "2",
+              "arm": 1,
+              "line": 44
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/shared/ui/PullToRefresh.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 98,
+            "total": 102,
+            "missing": 4,
+            "pct": 96.07
+          },
+          "branches": {
+            "covered": 79,
+            "total": 87,
+            "missing": 8,
+            "pct": 90.8
+          },
+          "functions": {
+            "covered": 6,
+            "total": 6,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 92,
+            "total": 92,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "8",
+              "line": 41
+            },
+            {
+              "id": "30",
+              "line": 78
+            },
+            {
+              "id": "33",
+              "line": 80
+            },
+            {
+              "id": "43",
+              "line": 94
+            }
+          ],
+          "branches": [
+            {
+              "id": "1",
+              "arm": 0,
+              "line": 41
+            },
+            {
+              "id": "9",
+              "arm": 0,
+              "line": 78
+            },
+            {
+              "id": "11",
+              "arm": 0,
+              "line": 80
+            },
+            {
+              "id": "14",
+              "arm": 0,
+              "line": 94
+            },
+            {
+              "id": "17",
+              "arm": 1,
+              "line": 101
+            },
+            {
+              "id": "18",
+              "arm": 1,
+              "line": 113
+            },
+            {
+              "id": "21",
+              "arm": 1,
+              "line": 119
+            },
+            {
+              "id": "22",
+              "arm": 1,
+              "line": 129
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/app/hooks/usePullToRefresh.ts",
+        "metrics": {
+          "statements": {
+            "covered": 52,
+            "total": 55,
+            "missing": 3,
+            "pct": 94.54
+          },
+          "branches": {
+            "covered": 24,
+            "total": 29,
+            "missing": 5,
+            "pct": 82.75
+          },
+          "functions": {
+            "covered": 7,
+            "total": 8,
+            "missing": 1,
+            "pct": 87.5
+          },
+          "lines": {
+            "covered": 45,
+            "total": 47,
+            "missing": 2,
+            "pct": 95.74
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "50",
+              "line": 117
+            },
+            {
+              "id": "51",
+              "line": 117
+            },
+            {
+              "id": "53",
+              "line": 122
+            }
+          ],
+          "branches": [
+            {
+              "id": "3",
+              "arm": 1,
+              "line": 48
+            },
+            {
+              "id": "7",
+              "arm": 1,
+              "line": 65
+            },
+            {
+              "id": "10",
+              "arm": 0,
+              "line": 73
+            },
+            {
+              "id": "13",
+              "arm": 1,
+              "line": 121
+            },
+            {
+              "id": "15",
+              "arm": 0,
+              "line": 116
+            }
+          ],
+          "functions": [
+            {
+              "id": "7",
+              "line": 117,
+              "name": "(anonymous_7)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PBlacklistPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 38,
+            "total": 41,
+            "missing": 3,
+            "pct": 92.68
+          },
+          "branches": {
+            "covered": 26,
+            "total": 30,
+            "missing": 4,
+            "pct": 86.66
+          },
+          "functions": {
+            "covered": 12,
+            "total": 14,
+            "missing": 2,
+            "pct": 85.71
+          },
+          "lines": {
+            "covered": 36,
+            "total": 38,
+            "missing": 2,
+            "pct": 94.73
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "20",
+              "line": 63
+            },
+            {
+              "id": "30",
+              "line": 108
+            },
+            {
+              "id": "31",
+              "line": 122
+            }
+          ],
+          "branches": [
+            {
+              "id": "0",
+              "arm": 1,
+              "line": 50
+            },
+            {
+              "id": "4",
+              "arm": 0,
+              "line": 63
+            },
+            {
+              "id": "8",
+              "arm": 1,
+              "line": 149
+            },
+            {
+              "id": "9",
+              "arm": 1,
+              "line": 157
+            }
+          ],
+          "functions": [
+            {
+              "id": "5",
+              "line": 108,
+              "name": "(anonymous_5)"
+            },
+            {
+              "id": "6",
+              "line": 122,
+              "name": "(anonymous_6)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/support/pages/SupportContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 26,
+            "total": 29,
+            "missing": 3,
+            "pct": 89.65
+          },
+          "branches": {
+            "covered": 29,
+            "total": 34,
+            "missing": 5,
+            "pct": 85.29
+          },
+          "functions": {
+            "covered": 9,
+            "total": 11,
+            "missing": 2,
+            "pct": 81.81
+          },
+          "lines": {
+            "covered": 22,
+            "total": 23,
+            "missing": 1,
+            "pct": 95.65
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "13",
+              "line": 30
+            },
+            {
+              "id": "22",
+              "line": 81
+            },
+            {
+              "id": "28",
+              "line": 112
+            }
+          ],
+          "branches": [
+            {
+              "id": "0",
+              "arm": 1,
+              "line": 16
+            },
+            {
+              "id": "4",
+              "arm": 1,
+              "line": 36
+            },
+            {
+              "id": "12",
+              "arm": 0,
+              "line": 81
+            },
+            {
+              "id": "13",
+              "arm": 1,
+              "line": 98
+            },
+            {
+              "id": "15",
+              "arm": 1,
+              "line": 111
+            }
+          ],
+          "functions": [
+            {
+              "id": "2",
+              "line": 30,
+              "name": "(anonymous_2)"
+            },
+            {
+              "id": "10",
+              "line": 112,
+              "name": "(anonymous_10)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/trading/components/TradingOrderEntryPanel.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 25,
+            "total": 29,
+            "missing": 4,
+            "pct": 86.2
+          },
+          "branches": {
+            "covered": 77,
+            "total": 77,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 12,
+            "total": 15,
+            "missing": 3,
+            "pct": 80
+          },
+          "lines": {
+            "covered": 24,
+            "total": 28,
+            "missing": 4,
+            "pct": 85.71
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "8",
+              "line": 89
+            },
+            {
+              "id": "9",
+              "line": 90
+            },
+            {
+              "id": "22",
+              "line": 241
+            },
+            {
+              "id": "23",
+              "line": 281
+            }
+          ],
+          "branches": [],
+          "functions": [
+            {
+              "id": "2",
+              "line": 88,
+              "name": "(anonymous_2)"
+            },
+            {
+              "id": "9",
+              "line": 241,
+              "name": "(anonymous_9)"
+            },
+            {
+              "id": "10",
+              "line": 281,
+              "name": "(anonymous_10)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/shared/ui/TrInput.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 56,
+            "total": 58,
+            "missing": 2,
+            "pct": 96.55
+          },
+          "branches": {
+            "covered": 124,
+            "total": 133,
+            "missing": 9,
+            "pct": 93.23
+          },
+          "functions": {
+            "covered": 14,
+            "total": 14,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 54,
+            "total": 54,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "13",
+              "line": 150
+            },
+            {
+              "id": "20",
+              "line": 164
+            }
+          ],
+          "branches": [
+            {
+              "id": "11",
+              "arm": 0,
+              "line": 150
+            },
+            {
+              "id": "12",
+              "arm": 1,
+              "line": 157
+            },
+            {
+              "id": "13",
+              "arm": 0,
+              "line": 164
+            },
+            {
+              "id": "15",
+              "arm": 1,
+              "line": 174
+            },
+            {
+              "id": "24",
+              "arm": 1,
+              "line": 220
+            },
+            {
+              "id": "32",
+              "arm": 0,
+              "line": 252
+            },
+            {
+              "id": "39",
+              "arm": 0,
+              "line": 290
+            },
+            {
+              "id": "40",
+              "arm": 0,
+              "line": 291
+            },
+            {
+              "id": "70",
+              "arm": 1,
+              "line": 476
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/app/hooks/useScrollPosition.ts",
+        "metrics": {
+          "statements": {
+            "covered": 28,
+            "total": 32,
+            "missing": 4,
+            "pct": 87.5
+          },
+          "branches": {
+            "covered": 4,
+            "total": 8,
+            "missing": 4,
+            "pct": 50
+          },
+          "functions": {
+            "covered": 6,
+            "total": 6,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 27,
+            "total": 29,
+            "missing": 2,
+            "pct": 93.1
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "5",
+              "line": 29
+            },
+            {
+              "id": "10",
+              "line": 35
+            },
+            {
+              "id": "11",
+              "line": 36
+            },
+            {
+              "id": "23",
+              "line": 54
+            }
+          ],
+          "branches": [
+            {
+              "id": "0",
+              "arm": 0,
+              "line": 29
+            },
+            {
+              "id": "1",
+              "arm": 0,
+              "line": 34
+            },
+            {
+              "id": "2",
+              "arm": 0,
+              "line": 54
+            },
+            {
+              "id": "3",
+              "arm": 1,
+              "line": 62
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/market/pages/MarketMoversPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 26,
+            "total": 27,
+            "missing": 1,
+            "pct": 96.29
+          },
+          "branches": {
+            "covered": 33,
+            "total": 40,
+            "missing": 7,
+            "pct": 82.5
+          },
+          "functions": {
+            "covered": 11,
+            "total": 12,
+            "missing": 1,
+            "pct": 91.66
+          },
+          "lines": {
+            "covered": 26,
+            "total": 27,
+            "missing": 1,
+            "pct": 96.29
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "20",
+              "line": 135
+            }
+          ],
+          "branches": [
+            {
+              "id": "9",
+              "arm": 0,
+              "line": 140
+            },
+            {
+              "id": "13",
+              "arm": 1,
+              "line": 183
+            },
+            {
+              "id": "14",
+              "arm": 1,
+              "line": 194
+            },
+            {
+              "id": "15",
+              "arm": 1,
+              "line": 195
+            },
+            {
+              "id": "17",
+              "arm": 0,
+              "line": 236
+            },
+            {
+              "id": "18",
+              "arm": 1,
+              "line": 236
+            },
+            {
+              "id": "19",
+              "arm": 1,
+              "line": 244
+            }
+          ],
+          "functions": [
+            {
+              "id": "8",
+              "line": 135,
+              "name": "(anonymous_8)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/shared/ui/TabBar.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 32,
+            "total": 34,
+            "missing": 2,
+            "pct": 94.11
+          },
+          "branches": {
+            "covered": 45,
+            "total": 49,
+            "missing": 4,
+            "pct": 91.83
+          },
+          "functions": {
+            "covered": 11,
+            "total": 13,
+            "missing": 2,
+            "pct": 84.61
+          },
+          "lines": {
+            "covered": 32,
+            "total": 34,
+            "missing": 2,
+            "pct": 94.11
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "27",
+              "line": 194
+            },
+            {
+              "id": "33",
+              "line": 232
+            }
+          ],
+          "branches": [
+            {
+              "id": "5",
+              "arm": 1,
+              "line": 117
+            },
+            {
+              "id": "9",
+              "arm": 0,
+              "line": 131
+            },
+            {
+              "id": "10",
+              "arm": 1,
+              "line": 139
+            },
+            {
+              "id": "17",
+              "arm": 1,
+              "line": 186
+            }
+          ],
+          "functions": [
+            {
+              "id": "9",
+              "line": 194,
+              "name": "(anonymous_9)"
+            },
+            {
+              "id": "12",
+              "line": 232,
+              "name": "(anonymous_12)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/market/pages/MarketCorrelationPairsPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 17,
+            "total": 19,
+            "missing": 2,
+            "pct": 89.47
+          },
+          "branches": {
+            "covered": 33,
+            "total": 36,
+            "missing": 3,
+            "pct": 91.66
+          },
+          "functions": {
+            "covered": 8,
+            "total": 10,
+            "missing": 2,
+            "pct": 80
+          },
+          "lines": {
+            "covered": 17,
+            "total": 19,
+            "missing": 2,
+            "pct": 89.47
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "12",
+              "line": 55
+            },
+            {
+              "id": "15",
+              "line": 105
+            }
+          ],
+          "branches": [
+            {
+              "id": "12",
+              "arm": 0,
+              "line": 110
+            },
+            {
+              "id": "15",
+              "arm": 1,
+              "line": 124
+            },
+            {
+              "id": "17",
+              "arm": 1,
+              "line": 130
+            }
+          ],
+          "functions": [
+            {
+              "id": "5",
+              "line": 55,
+              "name": "(anonymous_5)"
+            },
+            {
+              "id": "8",
+              "line": 105,
+              "name": "(anonymous_8)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/market/pages/MarketNewsFeedPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 23,
+            "total": 26,
+            "missing": 3,
+            "pct": 88.46
+          },
+          "branches": {
+            "covered": 34,
+            "total": 35,
+            "missing": 1,
+            "pct": 97.14
+          },
+          "functions": {
+            "covered": 9,
+            "total": 11,
+            "missing": 2,
+            "pct": 81.81
+          },
+          "lines": {
+            "covered": 23,
+            "total": 26,
+            "missing": 3,
+            "pct": 88.46
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "20",
+              "line": 131
+            },
+            {
+              "id": "21",
+              "line": 148
+            },
+            {
+              "id": "22",
+              "line": 149
+            }
+          ],
+          "branches": [
+            {
+              "id": "14",
+              "arm": 2,
+              "line": 143
+            }
+          ],
+          "functions": [
+            {
+              "id": "6",
+              "line": 131,
+              "name": "(anonymous_6)"
+            },
+            {
+              "id": "7",
+              "line": 147,
+              "name": "(anonymous_7)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PAdAnalyticsPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 18,
+            "total": 21,
+            "missing": 3,
+            "pct": 85.71
+          },
+          "branches": {
+            "covered": 10,
+            "total": 12,
+            "missing": 2,
+            "pct": 83.33
+          },
+          "functions": {
+            "covered": 5,
+            "total": 6,
+            "missing": 1,
+            "pct": 83.33
+          },
+          "lines": {
+            "covered": 18,
+            "total": 21,
+            "missing": 3,
+            "pct": 85.71
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "13",
+              "line": 57
+            },
+            {
+              "id": "14",
+              "line": 64
+            },
+            {
+              "id": "15",
+              "line": 65
+            }
+          ],
+          "branches": [
+            {
+              "id": "2",
+              "arm": 0,
+              "line": 56
+            },
+            {
+              "id": "4",
+              "arm": 1,
+              "line": 80
+            }
+          ],
+          "functions": [
+            {
+              "id": "2",
+              "line": 63,
+              "name": "(anonymous_2)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/profile/pages/EditProfileContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 29,
+            "total": 32,
+            "missing": 3,
+            "pct": 90.62
+          },
+          "branches": {
+            "covered": 26,
+            "total": 31,
+            "missing": 5,
+            "pct": 83.87
+          },
+          "functions": {
+            "covered": 9,
+            "total": 10,
+            "missing": 1,
+            "pct": 90
+          },
+          "lines": {
+            "covered": 26,
+            "total": 26,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "13",
+              "line": 32
+            },
+            {
+              "id": "14",
+              "line": 32
+            },
+            {
+              "id": "26",
+              "line": 92
+            }
+          ],
+          "branches": [
+            {
+              "id": "2",
+              "arm": 0,
+              "line": 32
+            },
+            {
+              "id": "8",
+              "arm": 1,
+              "line": 79
+            },
+            {
+              "id": "12",
+              "arm": 0,
+              "line": 92
+            },
+            {
+              "id": "13",
+              "arm": 1,
+              "line": 105
+            },
+            {
+              "id": "14",
+              "arm": 0,
+              "line": 110
+            }
+          ],
+          "functions": [
+            {
+              "id": "2",
+              "line": 32,
+              "name": "(anonymous_2)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/trading/pages/CopyConfigurationContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 25,
+            "total": 28,
+            "missing": 3,
+            "pct": 89.28
+          },
+          "branches": {
+            "covered": 20,
+            "total": 20,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 7,
+            "total": 10,
+            "missing": 3,
+            "pct": 70
+          },
+          "lines": {
+            "covered": 23,
+            "total": 26,
+            "missing": 3,
+            "pct": 88.46
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "23",
+              "line": 71
+            },
+            {
+              "id": "24",
+              "line": 87
+            },
+            {
+              "id": "25",
+              "line": 101
+            }
+          ],
+          "branches": [],
+          "functions": [
+            {
+              "id": "5",
+              "line": 71,
+              "name": "(anonymous_5)"
+            },
+            {
+              "id": "6",
+              "line": 87,
+              "name": "(anonymous_6)"
+            },
+            {
+              "id": "7",
+              "line": 101,
+              "name": "(anonymous_7)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/trading/pages/ProviderComparisonContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 21,
+            "total": 24,
+            "missing": 3,
+            "pct": 87.5
+          },
+          "branches": {
+            "covered": 8,
+            "total": 10,
+            "missing": 2,
+            "pct": 80
+          },
+          "functions": {
+            "covered": 10,
+            "total": 12,
+            "missing": 2,
+            "pct": 83.33
+          },
+          "lines": {
+            "covered": 21,
+            "total": 23,
+            "missing": 2,
+            "pct": 91.3
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "10",
+              "line": 34
+            },
+            {
+              "id": "11",
+              "line": 34
+            },
+            {
+              "id": "20",
+              "line": 81
+            }
+          ],
+          "branches": [
+            {
+              "id": "0",
+              "arm": 1,
+              "line": 19
+            },
+            {
+              "id": "2",
+              "arm": 0,
+              "line": 33
+            }
+          ],
+          "functions": [
+            {
+              "id": "2",
+              "line": 34,
+              "name": "(anonymous_2)"
+            },
+            {
+              "id": "9",
+              "line": 81,
+              "name": "(anonymous_9)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/trading/pages/WebCopyPerformancePage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 17,
+            "total": 21,
+            "missing": 4,
+            "pct": 80.95
+          },
+          "branches": {
+            "covered": 11,
+            "total": 14,
+            "missing": 3,
+            "pct": 78.57
+          },
+          "functions": {
+            "covered": 4,
+            "total": 6,
+            "missing": 2,
+            "pct": 66.66
+          },
+          "lines": {
+            "covered": 16,
+            "total": 16,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "10",
+              "line": 39
+            },
+            {
+              "id": "11",
+              "line": 39
+            },
+            {
+              "id": "15",
+              "line": 41
+            },
+            {
+              "id": "16",
+              "line": 41
+            }
+          ],
+          "branches": [
+            {
+              "id": "2",
+              "arm": 0,
+              "line": 39
+            },
+            {
+              "id": "4",
+              "arm": 0,
+              "line": 41
+            },
+            {
+              "id": "6",
+              "arm": 1,
+              "line": 81
+            }
+          ],
+          "functions": [
+            {
+              "id": "1",
+              "line": 39,
+              "name": "(anonymous_1)"
+            },
+            {
+              "id": "3",
+              "line": 41,
+              "name": "(anonymous_3)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/shared/ui/InputField.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 16,
+            "total": 17,
+            "missing": 1,
+            "pct": 94.11
+          },
+          "branches": {
+            "covered": 35,
+            "total": 41,
+            "missing": 6,
+            "pct": 85.36
+          },
+          "functions": {
+            "covered": 5,
+            "total": 6,
+            "missing": 1,
+            "pct": 83.33
+          },
+          "lines": {
+            "covered": 16,
+            "total": 17,
+            "missing": 1,
+            "pct": 94.11
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "16",
+              "line": 172
+            }
+          ],
+          "branches": [
+            {
+              "id": "7",
+              "arm": 1,
+              "line": 48
+            },
+            {
+              "id": "12",
+              "arm": 1,
+              "line": 106
+            },
+            {
+              "id": "14",
+              "arm": 0,
+              "line": 140
+            },
+            {
+              "id": "19",
+              "arm": 1,
+              "line": 167
+            },
+            {
+              "id": "20",
+              "arm": 1,
+              "line": 173
+            },
+            {
+              "id": "21",
+              "arm": 1,
+              "line": 178
+            }
+          ],
+          "functions": [
+            {
+              "id": "5",
+              "line": 172,
+              "name": "(anonymous_5)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/auth/pages/WebLoginPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 79,
+            "total": 82,
+            "missing": 3,
+            "pct": 96.34
+          },
+          "branches": {
+            "covered": 70,
+            "total": 72,
+            "missing": 2,
+            "pct": 97.22
+          },
+          "functions": {
+            "covered": 13,
+            "total": 14,
+            "missing": 1,
+            "pct": 92.85
+          },
+          "lines": {
+            "covered": 79,
+            "total": 81,
+            "missing": 2,
+            "pct": 97.53
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "60",
+              "line": 118
+            },
+            {
+              "id": "65",
+              "line": 124
+            },
+            {
+              "id": "81",
+              "line": 366
+            }
+          ],
+          "branches": [
+            {
+              "id": "14",
+              "arm": 0,
+              "line": 118
+            },
+            {
+              "id": "23",
+              "arm": 1,
+              "line": 257
+            }
+          ],
+          "functions": [
+            {
+              "id": "13",
+              "line": 366,
+              "name": "(anonymous_13)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/auth/pages/WebSessionExpiredPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 20,
+            "total": 22,
+            "missing": 2,
+            "pct": 90.9
+          },
+          "branches": {
+            "covered": 22,
+            "total": 26,
+            "missing": 4,
+            "pct": 84.61
+          },
+          "functions": {
+            "covered": 5,
+            "total": 6,
+            "missing": 1,
+            "pct": 83.33
+          },
+          "lines": {
+            "covered": 20,
+            "total": 21,
+            "missing": 1,
+            "pct": 95.23
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "13",
+              "line": 103
+            },
+            {
+              "id": "19",
+              "line": 234
+            }
+          ],
+          "branches": [
+            {
+              "id": "1",
+              "arm": 1,
+              "line": 93
+            },
+            {
+              "id": "3",
+              "arm": 1,
+              "line": 95
+            },
+            {
+              "id": "4",
+              "arm": 0,
+              "line": 103
+            },
+            {
+              "id": "11",
+              "arm": 1,
+              "line": 320
+            }
+          ],
+          "functions": [
+            {
+              "id": "3",
+              "line": 234,
+              "name": "(anonymous_3)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/dca/model/dca-context-provider.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 43,
+            "total": 44,
+            "missing": 1,
+            "pct": 97.72
+          },
+          "branches": {
+            "covered": 11,
+            "total": 18,
+            "missing": 7,
+            "pct": 61.11
+          },
+          "functions": {
+            "covered": 9,
+            "total": 9,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 41,
+            "total": 41,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "14",
+              "line": 45
+            }
+          ],
+          "branches": [
+            {
+              "id": "0",
+              "arm": 1,
+              "line": 27
+            },
+            {
+              "id": "1",
+              "arm": 1,
+              "line": 29
+            },
+            {
+              "id": "2",
+              "arm": 0,
+              "line": 45
+            },
+            {
+              "id": "5",
+              "arm": 1,
+              "line": 100
+            },
+            {
+              "id": "6",
+              "arm": 1,
+              "line": 101
+            },
+            {
+              "id": "7",
+              "arm": 1,
+              "line": 102
+            },
+            {
+              "id": "8",
+              "arm": 1,
+              "line": 103
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/market/pages/MarketEventCalendarPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 19,
+            "total": 20,
+            "missing": 1,
+            "pct": 95
+          },
+          "branches": {
+            "covered": 33,
+            "total": 38,
+            "missing": 5,
+            "pct": 86.84
+          },
+          "functions": {
+            "covered": 9,
+            "total": 10,
+            "missing": 1,
+            "pct": 90
+          },
+          "lines": {
+            "covered": 17,
+            "total": 18,
+            "missing": 1,
+            "pct": 94.44
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "14",
+              "line": 110
+            }
+          ],
+          "branches": [
+            {
+              "id": "11",
+              "arm": 0,
+              "line": 115
+            },
+            {
+              "id": "13",
+              "arm": 1,
+              "line": 134
+            },
+            {
+              "id": "14",
+              "arm": 1,
+              "line": 143
+            },
+            {
+              "id": "15",
+              "arm": 1,
+              "line": 146
+            },
+            {
+              "id": "16",
+              "arm": 1,
+              "line": 148
+            }
+          ],
+          "functions": [
+            {
+              "id": "6",
+              "line": 110,
+              "name": "(anonymous_6)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/p2p/model/p2p-queries.ts",
+        "metrics": {
+          "statements": {
+            "covered": 142,
+            "total": 142,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 30,
+            "total": 38,
+            "missing": 8,
+            "pct": 78.94
+          },
+          "functions": {
+            "covered": 118,
+            "total": 118,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 142,
+            "total": 142,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [],
+          "branches": [
+            {
+              "id": "9",
+              "arm": 1,
+              "line": 180
+            },
+            {
+              "id": "15",
+              "arm": 1,
+              "line": 276
+            },
+            {
+              "id": "16",
+              "arm": 1,
+              "line": 295
+            },
+            {
+              "id": "17",
+              "arm": 1,
+              "line": 404
+            },
+            {
+              "id": "18",
+              "arm": 1,
+              "line": 423
+            },
+            {
+              "id": "19",
+              "arm": 1,
+              "line": 442
+            },
+            {
+              "id": "22",
+              "arm": 1,
+              "line": 530
+            },
+            {
+              "id": "23",
+              "arm": 1,
+              "line": 547
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PBlacklistAddPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 23,
+            "total": 25,
+            "missing": 2,
+            "pct": 92
+          },
+          "branches": {
+            "covered": 26,
+            "total": 30,
+            "missing": 4,
+            "pct": 86.66
+          },
+          "functions": {
+            "covered": 7,
+            "total": 8,
+            "missing": 1,
+            "pct": 87.5
+          },
+          "lines": {
+            "covered": 23,
+            "total": 24,
+            "missing": 1,
+            "pct": 95.83
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "12",
+              "line": 40
+            },
+            {
+              "id": "23",
+              "line": 140
+            }
+          ],
+          "branches": [
+            {
+              "id": "0",
+              "arm": 1,
+              "line": 33
+            },
+            {
+              "id": "1",
+              "arm": 0,
+              "line": 40
+            },
+            {
+              "id": "9",
+              "arm": 1,
+              "line": 150
+            },
+            {
+              "id": "13",
+              "arm": 0,
+              "line": 166
+            }
+          ],
+          "functions": [
+            {
+              "id": "6",
+              "line": 140,
+              "name": "(anonymous_6)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PEscrowDetailPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 78,
+            "total": 81,
+            "missing": 3,
+            "pct": 96.29
+          },
+          "branches": {
+            "covered": 80,
+            "total": 85,
+            "missing": 5,
+            "pct": 94.11
+          },
+          "functions": {
+            "covered": 14,
+            "total": 14,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 78,
+            "total": 78,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "25",
+              "line": 55
+            },
+            {
+              "id": "33",
+              "line": 66
+            },
+            {
+              "id": "47",
+              "line": 92
+            }
+          ],
+          "branches": [
+            {
+              "id": "2",
+              "arm": 0,
+              "line": 55
+            },
+            {
+              "id": "4",
+              "arm": 0,
+              "line": 66
+            },
+            {
+              "id": "8",
+              "arm": 0,
+              "line": 92
+            },
+            {
+              "id": "15",
+              "arm": 2,
+              "line": 157
+            },
+            {
+              "id": "21",
+              "arm": 1,
+              "line": 188
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PReportMerchantPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 25,
+            "total": 28,
+            "missing": 3,
+            "pct": 89.28
+          },
+          "branches": {
+            "covered": 28,
+            "total": 30,
+            "missing": 2,
+            "pct": 93.33
+          },
+          "functions": {
+            "covered": 6,
+            "total": 7,
+            "missing": 1,
+            "pct": 85.71
+          },
+          "lines": {
+            "covered": 25,
+            "total": 27,
+            "missing": 2,
+            "pct": 92.59
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "13",
+              "line": 99
+            },
+            {
+              "id": "14",
+              "line": 105
+            },
+            {
+              "id": "17",
+              "line": 111
+            }
+          ],
+          "branches": [
+            {
+              "id": "2",
+              "arm": 0,
+              "line": 98
+            },
+            {
+              "id": "4",
+              "arm": 0,
+              "line": 111
+            }
+          ],
+          "functions": [
+            {
+              "id": "1",
+              "line": 105,
+              "name": "(anonymous_1)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/trading/components/copy-education/CopyEducationScenarioTab.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 20,
+            "total": 22,
+            "missing": 2,
+            "pct": 90.9
+          },
+          "branches": {
+            "covered": 30,
+            "total": 32,
+            "missing": 2,
+            "pct": 93.75
+          },
+          "functions": {
+            "covered": 5,
+            "total": 7,
+            "missing": 2,
+            "pct": 71.42
+          },
+          "lines": {
+            "covered": 19,
+            "total": 21,
+            "missing": 2,
+            "pct": 90.47
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "19",
+              "line": 128
+            },
+            {
+              "id": "20",
+              "line": 138
+            }
+          ],
+          "branches": [
+            {
+              "id": "10",
+              "arm": 0,
+              "line": 140
+            },
+            {
+              "id": "10",
+              "arm": 1,
+              "line": 140
+            }
+          ],
+          "functions": [
+            {
+              "id": "4",
+              "line": 128,
+              "name": "(anonymous_4)"
+            },
+            {
+              "id": "5",
+              "line": 138,
+              "name": "(anonymous_5)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/shared/hooks/useInfiniteScroll.ts",
+        "metrics": {
+          "statements": {
+            "covered": 49,
+            "total": 52,
+            "missing": 3,
+            "pct": 94.23
+          },
+          "branches": {
+            "covered": 19,
+            "total": 23,
+            "missing": 4,
+            "pct": 82.6
+          },
+          "functions": {
+            "covered": 12,
+            "total": 12,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 45,
+            "total": 46,
+            "missing": 1,
+            "pct": 97.82
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "25",
+              "line": 80
+            },
+            {
+              "id": "27",
+              "line": 82
+            },
+            {
+              "id": "49",
+              "line": 126
+            }
+          ],
+          "branches": [
+            {
+              "id": "6",
+              "arm": 0,
+              "line": 80
+            },
+            {
+              "id": "8",
+              "arm": 0,
+              "line": 82
+            },
+            {
+              "id": "11",
+              "arm": 1,
+              "line": 107
+            },
+            {
+              "id": "12",
+              "arm": 0,
+              "line": 125
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/shared/telemetry/telemetry.ts",
+        "metrics": {
+          "statements": {
+            "covered": 13,
+            "total": 16,
+            "missing": 3,
+            "pct": 81.25
+          },
+          "branches": {
+            "covered": 0,
+            "total": 0,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 7,
+            "total": 10,
+            "missing": 3,
+            "pct": 70
+          },
+          "lines": {
+            "covered": 13,
+            "total": 15,
+            "missing": 2,
+            "pct": 86.66
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "3",
+              "line": 19
+            },
+            {
+              "id": "9",
+              "line": 31
+            },
+            {
+              "id": "15",
+              "line": 40
+            }
+          ],
+          "branches": [],
+          "functions": [
+            {
+              "id": "2",
+              "line": 19,
+              "name": "(anonymous_2)"
+            },
+            {
+              "id": "6",
+              "line": 31,
+              "name": "(anonymous_6)"
+            },
+            {
+              "id": "9",
+              "line": 40,
+              "name": "(anonymous_9)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/app/components/layout/webConstants.ts",
+        "metrics": {
+          "statements": {
+            "covered": 15,
+            "total": 17,
+            "missing": 2,
+            "pct": 88.23
+          },
+          "branches": {
+            "covered": 7,
+            "total": 10,
+            "missing": 3,
+            "pct": 70
+          },
+          "functions": {
+            "covered": 2,
+            "total": 2,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 14,
+            "total": 16,
+            "missing": 2,
+            "pct": 87.5
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "9",
+              "line": 85
+            },
+            {
+              "id": "13",
+              "line": 93
+            }
+          ],
+          "branches": [
+            {
+              "id": "0",
+              "arm": 0,
+              "line": 84
+            },
+            {
+              "id": "2",
+              "arm": 0,
+              "line": 92
+            },
+            {
+              "id": "3",
+              "arm": 1,
+              "line": 96
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/arena/pages/ArenaDiscoveryPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 28,
+            "total": 30,
+            "missing": 2,
+            "pct": 93.33
+          },
+          "branches": {
+            "covered": 27,
+            "total": 28,
+            "missing": 1,
+            "pct": 96.42
+          },
+          "functions": {
+            "covered": 13,
+            "total": 15,
+            "missing": 2,
+            "pct": 86.66
+          },
+          "lines": {
+            "covered": 28,
+            "total": 30,
+            "missing": 2,
+            "pct": 93.33
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "27",
+              "line": 202
+            },
+            {
+              "id": "29",
+              "line": 217
+            }
+          ],
+          "branches": [
+            {
+              "id": "13",
+              "arm": 0,
+              "line": 222
+            }
+          ],
+          "functions": [
+            {
+              "id": "12",
+              "line": 202,
+              "name": "(anonymous_12)"
+            },
+            {
+              "id": "14",
+              "line": 217,
+              "name": "(anonymous_14)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/market/api/market-stream.ts",
+        "metrics": {
+          "statements": {
+            "covered": 31,
+            "total": 34,
+            "missing": 3,
+            "pct": 91.17
+          },
+          "branches": {
+            "covered": 9,
+            "total": 12,
+            "missing": 3,
+            "pct": 75
+          },
+          "functions": {
+            "covered": 7,
+            "total": 8,
+            "missing": 1,
+            "pct": 87.5
+          },
+          "lines": {
+            "covered": 29,
+            "total": 29,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "5",
+              "line": 22
+            },
+            {
+              "id": "17",
+              "line": 40
+            },
+            {
+              "id": "21",
+              "line": 43
+            }
+          ],
+          "branches": [
+            {
+              "id": "0",
+              "arm": 0,
+              "line": 22
+            },
+            {
+              "id": "3",
+              "arm": 0,
+              "line": 43
+            },
+            {
+              "id": "4",
+              "arm": 1,
+              "line": 54
+            }
+          ],
+          "functions": [
+            {
+              "id": "4",
+              "line": 40,
+              "name": "(anonymous_4)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/market/pages/TokenUnlockSchedulePage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 17,
+            "total": 18,
+            "missing": 1,
+            "pct": 94.44
+          },
+          "branches": {
+            "covered": 26,
+            "total": 30,
+            "missing": 4,
+            "pct": 86.66
+          },
+          "functions": {
+            "covered": 9,
+            "total": 10,
+            "missing": 1,
+            "pct": 90
+          },
+          "lines": {
+            "covered": 17,
+            "total": 18,
+            "missing": 1,
+            "pct": 94.44
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "15",
+              "line": 115
+            }
+          ],
+          "branches": [
+            {
+              "id": "10",
+              "arm": 0,
+              "line": 120
+            },
+            {
+              "id": "12",
+              "arm": 1,
+              "line": 142
+            },
+            {
+              "id": "13",
+              "arm": 1,
+              "line": 143
+            },
+            {
+              "id": "14",
+              "arm": 1,
+              "line": 146
+            }
+          ],
+          "functions": [
+            {
+              "id": "7",
+              "line": 115,
+              "name": "(anonymous_7)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PDashboardPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 15,
+            "total": 17,
+            "missing": 2,
+            "pct": 88.23
+          },
+          "branches": {
+            "covered": 6,
+            "total": 8,
+            "missing": 2,
+            "pct": 75
+          },
+          "functions": {
+            "covered": 7,
+            "total": 8,
+            "missing": 1,
+            "pct": 87.5
+          },
+          "lines": {
+            "covered": 14,
+            "total": 16,
+            "missing": 2,
+            "pct": 87.5
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "6",
+              "line": 35
+            },
+            {
+              "id": "7",
+              "line": 41
+            }
+          ],
+          "branches": [
+            {
+              "id": "1",
+              "arm": 0,
+              "line": 34
+            },
+            {
+              "id": "3",
+              "arm": 1,
+              "line": 239
+            }
+          ],
+          "functions": [
+            {
+              "id": "1",
+              "line": 41,
+              "name": "(anonymous_1)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/p2p/pages/P2PReviewsPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 16,
+            "total": 16,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 19,
+            "total": 26,
+            "missing": 7,
+            "pct": 73.07
+          },
+          "functions": {
+            "covered": 7,
+            "total": 7,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 16,
+            "total": 16,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [],
+          "branches": [
+            {
+              "id": "4",
+              "arm": 1,
+              "line": 62
+            },
+            {
+              "id": "5",
+              "arm": 1,
+              "line": 63
+            },
+            {
+              "id": "6",
+              "arm": 1,
+              "line": 73
+            },
+            {
+              "id": "7",
+              "arm": 1,
+              "line": 79
+            },
+            {
+              "id": "10",
+              "arm": 1,
+              "line": 123
+            },
+            {
+              "id": "11",
+              "arm": 1,
+              "line": 124
+            },
+            {
+              "id": "12",
+              "arm": 1,
+              "line": 133
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/profile/pages/DeviceManagementContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 28,
+            "total": 30,
+            "missing": 2,
+            "pct": 93.33
+          },
+          "branches": {
+            "covered": 33,
+            "total": 38,
+            "missing": 5,
+            "pct": 86.84
+          },
+          "functions": {
+            "covered": 7,
+            "total": 7,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 26,
+            "total": 26,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "9",
+              "line": 25
+            },
+            {
+              "id": "16",
+              "line": 42
+            }
+          ],
+          "branches": [
+            {
+              "id": "1",
+              "arm": 0,
+              "line": 25
+            },
+            {
+              "id": "2",
+              "arm": 1,
+              "line": 33
+            },
+            {
+              "id": "3",
+              "arm": 1,
+              "line": 37
+            },
+            {
+              "id": "4",
+              "arm": 0,
+              "line": 42
+            },
+            {
+              "id": "5",
+              "arm": 1,
+              "line": 50
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/support/pages/NotificationsContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 23,
+            "total": 26,
+            "missing": 3,
+            "pct": 88.46
+          },
+          "branches": {
+            "covered": 27,
+            "total": 30,
+            "missing": 3,
+            "pct": 90
+          },
+          "functions": {
+            "covered": 6,
+            "total": 7,
+            "missing": 1,
+            "pct": 85.71
+          },
+          "lines": {
+            "covered": 23,
+            "total": 23,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "13",
+              "line": 41
+            },
+            {
+              "id": "14",
+              "line": 41
+            },
+            {
+              "id": "19",
+              "line": 85
+            }
+          ],
+          "branches": [
+            {
+              "id": "3",
+              "arm": 0,
+              "line": 41
+            },
+            {
+              "id": "12",
+              "arm": 0,
+              "line": 85
+            },
+            {
+              "id": "14",
+              "arm": 1,
+              "line": 102
+            }
+          ],
+          "functions": [
+            {
+              "id": "1",
+              "line": 41,
+              "name": "(anonymous_1)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/trading/components/OrderModifySheet.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 23,
+            "total": 24,
+            "missing": 1,
+            "pct": 95.83
+          },
+          "branches": {
+            "covered": 35,
+            "total": 41,
+            "missing": 6,
+            "pct": 85.36
+          },
+          "functions": {
+            "covered": 6,
+            "total": 6,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 23,
+            "total": 23,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "19",
+              "line": 61
+            }
+          ],
+          "branches": [
+            {
+              "id": "4",
+              "arm": 0,
+              "line": 61
+            },
+            {
+              "id": "8",
+              "arm": 1,
+              "line": 73
+            },
+            {
+              "id": "9",
+              "arm": 1,
+              "line": 74
+            },
+            {
+              "id": "10",
+              "arm": 1,
+              "line": 77
+            },
+            {
+              "id": "13",
+              "arm": 1,
+              "line": 124
+            },
+            {
+              "id": "14",
+              "arm": 1,
+              "line": 126
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/trading/lib/copy-route.ts",
+        "metrics": {
+          "statements": {
+            "covered": 4,
+            "total": 5,
+            "missing": 1,
+            "pct": 80
+          },
+          "branches": {
+            "covered": 2,
+            "total": 6,
+            "missing": 4,
+            "pct": 33.33
+          },
+          "functions": {
+            "covered": 4,
+            "total": 5,
+            "missing": 1,
+            "pct": 80
+          },
+          "lines": {
+            "covered": 4,
+            "total": 5,
+            "missing": 1,
+            "pct": 80
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "1",
+              "line": 6
+            }
+          ],
+          "branches": [
+            {
+              "id": "0",
+              "arm": 0,
+              "line": 6
+            },
+            {
+              "id": "0",
+              "arm": 1,
+              "line": 6
+            },
+            {
+              "id": "1",
+              "arm": 0,
+              "line": 11
+            },
+            {
+              "id": "2",
+              "arm": 0,
+              "line": 26
+            }
+          ],
+          "functions": [
+            {
+              "id": "1",
+              "line": 5,
+              "name": "copyHubPath"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/shared/ui/TrCard.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 15,
+            "total": 15,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 33,
+            "total": 40,
+            "missing": 7,
+            "pct": 82.5
+          },
+          "functions": {
+            "covered": 3,
+            "total": 3,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 15,
+            "total": 15,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [],
+          "branches": [
+            {
+              "id": "8",
+              "arm": 1,
+              "line": 149
+            },
+            {
+              "id": "12",
+              "arm": 0,
+              "line": 160
+            },
+            {
+              "id": "17",
+              "arm": 0,
+              "line": 198
+            },
+            {
+              "id": "19",
+              "arm": 0,
+              "line": 200
+            },
+            {
+              "id": "21",
+              "arm": 0,
+              "line": 202
+            },
+            {
+              "id": "22",
+              "arm": 0,
+              "line": 206
+            },
+            {
+              "id": "23",
+              "arm": 0,
+              "line": 207
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/app/components/layout/WebShell.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 9,
+            "total": 11,
+            "missing": 2,
+            "pct": 81.81
+          },
+          "branches": {
+            "covered": 5,
+            "total": 6,
+            "missing": 1,
+            "pct": 83.33
+          },
+          "functions": {
+            "covered": 1,
+            "total": 2,
+            "missing": 1,
+            "pct": 50
+          },
+          "lines": {
+            "covered": 9,
+            "total": 11,
+            "missing": 2,
+            "pct": 81.81
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "1",
+              "line": 70
+            },
+            {
+              "id": "2",
+              "line": 71
+            }
+          ],
+          "branches": [
+            {
+              "id": "1",
+              "arm": 1,
+              "line": 129
+            }
+          ],
+          "functions": [
+            {
+              "id": "0",
+              "line": 69,
+              "name": "WebLoadingFallback"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/app/hooks/useOnlineStatus.ts",
+        "metrics": {
+          "statements": {
+            "covered": 32,
+            "total": 33,
+            "missing": 1,
+            "pct": 96.96
+          },
+          "branches": {
+            "covered": 4,
+            "total": 8,
+            "missing": 4,
+            "pct": 50
+          },
+          "functions": {
+            "covered": 8,
+            "total": 9,
+            "missing": 1,
+            "pct": 88.88
+          },
+          "lines": {
+            "covered": 31,
+            "total": 31,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "30",
+              "line": 67
+            }
+          ],
+          "branches": [
+            {
+              "id": "0",
+              "arm": 1,
+              "line": 25
+            },
+            {
+              "id": "1",
+              "arm": 1,
+              "line": 34
+            },
+            {
+              "id": "2",
+              "arm": 1,
+              "line": 54
+            },
+            {
+              "id": "3",
+              "arm": 1,
+              "line": 65
+            }
+          ],
+          "functions": [
+            {
+              "id": "8",
+              "line": 67,
+              "name": "(anonymous_8)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/app/router/index.ts",
+        "metrics": {
+          "statements": {
+            "covered": 16,
+            "total": 17,
+            "missing": 1,
+            "pct": 94.11
+          },
+          "branches": {
+            "covered": 17,
+            "total": 22,
+            "missing": 5,
+            "pct": 77.27
+          },
+          "functions": {
+            "covered": 4,
+            "total": 4,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 13,
+            "total": 13,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "15",
+              "line": 36
+            }
+          ],
+          "branches": [
+            {
+              "id": "4",
+              "arm": 1,
+              "line": 20
+            },
+            {
+              "id": "7",
+              "arm": 1,
+              "line": 23
+            },
+            {
+              "id": "10",
+              "arm": 0,
+              "line": 36
+            },
+            {
+              "id": "11",
+              "arm": 0,
+              "line": 36
+            },
+            {
+              "id": "11",
+              "arm": 1,
+              "line": 36
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/dca/components/DCAExpandedChartSheet.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 5,
+            "total": 5,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 24,
+            "total": 30,
+            "missing": 6,
+            "pct": 80
+          },
+          "functions": {
+            "covered": 4,
+            "total": 4,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 5,
+            "total": 5,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [],
+          "branches": [
+            {
+              "id": "8",
+              "arm": 1,
+              "line": 114
+            },
+            {
+              "id": "9",
+              "arm": 1,
+              "line": 120
+            },
+            {
+              "id": "10",
+              "arm": 1,
+              "line": 126
+            },
+            {
+              "id": "11",
+              "arm": 1,
+              "line": 128
+            },
+            {
+              "id": "12",
+              "arm": 1,
+              "line": 142
+            },
+            {
+              "id": "13",
+              "arm": 1,
+              "line": 145
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/market/api/market-research-schemas.ts",
+        "metrics": {
+          "statements": {
+            "covered": 56,
+            "total": 58,
+            "missing": 2,
+            "pct": 96.55
+          },
+          "branches": {
+            "covered": 24,
+            "total": 26,
+            "missing": 2,
+            "pct": 92.3
+          },
+          "functions": {
+            "covered": 11,
+            "total": 11,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 52,
+            "total": 54,
+            "missing": 2,
+            "pct": 96.29
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "21",
+              "line": 124
+            },
+            {
+              "id": "43",
+              "line": 277
+            }
+          ],
+          "branches": [
+            {
+              "id": "2",
+              "arm": 0,
+              "line": 123
+            },
+            {
+              "id": "7",
+              "arm": 0,
+              "line": 276
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/shared/lib/browser-storage.ts",
+        "metrics": {
+          "statements": {
+            "covered": 26,
+            "total": 29,
+            "missing": 3,
+            "pct": 89.65
+          },
+          "branches": {
+            "covered": 10,
+            "total": 10,
+            "missing": 0,
+            "pct": 100
+          },
+          "functions": {
+            "covered": 10,
+            "total": 10,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 23,
+            "total": 26,
+            "missing": 3,
+            "pct": 88.46
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "7",
+              "line": 17
+            },
+            {
+              "id": "14",
+              "line": 28
+            },
+            {
+              "id": "21",
+              "line": 39
+            }
+          ],
+          "branches": [],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/shared/ui/SectionHeader.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 7,
+            "total": 7,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 31,
+            "total": 37,
+            "missing": 6,
+            "pct": 83.78
+          },
+          "functions": {
+            "covered": 1,
+            "total": 1,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 7,
+            "total": 7,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [],
+          "branches": [
+            {
+              "id": "11",
+              "arm": 0,
+              "line": 82
+            },
+            {
+              "id": "14",
+              "arm": 1,
+              "line": 101
+            },
+            {
+              "id": "15",
+              "arm": 0,
+              "line": 102
+            },
+            {
+              "id": "15",
+              "arm": 1,
+              "line": 102
+            },
+            {
+              "id": "16",
+              "arm": 0,
+              "line": 103
+            },
+            {
+              "id": "16",
+              "arm": 1,
+              "line": 103
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/shared/config/runtime-env-validation.ts",
+        "metrics": {
+          "statements": {
+            "covered": 20,
+            "total": 22,
+            "missing": 2,
+            "pct": 90.9
+          },
+          "branches": {
+            "covered": 21,
+            "total": 22,
+            "missing": 1,
+            "pct": 95.45
+          },
+          "functions": {
+            "covered": 2,
+            "total": 2,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 19,
+            "total": 21,
+            "missing": 2,
+            "pct": 90.47
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "4",
+              "line": 16
+            },
+            {
+              "id": "13",
+              "line": 31
+            }
+          ],
+          "branches": [
+            {
+              "id": "5",
+              "arm": 0,
+              "line": 30
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/shared/ui/StatCard.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 28,
+            "total": 29,
+            "missing": 1,
+            "pct": 96.55
+          },
+          "branches": {
+            "covered": 56,
+            "total": 59,
+            "missing": 3,
+            "pct": 94.91
+          },
+          "functions": {
+            "covered": 7,
+            "total": 7,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 25,
+            "total": 26,
+            "missing": 1,
+            "pct": 96.15
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "7",
+              "line": 117
+            }
+          ],
+          "branches": [
+            {
+              "id": "3",
+              "arm": 2,
+              "line": 116
+            },
+            {
+              "id": "22",
+              "arm": 0,
+              "line": 275
+            },
+            {
+              "id": "23",
+              "arm": 0,
+              "line": 277
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/dca/components/dca-history-chart-utils.ts",
+        "metrics": {
+          "statements": {
+            "covered": 38,
+            "total": 40,
+            "missing": 2,
+            "pct": 95
+          },
+          "branches": {
+            "covered": 4,
+            "total": 6,
+            "missing": 2,
+            "pct": 66.66
+          },
+          "functions": {
+            "covered": 3,
+            "total": 3,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 35,
+            "total": 35,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "2",
+              "line": 17
+            },
+            {
+              "id": "7",
+              "line": 24
+            }
+          ],
+          "branches": [
+            {
+              "id": "0",
+              "arm": 0,
+              "line": 17
+            },
+            {
+              "id": "1",
+              "arm": 0,
+              "line": 24
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/earn/pages/EarnHistoryPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 31,
+            "total": 32,
+            "missing": 1,
+            "pct": 96.87
+          },
+          "branches": {
+            "covered": 54,
+            "total": 57,
+            "missing": 3,
+            "pct": 94.73
+          },
+          "functions": {
+            "covered": 14,
+            "total": 14,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 30,
+            "total": 30,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "4",
+              "line": 30
+            }
+          ],
+          "branches": [
+            {
+              "id": "0",
+              "arm": 0,
+              "line": 30
+            },
+            {
+              "id": "12",
+              "arm": 1,
+              "line": 108
+            },
+            {
+              "id": "13",
+              "arm": 1,
+              "line": 113
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/market/pages/TokenInfoPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 18,
+            "total": 18,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 17,
+            "total": 21,
+            "missing": 4,
+            "pct": 80.95
+          },
+          "functions": {
+            "covered": 5,
+            "total": 5,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 18,
+            "total": 18,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [],
+          "branches": [
+            {
+              "id": "4",
+              "arm": 0,
+              "line": 74
+            },
+            {
+              "id": "5",
+              "arm": 0,
+              "line": 76
+            },
+            {
+              "id": "6",
+              "arm": 0,
+              "line": 128
+            },
+            {
+              "id": "7",
+              "arm": 0,
+              "line": 129
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/profile/pages/ActivityLogContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 12,
+            "total": 14,
+            "missing": 2,
+            "pct": 85.71
+          },
+          "branches": {
+            "covered": 19,
+            "total": 20,
+            "missing": 1,
+            "pct": 95
+          },
+          "functions": {
+            "covered": 5,
+            "total": 6,
+            "missing": 1,
+            "pct": 83.33
+          },
+          "lines": {
+            "covered": 12,
+            "total": 12,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "6",
+              "line": 23
+            },
+            {
+              "id": "7",
+              "line": 23
+            }
+          ],
+          "branches": [
+            {
+              "id": "1",
+              "arm": 0,
+              "line": 23
+            }
+          ],
+          "functions": [
+            {
+              "id": "1",
+              "line": 23,
+              "name": "(anonymous_1)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/profile/pages/SubAccountContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 10,
+            "total": 12,
+            "missing": 2,
+            "pct": 83.33
+          },
+          "branches": {
+            "covered": 9,
+            "total": 10,
+            "missing": 1,
+            "pct": 90
+          },
+          "functions": {
+            "covered": 3,
+            "total": 4,
+            "missing": 1,
+            "pct": 75
+          },
+          "lines": {
+            "covered": 9,
+            "total": 9,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "5",
+              "line": 21
+            },
+            {
+              "id": "6",
+              "line": 21
+            }
+          ],
+          "branches": [
+            {
+              "id": "1",
+              "arm": 0,
+              "line": 21
+            }
+          ],
+          "functions": [
+            {
+              "id": "1",
+              "line": 21,
+              "name": "(anonymous_1)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/features/trading/components/OpenOrdersPanel.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 5,
+            "total": 5,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 19,
+            "total": 23,
+            "missing": 4,
+            "pct": 82.6
+          },
+          "functions": {
+            "covered": 4,
+            "total": 4,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 5,
+            "total": 5,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [],
+          "branches": [
+            {
+              "id": "1",
+              "arm": 1,
+              "line": 49
+            },
+            {
+              "id": "2",
+              "arm": 1,
+              "line": 50
+            },
+            {
+              "id": "3",
+              "arm": 1,
+              "line": 53
+            },
+            {
+              "id": "8",
+              "arm": 1,
+              "line": 191
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/trading/pages/ActiveCopiesContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 36,
+            "total": 38,
+            "missing": 2,
+            "pct": 94.73
+          },
+          "branches": {
+            "covered": 35,
+            "total": 36,
+            "missing": 1,
+            "pct": 97.22
+          },
+          "functions": {
+            "covered": 9,
+            "total": 10,
+            "missing": 1,
+            "pct": 90
+          },
+          "lines": {
+            "covered": 34,
+            "total": 34,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "17",
+              "line": 53
+            },
+            {
+              "id": "20",
+              "line": 56
+            }
+          ],
+          "branches": [
+            {
+              "id": "5",
+              "arm": 0,
+              "line": 56
+            }
+          ],
+          "functions": [
+            {
+              "id": "1",
+              "line": 53,
+              "name": "(anonymous_1)"
+            }
+          ]
+        }
+      },
+      {
+        "path": "src/shared/ui/form.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 28,
+            "total": 29,
+            "missing": 1,
+            "pct": 96.55
+          },
+          "branches": {
+            "covered": 8,
+            "total": 10,
+            "missing": 2,
+            "pct": 80
+          },
+          "functions": {
+            "covered": 7,
+            "total": 7,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 28,
+            "total": 29,
+            "missing": 1,
+            "pct": 96.55
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "12",
+              "line": 51
+            }
+          ],
+          "branches": [
+            {
+              "id": "0",
+              "arm": 0,
+              "line": 50
+            },
+            {
+              "id": "3",
+              "arm": 1,
+              "line": 125
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/shared/ui/layout/PageContent.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 12,
+            "total": 12,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 22,
+            "total": 26,
+            "missing": 4,
+            "pct": 84.61
+          },
+          "functions": {
+            "covered": 2,
+            "total": 2,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 12,
+            "total": 12,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [],
+          "branches": [
+            {
+              "id": "4",
+              "arm": 0,
+              "line": 129
+            },
+            {
+              "id": "6",
+              "arm": 0,
+              "line": 130
+            },
+            {
+              "id": "8",
+              "arm": 0,
+              "line": 133
+            },
+            {
+              "id": "14",
+              "arm": 0,
+              "line": 202
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/trading/components/OrderBook.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 22,
+            "total": 22,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 19,
+            "total": 22,
+            "missing": 3,
+            "pct": 86.36
+          },
+          "functions": {
+            "covered": 7,
+            "total": 7,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 20,
+            "total": 20,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [],
+          "branches": [
+            {
+              "id": "8",
+              "arm": 0,
+              "line": 123
+            },
+            {
+              "id": "9",
+              "arm": 0,
+              "line": 129
+            },
+            {
+              "id": "10",
+              "arm": 0,
+              "line": 130
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/trading/components/TPSLForm.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 36,
+            "total": 36,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 127,
+            "total": 130,
+            "missing": 3,
+            "pct": 97.69
+          },
+          "functions": {
+            "covered": 9,
+            "total": 9,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 35,
+            "total": 35,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [],
+          "branches": [
+            {
+              "id": "8",
+              "arm": 1,
+              "line": 51
+            },
+            {
+              "id": "10",
+              "arm": 1,
+              "line": 53
+            },
+            {
+              "id": "12",
+              "arm": 1,
+              "line": 57
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/features/trading/pages/CopyConfirmationContractPage.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 38,
+            "total": 39,
+            "missing": 1,
+            "pct": 97.43
+          },
+          "branches": {
+            "covered": 43,
+            "total": 45,
+            "missing": 2,
+            "pct": 95.55
+          },
+          "functions": {
+            "covered": 11,
+            "total": 11,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 35,
+            "total": 35,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "19",
+              "line": 50
+            }
+          ],
+          "branches": [
+            {
+              "id": "2",
+              "arm": 2,
+              "line": 41
+            },
+            {
+              "id": "8",
+              "arm": 0,
+              "line": 50
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/shared/ui/RefreshableSkeletonList.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 8,
+            "total": 9,
+            "missing": 1,
+            "pct": 88.88
+          },
+          "branches": {
+            "covered": 14,
+            "total": 16,
+            "missing": 2,
+            "pct": 87.5
+          },
+          "functions": {
+            "covered": 2,
+            "total": 2,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 8,
+            "total": 8,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [
+            {
+              "id": "7",
+              "line": 78
+            }
+          ],
+          "branches": [
+            {
+              "id": "4",
+              "arm": 1,
+              "line": 62
+            },
+            {
+              "id": "6",
+              "arm": 0,
+              "line": 78
+            }
+          ],
+          "functions": []
+        }
+      },
+      {
+        "path": "src/app/components/layout/TabletSidebar.tsx",
+        "metrics": {
+          "statements": {
+            "covered": 26,
+            "total": 26,
+            "missing": 0,
+            "pct": 100
+          },
+          "branches": {
+            "covered": 55,
+            "total": 57,
+            "missing": 2,
+            "pct": 96.49
+          },
+          "functions": {
+            "covered": 9,
+            "total": 9,
+            "missing": 0,
+            "pct": 100
+          },
+          "lines": {
+            "covered": 26,
+            "total": 26,
+            "missing": 0,
+            "pct": 100
+          }
+        },
+        "measurable": true,
+        "hasGap": true,
+        "missing": {
+          "statements": [],
+          "branches": [
+            {
+              "id": "13",
+              "arm": 1,
+              "line": 216
+            },
+            {
+              "id": "13",
+              "arm": 2,
+              "line": 217
+            }
+          ],
+          "functions": []
+        }
+      }
+    ],
+    "noCounterPaths": [
+      "src/app/router/route-types.ts",
+      "src/features/admin/model/admin-types.ts",
+      "src/features/arena/model/arena-types.ts",
+      "src/features/auth/model/registration-types.ts",
+      "src/features/auth/pages/Web2FASetupPage.tsx",
+      "src/features/dca/index.ts",
+      "src/features/dca/model/dca-types.ts",
+      "src/features/earn/index.ts",
+      "src/features/earn/model/earn-types.ts",
+      "src/features/launchpad/index.ts",
+      "src/features/launchpad/model/launchpad-types.ts",
+      "src/features/market/index.ts",
+      "src/features/market/model/market-stream-types.ts",
+      "src/features/market/model/market-types.ts",
+      "src/features/p2p/api/p2p-api-contract.ts",
+      "src/features/p2p/index.ts",
+      "src/features/p2p/model/p2p-types.ts",
+      "src/features/predictions/model/prediction-types.ts",
+      "src/features/profile/index.ts",
+      "src/features/profile/model/profile-types.ts",
+      "src/features/referral/model/referral-types.ts",
+      "src/features/support/index.ts",
+      "src/features/support/model/support-types.ts",
+      "src/features/trading/index.ts",
+      "src/features/trading/model/analytics-types.ts",
+      "src/features/trading/model/trading-types.ts",
+      "src/features/wallet/index.ts",
+      "src/features/wallet/model/wallet-types.ts",
+      "src/shared/session/auth-context-types.ts",
+      "src/shared/session/session-types.ts",
+      "src/shared/types/charts.ts",
+      "src/shared/types/feature-flags.ts"
+    ],
+    "targetMetrics": {
+      "statements": 100,
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    }
+  },
+  "p2pFileChanges": {
+    "sourcePath": "src/features/p2p/pages/P2PMyAdsContractPage.tsx",
+    "beforeHash": "cd328aa07511f9c40adc3c1ac8f863cddefea83f8380276cc91b33eca673c96a",
+    "afterHash": "d3a8c854201fa42caede2d577d846baa93d29692a51d076679182ad4ecd4755b",
+    "behavior": "Existing status/delete handlers were extracted into directly testable helpers; permission, expired/pending, idempotency, request, error and success behavior were preserved and focused/full suites pass.",
+    "testPath": "src/features/p2p/pages/P2PMyAdsContractPage.test.tsx",
+    "testSha256": "78e0b6a097406467291726a832ba0d400377fc40dd4c4fe5ded4db669cdc695b",
+    "preEditWorkingTreeHashCaptured": false,
+    "note": "The owner test was already dirty before this turn and its pre-edit content hash was not captured; EV-064 records the existing mismatch. No beforeHash was fabricated."
+  },
+  "trackerAudit": {
+    "command": "node docs/architecture/production-readiness/check-tracking.mjs",
+    "exitCode": 1,
+    "errorCount": 313,
+    "priorEvidenceId": "EV-20261011-064",
+    "priorErrorCount": 312,
+    "categories": {
+      "catalogued-snapshot-does-not-contain-file-path": 4,
+      "change-record-invalid-action": 8,
+      "change-record-missing-afterHash": 38,
+      "changed-file-recorded-but-source-path-missing-from-file-ledger": 59,
+      "current-file-differs-from-catalogued-source-snapshot": 163,
+      "file-record-missing-catalogued-source-head-or-hash": 15,
+      "source-file-absent-from-file-ledger": 26
+    },
+    "mismatchDelta": [
+      {
+        "category": "current-file-differs-from-catalogued-source-snapshot",
+        "path": "src/features/p2p/pages/P2PMyAdsContractPage.tsx",
+        "dirtyStatus": " M",
+        "beforeCataloguedSha256": "cd328aa07511f9c40adc3c1ac8f863cddefea83f8380276cc91b33eca673c96a",
+        "currentSha256": "d3a8c854201fa42caede2d577d846baa93d29692a51d076679182ad4ecd4755b",
+        "changeId": "CHANGE-20261011-0277",
+        "note": "This source was clean and matched its catalogued hash in EV-064; the authorized C03 change adds the one new mismatch. The file remains catalogued against its historic source head; no rebaseline was performed."
+      }
+    ],
+    "note": "EV-064 contains the complete 312-row per-file/change-record inventory. EV-065 adds one current-source mismatch for the changed P2P page; all other error rows are carried forward unchanged."
+  },
+  "nextSlice": {
+    "priority": "P1",
+    "area": "Tablet top bar breadcrumbs and quick actions",
+    "candidateFiles": [
+      "src/app/components/layout/TabletTopBar.tsx",
+      "src/app/components/layout/TabletTopBar.test.tsx"
+    ],
+    "ownerTests": [
+      "src/app/components/layout/TabletTopBar.test.tsx"
+    ],
+    "reason": "The full V8 report ranks TabletTopBar.tsx among the largest gaps with 3 statements, 8 branch arms, 3 functions and 3 lines uncovered (17 counters). No owner test file exists yet.",
+    "acceptance": "Add focused component tests using UIContext and MemoryRouter for breadcrumb navigation, quick actions, unread count and fallback; preserve user-visible behavior."
+  },
+  "limitations": [
+    "This is a full local Windows run on a dirty working tree, not exact-SHA Ubuntu or hosted CI evidence. EV-20261010-053 remains the historic aggregate.",
+    "322/406 measurable files are now fully covered; 84 still have gaps. Overall coverage remains below 100/100/100/100.",
+    "The tracking checker still fails with 313 errors; EV-064 has the prior 312 fully itemized rows and this artifact records the single P2P-source delta. No bulk rebaseline was performed.",
+    "Unit/MSW coverage does not establish backend authorization, staging, production or user acceptance. Backend/staging remains 0/154 and UI acceptance 0/128."
+  ]
+}

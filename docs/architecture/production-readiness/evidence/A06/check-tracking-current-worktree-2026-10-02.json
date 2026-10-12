@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261002-014",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "ledger-consistency-check",
+  "observedAt": "2026-10-02T02:36:09Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "environment": "Windows PowerShell; Node 24.19.0; current primary worktree with pre-existing dirty source outside this docs checkpoint.",
+  "command": "node docs/architecture/production-readiness/check-tracking.mjs",
+  "expected": "Ledger consistency check exits 0 with no errors before closing or advancing dependent production-readiness checkpoints.",
+  "actual": "Checker exited 1; its summary reports 2191 total errors and returns only the first 40 error messages. The first 12 examples all report missing catalogued source head/hash. Independent scope counts show 916/916 current non-plan files map to the active ledger (0 missing and 0 extra); 885/916 active non-plan file records lack cataloguedSourceHead/cataloguedSha256. The checker output says to reconcile scope before continuing.",
+  "result": "fail",
+  "artifact": "docs/architecture/production-readiness/evidence/A06/check-tracking-current-worktree-2026-10-02.json",
+  "sourceHashes": {
+    "docs/architecture/production-readiness/check-tracking.mjs": "a54723e7f72633bd8562289639b5252c34b125eb6a7dd2e68d840395e011e734",
+    "docs/architecture/production-readiness/TRACKING.json": "4d6d187fcc7c38274edb5de57310aa98c4fd5e7cb28ee8e44f05af29b2e72ce9",
+    "docs/architecture/page-inventory.json": "4f25117ff0d216b4eb10d17fbfeab33d859effd80c9553679b6f4bfb33f7958b",
+    "docs/architecture/production-readiness/PLAN.md": "cc2b889b78c74cdca42cf9b1a1f2c209d9c146451f3ab8385e14b4a8622f341b"
+  },
+  "metrics": {
+    "exitStatus": 1,
+    "totalErrorCount": 2191,
+    "returnedErrorExamples": 40,
+    "currentNonPlanFiles": 916,
+    "activeNonPlanLedgerFiles": 916,
+    "unmappedCurrentFiles": 0,
+    "extraLedgerFiles": 0,
+    "activeFilesMissingCataloguedSourceFingerprint": 885
+  },
+  "errorExamples": [
+    ".dependency-cruiser.cjs: missing catalogued source head/hash",
+    ".editorconfig: missing catalogued source head/hash",
+    ".env.example: missing catalogued source head/hash",
+    ".env.production.example: missing catalogued source head/hash",
+    ".env.staging.example: missing catalogued source head/hash",
+    ".github/CODEOWNERS: missing catalogued source head/hash",
+    ".github/workflows/ci.yml: missing catalogued source head/hash",
+    ".gitignore: missing catalogued source head/hash",
+    ".nvmrc: missing catalogued source head/hash",
+    ".prettierignore: missing catalogued source head/hash",
+    ".prettierrc: missing catalogued source head/hash",
+    ".superpowers/sdd/2026-09-25-auth-login-mfa/progress.md: missing catalogued source head/hash"
+  ],
+  "limitations": [
+    "This is a repository-wide ledger consistency result, not a product test or production certification.",
+    "The checker exposes only the first 40 error strings; 2,191 is its total error count.",
+    "The active root workspace contains dirty source and must not be treated as an exact committed source snapshot."
+  ]
+}

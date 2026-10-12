@@ -1,6 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const nodeExecutable = `"${process.execPath}"`;
+const previewPort = Number(process.env.E2E_PREVIEW_PORT ?? '4173');
+const previewUrl = `http://127.0.0.1:${previewPort}`;
 
 /**
  * E2E smoke profile cho shell/auth/accessibility.
@@ -18,7 +20,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
   use: {
-    baseURL: 'http://127.0.0.1:4173',
+    baseURL: previewUrl,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
@@ -32,7 +34,7 @@ export default defineConfig({
   webServer: {
     command: `${nodeExecutable} scripts/serve-e2e.mjs`,
     // Wait for our preview process; another service can answer the port during the build.
-    wait: { stdout: /Local:\s+http:\/\/127\.0\.0\.1:4173\// },
+    wait: { stdout: new RegExp(`Local:\\s+http:\\/\\/127\\.0\\.0\\.1:${previewPort}\\/`) },
     timeout: 120_000,
   },
 });

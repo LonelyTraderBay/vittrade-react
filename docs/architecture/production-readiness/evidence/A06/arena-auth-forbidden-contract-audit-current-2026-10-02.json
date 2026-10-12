@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261002-009",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "read-only-openapi-scenario-row-audit",
+  "observedAt": "2026-10-02T01:53:04Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "environment": "Windows 11, Node 24.19.0; current primary worktree. Read-only YAML/OpenAPI and scenario-matrix parsing; no browser or API side effect.",
+  "commandOrSteps": "Parse the current scenario matrix and contracts/openapi/arena.yaml plus contracts/openapi/auth.yaml; resolve every operationId linked to arena.unauthorized, arena.forbidden and auth.forbidden; count only operation-level HTTP response declarations for the target status; confirm current matrix disposition.",
+  "expected": "Use only declared response codes as browser-scenario inputs; keep a row not_verified when its mapped contract does not declare the requested 401/403 behavior.",
+  "actual": "Arena: 4/4 unique mapped operations resolve. arena.unauthorized has 0/4 declaring 401; arena.forbidden has 0/4 declaring 403. The exact GET /arena/discovery response is 200; GET /arena/modes/{modeId} and GET /arena/challenges/{challengeId} are 200/404; POST /arena/challenges/{challengeId}/join is 201/409. Auth: auth.forbidden resolves 8/8 unique operations; 0/8 declare 403 (3/8 separately declare 401). All three matrix rows remain not_verified. No browser scenario ran and no undeclared response was injected.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/A06/arena-auth-forbidden-contract-audit-current-2026-10-02.json",
+  "sourceHashes": {
+    "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "0bbf7c7a887415389265aa3fa2f2c07fc670a070ac4f692b55fae87ff19922f4",
+    "contracts/openapi/arena.yaml": "30f0f57dfd35eec65c9afca06bd9f79f2d0f42a4a678c18e09dc669d32641157",
+    "contracts/openapi/auth.yaml": "39a1c3bfab16bfc549b20885b7ed1fc5f5200f910499c2cdb5222c4dc282a36b"
+  },
+  "scenarioMatrixSummary": {
+    "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+    "scenariosDefined": 106,
+    "freshScenarioRows": 81,
+    "fullyCoveredRows": 38,
+    "uniqueOperationsWithEvidence": 88,
+    "registeredSidecars": 81,
+    "staleSidecars": 0
+  },
+  "globalSecurity": {
+    "arena": [
+      {
+        "sessionCookie": []
+      }
+    ],
+    "auth": [
+      {
+        "sessionCookie": []
+      }
+    ]
+  },
+  "rows": [
+    {
+      "id": "arena.unauthorized",
+      "state": "unauthorized",
+      "status": "not_verified",
+      "operationIds": [
+        "getArenaDiscovery",
+        "getArenaMode",
+        "getArenaChallenge",
+        "joinArenaChallenge"
+      ],
+      "operations": [
+        {
+          "operationId": "getArenaDiscovery",
+          "method": "GET",
+          "path": "/arena/discovery",
+          "responseCodes": ["200"]
+        },
+        {
+          "operationId": "getArenaMode",
+          "method": "GET",
+          "path": "/arena/modes/{modeId}",
+          "responseCodes": ["200", "404"]
+        },
+        {
+          "operationId": "getArenaChallenge",
+          "method": "GET",
+          "path": "/arena/challenges/{challengeId}",
+          "responseCodes": ["200", "404"]
+        },
+        {
+          "operationId": "joinArenaChallenge",
+          "method": "POST",
+          "path": "/arena/challenges/{challengeId}/join",
+          "responseCodes": ["201", "409"]
+        }
+      ],
+      "declaredTargetStatusCount": 0
+    },
+    {
+      "id": "arena.forbidden",
+      "state": "forbidden",
+      "status": "not_verified",
+      "operationIds": [
+        "getArenaDiscovery",
+        "getArenaMode",
+        "getArenaChallenge",
+        "joinArenaChallenge"
+      ],
+      "operations": [
+        {
+          "operationId": "getArenaDiscovery",
+          "method": "GET",
+          "path": "/arena/discovery",
+          "responseCodes": ["200"]
+        },
+        {
+          "operationId": "getArenaMode",
+          "method": "GET",
+          "path": "/arena/modes/{modeId}",
+          "responseCodes": ["200", "404"]
+        },
+        {
+          "operationId": "getArenaChallenge",
+          "method": "GET",
+          "path": "/arena/challenges/{challengeId}",
+          "responseCodes": ["200", "404"]
+        },
+        {
+          "operationId": "joinArenaChallenge",
+          "method": "POST",
+          "path": "/arena/challenges/{challengeId}/join",
+          "responseCodes": ["201", "409"]
+        }
+      ],
+      "declaredTargetStatusCount": 0
+    },
+    {
+      "id": "auth.forbidden",
+      "state": "forbidden",
+      "status": "not_verified",
+      "operationIds": [
+        "getSession",
+        "refreshSession",
+        "logout",
+        "verifyMfa",
+        "confirmMfaSetup",
+        "beginMfaSetup",
+        "verifyCurrentPassword",
+        "changePassword"
+      ],
+      "operations": [
+        {
+          "operationId": "getSession",
+          "method": "GET",
+          "path": "/auth/session",
+          "responseCodes": ["200", "401"]
+        },
+        {
+          "operationId": "refreshSession",
+          "method": "POST",
+          "path": "/auth/refresh",
+          "responseCodes": ["200"]
+        },
+        {
+          "operationId": "logout",
+          "method": "POST",
+          "path": "/auth/logout",
+          "responseCodes": ["204"]
+        },
+        {
+          "operationId": "verifyMfa",
+          "method": "POST",
+          "path": "/auth/mfa/verify",
+          "responseCodes": ["200", "400"]
+        },
+        {
+          "operationId": "confirmMfaSetup",
+          "method": "POST",
+          "path": "/auth/mfa/setup/confirm",
+          "responseCodes": ["200"]
+        },
+        {
+          "operationId": "beginMfaSetup",
+          "method": "POST",
+          "path": "/auth/mfa/setup",
+          "responseCodes": ["200"]
+        },
+        {
+          "operationId": "verifyCurrentPassword",
+          "method": "POST",
+          "path": "/auth/password/verify-current",
+          "responseCodes": ["204", "400", "401"]
+        },
+        {
+          "operationId": "changePassword",
+          "method": "POST",
+          "path": "/auth/password/change",
+          "responseCodes": ["204", "400", "401"]
+        }
+      ],
+      "declared401Count": 3,
+      "declared403Count": 0
+    }
+  ],
+  "nextAction": "Continue A06.03 in matrix order at dca.forbidden: resolve its current row operationIds against contracts/openapi/dca.yaml and run no browser case unless a mapped operation declares HTTP 403.",
+  "limitations": [
+    "This is a contract/matrix audit, not browser behavior, live backend authorization, staging verification, or user acceptance.",
+    "A prior Arena/Auth audit recorded an older scenario-matrix hash after the matrix was refreshed; this report hashes the current matrix and both current OpenAPI documents.",
+    "The source tree HEAD is recorded separately from current working-tree file hashes; the report is explicitly local read-only evidence."
+  ]
+}

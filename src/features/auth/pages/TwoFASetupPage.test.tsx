@@ -46,26 +46,86 @@ function mockClipboard(writeText: Clipboard['writeText']) {
   };
 }
 
+async function invokeDisabledButtonHandler(button: HTMLElement) {
+  if (button.tagName !== 'BUTTON') throw new Error('Expected a button element');
+
+  const propsKey = Object.keys(button).find((key) => key.startsWith('__reactProps$'));
+  if (!propsKey) throw new Error('React click handler was not attached to the button');
+
+  const props = (button as unknown as Record<string, { onClick?: () => void | Promise<void> }>)[
+    propsKey
+  ];
+  if (typeof props?.onClick !== 'function') throw new Error('Button has no React click handler');
+
+  // Native disabled buttons suppress clicks; invoke only the handler to verify its defensive guard.
+  await act(async () => {
+    await props.onClick?.();
+  });
+}
+
 describe('TwoFASetupPage', () => {
   it('keeps verification disabled until the setup challenge is available', async () => {
     let resolveChallenge!: (value: MfaSetupChallenge) => void;
     const beginMfaSetup = vi.fn(
       () => new Promise<MfaSetupChallenge>((resolve) => (resolveChallenge = resolve)),
     );
-    renderSetup({ beginMfaSetup });
+    const writeText = vi.fn<Clipboard['writeText']>().mockResolvedValue(undefined);
+    const restoreClipboard = mockClipboard(writeText);
+    try {
+      renderSetup({ beginMfaSetup });
 
-    const nextButton = screen.getByRole('button', { name: /Tiếp theo/ });
-    expect(nextButton).toBeDisabled();
-    expect(screen.getByLabelText('Đang tải mã QR')).toBeVisible();
+      const nextButton = screen.getByRole('button', { name: /Tiếp theo/ });
+      expect(nextButton).toBeDisabled();
+      expect(screen.getByLabelText('Đang tải mã QR')).toBeVisible();
+      fireEvent.click(screen.getByRole('button', { name: 'Sao chép' }));
+      expect(writeText).not.toHaveBeenCalled();
 
-    await act(async () => resolveChallenge(challenge));
+      await invokeDisabledButtonHandler(nextButton);
+      expect(screen.getByRole('heading', { name: 'Bước 1: Quét mã QR' })).toBeVisible();
 
-    expect(await screen.findByAltText('Mã QR thiết lập xác thực hai bước')).toHaveAttribute(
-      'src',
-      challenge.qrCodeUrl,
+      await act(async () => resolveChallenge(challenge));
+
+      expect(await screen.findByAltText('Mã QR thiết lập xác thực hai bước')).toHaveAttribute(
+        'src',
+        challenge.qrCodeUrl,
+      );
+      expect(screen.getByText(challenge.secret)).toBeVisible();
+      expect(nextButton).toBeEnabled();
+    } finally {
+      restoreClipboard();
+    }
+  });
+
+  it('ignores a setup response that resolves after the page unmounts', async () => {
+    let resolveChallenge!: (value: MfaSetupChallenge) => void;
+    const beginMfaSetup = vi.fn(
+      () => new Promise<MfaSetupChallenge>((resolve) => (resolveChallenge = resolve)),
     );
-    expect(screen.getByText(challenge.secret)).toBeVisible();
-    expect(nextButton).toBeEnabled();
+    const { unmount } = renderSetup({ beginMfaSetup });
+
+    unmount();
+    await act(async () => {
+      resolveChallenge(challenge);
+      await Promise.resolve();
+    });
+
+    expect(beginMfaSetup).toHaveBeenCalledOnce();
+  });
+
+  it('ignores a setup failure that arrives after the page unmounts', async () => {
+    let rejectChallenge!: (reason: Error) => void;
+    const beginMfaSetup = vi.fn(
+      () => new Promise<MfaSetupChallenge>((_, reject) => (rejectChallenge = reject)),
+    );
+    const { unmount } = renderSetup({ beginMfaSetup });
+
+    unmount();
+    await act(async () => {
+      rejectChallenge(new Error('setup unavailable'));
+      await Promise.resolve();
+    });
+
+    expect(beginMfaSetup).toHaveBeenCalledOnce();
   });
 
   it('offers retry after setup fails and stays on the QR step until retry succeeds', async () => {
@@ -94,12 +154,22 @@ describe('TwoFASetupPage', () => {
     try {
       renderSetup();
       await screen.findByText(challenge.secret);
+      vi.useFakeTimers();
 
-      fireEvent.click(screen.getByRole('button', { name: 'Sao chép' }));
+      await act(async () => {
+        fireEvent.click(screen.getByRole('button', { name: 'Sao chép' }));
+        await Promise.resolve();
+      });
 
-      expect(await screen.findByRole('button', { name: 'Đã sao chép' })).toBeVisible();
+      expect(screen.getByRole('button', { name: 'Đã sao chép' })).toBeVisible();
       expect(writeText).toHaveBeenCalledWith(challenge.secret);
+
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(2000);
+      });
+      expect(screen.getByRole('button', { name: 'Sao chép' })).toBeVisible();
     } finally {
+      vi.useRealTimers();
       restoreClipboard();
     }
   });
@@ -124,10 +194,15 @@ describe('TwoFASetupPage', () => {
   });
 
   it('reveals backup codes only after server confirmation and requires acknowledgement before leaving', async () => {
+    type ConfirmMfaSetupResult = Awaited<ReturnType<NonNullable<AuthAdapter['confirmMfaSetup']>>>;
+    let resolveConfirmation!: (session: ConfirmMfaSetupResult) => void;
+    const pendingConfirmation = new Promise<ConfirmMfaSetupResult>(
+      (resolve) => (resolveConfirmation = resolve),
+    );
     const confirmMfaSetup = vi
       .fn(testAuthAdapter.confirmMfaSetup)
       .mockRejectedValueOnce(new Error('invalid setup code'))
-      .mockResolvedValue(testAuthAdapter.initialSession!);
+      .mockReturnValue(pendingConfirmation);
     renderSetup({ confirmMfaSetup });
 
     await screen.findByText(challenge.secret);
@@ -136,6 +211,9 @@ describe('TwoFASetupPage', () => {
 
     const otpInput = screen.getByRole('textbox', { name: 'Mã xác thực 6 chữ số' });
     const verifyButton = screen.getByRole('button', { name: 'Xác nhận' });
+    await invokeDisabledButtonHandler(verifyButton);
+    expect(confirmMfaSetup).not.toHaveBeenCalled();
+
     fireEvent.change(otpInput, { target: { value: '12a3456' } });
     expect(otpInput).toHaveValue('123456');
     expect(verifyButton).toBeEnabled();
@@ -146,11 +224,20 @@ describe('TwoFASetupPage', () => {
     expect(screen.queryByText('TEST-001')).not.toBeInTheDocument();
 
     fireEvent.click(verifyButton);
-    expect(await screen.findByText('TEST-001')).toBeVisible();
+    const verifyingButton = await screen.findByRole('button', { name: 'Đang xác minh...' });
+    expect(verifyingButton).toBeDisabled();
     expect(confirmMfaSetup).toHaveBeenCalledTimes(2);
+    await invokeDisabledButtonHandler(verifyingButton);
+    expect(confirmMfaSetup).toHaveBeenCalledTimes(2);
+
+    await act(async () => resolveConfirmation(testAuthAdapter.initialSession!));
+    expect(await screen.findByText('TEST-001')).toBeVisible();
 
     const finishButton = screen.getByRole('button', { name: /Hoàn tất thiết lập 2FA/ });
     expect(finishButton).toBeDisabled();
+    await invokeDisabledButtonHandler(finishButton);
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/t/security/2fa-setup');
+
     fireEvent.click(screen.getByRole('button', { name: 'Tôi đã lưu các mã dự phòng' }));
     expect(finishButton).toBeEnabled();
     fireEvent.click(finishButton);

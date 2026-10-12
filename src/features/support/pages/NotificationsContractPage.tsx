@@ -13,10 +13,22 @@ export function NotificationsContractPage() {
   const colors = useThemeColors();
   const actionToast = useActionToast();
   const { hasPermission } = useAuth();
+  const canRead = hasPermission('notifications:read');
   const canMarkRead = hasPermission('notifications:write') || hasPermission('support:write');
-  const query = useNotificationsQuery();
+  const query = useNotificationsQuery({ enabled: canRead });
   const markRead = useMarkNotificationReadMutation();
   const idempotencyKeys = useRef(new Map<string, string>());
+  if (!canRead)
+    return (
+      <PageLayout>
+        <Header title="Thông báo" back />
+        <PageContent>
+          <p role="alert" style={{ color: colors.text2 }}>
+            Notification read permission is required to view notifications.
+          </p>
+        </PageContent>
+      </PageLayout>
+    );
   if (query.isPending)
     return (
       <PageLayout>

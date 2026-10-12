@@ -1,0 +1,25 @@
+{
+  "id": "EV-20261003-008",
+  "taskId": "U01",
+  "stepId": "U01.03",
+  "kind": "password-reset-test-fixture-contract-alignment",
+  "commandOrSteps": "Run node node_modules/vitest/vitest.mjs run src/features/auth/pages/PasswordResetPages.test.tsx. The unit suite uses MSW node handlers only and does not call a backend. The request-code transport failure uses HttpResponse.error(); the confirm rejection uses contract-declared HTTP 400. Both TypeScript no-emit projects, focused ESLint/Prettier, lint-budget, OpenAPI contract, dependency-cruiser architecture, architecture inventory, EOL, tracking, and git diff checks were run.",
+  "environment": "Windows 11; Node v24.19.0; Vitest v4.1.11; MSW node test server; backend and staging disconnected.",
+  "observedAt": "2026-10-02T21:26:32Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "sourceBranch": "main",
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "f781275476009057ff9aeab57110c150742b278c7b92d6e913d2eb4fdd278b0c",
+    "src/features/auth/pages/PasswordResetPages.tsx": "1e3c9d521547ba3e45002191c5b2b1a5d07a8da4ac4a96141dfac6f292393a8d",
+    "src/features/auth/api/password-reset-api.ts": "f9898d3b1594212e1b7d9ada91a98aed40475dba4e8d3fa3ce65d7a73168369e",
+    "src/features/auth/pages/PasswordResetPages.test.tsx": "3fe12699a6505e471bab877d266ff3773f29d15be532bc54c5dc97515ef70da4"
+  },
+  "dirtyFileHashes": {
+    "src/features/auth/pages/PasswordResetPages.test.tsx": "3fe12699a6505e471bab877d266ff3773f29d15be532bc54c5dc97515ef70da4"
+  },
+  "expected": "Auth password-reset tests should model declared HTTP responses only: request 204/400, verify 200/400, and confirm 204/400. A lost connection is represented as a transport error, and request/confirm failures must stay on the current step while showing the existing error message.",
+  "actual": "The focused PasswordResetPages test file passed 6/6 after correction. Request-code transport failure is represented by HttpResponse.error() and shows the retry alert without advancing. Password confirmation rejection uses contract-declared HTTP 400 and preserves the entered password. The suite still covers successful reset, invalid OTP filtering/rejection, direct links without a token, and valid direct reset. Both TypeScript projects, focused ESLint/Prettier, lint-budget (0 errors/0 warnings), OpenAPI (15 contracts/154 operations), dependency-cruiser (863 modules/4679 dependencies, 0 violations), architecture inventory (129 pages/427 routes/149 components/32 services/28 mocks), EOL (3221 paths, 0 violations), and git diff --check passed. check-tracking exited 1 with 40 source-ledger errors: 32 missing catalogued hashes, 5 paths absent from cataloguedSourceHead, and 3 source mismatches; source inventory remains 916/916.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/U01/u01-03-reset-error-fixture-contract-correction-2026-10-03.json",
+  "notes": "This is local MSW evidence for frontend error handling. It does not establish API owner approval, email delivery, reset-token expiry/replay semantics, backend, staging, production, or user acceptance. The tracking consistency failure is recorded as an open source-ledger gap and does not change the 6/6 focused test result."
+}

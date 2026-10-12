@@ -101,9 +101,9 @@ export function InfoRow({
   const variant: InfoRowVariant =
     variantProp ?? (highlight ? 'highlight' : stacked ? 'stacked' : 'default');
   const isClickable = !!onPress;
+  const hasCopyableValue = value !== undefined && value !== '';
 
   const handleCopy = useCallback(() => {
-    if (!value) return;
     navigator.clipboard.writeText(String(value)).catch(() => {});
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -166,7 +166,7 @@ export function InfoRow({
           >
             {trailing ?? value}
           </span>
-          {copyable && value && (
+          {copyable && hasCopyableValue && (
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -240,7 +240,7 @@ export function InfoRow({
           </span>
         )}
 
-        {copyable && value && (
+        {copyable && hasCopyableValue && (
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -253,7 +253,7 @@ export function InfoRow({
           </button>
         )}
 
-        {isClickable && <ChevronRight size={φIcon.sm} color={c.text3} className="shrink-0" />}
+        {isClickable ? <ChevronRight size={φIcon.sm} color={c.text3} className="shrink-0" /> : null}
       </div>
     </Tag>
   );

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261002-018",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "read-only-openapi-forbidden-contract-audit",
+  "observedAt": "2026-10-02T02:53:18Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "environment": "Windows 11, Python 3 with PyYAML 6.0.3; current primary worktree. Read-only OpenAPI, matrix and operation-map parsing; no browser or API side effect.",
+  "commandOrSteps": "Resolve referral.forbidden against current OpenAPI and operation map; count declared HTTP 403 responses.",
+  "expected": "Only run a forbidden browser case if a mapped operation declares HTTP 403; otherwise preserve not_verified and do not synthesize a status.",
+  "actual": "Resolved 1/1 Referral operation and 1/1 exact method/path mappings. getReferralOverview (GET /referral/overview) declares 200/401 and no 403. referral.forbidden remains not_verified; no browser case ran. Next unresolved row is support.unauthorized.",
+  "result": "pass",
+  "artifact": "docs\\architecture\\production-readiness\\evidence\\A06\\referral-forbidden-contract-audit-current-2026-10-02.json",
+  "scenario": {
+    "id": "referral.forbidden",
+    "state": "forbidden",
+    "executionStatus": "not_verified",
+    "operationIds": ["getReferralOverview"]
+  },
+  "operations": [
+    {
+      "operationId": "getReferralOverview",
+      "method": "GET",
+      "path": "/referral/overview",
+      "responseCodes": ["200", "401"]
+    }
+  ],
+  "counts": {
+    "mappedOperations": 1,
+    "exactOperationMapMatches": 1,
+    "operationsDeclaring403": 0
+  },
+  "scenarioMatrixSummary": {
+    "scenariosDefined": 106,
+    "scenarioRowsWithFreshBrowserEvidence": 81,
+    "scenarioRowsFullyCoveredByFreshBrowserEvidence": 38,
+    "uniqueOperationsWithFreshBrowserEvidence": 88,
+    "runtimeEvidenceFresh": false,
+    "freshScenarioEvidenceSidecars": 81,
+    "registeredScenarioEvidenceSidecars": 81,
+    "sourceHashStaleScenarioEvidenceSidecars": 0
+  },
+  "nextAction": "Continue A06.03 in current unresolved matrix order at support.unauthorized.",
+  "sourceHashes": {
+    "docs\\architecture\\production-readiness\\evidence\\A06\\scenario-matrix-2026-09-28.json": "0bbf7c7a887415389265aa3fa2f2c07fc670a070ac4f692b55fae87ff19922f4",
+    "contracts\\openapi\\referral.yaml": "91e4eb405cc9b095a71416f64189bf6e16547babe05d04eaa137477175391715",
+    "docs\\architecture\\production-readiness\\evidence\\A06\\operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320"
+  },
+  "limitations": [
+    "Static contract audit only; backend authorization and browser behavior are unverified.",
+    "The check-tracking gate remains failed under EV-20261002-014."
+  ]
+}

@@ -1,0 +1,226 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261002-023",
+  "taskId": "A06",
+  "stepId": "A06.03",
+  "kind": "existing-remote-source-snapshot-match-and-ledger-reconciliation",
+  "observedAt": "2026-10-02T04:49:21Z",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "branch": "main",
+  "environment": "Windows PowerShell; Node 24.19.0; local primary worktree with B07 remote refs already present.",
+  "commandOrSteps": [
+    "Read EV-20261002-022 exact check-tracking error paths.",
+    "Compare each candidate path byte-for-byte with git show <remote-commit>:<path> and confirm the commit is reachable from origin/codex/b07-01-current-checkpoint.",
+    "Rebind the tracked scripts/serve-e2e.mjs ledger source fingerprint to its exact existing remote source commit; do not modify or stage source files.",
+    "Re-run node docs/architecture/production-readiness/check-tracking.mjs and expand the bounded error list in a temporary, immediately removed copy to classify all remaining errors."
+  ],
+  "expected": "Reuse an existing remotely retained commit only when the current path bytes match exactly and the current checker recognizes that path as present in the worktree/index. Preserve unresolved source-snapshot errors and do not stage or commit unrelated files.",
+  "actual": {
+    "priorLedgerEvidence": {
+      "id": "EV-20261002-022",
+      "errorCount": 64,
+      "sourceSnapshotComparisonsPassing": 852
+    },
+    "candidateComparisons": [
+      {
+        "path": "scripts/serve-e2e.mjs",
+        "commit": "ee0bf684e2b3f2f9ece6ac3a6594de36f6f92dbe",
+        "remoteRefs": ["origin/codex/b07-01-current-checkpoint"],
+        "worktreeStatus": "M scripts/serve-e2e.mjs",
+        "exactBytesMatch": true,
+        "sha256": "520c0344b04ba89bff73ffcfb9b19ae08051d6d156308c45290fbcfb9d8b4ab1",
+        "cataloguedByCurrentChecker": true
+      },
+      {
+        "path": ".gitattributes",
+        "commit": "ee0bf684e2b3f2f9ece6ac3a6594de36f6f92dbe",
+        "remoteRefs": ["origin/codex/b07-01-current-checkpoint"],
+        "worktreeStatus": "?? .gitattributes",
+        "exactBytesMatch": true,
+        "sha256": "9719708cafb76d38d0deb71c4ea048906a7ac1634ce362623ec3854d53ce081e",
+        "cataloguedByCurrentChecker": false
+      },
+      {
+        "path": "scripts/check-git-eol.mjs",
+        "commit": "ee0bf684e2b3f2f9ece6ac3a6594de36f6f92dbe",
+        "remoteRefs": ["origin/codex/b07-01-current-checkpoint"],
+        "worktreeStatus": "?? scripts/check-git-eol.mjs",
+        "exactBytesMatch": true,
+        "sha256": "f268a2c317c09d9630a51295a62ecca776bce41ec0e3d9d74e0cd808b97884ca",
+        "cataloguedByCurrentChecker": false
+      },
+      {
+        "path": "scripts/check-tracking.test.mjs",
+        "commit": "016585c0b339e9645ee3aa01f3f27e1167129ffa",
+        "remoteRefs": ["origin/codex/b07-01-current-checkpoint"],
+        "worktreeStatus": "?? scripts/check-tracking.test.mjs",
+        "exactBytesMatch": true,
+        "sha256": "d76491378946838fce148e538bf3b72d256e18c5db960f22d809329cd52709db",
+        "cataloguedByCurrentChecker": false
+      }
+    ],
+    "reconciledPaths": [
+      {
+        "path": "scripts/serve-e2e.mjs",
+        "commit": "ee0bf684e2b3f2f9ece6ac3a6594de36f6f92dbe",
+        "remoteRef": "origin/codex/b07-01-current-checkpoint",
+        "sha256": "520c0344b04ba89bff73ffcfb9b19ae08051d6d156308c45290fbcfb9d8b4ab1",
+        "exactByteMatch": true,
+        "checkerErrorResolved": true
+      }
+    ],
+    "exactMatchesNotAcceptedByCurrentChecker": [
+      {
+        "path": ".gitattributes",
+        "commit": "ee0bf684e2b3f2f9ece6ac3a6594de36f6f92dbe",
+        "remoteRef": "origin/codex/b07-01-current-checkpoint",
+        "sha256": "9719708cafb76d38d0deb71c4ea048906a7ac1634ce362623ec3854d53ce081e",
+        "worktreeStatus": "?? .gitattributes",
+        "reason": "The path is untracked on current main, so check-tracking compares the committed snapshot to a deletion in the current index. No staging or commit was performed."
+      },
+      {
+        "path": "scripts/check-git-eol.mjs",
+        "commit": "ee0bf684e2b3f2f9ece6ac3a6594de36f6f92dbe",
+        "remoteRef": "origin/codex/b07-01-current-checkpoint",
+        "sha256": "f268a2c317c09d9630a51295a62ecca776bce41ec0e3d9d74e0cd808b97884ca",
+        "worktreeStatus": "?? scripts/check-git-eol.mjs",
+        "reason": "The path is untracked on current main, so check-tracking compares the committed snapshot to a deletion in the current index. No staging or commit was performed."
+      },
+      {
+        "path": "scripts/check-tracking.test.mjs",
+        "commit": "016585c0b339e9645ee3aa01f3f27e1167129ffa",
+        "remoteRef": "origin/codex/b07-01-current-checkpoint",
+        "sha256": "d76491378946838fce148e538bf3b72d256e18c5db960f22d809329cd52709db",
+        "worktreeStatus": "?? scripts/check-tracking.test.mjs",
+        "reason": "The path is untracked on current main, so check-tracking compares the committed snapshot to a deletion in the current index. No staging or commit was performed."
+      }
+    ],
+    "ledger": {
+      "command": "node docs/architecture/production-readiness/check-tracking.mjs",
+      "exitCode": 1,
+      "errorCount": 63,
+      "classifiedErrors": [
+        {
+          "category": "missing catalogued source head/hash",
+          "count": 32,
+          "paths": [
+            ".env.production.example",
+            ".env.staging.example",
+            ".github/workflows/ci.yml",
+            "docs/ai/PRODUCTION-READINESS-PROMPT.md",
+            "docs/ai/WORKFLOW.md",
+            "README.md",
+            "scripts/build-e2e.mjs",
+            "src/app/__tests__/AppContext.test.tsx",
+            "src/app/__tests__/UIContext.test.tsx",
+            "src/app/components/layout/ShellComposition.test.tsx",
+            "src/app/components/layout/TabletSidebar.tsx",
+            "src/app/components/layout/WebCommandBar.test.tsx",
+            "src/app/components/layout/WebSidebar.tsx",
+            "src/app/contexts/ui-context.ts",
+            "src/app/contexts/UIContext.tsx",
+            "src/features/support/pages/NotificationsContractPage.tsx",
+            "src/features/support/pages/SupportWriteBoundary.test.tsx",
+            "src/features/wallet/pages/WalletOverviewContractPage.test.tsx",
+            "src/features/wallet/pages/WalletOverviewContractPage.tsx",
+            "src/features/wallet/pages/WalletTransactionHistoryContractPage.test.tsx",
+            "src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx",
+            "src/features/wallet/pages/WalletTransferContractPage.test.tsx",
+            "src/features/wallet/pages/WalletTransferContractPage.tsx",
+            "src/main.test.tsx",
+            "src/main.tsx",
+            "src/shared/config/env.test.ts",
+            "src/shared/config/env.ts",
+            "tests/e2e/auth-session.spec.ts",
+            "tests/e2e/dca-earn-contract.spec.ts",
+            "tests/e2e/p2p-contract.spec.ts",
+            "tests/e2e/trading-contract.spec.ts",
+            "vite.config.ts"
+          ]
+        },
+        {
+          "category": "cataloguedSourceHead does not contain this path",
+          "count": 7,
+          "paths": [
+            ".gitattributes",
+            "scripts/check-git-eol.mjs",
+            "src/features/admin/model/admin-queries.test.tsx",
+            "src/features/profile/model/profile-queries.test.tsx",
+            "src/features/referral/model/referral-queries.test.tsx",
+            "src/features/support/model/support-queries.test.tsx",
+            "src/shared/config/runtime-env-validation.ts"
+          ]
+        },
+        {
+          "category": "current source differs from cataloguedSourceHead",
+          "count": 24,
+          "paths": [
+            "ARCHITECTURE.md",
+            "docs/architecture/page-inventory.json",
+            "src/dev/mocks/auth-handlers.test.ts",
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/preview-scenario-handler.test.ts",
+            "src/dev/mocks/preview-scenario-handler.ts",
+            "src/features/admin/model/admin-queries.ts",
+            "src/features/admin/pages/AdminContractPages.test.tsx",
+            "src/features/earn/pages/EarnPage.test.tsx",
+            "src/features/earn/pages/EarnPage.tsx",
+            "src/features/earn/pages/EarnTransactionPages.tsx",
+            "src/features/earn/routes.ts",
+            "src/features/launchpad/model/launchpad-queries.ts",
+            "src/features/launchpad/pages/LaunchpadContractPages.test.tsx",
+            "src/features/market/model/market-queries.test.tsx",
+            "src/features/market/model/market-queries.ts",
+            "src/features/profile/model/profile-queries.ts",
+            "src/features/referral/model/referral-queries.ts",
+            "src/features/referral/pages/ReferralContractPage.test.tsx",
+            "src/features/support/model/support-queries.ts",
+            "src/features/support/pages/SupportContractPages.test.tsx",
+            "src/features/wallet/model/wallet-queries.test.tsx",
+            "src/features/wallet/model/wallet-queries.ts",
+            "scripts/check-tracking.test.mjs"
+          ]
+        }
+      ],
+      "nonPlanInventory": {
+        "currentGitFiles": 916,
+        "mappedToLedger": 916,
+        "missingLedgerRecords": 0,
+        "unexpectedActiveLedgerPaths": 0
+      },
+      "exactSourceSnapshotComparisonsPassing": 853
+    },
+    "matrix": {
+      "path": "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
+      "sha256": "0bbf7c7a887415389265aa3fa2f2c07fc670a070ac4f692b55fae87ff19922f4",
+      "scenarioRows": 106,
+      "notVerifiedRows": 25
+    },
+    "behavior": {
+      "matrixNotVerifiedRowsRemainNotVerified": true,
+      "unsupportedResponsesFabricated": 0,
+      "browserBackendStagingRequests": 0,
+      "financialWritesOrReplays": 0
+    },
+    "gates": {
+      "uiUserAcceptedPages": "0/128",
+      "backendAndStagingOperationsVerified": "0/154",
+      "taskStatus": "in_progress",
+      "stepStatus": "in_progress"
+    }
+  },
+  "result": "fail",
+  "artifact": "docs/architecture/production-readiness/evidence/A06/existing-remote-source-snapshot-reconciliation-current-2026-10-02.json",
+  "sourceHashes": {
+    "scripts/serve-e2e.mjs": "520c0344b04ba89bff73ffcfb9b19ae08051d6d156308c45290fbcfb9d8b4ab1",
+    ".gitattributes": "9719708cafb76d38d0deb71c4ea048906a7ac1634ce362623ec3854d53ce081e",
+    "scripts/check-git-eol.mjs": "f268a2c317c09d9630a51295a62ecca776bce41ec0e3d9d74e0cd808b97884ca",
+    "scripts/check-tracking.test.mjs": "d76491378946838fce148e538bf3b72d256e18c5db960f22d809329cd52709db"
+  },
+  "nextAction": "A06.03 remains in_progress: 25/25 not_verified rows still need approved contract semantics for behavioral verification. The current ledger gate is 63 errors (32 missing fingerprints, 7 snapshots without the path, 24 current sources differing); source paths must match an existing tracked snapshot or be included in an authorized committed source revision.",
+  "limitations": [
+    "One source fingerprint was resolved by reusing an exact byte match from an already-pushed B07 commit; no new commit, push, staging operation, or product source edit occurred.",
+    "Three additional exact matches are untracked in the current main worktree and therefore remain checker failures; their ledger refs were not changed.",
+    "The 25 contract-audit rows remain behaviorally unverified and the aggregate runtime evidence remains historical_baseline."
+  ]
+}

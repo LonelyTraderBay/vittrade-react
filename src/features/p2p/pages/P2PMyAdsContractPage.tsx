@@ -13,6 +13,7 @@ import {
   useP2PAdStatusMutation,
   useP2PMyAdsQuery,
 } from '../model/p2p-my-ads-queries';
+import { runOwnedAdDelete, runOwnedAdStatusUpdate } from '../model/p2p-my-ads-actions';
 import type { P2PAd } from '../model/p2p-types';
 
 type Filter = 'all' | 'active' | 'paused';
@@ -40,33 +41,24 @@ export function P2PMyAdsContractPage() {
   const pausedCount = ads.filter((ad) => ad.status === 'paused').length;
   const totalVolume = ads.reduce((total, ad) => total + ad.totalVolume30d, 0);
 
-  const updateStatus = async (ad: P2PAd) => {
-    if (!canWriteAds || ad.status === 'expired' || statusMutation.isPending) return;
-    setActionError(null);
-    try {
-      await statusMutation.mutateAsync({
-        adId: ad.id,
-        request: { status: ad.status === 'active' ? 'paused' : 'active' },
-        idempotencyKey: `p2p-ad-status-${ad.id}-${crypto.randomUUID()}`,
-      });
-    } catch {
-      setActionError('Không thể cập nhật trạng thái quảng cáo.');
-    }
-  };
+  const updateStatus = (ad: P2PAd) =>
+    runOwnedAdStatusUpdate(
+      canWriteAds,
+      ad,
+      statusMutation,
+      () => setActionError(null),
+      () => setActionError('Không thể cập nhật trạng thái quảng cáo.'),
+    );
 
-  const deleteAd = async () => {
-    if (!canWriteAds || !deleteId || deleteMutation.isPending) return;
-    setActionError(null);
-    try {
-      await deleteMutation.mutateAsync({
-        adId: deleteId,
-        idempotencyKey: `p2p-ad-delete-${deleteId}-${crypto.randomUUID()}`,
-      });
-      setDeleteId(null);
-    } catch {
-      setActionError('Không thể xóa quảng cáo.');
-    }
-  };
+  const deleteAd = () =>
+    runOwnedAdDelete(
+      canWriteAds,
+      deleteId,
+      deleteMutation,
+      () => setActionError(null),
+      () => setDeleteId(null),
+      () => setActionError('Không thể xóa quảng cáo.'),
+    );
 
   if (adsQuery.isPending) {
     return (

@@ -6,8 +6,11 @@ describe('DCAAnalyticsService', () => {
   const services: DCAAnalyticsService[] = [];
 
   afterEach(() => {
+    vi.unstubAllGlobals();
     services.splice(0).forEach((service) => service.destroy());
     window.localStorage.removeItem('analytics_consent');
+    window.localStorage.removeItem('dca_analytics_queue');
+    window.sessionStorage.removeItem('dca_session_id');
     vi.useRealTimers();
     vi.restoreAllMocks();
   });
@@ -116,6 +119,8 @@ describe('DCAAnalyticsService', () => {
     services.push(disabled);
     disabled.setUserConsent(true);
     disabled.trackEvent('disabled');
+    disabled.trackPerformance({ name: 'ignored', value: 0, unit: 'count', timestamp: 1 });
+    disabled.setUserProperty('tier', 'ignored');
     expect(disabled.getQueue()).toEqual([]);
 
     const consentOptional = new DCAAnalyticsService({
@@ -166,7 +171,6 @@ describe('DCAAnalyticsService', () => {
         event_name: 'new_event',
         timestamp: 2,
         session_id: 'session',
-        properties: {},
       },
     ];
     vi.spyOn(browserStorage.session, 'getItem').mockReturnValue('existing-session');
@@ -186,8 +190,40 @@ describe('DCAAnalyticsService', () => {
 
     expect(service.getSessionId()).toBe('existing-session');
     expect(service.getQueue().map((event) => event.eventId)).toEqual(['new']);
+    expect(service.getQueue()[0].properties).toEqual({});
     await service.flush();
     expect(removeItem).toHaveBeenCalledWith('dca_analytics_queue');
+  });
+
+  it('flushes a full batch automatically and does not enqueue while server-rendered', async () => {
+    const send = vi.fn().mockResolvedValue(undefined);
+    const service = new DCAAnalyticsService(
+      {
+        enabled: true,
+        requireConsent: false,
+        sampleRate: 1,
+        batchSize: 1,
+        flushInterval: 0,
+        offlineQueue: false,
+      },
+      { send },
+    );
+    services.push(service);
+
+    service.trackEvent('auto_flush');
+    await vi.waitFor(() => expect(send).toHaveBeenCalledTimes(1));
+    expect(service.getQueue()).toEqual([]);
+
+    vi.stubGlobal('window', undefined);
+    const serverRendered = new DCAAnalyticsService({
+      enabled: true,
+      requireConsent: false,
+      flushInterval: 0,
+      offlineQueue: true,
+    });
+    services.push(serverRendered);
+    serverRendered.trackEvent('server_render');
+    expect(serverRendered.getQueue()).toHaveLength(1);
   });
 
   it('keeps only the newest events when backend flushing fails', async () => {
@@ -209,6 +245,58 @@ describe('DCAAnalyticsService', () => {
     await service.flush();
 
     expect(service.getQueue().map((event) => event.eventName)).toEqual(['second']);
+  });
+
+  it('continues tracking when offline persistence unexpectedly throws', () => {
+    const setItem = vi.spyOn(browserStorage.local, 'setItem').mockImplementation(() => {
+      throw new Error('storage adapter failure');
+    });
+    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const service = new DCAAnalyticsService({
+      enabled: true,
+      requireConsent: false,
+      offlineQueue: true,
+      flushInterval: 0,
+    });
+    services.push(service);
+
+    service.trackEvent('storage_failure');
+
+    expect(setItem).toHaveBeenCalledWith('dca_analytics_queue', expect.any(String));
+    expect(service.getQueue().map((event) => event.eventName)).toEqual(['storage_failure']);
+    expect(error).toHaveBeenCalledWith(
+      '[DCA Analytics] Failed to save offline queue:',
+      expect.any(Error),
+    );
+  });
+
+  it('logs offline queue clear failures without changing the successful delivery result', async () => {
+    const send = vi.fn().mockResolvedValue(undefined);
+    const service = new DCAAnalyticsService(
+      {
+        enabled: true,
+        requireConsent: false,
+        offlineQueue: true,
+        flushInterval: 0,
+      },
+      { send },
+    );
+    services.push(service);
+    const removeItem = vi.spyOn(browserStorage.local, 'removeItem').mockImplementation(() => {
+      throw new Error('storage adapter failure');
+    });
+    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    service.trackEvent('delivered_offline_event');
+
+    await service.flush();
+
+    expect(send).toHaveBeenCalledTimes(1);
+    expect(service.getQueue()).toEqual([]);
+    expect(removeItem).toHaveBeenCalledWith('dca_analytics_queue');
+    expect(error).toHaveBeenCalledWith(
+      '[DCA Analytics] Failed to clear offline queue:',
+      expect.any(Error),
+    );
   });
 
   it('writes offline queue snapshots as events are added', () => {
@@ -246,6 +334,8 @@ describe('DCAAnalyticsService', () => {
     services.push(service);
     service.setUserConsent(true);
     service.enableDebugMode(true);
+    service.setUserProperty('tier', 'gold');
+    service.setUserProperty('tier', 'platinum');
     service.trackEvent('debug_event');
 
     expect(log).toHaveBeenCalledWith(expect.stringContaining('enabled'));
@@ -253,6 +343,10 @@ describe('DCAAnalyticsService', () => {
       '[DCA Analytics] Event:',
       expect.objectContaining({ event_name: 'debug_event' }),
     );
+    expect(log).toHaveBeenCalledWith('[DCA Analytics] User Property:', {
+      key: 'tier',
+      value: 'gold',
+    });
     await service.flush();
     expect(table).toHaveBeenCalled();
     service.enableDebugMode(false);
@@ -280,6 +374,44 @@ describe('DCAAnalyticsService', () => {
       '[DCA Analytics] Failed to save consent:',
       expect.any(Error),
     );
+  });
+
+  it('defaults to no consent when browser storage reads throw', () => {
+    vi.spyOn(browserStorage.local, 'getItem').mockImplementation(() => {
+      throw new Error('storage blocked');
+    });
+    const service = new DCAAnalyticsService({
+      enabled: true,
+      requireConsent: true,
+      flushInterval: 0,
+      offlineQueue: false,
+    });
+    services.push(service);
+
+    service.trackEvent('consent_storage_failure');
+
+    expect(service.getQueue()).toEqual([]);
+  });
+
+  it('flushes queued events on unload and unregisters the handler on destroy', async () => {
+    const send = vi.fn().mockResolvedValue(undefined);
+    const service = new DCAAnalyticsService(
+      {
+        enabled: true,
+        requireConsent: false,
+        flushInterval: 0,
+        offlineQueue: false,
+      },
+      { send },
+    );
+    services.push(service);
+    service.trackEvent('unload_event');
+    window.dispatchEvent(new Event('beforeunload'));
+    await vi.waitFor(() => expect(send).toHaveBeenCalledTimes(1));
+    service.destroy();
+    services.splice(services.indexOf(service), 1);
+    window.dispatchEvent(new Event('beforeunload'));
+    expect(send).toHaveBeenCalledTimes(1);
   });
 
   it('flushes on the configured timer and clears that timer on destroy', async () => {

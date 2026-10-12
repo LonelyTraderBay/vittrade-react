@@ -25,8 +25,12 @@ const context = {
 
 afterEach(() => vi.restoreAllMocks());
 
-function renderOverlay(options: { active?: boolean; onClose?: () => void } = {}) {
-  vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(() => context);
+function renderOverlay(
+  options: { active?: boolean; onClose?: () => void; contextAvailable?: boolean } = {},
+) {
+  vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(() =>
+    options.contextAvailable === false ? null : context,
+  );
   vi.spyOn(HTMLCanvasElement.prototype, 'getBoundingClientRect').mockReturnValue({
     bottom: 300,
     height: 300,
@@ -299,5 +303,104 @@ describe('ChartAnnotationOverlay', () => {
     fireEvent.mouseMove(canvas, { clientX: 50, clientY: 60 });
     fireEvent.mouseDown(canvas, { clientX: 50, clientY: 60 });
     expect(ref.current?.hasAnnotations()).toBe(false);
+  });
+
+  it('uses touch and changed-touch coordinates for note placement and pen drawing', () => {
+    const { canvas, ref } = renderOverlay();
+    const dispatchTouch = (
+      type: 'touchstart' | 'touchmove' | 'touchend',
+      touches: { clientX: number; clientY: number }[],
+      changedTouches: { clientX: number; clientY: number }[],
+    ) => {
+      const event = new Event(type, { bubbles: true, cancelable: true });
+      Object.defineProperties(event, {
+        touches: { value: touches },
+        changedTouches: { value: changedTouches },
+      });
+      fireEvent(canvas, event);
+    };
+
+    fireEvent.click(screen.getByRole('button', { name: 'Ghi chú' }));
+    dispatchTouch('touchstart', [], []);
+    const originInput = screen.getByPlaceholderText('Ghi chú...');
+    expect(originInput.parentElement).toHaveStyle({ left: '0%', top: '0%' });
+    fireEvent.change(originInput, { target: { value: 'Origin note' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Xác nhận' }));
+    expect(ref.current?.hasAnnotations()).toBe(true);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Ghi chú' }));
+    dispatchTouch('touchstart', [], [{ clientX: 40, clientY: 50 }]);
+    fireEvent.change(screen.getByPlaceholderText('Ghi chú...'), {
+      target: { value: 'Touch note' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Xác nhận' }));
+    expect(ref.current?.hasAnnotations()).toBe(true);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Vẽ tay' }));
+    dispatchTouch('touchstart', [{ clientX: 80, clientY: 80 }], []);
+    dispatchTouch('touchmove', [{ clientX: 90, clientY: 90 }], []);
+    dispatchTouch('touchend', [], [{ clientX: 90, clientY: 90 }]);
+    expect(screen.getByText('3 ghi chú')).toBeInTheDocument();
+  });
+
+  it('discards a pen tap and an arrow that does not clear the minimum distance', () => {
+    const { canvas, ref } = renderOverlay();
+
+    fireEvent.mouseDown(canvas, { clientX: 20, clientY: 20 });
+    fireEvent.mouseUp(canvas, { clientX: 20, clientY: 20 });
+    expect(ref.current?.hasAnnotations()).toBe(false);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Mũi tên' }));
+    fireEvent.mouseDown(canvas, { clientX: 20, clientY: 20 });
+    fireEvent.mouseUp(canvas, { clientX: 25, clientY: 20 });
+    expect(ref.current?.hasAnnotations()).toBe(false);
+  });
+
+  it('clears an incomplete arrow state after switching tools during a pen gesture', () => {
+    const { canvas, ref } = renderOverlay();
+
+    fireEvent.mouseDown(canvas, { clientX: 20, clientY: 20 });
+    fireEvent.click(screen.getByRole('button', { name: 'Mũi tên' }));
+    fireEvent.mouseUp(canvas, { clientX: 30, clientY: 30 });
+    expect(ref.current?.hasAnnotations()).toBe(false);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Vẽ tay' }));
+    fireEvent.mouseDown(canvas, { clientX: 20, clientY: 20 });
+    fireEvent.mouseMove(canvas, { clientX: 30, clientY: 30 });
+    fireEvent.mouseUp(canvas, { clientX: 30, clientY: 30 });
+    expect(ref.current?.hasAnnotations()).toBe(true);
+  });
+
+  it('retains annotations when the browser has no canvas rendering context', () => {
+    const { canvas, ref } = renderOverlay({ contextAvailable: false });
+
+    fireEvent.mouseDown(canvas, { clientX: 20, clientY: 20 });
+    fireEvent.mouseMove(canvas, { clientX: 30, clientY: 30 });
+    fireEvent.mouseUp(canvas, { clientX: 30, clientY: 30 });
+    expect(ref.current?.hasAnnotations()).toBe(true);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Mũi tên' }));
+    fireEvent.mouseDown(canvas, { clientX: 20, clientY: 20 });
+    fireEvent.mouseMove(canvas, { clientX: 100, clientY: 100 });
+    fireEvent.mouseUp(canvas, { clientX: 100, clientY: 100 });
+    expect(screen.getByText('2 ghi chú')).toBeInTheDocument();
+  });
+
+  it('reuses a selected pen annotation as the drag source and deselects on empty canvas', () => {
+    const { canvas } = renderOverlay();
+
+    fireEvent.mouseDown(canvas, { clientX: 20, clientY: 20 });
+    fireEvent.mouseMove(canvas, { clientX: 40, clientY: 40 });
+    fireEvent.mouseUp(canvas, { clientX: 40, clientY: 40 });
+    fireEvent.click(screen.getByRole('button', { name: 'Chọn / Di chuyển' }));
+    fireEvent.mouseDown(canvas, { clientX: 30, clientY: 30 });
+    fireEvent.mouseUp(canvas, { clientX: 30, clientY: 30 });
+    fireEvent.mouseDown(canvas, { clientX: 30, clientY: 30 });
+    fireEvent.mouseMove(canvas, { clientX: 35, clientY: 35 });
+    fireEvent.mouseUp(canvas, { clientX: 35, clientY: 35 });
+    fireEvent.mouseDown(canvas, { clientX: 350, clientY: 250 });
+
+    expect(screen.queryByText('Kéo để di chuyển')).not.toBeInTheDocument();
+    expect(screen.getByText('1 ghi chú')).toBeInTheDocument();
   });
 });

@@ -128,4 +128,94 @@ describe('MarketSentimentPage', () => {
     expect(screen.getByText('Không có chủ đề trending.')).toBeInTheDocument();
     expect(screen.getByText('Không có dữ liệu theo token.')).toBeInTheDocument();
   });
+
+  it('renders empty history, token, topic, heatmap and mention states for empty response arrays', () => {
+    useMarketSentimentQuery.mockReturnValue(
+      queryState({ data: { ...response, timeline: [], tokens: [], trendingTopics: [] } }),
+    );
+    renderWithProviders(<MarketSentimentPage />);
+
+    expect(screen.getByText('Không có dữ liệu lịch sử.')).toBeInTheDocument();
+    expect(screen.getByText('Không có token trending.')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Theo token' }));
+    expect(screen.getByText('Không có dữ liệu sentiment theo token.')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Xu hướng' }));
+    expect(screen.getByText('Không có chủ đề trending.')).toBeInTheDocument();
+    expect(screen.getByText('Không có dữ liệu theo token.')).toBeInTheDocument();
+    expect(screen.getByText('Không có dữ liệu lượt đề cập.')).toBeInTheDocument();
+  });
+
+  it('covers supported timeline bands, optional ranks and each token sort order', () => {
+    const data: MarketSentimentResponse = {
+      ...response,
+      overall: { ...response.overall, score: -32, sentiment: 'bearish' },
+      timeline: [
+        { at: '2026-09-24T08:00:00.000Z', score: 20, mentions: 900 },
+        { at: '2026-09-25T08:00:00.000Z', score: -20, mentions: 700 },
+        { at: '2026-09-26T08:00:00.000Z', score: 0, mentions: 500 },
+      ],
+      tokens: [
+        {
+          ...response.tokens[1],
+          id: 'ada',
+          symbol: 'ADA',
+          name: 'Cardano',
+          mentions24h: 1500,
+          mentionsChange24h: 0,
+          trendingRank: undefined,
+        },
+        { ...response.tokens[0], mentionsChange24h: 0, trendingRank: 2 },
+        {
+          ...response.tokens[1],
+          id: 'xrp',
+          symbol: 'XRP',
+          name: 'Ripple',
+          mentions24h: 1100,
+          mentionsChange24h: 0,
+          trendingRank: undefined,
+        },
+        { ...response.tokens[1], mentionsChange24h: 0, trendingRank: 1 },
+        {
+          ...response.tokens[0],
+          id: 'sol',
+          symbol: 'SOL',
+          name: 'Solana',
+          score: 0,
+          sentiment: 'neutral',
+          mentions24h: 900,
+          mentionsChange24h: 0,
+          trendingRank: 3,
+          topTopics: [],
+        },
+      ],
+    };
+    useMarketSentimentQuery.mockReturnValue(queryState({ data }));
+    renderWithProviders(<MarketSentimentPage />);
+
+    expect(screen.getByText('-32')).toBeInTheDocument();
+    expect(screen.getByText('-20')).toBeInTheDocument();
+    expect(screen.getAllByText('0')).toHaveLength(2);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Theo token' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Mentions' }));
+    expect(
+      screen
+        .getAllByText(/^(Cardano|Ripple|Bitcoin|Ethereum|Solana)$/)
+        .map((node) => node.textContent),
+    ).toEqual(['Cardano', 'Ripple', 'Solana', 'Bitcoin', 'Ethereum']);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Trending' }));
+    expect(
+      screen
+        .getAllByText(/^(Ethereum|Bitcoin|Solana|Cardano|Ripple)$/)
+        .map((node) => node.textContent),
+    ).toEqual(['Ethereum', 'Bitcoin', 'Solana', 'Cardano', 'Ripple']);
+    expect(screen.getByText('Cardano')).not.toHaveTextContent('#');
+    expect(screen.getByText('Solana')).not.toHaveTextContent('#');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Xu hướng' }));
+    expect(screen.getAllByText('0.0%')).toHaveLength(data.tokens.length);
+  });
 });

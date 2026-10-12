@@ -23,6 +23,23 @@ describe('CoachmarkService storage', () => {
     );
   });
 
+  it('keeps in-memory updates when saving to browser storage fails', () => {
+    vi.spyOn(browserStorage.local, 'getItem').mockReturnValue(null);
+    vi.spyOn(browserStorage.local, 'setItem').mockImplementation(() => {
+      throw new Error('storage unavailable');
+    });
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const service = new CoachmarkService();
+
+    service.markSeen('home-modules-overview');
+
+    expect(service.getState().seen).toContain('home-modules-overview');
+    expect(warn).toHaveBeenCalledWith(
+      'Failed to save coachmark state:',
+      expect.objectContaining({ message: 'storage unavailable' }),
+    );
+  });
+
   it('falls back to empty state when persisted JSON is invalid', () => {
     vi.spyOn(browserStorage.local, 'getItem').mockReturnValue('{invalid');
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);

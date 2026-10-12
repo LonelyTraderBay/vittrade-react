@@ -1,0 +1,5 @@
+
+> vittrade-react@0.0.1 contracts:check
+> node scripts/check-openapi-contracts.mjs
+
+OpenAPI contract gate passed: 15 contracts, 154 operations validated.

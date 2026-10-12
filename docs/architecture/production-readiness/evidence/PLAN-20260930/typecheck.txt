@@ -1,0 +1,4 @@
+
+> vittrade-react@0.0.1 typecheck
+> tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json
+

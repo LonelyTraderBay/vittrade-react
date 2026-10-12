@@ -68,4 +68,37 @@ describe('SwipeBack', () => {
 
     expect(screen.getByText('Current page')).toBeInTheDocument();
   });
+  it('does not update swipe state when an edge gesture ends before activation', () => {
+    const { swipeArea } = renderSwipeBack();
+
+    fireEvent.touchStart(swipeArea, { touches: [{ clientX: 4, clientY: 10 }] });
+    fireEvent.touchEnd(swipeArea, { touches: [] });
+
+    expect(screen.getByText('Current page')).toBeInTheDocument();
+    expect(swipeArea.querySelector('svg')).toBeNull();
+  });
+
+  it('does not navigate when the first significant edge movement is leftward', () => {
+    const { swipeArea } = renderSwipeBack();
+
+    swipe(swipeArea, { x: 10, y: 40 }, { x: 0, y: 40 });
+
+    expect(screen.getByText('Current page')).toBeInTheDocument();
+    expect(swipeArea.querySelector('svg')).toBeNull();
+  });
+
+  it('ignores edge movement inside the dead zone before tracking a horizontal swipe', () => {
+    const { swipeArea } = renderSwipeBack({ threshold: 80 });
+
+    fireEvent.touchStart(swipeArea, { touches: [{ clientX: 4, clientY: 10 }] });
+    fireEvent.touchMove(swipeArea, { touches: [{ clientX: 8, clientY: 10 }] });
+    expect(swipeArea.querySelector('svg')).toBeNull();
+
+    fireEvent.touchMove(swipeArea, { touches: [{ clientX: 88, clientY: 11 }] });
+    expect(swipeArea.querySelector('svg')).not.toBeNull();
+    fireEvent.touchMove(swipeArea, { touches: [{ clientX: 92, clientY: 11 }] });
+    fireEvent.touchEnd(swipeArea, { touches: [] });
+
+    expect(screen.getByText('Previous page')).toBeInTheDocument();
+  });
 });

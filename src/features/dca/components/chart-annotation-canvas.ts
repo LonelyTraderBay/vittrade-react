@@ -28,13 +28,20 @@ export interface ArrowLine {
 
 export type Annotation = PenStroke | TextLabel | ArrowLine;
 
-export type DragHandle = 'body' | 'arrow-start' | 'arrow-end';
+export type ArrowHandle = 'arrow-start' | 'arrow-end';
+export type DragHandle = 'body' | ArrowHandle;
 
-export interface DragState {
-  handle: DragHandle;
-  startPos: { x: number; y: number };
-  originalAnnotation: Annotation;
-}
+export type DragState =
+  | {
+      handle: 'body';
+      startPos: { x: number; y: number };
+      originalAnnotation: Annotation;
+    }
+  | {
+      handle: ArrowHandle;
+      startPos: { x: number; y: number };
+      originalAnnotation: ArrowLine;
+    };
 
 /** A chart data point position (in CSS px, relative to chart container) */
 export interface SnapPoint {
@@ -145,7 +152,7 @@ export function hitTestAnnotation(
 export function hitTestArrowHandles(
   pos: { x: number; y: number },
   arrow: ArrowLine,
-): DragHandle | null {
+): ArrowHandle | null {
   if (distPP(pos.x, pos.y, arrow.startX, arrow.startY) < HANDLE_HIT_RADIUS) return 'arrow-start';
   if (distPP(pos.x, pos.y, arrow.endX, arrow.endY) < HANDLE_HIT_RADIUS) return 'arrow-end';
   return null;

@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-01T02:57:03.000Z",
+  "taskId": "B07",
+  "stepId": "B07.01",
+  "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+  "environment": {
+    "os": "Windows x64",
+    "node": "v24.19.0",
+    "branch": "main",
+    "originMain": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+    "gitCoreAutocrlf": "true"
+  },
+  "scope": {
+    "stepFileRecordsBeforeThisReport": 563,
+    "trackedFiles": 506,
+    "untrackedFiles": 59,
+    "environmentInputs": [
+      "git ls-files --eol",
+      ".gitattributes",
+      ".nvmrc",
+      ".github/workflows/ci.yml",
+      "GitHub Actions public run metadata and job steps"
+    ],
+    "noGitSettingsChanged": true,
+    "fileRecordsMeasured": 565,
+    "eolMeasurementCommand": "git ls-files --eol --cached --others --exclude-standard"
+  },
+  "ciRun": {
+    "provider": "GitHub Actions",
+    "runId": 36671527798,
+    "runNumber": 7,
+    "attempt": 1,
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "headSha": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+    "runUrl": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36671527798",
+    "createdAt": "2026-09-30T05:01:47Z",
+    "startedAt": "2026-09-30T05:01:50Z",
+    "completedAt": "2026-09-30T05:16:57Z",
+    "job": {
+      "name": "Production gates",
+      "status": "completed",
+      "conclusion": "success",
+      "runnerLabels": [
+        "ubuntu-latest"
+      ],
+      "steps": 28,
+      "allStepsSucceeded": true
+    },
+    "toolchainSelection": {
+      "nvmrcAtHeadSha": "22",
+      "workflowAtHeadShaUsesNodeVersionFile": true,
+      "setupNodeStepConclusion": "success",
+      "installDependenciesStepConclusion": "success",
+      "resolvedNodePatchVersion": "not_observed"
+    },
+    "logsApiStatus": 403
+  },
+  "workingTreeCoverage": {
+    "headMatchesOriginMain": true,
+    "dirtyPathsOutsideHeadRun": [
+      ".github/workflows/ci.yml",
+      ".env.production.example",
+      "src/shared/config/runtime-env-validation.ts",
+      "vite.config.ts"
+    ],
+    "conclusion": "The successful run verifies committed HEAD c5fc38b0755da3fe2c9831fe3040160a308a9a03 only; it does not include the listed current B02 working-tree changes or the other uncommitted repository changes."
+  },
+  "eolAudit": {
+    "policy": "* text=auto eol=lf; AGENTS.md, AI_RULES.md and PROJECT_BOOTSTRAP_PROMPT.txt explicitly preserve working-tree EOL.",
+    "gitLsFilesEol": {
+      "command": "git ls-files --eol --cached --others --exclude-standard",
+      "trackedScopeFiles": 506,
+      "untrackedScopeFiles": 59,
+      "workingTreeLf": 522,
+      "workingTreeCrlf": 3,
+      "workingTreeMixed": 0,
+      "binaryNoText": 40,
+      "crlfPaths": [
+        "AGENTS.md",
+        "AI_RULES.md",
+        "PROJECT_BOOTSTRAP_PROMPT.txt"
+      ]
+    },
+    "protectedFileHashesMatchPriorEolReport": true,
+    "pngAssetsWithEmbeddedCrLfOrCrBytes": "Binary byte sequences; not treated as text line-ending failures.",
+    "ubuntuCheckoutEolMeasurement": "not emitted by this workflow; runner label and green run do not directly report git ls-files --eol output.",
+    "untrackedWorkingTreeEol": "measured: 19 w/lf text paths and 40 w/-text binary paths; 0 w/crlf or w/mixed"
+  },
+  "expected": "Confirm exact-SHA Node22/Ubuntu clean CI, measure Windows EOL across every tracked and untracked path in the selected scope, preserve protected instruction files, and report evidence boundaries accurately.",
+  "actual": "GitHub Actions run #7 for exact committed HEAD c5fc38b0755da3fe2c9831fe3040160a308a9a03 completed successfully on ubuntu-latest; .nvmrc at that SHA is 22, Setup Node and npm ci succeeded, and all 28 reported job steps succeeded. The current B07.01 scope contains 565 file records: 506 tracked and 59 untracked. git ls-files --eol --cached --others --exclude-standard returned all 565 scoped paths: 522 text paths w/lf (503 tracked and 19 untracked), 3 tracked text paths w/crlf, 0 mixed, and 40 untracked binary paths w/-text. The only CRLF paths are the three protected Universal instruction files and their SHA values match prior EOL evidence. Current dirty B02 files, including .github/workflows/ci.yml, were not in the Actions run. The logs endpoint returned 403; resolved Node patch version and explicit Ubuntu EOL output were not observed.",
+  "result": "pass",
+  "artifact": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36671527798; docs/architecture/production-readiness/evidence/B07/b07-01-current-run-and-eol-audit-2026-10-01.json; docs/architecture/production-readiness/evidence/B07/eol-normalization-2026-09-30.json",
+  "notes": "The green run validates committed HEAD only, not the current dirty working tree. Node major 22 is selected by the .nvmrc at that SHA; exact patch is unobserved. The combined git ls-files --eol scan covers all 565 current B07.01 paths, including untracked text and binary assets; no personal Git setting changed. Ubuntu-side EOL output and remote required-status enforcement remain open; GitHub CLI had no authenticated host."
+}

@@ -149,8 +149,8 @@ export function usePlatformFromRoute(): PlatformInfo {
 /** Hook: get route prefix (backward compat with useRoutePrefix) */
 export function usePlatformPrefix(): string {
   const location = useLocation();
-  if (location.pathname.startsWith('/w/')) return '/w';
-  if (location.pathname.startsWith('/t/')) return '/t';
-  if (location.pathname.startsWith('/r/')) return '/r'; // legacy compat
+  if (location.pathname === '/w' || location.pathname.startsWith('/w/')) return '/w';
+  if (location.pathname === '/t' || location.pathname.startsWith('/t/')) return '/t';
+  if (location.pathname === '/r' || location.pathname.startsWith('/r/')) return '/r'; // legacy compat
   return '';
 }

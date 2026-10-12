@@ -28,6 +28,7 @@ export function useP2POrderQuery(orderId: string | undefined) {
 
 export function useP2PChatMessageMutation(orderId: string | undefined) {
   const queryClient = useQueryClient();
+  const queryKey = p2pChatQueryKeys.chat(orderId ?? '');
   return useMutation({
     mutationFn: ({
       request,
@@ -37,7 +38,7 @@ export function useP2PChatMessageMutation(orderId: string | undefined) {
       idempotencyKey: string;
     }) => p2pApi.sendChatMessage(orderId!, request, idempotencyKey),
     onSuccess: (chat) => {
-      queryClient.setQueryData(p2pChatQueryKeys.chat(orderId ?? ''), chat);
+      queryClient.setQueryData(queryKey, chat);
     },
   });
 }

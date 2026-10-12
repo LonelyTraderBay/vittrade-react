@@ -3,6 +3,7 @@ import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { useLocation } from 'react-router';
+import { toast } from 'sonner';
 import { renderWithProviders } from '@/test/test-utils';
 import type { P2PAdsResponse, P2POverviewResponse } from '../model/p2p-types';
 import { P2PMarketplacePage } from './P2PMarketplacePage';
@@ -12,6 +13,7 @@ beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 const originalClipboard = Object.getOwnPropertyDescriptor(navigator, 'clipboard');
 afterEach(() => {
   server.resetHandlers();
+  vi.restoreAllMocks();
   if (originalClipboard) Object.defineProperty(navigator, 'clipboard', originalClipboard);
   else Reflect.deleteProperty(navigator, 'clipboard');
 });
@@ -74,6 +76,20 @@ const ads: P2PAdsResponse = {
       status: 'active',
       merchantBadge: 'pro',
     },
+  ],
+};
+const mixedAds: P2PAdsResponse = {
+  items: [
+    ...ads.items,
+    { ...ads.items[0], id: 'ad-buy', type: 'buy', merchant: 'Buyer One', merchantId: 'buyer-1' },
+  ],
+};
+
+const marketplaceAds: P2PAdsResponse = {
+  items: [
+    ...ads.items,
+    { ...ads.items[0], id: 'ad-3', merchant: 'Merchant Three', merchantId: 'merchant-3' },
+    { ...ads.items[0], id: 'ad-4', merchant: 'Merchant Four', merchantId: 'merchant-4' },
   ],
 };
 
@@ -179,6 +195,47 @@ describe('P2P marketplace feature page', () => {
     expect(screen.getByTestId('location')).toHaveTextContent('/w/p2p/ad/ad-1');
   });
 
+  it('routes a quick sell from the selected offer in sell mode', async () => {
+    server.use(
+      http.get('*/p2p/ads', () => HttpResponse.json(mixedAds)),
+      http.get('*/p2p/overview', () => HttpResponse.json(overview)),
+    );
+    renderWithProviders(
+      <>
+        <P2PMarketplacePage />
+        <LocationProbe />
+      </>,
+      { routerProps: { initialEntries: ['/w/p2p'] } },
+    );
+
+    expect(await screen.findByText('Merchant One')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('tab', { name: 'BÁN' }));
+    expect(await screen.findByText('Buyer One')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Tuỳ chọn offer của Buyer One' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Bán nhanh USDT' }));
+
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/p2p/ad/ad-buy');
+  });
+
+  it('routes the order-history shortcut through the active web shell', async () => {
+    server.use(
+      http.get('*/p2p/ads', () => HttpResponse.json(ads)),
+      http.get('*/p2p/overview', () => HttpResponse.json(overview)),
+    );
+    renderWithProviders(
+      <>
+        <P2PMarketplacePage />
+        <LocationProbe />
+      </>,
+      { routerProps: { initialEntries: ['/w/p2p'] } },
+    );
+
+    expect(await screen.findByText('Merchant One')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Lịch sử lệnh' }));
+
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/p2p/my-orders');
+  });
+
   it('adds an offer to comparison and clears the comparison bar', async () => {
     server.use(
       http.get('*/p2p/ads', () => HttpResponse.json(ads)),
@@ -198,10 +255,40 @@ describe('P2P marketplace feature page', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'So sánh giá' }));
     expect(screen.getByText('1 offer đang so sánh')).toBeInTheDocument();
 
+    const toastInfo = vi.spyOn(toast, 'info');
+    fireEvent.click(screen.getByRole('button', { name: 'So sánh' }));
+    expect(toastInfo).toHaveBeenCalledWith('So sánh chi tiết — Sắp ra mắt!');
+
     const clearButton = container.querySelector('.fixed.bottom-20 button:last-child');
     expect(clearButton).not.toBeNull();
     fireEvent.click(clearButton!);
     expect(screen.queryByText('1 offer đang so sánh')).not.toBeInTheDocument();
+  });
+
+  it('keeps the comparison capped at three distinct offers', async () => {
+    const toastWarning = vi.spyOn(toast, 'warning');
+    server.use(
+      http.get('*/p2p/ads', () => HttpResponse.json(marketplaceAds)),
+      http.get('*/p2p/overview', () => HttpResponse.json(overview)),
+    );
+    renderWithProviders(<P2PMarketplacePage />);
+
+    expect(await screen.findByText('Merchant Four')).toBeInTheDocument();
+    for (const merchant of ['Merchant One', 'Merchant Two', 'Merchant Three']) {
+      fireEvent.click(screen.getByRole('button', { name: `Tuỳ chọn offer của ${merchant}` }));
+      fireEvent.click(await screen.findByRole('button', { name: 'So sánh giá' }));
+    }
+    expect(screen.getByText('3 offer đang so sánh')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Tuỳ chọn offer của Merchant Four' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'So sánh giá' }));
+
+    const comparisonBar = screen.getByText('3 offer đang so sánh').parentElement;
+    expect(comparisonBar).toHaveTextContent('Merchant One vs Merchant Two vs Merchant Three');
+    expect(comparisonBar).not.toHaveTextContent('Merchant Four');
+    expect(toastWarning).toHaveBeenCalledWith('Tối đa 3 offer so sánh cùng lúc', {
+      duration: 1500,
+    });
   });
 
   it('copies a share link and opens the merchant profile in the web shell', async () => {
@@ -232,6 +319,31 @@ describe('P2P marketplace feature page', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Tuỳ chọn offer của Merchant One' }));
     fireEvent.click(await screen.findByRole('button', { name: 'Xem hồ sơ merchant' }));
     expect(screen.getByTestId('location')).toHaveTextContent('/w/p2p/merchant/merchant-1');
+  });
+
+  it('reports clipboard failure for the selected offer', async () => {
+    const writeText = vi.fn().mockRejectedValue(new Error('clipboard unavailable'));
+    const toastError = vi.spyOn(toast, 'error');
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+    server.use(
+      http.get('*/p2p/ads', () => HttpResponse.json(ads)),
+      http.get('*/p2p/overview', () => HttpResponse.json(overview)),
+    );
+    renderWithProviders(<P2PMarketplacePage />);
+
+    expect(await screen.findByText('Merchant One')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Tuỳ chọn offer của Merchant One' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Chia sẻ offer' }));
+
+    await waitFor(() =>
+      expect(toastError).toHaveBeenCalledWith('Không thể sao chép liên kết offer.', {
+        duration: 2000,
+      }),
+    );
+    expect(writeText).toHaveBeenCalledTimes(1);
   });
 
   it('switches to sell mode and routes from the P2P quick actions sheet', async () => {
