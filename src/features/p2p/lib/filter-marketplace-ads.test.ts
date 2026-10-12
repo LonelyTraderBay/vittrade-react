@@ -80,6 +80,16 @@ describe('filterMarketplaceAds', () => {
     expect(
       filterMarketplaceAds({
         ...defaults,
+        tab: 'sell',
+        ads: [
+          makeAd({ id: 'sell-high', type: 'buy', price: 25_200 }),
+          makeAd({ id: 'sell-low', type: 'buy', price: 24_800 }),
+        ],
+      }).map((ad) => ad.id),
+    ).toEqual(['sell-high', 'sell-low']);
+    expect(
+      filterMarketplaceAds({
+        ...defaults,
         sortBy: 'completion',
         ads: [ads[0], makeAd({ id: 'best-rate', completionRate: 99 })],
       }).map((ad) => ad.id),
@@ -100,5 +110,8 @@ describe('filterMarketplaceAds', () => {
     expect(filterMarketplaceAds({ ...defaults, merchantType: 'elite' }).map((ad) => ad.id)).toEqual(
       ['price-low'],
     );
+    expect(filterMarketplaceAds({ ...defaults, merchantType: 'pro' }).map((ad) => ad.id)).toEqual([
+      'price-high',
+    ]);
   });
 });

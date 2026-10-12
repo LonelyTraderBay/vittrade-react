@@ -1,8 +1,10 @@
-import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Route, Routes, useSearchParams } from 'react-router';
+import { toast } from 'sonner';
 import { renderWithProviders } from '@/test/test-utils';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
@@ -12,8 +14,31 @@ import { P2PPaymentMethodsPage } from './P2PPaymentMethodsPage';
 const server = setupServer();
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+  server.resetHandlers();
+  vi.restoreAllMocks();
+});
 afterAll(() => server.close());
+
+function PaymentMethodAddRoute() {
+  const [searchParams] = useSearchParams();
+  return <p>payment method form: {searchParams.get('type')}</p>;
+}
+
+const paymentMethodRoutes = (
+  <Routes>
+    <Route path="/p2p/payment-methods" element={<P2PPaymentMethodsPage />} />
+    <Route path="/p2p/payment-method/add" element={<PaymentMethodAddRoute />} />
+  </Routes>
+);
+
+const authAdapterWithPermissions = (permissions: string[]): AuthAdapter => ({
+  ...testAuthAdapter,
+  initialSession: {
+    ...testAuthAdapter.initialSession!,
+    user: { ...testAuthAdapter.initialSession!.user, permissions },
+  },
+});
 
 const bank: P2PPaymentMethod = {
   id: 'pm-bank',
@@ -127,5 +152,71 @@ describe('P2P payment methods contract page', () => {
     expect(screen.getByRole('button', { name: 'Add bank payment method' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Delete Vietcombank' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Set default MoMo' })).toBeDisabled();
+  });
+
+  it('navigates to bank payment method creation with the registered route and query', async () => {
+    server.use(http.get('*/p2p/payment-methods', () => HttpResponse.json({ items: [] })));
+
+    const user = userEvent.setup();
+    renderWithProviders(paymentMethodRoutes, {
+      routerProps: { initialEntries: ['/p2p/payment-methods'] },
+    });
+
+    await user.click(await screen.findByRole('button', { name: 'Add bank payment method' }));
+    expect(await screen.findByText('payment method form: bank')).toBeInTheDocument();
+  });
+
+  it('navigates to e-wallet creation for the dedicated payment-method write permission', async () => {
+    server.use(http.get('*/p2p/payment-methods', () => HttpResponse.json({ items: [] })));
+
+    const user = userEvent.setup();
+    renderWithProviders(paymentMethodRoutes, {
+      authAdapter: authAdapterWithPermissions(['p2p:payment-methods:write']),
+      routerProps: { initialEntries: ['/p2p/payment-methods'] },
+    });
+
+    await user.click(await screen.findByRole('button', { name: 'Add e-wallet payment method' }));
+    expect(await screen.findByText('payment method form: ewallet')).toBeInTheDocument();
+  });
+
+  it('navigates to the registered edit form with the selected method type', async () => {
+    server.use(http.get('*/p2p/payment-methods', () => HttpResponse.json({ items: [bank] })));
+
+    const user = userEvent.setup();
+    renderWithProviders(paymentMethodRoutes, {
+      routerProps: { initialEntries: ['/p2p/payment-methods'] },
+    });
+
+    await user.click(await screen.findByRole('button', { name: 'Edit Vietcombank' }));
+    expect(await screen.findByText('payment method form: bank')).toBeInTheDocument();
+  });
+
+  it('shows API errors for default updates and confirmed deletes', async () => {
+    const errorToast = vi.spyOn(toast, 'error');
+    server.use(
+      http.get('*/p2p/payment-methods', () => HttpResponse.json({ items: [bank, wallet] })),
+      http.patch('*/p2p/payment-methods/pm-wallet', () =>
+        HttpResponse.json({ code: 'NOT_FOUND' }, { status: 404 }),
+      ),
+      http.delete('*/p2p/payment-methods/pm-bank', () =>
+        HttpResponse.json({ code: 'NOT_FOUND' }, { status: 404 }),
+      ),
+    );
+
+    const user = userEvent.setup();
+    renderWithProviders(<P2PPaymentMethodsPage />);
+
+    await screen.findByText('Vietcombank');
+    await user.click(screen.getByRole('button', { name: 'Set default MoMo' }));
+    await waitFor(() =>
+      expect(errorToast).toHaveBeenCalledWith('Không thể đặt phương thức thanh toán mặc định.'),
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Delete Vietcombank' }));
+    await user.click(await screen.findByRole('button', { name: 'Delete' }));
+    await waitFor(() =>
+      expect(errorToast).toHaveBeenCalledWith('Không thể xóa phương thức thanh toán.'),
+    );
+    expect(errorToast).toHaveBeenCalledTimes(2);
   });
 });

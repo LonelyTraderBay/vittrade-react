@@ -1,11 +1,13 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { Route, Routes, useLocation } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
+import { browserStorage } from '@/shared/lib/browser-storage';
+import { useAuth } from '@/shared/session/useAuth';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
 import type { OCOOrderParams } from './OCOOrderForm';
 import type { TradingOrder } from '../model/trading-types';
@@ -32,11 +34,29 @@ vi.mock('./MiniChart', () => ({ MiniChart: () => null }));
 vi.mock('./OrderBook', () => ({ OrderBook: () => null }));
 vi.mock('./RecentTrades', () => ({ RecentTrades: () => null }));
 vi.mock('./QuickPairSwitcher', () => ({
-  QuickPairSwitcher: ({ open, onSelect }: { open: boolean; onSelect: (pairId: string) => void }) =>
+  QuickPairSwitcher: ({
+    open,
+    onClose,
+    onSelect,
+    currentPairId,
+  }: {
+    open: boolean;
+    onClose: () => void;
+    onSelect: (pairId: string) => void;
+    currentPairId: string;
+  }) =>
     open ? (
-      <button type="button" onClick={() => onSelect('ethusdt')}>
-        Select ETH/USDT fixture
-      </button>
+      <>
+        <button
+          type="button"
+          onClick={() => onSelect(currentPairId === 'ethusdt' ? 'btc-usdt' : 'ethusdt')}
+        >
+          Select {currentPairId === 'ethusdt' ? 'BTC/USDT' : 'ETH/USDT'} fixture
+        </button>
+        <button type="button" onClick={onClose}>
+          Close pair switcher
+        </button>
+      </>
     ) : null,
 }));
 vi.mock('./OCOOrderForm', () => ({
@@ -170,6 +190,8 @@ function renderTrade(
   return renderWithProviders(
     <Routes>
       <Route path="/trade/:pairId" element={<TradeTerminal />} />
+      <Route path="/trade" element={<TradeTerminal />} />
+      <Route path="/trade/export" element={<output>Trade export</output>} />
       <Route path="/trade/order-receipt" element={<OrderReceiptState />} />
     </Routes>,
     { routerProps: { initialEntries: [initialEntry] }, authAdapter },
@@ -187,6 +209,15 @@ function OrderReceiptState() {
   );
 }
 
+function RevokeSessionControl() {
+  const { signOut } = useAuth();
+  return (
+    <button type="button" onClick={() => void signOut()}>
+      Revoke trading session
+    </button>
+  );
+}
+
 function useDefaultHandlers(openOrders: TradingOrder[] = [], orderHistory: TradingOrder[] = []) {
   server.use(
     http.get('*/market/pairs', () => HttpResponse.json({ items: [pair] })),
@@ -200,7 +231,10 @@ function useDefaultHandlers(openOrders: TradingOrder[] = [], orderHistory: Tradi
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 beforeEach(() => useDefaultHandlers());
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+  server.resetHandlers();
+  vi.restoreAllMocks();
+});
 afterAll(() => server.close());
 
 describe('TradeTerminal contract-backed order lifecycle', () => {
@@ -287,6 +321,9 @@ describe('TradeTerminal contract-backed order lifecycle', () => {
 
     await user.click(placeButton);
     expect(screen.getByText('Xác nhận lệnh')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Đóng' }));
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    await user.click(placeButton);
     await user.click(screen.getByTestId('trade-confirm-submit'));
 
     await waitFor(() => {
@@ -405,6 +442,74 @@ describe('TradeTerminal contract-backed order lifecycle', () => {
     expect(screen.getByLabelText(/Khối lượng \(ETH\)/)).toBeInTheDocument();
   });
 
+  it('closes the quick pair switcher and flashes up then down when market price changes', async () => {
+    const user = userEvent.setup();
+    const ethPair = {
+      ...pair,
+      id: 'ethusdt',
+      symbol: 'ETH/USDT',
+      baseAsset: 'ETH',
+      price: 66_000,
+    };
+    server.use(http.get('*/market/pairs/ethusdt', () => HttpResponse.json(ethPair)));
+
+    renderTrade();
+    await screen.findByText('BTC/USDT');
+    await user.click(screen.getByRole('button', { name: 'BTC BTC/USDT' }));
+    await user.click(screen.getByRole('button', { name: 'Close pair switcher' }));
+    expect(screen.queryByRole('button', { name: 'Close pair switcher' })).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'BTC BTC/USDT' }));
+    await user.click(screen.getByRole('button', { name: 'Select ETH/USDT fixture' }));
+    expect(await screen.findByText('ETH/USDT')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'ETH ETH/USDT' }));
+    await user.click(screen.getByRole('button', { name: 'Select BTC/USDT fixture' }));
+    expect(await screen.findByText('BTC/USDT')).toBeInTheDocument();
+
+    await act(async () => new Promise((resolve) => setTimeout(resolve, 450)));
+    expect(screen.getByText('BTC/USDT')).toBeInTheDocument();
+  });
+
+  it('applies persisted TP/SL visibility and the default market pair route', async () => {
+    vi.spyOn(browserStorage.local, 'getItem').mockReturnValue(
+      JSON.stringify({ defaultOrderType: 'market', showTpsl: true, bracketMode: true }),
+    );
+    server.use(http.get('*/market/pairs/btcusdt', () => HttpResponse.json(pair)));
+
+    renderTrade(testAuthAdapter, '/trade');
+
+    expect(await screen.findByText('BTC/USDT')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Bracket Order/ })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    expect(screen.queryByLabelText('Giá đặt (USDT)')).not.toBeInTheDocument();
+  });
+
+  it('submits a market order without sending a limit price', async () => {
+    const user = userEvent.setup();
+    let requestBody: Record<string, unknown> | undefined;
+    vi.spyOn(browserStorage.local, 'getItem').mockReturnValue(
+      JSON.stringify({ defaultOrderType: 'market', showTpsl: false, bracketMode: false }),
+    );
+    server.use(
+      http.post('*/trading/orders', async ({ request }) => {
+        requestBody = (await request.json()) as Record<string, unknown>;
+        return HttpResponse.json({ ...openOrder, id: 'market-order-1', type: 'market' });
+      }),
+    );
+
+    renderTrade();
+    await screen.findByText('BTC/USDT');
+    fireEvent.change(screen.getByTestId('trade-amount'), { target: { value: '0.1' } });
+    await user.click(screen.getByRole('button', { name: /Đặt lệnh mua BTC\/USDT/i }));
+    await user.click(screen.getByTestId('trade-confirm-submit'));
+
+    await waitFor(() => expect(requestBody).toMatchObject({ type: 'market', amount: 0.1 }));
+    expect(requestBody).not.toHaveProperty('price');
+    expect(await screen.findByTestId('order-receipt-id')).toHaveTextContent('market-order-1');
+  });
+
   it('uses the sell-side balance when applying a percentage amount', async () => {
     const user = userEvent.setup();
     let requestBody: unknown;
@@ -478,6 +583,22 @@ describe('TradeTerminal contract-backed order lifecycle', () => {
     expect(screen.getByTestId('order-receipt-fee')).toHaveTextContent('0');
   });
 
+  it('exports open-order and history views through the trade export route', async () => {
+    const user = userEvent.setup();
+    const openOrders = renderTrade();
+    await screen.findByText('BTC/USDT');
+    await user.click(screen.getByRole('tab', { name: /Đang mở/ }));
+    await user.click(screen.getByRole('button', { name: 'Xuất lịch sử giao dịch' }));
+    expect(await screen.findByText('Trade export')).toBeInTheDocument();
+    openOrders.unmount();
+
+    renderTrade();
+    await screen.findByText('BTC/USDT');
+    await user.click(screen.getByRole('tab', { name: 'Lịch sử' }));
+    await user.click(screen.getByRole('button', { name: 'Xuất lịch sử giao dịch' }));
+    expect(await screen.findByText('Trade export')).toBeInTheDocument();
+  });
+
   it('cancels an open order with an idempotency key', async () => {
     const user = userEvent.setup();
     let cancelledOrderId: string | undefined;
@@ -541,6 +662,9 @@ describe('TradeTerminal contract-backed order lifecycle', () => {
     await screen.findByText('BTC/USDT');
     await user.click(screen.getByRole('tab', { name: /Đang mở/ }));
     await user.click(await screen.findByRole('button', { name: 'Sửa' }));
+    await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Hủy' }));
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    await user.click(await screen.findByRole('button', { name: 'Sửa' }));
 
     const priceInput = await screen.findByTestId('trade-modify-price');
     const amountInput = screen.getByTestId('trade-modify-amount');
@@ -592,6 +716,63 @@ describe('TradeTerminal contract-backed order lifecycle', () => {
 
     await waitFor(() => expect(requestReceived).toBe(true));
     expect(screen.queryByTestId('order-receipt-fee')).not.toBeInTheDocument();
+  });
+
+  it('revalidates order eligibility when form values change after confirmation opens', async () => {
+    const user = userEvent.setup();
+    let requests = 0;
+    server.use(
+      http.post('*/trading/orders', () => {
+        requests += 1;
+        return HttpResponse.json(openOrder);
+      }),
+    );
+
+    renderTrade();
+    await screen.findByText('BTC/USDT');
+    fireEvent.change(screen.getByTestId('trade-amount'), { target: { value: '0.1' } });
+    await user.click(screen.getByRole('button', { name: /Đặt lệnh mua BTC\/USDT/i }));
+    expect(await screen.findByRole('dialog')).toBeVisible();
+
+    fireEvent.change(screen.getByTestId('trade-amount'), { target: { value: '0' } });
+    await user.click(screen.getByTestId('trade-confirm-submit'));
+
+    expect(requests).toBe(0);
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+  });
+
+  it('rejects confirmation if the authenticated trading session ends while the sheet is open', async () => {
+    const user = userEvent.setup();
+    let requests = 0;
+    server.use(
+      http.post('*/trading/orders', () => {
+        requests += 1;
+        return HttpResponse.json(openOrder);
+      }),
+    );
+    renderWithProviders(
+      <>
+        <RevokeSessionControl />
+        <Routes>
+          <Route path="/trade/:pairId" element={<TradeTerminal />} />
+          <Route path="/trade/order-receipt" element={<OrderReceiptState />} />
+        </Routes>
+      </>,
+      { routerProps: { initialEntries: ['/trade/btc-usdt'] }, authAdapter: testAuthAdapter },
+    );
+
+    await screen.findByText('BTC/USDT');
+    fireEvent.change(screen.getByTestId('trade-amount'), { target: { value: '0.1' } });
+    await user.click(screen.getByRole('button', { name: /Đặt lệnh mua BTC\/USDT/i }));
+    expect(await screen.findByRole('dialog')).toBeVisible();
+    await user.click(screen.getByRole('button', { name: 'Revoke trading session' }));
+    await waitFor(() =>
+      expect(screen.getByRole('alert')).toHaveTextContent('Trading permission is required'),
+    );
+    await user.click(screen.getByTestId('trade-confirm-submit'));
+
+    expect(requests).toBe(0);
+    expect(screen.getByRole('dialog')).toBeVisible();
   });
 
   it('reuses the order idempotency key when retrying unchanged values and validates URL side', async () => {

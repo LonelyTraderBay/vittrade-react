@@ -52,7 +52,6 @@ export function P2PExpressPage() {
   );
 
   const goToConfirm = () => {
-    if (!bestAd || fiatAmount <= 0) return;
     const params = new URLSearchParams({
       type: tradeType,
       asset,

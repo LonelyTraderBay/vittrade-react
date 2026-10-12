@@ -133,6 +133,8 @@ describe('P2P orders contract page', () => {
 
     await userEvent.click(screen.getByRole('button', { name: 'Date' }));
     expect(screen.getByRole('button', { name: 'Amount' })).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Amount' }));
+    expect(screen.getByRole('button', { name: 'Date' })).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Open P2P dashboard' }));
     await userEvent.click(screen.getByText('#P2P-001'));
   });
@@ -159,6 +161,10 @@ describe('P2P orders contract page', () => {
     await userEvent.type(screen.getByLabelText('Search P2P orders'), 'unknown');
     expect(screen.getByText('No orders match the selected view.')).toBeInTheDocument();
     expect(screen.getByText('1 disputed orders recorded.')).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole('button', { name: 'Completed' }));
+    expect(screen.getByText('Try another filter or search term.')).toBeInTheDocument();
+    expect(screen.queryByText('1 disputed orders recorded.')).not.toBeInTheDocument();
   });
 
   it('renders the shared error state when the P2P order contract fails', async () => {

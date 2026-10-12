@@ -56,6 +56,7 @@ describe('P2P disputes contract page', () => {
     expect(
       await screen.findByRole('button', { name: 'Open dispute VT-P2P-001' }),
     ).toBeInTheDocument();
+    expect(screen.getByText('Tổng cộng').previousElementSibling).toHaveTextContent('4');
     expect(screen.getByRole('button', { name: 'Open dispute VT-P2P-002' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Open dispute VT-P2P-003' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Open dispute VT-P2P-004' })).toBeInTheDocument();

@@ -88,9 +88,10 @@ export function P2PDisputesPage() {
       <Header title="Tranh chấp P2P" subtitle="Compliance · P2P" back />
       <PageContent gap="default">
         <div className="grid grid-cols-3 gap-3">
+          {/* Successful responses have passed disputesResponseSchema, which requires total. */}
           <SummaryCard
             icon={<Scale size={16} color="#EF4444" />}
-            value={query.data?.total ?? disputes.length}
+            value={query.data!.total}
             label="Tổng cộng"
             color={colors.text1}
           />

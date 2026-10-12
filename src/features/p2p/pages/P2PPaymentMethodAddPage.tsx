@@ -52,8 +52,6 @@ export function P2PPaymentMethodAddPage() {
   };
 
   const save = async () => {
-    if (!canWritePaymentMethods || !provider || !accountNumber.trim() || !accountName.trim())
-      return;
     try {
       await createMutation.mutateAsync({
         request: {

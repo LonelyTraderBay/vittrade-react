@@ -71,40 +71,41 @@ export function P2PMarketplacePage({
     setShowContextMenu(true);
   }, []);
 
-  const handleShareOffer = useCallback(async () => {
-    if (!contextMenuAd) return;
-
-    try {
-      const shareUrl = `${window.location.origin}${prefix}/p2p/ad/${encodeURIComponent(contextMenuAd.id)}`;
-      await navigator.clipboard.writeText(shareUrl);
-      actionToast.success(TOAST.P2P.SHARE_COPIED);
-    } catch {
-      actionToast.error('Không thể sao chép liên kết offer.');
-    }
-  }, [contextMenuAd, prefix, actionToast]);
-
-  const handleCompare = useCallback(() => {
-    if (!contextMenuAd) return;
-    setCompareList((prev) => {
-      if (prev.find((ad) => ad.id === contextMenuAd.id)) return prev;
-      if (prev.length >= 3) {
-        toast.warning('Tối đa 3 offer so sánh cùng lúc', { duration: 1500 });
-        return prev;
+  const handleShareOffer = useCallback(
+    async (ad: P2PAd) => {
+      try {
+        const shareUrl = `${window.location.origin}${prefix}/p2p/ad/${encodeURIComponent(ad.id)}`;
+        await navigator.clipboard.writeText(shareUrl);
+        actionToast.success(TOAST.P2P.SHARE_COPIED);
+      } catch {
+        actionToast.error('Không thể sao chép liên kết offer.');
       }
-      return [...prev, contextMenuAd];
-    });
-    actionToast.info(TOAST.P2P.COMPARE_ADDED(contextMenuAd.merchant));
-  }, [contextMenuAd, actionToast]);
+    },
+    [prefix, actionToast],
+  );
+
+  const handleCompare = useCallback(
+    (ad: P2PAd) => {
+      if (compareList.some((item) => item.id === ad.id)) return;
+      if (compareList.length >= 3) {
+        toast.warning('Tối đa 3 offer so sánh cùng lúc', { duration: 1500 });
+        return;
+      }
+      setCompareList([...compareList, ad]);
+      actionToast.info(TOAST.P2P.COMPARE_ADDED(ad.merchant));
+    },
+    [compareList, actionToast],
+  );
 
   const handleClearCompare = useCallback(() => {
     setCompareList([]);
     actionToast.info(TOAST.P2P.COMPARE_CLEARED);
   }, [actionToast]);
 
-  const handleViewMerchant = useCallback(() => {
-    if (!contextMenuAd) return;
-    navigate(`${prefix}/p2p/merchant/${contextMenuAd.merchantId}`);
-  }, [contextMenuAd, navigate, prefix]);
+  const handleViewMerchant = useCallback(
+    (ad: P2PAd) => navigate(`${prefix}/p2p/merchant/${ad.merchantId}`),
+    [navigate, prefix],
+  );
 
   const userLevel = overview?.userLevel;
   const currentLevelData = overview?.tradingLevels.find(
@@ -187,11 +188,6 @@ export function P2PMarketplacePage({
     >
       {/* Offline / Error states (§18.1) */}
       <OfflineBanner showStaleHint />
-      {hasError && (
-        <div className="px-5 py-8">
-          <ErrorState title="Không thể tải P2P" onAction={() => void handleRefresh()} />
-        </div>
-      )}
       {/* Header — variant="page" module index (§21.4) */}
       <Header
         variant="page"
@@ -275,9 +271,7 @@ export function P2PMarketplacePage({
         tradeType={tab}
         onShare={handleShareOffer}
         onCompare={handleCompare}
-        onQuickAction={() => {
-          if (contextMenuAd) handleQuickAction(contextMenuAd, tab);
-        }}
+        onQuickAction={(ad) => handleQuickAction(ad, tab)}
         onViewMerchant={handleViewMerchant}
         prefix={prefix}
         onAfterOpen={onContextMenuOpen}

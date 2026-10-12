@@ -200,18 +200,21 @@ describe('CopyEducationPage', () => {
 
     const capital = getInputByLabel('Số vốn copy (USD)');
     const profit = getInputByLabel('Lợi nhuận dự kiến (%)');
+    const trades = getInputByLabel('Số lượng trades (30 ngày)');
 
     await user.clear(capital);
     await user.type(capital, '10000');
     await user.clear(profit);
     await user.type(profit, '20');
+    await user.clear(trades);
+    await user.type(trades, '100');
 
-    // platform $10 + performance $200 + trading $50 = $260; gross $2000; net $1740
+    // platform $10 + performance $200 + trading $100 = $310; gross $2000; net $1690
     await waitFor(() => {
-      expect(screen.getByText('$260.00')).toBeInTheDocument();
+      expect(screen.getByText('$310.00')).toBeInTheDocument();
       expect(screen.getByText('$2000.00')).toBeInTheDocument();
-      expect(screen.getByText('$1740.00')).toBeInTheDocument();
-      expect(screen.getByText(/Phí thực tế: 13\.0%/i)).toBeInTheDocument();
+      expect(screen.getByText('$1690.00')).toBeInTheDocument();
+      expect(screen.getByText(/Phí thực tế: 15\.5%/i)).toBeInTheDocument();
     });
   });
 

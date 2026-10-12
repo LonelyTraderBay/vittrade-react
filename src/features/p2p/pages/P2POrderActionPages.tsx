@@ -164,12 +164,15 @@ export function P2POrderCancelContractPage() {
             disabled={!canCancel || !reason || mutation.isPending}
             loading={mutation.isPending}
             onClick={async () => {
-              if (!reason) return;
-              await mutation.mutateAsync({
-                request: { reason },
-                idempotencyKey: crypto.randomUUID(),
-              });
-              navigate(`${prefix}/p2p/order/${order.id}`, { replace: true });
+              try {
+                await mutation.mutateAsync({
+                  request: { reason },
+                  idempotencyKey: crypto.randomUUID(),
+                });
+                navigate(`${prefix}/p2p/order/${order.id}`, { replace: true });
+              } catch {
+                // The mutation state renders the inline error; stay on the form so it can be retried.
+              }
             }}
           >
             Xác nhận hủy đơn
@@ -239,12 +242,15 @@ export function P2POrderRateContractPage() {
             disabled={!canRate || !rating || mutation.isPending}
             loading={mutation.isPending}
             onClick={async () => {
-              if (!rating) return;
-              await mutation.mutateAsync({
-                request: { rating, review: review.trim() || undefined },
-                idempotencyKey: crypto.randomUUID(),
-              });
-              navigate(-1);
+              try {
+                await mutation.mutateAsync({
+                  request: { rating, review: review.trim() || undefined },
+                  idempotencyKey: crypto.randomUUID(),
+                });
+                navigate(-1);
+              } catch {
+                // The mutation state renders the inline error; stay on the form so it can be retried.
+              }
             }}
           >
             Gửi đánh giá
@@ -337,11 +343,15 @@ export function P2POrderProofContractPage() {
             disabled={!canSubmitProof || !files.length || mutation.isPending}
             loading={mutation.isPending}
             onClick={async () => {
-              await mutation.mutateAsync({
-                request: { files },
-                idempotencyKey: crypto.randomUUID(),
-              });
-              navigate(-1);
+              try {
+                await mutation.mutateAsync({
+                  request: { files },
+                  idempotencyKey: crypto.randomUUID(),
+                });
+                navigate(-1);
+              } catch {
+                // The mutation state renders the inline error; stay on the form so it can be retried.
+              }
             }}
           >
             Gửi bằng chứng

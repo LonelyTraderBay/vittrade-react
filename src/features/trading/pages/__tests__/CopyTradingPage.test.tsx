@@ -106,11 +106,13 @@ const providers = vi.hoisted(() => [
   },
 ]);
 
+const queryState = vi.hoisted(() => ({ isError: false, refetch: vi.fn() }));
+
 vi.mock('@/features/trading', () => ({
   useCopyProvidersQuery: (query: { sort?: string } = {}) => ({
     isPending: false,
-    isError: false,
-    refetch: vi.fn(),
+    isError: queryState.isError,
+    refetch: queryState.refetch,
     data: {
       items: [...providers].sort((a, b) =>
         query.sort === 'followers'
@@ -126,7 +128,20 @@ vi.mock('@/features/trading', () => ({
 }));
 
 describe('CopyTradingPage', () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    queryState.isError = false;
+    vi.clearAllMocks();
+  });
+
+  it('retries loading providers from the shared error state', async () => {
+    queryState.isError = true;
+    const user = userEvent.setup();
+    renderWithRouter(<CopyTradingPage />);
+
+    await user.click(screen.getByRole('button', { name: 'Thử lại' }));
+
+    expect(queryState.refetch).toHaveBeenCalledTimes(1);
+  });
 
   it('renders provider metrics and risk disclosure from the query boundary', () => {
     renderWithRouter(<CopyTradingPage />);

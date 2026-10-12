@@ -57,7 +57,7 @@ export function QuickPairSwitcher({
     }
 
     if (query.trim()) {
-      const q = query.toLowerCase();
+      const q = query.trim().toLowerCase();
       list = list.filter(
         (p) => p.symbol.toLowerCase().includes(q) || p.baseAsset.toLowerCase().includes(q),
       );
@@ -91,7 +91,7 @@ export function QuickPairSwitcher({
             }}
           />
           {query && (
-            <button onClick={() => setQuery('')}>
+            <button aria-label="Xóa tìm kiếm" onClick={() => setQuery('')}>
               <X size={14} color={c.text3} />
             </button>
           )}

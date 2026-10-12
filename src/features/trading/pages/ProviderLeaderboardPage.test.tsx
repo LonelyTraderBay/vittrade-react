@@ -82,14 +82,22 @@ describe('provider leaderboard', () => {
   });
 
   it('shows a retry state when leaderboard data is unavailable', async () => {
+    let recover = false;
     server.use(
-      http.get('*/trading/copy/providers', () =>
-        HttpResponse.json({ code: 'PROVIDERS_UNAVAILABLE' }, { status: 503 }),
-      ),
+      http.get('*/trading/copy/providers', () => {
+        return recover
+          ? HttpResponse.json(providers)
+          : HttpResponse.json({ code: 'PROVIDERS_UNAVAILABLE' }, { status: 503 });
+      }),
     );
 
+    const user = userEvent.setup();
     renderWithProviders(<ProviderLeaderboardPage />);
 
-    expect(await screen.findByRole('button', { name: 'Thử lại' })).toBeInTheDocument();
+    const retryButton = await screen.findByRole('button', { name: 'Thử lại' });
+    recover = true;
+    await user.click(retryButton);
+
+    expect(await screen.findByText('Provider One')).toBeInTheDocument();
   });
 });

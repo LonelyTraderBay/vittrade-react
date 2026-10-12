@@ -175,25 +175,43 @@ describe('contract-backed copy trading pages', () => {
       <CopyConfirmationContractPage />,
     ],
   ])('shows retry when the %s contract cannot load', async (_name, path, element) => {
+    let recover = false;
     server.use(
       http.get('*/trading/copy/providers/:providerId', () =>
-        HttpResponse.json({ code: 'COPY_PROVIDER_UNAVAILABLE' }, { status: 503 }),
+        recover
+          ? HttpResponse.json(profile)
+          : HttpResponse.json({ code: 'COPY_PROVIDER_UNAVAILABLE' }, { status: 503 }),
       ),
     );
     renderRoute(path, element);
 
-    expect(await screen.findByRole('button', { name: 'Thử lại' })).toBeInTheDocument();
+    const retryButton = await screen.findByRole('button', { name: 'Thử lại' });
+    recover = true;
+    await userEvent.click(retryButton);
+
+    await waitFor(() =>
+      expect(screen.queryByRole('button', { name: 'Thử lại' })).not.toBeInTheDocument(),
+    );
   });
 
   it('requires all assessment acknowledgements before continuing', async () => {
     mockProviderProfile();
-    renderRoute('/trade/copy-provider/:providerId/assessment', <PreCopyAssessmentContractPage />);
+    renderRoute(
+      '/trade/copy-provider/:providerId/assessment',
+      <PreCopyAssessmentContractPage />,
+      <Route
+        path="/trade/copy-provider/provider-1/configuration"
+        element={<p>configuration-route</p>}
+      />,
+    );
 
     expect(await screen.findByText('Xác nhận hiểu rủi ro')).toBeInTheDocument();
     const next = screen.getByRole('button', { name: 'Tiếp tục cấu hình' });
     expect(next).toBeDisabled();
     for (const checkbox of await screen.findAllByRole('checkbox')) await userEvent.click(checkbox);
     expect(next).toBeEnabled();
+    await userEvent.click(next);
+    expect(await screen.findByText('configuration-route')).toBeInTheDocument();
   });
 
   it('validates capital and previews the configured copy amount', async () => {

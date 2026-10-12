@@ -48,9 +48,8 @@ export function P2PMerchantProfilePage() {
   }
 
   const { merchant, ads, reviews } = profile;
-  const block = async () => {
-    if (!canManageBlacklist || blockMutation.isPending) return;
-    await blockMutation.mutateAsync({
+  const block = () => {
+    blockMutation.mutate({
       request: {
         username: merchant.name,
         reason: 'other',
@@ -115,7 +114,7 @@ export function P2PMerchantProfilePage() {
             </button>
             <button
               type="button"
-              onClick={() => void block()}
+              onClick={block}
               aria-label="Block P2P merchant"
               disabled={!canManageBlacklist || blockMutation.isPending}
               className="flex-1 rounded-xl py-2.5 flex items-center justify-center gap-2"

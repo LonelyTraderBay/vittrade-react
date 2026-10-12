@@ -53,13 +53,11 @@ export function P2PPaymentMethodsPage() {
   );
 
   const add = (type: 'bank' | 'ewallet') => {
-    if (!canWritePaymentMethods) return;
     hapticSelection();
     navigate(`${prefix}/p2p/payment-method/add?type=${type}`);
   };
 
   const setDefault = async (method: P2PPaymentMethod) => {
-    if (!canWritePaymentMethods) return;
     try {
       await updateMutation.mutateAsync({
         id: method.id,
@@ -72,12 +70,11 @@ export function P2PPaymentMethodsPage() {
     }
   };
 
-  const remove = async () => {
-    if (!canWritePaymentMethods || !deleteId) return;
+  const remove = async (methodId: string) => {
     try {
       await deleteMutation.mutateAsync({
-        id: deleteId,
-        idempotencyKey: requestKey('p2p-payment-method-delete', deleteId),
+        id: methodId,
+        idempotencyKey: requestKey('p2p-payment-method-delete', methodId),
       });
       setDeleteId(null);
       hapticError();
@@ -207,7 +204,7 @@ export function P2PPaymentMethodsPage() {
       <ConfirmationDialog
         open={Boolean(deleteId)}
         onClose={() => setDeleteId(null)}
-        onConfirm={() => void remove()}
+        onConfirm={() => void remove(deleteId!)}
         variant="danger"
         icon={<Trash2 size={24} color="#EF4444" />}
         title="Delete payment method?"

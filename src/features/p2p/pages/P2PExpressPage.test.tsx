@@ -228,7 +228,35 @@ describe('P2P Express contract page', () => {
     const amountInput = screen.getByPlaceholderText('0');
     await userEvent.type(amountInput, '1a2b3');
     expect(amountInput).toHaveValue('123');
-    expect(screen.getByRole('button', { name: 'Mua nhanh USDT' })).toBeDisabled();
+    const confirmationButton = screen.getByRole('button', { name: 'Mua nhanh USDT' });
+    expect(confirmationButton).toBeDisabled();
+    await userEvent.click(confirmationButton);
     expect(screen.getByTestId('location')).toHaveTextContent('/');
+  });
+
+  it('allows confirmation without a preferred payment when the ad contract provides none', async () => {
+    server.use(
+      http.get('*/p2p/ads', () =>
+        HttpResponse.json({
+          items: [ad({ merchant: 'Offer without payment data', paymentMethods: [] })],
+        }),
+      ),
+      http.get('*/p2p/payment-methods', () => HttpResponse.json({ items: [] })),
+    );
+
+    const user = userEvent.setup();
+    renderWithProviders(
+      <>
+        <P2PExpressPage />
+        <LocationProbe />
+      </>,
+    );
+    expect(await screen.findByText('Offer without payment data')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: '1.000.000' }));
+    await user.click(screen.getByRole('button', { name: 'Mua nhanh USDT' }));
+
+    expect(screen.getByTestId('location')).toHaveTextContent(
+      '/p2p/express/confirm?type=buy&asset=USDT&fiat=1000000&adId=ad-default&payment=',
+    );
   });
 });

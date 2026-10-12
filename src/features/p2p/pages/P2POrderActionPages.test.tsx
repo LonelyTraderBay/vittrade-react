@@ -45,6 +45,19 @@ const order = {
   fee: 0,
 };
 
+function authAdapterWithPermissions(permissions: string[]): AuthAdapter {
+  return {
+    ...testAuthAdapter,
+    initialSession: {
+      ...testAuthAdapter.initialSession!,
+      user: {
+        ...testAuthAdapter.initialSession!.user,
+        permissions,
+      },
+    },
+  };
+}
+
 describe('P2P order action feature pages', () => {
   it('loads a server-owned order and submits an idempotent cancellation', async () => {
     let cancelCalls = 0;
@@ -61,7 +74,10 @@ describe('P2P order action feature pages', () => {
         <Route path="/p2p/order/:orderId/cancel" element={<P2POrderCancelContractPage />} />
         <Route path="/p2p/order/:orderId" element={<div />} />
       </Routes>,
-      { routerProps: { initialEntries: ['/p2p/order/order-1/cancel'] } },
+      {
+        routerProps: { initialEntries: ['/p2p/order/order-1/cancel'] },
+        authAdapter: authAdapterWithPermissions(['market:read', 'p2p:read', 'p2p:cancel']),
+      },
     );
 
     expect(await screen.findByText('P2P-001')).toBeInTheDocument();
@@ -72,7 +88,11 @@ describe('P2P order action feature pages', () => {
   });
 
   it('derives the order timeline from contract timestamps', async () => {
-    server.use(http.get('*/p2p/orders/order-1', () => HttpResponse.json(order)));
+    server.use(
+      http.get('*/p2p/orders/order-1', () =>
+        HttpResponse.json({ ...order, type: 'sell' as const }),
+      ),
+    );
 
     renderWithProviders(
       <Routes>
@@ -82,6 +102,7 @@ describe('P2P order action feature pages', () => {
     );
 
     expect(await screen.findByText('Đã tạo đơn')).toBeInTheDocument();
+    expect(screen.getByText('Bán 100 USDT')).toBeInTheDocument();
     expect(screen.getByText('Đã thanh toán')).toBeInTheDocument();
     expect(screen.getByText('Đã release escrow')).toBeInTheDocument();
     expect(screen.getByText('Đã hủy')).toBeInTheDocument();
@@ -102,7 +123,10 @@ describe('P2P order action feature pages', () => {
       <Routes>
         <Route path="/p2p/order/:orderId/rate" element={<P2POrderRateContractPage />} />
       </Routes>,
-      { routerProps: { initialEntries: ['/p2p/order/order-1/rate'] } },
+      {
+        routerProps: { initialEntries: ['/p2p/order/order-1/rate'] },
+        authAdapter: authAdapterWithPermissions(['market:read', 'p2p:read', 'p2p:rate']),
+      },
     );
 
     expect(await screen.findByText('P2P-001')).toBeInTheDocument();
@@ -123,7 +147,10 @@ describe('P2P order action feature pages', () => {
       <Routes>
         <Route path="/p2p/order/:orderId/proof" element={<P2POrderProofContractPage />} />
       </Routes>,
-      { routerProps: { initialEntries: ['/p2p/order/order-1/proof'] } },
+      {
+        routerProps: { initialEntries: ['/p2p/order/order-1/proof'] },
+        authAdapter: authAdapterWithPermissions(['market:read', 'p2p:read', 'p2p:payment-proof']),
+      },
     );
 
     expect(await screen.findByText('P2P-001')).toBeInTheDocument();
@@ -185,5 +212,188 @@ describe('P2P order action feature pages', () => {
       'P2P order write permission is required to cancel an order.',
     );
     expect(screen.getByRole('button', { name: 'Xác nhận hủy đơn' })).toBeDisabled();
+  });
+
+  it('shows the contract conflict when cancellation is rejected', async () => {
+    server.use(
+      http.get('*/p2p/orders/order-1', () => HttpResponse.json(order)),
+      http.post('*/p2p/orders/order-1/cancel', () =>
+        HttpResponse.json({ code: 'ORDER_STATE_CONFLICT' }, { status: 409 }),
+      ),
+    );
+
+    renderWithProviders(
+      <Routes>
+        <Route path="/p2p/order/:orderId/cancel" element={<P2POrderCancelContractPage />} />
+      </Routes>,
+      {
+        routerProps: { initialEntries: ['/p2p/order/order-1/cancel'] },
+        authAdapter: authAdapterWithPermissions(['market:read', 'p2p:read', 'p2p:cancel']),
+      },
+    );
+
+    expect(await screen.findByText('P2P-001')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Lý do khác' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Xác nhận hủy đơn' }));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Không thể hủy đơn. Vui lòng thử lại hoặc mở dispute nếu đơn đã chuyển trạng thái.',
+    );
+  });
+
+  it('blocks rating when the user lacks the order-rating permission', async () => {
+    server.use(http.get('*/p2p/orders/order-1', () => HttpResponse.json(order)));
+
+    renderWithProviders(
+      <Routes>
+        <Route path="/p2p/order/:orderId/rate" element={<P2POrderRateContractPage />} />
+      </Routes>,
+      {
+        routerProps: { initialEntries: ['/p2p/order/order-1/rate'] },
+        authAdapter: authAdapterWithPermissions(['market:read', 'p2p:read']),
+      },
+    );
+
+    expect(await screen.findByText('P2P-001')).toBeInTheDocument();
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'P2P order write permission is required to submit a rating.',
+    );
+    expect(screen.getByRole('button', { name: 'Gửi đánh giá' })).toBeDisabled();
+  });
+
+  it('shows the contract conflict when rating is rejected', async () => {
+    server.use(
+      http.get('*/p2p/orders/order-1', () => HttpResponse.json(order)),
+      http.post('*/p2p/orders/order-1/rate', () =>
+        HttpResponse.json({ code: 'ORDER_STATE_CONFLICT' }, { status: 409 }),
+      ),
+    );
+
+    renderWithProviders(
+      <Routes>
+        <Route path="/p2p/order/:orderId/rate" element={<P2POrderRateContractPage />} />
+      </Routes>,
+      {
+        routerProps: { initialEntries: ['/p2p/order/order-1/rate'] },
+        authAdapter: authAdapterWithPermissions(['market:read', 'p2p:read', 'p2p:rate']),
+      },
+    );
+
+    expect(await screen.findByText('P2P-001')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: '5 sao' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Gửi đánh giá' }));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Không thể gửi đánh giá. Vui lòng thử lại.',
+    );
+  });
+
+  it('blocks payment proof when the user lacks the proof permission', async () => {
+    server.use(http.get('*/p2p/orders/order-1', () => HttpResponse.json(order)));
+
+    renderWithProviders(
+      <Routes>
+        <Route path="/p2p/order/:orderId/proof" element={<P2POrderProofContractPage />} />
+      </Routes>,
+      {
+        routerProps: { initialEntries: ['/p2p/order/order-1/proof'] },
+        authAdapter: authAdapterWithPermissions(['market:read', 'p2p:read']),
+      },
+    );
+
+    expect(await screen.findByText('P2P-001')).toBeInTheDocument();
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'P2P order write permission is required to submit payment proof.',
+    );
+    expect(screen.getByRole('button', { name: 'Gửi bằng chứng' })).toBeDisabled();
+  });
+
+  it('validates proof image type, size and count and removes selected files', async () => {
+    server.use(http.get('*/p2p/orders/order-1', () => HttpResponse.json(order)));
+
+    renderWithProviders(
+      <Routes>
+        <Route path="/p2p/order/:orderId/proof" element={<P2POrderProofContractPage />} />
+      </Routes>,
+      {
+        routerProps: { initialEntries: ['/p2p/order/order-1/proof'] },
+        authAdapter: authAdapterWithPermissions(['market:read', 'p2p:read', 'p2p:payment-proof']),
+      },
+    );
+
+    expect(await screen.findByText('P2P-001')).toBeInTheDocument();
+    const input = document.getElementById('p2p-payment-proof') as HTMLInputElement;
+    fireEvent.change(input, { target: { files: null } });
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+
+    const invalidType = new window.File(['receipt'], 'receipt.txt', { type: 'text/plain' });
+    fireEvent.change(input, { target: { files: [invalidType] } });
+    expect(input.value).toBe('');
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Chỉ nhận tối đa 3 ảnh, mỗi ảnh không quá 10 MB.',
+    );
+    expect(screen.queryByText('receipt.txt')).not.toBeInTheDocument();
+
+    const oversized = new window.File([new Uint8Array(10 * 1024 * 1024 + 1)], 'large.png', {
+      type: 'image/png',
+    });
+    fireEvent.change(input, { target: { files: [oversized] } });
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Chỉ nhận tối đa 3 ảnh, mỗi ảnh không quá 10 MB.',
+    );
+
+    const image = (name: string) => new window.File(['receipt'], name, { type: 'image/png' });
+    fireEvent.change(input, {
+      target: {
+        files: [image('one.png'), image('two.png'), image('three.png'), image('four.png')],
+      },
+    });
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Chỉ nhận tối đa 3 ảnh, mỗi ảnh không quá 10 MB.',
+    );
+    expect(screen.queryByText('one.png')).not.toBeInTheDocument();
+
+    fireEvent.change(input, { target: { files: [image('one.png'), image('two.png')] } });
+    expect(await screen.findByText('one.png')).toBeInTheDocument();
+    expect(screen.getByText('two.png')).toBeInTheDocument();
+    fireEvent.change(input, { target: { files: [image('three.png'), image('four.png')] } });
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Chỉ nhận tối đa 3 ảnh, mỗi ảnh không quá 10 MB.',
+    );
+
+    fireEvent.change(input, { target: { files: [image('three.png')] } });
+    expect(await screen.findByText('three.png')).toBeInTheDocument();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Xóa two.png' }));
+    expect(screen.queryByText('two.png')).not.toBeInTheDocument();
+    expect(screen.getByText('one.png')).toBeInTheDocument();
+    expect(screen.getByText('three.png')).toBeInTheDocument();
+  });
+
+  it('keeps a selected payment proof visible when the server rejects it', async () => {
+    vi.spyOn(p2pApi, 'submitPaymentProof').mockRejectedValue(new Error('ORDER_STATE_CONFLICT'));
+    server.use(http.get('*/p2p/orders/order-1', () => HttpResponse.json(order)));
+
+    renderWithProviders(
+      <Routes>
+        <Route path="/p2p/order/:orderId/proof" element={<P2POrderProofContractPage />} />
+      </Routes>,
+      {
+        routerProps: { initialEntries: ['/p2p/order/order-1/proof'] },
+        authAdapter: authAdapterWithPermissions(['market:read', 'p2p:read', 'p2p:payment-proof']),
+      },
+    );
+
+    expect(await screen.findByText('P2P-001')).toBeInTheDocument();
+    const input = document.getElementById('p2p-payment-proof') as HTMLInputElement;
+    fireEvent.change(input, {
+      target: { files: [new window.File(['receipt'], 'receipt.png', { type: 'image/png' })] },
+    });
+    await userEvent.click(await screen.findByRole('button', { name: 'Gửi bằng chứng' }));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Không thể tải bằng chứng lên. Vui lòng thử lại.',
+    );
+    expect(screen.getByText('receipt.png')).toBeInTheDocument();
   });
 });

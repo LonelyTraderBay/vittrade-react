@@ -8,6 +8,8 @@ import {
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { p2pApi } from '../api/p2p-api';
+import * as chatQueries from './p2p-chat-queries';
+import * as disputeDetailQueries from './p2p-dispute-detail-queries';
 import * as queries from './p2p-queries';
 
 const apiMethods = p2pApi as unknown as Record<string, () => Promise<unknown>>;
@@ -277,11 +279,14 @@ describe('P2P query hooks', () => {
   it('skips identifier-scoped queries until a valid ID exists', () => {
     const disabledQueries = [
       { hook: () => queries.useP2PChatQuery(undefined), api: 'getChat' },
+      { hook: () => chatQueries.useP2PChatQuery(undefined), api: 'getChat' },
+      { hook: () => chatQueries.useP2POrderQuery(undefined), api: 'getOrder' },
       { hook: () => queries.useP2PAdAnalyticsQuery(undefined), api: 'getAdAnalytics' },
       { hook: () => queries.useP2PMerchantProfileQuery(undefined), api: 'getMerchantProfile' },
       { hook: () => queries.useP2PAdQuery(undefined), api: 'getAd' },
       { hook: () => queries.useP2POrderQuery(undefined), api: 'getOrder' },
       { hook: () => queries.useP2PDisputeQuery(undefined), api: 'getDispute' },
+      { hook: () => disputeDetailQueries.useP2PDisputeQuery(undefined), api: 'getDispute' },
     ] satisfies Array<{ hook: () => unknown; api: keyof typeof p2pApi }>;
 
     for (const { hook, api } of disabledQueries) {
@@ -345,6 +350,31 @@ describe('P2P mutation hooks', () => {
 
     chat.unmount();
     dispute.unmount();
+  });
+
+  it('keeps chat and dispute mutations idle when their required IDs are missing', () => {
+    const missingIdMutations = [
+      { hook: () => chatQueries.useP2PChatMessageMutation(undefined), api: 'sendChatMessage' },
+      {
+        hook: () => disputeDetailQueries.useP2PDisputeMessageMutation(undefined),
+        api: 'sendDisputeMessage',
+      },
+      {
+        hook: () => disputeDetailQueries.useP2PDisputeEscalationMutation(undefined),
+        api: 'escalateDispute',
+      },
+    ] satisfies Array<{ hook: () => unknown; api: keyof typeof p2pApi }>;
+
+    for (const { hook, api } of missingIdMutations) {
+      const client = createQueryClient();
+      const { result, unmount } = renderHook(
+        hook as () => UseMutationResult<unknown, Error, unknown, unknown>,
+        { wrapper: createWrapper(client) },
+      );
+      expect(result.current.status).toBe('idle');
+      expect(apiMethods[api]).not.toHaveBeenCalled();
+      unmount();
+    }
   });
 
   it('invalidates every filtered order list after order state transitions', async () => {
