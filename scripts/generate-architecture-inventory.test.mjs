@@ -7,6 +7,7 @@ import {
   extractRouteFactoryBindings,
   extractRouteRecords,
   getStatus,
+  isPageSupportFile,
   loadProductionCertifications,
   resolveShellOverrideTarget,
   validateInventory,
@@ -100,6 +101,14 @@ async function createCertificationWorkspace({
 }
 
 describe('architecture inventory route evidence', () => {
+  it('classifies formatter helpers as support while keeping page implementations in scope', () => {
+    expect(isPageSupportFile('src/features/wallet/pages/asset-detail-formatters.ts')).toBe(true);
+    expect(isPageSupportFile('src/features/wallet/pages/AssetDetailPage.tsx')).toBe(false);
+    expect(isPageSupportFile('src/features/wallet/pages/FormattersPage.tsx')).toBe(false);
+    expect(isPageSupportFile('src/app/pages/WalletPage.ts')).toBe(false);
+    expect(isPageSupportFile('src/features/wallet/pages/asset-detailData.ts')).toBe(true);
+  });
+
   it('resolves market pair route slots to the shell override implementation', () => {
     const shellOverrideTargets = new Map([
       [

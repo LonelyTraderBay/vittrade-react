@@ -67,6 +67,13 @@ function compareCodeUnits(left, right) {
   return left < right ? -1 : left > right ? 1 : 0;
 }
 
+function isPageSupportFile(repoPath) {
+  return (
+    repoPath.includes('/components/') ||
+    /(?:Data|Components|Formatters)\.(?:ts|tsx|js|jsx)$/i.test(repoPath)
+  );
+}
+
 function toDomain(repoPath) {
   const featureMatch = repoPath.match(/^src\/features\/([^/]+)/);
   if (featureMatch) return featureMatch[1];
@@ -1095,8 +1102,6 @@ async function buildInventory() {
     /^src\/features\/[^/]+\/pages\//.test(repoPath) ||
     (/^src\/dev\/legacy\//.test(repoPath) && /(?:Page|Screen)\.tsx?$/.test(repoPath)) ||
     routePageTargetPaths.has(repoPath);
-  const isPageSupportFile = (repoPath) =>
-    repoPath.includes('/components/') || /(?:Data|Components)\.(?:ts|tsx|js|jsx)$/i.test(repoPath);
   const routeSourceFiles = allSourceFiles.filter((file) => {
     const repoPath = toRepoPath(file);
     const isRouteSource =
@@ -1415,6 +1420,7 @@ export {
   extractRouteRecords,
   extractRouteFactoryBindings,
   getStatus,
+  isPageSupportFile,
   loadProductionCertifications,
   resolveShellOverrideTarget,
   validateInventory,

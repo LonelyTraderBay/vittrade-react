@@ -10,7 +10,7 @@
     "src/app/services"
   ],
   "summary": {
-    "pageCount": 130,
+    "pageCount": 129,
     "routeCount": 427,
     "componentCount": 149,
     "dataModuleCount": 0,
@@ -21,13 +21,13 @@
       "integration-pending": 125,
       "demo": 2,
       "deprecated": 0,
-      "not-implemented": 3
+      "not-implemented": 2
     },
     "pageOwner": {
       "features/dca": 5,
       "features/p2p": 28,
       "app/platform": 2,
-      "features/wallet": 17,
+      "features/wallet": 16,
       "features/admin": 4,
       "features/arena": 2,
       "features/auth": 13,
@@ -3898,25 +3898,6 @@
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
           "@/shared/ui/layout/PageLayout"
-        ],
-        "mockReferences": [],
-        "directRuntimeAccess": {
-          "fetch": false,
-          "websocket": false,
-          "storage": false
-        }
-      }
-    },
-    {
-      "path": "src/features/wallet/pages/asset-detail-formatters.ts",
-      "domain": "wallet",
-      "owner": "features/wallet",
-      "status": "not-implemented",
-      "lines": 6,
-      "routePaths": [],
-      "dependencies": {
-        "localImports": [
-          "@/shared/lib/formatNumber"
         ],
         "mockReferences": [],
         "directRuntimeAccess": {
